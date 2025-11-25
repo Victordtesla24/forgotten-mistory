@@ -38,6 +38,35 @@ body {
     z-index: -1;
 }
 
+/* CRT/Vignette Overlay */
+body::after {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    z-index: 9998;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+body::before {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.6) 100%);
+    z-index: 9998;
+    pointer-events: none;
+}
+
 /* Admin Controls */
 .admin-controls {
     position: fixed;
@@ -1607,6 +1636,20 @@ footer {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: textShine 5s linear infinite;
+    position: relative;
+}
+
+.hero-title .reveal-text:hover {
+    animation: glitch-anim 0.3s infinite;
+}
+
+@keyframes glitch-anim {
+  0% { transform: translate(0) }
+  20% { transform: translate(-2px, 2px) }
+  40% { transform: translate(-2px, -2px) }
+  60% { transform: translate(2px, 2px) }
+  80% { transform: translate(2px, -2px) }
+  100% { transform: translate(0) }
 }
 
 @keyframes textShine {

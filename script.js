@@ -644,15 +644,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Spotlight pos
                 card.style.setProperty('--mouse-x', `${x}px`);
                 card.style.setProperty('--mouse-y', `${y}px`);
+
+                // 3D Tilt
+                const rotateX = ((y - centerY) / centerY) * -5; // -5 to 5 deg
+                const rotateY = ((x - centerX) / centerX) * 5;  // -5 to 5 deg
+
+                gsap.to(card, {
+                    perspective: 1000,
+                    rotateX: rotateX,
+                    rotateY: rotateY,
+                    scale3d: 1.02,
+                    duration: 0.4,
+                    ease: "power2.out"
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    rotateX: 0,
+                    rotateY: 0,
+                    scale3d: 1,
+                    duration: 0.6,
+                    ease: "elastic.out(1, 0.5)"
+                });
             });
         });
     }
 
     // --- Magnetic Buttons ---
-    const magnets = document.querySelectorAll('.btn-primary, .social-btn, .btn-secondary');
+    const magnets = document.querySelectorAll('.btn-primary, .social-btn, .btn-secondary, .nav-link');
     if (magnets.length) {
         magnets.forEach(magnet => {
             magnet.addEventListener('mousemove', function(e) {
@@ -660,12 +686,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
                 
-                // Move button slightly towards mouse
+                // Move button towards mouse
                 gsap.to(magnet, {
-                    x: x * 0.3,
-                    y: y * 0.3,
-                    duration: 0.3,
-                    ease: "power2.out"
+                    x: x * 0.5,
+                    y: y * 0.5,
+                    rotate: x * 0.05,
+                    duration: 0.4,
+                    ease: "power3.out"
                 });
             });
 
@@ -673,7 +700,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 gsap.to(magnet, {
                     x: 0,
                     y: 0,
-                    duration: 0.5,
+                    rotate: 0,
+                    duration: 0.8,
                     ease: "elastic.out(1, 0.3)"
                 });
             });
