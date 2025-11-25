@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Victor | Creative Developer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="counter">0</div>
+    </div>
+
+    <!-- Cursor -->
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">VICTOR.</div>
+        <div class="menu-toggle">Menu</div>
+        <div class="nav-overlay">
+            <ul class="nav-links">
+                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#work" class="nav-link">Work</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section" data-scroll-section>
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="line">Hello, I'm</span>
+                    <span class="line reveal-text">Victor</span>
+                </h1>
+                <p class="hero-subtitle reveal-text-delay">Creative Developer & Tech Enthusiast</p>
+                <div class="hero-links reveal-text-delay">
+                    <a href="https://github.com/Victordtesla24" target="_blank" class="btn-link">GitHub</a>
+                    <a href="https://youtube.com/@vicd0ct?si=HLl19AeCvhJvSZso" target="_blank" class="btn-link">YouTube</a>
+                    <a href="#contact" class="btn-primary">Let's Talk</a>
+                </div>
+            </div>
+            <div class="hero-image-container parallax" data-speed="0.1">
+                <!-- Placeholder for Avatar -->
+                <div class="avatar-placeholder" id="avatar-container">
+                    <div class="avatar-circle"></div>
+                    <!-- You can replace this with an <img> tag later -->
+                    <!-- <img src="path/to/avatar.jpg" alt="Avatar" class="avatar-img"> -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section" data-scroll-section>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">About Me</h2>
+                </div>
+                <div class="about-content">
+                    <p class="about-text">
+                        I am a passionate developer with a knack for building immersive web experiences. 
+                        With a background in engineering and a love for creative problem-solving, 
+                        I turn complex ideas into elegant, user-friendly digital products.
+                    </p>
+                    <p class="about-text">
+                        My journey involves deep diving into code, exploring new technologies, and sharing my knowledge through content creation.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="experience-section" data-scroll-section>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Experience</h2>
+                </div>
+                <div class="timeline">
+                    <!-- Placeholder Experience Items - Update based on your PDF -->
+                    <div class="timeline-item">
+                        <div class="timeline-date">2023 - Present</div>
+                        <div class="timeline-content">
+                            <h3>Senior Developer</h3>
+                            <h4>Tech Company Inc.</h4>
+                            <p>Leading development teams, architecting scalable solutions, and driving innovation.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2021 - 2023</div>
+                        <div class="timeline-content">
+                            <h3>Full Stack Engineer</h3>
+                            <h4>Creative Solutions</h4>
+                            <p>Developed robust web applications using modern frameworks and best practices.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2019 - 2021</div>
+                        <div class="timeline-content">
+                            <h3>Junior Developer</h3>
+                            <h4>StartUp Hub</h4>
+                            <p>Collaborated with designers to implement responsive and interactive user interfaces.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Work/Projects Section -->
+        <section id="work" class="work-section" data-scroll-section>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Selected Work</h2>
+                </div>
+                <div class="projects-grid">
+                    <a href="https://github.com/Victordtesla24" target="_blank" class="project-card parallax" data-speed="0.05">
+                        <div class="project-image"></div>
+                        <div class="project-info">
+                            <h3>GitHub Portfolio</h3>
+                            <p>Explore my open source contributions and code repositories.</p>
+                        </div>
+                    </a>
+                    <!-- Add more project cards here -->
+                    <div class="project-card parallax" data-speed="0.08">
+                        <div class="project-image" style="background-color: #2a2a2a;"></div>
+                        <div class="project-info">
+                            <h3>Project Alpha</h3>
+                            <p>A cutting-edge web application built for performance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section" data-scroll-section>
+            <div class="container">
+                <div class="contact-wrapper">
+                    <h2 class="contact-title">Have an idea?</h2>
+                    <a href="mailto:contact@victor.com" class="contact-email">contact@victor.com</a>
+                    <div class="social-links">
+                        <a href="https://github.com/Victordtesla24" target="_blank">GitHub</a>
+                        <a href="https://youtube.com/@vicd0ct?si=HLl19AeCvhJvSZso" target="_blank">YouTube</a>
+                        <a href="#" target="_blank">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Victor. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.0.45/dist/lenis.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
