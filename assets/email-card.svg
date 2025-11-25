@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" role="img" aria-label="Email">
+  <defs>
+    <radialGradient id="space" cx="50%" cy="45%" r="70%">
+      <stop offset="0%" stop-color="#0d0f16"/>
+      <stop offset="60%" stop-color="#05060a"/>
+      <stop offset="100%" stop-color="#020305"/>
+    </radialGradient>
+    <linearGradient id="metal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f3f5f8"/>
+      <stop offset="35%" stop-color="#cfd4dc"/>
+      <stop offset="70%" stop-color="#8c92a0"/>
+      <stop offset="100%" stop-color="#cfd4dc"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#space)"/>
+  <g opacity="0.8">
+    <circle cx="150" cy="220" r="2" fill="#b9c2ff"/>
+    <circle cx="320" cy="180" r="1.5" fill="#fff2d9"/>
+    <circle cx="520" cy="120" r="2.2" fill="#ffe6c7"/>
+    <circle cx="820" cy="210" r="1.3" fill="#ffffff"/>
+    <circle cx="1010" cy="160" r="2" fill="#dbe3ff"/>
+    <circle cx="280" cy="420" r="1.5" fill="#ffffff"/>
+    <circle cx="600" cy="380" r="2" fill="#ffe6c7"/>
+    <circle cx="940" cy="420" r="1.6" fill="#fff2d9"/>
+    <circle cx="760" cy="340" r="1.2" fill="#e2e7ff"/>
+    <circle cx="430" cy="290" r="1.4" fill="#f8f8ff"/>
+    <circle cx="210" cy="700" r="1.7" fill="#f8f8ff"/>
+    <circle cx="480" cy="760" r="2.1" fill="#fff2d9"/>
+    <circle cx="720" cy="820" r="1.4" fill="#ffffff"/>
+    <circle cx="1000" cy="720" r="1.8" fill="#e2e7ff"/>
+    <circle cx="860" cy="600" r="1.2" fill="#ffffff"/>
+    <circle cx="620" cy="640" r="1.5" fill="#dbe3ff"/>
+    <circle cx="340" cy="620" r="1.2" fill="#ffffff"/>
+    <circle cx="520" cy="980" r="1.9" fill="#ffe6c7"/>
+    <circle cx="860" cy="980" r="1.5" fill="#ffffff"/>
+    <circle cx="240" cy="940" r="1.3" fill="#dbe3ff"/>
+  </g>
+  <g transform="translate(160 300)">
+    <rect x="40" y="60" width="800" height="520" rx="36" ry="36" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" stroke-width="3"/>
+    <path d="M60 120 L440 400 L840 120" fill="none" stroke="url(#metal)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M840 180 L640 360 C580 410 500 410 440 360 L60 180" fill="none" stroke="url(#metal)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="100" y="100" width="700" height="360" rx="30" ry="30" fill="url(#metal)" opacity="0.18"/>
+    <path d="M450 210 L540 210 L520 270 Q500 300 480 270 Z" fill="url(#metal)" opacity="0.9"/>
+    <path d="M480 260 L520 220" stroke="url(#glow)" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <text x="600" y="1080" fill="#dbe3ff" font-family="Arial, sans-serif" font-size="70" text-anchor="middle" letter-spacing="6">EMAIL</text>
+</svg>

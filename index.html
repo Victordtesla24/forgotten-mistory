@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Victor | Creative Developer</title>
+    <title>Vikram Deshpande | AI Delivery & Program Leader</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Condensed:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script type="importmap">
         {
@@ -27,11 +27,18 @@
         <button id="toggle-edit-mode" class="btn-secondary">
             <i class="fas fa-pen"></i> Edit Mode
         </button>
+        <button id="reset-content" class="btn-secondary" style="display: none; margin-top: 10px; background: rgba(255, 50, 50, 0.2); border-color: rgba(255, 50, 50, 0.4);">
+            <i class="fas fa-undo"></i> Reset
+        </button>
     </div>
 
     <!-- Preloader -->
-    <div class="preloader">
-        <div class="counter">0</div>
+    <div class="preloader" role="status" aria-live="polite">
+        <div class="preloader-inner">
+            <div class="loader-ring"></div>
+            <div class="counter">0</div>
+            <div class="loader-copy">Calibrating stars & telemetry</div>
+        </div>
     </div>
 
     <!-- Cursor -->
@@ -40,14 +47,16 @@
 
     <!-- Navigation -->
     <nav>
-        <div class="logo editable" data-key="logo">VICTOR.</div>
+        <div class="logo editable" data-key="logo">VIKRAM.</div>
         <div class="menu-toggle">Menu</div>
         <div class="nav-overlay">
             <ul class="nav-links">
                 <li><a href="#hero" class="nav-link">Home</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
                 <li><a href="#work" class="nav-link">Work</a></li>
+                <li><a href="docs/Vik_Resume_Final.pdf" class="nav-link" target="_blank">Resume</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </div>
@@ -59,23 +68,40 @@
             <div class="hero-content">
                 <h1 class="hero-title">
                     <span class="line">Hello, I'm</span>
-                    <span class="line reveal-text editable" data-key="hero-name">Victor</span>
+                    <span class="line reveal-text editable" data-key="hero-name">Vikram Deshpande</span>
                 </h1>
                 <p class="hero-subtitle reveal-text-delay editable" data-key="hero-subtitle">
-                    I build things for the web, break them, and then fix them better than before. 
-                    <br>Full Stack Engineer & Content Creator.
+                    Senior Technical Program/Delivery Manager & AI Solutions Architect in Melbourne. 15+ years aligning engineering, AI/ML, and exec strategy to ship cloud and telemetry-heavy programs with <strong>zero drama</strong>.
+                    I narrate my own work—dry humor included.
                 </p>
                 <div class="hero-links reveal-text-delay">
                     <a href="https://github.com/Victordtesla24" target="_blank" class="btn-link">GitHub</a>
-                    <a href="https://youtube.com/@vicd0ct?si=HLl19AeCvhJvSZso" target="_blank" class="btn-link">YouTube</a>
+                    <a href="https://youtube.com/@vicd0ct" target="_blank" class="btn-link">YouTube</a>
+                    <a href="docs/Vik_Resume_Final.pdf" class="btn-link">Resume PDF</a>
                     <a href="#contact" class="btn-primary">Let's Talk</a>
+                </div>
+                <div class="hero-meta">
+                    <div class="meta-card">
+                        <span class="meta-label">Program Leadership</span>
+                        <span class="meta-value">15+ yrs</span>
+                        <span class="meta-note">Azure/GCP | $5M+ portfolios</span>
+                    </div>
+                    <div class="meta-card">
+                        <span class="meta-label">AI/ML Delivery</span>
+                        <span class="meta-value">10k+</span>
+                        <span class="meta-note">Devices served via realtime telemetry</span>
+                    </div>
+                    <div class="meta-card">
+                        <span class="meta-label">Latency Wins</span>
+                        <span class="meta-value">P95 &lt;200ms</span>
+                        <span class="meta-note">WebSocket fleet at ANZ</span>
+                    </div>
                 </div>
             </div>
             <div class="hero-image-container parallax" data-speed="0.1">
                 <div class="avatar-placeholder" id="avatar-container">
                     <div class="avatar-circle">
-                        <!-- Placeholder image, user can upload their own -->
-                        <img src="https://via.placeholder.com/350x450/1a1a1a/ffffff?text=Victor" alt="Victor" class="avatar-img" id="profile-image">
+                        <img src="https://avatars.githubusercontent.com/u/147907674?v=4" alt="Vikram Deshpande headshot" class="avatar-img" id="profile-image">
                     </div>
                     <input type="file" id="image-upload" accept="image/*" style="display: none;">
                     <button id="upload-btn" class="btn-icon"><i class="fas fa-camera"></i></button>
@@ -87,23 +113,89 @@
         <section id="about" class="about-section" data-scroll-section>
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title editable" data-key="about-title">About Me</h2>
+                    <h2 class="section-title editable" data-key="about-title">About & Proof</h2>
                 </div>
                 <div class="about-content">
                     <p class="about-text editable" data-key="about-text-1">
-                        I'm a Full Stack Engineer who loves turning caffeine into code. When I'm not debugging my own life choices, I'm building scalable web apps and sharing my dev journey on YouTube. 
+                        Senior Technical Delivery Lead & AI/ML Solutions Architect (15+ years) bridging executive strategy with engineering to ship cloud and telemetry-heavy programs. Focused on cutting delivery time, de-risking modernisations, and proving impact with measurable telemetry.
                     </p>
                     <p class="about-text editable" data-key="about-text-2">
-                        My goal is simple: Create digital experiences that are not just functional, but memorable. Whether it's a complex backend system or a playful frontend interaction, I bring a detail-oriented and user-centric approach to every project.
+                        Core stack: Python, TypeScript/React/Next.js, Kubernetes, Terraform, CI/CD, Azure/GCP/AWS, realtime WebSocket telemetry, and MLOps. I keep squads, vendors, and execs aligned with clear dashboards and concise decision narratives.
                     </p>
-                    <div class="skills-ticker">
-                        <!-- Infinite scrolling skills or simple list -->
-                        <span class="skill-item">JavaScript</span>
-                        <span class="skill-item">React</span>
-                        <span class="skill-item">Node.js</span>
-                        <span class="skill-item">Three.js</span>
-                        <span class="skill-item">Python</span>
-                        <span class="skill-item">AWS</span>
+
+                    <div class="snap-grid" role="list">
+                        <div class="snap-card" data-snap role="listitem">
+                            <button class="snap-header" aria-expanded="false">
+                                <div>
+                                    <p class="snap-kicker">What I aim to deliver</p>
+                                    <h3 class="snap-title">Career Objective</h3>
+                                    <p class="snap-summary">Bridge technical depth with executive strategy so AI/ML pilots land in production with business value.</p>
+                                </div>
+                                <span class="snap-icon">+</span>
+                            </button>
+                            <div class="snap-body">
+                                <ul>
+                                    <li>Translate strategy into roadmaps that cut delivery time by &gt;30% and de-risk cloud modernisations.</li>
+                                    <li>Align AI/ML delivery with compliance and risk models from day one.</li>
+                                    <li>Use telemetry and narrative dashboards to keep decisions transparent for leaders and squads.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="snap-card" data-snap role="listitem">
+                            <button class="snap-header" aria-expanded="false">
+                                <div>
+                                    <p class="snap-kicker">Measurable outcomes</p>
+                                    <h3 class="snap-title">Delivery Impact</h3>
+                                    <p class="snap-summary">Programs built around latency, resilience, and cost controls.</p>
+                                </div>
+                                <span class="snap-icon">+</span>
+                            </button>
+                            <div class="snap-body">
+                                <ul>
+                                    <li>P95 &lt; 200 ms realtime WebSocket telemetry across 10k+ device concurrency (ANZ).</li>
+                                    <li>Core banking transformation (.NET/Azure) trimmed delivery time by &gt;30% and infra cost by &gt;15%.</li>
+                                    <li>$5M+ portfolio oversight with 100% compliance to enterprise standards and risk models.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="snap-card" data-snap role="listitem">
+                            <button class="snap-header" aria-expanded="false">
+                                <div>
+                                    <p class="snap-kicker">How teams experience it</p>
+                                    <h3 class="snap-title">Leadership & Governance</h3>
+                                    <p class="snap-summary">Servant leadership with clear guardrails and steady cadence.</p>
+                                </div>
+                                <span class="snap-icon">+</span>
+                            </button>
+                            <div class="snap-body">
+                                <ul>
+                                    <li>Lead 5+ squads (up to 40 resources including offshore) through Agile/Scrum/SAFe rituals.</li>
+                                    <li>Exec workshops for 40+ leaders improved decision clarity by ~55%.</li>
+                                    <li>Certified Scrum Master; governance first to keep risk, budget, and delivery aligned.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="snap-card" data-snap role="listitem">
+                            <button class="snap-header" aria-expanded="false">
+                                <div>
+                                    <p class="snap-kicker">Live proof points</p>
+                                    <h3 class="snap-title">Recent Builds</h3>
+                                    <p class="snap-summary">Hands-on shipping to validate decisions with working software.</p>
+                                </div>
+                                <span class="snap-icon">+</span>
+                            </button>
+                            <div class="snap-body">
+                                <ul>
+                                    <li>Next.js + Supabase JIRA analytics dashboard surfacing sprint velocity and LLM retro insights.</li>
+                                    <li>Node.js/Express public-key server with full Mocha/Chai coverage for API signing.</li>
+                                    <li>React/TypeScript + D3 relationship timeline visualiser for customer journeys.</li>
+                                    <li>Langfuse + Phoenix evaluation stack reducing simulated LLM error-budget breaches by 38%.</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -120,21 +212,20 @@
                     <div class="accordion-item">
                         <div class="accordion-header">
                             <div class="accordion-title">
-                                <span class="role editable" data-key="exp-1-role">Senior Developer</span>
-                                <span class="company editable" data-key="exp-1-company">Freelance & Open Source</span>
+                                <span class="role editable" data-key="exp-1-role">Senior Delivery Lead / Technical Product Owner</span>
+                                <span class="company editable" data-key="exp-1-company">ANZ — Melbourne, VIC</span>
                             </div>
                             <div class="accordion-meta">
-                                <span class="date editable" data-key="exp-1-date">2023 - Present</span>
+                                <span class="date editable" data-key="exp-1-date">Sept 2017 - Jun 2025</span>
                                 <span class="icon">+</span>
                             </div>
                         </div>
                         <div class="accordion-content">
                             <div class="accordion-body">
-                                <p class="editable" data-key="exp-1-desc">
-                                    Specializing in premium portfolio websites and high-performance web applications.
-                                    Contributing to the developer community through open source projects and educational content on YouTube.
-                                    Building custom solutions using the MERN stack and Next.js.
-                                </p>
+                                <ul>
+                                    <li class="editable" data-key="exp-1-desc-1">Led AI/ML strategy & delivery, including real-time WebSocket telemetry services for 10k+ device concurrency.</li>
+                                    <li class="editable" data-key="exp-1-desc-2">Reduced user response times to P95 &lt; 200 ms while steering cross-functional squads and exec stakeholders.</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -143,21 +234,22 @@
                     <div class="accordion-item">
                         <div class="accordion-header">
                             <div class="accordion-title">
-                                <span class="role editable" data-key="exp-2-role">Full Stack Engineer</span>
-                                <span class="company editable" data-key="exp-2-company">Tech Solutions</span>
+                                <span class="role editable" data-key="exp-2-role">AI/ML Strategy & Solutions Architect</span>
+                                <span class="company editable" data-key="exp-2-company">ANZ — Melbourne, VIC</span>
                             </div>
                             <div class="accordion-meta">
-                                <span class="date editable" data-key="exp-2-date">2021 - 2023</span>
+                                <span class="date editable" data-key="exp-2-date">2017 - 2022</span>
                                 <span class="icon">+</span>
                             </div>
                         </div>
                         <div class="accordion-content">
                             <div class="accordion-body">
-                                <p class="editable" data-key="exp-2-desc">
-                                    Architected and developed scalable web applications for enterprise clients.
-                                    Led a team of 3 junior developers, conducting code reviews and mentoring.
-                                    Optimized application performance, resulting in a 40% reduction in load times.
-                                </p>
+                                <ul>
+                                    <li class="editable" data-key="exp-2-desc-1">Orchestrated Agile transformation of core banking from monolith to cloud-native (.NET/Azure), cutting delivery time by &gt;30% and infra cost by &gt;15%.</li>
+                                    <li class="editable" data-key="exp-2-desc-2">Directed a $5M+ program portfolio, leading 5 squads (up to 40 resources incl. offshore) to on-time, high-quality releases.</li>
+                                    <li class="editable" data-key="exp-2-desc-3">Owned architecture & governance, ensuring 100% compliance with enterprise standards and risk models.</li>
+                                    <li class="editable" data-key="exp-2-desc-4">Ran exec workshops (40+ GMs) to align strategy and improve decision-making clarity by &gt;55%.</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -166,23 +258,161 @@
                      <div class="accordion-item">
                         <div class="accordion-header">
                             <div class="accordion-title">
-                                <span class="role editable" data-key="exp-3-role">Frontend Developer</span>
-                                <span class="company editable" data-key="exp-3-company">Creative Agency</span>
+                                <span class="role editable" data-key="exp-3-role">Senior Project Manager & Business Analyst</span>
+                                <span class="company editable" data-key="exp-3-company">National Australia Bank (NAB) — Melbourne, VIC</span>
                             </div>
                             <div class="accordion-meta">
-                                <span class="date editable" data-key="exp-3-date">2019 - 2021</span>
+                                <span class="date editable" data-key="exp-3-date">Nov 2016 - Sept 2017</span>
                                 <span class="icon">+</span>
                             </div>
                         </div>
                         <div class="accordion-content">
                             <div class="accordion-body">
-                                <p class="editable" data-key="exp-3-desc">
-                                    Collaborated with designers to implement pixel-perfect user interfaces.
-                                    Utilized GSAP and Three.js to create immersive animations and interactive elements.
-                                    Ensured cross-browser compatibility and mobile responsiveness.
-                                </p>
+                                <ul>
+                                    <li class="editable" data-key="exp-3-desc-1">Managed delivery for a critical risk and compliance program, ensuring 100% regulatory adherence for major data initiatives.</li>
+                                </ul>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <div class="accordion-title">
+                                <span class="role editable" data-key="exp-4-role">Lead Business Analyst</span>
+                                <span class="company editable" data-key="exp-4-company">Microsoft Inc. — Sydney, NSW</span>
+                            </div>
+                            <div class="accordion-meta">
+                                <span class="date editable" data-key="exp-4-date">Oct 2015 - Oct 2016</span>
+                                <span class="icon">+</span>
+                            </div>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li class="editable" data-key="exp-4-desc-1">Delivered Azure ML telemetry gap analysis: 10 key insights improved reliability by 15% and reduced MTTR by 10%.</li>
+                                    <li class="editable" data-key="exp-4-desc-2">Aligned DevOps strategies to enterprise standards, achieving 95% compliance.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 5 -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <div class="accordion-title">
+                                <span class="role editable" data-key="exp-5-role">Business Analyst / Project Coordinator</span>
+                                <span class="company editable" data-key="exp-5-company">Telstra — Melbourne, VIC</span>
+                            </div>
+                            <div class="accordion-meta">
+                                <span class="date editable" data-key="exp-5-date">Nov 2014 - Oct 2015</span>
+                                <span class="icon">+</span>
+                            </div>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li class="editable" data-key="exp-5-desc-1">Built customer journey scorecards and streamlined JIRA requirements, improving delivery efficiency by 20% and operational clarity by 15%.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 6 -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <div class="accordion-title">
+                                <span class="role editable" data-key="exp-6-role">Senior Business Analyst</span>
+                                <span class="company editable" data-key="exp-6-company">InfoCentric — Melbourne, VIC</span>
+                            </div>
+                            <div class="accordion-meta">
+                                <span class="date editable" data-key="exp-6-date">Aug 2011 - Nov 2014</span>
+                                <span class="icon">+</span>
+                            </div>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li class="editable" data-key="exp-6-desc-1">Delivered analytics and BI projects, boosting client engagement by 20% and automating regulatory reporting to 100% accuracy.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 7 -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <div class="accordion-title">
+                                <span class="role editable" data-key="exp-7-role">Developer Support / Software Testing / Analyst</span>
+                                <span class="company editable" data-key="exp-7-company">MYOB — Melbourne, VIC</span>
+                            </div>
+                            <div class="accordion-meta">
+                                <span class="date editable" data-key="exp-7-date">May 2010 - Aug 2011</span>
+                                <span class="icon">+</span>
+                            </div>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li class="editable" data-key="exp-7-desc-1">Optimized data processing workflows via ePAL implementation, improving efficiency by 30% and reducing reporting time by 90%.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 8 -->
+                    <div class="accordion-item">
+                        <div class="accordion-header">
+                            <div class="accordion-title">
+                                <span class="role editable" data-key="exp-8-role">Independent AI Consulting & Upskilling</span>
+                                <span class="company editable" data-key="exp-8-company">Flatiron Health — Melbourne, VIC</span>
+                            </div>
+                            <div class="accordion-meta">
+                                <span class="date editable" data-key="exp-8-date">Jun 2025 - Current</span>
+                                <span class="icon">+</span>
+                            </div>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li class="editable" data-key="exp-8-desc-1">Built a Next.js + Supabase JIRA analytics dashboard generating LLM-powered retro insights and sprint plans.</li>
+                                    <li class="editable" data-key="exp-8-desc-2">Created a production-grade Node.js/Express public-key server (100% Mocha/Chai coverage) for API signing.</li>
+                                    <li class="editable" data-key="exp-8-desc-3">Developed a React/TypeScript + D3 relationship timeline visualiser for dynamic customer journeys.</li>
+                                    <li class="editable" data-key="exp-8-desc-4">Implemented Langfuse + Phoenix LLM evaluation stack cutting error budget breaches by 38%.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="skills-section" data-scroll-section>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Skills & Certifications</h2>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <h3>AI/ML & Data</h3>
+                        <p>AI/ML solutions, LLM pipelines (LangChain, Langfuse), Real-time telemetry, Postgres/Supabase, Azure ML, Phoenix evaluation stacks.</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3>Engineering</h3>
+                        <p>Python, TypeScript, React/Next.js, Node.js/Express, Kubernetes, Docker, Terraform, CI/CD & DevOps, GCP/AWS/Azure.</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3>Leadership</h3>
+                        <p>Technical Program Management, Agile/Scrum/SAFe, Roadmap & backlog ownership, Stakeholder alignment, Risk & budget management ($5M+).</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3>Certifications</h3>
+                        <p>Certified Scrum Master (Scrum Alliance); Cloud/Data Certifications AWS/GCP (in progress).</p>
+                    </div>
+                    <div class="skill-card">
+                        <h3>Education</h3>
+                        <p>Master of Computer Science, Monash University (Honors, 2010), Melbourne. Bachelor of Engineering, Computer Science, University of Melbourne (2007).</p>
                     </div>
                 </div>
             </div>
@@ -192,37 +422,57 @@
         <section id="work" class="work-section" data-scroll-section>
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title editable" data-key="work-title">Selected Work</h2>
+                    <h2 class="section-title editable" data-key="work-title">Selected Work & Live Proof</h2>
                 </div>
                 <div class="projects-grid">
                     <a href="https://github.com/Victordtesla24" target="_blank" class="project-card parallax" data-speed="0.05">
                         <div class="project-image">
-                            <!-- Visual representation for GitHub -->
                             <div class="project-overlay"></div>
                             <div class="card-badge">Open Source</div>
                         </div>
                         <div class="project-info">
-                            <h3 class="editable" data-key="proj-1-title">GitHub Portfolio</h3>
+                            <h3 class="editable" data-key="proj-1-title">GitHub: VicsGitRepos</h3>
                             <p class="editable" data-key="proj-1-desc">
-                                A collection of my repositories, contributions, and coding experiments. 
-                                Includes full-stack applications, utility libraries, and more.
+                                Shipping cadence across AI/ML stacks, realtime telemetry, secure key servers, and analytics dashboards. 25 public repos; curated highlights below.
                             </p>
                         </div>
                     </a>
-                    <a href="https://youtube.com/@vicd0ct?si=HLl19AeCvhJvSZso" target="_blank" class="project-card parallax" data-speed="0.08">
+                    <a href="https://youtube.com/@vicd0ct" target="_blank" class="project-card parallax" data-speed="0.08">
                         <div class="project-image" style="background-color: #2a2a2a;">
-                             <!-- Visual representation for YouTube -->
                              <div class="project-overlay"></div>
                              <div class="card-badge">Content Creation</div>
                         </div>
                         <div class="project-info">
-                            <h3 class="editable" data-key="proj-2-title">YouTube Channel</h3>
+                            <h3 class="editable" data-key="proj-2-title">YouTube: @vicd0ct</h3>
                             <p class="editable" data-key="proj-2-desc">
-                                Educational content, tutorials, and dev logs. 
-                                Sharing insights on web development, debugging, and tech trends.
+                                Real-time narration of AI/ML builds: 7,000-year-old algorithms turned into Python, telemetry breakdowns, and build-in-public episodes with humor.
                             </p>
                         </div>
                     </a>
+                </div>
+
+                <div class="live-content">
+                    <div class="github-feed">
+                        <div class="section-subhead">Latest GitHub work</div>
+                        <div id="github-projects" class="repo-list" aria-live="polite"></div>
+                        <div class="repo-curated">
+                            <div class="section-subhead">Featured repos</div>
+                            <ul>
+                                <li><a href="https://github.com/Victordtesla24/EFDDH-Jira-Analytics-Dashboard" target="_blank">EFDDH-Jira-Analytics-Dashboard</a> — Python dashboard surfacing sprint velocity + LLM retros.</li>
+                                <li><a href="https://github.com/Victordtesla24/tailor-resume-with-ai" target="_blank">tailor-resume-with-ai</a> — AI-assisted resume tailoring with web scraping & prompt engineering.</li>
+                                <li><a href="https://github.com/Victordtesla24/relationship-timeline-feature" target="_blank">relationship-timeline-feature</a> — React/TypeScript + D3 customer journey visualiser.</li>
+                                <li><a href="https://github.com/Victordtesla24/AI-Gmail-Mailbox-Manager" target="_blank">AI-Gmail-Mailbox-Manager</a> — Autonomous Gmail triage in TypeScript.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="video-feed">
+                        <div class="section-subhead">YouTube stream</div>
+                        <div class="video-frame">
+                            <iframe title="Vicd0ct YouTube uploads" src="https://www.youtube.com/embed/videoseries?list=UUJSYpoFkGKKzYTKzAr8vGzQ" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                        <p class="video-note">Latest drops from @vicd0ct. Live coding, algorithm archaeology, telemetry breakdowns.</p>
+                        <div class="video-list" id="video-list"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -231,13 +481,13 @@
         <section id="contact" class="contact-section" data-scroll-section>
             <div class="container">
                 <div class="contact-wrapper">
-                    <h2 class="contact-title editable" data-key="contact-title">Let's create something amazing.</h2>
-                    <div class="contact-details">
-                        <a href="mailto:melbvicduque@gmail.com" class="contact-link editable" data-key="contact-email">
-                            <i class="far fa-envelope"></i> melbvicduque@gmail.com
+                    <h2 class="contact-title editable" data-key="contact-title">Let’s ship AI/ML programs that stay fast, safe, and compliant.</h2>
+                    <div class="contact-links-grid">
+                        <a href="mailto:melbvicduque@gmail.com" class="contact-card email-card" aria-label="Email">
+                            <span class="sr-only">Email</span>
                         </a>
-                        <a href="tel:0433224556" class="contact-link editable" data-key="contact-phone">
-                            <i class="fas fa-phone"></i> 0433 224 556
+                        <a href="tel:0433224556" class="contact-card phone-card" aria-label="Call">
+                            <span class="sr-only">Call</span>
                         </a>
                     </div>
                     <div class="social-links-large">
@@ -245,7 +495,7 @@
                             <span>GitHub</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
-                        <a href="https://youtube.com/@vicd0ct?si=HLl19AeCvhJvSZso" target="_blank" class="social-btn">
+                        <a href="https://youtube.com/@vicd0ct" target="_blank" class="social-btn">
                             <span>YouTube</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -257,9 +507,20 @@
 
     <footer>
         <div class="footer-content">
-            <p>&copy; 2024 Victor. All rights reserved.</p>
+            <p>&copy; 2024 Vikram Deshpande. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Telemetry HUD -->
+    <div class="telemetry-widget" id="telemetry-widget">
+        <div class="telemetry-header">
+            <span class="status-indicator"><div class="status-dot"></div> SYSTEM ONLINE</span>
+            <span>ID: VIK-9000</span>
+        </div>
+        <div class="telemetry-log" id="telemetry-log">
+            <!-- Logs will be injected here -->
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
