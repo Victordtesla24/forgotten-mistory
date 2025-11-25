@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Condensed:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" referrerpolicy="no-referrer">
     <script type="importmap">
         {
             "imports": {
@@ -71,8 +71,10 @@
                     <span class="line reveal-text editable" data-key="hero-name">Vikram Deshpande</span>
                 </h1>
                 <p class="hero-subtitle reveal-text-delay editable" data-key="hero-subtitle">
-                    Senior Technical Program/Delivery Manager & AI Solutions Architect in Melbourne. 15+ years aligning engineering, AI/ML, and exec strategy to ship cloud and telemetry-heavy programs with <strong>zero drama</strong>.
-                    I narrate my own work—dry humor included.
+                    I work as a Senior Technical Manager & AI Solution Architect here in Melbourne.<br>
+                    I am really passionate about solving complex problems and leading teams through challenging projects.<br><br>
+                    Whether it's discussing the latest in Technology, debating philosophical ideas, or planning my next travel adventure, I love diving deep into topics that spark my genuine whimsy.<br><br>
+                    My approach towards life is very simple; I do what brings happiness & value, while making sure I do not cause hard to anyone or anything along the way...
                 </p>
                 <div class="hero-links reveal-text-delay">
                     <a href="https://github.com/Victordtesla24" target="_blank" class="btn-link">GitHub</a>
@@ -81,27 +83,78 @@
                     <a href="#contact" class="btn-primary">Let's Talk</a>
                 </div>
                 <div class="hero-meta">
-                    <div class="meta-card">
-                        <span class="meta-label">Program Leadership</span>
-                        <span class="meta-value">15+ yrs</span>
-                        <span class="meta-note">Azure/GCP | $5M+ portfolios</span>
+                    <div class="meta-card glass-card">
+                        <div class="meta-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <div class="meta-content">
+                            <span class="meta-label">Cloud Modernisation</span>
+                            <div class="meta-stats">
+                                <span class="meta-value">-30%</span>
+                                <span class="meta-subvalue">Delivery</span>
+                            </div>
+                            <span class="meta-note">Faster ROI & leaner infra spend on regulated programs.</span>
+                        </div>
                     </div>
-                    <div class="meta-card">
-                        <span class="meta-label">AI/ML Delivery</span>
-                        <span class="meta-value">10k+</span>
-                        <span class="meta-note">Devices served via realtime telemetry</span>
+                    <div class="meta-card glass-card">
+                        <div class="meta-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <div class="meta-content">
+                            <span class="meta-label">Realtime Reliability</span>
+                            <div class="meta-stats">
+                                <span class="meta-value">10k+</span>
+                                <span class="meta-subvalue">Devices</span>
+                            </div>
+                            <span class="meta-note">Resilient CX & telemetry with P95 &lt;200ms latency.</span>
+                        </div>
                     </div>
-                    <div class="meta-card">
-                        <span class="meta-label">Latency Wins</span>
-                        <span class="meta-value">P95 &lt;200ms</span>
-                        <span class="meta-note">WebSocket fleet at ANZ</span>
+                    <div class="meta-card glass-card">
+                        <div class="meta-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="meta-content">
+                            <span class="meta-label">AI Quality & Risk</span>
+                            <div class="meta-stats">
+                                <span class="meta-value">-38%</span>
+                                <span class="meta-subvalue">Breaches</span>
+                            </div>
+                            <span class="meta-note">Safer AI rollouts; 100% tested key server for signing.</span>
+                        </div>
+                    </div>
+                    <div class="meta-card glass-card">
+                        <div class="meta-icon"><i class="fas fa-users"></i></div>
+                        <div class="meta-content">
+                            <span class="meta-label">Leadership Scale</span>
+                            <div class="meta-stats">
+                                <span class="meta-value">40+</span>
+                                <span class="meta-subvalue">Resources</span>
+                            </div>
+                            <span class="meta-note">Leading 5+ cross-functional squads onsite & offshore.</span>
+                        </div>
+                    </div>
+                    <div class="meta-card glass-card">
+                        <div class="meta-icon"><i class="fas fa-compass"></i></div>
+                        <div class="meta-content">
+                            <span class="meta-label">Strategic Alignment</span>
+                            <div class="meta-stats">
+                                <span class="meta-value">&gt;55%</span>
+                                <span class="meta-subvalue">Clarity</span>
+                            </div>
+                            <span class="meta-note">Bridging engineering depth with executive strategy.</span>
+                        </div>
+                    </div>
+                    <div class="meta-card glass-card">
+                        <div class="meta-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="meta-content">
+                            <span class="meta-label">Portfolio Value</span>
+                            <div class="meta-stats">
+                                <span class="meta-value">$5M+</span>
+                                <span class="meta-subvalue">Budget</span>
+                            </div>
+                            <span class="meta-note">Delivering mission-critical programs on budget.</span>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="hero-image-container parallax" data-speed="0.1">
                 <div class="avatar-placeholder" id="avatar-container">
                     <div class="avatar-circle">
-                        <img src="https://avatars.githubusercontent.com/u/147907674?v=4" alt="Vikram Deshpande headshot" class="avatar-img" id="profile-image">
+                        <img src="assets/my_avatar.png" alt="Vikram Deshpande headshot" class="avatar-img" id="profile-image">
                     </div>
                     <input type="file" id="image-upload" accept="image/*" style="display: none;">
                     <button id="upload-btn" class="btn-icon"><i class="fas fa-camera"></i></button>
@@ -113,14 +166,14 @@
         <section id="about" class="about-section" data-scroll-section>
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title editable" data-key="about-title">About & Proof</h2>
+                    <h2 class="section-title editable" data-key="about-title">About Me</h2>
                 </div>
                 <div class="about-content">
                     <p class="about-text editable" data-key="about-text-1">
-                        Senior Technical Delivery Lead & AI/ML Solutions Architect (15+ years) bridging executive strategy with engineering to ship cloud and telemetry-heavy programs. Focused on cutting delivery time, de-risking modernisations, and proving impact with measurable telemetry.
+                        15+ year Senior Technical Delivery Leader & AI/ML Solutions Architect (CSM) across Financial Services and Telecommunications, known for bridging engineering depth with executive strategy. I lead cloud-native modernisations that cut delivery time by 30%+, reduce infrastructure cost by 15%, and land mission-critical programs on multi-million-dollar budgets with full architectural compliance.
                     </p>
                     <p class="about-text editable" data-key="about-text-2">
-                        Core stack: Python, TypeScript/React/Next.js, Kubernetes, Terraform, CI/CD, Azure/GCP/AWS, realtime WebSocket telemetry, and MLOps. I keep squads, vendors, and execs aligned with clear dashboards and concise decision narratives.
+                        I direct 5+ cross-functional squads (up to 40 resources) through AI/ML solutions, real-time WebSocket telemetry at 10k+ device concurrency with P95 latency under 200 ms, and portfolio governance for $5M+. Core toolkit: Python, TypeScript/React/Next.js, Kubernetes, Docker, Terraform, CI/CD, GCP/AWS/Azure, Postgres/Supabase, and LangChain/Langfuse for measurable AI outcomes.
                     </p>
 
                     <div class="snap-grid" role="list">
@@ -394,25 +447,104 @@
                     <h2 class="section-title">Skills & Certifications</h2>
                 </div>
                 <div class="skills-grid">
-                    <div class="skill-card">
-                        <h3>AI/ML & Data</h3>
-                        <p>AI/ML solutions, LLM pipelines (LangChain, Langfuse), Real-time telemetry, Postgres/Supabase, Azure ML, Phoenix evaluation stacks.</p>
+                    <div class="skill-card" data-skill>
+                        <button class="skill-header" aria-expanded="false">
+                            <div class="skill-title">
+                                <span class="skill-icon"><i class="fas fa-brain"></i></span>
+                                <div>
+                                    <p class="skill-kicker">AI/ML & Data</p>
+                                    <h3 class="skill-name">LLM pipelines & telemetry</h3>
+                                </div>
+                            </div>
+                            <span class="skill-chevron"><i class="fas fa-plus"></i></span>
+                        </button>
+                        <div class="skill-body">
+                            <ul class="skill-list">
+                                <li>LLM pipelines with LangChain/Langfuse and Phoenix evaluation for measurable quality.</li>
+                                <li>Real-time WebSocket telemetry at 10k+ device concurrency with P95 latency under 200 ms.</li>
+                                <li>Postgres/Supabase analytics and Python data tooling for exec-ready dashboards.</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="skill-card">
-                        <h3>Engineering</h3>
-                        <p>Python, TypeScript, React/Next.js, Node.js/Express, Kubernetes, Docker, Terraform, CI/CD & DevOps, GCP/AWS/Azure.</p>
+
+                    <div class="skill-card" data-skill>
+                        <button class="skill-header" aria-expanded="false">
+                            <div class="skill-title">
+                                <span class="skill-icon"><i class="fas fa-code-branch"></i></span>
+                                <div>
+                                    <p class="skill-kicker">Engineering</p>
+                                    <h3 class="skill-name">Cloud-native delivery</h3>
+                                </div>
+                            </div>
+                            <span class="skill-chevron"><i class="fas fa-plus"></i></span>
+                        </button>
+                        <div class="skill-body">
+                            <ul class="skill-list">
+                                <li>Python, TypeScript/React/Next.js, Node.js/Express for production-grade services.</li>
+                                <li>Kubernetes, Docker, Terraform, and CI/CD automation for secure, repeatable releases.</li>
+                                <li>Cloud design on GCP/AWS/Azure with telemetry-first observability.</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="skill-card">
-                        <h3>Leadership</h3>
-                        <p>Technical Program Management, Agile/Scrum/SAFe, Roadmap & backlog ownership, Stakeholder alignment, Risk & budget management ($5M+).</p>
+
+                    <div class="skill-card" data-skill>
+                        <button class="skill-header" aria-expanded="false">
+                            <div class="skill-title">
+                                <span class="skill-icon"><i class="fas fa-chess-king"></i></span>
+                                <div>
+                                    <p class="skill-kicker">Leadership</p>
+                                    <h3 class="skill-name">Program & portfolio</h3>
+                                </div>
+                            </div>
+                            <span class="skill-chevron"><i class="fas fa-plus"></i></span>
+                        </button>
+                        <div class="skill-body">
+                            <ul class="skill-list">
+                                <li>Program delivery and backlog ownership for $5M+ portfolios with compliance guardrails.</li>
+                                <li>Lead 5+ squads (up to 40 resources) across onsite/offshore vendors with servant leadership.</li>
+                                <li>Exec workshops and decision narratives that lift clarity and alignment by ~55%.</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="skill-card">
-                        <h3>Certifications</h3>
-                        <p>Certified Scrum Master (Scrum Alliance); Cloud/Data Certifications AWS/GCP (in progress).</p>
+
+                    <div class="skill-card" data-skill>
+                        <button class="skill-header" aria-expanded="false">
+                            <div class="skill-title">
+                                <span class="skill-icon"><i class="fas fa-certificate"></i></span>
+                                <div>
+                                    <p class="skill-kicker">Certifications</p>
+                                    <h3 class="skill-name">Credentials & governance</h3>
+                                </div>
+                            </div>
+                            <span class="skill-chevron"><i class="fas fa-plus"></i></span>
+                        </button>
+                        <div class="skill-body">
+                            <ul class="skill-list">
+                                <li>Certified Scrum Master (Scrum Alliance) with Agile/Scrum/SAFe delivery.</li>
+                                <li>Cloud/Data certifications in progress for AWS/GCP; architecture-first mindset.</li>
+                                <li>Risk, budget, and stakeholder governance baked into delivery rituals.</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="skill-card">
-                        <h3>Education</h3>
-                        <p>Master of Computer Science, Monash University (Honors, 2010), Melbourne. Bachelor of Engineering, Computer Science, University of Melbourne (2007).</p>
+
+                    <div class="skill-card" data-skill>
+                        <button class="skill-header" aria-expanded="false">
+                            <div class="skill-title">
+                                <span class="skill-icon"><i class="fas fa-graduation-cap"></i></span>
+                                <div>
+                                    <p class="skill-kicker">Education</p>
+                                    <h3 class="skill-name">Technical foundations</h3>
+                                </div>
+                            </div>
+                            <span class="skill-chevron"><i class="fas fa-plus"></i></span>
+                        </button>
+                        <div class="skill-body">
+                            <ul class="skill-list">
+                                <li>Master of Computer Science (Honors, 2010), Monash University — Melbourne.</li>
+                                <li>Bachelor of Engineering, Computer Science (2007), University of Melbourne.</li>
+                                <li>Ongoing independent AI consulting and upskilling (2025-current).</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -422,34 +554,101 @@
         <section id="work" class="work-section" data-scroll-section>
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title editable" data-key="work-title">Selected Work & Live Proof</h2>
+                    <h2 class="section-title editable" data-key="work-title">Current Projects in the Pipeline</h2>
                 </div>
-                <div class="projects-grid">
-                    <a href="https://github.com/Victordtesla24" target="_blank" class="project-card parallax" data-speed="0.05">
+                
+                <div class="carousel-wrapper">
+                    <!-- <button class="carousel-nav prev" aria-label="Previous Project"><i class="fas fa-chevron-left"></i></button> -->
+                    <div class="projects-carousel" id="projects-carousel">
+                        
+                        <!-- Card 1: GitHub (Code/Terminal) -->
+                    <a href="https://github.com/Victordtesla24" target="_blank" class="project-card">
                         <div class="project-image">
-                            <div class="project-overlay"></div>
+                            <div class="viz-terminal">
+                                <div class="terminal-header">
+                                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                </div>
+                                <div class="terminal-body">
+                                    <div class="code-line"><span class="c-blue">const</span> <span class="c-yellow">telemetry</span> = <span class="c-purple">new</span> <span class="c-green">Socket</span>();</div>
+                                    <div class="code-line"><span class="c-blue">await</span> telemetry.<span class="c-yellow">connect</span>(<span class="c-orange">'wss://api.vikram.io'</span>);</div>
+                                    <div class="code-line">> Connection established.</div>
+                                    <div class="code-line">> Latency: 12ms</div>
+                                    <div class="code-line">> Syncing 25 repos...</div>
+                                    <div class="code-line blink">_</div>
+                                </div>
+                            </div>
                             <div class="card-badge">Open Source</div>
                         </div>
                         <div class="project-info">
-                            <h3 class="editable" data-key="proj-1-title">GitHub: VicsGitRepos</h3>
-                            <p class="editable" data-key="proj-1-desc">
-                                Shipping cadence across AI/ML stacks, realtime telemetry, secure key servers, and analytics dashboards. 25 public repos; curated highlights below.
-                            </p>
+                            <h3>GitHub: VicsGitRepos</h3>
+                            <p>Shipping cadence across AI/ML stacks, realtime telemetry, secure key servers, and analytics dashboards.</p>
                         </div>
                     </a>
-                    <a href="https://youtube.com/@vicd0ct" target="_blank" class="project-card parallax" data-speed="0.08">
-                        <div class="project-image" style="background-color: #2a2a2a;">
-                             <div class="project-overlay"></div>
-                             <div class="card-badge">Content Creation</div>
+
+                    <!-- Card 2: YouTube (Waveform) -->
+                    <a href="https://youtube.com/@vicd0ct" target="_blank" class="project-card">
+                        <div class="project-image">
+                            <div class="viz-waveform">
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="play-btn"></div>
+                            </div>
+                            <div class="card-badge">Content Creation</div>
                         </div>
                         <div class="project-info">
-                            <h3 class="editable" data-key="proj-2-title">YouTube: @vicd0ct</h3>
-                            <p class="editable" data-key="proj-2-desc">
-                                Real-time narration of AI/ML builds: 7,000-year-old algorithms turned into Python, telemetry breakdowns, and build-in-public episodes with humor.
-                            </p>
+                            <h3>YouTube: @vicd0ct</h3>
+                            <p>Real-time narration of AI/ML builds: 7,000-year-old algorithms, telemetry breakdowns, and humor.</p>
                         </div>
                     </a>
+
+                    <!-- Card 3: Jira Dashboard (Analytics UI) -->
+                    <a href="https://github.com/Victordtesla24/EFDDH-Jira-Analytics-Dashboard" target="_blank" class="project-card">
+                        <div class="project-image">
+                            <div class="viz-dashboard">
+                                <div class="dash-header"></div>
+                                <div class="dash-row">
+                                    <div class="dash-card c-1"></div>
+                                    <div class="dash-card c-2"></div>
+                                </div>
+                                <div class="dash-row row-2">
+                                    <div class="dash-bar b-1"></div>
+                                    <div class="dash-bar b-2"></div>
+                                    <div class="dash-bar b-3"></div>
+                                    <div class="dash-bar b-4"></div>
+                                </div>
+                            </div>
+                            <div class="card-badge">Next.js + AI</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Jira Analytics Dashboard</h3>
+                            <p>Python dashboard surfacing sprint velocity + LLM retros using LangChain.</p>
+                        </div>
+                    </a>
+
+                    <!-- Card 4: Resume Tailor (Document AI) -->
+                    <a href="https://github.com/Victordtesla24/tailor-resume-with-ai" target="_blank" class="project-card">
+                        <div class="project-image">
+                            <div class="viz-doc">
+                                <div class="doc-page">
+                                    <div class="doc-line w-70"></div>
+                                    <div class="doc-line w-90"></div>
+                                    <div class="doc-line w-50"></div>
+                                    <div class="scan-line"></div>
+                                </div>
+                            </div>
+                            <div class="card-badge">NLP / Automation</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>AI Resume Tailor</h3>
+                            <p>Automated resume tailoring with web scraping & prompt engineering.</p>
+                        </div>
+                    </a>
+
+                    </div>
+                    <!-- <button class="carousel-nav next" aria-label="Next Project"><i class="fas fa-chevron-right"></i></button> -->
                 </div>
+
 
                 <div class="live-content">
                     <div class="github-feed">
@@ -511,16 +710,7 @@
         </div>
     </footer>
 
-    <!-- Telemetry HUD -->
-    <div class="telemetry-widget" id="telemetry-widget">
-        <div class="telemetry-header">
-            <span class="status-indicator"><div class="status-dot"></div> SYSTEM ONLINE</span>
-            <span>ID: VIK-9000</span>
-        </div>
-        <div class="telemetry-log" id="telemetry-log">
-            <!-- Logs will be injected here -->
-        </div>
-    </div>
+
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>

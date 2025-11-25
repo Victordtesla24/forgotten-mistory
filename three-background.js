@@ -97,6 +97,9 @@ const clock = new THREE.Clock();
 function animate() {
     const elapsedTime = clock.getElapsedTime();
     
+    // Pulse particle size
+    particlesMaterial.size = PARTICLE_SIZE + Math.sin(elapsedTime * 2) * 0.03;
+    
     // 1. Update Particle Positions
     const positions = particlesMesh.geometry.attributes.position.array;
     

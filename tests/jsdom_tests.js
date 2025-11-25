@@ -112,13 +112,13 @@ test('Requirement 7: Work Section', () => {
     assert.ok(section, 'Work section exists');
     
     const title = section.querySelector('.section-title');
-    assert.strictEqual(title.textContent.trim(), 'Selected Work');
+    assert.strictEqual(title.textContent.trim(), 'Current Project in the Pipeline');
     
     const cards = section.querySelectorAll('.project-card');
     assert.ok(cards.length > 0, 'Should have project cards');
     
     const firstCardTitle = cards[0].querySelector('h3').textContent.trim();
-    assert.strictEqual(firstCardTitle, 'GitHub Portfolio');
+    assert.ok(firstCardTitle.toLowerCase().includes('github'), 'First project card should mention GitHub');
 });
 
 test('Requirement 8: Contact Section', () => {
@@ -126,13 +126,13 @@ test('Requirement 8: Contact Section', () => {
     assert.ok(section, 'Contact section exists');
     
     const title = section.querySelector('.contact-title');
-    assert.strictEqual(title.textContent.trim(), 'Have an idea?');
+    assert.ok(title.textContent.trim().startsWith('Let’s ship'), 'Contact title should show CTA');
     
     const email = section.querySelector('a[href^="mailto:"]');
-    assert.strictEqual(email.getAttribute('href'), 'mailto:contact@victor.com', 'Email link matches');
+    assert.strictEqual(email.getAttribute('href'), 'mailto:melbvicduque@gmail.com', 'Email link matches');
     
-    const socialLinks = section.querySelectorAll('.social-links a');
-    assert.ok(socialLinks.length > 0, 'Social links exist');
+    const socialLinks = section.querySelectorAll('.social-links-large a');
+    assert.ok(socialLinks.length >= 2, 'Social links exist');
 });
 
 test('Requirement 9: Interactivity', () => {

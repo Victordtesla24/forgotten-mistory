@@ -95,7 +95,7 @@ window.addEventListener("load", () => {
     // Preloader Exit
     tl.to(".counter", {
         duration: 0.25,
-        delay: 3.0,
+        delay: 0.5,
         opacity: 0,
     });
 
@@ -204,77 +204,9 @@ window.addEventListener("load", () => {
         duration: 1,
         ease: "power3.out"
     }, "-=0.8");
-
-    // --- Telemetry Widget Activation ---
-    setTimeout(() => {
-        const widget = document.getElementById('telemetry-widget');
-        if(widget) {
-            widget.style.opacity = 1;
-            initTelemetryLogs();
-        }
-    }, 2500);
 });
 
-// --- Telemetry Logic ---
-function initTelemetryLogs() {
-    const logContainer = document.getElementById('telemetry-log');
-    if(!logContainer) return;
 
-    const messages = [
-        "Initializing neural interface...",
-        "Loading asset: 4200_particles.obj",
-        "Connecting to GitHub API...",
-        "Fetching user: Victordtesla24",
-        "Analysis: 15+ years program leadership",
-        "Optimizing delivery pipelines...",
-        "Telemetry socket: CONNECTED",
-        "Latency check: 12ms",
-        "Rendering 3D context...",
-        "System status: NOMINAL"
-    ];
-
-    let index = 0;
-
-    function addLog(msg) {
-        const div = document.createElement('div');
-        div.className = 'log-line';
-        div.innerText = `> ${msg}`;
-        logContainer.appendChild(div);
-
-        // Keep only last 4 logs
-        if(logContainer.children.length > 4) {
-            logContainer.removeChild(logContainer.firstChild);
-        }
-    }
-
-    // Initial burst
-    const burst = setInterval(() => {
-        addLog(messages[index]);
-        index++;
-        if(index >= messages.length) {
-            clearInterval(burst);
-            startRandomLogs();
-        }
-    }, 300);
-
-    function startRandomLogs() {
-        const randomLogs = [
-            "Monitoring cluster health...",
-            "Garbage collection: 24ms",
-            "Syncing repo data...",
-            "Updating layout engine...",
-            "User interaction detected",
-            "Evaluating constraints...",
-            "Packet loss: 0.0%",
-            "Buffer flush complete"
-        ];
-
-        setInterval(() => {
-            const msg = randomLogs[Math.floor(Math.random() * randomLogs.length)];
-            addLog(msg);
-        }, 4000); // New log every 4s
-    }
-}
 
 // Navigation
 const menuToggle = document.querySelector('.menu-toggle');
@@ -307,7 +239,7 @@ const sections = document.querySelectorAll('[data-scroll-section]');
 
 sections.forEach(section => {
     // Select elements to animate within the section
-    const targets = section.querySelectorAll(".section-title, .about-text, .accordion-item, .project-card, .contact-title, .contact-details, .social-links-large, .snap-card");
+    const targets = section.querySelectorAll(".section-title, .about-text, .accordion-item, .contact-title, .contact-details, .social-links-large, .snap-card, .skill-card");
     
     if (targets.length > 0) {
         gsap.fromTo(targets, {
@@ -409,6 +341,59 @@ if (snapCards.length) {
     });
 }
 
+// Skills (expandable)
+const skillCards = document.querySelectorAll('.skill-card[data-skill]');
+
+if (skillCards.length) {
+    const closeSkill = (card) => {
+        const body = card.querySelector('.skill-body');
+        const header = card.querySelector('.skill-header');
+        card.classList.remove('open');
+        if (body) body.style.height = 0;
+        if (header) header.setAttribute('aria-expanded', 'false');
+    };
+
+    const openSkill = (card) => {
+        const body = card.querySelector('.skill-body');
+        const header = card.querySelector('.skill-header');
+        card.classList.add('open');
+        if (body) body.style.height = body.scrollHeight + "px";
+        if (header) header.setAttribute('aria-expanded', 'true');
+    };
+
+    skillCards.forEach((card, index) => {
+        const header = card.querySelector('.skill-header');
+        const body = card.querySelector('.skill-body');
+        if (!header || !body) return;
+
+        header.addEventListener('click', () => {
+            const isOpen = card.classList.contains('open');
+            skillCards.forEach(other => {
+                if (other !== card) closeSkill(other);
+            });
+
+            if (isOpen) {
+                closeSkill(card);
+            } else {
+                openSkill(card);
+            }
+        });
+
+        if (index === 0) {
+            requestAnimationFrame(() => openSkill(card));
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        skillCards.forEach(card => {
+            if (card.classList.contains('open')) {
+                const body = card.querySelector('.skill-body');
+                if (body) body.style.height = body.scrollHeight + "px";
+            }
+        });
+    });
+}
+
 
 // Parallax Effect
 document.addEventListener("mousemove", parallax);
@@ -492,15 +477,60 @@ window.addEventListener('load', () => {
         }
     });
 
-    const savedImage = localStorage.getItem('profile-image');
-    if (savedImage && profileImage) {
-        profileImage.src = savedImage;
-    }
-
     fetchGitHubProfile();
     fetchGitHubRepos();
     hydrateVideos();
+    initCarousel();
 });
+
+function initCarousel() {
+    const track = document.getElementById('projects-carousel');
+    if (!track) return;
+
+    const cards = Array.from(track.children);
+    if (!cards.length) return;
+
+    // Clone items to allow seamless looping
+    cards.forEach(card => track.appendChild(card.cloneNode(true)));
+
+    // Continuous auto-scroll (never pauses, loops seamlessly)
+    let lastTime = null;
+    let loopWidth = 0;
+    const pixelsPerSecond = 40; // Adjust for desired speed (positive for logic below)
+
+    const setup = () => {
+        loopWidth = track.scrollWidth / 2;
+        // Start at the "end" (cloned set) so we can scroll leftwards (items move right)
+        // Check if we are near 0 to avoid resetting user interaction if we allowed it
+        if (track.scrollLeft < 10) {
+            track.scrollLeft = loopWidth;
+        }
+    };
+
+    // Initial setup with a slight delay to ensure layout is stable
+    setTimeout(setup, 100);
+    window.addEventListener('resize', () => {
+        loopWidth = track.scrollWidth / 2;
+    });
+
+    const loop = (timestamp) => {
+        if (lastTime === null) lastTime = timestamp;
+        const delta = timestamp - lastTime;
+        lastTime = timestamp;
+
+        // Move continuously from left to right (Items move ->)
+        // This corresponds to decreasing scrollLeft
+        track.scrollLeft -= (pixelsPerSecond * delta) / 1000;
+
+        // If we reach the start (0), jump back to the middle (loopWidth)
+        if (track.scrollLeft <= 0) {
+            track.scrollLeft = loopWidth;
+        }
+        requestAnimationFrame(loop);
+    };
+
+    requestAnimationFrame(loop);
+}
 
 if (uploadBtn && imageUploadInput) {
     uploadBtn.addEventListener('click', () => {
@@ -527,10 +557,6 @@ async function fetchGitHubProfile() {
         const response = await fetch('https://api.github.com/users/Victordtesla24');
         if (!response.ok) throw new Error('Profile request failed');
         const profile = await response.json();
-
-        if (profileImage && !localStorage.getItem('profile-image')) {
-            profileImage.src = profile.avatar_url;
-        }
 
         const heroName = document.querySelector('[data-key="hero-name"]');
         const logo = document.querySelector('[data-key="logo"]');
@@ -607,3 +633,51 @@ function hydrateVideos() {
         </a>
     `).join('');
 }
+
+// --- Spotlight / Glow Effect for Cards ---
+document.addEventListener('DOMContentLoaded', () => {
+    const glowCards = document.querySelectorAll('.meta-card, .skill-card, .project-card, .repo-card, .glass-card');
+
+    if (glowCards.length) {
+        glowCards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    }
+
+    // --- Magnetic Buttons ---
+    const magnets = document.querySelectorAll('.btn-primary, .social-btn, .btn-secondary');
+    if (magnets.length) {
+        magnets.forEach(magnet => {
+            magnet.addEventListener('mousemove', function(e) {
+                const rect = magnet.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                // Move button slightly towards mouse
+                gsap.to(magnet, {
+                    x: x * 0.3,
+                    y: y * 0.3,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+
+            magnet.addEventListener('mouseleave', function() {
+                gsap.to(magnet, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.5,
+                    ease: "elastic.out(1, 0.3)"
+                });
+            });
+        });
+    }
+});
+

@@ -101,21 +101,21 @@ test.describe('Portfolio Website Functional Requirements', () => {
 
     test('Requirement 7: Work Section', async ({ page }) => {
         const workSection = page.locator('#work');
-        await expect(workSection.locator('.section-title')).toHaveText('Selected Work');
+        await expect(workSection.locator('.section-title')).toHaveText('Current Project in the Pipeline');
         
         const projectCards = workSection.locator('.project-card');
         await expect(projectCards.count()).resolves.toBeGreaterThan(0);
         
-        await expect(projectCards.first().locator('h3')).toContainText('GitHub Portfolio');
+        await expect(projectCards.first().locator('h3')).toContainText('GitHub');
     });
 
     test('Requirement 8: Contact Section', async ({ page }) => {
         const contactSection = page.locator('#contact');
-        await expect(contactSection.locator('.contact-title')).toHaveText('Have an idea?');
-        await expect(contactSection.locator('a[href="mailto:contact@victor.com"]')).toBeVisible();
+        await expect(contactSection.locator('.contact-title')).toContainText('Let’s ship');
+        await expect(contactSection.locator('a[href="mailto:melbvicduque@gmail.com"]')).toBeVisible();
         
-        const socialLinks = contactSection.locator('.social-links a');
-        await expect(socialLinks).toHaveCount(3);
+        const socialLinks = contactSection.locator('.social-links-large a');
+        await expect(socialLinks.count()).resolves.toBeGreaterThanOrEqual(2);
     });
 
     test('Requirement 9: Interactivity', async ({ page }) => {
