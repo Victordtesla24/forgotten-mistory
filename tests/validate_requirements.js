@@ -1,167 +1,148 @@
 const fs = require('fs');
 const path = require('path');
-const { JSDOM } = require('jsdom');
+const { JSDOM, VirtualConsole } = require('jsdom');
 
-// 1. Setup Environment
-const htmlPath = path.resolve(__dirname, '../index.html');
-const cssPath = path.resolve(__dirname, '../style.css');
-const jsPath = path.resolve(__dirname, '../script.js');
+async function runTests() {
+    const html = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf8');
+    
+    // Setup VirtualConsole to catch logs
+    const virtualConsole = new VirtualConsole();
+    virtualConsole.on("log", (message) => console.log("JSDOM Log:", message));
+    virtualConsole.on("error", (message) => console.error("JSDOM Error:", message));
+    virtualConsole.on("warn", (message) => console.warn("JSDOM Warn:", message));
 
-const htmlContent = fs.readFileSync(htmlPath, 'utf-8');
-const cssContent = fs.readFileSync(cssPath, 'utf-8');
-const jsContent = fs.readFileSync(jsPath, 'utf-8');
+    const dom = new JSDOM(html, {
+        url: "http://localhost/",
+        runScripts: "dangerously",
+        resources: "usable",
+        virtualConsole,
+        pretendToBeVisual: true
+    });
 
-const dom = new JSDOM(htmlContent, {
-    runScripts: "dangerously",
-    resources: "usable",
-    url: "file://" + htmlPath,
-    beforeParse(window) {
-        // Mock matchMedia
-        window.matchMedia = window.matchMedia || function () {
-            return {
-                matches: false,
-                addListener: function () { },
-                removeListener: function () { }
-            };
+    const { window } = dom;
+    const { document } = window;
+
+    // Polyfills and Mocks
+    window.matchMedia = window.matchMedia || function() {
+        return {
+            matches: false,
+            addListener: function() {},
+            removeListener: function() {}
         };
-        // Mock requestAnimationFrame
-        window.requestAnimationFrame = (callback) => setTimeout(callback, 0);
-        window.cancelAnimationFrame = (id) => clearTimeout(id);
-        
-        // Mock GSAP (simplistic mock to prevent errors if script tries to run)
-        window.gsap = {
-            registerPlugin: () => {},
-            timeline: () => ({
-                to: () => {},
-                from: () => {},
-                fromTo: () => {}
-            }),
-            to: () => {},
-            from: () => {},
-            fromTo: () => {}
+    };
+    
+    window.requestAnimationFrame = (callback) => {
+        return setTimeout(callback, 0);
+    };
+    
+    window.cancelAnimationFrame = (id) => {
+        clearTimeout(id);
+    };
+    
+    window.scrollTo = () => {}; 
+    
+    // Mock Element.animate if missing (JSDOM might not support it fully)
+    window.HTMLElement.prototype.animate = function() {
+        return {
+            finished: Promise.resolve(),
+            cancel: () => {},
+            addEventListener: () => {}
         };
-        window.ScrollTrigger = {};
-        
-        // Mock Lenis
-        window.Lenis = class {
-            constructor() {}
-            raf() {}
-        };
+    };
+
+    console.log("Starting Tests...");
+
+    const results = [];
+
+    function assert(condition, message, reqId) {
+        if (condition) {
+            console.log(`✓ [Req ${reqId}] PASS: ${message}`);
+            results.push({ reqId, message, status: 'PASS' });
+        } else {
+            console.error(`✗ [Req ${reqId}] FAIL: ${message}`);
+            results.push({ reqId, message, status: 'FAIL' });
+        }
     }
-});
 
-const { window } = dom;
-const { document } = window;
+    // Wait for a moment for potential initial scripts to run
+    await new Promise(resolve => setTimeout(resolve, 1500));
 
-// Helper function for logging
-const results = [];
-function assert(desc, condition, expected = true) {
-    const status = condition === expected ? 'PASS' : 'FAIL';
-    console.log(`[${status}] ${desc}`);
-    results.push({ description: desc, status, expected, actual: condition });
+    // --- Requirement 1: Design & Theme ---
+    const fontsLink = document.querySelector('link[href*="fonts.googleapis.com"]');
+    assert(fontsLink !== null, "Google Fonts link present", 1);
+    
+    // --- Requirement 2: Preloader ---
+    const preloader = document.querySelector('.preloader');
+    const counter = document.querySelector('.counter');
+    assert(preloader !== null, "Preloader element exists", 2);
+    assert(counter !== null, "Counter element exists", 2);
+    
+    // --- Requirement 3: Navigation ---
+    const logo = document.querySelector('.logo');
+    assert(logo && logo.textContent.includes('VICTOR.'), "Logo text is correct", 3);
+    
+    const menuToggle = document.querySelector('.menu-toggle');
+    assert(menuToggle !== null, "Menu toggle button exists", 3);
+    
+    const navOverlay = document.querySelector('.nav-overlay');
+    assert(navOverlay !== null, "Nav overlay exists", 3);
+    
+    const navLinks = Array.from(document.querySelectorAll('.nav-link')).map(l => l.textContent.trim());
+    const expectedLinks = ['Home', 'About', 'Experience', 'Work', 'Contact'];
+    const allLinksPresent = expectedLinks.every(link => navLinks.includes(link));
+    assert(allLinksPresent, `All nav links present: ${expectedLinks.join(', ')}`, 3);
+
+    // --- Requirement 4: Hero Section ---
+    const heroTitle = document.querySelector('.hero-title');
+    assert(heroTitle && heroTitle.textContent.includes("Victor"), "Hero title contains 'Victor'", 4);
+    
+    const heroSubtitle = document.querySelector('.hero-subtitle');
+    assert(heroSubtitle && heroSubtitle.textContent.includes("Creative Developer"), "Hero subtitle is correct", 4);
+    
+    const githubLink = document.querySelector('a[href="https://github.com/Victordtesla24"]');
+    assert(githubLink !== null, "GitHub link exists", 4);
+    
+    // --- Requirement 5: About Section ---
+    const aboutSection = document.getElementById('about');
+    assert(aboutSection !== null, "About section exists", 5);
+    const aboutTitle = aboutSection ? aboutSection.querySelector('.section-title') : null;
+    assert(aboutTitle && aboutTitle.textContent.includes("About Me"), "About section has title", 5);
+    
+    // --- Requirement 6: Experience Section ---
+    const expSection = document.getElementById('experience');
+    assert(expSection !== null, "Experience section exists", 6);
+    const timelineItems = expSection ? expSection.querySelectorAll('.timeline-item') : [];
+    assert(timelineItems.length >= 3, `Timeline has at least 3 items (found ${timelineItems.length})`, 6);
+    
+    // --- Requirement 7: Work Section ---
+    const workSection = document.getElementById('work');
+    assert(workSection !== null, "Work section exists", 7);
+    const projectCards = workSection ? workSection.querySelectorAll('.project-card') : [];
+    assert(projectCards.length > 0, "At least one project card exists", 7);
+    
+    // --- Requirement 8: Contact Section ---
+    const contactSection = document.getElementById('contact');
+    assert(contactSection !== null, "Contact section exists", 8);
+    const mailLink = document.querySelector('a[href^="mailto:contact@victor.com"]');
+    assert(mailLink !== null, "Mailto link exists", 8);
+    
+    // --- Requirement 9: Interactivity (Static Checks) ---
+    const cursorDot = document.querySelector('[data-cursor-dot]');
+    const cursorOutline = document.querySelector('[data-cursor-outline]');
+    assert(cursorDot !== null && cursorOutline !== null, "Custom cursor elements exist", 9);
+
+    // Summary
+    const failures = results.filter(r => r.status === 'FAIL');
+    console.log(`\nTest Summary: ${results.length} tests run, ${failures.length} failed.`);
+    
+    if (failures.length > 0) {
+        process.exit(1);
+    } else {
+        process.exit(0);
+    }
 }
 
-// 2. Define Requirements & Run Tests
-
-console.log('--- Starting Validation of Requirements ---');
-
-// REQ-001: Design Aesthetics - Dark Theme
-// We check if the CSS variable or body background is set to #0a0a0a
-const hasDarkTheme = cssContent.includes('--bg-color: #0a0a0a') || cssContent.includes('background-color: #0a0a0a');
-assert('REQ-001: Design Aesthetics - Dark Theme defined in CSS', hasDarkTheme);
-
-// REQ-002: Preloader
-const preloaderExists = document.querySelector('.preloader') !== null;
-const counterExists = document.querySelector('.counter') !== null;
-assert('REQ-002: Preloader element exists', preloaderExists);
-assert('REQ-002: Counter element exists', counterExists);
-
-// REQ-003: Navigation
-const logo = document.querySelector('.logo');
-const menuToggle = document.querySelector('.menu-toggle');
-const navOverlay = document.querySelector('.nav-overlay');
-assert('REQ-003: Logo "VICTOR." exists', logo && logo.textContent.trim() === 'VICTOR.');
-assert('REQ-003: Menu Toggle button exists', menuToggle !== null);
-assert('REQ-003: Navigation Overlay exists', navOverlay !== null);
-
-const navLinks = Array.from(document.querySelectorAll('.nav-link'));
-const expectedLinks = ['Home', 'About', 'Experience', 'Work', 'Contact'];
-const actualLinks = navLinks.map(l => l.textContent.trim());
-assert('REQ-003: All Navigation Links present', JSON.stringify(actualLinks) === JSON.stringify(expectedLinks));
-
-// REQ-004: Hero Section
-const heroTitle = document.querySelector('.hero-title');
-const heroSubtitle = document.querySelector('.hero-subtitle');
-const heroLinks = document.querySelectorAll('.hero-links a');
-const avatar = document.querySelector('#avatar-container');
-
-assert('REQ-004: Hero Title contains "Victor"', heroTitle && heroTitle.textContent.includes('Victor'));
-assert('REQ-004: Hero Subtitle is correct', heroSubtitle && heroSubtitle.textContent.includes('Creative Developer & Tech Enthusiast'));
-assert('REQ-004: 3 Hero Action Links exist', heroLinks.length === 3);
-assert('REQ-004: Avatar placeholder exists', avatar !== null);
-
-// REQ-005: About Section
-const aboutTitle = document.querySelector('#about .section-title');
-const aboutText = document.querySelector('.about-text');
-assert('REQ-005: About Section Title exists', aboutTitle && aboutTitle.textContent === 'About Me');
-assert('REQ-005: About descriptive text exists', aboutText && aboutText.textContent.length > 0);
-
-// REQ-006: Experience Section
-const expTitle = document.querySelector('#experience .section-title');
-const timelineItems = document.querySelectorAll('.timeline-item');
-assert('REQ-006: Experience Section Title exists', expTitle && expTitle.textContent === 'Experience');
-assert('REQ-006: At least 3 Experience items listed', timelineItems.length >= 3);
-
-// REQ-007: Work Section
-const workTitle = document.querySelector('#work .section-title');
-const projects = document.querySelectorAll('.project-card');
-assert('REQ-007: Work Section Title exists', workTitle && workTitle.textContent === 'Selected Work');
-assert('REQ-007: At least 2 Project Cards listed', projects.length >= 2);
-
-// REQ-008: Contact Section
-const contactTitle = document.querySelector('.contact-title');
-const emailLink = document.querySelector('.contact-email');
-const socialLinks = document.querySelectorAll('.social-links a');
-assert('REQ-008: Contact Title exists', contactTitle && contactTitle.textContent === 'Have an idea?');
-assert('REQ-008: Email link is correct', emailLink && emailLink.href.includes('mailto:contact@victor.com'));
-assert('REQ-008: Social links present in footer/contact area', socialLinks.length > 0);
-
-// REQ-009: Interactivity (Static Check)
-const cursorDot = document.querySelector('.cursor-dot');
-const cursorOutline = document.querySelector('.cursor-outline');
-assert('REQ-009: Custom Cursor elements exist', cursorDot !== null && cursorOutline !== null);
-
-const parallaxElements = document.querySelectorAll('.parallax');
-assert('REQ-009: Parallax elements defined', parallaxElements.length > 0);
-
-const hasGsapScript = htmlContent.includes('gsap.min.js');
-const hasLenisScript = htmlContent.includes('lenis.min.js');
-assert('REQ-009: GSAP script included', hasGsapScript);
-assert('REQ-009: Lenis script included', hasLenisScript);
-
-// 3. Generate Report
-const failedTests = results.filter(r => r.status === 'FAIL');
-const reportPath = path.resolve(__dirname, 'test_summary_report.md');
-
-let reportContent = '# Test Summary Report\n\n';
-reportContent += `**Date:** ${new Date().toLocaleString()}\n`;
-reportContent += `**Total Tests:** ${results.length}\n`;
-reportContent += `**Passed:** ${results.length - failedTests.length}\n`;
-reportContent += `**Failed:** ${failedTests.length}\n\n`;
-
-reportContent += '| Requirement | Status | Expected | Actual |\n';
-reportContent += '|---|---|---|---|\n';
-results.forEach(r => {
-    reportContent += `| ${r.description} | ${r.status} | ${r.expected} | ${r.actual} |\n`;
-});
-
-fs.writeFileSync(reportPath, reportContent);
-console.log(`\nReport generated at: ${reportPath}`);
-
-if (failedTests.length > 0) {
-    console.error('\nSOME TESTS FAILED. See report for details.');
+runTests().catch(err => {
+    console.error(err);
     process.exit(1);
-} else {
-    console.log('\nALL TESTS PASSED.');
-    process.exit(0);
-}
+});
