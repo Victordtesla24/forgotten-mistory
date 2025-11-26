@@ -17,8 +17,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 // --- Configuration ---
-const PARTICLE_COUNT = 140;   // Increased slightly
-const CONNECT_DISTANCE = 6.0; // Slightly increased
+const PARTICLE_COUNT = 180;   // Increased for density
+const CONNECT_DISTANCE = 6.5; // Slightly increased
 const PARTICLE_SIZE = 0.15;
 
 // --- Particles (Nodes) ---
@@ -27,9 +27,9 @@ const particlePositions = new Float32Array(PARTICLE_COUNT * 3);
 const particleVelocities = []; 
 
 for(let i = 0; i < PARTICLE_COUNT; i++) {
-    const x = (Math.random() - 0.5) * 35;
-    const y = (Math.random() - 0.5) * 35;
-    const z = (Math.random() - 0.5) * 35;
+    const x = (Math.random() - 0.5) * 40; // Wider spread
+    const y = (Math.random() - 0.5) * 40;
+    const z = (Math.random() - 0.5) * 40;
 
     particlePositions[i * 3] = x;
     particlePositions[i * 3 + 1] = y;
@@ -89,6 +89,30 @@ for(let i=0; i<MAX_PACKETS; i++) {
     packets.push({ active: false, startIdx: -1, endIdx: -1, progress: 0, speed: 0 });
 }
 
+// --- Cursor Trail ---
+const TRAIL_COUNT = 30;
+const trailGeometry = new THREE.BufferGeometry();
+const trailPosArray = new Float32Array(TRAIL_COUNT * 3);
+const trailColorArray = new Float32Array(TRAIL_COUNT * 3);
+
+// Initialize off-screen
+for(let i=0; i<TRAIL_COUNT*3; i++) trailPosArray[i] = 9999;
+
+trailGeometry.setAttribute('position', new THREE.BufferAttribute(trailPosArray, 3));
+trailGeometry.setAttribute('color', new THREE.BufferAttribute(trailColorArray, 3));
+
+const trailMaterial = new THREE.PointsMaterial({
+    size: 0.3,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.8,
+    blending: THREE.AdditiveBlending
+});
+
+const trailMesh = new THREE.Points(trailGeometry, trailMaterial);
+scene.add(trailMesh);
+let trailIdx = 0;
+
 // --- Interaction State ---
 let mouseX = 0;
 let mouseY = 0;
@@ -123,16 +147,52 @@ function animate() {
     // 1. Update Particle Positions
     const positions = particlesMesh.geometry.attributes.position.array;
     
+    // Mouse repulsion vector (approximate world coords at Z=0)
+    // Camera Z=20. FOV=75. Roughly width ~30 at z=0.
+    const aspect = window.innerWidth / window.innerHeight;
+    const mouseVec = new THREE.Vector3(
+        (mouseX * 20 * aspect), 
+        (mouseY * 20), 
+        0
+    );
+
     for(let i = 0; i < PARTICLE_COUNT; i++) {
         // Apply Velocity
         positions[i*3]     += particleVelocities[i].x;
         positions[i*3 + 1] += particleVelocities[i].y;
         positions[i*3 + 2] += particleVelocities[i].z;
 
+        // Mouse Repulsion
+        const dx = positions[i*3] - mouseVec.x;
+        const dy = positions[i*3+1] - mouseVec.y;
+        // We treat mouse as a cylinder through Z, or just a sphere at Z=0? Sphere at Z=0 is better.
+        const dz = positions[i*3+2]; 
+        const distSq = dx*dx + dy*dy + dz*dz;
+        
+        if(distSq < 60) { // Interaction radius
+             const dist = Math.sqrt(distSq);
+             const force = (Math.sqrt(60) - dist) / Math.sqrt(60); // 0 to 1
+             const repulsion = 0.02 * force; // Gentle push
+             
+             particleVelocities[i].x += (dx / dist) * repulsion;
+             particleVelocities[i].y += (dy / dist) * repulsion;
+             particleVelocities[i].z += (dz / dist) * repulsion;
+        }
+
+        // Dampen velocity slightly to prevent explosion but keep them floating
+        particleVelocities[i].x *= 0.995; 
+        particleVelocities[i].y *= 0.995;
+        particleVelocities[i].z *= 0.995;
+
+        // Keep minimum movement
+        if (Math.abs(particleVelocities[i].x) < 0.001) particleVelocities[i].x += (Math.random()-0.5)*0.005;
+        if (Math.abs(particleVelocities[i].y) < 0.001) particleVelocities[i].y += (Math.random()-0.5)*0.005;
+        if (Math.abs(particleVelocities[i].z) < 0.001) particleVelocities[i].z += (Math.random()-0.5)*0.005;
+
         // Boundary Check (Bounce)
-        if(Math.abs(positions[i*3]) > 25) particleVelocities[i].x *= -1;
-        if(Math.abs(positions[i*3+1]) > 25) particleVelocities[i].y *= -1;
-        if(Math.abs(positions[i*3+2]) > 25) particleVelocities[i].z *= -1;
+        if(Math.abs(positions[i*3]) > 30) particleVelocities[i].x *= -1;
+        if(Math.abs(positions[i*3+1]) > 30) particleVelocities[i].y *= -1;
+        if(Math.abs(positions[i*3+2]) > 30) particleVelocities[i].z *= -1;
     }
     
     particlesMesh.geometry.attributes.position.needsUpdate = true;
@@ -216,7 +276,33 @@ function animate() {
     packetMesh.geometry.attributes.position.needsUpdate = true;
 
 
-    // 4. Interaction & Camera
+    // 4. Cursor Trail Update
+    // Spawn at mouseVec position (using the one calculated for repulsion)
+    if (mouseX !== 0 || mouseY !== 0) {
+        trailPosArray[trailIdx * 3] = mouseVec.x;
+        trailPosArray[trailIdx * 3 + 1] = mouseVec.y;
+        trailPosArray[trailIdx * 3 + 2] = mouseVec.z; // 0
+        
+        // Color: Cyan/Orange mix
+        trailColorArray[trailIdx * 3]     = 0.2; // R
+        trailColorArray[trailIdx * 3 + 1] = 0.8; // G
+        trailColorArray[trailIdx * 3 + 2] = 1.0; // B
+        
+        trailIdx = (trailIdx + 1) % TRAIL_COUNT;
+    }
+
+    // Fade out trail
+    const trailColors = trailMesh.geometry.attributes.color.array;
+    for(let i=0; i<TRAIL_COUNT; i++) {
+        trailColors[i*3]     *= 0.94;
+        trailColors[i*3 + 1] *= 0.94;
+        trailColors[i*3 + 2] *= 0.94;
+    }
+    trailMesh.geometry.attributes.position.needsUpdate = true;
+    trailMesh.geometry.attributes.color.needsUpdate = true;
+
+
+    // 5. Interaction & Camera
     targetRotationY = mouseX * 0.2;
     targetRotationX = mouseY * 0.2;
     

@@ -3,14 +3,31 @@
   "version": "1.0.0",
   "description": "Tests for portfolio website",
   "scripts": {
+    "dev": "next dev -p 8080",
+    "build": "next build",
+    "start": "next start",
     "test": "npx playwright test"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0",
+    "@types/node": "^20.19.25",
+    "@types/react": "^18.3.27",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.17",
     "http-server": "^14.1.1",
-    "playwright": "^1.56.1"
+    "playwright": "^1.56.1",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "jsdom": "^27.2.0"
+    "gsap": "^3.12.5",
+    "jsdom": "^27.2.0",
+    "lenis": "^1.0.45",
+    "lucide-react": "^0.554.0",
+    "next": "^14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "three": "^0.160.0"
   }
 }

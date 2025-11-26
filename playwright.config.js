@@ -17,13 +17,18 @@ module.exports = defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { 
+        ...devices['Desktop Chrome'],
+        launchOptions: {
+          args: ['--use-fake-ui-for-media-stream', '--autoplay-policy=no-user-gesture-required'],
+        },
+      },
     },
   ],
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npx http-server -p 8080 .',
+    command: 'npm run dev',
     url: 'http://127.0.0.1:8080',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,

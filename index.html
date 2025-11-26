@@ -55,6 +55,7 @@
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#experience" class="nav-link">Experience</a></li>
                 <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#architecture-lab" class="nav-link">Architecture</a></li>
                 <li><a href="#work" class="nav-link">Work</a></li>
                 <li><a href="docs/Vik_Resume_Final.pdf" class="nav-link" target="_blank">Resume</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
@@ -70,6 +71,10 @@
                     <span class="line">Hello, I'm</span>
                     <span class="line reveal-text editable" data-key="hero-name">Vikram Deshpande</span>
                 </h1>
+                <div class="domain-chip">
+                    <span class="pill live">vikram.io</span>
+                    <span class="chip-text">Custom domain live. Goodbye forgotten-mistory.web.app</span>
+                </div>
                 <p class="hero-subtitle reveal-text-delay editable" data-key="hero-subtitle">
                     I work as a Senior Technical Manager & AI Solution Architect here in Melbourne.<br>
                     I am really passionate about solving complex problems and leading teams through challenging projects.<br><br>
@@ -81,6 +86,53 @@
                     <a href="https://youtube.com/@vicd0ct" target="_blank" class="btn-link">YouTube</a>
                     <a href="docs/Vik_Resume_Final.pdf" class="btn-link">Resume PDF</a>
                     <a href="#contact" class="btn-primary">Let's Talk</a>
+                </div>
+                <div class="telemetry-panel glass-card" id="telemetry-panel">
+                    <div class="telemetry-header">
+                        <div>
+                            <p class="eyebrow">Live Telemetry</p>
+                            <h3>System Status</h3>
+                        </div>
+                        <div class="telemetry-badges">
+                            <span class="pill soft">Simulated</span>
+                            <span class="pill accent">P95 <span data-latency>180 ms</span></span>
+                        </div>
+                    </div>
+                    <div class="telemetry-grid">
+                        <div class="telemetry-card">
+                            <div class="telemetry-label">Edge latency (ANZ)</div>
+                            <div class="telemetry-value" data-latency-number>0.180 s</div>
+                            <svg class="telemetry-spark" viewBox="0 0 160 40" preserveAspectRatio="none">
+                                <path data-latency-spark d="M0 30 L20 25 L40 28 L60 20 L80 24 L100 18 L120 22 L140 16 L160 20" />
+                            </svg>
+                            <p class="telemetry-note">Targets &lt; 200 ms at 10k+ device concurrency.</p>
+                        </div>
+                        <div class="telemetry-card">
+                            <div class="telemetry-label">Active visitors by region</div>
+                            <ul class="telemetry-list" id="telemetry-locations">
+                                <li>Melbourne · Edge POP</li>
+                                <li>Sydney · API Gateway</li>
+                                <li>Singapore · Vector cache</li>
+                            </ul>
+                            <p class="telemetry-note">Geo feed rotates every few seconds.</p>
+                        </div>
+                        <div class="telemetry-card telemetry-dual">
+                            <div class="telemetry-dual-row">
+                                <div>
+                                    <div class="telemetry-label">Server load</div>
+                                    <div class="telemetry-value" data-load>32%</div>
+                                </div>
+                                <div>
+                                    <div class="telemetry-label">Coffee consumed</div>
+                                    <div class="telemetry-value" data-coffee>1.0 cups</div>
+                                </div>
+                            </div>
+                            <div class="telemetry-meter">
+                                <span data-load-meter style="width: 32%"></span>
+                            </div>
+                            <p class="telemetry-note">Load is synthetic; caffeine is not.</p>
+                        </div>
+                    </div>
                 </div>
                 <div class="hero-meta">
                     <div class="meta-card glass-card">
@@ -550,6 +602,72 @@
             </div>
         </section>
 
+        <!-- Architecture Section -->
+        <section id="architecture-lab" class="architecture-section" data-scroll-section>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Interactive Architecture Map</h2>
+                    <p class="section-subhead">Trace how requests move from edge clients to Gemini, telemetry, and governance.</p>
+                </div>
+                <div class="arch-wrapper glass-card">
+                    <div class="arch-diagram">
+                        <svg class="arch-svg" viewBox="0 0 120 70" role="img" aria-label="Architecture flow diagram">
+                            <defs>
+                                <marker id="arrowhead" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto" markerUnits="strokeWidth">
+                                    <polygon points="0 0, 6 2, 0 4" />
+                                </marker>
+                            </defs>
+                            <g data-node="edge">
+                                <rect x="6" y="28" width="20" height="14" rx="4" ry="4" />
+                                <text x="16" y="36" text-anchor="middle">Edge</text>
+                                <text class="arch-sub" x="16" y="40" text-anchor="middle">Clients</text>
+                            </g>
+                            <g data-node="api">
+                                <rect x="36" y="26" width="20" height="18" rx="4" ry="4" />
+                                <text x="46" y="35" text-anchor="middle">API</text>
+                                <text class="arch-sub" x="46" y="39" text-anchor="middle">Gateway</text>
+                            </g>
+                            <g data-node="vector">
+                                <rect x="66" y="12" width="22" height="16" rx="4" ry="4" />
+                                <text x="77" y="21" text-anchor="middle">Vector</text>
+                                <text class="arch-sub" x="77" y="25" text-anchor="middle">DB</text>
+                            </g>
+                            <g data-node="llm">
+                                <rect x="96" y="12" width="18" height="16" rx="4" ry="4" />
+                                <text x="105" y="21" text-anchor="middle">Gemini</text>
+                            </g>
+                            <g data-node="telemetry">
+                                <rect x="66" y="48" width="22" height="16" rx="4" ry="4" />
+                                <text x="77" y="57" text-anchor="middle">Telemetry</text>
+                            </g>
+                            <g data-node="governance">
+                                <rect x="96" y="48" width="18" height="16" rx="4" ry="4" />
+                                <text x="105" y="57" text-anchor="middle">QA/GRC</text>
+                            </g>
+
+                            <line data-line="edge-api" x1="26" y1="35" x2="36" y2="35" marker-end="url(#arrowhead)" />
+                            <line data-line="api-vector" x1="56" y1="28" x2="66" y2="20" marker-end="url(#arrowhead)" />
+                            <line data-line="vector-llm" x1="88" y1="20" x2="96" y2="20" marker-end="url(#arrowhead)" />
+                            <line data-line="llm-api" x1="96" y1="22" x2="56" y2="34" marker-end="url(#arrowhead)" />
+                            <line data-line="api-telemetry" x1="56" y1="38" x2="66" y2="56" marker-end="url(#arrowhead)" />
+                            <line data-line="telemetry-governance" x1="88" y1="56" x2="96" y2="56" marker-end="url(#arrowhead)" />
+                            <line data-line="governance-edge" x1="96" y1="52" x2="26" y2="30" marker-end="url(#arrowhead)" />
+                        </svg>
+                    </div>
+                    <div class="arch-sidebar">
+                        <div class="arch-actions">
+                            <button class="arch-btn active" data-flow="chat">LLM Chat Path</button>
+                            <button class="arch-btn" data-flow="telemetry">Telemetry Stream</button>
+                            <button class="arch-btn" data-flow="governance">Governance & Quality</button>
+                        </div>
+                        <div class="arch-explainer" id="arch-explainer">
+                            Select a path to highlight the packets moving through edge, gateway, vector store, Gemini, telemetry, and governance.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Work/Projects Section -->
         <section id="work" class="work-section" data-scroll-section>
             <div class="container">
@@ -561,49 +679,8 @@
                     <!-- <button class="carousel-nav prev" aria-label="Previous Project"><i class="fas fa-chevron-left"></i></button> -->
                     <div class="projects-carousel" id="projects-carousel">
                         
-                        <!-- Card 1: GitHub (Code/Terminal) -->
-                    <a href="https://github.com/Victordtesla24" target="_blank" class="project-card">
-                        <div class="project-image">
-                            <div class="viz-terminal">
-                                <div class="terminal-header">
-                                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
-                                </div>
-                                <div class="terminal-body">
-                                    <div class="code-line"><span class="c-blue">const</span> <span class="c-yellow">telemetry</span> = <span class="c-purple">new</span> <span class="c-green">Socket</span>();</div>
-                                    <div class="code-line"><span class="c-blue">await</span> telemetry.<span class="c-yellow">connect</span>(<span class="c-orange">'wss://api.vikram.io'</span>);</div>
-                                    <div class="code-line">> Connection established.</div>
-                                    <div class="code-line">> Latency: 12ms</div>
-                                    <div class="code-line">> Syncing 25 repos...</div>
-                                    <div class="code-line blink">_</div>
-                                </div>
-                            </div>
-                            <div class="card-badge">Open Source</div>
-                        </div>
-                        <div class="project-info">
-                            <h3>GitHub: VicsGitRepos</h3>
-                            <p>Shipping cadence across AI/ML stacks, realtime telemetry, secure key servers, and analytics dashboards.</p>
-                        </div>
-                    </a>
-
-                    <!-- Card 2: YouTube (Waveform) -->
-                    <a href="https://youtube.com/@vicd0ct" target="_blank" class="project-card">
-                        <div class="project-image">
-                            <div class="viz-waveform">
-                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-                                <div class="play-btn"></div>
-                            </div>
-                            <div class="card-badge">Content Creation</div>
-                        </div>
-                        <div class="project-info">
-                            <h3>YouTube: @vicd0ct</h3>
-                            <p>Real-time narration of AI/ML builds: 7,000-year-old algorithms, telemetry breakdowns, and humor.</p>
-                        </div>
-                    </a>
-
-                    <!-- Card 3: Jira Dashboard (Analytics UI) -->
-                    <a href="https://github.com/Victordtesla24/EFDDH-Jira-Analytics-Dashboard" target="_blank" class="project-card">
+                    <!-- Card 1: EFDDH-Jira-Analytics-Dashboard -->
+                    <a href="https://github.com/Victordtesla24/EFDDH-Jira-Analytics-Dashboard" target="_blank" class="project-card" data-preview="chart" data-preview-label="Velocity charts">
                         <div class="project-image">
                             <div class="viz-dashboard">
                                 <div class="dash-header"></div>
@@ -613,21 +690,21 @@
                                 </div>
                                 <div class="dash-row row-2">
                                     <div class="dash-bar b-1"></div>
-                                    <div class="dash-bar b-2"></div>
                                     <div class="dash-bar b-3"></div>
+                                    <div class="dash-bar b-2"></div>
                                     <div class="dash-bar b-4"></div>
                                 </div>
                             </div>
-                            <div class="card-badge">Next.js + AI</div>
+                            <div class="card-badge">Python / AI</div>
                         </div>
                         <div class="project-info">
-                            <h3>Jira Analytics Dashboard</h3>
-                            <p>Python dashboard surfacing sprint velocity + LLM retros using LangChain.</p>
+                            <h3>EFDDH Jira Analytics</h3>
+                            <p>Python dashboard surfacing sprint velocity + LLM retros using LangChain. Exec-ready insights.</p>
                         </div>
                     </a>
 
-                    <!-- Card 4: Resume Tailor (Document AI) -->
-                    <a href="https://github.com/Victordtesla24/tailor-resume-with-ai" target="_blank" class="project-card">
+                    <!-- Card 2: tailor-resume-with-ai -->
+                    <a href="https://github.com/Victordtesla24/tailor-resume-with-ai" target="_blank" class="project-card" data-preview="doc" data-preview-label="Auto-tailoring">
                         <div class="project-image">
                             <div class="viz-doc">
                                 <div class="doc-page">
@@ -637,11 +714,51 @@
                                     <div class="scan-line"></div>
                                 </div>
                             </div>
-                            <div class="card-badge">NLP / Automation</div>
+                            <div class="card-badge">NLP Automation</div>
                         </div>
                         <div class="project-info">
                             <h3>AI Resume Tailor</h3>
-                            <p>Automated resume tailoring with web scraping & prompt engineering.</p>
+                            <p>Automated resume tailoring with web scraping & prompt engineering. Matches CVs to JDs instantly.</p>
+                        </div>
+                    </a>
+
+                    <!-- Card 3: relationship-timeline-feature -->
+                    <a href="https://github.com/Victordtesla24/relationship-timeline-feature" target="_blank" class="project-card" data-preview="wave" data-preview-label="D3 Visualization">
+                        <div class="project-image">
+                            <div class="viz-waveform">
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                                <div class="play-btn"></div>
+                            </div>
+                            <div class="card-badge">React / D3</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Relationship Timeline</h3>
+                            <p>React/TypeScript + D3 customer journey visualiser. Interactive temporal data visualization.</p>
+                        </div>
+                    </a>
+
+                    <!-- Card 4: AI-Gmail-Mailbox-Manager -->
+                    <a href="https://github.com/Victordtesla24/AI-Gmail-Mailbox-Manager" target="_blank" class="project-card" data-preview="terminal" data-preview-label="Inbox triage">
+                        <div class="project-image">
+                            <div class="viz-terminal">
+                                <div class="terminal-header">
+                                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                                </div>
+                                <div class="terminal-body">
+                                    <div class="code-line"><span class="c-purple">await</span> gmail.<span class="c-yellow">fetch</span>();</div>
+                                    <div class="code-line">> Analyzing sentiment...</div>
+                                    <div class="code-line">> Label: <span class="c-green">Urgent</span></div>
+                                    <div class="code-line">> Draft created.</div>
+                                    <div class="code-line blink">_</div>
+                                </div>
+                            </div>
+                            <div class="card-badge">TypeScript Automation</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>AI Gmail Manager</h3>
+                            <p>Autonomous Gmail triage in TypeScript. Filters, labels, and drafts replies using LLMs.</p>
                         </div>
                     </a>
 
@@ -657,10 +774,11 @@
                         <div class="repo-curated">
                             <div class="section-subhead">Featured repos</div>
                             <ul>
-                                <li><a href="https://github.com/Victordtesla24/EFDDH-Jira-Analytics-Dashboard" target="_blank">EFDDH-Jira-Analytics-Dashboard</a> — Python dashboard surfacing sprint velocity + LLM retros.</li>
-                                <li><a href="https://github.com/Victordtesla24/tailor-resume-with-ai" target="_blank">tailor-resume-with-ai</a> — AI-assisted resume tailoring with web scraping & prompt engineering.</li>
-                                <li><a href="https://github.com/Victordtesla24/relationship-timeline-feature" target="_blank">relationship-timeline-feature</a> — React/TypeScript + D3 customer journey visualiser.</li>
-                                <li><a href="https://github.com/Victordtesla24/AI-Gmail-Mailbox-Manager" target="_blank">AI-Gmail-Mailbox-Manager</a> — Autonomous Gmail triage in TypeScript.</li>
+                                <li><a href="https://github.com/Victordtesla24/btr-demo" target="_blank">btr-demo</a> — BPHS Birth Time Rectification engine.</li>
+                                <li><a href="https://github.com/Victordtesla24/jyotish-shastra" target="_blank">jyotish-shastra</a> — Enterprise-grade Vedic Astrology platform.</li>
+                                <li><a href="https://github.com/Victordtesla24/rishi-prajnya" target="_blank">rishi-prajnya</a> — AI career guidance platform.</li>
+                                <li><a href="https://github.com/Victordtesla24/Birth-Time-Rectifier" target="_blank">Birth-Time-Rectifier</a> — AI-driven rectification system.</li>
+                                <li><a href="https://github.com/Victordtesla24/Advanced-Prompt-Creator" target="_blank">Advanced-Prompt-Creator</a> — Privacy-first prompt engineering.</li>
                             </ul>
                         </div>
                     </div>
@@ -708,8 +826,70 @@
         <div class="footer-content">
             <p>&copy; 2024 Vikram Deshpande. All rights reserved.</p>
         </div>
-    </footer>
+</footer>
 
+
+    <!-- Konami / Terminal Easter Egg -->
+    <div id="terminal-overlay" class="terminal-overlay" aria-hidden="true">
+        <div class="terminal-window">
+            <div class="terminal-bar">
+                <div class="terminal-dots">
+                    <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                </div>
+                <div class="terminal-title">vikram.io // hidden terminal</div>
+                <button id="terminal-close" aria-label="Close terminal">×</button>
+            </div>
+            <div class="terminal-body" id="terminal-log" role="log">
+                <div class="terminal-line">Type <span class="accent">help</span>, <span class="accent">sudo hire vic</span>, <span class="accent">stack</span>, or try the Konami code.</div>
+            </div>
+            <form id="terminal-form" autocomplete="off">
+                <span class="prompt">vic@vikram.io:~$</span>
+                <input id="terminal-input" type="text" spellcheck="false" aria-label="Terminal input" placeholder="help | sudo hire vic | stack" />
+            </form>
+        </div>
+    </div>
+
+    <!-- Mini-Vic Chatbot -->
+    <div id="mini-vic" class="mini-vic-widget">
+        <div class="mini-vic-window" aria-live="polite">
+            <div class="mini-vic-header">
+                <div>
+                    <p class="eyebrow">Mini-Vic</p>
+                    <h3>Gemini CV Copilot</h3>
+                </div>
+                <div class="mini-vic-actions">
+                    <button type="button" data-mini-mute aria-label="Toggle voice"><i class="fas fa-volume-mute"></i></button>
+                    <button type="button" data-mini-close aria-label="Close chat"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="mini-vic-hero">
+                <div class="mini-vic-avatar">
+                    <video src="public/my-avatar.mp4" loop muted playsinline></video>
+                    <div class="mini-vic-talking" data-speaking></div>
+                </div>
+                <div class="mini-vic-status">
+                    <span class="status-dot" data-speaking-dot></span>
+                    <span>AI ARCHITECT · CV RAG</span>
+                </div>
+            </div>
+            <div class="mini-vic-messages" id="mini-vic-messages">
+                <div class="mini-vic-message bot">Yo! I'm Mini-Vic. Powered by Gemini + a RAG index of my CV. Ask about telemetry, leadership, or stacks.</div>
+            </div>
+            <div class="mini-vic-quick">
+                <button type="button" data-mini-prompt="Explain that in Star Wars terms!" data-mode="scifi">✨ Sci-Fi Mode</button>
+                <button type="button" data-mini-prompt="Summarize your tech stack concisely.">⚡ Stack Check</button>
+            </div>
+            <form id="mini-vic-form" autocomplete="off">
+                <input id="mini-vic-input" type="text" placeholder="Ask me anything..." aria-label="Mini-Vic input" />
+                <button type="submit"><i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+        <button class="mini-vic-toggle" data-mini-toggle aria-label="Open Mini-Vic chatbot">
+            <video src="public/my-avatar.mp4" autoplay loop muted playsinline></video>
+            <span class="mini-vic-ping"></span>
+        </button>
+        <audio id="mini-vic-audio" class="hidden"></audio>
+    </div>
 
 
     <!-- Scripts -->
