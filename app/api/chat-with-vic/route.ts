@@ -6,51 +6,116 @@ type RagChunk = {
   tags: string[];
 };
 
+type ChatMessage = {
+  role: 'user' | 'model';
+  parts: { text: string }[];
+};
+
 // ------------------------------------------------------------------
 // 1. CONFIGURATION
 // ------------------------------------------------------------------
-// Ensure these are in your .env.local file!
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 const ELEVENLABS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID; 
+const POLLO_AI_API_KEY = process.env.POLLO_AI_API_KEY;
 
-// Lightweight RAG store seeded from Vikram's CV
+// Expanded RAG store seeded from Vikram's Portfolio
 const resumeChunks: RagChunk[] = [
   {
     title: 'Headline',
     content: '15+ year Senior Technical Delivery Leader & AI/ML Solutions Architect in Melbourne. Bridges engineering depth with exec strategy to land cloud programs.',
-    tags: ['headline', 'summary', 'melbourne', 'ai', 'architect']
+    tags: ['headline', 'summary', 'melbourne', 'ai', 'architect', 'vikram']
   },
   {
-    title: 'Reliability & Telemetry',
-    content: 'Delivered real-time WebSocket telemetry at 10k+ device concurrency with P95 latency under 200 ms. Obsessed with measurable performance and resilience.',
-    tags: ['telemetry', 'reliability', 'websocket', 'p95', 'latency']
+    title: 'About Me',
+    content: 'Senior Technical Delivery Leader & AI/ML Solutions Architect (CSM) across Financial Services and Telecommunications. Leads cloud-native modernisations that cut delivery time by 30%+, reduce infra cost by 15%, and land mission-critical programs ($5M+). Core toolkit: Python, TypeScript/React/Next.js, Kubernetes, Docker, Terraform, CI/CD, GCP/AWS/Azure, Postgres/Supabase, and LangChain/Langfuse.',
+    tags: ['about', 'summary', 'bio', 'experience', 'toolkit']
   },
   {
-    title: 'Delivery & Governance',
-    content: 'Owns $5M+ portfolios, certified Scrum Master, leads 5+ cross-functional squads (40 resources) with compliance-first guardrails.',
-    tags: ['governance', 'scrum', 'portfolio', 'budget', 'team']
+    title: 'Career Objective',
+    content: 'Bridge technical depth with executive strategy so AI/ML pilots land in production with business value. Translate strategy into roadmaps (>30% faster delivery), align AI/ML with compliance/risk, and use telemetry for transparent decision making.',
+    tags: ['objective', 'goal', 'vision', 'strategy']
   },
   {
-    title: 'Tech Stack',
-    content: 'Hands-on with Python, TypeScript/React/Next.js, Node.js/Express, Kubernetes, Docker, Terraform, CI/CD, and multi-cloud (GCP/AWS/Azure).',
-    tags: ['python', 'typescript', 'react', 'next', 'node', 'kubernetes', 'terraform', 'cloud']
+    title: 'Delivery Impact',
+    content: 'Programs built around latency, resilience, and cost controls. P95 < 200 ms real-time WebSocket telemetry (ANZ, 10k+ concurrency). Core banking transformation (.NET/Azure) trimmed delivery time >30% and infra cost >15%. $5M+ portfolio oversight with 100% compliance.',
+    tags: ['impact', 'delivery', 'metrics', 'savings', 'performance', 'anz']
   },
   {
-    title: 'Recent Builds',
-    content: 'Next.js + Supabase JIRA analytics dashboard, Node/Express public-key server with full Mocha/Chai coverage, React+TypeScript+D3 timeline visualiser, Langfuse + Phoenix eval stack cutting LLM error budgets by 38%.',
-    tags: ['supabase', 'jira', 'langfuse', 'phoenix', 'llm', 'tests']
+    title: 'Leadership & Governance',
+    content: 'Servant leadership with clear guardrails. Lead 5+ squads (40+ resources, onsite/offshore) via Agile/Scrum/SAFe. Exec workshops for 40+ leaders improved decision clarity by ~55%. Certified Scrum Master.',
+    tags: ['leadership', 'governance', 'management', 'team', 'scrum', 'agile']
   },
   {
-    title: 'Career Highlights',
-    content: 'ANZ Senior Delivery Lead & AI/ML Architect; NAB risk/compliance delivery; Microsoft Azure ML telemetry gap analysis; Telstra customer journey scorecards.',
-    tags: ['anz', 'nab', 'microsoft', 'telstra', 'career']
+    title: 'Experience: ANZ (Senior Delivery Lead / PO)',
+    content: 'Sept 2017 - Jun 2025. Led AI/ML strategy & delivery, including real-time WebSocket telemetry for 10k+ devices. Reduced user response times to P95 < 200 ms.',
+    tags: ['anz', 'experience', 'telemetry', 'websocket', 'delivery lead']
+  },
+  {
+    title: 'Experience: ANZ (AI/ML Architect)',
+    content: '2017 - 2022. Orchestrated Agile transformation (monolith to cloud-native .NET/Azure). Directed $5M+ program portfolio (5 squads). Owned architecture & governance (100% compliance). Ran exec workshops (40+ GMs) improving clarity >55%.',
+    tags: ['anz', 'experience', 'architect', 'cloud', 'azure', 'transformation']
+  },
+  {
+    title: 'Experience: NAB (Senior PM & BA)',
+    content: 'Nov 2016 - Sept 2017. Managed delivery for a critical risk and compliance program, ensuring 100% regulatory adherence for major data initiatives.',
+    tags: ['nab', 'experience', 'risk', 'compliance', 'pm']
+  },
+  {
+    title: 'Experience: Microsoft (Lead BA)',
+    content: 'Oct 2015 - Oct 2016. Delivered Azure ML telemetry gap analysis (improved reliability 15%, reduced MTTR 10%). Aligned DevOps strategies to enterprise standards (95% compliance).',
+    tags: ['microsoft', 'experience', 'azure', 'ml', 'devops']
+  },
+  {
+    title: 'Experience: Telstra (BA)',
+    content: 'Nov 2014 - Oct 2015. Built customer journey scorecards and streamlined JIRA requirements, improving delivery efficiency 20% and operational clarity 15%.',
+    tags: ['telstra', 'experience', 'jira', 'scorecards']
+  },
+  {
+    title: 'Skills: AI/ML & Data',
+    content: 'LLM pipelines with LangChain/Langfuse and Phoenix evaluation. Real-time WebSocket telemetry (10k+ devices, P95 < 200ms). Postgres/Supabase analytics, Python data tooling.',
+    tags: ['skills', 'ai', 'ml', 'data', 'langchain', 'telemetry', 'python']
+  },
+  {
+    title: 'Skills: Engineering',
+    content: 'Python, TypeScript/React/Next.js, Node.js/Express. Kubernetes, Docker, Terraform, CI/CD. Cloud design on GCP/AWS/Azure with telemetry-first observability.',
+    tags: ['skills', 'engineering', 'cloud', 'react', 'node', 'kubernetes', 'terraform']
+  },
+  {
+    title: 'Project: EFDDH Jira Analytics',
+    content: 'Python dashboard surfacing sprint velocity + LLM retros using LangChain. Exec-ready insights. Tech: Python, AI.',
+    tags: ['project', 'jira', 'analytics', 'python', 'langchain']
+  },
+  {
+    title: 'Project: AI Resume Tailor',
+    content: 'Automated resume tailoring with web scraping & prompt engineering. Matches CVs to JDs instantly. Tech: NLP Automation.',
+    tags: ['project', 'resume', 'nlp', 'automation']
+  },
+  {
+    title: 'Project: Relationship Timeline',
+    content: 'React/TypeScript + D3 customer journey visualiser. Interactive temporal data visualization. Tech: React, D3.',
+    tags: ['project', 'd3', 'react', 'visualization']
+  },
+  {
+    title: 'Project: AI Gmail Manager',
+    content: 'Autonomous Gmail triage in TypeScript. Filters, labels, and drafts replies using LLMs. Tech: TypeScript Automation.',
+    tags: ['project', 'gmail', 'automation', 'typescript', 'llm']
+  },
+    {
+    title: 'Architecture',
+    content: 'Flow: Edge Clients -> API Gateway -> Vector DB (Embeddings) -> Gemini (Inference) -> Telemetry (Metric Bus) -> Governance. Key metrics: P95 latency ~180ms, Throughput ~12k req/s.',
+    tags: ['architecture', 'flow', 'system', 'design']
+  },
+  {
+    title: 'Contact',
+    content: 'Email: sarkar.vikram@gmail.com. Phone: +61 433 224 556. GitHub: github.com/Victordtesla24. YouTube: youtube.com/@vicd0ct.',
+    tags: ['contact', 'email', 'phone', 'social']
   }
 ];
 
 const normalize = (text: string) => text.toLowerCase().replace(/[^a-z0-9\s]/g, ' ');
 
-function getTopChunks(query: string, take = 3) {
+function getTopChunks(query: string, take = 4) {
   const terms = normalize(query).split(/\s+/).filter(Boolean);
   return resumeChunks
     .map((chunk) => {
@@ -72,7 +137,19 @@ function localRagAnswer(query: string, context: RagChunk[]) {
 
 export async function POST(req: Request) {
   try {
-    const { message, mode } = await req.json();
+    let payload;
+    try {
+      const bodyText = await req.text();
+      if (!bodyText) {
+        return NextResponse.json({ error: 'Empty body' }, { status: 400 });
+      }
+      payload = JSON.parse(bodyText);
+    } catch (jsonErr) {
+      console.error('Invalid JSON payload', jsonErr);
+      return NextResponse.json({ error: 'Invalid JSON payload' }, { status: 400 });
+    }
+
+    const { message, mode, history } = payload;
 
     if (!message) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 });
@@ -88,13 +165,28 @@ export async function POST(req: Request) {
     // ------------------------------------------------------------------
     
     // Customize prompt based on mode
-    let systemPrompt = `You are Vic (Vikram), a Senior AI Solution Architect. 
-    Tone: Casual, witty, brief, and technical. 
-    Context: You are talking to a recruiter or dev visiting your portfolio.
-    Constraint: Keep answers under 2-3 sentences.`;
+    let systemPrompt = `You are Vic (short for Vikram), a Senior AI Solution Architect and Technical Delivery Lead.
+    Persona: 10x Engineer & Leader. Confident, extremely competent, witty, slightly cheeky but professional. You speak with conviction and energy.
+    Context: You are talking to a recruiter, CTO, or engineer visiting your portfolio via a holographic interface.
+    Goal: Impress them with your depth of knowledge, strategic thinking, and hands-on capability.
+    Constraint: Keep answers conversational, spoken-word optimized (avoid complex lists), and under 3 sentences unless asked for a deep dive. Use natural phrasing.
+    
+    Key Traits:
+    - Bias for action: You talk about shipping, not just planning.
+    - Metrics-driven: You cite P95 latency, budget savings, and delivery acceleration.
+    - Strategic: You connect code to business value.
+    - Voice: Use natural pauses (like "Look," or "Honestly,") to make the TTS sound real.
+    `;
 
-    if (mode === 'scifi') {
-      systemPrompt += ` CRITICAL INSTRUCTION: Explain the concept using a STAR WARS or STAR TREK analogy. Use terms like 'Hyperdrive', 'The Force', 'Warp Core', or 'Droid' to explain the tech.`;
+    const personaPrompts: Record<string, string> = {
+      recruiter: `Focus on: Hiring fit, budget management ($5M+), team leadership (5+ squads), and delivery velocity. Be reassuring and capable.`,
+      engineer: `Focus on: Architecture, tech stack (Next.js, Python, K8s), telemetry patterns, and trade-offs. Be technical, precise, and use jargon correctly.`,
+      story: `Focus on: The narrative arc. Problem -> Strategy -> Execution -> Result. Make it compelling, engaging and eye winking sarcastic.`,
+      scifi: `CRITICAL INSTRUCTION: You are a holographic AI construct from the year 2142. Use sci-fi terminology (quantum couplings, neural uplinks) to explain the portfolio. Be dramatic but accurate about the skills.`,
+    };
+
+    if (mode && personaPrompts[mode]) {
+      systemPrompt += `\n\nCurrent Mode: ${mode.toUpperCase()}. ${personaPrompts[mode]}`;
     }
 
     let botText: string = localRagAnswer(message, ragMatches);
@@ -102,18 +194,32 @@ export async function POST(req: Request) {
     if (GEMINI_API_KEY) {
       const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${GEMINI_API_KEY}`;
       
+      const contents: ChatMessage[] = [];
+      
+      if (history && Array.isArray(history)) {
+          history.forEach((msg: any) => {
+              contents.push({
+                  role: msg.role === 'bot' ? 'model' : 'user',
+                  parts: [{ text: msg.text }]
+              });
+          });
+      }
+
+      contents.push({
+        role: 'user',
+        parts: [{ text: `Context from Vic's Portfolio/CV:\n${ragContext}\n\nUser question: ${message}\n\nAnswer as Vic (spoken):` }]
+      });
+
       const geminiResponse = await fetch(geminiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                { text: `Context from Vic's CV:\n${ragContext}\n\nUser question: ${message}\nRespond concisely and cite the most relevant achievements.` }
-              ]
-            }
-          ],
-          systemInstruction: { parts: [{ text: systemPrompt }] }
+          contents: contents,
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          generationConfig: {
+              temperature: 0.8,
+              maxOutputTokens: 250,
+          }
         })
       });
 
@@ -130,8 +236,9 @@ export async function POST(req: Request) {
     // 3. GENERATE AUDIO (The Voice - ElevenLabs)
     // ------------------------------------------------------------------
     if (ELEVENLABS_API_KEY && ELEVENLABS_VOICE_ID) {
+      // Use turbo_v2 for lowest latency
       const elevenLabsResponse = await fetch(
-        `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}`,
+        `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}?optimize_streaming_latency=2`, 
         {
           method: 'POST',
           headers: {
@@ -140,10 +247,11 @@ export async function POST(req: Request) {
           },
           body: JSON.stringify({
             text: botText,
-            model_id: "eleven_turbo_v2", // Turbo is crucial for speed
+            model_id: "eleven_turbo_v2", 
             voice_settings: {
               stability: 0.5,
               similarity_boost: 0.75,
+              use_speaker_boost: true,
             },
           }),
         }
@@ -154,13 +262,56 @@ export async function POST(req: Request) {
         return NextResponse.json({ text: botText });
       }
 
-      // Convert the audio stream to a base64 string
       const audioBuffer = await elevenLabsResponse.arrayBuffer();
       const audioBase64 = Buffer.from(audioBuffer).toString('base64');
 
+      // ------------------------------------------------------------------
+      // 4. GENERATE VIDEO (The Face - Pollo AI)
+      // ------------------------------------------------------------------
+      let polloTaskId = null;
+      if (POLLO_AI_API_KEY) {
+        try {
+          const avatarUrl = "https://raw.githubusercontent.com/Victordtesla24/forgotten-mistory/main/public/assets/my_avatar.png";
+          
+          // Using Pollo AI API for image-to-video (Pollo 1.6 endpoint per documentation)
+          const polloResponse = await fetch('https://pollo.ai/api/platform/generation/pollo/pollo-v1-6', {
+            method: 'POST',
+            headers: {
+              'x-api-key': POLLO_AI_API_KEY!,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              input: {
+                image: avatarUrl,
+                prompt: `A professional tech lead speaking confidently: ${botText.substring(0, 900)}`,
+                aspectRatio: "1:1"
+              }
+            })
+          });
+
+          if (polloResponse.ok) {
+            const polloData = await polloResponse.json();
+            // Handle different potential ID locations based on API variance
+            polloTaskId = polloData.data?.id || polloData.id; 
+            console.log("Pollo Task Started:", polloTaskId);
+          } else {
+             const errorText = await polloResponse.text();
+             // Gracefully handle credit limits
+             if (errorText.includes("Not enough credits")) {
+                console.warn("Pollo API Credit Limit Reached - Video generation skipped.");
+             } else {
+                console.warn("Pollo API Error:", errorText);
+             }
+          }
+        } catch (polloErr) {
+          console.error("Pollo Integration Failed:", polloErr);
+        }
+      }
+
       return NextResponse.json({
         text: botText,
-        audio: `data:audio/mpeg;base64,${audioBase64}`
+        audio: `data:audio/mpeg;base64,${audioBase64}`,
+        polloTaskId: polloTaskId
       });
     }
 
@@ -169,5 +320,33 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error('Error in Chat-with-Vic:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const taskId = searchParams.get('taskId');
+
+  if (!taskId || !POLLO_AI_API_KEY) {
+    return NextResponse.json({ error: 'Missing taskId or API Key' }, { status: 400 });
+  }
+
+  try {
+    const statusRes = await fetch(`https://pollo.ai/api/platform/task/${taskId}`, {
+      headers: {
+        'x-api-key': POLLO_AI_API_KEY!
+      }
+    });
+
+    if (!statusRes.ok) {
+      throw new Error(`Pollo Status API Error: ${statusRes.statusText}`);
+    }
+
+    const data = await statusRes.json();
+    return NextResponse.json(data);
+
+  } catch (error) {
+    console.error("Pollo Status Error:", error);
+    return NextResponse.json({ error: 'Failed to check status' }, { status: 500 });
   }
 }

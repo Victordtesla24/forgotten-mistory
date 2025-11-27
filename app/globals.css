@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-    --bg-color: #040406;
+    --bg-color: #0a0a0a;
     --text-color: #f4f4f4;
     --accent-color: #ff7350;
     --secondary-text: #8f93a3;
@@ -23,8 +23,13 @@ body.edit-mode-active * {
     cursor: auto;
 }
 
+html {
+    background-color: transparent;
+}
+
 body {
-    background-color: var(--bg-color);
+    background-color: #0a0a0a; /* Fallback */
+    background-color: transparent; /* Allow canvas to show through */
     color: var(--text-color);
     font-family: 'Source Sans Pro', sans-serif;
     overflow-x: hidden;
@@ -208,6 +213,8 @@ nav {
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 500;
+    position: relative;
+    z-index: 101;
 }
 
 .nav-overlay {
@@ -268,6 +275,7 @@ nav {
 section {
     padding: 10rem 0;
     position: relative;
+    background: transparent; /* Ensure sections are transparent */
 }
 
 /* Hero Section */
@@ -1221,32 +1229,50 @@ footer {
 
 .skill-card {
     position: relative;
-    background: radial-gradient(circle at 20% 20%, rgba(255, 115, 80, 0.08), rgba(255, 255, 255, 0.02));
-    border: 1px solid rgba(255,255,255,0.08);
+    background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 18px;
     overflow: hidden;
     box-shadow: 0 14px 45px rgba(0,0,0,0.35);
-    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
 }
 
 .skill-card::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(255,115,80,0.06), transparent 45%, rgba(255,255,255,0.04));
+    background: radial-gradient(circle at 50% 20%, rgba(0, 200, 255, 0.12), transparent 45%);
     opacity: 0;
     transition: opacity 0.4s ease;
     pointer-events: none;
 }
 
+.skill-card::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 22px;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 200, 255, 0.22), rgba(0, 200, 255, 0));
+    opacity: 0;
+    filter: blur(24px);
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
 .skill-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255,255,255,0.16);
-    box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+    transform: translateY(-3px);
+    border-color: rgba(0, 200, 255, 0.45);
+    box-shadow: 0 18px 60px rgba(0,0,0,0.55), 0 0 28px rgba(0,200,255,0.18);
+    background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015));
 }
 
 .skill-card:hover::before,
 .skill-card.open::before {
+    opacity: 1;
+}
+
+.skill-card:hover::after,
+.skill-card.open::after {
     opacity: 1;
 }
 
@@ -1454,7 +1480,9 @@ footer {
     color: #fff;
     line-height: 1.1;
     background: linear-gradient(to right, #fff, #ccc);
+    background-clip: text;
     -webkit-background-clip: text;
+    color: transparent;
     -webkit-text-fill-color: transparent;
 }
 
@@ -1594,8 +1622,9 @@ footer {
 
 /* --- Spotlight / Glow Effect --- */
 .meta-card, .skill-card, .project-card, .repo-card, .glass-card {
-    /* Ensure relative positioning for pseudo-element */
-    /* position: relative; is already set on most cards */
+    position: relative;
+    overflow: hidden;
+    isolation: isolate; /* keep glow inside card */
 }
 
 .meta-card::after, 
@@ -1856,76 +1885,254 @@ footer {
 
 /* 3. Interactive Architecture Diagram */
 .arch-wrapper {
+    --arch-accent: var(--accent-color);
     padding: 2rem;
-    background: rgba(10, 10, 12, 0.6);
-    border-radius: 20px;
+    border-radius: 28px;
+    background: transparent; /* Fully transparent as requested */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     border: 1px solid rgba(255, 255, 255, 0.08);
     display: grid;
-    grid-template-columns: 1.5fr 1fr;
+    grid-template-columns: minmax(0, 1.6fr) minmax(220px, 1fr);
     gap: 2rem;
     align-items: center;
+    box-shadow: none; /* Removed shadow to be cleaner */
+    position: relative;
+    overflow: hidden;
+}
+
+.arch-wrapper::after {
+    content: none;
 }
 
 .arch-diagram {
     width: 100%;
-    height: auto;
-    background: rgba(0, 0, 0, 0.2);
+    border-radius: 18px;
+    padding: 1.2rem;
+    background: transparent;
+    border: none;
+    position: relative;
+}
+
+.arch-diagram::before {
+    /* Removed grid background */
+    content: none;
+}
+
+.arch-diagram {
+    position: relative;
+    isolation: isolate;
+}
+
+.arch-diagram svg {
+    display: block;
+    position: relative;
+    z-index: 2;
+}
+
+.arch-diagram-halo {
+    position: absolute;
+    inset: -30%;
+    background: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.35), transparent 60%),
+        radial-gradient(circle at 80% 60%, color-mix(in srgb, var(--arch-accent) 50%, transparent 65%), transparent 80%);
+    filter: blur(24px);
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.arch-diagram-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.05) 0.5px, transparent 0.5px),
+        radial-gradient(circle at 20% 70%, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    opacity: 0.8;
+    transform: translateZ(0);
+}
+
+.arch-node-chips {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.35px;
+}
+
+.arch-node-chip {
+    position: absolute;
+    padding: 0.5rem 0.8rem;
     border-radius: 12px;
-    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(10, 10, 15, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+    min-width: 140px;
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 20;
+}
+
+.arch-node-chip:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    opacity: 0.8;
+}
+
+.arch-node-chip.active {
+    opacity: 1;
+    background: rgba(20, 20, 30, 0.85);
+    border-color: var(--arch-accent, var(--accent-color));
+    box-shadow: 
+        0 0 0 1px rgba(255,255,255,0.05),
+        0 10px 30px -10px rgba(0, 0, 0, 0.8),
+        0 0 20px -5px var(--arch-accent, var(--accent-color));
+    transform: translate(-50%, -50%) scale(1.05);
+    z-index: 25; /* Active higher */
+}
+
+.chip-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8f93a3;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.arch-node-chip.active .chip-icon {
+    background: var(--arch-accent, var(--accent-color));
+    color: #000;
+    box-shadow: 0 0 15px var(--arch-accent, var(--accent-color));
+}
+
+.chip-content {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.chip-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.3px;
+}
+
+.chip-desc {
+    font-size: 0.65rem;
+    color: #8f93a3;
+    font-family: 'Source Code Pro', monospace;
+}
+
+/* Positioning based on SVG coordinates (approx percentages) */
+.edge-chip { left: 13.3%; top: 50%; }
+.api-chip { left: 38.3%; top: 50%; }
+.vector-chip { left: 64.2%; top: 28.5%; }
+.llm-chip { left: 87.5%; top: 28.5%; }
+.telemetry-chip { left: 64.2%; top: 80%; }
+.governance-chip { left: 87.5%; top: 80%; }
+
+/* Mobile Adjustments for Diagram */
+@media (max-width: 768px) {
+    .arch-diagram {
+        height: 400px; /* taller for vertical stacking if needed, or keep landscape with scroll */
+        /* simple scale down */
+    }
+    .arch-node-chip {
+        padding: 0.4rem;
+        min-width: auto;
+        gap: 0.4rem;
+    }
+    .chip-icon { width: 1.6rem; height: 1.6rem; font-size: 0.8rem; }
+    .chip-title { font-size: 0.75rem; }
+    .chip-desc { display: none; } /* hide desc on tiny screens */
 }
 
 .arch-svg {
     width: 100%;
-    height: auto;
+    height: 100%;
     overflow: visible;
+    position: relative;
+    z-index: 3;
 }
 
-.arch-svg rect {
-    fill: rgba(255, 255, 255, 0.05);
-    stroke: rgba(255, 255, 255, 0.2);
-    stroke-width: 0.5;
-    transition: all 0.3s ease;
-}
-
-.arch-svg text {
-    fill: #aaa;
-    font-family: 'Source Code Pro', monospace;
-    font-size: 4px;
-    pointer-events: none;
-    transition: fill 0.3s ease;
-}
-
-.arch-svg .arch-sub {
-    font-size: 3px;
-    fill: #666;
-}
-
-.arch-svg line {
+/* Connections */
+.arch-connection {
     stroke: rgba(255, 255, 255, 0.1);
     stroke-width: 0.5;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+    fill: none;
 }
 
-/* Active States */
-.arch-svg g.active rect {
-    stroke: var(--accent-color);
-    fill: rgba(255, 115, 80, 0.1);
-    filter: drop-shadow(0 0 5px rgba(255, 115, 80, 0.3));
+.arch-connection.active {
+    stroke: var(--arch-accent, var(--accent-color));
+    stroke-width: 1;
+    stroke-dasharray: 4;
+    animation: flowDash 1s linear infinite;
+    filter: drop-shadow(0 0 6px var(--arch-accent, var(--accent-color)));
 }
 
-.arch-svg g.active text {
-    fill: #fff;
+@keyframes flowDash {
+    to { stroke-dashoffset: -8; }
 }
 
-.arch-svg line.active {
-    stroke: var(--accent-color);
-    stroke-width: 0.8;
-    stroke-dasharray: 2;
-    animation: flowLine 1s linear infinite;
+.arch-svg .flow-dot {
+    fill: var(--arch-accent, var(--accent-color));
+    opacity: 0;
+    filter: drop-shadow(0 0 6px rgba(255, 115, 80, 0.65));
+    transition: opacity 0.25s ease;
 }
 
-@keyframes flowLine {
-    to { stroke-dashoffset: -4; }
+.arch-svg .flow-dot.active {
+    opacity: 1;
+}
+
+.arch-metrics {
+    display: grid;
+    gap: 0.8rem;
+}
+
+.arch-metric {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+}
+
+.arch-metric-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: #8f93a3;
+    margin-bottom: 0.35rem;
+}
+
+.arch-metric-value {
+    font-size: 1.55rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.2rem;
+}
+
+.arch-metric-subtext {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .arch-sidebar {
@@ -1959,10 +2166,10 @@ footer {
 }
 
 .arch-btn.active {
-    background: rgba(255, 115, 80, 0.1);
-    border-color: var(--accent-color);
-    color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(255, 115, 80, 0.1);
+    background: color-mix(in srgb, var(--arch-accent, var(--accent-color)) 18%, rgba(255, 255, 255, 0.05));
+    border-color: var(--arch-accent, var(--accent-color));
+    color: var(--arch-accent, var(--accent-color));
+    box-shadow: 0 0 15px var(--arch-accent, var(--accent-color)), 0 10px 25px rgba(0, 0, 0, 0.35);
 }
 
 .arch-explainer {
@@ -1971,11 +2178,132 @@ footer {
     line-height: 1.6;
     padding-top: 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.arch-explainer-title {
+    font-size: 1.25rem;
+    color: #fff;
+    font-family: 'Source Sans Pro', sans-serif;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.arch-explainer-body {
+    margin: 0;
+    color: #b5b8cf;
+}
+
+.arch-legend {
+    margin: 1.5rem 0;
+    padding: 1rem 1.1rem 0.9rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.04);
+}
+
+.arch-legend-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #cfd1e5;
+    margin-bottom: 0.25rem;
+}
+
+.arch-legend-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 0.9rem;
+    color: rgba(207, 209, 229, 0.8);
+}
+
+.arch-legend-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+}
+
+.arch-legend-item {
+    display: flex;
+    gap: 0.65rem;
+    align-items: center;
+    padding: 0.45rem 0.35rem;
+    border-radius: 10px;
+    transition: background 0.3s, transform 0.3s, color 0.3s;
+    border: 1px solid transparent;
+}
+
+.arch-legend-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    display: inline-flex;
+}
+
+.arch-legend-name {
+    font-size: 0.85rem;
+    margin: 0;
+    color: #fff;
+}
+
+.arch-legend-desc {
+    font-size: 0.75rem;
+    margin: 0;
+    color: rgba(207, 209, 229, 0.65);
+}
+
+.arch-legend-item.active {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.arch-legend-item.active .arch-legend-dot {
+    background: var(--arch-accent, var(--accent-color));
+}
+
+.arch-explainer-callout {
+    margin-top: 1rem;
+    padding: 0.6rem 0.8rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.02);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+}
+
+.arch-explainer-badge {
+    font-size: 0.7rem;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.arch-explainer-note {
+    color: rgba(207, 209, 229, 0.85);
+    margin: 0;
 }
 
 @media (max-width: 768px) {
     .arch-wrapper {
         grid-template-columns: 1fr;
+    }
+
+    .arch-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .arch-metric {
+        padding: 0.7rem 0.9rem;
     }
 }
 
@@ -2379,9 +2707,27 @@ footer {
 
 @media (max-width: 480px) {
     .mini-vic-window {
-        width: calc(100vw - 40px);
-        right: 20px;
+    width: calc(100vw - 40px);
+    right: 20px;
     }
+}
+
+.avatar-mouth {
+    position: absolute;
+    left: 50%;
+    bottom: 12%;
+    width: 64%;
+    height: 18%;
+    transform: translateX(-50%) scaleY(0.4);
+    transform-origin: center;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 60%, rgba(255, 255, 255, 0.5), rgba(0, 200, 255, 0.15));
+    mix-blend-mode: screen;
+    filter: blur(6px) saturate(1.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 5;
 }
 
 /* 6. Video/GIF Hover (Project Preview) */

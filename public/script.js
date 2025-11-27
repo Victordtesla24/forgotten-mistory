@@ -82,12 +82,37 @@ function startLoader() {
     }
     
     updateCounter();
+    
+    // Force loader to finish if it takes too long (failsafe for slow networks/tests)
+    setTimeout(() => {
+        const p = document.querySelector(".preloader");
+        if (p) {
+            try {
+                // Try standard exit
+                if (typeof runIntroSequence === 'function') {
+                    runIntroSequence();
+                }
+            } catch(e) { console.warn(e); }
+
+            // Hard remove fallback
+            setTimeout(() => {
+                if (p && getComputedStyle(p).display !== 'none') {
+                    p.style.display = 'none';
+                    p.remove();
+                }
+            }, 500);
+        }
+    }, 2500);
 }
 
 startLoader();
 
 // GSAP Animations
-gsap.registerPlugin(ScrollTrigger);
+try {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+    }
+} catch (e) { console.warn('GSAP/ScrollTrigger missing', e); }
 
 // --- Scramble Text Effect Class ---
 class TextScramble {
@@ -181,7 +206,13 @@ function runIntroSequence() {
             const finalName = heroNameEl.innerText;
             scrambler.setText(finalName);
         }
-    }, 800);
+        
+        // Failsafe: ensure preloader is hidden if GSAP fails silently or is slow
+        const preloader = document.querySelector(".preloader");
+        if (preloader && getComputedStyle(preloader).display !== "none") {
+             preloader.style.display = "none";
+        }
+    }, 2000); // Increased failsafe time slightly to cover animation
 
     tl.to(".hero-subtitle", {
         opacity: 1,
@@ -780,34 +811,199 @@ function initArchitectureLab() {
     const lines = document.querySelectorAll('.arch-svg [data-line]');
     const nodes = document.querySelectorAll('.arch-svg [data-node]');
     const explainer = document.getElementById('arch-explainer');
+    const svgRoot = document.querySelector('.arch-svg');
+    const metricCards = document.querySelectorAll('.arch-metric');
+    const explainerTitle = explainer?.querySelector('[data-arch-headline]');
+    const explainerBody = explainer?.querySelector('[data-arch-description]');
+    const explainerBadge = explainer?.querySelector('[data-arch-badge]');
+    const explainerNote = explainer?.querySelector('[data-arch-note]');
+    const archWrapper = document.querySelector('.arch-wrapper');
+    const archLegend = document.querySelector('.arch-legend');
+    const legendTitle = archLegend?.querySelector('.arch-legend-title');
+    const legendSubtitle = archLegend?.querySelector('.arch-legend-subtitle');
+    const legendItems = archLegend ? archLegend.querySelectorAll('[data-legend-node]') : [];
+    const nodeChips = document.querySelectorAll('[data-arch-chip]');
     if (!buttons.length || !lines.length || !nodes.length || !explainer) return;
 
     const flows = {
         chat: {
             lines: ['edge-api', 'api-vector', 'vector-llm', 'llm-api'],
             nodes: ['edge', 'api', 'vector', 'llm'],
-            copy: 'LLM chat: Edge client hits API gateway, enriches with vector search, Gemini responds, and results return to client.'
+            headline: 'LLM Chat Path',
+            badge: 'Live LLM chat',
+            note: 'Edge → API → Vector → Gemini → Telemetry → Governance',
+            accent: '#ff7350',
+            copy: 'LLM chat: Edge client hits API gateway, enriches with vector search, Gemini responds, and the experience returns to the user in milliseconds.',
+            metrics: {
+                latency: '160 ms P95',
+                throughput: '12k req/s',
+                vectorHits: '3 shards'
+            }
         },
         telemetry: {
             lines: ['edge-api', 'api-telemetry', 'telemetry-governance'],
             nodes: ['edge', 'api', 'telemetry', 'governance'],
-            copy: 'Telemetry stream: devices send metrics, API ships them to the telemetry bus, and governance runs anomaly checks.'
+            headline: 'Telemetry Stream',
+            badge: 'Telemetry stream',
+            note: 'Edge → API → Telemetry → Governance loop',
+            accent: '#00f2fe',
+            copy: 'Telemetry stream: Dev kits emit thousands of metrics, API forwards them to the telemetry bus, and governance monitors for drift.',
+            metrics: {
+                latency: '210 ms P95',
+                throughput: '22k events/s',
+                vectorHits: 'Observability lens'
+            }
         },
         governance: {
             lines: ['edge-api', 'api-vector', 'vector-llm', 'llm-api', 'api-telemetry', 'telemetry-governance', 'governance-edge'],
             nodes: ['edge', 'api', 'vector', 'llm', 'telemetry', 'governance'],
-            copy: 'Governance loop: combines LLM responses, vector evidence, telemetry traces, and pushes decisions back to the edge with risk flags.'
+            headline: 'Governance & Quality',
+            badge: 'Governance watch',
+            note: 'Edge → API → Vector → Gemini → Telemetry → Governance → Edge',
+            accent: '#c65cff',
+            copy: 'Governance loop: LLM responses mix vector evidence and telemetry traces, then risk flags are returned to the edge.',
+            metrics: {
+                latency: '320 ms P95',
+                throughput: '6.5k decisions/hr',
+                vectorHits: '4 shards'
+            }
         }
+    };
+
+    const packetMap = new Map();
+
+    const stopPacket = (lineId) => {
+        const packet = packetMap.get(lineId);
+        if (!packet) return;
+        cancelAnimationFrame(packet.raf);
+        packet.dot.remove();
+        packetMap.delete(lineId);
+    };
+
+    const startPacket = (line) => {
+        if (!line || packetMap.has(line.dataset.line)) return;
+        if (!svgRoot) return;
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('r', '2');
+        dot.classList.add('flow-dot', 'active');
+        svgRoot.appendChild(dot);
+
+        // Support for PATH (curves) and LINE (straight)
+        const isPath = line.tagName.toLowerCase() === 'path';
+        let length = 0;
+        let x1, y1, x2, y2;
+
+        if (isPath) {
+            length = line.getTotalLength();
+        } else {
+            x1 = parseFloat(line.getAttribute('x1'));
+            y1 = parseFloat(line.getAttribute('y1'));
+            x2 = parseFloat(line.getAttribute('x2'));
+            y2 = parseFloat(line.getAttribute('y2'));
+        }
+
+        const duration = 1400 + Math.random() * 700;
+
+        const entry = { dot, raf: null, start: null };
+        const animate = (ts) => {
+            if (entry.start === null) entry.start = ts;
+            const progress = ((ts - entry.start) % duration) / duration;
+            
+            // Simple ease
+            const eased = 0.5 - Math.cos(progress * Math.PI * 2) / 2; 
+            
+            if (isPath) {
+                const point = line.getPointAtLength(progress * length); // Linear along path looks better for data flow
+                dot.setAttribute('cx', point.x.toFixed(2));
+                dot.setAttribute('cy', point.y.toFixed(2));
+            } else {
+                const cx = x1 + (x2 - x1) * eased;
+                const cy = y1 + (y2 - y1) * eased;
+                dot.setAttribute('cx', cx.toFixed(2));
+                dot.setAttribute('cy', cy.toFixed(2));
+            }
+            entry.raf = requestAnimationFrame(animate);
+        };
+        entry.raf = requestAnimationFrame(animate);
+        packetMap.set(line.dataset.line, entry);
+    };
+
+    const refreshPackets = (activeLines) => {
+        packetMap.forEach((_, id) => {
+            if (!activeLines.includes(id)) stopPacket(id);
+        });
+        activeLines.forEach(lineId => {
+            const line = svgRoot?.querySelector(`[data-line="${lineId}"]`);
+            startPacket(line);
+        });
+    };
+
+    const updateMetrics = (metrics = {}) => {
+        metricCards.forEach((card) => {
+            const key = card.dataset.key;
+            if (!key) return;
+            const valueEl = card.querySelector('[data-metric-value]');
+            if (!valueEl) return;
+            const nextValue = metrics[key];
+            if (nextValue) {
+                valueEl.textContent = nextValue;
+            }
+        });
     };
 
     const setFlow = (key) => {
         const flow = flows[key];
         if (!flow) return;
+        if (archWrapper) {
+            archWrapper.dataset.flow = key;
+            archWrapper.style.setProperty('--arch-accent', flow.accent || '#ff7350');
+        }
         buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.flow === key));
         lines.forEach(line => line.classList.toggle('active', flow.lines.includes(line.dataset.line)));
         nodes.forEach(node => node.classList.toggle('active', flow.nodes.includes(node.dataset.node)));
-        explainer.textContent = flow.copy;
+        if (explainerTitle) explainerTitle.textContent = flow.headline || 'Architecture path';
+        if (explainerBody) explainerBody.textContent = flow.copy;
+        if (explainerBadge) {
+            explainerBadge.textContent = flow.badge || 'Live feed';
+            if (flow.accent) {
+                explainerBadge.style.setProperty('background-color', flow.accent);
+                explainerBadge.style.setProperty('box-shadow', `0 8px 20px ${flow.accent}40`);
+            }
+        }
+        if (explainerNote) explainerNote.textContent = flow.note || '';
+        if (legendTitle) legendTitle.textContent = `Path components · ${flow.headline}`;
+        if (legendSubtitle) legendSubtitle.textContent = flow.badge || 'Live feed';
+        legendItems.forEach(item => {
+            const nodeName = item.dataset.legendNode;
+            item.classList.toggle('active', flow.nodes.includes(nodeName));
+        });
+        nodeChips.forEach(chip => {
+            const nodeName = chip.dataset.archChip;
+            chip.classList.toggle('active', flow.nodes.includes(nodeName));
+        });
+        updateMetrics(flow.metrics);
+        refreshPackets(flow.lines);
     };
+
+    // Event Delegation for Architecture Chips (handles React re-renders)
+    const wrapper = document.querySelector('.arch-wrapper');
+    if (wrapper) {
+        wrapper.addEventListener('click', (e) => {
+            const chip = e.target.closest('.arch-node-chip');
+            if (chip) {
+                const nodeKey = chip.getAttribute('data-arch-chip');
+                for (const [flowKey, flowData] of Object.entries(flows)) {
+                    if (flowData.nodes.includes(nodeKey)) {
+                        setFlow(flowKey);
+                        break;
+                    }
+                }
+            }
+        });
+        // Ensure cursor pointers on chips if CSS misses it
+        const chips = wrapper.querySelectorAll('.arch-node-chip');
+        chips.forEach(c => c.style.cursor = 'pointer');
+    }
 
     buttons.forEach(btn => btn.addEventListener('click', () => setFlow(btn.dataset.flow)));
     setFlow('chat');
@@ -1167,4 +1363,14 @@ document.addEventListener('DOMContentLoaded', () => {
     initProjectPreviews();
     initTerminalOverlay();
     initMiniVicWidget();
+
+    // Safety fallback: Force remove preloader if it hangs
+    setTimeout(() => {
+        const preloader = document.querySelector(".preloader");
+        if (preloader) {
+            preloader.style.display = "none";
+            preloader.style.pointerEvents = "none";
+            document.body.style.overflow = "auto"; // Ensure scrolling is enabled
+        }
+    }, 4000);
 });

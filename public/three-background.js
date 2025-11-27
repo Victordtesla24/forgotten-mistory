@@ -1,4 +1,4 @@
-import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+import * as THREE from '/vendor/three.module.js';
 
 const canvas = document.querySelector('#webgl');
 const scene = new THREE.Scene();
@@ -309,8 +309,20 @@ function animate() {
     scene.rotation.y += 0.05 * (targetRotationY - scene.rotation.y);
     scene.rotation.x += 0.05 * (targetRotationX - scene.rotation.x);
 
-    // Scroll parallax
-    camera.position.y = -scrollY * 0.008; 
+    // Infinite Scroll Parallax
+    const scrollSpeed = 0.002;
+    const fullHeight = 40; // Range of particle spread
+    
+    // Move group with scroll
+    const yOffset = (scrollY * scrollSpeed) % fullHeight;
+    
+    particlesMesh.position.y = yOffset;
+    linesMesh.position.y = yOffset;
+    packetMesh.position.y = yOffset;
+    
+    // If particles go too high, we could wrap them, but simple movement feels good enough
+    // Or just move camera slightly
+    camera.position.y = -scrollY * 0.005; 
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);

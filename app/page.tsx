@@ -1,25 +1,25 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Script from 'next/script';
 
 export default function Home() {
   return (
     <>
-      {/* Three.js Background */}
       <canvas id="webgl" className="fixed top-0 left-0 w-full h-full -z-10"></canvas>
 
-      {/* Admin Controls */}
       <div className="admin-controls fixed top-5 right-5 z-[10001]">
         <button id="toggle-edit-mode" className="btn-secondary">
           <i className="fas fa-pen"></i> Edit Mode
         </button>
-        <button id="reset-content" className="btn-secondary hidden mt-2.5 bg-red-500/20 border-red-500/40">
+        <button
+          id="reset-content"
+          className="btn-secondary hidden mt-2.5 bg-red-500/20 border-red-500/40"
+        >
           <i className="fas fa-undo"></i> Reset
         </button>
       </div>
 
-      {/* Preloader */}
       <div className="preloader" role="status" aria-live="polite">
         <div className="preloader-inner">
           <div className="loader-ring"></div>
@@ -28,54 +28,97 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Cursor */}
       <div className="cursor-dot" data-cursor-dot></div>
       <div className="cursor-outline" data-cursor-outline></div>
 
-      {/* Navigation */}
       <nav>
-        <div className="logo editable" data-key="logo">VIKRAM.</div>
+        <div className="logo editable" data-key="logo">
+          VIKRAM.
+        </div>
         <div className="menu-toggle">Menu</div>
         <div className="nav-overlay">
           <ul className="nav-links">
-            <li><a href="#hero" className="nav-link">Home</a></li>
-            <li><a href="#about" className="nav-link">About</a></li>
-            <li><a href="#experience" className="nav-link">Experience</a></li>
-            <li><a href="#skills" className="nav-link">Skills</a></li>
-            <li><a href="#architecture-lab" className="nav-link">Architecture</a></li>
-            <li><a href="#work" className="nav-link">Work</a></li>
-            <li><a href="docs/Vik_Resume_Final.pdf" className="nav-link" target="_blank">Resume</a></li>
-            <li><a href="#contact" className="nav-link">Contact</a></li>
+            <li>
+              <a href="#hero" className="nav-link">
+                Home
+              </a>
+            </li>
+            <li>
+              <a href="#about" className="nav-link">
+                About
+              </a>
+            </li>
+            <li>
+              <a href="#experience" className="nav-link">
+                Experience
+              </a>
+            </li>
+            <li>
+              <a href="#skills" className="nav-link">
+                Skills
+              </a>
+            </li>
+            <li>
+              <a href="#architecture-lab" className="nav-link">
+                Architecture
+              </a>
+            </li>
+            <li>
+              <a href="#work" className="nav-link">
+                Work
+              </a>
+            </li>
+            <li>
+              <a href="docs/Vik_Resume_Final.pdf" className="nav-link" target="_blank" rel="noreferrer">
+                Resume
+              </a>
+            </li>
+            <li>
+              <a href="#contact" className="nav-link">
+                Contact
+              </a>
+            </li>
           </ul>
         </div>
       </nav>
 
       <main>
-        {/* Hero Section */}
         <section id="hero" className="hero-section" data-scroll-section>
           <div className="hero-content">
             <h1 className="hero-title">
               <span className="line">Hello, I'm</span>
-              <span className="line reveal-text editable" data-key="hero-name">Vikram Deshpande</span>
+              <span className="line reveal-text editable" data-key="hero-name">
+                Vikram .
+              </span>
             </h1>
-            <div className="domain-chip">
-              <span className="pill live">vikram.io</span>
-              <span className="chip-text">Custom domain live. Goodbye forgotten-mistory.web.app</span>
-            </div>
             <p className="hero-subtitle reveal-text-delay editable" data-key="hero-subtitle">
-              I work as a Senior Technical Manager & AI Solution Architect here in Melbourne.<br/>
-              I am really passionate about solving complex problems and leading teams through challenging projects.<br/><br/>
-              Whether it's discussing the latest in Technology, debating philosophical ideas, or planning my next travel adventure, I love diving deep into topics that spark my genuine whimsy.<br/><br/>
-              My approach towards life is very simple; I do what brings happiness & value, while making sure I do not cause hard to anyone or anything along the way...
+              I work as a Senior Technical Program Manager & AI Solution Architect here in Melbourne.
+              <br />
+              I am really passionate about solving complex problems and leading teams through challenging
+              projects.
+              <br />
+              <br />
+              Whether it is discussing the latest in Technology, debating philosophical ideas, or planning my
+              next travel adventure, I love diving deep into topics that spark my genuine whimsy.
+              <br />
+              <br />
+              My approach towards life is very simple; I do what brings happiness & value, while making sure I
+              do not cause hard to anyone or anything along the way...
             </p>
             <div className="hero-links reveal-text-delay">
-              <a href="https://github.com/Victordtesla24" target="_blank" className="btn-link">GitHub</a>
-              <a href="https://youtube.com/@vicd0ct" target="_blank" className="btn-link">YouTube</a>
-              <a href="docs/Vik_Resume_Final.pdf" className="btn-link">Resume PDF</a>
-              <a href="#contact" className="btn-primary">Let's Talk</a>
+              <a href="https://github.com/Victordtesla24" target="_blank" rel="noreferrer" className="btn-link">
+                GitHub
+              </a>
+              <a href="https://youtube.com/@vicd0ct" target="_blank" rel="noreferrer" className="btn-link">
+                YouTube
+              </a>
+              <a href="docs/Vik_Resume_Final.pdf" className="btn-link" target="_blank" rel="noreferrer">
+                Resume PDF
+              </a>
+              <a href="#contact" className="btn-primary">
+                Let&apos;s Talk
+              </a>
             </div>
-            
-            {/* Telemetry Panel */}
             <div className="telemetry-panel glass-card" id="telemetry-panel">
               <div className="telemetry-header">
                 <div>
@@ -84,13 +127,17 @@ export default function Home() {
                 </div>
                 <div className="telemetry-badges">
                   <span className="pill soft">Simulated</span>
-                  <span className="pill accent">P95 <span data-latency>180 ms</span></span>
+                  <span className="pill accent">
+                    P95 <span data-latency>180 ms</span>
+                  </span>
                 </div>
               </div>
               <div className="telemetry-grid">
                 <div className="telemetry-card">
                   <div className="telemetry-label">Edge latency (ANZ)</div>
-                  <div className="telemetry-value" data-latency-number>0.180 s</div>
+                  <div className="telemetry-value" data-latency-number>
+                    0.180 s
+                  </div>
                   <svg className="telemetry-spark" viewBox="0 0 160 40" preserveAspectRatio="none">
                     <path data-latency-spark d="M0 30 L20 25 L40 28 L60 20 L80 24 L100 18 L120 22 L140 16 L160 20" />
                   </svg>
@@ -101,7 +148,7 @@ export default function Home() {
                   <ul className="telemetry-list" id="telemetry-locations">
                     <li>Melbourne · Edge POP</li>
                     <li>Sydney · API Gateway</li>
-                    <li>Singapore · Vector cache</li>
+                    <li>Adelaide · Vector cache</li>
                   </ul>
                   <p className="telemetry-note">Geo feed rotates every few seconds.</p>
                 </div>
@@ -109,11 +156,15 @@ export default function Home() {
                   <div className="telemetry-dual-row">
                     <div>
                       <div className="telemetry-label">Server load</div>
-                      <div className="telemetry-value" data-load>32%</div>
+                      <div className="telemetry-value" data-load>
+                        32%
+                      </div>
                     </div>
                     <div>
                       <div className="telemetry-label">Coffee consumed</div>
-                      <div className="telemetry-value" data-coffee>1.0 cups</div>
+                      <div className="telemetry-value" data-coffee>
+                        1.0 cups
+                      </div>
                     </div>
                   </div>
                   <div className="telemetry-meter">
@@ -125,9 +176,10 @@ export default function Home() {
             </div>
 
             <div className="hero-meta">
-              {/* Meta Cards */}
               <div className="meta-card glass-card">
-                <div className="meta-icon"><i className="fas fa-cloud-upload-alt"></i></div>
+                <div className="meta-icon">
+                  <i className="fas fa-cloud-upload-alt"></i>
+                </div>
                 <div className="meta-content">
                   <span className="meta-label">Cloud Modernisation</span>
                   <div className="meta-stats">
@@ -137,123 +189,1110 @@ export default function Home() {
                   <span className="meta-note">Faster ROI & leaner infra spend on regulated programs.</span>
                 </div>
               </div>
-              {/* Add other meta cards similarly if needed, skipping for brevity to focus on core structure */}
+              <div className="meta-card glass-card">
+                <div className="meta-icon">
+                  <i className="fas fa-tachometer-alt"></i>
+                </div>
+                <div className="meta-content">
+                  <span className="meta-label">Realtime Reliability</span>
+                  <div className="meta-stats">
+                    <span className="meta-value">10k+</span>
+                    <span className="meta-subvalue">Devices</span>
+                  </div>
+                  <span className="meta-note">Resilient CX & telemetry with P95 &lt;200ms latency.</span>
+                </div>
+              </div>
+              <div className="meta-card glass-card">
+                <div className="meta-icon">
+                  <i className="fas fa-shield-alt"></i>
+                </div>
+                <div className="meta-content">
+                  <span className="meta-label">AI Quality & Risk</span>
+                  <div className="meta-stats">
+                    <span className="meta-value">-38%</span>
+                    <span className="meta-subvalue">Breaches</span>
+                  </div>
+                  <span className="meta-note">Safer AI rollouts; 100% tested key server for signing.</span>
+                </div>
+              </div>
+              <div className="meta-card glass-card">
+                <div className="meta-icon">
+                  <i className="fas fa-users"></i>
+                </div>
+                <div className="meta-content">
+                  <span className="meta-label">Leadership Scale</span>
+                  <div className="meta-stats">
+                    <span className="meta-value">40+</span>
+                    <span className="meta-subvalue">Resources</span>
+                  </div>
+                  <span className="meta-note">Leading 5+ cross-functional squads onsite & offshore.</span>
+                </div>
+              </div>
+              <div className="meta-card glass-card">
+                <div className="meta-icon">
+                  <i className="fas fa-compass"></i>
+                </div>
+                <div className="meta-content">
+                  <span className="meta-label">Strategic Alignment</span>
+                  <div className="meta-stats">
+                    <span className="meta-value">&gt;55%</span>
+                    <span className="meta-subvalue">Clarity</span>
+                  </div>
+                  <span className="meta-note">Bridging engineering depth with executive strategy.</span>
+                </div>
+              </div>
+              <div className="meta-card glass-card">
+                <div className="meta-icon">
+                  <i className="fas fa-chart-line"></i>
+                </div>
+                <div className="meta-content">
+                  <span className="meta-label">Portfolio Value</span>
+                  <div className="meta-stats">
+                    <span className="meta-value">$5M+</span>
+                    <span className="meta-subvalue">Budget</span>
+                  </div>
+                  <span className="meta-note">Stewardship of multi-million programs with compliance.</span>
+                </div>
+              </div>
             </div>
           </div>
-          
+
           <div className="hero-image-container parallax" data-speed="0.1">
             <div className="avatar-placeholder" id="avatar-container">
               <div className="avatar-circle">
-                <img src="assets/my_avatar.png" alt="Vikram Deshpande headshot" className="avatar-img" id="profile-image" />
+                <img
+                  src="assets/my_avatar.png"
+                  alt="Vikram Deshpande headshot"
+                  className="avatar-img"
+                  id="profile-image"
+                />
               </div>
               <input type="file" id="image-upload" accept="image/*" style={{ display: 'none' }} />
-              <button id="upload-btn" className="btn-icon"><i className="fas fa-camera"></i></button>
+              <button id="upload-btn" className="btn-icon">
+                <i className="fas fa-camera"></i>
+              </button>
             </div>
           </div>
         </section>
 
-        {/* About Section */}
         <section id="about" className="about-section" data-scroll-section>
           <div className="container">
             <div className="section-header">
-              <h2 className="section-title editable" data-key="about-title">About Me</h2>
+              <h2 className="section-title editable" data-key="about-title">
+                About Me
+              </h2>
             </div>
             <div className="about-content">
               <p className="about-text editable" data-key="about-text-1">
-                15+ year Senior Technical Delivery Leader & AI/ML Solutions Architect (CSM) across Financial Services and Telecommunications...
+                15+ year Senior Technical Delivery Leader &amp; AI/ML Solutions Architect (CSM) across Financial
+                Services and Telecommunications, known for bridging engineering depth with executive strategy. I
+                lead cloud-native modernisations that cut delivery time by 30%+, reduce infrastructure cost by
+                15%, and land mission-critical programs on multi-million-dollar budgets with full architectural
+                compliance.
               </p>
-              {/* Additional about content */}
+              <p className="about-text editable" data-key="about-text-2">
+                I direct 5+ cross-functional squads (up to 40 resources) through AI/ML solutions, real-time
+                WebSocket telemetry at 10k+ device concurrency with P95 latency under 200 ms, and portfolio
+                governance for $5M+. Core toolkit: Python, TypeScript/React/Next.js, Kubernetes, Docker,
+                Terraform, CI/CD, GCP/AWS/Azure, Postgres/Supabase, and LangChain/Langfuse for measurable AI
+                outcomes.
+              </p>
+
+              <div className="snap-grid" role="list">
+                <div className="snap-card" data-snap role="listitem">
+                  <button className="snap-header" aria-expanded="false">
+                    <div>
+                      <p className="snap-kicker">What I aim to deliver</p>
+                      <h3 className="snap-title">Career Objective</h3>
+                      <p className="snap-summary">
+                        Bridge technical depth with executive strategy so AI/ML pilots land in production with
+                        business value.
+                      </p>
+                    </div>
+                    <span className="snap-icon">+</span>
+                  </button>
+                  <div className="snap-body">
+                    <ul>
+                      <li>Translate strategy into roadmaps that cut delivery time by &gt;30% and de-risk cloud modernisations.</li>
+                      <li>Align AI/ML delivery with compliance and risk models from day one.</li>
+                      <li>Use telemetry and narrative dashboards to keep decisions transparent for leaders and squads.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="snap-card" data-snap role="listitem">
+                  <button className="snap-header" aria-expanded="false">
+                    <div>
+                      <p className="snap-kicker">Measurable outcomes</p>
+                      <h3 className="snap-title">Delivery Impact</h3>
+                      <p className="snap-summary">Programs built around latency, resilience, and cost controls.</p>
+                    </div>
+                    <span className="snap-icon">+</span>
+                  </button>
+                  <div className="snap-body">
+                    <ul>
+                      <li>P95 &lt; 200 ms realtime WebSocket telemetry across 10k+ device concurrency (ANZ).</li>
+                      <li>Core banking transformation (.NET/Azure) trimmed delivery time by &gt;30% and infra cost by &gt;15%.</li>
+                      <li>$5M+ portfolio oversight with 100% compliance to enterprise standards and risk models.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="snap-card" data-snap role="listitem">
+                  <button className="snap-header" aria-expanded="false">
+                    <div>
+                      <p className="snap-kicker">How teams experience it</p>
+                      <h3 className="snap-title">Leadership &amp; Governance</h3>
+                      <p className="snap-summary">Servant leadership with clear guardrails and steady cadence.</p>
+                    </div>
+                    <span className="snap-icon">+</span>
+                  </button>
+                  <div className="snap-body">
+                    <ul>
+                      <li>Lead 5+ squads (up to 40 resources including offshore) through Agile/Scrum/SAFe rituals.</li>
+                      <li>Exec workshops for 40+ leaders improved decision clarity by ~55%.</li>
+                      <li>Certified Scrum Master; governance first to keep risk, budget, and delivery aligned.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="snap-card" data-snap role="listitem">
+                  <button className="snap-header" aria-expanded="false">
+                    <div>
+                      <p className="snap-kicker">Live proof points</p>
+                      <h3 className="snap-title">Recent Builds</h3>
+                      <p className="snap-summary">Hands-on shipping to validate decisions with working software.</p>
+                    </div>
+                    <span className="snap-icon">+</span>
+                  </button>
+                  <div className="snap-body">
+                    <ul>
+                      <li>Next.js + Supabase JIRA analytics dashboard surfacing sprint velocity and LLM retro insights.</li>
+                      <li>Node.js/Express public-key server with full Mocha/Chai coverage for API signing.</li>
+                      <li>React/TypeScript + D3 relationship timeline visualiser for customer journeys.</li>
+                      <li>Langfuse + Phoenix evaluation stack reducing simulated LLM error-budget breaches by 38%.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Work Section */}
-        <section id="work" className="work-section" data-scroll-section>
-            <div className="container">
-                <div className="section-header">
-                    <h2 className="section-title editable" data-key="work-title">Current Projects in the Pipeline</h2>
-                </div>
-                
-                <div className="carousel-wrapper">
-                    <div className="projects-carousel" id="projects-carousel">
-                        {/* Projects will be hydrated or placed here */}
-                        <a href="https://github.com/Victordtesla24/EFDDH-Jira-Analytics-Dashboard" target="_blank" className="project-card" data-preview="chart" data-preview-label="Velocity charts">
-                            <div className="project-image">
-                                <div className="viz-dashboard">
-                                    <div className="dash-header"></div>
-                                    <div className="dash-row">
-                                        <div className="dash-card c-1"></div>
-                                        <div className="dash-card c-2"></div>
-                                    </div>
-                                    <div className="dash-row row-2">
-                                        <div className="dash-bar b-1"></div>
-                                        <div className="dash-bar b-3"></div>
-                                        <div className="dash-bar b-2"></div>
-                                        <div className="dash-bar b-4"></div>
-                                    </div>
-                                </div>
-                                <div className="card-badge">Python / AI</div>
-                            </div>
-                            <div className="project-info">
-                                <h3>EFDDH Jira Analytics</h3>
-                                <p>Python dashboard surfacing sprint velocity + LLM retros using LangChain. Exec-ready insights.</p>
-                            </div>
-                        </a>
-                        {/* More projects... */}
-                    </div>
-                </div>
+        <section id="experience" className="experience-section" data-scroll-section>
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title editable" data-key="experience-title">
+                Experience
+              </h2>
             </div>
+            <div className="accordion-group">
+              <div className="accordion-item">
+                <div className="accordion-header">
+                  <div className="accordion-title">
+                    <span className="role editable" data-key="exp-1-role">
+                      Senior Delivery Lead / Technical Product Owner
+                    </span>
+                    <span className="company editable" data-key="exp-1-company">
+                      ANZ — Melbourne, VIC
+                    </span>
+                  </div>
+                  <div className="accordion-meta">
+                    <span className="date editable" data-key="exp-1-date">
+                      Sept 2017 - Jun 2025
+                    </span>
+                    <span className="icon">+</span>
+                  </div>
+                </div>
+                <div className="accordion-content">
+                  <div className="accordion-body">
+                    <ul>
+                      <li className="editable" data-key="exp-1-desc-1">
+                        Led AI/ML strategy &amp; delivery, including real-time WebSocket telemetry services for 10k+ device
+                        concurrency.
+                      </li>
+                      <li className="editable" data-key="exp-1-desc-2">
+                        Reduced user response times to P95 &lt; 200 ms while steering cross-functional squads and exec
+                        stakeholders.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="accordion-item">
+                <div className="accordion-header">
+                  <div className="accordion-title">
+                    <span className="role editable" data-key="exp-2-role">
+                      AI/ML Strategy &amp; Solutions Architect
+                    </span>
+                    <span className="company editable" data-key="exp-2-company">
+                      ANZ — Melbourne, VIC
+                    </span>
+                  </div>
+                  <div className="accordion-meta">
+                    <span className="date editable" data-key="exp-2-date">
+                      2017 - 2022
+                    </span>
+                    <span className="icon">+</span>
+                  </div>
+                </div>
+                <div className="accordion-content">
+                  <div className="accordion-body">
+                    <ul>
+                      <li className="editable" data-key="exp-2-desc-1">
+                        Orchestrated Agile transformation of core banking from monolith to cloud-native (.NET/Azure),
+                        cutting delivery time by &gt;30% and infra cost by &gt;15%.
+                      </li>
+                      <li className="editable" data-key="exp-2-desc-2">
+                        Directed a $5M+ program portfolio, leading 5 squads (up to 40 resources incl. offshore) to
+                        on-time, high-quality releases.
+                      </li>
+                      <li className="editable" data-key="exp-2-desc-3">
+                        Owned architecture &amp; governance, ensuring 100% compliance with enterprise standards and risk
+                        models.
+                      </li>
+                      <li className="editable" data-key="exp-2-desc-4">
+                        Ran exec workshops (40+ GMs) to align strategy and improve decision-making clarity by &gt;55%.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="accordion-item">
+                <div className="accordion-header">
+                  <div className="accordion-title">
+                    <span className="role editable" data-key="exp-3-role">
+                      Senior Project Manager &amp; Business Analyst
+                    </span>
+                    <span className="company editable" data-key="exp-3-company">
+                      National Australia Bank (NAB) — Melbourne, VIC
+                    </span>
+                  </div>
+                  <div className="accordion-meta">
+                    <span className="date editable" data-key="exp-3-date">
+                      Nov 2016 - Sept 2017
+                    </span>
+                    <span className="icon">+</span>
+                  </div>
+                </div>
+                <div className="accordion-content">
+                  <div className="accordion-body">
+                    <ul>
+                      <li className="editable" data-key="exp-3-desc-1">
+                        Managed delivery for a critical risk and compliance program, ensuring 100% regulatory adherence
+                        for major data initiatives.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="accordion-item">
+                <div className="accordion-header">
+                  <div className="accordion-title">
+                    <span className="role editable" data-key="exp-4-role">
+                      Lead Business Analyst
+                    </span>
+                    <span className="company editable" data-key="exp-4-company">
+                      Microsoft Inc. — Sydney, NSW
+                    </span>
+                  </div>
+                  <div className="accordion-meta">
+                    <span className="date editable" data-key="exp-4-date">
+                      Oct 2015 - Oct 2016
+                    </span>
+                    <span className="icon">+</span>
+                  </div>
+                </div>
+                <div className="accordion-content">
+                  <div className="accordion-body">
+                    <ul>
+                      <li className="editable" data-key="exp-4-desc-1">
+                        Delivered Azure ML telemetry gap analysis: 10 key insights improved reliability by 15% and
+                        reduced MTTR by 10%.
+                      </li>
+                      <li className="editable" data-key="exp-4-desc-2">
+                        Aligned DevOps strategies to enterprise standards, achieving 95% compliance.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="accordion-item">
+                <div className="accordion-header">
+                  <div className="accordion-title">
+                    <span className="role editable" data-key="exp-5-role">
+                      Business Analyst / Project Coordinator
+                    </span>
+                    <span className="company editable" data-key="exp-5-company">
+                      Telstra — Melbourne, VIC
+                    </span>
+                  </div>
+                  <div className="accordion-meta">
+                    <span className="date editable" data-key="exp-5-date">
+                      Nov 2014 - Oct 2015
+                    </span>
+                    <span className="icon">+</span>
+                  </div>
+                </div>
+                <div className="accordion-content">
+                  <div className="accordion-body">
+                    <ul>
+                      <li className="editable" data-key="exp-5-desc-1">
+                        Built customer journey scorecards and streamlined JIRA requirements, improving delivery
+                        efficiency by 20% and operational clarity by 15%.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="accordion-item">
+                <div className="accordion-header">
+                  <div className="accordion-title">
+                    <span className="role editable" data-key="exp-6-role">
+                      Senior Business Analyst
+                    </span>
+                    <span className="company editable" data-key="exp-6-company">
+                      InfoCentric — Melbourne, VIC
+                    </span>
+                  </div>
+                  <div className="accordion-meta">
+                    <span className="date editable" data-key="exp-6-date">
+                      Aug 2011 - Nov 2014
+                    </span>
+                    <span className="icon">+</span>
+                  </div>
+                </div>
+                <div className="accordion-content">
+                  <div className="accordion-body">
+                    <ul>
+                      <li className="editable" data-key="exp-6-desc-1">
+                        Delivered analytics and BI projects, boosting client engagement by 20% and automating
+                        regulatory reporting to 100% accuracy.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="accordion-item">
+                <div className="accordion-header">
+                  <div className="accordion-title">
+                    <span className="role editable" data-key="exp-7-role">
+                      Developer Support / Software Testing / Analyst
+                    </span>
+                    <span className="company editable" data-key="exp-7-company">
+                      MYOB — Melbourne, VIC
+                    </span>
+                  </div>
+                  <div className="accordion-meta">
+                    <span className="date editable" data-key="exp-7-date">
+                      May 2010 - Aug 2011
+                    </span>
+                    <span className="icon">+</span>
+                  </div>
+                </div>
+                <div className="accordion-content">
+                  <div className="accordion-body">
+                    <ul>
+                      <li className="editable" data-key="exp-7-desc-1">
+                        Optimized data processing workflows via ePAL implementation, improving efficiency by 30% and
+                        reducing reporting time by 90%.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="accordion-item">
+                <div className="accordion-header">
+                  <div className="accordion-title">
+                    <span className="role editable" data-key="exp-8-role">
+                      Independent AI Consulting &amp; Upskilling
+                    </span>
+                    <span className="company editable" data-key="exp-8-company">
+                      Independent AI Consulting &amp; Upskilling — Melbourne, VIC
+                    </span>
+                  </div>
+                  <div className="accordion-meta">
+                    <span className="date editable" data-key="exp-8-date">
+                      Jun 2025 - Current
+                    </span>
+                    <span className="icon">+</span>
+                  </div>
+                </div>
+                <div className="accordion-content">
+                  <div className="accordion-body">
+                    <ul>
+                      <li className="editable" data-key="exp-8-desc-1">
+                        Built a Next.js + Supabase JIRA analytics dashboard generating LLM-powered retro insights and
+                        sprint plans.
+                      </li>
+                      <li className="editable" data-key="exp-8-desc-2">
+                        Created a production-grade Node.js/Express public-key server (100% Mocha/Chai coverage) for API
+                        signing.
+                      </li>
+                      <li className="editable" data-key="exp-8-desc-3">
+                        Developed a React/TypeScript + D3 relationship timeline visualiser for dynamic customer
+                        journeys.
+                      </li>
+                      <li className="editable" data-key="exp-8-desc-4">
+                        Implemented Langfuse + Phoenix LLM evaluation stack cutting error budget breaches by 38%.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
-        {/* Contact */}
-        <section id="contact" className="contact-section" data-scroll-section>
-            <div className="container">
-                <div className="contact-wrapper">
-                    <h2 className="contact-title editable" data-key="contact-title">Let’s ship AI/ML programs that stay fast, safe, and compliant.</h2>
-                    <div className="social-links-large">
-                        <a href="https://github.com/Victordtesla24" target="_blank" className="social-btn">
-                            <span>GitHub</span>
-                            <i className="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
+        <section id="skills" className="skills-section" data-scroll-section>
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">Skills &amp; Certifications</h2>
             </div>
+            <div className="skills-grid">
+              <div className="skill-card" data-skill>
+                <button className="skill-header" aria-expanded="false">
+                  <div className="skill-title">
+                    <span className="skill-icon">
+                      <i className="fas fa-brain"></i>
+                    </span>
+                    <div>
+                      <p className="skill-kicker">AI/ML &amp; Data</p>
+                      <h3 className="skill-name">LLM pipelines &amp; telemetry</h3>
+                    </div>
+                  </div>
+                  <span className="skill-chevron">
+                    <i className="fas fa-plus"></i>
+                  </span>
+                </button>
+                <div className="skill-body">
+                  <ul className="skill-list">
+                    <li>LLM pipelines with LangChain/Langfuse and Phoenix evaluation for measurable quality.</li>
+                    <li>Real-time WebSocket telemetry at 10k+ device concurrency with P95 latency under 200 ms.</li>
+                    <li>Postgres/Supabase analytics and Python data tooling for exec-ready dashboards.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="skill-card" data-skill>
+                <button className="skill-header" aria-expanded="false">
+                  <div className="skill-title">
+                    <span className="skill-icon">
+                      <i className="fas fa-code-branch"></i>
+                    </span>
+                    <div>
+                      <p className="skill-kicker">Engineering</p>
+                      <h3 className="skill-name">Cloud-native delivery</h3>
+                    </div>
+                  </div>
+                  <span className="skill-chevron">
+                    <i className="fas fa-plus"></i>
+                  </span>
+                </button>
+                <div className="skill-body">
+                  <ul className="skill-list">
+                    <li>Python, TypeScript/React/Next.js, Node.js/Express for production-grade services.</li>
+                    <li>Kubernetes, Docker, Terraform, and CI/CD automation for secure, repeatable releases.</li>
+                    <li>Cloud design on GCP/AWS/Azure with telemetry-first observability.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="skill-card" data-skill>
+                <button className="skill-header" aria-expanded="false">
+                  <div className="skill-title">
+                    <span className="skill-icon">
+                      <i className="fas fa-chess-king"></i>
+                    </span>
+                    <div>
+                      <p className="skill-kicker">Leadership</p>
+                      <h3 className="skill-name">Program &amp; portfolio</h3>
+                    </div>
+                  </div>
+                  <span className="skill-chevron">
+                    <i className="fas fa-plus"></i>
+                  </span>
+                </button>
+                <div className="skill-body">
+                  <ul className="skill-list">
+                    <li>Program delivery and backlog ownership for $5M+ portfolios with compliance guardrails.</li>
+                    <li>Lead 5+ squads (up to 40 resources) across onsite/offshore vendors with servant leadership.</li>
+                    <li>Exec workshops and decision narratives that lift clarity and alignment by ~55%.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="skill-card" data-skill>
+                <button className="skill-header" aria-expanded="false">
+                  <div className="skill-title">
+                    <span className="skill-icon">
+                      <i className="fas fa-certificate"></i>
+                    </span>
+                    <div>
+                      <p className="skill-kicker">Certifications</p>
+                      <h3 className="skill-name">Credentials &amp; governance</h3>
+                    </div>
+                  </div>
+                  <span className="skill-chevron">
+                    <i className="fas fa-plus"></i>
+                  </span>
+                </button>
+                <div className="skill-body">
+                  <ul className="skill-list">
+                    <li>Certified Scrum Master (Scrum Alliance) with Agile/Scrum/SAFe delivery.</li>
+                    <li>Cloud/Data certifications in progress for AWS/GCP; architecture-first mindset.</li>
+                    <li>Risk, budget, and stakeholder governance baked into delivery rituals.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="skill-card" data-skill>
+                <button className="skill-header" aria-expanded="false">
+                  <div className="skill-title">
+                    <span className="skill-icon">
+                      <i className="fas fa-graduation-cap"></i>
+                    </span>
+                    <div>
+                      <p className="skill-kicker">Education</p>
+                      <h3 className="skill-name">Technical foundations</h3>
+                    </div>
+                  </div>
+                  <span className="skill-chevron">
+                    <i className="fas fa-plus"></i>
+                  </span>
+                </button>
+                <div className="skill-body">
+                  <ul className="skill-list">
+                    <li>Master of Computer Science (Honors, 2010), Monash University — Melbourne.</li>
+                    <li>Bachelor of Engineering, Computer Science (2007), University of Melbourne.</li>
+                    <li>Ongoing independent AI consulting and upskilling (2025-current).</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="architecture-lab" className="architecture-section" data-scroll-section>
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">Interactive Architecture Map</h2>
+              <p className="section-subhead">
+                Trace how requests move from edge clients to Gemini, telemetry, and governance.
+              </p>
+            </div>
+            <div className="arch-wrapper glass-card">
+              <div className="arch-diagram">
+                <div className="arch-diagram-halo" aria-hidden="true"></div>
+                <div className="arch-diagram-grid" aria-hidden="true"></div>
+                <svg className="arch-svg" viewBox="0 0 120 70" role="img" aria-label="Architecture flow diagram">
+                  <defs>
+                    <linearGradient id="link-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="rgba(255,255,255,0.1)" />
+                      <stop offset="100%" stopColor="rgba(255,255,255,0.05)" />
+                    </linearGradient>
+                    <marker
+                      id="arrowhead"
+                      markerWidth="5"
+                      markerHeight="5"
+                      refX="5"
+                      refY="2.5"
+                      orient="auto"
+                      markerUnits="strokeWidth"
+                    >
+                      <path d="M0,0 L5,2.5 L0,5" fill="rgba(255,255,255,0.3)" />
+                    </marker>
+                  </defs>
+
+                  {/* Connections - Using Bezier Curves */}
+                  <path
+                    data-line="edge-api"
+                    d="M 26 35 L 36 35"
+                    fill="none"
+                    className="arch-connection"
+                  />
+                  <path
+                    data-line="api-vector"
+                    d="M 56 35 C 60 35, 60 20, 66 20"
+                    fill="none"
+                    className="arch-connection"
+                  />
+                  <path
+                    data-line="vector-llm"
+                    d="M 88 20 L 96 20"
+                    fill="none"
+                    className="arch-connection"
+                  />
+                  <path
+                    data-line="llm-api"
+                    d="M 96 24 C 85 24, 70 38, 56 38"
+                    fill="none"
+                    className="arch-connection"
+                  />
+                  <path
+                    data-line="api-telemetry"
+                    d="M 56 35 C 60 35, 60 56, 66 56"
+                    fill="none"
+                    className="arch-connection"
+                  />
+                  <path
+                    data-line="telemetry-governance"
+                    d="M 88 56 L 96 56"
+                    fill="none"
+                    className="arch-connection"
+                  />
+                  <path
+                    data-line="governance-edge"
+                    d="M 105 64 C 105 75, 16 75, 16 42"
+                    fill="none"
+                    className="arch-connection"
+                  />
+
+                  {/* Invisible Node Targets for Script References if needed, or just removal if script relies on class toggling chips */}
+                  {/* We keep groups for potential future SVG logic, but they are empty of visible shapes now */}
+                  <g data-node="edge" />
+                  <g data-node="api" />
+                  <g data-node="vector" />
+                  <g data-node="llm" />
+                  <g data-node="telemetry" />
+                  <g data-node="governance" />
+                </svg>
+
+                {/* HTML Overlay Nodes - The Visuals */}
+                <div className="arch-node-chips">
+                  <div className="arch-node-chip edge-chip" data-arch-chip="edge">
+                    <div className="chip-icon"><i className="fas fa-laptop"></i></div>
+                    <div className="chip-content">
+                      <span className="chip-title">Edge</span>
+                      <span className="chip-desc">Clients &amp; Sensors</span>
+                    </div>
+                  </div>
+                  
+                  <div className="arch-node-chip api-chip" data-arch-chip="api">
+                    <div className="chip-icon"><i className="fas fa-network-wired"></i></div>
+                    <div className="chip-content">
+                      <span className="chip-title">API Gateway</span>
+                      <span className="chip-desc">Rate limit &amp; Route</span>
+                    </div>
+                  </div>
+
+                  <div className="arch-node-chip vector-chip" data-arch-chip="vector">
+                    <div className="chip-icon"><i className="fas fa-database"></i></div>
+                    <div className="chip-content">
+                      <span className="chip-title">Vector DB</span>
+                      <span className="chip-desc">Embeddings</span>
+                    </div>
+                  </div>
+
+                  <div className="arch-node-chip llm-chip" data-arch-chip="llm">
+                    <div className="chip-icon"><i className="fas fa-brain"></i></div>
+                    <div className="chip-content">
+                      <span className="chip-title">Gemini</span>
+                      <span className="chip-desc">Inference Core</span>
+                    </div>
+                  </div>
+
+                  <div className="arch-node-chip telemetry-chip" data-arch-chip="telemetry">
+                    <div className="chip-icon"><i className="fas fa-satellite-dish"></i></div>
+                    <div className="chip-content">
+                      <span className="chip-title">Telemetry</span>
+                      <span className="chip-desc">Metric Bus</span>
+                    </div>
+                  </div>
+
+                  <div className="arch-node-chip governance-chip" data-arch-chip="governance">
+                    <div className="chip-icon"><i className="fas fa-balance-scale"></i></div>
+                    <div className="chip-content">
+                      <span className="chip-title">Governance</span>
+                      <span className="chip-desc">Policy &amp; Risk</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="arch-sidebar">
+                <div className="arch-metrics" role="status" aria-live="polite">
+                  <div className="arch-metric" data-key="latency">
+                    <p className="arch-metric-label">P95 latency</p>
+                    <p className="arch-metric-value" data-metric-value>~180 ms</p>
+                    <span className="arch-metric-subtext">Edge → Gemini</span>
+                  </div>
+                  <div className="arch-metric" data-key="throughput">
+                    <p className="arch-metric-label">Throughput</p>
+                    <p className="arch-metric-value" data-metric-value>~12k req/s</p>
+                    <span className="arch-metric-subtext">Parallel reader sessions</span>
+                  </div>
+                  <div className="arch-metric" data-key="vectorHits">
+                    <p className="arch-metric-label">Vector hit accuracy</p>
+                    <p className="arch-metric-value" data-metric-value>3 shards</p>
+                    <span className="arch-metric-subtext">Multi-region cache</span>
+                  </div>
+                </div>
+                <div className="arch-legend" aria-live="polite">
+                  <p className="arch-legend-title">Path components</p>
+                  <p className="arch-legend-subtitle">Node states across the journey</p>
+                  <div className="arch-legend-grid">
+                    <div className="arch-legend-item" data-legend-node="edge">
+                      <span className="arch-legend-dot"></span>
+                      <div>
+                        <p className="arch-legend-name">Edge clients</p>
+                        <p className="arch-legend-desc">Browsers, mobile, and sensor kits.</p>
+                      </div>
+                    </div>
+                    <div className="arch-legend-item" data-legend-node="api">
+                      <span className="arch-legend-dot"></span>
+                      <div>
+                        <p className="arch-legend-name">API gateway</p>
+                        <p className="arch-legend-desc">Front door, throttling, metadata.</p>
+                      </div>
+                    </div>
+                    <div className="arch-legend-item" data-legend-node="vector">
+                      <span className="arch-legend-dot"></span>
+                      <div>
+                        <p className="arch-legend-name">Vector store</p>
+                        <p className="arch-legend-desc">Distributed cache of embeddings.</p>
+                      </div>
+                    </div>
+                    <div className="arch-legend-item" data-legend-node="llm">
+                      <span className="arch-legend-dot"></span>
+                      <div>
+                        <p className="arch-legend-name">Gemini</p>
+                        <p className="arch-legend-desc">LLM core with safety filters.</p>
+                      </div>
+                    </div>
+                    <div className="arch-legend-item" data-legend-node="telemetry">
+                      <span className="arch-legend-dot"></span>
+                      <div>
+                        <p className="arch-legend-name">Telemetry</p>
+                        <p className="arch-legend-desc">Metric bus and heartbeat feeds.</p>
+                      </div>
+                    </div>
+                    <div className="arch-legend-item" data-legend-node="governance">
+                      <span className="arch-legend-dot"></span>
+                      <div>
+                        <p className="arch-legend-name">Governance</p>
+                        <p className="arch-legend-desc">QA, risk, and compliance loops.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="arch-actions">
+                  <button className="arch-btn active" data-flow="chat">
+                    LLM Chat Path
+                  </button>
+                  <button className="arch-btn" data-flow="telemetry">
+                    Telemetry Stream
+                  </button>
+                  <button className="arch-btn" data-flow="governance">
+                    Governance &amp; Quality
+                  </button>
+                </div>
+                <div className="arch-explainer" id="arch-explainer">
+                  <p className="arch-explainer-title" data-arch-headline>
+                    LLM Chat Path
+                  </p>
+                  <p className="arch-explainer-body" data-arch-description>
+                    Select a path to highlight the packets moving through edge, gateway, vector store, Gemini, telemetry, and governance.
+                  </p>
+                  <div className="arch-explainer-callout">
+                    <span className="arch-explainer-badge" data-arch-badge>
+                      Live feed
+                    </span>
+                    <p className="arch-explainer-note" data-arch-note>
+                      Edge → API → Vector → Gemini → Telemetry → Governance
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="work" className="work-section" data-scroll-section>
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title editable" data-key="work-title">
+                Current Projects in the Pipeline
+              </h2>
+            </div>
+
+            <div className="carousel-wrapper">
+              <div className="projects-carousel" id="projects-carousel">
+                <a
+                  href="https://github.com/Victordtesla24/EFDDH-Jira-Analytics-Dashboard"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="project-card"
+                  data-preview="chart"
+                  data-preview-label="Velocity charts"
+                >
+                  <div className="project-image">
+                    <div className="viz-dashboard">
+                      <div className="dash-header"></div>
+                      <div className="dash-row">
+                        <div className="dash-card c-1"></div>
+                        <div className="dash-card c-2"></div>
+                      </div>
+                      <div className="dash-row row-2">
+                        <div className="dash-bar b-1"></div>
+                        <div className="dash-bar b-3"></div>
+                        <div className="dash-bar b-2"></div>
+                        <div className="dash-bar b-4"></div>
+                      </div>
+                    </div>
+                    <div className="card-badge">Python / AI</div>
+                  </div>
+                  <div className="project-info">
+                    <h3>EFDDH Jira Analytics</h3>
+                    <p>Python dashboard surfacing sprint velocity + LLM retros using LangChain. Exec-ready insights.</p>
+                  </div>
+                </a>
+
+                <a
+                  href="https://github.com/Victordtesla24/tailor-resume-with-ai"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="project-card"
+                  data-preview="doc"
+                  data-preview-label="Auto-tailoring"
+                >
+                  <div className="project-image">
+                    <div className="viz-doc">
+                      <div className="doc-page">
+                        <div className="doc-line w-70"></div>
+                        <div className="doc-line w-90"></div>
+                        <div className="doc-line w-50"></div>
+                        <div className="scan-line"></div>
+                      </div>
+                    </div>
+                    <div className="card-badge">NLP Automation</div>
+                  </div>
+                  <div className="project-info">
+                    <h3>AI Resume Tailor</h3>
+                    <p>Automated resume tailoring with web scraping &amp; prompt engineering. Matches CVs to JDs instantly.</p>
+                  </div>
+                </a>
+
+                <a
+                  href="https://github.com/Victordtesla24/relationship-timeline-feature"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="project-card"
+                  data-preview="wave"
+                  data-preview-label="D3 Visualization"
+                >
+                  <div className="project-image">
+                    <div className="viz-waveform">
+                      <div className="bar"></div>
+                      <div className="bar"></div>
+                      <div className="bar"></div>
+                      <div className="bar"></div>
+                      <div className="bar"></div>
+                      <div className="bar"></div>
+                      <div className="bar"></div>
+                      <div className="bar"></div>
+                      <div className="bar"></div>
+                      <div className="bar"></div>
+                      <div className="bar"></div>
+                      <div className="bar"></div>
+                      <div className="play-btn"></div>
+                    </div>
+                    <div className="card-badge">React / D3</div>
+                  </div>
+                  <div className="project-info">
+                    <h3>Relationship Timeline</h3>
+                    <p>React/TypeScript + D3 customer journey visualiser. Interactive temporal data visualization.</p>
+                  </div>
+                </a>
+
+                <a
+                  href="https://github.com/Victordtesla24/AI-Gmail-Mailbox-Manager"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="project-card"
+                  data-preview="terminal"
+                  data-preview-label="Inbox triage"
+                >
+                  <div className="project-image">
+                    <div className="viz-terminal">
+                      <div className="terminal-header">
+                        <span className="dot red"></span>
+                        <span className="dot yellow"></span>
+                        <span className="dot green"></span>
+                      </div>
+                      <div className="terminal-body">
+                        <div className="code-line">
+                          <span className="c-purple">await</span> gmail.<span className="c-yellow">fetch</span>();
+                        </div>
+                        <div className="code-line">&gt; Analyzing sentiment...</div>
+                        <div className="code-line">
+                          &gt; Label: <span className="c-green">Urgent</span>
+                        </div>
+                        <div className="code-line">&gt; Draft created.</div>
+                        <div className="code-line blink">_</div>
+                      </div>
+                    </div>
+                    <div className="card-badge">TypeScript Automation</div>
+                  </div>
+                  <div className="project-info">
+                    <h3>AI Gmail Manager</h3>
+                    <p>Autonomous Gmail triage in TypeScript. Filters, labels, and drafts replies using LLMs.</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <div className="live-content">
+              <div className="github-feed">
+                <div className="section-subhead">Latest GitHub work</div>
+                <div id="github-projects" className="repo-list" aria-live="polite"></div>
+                <div className="repo-curated">
+                  <div className="section-subhead">Featured repos</div>
+                  <ul>
+                    <li>
+                      <a href="https://github.com/Victordtesla24/btr-demo" target="_blank" rel="noreferrer">
+                        btr-demo
+                      </a>{' '}
+                      — BPHS Birth Time Rectification engine.
+                    </li>
+                    <li>
+                      <a href="https://github.com/Victordtesla24/jyotish-shastra" target="_blank" rel="noreferrer">
+                        jyotish-shastra
+                      </a>{' '}
+                      — Enterprise-grade Vedic Astrology platform.
+                    </li>
+                    <li>
+                      <a href="https://github.com/Victordtesla24/rishi-prajnya" target="_blank" rel="noreferrer">
+                        rishi-prajnya
+                      </a>{' '}
+                      — AI career guidance platform.
+                    </li>
+                    <li>
+                      <a href="https://github.com/Victordtesla24/Birth-Time-Rectifier" target="_blank" rel="noreferrer">
+                        Birth-Time-Rectifier
+                      </a>{' '}
+                      — AI-driven rectification system.
+                    </li>
+                    <li>
+                      <a
+                        href="https://github.com/Victordtesla24/Advanced-Prompt-Creator"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Advanced-Prompt-Creator
+                      </a>{' '}
+                      — Privacy-first prompt engineering.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="video-feed">
+                <div className="section-subhead">YouTube stream</div>
+                <div className="video-frame">
+                  <iframe
+                    title="Vicd0ct YouTube uploads"
+                    src="https://www.youtube.com/embed/videoseries?list=UUJSYpoFkGKKzYTKzAr8vGzQ"
+                    allowFullScreen
+                    loading="lazy"
+                  ></iframe>
+                </div>
+                <p className="video-note">
+                  Latest drops from @vicd0ct. Live coding, algorithm archaeology, telemetry breakdowns.
+                </p>
+                <div className="video-list" id="video-list"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" className="contact-section" data-scroll-section>
+          <div className="container">
+            <div className="contact-wrapper">
+              <h2 className="contact-title editable" data-key="contact-title">
+                Let&apos;s ship AI/ML programs that stay fast, safe, and compliant.
+              </h2>
+              <div className="contact-links-grid">
+                <a
+                  href="mailto:sarkar.vikram@gmail.com"
+                  className="contact-card email-card"
+                  aria-label="Email sarkar.vikram@gmail.com"
+                  title="Email sarkar.vikram@gmail.com"
+                >
+                  <span className="sr-only">Email Vikram at sarkar.vikram@gmail.com</span>
+                </a>
+                <a
+                  href="tel:+61433224556"
+                  className="contact-card phone-card"
+                  aria-label="Call +61 433 224 556"
+                  title="Call +61 433 224 556"
+                >
+                  <span className="sr-only">Call +61 433 224 556</span>
+                </a>
+              </div>
+              <div className="social-links-large">
+                <a href="https://github.com/Victordtesla24" target="_blank" rel="noreferrer" className="social-btn">
+                  <span>GitHub</span>
+                  <i className="fas fa-arrow-right"></i>
+                </a>
+                <a href="https://youtube.com/@vicd0ct" target="_blank" rel="noreferrer" className="social-btn">
+                  <span>YouTube</span>
+                  <i className="fas fa-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
 
       <footer>
         <div className="footer-content">
-            <p>&copy; 2024 Vikram Deshpande. All rights reserved.</p>
+          <p>&copy; 2024 Vikram Deshpande. All rights reserved.</p>
         </div>
       </footer>
 
-      {/* Konami / Terminal Easter Egg */}
       <div id="terminal-overlay" className="terminal-overlay" aria-hidden="true">
         <div className="terminal-window">
-            <div className="terminal-bar">
-                <div className="terminal-dots">
-                    <span className="dot red"></span><span className="dot yellow"></span><span className="dot green"></span>
-                </div>
-                <div className="terminal-title">vikram.io // hidden terminal</div>
-                <button id="terminal-close" aria-label="Close terminal">×</button>
+          <div className="terminal-bar">
+            <div className="terminal-dots">
+              <span className="dot red"></span>
+              <span className="dot yellow"></span>
+              <span className="dot green"></span>
             </div>
-            <div className="terminal-body" id="terminal-log" role="log">
-                <div className="terminal-line">Type <span className="accent">help</span>, <span className="accent">sudo hire vic</span>, <span className="accent">stack</span>, or try the Konami code.</div>
+            <div className="terminal-title">vikram.io // hidden terminal</div>
+            <button id="terminal-close" aria-label="Close terminal">
+              ×
+            </button>
+          </div>
+          <div className="terminal-body" id="terminal-log" role="log">
+            <div className="terminal-line">
+              Type <span className="accent">help</span>, <span className="accent">sudo hire vic</span>,{' '}
+              <span className="accent">stack</span>, or try the Konami code.
             </div>
-            <form id="terminal-form" autoComplete="off">
-                <span className="prompt">vic@vikram.io:~$</span>
-                <input id="terminal-input" type="text" spellCheck="false" aria-label="Terminal input" placeholder="help | sudo hire vic | stack" />
-            </form>
+          </div>
+          <form id="terminal-form" autoComplete="off">
+            <span className="prompt">vic@vikram.io:~$</span>
+            <input
+              id="terminal-input"
+              type="text"
+              spellCheck="false"
+              aria-label="Terminal input"
+              placeholder="help | sudo hire vic | stack"
+            />
+          </form>
         </div>
       </div>
 
-      {/* Load Scripts */}
-      <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" strategy="beforeInteractive" />
-      <Script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" strategy="beforeInteractive" />
-      <Script src="https://unpkg.com/lenis@1.0.45/dist/lenis.min.js" strategy="beforeInteractive" />
+      <Script src="/vendor/gsap.min.js" strategy="beforeInteractive" />
+      <Script src="/vendor/ScrollTrigger.min.js" strategy="beforeInteractive" />
+      <Script src="/vendor/lenis.min.js" strategy="beforeInteractive" />
       <Script type="module" src="three-background.js" strategy="lazyOnload" />
       <Script src="script.js" strategy="lazyOnload" />
     </>
   );
 }
-
