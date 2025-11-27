@@ -81,6 +81,8 @@ const MiniVicBot = () => {
   const rafRef = useRef<number | null>(null);
   
   const recognitionRef = useRef<any>(null);
+  const messagesRef = useRef(messages);
+  messagesRef.current = messages;
 
   const AVATAR_VIDEO_URL = "/assets/my-avatar.mp4";
 
@@ -94,14 +96,21 @@ const MiniVicBot = () => {
     }
   }, [isMuted]);
 
+  // Calculate active tasks for dependency tracking
+  const hasActiveTasks = messages.some(m => m.polloTaskId && !m.videoUrl);
+
   useEffect(() => {
-    // Poll for active video tasks
-    const activeTasks = messages.filter(m => m.polloTaskId && !m.videoUrl);
-    
-    if (activeTasks.length > 0 && !pollingIntervalRef.current) {
+    if (hasActiveTasks) {
       pollingIntervalRef.current = setInterval(async () => {
-        let updated = false;
-        const newMessages = [...messages];
+        // Use ref to get latest messages inside the interval closure
+        const currentMessages = messagesRef.current;
+        const activeTasks = currentMessages.filter(m => m.polloTaskId && !m.videoUrl);
+
+        if (activeTasks.length === 0) {
+           return;
+        }
+
+        const updates = new Map<string, { videoUrl?: string; removeTask?: boolean }>();
 
         for (const msg of activeTasks) {
           try {
@@ -112,24 +121,11 @@ const MiniVicBot = () => {
               if (data.status === 'succeeded' || data.data?.status === 'succeeded' || data.status === 'completed') {
                  const videoUrl = data.output?.[0] || data.data?.url || data.url;
                  if (videoUrl) {
-                   const index = newMessages.findIndex(m => m.id === msg.id);
-                   if (index !== -1) {
-                     newMessages[index] = { ...newMessages[index], videoUrl };
-                     updated = true;
-                     
-                     // If this is the latest message, suggest playing it? 
-                     // Or just let the user click "Play Video"
-                   }
+                   updates.set(msg.id, { videoUrl });
                  }
               } else if (data.status === 'failed' || data.data?.status === 'failed') {
                   // Stop polling for this one
-                  const index = newMessages.findIndex(m => m.id === msg.id);
-                   if (index !== -1) {
-                     // Remove taskId to stop polling
-                     const { polloTaskId, ...rest } = newMessages[index];
-                     newMessages[index] = { ...rest }; // Keep text/audio, remove task
-                     updated = true;
-                   }
+                  updates.set(msg.id, { removeTask: true });
               }
             }
           } catch (e) {
@@ -137,28 +133,31 @@ const MiniVicBot = () => {
           }
         }
 
-        if (updated) {
-          setMessages(newMessages);
+        if (updates.size > 0) {
+          setMessages((prev) => prev.map((m) => {
+            const update = updates.get(m.id);
+            if (!update) return m;
+            
+            if (update.removeTask) {
+               const { polloTaskId, ...rest } = m;
+               return rest;
+            }
+            if (update.videoUrl) {
+               return { ...m, videoUrl: update.videoUrl };
+            }
+            return m;
+          }));
         }
-        
-        // Stop polling if no more tasks
-        if (newMessages.filter(m => m.polloTaskId && !m.videoUrl).length === 0) {
-          if (pollingIntervalRef.current) {
-            clearInterval(pollingIntervalRef.current);
-            pollingIntervalRef.current = null;
-          }
-        }
-
-      }, 3000); // Poll every 3s
+      }, 3000);
     }
 
     return () => {
-       if (pollingIntervalRef.current && activeTasks.length === 0) {
+       if (pollingIntervalRef.current) {
           clearInterval(pollingIntervalRef.current);
           pollingIntervalRef.current = null;
        }
-    }
-  }, [messages]);
+    };
+  }, [hasActiveTasks]);
 
 
   useEffect(() => {
