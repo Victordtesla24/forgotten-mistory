@@ -954,15 +954,38 @@ function initArchitectureLab() {
     const setFlow = (key) => {
         const flow = flows[key];
         if (!flow) return;
+
         if (archWrapper) {
             archWrapper.dataset.flow = key;
             archWrapper.style.setProperty('--arch-accent', flow.accent || '#ff7350');
         }
+
         buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.flow === key));
-        lines.forEach(line => line.classList.toggle('active', flow.lines.includes(line.dataset.line)));
-        nodes.forEach(node => node.classList.toggle('active', flow.nodes.includes(node.dataset.node)));
+
+        gsap.to(lines, {
+            stroke: (i, el) => flow.lines.includes(el.dataset.line) ? flow.accent : 'rgba(255, 255, 255, 0.1)',
+            strokeWidth: (i, el) => flow.lines.includes(el.dataset.line) ? 1.5 : 0.5,
+            duration: 0.5,
+            stagger: 0.05
+        });
+
+        nodeChips.forEach(chip => {
+            const nodeName = chip.dataset.archChip;
+            const isActive = flow.nodes.includes(nodeName);
+            gsap.to(chip, {
+                scale: isActive ? 1.1 : 1,
+                boxShadow: isActive ? `0 0 15px ${flow.accent}`: 'none',
+                duration: 0.3,
+                ease: 'power2.out'
+            });
+            chip.classList.toggle('active', isActive);
+        });
+        
         if (explainerTitle) explainerTitle.textContent = flow.headline || 'Architecture path';
-        if (explainerBody) explainerBody.textContent = flow.copy;
+        if (explainerBody) {
+            gsap.fromTo(explainerBody, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" });
+            explainerBody.textContent = flow.copy;
+        }
         if (explainerBadge) {
             explainerBadge.textContent = flow.badge || 'Live feed';
             if (flow.accent) {
@@ -971,22 +994,29 @@ function initArchitectureLab() {
             }
         }
         if (explainerNote) explainerNote.textContent = flow.note || '';
+        
         if (legendTitle) legendTitle.textContent = `Path components · ${flow.headline}`;
         if (legendSubtitle) legendSubtitle.textContent = flow.badge || 'Live feed';
+        
         legendItems.forEach(item => {
             const nodeName = item.dataset.legendNode;
-            item.classList.toggle('active', flow.nodes.includes(nodeName));
+            const isActive = flow.nodes.includes(nodeName);
+            gsap.to(item, {
+                scale: isActive ? 1.05 : 1,
+                opacity: isActive ? 1 : 0.5,
+                duration: 0.3,
+            });
+            item.classList.toggle('active', isActive);
         });
-        nodeChips.forEach(chip => {
-            const nodeName = chip.dataset.archChip;
-            chip.classList.toggle('active', flow.nodes.includes(nodeName));
-        });
+
         updateMetrics(flow.metrics);
         refreshPackets(flow.lines);
     };
 
     // Event Delegation for Architecture Chips (handles React re-renders)
     const wrapper = document.querySelector('.arch-wrapper');
+    const tooltip = document.getElementById('arch-tooltip');
+
     if (wrapper) {
         wrapper.addEventListener('click', (e) => {
             const chip = e.target.closest('.arch-node-chip');
@@ -1002,7 +1032,29 @@ function initArchitectureLab() {
         });
         // Ensure cursor pointers on chips if CSS misses it
         const chips = wrapper.querySelectorAll('.arch-node-chip');
-        chips.forEach(c => c.style.cursor = 'pointer');
+        chips.forEach(c => {
+            c.style.cursor = 'pointer';
+            c.addEventListener('mouseenter', (e) => {
+                gsap.to(c, {scale: 1.05, duration: 0.2});
+                if (tooltip) {
+                    const title = c.querySelector('.chip-title')?.textContent || '';
+                    const desc = c.querySelector('.chip-desc')?.textContent || '';
+                    tooltip.innerHTML = `<strong>${title}</strong><br/><span style="font-size:0.8em; color:#ccc">${desc}</span>`;
+                    tooltip.style.opacity = '1';
+                }
+            });
+            c.addEventListener('mousemove', (e) => {
+                if (tooltip) {
+                    const rect = wrapper.getBoundingClientRect();
+                    tooltip.style.left = (e.clientX - rect.left + 15) + 'px';
+                    tooltip.style.top = (e.clientY - rect.top + 15) + 'px';
+                }
+            });
+            c.addEventListener('mouseleave', () => {
+                gsap.to(c, {scale: 1, duration: 0.2});
+                if (tooltip) tooltip.style.opacity = '0';
+            });
+        });
     }
 
     buttons.forEach(btn => btn.addEventListener('click', () => setFlow(btn.dataset.flow)));
@@ -1167,197 +1219,33 @@ function initTerminalOverlay() {
     closeBtn?.addEventListener('click', closeTerminal);
 }
 
-// --- Mini-Vic Chatbot (Enhanced Client-Side RAG) ---
-function initMiniVicWidget() {
-    const root = document.getElementById('mini-vic');
-    const windowEl = root?.querySelector('.mini-vic-window');
-    const toggle = root?.querySelector('[data-mini-toggle]');
-    const closeBtn = root?.querySelector('[data-mini-close]');
-    const muteBtn = root?.querySelector('[data-mini-mute]');
-    const messages = document.getElementById('mini-vic-messages');
-    const form = document.getElementById('mini-vic-form');
-    const input = document.getElementById('mini-vic-input');
-    const quickButtons = root?.querySelectorAll('[data-mini-prompt]');
-    const audio = document.getElementById('mini-vic-audio');
-    const speakingDot = root?.querySelector('[data-speaking-dot]');
-    const speakingHalo = root?.querySelector('[data-speaking]');
-    const videoAvatar = root?.querySelector('.mini-vic-avatar video');
-    if (!root || !windowEl || !messages || !form || !input) return;
+// --- Mini-Vic Chatbot (Legacy Removed - Use React Component) ---
+// initMiniVicWidget logic removed to prevent conflicts.
 
-    let isOpen = false;
-    let isMuted = false;
-    let isSending = false;
-
-    // 1. Knowledge Base (Extracted from CV content)
-    const knowledgeBase = [
-        {
-            keywords: ['telemetry', 'websocket', 'realtime', 'latency', 'p95', 'anz'],
-            text: "I implemented real-time WebSocket telemetry services for ANZ, handling 10k+ concurrent devices. We achieved P95 latency under 200ms, which was a huge win for customer experience."
-        },
-        {
-            keywords: ['leadership', 'team', 'squads', 'manage', 'size', 'resources', 'lead'],
-            text: "I lead 5+ cross-functional squads with up to 40 resources, including offshore teams. My style is servant leadership—clear guardrails, steady cadence, and removing blockers so the team can ship."
-        },
-        {
-            keywords: ['stack', 'tech', 'technologies', 'language', 'framework', 'tools', 'python', 'react'],
-            text: "My core stack is Python, TypeScript/React/Next.js, and Node.js/Express. For infra, I use Kubernetes, Docker, and Terraform across GCP, AWS, and Azure. Recently, I've been deep into LangChain and Langfuse for AI pipelines."
-        },
-        {
-            keywords: ['ai', 'ml', 'genai', 'llm', 'rag', 'model', 'artificial'],
-            text: "I specialize in bridging engineering with AI strategy. I've built RAG pipelines using Gemini and OpenAI, and I focus heavily on evaluation (using Phoenix/Langfuse) to reduce error rates in production."
-        },
-        {
-            keywords: ['budget', 'cost', 'finance', 'money', 'portfolio'],
-            text: "I've managed $5M+ program portfolios, ensuring we land on budget. I also drove cloud modernization that cut infrastructure costs by over 15%."
-        },
-        {
-            keywords: ['certification', 'cert', 'scrum', 'agile', 'csm'],
-            text: "I'm a Certified Scrum Master (CSM) and have extensive experience with SAFe and Agile delivery. I believe governance should enable speed, not slow it down."
-        },
-        {
-            keywords: ['contact', 'email', 'phone', 'reach', 'hire'],
-            text: "You can reach me at melbvicduque@gmail.com or 0433 224 556. I'm based in Melbourne."
-        },
-        {
-            keywords: ['education', 'degree', 'university', 'study'],
-            text: "I hold a Master of Computer Science (Honors) from Monash University and a Bachelor of Engineering from the University of Melbourne."
-        },
-        {
-            keywords: ['philosophy', 'whimsy', 'life'],
-            text: "I love diving deep into topics that spark genuine whimsy. My philosophy is simple: do what brings happiness and value, without causing harm."
-        }
-    ];
-
-    // 2. Simple Matcher
-    const findBestMatch = (query) => {
-        const tokens = query.toLowerCase().match(/\b\w+\b/g) || [];
-        let bestScore = 0;
-        let bestAnswer = null;
-
-        knowledgeBase.forEach(entry => {
-            let score = 0;
-            entry.keywords.forEach(kw => {
-                if (tokens.includes(kw)) score += 3; // Exact keyword match
-                tokens.forEach(t => {
-                    if (kw.includes(t) && t.length > 3) score += 1; // Partial match
-                });
-            });
-            if (score > bestScore) {
-                bestScore = score;
-                bestAnswer = entry.text;
-            }
-        });
-
-        return bestScore > 0 ? bestAnswer : null;
-    };
-
-    const addMessage = (role, text) => {
-        const bubble = document.createElement('div');
-        bubble.className = `mini-vic-message ${role}`;
-        bubble.innerHTML = text; // Allow HTML for formatting
-        messages.appendChild(bubble);
-        messages.scrollTop = messages.scrollHeight;
-        return bubble;
-    };
-
-    const setSpeaking = (state) => {
-        if (state) {
-            speakingDot?.classList.add('active');
-            speakingHalo?.classList.add('active');
-            videoAvatar?.classList.add('speaking');
-            if (videoAvatar) {
-                videoAvatar.currentTime = 0;
-                videoAvatar.play().catch(e => console.log('Video autoplay blocked', e));
-            }
-        } else {
-            speakingDot?.classList.remove('active');
-            speakingHalo?.classList.remove('active');
-            videoAvatar?.classList.remove('speaking');
-            if (videoAvatar) videoAvatar.pause();
-        }
-    };
-
-    const openWidget = () => {
-        isOpen = true;
-        root.classList.add('open');
-        windowEl.classList.add('open');
-        input.focus();
-    };
-
-    const closeWidget = () => {
-        isOpen = false;
-        root.classList.remove('open');
-        windowEl.classList.remove('open');
-    };
-
-    const sendMessage = async (text, mode = 'normal') => {
-        const trimmed = (text || '').trim();
-        if (!trimmed || isSending) return;
-        isSending = true;
-        addMessage('user', trimmed);
-        input.value = '';
-        
-        // Simulate thinking
-        const typingId = 'typing-' + Date.now();
-        const typingBubble = addMessage('bot', `<span id="${typingId}">...</span>`);
-        setSpeaking(true);
-
-        // Delay for realism
-        await new Promise(r => setTimeout(r, 600 + Math.random() * 800));
-
-        let answer = findBestMatch(trimmed);
-        if (!answer) {
-            // Default fallback
-            const fallbacks = [
-                "That's an interesting question. While my CV RAG index is still learning that specific detail, I can tell you about my <b>cloud architecture</b>, <b>leadership style</b>, or <b>tech stack</b>. What would you like to know?",
-                "I'm tuned to answer questions about my professional experience. Ask me about <b>telemetry</b>, <b>AI pipelines</b>, or <b>agile delivery</b>!",
-                "I don't have that exact info in my index yet. But I can discuss how I reduced delivery times by 30% or my work with <b>LLMs</b>."
-            ];
-            answer = fallbacks[Math.floor(Math.random() * fallbacks.length)];
-        }
-
-        // Apply "Mode" flavor
-        if (mode === 'scifi') {
-            answer = "⚙️ <i>Processing...</i> " + answer.replace('I ', 'Unit Vic ').replace('my ', 'local ').replace('team', 'crew').replace('leadership', 'command protocols');
-        }
-
-        const typingEl = document.getElementById(typingId);
-        if (typingEl && typingEl.parentElement) {
-            typingEl.parentElement.innerHTML = answer;
-        }
-        
-        setSpeaking(false);
-        isSending = false;
-    };
-
-    toggle?.addEventListener('click', () => isOpen ? closeWidget() : openWidget());
-    closeBtn?.addEventListener('click', closeWidget);
-    muteBtn?.addEventListener('click', () => {
-        isMuted = !isMuted;
-        muteBtn.innerHTML = isMuted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
-    });
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        sendMessage(input.value);
-    });
-
-    quickButtons?.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const prompt = btn.getAttribute('data-mini-prompt') || '';
-            const mode = btn.getAttribute('data-mode') || 'normal';
-            sendMessage(prompt, mode);
-        });
-    });
-
-    window.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'm') {
-            openWidget();
-        }
-    });
-}
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Avatar Hover Video ---
+    const avatarContainer = document.getElementById('avatar-container');
+    const video = document.getElementById('profile-image');
+    const staticImg = document.getElementById('avatar-static');
+
+    if (avatarContainer && video && staticImg) {
+        avatarContainer.addEventListener('mouseenter', () => {
+            video.play().then(() => {
+                staticImg.style.opacity = '0';
+            }).catch(e => console.warn('Video play interrupted', e));
+        });
+
+        avatarContainer.addEventListener('mouseleave', () => {
+            staticImg.style.opacity = '1';
+            // Wait for fade out before pausing/resetting to avoid glitch
+            setTimeout(() => {
+                video.pause();
+                video.currentTime = 0;
+            }, 500);
+        });
+    }
+
     initTelemetryPanel();
     initArchitectureLab();
     initProjectPreviews();

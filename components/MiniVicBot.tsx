@@ -247,9 +247,9 @@ const MiniVicBot = () => {
 
       // Draw a holographic waveform
       ctx.lineWidth = 2;
-      ctx.strokeStyle = 'rgba(34, 211, 238, 0.8)'; // Cyan-400
+      ctx.strokeStyle = 'rgba(255, 115, 80, 0.8)'; // orange-400
       ctx.shadowBlur = 8;
-      ctx.shadowColor = '#22d3ee';
+      ctx.shadowColor = '#ff7350';
       
       ctx.beginPath();
       
@@ -496,7 +496,7 @@ const MiniVicBot = () => {
   return (
     <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end font-sans">
       {isOpen && (
-        <div className="mb-4 w-[22rem] md:w-[25rem] bg-gray-950/95 backdrop-blur-2xl border border-cyan-500/30 rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 animate-in slide-in-from-bottom-10 ring-1 ring-cyan-900/50">
+        <div className="mb-4 w-[22rem] md:w-[25rem] bg-gray-950/95 backdrop-blur-2xl border border-orange-500/30 rounded-2xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 animate-in slide-in-from-bottom-10 ring-1 ring-orange-900/50">
           <div className="relative h-60 w-full bg-black overflow-hidden group">
             <video
               ref={videoRef}
@@ -532,16 +532,16 @@ const MiniVicBot = () => {
                 isSpeaking ? "opacity-100" : "opacity-0"
               }`}
             >
-              <div className="absolute inset-0 bg-cyan-400/10 mix-blend-overlay animate-pulse" />
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.3)_1px,transparent_1px)] bg-[size:20px_20px] opacity-20" />
+              <div className="absolute inset-0 bg-orange-400/5 mix-blend-overlay animate-pulse" />
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(255,115,80,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(255,115,80,0.15)_1px,transparent_1px)] bg-[size:20px_20px] opacity-10" />
             </div>
 
             <div className="absolute top-0 left-0 right-0 p-3 flex justify-between items-start z-10">
               <div className={`backdrop-blur-md rounded-full px-3 py-1 flex items-center gap-2 border transition-all duration-300 ${
-                isSpeaking ? "bg-cyan-950/60 border-cyan-400/50" : "bg-black/40 border-white/10"
+                isSpeaking ? "bg-orange-950/60 border-orange-400/50" : "bg-black/40 border-white/10"
               }`}>
-                <span className={`h-2 w-2 rounded-full ${isSpeaking ? "bg-green-400 animate-ping" : "bg-cyan-400"}`} />
-                <span className="text-[11px] text-cyan-50 font-mono tracking-wider">VIC • DIGITAL TWIN</span>
+                <span className={`h-2 w-2 rounded-full ${isSpeaking ? "bg-green-400 animate-ping" : "bg-orange-400"}`} />
+                <span className="text-[10px] text-orange-50 font-mono tracking-wider uppercase">Vic AI</span>
               </div>
               <div className="flex gap-2">
                 <button
@@ -549,7 +549,7 @@ const MiniVicBot = () => {
                   className="p-2 bg-black/40 backdrop-blur-md rounded-full text-white hover:bg-white/15 transition-all border border-white/10"
                   aria-label={isMuted ? "Unmute voice" : "Mute voice"}
                 >
-                  {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                  {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
                 </button>
                 <button
                   onClick={() => {
@@ -559,7 +559,7 @@ const MiniVicBot = () => {
                   className="p-2 bg-black/40 backdrop-blur-md rounded-full text-white hover:bg-red-500/20 hover:text-red-300 transition-all border border-white/10"
                   aria-label="Close mini Vic"
                 >
-                  <X size={16} />
+                  <X size={14} />
                 </button>
               </div>
             </div>
@@ -567,11 +567,11 @@ const MiniVicBot = () => {
             <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between z-10">
               <h3 className="text-white font-semibold text-lg flex items-center gap-2 drop-shadow-lg">
                 Mini Vic
-                <Sparkles size={16} className={`${isSpeaking ? "text-cyan-300 animate-spin-slow" : "text-gray-400"}`} />
+                <Sparkles size={16} className={`${isSpeaking ? "text-orange-300 animate-spin-slow" : "text-gray-400"}`} />
               </h3>
               <div className={`text-xs px-2 py-1 rounded-full backdrop-blur transition-colors ${
                 isSpeaking 
-                  ? "text-cyan-100 bg-cyan-500/30 border border-cyan-400/60" 
+                  ? "text-orange-100 bg-orange-500/30 border border-orange-400/60" 
                   : isListening
                     ? "text-red-100 bg-red-500/30 border border-red-400/60 animate-pulse"
                     : "text-gray-400 bg-black/20 border border-white/10"
@@ -588,8 +588,8 @@ const MiniVicBot = () => {
                 onClick={() => setActiveMode(mode.key)}
                 className={`px-3 py-1.5 text-xs rounded-lg border transition-all ${
                   activeMode === mode.key
-                    ? "bg-cyan-600 text-white border-cyan-300 shadow-cyan-500/30 shadow-lg"
-                    : "bg-gray-900/80 text-gray-200 border-gray-700 hover:border-cyan-500/50"
+                    ? "bg-orange-600 text-white border-orange-300 shadow-orange-500/30 shadow-lg"
+                    : "bg-gray-900/80 text-gray-200 border-gray-700 hover:border-orange-500/50"
                 }`}
               >
                 {mode.label}
@@ -599,7 +599,7 @@ const MiniVicBot = () => {
               <button
                 onClick={handleReplay}
                 disabled={!lastAudio || isMuted}
-                className="px-3 py-1.5 text-xs rounded-lg border border-gray-700 text-gray-200 hover:border-cyan-500/50 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-3 py-1.5 text-xs rounded-lg border border-gray-700 text-gray-200 hover:border-orange-500/50 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <div className="flex items-center gap-1">
                   <Play size={12} />
@@ -619,7 +619,7 @@ const MiniVicBot = () => {
           </div>
 
           <div className="px-3 pb-2 text-[11px] text-gray-300 flex items-center gap-3 bg-gray-950/60">
-            <span className="px-2 py-1 rounded-md bg-cyan-500/10 border border-cyan-500/30 text-cyan-100">
+            <span className="px-2 py-1 rounded-md bg-orange-500/10 border border-orange-500/30 text-orange-100">
               {PERSONA_MODES.find((m) => m.key === activeMode)?.blurb}
             </span>
             {latencyMs !== null && (
@@ -638,7 +638,7 @@ const MiniVicBot = () => {
                 <div
                   className={`max-w-[85%] p-3 text-sm leading-relaxed rounded-2xl shadow-sm border ${
                     msg.role === "user"
-                      ? "bg-cyan-600 text-white rounded-tr-none border-cyan-400/60"
+                      ? "bg-orange-600 text-white rounded-tr-none border-orange-400/60"
                       : "bg-gray-900/80 text-gray-100 border-gray-700/70 rounded-tl-none"
                   }`}
                 >
@@ -662,7 +662,7 @@ const MiniVicBot = () => {
                         <button
                           onClick={() => playAudio(msg.audio!)}
                           disabled={isMuted}
-                          className="px-2 py-1 rounded-md bg-cyan-500/10 text-cyan-100 border border-cyan-500/30 hover:bg-cyan-500/20 disabled:opacity-40"
+                          className="px-2 py-1 rounded-md bg-orange-500/10 text-orange-100 border border-orange-500/30 hover:bg-orange-500/20 disabled:opacity-40"
                         >
                           <div className="flex items-center gap-1">
                             <Play size={12} />
@@ -689,7 +689,7 @@ const MiniVicBot = () => {
                       )}
                       <button
                         onClick={() => handleCopy(msg.text, msg.id)}
-                        className="px-2 py-1 rounded-md bg-gray-800/70 text-gray-200 border border-gray-700 hover:border-cyan-400/60"
+                        className="px-2 py-1 rounded-md bg-gray-800/70 text-gray-200 border border-gray-700 hover:border-orange-400/60"
                       >
                         <div className="flex items-center gap-1">
                           <Copy size={12} />
@@ -703,13 +703,13 @@ const MiniVicBot = () => {
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-gray-900/80 p-3 rounded-2xl rounded-tl-none border border-gray-800 shadow-[0_0_15px_rgba(34,211,238,0.1)]">
+                <div className="bg-gray-900/80 p-3 rounded-2xl rounded-tl-none border border-gray-800 shadow-[0_0_15px_rgba(255,115,80,0.1)]">
                   <div className="flex gap-1.5">
-                    <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                    <span className="w-1.5 h-1.5 bg-orange-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <span className="w-1.5 h-1.5 bg-orange-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <span className="w-1.5 h-1.5 bg-orange-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
                   </div>
-                  <div className="text-[10px] text-cyan-500 mt-1 animate-pulse">Accessing neural memory...</div>
+                  <div className="text-[10px] text-orange-500 mt-1 animate-pulse">Accessing neural memory...</div>
                 </div>
               </div>
             )}
@@ -722,9 +722,9 @@ const MiniVicBot = () => {
                 key={item.label}
                 onClick={() => handleSend(item.prompt, item.mode)}
                 disabled={isLoading}
-                className="flex items-center gap-2 px-3 py-2 bg-gray-900/80 hover:bg-gray-800 border border-gray-800 hover:border-cyan-500/40 rounded-xl text-xs text-gray-100 transition-colors whitespace-nowrap"
+                className="flex items-center gap-2 px-3 py-2 bg-gray-900/80 hover:bg-gray-800 border border-gray-800 hover:border-orange-500/40 rounded-xl text-xs text-gray-100 transition-colors whitespace-nowrap"
               >
-                {item.mode === "scifi" ? <Rocket size={14} /> : <Sparkles size={14} className="text-cyan-300" />}
+                {item.mode === "scifi" ? <Rocket size={14} /> : <Sparkles size={14} className="text-orange-300" />}
                 <span>{item.label}</span>
               </button>
             ))}
@@ -745,8 +745,8 @@ const MiniVicBot = () => {
                 placeholder={isListening ? "Listening..." : "Ask me anything—teams, budgets, AI stack..."}
                 className={`w-full bg-gray-800 text-gray-100 text-sm rounded-xl pl-4 pr-10 py-2.5 border transition-all placeholder-gray-500 ${
                   isListening 
-                    ? "border-red-500/50 ring-1 ring-red-500/30 bg-red-500/5" 
-                    : "border-gray-700 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 focus:outline-none"
+                    ? "border-orange-500/50 ring-1 ring-orange-500/30 bg-orange-500/5" 
+                    : "border-gray-700 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 focus:outline-none"
                 }`}
               />
               
@@ -756,8 +756,8 @@ const MiniVicBot = () => {
                 onClick={toggleListening}
                 className={`absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg transition-colors ${
                   isListening 
-                    ? "text-red-400 hover:text-red-300 bg-red-500/10" 
-                    : "text-gray-400 hover:text-cyan-300 hover:bg-gray-700"
+                    ? "text-orange-400 hover:text-orange-300 bg-orange-500/10" 
+                    : "text-gray-400 hover:text-orange-300 hover:bg-gray-700"
                 }`}
                 title="Use Microphone"
               >
@@ -773,7 +773,7 @@ const MiniVicBot = () => {
                       handleCopy(last.text, lastAnswerId);
                     }
                   }}
-                  className="absolute right-10 top-1/2 -translate-y-1/2 text-gray-400 hover:text-cyan-300"
+                  className="absolute right-10 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-300"
                   title="Copy last answer"
                 >
                   <Copy size={14} />
@@ -783,7 +783,7 @@ const MiniVicBot = () => {
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="p-2.5 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl transition-all shadow-lg shadow-cyan-900/20"
+              className="p-2.5 bg-orange-600 hover:bg-orange-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl transition-all shadow-lg shadow-orange-900/20"
             >
               <Send size={18} />
             </button>
@@ -793,8 +793,8 @@ const MiniVicBot = () => {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`group relative h-16 w-16 rounded-full border-2 border-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.4)] overflow-hidden transition-all duration-300 hover:scale-110 active:scale-95 ${
-          isOpen ? "ring-4 ring-cyan-500/20" : ""
+        className={`group relative h-16 w-16 rounded-full border-2 border-orange-400 shadow-[0_0_20px_rgba(255,115,80,0.4)] overflow-hidden transition-all duration-300 hover:scale-110 active:scale-95 ${
+          isOpen ? "ring-4 ring-orange-500/20" : ""
         }`}
       >
         <video src={AVATAR_VIDEO_URL} className="h-full w-full object-cover" autoPlay loop muted playsInline />

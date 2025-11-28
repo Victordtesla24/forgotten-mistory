@@ -24,12 +24,11 @@ body.edit-mode-active * {
 }
 
 html {
-    background-color: transparent;
+    background-color: transparent; /* Dark background for the page */
 }
 
 body {
-    background-color: #0a0a0a; /* Fallback */
-    background-color: transparent; /* Allow canvas to show through */
+    background-color: transparent; /* Dark fallback */
     color: var(--text-color);
     font-family: 'Source Sans Pro', sans-serif;
     overflow-x: hidden;
@@ -362,69 +361,36 @@ section {
 }
 
 .avatar-placeholder {
-    width: 480px;
-    height: 600px;
+    width: 520px;
+    height: 650px;
     position: relative;
-    filter: drop-shadow(0 18px 35px rgba(0,0,0,0.5));
-    perspective: none;
 }
 
 .avatar-circle {
     width: 100%;
     height: 100%;
     background: transparent;
-    border-radius: 320px;
+    border-radius: 350px;
     overflow: hidden;
-    border: none;
     position: relative;
-    box-shadow: 0 14px 38px rgba(0,0,0,0.42);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.avatar-circle:hover {
+    transform: scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(255,115,80,0.2);
 }
 
 .avatar-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: none;
-    transition: filter 0.5s ease, transform 0.5s ease;
+    transition: transform 0.6s ease;
     transform: scale(1);
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, rgba(0,0,0,1) 52%, rgba(0,0,0,0.55) 72%, rgba(0,0,0,0) 90%);
-    mask-image: radial-gradient(circle at 50% 50%, rgba(0,0,0,1) 52%, rgba(0,0,0,0.55) 72%, rgba(0,0,0,0) 90%);
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
 }
 
-.avatar-placeholder:hover .avatar-img {
-    filter: grayscale(0%);
-    transform: scale(1.01);
-    transition: transform 0.6s ease, filter 0.6s ease;
-}
-
-#upload-btn {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background: var(--accent-color);
-    color: #0a0a0a;
-    border: none;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    display: none; 
-    cursor: pointer;
-    z-index: 10;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-.avatar-circle::before {
-    content: none;
-}
-
-.avatar-circle::after {
-    content: none;
-}
-
-.avatar-placeholder::after {
-    content: none;
+.avatar-circle:hover .avatar-img {
+    transform: scale(1.05);
 }
 
 /* Sections Global */
@@ -905,7 +871,7 @@ section {
 
 .dash-bar {
     width: 15%;
-    background: linear-gradient(to top, #4facfe 0%, #00f2fe 100%);
+    background: var(--accent-color);
     border-radius: 2px 2px 0 0;
     animation: growBar 2s ease-in-out infinite alternate;
 }
@@ -925,10 +891,10 @@ section {
 .viz-doc {
     width: 110px;
     height: 150px;
-    background: #f0f0f0;
+    background: #1a1b20;
     border-radius: 4px;
     position: relative;
-    box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -946,7 +912,7 @@ section {
 
 .doc-line {
     height: 6px;
-    background: #ccc;
+    background: #2a2b30;
     border-radius: 3px;
 }
 
@@ -960,8 +926,8 @@ section {
     left: 0;
     width: 100%;
     height: 4px;
-    background: #00ff88;
-    box-shadow: 0 0 15px #00ff88;
+    background: var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-color);
     opacity: 0.8;
     animation: scanDoc 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
@@ -1693,39 +1659,7 @@ footer {
 }
 
 /* --- Animated Gradient Border on Hover (New Addition) --- */
-@keyframes borderShine {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 200% 0%; }
-}
 
-.project-card:hover, .skill-card:hover {
-    border-color: transparent; 
-    background-image: 
-        linear-gradient(var(--card-bg), var(--card-bg)), /* Inner Content BG */
-        linear-gradient(90deg, #ff7350, #00f2fe, #ff7350); /* Border Gradient */
-    background-origin: border-box;
-    background-clip: padding-box, border-box;
-    background-size: 200% 100%;
-    animation: borderShine 2s linear infinite;
-}
-
-/* --- Added for WOW Factor Features --- */
-
-/* 2. Live Telemetry Dashboard */
-.telemetry-panel {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background: rgba(10, 10, 12, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    backdrop-filter: blur(10px);
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    font-family: 'Source Code Pro', monospace;
-    position: relative;
-    overflow: hidden;
-}
 
 .telemetry-panel::before {
     content: '';
@@ -2793,3 +2727,19 @@ footer {
 @keyframes bounceBar { from { transform: scaleY(0.5); } to { transform: scaleY(1); } }
 
 /* End WOW Factor Additions */
+
+/* Restored missing telemetry-panel style */
+.telemetry-panel {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(10, 10, 12, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    font-family: 'Source Code Pro', monospace;
+    position: relative;
+    overflow: hidden;
+}

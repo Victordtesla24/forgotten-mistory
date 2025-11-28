@@ -92,18 +92,13 @@ export default function Home() {
               </span>
             </h1>
             <p className="hero-subtitle reveal-text-delay editable" data-key="hero-subtitle">
-              I work as a Senior Technical Program Manager & AI Solution Architect here in Melbourne.
-              <br />
-              I am really passionate about solving complex problems and leading teams through challenging
-              projects.
+              I'm a technical leader and AI solutions architect based in Melbourne. With over 15 years of experience, I enjoy helping teams build complex systems and solve challenging problems. My work has spanned across finance and telecommunications, where I've focused on delivering value and making a positive impact.
               <br />
               <br />
-              Whether it is discussing the latest in Technology, debating philosophical ideas, or planning my
-              next travel adventure, I love diving deep into topics that spark my genuine whimsy.
+              Beyond my professional work, I have a deep interest in the intersection of technology and history, particularly in ancient algorithms and Vedic astronomy. I believe there's a lot to learn from the past to build a better future.
               <br />
               <br />
-              My approach towards life is very simple; I do what brings happiness & value, while making sure I
-              do not cause hard to anyone or anything along the way...
+              My goal is to create technology that is not only powerful but also responsible and beneficial to everyone.
             </p>
             <div className="hero-links reveal-text-delay">
               <a href="https://github.com/Victordtesla24" target="_blank" rel="noreferrer" className="btn-link">
@@ -259,18 +254,23 @@ export default function Home() {
 
           <div className="hero-image-container parallax" data-speed="0.1">
             <div className="avatar-placeholder" id="avatar-container">
-              <div className="avatar-circle">
-                <img
-                  src="assets/my_avatar.png"
-                  alt="Vikram Deshpande headshot"
-                  className="avatar-img"
-                  id="profile-image"
+              <div className="avatar-circle relative overflow-hidden">
+                <img 
+                  src="assets/my_avatar.png" 
+                  alt="Vikram Avatar" 
+                  className="avatar-img absolute inset-0 w-full h-full object-cover z-10 transition-opacity duration-500"
+                  id="avatar-static"
                 />
+                <video
+                  src="assets/my-avatar.mp4"
+                  className="avatar-img absolute inset-0 w-full h-full object-cover z-0"
+                  id="profile-image"
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                ></video>
               </div>
-              <input type="file" id="image-upload" accept="image/*" style={{ display: 'none' }} />
-              <button id="upload-btn" className="btn-icon">
-                <i className="fas fa-camera"></i>
-              </button>
             </div>
           </div>
         </section>
@@ -284,18 +284,10 @@ export default function Home() {
             </div>
             <div className="about-content">
               <p className="about-text editable" data-key="about-text-1">
-                15+ year Senior Technical Delivery Leader &amp; AI/ML Solutions Architect (CSM) across Financial
-                Services and Telecommunications, known for bridging engineering depth with executive strategy. I
-                lead cloud-native modernisations that cut delivery time by 30%+, reduce infrastructure cost by
-                15%, and land mission-critical programs on multi-million-dollar budgets with full architectural
-                compliance.
+                With over 15 years in the technology industry, I've had the privilege of working as a Senior Technical Leader and Certified Scrum Master (CSM) in the financial services and telecommunications sectors. My focus has been on program delivery, enterprise transformation, and architecting AI/ML-driven solutions.
               </p>
               <p className="about-text editable" data-key="about-text-2">
-                I direct 5+ cross-functional squads (up to 40 resources) through AI/ML solutions, real-time
-                WebSocket telemetry at 10k+ device concurrency with P95 latency under 200 ms, and portfolio
-                governance for $5M+. Core toolkit: Python, TypeScript/React/Next.js, Kubernetes, Docker,
-                Terraform, CI/CD, GCP/AWS/Azure, Postgres/Supabase, and LangChain/Langfuse for measurable AI
-                outcomes.
+                I have experience in leading cross-functional teams and guiding cloud-based modernizations. My technical background includes Python, TypeScript, and cloud-native infrastructure like Kubernetes, GCP, and AWS. I'm passionate about fostering an agile culture and translating complex technical roadmaps into business value.
               </p>
 
               <div className="snap-grid" role="list">
@@ -311,11 +303,11 @@ export default function Home() {
                     </div>
                     <span className="snap-icon">+</span>
                   </button>
-                  <div className="snap-body">
+                    <div className="snap-body">
                     <ul>
-                      <li>Translate strategy into roadmaps that cut delivery time by &gt;30% and de-risk cloud modernisations.</li>
-                      <li>Align AI/ML delivery with compliance and risk models from day one.</li>
-                      <li>Use telemetry and narrative dashboards to keep decisions transparent for leaders and squads.</li>
+                      <li>Translate strategy into roadmaps that improve delivery efficiency and de-risk cloud modernisations.</li>
+                      <li>Align AI/ML delivery with compliance and risk models from the start.</li>
+                      <li>Use telemetry and dashboards to provide transparency for leaders and teams.</li>
                     </ul>
                   </div>
                 </div>
@@ -391,7 +383,7 @@ export default function Home() {
                 <div className="accordion-header">
                   <div className="accordion-title">
                     <span className="role editable" data-key="exp-1-role">
-                      Senior Delivery Lead / Technical Product Owner
+                      Senior Delivery Lead / AI/ML Solutions Architect
                     </span>
                     <span className="company editable" data-key="exp-1-company">
                       ANZ — Melbourne, VIC
@@ -408,52 +400,16 @@ export default function Home() {
                   <div className="accordion-body">
                     <ul>
                       <li className="editable" data-key="exp-1-desc-1">
-                        Led AI/ML strategy &amp; delivery, including real-time WebSocket telemetry services for 10k+ device
-                        concurrency.
+                        Led the delivery of AI/ML solutions, including real-time WebSocket telemetry services for high-concurrency devices.
                       </li>
                       <li className="editable" data-key="exp-1-desc-2">
-                        Reduced user response times to P95 &lt; 200 ms while steering cross-functional squads and exec
-                        stakeholders.
+                        Guided the transition of core banking platforms to cloud-native architectures (.NET/Azure), improving delivery efficiency and reducing infrastructure costs.
                       </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div className="accordion-item">
-                <div className="accordion-header">
-                  <div className="accordion-title">
-                    <span className="role editable" data-key="exp-2-role">
-                      AI/ML Strategy &amp; Solutions Architect
-                    </span>
-                    <span className="company editable" data-key="exp-2-company">
-                      ANZ — Melbourne, VIC
-                    </span>
-                  </div>
-                  <div className="accordion-meta">
-                    <span className="date editable" data-key="exp-2-date">
-                      2017 - 2022
-                    </span>
-                    <span className="icon">+</span>
-                  </div>
-                </div>
-                <div className="accordion-content">
-                  <div className="accordion-body">
-                    <ul>
-                      <li className="editable" data-key="exp-2-desc-1">
-                        Orchestrated Agile transformation of core banking from monolith to cloud-native (.NET/Azure),
-                        cutting delivery time by &gt;30% and infra cost by &gt;15%.
+                      <li className="editable" data-key="exp-1-desc-3">
+                        Managed a program portfolio valued at over $5M, supporting multiple cross-functional squads.
                       </li>
-                      <li className="editable" data-key="exp-2-desc-2">
-                        Directed a $5M+ program portfolio, leading 5 squads (up to 40 resources incl. offshore) to
-                        on-time, high-quality releases.
-                      </li>
-                      <li className="editable" data-key="exp-2-desc-3">
-                        Owned architecture &amp; governance, ensuring 100% compliance with enterprise standards and risk
-                        models.
-                      </li>
-                      <li className="editable" data-key="exp-2-desc-4">
-                        Ran exec workshops (40+ GMs) to align strategy and improve decision-making clarity by &gt;55%.
+                      <li className="editable" data-key="exp-1-desc-4">
+                        Developed the technical vision and managed the product backlog for platform modernizations, ensuring alignment with enterprise standards and risk frameworks.
                       </li>
                     </ul>
                   </div>
@@ -481,8 +437,7 @@ export default function Home() {
                   <div className="accordion-body">
                     <ul>
                       <li className="editable" data-key="exp-3-desc-1">
-                        Managed delivery for a critical risk and compliance program, ensuring 100% regulatory adherence
-                        for major data initiatives.
+                        Managed the delivery for a critical risk and compliance program, focusing on regulatory adherence for major data initiatives.
                       </li>
                     </ul>
                   </div>
@@ -510,11 +465,10 @@ export default function Home() {
                   <div className="accordion-body">
                     <ul>
                       <li className="editable" data-key="exp-4-desc-1">
-                        Delivered Azure ML telemetry gap analysis: 10 key insights improved reliability by 15% and
-                        reduced MTTR by 10%.
+                        Delivered a gap analysis for Azure ML telemetry, which helped to improve system reliability and reduce incident resolution time.
                       </li>
                       <li className="editable" data-key="exp-4-desc-2">
-                        Aligned DevOps strategies to enterprise standards, achieving 95% compliance.
+                        Worked on aligning DevOps strategies with enterprise standards to improve compliance.
                       </li>
                     </ul>
                   </div>
@@ -542,8 +496,7 @@ export default function Home() {
                   <div className="accordion-body">
                     <ul>
                       <li className="editable" data-key="exp-5-desc-1">
-                        Built customer journey scorecards and streamlined JIRA requirements, improving delivery
-                        efficiency by 20% and operational clarity by 15%.
+                        Developed customer journey scorecards and streamlined JIRA requirements to improve delivery efficiency and operational clarity.
                       </li>
                     </ul>
                   </div>
@@ -571,8 +524,7 @@ export default function Home() {
                   <div className="accordion-body">
                     <ul>
                       <li className="editable" data-key="exp-6-desc-1">
-                        Delivered analytics and BI projects, boosting client engagement by 20% and automating
-                        regulatory reporting to 100% accuracy.
+                        Delivered analytics and BI projects that boosted client engagement and automated regulatory reporting.
                       </li>
                     </ul>
                   </div>
@@ -600,8 +552,7 @@ export default function Home() {
                   <div className="accordion-body">
                     <ul>
                       <li className="editable" data-key="exp-7-desc-1">
-                        Optimized data processing workflows via ePAL implementation, improving efficiency by 30% and
-                        reducing reporting time by 90%.
+                        Optimized data processing workflows, which improved efficiency and reduced reporting time for financial data sets.
                       </li>
                     </ul>
                   </div>
@@ -629,19 +580,16 @@ export default function Home() {
                   <div className="accordion-body">
                     <ul>
                       <li className="editable" data-key="exp-8-desc-1">
-                        Built a Next.js + Supabase JIRA analytics dashboard generating LLM-powered retro insights and
-                        sprint plans.
+                        Architected and developed a Next.js and Supabase analytics dashboard for JIRA to expose sprint velocity metrics and generate LLM-powered retrospective insights.
                       </li>
                       <li className="editable" data-key="exp-8-desc-2">
-                        Created a production-grade Node.js/Express public-key server (100% Mocha/Chai coverage) for API
-                        signing.
+                        Built a production-grade Node.js/Express public-key server for API signing.
                       </li>
                       <li className="editable" data-key="exp-8-desc-3">
-                        Developed a React/TypeScript + D3 relationship timeline visualiser for dynamic customer
-                        journeys.
+                        Developed a React/TypeScript and D3 visualization tool for dynamic customer journey interactions.
                       </li>
                       <li className="editable" data-key="exp-8-desc-4">
-                        Implemented Langfuse + Phoenix LLM evaluation stack cutting error budget breaches by 38%.
+                        Implemented an LLM evaluation stack using Langfuse and Phoenix to reduce error budget breaches in a simulated production environment.
                       </li>
                     </ul>
                   </div>
@@ -665,7 +613,7 @@ export default function Home() {
                     </span>
                     <div>
                       <p className="skill-kicker">AI/ML &amp; Data</p>
-                      <h3 className="skill-name">LLM pipelines &amp; telemetry</h3>
+                      <h3 className="skill-name">AI/ML Solutions &amp; LLM Pipelines</h3>
                     </div>
                   </div>
                   <span className="skill-chevron">
@@ -674,9 +622,11 @@ export default function Home() {
                 </button>
                 <div className="skill-body">
                   <ul className="skill-list">
-                    <li>LLM pipelines with LangChain/Langfuse and Phoenix evaluation for measurable quality.</li>
-                    <li>Real-time WebSocket telemetry at 10k+ device concurrency with P95 latency under 200 ms.</li>
-                    <li>Postgres/Supabase analytics and Python data tooling for exec-ready dashboards.</li>
+                    <li>AI/ML Solutions</li>
+                    <li>LLM Pipelines (LangChain, Langfuse)</li>
+                    <li>Real-Time Telemetry</li>
+                    <li>MLOps</li>
+                    <li>Data Architecture</li>
                   </ul>
                 </div>
               </div>
@@ -689,7 +639,7 @@ export default function Home() {
                     </span>
                     <div>
                       <p className="skill-kicker">Engineering</p>
-                      <h3 className="skill-name">Cloud-native delivery</h3>
+                      <h3 className="skill-name">Cloud-Native &amp; Full-Stack</h3>
                     </div>
                   </div>
                   <span className="skill-chevron">
@@ -698,9 +648,11 @@ export default function Home() {
                 </button>
                 <div className="skill-body">
                   <ul className="skill-list">
-                    <li>Python, TypeScript/React/Next.js, Node.js/Express for production-grade services.</li>
-                    <li>Kubernetes, Docker, Terraform, and CI/CD automation for secure, repeatable releases.</li>
-                    <li>Cloud design on GCP/AWS/Azure with telemetry-first observability.</li>
+                    <li>Python, TypeScript, React/Next.js</li>
+                    <li>Kubernetes, Docker, Terraform</li>
+                    <li>GCP, AWS</li>
+                    <li>Postgres/Supabase</li>
+                    <li>CI/CD, DevOps</li>
                   </ul>
                 </div>
               </div>
@@ -713,7 +665,7 @@ export default function Home() {
                     </span>
                     <div>
                       <p className="skill-kicker">Leadership</p>
-                      <h3 className="skill-name">Program &amp; portfolio</h3>
+                      <h3 className="skill-name">Program Delivery &amp; Management</h3>
                     </div>
                   </div>
                   <span className="skill-chevron">
@@ -722,9 +674,11 @@ export default function Home() {
                 </button>
                 <div className="skill-body">
                   <ul className="skill-list">
-                    <li>Program delivery and backlog ownership for $5M+ portfolios with compliance guardrails.</li>
-                    <li>Lead 5+ squads (up to 40 resources) across onsite/offshore vendors with servant leadership.</li>
-                    <li>Exec workshops and decision narratives that lift clarity and alignment by ~55%.</li>
+                    <li>Technical Program Management</li>
+                    <li>Agile/Scrum/SAFe</li>
+                    <li>Product Ownership</li>
+                    <li>Stakeholder Alignment</li>
+                    <li>Risk &amp; Budget Management</li>
                   </ul>
                 </div>
               </div>
@@ -737,7 +691,7 @@ export default function Home() {
                     </span>
                     <div>
                       <p className="skill-kicker">Certifications</p>
-                      <h3 className="skill-name">Credentials &amp; governance</h3>
+                      <h3 className="skill-name">Credentials &amp; Governance</h3>
                     </div>
                   </div>
                   <span className="skill-chevron">
@@ -746,9 +700,8 @@ export default function Home() {
                 </button>
                 <div className="skill-body">
                   <ul className="skill-list">
-                    <li>Certified Scrum Master (Scrum Alliance) with Agile/Scrum/SAFe delivery.</li>
-                    <li>Cloud/Data certifications in progress for AWS/GCP; architecture-first mindset.</li>
-                    <li>Risk, budget, and stakeholder governance baked into delivery rituals.</li>
+                    <li>Certified Scrum Master (CSM)</li>
+                    <li>Cloud/Data Certifications (AWS/GCP - In progress)</li>
                   </ul>
                 </div>
               </div>
@@ -761,7 +714,7 @@ export default function Home() {
                     </span>
                     <div>
                       <p className="skill-kicker">Education</p>
-                      <h3 className="skill-name">Technical foundations</h3>
+                      <h3 className="skill-name">Formal Education</h3>
                     </div>
                   </div>
                   <span className="skill-chevron">
@@ -770,9 +723,8 @@ export default function Home() {
                 </button>
                 <div className="skill-body">
                   <ul className="skill-list">
-                    <li>Master of Computer Science (Honors, 2010), Monash University — Melbourne.</li>
-                    <li>Bachelor of Engineering, Computer Science (2007), University of Melbourne.</li>
-                    <li>Ongoing independent AI consulting and upskilling (2025-current).</li>
+                    <li>Master of Computer Science (Honors), Monash University</li>
+                    <li>Bachelor of Engineering, Computer Science, University of Melbourne</li>
                   </ul>
                 </div>
               </div>
@@ -789,6 +741,7 @@ export default function Home() {
               </p>
             </div>
             <div className="arch-wrapper glass-card">
+              <div id="arch-tooltip" className="arch-tooltip" style={{ position: 'absolute', background: 'rgba(0, 0, 0, 0.8)', color: '#fff', padding: '5px 10px', borderRadius: '5px', fontSize: '0.9rem', pointerEvents: 'none', opacity: 0, transition: 'opacity 0.2s', zIndex: 100 }}></div>
               <div className="arch-diagram">
                 <div className="arch-diagram-halo" aria-hidden="true"></div>
                 <div className="arch-diagram-grid" aria-hidden="true"></div>
@@ -1291,8 +1244,8 @@ export default function Home() {
       <Script src="/vendor/gsap.min.js" strategy="beforeInteractive" />
       <Script src="/vendor/ScrollTrigger.min.js" strategy="beforeInteractive" />
       <Script src="/vendor/lenis.min.js" strategy="beforeInteractive" />
-      <Script type="module" src="three-background.js" strategy="lazyOnload" />
-      <Script src="script.js" strategy="lazyOnload" />
+      <Script type="module" src="/three-background.js" strategy="afterInteractive" />
+      <Script src="/script.js" strategy="lazyOnload" />
     </>
   );
 }

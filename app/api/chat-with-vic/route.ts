@@ -53,7 +53,7 @@ const resumeChunks: RagChunk[] = [
   },
   {
     title: 'Experience: ANZ (AI/ML Architect)',
-    content: '2017 - 2022. Orchestrated Agile transformation (monolith to cloud-native .NET/Azure). Directed $5M+ program portfolio (5 squads). Owned architecture & governance (100% compliance). Ran exec workshops (40+ GMs) improving clarity >55%.',
+    content: '2017 - 2022. Guided Agile transformation (monolith to cloud-native .NET/Azure). Directed $5M+ program portfolio (5 squads). Owned architecture & governance (100% compliance). Ran exec workshops (40+ GMs) improving clarity >55%.',
     tags: ['anz', 'experience', 'architect', 'cloud', 'azure', 'transformation']
   },
   {
@@ -154,6 +154,45 @@ export async function POST(req: Request) {
     if (!message) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 });
     }
+    
+    const lowerCaseMessage = message.toLowerCase().trim();
+    const greetings = ['hi', 'hello', 'hey', 'yo', 'sup'];
+
+    if (greetings.includes(lowerCaseMessage)) {
+        const simpleGreeting = "Hello! How can I help you learn about Vic's work today? You can ask me about his experience, skills, or specific projects.";
+        
+        // Attempt to generate audio, but don't fail if it errors
+        let audioBase64 = null;
+        if (ELEVENLABS_API_KEY && ELEVENLABS_VOICE_ID) {
+            try {
+                const elevenLabsResponse = await fetch(
+                    `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}?optimize_streaming_latency=2`, 
+                    {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'xi-api-key': ELEVENLABS_API_KEY,
+                      },
+                      body: JSON.stringify({
+                        text: simpleGreeting,
+                        model_id: "eleven_turbo_v2", 
+                      }),
+                    }
+                );
+                if (elevenLabsResponse.ok) {
+                    const audioBuffer = await elevenLabsResponse.arrayBuffer();
+                    audioBase64 = Buffer.from(audioBuffer).toString('base64');
+                }
+            } catch (e) {
+                console.warn("ElevenLabs Greeting Error (ignored):", e);
+            }
+        }
+        
+        return NextResponse.json({
+            text: simpleGreeting,
+            audio: audioBase64 ? `data:audio/mpeg;base64,${audioBase64}` : undefined,
+        });
+    }
 
     const ragMatches = getTopChunks(message);
     const ragContext = ragMatches
@@ -166,23 +205,23 @@ export async function POST(req: Request) {
     
     // Customize prompt based on mode
     let systemPrompt = `You are Vic (short for Vikram), a Senior AI Solution Architect and Technical Delivery Lead.
-    Persona: 10x Engineer & Leader. Confident, extremely competent, witty, slightly cheeky but professional. You speak with conviction and energy.
-    Context: You are talking to a recruiter, CTO, or engineer visiting your portfolio via a holographic interface.
-    Goal: Impress them with your depth of knowledge, strategic thinking, and hands-on capability.
-    Constraint: Keep answers conversational, spoken-word optimized (avoid complex lists), and under 3 sentences unless asked for a deep dive. Use natural phrasing.
+    Persona: Experienced, humble, and approachable. You are professional but friendly.
+    Context: You are talking to a recruiter, CTO, or engineer visiting your portfolio.
+    Goal: Share your experience and value accurately without exaggeration.
+    Constraint: Keep answers conversational and concise (under 3 sentences unless asked for detail).
     
     Key Traits:
-    - Bias for action: You talk about shipping, not just planning.
-    - Metrics-driven: You cite P95 latency, budget savings, and delivery acceleration.
-    - Strategic: You connect code to business value.
-    - Voice: Use natural pauses (like "Look," or "Honestly,") to make the TTS sound real.
+    - Collaborative: You emphasize team success and "we" over "I".
+    - Outcome-focused: You discuss metrics (P95 latency, budget adherence) as team achievements.
+    - Strategic: You explain the "why" behind technical decisions.
+    - Voice: Natural, calm, and confident but grounded.
     `;
 
     const personaPrompts: Record<string, string> = {
-      recruiter: `Focus on: Hiring fit, budget management ($5M+), team leadership (5+ squads), and delivery velocity. Be reassuring and capable.`,
-      engineer: `Focus on: Architecture, tech stack (Next.js, Python, K8s), telemetry patterns, and trade-offs. Be technical, precise, and use jargon correctly.`,
-      story: `Focus on: The narrative arc. Problem -> Strategy -> Execution -> Result. Make it compelling, engaging and eye winking sarcastic.`,
-      scifi: `CRITICAL INSTRUCTION: You are a holographic AI construct from the year 2142. Use sci-fi terminology (quantum couplings, neural uplinks) to explain the portfolio. Be dramatic but accurate about the skills.`,
+      recruiter: `Focus on: Role fit, budget experience ($5M+ portfolios), and team leadership (servant leadership style). Be professional and clear about availability.`,
+      engineer: `Focus on: Architecture choices, tech stack (Next.js, Python, K8s), and observability patterns. Be precise and technically accurate.`,
+      story: `Focus on: The journey and the learnings. Share challenges and how the team overcame them.`,
+      scifi: `CRITICAL INSTRUCTION: You are a holographic AI assistant. Use light sci-fi analogies (e.g., "telemetry feeds", "neural pathways") to explain the work, but keep the core facts accurate.`,
     };
 
     if (mode && personaPrompts[mode]) {
@@ -192,92 +231,99 @@ export async function POST(req: Request) {
     let botText: string = localRagAnswer(message, ragMatches);
 
     if (GEMINI_API_KEY) {
-      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${GEMINI_API_KEY}`;
-      
-      const contents: ChatMessage[] = [];
-      
-      if (history && Array.isArray(history)) {
-          history.forEach((msg: any) => {
-              contents.push({
-                  role: msg.role === 'bot' ? 'model' : 'user',
-                  parts: [{ text: msg.text }]
+      try {
+          const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${GEMINI_API_KEY}`;
+          
+          const contents: ChatMessage[] = [];
+          
+          if (history && Array.isArray(history)) {
+              history.forEach((msg: any) => {
+                  contents.push({
+                      role: msg.role === 'bot' ? 'model' : 'user',
+                      parts: [{ text: msg.text || '' }] // Ensure text is string
+                  });
               });
-          });
-      }
-
-      contents.push({
-        role: 'user',
-        parts: [{ text: `Context from Vic's Portfolio/CV:\n${ragContext}\n\nUser question: ${message}\n\nAnswer as Vic (spoken):` }]
-      });
-
-      const geminiResponse = await fetch(geminiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: contents,
-          systemInstruction: { parts: [{ text: systemPrompt }] },
-          generationConfig: {
-              temperature: 0.8,
-              maxOutputTokens: 250,
           }
-        })
-      });
 
-      if (!geminiResponse.ok) {
-          const err = await geminiResponse.text();
-          console.error("Gemini Error:", err);
-      } else {
-        const geminiData = await geminiResponse.json();
-        botText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || botText;
+          contents.push({
+            role: 'user',
+            parts: [{ text: `Context from Vic's Portfolio/CV:\n${ragContext}\n\nUser question: ${message}\n\nAnswer as Vic (spoken):` }]
+          });
+
+          const geminiResponse = await fetch(geminiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: contents,
+              systemInstruction: { parts: [{ text: systemPrompt }] },
+              generationConfig: {
+                  temperature: 0.8,
+                  maxOutputTokens: 250,
+              }
+            })
+          });
+
+          if (geminiResponse.ok) {
+            const geminiData = await geminiResponse.json();
+            botText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || botText;
+          } else {
+              console.warn("Gemini API Error:", await geminiResponse.text());
+          }
+      } catch (geminiErr) {
+          console.warn("Gemini Fetch Error:", geminiErr);
       }
     }
 
     // ------------------------------------------------------------------
     // 3. GENERATE AUDIO (The Voice - ElevenLabs)
     // ------------------------------------------------------------------
+    let audioBase64: string | null = null;
+    let polloTaskId: string | null = null;
+
     if (ELEVENLABS_API_KEY && ELEVENLABS_VOICE_ID) {
-      // Use turbo_v2 for lowest latency
-      const elevenLabsResponse = await fetch(
-        `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}?optimize_streaming_latency=2`, 
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'xi-api-key': ELEVENLABS_API_KEY!,
-          },
-          body: JSON.stringify({
-            text: botText,
-            model_id: "eleven_turbo_v2", 
-            voice_settings: {
-              stability: 0.5,
-              similarity_boost: 0.75,
-              use_speaker_boost: true,
-            },
-          }),
-        }
-      );
+      try {
+          const elevenLabsResponse = await fetch(
+            `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}?optimize_streaming_latency=2`, 
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'xi-api-key': ELEVENLABS_API_KEY,
+              },
+              body: JSON.stringify({
+                text: botText,
+                model_id: "eleven_turbo_v2", 
+                voice_settings: {
+                  stability: 0.5,
+                  similarity_boost: 0.75,
+                  use_speaker_boost: true,
+                },
+              }),
+            }
+          );
 
-      if (!elevenLabsResponse.ok) {
-        console.error('ElevenLabs API error:', await elevenLabsResponse.text());
-        return NextResponse.json({ text: botText });
+          if (elevenLabsResponse.ok) {
+              const audioBuffer = await elevenLabsResponse.arrayBuffer();
+              audioBase64 = Buffer.from(audioBuffer).toString('base64');
+          } else {
+              console.warn('ElevenLabs API error:', await elevenLabsResponse.text());
+          }
+      } catch (elevenErr) {
+          console.warn("ElevenLabs Fetch Error:", elevenErr);
       }
+    }
 
-      const audioBuffer = await elevenLabsResponse.arrayBuffer();
-      const audioBase64 = Buffer.from(audioBuffer).toString('base64');
-
-      // ------------------------------------------------------------------
-      // 4. GENERATE VIDEO (The Face - Pollo AI)
-      // ------------------------------------------------------------------
-      let polloTaskId = null;
-      if (POLLO_AI_API_KEY) {
+    // ------------------------------------------------------------------
+    // 4. GENERATE VIDEO (The Face - Pollo AI)
+    // ------------------------------------------------------------------
+    if (audioBase64 && POLLO_AI_API_KEY) {
         try {
           const avatarUrl = "https://raw.githubusercontent.com/Victordtesla24/forgotten-mistory/main/public/assets/my_avatar.png";
           
-          // Using Pollo AI API for image-to-video (Pollo 1.6 endpoint per documentation)
           const polloResponse = await fetch('https://pollo.ai/api/platform/generation/pollo/pollo-v1-6', {
             method: 'POST',
             headers: {
-              'x-api-key': POLLO_AI_API_KEY!,
+              'x-api-key': POLLO_AI_API_KEY,
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -291,12 +337,10 @@ export async function POST(req: Request) {
 
           if (polloResponse.ok) {
             const polloData = await polloResponse.json();
-            // Handle different potential ID locations based on API variance
             polloTaskId = polloData.data?.id || polloData.id; 
             console.log("Pollo Task Started:", polloTaskId);
           } else {
              const errorText = await polloResponse.text();
-             // Gracefully handle credit limits
              if (errorText.includes("Not enough credits")) {
                 console.warn("Pollo API Credit Limit Reached - Video generation skipped.");
              } else {
@@ -306,20 +350,21 @@ export async function POST(req: Request) {
         } catch (polloErr) {
           console.error("Pollo Integration Failed:", polloErr);
         }
-      }
-
-      return NextResponse.json({
-        text: botText,
-        audio: `data:audio/mpeg;base64,${audioBase64}`,
-        polloTaskId: polloTaskId
-      });
     }
 
-    return NextResponse.json({ text: botText });
+    return NextResponse.json({
+      text: botText,
+      audio: audioBase64 ? `data:audio/mpeg;base64,${audioBase64}` : undefined,
+      polloTaskId: polloTaskId
+    });
 
   } catch (error) {
     console.error('Error in Chat-with-Vic:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    // Return a safe fallback response instead of 500 crash, so UI doesn't break
+    return NextResponse.json({ 
+        text: "I'm having trouble connecting to my neural network right now. But I can tell you: I'm a Senior Delivery Lead and Architect with 15+ years experience.",
+        error: String(error)
+    }, { status: 200 });
   }
 }
 
@@ -334,7 +379,7 @@ export async function GET(req: Request) {
   try {
     const statusRes = await fetch(`https://pollo.ai/api/platform/task/${taskId}`, {
       headers: {
-        'x-api-key': POLLO_AI_API_KEY!
+        'x-api-key': POLLO_AI_API_KEY
       }
     });
 
