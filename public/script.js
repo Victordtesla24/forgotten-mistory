@@ -1219,46 +1219,60 @@ function initTerminalOverlay() {
     closeBtn?.addEventListener('click', closeTerminal);
 }
 
-// --- Mini-Vic Chatbot (Legacy Removed - Use React Component) ---
-// initMiniVicWidget logic removed to prevent conflicts.
-
-
-document.addEventListener('DOMContentLoaded', () => {
+// Init all interactive elements safely
+function initAllFeatures() {
     // --- Avatar Hover Video ---
     const avatarContainer = document.getElementById('avatar-container');
     const video = document.getElementById('profile-image');
     const staticImg = document.getElementById('avatar-static');
 
     if (avatarContainer && video && staticImg) {
-        avatarContainer.addEventListener('mouseenter', () => {
-            video.play().then(() => {
-                staticImg.style.opacity = '0';
-            }).catch(e => console.warn('Video play interrupted', e));
-        });
+        // Remove existing listeners to prevent duplicates if re-run
+        const newContainer = avatarContainer.cloneNode(true);
+        if (avatarContainer.parentNode) {
+            avatarContainer.parentNode.replaceChild(newContainer, avatarContainer);
+        }
+        
+        // Re-select after replace
+        const freshContainer = document.getElementById('avatar-container');
+        const freshVideo = document.getElementById('profile-image'); // IDs are unique
+        const freshStatic = document.getElementById('avatar-static');
 
-        avatarContainer.addEventListener('mouseleave', () => {
-            staticImg.style.opacity = '1';
-            // Wait for fade out before pausing/resetting to avoid glitch
-            setTimeout(() => {
-                video.pause();
-                video.currentTime = 0;
-            }, 500);
-        });
+        if (freshContainer && freshVideo && freshStatic) {
+             freshContainer.addEventListener('mouseenter', () => {
+                freshVideo.play().then(() => {
+                    freshStatic.style.opacity = '0';
+                }).catch(e => console.warn('Video play interrupted', e));
+            });
+
+            freshContainer.addEventListener('mouseleave', () => {
+                freshStatic.style.opacity = '1';
+                setTimeout(() => {
+                    freshVideo.pause();
+                    freshVideo.currentTime = 0;
+                }, 500);
+            });
+        }
     }
 
     initTelemetryPanel();
     initArchitectureLab();
     initProjectPreviews();
     initTerminalOverlay();
-    // initMiniVicWidget(); // Legacy removed
-
-    // Safety fallback: Force remove preloader if it hangs
+    
+    // Safety fallback
     setTimeout(() => {
         const preloader = document.querySelector(".preloader");
         if (preloader) {
             preloader.style.display = "none";
             preloader.style.pointerEvents = "none";
-            document.body.style.overflow = "auto"; // Ensure scrolling is enabled
+            document.body.style.overflow = "auto";
         }
     }, 4000);
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAllFeatures);
+} else {
+    initAllFeatures();
+}
