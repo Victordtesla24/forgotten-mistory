@@ -86,6 +86,32 @@ const MiniVicBot = () => {
 
   const AVATAR_VIDEO_URL = "/assets/my-avatar.mp4";
 
+  const stopMouth = React.useCallback(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = null;
+    if (mouthCanvasRef.current) {
+      const ctx = mouthCanvasRef.current.getContext('2d');
+      ctx?.clearRect(0, 0, mouthCanvasRef.current.width, mouthCanvasRef.current.height);
+    }
+  }, []);
+
+  const stopAudio = React.useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current.src = "";
+    }
+    if (videoRef.current && isVideoPlaying) {
+        // Revert to loop
+        setCurrentVideoSrc(AVATAR_VIDEO_URL);
+        setIsVideoPlaying(false);
+        videoRef.current.muted = true;
+        videoRef.current.loop = true;
+    }
+    setIsSpeaking(false);
+    stopMouth();
+  }, [isVideoPlaying, AVATAR_VIDEO_URL, stopMouth]);
+
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -94,7 +120,7 @@ const MiniVicBot = () => {
     if (isMuted) {
       stopAudio();
     }
-  }, [isMuted]);
+  }, [isMuted, stopAudio]);
 
   // Calculate active tasks for dependency tracking
   const hasActiveTasks = messages.some(m => m.polloTaskId && !m.videoUrl);
@@ -197,7 +223,7 @@ const MiniVicBot = () => {
       if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [stopAudio]);
 
   const toggleListening = () => {
     if (!recognitionRef.current) {
@@ -299,31 +325,6 @@ const MiniVicBot = () => {
     rafRef.current = requestAnimationFrame(loop);
   };
 
-  const stopMouth = () => {
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    rafRef.current = null;
-    if (mouthCanvasRef.current) {
-      const ctx = mouthCanvasRef.current.getContext('2d');
-      ctx?.clearRect(0, 0, mouthCanvasRef.current.width, mouthCanvasRef.current.height);
-    }
-  };
-
-  const stopAudio = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      audioRef.current.src = "";
-    }
-    if (videoRef.current && isVideoPlaying) {
-        // Revert to loop
-        setCurrentVideoSrc(AVATAR_VIDEO_URL);
-        setIsVideoPlaying(false);
-        videoRef.current.muted = true;
-        videoRef.current.loop = true;
-    }
-    setIsSpeaking(false);
-    stopMouth();
-  };
 
   const playAudio = (audioSrc: string) => {
     if (!audioRef.current || isMuted) return;

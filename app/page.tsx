@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Script from 'next/script';
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -69,7 +70,7 @@ export default function Home() {
               </a>
             </li>
             <li>
-              <a href="docs/Vik_Resume_Final.pdf" className="nav-link" target="_blank" rel="noreferrer">
+              <a href="/docs/Vik_Resume_Final.pdf" className="nav-link" target="_blank" rel="noreferrer">
                 Resume
               </a>
             </li>
@@ -86,16 +87,16 @@ export default function Home() {
         <section id="hero" className="hero-section" data-scroll-section>
           <div className="hero-content">
             <h1 className="hero-title">
-              <span className="line">Hello, I'm</span>
+              <span className="line">Hello, I&apos;m</span>
               <span className="line reveal-text editable" data-key="hero-name">
                 Vikram .
               </span>
             </h1>
             <p className="hero-subtitle reveal-text-delay editable" data-key="hero-subtitle">
-              I'm a technical leader and AI solutions architect based in Melbourne. With over 15 years of experience, I enjoy helping teams build complex systems and solve challenging problems. My work has spanned across finance and telecommunications, where I've focused on delivering value and making a positive impact.
+              I&apos;m a technical leader and AI solutions architect based in Melbourne. With over 15 years of experience, I enjoy helping teams build complex systems and solve challenging problems. My work has spanned across finance and telecommunications, where I&apos;ve focused on delivering value and making a positive impact.
               <br />
               <br />
-              Beyond my professional work, I have a deep interest in the intersection of technology and history, particularly in ancient algorithms and Vedic astronomy. I believe there's a lot to learn from the past to build a better future.
+              Beyond my professional work, I have a deep interest in the intersection of technology and history, particularly in ancient algorithms and Vedic astronomy. I believe there&apos;s a lot to learn from the past to build a better future.
               <br />
               <br />
               My goal is to create technology that is not only powerful but also responsible and beneficial to everyone.
@@ -107,7 +108,7 @@ export default function Home() {
               <a href="https://youtube.com/@vicd0ct" target="_blank" rel="noreferrer" className="btn-link">
                 YouTube
               </a>
-              <a href="docs/Vik_Resume_Final.pdf" className="btn-link" target="_blank" rel="noreferrer">
+              <a href="/docs/Vik_Resume_Final.pdf" className="btn-link" target="_blank" rel="noreferrer">
                 Resume PDF
               </a>
               <a href="#contact" className="btn-primary">
@@ -255,11 +256,13 @@ export default function Home() {
           <div className="hero-image-container parallax" data-speed="0.1">
             <div className="avatar-placeholder" id="avatar-container">
               <div className="avatar-circle relative overflow-hidden">
-                <img 
-                  src="assets/my_avatar.png" 
+                <Image 
+                  src="/assets/my_avatar.png" 
                   alt="Vikram Avatar" 
+                  fill
                   className="avatar-img absolute inset-0 w-full h-full object-cover z-10 transition-opacity duration-500"
                   id="avatar-static"
+                  priority
                 />
                 <video
                   src="assets/my-avatar.mp4"
@@ -284,10 +287,10 @@ export default function Home() {
             </div>
             <div className="about-content">
               <p className="about-text editable" data-key="about-text-1">
-                With over 15 years in the technology industry, I've had the privilege of working as a Senior Technical Leader and Certified Scrum Master (CSM) in the financial services and telecommunications sectors. My focus has been on program delivery, enterprise transformation, and architecting AI/ML-driven solutions.
+                With over 15 years in the technology industry, I&apos;ve had the privilege of working as a Senior Technical Leader and Certified Scrum Master (CSM) in the financial services and telecommunications sectors. My focus has been on program delivery, enterprise transformation, and architecting AI/ML-driven solutions.
               </p>
               <p className="about-text editable" data-key="about-text-2">
-                I have experience in leading cross-functional teams and guiding cloud-based modernizations. My technical background includes Python, TypeScript, and cloud-native infrastructure like Kubernetes, GCP, and AWS. I'm passionate about fostering an agile culture and translating complex technical roadmaps into business value.
+                I have experience in leading cross-functional teams and guiding cloud-based modernizations. My technical background includes Python, TypeScript, and cloud-native infrastructure like Kubernetes, GCP, and AWS. I&apos;m passionate about fostering an agile culture and translating complex technical roadmaps into business value.
               </p>
 
               <div className="snap-grid" role="list">
@@ -1245,7 +1248,7 @@ export default function Home() {
       <Script src="/vendor/ScrollTrigger.min.js" strategy="beforeInteractive" />
       <Script src="/vendor/lenis.min.js" strategy="beforeInteractive" />
       <Script type="module" src="/three-background.js" strategy="afterInteractive" />
-      <Script src="/script.js" strategy="lazyOnload" />
+      <Script src="/script.js" strategy="afterInteractive" />
     </>
   );
 }

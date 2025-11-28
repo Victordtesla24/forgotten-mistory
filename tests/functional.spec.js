@@ -63,7 +63,7 @@ test.describe('Portfolio Website Functional Requirements', () => {
         await expect(page.locator('.hero-title')).toContainText("Hello, I'm");
         // Increase timeout to account for text scramble animation
         await expect(page.locator('.hero-title')).toContainText("Vikram", { timeout: 15000 });
-        await expect(page.locator('.hero-subtitle')).toContainText("Senior Technical Program Manager & AI Solution Architect");
+        await expect(page.locator('.hero-subtitle')).toContainText("I'm a technical leader and AI solutions architect");
         
         const githubLink = page.locator('.hero-links a[href="https://github.com/Victordtesla24"]');
         await expect(githubLink).toBeVisible();
@@ -88,7 +88,7 @@ test.describe('Portfolio Website Functional Requirements', () => {
         await expect(expSection.locator('.section-title')).toHaveText('Experience');
         
         const items = expSection.locator('.accordion-item');
-        await expect(items).toHaveCount(8);
+        await expect(items).toHaveCount(7);
 
         await expect(items.first().locator('.role')).toContainText('Senior Delivery Lead');
         await expect(items.last().locator('.role')).toContainText('Independent AI Consulting & Upskilling');

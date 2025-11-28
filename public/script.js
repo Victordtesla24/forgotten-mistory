@@ -1250,7 +1250,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initArchitectureLab();
     initProjectPreviews();
     initTerminalOverlay();
-    initMiniVicWidget();
+    // initMiniVicWidget(); // Legacy removed
 
     // Safety fallback: Force remove preloader if it hangs
     setTimeout(() => {
