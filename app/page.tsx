@@ -198,13 +198,13 @@ export default function Home() {
       <main>
         <section id="hero" className="hero-section" data-scroll-section>
           <div className="hero-content">
-            <h1 className="hero-title parallax" data-depth="3" data-speed="2" data-parallax="true">
+            <h1 className="hero-title parallax" data-depth="3" data-speed="0.1" data-parallax="true">
               <span className="line">Hello, I&apos;m</span>
               <span className="line reveal-text glitch-text editable" data-key="hero-name" data-text="Vikram.">
                 Vikram.
               </span>
             </h1>
-            <p className="hero-subtitle reveal-text-delay editable parallax" data-key="hero-subtitle" data-depth="2" data-speed="1" data-parallax="true">
+            <p className="hero-subtitle reveal-text-delay editable parallax" data-key="hero-subtitle" data-depth="2" data-speed="0.15" data-parallax="true">
               I&apos;m a technical leader and AI solutions architect based in Melbourne. With over 15 years of experience, I enjoy helping teams build complex systems and solve challenging problems. My work has spanned across finance and telecommunications, where I&apos;ve focused on delivering value and making a positive impact.
               <br />
               <br />
@@ -213,7 +213,7 @@ export default function Home() {
               <br />
               My goal is to create technology that is not only powerful but also responsible and beneficial to everyone.
             </p>
-            <div className="hero-links reveal-text-delay parallax" data-speed="1.5" data-parallax="true">
+            <div className="hero-links reveal-text-delay parallax" data-speed="0.2" data-parallax="true">
               <a href="https://github.com/Victordtesla24" target="_blank" rel="noreferrer" className="btn-link">
                 GitHub
               </a>
@@ -227,7 +227,7 @@ export default function Home() {
                 Let&apos;s Talk
               </a>
             </div>
-            <div className="telemetry-panel glass-card parallax" id="telemetry-panel" data-depth="1" data-speed="-1" data-parallax="true">
+            <div className="telemetry-panel glass-card parallax" id="telemetry-panel" data-depth="1" data-speed="0.4" data-parallax="true">
               <div className="telemetry-header">
                 <div>
                   <p className="eyebrow">Live Telemetry</p>
@@ -283,7 +283,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="hero-meta parallax" data-depth="2" data-speed="3" data-parallax="true">
+            <div className="hero-meta parallax" data-depth="2" data-speed="0.6" data-parallax="true">
               <div 
                 className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
                 role="button"
@@ -413,7 +413,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="hero-image-container parallax" data-speed="-2" data-parallax="true">
+          <div className="hero-image-container parallax" data-speed="0.1" data-parallax="true">
             <div className="avatar-placeholder" id="avatar-container">
               <div className="avatar-circle relative overflow-hidden">
                 <Image 
@@ -425,13 +425,13 @@ export default function Home() {
                   priority
                 />
                 <video
-                  src="/assets/my-hero-avatar.mp4"
+                  data-src="/assets/my-hero-avatar.mp4"
                   className="avatar-img absolute inset-0 w-full h-full object-cover z-0"
                   id="profile-image"
                   muted
                   loop
                   playsInline
-                  preload="auto"
+                  preload="none"
                 ></video>
               </div>
             </div>

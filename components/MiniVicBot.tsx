@@ -65,7 +65,8 @@ const MiniVicBot = () => {
   const [lastAudio, setLastAudio] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [lastAnswerId, setLastAnswerId] = useState<string | null>(null);
-  const [currentVideoSrc, setCurrentVideoSrc] = useState<string>("/assets/my-avatar.mp4");
+  const [currentVideoSrc, setCurrentVideoSrc] = useState<string>("");
+  const [toggleVideoSrc, setToggleVideoSrc] = useState<string>("");
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -121,6 +122,13 @@ const MiniVicBot = () => {
       stopAudio();
     }
   }, [isMuted, stopAudio]);
+
+  // Lazy-load avatar video only when the widget opens to avoid unnecessary network errors
+  useEffect(() => {
+    if (isOpen && !currentVideoSrc) {
+      setCurrentVideoSrc(AVATAR_VIDEO_URL);
+    }
+  }, [AVATAR_VIDEO_URL, currentVideoSrc, isOpen]);
 
   // Calculate active tasks for dependency tracking
   const hasActiveTasks = messages.some(m => m.polloTaskId && !m.videoUrl);
@@ -501,7 +509,7 @@ const MiniVicBot = () => {
           <div className="relative h-60 w-full bg-black overflow-hidden group">
             <video
               ref={videoRef}
-              src={currentVideoSrc}
+              src={currentVideoSrc || undefined}
               className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ${
                 isSpeaking ? "scale-110" : "scale-100"
               }`}
@@ -509,6 +517,11 @@ const MiniVicBot = () => {
               loop={!isVideoPlaying}
               muted={!isVideoPlaying || isMuted}
               playsInline
+              preload="metadata"
+              onError={() => {
+                console.warn("MiniVic avatar video failed to load, disabling until next open.");
+                setCurrentVideoSrc("");
+              }}
             />
 
             {/* Dynamic Holographic Mouth Canvas - Only show if NOT playing generated video */}
@@ -797,8 +810,24 @@ const MiniVicBot = () => {
         className={`group relative h-16 w-16 rounded-full border-2 border-orange-400 shadow-[0_0_20px_rgba(255,115,80,0.4)] overflow-hidden transition-all duration-300 hover:scale-110 active:scale-95 ${
           isOpen ? "ring-4 ring-orange-500/20" : ""
         }`}
+        onMouseEnter={() => {
+          if (!toggleVideoSrc) setToggleVideoSrc(AVATAR_VIDEO_URL);
+        }}
+        onFocus={() => {
+          if (!toggleVideoSrc) setToggleVideoSrc(AVATAR_VIDEO_URL);
+        }}
+        aria-label={isOpen ? "Close Mini Vic assistant" : "Open Mini Vic assistant"}
       >
-        <video src={AVATAR_VIDEO_URL} className="h-full w-full object-cover" autoPlay loop muted playsInline />
+        <video
+          src={toggleVideoSrc || undefined}
+          className="h-full w-full object-cover"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="none"
+          onError={() => setToggleVideoSrc("")}
+        />
         <span className="absolute top-1 right-1 flex h-3 w-3">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 border border-black"></span>

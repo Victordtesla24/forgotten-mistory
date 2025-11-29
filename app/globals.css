@@ -37,13 +37,13 @@ body.edit-mode-active * {
 }
 
 html {
-    background-color: transparent; /* Dark background for the page */
+    background-color: #000; /* Fallback */
 }
 
 body {
-    background-color: transparent; /* Dark fallback */
+    background: transparent; /* Allow SpaceScene to show through */
     color: var(--text-color);
-    font-family: var(--font-body), 'Source Sans Pro', sans-serif;
+    font-family: var(--font-body), 'Source Sans Pro', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     position: relative;
@@ -80,7 +80,7 @@ body::after {
     z-index: 9998;
     background-size: 100% 2px, 3px 100%;
     pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.1;
 }
 
 body::before {
@@ -91,9 +91,10 @@ body::before {
     left: 0;
     bottom: 0;
     right: 0;
-    background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.6) 100%);
+    background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.4) 100%);
     z-index: 9998;
     pointer-events: none;
+    opacity: 0.3;
 }
 
 /* Admin Controls */
@@ -133,6 +134,8 @@ body::before {
     place-items: center;
     color: #fff;
     pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
 .preloader-inner {
@@ -166,6 +169,12 @@ body::before {
     letter-spacing: 1px;
     color: var(--secondary-text);
     text-transform: uppercase;
+}
+
+.preloader.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 /* Custom Cursor */
@@ -223,7 +232,7 @@ body.cursor-enhanced .cursor-outline {
 
 /* Typography & Links */
 h1, h2, h3, .role {
-    font-family: var(--font-heading), var(--font-alt), sans-serif;
+    font-family: var(--font-heading), var(--font-alt), 'Roboto Condensed', sans-serif;
     font-weight: 700;
     letter-spacing: 0.5px;
 }
@@ -324,6 +333,7 @@ section {
     padding: 10rem 0;
     position: relative;
     background: transparent; /* Ensure sections are transparent */
+    z-index: 5;
 }
 
 /* Morphing Background */
@@ -367,21 +377,21 @@ section {
     align-items: center;
     justify-content: space-between;
     padding: 0 5%;
-    /* overflow: hidden; Removed to prevent clipping of tall content */
+    overflow: hidden; /* Prevent parallax overlap */
     position: relative; /* Ensure z-index context */
     gap: 2rem;
-    perspective: 1000px;
-    transform-style: preserve-3d;
+    z-index: 1;
 }
 
 .hero-content {
     flex: 1.2;
     z-index: 2;
     padding-right: 2rem;
-    transform-style: preserve-3d;
+    /* transform-style: preserve-3d; Removed to fix overlap */
 }
 
-/* Depth Layers for Parallax - CSS 3D transforms for premium depth effect */
+/* Depth Layers for Parallax - Disabled to prevent overlap issues */
+/* 
 .hero-content [data-depth] {
     transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.35s ease, opacity 0.35s ease;
     will-change: transform;
@@ -399,6 +409,7 @@ section {
 .hero-content [data-depth="3"] {
     transform: translateZ(150px);
 }
+*/
 
 
 .hero-title {
@@ -508,6 +519,8 @@ section {
     font-size: 4rem;
     position: relative;
     display: inline-block;
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
 }
 
 .section-title::after {
@@ -1624,7 +1637,7 @@ footer {
     }
 
     .hero-title {
-        font-size: 14vw;
+        font-size: 12vw;
         margin-bottom: 1.5rem;
     }
     
@@ -1795,6 +1808,13 @@ footer {
     to {
         background-position: 200% center;
     }
+}
+
+.page-ready .hero-subtitle,
+.page-ready .hero-links,
+.page-ready .reveal-text {
+    opacity: 1;
+    transform: none;
 }
 
 /* --- Animated Gradient Border on Hover (New Addition) --- */
@@ -2866,3 +2886,10 @@ footer {
 @keyframes bounceBar { from { transform: scaleY(0.5); } to { transform: scaleY(1); } }
 
 /* End WOW Factor Additions */
+
+/* Telemetry Panel Spacing */
+.telemetry-panel {
+    margin-top: 4rem;
+    position: relative;
+    z-index: 10;
+}

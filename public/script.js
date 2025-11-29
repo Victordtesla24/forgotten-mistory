@@ -6,6 +6,26 @@ const enableSmooth = !prefersReducedMotion;
 let lenis = null;
 let lenisScroll = 0;
 let cursorTrailCleanup = null;
+let preloaderHidden = false;
+
+function hidePreloader(reason = '') {
+    if (preloaderHidden) return;
+    preloaderHidden = true;
+    const preloader = document.querySelector('.preloader');
+    if (preloader) {
+        preloader.classList.add('hide');
+        setTimeout(() => {
+            preloader.style.display = 'none';
+            preloader.remove?.();
+        }, 600);
+    }
+    document.body.style.overflow = 'auto';
+    document.body.classList.add('page-ready');
+    document.documentElement.classList.add('page-ready');
+    if (reason) {
+        console.debug('Preloader cleared:', reason);
+    }
+}
 
 if (enableSmooth) {
     try {
@@ -196,8 +216,8 @@ function startLoader() {
                 return;
             }
 
-            // Faster increment to avoid failsafe
-            currentValue += Math.floor(Math.random() * 12) + 2;
+            // Faster increment
+            currentValue += Math.floor(Math.random() * 20) + 10;
             if(currentValue > 100) {
                 currentValue = 100;
             }
@@ -205,37 +225,18 @@ function startLoader() {
             counterElement.textContent = currentValue;
 
             // Faster delay
-            let delay = Math.floor(Math.random() * 100) + 20;
+            let delay = Math.floor(Math.random() * 40) + 5;
             setTimeout(updateCounter, delay);
         }
         
         updateCounter();
         
-        // Force loader to finish if it takes too long (failsafe for slow networks/tests)
+        // Failsafe
         setTimeout(() => {
-            const p = document.querySelector(".preloader");
-            if (p && getComputedStyle(p).display !== 'none') {
-                try {
-                    // Only warn if it really stuck, but typically with faster settings this won't happen
-                    if (currentValue < 100) {
-                        console.warn('Loader failsafe triggering.');
-                    }
-                    // Try standard exit
-                    if (typeof runIntroSequence === 'function') {
-                        runIntroSequence();
-                    }
-                } catch(e) { console.warn(e); }
-
-                // Hard remove fallback
-                setTimeout(() => {
-                    if (p && getComputedStyle(p).display !== 'none') {
-                        p.style.display = 'none';
-                        p.remove();
-                        document.body.style.overflow = 'auto'; // Ensure scrollable
-                    }
-                }, 500);
+            if (!preloaderHidden) {
+                hidePreloader('failsafe');
             }
-        }, 4000); // Increased failsafe time
+        }, 2000);
     }
 
 // GSAP Animations
@@ -306,11 +307,7 @@ function runIntroSequence(forceInstant = false) {
     window._introRun = true;
 
     const showContentInstantly = () => {
-        const p = document.querySelector(".preloader");
-        if (p) {
-            p.style.display = 'none';
-            p.remove();
-        }
+        hidePreloader('instant');
         const heroNameEl = document.querySelector('.reveal-text');
         if (heroNameEl) {
             heroNameEl.style.opacity = '1';
@@ -358,12 +355,7 @@ function runIntroSequence(forceInstant = false) {
         height: 0,
         ease: "power4.inOut",
         onComplete: () => {
-            const p = document.querySelector(".preloader");
-            if (p) {
-                p.style.display = "none";
-                p.remove(); // Remove from DOM
-            }
-            document.body.style.overflow = 'auto'; // Enable scroll
+            hidePreloader('gsap-sequence');
         }
     });
 
@@ -1618,6 +1610,7 @@ function initAllFeatures() {
     const avatarContainer = document.getElementById('avatar-container');
     const video = document.getElementById('profile-image');
     const staticImg = document.getElementById('avatar-static');
+    let videoLoaded = false;
 
     if (avatarContainer && video && staticImg) {
         // Remove existing listeners to prevent duplicates if re-run
@@ -1632,7 +1625,24 @@ function initAllFeatures() {
         const freshStatic = document.getElementById('avatar-static');
 
         if (freshContainer && freshVideo && freshStatic) {
+             const ensureVideoReady = () => {
+                if (videoLoaded) return;
+                const src = freshVideo.getAttribute('data-src');
+                if (src) {
+                    freshVideo.src = src;
+                    freshVideo.load();
+                }
+                videoLoaded = true;
+             };
+
+             freshVideo.addEventListener('error', () => {
+                console.warn('Avatar video failed to load, falling back to image.');
+                freshVideo.style.display = 'none';
+                freshStatic.style.opacity = '1';
+             }, { once: true });
+
              freshContainer.addEventListener('mouseenter', () => {
+                ensureVideoReady();
                 freshVideo.play().then(() => {
                     freshStatic.style.opacity = '0';
                 }).catch(e => console.warn('Video play interrupted', e));

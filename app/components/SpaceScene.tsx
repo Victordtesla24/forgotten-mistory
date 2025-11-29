@@ -7,7 +7,7 @@ import { Trail, shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 // --- Constants ---
-const STAR_COUNT = 6000;
+const STAR_COUNT = 8000;
 const STAR_SEED = 1337;
 // Using realistic star colors (white/blue-white/yellow-white/orange-white)
 const STAR_COLORS = [
@@ -248,7 +248,7 @@ function StarField() {
       
       // Size gently tied to depth for distant speck feel
       const depthFactor = 1 - Math.min(1, Math.abs(z) / 220);
-      sizes[i] = 0.08 + rand() * 0.25 + depthFactor * 0.05;
+      sizes[i] = 0.15 + rand() * 0.35 + depthFactor * 0.05;
       
       // Twinkle speed/phase
       twinklePhase[i] = rand() * Math.PI * 2;
@@ -321,7 +321,7 @@ function StarField() {
       <meshBasicMaterial
         vertexColors
         transparent
-        opacity={0.8}
+        opacity={1.0}
       />
     </instancedMesh>
   );

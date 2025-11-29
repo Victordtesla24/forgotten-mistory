@@ -47,6 +47,7 @@
 - [x] Document the new background verification and React hydration warning in `docs/ui_ux_audit.md`.
 - [x] Resolve Firebase deployment dependency conflict by aligning ESLint versions (config 15 + plugin 4 + ESLint 8).
 - [x] Remove legacy static root (`index.html`, `main.js`) to eliminate `_next` asset 404s and force the Next.js app to serve bundles.
+- [x] Clean `.next` before dev/build to stop HMR hot-update 404s caused by stale artifacts.
 
 ## History
 - Added cursor trail effect and CSS glow, documented the local vs hosted UI mismatch, and captured the current lint/type-check/test script blockers when verifying the build.
