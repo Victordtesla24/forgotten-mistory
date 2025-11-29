@@ -69,7 +69,7 @@ export default function Home() {
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, []);
+  }, [handleClose]);
 
   return (
     <>
