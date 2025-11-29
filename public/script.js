@@ -1,6 +1,7 @@
 // Initialize Lenis for smooth scrolling (skip if reduced motion)
 const CONTENT_VERSION = '2025-11-25-v1';
-const enableSmooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const enableSmooth = !prefersReducedMotion;
 let lenis = null;
 
 if (enableSmooth) {
@@ -36,7 +37,7 @@ const cursorDot = document.querySelector("[data-cursor-dot]");
 const cursorOutline = document.querySelector("[data-cursor-outline]");
 
 // Ensure cursor elements exist before adding listeners
-if (cursorDot && cursorOutline) {
+if (!prefersReducedMotion && cursorDot && cursorOutline) {
     window.addEventListener("mousemove", function (e) {
         const posX = e.clientX;
         const posY = e.clientY;
@@ -452,8 +453,10 @@ if (skillCards.length) {
 }
 
 
-// Parallax Effect
-document.addEventListener("mousemove", parallax);
+// Parallax Effect (skipped for reduced motion)
+if (!prefersReducedMotion) {
+    document.addEventListener("mousemove", parallax);
+}
 function parallax(e) {
     document.querySelectorAll(".parallax").forEach(function(move){
         var moving_value = move.getAttribute("data-speed");

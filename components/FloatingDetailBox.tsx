@@ -70,7 +70,27 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
       if (threeObjectsRef.current) {
         threeObjectsRef.current.forEach(obj => {
             if (scene) scene.remove(obj);
-            // Optional: dispose geometries/materials if needed, but reuse is fine for now
+            
+            // Dispose geometries and materials to prevent memory leaks
+            if (obj.geometry) obj.geometry.dispose();
+            if (obj.material) {
+                if (Array.isArray(obj.material)) {
+                    obj.material.forEach((m: any) => m.dispose());
+                } else {
+                    obj.material.dispose();
+                }
+            }
+            // Traverse children if any
+            obj.traverse((child: any) => {
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) {
+                    if (Array.isArray(child.material)) {
+                        child.material.forEach((m: any) => m.dispose());
+                    } else {
+                        child.material.dispose();
+                    }
+                }
+            });
         });
       }
     threeObjectsRef.current = [];
