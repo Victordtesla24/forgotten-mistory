@@ -104,21 +104,26 @@ export function initBackground() {
     particles.rotation.y += 0.0008;
     particles.rotation.x += 0.0005;
 
+    if (!hasPointer) {
+      lines.geometry.setDrawRange(0, 0);
+      renderer.render(scene, camera);
+      return;
+    }
+
     let segmentIndex = 0;
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const ia = i * 3;
       tempA.fromArray(positions, ia);
 
-    for (let j = i + 1; j < PARTICLE_COUNT; j++) {
-      const ja = j * 3;
-      tempB.fromArray(positions, ja);
+      for (let j = i + 1; j < PARTICLE_COUNT; j++) {
+        const ja = j * 3;
+        tempB.fromArray(positions, ja);
 
-      if (!hasPointer) continue;
-      if (tempA.distanceTo(tempB) > LINK_DISTANCE) continue;
+        if (tempA.distanceTo(tempB) > LINK_DISTANCE) continue;
 
-      const closeA = pointer.distanceTo(tempA) < POINTER_RADIUS;
-      const closeB = pointer.distanceTo(tempB) < POINTER_RADIUS;
-      if (!closeA || !closeB) continue;
+        const closeA = pointer.distanceTo(tempA) < POINTER_RADIUS;
+        const closeB = pointer.distanceTo(tempB) < POINTER_RADIUS;
+        if (!closeA || !closeB) continue;
 
         const idx = segmentIndex * 6;
         linePositions[idx] = tempA.x;
