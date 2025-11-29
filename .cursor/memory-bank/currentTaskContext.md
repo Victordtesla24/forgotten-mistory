@@ -128,3 +128,30 @@ CSS `perspective` and `translateZ` on the scrolling body can be unreliable or co
 - `npm test` (fails: `npm error Missing script: "test"`).
 - `npm run build` (Next builds but lint still reports the same circular structure issue).
 - `npm run dev` (starts successfully after clearing the lingering processes on port 8080; React Dev overlay still logs the `data-cursor-ref` hydration warning).
+
+## Symptom (Next asset 404s)
+- `GET /_next/static/css/app/layout.css` and multiple `_next/static/chunks/*.js` requests were returning 404 during runtime.
+
+## Root Cause (Next asset 404s)
+- A legacy static `index.html` (plus empty `main.js`) at the repo root was being served instead of the Next.js app, so the `_next` asset paths were never generated/served by Next.
+
+## Impacted Modules
+- Hosting entrypoint/static root
+- `_next` asset serving
+
+## Evidence
+- Manual inspection showed `index.html` and `main.js` at repo root, outside the Next app, which would be picked up by static hosting.
+- `_next/static/chunks` and CSS existed in `.next/`, confirming the build outputs were present but not served.
+
+## Fix Summary
+- Removed the stale root `index.html` and empty `main.js` so requests route to the Next.js app (and its `_next` assets) instead of the obsolete static page.
+
+## Files Touched
+- `index.html` (deleted)
+- `main.js` (deleted)
+
+## Why This Works
+- With the static root entrypoint removed, hosting/dev now resolves to the Next.js server output, which correctly serves `_next` assets and prevents 404s for core bundles and CSS.
+
+## Verification Evidence
+- `.next/static/chunks` and `.next/static/css/app/layout.css` already exist; removing the static root ensures the Next server can serve them (run `npm run dev`/`npm run start` to verify locally).
