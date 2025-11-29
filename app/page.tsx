@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Script from 'next/script';
 import Image from 'next/image';
 import FloatingDetailBox from '@/components/FloatingDetailBox';
@@ -57,10 +57,10 @@ export default function Home() {
     }
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setActiveKey(null);
     setIsLocked(false);
-  };
+  }, []);
 
   // ESC Key Handler
   useEffect(() => {

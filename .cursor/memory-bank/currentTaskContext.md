@@ -1,24 +1,22 @@
-# Current Task: Deploy to Firebase Production & Verify
+# Current Task Context
 
 ## Symptom
-User requested deployment to `forgotten-mistory.web.app` and comprehensive post-deployment testing.
+Three.js animation in `FloatingDetailBox` was interrupted because the `useEffect` hook re-ran on every render of the parent component.
 
 ## Root Cause
-Task request.
+The `useEffect` in `FloatingDetailBox` includes `onClose` in its dependency array. The parent component `app/page.tsx` passed a non-memoized `handleClose` function as `onClose`, which changed reference on every render, triggering the effect unnecessarily.
 
 ## Impacted Modules
-- Build process
-- Firebase Hosting
+- `app/page.tsx`: Parent component defining `handleClose`.
+- `components/FloatingDetailBox.tsx`: Child component using `onClose` in `useEffect`.
 
-## Evidence
-- `firebase.json` exists.
-- `.firebaserc` exists and points to `forgotten-mistory`.
-- `package.json` contains `build` script.
+## Fix Summary
+Wrapped `handleClose` in `useCallback` in `app/page.tsx` to ensure stable function reference across renders.
 
-## Plan
-1.  Run `npm run build`.
-2.  Run `firebase deploy`.
-3.  Use browser tool to visit and verify.
+## Files Touched
+- `app/page.tsx`
 
-## Status
-Starting build process.
+## Verification Evidence
+- `app/page.tsx` imports `useCallback`.
+- `handleClose` uses `useCallback`.
+- Linter checks passed.
