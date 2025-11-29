@@ -56,9 +56,20 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
     }
   }, [activeKey, displayKey]);
 
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    document.body.classList.toggle('detail-open', !!activeKey);
+    return () => {
+      document.body.classList.remove('detail-open');
+    };
+  }, [activeKey]);
+
   // Three.js & Animation Logic
   useEffect(() => {
     if (!displayKey || !triggerRect || typeof window === 'undefined' || !window.spaceApp) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
 
     const { scene, camera, THREE } = window.spaceApp;
     if (!scene || !camera || !THREE) return;
@@ -210,6 +221,76 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
         starGroup.add(t);
         trailMeshes.push(t);
     }
+
+    // Halo + Shockwave at destination
+    const halo = new THREE.Mesh(
+      new THREE.TorusGeometry(BOX_W * 0.65, 0.4, 24, 80),
+      new THREE.MeshBasicMaterial({
+        color: new THREE.Color(themeColor),
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      })
+    );
+    const haloMat = halo.material as any;
+    halo.position.copy(endPos);
+    scene.add(halo);
+    threeObjectsRef.current.push(halo);
+
+    const shockwave = new THREE.Mesh(
+      new THREE.CircleGeometry(9, 96),
+      new THREE.MeshBasicMaterial({
+        color: new THREE.Color(themeColor),
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        map: glowTexture,
+        alphaMap: glowTexture,
+        side: THREE.DoubleSide
+      })
+    );
+    const shockMat = shockwave.material as any;
+    shockwave.position.copy(endPos);
+    shockwave.lookAt(camera.position);
+    scene.add(shockwave);
+    threeObjectsRef.current.push(shockwave);
+
+    // Radiating sparks around the box
+    const sparkCount = 140;
+    const sparkGeo = new THREE.BufferGeometry();
+    const sparkPos = new Float32Array(sparkCount * 3);
+    const sparkVel = new Float32Array(sparkCount * 3);
+    const sparkLife = new Float32Array(sparkCount);
+
+    const resetSpark = (i: number) => {
+      const angle = Math.random() * Math.PI * 2;
+      const tilt = Math.random() * Math.PI;
+      const speed = 0.2 + Math.random() * 0.6;
+      sparkPos[i*3] = endPos.x + Math.cos(angle) * Math.sin(tilt);
+      sparkPos[i*3+1] = endPos.y + Math.sin(angle) * Math.sin(tilt);
+      sparkPos[i*3+2] = endPos.z + Math.cos(tilt);
+      sparkVel[i*3] = Math.cos(angle) * Math.sin(tilt) * speed;
+      sparkVel[i*3+1] = Math.sin(angle) * Math.sin(tilt) * speed;
+      sparkVel[i*3+2] = Math.cos(tilt) * speed;
+      sparkLife[i] = 0.4 + Math.random() * 0.8;
+    };
+    for(let i=0; i<sparkCount; i++) resetSpark(i);
+    sparkGeo.setAttribute('position', new THREE.BufferAttribute(sparkPos, 3));
+    const sparkMat = new THREE.PointsMaterial({
+      color: new THREE.Color(themeColor),
+      size: 1.2,
+      map: glowTexture,
+      alphaMap: glowTexture,
+      transparent: true,
+      opacity: 0,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    }) as any;
+    const sparks = new THREE.Points(sparkGeo, sparkMat);
+    scene.add(sparks);
+    threeObjectsRef.current.push(sparks);
 
     // --- 3. Floating Box Frame ---
     const frameGroup = new THREE.Group();
@@ -383,7 +464,43 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
         beamMat.opacity = opacity * expand * 0.9;
         beamGlowMat.opacity = opacity * expand * 0.5 + (Math.sin(time * 15) * 0.1);
 
-        // 3. Orbiting Star
+        // 3. Halo / Shockwave layer
+        if (expand > 0.05) {
+            const shockPhase = (time % 1.4) / 1.4;
+            const shockFade = Math.max(0, 1 - shockPhase);
+            shockwave.scale.setScalar(1.4 + shockPhase * 4.2);
+            shockMat.opacity = opacity * shockFade * 0.75;
+            shockwave.lookAt(camera.position);
+
+            halo.scale.setScalar(0.95 + Math.sin(time * 2) * 0.06);
+            halo.rotation.x += 0.01;
+            halo.rotation.y += 0.02;
+            haloMat.opacity = opacity * 0.7;
+        } else {
+            shockMat.opacity = 0;
+            haloMat.opacity = 0;
+        }
+
+        // 4. Sparks
+        if (expand > 0.15) {
+            for(let i=0; i<sparkCount; i++) {
+                const life = sparkLife[i] - 0.016;
+                sparkLife[i] = life;
+                const idx = i*3;
+                sparkPos[idx] += sparkVel[idx];
+                sparkPos[idx+1] += sparkVel[idx+1];
+                sparkPos[idx+2] += sparkVel[idx+2];
+                if (life < 0 || Math.random() < 0.003) {
+                    resetSpark(i);
+                }
+            }
+            sparkGeo.attributes.position.needsUpdate = true;
+            sparkMat.opacity = opacity * 0.7;
+        } else {
+            sparkMat.opacity = 0;
+        }
+
+        // 5. Orbiting Star
         if (expand > 0.1) {
             starGroup.visible = true;
             const loopTime = (time * 0.5) % 1;
@@ -421,7 +538,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
             starGroup.visible = false;
         }
 
-        // 4. Box
+        // 6. Box
         if (expand > 0.01) {
             frameGroup.scale.setScalar(expand);
             frameMat.opacity = opacity * expand;
