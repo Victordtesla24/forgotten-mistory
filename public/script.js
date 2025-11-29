@@ -363,10 +363,9 @@ function runIntroSequence(forceInstant = false) {
     setTimeout(() => {
         const heroNameEl = document.querySelector('.reveal-text');
         if (heroNameEl) {
+            const finalName = (heroNameEl.dataset?.text || heroNameEl.textContent || '').trim() || 'Vikram.';
             gsap.set(heroNameEl, { opacity: 1, y: 0 });
-            const scrambler = new TextScramble(heroNameEl);
-            const finalName = heroNameEl.innerText;
-            scrambler.setText(finalName);
+            heroNameEl.textContent = finalName;
         }
     }, 1000);
 

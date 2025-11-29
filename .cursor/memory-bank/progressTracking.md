@@ -51,3 +51,18 @@
 
 ## History
 - Added cursor trail effect and CSS glow, documented the local vs hosted UI mismatch, and captured the current lint/type-check/test script blockers when verifying the build.
+
+## Current Task Summary (2025-11-30)
+- Restored Playwright stability by fixing fonts/hero copy, constraining worker count, and aligning ESLint config with Next 14.
+
+## Latest Cycle
+- Added font-variable fallbacks and explicit stacks in `app/globals.css` to satisfy typography checks.
+- Inserted explicit spacing for the hero title and removed the scramble animation in `app/page.tsx` and `public/script.js` for deterministic copy.
+- Set Playwright workers to 2 and reporter to `list` in `playwright.config.ts` to avoid multi-worker timeouts.
+- Downgraded `eslint-config-next` to `14.2.33`; lint now passes without circular config errors.
+- Captured localhost vs hosted screenshots (`test-results/local.png`, `test-results/remote.png`); remote still shows scrambled hero title and slightly different telemetry numbers.
+
+## Next Steps Checklist
+- [ ] Add missing npm scripts for `type-check` and `test` if required by CI.
+- [ ] Address Next Image `sizes` warning for `/assets/my_avatar.png`.
+- [ ] Monitor GPU stall warnings from WebGL; currently non-blocking.
