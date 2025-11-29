@@ -5,12 +5,6 @@ import Script from 'next/script';
 import Image from 'next/image';
 import FloatingDetailBox from '@/components/FloatingDetailBox';
 import SpaceScene from './components/SpaceScene';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 export default function Home() {
   const [activeKey, setActiveKey] = useState<string | null>(null);
@@ -18,34 +12,6 @@ export default function Home() {
   const [isLocked, setIsLocked] = useState(false);
   
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // --- GSAP Parallax Hook ---
-  useEffect(() => {
-    const parallaxElements = document.querySelectorAll('[data-parallax="true"]');
-    if (!parallaxElements.length) return;
-
-    const mm = gsap.matchMedia();
-
-    mm.add("(min-width: 769px)", () => {
-      parallaxElements.forEach((el) => {
-        const speed = parseFloat(el.getAttribute('data-speed') || '0');
-        // Scroll-based parallax: move element vertically based on scroll
-        gsap.to(el, {
-          y: (i, target) => ScrollTrigger.maxScroll(window) * speed * 0.05,
-          ease: "none",
-          scrollTrigger: {
-            trigger: document.body,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0,
-            invalidateOnRefresh: true
-          }
-        });
-      });
-    });
-
-    return () => mm.revert();
-  }, []);
 
   // --- Handlers ---
 
@@ -112,17 +78,17 @@ export default function Home() {
       <div className="morphing-bg" aria-hidden="true">
         <svg className="morphing-svg" viewBox="0 0 600 600" role="presentation" focusable="false">
           <defs>
-            <linearGradient id="morphGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#ff7350" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#ffb199" stopOpacity="0.6" />
+            <linearGradient id="morphGradient1" x1="10%" y1="0%" x2="90%" y2="100%">
+              <stop offset="0%" stopColor="#ff7350" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="#ffb199" stopOpacity="0.35" />
             </linearGradient>
             <linearGradient id="morphGradient2" x1="0%" y1="100%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#00f2fe" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#7cf3ff" stopOpacity="0.5" />
+              <stop offset="0%" stopColor="#00f2fe" stopOpacity="0.75" />
+              <stop offset="100%" stopColor="#7cf3ff" stopOpacity="0.4" />
             </linearGradient>
             <linearGradient id="morphGradient3" x1="30%" y1="0%" x2="80%" y2="100%">
               <stop offset="0%" stopColor="#ffffff" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#ff7350" stopOpacity="0.4" />
+              <stop offset="100%" stopColor="#ff7350" stopOpacity="0.35" />
             </linearGradient>
             <filter id="blur">
               <feGaussianBlur stdDeviation="60" />
@@ -132,17 +98,17 @@ export default function Home() {
             <path
               className="morphing-blob"
               fill="url(#morphGradient1)"
-              d="M350 180 C 300 110 200 110 150 180 C 90 260 130 360 210 380 C 290 400 380 340 390 260 C 400 200 390 150 350 180 Z"
+              d="M340 170 C 310 100 220 115 170 175 C 120 235 140 320 200 360 C 260 400 350 360 385 250 C 405 190 370 150 340 170 Z"
             />
             <path
               className="morphing-blob morphing-blob-secondary"
               fill="url(#morphGradient2)"
-              d="M350 180 C 300 110 200 110 150 180 C 90 260 130 360 210 380 C 290 400 380 340 390 260 C 400 200 390 150 350 180 Z"
+              d="M340 170 C 310 100 220 115 170 175 C 120 235 140 320 200 360 C 260 400 350 360 385 250 C 405 190 370 150 340 170 Z"
             />
             <path
               className="morphing-blob morphing-blob-tertiary"
               fill="url(#morphGradient3)"
-              d="M350 180 C 300 110 200 110 150 180 C 90 260 130 360 210 380 C 290 400 380 340 390 260 C 400 200 390 150 350 180 Z"
+              d="M340 170 C 310 100 220 115 170 175 C 120 235 140 320 200 360 C 260 400 350 360 385 250 C 405 190 370 150 340 170 Z"
             />
           </g>
         </svg>

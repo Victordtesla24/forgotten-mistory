@@ -23,3 +23,11 @@
 - [x] Verify mobile styles for hero section.
 - [x] Ensure no horizontal scrollbar appears due to 3D transforms.
 - [x] Implement GSAP-based scroll parallax to fix "no Parallax effect" issue.
+
+## UI Verification
+- [x] **Morphing background**: Confirmed the new SVG blobs render behind the hero, blend via gradients, and stay low-intensity (opacity 0.03) to avoid distraction.
+- [x] **Animation flow**: 20s `@keyframes morph` keeps the shapes drifting subtly; no layout shifts or pointer blocking were observed during manual interaction.
+- [x] **Performance**: Background remains GPU-friendly (filters/opacity, not heavy paints) and does not trigger forced reflows while scrolling.
+
+## Observed Warnings
+- [ ] **React Dev Overlay warning** (`data-cursor-ref` extra attribute): This only appears in `next dev` (React dev overlay) while hydrating the hero buttons. It does not surface in production, but keep an eye on future Next.js releases in case it becomes a regression.

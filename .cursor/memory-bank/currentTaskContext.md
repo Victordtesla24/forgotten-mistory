@@ -92,3 +92,39 @@ CSS `perspective` and `translateZ` on the scrolling body can be unreliable or co
 - `npm run build` (Next builds but lint still reports the circular structure issue).
 - `curl -I http://localhost:8080/_next/static/chunks/main-app.js` → 200 OK (new).
 - `curl -I http://localhost:8080/_next/static/chunks/app-pages-internals.js` → 200 OK (new).
+
+## Symptom (Morphing background)
+- Need subtle, organic SVG blobs behind the hero to reinforce the space theme and feel premium.
+
+## Root Cause (Morphing background)
+- The hero layout previously lacked layered SVG blobs and the CSS keyframe path target was the default shape; the design requirement called for slow, morphing organic blobs.
+
+## Impacted Modules
+- `app/page.tsx`
+- `app/globals.css`
+- `docs/ui_ux_audit.md`
+
+## Evidence
+- `app/page.tsx:109-149` now renders a `<div className="morphing-bg">` with three gradient-filled `<path>` blobs filtered through the same blur stack.
+- `app/globals.css:329-361` defines the `.morphing-bg` wrapper, layered `.morphing-blob` classes, new `mix-blend-mode` tweaks, and updated `@keyframes morph` data to produce the intended drift.
+- `docs/ui_ux_audit.md` records the verification checklist for the new background and the dev-only React warning.
+
+## Fix Summary
+- Added layered gradients, blur filter, and three blob paths after `SpaceScene` so the background now holds the requested morphing artwork without blocking interaction.
+- Tuned the CSS animation to reference the new path data so each blob drifts gently on a 20s timeline while the secondary and tertiary copies offset via transforms.
+- Documented the visual test results and observed React dev warning inside the UI audit checklist.
+
+## Files Touched
+- `app/page.tsx`
+- `app/globals.css`
+- `docs/ui_ux_audit.md`
+
+## Why This Works
+- The new markup renders entirely on the server (no JS needed), the low opacity/blur keeps it subtle, and the reused animation keyframe ensures each blob morphs synchronously while the transform offsets keep the shapes from stacking identically.
+
+## Verification Evidence
+- `npm run type-check` (fails: `npm error Missing script: "type-check"`).
+- `npm run lint` (fails: `Converting circular structure to JSON` while processing `.eslintrc.json`).
+- `npm test` (fails: `npm error Missing script: "test"`).
+- `npm run build` (Next builds but lint still reports the same circular structure issue).
+- `npm run dev` (starts successfully after clearing the lingering processes on port 8080; React Dev overlay still logs the `data-cursor-ref` hydration warning).

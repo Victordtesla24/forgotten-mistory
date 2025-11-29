@@ -5,6 +5,7 @@ const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
 const enableSmooth = !prefersReducedMotion;
 let lenis = null;
 let lenisScroll = 0;
+let cursorTrailCleanup = null;
 
 if (enableSmooth) {
     try {
@@ -81,6 +82,11 @@ function initCursorTrail() {
         return;
     }
 
+    // Clean up any prior trail before re-initializing
+    if (typeof cursorTrailCleanup === 'function') {
+        cursorTrailCleanup();
+    }
+
     const TRAIL_COUNT = 20;
     const FADE_DURATION = 500;
     const trailDots = [];
@@ -116,9 +122,16 @@ function initCursorTrail() {
         });
     };
 
-    document.addEventListener('mousemove', (event) => {
+    const handleMouseMove = (event) => {
         animateDot(event.clientX, event.clientY);
-    });
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+
+    cursorTrailCleanup = () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        trailDots.forEach(dot => dot.remove());
+    };
 }
 
 // Ensure cursor elements exist before adding listeners

@@ -43,6 +43,8 @@
 - [ ] Investigate ESLint `Converting circular structure to JSON` failure that blocks `next lint` and the lint phase of `next build`.
 - [ ] Note missing `type-check` and `test` scripts so verification instructions can be adjusted.
 - [ ] Rerun verification suite once lint/script blockers are resolved.
+- [x] Add layered morphing SVG blobs after `SpaceScene` and refresh the `@keyframes morph` path data.
+- [x] Document the new background verification and React hydration warning in `docs/ui_ux_audit.md`.
 
 ## History
 - Added cursor trail effect and CSS glow, documented the local vs hosted UI mismatch, and captured the current lint/type-check/test script blockers when verifying the build.
