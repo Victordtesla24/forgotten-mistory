@@ -1,22 +1,30 @@
 # Current Task Context
 
 ## Symptom
-Three.js animation in `FloatingDetailBox` was interrupted because the `useEffect` hook re-ran on every render of the parent component.
+Legacy vanilla Three.js background script (`public/three-background.js`) is outdated and needs to be replaced with a modern, reactive React Three Fiber (R3F) system for better performance and interactivity.
 
 ## Root Cause
-The `useEffect` in `FloatingDetailBox` includes `onClose` in its dependency array. The parent component `app/page.tsx` passed a non-memoized `handleClose` function as `onClose`, which changed reference on every render, triggering the effect unnecessarily.
+User request to upgrade the website to an "Awwwards" winning level using R3F.
 
 ## Impacted Modules
-- `app/page.tsx`: Parent component defining `handleClose`.
-- `components/FloatingDetailBox.tsx`: Child component using `onClose` in `useEffect`.
+- `package.json`: Adding R3F dependencies.
+- `app/components/SpaceScene.tsx`: New component for the 3D scene.
+- `app/page.tsx`: Integrating the new component and removing legacy elements.
+- `public/three-background.js`: File to be deleted.
 
 ## Fix Summary
-Wrapped `handleClose` in `useCallback` in `app/page.tsx` to ensure stable function reference across renders.
+- Install `three`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`.
+- Create `SpaceScene` with `StarField`, `WarpEffect`, reactive camera, and post-processing.
+- Replace legacy canvas and script in `app/page.tsx`.
+- Delete obsolete script.
 
 ## Files Touched
+- `package.json`
+- `app/components/SpaceScene.tsx`
 - `app/page.tsx`
+- `public/three-background.js`
 
 ## Verification Evidence
-- `app/page.tsx` imports `useCallback`.
-- `handleClose` uses `useCallback`.
-- Linter checks passed.
+- Successful build (`npm run build`).
+- Visual verification of the new background.
+- Git commit and push.

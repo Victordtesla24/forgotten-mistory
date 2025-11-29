@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Script from 'next/script';
 import Image from 'next/image';
 import FloatingDetailBox from '@/components/FloatingDetailBox';
+import SpaceScene from './components/SpaceScene';
 
 export default function Home() {
   const [activeKey, setActiveKey] = useState<string | null>(null);
@@ -73,7 +74,7 @@ export default function Home() {
 
   return (
     <>
-      <canvas id="webgl" className="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+      <SpaceScene />
       
       <FloatingDetailBox 
         activeKey={activeKey} 
@@ -1380,7 +1381,6 @@ export default function Home() {
       <Script src="/vendor/gsap.min.js" strategy="beforeInteractive" />
       <Script src="/vendor/ScrollTrigger.min.js" strategy="beforeInteractive" />
       <Script src="/vendor/lenis.min.js" strategy="beforeInteractive" />
-      <Script type="module" src="/three-background.js" strategy="afterInteractive" />
       <Script src="/script.js" strategy="afterInteractive" />
     </>
   );
