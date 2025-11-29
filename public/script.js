@@ -1,6 +1,7 @@
 // Initialize Lenis for smooth scrolling (skip if reduced motion)
 const CONTENT_VERSION = '2025-11-25-v1';
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
 const enableSmooth = !prefersReducedMotion;
 let lenis = null;
 
@@ -19,7 +20,9 @@ if (enableSmooth) {
             });
 
             function raf(time) {
-                lenis.raf(time);
+                if (!document.hidden) {
+                    lenis.raf(time);
+                }
                 requestAnimationFrame(raf);
             }
 
@@ -35,9 +38,12 @@ if (enableSmooth) {
 // Custom Cursor
 const cursorDot = document.querySelector("[data-cursor-dot]");
 const cursorOutline = document.querySelector("[data-cursor-outline]");
+const canUseCustomCursor = !prefersReducedMotion && !hasCoarsePointer;
 
 // Ensure cursor elements exist before adding listeners
-if (!prefersReducedMotion && cursorDot && cursorOutline) {
+if (canUseCustomCursor && cursorDot && cursorOutline) {
+    document.body.classList.add('cursor-enhanced');
+
     window.addEventListener("mousemove", function (e) {
         const posX = e.clientX;
         const posY = e.clientY;
@@ -65,6 +71,8 @@ if (!prefersReducedMotion && cursorDot && cursorOutline) {
             cursorOutline.style.borderColor = 'rgba(255, 255, 255, 0.3)';
         });
     });
+} else {
+    document.body.classList.remove('cursor-enhanced');
 }
 
 // Preloader Animation
@@ -74,6 +82,12 @@ function startLoader() {
         // If element missing, assume loaded or broken HTML, try to run intro immediately if possible
         console.warn('Counter element missing, skipping loader.');
         runIntroSequence();
+        return;
+    }
+
+    if (prefersReducedMotion) {
+        counterElement.textContent = '100';
+        runIntroSequence(true);
         return;
     }
 
@@ -184,16 +198,40 @@ class TextScramble {
     }
 }
 
-function runIntroSequence() {
+function runIntroSequence(forceInstant = false) {
     // Guard against multiple runs
     if (window._introRun) return;
     window._introRun = true;
 
-    if (typeof gsap === 'undefined') {
-        console.warn('GSAP missing, forcing content visible');
+    const showContentInstantly = () => {
         const p = document.querySelector(".preloader");
-        if(p) p.style.display = 'none';
+        if (p) {
+            p.style.display = 'none';
+            p.remove();
+        }
+        const heroNameEl = document.querySelector('.reveal-text');
+        if (heroNameEl) {
+            heroNameEl.style.opacity = '1';
+            heroNameEl.style.transform = 'none';
+        }
+        const heroSubtitleEl = document.querySelector('.hero-subtitle');
+        if (heroSubtitleEl) {
+            heroSubtitleEl.style.opacity = '1';
+            heroSubtitleEl.style.transform = 'translateY(0)';
+        }
+        const heroLinksEl = document.querySelector('.hero-links');
+        if (heroLinksEl) {
+            heroLinksEl.style.opacity = '1';
+            heroLinksEl.style.transform = 'translateY(0)';
+        }
         document.body.style.overflow = 'auto';
+    };
+
+    if (forceInstant || prefersReducedMotion || typeof gsap === 'undefined') {
+        if (typeof gsap === 'undefined') {
+            console.warn('GSAP missing, forcing content visible');
+        }
+        showContentInstantly();
         return;
     }
 
@@ -303,7 +341,15 @@ sections.forEach(section => {
     // Select elements to animate within the section
     const targets = section.querySelectorAll(".section-title, .about-text, .accordion-item, .contact-title, .contact-details, .social-links-large, .snap-card, .skill-card");
     
-    if (targets.length > 0 && typeof gsap !== 'undefined') {
+    if (targets.length > 0) {
+        if (prefersReducedMotion || typeof gsap === 'undefined') {
+            targets.forEach(el => {
+                el.style.opacity = '1';
+                el.style.transform = 'none';
+            });
+            return;
+        }
+
         gsap.fromTo(targets, {
             y: 50,
             opacity: 0
@@ -454,7 +500,8 @@ if (skillCards.length) {
 
 
 // Parallax Effect (skipped for reduced motion)
-if (!prefersReducedMotion) {
+const allowParallax = !prefersReducedMotion && window.matchMedia('(pointer: fine)').matches;
+if (allowParallax) {
     document.addEventListener("mousemove", parallax);
 }
 function parallax(e) {
@@ -550,6 +597,10 @@ function initCarousel() {
     const cards = Array.from(track.children);
     if (!cards.length) return;
 
+    if (prefersReducedMotion) {
+        return;
+    }
+
     // Clone items to allow seamless looping
     cards.forEach(card => track.appendChild(card.cloneNode(true)));
 
@@ -557,6 +608,14 @@ function initCarousel() {
     let lastTime = null;
     let loopWidth = 0;
     const pixelsPerSecond = 40; // Adjust for desired speed (positive for logic below)
+    let isPaused = document.hidden;
+
+    document.addEventListener('visibilitychange', () => {
+        isPaused = document.hidden;
+        if (!isPaused) {
+            lastTime = null;
+        }
+    });
 
     const setup = () => {
         loopWidth = track.scrollWidth / 2;
@@ -577,6 +636,11 @@ function initCarousel() {
         if (lastTime === null) lastTime = timestamp;
         const delta = timestamp - lastTime;
         lastTime = timestamp;
+
+        if (isPaused) {
+            requestAnimationFrame(loop);
+            return;
+        }
 
         // Move continuously from left to right (Items move ->)
         // This corresponds to decreasing scrollLeft
@@ -700,7 +764,7 @@ function hydrateVideos() {
 document.addEventListener('DOMContentLoaded', () => {
     const glowCards = document.querySelectorAll('.meta-card, .skill-card, .project-card, .repo-card, .glass-card');
 
-    if (glowCards.length) {
+    if (!prefersReducedMotion && glowCards.length) {
         glowCards.forEach(card => {
             card.addEventListener('mousemove', e => {
                 const rect = card.getBoundingClientRect();
@@ -745,7 +809,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Magnetic Buttons ---
     const magnets = document.querySelectorAll('.btn-primary, .social-btn, .btn-secondary, .nav-link');
-    if (magnets.length && typeof gsap !== 'undefined') {
+    if (magnets.length && typeof gsap !== 'undefined' && !prefersReducedMotion) {
         magnets.forEach(magnet => {
             magnet.addEventListener('mousemove', function(e) {
                 const rect = magnet.getBoundingClientRect();
@@ -801,6 +865,12 @@ function initTelemetryPanel() {
 
     const latencyHistory = Array.from({ length: 14 }, () => 150 + Math.random() * 70);
     let coffeeCount = 1.0;
+    let telemetryPaused = document.hidden;
+
+    document.addEventListener('visibilitychange', () => {
+        telemetryPaused = document.hidden;
+    });
+
     const cityPool = [
         'Melbourne · Edge POP',
         'Sydney · API Gateway',
@@ -813,11 +883,13 @@ function initTelemetryPanel() {
     ];
 
     const rotateCities = () => {
+        if (telemetryPaused) return;
         const shuffled = [...cityPool].sort(() => 0.5 - Math.random()).slice(0, 3);
         locations.innerHTML = shuffled.map(city => `<li>${city}</li>`).join('');
     };
 
     const tick = () => {
+        if (telemetryPaused) return;
         const nextLatency = Math.max(120, Math.round(165 + (Math.random() * 80 - 40)));
         latencyHistory.push(nextLatency);
         if (latencyHistory.length > 22) latencyHistory.shift();
@@ -835,6 +907,8 @@ function initTelemetryPanel() {
 
     rotateCities();
     tick();
+    if (prefersReducedMotion) return;
+
     setInterval(tick, 3200);
     setInterval(rotateCities, 4200);
 }

@@ -1,6 +1,8 @@
 import * as THREE from '/vendor/three.module.js';
 
 const canvas = document.querySelector('#webgl');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const pointerFine = window.matchMedia('(pointer: fine)').matches;
 
 // Scene Setup
 const scene = new THREE.Scene();
@@ -136,10 +138,12 @@ let targetX = 0, targetY = 0;
 const windowHalfX = window.innerWidth / 2;
 const windowHalfY = window.innerHeight / 2;
 
-document.addEventListener('mousemove', (event) => {
-    mouseX = (event.clientX - windowHalfX) * 0.001;
-    mouseY = (event.clientY - windowHalfY) * 0.001;
-});
+if (pointerFine && !prefersReducedMotion.matches) {
+    document.addEventListener('mousemove', (event) => {
+        mouseX = (event.clientX - windowHalfX) * 0.001;
+        mouseY = (event.clientY - windowHalfY) * 0.001;
+    });
+}
 
 let scrollY = 0;
 window.addEventListener('scroll', () => {
@@ -148,10 +152,23 @@ window.addEventListener('scroll', () => {
 
 // --- Animation Loop ---
 const clock = new THREE.Clock();
+let animationFrameId = null;
+let lastRender = 0;
+let targetFPS = prefersReducedMotion.matches ? 24 : 60;
 
-function animate() {
-    requestAnimationFrame(animate);
-    
+const renderFrame = (timestamp) => {
+    if (document.hidden) {
+        animationFrameId = null;
+        return;
+    }
+
+    const frameInterval = 1000 / targetFPS;
+    if (timestamp - lastRender < frameInterval) {
+        animationFrameId = requestAnimationFrame(renderFrame);
+        return;
+    }
+    lastRender = timestamp;
+
     const delta = clock.getDelta();
     const elapsedTime = clock.getElapsedTime();
 
@@ -226,9 +243,40 @@ function animate() {
     camera.position.y = -scrollY * 0.02;
     
     renderer.render(scene, camera);
-}
 
-animate();
+    if (!document.hidden) {
+        animationFrameId = requestAnimationFrame(renderFrame);
+    } else {
+        animationFrameId = null;
+    }
+};
+
+const startAnimation = () => {
+    if (animationFrameId) return;
+    lastRender = 0;
+    animationFrameId = requestAnimationFrame(renderFrame);
+};
+
+const stopAnimation = () => {
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
+};
+
+startAnimation();
+
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        stopAnimation();
+    } else {
+        startAnimation();
+    }
+});
+
+prefersReducedMotion.addEventListener('change', (event) => {
+    targetFPS = event.matches ? 24 : 60;
+});
 
 // Handle Resize
 window.addEventListener('resize', () => {

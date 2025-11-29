@@ -19,6 +19,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    cursor: auto;
+}
+
+body.cursor-enhanced * {
     cursor: none;
 }
 
@@ -160,6 +164,8 @@ body::before {
     border-radius: 50%;
     z-index: 10000;
     pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
 .cursor-dot {
@@ -172,7 +178,12 @@ body::before {
     width: var(--cursor-size);
     height: var(--cursor-size);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    transition: width 0.2s, height 0.2s, background-color 0.2s;
+    transition: opacity 0.2s ease, width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+body.cursor-enhanced .cursor-dot,
+body.cursor-enhanced .cursor-outline {
+    opacity: 1;
 }
 
 /* Typography & Links */
