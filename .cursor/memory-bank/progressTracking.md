@@ -40,9 +40,9 @@
 - [x] Implement `initCursorTrail` with a pooled set of dots inside `public/script.js`.
 - [x] Add `.cursor-trail` styling in `app/globals.css` that matches `--accent-color` and respects reduced-motion.
 - [x] Capture screenshots for `http://localhost:8080` and `https://forgotten-mistory.web.app/` to compare hero state.
-- [ ] Investigate ESLint `Converting circular structure to JSON` failure that blocks `next lint` and the lint phase of `next build`.
-- [ ] Note missing `type-check` and `test` scripts so verification instructions can be adjusted.
-- [ ] Rerun verification suite once lint/script blockers are resolved.
+- [x] Investigate ESLint `Converting circular structure to JSON` failure (resolved by rolling back to ESLint 8 + config 15).
+- [x] Note missing `type-check` and `test` scripts so verification instructions can be adjusted.
+- [x] Rerun verification suite once lint/script blockers are resolved (lint and build now pass after dependency fix).
 - [x] Add layered morphing SVG blobs after `SpaceScene` and refresh the `@keyframes morph` path data.
 - [x] Document the new background verification and React hydration warning in `docs/ui_ux_audit.md`.
 - [x] Resolve Firebase deployment dependency conflict by aligning ESLint versions (config 15 + plugin 4 + ESLint 8).
