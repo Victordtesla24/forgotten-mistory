@@ -161,7 +161,7 @@ export default function Home() {
           <div className="hero-content">
             <h1 className="hero-title">
               <span className="line">Hello, I&apos;m</span>
-              <span className="line reveal-text editable" data-key="hero-name">
+              <span className="line reveal-text glitch-text editable" data-key="hero-name" data-text="Vikram .">
                 Vikram .
               </span>
             </h1>

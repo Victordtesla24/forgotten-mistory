@@ -1,298 +1,211 @@
 import * as THREE from '/vendor/three.module.js';
 
-const canvas = document.querySelector('#webgl');
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-const pointerFine = window.matchMedia('(pointer: fine)').matches;
+// --- Configuration ---
+const CONFIG = {
+    starCount: 2000,
+    nebulaCount: 20,
+    baseSpeed: 0.2,
+    scrollMultiplier: 0.15,
+    starColor: 0xffffff,
+    nebulaColor: 0x3d00ff // Deep purple/blue
+};
 
-// Scene Setup
+// --- Setup ---
+const canvas = document.querySelector('#webgl');
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x050505); // Deep space black
+scene.fog = new THREE.FogExp2(0x000000, 0.001);
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 0, 50);
+camera.position.z = 1;
+camera.rotation.x = Math.PI / 2; // Point camera up/down for tunnel effect
 
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
-    alpha: true,
+    alpha: false, // Solid black background for better blending
     antialias: true,
     powerPreference: "high-performance"
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-// --- Group 1: Network (Foreground) ---
-// Nodes and connections representing "AI/Neural Network"
-const NETWORK_COUNT = 150;
-const networkGeo = new THREE.BufferGeometry();
-const networkPos = new Float32Array(NETWORK_COUNT * 3);
-const networkVel = [];
+// --- State ---
+let scrollY = 0;
+let lastScrollY = 0;
+let scrollVelocity = 0;
+let mouse = new THREE.Vector2(0, 0);
+let targetMouse = new THREE.Vector2(0, 0);
 
-for(let i = 0; i < NETWORK_COUNT; i++) {
-    networkPos[i*3] = (Math.random() - 0.5) * 80;
-    networkPos[i*3+1] = (Math.random() - 0.5) * 80;
-    networkPos[i*3+2] = (Math.random() - 0.5) * 40; // Closer to camera
-    
-    networkVel.push({
-        x: (Math.random() - 0.5) * 0.02,
-        y: (Math.random() - 0.5) * 0.02,
-        z: (Math.random() - 0.5) * 0.02
-    });
+// --- Star Tunnel System ---
+const starGeo = new THREE.BufferGeometry();
+const starPos = [];
+const starVel = []; // Store individual velocities
+
+for(let i = 0; i < CONFIG.starCount; i++) {
+    starPos.push(
+        (Math.random() - 0.5) * 600, // x
+        (Math.random() - 0.5) * 600, // y
+        (Math.random() - 0.5) * 600  // z
+    );
+    starVel.push(Math.random());
 }
-networkGeo.setAttribute('position', new THREE.BufferAttribute(networkPos, 3));
-const networkMat = new THREE.PointsMaterial({
-    color: 0x00f2fe, // Cyan/Teal for tech feel
-    size: 0.4,
-    transparent: true,
-    opacity: 0.8
-});
-const networkMesh = new THREE.Points(networkGeo, networkMat);
-scene.add(networkMesh);
+starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
+starGeo.setAttribute('velocity', new THREE.Float32BufferAttribute(starVel, 1));
 
-// Lines for Network
-const linesGeo = new THREE.BufferGeometry();
-const linesMat = new THREE.LineBasicMaterial({
-    color: 0x00f2fe,
-    transparent: true,
-    opacity: 0.15
-});
-const linesMesh = new THREE.LineSegments(linesGeo, linesMat);
-scene.add(linesMesh);
-
-// --- Group 2: Deep Stars (Background) ---
-// High count, small size, slow movement
-const STAR_COUNT = 1500;
-const starsGeo = new THREE.BufferGeometry();
-const starsPos = new Float32Array(STAR_COUNT * 3);
-
-for(let i = 0; i < STAR_COUNT; i++) {
-    starsPos[i*3] = (Math.random() - 0.5) * 300;
-    starsPos[i*3+1] = (Math.random() - 0.5) * 300;
-    starsPos[i*3+2] = -50 - Math.random() * 100; // Far behind
-}
-starsGeo.setAttribute('position', new THREE.BufferAttribute(starsPos, 3));
-const starsMat = new THREE.PointsMaterial({
-    color: 0xffffff,
-    size: 0.6,
-    sizeAttenuation: true,
-    transparent: true,
-    opacity: 0.8
-});
-const starsMesh = new THREE.Points(starsGeo, starsMat);
-scene.add(starsMesh);
-
-// --- Group 3: Twinkling Stars (Active) ---
-const TWINKLE_COUNT = 300;
-const twinkleGeo = new THREE.BufferGeometry();
-const twinklePos = new Float32Array(TWINKLE_COUNT * 3);
-// Add random phase for twinkling
-const twinklePhase = new Float32Array(TWINKLE_COUNT); 
-
-for(let i = 0; i < TWINKLE_COUNT; i++) {
-    twinklePos[i*3] = (Math.random() - 0.5) * 200;
-    twinklePos[i*3+1] = (Math.random() - 0.5) * 200;
-    twinklePos[i*3+2] = -20 - Math.random() * 80;
-    twinklePhase[i] = Math.random() * Math.PI * 2;
-}
-twinkleGeo.setAttribute('position', new THREE.BufferAttribute(twinklePos, 3));
-twinkleGeo.setAttribute('phase', new THREE.BufferAttribute(twinklePhase, 1));
-
-// Use a custom shader for true per-particle twinkling efficiently
-const twinkleMat = new THREE.ShaderMaterial({
+// Custom Shader for "Warp" effect
+const starMat = new THREE.ShaderMaterial({
     uniforms: {
+        color: { value: new THREE.Color(CONFIG.starColor) },
         time: { value: 0 },
-        color: { value: new THREE.Color(0xffaa80) } // Slight orange tint for warmth/contrast
+        speed: { value: 0 }
     },
     vertexShader: `
-        attribute float phase;
-        varying float vAlpha;
         uniform float time;
+        uniform float speed;
+        attribute float velocity;
+        varying float vAlpha;
+        
         void main() {
-            vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-            gl_Position = projectionMatrix * mvPosition;
-            gl_PointSize = (40.0 / -mvPosition.z); // Size attenuation
+            vec3 pos = position;
             
-            // Twinkle math: sine wave based on time + random phase
-            float twinkle = sin(time * 2.0 + phase);
-            vAlpha = 0.5 + 0.5 * twinkle; 
+            // Move stars along Y axis (tunnel direction) based on time and scroll speed
+            // The 'velocity' attribute makes some stars faster for parallax
+            float movement = time * (20.0 + speed * 50.0) * velocity;
+            
+            // Wrap around logic
+            pos.y = mod(pos.y - movement, 600.0) - 300.0;
+            
+            // Warp stretch effect: Stretch Z based on speed
+            // We simply use point size for now, but line distortion can happen in simple motion blur via opacity
+            
+            vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+            gl_Position = projectionMatrix * mvPosition;
+            
+            // Size attenuation
+            gl_PointSize = (2.0 + speed * 0.5) * (300.0 / -mvPosition.z);
+            
+            // Fade out at edges
+            vAlpha = smoothstep(300.0, 200.0, abs(pos.y));
         }
     `,
     fragmentShader: `
         uniform vec3 color;
         varying float vAlpha;
+        
         void main() {
-            if (length(gl_PointCoord - vec2(0.5, 0.5)) > 0.475) discard; // Circular particle
-            gl_FragColor = vec4(color, vAlpha);
+            // Soft circle particle
+            vec2 coord = gl_PointCoord - vec2(0.5);
+            float dist = length(coord);
+            if (dist > 0.5) discard;
+            
+            float alpha = (0.5 - dist) * 2.0 * vAlpha;
+            gl_FragColor = vec4(color, alpha);
         }
     `,
     transparent: true,
-    blending: THREE.AdditiveBlending
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
 });
 
-const twinkleMesh = new THREE.Points(twinkleGeo, twinkleMat);
-scene.add(twinkleMesh);
+const starSystem = new THREE.Points(starGeo, starMat);
+scene.add(starSystem);
 
+// --- Nebula Smoke (Simple Sprites) ---
+// Create soft smoke textures programmatically
+const canvasSize = 64;
+const canvasSprite = document.createElement('canvas');
+canvasSprite.width = canvasSize;
+canvasSprite.height = canvasSize;
+const ctx = canvasSprite.getContext('2d');
+const grad = ctx.createRadialGradient(canvasSize/2, canvasSize/2, 0, canvasSize/2, canvasSize/2, canvasSize/2);
+grad.addColorStop(0, 'rgba(100, 100, 255, 0.5)');
+grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+ctx.fillStyle = grad;
+ctx.fillRect(0, 0, canvasSize, canvasSize);
 
-// --- Interaction & Parallax ---
-let mouseX = 0, mouseY = 0;
-let targetX = 0, targetY = 0;
-const windowHalfX = window.innerWidth / 2;
-const windowHalfY = window.innerHeight / 2;
+const smokeTexture = new THREE.CanvasTexture(canvasSprite);
+const smokeGeo = new THREE.BufferGeometry();
+const smokePos = [];
 
-if (pointerFine && !prefersReducedMotion.matches) {
-    document.addEventListener('mousemove', (event) => {
-        mouseX = (event.clientX - windowHalfX) * 0.001;
-        mouseY = (event.clientY - windowHalfY) * 0.001;
-    });
+for(let i = 0; i < CONFIG.nebulaCount; i++) {
+    smokePos.push(
+        (Math.random() - 0.5) * 200,
+        (Math.random() - 0.5) * 800, // Spread along tunnel
+        (Math.random() - 0.5) * 200
+    );
 }
+smokeGeo.setAttribute('position', new THREE.Float32BufferAttribute(smokePos, 3));
 
-let scrollY = 0;
-window.addEventListener('scroll', () => {
-    scrollY = window.scrollY;
+const smokeMat = new THREE.PointsMaterial({
+    size: 150,
+    map: smokeTexture,
+    transparent: true,
+    opacity: 0.05,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    color: CONFIG.nebulaColor
 });
 
-// --- Animation Loop ---
-const clock = new THREE.Clock();
-let animationFrameId = null;
-let lastRender = 0;
-let targetFPS = prefersReducedMotion.matches ? 24 : 60;
+const smokeSystem = new THREE.Points(smokeGeo, smokeMat);
+scene.add(smokeSystem);
 
-const renderFrame = (timestamp) => {
-    if (document.hidden) {
-        animationFrameId = null;
-        return;
-    }
-
-    const frameInterval = 1000 / targetFPS;
-    if (timestamp - lastRender < frameInterval) {
-        animationFrameId = requestAnimationFrame(renderFrame);
-        return;
-    }
-    lastRender = timestamp;
-
-    const delta = clock.getDelta();
-    const elapsedTime = clock.getElapsedTime();
-
-    targetX = mouseX * 0.5;
-    targetY = mouseY * 0.5;
-
-    // Update Shader Uniforms
-    twinkleMat.uniforms.time.value = elapsedTime;
-
-    // 1. Network Animation (Float + Mouse Interaction)
-    const positions = networkGeo.attributes.position.array;
-    for(let i = 0; i < NETWORK_COUNT; i++) {
-        positions[i*3] += networkVel[i].x * 0.2;
-        positions[i*3+1] += networkVel[i].y * 0.2;
-        
-        // Gentle boundary wrap
-        if(Math.abs(positions[i*3]) > 40) networkVel[i].x *= -1;
-        if(Math.abs(positions[i*3+1]) > 40) networkVel[i].y *= -1;
-    }
-    networkGeo.attributes.position.needsUpdate = true;
-
-    // Network rotation (Mouse interaction)
-    networkMesh.rotation.y += 0.05 * (targetX - networkMesh.rotation.y);
-    networkMesh.rotation.x += 0.05 * (targetY - networkMesh.rotation.x);
-    linesMesh.rotation.copy(networkMesh.rotation); // Sync lines with nodes
-
-    // Update Connections
-    const linePositions = [];
-    const connectDist = 12; 
-    
-    // Optimization: Only check nearby particles or limit checks per frame if needed
-    // For 150 particles, brute force is ~11k checks, usually fine for desktop
-    // We calculate world positions for accurate distance if we wanted, but local is fine since they rotate together
-    
-    let connections = 0;
-    for(let i = 0; i < NETWORK_COUNT; i++) {
-        for(let j = i + 1; j < NETWORK_COUNT; j++) {
-            const dx = positions[i*3] - positions[j*3];
-            const dy = positions[i*3+1] - positions[j*3+1];
-            const dz = positions[i*3+2] - positions[j*3+2];
-            const distSq = dx*dx + dy*dy + dz*dz;
-
-            if(distSq < connectDist * connectDist) {
-                // Limit connections per node to avoid clutter
-                if (connections > 300) break; 
-                
-                linePositions.push(
-                    positions[i*3], positions[i*3+1], positions[i*3+2],
-                    positions[j*3], positions[j*3+1], positions[j*3+2]
-                );
-                connections++;
-            }
-        }
-    }
-    linesGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
-
-    // 2. Stars Parallax (Scroll + Mouse)
-    // Rotate stars much slower than foreground for depth
-    starsMesh.rotation.y += 0.01 * (targetX - starsMesh.rotation.y);
-    starsMesh.rotation.x += 0.01 * (targetY - starsMesh.rotation.x);
-    
-    // Twinkle stars follow similar parallax but slightly different for depth feel
-    twinkleMesh.rotation.y += 0.015 * (targetX - twinkleMesh.rotation.y);
-    twinkleMesh.rotation.x += 0.015 * (targetY - twinkleMesh.rotation.x);
-
-    // Constant slow rotation
-    starsMesh.rotation.z += 0.00005; // 0.1x speed
-    twinkleMesh.rotation.z += 0.00003; // 0.1x speed
-
-    // Scroll Parallax
-    // Move camera Y based on scroll
-    camera.position.y = -scrollY * 0.02;
-    
-    renderer.render(scene, camera);
-
-    if (!document.hidden) {
-        animationFrameId = requestAnimationFrame(renderFrame);
-    } else {
-        animationFrameId = null;
-    }
-};
-
-const startAnimation = () => {
-    if (animationFrameId) return;
-    lastRender = 0;
-    animationFrameId = requestAnimationFrame(renderFrame);
-};
-
-const stopAnimation = () => {
-    if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = null;
-    }
-};
-
-startAnimation();
-
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        stopAnimation();
-    } else {
-        startAnimation();
-    }
-});
-
-prefersReducedMotion.addEventListener('change', (event) => {
-    targetFPS = event.matches ? 24 : 60;
-});
-
-// Handle Resize
+// --- Event Listeners ---
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// --- Expose Internals for React/Animation Control ---
-window.spaceApp = {
-    scene,
-    camera,
-    renderer,
-    THREE,
-    addTempObject: (obj) => {
-        scene.add(obj);
-        return () => scene.remove(obj);
+document.addEventListener('mousemove', (e) => {
+    targetMouse.x = (e.clientX - window.innerWidth / 2) * 0.001;
+    targetMouse.y = (e.clientY - window.innerHeight / 2) * 0.001;
+});
+
+window.addEventListener('scroll', () => {
+    lastScrollY = scrollY;
+    scrollY = window.scrollY;
+    // Calculate momentary velocity
+    const delta = Math.abs(scrollY - lastScrollY);
+    scrollVelocity += delta * 0.05; // Add impulse
+});
+
+// --- Animation Loop ---
+const clock = new THREE.Clock();
+
+function animate() {
+    const time = clock.getElapsedTime();
+    
+    // Smoothly decay velocity back to 0
+    scrollVelocity *= 0.95;
+    const effectiveSpeed = CONFIG.baseSpeed + scrollVelocity * 0.01;
+    
+    // Smooth mouse follow
+    mouse.x += (targetMouse.x - mouse.x) * 0.05;
+    mouse.y += (targetMouse.y - mouse.y) * 0.05;
+    
+    // Update Star Shader Uniforms
+    starMat.uniforms.time.value = time;
+    starMat.uniforms.speed.value = Math.max(0, scrollVelocity); // Warp intensity
+    
+    // Rotate entire system slightly based on mouse
+    scene.rotation.z = mouse.x * 0.5;
+    scene.rotation.x = mouse.y * 0.2;
+    
+    // Animate Smoke
+    const smokePositions = smokeSystem.geometry.attributes.position.array;
+    for(let i=0; i < CONFIG.nebulaCount; i++) {
+        // Slowly drift smoke
+        smokePositions[i*3+1] -= 0.2; // Move down tunnel
+        if(smokePositions[i*3+1] < -400) smokePositions[i*3+1] = 400; // Reset
+        
+        // Gentle sway
+        smokePositions[i*3] += Math.sin(time * 0.5 + i) * 0.1;
     }
-};
+    smokeSystem.geometry.attributes.position.needsUpdate = true;
+
+    // Camera gentle bob
+    camera.position.y = Math.sin(time * 0.5) * 2;
+
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+}
+animate();
