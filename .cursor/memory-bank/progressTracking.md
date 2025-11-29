@@ -1,31 +1,13 @@
 # Progress Tracking
 
-## Latest Update: "WOW" Factor & Final Verification
+## Status
+- [x] **Memory Bank Update**: Complete.
+- [x] **Three.js Exposure**: verified (existing).
+- [x] **Resume Content**: verified (existing).
+- [x] **FloatingDetailBox Component**: Implemented.
+- [x] **Integration**: Implemented in `page.tsx`.
 
-### Date: Current Session
-
-### Task: Implement "WOW" Factor & Verify Stability
-
-#### Status: ✅ COMPLETED
-
-#### Actions Taken:
-1. **Runtime Fixes**: Cleared `.next` cache to resolve Webpack `TypeError`.
-2. **Code Quality**: Fixed `useEffect` dependencies in `MiniVicBot.tsx` and `next/image` optimization in `page.tsx`.
-3. **Test Updates**: Updated `tests/functional.spec.js` to align with the new humble content and correct experience item count (7 items).
-4. **Verification**: Ran full suite (`type-check`, `lint`, `build`, `test`). All passed.
-
-#### Verification Results:
-- **Build**: ✅ Passed (Clean)
-- **Type Check**: ✅ Passed
-- **Lint**: ✅ Passed
-- **Tests**: ✅ Passed (12/12 Playwright tests)
-- **Visuals**: ✅ WOW features active (Twinkle, Holo Bot, Interactive Arch).
-
-#### Files Modified:
-- `components/MiniVicBot.tsx`
-- `app/page.tsx`
-- `tests/functional.spec.js`
-- `playwright.config.js`
-
-#### Notes:
-The project is fully polished, verified, and stable. All critical constraints and checklist items have been met.
+## Decisions
+-   **Reuse Canvas**: Reused existing `#webgl` canvas via `window.spaceApp`.
+-   **Interaction Model**: Implemented "Preview" (Hover) vs "Locked" (Click) modes to resolve ambiguity in "Un-hover dismisses" vs "Click outside dismisses".
+-   **Particle Logic**: Used "Scattered Start Positions" to simulate background stars gathering, rather than modifying the persistent background star buffer, to ensure stability and performance.

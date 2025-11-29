@@ -598,7 +598,8 @@ async function fetchGitHubProfile() {
         }
 
         if (logo && !localStorage.getItem('logo') && profile.name) {
-            logo.textContent = (profile.name.split(' ')[0] || 'VIKRAM').toUpperCase() + '.';
+            const namePart = profile.name.split(' ')[0].replace(/\.$/, '');
+            logo.textContent = (namePart || 'VIKRAM').toUpperCase() + '.';
         }
     } catch (err) {
         console.warn('Could not hydrate GitHub profile', err);

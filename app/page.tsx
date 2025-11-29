@@ -1,13 +1,86 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Script from 'next/script';
 import Image from 'next/image';
+import FloatingDetailBox from '@/components/FloatingDetailBox';
 
 export default function Home() {
+  const [activeKey, setActiveKey] = useState<string | null>(null);
+  const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null);
+  const [isLocked, setIsLocked] = useState(false);
+  
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // --- Handlers ---
+
+  const handleMetaClick = (key: string, e: React.MouseEvent) => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setTriggerRect(rect);
+    setActiveKey(key);
+    setIsLocked(true); 
+  };
+
+  const handleMetaKeyDown = (key: string, e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      setTriggerRect(rect);
+      setActiveKey(key);
+      setIsLocked(true);
+    }
+  };
+
+  const handleMetaHover = (key: string, e: React.MouseEvent) => {
+    // Prevent re-triggering if already open (locked or same key)
+    if (isLocked || activeKey === key) return;
+    
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    
+    const target = e.currentTarget as HTMLElement;
+    
+    hoverTimeoutRef.current = setTimeout(() => {
+      const rect = target.getBoundingClientRect();
+      setTriggerRect(rect);
+      setActiveKey(key);
+      setIsLocked(false); 
+    }, 200);
+  };
+
+  const handleMetaLeave = () => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    
+    if (!isLocked) {
+      setActiveKey(null);
+    }
+  };
+
+  const handleClose = () => {
+    setActiveKey(null);
+    setIsLocked(false);
+  };
+
+  // ESC Key Handler
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleClose();
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
+
   return (
     <>
       <canvas id="webgl" className="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+      
+      <FloatingDetailBox 
+        activeKey={activeKey} 
+        triggerRect={triggerRect} 
+        onClose={handleClose} 
+        isLocked={isLocked}
+      />
 
       <div className="admin-controls fixed top-5 right-5 z-[10001]">
         <button id="toggle-edit-mode" className="btn-secondary">
@@ -172,7 +245,15 @@ export default function Home() {
             </div>
 
             <div className="hero-meta">
-              <div className="meta-card glass-card">
+              <div 
+                className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
+                role="button"
+                tabIndex={0}
+                onClick={(e) => handleMetaClick('Cloud Modernisation', e)}
+                onKeyDown={(e) => handleMetaKeyDown('Cloud Modernisation', e)}
+                onMouseEnter={(e) => handleMetaHover('Cloud Modernisation', e)}
+                onMouseLeave={handleMetaLeave}
+              >
                 <div className="meta-icon">
                   <i className="fas fa-cloud-upload-alt"></i>
                 </div>
@@ -185,7 +266,15 @@ export default function Home() {
                   <span className="meta-note">Faster ROI & leaner infra spend on regulated programs.</span>
                 </div>
               </div>
-              <div className="meta-card glass-card">
+              <div 
+                className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
+                role="button"
+                tabIndex={0}
+                onClick={(e) => handleMetaClick('Realtime Reliability', e)}
+                onKeyDown={(e) => handleMetaKeyDown('Realtime Reliability', e)}
+                onMouseEnter={(e) => handleMetaHover('Realtime Reliability', e)}
+                onMouseLeave={handleMetaLeave}
+              >
                 <div className="meta-icon">
                   <i className="fas fa-tachometer-alt"></i>
                 </div>
@@ -198,7 +287,15 @@ export default function Home() {
                   <span className="meta-note">Resilient CX & telemetry with P95 &lt;200ms latency.</span>
                 </div>
               </div>
-              <div className="meta-card glass-card">
+              <div 
+                className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
+                role="button"
+                tabIndex={0}
+                onClick={(e) => handleMetaClick('AI Quality & Risk', e)}
+                onKeyDown={(e) => handleMetaKeyDown('AI Quality & Risk', e)}
+                onMouseEnter={(e) => handleMetaHover('AI Quality & Risk', e)}
+                onMouseLeave={handleMetaLeave}
+              >
                 <div className="meta-icon">
                   <i className="fas fa-shield-alt"></i>
                 </div>
@@ -211,7 +308,15 @@ export default function Home() {
                   <span className="meta-note">Safer AI rollouts; 100% tested key server for signing.</span>
                 </div>
               </div>
-              <div className="meta-card glass-card">
+              <div 
+                className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
+                role="button"
+                tabIndex={0}
+                onClick={(e) => handleMetaClick('Leadership Scale', e)}
+                onKeyDown={(e) => handleMetaKeyDown('Leadership Scale', e)}
+                onMouseEnter={(e) => handleMetaHover('Leadership Scale', e)}
+                onMouseLeave={handleMetaLeave}
+              >
                 <div className="meta-icon">
                   <i className="fas fa-users"></i>
                 </div>
@@ -224,7 +329,15 @@ export default function Home() {
                   <span className="meta-note">Leading 5+ cross-functional squads onsite & offshore.</span>
                 </div>
               </div>
-              <div className="meta-card glass-card">
+              <div 
+                className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
+                role="button"
+                tabIndex={0}
+                onClick={(e) => handleMetaClick('Strategic Alignment', e)}
+                onKeyDown={(e) => handleMetaKeyDown('Strategic Alignment', e)}
+                onMouseEnter={(e) => handleMetaHover('Strategic Alignment', e)}
+                onMouseLeave={handleMetaLeave}
+              >
                 <div className="meta-icon">
                   <i className="fas fa-compass"></i>
                 </div>
@@ -237,7 +350,15 @@ export default function Home() {
                   <span className="meta-note">Bridging engineering depth with executive strategy.</span>
                 </div>
               </div>
-              <div className="meta-card glass-card">
+              <div 
+                className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
+                role="button"
+                tabIndex={0}
+                onClick={(e) => handleMetaClick('Portfolio Value', e)}
+                onKeyDown={(e) => handleMetaKeyDown('Portfolio Value', e)}
+                onMouseEnter={(e) => handleMetaHover('Portfolio Value', e)}
+                onMouseLeave={handleMetaLeave}
+              >
                 <div className="meta-icon">
                   <i className="fas fa-chart-line"></i>
                 </div>
@@ -265,7 +386,7 @@ export default function Home() {
                   priority
                 />
                 <video
-                  src="assets/my-avatar.mp4"
+                  src="/assets/my-hero-avatar.mp4"
                   className="avatar-img absolute inset-0 w-full h-full object-cover z-0"
                   id="profile-image"
                   muted
@@ -586,12 +707,24 @@ export default function Home() {
                         Architected and developed a Next.js and Supabase analytics dashboard for JIRA to expose sprint velocity metrics and generate LLM-powered retrospective insights.
                       </li>
                       <li className="editable" data-key="exp-8-desc-2">
-                        Built a production-grade Node.js/Express public-key server for API signing.
+                        Built 'AI Resume Tailor', an automated NLP system using web scraping and prompt engineering to match CVs to Job Descriptions instantly.
                       </li>
                       <li className="editable" data-key="exp-8-desc-3">
-                        Developed a React/TypeScript and D3 visualization tool for dynamic customer journey interactions.
+                        Created 'AI Gmail Manager', an autonomous TypeScript agent for inbox triage, sentiment analysis, and draft generation using LLMs.
                       </li>
                       <li className="editable" data-key="exp-8-desc-4">
+                        Developing 'Jyotish Shastra' and 'BTR-Demo', enterprise-grade platforms exploring the intersection of ancient Vedic algorithms and modern AI/ML.
+                      </li>
+                      <li className="editable" data-key="exp-8-desc-5">
+                        Creator of the @vicd0ct YouTube channel, producing technical deep-dives on live coding, algorithm archaeology, and telemetry breakdowns.
+                      </li>
+                      <li className="editable" data-key="exp-8-desc-6">
+                        Built a production-grade Node.js/Express public-key server for API signing with full test coverage.
+                      </li>
+                      <li className="editable" data-key="exp-8-desc-7">
+                        Developed a React/TypeScript and D3 visualization tool for dynamic customer journey interactions.
+                      </li>
+                      <li className="editable" data-key="exp-8-desc-8">
                         Implemented an LLM evaluation stack using Langfuse and Phoenix to reduce error budget breaches in a simulated production environment.
                       </li>
                     </ul>

@@ -164,8 +164,8 @@ function animate() {
     // 1. Network Animation (Float + Mouse Interaction)
     const positions = networkGeo.attributes.position.array;
     for(let i = 0; i < NETWORK_COUNT; i++) {
-        positions[i*3] += networkVel[i].x;
-        positions[i*3+1] += networkVel[i].y;
+        positions[i*3] += networkVel[i].x * 0.2;
+        positions[i*3+1] += networkVel[i].y * 0.2;
         
         // Gentle boundary wrap
         if(Math.abs(positions[i*3]) > 40) networkVel[i].x *= -1;
@@ -218,8 +218,8 @@ function animate() {
     twinkleMesh.rotation.x += 0.015 * (targetY - twinkleMesh.rotation.x);
 
     // Constant slow rotation
-    starsMesh.rotation.z += 0.0005;
-    twinkleMesh.rotation.z += 0.0003;
+    starsMesh.rotation.z += 0.00005; // 0.1x speed
+    twinkleMesh.rotation.z += 0.00003; // 0.1x speed
 
     // Scroll Parallax
     // Move camera Y based on scroll
@@ -236,3 +236,15 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+// --- Expose Internals for React/Animation Control ---
+window.spaceApp = {
+    scene,
+    camera,
+    renderer,
+    THREE,
+    addTempObject: (obj) => {
+        scene.add(obj);
+        return () => scene.remove(obj);
+    }
+};
