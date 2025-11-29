@@ -6,8 +6,43 @@
 - [x] Analyze issue (dependency stability).
 - [x] Fix `app/page.tsx` (useCallback).
 - [x] Verify fix with linter.
+- [x] Enhance `SpaceScene.tsx` with interactive elements.
+    - [x] Nebula clouds (ShaderMaterial).
+    - [x] Shooting stars (Trail).
+    - [x] 6000 Stars + Mouse Gravity.
+    - [x] Orbital drift.
+- [x] Fix loader timing in `script.js` to prevent race condition warnings.
+- [x] Fix color issues in `SpaceScene.tsx` (realistic star/nebula colors).
+- [x] Fix typography in `app/page.tsx` ("Vikram ." -> "Vikram.").
+- [x] Implement Parallax Floating Hero Elements.
+    - [x] Add `data-depth` attributes in `app/page.tsx`.
+    - [x] Add 3D perspective styles in `app/globals.css`.
+    - [x] **Refinement**: Replaced CSS parallax with GSAP ScrollTrigger for reliable scroll-based parallax.
+    - [x] **Refinement**: Added `data-speed` and `parallax` class for mouse-based parallax via `script.js`.
+- [x] UI/UX Audit & Fixes.
+    - [x] Content typo check.
+    - [x] Mobile responsiveness verification.
+    - [x] Scrollbar check.
 
 ## History
 - Initialized task for fixing `FloatingDetailBox` animation interruption.
 - Wrapped `handleClose` in `useCallback` in `app/page.tsx`.
 - Verified no linter errors.
+- Enhanced `SpaceScene.tsx` with advanced R3F features.
+- Optimized `script.js` loader logic.
+- Conducted UI/UX audit and fixed visual defects.
+- Added CSS-based 3D parallax to the Hero section.
+- Verified and finalized UI checks.
+- Switched parallax implementation to GSAP for better control and fixed "no effect" issue.
+## Status: In Progress
+
+## Tasks
+- [x] Implement `initCursorTrail` with a pooled set of dots inside `public/script.js`.
+- [x] Add `.cursor-trail` styling in `app/globals.css` that matches `--accent-color` and respects reduced-motion.
+- [x] Capture screenshots for `http://localhost:8080` and `https://forgotten-mistory.web.app/` to compare hero state.
+- [ ] Investigate ESLint `Converting circular structure to JSON` failure that blocks `next lint` and the lint phase of `next build`.
+- [ ] Note missing `type-check` and `test` scripts so verification instructions can be adjusted.
+- [ ] Rerun verification suite once lint/script blockers are resolved.
+
+## History
+- Added cursor trail effect and CSS glow, documented the local vs hosted UI mismatch, and captured the current lint/type-check/test script blockers when verifying the build.

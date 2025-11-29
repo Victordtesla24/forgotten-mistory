@@ -4,6 +4,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
 const enableSmooth = !prefersReducedMotion;
 let lenis = null;
+let lenisScroll = 0;
 
 if (enableSmooth) {
     try {
@@ -19,6 +20,32 @@ if (enableSmooth) {
                 touchMultiplier: 2,
             });
 
+            // Keep ScrollTrigger in sync with Lenis so parallax timelines stay active
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                lenis.on('scroll', ({ scroll }) => {
+                    lenisScroll = scroll;
+                    ScrollTrigger.update();
+                });
+
+                ScrollTrigger.scrollerProxy(document.documentElement, {
+                    scrollTop(value) {
+                        if (lenis && typeof lenis.scrollTo === 'function') {
+                            return arguments.length ? lenis.scrollTo(value) : lenisScroll;
+                        }
+                        return window.scrollY;
+                    },
+                    getBoundingClientRect() {
+                        return {
+                            top: 0,
+                            left: 0,
+                            width: window.innerWidth,
+                            height: window.innerHeight
+                        };
+                    },
+                    pinType: document.documentElement.style.transform ? 'transform' : 'fixed'
+                });
+            }
+
             function raf(time) {
                 if (!document.hidden) {
                     lenis.raf(time);
@@ -27,6 +54,12 @@ if (enableSmooth) {
             }
 
             requestAnimationFrame(raf);
+
+            // Refresh ScrollTrigger after Lenis starts so scrubbed animations bind correctly
+            if (typeof ScrollTrigger !== 'undefined') {
+                ScrollTrigger.defaults({ scroller: document.documentElement });
+                ScrollTrigger.refresh();
+            }
         } else {
             console.warn('Lenis not defined, skipping smooth scroll.');
         }
@@ -39,6 +72,54 @@ if (enableSmooth) {
 const cursorDot = document.querySelector("[data-cursor-dot]");
 const cursorOutline = document.querySelector("[data-cursor-outline]");
 const canUseCustomCursor = !prefersReducedMotion && !hasCoarsePointer;
+
+function initCursorTrail() {
+    if (prefersReducedMotion || hasCoarsePointer) return;
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCursorTrail, { once: true });
+        return;
+    }
+
+    const TRAIL_COUNT = 20;
+    const FADE_DURATION = 500;
+    const trailDots = [];
+    let poolIndex = 0;
+
+    const createDot = () => {
+        const trailDot = document.createElement('div');
+        trailDot.className = 'cursor-trail';
+        trailDot.style.opacity = '0';
+        trailDot.style.transform = 'translate(-50%, -50%) scale(0.2)';
+        document.body.appendChild(trailDot);
+        return trailDot;
+    };
+
+    for (let i = 0; i < TRAIL_COUNT; i++) {
+        trailDots.push(createDot());
+    }
+
+    const animateDot = (x, y) => {
+        const dot = trailDots[poolIndex];
+        poolIndex = (poolIndex + 1) % TRAIL_COUNT;
+
+        dot.style.transition = 'none';
+        dot.style.left = `${x}px`;
+        dot.style.top = `${y}px`;
+        dot.style.opacity = '1';
+        dot.style.transform = 'translate(-50%, -50%) scale(1)';
+
+        requestAnimationFrame(() => {
+            dot.style.transition = `opacity ${FADE_DURATION}ms linear, transform ${FADE_DURATION}ms ease-out`;
+            dot.style.opacity = '0';
+            dot.style.transform = 'translate(-50%, -50%) scale(0.2)';
+        });
+    };
+
+    document.addEventListener('mousemove', (event) => {
+        animateDot(event.clientX, event.clientY);
+    });
+}
 
 // Ensure cursor elements exist before adding listeners
 if (canUseCustomCursor && cursorDot && cursorOutline) {
@@ -75,66 +156,74 @@ if (canUseCustomCursor && cursorDot && cursorOutline) {
     document.body.classList.remove('cursor-enhanced');
 }
 
+if (canUseCustomCursor) {
+    initCursorTrail();
+}
 // Preloader Animation
 function startLoader() {
-    let counterElement = document.querySelector(".counter");
-    if (!counterElement) {
-        // If element missing, assume loaded or broken HTML, try to run intro immediately if possible
-        console.warn('Counter element missing, skipping loader.');
-        runIntroSequence();
-        return;
-    }
-
-    if (prefersReducedMotion) {
-        counterElement.textContent = '100';
-        runIntroSequence(true);
-        return;
-    }
-
-    let currentValue = 0;
-
-    function updateCounter() {
-        if(currentValue === 100) {
+        let counterElement = document.querySelector(".counter");
+        if (!counterElement) {
+            // If element missing, assume loaded or broken HTML, try to run intro immediately if possible
+            console.warn('Counter element missing, skipping loader.');
             runIntroSequence();
             return;
         }
 
-        currentValue += Math.floor(Math.random() * 10) + 1;
-        if(currentValue > 100) {
-            currentValue = 100;
+        if (prefersReducedMotion) {
+            counterElement.textContent = '100';
+            runIntroSequence(true);
+            return;
         }
 
-        counterElement.textContent = currentValue;
+        let currentValue = 0;
 
-        let delay = Math.floor(Math.random() * 200) + 50;
-        setTimeout(updateCounter, delay);
+        function updateCounter() {
+            if(currentValue === 100) {
+                runIntroSequence();
+                return;
+            }
+
+            // Faster increment to avoid failsafe
+            currentValue += Math.floor(Math.random() * 12) + 2;
+            if(currentValue > 100) {
+                currentValue = 100;
+            }
+
+            counterElement.textContent = currentValue;
+
+            // Faster delay
+            let delay = Math.floor(Math.random() * 100) + 20;
+            setTimeout(updateCounter, delay);
+        }
+        
+        updateCounter();
+        
+        // Force loader to finish if it takes too long (failsafe for slow networks/tests)
+        setTimeout(() => {
+            const p = document.querySelector(".preloader");
+            if (p && getComputedStyle(p).display !== 'none') {
+                try {
+                    // Only warn if it really stuck, but typically with faster settings this won't happen
+                    if (currentValue < 100) {
+                        console.warn('Loader failsafe triggering.');
+                    }
+                    // Try standard exit
+                    if (typeof runIntroSequence === 'function') {
+                        runIntroSequence();
+                    }
+                } catch(e) { console.warn(e); }
+
+                // Hard remove fallback
+                setTimeout(() => {
+                    if (p && getComputedStyle(p).display !== 'none') {
+                        p.style.display = 'none';
+                        p.remove();
+                        document.body.style.overflow = 'auto'; // Ensure scrollable
+                    }
+                }, 500);
+            }
+        }, 4000); // Increased failsafe time
     }
-    
-    updateCounter();
-    
-    // Force loader to finish if it takes too long (failsafe for slow networks/tests)
-    setTimeout(() => {
-        const p = document.querySelector(".preloader");
-        if (p && getComputedStyle(p).display !== 'none') {
-            try {
-                console.log('Failsafe triggering intro sequence...');
-                // Try standard exit
-                if (typeof runIntroSequence === 'function') {
-                    runIntroSequence();
-                }
-            } catch(e) { console.warn(e); }
-
-            // Hard remove fallback
-            setTimeout(() => {
-                if (p && getComputedStyle(p).display !== 'none') {
-                    p.style.display = 'none';
-                    p.remove();
-                    document.body.style.overflow = 'auto'; // Ensure scrollable
-                }
-            }, 500);
-        }
-    }, 3500); // Increased failsafe time
-}
 
 // GSAP Animations
 try {
@@ -337,27 +426,149 @@ if (menuToggle && navOverlay) {
 // Scroll Animations for Sections
 const sections = document.querySelectorAll('[data-scroll-section]');
 
+// Helper to split text for animation
+function splitText(element) {
+    if (!element) return;
+    const text = element.innerText;
+    element.innerHTML = '';
+    const chars = text.split('').map(char => {
+        const span = document.createElement('span');
+        span.innerText = char;
+        span.style.display = 'inline-block';
+        // Preserve spaces
+        if (char === ' ') span.style.width = '0.3em'; 
+        return span;
+    });
+    chars.forEach(span => element.appendChild(span));
+    return chars;
+}
+
 sections.forEach(section => {
     // Select elements to animate within the section
-    const targets = section.querySelectorAll(".section-title, .about-text, .accordion-item, .contact-title, .contact-details, .social-links-large, .snap-card, .skill-card");
+    const targets = section.querySelectorAll(".about-text, .accordion-item, .contact-details, .social-links-large, .snap-card, .skill-card");
+    const title = section.querySelector(".section-title");
+    const contactTitle = section.querySelector(".contact-title");
     
-    if (targets.length > 0) {
-        if (prefersReducedMotion || typeof gsap === 'undefined') {
+    if (prefersReducedMotion || typeof gsap === 'undefined') {
+        if (targets.length > 0) {
             targets.forEach(el => {
                 el.style.opacity = '1';
                 el.style.transform = 'none';
             });
-            return;
         }
+        if (title) {
+            title.style.opacity = '1';
+            title.style.clipPath = 'none';
+        }
+        if (contactTitle) {
+            contactTitle.style.opacity = '1';
+            contactTitle.style.transform = 'none';
+        }
+        return;
+    }
 
+    // Animate Section Title with Clip Path Reveal & Split Text Animation
+    if (title) {
+        const chars = splitText(title);
+
+        gsap.set(title, { 
+            clipPath: "inset(0 0 100% 0)",
+            opacity: 1 
+        });
+
+        if (chars && chars.length > 0) {
+            gsap.set(chars, { 
+                opacity: 0, 
+                y: 20,
+                display: 'inline-block'
+            });
+
+            const titleTimeline = gsap.timeline({
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 80%",
+                    end: "bottom 20%",
+                    toggleActions: "play none none reverse",
+                    onLeaveBack: () => {
+                        gsap.set(title, { clipPath: "inset(0 0 100% 0)" });
+                        gsap.set(chars, { opacity: 0, y: 20 });
+                    }
+                }
+            });
+
+            titleTimeline
+                .to(title, {
+                    clipPath: "inset(0 0 0% 0)",
+                    duration: 1.2,
+                    ease: "power4.out"
+                })
+                .to(chars, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.75,
+                    stagger: {
+                        each: 0.12,
+                        from: "start"
+                    },
+                    ease: "power2.out"
+                }, "-=0.6");
+        } else {
+            gsap.to(title, {
+                clipPath: "inset(0 0 0% 0)",
+                duration: 1.2,
+                ease: "power4.out",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 80%",
+                    end: "bottom 20%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        }
+    }
+
+    // Specific enhancement for Contact Title (often larger/center)
+    if (contactTitle) {
+        const chars = splitText(contactTitle);
+        if (chars) {
+            gsap.fromTo(chars, {
+                opacity: 0,
+                y: 50,
+                rotateX: -90
+            }, {
+                opacity: 1,
+                y: 0,
+                rotateX: 0,
+                duration: 0.8,
+                stagger: {
+                    each: 0.02,
+                    from: "start"
+                },
+                ease: "back.out(1.7)",
+                scrollTrigger: {
+                    trigger: contactTitle,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        }
+    }
+
+    // Staggered Reveal for Content with enhanced timing
+    if (targets.length > 0) {
         gsap.fromTo(targets, {
             y: 50,
-            opacity: 0
+            opacity: 0,
+            clipPath: "inset(0 0 15% 0)"
         }, {
             y: 0,
             opacity: 1,
+            clipPath: "inset(0 0 0% 0)",
             duration: 1,
-            stagger: 0.1,
+            stagger: {
+                each: 0.12,
+                from: "start"
+            },
             ease: "power3.out",
             scrollTrigger: {
                 trigger: section,
@@ -499,19 +710,80 @@ if (skillCards.length) {
 }
 
 
-// Parallax Effect (skipped for reduced motion)
+// Parallax Effect - Scroll-linked with scrub for smooth scroll-connected animations
 const allowParallax = !prefersReducedMotion && window.matchMedia('(pointer: fine)').matches;
+
+// Initialize scroll-linked parallax with GSAP ScrollTrigger
+function initScrollParallax() {
+    if (prefersReducedMotion || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        // If reduced motion or GSAP missing, ensure parallax elements are visible
+        document.querySelectorAll('.parallax, [data-parallax]').forEach(el => {
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+        });
+        return;
+    }
+
+    // Scroll-linked parallax with scrub: 0.5 for smooth scroll-connected movement
+    document.querySelectorAll('.parallax, [data-parallax]').forEach(el => {
+        const speed = parseFloat(el.getAttribute('data-speed')) || 0.5;
+        const direction = el.getAttribute('data-parallax-direction') || 'vertical';
+        
+        // Calculate movement based on speed factor
+        const yMovement = speed * 100;
+        const xMovement = speed * 50;
+        
+        gsap.fromTo(el, 
+            {
+                y: direction === 'horizontal' ? 0 : -yMovement,
+                x: direction === 'horizontal' ? -xMovement : 0
+            },
+            {
+                y: direction === 'horizontal' ? 0 : yMovement,
+                x: direction === 'horizontal' ? xMovement : 0,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 0.5, // Smooth scroll-linked animation
+                    invalidateOnRefresh: true
+                }
+            }
+        );
+    });
+}
+
+// Mouse-based parallax (complementary to scroll parallax)
 if (allowParallax) {
     document.addEventListener("mousemove", parallax);
 }
+
 function parallax(e) {
-    document.querySelectorAll(".parallax").forEach(function(move){
-        var moving_value = move.getAttribute("data-speed");
+    // Mouse parallax for elements without scroll parallax conflict
+    document.querySelectorAll(".parallax-mouse").forEach(function(move){
+        var moving_value = move.getAttribute("data-speed") || 1;
         var x = (e.clientX * moving_value) / 250;
         var y = (e.clientY * moving_value) / 250;
 
-        move.style.transform = "translateX(" + x + "px) translateY(" + y + "px)";
+        if (typeof gsap !== 'undefined') {
+             gsap.to(move, {
+                x: x,
+                y: y,
+                duration: 0.5,
+                overwrite: 'auto' 
+             });
+        } else {
+             move.style.transform = "translateX(" + x + "px) translateY(" + y + "px)";
+        }
     });
+}
+
+// Initialize scroll parallax when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollParallax);
+} else {
+    initScrollParallax();
 }
 
 /* 

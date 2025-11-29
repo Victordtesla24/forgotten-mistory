@@ -5,6 +5,12 @@ import Script from 'next/script';
 import Image from 'next/image';
 import FloatingDetailBox from '@/components/FloatingDetailBox';
 import SpaceScene from './components/SpaceScene';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function Home() {
   const [activeKey, setActiveKey] = useState<string | null>(null);
@@ -12,6 +18,34 @@ export default function Home() {
   const [isLocked, setIsLocked] = useState(false);
   
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // --- GSAP Parallax Hook ---
+  useEffect(() => {
+    const parallaxElements = document.querySelectorAll('[data-parallax="true"]');
+    if (!parallaxElements.length) return;
+
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 769px)", () => {
+      parallaxElements.forEach((el) => {
+        const speed = parseFloat(el.getAttribute('data-speed') || '0');
+        // Scroll-based parallax: move element vertically based on scroll
+        gsap.to(el, {
+          y: (i, target) => ScrollTrigger.maxScroll(window) * speed * 0.05,
+          ease: "none",
+          scrollTrigger: {
+            trigger: document.body,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0,
+            invalidateOnRefresh: true
+          }
+        });
+      });
+    });
+
+    return () => mm.revert();
+  }, []);
 
   // --- Handlers ---
 
@@ -75,6 +109,44 @@ export default function Home() {
   return (
     <>
       <SpaceScene />
+      <div className="morphing-bg" aria-hidden="true">
+        <svg className="morphing-svg" viewBox="0 0 600 600" role="presentation" focusable="false">
+          <defs>
+            <linearGradient id="morphGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#ff7350" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#ffb199" stopOpacity="0.6" />
+            </linearGradient>
+            <linearGradient id="morphGradient2" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#00f2fe" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#7cf3ff" stopOpacity="0.5" />
+            </linearGradient>
+            <linearGradient id="morphGradient3" x1="30%" y1="0%" x2="80%" y2="100%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="#ff7350" stopOpacity="0.4" />
+            </linearGradient>
+            <filter id="blur">
+              <feGaussianBlur stdDeviation="60" />
+            </filter>
+          </defs>
+          <g filter="url(#blur)">
+            <path
+              className="morphing-blob"
+              fill="url(#morphGradient1)"
+              d="M350 180 C 300 110 200 110 150 180 C 90 260 130 360 210 380 C 290 400 380 340 390 260 C 400 200 390 150 350 180 Z"
+            />
+            <path
+              className="morphing-blob morphing-blob-secondary"
+              fill="url(#morphGradient2)"
+              d="M350 180 C 300 110 200 110 150 180 C 90 260 130 360 210 380 C 290 400 380 340 390 260 C 400 200 390 150 350 180 Z"
+            />
+            <path
+              className="morphing-blob morphing-blob-tertiary"
+              fill="url(#morphGradient3)"
+              d="M350 180 C 300 110 200 110 150 180 C 90 260 130 360 210 380 C 290 400 380 340 390 260 C 400 200 390 150 350 180 Z"
+            />
+          </g>
+        </svg>
+      </div>
       
       <FloatingDetailBox 
         activeKey={activeKey} 
@@ -160,13 +232,13 @@ export default function Home() {
       <main>
         <section id="hero" className="hero-section" data-scroll-section>
           <div className="hero-content">
-            <h1 className="hero-title">
+            <h1 className="hero-title parallax" data-depth="3" data-speed="2" data-parallax="true">
               <span className="line">Hello, I&apos;m</span>
-              <span className="line reveal-text glitch-text editable" data-key="hero-name" data-text="Vikram .">
-                Vikram .
+              <span className="line reveal-text glitch-text editable" data-key="hero-name" data-text="Vikram.">
+                Vikram.
               </span>
             </h1>
-            <p className="hero-subtitle reveal-text-delay editable" data-key="hero-subtitle">
+            <p className="hero-subtitle reveal-text-delay editable parallax" data-key="hero-subtitle" data-depth="2" data-speed="1" data-parallax="true">
               I&apos;m a technical leader and AI solutions architect based in Melbourne. With over 15 years of experience, I enjoy helping teams build complex systems and solve challenging problems. My work has spanned across finance and telecommunications, where I&apos;ve focused on delivering value and making a positive impact.
               <br />
               <br />
@@ -175,7 +247,7 @@ export default function Home() {
               <br />
               My goal is to create technology that is not only powerful but also responsible and beneficial to everyone.
             </p>
-            <div className="hero-links reveal-text-delay">
+            <div className="hero-links reveal-text-delay parallax" data-speed="1.5" data-parallax="true">
               <a href="https://github.com/Victordtesla24" target="_blank" rel="noreferrer" className="btn-link">
                 GitHub
               </a>
@@ -189,7 +261,7 @@ export default function Home() {
                 Let&apos;s Talk
               </a>
             </div>
-            <div className="telemetry-panel glass-card" id="telemetry-panel">
+            <div className="telemetry-panel glass-card parallax" id="telemetry-panel" data-depth="1" data-speed="-1" data-parallax="true">
               <div className="telemetry-header">
                 <div>
                   <p className="eyebrow">Live Telemetry</p>
@@ -245,7 +317,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="hero-meta">
+            <div className="hero-meta parallax" data-depth="2" data-speed="3" data-parallax="true">
               <div 
                 className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
                 role="button"
@@ -375,7 +447,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="hero-image-container parallax" data-speed="0.1">
+          <div className="hero-image-container parallax" data-speed="-2" data-parallax="true">
             <div className="avatar-placeholder" id="avatar-container">
               <div className="avatar-circle relative overflow-hidden">
                 <Image 
