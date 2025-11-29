@@ -9,9 +9,25 @@ const STAR_COUNT = 4000;
 const COMFORT_COLOR = new THREE.Color('#ff7350'); // Accent
 const CYBER_COLOR = new THREE.Color('#00f2fe');   // Cyan
 
+// --- Custom Hook for Warp Effect ---
+function useWarpEffect() {
+  const scrollRef = useRef(0);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      scrollRef.current = window.scrollY;
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return scrollRef;
+}
+
 function StarField() {
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  const { viewport, mouse } = useThree();
+  const { viewport } = useThree();
+  const scrollRef = useWarpEffect();
   
   // Generate random positions and initial data
   const [positions, colors, sizes, speeds] = useMemo(() => {
@@ -48,25 +64,14 @@ function StarField() {
   // Dummy object for matrix updates
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
-  // Scroll tracking
-  const scrollRef = useRef(0);
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      scrollRef.current = window.scrollY;
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   useFrame((state, delta) => {
     if (!meshRef.current) return;
 
     // Calculate warp speed based on scroll
-    // Base speed + scroll factor
+    // Base speed + scroll factor (WarpEffect logic)
     const warpFactor = 1 + (scrollRef.current * 0.005);
     
-    // Parallax effect from mouse
+    // Parallax effect from mouse (Reactive Camera logic)
     const mouseX = (state.mouse.x * viewport.width) / 50;
     const mouseY = (state.mouse.y * viewport.height) / 50;
 
@@ -74,7 +79,6 @@ function StarField() {
       const i3 = i * 3;
       
       // Move star towards camera (Z axis)
-      // We'll simulate movement by updating Z
       let z = positions[i3 + 2];
       z += speeds[i] * 10 * delta * warpFactor;
       
@@ -89,8 +93,8 @@ function StarField() {
 
       // Apply parallax
       dummy.position.set(
-        positions[i3] + mouseX * z * 0.05, // Parallax X
-        positions[i3 + 1] + mouseY * z * 0.05, // Parallax Y
+        positions[i3] + mouseX * z * 0.05, 
+        positions[i3 + 1] + mouseY * z * 0.05,
         z
       );
       
