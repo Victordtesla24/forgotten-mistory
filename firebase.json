@@ -1,17 +1,15 @@
 {
   "hosting": {
-    "public": ".",
+    "source": ".",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**",
-      "tests/**",
-      "playwright.config.js",
-      "package.json",
       "package-lock.json",
-      "QUICK_FIX.md",
-      ".gitignore",
-      "test-results/**"
-    ]
+      "!**/.next/**"
+    ],
+    "frameworksBackend": {
+      "region": "us-central1"
+    }
   }
 }

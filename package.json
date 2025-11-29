@@ -1,37 +1,41 @@
 {
-  "name": "portfolio-tests",
+  "name": "portfolio-rebuild",
   "version": "1.0.0",
-  "description": "Tests for portfolio website",
+  "private": true,
   "scripts": {
     "dev": "next dev -p 8080",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "type-check": "tsc --noEmit",
-    "test": "npx playwright test"
-  },
-  "devDependencies": {
-    "@playwright/test": "^1.40.0",
-    "@types/node": "^20.19.25",
-    "@types/react": "^18.3.27",
-    "@types/react-dom": "^18.2.0",
-    "autoprefixer": "^10.4.17",
-    "eslint": "^8.57.1",
-    "eslint-config-next": "^14.1.0",
-    "http-server": "^14.1.1",
-    "playwright": "^1.56.1",
-    "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5.9.3"
+    "lint": "next lint"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "acorn": "^8.15.0",
+    "firebase-admin": "^13.6.0",
+    "firebase-frameworks": "^0.4.2",
+    "firebase-functions": "^7.0.0",
     "gsap": "^3.12.5",
-    "jsdom": "^27.2.0",
     "lenis": "^1.0.45",
-    "lucide-react": "^0.554.0",
-    "next": "^14.1.0",
+    "lucide-react": "^0.344.0",
+    "markdown-it": "^14.1.0",
+    "next": "^14.2.33",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.160.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^16.0.5",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": "20"
   }
 }

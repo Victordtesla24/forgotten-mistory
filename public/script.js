@@ -4,23 +4,31 @@ const enableSmooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matc
 let lenis = null;
 
 if (enableSmooth) {
-    lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        direction: 'vertical',
-        gestureDirection: 'vertical',
-        smooth: true,
-        mouseMultiplier: 1,
-        smoothTouch: false,
-        touchMultiplier: 2,
-    });
+    try {
+        if (typeof Lenis !== 'undefined') {
+            lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                direction: 'vertical',
+                gestureDirection: 'vertical',
+                smooth: true,
+                mouseMultiplier: 1,
+                smoothTouch: false,
+                touchMultiplier: 2,
+            });
 
-    function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+
+            requestAnimationFrame(raf);
+        } else {
+            console.warn('Lenis not defined, skipping smooth scroll.');
+        }
+    } catch (e) {
+        console.warn('Lenis init failed:', e);
     }
-
-    requestAnimationFrame(raf);
 }
 
 // Custom Cursor
@@ -61,12 +69,18 @@ if (cursorDot && cursorOutline) {
 // Preloader Animation
 function startLoader() {
     let counterElement = document.querySelector(".counter");
-    if (!counterElement) return;
+    if (!counterElement) {
+        // If element missing, assume loaded or broken HTML, try to run intro immediately if possible
+        console.warn('Counter element missing, skipping loader.');
+        runIntroSequence();
+        return;
+    }
 
     let currentValue = 0;
 
     function updateCounter() {
         if(currentValue === 100) {
+            runIntroSequence();
             return;
         }
 
@@ -86,8 +100,9 @@ function startLoader() {
     // Force loader to finish if it takes too long (failsafe for slow networks/tests)
     setTimeout(() => {
         const p = document.querySelector(".preloader");
-        if (p) {
+        if (p && getComputedStyle(p).display !== 'none') {
             try {
+                console.log('Failsafe triggering intro sequence...');
                 // Try standard exit
                 if (typeof runIntroSequence === 'function') {
                     runIntroSequence();
@@ -99,13 +114,12 @@ function startLoader() {
                 if (p && getComputedStyle(p).display !== 'none') {
                     p.style.display = 'none';
                     p.remove();
+                    document.body.style.overflow = 'auto'; // Ensure scrollable
                 }
             }, 500);
         }
-    }, 2500);
+    }, 3500); // Increased failsafe time
 }
-
-startLoader();
 
 // GSAP Animations
 try {
@@ -170,6 +184,18 @@ class TextScramble {
 }
 
 function runIntroSequence() {
+    // Guard against multiple runs
+    if (window._introRun) return;
+    window._introRun = true;
+
+    if (typeof gsap === 'undefined') {
+        console.warn('GSAP missing, forcing content visible');
+        const p = document.querySelector(".preloader");
+        if(p) p.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        return;
+    }
+
     const tl = gsap.timeline();
 
     // Preloader Exit
@@ -190,11 +216,14 @@ function runIntroSequence() {
         duration: 0.8,
         height: 0,
         ease: "power4.inOut",
-    });
-
-    tl.set(".preloader", {
-        display: "none",
-        pointerEvents: "none"
+        onComplete: () => {
+            const p = document.querySelector(".preloader");
+            if (p) {
+                p.style.display = "none";
+                p.remove(); // Remove from DOM
+            }
+            document.body.style.overflow = 'auto'; // Enable scroll
+        }
     });
 
     // Trigger scramble after curtain goes up
@@ -206,13 +235,7 @@ function runIntroSequence() {
             const finalName = heroNameEl.innerText;
             scrambler.setText(finalName);
         }
-        
-        // Failsafe: ensure preloader is hidden if GSAP fails silently or is slow
-        const preloader = document.querySelector(".preloader");
-        if (preloader && getComputedStyle(preloader).display !== "none") {
-             preloader.style.display = "none";
-        }
-    }, 2000); // Increased failsafe time slightly to cover animation
+    }, 1000);
 
     tl.to(".hero-subtitle", {
         opacity: 1,
@@ -230,14 +253,21 @@ function runIntroSequence() {
     }, "-=0.8");
 }
 
-// Run immediately if the page is already loaded (Next.js loads scripts after onload)
-if (document.readyState === "complete") {
-    runIntroSequence();
-} else {
-    window.addEventListener("load", runIntroSequence);
+// Run loader safely
+try {
+    // If document already loaded, running startLoader might be late if it relies on listeners?
+    // No, it just finds elements.
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", startLoader);
+    } else {
+        startLoader();
+    }
+} catch (e) {
+    console.error("Loader init failed", e);
+    // Emergency exit
+    const p = document.querySelector(".preloader");
+    if(p) p.style.display = 'none';
 }
-
-
 
 // Navigation
 const menuToggle = document.querySelector('.menu-toggle');
@@ -272,7 +302,7 @@ sections.forEach(section => {
     // Select elements to animate within the section
     const targets = section.querySelectorAll(".section-title, .about-text, .accordion-item, .contact-title, .contact-details, .social-links-large, .snap-card, .skill-card");
     
-    if (targets.length > 0) {
+    if (targets.length > 0 && typeof gsap !== 'undefined') {
         gsap.fromTo(targets, {
             y: 50,
             opacity: 0
@@ -299,10 +329,6 @@ accordionHeaders.forEach(header => {
     header.addEventListener('click', () => {
         const item = header.parentElement;
         const content = item.querySelector('.accordion-content');
-        
-        // Close other items (Optional: mimic simple behavior where multiple can be open or single)
-        // For this design, let's keep multiple open possible, or close others for cleaner look.
-        // Let's go with toggle behavior.
         
         const isActive = item.classList.contains('active');
         
@@ -685,34 +711,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.style.setProperty('--mouse-y', `${y}px`);
 
                 // 3D Tilt
-                const rotateX = ((y - centerY) / centerY) * -5; // -5 to 5 deg
-                const rotateY = ((x - centerX) / centerX) * 5;  // -5 to 5 deg
+                if (typeof gsap !== 'undefined') {
+                    const rotateX = ((y - centerY) / centerY) * -5; // -5 to 5 deg
+                    const rotateY = ((x - centerX) / centerX) * 5;  // -5 to 5 deg
 
-                gsap.to(card, {
-                    perspective: 1000,
-                    rotateX: rotateX,
-                    rotateY: rotateY,
-                    scale: 1.02,
-                    duration: 0.4,
-                    ease: "power2.out"
-                });
+                    gsap.to(card, {
+                        perspective: 1000,
+                        rotateX: rotateX,
+                        rotateY: rotateY,
+                        scale: 1.02,
+                        duration: 0.4,
+                        ease: "power2.out"
+                    });
+                }
             });
 
             card.addEventListener('mouseleave', () => {
-                gsap.to(card, {
-                    rotateX: 0,
-                    rotateY: 0,
-                    scale: 1,
-                    duration: 0.6,
-                    ease: "elastic.out(1, 0.5)"
-                });
+                if (typeof gsap !== 'undefined') {
+                    gsap.to(card, {
+                        rotateX: 0,
+                        rotateY: 0,
+                        scale: 1,
+                        duration: 0.6,
+                        ease: "elastic.out(1, 0.5)"
+                    });
+                }
             });
         });
     }
 
     // --- Magnetic Buttons ---
     const magnets = document.querySelectorAll('.btn-primary, .social-btn, .btn-secondary, .nav-link');
-    if (magnets.length) {
+    if (magnets.length && typeof gsap !== 'undefined') {
         magnets.forEach(magnet => {
             magnet.addEventListener('mousemove', function(e) {
                 const rect = magnet.getBoundingClientRect();
@@ -824,7 +854,7 @@ function initArchitectureLab() {
     const legendSubtitle = archLegend?.querySelector('.arch-legend-subtitle');
     const legendItems = archLegend ? archLegend.querySelectorAll('[data-legend-node]') : [];
     const nodeChips = document.querySelectorAll('[data-arch-chip]');
-    if (!buttons.length || !lines.length || !nodes.length || !explainer) return;
+    if (!buttons.length || !lines.length || !nodes.length || !explainer || typeof gsap === 'undefined') return;
 
     const flows = {
         chat: {
@@ -1264,7 +1294,7 @@ function initAllFeatures() {
     // Safety fallback
     setTimeout(() => {
         const preloader = document.querySelector(".preloader");
-        if (preloader) {
+        if (preloader && getComputedStyle(preloader).display !== 'none') {
             preloader.style.display = "none";
             preloader.style.pointerEvents = "none";
             document.body.style.overflow = "auto";

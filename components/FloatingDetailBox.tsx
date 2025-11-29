@@ -73,11 +73,11 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
             // Optional: dispose geometries/materials if needed, but reuse is fine for now
         });
       }
-      threeObjectsRef.current = [];
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      if (timelineRef.current) timelineRef.current.kill();
+    threeObjectsRef.current = [];
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    if (timelineRef.current) timelineRef.current.kill();
     };
-    
+
     cleanup(); 
 
     const ANIMATION_DURATION = 1.2;
@@ -135,7 +135,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
     const beamGeo = new THREE.CylinderGeometry(0.15, 0.15, beamLen, 8, 1, true); 
     beamGeo.rotateX(-Math.PI / 2); 
     const beamMat = new THREE.MeshBasicMaterial({
-        color: 0xffffff, 
+        color: 0xffffff,
         transparent: true,
         opacity: 0,
         blending: THREE.AdditiveBlending,
@@ -247,7 +247,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
     const pPos = new Float32Array(PARTICLE_COUNT * 3);
     const pOffsets = new Float32Array(PARTICLE_COUNT * 3); 
     const pSpeeds = new Float32Array(PARTICLE_COUNT);
-
+    
     for(let i=0; i<PARTICLE_COUNT; i++) {
         const r = 40 * Math.cbrt(Math.random()); // Wider gathering radius
         const theta = Math.random() * 2 * Math.PI;
@@ -317,7 +317,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
         const now = Date.now();
         const time = (now - startTime) * 0.001;
         const { gather, expand, opacity } = animState;
-
+        
         // 1. Particles Update
         const positions = particleSystem.geometry.attributes.position.array;
         for(let i=0; i<PARTICLE_COUNT; i++) {
@@ -362,7 +362,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
         // 2. Beam
         beamMat.opacity = opacity * expand * 0.9;
         beamGlowMat.opacity = opacity * expand * 0.5 + (Math.sin(time * 15) * 0.1);
-        
+
         // 3. Orbiting Star
         if (expand > 0.1) {
             starGroup.visible = true;
@@ -417,7 +417,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
     loop();
 
     return cleanup;
-  }, [displayKey, isExiting, triggerRect, themeColor]); 
+  }, [displayKey, isExiting, triggerRect, themeColor, onClose]); 
 
   const handleDismiss = () => { onClose(); };
 
@@ -445,7 +445,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
       >
         {/* Main Card Body */}
         <div className="relative bg-[#050505]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto"
-             style={{ 
+        style={{ 
                  boxShadow: `0 0 50px ${themeColor}20`,
                  borderColor: `${themeColor}40`
              }}>
@@ -453,14 +453,14 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
             {/* Color Accent Bar */}
             <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, transparent, ${themeColor}, transparent)` }}></div>
 
-            {isLocked && (
-                <button 
-                    onClick={handleDismiss}
+        {isLocked && (
+            <button 
+                onClick={handleDismiss}
                     className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-all z-20"
-                >
+            >
                     <i className="fas fa-times text-lg"></i>
-                </button>
-            )}
+            </button>
+        )}
 
             <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] min-h-[400px]">
                 {/* Left Sidebar: Stats & Title */}
@@ -485,22 +485,22 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
                             <div className="text-xs text-gray-400 uppercase tracking-wider font-mono mt-2">
                                 {content.stats.label}
                             </div>
-                        </div>
-                    </div>
                 </div>
+            </div>
+        </div>
 
                 {/* Right Content: Details */}
                 <div className="p-10 flex flex-col justify-between bg-gradient-to-br from-white/5 to-transparent">
                     <div className="space-y-6 text-gray-200 text-lg font-light leading-relaxed">
-                        {content.details.map((detail, i) => (
+            {content.details.map((detail, i) => (
                             <div key={i} className="flex items-start gap-4 group animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: `${i * 100}ms` }}>
                                 <div className="mt-2.5 w-1.5 h-1.5 rounded-full flex-shrink-0 shadow-[0_0_10px_currentColor]" 
                                      style={{ color: themeColor, backgroundColor: themeColor }}></div>
                                 <p className="group-hover:text-white transition-colors duration-200">{detail}</p>
-                            </div>
-                        ))}
-                    </div>
-
+                </div>
+            ))}
+        </div>
+        
                     <div className="mt-10 pt-8 border-t border-white/10 flex justify-between items-end">
                         <div className="flex flex-col gap-1">
                              <span className="text-[10px] text-gray-500 uppercase tracking-widest font-mono">Source</span>
@@ -510,12 +510,12 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
                             </div>
                         </div>
                         
-                        <a href="/docs/Vik_Resume_Final.pdf" target="_blank" 
+             <a href="/docs/Vik_Resume_Final.pdf" target="_blank" 
                             className="group flex items-center gap-3 px-6 py-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 transition-all"
                         >
                             <span className="text-sm font-medium text-white">View Full Document</span>
                             <i className="fas fa-arrow-right text-xs text-gray-400 group-hover:translate-x-1 transition-transform" style={{ color: themeColor }}></i>
-                        </a>
+             </a>
                     </div>
                 </div>
             </div>

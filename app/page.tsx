@@ -707,13 +707,13 @@ export default function Home() {
                         Architected and developed a Next.js and Supabase analytics dashboard for JIRA to expose sprint velocity metrics and generate LLM-powered retrospective insights.
                       </li>
                       <li className="editable" data-key="exp-8-desc-2">
-                        Built 'AI Resume Tailor', an automated NLP system using web scraping and prompt engineering to match CVs to Job Descriptions instantly.
+                        Built &apos;AI Resume Tailor&apos;, an automated NLP system using web scraping and prompt engineering to match CVs to Job Descriptions instantly.
                       </li>
                       <li className="editable" data-key="exp-8-desc-3">
-                        Created 'AI Gmail Manager', an autonomous TypeScript agent for inbox triage, sentiment analysis, and draft generation using LLMs.
+                        Created &apos;AI Gmail Manager&apos;, an autonomous TypeScript agent for inbox triage, sentiment analysis, and draft generation using LLMs.
                       </li>
                       <li className="editable" data-key="exp-8-desc-4">
-                        Developing 'Jyotish Shastra' and 'BTR-Demo', enterprise-grade platforms exploring the intersection of ancient Vedic algorithms and modern AI/ML.
+                        Developing &apos;Jyotish Shastra&apos; and &apos;BTR-Demo&apos;, enterprise-grade platforms exploring the intersection of ancient Vedic algorithms and modern AI/ML.
                       </li>
                       <li className="editable" data-key="exp-8-desc-5">
                         Creator of the @vicd0ct YouTube channel, producing technical deep-dives on live coding, algorithm archaeology, and telemetry breakdowns.
