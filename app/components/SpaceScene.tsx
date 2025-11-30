@@ -17,6 +17,11 @@ const STAR_COLORS = [
   new THREE.Color('#ffddaa')  // Orange-white
 ];
 
+const logDebug = (message: string, data?: Record<string, unknown>) => {
+  if (process.env.NODE_ENV === 'production') return;
+  console.debug('[SpaceScene]', message, data ?? {});
+};
+
 const mulberry32 = (a: number) => {
   return () => {
     a |= 0;
@@ -327,50 +332,30 @@ function StarField() {
   );
 }
 
-const DEBUG_ENDPOINT = 'http://127.0.0.1:7242/ingest/103626d8-3ba1-4105-a997-3a144124bdb2';
-
-const sendDebugLog = (payload: Record<string, unknown>) => {
-  if (process.env.NODE_ENV !== 'production') {
-    console.debug('[SpaceScene debug]', payload);
-  }
-
-  if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
-    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-    navigator.sendBeacon(DEBUG_ENDPOINT, blob);
-    return;
-  }
-
-  fetch(DEBUG_ENDPOINT, {
-    method: 'POST',
-    body: JSON.stringify(payload),
-    mode: 'no-cors',
-    keepalive: true,
-  }).catch(() => {});
-};
-
 // --- Main Scene ---
 function SpaceAppDebugProbe() {
   const { scene, camera } = useThree();
+  const probeRef = useRef<any>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const hasExisting = Boolean((window as any).spaceApp);
 
-    // #region agent log
-    sendDebugLog({
-      sessionId: 'debug-session',
-      runId: 'pre-fix',
-      hypothesisId: 'H3',
-      location: 'app/components/SpaceScene.tsx:SpaceAppDebugProbe',
-      message: 'Inspecting spaceApp availability inside SpaceScene',
-      data: {
-        hasExisting,
-        sceneType: scene?.type ?? null,
-        cameraType: camera?.type ?? null
-      },
-      timestamp: Date.now()
+    const existing = (window as any).spaceApp;
+    const instance = { scene, camera, THREE };
+    (window as any).spaceApp = instance;
+    probeRef.current = instance;
+
+    logDebug('Exposed spaceApp handle', {
+      replacedExisting: Boolean(existing),
+      sceneType: scene?.type ?? null,
+      cameraType: camera?.type ?? null
     });
-    // #endregion
+
+    return () => {
+      if ((window as any).spaceApp === probeRef.current) {
+        delete (window as any).spaceApp;
+      }
+    };
   }, [scene, camera]);
 
   return null;

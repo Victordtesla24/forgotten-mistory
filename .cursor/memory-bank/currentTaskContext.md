@@ -40,3 +40,75 @@ The user reported UI/UX issues including scrolling, overlapping text, overflow, 
 - **Build**: `npm run build` passed.
 - **Firebase**: Successfully deployed to `forgotten-mistory` (Project Number: 642338064840).
 - **URL**: `https://forgotten-mistory.web.app`
+
+---
+
+## Logging cleanup & Three.js wiring fix (2025-11-30)
+
+### Symptom
+- Dev server responded with repeated 404/500 errors for `/_next/static/...` assets and threw `TypeError: __webpack_modules__[moduleId] is not a function`.
+- Production bundles contained debug plumbing that POSTed hypothesis telemetry to `http://127.0.0.1:7242/...`.
+- Detail cards never animated because `window.spaceApp` was always `undefined`.
+
+### Root Cause
+- Hard-coded `DEBUG_ENDPOINT` constants executed in all environments, attempting to beacon telemetry to a localhost address that does not exist outside of the debugging machine.
+- A legacy Vite prototype (`index.html` + `src/`) re-introduced a competing entry point; during dev the static files sometimes served first, and on some hosts they shadow Next.js entirely.
+- The Three.js helper probe only *read* `window.spaceApp` but never wrote to it, so downstream consumers bailed out every time.
+
+### Impacted Modules
+- `next.config.js`
+- `public/script.js`
+- `app/components/SpaceScene.tsx`
+- `components/FloatingDetailBox.tsx`
+- Legacy prototype assets in `src/`
+
+### Evidence
+- `NEXT_RUNTIME_DEBUG_ENDPOINT=console npm run dev` logged dev-phase metadata and showed Webpack chunk names (`[name].js`), confirming the environment was correct while the logging endpoint remained localhost (`next.config debug` console output).
+- `curl -I http://localhost:8080/_next/static/chunks/app/layout.js` returned 404 before a page hit and 200 after compilation, indicating the chunk was served once Next handled routing.
+- `kill` and `lsof` invocations confirmed multiple dev servers fighting for port 8080.
+
+### Fix Summary
+1. Wrapped debug beacons behind a `NEXT_RUNTIME_DEBUG_ENDPOINT`/`NEXT_PUBLIC_DEBUG_ENDPOINT` opt-in. Added a `"console"` pseudo-target to aid local diagnostics without shipping traffic to localhost.
+2. Restored the Three.js probe to populate `window.spaceApp` with `{ scene, camera, THREE }` while keeping the lightweight `logDebug` helper.
+3. Removed the stale `src/` prototype to eliminate the static entry point entirely.
+
+### Files Touched
+- `next.config.js`
+- `public/script.js`
+- `app/components/SpaceScene.tsx`
+- `components/FloatingDetailBox.tsx`
+- `src/components/ThreeScene.ts` (deleted)
+- `src/main.ts` (deleted)
+- `src/style.css` (deleted)
+- `src/` directory (deleted)
+
+### Why This Works
+- Debug telemetry now runs only when a maintainer explicitly opts in, ensuring no production traffic gets sent to localhost and avoiding surprise session metadata leaks.
+- By setting `window.spaceApp` inside `SpaceAppDebugProbe`, downstream components receive the references they expect and animation setup no longer short-circuits.
+- Removing the static prototype guarantees Next.js routes occupy `/`, preventing hashed asset lookups from falling back to the wrong build.
+
+### Verification Evidence
+- `npm run lint`
+- `npm run build`
+- `curl -I http://localhost:8080/_next/static/chunks/app/layout.js` (200 after initial compilation)
+- `NEXT_RUNTIME_DEBUG_ENDPOINT=console npm run dev` (shows environment metadata without external network calls)
+
+---
+
+## Animation Performance Fix (2025-11-30)
+
+### Symptom
+- The detail box animation would constantly restart or stutter because `triggerRect` (a DOMRect object) was included in the `useEffect` dependency array, causing re-runs on every layout reflow.
+
+### Root Cause
+- `triggerRect` changes reference on every render or layout update. Including it in the dependency array caused the effect to tear down and re-initialize the Three.js scene repeatedly.
+
+### Fix Summary
+- Removed `triggerRect` from the `useEffect` dependency array in `components/FloatingDetailBox.tsx`. This ensures the animation only initializes when `displayKey` changes (modal opens), using the initial rect for position calculation without reacting to subsequent rect updates.
+
+### Files Touched
+- `components/FloatingDetailBox.tsx`
+
+### Verification Evidence
+- Code analysis confirms dependency array no longer includes the unstable object.
+- Build passed (`npm run build`).

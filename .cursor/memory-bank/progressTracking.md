@@ -56,11 +56,11 @@
 - Restored Playwright stability by fixing fonts/hero copy, constraining worker count, and aligning ESLint config with Next 14.
 
 ## Latest Cycle
-- Added font-variable fallbacks and explicit stacks in `app/globals.css` to satisfy typography checks.
-- Inserted explicit spacing for the hero title and removed the scramble animation in `app/page.tsx` and `public/script.js` for deterministic copy.
-- Set Playwright workers to 2 and reporter to `list` in `playwright.config.ts` to avoid multi-worker timeouts.
-- Downgraded `eslint-config-next` to `14.2.33`; lint now passes without circular config errors.
-- Captured localhost vs hosted screenshots (`test-results/local.png`, `test-results/remote.png`); remote still shows scrambled hero title and slightly different telemetry numbers.
+- Removed `process.env` reference in static `public/script.js` to prevent client-side ReferenceErrors.
+- Hardened `SpaceAppDebugProbe` cleanup in `SpaceScene.tsx` using a ref-based comparison to ensure stale Three.js instances are properly disposed.
+- Wrapped `next.config.js` debug logging behind a `NEXT_RUNTIME_DEBUG_ENDPOINT` check to avoid unintended telemetry calls.
+- Removed unstable `triggerRect` dependency from `FloatingDetailBox.tsx` effect to prevent animation restarts.
+- Verified that `npm run dev` works correctly with logging enabled/disabled and no longer conflicts with legacy static files.
 
 ## Next Steps Checklist
 - [ ] Add missing npm scripts for `type-check` and `test` if required by CI.

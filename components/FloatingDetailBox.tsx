@@ -28,25 +28,10 @@ const THEME_COLORS: Record<string, string> = {
 };
 
 const DEFAULT_COLOR = "#ff7350";
-const DEBUG_ENDPOINT = 'http://127.0.0.1:7242/ingest/103626d8-3ba1-4105-a997-3a144124bdb2';
-
-const sendDebugLog = (payload: Record<string, unknown>) => {
-  if (process.env.NODE_ENV !== 'production') {
-    console.debug('[FloatingDetailBox debug]', payload);
-  }
-
-  if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
-    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-    navigator.sendBeacon(DEBUG_ENDPOINT, blob);
-    return;
-  }
-
-  fetch(DEBUG_ENDPOINT, {
-    method: 'POST',
-    body: JSON.stringify(payload),
-    mode: 'no-cors',
-    keepalive: true,
-  }).catch(() => {});
+const DEBUG_BEACON_URL = process.env.NEXT_PUBLIC_DEBUG_BEACON_URL;
+const logDebug = (message: string, data?: Record<string, unknown>) => {
+  if (process.env.NODE_ENV === 'production') return;
+  console.debug('[FloatingDetailBox]', message, data ?? {});
 };
 
 export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isLocked = false }: FloatingDetailBoxProps) {
@@ -90,42 +75,48 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
 
     const spaceApp = (window as any).spaceApp;
     if (!spaceApp) {
-      // #region agent log
-      sendDebugLog({
-        sessionId: 'debug-session',
-        runId: 'pre-fix',
-        hypothesisId: 'H1',
-        location: 'components/FloatingDetailBox.tsx:spaceAppGuard',
-        message: 'spaceApp missing when trying to launch detail animation',
-        data: {
-          activeKey: displayKey,
-          hasTrigger: !!triggerRect
-        },
-        timestamp: Date.now()
+      logDebug('spaceApp missing; aborting detail animation', {
+        activeKey: displayKey,
+        hasTrigger: !!triggerRect
       });
-      // #endregion
       return;
     }
 
     const { scene, camera, THREE } = spaceApp;
     if (!scene || !camera || !THREE) {
-      // #region agent log
-      sendDebugLog({
-        sessionId: 'debug-session',
-        runId: 'pre-fix',
-        hypothesisId: 'H2',
-        location: 'components/FloatingDetailBox.tsx:spaceAppFields',
-        message: 'spaceApp present but missing required three.js primitives',
-        data: {
-          hasScene: !!scene,
-          hasCamera: !!camera,
-          hasThree: !!THREE
-        },
-        timestamp: Date.now()
+      logDebug('spaceApp missing required three.js primitives', {
+        hasScene: !!scene,
+        hasCamera: !!camera,
+        hasThree: !!THREE
       });
-      // #endregion
       return;
     }
+
+    // #region agent log (opt-in via env)
+    if (DEBUG_BEACON_URL && typeof fetch === 'function') {
+      fetch(DEBUG_BEACON_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: 'debug-session',
+          runId: 'repro-run',
+          hypothesisId: 'H4',
+          location: 'components/FloatingDetailBox.tsx:Effect',
+          message: 'Animation effect triggered',
+          data: {
+            displayKey,
+            triggerRect: triggerRect ? { x: triggerRect.x, y: triggerRect.y, width: triggerRect.width, height: triggerRect.height } : null,
+            timestamp: Date.now()
+          },
+          timestamp: Date.now()
+        }),
+        mode: 'no-cors',
+        keepalive: true
+      }).catch(() => {});
+    } else {
+      logDebug('Skipping debug beacon; URL not configured', { hasUrl: Boolean(DEBUG_BEACON_URL) });
+    }
+    // #endregion
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
@@ -610,7 +601,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
     loop();
 
     return cleanup;
-  }, [displayKey, isExiting, triggerRect, themeColor, onClose]); 
+  }, [displayKey, isExiting, themeColor, onClose, triggerRect]);
 
   const handleDismiss = () => { onClose(); };
 

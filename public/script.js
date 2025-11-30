@@ -1,5 +1,55 @@
 // Initialize Lenis for smooth scrolling (skip if reduced motion)
 const CONTENT_VERSION = '2025-11-25-v1';
+const ENV_DEBUG =
+  (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_ASSET_DEBUG_ENDPOINT) ||
+  (typeof window !== 'undefined' && window.__ASSET_DEBUG_ENDPOINT);
+const DEBUG_ENDPOINT = typeof ENV_DEBUG === 'string' ? ENV_DEBUG : '';
+const DEBUG_TARGET = DEBUG_ENDPOINT.trim();
+const LOG_ASSET_ERRORS = DEBUG_TARGET.length > 0;
+
+(typeof window !== 'undefined' && LOG_ASSET_ERRORS) && window.addEventListener('error', (event) => {
+    const target = event?.target;
+    if (!target) return;
+    const tagName = target.tagName;
+    if (tagName !== 'SCRIPT' && tagName !== 'LINK') return;
+
+    const source = tagName === 'SCRIPT' ? target.src : (target.href || null);
+    const relAttr = tagName === 'LINK' ? target.rel || null : null;
+
+    if (DEBUG_TARGET === 'console') {
+        console.debug('[asset-error]', {
+            tagName,
+            source,
+            rel: relAttr,
+            timestamp: Date.now()
+        });
+        return;
+    }
+
+    if (typeof fetch === 'function') {
+        // #region agent log
+        fetch(DEBUG_TARGET, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                sessionId: 'debug-session',
+                runId: 'pre-fix',
+                hypothesisId: 'H3',
+                location: 'public/script.js:assetErrorListener',
+                message: 'Asset load error captured',
+                data: {
+                    tagName,
+                    source,
+                    rel: relAttr
+                },
+                timestamp: Date.now()
+            }),
+            mode: 'no-cors',
+            keepalive: true
+        }).catch(() => {});
+        // #endregion
+    }
+}, true);
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
 const enableSmooth = !prefersReducedMotion;
