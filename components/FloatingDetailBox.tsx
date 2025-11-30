@@ -28,6 +28,26 @@ const THEME_COLORS: Record<string, string> = {
 };
 
 const DEFAULT_COLOR = "#ff7350";
+const DEBUG_ENDPOINT = 'http://127.0.0.1:7242/ingest/103626d8-3ba1-4105-a997-3a144124bdb2';
+
+const sendDebugLog = (payload: Record<string, unknown>) => {
+  if (process.env.NODE_ENV !== 'production') {
+    console.debug('[FloatingDetailBox debug]', payload);
+  }
+
+  if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
+    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+    navigator.sendBeacon(DEBUG_ENDPOINT, blob);
+    return;
+  }
+
+  fetch(DEBUG_ENDPOINT, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    mode: 'no-cors',
+    keepalive: true,
+  }).catch(() => {});
+};
 
 export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isLocked = false }: FloatingDetailBoxProps) {
   const [displayKey, setDisplayKey] = useState<string | null>(null);
@@ -66,13 +86,49 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
 
   // Three.js & Animation Logic
   useEffect(() => {
-    if (!displayKey || !triggerRect || typeof window === 'undefined' || !window.spaceApp) return;
+    if (!displayKey || !triggerRect || typeof window === 'undefined') return;
+
+    const spaceApp = (window as any).spaceApp;
+    if (!spaceApp) {
+      // #region agent log
+      sendDebugLog({
+        sessionId: 'debug-session',
+        runId: 'pre-fix',
+        hypothesisId: 'H1',
+        location: 'components/FloatingDetailBox.tsx:spaceAppGuard',
+        message: 'spaceApp missing when trying to launch detail animation',
+        data: {
+          activeKey: displayKey,
+          hasTrigger: !!triggerRect
+        },
+        timestamp: Date.now()
+      });
+      // #endregion
+      return;
+    }
+
+    const { scene, camera, THREE } = spaceApp;
+    if (!scene || !camera || !THREE) {
+      // #region agent log
+      sendDebugLog({
+        sessionId: 'debug-session',
+        runId: 'pre-fix',
+        hypothesisId: 'H2',
+        location: 'components/FloatingDetailBox.tsx:spaceAppFields',
+        message: 'spaceApp present but missing required three.js primitives',
+        data: {
+          hasScene: !!scene,
+          hasCamera: !!camera,
+          hasThree: !!THREE
+        },
+        timestamp: Date.now()
+      });
+      // #endregion
+      return;
+    }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
-
-    const { scene, camera, THREE } = window.spaceApp;
-    if (!scene || !camera || !THREE) return;
 
     // Use window.gsap if available (to share global instance/plugins), else fallback to imported
     const _gsap = window.gsap || gsap;

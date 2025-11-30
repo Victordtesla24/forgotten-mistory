@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useMemo, useState } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree, extend, Object3DNode } from '@react-three/fiber';
 import { EffectComposer, Bloom, Noise } from '@react-three/postprocessing';
 import { Trail, shaderMaterial } from '@react-three/drei';
@@ -327,7 +327,55 @@ function StarField() {
   );
 }
 
+const DEBUG_ENDPOINT = 'http://127.0.0.1:7242/ingest/103626d8-3ba1-4105-a997-3a144124bdb2';
+
+const sendDebugLog = (payload: Record<string, unknown>) => {
+  if (process.env.NODE_ENV !== 'production') {
+    console.debug('[SpaceScene debug]', payload);
+  }
+
+  if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
+    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+    navigator.sendBeacon(DEBUG_ENDPOINT, blob);
+    return;
+  }
+
+  fetch(DEBUG_ENDPOINT, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    mode: 'no-cors',
+    keepalive: true,
+  }).catch(() => {});
+};
+
 // --- Main Scene ---
+function SpaceAppDebugProbe() {
+  const { scene, camera } = useThree();
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const hasExisting = Boolean((window as any).spaceApp);
+
+    // #region agent log
+    sendDebugLog({
+      sessionId: 'debug-session',
+      runId: 'pre-fix',
+      hypothesisId: 'H3',
+      location: 'app/components/SpaceScene.tsx:SpaceAppDebugProbe',
+      message: 'Inspecting spaceApp availability inside SpaceScene',
+      data: {
+        hasExisting,
+        sceneType: scene?.type ?? null,
+        cameraType: camera?.type ?? null
+      },
+      timestamp: Date.now()
+    });
+    // #endregion
+  }, [scene, camera]);
+
+  return null;
+}
+
 function SceneContent() {
     const groupRef = useRef<THREE.Group>(null);
 
@@ -360,6 +408,7 @@ export default function SpaceScene() {
         gl={{ antialias: false, alpha: false }}
         dpr={[1, 2]} 
       >
+        <SpaceAppDebugProbe />
         <color attach="background" args={['#000000']} /> {/* Deep black background */}
         
         <SceneContent />
