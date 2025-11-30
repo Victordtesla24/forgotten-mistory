@@ -50,8 +50,14 @@ const LOG_ASSET_ERRORS = DEBUG_TARGET.length > 0;
         // #endregion
     }
 }, true);
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+const prefersReducedMotion =
+  typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false;
+const hasCoarsePointer =
+  typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+    ? window.matchMedia('(pointer: coarse)').matches
+    : false;
 const enableSmooth = !prefersReducedMotion;
 let lenis = null;
 let lenisScroll = 0;

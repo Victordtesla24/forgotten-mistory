@@ -601,7 +601,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
     loop();
 
     return cleanup;
-  }, [displayKey, isExiting, themeColor, onClose, triggerRect]);
+  }, [displayKey, isExiting, themeColor, onClose]); // eslint-disable-line react-hooks/exhaustive-deps -- triggerRect changes reflow often; effect should not restart
 
   const handleDismiss = () => { onClose(); };
 
