@@ -6,6 +6,21 @@ const ENV_DEBUG =
 const DEBUG_ENDPOINT = typeof ENV_DEBUG === 'string' ? ENV_DEBUG : '';
 const DEBUG_TARGET = DEBUG_ENDPOINT.trim();
 const LOG_ASSET_ERRORS = DEBUG_TARGET.length > 0;
+const RENDER_DEBUG =
+  (typeof window !== 'undefined' && window.location.search.includes('debugRendering=1')) ||
+  DEBUG_TARGET === 'console';
+
+function logRuntimeIssue(...args) {
+    if (RENDER_DEBUG) {
+        console.warn(...args);
+    }
+}
+
+function logRuntimeError(...args) {
+    if (RENDER_DEBUG) {
+        console.error(...args);
+    }
+}
 
 (typeof window !== 'undefined' && LOG_ASSET_ERRORS) && window.addEventListener('error', (event) => {
     const target = event?.target;
@@ -63,10 +78,26 @@ let lenis = null;
 let lenisScroll = 0;
 let cursorTrailCleanup = null;
 let preloaderHidden = false;
+let preloaderStartedAt = Date.now();
+let preloaderDeferredHide = null;
+const PRELOADER_MIN_MS = 2800;
 
 function hidePreloader(reason = '') {
     if (preloaderHidden) return;
+    const elapsed = Date.now() - preloaderStartedAt;
+    if (elapsed < PRELOADER_MIN_MS) {
+        if (preloaderDeferredHide) {
+            clearTimeout(preloaderDeferredHide);
+        }
+        preloaderDeferredHide = setTimeout(() => hidePreloader(reason), PRELOADER_MIN_MS - elapsed);
+        return;
+    }
+
     preloaderHidden = true;
+    if (preloaderDeferredHide) {
+        clearTimeout(preloaderDeferredHide);
+        preloaderDeferredHide = null;
+    }
     const preloader = document.querySelector('.preloader');
     if (preloader) {
         preloader.classList.add('hide');
@@ -138,10 +169,10 @@ if (enableSmooth) {
                 ScrollTrigger.refresh();
             }
         } else {
-            console.warn('Lenis not defined, skipping smooth scroll.');
+            logRuntimeIssue('Lenis not defined, skipping smooth scroll.');
         }
     } catch (e) {
-        console.warn('Lenis init failed:', e);
+        logRuntimeIssue('Lenis init failed:', e);
     }
 }
 
@@ -250,10 +281,11 @@ if (canUseCustomCursor) {
 }
 // Preloader Animation
 function startLoader() {
+        preloaderStartedAt = Date.now();
         let counterElement = document.querySelector(".counter");
         if (!counterElement) {
             // If element missing, assume loaded or broken HTML, try to run intro immediately if possible
-            console.warn('Counter element missing, skipping loader.');
+            logRuntimeIssue('Counter element missing, skipping loader.');
             runIntroSequence();
             return;
         }
@@ -273,15 +305,15 @@ function startLoader() {
             }
 
             // Faster increment
-            currentValue += Math.floor(Math.random() * 20) + 10;
+            currentValue += Math.floor(Math.random() * 6) + 4;
             if(currentValue > 100) {
                 currentValue = 100;
             }
 
             counterElement.textContent = currentValue;
 
-            // Faster delay
-            let delay = Math.floor(Math.random() * 40) + 5;
+            // Keep preloader visibly present while still responsive.
+            let delay = Math.floor(Math.random() * 55) + 18;
             setTimeout(updateCounter, delay);
         }
         
@@ -292,7 +324,7 @@ function startLoader() {
             if (!preloaderHidden) {
                 hidePreloader('failsafe');
             }
-        }, 2000);
+        }, 4500);
     }
 
 // GSAP Animations
@@ -300,7 +332,7 @@ try {
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger);
     }
-} catch (e) { console.warn('GSAP/ScrollTrigger missing', e); }
+} catch (e) { logRuntimeIssue('GSAP/ScrollTrigger missing', e); }
 
 // --- Scramble Text Effect Class ---
 class TextScramble {
@@ -384,36 +416,47 @@ function runIntroSequence(forceInstant = false) {
 
     if (forceInstant || prefersReducedMotion || typeof gsap === 'undefined') {
         if (typeof gsap === 'undefined') {
-            console.warn('GSAP missing, forcing content visible');
+            logRuntimeIssue('GSAP missing, forcing content visible');
         }
         showContentInstantly();
         return;
     }
 
     const tl = gsap.timeline();
+    const hasCounter = Boolean(document.querySelector('.counter'));
+    const hasLoaderRing = Boolean(document.querySelector('.loader-ring'));
+    const hasPreloader = Boolean(document.querySelector('.preloader'));
 
     // Preloader Exit
-    tl.to(".counter", {
-        duration: 0.25,
-        delay: 0.5,
-        opacity: 0,
-    });
+    if (hasCounter) {
+        tl.to(".counter", {
+            duration: 0.25,
+            delay: 0.5,
+            opacity: 0,
+        });
+    }
 
-    tl.to(".loader-ring", {
-        scale: 0.8,
-        opacity: 0,
-        duration: 0.5,
-        ease: "power2.inOut"
-    }, "-=0.4");
+    if (hasLoaderRing) {
+        tl.to(".loader-ring", {
+            scale: 0.8,
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.inOut"
+        }, hasCounter ? "-=0.4" : 0);
+    }
 
-    tl.to(".preloader", {
-        duration: 0.8,
-        height: 0,
-        ease: "power4.inOut",
-        onComplete: () => {
-            hidePreloader('gsap-sequence');
-        }
-    });
+    if (hasPreloader) {
+        tl.to(".preloader", {
+            duration: 0.8,
+            height: 0,
+            ease: "power4.inOut",
+            onComplete: () => {
+                hidePreloader('gsap-sequence');
+            }
+        });
+    } else {
+        hidePreloader('preloader-missing');
+    }
 
     // Trigger scramble after curtain goes up
     setTimeout(() => {
@@ -451,10 +494,12 @@ try {
         startLoader();
     }
 } catch (e) {
-    console.error("Loader init failed", e);
+    logRuntimeError("Loader init failed", e);
     // Emergency exit
     const p = document.querySelector(".preloader");
-    if(p) p.style.display = 'none';
+    if (p) {
+        hidePreloader('loader-init-failed');
+    }
 }
 
 // Navigation
@@ -1027,7 +1072,7 @@ async function fetchGitHubProfile() {
             logo.textContent = (namePart || 'VIKRAM').toUpperCase() + '.';
         }
     } catch (err) {
-        console.warn('Could not hydrate GitHub profile', err);
+        logRuntimeIssue('Could not hydrate GitHub profile', err);
     }
 }
 
@@ -1068,7 +1113,7 @@ async function fetchGitHubRepos() {
         }).join('');
     } catch (err) {
         repoContainer.innerHTML = '<p class="repo-description">Unable to load live GitHub activity right now. Try again later.</p>';
-        console.warn('Could not load repos', err);
+        logRuntimeIssue('Could not load repos', err);
     }
 }
 
@@ -1691,7 +1736,7 @@ function initAllFeatures() {
              };
 
              freshVideo.addEventListener('error', () => {
-                console.warn('Avatar video failed to load, falling back to image.');
+                logRuntimeIssue('Avatar video failed to load, falling back to image.');
                 freshVideo.style.display = 'none';
                 freshStatic.style.opacity = '1';
              }, { once: true });
@@ -1700,7 +1745,7 @@ function initAllFeatures() {
                 ensureVideoReady();
                 freshVideo.play().then(() => {
                     freshStatic.style.opacity = '0';
-                }).catch(e => console.warn('Video play interrupted', e));
+                }).catch(e => logRuntimeIssue('Video play interrupted', e));
             });
 
             freshContainer.addEventListener('mouseleave', () => {
@@ -1722,9 +1767,7 @@ function initAllFeatures() {
     setTimeout(() => {
         const preloader = document.querySelector(".preloader");
         if (preloader && getComputedStyle(preloader).display !== 'none') {
-            preloader.style.display = "none";
-            preloader.style.pointerEvents = "none";
-            document.body.style.overflow = "auto";
+            hidePreloader('initAllFeatures-safety');
         }
     }, 4000);
 }

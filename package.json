@@ -29,7 +29,8 @@
     "validate:phase18": "bash scripts/validate/phase18_observability.sh",
     "validate:phase19": "bash scripts/validate/phase19_log_aggregation.sh",
     "validate:phase20": "bash scripts/validate/phase20_scaling_strategy.sh",
-    "validate:final": "bash scripts/validate/final_full_system_validation.sh"
+    "validate:final": "bash scripts/validate/final_full_system_validation.sh",
+    "validate:postprod": "bash scripts/testing/run_post_prod_validation.sh"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.2.4",

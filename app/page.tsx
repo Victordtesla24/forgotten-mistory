@@ -75,6 +75,7 @@ export default function Home() {
   return (
     <>
       <SpaceScene />
+      <div className="cosmic-backdrop" aria-hidden="true" />
       <div className="morphing-bg" aria-hidden="true">
         <svg className="morphing-svg" viewBox="0 0 600 600" role="presentation" focusable="false">
           <defs>

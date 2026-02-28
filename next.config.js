@@ -37,6 +37,7 @@ const createDebugLogger = (phase) => {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = (phase) => {
+  const isStaticExport = process.env.FIREBASE_STATIC_EXPORT === "1";
   const sendLog = createDebugLogger(phase);
 
   if (sendLog) {
@@ -54,6 +55,12 @@ const nextConfig = (phase) => {
   let hasWebpackLogged = false;
 
   return {
+    output: isStaticExport ? "export" : undefined,
+    images: isStaticExport
+      ? {
+          unoptimized: true
+        }
+      : undefined,
     webpack: (config, webpackContext) => {
       if (!hasWebpackLogged) {
         hasWebpackLogged = true;

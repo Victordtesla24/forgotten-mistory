@@ -1,0 +1,397 @@
+{
+  "timestamp": "2026-02-28T09:39:32.124Z",
+  "baseUrl": "https://forgotten-mistory.web.app",
+  "commitSha": "661a799",
+  "gates": {
+    "backgroundGate": {
+      "pass": true
+    },
+    "preloaderGate": {
+      "pass": true
+    },
+    "layeringGate": {
+      "pass": true
+    },
+    "consoleGate": {
+      "pass": true
+    },
+    "stabilityGate": {
+      "pass": true
+    },
+    "evidenceGate": {
+      "pass": true
+    }
+  },
+  "axe": {
+    "totalViolations": 4,
+    "criticalViolations": 0
+  },
+  "runs": [
+    {
+      "run": 1,
+      "url": "https://forgotten-mistory.web.app?cb=render-stability-1772271506426-1",
+      "firstPaintEvidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run1-first-paint.png",
+      "preloaderEvidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run1-preloader-mid.png",
+      "settledEvidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run1-settled.png",
+      "preloaderState": {
+        "preloaderVisible": true,
+        "preloaderGone": false,
+        "pageReady": false,
+        "bodyBackground": "radial-gradient(circle at 15% 20%, rgba(38, 66, 112, 0.26), rgba(0, 0, 0, 0) 42%) repeat scroll 0% 0% / auto padding-box border-box, radial-gradient(circle at 82% 14%, rgba(18, 44, 92, 0.22), rgba(0, 0, 0, 0) 36%) repeat scroll 0% 0% / auto padding-box border-box, radial-gradient(circle at 60% 85%, rgba(30, 20, 66, 0.18), rgba(0, 0, 0, 0) 40%) repeat scroll 0% 0% / auto padding-box border-box, rgb(2, 3, 10) none repeat scroll 0% 0% / auto padding-box border-box",
+        "bodyBackgroundColor": "rgb(2, 3, 10)",
+        "bodyRgb": [
+          2,
+          3,
+          10
+        ],
+        "htmlBackgroundColor": "rgb(0, 0, 0)",
+        "htmlRgb": [
+          0,
+          0,
+          0
+        ],
+        "spaceScene": {
+          "present": true,
+          "zIndex": "-10"
+        },
+        "cosmicBackdrop": {
+          "present": true,
+          "zIndex": "-9"
+        }
+      },
+      "settledState": {
+        "preloaderVisible": false,
+        "preloaderGone": true,
+        "pageReady": true,
+        "bodyBackground": "radial-gradient(circle at 15% 20%, rgba(38, 66, 112, 0.26), rgba(0, 0, 0, 0) 42%) repeat scroll 0% 0% / auto padding-box border-box, radial-gradient(circle at 82% 14%, rgba(18, 44, 92, 0.22), rgba(0, 0, 0, 0) 36%) repeat scroll 0% 0% / auto padding-box border-box, radial-gradient(circle at 60% 85%, rgba(30, 20, 66, 0.18), rgba(0, 0, 0, 0) 40%) repeat scroll 0% 0% / auto padding-box border-box, rgb(2, 3, 10) none repeat scroll 0% 0% / auto padding-box border-box",
+        "bodyBackgroundColor": "rgb(2, 3, 10)",
+        "bodyRgb": [
+          2,
+          3,
+          10
+        ],
+        "htmlBackgroundColor": "rgb(0, 0, 0)",
+        "htmlRgb": [
+          0,
+          0,
+          0
+        ],
+        "spaceScene": {
+          "present": true,
+          "zIndex": "-10"
+        },
+        "cosmicBackdrop": {
+          "present": true,
+          "zIndex": "-9"
+        }
+      },
+      "consoleSummary": {
+        "totalConsoleMessages": 6,
+        "warningOrErrorCount": 4,
+        "gsapWarnings": 0,
+        "appWarningsOrErrors": 0,
+        "categoryCounts": {
+          "app": 0,
+          "webgl": 4,
+          "network": 0
+        },
+        "samples": [
+          {
+            "type": "warning",
+            "text": "[.WebGL-0x11c001b1400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+          },
+          {
+            "type": "warning",
+            "text": "[.WebGL-0x11c001b1400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+          },
+          {
+            "type": "warning",
+            "text": "[.WebGL-0x11c001b1400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+          },
+          {
+            "type": "warning",
+            "text": "[.WebGL-0x11c001b1400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+          }
+        ]
+      },
+      "gates": {
+        "backgroundPass": true,
+        "preloaderPass": true,
+        "layeringPass": true,
+        "consolePass": true
+      },
+      "pass": true
+    },
+    {
+      "run": 2,
+      "url": "https://forgotten-mistory.web.app?cb=render-stability-1772271548201-2",
+      "firstPaintEvidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run2-first-paint.png",
+      "preloaderEvidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run2-preloader-mid.png",
+      "settledEvidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run2-settled.png",
+      "preloaderState": {
+        "preloaderVisible": true,
+        "preloaderGone": false,
+        "pageReady": false,
+        "bodyBackground": "radial-gradient(circle at 15% 20%, rgba(38, 66, 112, 0.26), rgba(0, 0, 0, 0) 42%) repeat scroll 0% 0% / auto padding-box border-box, radial-gradient(circle at 82% 14%, rgba(18, 44, 92, 0.22), rgba(0, 0, 0, 0) 36%) repeat scroll 0% 0% / auto padding-box border-box, radial-gradient(circle at 60% 85%, rgba(30, 20, 66, 0.18), rgba(0, 0, 0, 0) 40%) repeat scroll 0% 0% / auto padding-box border-box, rgb(2, 3, 10) none repeat scroll 0% 0% / auto padding-box border-box",
+        "bodyBackgroundColor": "rgb(2, 3, 10)",
+        "bodyRgb": [
+          2,
+          3,
+          10
+        ],
+        "htmlBackgroundColor": "rgb(0, 0, 0)",
+        "htmlRgb": [
+          0,
+          0,
+          0
+        ],
+        "spaceScene": {
+          "present": true,
+          "zIndex": "-10"
+        },
+        "cosmicBackdrop": {
+          "present": true,
+          "zIndex": "-9"
+        }
+      },
+      "settledState": {
+        "preloaderVisible": false,
+        "preloaderGone": true,
+        "pageReady": true,
+        "bodyBackground": "radial-gradient(circle at 15% 20%, rgba(38, 66, 112, 0.26), rgba(0, 0, 0, 0) 42%) repeat scroll 0% 0% / auto padding-box border-box, radial-gradient(circle at 82% 14%, rgba(18, 44, 92, 0.22), rgba(0, 0, 0, 0) 36%) repeat scroll 0% 0% / auto padding-box border-box, radial-gradient(circle at 60% 85%, rgba(30, 20, 66, 0.18), rgba(0, 0, 0, 0) 40%) repeat scroll 0% 0% / auto padding-box border-box, rgb(2, 3, 10) none repeat scroll 0% 0% / auto padding-box border-box",
+        "bodyBackgroundColor": "rgb(2, 3, 10)",
+        "bodyRgb": [
+          2,
+          3,
+          10
+        ],
+        "htmlBackgroundColor": "rgb(0, 0, 0)",
+        "htmlRgb": [
+          0,
+          0,
+          0
+        ],
+        "spaceScene": {
+          "present": true,
+          "zIndex": "-10"
+        },
+        "cosmicBackdrop": {
+          "present": true,
+          "zIndex": "-9"
+        }
+      },
+      "consoleSummary": {
+        "totalConsoleMessages": 2,
+        "warningOrErrorCount": 0,
+        "gsapWarnings": 0,
+        "appWarningsOrErrors": 0,
+        "categoryCounts": {
+          "app": 0,
+          "webgl": 0,
+          "network": 0
+        },
+        "samples": []
+      },
+      "gates": {
+        "backgroundPass": true,
+        "preloaderPass": true,
+        "layeringPass": true,
+        "consolePass": true
+      },
+      "pass": true
+    },
+    {
+      "run": 3,
+      "url": "https://forgotten-mistory.web.app?cb=render-stability-1772271555109-3",
+      "firstPaintEvidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run3-first-paint.png",
+      "preloaderEvidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run3-preloader-mid.png",
+      "settledEvidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run3-settled.png",
+      "preloaderState": {
+        "preloaderVisible": true,
+        "preloaderGone": false,
+        "pageReady": true,
+        "bodyBackground": "radial-gradient(circle at 15% 20%, rgba(38, 66, 112, 0.26), rgba(0, 0, 0, 0) 42%) repeat scroll 0% 0% / auto padding-box border-box, radial-gradient(circle at 82% 14%, rgba(18, 44, 92, 0.22), rgba(0, 0, 0, 0) 36%) repeat scroll 0% 0% / auto padding-box border-box, radial-gradient(circle at 60% 85%, rgba(30, 20, 66, 0.18), rgba(0, 0, 0, 0) 40%) repeat scroll 0% 0% / auto padding-box border-box, rgb(2, 3, 10) none repeat scroll 0% 0% / auto padding-box border-box",
+        "bodyBackgroundColor": "rgb(2, 3, 10)",
+        "bodyRgb": [
+          2,
+          3,
+          10
+        ],
+        "htmlBackgroundColor": "rgb(0, 0, 0)",
+        "htmlRgb": [
+          0,
+          0,
+          0
+        ],
+        "spaceScene": {
+          "present": true,
+          "zIndex": "-10"
+        },
+        "cosmicBackdrop": {
+          "present": true,
+          "zIndex": "-9"
+        }
+      },
+      "settledState": {
+        "preloaderVisible": false,
+        "preloaderGone": true,
+        "pageReady": true,
+        "bodyBackground": "radial-gradient(circle at 15% 20%, rgba(38, 66, 112, 0.26), rgba(0, 0, 0, 0) 42%) repeat scroll 0% 0% / auto padding-box border-box, radial-gradient(circle at 82% 14%, rgba(18, 44, 92, 0.22), rgba(0, 0, 0, 0) 36%) repeat scroll 0% 0% / auto padding-box border-box, radial-gradient(circle at 60% 85%, rgba(30, 20, 66, 0.18), rgba(0, 0, 0, 0) 40%) repeat scroll 0% 0% / auto padding-box border-box, rgb(2, 3, 10) none repeat scroll 0% 0% / auto padding-box border-box",
+        "bodyBackgroundColor": "rgb(2, 3, 10)",
+        "bodyRgb": [
+          2,
+          3,
+          10
+        ],
+        "htmlBackgroundColor": "rgb(0, 0, 0)",
+        "htmlRgb": [
+          0,
+          0,
+          0
+        ],
+        "spaceScene": {
+          "present": true,
+          "zIndex": "-10"
+        },
+        "cosmicBackdrop": {
+          "present": true,
+          "zIndex": "-9"
+        }
+      },
+      "consoleSummary": {
+        "totalConsoleMessages": 2,
+        "warningOrErrorCount": 0,
+        "gsapWarnings": 0,
+        "appWarningsOrErrors": 0,
+        "categoryCounts": {
+          "app": 0,
+          "webgl": 0,
+          "network": 0
+        },
+        "samples": []
+      },
+      "gates": {
+        "backgroundPass": true,
+        "preloaderPass": true,
+        "layeringPass": true,
+        "consolePass": true
+      },
+      "pass": true
+    }
+  ],
+  "functionalChecks": [
+    {
+      "check": "Section render: hero",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-hero.png"
+    },
+    {
+      "check": "Section render: about",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-about.png"
+    },
+    {
+      "check": "Section render: experience",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-experience.png"
+    },
+    {
+      "check": "Section render: skills",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-skills.png"
+    },
+    {
+      "check": "Section render: architecture-lab",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-architecture-lab.png"
+    },
+    {
+      "check": "Section render: work",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-work.png"
+    },
+    {
+      "check": "Section render: contact",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-contact.png"
+    },
+    {
+      "check": "Navigation: #hero",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-hero.png"
+    },
+    {
+      "check": "Navigation: #about",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-about.png"
+    },
+    {
+      "check": "Navigation: #experience",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-experience.png"
+    },
+    {
+      "check": "Navigation: #skills",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-skills.png"
+    },
+    {
+      "check": "Navigation: #architecture-lab",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-architecture-lab.png"
+    },
+    {
+      "check": "Navigation: #work",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-work.png"
+    },
+    {
+      "check": "Navigation: #contact",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-contact.png"
+    },
+    {
+      "check": "MiniVic open",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-mini-vic-open.png"
+    },
+    {
+      "check": "Mobile render: home",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-mobile-home.png"
+    },
+    {
+      "check": "Mobile render: contact",
+      "pass": true,
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-mobile-contact.png"
+    }
+  ],
+  "evidence": [
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-mini-vic-open.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-mobile-contact.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-mobile-home.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-about.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-architecture-lab.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-contact.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-experience.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-hero.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-skills.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-nav-work.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run1-first-paint.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run1-preloader-mid.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run1-settled.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run2-first-paint.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run2-preloader-mid.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run2-settled.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run3-first-paint.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run3-preloader-mid.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-run3-settled.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-about.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-architecture-lab.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-contact.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-experience.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-hero.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-skills.png",
+    "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/stability-section-work.png"
+  ]
+}

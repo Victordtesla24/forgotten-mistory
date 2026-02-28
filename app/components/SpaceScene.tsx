@@ -7,14 +7,14 @@ import { Trail, shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 // --- Constants ---
-const STAR_COUNT = 8000;
+const STAR_COUNT = 2200;
 const STAR_SEED = 1337;
 // Using realistic star colors (white/blue-white/yellow-white/orange-white)
 const STAR_COLORS = [
-  new THREE.Color('rgb(255 255 255)'), // White
-  new THREE.Color('rgb(208 224 255)'), // Blue-white
-  new THREE.Color('rgb(255 238 187)'), // Yellow-white
-  new THREE.Color('rgb(255 221 170)')  // Orange-white
+  new THREE.Color('rgb(244 248 255)'), // White-blue
+  new THREE.Color('rgb(194 212 255)'), // Blue-white
+  new THREE.Color('rgb(255 228 172)'), // Warm-white
+  new THREE.Color('rgb(214 226 255)')  // Cool-white
 ];
 
 const logDebug = (message: string, data?: Record<string, unknown>) => {
@@ -93,7 +93,7 @@ const NebulaMaterial = shaderMaterial(
       float dist = distance(uv, vec2(0.5));
       alpha *= 1.0 - smoothstep(0.0, 0.5, dist);
 
-      gl_FragColor = vec4(color + vec3(n * 0.2), alpha * 0.3);
+      gl_FragColor = vec4(color + vec3(n * 0.08), alpha * 0.12);
     }
   `
 );
@@ -132,7 +132,7 @@ function NebulaCloud({ position, color, scale }: NebulaCloudProps) {
   return (
     <mesh position={position} scale={scale}>
       <planeGeometry args={[1, 1]} />
-      <nebulaMaterial ref={materialRef} color={color} transparent depthWrite={false} blending={THREE.AdditiveBlending} />
+      <nebulaMaterial ref={materialRef} color={color} transparent depthWrite={false} blending={THREE.NormalBlending} />
     </mesh>
   );
 }
@@ -199,12 +199,12 @@ function ShootingStar() {
     <Trail
         width={2}
         length={8}
-        color={new THREE.Color('rgb(255 255 255)')}
+        color={new THREE.Color('rgb(198 224 255)')}
         attenuation={(t) => t * t}
     >
         <mesh ref={meshRef} position={startPos.current}>
             <sphereGeometry args={[0.05, 8, 8]} />
-            <meshBasicMaterial color="rgb(255 255 255)" toneMapped={false} />
+            <meshBasicMaterial color="rgb(198 224 255)" toneMapped={false} />
         </mesh>
     </Trail>
   );
@@ -241,7 +241,7 @@ function StarField() {
       // Color with subtle brightness variation
       const colorIndex = Math.floor(rand() * STAR_COLORS.length);
       tempColor.copy(STAR_COLORS[colorIndex]);
-      const brightness = 0.55 + rand() * 0.45;
+      const brightness = 0.18 + rand() * 0.44;
       
       baseColors[i3] = tempColor.r * brightness;
       baseColors[i3 + 1] = tempColor.g * brightness;
@@ -253,7 +253,7 @@ function StarField() {
       
       // Size gently tied to depth for distant speck feel
       const depthFactor = 1 - Math.min(1, Math.abs(z) / 220);
-      sizes[i] = 0.15 + rand() * 0.35 + depthFactor * 0.05;
+      sizes[i] = 0.03 + rand() * 0.09 + depthFactor * 0.02;
       
       // Twinkle speed/phase
       twinklePhase[i] = rand() * Math.PI * 2;
@@ -303,7 +303,7 @@ function StarField() {
       meshRef.current.setMatrixAt(i, dummy.matrix);
 
       // Gentle per-star twinkle for realism
-      const twinkle = 0.75 + Math.sin(time * twinkleSpeed[i] + twinklePhase[i]) * 0.2;
+      const twinkle = 0.84 + Math.sin(time * twinkleSpeed[i] + twinklePhase[i]) * 0.08;
       colors[i3] = baseColors[i3] * twinkle;
       colors[i3 + 1] = baseColors[i3 + 1] * twinkle;
       colors[i3 + 2] = baseColors[i3 + 2] * twinkle;
@@ -326,7 +326,7 @@ function StarField() {
       <meshBasicMaterial
         vertexColors
         transparent
-        opacity={1.0}
+        opacity={0.72}
       />
     </instancedMesh>
   );
@@ -376,9 +376,9 @@ function SceneContent() {
         <group ref={groupRef}>
             <StarField />
             {/* More subtle, realistic nebula colors (Deep blues, purples) */}
-            <NebulaCloud position={[0, 0, -50]} color="rgb(26 26 46)" scale={[100, 100, 1]} />
-            <NebulaCloud position={[-30, 20, -80]} color="rgb(22 33 62)" scale={[120, 120, 1]} />
-            <NebulaCloud position={[30, -20, -60]} color="rgb(31 27 46)" scale={[90, 90, 1]} />
+            <NebulaCloud position={[0, 0, -50]} color="rgb(10 16 34)" scale={[100, 100, 1]} />
+            <NebulaCloud position={[-30, 20, -80]} color="rgb(9 19 40)" scale={[120, 120, 1]} />
+            <NebulaCloud position={[30, -20, -60]} color="rgb(12 10 30)" scale={[90, 90, 1]} />
             <ShootingStar />
             <ShootingStar />
         </group>
@@ -386,6 +386,20 @@ function SceneContent() {
 }
 
 export default function SpaceScene() {
+  const [enablePostFx, setEnablePostFx] = useState(true);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const nav = navigator as Navigator & { deviceMemory?: number };
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const lowPowerDevice =
+      (typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4) ||
+      (typeof nav.hardwareConcurrency === "number" && nav.hardwareConcurrency <= 4);
+
+    setEnablePostFx(!(prefersReduced || lowPowerDevice));
+  }, []);
+
   return (
     <div className="fixed top-0 left-0 w-full h-full -z-10 bg-black">
       <Canvas
@@ -395,13 +409,15 @@ export default function SpaceScene() {
       >
         <SpaceAppDebugProbe />
         <color attach="background" args={['rgb(0 0 0)']} /> {/* Deep black background */}
-        
+
         <SceneContent />
 
-        <EffectComposer>
-          <Bloom intensity={1.0} luminanceThreshold={0.5} mipmapBlur />
-          <Noise opacity={0.05} />
-        </EffectComposer>
+        {enablePostFx ? (
+          <EffectComposer>
+            <Bloom intensity={0.18} luminanceThreshold={0.86} mipmapBlur={false} />
+            <Noise opacity={0.015} />
+          </EffectComposer>
+        ) : null}
       </Canvas>
     </div>
   );

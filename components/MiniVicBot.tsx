@@ -45,6 +45,18 @@ const QUICK_PROMPTS: QuickPrompt[] = [
   },
 ];
 
+const shouldDebugRendering = () => {
+  if (typeof window === "undefined") return false;
+  return window.location.search.includes("debugRendering=1");
+};
+
+const logMiniVicIssue = (...args: unknown[]) => {
+  if (shouldDebugRendering()) {
+    // eslint-disable-next-line no-console
+    console.warn(...args);
+  }
+};
+
 const MiniVicBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -163,7 +175,7 @@ const MiniVicBot = () => {
               }
             }
           } catch (e) {
-            console.error("Polling error", e);
+            logMiniVicIssue("Polling error", e);
           }
         }
 
@@ -217,7 +229,7 @@ const MiniVicBot = () => {
         };
         
         recognition.onerror = (event: any) => {
-          console.error("Speech recognition error", event.error);
+          logMiniVicIssue("Speech recognition error", event.error);
           setIsListening(false);
         };
 
@@ -393,7 +405,7 @@ const MiniVicBot = () => {
           videoRef.current!.play();
       };
       
-      videoRef.current.play().catch(e => console.error("Video play failed", e));
+      videoRef.current.play().catch(e => logMiniVicIssue("Video play failed", e));
   };
 
   const handleCopy = async (text: string, id: string) => {
@@ -402,7 +414,7 @@ const MiniVicBot = () => {
       setCopiedId(id);
       setTimeout(() => setCopiedId(null), 1200);
     } catch (err) {
-      console.error("Clipboard failed", err);
+      logMiniVicIssue("Clipboard failed", err);
     }
   };
 
@@ -467,7 +479,7 @@ const MiniVicBot = () => {
         stopMouth();
       }
     } catch (error) {
-      console.error(error);
+      logMiniVicIssue("Chat send failed", error);
       setMessages((prev) => [
         ...prev,
         {
@@ -519,7 +531,7 @@ const MiniVicBot = () => {
               playsInline
               preload="metadata"
               onError={() => {
-                console.warn("MiniVic avatar video failed to load, disabling until next open.");
+                logMiniVicIssue("MiniVic avatar video failed to load, disabling until next open.");
                 setCurrentVideoSrc("");
               }}
             />
@@ -803,6 +815,7 @@ const MiniVicBot = () => {
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
+              aria-label="Send message"
               className="p-2.5 bg-orange-600 hover:bg-orange-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl transition-all shadow-lg shadow-orange-900/20"
             >
               <Send size={18} />
