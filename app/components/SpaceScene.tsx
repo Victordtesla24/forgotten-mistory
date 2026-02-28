@@ -11,10 +11,10 @@ const STAR_COUNT = 8000;
 const STAR_SEED = 1337;
 // Using realistic star colors (white/blue-white/yellow-white/orange-white)
 const STAR_COLORS = [
-  new THREE.Color('#ffffff'), // White
-  new THREE.Color('#d0e0ff'), // Blue-white
-  new THREE.Color('#ffeebb'), // Yellow-white
-  new THREE.Color('#ffddaa')  // Orange-white
+  new THREE.Color('rgb(255 255 255)'), // White
+  new THREE.Color('rgb(208 224 255)'), // Blue-white
+  new THREE.Color('rgb(255 238 187)'), // Yellow-white
+  new THREE.Color('rgb(255 221 170)')  // Orange-white
 ];
 
 const logDebug = (message: string, data?: Record<string, unknown>) => {
@@ -199,12 +199,12 @@ function ShootingStar() {
     <Trail
         width={2}
         length={8}
-        color={new THREE.Color('#ffffff')}
+        color={new THREE.Color('rgb(255 255 255)')}
         attenuation={(t) => t * t}
     >
         <mesh ref={meshRef} position={startPos.current}>
             <sphereGeometry args={[0.05, 8, 8]} />
-            <meshBasicMaterial color="#ffffff" toneMapped={false} />
+            <meshBasicMaterial color="rgb(255 255 255)" toneMapped={false} />
         </mesh>
     </Trail>
   );
@@ -376,9 +376,9 @@ function SceneContent() {
         <group ref={groupRef}>
             <StarField />
             {/* More subtle, realistic nebula colors (Deep blues, purples) */}
-            <NebulaCloud position={[0, 0, -50]} color="#1a1a2e" scale={[100, 100, 1]} />
-            <NebulaCloud position={[-30, 20, -80]} color="#16213e" scale={[120, 120, 1]} />
-            <NebulaCloud position={[30, -20, -60]} color="#1f1b2e" scale={[90, 90, 1]} />
+            <NebulaCloud position={[0, 0, -50]} color="rgb(26 26 46)" scale={[100, 100, 1]} />
+            <NebulaCloud position={[-30, 20, -80]} color="rgb(22 33 62)" scale={[120, 120, 1]} />
+            <NebulaCloud position={[30, -20, -60]} color="rgb(31 27 46)" scale={[90, 90, 1]} />
             <ShootingStar />
             <ShootingStar />
         </group>
@@ -391,10 +391,10 @@ export default function SpaceScene() {
       <Canvas
         camera={{ position: [0, 0, 20], fov: 60 }}
         gl={{ antialias: false, alpha: false }}
-        dpr={[1, 2]} 
+        dpr={1}
       >
         <SpaceAppDebugProbe />
-        <color attach="background" args={['#000000']} /> {/* Deep black background */}
+        <color attach="background" args={['rgb(0 0 0)']} /> {/* Deep black background */}
         
         <SceneContent />
 

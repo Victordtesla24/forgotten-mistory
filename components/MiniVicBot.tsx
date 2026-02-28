@@ -283,7 +283,7 @@ const MiniVicBot = () => {
       ctx.lineWidth = 2;
       ctx.strokeStyle = 'rgba(255, 115, 80, 0.8)'; // orange-400
       ctx.shadowBlur = 8;
-      ctx.shadowColor = '#ff7350';
+      ctx.shadowColor = 'rgb(255 115 80)';
       
       ctx.beginPath();
       
@@ -646,7 +646,13 @@ const MiniVicBot = () => {
             </span>
           </div>
 
-          <div className="h-72 overflow-y-auto p-4 space-y-3 bg-gray-950/70 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-transparent">
+          <div
+            className="h-72 overflow-y-auto p-4 space-y-3 bg-gray-950/70 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-transparent"
+            role="log"
+            aria-live="polite"
+            aria-relevant="additions text"
+            aria-atomic="false"
+          >
             {messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div

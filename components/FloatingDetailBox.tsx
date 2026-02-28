@@ -19,15 +19,15 @@ interface FloatingDetailBoxProps {
 }
 
 const THEME_COLORS: Record<string, string> = {
-  "Cloud Modernisation": "#ef4444", // Red
-  "Realtime Reliability": "#f97316", // Orange
-  "AI Quality & Risk": "#ef4444", // Red
-  "Leadership Scale": "#f97316", // Orange
-  "Strategic Alignment": "#06b6d4", // Cyan
-  "Portfolio Value": "#10b981", // Emerald
+  "Cloud Modernisation": "rgb(239 68 68)", // Red
+  "Realtime Reliability": "rgb(249 115 22)", // Orange
+  "AI Quality & Risk": "rgb(239 68 68)", // Red
+  "Leadership Scale": "rgb(249 115 22)", // Orange
+  "Strategic Alignment": "rgb(6 182 212)", // Cyan
+  "Portfolio Value": "rgb(16 185 129)", // Emerald
 };
 
-const DEFAULT_COLOR = "#ff7350";
+const DEFAULT_COLOR = "rgb(255 115 80)";
 const DEBUG_BEACON_URL = process.env.NEXT_PUBLIC_DEBUG_BEACON_URL;
 const logDebug = (message: string, data?: Record<string, unknown>) => {
   if (process.env.NODE_ENV === 'production') return;
@@ -628,7 +628,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
         className={containerClasses}
       >
         {/* Main Card Body */}
-        <div className="relative bg-[#050505]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto"
+        <div className="relative bg-[rgb(5_5_5)]/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto"
         style={{ 
                  boxShadow: `0 0 50px ${themeColor}20`,
                  borderColor: `${themeColor}40`

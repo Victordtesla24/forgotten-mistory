@@ -1,3 +1,23 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "overrides": [
+    {
+      "files": [
+        "app/**/*.{ts,tsx,js,jsx}",
+        "components/**/*.{ts,tsx,js,jsx}"
+      ],
+      "excludedFiles": [
+        "app/globals.css"
+      ],
+      "rules": {
+        "no-restricted-syntax": [
+          "error",
+          {
+            "selector": "Literal[value=/^#(?:[0-9a-fA-F]{3,8})$/]",
+            "message": "Use design token variables instead of raw hex values in component code."
+          }
+        ]
+      }
+    }
+  ]
 }

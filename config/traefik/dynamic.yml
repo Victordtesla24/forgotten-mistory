@@ -1,0 +1,19 @@
+http:
+  routers:
+    frontend:
+      rule: "Host(`yourdomain.com`)"
+      service: frontend
+      entryPoints: ["web", "websecure"]
+    api:
+      rule: "Host(`api.yourdomain.com`)"
+      service: api
+      entryPoints: ["web", "websecure"]
+  services:
+    frontend:
+      loadBalancer:
+        servers:
+          - url: "http://frontend:3000"
+    api:
+      loadBalancer:
+        servers:
+          - url: "http://api-gateway:8000"

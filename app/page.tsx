@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Script from 'next/script';
-import Image from 'next/image';
+import { AnimatePresence, motion } from 'framer-motion';
 import FloatingDetailBox from '@/components/FloatingDetailBox';
 import SpaceScene from './components/SpaceScene';
 
@@ -79,16 +79,16 @@ export default function Home() {
         <svg className="morphing-svg" viewBox="0 0 600 600" role="presentation" focusable="false">
           <defs>
             <linearGradient id="morphGradient1" x1="10%" y1="0%" x2="90%" y2="100%">
-              <stop offset="0%" stopColor="#ff7350" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="#ffb199" stopOpacity="0.35" />
+              <stop offset="0%" stopColor="rgb(255 115 80)" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="rgb(255 177 153)" stopOpacity="0.35" />
             </linearGradient>
             <linearGradient id="morphGradient2" x1="0%" y1="100%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#00f2fe" stopOpacity="0.75" />
-              <stop offset="100%" stopColor="#7cf3ff" stopOpacity="0.4" />
+              <stop offset="0%" stopColor="rgb(0 242 254)" stopOpacity="0.75" />
+              <stop offset="100%" stopColor="rgb(124 243 255)" stopOpacity="0.4" />
             </linearGradient>
             <linearGradient id="morphGradient3" x1="30%" y1="0%" x2="80%" y2="100%">
-              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#ff7350" stopOpacity="0.35" />
+              <stop offset="0%" stopColor="rgb(255 255 255)" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="rgb(255 115 80)" stopOpacity="0.35" />
             </linearGradient>
             <filter id="blur">
               <feGaussianBlur stdDeviation="60" />
@@ -195,8 +195,22 @@ export default function Home() {
         </div>
       </nav>
 
-      <main>
-        <section id="hero" className="hero-section" data-scroll-section>
+      <AnimatePresence mode="wait">
+      <motion.main
+        key="home-page"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -12 }}
+        transition={{ duration: 0.45, ease: 'easeOut' }}
+      >
+        <motion.section
+          id="hero"
+          className="hero-section"
+          data-scroll-section
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, ease: 'easeOut' }}
+        >
           <div className="hero-content">
             <h1 className="hero-title parallax" data-depth="3" data-speed="0.1" data-parallax="true">
               <span className="line">Hello, I&apos;m</span>{' '}
@@ -414,16 +428,20 @@ export default function Home() {
           </div>
 
           <div className="hero-image-container parallax" data-speed="0.1" data-parallax="true">
-            <div className="avatar-placeholder" id="avatar-container">
-              <div className="avatar-circle relative overflow-hidden">
-                <Image 
-                  src="/assets/my_avatar.png" 
-                  alt="Vikram Avatar" 
-                  fill
-                  className="avatar-img absolute inset-0 w-full h-full object-cover z-10 transition-opacity duration-500"
-                  id="avatar-static"
-                  priority
-                />
+              <div className="avatar-placeholder" id="avatar-container">
+                <div className="avatar-circle relative overflow-hidden">
+                <picture>
+                  <source srcSet="/assets/my_avatar.avif" type="image/avif" />
+                  <source srcSet="/assets/my_avatar.webp" type="image/webp" />
+                  <img
+                    src="/assets/my_avatar.png"
+                    alt="Vikram Avatar"
+                    className="avatar-img absolute inset-0 w-full h-full object-cover z-10 transition-opacity duration-500"
+                    id="avatar-static"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </picture>
                 <video
                   data-src="/assets/my-hero-avatar.mp4"
                   className="avatar-img absolute inset-0 w-full h-full object-cover z-0"
@@ -436,7 +454,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         <section id="about" className="about-section" data-scroll-section>
           <div className="container">
@@ -916,7 +934,7 @@ export default function Home() {
               </p>
             </div>
             <div className="arch-wrapper glass-card">
-              <div id="arch-tooltip" className="arch-tooltip" style={{ position: 'absolute', background: 'rgba(0, 0, 0, 0.8)', color: '#fff', padding: '5px 10px', borderRadius: '5px', fontSize: '0.9rem', pointerEvents: 'none', opacity: 0, transition: 'opacity 0.2s', zIndex: 100 }}></div>
+              <div id="arch-tooltip" className="arch-tooltip" style={{ position: 'absolute', background: 'rgba(0, 0, 0, 0.8)', color: 'rgb(255 255 255)', padding: '5px 10px', borderRadius: '5px', fontSize: '0.9rem', pointerEvents: 'none', opacity: 0, transition: 'opacity 0.2s', zIndex: 100 }}></div>
               <div className="arch-diagram">
                 <div className="arch-diagram-halo" aria-hidden="true"></div>
                 <div className="arch-diagram-grid" aria-hidden="true"></div>
@@ -1376,7 +1394,8 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </main>
+      </motion.main>
+      </AnimatePresence>
 
       <footer>
         <div className="footer-content">

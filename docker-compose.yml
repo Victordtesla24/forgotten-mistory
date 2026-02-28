@@ -1,0 +1,184 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    image: ghcr.io/victordtesla24/forgotten-mistory-frontend:${IMAGE_TAG:-latest}
+    ports:
+      - "3000:3000"
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 128M
+
+  api-gateway:
+    build:
+      context: ./services/api-gateway
+    image: ghcr.io/victordtesla24/forgotten-mistory-api-gateway:${IMAGE_TAG:-latest}
+    environment:
+      PORT: 8000
+      LLM_PROVIDER: ${LLM_PROVIDER:-local}
+      LLM_BASE_URL: http://llm-engine:11434
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-change-me}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000,https://forgotten-mistory.web.app}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
+      ELEVENLABS_VOICE_ID: ${ELEVENLABS_VOICE_ID:-}
+      DID_API_KEY: ${DID_API_KEY:-}
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+      llm-engine:
+        condition: service_started
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+
+  llm-engine:
+    build:
+      context: ./services/llm-engine
+    image: ghcr.io/victordtesla24/forgotten-mistory-llm-engine:${IMAGE_TAG:-latest}
+    ports:
+      - "11434:11434"
+    volumes:
+      - llm-models:/models
+    networks:
+      - app-net
+    deploy:
+      resources:
+        limits:
+          cpus: "6"
+          memory: 12G
+
+  redis:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+
+  nginx-proxy:
+    image: jc21/nginx-proxy-manager:2.11.3
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "81:81"
+    volumes:
+      - npm-data:/data
+      - npm-ssl:/etc/letsencrypt
+    networks:
+      - app-net
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    profiles: ["monitoring"]
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      - app-net
+
+  grafana:
+    image: grafana/grafana:12.1.1
+    profiles: ["monitoring"]
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+      - loki
+    networks:
+      - app-net
+
+  loki:
+    image: grafana/loki:3.5.0
+    profiles: ["monitoring"]
+    command: ["-config.file=/etc/loki/local-config.yaml"]
+    volumes:
+      - ./config/loki/loki-config.yml:/etc/loki/local-config.yaml:ro
+      - loki-data:/loki
+    ports:
+      - "3100:3100"
+    networks:
+      - app-net
+
+  promtail:
+    image: grafana/promtail:3.5.0
+    profiles: ["monitoring"]
+    command: ["-config.file=/etc/promtail/config.yml"]
+    volumes:
+      - ./config/promtail/promtail-config.yml:/etc/promtail/config.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - loki
+    networks:
+      - app-net
+
+  traefik:
+    image: traefik:v3.1
+    profiles: ["staging-traefik"]
+    command:
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--api.insecure=true"
+    ports:
+      - "8081:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - app-net
+
+volumes:
+  llm-models:
+  redis-data:
+  npm-data:
+  npm-ssl:
+  grafana-data:
+  loki-data:
+
+networks:
+  app-net:
+    driver: bridge

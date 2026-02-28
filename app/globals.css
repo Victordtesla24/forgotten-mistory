@@ -1,14 +1,20 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
 
 :root {
-    --bg-color: #0a0a0a;
-    --text-color: #f4f4f4;
-    --accent-color: #ff7350;
-    --secondary-text: #8f93a3;
-    --border-color: #1a1b20;
-    --card-bg: rgba(255, 255, 255, 0.03);
+    --token-bg-base: color(display-p3 0.03 0.04 0.08);
+    --token-bg-surface: color(display-p3 0.07 0.09 0.15);
+    --token-bg-elevated: color(display-p3 0.11 0.14 0.22);
+    --token-text-primary: color(display-p3 0.93 0.95 0.99);
+    --token-text-secondary: color(display-p3 0.66 0.70 0.79);
+    --token-brand-primary: color(display-p3 0.99 0.52 0.36);
+    --token-brand-accent: color(display-p3 0.35 0.82 0.98);
+    --token-border-default: color(display-p3 0.15 0.17 0.24 / 0.8);
+    --bg-color: var(--token-bg-base);
+    --text-color: var(--token-text-primary);
+    --accent-color: var(--token-brand-primary);
+    --secondary-text: var(--token-text-secondary);
+    --border-color: var(--token-border-default);
+    --card-bg: color(display-p3 0.93 0.95 0.99 / 0.03);
     --cursor-size: 20px;
     --font-body: var(--font-source-sans, 'Source Sans 3');
     --font-heading: var(--font-roboto-condensed, 'Roboto Condensed');
@@ -216,7 +222,7 @@ body::before {
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.2);
     transition: opacity 500ms linear, transform 500ms ease-out;
-    will-change: opacity, transform;
+    will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
