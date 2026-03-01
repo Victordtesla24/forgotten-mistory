@@ -74,45 +74,47 @@ export default function Home() {
 
   return (
     <>
-      <SpaceScene />
-      <div className="cosmic-backdrop" aria-hidden="true" />
-      <div className="morphing-bg" aria-hidden="true">
-        <svg className="morphing-svg" viewBox="0 0 600 600" role="presentation" focusable="false">
-          <defs>
-            <linearGradient id="morphGradient1" x1="10%" y1="0%" x2="90%" y2="100%">
-              <stop offset="0%" stopColor="rgb(255 115 80)" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="rgb(255 177 153)" stopOpacity="0.35" />
-            </linearGradient>
-            <linearGradient id="morphGradient2" x1="0%" y1="100%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="rgb(0 242 254)" stopOpacity="0.75" />
-              <stop offset="100%" stopColor="rgb(124 243 255)" stopOpacity="0.4" />
-            </linearGradient>
-            <linearGradient id="morphGradient3" x1="30%" y1="0%" x2="80%" y2="100%">
-              <stop offset="0%" stopColor="rgb(255 255 255)" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="rgb(255 115 80)" stopOpacity="0.35" />
-            </linearGradient>
-            <filter id="blur">
-              <feGaussianBlur stdDeviation="60" />
-            </filter>
-          </defs>
-          <g filter="url(#blur)">
-            <path
-              className="morphing-blob"
-              fill="url(#morphGradient1)"
-              d="M340 170 C 310 100 220 115 170 175 C 120 235 140 320 200 360 C 260 400 350 360 385 250 C 405 190 370 150 340 170 Z"
-            />
-            <path
-              className="morphing-blob morphing-blob-secondary"
-              fill="url(#morphGradient2)"
-              d="M340 170 C 310 100 220 115 170 175 C 120 235 140 320 200 360 C 260 400 350 360 385 250 C 405 190 370 150 340 170 Z"
-            />
-            <path
-              className="morphing-blob morphing-blob-tertiary"
-              fill="url(#morphGradient3)"
-              d="M340 170 C 310 100 220 115 170 175 C 120 235 140 320 200 360 C 260 400 350 360 385 250 C 405 190 370 150 340 170 Z"
-            />
-          </g>
-        </svg>
+      <div className="scene-stack" aria-hidden="true">
+        <SpaceScene />
+        <div className="cosmic-backdrop" />
+        <div className="morphing-bg">
+          <svg className="morphing-svg" viewBox="0 0 600 600" role="presentation" focusable="false">
+            <defs>
+              <linearGradient id="morphGradient1" x1="10%" y1="0%" x2="90%" y2="100%">
+                <stop offset="0%" stopColor="rgb(255 115 80)" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="rgb(255 177 153)" stopOpacity="0.35" />
+              </linearGradient>
+              <linearGradient id="morphGradient2" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgb(0 242 254)" stopOpacity="0.75" />
+                <stop offset="100%" stopColor="rgb(124 243 255)" stopOpacity="0.4" />
+              </linearGradient>
+              <linearGradient id="morphGradient3" x1="30%" y1="0%" x2="80%" y2="100%">
+                <stop offset="0%" stopColor="rgb(255 255 255)" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="rgb(255 115 80)" stopOpacity="0.35" />
+              </linearGradient>
+              <filter id="blur">
+                <feGaussianBlur stdDeviation="60" />
+              </filter>
+            </defs>
+            <g filter="url(#blur)">
+              <path
+                className="morphing-blob"
+                fill="url(#morphGradient1)"
+                d="M340 170 C 310 100 220 115 170 175 C 120 235 140 320 200 360 C 260 400 350 360 385 250 C 405 190 370 150 340 170 Z"
+              />
+              <path
+                className="morphing-blob morphing-blob-secondary"
+                fill="url(#morphGradient2)"
+                d="M340 170 C 310 100 220 115 170 175 C 120 235 140 320 200 360 C 260 400 350 360 385 250 C 405 190 370 150 340 170 Z"
+              />
+              <path
+                className="morphing-blob morphing-blob-tertiary"
+                fill="url(#morphGradient3)"
+                d="M340 170 C 310 100 220 115 170 175 C 120 235 140 320 200 360 C 260 400 350 360 385 250 C 405 190 370 150 340 170 Z"
+              />
+            </g>
+          </svg>
+        </div>
       </div>
       
       <FloatingDetailBox 
@@ -303,6 +305,8 @@ export default function Home() {
                 className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
                 role="button"
                 tabIndex={0}
+                data-outcome-card="true"
+                data-outcome-index={0}
                 onClick={(e) => handleMetaClick('Cloud Modernisation', e)}
                 onKeyDown={(e) => handleMetaKeyDown('Cloud Modernisation', e)}
                 onMouseEnter={(e) => handleMetaHover('Cloud Modernisation', e)}
@@ -324,6 +328,8 @@ export default function Home() {
                 className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
                 role="button"
                 tabIndex={0}
+                data-outcome-card="true"
+                data-outcome-index={1}
                 onClick={(e) => handleMetaClick('Realtime Reliability', e)}
                 onKeyDown={(e) => handleMetaKeyDown('Realtime Reliability', e)}
                 onMouseEnter={(e) => handleMetaHover('Realtime Reliability', e)}
@@ -345,6 +351,8 @@ export default function Home() {
                 className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
                 role="button"
                 tabIndex={0}
+                data-outcome-card="true"
+                data-outcome-index={2}
                 onClick={(e) => handleMetaClick('AI Quality & Risk', e)}
                 onKeyDown={(e) => handleMetaKeyDown('AI Quality & Risk', e)}
                 onMouseEnter={(e) => handleMetaHover('AI Quality & Risk', e)}
@@ -366,6 +374,8 @@ export default function Home() {
                 className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
                 role="button"
                 tabIndex={0}
+                data-outcome-card="true"
+                data-outcome-index={3}
                 onClick={(e) => handleMetaClick('Leadership Scale', e)}
                 onKeyDown={(e) => handleMetaKeyDown('Leadership Scale', e)}
                 onMouseEnter={(e) => handleMetaHover('Leadership Scale', e)}
@@ -387,6 +397,8 @@ export default function Home() {
                 className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
                 role="button"
                 tabIndex={0}
+                data-outcome-card="true"
+                data-outcome-index={4}
                 onClick={(e) => handleMetaClick('Strategic Alignment', e)}
                 onKeyDown={(e) => handleMetaKeyDown('Strategic Alignment', e)}
                 onMouseEnter={(e) => handleMetaHover('Strategic Alignment', e)}
@@ -408,6 +420,8 @@ export default function Home() {
                 className="meta-card glass-card cursor-pointer hover:scale-105 transition-transform"
                 role="button"
                 tabIndex={0}
+                data-outcome-card="true"
+                data-outcome-index={5}
                 onClick={(e) => handleMetaClick('Portfolio Value', e)}
                 onKeyDown={(e) => handleMetaKeyDown('Portfolio Value', e)}
                 onMouseEnter={(e) => handleMetaHover('Portfolio Value', e)}

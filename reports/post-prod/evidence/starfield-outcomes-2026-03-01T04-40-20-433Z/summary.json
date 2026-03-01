@@ -1,0 +1,104 @@
+{
+  "timestamp": "2026-03-01T04:40:56.767Z",
+  "baseUrl": "http://127.0.0.1:8080",
+  "evidenceDir": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/starfield-outcomes-2026-03-01T04-40-20-433Z",
+  "checks": [
+    {
+      "feature": "Scene stack and starfield canvas health",
+      "status": "PASS",
+      "details": {
+        "ok": true,
+        "fixedScene": true,
+        "layerVisible": true,
+        "canvasVisible": true,
+        "fullViewport": true,
+        "rect": {
+          "width": 1440,
+          "height": 900
+        }
+      }
+    },
+    {
+      "feature": "Starfield top viewport evidence",
+      "status": "PASS",
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/starfield-outcomes-2026-03-01T04-40-20-433Z/01-starfield-top.png"
+    },
+    {
+      "feature": "Starfield mid viewport evidence",
+      "status": "PASS",
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/starfield-outcomes-2026-03-01T04-40-20-433Z/02-starfield-mid.png"
+    },
+    {
+      "feature": "Starfield lower viewport evidence",
+      "status": "PASS",
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/starfield-outcomes-2026-03-01T04-40-20-433Z/03-starfield-lower.png"
+    },
+    {
+      "feature": "Outcome cards reveal state reached",
+      "status": "PASS",
+      "details": [
+        {
+          "index": "0",
+          "state": "revealed",
+          "opacity": "1"
+        },
+        {
+          "index": "1",
+          "state": "revealed",
+          "opacity": "1"
+        },
+        {
+          "index": "2",
+          "state": "revealed",
+          "opacity": "1"
+        },
+        {
+          "index": "3",
+          "state": "revealed",
+          "opacity": "1"
+        },
+        {
+          "index": "4",
+          "state": "revealed",
+          "opacity": "1"
+        },
+        {
+          "index": "5",
+          "state": "revealed",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "feature": "Business outcomes resting-state evidence",
+      "status": "PASS",
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/starfield-outcomes-2026-03-01T04-40-20-433Z/04-outcomes-resting.png"
+    },
+    {
+      "feature": "Business outcomes hover-state evidence",
+      "status": "PASS",
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/starfield-outcomes-2026-03-01T04-40-20-433Z/05-outcomes-hover.png"
+    },
+    {
+      "feature": "Business outcomes click/open interaction",
+      "status": "PASS",
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/starfield-outcomes-2026-03-01T04-40-20-433Z/06-outcomes-detail-open.png"
+    },
+    {
+      "feature": "Full-page polish reference evidence",
+      "status": "PASS",
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/starfield-outcomes-2026-03-01T04-40-20-433Z/07-polish-fullpage.png"
+    },
+    {
+      "feature": "Reduced-motion guard behavior",
+      "status": "PASS",
+      "details": {
+        "ok": true,
+        "state": "revealed",
+        "opacity": 1,
+        "cursorEnhanced": false
+      },
+      "evidence": "/Users/Shared/codex/forgotten-mistory/reports/post-prod/evidence/starfield-outcomes-2026-03-01T04-40-20-433Z/08-reduced-motion.png"
+    }
+  ]
+}

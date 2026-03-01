@@ -241,7 +241,7 @@ function StarField() {
       // Color with subtle brightness variation
       const colorIndex = Math.floor(rand() * STAR_COLORS.length);
       tempColor.copy(STAR_COLORS[colorIndex]);
-      const brightness = 0.18 + rand() * 0.44;
+      const brightness = 0.26 + rand() * 0.5;
       
       baseColors[i3] = tempColor.r * brightness;
       baseColors[i3 + 1] = tempColor.g * brightness;
@@ -326,7 +326,7 @@ function StarField() {
       <meshBasicMaterial
         vertexColors
         transparent
-        opacity={0.72}
+        opacity={0.88}
       />
     </instancedMesh>
   );
@@ -401,7 +401,7 @@ export default function SpaceScene() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full -z-10 bg-black">
+    <div className="space-scene-layer" aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0, 20], fov: 60 }}
         gl={{ antialias: false, alpha: false }}

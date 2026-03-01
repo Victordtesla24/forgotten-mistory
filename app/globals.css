@@ -19,6 +19,11 @@
     --font-body: var(--font-source-sans, 'Source Sans 3');
     --font-heading: var(--font-roboto-condensed, 'Roboto Condensed');
     --font-alt: var(--font-roboto, 'Roboto');
+    --motion-fast: 220ms;
+    --motion-base: 360ms;
+    --motion-slow: 520ms;
+    --motion-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+    --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @property --angle {
@@ -57,6 +62,41 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     position: relative;
+}
+
+.scene-stack {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.scene-stack::after {
+    content: "";
+    position: absolute;
+    inset: -10% -5%;
+    background-image:
+      radial-gradient(2px 2px at 15% 18%, rgb(255 255 255 / 0.28), transparent 70%),
+      radial-gradient(1.5px 1.5px at 72% 40%, rgb(191 220 255 / 0.22), transparent 72%),
+      radial-gradient(1.7px 1.7px at 38% 84%, rgb(255 224 174 / 0.18), transparent 74%);
+    background-size: 420px 420px;
+    opacity: 0.36;
+    animation: starDrift 30s linear infinite;
+}
+
+.space-scene-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: rgb(0 0 0);
+}
+
+.space-scene-layer canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
 }
 
 /* Canvas Background */
@@ -359,16 +399,22 @@ section {
     z-index: 5;
 }
 
+main,
+footer {
+    position: relative;
+    z-index: 5;
+}
+
 .cosmic-backdrop {
-    position: fixed;
+    position: absolute;
     inset: 0;
-    z-index: -9;
+    z-index: 1;
     pointer-events: none;
     background:
-      radial-gradient(circle at 16% 24%, rgba(38, 78, 150, 0.35), transparent 42%),
-      radial-gradient(circle at 82% 10%, rgba(34, 68, 134, 0.28), transparent 36%),
-      radial-gradient(circle at 68% 82%, rgba(58, 36, 132, 0.24), transparent 40%),
-      linear-gradient(180deg, rgb(3 6 20) 0%, rgb(2 5 18) 45%, rgb(2 4 14) 100%);
+      radial-gradient(circle at 16% 24%, rgba(43, 86, 165, 0.24), transparent 44%),
+      radial-gradient(circle at 82% 10%, rgba(34, 68, 134, 0.2), transparent 38%),
+      radial-gradient(circle at 68% 82%, rgba(58, 36, 132, 0.18), transparent 42%),
+      linear-gradient(180deg, rgba(3, 6, 20, 0.5) 0%, rgba(2, 5, 18, 0.44) 45%, rgba(2, 4, 14, 0.56) 100%);
 }
 
 .cosmic-backdrop::before {
@@ -380,7 +426,7 @@ section {
       radial-gradient(1.5px 1.5px at 42px 64px, rgb(179 211 255 / 0.75), transparent 60%),
       radial-gradient(1.7px 1.7px at 88px 34px, rgb(255 232 190 / 0.7), transparent 60%);
     background-size: 140px 140px;
-    opacity: 0.58;
+    opacity: 0.4;
 }
 
 .cosmic-backdrop::after {
@@ -391,15 +437,15 @@ section {
       radial-gradient(circle at 24% 42%, rgba(59, 108, 190, 0.2), transparent 45%),
       radial-gradient(circle at 76% 22%, rgba(71, 97, 196, 0.14), transparent 40%);
     filter: blur(22px);
-    opacity: 0.9;
+    opacity: 0.58;
 }
 
 /* Morphing Background */
 .morphing-bg {
-    position: fixed;
+    position: absolute;
     inset: 0;
-    z-index: -5;
-    opacity: 0.03;
+    z-index: 2;
+    opacity: 0.048;
     pointer-events: none;
 }
 
@@ -1534,12 +1580,28 @@ footer {
     display: flex;
     align-items: flex-start;
     gap: 1.2rem;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition:
+      transform var(--motion-base) var(--motion-ease-emphasized),
+      border-color var(--motion-base) var(--motion-ease-standard),
+      box-shadow var(--motion-base) var(--motion-ease-standard),
+      background var(--motion-base) var(--motion-ease-standard);
     position: relative;
     overflow: hidden;
     /* Entrance Animation - Disabled to ensure visibility */
     /* opacity: 0; */
     /* animation: slideUpFade 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; */
+}
+
+.meta-card[data-outcome-card] {
+    will-change: transform, opacity;
+}
+
+.meta-card[data-outcome-card][data-anim-state="idle"] {
+    opacity: 0;
+}
+
+.meta-card[data-outcome-card][data-anim-state="revealed"] {
+    opacity: 1;
 }
 
 /* 
@@ -1578,12 +1640,37 @@ footer {
 }
 
 .meta-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    background: linear-gradient(var(--bg-color), var(--bg-color)) padding-box,
-                conic-gradient(from var(--angle), var(--accent-color), #00f2fe, var(--accent-color)) border-box;
-    border: 2px solid transparent;
-    animation: borderRotate 3s linear infinite;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 115, 80, 0.1);
+    transform: translateY(-6px) scale(1.01);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+      linear-gradient(var(--bg-color), var(--bg-color)) padding-box,
+      linear-gradient(125deg, rgba(255,115,80,0.42), rgba(124,243,255,0.32)) border-box;
+    border: 1px solid transparent;
+    box-shadow: 0 20px 42px rgba(0, 0, 0, 0.42), 0 0 30px rgba(255, 115, 80, 0.2);
+}
+
+.meta-card:focus-visible {
+    outline: 2px solid rgba(124, 243, 255, 0.7);
+    outline-offset: 2px;
+    transform: translateY(-4px);
+}
+
+.meta-card::before {
+    content: "";
+    position: absolute;
+    inset: -120% 65% auto -40%;
+    height: 260%;
+    background: linear-gradient(120deg, rgba(255,255,255,0), rgba(255,255,255,0.18), rgba(255,255,255,0));
+    transform: rotate(12deg);
+    opacity: 0;
+    transition: opacity var(--motion-fast) var(--motion-ease-standard);
+    pointer-events: none;
+}
+
+.meta-card:hover::before,
+.meta-card:focus-visible::before {
+    opacity: 1;
+    animation: cardSweep 1.2s var(--motion-ease-standard) 1;
 }
 
 .meta-icon {
@@ -1601,7 +1688,7 @@ footer {
 }
 
 .meta-card:hover .meta-icon {
-    transform: rotate(10deg) scale(1.1);
+    transform: rotate(6deg) scale(1.08);
     background: rgba(255, 115, 80, 0.2);
 }
 
@@ -1866,6 +1953,17 @@ footer {
     to {
         background-position: 200% center;
     }
+}
+
+@keyframes starDrift {
+    0% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(-1.5%, -1.2%, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes cardSweep {
+    0% { transform: translateX(-24%) rotate(12deg); }
+    100% { transform: translateX(120%) rotate(12deg); }
 }
 
 .page-ready .hero-subtitle,

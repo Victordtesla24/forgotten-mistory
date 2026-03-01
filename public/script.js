@@ -685,6 +685,119 @@ sections.forEach(section => {
     }
 });
 
+function initOutcomeCardAnimations() {
+    const cards = Array.from(document.querySelectorAll('[data-outcome-card]'));
+    if (!cards.length) return;
+    let revealStateTimer = null;
+
+    const markState = (state) => {
+        cards.forEach((card) => card.setAttribute('data-anim-state', state));
+    };
+
+    if (prefersReducedMotion || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        markState('revealed');
+        cards.forEach((card) => {
+            card.style.opacity = '1';
+            card.style.transform = 'none';
+        });
+        return;
+    }
+
+    markState('idle');
+    gsap.set(cards, {
+        opacity: 0,
+        y: 28,
+        scale: 0.985,
+        rotateX: 4,
+        transformOrigin: '50% 100%'
+    });
+
+    gsap.to(cards, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        rotateX: 0,
+        duration: 0.82,
+        ease: 'power3.out',
+        stagger: {
+            each: 0.08,
+            from: 'start'
+        },
+        onComplete: () => markState('revealed'),
+        scrollTrigger: {
+            trigger: '.hero-meta',
+            start: 'top 82%',
+            toggleActions: 'play none none reverse',
+            onEnter: () => {
+                markState('revealing');
+                if (revealStateTimer) clearTimeout(revealStateTimer);
+                revealStateTimer = setTimeout(() => markState('revealed'), 920);
+            },
+            onEnterBack: () => {
+                markState('revealing');
+                if (revealStateTimer) clearTimeout(revealStateTimer);
+                revealStateTimer = setTimeout(() => markState('revealed'), 920);
+            },
+            onLeaveBack: () => {
+                if (revealStateTimer) clearTimeout(revealStateTimer);
+                markState('idle');
+                gsap.set(cards, { opacity: 0, y: 28, scale: 0.985, rotateX: 4 });
+            }
+        }
+    });
+
+    cards.forEach((card) => {
+        if (card.dataset.outcomeBound === '1') return;
+        card.dataset.outcomeBound = '1';
+        const icon = card.querySelector('.meta-icon');
+
+        const lift = () => {
+            gsap.to(card, {
+                y: -8,
+                scale: 1.012,
+                duration: 0.3,
+                ease: 'power2.out',
+                overwrite: 'auto'
+            });
+            if (icon) {
+                gsap.to(icon, {
+                    y: -1,
+                    rotate: 4,
+                    duration: 0.3,
+                    ease: 'power2.out',
+                    overwrite: 'auto'
+                });
+            }
+        };
+
+        const settle = () => {
+            gsap.to(card, {
+                y: 0,
+                scale: 1,
+                duration: 0.32,
+                ease: 'power2.out',
+                overwrite: 'auto'
+            });
+            if (icon) {
+                gsap.to(icon, {
+                    y: 0,
+                    rotate: 0,
+                    duration: 0.3,
+                    ease: 'power2.out',
+                    overwrite: 'auto'
+                });
+            }
+        };
+
+        card.addEventListener('pointerenter', lift);
+        card.addEventListener('pointerleave', settle);
+        card.addEventListener('focusin', lift);
+        card.addEventListener('focusout', settle);
+    });
+}
+
+initOutcomeCardAnimations();
+
 // Accordion Functionality
 const accordionHeaders = document.querySelectorAll('.accordion-header');
 
@@ -1139,7 +1252,7 @@ function hydrateVideos() {
 
 // --- Spotlight / Glow Effect for Cards ---
 document.addEventListener('DOMContentLoaded', () => {
-    const glowCards = document.querySelectorAll('.meta-card, .skill-card, .project-card, .repo-card, .glass-card');
+    const glowCards = document.querySelectorAll('.meta-card:not([data-outcome-card]), .skill-card, .project-card, .repo-card, .glass-card');
 
     if (!prefersReducedMotion && glowCards.length) {
         glowCards.forEach(card => {
@@ -1156,16 +1269,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // 3D Tilt
                 if (typeof gsap !== 'undefined') {
-                    const rotateX = ((y - centerY) / centerY) * -5; // -5 to 5 deg
-                    const rotateY = ((x - centerX) / centerX) * 5;  // -5 to 5 deg
+                    const rotateX = ((y - centerY) / centerY) * -2.2;
+                    const rotateY = ((x - centerX) / centerX) * 2.2;
 
                     gsap.to(card, {
                         perspective: 1000,
                         rotateX: rotateX,
                         rotateY: rotateY,
-                        scale: 1.02,
-                        duration: 0.4,
-                        ease: "power2.out"
+                        scale: 1.01,
+                        duration: 0.22,
+                        ease: "power2.out",
+                        overwrite: "auto"
                     });
                 }
             });
@@ -1176,8 +1290,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         rotateX: 0,
                         rotateY: 0,
                         scale: 1,
-                        duration: 0.6,
-                        ease: "elastic.out(1, 0.5)"
+                        duration: 0.28,
+                        ease: "power2.out",
+                        overwrite: "auto"
                     });
                 }
             });
@@ -1195,11 +1310,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Move button towards mouse
                 gsap.to(magnet, {
-                    x: x * 0.5,
-                    y: y * 0.5,
-                    rotate: x * 0.05,
-                    duration: 0.4,
-                    ease: "power3.out"
+                    x: x * 0.22,
+                    y: y * 0.22,
+                    rotate: x * 0.02,
+                    duration: 0.24,
+                    ease: "power2.out",
+                    overwrite: "auto"
                 });
             });
 
@@ -1208,8 +1324,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     x: 0,
                     y: 0,
                     rotate: 0,
-                    duration: 0.8,
-                    ease: "elastic.out(1, 0.3)"
+                    duration: 0.45,
+                    ease: "power2.out",
+                    overwrite: "auto"
                 });
             });
         });
