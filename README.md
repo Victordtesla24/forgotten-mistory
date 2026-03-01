@@ -1,11 +1,11 @@
 # Forgotten Mistory — Portfolio & Space Experience
 
-High-concept personal portfolio built with Next.js 14 (App Router), TypeScript, Tailwind, and a Three.js/R3F space scene. Features glassmorphism UI, interactive detail flyouts, smooth scrolling, and an AI chat endpoint powered by Gemini with optional ElevenLabs audio.
+High-concept personal portfolio built with Next.js 14 (App Router), TypeScript, Tailwind, and a Three.js/R3F space scene. Features glassmorphism UI, interactive detail flyouts, smooth scrolling, and a realtime AI media pipeline (LLM -> ElevenLabs -> D-ID session orchestration).
 
 - **Production:** https://forgotten-mistory.web.app (Firebase Hosting) — update if your deployment domain differs.
 - **Tech stack:** Next.js 14, React 18, TypeScript, TailwindCSS, @react-three/fiber + drei + postprocessing, GSAP, Lenis, Firebase Hosting.
 - **Visuals:** Fullscreen starfield/nebula background, morphing SVG gradients, glass cards, custom cursor, preloader, and FloatingDetailBox animations synced to hover/click triggers.
-- **AI chat:** `/api/chat-with-vic` route uses Gemini (text) with optional ElevenLabs TTS; seeded RAG snippets from the portfolio.
+- **Realtime AI pipeline:** `/api/realtime/session` and `/ws/realtime/:sessionId` stream token/audio/avatar orchestration through the API gateway and gRPC realtime orchestrator.
 
 ## Getting Started
 
@@ -23,21 +23,39 @@ npm run dev
 - `npm run build` — production build.
 - `npm start` — serve the production build.
 - `npm run lint` — lint with Next/ESLint config.
+- `npm run validate:provider-keys` — validate configured provider API keys from `.env` against official provider auth/model endpoints.
 
 ## Environment Variables
 
 Create `.env.local` for local development:
 
 ```bash
-# AI Chat (optional, used by /api/chat-with-vic)
+# AI + Realtime (optional, used by /api/chat and /api/realtime/session)
 GEMINI_API_KEY=your_key
 POLLO_AI_API_KEY=your_key          # optional fallback/telemetry
 ELEVENLABS_API_KEY=your_key        # optional TTS
 ELEVENLABS_VOICE_ID=voice_id       # required if using ElevenLabs
+DID_API_KEY=your_key               # required for D-ID stream creation
+ORCHESTRATOR_GRPC_ADDR=realtime-orchestrator:50051
 
 # Frontend debug beacons (optional)
 NEXT_PUBLIC_ASSET_DEBUG_ENDPOINT=   # e.g. https://example.com/debug or omit to disable
+NEXT_PUBLIC_REALTIME_WS_URL=        # optional explicit ws/wss base
 ```
+
+## Provider Key Validation
+
+Run provider key validation before deploy:
+
+```bash
+npm run validate:provider-keys
+```
+
+The validator checks configured keys against official provider APIs:
+- OpenAI: `GET /v1/models`
+- Gemini: `GET /v1beta/models`
+- ElevenLabs: `GET /v1/models`
+- D-ID: `GET /agents`
 
 ## Project Structure
 
@@ -52,7 +70,7 @@ NEXT_PUBLIC_ASSET_DEBUG_ENDPOINT=   # e.g. https://example.com/debug or omit to 
 - **Space backdrop:** Instanced stars, nebula shader, bloom/noise post-processing, shooting stars; camera handle exposed via `window.spaceApp` for downstream animations.
 - **Detail flyouts:** `FloatingDetailBox` renders animated glassmorphism panels anchored to trigger rects with GSAP timelines and Three.js overlays.
 - **Smooth interactions:** Lenis-driven scroll, custom cursor trail, preloader, morphing gradients, and telemetry widgets.
-- **AI chat route:** RAG seeded from resume content; optional TTS response for greetings.
+- **Realtime orchestration:** API gateway proxies realtime websocket events while a dedicated gRPC orchestrator streams model output, TTS chunks, and avatar readiness events.
 
 ## Deployment
 

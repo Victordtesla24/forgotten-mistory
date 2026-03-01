@@ -13,8 +13,9 @@ SSH_KEY="${3:-$HOME/.ssh/id_rsa}"
 ssh -i "${SSH_KEY}" "${SSH_USER}@${VPS_IP}" <<'REMOTE'
 set -euo pipefail
 sudo apt update
-sudo apt install -y docker.io docker-compose-v2 ufw curl git
+sudo apt install -y docker.io docker-compose-v2 ufw curl git fail2ban jq
 sudo systemctl enable --now docker
+sudo systemctl enable --now fail2ban
 sudo usermod -aG docker "$USER"
 
 sudo ufw allow 22/tcp
@@ -27,6 +28,7 @@ sudo sed -i 's/^#\?PubkeyAuthentication .*/PubkeyAuthentication yes/' /etc/ssh/s
 sudo systemctl restart sshd
 
 mkdir -p /opt/forgotten-mistory
+mkdir -p /opt/forgotten-mistory/.deploy-state
 cd /opt/forgotten-mistory
 if [ ! -d .git ]; then
   git clone https://github.com/Victordtesla24/forgotten-mistory.git .

@@ -18,6 +18,35 @@ type ChatMessage = {
 
 type QuickPrompt = { label: string; prompt: string; mode?: ModeKey };
 
+type RealtimeServerEnvelope = {
+  sessionId: string;
+  eventType: string;
+  payload?: {
+    token?: string;
+    text?: string;
+    audioBase64?: string;
+    audioMimeType?: string;
+    streamId?: string;
+    provider?: string;
+    code?: string;
+    status?: number;
+    retryable?: boolean;
+    details?: string;
+    metrics?: { firstTokenToDoneMs?: number };
+    error?: string;
+  };
+  emittedAtMs?: number;
+};
+
+type ProviderErrorPayload = {
+  error?: string;
+  provider?: string;
+  code?: string;
+  status?: number;
+  retryable?: boolean;
+  details?: string;
+};
+
 const PERSONA_MODES: { key: ModeKey; label: string; blurb: string }[] = [
   { key: "recruiter", label: "Hiring Fit", blurb: "Outcomes, budgets, velocity" },
   { key: "engineer", label: "Engineering", blurb: "Architecture, telemetry, trade-offs" },
@@ -418,6 +447,140 @@ const MiniVicBot = () => {
     }
   };
 
+  const wsBaseUrl = () => {
+    if (typeof window === "undefined") return "";
+    const explicit = process.env.NEXT_PUBLIC_REALTIME_WS_URL;
+    if (explicit && explicit.length > 0) {
+      return explicit.replace(/\/$/, "");
+    }
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const hostName = window.location.hostname;
+    const isLocal = hostName === "localhost" || hostName === "127.0.0.1";
+    const host = isLocal ? `${hostName}:8000` : window.location.host;
+    return `${protocol}//${host}`;
+  };
+
+  const formatProviderError = (input?: ProviderErrorPayload): string => {
+    if (!input) return "The AI service is unavailable right now.";
+    const providerLabel = input.provider ? `${input.provider.toUpperCase()} ` : "";
+    const base = input.error || "provider request failed";
+    const retryHint = input.retryable ? " Please retry in a moment." : "";
+    return `${providerLabel}${base}.${retryHint}`.trim();
+  };
+
+  const parseProviderErrorPayload = async (response: Response): Promise<ProviderErrorPayload> => {
+    try {
+      const json = await response.json() as ProviderErrorPayload;
+      return json;
+    } catch {
+      try {
+        const text = await response.text();
+        return { error: text || `HTTP ${response.status}`, status: response.status };
+      } catch {
+        return { error: `HTTP ${response.status}`, status: response.status };
+      }
+    }
+  };
+
+  const sendRealtimeMessage = async (textToSend: string, modeToSend: ModeKey) => {
+    const createSessionResp = await fetch("/api/realtime/session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        mode: modeToSend,
+        userId: "mini-vic-client"
+      })
+    });
+
+    if (!createSessionResp.ok) {
+      const payload = await parseProviderErrorPayload(createSessionResp);
+      throw new Error(formatProviderError(payload));
+    }
+
+    const created = await createSessionResp.json() as { sessionId: string; wsPath: string };
+    const sessionId = created.sessionId;
+    if (!sessionId || !created.wsPath) {
+      throw new Error("Realtime session response missing identifiers");
+    }
+
+    const realtimeResult = await new Promise<{
+      text: string;
+      audioDataUrl?: string;
+      firstTokenToDoneMs?: number;
+      didStreamId?: string;
+    }>((resolve, reject) => {
+      let completed = false;
+      let textBuffer = "";
+      let didStreamId = "";
+      const timeout = window.setTimeout(() => {
+        if (completed) return;
+        completed = true;
+        reject(new Error("Realtime session timed out"));
+      }, 45000);
+
+      const ws = new WebSocket(`${wsBaseUrl()}${created.wsPath}`);
+
+      ws.onopen = () => {
+        ws.send(JSON.stringify({ eventType: "session.start", message: textToSend, requestId: `${Date.now()}` }));
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const envelope = JSON.parse(String(event.data)) as RealtimeServerEnvelope;
+          if (envelope.eventType === "llm.token" && envelope.payload?.token) {
+            textBuffer += envelope.payload.token;
+          }
+          if (envelope.eventType === "avatar.state" && envelope.payload?.streamId) {
+            didStreamId = envelope.payload.streamId;
+          }
+          if (envelope.eventType === "session.error") {
+            if (completed) return;
+            completed = true;
+            clearTimeout(timeout);
+            ws.close();
+            reject(new Error(formatProviderError(envelope.payload)));
+            return;
+          }
+          if (envelope.eventType === "session.done") {
+            if (completed) return;
+            completed = true;
+            clearTimeout(timeout);
+            ws.close();
+
+            const finalText = envelope.payload?.text || textBuffer.trim();
+            const audioDataUrl = envelope.payload?.audioBase64
+              ? `data:${envelope.payload.audioMimeType || "audio/mpeg"};base64,${envelope.payload.audioBase64}`
+              : undefined;
+            resolve({
+              text: finalText,
+              audioDataUrl,
+              firstTokenToDoneMs: envelope.payload?.metrics?.firstTokenToDoneMs,
+              didStreamId
+            });
+          }
+        } catch (err) {
+          logMiniVicIssue("Realtime payload parse error", err);
+        }
+      };
+
+      ws.onerror = () => {
+        if (completed) return;
+        completed = true;
+        clearTimeout(timeout);
+        reject(new Error("Realtime websocket failed"));
+      };
+
+      ws.onclose = () => {
+        if (completed) return;
+        completed = true;
+        clearTimeout(timeout);
+        resolve({ text: textBuffer.trim() });
+      };
+    });
+
+    return realtimeResult;
+  };
+
   const handleSend = async (overrideText?: string, overrideMode?: ModeKey) => {
     const textToSend = (overrideText ?? input).trim();
     const modeToSend = overrideMode || activeMode;
@@ -443,27 +606,43 @@ const MiniVicBot = () => {
     }));
 
     try {
-      const res = await fetch("/api/chat-with-vic", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          message: textToSend, 
-          mode: modeToSend,
-          history: historyPayload 
-        }),
-      });
+      let text = "";
+      let audio: string | undefined;
+      let measuredLatency = 0;
 
-      if (!res.ok) throw new Error("API Limit or Error");
+      try {
+        const realtime = await sendRealtimeMessage(textToSend, modeToSend);
+        text = realtime.text;
+        audio = realtime.audioDataUrl;
+        measuredLatency = realtime.firstTokenToDoneMs || Math.round(performance.now() - startedAt);
+      } catch (realtimeError) {
+        logMiniVicIssue("Realtime flow failed; falling back to compatibility route", realtimeError);
+        const res = await fetch("/api/chat-with-vic", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: textToSend,
+            mode: modeToSend,
+            history: historyPayload
+          }),
+        });
+        if (!res.ok) {
+          const fallbackPayload = await parseProviderErrorPayload(res);
+          throw new Error(formatProviderError(fallbackPayload));
+        }
+        const data = await res.json() as { text?: string; audio?: string };
+        text = data.text || "";
+        audio = data.audio;
+        measuredLatency = Math.round(performance.now() - startedAt);
+      }
 
-      const data = await res.json();
-      setLatencyMs(Math.round(performance.now() - startedAt));
+      setLatencyMs(measuredLatency);
 
       const botMessage: ChatMessage = {
         id: `bot-${Date.now()}`,
         role: "bot",
-        text: data.text || "I'm here—ask me anything about how I deliver, lead teams, or architect AI.",
-        audio: data.audio,
-        polloTaskId: data.polloTaskId,
+        text: text || "I'm here—ask me anything about how I deliver, lead teams, or architect AI.",
+        audio,
         mode: modeToSend,
         timestamp: Date.now(),
       };
@@ -471,9 +650,9 @@ const MiniVicBot = () => {
       setMessages((prev) => [...prev, botMessage]);
       setLastAnswerId(botMessage.id);
 
-      if (!isMuted && data.audio) {
-        setLastAudio(data.audio);
-        playAudio(data.audio);
+      if (!isMuted && audio) {
+        setLastAudio(audio);
+        playAudio(audio);
       } else {
         setIsSpeaking(false);
         stopMouth();
@@ -485,7 +664,7 @@ const MiniVicBot = () => {
         {
           id: `bot-error-${Date.now()}`,
           role: "bot",
-          text: "My brain link glitched. Give it another go in a moment.",
+          text: error instanceof Error ? `Service degraded: ${error.message}` : "Service degraded. Please retry in a moment.",
           timestamp: Date.now(),
         },
       ]);

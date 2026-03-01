@@ -10,7 +10,7 @@ cd "${ROOT_DIR}"
 docker compose config >/tmp/phase11-compose-config.log
 
 SERVICES="$(docker compose config --services)"
-for svc in frontend api-gateway llm-engine redis nginx-proxy; do
+for svc in frontend api-gateway realtime-orchestrator llm-engine redis nginx-proxy; do
   if ! echo "${SERVICES}" | grep -qx "${svc}"; then
     echo "Phase 11 failed: missing required service ${svc} in compose config."
     exit 1

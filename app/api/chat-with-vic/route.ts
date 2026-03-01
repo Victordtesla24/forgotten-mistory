@@ -61,8 +61,18 @@ export async function POST(req: Request) {
   });
 
   if (!gatewayResponse.ok) {
-    const body = await gatewayResponse.text();
-    return NextResponse.json({ error: `Gateway call failed: ${body}` }, { status: gatewayResponse.status });
+    const bodyText = await gatewayResponse.text();
+    let bodyJson: Record<string, unknown> | null = null;
+    try {
+      bodyJson = JSON.parse(bodyText) as Record<string, unknown>;
+    } catch {
+      bodyJson = null;
+    }
+
+    return NextResponse.json(
+      bodyJson || { error: "Gateway call failed", details: bodyText || "" },
+      { status: gatewayResponse.status }
+    );
   }
 
   const text = await readSseText(gatewayResponse);
@@ -71,7 +81,7 @@ export async function POST(req: Request) {
     text,
     migration: {
       deprecatedRoute: "/api/chat-with-vic",
-      replacementRoute: "/api/chat"
+      replacementRoute: "/api/realtime/session + /ws/realtime/:sessionId"
     }
   });
 
@@ -85,7 +95,7 @@ export async function POST(req: Request) {
 export async function GET() {
   return NextResponse.json(
     {
-      error: "This route is deprecated. Use /api/chat and /api/avatar/streams endpoints.",
+      error: "This route is deprecated. Use /api/realtime/session and /ws/realtime/:sessionId endpoints.",
       deprecated: true
     },
     { status: 410 }

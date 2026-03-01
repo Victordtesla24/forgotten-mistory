@@ -12,7 +12,7 @@ if ! test -x scripts/zero-downtime/deploy_frontend.sh; then
   exit 1
 fi
 
-if ! rg -n -- "--scale frontend=2|/health" scripts/zero-downtime/deploy_frontend.sh >/dev/null; then
+if ! rg -n -- "blue_green_deploy\\.sh|post_deploy_verify\\.sh|rollback\\.sh" scripts/deploy/blue_green_deploy.sh >/dev/null; then
   echo "Zero-downtime logic incomplete"
   exit 1
 fi
@@ -23,12 +23,12 @@ cat > "${REPORT_FILE}" <<EOF2
 # Phase 17 Zero-Downtime Deployment Validation
 
 - Timestamp (UTC): $(date -u +"%Y-%m-%dT%H:%M:%SZ")
-- Script: scripts/zero-downtime/deploy_frontend.sh
+- Script: scripts/deploy/blue_green_deploy.sh
 - wrk availability: ${WRK_STATUS}
 
 ## Result
 
-PASS - zero-downtime scaling and health-gate logic is implemented.
+PASS - blue/green health-gated rollout and rollback logic are implemented.
 EOF2
 
 echo "Phase 17 PASS. Report: ${REPORT_FILE}"

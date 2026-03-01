@@ -39,12 +39,15 @@ services:
       ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
       ELEVENLABS_VOICE_ID: ${ELEVENLABS_VOICE_ID:-}
       DID_API_KEY: ${DID_API_KEY:-}
+      ORCHESTRATOR_GRPC_ADDR: realtime-orchestrator:50051
     ports:
       - "8000:8000"
     depends_on:
       redis:
         condition: service_healthy
       llm-engine:
+        condition: service_started
+      realtime-orchestrator:
         condition: service_started
     networks:
       - app-net
@@ -58,6 +61,32 @@ services:
         limits:
           cpus: "1"
           memory: 512M
+
+  realtime-orchestrator:
+    build:
+      context: ./services/realtime-orchestrator
+    image: ghcr.io/victordtesla24/forgotten-mistory-realtime-orchestrator:${IMAGE_TAG:-latest}
+    environment:
+      ORCHESTRATOR_GRPC_PORT: 50051
+      LLM_PROVIDER: ${LLM_PROVIDER:-local}
+      LLM_BASE_URL: http://llm-engine:11434
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
+      ELEVENLABS_VOICE_ID: ${ELEVENLABS_VOICE_ID:-}
+      DID_API_KEY: ${DID_API_KEY:-}
+    ports:
+      - "50051:50051"
+    depends_on:
+      llm-engine:
+        condition: service_started
+    networks:
+      - app-net
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 1G
 
   llm-engine:
     build:

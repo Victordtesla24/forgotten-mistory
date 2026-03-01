@@ -15,4 +15,10 @@
 - Forward host: `api-gateway`
 - Forward port: `8000`
 - SSL and HSTS same as above
+ - Enable WebSocket support (required for `/ws/realtime/:sessionId`)
 6. Keep `llm.yourdomain.com` internal only; do not publish public DNS.
+
+## Optional same-domain websocket routing
+If you want the frontend domain to serve realtime websocket paths without cross-origin ws URLs:
+- Add custom Nginx location on the frontend host:
+  - `/ws/realtime/` -> `http://api-gateway:8000/ws/realtime/`

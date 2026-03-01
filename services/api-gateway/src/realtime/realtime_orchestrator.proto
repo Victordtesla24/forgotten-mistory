@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package realtime;
+
+service RealtimeOrchestrator {
+  rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
+  rpc InterruptSession(InterruptSessionRequest) returns (InterruptSessionResponse);
+  rpc DeleteSession(DeleteSessionRequest) returns (DeleteSessionResponse);
+  rpc GetSessionMetrics(GetSessionMetricsRequest) returns (GetSessionMetricsResponse);
+  rpc StreamSession(stream SessionClientEvent) returns (stream SessionServerEvent);
+}
+
+message CreateSessionRequest {
+  string mode = 1;
+  string user_id = 2;
+  string did_source_url = 3;
+}
+
+message CreateSessionResponse {
+  string session_id = 1;
+  int64 created_at_ms = 2;
+  string mode = 3;
+  string did_stream_id = 4;
+}
+
+message InterruptSessionRequest {
+  string session_id = 1;
+  string reason = 2;
+}
+
+message InterruptSessionResponse {
+  bool ok = 1;
+}
+
+message DeleteSessionRequest {
+  string session_id = 1;
+}
+
+message DeleteSessionResponse {
+  bool ok = 1;
+}
+
+message GetSessionMetricsRequest {
+  string session_id = 1;
+}
+
+message GetSessionMetricsResponse {
+  string session_id = 1;
+  int64 created_at_ms = 2;
+  int64 first_token_at_ms = 3;
+  int64 first_tts_byte_at_ms = 4;
+  int64 avatar_ready_at_ms = 5;
+  int64 completed_at_ms = 6;
+  int64 first_token_to_avatar_ms = 7;
+  int64 first_token_to_done_ms = 8;
+  bool interrupted = 9;
+  string provider = 10;
+}
+
+message SessionClientEvent {
+  string session_id = 1;
+  string event_type = 2;
+  string message = 3;
+  string request_id = 4;
+  int64 sent_at_ms = 5;
+}
+
+message SessionServerEvent {
+  string session_id = 1;
+  string event_type = 2;
+  string payload_json = 3;
+  int64 emitted_at_ms = 4;
+}

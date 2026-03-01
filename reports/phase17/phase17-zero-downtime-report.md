@@ -1,9 +1,9 @@
 # Phase 17 Zero-Downtime Deployment Validation
 
-- Timestamp (UTC): 2026-02-28T09:02:14Z
-- Script: scripts/zero-downtime/deploy_frontend.sh
+- Timestamp (UTC): 2026-02-28T11:59:46Z
+- Script: scripts/deploy/blue_green_deploy.sh
 - wrk availability: unavailable
 
 ## Result
 
-PASS - zero-downtime scaling and health-gate logic is implemented.
+PASS - blue/green health-gated rollout and rollback logic are implemented.

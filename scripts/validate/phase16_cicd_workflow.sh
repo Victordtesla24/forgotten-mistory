@@ -12,7 +12,7 @@ if ! test -f .github/workflows/deploy.yml; then
   exit 1
 fi
 
-for token in "lint" "test" "build" "deploy" "appleboy/ssh-action" "docker compose up -d --no-deps frontend api-gateway"; do
+for token in "lint" "test" "build" "deploy" "appleboy/ssh-action" "forgotten-mistory-realtime-orchestrator" "./scripts/deploy/blue_green_deploy.sh"; do
   if ! rg -n "$token" .github/workflows/deploy.yml >/dev/null; then
     echo "Workflow token missing: $token"
     exit 1
