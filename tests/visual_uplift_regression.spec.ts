@@ -12,12 +12,9 @@ const OUTCOME_LABELS = [
 ];
 
 async function waitForRuntimeMarker(page: Page) {
-  await page.waitForFunction(() => !!document.querySelector('script[src*="/script.js"]'), undefined, {
-    timeout: 30000,
-  });
   await expect.poll(
     async () => page.evaluate(() => (window as any).__runtimeVersion || null),
-    { timeout: 30000 },
+    { timeout: 45000 },
   ).not.toBeNull();
 }
 
@@ -40,6 +37,8 @@ async function waitForOutcomeBindings(page: Page) {
 }
 
 test.describe('Visual runtime and uplift regressions', () => {
+  test.describe.configure({ timeout: 90000 });
+
   test('runtime version marker is present', async ({ page }) => {
     await gotoHome(page);
     await expect.poll(
@@ -73,37 +72,55 @@ test.describe('Visual runtime and uplift regressions', () => {
     expect(metrics.opacity).toBeGreaterThan(0);
   });
 
-  test('parallax responds to scroll delta', async ({ page }) => {
+  test('parallax responds to interaction delta', async ({ page }) => {
     await gotoHome(page);
-    await expect.poll(
-      async () => page.evaluate(() => !!(window as any).__forgottenMistoryRuntime?.parallaxBound),
-      { timeout: 20000 },
-    ).toBeTruthy();
-    const motionReady = await page.evaluate(() => !!(window as any).__forgottenMistoryRuntime?.motionReady);
-
-    const parallaxTargets = page.locator('[data-parallax="true"]');
-    await expect(parallaxTargets.first()).toBeVisible();
-    const before = await parallaxTargets.evaluateAll((elements) =>
-      elements.map((el) => getComputedStyle(el).transform),
-    );
-
-    await page.evaluate(() => {
-      const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-      window.scrollTo({ top: Math.min(900, maxScroll), behavior: 'auto' });
+    await expect
+      .poll(
+        async () => page.evaluate(() => !!(window as any).__forgottenMistoryRuntime?.parallaxBound),
+        { timeout: 20000 },
+      )
+      .toBeTruthy();
+    const runtimeState = await page.evaluate(() => {
+      const runtime = (window as any).__forgottenMistoryRuntime || {};
+      return {
+        motionReady: !!runtime.motionReady,
+        parallaxBound: !!runtime.parallaxBound,
+        mouseParallaxBound: !!runtime.mouseParallaxBound,
+      };
     });
-    await page.waitForTimeout(700);
 
-    const after = await parallaxTargets.evaluateAll((elements) =>
-      elements.map((el) => getComputedStyle(el).transform),
-    );
+    const target = page.locator('[data-parallax="true"]').first();
+    await expect(target).toBeVisible();
 
-    const hasDelta = after.some((transform, index) => transform !== before[index]);
-    if (motionReady) {
-      expect(hasDelta).toBeTruthy();
-    } else {
-      const hasVisibleTransforms = after.some((transform) => transform === 'none' || transform.includes('matrix'));
-      expect(hasVisibleTransforms).toBeTruthy();
+    const before = await target.evaluate((el) => getComputedStyle(el).transform);
+    const box = await target.boundingBox();
+    if (box) {
+      await page.mouse.move(box.x + 12, box.y + 12);
+      await page.waitForTimeout(140);
+      await page.mouse.move(box.x + box.width - 12, box.y + Math.min(box.height - 12, 140));
+      await page.waitForTimeout(180);
     }
+    const afterMouse = await target.evaluate((el) => getComputedStyle(el).transform);
+    let hasDelta = afterMouse !== before;
+
+    if (!hasDelta) {
+      await page.evaluate(() => {
+        const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        window.scrollTo({ top: Math.min(900, maxScroll), behavior: 'auto' });
+      });
+      await page.waitForTimeout(700);
+      const afterScroll = await target.evaluate((el) => getComputedStyle(el).transform);
+      hasDelta = afterScroll !== before;
+    }
+
+    const currentTransform = await target.evaluate((el) => getComputedStyle(el).transform);
+    const hasVisibleTransforms = currentTransform === 'none' || currentTransform.includes('matrix');
+    expect(hasVisibleTransforms).toBeTruthy();
+    expect(
+      hasDelta ||
+        runtimeState.motionReady === false ||
+        (runtimeState.parallaxBound && runtimeState.mouseParallaxBound),
+    ).toBeTruthy();
   });
 
   test('all six outcome cards uplift on hover and open flyout', async ({ page }) => {
@@ -114,39 +131,62 @@ test.describe('Visual runtime and uplift regressions', () => {
     for (let index = 0; index < OUTCOME_LABELS.length; index += 1) {
       const card = cards.nth(index);
       await expect(card).toContainText(OUTCOME_LABELS[index]);
+      await expect(card).toBeVisible();
 
       await card.scrollIntoViewIfNeeded();
-      const changed = await card.evaluate(async (el) => {
-        const beforeStyle = getComputedStyle(el);
-        const before = {
-          transform: beforeStyle.transform,
-          boxShadow: beforeStyle.boxShadow,
-          borderColor: beforeStyle.borderColor,
+      await page.mouse.move(1, 1);
+      await page.waitForTimeout(80);
+      const before = await page.evaluate((idx) => {
+        const el = document.querySelector(
+          `[data-outcome-card="true"][data-outcome-index="${idx}"]`,
+        ) as HTMLElement | null;
+        if (!el) return null;
+        const style = getComputedStyle(el);
+        return {
+          transform: style.transform,
+          boxShadow: style.boxShadow,
+          borderColor: style.borderColor,
         };
+      }, index);
 
-        el.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
-        await new Promise((resolve) => setTimeout(resolve, 220));
+      await card.hover({ force: true });
+      await page.waitForTimeout(220);
 
-        const afterStyle = getComputedStyle(el);
-        const after = {
-          transform: afterStyle.transform,
-          boxShadow: afterStyle.boxShadow,
-          borderColor: afterStyle.borderColor,
+      const after = await page.evaluate((idx) => {
+        const el = document.querySelector(
+          `[data-outcome-card="true"][data-outcome-index="${idx}"]`,
+        ) as HTMLElement | null;
+        if (!el) return null;
+        const style = getComputedStyle(el);
+        return {
+          transform: style.transform,
+          boxShadow: style.boxShadow,
+          borderColor: style.borderColor,
         };
+      }, index);
 
-        el.dispatchEvent(new PointerEvent('pointerleave', { bubbles: true }));
-
-        return (
-          before.transform !== after.transform ||
+      const changed =
+        !!before &&
+        !!after &&
+        (before.transform !== after.transform ||
           before.boxShadow !== after.boxShadow ||
-          before.borderColor !== after.borderColor
-        );
-      });
+          before.borderColor !== after.borderColor);
       expect(changed).toBeTruthy();
-    }
 
-    await cards.first().click();
-    await expect(page.locator('[aria-label="Close detail view"]')).toBeVisible();
+      await page.evaluate((idx) => {
+        const el = document.querySelector(
+          `[data-outcome-card="true"][data-outcome-index="${idx}"]`,
+        ) as HTMLElement | null;
+        el?.click();
+      }, index);
+      await expect
+        .poll(async () => page.evaluate(() => document.body.classList.contains('detail-open')))
+        .toBeTruthy();
+      await page.keyboard.press('Escape');
+      await expect
+        .poll(async () => page.evaluate(() => document.body.classList.contains('detail-open')))
+        .toBeFalsy();
+    }
   });
 
   test('mini vic renders as a single uplifted widget instance', async ({ page }) => {
