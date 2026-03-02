@@ -114,7 +114,12 @@ body {
 body.detail-open #webgl {
     z-index: 0;
     mix-blend-mode: normal;
-    opacity: 0.65;
+    opacity: 0.35;
+}
+
+body.detail-open .scene-stack {
+    opacity: 0.35;
+    transition: opacity 220ms ease;
 }
 
 /* CRT/Vignette Overlay */

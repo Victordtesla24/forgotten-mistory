@@ -619,7 +619,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
   return (
     <div className={`fixed inset-0 z-[10002] flex items-center justify-center pointer-events-none`}>
       <div 
-        className={`absolute inset-0 bg-black/55 backdrop-blur-[2px] transition-opacity duration-500 ${!isExiting ? 'opacity-100' : 'opacity-0'} ${isLocked ? 'pointer-events-auto' : 'pointer-events-none'}`}
+        className={`absolute inset-0 bg-black/82 backdrop-blur-[6px] transition-opacity duration-500 ${!isExiting ? 'opacity-100' : 'opacity-0'} ${isLocked ? 'pointer-events-auto' : 'pointer-events-none'}`}
         onClick={handleDismiss}
         aria-label="Close detail view"
       ></div>
@@ -628,10 +628,10 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
         className={containerClasses}
       >
         {/* Main Card Body */}
-        <div className="relative bg-[rgb(8_10_16)]/95 backdrop-blur-md border border-white/15 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto"
+        <div className="relative bg-[rgb(8_11_17)]/98 border border-white/25 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto"
         style={{ 
-                 boxShadow: `0 0 50px ${themeColor}2b`,
-                 borderColor: `${themeColor}55`
+                 boxShadow: `0 0 70px ${themeColor}33`,
+                 borderColor: `${themeColor}75`
              }}>
              
             {/* Color Accent Bar */}
@@ -640,7 +640,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
         {isLocked && (
             <button 
                 onClick={handleDismiss}
-                    className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-all z-20"
+                    className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 text-white/80 hover:text-white transition-all z-20 border border-white/30"
             >
                     <i className="fas fa-times text-lg"></i>
             </button>
@@ -648,7 +648,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
 
             <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] min-h-[400px]">
                 {/* Left Sidebar: Stats & Title */}
-                <div className="p-8 bg-white/[0.08] border-r border-white/10 flex flex-col justify-center relative overflow-hidden">
+                <div className="p-8 bg-[linear-gradient(180deg,rgba(13,17,26,0.98),rgba(9,12,20,0.98))] border-r border-white/15 flex flex-col justify-center relative overflow-hidden">
                     {/* Decorative massive number bg */}
                     <div className="absolute -right-4 -bottom-12 text-9xl font-black text-white/5 select-none z-0 pointer-events-none">
                         {content.stats.value.replace(/\D/g, '')}
@@ -658,7 +658,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
                         <p className="text-xs font-mono tracking-[0.2em] uppercase mb-4 font-bold" style={{ color: themeColor }}>
                             {content.subtitle}
                         </p>
-                        <h2 className="text-3xl font-bold text-white leading-tight mb-8 drop-shadow-sm">
+                        <h2 className="text-3xl font-bold text-white leading-tight mb-8 drop-shadow-md">
                             {content.title}
                         </h2>
                         
@@ -666,7 +666,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
                             <div className="text-5xl font-bold text-white tracking-tight" style={{ textShadow: `0 0 30px ${themeColor}60` }}>
                                 {content.stats.value}
                             </div>
-                            <div className="text-xs text-gray-300 uppercase tracking-wider font-mono mt-2">
+                            <div className="text-xs text-gray-200 uppercase tracking-wider font-mono mt-2">
                                 {content.stats.label}
                             </div>
                 </div>
@@ -674,8 +674,8 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
         </div>
 
                 {/* Right Content: Details */}
-                <div className="p-10 flex flex-col justify-between bg-gradient-to-br from-white/[0.10] to-transparent">
-                    <div className="space-y-6 text-gray-100 text-lg font-normal leading-relaxed">
+                <div className="p-10 flex flex-col justify-between bg-[linear-gradient(135deg,rgba(12,16,25,0.97),rgba(9,12,20,0.97))]">
+                    <div className="space-y-6 text-gray-50 text-lg font-normal leading-[1.7]">
             {content.details.map((detail, i) => (
                             <div key={i} className="flex items-start gap-4 group animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: `${i * 100}ms` }}>
                                 <div className="mt-2.5 w-1.5 h-1.5 rounded-full flex-shrink-0 shadow-[0_0_10px_currentColor]" 
@@ -685,17 +685,17 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
             ))}
         </div>
         
-                    <div className="mt-10 pt-8 border-t border-white/10 flex justify-between items-end">
+                    <div className="mt-10 pt-8 border-t border-white/20 flex justify-between items-end">
                         <div className="flex flex-col gap-1">
-                             <span className="text-[10px] text-gray-300 uppercase tracking-widest font-mono">Source</span>
-                             <div className="flex items-center gap-2 text-xs text-gray-200 font-mono">
+                             <span className="text-[10px] text-gray-100 uppercase tracking-widest font-mono">Source</span>
+                             <div className="flex items-center gap-2 text-xs text-gray-100 font-mono">
                                 <i className="fas fa-database text-[10px]"></i>
                                 <span>VIKRAM_RESUME_V2.4.PDF</span>
                             </div>
                         </div>
                         
              <a href="/docs/Vik_Resume_Final.pdf" target="_blank" 
-                            className="group flex items-center gap-3 px-6 py-3 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all"
+                            className="group flex items-center gap-3 px-6 py-3 rounded-lg bg-white/20 hover:bg-white/30 border border-white/35 hover:border-white/60 transition-all"
                         >
                             <span className="text-sm font-medium text-white">View Full Document</span>
                             <i className="fas fa-arrow-right text-xs text-gray-200 group-hover:translate-x-1 transition-transform" style={{ color: themeColor }}></i>
