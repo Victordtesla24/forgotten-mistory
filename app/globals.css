@@ -88,9 +88,9 @@ body {
 .space-scene-layer {
     position: absolute;
     inset: 0;
-    z-index: 0;
+    z-index: 3;
     pointer-events: none;
-    background: rgb(0 0 0);
+    mix-blend-mode: screen;
 }
 
 .space-scene-layer canvas {
@@ -494,26 +494,40 @@ footer {
     /* transform-style: preserve-3d; Removed to fix overlap */
 }
 
-/* Depth Layers for Parallax - Disabled to prevent overlap issues */
-/* 
-.hero-content [data-depth] {
-    transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.35s ease, opacity 0.35s ease;
+/* ── Parallax Depth Layers ────────────────────────────────────────── */
+/* Driven by script.js which reads data-speed & data-parallax="true"  */
+/* and sets --parallax-y / --parallax-x custom properties per element */
+[data-parallax="true"] {
     will-change: transform;
-    backface-visibility: hidden;
+    transition: transform 0.08s linear;
 }
 
-.hero-content [data-depth="1"] {
-    transform: translateZ(50px);
+/* Outcome / hero meta cards — pulse-glow on hover */
+@keyframes outcomeGlow {
+    0%   { box-shadow: 0 0 0px transparent; }
+    50%  { box-shadow: 0 0 22px rgba(255, 115, 80, 0.45), 0 0 6px rgba(255, 115, 80, 0.2) inset; }
+    100% { box-shadow: 0 0 0px transparent; }
 }
 
-.hero-content [data-depth="2"] {
-    transform: translateZ(100px);
+[data-outcome-card="true"] {
+    position: relative;
+    transition:
+        transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
 }
 
-.hero-content [data-depth="3"] {
-    transform: translateZ(150px);
+[data-outcome-card="true"]:hover,
+[data-outcome-card="true"]:focus-visible {
+    transform: translateY(-4px) scale(1.03);
+    animation: outcomeGlow 1.4s ease-in-out infinite;
+    border-color: rgba(255, 115, 80, 0.5) !important;
+    outline: none;
 }
-*/
+
+[data-outcome-card="true"]:active {
+    transform: translateY(-1px) scale(1.01);
+}
 
 
 .hero-title {

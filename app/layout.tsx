@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Roboto, Roboto_Condensed, Source_Sans_3 } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import MiniVicBot from "../components/MiniVicBot";
 import MotionProvider from "../components/MotionProvider";
@@ -87,6 +88,10 @@ export default function RootLayout({
           {children}
           <MiniVicBot />
         </MotionProvider>
+        <Script id="vendor-gsap" src="/vendor/gsap.min.js" strategy="beforeInteractive" />
+        <Script id="vendor-scrolltrigger" src="/vendor/ScrollTrigger.min.js" strategy="beforeInteractive" />
+        <Script id="vendor-lenis" src="/vendor/lenis.min.js" strategy="beforeInteractive" />
+        <Script id="site-runtime" src="/script.js" strategy="afterInteractive" />
       </body>
     </html>
   );

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "rm -rf .next && next dev -p 8080",
     "build": "rm -rf .next && next build",
+    "build:static": "rm -rf .next out && FIREBASE_STATIC_EXPORT=1 next build",
     "start": "next start",
     "lint": "next lint",
     "validate:phase01": "bash scripts/validate/phase01_stack.sh",

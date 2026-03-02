@@ -1,15 +1,13 @@
 {
   "hosting": {
-    "source": ".",
+    "public": "out",
+    "predeploy": [
+      "npm run build:static"
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**",
-      "package-lock.json",
-      "!**/.next/**"
-    ],
-    "frameworksBackend": {
-      "region": "us-central1"
-    }
+      "**/node_modules/**"
+    ]
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 'use client';
 
 import React, { useRef, useMemo, useState, useEffect } from 'react';
@@ -7,14 +8,14 @@ import { Trail, shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 // --- Constants ---
-const STAR_COUNT = 2200;
+const STAR_COUNT = 4500;
 const STAR_SEED = 1337;
 // Using realistic star colors (white/blue-white/yellow-white/orange-white)
 const STAR_COLORS = [
-  new THREE.Color('rgb(244 248 255)'), // White-blue
-  new THREE.Color('rgb(194 212 255)'), // Blue-white
-  new THREE.Color('rgb(255 228 172)'), // Warm-white
-  new THREE.Color('rgb(214 226 255)')  // Cool-white
+  new THREE.Color('#f4f8ff'), // White-blue
+  new THREE.Color('#c2d4ff'), // Blue-white
+  new THREE.Color('#ffe4ac'), // Warm-white
+  new THREE.Color('#d6e2ff')  // Cool-white
 ];
 
 const logDebug = (message: string, data?: Record<string, unknown>) => {
@@ -36,7 +37,7 @@ const mulberry32 = (a: number) => {
 const NebulaMaterial = shaderMaterial(
   {
     time: 0,
-    color: new THREE.Color(0.1, 0.1, 0.2), // Darker base color for realism
+    color: new THREE.Color('#0a1022'), // Keep very dark to prevent mix-blend blowout
   },
   // Vertex Shader
   `
@@ -93,7 +94,7 @@ const NebulaMaterial = shaderMaterial(
       float dist = distance(uv, vec2(0.5));
       alpha *= 1.0 - smoothstep(0.0, 0.5, dist);
 
-      gl_FragColor = vec4(color + vec3(n * 0.08), alpha * 0.12);
+      gl_FragColor = vec4(color + vec3(n * 0.05), alpha * 0.15);
     }
   `
 );
@@ -122,7 +123,7 @@ interface NebulaCloudProps {
 function NebulaCloud({ position, color, scale }: NebulaCloudProps) {
   // Cast to any because the shader material adds the 'time' uniform property which isn't on standard ShaderMaterial type
   const materialRef = useRef<any>(null);
-  
+
   useFrame((state, delta) => {
     if (materialRef.current) {
       materialRef.current.time += delta;
@@ -142,7 +143,7 @@ function ShootingStar() {
   const meshRef = useRef<THREE.Mesh>(null);
   const [active, setActive] = useState(false);
   const { viewport } = useThree();
-  
+
   // State for current trajectory
   const startPos = useRef(new THREE.Vector3());
   const velocity = useRef(new THREE.Vector3());
@@ -157,23 +158,23 @@ function ShootingStar() {
         // Spawn logic
         setActive(true);
         timer.current = 0;
-        
+
         // Random start position (top-left/right area mostly)
         const x = (Math.random() - 0.5) * viewport.width * 1.5;
         const y = (Math.random() - 0.5) * viewport.height * 1.5;
         startPos.current.set(x, y, -Math.random() * 20);
-        
+
         if (meshRef.current) {
-            meshRef.current.position.copy(startPos.current);
+          meshRef.current.position.copy(startPos.current);
         }
 
         // Random direction (generally downward/diagonal)
         velocity.current.set(
-          (Math.random() - 0.5) * 20, 
-          -Math.random() * 10 - 10, 
+          (Math.random() - 0.5) * 20,
+          -Math.random() * 10 - 10,
           0
         );
-        
+
         // Reset spawn timer for next time
         nextSpawnTime.current = Math.random() * 5 + 3;
       }
@@ -181,11 +182,11 @@ function ShootingStar() {
       // Move star
       if (meshRef.current) {
         meshRef.current.position.addScaledVector(velocity.current, delta);
-        
+
         // Check bounds to deactivate
         if (
-           Math.abs(meshRef.current.position.x) > viewport.width ||
-           Math.abs(meshRef.current.position.y) > viewport.height
+          Math.abs(meshRef.current.position.x) > viewport.width ||
+          Math.abs(meshRef.current.position.y) > viewport.height
         ) {
           setActive(false);
         }
@@ -197,15 +198,15 @@ function ShootingStar() {
 
   return (
     <Trail
-        width={2}
-        length={8}
-        color={new THREE.Color('rgb(198 224 255)')}
-        attenuation={(t) => t * t}
+      width={2}
+      length={8}
+      color={new THREE.Color('#c6e0ff')}
+      attenuation={(t) => t * t}
     >
-        <mesh ref={meshRef} position={startPos.current}>
-            <sphereGeometry args={[0.05, 8, 8]} />
-            <meshBasicMaterial color="rgb(198 224 255)" toneMapped={false} />
-        </mesh>
+      <mesh ref={meshRef} position={startPos.current}>
+        <sphereGeometry args={[0.05, 8, 8]} />
+        <meshBasicMaterial color="#c6e0ff" toneMapped={false} />
+      </mesh>
     </Trail>
   );
 }
@@ -214,7 +215,7 @@ function ShootingStar() {
 function StarField() {
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const { viewport } = useThree();
-  
+
   // Generate random positions and initial data
   const [colors, baseColors, sizes, twinklePhase, twinkleSpeed, initialPositions] = useMemo(() => {
     const rand = mulberry32(STAR_SEED);
@@ -224,42 +225,42 @@ function StarField() {
     const sizes = new Float32Array(STAR_COUNT);
     const twinklePhase = new Float32Array(STAR_COUNT);
     const twinkleSpeed = new Float32Array(STAR_COUNT);
-    
+
     const tempColor = new THREE.Color();
-    
+
     for (let i = 0; i < STAR_COUNT; i++) {
       const i3 = i * 3;
       // Position - balanced spread with all stars behind camera for consistency
       const x = (rand() - 0.5) * 240;
       const y = (rand() - 0.5) * 240;
       const z = -40 - rand() * 180; // Keep depth negative so they sit behind content
-      
+
       initialPositions[i3] = x;
       initialPositions[i3 + 1] = y;
       initialPositions[i3 + 2] = z;
-      
-      // Color with subtle brightness variation
+
+      // Color with higher brightness variation
       const colorIndex = Math.floor(rand() * STAR_COLORS.length);
       tempColor.copy(STAR_COLORS[colorIndex]);
-      const brightness = 0.26 + rand() * 0.5;
-      
+      const brightness = 0.4 + rand() * 0.6;
+
       baseColors[i3] = tempColor.r * brightness;
       baseColors[i3 + 1] = tempColor.g * brightness;
       baseColors[i3 + 2] = tempColor.b * brightness;
-      
+
       colors[i3] = baseColors[i3];
       colors[i3 + 1] = baseColors[i3 + 1];
       colors[i3 + 2] = baseColors[i3 + 2];
-      
-      // Size gently tied to depth for distant speck feel
+
+      // Size gently tied to depth for distant speck feel - much larger base values
       const depthFactor = 1 - Math.min(1, Math.abs(z) / 220);
-      sizes[i] = 0.03 + rand() * 0.09 + depthFactor * 0.02;
-      
+      sizes[i] = 0.15 + rand() * 0.2 + depthFactor * 0.05;
+
       // Twinkle speed/phase
       twinklePhase[i] = rand() * Math.PI * 2;
       twinkleSpeed[i] = 0.4 + rand() * 0.8;
     }
-    
+
     return [colors, baseColors, sizes, twinklePhase, twinkleSpeed, initialPositions];
   }, []);
 
@@ -274,9 +275,9 @@ function StarField() {
     // Map mouse to world space roughly at z=0
     // Note: unproject is more accurate but simple mapping works for background effects
     mouseVec.set(
-        (state.mouse.x * viewport.width) / 2,
-        (state.mouse.y * viewport.height) / 2,
-        0
+      (state.mouse.x * viewport.width) / 2,
+      (state.mouse.y * viewport.height) / 2,
+      0
     );
 
     for (let i = 0; i < STAR_COUNT; i++) {
@@ -289,8 +290,8 @@ function StarField() {
       const depthFactor = 1 - Math.min(1, Math.abs(baseZ) / 220);
       const driftX = Math.sin(time * 0.12 + twinklePhase[i]) * 0.25 * depthFactor;
       const driftY = Math.cos(time * 0.15 + twinklePhase[i]) * 0.25 * depthFactor;
-      const parallaxX = mouseVec.x * 0.02 * depthFactor;
-      const parallaxY = mouseVec.y * 0.02 * depthFactor;
+      const parallaxX = mouseVec.x * 0.12 * depthFactor;
+      const parallaxY = mouseVec.y * 0.12 * depthFactor;
 
       const x = baseX + driftX + parallaxX;
       const y = baseY + driftY + parallaxY;
@@ -298,17 +299,20 @@ function StarField() {
 
       dummy.position.set(x, y, z);
       dummy.scale.setScalar(sizes[i]);
-      
+
       dummy.updateMatrix();
       meshRef.current.setMatrixAt(i, dummy.matrix);
 
       // Gentle per-star twinkle for realism
-      const twinkle = 0.84 + Math.sin(time * twinkleSpeed[i] + twinklePhase[i]) * 0.08;
-      colors[i3] = baseColors[i3] * twinkle;
-      colors[i3 + 1] = baseColors[i3 + 1] * twinkle;
-      colors[i3 + 2] = baseColors[i3 + 2] * twinkle;
+      const twinkle = 0.84 + Math.sin(time * twinkleSpeed[i] + twinklePhase[i]) * 0.3;
+      if (colorAttr) {
+        const array = colorAttr.array as Float32Array;
+        array[i3] = baseColors[i3] * twinkle;
+        array[i3 + 1] = baseColors[i3 + 1] * twinkle;
+        array[i3 + 2] = baseColors[i3 + 2] * twinkle;
+      }
     }
-    
+
     if (colorAttr) {
       colorAttr.needsUpdate = true;
     }
@@ -362,27 +366,27 @@ function SpaceAppDebugProbe() {
 }
 
 function SceneContent() {
-    const groupRef = useRef<THREE.Group>(null);
+  const groupRef = useRef<THREE.Group>(null);
 
-    useFrame((state, delta) => {
-        if (groupRef.current) {
-            // Orbital drift
-            groupRef.current.rotation.y += delta * 0.05;
-            groupRef.current.rotation.z += delta * 0.01;
-        }
-    });
+  useFrame((state, delta) => {
+    if (groupRef.current) {
+      // Orbital drift
+      groupRef.current.rotation.y += delta * 0.05;
+      groupRef.current.rotation.z += delta * 0.01;
+    }
+  });
 
-    return (
-        <group ref={groupRef}>
-            <StarField />
-            {/* More subtle, realistic nebula colors (Deep blues, purples) */}
-            <NebulaCloud position={[0, 0, -50]} color="rgb(10 16 34)" scale={[100, 100, 1]} />
-            <NebulaCloud position={[-30, 20, -80]} color="rgb(9 19 40)" scale={[120, 120, 1]} />
-            <NebulaCloud position={[30, -20, -60]} color="rgb(12 10 30)" scale={[90, 90, 1]} />
-            <ShootingStar />
-            <ShootingStar />
-        </group>
-    );
+  return (
+    <group ref={groupRef}>
+      <StarField />
+      {/* Dark nebula colors are required because mix-blend-mode: screen blows out brightness */}
+      <NebulaCloud position={[0, 0, -50]} color="#0a1022" scale={[100, 100, 1]} />
+      <NebulaCloud position={[-30, 20, -80]} color="#091328" scale={[120, 120, 1]} />
+      <NebulaCloud position={[30, -20, -60]} color="#0c0a1e" scale={[90, 90, 1]} />
+      <ShootingStar />
+      <ShootingStar />
+    </group>
+  );
 }
 
 export default function SpaceScene() {
@@ -408,13 +412,13 @@ export default function SpaceScene() {
         dpr={1}
       >
         <SpaceAppDebugProbe />
-        <color attach="background" args={['rgb(0 0 0)']} /> {/* Deep black background */}
+        <color attach="background" args={['#000000']} /> {/* Deep black background */}
 
         <SceneContent />
 
         {enablePostFx ? (
           <EffectComposer>
-            <Bloom intensity={0.18} luminanceThreshold={0.86} mipmapBlur={false} />
+            {/* <Bloom intensity={0.2} luminanceThreshold={0.8} mipmapBlur={false} /> */}
             <Noise opacity={0.015} />
           </EffectComposer>
         ) : null}
