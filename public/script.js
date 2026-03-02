@@ -5,8 +5,13 @@
             refreshScheduled: false,
             outcomeBound: false,
             parallaxBound: false,
-            mouseParallaxBound: false
+            mouseParallaxBound: false,
+            motionBootStarted: false,
+            motionReady: false,
+            motionRebindAttempts: 0
         });
+        runtimeState.motionBootStarted = Boolean(runtimeState.motionBootStarted);
+        runtimeState.motionReady = Boolean(runtimeState.motionReady);
 
         if (runtimeState.initialized) {
             if (!runtimeState.refreshScheduled) {
@@ -24,6 +29,20 @@
         }
 
         runtimeState.initialized = true;
+
+        const currentScript = document.currentScript;
+        let versionFromUrl = '';
+        if (currentScript && typeof currentScript.src === 'string') {
+            try {
+                versionFromUrl = new URL(currentScript.src, window.location.href).searchParams.get('v') || '';
+            } catch (error) {
+                if (window.location.search.includes('debugRendering=1')) {
+                    console.warn('Unable to read runtime version from script URL', error);
+                }
+            }
+        }
+        const runtimeVersion = window.__NEXT_RUNTIME_VERSION || versionFromUrl || 'dev-local';
+        window.__runtimeVersion = runtimeVersion;
     }
 
 // Initialize Lenis for smooth scrolling (skip if reduced motion)
@@ -713,26 +732,46 @@ sections.forEach(section => {
     }
 });
 
-function initOutcomeCardAnimations() {
+function initOutcomeCardAnimations({ forceFallback = false } = {}) {
     const cards = Array.from(document.querySelectorAll('[data-outcome-card]'));
-    if (!cards.length) return;
+    if (!cards.length) return true;
     const runtimeState = typeof window !== 'undefined' ? window.__forgottenMistoryRuntime : null;
-    if (runtimeState?.outcomeBound) return;
-    if (runtimeState) runtimeState.outcomeBound = true;
+    if (runtimeState?.outcomeBound) return true;
     let revealStateTimer = null;
 
     const markState = (state) => {
         cards.forEach((card) => card.setAttribute('data-anim-state', state));
     };
 
-    if (prefersReducedMotion || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+    const markFallbackBound = () => {
         markState('revealed');
         cards.forEach((card) => {
+            card.classList.add('outcome-hover-fallback');
+            card.dataset.outcomeBound = '1';
             card.style.opacity = '1';
+        });
+        if (runtimeState) runtimeState.outcomeBound = true;
+    };
+
+    if (prefersReducedMotion) {
+        markFallbackBound();
+        cards.forEach((card) => {
             card.style.transform = 'none';
         });
-        return;
+        return true;
     }
+
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        if (forceFallback) {
+            markFallbackBound();
+            return true;
+        }
+        return false;
+    }
+
+    cards.forEach((card) => {
+        card.classList.remove('outcome-hover-fallback');
+    });
 
     markState('idle');
     gsap.set(cards, {
@@ -833,9 +872,10 @@ function initOutcomeCardAnimations() {
         card.addEventListener('focusin', lift);
         card.addEventListener('focusout', settle);
     });
-}
 
-initOutcomeCardAnimations();
+    if (runtimeState) runtimeState.outcomeBound = true;
+    return true;
+}
 
 // Accordion Functionality
 const accordionHeaders = document.querySelectorAll('.accordion-header');
@@ -971,25 +1011,37 @@ if (skillCards.length) {
 const allowParallax = !prefersReducedMotion && window.matchMedia('(pointer: fine)').matches;
 
 // Initialize scroll-linked parallax with GSAP ScrollTrigger
-function initScrollParallax() {
+function initScrollParallax({ forceFallback = false } = {}) {
     const parallaxElements = document.querySelectorAll('.parallax, [data-parallax]');
-    if (!parallaxElements.length) return;
+    if (!parallaxElements.length) return true;
     const runtimeState = typeof window !== 'undefined' ? window.__forgottenMistoryRuntime : null;
     if (runtimeState?.parallaxBound) {
         if (typeof ScrollTrigger !== 'undefined' && typeof ScrollTrigger.refresh === 'function') {
             ScrollTrigger.refresh();
         }
-        return;
+        return true;
     }
-    if (runtimeState) runtimeState.parallaxBound = true;
 
-    if (prefersReducedMotion || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+    if (prefersReducedMotion) {
         // If reduced motion or GSAP missing, ensure parallax elements are visible
         parallaxElements.forEach(el => {
             el.style.opacity = '1';
             el.style.transform = 'none';
         });
-        return;
+        if (runtimeState) runtimeState.parallaxBound = true;
+        return true;
+    }
+
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        if (forceFallback) {
+            parallaxElements.forEach(el => {
+                el.style.opacity = '1';
+                el.style.transform = 'none';
+            });
+            if (runtimeState) runtimeState.parallaxBound = true;
+            return true;
+        }
+        return false;
     }
 
     // Scroll-linked parallax with scrub: 0.5 for smooth scroll-connected movement
@@ -1020,6 +1072,55 @@ function initScrollParallax() {
             }
         );
     });
+
+    if (runtimeState) runtimeState.parallaxBound = true;
+    return true;
+}
+
+function initMotionRuntime() {
+    if (typeof window === 'undefined') return;
+    const runtimeState = window.__forgottenMistoryRuntime || {};
+    if (runtimeState.motionBootStarted || runtimeState.motionReady) return;
+    runtimeState.motionBootStarted = true;
+
+    const startTime = Date.now();
+    const maxWaitMs = 2200;
+
+    const attempt = () => {
+        const timedOut = Date.now() - startTime >= maxWaitMs;
+        const outcomeReady = initOutcomeCardAnimations({ forceFallback: timedOut });
+        const parallaxReady = initScrollParallax({ forceFallback: timedOut });
+        const complete = outcomeReady && parallaxReady;
+
+        if (complete) {
+            const motionAvailable = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+            runtimeState.motionReady = motionAvailable;
+            runtimeState.motionBootStarted = false;
+            scheduleRuntimeRefresh();
+
+            if (!motionAvailable) {
+                runtimeState.motionRebindAttempts = Number(runtimeState.motionRebindAttempts || 0) + 1;
+                if (runtimeState.motionRebindAttempts <= 6) {
+                    window.setTimeout(() => {
+                        runtimeState.outcomeBound = false;
+                        runtimeState.parallaxBound = false;
+                        document.querySelectorAll('[data-outcome-card]').forEach((card) => {
+                            card.removeAttribute('data-outcome-bound');
+                            card.classList.remove('outcome-hover-fallback');
+                        });
+                        initMotionRuntime();
+                    }, 1200);
+                }
+            } else {
+                runtimeState.motionRebindAttempts = 0;
+            }
+            return;
+        }
+
+        window.setTimeout(attempt, 120);
+    };
+
+    attempt();
 }
 
 // Mouse-based parallax (complementary to scroll parallax)
@@ -1051,11 +1152,11 @@ function parallax(e) {
     });
 }
 
-// Initialize scroll parallax when DOM is ready
+// Initialize motion runtime when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initScrollParallax);
+    document.addEventListener('DOMContentLoaded', initMotionRuntime);
 } else {
-    initScrollParallax();
+    initMotionRuntime();
 }
 
 /* 

@@ -67,6 +67,9 @@ const personSchema = {
   }
 };
 
+const runtimeVersion = process.env.NEXT_PUBLIC_RUNTIME_VERSION || "dev-local";
+const withRuntimeVersion = (path: string) => `${path}?v=${encodeURIComponent(runtimeVersion)}`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -88,10 +91,13 @@ export default function RootLayout({
           {children}
           <MiniVicBot />
         </MotionProvider>
-        <Script id="vendor-gsap" src="/vendor/gsap.min.js" strategy="beforeInteractive" />
-        <Script id="vendor-scrolltrigger" src="/vendor/ScrollTrigger.min.js" strategy="beforeInteractive" />
-        <Script id="vendor-lenis" src="/vendor/lenis.min.js" strategy="beforeInteractive" />
-        <Script id="site-runtime" src="/script.js" strategy="afterInteractive" />
+        <Script id="runtime-version" strategy="beforeInteractive">
+          {`window.__NEXT_RUNTIME_VERSION=${JSON.stringify(runtimeVersion)};`}
+        </Script>
+        <Script id="vendor-gsap" src={withRuntimeVersion("/vendor/gsap.min.js")} strategy="beforeInteractive" />
+        <Script id="vendor-scrolltrigger" src={withRuntimeVersion("/vendor/ScrollTrigger.min.js")} strategy="beforeInteractive" />
+        <Script id="vendor-lenis" src={withRuntimeVersion("/vendor/lenis.min.js")} strategy="beforeInteractive" />
+        <Script id="site-runtime" src={withRuntimeVersion("/script.js")} strategy="afterInteractive" />
       </body>
     </html>
   );

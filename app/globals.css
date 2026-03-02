@@ -286,6 +286,13 @@ body::before {
     .cursor-trail {
         display: none;
     }
+
+    .outcome-hover-fallback,
+    .outcome-hover-fallback:hover,
+    .outcome-hover-fallback:focus-visible {
+        transform: none !important;
+        animation: none !important;
+    }
 }
 
 body.cursor-enhanced .cursor-dot,
@@ -527,6 +534,32 @@ footer {
 
 [data-outcome-card="true"]:active {
     transform: translateY(-1px) scale(1.01);
+}
+
+.outcome-hover-fallback {
+    transition:
+        transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.28s ease,
+        border-color 0.28s ease,
+        background 0.28s ease;
+}
+
+.outcome-hover-fallback:hover,
+.outcome-hover-fallback:focus-visible {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 24px 48px -14px rgba(255, 115, 80, 0.46), 0 0 28px rgba(255, 115, 80, 0.28);
+    border-color: rgba(255, 115, 80, 0.62) !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02)),
+      linear-gradient(var(--bg-color), var(--bg-color)) padding-box,
+      linear-gradient(125deg, rgba(255,115,80,0.5), rgba(124,243,255,0.4)) border-box;
+}
+
+.outcome-hover-fallback:hover .meta-icon,
+.outcome-hover-fallback:focus-visible .meta-icon {
+    transform: translateY(-2px) rotate(8deg) scale(1.1);
+    background: rgba(255, 115, 80, 0.2);
+    color: #ff7350;
 }
 
 
