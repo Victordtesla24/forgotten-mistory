@@ -501,6 +501,7 @@ footer {
 
 .hero-content {
     flex: 1.2;
+    position: relative;
     z-index: 2;
     padding-right: 2rem;
     /* transform-style: preserve-3d; Removed to fix overlap */
@@ -631,6 +632,8 @@ footer {
     display: flex;
     justify-content: flex-end;
     opacity: 0.9;
+    position: relative;
+    z-index: 1;
 }
 
 .avatar-placeholder {
