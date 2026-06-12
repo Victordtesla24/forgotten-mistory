@@ -43,10 +43,6 @@ body.cursor-enhanced * {
     cursor: none;
 }
 
-body.edit-mode-active * {
-    cursor: auto;
-}
-
 html {
     background-color: #000; /* Fallback */
 }
@@ -150,30 +146,6 @@ body::before {
     z-index: 9998;
     pointer-events: none;
     opacity: 0.3;
-}
-
-/* Admin Controls */
-.admin-controls {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 10001;
-}
-
-.btn-secondary {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    backdrop-filter: blur(5px);
-    transition: background 0.3s ease;
-}
-
-.btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.2);
 }
 
 /* Preloader */
@@ -332,6 +304,7 @@ nav {
 }
 
 .logo {
+    text-decoration: none;
     font-weight: 700;
     font-size: 1.1rem;
     letter-spacing: 2px;
@@ -340,6 +313,10 @@ nav {
 }
 
 .menu-toggle {
+    background: none;
+    border: none;
+    color: inherit;
+    font-family: inherit;
     cursor: pointer;
     font-size: 0.9rem;
     text-transform: uppercase;
@@ -583,8 +560,6 @@ footer {
 }
 
 .hero-links {
-    opacity: 0; 
-    transform: translateY(20px);
     display: flex;
     flex-wrap: wrap;
     gap: 1.2rem;
@@ -830,6 +805,12 @@ footer {
 }
 
 .accordion-header {
+    width: 100%;
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
     padding: 2.5rem 0;
     display: flex;
     justify-content: space-between;
@@ -887,8 +868,7 @@ footer {
 }
 
 .accordion-content {
-    height: 0;
-    transition: height 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    overflow: hidden;
 }
 
 .accordion-body {
@@ -1934,8 +1914,6 @@ footer {
     line-height: 1.5;
     max-width: 900px;
     font-weight: 300;
-    opacity: 0; 
-    transform: translateY(20px);
 }
 
 /* --- Spotlight / Glow Effect --- */
@@ -1957,7 +1935,7 @@ footer {
     width: 100%;
     border-radius: inherit;
     background: radial-gradient(
-        600px circle at var(--mouse-x) var(--mouse-y), 
+        600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
         rgba(255, 255, 255, 0.06), 
         transparent 40%
     );
@@ -2019,13 +1997,6 @@ footer {
 @keyframes cardSweep {
     0% { transform: translateX(-24%) rotate(12deg); }
     100% { transform: translateX(120%) rotate(12deg); }
-}
-
-.page-ready .hero-subtitle,
-.page-ready .hero-links,
-.page-ready .reveal-text {
-    opacity: 1;
-    transform: none;
 }
 
 /* --- Animated Gradient Border on Hover (New Addition) --- */
@@ -3103,4 +3074,53 @@ footer {
     margin-top: 4rem;
     position: relative;
     z-index: 10;
+}
+
+
+/* --- GitHub feed status + footer terminal trigger (React runtime) --- */
+.repo-status {
+    color: var(--secondary-text);
+    font-size: 0.95rem;
+}
+
+.repo-status a {
+    color: var(--accent-color);
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.terminal-trigger {
+    background: none;
+    border: none;
+    color: var(--secondary-text);
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    opacity: 0.55;
+    transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.terminal-trigger:hover,
+.terminal-trigger:focus-visible {
+    opacity: 1;
+    color: var(--accent-color);
+}
+
+/* --- Global reduced-motion guard --- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }

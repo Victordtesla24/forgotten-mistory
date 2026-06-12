@@ -1,11 +1,43 @@
 # Forgotten Mistory — Portfolio & Space Experience
 
-High-concept personal portfolio built with Next.js 14 (App Router), TypeScript, Tailwind, and a Three.js/R3F space scene. Features glassmorphism UI, interactive detail flyouts, smooth scrolling, and a realtime AI media pipeline (LLM -> ElevenLabs -> D-ID session orchestration).
+Personal portfolio for **Vikram Deshpande** — Scrum Master / Project Manager (Australian Taxation Office, Payday Super program) and AI solutions architect. Built with Next.js 14 (App Router), TypeScript, Tailwind, Framer Motion, and a Three.js/R3F starfield scene.
 
-- **Production:** https://forgotten-mistory.web.app (Firebase Hosting) — update if your deployment domain differs.
-- **Tech stack:** Next.js 14, React 18, TypeScript, TailwindCSS, @react-three/fiber + drei + postprocessing, GSAP, Lenis, Firebase Hosting.
-- **Visuals:** Fullscreen starfield/nebula background, morphing SVG gradients, glass cards, custom cursor, preloader, and FloatingDetailBox animations synced to hover/click triggers.
-- **Realtime AI pipeline:** `/api/realtime/session` and `/ws/realtime/:sessionId` stream token/audio/avatar orchestration through the API gateway and gRPC realtime orchestrator.
+- **Production:** https://forgotten-mistory.web.app (Firebase Hosting, static export)
+- **Tech stack:** Next.js 14 · React 18 · TypeScript · Tailwind CSS 4 · Framer Motion · @react-three/fiber + drei + postprocessing · Firebase Hosting
+- **Architecture:** a fully React-native runtime — every interaction (preloader, navigation, telemetry simulation, accordions, architecture map, hidden terminal, cursor, parallax) is a typed client component animated with Framer Motion. There is no imperative DOM script layer.
+
+## Content Model
+
+All biographical and career content lives in two typed modules and is kept in
+strict parity with the standalone CV served at `public/docs/Vik_Resume_Final.pdf`:
+
+| File | Purpose |
+| --- | --- |
+| `app/data/siteContent.ts` | Hero copy, about, experience roles, skills, projects, contact |
+| `app/data/resumeContent.ts` | Hero outcome cards + FloatingDetailBox expansions |
+
+To update career content, edit those files and regenerate the CV PDF — nothing
+else needs to change.
+
+## Project Structure
+
+```
+app/
+  layout.tsx            Root layout: fonts, metadata, JSON-LD schema
+  page.tsx              Single-page composition of all sections
+  globals.css           Design tokens + component styles
+  data/                 Typed content layer (see above)
+  components/           SpaceScene (R3F starfield)
+components/
+  site/                 React runtime: Preloader, Navigation, CursorGlow,
+                        Reveal, TelemetryPanel, ExperienceAccordion,
+                        ExpandableCard, ArchitectureMap, ProjectsCarousel,
+                        GithubFeed, HiddenTerminal, HeroAvatar
+  MiniVicBot.tsx        AI assistant (degrades gracefully on static hosting)
+  FloatingDetailBox.tsx Outcome-card flyout
+services/
+  realtime-orchestrator/  Optional gRPC/WebSocket backend for MiniVic realtime mode
+```
 
 ## Getting Started
 
@@ -17,71 +49,40 @@ npm run dev
 # open http://localhost:8080
 ```
 
-## Available Scripts
+## Scripts
 
-- `npm run dev` — Next dev server on port 8080.
-- `npm run build` — production build.
-- `npm start` — serve the production build.
-- `npm run lint` — lint with Next/ESLint config.
-- `npm run validate:provider-keys` — validate configured provider API keys from `.env` against official provider auth/model endpoints.
-
-## Environment Variables
-
-Create `.env.local` for local development:
-
-```bash
-# AI + Realtime (optional, used by /api/chat and /api/realtime/session)
-GEMINI_API_KEY=your_key
-POLLO_AI_API_KEY=your_key          # optional fallback/telemetry
-ELEVENLABS_API_KEY=your_key        # optional TTS
-ELEVENLABS_VOICE_ID=voice_id       # required if using ElevenLabs
-DID_API_KEY=your_key               # required for D-ID stream creation
-ORCHESTRATOR_GRPC_ADDR=realtime-orchestrator:50051
-
-# Frontend debug beacons (optional)
-NEXT_PUBLIC_ASSET_DEBUG_ENDPOINT=   # e.g. https://example.com/debug or omit to disable
-NEXT_PUBLIC_REALTIME_WS_URL=        # optional explicit ws/wss base
-```
-
-## Provider Key Validation
-
-Run provider key validation before deploy:
-
-```bash
-npm run validate:provider-keys
-```
-
-The validator checks configured keys against official provider APIs:
-- OpenAI: `GET /v1/models`
-- Gemini: `GET /v1beta/models`
-- ElevenLabs: `GET /v1/models`
-- D-ID: `GET /agents`
-
-## Project Structure
-
-- `app/` — Next.js App Router pages, layout, global styles, and the R3F `SpaceScene`.
-- `components/` — shared UI like `FloatingDetailBox`.
-- `public/` — static assets, vendor scripts (GSAP/ScrollTrigger), and `script.js` for smooth scrolling, cursor, and telemetry UI hooks.
-- `tests/` — Playwright end-to-end setup.
-- `firebase.json` — Firebase Hosting config (serves `.next` output).
-
-## Key Features
-
-- **Space backdrop:** Instanced stars, nebula shader, bloom/noise post-processing, shooting stars; camera handle exposed via `window.spaceApp` for downstream animations.
-- **Detail flyouts:** `FloatingDetailBox` renders animated glassmorphism panels anchored to trigger rects with GSAP timelines and Three.js overlays.
-- **Smooth interactions:** Lenis-driven scroll, custom cursor trail, preloader, morphing gradients, and telemetry widgets.
-- **Realtime orchestration:** API gateway proxies realtime websocket events while a dedicated gRPC orchestrator streams model output, TTS chunks, and avatar readiness events.
+- `npm run dev` — Next dev server on port 8080 (API routes active).
+- `npm run build` — production build (server mode).
+- `npm run build:static` — static export to `out/` for Firebase Hosting.
+- `npm run lint` — Next/ESLint.
+- `npm test` — Playwright smoke suite (`tests/site.spec.ts`).
+- `npm run test:e2e:bot` — provider-backed MiniVic E2E suite (requires API keys).
+- `npm run validate:*` — operational validation pipeline (Lighthouse, a11y, infra phases).
 
 ## Deployment
 
-The project is configured for Firebase Hosting (`.firebaserc`, `firebase.json`). Typical flow:
+Production is a **static export** on Firebase Hosting:
 
 ```bash
-npm run build
+npm run build:static
 firebase deploy --only hosting
 ```
 
-Update the production URL above if your hosting domain changes.
+CI (`.github/workflows/deploy.yml`) runs lint → Playwright tests → static build,
+then deploys to the live channel on pushes to `main` (requires the
+`FIREBASE_SERVICE_ACCOUNT` repository secret).
+
+> **Note:** API routes (`/api/chat-with-vic`, `/api/realtime/session`) are not
+> part of the static export. MiniVicBot detects this and falls back to a
+> direct-contact message. Run `npm run dev` or deploy the realtime
+> orchestrator to enable live chat.
+
+## Environment Variables
+
+Create `.env.local` for local development (see `.env.example`):
+
+- `OPENAI_API_KEY`, `GEMINI_API_KEY`, `ELEVENLABS_API_KEY`, `DID_API_KEY` — MiniVic provider pipeline
+- `NEXT_PUBLIC_REALTIME_WS_URL` — explicit realtime WebSocket origin (optional)
 
 ## License
 

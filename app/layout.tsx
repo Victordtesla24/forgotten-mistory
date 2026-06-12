@@ -1,74 +1,68 @@
-import type { Metadata } from "next";
-import { Roboto, Roboto_Condensed, Source_Sans_3 } from "next/font/google";
-import Script from "next/script";
-import "./globals.css";
-import MiniVicBot from "../components/MiniVicBot";
-import MotionProvider from "../components/MotionProvider";
+import type { Metadata } from 'next';
+import { Roboto_Condensed, Source_Sans_3 } from 'next/font/google';
+import './globals.css';
+import MiniVicBot from '../components/MiniVicBot';
+import MotionProvider from '../components/MotionProvider';
 
 const bodyFont = Source_Sans_3({
-  subsets: ["latin"],
-  weight: ["300", "400", "600"],
-  variable: "--font-source-sans",
+  subsets: ['latin'],
+  weight: ['300', '400', '600'],
+  variable: '--font-source-sans',
 });
 
 const headingFont = Roboto_Condensed({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-roboto-condensed",
-});
-
-const altFont = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-roboto",
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-roboto-condensed',
 });
 
 export const metadata: Metadata = {
-  title: "Vikram Deshpande | AI Delivery & Program Leader",
-  description: "AI Solution Architect & Technical Delivery Leader based in Melbourne.",
-  metadataBase: new URL("https://forgotten-mistory.web.app"),
-  alternates: { canonical: "/" },
+  title: 'Vikram Deshpande | Scrum Master · Project Manager · AI Delivery Leader',
+  description:
+    'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
+  metadataBase: new URL('https://forgotten-mistory.web.app'),
+  alternates: { canonical: '/' },
   openGraph: {
-    title: "Vikram Deshpande | AI Delivery & Program Leader",
-    description: "AI Solution Architect & Technical Delivery Leader based in Melbourne.",
-    url: "https://forgotten-mistory.web.app",
-    siteName: "Forgotten Mistory",
-    type: "website"
+    title: 'Vikram Deshpande | Scrum Master · Project Manager · AI Delivery Leader',
+    description:
+      'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
+    url: 'https://forgotten-mistory.web.app',
+    siteName: 'Forgotten Mistory',
+    type: 'website',
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Vikram Deshpande | AI Delivery & Program Leader",
-    description: "AI Solution Architect & Technical Delivery Leader based in Melbourne."
-  }
+    card: 'summary_large_image',
+    title: 'Vikram Deshpande | Scrum Master · Project Manager · AI Delivery Leader',
+    description:
+      'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
+  },
 };
 
 const webSiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Forgotten Mistory",
-  "url": "https://forgotten-mistory.web.app",
-  "description": "Portfolio and AI systems showcase for Vikram Deshpande."
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Forgotten Mistory',
+  url: 'https://forgotten-mistory.web.app',
+  description: 'Portfolio and AI systems showcase for Vikram Deshpande.',
 };
 
 const personSchema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Vikram Deshpande",
-  "jobTitle": "Senior Technical Delivery Leader & AI/ML Solutions Architect",
-  "url": "https://forgotten-mistory.web.app",
-  "sameAs": [
-    "https://github.com/Victordtesla24",
-    "https://youtube.com/@vicd0ct"
-  ],
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Melbourne",
-    "addressCountry": "AU"
-  }
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Vikram Deshpande',
+  jobTitle: 'Scrum Master / Project Manager — Australian Taxation Office',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Australian Taxation Office',
+  },
+  url: 'https://forgotten-mistory.web.app',
+  sameAs: ['https://github.com/Victordtesla24', 'https://youtube.com/@vicd0ct'],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Melbourne',
+    addressCountry: 'AU',
+  },
 };
-
-const runtimeVersion = process.env.NEXT_PUBLIC_RUNTIME_VERSION || "dev-local";
-const withRuntimeVersion = (path: string) => `${path}?v=${encodeURIComponent(runtimeVersion)}`;
 
 export default function RootLayout({
   children,
@@ -78,26 +72,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-          referrerPolicy="no-referrer"
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
         />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
       </head>
-      <body className={`${bodyFont.variable} ${headingFont.variable} ${altFont.variable}`}>
+      <body className={`${bodyFont.variable} ${headingFont.variable}`}>
         <MotionProvider>
           {children}
           <MiniVicBot />
         </MotionProvider>
-        <Script id="runtime-version" strategy="beforeInteractive">
-          {`window.__NEXT_RUNTIME_VERSION=${JSON.stringify(runtimeVersion)};`}
-        </Script>
-        <Script id="vendor-gsap" src={withRuntimeVersion("/vendor/gsap.min.js")} strategy="beforeInteractive" />
-        <Script id="vendor-scrolltrigger" src={withRuntimeVersion("/vendor/ScrollTrigger.min.js")} strategy="beforeInteractive" />
-        <Script id="vendor-lenis" src={withRuntimeVersion("/vendor/lenis.min.js")} strategy="beforeInteractive" />
-        <Script id="site-runtime" src={withRuntimeVersion("/script.js")} strategy="afterInteractive" />
       </body>
     </html>
   );

@@ -1,0 +1,64 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+
+const LOADER_DURATION_MS = 1100;
+
+/**
+ * Deterministic preloader. Counts 0 → 100 over a fixed duration, then adds
+ * the `page-ready` class to <body> (which releases the CSS-gated hero
+ * elements) and unmounts itself. Skips instantly for users who prefer
+ * reduced motion.
+ */
+export default function Preloader() {
+  const prefersReducedMotion = useReducedMotion();
+  const [count, setCount] = useState(0);
+  const [done, setDone] = useState(false);
+  const frameRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      document.body.classList.add('page-ready');
+      setDone(true);
+      return;
+    }
+
+    const start = performance.now();
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / LOADER_DURATION_MS, 1);
+      setCount(Math.round(progress * 100));
+      if (progress < 1) {
+        frameRef.current = requestAnimationFrame(tick);
+      } else {
+        document.body.classList.add('page-ready');
+        setDone(true);
+      }
+    };
+    frameRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    };
+  }, [prefersReducedMotion]);
+
+  return (
+    <AnimatePresence>
+      {!done && (
+        <motion.div
+          className="preloader"
+          role="status"
+          aria-live="polite"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0, transition: { duration: 0.5, ease: 'easeInOut' } }}
+        >
+          <div className="preloader-inner">
+            <div className="loader-ring" />
+            <div className="counter">{count}</div>
+            <div className="loader-copy">Calibrating stars &amp; telemetry</div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}

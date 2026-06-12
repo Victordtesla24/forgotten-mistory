@@ -171,6 +171,18 @@ const MiniVicBot = () => {
     }
   }, [AVATAR_VIDEO_URL, currentVideoSrc, isOpen]);
 
+  // Release the Web Audio context on unmount so the device's audio session
+  // (and microphone access for other apps) is not held hostage.
+  useEffect(() => {
+    return () => {
+      if (audioCtxRef.current && audioCtxRef.current.state !== "closed") {
+        audioCtxRef.current.close().catch(() => {
+          /* Closing an already-closing context is non-fatal. */
+        });
+      }
+    };
+  }, []);
+
   // Calculate active tasks for dependency tracking
   const hasActiveTasks = messages.some(m => m.polloTaskId && !m.videoUrl);
 
@@ -460,6 +472,18 @@ const MiniVicBot = () => {
     return `${protocol}//${host}`;
   };
 
+  const OFFLINE_MESSAGE =
+    "MiniVic's realtime backend isn't connected on this deployment, so I can't chat live right now. You can reach Vikram directly at sarkar.vikram@gmail.com or +61 433 224 556.";
+
+  /**
+   * On the static Firebase deployment every unknown route rewrites to
+   * /index.html with a 200 status, so a missing API surfaces as an HTML
+   * response rather than an error status. Treat any non-JSON response as
+   * "backend unavailable" instead of attempting to parse it.
+   */
+  const isJsonResponse = (response: Response): boolean =>
+    (response.headers.get("content-type") || "").toLowerCase().includes("application/json");
+
   const formatProviderError = (input?: ProviderErrorPayload): string => {
     if (!input) return "The AI service is unavailable right now.";
     const providerLabel = input.provider ? `${input.provider.toUpperCase()} ` : "";
@@ -495,6 +519,9 @@ const MiniVicBot = () => {
     if (!createSessionResp.ok) {
       const payload = await parseProviderErrorPayload(createSessionResp);
       throw new Error(formatProviderError(payload));
+    }
+    if (!isJsonResponse(createSessionResp)) {
+      throw new Error(OFFLINE_MESSAGE);
     }
 
     const created = await createSessionResp.json() as { sessionId: string; wsPath: string };
@@ -617,6 +644,9 @@ const MiniVicBot = () => {
         measuredLatency = realtime.firstTokenToDoneMs || Math.round(performance.now() - startedAt);
       } catch (realtimeError) {
         logMiniVicIssue("Realtime flow failed; falling back to compatibility route", realtimeError);
+        if (realtimeError instanceof Error && realtimeError.message === OFFLINE_MESSAGE) {
+          throw realtimeError;
+        }
         const res = await fetch("/api/chat-with-vic", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -629,6 +659,9 @@ const MiniVicBot = () => {
         if (!res.ok) {
           const fallbackPayload = await parseProviderErrorPayload(res);
           throw new Error(formatProviderError(fallbackPayload));
+        }
+        if (!isJsonResponse(res)) {
+          throw new Error(OFFLINE_MESSAGE);
         }
         const data = await res.json() as { text?: string; audio?: string };
         text = data.text || "";
@@ -664,7 +697,12 @@ const MiniVicBot = () => {
         {
           id: `bot-error-${Date.now()}`,
           role: "bot",
-          text: error instanceof Error ? `Service degraded: ${error.message}` : "Service degraded. Please retry in a moment.",
+          text:
+            error instanceof Error
+              ? error.message === OFFLINE_MESSAGE
+                ? OFFLINE_MESSAGE
+                : `Service degraded: ${error.message}`
+              : "Service degraded. Please retry in a moment.",
           timestamp: Date.now(),
         },
       ]);

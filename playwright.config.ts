@@ -14,12 +14,15 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      // CI installs the pinned Chromium build; local runs fall back to the
+      // system Chrome so contributors don't need a browser download.
+      use: { ...devices['Desktop Chrome'], channel: process.env.CI ? undefined : 'chrome' },
     },
   ],
   webServer: {
     command: 'npm run dev',
     url: 'http://localhost:8080',
     reuseExistingServer: true,
+    timeout: 120000,
   },
 });

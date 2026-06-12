@@ -1,15 +1,25 @@
 'use client';
 
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import gsap from 'gsap';
+import { ArrowRight, Database, X } from 'lucide-react';
 import { resumeContent } from '@/app/data/resumeContent';
 
 declare global {
   interface Window {
     spaceApp: any;
-    gsap: any;
   }
 }
+
+/* --- Deterministic easing (replaces the former GSAP timeline) --- */
+const easeInQuart = (t: number) => t * t * t * t;
+const easeOutQuad = (t: number) => 1 - (1 - t) * (1 - t);
+const elasticOut = (t: number) => {
+  if (t <= 0) return 0;
+  if (t >= 1) return 1;
+  const period = 0.6;
+  return Math.pow(2, -10 * t) * Math.sin(((t - period / 4) * (2 * Math.PI)) / period) + 1;
+};
+const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
 interface FloatingDetailBoxProps {
   activeKey: string | null;
@@ -19,16 +29,15 @@ interface FloatingDetailBoxProps {
 }
 
 const THEME_COLORS: Record<string, string> = {
+  "Test Automation at Scale": "rgb(6 182 212)", // Cyan
   "Cloud Modernisation": "rgb(239 68 68)", // Red
   "Realtime Reliability": "rgb(249 115 22)", // Orange
   "AI Quality & Risk": "rgb(239 68 68)", // Red
   "Leadership Scale": "rgb(249 115 22)", // Orange
-  "Strategic Alignment": "rgb(6 182 212)", // Cyan
   "Portfolio Value": "rgb(16 185 129)", // Emerald
 };
 
 const DEFAULT_COLOR = "rgb(255 115 80)";
-const DEBUG_BEACON_URL = process.env.NEXT_PUBLIC_DEBUG_BEACON_URL;
 const logDebug = (message: string, data?: Record<string, unknown>) => {
   if (process.env.NODE_ENV === 'production') return;
   console.debug('[FloatingDetailBox]', message, data ?? {});
@@ -40,7 +49,6 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
   
   const threeObjectsRef = useRef<any[]>([]);
   const rafRef = useRef<number>();
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
   
   const content = useMemo(() => 
     displayKey ? resumeContent[displayKey as keyof typeof resumeContent] : null, 
@@ -92,37 +100,8 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
       return;
     }
 
-    // #region agent log (opt-in via env)
-    if (DEBUG_BEACON_URL && typeof fetch === 'function') {
-      fetch(DEBUG_BEACON_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          sessionId: 'debug-session',
-          runId: 'repro-run',
-          hypothesisId: 'H4',
-          location: 'components/FloatingDetailBox.tsx:Effect',
-          message: 'Animation effect triggered',
-          data: {
-            displayKey,
-            triggerRect: triggerRect ? { x: triggerRect.x, y: triggerRect.y, width: triggerRect.width, height: triggerRect.height } : null,
-            timestamp: Date.now()
-          },
-          timestamp: Date.now()
-        }),
-        mode: 'no-cors',
-        keepalive: true
-      }).catch(() => {});
-    } else {
-      logDebug('Skipping debug beacon; URL not configured', { hasUrl: Boolean(DEBUG_BEACON_URL) });
-    }
-    // #endregion
-
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
-
-    // Use window.gsap if available (to share global instance/plugins), else fallback to imported
-    const _gsap = window.gsap || gsap;
 
     const cleanup = () => {
       if (threeObjectsRef.current) {
@@ -153,7 +132,6 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
       }
     threeObjectsRef.current = [];
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    if (timelineRef.current) timelineRef.current.kill();
     };
 
     cleanup(); 
@@ -430,33 +408,35 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
     scene.add(particleSystem);
     threeObjectsRef.current.push(particleSystem);
 
-    // --- Animation Timeline ---
-    const animState = { 
-        gather: 0, 
+    // --- Animation State (deterministic tween, evaluated inside the render loop) ---
+    const animState = {
+        gather: 0,
         expand: 0,
         opacity: 0
     };
-    
-    const tl = _gsap.timeline({
-      onComplete: () => {
-        if (isExiting) {
+
+    /**
+     * Entrance: opacity 0→1 (0.2s) and gather 0→1 (0.5s, quartic-in implosion)
+     * run together from t=0; expand 0→1 (1.0s, elastic materialise) starts at
+     * t=0.6s. Exit: opacity 1→0 over 0.3s, then the detail box unmounts.
+     */
+    let exitCompleted = false;
+    const updateAnimState = (elapsedSeconds: number) => {
+      if (!isExiting) {
+        animState.opacity = clamp01(elapsedSeconds / 0.2);
+        animState.gather = easeInQuart(clamp01(elapsedSeconds / 0.5));
+        animState.expand = elasticOut(clamp01((elapsedSeconds - 0.6) / 1.0));
+      } else {
+        animState.gather = 1;
+        animState.expand = 1;
+        animState.opacity = 1 - easeOutQuad(clamp01(elapsedSeconds / 0.3));
+        if (elapsedSeconds >= 0.3 && !exitCompleted) {
+          exitCompleted = true;
           setDisplayKey(null);
           onClose();
         }
       }
-    });
-    timelineRef.current = tl;
-
-    if (!isExiting) {
-      tl.to(animState, { opacity: 1, duration: 0.2 })
-        .to(animState, { gather: 1, duration: 0.5, ease: "power4.in" }, 0) // Fast implosion
-        .to(animState, { expand: 1, duration: 1.0, ease: "elastic.out(1, 0.6)" }, "+=0.1"); // Materialize
-    } else {
-      animState.gather = 1;
-      animState.expand = 1;
-      animState.opacity = 1;
-      tl.to(animState, { opacity: 0, duration: 0.3, ease: "power2.out" });
-    }
+    };
 
     const startTime = Date.now();
 
@@ -464,6 +444,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
     const loop = () => {
         const now = Date.now();
         const time = (now - startTime) * 0.001;
+        updateAnimState(time);
         const { gather, expand, opacity } = animState;
         
         // 1. Particles Update
@@ -642,7 +623,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
                 onClick={handleDismiss}
                     className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 text-white/80 hover:text-white transition-all z-20 border border-white/30"
             >
-                    <i className="fas fa-times text-lg"></i>
+                    <X size={18} strokeWidth={2} aria-hidden="true" />
             </button>
         )}
 
@@ -689,8 +670,8 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
                         <div className="flex flex-col gap-1">
                              <span className="text-[10px] text-gray-100 uppercase tracking-widest font-mono">Source</span>
                              <div className="flex items-center gap-2 text-xs text-gray-100 font-mono">
-                                <i className="fas fa-database text-[10px]"></i>
-                                <span>VIKRAM_RESUME_V2.4.PDF</span>
+                                <Database size={11} strokeWidth={2} aria-hidden="true" />
+                                <span>VIK_RESUME_FINAL.PDF</span>
                             </div>
                         </div>
                         
@@ -698,7 +679,13 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
                             className="group flex items-center gap-3 px-6 py-3 rounded-lg bg-white/20 hover:bg-white/30 border border-white/35 hover:border-white/60 transition-all"
                         >
                             <span className="text-sm font-medium text-white">View Full Document</span>
-                            <i className="fas fa-arrow-right text-xs text-gray-200 group-hover:translate-x-1 transition-transform" style={{ color: themeColor }}></i>
+                            <ArrowRight
+                              size={14}
+                              strokeWidth={2}
+                              aria-hidden="true"
+                              className="group-hover:translate-x-1 transition-transform"
+                              style={{ color: themeColor }}
+                            />
              </a>
                     </div>
                 </div>

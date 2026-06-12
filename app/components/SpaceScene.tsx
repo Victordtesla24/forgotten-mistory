@@ -3,7 +3,7 @@
 
 import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree, extend, Object3DNode } from '@react-three/fiber';
-import { EffectComposer, Bloom, Noise } from '@react-three/postprocessing';
+import { EffectComposer, Noise } from '@react-three/postprocessing';
 import { Trail, shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -418,7 +418,6 @@ export default function SpaceScene() {
 
         {enablePostFx ? (
           <EffectComposer>
-            {/* <Bloom intensity={0.2} luminanceThreshold={0.8} mipmapBlur={false} /> */}
             <Noise opacity={0.015} />
           </EffectComposer>
         ) : null}

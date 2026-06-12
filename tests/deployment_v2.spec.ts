@@ -1,7 +1,14 @@
 import { test, expect } from '@playwright/test';
 
+/**
+ * These end-to-end tests exercise the live AI provider pipeline and require
+ * provider API keys plus the realtime orchestrator. They are opt-in: set
+ * RUN_BOT_E2E=1 to include them (e.g. in a provisioned staging environment).
+ */
+test.skip(process.env.RUN_BOT_E2E !== '1', 'Provider-backed E2E suite; set RUN_BOT_E2E=1 to run.');
+
 test.describe('Mini-Vic Chatbot E2E Validation', () => {
-  
+
   test.beforeEach(async ({ page }) => {
     page.on('console', msg => console.log(`BROWSER: ${msg.text()}`));
     await page.goto('http://127.0.0.1:8080');
