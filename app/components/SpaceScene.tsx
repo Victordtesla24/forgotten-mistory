@@ -3,7 +3,7 @@
 
 import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree, extend, Object3DNode } from '@react-three/fiber';
-import { EffectComposer, Noise } from '@react-three/postprocessing';
+import { Bloom, EffectComposer, Noise, Vignette } from '@react-three/postprocessing';
 import { Trail, shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -330,10 +330,29 @@ function StarField() {
       <meshBasicMaterial
         vertexColors
         transparent
-        opacity={0.88}
+        opacity={0.92}
+        toneMapped={false}
       />
     </instancedMesh>
   );
+}
+
+/**
+ * Cinematic camera rig: a slow elliptical drift that gives the field gentle
+ * parallax depth without ever moving far enough to disturb the
+ * FloatingDetailBox screen-space unprojection.
+ */
+function CameraRig() {
+  const { camera } = useThree();
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    camera.position.x = Math.sin(t * 0.05) * 1.1;
+    camera.position.y = Math.cos(t * 0.04) * 0.7;
+    camera.lookAt(0, 0, -60);
+  });
+
+  return null;
 }
 
 // --- Main Scene ---
@@ -367,12 +386,26 @@ function SpaceAppDebugProbe() {
 
 function SceneContent() {
   const groupRef = useRef<THREE.Group>(null);
+  const scrollRef = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      scrollRef.current = window.scrollY;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useFrame((state, delta) => {
     if (groupRef.current) {
       // Orbital drift
       groupRef.current.rotation.y += delta * 0.05;
       groupRef.current.rotation.z += delta * 0.01;
+
+      // Scroll-reactive tilt: the cosmos leans away as the visitor descends,
+      // eased so fast scrolling never causes a visual snap.
+      const targetTilt = Math.min(0.22, scrollRef.current * 0.00012);
+      groupRef.current.rotation.x += (targetTilt - groupRef.current.rotation.x) * Math.min(1, delta * 2.5);
     }
   });
 
@@ -414,11 +447,14 @@ export default function SpaceScene() {
         <SpaceAppDebugProbe />
         <color attach="background" args={['#000000']} /> {/* Deep black background */}
 
+        <CameraRig />
         <SceneContent />
 
         {enablePostFx ? (
           <EffectComposer>
+            <Bloom intensity={0.55} luminanceThreshold={0.18} luminanceSmoothing={0.25} mipmapBlur />
             <Noise opacity={0.015} />
+            <Vignette eskil={false} offset={0.18} darkness={0.78} />
           </EffectComposer>
         ) : null}
       </Canvas>

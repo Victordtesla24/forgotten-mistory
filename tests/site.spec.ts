@@ -129,6 +129,34 @@ test.describe('Portfolio site — React/Framer Motion runtime', () => {
     await expect(page.locator('a[href="tel:+61433224556"]')).toBeVisible();
   });
 
+  test('MiniVic AI clone answers an employer question', async ({ page }) => {
+    test.setTimeout(120000);
+    // Open the bot.
+    await page.locator('button[aria-label*="Mini Vic assistant"]').click();
+    const input = page.locator('#minivic-input, input[placeholder*="Ask me anything"]').first();
+    await expect(input).toBeVisible({ timeout: 10000 });
+
+    await input.fill('What do you do at the ATO?');
+    await input.press('Enter');
+
+    // A substantive first-person answer must arrive (brain ladder guarantees
+    // an answer — Gemini, or the local knowledge base as final fallback).
+    const panel = page.locator('[data-testid="minivic-panel"]');
+    await expect
+      .poll(
+        async () => {
+          const combined = (await panel.textContent()) ?? '';
+          return /payday super|kookaburras|scrum master/i.test(combined);
+        },
+        { timeout: 45000 },
+      )
+      .toBe(true);
+
+    // Never show a raw failure to a visitor.
+    const panelText = await page.locator('[data-testid="minivic-panel"]').textContent();
+    expect(panelText).not.toContain('Service degraded');
+  });
+
   test('legacy runtime is fully retired', async ({ page }) => {
     // No GSAP/Lenis globals, no edit-mode controls, no Font Awesome.
     const legacyGlobals = await page.evaluate(() => ({

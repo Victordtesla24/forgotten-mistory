@@ -1,9 +1,19 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { askMiniVicBrain, type BrainTurn } from "@/lib/miniVicBrain";
+import { GREETING, type PersonaMode } from "@/app/data/miniVicKnowledge";
 import { Copy, Play, RefreshCcw, Rocket, Send, Sparkles, Square, Volume2, VolumeX, X, Mic, MicOff, Video } from "lucide-react";
 
 type ModeKey = "recruiter" | "engineer" | "story" | "scifi";
+
+/** Maps UI persona modes to the knowledge module's persona vocabulary. */
+const PERSONA_FOR_MODE: Record<ModeKey, PersonaMode> = {
+  recruiter: "hiring",
+  engineer: "engineering",
+  story: "story",
+  scifi: "scifi",
+};
 
 type ChatMessage = {
   id: string;
@@ -93,7 +103,7 @@ const MiniVicBot = () => {
     {
       id: "intro",
       role: "bot",
-      text: "I'm Vic's animated AI twin. Choose the persona, ask anything about teams, delivery, or architecture, and I'll answer in my own voice with lip-synced video.",
+      text: GREETING.hiring,
       timestamp: Date.now(),
     },
   ]);
@@ -127,6 +137,9 @@ const MiniVicBot = () => {
   messagesRef.current = messages;
 
   const AVATAR_VIDEO_URL = "/assets/my-avatar.mp4";
+  /** Build-time ElevenLabs render of the greeting in Vikram's cloned voice. */
+  const GREETING_AUDIO_URL = "/assets/minivic-greeting.mp3";
+  const hasPlayedGreetingRef = useRef(false);
 
   const stopMouth = React.useCallback(() => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -169,12 +182,22 @@ const MiniVicBot = () => {
     if (isOpen && !currentVideoSrc) {
       setCurrentVideoSrc(AVATAR_VIDEO_URL);
     }
-  }, [AVATAR_VIDEO_URL, currentVideoSrc, isOpen]);
+    // First open: greet the visitor in Vikram's cloned voice (pre-rendered
+    // with ElevenLabs at build time, so no API key ships to the browser).
+    // playAudio drives the lip-sync waveform through the audio analyser.
+    if (isOpen && !hasPlayedGreetingRef.current && !isMuted) {
+      hasPlayedGreetingRef.current = true;
+      playAudio(GREETING_AUDIO_URL);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- playAudio identity is stable for this effect's purpose
+  }, [AVATAR_VIDEO_URL, GREETING_AUDIO_URL, currentVideoSrc, isOpen, isMuted]);
 
   // Release the Web Audio context on unmount so the device's audio session
-  // (and microphone access for other apps) is not held hostage.
+  // (and microphone access for other apps) is not held hostage; also stop
+  // any in-flight browser speech synthesis.
   useEffect(() => {
     return () => {
+      if (typeof window !== "undefined") window.speechSynthesis?.cancel();
       if (audioCtxRef.current && audioCtxRef.current.state !== "closed") {
         audioCtxRef.current.close().catch(() => {
           /* Closing an already-closing context is non-fatal. */
@@ -182,6 +205,15 @@ const MiniVicBot = () => {
       }
     };
   }, []);
+
+  // Muting must silence browser speech synthesis immediately.
+  useEffect(() => {
+    if (isMuted && typeof window !== "undefined") {
+      window.speechSynthesis?.cancel();
+      setIsSpeaking(false);
+      stopMouth();
+    }
+  }, [isMuted, stopMouth]);
 
   // Calculate active tasks for dependency tracking
   const hasActiveTasks = messages.some(m => m.polloTaskId && !m.videoUrl);
@@ -386,6 +418,86 @@ const MiniVicBot = () => {
     rafRef.current = requestAnimationFrame(loop);
   };
 
+
+  /**
+   * Synthetic mouth animation for browser-voice replies (no audio element to
+   * analyse). Draws the same holographic waveform style as startMouth, driven
+   * by layered sine waves instead of an AnalyserNode.
+   */
+  const startSyntheticMouth = () => {
+    const canvas = mouthCanvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx) return;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+
+    const started = performance.now();
+    const loop = () => {
+      const t = (performance.now() - started) / 1000;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "rgba(255, 115, 80, 0.8)";
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = "rgb(255 115 80)";
+
+      const openAmount = 6 + Math.abs(Math.sin(t * 7.3)) * 7 + Math.abs(Math.sin(t * 3.1)) * 2;
+      const segments = 48;
+      const sliceWidth = canvas.width / segments;
+
+      ctx.beginPath();
+      for (let i = 0; i <= segments; i++) {
+        const wave = Math.sin(i * 0.55 + t * 9) * 0.5 + Math.sin(i * 0.21 - t * 5) * 0.5;
+        const y = canvas.height / 2 - openAmount * (0.4 + 0.6 * Math.abs(wave));
+        if (i === 0) ctx.moveTo(0, y);
+        else ctx.lineTo(i * sliceWidth, y);
+      }
+      ctx.stroke();
+
+      ctx.beginPath();
+      for (let i = 0; i <= segments; i++) {
+        const wave = Math.sin(i * 0.48 - t * 8) * 0.5 + Math.sin(i * 0.19 + t * 4) * 0.5;
+        const y = canvas.height / 2 + openAmount * (0.3 + 0.5 * Math.abs(wave));
+        if (i === 0) ctx.moveTo(0, y);
+        else ctx.lineTo(i * sliceWidth, y);
+      }
+      ctx.stroke();
+
+      rafRef.current = requestAnimationFrame(loop);
+    };
+    rafRef.current = requestAnimationFrame(loop);
+  };
+
+  /**
+   * Browser text-to-speech for replies that arrive without provider audio
+   * (the normal case on static hosting). Prefers an Australian English voice.
+   */
+  const speakText = (text: string) => {
+    if (isMuted || typeof window === "undefined" || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voices = window.speechSynthesis.getVoices();
+    const preferred =
+      voices.find((v) => v.lang === "en-AU" && /male|lee|daniel/i.test(v.name)) ||
+      voices.find((v) => v.lang === "en-AU") ||
+      voices.find((v) => v.lang.startsWith("en-GB")) ||
+      voices.find((v) => v.lang.startsWith("en"));
+    if (preferred) utterance.voice = preferred;
+    utterance.rate = 1.02;
+    utterance.pitch = 0.92;
+
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+      startSyntheticMouth();
+    };
+    const finish = () => {
+      setIsSpeaking(false);
+      stopMouth();
+    };
+    utterance.onend = finish;
+    utterance.onerror = finish;
+
+    window.speechSynthesis.speak(utterance);
+  };
 
   const playAudio = (audioSrc: string) => {
     if (!audioRef.current || isMuted) return;
@@ -686,26 +798,38 @@ const MiniVicBot = () => {
       if (!isMuted && audio) {
         setLastAudio(audio);
         playAudio(audio);
+      } else if (!isMuted && text) {
+        // Provider returned text without audio — voice it with browser TTS.
+        speakText(text);
       } else {
         setIsSpeaking(false);
         stopMouth();
       }
     } catch (error) {
-      logMiniVicIssue("Chat send failed", error);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `bot-error-${Date.now()}`,
-          role: "bot",
-          text:
-            error instanceof Error
-              ? error.message === OFFLINE_MESSAGE
-                ? OFFLINE_MESSAGE
-                : `Service degraded: ${error.message}`
-              : "Service degraded. Please retry in a moment.",
-          timestamp: Date.now(),
-        },
-      ]);
+      // Backend unavailable (static hosting) or provider failure: answer with
+      // the client-side brain — Gemini grounded in the knowledge base, with a
+      // deterministic local fallback. Visitors always get a real answer.
+      logMiniVicIssue("Backend flow failed; using client-side brain", error);
+      const brainHistory: BrainTurn[] = historyPayload.map((m) => ({
+        role: m.role === "user" ? "user" : "bot",
+        text: m.text,
+      }));
+      const reply = await askMiniVicBrain(textToSend, PERSONA_FOR_MODE[modeToSend], brainHistory);
+
+      const botMessage: ChatMessage = {
+        id: `bot-${Date.now()}`,
+        role: "bot",
+        text: reply.text,
+        mode: modeToSend,
+        timestamp: Date.now(),
+      };
+      setMessages((prev) => [...prev, botMessage]);
+      setLastAnswerId(botMessage.id);
+      setLatencyMs(Math.round(performance.now() - startedAt));
+
+      if (!isMuted) {
+        speakText(reply.text);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -736,7 +860,7 @@ const MiniVicBot = () => {
       {isOpen && (
         <section
           data-testid="minivic-panel"
-          className="mb-4 w-[22rem] md:w-[27rem] max-h-[calc(100vh-7rem)] overflow-hidden rounded-3xl border border-cyan-300/20 bg-[linear-gradient(150deg,rgba(6,14,32,0.97),rgba(10,8,24,0.96))] shadow-[0_24px_70px_rgba(4,8,22,0.65),0_0_40px_rgba(0,242,254,0.14)] ring-1 ring-orange-400/25 animate-in slide-in-from-bottom-8 duration-300"
+          className="mb-4 w-[22rem] md:w-[27rem] max-w-[calc(100vw-2.5rem)] max-h-[calc(100vh-7rem)] overflow-hidden rounded-3xl border border-cyan-300/20 bg-[linear-gradient(150deg,rgba(6,14,32,0.97),rgba(10,8,24,0.96))] shadow-[0_24px_70px_rgba(4,8,22,0.65),0_0_40px_rgba(0,242,254,0.14)] ring-1 ring-orange-400/25 animate-in slide-in-from-bottom-8 duration-300"
           aria-label="MiniVic assistant panel"
         >
           <div className="relative h-56 w-full overflow-hidden border-b border-white/10 bg-black/50">
