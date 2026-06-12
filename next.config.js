@@ -17,6 +17,10 @@ const nextConfig = {
     // Studio so it is only usable from the production site.
     NEXT_PUBLIC_GEMINI_API_KEY: process.env.GEMINI_API_KEY ?? '',
     NEXT_PUBLIC_GEMINI_MODEL: process.env.NEXT_PUBLIC_GEMINI_MODEL ?? '',
+    // '1' on static exports: MiniVic skips the backend API tiers entirely
+    // (no /api/* probes that 404 on Firebase Hosting) and answers via the
+    // client-side brain immediately.
+    NEXT_PUBLIC_STATIC_EXPORT: isStaticExport ? '1' : '',
   },
 };
 

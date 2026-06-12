@@ -54,6 +54,7 @@ body {
       radial-gradient(circle at 60% 85%, rgba(30, 20, 66, 0.18), transparent 40%),
       #02030a;
     color: var(--text-color);
+    overflow-x: hidden;
     font-family: 'Inter', 'Source Sans Pro', var(--font-body), 'Source Sans 3', 'Segoe UI', 'Roboto', Helvetica, Arial, sans-serif;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -650,7 +651,9 @@ footer {
 }
 
 .section-title {
-    font-size: 4rem;
+    font-size: clamp(2.25rem, 9vw, 4rem);
+    max-width: 100%;
+    overflow-wrap: break-word;
     position: relative;
     display: inline-block;
     clip-path: inset(0 0 0 0);
@@ -896,13 +899,12 @@ footer {
 .projects-carousel {
     display: flex;
     gap: 2rem;
-    overflow-x: hidden; /* Prevent manual scroll */
-    padding: 1rem 0.5rem 2rem; /* added top/side padding for shadow/hover space */
-    /* scroll-snap-type: x mandatory;  Removed for continuous scroll */
-    /* -webkit-overflow-scrolling: touch; Removed for continuous scroll */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 1rem 0.5rem 2rem; /* top/side padding for shadow/hover space */
     width: 100%;
-    /* scroll-behavior: smooth; Removed for JS animation */
 }
+
 
 .projects-carousel::-webkit-scrollbar {
     display: none; /* Chrome/Safari */
@@ -1367,17 +1369,20 @@ footer {
 
 .contact-links-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
     gap: 1.25rem;
     margin: 0 auto 3rem;
-    max-width: 560px;
+    width: 100%;
+    max-width: min(560px, 100%);
     justify-items: center;
 }
 
 .contact-card {
     position: relative;
-    width: 240px;
-    height: 240px;
+    width: 100%;
+    max-width: 240px;
+    aspect-ratio: 1 / 1;
+    height: auto;
     border-radius: 16px;
     overflow: hidden;
     border: none;

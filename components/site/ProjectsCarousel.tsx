@@ -75,29 +75,43 @@ function ProjectVisual({ visual }: { visual: ProjectCard['visual'] }) {
  */
 export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
   const railRef = useRef<HTMLDivElement | null>(null);
-  const dragState = useRef<{ startX: number; startScroll: number; dragging: boolean }>({
+  const dragState = useRef<{ startX: number; startScroll: number; dragging: boolean; moved: boolean }>({
     startX: 0,
     startScroll: 0,
     dragging: false,
+    moved: false,
   });
 
   const onPointerDown = (e: React.PointerEvent) => {
     const rail = railRef.current;
     if (!rail || e.pointerType === 'touch') return; // touch uses native scrolling
-    dragState.current = { startX: e.clientX, startScroll: rail.scrollLeft, dragging: true };
+    // Prevent the browser's native link-drag from hijacking the gesture.
+    e.preventDefault();
+    dragState.current = { startX: e.clientX, startScroll: rail.scrollLeft, dragging: true, moved: false };
     rail.setPointerCapture(e.pointerId);
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
     const rail = railRef.current;
     if (!rail || !dragState.current.dragging) return;
-    rail.scrollLeft = dragState.current.startScroll - (e.clientX - dragState.current.startX);
+    const delta = e.clientX - dragState.current.startX;
+    if (Math.abs(delta) > 4) dragState.current.moved = true;
+    rail.scrollLeft = dragState.current.startScroll - delta;
   };
 
   const endDrag = (e: React.PointerEvent) => {
     const rail = railRef.current;
     if (rail?.hasPointerCapture(e.pointerId)) rail.releasePointerCapture(e.pointerId);
     dragState.current.dragging = false;
+  };
+
+  /** A drag should never trigger the card's link navigation on release. */
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (dragState.current.moved) {
+      e.preventDefault();
+      e.stopPropagation();
+      dragState.current.moved = false;
+    }
   };
 
   return (
@@ -110,6 +124,7 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
+        onClickCapture={onClickCapture}
       >
         {projects.map((project) => (
           <a

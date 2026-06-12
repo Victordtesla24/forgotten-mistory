@@ -745,6 +745,12 @@ const MiniVicBot = () => {
     }));
 
     try {
+      // Static deployments have no /api routes — go straight to the
+      // client-side brain instead of probing endpoints that would 404.
+      if (process.env.NEXT_PUBLIC_STATIC_EXPORT === "1") {
+        throw new Error(OFFLINE_MESSAGE);
+      }
+
       let text = "";
       let audio: string | undefined;
       let measuredLatency = 0;
