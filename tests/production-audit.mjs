@@ -273,8 +273,13 @@ const run = async () => {
   // ── 25 404 page + 26 benchmark page + 27 resume ────────────────────────
   const r404 = await page.request.get(`${BASE}/definitely-not-a-page`);
   log('25', 'Custom 404 served', r404.status() === 404 || (await r404.text()).includes('not-found') || (await r404.text()).includes('404'), `status=${r404.status()}`);
+  // QA-ARCH-02: the Lighthouse-only /performance-benchmark route is intentionally
+  // excluded from the public static export. It must NOT serve the benchmark page —
+  // Firebase either returns 404 or rewrites unknown routes to the home shell.
   const rBench = await page.request.get(`${BASE}/performance-benchmark`);
-  log('26', 'Performance-benchmark page serves 200', rBench.status() === 200);
+  const rBenchBody = await rBench.text().catch(() => '');
+  log('26', 'Performance-benchmark route excluded from public build',
+    rBench.status() === 404 || !rBenchBody.includes('Enterprise Performance Validation Target'));
   const rCv = await page.request.get(`${BASE}/docs/Vik_Resume_Final.pdf`);
   log('27', 'Resume PDF serves 200 (157KB, original template + ATO)', rCv.status() === 200 && (await rCv.body()).length > 100000);
 

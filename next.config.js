@@ -1,5 +1,41 @@
 /** @type {import('next').NextConfig} */
 const isStaticExport = process.env.FIREBASE_STATIC_EXPORT === '1';
+const isProduction = process.env.NODE_ENV === 'production';
+
+// ── Fail loud, not fail safe (SPEC NFR-SEC / §0.1 DEV-8 / CLAUDE.md rule 6) ──
+// The static Firebase export inlines a RESTRICTED, HTTP-referrer-locked *public*
+// Gemini key for the client-side MiniVic brain (the true secret is reserved for
+// the services/ gateway deployment — a static client cannot hold a real secret).
+// That public key is still REQUIRED at build time: a missing key must crash the
+// build naming the variable rather than silently inlining an empty string that
+// ships a broken brain tier. (Workspace rule: never silently degrade.)
+if (isStaticExport && isProduction && !process.env.GEMINI_API_KEY) {
+  throw new Error(
+    '[fail-loud] Missing required environment variable GEMINI_API_KEY for the ' +
+      'static export (FIREBASE_STATIC_EXPORT=1). Set it in .env.production. ' +
+      'Refusing to build a degraded MiniVic brain. See SPEC §0.1 DEV-8 / NFR-SEC.',
+  );
+}
+
+// ── Security headers (TC-NFR-SEC). Emitted by `next dev` / the dynamic runtime via
+// headers(); `output: 'export'` strips headers(), so production (static Firebase)
+// mirrors these in firebase.json. Both must stay in sync. ──
+const SECURITY_HEADERS = [
+  {
+    key: 'Content-Security-Policy',
+    value:
+      "default-src 'self'; base-uri 'self'; object-src 'none'; " +
+      "img-src 'self' data: blob: https:; media-src 'self' blob:; font-src 'self' data:; " +
+      "style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+      "connect-src 'self' ws: wss: https://generativelanguage.googleapis.com https://*.googleapis.com; " +
+      "frame-src https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors 'none'",
+  },
+  { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'X-Frame-Options', value: 'DENY' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  { key: 'Permissions-Policy', value: 'camera=(), microphone=(self), geolocation=(), browsing-topics=()' },
+];
 
 const nextConfig = {
   ...(isStaticExport
@@ -7,7 +43,11 @@ const nextConfig = {
         output: 'export',
         images: { unoptimized: true },
       }
-    : {}),
+    : {
+        async headers() {
+          return [{ source: '/:path*', headers: SECURITY_HEADERS }];
+        },
+      }),
   reactStrictMode: true,
   poweredByHeader: false,
   env: {

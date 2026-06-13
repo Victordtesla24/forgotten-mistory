@@ -152,18 +152,21 @@ test.describe('Portfolio site — React/Framer Motion runtime', () => {
       )
       .toBe(true);
 
-    // Never show a raw failure to a visitor.
+    // Never show a degraded/offline fallback to a visitor on this path. Guard
+    // against the strings the bot actually emits when the brain falls back
+    // (OFFLINE_MESSAGE in MiniVicBot.tsx, FALLBACK_ANSWER in miniVicKnowledge.ts).
     const panelText = await page.locator('[data-testid="minivic-panel"]').textContent();
-    expect(panelText).not.toContain('Service degraded');
+    expect(panelText).not.toContain("realtime backend isn't connected");
+    expect(panelText).not.toContain("I don't have that on file");
   });
 
-  test('legacy runtime is fully retired', async ({ page }) => {
-    // No GSAP/Lenis globals, no edit-mode controls, no Font Awesome.
+  test('imperative legacy DOM layer is retired (no Lenis global, admin controls, or Font Awesome)', async ({ page }) => {
+    // NOTE: GSAP is now an intentional module dependency (ScrollTrigger drives the
+    // FR-SCROLL section timeline in components/site/ScrollRail.tsx). It is imported,
+    // not attached to window, so there is deliberately no global to assert against.
     const legacyGlobals = await page.evaluate(() => ({
-      gsap: typeof (window as unknown as { gsap?: unknown }).gsap,
       lenis: typeof (window as unknown as { Lenis?: unknown }).Lenis,
     }));
-    expect(legacyGlobals.gsap).toBe('undefined');
     expect(legacyGlobals.lenis).toBe('undefined');
     await expect(page.locator('.admin-controls')).toHaveCount(0);
     await expect(page.locator('link[href*="font-awesome"]')).toHaveCount(0);

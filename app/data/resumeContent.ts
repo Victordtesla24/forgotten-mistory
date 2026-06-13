@@ -17,11 +17,11 @@ export const resumeContent: Record<string, OutcomeDetail> = {
     title: 'Test Automation at Scale',
     subtitle: '-92% Evidence Effort',
     stats: { value: '-92%', label: 'Effort' },
-    themeColor: 'rgb(0 242 254)', // Cyan
+    themeColor: 'rgb(244 246 250)', // monochrome — flagship emphasis
     details: [
       'Architected the ATO Payday Super program’s COBOL/mainframe test-evidence automation covering 200+ SIT/E2E scenarios across eight squads.',
       'Cut evidence effort from ~3 hours to ~15 minutes per scenario using REXX, SMF, SDSF, PCOMM, PowerShell, and VBA — zero new InfoSec approvals.',
-      'Converted an infeasible 8-day SIT window into an achievable plan via a six-day tiered harness build with go/no-go gating.',
+      'Converted an infeasible SIT window — 75+ hours of evidence per team against 64 available — into an achievable plan via a six-day tiered harness build with formal go/no-go gating.',
       'War room produced a binding automation recommendation in under three hours.',
     ],
   },
@@ -29,7 +29,7 @@ export const resumeContent: Record<string, OutcomeDetail> = {
     title: 'Cloud Modernisation',
     subtitle: '-30% Delivery',
     stats: { value: '-30%', label: 'Delivery' },
-    themeColor: 'rgb(255 77 77)', // Red
+    themeColor: 'rgb(174 182 194)', // monochrome
     details: [
       'Guided the transition of core banking platforms to cloud-native architectures (.NET/Azure).',
       'Improved delivery efficiency by >30% and reduced infrastructure costs by >15%.',
@@ -41,7 +41,7 @@ export const resumeContent: Record<string, OutcomeDetail> = {
     title: 'Realtime Reliability',
     subtitle: '10k+ Devices',
     stats: { value: '10k+', label: 'Devices' },
-    themeColor: 'rgb(255 115 80)', // Orange (Site Accent)
+    themeColor: 'rgb(201 205 214)', // monochrome
     details: [
       'Led delivery of AI/ML solutions including real-time WebSocket telemetry.',
       'Achieved P95 < 200ms latency across 10k+ concurrent devices (ANZ).',
@@ -53,7 +53,7 @@ export const resumeContent: Record<string, OutcomeDetail> = {
     title: 'AI Quality & Risk',
     subtitle: '-38% Breaches',
     stats: { value: '-38%', label: 'Breaches' },
-    themeColor: 'rgb(255 77 77)', // Red
+    themeColor: 'rgb(174 182 194)', // monochrome
     details: [
       'Implemented Langfuse + Phoenix evaluation stack reducing simulated LLM error-budget breaches by 38%.',
       'Built Node.js/Express public-key server with 100% test coverage for API signing.',
@@ -65,7 +65,7 @@ export const resumeContent: Record<string, OutcomeDetail> = {
     title: 'Leadership Scale',
     subtitle: '40+ Resources',
     stats: { value: '40+', label: 'Resources' },
-    themeColor: 'rgb(255 115 80)', // Orange
+    themeColor: 'rgb(201 205 214)', // monochrome
     details: [
       'Leading the Agile Kookaburras squad at the ATO within an eight-team SIT program.',
       'Led 5+ cross-functional squads including onsite & offshore teams (40+ practitioners).',
@@ -77,7 +77,7 @@ export const resumeContent: Record<string, OutcomeDetail> = {
     title: 'Portfolio Value',
     subtitle: '$5M+ Budget',
     stats: { value: '$5M+', label: 'Budget' },
-    themeColor: 'rgb(39 201 63)', // Green
+    themeColor: 'rgb(232 235 240)', // monochrome
     details: [
       'Stewardship of multi-million programs with full compliance.',
       'Authored executive change requests with costed options analysis and full delivery traceability (Azure DevOps).',

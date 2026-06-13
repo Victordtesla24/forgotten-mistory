@@ -6,17 +6,13 @@ import { Canvas, useFrame, useThree, extend, Object3DNode } from '@react-three/f
 import { Bloom, EffectComposer, Noise, Vignette } from '@react-three/postprocessing';
 import { Trail, shaderMaterial } from '@react-three/drei';
 import * as THREE from 'three';
+import { PALETTE } from '@/lib/palette';
 
 // --- Constants ---
 const STAR_COUNT = 4500;
 const STAR_SEED = 1337;
-// Using realistic star colors (white/blue-white/yellow-white/orange-white)
-const STAR_COLORS = [
-  new THREE.Color('#f4f8ff'), // White-blue
-  new THREE.Color('#c2d4ff'), // Blue-white
-  new THREE.Color('#ffe4ac'), // Warm-white
-  new THREE.Color('#d6e2ff')  // Cool-white
-];
+// Monochrome star palette (whites/greys, no hue) — sourced from lib/palette.ts
+const STAR_COLORS = PALETTE.star.map((hex) => new THREE.Color(hex));
 
 const logDebug = (message: string, data?: Record<string, unknown>) => {
   if (process.env.NODE_ENV === 'production') return;
@@ -37,7 +33,7 @@ const mulberry32 = (a: number) => {
 const NebulaMaterial = shaderMaterial(
   {
     time: 0,
-    color: new THREE.Color('#0a1022'), // Keep very dark to prevent mix-blend blowout
+    color: new THREE.Color(PALETTE.nebula[0]), // Keep very dark to prevent mix-blend blowout
   },
   // Vertex Shader
   `
@@ -200,12 +196,12 @@ function ShootingStar() {
     <Trail
       width={2}
       length={8}
-      color={new THREE.Color('#c6e0ff')}
+      color={new THREE.Color(PALETTE.starGlow)}
       attenuation={(t) => t * t}
     >
       <mesh ref={meshRef} position={startPos.current}>
         <sphereGeometry args={[0.05, 8, 8]} />
-        <meshBasicMaterial color="#c6e0ff" toneMapped={false} />
+        <meshBasicMaterial color={PALETTE.starGlow} toneMapped={false} />
       </mesh>
     </Trail>
   );
@@ -413,9 +409,9 @@ function SceneContent() {
     <group ref={groupRef}>
       <StarField />
       {/* Dark nebula colors are required because mix-blend-mode: screen blows out brightness */}
-      <NebulaCloud position={[0, 0, -50]} color="#0a1022" scale={[100, 100, 1]} />
-      <NebulaCloud position={[-30, 20, -80]} color="#091328" scale={[120, 120, 1]} />
-      <NebulaCloud position={[30, -20, -60]} color="#0c0a1e" scale={[90, 90, 1]} />
+      <NebulaCloud position={[0, 0, -50]} color={PALETTE.nebula[0]} scale={[100, 100, 1]} />
+      <NebulaCloud position={[-30, 20, -80]} color={PALETTE.nebula[1]} scale={[120, 120, 1]} />
+      <NebulaCloud position={[30, -20, -60]} color={PALETTE.nebula[2]} scale={[90, 90, 1]} />
       <ShootingStar />
       <ShootingStar />
     </group>
@@ -445,14 +441,14 @@ export default function SpaceScene() {
         dpr={1}
       >
         <SpaceAppDebugProbe />
-        <color attach="background" args={['#000000']} /> {/* Deep black background */}
+        <color attach="background" args={[PALETTE.black]} /> {/* Deep black background */}
 
         <CameraRig />
         <SceneContent />
 
         {enablePostFx ? (
           <EffectComposer>
-            <Bloom intensity={0.55} luminanceThreshold={0.18} luminanceSmoothing={0.25} mipmapBlur />
+            <Bloom intensity={0.3} luminanceThreshold={0.22} luminanceSmoothing={0.25} mipmapBlur />
             <Noise opacity={0.015} />
             <Vignette eskil={false} offset={0.18} darkness={0.78} />
           </EffectComposer>

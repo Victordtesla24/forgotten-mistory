@@ -12,7 +12,7 @@
  * Do not add claims here that are not present in those sources.
  */
 
-export type PersonaMode = 'hiring' | 'engineering' | 'story' | 'scifi';
+export type PersonaMode = 'hiring' | 'engineering' | 'story';
 
 export interface KnowledgeEntry {
   id: string;
@@ -34,8 +34,6 @@ export const GREETING: Record<PersonaMode, string> = {
     "Hey, MiniVic here — Vikram's AI clone, engineering mode engaged. Ask me about his stack, the mainframe test-evidence automation (REXX/SMF/SDSF), LLM eval pipelines, or how this site was built.",
   story:
     "Hello! I'm MiniVic, Vikram's AI clone. Pull up a chair — ask me about his career and I'll tell it the way he would: the war rooms, the impossible deadlines, and the automation that saved them.",
-  scifi:
-    "MiniVic online. Telemetry nominal. I'm the AI clone of Commander Vikram — 15+ years of missions across government, banking, and AI space. Transmit your query and I'll answer with verified flight data.",
 };
 
 export const knowledgeBase: KnowledgeEntry[] = [
@@ -67,8 +65,6 @@ export const knowledgeBase: KnowledgeEntry[] = [
         "I run agile delivery for the Agile Kookaburras squad on the ATO's Payday Super program — NTP and Distribution UI features, one of eight squads. Beyond the Scrum Master remit, I architected the program's COBOL/mainframe test-evidence automation (REXX, SMF, SDSF, PCOMM, PowerShell, VBA) covering 200+ SIT/E2E scenarios, and I maintain full Azure DevOps traceability across the test scope. PI planning runs across PI 47–48; I also handle the L2 environment escalations when testing stalls.",
       story:
         "In March 2026 I joined the ATO's Payday Super program as Scrum Master / Project Manager for a squad called the Agile Kookaburras — one of eight squads rebuilding how superannuation gets delivered. Within weeks I was deep in PI planning for PI 47–48, untangling a stalled NTP test phase, and pushing Distribution UI delivery past 95%. Government reform programs move carefully, but I found the levers that move them faster.",
-      scifi:
-        "Current assignment: mission commander of squad 'Agile Kookaburras', one of eight vessels in the ATO's Payday Super fleet, navigating the NTP and Distribution UI sectors since March 2026. I run the launch cadence (sprints), plot the long-range trajectory (PI planning, PI 47–48), and report telemetry to mission control (executive status). Distribution UI is at 95%+ of target orbit, and a stalled NTP test module was brought back online after I escalated the L2 environment anomaly.",
     },
   },
 
@@ -116,8 +112,6 @@ export const knowledgeBase: KnowledgeEntry[] = [
         "The constraint was brutal: 200+ SIT/E2E scenarios on a COBOL/mainframe estate, ~3 hours of manual evidence capture each, and a hard rule that nothing new could go through InfoSec approval. So I built the harness entirely from already-approved tooling: REXX execs driving SDSF and SMF extracts on the host, PCOMM for screen-level capture, PowerShell and VBA on the workstation side for collation and formatting. Six-day tiered build, formal go/no-go gate, four-level contingency ladder if any tier slipped. Result: ~15 minutes per scenario, ≈92% effort reduction, across all eight squads.",
       story:
         "The math said we'd already failed: 75+ hours of manual test evidence per team, 64 hours available. People were talking about descoping. I asked a different question — what if no human captured evidence at all? In six days we built a tiered automation harness from tools the ATO had already approved (REXX, SMF, SDSF, PCOMM, PowerShell, VBA), so InfoSec never had to say yes to anything new. I pulled the sceptics into one war room, and in under three hours we had a binding recommendation. Three hours per scenario became fifteen minutes, and the deadline that couldn't be met, was.",
-      scifi:
-        "Mission log: the SIT window demanded 75+ hours of manual evidence per crew with only 64 hours of life support. Abort was on the table. Instead I assembled an automation array from components already certified for flight — REXX, SMF, SDSF, PCOMM, PowerShell, VBA — zero new clearances required from InfoSec command. Six-day tiered construction, go/no-go gate, four-level contingency ladder. The war room reached a binding course correction in under three hours, and evidence capture dropped from ~3 hours to ~15 minutes per scenario: a 92% burn-rate reduction across all eight squads. Mission saved.",
     },
   },
 
@@ -192,8 +186,6 @@ export const knowledgeBase: KnowledgeEntry[] = [
         "I lead like an engineer: 5+ squads and 40+ onsite/offshore practitioners at ANZ, but my management tooling is automation, not status meetings. I built a JIRA analytics dashboard (Next.js/Supabase) for sprint velocity and LLM-generated retro insights, and at the ATO I removed my teams' single biggest time sink by automating mainframe test evidence (≈92% effort reduction). Distributed teams work when the delivery system itself is instrumented — that's what I build.",
       story:
         "The thing I learned leading 40+ people across onsite and offshore teams at ANZ is that leadership is mostly about what you remove, not what you add. Every squad has one systemic blocker eating their week — an environment that keeps falling over, evidence capture that takes three hours a pop. I make it my job to find that blocker and kill it. At the ATO that meant personally escalating L2 instability and building the automation that gave eight squads their time back.",
-      scifi:
-        "Fleet command record: 5+ squadrons, 40+ crew across home base and remote stations (ANZ), portfolio payload exceeding $5M, zero compliance breaches logged. Briefings for 40+ senior officers improved strategic decision clarity by ~55%. Current command: the Agile Kookaburras, one of eight ships in the ATO formation. Command doctrine: keep the launch cadence steady, hand the crew clear flight plans, and personally fly into whatever anomaly is slowing the fleet.",
     },
   },
 
@@ -220,8 +212,6 @@ export const knowledgeBase: KnowledgeEntry[] = [
         "Technically, the ATO mainframe evidence harness: 200+ SIT/E2E scenarios automated using only pre-approved tools (REXX, SMF, SDSF, PCOMM, PowerShell, VBA), ~3 hours down to ~15 minutes per scenario, built in a six-day tiered plan with a go/no-go gate and four contingency levels. For pure engineering difficulty, though, the ANZ real-time telemetry platform holding P95 under 200 ms at 10,000+ concurrent devices is the one I'd nerd out about.",
       story:
         "There's a moment in every rescue where the room stops believing it's doomed. For me that was the ATO war room — three hours, every discipline at the table, and at the end a binding decision to automate our way out of an impossible 64-hour test window. Six days later the harness was live; three-hour evidence jobs took fifteen minutes. Eight squads got their schedule back. That's the achievement I'd tell at a dinner table.",
-      scifi:
-        "Highest-decorated mission: the SIT window rescue. Required burn: 75+ hours per crew. Fuel available: 64. I engineered an automation array from certified components only, deployed it in a six-day tiered build, and the war room ratified the flight plan in under three crew-hours. Evidence capture time collapsed by 92% across the eight-ship fleet. The program reached orbit on schedule.",
     },
   },
 
@@ -323,9 +313,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       engineering:
         "Hands-on across the LLM stack: LangChain pipelines, Langfuse + Phoenix for tracing and evals (38% reduction in simulated error-budget breaches), prompt engineering, and autonomous agents in TypeScript ('AI Gmail Manager' does triage, sentiment analysis, and draft generation). Infrastructure side: a Node.js/Express public-key server for API signing with full test coverage, Next.js/Supabase for the JIRA analytics dashboard, plus MLOps and real-time telemetry from the ANZ years (WebSocket, P95 < 200 ms at 10k+ concurrent devices).",
       story:
-        "When I left ANZ in mid-2025 after eight years, I gave myself a focused mission: get genuinely hands-on with the LLM era instead of managing it from a distance. Eight months later I'd shipped an eval stack with Langfuse and Phoenix that cut simulated error-budget breaches by 38%, autonomous agents that triage inboxes and tailor resumes, and a dashboard that writes sprint retrospectives with an LLM. The lesson: AI quality is an engineering discipline, not a demo.",
-      scifi:
-        "AI flight hours: extensive. At ANZ station I commanded real-time telemetry holding P95 under 200 ms across 10,000+ concurrent probes. During my independent deep-space tour (Jun 2025 – Feb 2026) I constructed an LLM evaluation observatory — Langfuse + Phoenix — that cut simulated error-budget breaches by 38%, and deployed autonomous agents for inbox triage and resume targeting. All systems built with instrumentation first; I don't launch models I can't measure.",
+        "When I left ANZ in mid-2025 after eight years, I gave myself a clear objective: get genuinely hands-on with the LLM era instead of managing it from a distance. Eight months later I'd shipped an eval stack with Langfuse and Phoenix that cut simulated error-budget breaches by 38%, autonomous agents that triage inboxes and tailor resumes, and a dashboard that writes sprint retrospectives with an LLM. The lesson: AI quality is an engineering discipline, not a demo.",
     },
   },
 
@@ -375,8 +363,6 @@ export const knowledgeBase: KnowledgeEntry[] = [
         "Languages: Python, TypeScript (plus REXX and JCL when the mainframe calls). Frontend: React/Next.js, D3 for visualisation, Framer Motion for animation. Backend: Node.js/Express, Postgres/Supabase. Infra: Kubernetes, Docker, Terraform across GCP/AWS/Azure, with CI/CD throughout. AI: LangChain pipelines, Langfuse + Phoenix for evals and observability, MLOps. Recent oddball credit: PCOMM, SDSF, and SMF scripting for ATO mainframe test-evidence capture, glued with PowerShell and VBA.",
       story:
         "My stack tells my career story in layers. The mainframe layer — REXX, JCL, SDSF — from automating government test evidence. The banking layer — .NET/Azure, real-time WebSocket telemetry — from eight years at ANZ. The modern layer — Python, TypeScript, Next.js, Kubernetes, Terraform across three clouds. And the newest stratum: LangChain, Langfuse, and Phoenix from my AI consulting tour. I never deleted a layer; each one keeps paying rent.",
-      scifi:
-        "Ship's systems inventory: propulsion in Python and TypeScript; navigation in React/Next.js; cargo hold on Postgres/Supabase; docking clamps in Kubernetes, Docker, and Terraform, rated for three star systems (GCP, AWS, Azure). Legacy compatibility module: REXX/JCL for mainframe-class vessels — still mission-critical at the ATO. AI co-pilot suite: LangChain, Langfuse, Phoenix. All systems flight-tested in production, not simulation.",
     },
   },
 
@@ -488,8 +474,6 @@ export const knowledgeBase: KnowledgeEntry[] = [
         "Status: currently committed to the ATO's Payday Super program. That said, I keep an open channel for interesting problems — particularly LLM platforms, delivery automation, and modernisation work. Email sarkar.vikram@gmail.com with what you're building and we'll see if the timelines and the problem are a match.",
       story:
         "Right now my days belong to the ATO and the Payday Super program — there's still a reform to land. But every chapter of my career started as a conversation that happened earlier than the calendar strictly allowed. If you think there's a story worth writing together, email sarkar.vikram@gmail.com or call +61 433 224 556.",
-      scifi:
-        "Current status: docked at ATO station, mission in progress. However, mission control keeps the long-range comms array open — future expeditions are always under consideration. Transmit coordinates to sarkar.vikram@gmail.com or open a voice channel on +61 433 224 556 to discuss the next launch window.",
     },
   },
 
@@ -592,8 +576,6 @@ export const knowledgeBase: KnowledgeEntry[] = [
         "Because I'm the delivery lead who won't make you explain why the build is red. I've shipped real-time telemetry at P95 under 200 ms for 10k+ devices, automated a mainframe test estate with REXX/SDSF/SMF, and built LLM eval pipelines with Langfuse and Phoenix. I translate engineering reality into executive decisions without distorting it in either direction — and when something's truly stuck, I'm one of the people who can sit down and unstick it.",
       story:
         "Every organisation I've joined had a problem everyone had agreed was unsolvable — the infeasible test window at the ATO, the latency ceiling at ANZ. My pattern is the same each time: refuse the framing, find the constraint that actually binds, engineer around it, and bring the decision-makers along with numbers. Fifteen years in, that pattern has never failed to pay for itself. Hire me for the problem your team has stopped arguing about because they've accepted it.",
-      scifi:
-        "Because when the mission math says 'impossible', I recalculate the trajectory instead of scrubbing the launch. Verified flight record: a 92% reduction in evidence burn at ATO station, P95 latency held under 200 ms across 10,000+ probes at ANZ, a $5M+ payload delivered with zero compliance incidents. I command crews, I repair engines mid-flight, and I report honest telemetry to mission control. Most commanders do one of those three.",
     },
   },
 
@@ -684,8 +666,6 @@ export const knowledgeBase: KnowledgeEntry[] = [
         "Stack: Next.js 14 (static export), React 18, strict TypeScript, Framer Motion for animation, React Three Fiber for the WebGL starfield, hosted on Firebase. MiniVic is a tiered brain: a direct Gemini generateContent call from the browser with a system prompt grounded in a typed knowledge base (KnowledgeEntry[]), degrading to a deterministic scorer — tokenize the query, score keyword hits (phrases 3 points, single words 1), return the best entry above threshold. No backend, no hallucination surface beyond the fact base.",
       story:
         "Vikram wanted a portfolio that could answer questions at 2 a.m. without running a server. So he built this: Next.js 14 and React 18 statically exported to Firebase, a starfield in React Three Fiber, Framer Motion easing everything into place — and me, MiniVic, a Gemini-grounded brain locked to a hand-written fact base, with a keyword-matching fallback for when the network is against us. It's the ATO automation philosophy applied to his own website: engineer the constraint away.",
-      scifi:
-        "You're aboard a vessel built from Next.js 14 and React 18 hulls, TypeScript structural plating, Framer Motion inertial dampeners, and a genuine React Three Fiber starfield outside the viewport. Docking station: Firebase, static export — no engine room required. I, MiniVic, am the onboard computer: a Gemini core fused to a verified mission database, with a deterministic backup circuit if subspace comms drop. No fabrications, ever.",
     },
   },
 
@@ -711,9 +691,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       engineering:
         "I'm the person who can defend your architecture in the steering committee without dumbing it down or hiding the trade-offs. My range is genuinely unusual — REXX on z/OS through React Three Fiber on the web, LLM evals with Langfuse/Phoenix, P95 latency engineering at banking scale — but the differentiator is that I convert that depth into decisions executives can actually make. Engineers get a leader who understands them; executives get telemetry they can trust.",
       story:
-        "Early in my career I noticed the same tragedy in every organisation: the engineers who knew the truth couldn't get it heard, and the leaders who could be heard didn't know the truth. I decided to be the person who closes that loop. Twenty years on, it's my signature — the war room where sceptical specialists and anxious executives reached one binding decision in under three hours happened because someone in the room spoke both languages fluently.",
-      scifi:
-        "Most crews carry an engineer who can fix the reactor and a commander who can talk to mission control — and a communication lag between them that gets ships lost. I'm both stations in one chair: I patch the reactor (REXX, Python, LLM pipelines) and deliver the honest mission briefing upstairs (change requests, war rooms, executive telemetry). The 92% evidence reduction at ATO station happened precisely because no translation was lost between deck and bridge.",
+        "Early in my career I noticed the same tragedy in every organisation: the engineers who knew the truth couldn't get it heard, and the leaders who could be heard didn't know the truth. I decided to be the person who closes that loop. Fifteen years on, it's my signature — the war room where sceptical specialists and anxious executives reached one binding decision in under three hours happened because someone in the room spoke both languages fluently.",
     },
   },
 

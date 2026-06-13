@@ -70,23 +70,30 @@ async function runTests() {
     process.exit(1);
   }
 
-  // TEST 2: Sci-Fi Mode
-  console.log('\nTEST 2: Gemini Feature Validation (Sci-Fi Mode)');
+  // TEST 2: Story persona mode (sci-fi persona removed — NN-3 restrained pivot)
+  console.log('\nTEST 2: Persona Mode Validation (Story) + NN-3 tone guard');
   try {
     const res2 = await postRequest('/api/chat-with-vic', {
-      message: "Explain that in Star Wars terms!",
-      mode: "scifi"
+      message: "Tell me about your leadership style.",
+      mode: "story"
     });
-    
-    const scifiTerms = ['force', 'warp', 'droid', 'hyperdrive', 'jedi', 'sith', 'lightsaber', 'empire', 'rebellion', 'star wars', 'star trek'];
-    const textLower = res2.text.toLowerCase();
-    const hasSciFi = scifiTerms.some(term => textLower.includes(term));
 
-    if (hasSciFi) {
-        console.log(`✅ PASS: Response contains Sci-Fi terminology ("${res2.text.substring(0, 50)}...").`);
+    const textLower = (res2.text || '').toLowerCase();
+    if (res2.text && res2.text.trim().length > 0) {
+        console.log(`✅ PASS: Story persona returned a grounded response ("${res2.text.substring(0, 50)}...").`);
     } else {
-        console.error(`❌ FAIL: Response does not contain Sci-Fi terminology: "${res2.text}"`);
-        // Note: This might fail if the model doesn't follow instructions perfectly or if mock keys are used.
+        console.error('❌ FAIL: Story persona returned an empty response.');
+        process.exit(1);
+    }
+
+    // NN-3: no theatrical/sci-fi vocabulary in the response.
+    const bannedTerms = ['star wars', 'star trek', 'jedi', 'hyperdrive', 'lightsaber', 'warp drive'];
+    const leaked = bannedTerms.filter(term => textLower.includes(term));
+    if (leaked.length === 0) {
+        console.log('✅ PASS: Response free of banned sci-fi vocabulary (NN-3).');
+    } else {
+        console.error(`❌ FAIL: Response contains banned sci-fi terms: ${leaked.join(', ')}`);
+        process.exit(1);
     }
 
     if (res2.audio) {

@@ -1,3 +1,10 @@
+> ⚠️ **SUPERSEDED — do not implement from this file.** This is a stale pre-overhaul baseline
+> (generic roles "Senior/Full Stack/Junior Developer", wrong email `melbvicduque@gmail.com`,
+> orange accent, `Roboto` fonts) that contradicts current ground truth. The authoritative
+> requirements are **`docs/overhaul/SPEC.md`** (+ `MVP-AND-ROLLOUT.md`), and the authoritative
+> content is **`app/data/siteContent.ts` / `resumeContent.ts` / `miniVicKnowledge.ts`** (real
+> contact: `sarkar.vikram@gmail.com`, `+61 433 224 556`). Kept only for historical reference.
+
 # Functional Requirements
 
 1.  **Preloader**

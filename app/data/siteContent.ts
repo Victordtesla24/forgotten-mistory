@@ -47,7 +47,7 @@ export const hero = {
 export const about = {
   paragraphs: [
     'With over 15 years in the technology industry, I work as a Senior Technical Leader and Certified Scrum Master (CSM) across government, financial services, and telecommunications — currently leading agile delivery for the Australian Taxation Office’s Payday Super reform program. My focus is program delivery, enterprise transformation, and architecting AI/ML-driven solutions.',
-    'I lead cross-functional squads, guide cloud-based modernisations, and automate away systemic delivery friction. My technical background spans Python, TypeScript, and cloud-native infrastructure (Kubernetes, GCP, AWS, Azure). I’m passionate about fostering an agile culture and translating complex technical roadmaps into business value.',
+    'I lead cross-functional squads, guide cloud-based modernisations, and automate away systemic delivery friction. My technical background spans Python, TypeScript, and cloud-native infrastructure (Kubernetes, GCP, AWS, Azure). I focus on fostering an agile culture and translating complex technical roadmaps into measurable business value.',
   ],
 };
 
@@ -277,3 +277,18 @@ export const contact = {
   github: 'https://github.com/Victordtesla24',
   youtube: 'https://youtube.com/@vicd0ct',
 };
+
+export interface ProofPoint {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  label: string;
+}
+
+/** Quantified, resume-sourced proof points for the hero proof bar (FR-PROOF). */
+export const proof: ProofPoint[] = [
+  { value: 15, suffix: '+', label: 'years across government, finance and telecommunications' },
+  { value: 5, prefix: '$', suffix: 'M+', label: 'program portfolio led at ANZ' },
+  { value: 92, prefix: '≈', suffix: '%', label: 'evidence effort cut by the ATO test-automation harness' },
+  { value: 10, suffix: 'k+', label: 'concurrent devices at P95 under 200 ms (ANZ telemetry)' },
+];

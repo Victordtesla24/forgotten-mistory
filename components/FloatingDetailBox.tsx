@@ -29,15 +29,15 @@ interface FloatingDetailBoxProps {
 }
 
 const THEME_COLORS: Record<string, string> = {
-  "Test Automation at Scale": "rgb(6 182 212)", // Cyan
-  "Cloud Modernisation": "rgb(239 68 68)", // Red
-  "Realtime Reliability": "rgb(249 115 22)", // Orange
-  "AI Quality & Risk": "rgb(239 68 68)", // Red
-  "Leadership Scale": "rgb(249 115 22)", // Orange
-  "Portfolio Value": "rgb(16 185 129)", // Emerald
+  "Test Automation at Scale": "rgb(201 205 214)", // mist-200 (light cool grey)
+  "Cloud Modernisation": "rgb(174 182 194)", // slate (mid cool grey)
+  "Realtime Reliability": "rgb(201 205 214)", // mist-200 (light cool grey)
+  "AI Quality & Risk": "rgb(174 182 194)", // slate (mid cool grey)
+  "Leadership Scale": "rgb(201 205 214)", // mist-200 (light cool grey)
+  "Portfolio Value": "rgb(232 235 240)", // near-white accent
 };
 
-const DEFAULT_COLOR = "rgb(255 115 80)";
+const DEFAULT_COLOR = "rgb(201 205 214)";
 const logDebug = (message: string, data?: Record<string, unknown>) => {
   if (process.env.NODE_ENV === 'production') return;
   console.debug('[FloatingDetailBox]', message, data ?? {});
@@ -629,7 +629,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
 
             <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] min-h-[400px]">
                 {/* Left Sidebar: Stats & Title */}
-                <div className="p-8 bg-[linear-gradient(180deg,rgba(13,17,26,0.98),rgba(9,12,20,0.98))] border-r border-white/15 flex flex-col justify-center relative overflow-hidden">
+                <div className="p-8 bg-[linear-gradient(180deg,rgba(18,19,23,0.98),rgba(9,12,20,0.98))] border-r border-white/15 flex flex-col justify-center relative overflow-hidden">
                     {/* Decorative massive number bg */}
                     <div className="absolute -right-4 -bottom-12 text-9xl font-black text-white/5 select-none z-0 pointer-events-none">
                         {content.stats.value.replace(/\D/g, '')}
@@ -655,7 +655,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
         </div>
 
                 {/* Right Content: Details */}
-                <div className="p-10 flex flex-col justify-between bg-[linear-gradient(135deg,rgba(12,16,25,0.97),rgba(9,12,20,0.97))]">
+                <div className="p-10 flex flex-col justify-between bg-[linear-gradient(135deg,rgba(18,19,23,0.97),rgba(9,12,20,0.97))]">
                     <div className="space-y-6 text-gray-50 text-lg font-normal leading-[1.7]">
             {content.details.map((detail, i) => (
                             <div key={i} className="flex items-start gap-4 group animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: `${i * 100}ms` }}>

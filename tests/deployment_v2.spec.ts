@@ -53,18 +53,28 @@ test.describe('Mini-Vic Chatbot E2E Validation', () => {
     }
   });
 
-  test('TEST 2: Gemini Feature (Sci-Fi Mode) Validation', async ({ page }) => {
-    // Open the chat
+  test('TEST 2: Story persona mode returns a grounded, restrained response (NN-3)', async ({ page }) => {
+    // The sci-fi persona was removed; persona modes are now Hiring Fit / Engineering /
+    // Story. This guards the NN-3 monochrome/restrained pivot: a real persona button,
+    // a grounded answer, and NO theatrical/sci-fi vocabulary in the response.
     await page.locator('button.group.relative').click();
-    
-    // Click Sci-Fi Mode button
-    await page.getByRole('button', { name: 'Explain in sci-fi' }).click();
+    await page.getByRole('button', { name: 'Story' }).click();
 
-    // Text Output Check: ensure there is a response
-    const responseLocator = page.locator('.bg-gray-800\\/80').last();
-    await expect(responseLocator).toBeVisible({ timeout: 10000 });
-    const scifiText = (await responseLocator.textContent())?.trim() ?? "";
-    expect(scifiText.length).toBeGreaterThan(0);
+    await page.getByPlaceholder('Ask me anything—teams, budgets, AI stack...').fill(
+      'Tell me about your leadership style.',
+    );
+    await page.locator('button[type="submit"]').click();
+
+    const panel = page.locator('[data-testid="minivic-panel"]');
+    await expect(panel).toBeVisible({ timeout: 10000 });
+    await expect
+      .poll(async () => ((await panel.textContent()) ?? '').trim().length, { timeout: 15000 })
+      .toBeGreaterThan(0);
+
+    const text = ((await panel.textContent()) ?? '').toLowerCase();
+    for (const banned of ['star wars', 'star trek', 'jedi', 'hyperdrive', 'lightsaber', 'warp drive']) {
+      expect(text).not.toContain(banned);
+    }
   });
 
   test('TEST 3: Pollo AI Video Flow (Mocked)', async ({ page }) => {

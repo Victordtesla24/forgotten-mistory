@@ -57,8 +57,6 @@ const PERSONA_STYLE: Record<PersonaMode, string> = {
     'Speak engineer-to-engineer: name the tools, architectures, and trade-offs precisely. Skip marketing language.',
   story:
     'Answer as a short first-person story — set the scene in a sentence, then what happened and the result.',
-  scifi:
-    'Answer with playful mission-control / deep-space metaphors, but keep every fact accurate and grounded.',
 };
 
 const GROUNDING_FACTS: string = knowledgeBase

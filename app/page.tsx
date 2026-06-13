@@ -10,6 +10,8 @@ import {
   Gauge,
   GitBranch,
   GraduationCap,
+  Mail,
+  Phone,
   ShieldCheck,
   TrendingUp,
   UploadCloud,
@@ -32,6 +34,9 @@ import ProjectsCarousel from '@/components/site/ProjectsCarousel';
 import GithubFeed from '@/components/site/GithubFeed';
 import HiddenTerminal from '@/components/site/HiddenTerminal';
 import HeroAvatar from '@/components/site/HeroAvatar';
+import ScrollRail from '@/components/site/ScrollRail';
+import HudFrame from '@/components/fx/HudFrame';
+import ProofBar from '@/components/site/ProofBar';
 
 import { resumeContent } from './data/resumeContent';
 import {
@@ -43,6 +48,13 @@ import {
   projects,
   skillGroups,
 } from './data/siteContent';
+
+// FR-CONTACT: booking CTA — owner can set NEXT_PUBLIC_BOOKING_URL to a Calendly/Cal.com
+// link; falls back to a structured mailto so the path always works. Plus in-section CV.
+const BOOKING_HREF =
+  process.env.NEXT_PUBLIC_BOOKING_URL ||
+  `mailto:${contact.email}?subject=${encodeURIComponent('Conversation request — portfolio')}`;
+const CV_HREF = '/docs/Vik_Resume_Final.pdf';
 
 const OUTCOME_ICONS: Record<string, LucideIcon> = {
   'Test Automation at Scale': Workflow,
@@ -148,16 +160,16 @@ export default function Home() {
           <svg className="morphing-svg" viewBox="0 0 600 600" role="presentation" focusable="false">
             <defs>
               <linearGradient id="morphGradient1" x1="10%" y1="0%" x2="90%" y2="100%">
-                <stop offset="0%" stopColor="rgb(255 115 80)" stopOpacity="0.85" />
-                <stop offset="100%" stopColor="rgb(255 177 153)" stopOpacity="0.35" />
+                <stop offset="0%" stopColor="rgb(201 205 214)" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="rgb(201 205 214)" stopOpacity="0.35" />
               </linearGradient>
               <linearGradient id="morphGradient2" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgb(0 242 254)" stopOpacity="0.75" />
-                <stop offset="100%" stopColor="rgb(124 243 255)" stopOpacity="0.4" />
+                <stop offset="0%" stopColor="rgb(201 205 214)" stopOpacity="0.75" />
+                <stop offset="100%" stopColor="rgb(201 205 214)" stopOpacity="0.4" />
               </linearGradient>
               <linearGradient id="morphGradient3" x1="30%" y1="0%" x2="80%" y2="100%">
                 <stop offset="0%" stopColor="rgb(255 255 255)" stopOpacity="0.6" />
-                <stop offset="100%" stopColor="rgb(255 115 80)" stopOpacity="0.35" />
+                <stop offset="100%" stopColor="rgb(201 205 214)" stopOpacity="0.35" />
               </linearGradient>
               <filter id="blur">
                 <feGaussianBlur stdDeviation="60" />
@@ -195,6 +207,9 @@ export default function Home() {
 
       <main>
         <section id="hero" className="hero-section" ref={heroRef}>
+          <div className="hero-hud-backdrop">
+            <HudFrame variant="backdrop" label="" />
+          </div>
           <motion.div
             className="hero-content"
             variants={heroStagger}
@@ -278,6 +293,8 @@ export default function Home() {
             <HeroAvatar />
           </motion.div>
         </section>
+
+        <ProofBar />
 
         <section id="about" className="about-section">
           <div className="container">
@@ -403,6 +420,7 @@ export default function Home() {
         </section>
 
         <section id="experience" className="experience-section">
+          <ScrollRail targetId="experience" label="Experience" />
           <div className="container">
             <Reveal className="section-header">
               <h2 className="section-title">Experience</h2>
@@ -477,6 +495,10 @@ export default function Home() {
               <h2 className="section-title">Current Projects in the Pipeline</h2>
             </Reveal>
 
+            <Reveal delay={0.05}>
+              <HudFrame label="JARVIS · real-time telemetry" className="work-hud" />
+            </Reveal>
+
             <Reveal delay={0.08}>
               <ProjectsCarousel projects={projects} />
             </Reveal>
@@ -523,22 +545,46 @@ export default function Home() {
               <Reveal>
                 <h2 className="contact-title">{contact.headline}</h2>
               </Reveal>
+              <Reveal className="contact-cta-row" delay={0.04}>
+                <a
+                  href={BOOKING_HREF}
+                  className="btn-primary contact-cta"
+                  {...(BOOKING_HREF.startsWith('http')
+                    ? { target: '_blank', rel: 'noreferrer' }
+                    : {})}
+                >
+                  Book a conversation
+                </a>
+                <a
+                  href={CV_HREF}
+                  className="btn-link contact-cta"
+                  download
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Download CV
+                </a>
+              </Reveal>
               <Reveal className="contact-links-grid" delay={0.08}>
                 <a
                   href={`mailto:${contact.email}`}
-                  className="contact-card email-card"
+                  className="contact-card"
                   aria-label={`Email ${contact.email}`}
                   title={`Email ${contact.email}`}
                 >
-                  <span className="sr-only">Email Vikram at {contact.email}</span>
+                  <Mail className="contact-card-icon" size={28} strokeWidth={1.5} aria-hidden="true" />
+                  <span className="contact-card-label">Email</span>
+                  <span className="contact-card-value">{contact.email}</span>
                 </a>
                 <a
                   href={contact.phoneHref}
-                  className="contact-card phone-card"
+                  className="contact-card"
                   aria-label={`Call ${contact.phone}`}
                   title={`Call ${contact.phone}`}
                 >
-                  <span className="sr-only">Call {contact.phone}</span>
+                  <Phone className="contact-card-icon" size={28} strokeWidth={1.5} aria-hidden="true" />
+                  <span className="contact-card-label">Call</span>
+                  <span className="contact-card-value">{contact.phone}</span>
                 </a>
               </Reveal>
               <Reveal className="social-links-large" delay={0.16}>

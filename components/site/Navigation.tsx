@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const NAV_LINKS = [
   { href: '#hero', label: 'Home' },
@@ -20,8 +20,15 @@ const NAV_LINKS = [
  */
 export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   const close = useCallback(() => setOpen(false), []);
+
+  // Remove the closed overlay from the tab order + accessibility tree so its links
+  // are not focusable while aria-hidden (fixes axe aria-hidden-focus — TC-NFR-A11Y).
+  useEffect(() => {
+    if (overlayRef.current) overlayRef.current.inert = !open;
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -51,7 +58,7 @@ export default function Navigation() {
       >
         {open ? 'Close' : 'Menu'}
       </button>
-      <div id="site-nav-overlay" className={`nav-overlay${open ? ' open' : ''}`} aria-hidden={!open}>
+      <div ref={overlayRef} id="site-nav-overlay" className={`nav-overlay${open ? ' open' : ''}`} aria-hidden={!open}>
         <ul className="nav-links">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>

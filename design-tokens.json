@@ -1,11 +1,11 @@
 {
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "metadata": {
-    "name": "Forgotten Mistory Enterprise Tokens",
-    "version": "1.0.0",
+    "name": "Forgotten Mistory — Monochrome System",
+    "version": "2.0.0",
     "grid": "8pt",
     "fontFamily": "Inter Variable",
-    "colorSpace": "display-p3"
+    "note": "Monochromatic by mandate (docs/overhaul/SPEC.md §3.1). No hue; depth via light, blur, motion. The ONLY accent is a luminous cool-white."
   },
   "spacing": {
     "0": { "value": "0rem" },
@@ -20,27 +20,25 @@
     "16": { "value": "4rem" }
   },
   "typography": {
-    "display": { "value": { "fontFamily": "Inter Variable", "fontWeight": 700, "fontSize": "3.5rem", "lineHeight": 1.1 } },
-    "h1": { "value": { "fontFamily": "Inter Variable", "fontWeight": 700, "fontSize": "2.5rem", "lineHeight": 1.2 } },
-    "h2": { "value": { "fontFamily": "Inter Variable", "fontWeight": 600, "fontSize": "2rem", "lineHeight": 1.3 } },
+    "display": { "value": { "fontFamily": "Inter Variable", "fontWeight": 700, "fontSize": "3.5rem", "lineHeight": 1.05, "letterSpacing": "-0.02em" } },
+    "h1": { "value": { "fontFamily": "Inter Variable", "fontWeight": 700, "fontSize": "2.5rem", "lineHeight": 1.1, "letterSpacing": "-0.015em" } },
+    "h2": { "value": { "fontFamily": "Inter Variable", "fontWeight": 600, "fontSize": "2rem", "lineHeight": 1.2 } },
     "body": { "value": { "fontFamily": "Inter Variable", "fontWeight": 400, "fontSize": "1rem", "lineHeight": 1.6 } },
     "caption": { "value": { "fontFamily": "Inter Variable", "fontWeight": 500, "fontSize": "0.875rem", "lineHeight": 1.4 } }
   },
   "colors": {
-    "background": {
-      "base": { "value": "color(display-p3 0.03 0.04 0.08)" },
-      "surface": { "value": "color(display-p3 0.07 0.09 0.15)" },
-      "elevated": { "value": "color(display-p3 0.11 0.14 0.22)" }
+    "ink": {
+      "900": { "value": "#0A0B0D", "comment": "page background, near-black" },
+      "800": { "value": "#121317", "comment": "raised surface" },
+      "700": { "value": "#1B1D23", "comment": "card / panel" },
+      "500": { "value": "#3A3D46", "comment": "border / hairline" }
     },
-    "text": {
-      "primary": { "value": "color(display-p3 0.93 0.95 0.99)" },
-      "secondary": { "value": "color(display-p3 0.66 0.70 0.79)" },
-      "muted": { "value": "color(display-p3 0.49 0.54 0.63)" }
+    "mist": {
+      "400": { "value": "#8A8F9A", "comment": "secondary text" },
+      "200": { "value": "#C9CDD6", "comment": "body text" }
     },
-    "brand": {
-      "primary": { "value": "color(display-p3 0.99 0.52 0.36)" },
-      "accent": { "value": "color(display-p3 0.35 0.82 0.98)" },
-      "success": { "value": "color(display-p3 0.43 0.90 0.67)" }
-    }
+    "white": { "value": "#F4F6FA", "comment": "primary text / highlight" },
+    "accent": { "value": "#E8EBF0", "comment": "THE only accent — luminous cool-white" },
+    "steel": { "value": "#AEB6C2", "comment": "low-saturation glow tint, never large fills" }
   }
 }

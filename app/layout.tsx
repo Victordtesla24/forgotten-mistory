@@ -1,19 +1,25 @@
 import type { Metadata } from 'next';
-import { Roboto_Condensed, Source_Sans_3 } from 'next/font/google';
+import { Inter, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import MiniVicBot from '../components/MiniVicBot';
 import MotionProvider from '../components/MotionProvider';
 
-const bodyFont = Source_Sans_3({
+// Two families only (SPEC §3.2). Both are variable fonts self-hosted by
+// next/font at build time (no runtime Google Fonts request):
+//   • Inter — body / UI text.
+//   • Space Grotesk — high-contrast grotesque display/heading face.
+const bodyFont = Inter({
   subsets: ['latin'],
-  weight: ['300', '400', '600'],
-  variable: '--font-source-sans',
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-inter',
+  display: 'swap',
 });
 
-const headingFont = Roboto_Condensed({
+const headingFont = Space_Grotesk({
   subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-roboto-condensed',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-space-grotesk',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -70,7 +76,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // Font variables live on <html> so the :root --font-body/--font-heading
+    // tokens (which reference these next/font vars) resolve at :root. Placing
+    // them on <body> would leave :root unable to see them — the tokens would
+    // compute to empty and headings would fall back to the UA sans stack.
+    <html lang="en" className={`${bodyFont.variable} ${headingFont.variable}`}>
       <head>
         <script
           type="application/ld+json"
@@ -81,7 +91,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
-      <body className={`${bodyFont.variable} ${headingFont.variable}`}>
+      <body>
         <MotionProvider>
           {children}
           <MiniVicBot />

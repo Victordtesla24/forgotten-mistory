@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 REPORT_DIR="${ROOT_DIR}/reports/phase02"
 REPORT_FILE="${REPORT_DIR}/phase02-lighthouse-report.md"
-URL="http://127.0.0.1:3000/performance-benchmark"
+URL="http://127.0.0.1:3000/"
 
 mkdir -p "${REPORT_DIR}"
 

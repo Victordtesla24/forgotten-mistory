@@ -1,0 +1,22 @@
+{
+  // markdownlint configuration for forgotten-mistory.
+  //
+  // This repo's Markdown is prose-heavy spec / agent / documentation content
+  // (docs/overhaul/*.md, .claude/agents/*.md, README.md, CLAUDE.md). It is
+  // intentionally written in long, unwrapped lines, and the agent/spec docs use
+  // angle-bracket structural tags (<type>, <example>, <code>, <name>, ...) that
+  // are a functional part of the agent prompt format — not stray HTML. The two
+  // cosmetic rules disabled below conflict with that legitimate content; every
+  // other rule stays at its default.
+  "default": true,
+
+  // MD013 line-length: prose/spec docs use long lines on purpose; an 80-column
+  // hard-wrap is noise here and cannot be applied to single-line YAML frontmatter
+  // strings (e.g. an agent's `description`) without changing their meaning.
+  "MD013": false,
+
+  // MD033 no-inline-html: agent and spec docs intentionally use <type>/<example>/
+  // <code>/<name>/<description> structural tags that are parsed as prompt
+  // structure; they must remain verbatim.
+  "MD033": false
+}

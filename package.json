@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "rm -rf .next && NODE_ENV=development next dev -p 8080",
     "build": "rm -rf .next && NODE_ENV=production next build",
-    "build:static": "rm -rf .next out && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build",
+    "build:static": "rm -rf .next out && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs",
     "start": "next start",
     "lint": "next lint",
     "test": "playwright test",
@@ -48,6 +48,7 @@
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "framer-motion": "11.18.2",
+    "gsap": "^3.15.0",
     "lucide-react": "0.344.0",
     "next": "14.2.33",
     "react": "18.2.0",

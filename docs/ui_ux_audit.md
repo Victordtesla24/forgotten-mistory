@@ -1,3 +1,9 @@
+> ⚠️ **HISTORICAL — pre-overhaul audit, not current direction.** One decision here is now
+> **reversed**: "UI accents kept for brand identity" (Requirement Gaps) contradicts the overhaul's
+> monochrome mandate — the coral/orange accent is a defect (SPEC §13 D-5; NFR-MONO). The GSAP
+> `ScrollTrigger` parallax notes remain accurate (GSAP is in the stack). Authoritative spec:
+> **`docs/overhaul/SPEC.md`**.
+
 # UI/UX Audit Checklist
 
 ## UI Defects

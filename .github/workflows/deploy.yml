@@ -11,6 +11,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # ── Static quality gates (SPEC §11): strict typecheck + monochrome/tone/perf/parity/secret audit ──
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Strict typecheck
+        run: npx tsc --noEmit
+      - name: Static audit (TONE/MONO/PERF/PARITY/SEC)
+        run: node scripts/validate/overhaul_static_audit.mjs
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -22,6 +37,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
 
+  # ── E2E across all three engines (NFR-COMPAT) ──
   test:
     runs-on: ubuntu-latest
     steps:
@@ -31,14 +47,41 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium webkit firefox
       - run: npx playwright test
         env:
           CI: "true"
 
+  # ── Performance budgets (TC-NFR-PERF): Lighthouse via lighthouserc.json ──
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Lighthouse budgets
+        run: npm run validate:phase02
+
+  # ── Accessibility (TC-NFR-A11Y): axe + SEO/schema ──
+  axe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: axe accessibility + SEO
+        run: npm run validate:phase06
+
   build:
     runs-on: ubuntu-latest
-    needs: [lint, test]
+    needs: [quality, lint, test, lighthouse, axe]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -49,7 +92,7 @@ jobs:
       - run: npm run build:static
         env:
           # Inlined into the client bundle for the MiniVic Gemini brain.
-          # Restrict this key by HTTP referrer in Google AI Studio.
+          # Restrict this key by HTTP referrer in Google AI Studio (see SPEC §0.1 / QA-SEC-01).
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       - uses: actions/upload-artifact@v4
         with:

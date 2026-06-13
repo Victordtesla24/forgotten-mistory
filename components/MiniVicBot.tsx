@@ -3,16 +3,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { askMiniVicBrain, type BrainTurn } from "@/lib/miniVicBrain";
 import { GREETING, type PersonaMode } from "@/app/data/miniVicKnowledge";
-import { Copy, Play, RefreshCcw, Rocket, Send, Sparkles, Square, Volume2, VolumeX, X, Mic, MicOff, Video } from "lucide-react";
+import { Copy, Play, RefreshCcw, Send, Sparkles, Square, Volume2, VolumeX, X, Mic, MicOff, Video } from "lucide-react";
 
-type ModeKey = "recruiter" | "engineer" | "story" | "scifi";
+type ModeKey = "recruiter" | "engineer" | "story";
 
 /** Maps UI persona modes to the knowledge module's persona vocabulary. */
 const PERSONA_FOR_MODE: Record<ModeKey, PersonaMode> = {
   recruiter: "hiring",
   engineer: "engineering",
   story: "story",
-  scifi: "scifi",
 };
 
 type ChatMessage = {
@@ -61,7 +60,6 @@ const PERSONA_MODES: { key: ModeKey; label: string; blurb: string }[] = [
   { key: "recruiter", label: "Hiring Fit", blurb: "Outcomes, budgets, velocity" },
   { key: "engineer", label: "Engineering", blurb: "Architecture, telemetry, trade-offs" },
   { key: "story", label: "Story", blurb: "Narrative, stakeholder clarity" },
-  { key: "scifi", label: "Sci-Fi", blurb: "Star Wars/Trek analogies" },
 ];
 
 const QUICK_PROMPTS: QuickPrompt[] = [
@@ -76,11 +74,6 @@ const QUICK_PROMPTS: QuickPrompt[] = [
   {
     label: "Tech stack read",
     prompt: "Summarize your preferred stack for building reliable real-time dashboards.",
-  },
-  {
-    label: "Explain in sci-fi",
-    prompt: "Explain this portfolio like a Star Wars scene.",
-    mode: "scifi",
   },
 ];
 
@@ -366,9 +359,9 @@ const MiniVicBot = () => {
 
       // Draw a holographic waveform
       ctx.lineWidth = 2;
-      ctx.strokeStyle = 'rgba(255, 115, 80, 0.8)'; // orange-400
+      ctx.strokeStyle = 'rgba(201, 205, 214, 0.8)'; // cool grey (mist-200)
       ctx.shadowBlur = 8;
-      ctx.shadowColor = 'rgb(255 115 80)';
+      ctx.shadowColor = 'rgb(201 205 214)';
       
       ctx.beginPath();
       
@@ -435,9 +428,9 @@ const MiniVicBot = () => {
       const t = (performance.now() - started) / 1000;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.lineWidth = 2;
-      ctx.strokeStyle = "rgba(255, 115, 80, 0.8)";
+      ctx.strokeStyle = "rgba(201, 205, 214, 0.8)";
       ctx.shadowBlur = 8;
-      ctx.shadowColor = "rgb(255 115 80)";
+      ctx.shadowColor = "rgb(201 205 214)";
 
       const openAmount = 6 + Math.abs(Math.sin(t * 7.3)) * 7 + Math.abs(Math.sin(t * 3.1)) * 2;
       const segments = 48;
@@ -866,7 +859,7 @@ const MiniVicBot = () => {
       {isOpen && (
         <section
           data-testid="minivic-panel"
-          className="mb-4 w-[22rem] md:w-[27rem] max-w-[calc(100vw-2.5rem)] max-h-[calc(100vh-7rem)] overflow-hidden rounded-3xl border border-cyan-300/20 bg-[linear-gradient(150deg,rgba(6,14,32,0.97),rgba(10,8,24,0.96))] shadow-[0_24px_70px_rgba(4,8,22,0.65),0_0_40px_rgba(0,242,254,0.14)] ring-1 ring-orange-400/25 animate-in slide-in-from-bottom-8 duration-300"
+          className="mb-4 w-[22rem] md:w-[27rem] max-w-[calc(100vw-2.5rem)] max-h-[calc(100vh-7rem)] overflow-hidden rounded-3xl border border-zinc-300/20 bg-[linear-gradient(150deg,rgba(14,15,20,0.97),rgba(10,8,24,0.96))] shadow-[0_24px_70px_rgba(4,8,22,0.65),0_0_40px_rgba(201,205,214,0.14)] ring-1 ring-neutral-400/25 animate-in slide-in-from-bottom-8 duration-300"
           aria-label="MiniVic assistant panel"
         >
           <div className="relative h-56 w-full overflow-hidden border-b border-white/10 bg-black/50">
@@ -895,7 +888,7 @@ const MiniVicBot = () => {
               />
             )}
             <div
-              className={`absolute inset-0 bg-gradient-to-t from-[#050814] via-[#050814]/30 to-transparent transition-opacity duration-500 ${
+              className={`absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/30 to-transparent transition-opacity duration-500 ${
                 isSpeaking ? "opacity-70" : "opacity-45"
               }`}
             />
@@ -904,20 +897,20 @@ const MiniVicBot = () => {
                 isSpeaking ? "opacity-100" : "opacity-0"
               }`}
             >
-              <div className="absolute inset-0 animate-pulse bg-orange-400/10 mix-blend-overlay" />
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(0,242,254,0.14)_1px,transparent_1px),linear-gradient(90deg,rgba(255,115,80,0.16)_1px,transparent_1px)] bg-[size:24px_24px] opacity-20" />
+              <div className="absolute inset-0 animate-pulse bg-white/5 mix-blend-overlay" />
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(244,246,250,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(244,246,250,0.12)_1px,transparent_1px)] bg-[size:24px_24px] opacity-20" />
             </div>
             <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between p-3">
               <div className={`flex items-center gap-2 rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] backdrop-blur-md transition-all duration-300 ${
-                isSpeaking ? "border-orange-300/70 bg-orange-950/70 text-orange-100" : "border-cyan-200/25 bg-black/40 text-cyan-100"
+                isSpeaking ? "border-neutral-300/70 bg-neutral-950/70 text-neutral-100" : "border-zinc-200/25 bg-black/40 text-zinc-100"
               }`}>
-                <span className={`h-2 w-2 rounded-full ${isSpeaking ? "bg-green-400 animate-ping" : "bg-cyan-300"}`} />
+                <span className={`h-2 w-2 rounded-full ${isSpeaking ? "bg-zinc-400 animate-ping" : "bg-zinc-300"}`} />
                 <span>MiniVic Live</span>
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => setIsMuted((prev) => !prev)}
-                  className="rounded-full border border-white/15 bg-black/40 p-2 text-white backdrop-blur-md transition-all hover:border-cyan-300/40 hover:bg-white/15"
+                  className="rounded-full border border-white/15 bg-black/40 p-2 text-white backdrop-blur-md transition-all hover:border-zinc-300/40 hover:bg-white/15"
                   aria-label={isMuted ? "Unmute voice" : "Mute voice"}
                 >
                   {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
@@ -927,7 +920,7 @@ const MiniVicBot = () => {
                     stopAudio();
                     setIsOpen(false);
                   }}
-                  className="rounded-full border border-white/15 bg-black/40 p-2 text-white backdrop-blur-md transition-all hover:border-red-300/50 hover:bg-red-500/25 hover:text-red-200"
+                  className="rounded-full border border-white/15 bg-black/40 p-2 text-white backdrop-blur-md transition-all hover:border-neutral-300/50 hover:bg-neutral-500/25 hover:text-neutral-200"
                   aria-label="Close mini Vic"
                 >
                   <X size={14} />
@@ -939,7 +932,7 @@ const MiniVicBot = () => {
                 <div>
                   <h3 className="flex items-center gap-2 text-lg font-semibold text-white">
                     Mini Vic Command
-                    <Sparkles size={16} className={`${isSpeaking ? "animate-spin-slow text-orange-200" : "text-cyan-200"}`} />
+                    <Sparkles size={16} className={`${isSpeaking ? "animate-spin-slow text-neutral-200" : "text-zinc-200"}`} />
                   </h3>
                   <p className="mt-0.5 text-[11px] text-slate-300">
                     Ask about delivery, systems, team leadership, or roadmap execution.
@@ -947,10 +940,10 @@ const MiniVicBot = () => {
                 </div>
                 <div className={`rounded-full border px-2 py-1 text-[11px] font-medium backdrop-blur transition-colors ${
                   isSpeaking
-                    ? "border-orange-300/70 bg-orange-500/25 text-orange-100"
+                    ? "border-neutral-300/70 bg-neutral-500/25 text-neutral-100"
                     : isListening
-                      ? "animate-pulse border-red-300/70 bg-red-500/25 text-red-100"
-                      : "border-cyan-200/30 bg-cyan-500/10 text-cyan-100"
+                      ? "animate-pulse border-neutral-300/70 bg-neutral-500/25 text-neutral-100"
+                      : "border-zinc-200/30 bg-zinc-500/10 text-zinc-100"
               }`}>
                 {isSpeaking ? (isVideoPlaying ? "Video Playback" : "Voice Active") : isListening ? "Listening..." : "Online"}
               </div>
@@ -967,8 +960,8 @@ const MiniVicBot = () => {
                 onClick={() => setActiveMode(mode.key)}
                 className={`rounded-xl border px-3 py-1.5 text-xs transition-all ${
                   activeMode === mode.key
-                    ? "border-cyan-200/70 bg-cyan-500/25 text-cyan-50 shadow-lg shadow-cyan-500/20"
-                    : "border-white/15 bg-white/5 text-slate-200 hover:border-orange-300/60 hover:bg-orange-500/10"
+                    ? "border-zinc-200/70 bg-zinc-500/25 text-zinc-50 shadow-lg shadow-zinc-500/20"
+                    : "border-white/15 bg-white/5 text-slate-200 hover:border-neutral-300/60 hover:bg-neutral-500/10"
                 }`}
               >
                 <span className="font-medium">{mode.label}</span>
@@ -979,7 +972,7 @@ const MiniVicBot = () => {
               <button
                 onClick={handleReplay}
                 disabled={!lastAudio || isMuted}
-                className="rounded-lg border border-white/15 px-3 py-1.5 text-xs text-slate-200 transition-colors hover:border-cyan-300/60 hover:bg-cyan-500/10 disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-lg border border-white/15 px-3 py-1.5 text-xs text-slate-200 transition-colors hover:border-zinc-300/60 hover:bg-zinc-500/10 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <div className="flex items-center gap-1">
                   <Play size={12} />
@@ -988,7 +981,7 @@ const MiniVicBot = () => {
               </button>
               <button
                 onClick={handleClear}
-                className="rounded-lg border border-white/15 px-3 py-1.5 text-xs text-slate-200 transition-colors hover:border-red-300/70 hover:bg-red-500/10"
+                className="rounded-lg border border-white/15 px-3 py-1.5 text-xs text-slate-200 transition-colors hover:border-neutral-300/70 hover:bg-neutral-500/10"
               >
                 <div className="flex items-center gap-1">
                   <RefreshCcw size={12} />
@@ -998,20 +991,20 @@ const MiniVicBot = () => {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2 border-b border-white/10 bg-black/25 px-3 py-2 text-[11px] text-slate-200">
-            <span className="rounded-md border border-cyan-300/35 bg-cyan-500/10 px-2 py-1 text-cyan-100">
+            <span className="rounded-md border border-zinc-300/35 bg-zinc-500/10 px-2 py-1 text-zinc-100">
               {PERSONA_MODES.find((m) => m.key === activeMode)?.blurb}
             </span>
             {latencyMs !== null && (
-              <span className="rounded-md border border-emerald-300/40 bg-emerald-500/10 px-2 py-1 text-emerald-100">
+              <span className="rounded-md border border-zinc-300/40 bg-zinc-500/10 px-2 py-1 text-zinc-100">
                 {latencyMs} ms response
               </span>
             )}
-            <span className="rounded-md border border-orange-300/40 bg-orange-500/10 px-2 py-1 text-orange-100">
+            <span className="rounded-md border border-neutral-300/40 bg-neutral-500/10 px-2 py-1 text-neutral-100">
               {isMuted ? "Muted" : "Voice on"}
             </span>
           </div>
           <div
-            className="h-72 space-y-3 overflow-y-auto bg-[linear-gradient(180deg,rgba(7,10,21,0.92),rgba(4,7,15,0.9))] p-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-cyan-900/50"
+            className="h-72 space-y-3 overflow-y-auto bg-[linear-gradient(180deg,rgba(7,10,21,0.92),rgba(4,7,15,0.9))] p-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-zinc-900/50"
             role="log"
             aria-live="polite"
             aria-relevant="additions text"
@@ -1022,15 +1015,15 @@ const MiniVicBot = () => {
                 <div
                   className={`max-w-[85%] p-3 text-sm leading-relaxed rounded-2xl shadow-sm border ${
                     msg.role === "user"
-                      ? "rounded-tr-none border-orange-300/70 bg-orange-500/85 text-white"
-                      : "rounded-tl-none border-cyan-300/20 bg-slate-950/85 text-slate-100"
+                      ? "rounded-tr-none border-neutral-300/70 bg-neutral-500/85 text-white"
+                      : "rounded-tl-none border-zinc-300/20 bg-slate-950/85 text-slate-100"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2 text-[11px] mb-1 opacity-80">
                     <span>{msg.role === "user" ? "You" : "Vic"}</span>
                     <div className="flex gap-1 items-center">
                       {msg.mode && (
-                        <span className="rounded-full border border-cyan-200/25 bg-cyan-500/10 px-2 py-[2px] text-[10px] uppercase tracking-wide text-cyan-100">
+                        <span className="rounded-full border border-zinc-200/25 bg-zinc-500/10 px-2 py-[2px] text-[10px] uppercase tracking-wide text-zinc-100">
                           {msg.mode}
                         </span>
                       )}
@@ -1046,7 +1039,7 @@ const MiniVicBot = () => {
                         <button
                           onClick={() => playAudio(msg.audio!)}
                           disabled={isMuted}
-                          className="rounded-md border border-orange-300/40 bg-orange-500/10 px-2 py-1 text-orange-100 hover:bg-orange-500/20 disabled:opacity-40"
+                          className="rounded-md border border-neutral-300/40 bg-neutral-500/10 px-2 py-1 text-neutral-100 hover:bg-neutral-500/20 disabled:opacity-40"
                         >
                           <div className="flex items-center gap-1">
                             <Play size={12} />
@@ -1055,7 +1048,7 @@ const MiniVicBot = () => {
                         </button>
                       )}
                       {msg.polloTaskId && !msg.videoUrl && (
-                         <span className="flex animate-pulse items-center gap-1 rounded-md border border-yellow-300/40 bg-yellow-500/10 px-2 py-1 text-yellow-200">
+                         <span className="flex animate-pulse items-center gap-1 rounded-md border border-neutral-300/40 bg-neutral-500/10 px-2 py-1 text-neutral-200">
                            <Sparkles size={12} /> Generating Video...
                          </span>
                       )}
@@ -1063,7 +1056,7 @@ const MiniVicBot = () => {
                         <button
                           onClick={() => playGeneratedVideo(msg.videoUrl!)}
                           disabled={isMuted}
-                          className="rounded-md border border-purple-300/40 bg-purple-500/10 px-2 py-1 text-purple-100 hover:bg-purple-500/20 disabled:opacity-40"
+                          className="rounded-md border border-zinc-300/40 bg-zinc-500/10 px-2 py-1 text-zinc-100 hover:bg-zinc-500/20 disabled:opacity-40"
                         >
                           <div className="flex items-center gap-1">
                             <Video size={12} />
@@ -1073,7 +1066,7 @@ const MiniVicBot = () => {
                       )}
                       <button
                         onClick={() => handleCopy(msg.text, msg.id)}
-                        className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-slate-200 hover:border-orange-300/70 hover:bg-orange-500/10"
+                        className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-slate-200 hover:border-neutral-300/70 hover:bg-neutral-500/10"
                       >
                         <div className="flex items-center gap-1">
                           <Copy size={12} />
@@ -1087,13 +1080,13 @@ const MiniVicBot = () => {
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="rounded-2xl rounded-tl-none border border-cyan-300/20 bg-slate-950/90 p-3 shadow-[0_0_15px_rgba(0,242,254,0.15)]">
+                <div className="rounded-2xl rounded-tl-none border border-zinc-300/20 bg-slate-950/90 p-3 shadow-[0_0_15px_rgba(201,205,214,0.15)]">
                   <div className="flex gap-1.5">
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-cyan-300" style={{ animationDelay: "0ms" }} />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-cyan-300" style={{ animationDelay: "150ms" }} />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-cyan-300" style={{ animationDelay: "300ms" }} />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-300" style={{ animationDelay: "0ms" }} />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-300" style={{ animationDelay: "150ms" }} />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-300" style={{ animationDelay: "300ms" }} />
                   </div>
-                  <div className="mt-1 animate-pulse text-[10px] text-cyan-100">Accessing neural memory...</div>
+                  <div className="mt-1 animate-pulse text-[10px] text-zinc-100">Accessing neural memory...</div>
                 </div>
               </div>
             )}
@@ -1105,9 +1098,9 @@ const MiniVicBot = () => {
                 key={item.label}
                 onClick={() => handleSend(item.prompt, item.mode)}
                 disabled={isLoading}
-                className="whitespace-nowrap rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs text-slate-100 transition-colors hover:border-cyan-300/50 hover:bg-cyan-500/10"
+                className="whitespace-nowrap rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs text-slate-100 transition-colors hover:border-zinc-300/50 hover:bg-zinc-500/10"
               >
-                {item.mode === "scifi" ? <Rocket size={14} /> : <Sparkles size={14} className="text-orange-300" />}
+                <Sparkles size={14} className="text-neutral-300" />
                 <span>{item.label}</span>
               </button>
             ))}
@@ -1128,8 +1121,8 @@ const MiniVicBot = () => {
                 placeholder={isListening ? "Listening..." : "Ask me anything—teams, budgets, AI stack..."}
                 className={`w-full rounded-xl border bg-slate-900/90 py-2.5 pl-4 pr-10 text-sm text-slate-100 placeholder-slate-400 transition-all ${
                   isListening
-                    ? "border-orange-300/70 bg-orange-500/10 ring-1 ring-orange-500/40"
-                    : "border-white/20 focus:border-cyan-300/70 focus:outline-none focus:ring-1 focus:ring-cyan-500/50"
+                    ? "border-neutral-300/70 bg-neutral-500/10 ring-1 ring-neutral-500/40"
+                    : "border-white/20 focus:border-zinc-300/70 focus:outline-none focus:ring-1 focus:ring-zinc-500/50"
                 }`}
               />
               <button
@@ -1137,8 +1130,8 @@ const MiniVicBot = () => {
                 onClick={toggleListening}
                 className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5 transition-colors ${
                   isListening
-                    ? "bg-orange-500/15 text-orange-300 hover:text-orange-200"
-                    : "text-slate-300 hover:bg-slate-800 hover:text-cyan-200"
+                    ? "bg-neutral-500/15 text-neutral-300 hover:text-neutral-200"
+                    : "text-slate-300 hover:bg-slate-800 hover:text-zinc-200"
                 }`}
                 title="Use Microphone"
               >
@@ -1153,7 +1146,7 @@ const MiniVicBot = () => {
                       handleCopy(last.text, lastAnswerId);
                     }
                   }}
-                  className="absolute right-10 top-1/2 -translate-y-1/2 text-slate-400 hover:text-cyan-200"
+                  className="absolute right-10 top-1/2 -translate-y-1/2 text-slate-400 hover:text-zinc-200"
                   title="Copy last answer"
                 >
                   <Copy size={14} />
@@ -1164,7 +1157,7 @@ const MiniVicBot = () => {
               type="submit"
               disabled={!input.trim() || isLoading}
               aria-label="Send message"
-              className="rounded-xl border border-orange-200/45 bg-gradient-to-br from-orange-500 to-orange-600 p-2.5 text-white shadow-lg shadow-orange-900/30 transition-all hover:from-orange-400 hover:to-orange-500 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-xl border border-neutral-200/45 bg-gradient-to-br from-neutral-500 to-neutral-600 p-2.5 text-white shadow-lg shadow-neutral-900/30 transition-all hover:from-neutral-400 hover:to-neutral-500 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Send size={18} />
             </button>
@@ -1174,8 +1167,8 @@ const MiniVicBot = () => {
       <button
         data-testid="minivic-toggle"
         onClick={() => setIsOpen(!isOpen)}
-        className={`group relative h-16 w-16 overflow-hidden rounded-full border-2 border-cyan-300/70 shadow-[0_0_26px_rgba(0,242,254,0.45)] transition-all duration-300 hover:scale-110 active:scale-95 ${
-          isOpen ? "ring-4 ring-cyan-300/30" : ""
+        className={`group relative h-16 w-16 overflow-hidden rounded-full border-2 border-zinc-300/70 shadow-[0_0_26px_rgba(201,205,214,0.45)] transition-all duration-300 hover:scale-110 active:scale-95 ${
+          isOpen ? "ring-4 ring-zinc-300/30" : ""
         }`}
         onMouseEnter={() => {
           if (!toggleVideoSrc) setToggleVideoSrc(AVATAR_VIDEO_URL);
@@ -1196,8 +1189,8 @@ const MiniVicBot = () => {
           onError={() => setToggleVideoSrc("")}
         />
         <span className="absolute right-1 top-1 flex h-3 w-3">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
-          <span className="relative inline-flex h-3 w-3 rounded-full border border-black bg-green-500"></span>
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-zinc-400 opacity-75"></span>
+          <span className="relative inline-flex h-3 w-3 rounded-full border border-black bg-zinc-500"></span>
         </span>
       </button>
       <audio ref={audioRef} className="hidden" />

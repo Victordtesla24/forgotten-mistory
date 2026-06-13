@@ -67,6 +67,7 @@ export default function HiddenTerminal() {
   const [input, setInput] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
   const logRef = useRef<HTMLDivElement | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
   const konamiIndex = useRef(0);
 
   // Konami code listener (global).
@@ -97,6 +98,12 @@ export default function HiddenTerminal() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
+  // Remove the closed terminal from the tab order + accessibility tree so its input
+  // is not focusable while aria-hidden (fixes axe aria-hidden-focus — TC-NFR-A11Y).
+  useEffect(() => {
+    if (overlayRef.current) overlayRef.current.inert = !open;
   }, [open]);
 
   // Keep the log scrolled to the latest line.
@@ -140,6 +147,7 @@ export default function HiddenTerminal() {
         ~/terminal
       </button>
       <div
+        ref={overlayRef}
         id="terminal-overlay"
         className={`terminal-overlay${open ? ' open' : ''}`}
         aria-hidden={!open}
