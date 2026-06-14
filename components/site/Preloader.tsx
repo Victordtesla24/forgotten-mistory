@@ -4,19 +4,27 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
 const LOADER_DURATION_MS = 1100;
+// Hold the completed 100 frame on screen before revealing, so the counter
+// visibly settles on 100 (FR-BOOT). Total boot ≈ duration + hold + exit fade,
+// kept under the 2.5 s TC-FR-BOOT budget.
+const REVEAL_HOLD_MS = 260;
 
 /**
- * Deterministic preloader. Counts 0 → 100 over a fixed duration, then adds
- * the `page-ready` class to <body> (which releases the CSS-gated hero
- * elements) and unmounts itself. Skips instantly for users who prefer
- * reduced motion.
+ * Deterministic preloader. Counts 0 → 100 over a fixed duration, holds the
+ * completed 100 briefly, then adds the `page-ready` class to <body> (which
+ * releases the CSS-gated hero elements) and unmounts itself. Skips instantly
+ * for users who prefer reduced motion.
  */
 export default function Preloader() {
   const prefersReducedMotion = useReducedMotion();
   const [count, setCount] = useState(0);
+  const [complete, setComplete] = useState(false);
   const [done, setDone] = useState(false);
   const frameRef = useRef<number | null>(null);
 
+  // Drive the counter 0 → 100, then flag completion. `setCount(100)` and
+  // `setComplete(true)` batch into one render, so 100 is committed (and painted)
+  // while the loader is still mounted.
   useEffect(() => {
     if (prefersReducedMotion) {
       document.body.classList.add('page-ready');
@@ -31,8 +39,7 @@ export default function Preloader() {
       if (progress < 1) {
         frameRef.current = requestAnimationFrame(tick);
       } else {
-        document.body.classList.add('page-ready');
-        setDone(true);
+        setComplete(true);
       }
     };
     frameRef.current = requestAnimationFrame(tick);
@@ -41,6 +48,17 @@ export default function Preloader() {
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
     };
   }, [prefersReducedMotion]);
+
+  // Reveal only AFTER the count===100 render has committed (this effect runs
+  // post-commit). The counter therefore always paints 100 before the loader
+  // reveals, regardless of main-thread contention — it can never be batched
+  // away with `done`. The exit fade keeps 100 visible while the loader leaves.
+  useEffect(() => {
+    if (!complete) return undefined;
+    document.body.classList.add('page-ready');
+    const id = window.setTimeout(() => setDone(true), REVEAL_HOLD_MS);
+    return () => clearTimeout(id);
+  }, [complete]);
 
   return (
     <AnimatePresence>
