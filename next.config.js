@@ -27,6 +27,7 @@ const SECURITY_HEADERS = [
       "default-src 'self'; base-uri 'self'; object-src 'none'; " +
       "img-src 'self' data: blob: https:; media-src 'self' blob:; font-src 'self' data:; " +
       "style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+      "worker-src 'self'; " +
       "connect-src 'self' ws: wss: https://generativelanguage.googleapis.com https://*.googleapis.com; " +
       "frame-src https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors 'none'",
   },
@@ -45,7 +46,19 @@ const nextConfig = {
       }
     : {
         async headers() {
-          return [{ source: '/:path*', headers: SECURITY_HEADERS }];
+          return [
+            { source: '/:path*', headers: SECURITY_HEADERS },
+            // The service worker (NFR-DURABLE) must always be revalidated so a new
+            // version is picked up promptly, and must be allowed to claim root scope.
+            // Mirrored for the static export in firebase.json.
+            {
+              source: '/sw.js',
+              headers: [
+                { key: 'Cache-Control', value: 'no-cache' },
+                { key: 'Service-Worker-Allowed', value: '/' },
+              ],
+            },
+          ];
         },
       }),
   reactStrictMode: true,

@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import MiniVicBot from '../components/MiniVicBot';
 import MotionProvider from '../components/MotionProvider';
+import ServiceWorkerRegister from '../components/site/ServiceWorkerRegister';
 
 // Two families only (SPEC §3.2). Both are variable fonts self-hosted by
 // next/font at build time (no runtime Google Fonts request):
@@ -96,6 +97,7 @@ export default function RootLayout({
           {children}
           <MiniVicBot />
         </MotionProvider>
+        <ServiceWorkerRegister />
       </body>
     </html>
   );

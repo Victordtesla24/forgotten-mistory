@@ -27,9 +27,10 @@
 | TC-NFR-TYPE | `tests/overhaul/typography.spec.ts` (+ `audit.spec.ts` `checkFonts`) |
 | TC-NFR-SEC (headers + fail-loud + `out/` leak) | `tests/overhaul/security.spec.ts` |
 | TC-NFR-A11Y | `tests/overhaul/a11y.spec.ts` (`@axe-core/playwright`, gates critical+serious) |
+| TC-NFR-DURABLE (offline-after-visit reload: core content + CV from cache; static `out/` served with gzip via `helpers/staticServer`, `context.setOffline(true)`) | `tests/overhaul/durable.spec.ts` (service worker `public/sw.js` + `components/site/ServiceWorkerRegister.tsx`) |
 
 Remaining `TC-*` (HERO, CHAT, VOICE, CLONE/CLONE-LIVE, VOICE-DYN, SYNTH, MINDSET, SECONDARY,
-U-STATE, INT-CLONE, FPS, RENDER, COMPAT, DURABLE, NN-1/2/3) get their bound spec as each
+U-STATE, INT-CLONE, FPS, RENDER, COMPAT, NN-1/2/3) get their bound spec as each
 feature lands — tracked in `IMPLEMENTATION-PLAN.md`. (HERO is touched by `site.spec.ts` but the
 SPEC §10 criteria — ≥1 metric, 2 dual-pillar CTAs, GitHub/YouTube/CV links resolving 200 — are
 not yet asserted; tracked as Partial in `quality-assurance.md`.)
