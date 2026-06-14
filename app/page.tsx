@@ -237,6 +237,17 @@ export default function Home() {
                 ))}
               </p>
             </motion.div>
+            {/* Dual-pillar CTAs (NN-1): the two first-class audiences each get a
+                first-class action — employers review the evidence, clients see the
+                quantified outcomes. */}
+            <motion.div className="hero-cta-pillars" variants={heroItem}>
+              <a href="#experience" data-pillar="employer" className="btn-pillar">
+                Review experience
+              </a>
+              <a href="#proof" data-pillar="client" className="btn-pillar">
+                See outcomes
+              </a>
+            </motion.div>
             <motion.div className="hero-links" variants={heroItem}>
               <a href={contact.github} target="_blank" rel="noreferrer" className="btn-link">
                 GitHub
