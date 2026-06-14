@@ -31,8 +31,9 @@
 | TC-NFR-A11Y | `tests/overhaul/a11y.spec.ts` (`@axe-core/playwright`, gates critical+serious) |
 | TC-NFR-DURABLE (offline-after-visit reload: core content + CV from cache; static `out/` served with gzip via `helpers/staticServer`, `context.setOffline(true)`) | `tests/overhaul/durable.spec.ts` (service worker `public/sw.js` + `components/site/ServiceWorkerRegister.tsx`) |
 | TC-FR-CATALOG (curated catalogue lists ≥10 distinct repos — corporate + personal — and every catalogue link resolves <400; dynamic `#github-projects` feed excluded so the count is a deterministic guard. **Per-repo dedicated-effect mapping per §7/§2.1 remains fan-out scope**) | `tests/overhaul/catalog.spec.ts` |
+| TC-FR-SYNTH (the `#synthesis` section shows every §6 source consulted — résumé + repo/commits/READMEs, YouTube descriptions, local profile files, operational traces, public accounts — and ≥1 rendered fact traces to a non-résumé source) | `tests/overhaul/synthesis.spec.ts` (data: `synthesisSources` in `app/data/siteContent.ts`; view: `components/site/SynthesisProvenance.tsx`) |
 
-Remaining `TC-*` (CHAT, VOICE, CLONE/CLONE-LIVE, VOICE-DYN, SYNTH, MINDSET, SECONDARY,
+Remaining `TC-*` (CHAT, VOICE, CLONE/CLONE-LIVE, VOICE-DYN, MINDSET, SECONDARY,
 U-STATE, INT-CLONE, FPS, RENDER, COMPAT, NN-2/3) get their bound spec as each
 feature lands — tracked in `IMPLEMENTATION-PLAN.md`. (NN-1 dual-pillar is now asserted
 in the hero via `hero.spec.ts`; per-section NN-1 audit across all sections remains.)

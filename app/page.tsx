@@ -37,6 +37,7 @@ import HeroAvatar from '@/components/site/HeroAvatar';
 import ScrollRail from '@/components/site/ScrollRail';
 import HudFrame from '@/components/fx/HudFrame';
 import ProofBar from '@/components/site/ProofBar';
+import SynthesisProvenance from '@/components/site/SynthesisProvenance';
 
 import { resumeContent } from './data/resumeContent';
 import {
@@ -549,6 +550,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <SynthesisProvenance />
 
         <section id="contact" className="contact-section">
           <div className="container">

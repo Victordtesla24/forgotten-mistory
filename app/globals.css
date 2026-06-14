@@ -3305,6 +3305,37 @@ footer {
 .proof-label { color: var(--mist-400); font-size: 0.95rem; line-height: 1.45; }
 @media (max-width: 768px) { .proof-grid { gap: 1.25rem; } }
 
+/* ── Synthesis provenance (FR-SYNTH) ── */
+.synthesis-section { padding: 4rem 0; position: relative; z-index: 5; }
+.synthesis-grid {
+    list-style: none; margin: 1.5rem 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1.25rem;
+}
+.synthesis-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.25rem 1.35rem;
+    display: flex; flex-direction: column;
+    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+.synthesis-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.06);
+}
+.synthesis-source {
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--mist-400); margin: 0 0 0.6rem;
+}
+.synthesis-mined { color: var(--secondary-text); font-size: 0.95rem; line-height: 1.5; margin: 0 0 0.85rem; }
+.synthesis-fact {
+    color: var(--white); font-size: 1rem; line-height: 1.5; margin: auto 0 0;
+    padding-top: 0.85rem; border-top: 1px solid var(--border-color);
+    font-variant-numeric: tabular-nums;
+}
+@media (max-width: 768px) { .synthesis-grid { gap: 1rem; } }
+
 /* ── Contact CTAs (FR-CONTACT) ── */
 .contact-cta-row {
     display: flex; flex-wrap: wrap; gap: 1rem;

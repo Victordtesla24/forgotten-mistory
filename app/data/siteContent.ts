@@ -35,6 +35,27 @@ export interface FeaturedRepo {
   description: string;
 }
 
+/**
+ * Provenance of the multi-source synthesis (SPEC §6 / FR-SYNTH, prompt §4).
+ * Each `kind` is one §6 source category that was actually mined; `tracedFact` is
+ * a concrete claim rendered elsewhere on the site that traces back to that
+ * source — so every fact stays evidence-led and is never the résumé alone (NN-3).
+ */
+export type SynthesisSourceKind =
+  | 'resume'
+  | 'repo'
+  | 'youtube'
+  | 'local'
+  | 'traces'
+  | 'accounts';
+
+export interface SynthesisSource {
+  kind: SynthesisSourceKind;
+  label: string;
+  mined: string;
+  tracedFact: string;
+}
+
 export const hero = {
   greeting: "Hello, I'm",
   name: 'Vikram.',
@@ -286,6 +307,50 @@ export const featuredRepos: FeaturedRepo[] = [
     href: 'https://github.com/Victordtesla24/Error-Management-System',
     name: 'Error-Management-System',
     description: 'Autonomous AI agent that detects and repairs build and runtime errors across projects.',
+  },
+];
+
+/**
+ * The six §6 mining sources, each with a fact traceable to it that is rendered
+ * elsewhere on the site (FR-SYNTH / TC-FR-SYNTH). Order: résumé first, then the
+ * five non-résumé sources the SPEC names as consulted.
+ */
+export const synthesisSources: SynthesisSource[] = [
+  {
+    kind: 'resume',
+    label: 'Résumé dossier',
+    mined: 'Roles, dates, education and certifications.',
+    tracedFact: 'Eight career roles from MYOB (2010) through to the ATO Payday Super program.',
+  },
+  {
+    kind: 'repo',
+    label: 'GitHub repositories, commits and READMEs',
+    mined: 'Project scope and execution detail read from the code itself.',
+    tracedFact: 'telemetry-server — real-time device ingestion with WebSocket fan-out.',
+  },
+  {
+    kind: 'youtube',
+    label: 'YouTube @vicd0ct video descriptions',
+    mined: 'Project narratives and live-build context.',
+    tracedFact: 'Deep-dives on live coding, algorithm archaeology and telemetry breakdowns.',
+  },
+  {
+    kind: 'local',
+    label: 'Local profile source files',
+    mined: 'Working profile and configuration facts.',
+    tracedFact: 'AI/ML delivery focus — fast, safe and compliant programs.',
+  },
+  {
+    kind: 'traces',
+    label: 'Past operational traces',
+    mined: 'Prior outcomes and measured reliability.',
+    tracedFact: '10,000+ concurrent devices held at P95 under 200 ms.',
+  },
+  {
+    kind: 'accounts',
+    label: 'Public accounts',
+    mined: 'Verifiable public presence.',
+    tracedFact: 'github.com/Victordtesla24 and youtube.com/@vicd0ct.',
   },
 ];
 
