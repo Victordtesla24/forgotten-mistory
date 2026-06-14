@@ -22,8 +22,10 @@ export default function Preloader() {
   const [done, setDone] = useState(false);
   const frameRef = useRef<number | null>(null);
 
-  // Drive the counter 0 → 100, then flag completion. `setCount(100)` and
-  // `setComplete(true)` batch into one render, so 100 is committed (and painted)
+  // Drive the counter 0 → 100, then flag completion. `floor` (not `round`) means
+  // 100 is shown ONLY at progress === 1 — the counter never reads 100 before the
+  // loader has actually finished (round would flip to 100 at 99.5%). `setCount(100)`
+  // and `setComplete(true)` batch into one render, so 100 is committed (and painted)
   // while the loader is still mounted.
   useEffect(() => {
     if (prefersReducedMotion) {
@@ -35,7 +37,7 @@ export default function Preloader() {
     const start = performance.now();
     const tick = (now: number) => {
       const progress = Math.min((now - start) / LOADER_DURATION_MS, 1);
-      setCount(Math.round(progress * 100));
+      setCount(Math.floor(progress * 100));
       if (progress < 1) {
         frameRef.current = requestAnimationFrame(tick);
       } else {

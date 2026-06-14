@@ -18,6 +18,12 @@ import { ensureStaticBuild, startStaticServer, type StaticServer } from './helpe
  * RED before the batch fix: on the final tick the original Preloader batched
  * `setCount(100)` with `setDone(true)`, so the loader unmounted before 100 ever
  * painted — the counter visibly reached only 99.
+ *
+ * The counter uses `Math.floor`, so 100 is reached ONLY at progress === 1 — the
+ * exact tick where the batched `setDone` would have dropped the 100 paint. That
+ * makes this a DETERMINISTIC regression guard: the buggy (batched) Preloader
+ * fails on every refresh rate, not just when an rAF tick happens to land in the
+ * sub-frame window where `round` flipped to 100 a few ms early.
  */
 
 test.describe('TC-FR-BOOT — preloader counter→100, reveal, motif', () => {
