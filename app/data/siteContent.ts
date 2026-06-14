@@ -267,6 +267,26 @@ export const featuredRepos: FeaturedRepo[] = [
     name: 'Advanced-Prompt-Creator',
     description: 'Privacy-first prompt engineering.',
   },
+  {
+    href: 'https://github.com/Victordtesla24/telemetry-server',
+    name: 'telemetry-server',
+    description: 'Real-time device telemetry ingestion and WebSocket fan-out server (ANZ-era platform).',
+  },
+  {
+    href: 'https://github.com/Victordtesla24/tesla-api',
+    name: 'tesla-api',
+    description: 'Telemetry API layer normalising live vehicle signal feeds for downstream clients.',
+  },
+  {
+    href: 'https://github.com/Victordtesla24/ride-with-vic-app',
+    name: 'ride-with-vic-app',
+    description: 'Client app consuming the live telemetry stream over WebSockets.',
+  },
+  {
+    href: 'https://github.com/Victordtesla24/Error-Management-System',
+    name: 'Error-Management-System',
+    description: 'Autonomous AI agent that detects and repairs build and runtime errors across projects.',
+  },
 ];
 
 export const contact = {

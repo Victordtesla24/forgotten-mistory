@@ -30,6 +30,7 @@
 | TC-NFR-SEC (headers + fail-loud + `out/` leak) | `tests/overhaul/security.spec.ts` |
 | TC-NFR-A11Y | `tests/overhaul/a11y.spec.ts` (`@axe-core/playwright`, gates critical+serious) |
 | TC-NFR-DURABLE (offline-after-visit reload: core content + CV from cache; static `out/` served with gzip via `helpers/staticServer`, `context.setOffline(true)`) | `tests/overhaul/durable.spec.ts` (service worker `public/sw.js` + `components/site/ServiceWorkerRegister.tsx`) |
+| TC-FR-CATALOG (curated catalogue lists ≥10 distinct repos — corporate + personal — and every catalogue link resolves <400; dynamic `#github-projects` feed excluded so the count is a deterministic guard. **Per-repo dedicated-effect mapping per §7/§2.1 remains fan-out scope**) | `tests/overhaul/catalog.spec.ts` |
 
 Remaining `TC-*` (CHAT, VOICE, CLONE/CLONE-LIVE, VOICE-DYN, SYNTH, MINDSET, SECONDARY,
 U-STATE, INT-CLONE, FPS, RENDER, COMPAT, NN-2/3) get their bound spec as each
