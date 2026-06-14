@@ -21,7 +21,8 @@
 | TC-FR-NAV / ABOUT / EXP / SKILLS / SEO / RESP | `tests/overhaul/sections.spec.ts` |
 | TC-FR-PROOF | `tests/overhaul/proof.spec.ts` |
 | TC-FR-CONTACT | `tests/overhaul/contact.spec.ts` |
-| TC-NFR-TONE / MONO / PERF / PARITY / TYPE / SEC | `tests/overhaul/audit.spec.ts` (runs `scripts/validate/overhaul_static_audit.mjs` — 7 checks incl. `TC-NFR-TYPE` + `TC-ARCH-BENCH`; **PERF here = per-asset media budgets only**) |
+| TC-NFR-TONE / MONO / PERF / PARITY / TYPE / SEC / COMPLETE | `tests/overhaul/audit.spec.ts` (runs `scripts/validate/overhaul_static_audit.mjs` — 8 checks incl. `TC-NFR-TYPE`, `TC-ARCH-BENCH`, `TC-NFR-COMPLETE`; **PERF here = per-asset media budgets only**) |
+| TC-NFR-COMPLETE (0 truncation/placeholder/stub markers in `app\|components\|lib`) | `tests/overhaul/audit.spec.ts` → `overhaul_static_audit.mjs` `checkComplete` |
 | TC-NFR-PERF (first-view payload ≤2.5 MB + CLS <0.05, deterministic; static `out/` served with gzip, measured to `load`) | `tests/overhaul/perf.spec.ts` (Lighthouse perf≥90/LCP<2.5s/TBT<200ms companion = `scripts/validate/phase02_lighthouse.sh` on `/`) |
 | TC-NFR-TS | `tests/overhaul/audit.spec.ts` (runs `tsc --noEmit`) |
 | TC-NFR-TYPE | `tests/overhaul/typography.spec.ts` (+ `audit.spec.ts` `checkFonts`) |

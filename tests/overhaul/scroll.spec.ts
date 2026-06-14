@@ -51,8 +51,16 @@ test.describe('TC-FR-SCROLL — GSAP ScrollTrigger', () => {
     await gotoHome(page);
     const fill = page.getByTestId('scroll-rail-fill');
     await expect(fill).toBeAttached();
-    await page.waitForTimeout(500);
-    const s = scaleY(await fill.evaluate((el) => getComputedStyle(el).transform));
-    expect(s).toBeGreaterThan(0.9);
+    // Poll the computed fill rather than reading once after a fixed sleep: the
+    // reduced-motion final-state effect runs post-hydration, which on a cold dev
+    // server (~8 s first compile) can land after a 500 ms wait (QA-TEST-05). The
+    // assertion is unchanged — the rail MUST reach the final filled state (>0.9) —
+    // it just tolerates timing instead of one-shot reading a transient.
+    await expect
+      .poll(async () => scaleY(await fill.evaluate((el) => getComputedStyle(el).transform)), {
+        timeout: 12000,
+        message: 'reduced-motion rail never reached final filled state (>0.9)',
+      })
+      .toBeGreaterThan(0.9);
   });
 });

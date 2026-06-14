@@ -4,7 +4,9 @@
  * cases in docs/overhaul/SPEC.md §10. Runs with zero deps against the source tree.
  *
  * Covers: TC-NFR-TONE, TC-NFR-MONO, TC-NFR-PERF (asset budget), TC-FR-PARITY (facts),
- *         TC-NFR-SEC (client secret leak).
+ *         TC-NFR-TYPE (≤2 font families), TC-NFR-SEC (client secret leak),
+ *         TC-ARCH-BENCH (no /performance-benchmark in out/), TC-NFR-COMPLETE
+ *         (no truncation/placeholder/stub markers in app|components|lib).
  *
  * Usage:  node scripts/validate/overhaul_static_audit.mjs
  * Exit:   0 if all checks PASS, 1 otherwise. Prints a per-check report.
@@ -228,6 +230,67 @@ function checkBuildOutput() {
     offenders.length ? `${offenders.length} leaked artifact(s): ${offenders.join('; ')}` : 'absent from out/');
 }
 
+// ── TC-NFR-COMPLETE — no truncation/placeholder/stub markers ─────────────────
+function checkComplete() {
+  // NFR-COMPLETE (SPEC §9/§10): every shipped line is complete and runnable —
+  // zero truncation/placeholder/stub markers across app/**, components/**, lib/**.
+  // High-precision by design: it flags the markers that signal *incomplete* code
+  // and deliberately does NOT match legitimate idioms present in this tree — the
+  // Three.js `dummy` Object3D instancing variable, `placeholder=` input attributes,
+  // `placeholder-*` utility classes, the SPEC-mandated deterministic offline
+  // `fallback` brain path, or trailing "…" in UI strings ("Generating Video...").
+  const files = [
+    ...walk(join(ROOT, 'app')),
+    ...walk(join(ROOT, 'components')),
+    ...walk(join(ROOT, 'lib')),
+  ].filter((p) => /\.(ts|tsx|js|jsx|mjs)$/.test(p));
+
+  // Markers flagged anywhere in source (unambiguous incomplete-code signals).
+  const MARKERS = [
+    { re: /\bTODO\b/, label: 'TODO' },
+    { re: /\bFIXME\b/, label: 'FIXME' },
+    { re: /\bXXX\b/, label: 'XXX' },
+    { re: /\bHACK\b/, label: 'HACK' },
+    { re: /\bnot[\s-]?implemented\b/i, label: 'not implemented' },
+    { re: /\bunimplemented\b/i, label: 'unimplemented' },
+    { re: /\bnotImplemented\b/, label: 'notImplemented' },
+    // "real APIs only, never dummy/mock" (CLAUDE.md) — these never belong in app code.
+    { re: /\bmock(?:ed|s)?\b/i, label: 'mock' },
+    { re: /\bstub(?:bed|s)?\b/i, label: 'stub' },
+    // Agent truncation phrases.
+    { re: /\b(?:rest|remainder)\s+of\s+(?:the\s+)?(?:file|code|component|implementation|function|method)\b/i, label: 'rest-of-file' },
+    { re: /\bcode\s+omitted\b/i, label: 'code omitted' },
+    { re: /\bomitted\s+for\s+brevity\b/i, label: 'omitted for brevity' },
+    { re: /\byour\s+code\s+here\b/i, label: 'your code here' },
+    { re: /\b(?:implementation|logic|code)\s+goes\s+here\b/i, label: 'goes here' },
+    { re: /\bplaceholder\s+(?:implementation|logic|function|component|here)\b/i, label: 'placeholder impl' },
+  ];
+  // Ellipsis-as-truncation, but ONLY when the whole comment is an ellipsis — a
+  // trailing "..." inside UI/string content is legitimate and never matches.
+  const ELLIPSIS_COMMENT = [
+    /^\s*\/\/\s*\.{3,}\s*$/,
+    /^\s*\/\*\s*\.{3,}\s*\*\/\s*$/,
+    /\{\s*\/\*\s*\.{3,}\s*\*\/\s*\}/,
+  ];
+
+  const hits = [];
+  for (const f of files) {
+    const rel = relative(ROOT, f);
+    const lines = read(f).split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      for (const { re, label } of MARKERS) {
+        if (re.test(line)) { hits.push(`${rel}:${i + 1} :: ${label}`); break; }
+      }
+      if (ELLIPSIS_COMMENT.some((re) => re.test(line))) hits.push(`${rel}:${i + 1} :: ellipsis-comment`);
+    }
+  }
+  const uniq = [...new Set(hits)];
+  record('TC-NFR-COMPLETE', 'No truncation/placeholder/stub markers (app|components|lib)',
+    uniq.length === 0,
+    uniq.length ? `${uniq.length} marker(s): ${uniq.slice(0, 16).join('; ')}` : 'clean — no incomplete-code markers');
+}
+
 checkTone();
 checkMono();
 checkAssetBudget();
@@ -235,6 +298,7 @@ checkParity();
 checkFonts();
 checkSecrets();
 checkBuildOutput();
+checkComplete();
 
 // ── Report ──────────────────────────────────────────────────────────────────
 let allPass = true;
