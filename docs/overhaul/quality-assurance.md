@@ -32,8 +32,27 @@
 8. **HMR discipline.** Browser suites are NOT run while the implementation agent edits a shared
   dev server — concurrent runs cause false failures. QA holds runs until the edit-hold is released.
 
-**Last audit:** 2026-06-14 (re-audit **#8** — spec-fidelity guardian **iteration-1 verification of
-TC-NFR-PERF**). QA independently re-ran the full chain (no contention: ports 3000/8080 free, no live
+**Last audit:** 2026-06-14 (re-audit **#9** — MVP-completion loop). Three §7-P1 units landed
+test-first and were independently QA-verified, and the QA-TEST-05 cold-compile flap was fixed at
+the test layer. QA re-ran the full chain in an isolated worktree off HEAD `ae259a8` (dev server
+killed → faithful **cold** start; `out/` rebuilt fresh): `npx tsc --noEmit` **0**, `npm run lint`
+**clean**, `overhaul_static_audit.mjs` **8/8** (TONE·MONO·PERF·PARITY·TYPE·SEC·ARCH-BENCH·**COMPLETE**),
+`npx playwright test tests/overhaul --workers=1` **34 passed COLD** (1.8 min, exit 0, **no flap** —
+hardened reduced-motion specs survive an ~8 s cold compile), perf **negative control** **2 failed**
+(gate bites). **New VERIFIED TCs:** **TC-NFR-DURABLE** (`durable.spec` 2✓ — offline reload renders
+core sections + CV 200 from SW cache; static `out/`+gzip), **TC-NFR-COMPLETE** (`checkComplete`: 0
+truncation/placeholder/stub markers in app|components|lib; neg-control flips it FAIL), **TC-FR-HERO**
+(`hero.spec` 2✓ — name, position line, ≥1 metric, dual-pillar CTAs employer #experience / client
+#proof, GitHub/YouTube/CV present & resolve 200). Visual review at 320 + 1280: monochrome, restrained,
+CTAs wrap clean, **no horizontal overflow**. **QA-TEST-05 fixed:** proof/scroll reduced-motion specs
+given cold-compile-tolerant budgets (`toBeVisible({timeout:12000})` / `expect.poll`) — assertions
+unchanged, validated 4/4 green on a cold server. **Owner gates honoured:** no git push / Firebase
+deploy / `main` edit / paid D-ID/ElevenLabs call (committed locally on `worktree-mvp-completion` off
+`overhaul/marvel-grade-portfolio`). **Verdict: ~67%, NOT deploy-ready** — Lighthouse/FPS/3-browser
+runtime budgets, clone voice/lip-sync, asset/VFX layer, catalogue ≥10, synthesis, NN-2 dossier remain.
+
+**Prior re-audit #8** — spec-fidelity guardian **iteration-1 verification of
+TC-NFR-PERF**. QA independently re-ran the full chain (no contention: ports 3000/8080 free, no live
 next/playwright/lhci procs, `out/` freshly built 08:43): `npx tsc --noEmit` **0**, `npm run lint`
 **clean**, `overhaul_static_audit.mjs` **7/7**, `npx playwright test tests/overhaul --workers=1`
 **30 passed** (1.7 min, exit 0, no flap), and the perf **negative control** (`PERF_PAYLOAD_BUDGET=100000
@@ -93,18 +112,20 @@ sampling, offline durability, per-browser cinematic render-compliance.
 
 ## 1. Governance dashboard
 
-**Overall verdict: ~55–60% done · MVP feature/test/CI layer largely VERIFIED · NOT deploy-ready ·
-NOT whole-overhaul-complete.** The three stated MVP BLOCKERs (Phase-1 tests + CI, FR-PROOF,
-FR-CONTACT) are cleared and test-backed; **typography (P1-4) and the `/performance-benchmark`
-export-exclusion are now also cleared & test-backed (re-audit #5)**. What remains is substantial
-SPEC scope (AI clone voice/lip-sync, project catalogue, multi-source synthesis, the **entire
-cinematic asset/VFX layer**, NN dual-pillar/rememberability) plus all the runtime budgets
-(Lighthouse / axe / FPS / payload / durability) which are still UNVERIFIED.
+**Overall verdict: ~67% done · MVP feature/test/CI layer + offline durability + hero dual-pillar
++ completeness gate VERIFIED · NOT deploy-ready · NOT whole-overhaul-complete.** The three stated
+MVP BLOCKERs (Phase-1 tests + CI, FR-PROOF, FR-CONTACT) are cleared and test-backed; typography
+(P1-4), the `/performance-benchmark` export-exclusion, first-view payload+CLS, **and now
+TC-NFR-DURABLE (offline SW), TC-NFR-COMPLETE (truncation/stub scan), and TC-FR-HERO (dual-pillar
+NN-1 CTAs) (re-audit #9)** are all cleared & test-backed. What remains is substantial SPEC scope
+(AI clone voice/lip-sync, project catalogue ≥10, multi-source synthesis, the **entire cinematic
+asset/VFX layer**, NN-2 dossier/rememberability) plus the remaining runtime budgets (Lighthouse
+perf/LCP/TBT on `/`, FPS, 3-browser COMPAT/RENDER) which are still UNVERIFIED.
 
 
 | Dimension                         | Verdict                           | Worst sev   | Headline (evidence)                                                                   |
 | --------------------------------- | --------------------------------- | ----------- | ------------------------------------------------------------------------------------- |
-| Success criteria (SPEC §10)       | Partial                           | HIGH        | **~16/41 VERIFIED** + ~7 RESOLVED/partial (A11Y/SEC now test-backed); clone/perf/synth/catalogue/NN open |
+| Success criteria (SPEC §10)       | Partial                           | HIGH        | **~19/41 VERIFIED** (+DURABLE/COMPLETE/HERO #9) + ~8 RESOLVED/partial (A11Y/SEC/PERF-payload test-backed); clone/Lighthouse/synth/catalogue/NN-2 open |
 | Website architecture / IA         | Mostly done                       | MEDIUM      | `#proof` ✅; `/performance-benchmark` **excluded from export** (prune+notFound+TC-ARCH-BENCH); `architecture-lab` review |
 | System design                     | Partial                           | MEDIUM      | `services/` scaffolded; live clone not wired to UI                                    |
 | UI colour (NFR-MONO)              | **RESOLVED (code)** · (V) visual  | was BLOCKER | audit 7/7; `lib/palette.ts`; greys; 1 stale comment                                   |
@@ -158,7 +179,7 @@ single "blocker," but all gate a credible production launch):
 | ---------------- | -------------------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | TC-FR-BOOT       | UNVERIFIED                                   | No                 | `.preloader` exists (waited-on in specs); counter→100 not asserted                                                                                        |
 | TC-FR-NAV        | **VERIFIED** ✅                               | Yes                | `sections.spec` (menu opens/lists/Esc); real bug fixed (`.open`)                                                                                          |
-| TC-FR-HERO       | Partial                                      | Partial            | `site.spec` checks identity/CTA/resume; **dual-pillar NN-1 CTAs not explicitly audited**                                                                  |
+| TC-FR-HERO       | **VERIFIED** ✅ ▲ (#9)                        | Yes                | `hero.spec` 2✓ — name + position line + ≥1 metric + **dual-pillar CTAs** (employer "Review experience"→#experience, client "See outcomes"→#proof) + GitHub/YouTube/CV present & resolve 200 (CV same-origin 200; externals <400 network-gated) |
 | TC-FR-PROOF      | **VERIFIED** ✅                               | Yes                | `ProofBar.tsx` `#proof` + count-up + reduced-motion; `proof.spec` 2 passed                                                                                |
 | TC-FR-ABOUT      | **VERIFIED** ✅                               | Yes                | `sections.spec` (#about title + bio)                                                                                                                      |
 | TC-FR-EXP        | **VERIFIED** ✅                               | Yes                | `sections.spec` (ATO+ANZ roles, dates)                                                                                                                    |
@@ -183,15 +204,15 @@ single "blocker," but all gate a credible production launch):
 | TC-NFR-FPS       | UNVERIFIED                                   | No                 | probe exists; not run this pass                                                                                                                           |
 | TC-NFR-RENDER    | UNVERIFIED                                   | No                 | per-browser render-compliance not run                                                                                                                     |
 | TC-NFR-TS        | **VERIFIED** ✅                               | Yes                | `audit.spec` asserts `tsc --noEmit` 0; CI `quality` job runs it                                                                                           |
-| TC-NFR-COMPLETE  | Likely PASS                                  | No                 | no truncation markers                                                                                                                                     |
+| TC-NFR-COMPLETE  | **VERIFIED** ✅ ▲ (#9)                        | Yes(audit)         | `overhaul_static_audit.mjs` `checkComplete` (8/8): 0 truncation/placeholder/stub markers across app|components|lib (TODO/FIXME/XXX/HACK, not-implemented, mock/stub, rest-of-file, ellipsis-only comments); excludes legit idioms (Three `dummy`, `placeholder=` attrs, `fallback` brain); neg-control (injected `// TODO`) flips it FAIL |
 | TC-NFR-A11Y      | **RESOLVED** · (V) kbd/focus+LH             | Yes                | `a11y.spec` GREEN — axe wcag2a/2aa/21a/21aa, **0 critical + 0 serious** on home (whole single-page site); CI `phase06` too. (V) explicit kbd-path + focus-visible E2E + Lighthouse a11y≥95                                                                                                   |
 | TC-NFR-TONE      | **VERIFIED** ✅                               | Yes                | `audit.spec`; banned-list widened + scans data/layout/meta/OG/JSON-LD/alt/aria; PASS                                                                      |
 | TC-NFR-MONO      | **VERIFIED (code)** · (V)                    | Yes(audit)         | `audit.spec` MONO PASS; palette greys; visual pass pending |
 | TC-NFR-TYPE | **VERIFIED** ✅ | Yes | 2 families (Inter+Space Grotesk) self-hosted via next/font (`layout.tsx:2`); Playfair/Roboto/Source-Sans dropped; tabular; `typography.spec` 4 passed; audit TYPE PASS                                                                                                |
 | TC-NFR-SEC       | **RESOLVED (code+test)** · owner-decision    | Yes(security.spec) | `security.spec` 5✓ — fail-loud names GEMINI_API_KEY on prod static-export; CSP/HSTS/nosniff/XFO/Referrer/Permissions present; no `out/` leak. Open = owner decision on client-inlined Gemini key (DEV-8 vs proxy); DID/ELEVENLABS fail-loud lives in `services/`                                                               |
 | TC-NFR-COMPAT    | UNVERIFIED on-push                           | CI 3-browser job   | CI installs chromium+webkit+firefox; only chromium run locally                                                                                            |
-| TC-NFR-DURABLE   | UNVERIFIED                                   | No                 | offline reload not probed                                                                                                                                 |
-| TC-NN-1          | OPEN                                         | No                 | per-section employer+client dual action audit not done                                                                                                    |
+| TC-NFR-DURABLE   | **VERIFIED** ✅ ▲ (#9)                        | Yes                | `durable.spec` 2✓ — after first visit, offline reload renders identity + #about/#experience/#proof + CV link from the SW cache, and the CV PDF replays 200 offline; static `out/`+gzip, `context.setOffline(true)`; SW `public/sw.js` cache-first + precache; RED without the SW |
+| TC-NN-1          | Partial ▲ (#9)                               | Yes(hero)          | hero **dual-pillar** asserted (`hero.spec`: employer + client actions); per-section employer+client audit across all sections still open                   |
 | TC-NN-2          | Partial                                      | No                 | HUD motif recurs ×2; dossier artifact + recall heuristic not there                                                                                        |
 | TC-NN-3          | Automated PASS · **manual sign-off pending** | Partial            | sci-fi removed + NFR-TONE pass; manual review pending ('story' prose theatrical)                                                                          |
 | TC-FR-SECONDARY  | OPEN                                         | No                 | clone+chatbot+voiceover not yet exercised as one non-degraded smoke pass                                                                                  |
@@ -407,19 +428,15 @@ Gemini key (proxy vs recorded deviation, QA-SEC-01); TC-NN-3 manual tone sign-of
 
 ## 7. Next-up (priority for the implementation agent)
 
-- **P1 (finish MVP credibility — remaining runtime budgets):** ① **TC-NFR-DURABLE** —
-  offline-reload renders core content + CV (highest-value, lowest-risk next unit; author
-  `tests/overhaul/durable.spec.ts` against static `out/` with `context.setOffline(true)`).
-  ② **TC-NFR-COMPLETE** — grep/AST placeholder/truncation scan over `app/**`,`components/**`,`lib/**`
-  (fast, deterministic). ③ **TC-FR-HERO** — dual-pillar (NN-1) CTA + GitHub/YouTube/CV 200-link
-  assertions. ④ **TC-NFR-PERF Lighthouse sub-dim** — run mobile Lighthouse perf≥90/LCP<2.5s/TBT<200ms
-  on `/` in an **isolated** clean-build env (lhci now points at `/`; **flag the R3F <0.90 risk**).
-  ⑤ **TC-NFR-FPS** — FPS ≥55/≥30 probe (needs headed/Xvfb — environment-blocked locally).
-  ⑥ **TC-NFR-COMPAT / RENDER** — 3-browser (webkit/firefox) + per-browser render-compliance
-  (CI-on-push / local browser install). ⑦ **QA-SEC-01** — owner decision on the client-inlined
-  Gemini key (DEV-8 vs proxy).
+- **P1 (finish MVP credibility — remaining runtime budgets):** ① **TC-NFR-PERF Lighthouse sub-dim** —
+  run mobile Lighthouse perf≥90/LCP<2.5s/TBT<200ms on `/` in an **isolated** clean-build env (lhci
+  now points at `/`; **flag the R3F <0.90 risk**). ② **TC-NFR-FPS** — FPS ≥55/≥30 probe (needs
+  headed/Xvfb — environment-blocked locally). ③ **TC-NFR-COMPAT / RENDER** — 3-browser
+  (webkit/firefox) + per-browser render-compliance (CI-on-push / local browser install). ④ **QA-SEC-01**
+  — owner decision on the client-inlined Gemini key (DEV-8 vs proxy).
   _(CLEARED: P1-4 typography + `/performance-benchmark` (#5); 320px overflow + home-page axe +
-  fail-loud/headers security (#6); **TC-NFR-PERF first-view payload + CLS** test-green (#8).)_
+  fail-loud/headers security (#6); **TC-NFR-PERF first-view payload + CLS** test-green (#8);
+  **TC-NFR-DURABLE** + **TC-NFR-COMPLETE** + **TC-FR-HERO** dual-pillar + **QA-TEST-05 flap fix** (#9).)_
 - **P2 (clone):** real lip-sync ≤120 ms + voice-id check (TC-FR-CLONE/VOICE) · MiniVic monochrome
 visual pass · VOICE-DYN.
 - **P3 (scale + signature):** the **asset/VFX production track** (cinematic imagery/SVG/templates/
@@ -444,6 +461,7 @@ dossier — QA-ASSET-01) · project catalogue ≥10 + link-200 (TC-FR-CATALOG) �
 | 2026-06-14 | 667d339 (wt) | Re-audit #8 START: spec-fidelity guardian — iteration-1 verification of TC-NFR-PERF | **Start of task:** re-read `docs/prompt.md` (apex §3.5/§6), `SPEC.md` §3.5/§10, this register, `tests/overhaul/perf.spec.ts`, `lighthouserc.json`, `phase02_lighthouse.sh`, `tests/requirements_list.md`, execution-log OV-PERF; re-verified the findings this pass touches (QA-PERF group). HMR/contention check: no live next/playwright/lhci procs, ports 3000+8080 free, `out/index.html` freshly built today 08:43 → safe to run all gates. Kicked off tsc/lint/static-audit + `tests/overhaul --workers=1` + perf negative control. |
 | 2026-06-14 | 667d339 (wt) | Re-audit #8 END: spec-fidelity guardian — TC-NFR-PERF payload+CLS VERIFIED (test-green) + Lighthouse-on-`/` UNVERIFIED risk flagged + binding added | **Gates re-run independently, ALL GREEN:** `npx tsc --noEmit` **0**, `npm run lint` **clean**, `overhaul_static_audit.mjs` **7/7**, `npx playwright test tests/overhaul --workers=1` **30 passed** (1.7 min, exit 0, no flap), perf **neg-control** (`PERF_PAYLOAD_BUDGET=100000 PERF_CLS_BUDGET=0`) **2 failed** (gate bites). **Independent perf measure:** first-view transfer **596.7 KB**, CLS **0.0011** (orchestrator 907.3 KB/0.0005 — payload non-deterministic via Next prefetch timing; both ≪ 2.5 MB/0.05, 3–4× headroom). **Anti-fake-green PASS** (evidence-cited): static `out/` export served with gzip (`perf.spec:22,64-96`), measured to `load` (`:117,:144`); deferred hero/MiniVic video `preload="none"`+IO-gated (`HeroAvatar.tsx:40-42,83`, `MiniVicBot.tsx:1188`) correctly excluded; per-asset media still capped by audit (`overhaul_static_audit.mjs:116-136`); neg-control proves bite. **Register updates:** §2 TC-NFR-PERF Partial/UNVERIFIED → **RESOLVED (payload+CLS, test-green)** + Lighthouse sub-dim UNVERIFIED; tally RESOLVED/partial ~7→~8; §3 split QA-PERF-01 (RESOLVED) / QA-PERF-02 (Lighthouse HIGH UNVERIFIED, **R3F <0.90 risk flagged** vs R1 home perf=0.54) / QA-FPS-COMPAT-DURABLE-RENDER; §5/§7 re-scoped (payload+CLS closed; next-up reordered → DURABLE/COMPLETE/HERO); header #8. **Doc-drift fix:** added `TC-NFR-PERF → tests/overhaul/perf.spec.ts` row to `tests/requirements_list.md` (was missing). **Prompt↔SPEC §3.5/§10 wording re-confirmed matching the gate (0 drift);** SPEC §10 last column is a baseline-at-authoring snapshot (RESP/PERF still read "FAIL") — live status is this register by design, not drift. **Verdict: ~63%, NOT deploy-ready** — Lighthouse/FPS/DURABLE/COMPAT/RENDER, clone/voice, catalogue, synthesis, asset/VFX, NN remain. **Owner gates honoured:** no git push / Firebase deploy / `main` edit / paid D-ID/ElevenLabs call. |
 | 2026-06-14 | 667d339 (wt) | Re-audit #6: spec-fidelity guardian — BASELINE pass grounding the impl→QA loop + post-#5 drift reconciled | **Gates re-run from scratch, ALL GREEN:** `npm run lint` **clean (0 warnings/errors)**, `npx tsc --noEmit` **exit 0**, `overhaul_static_audit.mjs` **7/7** (TONE·MONO·PERF·PARITY·TYPE·SEC·ARCH-BENCH), `npx playwright test tests/overhaul` **28 passed / 0 skipped** (system Chrome, 1.1 min, exit 0). **Environment finding (recorded, not papered over):** local runtime is **Node v26.3.0** vs repo pin **Node 20.x** (`engines`); gates passed clean under Node 26 (only benign DEP0205 + baseline-browser-mapping notices); canonical gate stays Node 20 on CI. **Orchestration-prompt note:** the driving prompt said audit "must be 5/5" — stale; the audit is **7 checks → 7/7** (reconciled at #5). **Post-#5 drift found + corrected (the implementation agent shipped ahead of the register):** the suite grew 25→28 and three items were green on the tree but the register read them stale — (a) **D-6 320px** overflow fixed (`sections.spec` asserts 320 first-class, no skip; execution-log OV-D6) → **TC-FR-RESP fully VERIFIED (320–2560)**, QA-RESP-320 RESOLVED; (b) **`a11y.spec`** green (axe wcag2a/2aa/21a/21aa, 0 critical+0 serious on home) → **TC-NFR-A11Y RESOLVED·(V)**, new QA-A11Y-01; (c) **`security.spec`** 5✓ (fail-loud names GEMINI_API_KEY, CSP/HSTS/nosniff/XFO/Referrer/Permissions headers, no `out/` leak) → **TC-NFR-SEC RESOLVED**, QA-SEC-02 RESOLVED, QA-SEC-01 downgraded HIGH→owner-decision (DEV-8 vs proxy). Also corrected `tests/requirements_list.md` TC→test binding table (added TYPE→`typography.spec`, SEC→`security.spec`, A11Y→`a11y.spec`; removed A11Y from the "remaining" line). **Updated this register:** header (#6, method incl. Playwright, Node-26 finding), dashboard (success-criteria 15→16 VERIFIED + 7 RESOLVED, FR-RESP→VERIFIED, Security→RESOLVED, suite 24→28, runtime-budget item re-scoped), §2 (RESP/A11Y/SEC rows + count 15/41→16/41), §3 (QA-SEC-01/02, QA-A11Y-01, QA-RESP-320, QA-PERF group re-scoped), §5/§7. **Verdict: ~62%, NOT deploy-ready** — remaining: TC-NFR-PERF(payload/Lighthouse)/FPS/DURABLE/COMPAT/RENDER runtime budgets, clone/voice (CLONE/VOICE/VOICE-DYN), catalogue ≥10+link-200, multi-source synthesis, asset/VFX layer, NN-1/2 + NN-3 manual sign-off, QA-SEC-01 owner decision. Doc set back to **0 known drift**. |
+| 2026-06-14 | ae259a8 (wt) | Re-audit #9: MVP-completion loop — TC-NFR-DURABLE + TC-NFR-COMPLETE + TC-FR-HERO landed test-first + QA-TEST-05 flap fixed + all independently verified | **Re-ran the full chain in an isolated worktree off HEAD `ae259a8`, faithful COLD start (dev server killed, `out/` rebuilt fresh):** `tsc` **0**, `lint` **clean**, `overhaul_static_audit.mjs` **8/8** (new `checkComplete` → TC-NFR-COMPLETE; `audit.spec` pins `(8/8)`), `tests/overhaul --workers=1` **34 passed COLD** (exit 0, **no flap**), perf neg-control **2 failed** (bites). **Verified & committed locally (no push):** `2b7016f` **TC-NFR-DURABLE** (SW `public/sw.js` + `ServiceWorkerRegister` + CSP `worker-src` in next.config+firebase; `durable.spec` 2✓ offline reload core sections + CV 200 from cache; RED without the SW), `18839e0` **TC-NFR-COMPLETE** (`checkComplete` 0 truncation/placeholder/stub markers, neg-control bites) + **QA-TEST-05 flap FIX** (proof/scroll reduced-motion → cold-compile-tolerant budgets `toBeVisible({timeout:12000})`/`expect.poll`, assertions unchanged, validated 4/4 green cold), `ae259a8` **TC-FR-HERO** (`hero.spec` 2✓ dual-pillar CTAs employer "Review experience"→#experience / client "See outcomes"→#proof + name/position/≥1 metric + GitHub/YouTube/CV present & resolve 200; new `.hero-cta-pillars`/`.btn-pillar`, achromatic). **Visual review 320+1280:** monochrome, restrained, CTAs wrap clean, **no h-overflow**. **§2 updates:** DURABLE/COMPLETE/HERO → **VERIFIED** (+3), NN-1 OPEN→Partial (hero dual-pillar asserted). **Owner gates honoured:** no git push / Firebase deploy / `main` edit / paid D-ID/ElevenLabs call. **Verdict: ~67%, NOT deploy-ready** — Lighthouse/FPS/COMPAT/RENDER runtime budgets, clone voice/lip-sync, asset/VFX layer, catalogue ≥10, synthesis, NN-2 dossier remain. Doc set **0 known drift**. |
 
 
 ---
