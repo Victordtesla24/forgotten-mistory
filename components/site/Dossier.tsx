@@ -1,0 +1,87 @@
+'use client';
+
+import Reveal from '@/components/site/Reveal';
+import HudFrame from '@/components/fx/HudFrame';
+import { dossier } from '@/app/data/siteContent';
+
+/**
+ * Dossier — the #dossier "leave-behind" section (NN-2 / TC-NN-2, prompt §2). Closes
+ * the page so a visitor leaves with something concrete: a downloadable one-page
+ * dossier (the CV PDF) for BOTH first-class personas (employer + client), the
+ * recurring monochrome signature motif, and a one-tap path to the live clone. Every
+ * recall signature is number-led and traces back to the résumé-sourced proof data.
+ */
+export default function Dossier() {
+  // Reach the always-mounted MiniVic clone launcher without prop-drilling: open it
+  // only if its panel isn't already showing (idempotent).
+  const openClone = () => {
+    if (document.querySelector('[data-testid="minivic-panel"]')) return;
+    document.querySelector<HTMLButtonElement>('[data-testid="minivic-toggle"]')?.click();
+  };
+
+  return (
+    <section id="dossier" className="dossier-section" aria-labelledby="dossier-title">
+      <div className="container">
+        <Reveal className="section-header">
+          <h2 className="section-title" id="dossier-title">
+            Take the dossier with you
+          </h2>
+          <p className="section-subhead">
+            One page, two audiences — download the record, or ask the clone.
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.05}>
+          <div className="dossier-card">
+            <HudFrame variant="panel" scene={false} label="VIKRAM DESHPANDE · PRINCIPAL ENGINEER · DOSSIER" />
+            <div className="dossier-body">
+              <p className="dossier-name">{dossier.name}</p>
+              <p className="dossier-role">{dossier.role}</p>
+              <p className="dossier-summary">{dossier.summary}</p>
+
+              <ul className="dossier-highlights" role="list">
+                {dossier.highlights.map((highlight) => (
+                  <li key={highlight} className="dossier-highlight">
+                    {highlight}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="dossier-editions">
+                {dossier.editions.map((edition) => (
+                  <div
+                    key={edition.persona}
+                    className="dossier-edition"
+                    data-persona={edition.persona}
+                  >
+                    <p className="dossier-edition-label">{edition.label}</p>
+                    <p className="dossier-edition-takeaway">{edition.takeaway}</p>
+                    <a
+                      href={dossier.downloadHref}
+                      className="btn-link dossier-download"
+                      data-dossier-download="true"
+                      download
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {dossier.downloadLabel}
+                    </a>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                className="btn-primary dossier-clone"
+                data-dossier-clone="true"
+                onClick={openClone}
+              >
+                Ask my digital twin
+              </button>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}

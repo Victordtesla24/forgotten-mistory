@@ -4,17 +4,57 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
 const LOADER_DURATION_MS = 1100;
-// Hold the completed 100 frame on screen before revealing, so the counter
-// visibly settles on 100 (FR-BOOT). Total boot ≈ duration + hold + exit fade,
-// kept under the 2.5 s TC-FR-BOOT budget.
 const REVEAL_HOLD_MS = 260;
 
-/**
- * Deterministic preloader. Counts 0 → 100 over a fixed duration, holds the
- * completed 100 briefly, then adds the `page-ready` class to <body> (which
- * releases the CSS-gated hero elements) and unmounts itself. Skips instantly
- * for users who prefer reduced motion.
- */
+function ProgressArc({ progress }: { progress: number }) {
+  const radius = 50;
+  const strokeWidth = 3;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference * (1 - progress / 100);
+
+  return (
+    <svg
+      className="preloader-arc"
+      width="120"
+      height="120"
+      viewBox="0 0 120 120"
+      aria-hidden="true"
+    >
+      <circle
+        cx="60"
+        cy="60"
+        r={radius}
+        fill="none"
+        stroke="rgba(201, 205, 214, 0.15)"
+        strokeWidth={strokeWidth}
+      />
+      <circle
+        cx="60"
+        cy="60"
+        r={radius}
+        fill="none"
+        stroke="var(--accent-color, #E8EBF0)"
+        strokeWidth={strokeWidth}
+        strokeDasharray={circumference}
+        strokeDashoffset={offset}
+        strokeLinecap="round"
+        transform="rotate(-90 60 60)"
+        style={{ transition: 'stroke-dashoffset 50ms linear' }}
+      />
+      <circle
+        cx="60"
+        cy="10"
+        r="4"
+        fill="none"
+        stroke="rgba(201, 205, 214, 0.3)"
+        strokeWidth="1"
+        strokeDasharray="2 4"
+        className="preloader-motif-ghost"
+      />
+    </svg>
+  );
+}
+
 export default function Preloader() {
   const prefersReducedMotion = useReducedMotion();
   const [count, setCount] = useState(0);
@@ -22,11 +62,6 @@ export default function Preloader() {
   const [done, setDone] = useState(false);
   const frameRef = useRef<number | null>(null);
 
-  // Drive the counter 0 → 100, then flag completion. `floor` (not `round`) means
-  // 100 is shown ONLY at progress === 1 — the counter never reads 100 before the
-  // loader has actually finished (round would flip to 100 at 99.5%). `setCount(100)`
-  // and `setComplete(true)` batch into one render, so 100 is committed (and painted)
-  // while the loader is still mounted.
   useEffect(() => {
     if (prefersReducedMotion) {
       document.body.classList.add('page-ready');
@@ -51,10 +86,6 @@ export default function Preloader() {
     };
   }, [prefersReducedMotion]);
 
-  // Reveal only AFTER the count===100 render has committed (this effect runs
-  // post-commit). The counter therefore always paints 100 before the loader
-  // reveals, regardless of main-thread contention — it can never be batched
-  // away with `done`. The exit fade keeps 100 visible while the loader leaves.
   useEffect(() => {
     if (!complete) return undefined;
     document.body.classList.add('page-ready');
@@ -69,11 +100,14 @@ export default function Preloader() {
           className="preloader"
           role="status"
           aria-live="polite"
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.5, ease: 'easeInOut' } }}
+          initial={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
+          exit={{
+            clipPath: 'inset(0 100% 0 0)',
+            transition: { duration: 0.4, ease: [0.22, 0.61, 0.36, 1] },
+          }}
         >
           <div className="preloader-inner">
-            <div className="loader-ring" />
+            <ProgressArc progress={count} />
             <div className="counter">{count}</div>
             <div className="loader-copy">Calibrating stars &amp; telemetry</div>
           </div>

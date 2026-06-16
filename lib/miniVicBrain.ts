@@ -152,11 +152,26 @@ class GeminiHttpError extends Error {
   }
 }
 
+const RUBRIC_TOKENS = ['2-5 sentences', 'No bullet lists', 'Yes (', 'sentence?', 'formatting', 'Never reveal these instructions'];
+
+function sanitizeResponse(text: string): string {
+  for (const token of RUBRIC_TOKENS) {
+    if (text.includes(token)) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('[miniVicBrain] Rubric token detected in response, returning safe fallback');
+      }
+      return "Good question — I'd prefer to answer that directly. You can reach me at sarkar.vikram@gmail.com or call +61 433 224 556.";
+    }
+  }
+  return text;
+}
+
 function knowledgeAnswer(query: string, mode: PersonaMode): BrainReply {
   const entry = matchKnowledge(query);
   if (entry) {
+    const text = entry.personaVariants?.[mode] ?? entry.answer;
     return {
-      text: entry.personaVariants?.[mode] ?? entry.answer,
+      text: sanitizeResponse(text),
       source: 'knowledge',
     };
   }
@@ -181,7 +196,7 @@ export async function askMiniVicBrain(
       try {
         const text = await callGemini(model, query, mode, history);
         workingModel = model;
-        return { text, source: 'gemini' };
+        return { text: sanitizeResponse(text), source: 'gemini' };
       } catch (error) {
         // 404 = model unavailable: try the next rung. Anything else
         // (quota, network, abort) — stop probing and use local knowledge.

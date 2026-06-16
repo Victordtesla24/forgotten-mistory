@@ -112,6 +112,11 @@ export default function ArchitectureMap() {
           role="img"
           aria-label={`Architecture flow diagram, highlighting: ${active.label}`}
         >
+          <defs>
+            {Object.entries(LINE_PATHS).map(([id, d]) => (
+              <path key={`path-${id}`} id={`path-${id}`} d={d} fill="none" />
+            ))}
+          </defs>
           {Object.entries(LINE_PATHS).map(([id, d]) => (
             <path
               key={id}
@@ -119,6 +124,24 @@ export default function ArchitectureMap() {
               fill="none"
               className={`arch-connection${active.lines.includes(id) ? ' active' : ''}`}
             />
+          ))}
+          {active.lines.map((lineId) => (
+            <circle
+              key={`dot-${lineId}`}
+              r="1.5"
+              fill="currentColor"
+              className="flow-dot"
+              data-testid="flow-dot"
+              style={prefersReducedMotion ? { animationPlayState: 'paused' } : undefined}
+            >
+              <animateMotion
+                dur="3s"
+                repeatCount="indefinite"
+                fill={prefersReducedMotion ? 'freeze' : 'remove'}
+              >
+                <mpath xlinkHref={`#path-${lineId}`} />
+              </animateMotion>
+            </circle>
           ))}
         </svg>
         <div className="arch-node-chips">
