@@ -354,6 +354,54 @@ export const synthesisSources: SynthesisSource[] = [
   },
 ];
 
+/** The tangible-value layers FR-MINDSET names (≥2 must be shown on the value dimension). */
+export type ProjectionValueKind = 'time saved' | 'risk reduced' | 'cost avoided';
+
+export interface ProjectionDimension {
+  /** Stable slug → `data-dimension`. */
+  key: 'depth' | 'scale' | 'longevity' | 'value';
+  label: string;
+  /** Number-led, source-traceable claim (NN-3). */
+  claim: string;
+  /** Primary source the claim traces back to. */
+  source: string;
+  /** Only the multi-layered value dimension: the value types delivered. */
+  values?: ProjectionValueKind[];
+}
+
+/**
+ * FR-MINDSET (prompt §4) — the four dimensions of the balanced persona, each a
+ * number-led claim traceable to the résumé/record (mirrored in `miniVicKnowledge`
+ * so the clone projects the same profile). Rendered in `#mindset` (TC-FR-MINDSET).
+ */
+export const projectionDimensions: ProjectionDimension[] = [
+  {
+    key: 'depth',
+    label: 'Technical depth',
+    claim: '92% of test-evidence effort cut across 200+ ATO scenarios — automation built with zero new InfoSec approvals.',
+    source: 'ATO Payday Super test-automation harness',
+  },
+  {
+    key: 'scale',
+    label: 'Program scale',
+    claim: '$5M+ program portfolio across 5+ squads and 40+ practitioners, delivered at 100% compliance.',
+    source: 'ANZ Banking Group program leadership',
+  },
+  {
+    key: 'longevity',
+    label: 'Sustained execution',
+    claim: '15+ years across government, finance and telecommunications; nearly 8 sustained years at ANZ (2017–2025).',
+    source: 'Career record, MYOB (2010) through to the ATO',
+  },
+  {
+    key: 'value',
+    label: 'Tangible value',
+    claim: '30%+ delivery-efficiency gain, 15%+ infrastructure cost cut, and 100% risk-framework compliance.',
+    source: 'ANZ cloud-native modernisation',
+    values: ['time saved', 'cost avoided', 'risk reduced'],
+  },
+];
+
 export const contact = {
   headline: "Let's ship AI/ML programs that stay fast, safe, and compliant.",
   email: 'sarkar.vikram@gmail.com',

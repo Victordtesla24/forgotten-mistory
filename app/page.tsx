@@ -37,6 +37,7 @@ import HeroAvatar from '@/components/site/HeroAvatar';
 import ScrollRail from '@/components/site/ScrollRail';
 import HudFrame from '@/components/fx/HudFrame';
 import ProofBar from '@/components/site/ProofBar';
+import MindsetProjection from '@/components/site/MindsetProjection';
 import SynthesisProvenance from '@/components/site/SynthesisProvenance';
 
 import { resumeContent } from './data/resumeContent';
@@ -550,6 +551,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <MindsetProjection />
 
         <SynthesisProvenance />
 
