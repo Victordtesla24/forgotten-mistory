@@ -102,6 +102,8 @@ body {
     z-index: 3;
     pointer-events: none;
     mix-blend-mode: screen;
+    opacity: 0.60;
+    transition: opacity 220ms ease;
 }
 
 .space-scene-layer canvas {
@@ -129,8 +131,13 @@ body.detail-open #webgl {
 }
 
 body.detail-open .scene-stack {
-    opacity: 0.35;
+    opacity: 0.5;
     transition: opacity 220ms ease;
+}
+
+/* Raise space scene opacity during modal so FX is visible through light scrim (IV-3) */
+body.detail-open .space-scene-layer {
+    opacity: 0.75;
 }
 
 /* CRT/Vignette Overlay */
@@ -1667,6 +1674,13 @@ footer {
     padding: 0 1.25rem 1.2rem;
 }
 
+/* Framer Motion animated expansion (IV-1/2 fix): let motion.div control height */
+.snap-body.expanded,
+.skill-body.expanded {
+    height: auto !important;
+    padding: 0 1.25rem 1.2rem;
+}
+
 .skill-list {
     list-style: none;
     display: grid;
@@ -2068,6 +2082,56 @@ footer {
 
 .hero-title .reveal-text:hover {
     animation: glitch-anim 0.3s infinite;
+}
+
+/* Entrance glitch effect using ::before/::after (VFX-4 fix) */
+.hero-title .glitch-text::before,
+.hero-title .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.hero-title .glitch-text::before {
+    clip-path: inset(0 0 60% 0);
+    transform: translateX(-3px);
+    animation: glitchEntrance 0.4s ease-out 1.2s forwards, glitchFadeOut 0.3s ease 1.6s forwards;
+}
+
+.hero-title .glitch-text::after {
+    clip-path: inset(40% 0 0 0);
+    transform: translateX(3px);
+    animation: glitchEntrance 0.4s ease-out 1.25s forwards, glitchFadeOut 0.3s ease 1.65s forwards;
+}
+
+@keyframes glitchEntrance {
+    0% { opacity: 0; transform: translateX(0); }
+    20% { opacity: 0.7; transform: translateX(-3px); }
+    40% { opacity: 0.5; transform: translateX(3px); }
+    60% { opacity: 0.6; transform: translateX(-2px); }
+    80% { opacity: 0.4; transform: translateX(2px); }
+    100% { opacity: 0.3; transform: translateX(0); }
+}
+
+@keyframes glitchFadeOut {
+    from { opacity: 0.3; }
+    to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-title .glitch-text::before,
+    .hero-title .glitch-text::after {
+        display: none;
+    }
 }
 
 @keyframes glitch-anim {

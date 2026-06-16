@@ -2,6 +2,7 @@
 
 import { useId, useState } from 'react';
 import type { ReactNode } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
 interface ExpandableCardProps {
   /** Base class for the card shell, e.g. "snap-card" or "skill-card". */
@@ -17,8 +18,7 @@ interface ExpandableCardProps {
 
 /**
  * Generic expandable card used by the About snap-cards and Skills cards.
- * Toggles the existing `.open` CSS state (max-height transitions live in
- * globals.css) and keeps aria-expanded in sync.
+ * Uses Framer Motion for height:0→'auto' animation (IV-1/2 fix).
  */
 export default function ExpandableCard({
   baseClass,
@@ -30,6 +30,7 @@ export default function ExpandableCard({
 }: ExpandableCardProps) {
   const [open, setOpen] = useState(false);
   const bodyId = useId();
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <div className={`${baseClass}${open ? ' open' : ''}`} role={role}>
@@ -42,9 +43,21 @@ export default function ExpandableCard({
       >
         {header}
       </button>
-      <div id={bodyId} className={bodyClass}>
-        {children}
-      </div>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            id={bodyId}
+            className={`${bodyClass} expanded`}
+            style={{ overflow: 'hidden' }}
+            initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
+            transition={{ duration: 0.45, ease: [0.22, 0.61, 0.36, 1] }}
+          >
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { ArrowRight, Database, X } from 'lucide-react';
 import { resumeContent } from '@/app/data/resumeContent';
+import { PALETTE } from '@/lib/palette';
 
 declare global {
   interface Window {
@@ -29,15 +30,15 @@ interface FloatingDetailBoxProps {
 }
 
 const THEME_COLORS: Record<string, string> = {
-  "Test Automation at Scale": "rgb(201 205 214)", // mist-200 (light cool grey)
-  "Cloud Modernisation": "rgb(174 182 194)", // slate (mid cool grey)
-  "Realtime Reliability": "rgb(201 205 214)", // mist-200 (light cool grey)
-  "AI Quality & Risk": "rgb(174 182 194)", // slate (mid cool grey)
-  "Leadership Scale": "rgb(201 205 214)", // mist-200 (light cool grey)
-  "Portfolio Value": "rgb(232 235 240)", // near-white accent
+  "Test Automation at Scale": PALETTE.steel,
+  "Cloud Modernisation": PALETTE.steel,
+  "Realtime Reliability": PALETTE.steel,
+  "AI Quality & Risk": PALETTE.steel,
+  "Leadership Scale": PALETTE.steel,
+  "Portfolio Value": PALETTE.accent,
 };
 
-const DEFAULT_COLOR = "rgb(201 205 214)";
+const DEFAULT_COLOR = PALETTE.steel;
 const logDebug = (message: string, data?: Record<string, unknown>) => {
   if (process.env.NODE_ENV === 'production') return;
   console.debug('[FloatingDetailBox]', message, data ?? {});
@@ -585,6 +586,41 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
   }, [displayKey, isExiting, themeColor, onClose]); // eslint-disable-line react-hooks/exhaustive-deps -- triggerRect changes reflow often; effect should not restart
 
   const handleDismiss = () => { onClose(); };
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (isLocked && displayKey) {
+      triggerRef.current = document.activeElement as HTMLElement;
+      setTimeout(() => closeButtonRef.current?.focus(), 100);
+    }
+    return () => {
+      if (!displayKey && triggerRef.current) {
+        triggerRef.current.focus();
+        triggerRef.current = null;
+      }
+    };
+  }, [isLocked, displayKey]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (!isLocked || !dialogRef.current) return;
+    if (e.key === 'Tab') {
+      const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }, [isLocked]);
 
   if (!displayKey || !content) return null;
 
@@ -598,14 +634,21 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
   `;
 
   return (
-    <div className={`fixed inset-0 z-[10002] flex items-center justify-center pointer-events-none`}>
-      <div 
-        className={`absolute inset-0 bg-black/82 backdrop-blur-[6px] transition-opacity duration-500 ${!isExiting ? 'opacity-100' : 'opacity-0'} ${isLocked ? 'pointer-events-auto' : 'pointer-events-none'}`}
+    <div
+      ref={dialogRef}
+      className={`fixed inset-0 z-[10002] flex items-center justify-center pointer-events-none`}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="capability-modal-title"
+      onKeyDown={handleKeyDown}
+    >
+      <div
+        className={`absolute inset-0 bg-black/25 transition-opacity duration-500 ${!isExiting ? 'opacity-100' : 'opacity-0'} ${isLocked ? 'pointer-events-auto' : 'pointer-events-none'}`}
         onClick={handleDismiss}
         aria-label="Close detail view"
       ></div>
 
-      <div 
+      <div
         className={containerClasses}
       >
         {/* Main Card Body */}
@@ -619,9 +662,11 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
             <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, transparent, ${themeColor}, transparent)` }}></div>
 
         {isLocked && (
-            <button 
+            <button
+                ref={closeButtonRef}
                 onClick={handleDismiss}
-                    className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 text-white/80 hover:text-white transition-all z-20 border border-white/30"
+                aria-label="Close capability details"
+                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 text-white/80 hover:text-white transition-all z-20 border border-white/30"
             >
                     <X size={18} strokeWidth={2} aria-hidden="true" />
             </button>
@@ -639,7 +684,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
                         <p className="text-xs font-mono tracking-[0.2em] uppercase mb-4 font-bold" style={{ color: themeColor }}>
                             {content.subtitle}
                         </p>
-                        <h2 className="text-3xl font-bold text-white leading-tight mb-8 drop-shadow-md">
+                        <h2 id="capability-modal-title" className="text-3xl font-bold text-white leading-tight mb-8 drop-shadow-md">
                             {content.title}
                         </h2>
                         
