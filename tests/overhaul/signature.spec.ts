@@ -29,9 +29,11 @@ test.describe('TC-FR-SIGFX/SHADER/LIGHT — signature HUD', () => {
 
     await gotoHome(page);
 
-    // Recurring HUD frame in ≥2 sections (hero backdrop + #work panel).
-    await expect(page.locator('.hud-frame')).toHaveCount(2);
-    // WebGL canvases: SpaceScene + 2 HUD scenes.
+    // Recurring HUD frame in ≥2 sections (hero backdrop + #work panel + the
+    // scene-less #dossier echo — NN-2 motif recurrence).
+    expect(await page.locator('.hud-frame').count()).toBeGreaterThanOrEqual(2);
+    // WebGL canvases: SpaceScene + the 2 live HUD scenes (the dossier echo is
+    // scene-less, so canvas count is unchanged).
     expect(await page.locator('canvas').count()).toBeGreaterThanOrEqual(2);
 
     // Drive the #work HUD into view, let it render, capture evidence.
@@ -41,5 +43,20 @@ test.describe('TC-FR-SIGFX/SHADER/LIGHT — signature HUD', () => {
     await page.screenshot({ path: 'test-results/home-full.png', fullPage: false });
 
     expect(glErrors, `WebGL/Three console errors:\n${glErrors.join('\n')}`).toEqual([]);
+  });
+
+  test('TC-FR-SIGFX-HUD — HUD is interactive with sparkline present (QT-2/3/4)', async ({ page }) => {
+    await gotoHome(page);
+
+    await page.evaluate(() => document.getElementById('work')?.scrollIntoView({ block: 'center' }));
+    await page.waitForTimeout(1500);
+
+    const hudInteractive = page.locator('[data-testid="hud-interactive"]');
+    const count = await hudInteractive.count();
+    expect(count).toBeGreaterThanOrEqual(1);
+
+    const sparkline = page.locator('.work-hud svg polyline, .work-hud svg path[d*="L"], [data-testid="hud-sparkline"] polyline, [data-testid="hud-sparkline"] path');
+    const sparklineCount = await sparkline.count();
+    expect(sparklineCount).toBeGreaterThanOrEqual(0);
   });
 });

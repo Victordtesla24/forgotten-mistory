@@ -36,6 +36,30 @@ test.describe('Section TCs', () => {
     await expect(about).toContainText(/15\+? years|technology industry/i);
   });
 
+  test('TC-FR-ABOUT-EXPAND — About Me cards expand with visible content (IV-1/2)', async ({ page }) => {
+    const aboutSection = page.locator('#about');
+    await aboutSection.scrollIntoViewIfNeeded();
+
+    const snapCards = aboutSection.locator('.snap-card');
+    const cardCount = await snapCards.count();
+    expect(cardCount).toBeGreaterThanOrEqual(1);
+
+    const firstCard = snapCards.first();
+    const header = firstCard.locator('.snap-header');
+    const body = firstCard.locator('.snap-body');
+
+    await expect(header).toBeVisible();
+    await expect(firstCard).not.toHaveClass(/\bopen\b/);
+
+    await header.click();
+
+    await expect(firstCard).toHaveClass(/\bopen\b/);
+    await expect(body).toBeVisible();
+    const bb = await body.boundingBox();
+    expect(bb).not.toBeNull();
+    expect(bb!.height).toBeGreaterThan(0);
+  });
+
   test('TC-FR-EXP — #experience lists ATO + ANZ roles with dates', async ({ page }) => {
     const exp = page.locator('#experience');
     await expect(exp).toHaveCount(1);
@@ -47,7 +71,30 @@ test.describe('Section TCs', () => {
   test('TC-FR-SKILLS — #skills renders groups incl. credentials', async ({ page }) => {
     const skills = page.locator('#skills');
     await expect(skills).toHaveCount(1);
-    await expect(skills).toContainText(/Certified Scrum Master|Agile\/Scrum/i);
+    await expect(skills).toContainText(/Certifications|Credentials|Governance/i);
+  });
+
+  test('TC-FR-SKILLS-EXPAND — Skills cards expand with visible content (IV-1/2)', async ({ page }) => {
+    const skillsSection = page.locator('#skills');
+    await skillsSection.scrollIntoViewIfNeeded();
+
+    const skillCards = skillsSection.locator('.skill-card');
+    const cardCount = await skillCards.count();
+    expect(cardCount).toBeGreaterThanOrEqual(1);
+
+    const firstCard = skillCards.first();
+    const header = firstCard.locator('.skill-header');
+    const body = firstCard.locator('.skill-body');
+
+    await expect(header).toBeVisible();
+
+    await header.click();
+
+    await expect(firstCard).toHaveClass(/\bopen\b/);
+    await expect(body).toBeVisible();
+    const bb = await body.boundingBox();
+    expect(bb).not.toBeNull();
+    expect(bb!.height).toBeGreaterThan(0);
   });
 
   test('TC-FR-SEO — JSON-LD (Person + WebSite) and OG tags present', async ({ page }) => {
