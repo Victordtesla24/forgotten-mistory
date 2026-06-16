@@ -425,3 +425,50 @@ export const proof: ProofPoint[] = [
   { value: 92, prefix: '≈', suffix: '%', label: 'evidence effort cut by the ATO test-automation harness' },
   { value: 10, suffix: 'k+', label: 'concurrent devices at P95 under 200 ms (ANZ telemetry)' },
 ];
+
+export type DossierPersona = 'employer' | 'client';
+
+export interface DossierEdition {
+  /** First-class audience → `data-persona` (SPEC §2 / NN-1). */
+  persona: DossierPersona;
+  /** Section label, e.g. "For employers". */
+  label: string;
+  /** Number-led, persona-specific takeaway (NN-3). */
+  takeaway: string;
+}
+
+/**
+ * NN-2 (prompt §2) — the memorable "leave-behind" dossier. A visitor leaves with
+ * something concrete: a downloadable one-page dossier (the CV PDF), the recurring
+ * monochrome signature motif, and a reachable clone. Every recall signature is
+ * number-led and traces 1:1 to the canonical `proof` data above (no drift).
+ * Rendered in `#dossier` (TC-NN-2).
+ */
+export const dossier = {
+  name: 'Vikram Deshpande',
+  role: 'Scrum Master / Project Manager — Australian Taxation Office · AI Solutions Architect',
+  summary:
+    'Fifteen-plus years turning complex government, finance and telecommunications programs into measurable, compliant delivery.',
+  downloadHref: '/docs/Vik_Resume_Final.pdf',
+  downloadLabel: 'Download the one-page dossier (PDF)',
+  highlights: [
+    '15+ years across government, finance and telecommunications',
+    '$5M+ program portfolio led across 5+ squads at 100% compliance',
+    '≈92% test-evidence effort cut on the ATO Payday Super harness',
+    '10k+ concurrent devices at P95 under 200 ms (ANZ telemetry)',
+  ],
+  editions: [
+    {
+      persona: 'employer',
+      label: 'For employers',
+      takeaway:
+        '15+ years of delivery leadership and a 92% evidence-effort cut — the full record is in the dossier.',
+    },
+    {
+      persona: 'client',
+      label: 'For clients',
+      takeaway:
+        '$5M+ programs shipped at 100% compliance; book a conversation and keep the one-page dossier.',
+    },
+  ] as DossierEdition[],
+};

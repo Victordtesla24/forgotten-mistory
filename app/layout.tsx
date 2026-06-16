@@ -36,12 +36,21 @@ export const metadata: Metadata = {
     url: 'https://forgotten-mistory.web.app',
     siteName: 'Forgotten Mistory',
     type: 'website',
+    images: [
+      {
+        url: '/assets/my_avatar.png',
+        width: 512,
+        height: 512,
+        alt: 'Vikram Deshpande',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Vikram Deshpande | Scrum Master · Project Manager · AI Delivery Leader',
     description:
       'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
+    images: ['/assets/my_avatar.png'],
   },
 };
 
@@ -63,6 +72,7 @@ const personSchema = {
     name: 'Australian Taxation Office',
   },
   url: 'https://forgotten-mistory.web.app',
+  image: 'https://forgotten-mistory.web.app/assets/my_avatar.png',
   sameAs: ['https://github.com/Victordtesla24', 'https://youtube.com/@vicd0ct'],
   address: {
     '@type': 'PostalAddress',
