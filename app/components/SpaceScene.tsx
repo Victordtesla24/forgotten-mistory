@@ -334,9 +334,9 @@ function StarField() {
 }
 
 /**
- * Cinematic camera rig: a slow elliptical drift that gives the field gentle
- * parallax depth without ever moving far enough to disturb the
- * FloatingDetailBox screen-space unprojection.
+ * Cinematic camera rig: eased elliptical camera drift bounded to ±1.1 x-offset
+ * and ±0.7 y-offset, providing gentle parallax depth while keeping the starfield
+ * stable. FloatingDetailBox uses a separate window.spaceApp bridge for FX IPC.
  */
 function CameraRig() {
   const { camera } = useThree();
@@ -352,7 +352,7 @@ function CameraRig() {
 }
 
 // --- Main Scene ---
-function SpaceAppDebugProbe() {
+function SpaceAppBridge() {
   const { scene, camera } = useThree();
   const probeRef = useRef<any>(null);
 
@@ -380,7 +380,7 @@ function SpaceAppDebugProbe() {
   return null;
 }
 
-function SceneContent() {
+function SceneContent({ frozen = false }: { frozen?: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const scrollRef = useRef(0);
 
@@ -393,16 +393,15 @@ function SceneContent() {
   }, []);
 
   useFrame((state, delta) => {
-    if (groupRef.current) {
-      // Orbital drift
-      groupRef.current.rotation.y += delta * 0.05;
-      groupRef.current.rotation.z += delta * 0.01;
+    if (frozen || !groupRef.current) return;
+    // Orbital drift
+    groupRef.current.rotation.y += delta * 0.05;
+    groupRef.current.rotation.z += delta * 0.01;
 
-      // Scroll-reactive tilt: the cosmos leans away as the visitor descends,
-      // eased so fast scrolling never causes a visual snap.
-      const targetTilt = Math.min(0.22, scrollRef.current * 0.00012);
-      groupRef.current.rotation.x += (targetTilt - groupRef.current.rotation.x) * Math.min(1, delta * 2.5);
-    }
+    // Scroll-reactive tilt: the cosmos leans away as the visitor descends,
+    // eased so fast scrolling never causes a visual snap.
+    const targetTilt = Math.min(0.22, scrollRef.current * 0.00012);
+    groupRef.current.rotation.x += (targetTilt - groupRef.current.rotation.x) * Math.min(1, delta * 2.5);
   });
 
   return (
@@ -420,6 +419,7 @@ function SceneContent() {
 
 export default function SpaceScene() {
   const [enablePostFx, setEnablePostFx] = useState(true);
+  const [frozen, setFrozen] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -430,6 +430,7 @@ export default function SpaceScene() {
       (typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4) ||
       (typeof nav.hardwareConcurrency === "number" && nav.hardwareConcurrency <= 4);
 
+    setFrozen(prefersReduced);
     setEnablePostFx(!(prefersReduced || lowPowerDevice));
   }, []);
 
@@ -439,14 +440,15 @@ export default function SpaceScene() {
         camera={{ position: [0, 0, 20], fov: 60 }}
         gl={{ antialias: false, alpha: false }}
         dpr={1}
+        frameloop={frozen ? 'demand' : 'always'}
       >
-        <SpaceAppDebugProbe />
-        <color attach="background" args={[PALETTE.black]} /> {/* Deep black background */}
+        <SpaceAppBridge />
+        <color attach="background" args={[PALETTE.black]} />
 
-        <CameraRig />
-        <SceneContent />
+        {!frozen && <CameraRig />}
+        <SceneContent frozen={frozen} />
 
-        {enablePostFx ? (
+        {enablePostFx && !frozen ? (
           <EffectComposer>
             <Bloom intensity={0.3} luminanceThreshold={0.22} luminanceSmoothing={0.25} mipmapBlur />
             <Noise opacity={0.015} />

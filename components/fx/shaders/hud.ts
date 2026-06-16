@@ -30,8 +30,8 @@ export const holoRingFragment = /* glsl */ `
     // concentric tick rings
     float rings = smoothstep(0.5, 0.46, abs(fract(r * 8.0) - 0.5));
 
-    // rotating radar sweep (trailing falloff)
-    float sweep = mod(ang + uTime * 1.2, 6.28318530718) / 6.28318530718;
+    // rotating radar sweep (trailing falloff) — slowed to 0.25 rad/s for calm authority (QT-4)
+    float sweep = mod(ang + uTime * 0.25, 6.28318530718) / 6.28318530718;
     float beam  = smoothstep(0.16, 0.0, sweep);
 
     // outer rim + a brighter inner ring

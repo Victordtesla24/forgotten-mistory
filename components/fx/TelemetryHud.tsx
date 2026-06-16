@@ -104,12 +104,45 @@ function Hud({ frozen }: { frozen: boolean }) {
   );
 }
 
+const SPARKLINE_DATA = [68, 72, 69, 75, 71, 70, 73, 74, 71, 72, 73, 74];
+
+function Sparkline() {
+  const max = Math.max(...SPARKLINE_DATA);
+  const min = Math.min(...SPARKLINE_DATA);
+  const range = max - min || 1;
+  const width = 80;
+  const height = 24;
+  const points = SPARKLINE_DATA.map((v, i) => {
+    const x = (i / (SPARKLINE_DATA.length - 1)) * width;
+    const y = height - ((v - min) / range) * height;
+    return `${x},${y}`;
+  }).join(' ');
+
+  return (
+    <svg
+      data-testid="hud-sparkline"
+      width={width}
+      height={height}
+      className="absolute bottom-2 right-2 opacity-70"
+      aria-label="P95 latency sparkline"
+    >
+      <polyline
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        points={points}
+        className="text-steel"
+      />
+    </svg>
+  );
+}
+
 export default function TelemetryHud({ className }: { className?: string }) {
   const reduced = useReducedMotion();
   const frozen = !!reduced;
 
   return (
-    <div className={className} aria-hidden="true">
+    <div className={className} data-testid="hud-interactive">
       <Canvas
         camera={{ position: [0, 0, 4], fov: 50 }}
         gl={{ antialias: false, alpha: true }}
@@ -126,6 +159,7 @@ export default function TelemetryHud({ className }: { className?: string }) {
           <></>
         )}
       </Canvas>
+      <Sparkline />
     </div>
   );
 }
