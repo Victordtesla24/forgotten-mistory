@@ -3,7 +3,10 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "dev": "rm -rf .next && NODE_ENV=development next dev -p 8080",
+    "dev": "node scripts/fm/dev.mjs",
+    "dev:raw": "rm -rf .next && NODE_ENV=development next dev -p 8080",
+    "fmctl": "node scripts/fmctl",
+    "test:fmctl": "node --test tests/fmctl.test.mjs",
     "build": "rm -rf .next && NODE_ENV=production next build",
     "build:static": "rm -rf .next out && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs",
     "start": "next start",

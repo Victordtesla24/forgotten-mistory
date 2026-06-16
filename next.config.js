@@ -28,7 +28,7 @@ const SECURITY_HEADERS = [
       "img-src 'self' data: blob: https:; media-src 'self' blob:; font-src 'self' data:; " +
       "style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
       "worker-src 'self'; " +
-      "connect-src 'self' ws: wss: https://generativelanguage.googleapis.com https://*.googleapis.com; " +
+      "connect-src 'self' ws: wss: https://api.github.com https://generativelanguage.googleapis.com https://*.googleapis.com; " +
       "frame-src https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors 'none'",
   },
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },

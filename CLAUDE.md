@@ -54,10 +54,14 @@ frame-accurate (~40 ms) live lip-sync pipeline on the dynamic deployment.
 5. **Verify:** `npm run lint` + `npx tsc --noEmit` + `node scripts/validate/overhaul_static_audit.mjs`
    + relevant `npm run validate:*`. For UI, capture a screenshot.
 6. **Log:** append the result row to `docs/execution-log.md`.
-7. **Deploy/push:** owner-gated. Local-first. Ask before Firebase deploy, `git push`, or any
-   paid D-ID/ElevenLabs API call. (This deliberately overrides the prompt's "Total Autonomy /
-   publish directly to production" clause — see SPEC §0.1 DEV-5. Build/test/V&V are fully
-   autonomous; only the final production publish waits for the owner.)
+7. **Deploy/push:** autonomous. Once tsc/lint/audit/tests are green, agents may `git commit`,
+   `git push` (the active branch, and to `main` via `git push origin HEAD:main`), and run
+   `firebase deploy` **without manual approval**, then conduct production verification against
+   the live site (<https://forgotten-mistory.web.app>); fix and redeploy if verification fails.
+   Still **ask before any _paid_ D-ID/ElevenLabs API call** (that's a cost gate, not a deploy
+   gate). Never force-push, hard-reset, or rewrite history (data-loss guard stays). (This
+   restores the prompt's "Total Autonomy / publish directly to production" clause — see
+   SPEC §0.1 DEV-5, now flipped to auto-deploy per the owner's 2026-06-15 directive.)
 
 ## How to add a project "signature effect" (common task)
 

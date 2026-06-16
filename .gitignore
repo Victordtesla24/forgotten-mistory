@@ -161,3 +161,7 @@ vite.config.ts.timestamp-*
 # Playwright artifacts
 test-results/
 playwright-report/
+
+# fmctl runtime state (pidfiles, server logs) + local Lighthouse reports
+.fmctl/
+.lighthouseci/

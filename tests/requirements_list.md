@@ -33,8 +33,9 @@
 | TC-FR-CATALOG (curated catalogue lists ≥10 distinct repos — corporate + personal — and every catalogue link resolves <400; dynamic `#github-projects` feed excluded so the count is a deterministic guard. **Per-repo dedicated-effect mapping per §7/§2.1 remains fan-out scope**) | `tests/overhaul/catalog.spec.ts` |
 | TC-FR-SYNTH (the `#synthesis` section shows every §6 source consulted — résumé + repo/commits/READMEs, YouTube descriptions, local profile files, operational traces, public accounts — and ≥1 rendered fact traces to a non-résumé source) | `tests/overhaul/synthesis.spec.ts` (data: `synthesisSources` in `app/data/siteContent.ts`; view: `components/site/SynthesisProvenance.tsx`) |
 | TC-FR-MINDSET (the `#mindset` section projects the four balanced-persona dimensions — technical depth, multi-million-dollar program scale, multi-year/decades execution, multi-layered tangible value [≥2 of time saved/risk reduced/cost avoided] — each number-led and source-traceable; ≥1 $5M+ scale claim and ≥1 15+ year claim rendered; `miniVicKnowledge` carries the same signatures) | `tests/overhaul/mindset.spec.ts` (data: `projectionDimensions` in `app/data/siteContent.ts`; view: `components/site/MindsetProjection.tsx`) |
+| TC-NN-2 (the `#dossier` "leave-behind" gives BOTH first-class personas — employer + client — a downloadable one-page dossier [the CV PDF, resolves 200], carries the recurring monochrome signature motif, and keeps the live clone reachable; recall heuristic = identity + position line + ≥3 number-led signatures that trace to the canonical `proof` data) | `tests/overhaul/dossier.spec.ts` (data: `dossier` in `app/data/siteContent.ts`; view: `components/site/Dossier.tsx`) |
 
 Remaining `TC-*` (CHAT, VOICE, CLONE/CLONE-LIVE, VOICE-DYN, SECONDARY,
-U-STATE, INT-CLONE, FPS, RENDER, COMPAT, NN-2/3) get their bound spec as each
+U-STATE, INT-CLONE, FPS, RENDER, COMPAT, NN-3) get their bound spec as each
 feature lands — tracked in `IMPLEMENTATION-PLAN.md`. (NN-1 dual-pillar is now asserted
 in the hero via `hero.spec.ts`; per-section NN-1 audit across all sections remains.)
