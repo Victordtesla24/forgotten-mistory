@@ -36,9 +36,13 @@ import HiddenTerminal from '@/components/site/HiddenTerminal';
 import HeroAvatar from '@/components/site/HeroAvatar';
 import ScrollRail from '@/components/site/ScrollRail';
 import HudFrame from '@/components/fx/HudFrame';
+import PacketFlowGraph from '@/components/fx/PacketFlowGraph';
+import SprintBurndown from '@/components/fx/SprintBurndown';
+import TokenReflow from '@/components/fx/TokenReflow';
 import ProofBar from '@/components/site/ProofBar';
 import MindsetProjection from '@/components/site/MindsetProjection';
 import SynthesisProvenance from '@/components/site/SynthesisProvenance';
+import Dossier from '@/components/site/Dossier';
 
 import { resumeContent } from './data/resumeContent';
 import {
@@ -516,6 +520,14 @@ export default function Home() {
               <ProjectsCarousel projects={projects} />
             </Reveal>
 
+            <Reveal delay={0.12}>
+              <div className="vfx-gallery">
+                <PacketFlowGraph />
+                <SprintBurndown />
+                <TokenReflow />
+              </div>
+            </Reveal>
+
             <div className="live-content">
               <Reveal className="github-feed">
                 <div className="section-subhead">Latest GitHub work</div>
@@ -555,6 +567,8 @@ export default function Home() {
         <MindsetProjection />
 
         <SynthesisProvenance />
+
+        <Dossier />
 
         <section id="contact" className="contact-section">
           <div className="container">

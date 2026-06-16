@@ -1273,6 +1273,21 @@ footer {
     max-width: 90%;
 }
 
+/* VFX Gallery (SPEC §7 infographics) */
+.vfx-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    justify-items: center;
+}
+
+@media (max-width: 768px) {
+    .vfx-gallery {
+        grid-template-columns: 1fr;
+    }
+}
+
 .live-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
@@ -3377,6 +3392,60 @@ footer {
     padding-top: 0.85rem; border-top: 1px solid var(--border-color);
 }
 @media (max-width: 768px) { .mindset-grid { gap: 1rem; } }
+
+/* ── Dossier leave-behind (NN-2 / TC-NN-2) ── */
+.dossier-section { padding: 4rem 0; position: relative; z-index: 5; }
+.dossier-card {
+    position: relative;
+    margin: 1.5rem 0 0;
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 2rem 2.25rem;
+    overflow: hidden;
+}
+.dossier-body { position: relative; z-index: 1; }
+.dossier-name {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; line-height: 1.1;
+    color: var(--white); margin: 0;
+}
+.dossier-role { color: var(--mist-400); font-size: 0.95rem; margin: 0.35rem 0 0; }
+.dossier-summary {
+    color: var(--secondary-text); font-size: 1rem; line-height: 1.55;
+    margin: 1rem 0 0; max-width: 62ch;
+}
+.dossier-highlights {
+    list-style: none; margin: 1.25rem 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 0.55rem 1.5rem;
+}
+.dossier-highlight {
+    position: relative; padding-left: 1rem;
+    color: var(--white); font-size: 0.95rem; line-height: 1.4;
+    font-variant-numeric: tabular-nums;
+}
+.dossier-highlight::before {
+    content: ''; position: absolute; left: 0; top: 0.55em;
+    width: 5px; height: 5px; border-radius: 999px; background: var(--mist-400);
+}
+.dossier-editions {
+    margin: 1.75rem 0 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1.25rem;
+}
+.dossier-edition {
+    display: flex; flex-direction: column; gap: 0.55rem;
+    border: 1px solid var(--border-color); border-radius: 14px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1.1rem 1.25rem;
+}
+.dossier-edition-label {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--mist-400); margin: 0;
+}
+.dossier-edition-takeaway { color: var(--secondary-text); font-size: 0.95rem; line-height: 1.5; margin: 0; }
+.dossier-download { margin-top: auto; align-self: flex-start; }
+.dossier-clone { margin: 1.75rem 0 0; }
+@media (max-width: 768px) { .dossier-card { padding: 1.5rem 1.35rem; } }
 
 /* ── Contact CTAs (FR-CONTACT) ── */
 .contact-cta-row {
