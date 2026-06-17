@@ -63,8 +63,16 @@ test.describe('TC-VFX-1 — PacketFlowGraph', () => {
 
     const graph = page.locator('[data-testid="packet-flow-graph"]');
     await expect(graph).toBeVisible({ timeout: 5000 });
+
+    // The static-fallback flag must actually engage under emulated reduced motion.
     const hasAttr = await graph.getAttribute('data-reduced-motion');
-    expect(hasAttr === 'true' || hasAttr === null).toBeTruthy();
+    expect(hasAttr).toBe('true');
+
+    // And the animated particles must NOT render/animate: the component gates
+    // <circle class="pfg-particle"> on !prefersReducedMotion, and CSS hides any
+    // residual particle. Under reduced motion zero particles may be present.
+    const particles = graph.locator('.pfg-particle');
+    await expect(particles).toHaveCount(0);
   });
 });
 
@@ -105,8 +113,25 @@ test.describe('TC-VFX-2 — SprintBurndown', () => {
 
     const chart = page.locator('[data-testid="sprint-burndown"]');
     await expect(chart).toBeVisible({ timeout: 5000 });
+
+    // The static-fallback flag must actually engage under emulated reduced motion.
     const hasAttr = await chart.getAttribute('data-reduced-motion');
-    expect(hasAttr === 'true' || hasAttr === null).toBeTruthy();
+    expect(hasAttr).toBe('true');
+
+    // And the actual line must be at its FINAL drawn state with no draw-on
+    // animation: under reduced motion the component resolves strokeDashoffset to
+    // 0 and skips the Framer draw-on, so the computed offset settles at 0px.
+    const actualPath = chart.locator('[data-testid="burndown-actual"]');
+    await expect(actualPath).toBeVisible();
+    await expect
+      .poll(
+        () =>
+          actualPath.evaluate(
+            (el) => getComputedStyle(el as SVGElement).strokeDashoffset
+          ),
+        { timeout: 5000 }
+      )
+      .toBe('0px');
   });
 });
 
@@ -142,7 +167,17 @@ test.describe('TC-VFX-3 — TokenReflow', () => {
 
     const reflow = page.locator('[data-testid="token-reflow"]');
     await expect(reflow).toBeVisible({ timeout: 5000 });
+
+    // The static-fallback flag must actually engage under emulated reduced motion.
     const hasAttr = await reflow.getAttribute('data-reduced-motion');
-    expect(hasAttr === 'true' || hasAttr === null).toBeTruthy();
+    expect(hasAttr).toBe('true');
+
+    // And the optimised stacked layout (the showOptimised path) must be shown
+    // immediately: under reduced motion the component forces showOptimised=true
+    // and renders the OPTIMAL_ORDER stack as `.token-pill.stacked` spans. Without
+    // reduced motion these only appear after the 1s phase timer, so their
+    // immediate presence proves the static fallback engaged.
+    const stacked = reflow.locator('.token-pill.stacked');
+    await expect(stacked).toHaveCount(12);
   });
 });

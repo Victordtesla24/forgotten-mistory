@@ -1725,16 +1725,23 @@ footer {
     display: flex;
     align-items: flex-start;
     gap: 1.2rem;
+    /* System A+C — magnetic depth parallax. CursorGlow writes --rx/--ry (tilt) and
+       --tx/--ty (magnetic offset); :hover supplies --lift/--card-scale. One composed
+       transform so the gestures never fight each other. Flattened under reduced motion. */
+    transform:
+      perspective(1000px)
+      translate3d(var(--tx, 0px), calc(var(--ty, 0px) + var(--lift, 0px)), var(--depth, 0px))
+      scale(var(--card-scale, 1))
+      rotateX(calc(var(--ry, 0) * -7deg))
+      rotateY(calc(var(--rx, 0) * 7deg));
+    transform-style: preserve-3d;
     transition:
-      transform var(--motion-base) var(--motion-ease-emphasized),
+      transform 220ms var(--motion-ease-emphasized),
       border-color var(--motion-base) var(--motion-ease-standard),
       box-shadow var(--motion-base) var(--motion-ease-standard),
       background var(--motion-base) var(--motion-ease-standard);
     position: relative;
     overflow: hidden;
-    /* Entrance Animation - Disabled to ensure visibility */
-    /* opacity: 0; */
-    /* animation: slideUpFade 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; */
 }
 
 .meta-card[data-outcome-card] {
@@ -1785,19 +1792,31 @@ footer {
 }
 
 .meta-card:hover {
-    transform: translateY(-6px) scale(1.01);
+    --lift: -6px;
+    --card-scale: 1.012;
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
       linear-gradient(var(--bg-color), var(--bg-color)) padding-box,
       linear-gradient(125deg, rgba(244,246,250,0.42), rgba(201,205,214,0.32)) border-box;
     border: 1px solid transparent;
-    box-shadow: 0 20px 42px rgba(0, 0, 0, 0.42), 0 0 30px rgba(244, 246, 250, 0.2);
+    box-shadow:
+      0 20px 42px rgba(0, 0, 0, 0.42),
+      0 0 calc(18px + var(--edge-glow, 0) * 26px) rgba(244, 246, 250, calc(0.16 + var(--edge-glow, 0) * 0.18));
 }
 
 .meta-card:focus-visible {
     outline: 2px solid rgba(201, 205, 214, 0.7);
     outline-offset: 2px;
-    transform: translateY(-4px);
+    --lift: -4px;
+    box-shadow: 0 0 calc(var(--edge-glow, 0) * 28px) rgba(244, 246, 250, calc(var(--edge-glow, 0) * 0.24));
+}
+
+/* System C — parallax depth layers: the icon lifts further toward the viewer than
+   the text, both driven by the GSAP --depth Z-lift (CardDepth). preserve-3d on the
+   card makes the translateZ read as real depth. */
+.meta-content {
+    transform: translateZ(calc(var(--depth, 0px) * 0.32));
+    transition: transform 220ms var(--motion-ease-emphasized);
 }
 
 .meta-card::before {
@@ -1829,11 +1848,12 @@ footer {
     justify-content: center;
     border-radius: 12px;
     flex-shrink: 0;
-    transition: transform 0.3s ease;
+    transform: translateZ(calc(var(--depth, 0px) * 0.6));
+    transition: transform 0.3s var(--motion-ease-emphasized);
 }
 
 .meta-card:hover .meta-icon {
-    transform: rotate(6deg) scale(1.08);
+    transform: translateZ(calc(var(--depth, 0px) * 1.05)) rotate(6deg) scale(1.08);
     background: rgba(244, 246, 250, 0.2);
 }
 
@@ -1851,6 +1871,8 @@ footer {
     letter-spacing: 1.5px;
     font-weight: 600;
     margin-bottom: 0.2rem;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .meta-stats {
@@ -1885,6 +1907,11 @@ footer {
     line-height: 1.4;
     margin-top: 0.5rem;
     opacity: 0.8;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Responsive */
@@ -2263,6 +2290,31 @@ footer {
     fill: none;
     margin: 0.5rem 0;
     filter: drop-shadow(0 0 4px var(--accent-color));
+}
+
+/* System B — Living Sparkline: gradient area-fill + glowing scan node. */
+.telemetry-spark-area {
+    fill: url(#telemetry-spark-fill);
+    stroke: none;
+}
+
+.telemetry-spark-stroke {
+    fill: none;
+    stroke: var(--accent-color);
+}
+
+.telemetry-spark-node {
+    fill: var(--white);
+    stroke: none;
+    transform-box: fill-box;
+    transform-origin: center;
+    filter: drop-shadow(0 0 5px var(--accent-color));
+    animation: sparkNodePulse 2.4s var(--motion-ease-standard) infinite;
+}
+
+@keyframes sparkNodePulse {
+    0%, 100% { opacity: 0.55; transform: scale(0.85); }
+    50% { opacity: 1; transform: scale(1.35); }
 }
 
 .telemetry-note {
@@ -3237,6 +3289,72 @@ footer {
     margin-top: 4rem;
     position: relative;
     z-index: 10;
+    isolation: isolate;
+    /* System A — Panel Depth Parallax: CursorGlow writes --rx/--ry; calmer tilt than
+       the cards (this is a reading surface). Flattened under reduced motion. */
+    transform:
+      perspective(1400px)
+      rotateX(calc(var(--ry, 0) * -3deg))
+      rotateY(calc(var(--rx, 0) * 3deg));
+    transform-style: preserve-3d;
+    transition: transform 260ms var(--motion-ease-standard);
+    will-change: transform;
+}
+
+.telemetry-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+    background: radial-gradient(
+        440px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(244, 246, 250, 0.08),
+        transparent 58%
+    );
+    opacity: 0;
+    transition: opacity 0.5s var(--motion-ease-standard);
+}
+
+.telemetry-panel:hover::after {
+    opacity: 1;
+}
+
+/* System A — real-3D depth backdrop (PanelDepthScene). Sits behind the crisp DOM
+   content (which is lifted above via z-index). pointer-events stay off so the panel
+   remains fully interactive. */
+.telemetry-depth {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
+}
+.telemetry-panel > .telemetry-header,
+.telemetry-panel > .telemetry-grid {
+    position: relative;
+    z-index: 1;
+}
+
+/* System B — living sparkline (SparklineGL) layered over the structural SVG. The SVG
+   stays as the reduced-motion fallback; the GL canvas adds the animated GLSL glow. */
+.telemetry-spark-stack {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    margin: 0.5rem 0;
+}
+.telemetry-spark-stack .telemetry-spark {
+    display: block;
+    margin: 0;
+}
+.telemetry-spark-gl {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
 }
 
 
@@ -3285,6 +3403,21 @@ footer {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+    /* Floating-panel depth parallax (Systems A/B/C) collapses to a flat, static
+       surface — no perspective tilt, magnetic offset, or pulsing scan node. */
+    .meta-card,
+    .telemetry-panel {
+        transform: none !important;
+    }
+    .telemetry-spark-node {
+        animation: none !important;
+    }
+    /* Real-3D WebGL enhancement layers are not mounted under reduced motion; hide
+       them defensively so only the static SVG / DOM fallbacks remain. */
+    .telemetry-depth,
+    .telemetry-spark-gl {
+        display: none !important;
     }
 }
 
@@ -3521,3 +3654,152 @@ footer {
 /* Decorative card-viz terminal must not be a keyboard scroll-trap (TC-NFR-A11Y).
    Scoped to the viz only so the real #terminal-log keeps its scroll. */
 .viz-terminal > .terminal-body { overflow: hidden; }
+
+/* ── Floating capability panel (FloatingDetailBox) — self-contained HUD
+   materialization. Monochrome; accent channels arrive via --detail-accent-rgb
+   (set inline from lib/palette.ts). Replaces the old shared-scene WebGL overlay. */
+.detail-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10002;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    pointer-events: none;
+}
+
+.detail-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: rgba(5, 6, 9, 0.55);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    pointer-events: none;
+}
+.detail-scrim.is-interactive { pointer-events: auto; }
+
+.detail-materialize {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.detail-panel {
+    --detail-accent-rgb: 174, 182, 194;
+    position: relative;
+    z-index: 2;
+    width: min(56rem, 100%);
+    max-height: 88vh;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid rgba(var(--detail-accent-rgb), 0.45);
+    background: linear-gradient(135deg, rgba(18, 19, 23, 0.97), rgba(9, 12, 20, 0.97));
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.55),
+        0 0 60px rgba(244, 246, 250, 0.10),
+        inset 0 1px 0 rgba(244, 246, 250, 0.06);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    pointer-events: none;
+    transform-style: preserve-3d;
+}
+.detail-panel.is-interactive { pointer-events: auto; }
+
+.detail-accent-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(var(--detail-accent-rgb), 0.9), transparent);
+    pointer-events: none;
+    z-index: 4;
+}
+
+/* HUD corner brackets — draw in clockwise from the top-left. */
+.detail-corner {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid rgba(var(--detail-accent-rgb), 0.85);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 4;
+    animation: detailCornerIn 0.4s var(--motion-ease-emphasized) forwards;
+}
+.detail-corner--tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; border-top-left-radius: 6px; animation-delay: 0.04s; }
+.detail-corner--tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; border-top-right-radius: 6px; animation-delay: 0.10s; }
+.detail-corner--br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; border-bottom-right-radius: 6px; animation-delay: 0.16s; }
+.detail-corner--bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; border-bottom-left-radius: 6px; animation-delay: 0.12s; }
+
+@keyframes detailCornerIn {
+    from { opacity: 0; transform: scale(0.6); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Single scanline sweep on open — never loops. */
+.detail-sweep {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(244, 246, 250, 0.08) 47%,
+        rgba(244, 246, 250, 0.16) 50%,
+        rgba(244, 246, 250, 0.08) 53%,
+        transparent 100%
+    );
+    transform: translateY(-120%);
+    animation: detailSweep 0.85s var(--motion-ease-standard) 0.1s forwards;
+}
+
+@keyframes detailSweep {
+    0% { transform: translateY(-120%); opacity: 0; }
+    15% { opacity: 1; }
+    100% { transform: translateY(120%); opacity: 0; }
+}
+
+.detail-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 6;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid rgba(244, 246, 250, 0.3);
+    background: rgba(244, 246, 250, 0.12);
+    color: rgba(244, 246, 250, 0.8);
+    transition: background var(--motion-fast) var(--motion-ease-standard), color var(--motion-fast) var(--motion-ease-standard);
+}
+.detail-close:hover { background: rgba(244, 246, 250, 0.24); color: rgba(244, 246, 250, 1); }
+.detail-close:focus-visible { outline: 2px solid rgba(var(--detail-accent-rgb), 0.9); outline-offset: 2px; }
+
+.detail-sidebar { background: linear-gradient(180deg, rgba(18, 19, 23, 0.98), rgba(9, 12, 20, 0.98)); }
+.detail-body { background: linear-gradient(135deg, rgba(18, 19, 23, 0.97), rgba(9, 12, 20, 0.97)); overflow-y: auto; }
+
+.detail-cta {
+    border: 1px solid rgba(244, 246, 250, 0.35);
+    background: rgba(244, 246, 250, 0.18);
+    transition: background var(--motion-fast) var(--motion-ease-standard), border-color var(--motion-fast) var(--motion-ease-standard);
+}
+.detail-cta:hover { background: rgba(244, 246, 250, 0.3); border-color: rgba(244, 246, 250, 0.6); }
+.detail-cta:focus-visible { outline: 2px solid rgba(var(--detail-accent-rgb), 0.9); outline-offset: 2px; }
+
+@media (max-width: 768px) {
+    .detail-sidebar { border-right: 0; border-bottom: 1px solid rgba(244, 246, 250, 0.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .detail-corner { animation: none; opacity: 1; transform: none; }
+    .detail-sweep { display: none; }
+    .detail-scrim { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}

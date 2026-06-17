@@ -43,6 +43,8 @@ import ProofBar from '@/components/site/ProofBar';
 import MindsetProjection from '@/components/site/MindsetProjection';
 import SynthesisProvenance from '@/components/site/SynthesisProvenance';
 import Dossier from '@/components/site/Dossier';
+import CursorDepthField from '@/components/site/CursorDepthField';
+import CardDepth from '@/components/site/CardDepth';
 
 import { resumeContent } from './data/resumeContent';
 import {
@@ -164,6 +166,9 @@ export default function Home() {
         <div className="cosmic-backdrop" />
       </div>
 
+      <CursorDepthField />
+      <CardDepth />
+
       <FloatingDetailBox
         activeKey={activeKey}
         triggerRect={triggerRect}
@@ -237,15 +242,17 @@ export default function Home() {
               {Object.entries(resumeContent).map(([key, outcome], index) => {
                 const Icon = OUTCOME_ICONS[key] ?? TrendingUp;
                 return (
-                  <motion.div
+                  // Plain div: the magnetic depth-parallax transform is driven via
+                  // CSS custom properties (--rx/--ry/--tx/--ty from CursorGlow), so a
+                  // framer-motion inline transform would shadow it. Hover lift/scale
+                  // moved to CSS (System C).
+                  <div
                     key={key}
                     className="meta-card glass-card cursor-pointer"
                     role="button"
                     tabIndex={0}
                     data-outcome-card="true"
                     data-outcome-index={index}
-                    whileHover={prefersReducedMotion ? undefined : { scale: 1.045, y: -4 }}
-                    transition={{ type: 'spring', stiffness: 320, damping: 22 }}
                     onClick={(e) => handleMetaClick(key, e)}
                     onKeyDown={(e) => handleMetaKeyDown(key, e)}
                     onMouseEnter={(e) => handleMetaHover(key, e)}
@@ -262,7 +269,7 @@ export default function Home() {
                       </div>
                       <span className="meta-note">{outcome.details[0]}</span>
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </motion.div>

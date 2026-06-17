@@ -1,26 +1,11 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Database, X } from 'lucide-react';
 import { resumeContent } from '@/app/data/resumeContent';
 import { PALETTE } from '@/lib/palette';
-
-declare global {
-  interface Window {
-    spaceApp: any;
-  }
-}
-
-/* --- Deterministic easing (replaces the former GSAP timeline) --- */
-const easeInQuart = (t: number) => t * t * t * t;
-const easeOutQuad = (t: number) => 1 - (1 - t) * (1 - t);
-const elasticOut = (t: number) => {
-  if (t <= 0) return 0;
-  if (t >= 1) return 1;
-  const period = 0.6;
-  return Math.pow(2, -10 * t) * Math.sin(((t - period / 4) * (2 * Math.PI)) / period) + 1;
-};
-const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+import DetailMaterialize from '@/components/fx/DetailMaterialize';
 
 interface FloatingDetailBoxProps {
   activeKey: string | null;
@@ -29,714 +14,265 @@ interface FloatingDetailBoxProps {
   isLocked?: boolean;
 }
 
+/**
+ * The hero outcome cards open this capability panel. The previous entrance
+ * rendered its FX (600 particles + beam + orbiting star) into the SHARED
+ * SpaceScene via `window.spaceApp`, positioned from the camera at click-time —
+ * so the continuously-drifting `CameraRig` desynchronised the FX from the DOM
+ * modal and the orbiting star wandered off-frame (the stray corner orb).
+ *
+ * This is a SELF-CONTAINED, camera-independent "HUD materialization":
+ *   - Framer-Motion FLIP: the panel lifts off the clicked card and floats to centre.
+ *   - A dedicated 2-D <canvas> particle convergence bounded to the dialog's
+ *     fixed-viewport layer (it cannot leave an off-frame artifact and is torn
+ *     down on close).
+ *   - CSS HUD corner brackets (×4) + a single scanline sweep.
+ *   - Monochrome only (accent sourced from lib/palette.ts).
+ *   - Under reduced motion the canvas + sweep are not rendered and the panel
+ *     appears instantly centred.
+ */
+
 const THEME_COLORS: Record<string, string> = {
-  "Test Automation at Scale": PALETTE.steel,
-  "Cloud Modernisation": PALETTE.steel,
-  "Realtime Reliability": PALETTE.steel,
-  "AI Quality & Risk": PALETTE.steel,
-  "Leadership Scale": PALETTE.steel,
-  "Portfolio Value": PALETTE.accent,
+  'Test Automation at Scale': PALETTE.steel,
+  'Cloud Modernisation': PALETTE.steel,
+  'Realtime Reliability': PALETTE.steel,
+  'AI Quality & Risk': PALETTE.steel,
+  'Leadership Scale': PALETTE.steel,
+  'Portfolio Value': PALETTE.accent,
+};
+const DEFAULT_COLOR = PALETTE.steel;
+
+const CORNERS = ['tl', 'tr', 'br', 'bl'] as const;
+
+/** Hex → "r, g, b" channel triple. lib/palette.ts is the sanctioned home for raw
+ *  hex, so converting tokens here keeps components literal-free (audit/eslint). */
+const rgbTriple = (hex: string): string => {
+  const h = hex.replace('#', '');
+  const n = h.length === 3 ? h.split('').map((c) => c + c).join('') : h;
+  return `${parseInt(n.slice(0, 2), 16)}, ${parseInt(n.slice(2, 4), 16)}, ${parseInt(n.slice(4, 6), 16)}`;
 };
 
-const DEFAULT_COLOR = PALETTE.steel;
-const logDebug = (message: string, data?: Record<string, unknown>) => {
-  if (process.env.NODE_ENV === 'production') return;
-  console.debug('[FloatingDetailBox]', message, data ?? {});
-};
+interface Origin {
+  x: number;
+  y: number;
+}
 
 export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isLocked = false }: FloatingDetailBoxProps) {
   const [displayKey, setDisplayKey] = useState<string | null>(null);
-  const [isExiting, setIsExiting] = useState(false);
-  
-  const threeObjectsRef = useRef<any[]>([]);
-  const rafRef = useRef<number>();
-  
-  const content = useMemo(() => 
-    displayKey ? resumeContent[displayKey as keyof typeof resumeContent] : null, 
-    [displayKey]
-  );
+  const reduced = !!useReducedMotion();
 
-  const themeColor = useMemo(() => 
-    displayKey ? (THEME_COLORS[displayKey] || DEFAULT_COLOR) : DEFAULT_COLOR,
-    [displayKey]
-  );
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const triggerElRef = useRef<HTMLElement | null>(null);
 
-  useEffect(() => {
-    if (activeKey) {
-      setDisplayKey(activeKey);
-      setIsExiting(false);
-    } else if (displayKey && !activeKey) {
-      setIsExiting(true);
+  const isOpen = !!activeKey;
+
+  const content = useMemo(
+    () => (displayKey ? resumeContent[displayKey as keyof typeof resumeContent] : null),
+    [displayKey],
+  );
+  const themeColor = useMemo(
+    () => (displayKey ? THEME_COLORS[displayKey] ?? DEFAULT_COLOR : DEFAULT_COLOR),
+    [displayKey],
+  );
+  const origin = useMemo<Origin>(() => {
+    if (triggerRect) {
+      return { x: triggerRect.left + triggerRect.width / 2, y: triggerRect.top + triggerRect.height / 2 };
     }
-  }, [activeKey, displayKey]);
+    if (typeof window !== 'undefined') return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    return { x: 0, y: 0 };
+  }, [triggerRect]);
 
+  // Keep the last opened content available so the exit animation can still render.
+  useEffect(() => {
+    if (activeKey) setDisplayKey(activeKey);
+  }, [activeKey]);
+
+  // Dim the background scene while the panel is open (CSS hooks on body.detail-open).
   useEffect(() => {
     if (typeof document === 'undefined') return;
-    document.body.classList.toggle('detail-open', !!activeKey);
+    document.body.classList.toggle('detail-open', isOpen);
     return () => {
       document.body.classList.remove('detail-open');
     };
-  }, [activeKey]);
+  }, [isOpen]);
 
-  // Three.js & Animation Logic
+  // Focus management: a click/keyboard (locked) open moves focus into the dialog
+  // and restores it to the originating card on close. Hover (unlocked) previews
+  // never steal focus.
   useEffect(() => {
-    if (!displayKey || !triggerRect || typeof window === 'undefined') return;
-
-    const spaceApp = (window as any).spaceApp;
-    if (!spaceApp) {
-      logDebug('spaceApp missing; aborting detail animation', {
-        activeKey: displayKey,
-        hasTrigger: !!triggerRect
-      });
-      return;
+    if (isOpen && isLocked) {
+      triggerElRef.current = (document.activeElement as HTMLElement) ?? null;
+      const t = setTimeout(() => closeButtonRef.current?.focus(), 60);
+      return () => clearTimeout(t);
     }
-
-    const { scene, camera, THREE } = spaceApp;
-    if (!scene || !camera || !THREE) {
-      logDebug('spaceApp missing required three.js primitives', {
-        hasScene: !!scene,
-        hasCamera: !!camera,
-        hasThree: !!THREE
-      });
-      return;
+    if (!isOpen && triggerElRef.current) {
+      triggerElRef.current.focus();
+      triggerElRef.current = null;
     }
+  }, [isOpen, isLocked]);
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
-
-    const cleanup = () => {
-      if (threeObjectsRef.current) {
-        threeObjectsRef.current.forEach(obj => {
-            if (scene) scene.remove(obj);
-            
-            // Dispose geometries and materials to prevent memory leaks
-            if (obj.geometry) obj.geometry.dispose();
-            if (obj.material) {
-                if (Array.isArray(obj.material)) {
-                    obj.material.forEach((m: any) => m.dispose());
-                } else {
-                    obj.material.dispose();
-                }
-            }
-            // Traverse children if any
-            obj.traverse((child: any) => {
-                if (child.geometry) child.geometry.dispose();
-                if (child.material) {
-                    if (Array.isArray(child.material)) {
-                        child.material.forEach((m: any) => m.dispose());
-                    } else {
-                        child.material.dispose();
-                    }
-                }
-            });
-        });
-      }
-    threeObjectsRef.current = [];
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-
-    cleanup(); 
-
-    const ANIMATION_DURATION = 1.2;
-    const BOX_W = 45;
-    const BOX_H = 35;
-
-    // --- Helper: Create Soft Glow Texture ---
-    const createGlowTexture = () => {
-        const size = 64;
-        const canvas = document.createElement('canvas');
-        canvas.width = size;
-        canvas.height = size;
-        const context = canvas.getContext('2d');
-        if (context) {
-            const gradient = context.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
-            gradient.addColorStop(0, 'rgba(255,255,255,1)');
-            gradient.addColorStop(0.2, 'rgba(255,255,255,0.8)');
-            gradient.addColorStop(0.5, 'rgba(255,255,255,0.2)');
-            gradient.addColorStop(1, 'rgba(0,0,0,0)');
-            context.fillStyle = gradient;
-            context.fillRect(0,0, size, size);
-        }
-        const texture = new THREE.CanvasTexture(canvas);
-        texture.needsUpdate = true;
-        return texture;
-    };
-    const glowTexture = createGlowTexture();
-
-
-    const getThreePos = (x: number, y: number, depth = -20) => {
-      const vec = new THREE.Vector3();
-      vec.set(
-        (x / window.innerWidth) * 2 - 1,
-        -(y / window.innerHeight) * 2 + 1,
-        0.5
-      );
-      vec.unproject(camera);
-      vec.sub(camera.position).normalize();
-      const distance = (depth - camera.position.z) / vec.z;
-      return new THREE.Vector3().copy(camera.position).add(vec.multiplyScalar(distance));
-    };
-
-    const startPos = getThreePos(
-      triggerRect.left + triggerRect.width / 2,
-      triggerRect.top + triggerRect.height / 2,
-      -20
-    );
-    const endPos = getThreePos(window.innerWidth / 2, window.innerHeight / 2, -20);
-    const midPos = new THREE.Vector3().lerpVectors(startPos, endPos, 0.5);
-
-    // --- 1. Connection Line (Beam) ---
-    const beamLen = startPos.distanceTo(endPos);
-    
-    // Inner White Core
-    const beamGeo = new THREE.CylinderGeometry(0.15, 0.15, beamLen, 8, 1, true); 
-    beamGeo.rotateX(-Math.PI / 2); 
-    const beamMat = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0,
-        blending: THREE.AdditiveBlending,
-    });
-    const beamMesh = new THREE.Mesh(beamGeo, beamMat);
-    beamMesh.position.copy(midPos);
-    beamMesh.lookAt(endPos);
-    scene.add(beamMesh);
-    threeObjectsRef.current.push(beamMesh);
-
-    // Outer Colored Glow
-    const beamGlowGeo = new THREE.CylinderGeometry(1.0, 1.0, beamLen, 12, 1, true);
-    beamGlowGeo.rotateX(-Math.PI / 2);
-    const beamGlowMat = new THREE.MeshBasicMaterial({
-        color: new THREE.Color(themeColor),
-        transparent: true,
-        opacity: 0,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-        side: THREE.DoubleSide
-    });
-    const beamGlowMesh = new THREE.Mesh(beamGlowGeo, beamGlowMat);
-    beamGlowMesh.position.copy(midPos);
-    beamGlowMesh.lookAt(endPos);
-    scene.add(beamGlowMesh);
-    threeObjectsRef.current.push(beamGlowMesh);
-
-    // --- 2. Orbiting Star ---
-    const starGroup = new THREE.Group();
-    scene.add(starGroup);
-    threeObjectsRef.current.push(starGroup);
-    
-    // Main orbiting star
-    const starOrbiter = new THREE.Mesh(
-        new THREE.SphereGeometry(0.6, 16, 16),
-        new THREE.MeshBasicMaterial({ color: 0xffffff })
-    );
-    starGroup.add(starOrbiter);
-    
-    // Add a light to the star for effect
-    const starLight = new THREE.PointLight(themeColor, 2, 20);
-    starOrbiter.add(starLight);
-
-    // Trail for Star
-    const trailCount = 10;
-    const trailMeshes: any[] = [];
-    for(let i=0; i<trailCount; i++) {
-        const t = new THREE.Mesh(
-            new THREE.SphereGeometry(0.4 - (i*0.03), 8, 8),
-            new THREE.MeshBasicMaterial({ color: themeColor, transparent: true, opacity: 0.6 - (i*0.06) })
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (!isLocked || !dialogRef.current) return;
+      if (e.key === 'Tab') {
+        const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
         );
-        starGroup.add(t);
-        trailMeshes.push(t);
-    }
-
-    // Halo + Shockwave at destination
-    const halo = new THREE.Mesh(
-      new THREE.TorusGeometry(BOX_W * 0.65, 0.4, 24, 80),
-      new THREE.MeshBasicMaterial({
-        color: new THREE.Color(themeColor),
-        transparent: true,
-        opacity: 0,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      })
-    );
-    const haloMat = halo.material as any;
-    halo.position.copy(endPos);
-    scene.add(halo);
-    threeObjectsRef.current.push(halo);
-
-    const shockwave = new THREE.Mesh(
-      new THREE.CircleGeometry(9, 96),
-      new THREE.MeshBasicMaterial({
-        color: new THREE.Color(themeColor),
-        transparent: true,
-        opacity: 0,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-        map: glowTexture,
-        alphaMap: glowTexture,
-        side: THREE.DoubleSide
-      })
-    );
-    const shockMat = shockwave.material as any;
-    shockwave.position.copy(endPos);
-    shockwave.lookAt(camera.position);
-    scene.add(shockwave);
-    threeObjectsRef.current.push(shockwave);
-
-    // Radiating sparks around the box
-    const sparkCount = 140;
-    const sparkGeo = new THREE.BufferGeometry();
-    const sparkPos = new Float32Array(sparkCount * 3);
-    const sparkVel = new Float32Array(sparkCount * 3);
-    const sparkLife = new Float32Array(sparkCount);
-
-    const resetSpark = (i: number) => {
-      const angle = Math.random() * Math.PI * 2;
-      const tilt = Math.random() * Math.PI;
-      const speed = 0.2 + Math.random() * 0.6;
-      sparkPos[i*3] = endPos.x + Math.cos(angle) * Math.sin(tilt);
-      sparkPos[i*3+1] = endPos.y + Math.sin(angle) * Math.sin(tilt);
-      sparkPos[i*3+2] = endPos.z + Math.cos(tilt);
-      sparkVel[i*3] = Math.cos(angle) * Math.sin(tilt) * speed;
-      sparkVel[i*3+1] = Math.sin(angle) * Math.sin(tilt) * speed;
-      sparkVel[i*3+2] = Math.cos(tilt) * speed;
-      sparkLife[i] = 0.4 + Math.random() * 0.8;
-    };
-    for(let i=0; i<sparkCount; i++) resetSpark(i);
-    sparkGeo.setAttribute('position', new THREE.BufferAttribute(sparkPos, 3));
-    const sparkMat = new THREE.PointsMaterial({
-      color: new THREE.Color(themeColor),
-      size: 1.2,
-      map: glowTexture,
-      alphaMap: glowTexture,
-      transparent: true,
-      opacity: 0,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false
-    }) as any;
-    const sparks = new THREE.Points(sparkGeo, sparkMat);
-    scene.add(sparks);
-    threeObjectsRef.current.push(sparks);
-
-    // --- 3. Floating Box Frame ---
-    const frameGroup = new THREE.Group();
-    frameGroup.position.copy(endPos);
-    scene.add(frameGroup);
-    threeObjectsRef.current.push(frameGroup);
-
-    const edgeRadius = 0.25;
-    const frameMat = new THREE.MeshBasicMaterial({ 
-        color: new THREE.Color(themeColor),
-        transparent: true, 
-        opacity: 0 
-    });
-    
-    // Construct Frame
-    const topGeo = new THREE.CylinderGeometry(edgeRadius, edgeRadius, BOX_W, 8);
-    topGeo.rotateZ(Math.PI / 2);
-    const topMesh = new THREE.Mesh(topGeo, frameMat);
-    topMesh.position.y = BOX_H / 2;
-    frameGroup.add(topMesh);
-
-    const botMesh = topMesh.clone();
-    botMesh.position.y = -BOX_H / 2;
-    frameGroup.add(botMesh);
-
-    const sideGeo = new THREE.CylinderGeometry(edgeRadius, edgeRadius, BOX_H, 8);
-    const leftMesh = new THREE.Mesh(sideGeo, frameMat);
-    leftMesh.position.x = -BOX_W / 2;
-    frameGroup.add(leftMesh);
-
-    const rightMesh = leftMesh.clone();
-    rightMesh.position.x = BOX_W / 2;
-    frameGroup.add(rightMesh);
-    
-    // Corners
-    const cornerGeo = new THREE.SphereGeometry(0.6, 16, 16);
-    const cornerMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0 });
-    const corners = [
-        new THREE.Vector3(-BOX_W/2, BOX_H/2, 0),
-        new THREE.Vector3(BOX_W/2, BOX_H/2, 0),
-        new THREE.Vector3(BOX_W/2, -BOX_H/2, 0),
-        new THREE.Vector3(-BOX_W/2, -BOX_H/2, 0)
-    ];
-    corners.forEach(pos => {
-        const c = new THREE.Mesh(cornerGeo, cornerMat);
-        c.position.copy(pos);
-        frameGroup.add(c);
-    });
-
-    frameGroup.scale.setScalar(0.8); 
-
-    // --- 4. Particle Aggregation System ---
-    const PARTICLE_COUNT = 600;
-    const pGeo = new THREE.BufferGeometry();
-    const pPos = new Float32Array(PARTICLE_COUNT * 3);
-    const pOffsets = new Float32Array(PARTICLE_COUNT * 3); 
-    const pSpeeds = new Float32Array(PARTICLE_COUNT);
-    
-    for(let i=0; i<PARTICLE_COUNT; i++) {
-        const r = 40 * Math.cbrt(Math.random()); // Wider gathering radius
-        const theta = Math.random() * 2 * Math.PI;
-        const phi = Math.acos(2 * Math.random() - 1);
-        
-        const ox = r * Math.sin(phi) * Math.cos(theta);
-        const oy = r * Math.sin(phi) * Math.sin(theta);
-        const oz = r * Math.cos(phi);
-        
-        pOffsets[i*3] = ox;
-        pOffsets[i*3+1] = oy;
-        pOffsets[i*3+2] = oz;
-        
-        pPos[i*3] = startPos.x + ox;
-        pPos[i*3+1] = startPos.y + oy;
-        pPos[i*3+2] = startPos.z + oz;
-
-        pSpeeds[i] = 0.5 + Math.random() * 0.8;
-    }
-    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-    
-    const pMat = new THREE.PointsMaterial({
-        color: 0xffffff,
-        size: 1.5, // Much larger particles for "Stardust" feel
-        map: glowTexture, // Use soft texture
-        transparent: true,
-        opacity: 0,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-    });
-    const particleSystem = new THREE.Points(pGeo, pMat);
-    scene.add(particleSystem);
-    threeObjectsRef.current.push(particleSystem);
-
-    // --- Animation State (deterministic tween, evaluated inside the render loop) ---
-    const animState = {
-        gather: 0,
-        expand: 0,
-        opacity: 0
-    };
-
-    /**
-     * Entrance: opacity 0→1 (0.2s) and gather 0→1 (0.5s, quartic-in implosion)
-     * run together from t=0; expand 0→1 (1.0s, elastic materialise) starts at
-     * t=0.6s. Exit: opacity 1→0 over 0.3s, then the detail box unmounts.
-     */
-    let exitCompleted = false;
-    const updateAnimState = (elapsedSeconds: number) => {
-      if (!isExiting) {
-        animState.opacity = clamp01(elapsedSeconds / 0.2);
-        animState.gather = easeInQuart(clamp01(elapsedSeconds / 0.5));
-        animState.expand = elasticOut(clamp01((elapsedSeconds - 0.6) / 1.0));
-      } else {
-        animState.gather = 1;
-        animState.expand = 1;
-        animState.opacity = 1 - easeOutQuad(clamp01(elapsedSeconds / 0.3));
-        if (elapsedSeconds >= 0.3 && !exitCompleted) {
-          exitCompleted = true;
-          setDisplayKey(null);
-          onClose();
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
         }
       }
-    };
+    },
+    [isLocked],
+  );
 
-    const startTime = Date.now();
+  const flipInitial = useMemo(() => {
+    const halfW = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
+    const halfH = typeof window !== 'undefined' ? window.innerHeight / 2 : 0;
+    return { opacity: 0, scale: 0.34, x: origin.x - halfW, y: origin.y - halfH };
+  }, [origin]);
 
-    // --- Render Loop ---
-    const loop = () => {
-        const now = Date.now();
-        const time = (now - startTime) * 0.001;
-        updateAnimState(time);
-        const { gather, expand, opacity } = animState;
-        
-        // 1. Particles Update
-        const positions = particleSystem.geometry.attributes.position.array;
-        for(let i=0; i<PARTICLE_COUNT; i++) {
-            const ox = pOffsets[i*3];
-            const oy = pOffsets[i*3+1];
-            const oz = pOffsets[i*3+2];
-            
-            // Implosion to startPos
-            // Add a "swirl" effect during gather
-            const swirl = gather * 2;
-            const cx = Math.cos(swirl*pSpeeds[i]) * ox - Math.sin(swirl*pSpeeds[i]) * oy;
-            const cy = Math.sin(swirl*pSpeeds[i]) * ox + Math.cos(swirl*pSpeeds[i]) * oy;
-            
-            let x = startPos.x + cx * (1 - gather);
-            let y = startPos.y + cy * (1 - gather);
-            let z = startPos.z + oz * (1 - gather);
+  if (!content) return null;
 
-            // Shoot along beam
-            if (expand > 0.01) {
-                const travel = expand * (1 + Math.sin(i*132)*0.3); // Randomize travel
-                const beamPos = new THREE.Vector3(x,y,z).lerp(endPos, Math.min(1, travel));
-                
-                if (travel > 0.9) {
-                    // Cloud around the box
-                    const spreadFactor = (travel - 0.9) * 15;
-                    beamPos.x += ox * 0.2 * spreadFactor;
-                    beamPos.y += oy * 0.2 * spreadFactor;
-                }
-                
-                x = beamPos.x;
-                y = beamPos.y;
-                z = beamPos.z;
-            }
-            
-            positions[i*3] = x;
-            positions[i*3+1] = y;
-            positions[i*3+2] = z;
-        }
-        particleSystem.geometry.attributes.position.needsUpdate = true;
-        pMat.opacity = opacity;
-
-        // 2. Beam
-        beamMat.opacity = opacity * expand * 0.9;
-        beamGlowMat.opacity = opacity * expand * 0.5 + (Math.sin(time * 15) * 0.1);
-
-        // 3. Halo / Shockwave layer
-        if (expand > 0.05) {
-            const shockPhase = (time % 1.4) / 1.4;
-            const shockFade = Math.max(0, 1 - shockPhase);
-            shockwave.scale.setScalar(1.4 + shockPhase * 4.2);
-            shockMat.opacity = opacity * shockFade * 0.75;
-            shockwave.lookAt(camera.position);
-
-            halo.scale.setScalar(0.95 + Math.sin(time * 2) * 0.06);
-            halo.rotation.x += 0.01;
-            halo.rotation.y += 0.02;
-            haloMat.opacity = opacity * 0.7;
-        } else {
-            shockMat.opacity = 0;
-            haloMat.opacity = 0;
-        }
-
-        // 4. Sparks
-        if (expand > 0.15) {
-            for(let i=0; i<sparkCount; i++) {
-                const life = sparkLife[i] - 0.016;
-                sparkLife[i] = life;
-                const idx = i*3;
-                sparkPos[idx] += sparkVel[idx];
-                sparkPos[idx+1] += sparkVel[idx+1];
-                sparkPos[idx+2] += sparkVel[idx+2];
-                if (life < 0 || Math.random() < 0.003) {
-                    resetSpark(i);
-                }
-            }
-            sparkGeo.attributes.position.needsUpdate = true;
-            sparkMat.opacity = opacity * 0.7;
-        } else {
-            sparkMat.opacity = 0;
-        }
-
-        // 5. Orbiting Star
-        if (expand > 0.1) {
-            starGroup.visible = true;
-            const loopTime = (time * 0.5) % 1;
-            // Loop back and forth? No, just loop one way is cleaner
-            const linePos = new THREE.Vector3().lerpVectors(startPos, endPos, loopTime);
-            
-            const orbitRadius = 3.0;
-            const angle = time * 6;
-            
-            const vecSE = new THREE.Vector3().subVectors(endPos, startPos);
-            const axis = vecSE.clone().normalize();
-            let arbit = new THREE.Vector3(0,1,0);
-            if (Math.abs(axis.dot(arbit)) > 0.9) arbit.set(1,0,0);
-            const perp1 = new THREE.Vector3().crossVectors(axis, arbit).normalize();
-            const perp2 = new THREE.Vector3().crossVectors(axis, perp1).normalize();
-            
-            const offset = new THREE.Vector3()
-                .addScaledVector(perp1, Math.cos(angle) * orbitRadius)
-                .addScaledVector(perp2, Math.sin(angle) * orbitRadius);
-            
-            const finalStarPos = linePos.add(offset);
-            starOrbiter.position.copy(finalStarPos);
-            
-             for(let i=0; i<trailCount; i++) {
-                const lagTime = time - (i+1)*0.04;
-                const lLoop = (lagTime * 0.5) % 1;
-                const lPos = new THREE.Vector3().lerpVectors(startPos, endPos, lLoop);
-                const lAngle = lagTime * 6;
-                const lOffset = new THREE.Vector3()
-                    .addScaledVector(perp1, Math.cos(lAngle) * orbitRadius)
-                    .addScaledVector(perp2, Math.sin(lAngle) * orbitRadius);
-                trailMeshes[i].position.copy(lPos.add(lOffset));
-             }
-        } else {
-            starGroup.visible = false;
-        }
-
-        // 6. Box
-        if (expand > 0.01) {
-            frameGroup.scale.setScalar(expand);
-            frameMat.opacity = opacity * expand;
-            cornerMat.opacity = opacity * expand;
-            frameGroup.rotation.y = Math.sin(time * 0.3) * 0.08;
-        } else {
-            frameGroup.scale.setScalar(0.01);
-        }
-
-        rafRef.current = requestAnimationFrame(loop);
-    };
-
-    loop();
-
-    return cleanup;
-  }, [displayKey, isExiting, themeColor, onClose]); // eslint-disable-line react-hooks/exhaustive-deps -- triggerRect changes reflow often; effect should not restart
-
-  const handleDismiss = () => { onClose(); };
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLElement | null>(null);
-
-  useEffect(() => {
-    if (isLocked && displayKey) {
-      triggerRef.current = document.activeElement as HTMLElement;
-      setTimeout(() => closeButtonRef.current?.focus(), 100);
-    }
-    return () => {
-      if (!displayKey && triggerRef.current) {
-        triggerRef.current.focus();
-        triggerRef.current = null;
-      }
-    };
-  }, [isLocked, displayKey]);
-
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (!isLocked || !dialogRef.current) return;
-    if (e.key === 'Tab') {
-      const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    }
-  }, [isLocked]);
-
-  if (!displayKey || !content) return null;
-
-  const pointerEventsClass = isLocked ? 'pointer-events-auto' : 'pointer-events-none';
-
-  // FIXED CONTAINER: Solid glassmorphism to ensure readability
-  const containerClasses = `
-    p-0 rounded-2xl max-w-4xl w-full 
-    ${pointerEventsClass} transition-all duration-700 transform
-    ${!isExiting ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4'}
-  `;
+  const accentStyle = { ['--detail-accent-rgb']: rgbTriple(themeColor) } as React.CSSProperties;
 
   return (
-    <div
-      ref={dialogRef}
-      className={`fixed inset-0 z-[10002] flex items-center justify-center pointer-events-none`}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="capability-modal-title"
-      onKeyDown={handleKeyDown}
-    >
-      <div
-        className={`absolute inset-0 bg-black/25 transition-opacity duration-500 ${!isExiting ? 'opacity-100' : 'opacity-0'} ${isLocked ? 'pointer-events-auto' : 'pointer-events-none'}`}
-        onClick={handleDismiss}
-        aria-label="Close detail view"
-      ></div>
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          key="detail-overlay"
+          ref={dialogRef}
+          className="detail-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="capability-modal-title"
+          onKeyDown={handleKeyDown}
+          initial={reduced ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0, transition: { duration: reduced ? 0 : 0.22 } }}
+          transition={{ duration: reduced ? 0 : 0.26 }}
+        >
+          <div
+            className={`detail-scrim${isLocked ? ' is-interactive' : ''}`}
+            aria-label="Close detail view"
+            onClick={onClose}
+          />
 
-      <div
-        className={containerClasses}
-      >
-        {/* Main Card Body */}
-        <div className="relative bg-[rgb(8_11_17)]/98 border border-white/25 rounded-2xl shadow-2xl overflow-hidden pointer-events-auto"
-        style={{ 
-                 boxShadow: `0 0 70px ${themeColor}33`,
-                 borderColor: `${themeColor}75`
-             }}>
-             
-            {/* Color Accent Bar */}
-            <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, transparent, ${themeColor}, transparent)` }}></div>
+          {!reduced && <DetailMaterialize key={displayKey} origin={origin} color={themeColor} />}
 
-        {isLocked && (
-            <button
+          <motion.div
+            data-detail-panel=""
+            data-detail-state={isOpen ? 'open' : 'closing'}
+            className={`detail-panel${isLocked ? ' is-interactive' : ''}`}
+            style={accentStyle}
+            initial={reduced ? false : flipInitial}
+            animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+            exit={
+              reduced
+                ? { opacity: 0, transition: { duration: 0 } }
+                : { opacity: 0, scale: 0.96, y: 8, transition: { duration: 0.24, ease: 'easeIn' } }
+            }
+            transition={
+              reduced
+                ? { duration: 0 }
+                : { type: 'spring', stiffness: 240, damping: 30, mass: 0.9, opacity: { duration: 0.3 } }
+            }
+          >
+            <span className="detail-accent-bar" aria-hidden="true" />
+            {CORNERS.map((c) => (
+              <span key={c} data-detail-corner={c} className={`detail-corner detail-corner--${c}`} aria-hidden="true" />
+            ))}
+            {!reduced && <span data-detail-sweep="" className="detail-sweep" aria-hidden="true" />}
+
+            {isLocked && (
+              <button
                 ref={closeButtonRef}
-                onClick={handleDismiss}
+                onClick={onClose}
                 aria-label="Close capability details"
-                className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 text-white/80 hover:text-white transition-all z-20 border border-white/30"
-            >
-                    <X size={18} strokeWidth={2} aria-hidden="true" />
-            </button>
-        )}
+                className="detail-close"
+              >
+                <X size={18} strokeWidth={2} aria-hidden="true" />
+              </button>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] min-h-[400px]">
-                {/* Left Sidebar: Stats & Title */}
-                <div className="p-8 bg-[linear-gradient(180deg,rgba(18,19,23,0.98),rgba(9,12,20,0.98))] border-r border-white/15 flex flex-col justify-center relative overflow-hidden">
-                    {/* Decorative massive number bg */}
-                    <div className="absolute -right-4 -bottom-12 text-9xl font-black text-white/5 select-none z-0 pointer-events-none">
-                        {content.stats.value.replace(/\D/g, '')}
-                    </div>
-                    
-                    <div className="relative z-10">
-                        <p className="text-xs font-mono tracking-[0.2em] uppercase mb-4 font-bold" style={{ color: themeColor }}>
-                            {content.subtitle}
-                        </p>
-                        <h2 id="capability-modal-title" className="text-3xl font-bold text-white leading-tight mb-8 drop-shadow-md">
-                            {content.title}
-                        </h2>
-                        
-                        <div>
-                            <div className="text-5xl font-bold text-white tracking-tight" style={{ textShadow: `0 0 30px ${themeColor}60` }}>
-                                {content.stats.value}
-                            </div>
-                            <div className="text-xs text-gray-200 uppercase tracking-wider font-mono mt-2">
-                                {content.stats.label}
-                            </div>
+              {/* Left sidebar: stat + title */}
+              <div className="detail-sidebar p-8 border-r border-white/10 flex flex-col justify-center relative overflow-hidden">
+                <div
+                  className="absolute -right-4 -bottom-12 text-9xl font-black text-white/5 select-none z-0 pointer-events-none"
+                  aria-hidden="true"
+                >
+                  {content.stats.value.replace(/\D/g, '')}
                 </div>
-            </div>
-        </div>
+                <div className="relative z-10">
+                  <p
+                    className="text-xs font-mono tracking-[0.2em] uppercase mb-4 font-bold"
+                    style={{ color: themeColor }}
+                  >
+                    {content.subtitle}
+                  </p>
+                  <h2 id="capability-modal-title" className="text-3xl font-bold text-white leading-tight mb-8">
+                    {content.title}
+                  </h2>
+                  <div className="text-5xl font-bold text-white tracking-tight">{content.stats.value}</div>
+                  <div className="text-xs text-gray-200 uppercase tracking-wider font-mono mt-2">
+                    {content.stats.label}
+                  </div>
+                </div>
+              </div>
 
-                {/* Right Content: Details */}
-                <div className="p-10 flex flex-col justify-between bg-[linear-gradient(135deg,rgba(18,19,23,0.97),rgba(9,12,20,0.97))]">
-                    <div className="space-y-6 text-gray-50 text-lg font-normal leading-[1.7]">
-            {content.details.map((detail, i) => (
-                            <div key={i} className="flex items-start gap-4 group animate-in fade-in slide-in-from-bottom-4 duration-500" style={{ animationDelay: `${i * 100}ms` }}>
-                                <div className="mt-2.5 w-1.5 h-1.5 rounded-full flex-shrink-0 shadow-[0_0_10px_currentColor]" 
-                                     style={{ color: themeColor, backgroundColor: themeColor }}></div>
-                                <p className="group-hover:text-white transition-colors duration-200">{detail}</p>
-                </div>
-            ))}
-        </div>
-        
-                    <div className="mt-10 pt-8 border-t border-white/20 flex justify-between items-end">
-                        <div className="flex flex-col gap-1">
-                             <span className="text-[10px] text-gray-100 uppercase tracking-widest font-mono">Source</span>
-                             <div className="flex items-center gap-2 text-xs text-gray-100 font-mono">
-                                <Database size={11} strokeWidth={2} aria-hidden="true" />
-                                <span>VIK_RESUME_FINAL.PDF</span>
-                            </div>
-                        </div>
-                        
-             <a href="/docs/Vik_Resume_Final.pdf" target="_blank" 
-                            className="group flex items-center gap-3 px-6 py-3 rounded-lg bg-white/20 hover:bg-white/30 border border-white/35 hover:border-white/60 transition-all"
-                        >
-                            <span className="text-sm font-medium text-white">View Full Document</span>
-                            <ArrowRight
-                              size={14}
-                              strokeWidth={2}
-                              aria-hidden="true"
-                              className="group-hover:translate-x-1 transition-transform"
-                              style={{ color: themeColor }}
-                            />
-             </a>
+              {/* Right content: evidence */}
+              <div className="detail-body p-10 flex flex-col justify-between">
+                <ul className="space-y-6 text-gray-50 text-lg font-normal leading-[1.7] list-none m-0 p-0">
+                  {content.details.map((detail) => (
+                    <li key={detail.slice(0, 48)} className="flex items-start gap-4">
+                      <span
+                        className="mt-2.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: themeColor }}
+                        aria-hidden="true"
+                      />
+                      <span>{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-10 pt-8 border-t border-white/15 flex justify-between items-end gap-4">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] text-gray-100 uppercase tracking-widest font-mono">Source</span>
+                    <div className="flex items-center gap-2 text-xs text-gray-100 font-mono">
+                      <Database size={11} strokeWidth={2} aria-hidden="true" />
+                      <span>VIK_RESUME_FINAL.PDF</span>
                     </div>
+                  </div>
+                  <a
+                    href="/docs/Vik_Resume_Final.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="detail-cta group flex items-center gap-3 px-6 py-3 rounded-lg"
+                  >
+                    <span className="text-sm font-medium text-white">View Full Document</span>
+                    <ArrowRight
+                      size={14}
+                      strokeWidth={2}
+                      aria-hidden="true"
+                      className="group-hover:translate-x-1 transition-transform"
+                      style={{ color: themeColor }}
+                    />
+                  </a>
                 </div>
+              </div>
             </div>
-        </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
