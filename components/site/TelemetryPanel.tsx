@@ -21,18 +21,38 @@ function nextValue(previous: number, min: number, max: number, step: number, see
   return Math.min(max, Math.max(min, previous + delta));
 }
 
-function buildSparkPath(values: number[], width = 160, height = 40): string {
+interface SparkGeometry {
+  /** Open stroke path tracing the samples. */
+  stroke: string;
+  /** Closed area path (stroke dropped to the baseline) for the gradient fill. */
+  area: string;
+  /** The latest sample point — anchors the traveling scan node. */
+  node: { x: number; y: number };
+  /** The sample just before the node — the comet trail's tail anchor. */
+  prev: { x: number; y: number };
+}
+
+/**
+ * Living-sparkline geometry: returns the stroke path, a closed area path for the
+ * monochrome gradient fill, the latest-sample coordinate for the scan node, and the
+ * preceding sample so a short comet trail can lead into the node.
+ */
+function buildSparkGeometry(values: number[], width = 160, height = 40): SparkGeometry {
   const min = Math.min(...values);
   const max = Math.max(...values);
   const range = max - min || 1;
   const stepX = width / (values.length - 1);
-  return values
-    .map((value, index) => {
-      const x = index * stepX;
-      const y = height - ((value - min) / range) * (height - 8) - 4;
-      return `${index === 0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)}`;
-    })
+  const points = values.map((value, index) => ({
+    x: index * stepX,
+    y: height - ((value - min) / range) * (height - 8) - 4,
+  }));
+  const stroke = points
+    .map((p, index) => `${index === 0 ? 'M' : 'L'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`)
     .join(' ');
+  const last = points[points.length - 1];
+  const prev = points[points.length - 2] ?? last;
+  const area = `${stroke} L ${last.x.toFixed(1)} ${height} L 0 ${height} Z`;
+  return { stroke, area, node: last, prev };
 }
 
 /**
@@ -67,7 +87,7 @@ export default function TelemetryPanel() {
     return () => window.clearInterval(interval);
   }, [prefersReducedMotion]);
 
-  const sparkPath = useMemo(() => buildSparkPath(sparkValues), [sparkValues]);
+  const spark = useMemo(() => buildSparkGeometry(sparkValues), [sparkValues]);
   const locations = LOCATION_SETS[locationIndex];
 
   return (
@@ -87,7 +107,22 @@ export default function TelemetryPanel() {
           <div className="telemetry-label">Edge latency (ANZ)</div>
           <div className="telemetry-value">{(latencyMs / 1000).toFixed(3)} s</div>
           <svg className="telemetry-spark" viewBox="0 0 160 40" preserveAspectRatio="none" aria-hidden="true">
-            <path d={sparkPath} />
+            <defs>
+              <linearGradient id="telemetry-spark-fill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" style={{ stopColor: 'var(--accent-color)', stopOpacity: 0.28 }} />
+                <stop offset="100%" style={{ stopColor: 'var(--accent-color)', stopOpacity: 0 }} />
+              </linearGradient>
+            </defs>
+            <path className="telemetry-spark-area" d={spark.area} />
+            <path className="telemetry-spark-stroke" d={spark.stroke} />
+            <line
+              className="telemetry-spark-trail"
+              x1={spark.prev.x}
+              y1={spark.prev.y}
+              x2={spark.node.x}
+              y2={spark.node.y}
+            />
+            <circle className="telemetry-spark-node" cx={spark.node.x} cy={spark.node.y} r={2.4} />
           </svg>
           <p className="telemetry-note">Targets &lt; 200 ms at 10k+ device concurrency.</p>
         </div>

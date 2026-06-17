@@ -16,29 +16,65 @@ export default function CursorGlow() {
   const outlineY = useSpring(y, { stiffness: 260, damping: 28, mass: 0.6 });
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    // Gate on a live matchMedia read (not only framer's hook) so emulated /
+    // late-applied reduced-motion preferences reliably disable the driver.
+    const reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
     const finePointer = window.matchMedia('(pointer: fine)');
-    if (!finePointer.matches) return;
+    if (prefersReducedMotion || reduceMQ.matches || !finePointer.matches) return;
 
     document.body.classList.add('cursor-enhanced');
+
+    // The hero "floating panels" share one depth-parallax driver: the hovered
+    // surface gets a cursor spotlight (--mouse-x/--mouse-y), a normalised tilt
+    // (--rx/--ry ∈ [-0.5, 0.5]) and a subtle magnetic offset (--tx/--ty). CSS maps
+    // those to perspective rotation + translation. Resetting on surface change keeps
+    // a panel from staying tilted after the pointer leaves it.
+    const DEPTH_TARGETS = '.meta-card, .skill-card, .project-card, .repo-card, .telemetry-panel';
+    let activeSurface: HTMLElement | null = null;
+    // Rect cached at the moment the pointer enters a surface, measured while the
+    // surface is at rest. Reusing it avoids a feedback loop where reading the
+    // already-transformed rect would drag the normalised pointer toward centre.
+    let activeRect: DOMRect | null = null;
+    const resetDepth = (el: HTMLElement | null) => {
+      if (!el) return;
+      el.style.setProperty('--rx', '0');
+      el.style.setProperty('--ry', '0');
+      el.style.setProperty('--tx', '0px');
+      el.style.setProperty('--ty', '0px');
+    };
+
     const onMove = (e: PointerEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);
 
-      // Drive the card spotlight (--mouse-x/--mouse-y) for the hovered card.
-      const card = (e.target as Element | null)?.closest?.(
-        '.meta-card, .skill-card, .project-card, .repo-card',
-      ) as HTMLElement | null;
-      if (card) {
-        const rect = card.getBoundingClientRect();
-        card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-        card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      const surface = (e.target as Element | null)?.closest?.(DEPTH_TARGETS) as HTMLElement | null;
+      if (surface !== activeSurface) {
+        resetDepth(activeSurface);
+        activeSurface = surface;
+        if (surface) {
+          // Reset to rest, then measure the untransformed layout rect.
+          resetDepth(surface);
+          activeRect = surface.getBoundingClientRect();
+        } else {
+          activeRect = null;
+        }
       }
+      if (!surface || !activeRect || activeRect.width === 0 || activeRect.height === 0) return;
+
+      const nx = (e.clientX - activeRect.left) / activeRect.width; // 0..1
+      const ny = (e.clientY - activeRect.top) / activeRect.height; // 0..1
+      surface.style.setProperty('--mouse-x', `${e.clientX - activeRect.left}px`);
+      surface.style.setProperty('--mouse-y', `${e.clientY - activeRect.top}px`);
+      surface.style.setProperty('--rx', (nx - 0.5).toFixed(3));
+      surface.style.setProperty('--ry', (ny - 0.5).toFixed(3));
+      surface.style.setProperty('--tx', `${((nx - 0.5) * 10).toFixed(1)}px`);
+      surface.style.setProperty('--ty', `${((ny - 0.5) * 10).toFixed(1)}px`);
     };
     window.addEventListener('pointermove', onMove, { passive: true });
 
     return () => {
       window.removeEventListener('pointermove', onMove);
+      resetDepth(activeSurface);
       document.body.classList.remove('cursor-enhanced');
     };
   }, [prefersReducedMotion, x, y]);

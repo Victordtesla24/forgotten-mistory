@@ -1725,16 +1725,23 @@ footer {
     display: flex;
     align-items: flex-start;
     gap: 1.2rem;
+    /* System A+C — magnetic depth parallax. CursorGlow writes --rx/--ry (tilt) and
+       --tx/--ty (magnetic offset); :hover supplies --lift/--card-scale. One composed
+       transform so the gestures never fight each other. Flattened under reduced motion. */
+    transform:
+      perspective(1000px)
+      translate3d(var(--tx, 0px), calc(var(--ty, 0px) + var(--lift, 0px)), 0)
+      scale(var(--card-scale, 1))
+      rotateX(calc(var(--ry, 0) * -7deg))
+      rotateY(calc(var(--rx, 0) * 7deg));
+    transform-style: preserve-3d;
     transition:
-      transform var(--motion-base) var(--motion-ease-emphasized),
+      transform 220ms var(--motion-ease-emphasized),
       border-color var(--motion-base) var(--motion-ease-standard),
       box-shadow var(--motion-base) var(--motion-ease-standard),
       background var(--motion-base) var(--motion-ease-standard);
     position: relative;
     overflow: hidden;
-    /* Entrance Animation - Disabled to ensure visibility */
-    /* opacity: 0; */
-    /* animation: slideUpFade 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; */
 }
 
 .meta-card[data-outcome-card] {
@@ -1774,7 +1781,14 @@ footer {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    /* E1 — glass rim-light + layered elevation: a crisp INSET top highlight (light
+       catching the glass edge) + a faint inset floor shadow over the drop shadow.
+       Pure achromatic alphas (audit-safe); reads as real, lit glass not a flat panel. */
+    box-shadow:
+        0 10px 34px -6px rgba(0, 0, 0, 0.38),
+        0 2px 8px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(244, 246, 250, 0.10),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.30);
 }
 
 .glass-card:hover {
@@ -1785,7 +1799,8 @@ footer {
 }
 
 .meta-card:hover {
-    transform: translateY(-6px) scale(1.01);
+    --lift: -6px;
+    --card-scale: 1.012;
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
       linear-gradient(var(--bg-color), var(--bg-color)) padding-box,
@@ -1797,7 +1812,7 @@ footer {
 .meta-card:focus-visible {
     outline: 2px solid rgba(201, 205, 214, 0.7);
     outline-offset: 2px;
-    transform: translateY(-4px);
+    --lift: -4px;
 }
 
 .meta-card::before {
@@ -2045,11 +2060,19 @@ footer {
     height: 100%;
     width: 100%;
     border-radius: inherit;
-    background: radial-gradient(
-        600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-        rgba(255, 255, 255, 0.06), 
-        transparent 40%
-    );
+    /* E2 — two-layer specular: a tight bright hotspot rides a soft halo, both
+       tracking the cursor. Reads as light gliding across glass, not a flat wash. */
+    background:
+        radial-gradient(
+            190px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(244, 246, 250, 0.16),
+            transparent 60%
+        ),
+        radial-gradient(
+            600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(244, 246, 250, 0.06),
+            transparent 45%
+        );
     z-index: 2;
     pointer-events: none;
     opacity: 0;
@@ -2263,6 +2286,48 @@ footer {
     fill: none;
     margin: 0.5rem 0;
     filter: drop-shadow(0 0 4px var(--accent-color));
+}
+
+/* System B — Living Sparkline: gradient area-fill + glowing scan node. */
+.telemetry-spark-area {
+    fill: url(#telemetry-spark-fill);
+    stroke: none;
+}
+
+.telemetry-spark-stroke {
+    fill: none;
+    stroke: var(--accent-color);
+}
+
+.telemetry-spark-node {
+    fill: var(--white);
+    stroke: none;
+    transform-box: fill-box;
+    transform-origin: center;
+    filter: drop-shadow(0 0 5px var(--accent-color));
+    animation: sparkNodePulse 2.4s var(--motion-ease-standard) infinite;
+}
+
+/* E5 — comet trail: a short glowing streak leading into the scan node, so the
+   latest sample reads as a live, travelling sensor head rather than a static dot. */
+.telemetry-spark-trail {
+    fill: none;
+    stroke: var(--accent-color);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 4px var(--accent-color));
+    opacity: 0.5;
+    animation: sparkTrailPulse 2.4s var(--motion-ease-standard) infinite;
+}
+
+@keyframes sparkNodePulse {
+    0%, 100% { opacity: 0.55; transform: scale(0.85); }
+    50% { opacity: 1; transform: scale(1.35); }
+}
+
+@keyframes sparkTrailPulse {
+    0%, 100% { opacity: 0.28; }
+    50% { opacity: 0.6; }
 }
 
 .telemetry-note {
@@ -3237,6 +3302,45 @@ footer {
     margin-top: 4rem;
     position: relative;
     z-index: 10;
+    isolation: isolate;
+    /* System A — Panel Depth Parallax: CursorGlow writes --rx/--ry; calmer tilt than
+       the cards (this is a reading surface). Flattened under reduced motion. */
+    transform:
+      perspective(1400px)
+      rotateX(calc(var(--ry, 0) * -3deg))
+      rotateY(calc(var(--rx, 0) * 3deg));
+    transform-style: preserve-3d;
+    transition: transform 260ms var(--motion-ease-standard);
+    will-change: transform;
+}
+
+.telemetry-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+    /* E2 — two-layer specular for the reading panel: a contained bright core over a
+       wide soft halo. Calmer than the cards (lower core alpha) — this is a surface
+       the eye rests on, not a CTA. */
+    background:
+        radial-gradient(
+            240px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(244, 246, 250, 0.12),
+            transparent 62%
+        ),
+        radial-gradient(
+            520px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(244, 246, 250, 0.05),
+            transparent 60%
+        );
+    opacity: 0;
+    transition: opacity 0.5s var(--motion-ease-standard);
+}
+
+.telemetry-panel:hover::after {
+    opacity: 1;
 }
 
 
@@ -3285,6 +3389,18 @@ footer {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+    /* Floating-panel depth parallax (Systems A/B/C + the studio-grade layer)
+       collapses to a flat, static surface — no perspective tilt, magnetic offset,
+       pulsing scan node, comet trail, or open-panel hologram tilt. */
+    .meta-card,
+    .telemetry-panel,
+    .detail-panel-depth {
+        transform: none !important;
+    }
+    .telemetry-spark-node,
+    .telemetry-spark-trail {
+        animation: none !important;
     }
 }
 
@@ -3521,3 +3637,172 @@ footer {
 /* Decorative card-viz terminal must not be a keyboard scroll-trap (TC-NFR-A11Y).
    Scoped to the viz only so the real #terminal-log keeps its scroll. */
 .viz-terminal > .terminal-body { overflow: hidden; }
+
+/* ── Floating capability panel (FloatingDetailBox) — self-contained HUD
+   materialization. Monochrome; accent channels arrive via --detail-accent-rgb
+   (set inline from lib/palette.ts). Replaces the old shared-scene WebGL overlay. */
+.detail-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10002;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    pointer-events: none;
+}
+
+.detail-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: rgba(5, 6, 9, 0.55);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    pointer-events: none;
+}
+.detail-scrim.is-interactive { pointer-events: auto; }
+
+.detail-materialize {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.detail-panel {
+    --detail-accent-rgb: 174, 182, 194;
+    position: relative;
+    z-index: 2;
+    width: min(56rem, 100%);
+    max-height: 88vh;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid rgba(var(--detail-accent-rgb), 0.45);
+    background: linear-gradient(135deg, rgba(18, 19, 23, 0.97), rgba(9, 12, 20, 0.97));
+    box-shadow:
+        0 36px 90px -10px rgba(0, 0, 0, 0.6),
+        0 0 64px rgba(244, 246, 250, 0.10),
+        inset 0 1px 0 rgba(244, 246, 250, 0.08),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    pointer-events: none;
+    transform-style: preserve-3d;
+    /* E3 — perspective for the inner hologram-depth tilt (applies to the direct
+       .detail-panel-depth child even though this panel clips its overflow). */
+    perspective: 1600px;
+}
+.detail-panel.is-interactive { pointer-events: auto; }
+
+/* E3 — hologram depth wrapper. Holds every panel layer (HUD frame + content) and
+   tilts a few degrees toward the cursor while the panel is locked open, driven by
+   --panel-rx/--panel-ry written by FloatingDetailBox. Composes cleanly with the
+   Framer FLIP transform on .detail-panel (custom props don't shadow `transform`).
+   Flattened under reduced motion by the global panel guard above. */
+.detail-panel-depth {
+    position: relative;
+    z-index: 1;
+    transform-style: preserve-3d;
+    transform:
+        rotateX(calc(var(--panel-ry, 0) * -5deg))
+        rotateY(calc(var(--panel-rx, 0) * 5deg));
+    transition: transform 240ms var(--motion-ease-standard);
+}
+.detail-panel.is-interactive .detail-panel-depth { will-change: transform; }
+
+.detail-accent-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(var(--detail-accent-rgb), 0.9), transparent);
+    pointer-events: none;
+    z-index: 4;
+}
+
+/* HUD corner brackets — draw in clockwise from the top-left. */
+.detail-corner {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid rgba(var(--detail-accent-rgb), 0.85);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 4;
+    animation: detailCornerIn 0.4s var(--motion-ease-emphasized) forwards;
+}
+.detail-corner--tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; border-top-left-radius: 6px; animation-delay: 0.04s; }
+.detail-corner--tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; border-top-right-radius: 6px; animation-delay: 0.10s; }
+.detail-corner--br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; border-bottom-right-radius: 6px; animation-delay: 0.16s; }
+.detail-corner--bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; border-bottom-left-radius: 6px; animation-delay: 0.12s; }
+
+@keyframes detailCornerIn {
+    from { opacity: 0; transform: scale(0.6); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Single scanline sweep on open — never loops. */
+.detail-sweep {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(244, 246, 250, 0.08) 47%,
+        rgba(244, 246, 250, 0.16) 50%,
+        rgba(244, 246, 250, 0.08) 53%,
+        transparent 100%
+    );
+    transform: translateY(-120%);
+    animation: detailSweep 0.85s var(--motion-ease-standard) 0.1s forwards;
+}
+
+@keyframes detailSweep {
+    0% { transform: translateY(-120%); opacity: 0; }
+    15% { opacity: 1; }
+    100% { transform: translateY(120%); opacity: 0; }
+}
+
+.detail-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 6;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid rgba(244, 246, 250, 0.3);
+    background: rgba(244, 246, 250, 0.12);
+    color: rgba(244, 246, 250, 0.8);
+    transition: background var(--motion-fast) var(--motion-ease-standard), color var(--motion-fast) var(--motion-ease-standard);
+}
+.detail-close:hover { background: rgba(244, 246, 250, 0.24); color: rgba(244, 246, 250, 1); }
+.detail-close:focus-visible { outline: 2px solid rgba(var(--detail-accent-rgb), 0.9); outline-offset: 2px; }
+
+.detail-sidebar { background: linear-gradient(180deg, rgba(18, 19, 23, 0.98), rgba(9, 12, 20, 0.98)); }
+.detail-body { background: linear-gradient(135deg, rgba(18, 19, 23, 0.97), rgba(9, 12, 20, 0.97)); overflow-y: auto; }
+
+.detail-cta {
+    border: 1px solid rgba(244, 246, 250, 0.35);
+    background: rgba(244, 246, 250, 0.18);
+    transition: background var(--motion-fast) var(--motion-ease-standard), border-color var(--motion-fast) var(--motion-ease-standard);
+}
+.detail-cta:hover { background: rgba(244, 246, 250, 0.3); border-color: rgba(244, 246, 250, 0.6); }
+.detail-cta:focus-visible { outline: 2px solid rgba(var(--detail-accent-rgb), 0.9); outline-offset: 2px; }
+
+@media (max-width: 768px) {
+    .detail-sidebar { border-right: 0; border-bottom: 1px solid rgba(244, 246, 250, 0.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .detail-corner { animation: none; opacity: 1; transform: none; }
+    .detail-sweep { display: none; }
+    .detail-scrim { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
