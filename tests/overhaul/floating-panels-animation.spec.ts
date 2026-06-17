@@ -121,9 +121,25 @@ test.describe('TC-FR-PANELFX — hero floating-panel motion systems', () => {
 
   // ── Zero console errors during interaction ──────────────────────────────────
   test('parallax interaction across panels emits no console errors', async ({ page }) => {
+    // App-relevant errors only: ignore third-party / network noise (e.g. the GitHub
+    // feed rate-limiting to 403, YouTube, favicon/MIME, CSP) that has nothing to do
+    // with the panel motion — mirrors the repo's isAppError convention so the test is
+    // not flaky on external resource failures. pageerror (uncaught JS exceptions) is
+    // never filtered.
+    const ignorable = [
+      /Failed to load resource/i,
+      /\b40\d\b/,
+      /MIME type/i,
+      /favicon/i,
+      /service-worker/i,
+      /net::ERR/i,
+      /Content Security Policy/i,
+      /api\.github\.com/i,
+      /youtube/i,
+    ];
     const errors: string[] = [];
     page.on('console', (m) => {
-      if (m.type() === 'error') errors.push(m.text());
+      if (m.type() === 'error' && !ignorable.some((re) => re.test(m.text()))) errors.push(m.text());
     });
     page.on('pageerror', (e) => errors.push(String(e)));
 

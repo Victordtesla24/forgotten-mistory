@@ -253,16 +253,29 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
     const panel = panelRef.current;
     if (!panel) return;
 
+    // Cache the panel rect instead of measuring on every pointermove: the panel is
+    // centred in a fixed overlay, so its box only changes when the window resizes or
+    // once the entrance FLIP settles. This keeps onMove write-only (no per-move
+    // layout read / forced reflow).
+    let rect: DOMRect | null = null;
+    const measure = () => {
+      rect = panel.getBoundingClientRect();
+    };
+    const settleTimer = window.setTimeout(measure, 650); // re-measure once the FLIP settles
+    window.addEventListener('resize', measure, { passive: true });
+
     const onMove = (e: PointerEvent) => {
-      const r = panel.getBoundingClientRect();
-      if (r.width === 0 || r.height === 0) return;
-      const nx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (r.width / 2))) * 0.5;
-      const ny = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / (r.height / 2))) * 0.5;
+      if (!rect) measure(); // lazy first measure (before the settle timer fires)
+      if (!rect || rect.width === 0 || rect.height === 0) return;
+      const nx = Math.max(-1, Math.min(1, (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2))) * 0.5;
+      const ny = Math.max(-1, Math.min(1, (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2))) * 0.5;
       panel.style.setProperty('--panel-rx', nx.toFixed(3));
       panel.style.setProperty('--panel-ry', ny.toFixed(3));
     };
     window.addEventListener('pointermove', onMove, { passive: true });
     return () => {
+      window.clearTimeout(settleTimer);
+      window.removeEventListener('resize', measure);
       window.removeEventListener('pointermove', onMove);
       panel.style.removeProperty('--panel-rx');
       panel.style.removeProperty('--panel-ry');

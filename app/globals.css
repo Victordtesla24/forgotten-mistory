@@ -757,6 +757,7 @@ footer {
     padding: 1.5rem;
     border-radius: 16px;
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     box-shadow: 0 10px 40px rgba(0,0,0,0.35);
     line-height: 1.6;
 }
@@ -1140,6 +1141,7 @@ footer {
     z-index: 5;
     background: rgba(0,0,0,0.3);
     backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
 }
 .play-btn::after {
     content: '';
@@ -1323,6 +1325,7 @@ footer {
     padding: 1rem 1.25rem;
     border-radius: 16px;
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 
@@ -1744,11 +1747,12 @@ footer {
     overflow: hidden;
 }
 
-.meta-card[data-outcome-card] {
-    will-change: transform, opacity;
-}
-
+/* will-change is intentionally NOT set here: per MOTION-AND-FX-SPEC it must only be
+   promoted while a card is actively animating, never permanently across all 6 cards
+   (which would pin 6 idle compositor layers). It is applied on :hover/:focus-visible
+   (the parallax window) and on the pre-reveal [data-anim-state="idle"] state. */
 .meta-card[data-outcome-card][data-anim-state="idle"] {
+    will-change: transform, opacity;
     opacity: 0;
 }
 
@@ -1801,6 +1805,8 @@ footer {
 .meta-card:hover {
     --lift: -6px;
     --card-scale: 1.012;
+    /* Promote to a compositor layer only during the hover/parallax window. */
+    will-change: transform;
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
       linear-gradient(var(--bg-color), var(--bg-color)) padding-box,
@@ -1813,6 +1819,7 @@ footer {
     outline: 2px solid rgba(201, 205, 214, 0.7);
     outline-offset: 2px;
     --lift: -4px;
+    will-change: transform;
 }
 
 .meta-card::before {
@@ -2476,6 +2483,7 @@ footer {
     background: rgba(10, 10, 15, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     transform: translate(-50%, -50%);
     opacity: 0.5;
@@ -2615,6 +2623,7 @@ footer {
     padding: 0.9rem 1rem;
     border-radius: 12px;
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .arch-metric-label {
@@ -2836,6 +2845,7 @@ footer {
     height: 100vh;
     background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     z-index: 20000;
     display: flex;
     justify-content: center;
@@ -2989,6 +2999,7 @@ footer {
     height: 500px;
     background: rgba(20, 20, 25, 0.95);
     backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     margin-bottom: 20px;
@@ -3311,6 +3322,11 @@ footer {
       rotateY(calc(var(--rx, 0) * 3deg));
     transform-style: preserve-3d;
     transition: transform 260ms var(--motion-ease-standard);
+    /* will-change promoted only while hovered (the parallax window) — see below. */
+}
+
+/* Promote the reading panel to a compositor layer only during the parallax window. */
+.telemetry-panel:hover {
     will-change: transform;
 }
 
@@ -3710,6 +3726,13 @@ footer {
     transition: transform 240ms var(--motion-ease-standard);
 }
 .detail-panel.is-interactive .detail-panel-depth { will-change: transform; }
+
+/* Belt-and-suspenders: the JS parallax driver is already gated on (pointer: fine),
+   but disable the hologram tilt in CSS too on touch / coarse-pointer surfaces
+   (MOTION-AND-FX-SPEC §6 — pointer parallax is desktop-only). */
+@media (hover: none), (pointer: coarse) {
+    .detail-panel-depth { transform: none !important; }
+}
 
 .detail-accent-bar {
     position: absolute;
