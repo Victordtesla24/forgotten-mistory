@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+// fmctl — forgotten-mistory server & deploy console.
+// CommonJS launcher (package.json has no "type":"module") that dynamic-imports
+// the ESM CLI. Works regardless of the package module type.
+'use strict';
+const path = require('node:path');
+const { pathToFileURL } = require('node:url');
+
+const cliUrl = pathToFileURL(path.join(__dirname, 'fm', 'cli.mjs')).href;
+
+import(cliUrl)
+  .then(({ main }) => main(process.argv.slice(2)))
+  .then((code) => process.exit(code || 0))
+  .catch((err) => {
+    console.error(err && err.stack ? err.stack : err);
+    process.exit(1);
+  });

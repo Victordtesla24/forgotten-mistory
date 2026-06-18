@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Database, X } from 'lucide-react';
 import { resumeContent } from '@/app/data/resumeContent';
 import { PALETTE } from '@/lib/palette';
+import DetailMaterialize from '@/components/fx/DetailMaterialize';
 
 interface FloatingDetailBoxProps {
   activeKey: string | null;
@@ -51,136 +52,9 @@ const rgbTriple = (hex: string): string => {
   return `${parseInt(n.slice(0, 2), 16)}, ${parseInt(n.slice(2, 4), 16)}, ${parseInt(n.slice(4, 6), 16)}`;
 };
 
-/** Deterministic PRNG (mulberry32) — keeps the materialization reproducible and
- *  free of Math.random, matching the SpaceScene starfield generator. */
-const mulberry32 = (seed: number) => {
-  let a = seed >>> 0;
-  return () => {
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-};
-
-const PARTICLE_COUNT = 96;
-const MATERIALIZE_MS = 1100;
-
 interface Origin {
   x: number;
   y: number;
-}
-
-/**
- * Self-contained convergence: monochrome particles stream from the originating
- * card toward the panel centre and fade as they merge — brightest mid-flight
- * (visible around the forming panel), gone by the time they reach centre. The
- * canvas is viewport-fixed inside the dialog layer, so nothing can escape frame,
- * and the rAF loop self-halts after MATERIALIZE_MS and is cancelled on unmount.
- */
-function MaterializeCanvas({ origin }: { origin: Origin }) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    const resize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = Math.floor(width * dpr);
-      canvas.height = Math.floor(height * dpr);
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    };
-    resize();
-
-    // Pre-render one soft white sprite; per-frame we only drawImage (no allocation).
-    const sprite = document.createElement('canvas');
-    sprite.width = 64;
-    sprite.height = 64;
-    const sctx = sprite.getContext('2d');
-    if (sctx) {
-      const whiteRGB = rgbTriple(PALETTE.white);
-      const grad = sctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-      grad.addColorStop(0, `rgba(${whiteRGB}, 1)`);
-      grad.addColorStop(0.35, `rgba(${whiteRGB}, 0.5)`);
-      grad.addColorStop(1, `rgba(${whiteRGB}, 0)`);
-      sctx.fillStyle = grad;
-      sctx.fillRect(0, 0, 64, 64);
-    }
-
-    const rand = mulberry32(0x9e3779b1);
-    const sx = new Float32Array(PARTICLE_COUNT);
-    const sy = new Float32Array(PARTICLE_COUNT);
-    const tx = new Float32Array(PARTICLE_COUNT);
-    const ty = new Float32Array(PARTICLE_COUNT);
-    const ph = new Float32Array(PARTICLE_COUNT);
-    const sz = new Float32Array(PARTICLE_COUNT);
-
-    const cx = width / 2;
-    const cy = height / 2;
-    const frameR = Math.min(width, height) * 0.26;
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const a0 = rand() * Math.PI * 2;
-      const spread = 60 + rand() * 220;
-      sx[i] = origin.x + Math.cos(a0) * spread * (0.4 + rand());
-      sy[i] = origin.y + Math.sin(a0) * spread * (0.4 + rand());
-      const a1 = rand() * Math.PI * 2;
-      const rr = frameR * (0.7 + rand() * 0.5);
-      tx[i] = cx + Math.cos(a1) * rr;
-      ty[i] = cy + Math.sin(a1) * rr * 0.62;
-      ph[i] = rand() * 0.28;
-      sz[i] = 0.8 + rand() * 1.6;
-    }
-
-    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-
-    let raf = 0;
-    let alive = true;
-    let start = 0;
-    const step = (now: number) => {
-      if (!alive) return;
-      if (start === 0) start = now;
-      const g = Math.min(1, (now - start) / MATERIALIZE_MS);
-      ctx.clearRect(0, 0, width, height);
-      if (g >= 1) {
-        alive = false;
-        return;
-      }
-      ctx.globalCompositeOperation = 'lighter';
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const local = Math.max(0, Math.min(1, (g - ph[i]) / (1 - ph[i])));
-        const e = easeOutCubic(local);
-        const x = sx[i] + (tx[i] - sx[i]) * e;
-        const y = sy[i] + (ty[i] - sy[i]) * e;
-        const alpha = Math.sin(local * Math.PI) * 0.6;
-        if (alpha <= 0.01) continue;
-        const s = sz[i] * (10 - 3 * e);
-        ctx.globalAlpha = alpha;
-        ctx.drawImage(sprite, x - s / 2, y - s / 2, s, s);
-      }
-      ctx.globalAlpha = 1;
-      raf = requestAnimationFrame(step);
-    };
-    raf = requestAnimationFrame(step);
-    window.addEventListener('resize', resize);
-
-    return () => {
-      alive = false;
-      cancelAnimationFrame(raf);
-      window.removeEventListener('resize', resize);
-      ctx.clearRect(0, 0, width, height);
-    };
-  }, [origin]);
-
-  return <canvas ref={canvasRef} data-detail-canvas="" aria-hidden="true" className="detail-materialize" />;
 }
 
 export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isLocked = false }: FloatingDetailBoxProps) {
@@ -340,7 +214,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
             onClick={onClose}
           />
 
-          {!reduced && <MaterializeCanvas key={displayKey} origin={origin} />}
+          {!reduced && <DetailMaterialize key={displayKey} origin={origin} color={themeColor} />}
 
           <motion.div
             ref={panelRef}

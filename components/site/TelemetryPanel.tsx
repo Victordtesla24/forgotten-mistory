@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
+import PanelDepthScene from '@/components/fx/PanelDepthScene';
+import SparklineGL from '@/components/fx/SparklineGL';
 
 const LOCATION_SETS: string[][] = [
   ['Melbourne · Edge POP', 'Sydney · API Gateway', 'Adelaide · Vector cache'],
@@ -92,6 +94,7 @@ export default function TelemetryPanel() {
 
   return (
     <div className="telemetry-panel glass-card" id="telemetry-panel">
+      <PanelDepthScene />
       <div className="telemetry-header">
         <div>
           <p className="eyebrow">Live Telemetry</p>
@@ -106,7 +109,9 @@ export default function TelemetryPanel() {
         <div className="telemetry-card">
           <div className="telemetry-label">Edge latency (ANZ)</div>
           <div className="telemetry-value">{(latencyMs / 1000).toFixed(3)} s</div>
-          <svg className="telemetry-spark" viewBox="0 0 160 40" preserveAspectRatio="none" aria-hidden="true">
+          <div className="telemetry-spark-wrapper" style={{ position: 'relative' }}>
+            <SparklineGL values={sparkValues} />
+            <svg className="telemetry-spark" viewBox="0 0 160 40" preserveAspectRatio="none" aria-hidden="true">
             <defs>
               <linearGradient id="telemetry-spark-fill" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" style={{ stopColor: 'var(--accent-color)', stopOpacity: 0.28 }} />
@@ -124,6 +129,7 @@ export default function TelemetryPanel() {
             />
             <circle className="telemetry-spark-node" cx={spark.node.x} cy={spark.node.y} r={2.4} />
           </svg>
+          </div>
           <p className="telemetry-note">Targets &lt; 200 ms at 10k+ device concurrency.</p>
         </div>
         <div className="telemetry-card">

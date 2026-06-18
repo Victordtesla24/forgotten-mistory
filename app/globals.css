@@ -2337,6 +2337,43 @@ footer {
     50% { opacity: 0.6; }
 }
 
+/* PanelDepthScene — volumetric depth backdrop canvas (decorative, behind content).
+   The component self-guards on prefers-reduced-motion (renders null), so it needs
+   no separate motion guard here. overflow:hidden on .glass-card clips it to the panel. */
+.telemetry-depth {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    border-radius: inherit;
+}
+
+/* Keep telemetry content above the depth backdrop: a positioned z-index:0 canvas
+   would otherwise paint over the static-flow header/grid. */
+.telemetry-panel > .telemetry-header,
+.telemetry-panel > .telemetry-grid {
+    position: relative;
+    z-index: 1;
+}
+
+/* SparklineGL — soft luminous glow overlay mirroring the SVG sparkline. Absolutely
+   positioned so it overlays the SVG (which stays in flow and defines the box height)
+   rather than adding layout height of its own. */
+.telemetry-spark-wrapper {
+    position: relative;
+    width: 100%;
+}
+.telemetry-spark-gl {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+}
+
 .telemetry-note {
     font-size: 0.65rem;
     color: #666;

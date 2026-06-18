@@ -24,6 +24,7 @@ import FloatingDetailBox from '@/components/FloatingDetailBox';
 import SpaceScene from './components/SpaceScene';
 import Preloader from '@/components/site/Preloader';
 import CursorGlow from '@/components/site/CursorGlow';
+import CardDepth from '@/components/site/CardDepth';
 import Navigation from '@/components/site/Navigation';
 import Reveal from '@/components/site/Reveal';
 import TelemetryPanel from '@/components/site/TelemetryPanel';
@@ -158,6 +159,7 @@ export default function Home() {
     <>
       <Preloader />
       <CursorGlow />
+      <CardDepth />
 
       <div className="scene-stack" aria-hidden="true">
         <SpaceScene />
