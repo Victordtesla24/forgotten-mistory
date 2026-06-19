@@ -71,4 +71,29 @@ test.describe('TC-FR-MINIVIC — MiniVicBot scaffold leak guard', () => {
     await engineerMode.click();
     await expect(engineerMode).toHaveClass(/bg-zinc-500|border-zinc-200/);
   });
+
+  test('avatar video + cloned-voice greeting assets resolve within budget and wire to the panel (TC-FR-VOICE)', async ({ page, request }) => {
+    // The HiggsField video avatar (silent loop) and the ElevenLabs cloned-voice
+    // greeting must ship as real, non-placeholder assets inside the perf budget
+    // (video ≤2.5MB, audio ≤1MB) — and the panel's <video> must point at the avatar.
+    const video = await request.get('/assets/my-avatar.mp4');
+    expect(video.status()).toBe(200);
+    expect(video.headers()['content-type'] || '').toContain('video');
+    const videoLen = (await video.body()).byteLength;
+    expect(videoLen, 'avatar video must not be an empty placeholder').toBeGreaterThan(50_000);
+    expect(videoLen, 'avatar video must stay within the 2.5MB perf budget').toBeLessThan(2_500_000);
+
+    const audio = await request.get('/assets/minivic-greeting.mp3');
+    expect(audio.status()).toBe(200);
+    expect(audio.headers()['content-type'] || '').toMatch(/audio|mpeg/);
+    const audioLen = (await audio.body()).byteLength;
+    expect(audioLen, 'greeting audio must not be an empty placeholder').toBeGreaterThan(10_000);
+    expect(audioLen, 'greeting audio must stay within the 1MB budget').toBeLessThan(1_000_000);
+
+    await gotoHome(page);
+    await page.locator('[data-testid="minivic-toggle"]').click();
+    await expect(page.locator('[data-testid="minivic-panel"]')).toBeVisible({ timeout: 5000 });
+    const src = await page.locator('[data-testid="minivic-panel"] video').getAttribute('src');
+    expect(src || '', 'panel avatar <video> must source the bundled HiggsField avatar').toContain('my-avatar.mp4');
+  });
 });
