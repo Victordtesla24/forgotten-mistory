@@ -1,5 +1,5 @@
 import http from 'node:http';
-import { existsSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { extname, join, normalize } from 'node:path';
 import { gzipSync } from 'node:zlib';
@@ -66,9 +66,57 @@ export interface StaticServer {
   close: () => Promise<void>;
 }
 
-/** Build the static export once if it is not already present. */
+// Source trees/files whose changes invalidate a prior `out/`. `tests/` and `docs/`
+// are deliberately excluded — editing a spec must not force a rebuild.
+const SOURCE_DIRS = ['app', 'components', 'lib', 'public'];
+const SOURCE_FILES = [
+  'package.json',
+  'package-lock.json',
+  'next.config.ts',
+  'next.config.mjs',
+  'next.config.js',
+  'tailwind.config.ts',
+  'postcss.config.mjs',
+  'tsconfig.json',
+];
+
+/** Newest mtime (ms) under a path, skipping node_modules/dotfiles. */
+function newestMtime(path: string): number {
+  const stat = statSync(path);
+  if (!stat.isDirectory()) return stat.mtimeMs;
+  let newest = stat.mtimeMs;
+  for (const entry of readdirSync(path)) {
+    if (entry === 'node_modules' || entry.startsWith('.')) continue;
+    newest = Math.max(newest, newestMtime(join(path, entry)));
+  }
+  return newest;
+}
+
+/**
+ * Build the static export if it is absent OR stale relative to the source tree.
+ *
+ * The mtime guard is load-bearing: a prior `ensureStaticBuild()` that only checked
+ * for `out/index.html` served a stale export after in-tree source edits, which
+ * surfaced as phantom React #418 hydration errors (the cached build predated the
+ * SSR-hydration fixes). Rebuilding when any source file is newer than the export
+ * keeps every spec that boots `out/` honest against the working tree.
+ */
 export function ensureStaticBuild(): void {
-  if (!existsSync(join(OUT, 'index.html'))) {
+  const indexHtml = join(OUT, 'index.html');
+  const builtAt = existsSync(indexHtml) ? statSync(indexHtml).mtimeMs : 0;
+
+  let sourceNewest = 0;
+  const root = process.cwd();
+  for (const dir of SOURCE_DIRS) {
+    const p = join(root, dir);
+    if (existsSync(p)) sourceNewest = Math.max(sourceNewest, newestMtime(p));
+  }
+  for (const file of SOURCE_FILES) {
+    const p = join(root, file);
+    if (existsSync(p)) sourceNewest = Math.max(sourceNewest, statSync(p).mtimeMs);
+  }
+
+  if (builtAt === 0 || sourceNewest > builtAt) {
     execSync('npm run build:static', { stdio: 'inherit', timeout: 300000 });
   }
 }

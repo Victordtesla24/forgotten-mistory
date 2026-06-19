@@ -260,7 +260,7 @@ test.describe('TC-FR-PANELFX — reduced-motion flattens all panel motion', () =
  *
  * The hero outcome cards open a centered capability panel (FloatingDetailBox).
  * The previous entrance rendered its FX (particles + beam + orbiting star) into
- * the SHARED SpaceScene via window.spaceApp, positioned from the camera at
+ * the SHARED SpaceScene via window.__portfolioSceneBridge__, positioned from the camera at
  * click-time — so the drifting camera desynchronised the FX from the DOM modal
  * and the orbiting star wandered off-frame (the stray corner orb in the owner's
  * reference image), as well as being busy/scribbly (NN-3 restraint breach).
@@ -270,7 +270,7 @@ test.describe('TC-FR-PANELFX — reduced-motion flattens all panel motion', () =
  *   - A dedicated 2-D <canvas> particle convergence bounded to the dialog's
  *     fixed-viewport layer (cannot leave a stray off-frame artifact; torn down on close).
  *   - CSS HUD corner brackets (×4) + a single scanline sweep.
- *   - No dependency on window.spaceApp.
+ *   - No dependency on window.__portfolioSceneBridge__.
  *   - Under reduced motion: instant centred panel, no canvas, no sweep.
  */
 function cloudCard(page: Page) {
@@ -346,13 +346,13 @@ test.describe('TC-FR-DETAILFX — Cloud Modernisation floating panel', () => {
     expect(Math.abs(cy - vp!.height / 2)).toBeLessThan(vp!.height * 0.18);
   });
 
-  test('does NOT depend on window.spaceApp (root-cause of the old corner-orb artifact)', async ({
+  test('does NOT depend on window.__portfolioSceneBridge__ (root-cause of the old corner-orb artifact)', async ({
     page,
   }) => {
     await gotoHome(page);
     // Remove the shared-scene bridge the old FX relied on; the redesign must not need it.
     await page.evaluate(() => {
-      delete (window as unknown as { spaceApp?: unknown }).spaceApp;
+      delete (window as unknown as { __portfolioSceneBridge__?: unknown }).__portfolioSceneBridge__;
     });
     const card = cloudCard(page);
     await card.scrollIntoViewIfNeeded();

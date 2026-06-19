@@ -240,10 +240,10 @@ const run = async () => {
       const tick = () => { n += 1; if (performance.now() - t0 < 1000) requestAnimationFrame(tick); else res(n); };
       requestAnimationFrame(tick);
     });
-    return { canvas: true, fps: frames, spaceApp: !!window.spaceApp };
+    return { canvas: true, fps: frames, sceneBridge: !!window.__portfolioSceneBridge__ };
   });
-  log('20', 'Three.js scene live (canvas, ~60fps loop, spaceApp handle)',
-    sceneInfo.canvas && sceneInfo.fps > 25 && sceneInfo.spaceApp, `fps≈${sceneInfo.fps}`);
+  log('20', 'Three.js scene live (canvas, ~60fps loop, __portfolioSceneBridge__ handle)',
+    sceneInfo.canvas && sceneInfo.fps > 25 && sceneInfo.sceneBridge, `fps≈${sceneInfo.fps}`);
 
   // ── 21 Scroll reveals ───────────────────────────────────────────────────
   const aboutOpacity = await page.locator('#about .section-title').evaluate((el) => getComputedStyle(el.parentElement).opacity);
