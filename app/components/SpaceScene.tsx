@@ -2,13 +2,15 @@
 
 import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree, extend, Object3DNode } from '@react-three/fiber';
-import { Bloom, EffectComposer, Noise, Vignette } from '@react-three/postprocessing';
+import { Bloom, ChromaticAberration, EffectComposer, Noise, Vignette } from '@react-three/postprocessing';
 import { Trail, shaderMaterial } from '@react-three/drei';
+import { useScroll, useTransform } from 'framer-motion';
 import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
 
 // --- Constants ---
 const STAR_COUNT = 4500;
+const DUST_COUNT = 60;
 const STAR_SEED = 1337;
 // Monochrome star palette (whites/greys, no hue) — sourced from lib/palette.ts
 const STAR_COLORS = PALETTE.star.map((hex) => new THREE.Color(hex));
@@ -77,19 +79,26 @@ const NebulaMaterial = shaderMaterial(
 
     void main() {
       vec2 uv = vUv;
-      
-      // Moving noise
+
+      // Three-octave volumetric noise: a broad base, a mid swirl, and a fine
+      // filament layer combine into layered cloud density.
       float n = fbm(uv * 3.0 + time * 0.05);
       float n2 = fbm(uv * 6.0 - time * 0.02);
-      
-      float cloud = n * n2;
-      
-      // Soft edges
-      float alpha = smoothstep(0.3, 0.7, cloud);
-      float dist = distance(uv, vec2(0.5));
-      alpha *= 1.0 - smoothstep(0.0, 0.5, dist);
+      float n3 = fbm(uv * 11.0 + time * 0.035);
 
-      gl_FragColor = vec4(color + vec3(n * 0.05), alpha * 0.15);
+      float cloud = n * n2 * (0.65 + n3 * 0.6);
+
+      // Soft edges + a volumetric light core that falls off toward the rim.
+      float alpha = smoothstep(0.28, 0.72, cloud);
+      float dist = distance(uv, vec2(0.5));
+      float core = 1.0 - smoothstep(0.0, 0.5, dist);
+      alpha *= core;
+
+      // Internal lighting kept tiny — mix-blend: screen blows out anything bright,
+      // so the nebula must stay near-black (monochrome).
+      float light = n * 0.05 + n3 * 0.03 * core;
+
+      gl_FragColor = vec4(color + vec3(light), alpha * 0.16);
     }
   `
 );
@@ -212,6 +221,67 @@ function ShootingStar({ frozen }: ShootingStarProps) {
         <meshBasicMaterial color={PALETTE.starGlow} toneMapped={false} />
       </mesh>
     </Trail>
+  );
+}
+
+// --- Ambient Dust ---
+interface DustFieldProps {
+  frozen: boolean;
+}
+
+/**
+ * Ambient floating dust: a sparse layer of additively-blended motes drifting near
+ * the camera to seat the portrait/content in depth. Monochrome (steel grey), tiny,
+ * and frozen under reduced motion.
+ */
+function DustField({ frozen }: DustFieldProps) {
+  const pointsRef = useRef<THREE.Points>(null);
+
+  const [positions, basePositions, drift] = useMemo(() => {
+    const rand = mulberry32(STAR_SEED + 7);
+    const positions = new Float32Array(DUST_COUNT * 3);
+    const drift = new Float32Array(DUST_COUNT * 2);
+    for (let i = 0; i < DUST_COUNT; i++) {
+      const i3 = i * 3;
+      positions[i3] = (rand() - 0.5) * 60;
+      positions[i3 + 1] = (rand() - 0.5) * 40;
+      positions[i3 + 2] = -10 - rand() * 30; // close-ish, in front of the starfield
+      drift[i * 2] = 0.3 + rand() * 0.5; // speed
+      drift[i * 2 + 1] = rand() * Math.PI * 2; // phase
+    }
+    return [positions, positions.slice(), drift];
+  }, []);
+
+  useFrame((state) => {
+    // Reduced-motion: no drift — the dust holds a single static frame.
+    if (frozen || !pointsRef.current) return;
+    const t = state.clock.elapsedTime;
+    const attr = pointsRef.current.geometry.getAttribute('position') as THREE.BufferAttribute;
+    const a = attr.array as Float32Array;
+    for (let i = 0; i < DUST_COUNT; i++) {
+      const i3 = i * 3;
+      a[i3] = basePositions[i3] + Math.sin(t * drift[i * 2] * 0.2 + drift[i * 2 + 1]) * 1.2;
+      a[i3 + 1] = basePositions[i3 + 1] + Math.cos(t * drift[i * 2] * 0.15 + drift[i * 2 + 1]) * 1.2;
+    }
+    attr.needsUpdate = true;
+  });
+
+  return (
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.13}
+        sizeAttenuation
+        color={PALETTE.steel}
+        transparent
+        opacity={0.5}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+        toneMapped={false}
+      />
+    </points>
   );
 }
 
@@ -349,16 +419,20 @@ function StarField({ frozen }: StarFieldProps) {
 
 /**
  * Cinematic camera rig: eased elliptical camera drift bounded to ±1.1 x-offset
- * and ±0.7 y-offset, providing gentle parallax depth while keeping the starfield
- * stable. FloatingDetailBox uses a separate window.__portfolioSceneBridge__ for FX IPC.
+ * and ±0.7 y-offset, layered with a scroll-driven parallax descent on the Y axis
+ * (framer `useScroll` → `useTransform`), so the cosmos sinks gently as the visitor
+ * scrolls. FloatingDetailBox uses a separate window.__portfolioSceneBridge__ for FX IPC.
  */
 function CameraRig() {
   const { camera } = useThree();
+  const { scrollYProgress } = useScroll();
+  // Map full-page scroll progress to a bounded Y parallax offset.
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -2.4]);
 
   useFrame((state) => {
     const t = state.clock.elapsedTime;
     camera.position.x = Math.sin(t * 0.05) * 1.1;
-    camera.position.y = Math.cos(t * 0.04) * 0.7;
+    camera.position.y = Math.cos(t * 0.04) * 0.7 + parallaxY.get();
     camera.lookAt(0, 0, -60);
   });
 
@@ -427,6 +501,7 @@ function SceneContent({ frozen = false }: { frozen?: boolean }) {
   return (
     <group ref={groupRef}>
       <StarField frozen={frozen} />
+      <DustField frozen={frozen} />
       {/* Dark nebula colors are required because mix-blend-mode: screen blows out brightness */}
       <NebulaCloud position={[0, 0, -50]} color={PALETTE.nebula[0]} scale={[100, 100, 1]} frozen={frozen} />
       <NebulaCloud position={[-30, 20, -80]} color={PALETTE.nebula[1]} scale={[120, 120, 1]} frozen={frozen} />
@@ -441,6 +516,13 @@ export default function SpaceScene() {
   const [enablePostFx, setEnablePostFx] = useState(true);
   const [frozen, setFrozen] = useState(false);
   const [hidden, setHidden] = useState(false);
+  // DPR cap: full devices get [1, 1.5] for crisper bloom; low-power/reduced-motion
+  // devices stay pinned at [1, 1] to protect the mobile FPS budget (NFR-FPS).
+  const [maxDpr, setMaxDpr] = useState<[number, number]>([1, 1.5]);
+
+  // Sub-pixel chromatic aberration on the bloomed result — a restrained lens artifact
+  // (the source is strictly greyscale; the fringe only kisses the brightest stars).
+  const chromaticOffset = useMemo(() => new THREE.Vector2(0.002, 0.002), []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -453,6 +535,7 @@ export default function SpaceScene() {
 
     setFrozen(prefersReduced);
     setEnablePostFx(!(prefersReduced || lowPowerDevice));
+    setMaxDpr(prefersReduced || lowPowerDevice ? [1, 1] : [1, 1.5]);
   }, []);
 
   // Pause the render loop while the tab is backgrounded (VFX-2 / NFR-FPS): a hidden
@@ -474,7 +557,7 @@ export default function SpaceScene() {
       <Canvas
         camera={{ position: [0, 0, 20], fov: 60 }}
         gl={{ antialias: false, alpha: false }}
-        dpr={1}
+        dpr={maxDpr}
         frameloop={halt ? 'demand' : 'always'}
       >
         <PortfolioSceneBridge />
@@ -486,6 +569,7 @@ export default function SpaceScene() {
         {enablePostFx && !frozen ? (
           <EffectComposer>
             <Bloom intensity={0.3} luminanceThreshold={0.22} luminanceSmoothing={0.25} mipmapBlur />
+            <ChromaticAberration offset={chromaticOffset} radialModulation={false} modulationOffset={0} />
             <Noise opacity={0.015} />
             <Vignette eskil={false} offset={0.18} darkness={0.78} />
           </EffectComposer>
