@@ -25,14 +25,28 @@ export default function HeroAvatar() {
 
     let cancelled = false;
 
-    const onCanPlay = () => {
-      if (cancelled) return;
-      setVideoReady(true);
+    // Only cross-fade FROM the still portrait TO the video once the video is
+    // genuinely playing AND has advanced past its first frame. The previous
+    // 'canplay' → ready flip fired far too early: the portrait faded to opacity 0
+    // before the video had painted (and sometimes before it even had a src),
+    // leaving a dark empty panel with no portrait at all. If the video stalls,
+    // errors, or pauses (scrolled out of view), the still portrait returns.
+    const startPlay = () =>
       video.play().catch(() => {
         /* Autoplay rejection is non-fatal; the static image remains. */
       });
+    const showVideo = () => {
+      if (!cancelled && !video.paused && video.currentTime > 0.04 && video.videoWidth > 0) {
+        setVideoReady(true);
+      }
     };
-    video.addEventListener('canplay', onCanPlay);
+    const showImage = () => {
+      if (!cancelled) setVideoReady(false);
+    };
+    video.addEventListener('canplay', startPlay);
+    video.addEventListener('timeupdate', showVideo);
+    video.addEventListener('pause', showImage);
+    video.addEventListener('error', showImage);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -53,7 +67,10 @@ export default function HeroAvatar() {
 
     return () => {
       cancelled = true;
-      video.removeEventListener('canplay', onCanPlay);
+      video.removeEventListener('canplay', startPlay);
+      video.removeEventListener('timeupdate', showVideo);
+      video.removeEventListener('pause', showImage);
+      video.removeEventListener('error', showImage);
       observer.disconnect();
       video.pause();
     };
@@ -61,6 +78,15 @@ export default function HeroAvatar() {
 
   return (
     <div className="avatar-placeholder" id="avatar-container" ref={containerRef}>
+      {/* HUD chrome tying the portrait to the JARVIS signature motif — corner
+          brackets + a scan label so the right column carries real weight. */}
+      <span className="avatar-frame" aria-hidden="true">
+        <span className="hud-frame__corner hud-frame__corner--tl" />
+        <span className="hud-frame__corner hud-frame__corner--tr" />
+        <span className="hud-frame__corner hud-frame__corner--bl" />
+        <span className="hud-frame__corner hud-frame__corner--br" />
+      </span>
+      <span className="avatar-tag" aria-hidden="true">SUBJECT · LIVE</span>
       <div className="avatar-circle relative overflow-hidden">
         <picture>
           <source srcSet="/assets/my_avatar.avif" type="image/avif" />

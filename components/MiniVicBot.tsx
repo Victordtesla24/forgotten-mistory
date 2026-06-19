@@ -894,11 +894,11 @@ const MiniVicBot = () => {
           className="mb-4 w-[22rem] md:w-[27rem] max-w-[calc(100vw-2.5rem)] max-h-[calc(100vh-7rem)] overflow-hidden rounded-3xl border border-zinc-300/20 bg-[linear-gradient(150deg,rgba(14,15,20,0.97),rgba(10,8,24,0.96))] shadow-[0_24px_70px_rgba(4,8,22,0.65),0_0_40px_rgba(201,205,214,0.14)] ring-1 ring-neutral-400/25 animate-in slide-in-from-bottom-8 duration-300"
           aria-label="MiniVic assistant panel"
         >
-          <div className="relative h-56 w-full overflow-hidden border-b border-white/10 bg-black/50">
+          <div className="relative h-44 w-full overflow-hidden border-b border-white/10 bg-neutral-950">
             <video
               ref={videoRef}
               src={currentVideoSrc || undefined}
-              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ${
+              className={`absolute inset-0 w-full h-full object-cover object-top grayscale contrast-[1.05] transition-transform duration-700 ${
                 isSpeaking ? "scale-105" : "scale-100"
               }`}
               autoPlay
@@ -916,33 +916,32 @@ const MiniVicBot = () => {
                 ref={mouthCanvasRef}
                 width={200}
                 height={100}
-                className="absolute left-1/2 top-[58%] h-12 w-24 -translate-x-1/2 pointer-events-none mix-blend-screen"
+                className="absolute left-1/2 top-[56%] h-12 w-24 -translate-x-1/2 pointer-events-none mix-blend-screen"
               />
             )}
+            {/* legibility gradient — keeps the top bar + identity strip readable over the portrait */}
             <div
-              className={`absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/30 to-transparent transition-opacity duration-500 ${
-                isSpeaking ? "opacity-70" : "opacity-45"
+              className={`absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/35 to-neutral-950/15 transition-opacity duration-500 ${
+                isSpeaking ? "opacity-95" : "opacity-80"
               }`}
             />
+            {/* speaking-state scan grid (monochrome) */}
             <div
               className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${
                 isSpeaking ? "opacity-100" : "opacity-0"
               }`}
             >
-              <div className="absolute inset-0 animate-pulse bg-white/5 mix-blend-overlay" />
-              <div className="absolute inset-0 bg-[linear-gradient(rgba(244,246,250,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(244,246,250,0.12)_1px,transparent_1px)] bg-[size:24px_24px] opacity-20" />
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(244,246,250,0.10)_1px,transparent_1px),linear-gradient(90deg,rgba(244,246,250,0.10)_1px,transparent_1px)] bg-[size:26px_26px] opacity-25" />
             </div>
-            <div className="absolute inset-x-0 top-0 z-10 flex items-start justify-between p-3">
-              <div className={`flex items-center gap-2 rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] backdrop-blur-md transition-all duration-300 ${
-                isSpeaking ? "border-neutral-300/70 bg-neutral-950/70 text-neutral-100" : "border-zinc-200/25 bg-black/40 text-zinc-100"
-              }`}>
-                <span className={`h-2 w-2 rounded-full ${isSpeaking ? "bg-zinc-400 animate-ping" : "bg-zinc-300"}`} />
+            <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-3 py-2.5">
+              <div className="flex items-center gap-2 rounded-full border border-white/15 bg-black/45 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-md">
+                <span className={`h-1.5 w-1.5 rounded-full ${isSpeaking ? "bg-white animate-pulse" : "bg-white/70"}`} />
                 <span>MiniVic Live</span>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-1.5">
                 <button
                   onClick={() => setIsMuted((prev) => !prev)}
-                  className="rounded-full border border-white/15 bg-black/40 p-2 text-white backdrop-blur-md transition-all hover:border-zinc-300/40 hover:bg-white/15"
+                  className="rounded-full border border-white/15 bg-black/45 p-1.5 text-white/90 backdrop-blur-md transition-colors hover:border-white/35 hover:bg-white/10"
                   aria-label={isMuted ? "Unmute voice" : "Mute voice"}
                 >
                   {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
@@ -952,91 +951,86 @@ const MiniVicBot = () => {
                     stopAudio();
                     setIsOpen(false);
                   }}
-                  className="rounded-full border border-white/15 bg-black/40 p-2 text-white backdrop-blur-md transition-all hover:border-neutral-300/50 hover:bg-neutral-500/25 hover:text-neutral-200"
+                  className="rounded-full border border-white/15 bg-black/45 p-1.5 text-white/90 backdrop-blur-md transition-colors hover:border-white/35 hover:bg-white/10"
                   aria-label="Close mini Vic"
                 >
                   <X size={14} />
                 </button>
               </div>
             </div>
-            <div className="absolute inset-x-4 bottom-3 z-10 rounded-2xl border border-white/10 bg-black/45 px-4 py-3 backdrop-blur-md">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="flex items-center gap-2 text-lg font-semibold text-white">
-                    Mini Vic Command
-                    <Sparkles size={16} className={`${isSpeaking ? "animate-spin-slow text-neutral-200" : "text-zinc-200"}`} />
-                  </h3>
-                  <p className="mt-0.5 text-[11px] text-slate-300">
-                    Ask about delivery, systems, team leadership, or roadmap execution.
-                  </p>
-                </div>
-                <div className={`rounded-full border px-2 py-1 text-[11px] font-medium backdrop-blur transition-colors ${
-                  isSpeaking
-                    ? "border-neutral-300/70 bg-neutral-500/25 text-neutral-100"
-                    : isListening
-                      ? "animate-pulse border-neutral-300/70 bg-neutral-500/25 text-neutral-100"
-                      : "border-zinc-200/30 bg-zinc-500/10 text-zinc-100"
-              }`}>
-                {isSpeaking ? (isVideoPlaying ? "Video Playback" : "Voice Active") : isListening ? "Listening..." : "Online"}
+            {/* identity strip — clean text over the gradient, not a heavy boxed card */}
+            <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 px-4 pb-3">
+              <div className="min-w-0">
+                <h3 className="flex items-center gap-1.5 text-[1.1rem] font-semibold tracking-tight text-white">
+                  Mini Vic
+                  <Sparkles size={14} className={isSpeaking ? "animate-spin-slow text-white" : "text-white/70"} />
+                </h3>
+                <p className="mt-0.5 truncate text-[11px] text-white/55">Vikram&apos;s AI clone · ask me anything</p>
               </div>
-            </div>
+              <span className={`shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-medium tracking-wide backdrop-blur transition-colors ${
+                isSpeaking
+                  ? "border-white/40 bg-white/15 text-white"
+                  : isListening
+                    ? "animate-pulse border-white/40 bg-white/15 text-white"
+                    : "border-white/20 bg-white/5 text-white/85"
+              }`}>
+                {isSpeaking ? (isVideoPlaying ? "On video" : "Speaking") : isListening ? "Listening" : "Online"}
+              </span>
             </div>
           </div>
-          <div className="border-b border-white/10 bg-black/30 px-3 py-2">
-            <p className="mb-2 text-[11px] uppercase tracking-[0.18em] text-slate-300">Persona Modes</p>
-            <div className="flex flex-wrap gap-2">
-            {PERSONA_MODES.map((mode) => (
-              <button
-                key={mode.key}
-                data-testid={`minivic-mode-${mode.key}`}
-                onClick={() => setActiveMode(mode.key)}
-                className={`rounded-xl border px-3 py-1.5 text-xs transition-all ${
-                  activeMode === mode.key
-                    ? "border-zinc-200/70 bg-zinc-500/25 text-zinc-50 shadow-lg shadow-zinc-500/20"
-                    : "border-white/15 bg-white/5 text-slate-200 hover:border-neutral-300/60 hover:bg-neutral-500/10"
-                }`}
-              >
-                <span className="font-medium">{mode.label}</span>
-              </button>
-            ))}
-            </div>
-            <div className="mt-2 flex gap-2">
+          <div className="border-b border-white/10 bg-black/30 px-3 py-3">
+            <div className="flex items-center gap-2">
+              {/* Persona segmented control — one clean toggle instead of three cramped pills */}
+              <div className="flex flex-1 rounded-xl border border-white/12 bg-white/[0.03] p-0.5">
+                {PERSONA_MODES.map((mode) => (
+                  <button
+                    key={mode.key}
+                    data-testid={`minivic-mode-${mode.key}`}
+                    onClick={() => setActiveMode(mode.key)}
+                    aria-pressed={activeMode === mode.key}
+                    className={`flex-1 rounded-lg px-2 py-1.5 text-[12px] font-medium transition-all ${
+                      activeMode === mode.key
+                        ? "bg-white text-neutral-950 shadow-sm"
+                        : "text-white/55 hover:text-white/90"
+                    }`}
+                  >
+                    {mode.label}
+                  </button>
+                ))}
+              </div>
               <button
                 onClick={handleReplay}
                 disabled={!lastAudio || isMuted}
-                className="rounded-lg border border-white/15 px-3 py-1.5 text-xs text-slate-200 transition-colors hover:border-zinc-300/60 hover:bg-zinc-500/10 disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-lg border border-white/12 p-2 text-white/70 transition-colors hover:border-white/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+                aria-label="Replay last voice"
+                title="Replay"
               >
-                <div className="flex items-center gap-1">
-                  <Play size={12} />
-                  <span>Replay</span>
-                </div>
+                <Play size={14} />
               </button>
               <button
                 onClick={handleClear}
-                className="rounded-lg border border-white/15 px-3 py-1.5 text-xs text-slate-200 transition-colors hover:border-neutral-300/70 hover:bg-neutral-500/10"
+                className="rounded-lg border border-white/12 p-2 text-white/70 transition-colors hover:border-white/30 hover:text-white"
+                aria-label="Reset conversation"
+                title="Reset"
               >
-                <div className="flex items-center gap-1">
-                  <RefreshCcw size={12} />
-                  <span>Reset</span>
-                </div>
+                <RefreshCcw size={14} />
               </button>
             </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-2 border-b border-white/10 bg-black/25 px-3 py-2 text-[11px] text-slate-200">
-            <span className="rounded-md border border-zinc-300/35 bg-zinc-500/10 px-2 py-1 text-zinc-100">
-              {PERSONA_MODES.find((m) => m.key === activeMode)?.blurb}
-            </span>
-            {latencyMs !== null && (
-              <span className="rounded-md border border-zinc-300/40 bg-zinc-500/10 px-2 py-1 text-zinc-100">
-                {latencyMs} ms response
-              </span>
-            )}
-            <span className="rounded-md border border-neutral-300/40 bg-neutral-500/10 px-2 py-1 text-neutral-100">
-              {isMuted ? "Muted" : "Voice on"}
-            </span>
+            {/* single subtle status line replaces the old blurb/latency/voice chip row */}
+            <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white/45">
+              <span className="font-medium text-white/70">{PERSONA_MODES.find((m) => m.key === activeMode)?.label}</span>
+              <span className="text-white/25">·</span>
+              <span className="truncate">{PERSONA_MODES.find((m) => m.key === activeMode)?.blurb}</span>
+              {latencyMs !== null && (
+                <>
+                  <span className="text-white/25">·</span>
+                  <span className="shrink-0">{latencyMs} ms</span>
+                </>
+              )}
+            </p>
           </div>
           <div
-            className="h-72 space-y-3 overflow-y-auto bg-[linear-gradient(180deg,rgba(7,10,21,0.92),rgba(4,7,15,0.9))] p-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-zinc-900/50"
+            className="h-80 space-y-3 overflow-y-auto bg-[linear-gradient(180deg,rgba(10,11,13,0.96),rgba(7,8,10,0.96))] px-4 py-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10"
             role="log"
             aria-live="polite"
             aria-relevant="additions text"
@@ -1045,10 +1039,10 @@ const MiniVicBot = () => {
             {messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
-                  className={`max-w-[85%] p-3 text-sm leading-relaxed rounded-2xl shadow-sm border ${
+                  className={`max-w-[86%] px-3.5 py-2.5 text-[13.5px] leading-relaxed rounded-2xl shadow-sm border ${
                     msg.role === "user"
-                      ? "rounded-tr-none border-neutral-300/70 bg-neutral-500/85 text-white"
-                      : "rounded-tl-none border-zinc-300/20 bg-slate-950/85 text-slate-100"
+                      ? "rounded-tr-sm border-white/25 bg-white/90 text-neutral-950"
+                      : "rounded-tl-sm border-white/10 bg-white/[0.04] text-white/90"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2 text-[11px] mb-1 opacity-80">
@@ -1124,15 +1118,15 @@ const MiniVicBot = () => {
             )}
             <div ref={chatEndRef} />
           </div>
-          <div className="scrollbar-hide flex gap-2 overflow-x-auto border-t border-white/10 bg-black/25 px-3 py-3">
+          <div className="scrollbar-hide flex gap-2 overflow-x-auto border-t border-white/10 bg-black/25 px-3 py-2.5">
             {QUICK_PROMPTS.map((item) => (
               <button
                 key={item.label}
                 onClick={() => handleSend(item.prompt, item.mode)}
                 disabled={isLoading}
-                className="whitespace-nowrap rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-xs text-slate-100 transition-colors hover:border-zinc-300/50 hover:bg-zinc-500/10"
+                className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-[12px] text-white/80 transition-colors hover:border-white/30 hover:bg-white/10 hover:text-white disabled:opacity-40"
               >
-                <Sparkles size={14} className="text-neutral-300" />
+                <Sparkles size={13} className="text-white/55" />
                 <span>{item.label}</span>
               </button>
             ))}
@@ -1142,7 +1136,7 @@ const MiniVicBot = () => {
               e.preventDefault();
               handleSend();
             }}
-            className="flex gap-2 border-t border-white/10 bg-slate-950/95 p-3"
+            className="flex gap-2 border-t border-white/10 bg-neutral-950/95 p-3"
           >
             <div className="flex-1 relative">
               <input
@@ -1150,11 +1144,11 @@ const MiniVicBot = () => {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={isListening ? "Listening..." : "Ask me anything—teams, budgets, AI stack..."}
-                className={`w-full rounded-xl border bg-slate-900/90 py-2.5 pl-4 pr-10 text-sm text-slate-100 placeholder-slate-400 transition-all ${
+                placeholder={isListening ? "Listening..." : "Ask me anything…"}
+                className={`w-full rounded-xl border bg-white/[0.04] py-2.5 pl-4 pr-10 text-[13.5px] text-white placeholder-white/40 transition-all ${
                   isListening
-                    ? "border-neutral-300/70 bg-neutral-500/10 ring-1 ring-neutral-500/40"
-                    : "border-white/20 focus:border-zinc-300/70 focus:outline-none focus:ring-1 focus:ring-zinc-500/50"
+                    ? "border-white/40 bg-white/10 ring-1 ring-white/30"
+                    : "border-white/15 focus:border-white/45 focus:outline-none focus:ring-1 focus:ring-white/25"
                 }`}
               />
               <button
@@ -1189,7 +1183,7 @@ const MiniVicBot = () => {
               type="submit"
               disabled={!input.trim() || isLoading}
               aria-label="Send message"
-              className="rounded-xl border border-neutral-200/45 bg-gradient-to-br from-neutral-500 to-neutral-600 p-2.5 text-white shadow-lg shadow-neutral-900/30 transition-all hover:from-neutral-400 hover:to-neutral-500 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-xl bg-white p-2.5 text-neutral-950 shadow-sm transition-all hover:bg-white/90 disabled:cursor-not-allowed disabled:bg-white/25 disabled:text-white/50"
             >
               <Send size={18} />
             </button>

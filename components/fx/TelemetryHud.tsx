@@ -93,8 +93,9 @@ function GaugeArc({ radius, target, frozen }: { radius: number; target: number; 
 function Hud({ frozen }: { frozen: boolean }) {
   return (
     <group>
-      {/* volumetric stage light behind the HUD (FR-LIGHT) */}
-      <ShaderPlane fragmentShader={lightShaftFragment} color={STEEL} size={[4.5, 6]} position={[0, 0.4, -1.2]} frozen={frozen} opacity={0.7} />
+      {/* volumetric stage light behind the HUD (FR-LIGHT) — dialled back so it reads as
+          depth behind the dish rather than washing the rings into a grey blob. */}
+      <ShaderPlane fragmentShader={lightShaftFragment} color={STEEL} size={[4.2, 5.6]} position={[0, 0.5, -1.2]} frozen={frozen} opacity={0.42} />
       {/* custom-GLSL radar ring (FR-SHADER) */}
       <ShaderPlane fragmentShader={holoRingFragment} color={ACCENT} size={[3.4, 3.4]} position={[0, 0, 0]} frozen={frozen} />
       {/* live gauge readouts */}
@@ -152,11 +153,13 @@ export default function TelemetryHud({ className }: { className?: string }) {
         <Hud frozen={frozen} />
         {!frozen ? (
           <EffectComposer>
-            <Bloom intensity={0.7} luminanceThreshold={0.12} luminanceSmoothing={0.3} mipmapBlur />
+            {/* Higher threshold so only the sweep arm / blips / rim bloom — the crisp
+                ring graticule stays sharp instead of blooming into a haze. */}
+            <Bloom intensity={0.62} luminanceThreshold={0.3} luminanceSmoothing={0.25} mipmapBlur />
             {/* QT-5 — bokeh depth-of-field for genuine optical depth; only ever runs in
                 this !frozen branch, so it is disabled under reduced-motion/low-power. */}
-            <DepthOfField focusDistance={0.0} focalLength={0.04} bokehScale={2.0} height={480} />
-            <Vignette eskil={false} offset={0.2} darkness={0.7} />
+            <DepthOfField focusDistance={0.0} focalLength={0.035} bokehScale={1.3} height={480} />
+            <Vignette eskil={false} offset={0.22} darkness={0.62} />
           </EffectComposer>
         ) : (
           <></>

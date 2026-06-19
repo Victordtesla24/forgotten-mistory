@@ -182,11 +182,14 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
     [isLocked],
   );
 
-  const flipInitial = useMemo(() => {
-    const halfW = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
-    const halfH = typeof window !== 'undefined' ? window.innerHeight / 2 : 0;
-    return { opacity: 0, scale: 0.34, x: origin.x - halfW, y: origin.y - halfH };
-  }, [origin]);
+  // Materialize the panel in place (centred) rather than flying it up from the
+  // clicked card at scale 0.34. The old card-origin FLIP scaled the whole panel —
+  // text included — by ~3x while translating, and combined with the hologram tilt
+  // it overshot and spilled the left sidebar outside the frame mid-flight. A gentle
+  // centred fade + rise reads as a clean HUD materialization and never overflows.
+  // (DetailMaterialize still emits its particle convergence FROM `origin`, so the
+  // visual link back to the clicked card is preserved.)
+  const flipInitial = useMemo(() => ({ opacity: 0, scale: 0.92, y: 26 }), []);
 
   if (!content) return null;
 

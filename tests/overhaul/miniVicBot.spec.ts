@@ -69,7 +69,8 @@ test.describe('TC-FR-MINIVIC — MiniVicBot scaffold leak guard', () => {
     const engineerMode = page.locator('[data-testid="minivic-mode-engineer"]');
     await expect(engineerMode).toBeVisible();
     await engineerMode.click();
-    await expect(engineerMode).toHaveClass(/bg-zinc-500|border-zinc-200/);
+    // Active persona segment is the filled white pill (redesigned segmented control).
+    await expect(engineerMode).toHaveClass(/bg-white/);
   });
 
   test('avatar video + cloned-voice greeting assets resolve within budget and wire to the panel (TC-FR-VOICE)', async ({ page, request }) => {

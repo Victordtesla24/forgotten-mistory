@@ -1,7 +1,6 @@
 'use client';
 
 import Reveal from '@/components/site/Reveal';
-import HudFrame from '@/components/fx/HudFrame';
 import { dossier } from '@/app/data/siteContent';
 
 /**
@@ -33,7 +32,19 @@ export default function Dossier() {
 
         <Reveal delay={0.05}>
           <div className="dossier-card">
-            <HudFrame variant="panel" scene={false} label="VIKRAM DESHPANDE · PRINCIPAL ENGINEER · DOSSIER" />
+            {/* Decorative HUD frame — corner brackets + a document label drawn AROUND
+                the real content (the previous build rendered an empty 16:10 panel here,
+                a ~740px void that read as a broken/unloaded screen). */}
+            <span className="dossier-frame" aria-hidden="true">
+              <span className="hud-frame__corner hud-frame__corner--tl" />
+              <span className="hud-frame__corner hud-frame__corner--tr" />
+              <span className="hud-frame__corner hud-frame__corner--bl" />
+              <span className="hud-frame__corner hud-frame__corner--br" />
+              <span className="dossier-frame__sheen" />
+            </span>
+            <p className="dossier-frame-label" aria-hidden="true">
+              VIKRAM DESHPANDE · PRINCIPAL ENGINEER · DOSSIER
+            </p>
             <div className="dossier-body">
               <p className="dossier-name">{dossier.name}</p>
               <p className="dossier-role">{dossier.role}</p>

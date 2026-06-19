@@ -22,27 +22,58 @@ export const holoRingFragment = /* glsl */ `
   uniform float uOpacity;
   varying vec2  vUv;
 
+  #define TAU 6.28318530718
+
+  // anti-aliased ring at radius t, half-width w (in r-units)
+  float ring(float r, float t, float w) {
+    return smoothstep(w, 0.0, abs(r - t));
+  }
+
   void main() {
     vec2 p = vUv - 0.5;
     float r = length(p) * 2.0;            // 0 at centre, ~1 at edge
-    float ang = atan(p.y, p.x);
+    float ang = atan(p.y, p.x);           // -PI..PI
 
-    // concentric tick rings
-    float rings = smoothstep(0.5, 0.46, abs(fract(r * 8.0) - 0.5));
+    // ---- range rings (crisp, calibrated radii) ----
+    float rings =
+        ring(r, 0.30, 0.0055) * 0.55 +
+        ring(r, 0.50, 0.0055) * 0.6  +
+        ring(r, 0.70, 0.0055) * 0.65 +
+        ring(r, 0.985, 0.012) * 1.0;      // outer rim
+    // fine graticule ticks between the rings
+    rings += smoothstep(0.5, 0.38, abs(fract(r * 22.0) - 0.5)) * 0.07
+             * smoothstep(0.04, 0.10, r) * smoothstep(1.0, 0.9, r);
 
-    // rotating radar sweep (trailing falloff) — slowed to 0.25 rad/s for calm authority (QT-4)
-    float sweep = mod(ang + uTime * 0.25, 6.28318530718) / 6.28318530718;
-    float beam  = smoothstep(0.16, 0.0, sweep);
+    // ---- radial spokes every 30° (12 around) ----
+    float sa = abs(fract(ang / TAU * 12.0 + 0.5) - 0.5);
+    float spokes = smoothstep(0.014, 0.0, sa) * 0.16
+                   * smoothstep(0.06, 0.16, r) * smoothstep(1.0, 0.86, r);
 
-    // outer rim + a brighter inner ring
-    float rim   = smoothstep(0.025, 0.0, abs(r - 0.98));
-    float inner = smoothstep(0.02, 0.0, abs(r - 0.34));
+    // ---- rotating sweep with a smooth trailing gradient (the radar arm) ----
+    float d = mod(uTime * 0.45 - ang, TAU);     // 0 at the leading arm, grows behind
+    float beam = pow(smoothstep(2.4, 0.0, d), 1.6);   // ~2.4rad luminous trail
+    float arm  = smoothstep(0.05, 0.0, d) * 0.9;      // bright leading edge
+    float sweep = (beam * 0.5 + arm) * smoothstep(0.985, 0.94, r) * smoothstep(0.04, 0.10, r);
 
-    float a = (rings * 0.28 + beam * 0.55 + rim + inner * 0.6) * uOpacity;
-    a *= smoothstep(1.02, 0.9, r);        // fade past the edge
-    a *= smoothstep(0.04, 0.12, r);       // hollow centre
+    // ---- pulsing contact blips that flare as the arm passes over them ----
+    float blips = 0.0;
+    for (int i = 0; i < 3; i++) {
+      float fi = float(i);
+      float ba = (fi * 2.3) - 1.4;                       // fixed bearing
+      float br = 0.34 + fi * 0.2;                         // fixed range
+      vec2  bp = vec2(cos(ba), sin(ba)) * (br * 0.5);     // back to plane coords
+      float dist = length(p - bp);
+      float dot = smoothstep(0.022, 0.0, dist);
+      float since = mod(uTime * 0.45 - (-ba), TAU);       // time since arm swept this bearing
+      float flare = exp(-since * 2.2);                    // decay after the ping
+      blips += dot * (0.25 + flare * 1.0);
+    }
+
+    float a = (rings + spokes + sweep + blips) * uOpacity;
+    a *= smoothstep(1.04, 0.96, r);       // fade past the edge
+    a *= smoothstep(0.035, 0.085, r);     // hollow centre
     if (a < 0.001) discard;
-    gl_FragColor = vec4(uColor, a);
+    gl_FragColor = vec4(uColor, clamp(a, 0.0, 1.0));
   }
 `;
 
