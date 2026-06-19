@@ -3710,11 +3710,21 @@ footer {
 
 /* ── Synthesis provenance (FR-SYNTH) ── */
 .synthesis-section { padding: 4rem 0; position: relative; z-index: 5; }
+/* Provenance chain — a vertical timeline: every consulted source sits on a single
+   luminous monochrome rail with its own node, so the synthesis reads as an
+   evidence chain rather than a flat list (UI/UX §8). */
 .synthesis-grid {
-    list-style: none; margin: 1.5rem 0 0; padding: 0;
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1.25rem;
+    list-style: none; margin: 1.75rem 0 0; padding: 0 0 0 1.75rem;
+    display: flex; flex-direction: column; gap: 1rem;
+    position: relative;
+}
+.synthesis-grid::before {
+    content: ''; position: absolute; left: 0.5rem; top: 0.75rem; bottom: 0.75rem; width: 2px;
+    background: linear-gradient(180deg, transparent, var(--accent) 10%, var(--accent) 90%, transparent);
+    opacity: 0.32; border-radius: 2px; pointer-events: none;
 }
 .synthesis-card {
+    position: relative;
     background: var(--card-sheen), var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: var(--card-radius);
@@ -3728,6 +3738,17 @@ footer {
     transform: translateY(-4px);
     border-color: var(--card-border-hover);
     box-shadow: var(--card-shadow-hover), var(--card-rim);
+}
+/* Timeline node — a glowing station marker pinned to the rail. */
+.synthesis-node {
+    position: absolute; left: -1.5rem; top: 1.5rem;
+    width: 12px; height: 12px; border-radius: 999px;
+    background: var(--white);
+    box-shadow: 0 0 0 4px var(--ink-800), 0 0 12px rgb(244 246 250 / 0.45);
+    transition: box-shadow var(--motion-base) ease;
+}
+.synthesis-card:hover .synthesis-node {
+    box-shadow: 0 0 0 4px var(--ink-800), 0 0 18px rgb(244 246 250 / 0.7);
 }
 .synthesis-source {
     font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.5px;
@@ -3747,6 +3768,7 @@ footer {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1.25rem;
 }
 .mindset-card {
+    position: relative;
     background: var(--card-sheen), var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: var(--card-radius);
@@ -3756,11 +3778,17 @@ footer {
     transition: transform var(--motion-base) var(--motion-ease-standard),
                 border-color var(--motion-base) ease, box-shadow var(--motion-base) ease;
 }
+.mindset-card::after {
+    content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(135deg, rgb(244 246 250 / 0.05), transparent 55%);
+    opacity: 0; transition: opacity var(--motion-base) ease;
+}
 .mindset-card:hover {
     transform: translateY(-4px);
     border-color: var(--card-border-hover);
     box-shadow: var(--card-shadow-hover), var(--card-rim);
 }
+.mindset-card:hover::after { opacity: 1; }
 .mindset-label {
     font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.5px;
     color: var(--mist-400); margin: 0 0 0.6rem;

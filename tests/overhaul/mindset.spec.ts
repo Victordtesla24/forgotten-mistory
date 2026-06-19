@@ -90,3 +90,24 @@ test.describe('TC-FR-MINDSET — balanced-persona projection', () => {
     }
   });
 });
+
+/**
+ * A11y guard for the new staggered entrance: each dimension card now mounts at
+ * opacity:0 and is revealed by a Framer-Motion whileInView stagger. Under
+ * prefers-reduced-motion the reveal must resolve instantly to opacity:1.
+ */
+test.describe('TC-FR-MINDSET — reduced-motion reveals every dimension', () => {
+  test.describe.configure({ timeout: 90000 });
+
+  test('all four dimension cards resolve to opacity:1 under prefers-reduced-motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await gotoMindset(page);
+    const mindset = page.locator('#mindset');
+    for (const key of DIMENSION_KEYS) {
+      await expect(
+        mindset.locator(`[data-dimension="${key}"]`),
+        `dimension "${key}" must reveal under reduced motion`,
+      ).toHaveCSS('opacity', '1');
+    }
+  });
+});
