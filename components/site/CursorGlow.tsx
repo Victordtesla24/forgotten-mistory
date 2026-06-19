@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
  * Custom cursor (dot + trailing outline) driven by framer-motion springs.
@@ -9,7 +10,12 @@ import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-moti
  * reduced motion; otherwise renders nothing and the native cursor is used.
  */
 export default function CursorGlow() {
-  const prefersReducedMotion = useReducedMotion();
+  // SSR-safe: returns false on the server AND the client's first paint, so the
+  // initial render matches the server HTML (the cursor nodes are emitted in both),
+  // then resolves to the real preference after mount. A raw useReducedMotion() here
+  // returned the divs on the server but null on a reduced-motion client's first
+  // render — a hard hydration mismatch (#418/#423). See lib/useReducedMotionSafe.
+  const prefersReducedMotion = useReducedMotionSafe();
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
   const outlineX = useSpring(x, { stiffness: 260, damping: 28, mass: 0.6 });

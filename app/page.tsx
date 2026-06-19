@@ -40,6 +40,7 @@ import HudFrame from '@/components/fx/HudFrame';
 import PacketFlowGraph from '@/components/fx/PacketFlowGraph';
 import SprintBurndown from '@/components/fx/SprintBurndown';
 import TokenReflow from '@/components/fx/TokenReflow';
+import AtoEvidenceBar from '@/components/fx/AtoEvidenceBar';
 import ProofBar from '@/components/site/ProofBar';
 import MindsetProjection from '@/components/site/MindsetProjection';
 import SynthesisProvenance from '@/components/site/SynthesisProvenance';
@@ -183,7 +184,11 @@ export default function Home() {
           <motion.div
             className="hero-content"
             variants={heroStagger}
-            initial={prefersReducedMotion ? false : 'hidden'}
+            // `initial` is kept identical on server and first client paint (it cannot
+            // branch on useReducedMotion without a hydration mismatch). MotionConfig
+            // reducedMotion="user" makes the transform legs instant for reduced-motion
+            // users, leaving only a gentle opacity fade.
+            initial="hidden"
             animate="visible"
           >
             <motion.h1 className="hero-title" variants={heroItem} style={{ y: titleY }}>
@@ -479,7 +484,9 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={0.05}>
-              <HudFrame label="JARVIS · real-time telemetry" className="work-hud" />
+              {/* lazy: the JARVIS WebGL context only mounts when #work scrolls into
+                  view, so the home view boots with a single live context (NFR-FPS / QT-10). */}
+              <HudFrame label="JARVIS · real-time telemetry" className="work-hud" lazy />
             </Reveal>
 
             <Reveal delay={0.08}>
@@ -488,6 +495,7 @@ export default function Home() {
 
             <Reveal delay={0.12}>
               <div className="vfx-gallery">
+                <AtoEvidenceBar />
                 <PacketFlowGraph />
                 <SprintBurndown />
                 <TokenReflow />

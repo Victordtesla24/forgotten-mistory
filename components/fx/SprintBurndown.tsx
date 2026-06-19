@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
  * SprintBurndown — Animated SVG burndown/burnup infographic for the
@@ -48,7 +49,7 @@ function pathLength(path: string): number {
 }
 
 export default function SprintBurndown({ className = '' }: { className?: string }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [idealLen, setIdealLen] = useState(500);

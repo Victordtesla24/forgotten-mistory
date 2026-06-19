@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 'use client';
 
 import React, { useRef, useMemo, useState, useEffect } from 'react';
@@ -114,13 +113,16 @@ interface NebulaCloudProps {
   position: [number, number, number];
   color: string;
   scale: [number, number, number];
+  frozen: boolean;
 }
 
-function NebulaCloud({ position, color, scale }: NebulaCloudProps) {
+function NebulaCloud({ position, color, scale, frozen }: NebulaCloudProps) {
   // Cast to any because the shader material adds the 'time' uniform property which isn't on standard ShaderMaterial type
   const materialRef = useRef<any>(null);
 
   useFrame((state, delta) => {
+    // Reduced-motion: hold the shader clock so the nebula does not advect.
+    if (frozen) return;
     if (materialRef.current) {
       materialRef.current.time += delta;
     }
@@ -135,7 +137,11 @@ function NebulaCloud({ position, color, scale }: NebulaCloudProps) {
 }
 
 // --- Shooting Star Component ---
-function ShootingStar() {
+interface ShootingStarProps {
+  frozen: boolean;
+}
+
+function ShootingStar({ frozen }: ShootingStarProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [active, setActive] = useState(false);
   const { viewport } = useThree();
@@ -147,6 +153,8 @@ function ShootingStar() {
   const nextSpawnTime = useRef(Math.random() * 5 + 3); // 3-8 seconds
 
   useFrame((state, delta) => {
+    // Reduced-motion: no spawn timer, no flight — the sky stays still.
+    if (frozen) return;
     timer.current += delta;
 
     if (!active) {
@@ -208,7 +216,11 @@ function ShootingStar() {
 }
 
 // --- Enhanced StarField ---
-function StarField() {
+interface StarFieldProps {
+  frozen: boolean;
+}
+
+function StarField({ frozen }: StarFieldProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const { viewport } = useThree();
 
@@ -264,6 +276,8 @@ function StarField() {
   const mouseVec = useMemo(() => new THREE.Vector3(), []);
 
   useFrame((state, delta) => {
+    // Reduced-motion: no twinkle, no drift, no mouse parallax — stars are static.
+    if (frozen) return;
     if (!meshRef.current) return;
     const time = state.clock.elapsedTime;
     const colorAttr = meshRef.current.geometry.getAttribute('color') as THREE.InstancedBufferAttribute;
@@ -336,7 +350,7 @@ function StarField() {
 /**
  * Cinematic camera rig: eased elliptical camera drift bounded to ±1.1 x-offset
  * and ±0.7 y-offset, providing gentle parallax depth while keeping the starfield
- * stable. FloatingDetailBox uses a separate window.spaceApp bridge for FX IPC.
+ * stable. FloatingDetailBox uses a separate window.__portfolioSceneBridge__ for FX IPC.
  */
 function CameraRig() {
   const { camera } = useThree();
@@ -352,27 +366,33 @@ function CameraRig() {
 }
 
 // --- Main Scene ---
-function SpaceAppBridge() {
+/**
+ * @internal IPC bridge between SpaceScene and the modal FX layer (ModalFxCanvas /
+ * FloatingDetailBox). Exposes the live three.js scene/camera/THREE handles on
+ * `window.__portfolioSceneBridge__` for FX probes and the production audit. Renamed
+ * from the generic, collision-prone `window.spaceApp` (OD-4).
+ */
+function PortfolioSceneBridge() {
   const { scene, camera } = useThree();
   const probeRef = useRef<any>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const existing = (window as any).spaceApp;
+    const existing = (window as any).__portfolioSceneBridge__;
     const instance = { scene, camera, THREE };
-    (window as any).spaceApp = instance;
+    (window as any).__portfolioSceneBridge__ = instance;
     probeRef.current = instance;
 
-    logDebug('Exposed spaceApp handle', {
+    logDebug('Exposed __portfolioSceneBridge__ handle', {
       replacedExisting: Boolean(existing),
       sceneType: scene?.type ?? null,
       cameraType: camera?.type ?? null
     });
 
     return () => {
-      if ((window as any).spaceApp === probeRef.current) {
-        delete (window as any).spaceApp;
+      if ((window as any).__portfolioSceneBridge__ === probeRef.current) {
+        delete (window as any).__portfolioSceneBridge__;
       }
     };
   }, [scene, camera]);
@@ -406,13 +426,13 @@ function SceneContent({ frozen = false }: { frozen?: boolean }) {
 
   return (
     <group ref={groupRef}>
-      <StarField />
+      <StarField frozen={frozen} />
       {/* Dark nebula colors are required because mix-blend-mode: screen blows out brightness */}
-      <NebulaCloud position={[0, 0, -50]} color={PALETTE.nebula[0]} scale={[100, 100, 1]} />
-      <NebulaCloud position={[-30, 20, -80]} color={PALETTE.nebula[1]} scale={[120, 120, 1]} />
-      <NebulaCloud position={[30, -20, -60]} color={PALETTE.nebula[2]} scale={[90, 90, 1]} />
-      <ShootingStar />
-      <ShootingStar />
+      <NebulaCloud position={[0, 0, -50]} color={PALETTE.nebula[0]} scale={[100, 100, 1]} frozen={frozen} />
+      <NebulaCloud position={[-30, 20, -80]} color={PALETTE.nebula[1]} scale={[120, 120, 1]} frozen={frozen} />
+      <NebulaCloud position={[30, -20, -60]} color={PALETTE.nebula[2]} scale={[90, 90, 1]} frozen={frozen} />
+      <ShootingStar frozen={frozen} />
+      <ShootingStar frozen={frozen} />
     </group>
   );
 }
@@ -420,6 +440,7 @@ function SceneContent({ frozen = false }: { frozen?: boolean }) {
 export default function SpaceScene() {
   const [enablePostFx, setEnablePostFx] = useState(true);
   const [frozen, setFrozen] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -434,19 +455,33 @@ export default function SpaceScene() {
     setEnablePostFx(!(prefersReduced || lowPowerDevice));
   }, []);
 
+  // Pause the render loop while the tab is backgrounded (VFX-2 / NFR-FPS): a hidden
+  // tab should never burn GPU/CPU on an invisible starfield.
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const onVisibility = () => setHidden(document.visibilityState === "hidden");
+    onVisibility();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
+  // Halt = reduced-motion freeze OR backgrounded tab. Both stop every useFrame loop
+  // and drop the canvas to frameloop="demand" so no idle frames are scheduled.
+  const halt = frozen || hidden;
+
   return (
     <div className="space-scene-layer" aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0, 20], fov: 60 }}
         gl={{ antialias: false, alpha: false }}
         dpr={1}
-        frameloop={frozen ? 'demand' : 'always'}
+        frameloop={halt ? 'demand' : 'always'}
       >
-        <SpaceAppBridge />
+        <PortfolioSceneBridge />
         <color attach="background" args={[PALETTE.black]} />
 
-        {!frozen && <CameraRig />}
-        <SceneContent frozen={frozen} />
+        {!halt && <CameraRig />}
+        <SceneContent frozen={halt} />
 
         {enablePostFx && !frozen ? (
           <EffectComposer>

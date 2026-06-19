@@ -17,7 +17,7 @@ interface FloatingDetailBoxProps {
 /**
  * The hero outcome cards open this capability panel. The previous entrance
  * rendered its FX (600 particles + beam + orbiting star) into the SHARED
- * SpaceScene via `window.spaceApp`, positioned from the camera at click-time —
+ * SpaceScene via `window.__portfolioSceneBridge__`, positioned from the camera at click-time —
  * so the continuously-drifting `CameraRig` desynchronised the FX from the DOM
  * modal and the orbiting star wandered off-frame (the stray corner orb).
  *

@@ -32,6 +32,18 @@ function walk(dir, acc = []) {
 }
 const read = (p) => { try { return readFileSync(p, 'utf8'); } catch { return ''; } };
 
+// Strip JS/TS/CSS comments so the monochrome hue scan only inspects code that
+// actually renders colour. Hex/rgb/hsl tokens inside comments are documentation,
+// not styling — e.g. React error-code references like (#418)/(#423) in the
+// hydration-mismatch JSDoc would otherwise be misread as 3-digit hex colours and
+// fail the gate. Block comments (including JSDoc) are removed first, then `//`
+// line comments — but only when the `//` is NOT preceded by `:`, so URL schemes
+// (https://…) survive intact.
+const stripComments = (s) =>
+  s
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')
+    .replace(/(^|[^:])\/\/[^\n]*/gm, '$1');
+
 // ── TC-NFR-TONE — no boastful/superlative copy ──────────────────────────────
 const BANNED = [
   'world-class', 'world class', 'best-in-class', 'best in class', 'ninja', 'guru',
@@ -94,7 +106,7 @@ function checkMono() {
 
   const hits = [];
   for (const f of files) {
-    const text = read(f);
+    const text = stripComments(read(f));
     const rel = relative(ROOT, f);
     for (const m of text.matchAll(TW)) hits.push(`${rel} :: ${m[0]}`);
     for (const m of text.matchAll(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g)) {

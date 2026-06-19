@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useReducedMotion } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 import { Brain, Database, Laptop, Network, Satellite, Scale } from 'lucide-react';
 
 type FlowId = 'chat' | 'telemetry' | 'governance';
@@ -83,7 +83,7 @@ const LEGEND: { id: string; name: string; desc: string }[] = [
  * dots along the active SVG paths using stroke-dash animation.
  */
 export default function ArchitectureMap() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const [flow, setFlow] = useState<FlowId>('chat');
   const svgRef = useRef<SVGSVGElement | null>(null);
   const active = FLOWS[flow];

@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
  * TokenReflow — Prompt-optimisation visualiser for prompt-reconstruct /
@@ -51,7 +52,7 @@ const OPTIMAL_ORDER = [
 ];
 
 export default function TokenReflow({ className = '' }: { className?: string }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [phase, setPhase] = useState<'raw' | 'optimised'>('raw');

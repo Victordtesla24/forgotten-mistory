@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
  * PacketFlowGraph — WebSocket packet-flow visualisation for telemetry-server /
@@ -73,7 +74,7 @@ function useCountUp(target: number, duration: number, enabled: boolean) {
 }
 
 export default function PacketFlowGraph({ className = '' }: { className?: string }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
 

@@ -187,7 +187,25 @@ body::before {
     color: #fff;
     pointer-events: none;
     opacity: 1;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+    clip-path: inset(0 0 0 0);
+    transition: opacity 0.42s ease, visibility 0.42s ease,
+      clip-path 0.42s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Reveal wipe: clip away left→right while fading out (FR-BOOT / QT-8). */
+.preloader.is-revealing {
+    opacity: 0;
+    clip-path: inset(0 0 0 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /* No directional wipe under reduced motion — fade only. */
+    .preloader {
+        transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+    .preloader.is-revealing {
+        clip-path: inset(0 0 0 0);
+    }
 }
 
 .preloader-inner {
@@ -2304,6 +2322,8 @@ footer {
 .telemetry-spark-stroke {
     fill: none;
     stroke: var(--accent-color);
+    /* Live-scan halo — replaces the removed SparklineGL Canvas2D glow overlay. */
+    filter: drop-shadow(0 0 6px var(--accent-color));
 }
 
 .telemetry-spark-node {
@@ -2337,19 +2357,30 @@ footer {
     50% { opacity: 0.6; }
 }
 
-/* PanelDepthScene — volumetric depth backdrop canvas (decorative, behind content).
-   The component self-guards on prefers-reduced-motion (renders null), so it needs
-   no separate motion guard here. overflow:hidden on .glass-card clips it to the panel. */
+/* Depth backdrop — a pure-CSS volumetric layer behind panel content. It replaced a
+   Canvas2D drift-particle scene (PanelDepthScene) so the page holds the ≤2 WebGL/
+   canvas budget (NFR-FPS): the only live contexts are SpaceScene + the work HUD. A
+   faint dual-radial monochrome glow drifts slowly; the global reduced-motion rule
+   pins the drift. overflow:hidden on .glass-card clips it to the panel. */
 .telemetry-depth {
     position: absolute;
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.5;
     border-radius: inherit;
+    opacity: 0.6;
+    background:
+      radial-gradient(140px 100px at 22% 26%, rgba(232, 235, 240, 0.07), transparent 70%),
+      radial-gradient(180px 130px at 80% 74%, rgba(201, 205, 214, 0.05), transparent 72%);
+    animation: telemetryDepthDrift 16s ease-in-out infinite alternate;
 }
 
-/* Keep telemetry content above the depth backdrop: a positioned z-index:0 canvas
+@keyframes telemetryDepthDrift {
+    0%   { transform: translate3d(0, 0, 0) scale(1); }
+    100% { transform: translate3d(2%, -2%, 0) scale(1.05); }
+}
+
+/* Keep telemetry content above the depth backdrop: a positioned z-index:0 layer
    would otherwise paint over the static-flow header/grid. */
 .telemetry-panel > .telemetry-header,
 .telemetry-panel > .telemetry-grid {
@@ -2357,21 +2388,11 @@ footer {
     z-index: 1;
 }
 
-/* SparklineGL — soft luminous glow overlay mirroring the SVG sparkline. Absolutely
-   positioned so it overlays the SVG (which stays in flow and defines the box height)
-   rather than adding layout height of its own. */
+/* Sparkline wrapper keeps the SVG in flow; its "live scan" halo is now a pure-CSS
+   drop-shadow on the stroke (replaced the SparklineGL Canvas2D glow overlay). */
 .telemetry-spark-wrapper {
     position: relative;
     width: 100%;
-}
-.telemetry-spark-gl {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0.5;
-    width: 100%;
-    height: 100%;
 }
 
 .telemetry-note {

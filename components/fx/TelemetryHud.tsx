@@ -10,7 +10,7 @@
 
 import { useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing';
+import { Bloom, DepthOfField, EffectComposer, Vignette } from '@react-three/postprocessing';
 import { useReducedMotion } from 'framer-motion';
 import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
@@ -153,6 +153,9 @@ export default function TelemetryHud({ className }: { className?: string }) {
         {!frozen ? (
           <EffectComposer>
             <Bloom intensity={0.7} luminanceThreshold={0.12} luminanceSmoothing={0.3} mipmapBlur />
+            {/* QT-5 — bokeh depth-of-field for genuine optical depth; only ever runs in
+                this !frozen branch, so it is disabled under reduced-motion/low-power. */}
+            <DepthOfField focusDistance={0.0} focalLength={0.04} bokehScale={2.0} height={480} />
             <Vignette eskil={false} offset={0.2} darkness={0.7} />
           </EffectComposer>
         ) : (

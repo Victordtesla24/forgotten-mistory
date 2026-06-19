@@ -49,10 +49,19 @@ export default function ExperienceAccordion({ roles }: ExperienceAccordionProps)
                   id={`experience-${role.id}`}
                   className="accordion-content"
                   style={{ overflow: 'hidden', maxHeight: 'none' }}
-                  initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
+                  // `initial`/`exit` are kept IDENTICAL regardless of reduced motion:
+                  // the first role renders open during SSR, so a reduced-motion client
+                  // whose `initial` differed from the server's would hydrate-mismatch
+                  // (#418). Motion is suppressed via an instant transition instead, so
+                  // reduced-motion users get the panel with no perceptible animation.
+                  initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
-                  exit={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
-                  transition={{ duration: 0.45, ease: [0.22, 0.61, 0.36, 1] }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={
+                    prefersReducedMotion
+                      ? { duration: 0 }
+                      : { duration: 0.45, ease: [0.22, 0.61, 0.36, 1] }
+                  }
                 >
                   <div className="accordion-body">
                     <ul>

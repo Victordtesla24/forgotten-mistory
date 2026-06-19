@@ -22,13 +22,22 @@ interface RevealProps {
 export default function Reveal({ children, delay = 0, y = 28, className, once = true }: RevealProps) {
   const prefersReducedMotion = useReducedMotion();
 
+  // `initial` must be IDENTICAL on the server and the client's first paint, so it
+  // cannot branch on useReducedMotion() (which is false during SSR but true for a
+  // reduced-motion client → hydration mismatch). Reduced motion is expressed via an
+  // instant transition instead: the element still mounts at {opacity:0,y} on both
+  // sides, then snaps to its resting state with no perceptible motion.
   return (
     <motion.div
       className={className}
-      initial={prefersReducedMotion ? false : { opacity: 0, y }}
+      initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once, margin: '0px 0px -80px 0px' }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 0.61, 0.36, 1] }}
+      transition={
+        prefersReducedMotion
+          ? { duration: 0 }
+          : { duration: 0.6, delay, ease: [0.22, 0.61, 0.36, 1] }
+      }
     >
       {children}
     </motion.div>

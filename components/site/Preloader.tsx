@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
 const LOADER_DURATION_MS = 1100;
 const REVEAL_HOLD_MS = 260;
+// Matches the CSS clip-path/opacity reveal transition on `.preloader.is-revealing`.
+const WIPE_MS = 420;
 
 function ProgressArc({ progress }: { progress: number }) {
   const radius = 50;
@@ -55,17 +56,31 @@ function ProgressArc({ progress }: { progress: number }) {
   );
 }
 
+/**
+ * Deterministic boot preloader (FR-BOOT / TC-FR-BOOT). Counts 0→100, then reveals
+ * the page with a clip-path wipe.
+ *
+ * The overlay is intentionally plain DOM (no framer-motion) so the server-rendered
+ * HTML and the client's first hydration pass are byte-identical: framer-motion's
+ * `motion`/`AnimatePresence` serialise their inline transform/clip styles
+ * differently between SSR and CSR, which produced a hard hydration mismatch on the
+ * `<svg>` arc and forced React to client-render the whole root. The reveal wipe and
+ * fade are now pure CSS (`.preloader.is-revealing`), which also honours
+ * prefers-reduced-motion (fade only, no wipe).
+ */
 export default function Preloader() {
-  const prefersReducedMotion = useReducedMotion();
   const [count, setCount] = useState(0);
   const [complete, setComplete] = useState(false);
   const [done, setDone] = useState(false);
   const frameRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      document.body.classList.add('page-ready');
-      setDone(true);
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      // Reduced motion: show the finished state at once, then fade (no wipe, no count
+      // animation). `complete` drives the reveal effect below.
+      setCount(100);
+      setComplete(true);
       return;
     }
 
@@ -76,6 +91,8 @@ export default function Preloader() {
       if (progress < 1) {
         frameRef.current = requestAnimationFrame(tick);
       } else {
+        // NOTE: setComplete (not setDone) so the 100 frame paints before unmount —
+        // batching the unmount here would drop the final 100 (TC-FR-BOOT guard).
         setComplete(true);
       }
     };
@@ -84,35 +101,24 @@ export default function Preloader() {
     return () => {
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
     };
-  }, [prefersReducedMotion]);
+  }, []);
 
   useEffect(() => {
     if (!complete) return undefined;
     document.body.classList.add('page-ready');
-    const id = window.setTimeout(() => setDone(true), REVEAL_HOLD_MS);
+    const id = window.setTimeout(() => setDone(true), REVEAL_HOLD_MS + WIPE_MS);
     return () => clearTimeout(id);
   }, [complete]);
 
+  if (done) return null;
+
   return (
-    <AnimatePresence>
-      {!done && (
-        <motion.div
-          className="preloader"
-          role="status"
-          aria-live="polite"
-          initial={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
-          exit={{
-            clipPath: 'inset(0 100% 0 0)',
-            transition: { duration: 0.4, ease: [0.22, 0.61, 0.36, 1] },
-          }}
-        >
-          <div className="preloader-inner">
-            <ProgressArc progress={count} />
-            <div className="counter">{count}</div>
-            <div className="loader-copy">Calibrating stars &amp; telemetry</div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div className={`preloader${complete ? ' is-revealing' : ''}`} role="status" aria-live="polite">
+      <div className="preloader-inner">
+        <ProgressArc progress={count} />
+        <div className="counter">{count}</div>
+        <div className="loader-copy">Calibrating stars &amp; telemetry</div>
+      </div>
+    </div>
   );
 }
