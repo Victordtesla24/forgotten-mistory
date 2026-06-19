@@ -12,7 +12,8 @@
     "predeploy": ["npm run build:static"],
     "cleanUrls": true,
     "rewrites": [
-      { "source": "/api/tts", "function": { "functionId": "elevenLabsTts", "region": "us-central1" } }
+      { "source": "/api/tts", "function": { "functionId": "elevenLabsTts", "region": "us-central1" } },
+      { "source": "/api/chat", "function": { "functionId": "minivicChat", "region": "us-central1" } }
     ],
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "headers": [

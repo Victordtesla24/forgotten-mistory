@@ -2,14 +2,12 @@
  * miniVicBrain.ts — client-side reasoning layer for the MiniVic AI clone.
  *
  * Answer ladder (first success wins):
- *   1. The realtime orchestrator / Next API routes (handled by MiniVicBot
- *      itself — this module is the fallback brain when those are absent,
- *      which is the case on the static Firebase deployment).
- *   2. Direct Gemini `generateContent` call from the browser, grounded in
- *      the curated knowledge base. Requires NEXT_PUBLIC_GEMINI_API_KEY to be
- *      inlined at build time (next.config.js maps it from GEMINI_API_KEY in
- *      .env.production). The key should be HTTP-referrer-restricted to the
- *      production domain in Google AI Studio / Cloud Console.
+ *   1. A top open-source model on OpenRouter, reached via the same-origin
+ *      /api/chat Firebase Function (key stays server-side; works on the static
+ *      export through a Hosting rewrite). This is the primary brain.
+ *   2. Direct Gemini `generateContent` call from the browser, grounded in the
+ *      curated knowledge base (NEXT_PUBLIC_GEMINI_API_KEY, referrer-restricted) —
+ *      used only if /api/chat is unavailable.
  *   3. Deterministic local knowledge-base matching — always available,
  *      works fully offline.
  */
@@ -22,7 +20,7 @@ import {
   type PersonaMode,
 } from '@/app/data/miniVicKnowledge';
 
-export type BrainSource = 'gemini' | 'knowledge' | 'fallback';
+export type BrainSource = 'openrouter' | 'gemini' | 'knowledge' | 'fallback';
 
 export interface BrainTurn {
   role: 'user' | 'bot';
@@ -179,14 +177,71 @@ function knowledgeAnswer(query: string, mode: PersonaMode): BrainReply {
 }
 
 /**
+ * Tier 1 brain: a top open-source model on OpenRouter, reached through the
+ * same-origin /api/chat function (a Firebase Function via Hosting rewrite, so it
+ * works on the static export). The OpenRouter key stays server-side. The client
+ * sends the grounded system prompt + history + question as OpenAI-style messages.
+ * Throws on any failure (incl. local dev where /api/chat 404s → non-JSON) so the
+ * caller falls through to Gemini and then the offline knowledge base.
+ */
+const CHAT_ENDPOINT = '/api/chat';
+
+async function callOpenRouter(query: string, mode: PersonaMode, history: BrainTurn[]): Promise<string> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  try {
+    const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+      { role: 'system', content: buildSystemPrompt(mode) },
+      ...history.slice(-MAX_HISTORY_TURNS).map((turn) => ({
+        role: (turn.role === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
+        content: turn.text,
+      })),
+      { role: 'user', content: query },
+    ];
+    const response = await fetch(CHAT_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify({ messages }),
+    });
+    if (!response.ok) {
+      throw new Error(`chat endpoint responded ${response.status}`);
+    }
+    // On static hosting an absent function rewrites to HTML; treat non-JSON as "unavailable".
+    if (!(response.headers.get('content-type') || '').includes('application/json')) {
+      throw new Error('chat endpoint returned non-JSON (unavailable)');
+    }
+    const data = (await response.json()) as { text?: string };
+    const text = (data.text ?? '').trim();
+    if (!text) {
+      throw new Error('chat endpoint returned empty text');
+    }
+    return text;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/**
  * Answer a visitor's question. Resolves with the best available reply —
  * never rejects, so callers can rely on always getting presentable text.
+ *
+ * Ladder: (1) OpenRouter open-source model via /api/chat, (2) direct Gemini,
+ * (3) deterministic offline knowledge base.
  */
 export async function askMiniVicBrain(
   query: string,
   mode: PersonaMode,
   history: BrainTurn[] = [],
 ): Promise<BrainReply> {
+  // Tier 1 — OpenRouter (the configured brain). Server-side key via /api/chat.
+  try {
+    const text = await callOpenRouter(query, mode, history);
+    return { text: sanitizeResponse(text), source: 'openrouter' };
+  } catch {
+    // Fall through to Gemini, then the offline knowledge base.
+  }
+
   if (GEMINI_KEY) {
     const ladder = workingModel
       ? [workingModel, ...MODEL_LADDER.filter((m) => m !== workingModel)]
