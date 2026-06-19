@@ -46,49 +46,58 @@ export default function Dossier() {
               VIKRAM DESHPANDE · PRINCIPAL ENGINEER · DOSSIER
             </p>
             <div className="dossier-body">
-              <p className="dossier-name">{dossier.name}</p>
-              <p className="dossier-role">{dossier.role}</p>
-              <p className="dossier-summary">{dossier.summary}</p>
+              <Reveal stagger={0.08} variant="clip">
+                <div className="dossier-headline">
+                  <p className="dossier-name">{dossier.name}</p>
+                  <p className="dossier-role">{dossier.role}</p>
+                  <p className="dossier-summary">{dossier.summary}</p>
+                </div>
 
-              <ul className="dossier-highlights" role="list">
-                {dossier.highlights.map((highlight) => (
-                  <li key={highlight} className="dossier-highlight">
-                    {highlight}
-                  </li>
-                ))}
-              </ul>
+                <ul className="dossier-highlights" role="list">
+                  {dossier.highlights.map((highlight) => (
+                    <li key={highlight} className="dossier-highlight">
+                      {highlight}
+                    </li>
+                  ))}
+                </ul>
 
-              <div className="dossier-editions">
-                {dossier.editions.map((edition) => (
-                  <div
-                    key={edition.persona}
-                    className="dossier-edition"
-                    data-persona={edition.persona}
-                  >
-                    <p className="dossier-edition-label">{edition.label}</p>
-                    <p className="dossier-edition-takeaway">{edition.takeaway}</p>
-                    <a
-                      href={dossier.downloadHref}
-                      className="btn-link dossier-download"
-                      data-dossier-download="true"
-                      download
-                      target="_blank"
-                      rel="noreferrer"
+                <div className="dossier-editions">
+                  {dossier.editions.map((edition) => (
+                    <div
+                      key={edition.persona}
+                      className="dossier-edition"
+                      data-persona={edition.persona}
                     >
-                      {dossier.downloadLabel}
-                    </a>
-                  </div>
-                ))}
-              </div>
+                      <p className="dossier-edition-label">{edition.label}</p>
+                      <p className="dossier-edition-takeaway">{edition.takeaway}</p>
+                      <a
+                        href={dossier.downloadHref}
+                        className="btn-link dossier-download"
+                        data-dossier-download="true"
+                        data-magnetic=""
+                        data-cursor-label="Download"
+                        download
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {dossier.downloadLabel}
+                      </a>
+                    </div>
+                  ))}
+                </div>
 
-              <button
-                type="button"
-                className="btn-primary dossier-clone"
-                data-dossier-clone="true"
-                onClick={openClone}
-              >
-                Ask my digital twin
-              </button>
+                <button
+                  type="button"
+                  className="btn-primary dossier-clone"
+                  data-dossier-clone="true"
+                  data-magnetic=""
+                  data-cursor-label="Ask the twin"
+                  onClick={openClone}
+                >
+                  Ask my digital twin
+                  <span className="dossier-clone-spark" aria-hidden="true" />
+                </button>
+              </Reveal>
             </div>
           </div>
         </Reveal>

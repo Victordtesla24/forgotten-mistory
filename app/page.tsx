@@ -216,10 +216,22 @@ export default function Home() {
                 first-class action — employers review the evidence, clients see the
                 quantified outcomes. */}
             <motion.div className="hero-cta-pillars" variants={heroItem}>
-              <a href="#experience" data-pillar="employer" className="btn-pillar">
+              <a
+                href="#experience"
+                data-pillar="employer"
+                className="btn-pillar"
+                data-magnetic=""
+                data-cursor-label="Experience"
+              >
                 Review experience
               </a>
-              <a href="#proof" data-pillar="client" className="btn-pillar">
+              <a
+                href="#proof"
+                data-pillar="client"
+                className="btn-pillar"
+                data-magnetic=""
+                data-cursor-label="Outcomes"
+              >
                 See outcomes
               </a>
             </motion.div>
@@ -286,7 +298,7 @@ export default function Home() {
 
         <section id="about" className="about-section">
           <div className="container">
-            <Reveal className="section-header">
+            <Reveal className="section-header" variant="depth">
               <h2 className="section-title">About Me</h2>
             </Reveal>
             <div className="about-content">

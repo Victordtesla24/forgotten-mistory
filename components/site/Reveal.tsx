@@ -25,9 +25,11 @@ interface RevealProps {
   variant?: RevealVariant;
   /**
    * When > 0, treat the DIRECT children as a staggered group: each child lifts in
-   * sequence `stagger` seconds apart. The orchestrating wrapper uses
-   * `display: contents` so the children keep the parent's exact layout (no extra
-   * box, no spacing regression) — only the per-child motion wrappers are added.
+   * sequence `stagger` seconds apart. The orchestrating wrapper is a real box (it
+   * must be — framer's `whileInView` uses an IntersectionObserver, which cannot
+   * observe a `display: contents` element, so the entrance would never fire). Pass
+   * the layout (`grid`/`flex`/…) via `className` so the wrapper IS the layout
+   * container and the per-child motion wrappers become its direct items.
    */
   stagger?: number;
 }
@@ -104,7 +106,6 @@ export default function Reveal({
         className={className}
         data-reveal-variant={variant}
         data-reveal-stagger=""
-        style={{ display: 'contents' }}
         initial="hidden"
         whileInView="shown"
         viewport={viewport}
