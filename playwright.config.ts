@@ -4,8 +4,11 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : 2,
+  retries: process.env.CI ? 1 : 0,
+  // The GPU-less CI runner serves a heavy WebGL page; serialising at workers:1 blew
+  // past the job timeout. The production build has no on-demand compilation, so the
+  // suite parallelises safely.
+  workers: process.env.CI ? 3 : 2,
   reporter: 'list',
   use: {
     trace: 'on-first-retry',

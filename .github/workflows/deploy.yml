@@ -79,8 +79,17 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      - name: Lighthouse budgets
-        run: npm run validate:phase02
+      - run: npm run build
+      - name: Lighthouse budgets (lighthouserc.json)
+        run: |
+          npx next start -p 3000 &
+          SERVER_PID=$!
+          for _ in $(seq 1 45); do curl -fsS http://127.0.0.1:3000/ >/dev/null 2>&1 && break; sleep 1; done
+          npx --yes @lhci/cli@0.13.0 collect --config=lighthouserc.json
+          npx --yes @lhci/cli@0.13.0 assert --config=lighthouserc.json
+          STATUS=$?
+          kill "$SERVER_PID" 2>/dev/null || true
+          exit $STATUS
 
   # ── Accessibility (TC-NFR-A11Y): axe + SEO/schema ──
   axe:
