@@ -525,6 +525,35 @@ const MiniVicBot = () => {
     });
   };
 
+  /**
+   * Voice a dynamic answer in Vikram's ElevenLabs cloned voice via the same-origin
+   * /api/tts function (Stage 2 / TC-FR-VOICE-DYN — a Firebase Function reached
+   * through a Hosting rewrite, so it works even on the static export where the Next
+   * /api/* routes don't). The returned MP3 plays through playAudio, so the
+   * holographic mouth-canvas lip-syncs off the audio amplitude in realtime. Falls
+   * back to browser speech synthesis when the function is unavailable (local dev or
+   * a transient error) so a reply is always voiced.
+   */
+  const speakReply = async (text: string) => {
+    if (isMuted || !text.trim()) return;
+    try {
+      const resp = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+      if (!resp.ok || !(resp.headers.get("content-type") || "").includes("audio")) {
+        throw new Error("cloned-voice TTS unavailable");
+      }
+      const url = URL.createObjectURL(await resp.blob());
+      setLastAudio(url);
+      playAudio(url);
+    } catch (err) {
+      logMiniVicIssue("Cloned-voice TTS unavailable; using browser voice", err);
+      speakText(text);
+    }
+  };
+
   const playGeneratedVideo = (videoSrc: string) => {
       if (!videoRef.current) return;
       
@@ -798,8 +827,9 @@ const MiniVicBot = () => {
         setLastAudio(audio);
         playAudio(audio);
       } else if (!isMuted && text) {
-        // Provider returned text without audio — voice it with browser TTS.
-        speakText(text);
+        // Provider returned text without audio — voice it in Vikram's cloned voice
+        // via /api/tts (speakReply falls back to browser TTS if unavailable).
+        speakReply(text);
       } else {
         setIsSpeaking(false);
         stopMouth();
@@ -827,7 +857,9 @@ const MiniVicBot = () => {
       setLatencyMs(Math.round(performance.now() - startedAt));
 
       if (!isMuted) {
-        speakText(reply.text);
+        // Voice the brain's reply in Vikram's cloned voice via /api/tts (this is the
+        // static-site path); speakReply degrades to browser TTS if the function is down.
+        speakReply(reply.text);
       }
     } finally {
       setIsLoading(false);

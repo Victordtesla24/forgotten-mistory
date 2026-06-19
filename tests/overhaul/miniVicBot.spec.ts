@@ -96,4 +96,27 @@ test.describe('TC-FR-MINIVIC — MiniVicBot scaffold leak guard', () => {
     const src = await page.locator('[data-testid="minivic-panel"] video').getAttribute('src');
     expect(src || '', 'panel avatar <video> must source the bundled HiggsField avatar').toContain('my-avatar.mp4');
   });
+
+  test('dynamic answers are voiced through the /api/tts cloned-voice endpoint (TC-FR-VOICE-DYN)', async ({ page }) => {
+    // Wiring test only (no real ElevenLabs call): intercept /api/tts and assert the
+    // chatbot routes a generated answer's audio through it. A minimal MP3 stub keeps
+    // playback from blocking; we assert the request was made.
+    let ttsHits = 0;
+    const STUB_MP3 = Buffer.from('SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQxAADwAAAAAAAAAAAAAAAAAAAAAA=', 'base64');
+    await page.route('**/api/tts', async (route) => {
+      ttsHits += 1;
+      await route.fulfill({ status: 200, contentType: 'audio/mpeg', body: STUB_MP3 });
+    });
+
+    await gotoHome(page);
+    await page.locator('[data-testid="minivic-toggle"]').click();
+    await expect(page.locator('[data-testid="minivic-panel"]')).toBeVisible({ timeout: 5000 });
+
+    const input = page.locator('[data-testid="minivic-input"]');
+    await input.fill('In one sentence, what do you do?');
+    await page.locator('button[aria-label="Send message"]').click();
+
+    // The brain answers (Gemini or local fallback) → speakReply → POST /api/tts.
+    await expect.poll(() => ttsHits, { timeout: 25000 }).toBeGreaterThan(0);
+  });
 });
