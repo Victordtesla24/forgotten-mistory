@@ -1,8 +1,16 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 import { Brain, Database, Laptop, Network, Satellite, Scale } from 'lucide-react';
+
+/** Radial spread of the flow-switch burst (deterministic — no per-render randomness). */
+const BURST_PARTICLES = Array.from({ length: 10 }, (_, i) => {
+  const angle = (i / 10) * Math.PI * 2;
+  const dist = 42 + (i % 3) * 12;
+  return { id: i, x: Math.cos(angle) * dist, y: Math.sin(angle) * dist };
+});
 
 type FlowId = 'chat' | 'telemetry' | 'governance';
 
@@ -85,19 +93,29 @@ const LEGEND: { id: string; name: string; desc: string }[] = [
 export default function ArchitectureMap() {
   const prefersReducedMotion = useReducedMotionSafe();
   const [flow, setFlow] = useState<FlowId>('chat');
+  const [burstKey, setBurstKey] = useState(0);
   const svgRef = useRef<SVGSVGElement | null>(null);
+  const firstRun = useRef(true);
   const active = FLOWS[flow];
 
-  // Restart the packet animation whenever the flow changes.
+  // Restart the packet animation whenever the flow changes, and fire a one-shot
+  // particle burst on every real switch (skipping the initial mount).
   useEffect(() => {
-    if (prefersReducedMotion || !svgRef.current) return;
-    const paths = svgRef.current.querySelectorAll<SVGPathElement>('.arch-connection.active');
-    paths.forEach((path) => {
-      path.style.animation = 'none';
-      // Force reflow so the dash animation restarts from zero.
-      void path.getBoundingClientRect();
-      path.style.animation = '';
-    });
+    if (prefersReducedMotion) return;
+    if (svgRef.current) {
+      const paths = svgRef.current.querySelectorAll<SVGPathElement>('.arch-connection.active');
+      paths.forEach((path) => {
+        path.style.animation = 'none';
+        // Force reflow so the dash animation restarts from zero.
+        void path.getBoundingClientRect();
+        path.style.animation = '';
+      });
+    }
+    if (firstRun.current) {
+      firstRun.current = false;
+      return;
+    }
+    setBurstKey((k) => k + 1);
   }, [flow, prefersReducedMotion]);
 
   return (
@@ -125,11 +143,41 @@ export default function ArchitectureMap() {
               className={`arch-connection${active.lines.includes(id) ? ' active' : ''}`}
             />
           ))}
+          {/* Draw-in overlay: re-keyed on flow change so each active line strokes itself
+              on from edge to edge (stroke-dasharray reveal). Suppressed for reduced motion. */}
+          {!prefersReducedMotion &&
+            active.lines.map((lineId) => (
+              <path
+                key={`draw-${flow}-${lineId}`}
+                d={LINE_PATHS[lineId]}
+                className="arch-connection-draw"
+                data-conn-draw
+                pathLength={1}
+                fill="none"
+              />
+            ))}
+          {active.lines.map((lineId) => (
+            <circle
+              key={`trail-${lineId}`}
+              r="2.6"
+              className="flow-dot-trail"
+              data-flow-trail
+              style={prefersReducedMotion ? { animationPlayState: 'paused' } : undefined}
+            >
+              <animateMotion
+                dur="3s"
+                begin="-0.18s"
+                repeatCount="indefinite"
+                fill={prefersReducedMotion ? 'freeze' : 'remove'}
+              >
+                <mpath xlinkHref={`#path-${lineId}`} />
+              </animateMotion>
+            </circle>
+          ))}
           {active.lines.map((lineId) => (
             <circle
               key={`dot-${lineId}`}
               r="1.5"
-              fill="currentColor"
               className="flow-dot"
               data-testid="flow-dot"
               style={prefersReducedMotion ? { animationPlayState: 'paused' } : undefined}
@@ -159,6 +207,24 @@ export default function ArchitectureMap() {
               </div>
             </div>
           ))}
+        </div>
+        {/* Particle burst — a short radial spray fired from the board centre on each
+            flow switch (scale + opacity spring). Not rendered under reduced motion. */}
+        <div className="arch-burst" data-flow-burst aria-hidden="true">
+          {!prefersReducedMotion && burstKey > 0 && (
+            <div className="arch-burst-group" key={burstKey}>
+              {BURST_PARTICLES.map((p) => (
+                <motion.span
+                  key={p.id}
+                  className="arch-burst-dot"
+                  data-burst-particle
+                  initial={{ x: 0, y: 0, scale: 0.2, opacity: 0.85 }}
+                  animate={{ x: p.x, y: p.y, scale: 1, opacity: 0 }}
+                  transition={{ type: 'spring', stiffness: 220, damping: 18, mass: 0.6 }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <div className="arch-sidebar">

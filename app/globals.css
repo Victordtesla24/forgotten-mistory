@@ -4363,3 +4363,228 @@ footer {
     .detail-sweep { display: none; }
     .detail-scrim { backdrop-filter: none; -webkit-backdrop-filter: none; }
 }
+
+/* ════════════════════════════════════════════════════════════════════════════════
+   WAVE 6 — interactive widgets elevation (#15 ExperienceAccordion, #16 TelemetryPanel,
+   #17 ArchitectureMap). Strictly monochrome (accent + neutral alphas only), every
+   looping/draw motion pinned under prefers-reduced-motion.
+   ════════════════════════════════════════════════════════════════════════════════ */
+
+/* ── #15 ExperienceAccordion ─────────────────────────────────────────────────── */
+.accordion-shell {
+    position: relative;
+    border-radius: var(--card-radius);
+    padding: 0.2rem 1.5rem;
+    background: rgb(244 246 250 / 0.025);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow), var(--card-rim);
+    overflow: hidden;
+}
+
+.accordion-duration {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.35rem;
+}
+
+.accordion-duration-track {
+    position: relative;
+    width: clamp(80px, 22vw, 190px);
+    height: 3px;
+    border-radius: 999px;
+    background: var(--card-border);
+    overflow: hidden;
+}
+
+.accordion-duration-fill {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--mist-400), var(--white));
+    box-shadow: 0 0 8px rgb(244 246 250 / 0.4);
+}
+
+.accordion-duration-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.4px;
+    color: var(--secondary-text);
+}
+
+.accordion-item.active .accordion-duration-fill {
+    box-shadow: 0 0 12px rgb(244 246 250 / 0.6);
+}
+
+.accordion-body ul {
+    list-style: none;
+    margin: 0;
+}
+
+.accordion-body ul li {
+    position: relative;
+    padding-left: 1.4rem;
+}
+
+.accordion-body ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7rem;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 999px;
+    background: var(--mist-400);
+    box-shadow: 0 0 8px rgb(244 246 250 / 0.35);
+}
+
+/* ── #16 TelemetryPanel ──────────────────────────────────────────────────────── */
+.telemetry-value-pulse {
+    display: inline-block;
+    animation: telemetryValuePulse 0.6s var(--motion-ease-standard);
+}
+
+@keyframes telemetryValuePulse {
+    0%   { text-shadow: 0 0 0 rgb(244 246 250 / 0); }
+    35%  { text-shadow: 0 0 14px rgb(244 246 250 / 0.55); }
+    100% { text-shadow: 0 0 0 rgb(244 246 250 / 0); }
+}
+
+.telemetry-spark-stroke[data-spark-draw] {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: sparkDraw 1.6s var(--motion-ease-standard) 0.15s forwards;
+}
+
+@keyframes sparkDraw {
+    to { stroke-dashoffset: 0; }
+}
+
+.telemetry-scan {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 16%;
+    z-index: 2;
+    pointer-events: none;
+    border-radius: inherit;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgb(244 246 250 / 0.05) 45%,
+        rgb(244 246 250 / 0.09) 50%,
+        rgb(244 246 250 / 0.05) 55%,
+        transparent
+    );
+    mix-blend-mode: screen;
+    opacity: 0;
+    animation: telemetryScanSweep 6.5s var(--motion-ease-standard) infinite;
+}
+
+@keyframes telemetryScanSweep {
+    0%   { transform: translateY(-20%); opacity: 0; }
+    12%  { opacity: 0.8; }
+    88%  { opacity: 0.8; }
+    100% { transform: translateY(460%); opacity: 0; }
+}
+
+/* ── #17 ArchitectureMap ─────────────────────────────────────────────────────── */
+.arch-sidebar {
+    padding: 1.4rem;
+    border-radius: var(--card-radius);
+    background: rgb(244 246 250 / 0.025);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow), var(--card-rim);
+}
+
+.arch-node-chip.active {
+    animation: archNodeBreathe 2.8s var(--motion-ease-standard) infinite;
+}
+
+@keyframes archNodeBreathe {
+    0%, 100% {
+        box-shadow:
+            0 0 0 1px rgb(244 246 250 / 0.05),
+            0 10px 30px -10px rgb(0 0 0 / 0.8),
+            0 0 16px -6px var(--arch-accent, var(--accent-color));
+    }
+    50% {
+        box-shadow:
+            0 0 0 1px rgb(244 246 250 / 0.08),
+            0 10px 30px -10px rgb(0 0 0 / 0.8),
+            0 0 30px -2px var(--arch-accent, var(--accent-color));
+    }
+}
+
+.arch-connection-draw {
+    stroke: var(--arch-accent, var(--accent-color));
+    stroke-width: 1.4;
+    fill: none;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    filter: drop-shadow(0 0 5px var(--arch-accent, var(--accent-color)));
+    animation: archConnDraw 0.7s var(--motion-ease-emphasized) forwards;
+    pointer-events: none;
+}
+
+@keyframes archConnDraw {
+    to { stroke-dashoffset: 0; }
+}
+
+/* Packet dots are only rendered for the ACTIVE flow, so they paint by default now
+   (the old opacity:0 / .active gate left them invisible). The trail is a larger,
+   softer dot riding just ahead so each packet reads as a comet, not a pinprick. */
+.arch-svg .flow-dot {
+    opacity: 0.95;
+}
+
+.arch-svg .flow-dot-trail {
+    fill: var(--arch-accent, var(--accent-color));
+    opacity: 0.32;
+    filter: drop-shadow(0 0 8px var(--arch-accent, var(--accent-color)));
+}
+
+.arch-burst {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.arch-burst-group {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.arch-burst-dot {
+    position: absolute;
+    left: -3px;
+    top: -3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--arch-accent, var(--accent-color));
+    box-shadow: 0 0 8px var(--arch-accent, var(--accent-color));
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .telemetry-value-pulse { animation: none; }
+    .telemetry-spark-stroke[data-spark-draw] {
+        stroke-dasharray: none;
+        stroke-dashoffset: 0;
+        animation: none;
+    }
+    .telemetry-scan { animation: none; opacity: 0; }
+    .arch-node-chip.active { animation: none; }
+    .arch-connection-draw { animation: none; stroke-dashoffset: 0; }
+}

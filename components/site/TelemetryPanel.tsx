@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { useReducedMotion } from 'framer-motion';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { animate, useReducedMotion } from 'framer-motion';
 
 const LOCATION_SETS: string[][] = [
   ['Melbourne · Edge POP', 'Sydney · API Gateway', 'Adelaide · Vector cache'],
@@ -56,6 +56,44 @@ function buildSparkGeometry(values: number[], width = 160, height = 40): SparkGe
 }
 
 /**
+ * A single telemetry readout. The displayed number eases to each new target with a
+ * spring (stiffness 100 / damping 15 → a light overshoot that settles, not a linear
+ * tick), and the readout re-keys on every change so a brief glow pulse fires. Under
+ * reduced motion the value snaps to its target with no spring and no pulse.
+ */
+function TelemetryValue({ value, format }: { value: number; format: (n: number) => string }) {
+  const reduced = useReducedMotion();
+  const [display, setDisplay] = useState(value);
+  const displayRef = useRef(value);
+  const [pulseKey, setPulseKey] = useState(0);
+
+  useEffect(() => {
+    if (reduced) {
+      displayRef.current = value;
+      setDisplay(value);
+      return;
+    }
+    const controls = animate(displayRef.current, value, {
+      type: 'spring',
+      stiffness: 100,
+      damping: 15,
+      onUpdate: (v) => {
+        displayRef.current = v;
+        setDisplay(v);
+      },
+    });
+    setPulseKey((k) => k + 1);
+    return () => controls.stop();
+  }, [value, reduced]);
+
+  return (
+    <span key={pulseKey} className="telemetry-value-pulse" data-telemetry-value>
+      {format(display)}
+    </span>
+  );
+}
+
+/**
  * Simulated system telemetry panel. All state lives in React with proper
  * interval cleanup; values follow a bounded random walk so the panel reads
  * as live without ever drifting out of its labelled envelope.
@@ -96,6 +134,10 @@ export default function TelemetryPanel() {
           Canvas2D drift-particle scene so the page holds the ≤2 WebGL/canvas budget
           (NFR-FPS); the two live WebGL contexts are SpaceScene + the work HUD. */}
       <div className="telemetry-depth" aria-hidden="true" />
+      {/* Scan-line sweep — a faint instrument bar that travels the panel on a loop
+          (screen-blend, low alpha so it never hurts legibility). Pinned by the
+          reduced-motion rule. */}
+      <div className="telemetry-scan" data-telemetry-scanline aria-hidden="true" />
       <div className="telemetry-header">
         <div>
           <p className="eyebrow">Live Telemetry</p>
@@ -109,7 +151,9 @@ export default function TelemetryPanel() {
       <div className="telemetry-grid">
         <div className="telemetry-card">
           <div className="telemetry-label">Edge latency (ANZ)</div>
-          <div className="telemetry-value">{(latencyMs / 1000).toFixed(3)} s</div>
+          <div className="telemetry-value">
+            <TelemetryValue value={latencyMs} format={(n) => `${(n / 1000).toFixed(3)} s`} />
+          </div>
           <div className="telemetry-spark-wrapper" style={{ position: 'relative' }}>
             <svg className="telemetry-spark" viewBox="0 0 160 40" preserveAspectRatio="none" aria-hidden="true">
             <defs>
@@ -119,7 +163,7 @@ export default function TelemetryPanel() {
               </linearGradient>
             </defs>
             <path className="telemetry-spark-area" d={spark.area} />
-            <path className="telemetry-spark-stroke" d={spark.stroke} />
+            <path className="telemetry-spark-stroke" d={spark.stroke} pathLength={1} data-spark-draw="" />
             <line
               className="telemetry-spark-trail"
               x1={spark.prev.x}
@@ -145,11 +189,15 @@ export default function TelemetryPanel() {
           <div className="telemetry-dual-row">
             <div>
               <div className="telemetry-label">Server load</div>
-              <div className="telemetry-value">{loadPct}%</div>
+              <div className="telemetry-value">
+                <TelemetryValue value={loadPct} format={(n) => `${Math.round(n)}%`} />
+              </div>
             </div>
             <div>
               <div className="telemetry-label">Coffee consumed</div>
-              <div className="telemetry-value">{coffee.toFixed(1)} cups</div>
+              <div className="telemetry-value">
+                <TelemetryValue value={coffee} format={(n) => `${n.toFixed(1)} cups`} />
+              </div>
             </div>
           </div>
           <div className="telemetry-meter">
