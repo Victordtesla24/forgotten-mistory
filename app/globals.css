@@ -1266,8 +1266,13 @@ footer {
     gap: 2rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    /* Snap physics: cards settle to centre as the rail comes to rest (native + smooth
+       so the JS inertial fling decelerates INTO a snap rather than overshooting). */
+    scroll-snap-type: x proximity;
+    scroll-behavior: smooth;
     padding: 1rem 0.5rem 2rem; /* top/side padding for shadow/hover space */
     width: 100%;
+    perspective: 1400px; /* shared 3D stage so neighbouring card tilts share a vanishing point */
 }
 
 
@@ -1308,22 +1313,38 @@ footer {
 .project-image {
     width: 100%;
     height: 260px;
-    background-color: #0e1116;
-    border: 1px solid #2a2a2a;
+    /* Glassmorphic surface — translucent achromatic sheen over a backdrop blur, so
+       the starfield reads softly through the card edges (monochrome, audit-safe). */
+    background:
+        linear-gradient(180deg, rgba(244, 246, 250, 0.05), rgba(244, 246, 250, 0.02));
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--card-border);
     border-radius: 12px;
     overflow: hidden;
     position: relative;
     margin-bottom: 1.2rem;
-    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    /* Pointer 3D tilt (rotation vars written by the carousel) composed with a hover
+       lift; a single transform so the two never fight. */
+    transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(var(--img-lift, 0px));
+    transform-style: preserve-3d;
+    transition: border-color 0.3s ease, transform 0.35s var(--motion-ease-standard), box-shadow 0.3s ease;
+    will-change: transform;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .project-card:hover .project-image {
-    border-color: var(--accent-color);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--card-shadow-hover);
+    --img-lift: -6px;
+}
+
+/* Native scroll only under reduced motion: kill smooth-scroll + any residual tilt. */
+@media (prefers-reduced-motion: reduce) {
+    .projects-carousel { scroll-behavior: auto; }
+    .project-image { transform: none; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
 }
 
 .card-badge {
