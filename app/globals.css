@@ -4609,3 +4609,251 @@ footer {
     .arch-node-chip.active { animation: none; }
     .arch-connection-draw { animation: none; stroke-dashoffset: 0; }
 }
+
+/* ============================================================================
+   WAVE 7b — GithubFeed (#19) + HiddenTerminal (#20)
+   Monochrome (NN-4): every value is a neutral grey, a white rgba, or a token.
+   ========================================================================== */
+
+/* --- #19 GithubFeed: skeleton shimmer --------------------------------------- */
+.repo-skeletons {
+    display: grid;
+    gap: 1rem;
+}
+
+.repo-skeleton {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 1.1rem 1.25rem;
+    display: grid;
+    gap: 0.7rem;
+    background: linear-gradient(
+        100deg,
+        rgba(255, 255, 255, 0.02) 30%,
+        rgba(255, 255, 255, 0.07) 50%,
+        rgba(255, 255, 255, 0.02) 70%
+    );
+    background-size: 220% 100%;
+    animation: repoShimmer 1.4s ease-in-out infinite;
+}
+
+.repo-skel-line {
+    height: 0.7rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.07);
+}
+.repo-skel-line.w-40 { width: 40%; }
+.repo-skel-line.w-60 { width: 60%; }
+.repo-skel-line.w-90 { width: 90%; }
+
+@keyframes repoShimmer {
+    0% { background-position: 180% 0; }
+    100% { background-position: -80% 0; }
+}
+
+/* --- #19 GithubFeed: live header + fresh-data pulse ------------------------- */
+.repo-feed-head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--secondary-text);
+}
+
+.repo-fresh {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--accent-color);
+    box-shadow: 0 0 8px rgba(244, 246, 250, 0.6);
+}
+
+.repo-fresh::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 999px;
+    border: 1px solid rgba(244, 246, 250, 0.5);
+    animation: freshPulse 2.4s ease-out infinite;
+}
+
+@keyframes freshPulse {
+    0% { transform: scale(0.6); opacity: 0.8; }
+    100% { transform: scale(1.9); opacity: 0; }
+}
+
+/* --- #19 GithubFeed: staggered card grid ----------------------------------- */
+.repo-feed {
+    display: grid;
+    gap: 1rem;
+}
+
+.repo-card-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.repo-star {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    font-variant-numeric: tabular-nums;
+}
+
+.repo-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.repo-lang-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    background: rgba(244, 246, 250, var(--lang-tone, 0.7));
+    box-shadow: 0 0 6px rgba(244, 246, 250, calc(var(--lang-tone, 0.7) * 0.5));
+}
+
+/* --- #19 GithubFeed: error + retry ----------------------------------------- */
+.repo-error {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.repo-retry {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--accent-color);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    padding: 0.4rem 1.1rem;
+    cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+
+.repo-retry:hover,
+.repo-retry:focus-visible {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.32);
+    transform: translateY(-1px);
+}
+
+.repo-error-link {
+    color: var(--secondary-text);
+    font-size: 0.85rem;
+}
+
+/* --- #20 HiddenTerminal: CRT scan-line + flicker ---------------------------- */
+.terminal-window {
+    position: relative;
+    isolation: isolate;
+}
+
+.terminal-scanline {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    border-radius: inherit;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.05) 0px,
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    background-size: 100% 3px;
+    mix-blend-mode: overlay;
+    opacity: 0.55;
+    animation: terminalScan 8s linear infinite;
+}
+
+.terminal-window::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    border-radius: inherit;
+    background: radial-gradient(circle at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.35) 100%);
+    animation: terminalFlicker 5.5s steps(48) infinite;
+}
+
+@keyframes terminalScan {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 96px; }
+}
+
+@keyframes terminalFlicker {
+    0%, 100% { opacity: 0.9; }
+    46% { opacity: 0.86; }
+    48% { opacity: 1; }
+    50% { opacity: 0.82; }
+    52% { opacity: 0.94; }
+}
+
+/* Typewriter caret on the line currently being typed. */
+.terminal-line--typing { position: relative; }
+
+.terminal-caret {
+    display: inline-block;
+    width: 0.55ch;
+    height: 1em;
+    margin-left: 1px;
+    transform: translateY(0.15em);
+    background: var(--accent-color);
+    animation: terminalCaret 1s steps(1) infinite;
+}
+
+@keyframes terminalCaret {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+
+/* --- #20 HiddenTerminal: Konami celebration burst -------------------------- */
+.konami-burst {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    display: grid;
+    place-items: center;
+}
+
+.burst-particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--accent-color);
+    box-shadow: 0 0 10px rgba(244, 246, 250, 0.8);
+    transform: rotate(var(--burst-angle, 0deg)) translateY(0) scale(1);
+    animation: konamiFling 2.2s var(--motion-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)) forwards;
+}
+
+@keyframes konamiFling {
+    0% { transform: rotate(var(--burst-angle, 0deg)) translateY(0) scale(0.4); opacity: 0; }
+    18% { opacity: 1; }
+    100% { transform: rotate(var(--burst-angle, 0deg)) translateY(-130px) scale(0.25); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .repo-skeleton { animation: none; background-position: 0 0; }
+    .repo-fresh::after { animation: none; opacity: 0; }
+    .terminal-scanline { animation: none; }
+    .terminal-window::after { animation: none; }
+    .terminal-caret { animation: none; opacity: 1; }
+    .burst-particle { animation: none; opacity: 0; }
+}

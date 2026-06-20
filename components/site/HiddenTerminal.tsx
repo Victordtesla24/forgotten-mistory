@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 interface TerminalLine {
   id: number;
@@ -51,20 +52,35 @@ const COMMANDS: Record<string, string[]> = {
   ],
 };
 
+const BURST_PARTICLES = 18;
 let lineCounter = 0;
 const makeLine = (text: string, html = false): TerminalLine => ({ id: ++lineCounter, text, html });
 
+interface TypingState {
+  text: string;
+  shown: number;
+}
+
 /**
- * Hidden terminal easter egg. Opens via the Konami code or the footer
- * trigger; supports a small command set and traps focus in its input while
- * open.
+ * Hidden terminal easter egg. Opens via the Konami code or the footer trigger.
+ * Command output types in one character at a time over a CRT scan-line overlay;
+ * the arrow keys walk the command history; the Konami code opens the terminal
+ * with a monochrome celebration burst. Under reduced motion the typewriter and
+ * the scan-line sweep both fall away — output is printed at once and the surface
+ * is static — while every command stays fully usable.
  */
 export default function HiddenTerminal() {
+  const prefersReducedMotion = useReducedMotionSafe();
   const [open, setOpen] = useState(false);
   const [lines, setLines] = useState<TerminalLine[]>([
     makeLine('Type help, sudo hire vic, stack, or try the Konami code.', true),
   ]);
+  const [typingQueue, setTypingQueue] = useState<string[]>([]);
+  const [typing, setTyping] = useState<TypingState | null>(null);
   const [input, setInput] = useState('');
+  const [history, setHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [burst, setBurst] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const logRef = useRef<HTMLDivElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
@@ -80,6 +96,7 @@ export default function HiddenTerminal() {
           konamiIndex.current = 0;
           setOpen(true);
           setLines((prev) => [...prev, makeLine('Konami code accepted. Welcome, player one.')]);
+          setBurst(true);
         }
       } else {
         konamiIndex.current = e.key === KONAMI[0] ? 1 : 0;
@@ -106,35 +123,89 @@ export default function HiddenTerminal() {
     if (overlayRef.current) overlayRef.current.inert = !open;
   }, [open]);
 
-  // Keep the log scrolled to the latest line.
+  // Keep the log scrolled to the latest line as it types.
   useEffect(() => {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
-  }, [lines]);
+  }, [lines, typing]);
 
-  const runCommand = useCallback((raw: string) => {
-    const command = raw.trim().toLowerCase();
-    if (!command) return;
+  // Per-character typewriter. Dequeues pending output lines and reveals each one
+  // character at a time; reduced motion never enqueues, so this stays idle there.
+  useEffect(() => {
+    if (prefersReducedMotion) return undefined;
+    if (typing) {
+      if (typing.shown >= typing.text.length) {
+        setLines((prev) => [...prev, makeLine(typing.text)]);
+        setTyping(null);
+        return undefined;
+      }
+      const id = window.setTimeout(() => {
+        setTyping((t) => (t ? { ...t, shown: t.shown + 1 } : t));
+      }, 12);
+      return () => window.clearTimeout(id);
+    }
+    if (typingQueue.length) {
+      setTyping({ text: typingQueue[0], shown: 0 });
+      setTypingQueue((prev) => prev.slice(1));
+    }
+    return undefined;
+  }, [typing, typingQueue, prefersReducedMotion]);
 
-    setLines((prev) => [...prev, makeLine(`vic@vikram.io:~$ ${raw}`)]);
+  // Clear the celebration burst once it has played.
+  useEffect(() => {
+    if (!burst) return undefined;
+    const id = window.setTimeout(() => setBurst(false), 2200);
+    return () => window.clearTimeout(id);
+  }, [burst]);
 
-    if (command === 'clear') {
-      setLines([]);
-      return;
+  const runCommand = useCallback(
+    (raw: string) => {
+      const command = raw.trim().toLowerCase();
+      if (!command) return;
+
+      setHistory((prev) => [...prev, raw]);
+      setHistoryIndex(-1);
+      setLines((prev) => [...prev, makeLine(`vic@vikram.io:~$ ${raw}`)]);
+
+      if (command === 'clear') {
+        setLines([]);
+        setTyping(null);
+        setTypingQueue([]);
+        return;
+      }
+      if (command === 'exit') {
+        setOpen(false);
+        return;
+      }
+      const output = COMMANDS[command] ?? [`command not found: ${command}. Try 'help'.`];
+      if (prefersReducedMotion) {
+        setLines((prev) => [...prev, ...output.map((text) => makeLine(text))]);
+      } else {
+        setTypingQueue((prev) => [...prev, ...output]);
+      }
+    },
+    [prefersReducedMotion],
+  );
+
+  const onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!history.length) return;
+      const idx = historyIndex === -1 ? history.length - 1 : Math.max(0, historyIndex - 1);
+      setHistoryIndex(idx);
+      setInput(history[idx]);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIndex === -1) return;
+      const idx = historyIndex + 1;
+      if (idx >= history.length) {
+        setHistoryIndex(-1);
+        setInput('');
+      } else {
+        setHistoryIndex(idx);
+        setInput(history[idx]);
+      }
     }
-    if (command === 'exit') {
-      setOpen(false);
-      return;
-    }
-    const output = COMMANDS[command];
-    if (output) {
-      setLines((prev) => [...prev, ...output.map((text) => makeLine(text))]);
-    } else {
-      setLines((prev) => [
-        ...prev,
-        makeLine(`command not found: ${command}. Try 'help'.`),
-      ]);
-    }
-  }, []);
+  };
 
   return (
     <>
@@ -155,6 +226,19 @@ export default function HiddenTerminal() {
         aria-label="Hidden terminal"
       >
         <div className="terminal-window">
+          <div className="terminal-scanline" data-terminal-scanline aria-hidden="true" />
+          {burst && (
+            <div className="konami-burst" data-konami-burst aria-hidden="true">
+              {Array.from({ length: BURST_PARTICLES }, (_, i) => (
+                <span
+                  key={i}
+                  className="burst-particle"
+                  data-burst-particle
+                  style={{ '--burst-angle': `${(360 / BURST_PARTICLES) * i}deg` } as React.CSSProperties}
+                />
+              ))}
+            </div>
+          )}
           <div className="terminal-bar">
             <div className="terminal-dots">
               <span className="dot red" />
@@ -179,6 +263,12 @@ export default function HiddenTerminal() {
                 </div>
               ),
             )}
+            {typing && (
+              <div className="terminal-line terminal-line--typing">
+                {typing.text.slice(0, typing.shown)}
+                <span className="terminal-caret" aria-hidden="true" />
+              </div>
+            )}
           </div>
           <form
             id="terminal-form"
@@ -199,6 +289,7 @@ export default function HiddenTerminal() {
               placeholder="help | sudo hire vic | stack"
               value={input}
               onChange={(e) => setInput(e.target.value)}
+              onKeyDown={onInputKeyDown}
             />
           </form>
         </div>
