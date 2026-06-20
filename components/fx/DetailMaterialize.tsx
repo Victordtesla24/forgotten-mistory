@@ -79,6 +79,8 @@ export default function DetailMaterialize({ origin, color }: DetailMaterializePr
     const rand = mulberry32(0x7e57ab1f);
     const sx = new Float32Array(PARTICLE_COUNT);
     const sy = new Float32Array(PARTICLE_COUNT);
+    const bx = new Float32Array(PARTICLE_COUNT); // burst control point (outward from origin)
+    const by = new Float32Array(PARTICLE_COUNT);
     const tx = new Float32Array(PARTICLE_COUNT);
     const ty = new Float32Array(PARTICLE_COUNT);
     const ph = new Float32Array(PARTICLE_COUNT);
@@ -93,6 +95,9 @@ export default function DetailMaterialize({ origin, color }: DetailMaterializePr
       const spread = 70 + rand() * 240;
       sx[i] = origin.x + Math.cos(a0) * spread * (0.3 + rand());
       sy[i] = origin.y + Math.sin(a0) * spread * (0.3 + rand());
+      // Burst point: flung further outward along the spawn bearing before it reverses.
+      bx[i] = origin.x + Math.cos(a0) * spread * (1.3 + rand() * 0.6);
+      by[i] = origin.y + Math.sin(a0) * spread * (1.3 + rand() * 0.6);
       const a1 = rand() * Math.PI * 2;
       const rr = frameR * (0.65 + rand() * 0.55);
       tx[i] = cx + Math.cos(a1) * rr;
@@ -101,7 +106,11 @@ export default function DetailMaterialize({ origin, color }: DetailMaterializePr
       sz[i] = 0.7 + rand() * 1.8;
     }
 
+    // Three phases per particle: BURST outward, CONVERGE toward the panel centre,
+    // then SETTLE (fade) as they merge. Speeds vary per particle via `ph` + easing.
+    const BURST_END = 0.3;
     const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+    const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
     let raf = 0;
     let alive = true;
@@ -119,16 +128,30 @@ export default function DetailMaterialize({ origin, color }: DetailMaterializePr
       ctx.globalCompositeOperation = 'lighter';
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         const local = Math.max(0, Math.min(1, (g - ph[i]) / (1 - ph[i])));
-        const e = easeOutCubic(local);
-        const x = sx[i] + (tx[i] - sx[i]) * e;
-        const y = sy[i] + (ty[i] - sy[i]) * e;
+        let x: number;
+        let y: number;
+        if (local < BURST_END) {
+          // BURST — fling outward along the spawn bearing.
+          const t = easeOutCubic(local / BURST_END);
+          x = sx[i] + (bx[i] - sx[i]) * t;
+          y = sy[i] + (by[i] - sy[i]) * t;
+        } else {
+          // CONVERGE — reverse and stream toward the panel centre.
+          const t = easeInOutCubic((local - BURST_END) / (1 - BURST_END));
+          x = bx[i] + (tx[i] - bx[i]) * t;
+          y = by[i] + (ty[i] - by[i]) * t;
+        }
+        // SETTLE — brighten mid-flight, fade as the particle merges into the panel.
         const alpha = Math.sin(local * Math.PI) * 0.55;
         if (alpha <= 0.01) continue;
-        const s = sz[i] * (10 - 3 * e);
+        const s = sz[i] * (10 - 3 * easeOutCubic(local));
         ctx.globalAlpha = alpha;
         ctx.drawImage(sprite, x - s / 2, y - s / 2, s, s);
       }
       ctx.globalAlpha = 1;
+      // Restore the default blend so the additive 'lighter' pass never leaks into any
+      // other 2-D context drawing that may share this canvas's compositor state.
+      ctx.globalCompositeOperation = 'source-over';
       raf = requestAnimationFrame(step);
     };
     raf = requestAnimationFrame(step);

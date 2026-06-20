@@ -4279,6 +4279,9 @@ footer {
         rotateX(calc(var(--panel-ry, 0) * -3deg))
         rotateY(calc(var(--panel-rx, 0) * 3deg));
     transition: transform 240ms var(--motion-ease-standard);
+    /* Glass depth — the dimmed scene behind the panel reads through a soft blur. */
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
 }
 .detail-panel.is-interactive .detail-panel-depth { will-change: transform; }
 
@@ -4984,4 +4987,112 @@ footer {
     [data-hud-bracket] { animation: none; stroke-dashoffset: 0; }
     .hud-scanline { animation: none; opacity: 0; }
     .hud-readout { animation: none; }
+}
+
+/* ============================================================================
+   WAVE 10 — Button (#30) micro-interactions + Main-page scroll progress (#32)
+   Monochrome (NN-4): neutral white rgba + accent token only.
+   ========================================================================== */
+
+/* --- #30 Button: glow hover, magnetic pull, ripple, loading spinner -------- */
+.btn-glow:hover {
+    box-shadow: 0 0 0 1px rgb(244 246 250 / 0.22), 0 8px 26px rgb(244 246 250 / 0.16);
+}
+
+.btn-magnetic {
+    transform: translate(var(--btn-mx, 0), var(--btn-my, 0));
+    transition: transform 0.18s var(--motion-ease-standard, ease);
+}
+
+.btn-ripple {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    margin: -6px;
+    border-radius: 999px;
+    background: rgb(244 246 250 / 0.45);
+    transform: scale(0);
+    pointer-events: none;
+    animation: btnRipple 0.65s ease-out forwards;
+}
+
+@keyframes btnRipple {
+    to {
+        transform: scale(9);
+        opacity: 0;
+    }
+}
+
+.btn-spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1em;
+    height: 1em;
+    margin: -0.5em;
+    border-radius: 999px;
+    border: 2px solid rgb(244 246 250 / 0.25);
+    border-top-color: currentColor;
+    animation: btnSpin 0.7s linear infinite;
+}
+
+@keyframes btnSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- #32 Main page: global scroll-progress indicator ----------------------- */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 9999;
+    transform-origin: 0 50%;
+    background: linear-gradient(90deg, rgb(244 246 250 / 0.35), var(--accent-color));
+    pointer-events: none;
+}
+
+/* --- #31 ServiceWorkerRegister: offline / update toast --------------------- */
+.sw-toast-region {
+    position: fixed;
+    left: 1rem;
+    bottom: 1rem;
+    z-index: 9998;
+    display: flex;
+    pointer-events: none;
+}
+.sw-toast {
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent-color);
+    background: rgb(12 13 16 / 0.82);
+    border: 1px solid rgb(255 255 255 / 0.14);
+    border-radius: 999px;
+    padding: 0.5rem 0.9rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.4);
+}
+.sw-toast__reload {
+    color: var(--accent-color);
+    background: rgb(255 255 255 / 0.08);
+    border: 1px solid rgb(255 255 255 / 0.2);
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+    cursor: pointer;
+    font: inherit;
+}
+.sw-toast--dev { opacity: 0.7; }
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-magnetic { transition: none; }
+    .btn-ripple { animation: none; opacity: 0; }
+    .btn-glow:hover { box-shadow: none; }
 }

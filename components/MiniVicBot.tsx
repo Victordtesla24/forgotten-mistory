@@ -1,9 +1,28 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { askMiniVicBrain, type BrainTurn } from "@/lib/miniVicBrain";
 import { GREETING, type PersonaMode } from "@/app/data/miniVicKnowledge";
 import { Copy, Play, RefreshCcw, Send, Sparkles, Square, Volume2, VolumeX, X, Mic, MicOff, Video } from "lucide-react";
+
+// Minimal shapes for the vendor-prefixed browser APIs, so the component reaches
+// `webkitSpeechRecognition` / `webkitAudioContext` through typed casts only.
+interface SpeechRecognitionLike {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onresult: ((event: unknown) => void) | null;
+  onend: (() => void) | null;
+  onerror: ((event: unknown) => void) | null;
+  start: () => void;
+  stop: () => void;
+}
+interface LegacyMediaWindow {
+  SpeechRecognition?: new () => SpeechRecognitionLike;
+  webkitSpeechRecognition?: new () => SpeechRecognitionLike;
+  webkitAudioContext?: typeof AudioContext;
+}
 
 type ModeKey = "recruiter" | "engineer" | "story";
 
@@ -126,6 +145,7 @@ const MiniVicBot = () => {
   const rafRef = useRef<number | null>(null);
   
   const recognitionRef = useRef<any>(null);
+  const prefersReducedMotion = useReducedMotion();
   const messagesRef = useRef(messages);
   messagesRef.current = messages;
 
@@ -275,7 +295,8 @@ const MiniVicBot = () => {
   useEffect(() => {
     // Initialize Speech Recognition
     if (typeof window !== 'undefined') {
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      const legacyWindow = window as unknown as LegacyMediaWindow;
+      const SpeechRecognition = legacyWindow.SpeechRecognition ?? legacyWindow.webkitSpeechRecognition;
       if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
         recognition.continuous = false;
@@ -328,7 +349,8 @@ const MiniVicBot = () => {
   const ensureAnalyser = () => {
     if (!audioRef.current) return false;
     if (!audioCtxRef.current) {
-      audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const AudioCtx = (window.AudioContext ?? (window as unknown as LegacyMediaWindow).webkitAudioContext)!;
+      audioCtxRef.current = new AudioCtx();
     }
     if (!sourceRef.current) {
       sourceRef.current = audioCtxRef.current.createMediaElementSource(audioRef.current);
@@ -353,7 +375,7 @@ const MiniVicBot = () => {
 
     const loop = () => {
       if (!analyserRef.current) return;
-      analyserRef.current.getByteFrequencyData(dataArray as any);
+      analyserRef.current.getByteFrequencyData(dataArray);
       
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -891,7 +913,7 @@ const MiniVicBot = () => {
       {isOpen && (
         <section
           data-testid="minivic-panel"
-          className="mb-4 w-[22rem] md:w-[27rem] max-w-[calc(100vw-2.5rem)] max-h-[calc(100vh-7rem)] overflow-hidden rounded-3xl border border-zinc-300/20 bg-[linear-gradient(150deg,rgba(14,15,20,0.97),rgba(10,8,24,0.96))] shadow-[0_24px_70px_rgba(4,8,22,0.65),0_0_40px_rgba(201,205,214,0.14)] ring-1 ring-neutral-400/25 animate-in slide-in-from-bottom-8 duration-300"
+          className="mb-4 w-[22rem] md:w-[27rem] max-w-[calc(100vw-2.5rem)] max-h-[calc(100vh-7rem)] overflow-hidden rounded-3xl border border-zinc-300/20 bg-[linear-gradient(150deg,rgba(14,15,20,0.92),rgba(10,8,24,0.9))] backdrop-blur-xl shadow-[0_24px_70px_rgba(4,8,22,0.65),0_0_40px_rgba(201,205,214,0.14)] ring-1 ring-neutral-400/25 animate-in slide-in-from-bottom-8 duration-300"
           aria-label="MiniVic assistant panel"
         >
           <div className="relative h-44 w-full overflow-hidden border-b border-white/10 bg-neutral-950">
@@ -1037,7 +1059,14 @@ const MiniVicBot = () => {
             aria-atomic="false"
           >
             {messages.map((msg) => (
-              <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+              <motion.div
+                key={msg.id}
+                data-minivic-message
+                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              >
                 <div
                   className={`max-w-[86%] px-3.5 py-2.5 text-[13.5px] leading-relaxed rounded-2xl shadow-sm border ${
                     msg.role === "user"
@@ -1102,7 +1131,7 @@ const MiniVicBot = () => {
                     </div>
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
             {isLoading && (
               <div className="flex justify-start">

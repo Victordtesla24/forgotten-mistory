@@ -44,6 +44,16 @@ const DEFAULT_COLOR = PALETTE.steel;
 
 const CORNERS = ['tl', 'tr', 'br', 'bl'] as const;
 
+// Staggered reveal for the evidence list inside the panel (Apple emphasized-decelerate).
+const listStagger = {
+  hidden: {},
+  shown: { transition: { staggerChildren: 0.08, delayChildren: 0.18 } },
+};
+const listItem = {
+  hidden: { opacity: 0, x: -12 },
+  shown: { opacity: 1, x: 0, transition: { duration: 0.42, ease: [0.16, 1, 0.3, 1] as const } },
+};
+
 /** Hex → "r, g, b" channel triple. lib/palette.ts is the sanctioned home for raw
  *  hex, so converting tokens here keeps components literal-free (audit/eslint). */
 const rgbTriple = (hex: string): string => {
@@ -284,18 +294,28 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
 
               {/* Right content: evidence */}
               <div className="detail-body p-10 flex flex-col justify-between">
-                <ul className="space-y-6 text-gray-50 text-lg font-normal leading-[1.7] list-none m-0 p-0">
+                <motion.ul
+                  data-panel-stagger
+                  className="space-y-6 text-gray-50 text-lg font-normal leading-[1.7] list-none m-0 p-0"
+                  variants={reduced ? undefined : listStagger}
+                  initial={reduced ? false : 'hidden'}
+                  animate={reduced ? false : 'shown'}
+                >
                   {content.details.map((detail) => (
-                    <li key={detail.slice(0, 48)} className="flex items-start gap-4">
+                    <motion.li
+                      key={detail.slice(0, 48)}
+                      className="flex items-start gap-4"
+                      variants={reduced ? undefined : listItem}
+                    >
                       <span
                         className="mt-2.5 w-1.5 h-1.5 rounded-full flex-shrink-0"
                         style={{ backgroundColor: themeColor }}
                         aria-hidden="true"
                       />
                       <span>{detail}</span>
-                    </li>
+                    </motion.li>
                   ))}
-                </ul>
+                </motion.ul>
 
                 <div className="mt-10 pt-8 border-t border-white/15 flex justify-between items-end gap-4">
                   <div className="flex flex-col gap-1">

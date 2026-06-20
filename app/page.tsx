@@ -110,6 +110,9 @@ export default function Home() {
   const panelY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -24]);
   const avatarY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : 48]);
 
+  // Whole-document progress drives the slim reading indicator pinned to the top edge.
+  const { scrollYProgress: pageProgress } = useScroll();
+
   const openDetail = useCallback((key: string, element: HTMLElement, locked: boolean) => {
     setTriggerRect(element.getBoundingClientRect());
     setActiveKey(key);
@@ -158,6 +161,13 @@ export default function Home() {
 
   return (
     <>
+      <motion.div
+        className="scroll-progress"
+        data-scroll-progress
+        aria-hidden="true"
+        style={{ scaleX: pageProgress }}
+      />
+
       <Preloader />
       <CursorGlow />
       <CardDepth />
