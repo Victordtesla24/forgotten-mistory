@@ -4857,3 +4857,131 @@ footer {
     .terminal-caret { animation: none; opacity: 1; }
     .burst-particle { animation: none; opacity: 0; }
 }
+
+/* ============================================================================
+   WAVE 8 — TelemetryHud (#21) + HudFrame (#22)  [TokenReflow #23 is styled-jsx]
+   Monochrome (NN-4): neutral greys, white rgba, and the accent token only.
+   ========================================================================== */
+
+/* --- #22 HudFrame: pulse glow + animated corner brackets -------------------- */
+.hud-frame__glow {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 42%, rgb(244 246 250 / 0.06), transparent 68%);
+    opacity: 0.4;
+    animation: hudGlowPulse 4.5s ease-in-out infinite;
+}
+
+@keyframes hudGlowPulse {
+    0%, 100% { opacity: 0.28; }
+    50% { opacity: 0.62; }
+}
+
+.hud-frame__bracket {
+    position: absolute;
+    z-index: 2;
+    width: 22px;
+    height: 22px;
+    color: rgb(244 246 250 / 0.55);
+    pointer-events: none;
+}
+.hud-frame__bracket--tl { top: 7px; left: 7px; }
+.hud-frame__bracket--tr { top: 7px; right: 7px; }
+.hud-frame__bracket--bl { bottom: 7px; left: 7px; }
+.hud-frame__bracket--br { bottom: 7px; right: 7px; }
+
+[data-hud-bracket] {
+    stroke-dasharray: 44;
+    stroke-dashoffset: 44;
+    animation: hudBracketDraw 0.9s var(--motion-ease-standard, cubic-bezier(0.22, 1, 0.36, 1)) forwards;
+}
+.hud-frame__bracket--tr [data-hud-bracket] { animation-delay: 0.08s; }
+.hud-frame__bracket--bl [data-hud-bracket] { animation-delay: 0.16s; }
+.hud-frame__bracket--br [data-hud-bracket] { animation-delay: 0.24s; }
+
+@keyframes hudBracketDraw {
+    to { stroke-dashoffset: 0; }
+}
+
+/* Floating variant — a chrome-light panel that reads as hovering over content. */
+.hud-frame--floating {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-color: rgb(244 246 250 / 0.16);
+    box-shadow: 0 24px 60px rgb(0 0 0 / 0.45);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+/* --- #21 TelemetryHud: scan-line sweep + flickering data readout ------------ */
+.hud-scanline {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgb(244 246 250 / 0.05) 48%,
+        rgb(244 246 250 / 0.09) 50%,
+        rgb(244 246 250 / 0.05) 52%,
+        transparent 100%
+    );
+    background-size: 100% 42%;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+    animation: hudScanSweep 4.8s linear infinite;
+}
+
+@keyframes hudScanSweep {
+    0% { background-position: 0 -45%; }
+    100% { background-position: 0 145%; }
+}
+
+.hud-readout {
+    position: absolute;
+    top: 9px;
+    left: 11px;
+    z-index: 3;
+    pointer-events: none;
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    font-family: var(--font-mono);
+    color: var(--secondary-text);
+    animation: hudReadoutFlicker 3.2s steps(28) infinite;
+}
+.hud-readout__label {
+    font-size: 0.5rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+.hud-readout__value {
+    font-size: 0.78rem;
+    color: var(--accent-color);
+    font-variant-numeric: tabular-nums;
+}
+.hud-readout__unit {
+    font-size: 0.5rem;
+    margin-left: 1px;
+    opacity: 0.7;
+}
+
+@keyframes hudReadoutFlicker {
+    0%, 100% { opacity: 0.92; }
+    47% { opacity: 0.86; }
+    48% { opacity: 1; }
+    50% { opacity: 0.8; }
+    52% { opacity: 0.95; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hud-frame__glow { animation: none; }
+    [data-hud-bracket] { animation: none; stroke-dashoffset: 0; }
+    .hud-scanline { animation: none; opacity: 0; }
+    .hud-readout { animation: none; }
+}

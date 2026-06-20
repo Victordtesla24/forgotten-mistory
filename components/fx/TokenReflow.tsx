@@ -118,16 +118,35 @@ export default function TokenReflow({ className = '' }: { className?: string }) 
         </div>
       </div>
 
-      {/* Flow arrow */}
+      {/* Flow arrow — a dashed stream flows rightward; flow particles ride the gap. */}
       <div className="reflow-arrow" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--steel)">
-          <path d="M5 12h14M12 5l7 7-7 7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <path
+            data-reflow-arrow
+            d="M5 12h14M12 5l7 7-7 7"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
+        {inView && !prefersReducedMotion && (
+          <div className="reflow-particles" data-reflow-particles>
+            {Array.from({ length: 6 }, (_, i) => (
+              <span
+                key={i}
+                className="reflow-particle"
+                data-reflow-particle
+                style={{ animationDelay: `${(i * 0.32).toFixed(2)}s` }}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Optimised column */}
       <div className="reflow-col reflow-optimised">
         <span className="reflow-label">Optimised</span>
+        <span className="reflow-glow" data-reflow-glow aria-hidden="true" />
         <div className="reflow-list">
           <AnimatePresence>
             {showOptimised &&
@@ -163,12 +182,26 @@ export default function TokenReflow({ className = '' }: { className?: string }) 
           border: 1px solid rgba(255, 255, 255, 0.08);
           border-radius: 16px;
           padding: 1rem;
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
         }
         .reflow-col {
           flex: 1;
           display: flex;
           flex-direction: column;
           gap: 0.4rem;
+        }
+        .reflow-optimised {
+          position: relative;
+        }
+        .reflow-glow {
+          position: absolute;
+          inset: -6px -8px;
+          border-radius: 12px;
+          pointer-events: none;
+          background: radial-gradient(circle at 50% 38%, rgba(244, 246, 250, 0.13), transparent 70%);
+          opacity: 0.15;
+          animation: reflowGlow 2.6s ease-in-out infinite;
         }
         .reflow-label {
           font-family: var(--font-mono);
@@ -189,8 +222,72 @@ export default function TokenReflow({ className = '' }: { className?: string }) 
           min-height: 140px;
         }
         .reflow-arrow {
+          position: relative;
           flex-shrink: 0;
-          opacity: 0.6;
+          opacity: 0.75;
+        }
+        [data-reflow-arrow] {
+          stroke-dasharray: 6 6;
+          animation: reflowArrowFlow 0.9s linear infinite;
+        }
+        .reflow-particles {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: -18px;
+          right: -18px;
+          pointer-events: none;
+        }
+        .reflow-particle {
+          position: absolute;
+          top: 50%;
+          left: 0;
+          width: 4px;
+          height: 4px;
+          border-radius: 999px;
+          background: var(--white);
+          box-shadow: 0 0 6px rgba(244, 246, 250, 0.7);
+          opacity: 0;
+          animation: reflowParticle 1.3s linear infinite;
+        }
+        @keyframes reflowArrowFlow {
+          to {
+            stroke-dashoffset: -12;
+          }
+        }
+        @keyframes reflowGlow {
+          0%,
+          100% {
+            opacity: 0.15;
+          }
+          50% {
+            opacity: 0.5;
+          }
+        }
+        @keyframes reflowParticle {
+          0% {
+            transform: translate(-4px, -50%) scale(0.6);
+            opacity: 0;
+          }
+          20% {
+            opacity: 1;
+          }
+          100% {
+            transform: translate(48px, -50%) scale(0.85);
+            opacity: 0;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          [data-reflow-arrow] {
+            animation: none;
+          }
+          .reflow-glow {
+            animation: none;
+          }
+          .reflow-particle {
+            animation: none;
+            opacity: 0;
+          }
         }
       `}</style>
       <style jsx global>{`

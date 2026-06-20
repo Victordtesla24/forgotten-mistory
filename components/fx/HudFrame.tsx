@@ -15,6 +15,14 @@ import { useInViewMount } from '@/lib/useInViewMount';
  * (IntersectionObserver gate, QT-10 / NFR-FPS) so the home view boots with one
  * live context (SpaceScene) and the HUD context only spins up when reached.
  */
+// Per-corner L-bracket geometry inside a 22×22 box; each draws in via stroke-dashoffset.
+const BRACKETS = {
+  tl: 'M1 11 L1 1 L11 1',
+  tr: 'M11 1 L21 1 L21 11',
+  bl: 'M1 11 L1 21 L11 21',
+  br: 'M11 21 L21 21 L21 11',
+} as const;
+
 export default function HudFrame({
   label,
   className = '',
@@ -24,7 +32,7 @@ export default function HudFrame({
 }: {
   label: string;
   className?: string;
-  variant?: 'panel' | 'backdrop';
+  variant?: 'panel' | 'backdrop' | 'floating';
   scene?: boolean;
   lazy?: boolean;
 }) {
@@ -37,10 +45,26 @@ export default function HudFrame({
       className={`hud-frame hud-frame--${variant} ${className}`.trim()}
       aria-hidden="true"
     >
-      <span className="hud-frame__corner hud-frame__corner--tl" />
-      <span className="hud-frame__corner hud-frame__corner--tr" />
-      <span className="hud-frame__corner hud-frame__corner--bl" />
-      <span className="hud-frame__corner hud-frame__corner--br" />
+      <span className="hud-frame__glow" data-hud-glow />
+      {(Object.keys(BRACKETS) as Array<keyof typeof BRACKETS>).map((corner) => (
+        <svg
+          key={corner}
+          className={`hud-frame__bracket hud-frame__bracket--${corner}`}
+          width="22"
+          height="22"
+          viewBox="0 0 22 22"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            data-hud-bracket
+            d={BRACKETS[corner]}
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      ))}
       {showScene ? <TelemetryHud className="hud-frame__scene" /> : null}
       {variant === 'panel' ? <span className="hud-frame__label">{label}</span> : null}
     </div>

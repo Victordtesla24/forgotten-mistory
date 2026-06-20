@@ -166,6 +166,16 @@ export default function TelemetryHud({ className }: { className?: string }) {
         )}
       </Canvas>
       <Sparkline />
+      {/* HUD scan-line sweep — a faint band travelling down over the canvas. CSS-driven
+          and pinned under reduced motion (the canvas itself already freezes). */}
+      <div className="hud-scanline" data-hud-scanline aria-hidden="true" />
+      {/* Live telemetry readout with a subtle CRT flicker (also pinned when reduced). */}
+      <div className="hud-readout" data-hud-readout aria-hidden="true">
+        <span className="hud-readout__label">P95</span>
+        <span className="hud-readout__value">
+          198<span className="hud-readout__unit">ms</span>
+        </span>
+      </div>
     </div>
   );
 }

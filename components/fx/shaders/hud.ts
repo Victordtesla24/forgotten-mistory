@@ -98,6 +98,12 @@ export const lightShaftFragment = /* glsl */ `
     float mote = hash(floor(vec2(p.x * 42.0, p.y * 42.0 - uTime * 2.5)));
     shaft += shaft * step(0.985, mote) * 0.6;
 
+    // volumetric light scatter — a soft god-ray haze blooming off the cone axis,
+    // breathing slowly so the shaft reads as light scattering through air (FR-LIGHT).
+    float scatter = smoothstep(1.0, 0.0, d) * smoothstep(0.0, 0.62, p.y);
+    scatter *= 0.28 + 0.18 * sin(uTime * 0.8 + p.y * 6.0);
+    shaft += scatter;
+
     float a = shaft * 0.5 * uOpacity;
     if (a < 0.001) discard;
     gl_FragColor = vec4(uColor, a);
