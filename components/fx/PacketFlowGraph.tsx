@@ -25,6 +25,8 @@ interface Edge {
   from: string;
   to: string;
   path: string;
+  mid: { x: number; y: number };
+  weight: string;
 }
 
 const NODES: Node[] = [
@@ -36,11 +38,11 @@ const NODES: Node[] = [
 ];
 
 const EDGES: Edge[] = [
-  { from: 'device', to: 'edge', path: 'M50,110 Q80,70 110,55' },
-  { from: 'edge', to: 'gateway', path: 'M120,55 Q145,80 175,105' },
-  { from: 'gateway', to: 'metrics', path: 'M190,105 Q215,70 245,55' },
-  { from: 'gateway', to: 'alert', path: 'M195,115 Q230,130 280,130' },
-  { from: 'metrics', to: 'alert', path: 'M260,60 Q280,90 285,125' },
+  { from: 'device', to: 'edge', path: 'M50,110 Q80,70 110,55', mid: { x: 80, y: 76 }, weight: '2.4k/s' },
+  { from: 'edge', to: 'gateway', path: 'M120,55 Q145,80 175,105', mid: { x: 146, y: 80 }, weight: '2.4k/s' },
+  { from: 'gateway', to: 'metrics', path: 'M190,105 Q215,70 245,55', mid: { x: 216, y: 75 }, weight: '1.8k/s' },
+  { from: 'gateway', to: 'alert', path: 'M195,115 Q230,130 280,130', mid: { x: 234, y: 126 }, weight: '320/s' },
+  { from: 'metrics', to: 'alert', path: 'M260,60 Q280,90 285,125', mid: { x: 276, y: 92 }, weight: '900/s' },
 ];
 
 const P95_FINAL = 198;
@@ -129,6 +131,44 @@ export default function PacketFlowGraph({ className = '' }: { className?: string
           ))}
         </g>
 
+        {/* Edge weight labels (throughput) */}
+        <g className="pfg-weights">
+          {EDGES.map((edge) => (
+            <text
+              key={`w-${edge.from}-${edge.to}`}
+              data-pfg-weight
+              x={edge.mid.x}
+              y={edge.mid.y}
+              textAnchor="middle"
+              fill="var(--mist-400)"
+              fontSize="6.5"
+              fontFamily="var(--font-mono)"
+            >
+              {edge.weight}
+            </text>
+          ))}
+        </g>
+
+        {/* Particle trails — a softer, larger dot lagging just behind each packet. */}
+        {!prefersReducedMotion &&
+          EDGES.map((edge, idx) => (
+            <circle
+              key={`trail-${edge.from}-${edge.to}`}
+              r="5"
+              fill="var(--white)"
+              opacity="0.22"
+              className="pfg-particle-trail"
+              data-pfg-trail
+            >
+              <animateMotion
+                dur={`${1.8 + idx * 0.3}s`}
+                repeatCount="indefinite"
+                path={edge.path}
+                begin={`${idx * 0.4 + 0.1}s`}
+              />
+            </circle>
+          ))}
+
         {/* Particles (animated only if motion allowed) */}
         {!prefersReducedMotion &&
           EDGES.map((edge, idx) => (
@@ -150,8 +190,17 @@ export default function PacketFlowGraph({ className = '' }: { className?: string
 
         {/* Nodes */}
         <g className="pfg-nodes">
-          {NODES.map((node) => (
+          {NODES.map((node, i) => (
             <g key={node.id} transform={`translate(${node.x}, ${node.y})`}>
+              <circle
+                data-pfg-pulse
+                className="pfg-pulse"
+                r="14"
+                fill="none"
+                stroke="var(--steel)"
+                strokeWidth="1"
+                style={{ animationDelay: `${(i * 0.34).toFixed(2)}s` }}
+              />
               <circle r="14" fill="var(--ink-700)" stroke="var(--steel)" strokeWidth="1.5" />
               <text
                 y="28"
@@ -218,9 +267,40 @@ export default function PacketFlowGraph({ className = '' }: { className?: string
         .pfg-sep {
           opacity: 0.5;
         }
+        .pfg-pulse {
+          transform-box: fill-box;
+          transform-origin: center;
+          animation: pfgPulse 2.4s ease-out infinite;
+        }
+        @keyframes pfgPulse {
+          0% {
+            transform: scale(0.55);
+            opacity: 0.5;
+          }
+          100% {
+            transform: scale(1.85);
+            opacity: 0;
+          }
+        }
+        .pfg-particle {
+          filter: drop-shadow(0 0 4px rgba(244, 246, 250, 0.8));
+        }
+        .pfg-particle-trail {
+          filter: blur(1.5px);
+        }
+        .pfg-edges path {
+          transition: stroke-width 0.2s ease;
+        }
+        .pfg-edges path:hover {
+          stroke-width: 3.5;
+        }
         @media (prefers-reduced-motion: reduce) {
           .pfg-particle {
             display: none;
+          }
+          .pfg-pulse {
+            animation: none;
+            opacity: 0;
           }
         }
       `}</style>

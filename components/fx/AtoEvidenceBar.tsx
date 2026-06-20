@@ -46,7 +46,11 @@ export default function AtoEvidenceBar({ className = '' }: { className?: string 
 
   // Animate only for motion-allowing visitors; reduced motion snaps to the end state.
   const playing = inView && !reduced;
-  const barTransition = reduced ? { duration: 0 } : { duration: DURATION, ease: 'easeInOut' as const };
+  // Overdamped spring (no overshoot → width never crosses 0) gives the collapse a
+  // physical "snap-to-rest" while still settling well under the signature 6 s budget.
+  const barTransition = reduced
+    ? { duration: 0 }
+    : ({ type: 'spring', stiffness: 55, damping: 20, mass: 1 } as const);
 
   return (
     <div
@@ -124,6 +128,20 @@ export default function AtoEvidenceBar({ className = '' }: { className?: string 
             />
           ))}
         </div>
+
+        {/* Monochrome shimmer riding the collapsing bar (motion-only). */}
+        {playing && (
+          <div className="ato-sparks" aria-hidden>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <span
+                key={i}
+                className="ato-spark"
+                data-ato-spark
+                style={{ animationDelay: `${(i * 0.4).toFixed(2)}s` }}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="ato-metric" style={{ color: PALETTE.steel }}>
@@ -218,6 +236,37 @@ export default function AtoEvidenceBar({ className = '' }: { className?: string 
           padding: 0 1px;
           pointer-events: none;
         }
+        .ato-sparks {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          overflow: hidden;
+        }
+        .ato-spark {
+          position: absolute;
+          top: 50%;
+          left: 0;
+          width: 5px;
+          height: 5px;
+          border-radius: 999px;
+          background: var(--white);
+          box-shadow: 0 0 6px rgba(244, 246, 250, 0.8);
+          opacity: 0;
+          animation: ato-spark-run 1.6s linear infinite;
+        }
+        @keyframes ato-spark-run {
+          0% {
+            transform: translate(0, -50%) scale(0.6);
+            opacity: 0;
+          }
+          25% {
+            opacity: 1;
+          }
+          100% {
+            transform: translate(280px, -50%) scale(0.9);
+            opacity: 0;
+          }
+        }
         .ato-metric {
           font-family: var(--font-mono);
           font-size: 0.62rem;
@@ -239,6 +288,10 @@ export default function AtoEvidenceBar({ className = '' }: { className?: string 
         @media (prefers-reduced-motion: reduce) {
           .ato-caret {
             animation: none;
+          }
+          .ato-spark {
+            animation: none;
+            opacity: 0;
           }
         }
       `}</style>
