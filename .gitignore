@@ -165,3 +165,9 @@ playwright-report/
 # fmctl runtime state (pidfiles, server logs) + local Lighthouse reports
 .fmctl/
 .lighthouseci/
+
+# Local agent tooling + scratch (not part of the app; kept out of the tree)
+.cursor/
+.hermes/
+.playwright-mcp/
+tmp/
