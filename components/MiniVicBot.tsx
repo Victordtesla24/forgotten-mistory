@@ -135,6 +135,8 @@ const MiniVicBot = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
   const mouthCanvasRef = useRef<HTMLCanvasElement>(null);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -183,6 +185,27 @@ const MiniVicBot = () => {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Move focus into the panel once, on open, so keyboard/SR users get an anchor.
+  // Keyed on isOpen alone — mid-session re-renders (e.g. avatar video toggling
+  // isVideoPlaying) must never yank focus back off the input the user is typing in.
+  useEffect(() => {
+    if (isOpen) panelRef.current?.focus();
+  }, [isOpen]);
+
+  // While open, Escape closes the panel and returns focus to the toggle.
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        stopAudio();
+        setIsOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [isOpen, stopAudio]);
 
   useEffect(() => {
     if (isMuted) {
@@ -911,12 +934,16 @@ const MiniVicBot = () => {
   return (
     <div className="fixed bottom-5 right-5 z-[10030] flex flex-col items-end font-sans">
       {isOpen && (
-        <section
+        <div
+          ref={panelRef}
+          tabIndex={-1}
           data-testid="minivic-panel"
-          className="mb-4 w-[22rem] md:w-[27rem] max-w-[calc(100vw-2.5rem)] max-h-[calc(100vh-7rem)] overflow-hidden rounded-3xl border border-zinc-300/20 bg-[linear-gradient(150deg,rgba(14,15,20,0.92),rgba(10,8,24,0.9))] backdrop-blur-xl shadow-[0_24px_70px_rgba(4,8,22,0.65),0_0_40px_rgba(201,205,214,0.14)] ring-1 ring-neutral-400/25 animate-in slide-in-from-bottom-8 duration-300"
+          role="dialog"
+          aria-modal="false"
           aria-label="MiniVic assistant panel"
+          className="mb-4 flex h-[min(37rem,calc(100dvh-7rem))] w-[22rem] md:w-[27rem] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-3xl border border-zinc-300/20 bg-[linear-gradient(150deg,rgba(14,15,20,0.92),rgba(10,8,24,0.9))] backdrop-blur-xl shadow-[0_24px_70px_rgba(4,8,22,0.65),0_0_40px_rgba(201,205,214,0.14)] ring-1 ring-neutral-400/25 animate-in slide-in-from-bottom-8 duration-300 focus:outline-none"
         >
-          <div className="relative h-44 w-full overflow-hidden border-b border-white/10 bg-neutral-950">
+          <div className="relative h-40 w-full shrink-0 overflow-hidden border-b border-white/10 bg-neutral-950">
             <video
               ref={videoRef}
               src={currentVideoSrc || undefined}
@@ -972,6 +999,7 @@ const MiniVicBot = () => {
                   onClick={() => {
                     stopAudio();
                     setIsOpen(false);
+                    toggleRef.current?.focus();
                   }}
                   className="rounded-full border border-white/15 bg-black/45 p-1.5 text-white/90 backdrop-blur-md transition-colors hover:border-white/35 hover:bg-white/10"
                   aria-label="Close mini Vic"
@@ -1000,8 +1028,8 @@ const MiniVicBot = () => {
               </span>
             </div>
           </div>
-          <div className="border-b border-white/10 bg-black/30 px-3 py-3">
-            <div className="flex items-center gap-2">
+          <div className="shrink-0 border-b border-white/10 bg-black/30 px-3 py-3">
+            <div className="flex items-center gap-2.5">
               {/* Persona segmented control — one clean toggle instead of three cramped pills */}
               <div className="flex flex-1 rounded-xl border border-white/12 bg-white/[0.03] p-0.5">
                 {PERSONA_MODES.map((mode) => (
@@ -1039,7 +1067,7 @@ const MiniVicBot = () => {
               </button>
             </div>
             {/* single subtle status line replaces the old blurb/latency/voice chip row */}
-            <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white/45">
+            <p className="mt-2 flex items-center gap-1.5 text-[11px] text-white/55">
               <span className="font-medium text-white/70">{PERSONA_MODES.find((m) => m.key === activeMode)?.label}</span>
               <span className="text-white/25">·</span>
               <span className="truncate">{PERSONA_MODES.find((m) => m.key === activeMode)?.blurb}</span>
@@ -1052,7 +1080,7 @@ const MiniVicBot = () => {
             </p>
           </div>
           <div
-            className="h-80 space-y-3 overflow-y-auto bg-[linear-gradient(180deg,rgba(10,11,13,0.96),rgba(7,8,10,0.96))] px-4 py-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10"
+            className="min-h-0 flex-1 space-y-3 overflow-y-auto bg-[linear-gradient(180deg,rgba(10,11,13,0.96),rgba(7,8,10,0.96))] px-4 py-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10"
             role="log"
             aria-live="polite"
             aria-relevant="additions text"
@@ -1147,7 +1175,7 @@ const MiniVicBot = () => {
             )}
             <div ref={chatEndRef} />
           </div>
-          <div className="scrollbar-hide flex gap-2 overflow-x-auto border-t border-white/10 bg-black/25 px-3 py-2.5">
+          <div className="scrollbar-hide flex shrink-0 gap-2 overflow-x-auto border-t border-white/10 bg-black/25 px-3 py-2.5">
             {QUICK_PROMPTS.map((item) => (
               <button
                 key={item.label}
@@ -1165,7 +1193,7 @@ const MiniVicBot = () => {
               e.preventDefault();
               handleSend();
             }}
-            className="flex gap-2 border-t border-white/10 bg-neutral-950/95 p-3"
+            className="flex shrink-0 gap-2 border-t border-white/10 bg-neutral-950/95 p-3"
           >
             <div className="flex-1 relative">
               <input
@@ -1174,7 +1202,7 @@ const MiniVicBot = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={isListening ? "Listening..." : "Ask me anything…"}
-                className={`w-full rounded-xl border bg-white/[0.04] py-2.5 pl-4 pr-10 text-[13.5px] text-white placeholder-white/40 transition-all ${
+                className={`w-full rounded-xl border bg-white/[0.04] py-2.5 pl-4 pr-10 text-[13.5px] text-white placeholder-white/55 transition-all ${
                   isListening
                     ? "border-white/40 bg-white/10 ring-1 ring-white/30"
                     : "border-white/15 focus:border-white/45 focus:outline-none focus:ring-1 focus:ring-white/25"
@@ -1217,9 +1245,10 @@ const MiniVicBot = () => {
               <Send size={18} />
             </button>
           </form>
-        </section>
+        </div>
       )}
       <button
+        ref={toggleRef}
         data-testid="minivic-toggle"
         onClick={() => setIsOpen(!isOpen)}
         className={`group relative h-16 w-16 overflow-hidden rounded-full border-2 border-zinc-300/70 shadow-[0_0_26px_rgba(201,205,214,0.45)] transition-all duration-300 hover:scale-110 active:scale-95 ${

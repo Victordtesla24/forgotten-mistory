@@ -57,6 +57,65 @@ test.describe('TC-FR-MINIVIC — MiniVicBot scaffold leak guard', () => {
     await expect(greeting).toContainText(/MiniVic|hiring|delivery|Vikram/i);
   });
 
+  test('panel layout is clean: no inherited section padding, input not clipped (TC-FR-MINIVIC-LAYOUT)', async ({ page }) => {
+    // Regression for the `section { padding: 10rem 0 }` bleed: the panel used a bare
+    // <section>, inheriting 160px of page-section padding → a huge dead band at the
+    // top and the input/quick-prompts clipped off the bottom by overflow-hidden.
+    // A short-ish desktop viewport is where the clip bit hardest.
+    await page.setViewportSize({ width: 1280, height: 720 });
+    await gotoHome(page);
+
+    const toggle = page.locator('[data-testid="minivic-toggle"]');
+    await toggle.click();
+
+    const panel = page.locator('[data-testid="minivic-panel"]');
+    await expect(panel).toBeVisible({ timeout: 5000 });
+
+    // 1) No stray page-section vertical padding bleeding onto the widget.
+    const padTop = await panel.evaluate((el) => parseFloat(getComputedStyle(el).paddingTop) || 0);
+    expect(padTop, 'panel must not inherit the global section vertical padding (160px bug)').toBeLessThan(24);
+
+    const panelBox = await panel.boundingBox();
+    expect(panelBox, 'panel must have a bounding box').toBeTruthy();
+
+    // 2) The panel must fit inside the viewport (no clip against the window edge).
+    expect(panelBox!.y).toBeGreaterThanOrEqual(-1);
+    expect(panelBox!.y + panelBox!.height, 'panel must fit within the viewport').toBeLessThanOrEqual(721);
+
+    // 3) Input and quick-prompts must sit INSIDE the panel — the whole point of a chat
+    //    widget is being able to type. overflow-hidden must never clip them away.
+    const inputBox = await page.locator('[data-testid="minivic-input"]').boundingBox();
+    expect(inputBox, 'input must render').toBeTruthy();
+    expect(inputBox!.y, 'input top within panel').toBeGreaterThanOrEqual(panelBox!.y - 1);
+    expect(
+      inputBox!.y + inputBox!.height,
+      'input bottom must sit within the panel (not clipped by overflow-hidden)',
+    ).toBeLessThanOrEqual(panelBox!.y + panelBox!.height + 1);
+
+    // 4) No dead band: the hero/header must start near the top of the panel, not 160px down.
+    const firstChildTop = await panel.evaluate((el) => {
+      const first = el.firstElementChild as HTMLElement | null;
+      if (!first) return Infinity;
+      return first.getBoundingClientRect().top - el.getBoundingClientRect().top;
+    });
+    expect(firstChildTop, 'first row must hug the panel top (no dead band)').toBeLessThan(24);
+  });
+
+  test('panel closes on Escape and returns focus to the toggle (TC-FR-MINIVIC-A11Y)', async ({ page }) => {
+    await gotoHome(page);
+
+    const toggle = page.locator('[data-testid="minivic-toggle"]');
+    await toggle.click();
+
+    const panel = page.locator('[data-testid="minivic-panel"]');
+    await expect(panel).toBeVisible({ timeout: 5000 });
+
+    // A keyboard user must be able to dismiss the dialog and land back on the trigger.
+    await page.keyboard.press('Escape');
+    await expect(panel).toBeHidden();
+    await expect(toggle).toBeFocused();
+  });
+
   test('MiniVicBot persona modes are selectable', async ({ page }) => {
     await gotoHome(page);
 
