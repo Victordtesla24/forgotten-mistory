@@ -76,7 +76,7 @@ body {
       radial-gradient(circle at 15% 20%, rgba(40, 42, 50, 0.26), transparent 42%),
       radial-gradient(circle at 82% 14%, rgba(40, 42, 50, 0.22), transparent 36%),
       radial-gradient(circle at 60% 85%, rgba(36, 36, 42, 0.18), transparent 40%),
-      #02030a;
+      #0A0B0D;
     color: var(--text-color);
     overflow-x: hidden;
     font-family: var(--font-body);
@@ -591,7 +591,7 @@ footer {
       radial-gradient(circle at 16% 24%, rgba(46, 48, 56, 0.24), transparent 44%),
       radial-gradient(circle at 82% 10%, rgba(40, 42, 50, 0.2), transparent 38%),
       radial-gradient(circle at 68% 82%, rgba(42, 42, 50, 0.18), transparent 42%),
-      linear-gradient(180deg, rgba(3, 6, 20, 0.5) 0%, rgba(2, 5, 18, 0.44) 45%, rgba(2, 4, 14, 0.56) 100%);
+      linear-gradient(180deg, rgba(10, 11, 13, 0.5) 0%, rgba(8, 9, 11, 0.44) 45%, rgba(6, 6, 8, 0.56) 100%);
 }
 
 .cosmic-backdrop::before {
@@ -799,7 +799,12 @@ footer {
 .social-btn:focus-visible,
 .nav-link:focus-visible,
 .menu-toggle:focus-visible,
-.logo:focus-visible {
+.logo:focus-visible,
+.project-card:focus-visible,
+.repo-card:focus-visible,
+.accordion-header:focus-visible,
+.snap-header:focus-visible,
+.skip-link:focus-visible {
     outline: 2px solid var(--accent-color);
     outline-offset: 3px;
 }
@@ -2304,7 +2309,7 @@ footer {
         gap: 3rem;
     }
     
-    .project-card:nth-child(even) {
+    .projects-grid .project-card:nth-child(even) {
         transform: translateY(3rem);
     }
 }
@@ -2760,7 +2765,7 @@ footer {
 
 .telemetry-note {
     font-size: 0.65rem;
-    color: #666;
+    color: var(--mist-400);
     margin-top: auto;
 }
 
@@ -3144,7 +3149,7 @@ footer {
 
 .arch-explainer-body {
     margin: 0;
-    color: #b5b8cf;
+    color: var(--mist-200);
 }
 
 .arch-legend {
@@ -3160,7 +3165,7 @@ footer {
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.4px;
-    color: #cfd1e5;
+    color: var(--mist-200);
     margin-bottom: 0.25rem;
 }
 

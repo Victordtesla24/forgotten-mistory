@@ -165,6 +165,7 @@ export default function HeroAvatar() {
                 transition={{ type: 'spring', stiffness: 200, damping: 22 }}
                 loading="eager"
                 decoding="async"
+                fetchPriority="high"
               />
             </picture>
             <motion.video
