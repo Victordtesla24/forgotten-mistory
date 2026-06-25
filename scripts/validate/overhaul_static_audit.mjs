@@ -122,6 +122,15 @@ function checkMono() {
       if (+m[1] > 15) hits.push(`${rel} :: hsl(sat ${m[1]}%)`);
     }
   }
+
+  // Runtime GPU RGB-shift effects (e.g. ChromaticAberration) manufacture red/cyan hue on
+  // bright (bloomed) star edges — invisible to the static colour scan above. Flag by element name.
+  for (const f of files) {
+    for (const _m of read(f).matchAll(/<\s*ChromaticAberration\b/g)) {
+      hits.push(`${relative(ROOT, f)} :: <ChromaticAberration> (runtime RGB-shift hue)`);
+    }
+  }
+
   const uniq = [...new Set(hits)];
   record('TC-NFR-MONO', 'Monochrome — no chromatic hue in app/components', uniq.length === 0,
     uniq.length ? `${uniq.length} chromatic: ${uniq.slice(0, 16).join(' | ')}` : 'clean');

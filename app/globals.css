@@ -509,6 +509,8 @@ nav {
     left: 0;
     width: 100%;
     height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
     /* Glassmorphism overlay: a near-opaque ink wash so axe can still resolve link
        contrast, lifted by a blurred, saturated backdrop. */
     background: rgba(8, 9, 12, 0.82);
@@ -542,6 +544,22 @@ nav {
 .nav-link:hover {
     font-style: italic;
     color: #888;
+}
+
+/* Mobile: the 8-item menu at 4rem overran a short viewport with no scroll. Shrink the
+   type, tighten the rhythm, and top-align so the list scrolls cleanly if it still
+   exceeds the screen. */
+@media (max-width: 768px) {
+    .nav-overlay {
+        align-items: flex-start;
+        padding: 5.5rem 1.5rem 3rem;
+    }
+    .nav-link {
+        font-size: clamp(2rem, 9vw, 3rem);
+    }
+    .nav-links li {
+        margin: 0.6rem 0;
+    }
 }
 
 /* Layout */
@@ -770,6 +788,20 @@ footer {
 
 .btn-link:hover::after {
     width: 100%;
+}
+
+/* Keyboard focus ring for the interactive family (a11y ≥95) — achromatic accent,
+   mirrors the existing .detail-close/.detail-cta pattern. :focus-visible keeps
+   pointer clicks ring-free; modern browsers trace the element's own border-radius. */
+.btn-primary:focus-visible,
+.btn-link:focus-visible,
+.btn-pillar:focus-visible,
+.social-btn:focus-visible,
+.nav-link:focus-visible,
+.menu-toggle:focus-visible,
+.logo:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
 }
 
 /* Dual-pillar CTAs (NN-1): two co-equal, outlined actions — visually distinct
@@ -1758,7 +1790,7 @@ footer {
 }
 
 .contact-title {
-    font-size: 5vw;
+    font-size: clamp(2.25rem, 6vw, 4.5rem);
     line-height: 1.1;
     margin-bottom: 4rem;
 }

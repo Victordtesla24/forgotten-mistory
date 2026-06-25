@@ -2,7 +2,7 @@
 
 import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree, extend, Object3DNode } from '@react-three/fiber';
-import { Bloom, ChromaticAberration, EffectComposer, Noise, Vignette } from '@react-three/postprocessing';
+import { Bloom, EffectComposer, Noise, Vignette } from '@react-three/postprocessing';
 import { Trail, shaderMaterial } from '@react-three/drei';
 import { useScroll, useTransform } from 'framer-motion';
 import * as THREE from 'three';
@@ -520,10 +520,6 @@ export default function SpaceScene() {
   // devices stay pinned at [1, 1] to protect the mobile FPS budget (NFR-FPS).
   const [maxDpr, setMaxDpr] = useState<[number, number]>([1, 1.5]);
 
-  // Sub-pixel chromatic aberration on the bloomed result — a restrained lens artifact
-  // (the source is strictly greyscale; the fringe only kisses the brightest stars).
-  const chromaticOffset = useMemo(() => new THREE.Vector2(0.002, 0.002), []);
-
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -568,8 +564,9 @@ export default function SpaceScene() {
 
         {enablePostFx && !frozen ? (
           <EffectComposer>
+            {/* Strictly achromatic lens stack — no RGB-shift effects (e.g. ChromaticAberration),
+                which would manufacture red/cyan hue on bloomed star edges and break monochrome (NN-4). */}
             <Bloom intensity={0.3} luminanceThreshold={0.22} luminanceSmoothing={0.25} mipmapBlur />
-            <ChromaticAberration offset={chromaticOffset} radialModulation={false} modulationOffset={0} />
             <Noise opacity={0.015} />
             <Vignette eskil={false} offset={0.18} darkness={0.78} />
           </EffectComposer>
