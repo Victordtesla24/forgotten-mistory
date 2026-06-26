@@ -20,7 +20,24 @@ export default defineConfig({
   reporter: 'list',
   use: {
     trace: 'on-first-retry',
-    baseURL: 'http://localhost:8080',
+    // 127.0.0.1 (not "localhost"): the loopback static server binds IPv4, and
+    // "localhost" can resolve to IPv6 ::1 first on some hosts.
+    baseURL: 'http://127.0.0.1:8080',
+    launchOptions: {
+      // The CI runner has no GPU, so Chromium falls back to the SwiftShader software
+      // rasteriser — which newer Chromium gates behind --enable-unsafe-swiftshader (without
+      // it WebGL silently fails → the R3F/HUD canvases never draw). The backgrounding flags
+      // stop Chromium from throttling requestAnimationFrame to ~1fps when the page is not
+      // the foreground tab, which otherwise starves the scene render loop and the
+      // Framer-Motion reveal animations the specs assert on.
+      args: [
+        '--enable-unsafe-swiftshader',
+        '--disable-background-timer-throttling',
+        '--disable-backgrounding-occluded-windows',
+        '--disable-renderer-backgrounding',
+        '--disable-ipc-flooding-protection',
+      ],
+    },
   },
   projects: [
     {
@@ -31,13 +48,22 @@ export default defineConfig({
     },
   ],
   webServer: {
-    // In CI the on-demand Next dev compiler made the heavy WebGL/R3F pages take
-    // HOURS (the E2E job ran 2h+ and timed out). Serve a real production build
-    // instead — deterministic and fast. Locally, reuse a running dev server (or
-    // start one) so the contributor loop stays instant.
-    command: process.env.CI ? 'npm run build && npx next start -p 8080' : 'npm run dev',
-    url: 'http://localhost:8080',
+    // Production is a STATIC EXPORT (out/ -> Firebase Hosting), not an SSR server. In CI
+    // serve that real artifact read-only via the same zero-dependency server the visual/
+    // FPS jobs use. This (1) is faithful to production, (2) removes the `next start` SSR
+    // server whose server-side `fetch` to the absent gateway (127.0.0.1:8000) spammed
+    // ECONNREFUSED and broke pages, and (3) skips the backend tiers the static export
+    // disables (NEXT_PUBLIC_STATIC_EXPORT=1) so the page is lighter under software WebGL.
+    // `out/` is prebuilt by the deploy.yml `test` job (the dedicated `npm run build:static`
+    // step) before Playwright starts, so this server always has an artifact to serve, and
+    // globalSetup's ensureStaticBuild finds it fresh and no-ops. Locally, reuse/await a
+    // running dev server so the contributor loop stays instant.
+    command: process.env.CI
+      ? 'node scripts/validate/serve_static_out.mjs'
+      : 'npm run dev',
+    url: 'http://127.0.0.1:8080',
     reuseExistingServer: !process.env.CI,
     timeout: 240000,
+    env: { PORT: '8080', HOST: '127.0.0.1', STATIC_DIR: 'out' },
   },
 });
