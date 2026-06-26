@@ -19,8 +19,18 @@ const logger = require("firebase-functions/logger");
 const ELEVENLABS_API_KEY = defineSecret("ELEVENLABS_API_KEY");
 const OPENROUTER_API_KEY = defineSecret("OPENROUTER_API_KEY");
 
-// Top open-source chat model for the MiniVic brain.
-const MINIVIC_MODEL = "meta-llama/llama-3.3-70b-instruct";
+// MiniVic brain model family: Google Gemini, served THROUGH OpenRouter so the
+// OpenRouter key stays server-side and we do NOT depend on the referrer-locked
+// browser Gemini key (which can be restricted / over quota). `MINIVIC_MODEL_LADDER`
+// drives OpenRouter's native `models` fallback: if the primary Gemini model is
+// unavailable or over quota, OpenRouter transparently routes to the next one.
+// Override the primary via the OPENROUTER_MODEL env if needed.
+const MINIVIC_MODEL_LADDER = [
+  process.env.OPENROUTER_MODEL || "google/gemini-2.5-flash",
+  "google/gemini-2.5-flash-lite",
+  "google/gemini-2.0-flash-001",
+].filter((m, i, a) => m && a.indexOf(m) === i);
+const MINIVIC_MODEL = MINIVIC_MODEL_LADDER[0];
 
 // Vikram's cloned voice (ElevenLabs voice ID). Not a secret — unusable without the key.
 const VOICE_ID = "0ZJ4kFDo6bZUNQsuULOW";
@@ -102,11 +112,12 @@ exports.elevenLabsTts = onRequest(
 );
 
 /**
- * MiniVic brain (Phase 4 / TC-FR-CHAT). Proxies the chatbot to a top open-source
- * model on OpenRouter so the OpenRouter key stays server-side (never in the browser).
- * The client sends OpenAI-style {messages} (system prompt grounded in the curated
- * knowledge base + history + the question); we relay to OpenRouter and return {text}.
- * Same CORS / cost guards as the TTS function.
+ * MiniVic brain (Phase 4 / TC-FR-CHAT). Proxies the chatbot to Google Gemini models
+ * SERVED THROUGH OpenRouter, so the OpenRouter key stays server-side (never in the
+ * browser) and we don't depend on the referrer-locked browser Gemini key. The client
+ * sends OpenAI-style {messages} (system prompt grounded in the curated knowledge base
+ * + history + the question); we relay to OpenRouter — which routes across the Gemini
+ * ladder for resilience — and return {text}. Same CORS / cost guards as the TTS function.
  */
 exports.minivicChat = onRequest(
   { secrets: [OPENROUTER_API_KEY], region: "us-central1", maxInstances: 5, timeoutSeconds: 30, memory: "256MiB" },
@@ -153,6 +164,10 @@ exports.minivicChat = onRequest(
         },
         body: JSON.stringify({
           model: MINIVIC_MODEL,
+          // OpenRouter's native fallback routing across the Gemini ladder: if the
+          // primary Gemini model is unavailable / over quota, OpenRouter tries the
+          // next one before erroring — so the brain stays up "in case it fails".
+          models: MINIVIC_MODEL_LADDER,
           messages,
           temperature: 0.6,
           max_tokens: 512,

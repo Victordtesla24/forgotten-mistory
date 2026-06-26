@@ -2,9 +2,10 @@
  * miniVicBrain.ts — client-side reasoning layer for the MiniVic AI clone.
  *
  * Answer ladder (first success wins):
- *   1. A top open-source model on OpenRouter, reached via the same-origin
- *      /api/chat Firebase Function (key stays server-side; works on the static
- *      export through a Hosting rewrite). This is the primary brain.
+ *   1. Google Gemini models served THROUGH OpenRouter, reached via the same-origin
+ *      /api/chat Firebase Function (OpenRouter key stays server-side; works on the
+ *      static export through a Hosting rewrite). This is the primary brain — Gemini
+ *      via OpenRouter so it does not depend on the referrer-locked browser key.
  *   2. Direct Gemini `generateContent` call from the browser, grounded in the
  *      curated knowledge base (NEXT_PUBLIC_GEMINI_API_KEY, referrer-restricted) —
  *      used only if /api/chat is unavailable.
