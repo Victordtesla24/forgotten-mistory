@@ -2,6 +2,14 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
+  // Build the production static export (`out/`) ONCE before the worker pool spawns.
+  // Without this, boot/perf/durable/reduced-motion each kicked off `npm run build:static`
+  // from their beforeAll; under fullyParallel + workers:3 those builds raced and
+  // corrupted each other's build dir (ENOENT _error.js / _not-found.rsc, ENOTEMPTY
+  // .next/export), failing ~46 specs and blocking build/deploy. In CI the export is
+  // prebuilt as a dedicated step (deploy.yml) so this no-ops there; locally this is the
+  // build site. See tests/global-setup.ts for the webServer-ordering caveat.
+  globalSetup: './tests/global-setup.ts',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,

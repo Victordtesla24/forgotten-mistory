@@ -100,6 +100,13 @@ function newestMtime(path: string): number {
  * surfaced as phantom React #418 hydration errors (the cached build predated the
  * SSR-hydration fixes). Rebuilding when any source file is newer than the export
  * keeps every spec that boots `out/` honest against the working tree.
+ *
+ * Concurrency: this MUST NOT build from multiple processes at once — two parallel
+ * `npm run build:static` runs (`rm -rf .next out`) corrupt each other's build dir (the
+ * old CI cascade). `tests/global-setup.ts` builds `out/` once before the worker pool
+ * spawns (and CI prebuilds it as a step), so by the time a spec's beforeAll calls this
+ * the export is already fresh and the mtime guard makes every per-worker call a no-op.
+ * Keep it that way.
  */
 export function ensureStaticBuild(): void {
   const indexHtml = join(OUT, 'index.html');

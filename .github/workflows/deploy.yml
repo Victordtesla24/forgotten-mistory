@@ -9,7 +9,11 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Cancel superseded PR runs (save CI), but NEVER cancel a push-to-main run: that run
+  # owns the Firebase deploy, and two merges landing close together share the same
+  # group (ref is always refs/heads/main) — cancel-in-progress would abort a deploy
+  # mid-flight. Only PR runs are safe to cancel.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
@@ -51,8 +55,9 @@ jobs:
     timeout-minutes: 25
     env:
       CI: "true"
-      # Regular `next build` does not require the key, but pass it so the test
-      # build mirrors production (MiniVic Gemini brain). Restricted by referrer.
+      # build:static (FIREBASE_STATIC_EXPORT=1 + production) hard-requires this key
+      # (next.config.js fail-loud); the regular `next build` does not but mirrors
+      # production with it. Restricted by HTTP referrer.
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
     steps:
       - uses: actions/checkout@v4
@@ -62,11 +67,21 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+      # Build the static export ONCE here, before Playwright. Playwright 1.57 starts the
+      # webServer (`npm run build && next start -p 8080`, a SERVER build) BEFORE running
+      # globalSetup, so if globalSetup built `out/` it would `rm -rf .next` out from
+      # under the live :8080 server (transient 500/ENOENT on ~30 specs). Prebuilding
+      # `out/` here means globalSetup's ensureStaticBuild finds it fresh and no-ops, and
+      # the only `.next` rebuild is the webServer's own — never during a live server.
+      # (`npm run build` later removes only `.next`; this `out/` survives for the
+      # loopback static-server specs.)
+      - run: npm run build:static
       - run: npx playwright test
 
   # ── Performance / quality budgets (TC-NFR-PERF): Lighthouse via lighthouserc.json.
-  #    Performance is a WARN (a cinematic WebGL site can't hit 0.9); CLS + a11y/seo
-  #    stay hard gates. ──
+  #    lighthouserc.json gates ONLY two things: performance (WARN, a cinematic WebGL
+  #    site can't hit 0.9) and cumulative-layout-shift (hard ERROR, ≤0.1). a11y + SEO
+  #    are gated by the separate `axe` job (validate:phase06), not by Lighthouse. ──
   lighthouse:
     runs-on: ubuntu-latest
     timeout-minutes: 15

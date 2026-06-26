@@ -11,6 +11,15 @@ import { execSync } from 'node:child_process';
 test.describe('Static gates', () => {
   test.describe.configure({ timeout: 180000 });
 
+  // In CI these exact checks run as dedicated, isolated steps in the `quality` job
+  // (`npx tsc --noEmit` + the static audit). Running them again INSIDE a Playwright
+  // worker means a full single-threaded `tsc` project typecheck competes for cores
+  // with sibling workers software-rendering the heavy WebGL export on a GPU-less
+  // runner — pure CPU contention that made this gate intermittently time out (a flake,
+  // never a real type error). Skip the redundant in-worker copies in CI; keep them for
+  // the local `npx playwright test` loop where the quality job does not run.
+  test.skip(!!process.env.CI, 'Redundant with the CI `quality` job (tsc + static audit run there).');
+
   test('TC-NFR-TONE/MONO/PERF/PARITY/TYPE/SEC/ARCH-BENCH/COMPLETE — static audit ALL PASS (8/8)', () => {
     const out = execSync('node scripts/validate/overhaul_static_audit.mjs', { encoding: 'utf8' });
     expect(out).toContain('ALL PASS');
