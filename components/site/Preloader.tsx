@@ -25,28 +25,27 @@ function ProgressArc({ progress }: { progress: number }) {
         cy="60"
         r={radius}
         fill="none"
-        stroke="rgba(201, 205, 214, 0.15)"
         strokeWidth={strokeWidth}
+        className="preloader-track"
       />
       <circle
         cx="60"
         cy="60"
         r={radius}
         fill="none"
-        stroke="var(--accent-color, #E8EBF0)"
         strokeWidth={strokeWidth}
         strokeDasharray={circumference}
         strokeDashoffset={offset}
         strokeLinecap="round"
         transform="rotate(-90 60 60)"
         style={{ transition: 'stroke-dashoffset 50ms linear' }}
+        className="preloader-progress"
       />
       <circle
         cx="60"
         cy="10"
         r="4"
         fill="none"
-        stroke="rgba(201, 205, 214, 0.3)"
         strokeWidth="1"
         strokeDasharray="2 4"
         className="preloader-motif-ghost"
