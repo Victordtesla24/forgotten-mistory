@@ -43,6 +43,15 @@ const nextConfig = {
     ? {
         output: 'export',
         images: { unoptimized: true },
+        // G6-FIX: distDir: '.next-static' causes `output: 'export'` to fail with
+        // "Cannot find module for page: /_document" because the export worker
+        // looks for compiled pages in the default .next/ directory regardless
+        // of the distDir setting. Using the default .next/ dir — the build:static
+        // script's `rm -rf .next-static out` is kept for hygiene but we no longer
+        // override distDir (Next.js 14.2 does not properly support distDir +
+        // output: 'export'). The CONCURRENCY-01 concern remains but is acceptable
+        // during MVP baseline; concurrent builds must not run simultaneously.
+        // distDir: '.next-static',
       }
     : {
         async headers() {
