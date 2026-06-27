@@ -1,17 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import type { ExperienceRole } from '@/app/data/siteContent';
+import CardFlipCanvas from '@/components/fx/CardFlipCanvas';
 
 interface ExperienceAccordionProps {
   roles: ExperienceRole[];
 }
 
 /**
- * Accessible experience accordion. The first (current) role starts expanded.
- * Expansion is animated with framer-motion height-auto transitions and each
- * header is a real button with aria-expanded state.
+ * Accessible experience accordion with 3D card-flip page-turn reveal.
+ * The first (current) role starts expanded.
+ *
+ * Each content panel is wrapped with a self-contained R3F CardFlipCanvas
+ * overlay that renders a monochrome plane swinging into view from a left-edge
+ * hinge (page-turn). The accessible DOM (button, aria-expanded, aria-controls,
+ * keyboard) sits on top and stays fully functional.
+ *
+ * prefers-reduced-motion: static render — instant expand, no flip animation.
+ * The CardFlipCanvas is not mounted when reduced-motion is active.
  */
 export default function ExperienceAccordion({ roles }: ExperienceAccordionProps) {
   const prefersReducedMotion = useReducedMotion();
@@ -22,51 +30,85 @@ export default function ExperienceAccordion({ roles }: ExperienceAccordionProps)
       {roles.map((role) => {
         const isOpen = openId === role.id;
         return (
-          <div key={role.id} className={`accordion-item${isOpen ? ' active' : ''}`}>
-            <button
-              type="button"
-              className="accordion-header"
-              aria-expanded={isOpen}
-              aria-controls={`experience-${role.id}`}
-              onClick={() => setOpenId(isOpen ? null : role.id)}
-            >
-              <div className="accordion-title">
-                <span className="role">{role.role}</span>
-                <span className="company">
-                  {role.company} — {role.location}
-                </span>
-              </div>
-              <div className="accordion-meta">
-                <span className="date">{role.dates}</span>
-                <span className="icon" aria-hidden="true">
-                  +
-                </span>
-              </div>
-            </button>
-            <AnimatePresence initial={false}>
-              {isOpen && (
-                <motion.div
-                  id={`experience-${role.id}`}
-                  className="accordion-content"
-                  style={{ overflow: 'hidden', maxHeight: 'none' }}
-                  initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
-                  transition={{ duration: 0.45, ease: [0.22, 0.61, 0.36, 1] }}
-                >
-                  <div className="accordion-body">
-                    <ul>
-                      {role.bullets.map((bullet) => (
-                        <li key={bullet.slice(0, 48)}>{bullet}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+          <AccordionItem
+            key={role.id}
+            role={role}
+            isOpen={isOpen}
+            prefersReducedMotion={prefersReducedMotion ?? false}
+            onToggle={() => setOpenId(isOpen ? null : role.id)}
+          />
         );
       })}
+    </div>
+  );
+}
+
+function AccordionItem({
+  role,
+  isOpen,
+  prefersReducedMotion,
+  onToggle,
+}: {
+  role: ExperienceRole;
+  isOpen: boolean;
+  prefersReducedMotion: boolean;
+  onToggle: () => void;
+}) {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <div className={`accordion-item${isOpen ? ' active' : ''}`}>
+      <button
+        type="button"
+        className="accordion-header"
+        aria-expanded={isOpen}
+        aria-controls={`experience-${role.id}`}
+        onClick={onToggle}
+      >
+        <div className="accordion-title">
+          <span className="role">{role.role}</span>
+          <span className="company">
+            {role.company} — {role.location}
+          </span>
+        </div>
+        <div className="accordion-meta">
+          <span className="date">{role.dates}</span>
+          <span className="icon" aria-hidden="true">
+            +
+          </span>
+        </div>
+      </button>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            id={`experience-${role.id}`}
+            className="accordion-content"
+            role="region"
+            aria-labelledby={`experience-${role.id}-label`}
+            style={{ overflow: 'hidden', maxHeight: 'none', position: 'relative' }}
+            initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
+            transition={{ duration: 0.45, ease: [0.22, 0.61, 0.36, 1] }}
+          >
+            <div ref={contentRef} className="accordion-body" style={{ position: 'relative' }}>
+              {/* 3D card-flip overlay — visual layer behind the DOM content.
+                  Not rendered when prefers-reduced-motion is active. */}
+              {!prefersReducedMotion && (
+                <CardFlipCanvas
+                  active={isOpen}
+                  containerEl={contentRef.current}
+                />
+              )}
+              <ul style={{ position: 'relative', zIndex: 2 }}>
+                {role.bullets.map((bullet) => (
+                  <li key={bullet.slice(0, 48)}>{bullet}</li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
