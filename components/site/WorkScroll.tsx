@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { gsap } from '@/lib/gsap';
 
 /**
  * WorkScroll — T4 GSAP+ScrollTrigger per-scene pin sequential for #work (FR-SCROLL).

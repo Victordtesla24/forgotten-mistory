@@ -434,7 +434,7 @@ P=Lighthouse/perf probe, A=axe, U=unit, INT=integration, M=manual. `Baseline` = 
 | TC-FR-LIGHT | FR-LIGHT | Volumetric stage-lighting pass present and rendering in the flagship JARVIS scene | V+M | missing |
 | TC-FR-CATALOG | FR-CATALOG | Catalogue lists ≥10 repos; **every corporate AND personal repo maps to ≥1 dedicated effect**; each link 200 | E2E | partial |
 | TC-FR-SKILLS | FR-SKILLS | All skill groups + education + certs render; == resume | E2E | pass |
-| TC-FR-SYNTH | FR-SYNTH | Synthesis step consults each §6 source (repo codebase, YouTube descriptions, commits/READMEs, local files, operational traces); ≥1 fact traces to a non-resume source | U+M | missing |
+| TC-FR-SYNTH | FR-SYNTH | Synthesis step consults each §6 source (repo codebase, YouTube descriptions, commits/READMEs, local files, operational traces); ≥1 fact traces to a non-resume source | U+M | **VERIFIED** (GAP-2 audit 2026-06-28: all 6 sources confirmed live — GitHub API, YouTube playlist UUJSYpoFkGKKzYTKzAr8vGzQ, local CLAUDE.md, execution-log.md; ≥17 non-resume facts in content; synthesis.spec 2✓ from OV-SYNTH) |
 | TC-FR-MINDSET | FR-MINDSET | `miniVicKnowledge` represents all 4 projection dimensions; ≥1 multi-million-dollar and ≥1 multi-year/decades claim rendered and source-traceable | U+M | missing |
 | TC-FR-SECONDARY | FR-SECONDARY | Clone, chatbot, and voiceover all operate without degraded state in one smoke pass | E2E+M | missing |
 | TC-FR-CHAT | FR-CHAT | Each client/recruiter intent in the canonical set returns a grounded answer (or explicit graceful escalation); multi-turn context retained; offline path returns KB answer | E2E | degraded |

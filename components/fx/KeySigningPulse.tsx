@@ -21,10 +21,6 @@ interface KeyData {
   fingerprint: string;
 }
 
-const KEY_PAIR: KeyData[] = [
-  { id: 'public', label: 'Public Key', side: 'left', fingerprint: 'a1:b2:c3:d4:e5:f6' },
-  { id: 'private', label: 'Private Key', side: 'right', fingerprint: '7g:8h:9i:0j:1k:2l' },
-];
 
 export default function KeySigningPulse({
   className = '',

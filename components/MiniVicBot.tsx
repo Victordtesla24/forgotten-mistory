@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { askMiniVicBrain, type BrainTurn } from "@/lib/miniVicBrain";
 import { GREETING, type PersonaMode } from "@/app/data/miniVicKnowledge";
-import { Copy, Play, RefreshCcw, Send, Sparkles, Square, Volume2, VolumeX, X, Mic, MicOff, Video } from "lucide-react";
+import { Copy, Play, RefreshCcw, Send, Sparkles, Volume2, VolumeX, X, Mic, MicOff, Video } from "lucide-react";
 import { useSetAvatarSpeaking } from "@/lib/avatarContext";
 import { PALETTE } from "@/lib/palette";
 

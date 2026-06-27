@@ -55,6 +55,9 @@ import JourneyTimeline from '@/components/fx/JourneyTimeline';
 import TokenStreamMatch from '@/components/fx/TokenStreamMatch';
 import AstroChartSphere from '@/components/fx/AstroChartSphere';
 import JarvisRepairLoop from '@/components/fx/JarvisRepairLoop';
+import ImageEnhancer from '@/components/fx/ImageEnhancer';
+import KeySigningPulse from '@/components/fx/KeySigningPulse';
+import EventSeatShimmer from '@/components/fx/EventSeatShimmer';
 import ProofBar from '@/components/site/ProofBar';
 import MindsetProjection from '@/components/site/MindsetProjection';
 import SynthesisProvenance from '@/components/site/SynthesisProvenance';
@@ -558,6 +561,9 @@ export default function Home() {
                 <JarvisRepairLoop />
                 <AtoEvidenceBar />
                 <ClearanceStepper />
+                <ImageEnhancer project="image-enhancer" />
+                <KeySigningPulse project="public-key-server" />
+                <EventSeatShimmer project="abentertainment" />
               </div>
             </Reveal>
 

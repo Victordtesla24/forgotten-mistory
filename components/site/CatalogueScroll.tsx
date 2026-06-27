@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef } from 'react';
-import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { gsap } from '@/lib/gsap';
 
 /**
  * CatalogueScroll — T5 GSAP+ScrollTrigger vertical→horizontal for #work catalogue (FR-SCROLL).

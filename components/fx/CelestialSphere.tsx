@@ -25,7 +25,6 @@ import { celestialOrbitFragment, celestialOrbitVertex } from './shaders/celestia
 // ── Résumé-sourced real data (R3 — NEVER random) ──
 // From siteContent.ts featuredRepos: the astro cluster consists of 3 repos
 const ASTRO_REPO_COUNT = 3;
-const ASTRO_REPO_NAMES = 'btr-demo · jyotish-shastra · Birth-Time-Rectifier';
 
 const STEEL = new THREE.Color(PALETTE.steel);
 

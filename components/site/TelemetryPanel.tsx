@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
-import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { ScrollTrigger } from '@/lib/gsap';
 import { PALETTE } from '@/lib/palette';
 import PanelDepthScene from '@/components/fx/PanelDepthScene';
 import SparklineGL from '@/components/fx/SparklineGL';

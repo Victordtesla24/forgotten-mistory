@@ -657,7 +657,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'live coding',
     ],
     answer:
-      "I run the @vicd0ct YouTube channel (youtube.com/@vicd0ct), where I produce technical deep-dives: live coding sessions, algorithm archaeology — digging into ancient algorithms and what they teach modern engineering — and telemetry breakdowns. It's where my professional delivery work and my interest in the history of computation meet in public.",
+      "I run the @vicd0ct YouTube channel (youtube.com/@vicd0ct) with 10 published videos in English and Marathi. Highlights include a JARVIS-inspired real Arc Reactor HUD for Apple Silicon telemetry on Mac (196 views), and a multi-part series on the 7,000-year-old algorithm hidden in Sanskrit — translating Vedic astronomy into Python code — whose flagship video has 3.1K views. It's where my professional delivery work and my interest in the history of computation meet in public.",
   },
 
   // ── 27. How this website was built ─────────────────────────────────────

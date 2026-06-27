@@ -14,7 +14,7 @@
  * from globals.css to stay monochrome and consistent with TelemetryPanel (C1, C3).
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import {
   generateJarvisTelemetry,

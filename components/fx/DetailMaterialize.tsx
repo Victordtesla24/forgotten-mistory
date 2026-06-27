@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { materializeVertex, materializeFragment } from '@/components/fx/shaders/materializeParticles';
-import { PALETTE } from '@/lib/palette';
 
 /**
  * DetailMaterialize — the FloatingDetailBox entrance, upgraded from the old 2-D canvas

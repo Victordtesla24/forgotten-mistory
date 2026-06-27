@@ -23,7 +23,6 @@ import { agentGraphPulseFragment, agentGraphVertex } from './shaders/agentGraphP
 // ── Résumé-sourced real data (R3 — NEVER random) ──
 // Meta: this site is built by a 6-profile Hermes orchestration system
 const AGENT_PROFILE_COUNT = 6;
-const AGENT_LABEL = 'real-time agent orchestration';
 
 const ACCENT = new THREE.Color(PALETTE.accent);
 

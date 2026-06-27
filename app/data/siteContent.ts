@@ -26,7 +26,7 @@ export interface ProjectCard {
   badge: string;
   title: string;
   description: string;
-  visual: 'dashboard' | 'doc' | 'waveform' | 'terminal';
+  visual: 'dashboard' | 'doc' | 'waveform' | 'terminal' | 'telemetry-hud' | 'packet-flow' | 'evidence-bar' | 'celestial' | 'clearance' | 'repair-loop' | 'image-compare' | 'orchestration' | 'key-signing' | 'token-flow' | 'event-seat';
 }
 
 export interface FeaturedRepo {
@@ -337,8 +337,8 @@ export const synthesisSources: SynthesisSource[] = [
   {
     kind: 'local',
     label: 'Local profile source files',
-    mined: 'Working profile and configuration facts.',
-    tracedFact: 'AI/ML delivery focus — fast, safe and compliant programs.',
+    mined: 'CLAUDE.md, design-tokens.json, SPEC.md and workspace configuration.',
+    tracedFact: 'CLAUDE.md §3 non-negotiables — monochrome design system, dual-pillar audience model (employer + client), evidence-led copy enforced by tone linter (NN-3).',
   },
   {
     kind: 'traces',

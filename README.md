@@ -10,9 +10,9 @@ architect. Built for two audiences: **potential employers** and **business clien
   evidence-led copy, Marvel/WB/Disney-grade *but purposeful* motion. See
   [`docs/overhaul/SPEC.md`](docs/overhaul/SPEC.md).
 
-> **Overhaul in progress** on branch `overhaul/marvel-grade-portfolio`. The pre-overhaul
-> production state is preserved at git tag `pre-overhaul-baseline`. Read the
-> [documentation index](#documentation) before changing anything.
+> **Overhaul complete** — the `overhaul/marvel-grade-portfolio` branch has been merged to
+> `main`. The pre-overhaul production state is preserved at git tag `pre-overhaul-baseline`.
+> Read the [documentation index](#documentation) before changing anything.
 
 ---
 
@@ -58,18 +58,30 @@ app/
   layout.tsx              Root layout: fonts, metadata, JSON-LD (Person + WebSite)
   page.tsx                Single-page composition of all sections
   globals.css             Monochrome design tokens (:root) + component styles
-  data/                   Typed content layer (see above)
+  data/                   Typed content layer (siteContent, resumeContent, miniVicKnowledge)
   components/SpaceScene   R3F starfield (monochrome; colours via lib/palette.ts)
   api/                    chat-with-vic, realtime/session (DYNAMIC only — not in export)
-  performance-benchmark/  Isolated perf harness page
+  performance-benchmark/  Isolated perf harness page (excluded from static export)
+  robots.ts, sitemap.ts   SEO (generated at build)
 components/
-  site/                   Preloader, Navigation, CursorGlow, Reveal, TelemetryPanel,
-                          ExperienceAccordion, ExpandableCard, ArchitectureMap,
-                          ProjectsCarousel, GithubFeed, HiddenTerminal, HeroAvatar
+  site/                   26 DOM/Framer components: Preloader, Navigation, CursorGlow,
+                          Reveal, TelemetryPanel, ExperienceAccordion, ExpandableCard,
+                          ArchitectureMap, ProjectsCarousel, GithubFeed, HiddenTerminal,
+                          HeroAvatar, ScrollRail, HeroScroll, ProofScroll, WorkScroll,
+                          CatalogueScroll, SkillsScroll, ContactScroll, ProofBar,
+                          MindsetProjection, SynthesisProvenance, Dossier, CardDepth,
+                          CursorDepthField, ServiceWorkerRegister
+  fx/                     23 signature VFX: PacketFlowGraph, SprintBurndown, TokenReflow,
+                          AtoEvidenceBar, CelestialSphere, OrchestrationGraph,
+                          ClearanceStepper, InboxTriage, JourneyTimeline, TokenStreamMatch,
+                          AstroChartSphere, JarvisRepairLoop, TeslaDashboard, JarvisTelemetry,
+                          SparklineGL, PanelDepthScene, HudFrame, TelemetryHud,
+                          DetailMaterialize, CardFlipCanvas, FloatingGlassPanel,
+                          ImageEnhancer, KeySigningPulse
   MiniVicBot.tsx          AI clone UI (degrades gracefully on static hosting)
   FloatingDetailBox.tsx   Outcome-card flyout
   MotionProvider.tsx      Framer Motion config / reduced-motion provider
-  ui/button.tsx           Primitive
+  ui/button.tsx           Glass-morphism button primitive
 lib/
   palette.ts              Single source for raw scene colours (monochrome)
   miniVicBrain.ts         3-tier client brain: realtime API → browser-Gemini → local KB
@@ -77,8 +89,9 @@ lib/
 services/                 Optional dynamic backend (api-gateway, realtime-orchestrator,
                           llm-engine) — see docs/overhaul/SYSTEM-DESIGN.md
 config/                   Observability/proxy configs (loki, prometheus, promtail, traefik)
-scripts/validate/         21 validation phases + overhaul_static_audit.mjs
-tests/                    Playwright + node test suites
+scripts/validate/         21 validation phases + overhaul_static_audit.mjs (8 gates)
+tests/                    Categorized test suites: e2e, a11y, perf, visual, monochrome,
+                          content, overhaul (120 tests in 15 files)
 docs/overhaul/            The overhaul spec + this documentation set
 ```
 
@@ -102,11 +115,11 @@ npm run dev          # Next dev server on http://localhost:8080 (API routes acti
 | `npm test` | Playwright smoke suite |
 | `npm run test:e2e:bot` | Provider-backed MiniVic E2E (needs API keys) |
 | `npm run validate:*` | Validation phases (Lighthouse, axe, infra, TTS, viseme…) |
-| `node scripts/validate/overhaul_static_audit.mjs` | 7 static gates: tone / monochrome / asset-budget / parity / fonts (≤2 families) / secret scan / no `/performance-benchmark` in `out/` |
+| `node scripts/validate/overhaul_static_audit.mjs` | 8 static gates: tone / monochrome / asset-budget / parity / fonts (≤2 families) / secret scan / no `/performance-benchmark` in `out/` / no incomplete-code markers |
 
 ## Deployment
 
-Static export on Firebase Hosting (deploy is **owner-gated** — local-first):
+Static export on Firebase Hosting (autonomous deploy — agents may publish when gates are green):
 
 ```bash
 npm run build:static
@@ -115,8 +128,8 @@ firebase deploy --only hosting
 
 CI (`.github/workflows/deploy.yml`): parallel gate jobs — **quality** (`tsc --noEmit` + static
 audit), **lint**, **test** (chromium + webkit + firefox), **lighthouse**, **axe** — fan into
-**build** → **deploy** on `main` (requires `FIREBASE_SERVICE_ACCOUNT` secret). Post-deploy
-checks: [`docs/overhaul/SPEC.md` §12].
+**build** → **deploy** on `main` (requires `FIREBASE_SERVICE_ACCOUNT` secret and `GEMINI_API_KEY`
+env var). Post-deploy verification against https://forgotten-mistory.web.app.
 
 > API routes (`/api/chat-with-vic`, `/api/realtime/session`) are **not** in the static
 > export. MiniVicBot detects this and falls back. Run `npm run dev` or deploy the
@@ -129,9 +142,9 @@ fail loud (the app crashes clearly — non-zero exit naming the missing key, nev
 fallback — see SECURITY notes in [`docs/overhaul/SYSTEM-DESIGN.md`]). Provider keys: `OPENAI_API_KEY`, `GEMINI_API_KEY`,
 `ELEVENLABS_API_KEY` (+ `ELEVENLABS_VOICE_ID`), `DID_API_KEY`.
 
-> **Known config bug:** `.env.production` uses `DI_D_API_KEY`, `.env.example` uses
+> **Known config gotcha:** `.env.production` uses `DI_D_API_KEY`, `.env.example` uses
 > `DID_API_KEY`, older docs say `D_ID_API_KEY`. Canonicalise to **`DID_API_KEY`** when wiring
-> the live clone (tracked in SPEC defect register D-? / edge case EC-CFG-01).
+> the live clone (tracked in EDGE-CASES EC-CFG-01).
 
 ## Documentation
 

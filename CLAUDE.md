@@ -37,18 +37,17 @@ frame-accurate (~40 ms) live lip-sync pipeline on the dynamic deployment.
 - **Page composition:** `app/page.tsx` (one page, all sections), `app/layout.tsx` (metadata/JSON-LD).
 - **Styling/tokens:** `app/globals.css` (`:root` monochrome tokens), `design-tokens.json`.
 - **Scene colours:** `lib/palette.ts` (the ONLY place raw hex lives for WebGL/Canvas).
-- **Components:** `components/site/*` (DOM/Framer), `app/components/SpaceScene.tsx` (R3F),
-  `components/MiniVicBot.tsx` (clone UI), `lib/miniVicBrain.ts` (clone reasoning ladder).
+- **Components:** `components/site/*` (26 DOM/Framer components: Preloader, Navigation, CursorGlow, Reveal, TelemetryPanel, ExperienceAccordion, ExpandableCard, ArchitectureMap, ProjectsCarousel, GithubFeed, HiddenTerminal, HeroAvatar, ScrollRail, HeroScroll, ProofScroll, WorkScroll, CatalogueScroll, SkillsScroll, ContactScroll, ProofBar, MindsetProjection, SynthesisProvenance, Dossier, CardDepth, CursorDepthField, ServiceWorkerRegister), `components/fx/*` (23 signature VFX: PacketFlowGraph, SprintBurndown, TokenReflow, AtoEvidenceBar, CelestialSphere, OrchestrationGraph, ClearanceStepper, InboxTriage, JourneyTimeline, TokenStreamMatch, AstroChartSphere, JarvisRepairLoop, TeslaDashboard, JarvisTelemetry, SparklineGL, PanelDepthScene, HudFrame, TelemetryHud, DetailMaterialize, CardFlipCanvas, FloatingGlassPanel, ImageEnhancer, KeySigningPulse), `app/components/SpaceScene.tsx` (R3F starfield), `components/MiniVicBot.tsx` (clone UI), `components/MotionProvider.tsx` (Framer/reduced-motion config), `components/FloatingDetailBox.tsx` (outcome-card flyout), `lib/miniVicBrain.ts` (clone reasoning ladder).
 - **Dynamic backend (optional):** `services/api-gateway` (multi-LLM), `services/realtime-orchestrator`,
   viseme bridge. Powers the live clone; the static site works without it.
-- **Tests/validation:** `tests/*`, `scripts/validate/*` (21 phases + `overhaul_static_audit.mjs`).
+- **Tests/validation:** `tests/{e2e,a11y,perf,visual,monochrome,content,overhaul}/*` (120 tests, 15 files), `scripts/validate/*` (21 phases + `overhaul_static_audit.mjs` 8 gates).
 - **Docs:** `docs/overhaul/` (SPEC, ARCHITECTURE, SYSTEM-DESIGN, MOTION-AND-FX-SPEC, TECH-STACK, EDGE-CASES).
 
 ## Workflow (every change)
 
 1. **Read** the relevant doc(s) in `docs/overhaul/` first.
-2. **Branch:** work on `overhaul/*` or a feature branch — never directly on `main` without
-   the owner's OK. Baseline is recoverable at tag `pre-overhaul-baseline`.
+2. **Branch:** work on feature branches or directly on `main` — the overhaul has been merged.
+   Baseline is recoverable at tag `pre-overhaul-baseline`.
 3. **Test-first:** add/extend a test (`tests/*` Playwright, or a check in the audit script).
 4. **Implement** to green. Keep diffs small and one-concern.
 5. **Verify:** `npm run lint` + `npx tsc --noEmit` + `node scripts/validate/overhaul_static_audit.mjs`
@@ -74,7 +73,7 @@ Each GitHub project maps to one monochrome micro-visualisation (SPEC §7, MOTION
 
 ## Definition of done (any task)
 
-- `tsc` clean, `lint` clean, static audit 7/7, relevant Playwright green.
+- `tsc` clean, `lint` clean, static audit 8/8, relevant Playwright green.
 - Lighthouse mobile: perf ≥90, a11y ≥95; LCP<2.5s; CLS<0.05; no asset >500KB.
 - Reduced-motion path works; keyboard-navigable; monochrome; tone clean; parity intact.
 - Execution log updated.

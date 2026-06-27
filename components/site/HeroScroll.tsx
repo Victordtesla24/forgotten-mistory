@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { gsap } from '@/lib/gsap';
 
 /**
  * HeroScroll — T1 GSAP+ScrollTrigger scrub timeline for #hero (FR-SCROLL).
