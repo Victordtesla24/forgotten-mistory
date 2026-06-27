@@ -15,7 +15,7 @@ async function gotoHome(page: Page) {
   }
 }
 
-async function runAxeCheck(page: Page, sectionLabel: string) {
+async function runAxeCheck(page: Page, sectionLabel: string): Promise<void> {
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
     .analyze();

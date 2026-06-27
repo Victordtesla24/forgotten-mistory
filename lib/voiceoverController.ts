@@ -50,7 +50,6 @@ export class VoiceoverController {
 
   // Triggered — currently playing source
   private _triggeredSource: AudioBufferSourceNode | null = null;
-  private _triggeredBuffer: AudioBuffer | null = null;
 
   // Gain ramp animation frame
   private _rampRaf: number | null = null;
@@ -309,7 +308,6 @@ export class VoiceoverController {
     this._triggeredGain = null;
     this._ambientSource = null;
     this._triggeredSource = null;
-    this._triggeredBuffer = null;
     this.state.initialised = false;
     this.state.currentCue = null;
   }
