@@ -2,11 +2,12 @@
 'use client';
 
 import React, { useRef, useMemo, useState, useEffect } from 'react';
-import { Canvas, useFrame, useThree, extend, Object3DNode } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Bloom, EffectComposer, Noise, Vignette } from '@react-three/postprocessing';
-import { Trail, shaderMaterial } from '@react-three/drei';
+import { Trail } from '@react-three/drei';
 import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
+import { nebulaFBMVertex, nebulaFBMFragment } from '@/components/fx/shaders/nebulaFBM.glsl';
 
 // --- Constants ---
 const STAR_COUNT = 4500;
@@ -29,86 +30,6 @@ const mulberry32 = (a: number) => {
   };
 };
 
-// --- Nebula Shader Material ---
-const NebulaMaterial = shaderMaterial(
-  {
-    time: 0,
-    color: new THREE.Color(PALETTE.nebula[0]), // Keep very dark to prevent mix-blend blowout
-  },
-  // Vertex Shader
-  `
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  `,
-  // Fragment Shader
-  `
-    uniform float time;
-    uniform vec3 color;
-    varying vec2 vUv;
-
-    // Simple noise function
-    float random(vec2 st) {
-      return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
-    }
-
-    float noise(vec2 st) {
-      vec2 i = floor(st);
-      vec2 f = fract(st);
-      float a = random(i);
-      float b = random(i + vec2(1.0, 0.0));
-      float c = random(i + vec2(0.0, 1.0));
-      float d = random(i + vec2(1.0, 1.0));
-      vec2 u = f * f * (3.0 - 2.0 * f);
-      return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-    }
-
-    float fbm(vec2 st) {
-      float value = 0.0;
-      float amplitude = 0.5;
-      for (int i = 0; i < 5; i++) {
-        value += amplitude * noise(st);
-        st *= 2.0;
-        amplitude *= 0.5;
-      }
-      return value;
-    }
-
-    void main() {
-      vec2 uv = vUv;
-      
-      // Moving noise
-      float n = fbm(uv * 3.0 + time * 0.05);
-      float n2 = fbm(uv * 6.0 - time * 0.02);
-      
-      float cloud = n * n2;
-      
-      // Soft edges
-      float alpha = smoothstep(0.3, 0.7, cloud);
-      float dist = distance(uv, vec2(0.5));
-      alpha *= 1.0 - smoothstep(0.0, 0.5, dist);
-
-      gl_FragColor = vec4(color + vec3(n * 0.05), alpha * 0.15);
-    }
-  `
-);
-
-extend({ NebulaMaterial });
-
-// Add type definition for the custom shader material
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      nebulaMaterial: Object3DNode<THREE.ShaderMaterial, typeof NebulaMaterial> & {
-        time?: number;
-        color?: THREE.Color | string;
-      };
-    }
-  }
-}
-
 // --- Nebula Component ---
 interface NebulaCloudProps {
   position: [number, number, number];
@@ -117,19 +38,37 @@ interface NebulaCloudProps {
 }
 
 function NebulaCloud({ position, color, scale }: NebulaCloudProps) {
-  // Cast to any because the shader material adds the 'time' uniform property which isn't on standard ShaderMaterial type
-  const materialRef = useRef<any>(null);
+  const matRef = useRef<THREE.ShaderMaterial>(null);
+  const uniforms = useMemo(
+    () => ({
+      uTime: { value: 0 },
+      uColor: { value: new THREE.Color(color) },
+    }),
+    [color],
+  );
 
-  useFrame((state, delta) => {
-    if (materialRef.current) {
-      materialRef.current.time += delta;
+  useFrame((_, delta) => {
+    if (matRef.current) {
+      matRef.current.uniforms.uTime.value += delta;
     }
   });
 
   return (
     <mesh position={position} scale={scale}>
       <planeGeometry args={[1, 1]} />
-      <nebulaMaterial ref={materialRef} color={color} transparent depthWrite={false} blending={THREE.NormalBlending} />
+      <shaderMaterial
+        ref={matRef}
+        args={[
+          {
+            uniforms,
+            vertexShader: nebulaFBMVertex,
+            fragmentShader: nebulaFBMFragment,
+            transparent: true,
+            depthWrite: false,
+            blending: THREE.NormalBlending,
+          },
+        ]}
+      />
     </mesh>
   );
 }
@@ -140,22 +79,19 @@ function ShootingStar() {
   const [active, setActive] = useState(false);
   const { viewport } = useThree();
 
-  // State for current trajectory
   const startPos = useRef(new THREE.Vector3());
   const velocity = useRef(new THREE.Vector3());
   const timer = useRef(0);
-  const nextSpawnTime = useRef(Math.random() * 5 + 3); // 3-8 seconds
+  const nextSpawnTime = useRef(Math.random() * 5 + 3);
 
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     timer.current += delta;
 
     if (!active) {
       if (timer.current > nextSpawnTime.current) {
-        // Spawn logic
         setActive(true);
         timer.current = 0;
 
-        // Random start position (top-left/right area mostly)
         const x = (Math.random() - 0.5) * viewport.width * 1.5;
         const y = (Math.random() - 0.5) * viewport.height * 1.5;
         startPos.current.set(x, y, -Math.random() * 20);
@@ -164,22 +100,18 @@ function ShootingStar() {
           meshRef.current.position.copy(startPos.current);
         }
 
-        // Random direction (generally downward/diagonal)
         velocity.current.set(
           (Math.random() - 0.5) * 20,
           -Math.random() * 10 - 10,
           0
         );
 
-        // Reset spawn timer for next time
         nextSpawnTime.current = Math.random() * 5 + 3;
       }
     } else {
-      // Move star
       if (meshRef.current) {
         meshRef.current.position.addScaledVector(velocity.current, delta);
 
-        // Check bounds to deactivate
         if (
           Math.abs(meshRef.current.position.x) > viewport.width ||
           Math.abs(meshRef.current.position.y) > viewport.height
@@ -212,7 +144,6 @@ function StarField() {
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const { viewport } = useThree();
 
-  // Generate random positions and initial data
   const [colors, baseColors, sizes, twinklePhase, twinkleSpeed, initialPositions] = useMemo(() => {
     const rand = mulberry32(STAR_SEED);
     const initialPositions = new Float32Array(STAR_COUNT * 3);
@@ -226,16 +157,14 @@ function StarField() {
 
     for (let i = 0; i < STAR_COUNT; i++) {
       const i3 = i * 3;
-      // Position - balanced spread with all stars behind camera for consistency
       const x = (rand() - 0.5) * 240;
       const y = (rand() - 0.5) * 240;
-      const z = -40 - rand() * 180; // Keep depth negative so they sit behind content
+      const z = -40 - rand() * 180;
 
       initialPositions[i3] = x;
       initialPositions[i3 + 1] = y;
       initialPositions[i3 + 2] = z;
 
-      // Color with higher brightness variation
       const colorIndex = Math.floor(rand() * STAR_COLORS.length);
       tempColor.copy(STAR_COLORS[colorIndex]);
       const brightness = 0.4 + rand() * 0.6;
@@ -248,11 +177,9 @@ function StarField() {
       colors[i3 + 1] = baseColors[i3 + 1];
       colors[i3 + 2] = baseColors[i3 + 2];
 
-      // Size gently tied to depth for distant speck feel - much larger base values
       const depthFactor = 1 - Math.min(1, Math.abs(z) / 220);
       sizes[i] = 0.15 + rand() * 0.2 + depthFactor * 0.05;
 
-      // Twinkle speed/phase
       twinklePhase[i] = rand() * Math.PI * 2;
       twinkleSpeed[i] = 0.4 + rand() * 0.8;
     }
@@ -268,8 +195,6 @@ function StarField() {
     const time = state.clock.elapsedTime;
     const colorAttr = meshRef.current.geometry.getAttribute('color') as THREE.InstancedBufferAttribute;
 
-    // Map mouse to world space roughly at z=0
-    // Note: unproject is more accurate but simple mapping works for background effects
     mouseVec.set(
       (state.mouse.x * viewport.width) / 2,
       (state.mouse.y * viewport.height) / 2,
@@ -282,7 +207,6 @@ function StarField() {
       const baseY = initialPositions[i3 + 1];
       const baseZ = initialPositions[i3 + 2];
 
-      // Subtle orbital drift plus mouse parallax so field feels alive but stable
       const depthFactor = 1 - Math.min(1, Math.abs(baseZ) / 220);
       const driftX = Math.sin(time * 0.12 + twinklePhase[i]) * 0.25 * depthFactor;
       const driftY = Math.cos(time * 0.15 + twinklePhase[i]) * 0.25 * depthFactor;
@@ -299,7 +223,6 @@ function StarField() {
       dummy.updateMatrix();
       meshRef.current.setMatrixAt(i, dummy.matrix);
 
-      // Gentle per-star twinkle for realism
       const twinkle = 0.84 + Math.sin(time * twinkleSpeed[i] + twinklePhase[i]) * 0.3;
       if (colorAttr) {
         const array = colorAttr.array as Float32Array;
@@ -333,11 +256,7 @@ function StarField() {
   );
 }
 
-/**
- * Cinematic camera rig: eased elliptical camera drift bounded to ±1.1 x-offset
- * and ±0.7 y-offset, providing gentle parallax depth while keeping the starfield
- * stable. FloatingDetailBox uses a separate window.spaceApp bridge for FX IPC.
- */
+/** Cinematic camera rig: eased elliptical camera drift. */
 function CameraRig() {
   const { camera } = useThree();
 
@@ -392,14 +311,11 @@ function SceneContent({ frozen = false }: { frozen?: boolean }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     if (frozen || !groupRef.current) return;
-    // Orbital drift
     groupRef.current.rotation.y += delta * 0.05;
     groupRef.current.rotation.z += delta * 0.01;
 
-    // Scroll-reactive tilt: the cosmos leans away as the visitor descends,
-    // eased so fast scrolling never causes a visual snap.
     const targetTilt = Math.min(0.22, scrollRef.current * 0.00012);
     groupRef.current.rotation.x += (targetTilt - groupRef.current.rotation.x) * Math.min(1, delta * 2.5);
   });
@@ -407,7 +323,7 @@ function SceneContent({ frozen = false }: { frozen?: boolean }) {
   return (
     <group ref={groupRef}>
       <StarField />
-      {/* Dark nebula colors are required because mix-blend-mode: screen blows out brightness */}
+      {/* Dark nebula colors — monochrome near-black palette (PALETTE.nebula), since mix-blend-mode: screen blows out brightness */}
       <NebulaCloud position={[0, 0, -50]} color={PALETTE.nebula[0]} scale={[100, 100, 1]} />
       <NebulaCloud position={[-30, 20, -80]} color={PALETTE.nebula[1]} scale={[120, 120, 1]} />
       <NebulaCloud position={[30, -20, -60]} color={PALETTE.nebula[2]} scale={[90, 90, 1]} />

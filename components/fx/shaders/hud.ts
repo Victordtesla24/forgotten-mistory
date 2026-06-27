@@ -18,9 +18,11 @@ export const hudVertex = /* glsl */ `
 export const holoRingFragment = /* glsl */ `
   precision highp float;
   uniform float uTime;
-  uniform vec3  uColor;
+  uniform vec3  uColor;       // sourced from lib/palette.ts (NFR-MONO)
   uniform float uOpacity;
   varying vec2  vUv;
+
+  #define TAU 6.28318530718
 
   void main() {
     vec2 p = vUv - 0.5;
@@ -31,7 +33,7 @@ export const holoRingFragment = /* glsl */ `
     float rings = smoothstep(0.5, 0.46, abs(fract(r * 8.0) - 0.5));
 
     // rotating radar sweep (trailing falloff) — slowed to 0.25 rad/s for calm authority (QT-4)
-    float sweep = mod(ang + uTime * 0.25, 6.28318530718) / 6.28318530718;
+    float sweep = mod(ang + uTime * 0.25, TAU) / TAU;
     float beam  = smoothstep(0.16, 0.0, sweep);
 
     // outer rim + a brighter inner ring
@@ -49,10 +51,12 @@ export const holoRingFragment = /* glsl */ `
 export const lightShaftFragment = /* glsl */ `
   precision highp float;
   uniform float uTime;
-  uniform vec3  uColor;
+  uniform vec3  uColor;       // sourced from lib/palette.ts (NFR-MONO)
   uniform float uOpacity;
+  uniform vec2  uResolution;  // canvas resolution for half-res sampling (FR-LIGHT)
   varying vec2  vUv;
 
+  // Deterministic hash — no dependency on Math.random, reproducible seed.
   float hash(vec2 p) { return fract(sin(dot(p, vec2(41.0, 289.0))) * 43758.5453); }
 
   void main() {
@@ -63,7 +67,7 @@ export const lightShaftFragment = /* glsl */ `
     float shaft = smoothstep(1.0, 0.0, d);
     shaft *= smoothstep(0.0, 0.28, p.y) * smoothstep(1.0, 0.5, p.y); // fade both ends
 
-    // drifting volumetric dust motes
+    // drifting volumetric dust motes — capped at 1 deterministic sample per cell (FR-LIGHT)
     float mote = hash(floor(vec2(p.x * 42.0, p.y * 42.0 - uTime * 2.5)));
     shaft += shaft * step(0.985, mote) * 0.6;
 
