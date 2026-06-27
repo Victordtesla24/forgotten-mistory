@@ -466,3 +466,188 @@ test.describe('TC-FR-DETAILFX — reduced motion flattens the floating panel', (
     await expect(page.locator('[data-detail-corner]')).toHaveCount(4);
   });
 });
+
+/**
+ * TC-FR-DETAILFX-R5 — 3D glass panel + physics for FloatingDetailBox.
+ *
+ * The FloatingDetailBox gains a real Three.js depth layer: a glass-refraction
+ * plane (MeshTransmissionMaterial) with pointer-driven tilt parallax, depth-aware
+ * shadow, and damped-spring physics.  Self-contained per dialog (no shared
+ * SpaceScene), torn down on close.  Monochrome only.  Reduced motion: no 3D
+ * glass layer.
+ */
+test.describe('TC-FR-DETAILFX-R5 — 3D glass panel with tilt physics and refraction', () => {
+  test.describe.configure({ timeout: 90000 });
+
+  test('opens with a 3D glass panel (WebGL canvas) that carries the R5 marker', async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    const card = cloudCard(page);
+    await card.scrollIntoViewIfNeeded();
+    await card.click();
+
+    const dialog = page.locator(DETAIL_DIALOG);
+    await expect(dialog).toBeVisible({ timeout: 5000 });
+
+    // The glass panel is a self-contained R3F overlay inside the dialog,
+    // separate from the particle-convergence canvas.
+    const glass = page.locator('[data-detail-glass]');
+    await expect(glass.first()).toBeVisible({ timeout: 5000 });
+    await expect(glass.first()).toHaveAttribute('data-gl', 'webgl');
+
+    // Verify it renders a real WebGL canvas (not just a container).
+    const innerCanvas = glass.locator('canvas').first();
+    await expect(innerCanvas).toBeAttached();
+  });
+
+  test('pointer movement over the dialog sets tilt CSS custom properties on the glass layer', async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    const card = cloudCard(page);
+    await card.scrollIntoViewIfNeeded();
+    await card.click();
+
+    const panel = page.locator('[data-detail-panel]');
+    await expect(panel).toBeVisible({ timeout: 5000 });
+
+    // Wait for the glass panel to mount and its mousemove handler to attach
+    // (FloatingGlassPanel uses demand-loop R3F + deferred mount via useState).
+    const glass = page.locator('[data-detail-glass]');
+    await expect(glass.first()).toHaveCount(1, { timeout: 5000 });
+    await page.waitForTimeout(150);
+
+    const box = await panel.boundingBox();
+    expect(box).not.toBeNull();
+
+    // Move pointer to off-centre position to trigger tilt.
+    await page.mouse.move(box!.x + box!.width * 0.25, box!.y + box!.height * 0.3, { steps: 6 });
+    await page.waitForTimeout(120);
+
+    const tiltX = await inlineVar(page, '[data-detail-glass]', '--tilt-x');
+    const tiltY = await inlineVar(page, '[data-detail-glass]', '--tilt-y');
+    expect(tiltX, 'glass panel tilt-x must be written on pointer move').not.toBe('');
+    expect(Math.abs(parseFloat(tiltX)), 'off-centre pointer must produce non-trivial tilt').toBeGreaterThan(0.5);
+    expect(Math.abs(parseFloat(tiltY)), 'off-centre pointer must produce non-trivial tilt').toBeGreaterThan(0.5);
+
+    // Centre the pointer — tilt should relax near zero.
+    await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2, { steps: 6 });
+    await page.waitForTimeout(400);
+
+    const cx = await inlineVar(page, '[data-detail-glass]', '--tilt-x');
+    expect(Math.abs(parseFloat(cx)), 'centred pointer must produce near-zero tilt').toBeLessThan(0.8);
+  });
+
+  test('glass panel tears down its WebGL canvas on close (no leaked context)', async ({
+    page,
+  }) => {
+    await gotoHome(page);
+    const card = cloudCard(page);
+    await card.scrollIntoViewIfNeeded();
+    await card.click();
+
+    await expect(page.locator(DETAIL_DIALOG)).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('[data-detail-glass]')).toHaveCount(1);
+
+    await page.keyboard.press('Escape');
+    await expect(page.locator(DETAIL_DIALOG)).toHaveCount(0, { timeout: 5000 });
+
+    // The glass panel and its WebGL canvas must be completely torn down.
+    await expect(page.locator('[data-detail-glass]')).toHaveCount(0);
+  });
+
+  test('open → hover → close emits zero WebGL console errors', async ({ page }) => {
+    const ignorable = [
+      /Failed to load resource/i,
+      /\b40\d\b/,
+      /MIME type/i,
+      /favicon/i,
+      /service-worker/i,
+      /net::ERR/i,
+      /Content Security Policy/i,
+      /api\.github\.com/i,
+      /youtube/i,
+    ];
+    const errors: string[] = [];
+    page.on('console', (m) => {
+      if (m.type() === 'error' && !ignorable.some((re) => re.test(m.text()))) {
+        errors.push(m.text());
+      }
+    });
+    page.on('pageerror', (e) => errors.push(String(e)));
+
+    await gotoHome(page);
+    const card = cloudCard(page);
+    await card.scrollIntoViewIfNeeded();
+    await card.click();
+
+    const panel = page.locator('[data-detail-panel]');
+    await expect(panel).toBeVisible({ timeout: 5000 });
+    const box = await panel.boundingBox();
+    expect(box).not.toBeNull();
+
+    // Sweep the pointer across the glass panel to exercise the physics.
+    for (let i = 0; i <= 6; i++) {
+      await page.mouse.move(
+        box!.x + (box!.width * i) / 6,
+        box!.y + (box!.height * i) / 6,
+        { steps: 3 },
+      );
+    }
+    await page.waitForTimeout(200);
+
+    await page.keyboard.press('Escape');
+    await expect(page.locator(DETAIL_DIALOG)).toHaveCount(0, { timeout: 5000 });
+
+    expect(errors, `WebGL / console errors during glass-panel lifecycle:\n${errors.join('\n')}`).toEqual([]);
+  });
+});
+
+test.describe('TC-FR-DETAILFX-R5 — reduced motion flattens the glass panel', () => {
+  test.describe.configure({ timeout: 90000 });
+
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      const real = window.matchMedia.bind(window);
+      window.matchMedia = ((q: string) => {
+        if (q.includes('prefers-reduced-motion')) {
+          return {
+            matches: q.includes('reduce'),
+            media: q,
+            onchange: null,
+            addEventListener() {},
+            removeEventListener() {},
+            addListener() {},
+            removeListener() {},
+            dispatchEvent() {
+              return false;
+            },
+          } as unknown as MediaQueryList;
+        }
+        return real(q);
+      }) as typeof window.matchMedia;
+    });
+  });
+
+  test('no 3D glass canvas is rendered under reduced motion', async ({ page }) => {
+    await gotoHome(page);
+    const card = cloudCard(page);
+    await card.scrollIntoViewIfNeeded();
+    await card.click();
+
+    const panel = page.locator('[data-detail-panel]');
+    await expect(panel).toBeVisible({ timeout: 5000 });
+    await expect(page.locator('#capability-modal-title')).toHaveText('Cloud Modernisation');
+
+    // The 3D glass layer must not render under reduced motion.
+    await expect(page.locator('[data-detail-glass]')).toHaveCount(0);
+
+    // The particles and sweep are also absent (existing contract).
+    await expect(page.locator('[data-detail-canvas]')).toHaveCount(0);
+    await expect(page.locator('[data-detail-sweep]')).toHaveCount(0);
+
+    // But the static HUD framing is still drawn.
+    await expect(page.locator('[data-detail-corner]')).toHaveCount(4);
+  });
+});

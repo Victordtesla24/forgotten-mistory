@@ -6,6 +6,7 @@ import { ArrowRight, Database, X } from 'lucide-react';
 import { resumeContent } from '@/app/data/resumeContent';
 import { PALETTE } from '@/lib/palette';
 import DetailMaterialize from '@/components/fx/DetailMaterialize';
+import FloatingGlassPanel from '@/components/fx/FloatingGlassPanel';
 
 interface FloatingDetailBoxProps {
   activeKey: string | null;
@@ -26,10 +27,13 @@ interface FloatingDetailBoxProps {
  *   - A dedicated 2-D <canvas> particle convergence bounded to the dialog's
  *     fixed-viewport layer (it cannot leave an off-frame artifact and is torn
  *     down on close).
+ *   - R5: FloatingGlassPanel — a separate R3F canvas rendering a glass-refraction
+ *     plane (MeshTransmissionMaterial) with pointer-driven tilt parallax, damped-
+ *     spring physics, and a depth-aware contact shadow.
  *   - CSS HUD corner brackets (×4) + a single scanline sweep.
  *   - Monochrome only (accent sourced from lib/palette.ts).
- *   - Under reduced motion the canvas + sweep are not rendered and the panel
- *     appears instantly centred.
+ *   - Under reduced motion the canvas + sweep + glass panel are not rendered and
+ *     the panel appears instantly centred.
  */
 
 const THEME_COLORS: Record<string, string> = {
@@ -167,6 +171,7 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
           />
 
           {!reduced && <DetailMaterialize key={displayKey} origin={origin} color={themeColor} />}
+          {!reduced && <FloatingGlassPanel color={themeColor} reduced={reduced} />}
 
           <motion.div
             data-detail-panel=""

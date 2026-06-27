@@ -19,6 +19,11 @@
 | TC-FR-SCROLL | `tests/overhaul/scroll.spec.ts` |
 | TC-FR-SIGFX / SHADER / LIGHT | `tests/overhaul/signature.spec.ts` |
 | TC-FR-NAV / ABOUT / EXP / SKILLS / SEO / RESP | `tests/overhaul/sections.spec.ts` |
+| TC-FR-EXP-ACCORDION | `tests/overhaul/sections.spec.ts` |
+| TC-FR-EXP-WEBGL | `tests/overhaul/sections.spec.ts` |
+| TC-FR-EXP-REDUCED-MOTION | `tests/overhaul/sections.spec.ts` |
+| TC-FR-DETAILFX (FloatingDetailBox FLIP panel, 2-D particle convergence, HUD corners, scanline sweep, reduced-motion flatten) | `tests/overhaul/floating-panels-animation.spec.ts` |
+| TC-FR-DETAILFX-R5 (FloatingDetailBox 3-D glass-refraction layer — `components/fx/FloatingGlassPanel.tsx`: WebGL `[data-detail-glass][data-gl=webgl]` canvas mounts on open, pointer-driven tilt physics writes `--tilt-x`/`--tilt-y` + relaxes to ~0 on centre, canvas torn down on Esc-close with no leaked context, zero WebGL console errors across open→hover→close, reduced-motion renders no 3-D layer) | `tests/overhaul/floating-panels-animation.spec.ts` |
 | TC-FR-HERO (name, position line, ≥1 metric, 2 dual-pillar CTAs — employer "Review experience" + client "See outcomes" — GitHub/YouTube/CV present & resolve 200) | `tests/overhaul/hero.spec.ts` |
 | TC-FR-PROOF | `tests/overhaul/proof.spec.ts` |
 | TC-FR-CONTACT | `tests/overhaul/contact.spec.ts` |
