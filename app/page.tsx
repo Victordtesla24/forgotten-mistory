@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import {
   ArrowRight,
@@ -21,7 +22,8 @@ import {
 } from 'lucide-react';
 
 import FloatingDetailBox from '@/components/FloatingDetailBox';
-import SpaceScene from './components/SpaceScene';
+import ErrorBoundary from '@/components/ErrorBoundary';
+const SpaceScene = dynamic(() => import('./components/SpaceScene'), { ssr: false });
 import Preloader from '@/components/site/Preloader';
 import CursorGlow from '@/components/site/CursorGlow';
 import CardDepth from '@/components/site/CardDepth';
@@ -43,12 +45,23 @@ import CatalogueScroll from '@/components/site/CatalogueScroll';
 import SkillsScroll from '@/components/site/SkillsScroll';
 import ContactScroll from '@/components/site/ContactScroll';
 import HudFrame from '@/components/fx/HudFrame';
-import PacketFlowGraph from '@/components/fx/PacketFlowGraph';
 import SprintBurndown from '@/components/fx/SprintBurndown';
 import TokenReflow from '@/components/fx/TokenReflow';
 import AtoEvidenceBar from '@/components/fx/AtoEvidenceBar';
-import CelestialSphere from '@/components/fx/CelestialSphere';
-import OrchestrationGraph from '@/components/fx/OrchestrationGraph';
+// R3F Canvas components loaded via next/dynamic for code-splitting (FR-CODE-SPLIT).
+// WebGL contexts are never needed on the server; ssr:false avoids hydration mismatches.
+const CelestialSphere = dynamic(() => import('@/components/fx/CelestialSphere'), {
+  loading: () => <div className="r3f-loading-placeholder" />,
+  ssr: false,
+});
+const OrchestrationGraph = dynamic(() => import('@/components/fx/OrchestrationGraph'), {
+  loading: () => <div className="r3f-loading-placeholder" />,
+  ssr: false,
+});
+const PacketFlowGraph = dynamic(() => import('@/components/fx/PacketFlowGraph'), {
+  loading: () => <div className="r3f-loading-placeholder" />,
+  ssr: false,
+});
 import ClearanceStepper from '@/components/fx/ClearanceStepper';
 import InboxTriage from '@/components/fx/InboxTriage';
 import JourneyTimeline from '@/components/fx/JourneyTimeline';
@@ -554,10 +567,16 @@ export default function Home() {
                 <TokenReflow project="Advanced-Prompt-Creator" />
                 <JourneyTimeline project="relationship-timeline-feature" />
                 <InboxTriage project="AI-Gmail-Mailbox-Manager" />
-                <CelestialSphere project="btr-demo" />
+                <ErrorBoundary>
+                  <CelestialSphere project="btr-demo" />
+                </ErrorBoundary>
                 <AstroChartSphere project="jyotish-shastra" />
-                <OrchestrationGraph project="rishi-prajnya" />
-                <PacketFlowGraph project="telemetry-cluster" />
+                <ErrorBoundary>
+                  <OrchestrationGraph project="rishi-prajnya" />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <PacketFlowGraph project="telemetry-cluster" />
+                </ErrorBoundary>
                 <JarvisRepairLoop />
                 <AtoEvidenceBar />
                 <ClearanceStepper />

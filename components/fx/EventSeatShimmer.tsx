@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 /**
@@ -43,7 +43,7 @@ const MILESTONES: EventMilestone[] = [
 
 const totalCells = ROWS * COLS;
 
-export default function EventSeatShimmer({
+export default React.memo(function EventSeatShimmer({
   className = '',
   project = 'abentertainment',
 }: {

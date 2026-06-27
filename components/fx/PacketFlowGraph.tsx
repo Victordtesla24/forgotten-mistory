@@ -13,7 +13,7 @@
  * reduced-motion / low-power; pause off-screen via visibilitychange.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import { useReducedMotion } from 'framer-motion';
@@ -228,7 +228,7 @@ interface PacketFlowGraphProps {
   project?: string;
 }
 
-export default function PacketFlowGraph({ className = '', project }: PacketFlowGraphProps) {
+export default React.memo(function PacketFlowGraph({ className = '', project }: PacketFlowGraphProps) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef);

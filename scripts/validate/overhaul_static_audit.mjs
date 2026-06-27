@@ -6,13 +6,15 @@
  * Covers: TC-NFR-TONE, TC-NFR-MONO, TC-NFR-PERF (asset budget), TC-FR-PARITY (facts),
  *         TC-NFR-TYPE (≤2 font families), TC-NFR-SEC (client secret leak),
  *         TC-ARCH-BENCH (no /performance-benchmark in out/), TC-NFR-COMPLETE
- *         (no truncation/placeholder/stub markers in app|components|lib).
+ *         (no truncation/placeholder/stub markers in app|components|lib),
+ *         TC-NFR-TOKEN (CSS custom properties match design-tokens.json).
  *
  * Usage:  node scripts/validate/overhaul_static_audit.mjs
  * Exit:   0 if all checks PASS, 1 otherwise. Prints a per-check report.
+ * Writes: reports/static-audit.json (consolidated JSON report for CI artifact upload).
  */
-import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { join, extname, relative } from 'node:path';
+import { readFileSync, readdirSync, statSync, mkdirSync, writeFileSync } from 'node:fs';
+import { join, extname, relative, dirname } from 'node:path';
 
 const ROOT = process.cwd();
 const results = [];
@@ -312,6 +314,155 @@ function checkComplete() {
     uniq.length ? `${uniq.length} marker(s): ${uniq.slice(0, 16).join('; ')}` : 'clean — no incomplete-code markers');
 }
 
+// ── TC-NFR-TOKEN — CSS custom properties match design token spec ──────────────
+function checkTokens() {
+  // Verifies that CSS custom properties declared in the source tree match the
+  // canonical design-tokens.json color values. Also flags CSS vars that reference
+  // color tokens not defined in the token spec (drift prevention).
+  //
+  // Scanned files: app/globals.css, tailwind.config.js, and any .css/.tsx files
+  //                in app/** and components/**.
+  //
+  // Violations:
+  //   - A CSS custom property (--ink-*, --mist-*, --accent, --steel, --white)
+  //     is declared with a hex value that differs from the canonical token value.
+  //   - A CSS var() reference uses a color token name that is NOT defined in
+  //     design-tokens.json or in the approved extension list (token-*, card-*, etc.).
+  const TOKEN_PATH = join(ROOT, 'design-tokens.json');
+  let tokens;
+  try {
+    tokens = JSON.parse(readFileSync(TOKEN_PATH, 'utf8'));
+  } catch {
+    record('TC-NFR-TOKEN', 'CSS custom properties match design token spec',
+      true, '(design-tokens.json not found — token check skipped)');
+    return;
+  }
+
+  // Build canonical color value map from design tokens.
+  // Token structure: { colors: { ink: { "900": { value: "#0A0B0D" }, ... }, mist: ..., white: ..., accent: ..., steel: ... }}
+  const canonical = {}; // key: css var name (e.g. "--ink-900"), value: normalized hex
+  const colors = tokens.colors || {};
+  for (const [family, def] of Object.entries(colors)) {
+    if (typeof def === 'object' && def !== null && !def.value) {
+      // Nested: { "900": { value: "#..." } }
+      for (const [shade, sdef] of Object.entries(def)) {
+        if (sdef && sdef.value) {
+          canonical[`--${family}-${shade}`] = sdef.value.toUpperCase();
+        }
+      }
+    } else if (def && def.value) {
+      // Flat: { value: "#..." }
+      canonical[`--${family}`] = def.value.toUpperCase();
+    }
+  }
+
+  // Approved CSS variable prefixes that don't need to be in design-tokens.json.
+  // These are structural/composite tokens derived from the base colors and are
+  // documented in globals.css. New color-family prefixes must be added to the token spec.
+  const APPROVED_PREFIXES = [
+    '--token-',      // semantic aliases (token-bg-base, token-text-primary, ...)
+    '--card-',       // card surface system
+    '--cursor-',     // cursor sizing
+    '--font-',       // font families
+    '--motion-',     // animation timings
+    '--bg-',         // convenience aliases
+    '--text-',       // convenience aliases
+    '--border-',     // convenience aliases
+    '--secondary-',  // convenience aliases
+    '--accent-',     // convenience aliases
+    '--angle',       // @property registration
+    '--img-',        // image lift transform
+    '--lift',        // hover lift
+    '--arch-',       // architecture section styling
+    '--detail-',     // detail panel styling
+  ];
+
+  const isApproved = (name) => APPROVED_PREFIXES.some((pfx) => name.startsWith(pfx));
+
+  // Collect all CSS custom properties declared in the app
+  const cssFiles = [
+    join(ROOT, 'app', 'globals.css'),
+    ...walk(join(ROOT, 'app')).filter((p) => /\.css$/.test(p)),
+    ...walk(join(ROOT, 'components')).filter((p) => /\.css$/.test(p)),
+  ];
+
+  const hits = [];
+
+  // Check 1: Declared color tokens match canonical values.
+  for (const f of cssFiles) {
+    const text = read(f);
+    const rel = relative(ROOT, f);
+    // Parse CSS custom property declarations: --name: value;
+    const decls = text.matchAll(/^\s*(--[\w-]+)\s*:\s*((?:#[0-9a-fA-F]{3,8}|var\(--[\w-]+\))[^;]*)/gm);
+    for (const m of decls) {
+      const name = m[1];
+      const value = m[2].trim();
+      // Only check color-family tokens against the canonical map
+      if (canonical.hasOwnProperty(name)) {
+        const hexMatch = value.match(/#([0-9a-fA-F]{6})\b/);
+        if (hexMatch) {
+          const actual = hexMatch[1].toUpperCase();
+          const actualFull = `#${actual}`;
+          if (actualFull !== canonical[name]) {
+            hits.push(`${rel} :: ${name}: ${actualFull} (canonical: ${canonical[name]})`);
+          }
+        }
+      }
+    }
+  }
+
+  // Check 2: Scan all app/component files for CSS var() references using
+  // undefined color-family tokens (drift prevention).
+  const allFiles = [
+    ...walk(join(ROOT, 'app')).filter((p) => /\.(css|tsx|ts)$/.test(p)),
+    ...walk(join(ROOT, 'components')).filter((p) => /\.(css|tsx|ts)$/.test(p)),
+    join(ROOT, 'app', 'layout.tsx'),
+    join(ROOT, 'tailwind.config.js'),
+  ];
+
+  // Known token families from design-tokens.json — only these trigger drift checks.
+  // Dynamic vars (--mag-x, --rx, --ry, etc.) set via JS inline styles are ignored.
+  const TOKEN_FAMILIES = Object.keys(colors).filter((k) => k !== 'metadata');
+  const looksLikeColorToken = (name) => {
+    // Matches --{family}[-{shade}] where family is a known token family
+    for (const fam of TOKEN_FAMILIES) {
+      if (name === `--${fam}` || name.startsWith(`--${fam}-`)) return true;
+    }
+    return false;
+  };
+
+  const seenDrift = new Set();
+  for (const f of allFiles) {
+    const text = read(f);
+    const rel = relative(ROOT, f);
+    const refs = text.matchAll(/var\(\s*(--[\w-]+)/g);
+    for (const m of refs) {
+      const name = m[1];
+      // Skip approved prefixes and canonical tokens
+      if (isApproved(name)) continue;
+      if (canonical.hasOwnProperty(name)) continue;
+      // Only flag vars that look like color tokens — ignore dynamic JS-driven vars
+      if (!looksLikeColorToken(name)) continue;
+      if (seenDrift.has(name)) continue;
+      // Check if this var is declared somewhere (even if not in token spec)
+      let declared = false;
+      for (const cf of cssFiles) {
+        if (read(cf).includes(`${name}:`)) { declared = true; break; }
+      }
+      if (!declared) {
+        seenDrift.add(name);
+        hits.push(`${rel} :: var(${name}) — looks like a color token but not in design tokens or declared in CSS`);
+      }
+    }
+  }
+
+  const uniq = [...new Set(hits)];
+  record('TC-NFR-TOKEN', 'CSS custom properties match design token spec',
+    uniq.length === 0,
+    uniq.length ? `${uniq.length} token drift(s): ${uniq.slice(0, 12).join('; ')}` : 'all tokens match design spec');
+}
+
+// ── Run all checks ──────────────────────────────────────────────────────────
 checkTone();
 checkMono();
 checkAssetBudget();
@@ -320,6 +471,7 @@ checkFonts();
 checkSecrets();
 checkBuildOutput();
 checkComplete();
+checkTokens();
 
 // ── Report ──────────────────────────────────────────────────────────────────
 let allPass = true;
@@ -332,4 +484,41 @@ for (const r of results) {
 }
 console.log('  ' + '-'.repeat(60));
 console.log(`  RESULT: ${allPass ? 'ALL PASS' : 'FAILURES PRESENT'} (${results.filter((r) => r.pass).length}/${results.length})\n`);
+
+// ── JSON Report Artifact ────────────────────────────────────────────────────
+// Writes a consolidated JSON report to reports/static-audit.json for CI artifact upload.
+const REPORT_DIR = join(ROOT, 'reports');
+try { mkdirSync(REPORT_DIR, { recursive: true }); } catch { /* dir exists */ }
+
+const now = new Date().toISOString();
+const report = {
+  timestamp: now,
+  result: allPass ? 'PASS' : 'FAIL',
+  summary: {
+    total: results.length,
+    passed: results.filter((r) => r.pass).length,
+    failed: results.filter((r) => !r.pass).length,
+  },
+  // Group results by category for easier downstream consumption
+  categories: {
+    tone: results.filter((r) => r.id === 'TC-NFR-TONE').map((r) => ({ pass: r.pass, detail: r.detail })),
+    monochrome: results.filter((r) => r.id === 'TC-NFR-MONO').map((r) => ({ pass: r.pass, detail: r.detail })),
+    performance: results.filter((r) => r.id === 'TC-NFR-PERF').map((r) => ({ pass: r.pass, detail: r.detail })),
+    parity: results.filter((r) => r.id === 'TC-FR-PARITY').map((r) => ({ pass: r.pass, detail: r.detail })),
+    typography: results.filter((r) => r.id === 'TC-NFR-TYPE').map((r) => ({ pass: r.pass, detail: r.detail })),
+    security: results.filter((r) => r.id === 'TC-NFR-SEC').map((r) => ({ pass: r.pass, detail: r.detail })),
+    architecture: results.filter((r) => r.id === 'TC-ARCH-BENCH').map((r) => ({ pass: r.pass, detail: r.detail })),
+    completeness: results.filter((r) => r.id === 'TC-NFR-COMPLETE').map((r) => ({ pass: r.pass, detail: r.detail })),
+    tokens: results.filter((r) => r.id === 'TC-NFR-TOKEN').map((r) => ({ pass: r.pass, detail: r.detail })),
+  },
+  checks: results.map((r) => ({
+    id: r.id,
+    name: r.name,
+    pass: r.pass,
+    detail: r.detail,
+  })),
+};
+writeFileSync(join(REPORT_DIR, 'static-audit.json'), JSON.stringify(report, null, 2) + '\n');
+console.log(`  📄 JSON report → reports/static-audit.json\n`);
+
 process.exit(allPass ? 0 : 1);

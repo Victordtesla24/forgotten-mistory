@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { sparklineVertex, sparklineFragment, SPARK_COUNT } from '@/components/fx/shaders/sparkline';
@@ -110,7 +110,7 @@ function SparkMesh({ values, active }: { values: number[]; active: boolean }) {
   );
 }
 
-export default function SparklineGL({ values }: { values: number[] }) {
+export default React.memo(function SparklineGL({ values }: { values: number[] }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
 

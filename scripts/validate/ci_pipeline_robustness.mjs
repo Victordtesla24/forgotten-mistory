@@ -147,6 +147,27 @@ const hasGeminiKey = yaml.includes('GEMINI_API_KEY');
 record('INV-GEMINI-KEY', hasGeminiKey,
   hasGeminiKey ? 'GEMINI_API_KEY present (fail-loud invariant)' : 'GEMINI_API_KEY MISSING');
 
+// ── R6 Upgrade: All jobs must have timeout-minutes ──
+// Every job in deploy.yml must declare a timeout-minutes to prevent hung runners
+// from blocking the pipeline indefinitely (GitHub default is 360 min — far too long).
+const jobNames = [...yaml.matchAll(/^\s{2}([a-z][a-z-]*):\s*$/gm)].map((m) => m[1]);
+const knownJobs = new Set(REQUIRED_JOBS);
+const MISSING_TIMEOUT = [];
+for (const job of jobNames) {
+  // Skip non-job top-level keys (name, on, concurrency, etc.)
+  if (!knownJobs.has(job) && !['secrets-check'].includes(job)) continue;
+  // Build a regex that captures the job block up to the next top-level key or end
+  const jobBlockRe = new RegExp(`^\\s{2}${job.replace(/-/g, '\\-')}:[\\s\\S]*?(?=\\n\\s{2}[a-z])`);
+  const match = yaml.match(jobBlockRe);
+  if (!match || !/\btimeout-minutes\b/.test(match[0])) {
+    MISSING_TIMEOUT.push(job);
+  }
+}
+record('R6-TIMEOUT', MISSING_TIMEOUT.length === 0,
+  MISSING_TIMEOUT.length === 0
+    ? `all ${jobNames.filter((j) => knownJobs.has(j) || j === 'secrets-check').length} jobs have timeout-minutes`
+    : `MISSING timeout-minutes on: ${MISSING_TIMEOUT.join(', ')}`);
+
 // ── Report ──
 function report() {
   console.log('\n  CI/CD PIPELINE ROBUSTNESS — R6 validation\n  ' + '-'.repeat(60));

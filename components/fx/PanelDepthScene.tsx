@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
+import React, { useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import {
@@ -161,7 +161,7 @@ function DepthField({
   );
 }
 
-export default function PanelDepthScene() {
+export default React.memo(function PanelDepthScene() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const targetsRef = useRef<Targets>({ nx: 0, ny: 0, intensity: 0.14 });
   const [active, setActive] = useState(false);

@@ -1871,6 +1871,24 @@ footer {
     }
 }
 
+/* R3F Canvas loading placeholder — shown by next/dynamic while the WebGL
+   bundle resolves. Matches the max-width/aspect-ratio of the scene cards
+   so the gallery grid doesn't jump when components mount. */
+.r3f-loading-placeholder {
+    width: 100%;
+    max-width: 340px;
+    aspect-ratio: 1 / 1;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    animation: placeholder-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes placeholder-pulse {
+    0%, 100% { opacity: 0.3; }
+    50%      { opacity: 0.5; }
+}
+
 /* R2 signature 3D scene cards (CelestialSphere + OrchestrationGraph) */
 .signature-scenes {
     display: grid;

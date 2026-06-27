@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { PALETTE } from '@/lib/palette';
 
@@ -94,7 +94,7 @@ const ARCS: ArcDef[] = [
 
 // ─── Component ─────────────────────────────────────────────────────────
 
-export default function TokenStreamMatch({
+export default React.memo(function TokenStreamMatch({
   className = '',
   project = 'tailor-resume-with-ai',
 }: {

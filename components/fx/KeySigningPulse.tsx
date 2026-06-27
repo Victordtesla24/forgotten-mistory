@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 /**
@@ -15,7 +15,7 @@ import { motion, useReducedMotion } from 'framer-motion';
  */
 
 
-export default function KeySigningPulse({
+export default React.memo(function KeySigningPulse({
   className = '',
   project = 'public-key-server',
 }: {

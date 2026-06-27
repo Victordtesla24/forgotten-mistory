@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 
 /**
@@ -38,7 +38,7 @@ const MESSAGES: Message[] = [
 
 const LABELS = ['Urgent', 'Action', 'FYI', 'Archive'] as const;
 
-export default function InboxTriage({ className = '', project }: { className?: string; project?: string }) {
+export default React.memo(function InboxTriage({ className = '', project }: { className?: string; project?: string }) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);

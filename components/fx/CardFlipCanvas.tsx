@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { cardFlipVertex, cardFlipFragment } from '@/components/fx/shaders/cardFlip.glsl';
@@ -134,7 +134,7 @@ function FlipPlane({
   );
 }
 
-export default function CardFlipCanvas({
+export default React.memo(function CardFlipCanvas({
   active,
   containerEl,
 }: CardFlipCanvasProps) {

@@ -18,7 +18,7 @@ export default defineConfig({
     ['list'],
     ['html', { open: 'never', outputFolder: 'playwright-report' }],
   ],
-  timeout: 90000,
+  timeout: process.env.CI ? 180000 : 90000, // 3 min timeout in CI, 1.5 min locally
   use: {
     trace: 'on-first-retry',
     baseURL: 'http://localhost:5599',

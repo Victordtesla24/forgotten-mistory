@@ -12,7 +12,7 @@
  * reduced-motion; pause off-screen via visibilitychange; poster fallback.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import { useReducedMotion } from 'framer-motion';
@@ -231,7 +231,7 @@ interface OrchestrationGraphProps {
   project?: string;
 }
 
-export default function OrchestrationGraph({ className = '', project }: OrchestrationGraphProps) {
+export default React.memo(function OrchestrationGraph({ className = '', project }: OrchestrationGraphProps) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef);

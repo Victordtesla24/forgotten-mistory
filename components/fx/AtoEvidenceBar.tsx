@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 /**
@@ -44,7 +44,7 @@ function generateTicks(): Tick[] {
 
 const TICKS = generateTicks();
 
-export default function AtoEvidenceBar({ className = '', project }: { className?: string; project?: string }) {
+export default React.memo(function AtoEvidenceBar({ className = '', project }: { className?: string; project?: string }) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);

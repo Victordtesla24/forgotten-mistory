@@ -72,6 +72,7 @@ const nextConfig = {
       }),
   reactStrictMode: true,
   poweredByHeader: false,
+  transpilePackages: ['three', '@react-three/fiber', '@react-three/drei', '@react-three/postprocessing'],
   experimental: {
     // Tree-shake the icon + motion barrels so only the used exports ship,
     // trimming First-Load JS on the "/" route.

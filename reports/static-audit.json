@@ -1,0 +1,121 @@
+{
+  "timestamp": "2026-06-27T22:50:30.908Z",
+  "result": "PASS",
+  "summary": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0
+  },
+  "categories": {
+    "tone": [
+      {
+        "pass": true,
+        "detail": "clean"
+      }
+    ],
+    "monochrome": [
+      {
+        "pass": true,
+        "detail": "clean"
+      }
+    ],
+    "performance": [
+      {
+        "pass": true,
+        "detail": "within budget"
+      }
+    ],
+    "parity": [
+      {
+        "pass": true,
+        "detail": "all key facts present"
+      }
+    ],
+    "typography": [
+      {
+        "pass": true,
+        "detail": "clean — exactly 2 families"
+      }
+    ],
+    "security": [
+      {
+        "pass": true,
+        "detail": "clean"
+      }
+    ],
+    "architecture": [
+      {
+        "pass": true,
+        "detail": "(no out/ — run npm run build:static to verify the exported route is absent)"
+      }
+    ],
+    "completeness": [
+      {
+        "pass": true,
+        "detail": "clean — no incomplete-code markers"
+      }
+    ],
+    "tokens": [
+      {
+        "pass": true,
+        "detail": "all tokens match design spec"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "id": "TC-NFR-TONE",
+      "name": "No boastful/sci-fi copy (data + layout meta + alt/aria)",
+      "pass": true,
+      "detail": "clean"
+    },
+    {
+      "id": "TC-NFR-MONO",
+      "name": "Monochrome — no chromatic hue in app/components",
+      "pass": true,
+      "detail": "clean"
+    },
+    {
+      "id": "TC-NFR-PERF",
+      "name": "Asset budgets (img ≤0.5MB · video ≤2.5MB · audio ≤1MB)",
+      "pass": true,
+      "detail": "within budget"
+    },
+    {
+      "id": "TC-FR-PARITY",
+      "name": "Resume facts present in siteContent",
+      "pass": true,
+      "detail": "all key facts present"
+    },
+    {
+      "id": "TC-NFR-TYPE",
+      "name": "Two font families only — Inter + Space Grotesk (Playfair/Roboto/Source Sans dropped)",
+      "pass": true,
+      "detail": "clean — exactly 2 families"
+    },
+    {
+      "id": "TC-NFR-SEC",
+      "name": "No hardcoded secrets in client source",
+      "pass": true,
+      "detail": "clean"
+    },
+    {
+      "id": "TC-ARCH-BENCH",
+      "name": "No /performance-benchmark route in static export",
+      "pass": true,
+      "detail": "(no out/ — run npm run build:static to verify the exported route is absent)"
+    },
+    {
+      "id": "TC-NFR-COMPLETE",
+      "name": "No truncation/placeholder/stub markers (app|components|lib)",
+      "pass": true,
+      "detail": "clean — no incomplete-code markers"
+    },
+    {
+      "id": "TC-NFR-TOKEN",
+      "name": "CSS custom properties match design token spec",
+      "pass": true,
+      "detail": "all tokens match design spec"
+    }
+  ]
+}

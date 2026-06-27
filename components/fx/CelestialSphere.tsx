@@ -14,7 +14,7 @@
  * reduced-motion; pause off-screen via visibilitychange; poster fallback.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import { useReducedMotion } from 'framer-motion';
@@ -200,7 +200,7 @@ interface CelestialSphereProps {
   project?: string;
 }
 
-export default function CelestialSphere({ className = '', project }: CelestialSphereProps) {
+export default React.memo(function CelestialSphere({ className = '', project }: CelestialSphereProps) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef);

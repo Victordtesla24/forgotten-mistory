@@ -15,7 +15,7 @@
  * Hardened R3: Canvas2D sparkline (30 Hz throttle, DPR <=1.5, no per-frame alloc).
  */
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Bloom, DepthOfField, EffectComposer, Vignette } from '@react-three/postprocessing';
 import { useReducedMotion } from 'framer-motion';
@@ -257,7 +257,7 @@ function TelemetryReadout({ fps, frameTime, frozen }: { fps: number; frameTime: 
   );
 }
 
-export default function TelemetryHud({ className }: { className?: string }) {
+export default React.memo(function TelemetryHud({ className }: { className?: string }) {
   const reduced = useReducedMotion();
   const frozen = !!reduced;
   const { fps, frameTime, sparkline } = useRealTelemetry(!frozen);

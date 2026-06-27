@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import TelemetryHud from './TelemetryHud';
 import { useInViewMount } from '@/lib/useInViewMount';
 
@@ -23,7 +24,7 @@ const BRACKETS = {
   br: 'M11 21 L21 21 L21 11',
 } as const;
 
-export default function HudFrame({
+export default React.memo(function HudFrame({
   label,
   className = '',
   variant = 'panel',

@@ -14,7 +14,7 @@
  * from globals.css to stay monochrome and consistent with TelemetryPanel (C1, C3).
  */
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import {
   generateJarvisTelemetry,
@@ -63,7 +63,7 @@ const PHASE_ICONS: Record<string, string> = {
   repair: '\u25C8',   // ◈
 };
 
-export default function JarvisTelemetry() {
+export default React.memo(function JarvisTelemetry() {
   const prefersReducedMotion = useReducedMotion();
   const telemetry = useJarvisTelemetry(!prefersReducedMotion);
 

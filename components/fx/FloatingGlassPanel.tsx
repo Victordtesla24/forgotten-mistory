@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { MeshTransmissionMaterial } from '@react-three/drei';
 import * as THREE from 'three';
@@ -138,7 +138,7 @@ interface FloatingGlassPanelProps {
   reduced: boolean;
 }
 
-export default function FloatingGlassPanel({ color, reduced }: FloatingGlassPanelProps) {
+export default React.memo(function FloatingGlassPanel({ color, reduced }: FloatingGlassPanelProps) {
   const [mounted, setMounted] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 

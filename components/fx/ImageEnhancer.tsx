@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 /**
@@ -43,7 +43,7 @@ function generateGrid(): number[][] {
 
 const PIXEL_GRID = generateGrid();
 
-export default function ImageEnhancer({
+export default React.memo(function ImageEnhancer({
   className = '',
   project = 'image-enhancer',
 }: {

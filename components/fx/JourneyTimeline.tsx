@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 interface TimelineEvent {
@@ -18,7 +18,7 @@ const EVENTS: TimelineEvent[] = [
 ];
 const TW = 300; const TH = 120; const TY = 55;
 
-export default function JourneyTimeline({ className = '', project }: { className?: string; project?: string }) {
+export default React.memo(function JourneyTimeline({ className = '', project }: { className?: string; project?: string }) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);

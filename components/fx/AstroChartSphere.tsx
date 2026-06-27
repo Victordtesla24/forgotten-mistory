@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { PALETTE } from '@/lib/palette';
 
@@ -178,7 +178,7 @@ function ChartRings() {
 
 // ── Main component ──
 
-export default function AstroChartSphere({ className = '', project }: { className?: string; project?: string }) {
+export default React.memo(function AstroChartSphere({ className = '', project }: { className?: string; project?: string }) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);

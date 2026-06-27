@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { materializeVertex, materializeFragment } from '@/components/fx/shaders/materializeParticles';
@@ -128,7 +128,7 @@ function ParticleField({ origin, color }: { origin: Origin; color: string }) {
   );
 }
 
-export default function DetailMaterialize({ origin, color }: { origin: Origin; color: string }) {
+export default React.memo(function DetailMaterialize({ origin, color }: { origin: Origin; color: string }) {
   const wrapRef = useRef<HTMLDivElement>(null);
 
   return (

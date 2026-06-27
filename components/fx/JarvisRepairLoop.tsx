@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { PALETTE } from '@/lib/palette';
 
@@ -34,7 +34,7 @@ const EDGES = [0, 1, 2, 3, 0] as const;
 
 const CYCLE_INTERVAL_MS = 1200;
 
-export default function JarvisRepairLoop({ className = '', project = 'Error-Management-System' }: { className?: string; project?: string }) {
+export default React.memo(function JarvisRepairLoop({ className = '', project = 'Error-Management-System' }: { className?: string; project?: string }) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);

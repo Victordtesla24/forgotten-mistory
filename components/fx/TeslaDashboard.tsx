@@ -16,7 +16,7 @@
  * from globals.css to stay monochrome and consistent with TelemetryPanel (C1, C3).
  */
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import { generateTeslaTelemetry, type TeslaReadout } from '@/lib/telemetryFeed';
 
@@ -111,7 +111,7 @@ function BarGauge({
   );
 }
 
-export default function TeslaDashboard() {
+export default React.memo(function TeslaDashboard() {
   const prefersReducedMotion = useReducedMotion();
   const telemetry = useTeslaTelemetry(!prefersReducedMotion);
 

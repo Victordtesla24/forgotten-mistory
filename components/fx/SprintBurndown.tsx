@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
@@ -47,7 +47,7 @@ function pathLength(path: string): number {
   return len;
 }
 
-export default function SprintBurndown({ className = '', project }: { className?: string; project?: string }) {
+export default React.memo(function SprintBurndown({ className = '', project }: { className?: string; project?: string }) {
   const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
