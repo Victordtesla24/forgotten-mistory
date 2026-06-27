@@ -165,3 +165,17 @@ playwright-report/
 # fmctl runtime state (pidfiles, server logs) + local Lighthouse reports
 .fmctl/
 .lighthouseci/
+
+# Overhaul scratch / build debris (kept out of repo)
+.next.stale*/
+.next.prod.bak/
+_next.*
+_test_*
+_write_*.py
+scripts/_*
+scripts/__pycache__/
+.audit-evidence/
+playwright.temp.config.ts
+playwright.audit.config.ts
+playwright.review.config.ts
+vitest.config.ts
