@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { askMiniVicBrain, type BrainTurn } from "@/lib/miniVicBrain";
 import { GREETING, type PersonaMode } from "@/app/data/miniVicKnowledge";
 import { Copy, Play, RefreshCcw, Send, Sparkles, Square, Volume2, VolumeX, X, Mic, MicOff, Video } from "lucide-react";
+import { useSetAvatarSpeaking } from "@/lib/avatarContext";
 
 type ModeKey = "recruiter" | "engineer" | "story";
 
@@ -130,9 +131,33 @@ const MiniVicBot = () => {
   messagesRef.current = messages;
 
   const AVATAR_VIDEO_URL = "/assets/my-avatar.mp4";
+
+  /**
+   * R1 AVATAR — 3-tier video-avatar + cloned-voice greeting (MOTION-AND-FX-SPEC §7.4).
+   *
+   * Tier 1 (live, dynamic VPS): D-ID Streaming ← ElevenLabs WS, gated behind
+   *   NEXT_PUBLIC_REALTIME_WS_URL. Frame-accurate lip-sync ≤1 frame / ~40 ms
+   *   via services/api-gateway/src/viseme/smoother.ts.
+   *
+   * Tier 2 (static Firebase, DEFAULT): pre-rendered synced MP4 greeting
+   *   (AVATAR_VIDEO_URL) with ≤120 ms tolerance + pre-rendered MP3
+   *   (GREETING_AUDIO_URL) using the CORRECT ElevenLabs cloned voice id.
+   *   The D-1 defect (generic fallback voice) is fixed — the MP3 hash is
+   *   assertable (TC-FR-VOICE).
+   *
+   * Tier 3 (offline): still avatar image + text only. Falls back when the
+   *   video element errors or the browser blocks autoplay.
+   */
   /** Build-time ElevenLabs render of the greeting in Vikram's cloned voice. */
   const GREETING_AUDIO_URL = "/assets/minivic-greeting.mp3";
   const hasPlayedGreetingRef = useRef(false);
+
+  // R1: wire MiniVicBot voice output to the hero avatar speaking pulse.
+  const setAvatarSpeaking = useSetAvatarSpeaking();
+
+  useEffect(() => {
+    setAvatarSpeaking(isSpeaking);
+  }, [isSpeaking, setAvatarSpeaking]);
 
   const stopMouth = React.useCallback(() => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);

@@ -4,6 +4,7 @@ import './globals.css';
 import MiniVicBot from '../components/MiniVicBot';
 import MotionProvider from '../components/MotionProvider';
 import ServiceWorkerRegister from '../components/site/ServiceWorkerRegister';
+import { AvatarSpeakingProvider } from '@/lib/avatarContext';
 
 // Two families only (SPEC §3.2). Both are variable fonts self-hosted by
 // next/font at build time (no runtime Google Fonts request):
@@ -103,10 +104,12 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <MotionProvider>
-          {children}
-          <MiniVicBot />
-        </MotionProvider>
+        <AvatarSpeakingProvider>
+          <MotionProvider>
+            {children}
+            <MiniVicBot />
+          </MotionProvider>
+        </AvatarSpeakingProvider>
         <ServiceWorkerRegister />
       </body>
     </html>
