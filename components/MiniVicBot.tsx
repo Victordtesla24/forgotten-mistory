@@ -5,6 +5,7 @@ import { askMiniVicBrain, type BrainTurn } from "@/lib/miniVicBrain";
 import { GREETING, type PersonaMode } from "@/app/data/miniVicKnowledge";
 import { Copy, Play, RefreshCcw, Send, Sparkles, Square, Volume2, VolumeX, X, Mic, MicOff, Video } from "lucide-react";
 import { useSetAvatarSpeaking } from "@/lib/avatarContext";
+import { PALETTE } from "@/lib/palette";
 
 type ModeKey = "recruiter" | "engineer" | "story";
 
@@ -88,6 +89,14 @@ const logMiniVicIssue = (...args: unknown[]) => {
     // eslint-disable-next-line no-console
     console.warn(...args);
   }
+};
+
+/** Convert a PALETTE hex color to an rgba() string for canvas 2D contexts. */
+const hexToRgba = (hex: string, alpha: number): string => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
 const MiniVicBot = () => {
@@ -384,9 +393,9 @@ const MiniVicBot = () => {
 
       // Draw a holographic waveform
       ctx.lineWidth = 2;
-      ctx.strokeStyle = 'rgba(201, 205, 214, 0.8)'; // cool grey (mist-200)
+      ctx.strokeStyle = hexToRgba(PALETTE.steel, 0.8);
       ctx.shadowBlur = 8;
-      ctx.shadowColor = 'rgb(201 205 214)';
+      ctx.shadowColor = PALETTE.steel;
       
       ctx.beginPath();
       
@@ -453,9 +462,9 @@ const MiniVicBot = () => {
       const t = (performance.now() - started) / 1000;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.lineWidth = 2;
-      ctx.strokeStyle = "rgba(201, 205, 214, 0.8)";
+      ctx.strokeStyle = hexToRgba(PALETTE.steel, 0.8);
       ctx.shadowBlur = 8;
-      ctx.shadowColor = "rgb(201 205 214)";
+      ctx.shadowColor = PALETTE.steel;
 
       const openAmount = 6 + Math.abs(Math.sin(t * 7.3)) * 7 + Math.abs(Math.sin(t * 3.1)) * 2;
       const segments = 48;
