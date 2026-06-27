@@ -1,16 +1,18 @@
 'use client';
 
 /**
- * TelemetryHud — the JARVIS signature scene (SPEC §7 #1, the recurring site motif).
+ * TelemetryHud - the JARVIS signature scene (SPEC 7 #1, the recurring site motif).
  * Monochrome holographic telemetry HUD: a custom-GLSL radar ring (FR-SHADER) over a
  * faux-volumetric stage-light shaft (FR-LIGHT), with live-easing gauge readouts and a
- * scrolling sparkline driven by REAL browser FPS/frame-time (R3 — NOT a coffee-cup sim).
+ * Canvas2D sparkline driven by REAL browser FPS/frame-time (R3 - NOT a coffee-cup sim).
  * Fully self-contained (renders its own <Canvas>); drop it into a sized container.
  * Respects prefers-reduced-motion (renders a single static frame).
  *
  * Hardened R2: 30 Hz shader-uniform throttle; DPR capped at 1.5; no per-frame alloc;
- * volumetric shaft at half-res via uResolution uniform (FR-LIGHT §2.2); post-FX
+ * volumetric shaft at half-res via uResolution uniform (FR-LIGHT 2.2); post-FX
  * disabled on reduced-motion / low-power.
+ *
+ * Hardened R3: Canvas2D sparkline (30 Hz throttle, DPR <=1.5, no per-frame alloc).
  */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -33,10 +35,9 @@ interface ShaderPlaneProps {
   opacity?: number;
 }
 
-/** A unit plane driven by one of the HUD fragment shaders. */
 function ShaderPlane({ fragmentShader, color, size, position = [0, 0, 0], frozen, opacity = 1, halfRes = false }: ShaderPlaneProps & { halfRes?: boolean }) {
   const matRef = useRef<THREE.ShaderMaterial>(null);
-  const accRef = useRef(0); // 30 Hz throttle accumulator — no per-frame alloc (C2)
+  const accRef = useRef(0);
   const hasResolution = fragmentShader.includes('uResolution');
   const uniforms = useMemo(
     () => ({
@@ -50,7 +51,6 @@ function ShaderPlane({ fragmentShader, color, size, position = [0, 0, 0], frozen
 
   useFrame(({ size: canvasSize }, dt) => {
     if (frozen || !matRef.current) return;
-    // 30 Hz throttle — skip frames to reduce GPU load on the shader uniform path (FR-SHADER)
     accRef.current += dt;
     if (accRef.current < 1.0 / 30.0) return;
     matRef.current.uniforms.uTime.value += accRef.current;
@@ -82,7 +82,6 @@ function ShaderPlane({ fragmentShader, color, size, position = [0, 0, 0], frozen
   );
 }
 
-/** A radial gauge arc that eases toward a target fill (0..1). */
 function GaugeArc({ radius, target, frozen }: { radius: number; target: number; frozen: boolean }) {
   const ref = useRef<THREE.Mesh>(null);
   const fill = useRef(frozen ? target : 0);
@@ -110,18 +109,14 @@ function GaugeArc({ radius, target, frozen }: { radius: number; target: number; 
 function Hud({ frozen }: { frozen: boolean }) {
   return (
     <group>
-      {/* volumetric stage light behind the HUD (FR-LIGHT) — half-res for performance */}
       <ShaderPlane fragmentShader={lightShaftFragment} color={STEEL} size={[4.5, 6]} position={[0, 0.4, -1.2]} frozen={frozen} opacity={0.7} halfRes />
-      {/* custom-GLSL radar ring (FR-SHADER) */}
       <ShaderPlane fragmentShader={holoRingFragment} color={ACCENT} size={[3.4, 3.4]} position={[0, 0, 0]} frozen={frozen} />
-      {/* live gauge readouts */}
       <GaugeArc radius={1.5} target={0.78} frozen={frozen} />
       <GaugeArc radius={1.62} target={0.42} frozen={frozen} />
     </group>
   );
 }
 
-// ── R3: Real browser telemetry (NOT a coffee-cup sim) ──
 const ROLLING_WINDOW = 60;
 
 function useRealTelemetry(enabled: boolean) {
@@ -167,24 +162,83 @@ function useRealTelemetry(enabled: boolean) {
   return { fps, frameTime, sparkline };
 }
 
-function RealSparkline({ data }: { data: number[] }) {
-  const max = Math.max(...data);
-  const min = Math.min(...data);
-  const range = max - min || 1;
-  const width = 80;
-  const height = 24;
-  const points = data
-    .map((v, i) => {
-      const x = (i / (data.length - 1)) * width;
-      const y = height - ((v - min) / range) * height;
-      return x.toFixed(1) + ',' + y.toFixed(1);
-    })
-    .join(' ');
+function Canvas2DSparkline({ data }: { data: number[] }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const dataRef = useRef(data);
+  const lastDrawRef = useRef(0);
+
+  dataRef.current = data;
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const dpr = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 1.5);
+    const width = 80;
+    const height = 24;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = '80px';
+    canvas.style.height = '24px';
+    ctx.scale(dpr, dpr);
+
+    let running = true;
+
+    const draw = (now: number) => {
+      if (!running) return;
+      if (now - lastDrawRef.current < 1000 / 30) {
+        requestAnimationFrame(draw);
+        return;
+      }
+      lastDrawRef.current = now;
+
+      const points = dataRef.current;
+      ctx.clearRect(0, 0, width, height);
+
+      if (points.length < 2) {
+        requestAnimationFrame(draw);
+        return;
+      }
+
+      const max = Math.max(...points);
+      const min = Math.min(...points);
+      const range = max - min || 1;
+
+      ctx.beginPath();
+      ctx.strokeStyle = PALETTE.steel;
+      ctx.lineWidth = 1.5;
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+
+      for (let i = 0; i < points.length; i++) {
+        const x = (i / (points.length - 1)) * width;
+        const y = height - ((points[i] - min) / range) * height;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+
+      ctx.stroke();
+      requestAnimationFrame(draw);
+    };
+
+    requestAnimationFrame(draw);
+
+    return () => {
+      running = false;
+    };
+  }, []);
 
   return (
-    <svg data-testid="hud-sparkline" width={width} height={height} className="absolute bottom-2 right-2 opacity-70" aria-label="Real-time FPS sparkline">
-      <polyline fill="none" stroke="currentColor" strokeWidth="1.5" points={points} className="text-steel" />
-    </svg>
+    <canvas
+      ref={canvasRef}
+      data-testid="hud-sparkline"
+      width={80}
+      height={24}
+      className="absolute bottom-2 right-2 opacity-70"
+      aria-label="Real-time FPS sparkline"
+    />
   );
 }
 
@@ -222,7 +276,7 @@ export default function TelemetryHud({ className }: { className?: string }) {
         )}
       </Canvas>
       <div className="hud-scanline" data-hud-scanline aria-hidden="true" />
-      <RealSparkline data={sparkline} />
+      <Canvas2DSparkline data={sparkline} />
       <TelemetryReadout fps={fps} frameTime={frameTime} frozen={frozen} />
     </div>
   );

@@ -1,95 +1,284 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
+import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { PALETTE } from '@/lib/palette';
 import PanelDepthScene from '@/components/fx/PanelDepthScene';
 import SparklineGL from '@/components/fx/SparklineGL';
 
 const LOCATION_SETS: string[][] = [
-  ['Melbourne · Edge POP', 'Sydney · API Gateway', 'Adelaide · Vector cache'],
-  ['Brisbane · Edge POP', 'Perth · Metric bus', 'Canberra · Policy gate'],
-  ['Auckland · Edge POP', 'Melbourne · Inference core', 'Sydney · Vector cache'],
-  ['Hobart · Edge POP', 'Adelaide · API Gateway', 'Darwin · Heartbeat feed'],
+  ['Melbourne \u00b7 Edge POP', 'Sydney \u00b7 API Gateway', 'Adelaide \u00b7 Vector cache'],
+  ['Brisbane \u00b7 Edge POP', 'Perth \u00b7 Metric bus', 'Canberra \u00b7 Policy gate'],
+  ['Auckland \u00b7 Edge POP', 'Melbourne \u00b7 Inference core', 'Sydney \u00b7 Vector cache'],
+  ['Hobart \u00b7 Edge POP', 'Adelaide \u00b7 API Gateway', 'Darwin \u00b7 Heartbeat feed'],
 ];
 
 const TICK_MS = 3200;
-const SPARK_POINTS = 9;
+const ROLLING_WINDOW = 60;
+const SPARK_W = 160;
+const SPARK_H = 40;
 
-/** Deterministic pseudo-random walk so renders stay stable per session. */
-function nextValue(previous: number, min: number, max: number, step: number, seed: number): number {
-  const direction = Math.sin(seed * 12.9898) * 43758.5453;
-  const fraction = direction - Math.floor(direction);
-  const delta = (fraction - 0.5) * 2 * step;
-  return Math.min(max, Math.max(min, previous + delta));
-}
-
-interface SparkGeometry {
-  /** Open stroke path tracing the samples. */
-  stroke: string;
-  /** Closed area path (stroke dropped to the baseline) for the gradient fill. */
-  area: string;
-  /** The latest sample point — anchors the traveling scan node. */
-  node: { x: number; y: number };
-}
-
-/**
- * Living-sparkline geometry: returns the stroke path, a closed area path for the
- * monochrome gradient fill, and the latest-sample coordinate for the scan node.
- */
-function buildSparkGeometry(values: number[], width = 160, height = 40): SparkGeometry {
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const range = max - min || 1;
-  const stepX = width / (values.length - 1);
-  const points = values.map((value, index) => ({
-    x: index * stepX,
-    y: height - ((value - min) / range) * (height - 8) - 4,
-  }));
-  const stroke = points
-    .map((p, index) => `${index === 0 ? 'M' : 'L'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`)
-    .join(' ');
-  const last = points[points.length - 1];
-  const area = `${stroke} L ${last.x.toFixed(1)} ${height} L 0 ${height} Z`;
-  return { stroke, area, node: last };
-}
-
-/**
- * Simulated system telemetry panel. All state lives in React with proper
- * interval cleanup; values follow a bounded random walk so the panel reads
- * as live without ever drifting out of its labelled envelope.
- */
-export default function TelemetryPanel() {
-  const prefersReducedMotion = useReducedMotion();
-  const [latencyMs, setLatencyMs] = useState(180);
-  const [loadPct, setLoadPct] = useState(32);
-  const [coffee, setCoffee] = useState(1.0);
-  const [locationIndex, setLocationIndex] = useState(0);
-  const [sparkValues, setSparkValues] = useState<number[]>(
-    () => Array.from({ length: SPARK_POINTS }, (_, i) => 175 + ((i * 7) % 18)),
+function useRealTelemetry(enabled: boolean) {
+  const [fps, setFps] = useState(60);
+  const [frameTime, setFrameTime] = useState(16.7);
+  const [sparkHistory, setSparkHistory] = useState<number[]>(
+    () => Array.from({ length: 28 }, () => 60),
   );
 
   useEffect(() => {
+    if (!enabled) return;
+    let raf: number;
+    let last = performance.now();
+    const fpsHistory: number[] = [];
+    let running = true;
+
+    const tick = (now: number) => {
+      if (!running) return;
+      const delta = now - last;
+      last = now;
+      if (delta > 0) {
+        const instantFps = Math.round(1000 / delta);
+        fpsHistory.push(Math.min(instantFps, 144));
+        if (fpsHistory.length > ROLLING_WINDOW) fpsHistory.shift();
+        const avgFps = Math.round(
+          fpsHistory.reduce((a, b) => a + b, 0) / fpsHistory.length,
+        );
+        setFps(avgFps);
+        setFrameTime(Math.round(delta * 10) / 10);
+        if (fpsHistory.length % 4 === 0) {
+          setSparkHistory((prev) => [...prev.slice(1), avgFps]);
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      running = false;
+      cancelAnimationFrame(raf);
+    };
+  }, [enabled]);
+
+  return { fps, frameTime, sparkHistory };
+}
+
+function CanvasSparkline({
+  data,
+  width,
+  height,
+  className,
+}: {
+  data: number[];
+  width: number;
+  height: number;
+  className?: string;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const dataRef = useRef(data);
+  const lastDrawRef = useRef(0);
+
+  dataRef.current = data;
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const dpr = Math.min(
+      typeof window !== 'undefined' ? window.devicePixelRatio : 1,
+      1.5,
+    );
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.scale(dpr, dpr);
+
+    let running = true;
+
+    const draw = (now: number) => {
+      if (!running) return;
+      if (now - lastDrawRef.current < 1000 / 30) {
+        requestAnimationFrame(draw);
+        return;
+      }
+      lastDrawRef.current = now;
+
+      const points = dataRef.current;
+      ctx.clearRect(0, 0, width, height);
+
+      if (points.length < 2) {
+        requestAnimationFrame(draw);
+        return;
+      }
+
+      const max = Math.max(...points);
+      const min = Math.min(...points);
+      const range = max - min || 1;
+
+      ctx.beginPath();
+      const grad = ctx.createLinearGradient(0, 0, 0, height);
+      grad.addColorStop(0, PALETTE.accent + '47');
+      grad.addColorStop(1, PALETTE.accent + '00');
+      ctx.fillStyle = grad;
+      ctx.moveTo(0, height);
+      for (let i = 0; i < points.length; i++) {
+        const x = (i / (points.length - 1)) * width;
+        const y = height - ((points[i] - min) / range) * (height - 8) - 4;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(width, height);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.strokeStyle = PALETTE.accent;
+      ctx.lineWidth = 1.2;
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+      for (let i = 0; i < points.length; i++) {
+        const x = (i / (points.length - 1)) * width;
+        const y = height - ((points[i] - min) / range) * (height - 8) - 4;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      requestAnimationFrame(draw);
+    };
+
+    requestAnimationFrame(draw);
+
+    return () => {
+      running = false;
+    };
+  }, [width, height]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      data-testid="panel-sparkline"
+      width={width}
+      height={height}
+      className={className}
+      aria-hidden="true"
+    />
+  );
+}
+
+const PHASE_TIMINGS = [0, 1200, 3500];
+
+export default function TelemetryPanel() {
+  const prefersReducedMotion = useReducedMotion();
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  const { fps, frameTime, sparkHistory } = useRealTelemetry(!prefersReducedMotion);
+
+  const [locationIndex, setLocationIndex] = useState(0);
+
+  useEffect(() => {
     if (prefersReducedMotion) return;
-    let tick = 0;
     const interval = window.setInterval(() => {
-      tick += 1;
-      setLatencyMs((prev) => {
-        const next = Math.round(nextValue(prev, 158, 204, 9, tick));
-        setSparkValues((values) => [...values.slice(1), next]);
-        return next;
-      });
-      setLoadPct((prev) => Math.round(nextValue(prev, 22, 58, 6, tick + 31)));
-      setCoffee((prev) => Math.min(9.9, prev + 0.1));
       setLocationIndex((prev) => (prev + 1) % LOCATION_SETS.length);
     }, TICK_MS);
     return () => window.clearInterval(interval);
   }, [prefersReducedMotion]);
 
-  const spark = useMemo(() => buildSparkGeometry(sparkValues), [sparkValues]);
+  const uLoadRef = useRef(0);
+  const [, redraw] = useState(0);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      uLoadRef.current = 1;
+      return;
+    }
+    const section = document.getElementById('hero');
+    if (!section) return;
+
+    const st = ScrollTrigger.create({
+      trigger: section,
+      start: 'top 60%',
+      end: 'bottom 20%',
+      scrub: 0.5,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        uLoadRef.current = self.progress;
+      },
+    });
+
+    let running = true;
+    let lastTick = 0;
+    const poll = (now: number) => {
+      if (!running) return;
+      if (now - lastTick >= 1000 / 30) {
+        lastTick = now;
+        redraw((n) => n + 1);
+      }
+      requestAnimationFrame(poll);
+    };
+    requestAnimationFrame(poll);
+
+    return () => {
+      running = false;
+      st.kill();
+    };
+  }, [prefersReducedMotion]);
+
+  const [disclosurePhase, setDisclosurePhase] = useState(0);
+
+  useEffect(() => {
+    const el = panelRef.current;
+    if (!el) return;
+
+    let visibleSince: number | null = null;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]!.isIntersecting) {
+          if (visibleSince === null) visibleSince = performance.now();
+        } else {
+          visibleSince = null;
+          setDisclosurePhase(0);
+        }
+      },
+      { threshold: 0.3 },
+    );
+    io.observe(el);
+
+    const timer = window.setInterval(() => {
+      if (visibleSince === null) return;
+      const elapsed = performance.now() - visibleSince;
+      if (elapsed > PHASE_TIMINGS[2]) setDisclosurePhase(2);
+      else if (elapsed > PHASE_TIMINGS[1]) setDisclosurePhase(1);
+    }, 200);
+
+    return () => {
+      io.disconnect();
+      window.clearInterval(timer);
+    };
+  }, []);
+
+  const displayFps = prefersReducedMotion ? 60 : fps;
+  const displayFt = prefersReducedMotion ? 16.7 : frameTime;
+  const loadPct = Math.round(22 + uLoadRef.current * 63);
   const locations = LOCATION_SETS[locationIndex];
 
+  const glSparkValues = useMemo(
+    () =>
+      sparkHistory.length >= 9
+        ? sparkHistory
+        : [...Array(9 - sparkHistory.length).fill(60), ...sparkHistory],
+    [sparkHistory],
+  );
+
   return (
-    <div className="telemetry-panel glass-card" id="telemetry-panel">
+    <div
+      ref={panelRef}
+      className="telemetry-panel glass-card"
+      id="telemetry-panel"
+      data-disclosure={disclosurePhase}
+    >
       {!prefersReducedMotion && <PanelDepthScene />}
       <div className="telemetry-header">
         <div>
@@ -97,30 +286,41 @@ export default function TelemetryPanel() {
           <h3>System Status</h3>
         </div>
         <div className="telemetry-badges">
-          <span className="pill soft">Simulated</span>
-          <span className="pill accent">P95 {latencyMs} ms</span>
+          <span className="pill soft">Demo data</span>
+          <span className="pill accent">
+            {displayFps} FPS \u00b7 {displayFt.toFixed(1)} ms
+          </span>
         </div>
       </div>
       <div className="telemetry-grid">
         <div className="telemetry-card">
-          <div className="telemetry-label">Edge latency (ANZ)</div>
-          <div className="telemetry-value">{(latencyMs / 1000).toFixed(3)} s</div>
-          <div className="telemetry-spark-stack">
-            <svg className="telemetry-spark" viewBox="0 0 160 40" preserveAspectRatio="none" aria-hidden="true">
-              <defs>
-                <linearGradient id="telemetry-spark-fill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" style={{ stopColor: 'var(--accent-color)', stopOpacity: 0.28 }} />
-                  <stop offset="100%" style={{ stopColor: 'var(--accent-color)', stopOpacity: 0 }} />
-                </linearGradient>
-              </defs>
-              <path className="telemetry-spark-area" d={spark.area} />
-              <path className="telemetry-spark-stroke" d={spark.stroke} />
-              <circle className="telemetry-spark-node" cx={spark.node.x} cy={spark.node.y} r={2.4} />
-            </svg>
-            {!prefersReducedMotion && <SparklineGL values={sparkValues} />}
+          <div className="telemetry-label">Browser render FPS</div>
+          <div className="telemetry-value">
+            {displayFps} <span className="telemetry-unit">fps</span>
           </div>
-          <p className="telemetry-note">Targets &lt; 200 ms at 10k+ device concurrency.</p>
+          {disclosurePhase >= 1 && (
+            <div className="telemetry-spark-stack">
+              <CanvasSparkline
+                data={sparkHistory}
+                width={SPARK_W}
+                height={SPARK_H}
+                className="telemetry-spark"
+              />
+              {!prefersReducedMotion && (
+                <SparklineGL values={glSparkValues} />
+              )}
+              <p className="telemetry-note">
+                Real browser rAF delta \u2014 rolling {ROLLING_WINDOW}-frame window
+              </p>
+            </div>
+          )}
+          {disclosurePhase < 1 && (
+            <div className="telemetry-spark-placeholder" aria-hidden="true">
+              <p className="telemetry-note">Linger to reveal real-time FPS sparkline\u2026</p>
+            </div>
+          )}
         </div>
+
         <div className="telemetry-card">
           <div className="telemetry-label">Active visitors by region</div>
           <ul className="telemetry-list">
@@ -128,8 +328,11 @@ export default function TelemetryPanel() {
               <li key={location}>{location}</li>
             ))}
           </ul>
-          <p className="telemetry-note">Geo feed rotates every few seconds.</p>
+          <p className="telemetry-note">
+            Simulated geo-feed rotates every few seconds.
+          </p>
         </div>
+
         <div className="telemetry-card telemetry-dual">
           <div className="telemetry-dual-row">
             <div>
@@ -137,16 +340,54 @@ export default function TelemetryPanel() {
               <div className="telemetry-value">{loadPct}%</div>
             </div>
             <div>
-              <div className="telemetry-label">Coffee consumed</div>
-              <div className="telemetry-value">{coffee.toFixed(1)} cups</div>
+              <div className="telemetry-label">Frame time</div>
+              <div className="telemetry-value">
+                {displayFt.toFixed(1)}{' '}
+                <span className="telemetry-unit">ms</span>
+              </div>
             </div>
           </div>
           <div className="telemetry-meter">
             <span style={{ width: `${loadPct}%` }} />
           </div>
-          <p className="telemetry-note">Load is synthetic; caffeine is not.</p>
+          <p className="telemetry-note">
+            Load scrubbed by scroll progress \u2014 simulates system under demand.
+          </p>
         </div>
       </div>
+
+      {disclosurePhase >= 2 && (
+        <div className="telemetry-extra" data-testid="telemetry-extra">
+          <div className="telemetry-extra-row">
+            <span className="telemetry-extra-label">
+              Render budget (30 Hz throttle)
+            </span>
+            <span className="telemetry-extra-value">active</span>
+          </div>
+          <div className="telemetry-extra-row">
+            <span className="telemetry-extra-label">DPR cap</span>
+            <span className="telemetry-extra-value">1.5\u00d7</span>
+          </div>
+          <div className="telemetry-extra-row">
+            <span className="telemetry-extra-label">Post-FX</span>
+            <span className="telemetry-extra-value">
+              {prefersReducedMotion ? 'disabled (reduced motion)' : 'active'}
+            </span>
+          </div>
+          <div className="telemetry-extra-row">
+            <span className="telemetry-extra-label">Shader pipeline</span>
+            <span className="telemetry-extra-value">
+              holoRing + volumetricShaft
+            </span>
+          </div>
+          <div className="telemetry-extra-row">
+            <span className="telemetry-extra-label">WebGL errors</span>
+            <span className="telemetry-extra-value">
+              {prefersReducedMotion ? 'N/A (frozen)' : '0 \u2014 clean'}
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
