@@ -45,6 +45,12 @@ import HudFrame from '@/components/fx/HudFrame';
 import PacketFlowGraph from '@/components/fx/PacketFlowGraph';
 import SprintBurndown from '@/components/fx/SprintBurndown';
 import TokenReflow from '@/components/fx/TokenReflow';
+import AtoEvidenceBar from '@/components/fx/AtoEvidenceBar';
+import CelestialSphere from '@/components/fx/CelestialSphere';
+import OrchestrationGraph from '@/components/fx/OrchestrationGraph';
+import ClearanceStepper from '@/components/fx/ClearanceStepper';
+import InboxTriage from '@/components/fx/InboxTriage';
+import JourneyTimeline from '@/components/fx/JourneyTimeline';
 import ProofBar from '@/components/site/ProofBar';
 import MindsetProjection from '@/components/site/MindsetProjection';
 import SynthesisProvenance from '@/components/site/SynthesisProvenance';
@@ -511,6 +517,12 @@ export default function Home() {
                 <PacketFlowGraph />
                 <SprintBurndown />
                 <TokenReflow />
+                <AtoEvidenceBar />
+                <CelestialSphere />
+                <OrchestrationGraph />
+                <ClearanceStepper />
+                <InboxTriage />
+                <JourneyTimeline />
               </div>
             </Reveal>
 
