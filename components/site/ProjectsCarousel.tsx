@@ -272,7 +272,21 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
     startScroll: 0,
     dragging: false,
     moved: false,
+    lastX: 0,
+    lastT: 0,
+    velocity: 0,
   });
+  const momentumRaf = useRef(0);
+
+  const stopMomentum = () => {
+    if (momentumRaf.current) {
+      cancelAnimationFrame(momentumRaf.current);
+      momentumRaf.current = 0;
+    }
+  };
+
+  // Cancel any in-flight fling if the component unmounts mid-decay.
+  useEffect(() => stopMomentum, []);
 
   // Reset hovered card on pointer leave from the whole carousel
   useEffect(() => {
@@ -287,22 +301,56 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
     const rail = railRef.current;
     if (!rail || e.pointerType === 'touch') return;
     e.preventDefault();
-    dragState.current = { startX: e.clientX, startScroll: rail.scrollLeft, dragging: true, moved: false };
+    stopMomentum();
+    dragState.current = {
+      startX: e.clientX,
+      startScroll: rail.scrollLeft,
+      dragging: true,
+      moved: false,
+      lastX: e.clientX,
+      lastT: e.timeStamp,
+      velocity: 0,
+    };
     rail.setPointerCapture(e.pointerId);
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
     const rail = railRef.current;
-    if (!rail || !dragState.current.dragging) return;
-    const delta = e.clientX - dragState.current.startX;
-    if (Math.abs(delta) > 4) dragState.current.moved = true;
-    rail.scrollLeft = dragState.current.startScroll - delta;
+    const s = dragState.current;
+    if (!rail || !s.dragging) return;
+    const delta = e.clientX - s.startX;
+    if (Math.abs(delta) > 4) s.moved = true;
+    rail.scrollLeft = s.startScroll - delta;
+    // Track scroll velocity (px/ms) so the release can hand off to an inertial fling.
+    const dt = e.timeStamp - s.lastT;
+    if (dt > 0) {
+      s.velocity = -(e.clientX - s.lastX) / dt;
+      s.lastX = e.clientX;
+      s.lastT = e.timeStamp;
+    }
   };
 
   const endDrag = (e: React.PointerEvent) => {
     const rail = railRef.current;
+    const s = dragState.current;
     if (rail?.hasPointerCapture(e.pointerId)) rail.releasePointerCapture(e.pointerId);
-    dragState.current.dragging = false;
+    s.dragging = false;
+    if (!rail || prefersReducedMotion) return;
+
+    // Inertial decay: convert the px/ms velocity into a per-frame fling, then let
+    // friction settle it. Stops at the track ends or once the motion is sub-pixel.
+    let velocity = s.velocity * 16;
+    if (Math.abs(velocity) < 0.6) return;
+    const FRICTION = 0.94;
+    const step = () => {
+      velocity *= FRICTION;
+      rail.scrollLeft += velocity;
+      const atStart = rail.scrollLeft <= 0;
+      const atEnd = rail.scrollLeft >= rail.scrollWidth - rail.clientWidth - 1;
+      momentumRaf.current =
+        Math.abs(velocity) > 0.4 && !atStart && !atEnd ? requestAnimationFrame(step) : 0;
+    };
+    momentumRaf.current = requestAnimationFrame(step);
   };
 
   const onClickCapture = (e: React.MouseEvent) => {
@@ -313,12 +361,35 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
     }
   };
 
+  /** Pointer-driven 3D tilt: write the rotation the glass surface reads via CSS vars. */
+  const onCardMove = (e: React.PointerEvent<HTMLAnchorElement>) => {
+    if (prefersReducedMotion || dragState.current.dragging) return;
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const nx = (e.clientX - rect.left) / rect.width - 0.5;
+    const ny = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.setProperty('--tilt-y', `${(nx * 9).toFixed(2)}deg`);
+    card.style.setProperty('--tilt-x', `${(-ny * 7).toFixed(2)}deg`);
+  };
+
+  const onCardLeave = (e: React.PointerEvent<HTMLAnchorElement>) => {
+    const card = e.currentTarget;
+    card.style.removeProperty('--tilt-y');
+    card.style.removeProperty('--tilt-x');
+  };
+
   return (
     <div className="carousel-wrapper catalogue-row" data-carousel="true">
       <div
         ref={railRef}
         className={`projects-carousel${prefersReducedMotion ? '' : ' catalogue-scroll'}`}
         id="projects-carousel"
+        data-carousel-stagger=""
+        initial="hidden"
+        whileInView="shown"
+        viewport={{ once: true, margin: '0px 0px -80px 0px' }}
+        variants={railVariants}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}

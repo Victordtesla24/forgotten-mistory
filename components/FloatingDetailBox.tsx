@@ -61,6 +61,11 @@ interface Origin {
   y: number;
 }
 
+interface Origin {
+  x: number;
+  y: number;
+}
+
 export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isLocked = false }: FloatingDetailBoxProps) {
   const [displayKey, setDisplayKey] = useState<string | null>(null);
   const reduced = !!useReducedMotion();

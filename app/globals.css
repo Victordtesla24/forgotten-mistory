@@ -31,6 +31,16 @@
     --ink-400: #8F93A3;
     --ink-300: #6E7178;
     --card-bg: rgb(244 246 250 / 0.03);
+    /* ── Shared card depth system (coherence pass): one radius, one shadow ramp,
+       one rim-light, one border ramp + sheen so every card surface reads as the
+       same lit glass instead of drifting per-section. ── */
+    --card-radius: 18px;
+    --card-border: rgb(255 255 255 / 0.09);
+    --card-border-hover: rgb(255 255 255 / 0.18);
+    --card-rim: inset 0 1px 0 rgb(244 246 250 / 0.07);
+    --card-shadow: 0 14px 44px -10px rgb(0 0 0 / 0.5);
+    --card-shadow-hover: 0 22px 60px -12px rgb(0 0 0 / 0.62), 0 0 28px rgb(244 246 250 / 0.06);
+    --card-sheen: radial-gradient(120% 90% at 18% 0%, rgb(244 246 250 / 0.06), transparent 58%);
     --cursor-size: 20px;
     /* Two families only (SPEC §3.2): Inter (body) + Space Grotesk (display).
        Both self-hosted via next/font; literal names are fallbacks only. */
@@ -196,7 +206,25 @@ body::before {
     color: var(--white);
     pointer-events: none;
     opacity: 1;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+    clip-path: inset(0 0 0 0);
+    transition: opacity 0.42s ease, visibility 0.42s ease,
+      clip-path 0.42s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Reveal wipe: clip away left→right while fading out (FR-BOOT / QT-8). */
+.preloader.is-revealing {
+    opacity: 0;
+    clip-path: inset(0 0 0 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /* No directional wipe under reduced motion — fade only. */
+    .preloader {
+        transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+    .preloader.is-revealing {
+        clip-path: inset(0 0 0 0);
+    }
 }
 
 .preloader-inner {
@@ -254,6 +282,22 @@ body::before {
     letter-spacing: 0.12em;
     color: rgb(201 205 214 / 0.92);
     text-shadow: 0 0 24px rgb(180 186 196 / 0.45);
+}
+
+/* Spring-physics "completion" pop when the arc closes at 100% (neutralised under
+   reduced motion by the global animation-duration override). */
+.preloader-arc {
+    transform-origin: center;
+}
+
+.preloader-arc.is-complete {
+    animation: arc-complete 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes arc-complete {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.07); }
+    100% { transform: scale(1); }
 }
 
 .preloader.hide {
@@ -322,6 +366,68 @@ body.cursor-enhanced .cursor-outline {
     opacity: 1;
 }
 
+/* Contextual cursor label (CursorGlow) — a small pill that trails the pointer and
+   surfaces a magnetic zone's data-cursor-label. Position is spring-driven inline
+   (framer transform); only opacity transitions here. */
+.cursor-label {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10001;
+    pointer-events: none;
+    margin: 0.7rem 0 0 1rem;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--ink-900);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.18s ease;
+}
+.cursor-label[data-show="true"] {
+    opacity: 1;
+}
+/* Cursor state machine — the outline reshapes per body[data-cursor-state]. */
+body[data-cursor-state="hover"] .cursor-outline {
+    width: calc(var(--cursor-size) * 1.8);
+    height: calc(var(--cursor-size) * 1.8);
+    background-color: rgb(244 246 250 / 0.08);
+}
+body[data-cursor-state="click"] .cursor-outline {
+    width: calc(var(--cursor-size) * 0.8);
+    height: calc(var(--cursor-size) * 0.8);
+}
+body[data-cursor-state="drag"] .cursor-outline {
+    width: calc(var(--cursor-size) * 1.25);
+    height: calc(var(--cursor-size) * 1.25);
+    background-color: rgb(244 246 250 / 0.05);
+}
+
+/* Magnetic hover zones — pull toward the pointer via --mag-x/--mag-y (CursorGlow).
+   The composed :hover rules fold the pull into each zone's existing lift so neither
+   gesture clobbers the other. */
+[data-magnetic] {
+    transform: translate(var(--mag-x, 0px), var(--mag-y, 0px));
+    transition: transform 0.22s var(--motion-ease-emphasized);
+    will-change: transform;
+}
+.btn-pillar[data-magnetic]:hover {
+    transform: translate(var(--mag-x, 0px), var(--mag-y, 0px)) scale(1.04);
+}
+.btn-primary[data-magnetic]:hover {
+    transform: translate(var(--mag-x, 0px), var(--mag-y, 0px)) scale(1.05);
+}
+@media (prefers-reduced-motion: reduce) {
+    [data-magnetic] {
+        transform: none;
+        transition: none;
+    }
+}
+
 /* Typography & Links */
 h1, h2, h3, .role {
     font-family: var(--font-heading);
@@ -345,7 +451,12 @@ nav {
     justify-content: space-between;
     align-items: center;
     z-index: 100;
-    mix-blend-mode: difference;
+    /* NOTE: mix-blend-mode was previously set on the whole <nav>. Because the
+       full-screen .nav-overlay is a child of <nav>, `difference` blended its
+       opaque #0a0a0a fill into a near-no-op — the page bled straight through the
+       open menu. The blend now lives only on the persistent .logo / .menu-toggle
+       (the bits that must stay legible over scrolling content); the overlay
+       renders as a normal opaque layer. */
 }
 
 .logo {
@@ -369,6 +480,35 @@ nav {
     font-weight: 500;
     position: relative;
     z-index: 101;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    mix-blend-mode: difference; /* legible over any scrolling content (scoped — not on <nav>) */
+}
+
+.menu-toggle__label {
+    display: inline-block;
+    min-width: 3.2ch; /* reserve width so Menu↔Close swap does not shift the icon */
+    text-align: right;
+}
+
+/* Hamburger↔X glyph: two centred bars framer rotates/translates into an X. */
+.menu-toggle__icon {
+    position: relative;
+    display: inline-block;
+    width: 22px;
+    height: 14px;
+}
+
+.menu-toggle__bar {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 22px;
+    height: 2px;
+    margin-top: -1px;
+    border-radius: 2px;
+    background: currentColor;
 }
 
 .nav-overlay {
@@ -379,15 +519,11 @@ nav {
     height: 100vh;
     background: var(--ink-900);
     z-index: 99;
-    transform: translateY(-100%);
-    transition: transform 0.8s cubic-bezier(0.7, 0, 0.2, 1);
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.nav-overlay.open {
-    transform: translateY(0);
+    /* translateY + opacity are owned by framer-motion (m.div) — no CSS transform or
+       transition here, or it would fight the spring. */
 }
 
 .nav-links {
@@ -396,7 +532,6 @@ nav {
 }
 
 .nav-links li {
-    overflow: hidden;
     margin: 1rem 0;
 }
 
@@ -414,9 +549,20 @@ nav {
     color: var(--mist-400);
 }
 
-.nav-overlay.open .nav-link {
-    transform: translateY(0);
-    transition-delay: 0.2s;
+/* Mobile: the 8-item menu at 4rem overran a short viewport with no scroll. Shrink the
+   type, tighten the rhythm, and top-align so the list scrolls cleanly if it still
+   exceeds the screen. */
+@media (max-width: 768px) {
+    .nav-overlay {
+        align-items: flex-start;
+        padding: 5.5rem 1.5rem 3rem;
+    }
+    .nav-link {
+        font-size: clamp(2rem, 9vw, 3rem);
+    }
+    .nav-links li {
+        margin: 0.6rem 0;
+    }
 }
 
 /* Layout */
@@ -448,7 +594,7 @@ footer {
       radial-gradient(circle at 16% 24%, rgba(46, 48, 56, 0.24), transparent 44%),
       radial-gradient(circle at 82% 10%, rgba(40, 42, 50, 0.2), transparent 38%),
       radial-gradient(circle at 68% 82%, rgba(42, 42, 50, 0.18), transparent 42%),
-      linear-gradient(180deg, rgba(3, 6, 20, 0.5) 0%, rgba(2, 5, 18, 0.44) 45%, rgba(2, 4, 14, 0.56) 100%);
+      linear-gradient(180deg, rgba(10, 11, 13, 0.5) 0%, rgba(8, 9, 11, 0.44) 45%, rgba(6, 6, 8, 0.56) 100%);
 }
 
 .cosmic-backdrop::before {
@@ -647,6 +793,25 @@ footer {
     width: 100%;
 }
 
+/* Keyboard focus ring for the interactive family (a11y ≥95) — achromatic accent,
+   mirrors the existing .detail-close/.detail-cta pattern. :focus-visible keeps
+   pointer clicks ring-free; modern browsers trace the element's own border-radius. */
+.btn-primary:focus-visible,
+.btn-link:focus-visible,
+.btn-pillar:focus-visible,
+.social-btn:focus-visible,
+.nav-link:focus-visible,
+.menu-toggle:focus-visible,
+.logo:focus-visible,
+.project-card:focus-visible,
+.repo-card:focus-visible,
+.accordion-header:focus-visible,
+.snap-header:focus-visible,
+.skip-link:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
+}
+
 /* Dual-pillar CTAs (NN-1): two co-equal, outlined actions — visually distinct
    from the single filled contact pill, monochrome (achromatic tokens only). */
 .hero-cta-pillars {
@@ -699,19 +864,129 @@ footer {
     position: relative;
 }
 
+/* Soft instrument glow behind the portrait so the right column reads as lit,
+   not as empty negative space. */
+.avatar-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: -8%;
+    background: radial-gradient(50% 46% at 50% 42%, rgb(244 246 250 / 0.10), transparent 70%);
+    filter: blur(6px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Rectangular HUD bracket frame around the portrait (reuses .hud-frame__corner). */
+.avatar-frame {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+.avatar-frame .hud-frame__corner {
+    width: 26px; height: 26px;
+    border-color: rgb(244 246 250 / 0.5);
+}
+.avatar-frame .hud-frame__corner--tl { top: 0; left: 0; }
+.avatar-frame .hud-frame__corner--tr { top: 0; right: 0; }
+.avatar-frame .hud-frame__corner--bl { bottom: 0; left: 0; }
+.avatar-frame .hud-frame__corner--br { bottom: 0; right: 0; }
+/* Glass subject label. Horizontal centring is owned by framer (x:'-50%' in the
+   entrance variants) so the inline transform it writes never drops the centring —
+   hence no `transform` here. */
+.avatar-tag {
+    position: absolute;
+    bottom: 0.4rem; left: 50%;
+    z-index: 3;
+    display: inline-flex; align-items: center;
+    padding: 0.28rem 0.7rem;
+    font-family: var(--font-mono);
+    font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--mist-400);
+    background: rgb(10 11 13 / 0.5);
+    border: 1px solid rgb(244 246 250 / 0.08);
+    border-radius: 999px;
+    -webkit-backdrop-filter: blur(8px) saturate(160%);
+    backdrop-filter: blur(8px) saturate(160%);
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Scan-line sweep across the subject label (signature HUD motif). Neutralised under
+   reduced motion by the global animation-duration override below. */
+.avatar-tag__scan {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: -35%;
+    width: 35%;
+    background: linear-gradient(90deg, transparent, rgb(244 246 250 / 0.28), transparent);
+    animation: avatar-tag-scan 3.4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes avatar-tag-scan {
+    0% { transform: translateX(0); opacity: 0; }
+    18% { opacity: 1; }
+    82% { opacity: 1; }
+    100% { transform: translateX(385%); opacity: 0; }
+}
+
+/* Entrance wrapper (framer animates opacity/scale/y) holding the magnetic tilt. */
+.avatar-tilt-entrance {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Magnetic 3D tilt. --rx/--ry are written by the pointer handler (±5deg). */
+.avatar-tilt {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: perspective(1000px) rotateX(var(--ry, 0deg)) rotateY(var(--rx, 0deg));
+    transition: transform 0.25s var(--motion-ease-standard);
+    will-change: transform;
+}
+
+/* Glass depth frame: a blurred translucent rim behind the portrait that lifts it
+   off the starfield. */
+.avatar-glass {
+    position: absolute;
+    inset: -3%;
+    border-radius: 360px;
+    border: 1px solid rgb(244 246 250 / 0.08);
+    background: rgb(244 246 250 / 0.02);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    box-shadow: inset 0 1px 0 rgb(244 246 250 / 0.06);
+    pointer-events: none;
+    z-index: 0;
+}
+
 .avatar-circle {
     width: 100%;
     height: 100%;
-    background: transparent;
+    background: radial-gradient(120% 100% at 50% 0%, var(--ink-700), var(--ink-900));
+    border: 1px solid rgb(244 246 250 / 0.10);
     border-radius: 350px;
     overflow: hidden;
     position: relative;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1;
+    box-shadow:
+        0 30px 80px -20px rgb(0 0 0 / 0.7),
+        0 0 50px rgb(244 246 250 / 0.05),
+        inset 0 1px 0 rgb(244 246 250 / 0.08);
+    transition: transform 0.4s var(--motion-ease-standard), box-shadow 0.4s ease;
 }
 
 .avatar-circle:hover {
     transform: scale(1.02);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(244,246,250,0.2);
+    box-shadow:
+        0 36px 90px -18px rgb(0 0 0 / 0.75),
+        0 0 60px rgb(244 246 250 / 0.12),
+        inset 0 1px 0 rgb(244 246 250 / 0.10);
 }
 
 /* R1 AVATAR speaking pulse ring — absolutely positioned to never shift layout.
@@ -804,6 +1079,7 @@ footer {
     padding: 1.5rem;
     border-radius: 16px;
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     box-shadow: 0 10px 40px rgba(0,0,0,0.35);
     line-height: 1.6;
 }
@@ -828,6 +1104,9 @@ footer {
     position: relative;
     overflow: hidden;
     box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+    /* Glassmorphism surface — frosts the starfield behind the card (#14). */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -909,8 +1188,39 @@ footer {
 }
 
 .accordion-item {
+    position: relative;
+    padding-left: 2.5rem;
     border-bottom: 1px solid var(--border-color);
     overflow: hidden;
+    transition: background var(--motion-base) ease;
+}
+/* Timeline rail + node so the role list reads as a chronology, and the open role
+   gets a lit node + faint surface so an expanded drawer reads as deliberately opened. */
+.accordion-item::before {
+    content: '';
+    position: absolute;
+    left: 0.72rem; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--card-border);
+}
+.accordion-item::after {
+    content: '';
+    position: absolute;
+    left: 0.35rem; top: 3.15rem;
+    width: 0.85rem; height: 0.85rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--mist-400);
+    background: var(--ink-900);
+    transition: border-color var(--motion-base) ease, background var(--motion-base) ease, box-shadow var(--motion-base) ease;
+    z-index: 1;
+}
+.accordion-item.active {
+    background: linear-gradient(90deg, rgb(244 246 250 / 0.045), transparent 55%);
+}
+.accordion-item.active::after {
+    border-color: var(--white);
+    background: var(--white);
+    box-shadow: 0 0 14px rgb(244 246 250 / 0.55);
 }
 
 .accordion-header {
@@ -967,13 +1277,27 @@ footer {
 }
 
 .accordion-meta .icon {
-    font-size: 2rem;
+    font-size: 1.25rem;
     font-weight: 300;
-    transition: transform 0.3s ease;
+    width: 2.4rem; height: 2.4rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 999px;
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    box-shadow: var(--card-rim);
+    transition: transform var(--motion-base) var(--motion-ease-standard),
+                border-color var(--motion-base) ease, background var(--motion-base) ease;
+}
+
+.accordion-header:hover .icon {
+    border-color: var(--card-border-hover);
+    background: rgb(244 246 250 / 0.07);
 }
 
 .accordion-item.active .icon {
     transform: rotate(45deg);
+    border-color: rgb(244 246 250 / 0.5);
+    background: rgb(244 246 250 / 0.1);
 }
 
 .accordion-content {
@@ -1007,8 +1331,13 @@ footer {
     gap: 2rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    /* Snap physics: cards settle to centre as the rail comes to rest (native + smooth
+       so the JS inertial fling decelerates INTO a snap rather than overshooting). */
+    scroll-snap-type: x proximity;
+    scroll-behavior: smooth;
     padding: 1rem 0.5rem 2rem; /* top/side padding for shadow/hover space */
     width: 100%;
+    perspective: 1400px; /* shared 3D stage so neighbouring card tilts share a vanishing point */
 }
 
 
@@ -1055,16 +1384,27 @@ footer {
     overflow: hidden;
     position: relative;
     margin-bottom: 1.2rem;
-    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    /* Pointer 3D tilt (rotation vars written by the carousel) composed with a hover
+       lift; a single transform so the two never fight. */
+    transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(var(--img-lift, 0px));
+    transform-style: preserve-3d;
+    transition: border-color 0.3s ease, transform 0.35s var(--motion-ease-standard), box-shadow 0.3s ease;
+    will-change: transform;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .project-card:hover .project-image {
-    border-color: var(--accent-color);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--card-shadow-hover);
+    --img-lift: -6px;
+}
+
+/* Native scroll only under reduced motion: kill smooth-scroll + any residual tilt. */
+@media (prefers-reduced-motion: reduce) {
+    .projects-carousel { scroll-behavior: auto; }
+    .project-image { transform: none; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
 }
 
 .card-badge {
@@ -1187,6 +1527,7 @@ footer {
     z-index: 5;
     background: rgba(0,0,0,0.3);
     backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
 }
 .play-btn::after {
     content: '';
@@ -1642,6 +1983,7 @@ footer {
     padding: 1rem 1.25rem;
     border-radius: 16px;
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 
@@ -1748,7 +2090,7 @@ footer {
 }
 
 .contact-title {
-    font-size: 5vw;
+    font-size: clamp(2.25rem, 6vw, 4.5rem);
     line-height: 1.1;
     margin-bottom: 4rem;
 }
@@ -1775,9 +2117,10 @@ footer {
     width: 100%;
     max-width: 240px;
     min-height: 168px;
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    border: 1px solid var(--card-border);
+    background: var(--card-sheen), var(--card-bg);
+    box-shadow: var(--card-shadow), var(--card-rim);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1785,15 +2128,15 @@ footer {
     gap: 0.55rem;
     padding: 1.6rem 1.1rem;
     text-align: center;
-    transition: transform 0.25s var(--motion-ease-standard),
-                border-color 0.25s ease, box-shadow 0.25s ease;
+    transition: transform var(--motion-fast) var(--motion-ease-standard),
+                border-color var(--motion-fast) ease, box-shadow var(--motion-fast) ease;
 }
 
 .contact-card:hover,
 .contact-card:focus-visible {
     transform: translateY(-4px);
-    border-color: rgb(244 246 250 / 0.40);
-    box-shadow: 0 18px 40px rgb(0 0 0 / 0.45), 0 0 24px rgb(244 246 250 / 0.08);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--card-shadow-hover), var(--card-rim);
     outline: none;
 }
 
@@ -1869,9 +2212,14 @@ footer {
 /* Skills */
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    /* 5 cards: a fixed responsive column count avoids the 4+1 orphan that
+       auto-fit produced at mid widths (one card stranded on its own row). */
+    grid-template-columns: repeat(5, 1fr);
     gap: 1.25rem;
 }
+@media (max-width: 1280px) { .skills-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 820px) { .skills-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .skills-grid { grid-template-columns: 1fr; } }
 
 .skill-card {
     position: relative;
@@ -1880,6 +2228,9 @@ footer {
     border-radius: 18px;
     overflow: hidden;
     box-shadow: 0 14px 45px rgba(0,0,0,0.35);
+    /* Glassmorphism surface — frosts the starfield behind the card (#14). */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
 }
 
@@ -2067,7 +2418,12 @@ footer {
     will-change: transform, opacity;
 }
 
+/* will-change is intentionally NOT set here: per MOTION-AND-FX-SPEC it must only be
+   promoted while a card is actively animating, never permanently across all 6 cards
+   (which would pin 6 idle compositor layers). It is applied on :hover/:focus-visible
+   (the parallax window) and on the pre-reveal [data-anim-state="idle"] state. */
 .meta-card[data-outcome-card][data-anim-state="idle"] {
+    will-change: transform, opacity;
     opacity: 0;
 }
 
@@ -2100,7 +2456,14 @@ footer {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    /* E1 — glass rim-light + layered elevation: a crisp INSET top highlight (light
+       catching the glass edge) + a faint inset floor shadow over the drop shadow.
+       Pure achromatic alphas (audit-safe); reads as real, lit glass not a flat panel. */
+    box-shadow:
+        0 10px 34px -6px rgba(0, 0, 0, 0.38),
+        0 2px 8px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(244, 246, 250, 0.10),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.30);
 }
 
 .glass-card:hover {
@@ -2180,6 +2543,20 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    /* CardDepth tier 2 — the text layer drifts a little with the pointer. */
+    transform: translate3d(calc(var(--card-px, 0) * 6px), calc(var(--card-py, 0) * 6px), 0);
+    transition: transform 0.2s var(--motion-ease-emphasized);
+}
+
+/* CardDepth tier 3 — the icon lifts most (folded into the hover transform so the
+   parallax and the rotate/scale never clobber one another) with a shadow that
+   deepens as the card rises toward the pointer (--card-lift). */
+.meta-card:hover .meta-icon {
+    transform:
+      translate3d(calc(var(--card-px, 0) * 13px), calc(var(--card-py, 0) * 13px), 0)
+      rotate(6deg)
+      scale(1.08);
+    box-shadow: 0 calc(var(--card-lift, 0px) + 4px) calc(var(--card-lift, 0px) * 1.6 + 10px) rgb(0 0 0 / 0.4);
 }
 
 .meta-label {
@@ -2383,11 +2760,19 @@ footer {
     height: 100%;
     width: 100%;
     border-radius: inherit;
-    background: radial-gradient(
-        600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-        rgba(255, 255, 255, 0.06), 
-        transparent 40%
-    );
+    /* E2 — two-layer specular: a tight bright hotspot rides a soft halo, both
+       tracking the cursor. Reads as light gliding across glass, not a flat wash. */
+    background:
+        radial-gradient(
+            190px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(244, 246, 250, 0.16),
+            transparent 60%
+        ),
+        radial-gradient(
+            600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(244, 246, 250, 0.06),
+            transparent 45%
+        );
     z-index: 2;
     pointer-events: none;
     opacity: 0;
@@ -2717,16 +3102,33 @@ footer {
 
 .arch-diagram {
     width: 100%;
-    border-radius: 18px;
+    min-height: 340px;
+    border-radius: var(--card-radius);
     padding: 1.2rem;
-    background: transparent;
-    border: none;
+    /* Lit "system board" plane — the map used to be transparent on raw black, so
+       it read as empty negative space. Now it's a framed instrument surface. */
+    background:
+        radial-gradient(120% 90% at 50% 0%, rgb(244 246 250 / 0.05), transparent 55%),
+        linear-gradient(160deg, var(--ink-800), var(--ink-900));
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow), var(--card-rim);
     position: relative;
 }
 
+/* Engineering graticule + corner ticks on the board for premium texture (zero per-frame cost). */
 .arch-diagram::before {
-    /* Removed grid background */
-    content: none;
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image:
+        linear-gradient(rgb(244 246 250 / 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(244 246 250 / 0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: radial-gradient(120% 100% at 50% 0%, #000 35%, transparent 80%);
+    mask-image: radial-gradient(120% 100% at 50% 0%, #000 35%, transparent 80%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 .arch-diagram {
@@ -2781,12 +3183,14 @@ footer {
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    background: rgba(10, 10, 15, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(160deg, rgb(27 29 35 / 0.92), rgb(10 11 13 / 0.92));
+    border: 1px solid rgb(244 246 250 / 0.14);
+    box-shadow: 0 8px 24px -8px rgb(0 0 0 / 0.6), inset 0 1px 0 rgb(244 246 250 / 0.06);
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     transform: translate(-50%, -50%);
-    opacity: 0.5;
+    opacity: 0.72;
     min-width: 140px;
     pointer-events: auto;
     cursor: pointer;
@@ -2883,8 +3287,8 @@ footer {
 
 /* Connections */
 .arch-connection {
-    stroke: rgba(255, 255, 255, 0.1);
-    stroke-width: 0.5;
+    stroke: rgb(244 246 250 / 0.2);
+    stroke-width: 0.75;
     transition: all 0.4s ease;
     fill: none;
 }
@@ -2923,6 +3327,7 @@ footer {
     padding: 0.9rem 1rem;
     border-radius: 12px;
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .arch-metric-label {
@@ -3144,6 +3549,7 @@ footer {
     height: 100vh;
     background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     z-index: 20000;
     display: flex;
     justify-content: center;
@@ -3297,6 +3703,7 @@ footer {
     height: 500px;
     background: rgba(20, 20, 25, 0.95);
     backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     margin-bottom: 20px;
@@ -3780,6 +4187,36 @@ footer {
     color: var(--mist-400);
     white-space: nowrap;
 }
+/* Fixed index marks along the track — a faint second tone over the dim base. */
+.scroll-rail-tick {
+    position: absolute;
+    left: 50%;
+    width: 6px;
+    height: 1px;
+    transform: translateX(-50%);
+    background: rgb(255 255 255 / 0.18);
+    border-radius: 1px;
+}
+/* Glow pulse head — rides the fill's leading edge (top driven by ScrollTrigger). */
+.scroll-rail-head {
+    position: absolute;
+    left: 50%;
+    top: 0%;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--white);
+    box-shadow: 0 0 10px 2px rgb(244 246 250 / 0.55);
+    animation: scrollRailPulse 2.4s ease-in-out infinite;
+}
+@keyframes scrollRailPulse {
+    0%, 100% { box-shadow: 0 0 8px 1px rgb(244 246 250 / 0.4); opacity: 0.82; }
+    50% { box-shadow: 0 0 16px 4px rgb(244 246 250 / 0.7); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .scroll-rail-head { animation: none; }
+}
 @media (max-width: 768px) {
     .scroll-rail { display: none; }
 }
@@ -3828,32 +4265,60 @@ footer {
 .proof-item {
     display: flex; flex-direction: column; gap: 0.5rem;
     border-left: 1px solid var(--border-color); padding-left: 1.25rem;
+    transition: border-color var(--motion-base) var(--motion-ease-standard);
 }
+.proof-item:hover { border-color: var(--card-border-hover); }
 .proof-value {
     font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1;
-    color: var(--white); font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+    color: var(--white); font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+    transition: text-shadow var(--motion-base) var(--motion-ease-standard);
 }
+.proof-item:hover .proof-value { text-shadow: 0 0 18px rgb(244 246 250 / 0.35); }
 .proof-label { color: var(--mist-400); font-size: 0.95rem; line-height: 1.45; }
 @media (max-width: 768px) { .proof-grid { gap: 1.25rem; } }
 
 /* ── Synthesis provenance (FR-SYNTH) ── */
 .synthesis-section { padding: 4rem 0; position: relative; z-index: 5; }
+/* Provenance chain — a vertical timeline: every consulted source sits on a single
+   luminous monochrome rail with its own node, so the synthesis reads as an
+   evidence chain rather than a flat list (UI/UX §8). */
 .synthesis-grid {
-    list-style: none; margin: 1.5rem 0 0; padding: 0;
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1.25rem;
+    list-style: none; margin: 1.75rem 0 0; padding: 0 0 0 1.75rem;
+    display: flex; flex-direction: column; gap: 1rem;
+    position: relative;
+}
+.synthesis-grid::before {
+    content: ''; position: absolute; left: 0.5rem; top: 0.75rem; bottom: 0.75rem; width: 2px;
+    background: linear-gradient(180deg, transparent, var(--accent) 10%, var(--accent) 90%, transparent);
+    opacity: 0.32; border-radius: 2px; pointer-events: none;
 }
 .synthesis-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 1.25rem 1.35rem;
+    position: relative;
+    background: var(--card-sheen), var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--card-radius);
+    padding: 1.4rem 1.45rem;
     display: flex; flex-direction: column;
-    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    box-shadow: var(--card-shadow), var(--card-rim);
+    transition: transform var(--motion-base) var(--motion-ease-standard),
+                border-color var(--motion-base) ease, box-shadow var(--motion-base) ease;
 }
 .synthesis-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--card-shadow-hover), var(--card-rim);
+}
+/* Timeline node — a glowing station marker pinned to the rail. */
+.synthesis-node {
+    position: absolute; left: -1.5rem; top: 1.5rem;
+    width: 12px; height: 12px; border-radius: 999px;
+    background: var(--white);
+    box-shadow: 0 0 0 4px var(--ink-800), 0 0 12px rgb(244 246 250 / 0.45);
+    transition: box-shadow var(--motion-base) ease;
+}
+.synthesis-card:hover .synthesis-node {
+    box-shadow: 0 0 0 4px var(--ink-800), 0 0 18px rgb(244 246 250 / 0.7);
 }
 .synthesis-source {
     font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.5px;
@@ -3873,18 +4338,27 @@ footer {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1.25rem;
 }
 .mindset-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 1.25rem 1.35rem;
+    position: relative;
+    background: var(--card-sheen), var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--card-radius);
+    padding: 1.4rem 1.45rem;
     display: flex; flex-direction: column;
-    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    box-shadow: var(--card-shadow), var(--card-rim);
+    transition: transform var(--motion-base) var(--motion-ease-standard),
+                border-color var(--motion-base) ease, box-shadow var(--motion-base) ease;
+}
+.mindset-card::after {
+    content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(135deg, rgb(244 246 250 / 0.05), transparent 55%);
+    opacity: 0; transition: opacity var(--motion-base) ease;
 }
 .mindset-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--card-shadow-hover), var(--card-rim);
 }
+.mindset-card:hover::after { opacity: 1; }
 .mindset-label {
     font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.5px;
     color: var(--mist-400); margin: 0 0 0.6rem;
@@ -3914,11 +4388,30 @@ footer {
 .dossier-card {
     position: relative;
     margin: 1.5rem 0 0;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgb(255 255 255 / 0.12);
     border-radius: 18px;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 2rem 2.25rem;
+    background:
+      radial-gradient(120% 80% at 50% -10%, rgb(244 246 250 / 0.05), transparent 60%),
+      linear-gradient(160deg, rgb(255 255 255 / 0.04), rgb(255 255 255 / 0.015));
+    padding: 2.85rem 2.25rem 2.25rem;
     overflow: hidden;
+    /* Glassmorphism surface — frosts the starfield behind the leave-behind (#10). */
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 24px 60px -28px rgb(0 0 0 / 0.7), inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+.dossier-headline { margin: 0; }
+/* Decorative HUD frame around the dossier content (replaces the old empty 16:10 panel). */
+.dossier-frame { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.dossier-frame .hud-frame__corner { border-color: rgb(244 246 250 / 0.38); }
+.dossier-frame__sheen {
+    position: absolute; inset: 0;
+    background: radial-gradient(60% 50% at 85% 0%, rgb(244 246 250 / 0.06), transparent 70%);
+}
+.dossier-frame-label {
+    position: absolute; top: 1.1rem; left: 1.6rem; z-index: 1; margin: 0;
+    font-size: 0.6rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--mist-400); pointer-events: none;
 }
 .dossier-body { position: relative; z-index: 1; }
 .dossier-name {
@@ -3950,9 +4443,17 @@ footer {
 }
 .dossier-edition {
     display: flex; flex-direction: column; gap: 0.55rem;
-    border: 1px solid var(--border-color); border-radius: 14px;
-    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border); border-radius: 14px;
+    background: var(--card-sheen), var(--card-bg);
+    box-shadow: var(--card-shadow), var(--card-rim);
     padding: 1.1rem 1.25rem;
+    transition: transform var(--motion-fast) var(--motion-ease-standard),
+                border-color var(--motion-fast) ease, box-shadow var(--motion-fast) ease;
+}
+.dossier-edition:hover {
+    transform: translateY(-3px);
+    border-color: var(--card-border-hover);
+    box-shadow: var(--card-shadow-hover), var(--card-rim);
 }
 .dossier-edition-label {
     font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px;
@@ -3960,7 +4461,38 @@ footer {
 }
 .dossier-edition-takeaway { color: var(--secondary-text); font-size: 0.95rem; line-height: 1.5; margin: 0; }
 .dossier-download { margin-top: auto; align-self: flex-start; }
-.dossier-clone { margin: 1.75rem 0 0; }
+.dossier-clone { position: relative; margin: 1.75rem 0 0; }
+/* Particle accent burst on clone CTA hover — concentric monochrome rings pulse
+   outward once on hover (decorative, reduced-motion safe). */
+.dossier-clone-spark {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    margin: -3px 0 0 -3px;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+}
+.dossier-clone:hover .dossier-clone-spark {
+    animation: dossierSpark 0.72s var(--motion-ease-standard);
+}
+@keyframes dossierSpark {
+    0% {
+        opacity: 0.85;
+        transform: scale(0.4);
+        box-shadow: 0 0 0 0 rgb(244 246 250 / 0.5), 0 0 0 0 rgb(244 246 250 / 0.32);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1);
+        box-shadow: 0 0 0 24px rgb(244 246 250 / 0), 0 0 0 40px rgb(244 246 250 / 0);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .dossier-clone:hover .dossier-clone-spark { animation: none; }
+}
 @media (max-width: 768px) { .dossier-card { padding: 1.5rem 1.35rem; } }
 
 /* ── Contact CTAs (FR-CONTACT) ── */
@@ -3969,6 +4501,25 @@ footer {
     justify-content: center; margin: 0 0 2.5rem;
 }
 .contact-cta { display: inline-flex; align-items: center; }
+/* Promote "Download CV" from plain text into a co-equal ghost pill beside the
+   filled primary so the closing CTA reads as two deliberate choices. */
+.contact-cta-row .btn-link.contact-cta {
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    border: 1px solid var(--card-border-hover);
+    background: var(--card-bg);
+    color: var(--white);
+    font-weight: 500;
+    box-shadow: var(--card-rim);
+    transition: transform var(--motion-base) var(--motion-ease-standard),
+                border-color var(--motion-base) ease, background var(--motion-base) ease;
+}
+.contact-cta-row .btn-link.contact-cta::after { display: none; }
+.contact-cta-row .btn-link.contact-cta:hover {
+    transform: translateY(-2px);
+    border-color: rgb(244 246 250 / 0.55);
+    background: rgb(244 246 250 / 0.08);
+}
 
 /* Decorative card-viz terminal must not be a keyboard scroll-trap (TC-NFR-A11Y).
    Scoped to the viz only so the real #terminal-log keeps its scroll. */

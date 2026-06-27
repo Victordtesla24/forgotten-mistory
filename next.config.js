@@ -72,6 +72,11 @@ const nextConfig = {
       }),
   reactStrictMode: true,
   poweredByHeader: false,
+  experimental: {
+    // Tree-shake the icon + motion barrels so only the used exports ship,
+    // trimming First-Load JS on the "/" route.
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
+  },
   env: {
     // Inlined at build time for the client-side MiniVic brain. Next.js
     // auto-loads .env.production during `next build`. Restrict this key by

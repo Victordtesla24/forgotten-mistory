@@ -1,19 +1,36 @@
 'use client';
 
-import { useEffect } from 'react';
-import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
- * Custom cursor (dot + trailing outline) driven by framer-motion springs.
- * Only activates on fine-pointer devices when the user has not requested
- * reduced motion; otherwise renders nothing and the native cursor is used.
+ * Custom cursor system: a dot + trailing outline + a contextual text label, a
+ * default→hover→click→drag state machine (mirrored onto `body[data-cursor-state]`
+ * so CSS can restyle the cursor per state), and magnetic hover zones that pull
+ * toward the pointer via `--mag-x` / `--mag-y`. It ALSO drives the hero floating-
+ * panel depth parallax (--rx/--ry/--tx/--ty/--mouse-x/--mouse-y).
+ *
+ * Only activates on fine-pointer devices when the user has not requested reduced
+ * motion; otherwise renders nothing, sets no state attribute, and the native
+ * cursor is used.
  */
+const INTERACTIVE = 'a, button, [role="button"], [data-magnetic], summary, input, textarea, select, label';
+
 export default function CursorGlow() {
-  const prefersReducedMotion = useReducedMotion();
+  // SSR-safe: returns false on the server AND the client's first paint, so the
+  // initial render matches the server HTML (the cursor nodes are emitted in both),
+  // then resolves to the real preference after mount. A raw useReducedMotion() here
+  // returned the divs on the server but null on a reduced-motion client's first
+  // render — a hard hydration mismatch (#418/#423). See lib/useReducedMotionSafe.
+  const prefersReducedMotion = useReducedMotionSafe();
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
   const outlineX = useSpring(x, { stiffness: 260, damping: 28, mass: 0.6 });
   const outlineY = useSpring(y, { stiffness: 260, damping: 28, mass: 0.6 });
+  const labelX = useSpring(x, { stiffness: 320, damping: 30, mass: 0.5 });
+  const labelY = useSpring(y, { stiffness: 320, damping: 30, mass: 0.5 });
+  const labelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Gate on a live matchMedia read (not only framer's hook) so emulated /
@@ -46,6 +63,7 @@ export default function CursorGlow() {
     const onMove = (e: PointerEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);
+      const target = e.target as Element | null;
 
       const surface = (e.target as Element | null)?.closest?.(DEPTH_TARGETS) as HTMLElement | null;
       if (surface !== activeSurface) {
@@ -70,7 +88,30 @@ export default function CursorGlow() {
       surface.style.setProperty('--tx', `${((nx - 0.5) * 10).toFixed(1)}px`);
       surface.style.setProperty('--ty', `${((ny - 0.5) * 10).toFixed(1)}px`);
     };
+
+    const onDown = () => {
+      down = true;
+      movedWhileDown = false;
+      setState('click');
+    };
+    const onUp = (e: PointerEvent) => {
+      down = false;
+      movedWhileDown = false;
+      evaluateRestState(document.elementFromPoint(e.clientX, e.clientY));
+    };
+    const onLeaveWindow = () => {
+      resetDepth(activeSurface);
+      resetMagnetic(activeMagnetic);
+      activeSurface = null;
+      activeMagnetic = null;
+      setLabel('');
+      setState('default');
+    };
+
     window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('pointerdown', onDown, { passive: true });
+    window.addEventListener('pointerup', onUp, { passive: true });
+    document.addEventListener('pointerleave', onLeaveWindow);
 
     return () => {
       window.removeEventListener('pointermove', onMove);
@@ -92,6 +133,13 @@ export default function CursorGlow() {
         className="cursor-outline"
         aria-hidden="true"
         style={{ x: outlineX, y: outlineY, translateX: '-50%', translateY: '-50%' }}
+      />
+      <motion.div
+        ref={labelRef}
+        className="cursor-label"
+        aria-hidden="true"
+        data-show="false"
+        style={{ x: labelX, y: labelY }}
       />
     </>
   );

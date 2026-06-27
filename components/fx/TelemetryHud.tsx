@@ -17,7 +17,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing';
+import { Bloom, DepthOfField, EffectComposer, Vignette } from '@react-three/postprocessing';
 import { useReducedMotion } from 'framer-motion';
 import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
@@ -268,8 +268,13 @@ export default function TelemetryHud({ className }: { className?: string }) {
         <Hud frozen={frozen} />
         {!frozen ? (
           <EffectComposer>
-            <Bloom intensity={0.7} luminanceThreshold={0.12} luminanceSmoothing={0.3} mipmapBlur />
-            <Vignette eskil={false} offset={0.2} darkness={0.7} />
+            {/* Higher threshold so only the sweep arm / blips / rim bloom — the crisp
+                ring graticule stays sharp instead of blooming into a haze. */}
+            <Bloom intensity={0.62} luminanceThreshold={0.3} luminanceSmoothing={0.25} mipmapBlur />
+            {/* QT-5 — bokeh depth-of-field for genuine optical depth; only ever runs in
+                this !frozen branch, so it is disabled under reduced-motion/low-power. */}
+            <DepthOfField focusDistance={0.0} focalLength={0.035} bokehScale={1.3} height={480} />
+            <Vignette eskil={false} offset={0.22} darkness={0.62} />
           </EffectComposer>
         ) : (
           <></>

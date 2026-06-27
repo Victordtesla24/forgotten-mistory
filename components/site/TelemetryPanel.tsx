@@ -339,7 +339,9 @@ export default function TelemetryPanel() {
           <div className="telemetry-dual-row">
             <div>
               <div className="telemetry-label">Server load</div>
-              <div className="telemetry-value">{loadPct}%</div>
+              <div className="telemetry-value">
+                <TelemetryValue value={loadPct} format={(n) => `${Math.round(n)}%`} />
+              </div>
             </div>
             <div>
               <div className="telemetry-label">Frame time</div>

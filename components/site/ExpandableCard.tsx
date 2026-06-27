@@ -18,7 +18,11 @@ interface ExpandableCardProps {
 
 /**
  * Generic expandable card used by the About snap-cards and Skills cards.
- * Uses Framer Motion for height:0→'auto' animation (IV-1/2 fix).
+ * Spring-physics height (0→auto) opens the body; an inner content layer fades up
+ * just behind the height so the text settles into place rather than popping. The
+ * card reflects its state on `data-open` (drives the rotating header chevron). The
+ * body lives in the DOM only while open (AnimatePresence) so collapse cleanly
+ * unmounts it. Under reduced motion the body snaps open instantly (IV-1/2 fix).
  */
 export default function ExpandableCard({
   baseClass,
@@ -33,7 +37,7 @@ export default function ExpandableCard({
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <div className={`${baseClass}${open ? ' open' : ''}`} role={role}>
+    <div className={`${baseClass}${open ? ' open' : ''}`} role={role} data-open={open ? 'true' : 'false'}>
       <button
         type="button"
         className={headerClass}
@@ -52,9 +56,22 @@ export default function ExpandableCard({
             initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.45, ease: [0.22, 0.61, 0.36, 1] }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { type: 'spring', stiffness: 210, damping: 30, mass: 0.9 }
+            }
           >
-            {children}
+            <motion.div
+              data-expand-content=""
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={
+                prefersReducedMotion ? { duration: 0 } : { duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.08 }
+              }
+            >
+              {children}
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

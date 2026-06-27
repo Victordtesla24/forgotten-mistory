@@ -24,6 +24,7 @@ import FloatingDetailBox from '@/components/FloatingDetailBox';
 import SpaceScene from './components/SpaceScene';
 import Preloader from '@/components/site/Preloader';
 import CursorGlow from '@/components/site/CursorGlow';
+import CardDepth from '@/components/site/CardDepth';
 import Navigation from '@/components/site/Navigation';
 import Reveal from '@/components/site/Reveal';
 import TelemetryPanel from '@/components/site/TelemetryPanel';
@@ -125,6 +126,9 @@ export default function Home() {
   const panelY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -24]);
   const avatarY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : 48]);
 
+  // Whole-document progress drives the slim reading indicator pinned to the top edge.
+  const { scrollYProgress: pageProgress } = useScroll();
+
   const openDetail = useCallback((key: string, element: HTMLElement, locked: boolean) => {
     setTriggerRect(element.getBoundingClientRect());
     setActiveKey(key);
@@ -173,8 +177,16 @@ export default function Home() {
 
   return (
     <>
+      <motion.div
+        className="scroll-progress"
+        data-scroll-progress
+        aria-hidden="true"
+        style={{ scaleX: pageProgress }}
+      />
+
       <Preloader />
       <CursorGlow />
+      <CardDepth />
 
       <div className="scene-stack" aria-hidden="true">
         <SpaceScene />
@@ -201,7 +213,11 @@ export default function Home() {
           <motion.div
             className="hero-content"
             variants={heroStagger}
-            initial={prefersReducedMotion ? false : 'hidden'}
+            // `initial` is kept identical on server and first client paint (it cannot
+            // branch on useReducedMotion without a hydration mismatch). MotionConfig
+            // reducedMotion="user" makes the transform legs instant for reduced-motion
+            // users, leaving only a gentle opacity fade.
+            initial="hidden"
             animate="visible"
           >
             <motion.h1 className="hero-title" variants={heroItem} style={{ y: titleY }}>
@@ -229,10 +245,22 @@ export default function Home() {
                 first-class action — employers review the evidence, clients see the
                 quantified outcomes. */}
             <motion.div className="hero-cta-pillars" variants={heroItem}>
-              <a href="#experience" data-pillar="employer" className="btn-pillar">
+              <a
+                href="#experience"
+                data-pillar="employer"
+                className="btn-pillar"
+                data-magnetic=""
+                data-cursor-label="Experience"
+              >
                 Review experience
               </a>
-              <a href="#proof" data-pillar="client" className="btn-pillar">
+              <a
+                href="#proof"
+                data-pillar="client"
+                className="btn-pillar"
+                data-magnetic=""
+                data-cursor-label="Outcomes"
+              >
                 See outcomes
               </a>
             </motion.div>
@@ -305,7 +333,7 @@ export default function Home() {
 
         <section id="about" className="about-section">
           <div className="container">
-            <Reveal className="section-header">
+            <Reveal className="section-header" variant="depth">
               <h2 className="section-title">About Me</h2>
             </Reveal>
             <div className="about-content">
@@ -508,7 +536,9 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={0.05}>
-              <HudFrame label="JARVIS · real-time telemetry" className="work-hud" />
+              {/* lazy: the JARVIS WebGL context only mounts when #work scrolls into
+                  view, so the home view boots with a single live context (NFR-FPS / QT-10). */}
+              <HudFrame label="JARVIS · real-time telemetry" className="work-hud" lazy />
             </Reveal>
 
             <Reveal delay={0.08}>

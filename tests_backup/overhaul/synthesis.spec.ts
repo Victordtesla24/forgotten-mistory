@@ -69,3 +69,45 @@ test.describe('TC-FR-SYNTH — multi-source synthesis provenance', () => {
     ).toContainText(/P95/i);
   });
 });
+
+/**
+ * Studio-visual upgrade (UI/UX §8): the provenance section reads as a vertical
+ * provenance-chain timeline — every consulted source sits on a connecting rail
+ * with its own node marker — rather than a flat list. The node is the signature
+ * visual the spec mandates for this section.
+ */
+test.describe('TC-FR-SYNTH — provenance timeline (studio visual)', () => {
+  test.describe.configure({ timeout: 90000 });
+
+  test('every source sits on the provenance timeline with its own node marker', async ({ page }) => {
+    await gotoSynthesis(page);
+    const cards = page.locator('#synthesis .synthesis-card');
+    const count = await cards.count();
+    expect(count, 'résumé + 5 non-résumé sources render as timeline entries').toBeGreaterThanOrEqual(6);
+    // The signature rail visual: one node marker per provenance entry.
+    await expect(page.locator('#synthesis .synthesis-card .synthesis-node')).toHaveCount(count);
+  });
+});
+
+/**
+ * A11y guard for the new staggered entrance: each card now mounts at opacity:0 and
+ * is revealed by a Framer-Motion whileInView stagger. Under prefers-reduced-motion
+ * the reveal must resolve instantly to opacity:1 — never leave content stuck hidden.
+ */
+test.describe('TC-FR-SYNTH — reduced-motion reveals every provenance entry', () => {
+  test.describe.configure({ timeout: 90000 });
+
+  test('all source cards resolve to opacity:1 under prefers-reduced-motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await gotoSynthesis(page);
+    const cards = page.locator('#synthesis [data-source-kind]');
+    const count = await cards.count();
+    expect(count).toBeGreaterThanOrEqual(6);
+    for (let i = 0; i < count; i++) {
+      await expect(cards.nth(i), `source card ${i} must reveal under reduced motion`).toHaveCSS(
+        'opacity',
+        '1',
+      );
+    }
+  });
+});

@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 'use client';
 
 import React, { useRef, useMemo, useState, useEffect } from 'react';
@@ -11,6 +10,7 @@ import { nebulaFBMVertex, nebulaFBMFragment } from '@/components/fx/shaders/nebu
 
 // --- Constants ---
 const STAR_COUNT = 4500;
+const DUST_COUNT = 60;
 const STAR_SEED = 1337;
 // Monochrome star palette (whites/greys, no hue) — sourced from lib/palette.ts
 const STAR_COLORS = PALETTE.star.map((hex) => new THREE.Color(hex));
@@ -35,6 +35,7 @@ interface NebulaCloudProps {
   position: [number, number, number];
   color: string;
   scale: [number, number, number];
+  frozen: boolean;
 }
 
 function NebulaCloud({ position, color, scale }: NebulaCloudProps) {
@@ -74,7 +75,11 @@ function NebulaCloud({ position, color, scale }: NebulaCloudProps) {
 }
 
 // --- Shooting Star Component ---
-function ShootingStar() {
+interface ShootingStarProps {
+  frozen: boolean;
+}
+
+function ShootingStar({ frozen }: ShootingStarProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [active, setActive] = useState(false);
   const { viewport } = useThree();
@@ -139,8 +144,73 @@ function ShootingStar() {
   );
 }
 
+// --- Ambient Dust ---
+interface DustFieldProps {
+  frozen: boolean;
+}
+
+/**
+ * Ambient floating dust: a sparse layer of additively-blended motes drifting near
+ * the camera to seat the portrait/content in depth. Monochrome (steel grey), tiny,
+ * and frozen under reduced motion.
+ */
+function DustField({ frozen }: DustFieldProps) {
+  const pointsRef = useRef<THREE.Points>(null);
+
+  const [positions, basePositions, drift] = useMemo(() => {
+    const rand = mulberry32(STAR_SEED + 7);
+    const positions = new Float32Array(DUST_COUNT * 3);
+    const drift = new Float32Array(DUST_COUNT * 2);
+    for (let i = 0; i < DUST_COUNT; i++) {
+      const i3 = i * 3;
+      positions[i3] = (rand() - 0.5) * 60;
+      positions[i3 + 1] = (rand() - 0.5) * 40;
+      positions[i3 + 2] = -10 - rand() * 30; // close-ish, in front of the starfield
+      drift[i * 2] = 0.3 + rand() * 0.5; // speed
+      drift[i * 2 + 1] = rand() * Math.PI * 2; // phase
+    }
+    return [positions, positions.slice(), drift];
+  }, []);
+
+  useFrame((state) => {
+    // Reduced-motion: no drift — the dust holds a single static frame.
+    if (frozen || !pointsRef.current) return;
+    const t = state.clock.elapsedTime;
+    const attr = pointsRef.current.geometry.getAttribute('position') as THREE.BufferAttribute;
+    const a = attr.array as Float32Array;
+    for (let i = 0; i < DUST_COUNT; i++) {
+      const i3 = i * 3;
+      a[i3] = basePositions[i3] + Math.sin(t * drift[i * 2] * 0.2 + drift[i * 2 + 1]) * 1.2;
+      a[i3 + 1] = basePositions[i3 + 1] + Math.cos(t * drift[i * 2] * 0.15 + drift[i * 2 + 1]) * 1.2;
+    }
+    attr.needsUpdate = true;
+  });
+
+  return (
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+      </bufferGeometry>
+      <pointsMaterial
+        size={0.13}
+        sizeAttenuation
+        color={PALETTE.steel}
+        transparent
+        opacity={0.5}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+        toneMapped={false}
+      />
+    </points>
+  );
+}
+
 // --- Enhanced StarField ---
-function StarField() {
+interface StarFieldProps {
+  frozen: boolean;
+}
+
+function StarField({ frozen }: StarFieldProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const { viewport } = useThree();
 
@@ -191,6 +261,8 @@ function StarField() {
   const mouseVec = useMemo(() => new THREE.Vector3(), []);
 
   useFrame((state, delta) => {
+    // Reduced-motion: no twinkle, no drift, no mouse parallax — stars are static.
+    if (frozen) return;
     if (!meshRef.current) return;
     const time = state.clock.elapsedTime;
     const colorAttr = meshRef.current.geometry.getAttribute('color') as THREE.InstancedBufferAttribute;
@@ -259,11 +331,14 @@ function StarField() {
 /** Cinematic camera rig: eased elliptical camera drift. */
 function CameraRig() {
   const { camera } = useThree();
+  const { scrollYProgress } = useScroll();
+  // Map full-page scroll progress to a bounded Y parallax offset.
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -2.4]);
 
   useFrame((state) => {
     const t = state.clock.elapsedTime;
     camera.position.x = Math.sin(t * 0.05) * 1.1;
-    camera.position.y = Math.cos(t * 0.04) * 0.7;
+    camera.position.y = Math.cos(t * 0.04) * 0.7 + parallaxY.get();
     camera.lookAt(0, 0, -60);
   });
 
@@ -271,27 +346,33 @@ function CameraRig() {
 }
 
 // --- Main Scene ---
-function SpaceAppBridge() {
+/**
+ * @internal IPC bridge between SpaceScene and the modal FX layer (ModalFxCanvas /
+ * FloatingDetailBox). Exposes the live three.js scene/camera/THREE handles on
+ * `window.__portfolioSceneBridge__` for FX probes and the production audit. Renamed
+ * from the generic, collision-prone `window.spaceApp` (OD-4).
+ */
+function PortfolioSceneBridge() {
   const { scene, camera } = useThree();
   const probeRef = useRef<any>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const existing = (window as any).spaceApp;
+    const existing = (window as any).__portfolioSceneBridge__;
     const instance = { scene, camera, THREE };
-    (window as any).spaceApp = instance;
+    (window as any).__portfolioSceneBridge__ = instance;
     probeRef.current = instance;
 
-    logDebug('Exposed spaceApp handle', {
+    logDebug('Exposed __portfolioSceneBridge__ handle', {
       replacedExisting: Boolean(existing),
       sceneType: scene?.type ?? null,
       cameraType: camera?.type ?? null
     });
 
     return () => {
-      if ((window as any).spaceApp === probeRef.current) {
-        delete (window as any).spaceApp;
+      if ((window as any).__portfolioSceneBridge__ === probeRef.current) {
+        delete (window as any).__portfolioSceneBridge__;
       }
     };
   }, [scene, camera]);
@@ -336,6 +417,10 @@ function SceneContent({ frozen = false }: { frozen?: boolean }) {
 export default function SpaceScene() {
   const [enablePostFx, setEnablePostFx] = useState(true);
   const [frozen, setFrozen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  // DPR cap: full devices get [1, 1.5] for crisper bloom; low-power/reduced-motion
+  // devices stay pinned at [1, 1] to protect the mobile FPS budget (NFR-FPS).
+  const [maxDpr, setMaxDpr] = useState<[number, number]>([1, 1.5]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -348,24 +433,41 @@ export default function SpaceScene() {
 
     setFrozen(prefersReduced);
     setEnablePostFx(!(prefersReduced || lowPowerDevice));
+    setMaxDpr(prefersReduced || lowPowerDevice ? [1, 1] : [1, 1.5]);
   }, []);
+
+  // Pause the render loop while the tab is backgrounded (VFX-2 / NFR-FPS): a hidden
+  // tab should never burn GPU/CPU on an invisible starfield.
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const onVisibility = () => setHidden(document.visibilityState === "hidden");
+    onVisibility();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
+  // Halt = reduced-motion freeze OR backgrounded tab. Both stop every useFrame loop
+  // and drop the canvas to frameloop="demand" so no idle frames are scheduled.
+  const halt = frozen || hidden;
 
   return (
     <div className="space-scene-layer" aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0, 20], fov: 60 }}
         gl={{ antialias: false, alpha: false }}
-        dpr={1}
-        frameloop={frozen ? 'demand' : 'always'}
+        dpr={maxDpr}
+        frameloop={halt ? 'demand' : 'always'}
       >
-        <SpaceAppBridge />
+        <PortfolioSceneBridge />
         <color attach="background" args={[PALETTE.black]} />
 
-        {!frozen && <CameraRig />}
-        <SceneContent frozen={frozen} />
+        {!halt && <CameraRig />}
+        <SceneContent frozen={halt} />
 
         {enablePostFx && !frozen ? (
           <EffectComposer>
+            {/* Strictly achromatic lens stack — no RGB-shift effects (e.g. ChromaticAberration),
+                which would manufacture red/cyan hue on bloomed star edges and break monochrome (NN-4). */}
             <Bloom intensity={0.3} luminanceThreshold={0.22} luminanceSmoothing={0.25} mipmapBlur />
             <Noise opacity={0.015} />
             <Vignette eskil={false} offset={0.18} darkness={0.78} />

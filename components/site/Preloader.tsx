@@ -1,12 +1,18 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
-const LOADER_DURATION_MS = 1100;
-const REVEAL_HOLD_MS = 260;
+// Boot budget (TC-FR-BOOT): count → 0.5s dramatic hold at 100 → clip-path wipe, all
+// inside the 2.5s reveal budget. Core path ≈ 1000 + 500 + 420 = 1920 ms.
+const LOADER_DURATION_MS = 1000;
+const HOLD_AT_FULL_MS = 500;
+// Matches the CSS clip-path/opacity reveal transition on `.preloader.is-revealing`.
+const WIPE_MS = 420;
 
-function ProgressArc({ progress }: { progress: number }) {
+// Ease-out cubic so the count decelerates into 100 — feels deliberate, not linear.
+const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+function ProgressArc({ progress, complete }: { progress: number; complete: boolean }) {
   const radius = 50;
   const strokeWidth = 3;
   const circumference = 2 * Math.PI * radius;
@@ -14,7 +20,7 @@ function ProgressArc({ progress }: { progress: number }) {
 
   return (
     <svg
-      className="preloader-arc"
+      className={`preloader-arc${complete ? ' is-complete' : ''}`}
       width="120"
       height="120"
       viewBox="0 0 120 120"
@@ -54,28 +60,48 @@ function ProgressArc({ progress }: { progress: number }) {
   );
 }
 
+/**
+ * Deterministic boot preloader (FR-BOOT / TC-FR-BOOT). Counts 0→100 (ease-out cubic),
+ * holds at 100 for a beat, then reveals the page with a clip-path wipe.
+ *
+ * The overlay is intentionally plain DOM (no framer-motion) so the server-rendered
+ * HTML and the client's first hydration pass are byte-identical: framer-motion's
+ * `motion`/`AnimatePresence` serialise their inline transform/clip styles
+ * differently between SSR and CSR, which produced a hard hydration mismatch on the
+ * `<svg>` arc and forced React to client-render the whole root. The reveal wipe and
+ * fade are pure CSS (`.preloader.is-revealing`), which also honours
+ * prefers-reduced-motion (fade only, no wipe).
+ */
 export default function Preloader() {
-  const prefersReducedMotion = useReducedMotion();
   const [count, setCount] = useState(0);
-  const [complete, setComplete] = useState(false);
+  const [full, setFull] = useState(false); // count has visibly settled on 100
+  const [revealing, setRevealing] = useState(false); // wipe is playing
   const [done, setDone] = useState(false);
   const frameRef = useRef<number | null>(null);
+  const reducedRef = useRef(false);
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      document.body.classList.add('page-ready');
-      setDone(true);
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    reducedRef.current = prefersReduced;
+    if (prefersReduced) {
+      // Reduced motion: show the finished state at once (no count animation, no
+      // wipe). `full` drives the hold→reveal sequence below.
+      setCount(100);
+      setFull(true);
       return;
     }
 
     const start = performance.now();
     const tick = (now: number) => {
+      // Math.min(...,1) guarantees 100 is reached ONLY at progress === 1 — the exact
+      // tick the regression guard checks (a batched unmount here would drop the 100
+      // paint). `setFull` is separate from `setDone` so the 100 frame paints first.
       const progress = Math.min((now - start) / LOADER_DURATION_MS, 1);
-      setCount(Math.floor(progress * 100));
+      setCount(Math.floor(easeOutCubic(progress) * 100));
       if (progress < 1) {
         frameRef.current = requestAnimationFrame(tick);
       } else {
-        setComplete(true);
+        setFull(true);
       }
     };
     frameRef.current = requestAnimationFrame(tick);
@@ -83,35 +109,33 @@ export default function Preloader() {
     return () => {
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
     };
-  }, [prefersReducedMotion]);
+  }, []);
 
+  // Hold at 100 for a beat, then start the reveal wipe (reduced motion skips the hold).
   useEffect(() => {
-    if (!complete) return undefined;
-    document.body.classList.add('page-ready');
-    const id = window.setTimeout(() => setDone(true), REVEAL_HOLD_MS);
+    if (!full) return undefined;
+    const hold = reducedRef.current ? 0 : HOLD_AT_FULL_MS;
+    const id = window.setTimeout(() => setRevealing(true), hold);
     return () => clearTimeout(id);
-  }, [complete]);
+  }, [full]);
+
+  // Reveal: release the page (body.page-ready), run the wipe, then unmount.
+  useEffect(() => {
+    if (!revealing) return undefined;
+    document.body.classList.add('page-ready');
+    const id = window.setTimeout(() => setDone(true), WIPE_MS);
+    return () => clearTimeout(id);
+  }, [revealing]);
+
+  if (done) return null;
 
   return (
-    <AnimatePresence>
-      {!done && (
-        <motion.div
-          className="preloader"
-          role="status"
-          aria-live="polite"
-          initial={{ opacity: 1, clipPath: 'inset(0 0% 0 0)' }}
-          exit={{
-            clipPath: 'inset(0 100% 0 0)',
-            transition: { duration: 0.4, ease: [0.22, 0.61, 0.36, 1] },
-          }}
-        >
-          <div className="preloader-inner">
-            <ProgressArc progress={count} />
-            <div className="counter">{count}</div>
-            <div className="loader-copy">Calibrating stars &amp; telemetry</div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div className={`preloader${revealing ? ' is-revealing' : ''}`} role="status" aria-live="polite">
+      <div className="preloader-inner">
+        <ProgressArc progress={count} complete={full} />
+        <div className="counter">{count}</div>
+        <div className="loader-copy">Calibrating stars &amp; telemetry</div>
+      </div>
+    </div>
   );
 }

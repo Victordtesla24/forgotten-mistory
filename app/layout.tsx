@@ -37,21 +37,17 @@ export const metadata: Metadata = {
     url: 'https://forgotten-mistory.web.app',
     siteName: 'Forgotten Mistory',
     type: 'website',
-    images: [
-      {
-        url: '/assets/my_avatar.png',
-        width: 512,
-        height: 512,
-        alt: 'Vikram Deshpande',
-      },
-    ],
+    // Static social card (1200×630, monochrome). Served from public/ so it works
+    // under the Firebase static export — no app/opengraph-image.tsx runtime route.
+    images: [{ url: '/assets/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Vikram Deshpande | Scrum Master · Project Manager · AI Delivery Leader',
     description:
       'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
-    images: ['/assets/my_avatar.png'],
+    // Same static card drives the summary_large_image Twitter preview.
+    images: ['/assets/og-image.png'],
   },
 };
 
