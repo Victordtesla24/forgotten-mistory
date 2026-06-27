@@ -21,6 +21,10 @@ const ROLLING_WINDOW = 60;
 const SPARK_W = 160;
 const SPARK_H = 40;
 
+function TelemetryValue({ value, format }: { value: number; format: (n: number) => string }) {
+  return <>{format(value)}</>;
+}
+
 function useRealTelemetry(enabled: boolean) {
   const [fps, setFps] = useState(60);
   const [frameTime, setFrameTime] = useState(16.7);
