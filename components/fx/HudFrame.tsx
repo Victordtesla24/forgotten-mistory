@@ -1,8 +1,13 @@
 'use client';
 
 import React from 'react';
-import TelemetryHud from './TelemetryHud';
+import dynamic from 'next/dynamic';
 import { useInViewMount } from '@/lib/useInViewMount';
+
+const TelemetryHud = dynamic(() => import('./TelemetryHud'), {
+  loading: () => <div className="r3f-loading-placeholder" />,
+  ssr: false,
+});
 
 /**
  * HudFrame — the recurring monochrome HUD bezel (NN-2 signature motif). Wraps the

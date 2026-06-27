@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { PALETTE } from '@/lib/palette';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
  * TokenStreamMatch — SVG/Framer Motion token-match stream effect for the
@@ -101,7 +102,7 @@ export default React.memo(function TokenStreamMatch({
   className?: string;
   project?: string;
 }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [phase, setPhase] = useState<'entering' | 'connecting' | 'settled'>('entering');

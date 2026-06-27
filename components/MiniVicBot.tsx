@@ -4,9 +4,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { askMiniVicBrain, type BrainTurn } from "@/lib/miniVicBrain";
 import { GREETING, type PersonaMode } from "@/app/data/miniVicKnowledge";
-import { Copy, Play, RefreshCcw, Send, Sparkles, Volume2, VolumeX, X, Mic, MicOff, Video } from "lucide-react";
+import { Copy, Pause, Play, RefreshCcw, Send, Sparkles, Volume2, VolumeX, X, Mic, MicOff, Video } from "lucide-react";
 import { useSetAvatarSpeaking } from "@/lib/avatarContext";
 import { PALETTE } from "@/lib/palette";
+import {
+  getVisemeShape,
+  lerpVisemeShapes,
+  heuristicVisemeFromFrequency,
+  type VisemeShape,
+} from "@/lib/visemeMap";
 
 // Minimal shapes for the vendor-prefixed browser APIs, so the component reaches
 // `webkitSpeechRecognition` / `webkitAudioContext` through typed casts only.
@@ -130,6 +136,7 @@ const MiniVicBot = () => {
     },
   ]);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -149,12 +156,18 @@ const MiniVicBot = () => {
   const toggleRef = useRef<HTMLButtonElement>(null);
   const mouthCanvasRef = useRef<HTMLCanvasElement>(null);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const currentAudioSrcRef = useRef<string>("");
 
   const audioCtxRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const dataArrayRef = useRef<Uint8Array | null>(null);
   const rafRef = useRef<number | null>(null);
+  
+  // Viseme-driven lip-sync state (D-2 fix: replaces amplitude-only mouth)
+  const currentVisemeRef = useRef<VisemeShape>(getVisemeShape(0));
+  const targetVisemeRef = useRef<VisemeShape>(getVisemeShape(0));
+  const visemeLerpRef = useRef<number>(0);
   
   const recognitionRef = useRef<any>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -181,6 +194,8 @@ const MiniVicBot = () => {
    */
   /** Build-time ElevenLabs render of the greeting in Vikram's cloned voice. */
   const GREETING_AUDIO_URL = "/assets/minivic-greeting.mp3";
+  /** SHA-256 hash of the cloned-voice greeting MP3 — assertable in tests (TC-FR-VOICE). */
+  const CLONED_VOICE_GREETING_HASH = "4a2673ae8a8f3f0e4b6f4aab4bbd029586c68f99c565f157094b78d64ffeee12";
   const hasPlayedGreetingRef = useRef(false);
 
   // R1: wire MiniVicBot voice output to the hero avatar speaking pulse.
@@ -213,8 +228,29 @@ const MiniVicBot = () => {
         videoRef.current.loop = true;
     }
     setIsSpeaking(false);
+    setIsPaused(false);
+    currentAudioSrcRef.current = "";
     stopMouth();
   }, [isVideoPlaying, AVATAR_VIDEO_URL, stopMouth]);
+
+  const pauseAudio = React.useCallback(() => {
+    if (!audioRef.current || !isSpeaking || isPaused) return;
+    audioRef.current.pause();
+    setIsPaused(true);
+    setIsSpeaking(false);
+    stopMouth();
+  }, [isSpeaking, isPaused, stopMouth]);
+
+  const resumeAudio = React.useCallback(() => {
+    if (!audioRef.current || !isPaused) return;
+    audioRef.current.play().then(() => {
+      setIsPaused(false);
+      setIsSpeaking(true);
+      startMouth();
+    }).catch(() => {
+      setIsPaused(false);
+    });
+  }, [isPaused, startMouth]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -583,23 +619,31 @@ const MiniVicBot = () => {
     }
 
     stopAudio();
+    currentAudioSrcRef.current = audioSrc;
     const el = audioRef.current;
     el.src = audioSrc;
     el.onplay = () => {
       setIsSpeaking(true);
+      setIsPaused(false);
       stopMouth();
       startMouth();
     };
     el.onended = () => {
       setIsSpeaking(false);
+      setIsPaused(false);
+      currentAudioSrcRef.current = "";
       stopMouth();
     };
     el.onerror = () => {
       setIsSpeaking(false);
+      setIsPaused(false);
+      currentAudioSrcRef.current = "";
       stopMouth();
     };
     el.play().catch(() => {
       setIsSpeaking(false);
+      setIsPaused(false);
+      currentAudioSrcRef.current = "";
       stopMouth();
     });
   };
@@ -1029,6 +1073,18 @@ const MiniVicBot = () => {
                 >
                   {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
                 </button>
+                {(isSpeaking || isPaused) && (
+                  <button
+                    onClick={() => {
+                      if (isPaused) resumeAudio();
+                      else pauseAudio();
+                    }}
+                    className="rounded-full border border-white/15 bg-black/45 p-1.5 text-white/90 backdrop-blur-md transition-colors hover:border-white/35 hover:bg-white/10"
+                    aria-label={isPaused ? "Resume voice" : "Pause voice"}
+                  >
+                    {isPaused ? <Play size={14} /> : <Pause size={14} />}
+                  </button>
+                )}
                 <button
                   onClick={() => {
                     stopAudio();

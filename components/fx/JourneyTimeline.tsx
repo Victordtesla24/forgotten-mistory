@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 interface TimelineEvent {
   id: string; year: string; label: string; company: string; x: number; tier: 'top' | 'bottom';
@@ -19,7 +20,7 @@ const EVENTS: TimelineEvent[] = [
 const TW = 300; const TH = 120; const TY = 55;
 
 export default React.memo(function JourneyTimeline({ className = '', project }: { className?: string; project?: string }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [activeNode, setActiveNode] = useState<string | null>(null);

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
  * EventSeatShimmer — SVG seat-map shimmer + event timeline effect for the
@@ -50,7 +51,7 @@ export default React.memo(function EventSeatShimmer({
   className?: string;
   project?: string;
 }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [revealedCount, setRevealedCount] = useState(0);

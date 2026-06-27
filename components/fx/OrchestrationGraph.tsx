@@ -15,10 +15,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
-import { useReducedMotion } from 'framer-motion';
 import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
 import { agentGraphPulseFragment, agentGraphVertex } from './shaders/agentGraphPulse.glsl';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 // ── Résumé-sourced real data (R3 — NEVER random) ──
 // Meta: this site is built by a 6-profile Hermes orchestration system
@@ -232,7 +232,7 @@ interface OrchestrationGraphProps {
 }
 
 export default React.memo(function OrchestrationGraph({ className = '', project }: OrchestrationGraphProps) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef);
   const pageVisible = usePageVisible();
@@ -240,7 +240,10 @@ export default React.memo(function OrchestrationGraph({ className = '', project 
 
   const frozen = prefersReducedMotion || !inView || !pageVisible || webglError;
 
-  const handleCanvasError = useCallback(() => setWebglError(true), []);
+  const handleCanvasError = useCallback((err?: unknown) => {
+    console.error('[OrchestrationGraph] WebGL error:', err);
+    setWebglError(true);
+  }, []);
 
   return (
     <div

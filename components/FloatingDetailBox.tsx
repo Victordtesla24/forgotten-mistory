@@ -1,12 +1,20 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Database, X } from 'lucide-react';
 import { resumeContent } from '@/app/data/resumeContent';
 import { PALETTE } from '@/lib/palette';
-import DetailMaterialize from '@/components/fx/DetailMaterialize';
-import FloatingGlassPanel from '@/components/fx/FloatingGlassPanel';
+
+const DetailMaterialize = dynamic(() => import('@/components/fx/DetailMaterialize'), {
+  loading: () => <div className="r3f-loading-placeholder" />,
+  ssr: false,
+});
+const FloatingGlassPanel = dynamic(() => import('@/components/fx/FloatingGlassPanel'), {
+  loading: () => <div className="r3f-loading-placeholder" />,
+  ssr: false,
+});
 
 interface FloatingDetailBoxProps {
   activeKey: string | null;

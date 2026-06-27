@@ -15,12 +15,12 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { useReducedMotion } from 'framer-motion';
 import {
   generateJarvisTelemetry,
   TELEMETRY_SOURCE_LABEL,
   type JarvisReadout,
 } from '@/lib/telemetryFeed';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 const THROTTLE_MS = 1000 / 30; // 30 Hz
 
@@ -64,7 +64,7 @@ const PHASE_ICONS: Record<string, string> = {
 };
 
 export default React.memo(function JarvisTelemetry() {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const telemetry = useJarvisTelemetry(!prefersReducedMotion);
 
   const displayData = prefersReducedMotion

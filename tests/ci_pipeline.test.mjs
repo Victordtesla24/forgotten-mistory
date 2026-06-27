@@ -6,7 +6,7 @@
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ROOT = process.cwd();
@@ -154,5 +154,41 @@ describe('Edge cases', () => {
     assert.ok(lhBlock, 'lighthouse block not found');
     assert.ok(/lhci/.test(lhBlock[0]), 'lighthouse must use lhci');
     assert.ok(/lighthouserc\.json/.test(lhBlock[0]), 'lighthouse must reference config');
+  });
+});
+
+describe('CI-CD-4: Static audit hardening', () => {
+  it('static audit report artifact is uploaded in quality job', () => {
+    // The deploy.yml quality job should upload reports/static-audit.json as an artifact
+    const qualityBlock = yaml.match(/quality:[\s\S]*?(?=\n  lint:)/m);
+    assert.ok(qualityBlock, 'quality block not found');
+    assert.ok(/static-audit-report/.test(qualityBlock[0]),
+      'static-audit-report artifact name missing from quality job');
+    assert.ok(/reports\/static-audit\.json/.test(qualityBlock[0]),
+      'reports/static-audit.json path missing from quality job artifact');
+    assert.ok(/upload-artifact@v4/.test(qualityBlock[0]),
+      'upload-artifact@v4 action missing from quality job');
+  });
+
+  it('static audit fail-loud test file exists', () => {
+    assert.ok(existsSync(join(process.cwd(), 'tests', 'static_audit_fail.test.mjs')),
+      'tests/static_audit_fail.test.mjs must exist');
+  });
+
+  it('every job has timeout-minutes (R6 guard)', () => {
+    const REQUIRED_JOBS = ['quality', 'lint', 'test', 'test-gpu', 'lighthouse', 'axe', 'build', 'preview', 'deploy', 'verify'];
+    const missing = [];
+    for (const job of [...REQUIRED_JOBS, 'secrets-check']) {
+      const jobIdx = yaml.search(new RegExp(`^  ${job.replace(/-/g, '\\-')}:`, 'm'));
+      if (jobIdx === -1) { missing.push(job); continue; }
+      const remaining = yaml.slice(jobIdx);
+      const nextJobIdx = remaining.slice(1).search(/^  [a-z][a-z-]*:/m);
+      const block = nextJobIdx === -1 ? remaining : remaining.slice(0, nextJobIdx + 1);
+      if (!/timeout-minutes/.test(block)) {
+        missing.push(job);
+      }
+    }
+    assert.equal(missing.length, 0,
+      `jobs missing timeout-minutes: ${missing.join(', ')}`);
   });
 });

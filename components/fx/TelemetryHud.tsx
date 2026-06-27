@@ -18,10 +18,10 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Bloom, DepthOfField, EffectComposer, Vignette } from '@react-three/postprocessing';
-import { useReducedMotion } from 'framer-motion';
 import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
 import { holoRingFragment, hudVertex, lightShaftFragment } from './shaders/hud';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 const ACCENT = new THREE.Color(PALETTE.accent);
 const STEEL = new THREE.Color(PALETTE.steel);
@@ -258,7 +258,7 @@ function TelemetryReadout({ fps, frameTime, frozen }: { fps: number; frameTime: 
 }
 
 export default React.memo(function TelemetryHud({ className }: { className?: string }) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
   const frozen = !!reduced;
   const { fps, frameTime, sparkline } = useRealTelemetry(!frozen);
 

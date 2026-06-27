@@ -17,6 +17,7 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html', { open: 'never', outputFolder: 'playwright-report' }],
+    ['json', { outputFile: 'test-results.json' }],
   ],
   timeout: process.env.CI ? 180000 : 90000, // 3 min timeout in CI, 1.5 min locally
   use: {
@@ -28,6 +29,8 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'], channel: process.env.CI ? undefined : 'chrome' },
+      // Per-test file timeout (30 seconds per test file)
+      timeout: 30000,
     },
   ],
   // Snapshot config for visual-regression (toHaveScreenshot)

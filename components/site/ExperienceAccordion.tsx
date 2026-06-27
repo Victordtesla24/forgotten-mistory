@@ -1,9 +1,14 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import type { ExperienceRole } from '@/app/data/siteContent';
-import CardFlipCanvas from '@/components/fx/CardFlipCanvas';
+
+const CardFlipCanvas = dynamic(() => import('@/components/fx/CardFlipCanvas'), {
+  loading: () => <div className="r3f-loading-placeholder" />,
+  ssr: false,
+});
 
 interface ExperienceAccordionProps {
   roles: ExperienceRole[];

@@ -71,6 +71,7 @@ import JarvisRepairLoop from '@/components/fx/JarvisRepairLoop';
 import ImageEnhancer from '@/components/fx/ImageEnhancer';
 import KeySigningPulse from '@/components/fx/KeySigningPulse';
 import EventSeatShimmer from '@/components/fx/EventSeatShimmer';
+import TeslaDashboard from '@/components/fx/TeslaDashboard';
 import ProofBar from '@/components/site/ProofBar';
 import MindsetProjection from '@/components/site/MindsetProjection';
 import SynthesisProvenance from '@/components/site/SynthesisProvenance';
@@ -572,17 +573,18 @@ export default function Home() {
                 </ErrorBoundary>
                 <AstroChartSphere project="jyotish-shastra" />
                 <ErrorBoundary>
-                  <OrchestrationGraph project="rishi-prajnya" />
+                  <OrchestrationGraph project="ralph-loop-infinite" />
                 </ErrorBoundary>
                 <ErrorBoundary>
                   <PacketFlowGraph project="telemetry-cluster" />
                 </ErrorBoundary>
-                <JarvisRepairLoop />
-                <AtoEvidenceBar />
-                <ClearanceStepper />
+                <JarvisRepairLoop project="Error-Management-System" />
+                <AtoEvidenceBar project="cobol-testing-ato-work" />
+                <ClearanceStepper project="clearance" />
                 <ImageEnhancer project="image-enhancer" />
                 <KeySigningPulse project="public-key-server" />
                 <EventSeatShimmer project="abentertainment" />
+                <TeslaDashboard project="telemetry-server" />
               </div>
             </Reveal>
 

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
  * InboxTriage — Framer/SVG inbox triage funnel effect for the AI Gmail Manager
@@ -39,7 +40,7 @@ const MESSAGES: Message[] = [
 const LABELS = ['Urgent', 'Action', 'FYI', 'Archive'] as const;
 
 export default React.memo(function InboxTriage({ className = '', project }: { className?: string; project?: string }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [phase, setPhase] = useState<'incoming' | 'classifying' | 'settled'>('incoming');

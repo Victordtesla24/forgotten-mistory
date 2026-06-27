@@ -16,10 +16,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
-import { useReducedMotion } from 'framer-motion';
 import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
 import { packetFlowEdgeFragment, packetFlowVertex } from './shaders/packetFlowEdge.glsl';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 // Résumé-sourced data (R3 — NEVER random)
 const P95_MS = 198;
@@ -229,7 +229,7 @@ interface PacketFlowGraphProps {
 }
 
 export default React.memo(function PacketFlowGraph({ className = '', project }: PacketFlowGraphProps) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef);
   const pageVisible = usePageVisible();
@@ -241,7 +241,10 @@ export default React.memo(function PacketFlowGraph({ className = '', project }: 
   const p95 = useCountUp(P95_MS, 1200, animateReadout);
   const devices = useCountUp(DEVICE_COUNT, 1200, animateReadout);
 
-  const handleCanvasError = useCallback(() => setWebglError(true), []);
+  const handleCanvasError = useCallback((err?: unknown) => {
+    console.error('[PacketFlowGraph] WebGL error:', err);
+    setWebglError(true);
+  }, []);
 
   return (
     <div

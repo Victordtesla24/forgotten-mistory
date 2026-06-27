@@ -182,7 +182,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y xvfb
 
       # Virtual X display so headless Chromium has a display; software GL (SwiftShader)
-      - run: xvfb-run -a --server-args="-screen 0 1920x1080x24" npx playwright test
+      - run: xvfb-run -a --server-args="-screen 0 1920x1080x24" npx playwright test --reporter=json,html,list
 
       # R6 UPGRADE (Medium): Publish visual-regression screenshot baselines.
       - name: Upload visual-regression baselines
@@ -201,6 +201,50 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+      # New: Upload JSON test report for analysis
+      - name: Upload Playwright JSON report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-json-report
+          path: test-results.json
+          retention-days: 30
+
+      # New: Generate test summary and comment on PR
+      - name: Generate test summary
+        if: always() && github.event_name == 'pull_request'
+        run: |
+          echo "Analyzing test results..."
+          if [ -f "test-results.json" ]; then
+            npm install -g jq
+            PASS=$(jq -r '.suites[].specs[] | select(.tests[].results[].status == "passed") | .title' test-results.json | wc -l)
+            FAIL=$(jq -r '.suites[].specs[] | select(.tests[].results[].status == "failed") | .title' test-results.json | wc -l)
+            FLAKY=$(jq -r '.suites[].specs[] | select(.tests[].results[0].retry > 0) | .title' test-results.json | wc -l)
+            SKIP=$(jq -r '.suites[].specs[] | select(.tests[].results[].status == "skipped") | .title' test-results.json | wc -l)
+            
+            echo "TEST SUMMARY:" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Passed: $PASS" >> $GITHUB_STEP_SUMMARY
+            echo "- ❌ Failed: $FAIL" >> $GITHUB_STEP_SUMMARY
+            echo "- 🔄 Flaky (passed after retry): $FLAKY" >> $GITHUB_STEP_SUMMARY
+            echo "- ⏭️ Skipped: $SKIP" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$FLAKY" -gt 0 ]; then
+              echo "\nFLAKY TESTS (passed after retry):" >> $GITHUB_STEP_SUMMARY
+              jq -r '.suites[].specs[] | select(.tests[].results[0].retry > 0) | "- " + .title' test-results.json >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "::warning::Test results file not found - summary not generated"
+          fi
+
+      # New: Verify continue-on-error doesn't hide infra failures
+      - name: Verify test execution
+        if: always()
+        run: |
+          if [ "${{ job.status }}" != "success" ] && [ ! -f "test-results.json" ]; then
+            echo "::error::Test job failed without producing results - likely infrastructure failure"
+            exit 1
+          fi
 
   # ── OPTIONAL FULL-FIDELITY E2E. Runs ONLY when the owner declares a real GPU runner
   #    online by setting the repo variable E2E_RUNNER_LABELS (JSON array, e.g.
@@ -245,7 +289,7 @@ jobs:
       - run: npm run build:static
       - name: Install Xvfb
         run: sudo apt-get update && sudo apt-get install -y xvfb
-      - run: xvfb-run -a --server-args="-screen 0 1920x1080x24" npx playwright test
+      - run: xvfb-run -a --server-args="-screen 0 1920x1080x24" npx playwright test --reporter=json,html,list
 
   # ── Performance / quality budgets (TC-NFR-PERF): Lighthouse via lighthouserc.json ──
   lighthouse:

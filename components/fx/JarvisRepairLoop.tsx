@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { PALETTE } from '@/lib/palette';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
  * JarvisRepairLoop — SVG cycle animation for JARVIS Error-Management-System
@@ -35,7 +36,7 @@ const EDGES = [0, 1, 2, 3, 0] as const;
 const CYCLE_INTERVAL_MS = 1200;
 
 export default React.memo(function JarvisRepairLoop({ className = '', project = 'Error-Management-System' }: { className?: string; project?: string }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [activePhase, setActivePhase] = useState(0); // index into NODES

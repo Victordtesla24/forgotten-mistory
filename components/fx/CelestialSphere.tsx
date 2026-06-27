@@ -17,10 +17,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
-import { useReducedMotion } from 'framer-motion';
 import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
 import { celestialOrbitFragment, celestialOrbitVertex } from './shaders/celestialOrbit.glsl';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 // ── Résumé-sourced real data (R3 — NEVER random) ──
 // From siteContent.ts featuredRepos: the astro cluster consists of 3 repos
@@ -201,7 +201,7 @@ interface CelestialSphereProps {
 }
 
 export default React.memo(function CelestialSphere({ className = '', project }: CelestialSphereProps) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef);
   const pageVisible = usePageVisible();
@@ -209,7 +209,10 @@ export default React.memo(function CelestialSphere({ className = '', project }: 
 
   const frozen = prefersReducedMotion || !inView || !pageVisible || webglError;
 
-  const handleCanvasError = useCallback(() => setWebglError(true), []);
+  const handleCanvasError = useCallback((err?: unknown) => {
+    console.error('[CelestialSphere] WebGL error:', err);
+    setWebglError(true);
+  }, []);
 
   return (
     <div

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
  * ClearanceStepper — Framer monochrome credential stepper for the Credentials &
@@ -68,7 +69,7 @@ const STEPS: StepData[] = [
 ];
 
 export default React.memo(function ClearanceStepper({ className = '', project }: { className?: string; project?: string }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [visibleSteps, setVisibleSteps] = useState(0);

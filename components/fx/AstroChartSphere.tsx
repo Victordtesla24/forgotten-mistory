@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { PALETTE } from '@/lib/palette';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
  * AstroChartSphere — SVG-based Vedic astrology chart wheel for the
@@ -179,7 +180,7 @@ function ChartRings() {
 // ── Main component ──
 
 export default React.memo(function AstroChartSphere({ className = '', project }: { className?: string; project?: string }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
 

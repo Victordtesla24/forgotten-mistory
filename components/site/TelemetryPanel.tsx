@@ -1,11 +1,19 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useReducedMotion } from 'framer-motion';
 import { ScrollTrigger } from '@/lib/gsap';
 import { PALETTE } from '@/lib/palette';
-import PanelDepthScene from '@/components/fx/PanelDepthScene';
-import SparklineGL from '@/components/fx/SparklineGL';
+
+const PanelDepthScene = dynamic(() => import('@/components/fx/PanelDepthScene'), {
+  loading: () => <div className="r3f-loading-placeholder" />,
+  ssr: false,
+});
+const SparklineGL = dynamic(() => import('@/components/fx/SparklineGL'), {
+  loading: () => <div className="r3f-loading-placeholder" />,
+  ssr: false,
+});
 import JarvisTelemetry from '@/components/fx/JarvisTelemetry';
 import TeslaDashboard from '@/components/fx/TeslaDashboard';
 
@@ -285,7 +293,11 @@ export default function TelemetryPanel() {
       id="telemetry-panel"
       data-disclosure={disclosurePhase}
     >
-      {!prefersReducedMotion && <PanelDepthScene />}
+      {!prefersReducedMotion && (
+        <ErrorBoundary>
+          <PanelDepthScene />
+        </ErrorBoundary>
+      )}
       <div className="telemetry-header">
         <div>
           <p className="eyebrow">Live Telemetry</p>
@@ -313,7 +325,9 @@ export default function TelemetryPanel() {
                 className="telemetry-spark"
               />
               {!prefersReducedMotion && (
-                <SparklineGL values={glSparkValues} />
+                <ErrorBoundary>
+                  <SparklineGL values={glSparkValues} />
+                </ErrorBoundary>
               )}
               <p className="telemetry-note">
                 Real browser rAF delta \u2014 rolling {ROLLING_WINDOW}-frame window

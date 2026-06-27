@@ -17,8 +17,8 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { useReducedMotion } from 'framer-motion';
 import { generateTeslaTelemetry, type TeslaReadout } from '@/lib/telemetryFeed';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 const THROTTLE_MS = 1000 / 30; // 30 Hz
 
@@ -111,8 +111,8 @@ function BarGauge({
   );
 }
 
-export default React.memo(function TeslaDashboard() {
-  const prefersReducedMotion = useReducedMotion();
+export default React.memo(function TeslaDashboard({ project }: { project?: string }) {
+  const prefersReducedMotion = useReducedMotionSafe();
   const telemetry = useTeslaTelemetry(!prefersReducedMotion);
 
   const displayData = prefersReducedMotion
@@ -125,6 +125,7 @@ export default React.memo(function TeslaDashboard() {
     <div
       className="telemetry-card tesla-dashboard"
       data-testid="tesla-dashboard"
+      data-project={project}
     >
       <div className="telemetry-header">
         <div>

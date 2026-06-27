@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
  * AtoEvidenceBar — SVG time-compression bar for the ATO Payday Super
@@ -45,7 +46,7 @@ function generateTicks(): Tick[] {
 const TICKS = generateTicks();
 
 export default React.memo(function AtoEvidenceBar({ className = '', project }: { className?: string; project?: string }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [phase, setPhase] = useState<'terminal' | 'morphing' | 'pipeline'>('terminal');

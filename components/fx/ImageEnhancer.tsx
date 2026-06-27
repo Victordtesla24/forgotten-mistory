@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
  * ImageEnhancer — Before/after upscale reveal slider effect for the
@@ -50,7 +51,7 @@ export default React.memo(function ImageEnhancer({
   className?: string;
   project?: string;
 }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [dividerPos, setDividerPos] = useState(50);
