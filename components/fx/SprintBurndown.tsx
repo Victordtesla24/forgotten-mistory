@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
-import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
+import { motion, useReducedMotion } from 'framer-motion';
 
 /**
  * SprintBurndown — Animated SVG burndown/burnup infographic for the
@@ -16,8 +15,6 @@ import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 const SPRINT_DAYS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const IDEAL_REMAINING = [40, 36, 32, 28, 24, 20, 16, 12, 8, 4, 0];
 const ACTUAL_REMAINING = [40, 38, 35, 31, 26, 22, 17, 13, 9, 5, 0];
-// Third series — the velocity-fitted trend the team tracks against the ideal.
-const TREND_REMAINING = [40, 36.5, 33, 29.5, 25, 21, 17, 13, 9, 5, 1];
 
 const WIDTH = 300;
 const HEIGHT = 180;
@@ -37,12 +34,6 @@ function toPath(data: number[]): string {
 
 const idealPath = toPath(IDEAL_REMAINING);
 const actualPath = toPath(ACTUAL_REMAINING);
-const trendPath = toPath(TREND_REMAINING);
-// Closed area under the actual line (down to the day-0 baseline) for the gradient fill.
-const BASELINE_Y = PADDING.top + CHART_H;
-const areaPath = `${actualPath} L${(PADDING.left + CHART_W).toFixed(1)},${BASELINE_Y.toFixed(
-  1,
-)} L${PADDING.left.toFixed(1)},${BASELINE_Y.toFixed(1)} Z`;
 
 function pathLength(path: string): number {
   if (typeof document === 'undefined') return 500;
@@ -62,12 +53,10 @@ export default function SprintBurndown({ className = '', project }: { className?
   const [inView, setInView] = useState(false);
   const [idealLen, setIdealLen] = useState(500);
   const [actualLen, setActualLen] = useState(500);
-  const [trendLen, setTrendLen] = useState(500);
 
   useEffect(() => {
     setIdealLen(pathLength(idealPath));
     setActualLen(pathLength(actualPath));
-    setTrendLen(pathLength(trendPath));
   }, []);
 
   useEffect(() => {
@@ -98,24 +87,6 @@ export default function SprintBurndown({ className = '', project }: { className?
         role="img"
         aria-label="Sprint burndown chart"
       >
-        <defs>
-          <linearGradient id="burndown-area-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="var(--white)" stopOpacity="0.18" />
-            <stop offset="100%" stopColor="var(--white)" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-
-        {/* Gradient area fill under the actual line. */}
-        <motion.path
-          data-burndown-area
-          d={areaPath}
-          fill="url(#burndown-area-grad)"
-          stroke="none"
-          initial={prefersReducedMotion ? false : { opacity: 0 }}
-          animate={{ opacity: animate ? 0.9 : 1 }}
-          transition={{ duration: 1.4, ease: 'easeOut', delay: 0.5 }}
-        />
-
         {/* Y-axis labels */}
         <g className="burndown-axis-y" fill="var(--mist-400)" fontSize="9" fontFamily="var(--font-mono)">
           <text x={PADDING.left - 8} y={PADDING.top + 2} textAnchor="end">40</text>
@@ -163,23 +134,6 @@ export default function SprintBurndown({ className = '', project }: { className?
           animate={{ strokeDashoffset: 0 }}
           transition={{ duration: 1.2, ease: 'easeOut', delay: 0.2 }}
           style={{ strokeDasharray: idealLen }}
-        />
-
-        {/* Trend line (velocity-fitted projection) */}
-        <motion.path
-          data-testid="burndown-trend"
-          d={trendPath}
-          fill="none"
-          stroke="var(--steel)"
-          strokeWidth="1.5"
-          strokeDasharray="1 4"
-          strokeLinecap="round"
-          opacity="0.6"
-          strokeDashoffset={animate ? trendLen : 0}
-          initial={prefersReducedMotion ? false : { strokeDashoffset: trendLen }}
-          animate={{ strokeDashoffset: 0 }}
-          transition={{ duration: 1.3, ease: 'easeOut', delay: 0.25 }}
-          style={{ strokeDasharray: trendLen }}
         />
 
         {/* Actual line */}
@@ -233,24 +187,10 @@ export default function SprintBurndown({ className = '', project }: { className?
           display: flex;
           flex-direction: column;
           gap: 0.25rem;
-          backdrop-filter: blur(8px);
-          -webkit-backdrop-filter: blur(8px);
         }
         .burndown-svg {
           width: 100%;
           height: auto;
-        }
-        .burndown-axis-y,
-        .burndown-axis-x {
-          animation: burndownAxisIn 0.9s ease both;
-        }
-        @keyframes burndownAxisIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
         }
         .burndown-label {
           text-align: center;
@@ -261,11 +201,6 @@ export default function SprintBurndown({ className = '', project }: { className?
         @media (prefers-reduced-motion: reduce) {
           .burndown-dot {
             transform: none !important;
-          }
-          .burndown-axis-y,
-          .burndown-axis-x {
-            animation: none;
-            opacity: 1;
           }
         }
       `}</style>
