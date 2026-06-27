@@ -6,6 +6,8 @@ import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { PALETTE } from '@/lib/palette';
 import PanelDepthScene from '@/components/fx/PanelDepthScene';
 import SparklineGL from '@/components/fx/SparklineGL';
+import JarvisTelemetry from '@/components/fx/JarvisTelemetry';
+import TeslaDashboard from '@/components/fx/TeslaDashboard';
 
 const LOCATION_SETS: string[][] = [
   ['Melbourne \u00b7 Edge POP', 'Sydney \u00b7 API Gateway', 'Adelaide \u00b7 Vector cache'],
@@ -354,6 +356,14 @@ export default function TelemetryPanel() {
             Load scrubbed by scroll progress \u2014 simulates system under demand.
           </p>
         </div>
+      </div>
+
+      {/* G2 — Project-bound telemetry: JARVIS Error-Management-System + Tesla App Dashboard.
+           Both use deterministic sine-based live feeds (ZERO Math.random()), rendered
+           alongside the browser perf-counter HUD in a composing layout (C3). */}
+      <div className="telemetry-grid project-telemetry-grid">
+        <JarvisTelemetry />
+        <TeslaDashboard />
       </div>
 
       {disclosurePhase >= 2 && (

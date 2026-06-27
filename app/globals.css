@@ -2681,6 +2681,16 @@ footer {
     .telemetry-grid {
         grid-template-columns: 1fr;
     }
+    .project-telemetry-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* G2 — Project-bound telemetry grid (JARVIS + Tesla, 2-col). */
+.project-telemetry-grid {
+    grid-template-columns: 1fr 1fr;
+    margin-top: 1rem;
+    gap: 1rem;
 }
 
 /* 3. Interactive Architecture Diagram */
