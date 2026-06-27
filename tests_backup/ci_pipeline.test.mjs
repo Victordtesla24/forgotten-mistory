@@ -13,8 +13,8 @@ const ROOT = process.cwd();
 const yaml = readFileSync(join(ROOT, '.github', 'workflows', 'deploy.yml'), 'utf8');
 
 describe('R6 pipeline structure', () => {
-  it('has all 10 required jobs', () => {
-    const required = ['quality', 'lint', 'test', 'test-gpu', 'lighthouse', 'axe', 'build', 'preview', 'deploy', 'verify'];
+  it('has all 9 required jobs', () => {
+    const required = ['quality', 'lint', 'test', 'test-gpu', 'lighthouse', 'axe', 'build', 'preview', 'deploy'];
     for (const job of required) {
       assert.ok(new RegExp(`^  ${job}:`, 'm').test(yaml), `job "${job}" missing`);
     }
@@ -60,18 +60,6 @@ describe('R6 invariants', () => {
     assert.ok(buildBlock, 'build block not found');
     assert.ok(buildBlock[0].includes('GEMINI_API_KEY'), 'GEMINI_API_KEY missing from build');
     assert.ok(buildBlock[0].includes('secrets.GEMINI_API_KEY'), 'secrets.GEMINI_API_KEY reference missing');
-  });
-
-  it('STAGE 7: verify job runs after deploy and asserts production HTTP 200', () => {
-    const verifyBlock = yaml.match(/^  verify:[\s\S]*$/m);
-    assert.ok(verifyBlock, 'verify job (Stage 7) missing');
-    const vb = verifyBlock[0];
-    assert.ok(/needs:\s*\[[^\]]*\bdeploy\b[^\]]*\]/.test(vb), 'verify must depend on deploy');
-    assert.ok(vb.includes('refs/heads/main'), 'verify must gate on main ref');
-    assert.ok(vb.includes("event_name == 'push'"), 'verify must gate on push event');
-    assert.ok(/curl/.test(vb), 'verify must curl the production URL');
-    assert.ok(/http_code/.test(vb) && /200/.test(vb), 'verify must assert HTTP 200');
-    assert.ok(!/secrets\./.test(vb), 'verify must not reference secrets (public prod URL)');
   });
 
   it('PR runs never auto-deploy to live (preview only)', () => {

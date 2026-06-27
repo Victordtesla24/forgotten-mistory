@@ -54,7 +54,7 @@ function checkSyntax() {
 checkSyntax();
 
 // ── Required jobs ──
-const REQUIRED_JOBS = ['quality', 'lint', 'test', 'test-gpu', 'lighthouse', 'axe', 'build', 'preview', 'deploy'];
+const REQUIRED_JOBS = ['quality', 'lint', 'test', 'test-gpu', 'lighthouse', 'axe', 'build', 'preview', 'deploy', 'verify'];
 for (const job of REQUIRED_JOBS) {
   const jobRe = new RegExp(`^\\s{2}${job.replace('-', '\\-')}:`, 'm');
   record(`JOB-${job}`, jobRe.test(yaml),
@@ -80,6 +80,30 @@ if (deployIf) {
   const hasPushEvent = cond.includes("push");
   record('INV-DEPLOY-MAIN-ONLY', hasMainRef && hasPushEvent,
     (hasMainRef && hasPushEvent) ? 'deploy gated to main push only' : 'deploy if condition incomplete');
+}
+
+// ── Stage 7 (R6): post-deploy verify job ──
+const verifyBlock = yaml.match(/^\s{2}verify:[\s\S]*$/m);
+if (verifyBlock) {
+  const vb = verifyBlock[0];
+  // Runs only after a successful deploy
+  const needsDeploy = /needs:\s*\[[^\]]*\bdeploy\b[^\]]*\]/.test(vb);
+  record('R6-VERIFY-NEEDS-DEPLOY', needsDeploy,
+    needsDeploy ? 'verify runs after deploy (needs: [deploy])' : 'verify must depend on deploy');
+  // Gated to main push only (never runs on PRs)
+  const verifyMainOnly = vb.includes('refs/heads/main') && vb.includes("event_name == 'push'");
+  record('R6-VERIFY-MAIN-ONLY', verifyMainOnly,
+    verifyMainOnly ? 'verify gated to main push only' : 'verify must gate on main push');
+  // Performs an HTTP 200 production check via curl
+  const checks200 = vb.includes('curl') && /200/.test(vb) && /http_code/.test(vb);
+  record('R6-VERIFY-HTTP200', checks200,
+    checks200 ? 'verify curls production URL and asserts HTTP 200' : 'verify must curl prod URL for HTTP 200');
+  // No secrets referenced in the verify job (production URL is public)
+  const noSecrets = !/secrets\./.test(vb);
+  record('R6-VERIFY-NO-SECRETS', noSecrets,
+    noSecrets ? 'verify references no secrets (public prod URL)' : 'verify must not reference secrets');
+} else {
+  record('R6-VERIFY-NEEDS-DEPLOY', false, 'verify job MISSING (Stage 7)');
 }
 
 // ── R6 Upgrade: Playwright cache present ──

@@ -276,6 +276,7 @@ jobs:
           path: out
 
       - name: Deploy to Firebase live channel (main)
+        id: firebase-deploy
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
@@ -283,3 +284,39 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           projectId: forgotten-mistory
           channelId: live
+
+  # ── STAGE 7 (R6): Post-deploy production smoke verification. Runs ONLY after a
+  #    successful live deploy to main. Polls the production URL until it returns
+  #    HTTP 200 — deploy/CDN propagation can lag a few seconds — then fails loudly
+  #    if the site never comes back healthy. This closes the loop so a green
+  #    pipeline means the LIVE SITE is actually serving 200, not merely that the
+  #    `firebase deploy` command exited 0. The production URL is sourced from the
+  #    repo variable PRODUCTION_URL when set, falling back to the canonical
+  #    Firebase Hosting domain. No secrets are referenced here. ──
+  verify:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [deploy]
+    permissions:
+      contents: read
+    env:
+      PROD_URL: ${{ vars.PRODUCTION_URL || 'https://forgotten-mistory.web.app' }}
+    steps:
+      - name: Verify production responds HTTP 200
+        run: |
+          set -euo pipefail
+          echo "Verifying production deployment at: $PROD_URL"
+          attempts=12
+          delay=10
+          for i in $(seq 1 "$attempts"); do
+            code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 -L "$PROD_URL" || echo '000')"
+            echo "Attempt $i/$attempts → HTTP $code"
+            if [ "$code" = "200" ]; then
+              echo "Production is live and healthy (HTTP 200)."
+              exit 0
+            fi
+            sleep "$delay"
+          done
+          echo "Production did not return HTTP 200 after $attempts attempts."
+          exit 1
