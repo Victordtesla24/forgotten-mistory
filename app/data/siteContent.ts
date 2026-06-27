@@ -260,6 +260,94 @@ export const projects: ProjectCard[] = [
     description: 'Autonomous Gmail triage in TypeScript. Filters, labels, and drafts replies using LLMs.',
     visual: 'terminal',
   },
+  // §7 #1 — jarvis (SPEC: live monochrome telemetry HUD)
+  {
+    href: 'https://github.com/Victordtesla24/jarvis',
+    badge: 'R3F · GLSL',
+    title: 'JARVIS Telemetry HUD',
+    description: 'Live monochrome telemetry HUD: radial gauges, sparklines, holo-ring. R3F + custom GLSL shaders.',
+    visual: 'telemetry-hud',
+  },
+  // §7 #2 — telemetry-server / tesla-api / ride-with-vic-app (SPEC: WebSocket packet-flow)
+  {
+    href: 'https://github.com/Victordtesla24/telemetry-server',
+    badge: 'WebSocket · R3F',
+    title: 'Tesla Telemetry Pipeline',
+    description: 'WebSocket packet-flow: instanced particles along edges, live P95 latency. 10k+ concurrent devices.',
+    visual: 'packet-flow',
+  },
+  // §7 #4 — ATO COBOL evidence-harness (SPEC: time-compression bar)
+  {
+    href: 'https://github.com/Victordtesla24',
+    badge: 'ATO · COBOL',
+    title: 'ATO Evidence Harness',
+    description: 'Time-compression bar: 200+ SIT scenarios collapse from ~3h to ~15min. ≈92% effort reduction.',
+    visual: 'evidence-bar',
+  },
+  // §7 #8 — Birth-Time-Rectifier / jyotish-shastra / btr-demo (SPEC: celestial sphere)
+  {
+    href: 'https://github.com/Victordtesla24/Birth-Time-Rectifier',
+    badge: 'R3F · Vedic',
+    title: 'Birth Time Rectifier',
+    description: 'Slow monochrome celestial sphere + planetary ephemeris orbits. Vedic astronomy meets AI/ML.',
+    visual: 'celestial',
+  },
+  // §7 #9 — agsva-security-clearance-webapp (SPEC: clearance stepper)
+  {
+    href: 'https://github.com/Victordtesla24',
+    badge: 'Security · Gov',
+    title: 'AGSVA Clearance App',
+    description: 'Clearance stepper with secure lock-state transitions. Governance-grade credential verification.',
+    visual: 'clearance',
+  },
+  // §7 #10 — Error-Management-System (SPEC: self-healing pipeline graph)
+  {
+    href: 'https://github.com/Victordtesla24/Error-Management-System',
+    badge: 'AI Agent',
+    title: 'JARVIS Error Manager',
+    description: 'Self-healing pipeline graph: autonomous error detection → auto-fix flow. Build + runtime repair.',
+    visual: 'repair-loop',
+  },
+  // §7 #11 — Image-Enhancer (SPEC: before/after upscale reveal slider)
+  {
+    href: 'https://github.com/Victordtesla24',
+    badge: 'ML · Vision',
+    title: 'AI Image Enhancer',
+    description: 'Before/after upscale reveal slider. ML super-resolution with detail restoration at 2× scale.',
+    visual: 'image-compare',
+  },
+  // §7 #12 — 3-tier-multi-agent-architecture / ralph-loop-infinite (SPEC: orchestration graph)
+  {
+    href: 'https://github.com/Victordtesla24/rishi-prajnya',
+    badge: 'Multi-Agent',
+    title: 'Multi-Agent Orchestrator',
+    description: 'Multi-agent orchestration graph. 3-tier architecture: planning, execution, verification agents.',
+    visual: 'orchestration',
+  },
+  // §7 #13 — public-key-server (SPEC: key-signing handshake pulse)
+  {
+    href: 'https://github.com/Victordtesla24',
+    badge: 'Node.js · Crypto',
+    title: 'Public Key Server',
+    description: 'Key-signing handshake pulse. Node.js/Express API signing with full Mocha/Chai test coverage.',
+    visual: 'key-signing',
+  },
+  // §7 #14 — prompt-reconstruct / Advanced-Prompt-Creator (SPEC: token reflow)
+  {
+    href: 'https://github.com/Victordtesla24/Advanced-Prompt-Creator',
+    badge: 'LLM · Privacy',
+    title: 'Advanced Prompt Creator',
+    description: 'Token reflow: raw prompt → optimised. Privacy-first prompt engineering for LLM interactions.',
+    visual: 'token-flow',
+  },
+  // §7 #15 — abentertainment / indian-event-manager (SPEC: event timeline / seat-map shimmer)
+  {
+    href: 'https://github.com/Victordtesla24',
+    badge: 'Events · SVG',
+    title: 'Indian Event Manager',
+    description: 'Event timeline + seat-map shimmer. Live booking with 500+ guests and milestone coordination.',
+    visual: 'event-seat',
+  },
 ];
 
 export const featuredRepos: FeaturedRepo[] = [

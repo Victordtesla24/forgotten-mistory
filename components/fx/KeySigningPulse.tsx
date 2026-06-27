@@ -14,13 +14,6 @@ import { motion, useReducedMotion } from 'framer-motion';
  * Reduced-motion fallback shows final signed state.
  */
 
-interface KeyData {
-  id: string;
-  label: string;
-  side: 'left' | 'right';
-  fingerprint: string;
-}
-
 
 export default function KeySigningPulse({
   className = '',
