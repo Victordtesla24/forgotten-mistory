@@ -9,7 +9,7 @@ export default defineConfig({
   // .next/export), failing ~46 specs and blocking build/deploy. In CI the export is
   // prebuilt as a dedicated step (deploy.yml) so this no-ops there; locally this is the
   // build site. See tests/global-setup.ts for the webServer-ordering caveat.
-  globalSetup: './tests/global-setup.ts',
+  // globalSetup removed — dev server is running separately via `npx next dev -p 5599`
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -40,10 +40,6 @@ export default defineConfig({
       threshold: 0.2,
     },
   },
-  webServer: {
-    command: 'npx next start -p 5599',
-    url: 'http://localhost:5599',
-    reuseExistingServer: true,
-    timeout: 120000,
-  },
+  // webServer removed — dev server is already running on :5599 (started manually)
+  // Run `npx next dev -p 5599` before running tests
 });
