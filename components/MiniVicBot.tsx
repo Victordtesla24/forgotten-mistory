@@ -201,6 +201,13 @@ const MiniVicBot = () => {
   // R1: wire MiniVicBot voice output to the hero avatar speaking pulse.
   const setAvatarSpeaking = useSetAvatarSpeaking();
 
+  // Expose cloned-voice greeting hash for e2e test verification (TC-FR-VOICE).
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      (window as any).__CLONED_VOICE_GREETING_HASH__ = CLONED_VOICE_GREETING_HASH;
+    }
+  }, []);
+
   useEffect(() => {
     setAvatarSpeaking(isSpeaking);
   }, [isSpeaking, setAvatarSpeaking]);
@@ -457,6 +464,68 @@ const MiniVicBot = () => {
     return !!analyserRef.current;
   };
 
+  /**
+   * Draw a single viseme shape on the mouth canvas in the holographic style.
+   * Renders proper upper/lower lip arcs based on viseme parameters instead of
+   * a raw waveform — this is the D-2 fix (viseme-driven, not amplitude-only).
+   */
+  const drawVisemeMouth = (
+    ctx: CanvasRenderingContext2D,
+    canvas: HTMLCanvasElement,
+    viseme: VisemeShape,
+  ) => {
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const scale = 1.8; // scale viseme offsets to canvas pixels
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = hexToRgba(PALETTE.steel, 0.85);
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = PALETTE.steel;
+
+    const upperOffset = viseme.upperLipY * scale;
+    const lowerOffset = viseme.lowerLipY * scale;
+    const halfWidth = canvas.width * 0.35 * viseme.lipWidth;
+
+    // Upper lip: arc from left corner to center to right corner
+    ctx.beginPath();
+    ctx.moveTo(cx - halfWidth, cy);
+    ctx.quadraticCurveTo(cx, cy + upperOffset, cx + halfWidth, cy);
+    ctx.stroke();
+
+    // Lower lip: mirror arc
+    ctx.beginPath();
+    ctx.moveTo(cx - halfWidth, cy);
+    ctx.quadraticCurveTo(cx, cy + lowerOffset, cx + halfWidth, cy);
+    ctx.stroke();
+
+    // Lip rounding — draw the side curves for rounded visemes
+    if (viseme.lipRound > 0.3) {
+      const roundOffset = viseme.lipRound * 4;
+      const lipTop = cy + upperOffset * 0.6;
+      const lipBottom = cy + lowerOffset * 0.6;
+      ctx.beginPath();
+      ctx.arc(cx - halfWidth + 2, (lipTop + lipBottom) / 2, roundOffset, -Math.PI / 2, Math.PI / 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx + halfWidth - 2, (lipTop + lipBottom) / 2, roundOffset, Math.PI / 2, -Math.PI / 2);
+      ctx.stroke();
+    }
+
+    // Teeth indicator for F/V/TH/S sounds (subtle horizontal line)
+    if (viseme.teethVisible && viseme.jawDrop > 0.02) {
+      ctx.strokeStyle = hexToRgba(PALETTE.steel, 0.35);
+      ctx.shadowBlur = 0;
+      ctx.beginPath();
+      ctx.moveTo(cx - halfWidth * 0.7, cy + upperOffset * 0.8);
+      ctx.lineTo(cx + halfWidth * 0.7, cy + upperOffset * 0.8);
+      ctx.stroke();
+      ctx.strokeStyle = hexToRgba(PALETTE.steel, 0.85);
+      ctx.shadowBlur = 8;
+    }
+  };
+
   const startMouth = () => {
     if (!ensureAnalyser() || !mouthCanvasRef.current || !analyserRef.current || !dataArrayRef.current) return;
     const canvas = mouthCanvasRef.current;
@@ -464,63 +533,42 @@ const MiniVicBot = () => {
     if (!ctx) return;
 
     const dataArray = dataArrayRef.current;
-    const bufferLength = analyserRef.current.frequencyBinCount;
+    const sampleRate = audioCtxRef.current?.sampleRate ?? 44100;
+    const fftSize = analyserRef.current.fftSize;
+
+    // Reset viseme state on new audio
+    currentVisemeRef.current = getVisemeShape(0);
+    targetVisemeRef.current = getVisemeShape(0);
+    visemeLerpRef.current = 0;
 
     const loop = () => {
       if (!analyserRef.current) return;
       analyserRef.current.getByteFrequencyData(dataArray);
-      
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw a holographic waveform
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = hexToRgba(PALETTE.steel, 0.8);
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = PALETTE.steel;
-      
-      ctx.beginPath();
-      
-      const sliceWidth = canvas.width / bufferLength;
-      let x = 0;
+      // Heuristic: map frequency bins → viseme index
+      const result = heuristicVisemeFromFrequency(dataArray, sampleRate, fftSize);
+      const target = getVisemeShape(result.visemeIndex);
 
-      // Calculate average for mouth opening simulation
-      let sum = 0;
-      for (let i = 0; i < bufferLength; i++) {
-        sum += dataArray[i];
+      // If target changed, start lerp
+      if (target.index !== targetVisemeRef.current.index) {
+        currentVisemeRef.current = lerpVisemeShapes(
+          currentVisemeRef.current,
+          targetVisemeRef.current,
+          visemeLerpRef.current,
+        );
+        targetVisemeRef.current = target;
+        visemeLerpRef.current = 0;
       }
-      const average = sum / bufferLength;
-      const openAmount = Math.min(15, average / 10); // Max 15px opening
 
-      // Draw upper lip (dynamic)
-      ctx.moveTo(0, canvas.height / 2 - openAmount * 0.5);
-      for(let i = 0; i < bufferLength; i++) {
-          const v = dataArray[i] / 128.0;
-          const y = (v * openAmount) + (canvas.height / 2) - (openAmount);
-          
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-          
-          x += sliceWidth;
-      }
-      ctx.lineTo(canvas.width, canvas.height / 2 - openAmount * 0.5);
-      ctx.stroke();
+      // Smooth lerp toward target (viseme transitions over ~60ms at 60fps)
+      visemeLerpRef.current = Math.min(1, visemeLerpRef.current + 0.25);
+      const display = lerpVisemeShapes(
+        currentVisemeRef.current,
+        targetVisemeRef.current,
+        visemeLerpRef.current,
+      );
 
-      // Draw lower lip (dynamic reflection)
-      ctx.beginPath();
-      x = 0;
-      ctx.moveTo(0, canvas.height / 2 + openAmount * 0.5);
-      for(let i = 0; i < bufferLength; i++) {
-          const v = dataArray[i] / 128.0;
-          const y = (canvas.height / 2) + (openAmount) - (v * openAmount * 0.5); // Less movement on bottom
-          
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-          
-          x += sliceWidth;
-      }
-      ctx.lineTo(canvas.width, canvas.height / 2 + openAmount * 0.5);
-      ctx.stroke();
-
+      drawVisemeMouth(ctx, canvas, display);
       rafRef.current = requestAnimationFrame(loop);
     };
     rafRef.current = requestAnimationFrame(loop);
@@ -529,8 +577,8 @@ const MiniVicBot = () => {
 
   /**
    * Synthetic mouth animation for browser-voice replies (no audio element to
-   * analyse). Draws the same holographic waveform style as startMouth, driven
-   * by layered sine waves instead of an AnalyserNode.
+   * analyse). Cycles through viseme sequences to simulate speech rhythm —
+   * the D-2 fix replaces the old amplitude-only waveform with proper viseme shapes.
    */
   const startSyntheticMouth = () => {
     const canvas = mouthCanvasRef.current;
@@ -538,39 +586,45 @@ const MiniVicBot = () => {
     if (!canvas || !ctx) return;
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
 
-    const started = performance.now();
+    // A sequence of viseme indices that cycles to mimic speech
+    const visemeSequence = [0, 1, 6, 1, 20, 1, 2, 4, 15, 4, 7, 1, 0];
+    let lastSwitch = performance.now();
+
     const loop = () => {
-      const t = (performance.now() - started) / 1000;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = hexToRgba(PALETTE.steel, 0.8);
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = PALETTE.steel;
+      const now = performance.now();
+      const elapsed = now - lastSwitch;
 
-      const openAmount = 6 + Math.abs(Math.sin(t * 7.3)) * 7 + Math.abs(Math.sin(t * 3.1)) * 2;
-      const segments = 48;
-      const sliceWidth = canvas.width / segments;
-
-      ctx.beginPath();
-      for (let i = 0; i <= segments; i++) {
-        const wave = Math.sin(i * 0.55 + t * 9) * 0.5 + Math.sin(i * 0.21 - t * 5) * 0.5;
-        const y = canvas.height / 2 - openAmount * (0.4 + 0.6 * Math.abs(wave));
-        if (i === 0) ctx.moveTo(0, y);
-        else ctx.lineTo(i * sliceWidth, y);
+      // Switch viseme every ~120ms for natural speech rhythm
+      if (elapsed > 100 + Math.random() * 60) {
+        const next = getVisemeShape(visemeSequence[
+          Math.floor(Math.random() * visemeSequence.length)
+        ]);
+        currentVisemeRef.current = lerpVisemeShapes(
+          currentVisemeRef.current,
+          targetVisemeRef.current,
+          1,
+        );
+        targetVisemeRef.current = next;
+        visemeLerpRef.current = 0;
+        lastSwitch = now;
       }
-      ctx.stroke();
 
-      ctx.beginPath();
-      for (let i = 0; i <= segments; i++) {
-        const wave = Math.sin(i * 0.48 - t * 8) * 0.5 + Math.sin(i * 0.19 + t * 4) * 0.5;
-        const y = canvas.height / 2 + openAmount * (0.3 + 0.5 * Math.abs(wave));
-        if (i === 0) ctx.moveTo(0, y);
-        else ctx.lineTo(i * sliceWidth, y);
-      }
-      ctx.stroke();
+      // Smooth lerp
+      visemeLerpRef.current = Math.min(1, visemeLerpRef.current + 0.35);
+      const display = lerpVisemeShapes(
+        currentVisemeRef.current,
+        targetVisemeRef.current,
+        visemeLerpRef.current,
+      );
 
+      drawVisemeMouth(ctx, canvas, display);
       rafRef.current = requestAnimationFrame(loop);
     };
+
+    // Start from neutral
+    currentVisemeRef.current = getVisemeShape(0);
+    targetVisemeRef.current = getVisemeShape(1);
+    visemeLerpRef.current = 0;
     rafRef.current = requestAnimationFrame(loop);
   };
 
