@@ -60,7 +60,6 @@ import MindsetProjection from '@/components/site/MindsetProjection';
 import SynthesisProvenance from '@/components/site/SynthesisProvenance';
 import Dossier from '@/components/site/Dossier';
 import CursorDepthField from '@/components/site/CursorDepthField';
-import CardDepth from '@/components/site/CardDepth';
 
 import { resumeContent } from './data/resumeContent';
 import {
