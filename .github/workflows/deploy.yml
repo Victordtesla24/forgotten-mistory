@@ -59,6 +59,10 @@ jobs:
   #    read-only (not `next start`), so there is no SSR gateway fetch to 127.0.0.1:8000 and
   #    no .next race; this prebuild step materialises that `out/` once.
   test:
+    # Self-hosted/GPU runners are never assigned to fork pull requests on public repos,
+    # so this job (and the `build` gate that needs it) would queue forever on a fork PR.
+    # Skip it for forks; same-repo PRs and push/dispatch still run the full GPU suite.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ${{ fromJSON(vars.E2E_RUNNER_LABELS || '["self-hosted","gpu"]') }}
     timeout-minutes: 30
     env:
@@ -78,6 +82,10 @@ jobs:
       # Materialise the production static export ONCE; the Playwright webServer serves it
       # read-only and globalSetup's ensureStaticBuild then finds it fresh and no-ops.
       - run: npm run build:static
+      # xvfb-run is not preinstalled on GitHub-hosted (GPU) runners and may be absent on
+      # fresh self-hosted ones; `playwright install --with-deps` only adds browser libs.
+      - name: Install Xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
       # Run under a virtual X display so headless Chromium can reach the runner's GPU via
       # the driver (hardware GL → backdrop-filter compositing + real WebGL frame rates).
       # xvfb-run is a no-op-safe wrapper if the runner already provides a display.
