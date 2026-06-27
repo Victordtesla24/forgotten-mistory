@@ -32,7 +32,15 @@ export default function ScrollRail({ targetId, label }: { targetId: string; labe
             scaleY: 1,
             ease: 'none',
             transformOrigin: 'top center',
-            scrollTrigger: { trigger: section, start: 'top 72%', end: 'bottom 28%', scrub: 0.4 },
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 72%',
+              end: 'bottom 28%',
+              scrub: 0.4,
+              onEnter: () => {
+                section.dispatchEvent(new CustomEvent('gsap:experience:enter', { bubbles: true }));
+              },
+            },
           },
         );
         ScrollTrigger.create({

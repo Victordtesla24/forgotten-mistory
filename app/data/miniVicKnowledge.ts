@@ -55,6 +55,9 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'agile kookaburras',
       'role',
       'job',
+      'ato work',
+      'tell me about your ato',
+      'about your ato',
     ],
     answer:
       "I'm currently the Scrum Master / Project Manager on the Australian Taxation Office's Payday Super program in Melbourne (March 2026 – present), working on the NTP and Distribution UI features. I lead the Agile Kookaburras squad — one of eight squads on the program — owning sprint cadence, PI planning across PI 47–48, capacity management, and executive status reporting. Recent highlights include steering Distribution UI feature delivery past 95% completion and unblocking stalled NTP function testing by escalating L2 environment instability and brokering targeted SME enablement.",
@@ -176,6 +179,10 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'manage',
       'leader',
       'mentoring',
+      'lead a team',
+      'lead teams',
+      'how you lead',
+      'how do you lead',
     ],
     answer:
       "At ANZ I led 5+ cross-functional squads with 40+ onsite and offshore practitioners, managing a program portfolio valued at over $5M with 100% compliance to enterprise standards and risk frameworks. I ran executive workshops for 40+ leaders that improved strategic decision clarity by roughly 55%. Today I lead the Agile Kookaburras squad at the ATO within an eight-squad program. My style is to set a steady cadence, give people clear ownership, and personally take on the systemic blockers — escalations, environment issues, automation — so the team can focus on delivery.",
@@ -380,6 +387,9 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'legacy systems',
       'z os',
       'zos',
+      'mainframe automation',
+      'mainframe work',
+      'mainframe automation work',
     ],
     answer:
       "Yes — I do real mainframe work, which is increasingly rare. At the ATO I architected the COBOL/mainframe test-evidence automation for the Payday Super program: REXX scripting, SMF data, SDSF, and PCOMM on the host side, with PowerShell and VBA handling workstation-side collation. It covered 200+ SIT/E2E scenarios across eight squads and cut evidence effort by about 92% per scenario, using only already-approved tooling so no new InfoSec approvals were needed. I treat legacy platforms as engineering problems, not museum pieces.",
@@ -454,6 +464,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
     keywords: [
       'availability',
       'available',
+      'are you available',
       'notice period',
       'when can you start',
       'start date',
@@ -464,6 +475,11 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'free',
       'notice',
       'join us',
+      'new engagement',
+      'new engagements',
+      'new opportunities',
+      'engagements',
+      'opportunities',
     ],
     answer:
       "I'm currently engaged at the Australian Taxation Office on the Payday Super program, but I'm always open to discussing upcoming opportunities — the right conversation is worth having early. The best way to explore timing and fit is to contact me directly: sarkar.vikram@gmail.com or +61 433 224 556.",
@@ -617,6 +633,12 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'projects',
       'portfolio',
       'repos',
+      'what projects',
+      'what have you built',
+      'projects have you built',
+      'built projects',
+      'portfolio projects',
+      'what projects have you built',
     ],
     answer:
       "My GitHub (github.com/Victordtesla24) reflects two passions. The practical AI side: 'AI Resume Tailor' (automated CV-to-JD matching with NLP and prompt engineering), 'AI Gmail Manager' (an autonomous TypeScript inbox-triage agent), the EFDDH JIRA Analytics dashboard with LLM-powered retros, and a React/TypeScript + D3 relationship-timeline visualiser. The unusual side: 'Jyotish Shastra' and 'BTR-Demo' — enterprise-grade platforms exploring the intersection of ancient Vedic algorithms and modern AI/ML, including a BPHS birth-time rectification engine. I genuinely believe there's a lot to learn from ancient algorithms and Vedic astronomy when building modern systems.",
@@ -732,6 +754,105 @@ export const knowledgeBase: KnowledgeEntry[] = [
     ],
     answer:
       "My career spans 15+ years across government, financial services, and telecommunications. Before the banking years (NAB 2016–2017, ANZ 2017–2025) I was Lead Business Analyst at Microsoft in Sydney (Oct 2015 – Oct 2016), where I delivered a gap analysis for Azure ML telemetry that improved system reliability and reduced incident resolution time. Earlier: Business Analyst / Project Coordinator at Telstra (2014–2015) building customer journey scorecards, Senior Business Analyst at InfoCentric (2011–2014) delivering analytics and BI projects including automated regulatory reporting, and developer support, testing, and analysis at MYOB (2010–2011). It's a deliberate arc — from analysing systems, to delivering them, to leading the people and programs that build them.",
+  },
+
+  // ── 31. Services offered ─────────────────────────────────────────────────
+  {
+    id: 'services-offered',
+    keywords: [
+      'services',
+      'what services',
+      'services do you offer',
+      'what do you offer',
+      'services offered',
+      'what can you do for me',
+      'what can you do',
+      'consulting services',
+      'offerings',
+      'what you offer',
+      'service',
+      'capabilities',
+      'delivery services',
+      'consultant',
+      'as a consultant',
+    ],
+    answer:
+      "I offer three main service areas, all backed by 15+ years of measured delivery. First, AI/ML Solutions Architecture — I design and deliver LLM pipelines (LangChain, Langfuse, Phoenix), evaluation stacks, autonomous agents, and real-time telemetry platforms drawing on my experience shipping AI at ANZ and as an independent consultant. Second, Agile Program Delivery — I lead squads through complex government and enterprise programs, owning sprint cadence, PI planning, capacity management, and executive reporting, with a track record that includes steering a high-visibility government reform past 95% delivery completion. Third, Delivery Automation — I build the tooling that removes systemic friction from your delivery pipeline, whether that's mainframe test-evidence harnesses (92% effort reduction at the ATO), CI/CD instrumentation, or LLM-powered analytics dashboards. Every engagement is grounded in measured outcomes, not slideware.",
+    personaVariants: {
+      hiring:
+        "My services break into three pillars, all measured. AI/ML Solutions: LLM pipeline architecture, evaluation stacks (Langfuse/Phoenix), autonomous agents, and real-time telemetry. Agile Delivery: I run squads through complex programs — sprint cadence, PI planning, capacity management, and governance — having led a $5M+ portfolio at ANZ and currently delivering for the ATO. Delivery Automation: I build the tooling that removes friction permanently — the ATO evidence harness cut effort 92%, and my JIRA analytics dashboard gives execs real sprint telemetry. I measure everything I deliver, so you'll know what you're getting.",
+      engineering:
+        "Three services, each with shipped proof. AI Architecture: LLM pipelines with LangChain/Langfuse/Phoenix, real-time telemetry (WebSocket, P95 under 200 ms at 10k+ devices), MLOps, and autonomous TypeScript agents — I built the eval stack that cut simulated error-budget breaches 38%. Delivery Leadership: I run squads at scale (5+ cross-functional, 40+ practitioners, $5M+ portfolio) following SAFe/PI planning cadence with full Azure DevOps traceability. Automation Engineering: REXX/mainframe harnesses, CI/CD instrumentation, and analytics dashboards — I automate the constraints that make delivery infeasible. I'm the person who writes the change request and the script.",
+      story:
+        "Every client I work with has a problem they've accepted as unsolvable — a test window that's mathematically infeasible, a platform that can't hit its latency budget. My offering is simple: I find the real constraint, engineer around it, and bring the decision-makers along with numbers. Sometimes that looks like AI architecture (LLM pipelines, eval stacks, autonomous agents), sometimes program delivery (squads, PI planning, governance), and sometimes automation (mainframe harnesses, CI/CD tooling). The common thread: measured outcomes, not slideware.",
+    },
+  },
+
+  // ── 32. Engagement model ─────────────────────────────────────────────────
+  {
+    id: 'engagement-model',
+    keywords: [
+      'engagement model',
+      'how do you engage',
+      'how do you work with clients',
+      'working model',
+      'engagement',
+      'how do you work',
+      'contract',
+      'contracting',
+      'statement of work',
+      'fixed price',
+      'time and materials',
+      'retainer',
+      'engagement type',
+      'how do we start',
+      'how to start',
+      'process',
+      'next steps',
+      'how to hire you',
+      'hire you',
+    ],
+    answer:
+      "My engagement model starts with a conversation — not a sales pitch. Email me at sarkar.vikram@gmail.com with a sketch of what you need (scope, timeline, the problem you're solving) and I'll respond with a straight answer about fit, approach, and timing. I'm comfortable across advisory engagements, delivery leadership roles, and hands-on builds — the scope and pricing vary accordingly. Every engagement produces measured outcomes, and I'm happy to structure around deliverables or time-and-materials depending on what gives you the most confidence. Based in Melbourne, I work onsite, hybrid, or remote depending on what the engagement needs.",
+    personaVariants: {
+      hiring:
+        "The starting point is a conversation — email me at sarkar.vikram@gmail.com with an outline of the role or engagement you have in mind. I'll respond with a candid read on fit and timing. I'm currently delivering for the ATO's Payday Super program, so my availability is a conversation rather than an immediate start, but the right opportunities are worth planning early. I work across advisory, delivery leadership, and hands-on builds; scope and structure follow from what you actually need.",
+      engineering:
+        "Start with a technical brief — email sarkar.vikram@gmail.com with the problem you're trying to solve and the constraints you're working within. I'll respond with an honest read on approach, architecture, and timeline. I structure engagements around deliverables or time-and-materials, whichever gives you the cleaner risk profile. Currently committed to the ATO but open to discussing upcoming work — the best architectures get designed before the clock is ticking.",
+      story:
+        "Every engagement I've ever taken started the same way: someone emailed me with a problem. Not a job description, not an RFP — a problem. Email sarkar.vikram@gmail.com with yours, and I'll reply with what I think. We'll figure out scope, structure, and timing from there. I'm based in Melbourne but work onsite, hybrid, or remote — the working model follows the work, not the other way around.",
+    },
+  },
+
+  // ── 33. AI solutions architecture ────────────────────────────────────────
+  {
+    id: 'ai-architecture',
+    keywords: [
+      'ai architecture',
+      'ai solutions architecture',
+      'ai approach',
+      'how do you build ai',
+      'ai methodology',
+      'ai design',
+      'ai system design',
+      'llm architecture',
+      'ai stack',
+      'ai platform',
+      'how do you architect',
+      'architecture approach',
+      'solutions architecture',
+      'architectural approach',
+    ],
+    answer:
+      "My AI architecture philosophy is: measure everything, degrade gracefully, and never ship a black box. I build LLM pipelines with LangChain for orchestration, Langfuse for tracing, and Phoenix for observability — my evaluation stack reduced simulated error-budget breaches by 38%. For real-time systems I use WebSocket telemetry with defined latency budgets (I held P95 under 200 ms across 10,000+ concurrent devices at ANZ). Every AI component has a deterministic fallback — the same principle behind this chatbot, which uses Gemini grounded in a curated knowledge base with a local keyword-matching fallback so it never hallucinates. On the infrastructure side I work with Kubernetes, Docker, and Terraform across GCP, AWS, and Azure, with CI/CD throughout. The architecture is always shaped by the constraint: at the ATO, the constraint was zero new InfoSec approvals, so I built the mainframe automation entirely from already-approved tools. Different constraint, different architecture — same principle.",
+    personaVariants: {
+      hiring:
+        "I architect AI systems the way I deliver programs: measured, governed, and grounded in constraints. My LLM stack is LangChain for pipelines, Langfuse for tracing, Phoenix for observability — and I validate every component against error budgets (38% breach reduction in my evaluation stack). For real-time AI I define latency budgets upfront — at ANZ that meant P95 under 200 ms across 10,000+ concurrent devices. The non-negotiable is deterministic fallback: every AI surface degrades to a known-good path, which is how this chatbot works — Gemini grounded in a curated fact base, with a local matcher behind it. Infrastructure is Kubernetes, Docker, Terraform across GCP/AWS/Azure, all CI/CD automated.",
+      engineering:
+        "Stack: LangChain pipelines with Langfuse tracing and Phoenix observability on the LLM side. Real-time: WebSocket telemetry with P95 latency budgets (proven at 10k+ concurrent, sub-200 ms). Deterministic fallback everywhere — Gemini → keyword matcher with a typed KnowledgeEntry[] base, so the system never fabricates. Infra: Kubernetes, Docker, Terraform across GCP/AWS/Azure, CI/CD throughout. My eval stack (Langfuse + Phoenix) reduced simulated breaches 38%. The pattern: instrument first, ship with a safety net, measure continuously. Same approach whether it's a chatbot, a telemetry platform, or a mainframe harness built from REXX and SDSF inside a zero-new-approvals constraint.",
+      story:
+        "The lesson from 15 years of building systems is that architecture isn't about the prettiest diagram — it's about what survives contact with reality. At ANZ that meant defining a P95 latency budget and holding it at 200 ms across 10,000+ devices. At the ATO it meant building a mainframe automation harness from tools InfoSec had already approved, because the real constraint wasn't technical — it was procurement. My AI architecture follows the same rule: LangChain for pipelines, Langfuse and Phoenix for visibility, and always, always a deterministic fallback so nothing ships as a black box. The stack changes with the constraint. The principle doesn't.",
+    },
   },
 ];
 

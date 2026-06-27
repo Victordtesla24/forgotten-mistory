@@ -11,7 +11,8 @@
  *      .env.production). The key should be HTTP-referrer-restricted to the
  *      production domain in Google AI Studio / Cloud Console.
  *   3. Deterministic local knowledge-base matching — always available,
- *      works fully offline.
+ *      works fully offline. Now includes context-aware matching that uses
+ *      conversation history to resolve follow-up questions.
  */
 
 import {
@@ -62,6 +63,127 @@ const PERSONA_STYLE: Record<PersonaMode, string> = {
 const GROUNDING_FACTS: string = knowledgeBase
   .map((entry: KnowledgeEntry) => `- ${entry.answer}`)
   .join('\n');
+
+/** Words that suggest a follow-up question that needs prior context. */
+const FOLLOW_UP_INDICATORS = /\b(that|it|this|those|these|them|the program|the project|the team|the squad|the automation)\b/i;
+
+/** Maximum number of characters to extract from the last bot reply as context. */
+const MAX_CONTEXT_CHARS = 500;
+
+/**
+ * Extract key topic words from recent conversation history.
+ * Used to boost KB matching when the current query appears to be a follow-up.
+ */
+function extractContextTerms(history: BrainTurn[]): string[] {
+  if (history.length === 0) return [];
+
+  const terms: string[] = [];
+
+  // Take the last bot reply and the preceding user query
+  const reversed = [...history].reverse();
+  const lastBot = reversed.find((t) => t.role === 'bot');
+  const lastUser = reversed.find((t) => t.role === 'user');
+
+  if (lastBot) {
+    // Extract proper nouns and significant phrases from the last bot reply
+    const text = lastBot.text.slice(0, MAX_CONTEXT_CHARS).toLowerCase();
+    // Extract capitalized terms (proper nouns)
+    const properNouns = text.match(/\b[A-Z][A-Za-z]+(?: [A-Z][A-Za-z]+)*\b/g) ?? [];
+    terms.push(...properNouns.map((t) => t.toLowerCase()));
+    // Also extract key program/institution names
+    const keyPhrases = text.match(/\b(payday super|agile kookaburras|scrum master|test.evidence|sit\/e2e|distribution ui|pi planning|eight squad|azure devops|langchain|langfuse|phoenix|websocket|real.time|error.budget)\b/gi) ?? [];
+    terms.push(...keyPhrases.map((t) => t.toLowerCase()));
+  }
+
+  if (lastUser) {
+    // Extract key terms from the last user query too
+    const userText = lastUser.text.slice(0, 200).toLowerCase();
+    const userNouns = userText.match(/\b(role|job|work|project|team|automation|achievement|career|experience|stack|skills|leadership|delivery|architecture|program|squad|consulting)\b/gi) ?? [];
+    terms.push(...userNouns.map((t) => t.toLowerCase()));
+  }
+
+  // Deduplicate
+  const seen = new Set<string>();
+  const deduped: string[] = [];
+  for (const t of terms) {
+    if (!seen.has(t)) {
+      seen.add(t);
+      deduped.push(t);
+    }
+  }
+  return deduped;
+}
+
+/**
+ * Context-aware knowledge base matching.
+ *
+ * When a query looks like a follow-up (short, contains pronouns/demonstratives),
+ * boosts entries whose keywords overlap with the prior conversation topics.
+ */
+export function matchKnowledgeWithContext(
+  query: string,
+  history: BrainTurn[] = [],
+): KnowledgeEntry | null {
+  // First, try the standard match
+  const directMatch = matchKnowledge(query);
+  if (directMatch) return directMatch;
+
+  // No history → nothing to boost
+  if (history.length === 0) return null;
+
+  // Check if this looks like a follow-up
+  const isFollowUp = FOLLOW_UP_INDICATORS.test(query) || query.split(' ').length <= 4;
+
+  if (!isFollowUp) return null;
+
+  // Extract context terms from history
+  const contextTerms = extractContextTerms(history);
+  if (contextTerms.length === 0) return null;
+
+  // Score each entry with a context boost
+  let best: KnowledgeEntry | null = null;
+  let bestScore = 0;
+
+  // Use the same normalization as matchKnowledge
+  const normalizedQuery = query.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const paddedQuery = ` ${normalizedQuery} `;
+  const queryTokens = new Set(normalizedQuery.split(' '));
+
+  for (const entry of knowledgeBase) {
+    let score = 0;
+
+    for (const rawKeyword of entry.keywords) {
+      const keyword = rawKeyword.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+      if (keyword.length === 0) continue;
+
+      if (keyword.includes(' ')) {
+        if (paddedQuery.includes(` ${keyword} `)) {
+          score += 3; // phrase match
+        }
+      } else if (queryTokens.has(keyword)) {
+        score += 1; // word match
+      }
+    }
+
+    // Context boost: if any context term appears in this entry's keywords
+    for (const contextTerm of contextTerms) {
+      for (const kw of entry.keywords) {
+        const kwNorm = kw.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+        if (kwNorm.includes(contextTerm) || contextTerm.includes(kwNorm)) {
+          score += 2;
+        }
+      }
+    }
+
+    if (score > bestScore) {
+      bestScore = score;
+      best = entry;
+    }
+  }
+
+  // Use same threshold as matchKnowledge (2)
+  return bestScore >= 2 ? best : null;
+}
 
 function buildSystemPrompt(mode: PersonaMode): string {
   return [
@@ -166,8 +288,10 @@ function sanitizeResponse(text: string): string {
   return text;
 }
 
-function knowledgeAnswer(query: string, mode: PersonaMode): BrainReply {
-  const entry = matchKnowledge(query);
+function knowledgeAnswer(query: string, mode: PersonaMode, history: BrainTurn[] = []): BrainReply {
+  const entry = history.length > 0
+    ? matchKnowledgeWithContext(query, history)
+    : matchKnowledge(query);
   if (entry) {
     const text = entry.personaVariants?.[mode] ?? entry.answer;
     return {
@@ -208,5 +332,5 @@ export async function askMiniVicBrain(
     }
   }
 
-  return knowledgeAnswer(query, mode);
+  return knowledgeAnswer(query, mode, history);
 }
