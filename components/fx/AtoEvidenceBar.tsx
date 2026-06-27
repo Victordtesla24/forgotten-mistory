@@ -44,7 +44,7 @@ function generateTicks(): Tick[] {
 
 const TICKS = generateTicks();
 
-export default function AtoEvidenceBar({ className = '' }: { className?: string }) {
+export default function AtoEvidenceBar({ className = '', project }: { className?: string; project?: string }) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
@@ -131,7 +131,7 @@ export default function AtoEvidenceBar({ className = '' }: { className?: string 
   return (
     <div
       ref={containerRef}
-      data-testid="ato-evidence-bar"
+      data-testid="ato-evidence-bar" data-project={project}
       className={`ato-evidence-bar ${className}`.trim()}
       {...(prefersReducedMotion ? { 'data-reduced-motion': 'true' } : {})}
     >

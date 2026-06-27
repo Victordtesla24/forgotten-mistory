@@ -18,7 +18,7 @@ const EVENTS: TimelineEvent[] = [
 ];
 const TW = 300; const TH = 120; const TY = 55;
 
-export default function JourneyTimeline({ className = '' }: { className?: string }) {
+export default function JourneyTimeline({ className = '', project }: { className?: string; project?: string }) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
@@ -46,7 +46,7 @@ export default function JourneyTimeline({ className = '' }: { className?: string
   }, []);
 
   return (
-    <div ref={containerRef} data-testid="journey-timeline"
+    <div ref={containerRef} data-testid="journey-timeline" data-project={project}
       className={`journey-timeline ${className}`.trim()}
       {...(prefersReducedMotion ? { 'data-reduced-motion': 'true' } : {})}>
       <div className="tl-header">

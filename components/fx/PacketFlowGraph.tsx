@@ -225,9 +225,10 @@ function PosterFallback({ p95, devices }: { p95: number; devices: number }) {
 
 interface PacketFlowGraphProps {
   className?: string;
+  project?: string;
 }
 
-export default function PacketFlowGraph({ className = '' }: PacketFlowGraphProps) {
+export default function PacketFlowGraph({ className = '', project }: PacketFlowGraphProps) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef);
@@ -245,7 +246,7 @@ export default function PacketFlowGraph({ className = '' }: PacketFlowGraphProps
   return (
     <div
       ref={containerRef}
-      data-testid="packet-flow-graph"
+      data-testid="packet-flow-graph" data-project={project}
       className={`packet-flow-graph ${className}`.trim()}
       {...(frozen ? { 'data-frozen': 'true' } : {})}
     >

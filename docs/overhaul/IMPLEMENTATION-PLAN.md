@@ -65,3 +65,105 @@ Legend: `[ ]` todo · `[~]` in-progress · `[x]` done+verified · `(V)` needs ru
 ## Definition of done (whole overhaul)
 
 All `TC-*` VERIFIED on static preview **and** production; audit 7/7; Lighthouse/axe/FPS budgets met; zero console/runtime errors; QA register has no OPEN BLOCKER/HIGH; owner approves; post-deploy V&V (SPEC §12) green.
+
+---
+
+# Appendix A — Stage-2 Architecture: file-change map, FSM mapping, CI-CD & test strategy
+
+> **Council Stage 2 of 5 — Solutions Architect.** The analyst-programmer (Stage 3) builds
+> against this. Companion: `MOTION-AND-FX-SPEC.md §9` (GSAP orchestration plan, GLSL shader
+> inventory, per-skill scene contracts, avatar contract). **Design only — no production code.**
+> Constraints binding on every item: **C1** (UI/UX only — never reword `app/data/*` text),
+> **C2** (preserve working behaviour — never regress VERIFIED TCs), **C3** (extend existing
+> files; a genuinely-new file requires the justification column below).
+
+## A.1 File-level change map (per requirement)
+
+Existing files dominate (C3). Honest extension targets, grounded in the real tree
+(`components/site/*`, `components/fx/*`, `app/*`, `lib/*`, `.github/workflows/*`):
+
+| Req | Existing files to EXTEND | Genuinely-new files (+ justification) |
+|---|---|---|
+| **R1 shell/UI** | `app/page.tsx` (section composition), `app/globals.css` (tokens/component styles), `app/layout.tsx` (fonts/meta), `components/site/Preloader.tsx`, `Navigation.tsx`, `CursorGlow.tsx`, `components/MotionProvider.tsx` | — none (extend the existing single-page shell) |
+| **R1 avatar/voice** | `components/site/HeroAvatar.tsx` (still→MP4 crossfade), `components/MiniVicBot.tsx`, `lib/miniVicBrain.ts`, `services/api-gateway/src/viseme/smoother.ts` | — none (extend 3-tier brain + crossfade) |
+| **R2 per-skill FX** | `components/fx/TelemetryHud.tsx`, `PacketFlowGraph.tsx`, `SprintBurndown.tsx`, `AtoEvidenceBar.tsx`, `TokenReflow.tsx`, `DetailMaterialize.tsx`, `HudFrame.tsx`; `components/site/ArchitectureMap.tsx`, `ProjectsCarousel.tsx`, `Dossier.tsx`, `ExpandableCard.tsx`; `lib/palette.ts` | `components/fx/CelestialSphere.tsx` (§7 #8 — no existing astro scene); `components/fx/OrchestrationGraph.tsx` (§7 #12 — no existing agent-graph scene); `components/fx/shaders/{packetFlowEdge,celestialOrbit,agentGraphPulse}.glsl.ts` (new shaders; shaders dir is the established home per dossier §C3) |
+| **R3 telemetry** | `components/fx/TelemetryHud.tsx` + `components/site/TelemetryPanel.tsx` — wire **real** `performance.now()` rAF-delta counters (FPS, frame-time); explicitly NOT a coffee-cup sim | — none (harden existing HUD) |
+| **R6 CI-CD** | `.github/workflows/deploy.yml`, `lighthouserc.json`, `firebase.json`, `scripts/validate/overhaul_static_audit.mjs`, `scripts/validate/ci_pipeline_robustness.mjs` | — none (upgrade existing 8-job pipeline) |
+| **R7 Disney+/mono** | `app/globals.css` (design tokens), `app/page.tsx` (hero full-bleed + `#catalogue` horizontal row), `components/site/ProjectsCarousel.tsx` | — none |
+| **R8 tests** | `tests/overhaul/*.spec.ts` (scroll/signature/sections/proof/contact/audit/a11y/security/perf/typography), `tests/site.spec.ts`, `tests/requirements_list.md` | new `tests/overhaul/*.spec.ts` per new TC (catalogue, sigfx-extended, avatar lifecycle) — tests are additive by nature, not a C3 violation |
+
+## A.2 prompt.md SDLC FSM (P1–P10) mapped onto the build
+
+The analyst-programmer runs **every** task (each requirement / sub-feature) through this FSM,
+announcing the phase and transition reason; never skip a phase (prompt §3).
+
+| Phase | Gate in this build | Concrete artifact |
+|---|---|---|
+| **P1 Plan** | requirement listed, file-map row chosen, FSM announced | this Appendix + MOTION-AND-FX §9 |
+| **P2 Build** | minimal scoped edit to the file-map targets; no unrelated edits | extend the named component/shader |
+| **P3 Test** | run the requirement-linked `tests/overhaul/*.spec.ts` | per A.4 coverage table |
+| **P4 Debug** | root-cause from logs/stack on any fail → back to Test | record in `quality-assurance.md` |
+| **P5 Code-review** | self-review: correctness/security/perf/readability/C1-C3 adherence | independent-reviewer pass (Stage 4) |
+| **P6 Re-test** | re-run ALL requirement-linked tests after review edits | full overhaul suite |
+| **P7 Regression** | full regression suite — no previously-passing test fails | `tests/site.spec.ts` + overhaul suite + `tsc --noEmit` 0 + audit 7/7 |
+| **P8 Commit** | atomic commit referencing satisfied Rk; **single `main` branch** (R8 — remove other branches/PRs); working tree clean | `git push origin HEAD:main` |
+| **P9 Deploy** | only after P3/P5/P6/P7/P8 SUCCESS; Firebase live channel | `FirebaseExtended/action-hosting-deploy` |
+| **P10 Verify prod** | open production in the cursor native browser (CDP :9222, R5); confirm via live check + logs/metrics | post-deploy V&V (SPEC §12) |
+
+After P10 → loop to P1 for the next requirement. 3 failed Debug→Re-test→Regression loops ⇒ stop + Failure Report.
+
+## A.3 Requirement-coverage table structure (prompt §4 — builder maintains)
+
+The analyst-programmer keeps this table live, one row per Rk; **no Commit while any Rk lacks a
+PASSing test** (prompt §4). Binary status only (PASS/FAIL — no soft language):
+
+| Req | Implementation (file:symbol) | Test(s) (TC-id → spec) | Status |
+|---|---|---|---|
+| R1 shell | `app/page.tsx`, `Preloader.tsx`, `Navigation.tsx` | TC-FR-NAV/HERO → `sections.spec.ts` | _builder fills_ |
+| R1 avatar | `HeroAvatar.tsx`, `MiniVicBot.tsx` | TC-FR-CLONE/VOICE, TC-INT-CLONE → `avatar.spec.ts` *(new)* | _builder fills_ |
+| R2 per-skill FX | `components/fx/*` (§9.3 binding) | TC-FR-SIGFX/SHADER/CATALOG → `signature.spec.ts` | _builder fills_ |
+| R3 telemetry | `TelemetryHud.tsx` real perf counters | TC-FR-SIGFX (real-data assertion) → `signature.spec.ts` | _builder fills_ |
+| R6 CI-CD | `.github/workflows/deploy.yml` | green pipeline on push (owner-gated) | _builder fills_ |
+| R7 Disney+/mono | `globals.css`, `page.tsx` hero/catalogue | TC-NFR-MONO + visual baseline | _builder fills_ |
+| R8 tests | `tests/overhaul/*` | suite green + regression | _builder fills_ |
+
+## A.4 CI-CD pipeline design (R6 — upgrade the existing 8-job pipeline, do not replace)
+
+The existing `.github/workflows/deploy.yml` is already robust (dossier §5.1): `quality`(tsc+audit)
+→ `lint` → `lighthouse` → `axe` → `test`(chromium/webkit/firefox, signal) → `build` → `deploy`
+(main only, `FirebaseExtended/action-hosting-deploy`), with `ci_pipeline_robustness.mjs` ensuring
+deploy never blocks on a GPU runner. **Upgrades to push it to "most sophisticated" (R6 wording):**
+
+| Stage upgrade | Change | Priority |
+|---|---|---|
+| Playwright browser cache | `actions/cache` on `~/.cache/ms-playwright` — saves ~90 s/run | **High** |
+| PR preview channels | `firebase hosting:channel:deploy preview-${{github.event.number}}` on PR push | Medium |
+| Visual-regression gate | Playwright `toHaveScreenshot()` baselines per signature scene/breakpoint, stored as GH artifact | Medium |
+| HTML test report | publish Playwright HTML report as a GH Pages artifact | Low |
+| `tsc` fast-fail in lint | mirror tsc into lint for <30 s feedback (still hard-gated in quality) | Low |
+
+**Invariants kept (C2):** deploy only on green quality+lint+lighthouse+axe; PR runs never
+auto-deploy; fail-loud on missing `GEMINI_API_KEY`; signal tests stay `continue-on-error`; the
+robustness check stays. R8 single-branch rule is enforced at **P8 commit** (remove all other
+branches/PRs, commit + deploy to `main` only), not in the workflow YAML.
+
+## A.5 Test strategy per requirement (R8 — comprehensive Playwright suite replacing the old one)
+
+Replace the legacy `tests/site.spec.ts` old-UI assertions as Stage-3 rebuilds land; the new
+suite is `tests/overhaul/*.spec.ts`, each spec bound to TC ids (TC↔test table in
+`tests/requirements_list.md`). Every animation/VFX manually verified in the cursor native
+browser (CDP :9222, R5). Regression = full overhaul suite + legacy retained specs + `tsc 0` +
+audit 7/7, with **no previously-passing TC failing** (P7).
+
+| Req | New/extended spec | What it proves | Manual-V (cursor browser) |
+|---|---|---|---|
+| R1 shell | `sections.spec.ts` | nav keyboard/Esc/anchor, hero CTAs, footer landmark | hero full-bleed reveal |
+| R1 avatar | `avatar.spec.ts` *(new)* | zero-CLS box, still→MP4 crossfade, tier-fallback, cloned-voice-id hash | lip-sync drift ≤120 ms |
+| R2/R3 FX | `signature.spec.ts` (extend) | each §9.3 effect mounts/animates, reduced-motion fallback, **zero WebGL console errors**, real-data (not coffee-cup) assertion | per-scene render Chrome/WebKit/Firefox |
+| R6 CI-CD | n/a (pipeline self-tests) | green gates on push; preview channel resolves | PR preview URL live |
+| R7 mono | `audit.spec.ts` + visual baseline | TC-NFR-MONO (no chromatic hex/rgb/hsl), Disney+ hero/catalogue layout | side-by-side vs reference |
+| R8 regression | full `tests/overhaul/*` | suite green + no regression | full visual sweep, record in `quality-assurance.md §6` |
+
+**Coverage rule (prompt §4):** every Rk needs ≥1 PASSing test before Commit; an independent
+reviewer (Stage 4) re-derives each result from actual execution evidence (test output/logs/live
+check), never from the builder's summary — Rk stays unverified until evidence is shown.

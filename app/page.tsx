@@ -51,6 +51,9 @@ import OrchestrationGraph from '@/components/fx/OrchestrationGraph';
 import ClearanceStepper from '@/components/fx/ClearanceStepper';
 import InboxTriage from '@/components/fx/InboxTriage';
 import JourneyTimeline from '@/components/fx/JourneyTimeline';
+import TokenStreamMatch from '@/components/fx/TokenStreamMatch';
+import AstroChartSphere from '@/components/fx/AstroChartSphere';
+import JarvisRepairLoop from '@/components/fx/JarvisRepairLoop';
 import ProofBar from '@/components/site/ProofBar';
 import MindsetProjection from '@/components/site/MindsetProjection';
 import SynthesisProvenance from '@/components/site/SynthesisProvenance';
@@ -514,15 +517,18 @@ export default function Home() {
 
             <Reveal delay={0.12}>
               <div className="vfx-gallery">
-                <PacketFlowGraph />
-                <SprintBurndown />
-                <TokenReflow />
-                <AtoEvidenceBar />
-                <CelestialSphere />
+                <SprintBurndown project="EFDDH-Jira-Analytics-Dashboard" />
+                <TokenStreamMatch project="tailor-resume-with-ai" />
+                <TokenReflow project="Advanced-Prompt-Creator" />
+                <JourneyTimeline project="relationship-timeline-feature" />
+                <InboxTriage project="AI-Gmail-Mailbox-Manager" />
+                <CelestialSphere project="btr-demo" />
+                <AstroChartSphere project="jyotish-shastra" />
                 <OrchestrationGraph />
+                <PacketFlowGraph />
+                <JarvisRepairLoop />
+                <AtoEvidenceBar />
                 <ClearanceStepper />
-                <InboxTriage />
-                <JourneyTimeline />
               </div>
             </Reveal>
 

@@ -38,7 +38,7 @@ const MESSAGES: Message[] = [
 
 const LABELS = ['Urgent', 'Action', 'FYI', 'Archive'] as const;
 
-export default function InboxTriage({ className = '' }: { className?: string }) {
+export default function InboxTriage({ className = '', project }: { className?: string; project?: string }) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
@@ -104,7 +104,7 @@ export default function InboxTriage({ className = '' }: { className?: string }) 
   return (
     <div
       ref={containerRef}
-      data-testid="inbox-triage"
+      data-testid="inbox-triage" data-project={project}
       className={`inbox-triage ${className}`.trim()}
       {...(prefersReducedMotion ? { 'data-reduced-motion': 'true' } : {})}
     >

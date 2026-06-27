@@ -47,7 +47,7 @@ function pathLength(path: string): number {
   return len;
 }
 
-export default function SprintBurndown({ className = '' }: { className?: string }) {
+export default function SprintBurndown({ className = '', project }: { className?: string; project?: string }) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
@@ -77,7 +77,7 @@ export default function SprintBurndown({ className = '' }: { className?: string 
   return (
     <div
       ref={containerRef}
-      data-testid="sprint-burndown"
+      data-testid="sprint-burndown" data-project={project}
       className={`sprint-burndown ${className}`.trim()}
       {...(prefersReducedMotion ? { 'data-reduced-motion': 'true' } : {})}
     >

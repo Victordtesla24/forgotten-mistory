@@ -50,7 +50,7 @@ const OPTIMAL_ORDER = [
   'DELIMITER',
 ];
 
-export default function TokenReflow({ className = '' }: { className?: string }) {
+export default function TokenReflow({ className = '', project }: { className?: string; project?: string }) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
@@ -80,7 +80,7 @@ export default function TokenReflow({ className = '' }: { className?: string }) 
   return (
     <div
       ref={containerRef}
-      data-testid="token-reflow"
+      data-testid="token-reflow" data-project={project}
       className={`token-reflow ${className}`.trim()}
       {...(prefersReducedMotion ? { 'data-reduced-motion': 'true' } : {})}
     >

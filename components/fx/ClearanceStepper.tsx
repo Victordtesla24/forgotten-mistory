@@ -67,7 +67,7 @@ const STEPS: StepData[] = [
   },
 ];
 
-export default function ClearanceStepper({ className = '' }: { className?: string }) {
+export default function ClearanceStepper({ className = '', project }: { className?: string; project?: string }) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
@@ -119,7 +119,7 @@ export default function ClearanceStepper({ className = '' }: { className?: strin
   return (
     <div
       ref={containerRef}
-      data-testid="clearance-stepper"
+      data-testid="clearance-stepper" data-project={project}
       className={`clearance-stepper ${className}`.trim()}
       {...(prefersReducedMotion ? { 'data-reduced-motion': 'true' } : {})}
     >

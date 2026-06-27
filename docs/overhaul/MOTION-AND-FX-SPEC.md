@@ -163,3 +163,111 @@ Two audio layers, synced to on-screen view transitions (prompt §5):
 `prefers-reduced-motion: reduce` (and low-power detection) must yield a fully static,
 information-complete site: final metric values shown, posters instead of scenes, no parallax,
 no cursor glow, no infinite loops. This is tested (TC-NFR-A11Y) and non-negotiable.
+
+---
+
+# 9. Stage-2 Architecture — GSAP orchestration plan & GLSL shader inventory
+
+> **Council Stage 2 of 5 — Solutions Architect.** Authored from `RESEARCH-DOSSIER.md`
+> (Stage 1) + `prompt.md` R1–R8/C1–C3/P1–P10. Scope: the **motion/FX/shader** half of the
+> architecture (component scene graphs, GSAP timelines, GLSL list). The **file-change map,
+> FSM mapping, and test strategy** live in `IMPLEMENTATION-PLAN.md §A`. Read both together.
+> **Design only — no production code.** All effects extend existing `components/fx/*` and
+> `components/site/*` per C3; the data layer (`app/data/*`) is read-only per C1.
+
+## 9.1 GSAP + ScrollTrigger master orchestration plan (R1, R7)
+
+One **`gsap.context()` per pinned section component**, always torn down with `ctx.revert()`,
+always wrapped in `gsap.matchMedia()` with a `(prefers-reduced-motion: reduce)` branch that
+sets final state with no scrub (the proven `ScrollRail.tsx` pattern — replicate, do not
+re-invent). `ScrollTrigger` is registered exactly once, client-only, in `lib/gsap.ts`.
+Division of labour is fixed: **GSAP drives scroll-orchestrated/scrubbed/pinned timelines;
+Framer Motion drives component-level DOM motion.** Disney+/Marvel takeaway (R7): borrow the
+*restraint* (fast hovers, slow narrative reveals) and full-bleed dark hero — **not** the flat
+catalogue scroll; the portfolio is narrative, so sections pin-and-scrub.
+
+| # | Section (page.tsx anchor) | GSAP trigger | Scrub | Pin | Drives | Reduced-motion branch |
+|---|---|---|---|---|---|---|
+| T1 | `#hero` | top top → bottom top | `true` | `false` | HUD telemetry uniforms ramp (`uLoad` 0→1), headline clip-reveal, avatar still→video crossfade | final uniforms; static headline; still avatar |
+| T2 | `#proof` | enter 80% | — (discrete) | no | Framer count-up handoff (GSAP only fires `onEnter` cue) | final values shown |
+| T3 | `#experience` | **existing `ScrollRail.tsx`** | `true` | label pin | scrubbed fill + pinned role label (VERIFIED — do not regress) | open/instant |
+| T4 | `#work` (Signature FX) | per-scene pin, sequential | `1` (catch-up) | `true` | each flagship scene's hero uniform (`uReveal`/camera dolly), then unpin to next | static poster frame per scene |
+| T5 | `#catalogue` | vertical→horizontal | `true` | `true` | horizontal card-row translateX mapped to vertical scroll progress (Disney+ row, narrative-gated) | vertical static card grid |
+| T6 | `#skills` | enter, stagger | — | no | Framer group reveal + per-skill micro-viz `onEnter` mount cue | static, expanded |
+| T7 | `#minivic` / `#contact` | enter | — | no | Framer reveals; magnetic CTA hover (fast) | no magnet, text appears |
+
+**Rules carried from §1.1 (unchanged, restated for the builder):** `scrub:true` only for
+value-tied motion; `invalidateOnRefresh` on resize; never pin without a fallback height;
+ScrollTrigger only touches `transform`/`opacity`/uniform values — never layout. The hero→proof→
+experience→signature beat sequence is the Bandinopla section-scrubbing skeleton (dossier §4.1):
+each pinned section = one timeline that scrubs its dedicated 3D/SVG effect.
+
+## 9.2 GLSL shader inventory (FR-SHADER / FR-LIGHT, R2)
+
+All shaders live under `components/fx/shaders/*` (the established shader directory, C3). Each
+ships **explicit `precision`**, **guarded uniforms**, palette uniforms sourced from
+`lib/palette.ts` (never hardcoded hue — NFR-MONO), must **compile clean** (zero WebGL program
+warnings) and render across Chrome/WebKit/Firefox (TC-FR-SHADER, TC-NFR-RENDER), with a
+software/poster fallback. Monochrome only: strokes `--white`, secondary `--steel`, base `--ink-900`.
+
+| Shader | Type | Host scene | Uniforms (key) | Status | Notes |
+|---|---|---|---|---|---|
+| `holoRing` | vert+frag | TelemetryHud (jarvis HUD) | `uTime`,`uLoad`,`uColorStroke`,`uColorSteel`,`uDpr` | **exists** (mounted, §4) | harden: DPR fallback, 30 Hz throttle, no per-frame alloc |
+| `volumetricShaft` | frag post-pass | TelemetryHud flagship | `uTime`,`uLightPos`,`uSamples`,`uHalfRes` | **exists** (mounted) | FR-LIGHT: half-res buffer, capped samples, off on low-power |
+| `nebulaFBM` | vert+frag | SpaceScene (background) | `uTime`,`uIntensity`,`uColorInk` | **exists** | demoted (opacity 0.42); tone to mono, no regression (C2) |
+| `packetFlowEdge` | vert displacement + frag | PacketFlowGraph (§7 #2) | `uTime`,`uFlow`,`uP95`,`uColorStroke` | **new shader, existing component** | energy travels graph edges; values from real readout, not random (R3) |
+| `celestialOrbit` | frag (orbit trails) | new `CelestialSphere.tsx` (§7 #8) | `uTime`,`uOrbitSpeed`,`uColorSteel` | **new** | slow monochrome ephemeris; R3F orbit trails (jyotish/btr cluster) |
+| `agentGraphPulse` | frag (edge pulse) | new `OrchestrationGraph.tsx` (§7 #12) | `uTime`,`uActiveEdge`,`uColorStroke` | **new** | multi-agent graph (meta: how this site was built) |
+
+Non-shader flagship/catalogue effects stay **SVG/Framer** per DEV-7 (lightweight, read as
+"real-time canvas" intent): SprintBurndown, AtoEvidenceBar, inbox-triage funnel, TokenReflow,
+résumé↔JD arcs, journey timeline, clearance stepper, self-healing graph, upscaler, key-signing,
+seat-map. These already exist or extend an existing fx component (see IMPLEMENTATION-PLAN §A.3).
+
+## 9.3 Per-skill / per-project signature scene contracts (R2 — one design per tangible skill)
+
+Each tangible skill (from `app/data/siteContent.ts` `skillGroups`) and each flagship project
+(`projects`/`featuredRepos` → SPEC §7 catalogue) maps to **one dedicated, fully-implemented
+effect** — never a shared placeholder (FR-CATALOG). Contract shape = `{props, sceneGraph,
+shaders, data, motion, fallback}`. Skill→effect binding:
+
+| Tangible skill (siteContent skillGroups) | Bound signature effect | Component | Scene graph / tech |
+|---|---|---|---|
+| **AI/ML Solutions, LLM Pipelines, MLOps** | Multi-agent orchestration graph (§7 #12) | `OrchestrationGraph.tsx` *(new)* | R3F instanced nodes + `agentGraphPulse` shader edges |
+| **Real-Time Telemetry** (R3 anchor) | JARVIS telemetry HUD (§7 #1) | `TelemetryHud.tsx` *(exists)* | R3F + `holoRing`+`volumetricShaft` GLSL + Canvas2D sparkline; **real browser perf counters** (FPS, frame-time via `performance.now()` rAF delta) — NOT a coffee-cup sim |
+| **Data Architecture** | WebSocket packet-flow (§7 #2) | `PacketFlowGraph.tsx` *(exists)* | R3F instanced particles + `packetFlowEdge` shader; live P95<200 ms / 10k-device readout eases |
+| **Cloud-Native & Full-Stack / CI-CD / DevOps** | Self-healing build/error graph (Error-Management-System) | `ArchitectureMap.tsx` *(exists, extend)* | SVG/Framer node graph; failing node → repair pulse |
+| **Program Delivery / Agile/Scrum/SAFe** | Sprint burndown/burnup + PI swimlane (§7 #3) | `SprintBurndown.tsx` *(exists)* | SVG + Framer; velocity ticks |
+| **Stakeholder Alignment / Exec Reporting** | Inbox-triage funnel (§7 #5, AI-Gmail) | new effect in `ProjectsCarousel`/`fx` *(extend)* | Framer/SVG; messages classify, labels settle |
+| **Risk/Capacity/Budget (ATO)** | ATO evidence-harness time-compression (§7 #4) | `AtoEvidenceBar.tsx` *(exists)* | SVG bar collapses 3 h→15 min (≈92%) over 200+ ticks; legacy-terminal→pipeline morph |
+| **Credentials & Governance** | Clearance/credential stepper | extend `ExpandableCard`/`Dossier` *(exists)* | Framer stepper; monochrome |
+| **Jyotish/astro cluster** (btr-demo, jyotish-shastra, Birth-Time-Rectifier) | Celestial ephemeris sphere (§7 #8) | `CelestialSphere.tsx` *(new)* | R3F orbit trails + `celestialOrbit` shader |
+| **NLP / Resume Tailor** | Résumé↔JD matching arcs / TokenReflow | `TokenReflow.tsx` *(exists)* | SVG arcs / token reflow |
+| **Relationship Timeline (D3)** | D3 journey timeline | extend `Dossier`/catalogue card *(exists)* | SVG/D3 temporal viz |
+
+**Component contract template (builder fills per scene):**
+```
+Props:      { active: boolean; reducedMotion: boolean; dpr: number; palette: PaletteTokens }
+SceneGraph: <Canvas dpr={[1,1.5]}> <Scene/> <EffectComposer/> </Canvas> + DOM overlay (text OUT of bloom)
+Shaders:    [list from §9.2]
+Data:       real/sourced values (R3) — perf counters, P95 readout, resume metrics; never random/coffee-cup
+Motion:     enter on in-view (IntersectionObserver), PAUSE off-screen + on visibilitychange (NFR-FPS)
+Fallback:   static poster frame (reduced-motion / low-power / WebGL fail)
+```
+
+## 9.4 R1 avatar + voice-clone component contract (real-time AI video avatar)
+
+Extends `components/site/HeroAvatar.tsx` (already does video/still crossfade) + `MiniVicBot.tsx`
+(3-tier brain). **No new top-level component** — extend the existing crossfade pattern (C3).
+Three-tier degradation (dossier §3.2), zero-CLS reserved container:
+
+| Tier | Path | Avatar | Voice | Gate |
+|---|---|---|---|---|
+| 1 — live | dynamic VPS | D-ID Streaming ← ElevenLabs WS → `viseme/smoother.ts`, ≤1 frame / ~40 ms | live ElevenLabs cloned voice id | `NEXT_PUBLIC_REALTIME_WS_URL` set |
+| 2 — static | Firebase static | pre-rendered synced MP4 greeting (≤120 ms tol) + still | pre-rendered MP3, **correct cloned voice id** (D-1 fix) | default |
+| 3 — offline | offline reload | still avatar image | none / text | always |
+
+**Contract:** `HeroAvatar` reserves its box at layout time (zero CLS); crossfades still→MP4 on
+load; exposes a `speaking` pulse hook for MiniVic. Mascot Bot SDK flagged as a lower-cost
+browser-side alternative to D-ID (dossier §3.1) — **not adopted now**, recorded as a fallback
+option. Every voiceover/greeting asset verified by voice-id/asset-hash check (TC-FR-VOICE).

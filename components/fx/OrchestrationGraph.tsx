@@ -229,9 +229,10 @@ function PosterFallback() {
 
 interface OrchestrationGraphProps {
   className?: string;
+  project?: string;
 }
 
-export default function OrchestrationGraph({ className = '' }: OrchestrationGraphProps) {
+export default function OrchestrationGraph({ className = '', project }: OrchestrationGraphProps) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef);
@@ -246,7 +247,7 @@ export default function OrchestrationGraph({ className = '' }: OrchestrationGrap
     <div
       ref={containerRef}
       className={className}
-      data-testid="orchestration-graph"
+      data-testid="orchestration-graph" data-project={project}
       {...(frozen ? { 'data-frozen': 'true' } : {})}
     >
       {frozen ? (

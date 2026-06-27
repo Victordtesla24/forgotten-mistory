@@ -198,9 +198,10 @@ function PosterFallback() {
 
 interface CelestialSphereProps {
   className?: string;
+  project?: string;
 }
 
-export default function CelestialSphere({ className = '' }: CelestialSphereProps) {
+export default function CelestialSphere({ className = '', project }: CelestialSphereProps) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef);
@@ -215,7 +216,7 @@ export default function CelestialSphere({ className = '' }: CelestialSphereProps
     <div
       ref={containerRef}
       className={className}
-      data-testid="celestial-sphere"
+      data-testid="celestial-sphere" data-project={project}
       {...(frozen ? { 'data-frozen': 'true' } : {})}
     >
       {frozen ? (

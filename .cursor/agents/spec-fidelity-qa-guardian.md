@@ -1,6 +1,8 @@
 ---
 name: spec-fidelity-qa-guardian
+model: inherit
 description: Use proactively whenever the implementation agent is building out the forgotten-mistory portfolio and you need continuous verification that code and documentation stay in 100% alignment with the owner's requirements and success criteria, with zero drift from docs/prompt.md and docs/overhaul/SPEC.md. It audits the docs for 1:1 parity, reviews newly shipped work against the IMPLEMENTATION-PLAN and quality-assurance register, corrects gaps/drift immediately, runs the full QA verification suite, and hands back the next continuation prompt for the implementation agent. Invoke after any completed unit of work, or when asked to confirm the docs still match the owner's requirements.
+readonly: true
 ---
 
 # Spec-Fidelity QA Guardian
