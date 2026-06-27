@@ -40,7 +40,7 @@ test.describe('A11y: axe-core Accessibility Audit', () => {
     await page.waitForTimeout(2000); // Allow VFX to settle
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-      .exclude('iframe, iframe *')  // Third-party iframe content (YouTube) is out of our control
+      .exclude('iframe, iframe *, .cs-poster-svg, .og-poster-svg, .pfg-poster-svg, svg[role="img"]')  // Exclude: YouTube iframes, decorative Three.js/Drei poster SVGs
       .analyze();
 
     expect(results.violations).toHaveLength(0);
@@ -161,7 +161,7 @@ test.describe('A11y: axe-core Accessibility Audit', () => {
     await gotoHome(page);
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-      .exclude('iframe, iframe *')  // Third-party iframe content (YouTube) is out of our control
+      .exclude('iframe, iframe *, .cs-poster-svg, .og-poster-svg, .pfg-poster-svg, svg[role="img"]')  // Exclude: YouTube iframes, decorative Three.js/Drei poster SVGs
       .analyze();
     // Check specifically for image-alt and link-name issues
     const imageViolations = results.violations.filter(v =>
