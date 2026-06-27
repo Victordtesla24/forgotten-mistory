@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import type { ExperienceRole } from '@/app/data/siteContent';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 const CardFlipCanvas = dynamic(() => import('@/components/fx/CardFlipCanvas'), {
   loading: () => <div className="r3f-loading-placeholder" />,
@@ -100,10 +101,12 @@ function AccordionItem({
               {/* 3D card-flip overlay — visual layer behind the DOM content.
                   Not rendered when prefers-reduced-motion is active. */}
               {!prefersReducedMotion && (
-                <CardFlipCanvas
-                  active={isOpen}
-                  containerEl={contentRef.current}
-                />
+                <ErrorBoundary>
+                  <CardFlipCanvas
+                    active={isOpen}
+                    containerEl={contentRef.current}
+                  />
+                </ErrorBoundary>
               )}
               <ul style={{ position: 'relative', zIndex: 2 }}>
                 {role.bullets.map((bullet) => (

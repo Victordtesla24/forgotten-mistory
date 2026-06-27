@@ -16,7 +16,6 @@ const SparklineGL = dynamic(() => import('@/components/fx/SparklineGL'), {
 });
 import JarvisTelemetry from '@/components/fx/JarvisTelemetry';
 import TeslaDashboard from '@/components/fx/TeslaDashboard';
-
 const LOCATION_SETS: string[][] = [
   ['Melbourne \u00b7 Edge POP', 'Sydney \u00b7 API Gateway', 'Adelaide \u00b7 Vector cache'],
   ['Brisbane \u00b7 Edge POP', 'Perth \u00b7 Metric bus', 'Canberra \u00b7 Policy gate'],

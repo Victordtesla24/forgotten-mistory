@@ -2,6 +2,7 @@
 
 import React from 'react';
 import dynamic from 'next/dynamic';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { useInViewMount } from '@/lib/useInViewMount';
 
 const TelemetryHud = dynamic(() => import('./TelemetryHud'), {
@@ -71,7 +72,11 @@ export default React.memo(function HudFrame({
           />
         </svg>
       ))}
-      {showScene ? <TelemetryHud className="hud-frame__scene" /> : null}
+      {showScene ? (
+        <ErrorBoundary>
+          <TelemetryHud className="hud-frame__scene" />
+        </ErrorBoundary>
+      ) : null}
       {variant === 'panel' ? <span className="hud-frame__label">{label}</span> : null}
     </div>
   );

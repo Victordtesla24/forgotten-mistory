@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Database, X } from 'lucide-react';
 import { resumeContent } from '@/app/data/resumeContent';
@@ -183,8 +184,16 @@ export default function FloatingDetailBox({ activeKey, triggerRect, onClose, isL
             onClick={onClose}
           />
 
-          {!reduced && <DetailMaterialize key={displayKey} origin={origin} color={themeColor} />}
-          {!reduced && <FloatingGlassPanel color={themeColor} reduced={reduced} />}
+          {!reduced && (
+              <ErrorBoundary>
+                <DetailMaterialize key={displayKey} origin={origin} color={themeColor} />
+              </ErrorBoundary>
+            )}
+          {!reduced && (
+              <ErrorBoundary>
+                <FloatingGlassPanel color={themeColor} reduced={reduced} />
+              </ErrorBoundary>
+            )}
 
           <motion.div
             data-detail-panel=""
