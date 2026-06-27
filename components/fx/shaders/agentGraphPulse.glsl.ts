@@ -84,8 +84,8 @@ export const agentGraphPulseFragment = /* glsl */ `
       float pulseDist = abs(t - pulsePos);
       float pulse = exp(-pulseDist * pulseDist * 80.0) * 0.55;
       // Active edges glow brighter.
-      float active = uActiveEdge > 0.5 ? 1.0 : 0.4;
-      a += pulse * active * smoothstep(0.012, 0.0, distToEdge);
+      float edgeActive = uActiveEdge > 0.5 ? 1.0 : 0.4;
+      a += pulse * edgeActive * smoothstep(0.012, 0.0, distToEdge);
     }
 
     // Coordinated cascade: a wave of brightness that sweeps all edges.

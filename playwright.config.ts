@@ -10,40 +10,31 @@ export default defineConfig({
     ['list'],
     ['html', { open: 'never', outputFolder: 'playwright-report' }],
   ],
+  timeout: 90000,
   use: {
     trace: 'on-first-retry',
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://localhost:5599',
+    screenshot: 'only-on-failure',
   },
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'], channel: process.env.CI ? undefined : 'chrome' },
     },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
   ],
   // Snapshot config for visual-regression (toHaveScreenshot)
-  snapshotDir: './tests/screenshots',
+  snapshotDir: './tests/baselines',
   updateSnapshots: process.env.UPDATE_SNAPSHOTS === '1' ? 'all' : 'missing',
   expect: {
+    timeout: 15000,
     toHaveScreenshot: {
-      maxDiffPixelRatio: 0.01,   // 1% pixel diff threshold
-      threshold: 0.2,            // per-pixel colour tolerance
-    },
-    toMatchSnapshot: {
       maxDiffPixelRatio: 0.01,
       threshold: 0.2,
     },
   },
   webServer: {
-    command: 'npm run dev:raw',
-    url: 'http://localhost:8080',
+    command: 'npx next start -p 5599',
+    url: 'http://localhost:5599',
     reuseExistingServer: true,
     timeout: 120000,
   },

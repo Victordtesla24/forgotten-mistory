@@ -524,8 +524,8 @@ export default function Home() {
                 <InboxTriage project="AI-Gmail-Mailbox-Manager" />
                 <CelestialSphere project="btr-demo" />
                 <AstroChartSphere project="jyotish-shastra" />
-                <OrchestrationGraph />
-                <PacketFlowGraph />
+                <OrchestrationGraph project="rishi-prajnya" />
+                <PacketFlowGraph project="telemetry-cluster" />
                 <JarvisRepairLoop />
                 <AtoEvidenceBar />
                 <ClearanceStepper />
