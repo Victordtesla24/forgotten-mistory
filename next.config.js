@@ -39,6 +39,14 @@ const SECURITY_HEADERS = [
 ];
 
 const nextConfig = {
+  turbopack: {
+    root: __dirname,
+  },
+  // G6-FIX: Turbopack root — pin workspace root to the project directory so the
+  // builder resolves next/package.json correctly regardless of ancestor lockfiles.
+  turbopack: {
+    root: __dirname,
+  },
   ...(isStaticExport
     ? {
         output: 'export',
