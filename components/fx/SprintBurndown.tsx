@@ -48,7 +48,7 @@ function pathLength(path: string): number {
 }
 
 export default function SprintBurndown({ className = '', project }: { className?: string; project?: string }) {
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [idealLen, setIdealLen] = useState(500);

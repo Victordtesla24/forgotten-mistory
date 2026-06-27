@@ -15,14 +15,12 @@ import { motion, useReducedMotion } from 'framer-motion';
  * divider at midpoint.
  */
 
-const GRID_SIZE = 8; // 8×8 pixel grid for the "before" low-res side
-const CELL_SIZE = 12; // px per cell
-const CANVAS_SIZE = GRID_SIZE * CELL_SIZE; // 96px
+const GRID_SIZE = 8;
+const CELL_SIZE = 12;
+const CANVAS_SIZE = GRID_SIZE * CELL_SIZE;
 
-// Deterministic before/after "scanlines" — before is blocky, after is smooth
 function generateGrid(): number[][] {
   const grid: number[][] = [];
-  // Perlin-like deterministic hex pattern
   const pattern = [
     0x1a, 0x2c, 0x3e, 0x4f, 0x5d, 0x6b, 0x78, 0x84,
     0x22, 0x35, 0x47, 0x58, 0x67, 0x74, 0x80, 0x8a,
@@ -55,12 +53,11 @@ export default function ImageEnhancer({
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
-  const [dividerPos, setDividerPos] = useState(50); // percentage
+  const [dividerPos, setDividerPos] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const [phase, setPhase] = useState<'before' | 'revealing' | 'settled'>('before');
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // IntersectionObserver
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -74,7 +71,6 @@ export default function ImageEnhancer({
     return () => obs.disconnect();
   }, []);
 
-  // Auto-reveal animation when in view
   useEffect(() => {
     if (!inView || prefersReducedMotion) return;
     timerRef.current = setTimeout(() => setPhase('revealing'), 400);
@@ -83,27 +79,26 @@ export default function ImageEnhancer({
     };
   }, [inView, prefersReducedMotion]);
 
-  // Animate divider from 0→100 over the revealing phase
   useEffect(() => {
     if (phase !== 'revealing' || prefersReducedMotion) return;
     const start = performance.now();
-    const duration = 1800; // ms
+    const duration = 1800;
+    let raf: number;
     const animate = (now: number) => {
       const elapsed = now - start;
       const t = Math.min(elapsed / duration, 1);
-      // Ease-out cubic
       const eased = 1 - Math.pow(1 - t, 3);
       setDividerPos(eased * 100);
       if (t < 1) {
-        requestAnimationFrame(animate);
+        raf = requestAnimationFrame(animate);
       } else {
         setPhase('settled');
       }
     };
-    requestAnimationFrame(animate);
+    raf = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf);
   }, [phase, prefersReducedMotion]);
 
-  // Drag handlers for manual divider control
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     e.preventDefault();
     setIsDragging(true);
@@ -128,7 +123,6 @@ export default function ImageEnhancer({
   }, [isDragging]);
 
   const isSettled = phase === 'settled' || prefersReducedMotion;
-  const showDivider = dividerPos;
 
   return (
     <div
@@ -138,7 +132,6 @@ export default function ImageEnhancer({
       className={`image-enhancer ${className}`.trim()}
       {...(prefersReducedMotion ? { 'data-reduced-motion': 'true' } : {})}
     >
-      {/* Label row */}
       <motion.div
         className="enhancer-labels"
         initial={{ opacity: 0 }}
@@ -149,15 +142,13 @@ export default function ImageEnhancer({
         <span className="enhancer-label enhancer-label--after">Enhanced</span>
       </motion.div>
 
-      {/* Canvas comparison area */}
       <div className="enhancer-canvas-area">
-        {/* "Before" side — pixelated blocky grid */}
         <svg
           viewBox={`0 0 ${CANVAS_SIZE} ${CANVAS_SIZE}`}
           className="enhancer-canvas enhancer-canvas--before"
           role="img"
           aria-label="Original low-resolution image"
-          style={{ clipPath: `inset(0 ${100 - showDivider}% 0 0)` }}
+          style={{ clipPath: `inset(0 ${100 - dividerPos}% 0 0)` }}
         >
           {PIXEL_GRID.map((row, y) =>
             row.map((value, x) => (
@@ -184,7 +175,6 @@ export default function ImageEnhancer({
               </rect>
             )),
           )}
-          {/* Grid lines to emphasize pixelation */}
           {Array.from({ length: GRID_SIZE + 1 }).map((_, i) => (
             <line
               key={`h-${i}`}
@@ -199,13 +189,12 @@ export default function ImageEnhancer({
           ))}
         </svg>
 
-        {/* "After" side — smooth gradient with fine detail */}
         <svg
           viewBox={`0 0 ${CANVAS_SIZE} ${CANVAS_SIZE}`}
           className="enhancer-canvas enhancer-canvas--after"
           role="img"
           aria-label="Enhanced high-resolution image"
-          style={{ clipPath: `inset(0 0 0 ${showDivider}%)` }}
+          style={{ clipPath: `inset(0 0 0 ${dividerPos}%)` }}
         >
           <defs>
             <radialGradient id="enhanced-grad" cx="30%" cy="30%" r="70%">
@@ -213,15 +202,8 @@ export default function ImageEnhancer({
               <stop offset="50%" stopColor="var(--steel)" stopOpacity="0.6" />
               <stop offset="100%" stopColor="var(--ink-800)" stopOpacity="0.2" />
             </radialGradient>
-            <linearGradient id="detail-stripe" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.7" />
-              <stop offset="50%" stopColor="var(--white)" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.7" />
-            </linearGradient>
           </defs>
-          {/* Smooth background */}
           <rect width={CANVAS_SIZE} height={CANVAS_SIZE} fill="url(#enhanced-grad)" />
-          {/* Fine detail lines */}
           {Array.from({ length: 12 }).map((_, i) => (
             <line
               key={`detail-${i}`}
@@ -246,7 +228,6 @@ export default function ImageEnhancer({
               opacity="0.25"
             />
           ))}
-          {/* Highlight arc */}
           <path
             d={`M ${CANVAS_SIZE * 0.2} ${CANVAS_SIZE * 0.8} Q ${CANVAS_SIZE * 0.5} ${CANVAS_SIZE * 0.3} ${CANVAS_SIZE * 0.8} ${CANVAS_SIZE * 0.7}`}
             fill="none"
@@ -267,10 +248,9 @@ export default function ImageEnhancer({
           </path>
         </svg>
 
-        {/* Sliding divider handle */}
         <motion.div
           className={`enhancer-divider${isDragging ? ' enhancer-divider--dragging' : ''}`}
-          style={{ left: `${showDivider}%` }}
+          style={{ left: `${dividerPos}%` }}
           initial={{ opacity: 0 }}
           animate={{ opacity: inView ? 1 : 0 }}
           transition={{ delay: 0.3, duration: 0.3 }}
@@ -285,7 +265,6 @@ export default function ImageEnhancer({
         </motion.div>
       </div>
 
-      {/* Stats footer */}
       <motion.div
         className="enhancer-stats"
         initial={{ opacity: 0 }}
