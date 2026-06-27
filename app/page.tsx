@@ -35,6 +35,12 @@ import GithubFeed from '@/components/site/GithubFeed';
 import HiddenTerminal from '@/components/site/HiddenTerminal';
 import HeroAvatar from '@/components/site/HeroAvatar';
 import ScrollRail from '@/components/site/ScrollRail';
+import HeroScroll from '@/components/site/HeroScroll';
+import ProofScroll from '@/components/site/ProofScroll';
+import WorkScroll from '@/components/site/WorkScroll';
+import CatalogueScroll from '@/components/site/CatalogueScroll';
+import SkillsScroll from '@/components/site/SkillsScroll';
+import ContactScroll from '@/components/site/ContactScroll';
 import HudFrame from '@/components/fx/HudFrame';
 import PacketFlowGraph from '@/components/fx/PacketFlowGraph';
 import SprintBurndown from '@/components/fx/SprintBurndown';
@@ -278,9 +284,15 @@ export default function Home() {
           <motion.div className="hero-image-container" style={{ y: avatarY }}>
             <HeroAvatar />
           </motion.div>
+
+          {/* T1 — HeroScroll: GSAP ScrollTrigger scrubs HUD backdrop, headline clip-reveal, avatar crossfade */}
+          <HeroScroll />
         </section>
 
         <ProofBar />
+
+        {/* T2 — ProofScroll: GSAP onEnter cue anchor */}
+        <ProofScroll />
 
         <section id="about" className="about-section">
           <div className="container">
@@ -418,6 +430,8 @@ export default function Home() {
         </section>
 
         <section id="skills" className="skills-section">
+          {/* T6 — SkillsScroll: GSAP ScrollTrigger enter stagger, per-skill micro-viz cue */}
+          <SkillsScroll />
           <div className="container">
             <Reveal className="section-header">
               <h2 className="section-title">Skills &amp; Certifications</h2>
@@ -476,6 +490,9 @@ export default function Home() {
         </section>
 
         <section id="work" className="work-section">
+          {/* T4 + T5 — WorkScroll (per-scene pin sequential) + CatalogueScroll (vertical→horizontal) */}
+          <WorkScroll />
+          <CatalogueScroll />
           <div className="container">
             <Reveal className="section-header">
               <h2 className="section-title">Current Projects in the Pipeline</h2>
@@ -540,6 +557,8 @@ export default function Home() {
         <Dossier />
 
         <section id="contact" className="contact-section">
+          {/* T7 — ContactScroll: GSAP enter reveals + magnetic CTA */}
+          <ContactScroll />
           <div className="container">
             <div className="contact-wrapper">
               <Reveal>
@@ -602,7 +621,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer>
+      <footer role="contentinfo">
         <div className="footer-content">
           <p>&copy; {new Date().getFullYear()} Vikram Deshpande. All rights reserved.</p>
           <HiddenTerminal />
