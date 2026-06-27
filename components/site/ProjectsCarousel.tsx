@@ -523,23 +523,6 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
     }
   };
 
-  const onCardMove = (e: React.PointerEvent<HTMLAnchorElement>) => {
-    if (prefersReducedMotion || dragState.current.dragging) return;
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    const nx = (e.clientX - rect.left) / rect.width - 0.5;
-    const ny = (e.clientY - rect.top) / rect.height - 0.5;
-    card.style.setProperty('--tilt-y', `${(nx * 9).toFixed(2)}deg`);
-    card.style.setProperty('--tilt-x', `${(-ny * 7).toFixed(2)}deg`);
-  };
-
-  const onCardLeave = (e: React.PointerEvent<HTMLAnchorElement>) => {
-    const card = e.currentTarget;
-    card.style.removeProperty('--tilt-y');
-    card.style.removeProperty('--tilt-x');
-  };
-
   return (
     <div className="carousel-wrapper catalogue-row" data-carousel="true">
       <div

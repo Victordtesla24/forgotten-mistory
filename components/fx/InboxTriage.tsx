@@ -169,7 +169,6 @@ export default function InboxTriage({ className = '', project }: { className?: s
       <div className="inbox-messages" data-testid="inbox-messages">
         {showAll ? (
           MESSAGES.map((msg) => {
-            const labelIndex = LABELS.indexOf(msg.label);
             return (
               <div
                 key={msg.id}

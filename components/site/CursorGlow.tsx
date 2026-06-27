@@ -51,8 +51,6 @@ export default function CursorGlow() {
     // surface is at rest. Reusing it avoids a feedback loop where reading the
     // already-transformed rect would drag the normalised pointer toward centre.
     let activeRect: DOMRect | null = null;
-    let down = false;
-    let movedWhileDown = false;
     let activeMagnetic: HTMLElement | null = null;
     const setState = (s: string) => { document.body.setAttribute('data-cursor-state', s); };
     const setLabel = (l: string) => { if (labelRef.current) labelRef.current.textContent = l; };
@@ -79,8 +77,6 @@ export default function CursorGlow() {
     const onMove = (e: PointerEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);
-      const target = e.target as Element | null;
-
       const surface = (e.target as Element | null)?.closest?.(DEPTH_TARGETS) as HTMLElement | null;
       if (surface !== activeSurface) {
         resetDepth(activeSurface);
@@ -106,13 +102,9 @@ export default function CursorGlow() {
     };
 
     const onDown = () => {
-      down = true;
-      movedWhileDown = false;
       setState('click');
     };
     const onUp = (e: PointerEvent) => {
-      down = false;
-      movedWhileDown = false;
       evaluateRestState(document.elementFromPoint(e.clientX, e.clientY));
     };
     const onLeaveWindow = () => {
