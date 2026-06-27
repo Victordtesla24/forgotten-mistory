@@ -24,13 +24,19 @@ export default defineConfig({
     // "localhost" can resolve to IPv6 ::1 first on some hosts.
     baseURL: 'http://127.0.0.1:8080',
     launchOptions: {
-      // The CI runner has no GPU, so Chromium falls back to the SwiftShader software
-      // rasteriser — which newer Chromium gates behind --enable-unsafe-swiftshader (without
-      // it WebGL silently fails → the R3F/HUD canvases never draw). The backgrounding flags
-      // stop Chromium from throttling requestAnimationFrame to ~1fps when the page is not
-      // the foreground tab, which otherwise starves the scene render loop and the
-      // Framer-Motion reveal animations the specs assert on.
+      // The e2e job runs on a GPU-capable runner (see docs/ci-gpu-runner.md). The GPU
+      // specs need real hardware GL: CSS backdrop-filter compositing and the heavy
+      // R3F/HUD frame rates only work on a GPU — under SwiftShader (GPU-less) backdrop-
+      // filter is reported absent and WebGL is ~10-40x too slow (draws<200, rAF~4fps).
+      // --ignore-gpu-blocklist / --enable-gpu-rasterization let Chromium use the runner's
+      // GPU even if blocklisted; --enable-unsafe-swiftshader stays as a SAFE fallback so
+      // WebGL still initialises if hardware GL is unavailable (it is ignored when a real
+      // GPU is present). The backgrounding flags stop Chromium throttling
+      // requestAnimationFrame to ~1fps off-foreground, which starves the scene loop and
+      // the Framer-Motion reveals the specs assert on.
       args: [
+        '--ignore-gpu-blocklist',
+        '--enable-gpu-rasterization',
         '--enable-unsafe-swiftshader',
         '--disable-background-timer-throttling',
         '--disable-backgrounding-occluded-windows',

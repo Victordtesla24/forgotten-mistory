@@ -47,12 +47,20 @@ jobs:
       - run: npm ci
       - run: npm run lint
 
-  # ── E2E (NFR-COMPAT). Playwright serves a real production build in CI (config
-  #    webServer) — the old `next dev` webServer compiled the heavy WebGL pages
-  #    on demand and the job ran 2h+ before timing out. ──
+  # ── E2E (NFR-COMPAT). The suite asserts GPU-only rendering — CSS backdrop-filter
+  #    compositing AND heavy R3F/HUD frame rates — which CANNOT pass on GitHub's GPU-less
+  #    runners (SwiftShader reports backdrop-filter absent and WebGL is ~10-40x too slow:
+  #    draws<200, rAF~4fps, boot reveal 5-6s). So this job runs on a GPU-capable runner.
+  #    Provision it (self-hosted GPU runner OR a GitHub GPU larger runner) and set the repo
+  #    variable E2E_RUNNER_LABELS to its label(s) as a JSON array — full setup in
+  #    docs/ci-gpu-runner.md. Default targets a self-hosted runner labelled `gpu`.
+  #
+  #    The Playwright webServer (playwright.config.ts) serves the real static `out/` export
+  #    read-only (not `next start`), so there is no SSR gateway fetch to 127.0.0.1:8000 and
+  #    no .next race; this prebuild step materialises that `out/` once.
   test:
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
+    runs-on: ${{ fromJSON(vars.E2E_RUNNER_LABELS || '["self-hosted","gpu"]') }}
+    timeout-minutes: 30
     env:
       CI: "true"
       # build:static (FIREBASE_STATIC_EXPORT=1 + production) hard-requires this key
@@ -67,16 +75,13 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      # Build the static export ONCE here, before Playwright. Playwright 1.57 starts the
-      # webServer (`npm run build && next start -p 8080`, a SERVER build) BEFORE running
-      # globalSetup, so if globalSetup built `out/` it would `rm -rf .next` out from
-      # under the live :8080 server (transient 500/ENOENT on ~30 specs). Prebuilding
-      # `out/` here means globalSetup's ensureStaticBuild finds it fresh and no-ops, and
-      # the only `.next` rebuild is the webServer's own — never during a live server.
-      # (`npm run build` later removes only `.next`; this `out/` survives for the
-      # loopback static-server specs.)
+      # Materialise the production static export ONCE; the Playwright webServer serves it
+      # read-only and globalSetup's ensureStaticBuild then finds it fresh and no-ops.
       - run: npm run build:static
-      - run: npx playwright test
+      # Run under a virtual X display so headless Chromium can reach the runner's GPU via
+      # the driver (hardware GL → backdrop-filter compositing + real WebGL frame rates).
+      # xvfb-run is a no-op-safe wrapper if the runner already provides a display.
+      - run: xvfb-run -a --server-args="-screen 0 1920x1080x24" npx playwright test
 
   # ── Performance / quality budgets (TC-NFR-PERF): Lighthouse via lighthouserc.json.
   #    lighthouserc.json gates ONLY two things: performance (WARN, a cinematic WebGL
