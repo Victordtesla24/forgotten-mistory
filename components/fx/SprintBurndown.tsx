@@ -12,7 +12,6 @@ import { motion, useReducedMotion } from 'framer-motion';
  * Colours: CSS tokens only. Reduced-motion fallback shows final chart state.
  */
 
-const SPRINT_DAYS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const IDEAL_REMAINING = [40, 36, 32, 28, 24, 20, 16, 12, 8, 4, 0];
 const ACTUAL_REMAINING = [40, 38, 35, 31, 26, 22, 17, 13, 9, 5, 0];
 

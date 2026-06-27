@@ -15,7 +15,6 @@ import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
  * motion; otherwise renders nothing, sets no state attribute, and the native
  * cursor is used.
  */
-const INTERACTIVE = 'a, button, [role="button"], [data-magnetic], summary, input, textarea, select, label';
 
 export default function CursorGlow() {
   // SSR-safe: returns false on the server AND the client's first paint, so the
@@ -52,6 +51,23 @@ export default function CursorGlow() {
     // surface is at rest. Reusing it avoids a feedback loop where reading the
     // already-transformed rect would drag the normalised pointer toward centre.
     let activeRect: DOMRect | null = null;
+    let down = false;
+    let movedWhileDown = false;
+    let activeMagnetic: HTMLElement | null = null;
+    const setState = (s: string) => { document.body.setAttribute('data-cursor-state', s); };
+    const setLabel = (l: string) => { if (labelRef.current) labelRef.current.textContent = l; };
+    const evaluateRestState = (el: Element | null) => {
+      if (!el) { setState('default'); return; }
+      const interactive = el.closest('a, button, [role="button"], [data-magnetic], summary, input, textarea, select, label');
+      if (el.closest('[data-magnetic]')) { setState('magnetic'); }
+      else if (interactive) { setState('hover'); }
+      else { setState('default'); }
+    };
+    const resetMagnetic = (el: HTMLElement | null) => {
+      if (!el) return;
+      el.style.removeProperty('--mag-x');
+      el.style.removeProperty('--mag-y');
+    };
     const resetDepth = (el: HTMLElement | null) => {
       if (!el) return;
       el.style.setProperty('--rx', '0');
