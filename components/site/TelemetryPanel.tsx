@@ -14,6 +14,7 @@ const SparklineGL = dynamic(() => import('@/components/fx/SparklineGL'), {
   loading: () => <div className="r3f-loading-placeholder" />,
   ssr: false,
 });
+import ErrorBoundary from '@/components/ErrorBoundary';
 import JarvisTelemetry from '@/components/fx/JarvisTelemetry';
 import TeslaDashboard from '@/components/fx/TeslaDashboard';
 const LOCATION_SETS: string[][] = [

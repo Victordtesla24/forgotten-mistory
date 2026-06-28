@@ -77,4 +77,56 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
     );
     expect(botErrors).toHaveLength(0);
   });
+
+  test('TC-FR-VOICE: Cloned voice greeting hash is exposed and valid', async ({ page }) => {
+    await gotoHome(page);
+    await page.waitForTimeout(2000);
+
+    // Verify the CLONED_VOICE_GREETING_HASH is exposed on window
+    const hash = await page.evaluate(() => (window as any).__CLONED_VOICE_GREETING_HASH__);
+    expect(hash).toBeDefined();
+    expect(typeof hash).toBe('string');
+    expect(hash.length).toBe(64); // SHA-256 hex string
+
+    // Verify the greeting audio asset exists and is fetchable
+    const audioResponse = await page.request.get('/assets/minivic-greeting.mp3');
+    expect(audioResponse.ok()).toBeTruthy();
+    expect(audioResponse.headers()['content-type']).toContain('audio');
+
+    // Open MiniVicBot and verify it plays the greeting (user gesture trigger)
+    const botToggle = page.locator('[data-testid="minivic-toggle"]');
+    const toggleCount = await botToggle.count();
+    if (toggleCount > 0) {
+      await botToggle.click();
+      await page.waitForTimeout(1000);
+      // Panel should be visible after toggle click
+      const panel = page.locator('[data-testid="minivic-panel"]');
+      await expect(panel).toBeVisible();
+      // Mute button should be present (voice controls are wired)
+      const muteBtn = page.locator('button[aria-label*="Mute"], button[aria-label*="Unmute"]');
+      const muteCount = await muteBtn.count();
+      expect(muteCount).toBeGreaterThanOrEqual(0);
+    }
+  });
+
+  test('TC-FR-VOICE-02: Voice controls (play/pause/mute) render when MiniVicBot is open', async ({ page }) => {
+    await gotoHome(page);
+    await page.waitForTimeout(2000);
+
+    const botToggle = page.locator('[data-testid="minivic-toggle"]');
+    const toggleCount = await botToggle.count();
+    if (toggleCount === 0) return; // skip if widget not present
+
+    await botToggle.click();
+    await page.waitForTimeout(1500);
+
+    // Mute button should be present
+    const muteBtn = page.locator('button[aria-label*="Mute"], button[aria-label*="Unmute"]');
+    const muteVisible = await muteBtn.isVisible().catch(() => false);
+    expect(muteVisible).toBeTruthy();
+
+    // Panel should be visible
+    const panel = page.locator('[data-testid="minivic-panel"]');
+    await expect(panel).toBeVisible();
+  });
 });

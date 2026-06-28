@@ -109,8 +109,15 @@ function AccordionItem({
                 </ErrorBoundary>
               )}
               <ul style={{ position: 'relative', zIndex: 2 }}>
-                {role.bullets.map((bullet) => (
-                  <li key={bullet.slice(0, 48)}>{bullet}</li>
+                {role.bullets.map((bullet, index) => (
+                  <li
+                    key={bullet.slice(0, 48)}
+                    data-evidence-harness={
+                      role.id === 'ato' && index === 1 ? 'true' : undefined
+                    }
+                  >
+                    {bullet}
+                  </li>
                 ))}
               </ul>
             </div>

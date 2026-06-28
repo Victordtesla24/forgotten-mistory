@@ -54,7 +54,7 @@ function checkSyntax() {
 checkSyntax();
 
 // ── Required jobs ──
-const REQUIRED_JOBS = ['quality', 'lint', 'test', 'test-gpu', 'lighthouse', 'axe', 'build', 'preview', 'deploy', 'verify'];
+const REQUIRED_JOBS = ['quality', 'lint', 'test', 'test-gpu', 'visual-diff', 'lighthouse', 'axe', 'build', 'preview', 'deploy', 'verify'];
 for (const job of REQUIRED_JOBS) {
   const jobRe = new RegExp(`^\\s{2}${job.replace('-', '\\-')}:`, 'm');
   record(`JOB-${job}`, jobRe.test(yaml),

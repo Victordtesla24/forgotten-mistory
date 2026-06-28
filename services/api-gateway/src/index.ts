@@ -19,6 +19,7 @@ import {
 } from "./realtime/grpc-client.js";
 import type { ChatRequest, VisemeEvent } from "./types.js";
 import { smoothVisemes } from "./viseme/smoother.js";
+import { DidElevenLabsBridge } from "./viseme/bridge.js";
 
 const envSchema = z.object({
   PORT: z.string().default("8000"),
@@ -526,6 +527,184 @@ app.get("/internal/cache/health", async () => {
   const hitRatio = ping === "PONG" ? 1 : 0;
   redisHitRatioGauge.set(hitRatio);
   return { redis: ping, hitRatio };
+});
+
+// -- Live D-ID <-> ElevenLabs Bridge (FR-CLONE-LIVE) ----------------------
+
+// Active bridge instances keyed by stream ID
+const activeBridges = new Map<string, DidElevenLabsBridge>();
+
+/**
+ * POST /api/bridge/stream
+ * Open a live D-ID <-> ElevenLabs lip-sync pipeline for a text utterance.
+ *
+ * Body: { text: string, didSourceUrl?: string }
+ * Returns: { streamId, sessionId, offerSdp? } or error
+ *
+ * Requires: ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID, DID_API_KEY
+ */
+app.post("/api/bridge/stream", async (request, reply) => {
+  const body = request.body as { text?: string; didSourceUrl?: string };
+
+  if (!body?.text || typeof body.text !== "string" || !body.text.trim()) {
+    reply.code(400);
+    return { error: "text is required" };
+  }
+
+  if (!env.ELEVENLABS_API_KEY || !env.ELEVENLABS_VOICE_ID) {
+    reply.code(500);
+    return {
+      error: "ELEVENLABS_API_KEY and ELEVENLABS_VOICE_ID are required for live bridge",
+    };
+  }
+
+  if (!env.DID_API_KEY) {
+    reply.code(500);
+    return { error: "DID_API_KEY is required for D-ID stream creation" };
+  }
+
+  try {
+    const bridge = new DidElevenLabsBridge(
+      {
+        elevenLabsApiKey: env.ELEVENLABS_API_KEY,
+        elevenLabsVoiceId: env.ELEVENLABS_VOICE_ID,
+        didApiKey: env.DID_API_KEY,
+        didSourceUrl: body.didSourceUrl,
+      },
+      {
+        onVisemeEvents: (events, streamId) => {
+          publishVisemes(streamId, events);
+        },
+        onStreamCreated: (session) => {
+          activeBridges.set(session.streamId, bridge);
+        },
+        onStateChange: (state) => {
+          if (state === "disposed" || state === "error") {
+            // Clean up bridge reference
+            for (const [id, br] of activeBridges) {
+              if (br === bridge) {
+                activeBridges.delete(id);
+                break;
+              }
+            }
+          }
+        },
+        onError: (error) => {
+          // Logged by Fastify; non-fatal
+        },
+      },
+    );
+
+    const session = await bridge.openStream(body.text);
+
+    if (!session) {
+      reply.code(500);
+      return { error: "Failed to create stream session" };
+    }
+
+    return {
+      streamId: session.streamId,
+      sessionId: session.sessionId,
+      offerSdp: session.offerSdp || null,
+      iceServers: session.iceServers || null,
+      wsPath: "/ws/viseme/" + session.streamId,
+    };
+  } catch (error) {
+    const providerError = normalizeProviderError(error, "bridge");
+    reply.code(providerError.status);
+    return providerErrorPayload(providerError);
+  }
+});
+
+/**
+ * GET /api/bridge/stream/:id
+ * Get status of an active bridge stream.
+ */
+app.get("/api/bridge/stream/:id", async (request, reply) => {
+  const id = (request.params as { id: string }).id;
+  const bridge = activeBridges.get(id);
+
+  if (!bridge) {
+    reply.code(404);
+    return { error: "Bridge stream not found" };
+  }
+
+  return {
+    streamId: id,
+    state: bridge.currentState,
+    session: bridge.streamSession,
+  };
+});
+
+/**
+ * POST /api/bridge/stream/:id/text
+ * Send additional text on an active bridge stream.
+ */
+app.post("/api/bridge/stream/:id/text", async (request, reply) => {
+  const id = (request.params as { id: string }).id;
+  const body = request.body as { text?: string };
+  const bridge = activeBridges.get(id);
+
+  if (!bridge) {
+    reply.code(404);
+    return { error: "Bridge stream not found" };
+  }
+
+  if (!body?.text || typeof body.text !== "string" || !body.text.trim()) {
+    reply.code(400);
+    return { error: "text is required" };
+  }
+
+  try {
+    bridge.sendText(body.text);
+    return { ok: true, streamId: id, state: bridge.currentState };
+  } catch (error) {
+    const providerError = normalizeProviderError(error, "bridge");
+    reply.code(providerError.status);
+    return providerErrorPayload(providerError);
+  }
+});
+
+/**
+ * POST /api/bridge/stream/:id/flush
+ * Signal end of text and flush remaining audio/visemes.
+ */
+app.post("/api/bridge/stream/:id/flush", async (request, reply) => {
+  const id = (request.params as { id: string }).id;
+  const bridge = activeBridges.get(id);
+
+  if (!bridge) {
+    reply.code(404);
+    return { error: "Bridge stream not found" };
+  }
+
+  try {
+    await bridge.flush();
+    return { ok: true, streamId: id, state: bridge.currentState };
+  } catch (error) {
+    const providerError = normalizeProviderError(error, "bridge");
+    reply.code(providerError.status);
+    return providerErrorPayload(providerError);
+  }
+});
+
+/**
+ * DELETE /api/bridge/stream/:id
+ * Dispose an active bridge stream and clean up resources.
+ */
+app.delete("/api/bridge/stream/:id", async (request, reply) => {
+  const id = (request.params as { id: string }).id;
+  const bridge = activeBridges.get(id);
+
+  if (!bridge) {
+    reply.code(404);
+    return { error: "Bridge stream not found" };
+  }
+
+  bridge.dispose();
+  activeBridges.delete(id);
+
+  return { ok: true, streamId: id, disposed: true };
 });
 
 await app.listen({ port: Number(env.PORT), host: "0.0.0.0" });

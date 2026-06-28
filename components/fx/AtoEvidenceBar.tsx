@@ -467,4 +467,4 @@ export default React.memo(function AtoEvidenceBar({ className = '', project }: {
       `}</style>
     </div>
   );
-}
+})

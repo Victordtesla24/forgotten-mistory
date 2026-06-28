@@ -1,4 +1,4 @@
-export type ProviderName = "openai" | "gemini" | "elevenlabs" | "d-id" | "local-llama" | "orchestrator";
+export type ProviderName = "openai" | "gemini" | "elevenlabs" | "d-id" | "local-llama" | "orchestrator" | "bridge";
 
 export class ProviderApiError extends Error {
   provider: ProviderName;

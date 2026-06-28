@@ -457,6 +457,23 @@ nav {
        open menu. The blend now lives only on the persistent .logo / .menu-toggle
        (the bits that must stay legible over scrolling content); the overlay
        renders as a normal opaque layer. */
+
+    /* FR-NAV "again-on-scroll": smooth slide-out/in on scroll direction change.
+       Disabled under prefers-reduced-motion via the media query below. */
+    transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+nav.nav-hidden {
+    transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    nav {
+        transition: none;
+    }
+    nav.nav-hidden {
+        transform: none;
+    }
 }
 
 .logo {
@@ -1316,6 +1333,41 @@ footer {
     padding-left: 1.5rem;
     display: grid;
     gap: 0.6rem;
+}
+
+/* ATO evidence-harness emphasis — the 92% reduction bullet gets a subtle
+   monochrome accent: a luminous left-border pulse on the one bullet that
+   anchors Vikram's most distinctive delivery proof (FR-EXP, TC-FR-EXP). */
+.accordion-body li[data-evidence-harness="true"] {
+    border-left: 2px solid var(--white);
+    padding-left: 1rem;
+    margin-left: -1.5rem; /* align border with content edge, not list indent */
+    color: var(--white);
+    font-weight: 500;
+    position: relative;
+    transition: border-color 0.5s ease;
+}
+
+.accordion-body li[data-evidence-harness="true"]::before {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        var(--accent) 30%,
+        var(--accent) 70%,
+        transparent 100%
+    );
+    opacity: 0.5;
+    transition: opacity 0.5s ease;
+}
+
+.accordion-item.active .accordion-body li[data-evidence-harness="true"]::before {
+    opacity: 1;
 }
 
 /* Work - Carousel Layout */

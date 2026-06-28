@@ -24,6 +24,12 @@ export const holoRingFragment = /* glsl */ `
 
   #define TAU 6.28318530718
 
+  // Ring helper: returns 1.0 at dist == radius, smooth fade by thickness
+  float ring(float dist, float radius, float thickness) {
+    return smoothstep(radius - thickness, radius, dist) *
+           smoothstep(radius + thickness, radius, dist);
+  }
+
   void main() {
     vec2 p = vUv - 0.5;
     float r = length(p) * 2.0;            // 0 at centre, ~1 at edge
@@ -39,15 +45,17 @@ export const holoRingFragment = /* glsl */ `
     rings += smoothstep(0.5, 0.38, abs(fract(r * 22.0) - 0.5)) * 0.07
              * smoothstep(0.04, 0.10, r) * smoothstep(1.0, 0.9, r);
 
-    // rotating radar sweep (trailing falloff) — slowed to 0.25 rad/s for calm authority (QT-4)
-    float sweep = mod(ang + uTime * 0.25, TAU) / TAU;
-    float beam  = smoothstep(0.16, 0.0, sweep);
+    // ---- radial spokes (subtle, 16 divisions) ----
+    float spokeAngle = mod(ang + TAU / 32.0, TAU / 16.0);
+    float spokes = smoothstep(0.025, 0.008, spokeAngle) *
+                   smoothstep(0.06, 0.12, r) *
+                   smoothstep(1.0, 0.92, r) * 0.18;
 
-    // ---- rotating sweep with a smooth trailing gradient (the radar arm) ----
+    // ---- rotating radar sweep with smooth trailing gradient (the radar arm) ----
     float d = mod(uTime * 0.45 - ang, TAU);     // 0 at the leading arm, grows behind
-    float beam = pow(smoothstep(2.4, 0.0, d), 1.6);   // ~2.4rad luminous trail
-    float arm  = smoothstep(0.05, 0.0, d) * 0.9;      // bright leading edge
-    float sweep = (beam * 0.5 + arm) * smoothstep(0.985, 0.94, r) * smoothstep(0.04, 0.10, r);
+    float beamTrail = pow(smoothstep(2.4, 0.0, d), 1.6); // ~2.4rad luminous trail
+    float armEdge   = smoothstep(0.05, 0.0, d) * 0.9;     // bright leading edge
+    float sweep = (beamTrail * 0.5 + armEdge) * smoothstep(0.985, 0.94, r) * smoothstep(0.04, 0.10, r);
 
     // ---- pulsing contact blips that flare as the arm passes over them ----
     float blips = 0.0;
