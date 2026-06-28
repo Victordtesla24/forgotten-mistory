@@ -19,6 +19,7 @@ import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
 import { agentGraphPulseFragment, agentGraphVertex } from './shaders/agentGraphPulse.glsl';
 import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
+import { useWebGLTicketLazy } from '@/lib/webglContextGuard';
 
 // ── Résumé-sourced real data (R3 — NEVER random) ──
 // Meta: this site is built by a 6-profile Hermes orchestration system
@@ -238,7 +239,16 @@ export default React.memo(function OrchestrationGraph({ className = '', project 
   const pageVisible = usePageVisible();
   const [webglError, setWebglError] = useState(false);
 
-  const frozen = prefersReducedMotion || !inView || !pageVisible || webglError;
+  // R2 WebGL context conflict fix: acquire a ticket before creating the Canvas.
+  const { hasTicket, requestTicket } = useWebGLTicketLazy();
+
+  useEffect(() => {
+    if (!prefersReducedMotion && inView && pageVisible && !webglError && !hasTicket) {
+      requestTicket();
+    }
+  }, [prefersReducedMotion, inView, pageVisible, webglError, hasTicket, requestTicket]);
+
+  const frozen = prefersReducedMotion || !inView || !pageVisible || webglError || !hasTicket;
 
   const handleCanvasError = useCallback((err?: unknown) => {
     console.error('[OrchestrationGraph] WebGL error:', err);
@@ -331,4 +341,4 @@ export default React.memo(function OrchestrationGraph({ className = '', project 
       `}</style>
     </div>
   );
-}
+});

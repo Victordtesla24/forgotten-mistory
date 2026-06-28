@@ -382,4 +382,4 @@ export default React.memo(function ClearanceStepper({ className = '', project }:
       `}</style>
     </div>
   );
-}
+})

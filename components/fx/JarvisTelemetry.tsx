@@ -185,4 +185,4 @@ export default React.memo(function JarvisTelemetry() {
       </p>
     </div>
   );
-}
+});

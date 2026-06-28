@@ -413,4 +413,4 @@ export default React.memo(function TokenStreamMatch({
       `}</style>
     </div>
   );
-}
+});

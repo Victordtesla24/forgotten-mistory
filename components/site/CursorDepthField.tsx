@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useReducedMotion } from 'framer-motion';
 import * as THREE from 'three';
@@ -129,10 +129,33 @@ function DepthPlane() {
   );
 }
 
+/**
+ * Tracks scroll position to disable the depth field once the user scrolls
+ * past the hero area. Frees a WebGL context for VFX gallery components
+ * deeper in the page (fixes "Canvas has an existing context of a different
+ * type" errors from context exhaustion — R2 WebGL context conflict fix).
+ */
+function useScrollPastHero(): boolean {
+  const [past, setPast] = useState(false);
+  useEffect(() => {
+    const check = () => {
+      // Disable once scrolled past 1.5× viewport height (~ hero + proof)
+      setPast(window.scrollY > window.innerHeight * 1.5);
+    };
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    return () => window.removeEventListener('scroll', check);
+  }, []);
+  return past;
+}
+
 export default function CursorDepthField() {
   const prefersReducedMotion = useReducedMotion();
+  const pastHero = useScrollPastHero();
 
-  if (prefersReducedMotion) return null;
+  // No-op: reduced-motion OR scrolled past hero area
+  // (frees WebGL context for VFX gallery — R2 context conflict fix)
+  if (prefersReducedMotion || pastHero) return null;
 
   return (
     <div

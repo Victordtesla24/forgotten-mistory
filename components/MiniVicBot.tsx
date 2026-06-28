@@ -93,14 +93,27 @@ const QUICK_PROMPTS: QuickPrompt[] = [
   {
     label: "Fit me to a role",
     prompt: "Give me a 2-sentence fit for an enterprise AI delivery role and what you would do in week 1.",
+    mode: "recruiter",
   },
   {
     label: "Ship a roadmap",
     prompt: "How would you land a 90-day roadmap for an AI telemetry platform in a bank?",
+    mode: "recruiter",
   },
   {
     label: "Tech stack read",
     prompt: "Summarize your preferred stack for building reliable real-time dashboards.",
+    mode: "engineer",
+  },
+  {
+    label: "Services & rates",
+    prompt: "What services do you offer and what engagement models do you work with for AI consulting?",
+    mode: "recruiter",
+  },
+  {
+    label: "Teams at scale",
+    prompt: "Describe how you manage large distributed teams with onsite and offshore practitioners.",
+    mode: "recruiter",
   },
 ];
 
@@ -168,6 +181,8 @@ const MiniVicBot = () => {
   const currentVisemeRef = useRef<VisemeShape>(getVisemeShape(0));
   const targetVisemeRef = useRef<VisemeShape>(getVisemeShape(0));
   const visemeLerpRef = useRef<number>(0);
+  // Track live WebSocket connections for clean teardown (no leaked sockets)
+  const liveSocketsRef = useRef<Set<WebSocket>>(new Set());
   
   const recognitionRef = useRef<any>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -248,16 +263,20 @@ const MiniVicBot = () => {
     stopMouth();
   }, [isSpeaking, isPaused, stopMouth]);
 
+  // Ref wrapper for startMouth — declared early so resumeAudio can reference it
+  // before the actual implementation is defined below (TS2454/TS2448 fix).
+  const startMouthRef = useRef<() => void>(() => {});
+
   const resumeAudio = React.useCallback(() => {
     if (!audioRef.current || !isPaused) return;
     audioRef.current.play().then(() => {
       setIsPaused(false);
       setIsSpeaking(true);
-      startMouth();
+      startMouthRef.current();
     }).catch(() => {
       setIsPaused(false);
     });
-  }, [isPaused, startMouth]);
+  }, [isPaused]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -307,7 +326,7 @@ const MiniVicBot = () => {
 
   // Release the Web Audio context on unmount so the device's audio session
   // (and microphone access for other apps) is not held hostage; also stop
-  // any in-flight browser speech synthesis.
+  // any in-flight browser speech synthesis and close any leaked live sockets.
   useEffect(() => {
     return () => {
       if (typeof window !== "undefined") window.speechSynthesis?.cancel();
@@ -316,6 +335,15 @@ const MiniVicBot = () => {
           /* Closing an already-closing context is non-fatal. */
         });
       }
+      // Clean teardown: close any live WebSocket connections (FR-CLONE-LIVE)
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- ref, not React node; we want current value at teardown
+      const sockets = liveSocketsRef.current;
+      sockets.forEach((ws) => {
+        if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
+          ws.close(1000, "component unmounted");
+        }
+      });
+      sockets.clear();
     };
   }, []);
 
@@ -526,7 +554,7 @@ const MiniVicBot = () => {
     }
   };
 
-  const startMouth = () => {
+  startMouthRef.current = () => {
     if (!ensureAnalyser() || !mouthCanvasRef.current || !analyserRef.current || !dataArrayRef.current) return;
     const canvas = mouthCanvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -680,7 +708,7 @@ const MiniVicBot = () => {
       setIsSpeaking(true);
       setIsPaused(false);
       stopMouth();
-      startMouth();
+      startMouthRef.current();
     };
     el.onended = () => {
       setIsSpeaking(false);
@@ -857,6 +885,7 @@ const MiniVicBot = () => {
       }, 45000);
 
       const ws = new WebSocket(`${wsBaseUrl()}${created.wsPath}`);
+      liveSocketsRef.current.add(ws);
 
       ws.onopen = () => {
         ws.send(JSON.stringify({ eventType: "session.start", message: textToSend, requestId: `${Date.now()}` }));
@@ -876,6 +905,7 @@ const MiniVicBot = () => {
             completed = true;
             clearTimeout(timeout);
             ws.close();
+            liveSocketsRef.current.delete(ws);
             reject(new Error(formatProviderError(envelope.payload)));
             return;
           }
@@ -884,6 +914,7 @@ const MiniVicBot = () => {
             completed = true;
             clearTimeout(timeout);
             ws.close();
+            liveSocketsRef.current.delete(ws);
 
             const finalText = envelope.payload?.text || textBuffer.trim();
             const audioDataUrl = envelope.payload?.audioBase64
@@ -905,6 +936,7 @@ const MiniVicBot = () => {
         if (completed) return;
         completed = true;
         clearTimeout(timeout);
+        liveSocketsRef.current.delete(ws);
         reject(new Error("Realtime websocket failed"));
       };
 
@@ -912,6 +944,7 @@ const MiniVicBot = () => {
         if (completed) return;
         completed = true;
         clearTimeout(timeout);
+        liveSocketsRef.current.delete(ws);
         resolve({ text: textBuffer.trim() });
       };
     });
@@ -1337,7 +1370,7 @@ const MiniVicBot = () => {
               e.preventDefault();
               handleSend();
             }}
-            className="flex shrink-0 gap-2 border-t border-white/10 bg-neutral-950/95 p-3"
+            className="flex shrink-0 gap-2 border-t border-white/10 bg-transparent backdrop-blur-md p-3"
           >
             <div className="flex-1 relative">
               <input
@@ -1346,7 +1379,7 @@ const MiniVicBot = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={isListening ? "Listening..." : "Ask me anything…"}
-                className={`w-full rounded-xl border bg-white/[0.04] py-2.5 pl-4 pr-10 text-[13.5px] text-white placeholder-white/55 transition-all ${
+                className={`w-full rounded-xl border bg-white/[0.06] backdrop-blur-sm py-2.5 pl-4 pr-10 text-[13.5px] text-white placeholder-white/55 transition-all ${
                   isListening
                     ? "border-white/40 bg-white/10 ring-1 ring-white/30"
                     : "border-white/15 focus:border-white/45 focus:outline-none focus:ring-1 focus:ring-white/25"

@@ -338,4 +338,4 @@ export default React.memo(function InboxTriage({ className = '', project }: { cl
       `}</style>
     </div>
   );
-}
+});

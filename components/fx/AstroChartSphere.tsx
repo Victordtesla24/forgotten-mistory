@@ -288,4 +288,4 @@ export default React.memo(function AstroChartSphere({ className = '', project }:
       `}</style>
     </div>
   );
-}
+});

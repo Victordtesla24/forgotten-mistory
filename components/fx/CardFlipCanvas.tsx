@@ -184,4 +184,4 @@ export default React.memo(function CardFlipCanvas({
       </Canvas>
     </div>
   );
-}
+});

@@ -35,6 +35,88 @@ const EDGES = [0, 1, 2, 3, 0] as const;
 
 const CYCLE_INTERVAL_MS = 1200;
 
+// ── Animated edge connections ──
+
+interface AnimatedConnectionsProps {
+  nodes: Phase[];
+  isStatic: boolean;
+  activePhase: number;
+}
+
+function AnimatedConnections({ nodes, isStatic, activePhase }: AnimatedConnectionsProps) {
+  return (
+    <>
+      {EDGES.slice(0, -1).map((fromIdx, i) => {
+        const toIdx = EDGES[i + 1];
+        const from = nodes[fromIdx];
+        const to = nodes[toIdx];
+        const angle = Math.atan2(to.y - from.y, to.x - from.x);
+
+        // Offset the line start/end to the node perimeter
+        const x1 = from.x + Math.cos(angle) * from.r;
+        const y1 = from.y + Math.sin(angle) * from.r;
+        const x2 = to.x - Math.cos(angle) * to.r;
+        const y2 = to.y - Math.sin(angle) * to.r;
+
+        // Check if this edge is the currently active one (before active node)
+        const edgeActive = i === activePhase && !isStatic;
+
+        return (
+          <g key={`edge-${from.id}-${to.id}`}>
+            {/* Base connection line */}
+            <line
+              x1={x1}
+              y1={y1}
+              x2={x2}
+              y2={y2}
+              stroke={PALETTE.steel}
+              strokeWidth="0.6"
+              strokeOpacity={edgeActive ? 0.6 : 0.2}
+              strokeLinecap="round"
+            />
+
+            {/* Animated flow dashes (direction indicator) */}
+            <motion.line
+              x1={x1}
+              y1={y1}
+              x2={x2}
+              y2={y2}
+              stroke={PALETTE.accent}
+              strokeWidth={edgeActive ? 1.5 : 0.8}
+              strokeOpacity={edgeActive ? 0.9 : isStatic ? 0 : 0.3}
+              strokeDasharray="6 18"
+              strokeLinecap="round"
+              initial={false}
+              animate={
+                isStatic
+                  ? { strokeDashoffset: 0, strokeOpacity: 0 }
+                  : { strokeDashoffset: [24, 0] }
+              }
+              transition={
+                isStatic
+                  ? { duration: 0 }
+                  : { duration: 0.9, repeat: Infinity, ease: 'linear' }
+              }
+            />
+
+            {/* Arrow tip at the endpoint — small triangle */}
+            {(!isStatic || edgeActive) && (
+              <motion.polygon
+                points={`${x2},${y2} ${x2 - 4 * Math.cos(angle - 0.6)},${y2 - 4 * Math.sin(angle - 0.6)} ${x2 - 4 * Math.cos(angle + 0.6)},${y2 - 4 * Math.sin(angle + 0.6)}`}
+                fill={PALETTE.accent}
+                fillOpacity={edgeActive ? 0.7 : isStatic ? 0.3 : 0.15}
+                initial={false}
+                animate={{ fillOpacity: edgeActive ? 0.7 : isStatic ? 0.3 : 0.15 }}
+                transition={{ duration: 0.4 }}
+              />
+            )}
+          </g>
+        );
+      })}
+    </>
+  );
+}
+
 export default React.memo(function JarvisRepairLoop({ className = '', project = 'Error-Management-System' }: { className?: string; project?: string }) {
   const prefersReducedMotion = useReducedMotionSafe();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -284,86 +366,5 @@ export default React.memo(function JarvisRepairLoop({ className = '', project = 
       </motion.div>
     </div>
   );
-}
+});
 
-// ── Animated edge connections ──
-
-interface AnimatedConnectionsProps {
-  nodes: Phase[];
-  isStatic: boolean;
-  activePhase: number;
-}
-
-function AnimatedConnections({ nodes, isStatic, activePhase }: AnimatedConnectionsProps) {
-  return (
-    <>
-      {EDGES.slice(0, -1).map((fromIdx, i) => {
-        const toIdx = EDGES[i + 1];
-        const from = nodes[fromIdx];
-        const to = nodes[toIdx];
-        const angle = Math.atan2(to.y - from.y, to.x - from.x);
-
-        // Offset the line start/end to the node perimeter
-        const x1 = from.x + Math.cos(angle) * from.r;
-        const y1 = from.y + Math.sin(angle) * from.r;
-        const x2 = to.x - Math.cos(angle) * to.r;
-        const y2 = to.y - Math.sin(angle) * to.r;
-
-        // Check if this edge is the currently active one (before active node)
-        const edgeActive = i === activePhase && !isStatic;
-
-        return (
-          <g key={`edge-${from.id}-${to.id}`}>
-            {/* Base connection line */}
-            <line
-              x1={x1}
-              y1={y1}
-              x2={x2}
-              y2={y2}
-              stroke={PALETTE.steel}
-              strokeWidth="0.6"
-              strokeOpacity={edgeActive ? 0.6 : 0.2}
-              strokeLinecap="round"
-            />
-
-            {/* Animated flow dashes (direction indicator) */}
-            <motion.line
-              x1={x1}
-              y1={y1}
-              x2={x2}
-              y2={y2}
-              stroke={PALETTE.accent}
-              strokeWidth={edgeActive ? 1.5 : 0.8}
-              strokeOpacity={edgeActive ? 0.9 : isStatic ? 0 : 0.3}
-              strokeDasharray="6 18"
-              strokeLinecap="round"
-              initial={false}
-              animate={
-                isStatic
-                  ? { strokeDashoffset: 0, strokeOpacity: 0 }
-                  : { strokeDashoffset: [24, 0] }
-              }
-              transition={
-                isStatic
-                  ? { duration: 0 }
-                  : { duration: 0.9, repeat: Infinity, ease: 'linear' }
-              }
-            />
-
-            {/* Arrow tip at the endpoint — small triangle */}
-            {(!isStatic || edgeActive) && (
-              <motion.polygon
-                points={`${x2},${y2} ${x2 - 4 * Math.cos(angle - 0.6)},${y2 - 4 * Math.sin(angle - 0.6)} ${x2 - 4 * Math.cos(angle + 0.6)},${y2 - 4 * Math.sin(angle + 0.6)}`}
-                fill={PALETTE.accent}
-                fillOpacity={edgeActive ? 0.7 : isStatic ? 0.3 : 0.15}
-                initial={false}
-                animate={{ fillOpacity: edgeActive ? 0.7 : isStatic ? 0.3 : 0.15 }}
-                transition={{ duration: 0.4 }}
-              />
-            )}
-          </g>
-        );
-      })}
-    </>
-  );
-}

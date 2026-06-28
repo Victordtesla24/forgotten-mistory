@@ -62,6 +62,29 @@ const PacketFlowGraph = dynamic(() => import('@/components/fx/PacketFlowGraph'),
   loading: () => <div className="r3f-loading-placeholder" />,
   ssr: false,
 });
+// R2 skill visualizations — compact R3F scenes for the #skills section.
+// Each renders a unique monochrome micro-visualization bound to a skill group
+// per SPEC §9.3 (one dedicated effect per tangible skill domain).
+const SkillVizAI = dynamic(() => import('@/components/fx/SkillVizAI'), {
+  loading: () => <div className="skill-viz-placeholder" />,
+  ssr: false,
+});
+const SkillVizEngineering = dynamic(() => import('@/components/fx/SkillVizEngineering'), {
+  loading: () => <div className="skill-viz-placeholder" />,
+  ssr: false,
+});
+const SkillVizLeadership = dynamic(() => import('@/components/fx/SkillVizLeadership'), {
+  loading: () => <div className="skill-viz-placeholder" />,
+  ssr: false,
+});
+const SkillVizCertifications = dynamic(() => import('@/components/fx/SkillVizCertifications'), {
+  loading: () => <div className="skill-viz-placeholder" />,
+  ssr: false,
+});
+const SkillVizEducation = dynamic(() => import('@/components/fx/SkillVizEducation'), {
+  loading: () => <div className="skill-viz-placeholder" />,
+  ssr: false,
+});
 import ClearanceStepper from '@/components/fx/ClearanceStepper';
 import InboxTriage from '@/components/fx/InboxTriage';
 import JourneyTimeline from '@/components/fx/JourneyTimeline';
@@ -571,7 +594,9 @@ export default function Home() {
                 <ErrorBoundary>
                   <CelestialSphere project="btr-demo" />
                 </ErrorBoundary>
-                <AstroChartSphere project="jyotish-shastra" />
+                <ErrorBoundary>
+                  <AstroChartSphere project="jyotish-shastra" />
+                </ErrorBoundary>
                 <ErrorBoundary>
                   <OrchestrationGraph project="ralph-loop-infinite" />
                 </ErrorBoundary>

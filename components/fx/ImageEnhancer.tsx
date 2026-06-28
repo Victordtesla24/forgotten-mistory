@@ -393,4 +393,4 @@ export default React.memo(function ImageEnhancer({
       `}</style>
     </div>
   );
-}
+});

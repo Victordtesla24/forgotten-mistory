@@ -294,7 +294,7 @@ export const projects: ProjectCard[] = [
   },
   // §7 #9 — agsva-security-clearance-webapp (SPEC: clearance stepper)
   {
-    href: 'https://github.com/Victordtesla24',
+    href: 'https://github.com/Victordtesla24/agsva-security-clearance-webapp',
     badge: 'Security · Gov',
     title: 'AGSVA Clearance App',
     description: 'Clearance stepper with secure lock-state transitions. Governance-grade credential verification.',
@@ -310,7 +310,7 @@ export const projects: ProjectCard[] = [
   },
   // §7 #11 — Image-Enhancer (SPEC: before/after upscale reveal slider)
   {
-    href: 'https://github.com/Victordtesla24',
+    href: 'https://github.com/Victordtesla24/Image-Enhancer',
     badge: 'ML · Vision',
     title: 'AI Image Enhancer',
     description: 'Before/after upscale reveal slider. ML super-resolution with detail restoration at 2× scale.',
@@ -326,7 +326,7 @@ export const projects: ProjectCard[] = [
   },
   // §7 #13 — public-key-server (SPEC: key-signing handshake pulse)
   {
-    href: 'https://github.com/Victordtesla24',
+    href: 'https://github.com/Victordtesla24/public-key-server',
     badge: 'Node.js · Crypto',
     title: 'Public Key Server',
     description: 'Key-signing handshake pulse. Node.js/Express API signing with full Mocha/Chai test coverage.',
@@ -342,7 +342,7 @@ export const projects: ProjectCard[] = [
   },
   // §7 #15 — abentertainment / indian-event-manager (SPEC: event timeline / seat-map shimmer)
   {
-    href: 'https://github.com/Victordtesla24',
+    href: 'https://github.com/Victordtesla24/abentertainment',
     badge: 'Events · SVG',
     title: 'Indian Event Manager',
     description: 'Event timeline + seat-map shimmer. Live booking with 500+ guests and milestone coordination.',

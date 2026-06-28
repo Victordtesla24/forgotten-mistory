@@ -185,4 +185,4 @@ export default React.memo(function FloatingGlassPanel({ color, reduced }: Floati
       </Canvas>
     </div>
   );
-}
+});

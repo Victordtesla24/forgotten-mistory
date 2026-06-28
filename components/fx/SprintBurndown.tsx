@@ -206,4 +206,4 @@ export default React.memo(function SprintBurndown({ className = '', project }: {
       `}</style>
     </div>
   );
-}
+});

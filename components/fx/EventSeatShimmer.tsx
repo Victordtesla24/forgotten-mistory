@@ -428,4 +428,4 @@ export default React.memo(function EventSeatShimmer({
       `}</style>
     </div>
   );
-}
+})

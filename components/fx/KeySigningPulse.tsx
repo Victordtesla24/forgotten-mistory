@@ -371,4 +371,4 @@ export default React.memo(function KeySigningPulse({
       `}</style>
     </div>
   );
-}
+});

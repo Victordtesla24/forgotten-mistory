@@ -219,4 +219,4 @@ export default React.memo(function PanelDepthScene() {
       </Canvas>
     </div>
   );
-}
+});

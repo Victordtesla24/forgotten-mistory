@@ -122,7 +122,7 @@ const ROLLING_WINDOW = 60;
 function useRealTelemetry(enabled: boolean) {
   const [fps, setFps] = useState(60);
   const [frameTime, setFrameTime] = useState(16.7);
-  const [sparkline, setSparkline] = useState<number[]>(Array.from({ length: 24 }, () => 55 + Math.round(Math.random() * 10)));
+  const [sparkline, setSparkline] = useState<number[]>(() => Array.from({ length: 24 }, () => 55));
 
   useEffect(() => {
     if (!enabled) return;
@@ -285,4 +285,4 @@ export default React.memo(function TelemetryHud({ className }: { className?: str
       <TelemetryReadout fps={fps} frameTime={frameTime} frozen={frozen} />
     </div>
   );
-}
+});

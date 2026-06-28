@@ -80,4 +80,4 @@ export default React.memo(function HudFrame({
       {variant === 'panel' ? <span className="hud-frame__label">{label}</span> : null}
     </div>
   );
-}
+});

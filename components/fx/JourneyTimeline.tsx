@@ -122,4 +122,4 @@ export default React.memo(function JourneyTimeline({ className = '', project }: 
       `}</style>
     </div>
   );
-}
+});

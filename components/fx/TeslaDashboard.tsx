@@ -290,4 +290,4 @@ export default React.memo(function TeslaDashboard({ project }: { project?: strin
       </div>
     </div>
   );
-}
+});

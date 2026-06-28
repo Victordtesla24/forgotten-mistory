@@ -152,4 +152,4 @@ export default React.memo(function SparklineGL({ values }: { values: number[] })
       </Canvas>
     </div>
   );
-}
+});

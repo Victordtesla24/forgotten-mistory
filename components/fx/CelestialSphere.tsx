@@ -21,6 +21,7 @@ import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
 import { celestialOrbitFragment, celestialOrbitVertex } from './shaders/celestialOrbit.glsl';
 import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
+import { useWebGLTicketLazy } from '@/lib/webglContextGuard';
 
 // ── Résumé-sourced real data (R3 — NEVER random) ──
 // From siteContent.ts featuredRepos: the astro cluster consists of 3 repos
@@ -207,7 +208,21 @@ export default React.memo(function CelestialSphere({ className = '', project }: 
   const pageVisible = usePageVisible();
   const [webglError, setWebglError] = useState(false);
 
-  const frozen = prefersReducedMotion || !inView || !pageVisible || webglError;
+  // R2 WebGL context conflict fix: acquire a ticket before creating the Canvas.
+  // Only one VFX gallery R3F component renders at a time, preventing "Canvas has
+  // an existing context of a different type" from context exhaustion.
+  const { hasTicket, requestTicket } = useWebGLTicketLazy();
+
+  // Request a WebGL context ticket when the component would otherwise render its Canvas.
+  useEffect(() => {
+    if (!prefersReducedMotion && inView && pageVisible && !webglError && !hasTicket) {
+      requestTicket();
+    }
+  }, [prefersReducedMotion, inView, pageVisible, webglError, hasTicket, requestTicket]);
+
+  // Frozen = show poster when: reduced motion, not in view, page hidden, WebGL error,
+  // OR no context ticket available (WebGL context guard — R2 fix).
+  const frozen = prefersReducedMotion || !inView || !pageVisible || webglError || !hasTicket;
 
   const handleCanvasError = useCallback((err?: unknown) => {
     console.error('[CelestialSphere] WebGL error:', err);
@@ -300,4 +315,4 @@ export default React.memo(function CelestialSphere({ className = '', project }: 
       `}</style>
     </div>
   );
-}
+})

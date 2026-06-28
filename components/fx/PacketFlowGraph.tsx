@@ -20,6 +20,7 @@ import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
 import { packetFlowEdgeFragment, packetFlowVertex } from './shaders/packetFlowEdge.glsl';
 import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
+import { useWebGLTicketLazy } from '@/lib/webglContextGuard';
 
 // Résumé-sourced data (R3 — NEVER random)
 const P95_MS = 198;
@@ -235,7 +236,16 @@ export default React.memo(function PacketFlowGraph({ className = '', project }: 
   const pageVisible = usePageVisible();
   const [webglError, setWebglError] = useState(false);
 
-  const frozen = prefersReducedMotion || !inView || !pageVisible || webglError;
+  // R2 WebGL context conflict fix: acquire a ticket before creating the Canvas.
+  const { hasTicket, requestTicket } = useWebGLTicketLazy();
+
+  useEffect(() => {
+    if (!prefersReducedMotion && inView && pageVisible && !webglError && !hasTicket) {
+      requestTicket();
+    }
+  }, [prefersReducedMotion, inView, pageVisible, webglError, hasTicket, requestTicket]);
+
+  const frozen = prefersReducedMotion || !inView || !pageVisible || webglError || !hasTicket;
   const animateReadout = inView && pageVisible && !prefersReducedMotion;
 
   const p95 = useCountUp(P95_MS, 1200, animateReadout);
@@ -334,4 +344,4 @@ export default React.memo(function PacketFlowGraph({ className = '', project }: 
       `}</style>
     </div>
   );
-}
+});

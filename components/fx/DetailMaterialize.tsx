@@ -148,4 +148,4 @@ export default React.memo(function DetailMaterialize({ origin, color }: { origin
       </Canvas>
     </div>
   );
-}
+});

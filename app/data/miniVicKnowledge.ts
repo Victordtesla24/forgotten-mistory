@@ -493,7 +493,47 @@ export const knowledgeBase: KnowledgeEntry[] = [
     },
   },
 
-  // ── 20. Rates / salary ─────────────────────────────────────────────────
+  // ── 20. Services / engagements ──────────────────────────────────────────
+  {
+    id: 'services-engagements',
+    keywords: [
+      'services',
+      'what services',
+      'services do you offer',
+      'what do you offer',
+      'engagement model',
+      'engagement models',
+      'how do you engage',
+      'engage with clients',
+      'types of engagements',
+      'consulting services',
+      'advisory',
+      'consulting offer',
+      'what kind of work',
+      'client work',
+      'client engagement',
+      'delivery model',
+      'engagement types',
+      'contract',
+      'contracting',
+      'consulting',
+      'consultant',
+      'offer services',
+      'your services',
+    ],
+    answer:
+      "I work across three engagement models. Advisory: fractional delivery advisor or AI strategy consultant, helping organisations design LLM deployment roadmaps, evaluate vendor tools, or stand up MLOps practices — typically remote with periodic on-site. Embedded delivery lead: joining a program as Scrum Master / Project Manager or AI delivery lead, owning sprint cadence, PI planning, and cross-team coordination — currently what I do for the ATO. Build / hands-on architect: designing and building the system myself — automation harnesses, LLM eval stacks, real-time telemetry dashboards, or AI agents — scoped, priced, and delivered to a measurable outcome. The right model depends on what you're trying to ship. Email sarkar.vikram@gmail.com with a sketch of the need and I'll tell you which model fits.",
+    personaVariants: {
+      hiring:
+        "I offer three engagement models depending on what you need. Advisory: I help teams design their AI delivery roadmap, evaluate tools, or stand up MLOps — fractional, typically remote, highly flexible. Embedded delivery lead: I join your program as Scrum Master / Project Manager — what I'm doing right now at the ATO — owning sprint cadence, PI planning, and cross-squad dependency management. Build / hands-on: I architect and ship the system myself — automation, LLM evals, dashboards — scoped to a measurable outcome. For a permanent role, my experience spans 15+ years across government, banking, and AI consulting with a track record of delivering at scale.",
+      engineering:
+        "Three models, all evidence-led. Fractional advisory — AI/ML roadmap, vendor evaluation, MLOps setup; I typically run this remote with targeted on-site sessions. Embedded delivery — Scrum Master / PM role owning the full delivery cycle (current ATO engagement is this model). Hands-on build — I write the code (TypeScript/Python), architect the infrastructure (Kubernetes/Docker/Terraform), and ship a measured outcome (92% test-effort reduction is the kind of number I commit to). The model selection is about constraint fit: ask me at sarkar.vikram@gmail.com.",
+      story:
+        "When someone asks what I do, I point to three things. Sometimes I advise — helping a team see the AI roadmap clearly, picking tools, standing up the MLOps practice. Sometimes I embed — Scrum Master on a government program, owning the cadence, the PI planning, the messy cross-squad dependencies. And sometimes I build — seven days of REXX and PowerShell turning an impossible test deadline into a delivered outcome. The best engagements blend all three. If you know which one you need, email sarkar.vikram@gmail.com and we'll shape the engagement around the outcome.",
+    },
+  },
+
+  // ── 21. Rates / salary ─────────────────────────────────────────────────
   {
     id: 'rates-salary',
     keywords: [
