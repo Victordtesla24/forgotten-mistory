@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-06-28T03:26:08.994Z",
-  "result": "FAIL",
+  "timestamp": "2026-06-28T06:38:09.303Z",
+  "result": "PASS",
   "summary": {
     "total": 9,
-    "passed": 8,
-    "failed": 1
+    "passed": 9,
+    "failed": 0
   },
   "categories": {
     "tone": [
@@ -45,8 +45,8 @@
     ],
     "architecture": [
       {
-        "pass": false,
-        "detail": "3 leaked artifact(s): out/_next/static/chunks/app/performance-benchmark/page-50a5b9de43bda72c.js; out/performance-benchmark.html; out/performance-benchmark.txt"
+        "pass": true,
+        "detail": "absent from out/"
       }
     ],
     "completeness": [
@@ -102,8 +102,8 @@
     {
       "id": "TC-ARCH-BENCH",
       "name": "No /performance-benchmark route in static export",
-      "pass": false,
-      "detail": "3 leaked artifact(s): out/_next/static/chunks/app/performance-benchmark/page-50a5b9de43bda72c.js; out/performance-benchmark.html; out/performance-benchmark.txt"
+      "pass": true,
+      "detail": "absent from out/"
     },
     {
       "id": "TC-NFR-COMPLETE",
