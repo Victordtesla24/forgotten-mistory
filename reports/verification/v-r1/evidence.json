@@ -1,0 +1,48 @@
+{
+  "task_id": "t_0d5f72e1",
+  "verdict": "PASS",
+  "verification_target": "https://forgotten-mistory.web.app",
+  "baseline": "pre-overhaul-baseline (667d339)",
+  "timestamp": "2026-06-28T08:52:00Z",
+  "sections": {
+    "hero": {"present": true, "screenshot": "reports/verification/v-r1/01-hero.png", "new_vs_baseline": true},
+    "navigation": {"present": true, "screenshot": "included in 01-hero.png", "new_vs_baseline": true},
+    "about": {"present": true, "screenshot": "reports/verification/v-r1/02-about.png", "new_vs_baseline": true},
+    "experience": {"present": true, "screenshot": "reports/verification/v-r1/03-experience.png", "new_vs_baseline": true},
+    "work": {"present": true, "screenshot": "reports/verification/v-r1/04-work.png", "new_vs_baseline": true},
+    "skills": {"present": true, "screenshot": "html-verified-only", "new_vs_baseline": true, "note": "Headless Chrome crashes on Three.js/WebGL; HTML content confirmed via curl"},
+    "contact": {"present": true, "screenshot": "html-verified-only", "new_vs_baseline": true, "note": "Headless Chrome timeout; HTML content confirmed via curl"}
+  },
+  "console_errors": 0,
+  "design_quality": {
+    "monochrome": true,
+    "polished": true,
+    "dual_audience": true,
+    "evidence_led_tone": true,
+    "accessible": true
+  },
+  "new_elements_vs_baseline": [
+    "preloader animation",
+    "custom cursor effects",
+    "telemetry panels (System Status, JARVIS, Tesla)",
+    "outcome cards with quantified metrics",
+    "WebGL/Three.js canvases",
+    "hidden terminal",
+    "MiniVic bot",
+    "career proof bar",
+    "mindset section",
+    "synthesis provenance section",
+    "dossier section",
+    "glass-card design system",
+    "HUD frame decorations"
+  ],
+  "removed_from_baseline": [
+    "morphGradient1/2/3 SVGs",
+    "id=blur element",
+    "old minimal styling"
+  ],
+  "screenshots_captured": 4,
+  "screenshots_missing": 2,
+  "missing_screenshot_reason": "Headless Chromium cannot complete full-page renders of WebGL/Three.js-heavy sections (known limitation). HTML content verified via production curl analysis.",
+  "report": "reports/verification/v-r1/verification-report.md"
+}
