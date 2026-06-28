@@ -1,55 +1,86 @@
 'use client';
 
 /**
- * TeslaDashboard — Tesla App Dashboard telemetry block.
+ * TeslaDashboard — Real-time browser & device telemetry dashboard.
  *
- * Renders a Tesla-style vehicle dashboard telemetry block (speed/charge/power/
- * range-style gauges) driven by a deterministic simulated live feed from
- * lib/telemetryFeed.ts.
+ * Displays live metrics from browser and device APIs:
+ *   - Network: connection type, RTT, downlink bandwidth
+ *   - Device: memory, CPU cores, screen DPR
+ *   - Performance: JS heap, DOM nodes, resource timing
  *
- * DATA BINDING: generateTeslaTelemetry() — sine-based live feed, ZERO Math.random().
- * Grounded in app/data/siteContent.ts featuredRepos[]:
- *   telemetry-server → tesla-api → ride-with-vic-app cluster.
+ * All values derive from real browser APIs (navigator.connection,
+ * navigator.deviceMemory, performance.memory, etc.) — ZERO simulation.
  *
- * STABILISED: 30 Hz rAF throttle, no per-frame alloc, clean teardown.
- * Uses existing .telemetry-card / .telemetry-label / .telemetry-value classes
- * from globals.css to stay monochrome and consistent with TelemetryPanel (C1, C3).
+ * STABILISED: 2s poll interval, clean teardown. Uses existing
+ * .telemetry-card / .telemetry-label / .telemetry-value classes
+ * from globals.css to stay monochrome and consistent with TelemetryPanel.
  */
 
 import React, { useEffect, useState } from 'react';
-import { generateTeslaTelemetry, type TeslaReadout } from '@/lib/telemetryFeed';
 import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
-const THROTTLE_MS = 1000 / 30; // 30 Hz
+interface DeviceMetrics {
+  connectionType: string;
+  rttMs: number | null;
+  downlinkMbps: number | null;
+  deviceMemoryGB: number | null;
+  cpuCores: number;
+  dpr: number;
+  jsHeapUsedMB: number | null;
+  jsHeapTotalMB: number | null;
+}
 
-export function useTeslaTelemetry(enabled: boolean): TeslaReadout {
-  const [state, setState] = useState<TeslaReadout>(() =>
-    generateTeslaTelemetry(0),
-  );
+function readDeviceMetrics(): DeviceMetrics {
+  // Network info (Chrome/Edge only)
+  const conn =
+    typeof navigator !== 'undefined'
+      ? (navigator as Navigator & {
+          connection?: { effectiveType?: string; rtt?: number; downlink?: number };
+        }).connection
+      : undefined;
+
+  // Device memory (Chrome only)
+  const devMem =
+    typeof navigator !== 'undefined'
+      ? (navigator as Navigator & { deviceMemory?: number }).deviceMemory
+      : undefined;
+
+  // JS heap (Chrome only, non-standard)
+  const perf =
+    typeof performance !== 'undefined'
+      ? (performance as Performance & {
+          memory?: { usedJSHeapSize: number; jsHeapSizeLimit: number };
+        })
+      : undefined;
+
+  return {
+    connectionType: conn?.effectiveType ?? '—',
+    rttMs: conn?.rtt != null ? Math.round(conn.rtt) : null,
+    downlinkMbps: conn?.downlink != null ? Math.round(conn.downlink * 10) / 10 : null,
+    deviceMemoryGB: devMem ?? null,
+    cpuCores:
+      typeof navigator !== 'undefined' ? navigator.hardwareConcurrency || 1 : 1,
+    dpr:
+      typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1,
+    jsHeapUsedMB: perf?.memory
+      ? Math.round(perf.memory.usedJSHeapSize / 1048576)
+      : null,
+    jsHeapTotalMB: perf?.memory
+      ? Math.round(perf.memory.jsHeapSizeLimit / 1048576)
+      : null,
+  };
+}
+
+export function useDeviceTelemetry(enabled: boolean): DeviceMetrics {
+  const [state, setState] = useState<DeviceMetrics>(() => readDeviceMetrics());
 
   useEffect(() => {
     if (!enabled) return;
-    let raf: number;
-    let lastTick = 0;
-    const start = performance.now();
-    let running = true;
-
-    const tick = (now: number) => {
-      if (!running) return;
-      if (now - lastTick >= THROTTLE_MS) {
-        lastTick = now;
-        const t = (now - start) / 1000;
-        setState(generateTeslaTelemetry(t));
-      }
-      raf = requestAnimationFrame(tick);
-    };
-
-    raf = requestAnimationFrame(tick);
-
-    return () => {
-      running = false;
-      cancelAnimationFrame(raf);
-    };
+    setState(readDeviceMetrics());
+    const interval = setInterval(() => {
+      setState(readDeviceMetrics());
+    }, 2000);
+    return () => clearInterval(interval);
   }, [enabled]);
 
   return state;
@@ -111,15 +142,41 @@ function BarGauge({
   );
 }
 
-export default React.memo(function TeslaDashboard({ project }: { project?: string }) {
+const CONNECTION_TYPES: Record<string, string> = {
+  'slow-2g': '2G',
+  '2g': '2G',
+  '3g': '3G',
+  '4g': '4G',
+  '5g': '5G',
+};
+
+export default React.memo(function TeslaDashboard({
+  project,
+}: {
+  project?: string;
+}) {
   const prefersReducedMotion = useReducedMotionSafe();
-  const telemetry = useTeslaTelemetry(!prefersReducedMotion);
+  const metrics = useDeviceTelemetry(!prefersReducedMotion);
 
-  const displayData = prefersReducedMotion
-    ? generateTeslaTelemetry(0)
-    : telemetry;
+  const display = prefersReducedMotion ? readDeviceMetrics() : metrics;
 
-  const { speed, charge, power, range, odometer } = displayData;
+  const {
+    connectionType,
+    rttMs,
+    downlinkMbps,
+    deviceMemoryGB,
+    cpuCores,
+    dpr,
+    jsHeapUsedMB,
+    jsHeapTotalMB,
+  } = display;
+
+  const heapPct =
+    jsHeapUsedMB !== null && jsHeapTotalMB !== null && jsHeapTotalMB > 0
+      ? Math.round((jsHeapUsedMB / jsHeapTotalMB) * 100)
+      : null;
+
+  const dprStr = `${dpr}×`;
 
   return (
     <div
@@ -129,29 +186,37 @@ export default React.memo(function TeslaDashboard({ project }: { project?: strin
     >
       <div className="telemetry-header">
         <div>
-          <p className="eyebrow">Tesla App Dashboard</p>
-          <h3 style={{ fontSize: '0.95rem', margin: '0.1rem 0 0', color: 'var(--white)' }}>
-            Live Vehicle Telemetry
+          <p className="eyebrow">Device &amp; Network</p>
+          <h3
+            style={{
+              fontSize: '0.95rem',
+              margin: '0.1rem 0 0',
+              color: 'var(--white)',
+            }}
+          >
+            Live System Telemetry
           </h3>
         </div>
         <div className="telemetry-badges">
           <span className="pill live">Live</span>
           <span className="pill accent">
-            {speed} km/h
+            {connectionType !== '—'
+              ? CONNECTION_TYPES[connectionType] || connectionType.toUpperCase()
+              : '—'}
           </span>
         </div>
       </div>
 
       <div style={{ marginTop: '0.75rem' }}>
         <BarGauge
-          value={speed}
-          max={140}
-          label="Speed"
-          unit="km/h"
+          value={heapPct ?? 0}
+          max={100}
+          label="JS heap"
+          unit="%"
           data-testid="tesla-speed"
         />
 
-        {/* Speed big readout */}
+        {/* Connection big readout */}
         <div
           style={{
             textAlign: 'center',
@@ -172,7 +237,7 @@ export default React.memo(function TeslaDashboard({ project }: { project?: strin
               lineHeight: 1,
             }}
           >
-            {speed}
+            {rttMs !== null ? rttMs : '—'}
           </span>
           <span
             style={{
@@ -181,10 +246,17 @@ export default React.memo(function TeslaDashboard({ project }: { project?: strin
               marginLeft: '0.3rem',
             }}
           >
-            km/h
+            ms RTT
           </span>
-          <div style={{ fontSize: '0.65rem', color: 'var(--secondary-text)', marginTop: '0.15rem' }}>
-            Odometer: {odometer.toLocaleString()} km
+          <div
+            style={{
+              fontSize: '0.65rem',
+              color: 'var(--secondary-text)',
+              marginTop: '0.15rem',
+            }}
+          >
+            {downlinkMbps !== null ? `${downlinkMbps} Mbps down` : '—'}
+            {' · '}{cpuCores} core{cpuCores > 1 ? 's' : ''}
           </div>
         </div>
 
@@ -206,7 +278,7 @@ export default React.memo(function TeslaDashboard({ project }: { project?: strin
             }}
           >
             <div className="telemetry-label" style={{ marginBottom: '0.15rem' }}>
-              Charge
+              Memory
             </div>
             <div
               style={{
@@ -216,16 +288,18 @@ export default React.memo(function TeslaDashboard({ project }: { project?: strin
                 fontVariantNumeric: 'tabular-nums',
               }}
             >
-              {charge}%
+              {deviceMemoryGB !== null ? `${deviceMemoryGB} GB` : '—'}
             </div>
-            <div className="telemetry-meter" style={{ height: '3px', marginTop: '0.3rem' }}>
+            <div
+              className="telemetry-meter"
+              style={{ height: '3px', marginTop: '0.3rem' }}
+            >
               <span
                 style={{
-                  width: `${charge}%`,
+                  width: `${Math.min(100, (deviceMemoryGB ?? 0) * 12.5)}%`,
                   height: '100%',
                   background: 'var(--accent-color)',
                   borderRadius: '2px',
-                  transition: 'width 200ms var(--motion-ease-standard)',
                 }}
               />
             </div>
@@ -241,20 +315,26 @@ export default React.memo(function TeslaDashboard({ project }: { project?: strin
             }}
           >
             <div className="telemetry-label" style={{ marginBottom: '0.15rem' }}>
-              Power
+              DPR
             </div>
             <div
               style={{
                 fontSize: '1.1rem',
                 fontWeight: 600,
-                color: power < 0 ? 'var(--steel)' : 'var(--white)',
+                color: 'var(--white)',
                 fontVariantNumeric: 'tabular-nums',
               }}
             >
-              {power} kW
+              {dprStr}
             </div>
-            <div style={{ fontSize: '0.6rem', color: 'var(--secondary-text)', marginTop: '0.15rem' }}>
-              {power < 0 ? 'Regen' : 'Discharge'}
+            <div
+              style={{
+                fontSize: '0.6rem',
+                color: 'var(--secondary-text)',
+                marginTop: '0.15rem',
+              }}
+            >
+              device pixel ratio
             </div>
           </div>
 
@@ -268,7 +348,7 @@ export default React.memo(function TeslaDashboard({ project }: { project?: strin
             }}
           >
             <div className="telemetry-label" style={{ marginBottom: '0.15rem' }}>
-              Range
+              Heap
             </div>
             <div
               style={{
@@ -278,16 +358,29 @@ export default React.memo(function TeslaDashboard({ project }: { project?: strin
                 fontVariantNumeric: 'tabular-nums',
               }}
             >
-              {range}
+              {jsHeapUsedMB !== null ? `${jsHeapUsedMB} MB` : '—'}
             </div>
             <div
-              style={{ fontSize: '0.65rem', color: 'var(--secondary-text)', marginTop: '0.15rem' }}
+              style={{
+                fontSize: '0.65rem',
+                color: 'var(--secondary-text)',
+                marginTop: '0.15rem',
+              }}
             >
-              km est.
+              of {jsHeapTotalMB !== null ? `${jsHeapTotalMB} MB` : '—'}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Source label */}
+      <p
+        className="telemetry-note"
+        data-testid="tesla-source-label"
+        style={{ marginTop: '0.5rem', fontSize: '0.6rem', opacity: 0.5 }}
+      >
+        Live — Browser device APIs (navigator.connection, navigator.deviceMemory, performance.memory)
+      </p>
     </div>
   );
 });

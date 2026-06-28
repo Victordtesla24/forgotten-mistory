@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useReducedMotion } from 'framer-motion';
-import { ScrollTrigger } from '@/lib/gsap';
 import { PALETTE } from '@/lib/palette';
+import { useGithubStats } from '@/lib/githubTelemetry';
 
 const PanelDepthScene = dynamic(() => import('@/components/fx/PanelDepthScene'), {
   loading: () => <div className="r3f-loading-placeholder" />,
@@ -17,21 +17,9 @@ const SparklineGL = dynamic(() => import('@/components/fx/SparklineGL'), {
 import ErrorBoundary from '@/components/ErrorBoundary';
 import JarvisTelemetry from '@/components/fx/JarvisTelemetry';
 import TeslaDashboard from '@/components/fx/TeslaDashboard';
-const LOCATION_SETS: string[][] = [
-  ['Melbourne \u00b7 Edge POP', 'Sydney \u00b7 API Gateway', 'Adelaide \u00b7 Vector cache'],
-  ['Brisbane \u00b7 Edge POP', 'Perth \u00b7 Metric bus', 'Canberra \u00b7 Policy gate'],
-  ['Auckland \u00b7 Edge POP', 'Melbourne \u00b7 Inference core', 'Sydney \u00b7 Vector cache'],
-  ['Hobart \u00b7 Edge POP', 'Adelaide \u00b7 API Gateway', 'Darwin \u00b7 Heartbeat feed'],
-];
-
-const TICK_MS = 3200;
 const ROLLING_WINDOW = 60;
 const SPARK_W = 160;
 const SPARK_H = 40;
-
-function TelemetryValue({ value, format }: { value: number; format: (n: number) => string }) {
-  return <>{format(value)}</>;
-}
 
 function useRealTelemetry(enabled: boolean) {
   const [fps, setFps] = useState(60);
@@ -189,56 +177,25 @@ export default function TelemetryPanel() {
   const panelRef = useRef<HTMLDivElement>(null);
 
   const { fps, frameTime, sparkHistory } = useRealTelemetry(!prefersReducedMotion);
+  const githubStats = useGithubStats();
 
-  const [locationIndex, setLocationIndex] = useState(0);
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    const interval = window.setInterval(() => {
-      setLocationIndex((prev) => (prev + 1) % LOCATION_SETS.length);
-    }, TICK_MS);
-    return () => window.clearInterval(interval);
-  }, [prefersReducedMotion]);
-
-  const uLoadRef = useRef(0);
-  const [, redraw] = useState(0);
+  // Real browser memory usage (Chrome — non-standard but genuine browser API)
+  const [memoryUsedMB, setMemoryUsedMB] = useState<number | null>(null);
+  const [memoryTotalMB, setMemoryTotalMB] = useState<number | null>(null);
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      uLoadRef.current = 1;
-      return;
-    }
-    const section = document.getElementById('hero');
-    if (!section) return;
-
-    const st = ScrollTrigger.create({
-      trigger: section,
-      start: 'top 60%',
-      end: 'bottom 20%',
-      scrub: 0.5,
-      invalidateOnRefresh: true,
-      onUpdate: (self) => {
-        uLoadRef.current = self.progress;
-      },
-    });
-
-    let running = true;
-    let lastTick = 0;
-    const poll = (now: number) => {
-      if (!running) return;
-      if (now - lastTick >= 1000 / 30) {
-        lastTick = now;
-        redraw((n) => n + 1);
-      }
-      requestAnimationFrame(poll);
+    const perf = performance as Performance & {
+      memory?: { usedJSHeapSize: number; jsHeapSizeLimit: number };
     };
-    requestAnimationFrame(poll);
-
-    return () => {
-      running = false;
-      st.kill();
+    if (!perf.memory) return;
+    const poll = () => {
+      setMemoryUsedMB(Math.round(perf.memory!.usedJSHeapSize / 1048576));
+      setMemoryTotalMB(Math.round(perf.memory!.jsHeapSizeLimit / 1048576));
     };
-  }, [prefersReducedMotion]);
+    poll();
+    const interval = setInterval(poll, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   const [disclosurePhase, setDisclosurePhase] = useState(0);
 
@@ -275,8 +232,10 @@ export default function TelemetryPanel() {
 
   const displayFps = prefersReducedMotion ? 60 : fps;
   const displayFt = prefersReducedMotion ? 16.7 : frameTime;
-  const loadPct = Math.round(22 + uLoadRef.current * 63);
-  const locations = LOCATION_SETS[locationIndex];
+  const memoryPct =
+    memoryUsedMB !== null && memoryTotalMB !== null && memoryTotalMB > 0
+      ? Math.round((memoryUsedMB / memoryTotalMB) * 100)
+      : null;
 
   const glSparkValues = useMemo(
     () =>
@@ -304,9 +263,9 @@ export default function TelemetryPanel() {
           <h3>System Status</h3>
         </div>
         <div className="telemetry-badges">
-          <span className="pill soft">Demo data</span>
+          <span className="pill live">Live</span>
           <span className="pill accent">
-            {displayFps} FPS \u00b7 {displayFt.toFixed(1)} ms
+            {displayFps} FPS · {displayFt.toFixed(1)} ms
           </span>
         </div>
       </div>
@@ -330,35 +289,45 @@ export default function TelemetryPanel() {
                 </ErrorBoundary>
               )}
               <p className="telemetry-note">
-                Real browser rAF delta \u2014 rolling {ROLLING_WINDOW}-frame window
+                Real browser rAF delta — rolling {ROLLING_WINDOW}-frame window
               </p>
             </div>
           )}
           {disclosurePhase < 1 && (
             <div className="telemetry-spark-placeholder" aria-hidden="true">
-              <p className="telemetry-note">Linger to reveal real-time FPS sparkline\u2026</p>
+              <p className="telemetry-note">Linger to reveal real-time FPS sparkline…</p>
             </div>
           )}
         </div>
 
         <div className="telemetry-card">
-          <div className="telemetry-label">Active visitors by region</div>
-          <ul className="telemetry-list">
-            {locations.map((location) => (
-              <li key={location}>{location}</li>
-            ))}
-          </ul>
+          <div className="telemetry-label">GitHub public repos</div>
+          {githubStats.loading ? (
+            <p className="telemetry-note" style={{ marginTop: '0.5rem' }}>
+              Fetching live stats from GitHub API…
+            </p>
+          ) : githubStats.error ? (
+            <p className="telemetry-note" style={{ marginTop: '0.5rem' }}>
+              GitHub API unavailable — showing cached data
+            </p>
+          ) : (
+            <ul className="telemetry-list">
+              <li>{githubStats.repoCount} repos · {githubStats.totalStars} ★ · {githubStats.totalForks} forks</li>
+              <li>Top language: {githubStats.topLanguage}</li>
+              <li>{githubStats.totalOpenIssues} open issues across all repos</li>
+            </ul>
+          )}
           <p className="telemetry-note">
-            Simulated geo-feed rotates every few seconds.
+            Live — GitHub REST API (Victordtesla24, {githubStats.fromCache ? 'cached' : 'direct'})
           </p>
         </div>
 
         <div className="telemetry-card telemetry-dual">
           <div className="telemetry-dual-row">
             <div>
-              <div className="telemetry-label">Server load</div>
+              <div className="telemetry-label">JS heap usage</div>
               <div className="telemetry-value">
-                <TelemetryValue value={loadPct} format={(n) => `${Math.round(n)}%`} />
+                {memoryPct !== null ? `${memoryPct}%` : '—'}
               </div>
             </div>
             <div>
@@ -369,18 +338,21 @@ export default function TelemetryPanel() {
               </div>
             </div>
           </div>
-          <div className="telemetry-meter">
-            <span style={{ width: `${loadPct}%` }} />
-          </div>
+          {memoryPct !== null && (
+            <div className="telemetry-meter">
+              <span style={{ width: `${Math.min(memoryPct, 100)}%` }} />
+            </div>
+          )}
           <p className="telemetry-note">
-            Load scrubbed by scroll progress \u2014 simulates system under demand.
+            {memoryPct !== null
+              ? `Real browser performance.memory — ${memoryUsedMB} MB used of ${memoryTotalMB} MB heap limit`
+              : 'Browser JS heap memory (performance.memory — Chrome/Chromium only)'}
           </p>
         </div>
       </div>
 
-      {/* G2 — Project-bound telemetry: JARVIS Error-Management-System + Tesla App Dashboard.
-           Both use deterministic sine-based live feeds (ZERO Math.random()), rendered
-           alongside the browser perf-counter HUD in a composing layout (C3). */}
+      {/* Project-bound telemetry: JARVIS Error-Management-System + Tesla App Dashboard.
+           Both now use real data sources — GitHub REST API for JARVIS, browser device APIs for Tesla. */}
       <div className="telemetry-grid project-telemetry-grid">
         <JarvisTelemetry />
         <TeslaDashboard />

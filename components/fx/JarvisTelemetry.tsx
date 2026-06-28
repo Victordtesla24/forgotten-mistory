@@ -3,82 +3,47 @@
 /**
  * JarvisTelemetry — JARVIS Error-Management-System telemetry block.
  *
- * Renders a live event stream of detect→diagnose→repair cycles from the
- * Error-Management-System autonomous AI agent, with system-health readouts.
+ * Shows real GitHub repository statistics via the GitHub REST API
+ * (lib/githubTelemetry.ts), themed as the JARVIS autonomous agent dashboard.
+ * All values derive from live public data — ZERO simulation.
  *
- * DATA BINDING: generateJarvisTelemetry() from lib/telemetryFeed.ts
- *   — deterministic sine-based live feed, ZERO Math.random().
- *
- * STABILISED: 30 Hz rAF throttle, no per-frame alloc, clean teardown.
- * Uses existing .telemetry-card / .telemetry-label / .telemetry-value classes
- * from globals.css to stay monochrome and consistent with TelemetryPanel (C1, C3).
+ * STABILISED: uses useGithubStats() which caches in localStorage for 5 min
+ * and uses useSyncExternalStore for zero-rerender reads.
  */
 
-import React, { useEffect, useState } from 'react';
-import {
-  generateJarvisTelemetry,
-  TELEMETRY_SOURCE_LABEL,
-  type JarvisReadout,
-} from '@/lib/telemetryFeed';
+import React from 'react';
+import { useGithubStats, GITHUB_SOURCE_LABEL } from '@/lib/githubTelemetry';
 import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
-
-const THROTTLE_MS = 1000 / 30; // 30 Hz
-
-export function useJarvisTelemetry(enabled: boolean): JarvisReadout {
-  const [state, setState] = useState<JarvisReadout>(() =>
-    generateJarvisTelemetry(0),
-  );
-
-  useEffect(() => {
-    if (!enabled) return;
-    let raf: number;
-    let lastTick = 0;
-    const start = performance.now();
-    let running = true;
-
-    const tick = (now: number) => {
-      if (!running) return;
-      if (now - lastTick >= THROTTLE_MS) {
-        lastTick = now;
-        const t = (now - start) / 1000;
-        setState(generateJarvisTelemetry(t));
-      }
-      raf = requestAnimationFrame(tick);
-    };
-
-    raf = requestAnimationFrame(tick);
-
-    return () => {
-      running = false;
-      cancelAnimationFrame(raf);
-    };
-  }, [enabled]);
-
-  return state;
-}
-
-const PHASE_ICONS: Record<string, string> = {
-  detect: '\u25C9',   // ◉
-  diagnose: '\u25CE', // ◎
-  repair: '\u25C8',   // ◈
-};
 
 export default React.memo(function JarvisTelemetry() {
   const prefersReducedMotion = useReducedMotionSafe();
-  const telemetry = useJarvisTelemetry(!prefersReducedMotion);
+  const stats = useGithubStats();
 
-  const displayData = prefersReducedMotion
-    ? generateJarvisTelemetry(0)
-    : telemetry;
+  const display = stats.loading
+    ? null
+    : {
+        repoCount: stats.repoCount,
+        totalStars: stats.totalStars,
+        totalOpenIssues: stats.totalOpenIssues,
+        topLanguage: stats.topLanguage,
+        lastPushIso: stats.lastPushIso,
+      };
 
-  const {
-    events,
-    systemHealth,
-    activeAgents,
-    errorsDetected,
-    errorsRepaired,
-    avgRepairTimeMs,
-  } = displayData;
+  // Derive JARVIS-style metrics from real data
+  const openIssues = stats.totalOpenIssues;
+  const repoCount = stats.repoCount;
+  const starCount = stats.totalStars;
+
+  // Error-Management-System repo stats (if available)
+  const emsRepo = stats.repos?.find((r) => r.name === 'Error-Management-System');
+  const emsIssues = emsRepo?.openIssues ?? null;
+  const emsStars = emsRepo?.stars ?? null;
+
+  // Recent repos with open issues (real "error" indicators)
+  const reposWithIssues = stats.repos
+    ?.filter((r) => r.openIssues > 0)
+    .sort((a, b) => b.openIssues - a.openIssues)
+    .slice(0, 5) ?? [];
 
   return (
     <div
@@ -95,7 +60,7 @@ export default React.memo(function JarvisTelemetry() {
         <div className="telemetry-badges">
           <span className="pill live">Live</span>
           <span className="pill accent">
-            Health {systemHealth}%
+            {stats.loading ? '…' : `${repoCount} repos`}
           </span>
         </div>
       </div>
@@ -109,41 +74,63 @@ export default React.memo(function JarvisTelemetry() {
         }}
       >
         <div>
-          <div className="telemetry-label">Active Agents</div>
+          <div className="telemetry-label">Public Repos</div>
           <div className="telemetry-value" style={{ fontSize: '1.1rem' }}>
-            {activeAgents}
+            {stats.loading ? '—' : repoCount}
           </div>
         </div>
         <div>
-          <div className="telemetry-label">System Health</div>
+          <div className="telemetry-label">Total Stars</div>
           <div className="telemetry-value" style={{ fontSize: '1.1rem' }}>
-            {systemHealth}%
+            {stats.loading ? '—' : starCount}
           </div>
         </div>
         <div>
-          <div className="telemetry-label">Errors Detected</div>
+          <div className="telemetry-label">Open Issues</div>
           <div className="telemetry-value" style={{ fontSize: '1.1rem' }}>
-            {errorsDetected}
+            {stats.loading ? '—' : openIssues}
           </div>
         </div>
         <div>
-          <div className="telemetry-label">Repairs Completed</div>
+          <div className="telemetry-label">Top Language</div>
           <div className="telemetry-value" style={{ fontSize: '1.1rem' }}>
-            {errorsRepaired}
+            {stats.loading ? '—' : stats.topLanguage}
           </div>
         </div>
+        {emsIssues !== null && (
+          <div>
+            <div className="telemetry-label">EMS Open Issues</div>
+            <div className="telemetry-value" style={{ fontSize: '1.1rem' }}>
+              {emsIssues}
+            </div>
+          </div>
+        )}
+        {emsStars !== null && (
+          <div>
+            <div className="telemetry-label">EMS Stars</div>
+            <div className="telemetry-value" style={{ fontSize: '1.1rem' }}>
+              {emsStars}
+            </div>
+          </div>
+        )}
         <div style={{ gridColumn: '1 / -1' }}>
-          <div className="telemetry-label">Avg Repair Time</div>
+          <div className="telemetry-label">Last Push</div>
           <div className="telemetry-value" style={{ fontSize: '1.1rem' }}>
-            {avgRepairTimeMs}{' '}
-            <span className="telemetry-unit" style={{ fontSize: '0.7rem' }}>ms</span>
+            {stats.loading
+              ? '—'
+              : stats.lastPushIso
+                ? new Date(stats.lastPushIso).toLocaleDateString('en-AU', {
+                    day: 'numeric',
+                    month: 'short',
+                  })
+                : '—'}
           </div>
         </div>
       </div>
 
-      {/* Event stream — detect → diagnose → repair cycles */}
+      {/* Live repo activity stream — repos with open issues = active "error" surface */}
       <div style={{ marginTop: '0.75rem' }}>
-        <div className="telemetry-label">Live Event Stream</div>
+        <div className="telemetry-label">Active Repo Surface (open issues)</div>
         <div
           style={{
             maxHeight: '120px',
@@ -155,33 +142,41 @@ export default React.memo(function JarvisTelemetry() {
             marginTop: '0.25rem',
           }}
         >
-          {events.slice().reverse().map((evt) => (
-            <div key={evt.id} style={{ marginBottom: '2px' }}>
-              <span style={{ color: 'var(--steel)', marginRight: '0.35rem' }}>
-                {PHASE_ICONS[evt.phase] || '\u25CB'}
-              </span>
-              <span
-                style={{
-                  color: evt.phase === 'repair' ? 'var(--accent-color)' : 'var(--secondary-text)',
-                  fontWeight: evt.phase === 'repair' ? 600 : 400,
-                }}
-              >
-                [{evt.phase.toUpperCase()}]
-              </span>{' '}
-              <span>{evt.project}</span>{' '}
-              <span style={{ opacity: 0.5 }}>— {evt.description}</span>
-            </div>
-          ))}
+          {stats.loading ? (
+            <div>Fetching live data…</div>
+          ) : reposWithIssues.length === 0 ? (
+            <div style={{ opacity: 0.5 }}>All repos clean — zero open issues</div>
+          ) : (
+            reposWithIssues.map((repo) => (
+              <div key={repo.name} style={{ marginBottom: '2px' }}>
+                <span style={{ color: 'var(--steel)', marginRight: '0.35rem' }}>
+                  ◉
+                </span>
+                <span
+                  style={{
+                    color: repo.openIssues > 2 ? 'var(--accent-color)' : 'var(--secondary-text)',
+                    fontWeight: repo.openIssues > 2 ? 600 : 400,
+                  }}
+                >
+                  [{repo.openIssues}]
+                </span>{' '}
+                <span>{repo.name}</span>{' '}
+                <span style={{ opacity: 0.5 }}>
+                  — {repo.language ?? '—'} · {repo.stars} ★
+                </span>
+              </div>
+            ))
+          )}
         </div>
       </div>
 
-      {/* Source label — always visible to prove it's not random noise */}
+      {/* Source label — always visible */}
       <p
         className="telemetry-note"
         data-testid="telemetry-source-label"
         style={{ marginTop: '0.5rem', fontSize: '0.6rem', opacity: 0.5 }}
       >
-        {TELEMETRY_SOURCE_LABEL}
+        {GITHUB_SOURCE_LABEL}
       </p>
     </div>
   );
