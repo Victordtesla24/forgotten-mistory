@@ -1,0 +1,33 @@
+
+  CI/CD PIPELINE ROBUSTNESS — R6 validation
+  ------------------------------------------------------------
+  [PASS] SYNTAX               expression braces balanced
+  [PASS] JOB-quality          job "quality" present
+  [PASS] JOB-lint             job "lint" present
+  [PASS] JOB-test             job "test" present
+  [PASS] JOB-test-gpu         job "test-gpu" present
+  [PASS] JOB-visual-diff      job "visual-diff" present
+  [PASS] JOB-lighthouse       job "lighthouse" present
+  [PASS] JOB-axe              job "axe" present
+  [PASS] JOB-build            job "build" present
+  [PASS] JOB-preview          job "preview" present
+  [PASS] JOB-deploy           job "deploy" present
+  [PASS] JOB-verify           job "verify" present
+  [PASS] INV-NO-GPU-GATE      build.needs excludes test/test-gpu (deploy never blocks on GPU runner)
+  [PASS] INV-DEPLOY-MAIN-ONLY deploy gated to main push only
+  [PASS] R6-VERIFY-NEEDS-DEPLOY verify runs after deploy (needs: [deploy])
+  [PASS] R6-VERIFY-MAIN-ONLY  verify gated to main push only
+  [PASS] R6-VERIFY-HTTP200    verify curls production URL and asserts HTTP 200
+  [PASS] R6-VERIFY-NO-SECRETS verify references no secrets (public prod URL)
+  [PASS] R6-CACHE             11 Playwright cache step(s) (expected >= 2: test + axe)
+  [PASS] R6-PREVIEW           preview job with per-PR channel present
+  [PASS] R6-VISUAL-REG        visual-regression baselines artifact present
+  [PASS] R6-HTML-REPORT       Playwright HTML report artifact present
+  [PASS] R6-TSC-FASTFAIL      tsc fast-fail mirrored in lint job
+  [PASS] INV-TEST-COE         test has continue-on-error
+  [PASS] INV-TEST-GPU-COE     test-gpu has continue-on-error
+  [PASS] INV-GEMINI-KEY       GEMINI_API_KEY present (fail-loud invariant)
+  [PASS] R6-TIMEOUT           all 12 jobs have timeout-minutes
+  ------------------------------------------------------------
+  RESULT: ALL PASS (27/27)
+
