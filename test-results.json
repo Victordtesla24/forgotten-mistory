@@ -1,0 +1,4313 @@
+{
+  "config": {
+    "configFile": "/Users/vic/claude/forgotten-mistory/playwright.config.ts",
+    "rootDir": "/Users/vic/claude/forgotten-mistory/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "open": "never",
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/vic/claude/forgotten-mistory/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/vic/claude/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "a11y/accessibility.spec.ts",
+      "file": "a11y/accessibility.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "A11y: axe-core Accessibility Audit",
+          "file": "a11y/accessibility.spec.ts",
+          "line": 35,
+          "column": 6,
+          "specs": [
+            {
+              "title": "A11Y-01: Full page passes axe check (wcag2a + wcag2aa + wcag21a + wcag21aa)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0163b5c2b134f8786694-4a061944d3c610ccb8ba",
+              "file": "a11y/accessibility.spec.ts",
+              "line": 38,
+              "column": 7
+            },
+            {
+              "title": "A11Y-02: Hero section passes axe check",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0163b5c2b134f8786694-fec38f04d1d81c59f5ba",
+              "file": "a11y/accessibility.spec.ts",
+              "line": 49,
+              "column": 7
+            },
+            {
+              "title": "A11Y-03: About section passes axe check",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0163b5c2b134f8786694-da722f660d93cc741994",
+              "file": "a11y/accessibility.spec.ts",
+              "line": 58,
+              "column": 7
+            },
+            {
+              "title": "A11Y-04: Experience section passes axe check",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0163b5c2b134f8786694-7bbfad1da1759ef8cf34",
+              "file": "a11y/accessibility.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "A11Y-05: Skills section passes axe check",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0163b5c2b134f8786694-ed7387402bd92b191b0a",
+              "file": "a11y/accessibility.spec.ts",
+              "line": 78,
+              "column": 7
+            },
+            {
+              "title": "A11Y-06: Contact section passes axe check",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0163b5c2b134f8786694-b513d1347e472da16a13",
+              "file": "a11y/accessibility.spec.ts",
+              "line": 88,
+              "column": 7
+            },
+            {
+              "title": "A11Y-07: Footer passes axe check",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0163b5c2b134f8786694-d08767a36a70df2bc212",
+              "file": "a11y/accessibility.spec.ts",
+              "line": 98,
+              "column": 7
+            },
+            {
+              "title": "A11Y-08: Navigation overlay (open state) passes axe check",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0163b5c2b134f8786694-6b13a92306f5e4bbeb13",
+              "file": "a11y/accessibility.spec.ts",
+              "line": 108,
+              "column": 7
+            },
+            {
+              "title": "A11Y-09: Keyboard navigation — Tab through key interactive elements",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0163b5c2b134f8786694-9d8600369b70c324bfef",
+              "file": "a11y/accessibility.spec.ts",
+              "line": 119,
+              "column": 7
+            },
+            {
+              "title": "A11Y-10: Keyboard Escape closes nav overlay",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0163b5c2b134f8786694-4d3b7097f663f136c1e0",
+              "file": "a11y/accessibility.spec.ts",
+              "line": 134,
+              "column": 7
+            },
+            {
+              "title": "A11Y-11: ARIA labels present on navigation landmark",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0163b5c2b134f8786694-1661c503138fa87dc388",
+              "file": "a11y/accessibility.spec.ts",
+              "line": 147,
+              "column": 7
+            },
+            {
+              "title": "A11Y-12: Footer has contentinfo role",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0163b5c2b134f8786694-3c02e2decad44bff4db7",
+              "file": "a11y/accessibility.spec.ts",
+              "line": 154,
+              "column": 7
+            },
+            {
+              "title": "A11Y-13: Images have alt text, links have discernible text",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "0163b5c2b134f8786694-8c2145d3064dcf7d37d8",
+              "file": "a11y/accessibility.spec.ts",
+              "line": 160,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "content/content-check.spec.ts",
+      "file": "content/content-check.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Content Preservation",
+          "file": "content/content-check.spec.ts",
+          "line": 17,
+          "column": 6,
+          "specs": [
+            {
+              "title": "CT-01: Hero greeting from siteContent appears verbatim",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-81e599a97cb5507862f2",
+              "file": "content/content-check.spec.ts",
+              "line": 22,
+              "column": 7
+            },
+            {
+              "title": "CT-02: Hero name from siteContent appears verbatim",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-464216df0acffed59807",
+              "file": "content/content-check.spec.ts",
+              "line": 27,
+              "column": 7
+            },
+            {
+              "title": "CT-03: Hero subtitle contains \"technical delivery leader\" and \"AI solutions architect\"",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-c0d2f8043ac4f9e4af77",
+              "file": "content/content-check.spec.ts",
+              "line": 32,
+              "column": 7
+            },
+            {
+              "title": "CT-04: Hero subtitle contains \"ancient algorithms\" and \"Vedic astronomy\"",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-2812045df1ae2cb54ce6",
+              "file": "content/content-check.spec.ts",
+              "line": 38,
+              "column": 7
+            },
+            {
+              "title": "CT-05: About paragraphs from siteContent appear verbatim",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-737c7f7f5929c5b704c0",
+              "file": "content/content-check.spec.ts",
+              "line": 44,
+              "column": 7
+            },
+            {
+              "title": "CT-06: All 4 project cards from siteContent appear in HTML",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-c0dc9c391d3c7d163bf0",
+              "file": "content/content-check.spec.ts",
+              "line": 51,
+              "column": 7
+            },
+            {
+              "title": "CT-07: Featured repos from siteContent appear in HTML",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-42638cd3d3b2dd8d420c",
+              "file": "content/content-check.spec.ts",
+              "line": 60,
+              "column": 7
+            },
+            {
+              "title": "CT-08: Skill groups from siteContent appear verbatim",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-b8a7d91577844e51a5db",
+              "file": "content/content-check.spec.ts",
+              "line": 67,
+              "column": 7
+            },
+            {
+              "title": "CT-09: Contact info from siteContent appears verbatim",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-4ce2cb41effd030ed5b4",
+              "file": "content/content-check.spec.ts",
+              "line": 88,
+              "column": 7
+            },
+            {
+              "title": "CT-10: Proof points from siteContent appear in HTML",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-70fda63cb1e16a32a664",
+              "file": "content/content-check.spec.ts",
+              "line": 96,
+              "column": 7
+            },
+            {
+              "title": "CT-11: Social links from siteContent appear",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-87db0e8f68619c65a904",
+              "file": "content/content-check.spec.ts",
+              "line": 106,
+              "column": 7
+            },
+            {
+              "title": "CT-12: Outcome cards from resumeContent render with correct values",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-840b11f332fbfd875bb1",
+              "file": "content/content-check.spec.ts",
+              "line": 117,
+              "column": 7
+            },
+            {
+              "title": "CT-13: Outcome card details from resumeContent appear on hover/click",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-e9913172534cb3cb5fd3",
+              "file": "content/content-check.spec.ts",
+              "line": 128,
+              "column": 7
+            },
+            {
+              "title": "CT-14: MiniVicBot knowledge base facts are present (via component render check)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "56e3ef9a5d97cc1ecab3-7a6ff21811d5a10f8d5c",
+              "file": "content/content-check.spec.ts",
+              "line": 144,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e/about.spec.ts",
+      "file": "e2e/about.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "E2E: About Section",
+          "file": "e2e/about.spec.ts",
+          "line": 17,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-ABOUT-01: About section renders with ID and title",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9307a7da2bd0cbc06964-a1a672f64d706c3799cb",
+              "file": "e2e/about.spec.ts",
+              "line": 20,
+              "column": 7
+            },
+            {
+              "title": "TC-ABOUT-02: About paragraphs match siteContent about text",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9307a7da2bd0cbc06964-1a74c82716a32bb4de3b",
+              "file": "e2e/about.spec.ts",
+              "line": 27,
+              "column": 7
+            },
+            {
+              "title": "TC-ABOUT-03: Expandable cards (snap-cards) render in about section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9307a7da2bd0cbc06964-ef2842c6811f0d5402bd",
+              "file": "e2e/about.spec.ts",
+              "line": 38,
+              "column": 7
+            },
+            {
+              "title": "TC-ABOUT-04: Snap cards expand on click and show content",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9307a7da2bd0cbc06964-cd2081188622e8ead4de",
+              "file": "e2e/about.spec.ts",
+              "line": 45,
+              "column": 7
+            },
+            {
+              "title": "TC-ABOUT-05: Career Objective card has correct content",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9307a7da2bd0cbc06964-a363e6cb1d57b2c9859c",
+              "file": "e2e/about.spec.ts",
+              "line": 59,
+              "column": 7
+            },
+            {
+              "title": "TC-ABOUT-06: Delivery Impact card has measurable outcome content",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9307a7da2bd0cbc06964-10bf3d614f1c708d7b29",
+              "file": "e2e/about.spec.ts",
+              "line": 66,
+              "column": 7
+            },
+            {
+              "title": "TC-ABOUT-07: Leadership & Governance card renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9307a7da2bd0cbc06964-42d0a173cc8e1c92d8aa",
+              "file": "e2e/about.spec.ts",
+              "line": 74,
+              "column": 7
+            },
+            {
+              "title": "TC-ABOUT-08: Recent Builds card renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9307a7da2bd0cbc06964-b353f5e4469833119f26",
+              "file": "e2e/about.spec.ts",
+              "line": 80,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e/chatbot.spec.ts",
+      "file": "e2e/chatbot.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "E2E: MiniVicBot Chatbot",
+          "file": "e2e/chatbot.spec.ts",
+          "line": 16,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-BOT-01: MiniVicBot component is attached to the page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "427ede151af7962ce250-e34f9ebc81d69d7d1650",
+              "file": "e2e/chatbot.spec.ts",
+              "line": 19,
+              "column": 7
+            },
+            {
+              "title": "TC-BOT-02: Chat toggle button is discoverable",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "427ede151af7962ce250-0909cfc2218085e60c33",
+              "file": "e2e/chatbot.spec.ts",
+              "line": 28,
+              "column": 7
+            },
+            {
+              "title": "TC-BOT-03: Chat window can be opened (if button found)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "427ede151af7962ce250-935a7ff5798298086b2f",
+              "file": "e2e/chatbot.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "TC-BOT-04: Quick prompts are available (if chat window is open)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "427ede151af7962ce250-bf3ddc01bc473ac1f14e",
+              "file": "e2e/chatbot.spec.ts",
+              "line": 60,
+              "column": 7
+            },
+            {
+              "title": "TC-BOT-05: MiniVicBot does not throw console errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "427ede151af7962ce250-af309480a21aed07e733",
+              "file": "e2e/chatbot.spec.ts",
+              "line": 70,
+              "column": 7
+            },
+            {
+              "title": "TC-FR-VOICE: Cloned voice greeting hash is exposed and valid",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "427ede151af7962ce250-e2a42720211429505f7a",
+              "file": "e2e/chatbot.spec.ts",
+              "line": 81,
+              "column": 7
+            },
+            {
+              "title": "TC-FR-VOICE-02: Voice controls (play/pause/mute) render when MiniVicBot is open",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "427ede151af7962ce250-c4172b7e4226175e3ccd",
+              "file": "e2e/chatbot.spec.ts",
+              "line": 112,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e/clone-voice.spec.ts",
+      "file": "e2e/clone-voice.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "TC-FR-CLONE: Avatar lifecycle",
+          "file": "e2e/clone-voice.spec.ts",
+          "line": 34,
+          "column": 6,
+          "specs": [
+            {
+              "title": "avatar container has zero CLS — reserved dimensions present on load",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-5f74eddf23b1ce0ec9f7",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 37,
+              "column": 7
+            },
+            {
+              "title": "avatar still->MP4 crossfade triggers correctly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-8c6b39d93137cb656fdb",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 71,
+              "column": 7
+            },
+            {
+              "title": "avatar speaking pulse ring is present and hidden by default",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-6de6afbb7dbe8dc60347",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 87,
+              "column": 7
+            },
+            {
+              "title": "avatar container marks speaking state on data attribute",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-cd98d4c2715875e686e5",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 100,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "TC-FR-VOICE: Voiceover system",
+          "file": "e2e/clone-voice.spec.ts",
+          "line": 112,
+          "column": 6,
+          "specs": [
+            {
+              "title": "voiceover controller exposes window hook for test access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-79bf5ac2580113267a76",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 115,
+              "column": 7
+            },
+            {
+              "title": "voiceover controller starts muted and initialises on user gesture",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-aa64bb984aa45f44edcc",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 125,
+              "column": 7
+            },
+            {
+              "title": "voiceover controller respects mute toggle",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-6bd6538fe764ca00cba2",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 141,
+              "column": 7
+            },
+            {
+              "title": "voiceover controller queues fired sections for dedup",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-f06d727bd3e372ebf3c1",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 181,
+              "column": 7
+            },
+            {
+              "title": "voiceover controller ambient bed starts and stops",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-4eae4807816c4239a7ed",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 207,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "TC-FR-VOICE-DYN: Dynamic voiceover cues",
+          "file": "e2e/clone-voice.spec.ts",
+          "line": 249,
+          "column": 6,
+          "specs": [
+            {
+              "title": "GSAP ScrollTrigger dispatch events are wired for section cues",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-5ec0a496d4e8f9ff93f4",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 252,
+              "column": 7
+            },
+            {
+              "title": "voiceover cue log records triggered sections",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-65581e962b7820e90107",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 280,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "TC-INT-CLONE: Bridge lifecycle",
+          "file": "e2e/clone-voice.spec.ts",
+          "line": 310,
+          "column": 6,
+          "specs": [
+            {
+              "title": "DidElevenLabsBridge can be instantiated",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-fed9435cbf5a4800e325",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 311,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "TC-FR-CLONE-LIVE: Live pipeline path",
+          "file": "e2e/clone-voice.spec.ts",
+          "line": 334,
+          "column": 6,
+          "specs": [
+            {
+              "title": "avatar stats endpoint is available (mock path)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-4666e2b6feeb4355098c",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 335,
+              "column": 7
+            },
+            {
+              "title": "viseme smoother endpoint validates input",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-559429c05d3bca2a431c",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 347,
+              "column": 7
+            },
+            {
+              "title": "viseme smoother accepts valid events",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f99de9f6b98ba8f39a65-3db374cce1ad508b5805",
+              "file": "e2e/clone-voice.spec.ts",
+              "line": 358,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e/contact.spec.ts",
+      "file": "e2e/contact.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "E2E: Contact Section",
+          "file": "e2e/contact.spec.ts",
+          "line": 17,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CONTACT-01: Contact section renders with ID and headline",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7e113a30b0fcf0eb3b38-8969dc3aaf3085ef816b",
+              "file": "e2e/contact.spec.ts",
+              "line": 20,
+              "column": 7
+            },
+            {
+              "title": "TC-CONTACT-02: Book a conversation CTA is visible",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7e113a30b0fcf0eb3b38-2cc83ed4dbad28369b02",
+              "file": "e2e/contact.spec.ts",
+              "line": 28,
+              "column": 7
+            },
+            {
+              "title": "TC-CONTACT-03: Download CV link is visible",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7e113a30b0fcf0eb3b38-c1f5d58dda98eb7a7c55",
+              "file": "e2e/contact.spec.ts",
+              "line": 34,
+              "column": 7
+            },
+            {
+              "title": "TC-CONTACT-04: Email card renders with correct address",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7e113a30b0fcf0eb3b38-e3cb70c2063c9c8d279c",
+              "file": "e2e/contact.spec.ts",
+              "line": 40,
+              "column": 7
+            },
+            {
+              "title": "TC-CONTACT-05: Phone card renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7e113a30b0fcf0eb3b38-50b9969629f270d6d1b2",
+              "file": "e2e/contact.spec.ts",
+              "line": 46,
+              "column": 7
+            },
+            {
+              "title": "TC-CONTACT-06: Email link uses mailto protocol",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7e113a30b0fcf0eb3b38-b16914eb895b90d48b8e",
+              "file": "e2e/contact.spec.ts",
+              "line": 52,
+              "column": 7
+            },
+            {
+              "title": "TC-CONTACT-07: Social links render — GitHub and YouTube",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7e113a30b0fcf0eb3b38-f063d10c84c882149caa",
+              "file": "e2e/contact.spec.ts",
+              "line": 60,
+              "column": 7
+            },
+            {
+              "title": "TC-CONTACT-08: Contact card icons render (Mail and Phone)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7e113a30b0fcf0eb3b38-1a089cff637f465e9f00",
+              "file": "e2e/contact.spec.ts",
+              "line": 67,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e/experience.spec.ts",
+      "file": "e2e/experience.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "E2E: Experience Section",
+          "file": "e2e/experience.spec.ts",
+          "line": 17,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-EXP-01: Experience section renders with ID and title",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b64559fc4465ec32f46c-d1025c0d6d28eec36809",
+              "file": "e2e/experience.spec.ts",
+              "line": 20,
+              "column": 7
+            },
+            {
+              "title": "TC-EXP-02: All 8 experience roles are listed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b64559fc4465ec32f46c-f6e9714de41bb8928de7",
+              "file": "e2e/experience.spec.ts",
+              "line": 27,
+              "column": 7
+            },
+            {
+              "title": "TC-EXP-03: Experience accordion items are expandable",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b64559fc4465ec32f46c-2a9bf075ea7c0eb4ec62",
+              "file": "e2e/experience.spec.ts",
+              "line": 46,
+              "column": 7
+            },
+            {
+              "title": "TC-EXP-04: Experience dates are displayed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b64559fc4465ec32f46c-967eab7c1839de950eee",
+              "file": "e2e/experience.spec.ts",
+              "line": 58,
+              "column": 7
+            },
+            {
+              "title": "TC-EXP-05: ScrollRail label anchors to experience",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b64559fc4465ec32f46c-d4a6eaf9bf9ea6321142",
+              "file": "e2e/experience.spec.ts",
+              "line": 64,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e/footer.spec.ts",
+      "file": "e2e/footer.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "E2E: Footer",
+          "file": "e2e/footer.spec.ts",
+          "line": 17,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-FOOTER-01: Footer element renders with contentinfo role",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b55e9ea52e1db0d257b6-3451ec4c1560341b4d59",
+              "file": "e2e/footer.spec.ts",
+              "line": 20,
+              "column": 7
+            },
+            {
+              "title": "TC-FOOTER-02: Copyright text renders with current year",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b55e9ea52e1db0d257b6-dbbfbb9fd1c671d9fc13",
+              "file": "e2e/footer.spec.ts",
+              "line": 26,
+              "column": 7
+            },
+            {
+              "title": "TC-FOOTER-03: HiddenTerminal component renders in footer",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b55e9ea52e1db0d257b6-7d93549cfd83c4a6c6cb",
+              "file": "e2e/footer.spec.ts",
+              "line": 34,
+              "column": 7
+            },
+            {
+              "title": "TC-FOOTER-04: Footer is positioned at the bottom of the page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "b55e9ea52e1db0d257b6-3db893c5c6839ac47538",
+              "file": "e2e/footer.spec.ts",
+              "line": 43,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e/hero.spec.ts",
+      "file": "e2e/hero.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "E2E: Hero Section",
+          "file": "e2e/hero.spec.ts",
+          "line": 19,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-HERO-01: Hero section renders with greeting and name",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "abeae7f390145cc6be47-6b7a55622d90ba6acc5d",
+              "file": "e2e/hero.spec.ts",
+              "line": 22,
+              "column": 7
+            },
+            {
+              "title": "TC-HERO-02: Hero subtitle paragraphs render",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "abeae7f390145cc6be47-3cef1af8fd6b5b5b6e88",
+              "file": "e2e/hero.spec.ts",
+              "line": 30,
+              "column": 7
+            },
+            {
+              "title": "TC-HERO-03: Dual-pillar CTAs render",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "abeae7f390145cc6be47-ff200bd1715c87e901bb",
+              "file": "e2e/hero.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "TC-HERO-04: Hero link bar renders with GitHub, YouTube, Resume, Contact",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "abeae7f390145cc6be47-1300af1bb3edd02cf7fe",
+              "file": "e2e/hero.spec.ts",
+              "line": 47,
+              "column": 7
+            },
+            {
+              "title": "TC-HERO-05: TelemetryPanel renders in hero",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "abeae7f390145cc6be47-be3432ea8f5d9358340c",
+              "file": "e2e/hero.spec.ts",
+              "line": 57,
+              "column": 7
+            },
+            {
+              "title": "TC-HERO-06: Outcome cards (meta cards) render with resumeContent data",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "abeae7f390145cc6be47-84aad40d5b7299a4a1ec",
+              "file": "e2e/hero.spec.ts",
+              "line": 64,
+              "column": 7
+            },
+            {
+              "title": "TC-HERO-07: HeroAvatar renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "abeae7f390145cc6be47-e6d93519b18222eedd1e",
+              "file": "e2e/hero.spec.ts",
+              "line": 74,
+              "column": 7
+            },
+            {
+              "title": "TC-HERO-08: SpaceScene background renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "abeae7f390145cc6be47-3e7d4191778ccbd6c86c",
+              "file": "e2e/hero.spec.ts",
+              "line": 80,
+              "column": 7
+            },
+            {
+              "title": "TC-HERO-09: Preloader renders and then disappears",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "abeae7f390145cc6be47-d268f8870807b3097372",
+              "file": "e2e/hero.spec.ts",
+              "line": 86,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e/navigation.spec.ts",
+      "file": "e2e/navigation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "E2E: Navigation",
+          "file": "e2e/navigation.spec.ts",
+          "line": 16,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-NAV-01: Logo renders with correct text",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3e99b8f6c3cad4665a83-98fac3cfbf0ed4b958ec",
+              "file": "e2e/navigation.spec.ts",
+              "line": 19,
+              "column": 7
+            },
+            {
+              "title": "TC-NAV-02: Menu toggle button renders and is clickable",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3e99b8f6c3cad4665a83-25d954878df15c37b55b",
+              "file": "e2e/navigation.spec.ts",
+              "line": 26,
+              "column": 7
+            },
+            {
+              "title": "TC-NAV-03: Nav overlay opens on toggle click",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3e99b8f6c3cad4665a83-730be19fe0cf97820255",
+              "file": "e2e/navigation.spec.ts",
+              "line": 32,
+              "column": 7
+            },
+            {
+              "title": "TC-NAV-04: Nav overlay lists all 8 sections",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3e99b8f6c3cad4665a83-5c6f36d42b6ec81c19c0",
+              "file": "e2e/navigation.spec.ts",
+              "line": 40,
+              "column": 7
+            },
+            {
+              "title": "TC-NAV-05: Nav overlay closes on Escape key",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3e99b8f6c3cad4665a83-290d193abec2dee11323",
+              "file": "e2e/navigation.spec.ts",
+              "line": 52,
+              "column": 7
+            },
+            {
+              "title": "TC-NAV-06: Clicking a nav link scrolls to the correct section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3e99b8f6c3cad4665a83-5ca38750abce99c5255e",
+              "file": "e2e/navigation.spec.ts",
+              "line": 62,
+              "column": 7
+            },
+            {
+              "title": "TC-NAV-07: Sticky nav — nav is present after scrolling down",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3e99b8f6c3cad4665a83-a4c7a678e93a5c6cb55a",
+              "file": "e2e/navigation.spec.ts",
+              "line": 79,
+              "column": 7
+            },
+            {
+              "title": "TC-NAV-08: Logo click scrolls to top",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "3e99b8f6c3cad4665a83-7515c2be13db5e131859",
+              "file": "e2e/navigation.spec.ts",
+              "line": 89,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e/projects.spec.ts",
+      "file": "e2e/projects.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "E2E: Projects / Work Section",
+          "file": "e2e/projects.spec.ts",
+          "line": 17,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-WORK-01: Work section renders with ID and title",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4006612928a30a3362ae-d224db5041db22a98e4f",
+              "file": "e2e/projects.spec.ts",
+              "line": 20,
+              "column": 7
+            },
+            {
+              "title": "TC-WORK-02: ProjectsCarousel renders all 4 project cards",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4006612928a30a3362ae-68fdff5f0a968badc181",
+              "file": "e2e/projects.spec.ts",
+              "line": 27,
+              "column": 7
+            },
+            {
+              "title": "TC-WORK-03: Featured repos render in the work section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4006612928a30a3362ae-2b5317c91349268ed10c",
+              "file": "e2e/projects.spec.ts",
+              "line": 40,
+              "column": 7
+            },
+            {
+              "title": "TC-WORK-04: GitHub Feed section renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4006612928a30a3362ae-2b9788a53ada96c85330",
+              "file": "e2e/projects.spec.ts",
+              "line": 47,
+              "column": 7
+            },
+            {
+              "title": "TC-WORK-05: YouTube feed renders with iframe",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4006612928a30a3362ae-f8540290902703c3c971",
+              "file": "e2e/projects.spec.ts",
+              "line": 52,
+              "column": 7
+            },
+            {
+              "title": "TC-WORK-06: HudFrame renders in work section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "4006612928a30a3362ae-f98e9bd132978e6325f6",
+              "file": "e2e/projects.spec.ts",
+              "line": 59,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e/skills.spec.ts",
+      "file": "e2e/skills.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "E2E: Skills Section",
+          "file": "e2e/skills.spec.ts",
+          "line": 17,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-SKILLS-01: Skills section renders with ID and title",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d0d0b79d19e5403017ae-c85ec73afd05f2e680b0",
+              "file": "e2e/skills.spec.ts",
+              "line": 20,
+              "column": 7
+            },
+            {
+              "title": "TC-SKILLS-02: All 5 skill groups render",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d0d0b79d19e5403017ae-caaedef8c241322bd2b0",
+              "file": "e2e/skills.spec.ts",
+              "line": 28,
+              "column": 7
+            },
+            {
+              "title": "TC-SKILLS-03: Skill group kickers render",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d0d0b79d19e5403017ae-d530cc13b10c6b07bd23",
+              "file": "e2e/skills.spec.ts",
+              "line": 42,
+              "column": 7
+            },
+            {
+              "title": "TC-SKILLS-04: Skill cards are expandable",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d0d0b79d19e5403017ae-28890c507624ef0679d4",
+              "file": "e2e/skills.spec.ts",
+              "line": 51,
+              "column": 7
+            },
+            {
+              "title": "TC-SKILLS-05: Skill icons render for each group",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d0d0b79d19e5403017ae-7cc43e9b122012b202e4",
+              "file": "e2e/skills.spec.ts",
+              "line": 65,
+              "column": 7
+            },
+            {
+              "title": "TC-SKILLS-06: Certifications include CSM",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d0d0b79d19e5403017ae-fbb5b5936b987765e364",
+              "file": "e2e/skills.spec.ts",
+              "line": 72,
+              "column": 7
+            },
+            {
+              "title": "TC-SKILLS-07: Education shows Monash University",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d0d0b79d19e5403017ae-074cfdba90a61d22e1c0",
+              "file": "e2e/skills.spec.ts",
+              "line": 77,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e/vfx.spec.ts",
+      "file": "e2e/vfx.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "E2E: VFX / fx Components",
+          "file": "e2e/vfx.spec.ts",
+          "line": 16,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-VFX-01: VFX gallery container renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-c740d1f0c61d2610af72",
+              "file": "e2e/vfx.spec.ts",
+              "line": 19,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-02: CelestialSphere renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-74c24a114440e87b2003",
+              "file": "e2e/vfx.spec.ts",
+              "line": 27,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-03: AstroChartSphere renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-0f226eae65bc8d7cb05d",
+              "file": "e2e/vfx.spec.ts",
+              "line": 38,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-04: JarvisRepairLoop renders without errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-623deb23c53a6924dc96",
+              "file": "e2e/vfx.spec.ts",
+              "line": 46,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-05: TokenReflow renders without errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-64bba27395c7686d4530",
+              "file": "e2e/vfx.spec.ts",
+              "line": 56,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-06: SprintBurndown renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-ef49e876e1da50fa14f2",
+              "file": "e2e/vfx.spec.ts",
+              "line": 66,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-07: TokenStreamMatch renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-121bc28cac8284a5c558",
+              "file": "e2e/vfx.spec.ts",
+              "line": 74,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-08: JourneyTimeline renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-98460e88eb7159bfc220",
+              "file": "e2e/vfx.spec.ts",
+              "line": 82,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-09: InboxTriage renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-d1d9d2bee591f42f414d",
+              "file": "e2e/vfx.spec.ts",
+              "line": 90,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-10: OrchestrationGraph renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-f98c79de18a9f75303c5",
+              "file": "e2e/vfx.spec.ts",
+              "line": 98,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-11: PacketFlowGraph renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-6ecffe6b68e27454f6b3",
+              "file": "e2e/vfx.spec.ts",
+              "line": 106,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-12: AtoEvidenceBar renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-37c35acba9ef43fbf4f2",
+              "file": "e2e/vfx.spec.ts",
+              "line": 114,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-13: ClearanceStepper renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-28d334dacb5411539d3c",
+              "file": "e2e/vfx.spec.ts",
+              "line": 122,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-14: HudFrame renders in hero backdrop",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-4aef014385153f6bd959",
+              "file": "e2e/vfx.spec.ts",
+              "line": 130,
+              "column": 7
+            },
+            {
+              "title": "TC-VFX-15: No VFX component causes console errors on scroll",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "ec6e762950f9b5bd924e-5d765b868e60cca67af1",
+              "file": "e2e/vfx.spec.ts",
+              "line": 137,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "monochrome/monochrome.spec.ts",
+      "file": "monochrome/monochrome.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Monochrome Compliance",
+          "file": "monochrome/monochrome.spec.ts",
+          "line": 28,
+          "column": 6,
+          "specs": [
+            {
+              "title": "MONO-01: :root CSS variables are defined and contain only monochrome values",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "59bf5d5d8e323c4913ce-8913fee6dc2bbbfff6bc",
+              "file": "monochrome/monochrome.spec.ts",
+              "line": 31,
+              "column": 7
+            },
+            {
+              "title": "MONO-02: Body background-color uses CSS variable not hardcoded hex",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "59bf5d5d8e323c4913ce-705e36d1f695bc61a043",
+              "file": "monochrome/monochrome.spec.ts",
+              "line": 54,
+              "column": 7
+            },
+            {
+              "title": "MONO-03: No hardcoded hex colors in inline styles (scan)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "59bf5d5d8e323c4913ce-555315b1900c528d6a6a",
+              "file": "monochrome/monochrome.spec.ts",
+              "line": 70,
+              "column": 7
+            },
+            {
+              "title": "MONO-04: Text color is monochrome (gray/grayish)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "59bf5d5d8e323c4913ce-9b971387d55d85338c85",
+              "file": "monochrome/monochrome.spec.ts",
+              "line": 88,
+              "column": 7
+            },
+            {
+              "title": "MONO-05: Hero section has no chromatic hue deviations",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "59bf5d5d8e323c4913ce-1d01ae507be808c5850f",
+              "file": "monochrome/monochrome.spec.ts",
+              "line": 111,
+              "column": 7
+            },
+            {
+              "title": "MONO-06: Navigation overlay background is monochrome",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "59bf5d5d8e323c4913ce-6e4349836a124d465b8c",
+              "file": "monochrome/monochrome.spec.ts",
+              "line": 137,
+              "column": 7
+            },
+            {
+              "title": "MONO-07: Footer background is monochrome",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "59bf5d5d8e323c4913ce-5d96b7112c57431be7eb",
+              "file": "monochrome/monochrome.spec.ts",
+              "line": 155,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "overhaul/avatar.spec.ts",
+      "file": "overhaul/avatar.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "TC-FR-CLONE: Static Avatar & Clone Rendering",
+          "file": "overhaul/avatar.spec.ts",
+          "line": 36,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CLONE-01: Hero avatar container renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "fc44542240cf04a58639-3856e033da8d1f1865c1",
+              "file": "overhaul/avatar.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "TC-CLONE-02: Avatar container has reserved dimensions — zero CLS on load",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "fc44542240cf04a58639-5eec65daa52e9864a4c6",
+              "file": "overhaul/avatar.spec.ts",
+              "line": 45,
+              "column": 7
+            },
+            {
+              "title": "TC-CLONE-03: MiniVicBot toggle button is present in the DOM",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "fc44542240cf04a58639-ade846667ff7bea80500",
+              "file": "overhaul/avatar.spec.ts",
+              "line": 69,
+              "column": 7
+            },
+            {
+              "title": "TC-CLONE-04: Avatar crossfade — no jarring pop-in after preloader",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "fc44542240cf04a58639-75f5d372e32901f9e19f",
+              "file": "overhaul/avatar.spec.ts",
+              "line": 80,
+              "column": 7
+            },
+            {
+              "title": "TC-CLONE-05: MiniVicBot panel opens when toggle is clicked",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "fc44542240cf04a58639-2e3dd0a2496bf832da31",
+              "file": "overhaul/avatar.spec.ts",
+              "line": 100,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "TC-INT-CLONE: D-ID/ElevenLabs Clone Integration",
+          "file": "overhaul/avatar.spec.ts",
+          "line": 130,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-INT-01: Integration test skipped — requires dynamic VPS backend",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "fc44542240cf04a58639-d9dfc31309239792a714",
+              "file": "overhaul/avatar.spec.ts",
+              "line": 133,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "overhaul/catalogue.spec.ts",
+      "file": "overhaul/catalogue.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "TC-FR-CATALOG: Project Catalogue",
+          "file": "overhaul/catalogue.spec.ts",
+          "line": 28,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CATALOG-01: Work section renders and contains ≥10 project/repo items",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "345642d38e4f781fdebc-d8798d47330c627a916e",
+              "file": "overhaul/catalogue.spec.ts",
+              "line": 31,
+              "column": 7
+            },
+            {
+              "title": "TC-CATALOG-02: Every featured repo link resolves to a valid GitHub URL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "345642d38e4f781fdebc-b4979c347392f512ec94",
+              "file": "overhaul/catalogue.spec.ts",
+              "line": 52,
+              "column": 7
+            },
+            {
+              "title": "TC-CATALOG-03: VFX gallery contains ≥3 dedicated signature effects",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "345642d38e4f781fdebc-95235a96be915fe38042",
+              "file": "overhaul/catalogue.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "TC-CATALOG-04: Project cards render with titles and descriptions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "345642d38e4f781fdebc-8ac894d6085e6748e59a",
+              "file": "overhaul/catalogue.spec.ts",
+              "line": 102,
+              "column": 7
+            },
+            {
+              "title": "TC-CATALOG-05: No placeholder or fallback text in catalogue items",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "345642d38e4f781fdebc-e5e00431c0d368a867bf",
+              "file": "overhaul/catalogue.spec.ts",
+              "line": 116,
+              "column": 7
+            },
+            {
+              "title": "TC-CATALOG-06: JARVIS HudFrame renders with telemetry label",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "345642d38e4f781fdebc-e6a82106ccb24bee030c",
+              "file": "overhaul/catalogue.spec.ts",
+              "line": 136,
+              "column": 7
+            },
+            {
+              "title": "TC-CATALOG-07: GitHub Feed section renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "345642d38e4f781fdebc-588a80a44d0f842d809d",
+              "file": "overhaul/catalogue.spec.ts",
+              "line": 142,
+              "column": 7
+            },
+            {
+              "title": "TC-CATALOG-08: YouTube feed renders with iframe",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "345642d38e4f781fdebc-73db9271f52e60f19cec",
+              "file": "overhaul/catalogue.spec.ts",
+              "line": 147,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "overhaul/complete.spec.ts",
+      "file": "overhaul/complete.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "TC-NFR-COMPLETE: Zero Placeholder/Stub Scan",
+          "file": "overhaul/complete.spec.ts",
+          "line": 25,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-COMPLETE-01: Source scan — zero TODO markers in app/ components/ lib/",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "34ffc877209a9c2d15cf-f5508823311d3dbebc43",
+              "file": "overhaul/complete.spec.ts",
+              "line": 28,
+              "column": 7
+            },
+            {
+              "title": "TC-COMPLETE-02: No visible placeholder text in hero section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "34ffc877209a9c2d15cf-d39d06d37366bdfa4b24",
+              "file": "overhaul/complete.spec.ts",
+              "line": 42,
+              "column": 7
+            },
+            {
+              "title": "TC-COMPLETE-03: No visible placeholder text in experience section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "34ffc877209a9c2d15cf-4d3e77156230a59322b1",
+              "file": "overhaul/complete.spec.ts",
+              "line": 69,
+              "column": 7
+            },
+            {
+              "title": "TC-COMPLETE-04: No visible placeholder text in skills section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "34ffc877209a9c2d15cf-424858cc21b957da6e0a",
+              "file": "overhaul/complete.spec.ts",
+              "line": 90,
+              "column": 7
+            },
+            {
+              "title": "TC-COMPLETE-05: No visible placeholder text in contact section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "34ffc877209a9c2d15cf-bb7d4ed1cb58cfb12f00",
+              "file": "overhaul/complete.spec.ts",
+              "line": 111,
+              "column": 7
+            },
+            {
+              "title": "TC-COMPLETE-06: About section has real content, not stubs",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "34ffc877209a9c2d15cf-a72ee39677207f9e94e2",
+              "file": "overhaul/complete.spec.ts",
+              "line": 131,
+              "column": 7
+            },
+            {
+              "title": "TC-COMPLETE-07: No visible placeholder in MiniVicBot clone component",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "34ffc877209a9c2d15cf-ae008a86785e566ccc92",
+              "file": "overhaul/complete.spec.ts",
+              "line": 151,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "overhaul/durability.spec.ts",
+      "file": "overhaul/durability.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "TC-NFR-DURABLE: Offline Durability",
+          "file": "overhaul/durability.spec.ts",
+          "line": 43,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-DURABLE-01: ServiceWorkerRegister component is in the DOM",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c9514e96dfb67fb7e07f-7539d204694a4bc125a8",
+              "file": "overhaul/durability.spec.ts",
+              "line": 46,
+              "column": 7
+            },
+            {
+              "title": "TC-DURABLE-02: Core hero content renders on first visit",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c9514e96dfb67fb7e07f-dd91f04654f05697ba75",
+              "file": "overhaul/durability.spec.ts",
+              "line": 73,
+              "column": 7
+            },
+            {
+              "title": "TC-DURABLE-03: CV download link present and resolves",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c9514e96dfb67fb7e07f-d6fffae3c96b4cf8c55e",
+              "file": "overhaul/durability.spec.ts",
+              "line": 81,
+              "column": 7
+            },
+            {
+              "title": "TC-DURABLE-04: Contact section CV link present",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c9514e96dfb67fb7e07f-6441e0bbbdb118ac24e7",
+              "file": "overhaul/durability.spec.ts",
+              "line": 91,
+              "column": 7
+            },
+            {
+              "title": "TC-DURABLE-05: Offline reload — core content accessible (production only)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c9514e96dfb67fb7e07f-faea31661ab0520348b3",
+              "file": "overhaul/durability.spec.ts",
+              "line": 100,
+              "column": 7
+            },
+            {
+              "title": "TC-DURABLE-06: Dossier component renders with CV download",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c9514e96dfb67fb7e07f-351b02693a5f4a5356b1",
+              "file": "overhaul/durability.spec.ts",
+              "line": 137,
+              "column": 7
+            },
+            {
+              "title": "TC-DURABLE-07: Page has Content-Security-Policy or cache headers",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "c9514e96dfb67fb7e07f-b4de261262125fc64616",
+              "file": "overhaul/durability.spec.ts",
+              "line": 157,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "overhaul/mindset.spec.ts",
+      "file": "overhaul/mindset.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "TC-FR-MINDSET: Balanced Persona Projection",
+          "file": "overhaul/mindset.spec.ts",
+          "line": 29,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-MINDSET-01: Mindset section renders with ID and title",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9991ab1cd3d9901d24da-83becd0e277fe2f2a13a",
+              "file": "overhaul/mindset.spec.ts",
+              "line": 32,
+              "column": 7
+            },
+            {
+              "title": "TC-MINDSET-02: All 4 projection dimension cards render",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9991ab1cd3d9901d24da-fce38ca564b782883c90",
+              "file": "overhaul/mindset.spec.ts",
+              "line": 39,
+              "column": 7
+            },
+            {
+              "title": "TC-MINDSET-03: Each card has a label, claim, and source",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9991ab1cd3d9901d24da-ed1540755c5fb722276c",
+              "file": "overhaul/mindset.spec.ts",
+              "line": 45,
+              "column": 7
+            },
+            {
+              "title": "TC-MINDSET-04: Depth dimension renders technical depth claim",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9991ab1cd3d9901d24da-13d213828e200c70fcfa",
+              "file": "overhaul/mindset.spec.ts",
+              "line": 70,
+              "column": 7
+            },
+            {
+              "title": "TC-MINDSET-05: Scale dimension has multi-million-dollar claim",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9991ab1cd3d9901d24da-635b679e82b42f364a62",
+              "file": "overhaul/mindset.spec.ts",
+              "line": 79,
+              "column": 7
+            },
+            {
+              "title": "TC-MINDSET-06: Longevity dimension has multi-year/decades claim",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9991ab1cd3d9901d24da-dc70b2ba54f82d9a8a3b",
+              "file": "overhaul/mindset.spec.ts",
+              "line": 91,
+              "column": 7
+            },
+            {
+              "title": "TC-MINDSET-07: Value dimension has ≥2 tangible value kinds",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9991ab1cd3d9901d24da-15b0f9469af8068c8557",
+              "file": "overhaul/mindset.spec.ts",
+              "line": 103,
+              "column": 7
+            },
+            {
+              "title": "TC-MINDSET-08: Subhead text matches restrained tone",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9991ab1cd3d9901d24da-3d4b206e3e688994473c",
+              "file": "overhaul/mindset.spec.ts",
+              "line": 118,
+              "column": 7
+            },
+            {
+              "title": "TC-MINDSET-09: Cards animate into view (stagger visible)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "9991ab1cd3d9901d24da-813def6261d9fd3f180b",
+              "file": "overhaul/mindset.spec.ts",
+              "line": 134,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "overhaul/render.spec.ts",
+      "file": "overhaul/render.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "TC-NFR-RENDER: Cinematic Rendering Compliance",
+          "file": "overhaul/render.spec.ts",
+          "line": 41,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-RENDER-01: SpaceScene renders canvas in hero section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "dd16863fd0f244bebcf2-2168713644355cb87f1c",
+              "file": "overhaul/render.spec.ts",
+              "line": 44,
+              "column": 7
+            },
+            {
+              "title": "TC-RENDER-02: SpaceScene — no WebGL context loss errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "dd16863fd0f244bebcf2-53c8c79c4fa5cdc5fdfe",
+              "file": "overhaul/render.spec.ts",
+              "line": 61,
+              "column": 7
+            },
+            {
+              "title": "TC-RENDER-03: HudFrame renders in work section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "dd16863fd0f244bebcf2-b0149bf2f6074444a3be",
+              "file": "overhaul/render.spec.ts",
+              "line": 92,
+              "column": 7
+            },
+            {
+              "title": "TC-RENDER-04: VFX gallery canvases render without errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "dd16863fd0f244bebcf2-1cc8a6f9eb95531df530",
+              "file": "overhaul/render.spec.ts",
+              "line": 113,
+              "column": 7
+            },
+            {
+              "title": "TC-RENDER-05: Skill visualization canvases render in skills section",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "dd16863fd0f244bebcf2-b3d3cc094e5a47607dff",
+              "file": "overhaul/render.spec.ts",
+              "line": 134,
+              "column": 7
+            },
+            {
+              "title": "TC-RENDER-06: No WebGL shader compilation errors across entire page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "dd16863fd0f244bebcf2-b11f5db3cafa5326f351",
+              "file": "overhaul/render.spec.ts",
+              "line": 155,
+              "column": 7
+            },
+            {
+              "title": "TC-RENDER-07: Screenshot baseline — hero text content (chromium)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "dd16863fd0f244bebcf2-06352e7fc72df333a6ba",
+              "file": "overhaul/render.spec.ts",
+              "line": 184,
+              "column": 7
+            },
+            {
+              "title": "TC-RENDER-08: Screenshot baseline — work section vfx gallery (chromium)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "dd16863fd0f244bebcf2-19eececcd8bfcce266ee",
+              "file": "overhaul/render.spec.ts",
+              "line": 203,
+              "column": 7
+            },
+            {
+              "title": "TC-RENDER-09: Page renders without React error boundary fallback",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "dd16863fd0f244bebcf2-8a829cd3076e7c436ff3",
+              "file": "overhaul/render.spec.ts",
+              "line": 213,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "overhaul/voiceover.spec.ts",
+      "file": "overhaul/voiceover.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "TC-FR-VOICE: Cloned Voice Greeting",
+          "file": "overhaul/voiceover.spec.ts",
+          "line": 31,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-VOICE-01: MiniVicBot toggle button present (voice-controlled clone)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a320630249984e46dacc-7da6037878b1522458f8",
+              "file": "overhaul/voiceover.spec.ts",
+              "line": 34,
+              "column": 7
+            },
+            {
+              "title": "TC-VOICE-02: MiniVicBot panel contains interactive voice/video controls",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a320630249984e46dacc-d24b550d5b3f2ef83be0",
+              "file": "overhaul/voiceover.spec.ts",
+              "line": 43,
+              "column": 7
+            },
+            {
+              "title": "TC-VOICE-03: MiniVicBot audio context initialized without errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a320630249984e46dacc-7f626128fde746500026",
+              "file": "overhaul/voiceover.spec.ts",
+              "line": 67,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "TC-FR-VOICE-DYN: Dynamic Voiceover on Section Transitions",
+          "file": "overhaul/voiceover.spec.ts",
+          "line": 97,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-VOICE-DYN-01: ScrollRail components instrument sections for audio sync",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a320630249984e46dacc-e099f2948b1aaf38d7b5",
+              "file": "overhaul/voiceover.spec.ts",
+              "line": 100,
+              "column": 7
+            },
+            {
+              "title": "TC-VOICE-DYN-02: Section scroll triggers fire without JS errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a320630249984e46dacc-701c8fea12175771c306",
+              "file": "overhaul/voiceover.spec.ts",
+              "line": 110,
+              "column": 7
+            },
+            {
+              "title": "TC-VOICE-DYN-03: Reduced-motion respects audio autoplay policy",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a320630249984e46dacc-476fc61bcfc3a89b7e29",
+              "file": "overhaul/voiceover.spec.ts",
+              "line": 140,
+              "column": 7
+            },
+            {
+              "title": "TC-VOICE-DYN-04: MiniVicBot chat input has microphone button",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a320630249984e46dacc-438d49c6f49ea902192b",
+              "file": "overhaul/voiceover.spec.ts",
+              "line": 147,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "perf/performance.spec.ts",
+      "file": "perf/performance.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Performance Budgets",
+          "file": "perf/performance.spec.ts",
+          "line": 25,
+          "column": 6,
+          "specs": [
+            {
+              "title": "PERF-01: First-view transfer size <= 2.5 MB",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "418b819b72a0b40f0bf4-9f924ad88810a3386065",
+              "file": "perf/performance.spec.ts",
+              "line": 28,
+              "column": 7
+            },
+            {
+              "title": "PERF-02: LCP (Largest Contentful Paint) < 2.5s",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "418b819b72a0b40f0bf4-324e5ac008832c5adce7",
+              "file": "perf/performance.spec.ts",
+              "line": 46,
+              "column": 7
+            },
+            {
+              "title": "PERF-03: CLS (Cumulative Layout Shift) < 0.05",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "418b819b72a0b40f0bf4-4748faa77170ed86086f",
+              "file": "perf/performance.spec.ts",
+              "line": 73,
+              "column": 7
+            },
+            {
+              "title": "PERF-04: Page loads without errors (no console errors)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "418b819b72a0b40f0bf4-1bc1d2ea811a56be85ec",
+              "file": "perf/performance.spec.ts",
+              "line": 112,
+              "column": 7
+            },
+            {
+              "title": "PERF-05: DOMContentLoaded < 5s",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "418b819b72a0b40f0bf4-812597ae7457426b7c02",
+              "file": "perf/performance.spec.ts",
+              "line": 125,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "visual/screenshots.spec.ts",
+      "file": "visual/screenshots.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Visual Regression",
+          "file": "visual/screenshots.spec.ts",
+          "line": 20,
+          "column": 6,
+          "specs": [
+            {
+              "title": "VIS-01: Full hero section screenshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d0f726e908f7a5f9a0f2-5cfb65115e6f53c613ec",
+              "file": "visual/screenshots.spec.ts",
+              "line": 23,
+              "column": 7
+            },
+            {
+              "title": "VIS-02: About section screenshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d0f726e908f7a5f9a0f2-638c04ab19a22a5e8885",
+              "file": "visual/screenshots.spec.ts",
+              "line": 35,
+              "column": 7
+            },
+            {
+              "title": "VIS-03: Navigation overlay screenshot (open state)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d0f726e908f7a5f9a0f2-de6532ecc9c1156a1a33",
+              "file": "visual/screenshots.spec.ts",
+              "line": 46,
+              "column": 7
+            },
+            {
+              "title": "VIS-04: Contact section screenshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d0f726e908f7a5f9a0f2-3ed211703322e106563b",
+              "file": "visual/screenshots.spec.ts",
+              "line": 57,
+              "column": 7
+            },
+            {
+              "title": "VIS-05: Work / Projects section screenshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d0f726e908f7a5f9a0f2-9734027b4a6c5eb8dc62",
+              "file": "visual/screenshots.spec.ts",
+              "line": 68,
+              "column": 7
+            },
+            {
+              "title": "VIS-06: Full page screenshot (viewport top)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d0f726e908f7a5f9a0f2-1f34619e3d280a0d5ffd",
+              "file": "visual/screenshots.spec.ts",
+              "line": 79,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-06-28T02:48:04.472Z",
+    "duration": 1304.095,
+    "expected": 0,
+    "skipped": 190,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
