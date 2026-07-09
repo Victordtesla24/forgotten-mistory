@@ -97,7 +97,6 @@ import EventSeatShimmer from '@/components/fx/EventSeatShimmer';
 import TeslaDashboard from '@/components/fx/TeslaDashboard';
 import ProofBar from '@/components/site/ProofBar';
 import MindsetProjection from '@/components/site/MindsetProjection';
-import SynthesisProvenance from '@/components/site/SynthesisProvenance';
 import Dossier from '@/components/site/Dossier';
 import CursorDepthField from '@/components/site/CursorDepthField';
 
@@ -105,9 +104,11 @@ import { resumeContent } from './data/resumeContent';
 import {
   about,
   contact,
+  credibility,
   experience,
   featuredRepos,
   hero,
+  proof,
   projects,
   skillGroups,
 } from './data/siteContent';
@@ -265,6 +266,32 @@ export default function Home() {
                 {hero.name}
               </span>
             </motion.h1>
+
+            {/* D-HERO-01 / D-AVAIL-01 — scannable first-paint positioning: one CV-aligned
+                target role, location, and a truthful open-to-work signal. */}
+            <motion.div className="hero-positioning" variants={heroItem} style={{ y: titleY }}>
+              <p className="hero-role">{hero.title}</p>
+              <p className="hero-location">{hero.location}</p>
+              <p className="hero-availability" data-availability="open">
+                <span className="availability-dot" aria-hidden="true" />
+                {hero.availability}
+              </p>
+            </motion.div>
+
+            {/* D-PROOF-01 — ≥3 quantified metrics in the first viewport (reuses `proof`). */}
+            <motion.ul className="hero-proof-strip" variants={heroItem} aria-label="Career proof points">
+              {proof.slice(0, 4).map((m) => (
+                <li key={m.label} className="hero-proof-item" data-hero-proof>
+                  <span className="hero-proof-value">
+                    {m.prefix ?? ''}
+                    {m.value}
+                    {m.suffix ?? ''}
+                  </span>
+                  <span className="hero-proof-label">{m.label}</span>
+                </li>
+              ))}
+            </motion.ul>
+
             <motion.div variants={heroItem} style={{ y: titleY }}>
               <p className="hero-subtitle">
                 {hero.subtitle.map((paragraph, index) => (
@@ -304,14 +331,19 @@ export default function Home() {
               </a>
             </motion.div>
             <motion.div className="hero-links" variants={heroItem}>
+              {/* D-CONTACT-01 + D-CV-01 — LinkedIn (primary recruiter channel) and a
+                  clearly-labelled Download CV lead the row. */}
+              <a href={contact.linkedin} target="_blank" rel="noreferrer" className="btn-link btn-link--linkedin">
+                LinkedIn
+              </a>
+              <a href="/docs/Vik_Resume_Final.pdf" className="btn-link btn-link--cv" download target="_blank" rel="noreferrer">
+                Download CV
+              </a>
               <a href={contact.github} target="_blank" rel="noreferrer" className="btn-link">
                 GitHub
               </a>
               <a href={contact.youtube} target="_blank" rel="noreferrer" className="btn-link">
                 YouTube
-              </a>
-              <a href="/docs/Vik_Resume_Final.pdf" className="btn-link" target="_blank" rel="noreferrer">
-                Resume PDF
               </a>
               <a href="#contact" className="btn-primary">
                 Let&apos;s Talk
@@ -364,6 +396,28 @@ export default function Home() {
           {/* T1 — HeroScroll: GSAP ScrollTrigger scrubs HUD backdrop, headline clip-reveal, avatar crossfade */}
           <HeroScroll />
         </section>
+
+        {/* D-TRUST-01 — scannable credibility band: recognised employers + CSM + degrees,
+            all sourced from `experience`/`skillGroups`. Establishes pedigree near the top. */}
+        <aside className="credibility-band" aria-label="Career credibility">
+          <div className="container credibility-inner">
+            <span className="credibility-label">{credibility.label}</span>
+            <ul className="credibility-employers">
+              {credibility.employers.map((e) => (
+                <li key={e} data-employer>
+                  {e}
+                </li>
+              ))}
+            </ul>
+            <ul className="credibility-creds">
+              {credibility.credentials.map((c) => (
+                <li key={c} className="credibility-cred">
+                  {c}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </aside>
 
         <ProofBar />
 
@@ -650,8 +704,6 @@ export default function Home() {
         </section>
 
         <MindsetProjection />
-
-        <SynthesisProvenance />
 
         <Dossier />
 

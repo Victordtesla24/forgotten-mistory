@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // Boot budget (TC-FR-BOOT): count → 0.5s dramatic hold at 100 → clip-path wipe, all
 // inside the 2.5s reveal budget. Core path ≈ 1000 + 500 + 420 = 1920 ms.
@@ -127,6 +127,15 @@ export default function Preloader() {
     return () => clearTimeout(id);
   }, [revealing]);
 
+  // D-BOOT-01 — keyboard-reachable Skip: cancel the count and jump straight to the
+  // reveal wipe so a returning recruiter never waits out the ~1.9s intro.
+  const handleSkip = useCallback(() => {
+    if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    setCount(100);
+    setFull(true);
+    setRevealing(true);
+  }, []);
+
   if (done) return null;
 
   return (
@@ -136,6 +145,11 @@ export default function Preloader() {
         <div className="counter">{count}</div>
         <div className="loader-copy">Calibrating stars &amp; telemetry</div>
       </div>
+      {!revealing && (
+        <button type="button" className="preloader-skip" onClick={handleSkip}>
+          Skip intro
+        </button>
+      )}
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import { contact } from '@/app/data/siteContent';
 
 const NAV_LINKS = [
   { href: '#hero', label: 'Home' },
@@ -10,9 +11,12 @@ const NAV_LINKS = [
   { href: '#skills', label: 'Skills' },
   { href: '#architecture-lab', label: 'Architecture' },
   { href: '#work', label: 'Work' },
-  { href: '/docs/Vik_Resume_Final.pdf', label: 'Resume', external: true },
+  { href: contact.linkedin, label: 'LinkedIn', external: true },
+  { href: '/docs/Vik_Resume_Final.pdf', label: 'Download CV', external: true },
   { href: '#contact', label: 'Contact' },
 ] as const;
+
+const CV_HREF = '/docs/Vik_Resume_Final.pdf';
 
 const SPRING = { type: 'spring', stiffness: 300, damping: 30 } as const;
 
@@ -76,19 +80,26 @@ export default function Navigation() {
           />
         </svg>
       </a>
-      <button
-        type="button"
-        className="menu-toggle"
-        aria-expanded={open}
-        aria-controls="site-nav-overlay"
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span className="menu-toggle__label">{open ? 'Close' : 'Menu'}</span>
-        <span className="menu-toggle__icon" aria-hidden="true">
-          <motion.span className="menu-toggle__bar" animate={open ? { y: 0, rotate: 45 } : { y: -3.5, rotate: 0 }} transition={SPRING} />
-          <motion.span className="menu-toggle__bar" animate={open ? { y: 0, rotate: -45 } : { y: 3.5, rotate: 0 }} transition={SPRING} />
-        </span>
-      </button>
+      <div className="nav-actions">
+        {/* D-CV-01 — always-visible Download CV, the strongest recruiter action,
+            reachable without opening the overlay menu. */}
+        <a className="nav-cv" href={CV_HREF} download target="_blank" rel="noreferrer">
+          Download CV
+        </a>
+        <button
+          type="button"
+          className="menu-toggle"
+          aria-expanded={open}
+          aria-controls="site-nav-overlay"
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span className="menu-toggle__label">{open ? 'Close' : 'Menu'}</span>
+          <span className="menu-toggle__icon" aria-hidden="true">
+            <motion.span className="menu-toggle__bar" animate={open ? { y: 0, rotate: 45 } : { y: -3.5, rotate: 0 }} transition={SPRING} />
+            <motion.span className="menu-toggle__bar" animate={open ? { y: 0, rotate: -45 } : { y: 3.5, rotate: 0 }} transition={SPRING} />
+          </span>
+        </button>
+      </div>
       <motion.div
         ref={overlayRef}
         id="site-nav-overlay"

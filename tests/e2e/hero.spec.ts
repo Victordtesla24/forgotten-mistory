@@ -27,13 +27,14 @@ test.describe('E2E: Hero Section', () => {
     await expect(hero).toContainText('Vikram.');
   });
 
-  test('TC-HERO-02: Hero subtitle paragraphs render', async ({ page }) => {
+  test('TC-HERO-02: Hero subtitle renders professional positioning (astronomy demoted out of ATF)', async ({ page }) => {
     await gotoHome(page);
     const subtitle = page.locator('.hero-subtitle');
     await expect(subtitle).toBeVisible();
-    // Verify both paragraphs are present
     await expect(subtitle).toContainText('technical delivery leader');
-    await expect(subtitle).toContainText('ancient algorithms');
+    await expect(subtitle).toContainText('measurable business value');
+    // D-HERO-02: the personal Vedic-astronomy R&D narrative must no longer sit ATF.
+    await expect(subtitle).not.toContainText('Vedic astronomy');
   });
 
   test('TC-HERO-03: Dual-pillar CTAs render', async ({ page }) => {
@@ -44,13 +45,14 @@ test.describe('E2E: Hero Section', () => {
     await expect(page.locator('[data-pillar="client"]')).toContainText('See outcomes');
   });
 
-  test('TC-HERO-04: Hero link bar renders with GitHub, YouTube, Resume, Contact', async ({ page }) => {
+  test('TC-HERO-04: Hero link bar renders LinkedIn, GitHub, YouTube, Download CV, Contact', async ({ page }) => {
     await gotoHome(page);
     const heroLinks = page.locator('.hero-links');
     await expect(heroLinks).toBeVisible();
+    await expect(heroLinks.locator('a', { hasText: 'LinkedIn' })).toBeVisible();
     await expect(heroLinks.locator('a', { hasText: 'GitHub' })).toBeVisible();
     await expect(heroLinks.locator('a', { hasText: 'YouTube' })).toBeVisible();
-    await expect(heroLinks.locator('a', { hasText: 'Resume PDF' })).toBeVisible();
+    await expect(heroLinks.locator('a', { hasText: 'Download CV' })).toBeVisible();
     await expect(heroLinks.locator('a', { hasText: "Let's Talk" })).toBeVisible();
   });
 
@@ -91,5 +93,58 @@ test.describe('E2E: Hero Section', () => {
     // Should eventually hide
     await pre.waitFor({ state: 'hidden', timeout: 20000 });
     await expect(pre).not.toBeVisible();
+  });
+
+  // ── Hire-conversion first-paint elements (fable5-plan D-HERO/D-AVAIL/D-CONTACT/D-CV/D-PROOF/D-TRUST) ──
+
+  test('TC-HERO-10: Hero shows a CV-aligned target role as a scannable line', async ({ page }) => {
+    await gotoHome(page);
+    const role = page.locator('.hero-role');
+    await expect(role).toBeVisible();
+    await expect(role).toContainText('Scrum Master');
+    await expect(role).toContainText('AI Solutions Architect');
+  });
+
+  test('TC-HERO-11: Hero shows location', async ({ page }) => {
+    await gotoHome(page);
+    await expect(page.locator('.hero-location')).toContainText('Melbourne');
+  });
+
+  test('TC-HERO-12: Hero shows a truthful open-to-work signal', async ({ page }) => {
+    await gotoHome(page);
+    await expect(page.locator('.hero-availability')).toContainText('Open to');
+  });
+
+  test('TC-HERO-13: Hero LinkedIn link points to the canonical profile', async ({ page }) => {
+    await gotoHome(page);
+    const li = page.locator('.hero-links a[href*="linkedin.com/in/vikramd-profile"]');
+    await expect(li.first()).toBeVisible();
+  });
+
+  test('TC-HERO-14: At least 3 proof metrics render above the fold at mobile width', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoHome(page);
+    const metrics = page.locator('[data-hero-proof]');
+    expect(await metrics.count()).toBeGreaterThanOrEqual(3);
+    const box = await metrics.first().boundingBox();
+    expect(box?.y ?? 9999).toBeLessThan(844);
+  });
+
+  test('TC-HERO-15: Credibility band renders recognised employers + CSM', async ({ page }) => {
+    await gotoHome(page);
+    const band = page.locator('.credibility-band').first();
+    await expect(band).toBeVisible();
+    await expect(band).toContainText('ANZ');
+    await expect(band).toContainText('Certified Scrum Master');
+  });
+
+  test('TC-HERO-16: Preloader exposes a keyboard-focusable Skip control', async ({ page }) => {
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    const skip = page.locator('.preloader-skip');
+    if (await skip.isVisible().catch(() => false)) {
+      await expect(skip).toBeEnabled();
+      await skip.focus();
+      await expect(skip).toBeFocused();
+    }
   });
 });

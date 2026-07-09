@@ -25,13 +25,13 @@ const headingFont = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: 'Vikram Deshpande | Scrum Master · Project Manager · AI Delivery Leader',
+  title: 'Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect',
   description:
     'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
   metadataBase: new URL('https://forgotten-mistory.web.app'),
   alternates: { canonical: '/' },
   openGraph: {
-    title: 'Vikram Deshpande | Scrum Master · Project Manager · AI Delivery Leader',
+    title: 'Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect',
     description:
       'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
     url: 'https://forgotten-mistory.web.app',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Vikram Deshpande | Scrum Master · Project Manager · AI Delivery Leader',
+    title: 'Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect',
     description:
       'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
     // Same static card drives the summary_large_image Twitter preview.

@@ -35,10 +35,14 @@ test.describe('Content Preservation', () => {
     await expect(page.locator('#hero')).toContainText('AI solutions architect');
   });
 
-  test('CT-04: Hero subtitle contains "ancient algorithms" and "Vedic astronomy"', async ({ page }) => {
+  test('CT-04: Vedic-astronomy work is preserved in the projects section (demoted out of the hero ATF)', async ({ page }) => {
     await gotoHome(page);
-    await expect(page.locator('#hero')).toContainText('ancient algorithms');
-    await expect(page.locator('#hero')).toContainText('Vedic astronomy');
+    // D-HERO-02: the astronomy narrative was moved off the recruiter-critical ATF, but
+    // the underlying work is still represented as a real project in #work.
+    await page.locator('#work').scrollIntoViewIfNeeded();
+    await expect(page.locator('#work')).toContainText('Vedic');
+    // and it must no longer clutter the hero first paint
+    await expect(page.locator('#hero')).not.toContainText('Vedic astronomy');
   });
 
   test('CT-05: About paragraphs from siteContent appear verbatim', async ({ page }) => {
@@ -110,6 +114,12 @@ test.describe('Content Preservation', () => {
     await expect(githubLink.first()).toBeAttached();
     const ytLink = page.locator('a[href*="youtube.com/@vicd0ct"]');
     await expect(ytLink.first()).toBeAttached();
+  });
+
+  test('CT-15: LinkedIn (primary recruiter channel) is linked on the page', async ({ page }) => {
+    await gotoHome(page);
+    const li = page.locator('a[href*="linkedin.com/in/vikramd-profile"]');
+    await expect(li.first()).toBeAttached();
   });
 
   // ── resumeContent.ts ──

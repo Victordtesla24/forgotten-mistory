@@ -59,9 +59,14 @@ export interface SynthesisSource {
 export const hero = {
   greeting: "Hello, I'm",
   name: 'Vikram.',
+  // Scannable first-paint positioning for a recruiter's 5-second scan (D-HERO-01):
+  // one CV-aligned target title, location, and a truthful open-to-work signal
+  // (D-AVAIL-01 — currently at the ATO AND open to what's next; no invented end date).
+  title: 'Scrum Master / Project Manager · AI Solutions Architect',
+  location: 'Melbourne, VIC, Australia',
+  availability: 'Open to new delivery-leadership & AI engagements',
   subtitle: [
-    "I'm a technical delivery leader and AI solutions architect based in Melbourne, currently serving as Scrum Master / Project Manager on the Australian Taxation Office's Payday Super program. Over 15+ years across government, finance, and telecommunications I've helped teams ship complex systems — from mainframe test automation to real-time AI platforms — with a focus on measurable business value.",
-    "Beyond my professional work, I have a deep interest in the intersection of technology and history, particularly ancient algorithms and Vedic astronomy. I believe there's a lot to learn from the past to build a better future.",
+    "I'm a technical delivery leader and AI solutions architect based in Melbourne, currently leading agile delivery as Scrum Master / Project Manager on the Australian Taxation Office's Payday Super program. Over 15+ years across government, finance, and telecommunications I've helped teams ship complex systems — from mainframe test automation to real-time AI platforms — with a focus on measurable business value.",
   ],
 };
 
@@ -495,8 +500,26 @@ export const contact = {
   email: 'sarkar.vikram@gmail.com',
   phone: '+61 433 224 556',
   phoneHref: 'tel:+61433224556',
+  // LinkedIn is the primary recruiter channel (D-CONTACT-01); the clone already
+  // cites this profile, so it is public and canonical.
+  linkedin: 'https://www.linkedin.com/in/vikramd-profile',
   github: 'https://github.com/Victordtesla24',
   youtube: 'https://youtube.com/@vicd0ct',
+};
+
+/**
+ * Scannable credibility band shown near the top of the page (D-TRUST-01). Every
+ * item is drawn from `experience` and `skillGroups` above — recognised employers,
+ * the CSM credential, and the two degrees — so a recruiter gets pedigree at a glance.
+ */
+export const credibility = {
+  label: 'Experience across government, finance & telecommunications',
+  employers: ['Australian Taxation Office', 'ANZ', 'NAB', 'Microsoft', 'Telstra'],
+  credentials: [
+    'Certified Scrum Master (CSM)',
+    'M. Computer Science (Hons), Monash University',
+    'B.Eng Computer Science, University of Melbourne',
+  ],
 };
 
 export interface ProofPoint {
