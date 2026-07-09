@@ -1352,7 +1352,7 @@ const MiniVicBot = () => {
             )}
             <div ref={chatEndRef} />
           </div>
-          <div className="scrollbar-hide flex shrink-0 gap-2 overflow-x-auto border-t border-white/10 bg-black/25 px-3 py-2.5">
+          <div className="minivic-quickstrip scrollbar-hide flex shrink-0 gap-2 overflow-x-auto border-t border-white/10 bg-black/25 px-3 py-2.5">
             {QUICK_PROMPTS.map((item) => (
               <button
                 key={item.label}

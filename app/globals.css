@@ -67,9 +67,30 @@
 
 * {
     margin: 0;
-    padding: 0;
     box-sizing: border-box;
     cursor: auto;
+}
+
+/*
+ * Padding reset lives in Tailwind's `base` layer so that layered padding
+ * utilities (p-*, px-*, pl-*, …) win over it. An UNLAYERED `* { padding: 0 }`
+ * beats every Tailwind utility regardless of specificity (unlayered CSS always
+ * outranks @layer rules) — which silently zeroed the padding on every element
+ * that relies on Tailwind padding utilities, leaving the MiniVic chatbot with
+ * no internal spacing at all. Only MiniVicBot, FloatingDetailBox and the shared
+ * Button use these utilities, so the effect is contained to them.
+ */
+@layer base {
+    * {
+        padding: 0;
+    }
+}
+
+/* MiniVic quick-reply strip scrolls horizontally; a soft edge fade signals the
+   overflow is intentional rather than a hard clip. */
+.minivic-quickstrip {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 0.9rem, #000 calc(100% - 1.6rem), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 0.9rem, #000 calc(100% - 1.6rem), transparent);
 }
 
 body.cursor-enhanced * {
