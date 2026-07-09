@@ -66,3 +66,34 @@
 - [ ] Add missing npm scripts for `type-check` and `test` if required by CI.
 - [ ] Address Next Image `sizes` warning for `/assets/my_avatar.png`.
 - [ ] Monitor GPU stall warnings from WebGL; currently non-blocking.
+
+## IDE Reliability: plugins/MCP/CDP (2026-07-10)
+
+## Status: Completed (Cursor restart pending at user's convenience for CDP)
+
+## Tasks
+- [x] Diagnose 21 × `plugin-cache-miss` at claude startup (native terminal) — evidence in `~/.claude/debug/`.
+- [x] Reinstall broken plugins at user scope (21 official + compound-engineering + 8 local-marketplace).
+- [x] Move `NPM_CONFIG_CACHE` to persistent `~/.claude/npm-cache`; add `MCP_TIMEOUT=120000`; drop literal `${VAR}` env placeholders.
+- [x] Pre-warm npm caches (desktop-commander, firebase-tools, convex, snyk).
+- [x] Fix CDP watchdog (flock→mkdir lock, stale-backup handling, codesign identity) + LaunchAgent WatchPaths; fix generator script.
+- [x] Add CDP liveness probe to Cursor sessionStart hook (`validate-cursor-config.mjs`).
+- [x] Verify: fresh claude session loads with 0 plugin errors; MCP servers respond to `initialize` from warm cache.
+- [ ] USER ACTION: fully quit + relaunch Cursor (after live claude session finishes) → watchdog wraps binary → CDP :9222 live.
+- [ ] USER ACTION: authenticate supabase / adobe / datadog MCPs when needed (OAuth prompts).
+
+## Context7 Removal + Stale Purge (2026-07-10, post-IDE-fix)
+
+## Status: Completed
+
+## Tasks
+- [x] Kill runaway `@upstash/context7-mcp` (PID 89752, 100% CPU) — done by prior subagent, no respawn since.
+- [x] Disable context7 in enabledPlugins (×3 settings files: `~/.claude`, `~/.cursor`, Cursor User) → `false`.
+- [x] Remove 5 context7 install records + delete both plugin caches (claude + cursor-public) + 49 per-project MCP tool-cache dirs.
+- [x] Delete 52 orphaned `var-folders-*` project state dirs (backing temp paths gone; 62 MB freed).
+- [x] Delete 26 dangling `~/.claude/skills/` symlinks (targets pruned from `~/.agents/skills/`).
+- [x] Remove orphaned `claude-code-jetbrains-plugin` marketplace dir (12 MB, no JetBrains on machine, unreferenced).
+- [x] Prune 5 dead install records (missing installPath) from installed_plugins.json — backups kept.
+- [x] Delete 11 untracked `scripts/testing/_*.mjs` TEMP debug scripts.
+- [x] Verify: validator `TOTAL ERRORS: 0`, plugins 37/37 with manifest, JSONs valid, no context7 process.
+- KEPT (deliberate): 38 unreferenced cache versions carrying `.in_use` markers; empty `_staging` dir (Cursor infra); `installed_plugins.json.bak-*` history; cursor-cdp MCP (working path, awaiting relaunch).
