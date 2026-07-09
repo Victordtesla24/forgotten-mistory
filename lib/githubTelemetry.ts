@@ -230,29 +230,48 @@ function startFetch() {
 
 import { useSyncExternalStore } from 'react';
 
+/**
+ * Stable, frozen snapshot returned while GitHub data is still loading — and as
+ * the server snapshot. `useSyncExternalStore` compares snapshots with
+ * `Object.is`; returning a *new* object on every call makes React believe the
+ * store changed on every render → infinite re-render (React #185, "Maximum
+ * update depth exceeded"), which trips the root error boundary and blanks the
+ * whole page. A single shared reference breaks that loop and keeps the
+ * server-rendered markup identical to the client's first paint.
+ */
+const LOADING_SNAPSHOT: GithubStats = Object.freeze({
+  repoCount: 0,
+  totalStars: 0,
+  totalOpenIssues: 0,
+  totalForks: 0,
+  topLanguage: '—',
+  lastPushIso: '',
+  fromCache: false,
+  loading: true,
+  error: null,
+  repos: [],
+});
+
 function subscribe(callback: () => void) {
   _listeners.push(callback);
+  // Side effects belong in subscribe, never in getSnapshot: kick off the
+  // (client-only) fetch when the first consumer subscribes.
+  if (typeof window !== 'undefined') startFetch();
   return () => {
     _listeners = _listeners.filter((fn) => fn !== callback);
   };
 }
 
+/** Client snapshot — the live stats once loaded, otherwise the stable
+ *  LOADING_SNAPSHOT reference (never a freshly-allocated object). */
 function getSnapshot(): GithubStats {
-  if (_globalStats) return _globalStats;
-  // Trigger fetch on first access
-  if (typeof window !== 'undefined') startFetch();
-  return {
-    repoCount: 0,
-    totalStars: 0,
-    totalOpenIssues: 0,
-    totalForks: 0,
-    topLanguage: '—',
-    lastPushIso: '',
-    fromCache: false,
-    loading: true,
-    error: null,
-    repos: [],
-  };
+  return _globalStats ?? LOADING_SNAPSHOT;
+}
+
+/** Server snapshot — always the frozen loading constant so the prerendered
+ *  HTML matches the client's first render (no hydration mismatch). */
+function getServerSnapshot(): GithubStats {
+  return LOADING_SNAPSHOT;
 }
 
 /**
@@ -263,7 +282,7 @@ function getSnapshot(): GithubStats {
  * Source: api.github.com/users/Victordtesla24/repos (unauthenticated, public).
  */
 export function useGithubStats(): GithubStats {
-  return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
 /**

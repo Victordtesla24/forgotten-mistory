@@ -66,12 +66,24 @@ function toRad(deg: number): number {
   return (deg * Math.PI) / 180;
 }
 
+/**
+ * Round trig-derived SVG coordinates to a stable precision. Math.sin/Math.cos
+ * are NOT guaranteed bit-identical across V8 builds, so the server (Node) and
+ * client (browser) produced last-ULP-different values (e.g. y2 51.04363054907657
+ * vs 51.043630549076596) → a React hydration "Prop did not match" warning.
+ * Rounding to 3 decimals (sub-0.001 unit in a 400-unit viewBox — visually
+ * irrelevant) makes both engines stringify the attribute identically.
+ */
+function coord(value: number): number {
+  return Math.round(value * 1000) / 1000;
+}
+
 function polarX(angleDeg: number, radius: number): number {
-  return CENTER + radius * Math.cos(toRad(angleDeg));
+  return coord(CENTER + radius * Math.cos(toRad(angleDeg)));
 }
 
 function polarY(angleDeg: number, radius: number): number {
-  return CENTER + radius * Math.sin(toRad(angleDeg));
+  return coord(CENTER + radius * Math.sin(toRad(angleDeg)));
 }
 
 // ── Sub-components ──

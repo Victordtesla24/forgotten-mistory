@@ -71,17 +71,37 @@ function readDeviceMetrics(): DeviceMetrics {
   };
 }
 
-export function useDeviceTelemetry(enabled: boolean): DeviceMetrics {
-  const [state, setState] = useState<DeviceMetrics>(() => readDeviceMetrics());
+/**
+ * SSR-safe placeholder. The server (and the client's first paint) must render
+ * these exact values so hydration matches; the real device metrics are read
+ * only after mount, inside the effect below. Reading navigator.connection /
+ * performance.memory during the useState initializer previously made the
+ * server render "—" while the client hydrated to e.g. "4G" — a React #425
+ * text-content hydration mismatch.
+ */
+const SSR_SAFE_METRICS: DeviceMetrics = {
+  connectionType: '—',
+  rttMs: null,
+  downlinkMbps: null,
+  deviceMemoryGB: null,
+  cpuCores: 1,
+  dpr: 1,
+  jsHeapUsedMB: null,
+  jsHeapTotalMB: null,
+};
+
+export function useDeviceTelemetry(poll: boolean): DeviceMetrics {
+  const [state, setState] = useState<DeviceMetrics>(SSR_SAFE_METRICS);
 
   useEffect(() => {
-    if (!enabled) return;
+    // First real read happens post-mount so SSR and first client render agree.
     setState(readDeviceMetrics());
+    if (!poll) return;
     const interval = setInterval(() => {
       setState(readDeviceMetrics());
     }, 2000);
     return () => clearInterval(interval);
-  }, [enabled]);
+  }, [poll]);
 
   return state;
 }
@@ -156,9 +176,10 @@ export default React.memo(function TeslaDashboard({
   project?: string;
 }) {
   const prefersReducedMotion = useReducedMotionSafe();
-  const metrics = useDeviceTelemetry(!prefersReducedMotion);
-
-  const display = prefersReducedMotion ? readDeviceMetrics() : metrics;
+  // `metrics` is SSR-safe on first paint and holds real device values after
+  // mount (including a single read when reduced-motion disables polling), so
+  // we never read browser APIs during render.
+  const display = useDeviceTelemetry(!prefersReducedMotion);
 
   const {
     connectionType,
