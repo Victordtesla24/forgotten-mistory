@@ -60,11 +60,11 @@ export const hero = {
   greeting: "Hello, I'm",
   name: 'Vikram.',
   // Scannable first-paint positioning for a recruiter's 5-second scan (D-HERO-01):
-  // one CV-aligned target title, location, and a truthful open-to-work signal
-  // (D-AVAIL-01 — currently at the ATO AND open to what's next; no invented end date).
-  title: 'Scrum Master / Project Manager · AI Solutions Architect',
+  // SM/PM primary for Melbourne hiring; AI delivery stays a differentiator, not the H1.
+  // (D-AVAIL-01 — currently at the ATO AND actively exploring what's next; no invented end date).
+  title: 'Scrum Master / Project Manager · Technical Delivery Leader',
   location: 'Melbourne, VIC, Australia',
-  availability: 'Open to new delivery-leadership & AI engagements',
+  availability: 'Actively exploring Scrum Master and delivery-leadership roles in Melbourne',
   subtitle: [
     "I'm a technical delivery leader and AI solutions architect based in Melbourne, currently leading agile delivery as Scrum Master / Project Manager on the Australian Taxation Office's Payday Super program. Over 15+ years across government, finance, and telecommunications I've helped teams ship complex systems — from mainframe test automation to real-time AI platforms — with a focus on measurable business value.",
   ],
@@ -496,7 +496,9 @@ export const projectionDimensions: ProjectionDimension[] = [
 ];
 
 export const contact = {
-  headline: "Let's ship AI/ML programs that stay fast, safe, and compliant.",
+  // Employer-first hire invitation (Melbourne SM/PM); AI delivery kept as secondary signal.
+  headline:
+    'Open to Scrum Master / Project Manager roles in Melbourne — and selected AI delivery engagements.',
   email: 'sarkar.vikram@gmail.com',
   phone: '+61 433 224 556',
   phoneHref: 'tel:+61433224556',

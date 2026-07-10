@@ -62,4 +62,44 @@ test.describe('E2E: Projects / Work Section', () => {
     await expect(page.locator('#work')).toContainText('JARVIS');
     await expect(page.locator('#work')).toContainText('telemetry');
   });
+
+  test('TC-WORK-07: ScrollRail label anchors to work', async ({ page }) => {
+    await gotoHome(page);
+    const rail = page.locator('#work [data-testid="scroll-rail"]');
+    await expect(rail).toBeAttached();
+    await expect(rail).toContainText('Work');
+  });
+
+  test('TC-WORK-08: Catalogue is keyboard-reachable with progress dots', async ({ page }) => {
+    await gotoHome(page);
+    const carousel = page.locator('#projects-carousel');
+    await expect(carousel).toBeVisible();
+    await expect(carousel).toHaveAttribute('role', 'region');
+    await expect(carousel).toHaveAttribute('aria-label', 'Project catalogue');
+
+    const cards = page.locator('#projects-carousel .project-card');
+    const cardCount = await cards.count();
+    expect(cardCount).toBeGreaterThanOrEqual(4);
+
+    // First card keeps its real GitHub href (facts preserved).
+    const firstHref = await cards.first().getAttribute('href');
+    expect(firstHref).toMatch(/^https:\/\/github\.com\//);
+
+    const dots = page.locator('.carousel-progress-dot');
+    const dotCount = await dots.count();
+    if (dotCount > 0) {
+      expect(dotCount).toBe(cardCount);
+      await dots.nth(Math.min(1, dotCount - 1)).click();
+      await expect(cards.nth(Math.min(1, cardCount - 1))).toHaveAttribute('aria-current', 'true');
+    }
+  });
+
+  test('TC-WORK-09: Work section lede and featured repo links stay intact', async ({ page }) => {
+    await gotoHome(page);
+    await expect(page.locator('#work .work-section-lede')).toBeVisible();
+    const repo = page.locator('#work .repo-curated a').first();
+    await expect(repo).toBeVisible();
+    const href = await repo.getAttribute('href');
+    expect(href).toMatch(/^https:\/\/github\.com\//);
+  });
 });

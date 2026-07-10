@@ -25,7 +25,26 @@ export default function Error({ error, reset }: ErrorProps) {
     // Log to console in dev; in production a real error-reporting service
     // would be wired here (Sentry, Datadog RUM, etc.).
     console.error('[app/error.tsx] Unhandled error:', error);
-  }, [error]);
+
+    // Auto-recover once from *transient* errors (hydration/render races often
+    // succeed on a pure client re-render). Guarded via sessionStorage so a
+    // deterministic error can't loop: at most one silent retry per 10s window —
+    // after that the visible "Try again" UI is shown. This stops a one-off
+    // glitch from stranding a recruiter on "Something went wrong".
+    try {
+      const KEY = '__fm_error_autoretry_at';
+      const now = Date.now();
+      const last = Number(window.sessionStorage.getItem(KEY) || '0');
+      if (now - last > 10_000) {
+        window.sessionStorage.setItem(KEY, String(now));
+        const t = window.setTimeout(() => reset(), 150);
+        return () => window.clearTimeout(t);
+      }
+    } catch {
+      // sessionStorage unavailable (private mode / blocked) — fall through to
+      // the manual recovery UI below.
+    }
+  }, [error, reset]);
 
   return (
     <html lang="en">

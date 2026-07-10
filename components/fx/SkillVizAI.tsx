@@ -141,7 +141,7 @@ export default function SkillVizAI() {
       className="skill-viz skill-viz--ai"
       data-testid="skill-viz-ai"
       aria-hidden="true"
-      style={{ width: 260, height: 160, position: 'relative', overflow: 'hidden', borderRadius: 8, background: 'rgba(255,255,255,0.02)' }}
+      style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, background: 'transparent', pointerEvents: 'none' }}
     >
       {inView ? (
         <Canvas

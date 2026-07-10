@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import type { ExperienceRole } from '@/app/data/siteContent';
@@ -14,6 +14,11 @@ const CardFlipCanvas = dynamic(() => import('@/components/fx/CardFlipCanvas'), {
 interface ExperienceAccordionProps {
   roles: ExperienceRole[];
 }
+
+// Apple-style emphasized decelerate — a long, soft settle shared by the
+// experience section so the accordion feels coherent with the rest of the page.
+const ACCORDION_EASE = [0.22, 0.61, 0.36, 1] as const;
+const BULLET_STAGGER = 0.05;
 
 /**
  * Accessible experience accordion with 3D card-flip page-turn reveal.
@@ -60,15 +65,37 @@ function AccordionItem({
   prefersReducedMotion: boolean;
   onToggle: () => void;
 }) {
-  const contentRef = useRef<HTMLDivElement>(null);
+  // Keep the measured DOM node in state so the CardFlipCanvas always receives a
+  // real element (deterministic: callback ref fires on mount, no null race).
+  const [contentEl, setContentEl] = useState<HTMLDivElement | null>(null);
+
+  const bulletContainer = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: prefersReducedMotion ? 0 : BULLET_STAGGER,
+        delayChildren: prefersReducedMotion ? 0 : 0.08,
+      },
+    },
+  };
+
+  const bulletItem = {
+    hidden: { opacity: 0, x: -12 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.4, ease: ACCORDION_EASE },
+    },
+  };
 
   return (
-    <div className={`accordion-item${isOpen ? ' active' : ''}`}>
+    <div className={`accordion-item${isOpen ? ' active' : ''}`} data-open={isOpen}>
       <button
         type="button"
         className="accordion-header"
         aria-expanded={isOpen}
         aria-controls={`experience-${role.id}`}
+        id={`experience-${role.id}-label`}
         onClick={onToggle}
       >
         <div className="accordion-title">
@@ -80,7 +107,8 @@ function AccordionItem({
         <div className="accordion-meta">
           <span className="date">{role.dates}</span>
           <span className="icon" aria-hidden="true">
-            +
+            <span className="icon-bar icon-bar--h" />
+            <span className="icon-bar icon-bar--v" />
           </span>
         </div>
       </button>
@@ -95,31 +123,34 @@ function AccordionItem({
             initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.45, ease: [0.22, 0.61, 0.36, 1] }}
+            transition={{ duration: 0.45, ease: ACCORDION_EASE }}
           >
-            <div ref={contentRef} className="accordion-body" style={{ position: 'relative' }}>
+            <div ref={setContentEl} className="accordion-body">
               {/* 3D card-flip overlay — visual layer behind the DOM content.
                   Not rendered when prefers-reduced-motion is active. */}
               {!prefersReducedMotion && (
                 <ErrorBoundary>
-                  <CardFlipCanvas
-                    active={isOpen}
-                    containerEl={contentRef.current}
-                  />
+                  <CardFlipCanvas active={isOpen} containerEl={contentEl} />
                 </ErrorBoundary>
               )}
-              <ul style={{ position: 'relative', zIndex: 2 }}>
+              <motion.ul
+                className="accordion-bullets"
+                variants={bulletContainer}
+                initial="hidden"
+                animate="visible"
+              >
                 {role.bullets.map((bullet, index) => (
-                  <li
+                  <motion.li
                     key={bullet.slice(0, 48)}
+                    variants={bulletItem}
                     data-evidence-harness={
                       role.id === 'ato' && index === 1 ? 'true' : undefined
                     }
                   >
                     {bullet}
-                  </li>
+                  </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
             </div>
           </motion.div>
         )}

@@ -8,7 +8,7 @@ import { gsap } from '@/lib/gsap';
  *
  * scrub:true, no pin. On scroll through the hero section:
  *  - HUD backdrop fades/scales in (HUD telemetry "uLoad 0→1" equivalent)
- *  - Headline clip-reveal progresses (mask/clip-path scrub)
+ *  - Headline entrance fade (opacity only — no clip-path; D-NAME-01)
  *  - Avatar still→video crossfade (image opacity 1→0, video-ready state)
  *
  * Under prefers-reduced-motion the hero settles to final static state.
@@ -54,21 +54,22 @@ export default function HeroScroll() {
           );
         }
 
-        // Headline clip-reveal — scrub mask/clip-path
+        // Headline entrance — opacity only (D-NAME-01).
+        // A clip-path wipe previously left the name mid-clipped ("Vikr") whenever the
+        // tween was interrupted or measured before onComplete. Opacity never masks
+        // glyphs; clearProps still removes the inline style after settle.
         if (titleReveal) {
-          // Set up initial clip-path for reveal animation
-          gsap.set(titleReveal, { clipPath: 'inset(0 100% 0 0)' });
-          gsap.to(titleReveal, {
-            clipPath: 'inset(0 0% 0 0)',
-            ease: 'none',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 8%',
-              end: 'top -12%',
-              scrub: 0.5,
-              invalidateOnRefresh: true,
+          gsap.fromTo(
+            titleReveal,
+            { opacity: 0 },
+            {
+              opacity: 1,
+              duration: 0.9,
+              ease: 'power3.out',
+              delay: 0.15,
+              onComplete: () => gsap.set(titleReveal, { clearProps: 'opacity' }),
             },
-          });
+          );
         }
 
         // Avatar still→video crossfade — image fades out as hero scrolls past
@@ -92,9 +93,9 @@ export default function HeroScroll() {
       });
 
       mm.add('(prefers-reduced-motion: reduce)', () => {
-        // Final static state — backdrop at full, title revealed, avatar dimmed
+        // Final static state — backdrop at full, title fully visible, avatar dimmed
         if (backdrop) gsap.set(backdrop, { opacity: 0.38, scale: 1 });
-        if (titleReveal) gsap.set(titleReveal, { clipPath: 'inset(0 0% 0 0)' });
+        if (titleReveal) gsap.set(titleReveal, { clearProps: 'clipPath,opacity' });
         if (avatarImg) gsap.set(avatarImg, { opacity: 0.15 });
       });
     }, rootRef);

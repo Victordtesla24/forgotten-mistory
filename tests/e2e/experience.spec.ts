@@ -45,10 +45,14 @@ test.describe('E2E: Experience Section', () => {
 
   test('TC-EXP-03: Experience accordion items are expandable', async ({ page }) => {
     await gotoHome(page);
-    // The accordion items should be clickable/expandable
-    const firstRole = page.locator('#experience [class*="experience"] button, #experience [class*="accordion"], #experience [class*="Accordion"]').first();
-    if (await firstRole.isVisible().catch(() => false)) {
-      await firstRole.click();
+    // The first accordion header is the current ATO role; click it to toggle and
+    // confirm the panel remains functional. Use a specific button selector so
+    // the click lands on the real control, not the wrapper.
+    const firstHeader = page.locator('#experience .accordion-header').first();
+    if (await firstHeader.isVisible().catch(() => false)) {
+      await firstHeader.click();
+      await page.waitForTimeout(300);
+      await firstHeader.click();
       await page.waitForTimeout(300);
     }
     // Role details (bullets) should be visible after expanding
@@ -63,10 +67,10 @@ test.describe('E2E: Experience Section', () => {
 
   test('TC-EXP-05: ScrollRail label anchors to experience', async ({ page }) => {
     await gotoHome(page);
-    const rail = page.locator('[class*="scroll-rail"], [class*="ScrollRail"]');
-    const railCount = await rail.count();
-    if (railCount > 0) {
-      await expect(rail).toContainText('Experience');
+    const label = page.locator('#experience .scroll-rail-label');
+    const labelCount = await label.count();
+    if (labelCount > 0) {
+      await expect(label).toContainText('Experience');
     }
   });
 });

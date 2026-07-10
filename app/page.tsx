@@ -137,16 +137,26 @@ const SKILL_ICONS = {
   graduationCap: GraduationCap,
 } as const;
 
+const SKILL_VIZ_MAP: Record<string, React.ComponentType> = {
+  'ai-ml': SkillVizAI,
+  'engineering': SkillVizEngineering,
+  'leadership': SkillVizLeadership,
+  'certifications': SkillVizCertifications,
+  'education': SkillVizEducation,
+};
+
+// Entrance is triggered by the preloader handoff (`fm:page-ready`), not a fixed
+// delay — so `delayChildren` is just a short beat after the wipe starts.
 const heroStagger = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.12, delayChildren: 1.05 },
+    transition: { staggerChildren: 0.085, delayChildren: 0.12 },
   },
 };
 
 const heroItem = {
-  hidden: { opacity: 0, y: 26 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 0.61, 0.36, 1] } },
+  hidden: { opacity: 0, y: 22 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.62, ease: [0.16, 1, 0.3, 1] } },
 };
 
 export default function Home() {
@@ -155,6 +165,31 @@ export default function Home() {
   const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null);
   const [isLocked, setIsLocked] = useState(false);
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Hero entrance is choreographed to the preloader handoff. `initial="hidden"`
+  // stays identical on the server and first client paint (no hydration branch);
+  // the entrance plays the moment the boot wipe begins (`fm:page-ready`), which
+  // also covers the Skip-intro path. A safety timeout guarantees the hero is
+  // never left hidden if the signal is somehow missed.
+  const [revealed, setRevealed] = useState(false);
+  useEffect(() => {
+    if (typeof document !== 'undefined' && document.body.classList.contains('page-ready')) {
+      setRevealed(true);
+      return;
+    }
+    let settled = false;
+    const reveal = () => {
+      if (settled) return;
+      settled = true;
+      setRevealed(true);
+    };
+    window.addEventListener('fm:page-ready', reveal);
+    const fallback = window.setTimeout(reveal, 2600);
+    return () => {
+      window.removeEventListener('fm:page-ready', reveal);
+      window.clearTimeout(fallback);
+    };
+  }, []);
 
   // Subtle scroll parallax across the hero.
   const heroRef = useRef<HTMLElement | null>(null);
@@ -234,7 +269,6 @@ export default function Home() {
       </div>
 
       <CursorDepthField />
-      <CardDepth />
 
       <FloatingDetailBox
         activeKey={activeKey}
@@ -258,7 +292,7 @@ export default function Home() {
             // reducedMotion="user" makes the transform legs instant for reduced-motion
             // users, leaving only a gentle opacity fade.
             initial="hidden"
-            animate="visible"
+            animate={revealed ? 'visible' : 'hidden'}
           >
             <motion.h1 className="hero-title" variants={heroItem} style={{ y: titleY }}>
               <span className="line">{hero.greeting}</span>{' '}
@@ -292,24 +326,8 @@ export default function Home() {
               ))}
             </motion.ul>
 
-            <motion.div variants={heroItem} style={{ y: titleY }}>
-              <p className="hero-subtitle">
-                {hero.subtitle.map((paragraph, index) => (
-                  <React.Fragment key={paragraph.slice(0, 32)}>
-                    {index > 0 && (
-                      <>
-                        <br />
-                        <br />
-                      </>
-                    )}
-                    {paragraph}
-                  </React.Fragment>
-                ))}
-              </p>
-            </motion.div>
-            {/* Dual-pillar CTAs (NN-1): the two first-class audiences each get a
-                first-class action — employers review the evidence, clients see the
-                quantified outcomes. */}
+            {/* Dual-pillar CTAs (NN-1) sit above the narrative subtitle so a
+                recruiter's first paint lands on role + actions, not a wall of copy. */}
             <motion.div className="hero-cta-pillars" variants={heroItem}>
               <a
                 href="#experience"
@@ -329,6 +347,22 @@ export default function Home() {
               >
                 See outcomes
               </a>
+            </motion.div>
+
+            <motion.div variants={heroItem} style={{ y: titleY }}>
+              <p className="hero-subtitle">
+                {hero.subtitle.map((paragraph, index) => (
+                  <React.Fragment key={paragraph.slice(0, 32)}>
+                    {index > 0 && (
+                      <>
+                        <br />
+                        <br />
+                      </>
+                    )}
+                    {paragraph}
+                  </React.Fragment>
+                ))}
+              </p>
             </motion.div>
             <motion.div className="hero-links" variants={heroItem}>
               {/* D-CONTACT-01 + D-CV-01 — LinkedIn (primary recruiter channel) and a
@@ -436,6 +470,7 @@ export default function Home() {
                 </Reveal>
               ))}
 
+              <Reveal delay={0.16} y={24}>
               <div className="snap-grid" role="list">
                 <ExpandableCard
                   baseClass="snap-card"
@@ -543,6 +578,7 @@ export default function Home() {
                   </ul>
                 </ExpandableCard>
               </div>
+              </Reveal>
             </div>
           </div>
         </section>
@@ -569,8 +605,10 @@ export default function Home() {
             <div className="skills-grid">
               {skillGroups.map((group, index) => {
                 const Icon = SKILL_ICONS[group.icon];
+                const Viz = SKILL_VIZ_MAP[group.id];
                 return (
-                  <Reveal key={group.id} delay={index * 0.06}>
+                  <div key={group.id} className="skill-card-wrapper" style={{ opacity: 0 }}>
+                    <Reveal delay={index * 0.06}>
                     <ExpandableCard
                       baseClass="skill-card"
                       headerClass="skill-header"
@@ -587,31 +625,64 @@ export default function Home() {
                             </div>
                           </div>
                           <span className="skill-chevron" aria-hidden="true">
-                            +
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                           </span>
                         </>
                       }
                     >
-                      <ul className="skill-list">
-                        {group.items.map((item) => (
-                          <li key={item}>{item}</li>
-                        ))}
-                      </ul>
+                      <div className="skill-content-layout">
+                        <ul className="skill-list">
+                          {group.items.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                        {Viz && (
+                          <div className="skill-viz-wrapper">
+                            <Viz />
+                          </div>
+                        )}
+                      </div>
                     </ExpandableCard>
-                  </Reveal>
+                    </Reveal>
+                  </div>
                 );
               })}
             </div>
           </div>
         </section>
 
-        <section id="architecture-lab" className="architecture-section">
+        <section
+          id="architecture-lab"
+          className="architecture-section"
+          aria-labelledby="architecture-title"
+        >
           <div className="container">
-            <Reveal className="section-header">
-              <h2 className="section-title">Interactive Architecture Map</h2>
-              <p className="section-subhead">
-                Trace how requests move from edge clients to Gemini, telemetry, and governance.
-              </p>
+            <Reveal className="section-header architecture-section-header">
+              <p className="architecture-section-kicker">System topology / reference pathways</p>
+              <div className="architecture-section-title-row">
+                <div>
+                  <h2 id="architecture-title" className="section-title">
+                    Interactive Architecture Map
+                  </h2>
+                  <p className="section-subhead">
+                    Trace how requests move from edge clients to Gemini, telemetry, and governance.
+                  </p>
+                </div>
+                <ul className="architecture-section-facts" aria-label="Architecture map features">
+                  <li>
+                    <strong>03</strong>
+                    <span>Traceable routes</span>
+                  </li>
+                  <li>
+                    <strong>06</strong>
+                    <span>Inspectable nodes</span>
+                  </li>
+                  <li>
+                    <strong>AA</strong>
+                    <span>Keyboard ready</span>
+                  </li>
+                </ul>
+              </div>
             </Reveal>
             <Reveal delay={0.1}>
               <ArchitectureMap />
@@ -621,11 +692,15 @@ export default function Home() {
 
         <section id="work" className="work-section">
           {/* T4 + T5 — WorkScroll (per-scene pin sequential) + CatalogueScroll (vertical→horizontal) */}
+          <ScrollRail targetId="work" label="Work" />
           <WorkScroll />
           <CatalogueScroll />
           <div className="container">
             <Reveal className="section-header">
               <h2 className="section-title">Current Projects in the Pipeline</h2>
+              <p className="section-subhead work-section-lede">
+                Flagship builds with live signature effects — drag or scroll the catalogue, then explore the VFX gallery.
+              </p>
             </Reveal>
 
             <Reveal delay={0.05}>
@@ -758,11 +833,33 @@ export default function Home() {
                 </a>
               </Reveal>
               <Reveal className="social-links-large" delay={0.16}>
-                <a href={contact.github} target="_blank" rel="noreferrer" className="social-btn">
+                <a
+                  href={contact.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="social-btn"
+                  data-cursor-label="LinkedIn"
+                >
+                  <span>LinkedIn</span>
+                  <ArrowRight size={18} strokeWidth={2} aria-hidden="true" />
+                </a>
+                <a
+                  href={contact.github}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="social-btn"
+                  data-cursor-label="GitHub"
+                >
                   <span>GitHub</span>
                   <ArrowRight size={18} strokeWidth={2} aria-hidden="true" />
                 </a>
-                <a href={contact.youtube} target="_blank" rel="noreferrer" className="social-btn">
+                <a
+                  href={contact.youtube}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="social-btn"
+                  data-cursor-label="YouTube"
+                >
                   <span>YouTube</span>
                   <ArrowRight size={18} strokeWidth={2} aria-hidden="true" />
                 </a>
@@ -774,7 +871,8 @@ export default function Home() {
 
       <footer role="contentinfo">
         <div className="footer-content">
-          <p>&copy; {new Date().getFullYear()} Vikram Deshpande. All rights reserved.</p>
+          {/* Fixed year avoids SSR/CSR Date drift hydration warnings (D-CRASH-01). */}
+          <p>&copy; 2026 Vikram Deshpande. All rights reserved.</p>
           <HiddenTerminal />
         </div>
       </footer>

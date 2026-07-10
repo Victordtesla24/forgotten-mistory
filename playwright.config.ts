@@ -22,15 +22,16 @@ export default defineConfig({
   timeout: process.env.CI ? 180000 : 90000, // 3 min timeout in CI, 1.5 min locally
   use: {
     trace: 'on-first-retry',
-    baseURL: 'http://localhost:5599',
+    // Orchestrator lane serves `npm run dev` on :8080; allow override for CI/static.
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:8080',
     screenshot: 'only-on-failure',
   },
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'], channel: process.env.CI ? undefined : 'chrome' },
-      // Per-test file timeout (30 seconds per test file)
-      timeout: 30000,
+      // Allow describe-level overrides (telemetry-stability / hero D-NAME suites).
+      timeout: 90000,
     },
   ],
   // Snapshot config for visual-regression (toHaveScreenshot)

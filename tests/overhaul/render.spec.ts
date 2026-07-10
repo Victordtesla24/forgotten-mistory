@@ -211,15 +211,36 @@ test.describe('TC-NFR-RENDER: Cinematic Rendering Compliance', () => {
   });
 
   test('TC-RENDER-09: Page renders without React error boundary fallback', async ({ page }) => {
+    const pageErrors: string[] = [];
+    page.on('pageerror', (err) => pageErrors.push(err.message));
+
     await page.goto('/', { waitUntil: 'domcontentloaded' });
     const pre = page.locator('.preloader');
     if (await pre.isVisible().catch(() => false)) {
       await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
     }
 
+    // Full scroll so lazy VFX / AnimatePresence lists mount (D-CRASH-01).
+    for (const sectionId of ['#hero', '#skills', '#work', '#contact']) {
+      const section = page.locator(sectionId);
+      if ((await section.count()) === 0) continue;
+      await section.scrollIntoViewIfNeeded().catch(() => {});
+      await page.waitForTimeout(800);
+    }
+    await page.waitForTimeout(1500);
+
     // No error boundary fallback text visible
     const bodyText = await page.locator('body').innerText();
     expect(bodyText).not.toContain('Something went wrong');
+    expect(bodyText.toLowerCase()).not.toContain('system interrupt');
     expect(bodyText).not.toContain('Error:');
+
+    const fatal = pageErrors.filter(
+      (m) =>
+        m.includes('Maximum update depth exceeded') ||
+        m.includes('Minified React error #185') ||
+        m.includes('Minified React error #425'),
+    );
+    expect(fatal, `Fatal pageerrors:\n${fatal.join('\n')}`).toHaveLength(0);
   });
 });

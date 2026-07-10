@@ -120,9 +120,12 @@ export default function Preloader() {
   }, [full]);
 
   // Reveal: release the page (body.page-ready), run the wipe, then unmount.
+  // The `fm:page-ready` event lets the hero choreograph its entrance to the exact
+  // frame the wipe begins — including the Skip path — instead of a hardcoded delay.
   useEffect(() => {
     if (!revealing) return undefined;
     document.body.classList.add('page-ready');
+    window.dispatchEvent(new Event('fm:page-ready'));
     const id = window.setTimeout(() => setDone(true), WIPE_MS);
     return () => clearTimeout(id);
   }, [revealing]);

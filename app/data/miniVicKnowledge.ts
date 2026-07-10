@@ -482,10 +482,10 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'opportunities',
     ],
     answer:
-      "I'm open to new delivery-leadership and AI engagements. I'm currently leading the Australian Taxation Office's Payday Super program as Scrum Master / Project Manager, so a start is a conversation about timing rather than an immediate jump — but the right opportunities are worth planning early. The best way to explore fit is to contact me directly: sarkar.vikram@gmail.com or +61 433 224 556.",
+      "I'm actively exploring Scrum Master and delivery-leadership roles in Melbourne. I'm currently leading the Australian Taxation Office's Payday Super program as Scrum Master / Project Manager, so a start is a conversation about timing rather than an immediate jump — but the right opportunities are worth planning early. The best way to explore fit is to contact me directly: sarkar.vikram@gmail.com or +61 433 224 556.",
     personaVariants: {
       hiring:
-        "I'm open to new roles, especially where AI delivery leadership meets complex programs. I'm currently engaged at the ATO on the Payday Super program, so timing is a conversation rather than an immediate start — but I'd genuinely welcome the discussion early. Reach out directly at sarkar.vikram@gmail.com or +61 433 224 556 and we can talk timing, scope, and fit.",
+        "I'm actively exploring Scrum Master / Project Manager and delivery-leadership roles in Melbourne, especially where AI delivery leadership meets complex programs. I'm currently engaged at the ATO on the Payday Super program, so timing is a conversation rather than an immediate start — but I'd genuinely welcome the discussion early. Reach out directly at sarkar.vikram@gmail.com or +61 433 224 556 and we can talk timing, scope, and fit.",
       engineering:
         "Status: currently committed to the ATO's Payday Super program. That said, I keep an open channel for interesting problems — particularly LLM platforms, delivery automation, and modernisation work. Email sarkar.vikram@gmail.com with what you're building and we'll see if the timelines and the problem are a match.",
       story:

@@ -7,10 +7,12 @@ import { test, expect, type Page } from '@playwright/test';
 
 async function gotoHome(page: Page) {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  const pre = page.locator('.preloader');
-  if (await pre.isVisible().catch(() => false)) {
-    await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-  }
+  // Match hero suite: click Skip, then force-remove if the wipe stalls.
+  await page.evaluate(() => {
+    const skip = document.querySelector('button.preloader-skip') as HTMLButtonElement | null;
+    skip?.click();
+    document.querySelector('.preloader')?.remove();
+  }).catch(() => {});
   await page.locator('#contact').scrollIntoViewIfNeeded();
 }
 
@@ -21,20 +23,25 @@ test.describe('E2E: Contact Section', () => {
     await gotoHome(page);
     const section = page.locator('#contact');
     await expect(section).toBeVisible();
-    await expect(section).toContainText("Let's ship");
-    await expect(section).toContainText('compliant');
+    await expect(section).toContainText(
+      'Open to Scrum Master / Project Manager roles in Melbourne — and selected AI delivery engagements.',
+    );
   });
 
   test('TC-CONTACT-02: Book a conversation CTA is visible', async ({ page }) => {
     await gotoHome(page);
     const bookBtn = page.locator('#contact a', { hasText: 'Book a conversation' });
     await expect(bookBtn).toBeVisible();
+    const href = await bookBtn.getAttribute('href');
+    expect(href).toMatch(/^(https?:\/\/|mailto:)/i);
   });
 
   test('TC-CONTACT-03: Download CV link is visible', async ({ page }) => {
     await gotoHome(page);
     const cvLink = page.locator('#contact a', { hasText: 'Download CV' });
     await expect(cvLink).toBeVisible();
+    const href = await cvLink.getAttribute('href');
+    expect(href).toMatch(/\/docs\/Vik_Resume_Final\.pdf$/);
   });
 
   test('TC-CONTACT-04: Email card renders with correct address', async ({ page }) => {
@@ -62,6 +69,15 @@ test.describe('E2E: Contact Section', () => {
     const contact = page.locator('#contact');
     await expect(contact.locator('a', { hasText: 'GitHub' })).toBeVisible();
     await expect(contact.locator('a', { hasText: 'YouTube' })).toBeVisible();
+  });
+
+  test('TC-CONTACT-09: LinkedIn social link renders in contact section (D-CONTACT-01)', async ({ page }) => {
+    await gotoHome(page);
+    const contact = page.locator('#contact');
+    const linkedinLink = contact.locator('a.social-btn', { hasText: 'LinkedIn' });
+    await expect(linkedinLink).toBeVisible();
+    const href = await linkedinLink.getAttribute('href');
+    expect(href).toContain('linkedin.com/in/vikramd-profile');
   });
 
   test('TC-CONTACT-08: Contact card icons render (Mail and Phone)', async ({ page }) => {

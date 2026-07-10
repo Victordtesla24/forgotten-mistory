@@ -88,7 +88,7 @@ export default function RootLayout({
     // tokens (which reference these next/font vars) resolve at :root. Placing
     // them on <body> would leave :root unable to see them — the tokens would
     // compute to empty and headings would fall back to the UA sans stack.
-    <html lang="en" className={`${bodyFont.variable} ${headingFont.variable}`}>
+    <html lang="en" className={`${bodyFont.variable} ${headingFont.variable}`} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
@@ -99,7 +99,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <AvatarSpeakingProvider>
           <MotionProvider>
             {children}

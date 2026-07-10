@@ -43,7 +43,7 @@ export default function Dossier() {
               <span className="dossier-frame__sheen" />
             </span>
             <p className="dossier-frame-label" aria-hidden="true">
-              VIKRAM DESHPANDE · PRINCIPAL ENGINEER · DOSSIER
+              VIKRAM DESHPANDE · SCRUM MASTER / PROJECT MANAGER · DOSSIER
             </p>
             <div className="dossier-body">
               <Reveal stagger={0.08} variant="clip">

@@ -32,6 +32,24 @@ interface LegacyMediaWindow {
   webkitAudioContext?: typeof AudioContext;
 }
 
+type SpeechRecognitionEventLike = {
+  results?: ArrayLike<ArrayLike<{ transcript?: string }>>;
+};
+
+const transcriptFromSpeechEvent = (event: unknown): string => {
+  const results = (event as SpeechRecognitionEventLike).results;
+  if (!results) return "";
+  return Array.from({ length: results.length }, (_, index) => results[index]?.[0]?.transcript ?? "").join("");
+};
+
+const speechErrorLabel = (event: unknown): string => {
+  if (typeof event === "object" && event !== null && "error" in event) {
+    const error = (event as { error?: unknown }).error;
+    if (typeof error === "string") return error;
+  }
+  return "unknown";
+};
+
 type ModeKey = "recruiter" | "engineer" | "story";
 
 /** Maps UI persona modes to the knowledge module's persona vocabulary. */
@@ -53,6 +71,13 @@ type ChatMessage = {
 };
 
 type QuickPrompt = { label: string; prompt: string; mode?: ModeKey };
+
+/** Monotonic message ids — Date.now() alone can collide when user+bot land in the same ms. */
+let miniVicMsgSeq = 0;
+function nextChatMessageId(role: "user" | "bot"): string {
+  miniVicMsgSeq += 1;
+  return `${role}-${Date.now()}-${miniVicMsgSeq}`;
+}
 
 type RealtimeServerEnvelope = {
   sessionId: string;
@@ -184,7 +209,9 @@ const MiniVicBot = () => {
   // Track live WebSocket connections for clean teardown (no leaked sockets)
   const liveSocketsRef = useRef<Set<WebSocket>>(new Set());
   
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+  const objectUrlsRef = useRef<Set<string>>(new Set());
+  const inFlightRef = useRef(false);
   const prefersReducedMotion = useReducedMotion();
   const messagesRef = useRef(messages);
   messagesRef.current = messages;
@@ -238,9 +265,13 @@ const MiniVicBot = () => {
 
   const stopAudio = React.useCallback(() => {
     if (audioRef.current) {
+      audioRef.current.onplay = null;
+      audioRef.current.onended = null;
+      audioRef.current.onerror = null;
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
-      audioRef.current.src = "";
+      audioRef.current.removeAttribute("src");
+      audioRef.current.load();
     }
     if (videoRef.current && isVideoPlaying) {
         // Revert to loop
@@ -254,6 +285,42 @@ const MiniVicBot = () => {
     currentAudioSrcRef.current = "";
     stopMouth();
   }, [isVideoPlaying, AVATAR_VIDEO_URL, stopMouth]);
+
+  const rememberLastAudio = React.useCallback((src: string | null) => {
+    setLastAudio((previous) => {
+      if (previous && previous !== src && objectUrlsRef.current.has(previous)) {
+        URL.revokeObjectURL(previous);
+        objectUrlsRef.current.delete(previous);
+      }
+      return src;
+    });
+  }, []);
+
+  const revokeAllObjectUrls = React.useCallback(() => {
+    objectUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
+    objectUrlsRef.current.clear();
+  }, []);
+
+  const stopListening = React.useCallback(() => {
+    try {
+      recognitionRef.current?.stop();
+    } catch (error) {
+      logMiniVicIssue("Speech recognition stop failed", error);
+    }
+    setIsListening(false);
+  }, []);
+
+  const closePanel = React.useCallback(
+    (restoreFocus = true) => {
+      stopListening();
+      stopAudio();
+      setIsOpen(false);
+      if (restoreFocus) {
+        requestAnimationFrame(() => toggleRef.current?.focus());
+      }
+    },
+    [stopAudio, stopListening],
+  );
 
   const pauseAudio = React.useCallback(() => {
     if (!audioRef.current || !isSpeaking || isPaused) return;
@@ -294,14 +361,12 @@ const MiniVicBot = () => {
     if (!isOpen) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        stopAudio();
-        setIsOpen(false);
-        toggleRef.current?.focus();
+        closePanel();
       }
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [isOpen, stopAudio]);
+  }, [closePanel, isOpen]);
 
   useEffect(() => {
     if (isMuted) {
@@ -330,6 +395,17 @@ const MiniVicBot = () => {
   useEffect(() => {
     return () => {
       if (typeof window !== "undefined") window.speechSynthesis?.cancel();
+      if (recognitionRef.current) {
+        recognitionRef.current.onresult = null;
+        recognitionRef.current.onend = null;
+        recognitionRef.current.onerror = null;
+        try {
+          recognitionRef.current.stop();
+        } catch {
+          // Browsers can throw if recognition never started.
+        }
+        recognitionRef.current = null;
+      }
       if (audioCtxRef.current && audioCtxRef.current.state !== "closed") {
         audioCtxRef.current.close().catch(() => {
           /* Closing an already-closing context is non-fatal. */
@@ -431,11 +507,8 @@ const MiniVicBot = () => {
         recognition.interimResults = true;
         recognition.lang = 'en-US';
         
-        recognition.onresult = (event: any) => {
-          const transcript = Array.from(event.results)
-            .map((result: any) => result[0])
-            .map((result) => result.transcript)
-            .join('');
+        recognition.onresult = (event: unknown) => {
+          const transcript = transcriptFromSpeechEvent(event);
           setInput(transcript);
         };
 
@@ -443,8 +516,8 @@ const MiniVicBot = () => {
           setIsListening(false);
         };
         
-        recognition.onerror = (event: any) => {
-          logMiniVicIssue("Speech recognition error", event.error);
+        recognition.onerror = (event: unknown) => {
+          logMiniVicIssue("Speech recognition error", speechErrorLabel(event));
           setIsListening(false);
         };
 
@@ -454,11 +527,13 @@ const MiniVicBot = () => {
     
     return () => {
       stopAudio();
+      stopListening();
+      revokeAllObjectUrls();
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stopAudio]);
+  }, [stopAudio, stopListening, revokeAllObjectUrls]);
 
   const toggleListening = () => {
     if (!recognitionRef.current) {
@@ -751,7 +826,8 @@ const MiniVicBot = () => {
         throw new Error("cloned-voice TTS unavailable");
       }
       const url = URL.createObjectURL(await resp.blob());
-      setLastAudio(url);
+      objectUrlsRef.current.add(url);
+      rememberLastAudio(url);
       playAudio(url);
     } catch (err) {
       logMiniVicIssue("Cloned-voice TTS unavailable; using browser voice", err);
@@ -955,10 +1031,11 @@ const MiniVicBot = () => {
   const handleSend = async (overrideText?: string, overrideMode?: ModeKey) => {
     const textToSend = (overrideText ?? input).trim();
     const modeToSend = overrideMode || activeMode;
-    if (!textToSend || isLoading) return;
+    if (!textToSend || isLoading || inFlightRef.current) return;
+    inFlightRef.current = true;
 
     const userMsg: ChatMessage = {
-      id: `user-${Date.now()}`,
+      id: nextChatMessageId("user"),
       role: "user",
       text: textToSend,
       mode: modeToSend,
@@ -1022,7 +1099,7 @@ const MiniVicBot = () => {
       setLatencyMs(measuredLatency);
 
       const botMessage: ChatMessage = {
-        id: `bot-${Date.now()}`,
+        id: nextChatMessageId("bot"),
         role: "bot",
         text: text || "I'm here—ask me anything about how I deliver, lead teams, or architect AI.",
         audio,
@@ -1034,7 +1111,7 @@ const MiniVicBot = () => {
       setLastAnswerId(botMessage.id);
 
       if (!isMuted && audio) {
-        setLastAudio(audio);
+        rememberLastAudio(audio);
         playAudio(audio);
       } else if (!isMuted && text) {
         // Provider returned text without audio — voice it in Vikram's cloned voice
@@ -1056,7 +1133,7 @@ const MiniVicBot = () => {
       const reply = await askMiniVicBrain(textToSend, PERSONA_FOR_MODE[modeToSend], brainHistory);
 
       const botMessage: ChatMessage = {
-        id: `bot-${Date.now()}`,
+        id: nextChatMessageId("bot"),
         role: "bot",
         text: reply.text,
         mode: modeToSend,
@@ -1072,6 +1149,7 @@ const MiniVicBot = () => {
         speakReply(reply.text);
       }
     } finally {
+      inFlightRef.current = false;
       setIsLoading(false);
     }
   };
@@ -1092,7 +1170,7 @@ const MiniVicBot = () => {
         timestamp: Date.now(),
       },
     ]);
-    setLastAudio(null);
+    rememberLastAudio(null);
     setLastAnswerId(null);
   };
 
@@ -1174,9 +1252,7 @@ const MiniVicBot = () => {
                 )}
                 <button
                   onClick={() => {
-                    stopAudio();
-                    setIsOpen(false);
-                    toggleRef.current?.focus();
+                    closePanel();
                   }}
                   className="rounded-full border border-white/15 bg-black/45 p-1.5 text-white/90 backdrop-blur-md transition-colors hover:border-white/35 hover:bg-white/10"
                   aria-label="Close mini Vic"
@@ -1427,7 +1503,13 @@ const MiniVicBot = () => {
       <button
         ref={toggleRef}
         data-testid="minivic-toggle"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (isOpen) {
+            closePanel(false);
+            return;
+          }
+          setIsOpen(true);
+        }}
         className={`group relative h-16 w-16 overflow-hidden rounded-full border-2 border-zinc-300/70 shadow-[0_0_26px_rgba(201,205,214,0.45)] transition-all duration-300 hover:scale-110 active:scale-95 ${
           isOpen ? "ring-4 ring-zinc-300/30" : ""
         }`}
@@ -1441,7 +1523,7 @@ const MiniVicBot = () => {
       >
         <video
           src={toggleVideoSrc || undefined}
-          className="h-full w-full object-cover"
+          className="pointer-events-none h-full w-full object-cover"
           autoPlay
           loop
           muted
@@ -1454,7 +1536,7 @@ const MiniVicBot = () => {
           <span className="relative inline-flex h-3 w-3 rounded-full border border-black bg-zinc-500"></span>
         </span>
       </button>
-      <audio ref={audioRef} className="hidden" />
+      <audio ref={audioRef} data-testid="minivic-audio" className="hidden" />
     </div>
   );
 };

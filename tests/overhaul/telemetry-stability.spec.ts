@@ -31,12 +31,18 @@ const FATAL_ERROR_SIGNATURES = [
   'Text content did not match',
 ];
 
-async function loadAndSettle(page: Page) {
-  await page.goto('/', { waitUntil: 'load' });
+const DUPLICATE_KEY_SIGNATURE = 'Encountered two children with the same key';
+
+async function dismissPreloader(page: Page) {
   const pre = page.locator('.preloader');
   if (await pre.isVisible().catch(() => false)) {
     await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
   }
+}
+
+async function loadAndSettle(page: Page) {
+  await page.goto('/', { waitUntil: 'load' });
+  await dismissPreloader(page);
   // Force the telemetry panel to mount + give hydration time to loop if buggy.
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight / 2));
   await page.waitForTimeout(3500);
@@ -44,8 +50,40 @@ async function loadAndSettle(page: Page) {
   await page.waitForTimeout(500);
 }
 
+/** Full-page scroll that mounts lazy VFX (InboxTriage stream, etc.). */
+async function loadAndFullScroll(page: Page) {
+  await page.goto('/', { waitUntil: 'load' });
+  await dismissPreloader(page);
+
+  // Prefer #work (InboxTriage) + telemetry; keep total wall time well under 90s.
+  for (const sectionId of ['#hero', '#work', '#contact']) {
+    const section = page.locator(sectionId);
+    if ((await section.count()) === 0) continue;
+    await section.scrollIntoViewIfNeeded().catch(() => {});
+    await page.waitForTimeout(600);
+  }
+
+  const triage = page.locator('[data-testid="inbox-triage"]');
+  if ((await triage.count()) > 0) {
+    await triage.first().scrollIntoViewIfNeeded();
+    // 12 messages × 160ms ≈ 2s trickle + settle buffer
+    await page.waitForTimeout(2800);
+  }
+
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.waitForTimeout(800);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(300);
+}
+
+function assertNoErrorBoundary(bodyText: string) {
+  expect(bodyText).not.toContain('Something went wrong');
+  expect(bodyText.toLowerCase()).not.toContain('system interrupt');
+}
+
 test.describe('TC-TELEMETRY-STABILITY: no infinite render loop / error boundary', () => {
-  test.describe.configure({ timeout: 90000 });
+  // Full-scroll cases (TS-05/06) need headroom under a busy :8080 lane.
+  test.describe.configure({ timeout: 120000 });
 
   test('TS-01: no uncaught React exceptions (max-update-depth / hydration)', async ({ page }) => {
     const pageErrors: string[] = [];
@@ -63,8 +101,7 @@ test.describe('TC-TELEMETRY-STABILITY: no infinite render loop / error boundary'
     await loadAndSettle(page);
 
     const bodyText = await page.locator('body').innerText();
-    expect(bodyText).not.toContain('Something went wrong');
-    expect(bodyText).not.toContain('System interrupt');
+    assertNoErrorBoundary(bodyText);
 
     // The real app shell must be present.
     await expect(page.locator('main')).toHaveCount(1);
@@ -104,6 +141,45 @@ test.describe('TC-TELEMETRY-STABILITY: no infinite render loop / error boundary'
     expect(
       hydrationErrors,
       `Hydration / loop console errors:\n${hydrationErrors.join('\n')}`,
+    ).toHaveLength(0);
+  });
+
+  test('TS-05: full scroll never trips error boundary or React #185/#425', async ({ page }) => {
+    const pageErrors: string[] = [];
+    page.on('pageerror', (err) => pageErrors.push(err.message));
+
+    await loadAndFullScroll(page);
+
+    const bodyText = await page.locator('body').innerText();
+    assertNoErrorBoundary(bodyText);
+
+    const fatal = pageErrors.filter((m) =>
+      FATAL_ERROR_SIGNATURES.some((sig) => m.includes(sig)),
+    );
+    expect(fatal, `Fatal pageerrors after full scroll:\n${fatal.join('\n')}`).toHaveLength(0);
+
+    await expect(page.locator('main')).toHaveCount(1);
+    await expect(page.locator('#hero')).toContainText('Vikram');
+  });
+
+  test('TS-06: no duplicate React keys (m3/m5 AnimatePresence) during scroll', async ({ page }) => {
+    const consoleMessages: string[] = [];
+    page.on('console', (msg) => {
+      // React duplicate-key warnings are type "error" in React 18+ / "warning" in some builds.
+      if (msg.type() === 'error' || msg.type() === 'warning') {
+        consoleMessages.push(msg.text());
+      }
+    });
+
+    await loadAndFullScroll(page);
+
+    const bodyText = await page.locator('body').innerText();
+    assertNoErrorBoundary(bodyText);
+
+    const dupKeys = consoleMessages.filter((t) => t.includes(DUPLICATE_KEY_SIGNATURE));
+    expect(
+      dupKeys,
+      `Duplicate React key warnings (D-KEYS-01):\n${dupKeys.join('\n')}`,
     ).toHaveLength(0);
   });
 });

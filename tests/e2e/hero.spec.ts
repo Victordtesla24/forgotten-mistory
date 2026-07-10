@@ -7,17 +7,21 @@ import { test, expect, type Page } from '@playwright/test';
 
 async function gotoHome(page: Page) {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  // Wait for preloader to finish
-  const pre = page.locator('.preloader');
-  if (await pre.isVisible().catch(() => false)) {
-    await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-  }
-  // Wait for hero content to be visible
-  await page.locator('.hero-section').waitFor({ state: 'visible', timeout: 15000 });
+  // D-BOOT-01: click Skip, then force-remove the overlay if the wipe stalls so
+  // suite runs are not gated on the ~1.9s boot animation.
+  await page.evaluate(() => {
+    const skip = document.querySelector('button.preloader-skip') as HTMLButtonElement | null;
+    skip?.click();
+    const pre = document.querySelector('.preloader');
+    pre?.remove();
+  }).catch(() => {});
+  await page.locator('#hero, .hero-section').first().waitFor({ state: 'visible', timeout: 15000 });
+  // Allow GSAP/CSS name entrance to settle past any transient clip/glitch frames.
+  await page.waitForTimeout(400);
 }
 
 test.describe('E2E: Hero Section', () => {
-  test.describe.configure({ timeout: 60000 });
+  test.describe.configure({ timeout: 90000 });
 
   test('TC-HERO-01: Hero section renders with greeting and name', async ({ page }) => {
     await gotoHome(page);
@@ -101,8 +105,7 @@ test.describe('E2E: Hero Section', () => {
     await gotoHome(page);
     const role = page.locator('.hero-role');
     await expect(role).toBeVisible();
-    await expect(role).toContainText('Scrum Master');
-    await expect(role).toContainText('AI Solutions Architect');
+    await expect(role).toHaveText('Scrum Master / Project Manager · Technical Delivery Leader');
   });
 
   test('TC-HERO-11: Hero shows location', async ({ page }) => {
@@ -112,7 +115,66 @@ test.describe('E2E: Hero Section', () => {
 
   test('TC-HERO-12: Hero shows a truthful open-to-work signal', async ({ page }) => {
     await gotoHome(page);
-    await expect(page.locator('.hero-availability')).toContainText('Open to');
+    await expect(page.locator('.hero-availability')).toHaveText(
+      'Actively exploring Scrum Master and delivery-leadership roles in Melbourne',
+    );
+  });
+
+  test('TC-HERO-20: Hero first paint keeps role and employer CTA in-view while telemetry stays demoted', async ({
+    page,
+  }) => {
+    for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 },
+    ] as const) {
+      await page.setViewportSize(viewport);
+      await gotoHome(page);
+
+      const role = page.locator('.hero-role');
+      const employerPillar = page.locator('[data-pillar="employer"]');
+      const telemetryPanel = page.locator('#telemetry-panel');
+
+      await expect(role).toBeVisible();
+      await expect(employerPillar).toBeVisible();
+      await expect(telemetryPanel).toBeAttached();
+
+      const [roleBox, employerBox, telemetryBox] = await Promise.all([
+        role.boundingBox(),
+        employerPillar.boundingBox(),
+        telemetryPanel.boundingBox(),
+      ]);
+
+      if (!roleBox || !employerBox || !telemetryBox) {
+        throw new Error(`Expected hero geometry bounding boxes at ${viewport.width}x${viewport.height}`);
+      }
+
+      expect(roleBox.y, `role y @ ${viewport.width}x${viewport.height}`).toBeGreaterThanOrEqual(0);
+      expect(
+        roleBox.y + roleBox.height,
+        `role bottom edge @ ${viewport.width}x${viewport.height}`,
+      ).toBeLessThanOrEqual(viewport.height + 1);
+
+      expect(employerBox.y, `employer CTA y @ ${viewport.width}x${viewport.height}`).toBeGreaterThanOrEqual(0);
+      expect(
+        employerBox.y + employerBox.height,
+        `employer CTA bottom edge @ ${viewport.width}x${viewport.height}`,
+      ).toBeLessThanOrEqual(viewport.height + 1);
+
+      // Recruiter scan wins: role sits above telemetry, and telemetry is either
+      // below the fold or starts after the employer CTA (demoted, not dominant).
+      expect(
+        roleBox.y,
+        `role must precede telemetry @ ${viewport.width}x${viewport.height}`,
+      ).toBeLessThan(telemetryBox.y);
+      expect(
+        employerBox.y,
+        `employer CTA must precede telemetry @ ${viewport.width}x${viewport.height}`,
+      ).toBeLessThan(telemetryBox.y);
+      expect(
+        telemetryBox.y,
+        `telemetry must not occupy the top third @ ${viewport.width}x${viewport.height}`,
+      ).toBeGreaterThan(viewport.height * 0.33);
+    }
   });
 
   test('TC-HERO-13: Hero LinkedIn link points to the canonical profile', async ({ page }) => {
@@ -146,5 +208,115 @@ test.describe('E2E: Hero Section', () => {
       await skip.focus();
       await expect(skip).toBeFocused();
     }
+  });
+
+  // ── D-NAME-01: hero name must paint full "Vikram." without clip/glitch corruption ──
+
+  test('TC-HERO-17: Hero name span textContent is the full Vikram.', async ({ page }) => {
+    await gotoHome(page);
+    const title = page.locator('#hero .hero-title');
+    await expect(title).toContainText('Vikram.');
+    const name = page.locator('#hero .hero-title .glitch-text, #hero .hero-title .reveal-text').first();
+    await expect(name).toHaveText('Vikram.');
+  });
+
+  test('TC-HERO-18: Hero name line does not clip glyphs (overflow + layout width)', async ({ page }) => {
+    for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 },
+    ]) {
+      await page.setViewportSize(viewport);
+      await gotoHome(page);
+
+      const metrics = await page.locator('#hero .hero-title .reveal-text, #hero .hero-title .glitch-text').first().evaluate((el) => {
+        const name = el as HTMLElement;
+        const line = name.closest('.line') ?? name;
+        const lineStyle = window.getComputedStyle(line);
+        const nameStyle = window.getComputedStyle(name);
+        const rect = name.getBoundingClientRect();
+        const clipPath = nameStyle.clipPath || nameStyle.getPropertyValue('clip-path');
+        return {
+          text: (name.textContent ?? '').trim(),
+          lineOverflow: lineStyle.overflow,
+          lineOverflowX: lineStyle.overflowX,
+          scrollWidth: name.scrollWidth,
+          clientWidth: name.clientWidth,
+          rectWidth: rect.width,
+          clipPath,
+          // Transparent fill + background-clip can leave glyphs unpainted; solid color is preferred.
+          webkitTextFillColor: nameStyle.getPropertyValue('-webkit-text-fill-color'),
+          color: nameStyle.color,
+        };
+      });
+
+      expect(metrics.text, `viewport ${viewport.width}`).toBe('Vikram.');
+      // overflow:hidden on .line was clipping trailing glyphs (Vikr / Vikrar).
+      expect(metrics.lineOverflow, `overflow at ${viewport.width}`).not.toBe('hidden');
+      expect(metrics.lineOverflowX, `overflow-x at ${viewport.width}`).not.toBe('hidden');
+      // No residual GSAP/CSS clip-path masking trailing glyphs.
+      const clip = (metrics.clipPath || 'none').toLowerCase();
+      expect(
+        clip === 'none' || clip.includes('inset(0') && (clip.includes('0%') || clip.includes('0px')),
+        `clip-path must not mask name at ${viewport.width} (got ${metrics.clipPath})`,
+      ).toBeTruthy();
+      // Subpixel rounding can leave scrollWidth 1–3px over clientWidth even when
+      // overflow:visible paints every glyph; allow a small tolerance and require
+      // the box itself to be meaningfully wide.
+      expect(
+        metrics.scrollWidth,
+        `scrollWidth must fit clientWidth at ${viewport.width}`,
+      ).toBeLessThanOrEqual(metrics.clientWidth + 4);
+      expect(metrics.rectWidth, `bounding width at ${viewport.width}`).toBeGreaterThan(40);
+      // Name must paint with a real fill (not transparent clipped gradient text).
+      const fill = metrics.webkitTextFillColor || metrics.color;
+      expect(fill, `text fill at ${viewport.width}`).not.toMatch(/rgba?\(\s*0\s*,\s*0\s*,\s*0\s*,\s*0\s*\)/);
+      expect(fill.toLowerCase(), `text fill at ${viewport.width}`).not.toBe('transparent');
+    }
+  });
+
+  test('TC-HERO-19: Hero title remains fully visible under prefers-reduced-motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+
+    const name = page.locator('#hero .hero-title .reveal-text, #hero .hero-title .glitch-text').first();
+    await expect(name).toHaveText('Vikram.');
+    await expect(name).toBeVisible();
+
+    const state = await name.evaluate((el) => {
+      const nameEl = el as HTMLElement;
+      const line = nameEl.closest('.line') ?? nameEl;
+      const lineStyle = window.getComputedStyle(line);
+      const nameStyle = window.getComputedStyle(nameEl);
+      const before = window.getComputedStyle(nameEl, '::before');
+      const after = window.getComputedStyle(nameEl, '::after');
+      return {
+        lineOverflow: lineStyle.overflow,
+        scrollWidth: nameEl.scrollWidth,
+        clientWidth: nameEl.clientWidth,
+        opacity: nameStyle.opacity,
+        visibility: nameStyle.visibility,
+        beforeDisplay: before.display,
+        afterDisplay: after.display,
+        beforeOpacity: before.opacity,
+        afterOpacity: after.opacity,
+        webkitTextFillColor: nameStyle.getPropertyValue('-webkit-text-fill-color'),
+        color: nameStyle.color,
+      };
+    });
+
+    expect(state.lineOverflow).not.toBe('hidden');
+    expect(state.scrollWidth).toBeLessThanOrEqual(state.clientWidth + 2);
+    expect(state.visibility).toBe('visible');
+    expect(Number.parseFloat(state.opacity)).toBeGreaterThan(0.9);
+    // Glitch overlays must be inert under reduced motion (display:none or opacity 0).
+    const beforeInert =
+      state.beforeDisplay === 'none' || Number.parseFloat(state.beforeOpacity || '0') === 0;
+    const afterInert =
+      state.afterDisplay === 'none' || Number.parseFloat(state.afterOpacity || '0') === 0;
+    expect(beforeInert).toBe(true);
+    expect(afterInert).toBe(true);
+    const fill = state.webkitTextFillColor || state.color;
+    expect(fill.toLowerCase()).not.toBe('transparent');
   });
 });

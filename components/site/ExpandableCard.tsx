@@ -59,15 +59,15 @@ export default function ExpandableCard({
             transition={
               prefersReducedMotion
                 ? { duration: 0 }
-                : { type: 'spring', stiffness: 210, damping: 30, mass: 0.9 }
+                : { type: 'spring', stiffness: 180, damping: 25, mass: 0.8 }
             }
           >
             <motion.div
               data-expand-content=""
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={
-                prefersReducedMotion ? { duration: 0 } : { duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.08 }
+                prefersReducedMotion ? { duration: 0 } : { duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: 0.05 }
               }
             >
               {children}

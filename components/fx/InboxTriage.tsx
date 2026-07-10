@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 /**
@@ -74,28 +74,45 @@ export default React.memo(function InboxTriage({ className = '', project }: { cl
   useEffect(() => {
     if (!inView || prefersReducedMotion) return;
 
-    // Phase 1: Messages trickle in one by one over ~2s
-    let idx = 0;
+    // D-KEYS-01 / D-CRASH-01: NEVER clear+re-append the same msg.id under
+    // AnimatePresence. Clearing schedules exit nodes that still hold m3/m5;
+    // a Strict Mode (or inView flicker) re-run that re-adds those ids produces
+    // "Encountered two children with the same key". Append from prev.length
+    // and skip ids already present — keys stay unique across siblings.
+    let cancelled = false;
     const interval = setInterval(() => {
-      if (pausedRef.current) return;
-      if (idx < MESSAGES.length) {
-        setVisibleMessages((prev) => [...prev, MESSAGES[idx]]);
-        idx++;
-        if (idx === MESSAGES.length) {
+      if (cancelled || pausedRef.current) return;
+
+      setVisibleMessages((prev) => {
+        if (prev.length >= MESSAGES.length) return prev;
+        const next = MESSAGES[prev.length];
+        if (!next || prev.some((m) => m.id === next.id)) return prev;
+
+        const updated = [...prev, next];
+        if (updated.length === MESSAGES.length) {
           clearInterval(interval);
           intervalRef.current = null;
-          // Phase 2: classify
-          setPhase('classifying');
-          // Phase 3: settle
-          timerRef.current = setTimeout(() => setPhase('settled'), 800);
+          queueMicrotask(() => {
+            if (cancelled) return;
+            setPhase('classifying');
+            timerRef.current = setTimeout(() => {
+              if (!cancelled) setPhase('settled');
+            }, 800);
+          });
         }
-      }
+        return updated;
+      });
     }, 160);
     intervalRef.current = interval;
 
     return () => {
+      cancelled = true;
       clearInterval(interval);
-      if (timerRef.current) clearTimeout(timerRef.current);
+      intervalRef.current = null;
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
     };
   }, [inView, prefersReducedMotion]);
 
@@ -187,7 +204,10 @@ export default React.memo(function InboxTriage({ className = '', project }: { cl
             );
           })
         ) : (
-          <AnimatePresence>
+          // Append-only stream — no AnimatePresence. Exit nodes + re-append of
+          // the same msg.id (Strict Mode / inView flicker) was the D-KEYS-01
+          // "same key, m3/m5" warning under AnimatePresence.
+          <div className="inbox-messages-stream">
             {visibleMessages.map((msg) => {
               const labelIndex = LABELS.indexOf(msg.label);
               return (
@@ -203,7 +223,6 @@ export default React.memo(function InboxTriage({ className = '', project }: { cl
                     height: 'auto',
                     marginBottom: isSettled ? 2 : 4,
                   }}
-                  exit={{ opacity: 0, height: 0, marginBottom: 0 }}
                   transition={{
                     duration: 0.3,
                     delay: isSettled ? labelIndex * 0.05 : 0,
@@ -224,7 +243,7 @@ export default React.memo(function InboxTriage({ className = '', project }: { cl
                 </motion.div>
               );
             })}
-          </AnimatePresence>
+          </div>
         )}
       </div>
 

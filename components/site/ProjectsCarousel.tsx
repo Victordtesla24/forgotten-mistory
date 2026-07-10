@@ -433,7 +433,9 @@ function ProjectMicroEffect({ visual }: { visual: ProjectCard['visual'] }) {
 export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
   const prefersReducedMotion = useReducedMotion();
   const railRef = useRef<HTMLDivElement | null>(null);
+  const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const dragState = useRef<{ startX: number; startScroll: number; dragging: boolean; moved: boolean; lastX: number; lastT: number; velocity: number }>({
     startX: 0,
     startScroll: 0,
@@ -462,6 +464,46 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
     return () => rail.removeEventListener('pointerleave', handleLeave);
   }, []);
 
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail || prefersReducedMotion) return;
+
+    const syncActive = () => {
+      const cards = cardRefs.current.filter(Boolean) as HTMLAnchorElement[];
+      if (!cards.length) return;
+      const mid = rail.scrollLeft + rail.clientWidth / 2;
+      let best = 0;
+      let bestDist = Number.POSITIVE_INFINITY;
+      cards.forEach((card, i) => {
+        const center = card.offsetLeft + card.offsetWidth / 2;
+        const dist = Math.abs(center - mid);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = i;
+        }
+      });
+      setActiveIndex(best);
+    };
+
+    syncActive();
+    rail.addEventListener('scroll', syncActive, { passive: true });
+    window.addEventListener('resize', syncActive);
+    return () => {
+      rail.removeEventListener('scroll', syncActive);
+      window.removeEventListener('resize', syncActive);
+    };
+  }, [prefersReducedMotion, projects.length]);
+
+  const scrollToIndex = (index: number) => {
+    const rail = railRef.current;
+    const card = cardRefs.current[index];
+    if (!rail || !card) return;
+    stopMomentum();
+    const left = card.offsetLeft - (rail.clientWidth - card.offsetWidth) / 2;
+    rail.scrollTo({ left: Math.max(0, left), behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    setActiveIndex(index);
+  };
+
   const onPointerDown = (e: React.PointerEvent) => {
     const rail = railRef.current;
     if (!rail || e.pointerType === 'touch') return;
@@ -477,6 +519,7 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
       velocity: 0,
     };
     rail.setPointerCapture(e.pointerId);
+    rail.dataset.dragging = 'true';
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
@@ -499,18 +542,42 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
     const s = dragState.current;
     if (rail?.hasPointerCapture(e.pointerId)) rail.releasePointerCapture(e.pointerId);
     s.dragging = false;
+    if (rail) delete rail.dataset.dragging;
     if (!rail || prefersReducedMotion) return;
 
     let velocity = s.velocity * 16;
-    if (Math.abs(velocity) < 0.6) return;
+    if (Math.abs(velocity) < 0.6) {
+      // Settle to nearest card after a short drag without fling.
+      if (s.moved) scrollToIndex(activeIndex);
+      return;
+    }
     const FRICTION = 0.94;
     const step = () => {
       velocity *= FRICTION;
       rail.scrollLeft += velocity;
       const atStart = rail.scrollLeft <= 0;
       const atEnd = rail.scrollLeft >= rail.scrollWidth - rail.clientWidth - 1;
-      momentumRaf.current =
-        Math.abs(velocity) > 0.4 && !atStart && !atEnd ? requestAnimationFrame(step) : 0;
+      if (Math.abs(velocity) > 0.4 && !atStart && !atEnd) {
+        momentumRaf.current = requestAnimationFrame(step);
+      } else {
+        momentumRaf.current = 0;
+        // Snap to nearest after inertial coast.
+        const cards = cardRefs.current.filter(Boolean) as HTMLAnchorElement[];
+        if (cards.length) {
+          const mid = rail.scrollLeft + rail.clientWidth / 2;
+          let best = 0;
+          let bestDist = Number.POSITIVE_INFINITY;
+          cards.forEach((card, i) => {
+            const center = card.offsetLeft + card.offsetWidth / 2;
+            const dist = Math.abs(center - mid);
+            if (dist < bestDist) {
+              bestDist = dist;
+              best = i;
+            }
+          });
+          scrollToIndex(best);
+        }
+      }
     };
     momentumRaf.current = requestAnimationFrame(step);
   };
@@ -523,45 +590,97 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
     }
   };
 
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      scrollToIndex(Math.min(projects.length - 1, activeIndex + 1));
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      scrollToIndex(Math.max(0, activeIndex - 1));
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      scrollToIndex(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      scrollToIndex(projects.length - 1);
+    }
+  };
+
   return (
     <div className="carousel-wrapper catalogue-row" data-carousel="true">
       <div
         ref={railRef}
         className={`projects-carousel${prefersReducedMotion ? '' : ' catalogue-scroll'}`}
         id="projects-carousel"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Project catalogue"
+        tabIndex={0}
         data-carousel-stagger=""
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
         onClickCapture={onClickCapture}
+        onKeyDown={onKeyDown}
       >
         <div className={`projects-row${prefersReducedMotion ? ' projects-grid' : ''}`}>
-          {projects.map((project, index) => (
-            <a
-              key={project.href}
-              href={project.href}
-              target="_blank"
-              rel="noreferrer"
-              className="project-card catalogue-card"
-              draggable={false}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              <div className="project-poster">
-                <ProjectMicroEffect visual={project.visual} />
-                <div className={`poster-overlay${hoveredIndex === index ? ' overlay-lifted' : ''}`} />
-                <div className={`poster-info${hoveredIndex === index ? ' info-visible' : ''}`}>
-                  <span className="poster-badge">{project.badge}</span>
-                  <h3 className="poster-title">{project.title}</h3>
-                  <p className="poster-desc">{project.description}</p>
-                  <span className="poster-link-hint">View on GitHub →</span>
+          {projects.map((project, index) => {
+            const isActive = activeIndex === index;
+            const isHovered = hoveredIndex === index;
+            return (
+              <a
+                key={project.href}
+                ref={(el) => {
+                  cardRefs.current[index] = el;
+                }}
+                href={project.href}
+                target="_blank"
+                rel="noreferrer"
+                className={`project-card catalogue-card${isActive ? ' is-active' : ''}`}
+                draggable={false}
+                aria-current={isActive ? 'true' : undefined}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                onFocus={() => {
+                  setHoveredIndex(index);
+                  setActiveIndex(index);
+                }}
+                onBlur={() => setHoveredIndex(null)}
+              >
+                <div className="project-poster">
+                  <ProjectMicroEffect visual={project.visual} />
+                  <div className={`poster-overlay${isHovered || isActive ? ' overlay-lifted' : ''}`} />
+                  <div className={`poster-info${isHovered ? ' info-visible' : ''}`} aria-hidden={!isHovered}>
+                    <p className="poster-desc">{project.description}</p>
+                    <span className="poster-link-hint">View on GitHub →</span>
+                  </div>
                 </div>
-              </div>
-            </a>
-          ))}
+                <div className="poster-meta">
+                  <span className="poster-badge">{project.badge}</span>
+                  <p className="poster-title">{project.title}</p>
+                </div>
+              </a>
+            );
+          })}
         </div>
       </div>
+      {!prefersReducedMotion && projects.length > 1 ? (
+        <div className="carousel-progress" role="tablist" aria-label="Catalogue position">
+          {projects.map((project, index) => (
+            <button
+              key={`dot-${project.href}`}
+              type="button"
+              className="carousel-progress-dot"
+              role="tab"
+              aria-label={`Show ${project.title}`}
+              aria-current={activeIndex === index ? 'true' : undefined}
+              onClick={() => scrollToIndex(index)}
+            />
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }
+

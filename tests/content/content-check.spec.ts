@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { knowledgeBase } from '../../app/data/miniVicKnowledge';
 
 /**
  * Category 5: Content Preservation Tests
@@ -94,7 +95,9 @@ test.describe('Content Preservation', () => {
     await page.locator('#contact').scrollIntoViewIfNeeded();
     await expect(page.locator('#contact')).toContainText('sarkar.vikram@gmail.com');
     await expect(page.locator('#contact')).toContainText('+61 433 224 556');
-    await expect(page.locator('#contact')).toContainText("Let's ship AI/ML");
+    await expect(page.locator('#contact')).toContainText(
+      'Open to Scrum Master / Project Manager roles in Melbourne — and selected AI delivery engagements.',
+    );
   });
 
   test('CT-10: Proof points from siteContent appear in HTML', async ({ page }) => {
@@ -160,5 +163,42 @@ test.describe('Content Preservation', () => {
     page.on('pageerror', (err) => errors.push(err.message));
     await page.waitForTimeout(1000);
     expect(errors).toHaveLength(0);
+  });
+
+  test('CT-16: Dossier decorative frame keeps recruiter-facing role label', async ({ page }) => {
+    await gotoHome(page);
+    await page.locator('#dossier').scrollIntoViewIfNeeded();
+    const frameLabel = page.locator('#dossier .dossier-frame-label');
+    await expect(frameLabel).toBeVisible();
+    await expect(frameLabel).toContainText('SCRUM MASTER / PROJECT MANAGER');
+    await expect(frameLabel).not.toContainText('PRINCIPAL ENGINEER');
+  });
+
+  test('CT-17: MiniVic availability default and hiring copy keep active-intent ATO wording', async () => {
+    const availability = knowledgeBase.find((entry) => entry.id === 'availability');
+    expect(availability).toBeDefined();
+
+    if (!availability) {
+      throw new Error('Availability entry is missing from miniVicKnowledge.');
+    }
+
+    const defaultAnswer = availability.answer;
+    const hiringAnswer = availability.personaVariants?.hiring;
+
+    expect(hiringAnswer, 'availability.hiring persona variant is required').toBeTruthy();
+
+    for (const [variant, answer] of [
+      ['default', defaultAnswer],
+      ['hiring', hiringAnswer ?? ''],
+    ] as const) {
+      expect(answer, `${variant} availability must signal active intent`).toContain('actively exploring');
+      expect(
+        /(?:ato|australian taxation office|payday super)/i.test(answer),
+        `${variant} availability must mention current ATO work`,
+      ).toBe(true);
+      expect(answer.toLowerCase(), `${variant} availability must not claim off-market`).not.toContain(
+        'not on the market',
+      );
+    }
   });
 });

@@ -100,15 +100,17 @@ export default React.memo(function ClearanceStepper({ className = '', project }:
 
   useEffect(() => {
     if (!inView || prefersReducedMotion) return;
-    let idx = 0;
+    // Cap at STEPS.length via functional update so Strict Mode re-runs cannot
+    // overshoot (free-running idx + stale closures used to).
     const interval = setInterval(() => {
       if (pausedRef.current) return;
-      if (idx < STEPS.length) {
-        setVisibleSteps((prev) => prev + 1);
-        idx++;
-      } else {
-        clearInterval(interval);
-      }
+      setVisibleSteps((prev) => {
+        if (prev >= STEPS.length) {
+          clearInterval(interval);
+          return prev;
+        }
+        return prev + 1;
+      });
     }, 180);
 
     return () => clearInterval(interval);

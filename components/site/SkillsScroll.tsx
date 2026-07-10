@@ -27,17 +27,17 @@ export default function SkillsScroll() {
           start: 'top 78%',
           onEnter: () => {
             section.dispatchEvent(new CustomEvent('gsap:skills:enter', { bubbles: true }));
-            const cards = section.querySelectorAll('.skill-card');
+            const wrappers = section.querySelectorAll('.skill-card-wrapper');
             gsap.fromTo(
-              cards,
-              { opacity: 0, y: 30, scale: 0.95 },
+              wrappers,
+              { opacity: 0, y: 50, scale: 0.95 },
               {
                 opacity: 1,
                 y: 0,
                 scale: 1,
-                duration: 0.55,
-                stagger: 0.08,
-                ease: 'power2.out',
+                duration: 0.8,
+                stagger: 0.12,
+                ease: 'power3.out',
               },
             );
           },
@@ -46,8 +46,8 @@ export default function SkillsScroll() {
       });
 
       mm.add('(prefers-reduced-motion: reduce)', () => {
-        const cards = section.querySelectorAll('.skill-card');
-        gsap.set(cards, { opacity: 1, y: 0, scale: 1, clearProps: 'transform' });
+        const wrappers = section.querySelectorAll('.skill-card-wrapper');
+        gsap.set(wrappers, { opacity: 1, y: 0, scale: 1, clearProps: 'transform' });
       });
     }, rootRef);
 
