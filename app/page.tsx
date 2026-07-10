@@ -280,7 +280,9 @@ export default function Home() {
       <Navigation />
 
       <main>
-        <section id="hero" className="hero-section" ref={heroRef}>
+        <section id="hero" className="hero-section cine-stage" ref={heroRef}>
+          <div className="cine-spotlight" aria-hidden="true" />
+          <div className="cine-vignette" aria-hidden="true" />
           <div className="hero-hud-backdrop">
             <HudFrame variant="backdrop" label="" scene={false} />
           </div>
@@ -293,8 +295,9 @@ export default function Home() {
             // users, leaving only a gentle opacity fade.
             initial="hidden"
             animate={revealed ? 'visible' : 'hidden'}
+            data-revealed={revealed ? 'true' : 'false'}
           >
-            <motion.h1 className="hero-title" variants={heroItem} style={{ y: titleY }}>
+            <motion.h1 className="hero-title cine-title" variants={heroItem} style={{ y: titleY }}>
               <span className="line">{hero.greeting}</span>{' '}
               <span className="line reveal-text glitch-text" data-text={hero.name}>
                 {hero.name}

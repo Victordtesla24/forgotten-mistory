@@ -41,6 +41,7 @@ export default function Navigation() {
   const [open, setOpen] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const overlayRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
 
   const close = useCallback(() => setOpen(false), []);
 
@@ -64,8 +65,21 @@ export default function Navigation() {
     };
   }, [open, close]);
 
+  // Transparent → frosted nav: flag data-scrolled once the page leaves the top.
+  // Set imperatively via the ref so scrolling never triggers a React re-render.
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const onScroll = () => {
+      nav.setAttribute('data-scrolled', String(window.scrollY > 24));
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
-    <nav>
+    <nav ref={navRef}>
       <a className="logo" href="#hero" aria-label="Back to top">
         VIKRAM.
         <svg className="logo-underline" viewBox="0 0 120 4" fill="none" aria-hidden="true" preserveAspectRatio="none">

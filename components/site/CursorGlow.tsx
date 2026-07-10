@@ -40,6 +40,32 @@ export default function CursorGlow() {
 
     document.body.classList.add('cursor-enhanced');
 
+    // ── Cinematic hero spotlight (overhaul INC1): publish an eased --spot-x/--spot-y
+    // on <html> so the .cine-spotlight god-ray tracks the cursor. Lerped in a rAF so
+    // the gradient repaint is bounded (not one per raw pointermove) and idles when the
+    // pointer settles. Reduced-motion / coarse-pointer never reach here, so those users
+    // keep the static :root key-light.
+    const root = document.documentElement;
+    let spotTargetX = 50;
+    let spotTargetY = 18;
+    let spotX = 50;
+    let spotY = 18;
+    let spotRaf = 0;
+    const stepSpot = () => {
+      spotX += (spotTargetX - spotX) * 0.12;
+      spotY += (spotTargetY - spotY) * 0.12;
+      root.style.setProperty('--spot-x', `${spotX.toFixed(2)}%`);
+      root.style.setProperty('--spot-y', `${spotY.toFixed(2)}%`);
+      if (Math.abs(spotTargetX - spotX) > 0.1 || Math.abs(spotTargetY - spotY) > 0.1) {
+        spotRaf = requestAnimationFrame(stepSpot);
+      } else {
+        spotRaf = 0;
+      }
+    };
+    const ensureSpotRaf = () => {
+      if (!spotRaf) spotRaf = requestAnimationFrame(stepSpot);
+    };
+
     // The hero "floating panels" share one depth-parallax driver: the hovered
     // surface gets a cursor spotlight (--mouse-x/--mouse-y), a normalised tilt
     // (--rx/--ry ∈ [-0.5, 0.5]) and a subtle magnetic offset (--tx/--ty). CSS maps
@@ -77,6 +103,9 @@ export default function CursorGlow() {
     const onMove = (e: PointerEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);
+      spotTargetX = (e.clientX / window.innerWidth) * 100;
+      spotTargetY = (e.clientY / window.innerHeight) * 100;
+      ensureSpotRaf();
       const surface = (e.target as Element | null)?.closest?.(DEPTH_TARGETS) as HTMLElement | null;
       if (surface !== activeSurface) {
         resetDepth(activeSurface);
@@ -123,6 +152,13 @@ export default function CursorGlow() {
 
     return () => {
       window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerdown', onDown);
+      window.removeEventListener('pointerup', onUp);
+      document.removeEventListener('pointerleave', onLeaveWindow);
+      if (spotRaf) cancelAnimationFrame(spotRaf);
+      // Fall back to the :root static default (50% / 18%) instead of a baked-in stale position.
+      root.style.removeProperty('--spot-x');
+      root.style.removeProperty('--spot-y');
       resetDepth(activeSurface);
       document.body.classList.remove('cursor-enhanced');
     };
