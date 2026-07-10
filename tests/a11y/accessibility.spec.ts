@@ -169,4 +169,17 @@ test.describe('A11y: axe-core Accessibility Audit', () => {
     );
     expect(imageViolations).toHaveLength(0);
   });
+
+  test('A11Y-14: Telemetry live-log scroll region is keyboard-accessible (scrollable-region-focusable)', async ({ page }) => {
+    // The JarvisTelemetry "Active Repo Surface" feed is a max-height:120px,
+    // overflow-y:auto region. Once the live GitHub feed overflows it becomes a
+    // scrollable region, which axe's `scrollable-region-focusable` (serious, WCAG
+    // 2.1.1) requires be reachable by keyboard. Assert it is focusable + labelled
+    // regardless of current overflow state so this guard is deterministic.
+    await gotoHome(page);
+    const log = page.locator('.jarvis-telemetry [role="log"]').first();
+    await expect(log).toBeAttached();
+    await expect(log).toHaveAttribute('tabindex', '0');
+    await expect(log).toHaveAttribute('aria-label', /.+/);
+  });
 });

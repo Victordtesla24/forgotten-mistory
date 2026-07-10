@@ -131,7 +131,13 @@ export default React.memo(function JarvisTelemetry() {
       {/* Live repo activity stream — repos with open issues = active "error" surface */}
       <div style={{ marginTop: '0.75rem' }}>
         <div className="telemetry-label">Active Repo Surface (open issues)</div>
+        {/* Keyboard-accessible scroll region (a11y: scrollable-region-focusable,
+            WCAG 2.1.1). role="log" reflects the live GitHub feed; tabIndex makes the
+            overflowing region reachable + scrollable via keyboard. */}
         <div
+          role="log"
+          tabIndex={0}
+          aria-label="Active repository surface — repositories with open issues"
           style={{
             maxHeight: '120px',
             overflowY: 'auto',
