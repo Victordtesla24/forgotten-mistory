@@ -2182,21 +2182,25 @@ footer {
     inset: 0;
     display: grid;
     place-items: center;
-    filter: grayscale(1) contrast(1.03) brightness(0.96);
-    transition: filter 0.28s ease, transform 0.28s ease;
+    /* Faint achromatic backlight so the monochrome signature effect reads with depth
+       and presence at rest rather than flat/dim. White token → no hue. */
+    background: radial-gradient(70% 55% at 50% 42%, rgb(244 246 250 / 0.07), transparent 72%);
+    filter: grayscale(1) contrast(1.08) brightness(1.14);
+    transition: filter 0.28s ease, transform 0.28s ease, background 0.28s ease;
 }
 
 .catalogue-card:hover .poster-art,
 .catalogue-card:focus-visible .poster-art {
-    filter: grayscale(1) contrast(1.03) brightness(1);
+    background: radial-gradient(75% 60% at 50% 40%, rgb(244 246 250 / 0.12), transparent 72%);
+    filter: grayscale(1) contrast(1.08) brightness(1.32);
     transform: scale(1.05);
 }
 
-/* Micro-effect SVG sizing — visible at rest, not hidden behind a hover gate */
+/* Micro-effect SVG sizing — visible + present at rest, not hidden behind a hover gate */
 .micro-effect {
-    width: 90%;
-    height: 66%;
-    opacity: 0.92;
+    width: 92%;
+    height: 68%;
+    opacity: 1;
 }
 
 /* Scrim — lets the effect read through the top while the bottom text stays legible */
