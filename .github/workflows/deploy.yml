@@ -70,7 +70,7 @@ jobs:
       #    - Keyed on package-lock.json hash
       #    - Fallback to OS-specific cache
       # 2. Node modules cache (via setup-node)
-      #    - Already handled by actions/setup-node@v4 with cache: npm
+      #    - Already handled by actions/setup-node@v6 with cache: npm
       #    - No need for separate actions/cache step
       # 3. Static export cache (out/ directory)
       #    - Cached when safe (keyed on content hash of inputs)
@@ -90,7 +90,7 @@ jobs:
           restore-keys: |
             next-build-${{ runner.os }}-
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
@@ -133,7 +133,7 @@ jobs:
           restore-keys: |
             next-build-${{ runner.os }}-
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
@@ -172,7 +172,7 @@ jobs:
           restore-keys: |
             next-build-${{ runner.os }}-
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
@@ -286,7 +286,7 @@ jobs:
           restore-keys: |
             next-build-${{ runner.os }}-
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
@@ -328,7 +328,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
@@ -501,7 +501,7 @@ jobs:
           restore-keys: |
             next-build-${{ runner.os }}-
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
@@ -596,7 +596,7 @@ jobs:
           restore-keys: |
             next-build-${{ runner.os }}-
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
@@ -641,7 +641,7 @@ jobs:
           restore-keys: |
             next-build-${{ runner.os }}-
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
