@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { useReducedMotion } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 import type { ProjectCard } from '@/app/data/siteContent';
 
 interface ProjectsCarouselProps {
@@ -431,7 +431,13 @@ function ProjectMicroEffect({ visual }: { visual: ProjectCard['visual'] }) {
  * Reduced-motion: vertical static card grid.
  */
 export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
-  const prefersReducedMotion = useReducedMotion();
+  // SSR-safe: this component swaps its RENDERED STRUCTURE for reduced motion (a
+  // static vertical grid vs the scroll-snap rail) — exactly the case
+  // useReducedMotionSafe() exists for. The raw useReducedMotion() resolves
+  // synchronously on a reduced-motion client's first paint but stays `false` on
+  // the server, so the `projects-row`/`projects-carousel` className branches below
+  // produced a hard hydration mismatch (React #418/#423).
+  const prefersReducedMotion = useReducedMotionSafe();
   const railRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);

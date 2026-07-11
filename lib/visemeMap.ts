@@ -200,4 +200,30 @@ export function heuristicVisemeFromFrequency(
   return { visemeIndex: 20, confidence: 0.4 }; // PB
 }
 
+/**
+ * Deterministic idle / no-analyser mouth motion.
+ *
+ * Used only when there is no analysable audio waveform available for the
+ * currently-playing speech — e.g. browser `SpeechSynthesisUtterance`
+ * playback, which does not expose PCM/frequency data to the Web Audio API
+ * (unlike the ElevenLabs cloned-voice MP3, which plays through an
+ * `<audio>` element wired to a real `AnalyserNode` and is lip-synced via
+ * {@link heuristicVisemeFromFrequency}). Rather than fake per-phoneme
+ * lip-sync with randomised viseme cycling, this drives a subtle,
+ * deterministic sine "breathing" cadence between the rest viseme (0) and a
+ * gently-open viseme (1).
+ *
+ * Pure function of elapsed time — same input always produces the same
+ * output, and it never calls `Math.random()` (NN-3: no simulated/fake
+ * motion standing in for real signal).
+ */
+const IDLE_BREATH_PERIOD_S = 1.1;
+const IDLE_BREATH_AMPLITUDE = 0.55;
+
+export function deterministicIdleViseme(elapsedSeconds: number): VisemeShape {
+  const phase = (elapsedSeconds % IDLE_BREATH_PERIOD_S) / IDLE_BREATH_PERIOD_S;
+  const cycle = (Math.sin(phase * Math.PI * 2) + 1) / 2; // smooth 0..1 sine cycle
+  return lerpVisemeShapes(getVisemeShape(0), getVisemeShape(1), cycle * IDLE_BREATH_AMPLITUDE);
+}
+
 export type { VisemeShape as VisemeShapeType };

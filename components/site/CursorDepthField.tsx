@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useReducedMotion } from 'framer-motion';
 import * as THREE from 'three';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 import { cursorDepthVertex, cursorDepthFragment } from '@/components/fx/shaders/cursorDepth';
 import { PALETTE } from '@/lib/palette';
 
@@ -150,7 +150,15 @@ function useScrollPastHero(): boolean {
 }
 
 export default function CursorDepthField() {
-  const prefersReducedMotion = useReducedMotion();
+  // SSR-safe: false on the server AND the client's first paint, then the real
+  // preference after mount. The raw framer-motion useReducedMotion() resolves
+  // synchronously on a reduced-motion client's very first render, so branching
+  // this component's whole return (div+Canvas vs null) on it produced a hard
+  // hydration mismatch — SSR always emits the div, but that first client paint
+  // emitted null, throwing "Expected server HTML to contain a matching <nav> in
+  // <body>" for the next sibling (React #418/#423). See lib/useReducedMotionSafe
+  // and the identical fix already applied in CursorGlow.tsx.
+  const prefersReducedMotion = useReducedMotionSafe();
   const pastHero = useScrollPastHero();
 
   // No-op: reduced-motion OR scrolled past hero area

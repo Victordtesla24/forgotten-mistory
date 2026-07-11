@@ -88,9 +88,19 @@ export default function Navigation() {
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
-            initial={prefersReducedMotion ? false : { pathLength: 0, opacity: 0.4 }}
+            // `initial` must stay identical on the server and the client's first paint —
+            // branching it on the raw useReducedMotion() hook (false during SSR, but
+            // already resolved on a reduced-motion client's very first render) produced
+            // a hard hydration mismatch ("Expected server HTML to contain a matching
+            // <nav> in <body>", React #418/#423). Reduced motion is expressed via a
+            // zero-duration transition instead, matching the Reveal.tsx convention.
+            initial={{ pathLength: 0, opacity: 0.4 }}
             animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }
+            }
           />
         </svg>
       </a>

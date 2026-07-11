@@ -9,18 +9,37 @@ const VIDEO_SRC = '/assets/my-hero-avatar.mp4';
 // Cinematic entrance: the chrome (frame → label) settles first, then the portrait
 // rises into its lit frame. Crucially the portrait animates SCALE + Y only — never
 // opacity-to-zero — because it is the hero LCP candidate (TC-UIUX-HERO-AVATAR).
-const FRAME_VARIANTS: Variants = {
+//
+// These are functions of `reduced` (not static objects) so the entrance can collapse
+// to a zero-duration snap for reduced-motion users WITHOUT branching `initial` itself
+// — `initial` stays the constant `'hidden'` key on every render, so the server and the
+// client's first paint always resolve the identical `hidden` state. Only the `show`
+// transition (irrelevant until the animation starts, well after hydration) differs.
+const FRAME_VARIANTS = (reduced: boolean): Variants => ({
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.05 } },
-};
-const TAG_VARIANTS: Variants = {
+  show: {
+    opacity: 1,
+    transition: reduced ? { duration: 0 } : { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.05 },
+  },
+});
+const TAG_VARIANTS = (reduced: boolean): Variants => ({
   hidden: { opacity: 0, y: 8, x: '-50%' },
-  show: { opacity: 1, y: 0, x: '-50%', transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.18 } },
-};
-const PORTRAIT_VARIANTS: Variants = {
+  show: {
+    opacity: 1,
+    y: 0,
+    x: '-50%',
+    transition: reduced ? { duration: 0 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.18 },
+  },
+});
+const PORTRAIT_VARIANTS = (reduced: boolean): Variants => ({
   hidden: { opacity: 1, scale: 1.06, y: 12 },
-  show: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', stiffness: 120, damping: 20, delay: 0.1 } },
-};
+  show: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: reduced ? { duration: 0 } : { type: 'spring', stiffness: 120, damping: 20, delay: 0.1 },
+  },
+});
 
 // Magnetic hover tilt envelope (±5deg) written to CSS custom props the .avatar-tilt
 // transform reads. Kept tiny so the portrait feels responsive, not gimmicky.
@@ -50,9 +69,15 @@ export default function HeroAvatar() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [videoReady, setVideoReady] = useState(false);
 
-  // With reduced motion, skip the entrance entirely (`initial={false}` renders each
-  // layer directly at its `show` state) so the audit/a11y path sees opacity:1 at once.
-  const initial = prefersReducedMotion ? false : 'hidden';
+  // `initial` must stay the constant `'hidden'` on every render — branching it on the
+  // raw useReducedMotion() (false during SSR, already resolved on a reduced-motion
+  // client's very first paint) produced a hard hydration mismatch: the server always
+  // emitted `opacity:0`, but that first client paint emitted `opacity:1` directly
+  // ("Prop `style` did not match. Server: opacity:0 Client: opacity:1", React
+  // #418/#423). Reduced motion is expressed via a zero-duration `show` transition
+  // instead (see FRAME_VARIANTS/TAG_VARIANTS/PORTRAIT_VARIANTS above), which still
+  // lands the audit/a11y path on opacity:1 at once post-mount, without a mismatch.
+  const initial = 'hidden';
 
   useEffect(() => {
     if (prefersReducedMotion) return;
@@ -149,17 +174,17 @@ export default function HeroAvatar() {
     >
       {/* HUD chrome tying the portrait to the JARVIS signature motif — corner
           brackets + a glass scan label so the right column carries real weight. */}
-      <motion.span className="avatar-frame" aria-hidden="true" variants={FRAME_VARIANTS} initial={initial} animate="show">
+      <motion.span className="avatar-frame" aria-hidden="true" variants={FRAME_VARIANTS(!!prefersReducedMotion)} initial={initial} animate="show">
         <span className="hud-frame__corner hud-frame__corner--tl" />
         <span className="hud-frame__corner hud-frame__corner--tr" />
         <span className="hud-frame__corner hud-frame__corner--bl" />
         <span className="hud-frame__corner hud-frame__corner--br" />
       </motion.span>
-      <motion.span className="avatar-tag" aria-hidden="true" variants={TAG_VARIANTS} initial={initial} animate="show">
+      <motion.span className="avatar-tag" aria-hidden="true" variants={TAG_VARIANTS(!!prefersReducedMotion)} initial={initial} animate="show">
         SUBJECT · LIVE
         <span className="avatar-tag__scan" aria-hidden="true" />
       </motion.span>
-      <motion.div className="avatar-tilt-entrance" variants={PORTRAIT_VARIANTS} initial={initial} animate="show">
+      <motion.div className="avatar-tilt-entrance" variants={PORTRAIT_VARIANTS(!!prefersReducedMotion)} initial={initial} animate="show">
         <div className="avatar-tilt" ref={tiltRef}>
           <div className="avatar-glass" aria-hidden="true" />
           {/* R1 speaking pulse ring — a subtle glow that fades in when MiniVicBot

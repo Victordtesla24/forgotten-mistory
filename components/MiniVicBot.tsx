@@ -11,6 +11,7 @@ import {
   getVisemeShape,
   lerpVisemeShapes,
   heuristicVisemeFromFrequency,
+  deterministicIdleViseme,
   type VisemeShape,
 } from "@/lib/visemeMap";
 
@@ -679,9 +680,16 @@ const MiniVicBot = () => {
 
 
   /**
-   * Synthetic mouth animation for browser-voice replies (no audio element to
-   * analyse). Cycles through viseme sequences to simulate speech rhythm —
-   * the D-2 fix replaces the old amplitude-only waveform with proper viseme shapes.
+   * Deterministic idle mouth motion for browser text-to-speech replies.
+   * `SpeechSynthesisUtterance` (used only as the last-resort fallback when
+   * the cloned-voice `/api/tts` endpoint is unavailable) does not expose its
+   * audio samples to the Web Audio API, so there is no real waveform this
+   * component can analyse the way `startMouthRef` analyses the ElevenLabs
+   * MP3 through a genuine `AnalyserNode` (see `heuristicVisemeFromFrequency`
+   * above). Rather than fake per-phoneme lip-sync with randomised viseme
+   * cycling, this drives a subtle, deterministic sine "breathing" cadence
+   * via `deterministicIdleViseme` — a pure function of elapsed time, never
+   * `Math.random()` (NN-3: no simulated motion standing in for real signal).
    */
   const startSyntheticMouth = () => {
     const canvas = mouthCanvasRef.current;
@@ -689,45 +697,15 @@ const MiniVicBot = () => {
     if (!canvas || !ctx) return;
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
 
-    // A sequence of viseme indices that cycles to mimic speech
-    const visemeSequence = [0, 1, 6, 1, 20, 1, 2, 4, 15, 4, 7, 1, 0];
-    let lastSwitch = performance.now();
+    const startedAt = performance.now();
 
     const loop = () => {
-      const now = performance.now();
-      const elapsed = now - lastSwitch;
-
-      // Switch viseme every ~120ms for natural speech rhythm
-      if (elapsed > 100 + Math.random() * 60) {
-        const next = getVisemeShape(visemeSequence[
-          Math.floor(Math.random() * visemeSequence.length)
-        ]);
-        currentVisemeRef.current = lerpVisemeShapes(
-          currentVisemeRef.current,
-          targetVisemeRef.current,
-          1,
-        );
-        targetVisemeRef.current = next;
-        visemeLerpRef.current = 0;
-        lastSwitch = now;
-      }
-
-      // Smooth lerp
-      visemeLerpRef.current = Math.min(1, visemeLerpRef.current + 0.35);
-      const display = lerpVisemeShapes(
-        currentVisemeRef.current,
-        targetVisemeRef.current,
-        visemeLerpRef.current,
-      );
-
+      const elapsedSeconds = (performance.now() - startedAt) / 1000;
+      const display = deterministicIdleViseme(elapsedSeconds);
       drawVisemeMouth(ctx, canvas, display);
       rafRef.current = requestAnimationFrame(loop);
     };
 
-    // Start from neutral
-    currentVisemeRef.current = getVisemeShape(0);
-    targetVisemeRef.current = getVisemeShape(1);
-    visemeLerpRef.current = 0;
     rafRef.current = requestAnimationFrame(loop);
   };
 

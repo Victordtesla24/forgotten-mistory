@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { useReducedMotion } from 'framer-motion';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 import { PALETTE } from '@/lib/palette';
 import { useGithubStats } from '@/lib/githubTelemetry';
 
@@ -173,7 +173,13 @@ function CanvasSparkline({
 const PHASE_TIMINGS = [0, 1200, 3500];
 
 export default function TelemetryPanel() {
-  const prefersReducedMotion = useReducedMotion();
+  // SSR-safe: the raw framer-motion useReducedMotion() resolves synchronously on
+  // a reduced-motion client's first render, but stays `false` on the server (no
+  // matchMedia). Branching the PanelDepthScene mount below (`{!prefersReducedMotion
+  // && <PanelDepthScene/>}`) on the raw hook rendered a div on the server and
+  // nothing on that first client paint — "Expected server HTML to contain a
+  // matching <div> in <div>" (React #418/#423). See lib/useReducedMotionSafe.
+  const prefersReducedMotion = useReducedMotionSafe();
   const panelRef = useRef<HTMLDivElement>(null);
 
   const { fps, frameTime, sparkHistory } = useRealTelemetry(!prefersReducedMotion);

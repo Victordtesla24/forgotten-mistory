@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import type { ExperienceRole } from '@/app/data/siteContent';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 const CardFlipCanvas = dynamic(() => import('@/components/fx/CardFlipCanvas'), {
   loading: () => <div className="r3f-loading-placeholder" />,
@@ -33,7 +34,16 @@ const BULLET_STAGGER = 0.05;
  * The CardFlipCanvas is not mounted when reduced-motion is active.
  */
 export default function ExperienceAccordion({ roles }: ExperienceAccordionProps) {
-  const prefersReducedMotion = useReducedMotion();
+  // SSR-safe: the first (current) role starts expanded, so its content panel —
+  // including the conditionally-mounted CardFlipCanvas (next/dynamic ssr:false) —
+  // IS present in the server HTML. next/dynamic(ssr:false) emits a real Suspense
+  // "bail out to client-side rendering" marker during SSR that the client's FIRST
+  // hydration pass must also see; branching whether that dynamic import even mounts
+  // on the raw useReducedMotion() (false during SSR, already resolved on a
+  // reduced-motion client's first paint) made that marker present on one side and
+  // absent on the other — "Expected server HTML to contain a matching <ul> in
+  // <div>" (React #418/#423). useReducedMotionSafe() keeps both passes identical.
+  const prefersReducedMotion = useReducedMotionSafe();
   const [openId, setOpenId] = useState<string | null>(roles[0]?.id ?? null);
 
   return (
@@ -45,7 +55,7 @@ export default function ExperienceAccordion({ roles }: ExperienceAccordionProps)
             key={role.id}
             role={role}
             isOpen={isOpen}
-            prefersReducedMotion={prefersReducedMotion ?? false}
+            prefersReducedMotion={prefersReducedMotion}
             onToggle={() => setOpenId(isOpen ? null : role.id)}
           />
         );
@@ -120,10 +130,17 @@ function AccordionItem({
             role="region"
             aria-labelledby={`experience-${role.id}-label`}
             style={{ overflow: 'hidden', maxHeight: 'none', position: 'relative' }}
-            initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
+            // `initial` stays constant — the first (current) role starts expanded, so
+            // this panel DOES render on the server. Branching `initial` on the raw
+            // useReducedMotion() (false during SSR, already resolved on a
+            // reduced-motion client's first paint) produced a hard hydration
+            // mismatch ("Expected server HTML to contain a matching <ul> in <div>",
+            // React #418/#423). Reduced motion collapses via a zero-duration
+            // transition instead, matching the Reveal.tsx / HeroAvatar.tsx convention.
+            initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
-            transition={{ duration: 0.45, ease: ACCORDION_EASE }}
+            transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.45, ease: ACCORDION_EASE }}
           >
             <div ref={setContentEl} className="accordion-body">
               {/* 3D card-flip overlay — visual layer behind the DOM content.

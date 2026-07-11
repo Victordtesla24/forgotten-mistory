@@ -194,26 +194,45 @@ export default function Home() {
   }, []);
 
   // Defer the heavy WebGL starfield off the critical load path: mount SpaceScene only
-  // once the page is interactive (load → requestIdleCallback), so its shader compile +
-  // per-frame 4.5k-star loop never counts against LCP/TBT (Lighthouse perf gate). The
-  // static .cosmic-backdrop CSS is the immediate background; the starfield fades in after.
+  // once the boot/hero-reveal sequence has actually settled, so its shader compile +
+  // per-frame star loop never counts against LCP/TBT (Lighthouse perf gate). The
+  // static .cosmic-backdrop CSS is the immediate background; the starfield fades in
+  // after.
+  //
+  // Measured root cause (2026-07): arming this on raw `load` (as before) fires almost
+  // immediately on a static prerendered page — well BEFORE the preloader's boot wipe
+  // (~1.9 s) and the hero's own framer-motion reveal transition (~0.6 s) have painted.
+  // SpaceScene's mount (WebGL context + shader compile + 4.5k-star buffer init) is a
+  // long, uninterruptible main-thread task; when it lands inside that ~1.9-2.6 s
+  // window it blocks the hero's pending opacity commit until it finishes, pushing the
+  // REAL largest-contentful-paint from ~1.9 s to ~4.6 s and registering as Lighthouse
+  // NO_LCP. Arming on `fm:page-ready` (the preloader's own reveal signal, covering the
+  // Skip-intro path too) instead of `load` guarantees SpaceScene never contends with
+  // the hero's critical paint.
   const [heavyReady, setHeavyReady] = useState(false);
   useEffect(() => {
     let idleId: number | undefined;
-    let armed = false;
+    let settled = false;
     const arm = () => {
-      if (armed) return;
-      armed = true;
+      if (settled) return;
+      settled = true;
       if (typeof window.requestIdleCallback === 'function') {
         idleId = window.requestIdleCallback(() => setHeavyReady(true), { timeout: 2500 });
       } else {
-        idleId = window.setTimeout(() => setHeavyReady(true), 900);
+        idleId = window.setTimeout(() => setHeavyReady(true), 300);
       }
     };
-    if (document.readyState === 'complete') arm();
-    else window.addEventListener('load', arm, { once: true });
+    if (typeof document !== 'undefined' && document.body.classList.contains('page-ready')) {
+      arm();
+    } else {
+      window.addEventListener('fm:page-ready', arm, { once: true });
+    }
+    // Safety net: never wait forever if the preloader's event is somehow missed
+    // (matches the `revealed` fallback above).
+    const fallback = window.setTimeout(arm, 4000);
     return () => {
-      window.removeEventListener('load', arm);
+      window.removeEventListener('fm:page-ready', arm);
+      window.clearTimeout(fallback);
       if (idleId !== undefined) {
         if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleId);
         else window.clearTimeout(idleId);
@@ -299,7 +318,10 @@ export default function Home() {
         <div className="cosmic-backdrop" />
       </div>
 
-      <CursorDepthField />
+      {/* Decorative volumetric WebGL layer — not needed for first paint; deferred
+          behind the same heavyReady gate as SpaceScene so its Canvas/shader init
+          never competes with the hero's critical LCP paint (see heavyReady above). */}
+      {heavyReady && <CursorDepthField />}
 
       <FloatingDetailBox
         activeKey={activeKey}
