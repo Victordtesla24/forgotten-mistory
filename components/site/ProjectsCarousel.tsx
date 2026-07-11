@@ -434,7 +434,6 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
   const prefersReducedMotion = useReducedMotion();
   const railRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const dragState = useRef<{ startX: number; startScroll: number; dragging: boolean; moved: boolean; lastX: number; lastT: number; velocity: number }>({
     startX: 0,
@@ -455,14 +454,6 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
   };
 
   useEffect(() => stopMomentum, []);
-
-  useEffect(() => {
-    const rail = railRef.current;
-    if (!rail) return;
-    const handleLeave = () => setHoveredIndex(null);
-    rail.addEventListener('pointerleave', handleLeave);
-    return () => rail.removeEventListener('pointerleave', handleLeave);
-  }, []);
 
   useEffect(() => {
     const rail = railRef.current;
@@ -627,7 +618,6 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
         <div className={`projects-row${prefersReducedMotion ? ' projects-grid' : ''}`}>
           {projects.map((project, index) => {
             const isActive = activeIndex === index;
-            const isHovered = hoveredIndex === index;
             return (
               <a
                 key={project.href}
@@ -640,25 +630,19 @@ export default function ProjectsCarousel({ projects }: ProjectsCarouselProps) {
                 className={`project-card catalogue-card${isActive ? ' is-active' : ''}`}
                 draggable={false}
                 aria-current={isActive ? 'true' : undefined}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                onFocus={() => {
-                  setHoveredIndex(index);
-                  setActiveIndex(index);
-                }}
-                onBlur={() => setHoveredIndex(null)}
+                onFocus={() => setActiveIndex(index)}
               >
                 <div className="project-poster">
-                  <ProjectMicroEffect visual={project.visual} />
-                  <div className={`poster-overlay${isHovered || isActive ? ' overlay-lifted' : ''}`} />
-                  <div className={`poster-info${isHovered ? ' info-visible' : ''}`} aria-hidden={!isHovered}>
+                  <div className="poster-art" aria-hidden="true">
+                    <ProjectMicroEffect visual={project.visual} />
+                  </div>
+                  <div className="poster-scrim" aria-hidden="true" />
+                  <div className="poster-info">
+                    <span className="poster-badge">{project.badge}</span>
+                    <p className="poster-title">{project.title}</p>
                     <p className="poster-desc">{project.description}</p>
                     <span className="poster-link-hint">View on GitHub →</span>
                   </div>
-                </div>
-                <div className="poster-meta">
-                  <span className="poster-badge">{project.badge}</span>
-                  <p className="poster-title">{project.title}</p>
                 </div>
               </a>
             );

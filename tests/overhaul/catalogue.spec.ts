@@ -21,7 +21,7 @@ async function gotoWork(page: Page) {
     await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
   }
   await page.locator('#work').scrollIntoViewIfNeeded();
-  // Wait for lazy-loaded content (HudFrame, VFX gallery, feeds)
+  // Wait for lazy-loaded content (InViewGate-gated VFX gallery, feeds)
   await page.waitForTimeout(1500);
 }
 
@@ -133,10 +133,11 @@ test.describe('TC-FR-CATALOG: Project Catalogue', () => {
     }
   });
 
-  test('TC-CATALOG-06: JARVIS HudFrame renders with telemetry label', async ({ page }) => {
+  test('TC-CATALOG-06: Signature-effects showreel renders with a label', async ({ page }) => {
     await gotoWork(page);
-    await expect(page.locator('#work')).toContainText('JARVIS');
-    await expect(page.locator('#work')).toContainText('telemetry');
+    // The JARVIS radar HUD was removed from #work (posh-catalogue overhaul) —
+    // the VFX gallery now leads with a "Signature effects" showreel label.
+    await expect(page.locator('#work')).toContainText('Signature effects');
   });
 
   test('TC-CATALOG-07: GitHub Feed section renders', async ({ page }) => {

@@ -39,6 +39,7 @@ import GithubFeed from '@/components/site/GithubFeed';
 import HiddenTerminal from '@/components/site/HiddenTerminal';
 import HeroAvatar from '@/components/site/HeroAvatar';
 import ScrollRail from '@/components/site/ScrollRail';
+import InViewGate from '@/components/site/InViewGate';
 import HeroScroll from '@/components/site/HeroScroll';
 import ProofScroll from '@/components/site/ProofScroll';
 import WorkScroll from '@/components/site/WorkScroll';
@@ -704,14 +705,8 @@ export default function Home() {
             <Reveal className="section-header">
               <h2 className="section-title">Current Projects in the Pipeline</h2>
               <p className="section-subhead work-section-lede">
-                Flagship builds with live signature effects — drag or scroll the catalogue, then explore the VFX gallery.
+                Flagship builds with live signature effects — drag or scroll the catalogue.
               </p>
-            </Reveal>
-
-            <Reveal delay={0.05}>
-              {/* lazy: the JARVIS WebGL context only mounts when #work scrolls into
-                  view, so the home view boots with a single live context (NFR-FPS / QT-10). */}
-              <HudFrame label="JARVIS · real-time telemetry" className="work-hud" lazy />
             </Reveal>
 
             <Reveal delay={0.08}>
@@ -719,7 +714,8 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={0.12}>
-              <div className="vfx-gallery">
+              <div className="section-subhead vfx-gallery-label">Signature effects — live</div>
+              <InViewGate className="vfx-gallery" rootMargin="600px" minHeight="480px">
                 <SprintBurndown project="EFDDH-Jira-Analytics-Dashboard" />
                 <TokenStreamMatch project="tailor-resume-with-ai" />
                 <TokenReflow project="Advanced-Prompt-Creator" />
@@ -744,7 +740,7 @@ export default function Home() {
                 <KeySigningPulse project="public-key-server" />
                 <EventSeatShimmer project="abentertainment" />
                 <TeslaDashboard project="telemetry-server" />
-              </div>
+              </InViewGate>
             </Reveal>
 
             <div className="live-content">

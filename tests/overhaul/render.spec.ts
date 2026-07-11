@@ -6,7 +6,9 @@ import { test, expect, type Page } from '@playwright/test';
  *
  * The signature scenes are:
  *   - SpaceScene (hero starfield background)
- *   - TelemetryHud / HudFrame (JARVIS HUD in #work)
+ *   - HudFrame bezel motif (hero backdrop — scene={false}, no WebGL canvas;
+ *     the JARVIS radar instance was removed from #work in the posh-catalogue
+ *     overhaul, see TC-RENDER-03)
  *   - CelestialSphere (btr-demo in #work)
  *   - OrchestrationGraph (ralph-loop-infinite in #work)
  *   - PacketFlowGraph (telemetry-cluster in #work)
@@ -89,25 +91,19 @@ test.describe('TC-NFR-RENDER: Cinematic Rendering Compliance', () => {
     expect(criticalErrors).toHaveLength(0);
   });
 
-  test('TC-RENDER-03: HudFrame renders in work section', async ({ page }) => {
-    await gotoSection(page, '#work');
+  test('TC-RENDER-03: HudFrame bezel motif renders in hero backdrop', async ({ page }) => {
+    // The sparse JARVIS radar HudFrame instance was removed from #work
+    // (posh-catalogue overhaul — poster cards now carry the signature
+    // effect themselves, visible at rest). HudFrame's sole remaining
+    // mount is the hero backdrop bezel (scene={false} — bezel/corner-tick
+    // motif only, no WebGL canvas).
+    await gotoSection(page, '#hero');
 
-    // HudFrame renders a canvas or SVG for the JARVIS telemetry HUD
-    const hudCanvas = page.locator(
-      '#work canvas, [class*="hud"] canvas, [class*="HudFrame"] canvas',
-    ).first();
+    const hudFrame = page.locator('.hero-hud-backdrop .hud-frame');
+    await expect(hudFrame).toBeAttached();
 
-    const canvasCount = await hudCanvas.count();
-    if (canvasCount > 0) {
-      const box = await hudCanvas.boundingBox();
-      if (box) {
-        expect(box.width).toBeGreaterThan(0);
-        expect(box.height).toBeGreaterThan(0);
-      }
-    }
-
-    // At minimum, the HUD label text should be present
-    await expect(page.locator('#work')).toContainText('JARVIS');
+    const brackets = page.locator('.hero-hud-backdrop .hud-frame__bracket');
+    expect(await brackets.count()).toBe(4);
   });
 
   test('TC-RENDER-04: VFX gallery canvases render without errors', async ({ page }) => {

@@ -56,11 +56,11 @@ test.describe('E2E: Projects / Work Section', () => {
     await expect(iframe).toBeAttached();
   });
 
-  test('TC-WORK-06: HudFrame renders in work section', async ({ page }) => {
+  test('TC-WORK-06: Signature-effects showreel label renders in work section', async ({ page }) => {
     await gotoHome(page);
-    // The HUD frame labeled "JARVIS · real-time telemetry"
-    await expect(page.locator('#work')).toContainText('JARVIS');
-    await expect(page.locator('#work')).toContainText('telemetry');
+    // The JARVIS radar HUD was removed from #work (posh-catalogue overhaul) —
+    // the section now leads with the showreel label instead.
+    await expect(page.locator('#work')).toContainText('Signature effects');
   });
 
   test('TC-WORK-07: ScrollRail label anchors to work', async ({ page }) => {
