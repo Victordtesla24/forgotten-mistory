@@ -5654,3 +5654,46 @@ nav[data-scrolled="true"] {
         transition: none;
     }
 }
+
+/* 5. .beat — cinematic letterbox curtain per section (Marvel title-sequence beat, INC2).
+      Progressive enhancement: the bars only exist once SectionBeats arms
+      [data-beats-armed] on <html>; if the JS never runs, sections render fully open
+      (no hidden-content trap). Bars are decorative — pointer-events:none, z-index above
+      content. Content reveal itself stays owned by the existing <Reveal> wrappers, so
+      there is no double-mask. */
+.beat {
+    position: relative;
+}
+[data-beats-armed] .beat::before,
+[data-beats-armed] .beat::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--letterbox-h);
+    background: var(--ink-900);
+    z-index: 6;
+    pointer-events: none;
+    transform: scaleY(1);
+    transition: transform var(--motion-slow) var(--motion-ease-emphasized);
+}
+[data-beats-armed] .beat::before {
+    top: 0;
+    transform-origin: top;
+}
+[data-beats-armed] .beat::after {
+    bottom: 0;
+    transform-origin: bottom;
+}
+[data-beats-armed] .beat[data-inview="true"]::before,
+[data-beats-armed] .beat[data-inview="true"]::after {
+    transform: scaleY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+    /* Curtains open instantly (no sweep); content is always visible. */
+    [data-beats-armed] .beat::before,
+    [data-beats-armed] .beat::after {
+        transform: scaleY(0);
+        transition: none;
+    }
+}

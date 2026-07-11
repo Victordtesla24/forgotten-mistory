@@ -27,6 +27,7 @@ const SpaceScene = dynamic(() => import('./components/SpaceScene'), { ssr: false
 import Preloader from '@/components/site/Preloader';
 import CursorGlow from '@/components/site/CursorGlow';
 import CardDepth from '@/components/site/CardDepth';
+import SectionBeats from '@/components/site/SectionBeats';
 import Navigation from '@/components/site/Navigation';
 import Reveal from '@/components/site/Reveal';
 import TelemetryPanel from '@/components/site/TelemetryPanel';
@@ -262,6 +263,7 @@ export default function Home() {
       <Preloader />
       <CursorGlow />
       <CardDepth />
+      <SectionBeats />
 
       <div className="scene-stack" aria-hidden="true">
         <SpaceScene />
@@ -461,7 +463,7 @@ export default function Home() {
         {/* T2 — ProofScroll: GSAP onEnter cue anchor */}
         <ProofScroll />
 
-        <section id="about" className="about-section">
+        <section id="about" className="about-section beat">
           <div className="container">
             <Reveal className="section-header" variant="depth">
               <h2 className="section-title">About Me</h2>
@@ -586,7 +588,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="experience" className="experience-section">
+        <section id="experience" className="experience-section beat">
           <ScrollRail targetId="experience" label="Experience" />
           <div className="container">
             <Reveal className="section-header">
@@ -598,7 +600,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="skills" className="skills-section">
+        <section id="skills" className="skills-section beat">
           {/* T6 — SkillsScroll: GSAP ScrollTrigger enter stagger, per-skill micro-viz cue */}
           <SkillsScroll />
           <div className="container">
@@ -656,7 +658,7 @@ export default function Home() {
 
         <section
           id="architecture-lab"
-          className="architecture-section"
+          className="architecture-section beat"
           aria-labelledby="architecture-title"
         >
           <div className="container">
@@ -693,7 +695,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="work" className="work-section">
+        <section id="work" className="work-section beat">
           {/* T4 + T5 — WorkScroll (per-scene pin sequential) + CatalogueScroll (vertical→horizontal) */}
           <ScrollRail targetId="work" label="Work" />
           <WorkScroll />
@@ -785,7 +787,7 @@ export default function Home() {
 
         <Dossier />
 
-        <section id="contact" className="contact-section">
+        <section id="contact" className="contact-section beat">
           {/* T7 — ContactScroll: GSAP enter reveals + magnetic CTA */}
           <ContactScroll />
           <div className="container">

@@ -116,4 +116,30 @@ test.describe('Overhaul: Cinematic-Monochrome Design Language', () => {
     });
     expect(durMs).toBeLessThan(20);
   });
+
+  test('TC-CINE-07: content sections use the .beat letterbox primitive and JS arms it', async ({ page }) => {
+    await gotoHome(page);
+    const beats = page.locator('section.beat');
+    expect(await beats.count()).toBeGreaterThanOrEqual(5);
+    // SectionBeats sets the progressive-enhancement flag on <html> once armed.
+    await expect(page.locator('html')).toHaveAttribute('data-beats-armed', 'true');
+  });
+
+  test('TC-CINE-08: a beat section reveals (data-inview) when scrolled into view', async ({ page }) => {
+    await gotoHome(page);
+    const about = page.locator('#about');
+    await about.scrollIntoViewIfNeeded();
+    await expect(about).toHaveAttribute('data-inview', 'true');
+    // Letterbox bars are decorative — content is never trapped behind them.
+    await expect(about).toContainText('About Me');
+  });
+
+  test('TC-CINE-09: under reduced motion beat curtains render open (content visible)', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await gotoHome(page);
+    const about = page.locator('#about');
+    await about.scrollIntoViewIfNeeded();
+    await expect(about).toContainText('About Me');
+    await expect(about).toBeVisible();
+  });
 });
