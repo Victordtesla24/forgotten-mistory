@@ -193,6 +193,34 @@ export default function Home() {
     };
   }, []);
 
+  // Defer the heavy WebGL starfield off the critical load path: mount SpaceScene only
+  // once the page is interactive (load → requestIdleCallback), so its shader compile +
+  // per-frame 4.5k-star loop never counts against LCP/TBT (Lighthouse perf gate). The
+  // static .cosmic-backdrop CSS is the immediate background; the starfield fades in after.
+  const [heavyReady, setHeavyReady] = useState(false);
+  useEffect(() => {
+    let idleId: number | undefined;
+    let armed = false;
+    const arm = () => {
+      if (armed) return;
+      armed = true;
+      if (typeof window.requestIdleCallback === 'function') {
+        idleId = window.requestIdleCallback(() => setHeavyReady(true), { timeout: 2500 });
+      } else {
+        idleId = window.setTimeout(() => setHeavyReady(true), 900);
+      }
+    };
+    if (document.readyState === 'complete') arm();
+    else window.addEventListener('load', arm, { once: true });
+    return () => {
+      window.removeEventListener('load', arm);
+      if (idleId !== undefined) {
+        if (typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleId);
+        else window.clearTimeout(idleId);
+      }
+    };
+  }, []);
+
   // Subtle scroll parallax across the hero.
   const heroRef = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({
@@ -267,7 +295,7 @@ export default function Home() {
       <SectionBeats />
 
       <div className="scene-stack" aria-hidden="true">
-        <SpaceScene />
+        {heavyReady && <SpaceScene />}
         <div className="cosmic-backdrop" />
       </div>
 
