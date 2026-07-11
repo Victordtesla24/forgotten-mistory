@@ -12,6 +12,7 @@ import React, { useMemo, useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
+import { useReducedMotionSafe } from '@/lib/useReducedMotionSafe';
 
 const ACCENT = new THREE.Color(PALETTE.accent);
 const STEEL = new THREE.Color(PALETTE.steel);
@@ -133,6 +134,7 @@ function useInView(ref: React.RefObject<HTMLElement | null>) {
 export default function SkillVizEngineering() {
   const containerRef = useRef<HTMLDivElement>(null);
   const inView = useInView(containerRef);
+  const prefersReducedMotion = useReducedMotionSafe();
 
   return (
     <div
@@ -142,7 +144,7 @@ export default function SkillVizEngineering() {
       aria-hidden="true"
       style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, background: 'transparent', pointerEvents: 'none' }}
     >
-      {inView ? (
+      {!prefersReducedMotion && inView ? (
         <Canvas
           camera={{ position: [0, 0, 1.6], fov: 45 }}
           gl={{ antialias: false, alpha: true, preserveDrawingBuffer: false }}

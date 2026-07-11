@@ -79,4 +79,27 @@ test.describe('E2E: Skills Section', () => {
     await expect(page.locator('#skills')).toContainText('Monash University');
     await expect(page.locator('#skills')).toContainText('University of Melbourne');
   });
+
+  // R2 success criterion (NN-3): every signature scene MUST provide a
+  // prefers-reduced-motion fallback. Each per-skill SkillViz must render a static
+  // monochrome SVG poster and mount NO WebGL <canvas> when reduced motion is on.
+  test('TC-SKILLS-08: reduced motion swaps every skill viz to a static poster (no canvas)', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await gotoHome(page);
+    const cards = page.locator('#skills .skill-card');
+    const count = await cards.count();
+    expect(count).toBeGreaterThanOrEqual(5);
+
+    for (let i = 0; i < count; i++) {
+      const card = cards.nth(i);
+      await card.locator('.skill-header').click();
+      await expect(card).toHaveClass(/open/);
+      const wrapper = card.locator('.skill-viz-wrapper');
+      // Only skill groups that carry a viz have a wrapper; assert the fallback when present.
+      if (await wrapper.count()) {
+        await expect(wrapper.locator('[role="img"]').first()).toBeVisible();
+        await expect(wrapper.locator('canvas')).toHaveCount(0);
+      }
+    }
+  });
 });
