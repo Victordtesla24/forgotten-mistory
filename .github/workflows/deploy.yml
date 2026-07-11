@@ -76,14 +76,14 @@ jobs:
       #    - Cached when safe (keyed on content hash of inputs)
       #    - Fallback to OS-specific cache
       - name: Cache static export (out/)
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: out
           key: static-export-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('public/**') }}
           restore-keys: |
             static-export-${{ runner.os }}-
       - name: Cache Next.js build output
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .next/cache
           key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
@@ -126,7 +126,7 @@ jobs:
       # ── CACHE STRATEGY ──
       # Same caching as quality job
       - name: Cache Next.js build output
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .next/cache
           key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
@@ -165,7 +165,7 @@ jobs:
       # ── CACHE STRATEGY ──
       # Same caching as quality job
       - name: Cache Next.js build output
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .next/cache
           key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
@@ -179,7 +179,7 @@ jobs:
 
       # R6 UPGRADE (High): Cache Playwright browsers — saves ~90 s/run.
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
@@ -279,7 +279,7 @@ jobs:
       # ── CACHE STRATEGY ──
       # Same caching as quality job
       - name: Cache Next.js build output
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .next/cache
           key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
@@ -292,7 +292,7 @@ jobs:
           cache: npm
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-gpu-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
@@ -494,7 +494,7 @@ jobs:
       # ── CACHE STRATEGY ──
       # Same caching as quality job
       - name: Cache Next.js build output
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .next/cache
           key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
@@ -589,7 +589,7 @@ jobs:
       # ── CACHE STRATEGY ──
       # Same caching as quality job
       - name: Cache Next.js build output
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .next/cache
           key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
@@ -604,7 +604,7 @@ jobs:
 
       # R6 UPGRADE (High): Cache Playwright browsers for axe job.
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         id: axe-playwright-cache
         with:
           path: ~/.cache/ms-playwright
@@ -634,7 +634,7 @@ jobs:
       # ── CACHE STRATEGY ──
       # Same caching as quality job
       - name: Cache Next.js build output
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .next/cache
           key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
