@@ -1345,7 +1345,7 @@ const MiniVicBot = () => {
                     <div className="flex gap-1 items-center">
                       {msg.mode && (
                         <span className="rounded-full border border-zinc-200/25 bg-zinc-500/10 px-2 py-[2px] text-[10px] uppercase tracking-wide text-zinc-100">
-                          {msg.mode}
+                          {PERSONA_MODES.find((m) => m.key === msg.mode)?.label ?? msg.mode}
                         </span>
                       )}
                       <span>

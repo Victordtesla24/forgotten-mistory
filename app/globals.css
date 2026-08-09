@@ -577,12 +577,17 @@ nav.nav-hidden {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     background: var(--ink-900);
     z-index: 99;
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* `safe center` keeps the links centred when they fit but falls back to
+       start-aligned + scrollable when 9 links exceed a short phone's height
+       (otherwise `center` clipped "Contact"). overflow-y provides the scroll. */
+    align-items: safe center;
+    overflow-y: auto;
+    padding: 5rem 1.25rem;
     /* translateY + opacity are owned by framer-motion (m.div) — no CSS transform or
        transition here, or it would fight the spring. */
 }
@@ -2702,7 +2707,12 @@ footer {
     transform: translateY(-4px);
     border-color: var(--card-border-hover);
     box-shadow: var(--card-shadow-hover), var(--card-rim);
-    outline: none;
+}
+/* Keyboard focus needs an explicit indicator (a border tint alone isn't a
+   reliable focus cue) — matches the site-wide focus-visible treatment. */
+.contact-card:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
 }
 
 .contact-card-icon {
@@ -2916,7 +2926,7 @@ footer {
 
 .skill-title {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* top-align the icon with the eyebrow/title (was centered → drifted on 2-line titles) */
     gap: 1rem;
     min-width: 0; /* allow the title to shrink so the chevron never gets squeezed out */
 }
@@ -3264,16 +3274,38 @@ footer {
     .hero-section {
         flex-direction: column;
         justify-content: flex-start;
+        /* Override the base `align-items: flex-start`: in a column that makes the
+           content shrink-wrap to its widest child (the ~660px proof strip),
+           overflowing the phone viewport and getting clipped by overflow:hidden
+           (role line, pill, stat cards, CTAs all cut off on the right). Centre
+           + constrain instead. */
+        align-items: center;
         text-align: center;
         padding-top: 8rem;
         /* Reset perspective for mobile to avoid layout issues */
         perspective: none;
     }
-    
+
     .hero-content {
         padding-right: 0;
         /* Reset transform style for mobile */
         transform-style: flat;
+        /* Pin the content column to the viewport so nothing clips off the right. */
+        width: 100%;
+        max-width: 100%;
+        flex: none;
+    }
+
+    /* Two-column proof grid that fits the phone (base is 4-col @660px). */
+    .hero-proof-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 100%;
+    }
+    .hero-positioning,
+    .hero-links,
+    .hero-cta-pillars,
+    .hero-availability {
+        max-width: 100%;
     }
 
     /* Disable 3D transforms on mobile */

@@ -93,7 +93,7 @@ function ShootingStar() {
   const startPos = useRef(new THREE.Vector3());
   const velocity = useRef(new THREE.Vector3());
   const timer = useRef(0);
-  const nextSpawnTime = useRef(Math.random() * 5 + 3);
+  const nextSpawnTime = useRef(Math.random() * 12 + 10);
 
   useFrame((_state, delta) => {
     timer.current += delta;
@@ -117,7 +117,7 @@ function ShootingStar() {
           0
         );
 
-        nextSpawnTime.current = Math.random() * 5 + 3;
+        nextSpawnTime.current = Math.random() * 12 + 10;
       }
     } else {
       if (meshRef.current) {
@@ -137,8 +137,8 @@ function ShootingStar() {
 
   return (
     <Trail
-      width={2}
-      length={8}
+      width={1.3}
+      length={5}
       color={new THREE.Color(PALETTE.starGlow)}
       attenuation={(t) => t * t}
     >
