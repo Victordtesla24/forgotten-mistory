@@ -34,6 +34,14 @@ export interface BrainReply {
 }
 
 const GEMINI_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY ?? '';
+/**
+ * Only attempt the direct-Gemini tier when the inlined key is a *real* Google API
+ * key (they start with "AIza"). A misconfigured build can inline an empty string
+ * or the un-expanded literal "${GEMINI_API_KEY}" placeholder; firing a request
+ * with that produced a 400 on every message (visible console error) before
+ * silently falling through. Guarding here keeps the console clean and skips a
+ * doomed round-trip when the key is absent/placeholder. */
+const GEMINI_KEY_VALID = /^AIza[0-9A-Za-z_-]{20,}$/.test(GEMINI_KEY);
 const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models';
 const REQUEST_TIMEOUT_MS = 14000;
 const MAX_HISTORY_TURNS = 8;
@@ -129,8 +137,11 @@ export function matchKnowledgeWithContext(
   // No history → nothing to boost
   if (history.length === 0) return null;
 
-  // Check if this looks like a follow-up
-  const isFollowUp = FOLLOW_UP_INDICATORS.test(query) || query.split(' ').length <= 4;
+  // Check if this looks like a follow-up. It MUST actually reference prior
+  // context via a pronoun/demonstrative — the old `|| words<=4` heuristic
+  // misfired on gibberish ("asdkjf qwerty??"), treating it as a follow-up and
+  // echoing the previous answer verbatim instead of the graceful fallback.
+  const isFollowUp = FOLLOW_UP_INDICATORS.test(query);
 
   if (!isFollowUp) return null;
 
@@ -366,7 +377,7 @@ export async function askMiniVicBrain(
     // Fall through to Gemini, then the offline knowledge base.
   }
 
-  if (GEMINI_KEY) {
+  if (GEMINI_KEY_VALID) {
     const ladder = workingModel
       ? [workingModel, ...MODEL_LADDER.filter((m) => m !== workingModel)]
       : MODEL_LADDER;

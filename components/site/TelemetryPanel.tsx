@@ -39,7 +39,11 @@ function useRealTelemetry(enabled: boolean) {
       if (!running) return;
       const delta = now - last;
       last = now;
-      if (delta > 0) {
+      // Ignore throttled frames: a >100ms delta means the browser suspended rAF
+      // (backgrounded tab, alt-tab, devtools capture) — NOT a real render stall.
+      // Sampling those made the hero panel advertise an absurd "4 FPS · 450ms",
+      // contradicting the sub-200ms proof claim. Only real frames feed the meter.
+      if (delta > 0 && delta < 100 && !document.hidden) {
         const instantFps = Math.round(1000 / delta);
         fpsHistory.push(Math.min(instantFps, 144));
         if (fpsHistory.length > ROLLING_WINDOW) fpsHistory.shift();

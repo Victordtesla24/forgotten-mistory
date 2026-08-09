@@ -552,7 +552,7 @@ export interface DossierEdition {
 
 /**
  * NN-2 (prompt §2) — the memorable "leave-behind" dossier. A visitor leaves with
- * something concrete: a downloadable one-page dossier (the CV PDF), the recurring
+ * something concrete: a downloadable CV dossier (the PDF), the recurring
  * monochrome signature motif, and a reachable clone. Every recall signature is
  * number-led and traces 1:1 to the canonical `proof` data above (no drift).
  * Rendered in `#dossier` (TC-NN-2).
@@ -563,7 +563,7 @@ export const dossier = {
   summary:
     'Fifteen-plus years turning complex government, finance and telecommunications programs into measurable, compliant delivery.',
   downloadHref: '/docs/Vik_Resume_Final.pdf',
-  downloadLabel: 'Download the one-page dossier (PDF)',
+  downloadLabel: 'Download the CV dossier (PDF)',
   highlights: [
     '15+ years across government, finance and telecommunications',
     '$5M+ program portfolio led across 5+ squads at 100% compliance',
@@ -581,7 +581,7 @@ export const dossier = {
       persona: 'client',
       label: 'For clients',
       takeaway:
-        '$5M+ programs shipped at 100% compliance; book a conversation and keep the one-page dossier.',
+        '$5M+ programs shipped at 100% compliance; book a conversation and keep the CV dossier.',
     },
   ] as DossierEdition[],
 };

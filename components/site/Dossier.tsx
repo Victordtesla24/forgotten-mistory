@@ -5,8 +5,8 @@ import { dossier } from '@/app/data/siteContent';
 
 /**
  * Dossier — the #dossier "leave-behind" section (NN-2 / TC-NN-2, prompt §2). Closes
- * the page so a visitor leaves with something concrete: a downloadable one-page
- * dossier (the CV PDF) for BOTH first-class personas (employer + client), the
+ * the page so a visitor leaves with something concrete: a downloadable CV
+ * dossier (the PDF) for BOTH first-class personas (employer + client), the
  * recurring monochrome signature motif, and a one-tap path to the live clone. Every
  * recall signature is number-led and traces back to the résumé-sourced proof data.
  */
@@ -26,7 +26,7 @@ export default function Dossier() {
             Take the dossier with you
           </h2>
           <p className="section-subhead">
-            One page, two audiences — download the record, or ask the clone.
+            One record, two audiences — download the CV, or ask the clone.
           </p>
         </Reveal>
 

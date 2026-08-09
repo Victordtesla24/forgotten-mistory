@@ -65,6 +65,42 @@ export default function Navigation() {
     };
   }, [open, close]);
 
+  // Focus management + trap (WCAG 2.4.3 / 2.1.2): when the overlay opens, move
+  // focus into it and cycle Tab/Shift+Tab within its links so keyboard focus
+  // never leaks to the (visually hidden) page behind the menu; on close, return
+  // focus to the toggle that opened it.
+  useEffect(() => {
+    if (!open) return;
+    const overlay = overlayRef.current;
+    if (!overlay) return;
+    const toggle = navRef.current?.querySelector<HTMLElement>('.menu-toggle') ?? null;
+    const focusable = () =>
+      Array.from(overlay.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')).filter(
+        (el) => el.offsetParent !== null,
+      );
+    focusable()[0]?.focus();
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+      const items = focusable();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && (active === first || !overlay.contains(active))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (active === last || !overlay.contains(active))) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      toggle?.focus();
+    };
+  }, [open]);
+
   // Transparent → frosted nav: flag data-scrolled once the page leaves the top.
   // Set imperatively via the ref so scrolling never triggers a React re-render.
   useEffect(() => {

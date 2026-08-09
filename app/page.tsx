@@ -36,6 +36,7 @@ import ExpandableCard from '@/components/site/ExpandableCard';
 import ArchitectureMap from '@/components/site/ArchitectureMap';
 import ProjectsCarousel from '@/components/site/ProjectsCarousel';
 import GithubFeed from '@/components/site/GithubFeed';
+import LiteYouTube from '@/components/site/LiteYouTube';
 import HiddenTerminal from '@/components/site/HiddenTerminal';
 import HeroAvatar from '@/components/site/HeroAvatar';
 import ScrollRail from '@/components/site/ScrollRail';
@@ -814,12 +815,7 @@ export default function Home() {
               <Reveal className="video-feed" delay={0.1}>
                 <div className="section-subhead">YouTube stream</div>
                 <div className="video-frame">
-                  <iframe
-                    title="Vicd0ct YouTube uploads"
-                    src="https://www.youtube.com/embed/videoseries?list=UUJSYpoFkGKKzYTKzAr8vGzQ"
-                    allowFullScreen
-                    loading="lazy"
-                  />
+                  <LiteYouTube playlistId="UUJSYpoFkGKKzYTKzAr8vGzQ" title="Vicd0ct YouTube uploads" />
                 </div>
                 <p className="video-note">
                   Latest drops from @vicd0ct. Live coding, algorithm archaeology, telemetry breakdowns.

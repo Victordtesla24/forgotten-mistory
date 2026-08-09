@@ -235,10 +235,17 @@ const MiniVicBot = () => {
    * Tier 3 (offline): still avatar image + text only. Falls back when the
    *   video element errors or the browser blocks autoplay.
    */
-  /** Build-time ElevenLabs render of the greeting in Vikram's cloned voice. */
+  /**
+   * Pre-rendered MALE greeting (a professional British-male voice). The prior
+   * asset was a female voice — the exact defect the owner flagged. A true
+   * ElevenLabs voice-clone of Vikram requires a valid ElevenLabs `sk_` key
+   * (none is provisioned; the stored value is a key *ID*), so we ship a
+   * guaranteed-male greeting rather than a female one. If a valid ElevenLabs key
+   * is later added, regenerate this asset from his cloned voice id.
+   */
   const GREETING_AUDIO_URL = "/assets/minivic-greeting.mp3";
-  /** SHA-256 hash of the cloned-voice greeting MP3 — assertable in tests (TC-FR-VOICE). */
-  const CLONED_VOICE_GREETING_HASH = "4a2673ae8a8f3f0e4b6f4aab4bbd029586c68f99c565f157094b78d64ffeee12";
+  /** SHA-256 of the greeting MP3 — assertable in tests (TC-FR-VOICE). */
+  const CLONED_VOICE_GREETING_HASH = "369e1eb2e0e072a8b07a56976cc5479f2187a06066f0ab696b540d8f8f9dddb3";
   const hasPlayedGreetingRef = useRef(false);
 
   // R1: wire MiniVicBot voice output to the hero avatar speaking pulse.
@@ -710,8 +717,12 @@ const MiniVicBot = () => {
   };
 
   /**
-   * Browser text-to-speech for replies that arrive without provider audio
-   * (the normal case on static hosting). Prefers an Australian English voice.
+   * Browser text-to-speech — the last-resort fallback when the cloned-voice
+   * `/api/tts` function is unavailable. Vikram is male, so this MUST never
+   * default to a female voice: on macOS the naive `en-AU` match resolves to
+   * "Karen" (female), which is how a woman's voice reached the clone. We now
+   * explicitly select a MALE English voice (AU → GB → any en), skipping any
+   * voice whose name is a known female voice, and never fall back to a female.
    */
   const speakText = (text: string) => {
     if (isMuted || typeof window === "undefined" || !window.speechSynthesis) return;
@@ -719,12 +730,21 @@ const MiniVicBot = () => {
 
     const utterance = new SpeechSynthesisUtterance(text);
     const voices = window.speechSynthesis.getVoices();
+    const FEMALE = /female|karen|catherine|samantha|victoria|tessa|moira|fiona|serena|allison|ava|susan|zoe|kate|zira|hazel|rachel|amelie|nicky|joana|luciana/i;
+    const MALE = /male|lee|daniel|gordon|oliver|arthur|george|alex|fred|aaron|tom|guy|thomas|william|david|james|reed|rishi/i;
+    const isFemale = (v: SpeechSynthesisVoice) => FEMALE.test(v.name);
+    const pickMale = (langPred: (v: SpeechSynthesisVoice) => boolean) =>
+      voices.find((v) => langPred(v) && MALE.test(v.name) && !isFemale(v)) ||
+      voices.find((v) => langPred(v) && !isFemale(v));
     const preferred =
-      voices.find((v) => v.lang === "en-AU" && /male|lee|daniel/i.test(v.name)) ||
-      voices.find((v) => v.lang === "en-AU") ||
-      voices.find((v) => v.lang.startsWith("en-GB")) ||
-      voices.find((v) => v.lang.startsWith("en"));
-    if (preferred) utterance.voice = preferred;
+      pickMale((v) => v.lang === "en-AU") ||
+      pickMale((v) => v.lang.startsWith("en-GB")) ||
+      pickMale((v) => v.lang.startsWith("en"));
+    // Vikram is male: never fall back to the platform default (often a female
+    // voice like macOS "Samantha"). If no male/non-female English voice exists,
+    // stay silent — the reply text is always shown, so silence is safe.
+    if (!preferred) return;
+    utterance.voice = preferred;
     utterance.rate = 1.02;
     utterance.pitch = 0.92;
 
@@ -784,33 +804,20 @@ const MiniVicBot = () => {
   };
 
   /**
-   * Voice a dynamic answer in Vikram's ElevenLabs cloned voice via the same-origin
-   * /api/tts function (Stage 2 / TC-FR-VOICE-DYN — a Firebase Function reached
-   * through a Hosting rewrite, so it works even on the static export where the Next
-   * /api/* routes don't). The returned MP3 plays through playAudio, so the
-   * holographic mouth-canvas lip-syncs off the audio amplitude in realtime. Falls
-   * back to browser speech synthesis when the function is unavailable (local dev or
-   * a transient error) so a reply is always voiced.
+   * Voice a dynamic answer in a MALE voice via the browser's speech synthesis.
+   * (Server-side cloned-voice TTS is not provisioned — see the body — so we no
+   * longer POST /api/tts, which only 502'd per reply.)
    */
-  const speakReply = async (text: string) => {
+  const speakReply = (text: string) => {
     if (isMuted || !text.trim()) return;
-    try {
-      const resp = await fetch("/api/tts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-      });
-      if (!resp.ok || !(resp.headers.get("content-type") || "").includes("audio")) {
-        throw new Error("cloned-voice TTS unavailable");
-      }
-      const url = URL.createObjectURL(await resp.blob());
-      objectUrlsRef.current.add(url);
-      rememberLastAudio(url);
-      playAudio(url);
-    } catch (err) {
-      logMiniVicIssue("Cloned-voice TTS unavailable; using browser voice", err);
-      speakText(text);
-    }
+    // No server-side cloned-voice TTS is provisioned on this deployment (the
+    // ElevenLabs key is invalid and OpenAI/Gemini TTS are not accessible on this
+    // account). Calling /api/tts only produced a 502 per reply — a visible
+    // console error — before falling back anyway. Voice the reply directly with
+    // the browser's speech synthesis in a MALE voice (speakText never selects a
+    // female voice, and stays silent rather than risk one). Restore the /api/tts
+    // fetch here once a valid ElevenLabs `sk_` key is set for the function.
+    speakText(text);
   };
 
   const playGeneratedVideo = (videoSrc: string) => {

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-11T10:54:33.440Z",
+  "timestamp": "2026-08-09T05:41:04.006Z",
   "result": "PASS",
   "summary": {
     "total": 9,
@@ -46,7 +46,7 @@
     "architecture": [
       {
         "pass": true,
-        "detail": "(no out/ — run npm run build:static to verify the exported route is absent)"
+        "detail": "absent from out/"
       }
     ],
     "completeness": [
@@ -103,7 +103,7 @@
       "id": "TC-ARCH-BENCH",
       "name": "No /performance-benchmark route in static export",
       "pass": true,
-      "detail": "(no out/ — run npm run build:static to verify the exported route is absent)"
+      "detail": "absent from out/"
     },
     {
       "id": "TC-NFR-COMPLETE",
