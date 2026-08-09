@@ -1309,7 +1309,9 @@ const MiniVicBot = () => {
               <span className="font-medium text-white/70">{PERSONA_MODES.find((m) => m.key === activeMode)?.label}</span>
               <span className="text-white/25">·</span>
               <span className="truncate">{PERSONA_MODES.find((m) => m.key === activeMode)?.blurb}</span>
-              {latencyMs !== null && (
+              {/* Only surface latency when it's genuinely snappy — advertising a
+                  slow, variable 2–4s round-trip as a "metric" reads poorly. */}
+              {latencyMs !== null && latencyMs < 1200 && (
                 <>
                   <span className="text-white/25">·</span>
                   <span className="shrink-0">{latencyMs} ms</span>
@@ -1407,7 +1409,7 @@ const MiniVicBot = () => {
                     <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-300" style={{ animationDelay: "150ms" }} />
                     <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-300" style={{ animationDelay: "300ms" }} />
                   </div>
-                  <div className="mt-1 animate-pulse text-[10px] text-zinc-100">Accessing neural memory...</div>
+                  <div className="mt-1 animate-pulse text-[10px] text-zinc-100">Composing a reply…</div>
                 </div>
               </div>
             )}

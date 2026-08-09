@@ -145,7 +145,7 @@ function NodeSphere({ position, frozen }: { position: THREE.Vector3; frozen: boo
         roughness={0.7}
         metalness={0.1}
         emissive={PALETTE.steel}
-        emissiveIntensity={0.3}
+        emissiveIntensity={0.7}
       />
     </mesh>
   );

@@ -115,7 +115,7 @@ function CentralSphere({ frozen }: { frozen: boolean }) {
         roughness={0.85}
         metalness={0.05}
         emissive={PALETTE.steel}
-        emissiveIntensity={0.15}
+        emissiveIntensity={0.42}
       />
     </mesh>
   );
