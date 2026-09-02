@@ -67,7 +67,7 @@ volumes:
 - [ ] Step 1: Trigger `gh workflow run CI -R Victordtesla24/aether-job-career-agent --ref main`; wait; the `api-tests` job must provision `aether_test_ci` against `agentops-ci-postgres` (job log shows `[test-schema.sh] provisioned`), run the three slices and drop the schema. Application-level test failures (the 20 live-submitter assertions) are reported, not fixed here.
 
 
-### Task 4 (new): Production-tenant caps and relocation to /docker/<project>
+### Task 5: Production-tenant caps and relocation to /docker/<project>
 
 **Files:** `/docker/abentertainment/docker-compose.yml`, `/docker/portfolio/docker-compose.yml`, `/docker/aether-prod/docker-compose.yml` (moved from `/opt/abentertainment`, `/root/portfolio-project`, `/root/prod`), each with `mem_limit`/`cpus` and unchanged container names, ports and volumes; symlinks left at the old paths.
 
@@ -75,26 +75,26 @@ volumes:
 - [ ] Step 2: Nextcloud caps: add `mem_limit` to the four services in `/docker/nextcloud-kdka/docker-compose.yml` (Hostinger-managed file — back it up; total ≤ 1 GB) and `docker compose up -d`; verify status.php still 200.
 - [ ] Step 3: `docker compose ls` shows every tenant under `/docker/<project>` except unit-based ones; `docker stats` shows caps everywhere.
 
-### Task 5 (new): Deploy hook
+### Task 6: Deploy hook
 
 **Files:** `/docker/agent-ops/bin/deploy-hook.sh`, per-tenant `deploy.sh` registered in `projects.yml`.
 
 - [ ] Step 1: `deploy-hook.sh <project> <ref>` reads the registry, runs the tenant's `deploy.sh <ref>` (compose: `git pull`/`docker compose pull` + `up -d` + smoke; Aether: `/opt/aether-guardian/deploy_env.sh prod --rollback-on-failure <ref>`), logs to `/var/log/agent-ops/deploy-<project>.log`, exits non-zero on failed smoke.
 - [ ] Step 2: Harness pipeline template gains an optional `deploy` stage that runs the hook over SSH (Harness secret with a deploy-only key restricted by `command=` in `authorized_keys`).
 
-### Task 6 (renumbered): Runbook + onboarding checklist (was Task 5)
-### Task 7 (renumbered): Final adversarial sweep (was Task 6) — also verifies the resource budget from the v2 spec (`docker stats` sums per tier) and that every tenant has caps.
+### Task 7: Runbook + onboarding checklist — see details below.
+### Task 8: Final adversarial sweep — see details below; also verifies the resource budget from the v2 spec (`docker stats` sums per tier) and that every tenant has caps.
 
-### Task 6 (details): Runbook + onboarding checklist
+### Task 7 (details): Runbook + onboarding checklist
 
 **Files:** Modify `/docker/agent-ops/README.md`; create `/docker/agent-ops/ONBOARDING.md`.
 
 - [ ] Step 1: README becomes the platform runbook: services table (all platform services incl. ci-postgres, n8n, static), tenancy conventions, registry usage, health/dumps/backups, per-project sections generated from `projects.yml`.
 - [ ] Step 2: ONBOARDING.md checklist: add to `projects.yml` → `harness-onboard.sh` → (optional) `CREATE DATABASE <project>_ci` → Coder template choice → n8n workflow tag → Traefik route file → `registry-check.sh` green → backup path covered.
 
-### Task 7 (details): Final adversarial sweep (Fable verifier)
+### Task 8 (details): Final adversarial sweep (Fable verifier)
 
 - [ ] Read-only sweep of the whole platform against the addendum: every tenant in the registry green, no Aether-only assumptions left in platform scripts (`grep -ri aether /docker/agent-ops/bin /docker/agent-ops/README.md` limited to the Aether tenant section), all public hosts valid TLS, raw ports closed from the neutral host, dumps/backups include the platform, `systemctl --failed` empty.
 
 ## Rollback
-Task 1: `cd /docker/agent-ops && docker compose rm -sf ci-postgres`, restore `/root/ci/docker-compose.yml` from `.retired-…` and `docker compose up -d` there (same volume, same port). Tasks 2–5 are additive files. Task 3 creates spaces/repos in Harness that can be deleted from its UI.
+Task 1: `cd /docker/agent-ops && docker compose rm -sf ci-postgres`; Task 5: move the compose dir back and `docker compose up -d` (volumes untouched), restore `/root/ci/docker-compose.yml` from `.retired-…` and `docker compose up -d` there (same volume, same port). Tasks 2–5 are additive files. Task 3 creates spaces/repos in Harness that can be deleted from its UI.
