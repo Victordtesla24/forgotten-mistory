@@ -17,6 +17,8 @@ Compose project `agent-ops` at `/docker/agent-ops` (the name is the Hostinger Do
 | Shared app DB for platform apps | Postgres 18 (`agentops-postgres`) — `coder`, future `n8n` | 5440 | — | — |
 | Deployments | Harness deploy stage → `/docker/agent-ops/bin/deploy-hook.sh <project> <ref>` on the host (SSH step with a scoped key) → the project's own deploy script | — | — | key |
 | Automation / webhooks | n8n (`agentops-n8n`) | 5678 | `n8n.` (webhooks basic-auth) | native + basic-auth |
+| Agent access to n8n (MCP) | n8n instance-level MCP server (`/mcp-server/http`, Streamable HTTP) | via n8n | `n8n.`/mcp-server/http | bearer token |
+| AI-assistant code sandbox | n8n-sandbox: `agentops-sandbox-api` (8080) + `agentops-sandbox-runner-1` (privileged DinD, mTLS), one-shot `sandbox-certs` | none (compose network only) | — | API key (`SANDBOX_API_KEYS`) |
 | Agent memory | agentmemory (`agentops-agentmemory`) | 3111 | — | bearer |
 | Agent browsing | Steel (`agentops-steel`) | 3030/9223 | `steel.` | basic-auth |
 | Research | Local Deep Research + SearXNG (`agentops-ldr`, `agentops-searxng`) | 5050/8890 | `ldr.` | native |
@@ -47,7 +49,7 @@ Tenant rules: memory/CPU caps on every container; loopback ports + Traefik route
 
 | Pool | Cap (sum of `mem_limit`) | Idle today | Notes |
 |---|---|---|---|
-| Platform | ≤ 8.5 GB caps, ≤ 3 GB idle | ~1.2 GB | steel 2G, ldr 2G, harness 1.5G, coder 1.5G, n8n 1G, agentmemory 768M, postgres 512M, ci-postgres 512M, searxng 256M, static 64M |
+| Platform | ≤ 11 GB caps, ≤ 3.5 GB idle | ~1.5 GB | steel 2G, ldr 2G, n8n-sandbox runner (DinD) 2G, harness 1.5G, coder 1.5G, n8n 1G, agentmemory 768M, postgres 512M, ci-postgres 512M, searxng 256M, sandbox-api 256M, static 64M |
 | Production | ≤ 6 GB caps | ~4 GB (Aether API/worker/test venvs dominate) | add caps: abentertainment 512M, portfolio 512M, nextcloud 1G total, aether-prod-postgres 512M, redis 128M each |
 | Host/OS/agents | remainder | ~2 GB (Hermes gateway, hos-server, Chrome) | keep ≥ 4 GB free at idle; CPU: platform services capped so ≥ 1 vCPU stays free |
 
