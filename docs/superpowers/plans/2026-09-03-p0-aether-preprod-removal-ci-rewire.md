@@ -90,9 +90,9 @@ Expected: `BACKUP_DONE` and a listing with `aether_test.dump`, `aether_staging.d
 - [ ] **Step 2: Verify the dumps are restorable**
 
 ```bash
-ssh hos-vps 'B=/root/backups/aether-envs-2026-09-03; for d in aether_test aether_staging; do echo -n "$d tables in dump: "; docker exec -i aether-test-postgres pg_restore --list /dev/stdin < $B/$d.dump | grep -c "TABLE DATA"; done; sha256sum -c $B/SHA256SUMS | grep -c OK; systemctl is-enabled aether-guardian@dev.timer aether-guardian@test.timer'
+ssh hos-vps 'B=/root/backups/aether-envs-2026-09-03; for d in aether_test aether_staging; do echo -n "$d tables in dump: "; docker exec -i aether-test-postgres pg_restore --list < $B/$d.dump | grep -c "TABLE DATA"; done; sha256sum -c $B/SHA256SUMS | grep -c OK; systemctl is-enabled aether-guardian@dev.timer aether-guardian@test.timer'
 ```
-Expected: both counts > 0 (staging ≈ 48, test ≈ 48), `SHA256SUMS` OK count = 12, both timers `disabled`.
+Expected: both counts equal the live `pg_tables` counts (measured 2026-09-03: test = 94, staging = 1378 — the staging DB carries 26 per-wave test schemas), `SHA256SUMS` OK count = 14 (2 dumps + 2 sql.gz + 4 tgz + 4 service + 2 yml), both timers `disabled`. Note: `pg_restore --list /dev/stdin` fails on PG 18 ("did not find magic string"); pass the dump on stdin without a filename as above. Executed and verified 2026-09-03.
 
 ---
 
@@ -155,7 +155,7 @@ done
 docker exec aether-prod-postgres pg_dump -U aether -d aether_prod \
     --schema-only --no-owner --no-privileges --no-comments --no-tablespaces -n aether \
   | sed -E 's/\baether\b/aether_test/g' \
-  | docker exec -i aether-ci-postgres psql -U aether -d aether_ci -X -q -v ON_ERROR_STOP=1 --single-transaction
+  | docker exec -i aether-ci-postgres psql -U aether -d aether_ci -X -q -v ON_ERROR_STOP=1 --single-transaction -f -
 echo "seeded: $(docker exec aether-ci-postgres psql -U aether -d aether_ci -tAc "select count(*) from information_schema.tables where table_schema='aether_test'") tables"
 SEED
 chmod 755 seed-ci-template.sh
@@ -166,7 +166,7 @@ bash ./seed-ci-template.sh
 EOF
 scp /tmp/p0-ci-db.sh hos-vps:/tmp/p0-ci-db.sh && ssh hos-vps 'bash /tmp/p0-ci-db.sh'
 ```
-Expected: `health=healthy`, then `seeded: 48 tables` (the exact number equals the prod `aether` table count; anything > 40 is acceptable, 0 is a failure).
+Expected: `health=healthy`, then `seeded: 48 tables` (the exact number equals the prod `aether` table count; anything > 40 is acceptable, 0 is a failure). Executed and verified 2026-09-03: 48 tables, 111 indexes, 6 enums, 17 FKs, structural dump identical to prod; prod had no extensions beyond plpgsql.
 
 - [ ] **Step 2: Prove the repo's provisioning script works against it**
 
