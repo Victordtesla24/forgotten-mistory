@@ -4,7 +4,7 @@
 
 **Goal:** Make the `/docker/agent-ops` platform explicitly project-agnostic: a shared CI Postgres inside the platform with one database per project, every active GitHub repo mirrored into Harness with a standard pipeline template proven on a non-Aether project, a project registry that drives docs/health/dumps, and a runbook with an onboarding checklist.
 
-**Architecture:** see `docs/superpowers/specs/2026-09-03-vps-platform-multi-project-architecture.md`. Nothing about existing project runtimes moves. Aether's GitHub Actions delivery is kept; it simply consumes the same `aether_ci` database from the relocated CI Postgres.
+**Architecture:** see `docs/superpowers/specs/2026-09-03-vps-operations-architecture-v2.md` (two tiers: platform services vs production tenants; resource budget) and the addendum `2026-09-03-vps-platform-multi-project-architecture.md`. Nothing about existing project runtimes moves. Aether's GitHub Actions delivery is kept; it simply consumes the same `aether_ci` database from the relocated CI Postgres.
 
 **Tech Stack:** Docker Compose v5, Postgres 18, Harness Open Source 3.3.0 API (`/api/v1/spaces`, `/api/v1/repos` import, pipelines/executions), `gh` CLI, YAML registry, bash.
 
@@ -66,14 +66,33 @@ volumes:
 
 - [ ] Step 1: Trigger `gh workflow run CI -R Victordtesla24/aether-job-career-agent --ref main`; wait; the `api-tests` job must provision `aether_test_ci` against `agentops-ci-postgres` (job log shows `[test-schema.sh] provisioned`), run the three slices and drop the schema. Application-level test failures (the 20 live-submitter assertions) are reported, not fixed here.
 
-### Task 5: Runbook + onboarding checklist
+
+### Task 4 (new): Production-tenant caps and relocation to /docker/<project>
+
+**Files:** `/docker/abentertainment/docker-compose.yml`, `/docker/portfolio/docker-compose.yml`, `/docker/aether-prod/docker-compose.yml` (moved from `/opt/abentertainment`, `/root/portfolio-project`, `/root/prod`), each with `mem_limit`/`cpus` and unchanged container names, ports and volumes; symlinks left at the old paths.
+
+- [ ] Step 1: For each tenant, back up the compose dir (tar to `/root/backups/vps-fix-2026-09-02/p4/`), `docker compose down` (containers only; named volumes stay), move the directory (`.env` included) to `/docker/<project>/`, add caps (abentertainment 512m/1, portfolio 512m/1, aether-prod-postgres 512m/1, aether-prod-redis 128m/0.5), `docker compose up -d` from the new location, verify the same container names/ports/volumes (`docker inspect` Mounts + Ports) and the public route (200), `ln -s /docker/<project> <old path>` for scripts that still reference the old path (deploy_env.sh for Aether uses `/root/prod/app` — the app checkout stays where it is; only the datastore compose moves).
+- [ ] Step 2: Nextcloud caps: add `mem_limit` to the four services in `/docker/nextcloud-kdka/docker-compose.yml` (Hostinger-managed file — back it up; total ≤ 1 GB) and `docker compose up -d`; verify status.php still 200.
+- [ ] Step 3: `docker compose ls` shows every tenant under `/docker/<project>` except unit-based ones; `docker stats` shows caps everywhere.
+
+### Task 5 (new): Deploy hook
+
+**Files:** `/docker/agent-ops/bin/deploy-hook.sh`, per-tenant `deploy.sh` registered in `projects.yml`.
+
+- [ ] Step 1: `deploy-hook.sh <project> <ref>` reads the registry, runs the tenant's `deploy.sh <ref>` (compose: `git pull`/`docker compose pull` + `up -d` + smoke; Aether: `/opt/aether-guardian/deploy_env.sh prod --rollback-on-failure <ref>`), logs to `/var/log/agent-ops/deploy-<project>.log`, exits non-zero on failed smoke.
+- [ ] Step 2: Harness pipeline template gains an optional `deploy` stage that runs the hook over SSH (Harness secret with a deploy-only key restricted by `command=` in `authorized_keys`).
+
+### Task 6 (renumbered): Runbook + onboarding checklist (was Task 5)
+### Task 7 (renumbered): Final adversarial sweep (was Task 6) — also verifies the resource budget from the v2 spec (`docker stats` sums per tier) and that every tenant has caps.
+
+### Task 6 (details): Runbook + onboarding checklist
 
 **Files:** Modify `/docker/agent-ops/README.md`; create `/docker/agent-ops/ONBOARDING.md`.
 
 - [ ] Step 1: README becomes the platform runbook: services table (all platform services incl. ci-postgres, n8n, static), tenancy conventions, registry usage, health/dumps/backups, per-project sections generated from `projects.yml`.
 - [ ] Step 2: ONBOARDING.md checklist: add to `projects.yml` → `harness-onboard.sh` → (optional) `CREATE DATABASE <project>_ci` → Coder template choice → n8n workflow tag → Traefik route file → `registry-check.sh` green → backup path covered.
 
-### Task 6: Final adversarial sweep (Fable verifier)
+### Task 7 (details): Final adversarial sweep (Fable verifier)
 
 - [ ] Read-only sweep of the whole platform against the addendum: every tenant in the registry green, no Aether-only assumptions left in platform scripts (`grep -ri aether /docker/agent-ops/bin /docker/agent-ops/README.md` limited to the Aether tenant section), all public hosts valid TLS, raw ports closed from the neutral host, dumps/backups include the platform, `systemctl --failed` empty.
 
