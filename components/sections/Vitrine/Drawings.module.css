@@ -7,8 +7,18 @@
 .drawing {
     display: block;
     width: 100%;
-    height: auto;
     color: var(--mist-200);
+    /* Every drawing occupies the same band, whatever proportions its own
+       viewBox has. The deploy-loop drawing is authored on a 320x122 crop while
+       the other five are 320x200; with `height: auto` that made its plate 99px
+       shorter through the middle, so the COMMITS / ACTIVE / STACK row started
+       a hundred pixels higher than on the plates either side of it and the rail
+       read as six unrelated cards rather than one cabinet. Fixing the ratio
+       here rather than re-cropping that one drawing means the next drawing
+       aligns too, whatever box it is drawn in — SVG's default
+       preserveAspectRatio centres a shorter drawing in the band. */
+    aspect-ratio: 320 / 200;
+    height: auto;
     /* Hairlines must stay hairlines at every size: no stroke scaling. */
     vector-effect: non-scaling-stroke;
 }

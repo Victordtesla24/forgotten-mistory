@@ -102,4 +102,39 @@ test.describe('Vitrine', () => {
     await expect(page.locator(VITRINE)).toContainText('38 public repositories');
     await expect(page.locator(`${VITRINE} h2`)).toContainText('Six of thirty-eight');
   });
+
+  test('TC-VIT-09: every plate rules its metrics on the same line', async ({ page }) => {
+    // The rail has to read as one cabinet, not six unrelated cards. That claim
+    // is entirely carried by horizontal alignment: the COMMITS / ACTIVE / STACK
+    // row, the LIMITS block and the source link must start at the same offset
+    // inside every plate, so the eye tracks straight across the rail.
+    //
+    // It broke once, invisibly to every other assertion here: one drawing is
+    // authored on a 320x122 crop while the other five are 320x200, so with the
+    // drawing sized by its own aspect that plate's metrics began 99px higher
+    // than its neighbours'. The band is now fixed in CSS rather than by each
+    // drawing's viewBox, and this is the test that would have caught it.
+    const offsets = await page.locator(`${VITRINE} ol > li`).evaluateAll((plates) =>
+      plates.map((li) => {
+        const top = li.getBoundingClientRect().top;
+        const at = (frag: string) => {
+          const el = Array.from(li.querySelectorAll('*')).find((e) =>
+            (e.className?.toString() ?? '').includes(frag),
+          );
+          return el ? Math.round(el.getBoundingClientRect().top - top) : -1;
+        };
+        return { metrics: at('metrics'), limits: at('limits'), links: at('links') };
+      }),
+    );
+
+    expect(offsets.length).toBeGreaterThanOrEqual(6);
+    for (const row of ['metrics', 'limits', 'links'] as const) {
+      const values = offsets.map((o) => o[row]);
+      expect(values, `${row} was not found on every plate`).not.toContain(-1);
+      const spread = Math.max(...values) - Math.min(...values);
+      // A pixel or two of sub-pixel rounding is fine; a row is not.
+      expect(spread, `${row} varies by ${spread}px across the rail: ${values.join(', ')}`)
+        .toBeLessThanOrEqual(2);
+    }
+  });
 });

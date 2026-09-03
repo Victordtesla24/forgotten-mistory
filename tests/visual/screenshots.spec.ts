@@ -44,23 +44,55 @@ async function gotoHome(page: Page) {
   await page.waitForTimeout(500);
 }
 
+/**
+ * Capture a section by an integer clip rather than as an element.
+ *
+ * Playwright refuses outright to compare two screenshots of different sizes —
+ * `maxDiffPixelRatio` never gets a look in — and an element screenshot is sized
+ * from the element's own box. Several sections here compute to a fractional
+ * height (the closing section is 1099.23 px, set by text line-heights), which
+ * rounds to 1100 or 1101 depending on where the scroll happened to land that
+ * run. The baseline then failed on a difference of one row of pixels that no
+ * human could see and no change had caused.
+ *
+ * Clipping to a rounded, page-absolute box makes the captured size a function
+ * of the layout alone. The pixels compared are identical either way.
+ */
+async function shootSection(page: Page, id: string, name: string, settle = 500) {
+  const section = page.locator(id);
+  await section.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(settle);
+  // The nav is fixed, so a page-coordinate clip catches it wherever the
+  // viewport happens to be and bakes it across the section's own heading. It
+  // has its own baseline (VIS-03) and its overlay behaviour has its own suite;
+  // in a section baseline it is a occluding artefact, not the subject.
+  await page.addStyleTag({
+    content: 'body > nav, #site-nav-overlay { visibility: hidden !important; }',
+  });
+  await page.waitForTimeout(120);
+  const clip = await section.evaluate((el) => {
+    const r = el.getBoundingClientRect();
+    return {
+      x: Math.round(r.left + window.scrollX),
+      y: Math.round(r.top + window.scrollY),
+      width: Math.round(r.width),
+      height: Math.round(r.height),
+    };
+  });
+  await expect(page).toHaveScreenshot(name, { ...SHOT, fullPage: true, clip });
+}
+
 test.describe('Visual Regression', () => {
   test.describe.configure({ timeout: 90000 });
 
   test('VIS-01: Full hero section screenshot', async ({ page }) => {
     await gotoHome(page);
-    const hero = page.locator('#hero');
-    await hero.scrollIntoViewIfNeeded();
-    await page.waitForTimeout(500);
-    await expect(hero).toHaveScreenshot('hero-full.png', SHOT);
+    await shootSection(page, '#hero', 'hero-full.png');
   });
 
   test('VIS-02: About section screenshot', async ({ page }) => {
     await gotoHome(page);
-    const about = page.locator('#about');
-    await about.scrollIntoViewIfNeeded();
-    await page.waitForTimeout(500);
-    await expect(about).toHaveScreenshot('about-section.png', SHOT);
+    await shootSection(page, '#about', 'about-section.png');
   });
 
   test('VIS-03: Navigation overlay screenshot (open state)', async ({ page }) => {
@@ -73,20 +105,14 @@ test.describe('Visual Regression', () => {
 
   test('VIS-04: Listen (closing) section screenshot', async ({ page }) => {
     await gotoHome(page);
-    const listen = page.locator('#listen');
-    await listen.scrollIntoViewIfNeeded();
-    await page.waitForTimeout(500);
-    await expect(listen).toHaveScreenshot('listen-section.png', SHOT);
+    await shootSection(page, '#listen', 'listen-section.png');
   });
 
   test('VIS-05: Vitrine section screenshot', async ({ page }) => {
     await gotoHome(page);
-    const vitrine = page.locator('#vitrine');
-    await vitrine.scrollIntoViewIfNeeded();
     // The rail lights whichever plate is nearest its centre, so the frame is
     // only reproducible once the scroll observer has settled on one.
-    await page.waitForTimeout(1000);
-    await expect(vitrine).toHaveScreenshot('vitrine-section.png', SHOT);
+    await shootSection(page, '#vitrine', 'vitrine-section.png', 1000);
   });
 
   test('VIS-06: Full page screenshot (viewport top)', async ({ page }) => {

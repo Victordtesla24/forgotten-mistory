@@ -188,6 +188,11 @@
     line-height: 1.4;
     color: var(--mist-200);
     overflow-wrap: anywhere;
+    /* Two lines are reserved whether or not the value needs them. A plate whose
+       stack fits on one line otherwise pulls its LIMITS block up by 17px, and
+       the rail loses the horizontal line the metrics are supposed to draw
+       across it. */
+    min-height: calc(2 * 1.4em);
 }
 
 /* ── Limits ──────────────────────────────────────────────────────────────── */
