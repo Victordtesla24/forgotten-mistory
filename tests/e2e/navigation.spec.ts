@@ -65,11 +65,31 @@ test.describe('E2E: Navigation', () => {
       'About',
       'Experience',
       'Skills',
-      'Work',
-      'Contact',
+      'Keeping me busy',
+      'Feedback & coffee',
       'LinkedIn',
       'Download CV',
     ]);
+
+    // The wayfinding invariant, which is what the label list above is really
+    // standing in for: a visitor who clicks a menu entry must land somewhere
+    // that uses the same words back at them. The menu said "Work" and "Contact"
+    // while the sections they open are headed "What is keeping me busy" and
+    // "Feedback & coffee?" — nothing was broken, and the visitor still had to
+    // re-orient on arrival. `Home` is exempt: it is a return-to-top convention,
+    // not a description of the hero.
+    const WAYFINDING_EXEMPT = new Set(['Home']);
+    for (const link of await links.all()) {
+      const href = (await link.getAttribute('href')) ?? '';
+      if (!href.startsWith('#')) continue;
+      const label = (await link.innerText()).trim();
+      if (WAYFINDING_EXEMPT.has(label)) continue;
+      const section = page.locator(href);
+      await expect(
+        section,
+        `the menu says "${label}" but ${href} never uses that phrase`,
+      ).toContainText(label, { ignoreCase: true });
+    }
 
     // And the check that actually matters: no hash link may dangle. This is the
     // regression that shipped once already — three menu entries pointing at

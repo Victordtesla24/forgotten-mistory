@@ -480,6 +480,60 @@ function checkTokens() {
 }
 
 // ── Run all checks ──────────────────────────────────────────────────────────
+// ── TC-NFR-DEADCSS — globals.css may not style elements that do not exist ────
+function checkDeadCss() {
+  // The six-section rebuild replaced every section but left their stylesheets
+  // behind: 769 rules for a preloader, a custom cursor, a starfield, a projects
+  // carousel and an experience accordion that no longer exist, shipped to every
+  // visitor as 123 kB of CSS the browser parsed and then matched against
+  // nothing. Coverage measured 65% of the site's CSS unused on first paint.
+  //
+  // The rule this gate encodes: every class selector in globals.css must name a
+  // class that some source file can actually put on an element. Selectors with
+  // no class at all — :root, element defaults, resets, attribute selectors —
+  // are exempt, because they always match something.
+  const target = join(ROOT, 'app/globals.css');
+  let css;
+  try { css = read(target); } catch {
+    record('TC-NFR-DEADCSS', 'No globals.css rules for classes that do not exist', true, '(no globals.css)');
+    return;
+  }
+
+  // Every bare word inside a string literal in the source is a candidate class.
+  // Over-collecting only keeps rules, so it is the safe direction to err in.
+  const vocabulary = new Set();
+  for (const f of walk(join(ROOT, 'app')).concat(walk(join(ROOT, 'components')), walk(join(ROOT, 'lib')))) {
+    if (!/\.(tsx?|jsx?|mjs)$/.test(f)) continue;
+    for (const m of read(f).matchAll(/['"`]([^'"`\n]{0,400})['"`]/g)) {
+      for (const w of m[1].split(/[^A-Za-z0-9_-]+/)) if (w) vocabulary.add(w);
+    }
+  }
+
+  // Strip comments and @keyframes bodies (`0%`, `from`, `to` are not selectors),
+  // then read the selector that precedes each block.
+  const stripped = css
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/@(?:-[a-z]+-)?keyframes[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/g, '');
+
+  const dead = [];
+  for (const m of stripped.matchAll(/(^|[};])\s*([^{};@][^{}]*?)\s*\{/g)) {
+    const selectorList = m[2];
+    if (!selectorList.includes('.')) continue;
+    const live = selectorList.split(',').some((sel) => {
+      const classes = [...sel.matchAll(/\.(-?[A-Za-z_][A-Za-z0-9_-]*)/g)].map((c) => c[1]);
+      if (classes.length === 0) return true;
+      return classes.every((c) => vocabulary.has(c));
+    });
+    if (!live) dead.push(selectorList.replace(/\s+/g, ' ').slice(0, 70));
+  }
+
+  record('TC-NFR-DEADCSS', 'No globals.css rules for classes that do not exist',
+    dead.length === 0,
+    dead.length
+      ? `${dead.length} dead rule(s): ${[...new Set(dead)].slice(0, 6).join(' | ')}${dead.length > 6 ? ' …' : ''}`
+      : 'clean — every class selector names a class the source can render');
+}
+
 checkTone();
 checkMono();
 checkAssetBudget();
@@ -489,6 +543,7 @@ checkSecrets();
 checkBuildOutput();
 checkComplete();
 checkTokens();
+checkDeadCss();
 
 // ── Report ──────────────────────────────────────────────────────────────────
 let allPass = true;
@@ -527,6 +582,7 @@ const report = {
     architecture: results.filter((r) => r.id === 'TC-ARCH-BENCH').map((r) => ({ pass: r.pass, detail: r.detail })),
     completeness: results.filter((r) => r.id === 'TC-NFR-COMPLETE').map((r) => ({ pass: r.pass, detail: r.detail })),
     tokens: results.filter((r) => r.id === 'TC-NFR-TOKEN').map((r) => ({ pass: r.pass, detail: r.detail })),
+    deadCss: results.filter((r) => r.id === 'TC-NFR-DEADCSS').map((r) => ({ pass: r.pass, detail: r.detail })),
   },
   checks: results.map((r) => ({
     id: r.id,

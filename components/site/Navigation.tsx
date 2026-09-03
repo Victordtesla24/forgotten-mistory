@@ -16,8 +16,12 @@ const NAV_LINKS = [
   { href: '#about', label: 'About' },
   { href: '#experience', label: 'Experience' },
   { href: '#skills', label: 'Skills' },
-  { href: '#vitrine', label: 'Work' },
-  { href: '#listen', label: 'Contact' },
+  // Labelled from the sections themselves, not from the generic words a
+  // portfolio template would use. A visitor who clicked "Work" arrived at a
+  // section headed "What is keeping me busy" and had to re-orient; the menu now
+  // says where it is actually sending them.
+  { href: '#vitrine', label: 'Keeping me busy' },
+  { href: '#listen', label: 'Feedback & coffee' },
   { href: contact.linkedin, label: 'LinkedIn', external: true },
   { href: '/docs/Vik_Resume_Final.pdf', label: 'Download CV', external: true },
 ] as const;
