@@ -164,7 +164,7 @@ export default function Vitrine() {
                 <a className={styles.source} href={plate.href} target="_blank" rel="noreferrer noopener">
                   Source
                 </a>
-                {plate.live && (
+                {plate.live ? (
                   <a
                     className={styles.live}
                     href={plate.live.href}
@@ -173,6 +173,11 @@ export default function Vitrine() {
                   >
                     {plate.live.label}
                   </a>
+                ) : (
+                  /* Three of the six have nothing running to link to. Saying so
+                     is better than leaving the row half-empty and letting a
+                     reader wonder whether a link failed to render. */
+                  <span className={styles.notDeployed}>no public deployment</span>
                 )}
               </div>
             </li>

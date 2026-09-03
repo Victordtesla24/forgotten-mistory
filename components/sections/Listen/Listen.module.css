@@ -103,7 +103,8 @@
 }
 
 /* The closing hairline gesture at one-sixth scale — identical on hover and on
-   focus, so a keyboard reader gets exactly the same affordance as a mouse. */
+   focus, so a keyboard reader gets exactly the same affordance as a mouse. It
+   is white: an affordance is not evidence, and gold is reserved for evidence. */
 .channel::after {
     content: "";
     position: absolute;
@@ -111,7 +112,7 @@
     right: 0;
     bottom: -3px;
     height: 1px;
-    background: var(--gold);
+    background: var(--white);
     transform: scaleX(0);
     transform-origin: left center;
     transition: transform 120ms var(--motion-ease-standard);
@@ -132,14 +133,16 @@
     outline-offset: 4px;
 }
 
+/* Not gold. Gold on this site means "this figure has a source you can check",
+   and an offer of coffee is not evidence — an accent spent on warmth is an
+   accent that stops meaning anything where it matters. */
 .coffee {
     margin: clamp(2.5rem, 5vh, 3.5rem) 0 0;
     font-family: var(--font-mono);
     font-size: 0.74rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--gold);
-    opacity: 0.85;
+    color: var(--mist-400);
 }
 
 /* ── Colophon ────────────────────────────────────────────────────────────── */

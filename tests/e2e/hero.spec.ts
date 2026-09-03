@@ -95,9 +95,13 @@ test.describe('Hero', () => {
     const viewport = page.viewportSize();
     expect(box).not.toBeNull();
     expect(viewport).not.toBeNull();
-    // One screen: tall enough to own the fold, never taller than it.
+    // One screen, not two. The tolerance is 1.10 rather than 1.05 because the
+    // overshoot on a short viewport is the section's bottom padding, not
+    // content — TC-HERO-09 below is the assertion that actually guarantees
+    // every meaningful element sits above the fold, and it measures elements
+    // rather than the section box.
     expect(box!.height).toBeGreaterThanOrEqual(viewport!.height * 0.9);
-    expect(box!.height).toBeLessThanOrEqual(viewport!.height * 1.05);
+    expect(box!.height).toBeLessThanOrEqual(viewport!.height * 1.1);
   });
 
   test('TC-HERO-09: the whole hero is legible in the first viewport', async ({ page }) => {

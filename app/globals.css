@@ -67,6 +67,8 @@
     --card-shadow-hover: 0 22px 60px -12px rgb(0 0 0 / 0.62), 0 0 28px rgb(244 246 250 / 0.06);
     --card-sheen: radial-gradient(120% 90% at 18% 0%, rgb(244 246 250 / 0.06), transparent 58%);
     --cursor-size: 20px;
+    /* The rendered height of the fixed bar, used by the hero to clear it. */
+    --nav-height: 5.5rem;
     /* Three faces, one job each (design direction §1.1). All self-hosted via
        next/font; the literal names are fallbacks only.
          --font-heading  a document serif, for the h1, the six section titles and
@@ -454,7 +456,8 @@ nav {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 2.5rem 5%;
+    /* --nav-height is what the hero clears; keep the two in step. */
+    padding: 1.75rem 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -5763,5 +5766,75 @@ nav[data-scrolled="true"] {
     [data-beats-armed] .beat::after {
         transform: scaleY(0);
         transition: none;
+    }
+}
+
+/* ── Service-worker toast ────────────────────────────────────────────────────
+   The offline notice had no styles at all: it rendered as browser-default text
+   in the bottom-left corner, so the last thing on the page was an unstyled
+   sentence sitting on the ink. It is now a small mono pill in the site's own
+   language, and it stays out of the way of the clone launcher on the right. */
+.sw-toast-region {
+    position: fixed;
+    left: clamp(1rem, 3vw, 2rem);
+    bottom: clamp(1rem, 3vw, 1.75rem);
+    z-index: 10020;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.sw-toast {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.85rem;
+    border: 1px solid var(--gold-border);
+    border-radius: 3px;
+    background: rgb(10 11 13 / 0.92);
+    backdrop-filter: blur(4px);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--mist-200);
+    pointer-events: auto;
+    animation: swToastIn 320ms var(--motion-ease-standard) both;
+}
+
+@keyframes swToastIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.sw-toast__reload {
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    background: transparent;
+    font: inherit;
+    color: var(--white);
+    cursor: pointer;
+}
+
+.sw-toast__reload:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+}
+
+.sw-toast--dev {
+    color: var(--ink-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sw-toast {
+        animation: none;
     }
 }

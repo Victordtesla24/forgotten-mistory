@@ -342,3 +342,11 @@
         scroll-behavior: auto;
     }
 }
+
+/* The counterpart to a live URL, for the repositories that have none. */
+.notDeployed {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink-300);
+    align-self: center;
+}

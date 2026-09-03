@@ -16,7 +16,10 @@
     display: flex;
     align-items: center;
     min-height: 100svh;
-    padding: clamp(6rem, 14vh, 10rem) var(--page-gutter, clamp(1.5rem, 5vw, 5rem)) clamp(4rem, 10vh, 7rem);
+    /* The top padding never drops below the fixed nav's height plus a little
+       air: at 1280x720 the bar was crossing the hero's first line. */
+    padding: max(clamp(6rem, 14vh, 10rem), calc(var(--nav-height) + 1.5rem))
+        var(--page-gutter, clamp(1.5rem, 5vw, 5rem)) clamp(4rem, 10vh, 7rem);
     overflow: hidden;
 }
 
@@ -26,30 +29,35 @@
    a tighter scale rather than a scrollbar. */
 @media (max-height: 860px) {
     .hero {
-        padding-top: clamp(4rem, 9vh, 6rem);
-        padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
+        padding-top: max(clamp(4rem, 9vh, 6rem), calc(var(--nav-height) + 0.75rem));
+        padding-bottom: clamp(1.25rem, 3vh, 2rem);
     }
 
     .name {
-        font-size: clamp(2.5rem, 6.2vw, 4.5rem);
+        font-size: clamp(2.4rem, 5.6vw, 4rem);
     }
 
     .eyebrow {
-        margin-bottom: 1rem;
+        margin-bottom: 0.7rem;
+    }
+
+    .name {
+        line-height: 0.92;
     }
 
     .role {
-        margin-top: 0.75rem;
+        margin-top: 0.6rem;
+        font-size: 1.05rem;
     }
 
     .statement {
-        margin-top: 1rem;
-        font-size: 1rem;
-        line-height: 1.55;
+        margin-top: 0.85rem;
+        font-size: 0.98rem;
+        line-height: 1.5;
     }
 
     .ledger {
-        margin-top: 1.4rem;
+        margin-top: 1.1rem;
     }
 
     .ledgerItem {
@@ -57,11 +65,11 @@
     }
 
     .actions {
-        margin-top: 1.5rem;
+        margin-top: 1.2rem;
     }
 
     .availability {
-        margin-top: 1rem;
+        margin-top: 0.85rem;
     }
 }
 

@@ -97,10 +97,16 @@
     gap: 0.5rem;
 }
 
+/* The legend is a key: each swatch must be drawn exactly as the thing it
+   explains. The production mark is gold in the table, so it is gold here. */
 .legendGlyph {
     font-size: 0.8rem;
     line-height: 1;
     color: var(--mist-200);
+}
+
+.legendItem:first-child .legendGlyph {
+    color: var(--gold);
 }
 
 .legendLabel {

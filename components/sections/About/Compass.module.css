@@ -60,10 +60,11 @@
         stroke var(--motion-base) var(--motion-ease-standard);
 }
 
-/* The lit spoke takes the accent, on the same rule the rest of the site
-   follows: gold marks the thing the reader is actually being pointed at. */
+/* The lit spoke is white, not gold. Gold on this site means "this figure has a
+   source you can check"; a bearing showing where the reader is standing is not
+   evidence, and an accent that also means "here" stops meaning "sourced". */
 .spoke[data-active] {
-    stroke: var(--gold);
+    stroke: var(--white);
     stroke-width: 0.9;
     opacity: 1;
 }
