@@ -189,15 +189,38 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
 
-      # Materialise the production static export ONCE; the Playwright webServer serves it
-      # read-only and globalSetup's ensureStaticBuild then finds it fresh and no-ops.
+      # Materialise the production static export ONCE, then serve it ourselves.
+      # playwright.config.ts deliberately declares NO webServer and NO globalSetup:
+      # each spec used to run its own build from beforeAll, and under fullyParallel
+      # those builds raced and corrupted each other's output, failing ~46 specs for
+      # reasons unrelated to any of them. This workflow's previous comment still
+      # described that removed webServer, so CI built the export and then pointed
+      # Playwright at nothing — every browser spec died on ERR_CONNECTION_REFUSED at
+      # the config's localhost:8080 default. The suite has to be handed a server.
       - run: npm run build:static
 
       - name: Install Xvfb
         run: sudo apt-get update && sudo apt-get install -y xvfb
 
       # Virtual X display so headless Chromium has a display; software GL (SwiftShader)
+      - name: Serve the static export
+        run: |
+          # nohup + disown: each `run:` is its own shell, and a plain `&` job can be
+          # reaped when that shell exits, leaving the next step to test nothing.
+          nohup python3 -m http.server 5599 --directory out > /tmp/static-server.log 2>&1 &
+          disown
+          for _ in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:5599/ >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS -o /dev/null http://127.0.0.1:5599/ || {
+            echo "::error::the static export never came up on :5599 — refusing to run the suite against nothing"
+            exit 1
+          }
+
       - run: xvfb-run -a --server-args="-screen 0 1920x1080x24" npx playwright test --reporter=json,html,list
+        env:
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:5599
 
       # R6 UPGRADE (Medium): Publish visual-regression screenshot baselines.
       - name: Upload visual-regression baselines
@@ -304,7 +327,24 @@ jobs:
       - run: npm run build:static
       - name: Install Xvfb
         run: sudo apt-get update && sudo apt-get install -y xvfb
+      - name: Serve the static export
+        run: |
+          # nohup + disown: each `run:` is its own shell, and a plain `&` job can be
+          # reaped when that shell exits, leaving the next step to test nothing.
+          nohup python3 -m http.server 5599 --directory out > /tmp/static-server.log 2>&1 &
+          disown
+          for _ in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:5599/ >/dev/null 2>&1 && break
+            sleep 1
+          done
+          curl -fsS -o /dev/null http://127.0.0.1:5599/ || {
+            echo "::error::the static export never came up on :5599 — refusing to run the suite against nothing"
+            exit 1
+          }
+
       - run: xvfb-run -a --server-args="-screen 0 1920x1080x24" npx playwright test --reporter=json,html,list
+        env:
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:5599
 
   # ── CI-CD-7: VISUAL REGRESSION DIFF (SIGNAL, non-gating) ──
   # Compares PR screenshots against main branch baselines using pixelmatch.
