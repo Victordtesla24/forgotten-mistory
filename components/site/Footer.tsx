@@ -51,8 +51,20 @@ function readBuildStamp(): BuildStamp | null {
     //
     // Tracked files only. Untracked scratch does not reach the bundle, and
     // failing on it would make the stamp vanish for reasons a reader cannot see.
-    const dirty = git('status', '--porcelain', '--untracked-files=no');
-    if (dirty) return null;
+    //
+    // Two paths are excluded, and only these two, because the build writes them
+    // ITSELF before this code runs: `build:static` regenerates the corrections
+    // ledger from `git log`, and the static audit writes its own report. Both
+    // are derived from the commit rather than edited against it, so a difference
+    // there is the build working, not source that never got committed. Without
+    // the exclusion the guard would suppress the stamp on every build including
+    // a perfectly clean one — a check that always fires is a check nobody reads.
+    const BUILD_WRITES = /^app\/data\/generated\/|^reports\//;
+    const dirty = git('status', '--porcelain', '--untracked-files=no')
+      .split('\n')
+      .map((line) => line.slice(3).trim())
+      .filter((path) => path && !BUILD_WRITES.test(path));
+    if (dirty.length > 0) return null;
 
     const sha = git('rev-parse', '--short=8', 'HEAD');
     const authored = git('log', '-1', '--format=%cI');
