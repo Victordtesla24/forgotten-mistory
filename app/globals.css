@@ -5829,3 +5829,51 @@ nav[data-scrolled="true"] {
         transition: none;
     }
 }
+
+
+/* ── Slow-hydration boot failsafe (D-BOOT-02) ─────────────────────────────────
+   The front door was gated on client hydration: framer-motion server-renders
+   every hero block with an inline `opacity: 0`, and the preloader only unmounts
+   from a requestAnimationFrame loop that cannot start until the ~450 kB
+   first-load bundle has parsed. Measured against production, a cold load left
+   the viewport on the "Calibrating stars & telemetry" overlay for 4–8 s before
+   any content appeared — the worst possible first impression for a visitor who
+   arrived from a CV link.
+
+   These two delayed keyframe animations are the JS-free floor. CSS animations
+   outrank inline style declarations in the cascade, so they reveal the
+   server-rendered markup even if hydration is slow, throttled, or never happens
+   at all. Both are scoped to `body:not(.page-ready)`: the moment the real boot
+   sequence finishes it sets `.page-ready` on <body>, these rules stop matching,
+   and framer-motion owns the elements again — so on a fast load (reveal at
+   ~1.9 s) the failsafe never fires. Reduced motion keeps the reveal and drops
+   the movement, per the global reduced-motion contract. */
+@keyframes boot-failsafe-reveal {
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes boot-failsafe-dismiss {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+body:not(.page-ready) .preloader {
+    animation: boot-failsafe-dismiss 420ms ease 2400ms both;
+}
+
+body:not(.page-ready) .hero-content,
+body:not(.page-ready) .hero-content > * {
+    animation: boot-failsafe-reveal 520ms var(--motion-ease-standard) 2200ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body:not(.page-ready) .hero-content,
+    body:not(.page-ready) .hero-content > * {
+        animation: boot-failsafe-reveal 1ms linear 2200ms both;
+    }
+}
