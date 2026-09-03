@@ -41,6 +41,19 @@ function readBuildStamp(): BuildStamp | null {
   try {
     const git = (...args: string[]) =>
       execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+
+    // A dirty tree means these bytes were NOT built from this commit, and saying
+    // otherwise would make the one self-referential claim on the page a false
+    // one. This is not hypothetical: the deploy pipeline's predeploy hook builds
+    // the WORKING TREE, so a build taken while another change was in progress
+    // shipped source that existed in no commit at all — under a stamp naming a
+    // commit that did not contain it.
+    //
+    // Tracked files only. Untracked scratch does not reach the bundle, and
+    // failing on it would make the stamp vanish for reasons a reader cannot see.
+    const dirty = git('status', '--porcelain', '--untracked-files=no');
+    if (dirty) return null;
+
     const sha = git('rev-parse', '--short=8', 'HEAD');
     const authored = git('log', '-1', '--format=%cI');
     if (!sha || !authored) return null;
