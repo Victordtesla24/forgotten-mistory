@@ -1,5 +1,4 @@
-import { execFileSync } from 'node:child_process';
-
+import { buildStamp } from '@/app/data/generated/build-stamp';
 import { contact } from '@/app/data/siteContent';
 
 import styles from './Footer.module.css';
@@ -8,79 +7,25 @@ import styles from './Footer.module.css';
  * The footer — the last thing a reader sees, and until now the only part of the
  * page that said nothing.
  *
- * Two rules shaped it.
+ * Three rules shaped it.
  *
  * **It states the position, not a legal formula.** "All rights reserved" is the
  * kind of sentence a page carries when nobody decided what it should say. The
  * line here is the same claim the rest of the site makes, in one breath: every
  * figure above it has a source, and the reader is invited to go and check one.
  *
- * **The deploy signal is measured, not decorated.** It is read from git at build
- * time — the commit that produced these bytes and the moment it was authored —
- * so a reader can take the short SHA, open the repository, and find the exact
- * source of the page they are looking at. That is the delivery-excellence trait
- * expressed as a fact rather than a claim about pace.
+ * **The production credit is authorship, not a disclaimer** — one line, in one
+ * place, naming what is synthetic and how it was made.
  *
- * If git cannot be reached at build time the stamp is **omitted entirely**. It
- * is never approximated, never stood in for and never zeroed: a site whose argument
- * is that it refuses to publish an unsourced number cannot print a made-up one
- * at the bottom of every page.
+ * **The deploy signal is measured, not decorated.** `scripts/build/build_stamp.mjs`
+ * records the commit at build time and refuses to record one at all unless the
+ * tree matched it exactly, so the short SHA below always opens the source of the
+ * bytes being read. When there is no honest stamp the block is simply absent: a
+ * page whose argument is that it refuses to publish an unsourced number cannot
+ * print a made-up one along its own bottom edge.
  */
 
-interface BuildStamp {
-  sha: string;
-  authored: string;
-}
 
-/**
- * Read at module scope, which for a static export means once at build time. The
- * `git` call is wrapped because the build may legitimately run outside a
- * checkout — in which case the stamp is absent rather than invented.
- */
-function readBuildStamp(): BuildStamp | null {
-  try {
-    const git = (...args: string[]) =>
-      execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
-
-    // A dirty tree means these bytes were NOT built from this commit, and saying
-    // otherwise would make the one self-referential claim on the page a false
-    // one. This is not hypothetical: the deploy pipeline's predeploy hook builds
-    // the WORKING TREE, so a build taken while another change was in progress
-    // shipped source that existed in no commit at all — under a stamp naming a
-    // commit that did not contain it.
-    //
-    // Tracked files only. Untracked scratch does not reach the bundle, and
-    // failing on it would make the stamp vanish for reasons a reader cannot see.
-    //
-    // Two paths are excluded, and only these two, because the build writes them
-    // ITSELF before this code runs: `build:static` regenerates the corrections
-    // ledger from `git log`, and the static audit writes its own report. Both
-    // are derived from the commit rather than edited against it, so a difference
-    // there is the build working, not source that never got committed. Without
-    // the exclusion the guard would suppress the stamp on every build including
-    // a perfectly clean one — a check that always fires is a check nobody reads.
-    // `diff --name-only HEAD` rather than `status --porcelain`: it returns bare
-    // paths. Porcelain prefixes each line with a two-character status and a
-    // space, and trimming that output eats the leading space of the first line,
-    // so slicing a fixed offset silently cuts into the first path — which is
-    // exactly the bug that made this guard mask every build, clean or not.
-    const BUILD_WRITES = /^app\/data\/generated\/|^reports\//;
-    const dirty = git('diff', '--name-only', 'HEAD')
-      .split('\n')
-      .map((path) => path.trim())
-      .filter((path) => path && !BUILD_WRITES.test(path));
-    if (dirty.length > 0) return null;
-
-    const sha = git('rev-parse', '--short=8', 'HEAD');
-    const authored = git('log', '-1', '--format=%cI');
-    if (!sha || !authored) return null;
-    return { sha, authored };
-  } catch {
-    return null;
-  }
-}
-
-const stamp = readBuildStamp();
 
 /** `2026-09-03T21:40:11+00:00` → `3 September 2026`, in the reader's language. */
 function readableDate(iso: string): string {
@@ -131,17 +76,17 @@ export default function Footer() {
           </p>
 
           {/* The build signal. Present only when it is real. */}
-          {stamp ? (
+          {buildStamp.sha && buildStamp.authored ? (
             <p className={styles.build}>
               <span className={styles.buildLabel}>This page was built from commit</span>{' '}
               <a
                 className={styles.sha}
-                href={`https://github.com/Victordtesla24/forgotten-mistory/commit/${stamp.sha}`}
+                href={`https://github.com/Victordtesla24/forgotten-mistory/commit/${buildStamp.sha}`}
               >
-                {stamp.sha}
+                {buildStamp.sha}
               </a>
               <span className={styles.buildLabel}>
-                , authored {readableDate(stamp.authored)}. The source is open; so is the record of
+                , authored {readableDate(buildStamp.authored)}. The source is open; so is the record of
                 what changed.
               </span>
             </p>

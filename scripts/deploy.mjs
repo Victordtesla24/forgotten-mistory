@@ -114,7 +114,11 @@ try {
 // The deploy command reporting success is testimony; the served bytes are evidence.
 await new Promise((r) => setTimeout(r, 5000));
 const live = await fetch(SITE).then((r) => r.text());
-const stamped = live.match(/commit\/([0-9a-f]{7,40})/)?.[1];
+// Anchored on the footer's own sentence. A bare /commit\/[0-9a-f]+/ also matches
+// every entry in the corrections ledger, and the first of those is whatever
+// commit the ledger last harvested — which is how an earlier version of this
+// check read the ledger and reported a deploy as stale when it was fine.
+const stamped = live.match(/built from commit<\/span>\s*<a[^>]*>([0-9a-f]{7,40})<\/a>/)?.[1];
 
 if (!stamped) {
   die(
