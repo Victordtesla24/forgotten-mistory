@@ -1,0 +1,920 @@
+{
+  "$schema_version": "1.0.0",
+  "dataset_id": "corpus-youtube",
+  "contract_refs": [
+    "R-8",
+    "R-113",
+    "R-114",
+    "R-115",
+    "R-119",
+    "R-122",
+    "R-143",
+    "R-182",
+    "SC-64.1"
+  ],
+  "generation_record": {
+    "generated_at_utc": "2026-09-03T20:08:39Z",
+    "retrieval_window_utc": {
+      "channel_pages": "2026-09-03T20:02:02Z",
+      "watch_pages": "2026-09-03T20:05Z"
+    },
+    "host": "linux x86_64",
+    "youtube_api_key_present": false,
+    "youtube_api_key_verification": "Listed variable NAMES only from ~/.claude/.env.production via `grep -oE '^[A-Za-z_][A-Za-z0-9_]*=' | tr -d '='`. 45 names returned; no YOUTUBE_API_KEY (nor any YOUTUBE_* name) among them. No secret values were read, printed or stored.",
+    "methods_used_in_preference_order": [
+      {
+        "rank": "(a)",
+        "method": "yt-dlp",
+        "status": "PARTIAL SUCCESS",
+        "detail": "System /usr/local/bin/yt-dlp is BROKEN (ModuleNotFoundError: No module named 'yt_dlp'). Downloaded the standalone linux binary yt-dlp 2026.08.19 into the scratchpad (NOT into the repo) and used it. Channel-tab and playlist enumeration succeeded. Per-video extraction FAILED - bot-gated."
+      },
+      {
+        "rank": "(b)",
+        "method": "firecrawl MCP",
+        "status": "NOT NEEDED",
+        "detail": "curl + ytInitialData parsing already returned the full server-rendered payload; firecrawl was not required."
+      },
+      {
+        "rank": "(c)",
+        "method": "curl + ytInitialData/ytInitialPlayerResponse parsing",
+        "status": "SUCCESS",
+        "detail": "Primary source for per-video title, publish date and verbatim description, and for all channel About fields."
+      },
+      {
+        "rank": "(d)",
+        "method": "Playwright (real Chrome, headless, unauthenticated)",
+        "status": "USED FOR VERIFICATION ONLY",
+        "detail": "Confirmed the bot gate is not a curl artifact: a real browser also received playabilityStatus=LOGIN_REQUIRED and rendered 0 transcript segments."
+      }
+    ],
+    "enumeration_method_of_record": "yt-dlp 2026.08.19 --flat-playlist --dump-single-json against /videos, /podcasts, /playlists (and /shorts, /streams, /releases which do not exist), cross-checked against ytInitialData parsed from the curl-fetched channel page.",
+    "per_video_method_of_record": "curl watch page + parse ytInitialData (videoPrimaryInfoRenderer, videoSecondaryInfoRenderer, badges).",
+    "fabrication_policy": "Zero fabrication. Every field carries its source. Unavailable values are the literal string 'not observable' with the command and its output."
+  },
+  "headline_finding": "The channel is REACHABLE and NOT empty. It has 10 public videos plus 1 unlisted video that a public playlist exposes. Titles, publish dates, durations and full verbatim descriptions were retrieved for all 11. NO transcript or caption text was retrievable from this host: every watch request was bot-gated (LOGIN_REQUIRED), including from a real browser.",
+  "counts": {
+    "public_videos": 10,
+    "unlisted_videos_discovered": 1,
+    "total_video_records": 11,
+    "shorts": 0,
+    "live_streams": 0,
+    "playlists": 2,
+    "podcast_listings": 1,
+    "videos_with_transcript_text": 0,
+    "videos_with_verbatim_description": 11
+  },
+  "channel": {
+    "channel_url_requested": "https://youtube.com/@vicd0ct",
+    "resolved": true,
+    "handle": "@vicd0ct",
+    "display_title": {
+      "value": "Vic",
+      "source": "ytInitialData.metadata.channelMetadataRenderer.title"
+    },
+    "channel_id": {
+      "value": "UCJSYpoFkGKKzYTKzAr8vGzQ",
+      "source": "ytInitialData.metadata.channelMetadataRenderer.externalId"
+    },
+    "canonical_url": "https://www.youtube.com/channel/UCJSYpoFkGKKzYTKzAr8vGzQ",
+    "description": {
+      "value": "Hello, I’m Vikram, and I work as a Senior Technical Program Manager AI Solution Architect here in Melbourne.\n\nI'm really passionate about solving complex problems and leading teams through challenging projects.\n\nWhether it's discussing the latest in technology, debating philosophical ideas, or planning my next adventure, I love diving deep into topics that spark my genuine whimsy. \n\nMy approach to Life is very simple, I do what brings happiness and value, while making sure I not causing harm to anyone or anything along the way. \n🇦🇺 Naarm",
+      "verbatim": true,
+      "source": "aboutChannelViewModel.description (https://www.youtube.com/@vicd0ct/about)"
+    },
+    "country": {
+      "value": "Australia",
+      "source": "aboutChannelViewModel.country"
+    },
+    "joined_date": {
+      "value": "Joined May 28, 2015",
+      "source": "aboutChannelViewModel.joinedDateText.content"
+    },
+    "public_video_count_claimed_by_youtube": {
+      "value": "10 videos",
+      "source": "aboutChannelViewModel.videoCountText"
+    },
+    "keywords": {
+      "value": "",
+      "source": "channelMetadataRenderer.keywords (empty string served)"
+    },
+    "tabs_present": [
+      "Home",
+      "Videos",
+      "Podcasts",
+      "Playlists",
+      "Search"
+    ],
+    "tabs_absent": {
+      "shorts": "yt-dlp: 'ERROR: [youtube:tab] @vicd0ct: This channel does not have a shorts tab'",
+      "streams": "yt-dlp: 'ERROR: [youtube:tab] @vicd0ct: This channel does not have a streams tab'",
+      "releases": "yt-dlp: 'ERROR: [youtube:tab] @vicd0ct: This channel does not have a releases tab'"
+    },
+    "vanity_metrics_availability": {
+      "policy": "R-119 - availability recorded; values must NOT be used in headline position",
+      "subscriber_count_available": true,
+      "subscriber_count_observed_value": "83 subscribers",
+      "channel_view_count_available": true,
+      "channel_view_count_observed_value": "3,737 views"
+    }
+  },
+  "videos": [
+    {
+      "video_id": "p9pGAmqJCSk",
+      "url": "https://www.youtube.com/watch?v=p9pGAmqJCSk",
+      "title": {
+        "value": "JARVIS - I Built a Real Arc Reactor HUD for My Mac (Apple Silicon Telemetry)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.title (watch page HTML)",
+        "corroborated_by": "yt-dlp --flat-playlist channel /videos tab"
+      },
+      "publish_date": {
+        "value": "Apr 16, 2026",
+        "precision": "day (as rendered by YouTube; no ISO timestamp served)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.dateText (watch page HTML)",
+        "note": "itemprop uploadDate/datePublished meta tags and playerMicroformatRenderer.publishDate were NOT served on the bot-gated page; dateText is the only published date observed."
+      },
+      "duration": {
+        "seconds": 121,
+        "formatted": "2:01",
+        "source": "yt-dlp --flat-playlist (channel /videos tab, or playlist for the unlisted item); corroborated by thumbnailBadgeViewModel duration badge in channel-page ytInitialData"
+      },
+      "description": {
+        "value": "What if your Mac had an Iron Man-style interface?\n\nJARVIS is a cinema-grade telemetry HUD that turns your entire desktop into a live arc reactor — monitoring every core, every GPU cycle, every byte of memory in real time. Built exclusively for Apple Silicon.\n\nThis isn't a screensaver. This isn't a widget. This is 700 vector paths, 12 concentric rings, and 60 frames per second of pure real-time data visualization — rendered directly on your desktop at wallpaper level.\n\nFEATURES SHOWN IN THIS VIDEO:\n00:00 - Boot Sequence (Theatrical reactor ignition)\n00:14 - Arc Reactor HUD (12 rings, 700 vector paths, 60fps)\n00:30 - System Monitor Panel (Clock, storage, apps, live chatter)\n00:48 - Telemetry Array (Network, DRAM, GPU, Neural Engine)\n01:05 - Reactive Intelligence (Battery drama: power loss to full recovery)\n01:35 - macOS Integration (Desktop wallpaper, lock screen persistence)\n01:50 - Shutdown Sequence (Theatrical ring deceleration)\n\nWHAT JARVIS MONITORS:\nP-Core & E-Core utilization (per-core arcs)\nGPU frequency & load\nNeural Engine utilization\nDRAM bandwidth (live waveforms)\nNetwork I/O throughput\nThermal state & power efficiency\nBattery level with reactive behavior\nActive applications & system chatter\n\nTECH SPECS:\nmacOS 14+ / Apple Silicon only (M1/M2/M3/M4/M5)\nPure vector rendering — no images, no textures\n60fps via SwiftUI Canvas + Metal\nGo telemetry daemon streams JSON at 1Hz\nDesktop-level window (behind all apps, above wallpaper)\nMulti-screen support\n\nBUILT WITH:\nSwift 5 + SwiftUI (frontend rendering)\nGo 1.21+ (telemetry daemon)\nMetal (reactor core + ring rotation + scan lines)\nIOKit + SMC + IOReport (sensor access)\n\n---\n\nSUBSCRIBE for more Apple Silicon projects.\nLIKE if your Mac deserves an arc reactor.\nCOMMENT what features you want to see next.",
+        "verbatim": true,
+        "characters": 1781,
+        "source": "ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content (watch page HTML), full untruncated body"
+      },
+      "transcript": {
+        "value": "not observable",
+        "reason": "YouTube returned playabilityStatus=LOGIN_REQUIRED ('Sign in to confirm you are not a bot') for every watch request from this host, unauthenticated. No captionTracks were served, and the InnerTube get_transcript endpoint returned HTTP 400 failedPrecondition.",
+        "commands_attempted": [
+          {
+            "command": "/tmp/.../ytdlp --dump-json --skip-download 'https://www.youtube.com/watch?v=<id>'",
+            "output": "ERROR: [youtube] <id>: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication.",
+            "exit_code": 1
+          },
+          {
+            "command": "/tmp/.../ytdlp --dump-json --extractor-args 'youtube:player_client=<tv_simply|web_safari|android_vr|mweb|tv>' ...",
+            "output": "same 'Sign in to confirm you’re not a bot' error for all five alternate player clients",
+            "exit_code": 1
+          },
+          {
+            "command": "POST https://www.youtube.com/youtubei/v1/get_transcript (WEB client 2.20260903.01.00, params from watch-page getTranscriptEndpoint, with and without visitorData/API key)",
+            "output": "HTTP 400 {\"error\":{\"code\":400,\"message\":\"Precondition check failed.\",\"reason\":\"failedPrecondition\"}}",
+            "exit_code": 400
+          },
+          {
+            "command": "Playwright (real Chrome, headless, unauthenticated) -> navigate watch page, click 'Show transcript'",
+            "output": "ytInitialPlayerResponse.playabilityStatus.status='LOGIN_REQUIRED'; captionTracks length 0; transcript engagement panel opened but rendered 0 ytd-transcript-segment-renderer nodes",
+            "exit_code": 0
+          }
+        ],
+        "would_require": "An authenticated YouTube session (channel-owner cookies) or a YOUTUBE_API_KEY with captions.download scope. Neither is present on this host."
+      },
+      "captions_available": {
+        "value": "not observable",
+        "reason": "captionTracks absent from bot-gated playerResponse; a 'Show transcript' control IS advertised in ytInitialData (getTranscriptEndpoint present) for all 11 videos, which indicates a transcript exists server-side, but its contents could not be retrieved."
+      },
+      "listing_status": {
+        "value": "Public",
+        "source": "present in the channel's public /videos tab; no privacy badge on watch page",
+        "discovery_note": null
+      },
+      "vanity_metrics_availability": {
+        "policy": "R-119 - recorded as availability only, never as headline data",
+        "view_count_available": true,
+        "view_count_observed_value": "356 views",
+        "like_count_available": "not observable",
+        "like_count_note": "Like control is rendered but its count is not exposed in the unauthenticated, bot-gated page payload."
+      }
+    },
+    {
+      "video_id": "OEn5RzSEwpc",
+      "url": "https://www.youtube.com/watch?v=OEn5RzSEwpc",
+      "title": {
+        "value": "Lost Birth Time? An Ancient \"Sherlock Holmes\" Method now can Find It",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.title (watch page HTML)",
+        "corroborated_by": "yt-dlp --flat-playlist channel /videos tab"
+      },
+      "publish_date": {
+        "value": "Nov 27, 2025",
+        "precision": "day (as rendered by YouTube; no ISO timestamp served)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.dateText (watch page HTML)",
+        "note": "itemprop uploadDate/datePublished meta tags and playerMicroformatRenderer.publishDate were NOT served on the bot-gated page; dateText is the only published date observed."
+      },
+      "duration": {
+        "seconds": 190,
+        "formatted": "3:10",
+        "source": "yt-dlp --flat-playlist (channel /videos tab, or playlist for the unlisted item); corroborated by thumbnailBadgeViewModel duration badge in channel-page ytInitialData"
+      },
+      "description": {
+        "value": "The universe operates like a flawless, self-correcting computational engine. But what happens when the variable that defines your fate—your birth time—is lost to history?\nIn this video, we decode the Brihat Parashara Hora Shastra (BPHS), the \"Book of Books\" in Vedic Astrology. We explore the Ishtakala Method, a mathematically rigorous system of Birth Time Rectification (BTR) that acts as cosmic detective work.\n\nMuch like Sherlock Holmes tracing a suspect, we move from circumstantial evidence to scientific calculation using the Prashna Lagna (the moment the question is asked) to retroactively deduce your precise moment of entry into this world.\n\n*If you want to see the mathematical backbone of this method in action, subscribe and hit the bell. We are just scratching the surface of the Sidhanta.*\n\n**IN THIS VIDEO**:\nThe BPHS: Ancient philosophy meets cosmic mechanics.\nThe Ishtakala Method: How to rectify birth time when the clock is unknown.\nThe Process: Moving from Temporal Rectification to Astrological Validation.\nThe Anchor: Using the Prashna Lagna and Nisheka (conception) alignment.\nThe Calculation: Determining the Samvatsar, Ritu, Masa, and Nakshatra.\n\n☕ SUPPORT THE CHANNEL & MY CODING:\nThis channel is powered by passion and code. Help keep the engine running here: https://ko-fi.com/vicscoding",
+        "verbatim": true,
+        "characters": 1317,
+        "source": "ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content (watch page HTML), full untruncated body"
+      },
+      "transcript": {
+        "value": "not observable",
+        "reason": "YouTube returned playabilityStatus=LOGIN_REQUIRED ('Sign in to confirm you are not a bot') for every watch request from this host, unauthenticated. No captionTracks were served, and the InnerTube get_transcript endpoint returned HTTP 400 failedPrecondition.",
+        "commands_attempted": [
+          {
+            "command": "/tmp/.../ytdlp --dump-json --skip-download 'https://www.youtube.com/watch?v=<id>'",
+            "output": "ERROR: [youtube] <id>: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication.",
+            "exit_code": 1
+          },
+          {
+            "command": "/tmp/.../ytdlp --dump-json --extractor-args 'youtube:player_client=<tv_simply|web_safari|android_vr|mweb|tv>' ...",
+            "output": "same 'Sign in to confirm you’re not a bot' error for all five alternate player clients",
+            "exit_code": 1
+          },
+          {
+            "command": "POST https://www.youtube.com/youtubei/v1/get_transcript (WEB client 2.20260903.01.00, params from watch-page getTranscriptEndpoint, with and without visitorData/API key)",
+            "output": "HTTP 400 {\"error\":{\"code\":400,\"message\":\"Precondition check failed.\",\"reason\":\"failedPrecondition\"}}",
+            "exit_code": 400
+          },
+          {
+            "command": "Playwright (real Chrome, headless, unauthenticated) -> navigate watch page, click 'Show transcript'",
+            "output": "ytInitialPlayerResponse.playabilityStatus.status='LOGIN_REQUIRED'; captionTracks length 0; transcript engagement panel opened but rendered 0 ytd-transcript-segment-renderer nodes",
+            "exit_code": 0
+          }
+        ],
+        "would_require": "An authenticated YouTube session (channel-owner cookies) or a YOUTUBE_API_KEY with captions.download scope. Neither is present on this host."
+      },
+      "captions_available": {
+        "value": "not observable",
+        "reason": "captionTracks absent from bot-gated playerResponse; a 'Show transcript' control IS advertised in ytInitialData (getTranscriptEndpoint present) for all 11 videos, which indicates a transcript exists server-side, but its contents could not be retrieved."
+      },
+      "listing_status": {
+        "value": "Public",
+        "source": "present in the channel's public /videos tab; no privacy badge on watch page",
+        "discovery_note": null
+      },
+      "vanity_metrics_availability": {
+        "policy": "R-119 - recorded as availability only, never as headline data",
+        "view_count_available": true,
+        "view_count_observed_value": "23 views",
+        "like_count_available": "not observable",
+        "like_count_note": "Like control is rendered but its count is not exposed in the unauthenticated, bot-gated page payload."
+      }
+    },
+    {
+      "video_id": "gMe4FZbjcQE",
+      "url": "https://www.youtube.com/watch?v=gMe4FZbjcQE",
+      "title": {
+        "value": "Part 2: I Coded a 7,000-Year-Old Algorithm (It Actually Works)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.title (watch page HTML)",
+        "corroborated_by": "yt-dlp --flat-playlist channel /videos tab"
+      },
+      "publish_date": {
+        "value": "Nov 25, 2025",
+        "precision": "day (as rendered by YouTube; no ISO timestamp served)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.dateText (watch page HTML)",
+        "note": "itemprop uploadDate/datePublished meta tags and playerMicroformatRenderer.publishDate were NOT served on the bot-gated page; dateText is the only published date observed."
+      },
+      "duration": {
+        "seconds": 605,
+        "formatted": "10:05",
+        "source": "yt-dlp --flat-playlist (channel /videos tab, or playlist for the unlisted item); corroborated by thumbnailBadgeViewModel duration badge in channel-page ytInitialData"
+      },
+      "description": {
+        "value": "Is it possible that our ancestors possessed a \"cosmic zoom lens\"? 🔭✨\n\nIn this video, I translate the Brihat Parashara Hora Shastra (BPHS)—a 7,000-year-old Vedic text—into executable Python code. We dive deep into the Divisional Charts (Vargas) of Vedic Astrology, creating a fractal map of destiny that zooms in infinitely to reveal details about wealth, relationships, and purpose.\n\nSupport the Build (Buy me a Coffee!): ☕ https://ko-fi.com/vicscoding\nCode Repository (Open Source): 💻 https://github.com/VictordTesla24\n\nWhat’s Inside:\nThe \"Cosmic Zoom Lens\" (Vargas) explained for developers.\nMaharishi Parashara's ancient dialogue with Maitreya decoded.\nProof that Sanskrit Shlokas function like modern Computer Algorithms (If/Else logic).\nHow this knowledge survived 7,000 years unbroken.\nTech Stack: Python, Next.js, AI, Vedic Math.\n\nStop looking at it as magic—start looking at it as data science. 📊✨",
+        "verbatim": true,
+        "characters": 905,
+        "source": "ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content (watch page HTML), full untruncated body"
+      },
+      "transcript": {
+        "value": "not observable",
+        "reason": "YouTube returned playabilityStatus=LOGIN_REQUIRED ('Sign in to confirm you are not a bot') for every watch request from this host, unauthenticated. No captionTracks were served, and the InnerTube get_transcript endpoint returned HTTP 400 failedPrecondition.",
+        "commands_attempted": [
+          {
+            "command": "/tmp/.../ytdlp --dump-json --skip-download 'https://www.youtube.com/watch?v=<id>'",
+            "output": "ERROR: [youtube] <id>: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication.",
+            "exit_code": 1
+          },
+          {
+            "command": "/tmp/.../ytdlp --dump-json --extractor-args 'youtube:player_client=<tv_simply|web_safari|android_vr|mweb|tv>' ...",
+            "output": "same 'Sign in to confirm you’re not a bot' error for all five alternate player clients",
+            "exit_code": 1
+          },
+          {
+            "command": "POST https://www.youtube.com/youtubei/v1/get_transcript (WEB client 2.20260903.01.00, params from watch-page getTranscriptEndpoint, with and without visitorData/API key)",
+            "output": "HTTP 400 {\"error\":{\"code\":400,\"message\":\"Precondition check failed.\",\"reason\":\"failedPrecondition\"}}",
+            "exit_code": 400
+          },
+          {
+            "command": "Playwright (real Chrome, headless, unauthenticated) -> navigate watch page, click 'Show transcript'",
+            "output": "ytInitialPlayerResponse.playabilityStatus.status='LOGIN_REQUIRED'; captionTracks length 0; transcript engagement panel opened but rendered 0 ytd-transcript-segment-renderer nodes",
+            "exit_code": 0
+          }
+        ],
+        "would_require": "An authenticated YouTube session (channel-owner cookies) or a YOUTUBE_API_KEY with captions.download scope. Neither is present on this host."
+      },
+      "captions_available": {
+        "value": "not observable",
+        "reason": "captionTracks absent from bot-gated playerResponse; a 'Show transcript' control IS advertised in ytInitialData (getTranscriptEndpoint present) for all 11 videos, which indicates a transcript exists server-side, but its contents could not be retrieved."
+      },
+      "listing_status": {
+        "value": "Public",
+        "source": "present in the channel's public /videos tab; no privacy badge on watch page",
+        "discovery_note": null
+      },
+      "vanity_metrics_availability": {
+        "policy": "R-119 - recorded as availability only, never as headline data",
+        "view_count_available": true,
+        "view_count_observed_value": "50 views",
+        "like_count_available": "not observable",
+        "like_count_note": "Like control is rendered but its count is not exposed in the unauthenticated, bot-gated page payload."
+      }
+    },
+    {
+      "video_id": "TDOubaCAw7I",
+      "url": "https://www.youtube.com/watch?v=TDOubaCAw7I",
+      "title": {
+        "value": "Part 1: How 7,000 years old Sanskrit Verses mapped the Cosmos without Computers",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.title (watch page HTML)",
+        "corroborated_by": "yt-dlp --flat-playlist channel /videos tab"
+      },
+      "publish_date": {
+        "value": "Nov 22, 2025",
+        "precision": "day (as rendered by YouTube; no ISO timestamp served)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.dateText (watch page HTML)",
+        "note": "itemprop uploadDate/datePublished meta tags and playerMicroformatRenderer.publishDate were NOT served on the bot-gated page; dateText is the only published date observed."
+      },
+      "duration": {
+        "seconds": 517,
+        "formatted": "8:37",
+        "source": "yt-dlp --flat-playlist (channel /videos tab, or playlist for the unlisted item); corroborated by thumbnailBadgeViewModel duration badge in channel-page ytInitialData"
+      },
+      "description": {
+        "value": "Can an algorithm predict your life events? 🔮\n\nIn this video, I take the ancient Vimshottari Dasha system—a Vedic timing technique used for thousands of years—and translate it into Python. We explore how this predictive logic works and whether it can be digitized.\n\nSupport the Build: ☕ https://ko-fi.com/vicscoding\n\nCode Repository: 💻 https://github.com/VictordTesla24\n\nTopics:\nThe math behind planetary periods.\nCoding the prediction engine in Next.js.\nWhy ancient sages were the original data scientists.",
+        "verbatim": true,
+        "characters": 506,
+        "source": "ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content (watch page HTML), full untruncated body"
+      },
+      "transcript": {
+        "value": "not observable",
+        "reason": "YouTube returned playabilityStatus=LOGIN_REQUIRED ('Sign in to confirm you are not a bot') for every watch request from this host, unauthenticated. No captionTracks were served, and the InnerTube get_transcript endpoint returned HTTP 400 failedPrecondition.",
+        "commands_attempted": [
+          {
+            "command": "/tmp/.../ytdlp --dump-json --skip-download 'https://www.youtube.com/watch?v=<id>'",
+            "output": "ERROR: [youtube] <id>: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication.",
+            "exit_code": 1
+          },
+          {
+            "command": "/tmp/.../ytdlp --dump-json --extractor-args 'youtube:player_client=<tv_simply|web_safari|android_vr|mweb|tv>' ...",
+            "output": "same 'Sign in to confirm you’re not a bot' error for all five alternate player clients",
+            "exit_code": 1
+          },
+          {
+            "command": "POST https://www.youtube.com/youtubei/v1/get_transcript (WEB client 2.20260903.01.00, params from watch-page getTranscriptEndpoint, with and without visitorData/API key)",
+            "output": "HTTP 400 {\"error\":{\"code\":400,\"message\":\"Precondition check failed.\",\"reason\":\"failedPrecondition\"}}",
+            "exit_code": 400
+          },
+          {
+            "command": "Playwright (real Chrome, headless, unauthenticated) -> navigate watch page, click 'Show transcript'",
+            "output": "ytInitialPlayerResponse.playabilityStatus.status='LOGIN_REQUIRED'; captionTracks length 0; transcript engagement panel opened but rendered 0 ytd-transcript-segment-renderer nodes",
+            "exit_code": 0
+          }
+        ],
+        "would_require": "An authenticated YouTube session (channel-owner cookies) or a YOUTUBE_API_KEY with captions.download scope. Neither is present on this host."
+      },
+      "captions_available": {
+        "value": "not observable",
+        "reason": "captionTracks absent from bot-gated playerResponse; a 'Show transcript' control IS advertised in ytInitialData (getTranscriptEndpoint present) for all 11 videos, which indicates a transcript exists server-side, but its contents could not be retrieved."
+      },
+      "listing_status": {
+        "value": "Public",
+        "source": "present in the channel's public /videos tab; no privacy badge on watch page",
+        "discovery_note": null
+      },
+      "vanity_metrics_availability": {
+        "policy": "R-119 - recorded as availability only, never as headline data",
+        "view_count_available": true,
+        "view_count_observed_value": "24 views",
+        "like_count_available": "not observable",
+        "like_count_note": "Like control is rendered but its count is not exposed in the unauthenticated, bot-gated page payload."
+      }
+    },
+    {
+      "video_id": "6RT2caAAYfs",
+      "url": "https://www.youtube.com/watch?v=6RT2caAAYfs",
+      "title": {
+        "value": "प्राचीन अल्गोरिदम (भाग ३): प्राचीन भारताचे हे 'अल्गोरिदम' आज जगासाठी का महत्वाचे आहे? 🌍✨",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.title (watch page HTML)",
+        "corroborated_by": "yt-dlp --flat-playlist channel /videos tab"
+      },
+      "publish_date": {
+        "value": "Nov 20, 2025",
+        "precision": "day (as rendered by YouTube; no ISO timestamp served)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.dateText (watch page HTML)",
+        "note": "itemprop uploadDate/datePublished meta tags and playerMicroformatRenderer.publishDate were NOT served on the bot-gated page; dateText is the only published date observed."
+      },
+      "duration": {
+        "seconds": 386,
+        "formatted": "6:26",
+        "source": "yt-dlp --flat-playlist (channel /videos tab, or playlist for the unlisted item); corroborated by thumbnailBadgeViewModel duration badge in channel-page ytInitialData"
+      },
+      "description": {
+        "value": "हा कोड सिलिकॉन व्हॅलीमध्ये नाही, तर ७००० वर्षांपूर्वी भारताच्या पवित्र भूमीवर लिहिला गेला होता. आम्ही फक्त त्याचे 'कंपायलर' (Compiler) बनवले आहे. 🧠\n\n'द एन्शियंट अल्गोरिदम' च्या शेवटच्या भागात, आपण हे सर्व ज्ञान एकत्रित करणार आहोत. इतिहास आणि कोडिंगच्या पलीकडे जाऊन, हे विज्ञान आज आपल्या जीवनासाठी का महत्वाचे आहे? विज्ञान आणि अध्यात्म यांचा हा संगम आपल्याला काय शिकवतो?\n\nमहत्वाचे मुद्दे:\n\n🚀 अखंडता: परकीय आक्रमणे झेलूनही हे ज्ञान आज डिजिटल युगात कसे टिकून राहिले?\n🔮 संगम: प्राचीन अचूकता आणि भविष्यातील तंत्रज्ञान एकत्र आल्यावर काय घडते?\n🌍 विश्वगुरू: हे ज्ञान केवळ भारताचे नसून संपूर्ण मानवजातीचा वारसा का आहे?\n\nआपल्या प्राचीन वारशाचा हा अभिमान प्रत्येक भारतीयापर्यंत पोहोचवा!\n\n👇 संपूर्ण सिरीज पहा:\nभाग १:    • प्राचीन अल्गोरिदम (भाग १):  ५००० वर्षांपूर...  \nभाग २:    • प्राचीन अल्गोरिदम (भाग २): ७००० वर्ष जुने ...  \nभाग ३: हा व्हिडिओ",
+        "verbatim": true,
+        "characters": 835,
+        "source": "ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content (watch page HTML), full untruncated body"
+      },
+      "transcript": {
+        "value": "not observable",
+        "reason": "YouTube returned playabilityStatus=LOGIN_REQUIRED ('Sign in to confirm you are not a bot') for every watch request from this host, unauthenticated. No captionTracks were served, and the InnerTube get_transcript endpoint returned HTTP 400 failedPrecondition.",
+        "commands_attempted": [
+          {
+            "command": "/tmp/.../ytdlp --dump-json --skip-download 'https://www.youtube.com/watch?v=<id>'",
+            "output": "ERROR: [youtube] <id>: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication.",
+            "exit_code": 1
+          },
+          {
+            "command": "/tmp/.../ytdlp --dump-json --extractor-args 'youtube:player_client=<tv_simply|web_safari|android_vr|mweb|tv>' ...",
+            "output": "same 'Sign in to confirm you’re not a bot' error for all five alternate player clients",
+            "exit_code": 1
+          },
+          {
+            "command": "POST https://www.youtube.com/youtubei/v1/get_transcript (WEB client 2.20260903.01.00, params from watch-page getTranscriptEndpoint, with and without visitorData/API key)",
+            "output": "HTTP 400 {\"error\":{\"code\":400,\"message\":\"Precondition check failed.\",\"reason\":\"failedPrecondition\"}}",
+            "exit_code": 400
+          },
+          {
+            "command": "Playwright (real Chrome, headless, unauthenticated) -> navigate watch page, click 'Show transcript'",
+            "output": "ytInitialPlayerResponse.playabilityStatus.status='LOGIN_REQUIRED'; captionTracks length 0; transcript engagement panel opened but rendered 0 ytd-transcript-segment-renderer nodes",
+            "exit_code": 0
+          }
+        ],
+        "would_require": "An authenticated YouTube session (channel-owner cookies) or a YOUTUBE_API_KEY with captions.download scope. Neither is present on this host."
+      },
+      "captions_available": {
+        "value": "not observable",
+        "reason": "captionTracks absent from bot-gated playerResponse; a 'Show transcript' control IS advertised in ytInitialData (getTranscriptEndpoint present) for all 11 videos, which indicates a transcript exists server-side, but its contents could not be retrieved."
+      },
+      "listing_status": {
+        "value": "Public",
+        "source": "present in the channel's public /videos tab; no privacy badge on watch page",
+        "discovery_note": null
+      },
+      "vanity_metrics_availability": {
+        "policy": "R-119 - recorded as availability only, never as headline data",
+        "view_count_available": true,
+        "view_count_observed_value": "29 views",
+        "like_count_available": "not observable",
+        "like_count_note": "Like control is rendered but its count is not exposed in the unauthenticated, bot-gated page payload."
+      }
+    },
+    {
+      "video_id": "c_M_LSB65RA",
+      "url": "https://www.youtube.com/watch?v=c_M_LSB65RA",
+      "title": {
+        "value": "प्राचीन अल्गोरिदम (भाग २): ७००० वर्ष जुने संस्कृत श्लोक जेव्हा 'पायथन कोड' (Python Code) बनतात! 🐍💻",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.title (watch page HTML)",
+        "corroborated_by": "yt-dlp --flat-playlist channel /videos tab"
+      },
+      "publish_date": {
+        "value": "Nov 20, 2025",
+        "precision": "day (as rendered by YouTube; no ISO timestamp served)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.dateText (watch page HTML)",
+        "note": "itemprop uploadDate/datePublished meta tags and playerMicroformatRenderer.publishDate were NOT served on the bot-gated page; dateText is the only published date observed."
+      },
+      "duration": {
+        "seconds": 407,
+        "formatted": "6:47",
+        "source": "yt-dlp --flat-playlist (channel /videos tab, or playlist for the unlisted item); corroborated by thumbnailBadgeViewModel duration badge in channel-page ytInitialData"
+      },
+      "description": {
+        "value": "जर आपण प्राचीन संस्कृत श्लोकांना आजच्या कॉम्प्युटरमध्ये टाकले तर काय होईल? त्याचे उत्तर तुम्हाला थक्क करेल! ⚡️\n\n'द एन्शियंट अल्गोरिदम' च्या दुसऱ्या भागात आपण पाहणार आहोत की 'बृहत पराशर होरा शास्त्र' हे केवळ एक धार्मिक पुस्तक नाही, तर ते एक प्रगत 'टेक्निकल मॅन्युअल' आहे. यातील श्लोकांमध्ये दडलेले 'If/Else' लॉजिक आणि गणिताची अचूकता पाहून आजचे कोडिंग तज्ज्ञही आश्चर्यचकित होतील.\n\nया व्हिडिओमध्ये:\n\n🧬 संस्कृत = कोड: प्राचीन श्लोक आणि मॉडर्न पायथन फंक्शन (Python Functions) यांची तुलना.\n🛠️ रचना: ५००० वर्षांपूर्वीच्या विज्ञानावर आधारित आधुनिक वेब ॲप कसे बनले?\n🐞 बर्थ टाईम रेक्टिफिकेशन (BTR): कुंडलीचे 'डीबगिंग' (Debugging) कसे चालते?\n🤯 लॉजिक: हजारो वर्षांपूर्वी लिहिलेले अल्गोरिदम आजही इतके अचूक कसे?\n\nहे कोडिंग आणि संस्कृतीचे अद्भूत मिश्रण नक्की पहा!\n\n👇 संपूर्ण सिरीज पहा:\nभाग १:    • प्राचीन अल्गोरिदम (भाग १):  ५००० वर्षांपूर...  \nभाग २: हा व्हिडिओ\nभाग ३:    • प्राचीन अल्गोरिदम (भाग ३): प्राचीन भारताचे...  ",
+        "verbatim": true,
+        "characters": 908,
+        "source": "ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content (watch page HTML), full untruncated body"
+      },
+      "transcript": {
+        "value": "not observable",
+        "reason": "YouTube returned playabilityStatus=LOGIN_REQUIRED ('Sign in to confirm you are not a bot') for every watch request from this host, unauthenticated. No captionTracks were served, and the InnerTube get_transcript endpoint returned HTTP 400 failedPrecondition.",
+        "commands_attempted": [
+          {
+            "command": "/tmp/.../ytdlp --dump-json --skip-download 'https://www.youtube.com/watch?v=<id>'",
+            "output": "ERROR: [youtube] <id>: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication.",
+            "exit_code": 1
+          },
+          {
+            "command": "/tmp/.../ytdlp --dump-json --extractor-args 'youtube:player_client=<tv_simply|web_safari|android_vr|mweb|tv>' ...",
+            "output": "same 'Sign in to confirm you’re not a bot' error for all five alternate player clients",
+            "exit_code": 1
+          },
+          {
+            "command": "POST https://www.youtube.com/youtubei/v1/get_transcript (WEB client 2.20260903.01.00, params from watch-page getTranscriptEndpoint, with and without visitorData/API key)",
+            "output": "HTTP 400 {\"error\":{\"code\":400,\"message\":\"Precondition check failed.\",\"reason\":\"failedPrecondition\"}}",
+            "exit_code": 400
+          },
+          {
+            "command": "Playwright (real Chrome, headless, unauthenticated) -> navigate watch page, click 'Show transcript'",
+            "output": "ytInitialPlayerResponse.playabilityStatus.status='LOGIN_REQUIRED'; captionTracks length 0; transcript engagement panel opened but rendered 0 ytd-transcript-segment-renderer nodes",
+            "exit_code": 0
+          }
+        ],
+        "would_require": "An authenticated YouTube session (channel-owner cookies) or a YOUTUBE_API_KEY with captions.download scope. Neither is present on this host."
+      },
+      "captions_available": {
+        "value": "not observable",
+        "reason": "captionTracks absent from bot-gated playerResponse; a 'Show transcript' control IS advertised in ytInitialData (getTranscriptEndpoint present) for all 11 videos, which indicates a transcript exists server-side, but its contents could not be retrieved."
+      },
+      "listing_status": {
+        "value": "Public",
+        "source": "present in the channel's public /videos tab; no privacy badge on watch page",
+        "discovery_note": null
+      },
+      "vanity_metrics_availability": {
+        "policy": "R-119 - recorded as availability only, never as headline data",
+        "view_count_available": true,
+        "view_count_observed_value": "20 views",
+        "like_count_available": "not observable",
+        "like_count_note": "Like control is rendered but its count is not exposed in the unauthenticated, bot-gated page payload."
+      }
+    },
+    {
+      "video_id": "_L-jRltlZI4",
+      "url": "https://www.youtube.com/watch?v=_L-jRltlZI4",
+      "title": {
+        "value": "प्राचीन अल्गोरिदम (भाग १):  ५००० वर्षांपूर्वी टेलिस्कोपशिवाय भारतीय ऋषींनी अवकाश कसे मोजले? 🔭",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.title (watch page HTML)",
+        "corroborated_by": "yt-dlp --flat-playlist channel /videos tab"
+      },
+      "publish_date": {
+        "value": "Nov 20, 2025",
+        "precision": "day (as rendered by YouTube; no ISO timestamp served)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.dateText (watch page HTML)",
+        "note": "itemprop uploadDate/datePublished meta tags and playerMicroformatRenderer.publishDate were NOT served on the bot-gated page; dateText is the only published date observed."
+      },
+      "duration": {
+        "seconds": 455,
+        "formatted": "7:35",
+        "source": "yt-dlp --flat-playlist (channel /videos tab, or playlist for the unlisted item); corroborated by thumbnailBadgeViewModel duration badge in channel-page ytInitialData"
+      },
+      "description": {
+        "value": "५००० वर्षांपूर्वी, जेव्हा जगात कोणाकडेही कॉम्प्युटर किंवा टेलिस्कोप नव्हते, तेव्हा आपल्या भारतीय ऋषींनी ग्रहांची स्थिती इतक्या अचूकपणे कशी मोजली? 🤯\n\n'द एन्शियंट अल्गोरिदम' (The Ancient Algorithm) च्या पहिल्या भागात आपण इतिहासाची पाने उलघडून पाहणार आहोत. सिंधू संस्कृतीपासून ते छत्रपती शिवाजी महाराजांच्या काळापर्यंत, ज्योतिषशास्त्र हे केवळ भविष्य बघण्याचे साधन नसून, ते जगातील पहिले 'डेटा सायन्स' कसे होते, हे आपण पुराव्यासह पाहणार आहोत.\n\nया व्हिडिओमध्ये:\n\n🧐 रहस्य: प्राचीन भारतीय खगोलशास्त्र किती अचूक होते?\n📜 इतिहास: महाभारत काळापासून (इ.स.पू. ५५६१) ते इ.स. १६८० पर्यंतचा प्रवास.\n🕉️ मूळ स्त्रोत: 'बृहत पराशर होरा शास्त्र' (BPHS) चे विश्लेषण.\n🌌 पुरावा: ही एकमेव प्राचीन ज्ञान परंपरा आजही जिवंत कशी आहे?\n\n👇 संपूर्ण सिरीज पहा:\nभाग १: हा व्हिडिओ\nभाग २:    • प्राचीन अल्गोरिदम (भाग २): ७००० वर्ष जुने ...  \nभाग ३:    • प्राचीन अल्गोरिदम (भाग ३): प्राचीन भारताचे...  ",
+        "verbatim": true,
+        "characters": 863,
+        "source": "ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content (watch page HTML), full untruncated body"
+      },
+      "transcript": {
+        "value": "not observable",
+        "reason": "YouTube returned playabilityStatus=LOGIN_REQUIRED ('Sign in to confirm you are not a bot') for every watch request from this host, unauthenticated. No captionTracks were served, and the InnerTube get_transcript endpoint returned HTTP 400 failedPrecondition.",
+        "commands_attempted": [
+          {
+            "command": "/tmp/.../ytdlp --dump-json --skip-download 'https://www.youtube.com/watch?v=<id>'",
+            "output": "ERROR: [youtube] <id>: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication.",
+            "exit_code": 1
+          },
+          {
+            "command": "/tmp/.../ytdlp --dump-json --extractor-args 'youtube:player_client=<tv_simply|web_safari|android_vr|mweb|tv>' ...",
+            "output": "same 'Sign in to confirm you’re not a bot' error for all five alternate player clients",
+            "exit_code": 1
+          },
+          {
+            "command": "POST https://www.youtube.com/youtubei/v1/get_transcript (WEB client 2.20260903.01.00, params from watch-page getTranscriptEndpoint, with and without visitorData/API key)",
+            "output": "HTTP 400 {\"error\":{\"code\":400,\"message\":\"Precondition check failed.\",\"reason\":\"failedPrecondition\"}}",
+            "exit_code": 400
+          },
+          {
+            "command": "Playwright (real Chrome, headless, unauthenticated) -> navigate watch page, click 'Show transcript'",
+            "output": "ytInitialPlayerResponse.playabilityStatus.status='LOGIN_REQUIRED'; captionTracks length 0; transcript engagement panel opened but rendered 0 ytd-transcript-segment-renderer nodes",
+            "exit_code": 0
+          }
+        ],
+        "would_require": "An authenticated YouTube session (channel-owner cookies) or a YOUTUBE_API_KEY with captions.download scope. Neither is present on this host."
+      },
+      "captions_available": {
+        "value": "not observable",
+        "reason": "captionTracks absent from bot-gated playerResponse; a 'Show transcript' control IS advertised in ytInitialData (getTranscriptEndpoint present) for all 11 videos, which indicates a transcript exists server-side, but its contents could not be retrieved."
+      },
+      "listing_status": {
+        "value": "Public",
+        "source": "present in the channel's public /videos tab; no privacy badge on watch page",
+        "discovery_note": null
+      },
+      "vanity_metrics_availability": {
+        "policy": "R-119 - recorded as availability only, never as headline data",
+        "view_count_available": true,
+        "view_count_observed_value": "35 views",
+        "like_count_available": "not observable",
+        "like_count_note": "Like control is rendered but its count is not exposed in the unauthenticated, bot-gated page payload."
+      }
+    },
+    {
+      "video_id": "Q5yGe7uBkFA",
+      "url": "https://www.youtube.com/watch?v=Q5yGe7uBkFA",
+      "title": {
+        "value": "7000 years old algorithm",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.title (watch page HTML)",
+        "corroborated_by": "yt-dlp --flat-playlist channel /videos tab"
+      },
+      "publish_date": {
+        "value": "Nov 20, 2025",
+        "precision": "day (as rendered by YouTube; no ISO timestamp served)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.dateText (watch page HTML)",
+        "note": "itemprop uploadDate/datePublished meta tags and playerMicroformatRenderer.publishDate were NOT served on the bot-gated page; dateText is the only published date observed."
+      },
+      "duration": {
+        "seconds": 44,
+        "formatted": "0:44",
+        "source": "yt-dlp --flat-playlist (channel /videos tab, or playlist for the unlisted item); corroborated by thumbnailBadgeViewModel duration badge in channel-page ytInitialData"
+      },
+      "description": {
+        "value": "Find out how on earth there is a algorithm coded within a 7,000 years old Sanskrit verses",
+        "verbatim": true,
+        "characters": 89,
+        "source": "ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content (watch page HTML), full untruncated body"
+      },
+      "transcript": {
+        "value": "not observable",
+        "reason": "YouTube returned playabilityStatus=LOGIN_REQUIRED ('Sign in to confirm you are not a bot') for every watch request from this host, unauthenticated. No captionTracks were served, and the InnerTube get_transcript endpoint returned HTTP 400 failedPrecondition.",
+        "commands_attempted": [
+          {
+            "command": "/tmp/.../ytdlp --dump-json --skip-download 'https://www.youtube.com/watch?v=<id>'",
+            "output": "ERROR: [youtube] <id>: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication.",
+            "exit_code": 1
+          },
+          {
+            "command": "/tmp/.../ytdlp --dump-json --extractor-args 'youtube:player_client=<tv_simply|web_safari|android_vr|mweb|tv>' ...",
+            "output": "same 'Sign in to confirm you’re not a bot' error for all five alternate player clients",
+            "exit_code": 1
+          },
+          {
+            "command": "POST https://www.youtube.com/youtubei/v1/get_transcript (WEB client 2.20260903.01.00, params from watch-page getTranscriptEndpoint, with and without visitorData/API key)",
+            "output": "HTTP 400 {\"error\":{\"code\":400,\"message\":\"Precondition check failed.\",\"reason\":\"failedPrecondition\"}}",
+            "exit_code": 400
+          },
+          {
+            "command": "Playwright (real Chrome, headless, unauthenticated) -> navigate watch page, click 'Show transcript'",
+            "output": "ytInitialPlayerResponse.playabilityStatus.status='LOGIN_REQUIRED'; captionTracks length 0; transcript engagement panel opened but rendered 0 ytd-transcript-segment-renderer nodes",
+            "exit_code": 0
+          }
+        ],
+        "would_require": "An authenticated YouTube session (channel-owner cookies) or a YOUTUBE_API_KEY with captions.download scope. Neither is present on this host."
+      },
+      "captions_available": {
+        "value": "not observable",
+        "reason": "captionTracks absent from bot-gated playerResponse; a 'Show transcript' control IS advertised in ytInitialData (getTranscriptEndpoint present) for all 11 videos, which indicates a transcript exists server-side, but its contents could not be retrieved."
+      },
+      "listing_status": {
+        "value": "Public",
+        "source": "present in the channel's public /videos tab; no privacy badge on watch page",
+        "discovery_note": null
+      },
+      "vanity_metrics_availability": {
+        "policy": "R-119 - recorded as availability only, never as headline data",
+        "view_count_available": true,
+        "view_count_observed_value": "28 views",
+        "like_count_available": "not observable",
+        "like_count_note": "Like control is rendered but its count is not exposed in the unauthenticated, bot-gated page payload."
+      }
+    },
+    {
+      "video_id": "Q1NwbcHbAh0",
+      "url": "https://www.youtube.com/watch?v=Q1NwbcHbAh0",
+      "title": {
+        "value": "The 7,000-Year-Old Code Hidden in Sanskrit (Vedic Astronomy/Astrology)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.title (watch page HTML)",
+        "corroborated_by": "yt-dlp --flat-playlist channel /videos tab"
+      },
+      "publish_date": {
+        "value": "Nov 19, 2025",
+        "precision": "day (as rendered by YouTube; no ISO timestamp served)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.dateText (watch page HTML)",
+        "note": "itemprop uploadDate/datePublished meta tags and playerMicroformatRenderer.publishDate were NOT served on the bot-gated page; dateText is the only published date observed."
+      },
+      "duration": {
+        "seconds": 433,
+        "formatted": "7:13",
+        "source": "yt-dlp --flat-playlist (channel /videos tab, or playlist for the unlisted item); corroborated by thumbnailBadgeViewModel duration badge in channel-page ytInitialData"
+      },
+      "description": {
+        "value": "Did ancient civilizations have an algorithm for life? 🌌\n\nStick with me as we explore the Brihat Parashara Hora Shastra, an ancient manual that functions like a \"Cosmic Operating System.\" I break down how precise astronomical calculations were performed thousands of years ago without computers—and how I'm porting that logic into a modern Web App.\n\nHelp me keep the server running! ☕ https://ko-fi.com/vicscoding\n\nCheck out the Code: 👨‍💻 https://github.com/VictordTesla24\n\nTopics Covered:\nThe \"Science of Light\" (Jyotish) explained.\nTranslating the sun's longitude into Python.\nHow the \"Vargas\" (Divisional Charts) work like a fractal zoom.\nMy journey building a full-stack app based on Vedic logic.\n\nIf you love history, coding, or astronomy, this video is for you.",
+        "verbatim": true,
+        "characters": 766,
+        "source": "ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content (watch page HTML), full untruncated body"
+      },
+      "transcript": {
+        "value": "not observable",
+        "reason": "YouTube returned playabilityStatus=LOGIN_REQUIRED ('Sign in to confirm you are not a bot') for every watch request from this host, unauthenticated. No captionTracks were served, and the InnerTube get_transcript endpoint returned HTTP 400 failedPrecondition.",
+        "commands_attempted": [
+          {
+            "command": "/tmp/.../ytdlp --dump-json --skip-download 'https://www.youtube.com/watch?v=<id>'",
+            "output": "ERROR: [youtube] <id>: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication.",
+            "exit_code": 1
+          },
+          {
+            "command": "/tmp/.../ytdlp --dump-json --extractor-args 'youtube:player_client=<tv_simply|web_safari|android_vr|mweb|tv>' ...",
+            "output": "same 'Sign in to confirm you’re not a bot' error for all five alternate player clients",
+            "exit_code": 1
+          },
+          {
+            "command": "POST https://www.youtube.com/youtubei/v1/get_transcript (WEB client 2.20260903.01.00, params from watch-page getTranscriptEndpoint, with and without visitorData/API key)",
+            "output": "HTTP 400 {\"error\":{\"code\":400,\"message\":\"Precondition check failed.\",\"reason\":\"failedPrecondition\"}}",
+            "exit_code": 400
+          },
+          {
+            "command": "Playwright (real Chrome, headless, unauthenticated) -> navigate watch page, click 'Show transcript'",
+            "output": "ytInitialPlayerResponse.playabilityStatus.status='LOGIN_REQUIRED'; captionTracks length 0; transcript engagement panel opened but rendered 0 ytd-transcript-segment-renderer nodes",
+            "exit_code": 0
+          }
+        ],
+        "would_require": "An authenticated YouTube session (channel-owner cookies) or a YOUTUBE_API_KEY with captions.download scope. Neither is present on this host."
+      },
+      "captions_available": {
+        "value": "not observable",
+        "reason": "captionTracks absent from bot-gated playerResponse; a 'Show transcript' control IS advertised in ytInitialData (getTranscriptEndpoint present) for all 11 videos, which indicates a transcript exists server-side, but its contents could not be retrieved."
+      },
+      "listing_status": {
+        "value": "Public",
+        "source": "present in the channel's public /videos tab; no privacy badge on watch page",
+        "discovery_note": null
+      },
+      "vanity_metrics_availability": {
+        "policy": "R-119 - recorded as availability only, never as headline data",
+        "view_count_available": true,
+        "view_count_observed_value": "3,149 views",
+        "like_count_available": "not observable",
+        "like_count_note": "Like control is rendered but its count is not exposed in the unauthenticated, bot-gated page payload."
+      }
+    },
+    {
+      "video_id": "oiTfTeqvP0Y",
+      "url": "https://www.youtube.com/watch?v=oiTfTeqvP0Y",
+      "title": {
+        "value": "दिव्य संहिता :- प्राचीन विज्ञान",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.title (watch page HTML)",
+        "corroborated_by": "yt-dlp --flat-playlist channel /videos tab"
+      },
+      "publish_date": {
+        "value": "Nov 19, 2025",
+        "precision": "day (as rendered by YouTube; no ISO timestamp served)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.dateText (watch page HTML)",
+        "note": "itemprop uploadDate/datePublished meta tags and playerMicroformatRenderer.publishDate were NOT served on the bot-gated page; dateText is the only published date observed."
+      },
+      "duration": {
+        "seconds": 478,
+        "formatted": "7:58",
+        "source": "yt-dlp --flat-playlist (channel /videos tab, or playlist for the unlisted item); corroborated by thumbnailBadgeViewModel duration badge in channel-page ytInitialData"
+      },
+      "description": {
+        "value": "हजारो वर्षांपूर्वीचे खगोलशास्त्र आणि आजचे कोडिंग यात काय साम्य आहे? 🤯 या व्हिडिओमध्ये आपण उलगडणार आहोत महर्षी पराशरांच्या 'दिव्य संहिते'चे रहस्य! प्राचीन श्लोक आणि मॉडर्न अल्गोरिदम यांचा हा अकल्पनीय संबंध पाहून तुम्ही थक्क व्हाल. नक्की पहा! 🔭💻",
+        "verbatim": true,
+        "characters": 243,
+        "source": "ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content (watch page HTML), full untruncated body"
+      },
+      "transcript": {
+        "value": "not observable",
+        "reason": "YouTube returned playabilityStatus=LOGIN_REQUIRED ('Sign in to confirm you are not a bot') for every watch request from this host, unauthenticated. No captionTracks were served, and the InnerTube get_transcript endpoint returned HTTP 400 failedPrecondition.",
+        "commands_attempted": [
+          {
+            "command": "/tmp/.../ytdlp --dump-json --skip-download 'https://www.youtube.com/watch?v=<id>'",
+            "output": "ERROR: [youtube] <id>: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication.",
+            "exit_code": 1
+          },
+          {
+            "command": "/tmp/.../ytdlp --dump-json --extractor-args 'youtube:player_client=<tv_simply|web_safari|android_vr|mweb|tv>' ...",
+            "output": "same 'Sign in to confirm you’re not a bot' error for all five alternate player clients",
+            "exit_code": 1
+          },
+          {
+            "command": "POST https://www.youtube.com/youtubei/v1/get_transcript (WEB client 2.20260903.01.00, params from watch-page getTranscriptEndpoint, with and without visitorData/API key)",
+            "output": "HTTP 400 {\"error\":{\"code\":400,\"message\":\"Precondition check failed.\",\"reason\":\"failedPrecondition\"}}",
+            "exit_code": 400
+          },
+          {
+            "command": "Playwright (real Chrome, headless, unauthenticated) -> navigate watch page, click 'Show transcript'",
+            "output": "ytInitialPlayerResponse.playabilityStatus.status='LOGIN_REQUIRED'; captionTracks length 0; transcript engagement panel opened but rendered 0 ytd-transcript-segment-renderer nodes",
+            "exit_code": 0
+          }
+        ],
+        "would_require": "An authenticated YouTube session (channel-owner cookies) or a YOUTUBE_API_KEY with captions.download scope. Neither is present on this host."
+      },
+      "captions_available": {
+        "value": "not observable",
+        "reason": "captionTracks absent from bot-gated playerResponse; a 'Show transcript' control IS advertised in ytInitialData (getTranscriptEndpoint present) for all 11 videos, which indicates a transcript exists server-side, but its contents could not be retrieved."
+      },
+      "listing_status": {
+        "value": "Public",
+        "source": "present in the channel's public /videos tab; no privacy badge on watch page",
+        "discovery_note": null
+      },
+      "vanity_metrics_availability": {
+        "policy": "R-119 - recorded as availability only, never as headline data",
+        "view_count_available": true,
+        "view_count_observed_value": "25 views",
+        "like_count_available": "not observable",
+        "like_count_note": "Like control is rendered but its count is not exposed in the unauthenticated, bot-gated page payload."
+      }
+    },
+    {
+      "video_id": "9meaN-ZZAvc",
+      "url": "https://www.youtube.com/watch?v=9meaN-ZZAvc",
+      "title": {
+        "value": "I Coded a 7,000-Year-Old Algorithm (It Actually Works)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.title (watch page HTML)",
+        "corroborated_by": "yt-dlp --flat-playlist playlist PLrQIbUti-A-GqWuBEQbxvIVIhh4_x-BEg"
+      },
+      "publish_date": {
+        "value": "Nov 22, 2025",
+        "precision": "day (as rendered by YouTube; no ISO timestamp served)",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.dateText (watch page HTML)",
+        "note": "itemprop uploadDate/datePublished meta tags and playerMicroformatRenderer.publishDate were NOT served on the bot-gated page; dateText is the only published date observed."
+      },
+      "duration": {
+        "seconds": 603,
+        "formatted": "10:03",
+        "source": "yt-dlp --flat-playlist (channel /videos tab, or playlist for the unlisted item); corroborated by thumbnailBadgeViewModel duration badge in channel-page ytInitialData"
+      },
+      "description": {
+        "value": "Is it possible that our ancestors possessed a \"cosmic zoom lens\"? 🔭✨\n\nIn this video, I translate the Brihat Parashara Hora Shastra (BPHS)—a 7,000-year-old Vedic text—into executable Python code. We dive deep into the Divisional Charts (Vargas) of Vedic Astrology, creating a fractal map of destiny that zooms in infinitely to reveal details about wealth, relationships, and purpose.\n\nSupport the Build (Buy me a Coffee!): ☕ https://ko-fi.com/vicscoding\nCode Repository (Open Source): 💻 https://github.com/VictordTesla24\n\nWhat’s Inside:\nThe \"Cosmic Zoom Lens\" (Vargas) explained for developers.\nMaharishi Parashara's ancient dialogue with Maitreya decoded.\nProof that Sanskrit Shlokas function like modern Computer Algorithms (If/Else logic).\nHow this knowledge survived 7,000 years unbroken.\nTech Stack: Python, Next.js, AI, Vedic Math.\n\nStop looking at it as magic—start looking at it as data science. 📊✨",
+        "verbatim": true,
+        "characters": 905,
+        "source": "ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content (watch page HTML), full untruncated body"
+      },
+      "transcript": {
+        "value": "not observable",
+        "reason": "YouTube returned playabilityStatus=LOGIN_REQUIRED ('Sign in to confirm you are not a bot') for every watch request from this host, unauthenticated. No captionTracks were served, and the InnerTube get_transcript endpoint returned HTTP 400 failedPrecondition.",
+        "commands_attempted": [
+          {
+            "command": "/tmp/.../ytdlp --dump-json --skip-download 'https://www.youtube.com/watch?v=<id>'",
+            "output": "ERROR: [youtube] <id>: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication.",
+            "exit_code": 1
+          },
+          {
+            "command": "/tmp/.../ytdlp --dump-json --extractor-args 'youtube:player_client=<tv_simply|web_safari|android_vr|mweb|tv>' ...",
+            "output": "same 'Sign in to confirm you’re not a bot' error for all five alternate player clients",
+            "exit_code": 1
+          },
+          {
+            "command": "POST https://www.youtube.com/youtubei/v1/get_transcript (WEB client 2.20260903.01.00, params from watch-page getTranscriptEndpoint, with and without visitorData/API key)",
+            "output": "HTTP 400 {\"error\":{\"code\":400,\"message\":\"Precondition check failed.\",\"reason\":\"failedPrecondition\"}}",
+            "exit_code": 400
+          },
+          {
+            "command": "Playwright (real Chrome, headless, unauthenticated) -> navigate watch page, click 'Show transcript'",
+            "output": "ytInitialPlayerResponse.playabilityStatus.status='LOGIN_REQUIRED'; captionTracks length 0; transcript engagement panel opened but rendered 0 ytd-transcript-segment-renderer nodes",
+            "exit_code": 0
+          }
+        ],
+        "would_require": "An authenticated YouTube session (channel-owner cookies) or a YOUTUBE_API_KEY with captions.download scope. Neither is present on this host."
+      },
+      "captions_available": {
+        "value": "not observable",
+        "reason": "captionTracks absent from bot-gated playerResponse; a 'Show transcript' control IS advertised in ytInitialData (getTranscriptEndpoint present) for all 11 videos, which indicates a transcript exists server-side, but its contents could not be retrieved."
+      },
+      "listing_status": {
+        "value": "Unlisted",
+        "source": "ytInitialData.videoPrimaryInfoRenderer.badges[].metadataBadgeRenderer {icon:PRIVACY_UNLISTED, label:'Unlisted'}",
+        "discovery_note": "NOT listed in the channel /videos tab. Discovered only because it is included in the PUBLIC playlist 'The Math of the Stars' (PLrQIbUti-A-GqWuBEQbxvIVIhh4_x-BEg), which exposes it to anyone with the playlist link."
+      },
+      "vanity_metrics_availability": {
+        "policy": "R-119 - recorded as availability only, never as headline data",
+        "view_count_available": true,
+        "view_count_observed_value": "37 views",
+        "like_count_available": "not observable",
+        "like_count_note": "Like control is rendered but its count is not exposed in the unauthenticated, bot-gated page payload."
+      }
+    }
+  ],
+  "playlists": [
+    {
+      "playlist_id": "PLrQIbUti-A-GqWuBEQbxvIVIhh4_x-BEg",
+      "title": "The Math of the Stars",
+      "description": {
+        "value": "\"History books say one thing, the stars say another. What do you trust more?",
+        "verbatim": true
+      },
+      "listed_as": "playlist",
+      "url": "https://www.youtube.com/playlist?list=PLrQIbUti-A-GqWuBEQbxvIVIhh4_x-BEg",
+      "distinct_video_ids": [
+        "9meaN-ZZAvc",
+        "TDOubaCAw7I",
+        "Q5yGe7uBkFA",
+        "Q1NwbcHbAh0"
+      ],
+      "source": "yt-dlp --flat-playlist --dump-single-json"
+    },
+    {
+      "playlist_id": "PLrQIbUti-A-EUHHEUZIsVj7BQoWZrUTbV",
+      "title": "प्राचीन अल्गोरिदम: ५००० वर्षांपूर्वी टेलिस्कोपशिवाय भारतीय ऋषींनी अवकाश कसे मोजले? 🔭",
+      "description": {
+        "value": "५००० वर्षांपूर्वी, जेव्हा जगात कोणाकडेही कॉम्प्युटर किंवा टेलिस्कोप नव्हते, तेव्हा आपल्या भारतीय ऋषींनी ग्रहांची स्थिती इतक्या अचूकपणे कशी मोजली? 🤯\n\n'द एन्शियंट अल्गोरिदम' (The Ancient Algorithm) च्या पहिल्या भागात आपण इतिहासाची पाने उलघडून पाहणार आहोत. सिंधू संस्कृतीपासून ते छत्रपती शिवाजी महाराजांच्या काळापर्यंत, ज्योतिषशास्त्र हे केवळ भविष्य बघण्याचे साधन नसून, ते जगातील पहिले 'डेटा सायन्स' कसे होते, हे आपण पुराव्यासह पाहणार आहोत.",
+        "verbatim": true
+      },
+      "listed_as": "playlist + podcast",
+      "url": "https://www.youtube.com/playlist?list=PLrQIbUti-A-EUHHEUZIsVj7BQoWZrUTbV",
+      "distinct_video_ids": [
+        "6RT2caAAYfs",
+        "c_M_LSB65RA",
+        "_L-jRltlZI4"
+      ],
+      "source": "yt-dlp --flat-playlist --dump-single-json"
+    }
+  ],
+  "corpus_strand_risk": {
+    "note": "R-113..R-122 build a site strand on this corpus. The strand CAN be built from titles + publish dates + durations + verbatim descriptions (11 records, all sourced). It CANNOT quote spoken content: no transcript was observable. Any on-site quotation of what is SAID in a video would be fabrication under the current evidence.",
+    "unlisted_handling": "9meaN-ZZAvc is Unlisted. It is a near-duplicate of the public gMe4FZbjcQE (identical 905-character description; titles differ only by the 'Part 2: ' prefix; 603s vs 605s). Treat it as NOT publishable content: publishing an unlisted video on the site would expose material the creator chose not to list, even though a public playlist already leaks it."
+  }
+}

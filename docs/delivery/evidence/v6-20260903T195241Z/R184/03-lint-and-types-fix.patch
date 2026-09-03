@@ -1,0 +1,232 @@
+diff --git a/apps/api/app/agents/interview_prep_agent.py b/apps/api/app/agents/interview_prep_agent.py
+index 3d90caa..e4e935c 100644
+--- a/apps/api/app/agents/interview_prep_agent.py
++++ b/apps/api/app/agents/interview_prep_agent.py
+@@ -475,7 +475,8 @@ class InterviewPrepAgent:
+                 f"export):\n{career or '(none ingested)'}"
+             )
+             offer = getattr(ctx, "offer", None)
+-            if offer is not None and getattr(offer, "unanswered_questions", ()):
++            unanswered = getattr(offer, "unanswered_questions", None)
++            if offer is not None and unanswered:
+                 extra.append(
+                     "UNANSWERED QUESTIONS IN THE TRAIL:\n"
+                     + "\n".join(f"- {q}" for q in offer.unanswered_questions)
+@@ -659,7 +660,10 @@ class InterviewPrepAgent:
+                 extra.append("## Further guidelines")
+                 extra.extend(f"- {g}" for g in added_g)
+             if extra:
+-                out["documentMarkdown"] = (md.rstrip() + "\n\n" + "\n".join(extra) + "\n") if md else "\n".join(extra) + "\n"
++                joined = "\n".join(extra) + "\n"
++                out["documentMarkdown"] = (
++                    md.rstrip() + "\n\n" + joined if md else joined
++                )
+         return out
+ 
+     # -- honest messaging ----------------------------------------------------
+diff --git a/apps/api/app/repositories/resume.py b/apps/api/app/repositories/resume.py
+index 384ff38..380793e 100644
+--- a/apps/api/app/repositories/resume.py
++++ b/apps/api/app/repositories/resume.py
+@@ -56,7 +56,7 @@ class ResumeRepository:
+         self,
+         user_id: str,
+         sections: dict[str, Any],
+-        format_hash: str,
++        format_hash: str | None,
+         *,
+         label: str | None = None,
+         version: int = 1,
+diff --git a/apps/api/app/routers/workspaces.py b/apps/api/app/routers/workspaces.py
+index b8273cd..ed93f67 100644
+--- a/apps/api/app/routers/workspaces.py
++++ b/apps/api/app/routers/workspaces.py
+@@ -116,7 +116,7 @@ def _session_from_application(app: dict[str, Any]) -> dict[str, Any]:
+     when = app.get("scheduledAt")
+     scheduled = (
+         when.isoformat()
+-        if hasattr(when, "isoformat")
++        if when is not None and hasattr(when, "isoformat")
+         else (str(when) if when else None)
+     )
+     if itype:
+diff --git a/apps/api/app/services/apply_executor.py b/apps/api/app/services/apply_executor.py
+index 18c323b..bbeab98 100644
+--- a/apps/api/app/services/apply_executor.py
++++ b/apps/api/app/services/apply_executor.py
+@@ -499,7 +499,11 @@ def _lever_options(node: Any, primary: Any) -> list[str]:
+         if str(control.get("type") or "").lower() not in {"radio", "checkbox"}:
+             continue
+         label_el = control.find_parent("label")
+-        alt = label_el.find(class_="application-answer-alternative") if label_el is not None else None
++        alt = (
++            label_el.find(class_="application-answer-alternative")
++            if label_el is not None
++            else None
++        )
+         text = _text(alt) if alt is not None else ""
+         if not text:
+             text = str(control.get("value") or "")
+@@ -562,7 +566,10 @@ def _parse_lever(soup: Any) -> list[dict[str, Any]]:
+         required = (
+             (label_el is not None and label_el.find("span", class_="required") is not None)
+             or any(control.has_attr("required") for control in controls)
+-            or any(str(control.get("aria-required") or "").lower() == "true" for control in controls)
++            or any(
++                str(control.get("aria-required") or "").lower() == "true"
++                for control in controls
++            )
+             or (field_el is not None and "required-field" in _classes(field_el))
+         )
+         fields.append(
+diff --git a/apps/api/app/services/interview_pack.py b/apps/api/app/services/interview_pack.py
+index 58b2c78..3e9b12a 100644
+--- a/apps/api/app/services/interview_pack.py
++++ b/apps/api/app/services/interview_pack.py
+@@ -135,7 +135,8 @@ def extract_pack_file(user_id: str, job_id: str, name: str) -> tuple[bytes, str]
+         if match is None:
+             return None
+         data = zf.read(match)
+-    ctype = "application/pdf" if safe.endswith(".pdf") or match.endswith(".pdf") else "text/markdown; charset=utf-8"
++    is_pdf = safe.endswith(".pdf") or match.endswith(".pdf")
++    ctype = "application/pdf" if is_pdf else "text/markdown; charset=utf-8"
+     if match.endswith(".docx"):
+         ctype = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+     return data, ctype
+@@ -359,11 +360,12 @@ def pack_payload(user_id: str, job_id: str | None) -> dict[str, Any] | None:
+     if not row:
+         return None
+     manifest = row.get("manifest") or {}
++    _updated = row.get("updatedAt")
+     return {
+         "jobId": row["jobId"],
+-        "assembledAt": row.get("updatedAt").isoformat()
+-        if hasattr(row.get("updatedAt"), "isoformat")
+-        else row.get("updatedAt"),
++        "assembledAt": _updated.isoformat()
++        if _updated is not None and hasattr(_updated, "isoformat")
++        else _updated,
+         "folder": manifest.get("folder"),
+         "files": manifest.get("files") or [],
+         "gaps": manifest.get("gaps") or [],
+@@ -423,6 +425,7 @@ def _employer_resume(
+             "for a different job in this folder.",
+         )
+     from fastapi import HTTPException
++
+     from app.routers.resumes import _render_resume
+ 
+     try:
+@@ -443,7 +446,7 @@ def _employer_resume(
+ 
+ 
+ def _run_tailor(user_id: str, job_id: str, parent_id: str) -> dict[str, Any] | None:
+-    from app.agents.tailor_agent import TailorAgent
++    from app.agents.tailor_agent import TailoringAgent
+     from app.repositories.resume import ResumeRepository
+     from app.services.resume_grounding import MissingResumeError
+ 
+@@ -453,7 +456,7 @@ def _run_tailor(user_id: str, job_id: str, parent_id: str) -> dict[str, Any] | N
+         parent_run_id=parent_id,
+     )
+     try:
+-        TailorAgent().run(user_id, job_id)
++        TailoringAgent().run(user_id, job_id)
+         runs.finish(child["id"], "completed", output={"jobId": job_id}, cost_usd=0.0)
+         return ResumeRepository().get_tailored_for_job(user_id, job_id)
+     except (LookupError, MissingResumeError) as exc:
+@@ -483,6 +486,7 @@ def _employer_cover(
+             "agent, then assemble the pack again.",
+         )
+     from fastapi import HTTPException
++
+     from app.routers.cover_letters import export_cover_letter_pdf
+ 
+     try:
+diff --git a/apps/api/app/services/interview_pack_pdf.py b/apps/api/app/services/interview_pack_pdf.py
+index f36e254..fb1a490 100644
+--- a/apps/api/app/services/interview_pack_pdf.py
++++ b/apps/api/app/services/interview_pack_pdf.py
+@@ -9,10 +9,10 @@ stay the existing format-preserving / business-letter exporters.
+ """
+ from __future__ import annotations
+ 
+-from pathlib import Path
+-from typing import Any, Iterable
+ import logging
+ import unicodedata
++from pathlib import Path
++from typing import Any, Iterable
+ 
+ import fitz
+ 
+diff --git a/apps/api/app/services/interview_prep_briefing.py b/apps/api/app/services/interview_prep_briefing.py
+index 89b01b4..07ded0d 100644
+--- a/apps/api/app/services/interview_prep_briefing.py
++++ b/apps/api/app/services/interview_prep_briefing.py
+@@ -195,7 +195,8 @@ def default_questions_to_ask(*, thread_text: str, job_text: str) -> list[str]:
+         )
+     if _STAKEHOLDER.search(hay):
+         qs.append(
+-            "Who are the senior stakeholders on this piece of work, and how is governance run day to day?"
++            "Who are the senior stakeholders on this piece of work, "
++            "and how is governance run day to day?"
+         )
+     qs.append(
+         "Is there anything in my background you would like me to expand on?"
+diff --git a/apps/api/app/services/interview_prep_pipeline.py b/apps/api/app/services/interview_prep_pipeline.py
+index 97239f8..92de8d8 100644
+--- a/apps/api/app/services/interview_prep_pipeline.py
++++ b/apps/api/app/services/interview_prep_pipeline.py
+@@ -175,7 +175,10 @@ def _fingerprint(user_id: str, job_id: str) -> str:
+     if not rows:
+         return f"{job_id}:none"
+     when = rows[0].get("scheduledAt")
+-    stamp = when.isoformat() if hasattr(when, "isoformat") else str(when or "")
++    stamp = (
++        when.isoformat() if when is not None and hasattr(when, "isoformat")
++        else str(when or "")
++    )
+     return f"{job_id}:{stamp}:{rows[0].get('type') or ''}"
+ 
+ 
+diff --git a/apps/api/app/services/interview_thread_parser.py b/apps/api/app/services/interview_thread_parser.py
+index 137b51f..7c0e10a 100644
+--- a/apps/api/app/services/interview_thread_parser.py
++++ b/apps/api/app/services/interview_thread_parser.py
+@@ -382,7 +382,7 @@ def _resolve_when(text: str, stamp: datetime) -> datetime | None:
+     if day is None:
+         return None
+     hour, minute = clock if clock else (None, None)
+-    if hour is None:
++    if hour is None or minute is None:
+         return None
+     return datetime(day.year, day.month, day.day, hour, minute, tzinfo=MELBOURNE)
+ 
+diff --git a/apps/api/tests/test_apply_receipt_gate.py b/apps/api/tests/test_apply_receipt_gate.py
+index 4461d71..4a53885 100644
+--- a/apps/api/tests/test_apply_receipt_gate.py
++++ b/apps/api/tests/test_apply_receipt_gate.py
+@@ -23,7 +23,6 @@ from app.services.apply_receipt_inbox import (
+ )
+ from app.services.llm_client import QuotaExhaustedError
+ 
+-
+ SIMPLE_FORM = """
+ <form class="ashby-application-form">
+   <label>Name <input name="_systemfield_name" required></label>
+diff --git a/apps/api/tests/test_apply_receipt_inbox.py b/apps/api/tests/test_apply_receipt_inbox.py
+index 5258213..621498c 100644
+--- a/apps/api/tests/test_apply_receipt_inbox.py
++++ b/apps/api/tests/test_apply_receipt_inbox.py
+@@ -4,9 +4,9 @@ from __future__ import annotations
+ from email.utils import formatdate
+ 
+ from app.services.apply_receipt_inbox import (
++    ReceiptMailboxUnavailable,
+     is_application_receipt,
+     poll_application_receipt,
+-    ReceiptMailboxUnavailable,
+ )
+ from app.services.gmail_service import GmailAuthError, GmailNotConnectedError
+ 

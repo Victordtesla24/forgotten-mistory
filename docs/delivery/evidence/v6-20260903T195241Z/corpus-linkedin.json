@@ -1,0 +1,109 @@
+{
+  "schema": "corpus-linkedin/v1",
+  "contract_refs": [
+    "R-8",
+    "R-9",
+    "R-173"
+  ],
+  "generated_at_utc": "2026-09-03T19:55:35Z",
+  "status": "not observable",
+  "profile_url_source": {
+    "value": "linkedin.com/in/vikramd-profile",
+    "resolved_url": "https://www.linkedin.com/in/vikramd-profile",
+    "provenance": {
+      "source": "CV",
+      "page": 1,
+      "section": "CONTACT INFO"
+    },
+    "note": "The URL itself IS observable — it is printed on page 1 of the CV. Only the profile CONTENT behind it is not."
+  },
+  "summary": "LinkedIn returns HTTP 999 to every unauthenticated client. No field of this profile — headline, roles, dates, education, certifications, skills, endorsements, connection count — was retrieved. Nothing is recorded here beyond the URL printed on the CV. No LinkedIn value is estimated, inferred, or carried over from any other source.",
+  "attempts": [
+    {
+      "n": 1,
+      "tool": "mcp__firecrawl__firecrawl_scrape",
+      "arguments": {
+        "url": "https://www.linkedin.com/in/vikramd-profile",
+        "formats": [
+          "markdown"
+        ],
+        "maxAge": 0
+      },
+      "result": "error",
+      "response_verbatim": "Tool 'firecrawl_scrape' execution failed: We apologize for the inconvenience but we do not support this site. If you are part of an enterprise and want to have a further conversation about this, please fill out our intake form here: https://fk4bvu0n5qp.typeform.com/to/Ej6oydlg",
+      "interpretation": "Firecrawl blocklists linkedin.com at the provider level. The request never reached LinkedIn."
+    },
+    {
+      "n": 2,
+      "tool": "WebFetch",
+      "arguments": {
+        "url": "https://www.linkedin.com/in/vikramd-profile"
+      },
+      "result": "error",
+      "response_verbatim": "The server returned HTTP 999 Unknown Status.\n\nThe response body was not retrieved. If this URL requires authentication, use an authenticated tool (e.g. `gh` for GitHub, or an MCP-provided fetch tool) instead of WebFetch.",
+      "interpretation": "LinkedIn's anti-scraping gate. HTTP 999 is LinkedIn's non-standard refusal code for unauthenticated automated clients."
+    },
+    {
+      "n": 3,
+      "tool": "curl (direct, browser User-Agent)",
+      "command": "curl -sS -o /dev/null -D - -L --max-redirs 3 -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36' 'https://www.linkedin.com/in/vikramd-profile'",
+      "result": "HTTP 999",
+      "response_status_line_verbatim": "HTTP/2 999 ",
+      "response_headers_excerpt_verbatim": "date: Thu, 03 Sep 2026 19:55:35 GMT\ncontent-type: text/html\ncontent-length: 1530\nx-li-fabric: prod-lor1\nx-li-pop: cf-prod-lor1-x\ncf-cache-status: DYNAMIC\nserver: cloudflare",
+      "body_bytes": 1530,
+      "interpretation": "Same 999 refusal with a full browser User-Agent and redirect following, served through Cloudflare. Not a User-Agent problem; the profile is gated, not merely bot-filtered."
+    },
+    {
+      "n": 4,
+      "tool": "curl (bare, no User-Agent)",
+      "command": "curl -sS -o /dev/null -w 'http_code=%{http_code} url=%{url_effective}\\n' 'https://www.linkedin.com/in/vikramd-profile'",
+      "result": "HTTP 999",
+      "response_verbatim": "http_code=999 url=https://www.linkedin.com/in/vikramd-profile",
+      "interpretation": "Confirms attempt 3. No redirect to a public preview page is offered."
+    },
+    {
+      "n": 5,
+      "tool": "mcp__firecrawl__firecrawl_search",
+      "arguments": {
+        "query": "\"linkedin.com/in/vikramd-profile\" Vikram Deshpande",
+        "limit": 5
+      },
+      "result": "success, but zero matching results",
+      "response_summary_verbatim": "5 web results returned, none of them this profile: linkedin.com/pub/dir/Vikram/Deshpande (a 70+ profile directory page); linkedin.com/in/vikram-deshpande-001701208 (Cisco, California State University Los Angeles, Raleigh-Durham); linkedin.com/in/vdesh (Oakland, California, University of Illinois at Chicago); linkedin.com/posts/vikram-deshpande-23149a168_activity-7270470908526444544-i7_B; me.engin.umich.edu/me_seminar/vikram-deshpande/ (University of Michigan Mechanical Engineering).",
+      "interpretation": "No search-engine cache or snippet of /in/vikramd-profile exists either. Every returned result is a DIFFERENT person named Vikram Deshpande — none is the CV owner (whose location is Melbourne, VIC, Australia and whose institutions are Monash University and the University of Melbourne). None of these results may be used as a substitute source. Using any of them would be fabrication."
+    }
+  ],
+  "fields_not_observable": {
+    "headline": "not observable",
+    "about_summary": "not observable",
+    "roles": "not observable",
+    "role_dates": "not observable",
+    "education": "not observable",
+    "certifications": "not observable",
+    "skills": "not observable",
+    "endorsements": "not observable",
+    "recommendations": "not observable",
+    "connection_count": "not observable",
+    "follower_count": "not observable",
+    "last_activity": "not observable"
+  },
+  "reconciliation_ruling": {
+    "rule": "R-173",
+    "ruling": "The CV of record wins by default, because it is the only observable source. There is no LinkedIn value to reconcile against, agree with, or contradict — the comparison could not be performed at all.",
+    "cv_of_record": {
+      "path": "/root/forgotten-mistory/public/docs/Vik_Resume_Final.pdf",
+      "md5": "16b856c0f3f4ec0d801fdde6d084452c",
+      "md5_short8": "16b856c0",
+      "bytes": 157615,
+      "mtime_utc": "2026-07-09T22:56:02Z"
+    },
+    "consequence_for_site_copy": "Every biographical claim rendered on the site must cite corpus-cv.json and its page/section provenance. No claim may be attributed to LinkedIn. If the site currently shows a LinkedIn-sourced fact that does not appear in corpus-cv.json, that fact is unsourced and must be removed or re-sourced.",
+    "how_to_make_this_observable": "Only an authenticated retrieval can lift this. Options, in order of least privilege: (a) the owner exports his own profile via LinkedIn's 'Get a copy of your data' and drops the archive into the repo as a first-party source; (b) the owner saves the profile to PDF from a logged-in session; (c) a LinkedIn API credential with r_liteprofile/r_basicprofile scope. No such credential is present in ~/.claude/.env.production — the variable inventory there contains no LINKEDIN_* name."
+  },
+  "credential_check": {
+    "file_inspected": "~/.claude/.env.production",
+    "method": "variable NAMES only were listed; no value was read, printed, copied or committed",
+    "linkedin_credential_present": false,
+    "note": "No LINKEDIN_* variable exists in the inventory, so no authenticated retrieval path was available to this run."
+  }
+}

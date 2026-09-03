@@ -291,7 +291,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'gov',
     ],
     answer:
-      "My current engagement is with the Australian Taxation Office, where I'm Scrum Master / Project Manager on the Payday Super reform program — a large federal program running eight squads in parallel. Government delivery has its own physics: my flagship automation there was deliberately built with zero new InfoSec approvals so it could ship inside the security envelope, and my change request carried full options analysis, costed recommendations, and Azure DevOps traceability. My 15+ year career spans government, financial services, and telecommunications, so I'm used to delivering under formal governance.",
+      "My current engagement is with the Australian Taxation Office, where I'm Scrum Master / Project Manager on the Payday Super reform program — a large federal program running eight squads in parallel. Government delivery has its own physics: my flagship automation there was deliberately built with zero new InfoSec approvals so it could ship inside the security envelope, and my change request carried full options analysis, costed recommendations, and Azure DevOps traceability. My sixteen-year career spans government, financial services, and telecommunications, so I'm used to delivering under formal governance.",
   },
 
   // ── 12. AI/ML & LLM experience ─────────────────────────────────────────
@@ -891,7 +891,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       engineering:
         "Stack: LangChain pipelines with Langfuse tracing and Phoenix observability on the LLM side. Real-time: WebSocket telemetry with P95 latency budgets (proven at 10k+ concurrent, sub-200 ms). Deterministic fallback everywhere — Gemini → keyword matcher with a typed KnowledgeEntry[] base, so the system never fabricates. Infra: Kubernetes, Docker, Terraform across GCP/AWS/Azure, CI/CD throughout. My eval stack (Langfuse + Phoenix) reduced simulated breaches 38%. The pattern: instrument first, ship with a safety net, measure continuously. Same approach whether it's a chatbot, a telemetry platform, or a mainframe harness built from REXX and SDSF inside a zero-new-approvals constraint.",
       story:
-        "The lesson from 15 years of building systems is that architecture isn't about the prettiest diagram — it's about what survives contact with reality. At ANZ that meant defining a P95 latency budget and holding it at 200 ms across 10,000+ devices. At the ATO it meant building a mainframe automation harness from tools InfoSec had already approved, because the real constraint wasn't technical — it was procurement. My AI architecture follows the same rule: LangChain for pipelines, Langfuse and Phoenix for visibility, and always, always a deterministic fallback so nothing ships as a black box. The stack changes with the constraint. The principle doesn't.",
+        "The lesson from sixteen years of building systems is that architecture isn't about the prettiest diagram — it's about what survives contact with reality. At ANZ that meant defining a P95 latency budget and holding it at 200 ms across 10,000+ devices. At the ATO it meant building a mainframe automation harness from tools InfoSec had already approved, because the real constraint wasn't technical — it was procurement. My AI architecture follows the same rule: LangChain for pipelines, Langfuse and Phoenix for visibility, and always, always a deterministic fallback so nothing ships as a black box. The stack changes with the constraint. The principle doesn't.",
     },
   },
 ];

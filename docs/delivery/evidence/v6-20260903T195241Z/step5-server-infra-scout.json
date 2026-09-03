@@ -1,0 +1,352 @@
+{
+  "scout": "step5-server-infra-scout",
+  "run_id": "v6-20260903T195241Z",
+  "observed_at": "2026-09-03T20:05:00Z",
+  "repo": "/root/forgotten-mistory",
+  "head_commit": "d1fce27f8a28ef6b4ef2df3bf77436e7f5be7bc5",
+  "worktree_clean_except": ["docs/delivery/"],
+  "mutations_made": "none",
+
+  "verdicts": {
+    "chatbot_R65_R74": {
+      "status": "PARTIAL",
+      "present": [
+        "Server-side inference: Firebase Function minivicChat (functions/index.js:111) -> OpenRouter meta-llama/llama-3.3-70b-instruct (functions/index.js:23), deployed and live-probed 200 with a real completion",
+        "Same-origin Hosting rewrite /api/chat -> minivicChat (firebase.json:13)",
+        "Client brain ladder puts /api/chat first (lib/miniVicBrain.ts:322,324,372)",
+        "Shipped bundle out/_next/static/chunks/app/layout-e0b4d6ac7372434a.js is byte-identical to live (md5 5dd7a99bad7f2691aec0385851717522) and contains /api/chat 1x"
+      ],
+      "absent": [
+        "Streaming: functions/index.js:159-190 awaits the full upstream JSON and returns one {text}; lib/miniVicBrain.ts:336-352 does a single response.json(). No SSE/chunked anywhere in the served path.",
+        "Retrieval: no index, no embeddings, no chunk selection. lib/miniVicBrain.ts:70-72 concatenates the ENTIRE knowledge base into one static GROUNDING_FACTS string (prompt stuffing, not retrieval).",
+        "Server-enforced grounding: functions/index.js:126-152 validates only role/length and injects nothing. Live probe with no system prompt returned an ungrounded generic answer. Grounding is browser-built (lib/miniVicBrain.ts:197-217) and bypassable.",
+        "Cloned-voice reply audio: disabled in code at components/MiniVicBot.tsx:826-840; /api/tts appears 0x in the shipped bundle."
+      ],
+      "citations": [
+        "functions/index.js:111",
+        "functions/index.js:23",
+        "functions/index.js:126-152",
+        "functions/index.js:159-190",
+        "firebase.json:13",
+        "lib/miniVicBrain.ts:70-72",
+        "lib/miniVicBrain.ts:322-352",
+        "lib/miniVicBrain.ts:367-402",
+        "components/MiniVicBot.tsx:1061-1065",
+        "components/MiniVicBot.tsx:826-840",
+        "app/layout.tsx:4",
+        "app/layout.tsx:142"
+      ]
+    },
+
+    "video_avatar_R123_R138": {
+      "status": "ABSENT",
+      "qualifier": "PARTIAL as never-built, never-run source under services/; ABSENT as a running or reachable capability",
+      "source_present": [
+        "services/api-gateway/src/index.ts:148 POST /api/realtime/session",
+        "services/api-gateway/src/index.ts:227 GET /ws/realtime/:sessionId",
+        "services/api-gateway/src/index.ts:395 POST /api/avatar/streams (D-ID)",
+        "services/api-gateway/src/index.ts:435 POST /api/avatar/streams/:id/sdp (WebRTC SDP relay)",
+        "services/api-gateway/src/index.ts:503 POST /api/viseme/smooth",
+        "services/api-gateway/src/viseme/elevenlabs-ws.ts (12260 bytes)",
+        "services/api-gateway/src/viseme/bridge.ts (16930 bytes)",
+        "services/realtime-orchestrator/src/index.ts:36 gRPC bind 0.0.0.0:50051",
+        "services/viseme-bridge/src/index.ts (10919 bytes, FFT/formant viseme extraction)"
+      ],
+      "absent": [
+        "Server-side streaming STT: does not exist anywhere in the repo. Only the browser Web Speech API at components/MiniVicBot.tsx:530-539.",
+        "services/llm-engine contains ONLY a 4-line Dockerfile; no source, no model, no GGUF (docker-compose.yml:101-105 reserves 12G on a ~15GiB host).",
+        "services/viseme-bridge has no server: grep for PORT|listen|WebSocketServer|createServer|import in src/index.ts exits 1 with no output, yet Dockerfile:17-18 EXPOSE 9003 + CMD node dist/index.js.",
+        "Never installed or built: find services -maxdepth 2 -name node_modules -o -name dist returns nothing.",
+        "Never running: no matching process, no systemd unit in /etc/systemd/system, no container in docker ps -a, no nginx vhost.",
+        "Unreachable by the browser: components/MiniVicBot.tsx:1063 short-circuits on NEXT_PUBLIC_STATIC_EXPORT===1 before sendRealtimeMessage (MiniVicBot.tsx:928) is ever called."
+      ],
+      "live_probes": {
+        "127.0.0.1:50051": "CLOSED (connection refused)",
+        "127.0.0.1:9003/health": "000 (connection refused)"
+      },
+      "last_commit_touching_services": "cdc60d771851eeae9b4a120cef35df99fc0c67d3 2026-06-28"
+    },
+
+    "telemetry_R87_R183": {
+      "status": "ABSENT",
+      "evidence": [
+        "grep for sendBeacon|navigator.sendBeacon|/api/telemetry|/collect across app components lib returns no matches",
+        "No first-party collector endpoint and no third-party analytics (no Plausible/Umami/GA)",
+        "lib/githubTelemetry.ts and #telemetry-panel were deleted after the 2026-07-09 outage; tests/overhaul/telemetry-stability.spec.ts:6-35 documents the deletion and states TS-03 was removed with its subject",
+        "Only 'telemetry' string hits are prose in components/MiniVicBot.tsx:114,126 and content data files"
+      ]
+    },
+
+    "data_refresh_R108_R182": {
+      "status": "PARTIAL",
+      "github": {
+        "status": "PARTIAL",
+        "detail": "scripts/build/harvest_repos.mjs calls the real GitHub API via execFileSync('gh',['api',...]) (lines 35-42) over 6 repos (lines 23-31) and writes null for declined metrics, but its own header (line 3) says 'Run by hand, not by the build'. It is absent from package.json:9 build, package.json:10 build:static, and from .github/workflows/deploy.yml.",
+        "artifact": "app/data/generated/repo-harvest.json, 2092 bytes, mtime 2026-09-03 11:03 (hand-run)"
+      },
+      "youtube": {
+        "status": "ABSENT",
+        "detail": "Zero references to youtube.googleapis / YOUTUBE_API_KEY / videoId anywhere in the repo; app/data/portfolio/listen.ts has no YouTube fields; no YOUTUBE_API_KEY on the host. Only residue is a CSP frame-src allowlist entry (next.config.js:32, firebase.json)."
+      }
+    }
+  },
+
+  "services_inventory": [
+    {
+      "name": "api-gateway",
+      "path": "services/api-gateway",
+      "language": "TypeScript (ESM)",
+      "framework": "Fastify 5.6.1",
+      "entry_source": "src/index.ts",
+      "entry_runtime": "dist/index.js (never built)",
+      "default_port": 8000,
+      "binds": "0.0.0.0 (src/index.ts:710)",
+      "deps": ["fastify 5.6.1", "@fastify/cors", "@fastify/jwt", "@fastify/rate-limit", "@fastify/websocket", "@grpc/grpc-js 1.14.0", "@grpc/proto-loader", "ioredis 5.7.0", "prom-client 15.1.3", "zod 3.24.1"],
+      "installed": false,
+      "built": false,
+      "ever_run_here": false,
+      "currently_running": false,
+      "runner_found": "none (no systemd unit, no container, no process)"
+    },
+    {
+      "name": "realtime-orchestrator",
+      "path": "services/realtime-orchestrator",
+      "language": "TypeScript (ESM)",
+      "framework": "@grpc/grpc-js server",
+      "entry_source": "src/index.ts",
+      "default_port": 50051,
+      "binds": "0.0.0.0 (src/index.ts:36)",
+      "deps": ["@grpc/grpc-js 1.14.0", "@grpc/proto-loader 0.8.0", "zod 3.24.1"],
+      "installed": false,
+      "built": false,
+      "ever_run_here": false,
+      "currently_running": false
+    },
+    {
+      "name": "viseme-bridge",
+      "path": "services/viseme-bridge",
+      "language": "TypeScript (ESM)",
+      "framework": "none - pure library, no server",
+      "entry_source": "src/index.ts",
+      "declared_port": 9003,
+      "note": "Dockerfile:17-18 EXPOSE 9003 + CMD node dist/index.js, but src/index.ts has no listen/PORT/WebSocketServer/createServer and no imports. Running the image would exit immediately.",
+      "deps": ["ws ^8.16.0", "zod ^3.22.0"],
+      "installed": false,
+      "built": false,
+      "ever_run_here": false,
+      "currently_running": false
+    },
+    {
+      "name": "llm-engine",
+      "path": "services/llm-engine",
+      "language": "n/a",
+      "entry_source": null,
+      "note": "Dockerfile ONLY (4 lines, 229 bytes). Base ghcr.io/ggerganov/llama.cpp:server, expects /models/mistral-7b-instruct.Q5_K_M.gguf which is not in the repo. docker-compose.yml:101-105 reserves cpus 6 / memory 12G.",
+      "default_port": 11434,
+      "installed": false,
+      "built": false,
+      "ever_run_here": false,
+      "currently_running": false
+    }
+  ],
+
+  "firebase_functions": {
+    "config_file": "firebase.json",
+    "codebase": "tts",
+    "source_dir": "functions",
+    "runtime": "nodejs20",
+    "region": "us-central1",
+    "defined_in_source": [
+      {"name": "elevenLabsTts", "line": "functions/index.js:48", "secrets": ["ELEVENLABS_API_KEY"], "maxInstances": 5, "timeoutSeconds": 30, "memory": "256MiB"},
+      {"name": "minivicChat", "line": "functions/index.js:111", "secrets": ["OPENROUTER_API_KEY"], "maxInstances": 5, "timeoutSeconds": 30, "memory": "256MiB"}
+    ],
+    "deployed": [
+      {"name": "elevenLabsTts", "version": "v2", "trigger": "https", "location": "us-central1", "memory": 256, "runtime": "nodejs20"},
+      {"name": "minivicChat", "version": "v2", "trigger": "https", "location": "us-central1", "memory": 256, "runtime": "nodejs20"},
+      {"name": "ssrforgottenmistory", "version": "v2", "trigger": "https", "location": "us-central1", "memory": 256, "runtime": "nodejs20", "orphan": true, "note": "Present in NEITHER firebase.json NOR functions/index.js - leftover Next.js webframeworks SSR function, still live and billable"}
+    ],
+    "hosting_rewrites": [
+      {"source": "/api/tts", "functionId": "elevenLabsTts", "region": "us-central1"},
+      {"source": "/api/chat", "functionId": "minivicChat", "region": "us-central1"}
+    ],
+    "live_probes": [
+      {"url": "https://forgotten-mistory.web.app/api/chat", "method": "POST", "http": 200, "content_type": "application/json; charset=utf-8", "body": "{\"text\":\"Hello! It's nice to meet you. Is there something I can help you with or would you like to chat?\"}", "verdict": "PRESENT-AND-RUNNING"},
+      {"url": "https://forgotten-mistory.web.app/api/tts", "method": "POST", "http": 502, "body": "{\"error\":\"tts_upstream_failed\",\"status\":400}", "verdict": "DEPLOYED-BUT-BROKEN (ElevenLabs upstream rejects with 400)"},
+      {"url": "https://forgotten-mistory.web.app/", "http": 200}
+    ],
+    "cli": "/usr/bin/firebase 15.25.0, functions:list exit 0"
+  },
+
+  "app_api_routes": {
+    "directory_exists": false,
+    "route_handlers_found": 0,
+    "note": "There is no app/api directory anywhere in the repo. The static export does not need to prune API routes because none were ever written.",
+    "prune_script": {
+      "path": "scripts/build/prune_static_export.mjs",
+      "excluded_routes": ["performance-benchmark"],
+      "line": "scripts/build/prune_static_export.mjs:26",
+      "prunes_api_routes": false
+    },
+    "next_config": {
+      "path": "next.config.js",
+      "static_export_trigger": "FIREBASE_STATIC_EXPORT === '1' (line 2)",
+      "output_export_at": "next.config.js:44",
+      "bakes_flag": "NEXT_PUBLIC_STATIC_EXPORT = '1' (next.config.js:91)",
+      "fail_loud_on_missing_key": "next.config.js:12-18 throws if GEMINI_API_KEY absent on a production static export"
+    },
+    "out_dir_api_artifacts": 0
+  },
+
+  "validation_scripts": [
+    {
+      "script": "scripts/validate/phase07_llm_ttft.sh",
+      "boots": "services/api-gateway (npm install + npm run start), LLM_PROVIDER=mock PORT=8000",
+      "probes": ["http://127.0.0.1:8000/health", "npm run -s test:ttft -> src/lib/ttft-benchmark.ts"],
+      "gate": "ttftMs < 800",
+      "runnable_now": false,
+      "blockers": ["port 8000 held by foreign Aether prod uvicorn", "services never npm-installed"]
+    },
+    {
+      "script": "scripts/validate/phase08_tts_latency.sh",
+      "boots": "api-gateway on 8000",
+      "requires_secrets": ["ELEVENLABS_API_KEY", "ELEVENLABS_VOICE_ID"],
+      "probes": ["POST http://127.0.0.1:8000/api/tts/stream"],
+      "gate": "TTFB <= 600ms and audio bytes > 0, best of 5",
+      "runnable_now": false,
+      "blockers": ["port 8000 collision", "ELEVENLABS key known-bad (prod /api/tts returns upstream 400)"]
+    },
+    {
+      "script": "scripts/validate/phase09_avatar_sync.sh",
+      "boots": "api-gateway on 8000",
+      "requires_secrets": ["DID_API_KEY"],
+      "probes": ["POST /api/avatar/streams", "POST /api/avatar/streams/:id/stats", "GET /api/avatar/streams/:id/stats"],
+      "gate": "latencyMs < 200",
+      "runnable_now": false,
+      "blockers": ["port 8000 collision", "requires 'jsonwebtoken' (line 31) which is in no package.json in the repo", "host env has DI_D_API_KEY, repo expects DID_API_KEY"]
+    },
+    {
+      "script": "scripts/validate/phase10_viseme_bridge.sh",
+      "boots": "api-gateway on 8000",
+      "probes": ["POST /api/viseme/smooth x10"],
+      "gate": "all smoothed events >= 80ms, 10/10",
+      "runnable_now": false,
+      "blockers": ["port 8000 collision", "services never npm-installed"]
+    },
+    {
+      "script": "scripts/validate/phase21_realtime_pipeline.sh",
+      "boots": "realtime-orchestrator gRPC 50051 + api-gateway 8000",
+      "probes": ["node tests/test_realtime_pipeline.js with API_BASE=http://127.0.0.1:8000 WS_BASE=ws://127.0.0.1:8000"],
+      "gate": "none - parses metrics then unconditionally writes PASS",
+      "runnable_now": false,
+      "blockers": ["tests/test_realtime_pipeline.js DOES NOT EXIST (deleted in 3d6b071)", "port 8000 collision"]
+    }
+  ],
+
+  "endpoint_probes_now": [
+    {"target": "http://127.0.0.1:8000/health", "http": 200, "owner": "FOREIGN - Aether prod API (uvicorn, pid 5505, /root/prod/app/apps/api/.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000)", "body": "{\"status\":\"ok\",\"version\":\"0.2.0\"}"},
+    {"target": "http://127.0.0.1:8000/metrics", "http": 404},
+    {"target": "http://127.0.0.1:8000/api/chat (POST)", "http": 404},
+    {"target": "http://127.0.0.1:50051 (tcp)", "result": "CLOSED - connection refused"},
+    {"target": "http://127.0.0.1:9003/health", "http": "000 - connection refused"},
+    {"target": "http://127.0.0.1:8080/", "http": 200, "owner": "FOREIGN - HOS Dashboard Server v3.1.0 (pid 983, /root/cobol-testing-ato-work/hos-server.py), bound 0.0.0.0"}
+  ],
+
+  "host_infrastructure": {
+    "environments_manifest": "/etc/aether/ENVIRONMENTS.md (auto-generated 2026-09-03T19:51:42Z)",
+    "aether_prod": {"url": "https://aether.srv1356245.hstgr.cloud", "api_port": 8000, "web_port": 3200, "pg": 5434, "redis": 6381, "repo": "/root/prod/app", "commit": "bb5f5f01"},
+    "guardians": "systemd timer every 15 min per environment; manifest forbids doing environment/server management yourself",
+    "logstream": "http://127.0.0.1:9400",
+    "port_contract_ref": "orchestration-skill.md lines 254-281 (§3.6)",
+    "port_convention": {"web": "3200-3299", "api": "8000-8099", "postgres": "5430-5449", "redis": "6380-6399", "reserved": [9400]},
+    "bind_rule": "Bind app services to 127.0.0.1 only and expose through nginx; 3000/3001/1024 are 0.0.0.0 by other tenants - do not imitate",
+    "ports_occupied_now": [22, 53, 80, 443, 1024, 1080, 2222, 3000, 3001, 3002, 3010, 3020, 3030, 3040, 3111, 3200, 3400, 5050, 5434, 5436, 5440, 5599, 5678, 6381, 8000, 8080, 8095, 8099, 8443, 8644, 8791, 8890, 9119, 9222, 9223, 9400, 20128, 24282, 35380, 43774, 65529],
+    "ports_free_in_convention": {"api": ["8001-8079", "8081-8094", "8096-8098"], "web": ["3201-3399"], "redis": ["6380", "6382+"], "grpc_50051": "free", "viseme_9003": "free"},
+    "repo_default_ports_that_collide": [
+      {"port": 8000, "declared_at": ["services/api-gateway/src/index.ts:25", "docker-compose.yml:31", "docker-compose.yml:44"], "held_by": "Aether prod API (guardian-owned)"},
+      {"port": 8080, "declared_at": ["package.json:7 dev:raw -> next dev -p 8080"], "held_by": "HOS Dashboard Server on 0.0.0.0"}
+    ],
+    "nginx": {
+      "running": true,
+      "listens": ["0.0.0.0:8099", "127.0.0.1:8095", "0.0.0.0:8443"],
+      "sites_enabled": ["ab-chatbot", "horizon.conf", "orch-mon"],
+      "forgotten_mistory_vhost": false,
+      "grep_result": "grep -ril 'forgotten|mistory' /etc/nginx/ -> no matches",
+      "ports_80_443_held_by": "traefik (pid 3580)"
+    },
+    "docker_containers_from_this_repo": 0,
+    "systemd_units_for_this_repo": 0,
+    "credentials_available_names_only": ["OPENROUTER_API_KEY", "GEMINI_API_KEY", "OPENAI_API_KEY", "ELEVENLABS_API_KEY", "ELEVENLABS_VOICE_ID", "DI_D_API_KEY", "GITHUB_PERSONAL_ACCESS_TOKEN", "PERPLEXITY_API_KEY", "DEEPSEEK_API_KEY", "MINIMAX_API_KEY", "ANTHROPIC_API_KEY1", "DATABASE_URL", "NEXT_PUBLIC_SITE_URL", "PRODUCTION_WEBSITE_URL"],
+    "credentials_missing": ["YOUTUBE_API_KEY"],
+    "repo_env_file_present": false,
+    "repo_env_example_names": ["ALLOWED_ORIGINS", "API_GATEWAY_URL", "DID_API_KEY", "ELEVENLABS_API_KEY", "ELEVENLABS_VOICE_ID", "GEMINI_API_KEY", "IMAGE_TAG", "JWT_SECRET", "LLM_BASE_URL", "LLM_PROVIDER", "NEXT_PUBLIC_REALTIME_WS_URL", "OPENAI_API_KEY", "ORCHESTRATOR_GRPC_ADDR", "REDIS_URL"]
+  },
+
+  "failures_and_surprises": [
+    {
+      "id": "F1",
+      "severity": "high",
+      "title": "tests/test_realtime_pipeline.js does not exist",
+      "detail": "Referenced by package.json:42 (test:realtime-pipeline) and scripts/validate/phase21_realtime_pipeline.sh:37. Deleted in commit 3d6b071 and never restored. Phase 21 cannot pass; npm run test:realtime-pipeline is a guaranteed MODULE_NOT_FOUND."
+    },
+    {
+      "id": "F2",
+      "severity": "high",
+      "title": "Port-8000 false-positive readiness trap in five validate scripts",
+      "detail": "phase07/08/09/10/21 all poll http://127.0.0.1:8000/health and break out on the first 200. On this host port 8000 already returns {\"status\":\"ok\",\"version\":\"0.2.0\"} from the Aether PRODUCTION API (uvicorn, pid 5505). The gate therefore passes instantly against a foreign service, and the subsequent assertions 404. The scripts also try to bind :8000 themselves, colliding with a guardian-owned production service and violating orchestration contract §3.6."
+    },
+    {
+      "id": "F3",
+      "severity": "medium",
+      "title": "Orphan deployed Firebase Function ssrforgottenmistory",
+      "detail": "Live v2 https function in us-central1 present in neither firebase.json nor functions/index.js. Leftover Next.js webframeworks SSR function from an earlier deploy strategy; still deployed and billable."
+    },
+    {
+      "id": "F4",
+      "severity": "medium",
+      "title": "npm run dev:raw targets an occupied port",
+      "detail": "package.json:7 runs next dev -p 8080; 8080 is bound on 0.0.0.0 by HOS Dashboard Server (pid 983). The dev server cannot bind."
+    },
+    {
+      "id": "F5",
+      "severity": "medium",
+      "title": "services/viseme-bridge is a library packaged as a service",
+      "detail": "Dockerfile:17-18 EXPOSE 9003 + CMD node dist/index.js, but src/index.ts has no listen/PORT/WebSocketServer/createServer and no imports at all. The container would exit immediately."
+    },
+    {
+      "id": "F6",
+      "severity": "medium",
+      "title": "services/llm-engine has a Dockerfile and nothing else",
+      "detail": "4 lines total. No source, no model file. docker-compose.yml:101-105 reserves cpus 6 / memory 12G on a host whose whole allowance is ~15 GiB per the aether manifest."
+    },
+    {
+      "id": "F7",
+      "severity": "medium",
+      "title": "phase09 requires an undeclared dependency and a mis-named key",
+      "detail": "scripts/validate/phase09_avatar_sync.sh:31 requires('jsonwebtoken'), which appears in no package.json in the repo. Host env supplies DI_D_API_KEY while the repo expects DID_API_KEY."
+    },
+    {
+      "id": "F8",
+      "severity": "info",
+      "title": "Committed PASS reports predate the code that would produce them",
+      "detail": "reports/phase07 timestamped 2026-02-28T09:01:52Z, reports/phase21 2026-02-28T12:15:52Z with 'First token to avatar latency: 0 ms'. Both predate the deletion of tests/test_realtime_pipeline.js. They are stale artefacts, not evidence."
+    },
+    {
+      "id": "S1",
+      "severity": "info",
+      "title": "The chatbot's server-side brain really is live",
+      "detail": "Contrary to the 'static export means no server' premise, Hosting rewrites give the static site two real Cloud Functions and /api/chat answers 200 with genuine OpenRouter inference. The local out/ build is byte-identical to the deployed chunk (md5 5dd7a99bad7f2691aec0385851717522), so this is exactly what visitors run."
+    },
+    {
+      "id": "S2",
+      "severity": "info",
+      "title": "There is no app/api directory at all",
+      "detail": "The premise that the static export prunes app/api is moot: no Next.js route handler was ever written in this tree. prune_static_export.mjs:26 prunes only 'performance-benchmark'."
+    },
+    {
+      "id": "S3",
+      "severity": "info",
+      "title": "Grounding is client-side and therefore unenforceable",
+      "detail": "A probe of the production /api/chat with no system prompt returned an ungrounded generic reply, proving the function injects no persona or knowledge base. R-65..R-74 'strict retrieval grounding' cannot be met by browser-assembled prompts."
+    }
+  ]
+}

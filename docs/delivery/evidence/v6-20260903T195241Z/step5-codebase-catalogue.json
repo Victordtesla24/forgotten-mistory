@@ -1,0 +1,521 @@
+{
+  "meta": {
+    "step": 5,
+    "title": "Codebase defect and gap catalogue",
+    "repo": "/root/forgotten-mistory",
+    "production": "https://forgotten-mistory.web.app/",
+    "gitHead": "d1fce27f8a28ef6b4ef2df3bf77436e7f5be7bc5",
+    "gitHeadDate": "2026-09-03T17:53:38+00:00",
+    "gitHeadSubject": "chore(ledger): refresh the corrections log and note that it trails by one",
+    "workingTree": "clean except untracked docs/delivery/",
+    "productionParity": {
+      "method": "md5sum of fetched production HTML vs local out/index.html",
+      "prodIndexMd5": "74712d2c420b80127a72846d82e139b0",
+      "localOutIndexMd5": "74712d2c420b80127a72846d82e139b0",
+      "identical": true
+    },
+    "liveProbes": [
+      { "method": "POST", "url": "https://forgotten-mistory.web.app/api/chat", "status": 200, "body": "{\"text\":\"OK\"}" },
+      { "method": "POST", "url": "https://forgotten-mistory.web.app/api/tts", "status": 502 },
+      { "method": "POST", "url": "https://forgotten-mistory.web.app/api/realtime/session", "status": 404 },
+      { "method": "POST", "url": "https://forgotten-mistory.web.app/api/chat-with-vic", "status": 404 }
+    ]
+  },
+
+  "gaps": [
+    {
+      "id": "GAP-01",
+      "requirement": "R-178",
+      "task": "B",
+      "severity": "high",
+      "summary": "Four navigation labels are generic or truncated rather than the mandated section titles.",
+      "detail": "Shipped labels: Home, About, Experience, Skills, 'Keeping me busy', 'Feedback & coffee', LinkedIn, Download CV. Mandated: Front Door, About Me, Experience, Skills & Certifications, 'What is keeping me busy', 'Always willing to listen - feedback & Coffee?'. The three worst substitutes named in R-178 ('Work', 'Contact', 'Architecture') are already gone.",
+      "evidence": [
+        "components/site/Navigation.tsx:14-27",
+        "components/site/Navigation.tsx:15 label 'Home'",
+        "components/site/Navigation.tsx:16 label 'About'",
+        "components/site/Navigation.tsx:18 label 'Skills'",
+        "components/site/Navigation.tsx:23 label 'Keeping me busy'",
+        "components/site/Navigation.tsx:24 label 'Feedback & coffee'"
+      ],
+      "status": "partially satisfied"
+    },
+    {
+      "id": "GAP-02",
+      "requirement": "R-179",
+      "task": "C",
+      "severity": "high",
+      "summary": "Three 'Download CV' affordances ship; two render in the first viewport.",
+      "detail": "Production HTML contains the literal string 'Download CV' 3 times. Affordances #1 (always-visible header) and #3 (hero secondary CTA) are both above the fold. #1 and #2 are the same words on the same href from the same component.",
+      "evidence": [
+        "components/site/Navigation.tsx:156-158 (.nav-cv, always visible)",
+        "components/site/Navigation.tsx:26 (overlay menu entry)",
+        "components/sections/Hero/Hero.tsx:89-95 with label from app/data/portfolio/hero.ts:49",
+        "out/index.html + production HTML: grep -o -F 'Download CV' | wc -l => 3"
+      ],
+      "status": "unsatisfied"
+    },
+    {
+      "id": "GAP-03",
+      "requirement": "R-181",
+      "task": "D",
+      "severity": "medium",
+      "summary": "No footer element exists; the closing colophon carries no build or deploy signal (R-54).",
+      "detail": "There is no <footer> in the app. The closing line is a colophon rendered from listen.ts. It carries copyright, city, architecture notes and a telemetry claim, but no commit sha, build timestamp or deploy id.",
+      "evidence": [
+        "grep -rn '<footer' app components => 0 hits",
+        "components/sections/Listen/Listen.tsx:100",
+        "app/data/portfolio/listen.ts:46-47"
+      ],
+      "footerCopyVerbatim": "© 2026 Vikram Deshpande · Melbourne · static export · at most one WebGL context per section, and none on a phone · no analytics, no trackers, no cookies",
+      "status": "boilerplate already removed; positive half outstanding"
+    },
+    {
+      "id": "GAP-04",
+      "requirement": "R-183",
+      "task": "D",
+      "severity": "medium",
+      "summary": "Colophon claims 'no analytics, no trackers, no cookies'; R-87 requires first-party cookieless instrumentation, so the claim must be rewritten in the same change that builds it.",
+      "detail": "The claim is currently TRUE: no analytics library, no gtag/plausible/umami/posthog, no sendBeacon, no cookies. The only web-storage call in the app is a crash-loop guard in app/error.tsx.",
+      "evidence": [
+        "grep -rn 'analytics|gtag|plausible|umami|posthog|sendBeacon' app components lib => prose only",
+        "app/error.tsx:37-44 (sessionStorage crash-loop guard, the sole storage use)",
+        "app/data/portfolio/listen.ts:47"
+      ],
+      "status": "claim true today; instrumentation absent"
+    },
+    {
+      "id": "GAP-05",
+      "requirement": "R-185",
+      "task": "F",
+      "severity": "high",
+      "summary": "Contact is scattered across three surfaces with duplicated routes; no single canonical path.",
+      "detail": "Nine contact affordances across nav overlay, hero and closing section. LinkedIn appears 3x and mailto 2x in production HTML. MiniVicBot offers no contact route at all (R-72 gap).",
+      "evidence": [
+        "components/site/Navigation.tsx:25 (LinkedIn)",
+        "components/sections/Hero/Hero.tsx:101-112 with app/data/portfolio/hero.ts:52-54 (LinkedIn, GitHub, Email)",
+        "components/sections/Listen/Listen.tsx:44-58 with app/data/portfolio/listen.ts:24-31 (email, tel, LinkedIn, GitHub)",
+        "app/data/portfolio/listen.ts:33 ('Coffee · Melbourne CBD · I’ll come to you' - plain text, no link)",
+        "production HTML: mailto x2, tel x1, linkedin x3, bare github profile x3",
+        "grep -n 'mailto|linkedin|calendly|contact' components/MiniVicBot.tsx => 0 hits"
+      ],
+      "canonicalContactData": "app/data/siteContent.ts:492-504",
+      "status": "unsatisfied"
+    },
+    {
+      "id": "GAP-06",
+      "requirement": "R-84",
+      "task": "J",
+      "severity": "high",
+      "summary": "Five of nine mandated implementation libraries are absent from package.json and node_modules.",
+      "missing": ["gsap (+ScrollTrigger)", "lenis", "postprocessing", "d3", "@lhci/cli / lighthouse"],
+      "present": ["framer-motion@11.18.2", "three@0.165.0", "@react-three/fiber@8.18.0", "@react-three/drei@9.122.0", "@playwright/test@1.57.0", "playwright@1.57.0", "@axe-core/playwright@4.10.2"],
+      "evidence": [
+        "package.json:44-81",
+        "node_modules probe: gsap ABSENT, lenis ABSENT, @studio-freight/lenis ABSENT, d3 ABSENT, postprocessing ABSENT, @lhci/cli ABSENT, lighthouse ABSENT, three@0.165.0 PRESENT, framer-motion@11.18.2 PRESENT",
+        "lighthouserc.json exists at repo root and package.json:17 wires scripts/validate/phase02_lighthouse.sh, but the runner is not installed",
+        "grep -rn 'postprocessing|EffectComposer|UnrealBloom' app components lib => 0 hits"
+      ],
+      "status": "unsatisfied"
+    },
+    {
+      "id": "GAP-07",
+      "requirement": "R-176",
+      "task": "A",
+      "severity": "medium",
+      "summary": "Experience carries no authored system / delivery-flow diagram layer; the #architecture-lab material to fold in does not exist to be folded.",
+      "detail": "The removal half of R-176 is already done - #architecture-lab has zero component or JSX matches and zero occurrences in production HTML. The positive half is outstanding: Experience renders only a duration bar-chart plus a role accordion, and its WebGL layer is documented as texture, not data.",
+      "evidence": [
+        "grep -rn 'architecture-lab' app components lib tests scripts => comments only (Navigation.tsx:9, tests/e2e/navigation.spec.ts:9, scripts/testing/postprod_prod_probe.mjs:13, scripts/testing/rendering_stability_validation.mjs:16, scripts/testing/adversarial_evidence.mjs:33, app/globals.css:732)",
+        "production HTML: 0 occurrences of 'architecture-lab'",
+        "components/sections/Experience/Experience.tsx:40-42 ('The scene behind it draws texture, not data')"
+      ],
+      "status": "removal satisfied; absorption target absent; positive half outstanding"
+    },
+    {
+      "id": "GAP-08",
+      "requirement": "R-187",
+      "task": "A",
+      "severity": "medium",
+      "summary": "Skills calibration still renders as a static HTML table; the bench is bipartite, not the mandated force-directed topology.",
+      "evidence": [
+        "components/sections/Skills/Skills.tsx:150-193 (<table> with thead/tbody)",
+        "components/sections/Skills/Bench.tsx:15-42 (13 sources left, 17 capabilities right, SVG wires - not force-directed, no proficiency/recency/adjacency encoding)"
+      ],
+      "status": "unsatisfied"
+    },
+    {
+      "id": "GAP-09",
+      "requirement": "R-188",
+      "task": "A",
+      "severity": "medium",
+      "summary": "About renders ten dimensions as static prose; 'evidence' is a plain string, not a link into Experience, a repository or a channel item.",
+      "evidence": [
+        "app/data/portfolio/about.ts:28 ('evidence: string')",
+        "app/data/portfolio/about.ts:46 evidence value '38 public repositories · ATO evidence harness · ANZ platform migrations'",
+        "components/sections/About/About.tsx:117 renders evidence as a <p>, no anchor",
+        "components/sections/About/Compass.tsx (hover/focus rotates the compass - a reading aid, not a drill-down)"
+      ],
+      "status": "unsatisfied"
+    },
+    {
+      "id": "GAP-10",
+      "requirement": "R-147, R-186",
+      "task": "I",
+      "severity": "critical",
+      "summary": "CONTRADICTS R-186: a self-presentational avatar video IS present. R-147's removal is NOT a no-op.",
+      "detail": "components/sections/Listen/Avatar.tsx renders a 29-second synthetic clip whose script is 'Hello. I'm Vikram Deshpande...' - a self-introduction, teaching no concept, coupled to no visualisation. The module documents itself at Avatar.tsx:11 as 'a synthetic introduction, labelled as one.' Removal work: 3 source files, 3 assets (~4.08 MB), 1 mount point.",
+      "filesToRemove": [
+        "components/sections/Listen/Avatar.tsx (114 lines, 4122 bytes)",
+        "components/sections/Listen/Avatar.module.css (230 lines, 5651 bytes)",
+        "app/data/portfolio/avatar.ts (47 lines)",
+        "public/assets/avatar/introduction.mp4 (4041235 bytes)",
+        "public/assets/avatar/introduction.vtt (1116 bytes)",
+        "public/assets/avatar/poster.jpg (36140 bytes)",
+        "mount point components/sections/Listen/Listen.tsx:97 (<Avatar />)"
+      ],
+      "scriptVerbatim": [
+        "Hello. I'm Vikram Deshpande.",
+        "What you're watching is an AI-generated avatar — my photograph, my own cloned voice, rendered by a model. I'm telling you that straight away, because I build systems that are not allowed to fabricate their own evidence.",
+        "Everything else here is real. The figures come from my CV, and from repositories you can open and read. Where something could not honestly be measured, the page says so.",
+        "If any of it is useful to you, I would welcome a conversation."
+      ],
+      "captionCopyVerbatim": {
+        "invitation": "A word from me — 29 seconds",
+        "disclosure": "AI-generated: my photograph, my cloned voice, animated by a model. Nothing else on this site is synthetic."
+      },
+      "evidence": [
+        "app/data/portfolio/avatar.ts:41-46 (transcript)",
+        "app/data/portfolio/avatar.ts:22 (invitation), :26-27 (disclosure), :30-34 (provenance), :39 (durationSeconds 29)",
+        "public/assets/avatar/introduction.vtt cues 1-10 (identical wording)",
+        "components/sections/Listen/Listen.tsx:97",
+        "production HTML references assets/avatar/poster.jpg"
+      ],
+      "adjudication": "self-presentational 'hello I am Vik' video - exactly the artefact R-147 removes",
+      "status": "R-186 assertion FALSE; removal has real work"
+    },
+    {
+      "id": "GAP-11",
+      "requirement": "R-186, R-65..R-74",
+      "task": "I",
+      "severity": "critical",
+      "summary": "CONTRADICTS R-186: an AI chatbot IS present and answers live in production from a server-side LLM.",
+      "detail": "MiniVicBot (1561 lines) is mounted globally in app/layout.tsx:142. Its brain calls POST /api/chat, which Firebase Hosting rewrites to the minivicChat function running meta-llama/llama-3.3-70b-instruct on OpenRouter with a server-side secret. Live probe returned HTTP 200 with a model-generated body.",
+      "evidence": [
+        "app/layout.tsx:4 import, app/layout.tsx:142 mount",
+        "components/MiniVicBot.tsx (1561 lines)",
+        "lib/miniVicBrain.ts:1-14 (answer ladder), :322 CHAT_ENDPOINT='/api/chat', :336 fetch",
+        "app/data/miniVicKnowledge.ts (963 lines, local knowledge base tier 3)",
+        "functions/index.js:111-185 exports.minivicChat, :20 OPENROUTER_API_KEY secret, :23 model",
+        "firebase.json:16 rewrite /api/chat -> minivicChat",
+        "LIVE: POST /api/chat => 200 {\"text\":\"OK\"}",
+        "production HTML contains id=\"minivic-toggle\", id=\"minivic-audio\", 'Mini Vic'"
+      ],
+      "residualGapsAgainstR65toR74": [
+        "R-70: entry point is grey (border-zinc-300/70, bg-zinc-500 pulse) not gold-accent - components/MiniVicBot.tsx:1531,1548-1550",
+        "R-71: no streaming - functions/index.js:145-181 awaits the whole completion before responding",
+        "R-72: no conversation-to-outcome path - zero contact affordances in MiniVicBot.tsx",
+        "R-73: no rate limiting or injection resistance beyond payload size caps - functions/index.js:124-143",
+        "R-75: floating widget - components/MiniVicBot.tsx:1181-1190 'fixed bottom-5 right-5 z-[10030]'"
+      ],
+      "clientKeyExposure": "none - grep -ro 'AIza[0-9A-Za-z_-]{20,}' out/_next/ => 0 matches",
+      "status": "R-186 assertion FALSE; layer exists but breaches R-70/R-71/R-72/R-73/R-75"
+    },
+    {
+      "id": "GAP-12",
+      "requirement": "R-147..R-156",
+      "task": "I",
+      "severity": "high",
+      "summary": "Explainer avatar absent - no component, route, asset or copy teaches a difficult concept.",
+      "evidence": [
+        "app/data/portfolio/ contains no explainer data file (about, avatar, experience, hero, listen, skills, vitrine only)",
+        "the only avatar module is the self-presentation clip - app/data/portfolio/avatar.ts:41-46",
+        "no four-movement structure, no coupled hero visualisation, no recorded concept-selection rationale (R-149)"
+      ],
+      "status": "confirmed absent - new construction"
+    },
+    {
+      "id": "GAP-13",
+      "requirement": "R-123..R-138",
+      "task": "I, K",
+      "severity": "high",
+      "summary": "Real-time conversational presence absent from production; client and server code exist but are unreachable and disabled.",
+      "evidence": [
+        "firebase.json:14-17 declares only two rewrites: /api/tts and /api/chat",
+        "LIVE: POST /api/realtime/session => 404; POST /api/chat-with-vic => 404",
+        "next.config.js:2,91 set NEXT_PUBLIC_STATIC_EXPORT='1' for the production build",
+        "components/MiniVicBot.tsx:1063-1065 short-circuits the realtime path on that flag before any request",
+        "components/MiniVicBot.tsx:883 NEXT_PUBLIC_REALTIME_WS_URL, :929 POST /api/realtime/session",
+        "no RTCPeerConnection anywhere in app/components/lib - transport in dormant code is WebSocket/gRPC, not WebRTC",
+        "lib/visemeMap.ts (229 lines), lib/voiceoverController.ts (458 lines) - dormant lip-sync machinery"
+      ],
+      "status": "confirmed absent in production - new construction on an existing dormant foundation"
+    },
+    {
+      "id": "GAP-14",
+      "requirement": "R-113..R-122",
+      "task": "I",
+      "severity": "high",
+      "summary": "YouTube creator strand absent - the channel URL exists in data but is never rendered as a link.",
+      "evidence": [
+        "app/data/siteContent.ts:503 youtube: 'https://youtube.com/@vicd0ct' - key never read by any consumer",
+        "consumers of contact use linkedin/github/email/phoneHref only: app/data/portfolio/hero.ts:52-54, app/data/portfolio/listen.ts:24-31, components/site/Navigation.tsx:25",
+        "production HTML has no href to YouTube; the single occurrence is inside the Person JSON-LD sameAs array (app/layout.tsx:109)",
+        "no channel data module, no facade player, no youtube-nocookie iframe (firebase.json:25 CSP permits frame-src youtube-nocookie but nothing uses it)"
+      ],
+      "status": "confirmed absent - new construction"
+    },
+    {
+      "id": "GAP-15",
+      "requirement": "R-116",
+      "task": "I",
+      "severity": "high",
+      "summary": "Dual-strand hero visualisation absent - the hero is single-strand and the vitrine rail carries repositories only.",
+      "evidence": [
+        "components/sections/Hero/Hero.tsx:38-113 renders eyebrow, name, role, statement, 3-entry ledger, 2 actions, availability line - no shared timeline, no carousel",
+        "components/sections/Vitrine/Vitrine.tsx:110-186 - six repository plates, zero channel items"
+      ],
+      "status": "confirmed absent - new construction"
+    },
+    {
+      "id": "GAP-16",
+      "requirement": "R-117",
+      "task": "I",
+      "severity": "high",
+      "summary": "Content-DNA visualisation absent - no topic taxonomy exists and there is nothing to cross-link into.",
+      "evidence": [
+        "components/sections/Skills/Bench.tsx:15-42 - bipartite sources x capabilities graph, no topic taxonomy",
+        "no taxonomy data module anywhere in app/data/"
+      ],
+      "status": "confirmed absent - new construction"
+    },
+    {
+      "id": "GAP-17",
+      "requirement": "R-180, R-162",
+      "task": "E",
+      "severity": "low",
+      "summary": "The hidden terminal, the 'sudo hire vic' command and the Konami handler do not exist; only orphan CSS remains to be deleted.",
+      "evidence": [
+        "grep -rni 'sudo hire' app components lib public scripts tests config => 0 hits",
+        "grep -rni 'konami' => 1 hit, a CSS comment at app/globals.css:746",
+        "no #terminal-* element in any TSX (id inventory: minivic-panel/input/toggle/audio, site-nav-overlay, six section ids + *-title, compass-open, compass-hub, avatar-transcript, d1t..d6d, arrow)",
+        "no key-sequence handler; the only keydown listeners are Navigation.tsx:68-71 (Escape) and Navigation.tsx:92-107 (Tab trap)",
+        "production HTML: 0 occurrences of 'sudo hire'"
+      ],
+      "orphanCssToRemove": [
+        "app/globals.css:746 comment '/* 5. Konami / Terminal Overlay */'",
+        "app/globals.css:748-754 #terminal-close",
+        "app/globals.css:756-762 #terminal-form",
+        "app/globals.css:764-768 .prompt",
+        "app/globals.css:770-780 #terminal-input",
+        "app/globals.css:892-893 comment referencing #terminal-log"
+      ],
+      "adjudication": "cannot pass or fail the restraint check - it is not implemented; correct action is a shipped removal of the dead CSS under R-162",
+      "status": "feature absent; dead CSS present"
+    },
+    {
+      "id": "GAP-18",
+      "requirement": "R-182",
+      "task": "K",
+      "severity": "low",
+      "summary": "Repository metrics are harvested once at build time, not refreshed at deploy time, and the site says so.",
+      "evidence": [
+        "app/data/generated/repo-harvest.json: \"harvestedAt\": \"2026-09-03\", \"publicRepoCount\": 38",
+        "components/sections/Vitrine/Vitrine.tsx:203-206 renders '... metrics harvested {harvestedAt} from the GitHub API, not live'",
+        "app/data/portfolio/vitrine.ts:118-119"
+      ],
+      "status": "unsatisfied"
+    }
+  ],
+
+  "antiPatterns": [
+    {
+      "id": "AP-01",
+      "requirement": "R-75, R-70",
+      "kind": "floating widget pasted over the design",
+      "severity": "high",
+      "summary": "MiniVicBot is a fixed bottom-right launcher and floating dialog panel, and the launcher is grey rather than the mandated gold accent.",
+      "evidence": [
+        "components/MiniVicBot.tsx:1181-1190 className=\"fixed bottom-5 right-5 z-[10030] ...\"",
+        "components/MiniVicBot.tsx:1192-1199 floating dialog panel (22rem/27rem)",
+        "components/MiniVicBot.tsx:1519-1553 circular launcher, border-zinc-300/70",
+        "components/MiniVicBot.tsx:1548-1550 bg-zinc-500 pulse dot",
+        "components/MiniVicBot.tsx:172, 1184-1189 pastHero fade-in"
+      ]
+    },
+    {
+      "id": "AP-02",
+      "requirement": "R-162",
+      "kind": "dead code shipped to every visitor",
+      "severity": "medium",
+      "summary": "Orphan CSS in app/globals.css (1020 lines) for selectors that no element ever carries.",
+      "evidence": [
+        "app/globals.css:233 [data-magnetic] - 0 references in app/components/lib",
+        "app/globals.css:431 [data-parallax=\"true\"] - 0 references",
+        "app/globals.css:443-460 [data-outcome-card=\"true\"] (+:hover,:focus-visible,:active) - 0 references; :451-456 sets outline:none on a :focus-visible state",
+        "app/globals.css:748-780 #terminal-close, #terminal-form, .prompt, #terminal-input - no such elements",
+        "app/globals.css:782-836 #mini-vic-form, #mini-vic-input, #mini-vic-input:focus, #mini-vic-form button - shipped bot uses #minivic-* ids, not #mini-vic-*",
+        "app/globals.css:726-745 comment-only blocks with removed rule bodies plus an empty @media (max-width: 768px) { }"
+      ]
+    },
+    {
+      "id": "AP-03",
+      "requirement": "R-162, R-82",
+      "kind": "dead data module",
+      "severity": "medium",
+      "summary": "app/data/siteContent.ts (581 lines) exports 15 symbols; only 2 are imported anywhere.",
+      "consumed": ["contact (app/data/portfolio/hero.ts:12, app/data/portfolio/listen.ts:15, components/site/Navigation.tsx:5)", "experience (app/data/portfolio/experience.ts:11)"],
+      "unconsumed": ["hero (:59)", "skillGroups (:171)", "projects (:233)", "featuredRepos (:352)", "synthesisSources (:405)", "projectionDimensions (:464)", "credibility (:511)", "proof (:529)", "dossier (:554)", "SkillGroup/ProjectCard/FeaturedRepo/SynthesisSource/ProjectionDimension/ProofPoint/DossierEdition interfaces"],
+      "evidence": ["app/data/siteContent.ts:7-554", "grep -rn \"from '@/app/data/siteContent'|from '../siteContent'\" app components lib => 4 imports, 2 distinct symbols"]
+    },
+    {
+      "id": "AP-04",
+      "requirement": "R-164",
+      "kind": "documentation contradicts code",
+      "severity": "low",
+      "summary": "Avatar doc comment claims preload=\"none\"; the shipped <video> sets preload=\"auto\".",
+      "evidence": ["components/sections/Listen/Avatar.tsx:14", "components/sections/Listen/Avatar.tsx:54"]
+    }
+  ],
+
+  "antiPatternsCheckedAndClear": [
+    { "prohibition": "template hero", "requirement": "R-90", "evidence": "components/sections/Hero/Hero.tsx:34-36 WebGL slot, :60-77 caliper ledger, :80-82 grading line - bespoke composition" },
+    { "prohibition": "stock gradients", "requirement": "R-90", "evidence": "components/sections/Hero/atmosphere.glsl.ts (181 lines GLSL); the CSS gradient is the documented no-WebGL fallback per Hero.tsx:25-27" },
+    { "prohibition": "generic three-card grid", "requirement": "R-90", "evidence": "components/sections/Vitrine/Vitrine.tsx:110-186 six-plate horizontal rail with per-plate bespoke SVG (Drawings.tsx #d1t..#d6d), Limits line :161-164, 'Excluded, and why' :190-200" },
+    { "prohibition": "default system fonts", "requirement": "R-90", "evidence": "app/layout.tsx:24-61 Source_Serif_4 + Inter + IBM_Plex_Mono via next/font, applied at app/layout.tsx:127" },
+    { "prohibition": "emoji iconography", "requirement": "R-90", "evidence": "grep -rInP '[\\x{1F300}-\\x{1FAFF}\\x{2600}-\\x{27BF}\\x{FE0F}]' --include=*.tsx --include=*.ts --include=*.css app components lib => 0 hits; marks are geometric (components/marks/Caliper.tsx), bot icons are lucide-react SVG (MiniVicBot.tsx:7)" },
+    { "prohibition": "unstyled focus rings", "requirement": "R-90", "evidence": "focus-visible styling in app/globals.css and 9 section CSS modules plus app/error.tsx, app/not-found.tsx, components/ui/button.tsx:10; explicit focus trap and restore at components/site/Navigation.tsx:82-112" },
+    { "prohibition": "dead links", "requirement": "R-90", "evidence": "every href=\"#...\" in production HTML (#hero x2, #about, #experience x2, #skills, #vitrine, #listen) resolves to an id present in the same document; no href=\"#\" and no javascript:void(0)" },
+    { "prohibition": "boilerplate copy / 'All rights reserved'", "requirement": "R-82, R-181", "evidence": "grep -rni 'all rights reserved' app components lib public scripts => 0 hits; production HTML grep -c => 0" }
+  ],
+
+  "present": [
+    {
+      "id": "PR-01",
+      "requirement": "R-16",
+      "task": "A",
+      "summary": "Exactly six sections render, in the mandated order, with no seventh.",
+      "sections": [
+        { "order": 1, "component": "Hero", "id": "hero", "import": "app/page.tsx:6", "render": "app/page.tsx:53", "sectionTag": "components/sections/Hero/Hero.tsx:31", "kicker": null, "title": "Vikram Deshpande (h1)", "titleSource": "app/data/portfolio/hero.ts:23", "mandatedName": "Front Door" },
+        { "order": 2, "component": "About", "id": "about", "import": "app/page.tsx:7", "render": "app/page.tsx:55", "sectionTag": "components/sections/About/About.tsx:33", "kicker": "About", "title": "Ten dimensions, answered", "titleSource": "app/data/portfolio/about.ts:32-33", "mandatedName": "About Me" },
+        { "order": 3, "component": "Experience", "id": "experience", "import": "app/page.tsx:8", "render": "app/page.tsx:57", "sectionTag": "components/sections/Experience/Experience.tsx:58", "kicker": "Experience", "title": "Sixteen years, to scale", "titleSource": "app/data/portfolio/experience.ts:105-106", "mandatedName": "Experience" },
+        { "order": 4, "component": "Skills", "id": "skills", "import": "app/page.tsx:9", "render": "app/page.tsx:59", "sectionTag": "components/sections/Skills/Skills.tsx:91", "kicker": "Skills & Certifications", "title": "Calibration card", "titleSource": "app/data/portfolio/skills.ts:224-225", "mandatedName": "Skills & Certifications" },
+        { "order": 5, "component": "Vitrine", "id": "vitrine", "import": "app/page.tsx:10", "render": "app/page.tsx:61", "sectionTag": "components/sections/Vitrine/Vitrine.tsx:99", "titleSource": "app/data/portfolio/vitrine.ts", "mandatedName": "What is keeping me busy" },
+        { "order": 6, "component": "Listen", "id": "listen", "import": "app/page.tsx:11", "render": "app/page.tsx:63", "sectionTag": "components/sections/Listen/Listen.tsx:30", "kicker": "Always willing to listen", "title": "Feedback & coffee?", "titleSource": "app/data/portfolio/listen.ts:18-19", "mandatedName": "Always willing to listen - feedback & Coffee?" }
+      ],
+      "productionConfirmation": "grep -o 'id=\"(hero|about|experience|skills|vitrine|listen)\"' prod-index.html returns the six ids in page order"
+    },
+    {
+      "id": "PR-02",
+      "requirement": "R-175",
+      "task": "G",
+      "summary": "No counter animates from zero. Final values are server-rendered on first paint.",
+      "evidence": [
+        "grep -rn 'useMotionValue|useSpring|animate\\(|CountUp|countUp|useTransform' --include=*.tsx --include=*.ts app components lib => 2 hits, both the phrase 'counter-rotate' in About/Compass.tsx:76 and :191",
+        "app/data/portfolio/hero.ts:32,37,42 - values are pre-formatted string literals '≈92%', '$5M+', '10k+'; hero.ts:15 comment 'these are quoted, not computed'",
+        "components/sections/Hero/Hero.tsx:68-70 renders them as text via Caliper",
+        "components/sections/About/About.tsx:86-121 - no numeric counters; only ordinal indices at :98",
+        "production HTML already contains '≈92%' x3, '$5M+' x3, '10k+' x2, 'Sixteen years' x3; '$0M' x0",
+        "only requestAnimationFrame loops in section code are layout measurement (Skills/Bench.tsx:164-165, Vitrine/Vitrine.tsx:65), a page-ready signal (app/page.tsx:30) and video playback (Listen/Avatar.tsx:37)"
+      ],
+      "status": "satisfied - preservation obligation, not a build"
+    },
+    {
+      "id": "PR-03",
+      "requirement": "R-176, R-178, R-181",
+      "task": "A, B, D",
+      "summary": "Three defects R-176/R-178/R-181 describe are already absent from this baseline.",
+      "evidence": [
+        "#architecture-lab: 0 component/JSX matches; 0 occurrences in production HTML",
+        "nav labels 'Work', 'Contact', 'Architecture': 0 occurrences in components/site/Navigation.tsx and 0 in production HTML",
+        "'All rights reserved': 0 occurrences anywhere in source or production HTML"
+      ]
+    },
+    {
+      "id": "PR-04",
+      "requirement": "R-165, R-166, R-167, R-168, R-169",
+      "task": "A",
+      "summary": "The Preservation Register assets are all present and must survive any rebuild.",
+      "evidence": [
+        "R-165 provenance labelling: components/marks/Caliper.tsx:40-47 - three states with glosses 'Measured; source given.', 'Self-reported figure.', 'Not measurable; reason given.'",
+        "R-166 calibration + refusal of proficiency bars: app/data/portfolio/skills.ts:226 lede '...There are no proficiency bars on this page, because nobody can check one.'; CV calibration line components/sections/Skills/Skills.tsx:198-203 with app/data/generated/cv-fingerprint.ts:10-14 (md5 16b856c0f3f4ec0d801fdde6d084452c, short 16b856c0, bytes 157615)",
+        "R-167 vitrine honesty instruments: Limits line components/sections/Vitrine/Vitrine.tsx:161-164; 'Excluded, and why' :190-200",
+        "R-168 ten-dimension framing with source citation and 'measured from the role': app/data/portfolio/about.ts:1-18; components/sections/About/About.tsx:45-51 (provenance link) and :102-114 (Caliper state='open' label 'Computed from the role, not the candidate...')",
+        "R-169 duration-true timeline: components/sections/Experience/Experience.tsx:20-25 track() and :115 percentage-sized bars; open-bracket note :131-134",
+        "Feedback corrections ledger (build-generated): components/sections/Listen/Listen.tsx:67-95 with app/data/generated/feedback-log.ts (total 59)"
+      ]
+    },
+    {
+      "id": "PR-05",
+      "requirement": "R-65..R-74 foundation, K",
+      "task": "K",
+      "summary": "Server-side capability that already exists and is reachable from production: two Firebase Functions.",
+      "functions": [
+        { "export": "elevenLabsTts", "file": "functions/index.js:48-104", "secret": "ELEVENLABS_API_KEY (functions/index.js:19)", "upstream": "api.elevenlabs.io text-to-speech voice 0ZJ4kFDo6bZUNQsuULOW (:26,:70), model eleven_turbo_v2_5 (:28), 600-char cap (:29)", "route": "firebase.json:15 /api/tts", "liveStatus": 502 },
+        { "export": "minivicChat", "file": "functions/index.js:111-185", "secret": "OPENROUTER_API_KEY (functions/index.js:20)", "upstream": "openrouter.ai chat/completions (:146), model meta-llama/llama-3.3-70b-instruct (:23), temperature 0.6, max_tokens 512 (:158-159)", "route": "firebase.json:16 /api/chat", "liveStatus": 200 }
+      ],
+      "sharedGuards": "origin allow-list functions/index.js:31-35; applyCors :37-45; maxInstances 5, timeoutSeconds 30, memory 256MiB on both",
+      "limitations": ["neither streams - both await the full upstream body before responding (functions/index.js:145-181)", "no rate limiting or injection defence beyond payload size caps"]
+    },
+    {
+      "id": "PR-06",
+      "requirement": "R-123..R-138 foundation",
+      "task": "K",
+      "summary": "Three complete but undeployed Node services provide a foundation for real-time presence.",
+      "services": [
+        { "path": "services/api-gateway", "manifest": "services/api-gateway/package.json", "deps": ["fastify@5.6.1", "@fastify/cors@10.0.1", "@fastify/jwt@9.0.1", "@fastify/rate-limit@10.3.0", "@fastify/websocket@11.2.0", "@grpc/grpc-js@1.14.0", "@grpc/proto-loader@0.8.0", "ioredis@5.7.0", "prom-client@15.1.3", "zod@3.24.1"], "capability": "HTTP+WS gateway, JWT, CORS, rate limiting, Redis, Prometheus metrics, pluggable LLM provider interface (src/providers/), gRPC client to the orchestrator (src/realtime/grpc-client.ts), ElevenLabs streaming-WS viseme bridge with smoother (src/viseme/)", "reachableFromProduction": false },
+        { "path": "services/realtime-orchestrator", "manifest": "services/realtime-orchestrator/package.json", "deps": ["@grpc/grpc-js@1.14.0", "@grpc/proto-loader@0.8.0", "zod@3.24.1"], "capability": "gRPC session orchestrator (src/grpc/server.ts), session manager (src/orchestrator/session-manager.ts), D-ID streaming-avatar integration (src/integrations/did.ts), ElevenLabs integration (src/integrations/elevenlabs.ts), same provider abstraction", "reachableFromProduction": false },
+        { "path": "services/viseme-bridge", "manifest": "services/viseme-bridge/package.json", "deps": ["ws@^8.16.0", "zod@^3.22.0"], "capability": "frame-accurate viseme extraction from audio packets for D-ID lip-sync (FR-CLONE-LIVE) - services/viseme-bridge/package.json:4", "reachableFromProduction": false }
+      ],
+      "whyUnreachable": [
+        "firebase.json:14-17 declares only /api/tts and /api/chat rewrites",
+        "LIVE: /api/realtime/session => 404, /api/chat-with-vic => 404",
+        "next.config.js:2,91 NEXT_PUBLIC_STATIC_EXPORT='1' and components/MiniVicBot.tsx:1063-1065 disable the client half",
+        "docker-compose.yml and .env.example wire these services (API_GATEWAY_URL, ORCHESTRATOR_GRPC_ADDR, REDIS_URL, DID_API_KEY, JWT_SECRET, NEXT_PUBLIC_REALTIME_WS_URL empty) but none of it is exercised by the Firebase deployment",
+        "firebase.json:25 CSP connect-src currently 'self' ws: wss: https://api.github.com https://generativelanguage.googleapis.com https://*.googleapis.com"
+      ]
+    },
+    {
+      "id": "PR-07",
+      "requirement": "R-73",
+      "task": "I",
+      "summary": "No client-exposed API keys in the shipped bundle.",
+      "evidence": [
+        "grep -ro 'AIza[0-9A-Za-z_-]{20,}' out/_next/ => 0 matches",
+        "lib/miniVicBrain.ts:36 reads NEXT_PUBLIC_GEMINI_API_KEY and :41 guards on key shape, but nothing was inlined",
+        "both live secrets live in Firebase Secret Manager - functions/index.js:19-20"
+      ]
+    },
+    {
+      "id": "PR-08",
+      "requirement": "R-84",
+      "task": "J",
+      "summary": "Mandated libraries that ARE present, with versions.",
+      "libraries": [
+        { "name": "framer-motion", "declared": "package.json:51", "version": "11.18.2", "usedIn": ["app/page.tsx:4", "components/site/Navigation.tsx:4", "components/MiniVicBot.tsx:4", "components/MotionProvider.tsx"] },
+        { "name": "three", "declared": "package.json:57", "version": "0.165.0", "usedIn": ["components/gl/Scene.tsx", "components/gl/GLCanvas.tsx", "components/sections/Hero/HeroAtmosphere.tsx", "components/sections/Experience/CareerStrata.tsx"] },
+        { "name": "@react-three/fiber", "declared": "package.json:47", "version": "8.18.0" },
+        { "name": "@react-three/drei", "declared": "package.json:46", "version": "9.122.0" },
+        { "name": "@playwright/test", "declared": "package.json:65", "version": "1.57.0", "usedIn": ["playwright.config.ts", "tests/e2e/ (10 specs)"] },
+        { "name": "playwright", "declared": "package.json:75", "version": "1.57.0" },
+        { "name": "@axe-core/playwright", "declared": "package.json:60", "version": "4.10.2", "usedIn": ["tests/a11y/"] }
+      ]
+    }
+  ],
+
+  "counts": {
+    "sectionsRendered": 6,
+    "navEntries": 8,
+    "navEntriesWithGenericOrTruncatedLabels": 4,
+    "downloadCvAffordances": 3,
+    "downloadCvAffordancesInFirstViewport": 2,
+    "contactAffordances": 9,
+    "countersAnimatingFromZero": 0,
+    "r84LibrariesMandated": 9,
+    "r84LibrariesPresent": 4,
+    "r84LibrariesAbsent": 5,
+    "gaps": 18,
+    "antiPatternsPresent": 4,
+    "antiPatternsCheckedAndClear": 8
+  }
+}

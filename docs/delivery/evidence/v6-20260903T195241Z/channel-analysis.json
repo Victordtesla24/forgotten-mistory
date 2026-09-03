@@ -1,0 +1,1848 @@
+{
+  "$schema_version": "1.0.0",
+  "dataset_id": "channel-analysis",
+  "contract_refs": [
+    "R-8",
+    "R-108",
+    "R-113",
+    "R-114",
+    "R-115",
+    "R-117",
+    "R-118",
+    "R-119",
+    "R-120",
+    "R-121",
+    "R-122",
+    "R-143",
+    "R-182",
+    "Gate M",
+    "T-26"
+  ],
+  "generation_record": {
+    "generated_at_utc": "2026-09-03T20:23:47Z",
+    "host": "linux x86_64",
+    "producer": "Claude Code subagent · execution step 8 (channel content analysis)",
+    "model_id": "claude-opus-5[1m]",
+    "method": "Deterministic re-read and analysis of the already-collected corpus. NO new network calls were made to YouTube by this step; every quantitative statement below was recomputed with python3 from corpus-youtube.json and is reproducible from that file alone.",
+    "input_dataset": {
+      "path": "/root/forgotten-mistory/docs/delivery/evidence/v6-20260903T195241Z/corpus-youtube.json",
+      "sha256": "539a103e14157760a5a198d07bc93491f18570c7ac62b0dd16a094392ac9a35d",
+      "bytes": 69439,
+      "dataset_id": "corpus-youtube",
+      "generated_at_utc": "2026-09-03T20:08:39Z"
+    },
+    "cross_referenced_source_files": [
+      {
+        "path": "/root/forgotten-mistory/app/data/portfolio/about.ts",
+        "role": "R-121 join target — aboutContent.dimensions[].name"
+      },
+      {
+        "path": "/root/forgotten-mistory/app/data/portfolio/skills.ts",
+        "role": "R-121/R-117 join target — capabilities[].capability and sources[].id"
+      }
+    ],
+    "cost": {
+      "value": "not observable",
+      "reason": "no metered generation API was called by this step; only local file reads and python3 computation"
+    },
+    "fabrication_policy": "Zero fabrication. Every field carries its source. Anything not present in the input corpus is the literal string 'not observable' with the reason."
+  },
+  "headline_finding": "Eleven video records across two subjects and two languages, produced in a single 8-day burst (19-27 Nov 2025, 10 of 11 records) followed by a 140-day silence and one further release (16 Apr 2026). Nine of eleven records teach one thesis: that a 7,000-year-old Sanskrit corpus (Brihat Parashara Hora Shastra) is executable computation. The remaining public record demonstrates a shipped real-time telemetry visualisation. The corpus supports strong claims about how the owner STRUCTURES an explanation and about what he chose to explain; it supports NO claim about how he SOUNDS or what he SAYS, because no transcript or caption text was retrievable for any of the 11.",
+  "evidence_ceiling": {
+    "statement": "This analysis is derived exclusively from titles, publish dates, durations, verbatim descriptions, playlist membership and channel About fields. It is a written-artefact analysis, not a spoken-content analysis.",
+    "transcripts_available": 0,
+    "captions_available": 0,
+    "provenance": "corpus-youtube.json · counts.videos_with_transcript_text = 0; videos[].transcript.value = 'not observable' for all 11; videos[].captions_available.value = 'not observable' for all 11",
+    "upstream_reason": "YouTube returned playabilityStatus=LOGIN_REQUIRED ('Sign in to confirm you are not a bot') for every watch request from this host, unauthenticated. No captionTracks were served, and the InnerTube get_transcript endpoint returned HTTP 400 failedPrecondition.",
+    "consequences": [
+      {
+        "requirement": "R-122",
+        "consequence": "The conversational corpus extension (transcripts + summaries indexed for timestamp deep-linking) CANNOT be built from this evidence. The only timestamp index that exists in the corpus is the 7-chapter list the creator himself wrote into the description of p9pGAmqJCSk."
+      },
+      {
+        "requirement": "R-120",
+        "consequence": "Framing must be drawn from description text, series architecture and cadence. Any on-site sentence describing what is said aloud in a video would be fabrication."
+      },
+      {
+        "requirement": "R-119",
+        "consequence": "View counts WERE observable (channel.vanity_metrics_availability, videos[].vanity_metrics_availability) and are deliberately excluded from every ranking, cluster and depth signal in this document. Cluster membership is by subject, never by reach."
+      }
+    ]
+  },
+  "subject_taxonomy": {
+    "method": "Clusters were assigned from the verbatim title and description text of each record only. A record joins a cluster only where the cluster's named entities appear literally in that record's text; the matching strings are listed per member.",
+    "cluster_count": 3,
+    "clusters": [
+      {
+        "id": "cluster.vedic-computational-astronomy",
+        "label": "Vedic computational astronomy as executable code",
+        "member_count": 9,
+        "member_video_ids": [
+          "Q1NwbcHbAh0",
+          "oiTfTeqvP0Y",
+          "_L-jRltlZI4",
+          "c_M_LSB65RA",
+          "6RT2caAAYfs",
+          "Q5yGe7uBkFA",
+          "TDOubaCAw7I",
+          "9meaN-ZZAvc",
+          "gMe4FZbjcQE"
+        ],
+        "share_of_corpus": "9 of 11 records; 8 of 10 public records",
+        "runtime_seconds": 3928,
+        "defining_entities_observed": [
+          {
+            "entity": "Brihat Parashara Hora Shastra / BPHS / बृहत पराशर होरा शास्त्र",
+            "in_video_ids": [
+              "Q1NwbcHbAh0",
+              "_L-jRltlZI4",
+              "c_M_LSB65RA",
+              "gMe4FZbjcQE",
+              "9meaN-ZZAvc",
+              "OEn5RzSEwpc"
+            ]
+          },
+          {
+            "entity": "Vargas / Divisional Charts",
+            "in_video_ids": [
+              "Q1NwbcHbAh0",
+              "gMe4FZbjcQE",
+              "9meaN-ZZAvc"
+            ]
+          },
+          {
+            "entity": "Vimshottari Dasha",
+            "in_video_ids": [
+              "TDOubaCAw7I"
+            ]
+          },
+          {
+            "entity": "Python",
+            "in_video_ids": [
+              "Q1NwbcHbAh0",
+              "TDOubaCAw7I",
+              "gMe4FZbjcQE",
+              "9meaN-ZZAvc",
+              "c_M_LSB65RA"
+            ]
+          },
+          {
+            "entity": "Next.js",
+            "in_video_ids": [
+              "TDOubaCAw7I",
+              "gMe4FZbjcQE",
+              "9meaN-ZZAvc"
+            ]
+          },
+          {
+            "entity": "If/Else logic applied to Sanskrit shlokas",
+            "in_video_ids": [
+              "gMe4FZbjcQE",
+              "9meaN-ZZAvc",
+              "c_M_LSB65RA"
+            ]
+          }
+        ],
+        "thesis_verbatim": "Stop looking at it as magic-start looking at it as data science.",
+        "thesis_source": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[gMe4FZbjcQE] · closing line; identical line also present in unlisted 9meaN-ZZAvc",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title)",
+        "runtime_formatted": "1:05:28",
+        "runtime_note": "4239 s total corpus minus p9pGAmqJCSk (121 s) and OEn5RzSEwpc (190 s, counted under cluster.birth-time-rectification). Recomputed from videos[].duration.seconds."
+      },
+      {
+        "id": "cluster.birth-time-rectification",
+        "label": "Birth-time rectification as a deterministic, self-correcting procedure",
+        "member_count": 2,
+        "member_video_ids": [
+          "OEn5RzSEwpc",
+          "c_M_LSB65RA"
+        ],
+        "relationship_to_parent": "Proper subset of cluster.vedic-computational-astronomy by subject, promoted to its own cluster because it is the single subject with a matching named repository in corpus-repositories (containerised-birth-time-rectifier, skills.ts sources[].id = 'rectifier').",
+        "defining_entities_observed": [
+          {
+            "entity": "Ishtakala Method",
+            "in_video_ids": [
+              "OEn5RzSEwpc"
+            ]
+          },
+          {
+            "entity": "Birth Time Rectification (BTR) / बर्थ टाईम रेक्टिफिकेशन (BTR)",
+            "in_video_ids": [
+              "OEn5RzSEwpc",
+              "c_M_LSB65RA"
+            ]
+          },
+          {
+            "entity": "Prashna Lagna",
+            "in_video_ids": [
+              "OEn5RzSEwpc"
+            ]
+          },
+          {
+            "entity": "Nisheka (conception) alignment",
+            "in_video_ids": [
+              "OEn5RzSEwpc"
+            ]
+          },
+          {
+            "entity": "Samvatsar, Ritu, Masa, Nakshatra",
+            "in_video_ids": [
+              "OEn5RzSEwpc"
+            ]
+          },
+          {
+            "entity": "Debugging metaphor applied to a chart ('कुंडलीचे डीबगिंग')",
+            "in_video_ids": [
+              "c_M_LSB65RA"
+            ]
+          }
+        ],
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[OEn5RzSEwpc, c_M_LSB65RA]"
+      },
+      {
+        "id": "cluster.apple-silicon-telemetry",
+        "label": "Real-time Apple Silicon telemetry, rendered as a cinematic HUD",
+        "member_count": 1,
+        "member_video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "runtime_seconds": 121,
+        "defining_entities_observed": [
+          {
+            "entity": "Swift 5 + SwiftUI, Go 1.21+, Metal, IOKit + SMC + IOReport",
+            "in_video_ids": [
+              "p9pGAmqJCSk"
+            ]
+          },
+          {
+            "entity": "700 vector paths, 12 concentric rings, 60 frames per second",
+            "in_video_ids": [
+              "p9pGAmqJCSk"
+            ]
+          },
+          {
+            "entity": "P-Core & E-Core utilization, GPU frequency, Neural Engine, DRAM bandwidth, Network I/O, thermal state",
+            "in_video_ids": [
+              "p9pGAmqJCSk"
+            ]
+          },
+          {
+            "entity": "Go telemetry daemon streams JSON at 1Hz",
+            "in_video_ids": [
+              "p9pGAmqJCSk"
+            ]
+          }
+        ],
+        "isolation_note": "This is the only record in the corpus in this cluster and the only record published in 2026. It shares no named entity with any other record.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title) · video_ids=[p9pGAmqJCSk]"
+      }
+    ],
+    "unclustered": {
+      "video_ids": [],
+      "note": "Q5yGe7uBkFA (0:44, 89-char description) carries no named entity beyond '7,000 years old Sanskrit verses' and is placed in cluster.vedic-computational-astronomy on that string alone; it is flagged as a promotional micro-record under format_and_structure, not as a teaching record."
+    },
+    "series_architecture": [
+      {
+        "id": "series.ancient-algorithm-marathi",
+        "label": "प्राचीन अल्गोरिदम (The Ancient Algorithm) - 3 explicitly numbered parts, Marathi",
+        "video_ids_in_order": [
+          "_L-jRltlZI4",
+          "c_M_LSB65RA",
+          "6RT2caAAYfs"
+        ],
+        "evidence": "Titles carry (भाग १), (भाग २), (भाग ३); each description ends with a 'संपूर्ण सिरीज पहा' block linking the other two parts and marking itself 'हा व्हिडिओ'.",
+        "playlist_id": "PLrQIbUti-A-EUHHEUZIsVj7BQoWZrUTbV",
+        "playlist_listed_as": "playlist + podcast",
+        "provenance": "corpus-youtube.json · videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title) + videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + playlists[1] · video_ids=[_L-jRltlZI4, c_M_LSB65RA, 6RT2caAAYfs]"
+      },
+      {
+        "id": "series.english-part-1-2",
+        "label": "English 'Part 1 / Part 2' pair",
+        "video_ids_in_order": [
+          "TDOubaCAw7I",
+          "gMe4FZbjcQE"
+        ],
+        "evidence": "Titles are prefixed literally 'Part 1: ' and 'Part 2: '. No in-description cross-link block exists in either, unlike the Marathi series.",
+        "provenance": "corpus-youtube.json · videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title) + videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[TDOubaCAw7I, gMe4FZbjcQE]"
+      },
+      {
+        "id": "playlist.math-of-the-stars",
+        "label": "The Math of the Stars",
+        "video_ids": [
+          "9meaN-ZZAvc",
+          "TDOubaCAw7I",
+          "Q5yGe7uBkFA",
+          "Q1NwbcHbAh0"
+        ],
+        "description_verbatim": "\"History books say one thing, the stars say another. What do you trust more?",
+        "publication_hazard": "This public playlist exposes the UNLISTED record 9meaN-ZZAvc. Per corpus_strand_risk.unlisted_handling, 9meaN-ZZAvc must not be published on the site.",
+        "provenance": "corpus-youtube.json · playlists[0] (yt-dlp --flat-playlist --dump-single-json) + corpus_strand_risk.unlisted_handling"
+      }
+    ],
+    "language_split": {
+      "method": "Devanagari codepoint presence in videos[].title.value",
+      "marathi_devanagari": {
+        "count": 4,
+        "video_ids": [
+          "oiTfTeqvP0Y",
+          "_L-jRltlZI4",
+          "c_M_LSB65RA",
+          "6RT2caAAYfs"
+        ]
+      },
+      "english_latin": {
+        "count": 7,
+        "video_ids": [
+          "Q1NwbcHbAh0",
+          "Q5yGe7uBkFA",
+          "TDOubaCAw7I",
+          "9meaN-ZZAvc",
+          "gMe4FZbjcQE",
+          "OEn5RzSEwpc",
+          "p9pGAmqJCSk"
+        ]
+      },
+      "finding": "The same syllabus is delivered twice, once per language, inside the same 8-day window: the Marathi 3-part series (20 Nov) and the English pair plus opener (19-25 Nov) both walk BPHS -> Sanskrit-as-code -> divisional charts.",
+      "provenance": "corpus-youtube.json · videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title) + videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + videos[].publish_date.value (day precision; upstream videoPrimaryInfoRenderer.dateText)"
+    }
+  },
+  "format_and_structure": {
+    "method": "Regex feature detection over videos[].description.value, run with python3 re over the corpus file; hit lists are exhaustive, not sampled.",
+    "patterns": [
+      {
+        "pattern": "Question as the opening move",
+        "hits": 10,
+        "of": 11,
+        "video_ids": [
+          "p9pGAmqJCSk",
+          "OEn5RzSEwpc",
+          "gMe4FZbjcQE",
+          "TDOubaCAw7I",
+          "6RT2caAAYfs",
+          "c_M_LSB65RA",
+          "_L-jRltlZI4",
+          "Q1NwbcHbAh0",
+          "oiTfTeqvP0Y",
+          "9meaN-ZZAvc"
+        ],
+        "detector": "'?' present in description",
+        "exception": "Q5yGe7uBkFA - the only record with no question mark anywhere in its description",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "pattern": "Labelled contents block",
+        "hits": 10,
+        "of": 11,
+        "surface_forms_observed": [
+          "FEATURES SHOWN IN THIS VIDEO",
+          "**IN THIS VIDEO**",
+          "What's Inside:",
+          "Topics:",
+          "Topics Covered:",
+          "या व्हिडिओमध्ये:",
+          "महत्वाचे मुद्दे:"
+        ],
+        "video_ids": [
+          "p9pGAmqJCSk",
+          "OEn5RzSEwpc",
+          "gMe4FZbjcQE",
+          "TDOubaCAw7I",
+          "6RT2caAAYfs",
+          "c_M_LSB65RA",
+          "_L-jRltlZI4",
+          "Q1NwbcHbAh0",
+          "oiTfTeqvP0Y",
+          "9meaN-ZZAvc"
+        ],
+        "exception": "Q5yGe7uBkFA (89-char description, no structure)",
+        "note": "oiTfTeqvP0Y matches on 'या व्हिडिओमध्ये' used inline in prose rather than as a heading - the weakest instance of the pattern.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "pattern": "Timestamped chapter index",
+        "hits": 1,
+        "of": 11,
+        "video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "detail": "Seven chapters: 00:00 Boot Sequence, 00:14 Arc Reactor HUD, 00:30 System Monitor Panel, 00:48 Telemetry Array, 01:05 Reactive Intelligence, 01:35 macOS Integration, 01:50 Shutdown Sequence - covering a 121-second runtime.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + videos[].duration.seconds (upstream yt-dlp --flat-playlist, corroborated by channel-page duration badge) · video_ids=[p9pGAmqJCSk]"
+      },
+      {
+        "pattern": "Named technology stack in the description",
+        "hits": 6,
+        "of": 11,
+        "video_ids": [
+          "p9pGAmqJCSk",
+          "gMe4FZbjcQE",
+          "TDOubaCAw7I",
+          "c_M_LSB65RA",
+          "Q1NwbcHbAh0",
+          "9meaN-ZZAvc"
+        ],
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "pattern": "Source-code repository link (github.com/VictordTesla24)",
+        "hits": 4,
+        "of": 11,
+        "video_ids": [
+          "gMe4FZbjcQE",
+          "TDOubaCAw7I",
+          "Q1NwbcHbAh0",
+          "9meaN-ZZAvc"
+        ],
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "pattern": "Funding link (ko-fi.com/vicscoding)",
+        "hits": 5,
+        "of": 11,
+        "video_ids": [
+          "OEn5RzSEwpc",
+          "gMe4FZbjcQE",
+          "TDOubaCAw7I",
+          "Q1NwbcHbAh0",
+          "9meaN-ZZAvc"
+        ],
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "pattern": "In-description series cross-link block",
+        "hits": 3,
+        "of": 11,
+        "video_ids": [
+          "6RT2caAAYfs",
+          "c_M_LSB65RA",
+          "_L-jRltlZI4"
+        ],
+        "detector": "'भाग [१२३]:' link block",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "pattern": "Explicit subscribe/CTA block",
+        "hits": 2,
+        "of": 11,
+        "video_ids": [
+          "p9pGAmqJCSk",
+          "OEn5RzSEwpc"
+        ],
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      }
+    ],
+    "canonical_description_skeleton": {
+      "statement": "Nine of the eleven descriptions follow one skeleton, in this order.",
+      "steps": [
+        "1. A question, usually one line, usually with an emoji.",
+        "2. One or two paragraphs stating the claim and the method.",
+        "3. A funding and/or repository link.",
+        "4. A labelled contents block of 3-8 single-line promises.",
+        "5. Optional closing reframe or series navigation."
+      ],
+      "conforming_video_ids": [
+        "OEn5RzSEwpc",
+        "gMe4FZbjcQE",
+        "TDOubaCAw7I",
+        "6RT2caAAYfs",
+        "c_M_LSB65RA",
+        "_L-jRltlZI4",
+        "Q1NwbcHbAh0",
+        "9meaN-ZZAvc",
+        "p9pGAmqJCSk"
+      ],
+      "non_conforming_video_ids": [
+        "Q5yGe7uBkFA",
+        "oiTfTeqvP0Y"
+      ],
+      "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+    },
+    "format_classes": [
+      {
+        "class": "long-form explainer (6-11 min)",
+        "count": 8,
+        "video_ids": [
+          "oiTfTeqvP0Y",
+          "_L-jRltlZI4",
+          "c_M_LSB65RA",
+          "6RT2caAAYfs",
+          "Q1NwbcHbAh0",
+          "TDOubaCAw7I",
+          "9meaN-ZZAvc",
+          "gMe4FZbjcQE"
+        ],
+        "provenance": "corpus-youtube.json · videos[].duration.seconds (upstream yt-dlp --flat-playlist, corroborated by channel-page duration badge)"
+      },
+      {
+        "class": "short explainer (3 min)",
+        "count": 1,
+        "video_ids": [
+          "OEn5RzSEwpc"
+        ],
+        "provenance": "corpus-youtube.json · videos[].duration.seconds (upstream yt-dlp --flat-playlist, corroborated by channel-page duration badge)"
+      },
+      {
+        "class": "product demo reel (2 min, chaptered)",
+        "count": 1,
+        "video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "provenance": "corpus-youtube.json · videos[].duration.seconds (upstream yt-dlp --flat-playlist, corroborated by channel-page duration badge) + videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "class": "promotional micro-record (44 s)",
+        "count": 1,
+        "video_ids": [
+          "Q5yGe7uBkFA"
+        ],
+        "provenance": "corpus-youtube.json · videos[].duration.seconds (upstream yt-dlp --flat-playlist, corroborated by channel-page duration badge) + videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      }
+    ],
+    "shorts": {
+      "count": 0,
+      "provenance": "corpus-youtube.json · counts.shorts = 0; channel.tabs_absent.shorts = yt-dlp 'This channel does not have a shorts tab'",
+      "note": "Q5yGe7uBkFA is 44 s but is a regular upload, not a Short - the channel has no Shorts tab at all."
+    },
+    "live_streams": {
+      "count": 0,
+      "provenance": "corpus-youtube.json · counts.live_streams = 0; channel.tabs_absent.streams"
+    }
+  },
+  "cadence_and_consistency": {
+    "date_precision_caveat": "YouTube served day precision only ('Nov 20, 2025'); no ISO timestamp was available on the bot-gated watch pages. Four records therefore share a single day with no observable intra-day order.",
+    "precision_provenance": "corpus-youtube.json · videos[].publish_date.precision = 'day (as rendered by YouTube; no ISO timestamp served)' and videos[].publish_date.note",
+    "first_publication": {
+      "date": "Nov 19, 2025",
+      "video_ids": [
+        "Q1NwbcHbAh0",
+        "oiTfTeqvP0Y"
+      ]
+    },
+    "most_recent_publication": {
+      "date": "Apr 16, 2026",
+      "video_ids": [
+        "p9pGAmqJCSk"
+      ]
+    },
+    "channel_account_age": {
+      "value": "Joined May 28, 2015",
+      "gap_to_first_upload": "The account existed for roughly ten and a half years before the first observed upload.",
+      "provenance": "corpus-youtube.json · channel.joined_date.value (aboutChannelViewModel.joinedDateText.content)"
+    },
+    "timeline": [
+      {
+        "date": "2025-11-19",
+        "count": 2,
+        "video_ids": [
+          "Q1NwbcHbAh0",
+          "oiTfTeqvP0Y"
+        ],
+        "seconds": 911
+      },
+      {
+        "date": "2025-11-20",
+        "count": 4,
+        "video_ids": [
+          "_L-jRltlZI4",
+          "c_M_LSB65RA",
+          "6RT2caAAYfs",
+          "Q5yGe7uBkFA"
+        ],
+        "seconds": 1292
+      },
+      {
+        "date": "2025-11-22",
+        "count": 2,
+        "video_ids": [
+          "TDOubaCAw7I",
+          "9meaN-ZZAvc"
+        ],
+        "seconds": 1120,
+        "note": "9meaN-ZZAvc is Unlisted"
+      },
+      {
+        "date": "2025-11-25",
+        "count": 1,
+        "video_ids": [
+          "gMe4FZbjcQE"
+        ],
+        "seconds": 605
+      },
+      {
+        "date": "2025-11-27",
+        "count": 1,
+        "video_ids": [
+          "OEn5RzSEwpc"
+        ],
+        "seconds": 190
+      },
+      {
+        "date": "2026-04-16",
+        "count": 1,
+        "video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "seconds": 121
+      }
+    ],
+    "burst": {
+      "window": "2025-11-19 to 2025-11-27",
+      "span_days": 8,
+      "records": 10,
+      "share": "10 of 11 records (91%)",
+      "provenance": "corpus-youtube.json · videos[].publish_date.value (day precision; upstream videoPrimaryInfoRenderer.dateText)"
+    },
+    "silence": {
+      "from": "2025-11-27",
+      "to": "2026-04-16",
+      "days": 140,
+      "provenance": "corpus-youtube.json · videos[].publish_date.value (day precision; upstream videoPrimaryInfoRenderer.dateText) · computed with python3 datetime.date arithmetic from the two dateText values"
+    },
+    "consistency_verdict": {
+      "value": "Not a cadence. A single concentrated campaign, then a 140-day gap, then one unrelated release.",
+      "supporting": "Nine of eleven records land inside eight days; the tenth public record arrives 140 days later in a different subject cluster, a different language set and a different format class.",
+      "counter_evidence_absent": "No record exists between 2025-11-28 and 2026-04-15. Enumeration was exhaustive (yt-dlp against /videos, /podcasts, /playlists, cross-checked against ytInitialData); the channel's own About page claims '10 videos', matching the 10 public records found.",
+      "provenance": "corpus-youtube.json · videos[].publish_date.value (day precision; upstream videoPrimaryInfoRenderer.dateText) + counts.public_videos + channel.public_video_count_claimed_by_youtube.value"
+    },
+    "on_site_framing_guidance": {
+      "requirement": "R-120",
+      "guidance": "Present the burst as a campaign with a shape - one thesis, two languages, three formats, eight days - and the 2026 record as a separate, later artefact. Do NOT present the channel as a regular publishing habit; the dates do not support it."
+    }
+  },
+  "depth_signals": {
+    "runtime": {
+      "total_all_records_seconds": 4239,
+      "total_all_records_formatted": "1:10:39",
+      "total_public_seconds": 3636,
+      "total_public_formatted": "1:00:36",
+      "min": {
+        "seconds": 44,
+        "video_id": "Q5yGe7uBkFA"
+      },
+      "max": {
+        "seconds": 605,
+        "video_id": "gMe4FZbjcQE"
+      },
+      "median_seconds": 433,
+      "median_video_id": "Q1NwbcHbAh0",
+      "provenance": "corpus-youtube.json · videos[].duration.seconds (upstream yt-dlp --flat-playlist, corroborated by channel-page duration badge) · summed and sorted with python3 over all 11 records"
+    },
+    "duration_distribution": [
+      {
+        "video_id": "Q5yGe7uBkFA",
+        "seconds": 44
+      },
+      {
+        "video_id": "p9pGAmqJCSk",
+        "seconds": 121
+      },
+      {
+        "video_id": "OEn5RzSEwpc",
+        "seconds": 190
+      },
+      {
+        "video_id": "6RT2caAAYfs",
+        "seconds": 386
+      },
+      {
+        "video_id": "c_M_LSB65RA",
+        "seconds": 407
+      },
+      {
+        "video_id": "Q1NwbcHbAh0",
+        "seconds": 433
+      },
+      {
+        "video_id": "_L-jRltlZI4",
+        "seconds": 455
+      },
+      {
+        "video_id": "oiTfTeqvP0Y",
+        "seconds": 478
+      },
+      {
+        "video_id": "TDOubaCAw7I",
+        "seconds": 517
+      },
+      {
+        "video_id": "9meaN-ZZAvc",
+        "seconds": 603
+      },
+      {
+        "video_id": "gMe4FZbjcQE",
+        "seconds": 605
+      }
+    ],
+    "technical_density": {
+      "method": "Count of distinct domain-specific named entities appearing literally in each description. Entities were extracted, not inferred; each is quoted from the description text.",
+      "high_density_records": [
+        {
+          "video_id": "p9pGAmqJCSk",
+          "entity_count": 14,
+          "entities": [
+            "Swift 5",
+            "SwiftUI",
+            "Go 1.21+",
+            "Metal",
+            "IOKit",
+            "SMC",
+            "IOReport",
+            "P-Core",
+            "E-Core",
+            "Neural Engine",
+            "DRAM bandwidth",
+            "SwiftUI Canvas",
+            "desktop-level window",
+            "1Hz JSON"
+          ],
+          "note": "The only record that publishes an implementation spec sheet ('TECH SPECS', 'BUILT WITH') rather than a topic list."
+        },
+        {
+          "video_id": "OEn5RzSEwpc",
+          "entity_count": 8,
+          "entities": [
+            "Brihat Parashara Hora Shastra (BPHS)",
+            "Ishtakala Method",
+            "Birth Time Rectification (BTR)",
+            "Prashna Lagna",
+            "Nisheka",
+            "Samvatsar",
+            "Ritu",
+            "Masa/Nakshatra"
+          ],
+          "note": "Highest density of domain terms per second: 8 named entities in 190 s."
+        },
+        {
+          "video_id": "gMe4FZbjcQE",
+          "entity_count": 7,
+          "entities": [
+            "Brihat Parashara Hora Shastra (BPHS)",
+            "Divisional Charts (Vargas)",
+            "Maharishi Parashara",
+            "Maitreya",
+            "Sanskrit Shlokas",
+            "If/Else logic",
+            "Python, Next.js, AI, Vedic Math"
+          ]
+        }
+      ],
+      "low_density_records": [
+        {
+          "video_id": "Q5yGe7uBkFA",
+          "entity_count": 1,
+          "entities": [
+            "Sanskrit verses"
+          ]
+        },
+        {
+          "video_id": "oiTfTeqvP0Y",
+          "entity_count": 2,
+          "entities": [
+            "महर्षी पराशरांची दिव्य संहिता",
+            "अल्गोरिदम"
+          ]
+        }
+      ],
+      "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+    },
+    "teaches_or_demonstrates": {
+      "method": "Classified from the verb the creator uses about himself in his own description. 'teach' = decode/translate/explain/explore/break down; 'demonstrate' = a chaptered walkthrough of a running artefact; 'promote' = a hook with no method statement.",
+      "teaches": {
+        "count": 9,
+        "video_ids": [
+          "Q1NwbcHbAh0",
+          "oiTfTeqvP0Y",
+          "_L-jRltlZI4",
+          "c_M_LSB65RA",
+          "6RT2caAAYfs",
+          "TDOubaCAw7I",
+          "9meaN-ZZAvc",
+          "gMe4FZbjcQE",
+          "OEn5RzSEwpc"
+        ],
+        "verbatim_verbs": [
+          {
+            "video_id": "gMe4FZbjcQE",
+            "quote": "In this video, I translate the Brihat Parashara Hora Shastra (BPHS)-a 7,000-year-old Vedic text-into executable Python code."
+          },
+          {
+            "video_id": "Q1NwbcHbAh0",
+            "quote": "I break down how precise astronomical calculations were performed thousands of years ago without computers"
+          },
+          {
+            "video_id": "OEn5RzSEwpc",
+            "quote": "In this video, we decode the Brihat Parashara Hora Shastra (BPHS), the \"Book of Books\" in Vedic Astrology."
+          },
+          {
+            "video_id": "TDOubaCAw7I",
+            "quote": "We explore how this predictive logic works and whether it can be digitized."
+          }
+        ]
+      },
+      "demonstrates": {
+        "count": 1,
+        "video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "verbatim_evidence": "FEATURES SHOWN IN THIS VIDEO: followed by seven timestamped chapters covering boot, HUD, monitor panel, telemetry array, reactive behaviour, OS integration and shutdown.",
+        "note": "This record shows a working artefact end to end. It does not claim to teach how it was built; it lists what it does and what it was built with."
+      },
+      "promotes_only": {
+        "count": 1,
+        "video_ids": [
+          "Q5yGe7uBkFA"
+        ],
+        "verbatim_evidence": "Find out how on earth there is a algorithm coded within a 7,000 years old Sanskrit verses"
+      },
+      "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+    },
+    "depth_verdict": "The teaching records are long (median 433 s, eight of them over six minutes) and dense in named domain entities, and they consistently commit to a method rather than to a conclusion. The single demonstration record is short, chaptered and spec-heavy. The corpus reads as one person explaining a hard idea repeatedly at length, plus one person shipping a thing and showing it working.",
+    "unmeasurable": [
+      {
+        "signal": "spoken pacing, clarity, jargon load",
+        "value": "not observable",
+        "reason": "no transcript for any of the 11 records"
+      },
+      {
+        "signal": "on-screen code, diagrams or visual aids",
+        "value": "not observable",
+        "reason": "no frame, thumbnail-content or video analysis was performed and no such field exists in the corpus"
+      },
+      {
+        "signal": "audience comprehension (comments, replies)",
+        "value": "not observable",
+        "reason": "comment data was not collected in corpus-youtube.json"
+      }
+    ]
+  },
+  "production_evolution": {
+    "method": "Ordered by publish date; measured on the observable production artefacts only - description length, structural blocks present, links present, chaptering, and format class.",
+    "description_length_by_date": [
+      {
+        "date": "2025-11-19",
+        "video_id": "Q1NwbcHbAh0",
+        "chars": 766
+      },
+      {
+        "date": "2025-11-19",
+        "video_id": "oiTfTeqvP0Y",
+        "chars": 243
+      },
+      {
+        "date": "2025-11-20",
+        "video_id": "_L-jRltlZI4",
+        "chars": 863
+      },
+      {
+        "date": "2025-11-20",
+        "video_id": "c_M_LSB65RA",
+        "chars": 908
+      },
+      {
+        "date": "2025-11-20",
+        "video_id": "6RT2caAAYfs",
+        "chars": 835
+      },
+      {
+        "date": "2025-11-20",
+        "video_id": "Q5yGe7uBkFA",
+        "chars": 89
+      },
+      {
+        "date": "2025-11-22",
+        "video_id": "TDOubaCAw7I",
+        "chars": 506
+      },
+      {
+        "date": "2025-11-22",
+        "video_id": "9meaN-ZZAvc",
+        "chars": 905,
+        "listing": "Unlisted"
+      },
+      {
+        "date": "2025-11-25",
+        "video_id": "gMe4FZbjcQE",
+        "chars": 905
+      },
+      {
+        "date": "2025-11-27",
+        "video_id": "OEn5RzSEwpc",
+        "chars": 1317
+      },
+      {
+        "date": "2026-04-16",
+        "video_id": "p9pGAmqJCSk",
+        "chars": 1781
+      }
+    ],
+    "description_length_provenance": "corpus-youtube.json · videos[].description.characters (counted on the verbatim untruncated body)",
+    "phases": [
+      {
+        "phase": 1,
+        "label": "Opening - two languages, no template",
+        "window": "2025-11-19",
+        "video_ids": [
+          "Q1NwbcHbAh0",
+          "oiTfTeqvP0Y"
+        ],
+        "observation": "Both subjects launch on the same day, one English (766 chars, contents block, repo + ko-fi links) and one Marathi (243 chars, prose only). The English record already carries the full skeleton; the Marathi one does not.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + videos[].publish_date.value (day precision; upstream videoPrimaryInfoRenderer.dateText)"
+      },
+      {
+        "phase": 2,
+        "label": "The Marathi series - the template arrives, plus navigation",
+        "window": "2025-11-20",
+        "video_ids": [
+          "_L-jRltlZI4",
+          "c_M_LSB65RA",
+          "6RT2caAAYfs"
+        ],
+        "observation": "Three records shipped the same day, 835-908 chars each, each with a numbered title, an emoji-bulleted contents block and a 'संपूर्ण सिरीज पहा' navigation block linking the other two. This is the first appearance of inter-episode navigation, and it appears only here. Q5yGe7uBkFA (89 chars) ships the same day as a hook with no structure - the one production artefact in the corpus that received no craft.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title) + videos[].publish_date.value (day precision; upstream videoPrimaryInfoRenderer.dateText)"
+      },
+      {
+        "phase": 3,
+        "label": "English long-form, and a visible re-cut",
+        "window": "2025-11-22 to 2025-11-25",
+        "video_ids": [
+          "TDOubaCAw7I",
+          "9meaN-ZZAvc",
+          "gMe4FZbjcQE"
+        ],
+        "observation": "9meaN-ZZAvc (Unlisted, 603 s, 22 Nov) and gMe4FZbjcQE (Public, 605 s, 25 Nov) carry byte-identical 905-character descriptions and titles differing only by the 'Part 2: ' prefix. The 22 Nov cut was withdrawn from listing and republished three days later as an explicitly numbered part of a series. This is the only direct evidence in the corpus of the creator revising a shipped artefact.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title) + videos[].duration.seconds (upstream yt-dlp --flat-playlist, corroborated by channel-page duration badge) + videos[].listing_status.value + corpus_strand_risk.unlisted_handling"
+      },
+      {
+        "phase": 4,
+        "label": "Peak explanatory density",
+        "window": "2025-11-27",
+        "video_ids": [
+          "OEn5RzSEwpc"
+        ],
+        "observation": "1317 chars - the longest description of the 2025 campaign - carrying eight named domain entities in a 190-second record, plus the corpus's most compressed analogy ('Much like Sherlock Holmes tracing a suspect, we move from circumstantial evidence to scientific calculation'). Format tightens while density rises.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + videos[].duration.seconds (upstream yt-dlp --flat-playlist, corroborated by channel-page duration badge)"
+      },
+      {
+        "phase": 5,
+        "label": "140-day break, then a different kind of artefact",
+        "window": "2026-04-16",
+        "video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "observation": "1781 chars, the longest in the corpus. First and only timestamped chapter index. First and only implementation spec sheet ('TECH SPECS' / 'BUILT WITH'). Ko-fi and repository links are dropped; a subscribe/like/comment CTA appears instead. The subject moves from explaining someone else's system to demonstrating his own.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + videos[].publish_date.value (day precision; upstream videoPrimaryInfoRenderer.dateText) + videos[].duration.seconds (upstream yt-dlp --flat-playlist, corroborated by channel-page duration badge)"
+      }
+    ],
+    "trajectory_verdict": "Description craft rises monotonically across the corpus by every observable measure - length (243 -> 1781 chars), structure (prose -> contents block -> navigation block -> timestamped chapters), and specificity (topic promises -> named entity lists -> a full implementation spec). The one thing that does not persist is the funding and repository links: ko-fi appears in 5 records and the GitHub profile in 4, all of them in the 2025 campaign, and neither appears in the 2026 record, which carries a subscribe/like/comment block instead.",
+    "unmeasurable": [
+      {
+        "signal": "video, audio, editing, thumbnail or motion-graphics quality over time",
+        "value": "not observable",
+        "reason": "no media asset was downloaded or inspected; corpus-youtube.json holds text metadata only"
+      }
+    ]
+  },
+  "communication_evidence": {
+    "scope_statement": "What follows is evidence of how the owner CONSTRUCTS an explanation in writing and how he ARCHITECTS a syllabus. It is not evidence of spoken delivery. Every item is a quotation from a verbatim description or a structural fact about the corpus.",
+    "proven": [
+      {
+        "id": "comm.analogy",
+        "claim": "He reaches for a transfer analogy from the audience's own domain before he introduces a term from his.",
+        "instances": [
+          {
+            "video_id": "gMe4FZbjcQE",
+            "quote": "Is it possible that our ancestors possessed a \"cosmic zoom lens\"?"
+          },
+          {
+            "video_id": "Q1NwbcHbAh0",
+            "quote": "an ancient manual that functions like a \"Cosmic Operating System.\""
+          },
+          {
+            "video_id": "OEn5RzSEwpc",
+            "quote": "Much like Sherlock Holmes tracing a suspect, we move from circumstantial evidence to scientific calculation"
+          },
+          {
+            "video_id": "6RT2caAAYfs",
+            "quote": "हा कोड सिलिकॉन व्हॅलीमध्ये नाही, तर ७००० वर्षांपूर्वी भारताच्या पवित्र भूमीवर लिहिला गेला होता. आम्ही फक्त त्याचे 'कंपायलर' (Compiler) बनवले आहे."
+          },
+          {
+            "video_id": "p9pGAmqJCSk",
+            "quote": "What if your Mac had an Iron Man-style interface?"
+          }
+        ],
+        "count": 5,
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "id": "comm.cross-domain-translation",
+        "claim": "He states equivalences between an unfamiliar system and a familiar one, at the level of mechanism rather than vibe.",
+        "instances": [
+          {
+            "video_id": "gMe4FZbjcQE",
+            "quote": "Proof that Sanskrit Shlokas function like modern Computer Algorithms (If/Else logic)."
+          },
+          {
+            "video_id": "c_M_LSB65RA",
+            "quote": "🧬 संस्कृत = कोड: प्राचीन श्लोक आणि मॉडर्न पायथन फंक्शन (Python Functions) यांची तुलना."
+          },
+          {
+            "video_id": "c_M_LSB65RA",
+            "quote": "🐞 बर्थ टाईम रेक्टिफिकेशन (BTR): कुंडलीचे 'डीबगिंग' (Debugging) कसे चालते?"
+          },
+          {
+            "video_id": "Q1NwbcHbAh0",
+            "quote": "Translating the sun's longitude into Python."
+          }
+        ],
+        "count": 4,
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "id": "comm.names-the-audience",
+        "claim": "He states who the explanation is pitched at, in the artefact itself.",
+        "instances": [
+          {
+            "video_id": "gMe4FZbjcQE",
+            "quote": "The \"Cosmic Zoom Lens\" (Vargas) explained for developers."
+          },
+          {
+            "video_id": "Q1NwbcHbAh0",
+            "quote": "If you love history, coding, or astronomy, this video is for you."
+          }
+        ],
+        "count": 2,
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "id": "comm.decomposition",
+        "claim": "He decomposes one large subject into numbered parts with a stated promise per part and explicit navigation between them.",
+        "instances": [
+          {
+            "video_id": "_L-jRltlZI4",
+            "quote": "भाग १: हा व्हिडिओ / भाग २: ... / भाग ३: ..."
+          },
+          {
+            "video_id": "TDOubaCAw7I",
+            "quote": "Part 1: How 7,000 years old Sanskrit Verses mapped the Cosmos without Computers"
+          },
+          {
+            "video_id": "gMe4FZbjcQE",
+            "quote": "Part 2: I Coded a 7,000-Year-Old Algorithm (It Actually Works)"
+          }
+        ],
+        "count": 3,
+        "structural_fact": "The Marathi series carries a full three-way cross-link block in every part; the English pair is numbered in title only.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title)"
+      },
+      {
+        "id": "comm.contract-first",
+        "claim": "Ten of eleven descriptions open with a question and then answer it with a list of what the record will cover - a stated contract before the content.",
+        "structural_fact": "Question present in 10 of 11 descriptions; labelled contents block present in 10 of 11; both present in 9 of 11.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · regex feature detection, exhaustive over all 11 records"
+      },
+      {
+        "id": "comm.bilingual",
+        "claim": "He can deliver the same syllabus to two audiences in two languages, and adapts the framing rather than translating it - the Marathi records add a heritage argument ('विश्वगुरू', 'हे ज्ञान केवळ भारताचे नसून संपूर्ण मानवजातीचा वारसा का आहे?') that no English record contains.",
+        "instances": [
+          {
+            "video_id": "6RT2caAAYfs",
+            "quote": "🌍 विश्वगुरू: हे ज्ञान केवळ भारताचे नसून संपूर्ण मानवजातीचा वारसा का आहे?"
+          }
+        ],
+        "structural_fact": "4 Marathi records, 7 English records, one shared subject, one 8-day window.",
+        "provenance": "corpus-youtube.json · videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title) + videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + videos[].publish_date.value (day precision; upstream videoPrimaryInfoRenderer.dateText)"
+      },
+      {
+        "id": "comm.reframe",
+        "claim": "He states the reframe he wants the viewer to leave with, explicitly, as an instruction.",
+        "instances": [
+          {
+            "video_id": "gMe4FZbjcQE",
+            "quote": "Stop looking at it as magic-start looking at it as data science. 📊✨"
+          }
+        ],
+        "count": 1,
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "id": "comm.signposting",
+        "claim": "Where the artefact is a demonstration rather than a lecture, he replaces the topic list with a timestamped route through it.",
+        "instances": [
+          {
+            "video_id": "p9pGAmqJCSk",
+            "quote": "00:00 - Boot Sequence (Theatrical reactor ignition) ... 01:50 - Shutdown Sequence (Theatrical ring deceleration)"
+          }
+        ],
+        "count": 1,
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "id": "comm.shows-the-source",
+        "claim": "In four records he publishes the repository beside the claim, inviting the viewer to check it.",
+        "instances": [
+          {
+            "video_id": "gMe4FZbjcQE",
+            "quote": "Code Repository (Open Source): 💻 https://github.com/VictordTesla24"
+          }
+        ],
+        "count": 4,
+        "video_ids": [
+          "gMe4FZbjcQE",
+          "TDOubaCAw7I",
+          "Q1NwbcHbAh0",
+          "9meaN-ZZAvc"
+        ],
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      }
+    ],
+    "not_proven": [
+      {
+        "claim": "Spoken clarity, pacing, accent intelligibility, filler rate, or ability to hold a listener",
+        "value": "not observable",
+        "reason": "0 of 11 records yielded transcript or caption text; every watch request returned playabilityStatus=LOGIN_REQUIRED, confirmed with real headless Chrome as well as curl",
+        "provenance": "corpus-youtube.json · videos[].transcript, videos[].captions_available, generation_record.methods_used_in_preference_order[3]"
+      },
+      {
+        "claim": "Whether the code shown in a video actually runs, or matches the linked repository",
+        "value": "not observable",
+        "reason": "no frame content was inspected and no repository/video correspondence was verified by this step"
+      },
+      {
+        "claim": "Whether viewers understood the explanation",
+        "value": "not observable",
+        "reason": "no comment, retention or engagement data exists in the corpus (and R-119 would bar leading with it in any case)"
+      },
+      {
+        "claim": "Live or unscripted explanation ability",
+        "value": "not observable",
+        "reason": "counts.live_streams = 0; the channel has no streams tab"
+      }
+    ],
+    "verdict_for_site_use": "The corpus supports this sentence and sentences like it: 'He explains a hard idea by first handing you an analogy from your own field, then stating the mechanism, then showing you the source.' It does not support any sentence beginning 'In the video he says...'."
+  },
+  "cross_section_weave_r121": {
+    "join_keys": {
+      "about": {
+        "file": "/root/forgotten-mistory/app/data/portfolio/about.ts",
+        "key_path": "aboutContent.dimensions[].name",
+        "note": "Dimension names are verbatim from the aether-job-career-agent product and must not be paraphrased when referenced."
+      },
+      "skills": {
+        "file": "/root/forgotten-mistory/app/data/portfolio/skills.ts",
+        "key_path": "capabilities[].capability",
+        "note": "skills.ts capabilities carry NO stable id field. The verbatim `capability` string is the only join key available; `short` and the index are recorded as a secondary check. If skills.ts ever gains ids, re-key against them."
+      }
+    },
+    "about_dimension_support": [
+      {
+        "dimension": "Technical Skills",
+        "index": 0,
+        "supported": true,
+        "strength": "corroborating",
+        "supporting_video_ids": [
+          "p9pGAmqJCSk",
+          "gMe4FZbjcQE",
+          "TDOubaCAw7I",
+          "Q1NwbcHbAh0",
+          "9meaN-ZZAvc",
+          "c_M_LSB65RA"
+        ],
+        "how": "The dimension's answer claims 'Python and TypeScript to production'. Five records name Python and three name Next.js as the implementation stack for the Vedic engine; the 2026 record names Swift 5, SwiftUI, Go 1.21+, Metal, IOKit, SMC and IOReport.",
+        "caveat": "Swift, Go, Metal and IOKit are NOT claimed anywhere in aboutContent.dimensions[0].answer or in skills.ts. The channel evidences them; the dataset does not yet carry them. See dataset_extension_findings_r115.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) || /root/forgotten-mistory/app/data/portfolio/about.ts · aboutContent.dimensions[0]"
+      },
+      {
+        "dimension": "Experience Level",
+        "index": 1,
+        "supported": true,
+        "strength": "self-asserted only",
+        "supporting_video_ids": [],
+        "how": "The channel About text self-describes as 'Senior Technical Program Manager AI Solution Architect'. This is the owner's own words on his own channel, not third-party corroboration, and it names no dates.",
+        "provenance": "corpus-youtube.json · channel.description.value (verbatim, aboutChannelViewModel.description) || /root/forgotten-mistory/app/data/portfolio/about.ts · aboutContent.dimensions[1]"
+      },
+      {
+        "dimension": "Industry Match",
+        "index": 2,
+        "supported": false,
+        "value": "not observable",
+        "reason": "No record and no channel field mentions government, banking or telecommunications."
+      },
+      {
+        "dimension": "Role Alignment",
+        "index": 3,
+        "supported": true,
+        "strength": "weak, thematic",
+        "supporting_video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "how": "The dimension claims 'Scrum Master and Project Manager who architects'. The one record that demonstrates a system he built himself, spec sheet included, is consistent with the 'who architects' half. Nothing in the corpus speaks to the delivery-leadership half.",
+        "caveat": "One record is a thin basis. Do not carry this edge in headline position.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[p9pGAmqJCSk] || /root/forgotten-mistory/app/data/portfolio/about.ts · aboutContent.dimensions[3]"
+      },
+      {
+        "dimension": "Culture Fit",
+        "index": 4,
+        "supported": true,
+        "strength": "adjacent",
+        "supporting_video_ids": [
+          "_L-jRltlZI4",
+          "c_M_LSB65RA",
+          "6RT2caAAYfs",
+          "Q1NwbcHbAh0",
+          "gMe4FZbjcQE"
+        ],
+        "how": "The corpus shows the same material rebuilt for two different audiences in two languages inside one week, with the framing changed per audience rather than translated.",
+        "caveat": "The dimension's own evidence is about squads and war rooms. The channel evidences cross-audience explanation, not team facilitation. Label the edge accordingly.",
+        "provenance": "corpus-youtube.json · videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title) + videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + videos[].publish_date.value (day precision; upstream videoPrimaryInfoRenderer.dateText) || /root/forgotten-mistory/app/data/portfolio/about.ts · aboutContent.dimensions[4]"
+      },
+      {
+        "dimension": "Salary Fit",
+        "index": 5,
+        "supported": false,
+        "value": "not observable",
+        "reason": "role-side dimension; nothing in the corpus addresses it"
+      },
+      {
+        "dimension": "Location Match",
+        "index": 6,
+        "supported": true,
+        "strength": "corroborating",
+        "supporting_video_ids": [],
+        "how": "Channel About states 'here in Melbourne' and signs off '🇦🇺 Naarm'; channel country field resolves to Australia. aboutContent.dimensions[6].answer says 'Melbourne, Victoria.'",
+        "provenance": "corpus-youtube.json · channel.description.value + channel.country.value (aboutChannelViewModel) || /root/forgotten-mistory/app/data/portfolio/about.ts · aboutContent.dimensions[6]"
+      },
+      {
+        "dimension": "Career Growth",
+        "index": 7,
+        "supported": false,
+        "value": "not observable",
+        "reason": "The dimension is about AI delivery and AI assurance programmes. No record mentions evaluation, guardrails, error budgets or model assurance. 'AI' appears once, as a bare word in a tech-stack list (gMe4FZbjcQE / 9meaN-ZZAvc: 'Tech Stack: Python, Next.js, AI, Vedic Math.')."
+      },
+      {
+        "dimension": "Company Stability",
+        "index": 8,
+        "supported": false,
+        "value": "not observable",
+        "reason": "role-side dimension; nothing in the corpus addresses it"
+      },
+      {
+        "dimension": "North Star Align",
+        "index": 9,
+        "supported": true,
+        "strength": "corroborating",
+        "supporting_video_ids": [
+          "gMe4FZbjcQE",
+          "TDOubaCAw7I",
+          "Q1NwbcHbAh0",
+          "9meaN-ZZAvc"
+        ],
+        "how": "The dimension claims 'Build systems whose claims can be checked.' Four records publish the source repository beside the claim, and the campaign's stated thesis is an instruction to treat the subject as checkable data rather than as belief: 'Stop looking at it as magic-start looking at it as data science.'",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[gMe4FZbjcQE, TDOubaCAw7I, Q1NwbcHbAh0, 9meaN-ZZAvc] || /root/forgotten-mistory/app/data/portfolio/about.ts · aboutContent.dimensions[9]"
+      }
+    ],
+    "skills_capability_support": [
+      {
+        "capability": "Data visualisation",
+        "short": "Data visualisation",
+        "index": 12,
+        "supported": true,
+        "strength": "corroborating",
+        "supporting_video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "how": "'700 vector paths, 12 concentric rings, and 60 frames per second of pure real-time data visualization' - a third named artefact for a row whose current evidence is relationship-timeline-feature and EFDDH-Jira-Analytics-Dashboard.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[p9pGAmqJCSk] || /root/forgotten-mistory/app/data/portfolio/skills.ts · capabilities[12]"
+      },
+      {
+        "capability": "Real-time telemetry platforms",
+        "short": "Real-time telemetry",
+        "index": 2,
+        "supported": true,
+        "strength": "same capability class, different artefact",
+        "supporting_video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "how": "The record describes a Go daemon streaming JSON telemetry at 1 Hz into a 60 fps renderer covering per-core CPU, GPU frequency, Neural Engine, DRAM bandwidth, network I/O and thermal state.",
+        "caveat": "The row's evidence is ANZ ('10,000+ concurrent devices held at P95 under 200 ms'). The video evidences NEITHER that figure NOR that system. Do not let this edge imply corroboration of the ANZ number.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[p9pGAmqJCSk] || /root/forgotten-mistory/app/data/portfolio/skills.ts · capabilities[2]"
+      },
+      {
+        "capability": "Multi-service orchestration — Docker Compose",
+        "short": "Service orchestration",
+        "index": 10,
+        "supported": true,
+        "strength": "shares subject with the row's repository",
+        "supporting_video_ids": [
+          "OEn5RzSEwpc",
+          "c_M_LSB65RA",
+          "gMe4FZbjcQE",
+          "9meaN-ZZAvc"
+        ],
+        "how": "The row's source is containerised-birth-time-rectifier (sources[].id = 'rectifier'). Two records teach birth-time rectification by name (Ishtakala Method, BTR) and two more teach the divisional-chart mathematics the same engine implements. The channel is the public explanation of that repository's problem domain.",
+        "caveat": "The videos evidence the DOMAIN, not the orchestration. No record mentions Docker, Compose, containers or deployment.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[OEn5RzSEwpc, c_M_LSB65RA, gMe4FZbjcQE, 9meaN-ZZAvc] || /root/forgotten-mistory/app/data/portfolio/skills.ts · capabilities[10] and sources[].id='rectifier'"
+      },
+      {
+        "capability": "Next.js and TypeScript at production scale",
+        "short": "Next.js & TypeScript",
+        "index": 7,
+        "supported": true,
+        "strength": "names the same technology, different project",
+        "supporting_video_ids": [
+          "TDOubaCAw7I",
+          "gMe4FZbjcQE",
+          "9meaN-ZZAvc"
+        ],
+        "how": "Three records name Next.js as the stack of the Vedic web app ('Coding the prediction engine in Next.js'; 'Tech Stack: Python, Next.js, AI, Vedic Math').",
+        "caveat": "The row's evidence is aether-job-career-agent. TypeScript is never named in any description. Treat as an additional project using the technology, not as corroboration of the aether counts.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[TDOubaCAw7I, gMe4FZbjcQE, 9meaN-ZZAvc] || /root/forgotten-mistory/app/data/portfolio/skills.ts · capabilities[7]"
+      },
+      {
+        "capability": "WebGL and GLSL — three.js, React Three Fiber",
+        "short": "WebGL & GLSL",
+        "index": 11,
+        "supported": false,
+        "value": "not observable",
+        "reason": "DELIBERATE NON-EDGE. p9pGAmqJCSk is superficially the closest record - real-time vector rendering, shaders, 60 fps - but its named stack is 'SwiftUI Canvas + Metal', a different API on a different platform. Drawing this edge would be fabrication by association.",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[p9pGAmqJCSk] || /root/forgotten-mistory/app/data/portfolio/skills.ts · capabilities[11]"
+      },
+      {
+        "capability": "Mainframe test automation — REXX, SMF, SDSF, PCOMM",
+        "index": 0,
+        "supported": false,
+        "value": "not observable",
+        "reason": "no record mentions mainframe, REXX or test automation"
+      },
+      {
+        "capability": "Agile delivery at programme scale",
+        "index": 1,
+        "supported": false,
+        "value": "not observable",
+        "reason": "no record mentions squads, PIs or delivery process"
+      },
+      {
+        "capability": "Cloud-native migration — .NET, Azure",
+        "index": 3,
+        "supported": false,
+        "value": "not observable",
+        "reason": "no record mentions .NET, Azure or migration"
+      },
+      {
+        "capability": "Programme and portfolio management",
+        "index": 4,
+        "supported": false,
+        "value": "not observable",
+        "reason": "no record mentions portfolios, budgets or practitioner counts"
+      },
+      {
+        "capability": "Multi-agent system design — Python, FastAPI, Postgres, Redis",
+        "index": 5,
+        "supported": false,
+        "value": "not observable",
+        "reason": "Python is named in five records, but no record mentions agents, FastAPI, Postgres or Redis"
+      },
+      {
+        "capability": "LLM evaluation and guardrails — Langfuse, Phoenix",
+        "index": 6,
+        "supported": false,
+        "value": "not observable",
+        "reason": "no record mentions evaluation, guardrails, Langfuse or Phoenix"
+      },
+      {
+        "capability": "Node.js / Express services",
+        "index": 8,
+        "supported": false,
+        "value": "not observable",
+        "reason": "no record mentions Node.js or Express"
+      },
+      {
+        "capability": "Containerised delivery — Docker, systemd, self-hosted CI",
+        "index": 9,
+        "supported": false,
+        "value": "not observable",
+        "reason": "no record mentions Docker, systemd or CI"
+      },
+      {
+        "capability": "Certified Scrum Master (CSM)",
+        "index": 13,
+        "supported": false,
+        "value": "not observable",
+        "reason": "no record mentions Scrum or the credential"
+      },
+      {
+        "capability": "Master of Computer Science (Honours)",
+        "index": 14,
+        "supported": false,
+        "value": "not observable",
+        "reason": "no record mentions the degree"
+      },
+      {
+        "capability": "Bachelor of Engineering, Computer Science",
+        "index": 15,
+        "supported": false,
+        "value": "not observable",
+        "reason": "no record mentions the degree"
+      },
+      {
+        "capability": "AWS and GCP certification",
+        "index": 16,
+        "supported": false,
+        "value": "not observable",
+        "reason": "no record mentions AWS or GCP"
+      }
+    ],
+    "coverage_summary": {
+      "about_dimensions_total": 10,
+      "about_dimensions_with_channel_support": 6,
+      "about_dimensions_not_observable": 4,
+      "skills_capabilities_total": 17,
+      "skills_capabilities_with_channel_support": 4,
+      "skills_capabilities_not_observable": 13,
+      "reading": "The channel strand is not a general corroborator of the CV. It supports exactly four capability rows and six of ten dimensions, and it contributes two technologies (Swift, Go) that no other dataset currently carries. Its real weight is on North Star Align and on the explanatory capacity that neither about.ts nor skills.ts currently has a row for."
+    }
+  },
+  "content_dna_r117": {
+    "model": "A bipartite-plus graph. Content nodes are derived only from entities that appear literally in the corpus. Skill nodes and dimension nodes are the existing rows of skills.ts and about.ts, addressed by their verbatim join keys. Every edge carries a kind, a strength, the video ids that justify it, and - where the edge is weaker than it looks - the caveat that must travel with it into any rendering.",
+    "edge_kinds": {
+      "demonstrates": "A record shows the artefact of this capability running.",
+      "explains": "A record teaches the subject matter of this node.",
+      "names-technology": "A record names the technology the target row is about, in a different project.",
+      "shares-subject": "A record teaches the problem domain of the repository behind the target row, without evidencing the row's own claim.",
+      "self-asserts": "The claim comes from the owner's own channel About text, not from a record.",
+      "extends": "The corpus evidences something the target dataset does not currently claim.",
+      "excluded": "A superficially plausible edge that the evidence does not support; recorded so it is not drawn later by mistake."
+    },
+    "nodes": [
+      {
+        "id": "dna.vedic-computational-astronomy",
+        "label": "Vedic computational astronomy",
+        "kind": "subject",
+        "tier": 1,
+        "video_ids": [
+          "Q1NwbcHbAh0",
+          "oiTfTeqvP0Y",
+          "_L-jRltlZI4",
+          "c_M_LSB65RA",
+          "6RT2caAAYfs",
+          "Q5yGe7uBkFA",
+          "TDOubaCAw7I",
+          "9meaN-ZZAvc",
+          "gMe4FZbjcQE"
+        ],
+        "weight_records": 9,
+        "weight_seconds": 3928,
+        "provenance": "corpus-youtube.json · videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title) + videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "id": "dna.text-to-executable-code",
+        "label": "Ancient text -> executable code",
+        "kind": "method",
+        "tier": 2,
+        "parent": "dna.vedic-computational-astronomy",
+        "video_ids": [
+          "gMe4FZbjcQE",
+          "9meaN-ZZAvc",
+          "c_M_LSB65RA",
+          "TDOubaCAw7I",
+          "Q1NwbcHbAh0"
+        ],
+        "weight_records": 5,
+        "anchor_quote": "Proof that Sanskrit Shlokas function like modern Computer Algorithms (If/Else logic).",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[gMe4FZbjcQE]"
+      },
+      {
+        "id": "dna.divisional-chart-mathematics",
+        "label": "Divisional charts (Vargas) as a fractal index",
+        "kind": "subject",
+        "tier": 2,
+        "parent": "dna.vedic-computational-astronomy",
+        "video_ids": [
+          "gMe4FZbjcQE",
+          "9meaN-ZZAvc",
+          "Q1NwbcHbAh0"
+        ],
+        "weight_records": 3,
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "id": "dna.predictive-timing-algorithms",
+        "label": "Vimshottari Dasha as a timing algorithm",
+        "kind": "subject",
+        "tier": 2,
+        "parent": "dna.vedic-computational-astronomy",
+        "video_ids": [
+          "TDOubaCAw7I"
+        ],
+        "weight_records": 1,
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[TDOubaCAw7I]"
+      },
+      {
+        "id": "dna.birth-time-rectification",
+        "label": "Birth-time rectification (Ishtakala / BTR)",
+        "kind": "subject",
+        "tier": 2,
+        "parent": "dna.vedic-computational-astronomy",
+        "video_ids": [
+          "OEn5RzSEwpc",
+          "c_M_LSB65RA"
+        ],
+        "weight_records": 2,
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content)"
+      },
+      {
+        "id": "dna.apple-silicon-telemetry",
+        "label": "Apple Silicon system telemetry",
+        "kind": "subject",
+        "tier": 1,
+        "video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "weight_records": 1,
+        "weight_seconds": 121,
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[p9pGAmqJCSk]"
+      },
+      {
+        "id": "dna.realtime-visualisation",
+        "label": "Real-time data visualisation at 60 fps",
+        "kind": "method",
+        "tier": 2,
+        "parent": "dna.apple-silicon-telemetry",
+        "video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "weight_records": 1,
+        "anchor_quote": "700 vector paths, 12 concentric rings, and 60 frames per second of pure real-time data visualization",
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[p9pGAmqJCSk]"
+      },
+      {
+        "id": "dna.systems-instrumentation",
+        "label": "Low-level sensor access (IOKit / SMC / IOReport)",
+        "kind": "method",
+        "tier": 2,
+        "parent": "dna.apple-silicon-telemetry",
+        "video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "weight_records": 1,
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[p9pGAmqJCSk]"
+      },
+      {
+        "id": "dna.bilingual-explanation",
+        "label": "Bilingual explanation (English / Marathi)",
+        "kind": "practice",
+        "tier": 1,
+        "video_ids": [
+          "oiTfTeqvP0Y",
+          "_L-jRltlZI4",
+          "c_M_LSB65RA",
+          "6RT2caAAYfs"
+        ],
+        "weight_records": 4,
+        "provenance": "corpus-youtube.json · videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title) · Devanagari codepoint detection over titles"
+      },
+      {
+        "id": "dna.serialised-curriculum",
+        "label": "Serialised, cross-linked curriculum",
+        "kind": "practice",
+        "tier": 1,
+        "video_ids": [
+          "_L-jRltlZI4",
+          "c_M_LSB65RA",
+          "6RT2caAAYfs",
+          "TDOubaCAw7I",
+          "gMe4FZbjcQE"
+        ],
+        "weight_records": 5,
+        "provenance": "corpus-youtube.json · videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title) + videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + playlists[]"
+      },
+      {
+        "id": "dna.build-in-public",
+        "label": "Publishing the repository beside the claim",
+        "kind": "practice",
+        "tier": 1,
+        "video_ids": [
+          "gMe4FZbjcQE",
+          "TDOubaCAw7I",
+          "Q1NwbcHbAh0",
+          "9meaN-ZZAvc"
+        ],
+        "weight_records": 4,
+        "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[gMe4FZbjcQE, TDOubaCAw7I, Q1NwbcHbAh0, 9meaN-ZZAvc]"
+      }
+    ],
+    "edges": [
+      {
+        "from": "dna.realtime-visualisation",
+        "to_kind": "skill",
+        "to": "Data visualisation",
+        "to_index": 12,
+        "kind": "demonstrates",
+        "strength": "strong",
+        "video_ids": [
+          "p9pGAmqJCSk"
+        ]
+      },
+      {
+        "from": "dna.apple-silicon-telemetry",
+        "to_kind": "skill",
+        "to": "Real-time telemetry platforms",
+        "to_index": 2,
+        "kind": "demonstrates",
+        "strength": "medium",
+        "video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "caveat": "different artefact from the row's ANZ evidence; must not imply corroboration of the P95/10,000-device figure"
+      },
+      {
+        "from": "dna.systems-instrumentation",
+        "to_kind": "skill",
+        "to": "Technical Skills (about) — Swift, Go, Metal, IOKit",
+        "to_index": null,
+        "kind": "extends",
+        "strength": "strong",
+        "video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "caveat": "no skills.ts row exists for Swift, Go or Metal; this edge terminates in a gap, not a node"
+      },
+      {
+        "from": "dna.birth-time-rectification",
+        "to_kind": "skill",
+        "to": "Multi-service orchestration — Docker Compose",
+        "to_index": 10,
+        "kind": "shares-subject",
+        "strength": "medium",
+        "video_ids": [
+          "OEn5RzSEwpc",
+          "c_M_LSB65RA"
+        ],
+        "caveat": "via sources[].id='rectifier' (containerised-birth-time-rectifier); evidences the domain, not the orchestration"
+      },
+      {
+        "from": "dna.divisional-chart-mathematics",
+        "to_kind": "skill",
+        "to": "Multi-service orchestration — Docker Compose",
+        "to_index": 10,
+        "kind": "shares-subject",
+        "strength": "weak",
+        "video_ids": [
+          "gMe4FZbjcQE",
+          "Q1NwbcHbAh0"
+        ]
+      },
+      {
+        "from": "dna.text-to-executable-code",
+        "to_kind": "skill",
+        "to": "Next.js and TypeScript at production scale",
+        "to_index": 7,
+        "kind": "names-technology",
+        "strength": "weak",
+        "video_ids": [
+          "TDOubaCAw7I",
+          "gMe4FZbjcQE",
+          "9meaN-ZZAvc"
+        ],
+        "caveat": "TypeScript is never named in any description; only Next.js is"
+      },
+      {
+        "from": "dna.text-to-executable-code",
+        "to_kind": "dimension",
+        "to": "Technical Skills",
+        "to_index": 0,
+        "kind": "explains",
+        "strength": "medium",
+        "video_ids": [
+          "Q1NwbcHbAh0",
+          "TDOubaCAw7I",
+          "gMe4FZbjcQE",
+          "9meaN-ZZAvc",
+          "c_M_LSB65RA"
+        ]
+      },
+      {
+        "from": "dna.build-in-public",
+        "to_kind": "dimension",
+        "to": "North Star Align",
+        "to_index": 9,
+        "kind": "explains",
+        "strength": "strong",
+        "video_ids": [
+          "gMe4FZbjcQE",
+          "TDOubaCAw7I",
+          "Q1NwbcHbAh0",
+          "9meaN-ZZAvc"
+        ]
+      },
+      {
+        "from": "dna.vedic-computational-astronomy",
+        "to_kind": "dimension",
+        "to": "North Star Align",
+        "to_index": 9,
+        "kind": "explains",
+        "strength": "medium",
+        "video_ids": [
+          "gMe4FZbjcQE"
+        ],
+        "anchor_quote": "Stop looking at it as magic-start looking at it as data science."
+      },
+      {
+        "from": "dna.bilingual-explanation",
+        "to_kind": "dimension",
+        "to": "Culture Fit",
+        "to_index": 4,
+        "kind": "explains",
+        "strength": "weak",
+        "video_ids": [
+          "oiTfTeqvP0Y",
+          "_L-jRltlZI4",
+          "c_M_LSB65RA",
+          "6RT2caAAYfs"
+        ],
+        "caveat": "evidences cross-audience explanation, not the squad facilitation the row's own evidence describes"
+      },
+      {
+        "from": "dna.serialised-curriculum",
+        "to_kind": "dimension",
+        "to": "Role Alignment",
+        "to_index": 3,
+        "kind": "explains",
+        "strength": "weak",
+        "video_ids": [
+          "_L-jRltlZI4",
+          "c_M_LSB65RA",
+          "6RT2caAAYfs"
+        ],
+        "caveat": "structuring a syllabus is not evidence of delivery leadership; keep out of headline position"
+      },
+      {
+        "from": "dna.apple-silicon-telemetry",
+        "to_kind": "dimension",
+        "to": "Role Alignment",
+        "to_index": 3,
+        "kind": "demonstrates",
+        "strength": "weak",
+        "video_ids": [
+          "p9pGAmqJCSk"
+        ]
+      },
+      {
+        "from": "channel.about-text",
+        "to_kind": "dimension",
+        "to": "Location Match",
+        "to_index": 6,
+        "kind": "self-asserts",
+        "strength": "medium",
+        "video_ids": [],
+        "provenance": "corpus-youtube.json · channel.description.value + channel.country.value"
+      },
+      {
+        "from": "channel.about-text",
+        "to_kind": "dimension",
+        "to": "Experience Level",
+        "to_index": 1,
+        "kind": "self-asserts",
+        "strength": "weak",
+        "video_ids": [],
+        "caveat": "self-description on the owner's own channel; names no dates and no employer"
+      },
+      {
+        "from": "dna.realtime-visualisation",
+        "to_kind": "skill",
+        "to": "WebGL and GLSL — three.js, React Three Fiber",
+        "to_index": 11,
+        "kind": "excluded",
+        "strength": "none",
+        "video_ids": [
+          "p9pGAmqJCSk"
+        ],
+        "reason": "The record's named stack is SwiftUI Canvas + Metal. Different API, different platform. Recorded so this tempting edge is never drawn."
+      }
+    ],
+    "render_notes": {
+      "requirement": "R-117 / R-109 / R-110",
+      "notes": [
+        "Node weight has two honest encodings in this dataset: record count and total runtime seconds. Never encode weight by view count (R-119).",
+        "Nine of eleven records sit under one tier-1 node. A force graph will collapse into one hub and one orphan; that asymmetry is the true shape and should be shown, not balanced away.",
+        "Every 'excluded' edge exists so a later renderer does not infer it. Excluded edges must not be drawn, but must survive in the dataset.",
+        "The unlisted record 9meaN-ZZAvc contributes to node weights in this analysis but MUST NOT be rendered, linked or named on the site (corpus_strand_risk.unlisted_handling). Any renderer must filter listing_status == 'Unlisted' before drawing."
+      ]
+    }
+  },
+  "dataset_extension_findings_r115": [
+    {
+      "finding": "The channel evidences two languages (Swift 5, Go 1.21+) and one graphics API (Metal) that appear in no row of skills.ts and in no answer in about.ts.",
+      "video_ids": [
+        "p9pGAmqJCSk"
+      ],
+      "action": "Either add rows with this evidence, or record deliberately that the site does not claim them. Do not silently drop them.",
+      "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) · video_ids=[p9pGAmqJCSk]"
+    },
+    {
+      "finding": "No row in skills.ts covers public technical explanation, teaching or bilingual communication - the capability this corpus evidences most strongly.",
+      "video_ids": [
+        "Q1NwbcHbAh0",
+        "oiTfTeqvP0Y",
+        "_L-jRltlZI4",
+        "c_M_LSB65RA",
+        "6RT2caAAYfs",
+        "TDOubaCAw7I",
+        "gMe4FZbjcQE",
+        "OEn5RzSEwpc"
+      ],
+      "action": "A capability row sourced to the channel would be the natural join. Its status under skills.ts semantics would be 'production' (published publicly, for real viewers), with evidence stated as artefacts and structure, never as views (R-119).",
+      "provenance": "corpus-youtube.json · videos[].description.value (verbatim=true; upstream ytInitialData.videoSecondaryInfoRenderer.attributedDescription.content) + videos[].title.value (upstream ytInitialData.videoPrimaryInfoRenderer.title) + videos[].publish_date.value (day precision; upstream videoPrimaryInfoRenderer.dateText)"
+    },
+    {
+      "finding": "skills.ts capabilities have no stable id, so every cross-link in this document keys on the verbatim `capability` string.",
+      "action": "If skills.ts is refactored, the R-117 edges must be re-keyed. Recording the array index alongside the string is a deliberate redundancy for that day.",
+      "provenance": "/root/forgotten-mistory/app/data/portfolio/skills.ts · capabilities[] has no id field"
+    },
+    {
+      "finding": "The corpus offers no field the R-122 conversational index needs (no transcript, no captions, no per-second segments).",
+      "action": "R-122 is blocked on evidence, not on implementation. The only timestamped index available is the 7 chapters the creator wrote himself in p9pGAmqJCSk's description.",
+      "provenance": "corpus-youtube.json · counts.videos_with_transcript_text = 0"
+    }
+  ],
+  "not_observable_register": [
+    {
+      "field": "transcript text (all 11 records)",
+      "value": "not observable",
+      "reason": "YouTube returned playabilityStatus=LOGIN_REQUIRED ('Sign in to confirm you are not a bot') for every watch request from this host, unauthenticated. No captionTracks were served, and the InnerTube get_transcript endpoint returned HTTP 400 failedPrecondition."
+    },
+    {
+      "field": "caption availability (all 11 records)",
+      "value": "not observable",
+      "reason": "captionTracks absent from bot-gated playerResponse; a 'Show transcript' control IS advertised in ytInitialData (getTranscriptEndpoint present) for all 11 videos, which indicates a transcript exists server-side, but its contents could not be retrieved."
+    },
+    {
+      "field": "ISO publish timestamps",
+      "value": "not observable",
+      "reason": "itemprop uploadDate/datePublished meta tags and playerMicroformatRenderer.publishDate were NOT served on the bot-gated page; dateText is the only published date observed."
+    },
+    {
+      "field": "channel keywords / tags",
+      "value": "not observable",
+      "reason": "corpus-youtube.json · channel.keywords.value is an empty string served by channelMetadataRenderer.keywords"
+    },
+    {
+      "field": "per-video tags, category, language metadata",
+      "value": "not observable",
+      "reason": "no such field exists in corpus-youtube.json; the YouTube Data API was unavailable (no YOUTUBE_API_KEY among the 45 variable names in ~/.claude/.env.production)"
+    },
+    {
+      "field": "comments, retention, audience data",
+      "value": "not observable",
+      "reason": "not collected by the corpus step"
+    },
+    {
+      "field": "thumbnail, frame or audio content",
+      "value": "not observable",
+      "reason": "no media asset was downloaded or inspected at any point"
+    },
+    {
+      "field": "like counts",
+      "value": "not observable",
+      "reason": "corpus-youtube.json · videos[].vanity_metrics_availability.like_count_available = 'not observable'"
+    }
+  ]
+}

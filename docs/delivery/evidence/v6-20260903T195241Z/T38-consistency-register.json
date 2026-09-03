@@ -1,0 +1,777 @@
+{
+  "schema": "T38-consistency-register/v1",
+  "test": "T-38 — cross-source consistency audit",
+  "contract_refs": [
+    "R-172",
+    "R-173",
+    "R-184",
+    "SC-88.1"
+  ],
+  "generated_at_utc": "2026-09-03",
+  "site_audited": {
+    "url": "https://forgotten-mistory.web.app/",
+    "fetched": "2026-09-03",
+    "http_status": 200,
+    "bytes": 116809,
+    "md5": "74712d2c420b80127a72846d82e139b0",
+    "note": "Byte-identical to /root/forgotten-mistory/out/index.html, so the deployed page is the build of the current working tree. The site is a single page (sitemap.xml lists one URL); out/404.html is the only other HTML artefact."
+  },
+  "sources": {
+    "cv_of_record": {
+      "path": "/root/forgotten-mistory/public/docs/Vik_Resume_Final.pdf",
+      "md5_expected_short": "16b856c0",
+      "md5_actual": "16b856c0f3f4ec0d801fdde6d084452c",
+      "md5_short_actual": "16b856c0",
+      "md5_verdict": "MATCH",
+      "bytes_expected": 157615,
+      "bytes_actual": 157615,
+      "bytes_verdict": "MATCH",
+      "extraction": "pdftotext -layout, 151 lines"
+    },
+    "linkedin": {
+      "url": "https://www.linkedin.com/in/vikramd-profile",
+      "status": "not observable",
+      "attempts": [
+        {
+          "tool": "curl (desktop Chrome User-Agent)",
+          "result": "HTTP 999, 1530 bytes, tracking stub only"
+        },
+        {
+          "tool": "Playwright chromium { channel: 'chrome' }",
+          "result": "HTTP 999, body = 'Agree & Join LinkedIn' auth wall, zero profile fields"
+        }
+      ],
+      "fields_retrieved": []
+    },
+    "github": {
+      "auth": "gh CLI, authenticated as Victordtesla24",
+      "queried": "2026-09-03",
+      "endpoints": [
+        "/users/Victordtesla24",
+        "/repos/{owner}/{repo}",
+        "/repos/{owner}/{repo}/languages",
+        "/repos/{owner}/{repo}/commits",
+        "/repos/{owner}/{repo}/contents/{path}",
+        "/repos/{owner}/{repo}/git/trees/main?recursive=1",
+        "/repos/{owner}/{repo}/actions/workflows",
+        "/repos/{owner}/{repo}/actions/runs?branch=main",
+        "/repos/{owner}/{repo}/actions/runs/{id}/jobs"
+      ]
+    }
+  },
+  "computed_career_length": {
+    "earliest_role_start": "May 2010 (MYOB — Developer Support / Software Testing / Analyst)",
+    "as_of": "2026-09-03",
+    "elapsed": "16 years 4 months (16.34 years)",
+    "single_sourced_figure": "sixteen years",
+    "note": "The CV's own CAREER OBJECTIVE prose ('15+ year Senior Technical Leader') is stale against the CV's own employment dates. The dates, not the prose, are the source of record for this figure."
+  },
+  "totals": {
+    "rows": 70,
+    "consistent": 59,
+    "divergent": 9,
+    "not_observable": 2
+  },
+  "rows": [
+    {
+      "claim": "CV of record MD5 short hash",
+      "renderedAt": "Skills — calibration footer",
+      "siteValue": "16b856c0",
+      "cvValue": "md5sum public/docs/Vik_Resume_Final.pdf = 16b856c0f3f4ec0d801fdde6d084452c (short 16b856c0)",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — not a GitHub-held fact",
+      "verdict": "consistent",
+      "resolution": "No change. Verified this run: md5sum matches the expected 16b856c0 exactly, and app/data/generated/cv-fingerprint.ts:11 carries the same full digest."
+    },
+    {
+      "claim": "CV of record byte size",
+      "renderedAt": "Skills — calibration footer",
+      "siteValue": "157,615 bytes",
+      "cvValue": "stat -c %s = 157615",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — not a GitHub-held fact",
+      "verdict": "consistent",
+      "resolution": "No change. Verified this run; matches cv-fingerprint.ts:13 (bytes: 157615)."
+    },
+    {
+      "claim": "R-173 · Career-length figure in the hero statement",
+      "renderedAt": "Hero — one-sentence statement",
+      "siteValue": "Sixteen years",
+      "cvValue": "Computed from the CV's own employment dates: earliest role start May 2010 (MYOB) to 2026-09-03 = 16 years 4 months. The CV's CAREER OBJECTIVE prose says '15+ year', which is stale against its own dates.",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change to the hero. The live production HTML (fetched 2026-09-03, md5 74712d2c420b80127a72846d82e139b0, byte-identical to out/index.html) contains zero occurrences of 'fifteen'/'Fifteen'. The v6 baseline divergence has already been fixed at app/data/portfolio/hero.ts:29. Sourced figure to use everywhere: SIXTEEN YEARS (16y4m, May 2010 -> 2026-09-03)."
+    },
+    {
+      "claim": "R-173 · Career-length figure in About dimension 02 (Experience Level)",
+      "renderedAt": "About — dimension 02 answer",
+      "siteValue": "Sixteen years. Senior delivery lead and AI/ML solutions architect since 2017; before that, business analysis and project delivery from 2010.",
+      "cvValue": "MYOB May 2010; ANZ Senior Delivery Lead from Sept 2017 — both statements are exactly what the CV dates say.",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change. app/data/portfolio/about.ts:50 already reads 'Sixteen years.' The baseline 'fifteen years' is gone from the deployed page."
+    },
+    {
+      "claim": "R-173 · Career-length figure in the Experience heading",
+      "renderedAt": "Experience — section heading",
+      "siteValue": "Sixteen years, to scale",
+      "cvValue": "16 years 4 months from May 2010 to 2026-09-03",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change. app/data/portfolio/experience.ts:106. This heading was always the correct figure; the hero and About have now been brought up to it, so all three rendered surfaces agree."
+    },
+    {
+      "claim": "R-173 · Residual 'Fifteen-plus years' string in the codebase",
+      "renderedAt": "NOT RENDERED — dead export `dossier` in app/data/siteContent.ts:558",
+      "siteValue": "not rendered on the live page (grep of the deployed HTML for 'ifteen' returns 0 hits)",
+      "cvValue": "Contradicts the CV's dates, which give 16y4m",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "divergent",
+      "resolution": "FIX REQUIRED (regression risk, not a live defect): app/data/siteContent.ts:558 still reads 'Fifteen-plus years turning complex government, finance and telecommunications programs...'. The `dossier` export is imported by nothing (grep across app/, components/, lib/ finds no importer; Navigation.tsx:5 imports only `contact`). Either delete the dead `dossier` export or change line 558 to 'Sixteen years'. Leaving it is how R-173 comes back."
+    },
+    {
+      "claim": "R-172 · Dimensions source repository",
+      "renderedAt": "About — provenance line under the heading",
+      "siteValue": "Victordtesla24/aether-job-career-agent (anchor text and href)",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "Repo exists and is public: Victordtesla24/aether-job-career-agent, default branch main, created 2026-07-01T13:36:06Z, pushed 2026-09-02T20:59:41Z, primary language Python.",
+      "verdict": "consistent",
+      "resolution": "No change. Verified: the string 'aether-career-agent' appears ZERO times in the deployed HTML and zero times anywhere under app/, components/, lib/, docs/, scripts/, tests/. Every reference in app/data/portfolio/{about,vitrine,skills}.ts uses the full correct slug."
+    },
+    {
+      "claim": "R-172 · Dimensions source file path",
+      "renderedAt": "About — provenance line, <span class='About_provenancePath__36m9_'>",
+      "siteValue": "apps/api/app/routers/jobs.py (rendered as plain text, not a link)",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "File exists on main: apps/api/app/routers/jobs.py, blob sha 038073350df86466c0838c0539d5c3d41bbd0fe6, 52,581 bytes. It defines build_fit_dimensions() at line 226.",
+      "verdict": "divergent",
+      "resolution": "FIX REQUIRED: app/data/portfolio/about.ts:115 sets href = 'https://github.com/Victordtesla24/aether-job-career-agent', which resolves to the repository ROOT, not to the cited file. R-172 requires the reference to resolve to apps/api/app/routers/jobs.py. Change the href to 'https://github.com/Victordtesla24/aether-job-career-agent/blob/main/apps/api/app/routers/jobs.py' (and/or make the path span the anchor), so the sentence 'Dimensions taken verbatim from ...' lands the reader on the code it quotes."
+    },
+    {
+      "claim": "R-172 · The ten dimension names are verbatim from the source file",
+      "renderedAt": "About — dimensions 01-10",
+      "siteValue": "01 Technical Skills · 02 Experience Level · 03 Industry Match · 04 Role Alignment · 05 Culture Fit · 06 Salary Fit · 07 Location Match · 08 Career Growth · 09 Company Stability · 10 North Star Align",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "build_fit_dimensions() in apps/api/app/routers/jobs.py@main returns, in order: 'Technical Skills', 'Experience Level', 'Industry Match', 'Role Alignment', 'Culture Fit', 'Salary Fit', 'Location Match', 'Career Growth', 'Company Stability', 'North Star Align'.",
+      "verdict": "consistent",
+      "resolution": "No change. Names and order match the source exactly, character for character."
+    },
+    {
+      "claim": "R-172 · 'Three it computes from the role' (dimensions 06, 07, 09)",
+      "renderedAt": "About — dimension sector copy and the 'measured from the role' badges",
+      "siteValue": "Three axes computed from the role: 06 Salary Fit, 07 Location Match, 09 Company Stability",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "jobs.py@main docstring: 'The three resume-INDEPENDENT dimensions (Salary Fit / Location Match / Company Stability) are computed from the ``Job`` row alone.' Those three are the only ones constructed with degraded=False.",
+      "verdict": "consistent",
+      "resolution": "No change. The claim is exactly what the code does."
+    },
+    {
+      "claim": "R-184 · 'The public CI workflow is red on main'",
+      "renderedAt": "Vitrine — plate 01 aether-job-career-agent, Limits line",
+      "siteValue": "The public CI workflow is red on main; production deploys through a separate gated pipeline.",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "GitHub Actions API, queried 2026-09-03. Repo has 3 workflows: CI (.github/workflows/ci.yml, id 311628383, active), VPS Delivery (.github/workflows/vps-delivery.yml, id 336597190, active), Dependency Graph (dynamic/dependabot/update-graph, id 305449047). 525 runs on branch main. Most recent CI run on main: id 33682579720, head_sha bb5f5f01, event push, status completed, conclusion FAILURE, created 2026-09-02T20:59:50Z. The 8 most recent CI runs on main are all conclusion=failure (33682579720, 33668786861, 32365985463, 32365841061, 32351429057, 32332032864, 32300932470 ...). Failing jobs in run 33682579720: job 100422393204 'API - full pytest suite (self-hosted, isolated schema)' = failure at step 'Full backend suite against aether_test_ci'; job 100422393390 'API - lint, types (+ DB tests when secret set)' = failure at step 'Run ruff check app/ tests/'. Job 100422393625 'Web - lint, types, unit tests' = success. Most recent VPS Delivery run on main: id 33682579662, same head_sha bb5f5f01, conclusion SUCCESS, 2026-09-02T20:59:50Z.",
+      "verdict": "consistent",
+      "resolution": "No change. The vitrine's statement is true as of 2026-09-03 and is now backed by run ids. Both halves check out: CI is red on main, and the separate delivery pipeline (VPS Delivery) is green on the same commit. If this line is ever re-harvested, cite run id 33682579720 as the evidence."
+    },
+    {
+      "claim": "Employment dates — Australian Taxation Office (ATO)",
+      "renderedAt": "Experience — role card date line, and the bar length in the duration chart",
+      "siteValue": "March 2026 - Present (bar drawn 6 mo)",
+      "cvValue": "March 2026 - Present",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — employment dates are not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change. Month-for-month identical to the CV. Bar length recomputes as 6 mo (March 2026 -> NOW = September 2026, app/data/portfolio/experience.ts:90). Machine-readable spans at app/data/portfolio/experience.ts:27-73 carry the same months as inline comments."
+    },
+    {
+      "claim": "Employment dates — Independent AI Consulting & Upskilling",
+      "renderedAt": "Experience — role card date line, and the bar length in the duration chart",
+      "siteValue": "Jun 2025 - Feb 2026 (bar drawn 8 mo)",
+      "cvValue": "June 2025 - Feb 2026",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — employment dates are not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change. Month-for-month identical to the CV. Bar length recomputes as 8 mo (June 2025 -> February 2026). Machine-readable spans at app/data/portfolio/experience.ts:27-73 carry the same months as inline comments."
+    },
+    {
+      "claim": "Employment dates — ANZ Banking Group",
+      "renderedAt": "Experience — role card date line, and the bar length in the duration chart",
+      "siteValue": "Sept 2017 - Jun 2025 (bar drawn 7.8 yr)",
+      "cvValue": "Sept 2017 - June 2025",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — employment dates are not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change. Month-for-month identical to the CV. Bar length recomputes as 7 yr 9 mo = 7.75, displayed 7.8 yr. Machine-readable spans at app/data/portfolio/experience.ts:27-73 carry the same months as inline comments."
+    },
+    {
+      "claim": "Employment dates — National Australia Bank (NAB)",
+      "renderedAt": "Experience — role card date line, and the bar length in the duration chart",
+      "siteValue": "Nov 2016 - Sept 2017 (bar drawn 10 mo)",
+      "cvValue": "Nov 2016 - Sept 2017",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — employment dates are not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change. Month-for-month identical to the CV. Bar length recomputes as 10 mo. Machine-readable spans at app/data/portfolio/experience.ts:27-73 carry the same months as inline comments."
+    },
+    {
+      "claim": "Employment dates — Microsoft",
+      "renderedAt": "Experience — role card date line, and the bar length in the duration chart",
+      "siteValue": "Oct 2015 - Oct 2016 (bar drawn 1.0 yr)",
+      "cvValue": "Oct 2015 - Oct 2016",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — employment dates are not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change. Month-for-month identical to the CV. Bar length recomputes as 12 mo = 1.0 yr. Machine-readable spans at app/data/portfolio/experience.ts:27-73 carry the same months as inline comments."
+    },
+    {
+      "claim": "Employment dates — Telstra",
+      "renderedAt": "Experience — role card date line, and the bar length in the duration chart",
+      "siteValue": "Nov 2014 - Oct 2015 (bar drawn 11 mo)",
+      "cvValue": "Nov 2014 - Oct 2015",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — employment dates are not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change. Month-for-month identical to the CV. Bar length recomputes as 11 mo. Machine-readable spans at app/data/portfolio/experience.ts:27-73 carry the same months as inline comments."
+    },
+    {
+      "claim": "Employment dates — InfoCentric",
+      "renderedAt": "Experience — role card date line, and the bar length in the duration chart",
+      "siteValue": "Aug 2011 - Nov 2014 (bar drawn 3.3 yr)",
+      "cvValue": "Aug 2011 - Nov 2014",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — employment dates are not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change. Month-for-month identical to the CV. Bar length recomputes as 3 yr 3 mo = 3.25, displayed 3.3 yr. Machine-readable spans at app/data/portfolio/experience.ts:27-73 carry the same months as inline comments."
+    },
+    {
+      "claim": "Employment dates — MYOB",
+      "renderedAt": "Experience — role card date line, and the bar length in the duration chart",
+      "siteValue": "May 2010 - Aug 2011 (bar drawn 1.3 yr)",
+      "cvValue": "May 2010 - Aug 2011",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — employment dates are not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change. Month-for-month identical to the CV. Bar length recomputes as 1 yr 3 mo = 1.25, displayed 1.3 yr. Machine-readable spans at app/data/portfolio/experience.ts:27-73 carry the same months as inline comments."
+    },
+    {
+      "claim": "Employer name — Microsoft",
+      "renderedAt": "Experience — role card employer line",
+      "siteValue": "Microsoft",
+      "cvValue": "Microsoft Inc.",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change required. 'Microsoft' vs 'Microsoft Inc.' is the legal suffix only; no date, role or fact differs. Note it and leave it."
+    },
+    {
+      "claim": "Job title — Australian Taxation Office",
+      "renderedAt": "Experience — role card title",
+      "siteValue": "Scrum Master / Project Manager — Payday Super Program (NTP & Distribution UI)",
+      "cvValue": "Scrum Master / Project Manager (Australian Taxation Office (ATO))",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change. The site's title is the CV title plus the programme name, which the CV's own first bullet states ('the Payday Super reform program (NTP & Distribution UI capabilities)')."
+    },
+    {
+      "claim": "Job title — Independent engagement",
+      "renderedAt": "Experience — role card title / employer pair",
+      "siteValue": "role: 'AI Solutions Consultant — Applied LLM Engineering & Delivery Tooling'; company: 'Independent AI Consulting & Upskilling'",
+      "cvValue": "The CV prints 'Independent AI Consulting & Upskilling' as the ROLE and 'Independent' as the employer. The string 'AI Solutions Consultant' does not appear anywhere in the CV.",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "divergent",
+      "resolution": "FIX REQUIRED: app/data/siteContent.ts:92-93 invents a job title the CV of record does not carry, and promotes the CV's role line into the employer slot. Either set role = 'Independent AI Consulting & Upskilling' and company = 'Independent' to match the CV, or leave the descriptive title but mark it as a self-description rather than a CV-sourced title. Under the site's own rule ('the same dates as the CV'), an unsourced title is the one thing this page must not print."
+    },
+    {
+      "claim": "Job title — ANZ Banking Group",
+      "renderedAt": "Experience — role card title",
+      "siteValue": "Senior Delivery Lead / AI-ML Solutions Architect (one card, Sept 2017 - Jun 2025)",
+      "cvValue": "The CV lists TWO ANZ entries: 'Senior Delivery Lead / Technical Product Owner, ANZ, Sept 2017 - June 2025' and 'AI/ML Strategy & Solutions Architect, ANZ, 2017 - 2022'.",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "divergent",
+      "resolution": "FIX REQUIRED (low severity, honesty-relevant): app/data/siteContent.ts:107 fuses two CV titles into one hyphenated title and silently drops 'Technical Product Owner'. The dates are right and the span is right, but the title as printed is in neither CV entry verbatim. Either print the CV's primary title ('Senior Delivery Lead / Technical Product Owner') with the AI/ML architect role as a sub-line for 2017-2022, or state that the card merges two overlapping ANZ appointments."
+    },
+    {
+      "claim": "Job title — Senior Project Manager & Business Analyst (NAB)",
+      "renderedAt": "Experience — role card title",
+      "siteValue": "Senior Project Manager & Business Analyst",
+      "cvValue": "Senior Project Manager & Business Analyst, National Australia Bank (NAB)",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change. Verbatim match to the CV."
+    },
+    {
+      "claim": "Job title — Lead Business Analyst (Microsoft)",
+      "renderedAt": "Experience — role card title",
+      "siteValue": "Lead Business Analyst",
+      "cvValue": "Lead Business Analyst, Microsoft Inc.",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change. Verbatim match to the CV."
+    },
+    {
+      "claim": "Job title — Business Analyst / Project Coordinator (Telstra)",
+      "renderedAt": "Experience — role card title",
+      "siteValue": "Business Analyst / Project Coordinator",
+      "cvValue": "Business Analyst / Project Coordinator, Telstra",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change. Verbatim match to the CV."
+    },
+    {
+      "claim": "Job title — Senior Business Analyst (InfoCentric)",
+      "renderedAt": "Experience — role card title",
+      "siteValue": "Senior Business Analyst",
+      "cvValue": "Senior Business Analyst, InfoCentric",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change. Verbatim match to the CV."
+    },
+    {
+      "claim": "Job title — Developer Support / Software Testing / Analyst (MYOB)",
+      "renderedAt": "Experience — role card title",
+      "siteValue": "Developer Support / Software Testing / Analyst",
+      "cvValue": "Developer Support / Software Testing / Analyst, MYOB",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change. Verbatim match to the CV."
+    },
+    {
+      "claim": "Evidence-effort reduction at the ATO",
+      "renderedAt": "Hero ledger tile 1; Experience ATO figure; Skills row 1",
+      "siteValue": "≈92% evidence effort removed across 200+ SIT scenarios; ~3 hours -> ~15 minutes per scenario",
+      "cvValue": "'cutting evidence effort from ~3 hours to ~15 minutes per scenario (≈92% reduction)' across '200+ SIT/E2E scenarios across all eight squads'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — CV-sourced figure, not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change. Verbatim, including the ≈ and the tilde ranges. Correctly labelled '(Self-reported figure.)' on the page."
+    },
+    {
+      "claim": "Program portfolio value at ANZ",
+      "renderedAt": "Hero ledger tile 2; Experience ANZ bullet; Skills row 5",
+      "siteValue": "$5M+ program portfolio led",
+      "cvValue": "'Directed a program portfolio valued at over $5M'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — CV-sourced figure, not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change."
+    },
+    {
+      "claim": "Device concurrency and latency at ANZ",
+      "renderedAt": "Hero ledger tile 3; Experience ANZ figure; Skills row 3",
+      "siteValue": "10k+ concurrent devices at P95 under 200 ms",
+      "cvValue": "'real-time WebSocket telemetry servers for 10k+ device concurrency, improving user response time by reducing P95 latency to under 200 ms'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — CV-sourced figure, not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change."
+    },
+    {
+      "claim": "Error-budget breach reduction (Independent)",
+      "renderedAt": "Experience Independent figure; Skills row 7",
+      "siteValue": "−38% error-budget breaches — measured against a simulated budget, not live traffic",
+      "cvValue": "'reducing error budget breaches by 38% in a simulated production environment'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — CV-sourced figure, not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change. The site's caveat is the CV's caveat, made louder. This is the model the rest of the page should follow."
+    },
+    {
+      "claim": "Cloud-native migration outcomes at ANZ",
+      "renderedAt": "Experience ANZ bullet; Skills row 4",
+      "siteValue": "improving delivery efficiency by more than 30% and reducing infrastructure costs by over 15%",
+      "cvValue": "'cutting end-to-end delivery time by >30% and reducing infrastructure costs by >15%'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — CV-sourced figure, not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change."
+    },
+    {
+      "claim": "Test-capacity re-baselining at the ATO",
+      "renderedAt": "Experience ATO bullet; Skills row 2",
+      "siteValue": "re-baselining Payday Super test capacity from 30 to up to 90 person-days; 40 scenarios and 11 data tables (AC6–AC19)",
+      "cvValue": "'re-baselining Payday Super test capacity from 30 to up to 90 person-days ... traceability across 40 scenarios and 11 data tables (AC6–AC19)'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — CV-sourced figure, not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change. Verbatim."
+    },
+    {
+      "claim": "Infeasible SIT window at the ATO",
+      "renderedAt": "Experience ATO bullet; About dimension 09 evidence",
+      "siteValue": "75+ hours of manual evidence per team against 64 available hours",
+      "cvValue": "'75+ hours of manual evidence per team against 64 available hours'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — CV-sourced figure, not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change. Verbatim."
+    },
+    {
+      "claim": "Distribution UI completion at the ATO",
+      "renderedAt": "Experience ATO bullet",
+      "siteValue": "steering Distribution UI feature delivery to 95%+ completion",
+      "cvValue": "'steering Distribution UI delivery to 95%+ completion'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — CV-sourced figure, not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change."
+    },
+    {
+      "claim": "PI cadence at the ATO",
+      "renderedAt": "Experience ATO bullet; About dimension 04 evidence; Skills row 2",
+      "siteValue": "PI 47–48; eight squads; Agile Kookaburras squad",
+      "cvValue": "'PI Planning (PI 47–48)'; 'one of eight squads'; 'the Agile Kookaburras squad'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — CV-sourced figure, not a GitHub fact",
+      "verdict": "consistent",
+      "resolution": "No change. Verbatim."
+    },
+    {
+      "claim": "Executive decision-clarity improvement at ANZ",
+      "renderedAt": "Experience — ANZ bullet 4",
+      "siteValue": "executive workshops for 40+ leaders improved strategic decision clarity by approximately 55%",
+      "cvValue": "'Facilitated workshops for 40+ GMs and executives to align on strategy, improving decision-making efficiency and project clarity by >55%'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "divergent",
+      "resolution": "FIX (wording): the CV says '>55%' (greater than); the site says 'approximately 55%'. 'Approximately' is the weaker and less accurate rendering of a floor value. Change to 'by more than 55%' at app/data/siteContent.ts (ANZ bullet) so the operator matches the source."
+    },
+    {
+      "claim": "Squad and practitioner counts at ANZ",
+      "renderedAt": "Experience — ANZ bullet 3; About dimension 05 evidence; Skills row 5",
+      "siteValue": "5+ cross-functional squads (40+ onsite and offshore practitioners)",
+      "cvValue": "'leading 5+ cross-functional squads (up to 40 resources, including offshore teams)'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "divergent",
+      "resolution": "FIX (wording): the CV states a CEILING — 'up to 40 resources'. The site states a FLOOR — '40+ practitioners'. Those are opposite claims about the same number, and the site's is the more flattering one. Change '40+ practitioners' to 'up to 40 practitioners' everywhere it appears (Experience ANZ bullet, About dimension 05 evidence line, Skills capability row 5)."
+    },
+    {
+      "claim": "Duration prose — 'eight years at ANZ'",
+      "renderedAt": "Experience — section lede under the heading",
+      "siteValue": "'The long one in the middle is eight years at ANZ'; the bar itself is labelled 7.8 yr",
+      "cvValue": "Sept 2017 - June 2025 = 7 years 9 months",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "divergent",
+      "resolution": "FIX (low severity): the lede rounds 7.75 up to 'eight years' in the same sentence that promises 'every bar below is drawn to its real duration'. app/data/portfolio/experience.ts:107. Change to 'nearly eight years at ANZ' — which is exactly what app/data/siteContent.ts:480 already says ('nearly 8 sustained years at ANZ (2017–2025)')."
+    },
+    {
+      "claim": "Microsoft / Telstra / InfoCentric / MYOB / NAB outcome percentages",
+      "renderedAt": "Experience — role cards for those five employers",
+      "siteValue": "Prose only, no percentages; each card carries 'no published figure — (Not measurable; reason given.)'",
+      "cvValue": "The CV DOES carry figures for all five (Microsoft 15% reliability / 10% MTTR; Telstra 20% / 15%; InfoCentric 20% / 100%; MYOB 30% / 90%; NAB 100% regulatory adherence).",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change, but record the reasoning: this is deliberate under-claiming, not divergence. The site drops figures it chose not to stand behind and says so rather than inventing or inflating them. Nothing on the page contradicts the CV."
+    },
+    {
+      "claim": "Certified Scrum Master (CSM)",
+      "renderedAt": "Skills — capability row 14 and the Scrum Alliance credential node",
+      "siteValue": "Certified Scrum Master (CSM) · Scrum Alliance credential, held · ● measured in production",
+      "cvValue": "'Certified Scrum Master (CSM), Scrum Alliance' under CERTIFICATIONS",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — credentials could not be cross-checked on LinkedIn",
+      "verdict": "consistent",
+      "resolution": "No change."
+    },
+    {
+      "claim": "Master of Computer Science (Honours), Monash University",
+      "renderedAt": "Skills — capability row 15 and the Monash credential node",
+      "siteValue": "Master of Computer Science (Honours) · conferred · Monash University",
+      "cvValue": "'Master of Computer Science, Monash University, 2010, Melbourne, • Honors'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — credentials could not be cross-checked on LinkedIn",
+      "verdict": "consistent",
+      "resolution": "No change. The site omits the conferral year (2010); the CV states it. Nothing conflicts."
+    },
+    {
+      "claim": "Bachelor of Engineering, Computer Science, University of Melbourne",
+      "renderedAt": "Skills — capability row 16 and the UniMelb credential node",
+      "siteValue": "Bachelor of Engineering, Computer Science · conferred · University of Melbourne",
+      "cvValue": "'Bachelor of Engineering, Computer Science, University of Melbourne, 2007, Melbourne'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — credentials could not be cross-checked on LinkedIn",
+      "verdict": "consistent",
+      "resolution": "No change. Year (2007) omitted on the site; nothing conflicts."
+    },
+    {
+      "claim": "AWS and GCP certification",
+      "renderedAt": "Skills — capability row 17",
+      "siteValue": "'studying; no certificate issued' · '○ in progress, not yet held' · 'listed because the CV lists it — saying so is the point of the card'",
+      "cvValue": "'Cloud/Data Certifications AWS/GCP (In progress)'",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a — credentials could not be cross-checked on LinkedIn",
+      "verdict": "consistent",
+      "resolution": "No change. This is the single best-sourced row on the page: it reproduces the CV's own qualifier and then explains why an unheld credential is still listed."
+    },
+    {
+      "claim": "Email address",
+      "renderedAt": "Contact section and hero rail",
+      "siteValue": "sarkar.vikram@gmail.com",
+      "cvValue": "sarkar.vikram@gmail.com — printed in the CV's CONTACT INFO block, page 1",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change. Identical to the CV."
+    },
+    {
+      "claim": "Phone number",
+      "renderedAt": "Contact section and hero rail",
+      "siteValue": "+61 433 224 556",
+      "cvValue": "+61 433 224 556 — printed in the CV's CONTACT INFO block, page 1",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change. Identical to the CV."
+    },
+    {
+      "claim": "LinkedIn profile URL",
+      "renderedAt": "Contact section and hero rail",
+      "siteValue": "linkedin.com/in/vikramd-profile",
+      "cvValue": "linkedin.com/in/vikramd-profile — printed in the CV's CONTACT INFO block, page 1",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change. Identical to the CV. The LinkedIn URL itself is CV-observable; only the profile content behind it is not."
+    },
+    {
+      "claim": "GitHub profile URL",
+      "renderedAt": "Contact section and hero rail",
+      "siteValue": "github.com/Victordtesla24",
+      "cvValue": "github.com/Victordtesla24 — printed in the CV's CONTACT INFO block, page 1",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "github.com/Victordtesla24 resolves: login Victordtesla24, name 'Vikram.', public_repos 38 (GitHub API, 2026-09-03).",
+      "verdict": "consistent",
+      "resolution": "No change. Identical to the CV."
+    },
+    {
+      "claim": "Location",
+      "renderedAt": "Contact section and hero rail",
+      "siteValue": "Melbourne, Australia / Melbourne CBD",
+      "cvValue": "Melbourne, Australia / Melbourne CBD — printed in the CV's CONTACT INFO block, page 1",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change. Identical to the CV."
+    },
+    {
+      "claim": "Vitrine plate metrics — aether-job-career-agent",
+      "renderedAt": "Vitrine — plate metric strip (commits / active / stack)",
+      "siteValue": "commits 1,664 · active 2026-07 → 2026-09 · stack Python · TypeScript · HTML",
+      "cvValue": "n/a — repository metrics are not a CV fact",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "GitHub API, 2026-09-03: commits 1664 (Link-header last page on /commits?per_page=1); first commit 2026-07-01T13:36:07Z; last commit 2026-09-02T20:59:41Z; languages by bytes: Python 10,805,549 > TypeScript 5,211,010 > HTML 512,216 > JavaScript 318,260 > Shell > CSS > PLpgSQL",
+      "verdict": "consistent",
+      "resolution": "No change. Commit count exact; active range 2026-07 → 2026-09 exact at month precision; the three languages named are the top three by bytes, in order."
+    },
+    {
+      "claim": "Vitrine plate metrics — abentertainment",
+      "renderedAt": "Vitrine — plate metric strip (commits / active / stack)",
+      "siteValue": "commits 243 · active 2026-03 → 2026-08 · stack HTML · TypeScript · JavaScript",
+      "cvValue": "n/a — repository metrics are not a CV fact",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "GitHub API, 2026-09-03: commits 243; first commit 2026-03-28T03:15:29Z (repo created 2026-03-13T00:34:47Z); last commit 2026-08-06T06:57:40Z; languages: HTML 10,290,123 > TypeScript 1,115,081 > JavaScript 98,864 > Shell > PHP > CSS > Dockerfile",
+      "verdict": "consistent",
+      "resolution": "No change. Commit count exact; month-precision range exact; top three languages in order."
+    },
+    {
+      "claim": "Vitrine plate metrics — ralph-loop-infinite",
+      "renderedAt": "Vitrine — plate metric strip (commits / active / stack)",
+      "siteValue": "commits 31 · active 2026-05 → 2026-05 · stack Shell · Python · HTML",
+      "cvValue": "n/a — repository metrics are not a CV fact",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "GitHub API, 2026-09-03: commits 31; first commit 2026-05-19T08:29:23Z; last commit 2026-05-20T13:23:52Z; languages: Shell 214,771 > Python 191,360 > HTML 16,674",
+      "verdict": "consistent",
+      "resolution": "No change. Exact on all three."
+    },
+    {
+      "claim": "Vitrine plate metrics — prompt-reconstruction-engine",
+      "renderedAt": "Vitrine — plate metric strip (commits / active / stack)",
+      "siteValue": "commits 34 · active 2026-06 → 2026-06 · stack HTML · JavaScript",
+      "cvValue": "n/a — repository metrics are not a CV fact",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "GitHub API, 2026-09-03: commits 34; first commit 2026-06-16T19:16:59Z; last commit 2026-06-26T19:11:09Z; languages: HTML 223,569 > JavaScript 148,305 (only two)",
+      "verdict": "consistent",
+      "resolution": "No change. Exact on all three."
+    },
+    {
+      "claim": "Vitrine plate metrics — jyotish-shastra",
+      "renderedAt": "Vitrine — plate metric strip (commits / active / stack)",
+      "siteValue": "commits 214 · active 2025-06 → 2025-11 · stack JavaScript · CSS · Shell",
+      "cvValue": "n/a — repository metrics are not a CV fact",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "GitHub API, 2026-09-03: commits 214; first commit 2025-06-24T19:14:10Z; last commit 2025-11-10T12:07:55Z; languages: JavaScript 4,300,876 > CSS 82,038 > Shell 69,714 > TypeScript > Python > HTML",
+      "verdict": "consistent",
+      "resolution": "No change. Exact on all three."
+    },
+    {
+      "claim": "Vitrine plate metrics — forgotten-mistory (this site)",
+      "renderedAt": "Vitrine — plate 06 metric strip",
+      "siteValue": "commits 205 · active 2025-11 → 2026-09 · stack TypeScript · JavaScript · CSS",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "GitHub API, 2026-09-03: commits 238 (Link-header last page); local `git rev-list --count HEAD` = 238, so the working tree and the remote agree; first commit 2025-11-25T02:06:14Z; last commit 2026-09-03T17:53:38Z; languages: TypeScript 680,304 > JavaScript 279,069 > CSS 113,736 > Python > Shell > Dockerfile.",
+      "verdict": "divergent",
+      "resolution": "FIX REQUIRED: the plate says 205 commits; the repository has 238 as of the same date the page claims to have harvested them ('metrics harvested 2026-09-03'). app/data/generated/repo-harvest.json:66 carries the stale 205. The other five repositories are exact — only the self-referential one drifts, because the harvest runs before the commits that finish the work. Re-run the harvest as the LAST step before deploy, or have the plate print the harvest commit sha alongside the date so a reader can see what 'as of' means. Active range and stack are correct."
+    },
+    {
+      "claim": "Public repository count",
+      "renderedAt": "Vitrine — 'Six of thirty-eight' heading and the footer counter",
+      "siteValue": "38 public repositories · metrics harvested 2026-09-03 from the GitHub API, not live",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "GET /users/Victordtesla24 -> public_repos = 38 (2026-09-03)",
+      "verdict": "consistent",
+      "resolution": "No change. Exact, and the page correctly discloses that the figure is harvested rather than live."
+    },
+    {
+      "claim": "Excluded repositories and their reasons",
+      "renderedAt": "Vitrine — 'Excluded, and why'",
+      "siteValue": "vik-legal-defence (a personal legal matter); AI-Gmail-Mailbox-Manager (an environment file was committed early in its history); Codex · claude-designs (scratch workspaces)",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "All four exist and are public: Victordtesla24/vik-legal-defence (HTML), Victordtesla24/AI-Gmail-Mailbox-Manager (TypeScript), Victordtesla24/Codex (HTML), Victordtesla24/claude-designs (no primary language).",
+      "verdict": "consistent",
+      "resolution": "No change. Every named exclusion is a real public repository, so the disclosure can be checked by a reader."
+    },
+    {
+      "claim": "Deployment URLs cited on the vitrine plates",
+      "renderedAt": "Vitrine — 'Source' line on plates 01, 02, 06",
+      "siteValue": "aether.srv1356245.hstgr.cloud · abentertainment.com.au · forgotten-mistory.web.app; plates 03, 04, 05 say 'no public deployment'",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "All three resolve HTTP 200 (curl, 2026-09-03). GitHub `homepage` field is null for aether-job-career-agent and abentertainment, 'https://forgotten-mistory.web.app/' for forgotten-mistory.",
+      "verdict": "consistent",
+      "resolution": "No change. Each claimed deployment answers."
+    },
+    {
+      "claim": "Skills evidence — '22 routers' in aether-job-career-agent",
+      "renderedAt": "Skills — capability row 6 (Multi-agent system design)",
+      "siteValue": "22 routers",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "git tree main (recursive, untruncated, 1,962 blobs): apps/api/app/routers/ contains 23 .py files, 22 excluding __init__.py.",
+      "verdict": "consistent",
+      "resolution": "No change. Exact."
+    },
+    {
+      "claim": "Skills evidence — '4,272 backend tests' in aether-job-career-agent",
+      "renderedAt": "Skills — capability row 6 (Multi-agent system design)",
+      "siteValue": "4,272 backend tests",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "Blobless sparse clone of main (head bb5f5f01): `grep -rhoE '^\\s*(async )?def test_[A-Za-z0-9_]+' apps/api/tests | wc -l` = 4272, across 392 test files.",
+      "verdict": "consistent",
+      "resolution": "No change. Exact to the unit — the strongest-sourced repository figure on the page."
+    },
+    {
+      "claim": "Skills evidence — '39 page routes' in aether-job-career-agent",
+      "renderedAt": "Skills — capability row 8 (Next.js and TypeScript at production scale)",
+      "siteValue": "39 page routes",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "git tree main: files matching apps/web/(src/)?app/**/page.tsx = 39.",
+      "verdict": "consistent",
+      "resolution": "No change. Exact."
+    },
+    {
+      "claim": "Skills evidence — '26 Playwright specs' in aether-job-career-agent",
+      "renderedAt": "Skills — capability row 8 (Next.js and TypeScript at production scale)",
+      "siteValue": "26 Playwright specs",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "git tree main: 26 *.spec.ts files under an e2e path (27 *.spec.ts(x) in the repository overall).",
+      "verdict": "consistent",
+      "resolution": "No change. Exact for the e2e suite, which is what 'Playwright specs' means here."
+    },
+    {
+      "claim": "Skills evidence — '2,326 unit cases' in aether-job-career-agent",
+      "renderedAt": "Skills — capability row 8 (Next.js and TypeScript at production scale)",
+      "siteValue": "2,326 unit cases",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "Static count at main head bb5f5f01: `it(`/`test(` call sites in apps/web **/*.test.ts(x) = 2,270 strict, 2,274 including it.each/only/skip forms, across 259 test files. A separate 63 it/test call sites live in the *.spec.ts e2e files.",
+      "verdict": "not observable",
+      "resolution": "Cannot be confirmed or refuted by static counting: a Vitest run expands parametrised `it.each` tables into multiple reported cases, which plausibly accounts for the ~52-case gap between my 2,274 and the claimed 2,326, and the figure may have been taken at a different commit. RECOMMENDED: record the harvest method and commit sha next to the number (as the repo-harvest file does for commits), so the claim becomes reproducible rather than merely plausible."
+    },
+    {
+      "claim": "Skills evidence — '20 agent engines' in aether-job-career-agent",
+      "renderedAt": "Skills — capability row 6 (Multi-agent system design)",
+      "siteValue": "20 agent engines",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "git tree main, apps/api/app/agents/: 22 .py files = 21 excluding __init__.py; of those, 18 are named *_agent.py (company_research, compliance, cover_letter, email, interview_prep, learning_feedback, market_trends, matcher, notification, recruiter_outreach, reference, salary_intelligence, sales, scheduling, scout, sentiment_analysis, submission, tailor) and 3 are unsuffixed helpers (fit_scorer, outreach_support, story_extractor).",
+      "verdict": "divergent",
+      "resolution": "FIX REQUIRED (small, but this page's whole argument is that its numbers reproduce): no counting rule over apps/api/app/agents/ yields 20 — the observable counts are 18 (*_agent.py) or 21 (all non-__init__ modules). Either correct the figure to whichever rule is intended and state the rule, or drop the count and keep '22 routers · 4,272 backend tests', both of which reproduce exactly. app/data/portfolio/skills.ts:126."
+    },
+    {
+      "claim": "Skills evidence — remaining capability rows and their sources",
+      "renderedAt": "Skills — capability rows 9-13",
+      "siteValue": "public-key-server (PEM key-distribution, full Mocha/Chai coverage); containerised-birth-time-rectifier (Compose, not Kubernetes — there are no cluster manifests in that repository); relationship-timeline-feature and EFDDH-Jira-Analytics-Dashboard (data visualisation); this site + abentertainment (WebGL/GLSL)",
+      "cvValue": "public-key-server, relationship-timeline-feature and EFDDH-Jira-Analytics-Dashboard all correspond to CV bullets under 'Independent AI Consulting & Upskilling'.",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "All four repositories exist and are public (GitHub API, 2026-09-03): public-key-server (TypeScript, 16 commits, 2025-04-16 → 2025-05-02), containerised-birth-time-rectifier (Python, 43 commits, 2025-03-03 → 2025-04-02), relationship-timeline-feature (TypeScript, 19 commits, 2025-04-12 → 2025-04-13), EFDDH-Jira-Analytics-Dashboard (Python, 25 commits, 2024-11-11 → 2024-12-04).",
+      "verdict": "consistent",
+      "resolution": "No change. Every repository named as evidence exists, is public, and is reachable by a reader."
+    },
+    {
+      "claim": "Skills graph totals — '20 links · 13 sources · 17 capabilities'",
+      "renderedAt": "Skills — graph caption and the '17 of 17 capabilities shown' counter",
+      "siteValue": "20 links · 13 sources · 17 capabilities; 17 of 17 shown",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "consistent",
+      "resolution": "No change. Recomputed from app/data/portfolio/skills.ts: 13 entries in `sources` (3 programme, 7 repository, 3 credential), 17 capability entries, and the `sources` arrays across those 17 sum to exactly 20 links."
+    },
+    {
+      "claim": "Corrections ledger — '8 of 59 corrections in the history'",
+      "renderedAt": "Feedback & coffee — 'What I was told I had got wrong'",
+      "siteValue": "8 shown of 59 total, harvested 2026-09-03; SHAs f642b41, e480687, df0dac6, 5c7b50f, 45077cb, 79b11a0, 3df1815, 699933f (all 2026-09-03)",
+      "cvValue": "n/a",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "Recomputed against the live repository with the build script's own rule (subject matches /^(fix|perf|refactor)\\(/i or contains review|reviewer|audit|finding|findings|adversarial|regression|defect|caught|wrong|fabrication): 235 commits scanned, 59 qualifying. The eight most recent qualifying SHAs are f642b41, e480687, df0dac6, 5c7b50f, 45077cb, 79b11a0, 3df1815, 699933f — the exact eight rendered, in the exact order.",
+      "verdict": "consistent",
+      "resolution": "No change. The total, the shown count, the SHAs and their order all reproduce. The one-commit lag is disclosed by the generator's own docstring and by the page printing its harvest date."
+    },
+    {
+      "claim": "LinkedIn profile — every field (headline, roles, dates, education, certifications, skills)",
+      "renderedAt": "Not rendered on the site; the site renders only the profile URL",
+      "siteValue": "linkedin.com/in/vikramd-profile (link only — no LinkedIn-sourced content appears anywhere on the page)",
+      "cvValue": "The URL is printed in the CV's CONTACT INFO block, page 1. No other LinkedIn content is in the CV.",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "n/a",
+      "verdict": "not observable",
+      "resolution": "No reconciliation possible in either direction, and none was fabricated. Two independent attempts this run: (1) curl with a desktop Chrome User-Agent -> HTTP 999, 1,530-byte tracking stub; (2) Playwright with { channel: 'chrome' } -> HTTP 999, body is LinkedIn's 'Agree & Join LinkedIn' registration wall, zero profile fields present. HTTP 999 is LinkedIn's non-standard refusal for unauthenticated clients. Because no LinkedIn field is observable, NO claim on the site can be confirmed or contradicted by LinkedIn, and every linkedinValue in this register is recorded as 'not observable' rather than assumed to agree."
+    },
+    {
+      "claim": "Provenance discipline — self-reported vs harvested figures",
+      "renderedAt": "Hero ledger footnote; every figure tooltip; vitrine footer",
+      "siteValue": "'◐ self-reported, from my CV. Repository figures below are harvested and dated.' Each CV figure carries '(Self-reported figure.)'; each unmeasured role carries 'no published figure — (Not measurable; reason given.)'",
+      "cvValue": "Every figure so marked traces to a CV bullet.",
+      "linkedinValue": "not observable — LinkedIn returns HTTP 999 to every unauthenticated client (verified twice this run: curl HTTP 999; Playwright Chrome channel HTTP 999, body is the 'Agree & Join LinkedIn' auth wall). No profile field was retrieved.",
+      "githubValue": "Every figure marked harvested traces to the GitHub API and is dated 2026-09-03 on the page.",
+      "verdict": "consistent",
+      "resolution": "No change. The separation between self-reported and harvested is maintained everywhere it is claimed, and is the reason this audit could be run at all."
+    }
+  ]
+}

@@ -112,6 +112,6 @@ export const aboutContent = {
     label: 'Dimensions taken verbatim from',
     repo: 'Victordtesla24/aether-job-career-agent',
     path: 'apps/api/app/routers/jobs.py',
-    href: 'https://github.com/Victordtesla24/aether-job-career-agent',
+    href: 'https://github.com/Victordtesla24/aether-job-career-agent/blob/main/apps/api/app/routers/jobs.py',
   },
 } as const;

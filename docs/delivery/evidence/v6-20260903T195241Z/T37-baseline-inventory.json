@@ -1,0 +1,2743 @@
+{
+  "artefact": "T-37 baseline inventory",
+  "contract_refs": {
+    "requirements": "R-165 … R-171",
+    "success_criterion": "SC-87.1",
+    "test": "T-37",
+    "gate": "Gate R"
+  },
+  "run_id": "v6-20260903T195241Z",
+  "target_url": "https://forgotten-mistory.web.app/",
+  "captured_utc": "2026-09-03T20:03:42.936Z",
+  "capture_method": {
+    "tool": "Playwright (chromium, channel:'chrome')",
+    "playwright_version": "1.57.0",
+    "viewports": [
+      {
+        "name": "desktop-1440x900",
+        "width": 1440,
+        "height": 900,
+        "isMobile": false
+      },
+      {
+        "name": "mobile-390x844",
+        "width": 390,
+        "height": 844,
+        "isMobile": true
+      }
+    ],
+    "procedure": "navigate → first-rAF snapshot → load → 2.5 s settle → scroll each section into view (2.2 s dwell each) → extract → expand every Experience role → re-extract; a separate javaScriptEnabled:false pass captured the no-JS render",
+    "screenshots_dir": "docs/delivery/evidence/v6-20260903T195241Z/T37-baseline-shots"
+  },
+  "document_title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+  "1_metrics_with_provenance": {
+    "note": "Every element rendering the caliper mark (span[class*='Caliper_caliper']). The provenance gloss is rendered inside the mark as a screen-reader-only span; 'gloss_is_screen_reader_only' records how it is delivered.",
+    "caliper_states_observed_on_the_live_site": [
+      "open",
+      "self-reported"
+    ],
+    "provenance_gloss_strings_observed": [
+      "Computed from the role, not the candidate; answered as what he looks for.",
+      "Not measurable; reason given.",
+      "Self-reported figure."
+    ],
+    "gloss_string_not_observed_on_this_baseline": [
+      "Measured; source given. — the 'sourced' caliper state is defined in the component but no element on the live page currently renders it"
+    ],
+    "count_desktop": 15,
+    "count_mobile": 15,
+    "desktop": [
+      {
+        "section": "hero",
+        "caliper_state": "self-reported",
+        "visible_value": "≈92%",
+        "provenance_gloss": "Self-reported figure.",
+        "provenance_gloss_rendered": "(Self-reported figure.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(244, 246, 250)",
+        "context_text": "≈92% (Self-reported figure.)evidence effort removedATO Payday Super · 200+ SIT scenarios",
+        "selector": "#hero > div.Hero_inner__2iGTj:nth-of-type(2) > div.Hero_ledgerRow__UJeSu:nth-of-type(1) > ul.Hero_ledger__T0DjZ > li.Hero_ledgerItem__FffnS:nth-of-type(1) > span.Caliper_caliper__w4oUs.Hero_ledgerValue__bBHSS:nth-of-type(1)",
+        "class_list": "Caliper_caliper__w4oUs Hero_ledgerValue__bBHSS"
+      },
+      {
+        "section": "hero",
+        "caliper_state": "self-reported",
+        "visible_value": "$5M+",
+        "provenance_gloss": "Self-reported figure.",
+        "provenance_gloss_rendered": "(Self-reported figure.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(244, 246, 250)",
+        "context_text": "$5M+ (Self-reported figure.)program portfolio ledANZ · 5+ squads, 40+ practitioners",
+        "selector": "#hero > div.Hero_inner__2iGTj:nth-of-type(2) > div.Hero_ledgerRow__UJeSu:nth-of-type(1) > ul.Hero_ledger__T0DjZ > li.Hero_ledgerItem__FffnS:nth-of-type(2) > span.Caliper_caliper__w4oUs.Hero_ledgerValue__bBHSS:nth-of-type(1)",
+        "class_list": "Caliper_caliper__w4oUs Hero_ledgerValue__bBHSS"
+      },
+      {
+        "section": "hero",
+        "caliper_state": "self-reported",
+        "visible_value": "10k+",
+        "provenance_gloss": "Self-reported figure.",
+        "provenance_gloss_rendered": "(Self-reported figure.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(244, 246, 250)",
+        "context_text": "10k+ (Self-reported figure.)devices at P95 < 200 msANZ · real-time telemetry platform",
+        "selector": "#hero > div.Hero_inner__2iGTj:nth-of-type(2) > div.Hero_ledgerRow__UJeSu:nth-of-type(1) > ul.Hero_ledger__T0DjZ > li.Hero_ledgerItem__FffnS:nth-of-type(3) > span.Caliper_caliper__w4oUs.Hero_ledgerValue__bBHSS:nth-of-type(1)",
+        "class_list": "Caliper_caliper__w4oUs Hero_ledgerValue__bBHSS"
+      },
+      {
+        "section": "about",
+        "caliper_state": "open",
+        "visible_value": "measured from the role",
+        "provenance_gloss": "Computed from the role, not the candidate; answered as what he looks for.",
+        "provenance_gloss_rendered": "(Computed from the role, not the candidate; answered as what he looks for.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(138, 143, 154)",
+        "context_text": "Salary Fitmeasured from the role (Computed from the role, not the candidate; answered as what he looks for.)",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(6) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_",
+        "class_list": "Caliper_caliper__w4oUs About_sideTag__gGn7_"
+      },
+      {
+        "section": "about",
+        "caliper_state": "open",
+        "visible_value": "measured from the role",
+        "provenance_gloss": "Computed from the role, not the candidate; answered as what he looks for.",
+        "provenance_gloss_rendered": "(Computed from the role, not the candidate; answered as what he looks for.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(138, 143, 154)",
+        "context_text": "Location Matchmeasured from the role (Computed from the role, not the candidate; answered as what he looks for.)",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(7) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_",
+        "class_list": "Caliper_caliper__w4oUs About_sideTag__gGn7_"
+      },
+      {
+        "section": "about",
+        "caliper_state": "open",
+        "visible_value": "measured from the role",
+        "provenance_gloss": "Computed from the role, not the candidate; answered as what he looks for.",
+        "provenance_gloss_rendered": "(Computed from the role, not the candidate; answered as what he looks for.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(138, 143, 154)",
+        "context_text": "Company Stabilitymeasured from the role (Computed from the role, not the candidate; answered as what he looks for.)",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(9) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_",
+        "class_list": "Caliper_caliper__w4oUs About_sideTag__gGn7_"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "self-reported",
+        "visible_value": "≈92%",
+        "provenance_gloss": "Self-reported figure.",
+        "provenance_gloss_rendered": "(Self-reported figure.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(244, 246, 250)",
+        "context_text": "≈92% (Self-reported figure.)evidence effort removed across 200+ SIT scenarios",
+        "selector": "#role-ato > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineValue__BC6J9:nth-of-type(1)",
+        "class_list": "Caliper_caliper__w4oUs Experience_roleHeadlineValue__BC6J9"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "self-reported",
+        "visible_value": "−38%",
+        "provenance_gloss": "Self-reported figure.",
+        "provenance_gloss_rendered": "(Self-reported figure.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(244, 246, 250)",
+        "context_text": "−38% (Self-reported figure.)error-budget breaches — measured against a simulated budget, not live traffic",
+        "selector": "#role-independent > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineValue__BC6J9:nth-of-type(1)",
+        "class_list": "Caliper_caliper__w4oUs Experience_roleHeadlineValue__BC6J9"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "self-reported",
+        "visible_value": "10k+",
+        "provenance_gloss": "Self-reported figure.",
+        "provenance_gloss_rendered": "(Self-reported figure.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(244, 246, 250)",
+        "context_text": "10k+ (Self-reported figure.)concurrent devices at P95 under 200 ms",
+        "selector": "#role-anz > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineValue__BC6J9:nth-of-type(1)",
+        "class_list": "Caliper_caliper__w4oUs Experience_roleHeadlineValue__BC6J9"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "open",
+        "visible_value": "no published figure",
+        "provenance_gloss": "Not measurable; reason given.",
+        "provenance_gloss_rendered": "(Not measurable; reason given.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(138, 143, 154)",
+        "context_text": "no published figure (Not measurable; reason given.)",
+        "selector": "#role-nab > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineOpen__1FiOr",
+        "class_list": "Caliper_caliper__w4oUs Experience_roleHeadlineOpen__1FiOr"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "open",
+        "visible_value": "no published figure",
+        "provenance_gloss": "Not measurable; reason given.",
+        "provenance_gloss_rendered": "(Not measurable; reason given.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(138, 143, 154)",
+        "context_text": "no published figure (Not measurable; reason given.)",
+        "selector": "#role-microsoft > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineOpen__1FiOr",
+        "class_list": "Caliper_caliper__w4oUs Experience_roleHeadlineOpen__1FiOr"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "open",
+        "visible_value": "no published figure",
+        "provenance_gloss": "Not measurable; reason given.",
+        "provenance_gloss_rendered": "(Not measurable; reason given.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(138, 143, 154)",
+        "context_text": "no published figure (Not measurable; reason given.)",
+        "selector": "#role-telstra > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineOpen__1FiOr",
+        "class_list": "Caliper_caliper__w4oUs Experience_roleHeadlineOpen__1FiOr"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "open",
+        "visible_value": "no published figure",
+        "provenance_gloss": "Not measurable; reason given.",
+        "provenance_gloss_rendered": "(Not measurable; reason given.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(138, 143, 154)",
+        "context_text": "no published figure (Not measurable; reason given.)",
+        "selector": "#role-infocentric > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineOpen__1FiOr",
+        "class_list": "Caliper_caliper__w4oUs Experience_roleHeadlineOpen__1FiOr"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "open",
+        "visible_value": "no published figure",
+        "provenance_gloss": "Not measurable; reason given.",
+        "provenance_gloss_rendered": "(Not measurable; reason given.)",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(138, 143, 154)",
+        "context_text": "no published figure (Not measurable; reason given.)",
+        "selector": "#role-myob > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineOpen__1FiOr",
+        "class_list": "Caliper_caliper__w4oUs Experience_roleHeadlineOpen__1FiOr"
+      },
+      {
+        "section": "skills",
+        "caliper_state": "open",
+        "visible_value": "○",
+        "provenance_gloss": "",
+        "provenance_gloss_rendered": "()",
+        "gloss_is_screen_reader_only": true,
+        "gloss_computed_style": {
+          "position": "absolute",
+          "width": "1px",
+          "height": "1px",
+          "clip_path": "none",
+          "overflow": "hidden",
+          "display": "block"
+        },
+        "arm_count": 2,
+        "value_color": "rgb(138, 143, 154)",
+        "context_text": "○ ()in progress, not yet held",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_controls__jIh1U:nth-of-type(1) > ul.Skills_legend__kt3A_ > li.Skills_legendItem__Icsg2:nth-of-type(3) > span.Caliper_caliper__w4oUs.Skills_legendGlyph__ZFNcO:nth-of-type(1)",
+        "class_list": "Caliper_caliper__w4oUs Skills_legendGlyph__ZFNcO"
+      }
+    ],
+    "mobile": [
+      {
+        "section": "hero",
+        "caliper_state": "self-reported",
+        "visible_value": "≈92%",
+        "provenance_gloss": "Self-reported figure.",
+        "selector": "#hero > div.Hero_inner__2iGTj:nth-of-type(2) > div.Hero_ledgerRow__UJeSu:nth-of-type(1) > ul.Hero_ledger__T0DjZ > li.Hero_ledgerItem__FffnS:nth-of-type(1) > span.Caliper_caliper__w4oUs.Hero_ledgerValue__bBHSS:nth-of-type(1)"
+      },
+      {
+        "section": "hero",
+        "caliper_state": "self-reported",
+        "visible_value": "$5M+",
+        "provenance_gloss": "Self-reported figure.",
+        "selector": "#hero > div.Hero_inner__2iGTj:nth-of-type(2) > div.Hero_ledgerRow__UJeSu:nth-of-type(1) > ul.Hero_ledger__T0DjZ > li.Hero_ledgerItem__FffnS:nth-of-type(2) > span.Caliper_caliper__w4oUs.Hero_ledgerValue__bBHSS:nth-of-type(1)"
+      },
+      {
+        "section": "hero",
+        "caliper_state": "self-reported",
+        "visible_value": "10k+",
+        "provenance_gloss": "Self-reported figure.",
+        "selector": "#hero > div.Hero_inner__2iGTj:nth-of-type(2) > div.Hero_ledgerRow__UJeSu:nth-of-type(1) > ul.Hero_ledger__T0DjZ > li.Hero_ledgerItem__FffnS:nth-of-type(3) > span.Caliper_caliper__w4oUs.Hero_ledgerValue__bBHSS:nth-of-type(1)"
+      },
+      {
+        "section": "about",
+        "caliper_state": "open",
+        "visible_value": "measured from the role",
+        "provenance_gloss": "Computed from the role, not the candidate; answered as what he looks for.",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(6) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_"
+      },
+      {
+        "section": "about",
+        "caliper_state": "open",
+        "visible_value": "measured from the role",
+        "provenance_gloss": "Computed from the role, not the candidate; answered as what he looks for.",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(7) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_"
+      },
+      {
+        "section": "about",
+        "caliper_state": "open",
+        "visible_value": "measured from the role",
+        "provenance_gloss": "Computed from the role, not the candidate; answered as what he looks for.",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(9) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "self-reported",
+        "visible_value": "≈92%",
+        "provenance_gloss": "Self-reported figure.",
+        "selector": "#role-ato > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineValue__BC6J9:nth-of-type(1)"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "self-reported",
+        "visible_value": "−38%",
+        "provenance_gloss": "Self-reported figure.",
+        "selector": "#role-independent > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineValue__BC6J9:nth-of-type(1)"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "self-reported",
+        "visible_value": "10k+",
+        "provenance_gloss": "Self-reported figure.",
+        "selector": "#role-anz > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineValue__BC6J9:nth-of-type(1)"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "open",
+        "visible_value": "no published figure",
+        "provenance_gloss": "Not measurable; reason given.",
+        "selector": "#role-nab > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineOpen__1FiOr"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "open",
+        "visible_value": "no published figure",
+        "provenance_gloss": "Not measurable; reason given.",
+        "selector": "#role-microsoft > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineOpen__1FiOr"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "open",
+        "visible_value": "no published figure",
+        "provenance_gloss": "Not measurable; reason given.",
+        "selector": "#role-telstra > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineOpen__1FiOr"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "open",
+        "visible_value": "no published figure",
+        "provenance_gloss": "Not measurable; reason given.",
+        "selector": "#role-infocentric > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineOpen__1FiOr"
+      },
+      {
+        "section": "experience",
+        "caliper_state": "open",
+        "visible_value": "no published figure",
+        "provenance_gloss": "Not measurable; reason given.",
+        "selector": "#role-myob > p.Experience_roleHeadline__ol121 > span.Caliper_caliper__w4oUs.Experience_roleHeadlineOpen__1FiOr"
+      },
+      {
+        "section": "skills",
+        "caliper_state": "open",
+        "visible_value": "○",
+        "provenance_gloss": "",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_controls__jIh1U:nth-of-type(1) > ul.Skills_legend__kt3A_ > li.Skills_legendItem__Icsg2:nth-of-type(3) > span.Caliper_caliper__w4oUs.Skills_legendGlyph__ZFNcO:nth-of-type(1)"
+      }
+    ],
+    "desktop_mobile_parity": true,
+    "about_instrument_key_swatches": [
+      {
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > div.About_instrument__Wn_am > dl.About_key__Vodvg > div.About_keyRow__tHuKb:nth-of-type(1)",
+        "swatch_state": "answered",
+        "text": "Seven axes the engine computes from the candidate — answered on this page."
+      },
+      {
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > div.About_instrument__Wn_am > dl.About_key__Vodvg > div.About_keyRow__tHuKb:nth-of-type(2)",
+        "swatch_state": "role",
+        "text": "Three it computes from the role. Nothing about a person to measure, so the sector stays open."
+      }
+    ],
+    "hero_ledger_grading_line": "◐ self-reported, from my CV. Repository figures below are harvested and dated.",
+    "hero_ledger": [
+      {
+        "value": "≈92%",
+        "gloss": "(Self-reported figure.)",
+        "state": "self-reported",
+        "label": "evidence effort removed",
+        "source": "ATO Payday Super · 200+ SIT scenarios"
+      },
+      {
+        "value": "$5M+",
+        "gloss": "(Self-reported figure.)",
+        "state": "self-reported",
+        "label": "program portfolio led",
+        "source": "ANZ · 5+ squads, 40+ practitioners"
+      },
+      {
+        "value": "10k+",
+        "gloss": "(Self-reported figure.)",
+        "state": "self-reported",
+        "label": "devices at P95 < 200 ms",
+        "source": "ANZ · real-time telemetry platform"
+      }
+    ],
+    "hero_statement": "Sixteen years leading delivery across government, banking and telecommunications — currently Scrum Master and Project Manager on the Australian Taxation Office's Payday Super program."
+  },
+  "2_skills_calibration_semantics": {
+    "section_id": "skills",
+    "heading": "Calibration card",
+    "kicker": "Skills & Certifications",
+    "three_status_states": {
+      "data_status_values_in_dom": [
+        "production",
+        "non-production",
+        "pending"
+      ],
+      "legend": [
+        {
+          "glyph": "●",
+          "exact_label_string": "measured in production",
+          "full_text": "●measured in production",
+          "caliper_state": null,
+          "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_controls__jIh1U:nth-of-type(1) > ul.Skills_legend__kt3A_ > li.Skills_legendItem__Icsg2:nth-of-type(1)"
+        },
+        {
+          "glyph": "◐",
+          "exact_label_string": "measured outside production",
+          "full_text": "◐measured outside production",
+          "caliper_state": null,
+          "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_controls__jIh1U:nth-of-type(1) > ul.Skills_legend__kt3A_ > li.Skills_legendItem__Icsg2:nth-of-type(2)"
+        },
+        {
+          "glyph": "○",
+          "exact_label_string": "in progress, not yet held",
+          "full_text": "○ ()in progress, not yet held",
+          "caliper_state": "open",
+          "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_controls__jIh1U:nth-of-type(1) > ul.Skills_legend__kt3A_ > li.Skills_legendItem__Icsg2:nth-of-type(3)"
+        }
+      ]
+    },
+    "explicit_refusal_of_proficiency_bars": {
+      "selector": "#skills > div.Skills_inner__FWoEr > header.Skills_header__EGNya > p.Skills_lede__IPBNB:nth-of-type(2)",
+      "text": "Every instrument ships with a certificate saying what was tested, where, and what was not. This is that certificate. There are no proficiency bars on this page, because nobody can check one.",
+      "class_list": "Skills_lede__IPBNB"
+    },
+    "table_selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d",
+    "table_headers": [
+      "Capability",
+      "Evidence",
+      "Where",
+      "Status"
+    ],
+    "rows": [
+      {
+        "row_index": 1,
+        "data_status": "production",
+        "capability": "Mainframe test automation — REXX, SMF, SDSF, PCOMM",
+        "evidence_column_text": "200+ SIT/E2E scenarios · ~3 h to ~15 min per scenario",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "ATO · Payday Super",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(1)"
+      },
+      {
+        "row_index": 2,
+        "data_status": "production",
+        "capability": "Agile delivery at programme scale",
+        "evidence_column_text": "8 squads · PI 47–48 · test capacity re-baselined 30 → 90 person-days",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "ATO · Payday Super",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(2)"
+      },
+      {
+        "row_index": 3,
+        "data_status": "production",
+        "capability": "Real-time telemetry platforms",
+        "evidence_column_text": "10,000+ concurrent devices held at P95 under 200 ms",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "ANZ",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(3)"
+      },
+      {
+        "row_index": 4,
+        "data_status": "production",
+        "capability": "Cloud-native migration — .NET, Azure",
+        "evidence_column_text": ">30% delivery efficiency · >15% infrastructure cost reduction",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "ANZ",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(4)"
+      },
+      {
+        "row_index": 5,
+        "data_status": "production",
+        "capability": "Programme and portfolio management",
+        "evidence_column_text": "$5M+ portfolio · 5+ squads · 40+ practitioners onshore and offshore",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "ANZ",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(5)"
+      },
+      {
+        "row_index": 6,
+        "data_status": "production",
+        "capability": "Multi-agent system design — Python, FastAPI, Postgres, Redis",
+        "evidence_column_text": "20 agent engines · 22 routers · 4,272 backend tests · live on a VPS",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "aether-job-career-agent",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(6)"
+      },
+      {
+        "row_index": 7,
+        "data_status": "non-production",
+        "capability": "LLM evaluation and guardrails — Langfuse, Phoenix",
+        "evidence_column_text": "−38% error-budget breaches; entailment guard reverts unsupported claimsthe −38% was measured against a simulated error budget, not live traffic",
+        "qualifying_footnote_in_evidence": "the −38% was measured against a simulated error budget, not live traffic",
+        "where_column_text": "Independent · aether-job-career-agent",
+        "status_glyph": "◐",
+        "status_label": "measured outside production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(7)"
+      },
+      {
+        "row_index": 8,
+        "data_status": "production",
+        "capability": "Next.js and TypeScript at production scale",
+        "evidence_column_text": "39 page routes · 2,326 unit cases · 26 Playwright specs",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "aether-job-career-agent",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(8)"
+      },
+      {
+        "row_index": 9,
+        "data_status": "production",
+        "capability": "Node.js / Express services",
+        "evidence_column_text": "PEM key-distribution service · full Mocha/Chai coverage",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "public-key-server",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(9)"
+      },
+      {
+        "row_index": 10,
+        "data_status": "production",
+        "capability": "Containerised delivery — Docker, systemd, self-hosted CI",
+        "evidence_column_text": "build → gate → deploy → smoke test → automatic rollback on failure",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "aether-job-career-agent · abentertainment",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(10)"
+      },
+      {
+        "row_index": 11,
+        "data_status": "non-production",
+        "capability": "Multi-service orchestration — Docker Compose",
+        "evidence_column_text": "gateway, AI service and Redis composed across separate stacksCompose, not Kubernetes — there are no cluster manifests in that repository",
+        "qualifying_footnote_in_evidence": "Compose, not Kubernetes — there are no cluster manifests in that repository",
+        "where_column_text": "containerised-birth-time-rectifier",
+        "status_glyph": "◐",
+        "status_label": "measured outside production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(11)"
+      },
+      {
+        "row_index": 12,
+        "data_status": "production",
+        "capability": "WebGL and GLSL — three.js, React Three Fiber",
+        "evidence_column_text": "bespoke shaders and scenes, one context per section, no context loss",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "this site · abentertainment",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(12)"
+      },
+      {
+        "row_index": 13,
+        "data_status": "production",
+        "capability": "Data visualisation",
+        "evidence_column_text": "customer-journey timeline in React/TypeScript; sprint-velocity dashboard in Python",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "relationship-timeline-feature · EFDDH-Jira-Analytics-Dashboard",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(13)"
+      },
+      {
+        "row_index": 14,
+        "data_status": "production",
+        "capability": "Certified Scrum Master (CSM)",
+        "evidence_column_text": "Scrum Alliance credential, held",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "Scrum Alliance",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(14)"
+      },
+      {
+        "row_index": 15,
+        "data_status": "production",
+        "capability": "Master of Computer Science (Honours)",
+        "evidence_column_text": "conferred",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "Monash University",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(15)"
+      },
+      {
+        "row_index": 16,
+        "data_status": "production",
+        "capability": "Bachelor of Engineering, Computer Science",
+        "evidence_column_text": "conferred",
+        "qualifying_footnote_in_evidence": null,
+        "where_column_text": "University of Melbourne",
+        "status_glyph": "●",
+        "status_label": "measured in production",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(16)"
+      },
+      {
+        "row_index": 17,
+        "data_status": "pending",
+        "capability": "AWS and GCP certification",
+        "evidence_column_text": "studying; no certificate issuedlisted because the CV lists it — saying so is the point of the card",
+        "qualifying_footnote_in_evidence": "listed because the CV lists it — saying so is the point of the card",
+        "where_column_text": "—",
+        "status_glyph": "○",
+        "status_label": "in progress, not yet held",
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(17)"
+      }
+    ],
+    "qualifying_footnotes_caveats": [
+      {
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(7) > td.Skills_evidence__HceDJ:nth-of-type(1) > span.Skills_caveat__AOTAH",
+        "text": "the −38% was measured against a simulated error budget, not live traffic",
+        "row_capability": "LLM evaluation and guardrails — Langfuse, Phoenix"
+      },
+      {
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(11) > td.Skills_evidence__HceDJ:nth-of-type(1) > span.Skills_caveat__AOTAH",
+        "text": "Compose, not Kubernetes — there are no cluster manifests in that repository",
+        "row_capability": "Multi-service orchestration — Docker Compose"
+      },
+      {
+        "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > div.Skills_tableWrap__Aa492:nth-of-type(2) > table.Skills_table__qr48d > tbody > tr:nth-of-type(17) > td.Skills_evidence__HceDJ:nth-of-type(1) > span.Skills_caveat__AOTAH",
+        "text": "listed because the CV lists it — saying so is the point of the card",
+        "row_capability": "AWS and GCP certification"
+      }
+    ],
+    "cv_calibration_line": {
+      "text": "Calibrated against public/docs/Vik_Resume_Final.pdf · MD5 16b856c0 · 157,615 bytes. Run md5sum against the PDF this page links to and you should get the same eight characters.",
+      "selector": "#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > p.Skills_footer__N8hs4:nth-of-type(2)",
+      "document_path": "public/docs/Vik_Resume_Final.pdf",
+      "md5_prefix_rendered": "16b856c0",
+      "byte_size_rendered": "157,615 bytes",
+      "instruction_rendered": "Run md5sum against the PDF this page links to and you should get the same eight characters."
+    },
+    "topology_figure": {
+      "selector": "#skills > div.Skills_inner__FWoEr > figure.Bench_figure__Ga8Cb",
+      "caption": "Every capability, wired to the programme, repository or issuing body its evidence came from. Gold where that evidence was taken in production.",
+      "svg_present": true,
+      "svg_role": null,
+      "svg_aria_label": null,
+      "svg_title": null,
+      "svg_desc": null,
+      "node_labels": [
+        "ATO · Payday Super",
+        "ANZ Banking Group",
+        "Independent consulting",
+        "aether-job-career-agent",
+        "abentertainment",
+        "this site",
+        "public-key-server",
+        "containerised-birth-time-rectifier",
+        "relationship-timeline-feature",
+        "EFDDH-Jira-Analytics-Dashboard",
+        "Scrum Alliance",
+        "Monash University",
+        "University of Melbourne",
+        "Mainframe test automation",
+        "Agile delivery at scale",
+        "Real-time telemetry",
+        "Cloud-native migration",
+        "Programme & portfolio",
+        "Multi-agent systems",
+        "LLM eval & guardrails",
+        "Next.js & TypeScript",
+        "Node.js services",
+        "Containerised delivery",
+        "Service orchestration",
+        "WebGL & GLSL",
+        "Data visualisation",
+        "Certified Scrum Master",
+        "MSc Computer Science",
+        "BE Computer Science",
+        "AWS & GCP certification"
+      ],
+      "counter_line": null,
+      "all_text": "Every capability, wired to the programme, repository or issuing body its evidence came from. Gold where that evidence was taken in production.ProgrammesATO · Payday Super2ANZ Banking Group3Independent consulting1Repositoriesaether-job-career-agent4abentertainment2this site1public-key-server1containerised-birth-time-rectifier1relationship-timeline-feature1EFDDH-Jira-Analytics-Dashboard1CredentialsScrum Alliance1Monash University1University of Melbourne1Mainframe test automationAgile delivery at scaleReal-time telemetryCloud-native migrationProgramme & portfolioMulti-agent systemsLLM eval & guardrailsNext.js & TypeScriptNode.js servicesContainerised deliveryService orchestrationWebGL & GLSLData visualisationCertified Scrum MasterMSc Computer ScienceBE Computer ScienceAWS & GCP certification20 links · 13 sources · 17 capabilities. Hover or tab a node to trace it."
+    },
+    "all_paragraphs": [
+      {
+        "cls": "Skills_kicker__6mUw_",
+        "text": "Skills & Certifications"
+      },
+      {
+        "cls": "Skills_lede__IPBNB",
+        "text": "Every instrument ships with a certificate saying what was tested, where, and what was not. This is that certificate. There are no proficiency bars on this page, because nobody can check one."
+      },
+      {
+        "cls": "Bench_bandLabel__rA2BG",
+        "text": "Programmes"
+      },
+      {
+        "cls": "Bench_bandLabel__rA2BG",
+        "text": "Repositories"
+      },
+      {
+        "cls": "Bench_bandLabel__rA2BG",
+        "text": "Credentials"
+      },
+      {
+        "cls": "Bench_readout__EJ3Xl",
+        "text": "20 links · 13 sources · 17 capabilities. Hover or tab a node to trace it."
+      },
+      {
+        "cls": "Skills_count__a_bmR",
+        "text": "17 of 17 capabilities shown"
+      },
+      {
+        "cls": "Skills_footer__N8hs4",
+        "text": "Calibrated against public/docs/Vik_Resume_Final.pdf · MD5 16b856c0 · 157,615 bytes. Run md5sum against the PDF this page links to and you should get the same eight characters."
+      }
+    ],
+    "mobile_parity": {
+      "legend_labels_match": true,
+      "row_count_desktop": 17,
+      "row_count_mobile": 17,
+      "caveats_match": true,
+      "cv_line_match": true
+    }
+  },
+  "3_vitrine_repository_cards": {
+    "section_id": "vitrine",
+    "kicker": "What is keeping me busy",
+    "heading": "Six of thirty-eight",
+    "lede": "Thirty-eight public repositories exist. These six are the ones worth your time, each with what it does not do printed beside what it does.",
+    "rail_aria_label": "Six repositories, scrollable horizontally",
+    "card_count": 6,
+    "cards": [
+      {
+        "accession": "01",
+        "repository_name": "aether-job-career-agent",
+        "plate_title": "Aether",
+        "what_it_does_line": "A job-application platform whose guard reverts any claim your own résumé cannot support.",
+        "limits_label": "Limits",
+        "limits_line_verbatim": "The public CI workflow is red on main; production deploys through a separate gated pipeline.",
+        "limits_line_as_rendered": "LimitsThe public CI workflow is red on main; production deploys through a separate gated pipeline.",
+        "limits_selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > p.Vitrine_limits__WugAS:nth-of-type(2)",
+        "harvested_metrics": [
+          {
+            "key": "commits",
+            "value": "1,664"
+          },
+          {
+            "key": "active",
+            "value": "2026-07 → 2026-09"
+          },
+          {
+            "key": "stack",
+            "value": "Python · TypeScript · HTML"
+          }
+        ],
+        "links": [
+          {
+            "text": "Source",
+            "href": "https://github.com/Victordtesla24/aether-job-career-agent",
+            "cls": "Vitrine_source__vBcGL"
+          },
+          {
+            "text": "aether.srv1356245.hstgr.cloud",
+            "href": "https://aether.srv1356245.hstgr.cloud/",
+            "cls": "Vitrine_live__PwDxH"
+          }
+        ],
+        "selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1)"
+      },
+      {
+        "accession": "02",
+        "repository_name": "abentertainment",
+        "plate_title": "AB Entertainment",
+        "what_it_does_line": "A live event company’s site and admin portal, containerised and deployed from a push.",
+        "limits_label": "Limits",
+        "limits_line_verbatim": "Content persists as flat JSON files, not a database — sized for one editor, not many.",
+        "limits_line_as_rendered": "LimitsContent persists as flat JSON files, not a database — sized for one editor, not many.",
+        "limits_selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(2) > p.Vitrine_limits__WugAS:nth-of-type(2)",
+        "harvested_metrics": [
+          {
+            "key": "commits",
+            "value": "243"
+          },
+          {
+            "key": "active",
+            "value": "2026-03 → 2026-08"
+          },
+          {
+            "key": "stack",
+            "value": "HTML · TypeScript · JavaScript"
+          }
+        ],
+        "links": [
+          {
+            "text": "Source",
+            "href": "https://github.com/Victordtesla24/abentertainment",
+            "cls": "Vitrine_source__vBcGL"
+          },
+          {
+            "text": "abentertainment.com.au",
+            "href": "https://abentertainment.com.au/",
+            "cls": "Vitrine_live__PwDxH"
+          }
+        ],
+        "selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(2)"
+      },
+      {
+        "accession": "03",
+        "repository_name": "ralph-loop-infinite",
+        "plate_title": "Ralph Loop",
+        "what_it_does_line": "An agent loop whose only exit is a signed verifier saying the work actually passed.",
+        "limits_label": "Limits",
+        "limits_line_verbatim": "A harness for his own machine, not a product; it assumes a trusted local environment.",
+        "limits_line_as_rendered": "LimitsA harness for his own machine, not a product; it assumes a trusted local environment.",
+        "limits_selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > p.Vitrine_limits__WugAS:nth-of-type(2)",
+        "harvested_metrics": [
+          {
+            "key": "commits",
+            "value": "31"
+          },
+          {
+            "key": "active",
+            "value": "2026-05 → 2026-05"
+          },
+          {
+            "key": "stack",
+            "value": "Shell · Python · HTML"
+          }
+        ],
+        "links": [
+          {
+            "text": "Source",
+            "href": "https://github.com/Victordtesla24/ralph-loop-infinite",
+            "cls": "Vitrine_source__vBcGL"
+          }
+        ],
+        "selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3)"
+      },
+      {
+        "accession": "04",
+        "repository_name": "prompt-reconstruction-engine",
+        "plate_title": "Prompt Reconstruction",
+        "what_it_does_line": "Rebuilds a raw prompt into a specification, with provider failover when a model declines.",
+        "limits_label": "Limits",
+        "limits_line_verbatim": "Reconstruction quality is judged by the operator; there is no automated benchmark yet.",
+        "limits_line_as_rendered": "LimitsReconstruction quality is judged by the operator; there is no automated benchmark yet.",
+        "limits_selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(4) > p.Vitrine_limits__WugAS:nth-of-type(2)",
+        "harvested_metrics": [
+          {
+            "key": "commits",
+            "value": "34"
+          },
+          {
+            "key": "active",
+            "value": "2026-06 → 2026-06"
+          },
+          {
+            "key": "stack",
+            "value": "HTML · JavaScript"
+          }
+        ],
+        "links": [
+          {
+            "text": "Source",
+            "href": "https://github.com/Victordtesla24/prompt-reconstruction-engine",
+            "cls": "Vitrine_source__vBcGL"
+          }
+        ],
+        "selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(4)"
+      },
+      {
+        "accession": "05",
+        "repository_name": "jyotish-shastra",
+        "plate_title": "Jyotish Shastra",
+        "what_it_does_line": "A Vedic astrology API with an ephemeris accuracy gate that fails the build on drift.",
+        "limits_label": "Limits",
+        "limits_line_verbatim": "An engine, not an interpretation: it computes positions and declines to tell fortunes.",
+        "limits_line_as_rendered": "LimitsAn engine, not an interpretation: it computes positions and declines to tell fortunes.",
+        "limits_selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(5) > p.Vitrine_limits__WugAS:nth-of-type(2)",
+        "harvested_metrics": [
+          {
+            "key": "commits",
+            "value": "214"
+          },
+          {
+            "key": "active",
+            "value": "2025-06 → 2025-11"
+          },
+          {
+            "key": "stack",
+            "value": "JavaScript · CSS · Shell"
+          }
+        ],
+        "links": [
+          {
+            "text": "Source",
+            "href": "https://github.com/Victordtesla24/jyotish-shastra",
+            "cls": "Vitrine_source__vBcGL"
+          }
+        ],
+        "selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(5)"
+      },
+      {
+        "accession": "06",
+        "repository_name": "forgotten-mistory",
+        "plate_title": "This site",
+        "what_it_does_line": "The page you are reading: static export, one WebGL context per section, no analytics.",
+        "limits_label": "Limits",
+        "limits_line_verbatim": "Every figure on it is quoted from a CV or a repository — none is computed live.",
+        "limits_line_as_rendered": "LimitsEvery figure on it is quoted from a CV or a repository — none is computed live.",
+        "limits_selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(6) > p.Vitrine_limits__WugAS:nth-of-type(2)",
+        "harvested_metrics": [
+          {
+            "key": "commits",
+            "value": "205"
+          },
+          {
+            "key": "active",
+            "value": "2025-11 → 2026-09"
+          },
+          {
+            "key": "stack",
+            "value": "TypeScript · JavaScript · CSS"
+          }
+        ],
+        "links": [
+          {
+            "text": "Source",
+            "href": "https://github.com/Victordtesla24/forgotten-mistory",
+            "cls": "Vitrine_source__vBcGL"
+          },
+          {
+            "text": "forgotten-mistory.web.app",
+            "href": "https://forgotten-mistory.web.app/",
+            "cls": "Vitrine_live__PwDxH"
+          }
+        ],
+        "selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(6)"
+      }
+    ],
+    "excluded_and_why": {
+      "heading_verbatim": "Excluded, and why",
+      "entries": [
+        {
+          "repository": "vik-legal-defence",
+          "reason_verbatim": "a personal legal matter; not a work sample",
+          "selector": "#vitrine > div.Vitrine_foot__JWV__:nth-of-type(2) > div.Vitrine_exclusions__m0EKc > dl.Vitrine_exclusionList__jvMb5 > div.Vitrine_exclusion___sRSz:nth-of-type(1) > dt"
+        },
+        {
+          "repository": "AI-Gmail-Mailbox-Manager",
+          "reason_verbatim": "an environment file was committed early in its history",
+          "selector": "#vitrine > div.Vitrine_foot__JWV__:nth-of-type(2) > div.Vitrine_exclusions__m0EKc > dl.Vitrine_exclusionList__jvMb5 > div.Vitrine_exclusion___sRSz:nth-of-type(2) > dt"
+        },
+        {
+          "repository": "Codex · claude-designs",
+          "reason_verbatim": "scratch workspaces — no reviewable architecture",
+          "selector": "#vitrine > div.Vitrine_foot__JWV__:nth-of-type(2) > div.Vitrine_exclusions__m0EKc > dl.Vitrine_exclusionList__jvMb5 > div.Vitrine_exclusion___sRSz:nth-of-type(3) > dt"
+        }
+      ]
+    },
+    "stamp_line": "38 public repositories · metrics harvested 2026-09-03 from the GitHub API, not live",
+    "mobile_parity": {
+      "limits_lines_match": true,
+      "exclusions_match": true
+    }
+  },
+  "4_ten_dimension_framing": {
+    "section_id": "about",
+    "kicker": "About",
+    "heading": "Ten dimensions, answered",
+    "ledes": [
+      {
+        "selector": "#about > div.About_inner__s8EsR > header.About_header__75tJL > p.About_lede__46MtB:nth-of-type(2)",
+        "text": "I build a job-fit engine that scores a candidate against a role on ten dimensions. It is the fairest summary of a person I know how to write, so here I am on all ten of them."
+      },
+      {
+        "selector": "#about > div.About_inner__s8EsR > header.About_header__75tJL > p.About_lede__46MtB:nth-of-type(3)",
+        "text": "There are no scores below. The engine refuses to publish a number it cannot source, and a number I assign to myself has no source at all — so these are answers, with the evidence beside them."
+      }
+    ],
+    "no_scores_refusal_copy": {
+      "selector": "#about > div.About_inner__s8EsR > header.About_header__75tJL > p.About_lede__46MtB:nth-of-type(3)",
+      "text": "There are no scores below. The engine refuses to publish a number it cannot source, and a number I assign to myself has no source at all — so these are answers, with the evidence beside them."
+    },
+    "cited_source": {
+      "rendered_line": "Dimensions taken verbatim from Victordtesla24/aether-job-career-agentapps/api/app/routers/jobs.py",
+      "cited_repository_as_rendered": "Victordtesla24/aether-job-career-agent",
+      "cited_repository_href": "https://github.com/Victordtesla24/aether-job-career-agent",
+      "cited_file_path_as_rendered": "apps/api/app/routers/jobs.py",
+      "selector": "#about > div.About_inner__s8EsR > header.About_header__75tJL > p.About_provenance__WZF2T:nth-of-type(4)"
+    },
+    "instrument_svg": {
+      "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT",
+      "role": "img",
+      "aria_label": "Instrument face of ten dimensions. No scores: three of the ten are computed from the role and are drawn open.",
+      "viewBox": "0 0 100 100",
+      "box": {
+        "w": 384,
+        "h": 384,
+        "x": 104,
+        "y": 1452.73
+      }
+    },
+    "instrument_key_rows": [
+      {
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > div.About_instrument__Wn_am > dl.About_key__Vodvg > div.About_keyRow__tHuKb:nth-of-type(1)",
+        "swatch_state": "answered",
+        "text": "Seven axes the engine computes from the candidate — answered on this page."
+      },
+      {
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > div.About_instrument__Wn_am > dl.About_key__Vodvg > div.About_keyRow__tHuKb:nth-of-type(2)",
+        "swatch_state": "role",
+        "text": "Three it computes from the role. Nothing about a person to measure, so the sector stays open."
+      }
+    ],
+    "dimension_count": 10,
+    "dimensions": [
+      {
+        "index": "01",
+        "name": "Technical Skills",
+        "data_side": "candidate",
+        "measured_from_the_role_annotation": null,
+        "annotation_provenance_gloss": null,
+        "annotation_caliper_state": null,
+        "answer": "Python and TypeScript to production, and REXX on a mainframe when the program actually needs it. Cloud-native across Azure, GCP and AWS; Kubernetes, Terraform, Postgres.",
+        "evidence": "38 public repositories · ATO evidence harness · ANZ platform migrations",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(1)"
+      },
+      {
+        "index": "02",
+        "name": "Experience Level",
+        "data_side": "candidate",
+        "measured_from_the_role_annotation": null,
+        "annotation_provenance_gloss": null,
+        "annotation_caliper_state": null,
+        "answer": "Sixteen years. Senior delivery lead and AI/ML solutions architect since 2017; before that, business analysis and project delivery from 2010.",
+        "evidence": "ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MYOB",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(2)"
+      },
+      {
+        "index": "03",
+        "name": "Industry Match",
+        "data_side": "candidate",
+        "measured_from_the_role_annotation": null,
+        "annotation_provenance_gloss": null,
+        "annotation_caliper_state": null,
+        "answer": "Government, banking and telecommunications — three regulated industries where the delivery constraint is usually assurance, not engineering.",
+        "evidence": "Australian Taxation Office, ANZ, NAB, Telstra",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(3)"
+      },
+      {
+        "index": "04",
+        "name": "Role Alignment",
+        "data_side": "candidate",
+        "measured_from_the_role_annotation": null,
+        "annotation_provenance_gloss": null,
+        "annotation_caliper_state": null,
+        "answer": "Scrum Master and Project Manager who architects. I have never found the two halves to be separate jobs: the eight-squad test-evidence problem at the ATO was a delivery problem solved with a toolchain.",
+        "evidence": "Payday Super program · Agile Kookaburras squad · PI 47–48",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(4)"
+      },
+      {
+        "index": "05",
+        "name": "Culture Fit",
+        "data_side": "candidate",
+        "measured_from_the_role_annotation": null,
+        "annotation_provenance_gloss": null,
+        "annotation_caliper_state": null,
+        "answer": "Agile as practice rather than ceremony. Cadence and PI planning when the plan holds; a cross-discipline war room, inside three hours, when it does not.",
+        "evidence": "5+ squads, 40+ practitioners onshore and offshore",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(5)"
+      },
+      {
+        "index": "06",
+        "name": "Salary Fit",
+        "data_side": "role",
+        "measured_from_the_role_annotation": "measured from the role",
+        "annotation_provenance_gloss": "(Computed from the role, not the candidate; answered as what he looks for.)",
+        "annotation_caliper_state": "open",
+        "answer": "Melbourne market band for senior delivery leadership. I would rather agree the scope first and let the rate follow it.",
+        "evidence": "Open to permanent and contract engagements",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(6)"
+      },
+      {
+        "index": "07",
+        "name": "Location Match",
+        "data_side": "role",
+        "measured_from_the_role_annotation": "measured from the role",
+        "annotation_provenance_gloss": "(Computed from the role, not the candidate; answered as what he looks for.)",
+        "annotation_caliper_state": "open",
+        "answer": "Melbourne, Victoria. Hybrid locally, or remote across Australian and New Zealand time zones.",
+        "evidence": "Currently on site with the ATO, Melbourne",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(7)"
+      },
+      {
+        "index": "08",
+        "name": "Career Growth",
+        "data_side": "candidate",
+        "measured_from_the_role_annotation": null,
+        "annotation_provenance_gloss": null,
+        "annotation_caliper_state": null,
+        "answer": "Programs where AI delivery and AI assurance are the hard part — where somebody has to be accountable for whether the model output can be trusted, not just whether it shipped.",
+        "evidence": "Langfuse + Phoenix evaluation stack · −38% simulated error-budget breaches",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(8)"
+      },
+      {
+        "index": "09",
+        "name": "Company Stability",
+        "data_side": "role",
+        "measured_from_the_role_annotation": "measured from the role",
+        "annotation_provenance_gloss": "(Computed from the role, not the candidate; answered as what he looks for.)",
+        "annotation_caliper_state": "open",
+        "answer": "I look for organisations that can absorb an honest status report. Every program I have rescued was one where somebody said the number out loud early enough.",
+        "evidence": "75+ hours of evidence against 64 available — escalated, then re-baselined",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(9)"
+      },
+      {
+        "index": "10",
+        "name": "North Star Align",
+        "data_side": "candidate",
+        "measured_from_the_role_annotation": null,
+        "annotation_provenance_gloss": null,
+        "annotation_caliper_state": null,
+        "answer": "Build systems whose claims can be checked. Everything I ship is designed to refuse to fabricate its own evidence, and to say so when it cannot measure something.",
+        "evidence": "aether-job-career-agent · unmeasured signals read \"not measured\", never zero",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(10)"
+      }
+    ],
+    "measured_from_the_role_annotations": [
+      {
+        "index": "06",
+        "dimension": "Salary Fit",
+        "annotation_verbatim": "measured from the role",
+        "provenance_gloss_verbatim": "(Computed from the role, not the candidate; answered as what he looks for.)",
+        "caliper_state": "open",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(6)"
+      },
+      {
+        "index": "07",
+        "dimension": "Location Match",
+        "annotation_verbatim": "measured from the role",
+        "provenance_gloss_verbatim": "(Computed from the role, not the candidate; answered as what he looks for.)",
+        "caliper_state": "open",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(7)"
+      },
+      {
+        "index": "09",
+        "dimension": "Company Stability",
+        "annotation_verbatim": "measured from the role",
+        "provenance_gloss_verbatim": "(Computed from the role, not the candidate; answered as what he looks for.)",
+        "caliper_state": "open",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(9)"
+      }
+    ],
+    "mobile_parity": {
+      "dimension_names_match": true,
+      "cited_file_path_match": true
+    }
+  },
+  "5_experience_timeline": {
+    "section_id": "experience",
+    "kicker": "Experience",
+    "heading": "Sixteen years, to scale",
+    "lede": "Every bar below is drawn to its real duration — the same dates as the CV, on one axis. The long one in the middle is eight years at ANZ, and it is the reason the rest of this reads the way it does.",
+    "chart_scene_present": true,
+    "chart_scene_child_count": 0,
+    "grid_lines_desktop": [
+      {
+        "inline": "left:calc(clamp(7rem, 22%, 14rem) + 1.25rem + (100% - (clamp(7rem, 22%, 14rem) + 1.25rem)) * 0.0000)",
+        "x_px": 340
+      },
+      {
+        "inline": "left:calc(clamp(7rem, 22%, 14rem) + 1.25rem + (100% - (clamp(7rem, 22%, 14rem) + 1.25rem)) * 0.3000)",
+        "x_px": 641.19
+      },
+      {
+        "inline": "left:calc(clamp(7rem, 22%, 14rem) + 1.25rem + (100% - (clamp(7rem, 22%, 14rem) + 1.25rem)) * 0.6000)",
+        "x_px": 942.39
+      },
+      {
+        "inline": "left:calc(clamp(7rem, 22%, 14rem) + 1.25rem + (100% - (clamp(7rem, 22%, 14rem) + 1.25rem)) * 0.9000)",
+        "x_px": 1243.59
+      }
+    ],
+    "duration_true_mapping": {
+      "mechanism": "each bar carries an inline style of left:<percent>% and width:<percent>% against the track line; widths are laid out in 0.5-percent steps",
+      "desktop": {
+        "scale": {
+          "percent_per_year_min": 5.9997,
+          "percent_per_year_max": 6.0002,
+          "px_per_year_min": 60.22,
+          "px_per_year_max": 60.24,
+          "track_line_width_px": 1004
+        },
+        "bars": [
+          {
+            "company": "Australian Taxation Office (ATO)",
+            "aria_label": "Scrum Master / Project Manager — Payday Super Program (NTP & Distribution UI), Australian Taxation Office (ATO), March 2026 - Present",
+            "rendered_duration_label": "6 mo",
+            "dates_from_aria_label": {
+              "start": "2026-03",
+              "end": "present",
+              "months": 6,
+              "years": 0.5
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(1) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:97.00000000000001%;width:2.9999999999999862%",
+            "bar_left_percent": 97,
+            "bar_width_percent": 3,
+            "bar_width_px": 30.11,
+            "bar_left_px": 1313.88,
+            "track_line_width_px": 1004,
+            "px_per_year_implied": 60.22,
+            "percent_per_year_implied": 6.0
+          },
+          {
+            "company": "Independent AI Consulting & Upskilling",
+            "aria_label": "AI Solutions Consultant — Applied LLM Engineering & Delivery Tooling, Independent AI Consulting & Upskilling, Jun 2025 - Feb 2026",
+            "rendered_duration_label": "8 mo",
+            "dates_from_aria_label": {
+              "start": "2025-06",
+              "end": "2026-02",
+              "months": 8,
+              "years": 0.6667
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(2) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:92.50000000000004%;width:3.9999999999990723%",
+            "bar_left_percent": 92.5,
+            "bar_width_percent": 4,
+            "bar_width_px": 40.16,
+            "bar_left_px": 1268.69,
+            "track_line_width_px": 1004,
+            "px_per_year_implied": 60.237,
+            "percent_per_year_implied": 5.9997
+          },
+          {
+            "company": "ANZ Banking Group",
+            "aria_label": "Senior Delivery Lead / AI-ML Solutions Architect, ANZ Banking Group, Sept 2017 - Jun 2025",
+            "rendered_duration_label": "7.8 yr",
+            "dates_from_aria_label": {
+              "start": "2017-09",
+              "end": "2025-06",
+              "months": 93,
+              "years": 7.75
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(3) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:46.00000000000025%;width:46.49999999999979%",
+            "bar_left_percent": 46,
+            "bar_width_percent": 46.5,
+            "bar_width_px": 466.86,
+            "bar_left_px": 801.83,
+            "track_line_width_px": 1004,
+            "px_per_year_implied": 60.24,
+            "percent_per_year_implied": 6.0
+          },
+          {
+            "company": "National Australia Bank (NAB)",
+            "aria_label": "Senior Project Manager & Business Analyst, National Australia Bank (NAB), Nov 2016 - Sept 2017",
+            "rendered_duration_label": "10 mo",
+            "dates_from_aria_label": {
+              "start": "2016-11",
+              "end": "2017-09",
+              "months": 10,
+              "years": 0.8333
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(4) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:40.99999999999936%;width:5.000000000000887%",
+            "bar_left_percent": 41,
+            "bar_width_percent": 5,
+            "bar_width_px": 50.19,
+            "bar_left_px": 751.63,
+            "track_line_width_px": 1004,
+            "px_per_year_implied": 60.2304,
+            "percent_per_year_implied": 6.0002
+          },
+          {
+            "company": "Microsoft",
+            "aria_label": "Lead Business Analyst, Microsoft, Oct 2015 - Oct 2016",
+            "rendered_duration_label": "1.0 yr",
+            "dates_from_aria_label": {
+              "start": "2015-10",
+              "end": "2016-10",
+              "months": 12,
+              "years": 1.0
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(5) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:34.499999999999844%;width:5.9999999999999725%",
+            "bar_left_percent": 34.5,
+            "bar_width_percent": 6,
+            "bar_width_px": 60.23,
+            "bar_left_px": 686.38,
+            "track_line_width_px": 1004,
+            "px_per_year_implied": 60.23,
+            "percent_per_year_implied": 6.0
+          },
+          {
+            "company": "Telstra",
+            "aria_label": "Business Analyst / Project Coordinator, Telstra, Nov 2014 - Oct 2015",
+            "rendered_duration_label": "11 mo",
+            "dates_from_aria_label": {
+              "start": "2014-11",
+              "end": "2015-10",
+              "months": 11,
+              "years": 0.9167
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(6) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:28.999999999999414%;width:5.50000000000043%",
+            "bar_left_percent": 29,
+            "bar_width_percent": 5.5,
+            "bar_width_px": 55.22,
+            "bar_left_px": 631.16,
+            "track_line_width_px": 1004,
+            "px_per_year_implied": 60.2378,
+            "percent_per_year_implied": 5.9998
+          },
+          {
+            "company": "InfoCentric",
+            "aria_label": "Senior Business Analyst, InfoCentric, Aug 2011 - Nov 2014",
+            "rendered_duration_label": "3.3 yr",
+            "dates_from_aria_label": {
+              "start": "2011-08",
+              "end": "2014-11",
+              "months": 39,
+              "years": 3.25
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(7) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:9.499999999999503%;width:19.49999999999991%",
+            "bar_left_percent": 9.5,
+            "bar_width_percent": 19.5,
+            "bar_width_px": 195.77,
+            "bar_left_px": 435.38,
+            "track_line_width_px": 1004,
+            "px_per_year_implied": 60.2369,
+            "percent_per_year_implied": 6.0
+          },
+          {
+            "company": "MYOB",
+            "aria_label": "Developer Support / Software Testing / Analyst, MYOB, May 2010 - Aug 2011",
+            "rendered_duration_label": "1.3 yr",
+            "dates_from_aria_label": {
+              "start": "2010-05",
+              "end": "2011-08",
+              "months": 15,
+              "years": 1.25
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(8) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:1.9999999999995361%;width:7.499999999999966%",
+            "bar_left_percent": 2,
+            "bar_width_percent": 7.5,
+            "bar_width_px": 75.3,
+            "bar_left_px": 360.08,
+            "track_line_width_px": 1004,
+            "px_per_year_implied": 60.24,
+            "percent_per_year_implied": 6.0
+          }
+        ]
+      },
+      "mobile": {
+        "scale": {
+          "percent_per_year_min": 5.9997,
+          "percent_per_year_max": 6.0002,
+          "px_per_year_min": 13.06,
+          "px_per_year_max": 13.08,
+          "track_line_width_px": 218
+        },
+        "bars": [
+          {
+            "company": "Australian Taxation Office (ATO)",
+            "aria_label": "Scrum Master / Project Manager — Payday Super Program (NTP & Distribution UI), Australian Taxation Office (ATO), March 2026 - Present",
+            "rendered_duration_label": "6 mo",
+            "dates_from_aria_label": {
+              "start": "2026-03",
+              "end": "present",
+              "months": 6,
+              "years": 0.5
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(1) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:97.00000000000001%;width:2.9999999999999862%",
+            "bar_left_percent": 97,
+            "bar_width_percent": 3,
+            "bar_width_px": 6.53,
+            "bar_left_px": 359.45,
+            "track_line_width_px": 218,
+            "px_per_year_implied": 13.06,
+            "percent_per_year_implied": 6.0
+          },
+          {
+            "company": "Independent AI Consulting & Upskilling",
+            "aria_label": "AI Solutions Consultant — Applied LLM Engineering & Delivery Tooling, Independent AI Consulting & Upskilling, Jun 2025 - Feb 2026",
+            "rendered_duration_label": "8 mo",
+            "dates_from_aria_label": {
+              "start": "2025-06",
+              "end": "2026-02",
+              "months": 8,
+              "years": 0.6667
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(2) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:92.50000000000004%;width:3.9999999999990723%",
+            "bar_left_percent": 92.5,
+            "bar_width_percent": 4,
+            "bar_width_px": 8.72,
+            "bar_left_px": 349.64,
+            "track_line_width_px": 218,
+            "px_per_year_implied": 13.0793,
+            "percent_per_year_implied": 5.9997
+          },
+          {
+            "company": "ANZ Banking Group",
+            "aria_label": "Senior Delivery Lead / AI-ML Solutions Architect, ANZ Banking Group, Sept 2017 - Jun 2025",
+            "rendered_duration_label": "7.8 yr",
+            "dates_from_aria_label": {
+              "start": "2017-09",
+              "end": "2025-06",
+              "months": 93,
+              "years": 7.75
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(3) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:46.00000000000025%;width:46.49999999999979%",
+            "bar_left_percent": 46,
+            "bar_width_percent": 46.5,
+            "bar_width_px": 101.36,
+            "bar_left_px": 248.27,
+            "track_line_width_px": 218,
+            "px_per_year_implied": 13.0787,
+            "percent_per_year_implied": 6.0
+          },
+          {
+            "company": "National Australia Bank (NAB)",
+            "aria_label": "Senior Project Manager & Business Analyst, National Australia Bank (NAB), Nov 2016 - Sept 2017",
+            "rendered_duration_label": "10 mo",
+            "dates_from_aria_label": {
+              "start": "2016-11",
+              "end": "2017-09",
+              "months": 10,
+              "years": 0.8333
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(4) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:40.99999999999936%;width:5.000000000000887%",
+            "bar_left_percent": 41,
+            "bar_width_percent": 5,
+            "bar_width_px": 10.89,
+            "bar_left_px": 237.38,
+            "track_line_width_px": 218,
+            "px_per_year_implied": 13.0685,
+            "percent_per_year_implied": 6.0002
+          },
+          {
+            "company": "Microsoft",
+            "aria_label": "Lead Business Analyst, Microsoft, Oct 2015 - Oct 2016",
+            "rendered_duration_label": "1.0 yr",
+            "dates_from_aria_label": {
+              "start": "2015-10",
+              "end": "2016-10",
+              "months": 12,
+              "years": 1.0
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(5) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:34.499999999999844%;width:5.9999999999999725%",
+            "bar_left_percent": 34.5,
+            "bar_width_percent": 6,
+            "bar_width_px": 13.08,
+            "bar_left_px": 223.2,
+            "track_line_width_px": 218,
+            "px_per_year_implied": 13.08,
+            "percent_per_year_implied": 6.0
+          },
+          {
+            "company": "Telstra",
+            "aria_label": "Business Analyst / Project Coordinator, Telstra, Nov 2014 - Oct 2015",
+            "rendered_duration_label": "11 mo",
+            "dates_from_aria_label": {
+              "start": "2014-11",
+              "end": "2015-10",
+              "months": 11,
+              "years": 0.9167
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(6) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:28.999999999999414%;width:5.50000000000043%",
+            "bar_left_percent": 29,
+            "bar_width_percent": 5.5,
+            "bar_width_px": 11.98,
+            "bar_left_px": 211.22,
+            "track_line_width_px": 218,
+            "px_per_year_implied": 13.0686,
+            "percent_per_year_implied": 5.9998
+          },
+          {
+            "company": "InfoCentric",
+            "aria_label": "Senior Business Analyst, InfoCentric, Aug 2011 - Nov 2014",
+            "rendered_duration_label": "3.3 yr",
+            "dates_from_aria_label": {
+              "start": "2011-08",
+              "end": "2014-11",
+              "months": 39,
+              "years": 3.25
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(7) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:9.499999999999503%;width:19.49999999999991%",
+            "bar_left_percent": 9.5,
+            "bar_width_percent": 19.5,
+            "bar_width_px": 42.5,
+            "bar_left_px": 168.7,
+            "track_line_width_px": 218,
+            "px_per_year_implied": 13.0769,
+            "percent_per_year_implied": 6.0
+          },
+          {
+            "company": "MYOB",
+            "aria_label": "Developer Support / Software Testing / Analyst, MYOB, May 2010 - Aug 2011",
+            "rendered_duration_label": "1.3 yr",
+            "dates_from_aria_label": {
+              "start": "2010-05",
+              "end": "2011-08",
+              "months": 15,
+              "years": 1.25
+            },
+            "bar_selector": "#experience > div.Experience_inner__1OvUH > div.Experience_chart__PSIiB > div.Experience_trackField__OxyjE:nth-of-type(2) > ol.Experience_tracks__ZVI9F > li.Experience_trackRow__27vfZ:nth-of-type(8) > button.Experience_trackButton__hUcAB > span.Experience_trackLine__VEUWu:nth-of-type(2) > span.Experience_trackBar__OgKOY",
+            "bar_inline_style": "left:1.9999999999995361%;width:7.499999999999966%",
+            "bar_left_percent": 2,
+            "bar_width_percent": 7.5,
+            "bar_width_px": 16.34,
+            "bar_left_px": 152.36,
+            "track_line_width_px": 218,
+            "px_per_year_implied": 13.072,
+            "percent_per_year_implied": 6.0
+          }
+        ]
+      },
+      "assertion": "percent-per-year is constant at 6.0 for every role whose span divides evenly into the 0.5-percent rendering step; the residual spread is the rounding of the inline percent, not a distortion of duration",
+      "anz_is_the_widest_bar": "ANZ Banking Group"
+    },
+    "roles": [
+      {
+        "id": "role-ato",
+        "selector": "#role-ato",
+        "title": "Scrum Master / Project Manager — Payday Super Program (NTP & Distribution UI)",
+        "company": "Australian Taxation Office (ATO)",
+        "rendered_dates": "March 2026 - Present",
+        "figure_state": "self-reported",
+        "figure_value": "≈92%",
+        "figure_gloss": "(Self-reported figure.)",
+        "carries_a_figure": true,
+        "carries_an_open_bracket": false,
+        "headline_text": "≈92% (Self-reported figure.)evidence effort removed across 200+ SIT scenarios",
+        "detail_collapsed_by_default": false,
+        "detail_bullets_when_expanded": [
+          "Lead end-to-end agile delivery for the Agile Kookaburras squad — one of eight squads delivering NTP and Distribution UI capabilities for the ATO’s Payday Super reform — owning sprint cadence, PI planning (PI 47–48), capacity management, and executive status reporting.",
+          "Architected the program’s COBOL/mainframe test-evidence automation strategy covering 200+ SIT/E2E scenarios across all eight squads, cutting evidence effort from ~3 hours to ~15 minutes per scenario (≈92% reduction) using a zero-new-approvals toolchain (REXX, SMF, SDSF, PCOMM, PowerShell, VBA).",
+          "Converted a mathematically infeasible SIT window — 75+ hours of manual evidence per team against 64 available hours — into an achievable plan through a six-day tiered harness build with a formal go/no-go gate and a four-level contingency ladder.",
+          "Convened and facilitated a cross-discipline technical war room that produced a binding automation recommendation in under three hours, securing endorsement without a single new InfoSec approval.",
+          "Authored the executive change request re-baselining Payday Super test capacity from 30 to up to 90 person-days, including options analysis, costed recommendation, risk assessment, and full Azure DevOps traceability across 40 scenarios and 11 data tables (AC6–AC19) with STT regression scope.",
+          "Unblocked stalled NTP function testing by escalating L2 environment instability and brokering targeted SME enablement, while steering Distribution UI feature delivery to 95%+ completion."
+        ],
+        "detail_bullet_count": 6
+      },
+      {
+        "id": "role-independent",
+        "selector": "#role-independent",
+        "title": "AI Solutions Consultant — Applied LLM Engineering & Delivery Tooling",
+        "company": "Independent AI Consulting & Upskilling",
+        "rendered_dates": "Jun 2025 - Feb 2026",
+        "figure_state": "self-reported",
+        "figure_value": "−38%",
+        "figure_gloss": "(Self-reported figure.)",
+        "carries_a_figure": true,
+        "carries_an_open_bracket": false,
+        "headline_text": "−38% (Self-reported figure.)error-budget breaches — measured against a simulated budget, not live traffic",
+        "detail_collapsed_by_default": true,
+        "detail_bullets_when_expanded": [
+          "Architected and developed a Next.js and Supabase analytics dashboard for JIRA to expose sprint velocity metrics and generate LLM-powered retrospective insights.",
+          "Built an LLM evaluation stack using Langfuse and Phoenix that reduced simulated error-budget breaches by 38%, alongside a production-grade Node.js/Express public-key server for API signing with full test coverage.",
+          "Built 'AI Resume Tailor', an automated NLP system using web scraping and prompt engineering to match CVs to job descriptions instantly.",
+          "Created 'AI Gmail Manager', an autonomous TypeScript agent for inbox triage, sentiment analysis, and draft generation using LLMs.",
+          "Developed 'Jyotish Shastra' and 'BTR-Demo', enterprise-grade platforms exploring the intersection of ancient Vedic algorithms and modern AI/ML, and a React/TypeScript + D3 customer-journey visualiser.",
+          "Creator of the @vicd0ct YouTube channel, producing technical deep-dives on live coding, algorithm archaeology, and telemetry breakdowns."
+        ],
+        "detail_bullet_count": 6
+      },
+      {
+        "id": "role-anz",
+        "selector": "#role-anz",
+        "title": "Senior Delivery Lead / AI-ML Solutions Architect",
+        "company": "ANZ Banking Group",
+        "rendered_dates": "Sept 2017 - Jun 2025",
+        "figure_state": "self-reported",
+        "figure_value": "10k+",
+        "figure_gloss": "(Self-reported figure.)",
+        "carries_a_figure": true,
+        "carries_an_open_bracket": false,
+        "headline_text": "10k+ (Self-reported figure.)concurrent devices at P95 under 200 ms",
+        "detail_collapsed_by_default": true,
+        "detail_bullets_when_expanded": [
+          "Led the delivery of AI/ML solutions, including real-time WebSocket telemetry sustaining P95 latency under 200 ms across 10,000+ concurrent devices for critical banking services.",
+          "Guided the transition of core banking platforms to cloud-native architectures (.NET/Azure), improving delivery efficiency by more than 30% and reducing infrastructure costs by over 15%.",
+          "Managed a program portfolio valued at over $5M across 5+ cross-functional squads (40+ onsite and offshore practitioners) with 100% compliance to enterprise standards and risk frameworks.",
+          "Owned the technical vision and product backlog for platform modernisations; executive workshops for 40+ leaders improved strategic decision clarity by approximately 55%."
+        ],
+        "detail_bullet_count": 4
+      },
+      {
+        "id": "role-nab",
+        "selector": "#role-nab",
+        "title": "Senior Project Manager & Business Analyst",
+        "company": "National Australia Bank (NAB)",
+        "rendered_dates": "Nov 2016 - Sept 2017",
+        "figure_state": "open",
+        "figure_value": "no published figure",
+        "figure_gloss": "(Not measurable; reason given.)",
+        "carries_a_figure": false,
+        "carries_an_open_bracket": true,
+        "headline_text": "no published figure (Not measurable; reason given.)",
+        "detail_collapsed_by_default": true,
+        "detail_bullets_when_expanded": [
+          "Managed the delivery of a critical risk-and-compliance program, ensuring regulatory adherence for major enterprise data initiatives."
+        ],
+        "detail_bullet_count": 1
+      },
+      {
+        "id": "role-microsoft",
+        "selector": "#role-microsoft",
+        "title": "Lead Business Analyst",
+        "company": "Microsoft",
+        "rendered_dates": "Oct 2015 - Oct 2016",
+        "figure_state": "open",
+        "figure_value": "no published figure",
+        "figure_gloss": "(Not measurable; reason given.)",
+        "carries_a_figure": false,
+        "carries_an_open_bracket": true,
+        "headline_text": "no published figure (Not measurable; reason given.)",
+        "detail_collapsed_by_default": true,
+        "detail_bullets_when_expanded": [
+          "Delivered a gap analysis for Azure ML telemetry that improved system reliability and reduced incident resolution time.",
+          "Aligned DevOps strategies with enterprise standards to improve compliance."
+        ],
+        "detail_bullet_count": 2
+      },
+      {
+        "id": "role-telstra",
+        "selector": "#role-telstra",
+        "title": "Business Analyst / Project Coordinator",
+        "company": "Telstra",
+        "rendered_dates": "Nov 2014 - Oct 2015",
+        "figure_state": "open",
+        "figure_value": "no published figure",
+        "figure_gloss": "(Not measurable; reason given.)",
+        "carries_a_figure": false,
+        "carries_an_open_bracket": true,
+        "headline_text": "no published figure (Not measurable; reason given.)",
+        "detail_collapsed_by_default": true,
+        "detail_bullets_when_expanded": [
+          "Developed customer journey scorecards and streamlined JIRA requirements to improve delivery efficiency and operational clarity."
+        ],
+        "detail_bullet_count": 1
+      },
+      {
+        "id": "role-infocentric",
+        "selector": "#role-infocentric",
+        "title": "Senior Business Analyst",
+        "company": "InfoCentric",
+        "rendered_dates": "Aug 2011 - Nov 2014",
+        "figure_state": "open",
+        "figure_value": "no published figure",
+        "figure_gloss": "(Not measurable; reason given.)",
+        "carries_a_figure": false,
+        "carries_an_open_bracket": true,
+        "headline_text": "no published figure (Not measurable; reason given.)",
+        "detail_collapsed_by_default": true,
+        "detail_bullets_when_expanded": [
+          "Delivered analytics and BI projects that boosted client engagement and automated regulatory reporting."
+        ],
+        "detail_bullet_count": 1
+      },
+      {
+        "id": "role-myob",
+        "selector": "#role-myob",
+        "title": "Developer Support / Software Testing / Analyst",
+        "company": "MYOB",
+        "rendered_dates": "May 2010 - Aug 2011",
+        "figure_state": "open",
+        "figure_value": "no published figure",
+        "figure_gloss": "(Not measurable; reason given.)",
+        "carries_a_figure": false,
+        "carries_an_open_bracket": true,
+        "headline_text": "no published figure (Not measurable; reason given.)",
+        "detail_collapsed_by_default": true,
+        "detail_bullets_when_expanded": [
+          "Optimised data processing workflows, improving efficiency and reducing reporting time for financial data sets."
+        ],
+        "detail_bullet_count": 1
+      }
+    ],
+    "roles_carrying_a_figure": [
+      "role-ato",
+      "role-independent",
+      "role-anz"
+    ],
+    "roles_carrying_an_open_bracket": [
+      "role-nab",
+      "role-microsoft",
+      "role-telstra",
+      "role-infocentric",
+      "role-myob"
+    ],
+    "mobile_parity": {
+      "duration_labels_match": true,
+      "bar_percent_widths_match": true
+    }
+  },
+  "6_bespoke_diagrams_and_captions": {
+    "per_repository_drawings": [
+      {
+        "repository": "aether-job-career-agent",
+        "plate_title": "Aether",
+        "diagram_selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > div.Vitrine_drawingFrame__1Mg6P:nth-of-type(2) > svg.Drawings_drawing__0EhCA",
+        "svg_role": "img",
+        "svg_viewBox": "0 0 320 200",
+        "aria_labelledby": "d1t d1d",
+        "title_id": "d1t",
+        "caption_title_verbatim": "The application pipeline and its fabrication guard",
+        "desc_id": "d1d",
+        "caption_description_verbatim": "Twenty engine nodes in a line carry one job application from left to right. Near the end, a vertical gate intercepts a proposed sentence and strikes it through, reverting any claim the résumé does not support.",
+        "shape_counts": {
+          "line": 4,
+          "circle": 20,
+          "text": 2,
+          "path": 2
+        }
+      },
+      {
+        "repository": "abentertainment",
+        "plate_title": "AB Entertainment",
+        "diagram_selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(2) > div.Vitrine_drawingFrame__1Mg6P:nth-of-type(2) > svg.Drawings_drawing__0EhCA",
+        "svg_role": "img",
+        "svg_viewBox": "0 58 320 122",
+        "aria_labelledby": "d2t d2d",
+        "title_id": "d2t",
+        "caption_title_verbatim": "The deploy loop behind a live client site",
+        "desc_id": "d2d",
+        "caption_description_verbatim": "A push enters at the left, rebuilds a container image, and is released only after a health probe answers. A failed probe returns along the lower path to the previous image.",
+        "shape_counts": {
+          "g": 4,
+          "rect": 4,
+          "text": 5,
+          "line": 3,
+          "path": 1
+        }
+      },
+      {
+        "repository": "ralph-loop-infinite",
+        "plate_title": "Ralph Loop",
+        "diagram_selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > div.Vitrine_drawingFrame__1Mg6P:nth-of-type(2) > svg.Drawings_drawing__0EhCA",
+        "svg_role": "img",
+        "svg_viewBox": "0 0 320 200",
+        "aria_labelledby": "d3t d3d",
+        "title_id": "d3t",
+        "caption_title_verbatim": "An agent loop with a single signed exit",
+        "desc_id": "d3d",
+        "caption_description_verbatim": "Four stages — generate, critique, judge, remediate — run as a closed circuit. The one exit on the right stays shut until a signed verifier reports a pass; the repository generates and checks those contract hashes in its own hooks.",
+        "shape_counts": {
+          "circle": 5,
+          "g": 4,
+          "text": 6,
+          "line": 2
+        }
+      },
+      {
+        "repository": "prompt-reconstruction-engine",
+        "plate_title": "Prompt Reconstruction",
+        "diagram_selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(4) > div.Vitrine_drawingFrame__1Mg6P:nth-of-type(2) > svg.Drawings_drawing__0EhCA",
+        "svg_role": "img",
+        "svg_viewBox": "0 0 320 200",
+        "aria_labelledby": "d4t d4d",
+        "title_id": "d4t",
+        "caption_title_verbatim": "A raw prompt reconstructed into a specification",
+        "desc_id": "d4d",
+        "caption_description_verbatim": "Unstructured text enters at the top as broken bands. Five passes narrow it into evenly ruled lines leaving the bottom. A brighter hairline marks the fallback taken when a model declines the request.",
+        "shape_counts": {
+          "line": 16,
+          "path": 1,
+          "text": 1
+        }
+      },
+      {
+        "repository": "jyotish-shastra",
+        "plate_title": "Jyotish Shastra",
+        "diagram_selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(5) > div.Vitrine_drawingFrame__1Mg6P:nth-of-type(2) > svg.Drawings_drawing__0EhCA",
+        "svg_role": "img",
+        "svg_viewBox": "0 0 320 200",
+        "aria_labelledby": "d5t d5d",
+        "title_id": "d5t",
+        "caption_title_verbatim": "A North Indian chart and its ephemeris accuracy gate",
+        "desc_id": "d5d",
+        "caption_description_verbatim": "The twelve houses of a North Indian chart drawn in hairlines. One house is isolated by a caliper reading the Lahiri ayanamsa the repository configures as its default; a drift beyond tolerance fails the build.",
+        "shape_counts": {
+          "rect": 1,
+          "line": 5,
+          "path": 2,
+          "text": 2
+        }
+      },
+      {
+        "repository": "forgotten-mistory",
+        "plate_title": "This site",
+        "diagram_selector": "#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(6) > div.Vitrine_drawingFrame__1Mg6P:nth-of-type(2) > svg.Drawings_drawing__0EhCA",
+        "svg_role": "img",
+        "svg_viewBox": "0 0 320 200",
+        "aria_labelledby": "d6t d6d",
+        "title_id": "d6t",
+        "caption_title_verbatim": "The reading rail of this page",
+        "desc_id": "d6d",
+        "caption_description_verbatim": "A vertical rail with six ticks, one for each section of this site, and a single node travelling down it — the position you are currently reading from.",
+        "shape_counts": {
+          "line": 7,
+          "g": 6,
+          "text": 7,
+          "circle": 1
+        }
+      }
+    ],
+    "other_diagrams": [
+      {
+        "section": "about",
+        "tag": "svg",
+        "selector": "#about > div.About_inner__s8EsR > div.About_body__cuZQw > div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT",
+        "class_list": "Compass_compass__KU_lT",
+        "svg_role": "img",
+        "svg_aria_label": "Instrument face of ten dimensions. No scores: three of the ten are computed from the role and are drawn open.",
+        "svg_aria_labelledby": null,
+        "svg_viewBox": "0 0 100 100",
+        "title": null,
+        "desc": null,
+        "figcaption": null,
+        "owning_repository": null,
+        "box": {
+          "w": 384,
+          "h": 384,
+          "x": 104,
+          "y": 1452.73
+        }
+      },
+      {
+        "section": "skills",
+        "tag": "figure",
+        "selector": "#skills > div.Skills_inner__FWoEr > figure.Bench_figure__Ga8Cb",
+        "class_list": "Bench_figure__Ga8Cb",
+        "svg_role": null,
+        "svg_aria_label": null,
+        "svg_aria_labelledby": null,
+        "svg_viewBox": "0 0 1248 512.875",
+        "title": null,
+        "desc": null,
+        "figcaption": "Every capability, wired to the programme, repository or issuing body its evidence came from. Gold where that evidence was taken in production.",
+        "owning_repository": null,
+        "box": {
+          "w": 1248,
+          "h": 701.66,
+          "x": 96,
+          "y": 6400.41
+        }
+      },
+      {
+        "section": "listen",
+        "tag": "figure",
+        "selector": "#listen > div.Listen_inner___yz8E > figure.Avatar_avatar__O09A3",
+        "class_list": "Avatar_avatar__O09A3",
+        "svg_role": null,
+        "svg_aria_label": null,
+        "svg_aria_labelledby": null,
+        "svg_viewBox": null,
+        "title": null,
+        "desc": null,
+        "figcaption": "AI-generated: my photograph, my cloned voice, animated by a model. Nothing else on this site is synthetic.Read it insteadHello. I'm Vikram Deshpande.What you're watching is an AI-generated avatar — my photograph, my own cloned voice, rendered by a model. I'm telling you that straight away, because I build systems that are not allowed to fabricate their own evidence.Everything else here is real. The figures come from my CV, and from repositories you can open and read. Where something could not honestly be measured, the page says so.If any of it is useful to you, I would welcome a conversation.Facemy own photograph, unretouched framingVoicemy own voice, cloned from a recording of meRenderByteDance OmniHuman 1.5, one take, no editMaster1440 × 1440 · delivered at 1080 × 1080, H.264Scriptwritten by me; the transcript is below, verbatim",
+        "owning_repository": null,
+        "box": {
+          "w": 736,
+          "h": 224,
+          "x": 352,
+          "y": 11636.14
+        }
+      }
+    ],
+    "total_role_img_svgs_and_figures": 9
+  },
+  "7_webgl_and_third_party": {
+    "canvas_elements_in_dom": {
+      "desktop": 0,
+      "mobile": 0,
+      "detail_desktop": []
+    },
+    "webgl_contexts_created": {
+      "desktop": [
+        {
+          "type": "webgl2",
+          "ok": true,
+          "error": null,
+          "id": null,
+          "cls": null,
+          "attached": false,
+          "w": 300,
+          "h": 150,
+          "t_ms": 773
+        }
+      ],
+      "mobile": [
+        {
+          "type": "webgl2",
+          "ok": true,
+          "error": null,
+          "id": null,
+          "cls": null,
+          "attached": false,
+          "w": 300,
+          "h": 150,
+          "t_ms": 900
+        }
+      ],
+      "desktop_count": 1,
+      "mobile_count": 1,
+      "note": "the single webgl2 context is created on a detached 300x150 probe canvas (attached:false) — a capability probe, not a rendered scene"
+    },
+    "context_lost_events": {
+      "desktop": [],
+      "mobile": []
+    },
+    "per_section_walk_desktop": [
+      {
+        "section": "hero",
+        "canvases_in_section": 0,
+        "canvases_in_document": 0,
+        "contexts_created_so_far": 1,
+        "context_lost_events": 0
+      },
+      {
+        "section": "about",
+        "canvases_in_section": 0,
+        "canvases_in_document": 0,
+        "contexts_created_so_far": 1,
+        "context_lost_events": 0
+      },
+      {
+        "section": "experience",
+        "canvases_in_section": 0,
+        "canvases_in_document": 0,
+        "contexts_created_so_far": 1,
+        "context_lost_events": 0
+      },
+      {
+        "section": "skills",
+        "canvases_in_section": 0,
+        "canvases_in_document": 0,
+        "contexts_created_so_far": 1,
+        "context_lost_events": 0
+      },
+      {
+        "section": "vitrine",
+        "canvases_in_section": 0,
+        "canvases_in_document": 0,
+        "contexts_created_so_far": 1,
+        "context_lost_events": 0
+      },
+      {
+        "section": "listen",
+        "canvases_in_section": 0,
+        "canvases_in_document": 0,
+        "contexts_created_so_far": 1,
+        "context_lost_events": 0
+      }
+    ],
+    "per_section_walk_mobile": [
+      {
+        "section": "hero",
+        "canvases_in_section": 0,
+        "canvases_in_document": 0,
+        "contexts_created_so_far": 1,
+        "context_lost_events": 0
+      },
+      {
+        "section": "about",
+        "canvases_in_section": 0,
+        "canvases_in_document": 0,
+        "contexts_created_so_far": 1,
+        "context_lost_events": 0
+      },
+      {
+        "section": "experience",
+        "canvases_in_section": 0,
+        "canvases_in_document": 0,
+        "contexts_created_so_far": 1,
+        "context_lost_events": 0
+      },
+      {
+        "section": "skills",
+        "canvases_in_section": 0,
+        "canvases_in_document": 0,
+        "contexts_created_so_far": 1,
+        "context_lost_events": 0
+      },
+      {
+        "section": "vitrine",
+        "canvases_in_section": 0,
+        "canvases_in_document": 0,
+        "contexts_created_so_far": 1,
+        "context_lost_events": 0
+      },
+      {
+        "section": "listen",
+        "canvases_in_section": 0,
+        "canvases_in_document": 0,
+        "contexts_created_so_far": 1,
+        "context_lost_events": 0
+      }
+    ],
+    "one_context_per_section_observed": "not observable as a rendered scene on this baseline: 0 canvas elements mount in any section at either viewport; 1 detached webgl2 probe context is created per page load and never lost",
+    "third_party_requests": {
+      "desktop": {
+        "total_requests": 22,
+        "hosts_contacted": {
+          "forgotten-mistory.web.app": 22
+        },
+        "third_party_hosts": [],
+        "third_party_request_count": 0,
+        "requests": [
+          {
+            "url": "https://forgotten-mistory.web.app/",
+            "resource_type": "document",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/media/4fcd55e2c741afb8-s.p.woff2",
+            "resource_type": "font",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/media/e4af272ccee01ff0-s.p.woff2",
+            "resource_type": "font",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/css/4c45845169e695cf.css",
+            "resource_type": "stylesheet",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/css/aa9d2e780cc5fe7d.css",
+            "resource_type": "stylesheet",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/chunks/webpack-17ccc4c733b623d8.js",
+            "resource_type": "script",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/chunks/fd9d1056-65122057374fba7a.js",
+            "resource_type": "script",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/chunks/117-618d8b8178db00cb.js",
+            "resource_type": "script",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/chunks/main-app-364df5d8ef28aa6c.js",
+            "resource_type": "script",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/chunks/56-3885c91d30670c4e.js",
+            "resource_type": "script",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/chunks/180-3f6e420f54f764ed.js",
+            "resource_type": "script",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/chunks/app/page-97105010a4314fee.js",
+            "resource_type": "script",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/chunks/app/layout-e0b4d6ac7372434a.js",
+            "resource_type": "script",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/chunks/29-cf690c3b83c509f3.js",
+            "resource_type": "script",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/chunks/app/error-589692ed6ad97452.js",
+            "resource_type": "script",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/chunks/app/not-found-7ff5dcacaa933207.js",
+            "resource_type": "script",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/chunks/app/loading-81b2f18be645a569.js",
+            "resource_type": "script",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/media/d3ebbfd689654d3a-s.woff2",
+            "resource_type": "font",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/media/adc34f647e3c68e5-s.woff2",
+            "resource_type": "font",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/_next/static/media/98e207f02528a563-s.woff2",
+            "resource_type": "font",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/icon.png?bb6e72afeae3e9f8",
+            "resource_type": "other",
+            "method": "GET"
+          },
+          {
+            "url": "https://forgotten-mistory.web.app/assets/avatar/poster.jpg",
+            "resource_type": "image",
+            "method": "GET"
+          }
+        ]
+      },
+      "mobile": {
+        "total_requests": 22,
+        "hosts_contacted": {
+          "forgotten-mistory.web.app": 22
+        },
+        "third_party_hosts": [],
+        "third_party_request_count": 0
+      },
+      "assertion": "every request on both viewports resolves to forgotten-mistory.web.app; zero third-party hosts contacted; zero tracker requests"
+    },
+    "request_failures": {
+      "desktop": [],
+      "mobile": []
+    },
+    "page_errors": {
+      "desktop": [],
+      "mobile": []
+    }
+  },
+  "8_sections_and_navigation": {
+    "sections_in_dom_order": [
+      {
+        "dom_order": 0,
+        "id": "hero",
+        "class_list": "Hero_hero__2EmdV",
+        "aria_labelledby": "hero-name",
+        "heading": "Vikram Deshpande",
+        "selector": "#hero",
+        "nested_in_section": false
+      },
+      {
+        "dom_order": 1,
+        "id": "about",
+        "class_list": "About_about__iwTmp",
+        "aria_labelledby": "about-title",
+        "heading": "Ten dimensions, answered",
+        "selector": "#about",
+        "nested_in_section": false
+      },
+      {
+        "dom_order": 2,
+        "id": "experience",
+        "class_list": "Experience_experience__aQiBG",
+        "aria_labelledby": "experience-title",
+        "heading": "Sixteen years, to scale",
+        "selector": "#experience",
+        "nested_in_section": false
+      },
+      {
+        "dom_order": 3,
+        "id": "skills",
+        "class_list": "Skills_skills__qfrgn",
+        "aria_labelledby": "skills-title",
+        "heading": "Calibration card",
+        "selector": "#skills",
+        "nested_in_section": false
+      },
+      {
+        "dom_order": 4,
+        "id": "vitrine",
+        "class_list": "Vitrine_vitrine__XEM1G",
+        "aria_labelledby": "vitrine-title",
+        "heading": "Six of thirty-eight",
+        "selector": "#vitrine",
+        "nested_in_section": false
+      },
+      {
+        "dom_order": 5,
+        "id": "listen",
+        "class_list": "Listen_listen__D6_5Z",
+        "aria_labelledby": "listen-title",
+        "heading": "Feedback & coffee?",
+        "selector": "#listen",
+        "nested_in_section": false
+      },
+      {
+        "dom_order": 6,
+        "id": null,
+        "class_list": "Listen_ledger__MZDix",
+        "aria_labelledby": "listen-ledger-title",
+        "heading": "What I was told I had got wrong",
+        "selector": "#listen > div.Listen_inner___yz8E > section.Listen_ledger__MZDix",
+        "nested_in_section": true
+      }
+    ],
+    "top_level_section_ids_in_dom_order": [
+      "hero",
+      "about",
+      "experience",
+      "skills",
+      "vitrine",
+      "listen"
+    ],
+    "navigation": {
+      "selector": "html.__variable_37ef13.__variable_81ced4.__variable_e1377c.__variable_fc41db > body.page-ready > nav",
+      "aria_label": null,
+      "links": [
+        {
+          "label": "VIKRAM.",
+          "href": "#hero",
+          "class_list": "logo",
+          "selector": "html.__variable_37ef13.__variable_81ced4.__variable_e1377c.__variable_fc41db > body.page-ready > nav > a.logo",
+          "visible": true
+        },
+        {
+          "label": "Download CV",
+          "href": "/docs/Vik_Resume_Final.pdf",
+          "class_list": "nav-cv",
+          "selector": "html.__variable_37ef13.__variable_81ced4.__variable_e1377c.__variable_fc41db > body.page-ready > nav > div.nav-actions:nth-of-type(1) > a.nav-cv",
+          "visible": true
+        },
+        {
+          "label": "Home",
+          "href": "#hero",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(1) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "About",
+          "href": "#about",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(2) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "Experience",
+          "href": "#experience",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(3) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "Skills",
+          "href": "#skills",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(4) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "Keeping me busy",
+          "href": "#vitrine",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(5) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "Feedback & coffee",
+          "href": "#listen",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(6) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "LinkedIn",
+          "href": "https://www.linkedin.com/in/vikramd-profile",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(7) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "Download CV",
+          "href": "/docs/Vik_Resume_Final.pdf",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(8) > a.nav-link",
+          "visible": true
+        }
+      ],
+      "buttons": [
+        {
+          "label": "Menu",
+          "aria_label": null,
+          "aria_expanded": "false"
+        }
+      ]
+    },
+    "navigation_labels_in_order": [
+      "VIKRAM.",
+      "Download CV",
+      "Home",
+      "About",
+      "Experience",
+      "Skills",
+      "Keeping me busy",
+      "Feedback & coffee",
+      "LinkedIn",
+      "Download CV"
+    ],
+    "overlay_navigation": {
+      "selector": "#site-nav-overlay",
+      "links": [
+        {
+          "label": "Home",
+          "href": "#hero"
+        },
+        {
+          "label": "About",
+          "href": "#about"
+        },
+        {
+          "label": "Experience",
+          "href": "#experience"
+        },
+        {
+          "label": "Skills",
+          "href": "#skills"
+        },
+        {
+          "label": "Keeping me busy",
+          "href": "#vitrine"
+        },
+        {
+          "label": "Feedback & coffee",
+          "href": "#listen"
+        },
+        {
+          "label": "LinkedIn",
+          "href": "https://www.linkedin.com/in/vikramd-profile"
+        },
+        {
+          "label": "Download CV",
+          "href": "/docs/Vik_Resume_Final.pdf"
+        }
+      ]
+    },
+    "footer_element": null,
+    "closing_section": {
+      "kicker": "Always willing to listen",
+      "heading": "Feedback & coffee?",
+      "sentence": "I have been wrong often enough to want to hear it early. Tell me what you think — I’ll listen properly.",
+      "channels": [
+        {
+          "label": "sarkar.vikram@gmail.com",
+          "href": "mailto:sarkar.vikram@gmail.com"
+        },
+        {
+          "label": "+61 433 224 556",
+          "href": "tel:+61433224556"
+        },
+        {
+          "label": "linkedin.com/in/vikramd-profile",
+          "href": "https://www.linkedin.com/in/vikramd-profile"
+        },
+        {
+          "label": "github.com/Victordtesla24",
+          "href": "https://github.com/Victordtesla24"
+        }
+      ],
+      "coffee": "Coffee · Melbourne CBD · I’ll come to you",
+      "ledger_heading": "What I was told I had got wrong",
+      "ledger_text": "What I was told I had got wrongThe line above is a claim, so here is the evidence for it: the last corrections made to this page, in the words of the commit that made each one. The reviews behind them are a mix of people and adversarial agents pointed at my own work. The corrections are the same either way, and every one of them is a link to the diff.f642b412026-09-03Let the chart be read against the years it is drawn toe4806872026-09-03The bench on a phone is a filter, not a second listdf0dac62026-09-03Ship the render that was made, not a soft copy of it5c7b50f2026-09-03Stop drawing forty headings in fake bold45077cb2026-09-03Take the WebGL runtime off the hero's critical path79b11a02026-09-03Make the rail read as one cabinet again3df18152026-09-03Stop shipping the stylesheet for a site that was deleted699933f2026-09-03Delete the site that no longer exists8 of 59 corrections in the history · harvested 2026-09-03 from the repository this page is built from",
+      "avatar_caption": "AI-generated: my photograph, my cloned voice, animated by a model. Nothing else on this site is synthetic.Read it insteadHello. I'm Vikram Deshpande.What you're watching is an AI-generated avatar — my photograph, my own cloned voice, rendered by a model. I'm telling you that straight away, because I build systems that are not allowed to fabricate their own evidence.Everything else here is real. The figures come from my CV, and from repositories you can open and read. Where something could not honestly be measured, the page says so.If any of it is useful to you, I would welcome a conversation.Facemy own photograph, unretouched framingVoicemy own voice, cloned from a recording of meRenderByteDance OmniHuman 1.5, one take, no editMaster1440 × 1440 · delivered at 1080 × 1080, H.264Scriptwritten by me; the transcript is below, verbatim"
+    },
+    "mobile_navigation": {
+      "selector": "html.__variable_37ef13.__variable_81ced4.__variable_e1377c.__variable_fc41db > body.page-ready > nav",
+      "aria_label": null,
+      "links": [
+        {
+          "label": "VIKRAM.",
+          "href": "#hero",
+          "class_list": "logo",
+          "selector": "html.__variable_37ef13.__variable_81ced4.__variable_e1377c.__variable_fc41db > body.page-ready > nav > a.logo",
+          "visible": true
+        },
+        {
+          "label": "Download CV",
+          "href": "/docs/Vik_Resume_Final.pdf",
+          "class_list": "nav-cv",
+          "selector": "html.__variable_37ef13.__variable_81ced4.__variable_e1377c.__variable_fc41db > body.page-ready > nav > div.nav-actions:nth-of-type(1) > a.nav-cv",
+          "visible": false
+        },
+        {
+          "label": "Home",
+          "href": "#hero",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(1) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "About",
+          "href": "#about",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(2) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "Experience",
+          "href": "#experience",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(3) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "Skills",
+          "href": "#skills",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(4) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "Keeping me busy",
+          "href": "#vitrine",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(5) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "Feedback & coffee",
+          "href": "#listen",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(6) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "LinkedIn",
+          "href": "https://www.linkedin.com/in/vikramd-profile",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(7) > a.nav-link",
+          "visible": true
+        },
+        {
+          "label": "Download CV",
+          "href": "/docs/Vik_Resume_Final.pdf",
+          "class_list": "nav-link",
+          "selector": "#site-nav-overlay > ul.nav-links > li:nth-of-type(8) > a.nav-link",
+          "visible": true
+        }
+      ],
+      "buttons": [
+        {
+          "label": "Menu",
+          "aria_label": null,
+          "aria_expanded": "false"
+        }
+      ]
+    },
+    "mobile_section_ids": [
+      "hero",
+      "about",
+      "experience",
+      "skills",
+      "vitrine",
+      "listen"
+    ]
+  },
+  "9_counters_first_paint_vs_settled": {
+    "method": "a first-requestAnimationFrame snapshot taken by an init script recorded every value-bearing node before any animation could run; the settled extraction ran after full load, a 2.5 s settle and a full-page scroll walk; a third pass loaded the page with JavaScript disabled",
+    "desktop": {
+      "first_frame_at_ms": 303.4,
+      "first_frame_caliper_values": [
+        "≈92%",
+        "$5M+",
+        "10k+",
+        "measured from the role",
+        "measured from the role",
+        "measured from the role",
+        "≈92%",
+        "−38%",
+        "10k+",
+        "no published figure",
+        "no published figure",
+        "no published figure",
+        "no published figure",
+        "no published figure",
+        "○"
+      ],
+      "settled_caliper_values": [
+        "≈92%",
+        "$5M+",
+        "10k+",
+        "measured from the role",
+        "measured from the role",
+        "measured from the role",
+        "≈92%",
+        "−38%",
+        "10k+",
+        "no published figure",
+        "no published figure",
+        "no published figure",
+        "no published figure",
+        "no published figure",
+        "○"
+      ],
+      "first_frame_duration_labels": [
+        "6 mo",
+        "8 mo",
+        "7.8 yr",
+        "10 mo",
+        "1.0 yr",
+        "11 mo",
+        "3.3 yr",
+        "1.3 yr"
+      ],
+      "settled_duration_labels": [
+        "6 mo",
+        "8 mo",
+        "7.8 yr",
+        "10 mo",
+        "1.0 yr",
+        "11 mo",
+        "3.3 yr",
+        "1.3 yr"
+      ],
+      "identical_first_frame_vs_settled": true
+    },
+    "mobile": {
+      "first_frame_at_ms": 401.2,
+      "first_frame_caliper_values": [
+        "≈92%",
+        "$5M+",
+        "10k+",
+        "measured from the role",
+        "measured from the role",
+        "measured from the role",
+        "≈92%",
+        "−38%",
+        "10k+",
+        "no published figure",
+        "no published figure",
+        "no published figure",
+        "no published figure",
+        "no published figure",
+        "○"
+      ],
+      "settled_caliper_values": [
+        "≈92%",
+        "$5M+",
+        "10k+",
+        "measured from the role",
+        "measured from the role",
+        "measured from the role",
+        "≈92%",
+        "−38%",
+        "10k+",
+        "no published figure",
+        "no published figure",
+        "no published figure",
+        "no published figure",
+        "no published figure",
+        "○"
+      ],
+      "identical_first_frame_vs_settled": true
+    },
+    "no_javascript_render": {
+      "html_bytes": 116373,
+      "values_present_without_javascript": {
+        "≈92%": true,
+        "$5M+": true,
+        "10k+": true,
+        "−38%": true,
+        "7.8 yr": true,
+        "1,664": true,
+        "157,615 (CV byte size, split across React comment markers in the markup)": true
+      },
+      "screenshot": "T37-baseline-shots/desktop-1440x900-nojs.png"
+    },
+    "counters_that_animate": [],
+    "assertion": "no counter on the live baseline animates from zero: every value-bearing node holds its final value at the first animation frame, at settle, and with JavaScript disabled. Values at first paint equal values at settle in all three passes and at both viewports."
+  },
+  "screenshots": [
+    "desktop-1440x900-about.png",
+    "desktop-1440x900-experience.png",
+    "desktop-1440x900-full.png",
+    "desktop-1440x900-hero.png",
+    "desktop-1440x900-listen.png",
+    "desktop-1440x900-nojs.png",
+    "desktop-1440x900-skills.png",
+    "desktop-1440x900-vitrine.png",
+    "mobile-390x844-about.png",
+    "mobile-390x844-experience.png",
+    "mobile-390x844-full.png",
+    "mobile-390x844-hero.png",
+    "mobile-390x844-listen.png",
+    "mobile-390x844-skills.png",
+    "mobile-390x844-vitrine.png"
+  ]
+}

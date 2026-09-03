@@ -1,0 +1,1171 @@
+{
+  "schema": "corpus-cv/v1",
+  "contract_refs": [
+    "R-8",
+    "R-9",
+    "R-108",
+    "R-143",
+    "R-173"
+  ],
+  "generated_at_utc": "2026-09-03T19:55:35Z",
+  "source_document": {
+    "path": "/root/forgotten-mistory/public/docs/Vik_Resume_Final.pdf",
+    "public_path": "/docs/Vik_Resume_Final.pdf",
+    "md5": "16b856c0f3f4ec0d801fdde6d084452c",
+    "md5_short8": "16b856c0",
+    "sha256": "0700d1aa1a48de5dc9ca308968ff5a6049b2b0ea38adac5550353279b0768a25",
+    "bytes": 157615,
+    "mtime_utc": "2026-07-09T22:56:02Z",
+    "mtime_raw": "2026-07-09 22:56:02.733233737 +0000",
+    "pdf_pages": 3,
+    "pdf_title": "Vikram Deshpande — Resume",
+    "pdf_creator": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/149.0.0.0 Safari/537.36",
+    "pdf_producer": "Skia/PDF m149",
+    "pdf_creation_date": "Fri Jun 12 17:30:37 2026 UTC",
+    "pdf_mod_date": "Fri Jun 12 17:30:37 2026 UTC",
+    "page_size": "612 x 792 pts (letter)",
+    "commands": [
+      "md5sum /root/forgotten-mistory/public/docs/Vik_Resume_Final.pdf",
+      "sha256sum /root/forgotten-mistory/public/docs/Vik_Resume_Final.pdf",
+      "stat -c '%n size=%s mtime=%y' /root/forgotten-mistory/public/docs/Vik_Resume_Final.pdf",
+      "pdfinfo /root/forgotten-mistory/public/docs/Vik_Resume_Final.pdf"
+    ]
+  },
+  "extraction": {
+    "tool": "pdftotext",
+    "tool_version": "pdftotext version 26.01.0 (Poppler 2005-2026)",
+    "tool_path": "/usr/bin/pdftotext",
+    "command_full": "pdftotext -layout /root/forgotten-mistory/public/docs/Vik_Resume_Final.pdf -",
+    "command_per_page": "pdftotext -layout -f <n> -l <n> /root/forgotten-mistory/public/docs/Vik_Resume_Final.pdf -",
+    "fallbacks_not_needed": [
+      "node pdf parser",
+      "python3"
+    ],
+    "normalisation_note": "The PDF is a two-column layout. Text is reproduced verbatim; the only change is that soft line-wrap breaks and the runs of column padding whitespace inserted by -layout were collapsed to single spaces so each bullet is one string. No word, number, punctuation mark or dash character was altered.",
+    "page_assignment_method": "Each record's page was read directly from a per-page pdftotext run (-f/-l), not inferred."
+  },
+  "identity": {
+    "name_verbatim": "VIKRAM DESHPANDE",
+    "name": "Vikram Deshpande",
+    "headline_verbatim": "Senior Technical Program/Delivery Manager & AI Solutions Architect",
+    "provenance": {
+      "source": "CV",
+      "page": 1,
+      "section": "HEADER"
+    }
+  },
+  "contact": [
+    {
+      "type": "email",
+      "value": "sarkar.vikram@gmail.com",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "CONTACT INFO"
+      }
+    },
+    {
+      "type": "phone",
+      "value": "+61 433 224 556",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "CONTACT INFO"
+      }
+    },
+    {
+      "type": "location",
+      "value": "Melbourne, VIC, Australia",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "CONTACT INFO"
+      }
+    },
+    {
+      "type": "linkedin",
+      "value": "linkedin.com/in/vikramd-profile",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "CONTACT INFO"
+      }
+    },
+    {
+      "type": "github",
+      "value": "github.com/Victordtesla24",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "CONTACT INFO"
+      }
+    }
+  ],
+  "career_objective": {
+    "text_verbatim": "15+ year Senior Technical Leader and Certified Scrum Master (CSM) specializing in end-to-end program delivery, enterprise transformation, and architecting AI/ML-driven solutions across the Financial Services and Telecommunications sectors. I possess a proven track record of bridging technical engineering with executive strategy, guiding Azure/Cloud-based modernisations that cut delivery time by over 30%, and deploying mission-critical programs with multi-million dollar budgets. Core Expertise: Leveraging deep experience in Python, TypeScript, and cloud-native infrastructure (Kubernetes/GCP/AWS) to lead cross-functional squads and drive commercial outcomes. I am adept at fostering agile culture, ensuring architectural alignment, and translating complex technical roadmaps into quantifiable business value.",
+    "provenance": {
+      "source": "CV",
+      "page": 1,
+      "section": "CAREER OBJECTIVE"
+    }
+  },
+  "roles": [
+    {
+      "id": "role-ato-2026",
+      "order": 1,
+      "employer": "Australian Taxation Office (ATO)",
+      "title": "Scrum Master / Project Manager",
+      "date_text_verbatim": "March 2026 - Present",
+      "start": {
+        "text": "March 2026",
+        "iso": "2026-03",
+        "precision": "month"
+      },
+      "end": {
+        "text": "Present",
+        "iso": null,
+        "precision": "ongoing"
+      },
+      "location": "Melbourne, VIC",
+      "bullets": [
+        {
+          "text": "Agile Delivery Leadership: Lead end-to-end delivery for the Agile Kookaburras squad — one of eight squads on the Payday Super reform program (NTP & Distribution UI capabilities) — owning sprint cadence, PI Planning (PI 47–48), capacity management, and executive status reporting.",
+          "provenance": {
+            "source": "CV",
+            "page": 1,
+            "section": "WORK EXPERIENCE"
+          }
+        },
+        {
+          "text": "Test Automation Strategy: Architected the program's COBOL/mainframe test-evidence automation covering 200+ SIT/E2E scenarios across all eight squads, cutting evidence effort from ~3 hours to ~15 minutes per scenario (≈92% reduction) with a zero-new-approvals toolchain (REXX, SMF, SDSF, PCOMM, PowerShell, VBA).",
+          "provenance": {
+            "source": "CV",
+            "page": 1,
+            "section": "WORK EXPERIENCE"
+          }
+        },
+        {
+          "text": "Delivery Recovery: Converted a mathematically infeasible SIT window — 75+ hours of manual evidence per team against 64 available hours — into an achievable plan through a six-day tiered harness build with a formal go/no-go gate and a four-level contingency ladder.",
+          "provenance": {
+            "source": "CV",
+            "page": 1,
+            "section": "WORK EXPERIENCE"
+          }
+        },
+        {
+          "text": "Governance & Change Management: Authored the executive change request re-baselining Payday Super test capacity from 30 to up to 90 person-days, including options analysis, costed recommendation, risk assessment, and full Azure DevOps traceability across 40 scenarios and 11 data tables (AC6–AC19) with STT regression scope.",
+          "provenance": {
+            "source": "CV",
+            "page": 1,
+            "section": "WORK EXPERIENCE"
+          }
+        },
+        {
+          "text": "Stakeholder Leadership: Convened a cross-discipline technical war room that produced a binding automation recommendation in under three hours; unblocked stalled NTP function testing through L2 environment escalation and targeted SME enablement while steering Distribution UI delivery to 95%+ completion.",
+          "provenance": {
+            "source": "CV",
+            "page": 1,
+            "section": "WORK EXPERIENCE"
+          }
+        }
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "WORK EXPERIENCE"
+      }
+    },
+    {
+      "id": "role-anz-sdl-2017",
+      "order": 2,
+      "employer": "ANZ",
+      "title": "Senior Delivery Lead / Technical Product Owner",
+      "date_text_verbatim": "Sept 2017 - June 2025",
+      "start": {
+        "text": "Sept 2017",
+        "iso": "2017-09",
+        "precision": "month"
+      },
+      "end": {
+        "text": "June 2025",
+        "iso": "2025-06",
+        "precision": "month"
+      },
+      "location": "Melbourne, VIC",
+      "bullets": [
+        {
+          "text": "AI/ML Strategy & Solutions (2022 - 2025): Led the technical delivery of AI solutions, including real-time WebSocket telemetry servers for 10k+ device concurrency, improving user response time by reducing P95 latency to under 200 ms.",
+          "provenance": {
+            "source": "CV",
+            "page": 2,
+            "section": "WORK EXPERIENCE"
+          }
+        }
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      }
+    },
+    {
+      "id": "role-anz-arch-2017",
+      "order": 3,
+      "employer": "ANZ",
+      "title": "AI/ML Strategy & Solutions Architect",
+      "date_text_verbatim": "2017 - 2022",
+      "start": {
+        "text": "2017",
+        "iso": "2017",
+        "precision": "year"
+      },
+      "end": {
+        "text": "2022",
+        "iso": "2022",
+        "precision": "year"
+      },
+      "location": "Melbourne, VIC",
+      "bullets": [
+        {
+          "text": "Agile Transformation & Program Management (2017 - 2022): Orchestrated the transformation of core banking platforms from monolithic to cloud-native (.NET/Azure), cutting end-to-end delivery time by >30% and reducing infrastructure costs by >15%.",
+          "provenance": {
+            "source": "CV",
+            "page": 2,
+            "section": "WORK EXPERIENCE"
+          }
+        },
+        {
+          "text": "Delivery Leadership: Directed a program portfolio valued at over $5M, leading 5+ cross-functional squads (up to 40 resources, including offshore teams) to deliver on-time, high-quality releases.",
+          "provenance": {
+            "source": "CV",
+            "page": 2,
+            "section": "WORK EXPERIENCE"
+          }
+        },
+        {
+          "text": "Architecture & Governance: Defined the technical vision and owned the product backlog for major platform modernisations, ensuring 100% compliance with enterprise architectural standards and risk models.",
+          "provenance": {
+            "source": "CV",
+            "page": 2,
+            "section": "WORK EXPERIENCE"
+          }
+        },
+        {
+          "text": "Metrics: Facilitated workshops for 40+ GMs and executives to align on strategy, improving decision-making efficiency and project clarity by >55%.",
+          "provenance": {
+            "source": "CV",
+            "page": 2,
+            "section": "WORK EXPERIENCE"
+          }
+        }
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      }
+    },
+    {
+      "id": "role-nab-2016",
+      "order": 4,
+      "employer": "National Australia Bank (NAB)",
+      "title": "Senior Project Manager & Business Analyst",
+      "date_text_verbatim": "Nov 2016 - Sept 2017",
+      "start": {
+        "text": "Nov 2016",
+        "iso": "2016-11",
+        "precision": "month"
+      },
+      "end": {
+        "text": "Sept 2017",
+        "iso": "2017-09",
+        "precision": "month"
+      },
+      "location": "Melbourne, VIC",
+      "bullets": [
+        {
+          "text": "Managed the delivery stream for a critical risk and compliance program, ensuring 100% regulatory adherence for major data initiatives.",
+          "provenance": {
+            "source": "CV",
+            "page": 2,
+            "section": "WORK EXPERIENCE"
+          }
+        },
+        {
+          "text": "Conducted deep-dive business analysis, translating complex regulatory requirements into actionable technical specifications for development teams.",
+          "provenance": {
+            "source": "CV",
+            "page": 2,
+            "section": "WORK EXPERIENCE"
+          }
+        }
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      }
+    },
+    {
+      "id": "role-microsoft-2015",
+      "order": 5,
+      "employer": "Microsoft Inc.",
+      "title": "Lead Business Analyst",
+      "date_text_verbatim": "Oct 2015 - Oct 2016",
+      "start": {
+        "text": "Oct 2015",
+        "iso": "2015-10",
+        "precision": "month"
+      },
+      "end": {
+        "text": "Oct 2016",
+        "iso": "2016-10",
+        "precision": "month"
+      },
+      "location": "Sydney, NSW",
+      "bullets": [
+        {
+          "text": "Executed a comprehensive gap analysis for Azure ML telemetry, delivering 10 key insights that enhanced system reliability by 15% and decreased incident MTTR by 10%.",
+          "provenance": {
+            "source": "CV",
+            "page": 2,
+            "section": "WORK EXPERIENCE"
+          }
+        },
+        {
+          "text": "Spearheaded initiatives to align DevOps strategies with overall IT objectives, achieving 95% alignment with enterprise architecture standards.",
+          "provenance": {
+            "source": "CV",
+            "page": 2,
+            "section": "WORK EXPERIENCE"
+          }
+        }
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      }
+    },
+    {
+      "id": "role-telstra-2014",
+      "order": 6,
+      "employer": "Telstra",
+      "title": "Business Analyst / Project Coordinator",
+      "date_text_verbatim": "Nov 2014 - Oct 2015",
+      "start": {
+        "text": "Nov 2014",
+        "iso": "2014-11",
+        "precision": "month"
+      },
+      "end": {
+        "text": "Oct 2015",
+        "iso": "2015-10",
+        "precision": "month"
+      },
+      "location": "Melbourne, VIC",
+      "bullets": [
+        {
+          "text": "Developed customer journey scorecards and streamlined JIRA requirements for core delivery teams, improving delivery efficiency by 20% and operational clarity by 15%.",
+          "provenance": {
+            "source": "CV",
+            "page": 3,
+            "section": "WORK EXPERIENCE"
+          }
+        }
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "WORK EXPERIENCE"
+      }
+    },
+    {
+      "id": "role-infocentric-2011",
+      "order": 7,
+      "employer": "InfoCentric",
+      "title": "Senior Business Analyst",
+      "date_text_verbatim": "Aug 2011 - Nov 2014",
+      "start": {
+        "text": "Aug 2011",
+        "iso": "2011-08",
+        "precision": "month"
+      },
+      "end": {
+        "text": "Nov 2014",
+        "iso": "2014-11",
+        "precision": "month"
+      },
+      "location": "Melbourne, VIC",
+      "bullets": [
+        {
+          "text": "Delivered analytics and Business Intelligence (BI) projects, boosting client customer engagement by 20% and automating regulatory reporting workflows to achieve 100% accuracy.",
+          "provenance": {
+            "source": "CV",
+            "page": 3,
+            "section": "WORK EXPERIENCE"
+          }
+        }
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "WORK EXPERIENCE"
+      }
+    },
+    {
+      "id": "role-myob-2010",
+      "order": 8,
+      "employer": "MYOB",
+      "title": "Developer Support / Software Testing / Analyst",
+      "date_text_verbatim": "May 2010 - Aug 2011",
+      "start": {
+        "text": "May 2010",
+        "iso": "2010-05",
+        "precision": "month"
+      },
+      "end": {
+        "text": "Aug 2011",
+        "iso": "2011-08",
+        "precision": "month"
+      },
+      "location": "Melbourne, VIC",
+      "bullets": [
+        {
+          "text": "Optimized data processing workflows through ePAL implementation, improving efficiency by 30% and reducing reporting time by 90% for financial data sets.",
+          "provenance": {
+            "source": "CV",
+            "page": 3,
+            "section": "WORK EXPERIENCE"
+          }
+        }
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "WORK EXPERIENCE"
+      }
+    },
+    {
+      "id": "role-independent-2025",
+      "order": 9,
+      "employer": "Independent",
+      "title": "Independent AI Consulting & Upskilling",
+      "date_text_verbatim": "June 2025 - Feb 2026",
+      "start": {
+        "text": "June 2025",
+        "iso": "2025-06",
+        "precision": "month"
+      },
+      "end": {
+        "text": "Feb 2026",
+        "iso": "2026-02",
+        "precision": "month"
+      },
+      "location": "Melbourne, VIC",
+      "bullets": [
+        {
+          "text": "JIRA Analytics Dashboard: Architected and developed a Next.js + Supabase analytics application to expose sprint velocity metrics and generate LLM-powered retrospective insights and sprint plans.",
+          "provenance": {
+            "source": "CV",
+            "page": 3,
+            "section": "WORK EXPERIENCE"
+          }
+        },
+        {
+          "text": "Public-Key Server: Built a robust, production-grade Node.js/Express service for distributing PEM keys for fleet API signing, achieving 100% test coverage (Mocha/Chai).",
+          "provenance": {
+            "source": "CV",
+            "page": 3,
+            "section": "WORK EXPERIENCE"
+          }
+        },
+        {
+          "text": "Relationship Timeline Visualisation: Developed a React/TypeScript visualisation tool featuring D3 event arcs for showcasing dynamic customer journey interactions.",
+          "provenance": {
+            "source": "CV",
+            "page": 3,
+            "section": "WORK EXPERIENCE"
+          }
+        },
+        {
+          "text": "LLM Evaluation Stack: Stood up an end-to-end Langfuse + Phoenix evaluation stack to score hallucination, latency, and cost across high-volume daily LLM generations, reducing error budget breaches by 38% in a simulated production environment.",
+          "provenance": {
+            "source": "CV",
+            "page": 3,
+            "section": "WORK EXPERIENCE"
+          }
+        }
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "WORK EXPERIENCE"
+      }
+    }
+  ],
+  "education": [
+    {
+      "id": "edu-monash-2010",
+      "qualification": "Master of Computer Science",
+      "institution": "Monash University",
+      "date_text_verbatim": "2010",
+      "date_iso": "2010",
+      "date_precision": "year",
+      "location": "Melbourne",
+      "notes_verbatim": [
+        "Honors"
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "EDUCATION"
+      }
+    },
+    {
+      "id": "edu-unimelb-2007",
+      "qualification": "Bachelor of Engineering",
+      "field_verbatim": "Computer Science",
+      "institution": "University of Melbourne",
+      "date_text_verbatim": "2007",
+      "date_iso": "2007",
+      "date_precision": "year",
+      "location": "Melbourne",
+      "notes_verbatim": [],
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "EDUCATION"
+      }
+    }
+  ],
+  "certifications": [
+    {
+      "id": "cert-csm",
+      "name": "Certified Scrum Master (CSM)",
+      "issuer": "Scrum Alliance",
+      "status": "held",
+      "date_text_verbatim": null,
+      "date_not_observable": "No award or expiry date is printed on the CV for this certification.",
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "CERTIFICATIONS"
+      }
+    },
+    {
+      "id": "cert-cloud-data",
+      "name": "Cloud/Data Certifications",
+      "issuer": "AWS/GCP",
+      "status": "in progress",
+      "status_text_verbatim": "AWS/GCP (In progress)",
+      "date_text_verbatim": null,
+      "date_not_observable": "No date is printed on the CV; the CV states only \"(In progress)\".",
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "CERTIFICATIONS"
+      }
+    }
+  ],
+  "skills": [
+    {
+      "id": "skills-p1-b1",
+      "block": "SKILLS (page 1)",
+      "text_verbatim": "AI/ML Solutions, LLM Pipelines (LangChain, Langfuse), Python, TypeScript, React/Next.js, Kubernetes, Docker, Terraform, GCP/AWS, Postgres/Supabase, Real-Time Telemetry.",
+      "items": [
+        "AI/ML Solutions",
+        "LLM Pipelines (LangChain, Langfuse)",
+        "Python",
+        "TypeScript",
+        "React/Next.js",
+        "Kubernetes",
+        "Docker",
+        "Terraform",
+        "GCP/AWS",
+        "Postgres/Supabase",
+        "Real-Time Telemetry"
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "SKILLS"
+      }
+    },
+    {
+      "id": "skills-p2-b1",
+      "block": "SKILLS (page 2)",
+      "text_verbatim": "Technical Program Management, Agile/Scrum/SAFe, Product Ownership, Roadmap & Backlog Management, Stakeholder Alignment, Risk & Budget Management ($5M+).",
+      "items": [
+        "Technical Program Management",
+        "Agile/Scrum/SAFe",
+        "Product Ownership",
+        "Roadmap & Backlog Management",
+        "Stakeholder Alignment",
+        "Risk & Budget Management ($5M+)"
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "SKILLS"
+      }
+    },
+    {
+      "id": "skills-p2-b2",
+      "block": "SKILLS (page 2)",
+      "text_verbatim": "Enterprise Architecture, Data Architecture, MLOps, CI/CD, DevOps, Systems Thinking, Business Analysis, Requirements Elicitation, Gap Analysis.",
+      "items": [
+        "Enterprise Architecture",
+        "Data Architecture",
+        "MLOps",
+        "CI/CD",
+        "DevOps",
+        "Systems Thinking",
+        "Business Analysis",
+        "Requirements Elicitation",
+        "Gap Analysis"
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "SKILLS"
+      }
+    },
+    {
+      "id": "skills-p2-b3",
+      "block": "SKILLS (page 2)",
+      "text_verbatim": "Cross-functional Team Leadership, Servant Leadership, Coaching, Executive Communication, Vendor Management, Onsite/Offshore Model Coordination.",
+      "items": [
+        "Cross-functional Team Leadership",
+        "Servant Leadership",
+        "Coaching",
+        "Executive Communication",
+        "Vendor Management",
+        "Onsite/Offshore Model Coordination"
+      ],
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "SKILLS"
+      }
+    }
+  ],
+  "metrics": [
+    {
+      "id": "m-obj-01",
+      "value_verbatim": "15+ year",
+      "role_id": null,
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "CAREER OBJECTIVE"
+      },
+      "context_verbatim": "15+ year Senior Technical Leader and Certified Scrum Master (CSM)"
+    },
+    {
+      "id": "m-obj-02",
+      "value_verbatim": "over 30%",
+      "role_id": null,
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "CAREER OBJECTIVE"
+      },
+      "context_verbatim": "guiding Azure/Cloud-based modernisations that cut delivery time by over 30%"
+    },
+    {
+      "id": "m-obj-03",
+      "value_verbatim": "multi-million dollar budgets",
+      "role_id": null,
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "CAREER OBJECTIVE"
+      },
+      "context_verbatim": "deploying mission-critical programs with multi-million dollar budgets"
+    },
+    {
+      "id": "m-ato-01",
+      "value_verbatim": "eight squads",
+      "role_id": "role-ato-2026",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "one of eight squads on the Payday Super reform program"
+    },
+    {
+      "id": "m-ato-02",
+      "value_verbatim": "PI 47–48",
+      "role_id": "role-ato-2026",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "owning sprint cadence, PI Planning (PI 47–48), capacity management"
+    },
+    {
+      "id": "m-ato-03",
+      "value_verbatim": "200+ SIT/E2E scenarios",
+      "role_id": "role-ato-2026",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "test-evidence automation covering 200+ SIT/E2E scenarios across all eight squads"
+    },
+    {
+      "id": "m-ato-04",
+      "value_verbatim": "from ~3 hours to ~15 minutes per scenario (≈92% reduction)",
+      "role_id": "role-ato-2026",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "cutting evidence effort from ~3 hours to ~15 minutes per scenario (≈92% reduction)"
+    },
+    {
+      "id": "m-ato-05",
+      "value_verbatim": "75+ hours of manual evidence per team against 64 available hours",
+      "role_id": "role-ato-2026",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "a mathematically infeasible SIT window — 75+ hours of manual evidence per team against 64 available hours"
+    },
+    {
+      "id": "m-ato-06",
+      "value_verbatim": "six-day tiered harness build",
+      "role_id": "role-ato-2026",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "through a six-day tiered harness build with a formal go/no-go gate"
+    },
+    {
+      "id": "m-ato-07",
+      "value_verbatim": "four-level contingency ladder",
+      "role_id": "role-ato-2026",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "a formal go/no-go gate and a four-level contingency ladder"
+    },
+    {
+      "id": "m-ato-08",
+      "value_verbatim": "from 30 to up to 90 person-days",
+      "role_id": "role-ato-2026",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "re-baselining Payday Super test capacity from 30 to up to 90 person-days"
+    },
+    {
+      "id": "m-ato-09",
+      "value_verbatim": "40 scenarios and 11 data tables (AC6–AC19)",
+      "role_id": "role-ato-2026",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "full Azure DevOps traceability across 40 scenarios and 11 data tables (AC6–AC19)"
+    },
+    {
+      "id": "m-ato-10",
+      "value_verbatim": "under three hours",
+      "role_id": "role-ato-2026",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "produced a binding automation recommendation in under three hours"
+    },
+    {
+      "id": "m-ato-11",
+      "value_verbatim": "95%+ completion",
+      "role_id": "role-ato-2026",
+      "provenance": {
+        "source": "CV",
+        "page": 1,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "steering Distribution UI delivery to 95%+ completion"
+    },
+    {
+      "id": "m-anz-01",
+      "value_verbatim": "10k+ device concurrency",
+      "role_id": "role-anz-sdl-2017",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "real-time WebSocket telemetry servers for 10k+ device concurrency"
+    },
+    {
+      "id": "m-anz-02",
+      "value_verbatim": "P95 latency to under 200 ms",
+      "role_id": "role-anz-sdl-2017",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "improving user response time by reducing P95 latency to under 200 ms"
+    },
+    {
+      "id": "m-anz-03",
+      "value_verbatim": ">30%",
+      "role_id": "role-anz-arch-2017",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "cutting end-to-end delivery time by >30%"
+    },
+    {
+      "id": "m-anz-04",
+      "value_verbatim": ">15%",
+      "role_id": "role-anz-arch-2017",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "reducing infrastructure costs by >15%"
+    },
+    {
+      "id": "m-anz-05",
+      "value_verbatim": "over $5M",
+      "role_id": "role-anz-arch-2017",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "Directed a program portfolio valued at over $5M"
+    },
+    {
+      "id": "m-anz-06",
+      "value_verbatim": "5+ cross-functional squads (up to 40 resources, including offshore teams)",
+      "role_id": "role-anz-arch-2017",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "leading 5+ cross-functional squads (up to 40 resources, including offshore teams)"
+    },
+    {
+      "id": "m-anz-07",
+      "value_verbatim": "100% compliance",
+      "role_id": "role-anz-arch-2017",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "ensuring 100% compliance with enterprise architectural standards and risk models"
+    },
+    {
+      "id": "m-anz-08",
+      "value_verbatim": "40+ GMs and executives",
+      "role_id": "role-anz-arch-2017",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "Facilitated workshops for 40+ GMs and executives to align on strategy"
+    },
+    {
+      "id": "m-anz-09",
+      "value_verbatim": ">55%",
+      "role_id": "role-anz-arch-2017",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "improving decision-making efficiency and project clarity by >55%"
+    },
+    {
+      "id": "m-nab-01",
+      "value_verbatim": "100% regulatory adherence",
+      "role_id": "role-nab-2016",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "ensuring 100% regulatory adherence for major data initiatives"
+    },
+    {
+      "id": "m-msft-01",
+      "value_verbatim": "10 key insights",
+      "role_id": "role-microsoft-2015",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "delivering 10 key insights"
+    },
+    {
+      "id": "m-msft-02",
+      "value_verbatim": "15%",
+      "role_id": "role-microsoft-2015",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "enhanced system reliability by 15%"
+    },
+    {
+      "id": "m-msft-03",
+      "value_verbatim": "10%",
+      "role_id": "role-microsoft-2015",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "decreased incident MTTR by 10%"
+    },
+    {
+      "id": "m-msft-04",
+      "value_verbatim": "95% alignment",
+      "role_id": "role-microsoft-2015",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "achieving 95% alignment with enterprise architecture standards"
+    },
+    {
+      "id": "m-telstra-01",
+      "value_verbatim": "20%",
+      "role_id": "role-telstra-2014",
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "improving delivery efficiency by 20%"
+    },
+    {
+      "id": "m-telstra-02",
+      "value_verbatim": "15%",
+      "role_id": "role-telstra-2014",
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "operational clarity by 15%"
+    },
+    {
+      "id": "m-infoc-01",
+      "value_verbatim": "20%",
+      "role_id": "role-infocentric-2011",
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "boosting client customer engagement by 20%"
+    },
+    {
+      "id": "m-infoc-02",
+      "value_verbatim": "100% accuracy",
+      "role_id": "role-infocentric-2011",
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "automating regulatory reporting workflows to achieve 100% accuracy"
+    },
+    {
+      "id": "m-myob-01",
+      "value_verbatim": "30%",
+      "role_id": "role-myob-2010",
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "improving efficiency by 30%"
+    },
+    {
+      "id": "m-myob-02",
+      "value_verbatim": "90%",
+      "role_id": "role-myob-2010",
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "reducing reporting time by 90% for financial data sets"
+    },
+    {
+      "id": "m-ind-01",
+      "value_verbatim": "100% test coverage (Mocha/Chai)",
+      "role_id": "role-independent-2025",
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "achieving 100% test coverage (Mocha/Chai)"
+    },
+    {
+      "id": "m-ind-02",
+      "value_verbatim": "38%",
+      "role_id": "role-independent-2025",
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "WORK EXPERIENCE"
+      },
+      "context_verbatim": "reducing error budget breaches by 38% in a simulated production environment"
+    },
+    {
+      "id": "m-skill-01",
+      "value_verbatim": "$5M+",
+      "role_id": null,
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "SKILLS"
+      },
+      "context_verbatim": "Risk & Budget Management ($5M+)."
+    }
+  ],
+  "years_of_experience": {
+    "question": "R-173: fifteen or sixteen years?",
+    "method": "Earliest dated role start on the CV of record, measured to the contract's as-at date.",
+    "earliest_role_id": "role-myob-2010",
+    "earliest_role_employer": "MYOB",
+    "earliest_role_start_text_verbatim": "May 2010",
+    "day_assumption": "The CV states month-and-year only. 2010-05-01 is used as the start instant; this is the assumption, not an observed value. Using 2010-05-31 instead yields 16.26 years, which still rounds to 16 whole years.",
+    "start_date_used": "2010-05-01",
+    "as_at_date": "2026-09-03",
+    "elapsed_days": 5969,
+    "arithmetic_days": "date(2026,9,3) - date(2010,5,1) = 5969 days",
+    "arithmetic_decimal": "5969 / 365.25 = 16.3422",
+    "arithmetic_calendar": "2010-05-01 -> 2026-09-03 = 16 years, 4 months, 2 days; 16 + 4/12 = 16.3333",
+    "years_one_decimal": 16.3,
+    "years_whole": 16,
+    "cv_self_description_verbatim": "15+ year",
+    "cv_self_description_provenance": {
+      "source": "CV",
+      "page": 1,
+      "section": "CAREER OBJECTIVE"
+    },
+    "resolution": "Sixteen. The CV's own dated employment record places the earliest role start at May 2010, which is 16.3 years to 2026-09-03. The CV's prose says \"15+ year\", which is true but understated by a full year. Any site copy should say sixteen, or state the year (\"since 2010\") and let it compute. R-173 is settled in favour of sixteen.",
+    "computation_command": "python3 - <<'EOF'\\nfrom datetime import date\\ns=date(2010,5,1); e=date(2026,9,3)\\nd=(e-s).days\\nprint(d, d/365.25)\\nEOF",
+    "computation_output": "5969 16.342231348391513"
+  },
+  "observed_anomalies": [
+    {
+      "id": "anom-anz-overlap",
+      "description": "The two ANZ entries overlap in time. \"Senior Delivery Lead / Technical Product Owner\" is dated Sept 2017 - June 2025 (page 2) while \"AI/ML Strategy & Solutions Architect\" at the same employer is dated 2017 - 2022 (page 2). The CV does not state whether these were concurrent titles, a promotion sequence printed out of order, or a layout artefact.",
+      "impact": "None on the years-of-experience computation: both fall inside the continuous May 2010 - present span. Any site timeline rendering ANZ as a single tenure should use Sept 2017 - June 2025 and treat the Architect entry as a nested title.",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "WORK EXPERIENCE"
+      }
+    },
+    {
+      "id": "anom-role-order",
+      "description": "\"Independent AI Consulting & Upskilling\" (June 2025 - Feb 2026) is printed last on page 3, after MYOB (May 2010 - Aug 2011), breaking the otherwise reverse-chronological order. It is chronologically the second-most-recent role.",
+      "impact": "A timeline built by reading the PDF top-to-bottom would place a 2025-2026 role before a 2010 role. Sort by parsed start date, not print order.",
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "WORK EXPERIENCE"
+      }
+    },
+    {
+      "id": "anom-two-skills-blocks",
+      "description": "The CV prints two separate sidebar headings both labelled \"SKILLS\" (page 1 and page 2). They are not duplicates; the page 1 block is the technology inventory and the page 2 block is the management/architecture inventory.",
+      "impact": "Both blocks are recorded separately with their own page provenance rather than merged.",
+      "provenance": {
+        "source": "CV",
+        "page": 2,
+        "section": "SKILLS"
+      }
+    },
+    {
+      "id": "anom-cert-dates",
+      "description": "Neither certification carries a date on the CV. R-8/R-9 require a date per credential; the date is not observable from this source.",
+      "impact": "Certification dates are recorded as not observable, not estimated.",
+      "provenance": {
+        "source": "CV",
+        "page": 3,
+        "section": "CERTIFICATIONS"
+      }
+    }
+  ],
+  "counts": {
+    "roles": 9,
+    "bullets": 21,
+    "education": 2,
+    "certifications": 2,
+    "skill_blocks": 4,
+    "skill_items": 32,
+    "metrics": 37
+  },
+  "self_verification": {
+    "method": "Every extracted string (employer, title, date text, location, each bullet, each education field, each certification name, each skills block, each metric value and its context, the career objective, and each contact value) was re-checked as a substring of a fresh pdftotext run of the page it claims, using column crops (-x/-W) to defeat the two-column interleave and a soft-hyphen rejoin rule for words broken across a line.",
+    "assertions_checked": 149,
+    "assertions_passed": 149,
+    "failures": 0,
+    "crops_used": {
+      "body": [
+        "-x 160",
+        "-x 175",
+        "-x 182",
+        "-x 190",
+        "-x 196"
+      ],
+      "sidebar": [
+        "-W 160",
+        "-W 175",
+        "-W 190"
+      ],
+      "full": [
+        "-W 612"
+      ]
+    },
+    "soft_hyphen_rule": "regex ([A-Za-z])- ([a-z]) -> \\1-\\2, applied only to the PDF side of the comparison, to rejoin words the layout split across lines (e.g. \"test-\\nevidence\" -> \"test-evidence\", \"re-\\nbaselining\" -> \"re-baselining\").",
+    "corrections_made": [
+      {
+        "record": "m-anz-06",
+        "field": "value_verbatim",
+        "before": "5+ cross-functional squads (up to 40 resources)",
+        "after": "5+ cross-functional squads (up to 40 resources, including offshore teams)",
+        "reason": "The first draft truncated the parenthetical and closed the bracket early, which would have been a non-verbatim quote. Corrected to the full printed phrase before this file was finalised."
+      }
+    ]
+  }
+}

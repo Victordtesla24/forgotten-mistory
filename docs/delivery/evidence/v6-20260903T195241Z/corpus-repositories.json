@@ -1,0 +1,4451 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetId": "corpus-repositories",
+  "contract": [
+    "R-8",
+    "R-108",
+    "R-182",
+    "R-184"
+  ],
+  "generatedAt": "2026-09-03T20:09:30Z",
+  "generator": {
+    "tool": "gh CLI 2.93.0 (authenticated, real GitHub REST API)",
+    "host": "aether VPS",
+    "authenticatedAs": "Victordtesla24",
+    "fabricationPolicy": "Every value below was returned by a live API call recorded in reproductionCommands. No value is estimated, inferred or invented. Anything the API does not publish is written as \"not observable\" with the command that proved it."
+  },
+  "owner": {
+    "login": "Victordtesla24",
+    "name": "Vikram.",
+    "publicRepoCount": 38,
+    "accountCreatedAt": "2023-10-14T07:21:02Z",
+    "_provenance": {
+      "api": "GET https://api.github.com/user",
+      "retrievedAt": "2026-09-03T20:09:30Z",
+      "tool": "gh api"
+    }
+  },
+  "totals": {
+    "repositoriesOwned": 41,
+    "public": 38,
+    "private": 3,
+    "forks": 1,
+    "archived": 0,
+    "withGithubActionsWorkflows": 26,
+    "_note": "publicRepoCount from /user is 38; this dataset lists 41 owned repositories because /user/repos?affiliation=owner also returns the 3 private repositories."
+  },
+  "repositories": [
+    {
+      "name": "3-tier-multi-agent-architecture",
+      "htmlUrl": "https://github.com/Victordtesla24/3-tier-multi-agent-architecture",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "The Antigravity 3-Tier Multi-Agent Architecture is a deterministic, highly optimized orchestration system operating natively within the Antigravity IDE. It leverages a rigorous, specialized hierarchy of agents (Prompt Reconstruction, Research, Orchestration, Sub-Agents, and Leaf Workers) bound by strict operational constraints.",
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 479302,
+          "percent": 94.78
+        },
+        {
+          "language": "Shell",
+          "bytes": 22931,
+          "percent": 4.53
+        },
+        {
+          "language": "Makefile",
+          "bytes": 2735,
+          "percent": 0.54
+        },
+        {
+          "language": "Dockerfile",
+          "bytes": 733,
+          "percent": 0.14
+        }
+      ],
+      "languageBytesTotal": 505701,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 1343,
+      "createdAt": "2026-03-01T05:56:11Z",
+      "updatedAt": "2026-03-09T08:23:36Z",
+      "pushedAt": "2026-03-09T08:23:33Z",
+      "license": {
+        "key": "mit",
+        "spdxId": "MIT",
+        "name": "MIT License"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 2,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 240048320,
+            "name": "Antigravity Architecture CI",
+            "path": ".github/workflows/ci.yml",
+            "state": "active"
+          },
+          {
+            "id": 241062741,
+            "name": "Publish Docker image",
+            "path": ".github/workflows/docker-publish.yml",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/3-tier-multi-agent-architecture/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/3-tier-multi-agent-architecture/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "abentertainment",
+      "htmlUrl": "https://github.com/Victordtesla24/abentertainment",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "event management company website",
+      "primaryLanguage": "HTML",
+      "languageBreakdown": [
+        {
+          "language": "HTML",
+          "bytes": 10290123,
+          "percent": 89.11
+        },
+        {
+          "language": "TypeScript",
+          "bytes": 1115081,
+          "percent": 9.66
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 98864,
+          "percent": 0.86
+        },
+        {
+          "language": "Shell",
+          "bytes": 24699,
+          "percent": 0.21
+        },
+        {
+          "language": "PHP",
+          "bytes": 8430,
+          "percent": 0.07
+        },
+        {
+          "language": "CSS",
+          "bytes": 7527,
+          "percent": 0.07
+        },
+        {
+          "language": "Dockerfile",
+          "bytes": 2401,
+          "percent": 0.02
+        }
+      ],
+      "languageBytesTotal": 11547125,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 111068,
+      "createdAt": "2026-03-13T00:34:47Z",
+      "updatedAt": "2026-08-06T06:58:27Z",
+      "pushedAt": "2026-08-06T06:57:44Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 2,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 291771036,
+            "name": "Deploy to VPS (rebuild Docker image)",
+            "path": ".github/workflows/deploy-vps.yml",
+            "state": "active"
+          },
+          {
+            "id": 266128054,
+            "name": "opencode",
+            "path": ".github/workflows/opencode.yml",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/abentertainment/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/abentertainment/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "adblocker",
+      "htmlUrl": "https://github.com/Victordtesla24/adblocker",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": true,
+      "isArchived": false,
+      "description": "Efficient embeddable adblocker library",
+      "primaryLanguage": null,
+      "languageBreakdown": [
+        {
+          "language": "TypeScript",
+          "bytes": 2673915,
+          "percent": 82.66
+        },
+        {
+          "language": "Jupyter Notebook",
+          "bytes": 468570,
+          "percent": 14.49
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 84067,
+          "percent": 2.6
+        },
+        {
+          "language": "Python",
+          "bytes": 6192,
+          "percent": 0.19
+        },
+        {
+          "language": "Makefile",
+          "bytes": 1908,
+          "percent": 0.06
+        }
+      ],
+      "languageBytesTotal": 3234652,
+      "defaultBranch": "master",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 102885,
+      "createdAt": "2024-11-07T11:46:05Z",
+      "updatedAt": "2024-11-07T11:46:36Z",
+      "pushedAt": "2024-11-06T05:13:30Z",
+      "license": {
+        "key": "mpl-2.0",
+        "spdxId": "MPL-2.0",
+        "name": "Mozilla Public License 2.0"
+      },
+      "homepage": "https://www.ghostery.com",
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/adblocker/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/adblocker/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "Advanced-Prompt-Creator",
+      "htmlUrl": "https://github.com/Victordtesla24/Advanced-Prompt-Creator",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "An AI based Advanced Prompt creator using user input text and transforming it using latest and advanced Prompt Engineering Techniques & reasoning AI Models ensuring prompt output accuracy, adherence to input prompt success criteria’s and requirements, effective prompt structure with all the structural details derived from the input prompt. ",
+      "primaryLanguage": "TypeScript",
+      "languageBreakdown": [
+        {
+          "language": "TypeScript",
+          "bytes": 403372,
+          "percent": 95.36
+        },
+        {
+          "language": "Python",
+          "bytes": 10596,
+          "percent": 2.51
+        },
+        {
+          "language": "CSS",
+          "bytes": 8518,
+          "percent": 2.01
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 508,
+          "percent": 0.12
+        }
+      ],
+      "languageBytesTotal": 422994,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 156,
+      "createdAt": "2025-10-23T04:59:08Z",
+      "updatedAt": "2026-03-01T07:54:27Z",
+      "pushedAt": "2025-11-25T18:09:29Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/Advanced-Prompt-Creator/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/Advanced-Prompt-Creator/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "aether-job-career-agent",
+      "htmlUrl": "https://github.com/Victordtesla24/aether-job-career-agent",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "Fully autonomous, high fidelity and comprehensive career management and job application management ai agent",
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 10805549,
+          "percent": 63.29
+        },
+        {
+          "language": "TypeScript",
+          "bytes": 5211010,
+          "percent": 30.52
+        },
+        {
+          "language": "HTML",
+          "bytes": 512216,
+          "percent": 3.0
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 318260,
+          "percent": 1.86
+        },
+        {
+          "language": "Shell",
+          "bytes": 135573,
+          "percent": 0.79
+        },
+        {
+          "language": "CSS",
+          "bytes": 81810,
+          "percent": 0.48
+        },
+        {
+          "language": "PLpgSQL",
+          "bytes": 9086,
+          "percent": 0.05
+        }
+      ],
+      "languageBytesTotal": 17073504,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 157527,
+      "createdAt": "2026-07-01T13:36:06Z",
+      "updatedAt": "2026-09-02T21:00:13Z",
+      "pushedAt": "2026-09-02T20:59:41Z",
+      "license": {
+        "key": "mit",
+        "spdxId": "MIT",
+        "name": "MIT License"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 3,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 311628383,
+            "name": "CI",
+            "path": ".github/workflows/ci.yml",
+            "state": "active"
+          },
+          {
+            "id": 336597190,
+            "name": "VPS Delivery",
+            "path": ".github/workflows/vps-delivery.yml",
+            "state": "active"
+          },
+          {
+            "id": 305449047,
+            "name": "Dependency Graph",
+            "path": "dynamic/dependabot/update-graph",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/aether-job-career-agent/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/aether-job-career-agent/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "agsva-security-clearance-webapp",
+      "htmlUrl": "https://github.com/Victordtesla24/agsva-security-clearance-webapp",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "web app to track, manage and track AGSVA Security Clearance (Baseline)",
+      "primaryLanguage": "HTML",
+      "languageBreakdown": [
+        {
+          "language": "HTML",
+          "bytes": 287415,
+          "percent": 62.4
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 142548,
+          "percent": 30.95
+        },
+        {
+          "language": "Shell",
+          "bytes": 30608,
+          "percent": 6.65
+        }
+      ],
+      "languageBytesTotal": 460571,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 627,
+      "createdAt": "2026-03-12T16:58:04Z",
+      "updatedAt": "2026-03-12T21:39:29Z",
+      "pushedAt": "2026-06-11T14:42:49Z",
+      "license": {
+        "key": "mit",
+        "spdxId": "MIT",
+        "name": "MIT License"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 4,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 245265054,
+            "name": "CI",
+            "path": ".github/workflows/ci.yml",
+            "state": "active"
+          },
+          {
+            "id": 245265055,
+            "name": "CodeQL",
+            "path": ".github/workflows/codeql.yml",
+            "state": "disabled_inactivity"
+          },
+          {
+            "id": 245284330,
+            "name": "Pages",
+            "path": ".github/workflows/pages.yml",
+            "state": "active"
+          },
+          {
+            "id": 245265057,
+            "name": "Repository Hygiene",
+            "path": ".github/workflows/repo-hygiene.yml",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/agsva-security-clearance-webapp/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/agsva-security-clearance-webapp/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "AI-Gmail-Mailbox-Manager",
+      "htmlUrl": "https://github.com/Victordtesla24/AI-Gmail-Mailbox-Manager",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "Fully automated & Autonomous AI Driven Gmail Mailbox Management System",
+      "primaryLanguage": "TypeScript",
+      "languageBreakdown": [
+        {
+          "language": "TypeScript",
+          "bytes": 356644,
+          "percent": 94.14
+        },
+        {
+          "language": "HTML",
+          "bytes": 8797,
+          "percent": 2.32
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 7967,
+          "percent": 2.1
+        },
+        {
+          "language": "CSS",
+          "bytes": 5430,
+          "percent": 1.43
+        }
+      ],
+      "languageBytesTotal": 378838,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 314,
+      "createdAt": "2025-08-02T04:13:54Z",
+      "updatedAt": "2025-08-02T05:00:54Z",
+      "pushedAt": "2025-08-02T05:00:50Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/AI-Gmail-Mailbox-Manager/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/AI-Gmail-Mailbox-Manager/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "Birth-Time-Rectifier",
+      "htmlUrl": "https://github.com/Victordtesla24/Birth-Time-Rectifier",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "An AI driven birth time rectification system which uses the most advanced and modern birth time rectification algorithms in combination with the ancient Indian Parashara Hora Shastra decoded wisdom from Sanskrit Texts.",
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 67890320,
+          "percent": 89.55
+        },
+        {
+          "language": "HTML",
+          "bytes": 3047045,
+          "percent": 4.02
+        },
+        {
+          "language": "C",
+          "bytes": 2594252,
+          "percent": 3.42
+        },
+        {
+          "language": "TypeScript",
+          "bytes": 827963,
+          "percent": 1.09
+        },
+        {
+          "language": "Cython",
+          "bytes": 466536,
+          "percent": 0.62
+        },
+        {
+          "language": "Shell",
+          "bytes": 403016,
+          "percent": 0.53
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 312101,
+          "percent": 0.41
+        },
+        {
+          "language": "C++",
+          "bytes": 85980,
+          "percent": 0.11
+        },
+        {
+          "language": "CSS",
+          "bytes": 48138,
+          "percent": 0.06
+        },
+        {
+          "language": "Fortran",
+          "bytes": 33225,
+          "percent": 0.04
+        },
+        {
+          "language": "SCSS",
+          "bytes": 18457,
+          "percent": 0.02
+        },
+        {
+          "language": "M4",
+          "bytes": 16582,
+          "percent": 0.02
+        },
+        {
+          "language": "Jupyter Notebook",
+          "bytes": 16427,
+          "percent": 0.02
+        },
+        {
+          "language": "Dockerfile",
+          "bytes": 15456,
+          "percent": 0.02
+        },
+        {
+          "language": "PowerShell",
+          "bytes": 8834,
+          "percent": 0.01
+        },
+        {
+          "language": "Smarty",
+          "bytes": 8486,
+          "percent": 0.01
+        },
+        {
+          "language": "Makefile",
+          "bytes": 6027,
+          "percent": 0.01
+        },
+        {
+          "language": "Roff",
+          "bytes": 5377,
+          "percent": 0.01
+        },
+        {
+          "language": "Perl",
+          "bytes": 4956,
+          "percent": 0.01
+        },
+        {
+          "language": "Meson",
+          "bytes": 2531,
+          "percent": 0.0
+        },
+        {
+          "language": "Lua",
+          "bytes": 139,
+          "percent": 0.0
+        },
+        {
+          "language": "GDB",
+          "bytes": 130,
+          "percent": 0.0
+        },
+        {
+          "language": "Assembly",
+          "bytes": 36,
+          "percent": 0.0
+        }
+      ],
+      "languageBytesTotal": 75812014,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 5,
+      "sizeKb": 582485,
+      "createdAt": "2025-02-10T05:15:52Z",
+      "updatedAt": "2025-06-10T17:33:51Z",
+      "pushedAt": "2026-06-18T09:32:53Z",
+      "license": {
+        "key": "mit",
+        "spdxId": "MIT",
+        "name": "MIT License"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 7,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 167639067,
+            "name": "Birth Time Rectifier CI/CD",
+            "path": ".github/workflows/ci-cd.yml",
+            "state": "active"
+          },
+          {
+            "id": 144415940,
+            "name": ".github/workflows/ci.yml",
+            "path": ".github/workflows/ci.yml",
+            "state": "active"
+          },
+          {
+            "id": 167639068,
+            "name": "Deploy Birth Time Rectifier",
+            "path": ".github/workflows/deploy.yml",
+            "state": "active"
+          },
+          {
+            "id": 143189010,
+            "name": "CI/CD Pipeline",
+            "path": ".github/workflows/main.yml",
+            "state": "active"
+          },
+          {
+            "id": 144415941,
+            "name": "Test Suite",
+            "path": ".github/workflows/test.yml",
+            "state": "active"
+          },
+          {
+            "id": 167639069,
+            "name": "Deploy to Vercel",
+            "path": ".github/workflows/vercel-deploy.yml",
+            "state": "active"
+          },
+          {
+            "id": 143189021,
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/Birth-Time-Rectifier/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/Birth-Time-Rectifier/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "btr-demo",
+      "htmlUrl": "https://github.com/Victordtesla24/btr-demo",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "Birth Time Rectification Demo purely using BPHS-BTR",
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 412853,
+          "percent": 33.3
+        },
+        {
+          "language": "TypeScript",
+          "bytes": 394528,
+          "percent": 31.82
+        },
+        {
+          "language": "HTML",
+          "bytes": 206820,
+          "percent": 16.68
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 138845,
+          "percent": 11.2
+        },
+        {
+          "language": "CSS",
+          "bytes": 46742,
+          "percent": 3.77
+        },
+        {
+          "language": "GLSL",
+          "bytes": 34074,
+          "percent": 2.75
+        },
+        {
+          "language": "Shell",
+          "bytes": 5302,
+          "percent": 0.43
+        },
+        {
+          "language": "Dockerfile",
+          "bytes": 537,
+          "percent": 0.04
+        },
+        {
+          "language": "Procfile",
+          "bytes": 59,
+          "percent": 0.0
+        }
+      ],
+      "languageBytesTotal": 1239760,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 9776,
+      "createdAt": "2025-11-16T13:58:35Z",
+      "updatedAt": "2025-12-02T05:58:38Z",
+      "pushedAt": "2025-12-02T05:58:34Z",
+      "license": {
+        "key": "lgpl-2.1",
+        "spdxId": "LGPL-2.1",
+        "name": "GNU Lesser General Public License v2.1"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 8,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 212067613,
+            "name": "Deploy to Firebase Hosting on merge",
+            "path": ".github/workflows/firebase-hosting-merge.yml",
+            "state": "active"
+          },
+          {
+            "id": 212067614,
+            "name": "Deploy to Firebase Hosting on PR",
+            "path": ".github/workflows/firebase-hosting-pull-request.yml",
+            "state": "active"
+          },
+          {
+            "id": 212062259,
+            "name": "Deploy to Firebase Hosting",
+            "path": ".github/workflows/firebase-hosting.yml",
+            "state": "active"
+          },
+          {
+            "id": 208343129,
+            "name": "🔀 Gemini Dispatch",
+            "path": ".github/workflows/gemini-dispatch.yml",
+            "state": "active"
+          },
+          {
+            "id": 208343130,
+            "name": "▶️ Gemini Invoke",
+            "path": ".github/workflows/gemini-invoke.yml",
+            "state": "active"
+          },
+          {
+            "id": 208343131,
+            "name": "🔎 Gemini Review",
+            "path": ".github/workflows/gemini-review.yml",
+            "state": "active"
+          },
+          {
+            "id": 208343133,
+            "name": "📋 Gemini Scheduled Issue Triage",
+            "path": ".github/workflows/gemini-scheduled-triage.yml",
+            "state": "disabled_inactivity"
+          },
+          {
+            "id": 208343134,
+            "name": "🔀 Gemini Triage",
+            "path": ".github/workflows/gemini-triage.yml",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/btr-demo/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/btr-demo/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "chris-cole-website",
+      "htmlUrl": "https://github.com/Victordtesla24/chris-cole-website",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "a test website from chris coles website template `https://hellochriscole.webflow.io`",
+      "primaryLanguage": "TypeScript",
+      "languageBreakdown": [
+        {
+          "language": "TypeScript",
+          "bytes": 413502,
+          "percent": 32.85
+        },
+        {
+          "language": "Python",
+          "bytes": 412853,
+          "percent": 32.8
+        },
+        {
+          "language": "HTML",
+          "bytes": 206820,
+          "percent": 16.43
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 138845,
+          "percent": 11.03
+        },
+        {
+          "language": "CSS",
+          "bytes": 46742,
+          "percent": 3.71
+        },
+        {
+          "language": "GLSL",
+          "bytes": 34074,
+          "percent": 2.71
+        },
+        {
+          "language": "Shell",
+          "bytes": 5302,
+          "percent": 0.42
+        },
+        {
+          "language": "Dockerfile",
+          "bytes": 537,
+          "percent": 0.04
+        },
+        {
+          "language": "Procfile",
+          "bytes": 59,
+          "percent": 0.0
+        }
+      ],
+      "languageBytesTotal": 1258734,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 9509,
+      "createdAt": "2025-11-13T06:16:37Z",
+      "updatedAt": "2025-12-02T13:12:10Z",
+      "pushedAt": "2025-12-02T13:12:05Z",
+      "license": {
+        "key": "lgpl-2.1",
+        "spdxId": "LGPL-2.1",
+        "name": "GNU Lesser General Public License v2.1"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 8,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 212062761,
+            "name": "Deploy to Firebase Hosting on merge",
+            "path": ".github/workflows/firebase-hosting-merge.yml",
+            "state": "active"
+          },
+          {
+            "id": 212062762,
+            "name": "Deploy to Firebase Hosting on PR",
+            "path": ".github/workflows/firebase-hosting-pull-request.yml",
+            "state": "active"
+          },
+          {
+            "id": 212062763,
+            "name": "Deploy to Firebase Hosting",
+            "path": ".github/workflows/firebase-hosting.yml",
+            "state": "active"
+          },
+          {
+            "id": 212062764,
+            "name": "🔀 Gemini Dispatch",
+            "path": ".github/workflows/gemini-dispatch.yml",
+            "state": "active"
+          },
+          {
+            "id": 212062765,
+            "name": "▶️ Gemini Invoke",
+            "path": ".github/workflows/gemini-invoke.yml",
+            "state": "active"
+          },
+          {
+            "id": 212062766,
+            "name": "🔎 Gemini Review",
+            "path": ".github/workflows/gemini-review.yml",
+            "state": "active"
+          },
+          {
+            "id": 212062767,
+            "name": "📋 Gemini Scheduled Issue Triage",
+            "path": ".github/workflows/gemini-scheduled-triage.yml",
+            "state": "disabled_inactivity"
+          },
+          {
+            "id": 212062768,
+            "name": "🔀 Gemini Triage",
+            "path": ".github/workflows/gemini-triage.yml",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/chris-cole-website/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/chris-cole-website/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "claude-designs",
+      "htmlUrl": "https://github.com/Victordtesla24/claude-designs",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "all my claude designs in one place",
+      "primaryLanguage": null,
+      "languageBreakdown": [],
+      "languageBytesTotal": 0,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 0,
+      "createdAt": "2026-05-07T10:47:36Z",
+      "updatedAt": "2026-05-07T10:47:37Z",
+      "pushedAt": "2026-05-07T10:47:37Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/claude-designs/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/claude-designs/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "Codex",
+      "htmlUrl": "https://github.com/Victordtesla24/Codex",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "All the Codex Dev files and folders into one folder on github",
+      "primaryLanguage": "HTML",
+      "languageBreakdown": [
+        {
+          "language": "HTML",
+          "bytes": 275607,
+          "percent": 64.84
+        },
+        {
+          "language": "Python",
+          "bytes": 112555,
+          "percent": 26.48
+        },
+        {
+          "language": "Shell",
+          "bytes": 28299,
+          "percent": 6.66
+        },
+        {
+          "language": "TypeScript",
+          "bytes": 8401,
+          "percent": 1.98
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 178,
+          "percent": 0.04
+        }
+      ],
+      "languageBytesTotal": 425040,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 612,
+      "createdAt": "2026-02-12T05:02:09Z",
+      "updatedAt": "2026-02-13T17:20:12Z",
+      "pushedAt": "2026-02-13T17:20:08Z",
+      "license": {
+        "key": "apache-2.0",
+        "spdxId": "Apache-2.0",
+        "name": "Apache License 2.0"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/Codex/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/Codex/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "containerised-birth-time-rectifier",
+      "htmlUrl": "https://github.com/Victordtesla24/containerised-birth-time-rectifier",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "AI driven birth time rectifier system",
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 67212793,
+          "percent": 97.32
+        },
+        {
+          "language": "Cython",
+          "bytes": 466536,
+          "percent": 0.68
+        },
+        {
+          "language": "C",
+          "bytes": 431397,
+          "percent": 0.62
+        },
+        {
+          "language": "Shell",
+          "bytes": 344146,
+          "percent": 0.5
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 273332,
+          "percent": 0.4
+        },
+        {
+          "language": "C++",
+          "bytes": 85980,
+          "percent": 0.12
+        },
+        {
+          "language": "TypeScript",
+          "bytes": 74436,
+          "percent": 0.11
+        },
+        {
+          "language": "HTML",
+          "bytes": 45192,
+          "percent": 0.07
+        },
+        {
+          "language": "Fortran",
+          "bytes": 33225,
+          "percent": 0.05
+        },
+        {
+          "language": "CSS",
+          "bytes": 24076,
+          "percent": 0.03
+        },
+        {
+          "language": "SCSS",
+          "bytes": 18457,
+          "percent": 0.03
+        },
+        {
+          "language": "Jupyter Notebook",
+          "bytes": 16427,
+          "percent": 0.02
+        },
+        {
+          "language": "Dockerfile",
+          "bytes": 14389,
+          "percent": 0.02
+        },
+        {
+          "language": "PowerShell",
+          "bytes": 8834,
+          "percent": 0.01
+        },
+        {
+          "language": "Smarty",
+          "bytes": 8486,
+          "percent": 0.01
+        },
+        {
+          "language": "Roff",
+          "bytes": 5377,
+          "percent": 0.01
+        },
+        {
+          "language": "Meson",
+          "bytes": 2531,
+          "percent": 0.0
+        },
+        {
+          "language": "Lua",
+          "bytes": 139,
+          "percent": 0.0
+        }
+      ],
+      "languageBytesTotal": 69065753,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 7,
+      "sizeKb": 548858,
+      "createdAt": "2025-03-03T01:32:17Z",
+      "updatedAt": "2025-04-02T13:41:38Z",
+      "pushedAt": "2026-03-30T13:34:15Z",
+      "license": {
+        "key": "gpl-3.0",
+        "spdxId": "GPL-3.0",
+        "name": "GNU General Public License v3.0"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 5,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 147304042,
+            "name": "Birth Time Rectifier CI/CD",
+            "path": ".github/workflows/ci-cd.yml",
+            "state": "active"
+          },
+          {
+            "id": 147304043,
+            "name": "Birth Time Rectifier CI/CD",
+            "path": ".github/workflows/ci.yml",
+            "state": "active"
+          },
+          {
+            "id": 147304044,
+            "name": "Deploy Birth Time Rectifier",
+            "path": ".github/workflows/deploy.yml",
+            "state": "active"
+          },
+          {
+            "id": 148571856,
+            "name": "Deploy to Vercel",
+            "path": ".github/workflows/vercel-deploy.yml",
+            "state": "active"
+          },
+          {
+            "id": 147304053,
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/containerised-birth-time-rectifier/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/containerised-birth-time-rectifier/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "cursor-tutor",
+      "htmlUrl": "https://github.com/Victordtesla24/cursor-tutor",
+      "visibility": "private",
+      "isPrivate": true,
+      "publicationPolicy": "private — metadata recorded, content NOT for publication",
+      "isFork": false,
+      "isArchived": false,
+      "description": null,
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 88347543,
+          "percent": 90.62
+        },
+        {
+          "language": "Cython",
+          "bytes": 5067288,
+          "percent": 5.2
+        },
+        {
+          "language": "C",
+          "bytes": 2624775,
+          "percent": 2.69
+        },
+        {
+          "language": "C++",
+          "bytes": 703648,
+          "percent": 0.72
+        },
+        {
+          "language": "SCSS",
+          "bytes": 342292,
+          "percent": 0.35
+        },
+        {
+          "language": "XSLT",
+          "bytes": 162066,
+          "percent": 0.17
+        },
+        {
+          "language": "HTML",
+          "bytes": 59656,
+          "percent": 0.06
+        },
+        {
+          "language": "Meson",
+          "bytes": 35024,
+          "percent": 0.04
+        },
+        {
+          "language": "Fortran",
+          "bytes": 33225,
+          "percent": 0.03
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 29375,
+          "percent": 0.03
+        },
+        {
+          "language": "CSS",
+          "bytes": 24279,
+          "percent": 0.02
+        },
+        {
+          "language": "Cuda",
+          "bytes": 24032,
+          "percent": 0.02
+        },
+        {
+          "language": "Jinja",
+          "bytes": 16352,
+          "percent": 0.02
+        },
+        {
+          "language": "PowerShell",
+          "bytes": 9033,
+          "percent": 0.01
+        },
+        {
+          "language": "Roff",
+          "bytes": 7889,
+          "percent": 0.01
+        },
+        {
+          "language": "Shell",
+          "bytes": 5424,
+          "percent": 0.01
+        },
+        {
+          "language": "Jupyter Notebook",
+          "bytes": 835,
+          "percent": 0.0
+        },
+        {
+          "language": "Batchfile",
+          "bytes": 800,
+          "percent": 0.0
+        },
+        {
+          "language": "Makefile",
+          "bytes": 634,
+          "percent": 0.0
+        }
+      ],
+      "languageBytesTotal": 97494170,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 139601,
+      "createdAt": "2024-11-11T08:27:24Z",
+      "updatedAt": "2024-11-12T23:03:24Z",
+      "pushedAt": "2024-11-12T23:03:21Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/cursor-tutor/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/cursor-tutor/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "cursor-uninstaller",
+      "htmlUrl": "https://github.com/Victordtesla24/cursor-uninstaller",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": null,
+      "primaryLanguage": "Shell",
+      "languageBreakdown": [
+        {
+          "language": "Shell",
+          "bytes": 296650,
+          "percent": 100.0
+        }
+      ],
+      "languageBytesTotal": 296650,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 1003,
+      "createdAt": "2025-05-06T22:58:13Z",
+      "updatedAt": "2025-06-21T09:33:10Z",
+      "pushedAt": "2025-06-21T09:33:06Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/cursor-uninstaller/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/cursor-uninstaller/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "cursor-vscode-anti-fake-coding-system",
+      "htmlUrl": "https://github.com/Victordtesla24/cursor-vscode-anti-fake-coding-system",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": null,
+      "primaryLanguage": "Shell",
+      "languageBreakdown": [
+        {
+          "language": "Shell",
+          "bytes": 250433,
+          "percent": 98.23
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 4501,
+          "percent": 1.77
+        }
+      ],
+      "languageBytesTotal": 254934,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 273,
+      "createdAt": "2025-06-12T16:51:40Z",
+      "updatedAt": "2026-03-01T07:54:34Z",
+      "pushedAt": "2025-06-17T08:03:22Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/cursor-vscode-anti-fake-coding-system/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/cursor-vscode-anti-fake-coding-system/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "EFDDH-Jira-Analytics-Dashboard",
+      "htmlUrl": "https://github.com/Victordtesla24/EFDDH-Jira-Analytics-Dashboard",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "Dashboard for ANZ EFDDH Team Metrics and JIRA Handbook",
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 110458101,
+          "percent": 93.01
+        },
+        {
+          "language": "C++",
+          "bytes": 5389297,
+          "percent": 4.54
+        },
+        {
+          "language": "Cython",
+          "bytes": 1979455,
+          "percent": 1.67
+        },
+        {
+          "language": "C",
+          "bytes": 740882,
+          "percent": 0.62
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 38759,
+          "percent": 0.03
+        },
+        {
+          "language": "Fortran",
+          "bytes": 37029,
+          "percent": 0.03
+        },
+        {
+          "language": "Shell",
+          "bytes": 26325,
+          "percent": 0.02
+        },
+        {
+          "language": "SCSS",
+          "bytes": 18457,
+          "percent": 0.02
+        },
+        {
+          "language": "CSS",
+          "bytes": 15486,
+          "percent": 0.01
+        },
+        {
+          "language": "HTML",
+          "bytes": 14251,
+          "percent": 0.01
+        },
+        {
+          "language": "PowerShell",
+          "bytes": 9033,
+          "percent": 0.01
+        },
+        {
+          "language": "XSLT",
+          "bytes": 8510,
+          "percent": 0.01
+        },
+        {
+          "language": "Smarty",
+          "bytes": 8486,
+          "percent": 0.01
+        },
+        {
+          "language": "Roff",
+          "bytes": 5377,
+          "percent": 0.0
+        },
+        {
+          "language": "Meson",
+          "bytes": 4589,
+          "percent": 0.0
+        },
+        {
+          "language": "CMake",
+          "bytes": 1692,
+          "percent": 0.0
+        },
+        {
+          "language": "Jinja",
+          "bytes": 1570,
+          "percent": 0.0
+        },
+        {
+          "language": "Batchfile",
+          "bytes": 1476,
+          "percent": 0.0
+        },
+        {
+          "language": "Makefile",
+          "bytes": 634,
+          "percent": 0.0
+        },
+        {
+          "language": "Procfile",
+          "bytes": 85,
+          "percent": 0.0
+        }
+      ],
+      "languageBytesTotal": 118759494,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 1,
+      "openIssuesCount": 0,
+      "sizeKb": 265697,
+      "createdAt": "2024-12-03T08:57:12Z",
+      "updatedAt": "2024-12-04T02:01:10Z",
+      "pushedAt": "2024-12-04T02:01:07Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/EFDDH-Jira-Analytics-Dashboard/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/EFDDH-Jira-Analytics-Dashboard/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "EFDDH-Jira-Dashboard",
+      "htmlUrl": "https://github.com/Victordtesla24/EFDDH-Jira-Dashboard",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": null,
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 76679,
+          "percent": 79.74
+        },
+        {
+          "language": "PowerShell",
+          "bytes": 9031,
+          "percent": 9.39
+        },
+        {
+          "language": "Shell",
+          "bytes": 5263,
+          "percent": 5.47
+        },
+        {
+          "language": "CSS",
+          "bytes": 3662,
+          "percent": 3.81
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 847,
+          "percent": 0.88
+        },
+        {
+          "language": "Batchfile",
+          "bytes": 676,
+          "percent": 0.7
+        }
+      ],
+      "languageBytesTotal": 96158,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 76992,
+      "createdAt": "2024-11-18T12:36:48Z",
+      "updatedAt": "2024-11-21T13:41:47Z",
+      "pushedAt": "2024-11-21T13:41:34Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/EFDDH-Jira-Dashboard/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/EFDDH-Jira-Dashboard/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "Error-Management-System",
+      "htmlUrl": "https://github.com/Victordtesla24/Error-Management-System",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "Fully Autonomous, Project Agnostic, Fully Automated AI Agent Driven Error Handling and Error Fixing System (Incl. of all Errors including runtime errors)",
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 13671655,
+          "percent": 86.01
+        },
+        {
+          "language": "TypeScript",
+          "bytes": 2067906,
+          "percent": 13.01
+        },
+        {
+          "language": "Shell",
+          "bytes": 136852,
+          "percent": 0.86
+        },
+        {
+          "language": "PowerShell",
+          "bytes": 9033,
+          "percent": 0.06
+        },
+        {
+          "language": "Dockerfile",
+          "bytes": 4889,
+          "percent": 0.03
+        },
+        {
+          "language": "CSS",
+          "bytes": 3368,
+          "percent": 0.02
+        },
+        {
+          "language": "HTML",
+          "bytes": 1190,
+          "percent": 0.01
+        }
+      ],
+      "languageBytesTotal": 15894893,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 1,
+      "sizeKb": 5644,
+      "createdAt": "2024-12-12T04:16:14Z",
+      "updatedAt": "2026-03-01T07:54:37Z",
+      "pushedAt": "2025-04-29T02:26:03Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 1,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 132841882,
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/Error-Management-System/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/Error-Management-System/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "forgotten-mistory",
+      "htmlUrl": "https://github.com/Victordtesla24/forgotten-mistory",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "My Website",
+      "primaryLanguage": "TypeScript",
+      "languageBreakdown": [
+        {
+          "language": "TypeScript",
+          "bytes": 680304,
+          "percent": 56.23
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 279069,
+          "percent": 23.07
+        },
+        {
+          "language": "CSS",
+          "bytes": 113736,
+          "percent": 9.4
+        },
+        {
+          "language": "Python",
+          "bytes": 97936,
+          "percent": 8.1
+        },
+        {
+          "language": "Shell",
+          "bytes": 37648,
+          "percent": 3.11
+        },
+        {
+          "language": "Dockerfile",
+          "bytes": 1105,
+          "percent": 0.09
+        }
+      ],
+      "languageBytesTotal": 1209798,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 10,
+      "sizeKb": 291111,
+      "createdAt": "2025-11-25T02:06:13Z",
+      "updatedAt": "2026-09-03T17:58:09Z",
+      "pushedAt": "2026-09-03T17:53:39Z",
+      "license": {
+        "key": "mit",
+        "spdxId": "MIT",
+        "name": "MIT License"
+      },
+      "homepage": "https://forgotten-mistory.web.app/",
+      "actions": {
+        "workflowCount": 3,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 240428014,
+            "name": "CI & Deploy",
+            "path": ".github/workflows/deploy.yml",
+            "state": "active"
+          },
+          {
+            "id": 311139623,
+            "name": "Security",
+            "path": ".github/workflows/security.yml",
+            "state": "active"
+          },
+          {
+            "id": 311139660,
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/forgotten-mistory/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/forgotten-mistory/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "frontend",
+      "htmlUrl": "https://github.com/Victordtesla24/frontend",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": null,
+      "primaryLanguage": "JavaScript",
+      "languageBreakdown": [
+        {
+          "language": "JavaScript",
+          "bytes": 466403,
+          "percent": 99.25
+        },
+        {
+          "language": "Shell",
+          "bytes": 2483,
+          "percent": 0.53
+        },
+        {
+          "language": "CSS",
+          "bytes": 1025,
+          "percent": 0.22
+        }
+      ],
+      "languageBytesTotal": 469911,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 1,
+      "sizeKb": 772,
+      "createdAt": "2025-05-05T13:46:36Z",
+      "updatedAt": "2025-05-05T13:51:00Z",
+      "pushedAt": "2025-06-03T07:06:58Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 1,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 165920787,
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/frontend/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/frontend/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "general-work",
+      "htmlUrl": "https://github.com/Victordtesla24/general-work",
+      "visibility": "private",
+      "isPrivate": true,
+      "publicationPolicy": "private — metadata recorded, content NOT for publication",
+      "isFork": false,
+      "isArchived": false,
+      "description": "General personal projects from my macbook ",
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 131591,
+          "percent": 50.32
+        },
+        {
+          "language": "HTML",
+          "bytes": 124166,
+          "percent": 47.48
+        },
+        {
+          "language": "Shell",
+          "bytes": 5756,
+          "percent": 2.2
+        }
+      ],
+      "languageBytesTotal": 261513,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 162,
+      "createdAt": "2026-04-26T00:29:12Z",
+      "updatedAt": "2026-05-04T03:11:20Z",
+      "pushedAt": "2026-05-04T03:11:16Z",
+      "license": {
+        "key": "gpl-3.0",
+        "spdxId": "GPL-3.0",
+        "name": "GNU General Public License v3.0"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 1,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 270520322,
+            "name": "Dependency Graph",
+            "path": "dynamic/dependabot/update-graph",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/general-work/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/general-work/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "global-ticketing-initiative",
+      "htmlUrl": "https://github.com/Victordtesla24/global-ticketing-initiative",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "Global Ticketing system initiative",
+      "primaryLanguage": "TypeScript",
+      "languageBreakdown": [
+        {
+          "language": "TypeScript",
+          "bytes": 982332,
+          "percent": 98.32
+        },
+        {
+          "language": "CSS",
+          "bytes": 10540,
+          "percent": 1.05
+        },
+        {
+          "language": "Shell",
+          "bytes": 3178,
+          "percent": 0.32
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 3056,
+          "percent": 0.31
+        }
+      ],
+      "languageBytesTotal": 999106,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 1501,
+      "createdAt": "2026-08-23T10:36:06Z",
+      "updatedAt": "2026-08-25T10:03:50Z",
+      "pushedAt": "2026-08-25T10:00:36Z",
+      "license": {
+        "key": "mit",
+        "spdxId": "MIT",
+        "name": "MIT License"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 1,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 340512867,
+            "name": "CI",
+            "path": ".github/workflows/ci.yml",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/global-ticketing-initiative/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/global-ticketing-initiative/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "hostinger-vps-backup",
+      "htmlUrl": "https://github.com/Victordtesla24/hostinger-vps-backup",
+      "visibility": "private",
+      "isPrivate": true,
+      "publicationPolicy": "private — metadata recorded, content NOT for publication",
+      "isFork": false,
+      "isArchived": false,
+      "description": "a backup of my hosting vps and all its content",
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 2830028,
+          "percent": 41.78
+        },
+        {
+          "language": "TypeScript",
+          "bytes": 1629153,
+          "percent": 24.05
+        },
+        {
+          "language": "HTML",
+          "bytes": 1064513,
+          "percent": 15.71
+        },
+        {
+          "language": "TeX",
+          "bytes": 434546,
+          "percent": 6.41
+        },
+        {
+          "language": "Shell",
+          "bytes": 338519,
+          "percent": 5.0
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 258784,
+          "percent": 3.82
+        },
+        {
+          "language": "BibTeX Style",
+          "bytes": 156486,
+          "percent": 2.31
+        },
+        {
+          "language": "CSS",
+          "bytes": 21169,
+          "percent": 0.31
+        },
+        {
+          "language": "Cuda",
+          "bytes": 10328,
+          "percent": 0.15
+        },
+        {
+          "language": "PowerShell",
+          "bytes": 8574,
+          "percent": 0.13
+        },
+        {
+          "language": "Jupyter Notebook",
+          "bytes": 7824,
+          "percent": 0.12
+        },
+        {
+          "language": "C",
+          "bytes": 6731,
+          "percent": 0.1
+        },
+        {
+          "language": "Dockerfile",
+          "bytes": 5138,
+          "percent": 0.08
+        },
+        {
+          "language": "Makefile",
+          "bytes": 1054,
+          "percent": 0.02
+        },
+        {
+          "language": "C++",
+          "bytes": 977,
+          "percent": 0.01
+        },
+        {
+          "language": "Batchfile",
+          "bytes": 168,
+          "percent": 0.0
+        }
+      ],
+      "languageBytesTotal": 6773992,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 176697,
+      "createdAt": "2026-05-08T01:14:42Z",
+      "updatedAt": "2026-09-03T02:30:46Z",
+      "pushedAt": "2026-09-03T02:30:36Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 1,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 348448825,
+            "name": "Dependency Graph",
+            "path": "dynamic/dependabot/update-graph",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/hostinger-vps-backup/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/hostinger-vps-backup/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "Image-Enhancer",
+      "htmlUrl": "https://github.com/Victordtesla24/Image-Enhancer",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "The App enhances the image size ans resolution",
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 300700,
+          "percent": 92.96
+        },
+        {
+          "language": "Shell",
+          "bytes": 22744,
+          "percent": 7.03
+        },
+        {
+          "language": "Procfile",
+          "bytes": 36,
+          "percent": 0.01
+        }
+      ],
+      "languageBytesTotal": 323480,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 1,
+      "sizeKb": 3379,
+      "createdAt": "2024-12-05T15:18:40Z",
+      "updatedAt": "2025-01-19T06:51:28Z",
+      "pushedAt": "2026-04-26T00:42:09Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 1,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 131594930,
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/Image-Enhancer/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/Image-Enhancer/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "indian-event-manager",
+      "htmlUrl": "https://github.com/Victordtesla24/indian-event-manager",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "An event Management Platform specifically tailored for cultural events in Australia ",
+      "primaryLanguage": "TypeScript",
+      "languageBreakdown": [
+        {
+          "language": "TypeScript",
+          "bytes": 460068,
+          "percent": 38.05
+        },
+        {
+          "language": "HTML",
+          "bytes": 391454,
+          "percent": 32.38
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 199117,
+          "percent": 16.47
+        },
+        {
+          "language": "Python",
+          "bytes": 144840,
+          "percent": 11.98
+        },
+        {
+          "language": "CSS",
+          "bytes": 8430,
+          "percent": 0.7
+        },
+        {
+          "language": "Shell",
+          "bytes": 4573,
+          "percent": 0.38
+        },
+        {
+          "language": "Mako",
+          "bytes": 510,
+          "percent": 0.04
+        },
+        {
+          "language": "Procfile",
+          "bytes": 84,
+          "percent": 0.01
+        }
+      ],
+      "languageBytesTotal": 1209076,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 6,
+      "sizeKb": 8668,
+      "createdAt": "2025-01-22T15:32:28Z",
+      "updatedAt": "2025-02-09T11:10:47Z",
+      "pushedAt": "2025-04-21T23:05:16Z",
+      "license": null,
+      "homepage": "https://indian-event-manager.vercel.app",
+      "actions": {
+        "workflowCount": 4,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 139830848,
+            "name": "Backend CI/CD",
+            "path": ".github/workflows/backend.yml",
+            "state": "active"
+          },
+          {
+            "id": 139968464,
+            "name": "Deploy to Vercel",
+            "path": ".github/workflows/deploy.yml",
+            "state": "active"
+          },
+          {
+            "id": 139830849,
+            "name": "Frontend CI/CD",
+            "path": ".github/workflows/frontend.yml",
+            "state": "active"
+          },
+          {
+            "id": 140048968,
+            "name": "Dependency Monitoring",
+            "path": ".github/workflows/monitoring.yml",
+            "state": "disabled_inactivity"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/indian-event-manager/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/indian-event-manager/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "jarvis",
+      "htmlUrl": "https://github.com/Victordtesla24/jarvis",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "Realtime macOS Telemetry Dashbaord using Jarvis from Iron Man UI as a wallpaper",
+      "primaryLanguage": "HTML",
+      "languageBreakdown": [
+        {
+          "language": "HTML",
+          "bytes": 675996,
+          "percent": 32.61
+        },
+        {
+          "language": "Swift",
+          "bytes": 555011,
+          "percent": 26.77
+        },
+        {
+          "language": "Go",
+          "bytes": 354024,
+          "percent": 17.08
+        },
+        {
+          "language": "Objective-C",
+          "bytes": 191748,
+          "percent": 9.25
+        },
+        {
+          "language": "Python",
+          "bytes": 170446,
+          "percent": 8.22
+        },
+        {
+          "language": "Shell",
+          "bytes": 64901,
+          "percent": 3.13
+        },
+        {
+          "language": "TypeScript",
+          "bytes": 47231,
+          "percent": 2.28
+        },
+        {
+          "language": "C",
+          "bytes": 7659,
+          "percent": 0.37
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 4267,
+          "percent": 0.21
+        },
+        {
+          "language": "Ruby",
+          "bytes": 1411,
+          "percent": 0.07
+        },
+        {
+          "language": "Makefile",
+          "bytes": 395,
+          "percent": 0.02
+        },
+        {
+          "language": "Metal",
+          "bytes": 122,
+          "percent": 0.01
+        }
+      ],
+      "languageBytesTotal": 2073211,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 2,
+      "sizeKb": 47255,
+      "createdAt": "2026-04-09T05:29:22Z",
+      "updatedAt": "2026-05-15T23:59:43Z",
+      "pushedAt": "2026-06-04T06:59:58Z",
+      "license": {
+        "key": "mit",
+        "spdxId": "MIT",
+        "name": "MIT License"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 1,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 258686110,
+            "name": "Dependency Graph",
+            "path": "dynamic/dependabot/update-graph",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/jarvis/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/jarvis/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "jyotish-shastra",
+      "htmlUrl": "https://github.com/Victordtesla24/jyotish-shastra",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": null,
+      "primaryLanguage": "JavaScript",
+      "languageBreakdown": [
+        {
+          "language": "JavaScript",
+          "bytes": 4300876,
+          "percent": 94.81
+        },
+        {
+          "language": "CSS",
+          "bytes": 82038,
+          "percent": 1.81
+        },
+        {
+          "language": "Shell",
+          "bytes": 69714,
+          "percent": 1.54
+        },
+        {
+          "language": "TypeScript",
+          "bytes": 64988,
+          "percent": 1.43
+        },
+        {
+          "language": "Python",
+          "bytes": 11747,
+          "percent": 0.26
+        },
+        {
+          "language": "HTML",
+          "bytes": 6930,
+          "percent": 0.15
+        }
+      ],
+      "languageBytesTotal": 4536293,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 1,
+      "openIssuesCount": 0,
+      "sizeKb": 77318,
+      "createdAt": "2025-06-24T19:14:09Z",
+      "updatedAt": "2025-11-10T12:08:08Z",
+      "pushedAt": "2025-11-10T12:08:04Z",
+      "license": {
+        "key": "mit",
+        "spdxId": "MIT",
+        "name": "MIT License"
+      },
+      "homepage": "https://jjyotish-shastra.vercel.app",
+      "actions": {
+        "workflowCount": 2,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 170519131,
+            "name": ".github/workflows/blank.yml",
+            "path": ".github/workflows/blank.yml",
+            "state": "active"
+          },
+          {
+            "id": 170534221,
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/jyotish-shastra/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/jyotish-shastra/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "openclaw-agents-ecosystem",
+      "htmlUrl": "https://github.com/Victordtesla24/openclaw-agents-ecosystem",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "A workspace where all the files, scripts and documents to manage, maintain and create OpenClaw AI Agents Ecosystem on Hostinger VPS",
+      "primaryLanguage": "Shell",
+      "languageBreakdown": [
+        {
+          "language": "Shell",
+          "bytes": 109388,
+          "percent": 100.0
+        }
+      ],
+      "languageBytesTotal": 109388,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 56,
+      "createdAt": "2026-02-17T04:31:36Z",
+      "updatedAt": "2026-02-17T04:59:55Z",
+      "pushedAt": "2026-02-17T04:59:51Z",
+      "license": {
+        "key": "mit",
+        "spdxId": "MIT",
+        "name": "MIT License"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/openclaw-agents-ecosystem/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/openclaw-agents-ecosystem/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "project_management_dashboard",
+      "htmlUrl": "https://github.com/Victordtesla24/project_management_dashboard",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": null,
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 8340210,
+          "percent": 96.72
+        },
+        {
+          "language": "Shell",
+          "bytes": 121718,
+          "percent": 1.41
+        },
+        {
+          "language": "HTML",
+          "bytes": 87126,
+          "percent": 1.01
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 50970,
+          "percent": 0.59
+        },
+        {
+          "language": "CSS",
+          "bytes": 22687,
+          "percent": 0.26
+        },
+        {
+          "language": "Makefile",
+          "bytes": 632,
+          "percent": 0.01
+        }
+      ],
+      "languageBytesTotal": 8623343,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 1,
+      "sizeKb": 10659,
+      "createdAt": "2024-12-29T15:22:33Z",
+      "updatedAt": "2025-01-12T05:02:08Z",
+      "pushedAt": "2025-03-22T03:31:53Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 2,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 136842533,
+            "name": "CI",
+            "path": ".github/workflows/ci.yml",
+            "state": "active"
+          },
+          {
+            "id": 137009688,
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/project_management_dashboard/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/project_management_dashboard/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "prompt-reconstruct",
+      "htmlUrl": "https://github.com/Victordtesla24/prompt-reconstruct",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "A Skill to enhance, optimise and precise any ai prompt that has maximum prompt execution accuracy. In simple words, if you ask `X`, you get `X` as the AI Agent LLM output consistently",
+      "primaryLanguage": "Shell",
+      "languageBreakdown": [
+        {
+          "language": "Shell",
+          "bytes": 762,
+          "percent": 100.0
+        }
+      ],
+      "languageBytesTotal": 762,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 4,
+      "createdAt": "2026-05-20T13:05:01Z",
+      "updatedAt": "2026-05-20T13:25:19Z",
+      "pushedAt": "2026-05-20T13:24:47Z",
+      "license": {
+        "key": "mit",
+        "spdxId": "MIT",
+        "name": "MIT License"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/prompt-reconstruct/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/prompt-reconstruct/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "prompt-reconstruction-engine",
+      "htmlUrl": "https://github.com/Victordtesla24/prompt-reconstruction-engine",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "prompt revuilding from raw prompts",
+      "primaryLanguage": "HTML",
+      "languageBreakdown": [
+        {
+          "language": "HTML",
+          "bytes": 223569,
+          "percent": 60.12
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 148305,
+          "percent": 39.88
+        }
+      ],
+      "languageBytesTotal": 371874,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 2062,
+      "createdAt": "2026-06-16T19:16:58Z",
+      "updatedAt": "2026-06-26T19:11:14Z",
+      "pushedAt": "2026-06-26T19:11:12Z",
+      "license": {
+        "key": "mit",
+        "spdxId": "MIT",
+        "name": "MIT License"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 2,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 297166178,
+            "name": "Deploy to Firebase Hosting",
+            "path": ".github/workflows/deploy.yml",
+            "state": "active"
+          },
+          {
+            "id": 302905153,
+            "name": "Reusable CI/CD",
+            "path": ".github/workflows/reusable-ci-cd.yml",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/prompt-reconstruction-engine/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/prompt-reconstruction-engine/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "public-key-server",
+      "htmlUrl": "https://github.com/Victordtesla24/public-key-server",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": null,
+      "primaryLanguage": "TypeScript",
+      "languageBreakdown": [
+        {
+          "language": "TypeScript",
+          "bytes": 8254,
+          "percent": 51.32
+        },
+        {
+          "language": "Shell",
+          "bytes": 4241,
+          "percent": 26.37
+        },
+        {
+          "language": "HTML",
+          "bytes": 3234,
+          "percent": 20.11
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 355,
+          "percent": 2.21
+        }
+      ],
+      "languageBytesTotal": 16084,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 15326,
+      "createdAt": "2025-04-16T14:52:39Z",
+      "updatedAt": "2025-05-02T00:23:15Z",
+      "pushedAt": "2025-05-02T00:23:12Z",
+      "license": null,
+      "homepage": "https://public-key-server-steel.vercel.app",
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/public-key-server/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/public-key-server/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "ralph-loop-infinite",
+      "htmlUrl": "https://github.com/Victordtesla24/ralph-loop-infinite",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "Inspired from the original `ralph-loop` for autonomous ai agentic product development process",
+      "primaryLanguage": "Shell",
+      "languageBreakdown": [
+        {
+          "language": "Shell",
+          "bytes": 214771,
+          "percent": 50.8
+        },
+        {
+          "language": "Python",
+          "bytes": 191360,
+          "percent": 45.26
+        },
+        {
+          "language": "HTML",
+          "bytes": 16674,
+          "percent": 3.94
+        }
+      ],
+      "languageBytesTotal": 422805,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 656,
+      "createdAt": "2026-05-19T08:29:23Z",
+      "updatedAt": "2026-05-20T13:25:08Z",
+      "pushedAt": "2026-05-20T13:24:03Z",
+      "license": {
+        "key": "mit",
+        "spdxId": "MIT",
+        "name": "MIT License"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/ralph-loop-infinite/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/ralph-loop-infinite/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "relationship-timeline-feature",
+      "htmlUrl": "https://github.com/Victordtesla24/relationship-timeline-feature",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": null,
+      "primaryLanguage": "TypeScript",
+      "languageBreakdown": [
+        {
+          "language": "TypeScript",
+          "bytes": 256866,
+          "percent": 89.05
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 25728,
+          "percent": 8.92
+        },
+        {
+          "language": "CSS",
+          "bytes": 5866,
+          "percent": 2.03
+        }
+      ],
+      "languageBytesTotal": 288460,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 1,
+      "sizeKb": 1060,
+      "createdAt": "2025-04-12T07:01:05Z",
+      "updatedAt": "2025-04-13T20:42:09Z",
+      "pushedAt": "2025-04-13T20:42:05Z",
+      "license": null,
+      "homepage": "https://relationship-timeline-feature.vercel.app",
+      "actions": {
+        "workflowCount": 1,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 155590349,
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/relationship-timeline-feature/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/relationship-timeline-feature/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "ride-with-vic-app",
+      "htmlUrl": "https://github.com/Victordtesla24/ride-with-vic-app",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": null,
+      "primaryLanguage": "JavaScript",
+      "languageBreakdown": [
+        {
+          "language": "JavaScript",
+          "bytes": 655546,
+          "percent": 95.64
+        },
+        {
+          "language": "CSS",
+          "bytes": 12067,
+          "percent": 1.76
+        },
+        {
+          "language": "Shell",
+          "bytes": 11602,
+          "percent": 1.69
+        },
+        {
+          "language": "Python",
+          "bytes": 5355,
+          "percent": 0.78
+        },
+        {
+          "language": "Dockerfile",
+          "bytes": 825,
+          "percent": 0.12
+        }
+      ],
+      "languageBytesTotal": 685395,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 1,
+      "sizeKb": 10151,
+      "createdAt": "2025-04-05T08:52:03Z",
+      "updatedAt": "2025-04-09T11:38:10Z",
+      "pushedAt": "2025-04-09T11:38:07Z",
+      "license": null,
+      "homepage": "https://ride-with-vic-app.vercel.app",
+      "actions": {
+        "workflowCount": 2,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 154234845,
+            "name": "Ride With Vic CI",
+            "path": ".github/workflows/ci.yml",
+            "state": "active"
+          },
+          {
+            "id": 154163536,
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/ride-with-vic-app/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/ride-with-vic-app/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "rishi-prajnya",
+      "htmlUrl": "https://github.com/Victordtesla24/rishi-prajnya",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "Transforming career guidance through AI-powered solutions, combining modern technology with traditional Indian wisdom.",
+      "primaryLanguage": "TypeScript",
+      "languageBreakdown": [
+        {
+          "language": "TypeScript",
+          "bytes": 516910,
+          "percent": 95.64
+        },
+        {
+          "language": "CSS",
+          "bytes": 22564,
+          "percent": 4.17
+        },
+        {
+          "language": "JavaScript",
+          "bytes": 1016,
+          "percent": 0.19
+        }
+      ],
+      "languageBytesTotal": 540490,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 354,
+      "createdAt": "2025-10-29T09:24:13Z",
+      "updatedAt": "2025-10-29T13:48:28Z",
+      "pushedAt": "2025-10-29T12:48:22Z",
+      "license": null,
+      "homepage": "https://rishi-prajnya.vercel.app",
+      "actions": {
+        "workflowCount": 0,
+        "hasWorkflows": false,
+        "workflows": []
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/rishi-prajnya/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/rishi-prajnya/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "tailor-resume-with-ai",
+      "htmlUrl": "https://github.com/Victordtesla24/tailor-resume-with-ai",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "An AI assisted app that web app that custom-tailors a resume as per the job description. This app web scraps all the necessary details from the JD, by simply providing the JD link. Additionally, the app provides intuitive options to the users to select specific sections of the resume if they choose not to tailor their whole resume as per the JD.",
+      "primaryLanguage": "Python",
+      "languageBreakdown": [
+        {
+          "language": "Python",
+          "bytes": 287294,
+          "percent": 94.77
+        },
+        {
+          "language": "HTML",
+          "bytes": 9198,
+          "percent": 3.03
+        },
+        {
+          "language": "CSS",
+          "bytes": 5904,
+          "percent": 1.95
+        },
+        {
+          "language": "Shell",
+          "bytes": 738,
+          "percent": 0.24
+        }
+      ],
+      "languageBytesTotal": 303134,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 0,
+      "openIssuesCount": 7,
+      "sizeKb": 19138,
+      "createdAt": "2025-01-15T15:12:48Z",
+      "updatedAt": "2025-01-18T18:31:44Z",
+      "pushedAt": "2025-04-07T02:58:48Z",
+      "license": {
+        "key": "mit",
+        "spdxId": "MIT",
+        "name": "MIT License"
+      },
+      "homepage": null,
+      "actions": {
+        "workflowCount": 1,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 138329231,
+            "name": "Python Application CI",
+            "path": ".github/workflows/python-app.yml",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/tailor-resume-with-ai/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/tailor-resume-with-ai/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "telemetry-server",
+      "htmlUrl": "https://github.com/Victordtesla24/telemetry-server",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": null,
+      "primaryLanguage": "TypeScript",
+      "languageBreakdown": [
+        {
+          "language": "TypeScript",
+          "bytes": 46164,
+          "percent": 94.71
+        },
+        {
+          "language": "Shell",
+          "bytes": 1458,
+          "percent": 2.99
+        },
+        {
+          "language": "Dockerfile",
+          "bytes": 1120,
+          "percent": 2.3
+        }
+      ],
+      "languageBytesTotal": 48742,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 1,
+      "sizeKb": 12380,
+      "createdAt": "2025-04-16T15:12:50Z",
+      "updatedAt": "2025-04-17T11:03:14Z",
+      "pushedAt": "2025-07-22T13:17:33Z",
+      "license": null,
+      "homepage": "https://telemetry-server-omega.vercel.app",
+      "actions": {
+        "workflowCount": 1,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 176277100,
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/telemetry-server/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/telemetry-server/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "tesla-api",
+      "htmlUrl": "https://github.com/Victordtesla24/tesla-api",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": null,
+      "primaryLanguage": "JavaScript",
+      "languageBreakdown": [
+        {
+          "language": "JavaScript",
+          "bytes": 209234,
+          "percent": 67.47
+        },
+        {
+          "language": "Shell",
+          "bytes": 96814,
+          "percent": 31.22
+        },
+        {
+          "language": "TypeScript",
+          "bytes": 2444,
+          "percent": 0.79
+        },
+        {
+          "language": "Dockerfile",
+          "bytes": 1640,
+          "percent": 0.53
+        }
+      ],
+      "languageBytesTotal": 310132,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 1,
+      "forksCount": 1,
+      "openIssuesCount": 1,
+      "sizeKb": 373,
+      "createdAt": "2025-05-05T13:44:08Z",
+      "updatedAt": "2025-10-07T17:06:09Z",
+      "pushedAt": "2025-07-22T08:01:35Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 2,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 160064553,
+            "name": "Fly Deploy",
+            "path": ".github/workflows/fly-deploy.yml",
+            "state": "active"
+          },
+          {
+            "id": 160064578,
+            "name": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/tesla-api/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/tesla-api/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    {
+      "name": "vik-legal-defence",
+      "htmlUrl": "https://github.com/Victordtesla24/vik-legal-defence",
+      "visibility": "public",
+      "isPrivate": false,
+      "publicationPolicy": "public — publishable",
+      "isFork": false,
+      "isArchived": false,
+      "description": "Vikram Deshpande — Legal Defence Dashboard | When Government Systems Fail Citizens",
+      "primaryLanguage": "HTML",
+      "languageBreakdown": [
+        {
+          "language": "HTML",
+          "bytes": 223763,
+          "percent": 100.0
+        }
+      ],
+      "languageBytesTotal": 223763,
+      "defaultBranch": "main",
+      "topics": [],
+      "stargazersCount": 0,
+      "forksCount": 0,
+      "openIssuesCount": 0,
+      "sizeKb": 100,
+      "createdAt": "2026-03-23T09:41:10Z",
+      "updatedAt": "2026-06-26T19:16:18Z",
+      "pushedAt": "2026-06-26T19:16:15Z",
+      "license": null,
+      "homepage": null,
+      "actions": {
+        "workflowCount": 1,
+        "hasWorkflows": true,
+        "workflows": [
+          {
+            "id": 302908634,
+            "name": "Deploy to GitHub Pages",
+            "path": ".github/workflows/deploy.yml",
+            "state": "active"
+          }
+        ]
+      },
+      "_provenance": {
+        "metadata": {
+          "api": "GET https://api.github.com/user/repos?per_page=100&affiliation=owner&sort=full_name (paginated)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "languageBreakdown": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/vik-legal-defence/languages",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        },
+        "actions": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/vik-legal-defence/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    }
+  ],
+  "flagshipRepositories": {
+    "aether-job-career-agent": {
+      "commits": {
+        "defaultBranchCommitCount": 1664,
+        "countMethod": "Link header rel=\"last\" page number from GET /repos/Victordtesla24/aether-job-career-agent/commits?sha=<default>&per_page=1 — one commit per page, so the last page number IS the commit count.",
+        "firstCommit": {
+          "sha": "5c0d05244d984b6c443829d9b0a458c5ec849740",
+          "date": "2026-07-01T13:36:07Z",
+          "subject": "Initial commit"
+        },
+        "lastCommit": {
+          "sha": "bb5f5f010c202d1b1811ebaba443f30290cb29b2",
+          "date": "2026-09-02T20:59:41Z",
+          "subject": "ci: add workflow_dispatch trigger (on-demand CI proof runs)"
+        },
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/aether-job-career-agent/commits?sha=<default_branch>&per_page=1[&page=N]",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "tests": {
+        "method": "git tree at HEAD (recursive, truncated=false), vendor/venv paths excluded; counted by filename convention.",
+        "pythonTestFiles": 392,
+        "pythonTestFileLocations": {
+          "apps/api/tests": 390,
+          "ops/guardian": 2
+        },
+        "jsTestSpecFiles": 286,
+        "filesUnderTestDirectories": 455,
+        "executedTestCountFromCI": {
+          "value": {
+            "passed": 5332,
+            "failed": 20,
+            "skipped": 15
+          },
+          "source": "the three pytest slices of run 33682579720, job 100422393204: '16 failed, 1769 passed, 13 skipped', '1652 passed, 1 skipped', '4 failed, 1911 passed, 1 skipped'"
+        },
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/aether-job-career-agent/git/trees/<head-sha>?recursive=1",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "readmeSelfStatement": {
+        "does": "\"Aether discovers jobs, scores fit, tailors résumés and cover letters from your own evidence, and routes every outbound action through your approval — as a subscription web app.\" (README.md line 15)",
+        "doesNot": "\"No outcome promises anywhere. Aether does not predict interviews or offers, and its progress score says so in its own methodology text… a signal with no data reads 'not measured' rather than counting as a zero.\" (README.md line 39); planned-but-unwired agents carry an explicit \"Planned — roadmap\" marker (line 51).",
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/aether-job-career-agent/readme (Accept: application/vnd.github.raw)",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "actions": {
+        "workflows": [
+          {
+            "workflowId": 311628383,
+            "workflowName": "CI",
+            "path": ".github/workflows/ci.yml",
+            "state": "active",
+            "latestRunOnMain": {
+              "runId": 33682579720,
+              "status": "completed",
+              "conclusion": "failure",
+              "createdAt": "2026-09-02T20:59:50Z",
+              "headSha": "bb5f5f010c202d1b1811ebaba443f30290cb29b2",
+              "event": "push",
+              "htmlUrl": "https://github.com/Victordtesla24/aether-job-career-agent/actions/runs/33682579720"
+            },
+            "note": null
+          },
+          {
+            "workflowId": 336597190,
+            "workflowName": "VPS Delivery",
+            "path": ".github/workflows/vps-delivery.yml",
+            "state": "active",
+            "latestRunOnMain": {
+              "runId": 33682579662,
+              "status": "completed",
+              "conclusion": "success",
+              "createdAt": "2026-09-02T20:59:50Z",
+              "headSha": "bb5f5f010c202d1b1811ebaba443f30290cb29b2",
+              "event": "push",
+              "htmlUrl": "https://github.com/Victordtesla24/aether-job-career-agent/actions/runs/33682579662"
+            },
+            "note": null
+          },
+          {
+            "workflowId": 305449047,
+            "workflowName": "Dependency Graph",
+            "path": "dynamic/dependabot/update-graph",
+            "state": "active",
+            "latestRunOnMain": {
+              "runId": 32179298108,
+              "status": "completed",
+              "conclusion": "success",
+              "createdAt": "2026-08-18T19:54:56Z",
+              "headSha": "60aa6e526f88057eea3868218dbe74aaef303a6c",
+              "event": "dynamic",
+              "htmlUrl": "https://github.com/Victordtesla24/aether-job-career-agent/actions/runs/32179298108"
+            },
+            "note": null
+          }
+        ],
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/aether-job-career-agent/actions/workflows/<id>/runs?branch=main&per_page=1",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "ciTruth_R184": {
+        "see": "R184-flagship-ci-diagnosis.md",
+        "verdict": "CI IS RED ON MAIN — confirmed, two independent failing jobs, deterministic."
+      }
+    },
+    "abentertainment": {
+      "commits": {
+        "defaultBranchCommitCount": 243,
+        "countMethod": "Link header rel=\"last\" page number from GET /repos/Victordtesla24/abentertainment/commits?sha=<default>&per_page=1 — one commit per page, so the last page number IS the commit count.",
+        "firstCommit": {
+          "sha": "2b939fd9bcc892173fb264dd1ffaef5ba1fa86a3",
+          "date": "2026-03-28T03:15:29Z",
+          "subject": "feat: complete AB Entertainment platform — eventsunleashed.com visual clone"
+        },
+        "lastCommit": {
+          "sha": "8cd069020771a7b1e047c2f079c6bd6286329ae4",
+          "date": "2026-08-06T06:57:40Z",
+          "subject": "build(export): regenerate static export with title-fit fix"
+        },
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/abentertainment/commits?sha=<default_branch>&per_page=1[&page=N]",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "tests": {
+        "method": "git tree at HEAD (truncated=false); 678 of 1319 blobs are committed build output (out/, .next/, dist/) and were excluded from source counting.",
+        "playwrightSpecFiles": 3,
+        "playwrightSpecPaths": [
+          "e2e/admin-to-public.spec.ts",
+          "e2e/app.spec.ts",
+          "e2e/comprehensive.spec.ts"
+        ],
+        "pythonTestFiles": 0,
+        "executedTestCount": "not observable — no workflow in this repo runs the e2e specs, so no run log publishes a test count.",
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/abentertainment/git/trees/<head-sha>?recursive=1",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "readmeSelfStatement": {
+        "does": "README.md is a versioned changelog headed \"# AB Entertainment / ## v4.2.0 — Hero Simplification & Event Ordering (2026-08-06)\"; it documents the site's pages, hero, event ordering and asset pipeline.",
+        "doesNot": "\"All content is sourced from the authentic AB Entertainment brand. There is no placeholder or generated filler text anywhere on the platform.\" (README.md line 798). Line 80 still lists a \"Video highlights placeholder component\".",
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/abentertainment/readme",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "actions": {
+        "workflows": [
+          {
+            "workflowId": 291771036,
+            "workflowName": "Deploy to VPS (rebuild Docker image)",
+            "path": ".github/workflows/deploy-vps.yml",
+            "state": "active",
+            "latestRunOnMain": {
+              "runId": 31079105075,
+              "status": "completed",
+              "conclusion": "success",
+              "createdAt": "2026-08-06T06:57:46Z",
+              "headSha": "8cd069020771a7b1e047c2f079c6bd6286329ae4",
+              "event": "push",
+              "htmlUrl": "https://github.com/Victordtesla24/abentertainment/actions/runs/31079105075"
+            },
+            "note": null
+          },
+          {
+            "workflowId": 266128054,
+            "workflowName": "opencode",
+            "path": ".github/workflows/opencode.yml",
+            "state": "active",
+            "latestRunOnMain": {
+              "runId": 27183000822,
+              "status": "completed",
+              "conclusion": "skipped",
+              "createdAt": "2026-06-09T04:01:35Z",
+              "headSha": "31df23b2ddda111b5bb2ba8a608b9b2c2188c95a",
+              "event": "issue_comment",
+              "htmlUrl": "https://github.com/Victordtesla24/abentertainment/actions/runs/27183000822"
+            },
+            "note": null
+          }
+        ],
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/abentertainment/actions/workflows/<id>/runs?branch=main&per_page=1",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    "forgotten-mistory": {
+      "commits": {
+        "defaultBranchCommitCount": 238,
+        "countMethod": "Link header rel=\"last\" page number from GET /repos/Victordtesla24/forgotten-mistory/commits?sha=<default>&per_page=1 — one commit per page, so the last page number IS the commit count.",
+        "firstCommit": {
+          "sha": "d41ac9d639e0418ecda796a20f984f18514b60e0",
+          "date": "2025-11-25T02:06:14Z",
+          "subject": "Initial commit"
+        },
+        "lastCommit": {
+          "sha": "d1fce27f8a28ef6b4ef2df3bf77436e7f5be7bc5",
+          "date": "2026-09-03T17:53:38Z",
+          "subject": "chore(ledger): refresh the corrections log and note that it trails by one"
+        },
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/forgotten-mistory/commits?sha=<default_branch>&per_page=1[&page=N]",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "tests": {
+        "method": "git tree at HEAD (truncated=false), vendor paths excluded; counted by filename convention.",
+        "jsTestSpecFiles": 25,
+        "pythonTestFiles": 3,
+        "filesUnderTestDirectories": 37,
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/forgotten-mistory/git/trees/<head-sha>?recursive=1",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "readmeSelfStatement": {
+        "does": "\"Forgotten Mistory — A portfolio that asks to be checked.\" Facts live in typed modules and nowhere else; a section renders them and never restates them (README.md lines 13-15, 174).",
+        "doesNot": "README carries an explicit \"◆ Known limitations\" section: /api/tts returns 502 because ELEVENLABS_API_KEY holds a key ID not a key; DI_D_API_KEY returns 403; repository metrics are harvested and dated, not live; WebGL scenes do not mount on software renderers by design.",
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/forgotten-mistory/readme",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "actions": {
+        "workflows": [
+          {
+            "workflowId": 240428014,
+            "workflowName": "CI & Deploy",
+            "path": ".github/workflows/deploy.yml",
+            "state": "active",
+            "latestRunOnMain": {
+              "runId": 33787251221,
+              "status": "completed",
+              "conclusion": "failure",
+              "createdAt": "2026-09-03T17:53:42Z",
+              "headSha": "d1fce27f8a28ef6b4ef2df3bf77436e7f5be7bc5",
+              "event": "push",
+              "htmlUrl": "https://github.com/Victordtesla24/forgotten-mistory/actions/runs/33787251221"
+            },
+            "note": null
+          },
+          {
+            "workflowId": 311139623,
+            "workflowName": "Security",
+            "path": ".github/workflows/security.yml",
+            "state": "active",
+            "latestRunOnMain": {
+              "runId": 33787251365,
+              "status": "completed",
+              "conclusion": "failure",
+              "createdAt": "2026-09-03T17:53:42Z",
+              "headSha": "d1fce27f8a28ef6b4ef2df3bf77436e7f5be7bc5",
+              "event": "push",
+              "htmlUrl": "https://github.com/Victordtesla24/forgotten-mistory/actions/runs/33787251365"
+            },
+            "note": null
+          },
+          {
+            "workflowId": 311139660,
+            "workflowName": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active",
+            "latestRunOnMain": {
+              "runId": 33784926906,
+              "status": "completed",
+              "conclusion": "success",
+              "createdAt": "2026-09-03T17:30:07Z",
+              "headSha": "155b5ba12aeefbd51fcaae8d990f840ff4196d17",
+              "event": "dynamic",
+              "htmlUrl": "https://github.com/Victordtesla24/forgotten-mistory/actions/runs/33784926906"
+            },
+            "note": null
+          }
+        ],
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/forgotten-mistory/actions/workflows/<id>/runs?branch=main&per_page=1",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "currentFailuresOnMain": [
+        {
+          "workflow": "CI & Deploy",
+          "runId": 33787251221,
+          "conclusion": "failure",
+          "headSha": "d1fce27f",
+          "failingJob": "test (job 100756780979)",
+          "failingStep": "10 — Run xvfb-run -a --server-args=\"-screen 0 1920x1080x24\" npx playwright test --reporter=json,html,list",
+          "errorExcerpt": "Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:8080/ — at gotoHome (tests/a11y/accessibility.spec.ts:28:14)",
+          "reading": "the Playwright harness runs with no webServer, so the a11y specs navigate to a localhost:8080 that nothing is serving."
+        },
+        {
+          "workflow": "CI & Deploy",
+          "runId": 33787251221,
+          "conclusion": "failure",
+          "failingJob": "deploy (job 100758135555)",
+          "failingStep": "4 — Deploy to Firebase live channel (main)",
+          "errorExcerpt": "Error: hosting predeploy error: Command terminated with non-zero exit code 127 … [iam] error while checking permissions … HTTP Error: 403, Caller does not have required permission to use project forgotten-mistory … The process '/usr/local/bin/npx' failed with exit code 1"
+        },
+        {
+          "workflow": "Security",
+          "runId": 33787251365,
+          "conclusion": "failure",
+          "failingJob": "npm audit (high/critical) (job 100754898596)",
+          "failingStep": "5 — Audit (gating — fails on high/critical)",
+          "errorExcerpt": "npm audit report: brace-expansion <=1.1.17 || 2.0.0-2.1.3 (high, GHSA-3jxr-9vmj-r5cp / GHSA-mh99-v99m-4gvg / GHSA-rgw5-rvv9-x895); browserslist <=4.28.6 (high, GHSA-c83g-rgw3-j3cx / GHSA-73wf-gq98-2v4g); glob 10.2.0-10.4.5 (high, GHSA-5j98-mcp5-4vw2, transitively via @next/eslint-plugin-next / eslint-config-next); fflate (moderate). Process completed with exit code 1.",
+          "sideNote": "CodeQL analyze in the same workflow passed."
+        }
+      ]
+    },
+    "public-key-server": {
+      "commits": {
+        "defaultBranchCommitCount": 16,
+        "countMethod": "Link header rel=\"last\" page number from GET /repos/Victordtesla24/public-key-server/commits?sha=<default>&per_page=1 — one commit per page, so the last page number IS the commit count.",
+        "firstCommit": {
+          "sha": "cfcf3b5719aed3a7ac538319c93771f8c84006b1",
+          "date": "2025-04-16T14:54:22Z",
+          "subject": "first commit"
+        },
+        "lastCommit": {
+          "sha": "c2cab77b437511da37b49fc6f407847e9b42861a",
+          "date": "2025-05-02T00:23:12Z",
+          "subject": "Update index.ts"
+        },
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/public-key-server/commits?sha=<default_branch>&per_page=1[&page=N]",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "tests": {
+        "method": "git tree at HEAD (truncated=false); 9465 of 9481 blobs are a committed node_modules/ and were excluded.",
+        "jsTestSpecFiles": 1,
+        "jsTestSpecPaths": [
+          "src/services/keyService.test.ts"
+        ],
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/public-key-server/git/trees/<head-sha>?recursive=1",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "readmeSelfStatement": {
+        "does": "\"A dedicated server for hosting a Tesla public key at the exact .well-known path required for Tesla's virtual key pairing process… This server has one primary function: serve the PEM-formatted public key at /.well-known/appspecific/com.tesla.3p.public-key.pem\" (README.md lines 3-8).",
+        "doesNot": "\"The server does not log the full key content to prevent accidental leakage\" (README.md line 123). The README claims no capability beyond serving the key.",
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/public-key-server/readme",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "actions": {
+        "workflows": [],
+        "note": "No GitHub Actions workflows are registered on this repository (total_count = 0).",
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/public-key-server/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    },
+    "containerised-birth-time-rectifier": {
+      "commits": {
+        "defaultBranchCommitCount": 43,
+        "countMethod": "Link header rel=\"last\" page number from GET /repos/Victordtesla24/containerised-birth-time-rectifier/commits?sha=<default>&per_page=1 — one commit per page, so the last page number IS the commit count.",
+        "firstCommit": {
+          "sha": "644b95abf304c844f9b03d616e91091c13182555",
+          "date": "2025-03-03T01:32:18Z",
+          "subject": "Initial commit"
+        },
+        "lastCommit": {
+          "sha": "deea4229805d4522aef7167dde4cc03892225d5e",
+          "date": "2025-04-02T13:41:19Z",
+          "subject": "COMMIT BEFORE CURSOR REINSTALL"
+        },
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/containerised-birth-time-rectifier/commits?sha=<default_branch>&per_page=1[&page=N]",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "tests": {
+        "method": "git tree at HEAD (truncated=false); 7393 of 10375 blobs are vendored/build output and were excluded.",
+        "pythonTestFiles": 20,
+        "jsTestSpecFiles": 1,
+        "filesUnderTestDirectories": 82,
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/containerised-birth-time-rectifier/git/trees/<head-sha>?recursive=1",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "readmeSelfStatement": {
+        "does": "\"A sophisticated application for astrological birth time rectification using AI analysis of life events\", built as three components — AI Service (Python/FastAPI), API Gateway (Python/FastAPI) and a frontend (README.md lines 5-25).",
+        "doesNot": "README heads its component list \"## Current Implementation Status — The application consists of three main components in active development\" (line 11-13); it claims development status, not completion. No limitation section beyond a .env warning at line 398.",
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/containerised-birth-time-rectifier/readme",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "actions": {
+        "workflows": [
+          {
+            "workflowId": 147304042,
+            "workflowName": "Birth Time Rectifier CI/CD",
+            "path": ".github/workflows/ci-cd.yml",
+            "state": "active",
+            "latestRunOnMain": null,
+            "note": "no run of this workflow has ever executed on main (observed; see reproductionCommands)"
+          },
+          {
+            "workflowId": 147304043,
+            "workflowName": "Birth Time Rectifier CI/CD",
+            "path": ".github/workflows/ci.yml",
+            "state": "active",
+            "latestRunOnMain": null,
+            "note": "no run of this workflow has ever executed on main (observed; see reproductionCommands)"
+          },
+          {
+            "workflowId": 147304044,
+            "workflowName": "Deploy Birth Time Rectifier",
+            "path": ".github/workflows/deploy.yml",
+            "state": "active",
+            "latestRunOnMain": null,
+            "note": "no run of this workflow has ever executed on main (observed; see reproductionCommands)"
+          },
+          {
+            "workflowId": 148571856,
+            "workflowName": "Deploy to Vercel",
+            "path": ".github/workflows/vercel-deploy.yml",
+            "state": "active",
+            "latestRunOnMain": null,
+            "note": "no run of this workflow has ever executed on main (observed; see reproductionCommands)"
+          },
+          {
+            "workflowId": 147304053,
+            "workflowName": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active",
+            "latestRunOnMain": {
+              "runId": 26071661242,
+              "status": "completed",
+              "conclusion": "success",
+              "createdAt": "2026-05-19T02:02:20Z",
+              "headSha": "deea4229805d4522aef7167dde4cc03892225d5e",
+              "event": "dynamic",
+              "htmlUrl": "https://github.com/Victordtesla24/containerised-birth-time-rectifier/actions/runs/26071661242"
+            },
+            "note": null
+          }
+        ],
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/containerised-birth-time-rectifier/actions/workflows/<id>/runs?branch=main&per_page=1",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "actionsNote": "Four of the five workflows (ci-cd.yml, ci.yml, deploy.yml, vercel-deploy.yml) have NEVER run on main. All 5 of their historical runs are on dependabot branches and ALL of those runs concluded 'failure' (latest 2026-03-30, run 23747485150 et al.). Only the dynamic Dependabot Updates workflow has a main run, and it succeeded."
+    },
+    "relationship-timeline-feature": {
+      "commits": {
+        "defaultBranchCommitCount": 19,
+        "countMethod": "Link header rel=\"last\" page number from GET /repos/Victordtesla24/relationship-timeline-feature/commits?sha=<default>&per_page=1 — one commit per page, so the last page number IS the commit count.",
+        "firstCommit": {
+          "sha": "2e693e83fc19b8f4c44ec7faa53aeeae5ace21e4",
+          "date": "2025-04-12T07:03:12Z",
+          "subject": "first commit"
+        },
+        "lastCommit": {
+          "sha": "fa2ef17dd40c48d70afa842acf44079d504ab608",
+          "date": "2025-04-13T20:42:04Z",
+          "subject": "Update project documentation for production deployment"
+        },
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/relationship-timeline-feature/commits?sha=<default_branch>&per_page=1[&page=N]",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "tests": {
+        "method": "git tree at HEAD (truncated=false, 92 blobs, no vendored paths).",
+        "jsTestSpecFiles": 11,
+        "filesUnderTestDirectories": 20,
+        "executedTestCount": "not observable — no CI workflow in this repo runs them.",
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/relationship-timeline-feature/git/trees/<head-sha>?recursive=1",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "readmeSelfStatement": {
+        "does": "\"A beautiful web application that allows users to create, organize, and share relationship timelines with events, media attachments… Next.js 14, Tailwind CSS, LocalStorage (client-side data persistence, no database required), TypeScript\" (README.md lines 5-25).",
+        "doesNot": "\"No Login Required: Start using immediately without any account creation\" and \"Private: Your data never leaves your device\" (README.md lines 16, 31) — i.e. it explicitly has no server-side persistence, no accounts and no multi-device sync.",
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/relationship-timeline-feature/readme",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "actions": {
+        "workflows": [
+          {
+            "workflowId": 155590349,
+            "workflowName": "Dependabot Updates",
+            "path": "dynamic/dependabot/dependabot-updates",
+            "state": "active",
+            "latestRunOnMain": {
+              "runId": 33799826738,
+              "status": "completed",
+              "conclusion": "success",
+              "createdAt": "2026-09-03T20:01:30Z",
+              "headSha": "fa2ef17dd40c48d70afa842acf44079d504ab608",
+              "event": "dynamic",
+              "htmlUrl": "https://github.com/Victordtesla24/relationship-timeline-feature/actions/runs/33799826738"
+            },
+            "note": null
+          }
+        ],
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/relationship-timeline-feature/actions/workflows/<id>/runs?branch=main&per_page=1",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "actionsNote": "The only registered workflow is the dynamic Dependabot Updates workflow; there is no project CI. Latest run on main 33799826738 succeeded (2026-09-03T20:01:30Z)."
+    },
+    "EFDDH-Jira-Analytics-Dashboard": {
+      "commits": {
+        "defaultBranchCommitCount": 25,
+        "countMethod": "Link header rel=\"last\" page number from GET /repos/Victordtesla24/EFDDH-Jira-Analytics-Dashboard/commits?sha=<default>&per_page=1 — one commit per page, so the last page number IS the commit count.",
+        "firstCommit": {
+          "sha": "a401c888aae5bd66d9e40824eeb77142b90edefe",
+          "date": "2024-11-11T12:09:28Z",
+          "subject": "commit"
+        },
+        "lastCommit": {
+          "sha": "79f15a8ff9bb3565b78699f3467930c225666773",
+          "date": "2024-12-04T02:01:03Z",
+          "subject": "Fix: Remove src prefix from all imports for proper package resolution"
+        },
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/EFDDH-Jira-Analytics-Dashboard/commits?sha=<default_branch>&per_page=1[&page=N]",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "tests": {
+        "method": "the recursive tree at HEAD is TRUNCATED by the GitHub API (48515 entries, 44233 of them a committed .venv/). Test files were therefore counted from the sub-tree GET /git/trees/main:src?recursive=1 (81 blobs, not truncated).",
+        "pythonTestFiles": 26,
+        "pythonTestFileLocations": "all under src/tests/ (components, config, data, deployment, integration, pages, ui/dashboard, utils)",
+        "pythonSourceFilesUnderSrc": 74,
+        "treeTruncated": true,
+        "executedTestCount": "not observable — no GitHub Actions workflow exists in this repository, so no run has ever published a test count.",
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/EFDDH-Jira-Analytics-Dashboard/git/trees/main:src?recursive=1",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "readmeSelfStatement": {
+        "does": "\"A powerful analytics dashboard for visualizing and analyzing JIRA project data, with a focus on sprint metrics, team velocity, and issue tracking\" — sprint analytics, performance metrics, team capacity, dynamic sprint selection (README.md lines 3-25).",
+        "doesNot": "not observable — the README contains no limitation, scope-exclusion or 'does not' statement (grep for does not / not implemented / limitation / known issue over README.md returned zero matches).",
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/EFDDH-Jira-Analytics-Dashboard/readme",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      },
+      "actions": {
+        "workflows": [],
+        "note": "No GitHub Actions workflows are registered on this repository (total_count = 0). The repo does carry run_tests.sh and pytest.ini, but nothing runs them in CI.",
+        "_provenance": {
+          "api": "GET https://api.github.com/repos/Victordtesla24/EFDDH-Jira-Analytics-Dashboard/actions/workflows",
+          "retrievedAt": "2026-09-03T20:09:30Z",
+          "tool": "gh api"
+        }
+      }
+    }
+  },
+  "reproductionCommands": {
+    "purpose": "R-182 — this dataset must be refreshed at deploy time. Run these in order; every value in this file comes from one of them.",
+    "prerequisite": "gh CLI authenticated as Victordtesla24 (token scopes: repo, workflow, read:org, gist). Read the variable NAME from ~/.claude/.env.production; never print or commit the value.",
+    "steps": [
+      {
+        "id": "R1",
+        "purpose": "identity",
+        "cmd": "gh api /user"
+      },
+      {
+        "id": "R2",
+        "purpose": "every owned repository (public + private)",
+        "cmd": "gh api --paginate '/user/repos?per_page=100&affiliation=owner&sort=full_name' | jq -s add"
+      },
+      {
+        "id": "R3",
+        "purpose": "language byte breakdown per repo",
+        "cmd": "gh api /repos/Victordtesla24/$REPO/languages"
+      },
+      {
+        "id": "R4",
+        "purpose": "registered Actions workflows per repo",
+        "cmd": "gh api /repos/Victordtesla24/$REPO/actions/workflows"
+      },
+      {
+        "id": "R5",
+        "purpose": "commit count on the default branch (read the Link header's rel=\"last\" page number)",
+        "cmd": "gh api -i '/repos/Victordtesla24/$REPO/commits?sha=$BRANCH&per_page=1' | grep -i '^link:'"
+      },
+      {
+        "id": "R6",
+        "purpose": "first and last commit",
+        "cmd": "gh api '/repos/Victordtesla24/$REPO/commits?sha=$BRANCH&per_page=1&page=1'  # last\ngh api '/repos/Victordtesla24/$REPO/commits?sha=$BRANCH&per_page=1&page=$LAST'  # first"
+      },
+      {
+        "id": "R7",
+        "purpose": "full file tree for test-file counting (check .truncated)",
+        "cmd": "gh api '/repos/Victordtesla24/$REPO/git/trees/$HEAD_SHA?recursive=1'"
+      },
+      {
+        "id": "R7b",
+        "purpose": "sub-tree fallback when R7 reports truncated:true",
+        "cmd": "gh api '/repos/Victordtesla24/$REPO/git/trees/main:src?recursive=1'"
+      },
+      {
+        "id": "R8",
+        "purpose": "README as its own words",
+        "cmd": "gh api -H 'Accept: application/vnd.github.raw' /repos/Victordtesla24/$REPO/readme"
+      },
+      {
+        "id": "R9",
+        "purpose": "latest run of each workflow on main",
+        "cmd": "gh api '/repos/Victordtesla24/$REPO/actions/workflows/$WORKFLOW_ID/runs?branch=main&per_page=1'"
+      },
+      {
+        "id": "R10",
+        "purpose": "jobs and per-step conclusions of a run",
+        "cmd": "gh api '/repos/Victordtesla24/$REPO/actions/runs/$RUN_ID/jobs?per_page=100'"
+      },
+      {
+        "id": "R11",
+        "purpose": "raw log of a failing job (the error excerpt)",
+        "cmd": "gh api -H 'Accept: application/vnd.github.raw' /repos/Victordtesla24/$REPO/actions/jobs/$JOB_ID/logs"
+      },
+      {
+        "id": "R12",
+        "purpose": "R-184 — full CI history on main, to establish when it was last green",
+        "cmd": "gh api --paginate '/repos/Victordtesla24/aether-job-career-agent/actions/workflows/311628383/runs?branch=main&per_page=100' --jq '.workflow_runs[]|[.created_at,.id,.conclusion,.head_sha[0:8],.display_title]|@tsv' | sort"
+      }
+    ]
+  },
+  "notObservable": [
+    {
+      "field": "abentertainment executed test count",
+      "reason": "no workflow runs the 3 Playwright specs; no run log publishes a count.",
+      "provedBy": "gh api /repos/Victordtesla24/abentertainment/actions/workflows (2 workflows: deploy-vps.yml, opencode.yml — neither runs tests)"
+    },
+    {
+      "field": "EFDDH-Jira-Analytics-Dashboard executed test count",
+      "reason": "the repository has zero registered GitHub Actions workflows.",
+      "provedBy": "gh api /repos/Victordtesla24/EFDDH-Jira-Analytics-Dashboard/actions/workflows -> total_count 0"
+    },
+    {
+      "field": "EFDDH-Jira-Analytics-Dashboard full file tree",
+      "reason": "GitHub returned truncated:true (48515 entries, 44233 of them a committed .venv/). Counted from the src sub-tree instead.",
+      "provedBy": "gh api '/repos/.../git/trees/79f15a8f?recursive=1' -> .truncated == true"
+    },
+    {
+      "field": "EFDDH-Jira-Analytics-Dashboard README 'what it does not do'",
+      "reason": "the README publishes no limitation or scope-exclusion statement.",
+      "provedBy": "grep -inE \"does not|not implemented|limitation|known issue|out of scope\" README.md -> 0 matches"
+    },
+    {
+      "field": "public-key-server / EFDDH CI state",
+      "reason": "neither repository has any GitHub Actions workflow, so there is no CI state to report.",
+      "provedBy": "gh api /repos/Victordtesla24/$REPO/actions/workflows -> total_count 0"
+    },
+    {
+      "field": "containerised-birth-time-rectifier CI state on main",
+      "reason": "four of its five workflows have never executed on main; all of their historical runs are on dependabot branches.",
+      "provedBy": "gh api '/repos/.../actions/workflows/147304042/runs?branch=main&per_page=1' -> workflow_runs [] ; ?per_page=3 (any branch) -> 5 runs, all head_branch dependabot/*, all conclusion failure"
+    },
+    {
+      "field": "relationship-timeline-feature project CI",
+      "reason": "the only registered workflow is the dynamic Dependabot Updates workflow; the repo has no project CI.",
+      "provedBy": "gh api /repos/Victordtesla24/relationship-timeline-feature/actions/workflows -> total_count 1, path dynamic/dependabot/dependabot-updates"
+    },
+    {
+      "field": "private repository contents (cursor-tutor, general-work, hostinger-vps-backup)",
+      "reason": "recorded as metadata only; private content is not for publication per the brief.",
+      "provedBy": "visibility field from /user/repos"
+    }
+  ]
+}
