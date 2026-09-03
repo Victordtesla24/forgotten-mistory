@@ -17,9 +17,13 @@ import { AvatarSpeakingProvider } from '@/lib/avatarContext';
 // All three self-host their woff2 at build time through next/font (mandatory under
 // a static export: no runtime font request), and `adjustFontFallback` generates the
 // metric-matched fallback, so there is no layout shift when the real face lands.
+// One normal weight. Every heading, title and role line on the site is set at
+// 400; nothing uses the light. The 300 was 47 kB of preload — on the critical
+// path, ahead of the face the hero's own name is drawn in — for a weight zero
+// elements resolved to.
 const displayFont = Source_Serif_4({
   subsets: ['latin'],
-  weight: ['300', '400'],
+  weight: ['400'],
   style: ['normal'],
   variable: '--font-serif',
   display: 'swap',
@@ -31,7 +35,7 @@ const displayFont = Source_Serif_4({
 // 50 kB on the critical path for a face nobody sees until the end.
 const displayItalic = Source_Serif_4({
   subsets: ['latin'],
-  weight: ['300', '400'],
+  weight: ['300'],
   style: ['italic'],
   variable: '--font-serif-italic',
   display: 'swap',

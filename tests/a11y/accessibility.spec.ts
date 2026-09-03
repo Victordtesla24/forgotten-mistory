@@ -40,6 +40,33 @@ const WCAG = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
  */
 async function expectSectionClean(page: Page, selector: string) {
   await page.locator(selector).scrollIntoViewIfNeeded();
+  // Let the entrance animations finish before sampling colour.
+  //
+  // Every section rises in on a staggered CSS animation, and axe computes
+  // contrast from the composited pixel. Sampled mid-rise, an element still at
+  // partial opacity reads as low-contrast against whatever is behind it — the
+  // hero's primary action, ink on white at about 19:1, was reported as a
+  // serious `color-contrast` violation on a loaded machine and passed three
+  // times out of three when run alone. That is a measurement artefact, not a
+  // finding, and waiting for the animations removes it without hiding the
+  // animated state from the audit the way `prefers-reduced-motion` would.
+  await page
+    .evaluate(() => {
+      // Only the finite ones. A looping pulse never resolves `finished`, so
+      // awaiting every animation on the page hangs until the spec times out.
+      const settling = document
+        .getAnimations()
+        .filter((a) => {
+          const iterations = (a.effect?.getComputedTiming().iterations ?? 1) as number;
+          return Number.isFinite(iterations);
+        })
+        .map((a) => a.finished.catch(() => undefined));
+      return Promise.race([
+        Promise.all(settling),
+        new Promise((resolve) => window.setTimeout(resolve, 3000)),
+      ]).then(() => undefined);
+    })
+    .catch(() => undefined);
   const results = await new AxeBuilder({ page }).include(selector).withTags(WCAG).analyze();
 
   if (results.violations.length > 0) {

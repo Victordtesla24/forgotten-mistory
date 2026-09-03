@@ -243,10 +243,19 @@ body::before {
 }
 
 /* Typography & Links */
+/* 400 and negative tracking, not 700 and +0.5px.
+   Source Serif 4 is loaded at one normal weight — 400 — because that is the
+   only normal weight the design uses. This rule asked for 700, so every
+   heading that did not override it (the Experience role headings, and through
+   `font: inherit` on their toggles, every company name and date beside them)
+   was drawn in *synthetic* bold: the browser algorithmically smearing the 400
+   outlines. Forty elements of fake bold, in the most closely read section on
+   a site whose argument is craft. The +0.5px tracking was the same leftover,
+   opening headings out while every section module tightens them. */
 h1, h2, h3, .role {
     font-family: var(--font-heading);
-    font-weight: 700;
-    letter-spacing: 0.5px;
+    font-weight: 400;
+    letter-spacing: -0.015em;
 }
 
 a {
@@ -286,7 +295,8 @@ nav {
 
 .logo {
     text-decoration: none;
-    font-weight: 700;
+    /* 600, which is a weight Inter is actually loaded at. 700 was synthesised. */
+    font-weight: 600;
     font-size: 1.1rem;
     letter-spacing: 2px;
     text-transform: uppercase;
