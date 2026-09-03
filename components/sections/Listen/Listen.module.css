@@ -169,3 +169,105 @@
         transition: none;
     }
 }
+
+/* ── The corrections ledger ──────────────────────────────────────────────── */
+/* Set as a record, not as a feature: mono, hairline rules, tabular dates. The
+   section's claim is that feedback is wanted and acted on, and a decorated
+   list of one's own corrections would undercut it — a ledger is the register
+   this belongs in. */
+.ledger {
+    margin-top: clamp(3rem, 7vh, 4.5rem);
+    padding-top: clamp(1.75rem, 3.5vh, 2.5rem);
+    border-top: 1px solid var(--token-border-default);
+}
+
+.ledgerTitle {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-heading);
+    font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    color: var(--white);
+}
+
+.ledgerLede {
+    margin: 0 0 clamp(1.5rem, 3vh, 2rem);
+    max-width: 62ch;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--mist-400);
+}
+
+.corrections {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid rgb(255 255 255 / 0.05);
+}
+
+.correction {
+    display: grid;
+    grid-template-columns: 5.2rem 6rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgb(255 255 255 / 0.05);
+}
+
+.correctionHash {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--mist-400);
+    text-decoration: none;
+    border-bottom: 1px solid var(--card-border);
+    transition:
+        color var(--motion-fast) var(--motion-ease-standard),
+        border-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.correctionHash:hover {
+    color: var(--white);
+    border-bottom-color: var(--card-border-hover);
+}
+
+.correctionHash:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+}
+
+.correctionDate {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-300);
+    font-variant-numeric: tabular-nums;
+}
+
+.correctionSaid {
+    min-width: 0;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--mist-200);
+    overflow-wrap: anywhere;
+}
+
+.ledgerFoot {
+    margin: 1.1rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+    color: var(--ink-300);
+}
+
+@media (max-width: 720px) {
+    .correction {
+        grid-template-columns: 5.2rem minmax(0, 1fr);
+        row-gap: 0.3rem;
+    }
+
+    .correctionSaid {
+        grid-column: 1 / -1;
+    }
+}

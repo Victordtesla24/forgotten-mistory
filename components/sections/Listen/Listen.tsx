@@ -3,6 +3,8 @@
 import { listenContent } from '@/app/data/portfolio/listen';
 
 import Avatar from './Avatar';
+import { feedbackLog } from '@/app/data/generated/feedback-log';
+
 import styles from './Listen.module.css';
 
 /**
@@ -56,6 +58,41 @@ export default function Listen() {
         </ul>
 
         <p className={styles.coffee}>{listenContent.coffee}</p>
+
+        {/* The receipts. Every portfolio says it wants feedback; this is the
+            list of times a review found something wrong with this page and it
+            was fixed, read out of the repository's own history at build time.
+            The sentence above is a claim; this is the evidence for it, and it
+            is the only kind this section could honestly offer. */}
+        <section className={styles.ledger} aria-labelledby="listen-ledger-title">
+          <h3 id="listen-ledger-title" className={styles.ledgerTitle}>
+            {listenContent.ledger.title}
+          </h3>
+          <p className={styles.ledgerLede}>{listenContent.ledger.lede}</p>
+          <ol className={styles.corrections}>
+            {feedbackLog.corrections.map((correction) => (
+              <li key={correction.hash} className={styles.correction}>
+                <a
+                  className={styles.correctionHash}
+                  href={`${listenContent.ledger.commitBase}${correction.hash}`}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  {correction.hash}
+                </a>
+                <time className={styles.correctionDate} dateTime={correction.date}>
+                  {correction.date}
+                </time>
+                <span className={styles.correctionSaid}>{correction.said}</span>
+              </li>
+            ))}
+          </ol>
+          <p className={styles.ledgerFoot}>
+            {feedbackLog.corrections.length} of {feedbackLog.total} corrections in the
+            history · harvested {feedbackLog.harvested} from the repository this page is
+            built from
+          </p>
+        </section>
 
         <Avatar />
       </div>

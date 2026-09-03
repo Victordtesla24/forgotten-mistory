@@ -31,6 +31,18 @@ export const listenContent = {
     { label: 'github.com/Victordtesla24', href: contact.github, kind: 'external' },
   ],
   coffee: 'Coffee · Melbourne CBD · I’ll come to you',
+  /**
+   * The corrections ledger. The rows are not here — they are read out of the
+   * repository's history at build time by scripts/build/feedback_log.mjs,
+   * because a hand-written list of times you took feedback well is not
+   * evidence of anything.
+   */
+  ledger: {
+    title: 'What I was told I had got wrong',
+    lede:
+      'The line above is a claim, so here is the evidence for it: the last corrections made to this page, in the words of the commit that made each one. The reviews behind them are a mix of people and adversarial agents pointed at my own work. The corrections are the same either way, and every one of them is a link to the diff.',
+    commitBase: 'https://github.com/Victordtesla24/forgotten-mistory/commit/',
+  },
   colophon:
     '© 2026 Vikram Deshpande · Melbourne · static export · at most one WebGL context per section, and none on a phone · no analytics, no trackers, no cookies',
 } as const;

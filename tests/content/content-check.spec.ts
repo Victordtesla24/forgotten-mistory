@@ -215,7 +215,13 @@ test.describe('Content Preservation', () => {
     await gotoHome(page);
     await page.locator('#listen').scrollIntoViewIfNeeded();
     const listen = page.locator('#listen');
-    await expect(listen.locator('a[href*="github.com/Victordtesla24"]')).toHaveCount(1);
+    // The profile, specifically. The corrections ledger below links every one
+    // of its rows to a commit under the same owner, so a bare substring match
+    // on the owner now finds nine anchors and proves nothing about whether the
+    // reader can reach him.
+    await expect(
+      listen.locator('a[href="https://github.com/Victordtesla24"]'),
+    ).toHaveCount(1);
     await expect(listen.locator('a[href*="linkedin.com/in/vikramd-profile"]')).toHaveCount(1);
     // The YouTube channel is still declared in the Person JSON-LD, but it is no
     // longer an anchor anywhere on the page — the closing section offers four
