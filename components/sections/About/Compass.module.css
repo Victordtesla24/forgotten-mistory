@@ -1,0 +1,85 @@
+/**
+ * The compass. Hairlines only, one accent, and one moving part.
+ *
+ * The rose turns; the bearing mark at twelve o'clock does not. That is the
+ * whole mechanism: the instrument moves under a fixed reading position, which
+ * is how a real compass is read and why it needs no legend.
+ */
+
+.compass {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.rose {
+    transform-origin: 50% 50%;
+    transition: transform 620ms var(--motion-ease-emphasized);
+}
+
+.ring,
+.ringInner {
+    fill: none;
+    stroke: var(--steel);
+    vector-effect: non-scaling-stroke;
+}
+
+.ring {
+    stroke-width: 0.6;
+    opacity: 0.38;
+}
+
+.ringInner {
+    stroke-width: 0.5;
+    opacity: 0.2;
+}
+
+.tick,
+.tickMajor {
+    stroke: var(--steel);
+    vector-effect: non-scaling-stroke;
+    stroke-width: 0.5;
+}
+
+.tick {
+    opacity: 0.16;
+}
+
+.tickMajor {
+    opacity: 0.3;
+}
+
+.spoke {
+    stroke: var(--steel);
+    stroke-width: 0.6;
+    opacity: 0.28;
+    vector-effect: non-scaling-stroke;
+    transition:
+        opacity var(--motion-base) var(--motion-ease-standard),
+        stroke var(--motion-base) var(--motion-ease-standard);
+}
+
+/* The lit spoke takes the accent, on the same rule the rest of the site
+   follows: gold marks the thing the reader is actually being pointed at. */
+.spoke[data-active] {
+    stroke: var(--gold);
+    stroke-width: 0.9;
+    opacity: 1;
+}
+
+.bearing {
+    stroke: var(--white);
+    stroke-width: 0.8;
+    opacity: 0.8;
+    vector-effect: non-scaling-stroke;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /* The rose still points — that is information, not decoration. It simply
+       arrives rather than travels. */
+    .rose,
+    .spoke {
+        transition: none;
+    }
+}

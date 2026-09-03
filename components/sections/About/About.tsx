@@ -1,15 +1,12 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { useCallback, useState } from 'react';
 
 import Caliper from '@/components/marks/Caliper';
-import Scene from '@/components/gl/Scene';
 import { aboutContent } from '@/app/data/portfolio/about';
 
+import Compass from './Compass';
 import styles from './About.module.css';
-
-const Compass = dynamic(() => import('./Compass'), { ssr: false });
 
 /**
  * About — the ten dimensions his own job-fit engine scores a candidate on,
@@ -17,10 +14,12 @@ const Compass = dynamic(() => import('./Compass'), { ssr: false });
  *
  * The interaction is a reading aid, not a toy: moving through the list turns
  * the compass so the current dimension sits at top-centre. Everything the
- * reader needs is in the list itself, so the section is complete on a device
- * with no WebGL, with reduced motion, or with JavaScript switched off — in
- * which case it is simply ten headings and ten answers, which is the content.
+ * reader needs is in the list itself, so the section is complete with reduced
+ * motion or with JavaScript switched off — in which case it is ten headings,
+ * ten answers and a compass sitting at rest, which is the content.
  */
+const DIMENSION_NAMES = aboutContent.dimensions.map((dimension) => dimension.name);
+
 export default function About() {
   const [active, setActive] = useState(-1);
 
@@ -51,10 +50,10 @@ export default function About() {
         <div className={styles.body}>
           {/* The instrument. Sticky beside the list on a wide screen; on a phone
               it sits above the list and stops being sticky. */}
-          <div className={styles.instrument} aria-hidden="true">
-            <Scene className={styles.instrumentStage} camera={{ position: [0, 0, 4.2], fov: 45 }}>
-              <Compass active={active} />
-            </Scene>
+          <div className={styles.instrument}>
+            <div className={styles.instrumentStage}>
+              <Compass active={active} labels={DIMENSION_NAMES} />
+            </div>
             <p className={styles.instrumentCaption}>
               {active >= 0
                 ? aboutContent.dimensions[active].name
