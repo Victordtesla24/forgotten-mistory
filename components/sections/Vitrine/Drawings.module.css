@@ -1,0 +1,22 @@
+/**
+ * The mechanism drawings inherit the plate's colour, so the raking light that
+ * falls across a plate falls across its drawing too — one light source for the
+ * whole section rather than a drawing that is lit independently of its frame.
+ */
+
+.drawing {
+    display: block;
+    width: 100%;
+    height: auto;
+    color: var(--mist-200);
+    /* Hairlines must stay hairlines at every size: no stroke scaling. */
+    vector-effect: non-scaling-stroke;
+}
+
+.label {
+    font-family: var(--font-mono);
+    font-size: 7px;
+    letter-spacing: 0.1em;
+    fill: currentColor;
+    opacity: 0.65;
+}

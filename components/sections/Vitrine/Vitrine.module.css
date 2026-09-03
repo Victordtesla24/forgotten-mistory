@@ -1,0 +1,336 @@
+/**
+ * The long vitrine.
+ *
+ * A native horizontal scroll-snap rail. Everything about the movement is the
+ * browser's: no drag physics, no hijacked wheel, no autoplay, no dots. The one
+ * effect is the raking light — the plate nearest the rail's centre is lit and
+ * its neighbours fall into shadow — which is a CSS gradient and an opacity, so
+ * it works identically on a phone and on a machine with no WebGL.
+ */
+
+.vitrine {
+    position: relative;
+    padding: clamp(5rem, 12vh, 9rem) 0;
+    overflow: hidden;
+}
+
+.head,
+.foot {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: 0 var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
+}
+
+.kicker {
+    margin: 0 0 1rem;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist-400);
+}
+
+.title {
+    margin: 0 0 1.5rem;
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--white);
+}
+
+.lede {
+    margin: 0 0 clamp(2.5rem, 6vh, 4rem);
+    max-width: 56ch;
+    font-size: clamp(1rem, 1.25vw, 1.12rem);
+    line-height: 1.68;
+    color: var(--mist-200);
+}
+
+/* ── The rail ────────────────────────────────────────────────────────────── */
+.rail {
+    display: flex;
+    gap: clamp(1rem, 2vw, 1.75rem);
+    margin: 0;
+    padding: 0.5rem var(--page-gutter, clamp(1.5rem, 5vw, 5rem)) 2rem;
+    list-style: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
+    /* A thin rule under the rail, so the plates read as standing on something. */
+    border-bottom: 1px solid var(--token-border-default);
+    scrollbar-width: thin;
+    scrollbar-color: rgb(244 246 250 / 0.18) transparent;
+}
+
+.rail::-webkit-scrollbar {
+    height: 3px;
+}
+
+.rail::-webkit-scrollbar-thumb {
+    background: rgb(244 246 250 / 0.18);
+}
+
+/* ── A plate ─────────────────────────────────────────────────────────────── */
+.plate {
+    position: relative;
+    flex: 0 0 auto;
+    width: min(30rem, 82vw);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: clamp(1.5rem, 2.5vw, 2.25rem);
+    border: 1px solid var(--token-border-default);
+    border-radius: 4px;
+    scroll-snap-align: center;
+    /* Unlit plates sit back. This is the shadow half of the raking light. */
+    opacity: 0.42;
+    background: var(--ink-900);
+    transition:
+        opacity var(--motion-base) var(--motion-ease-standard),
+        border-color var(--motion-base) var(--motion-ease-standard),
+        transform var(--motion-base) var(--motion-ease-standard);
+}
+
+.plate:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 4px;
+}
+
+/* The lit plate: the gallery spot has tracked to it. The light is a gradient
+   anchored to the top-left of the plate, the same direction the hero is lit
+   from, so the whole page reads as having one light source. */
+.plate[data-lit] {
+    opacity: 1;
+    border-color: var(--card-border-hover);
+    background:
+        radial-gradient(120% 80% at 18% 0%, rgb(244 246 250 / 0.075), transparent 62%),
+        var(--ink-900);
+}
+
+.plateHead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.accession {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--mist-400);
+}
+
+.repo {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.02em;
+    color: var(--ink-300);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.plateTitle {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--white);
+}
+
+.description {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--mist-200);
+}
+
+.drawingFrame {
+    margin: 0.4rem 0;
+    padding: 0.75rem 0;
+    border-top: 1px solid rgb(255 255 255 / 0.05);
+    border-bottom: 1px solid rgb(255 255 255 / 0.05);
+}
+
+/* ── Metrics ─────────────────────────────────────────────────────────────── */
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 0;
+}
+
+.metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.metric dt {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-300);
+}
+
+.metric dd {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    line-height: 1.4;
+    color: var(--mist-200);
+    overflow-wrap: anywhere;
+}
+
+/* ── Limits ──────────────────────────────────────────────────────────────── */
+.limits {
+    margin: 0.35rem 0 0;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--mist-400);
+}
+
+.limitsLabel {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-300);
+}
+
+/* ── Links ───────────────────────────────────────────────────────────────── */
+.links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+}
+
+.source,
+.live {
+    font-size: 0.82rem;
+    text-decoration: none;
+    color: var(--mist-200);
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 1px;
+    transition:
+        color var(--motion-fast) var(--motion-ease-standard),
+        border-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.live {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--mist-400);
+}
+
+.source:hover,
+.live:hover {
+    color: var(--white);
+    border-bottom-color: var(--card-border-hover);
+}
+
+.source:focus-visible,
+.live:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+}
+
+/* ── Foot: the exclusions ────────────────────────────────────────────────── */
+.foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-top: clamp(2.5rem, 5vh, 3.5rem);
+}
+
+.exclusions {
+    max-width: 42rem;
+}
+
+.exclusionsTitle {
+    margin: 0 0 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mist-400);
+}
+
+.exclusionList {
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.exclusion {
+    display: grid;
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    gap: 1rem;
+}
+
+.exclusion dt {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--mist-200);
+    overflow-wrap: anywhere;
+}
+
+.exclusion dd {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--ink-300);
+}
+
+.stamp {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    line-height: 1.7;
+    color: var(--ink-300);
+    max-width: 22rem;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 700px) {
+    .plate {
+        width: 86vw;
+    }
+
+    .metrics {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .exclusion {
+        grid-template-columns: 1fr;
+        gap: 0.15rem;
+    }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────────
+   The light still tracks — it is how the reader knows which plate they are on —
+   but it arrives without a transition rather than gliding. */
+@media (prefers-reduced-motion: reduce) {
+    .plate {
+        transition: none;
+    }
+
+    .rail {
+        scroll-behavior: auto;
+    }
+}
