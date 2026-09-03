@@ -4,16 +4,22 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import { contact } from '@/app/data/siteContent';
 
+/**
+ * One entry per section that exists, in page order. Three of these used to point
+ * at #architecture-lab, #work and #contact — sections deleted in the rebuild —
+ * so the menu was quietly offering a recruiter three links that scrolled
+ * nowhere. Anchors here must be kept in step with app/page.tsx; the navigation
+ * test asserts every one of them resolves to a real element.
+ */
 const NAV_LINKS = [
   { href: '#hero', label: 'Home' },
   { href: '#about', label: 'About' },
   { href: '#experience', label: 'Experience' },
   { href: '#skills', label: 'Skills' },
-  { href: '#architecture-lab', label: 'Architecture' },
-  { href: '#work', label: 'Work' },
+  { href: '#vitrine', label: 'Work' },
+  { href: '#listen', label: 'Contact' },
   { href: contact.linkedin, label: 'LinkedIn', external: true },
   { href: '/docs/Vik_Resume_Final.pdf', label: 'Download CV', external: true },
-  { href: '#contact', label: 'Contact' },
 ] as const;
 
 const CV_HREF = '/docs/Vik_Resume_Final.pdf';
