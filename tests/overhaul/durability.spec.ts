@@ -1,181 +1,165 @@
 import { test, expect, type Page } from '@playwright/test';
 
 /**
- * SPEC §10 TC-NFR-DURABLE — After first load, reload offline still renders
- * core content + CV available.
+ * SPEC §10 TC-NFR-DURABLE — after one visit the site still works with the
+ * network gone, and the CV is still downloadable.
  *
- * Test approach:
- *   1. Load the page normally (ensure first-visit cache populated)
- *   2. Verify core content is present
- *   3. Simulate offline mode via Playwright's context.setOffline(true)
- *   4. Reload and verify core content still renders
- *   5. Verify CV download link is still present (cached PDF)
+ * `components/site/ServiceWorkerRegister.tsx` survived the rebuild untouched
+ * and still mounts from `app/layout.tsx`, so this file's subject is intact.
+ * Two things about it changed, and both are improvements:
  *
- * NOTE: ServiceWorker durability is a PRODUCTION-only feature. The
- * ServiceWorkerRegister component only activates in NODE_ENV=production.
- * These tests verify the DOM structure for durability indicators; the
- * full offline test requires the production build (npm run build:static →
- * serve out/).
- *
- * PASS:
- *   - Core content sections render after offline reload (production)
- *   - CV download link present after offline reload
- *   - Service worker registration indicator present (production)
- *   - No broken content references after offline reload
+ *   1. TC-DURABLE-05 is no longer skipped. It used to gate itself on a
+ *      `TEST_BASE_URL`/`CI` heuristic and therefore never ran locally, which
+ *      meant the one test that actually proved offline durability proved it
+ *      almost never. These runs go against the production static export in
+ *      `out/`, `NODE_ENV` is `production` there, so the worker registers,
+ *      activates and takes control exactly as it does on the deployed site —
+ *      and the offline reload can simply be performed and asserted.
+ *   2. TC-DURABLE-04 and TC-DURABLE-06 lost their subjects: the `#contact`
+ *      section and the `Dossier` component were both deleted. What they were
+ *      protecting is unchanged and still worth protecting — the CV must be
+ *      reachable from more than one place, so that losing one of them does not
+ *      make the site's single most important download disappear — so they are
+ *      re-pointed at the two places that carry it now: the persistent nav bar
+ *      and the hero's secondary action.
  */
 
-const IS_PRODUCTION_PREVIEW =
-  process.env.TEST_BASE_URL?.includes('web.app') ||
-  process.env.TEST_BASE_URL?.includes('firebase') ||
-  process.env.CI === 'true';
-
 async function loadAndCache(page: Page) {
-  // First visit: load normally to allow SW to cache
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
-  const pre = page.locator('.preloader');
-  if (await pre.isVisible().catch(() => false)) {
-    await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-  }
-  // Wait for Service Worker to activate if in production
+  await page.goto('/', { waitUntil: 'load' });
+  await page
+    .waitForFunction(() => document.body.classList.contains('page-ready'), null, { timeout: 20000 })
+    .catch(() => {});
+  await page.locator('#hero').waitFor({ state: 'visible', timeout: 15000 });
+}
+
+/** Waits until the worker has installed, activated and taken control of the page. */
+async function waitForServiceWorker(page: Page) {
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.waitForFunction(() => !!navigator.serviceWorker.controller, null, { timeout: 30000 });
+  // The precache runs during `install`; give it a moment to finish writing
+  // before the network is taken away underneath it.
   await page.waitForTimeout(2000);
 }
 
 test.describe('TC-NFR-DURABLE: Offline Durability', () => {
-  test.describe.configure({ timeout: 90000 });
+  test.describe.configure({ timeout: 120000 });
 
-  test('TC-DURABLE-01: ServiceWorkerRegister component is in the DOM', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-    const pre = page.locator('.preloader');
-    if (await pre.isVisible().catch(() => false)) {
-      await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-    }
+  test('TC-DURABLE-01: The service worker registers, activates and controls the page', async ({ page }) => {
+    await loadAndCache(page);
+    await waitForServiceWorker(page);
 
-    // ServiceWorkerRegister is the last element in layout.tsx body
-    // It renders a toast container for offline/update notifications
-    const swToast = page.locator('[class*="sw-toast"], [aria-live="polite"]').first();
-    const swAttached = (await swToast.count()) > 0;
+    const state = await page.evaluate(async () => {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      return {
+        registrations: regs.length,
+        active: regs.map((r) => r.active?.state ?? 'none'),
+        controlled: !!navigator.serviceWorker.controller,
+      };
+    });
+    expect(state.registrations).toBeGreaterThanOrEqual(1);
+    expect(state.active).toContain('activated');
+    expect(state.controlled).toBe(true);
 
-    // The SW register component may not render visible UI until activated
-    // In development mode, it tears down any existing SW and skips registration
-    // so the toast container may not be visible — that's expected.
-    if (swAttached) {
-      // If the toast container exists, it should be an aria-live region
-      const role = await swToast.getAttribute('aria-live').catch(() => null);
-      // aria-live may be "polite" or not set if the toast hasn't fired yet
-      expect(true).toBe(true); // Component in DOM is sufficient
-    }
-
-    // Verify at minimum the layout renders (SW register is the last child)
-    const bodyHTML = await page.locator('body').innerHTML();
-    expect(bodyHTML.length).toBeGreaterThan(500);
+    // The toast region is always in the DOM so "Ready to work offline" and
+    // "Update available" are announced in place, without a layout shift.
+    const toast = page.locator('[data-sw-toast]');
+    await expect(toast).toHaveCount(1);
+    await expect(toast).toHaveAttribute('aria-live', 'polite');
+    await expect(toast).toHaveAttribute('role', 'status');
   });
 
   test('TC-DURABLE-02: Core hero content renders on first visit', async ({ page }) => {
     await loadAndCache(page);
-
-    // Hero section must render
     await expect(page.locator('#hero')).toBeVisible();
     await expect(page.locator('#hero')).toContainText('Vikram');
   });
 
-  test('TC-DURABLE-03: CV download link present and resolves', async ({ page }) => {
+  test('TC-DURABLE-03: CV download link is present in the hero and resolves', async ({ page }) => {
     await loadAndCache(page);
 
-    // CV link in hero
-    const cvLink = page.locator('a[href*="Vik_Resume_Final.pdf"]').first();
+    const cvLink = page.locator('#hero a[href*="Vik_Resume_Final.pdf"]');
     await expect(cvLink).toBeVisible();
-    const href = await cvLink.getAttribute('href');
-    expect(href).toContain('.pdf');
+    await expect(cvLink).toHaveAttribute('download', '');
+
+    const response = await page.request.get('/docs/Vik_Resume_Final.pdf');
+    expect(response.status()).toBe(200);
   });
 
-  test('TC-DURABLE-04: Contact section CV link present', async ({ page }) => {
+  test('TC-DURABLE-04: CV is reachable from the persistent navigation, on every screen', async ({ page }) => {
     await loadAndCache(page);
-    await page.locator('#contact').scrollIntoViewIfNeeded();
-    await page.waitForTimeout(500);
+    // D-CV-01: the nav bar's Download CV is visible without opening the menu,
+    // which is what makes the CV reachable from anywhere on the page — the role
+    // the deleted `#contact` section's CV button used to play at the bottom.
+    const navCv = page.locator('.nav-cv');
+    await expect(navCv).toBeVisible();
+    await expect(navCv).toHaveAttribute('href', '/docs/Vik_Resume_Final.pdf');
 
-    const contactCV = page.locator('#contact a', { hasText: 'Download CV' });
-    await expect(contactCV).toBeVisible();
+    await page.locator('#listen').scrollIntoViewIfNeeded();
+    await expect(navCv).toBeVisible();
   });
 
-  test('TC-DURABLE-05: Offline reload — core content accessible (production only)', async ({ page }) => {
-    test.skip(
-      !IS_PRODUCTION_PREVIEW,
-      'Offline durability requires the production build with ServiceWorker. ' +
-        'Run against forgotten-mistory.web.app or the static export to test.',
-    );
-
-    // First visit to cache
+  test('TC-DURABLE-05: Offline reload still renders the page and still serves the CV', async ({ page }) => {
     await loadAndCache(page);
+    await waitForServiceWorker(page);
 
-    // Go offline
     await page.context().setOffline(true);
+    try {
+      const response = await page.reload({ waitUntil: 'domcontentloaded', timeout: 30000 });
+      expect(response?.status()).toBe(200);
 
-    // Reload
-    await page.reload({ waitUntil: 'domcontentloaded' });
-
-    // Core content should still be present
-    const hero = page.locator('#hero');
-    const heroVisible = await hero.isVisible({ timeout: 10000 }).catch(() => false);
-
-    if (heroVisible) {
+      // The page comes back from the precache, not from a browser error page.
+      const hero = page.locator('#hero');
+      await expect(hero).toBeVisible();
       await expect(hero).toContainText('Vikram');
+
+      const bodyText = await page.locator('body').innerText();
+      expect(bodyText).not.toContain('ERR_INTERNET_DISCONNECTED');
+      expect(bodyText).not.toContain('No internet');
+
+      // And the CV — the one artefact a recruiter came for — is cached too.
+      // A site that renders offline but cannot hand over the PDF has kept the
+      // decoration and lost the point.
+      const pdfStatus = await page.evaluate(async () => {
+        try {
+          const r = await fetch('/docs/Vik_Resume_Final.pdf');
+          return r.status;
+        } catch (error) {
+          return `fetch failed: ${(error as Error).message}`;
+        }
+      });
+      expect(pdfStatus).toBe(200);
+    } finally {
+      await page.context().setOffline(false);
     }
-
-    // CV should be cached and accessible
-    const cvLink = page.locator('a[href*="Vik_Resume_Final.pdf"]').first();
-    const cvAttached = await cvLink.isAttached().catch(() => false);
-
-    // At minimum, the page should not show a browser offline error
-    const bodyText = await page.locator('body').innerText();
-    expect(bodyText).not.toContain('ERR_INTERNET_DISCONNECTED');
-    expect(bodyText).not.toContain('No internet');
-
-    // Restore online
-    await page.context().setOffline(false);
   });
 
-  test('TC-DURABLE-06: Dossier component renders with CV download', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-    const pre = page.locator('.preloader');
-    if (await pre.isVisible().catch(() => false)) {
-      await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-    }
-
-    // Dossier renders before #contact
-    await page.locator('#contact').scrollIntoViewIfNeeded();
-    await page.waitForTimeout(500);
-
-    // Scroll up slightly to find Dossier
-    await page.evaluate(() => window.scrollBy(0, -200));
-    await page.waitForTimeout(300);
-
-    const dossierDownloadLinks = page.locator('a[href*="Vik_Resume_Final.pdf"]');
-    const linkCount = await dossierDownloadLinks.count();
-    expect(linkCount).toBeGreaterThanOrEqual(2); // Hero + Dossier/Contact
-  });
-
-  test('TC-DURABLE-07: Page has Content-Security-Policy or cache headers', async ({ page }) => {
+  test('TC-DURABLE-06: The CV is offered from more than one place on the page', async ({ page }) => {
     await loadAndCache(page);
 
-    // Check that resources are being cached (ServiceWorker or HTTP cache)
-    // This is verified by checking that the page loads without network errors
-    const failedRequests: string[] = [];
-    page.on('requestfailed', (request) => {
-      failedRequests.push(request.url());
-    });
+    // Two independent entry points minimum — the nav bar and the hero. This was
+    // the Dossier's job before the rebuild deleted it; the requirement that the
+    // download never depend on a single component is unchanged.
+    const links = page.locator('a[href*="Vik_Resume_Final.pdf"]');
+    expect(await links.count()).toBeGreaterThanOrEqual(2);
+    await expect(page.locator('.nav-cv')).toHaveCount(1);
+    await expect(page.locator('#hero a[href*="Vik_Resume_Final.pdf"]')).toHaveCount(1);
+  });
 
-    // Navigate again to trigger cache reads
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
+  test('TC-DURABLE-07: No first-party request fails on a warm load', async ({ page }) => {
+    const failedRequests: string[] = [];
+    page.on('requestfailed', (request) => failedRequests.push(request.url()));
+
+    await loadAndCache(page);
+    await page.goto('/', { waitUntil: 'load' });
     await page.waitForTimeout(1000);
 
-    // Filter out external third-party failures (YouTube, fonts, analytics)
+    // Third-party failures (fonts, analytics that are not installed) are not
+    // this site's problem; a broken first-party asset is.
     const localFailures = failedRequests.filter(
       (url) =>
-        url.includes('localhost') ||
-        url.includes('forgotten-mistory') ||
-        url.includes('_next'),
+        url.includes('localhost') || url.includes('forgotten-mistory') || url.includes('_next'),
     );
 
-    expect(localFailures).toHaveLength(0);
+    expect(localFailures, `failed first-party requests:\n${localFailures.join('\n')}`).toHaveLength(0);
   });
 });

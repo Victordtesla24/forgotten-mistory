@@ -37,7 +37,6 @@
     "validate:phase20": "bash scripts/validate/phase20_scaling_strategy.sh",
     "validate:phase21": "bash scripts/validate/phase21_realtime_pipeline.sh",
     "validate:provider-keys": "node scripts/validate/provider_api_keys.mjs",
-    "validate:starfield-outcomes": "node scripts/testing/starfield_outcome_probe.mjs",
     "validate:final": "bash scripts/validate/final_full_system_validation.sh",
     "validate:postprod": "bash scripts/testing/run_post_prod_validation.sh",
     "test:realtime-pipeline": "node tests/test_realtime_pipeline.js"

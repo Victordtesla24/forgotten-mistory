@@ -1,37 +1,37 @@
 import { test, expect, type Page } from '@playwright/test';
 
 /**
- * Overhaul — Cinematic-Monochrome Design Language
+ * Overhaul — cinematic-monochrome design language, as the rebuilt page states it.
  *
- * These are the R1/R7 (posh, Disney+/Marvel-grade cinematic) acceptance tests.
- * Ref: docs/execution-log OVERHAUL-INC1.
+ * These are the R1/R7 acceptance tests. The hero rebuild replaced the INC1 hero
+ * stage wholesale: `.cine-stage`, `.cine-spotlight`, `.cine-vignette`,
+ * `.cine-title` and `.hero-title` render nowhere, so the tests that asserted
+ * their existence were deleted rather than softened. What replaced them is one
+ * decorative `<div aria-hidden>` per section onto which the shared GL stage
+ * mounts a shader scene, and the invariants that genuinely survived — the
+ * backdrop is inert, the CTA is never covered, the name renders unclipped, and
+ * reduced motion drops movement without dropping content — are re-asserted here
+ * against the new markup.
  *
- * The hero rebuild (components/sections/Hero/Hero.tsx + Hero.module.css +
- * HeroAtmosphere.tsx) replaced the INC1 hero stage wholesale. The DOM planes it
- * tested — `.cine-stage`, `.cine-spotlight`, `.cine-vignette`, `.cine-title`,
- * `.hero-title` — no longer render anywhere, so the tests that asserted their
- * existence and their reduced-motion behaviour were deleted outright rather than
- * softened. What replaced them is one decorative `<div aria-hidden>` per hero
- * onto which the shared GL stage scissors a shader scene, so the invariants that
- * genuinely survived — the backdrop is inert, the CTAs are never covered, the
- * name renders unclipped, and reduced motion drops movement without dropping
- * content — are re-asserted here against the new markup.
+ * Three tests were retired outright in this pass:
  *
- * Two consequences of the rebuild shape every test below:
+ *   - TC-CINE-04 asserted that `:root` publishes `--spot-x`/`--spot-y`. The
+ *     tokens are still declared in `app/globals.css`, but the god-ray plane
+ *     that consumed them and the `CursorGlow` component that eased them are
+ *     both deleted, so the check guarded a value nothing reads and nothing
+ *     writes. Passing told us nothing.
+ *   - TC-CINE-07/08/09 were built on the `.beat` letterbox primitive and the
+ *     `data-beats-armed` flag `SectionBeats` set on `<html>`. That primitive was
+ *     removed from the site entirely — `section.beat` matches zero elements —
+ *     so the threshold was not lowered from five, it was retired: there is no
+ *     letterbox to arm. What TC-CINE-08/09 were really protecting, though, is
+ *     that a decorative reveal must never leave content trapped behind it, and
+ *     that is a live risk for every section on the page. TC-CINE-07 below is
+ *     that invariant, restated against the six sections that exist.
  *
- * 1. **There is no preloader.** components/site/Preloader.tsx is deleted and the
- *    hero is server-rendered, so navigation waits on `#hero` alone. Nothing to
- *    skip, nothing to race.
- * 2. **The hero uses CSS-module hashed class names.** Selecting by class is no
- *    longer stable, so every hero assertion goes through semantics that survive a
- *    rebuild: `#hero`, `#hero h1`, `#hero a[href="#experience"]`, and text.
- *
- * The non-hero cinematic primitives — the frosted-on-scroll nav and the `.beat`
- * letterbox sections — are untouched by the rebuild. The two `.beat` tests were
- * still re-pointed: they had hard-coded `#about` and its "About Me" heading, and
- * that section has since been rewritten out of the `.beat` set. They now assert
- * against whichever section is first to carry the primitive, which is what they
- * were always meant to be testing.
+ * The hero uses CSS-module hashed class names, so every hero assertion goes
+ * through semantics that survive a rebuild: `#hero`, `#hero h1`,
+ * `#hero a[href="#experience"]`, and text.
  */
 
 async function gotoHome(page: Page) {
@@ -49,8 +49,8 @@ test.describe('Overhaul: Cinematic-Monochrome Design Language', () => {
     await gotoHome(page);
 
     // Replaces the old `.cine-stage` + spotlight/vignette plane test. The new
-    // hero has exactly one backdrop element: the div the shared GL stage
-    // scissors its scene onto. The contract is unchanged even though the markup
+    // hero has exactly one backdrop element: the slot the shared GL stage
+    // mounts its scene into. The contract is unchanged even though the markup
     // is — the backdrop is never content, never announced, never a hit target.
     const stage = page.locator('#hero > div[aria-hidden="true"]');
     await expect(stage).toHaveCount(1);
@@ -61,8 +61,8 @@ test.describe('Overhaul: Cinematic-Monochrome Design Language', () => {
 
     // Sits behind the copy in the hero's own stacking context, so the section
     // reads correctly with the scene present, absent, or still loading. The
-    // absolute value is the hero's business (it has been both -1 and 0); what
-    // must hold is the ordering against the content wrapper beside it.
+    // absolute value is the hero's business; what must hold is the ordering
+    // against the content wrapper beside it.
     const order = await page.evaluate(() => {
       const hero = document.querySelector('#hero');
       const zOf = (el: Element | null) => {
@@ -79,20 +79,41 @@ test.describe('Overhaul: Cinematic-Monochrome Design Language', () => {
     expect(order.stage).toBeLessThan(order.content);
   });
 
-  test('TC-CINE-02: the backdrop never intercepts clicks on the hero CTA', async ({ page }) => {
+  test('TC-CINE-02: nothing intercepts clicks on the hero CTA', async ({ page }) => {
     await gotoHome(page);
     // The dual `[data-pillar]` CTAs are gone; the hero now offers one primary
     // action into the evidence and one CV download. The invariant is the one
-    // that always mattered: whatever is painted behind the copy must not steal
-    // the click.
+    // that always mattered: whatever is painted over or behind the copy must
+    // not steal the click.
     const cta = page.locator('#hero a[href="#experience"]');
     await expect(cta).toBeVisible();
+
+    // Two things have to happen before the probe is meaningful. The web fonts
+    // change how the hero's statement wraps, which changes the hero's height by
+    // about thirty pixels; and at 1280×720 the CTA sits low enough that on the
+    // taller of those two layouts its centre point is *below* the fold.
+    // `document.elementFromPoint` is viewport-relative and answers `null` for a
+    // point off screen, so probing without scrolling first tested whichever
+    // layout the fonts happened to have produced — which is how this check
+    // came to report an element that is nowhere near the hero.
+    await page.evaluate(() => document.fonts?.ready);
+    await cta.scrollIntoViewIfNeeded();
+
     const hit = await cta.evaluate((el) => {
       const r = el.getBoundingClientRect();
       const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
-      return top?.closest('#hero a[href="#experience"]') ? 'cta' : (top?.className ?? 'other');
+      if (!top) return 'off-screen';
+      return top.closest('#hero a[href="#experience"]') ? 'cta' : (top.className || top.tagName);
     });
     expect(hit).toBe('cta');
+
+    // And the authoritative form of the same question. A trial click runs
+    // Playwright's full actionability check and, when something is in the way,
+    // names the element that is — which is more use in a failure than a class
+    // string. Note that `.sw-toast` is `position: fixed` at the bottom-left,
+    // which is where this CTA also sits at this viewport, so this is the guard
+    // that would catch a notification landing on the primary call to action.
+    await cta.click({ trial: true });
   });
 
   test('TC-CINE-03: nav is transparent at top and frosts (data-scrolled) after scroll', async ({ page }) => {
@@ -118,20 +139,31 @@ test.describe('Overhaul: Cinematic-Monochrome Design Language', () => {
     expect(bg).not.toBe('transparent');
   });
 
-  test('TC-CINE-04: :root publishes an achromatic --spot-x/--spot-y spotlight anchor', async ({ page }) => {
+  test('TC-CINE-04: with every scene suppressed the page is still the whole page', async ({ page }) => {
+    // Replaces the `--spot-x`/`--spot-y` token check, whose consumer was
+    // deleted along with the god-ray plane and CursorGlow — it asserted that a
+    // value nothing reads is still published, which cannot fail informatively.
+    //
+    // The rule that governs decoration on the rebuilt page is the one
+    // `components/gl/Scene.tsx` states: the scene is evidence rendered, never
+    // the evidence itself. Reduced motion is the deterministic way to prove it
+    // on any host — `Scene` refuses to mount a canvas when motion is not
+    // allowed, regardless of whether the machine running the test has a GPU —
+    // so this asserts the strong form: not one WebGL surface exists, and every
+    // section is still carrying its content.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await gotoHome(page);
-    // The hero god-ray plane that consumed this anchor was removed with the hero
-    // rebuild, but the tokens themselves are still declared on `:root` in
-    // globals.css and still published (eased, in a rAF) by CursorGlow, which is
-    // mounted page-wide. The contract under test is that the anchor is always
-    // defined — a consumer reading it can never compose an invalid gradient,
-    // including on touch/no-JS where the pointer never moves.
-    const vars = await page.evaluate(() => {
-      const s = getComputedStyle(document.documentElement);
-      return { x: s.getPropertyValue('--spot-x').trim(), y: s.getPropertyValue('--spot-y').trim() };
-    });
-    expect(vars.x).not.toBe('');
-    expect(vars.y).not.toBe('');
+
+    for (const id of ['#hero', '#about', '#experience', '#skills', '#vitrine', '#listen']) {
+      await page.locator(id).scrollIntoViewIfNeeded();
+      await page.waitForTimeout(200);
+    }
+    await expect(page.locator('canvas')).toHaveCount(0);
+
+    for (const id of ['#hero', '#about', '#experience', '#skills', '#vitrine', '#listen']) {
+      const text = (await page.locator(id).innerText()).trim();
+      expect(text.length, `${id} lost its content with the scene suppressed`).toBeGreaterThan(200);
+    }
   });
 
   test('TC-CINE-05: the hero name renders in full with no glyph-masking clip-path (D-NAME-01)', async ({ page }) => {
@@ -175,37 +207,29 @@ test.describe('Overhaul: Cinematic-Monochrome Design Language', () => {
     expect(entrance.durationMs).toBeLessThan(20);
   });
 
-  test('TC-CINE-07: content sections use the .beat letterbox primitive and JS arms it', async ({ page }) => {
-    await gotoHome(page);
-    const beats = page.locator('section.beat');
-    expect(await beats.count()).toBeGreaterThanOrEqual(5);
-    // SectionBeats sets the progressive-enhancement flag on <html> once armed.
-    await expect(page.locator('html')).toHaveAttribute('data-beats-armed', 'true');
-  });
-
-  // TC-CINE-08/09 used to pin themselves to `#about` and its "About Me" heading.
-  // The section rewrite moved that heading and dropped `#about` from the `.beat`
-  // set, which broke both tests for a reason that has nothing to do with the
-  // primitive they exist to protect. They now take the first `.beat` section
-  // there is and assert the primitive's own contract, so they survive the copy
-  // and markup of any one section changing.
-  test('TC-CINE-08: a beat section reveals (data-inview) when scrolled into view', async ({ page }) => {
-    await gotoHome(page);
-    const beat = page.locator('section.beat').first();
-    await beat.scrollIntoViewIfNeeded();
-    await expect(beat).toHaveAttribute('data-inview', 'true');
-    // Letterbox bars are decorative — content is never trapped behind them.
-    await expect(beat.locator('h2').first()).toBeVisible();
-  });
-
-  test('TC-CINE-09: under reduced motion beat curtains render open (content visible)', async ({ page }) => {
+  test('TC-CINE-07: under reduced motion every section is readable, not left behind a curtain', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await gotoHome(page);
-    const beat = page.locator('section.beat').first();
-    await beat.scrollIntoViewIfNeeded();
-    await expect(beat).toBeVisible();
-    // With the curtain animation suppressed the section must still be readable,
-    // not left behind a bar that never opened.
-    await expect(beat.locator('h2').first()).toBeVisible();
+
+    // This is what the two deleted `.beat` tests were actually protecting: a
+    // decorative reveal that never runs must fail open, leaving the content
+    // visible, rather than fail closed and leave a section behind a bar that
+    // never lifted. The letterbox primitive is gone, but the risk applies to
+    // every entrance on the page, so the check is now made against all six
+    // sections instead of against whichever one happened to carry the class.
+    for (const [section, heading] of [
+      ['#hero', '#hero h1'],
+      ['#about', '#about h2'],
+      ['#experience', '#experience h2'],
+      ['#skills', '#skills h2'],
+      ['#vitrine', '#vitrine h2'],
+      ['#listen', '#listen h2'],
+    ]) {
+      await page.locator(section).scrollIntoViewIfNeeded();
+      const title = page.locator(heading).first();
+      await expect(title, `${heading} is not visible under reduced motion`).toBeVisible();
+      const opacity = await title.evaluate((el) => Number(getComputedStyle(el).opacity));
+      expect(opacity, `${heading} is transparent under reduced motion`).toBeGreaterThan(0.9);
+    }
   });
 });

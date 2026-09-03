@@ -2,14 +2,15 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  // Build the production static export (`out/`) ONCE before the worker pool spawns.
-  // Without this, boot/perf/durable/reduced-motion each kicked off `npm run build:static`
-  // from their beforeAll; under fullyParallel + workers:3 those builds raced and
-  // corrupted each other's build dir (ENOENT _error.js / _not-found.rsc, ENOTEMPTY
-  // .next/export), failing ~46 specs and blocking build/deploy. In CI the export is
-  // prebuilt as a dedicated step (deploy.yml) so this no-ops there; locally this is the
-  // build site. See tests/global-setup.ts for the webServer-ordering caveat.
-  // globalSetup removed — dev server is running separately via `npx next dev -p 5599`
+  // No globalSetup and no webServer: the static export in `out/` is built and
+  // served separately, and the suite is pointed at it with PLAYWRIGHT_BASE_URL.
+  // This is deliberate. Each spec used to kick off `npm run build:static` from
+  // its own beforeAll; under fullyParallel those builds raced and corrupted each
+  // other's build dir (ENOENT _error.js / _not-found.rsc, ENOTEMPTY .next/export),
+  // failing ~46 specs at once for a reason that had nothing to do with any of
+  // them. The `tests/global-setup.ts` no-op that replaced that arrangement was
+  // itself deleted once nothing referenced it. In CI the export is prebuilt as a
+  // dedicated step (deploy.yml).
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,

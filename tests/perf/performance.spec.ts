@@ -1,37 +1,52 @@
 import { test, expect, type Page } from '@playwright/test';
 
 /**
- * Category 6: Performance Budget Tests
- * Verifies performance budgets:
- *   - First-view transfer size (payload budget)
- *   - LCP < 2.5s
- *   - CLS < 0.05
+ * Performance budgets — the numbers the rebuild was for.
  *
- * Measured against the production Next.js server on :5599.
+ * These are the same three budgets as before (first-view transfer, LCP, CLS)
+ * because they are the ones the site's own definition of done names, and
+ * because the rebuild's central claim is that it is faster: the previous hero
+ * server-rendered its content at `opacity: 0` and waited on a 450 kB
+ * framer-motion bundle to reveal it, which meant a cold load showed a blank
+ * screen for four to eight seconds. Nothing in the current hero waits on
+ * JavaScript, so these budgets are now the thing that keeps that true.
+ *
+ * Two repairs were needed. The `gotoHome` helper waited on a `.preloader` that
+ * no longer exists — harmless, but it described a boot sequence the site does
+ * not have. And every measurement navigated to a hard-coded
+ * `http://localhost:5599/`, which silently ignored `PLAYWRIGHT_BASE_URL` and
+ * would have measured the wrong service the moment the port changed. The
+ * contexts these tests build by hand do not inherit `use.baseURL`, so it is
+ * passed to `browser.newContext` explicitly instead.
+ *
+ * The viewport is a phone on purpose. A recruiter opening a CV link on a train
+ * is the load that matters, and it is the load the budgets were set for.
  */
 
 const PAYLOAD_BUDGET = 2.5 * 1024 * 1024; // 2.5 MB
 const LCP_BUDGET_MS = 2500;
 const CLS_BUDGET = 0.05;
+const PHONE = { width: 390, height: 844 };
 
 async function gotoHome(page: Page) {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  const pre = page.locator('.preloader');
-  if (await pre.isVisible().catch(() => false)) {
-    await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-  }
+  await page
+    .waitForFunction(() => document.body.classList.contains('page-ready'), null, { timeout: 20000 })
+    .catch(() => {});
 }
 
 test.describe('Performance Budgets', () => {
   test.describe.configure({ timeout: 120000 });
 
-  test('PERF-01: First-view transfer size <= 2.5 MB', async ({ browser }) => {
-    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  test('PERF-01: First-view transfer size <= 2.5 MB', async ({ browser, baseURL }) => {
+    const ctx = await browser.newContext({ viewport: PHONE, baseURL });
     const page = await ctx.newPage();
-    await page.goto('http://localhost:5599/', { waitUntil: 'load' });
+    await page.goto('/', { waitUntil: 'load' });
 
     const total = await page.evaluate(() => {
-      const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+      const nav = performance.getEntriesByType('navigation')[0] as
+        | PerformanceNavigationTiming
+        | undefined;
       const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
       let bytes = nav?.transferSize ?? 0;
       for (const r of resources) bytes += r.transferSize || 0;
@@ -43,99 +58,103 @@ test.describe('Performance Budgets', () => {
     expect(total).toBeLessThanOrEqual(PAYLOAD_BUDGET);
   });
 
-  test('PERF-02: LCP (Largest Contentful Paint) < 2.5s', async ({ browser }) => {
-    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  test('PERF-02: LCP (Largest Contentful Paint) < 2.5s', async ({ browser, baseURL }) => {
+    const ctx = await browser.newContext({ viewport: PHONE, baseURL });
     const page = await ctx.newPage();
-    await page.goto('http://localhost:5599/', { waitUntil: 'load' });
+    await page.goto('/', { waitUntil: 'load' });
 
-    const lcp = await page.evaluate(() => {
-      return new Promise<number>((resolve) => {
-        new PerformanceObserver((list) => {
-          const entries = list.getEntries();
-          if (entries.length > 0) {
-            resolve(entries[entries.length - 1].startTime);
-          }
-        }).observe({ type: 'largest-contentful-paint', buffered: true });
-        // Fallback: resolve after 3s if LCP not reported
-        setTimeout(() => resolve(-1), 3000);
-      });
-    });
+    const lcp = await page.evaluate(
+      () =>
+        new Promise<number>((resolve) => {
+          new PerformanceObserver((list) => {
+            const entries = list.getEntries();
+            if (entries.length > 0) resolve(entries[entries.length - 1].startTime);
+          }).observe({ type: 'largest-contentful-paint', buffered: true });
+          setTimeout(() => resolve(-1), 5000);
+        }),
+    );
     await ctx.close();
 
-    if (lcp > 0) {
-      console.log(`LCP: ${lcp.toFixed(0)} ms`);
-      expect(lcp).toBeLessThanOrEqual(LCP_BUDGET_MS);
-    } else {
-      console.log('LCP not reported within 3s — skipping budget check');
-    }
+    // The hero's own text is the LCP element and it is server-rendered, so an
+    // unreported LCP means the observer never fired, not that the page was
+    // fast. Treat it as a failure rather than as a pass with a console note —
+    // the old version logged "skipping budget check" and moved on, which is the
+    // one outcome that must never be silent.
+    console.log(`LCP: ${lcp.toFixed(0)} ms`);
+    expect(lcp, 'no LCP was reported within 5s').toBeGreaterThan(0);
+    expect(lcp).toBeLessThanOrEqual(LCP_BUDGET_MS);
   });
 
-  test('PERF-03: CLS (Cumulative Layout Shift) < 0.05', async ({ browser }) => {
-    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  test('PERF-03: CLS (Cumulative Layout Shift) < 0.05', async ({ browser, baseURL }) => {
+    const ctx = await browser.newContext({ viewport: PHONE, baseURL });
     const page = await ctx.newPage();
-    await page.goto('http://localhost:5599/', { waitUntil: 'load' });
+    await page.goto('/', { waitUntil: 'load' });
 
-    // Scroll through page to trigger any layout shifts
+    // Scroll through the page so anything that mounts late gets the chance to
+    // push content around. The Skills table measures itself and holds a
+    // min-height floor precisely to stop that, so this is the check that says
+    // the floor works.
     await page.evaluate(async () => {
-      const steps = 5;
-      for (let i = 0; i < steps; i++) {
+      const steps = 6;
+      for (let i = 0; i < steps; i += 1) {
         window.scrollTo(0, (i / steps) * document.body.scrollHeight);
-        await new Promise(r => setTimeout(r, 400));
+        await new Promise((r) => setTimeout(r, 400));
       }
     });
-    // Give layout shift observer time to capture
     await page.waitForTimeout(1000);
 
-    let cls = await page.evaluate(() => {
-      return new Promise<number>((resolve) => {
-        let clsValue = 0;
-        try {
-          new PerformanceObserver((list) => {
-            for (const entry of list.getEntries()) {
-              // LayoutShift entries don't have an explicit 'value' — check hadRecentInput
-              const lsEntry = entry as any;
-              if (!lsEntry.hadRecentInput) {
-                clsValue += lsEntry.value || 0;
+    const cls = await page.evaluate(
+      () =>
+        new Promise<number>((resolve) => {
+          let value = 0;
+          try {
+            new PerformanceObserver((list) => {
+              for (const entry of list.getEntries()) {
+                const shift = entry as PerformanceEntry & {
+                  hadRecentInput?: boolean;
+                  value?: number;
+                };
+                if (!shift.hadRecentInput) value += shift.value || 0;
               }
-            }
-          }).observe({ type: 'layout-shift', buffered: true });
-        } catch (_) { /* layout-shift not supported in all browsers */ }
-        setTimeout(() => resolve(clsValue), 1000);
-      });
-    });
+            }).observe({ type: 'layout-shift', buffered: true });
+          } catch {
+            /* layout-shift is not supported in every browser */
+          }
+          setTimeout(() => resolve(value), 1000);
+        }),
+    );
     await ctx.close();
 
     console.log(`CLS: ${cls.toFixed(4)}`);
     expect(cls).toBeLessThan(CLS_BUDGET);
   });
 
-  test('PERF-04: Page loads without errors (no console errors)', async ({ page }) => {
+  test('PERF-04: Page loads without page errors', async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', (err) => errors.push(err.message));
     await gotoHome(page);
     await page.waitForTimeout(2000);
-    // Filter out known non-critical issues
-    const criticalErrors = errors.filter(e =>
-      !e.includes('ResizeObserver loop') &&
-      !e.includes('Third-party cookie')
+    const critical = errors.filter(
+      (e) => !e.includes('ResizeObserver loop') && !e.includes('Third-party cookie'),
     );
-    expect(criticalErrors).toHaveLength(0);
+    expect(critical, `page errors on load:\n${critical.join('\n')}`).toHaveLength(0);
   });
 
-  test('PERF-05: DOMContentLoaded < 5s', async ({ browser }) => {
-    const ctx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  test('PERF-05: DOMContentLoaded < 5s', async ({ browser, baseURL }) => {
+    const ctx = await browser.newContext({ viewport: PHONE, baseURL });
     const page = await ctx.newPage();
-    await page.goto('http://localhost:5599/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     const dcl = await page.evaluate(() => {
-      const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+      const nav = performance.getEntriesByType('navigation')[0] as
+        | PerformanceNavigationTiming
+        | undefined;
       return nav?.domContentLoadedEventEnd ?? -1;
     });
     await ctx.close();
 
-    if (dcl > 0) {
-      console.log(`DOMContentLoaded: ${dcl.toFixed(0)} ms`);
-      expect(dcl).toBeLessThan(5000);
-    }
+    console.log(`DOMContentLoaded: ${dcl.toFixed(0)} ms`);
+    expect(dcl, 'no navigation timing was reported').toBeGreaterThan(0);
+    expect(dcl).toBeLessThan(5000);
   });
 });

@@ -1,38 +1,34 @@
 import { test, expect, type Page } from '@playwright/test';
 
 /**
- * SPEC §10 TC-FR-CLONE — the conversational clone's front-of-house.
+ * SPEC §10 TC-FR-CLONE — the conversational clone is present, and it is inert
+ * until asked.
  *
  * This file used to carry two subjects. The first was the static hero portrait
- * (HeroAvatar, rendered into `.hero-image-container`): its container, its
+ * (`HeroAvatar`, rendered into `.hero-image-container`): its container, its
  * reserved-dimension CLS guard and its post-preloader crossfade. The hero
- * rebuild (components/sections/Hero/Hero.tsx) removed the portrait from the page
- * altogether — the front door is now type, a three-figure ledger and two links,
- * with no image — so those three tests had no subject left and were deleted
- * rather than weakened into assertions that would pass on an empty page.
+ * rebuild removed the portrait from the page altogether — the front door is now
+ * type, a three-figure ledger and two links, with no image — so those three
+ * tests had no subject left and were deleted rather than weakened into
+ * assertions that would pass on an empty page.
  *
- * The second subject survives untouched: MiniVicBot still mounts from
- * app/layout.tsx and is independent of the hero. It exposes
- *   - data-testid="minivic-toggle" — the clone toggle button
- *   - data-testid="minivic-panel" — the open panel (when expanded)
- *   - data-testid="minivic-input" — the chat input
+ * The second subject survives untouched: `MiniVicBot` still mounts from
+ * `app/layout.tsx` and is independent of anything the page contains. It is what
+ * this file now covers, and it covers only the *presence* contract — the
+ * launcher exists, it is inert until pressed, and pressing it yields a panel
+ * with real content. The interaction and accessibility contract belongs to
+ * tests/e2e/chatbot.spec.ts and is not restated here.
  *
- * SPEC §10 TC-INT-CLONE — D-ID stream session + ElevenLabs WebSocket lifecycle
- * handles open, stream audio packets, and dispose cleanly (no leaked
- * sockets/listeners); reconnection path covered. Still gated on a live backend.
- *
- * Navigation waits on `#hero` rather than on a preloader: components/site/
- * Preloader.tsx is deleted, and the hero is server-rendered, so the first paint
- * is the finished page and there is no boot wipe to sit out.
- *
- * PASS:
- *   - MiniVicBot's clone toggle is present and interactive on the static build
- *   - Clicking the toggle yields a panel carrying real clone content
+ * TC-INT-01 was deleted with the same reasoning as the tests above it. It was a
+ * `test.skip` gated on an `INTEGRATION_BASE_URL` that is never set in this
+ * repository, aimed at a D-ID/ElevenLabs backend that lives in `services/` and
+ * that the static export does not host — a permanently-skipped placeholder that
+ * asserted nothing about this site on any run.
  */
 
-const INTEGRATION_BASE_URL = process.env.INTEGRATION_BASE_URL;
-
 async function gotoHome(page: Page) {
+  // No preloader to sit out: `components/site/Preloader.tsx` is deleted and the
+  // hero is server-rendered, so the first paint is the finished page.
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   await page.locator('#hero').waitFor({ state: 'visible', timeout: 15000 });
 }
@@ -40,59 +36,35 @@ async function gotoHome(page: Page) {
 test.describe('TC-FR-CLONE: Clone Rendering (MiniVicBot)', () => {
   test.describe.configure({ timeout: 90000 });
 
-  test('TC-CLONE-03: MiniVicBot toggle button is present in the DOM', async ({ page }) => {
+  test('TC-CLONE-03: MiniVicBot launcher is present and interactive on the static build', async ({ page }) => {
     await gotoHome(page);
 
-    // MiniVicBot renders a toggle button with data-testid="minivic-toggle"
     const toggle = page.locator('[data-testid="minivic-toggle"]');
-    await expect(toggle).toBeAttached();
-
-    // The toggle button should be interactive
     await expect(toggle).toBeVisible();
+    await expect(toggle).toBeEnabled();
+
+    // Closed is the resting state. The clone is an offer, not an interruption:
+    // nothing about it may be on screen until a visitor asks for it.
+    await expect(page.locator('[data-testid="minivic-panel"]')).toHaveCount(0);
   });
 
-  test('TC-CLONE-05: MiniVicBot panel opens when toggle is clicked', async ({ page }) => {
+  test('TC-CLONE-05: Pressing the launcher yields a panel carrying real clone content', async ({ page }) => {
     await gotoHome(page);
 
     const toggle = page.locator('[data-testid="minivic-toggle"]');
-    await expect(toggle).toBeVisible();
+    await toggle.evaluate((el: HTMLElement) => el.click());
 
-    // Click the toggle to open the panel
-    await toggle.click();
-    await page.waitForTimeout(800);
-
-    // Panel should now be visible
+    // The old version ended with `expect(panelVisible || toggle).toBeTruthy()`,
+    // which is true for any locator and could not fail. The panel either opens
+    // or the clone is broken, so it is asserted outright.
     const panel = page.locator('[data-testid="minivic-panel"]');
-    const panelVisible = await panel.isVisible().catch(() => false);
+    await expect(panel).toBeVisible();
+    await expect(panel).toContainText('Mini Vic');
+    await expect(page.locator('[data-testid="minivic-input"]')).toBeVisible();
 
-    // Panel may or may not open (depends on state) — at minimum verify
-    // the toggle exists and is clickable
-    if (panelVisible) {
-      // Verify the panel has real content
-      await expect(panel).toContainText('Vikram');
-    }
-
-    // Verify the chat input exists inside the panel
-    const input = page.locator('[data-testid="minivic-input"]');
-    const inputVisible = await input.isVisible().catch(() => false);
-
-    // Either the panel is open with input, or the toggle state changed
-    expect(panelVisible || toggle).toBeTruthy();
-  });
-});
-
-test.describe('TC-INT-CLONE: D-ID/ElevenLabs Clone Integration', () => {
-  test.describe.configure({ timeout: 30000 });
-
-  test('TC-INT-01: Integration test skipped — requires dynamic VPS backend', async () => {
-    test.skip(
-      !INTEGRATION_BASE_URL,
-      'TC-INT-CLONE requires the dynamic VPS backend with D-ID/ElevenLabs. ' +
-        'Set INTEGRATION_BASE_URL to run live integration tests.',
-    );
-
-    // If INTEGRATION_BASE_URL is set, verify the backend is reachable
-    const resp = await fetch(`${INTEGRATION_BASE_URL}/health`);
-    expect(resp.status).toBe(200);
+    // And it carries a real opening turn from the knowledge base rather than an
+    // empty transcript waiting on a backend the static export does not have.
+    const transcript = panel.getByRole('log');
+    expect((await transcript.innerText()).trim().length).toBeGreaterThan(40);
   });
 });

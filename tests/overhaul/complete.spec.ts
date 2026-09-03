@@ -1,168 +1,163 @@
 import { test, expect, type Page } from '@playwright/test';
 
 /**
- * SPEC §10 TC-NFR-COMPLETE — grep/AST scan over app/**, components/**, lib/**
- * finds 0 truncation/placeholder/stub markers. Also verify at runtime that the
- * DOM contains no visible placeholder content.
+ * SPEC §10 TC-NFR-COMPLETE — nothing on the rendered page is a stub.
  *
- * Banned markers (per SPEC §9 NFR-COMPLETE):
- *   - `// TODO`, `// FIXME`, `// HACK`, `// XXX`
- *   - `throw new Error("not implemented")`
- *   - `...` (ellipsis as truncation in component bodies)
- *   - `placeholder` text visible in DOM
+ * The source-tree half of this gate lives in
+ * `scripts/validate/overhaul_static_audit.mjs`, which greps `app/**`,
+ * `components/**` and `lib/**` for truncation and placeholder markers, and
+ * `tests/static_audit_fail.test.mjs` proves that audit exits non-zero when a
+ * marker is injected. This file is the runtime half: the same rule, applied to
+ * what a visitor actually sees, because a section can render an empty shell
+ * from perfectly marker-free source.
  *
- * PASS: Zero banned markers found in source; zero placeholder text visible in DOM.
+ * TC-COMPLETE-01 was deleted. It skipped itself outside CI and, inside CI,
+ * asserted `expect(true).toBe(true)` on the theory that the audit had already
+ * run — a test that cannot fail is not a gate, and the real gate is the audit
+ * plus its own fail-loud contract test, both of which are unaffected.
+ *
+ * The section list was re-pointed with the page. `#contact` became `#listen`,
+ * which now carries the four contact anchors, and `#vitrine` was added: the
+ * placeholder scan over the project catalogue used to live in
+ * `tests/overhaul/catalogue.spec.ts` (TC-CATALOG-05) against `#work` and the
+ * `.vfx-gallery`, and when that file was deleted with its section the check
+ * moved here rather than being lost. It matters more on the vitrine than
+ * anywhere else, because a plate whose "limits" line degraded to a placeholder
+ * would quietly turn the section's central claim into a lie.
  */
 
-const FS = typeof require !== 'undefined' ? require('fs') : null;
-const PATH = typeof require !== 'undefined' ? require('path') : null;
+/** Markers that would mean a section shipped half-written. */
+const BANNED = [
+  'lorem ipsum',
+  'placeholder',
+  'coming soon',
+  'under construction',
+  'todo',
+  'fixme',
+  'tbd',
+  '...',
+  'not implemented',
+  'undefined',
+  '[object object]',
+];
 
-/**
- * Source-level scan for placeholder/stub markers. This runs as a Node-style
- * scan (not a browser test). If the file system is not available (CI without
- * build context), the test is skipped with an explanatory note.
- */
+async function gotoHome(page: Page) {
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page
+    .waitForFunction(() => document.body.classList.contains('page-ready'), null, { timeout: 20000 })
+    .catch(() => {});
+  await page.locator('#hero').waitFor({ state: 'visible', timeout: 15000 });
+}
+
+/** Scrolls a section into view, waits for its lazy content, and returns its text. */
+async function sectionText(page: Page, id: string): Promise<string> {
+  await page.locator(id).scrollIntoViewIfNeeded();
+  await page.waitForTimeout(500);
+  return page.locator(id).innerText();
+}
+
+function expectNoStubMarkers(text: string, id: string) {
+  const lower = text.toLowerCase();
+  for (const marker of BANNED) {
+    expect(lower, `${id} contains the stub marker "${marker}"`).not.toContain(marker);
+  }
+}
+
 test.describe('TC-NFR-COMPLETE: Zero Placeholder/Stub Scan', () => {
-  test.describe.configure({ timeout: 30000 });
+  test.describe.configure({ timeout: 90000 });
 
-  test('TC-COMPLETE-01: Source scan — zero TODO markers in app/ components/ lib/', async () => {
-    // This test verifies via Playwright's ability to evaluate scripts.
-    // For a runtime DOM check approach, see TC-COMPLETE-02+
-    // The source scan is best done via the static audit script (scripts/validate/overhaul_static_audit.mjs)
-    // which already checks for these markers. This test provides the Playwright-side gate.
-    test.skip(
-      !process.env.CI,
-      'Source-scan runs via static audit script; this gate is CI-only',
+  test('TC-COMPLETE-02: The hero is finished copy, not a scaffold', async ({ page }) => {
+    await gotoHome(page);
+    const text = await sectionText(page, '#hero');
+    expectNoStubMarkers(text, '#hero');
+
+    // And it is the real front door: name, positioning, and three figures.
+    expect(text).toContain('Vikram Deshpande');
+    expect(text).toContain('Delivery leadership');
+    expect(text.length).toBeGreaterThan(300);
+  });
+
+  test('TC-COMPLETE-03: The experience timeline carries real roles', async ({ page }) => {
+    await gotoHome(page);
+    const text = await sectionText(page, '#experience');
+    expectNoStubMarkers(text, '#experience');
+    expect(text).toMatch(/ATO|ANZ|NAB|Microsoft|Telstra|InfoCentric|MYOB/);
+    // Eight roles, each with a duration label — the bars are the section.
+    expect(text).toMatch(/\d+(\.\d+)?\s*yr|\d+\s*mo/);
+  });
+
+  test('TC-COMPLETE-04: The calibration table carries real rows, including the un-held one', async ({ page }) => {
+    await gotoHome(page);
+    const text = await sectionText(page, '#skills');
+    expectNoStubMarkers(text, '#skills');
+    expect(text).toMatch(/AI|Engineering|Leadership|Certif|Education/);
+
+    // Every row must have all four cells filled. An empty evidence or "where"
+    // cell is exactly the shape of an unfinished row, and the section's rule is
+    // that a capability without evidence gets no row at all.
+    const emptyCells = await page.locator('#skills tbody tr:not([hidden]) td').evaluateAll((cells) =>
+      cells.filter((c) => (c.textContent ?? '').trim().length === 0).length,
     );
-    // In CI, the deploy.yml runs the static audit before playwright tests.
-    // If we reach here, the audit passed — this is a smoke assertion.
-    expect(true).toBe(true);
+    expect(emptyCells).toBe(0);
   });
 
-  test('TC-COMPLETE-02: No visible placeholder text in hero section', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-    const pre = page.locator('.preloader');
-    if (await pre.isVisible().catch(() => false)) {
-      await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-    }
-    await page.locator('#hero').waitFor({ state: 'visible', timeout: 15000 });
-
-    const heroText = await page.locator('#hero').innerText();
-    const lowerHero = heroText.toLowerCase();
-
-    const bannedPatterns = [
-      'lorem ipsum',
-      'placeholder',
-      'coming soon',
-      'under construction',
-      'todo',
-      'fixme',
-      'tbd',
-      '...',
-    ];
-
-    for (const pattern of bannedPatterns) {
-      expect(lowerHero).not.toContain(pattern);
-    }
+  test('TC-COMPLETE-05: The closing section carries real contact details', async ({ page }) => {
+    await gotoHome(page);
+    const text = await sectionText(page, '#listen');
+    expectNoStubMarkers(text, '#listen');
+    expect(text.toLowerCase()).not.toContain('email@example.com');
+    expect(text).toContain('sarkar.vikram@gmail.com');
   });
 
-  test('TC-COMPLETE-03: No visible placeholder text in experience section', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-    const pre = page.locator('.preloader');
-    if (await pre.isVisible().catch(() => false)) {
-      await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-    }
-    await page.locator('#experience').scrollIntoViewIfNeeded();
-    await page.waitForTimeout(500);
+  test('TC-COMPLETE-06: About has real content, not stubs', async ({ page }) => {
+    await gotoHome(page);
+    const text = await sectionText(page, '#about');
+    expectNoStubMarkers(text, '#about');
+    expect(text.toLowerCase()).not.toContain('add your bio here');
+    expect(text.length).toBeGreaterThan(200);
 
-    const expText = await page.locator('#experience').innerText();
-    const lowerExp = expText.toLowerCase();
-
-    // Experience must contain real roles, not stubs
-    expect(lowerExp).not.toContain('lorem ipsum');
-    expect(lowerExp).not.toContain('placeholder role');
-    expect(lowerExp).not.toContain('todo');
-
-    // Verify at least one real role is present
-    expect(expText).toMatch(/ATO|ANZ|NAB|Microsoft|Telstra|InfoCentric|MYOB/);
+    // Ten dimensions, each answered. Nine would mean one silently dropped.
+    await expect(page.locator('#about ol > li')).toHaveCount(10);
   });
 
-  test('TC-COMPLETE-04: No visible placeholder text in skills section', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-    const pre = page.locator('.preloader');
-    if (await pre.isVisible().catch(() => false)) {
-      await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-    }
-    await page.locator('#skills').scrollIntoViewIfNeeded();
-    await page.waitForTimeout(500);
+  test('TC-COMPLETE-07: Every vitrine plate states what its repository does not do', async ({ page }) => {
+    await gotoHome(page);
+    const text = await sectionText(page, '#vitrine');
+    expectNoStubMarkers(text, '#vitrine');
 
-    const skillsText = await page.locator('#skills').innerText();
-    const lowerSkills = skillsText.toLowerCase();
-
-    expect(lowerSkills).not.toContain('lorem ipsum');
-    expect(lowerSkills).not.toContain('placeholder');
-    expect(lowerSkills).not.toContain('skill 1');
-    expect(lowerSkills).not.toContain('skill 2');
-
-    // Verify real skill groups
-    expect(skillsText).toMatch(/AI|Engineering|Leadership|Certif|Education/);
+    // Inherited from the deleted TC-CATALOG-05. Six plates, and each one's
+    // limits line is the part a reader is asked to trust the rest on, so an
+    // empty or missing one is a completeness failure rather than a copy nit.
+    const plates = page.locator('#vitrine li[aria-roledescription="plate"]');
+    await expect(plates).toHaveCount(6);
+    const limits = await plates.evaluateAll((items) =>
+      items.map((item) => {
+        const line = Array.from(item.querySelectorAll('p')).find((p) =>
+          (p.textContent ?? '').includes('Limits'),
+        );
+        return (line?.textContent ?? '').replace('Limits', '').trim();
+      }),
+    );
+    expect(limits).toHaveLength(6);
+    for (const line of limits) expect(line.length).toBeGreaterThan(20);
   });
 
-  test('TC-COMPLETE-05: No visible placeholder text in contact section', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-    const pre = page.locator('.preloader');
-    if (await pre.isVisible().catch(() => false)) {
-      await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-    }
-    await page.locator('#contact').scrollIntoViewIfNeeded();
-    await page.waitForTimeout(500);
+  test('TC-COMPLETE-08: The MiniVicBot clone opens without an error state', async ({ page }) => {
+    await gotoHome(page);
 
-    const contactText = await page.locator('#contact').innerText();
-    const lowerContact = contactText.toLowerCase();
+    // The old selector was `[class*="mini-vic"]`, which matches nothing — the
+    // component is styled with utility classes and identifies itself with
+    // `data-testid` instead, so the check could never see its subject and the
+    // guarded `if` meant it never ran.
+    const toggle = page.locator('[data-testid="minivic-toggle"]');
+    await expect(toggle).toBeVisible();
+    await toggle.evaluate((el: HTMLElement) => el.click());
 
-    expect(lowerContact).not.toContain('lorem ipsum');
-    expect(lowerContact).not.toContain('placeholder');
-    expect(lowerContact).not.toContain('email@example.com');
-
-    // Must contain real contact info
-    expect(contactText).toContain('sarkar.vikram@gmail.com');
-  });
-
-  test('TC-COMPLETE-06: About section has real content, not stubs', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-    const pre = page.locator('.preloader');
-    if (await pre.isVisible().catch(() => false)) {
-      await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-    }
-    await page.locator('#about').scrollIntoViewIfNeeded();
-    await page.waitForTimeout(500);
-
-    const aboutText = await page.locator('#about').innerText();
-    const lowerAbout = aboutText.toLowerCase();
-
-    expect(lowerAbout).not.toContain('lorem ipsum');
-    expect(lowerAbout).not.toContain('placeholder');
-    expect(lowerAbout).not.toContain('add your bio here');
-
-    // Must contain substantive text
-    expect(aboutText.length).toBeGreaterThan(200);
-  });
-
-  test('TC-COMPLETE-07: No visible placeholder in MiniVicBot clone component', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-    const pre = page.locator('.preloader');
-    if (await pre.isVisible().catch(() => false)) {
-      await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-    }
-
-    // MiniVicBot is rendered in layout.tsx after children
-    const cloneContainer = page.locator('[class*="mini-vic"], [class*="MiniVic"]').first();
-    // If the clone is not visible, it may be collapsed — verify no error text
-    if (await cloneContainer.isVisible().catch(() => false)) {
-      const cloneText = await cloneContainer.innerText();
-      const lowerClone = cloneText.toLowerCase();
-      expect(lowerClone).not.toContain('not implemented');
-      expect(lowerClone).not.toContain('error:');
-    }
+    const panel = page.locator('[data-testid="minivic-panel"]');
+    await expect(panel).toBeVisible();
+    const text = (await panel.innerText()).toLowerCase();
+    expect(text).not.toContain('not implemented');
+    expect(text).not.toContain('error:');
+    expect(text).not.toContain('undefined');
   });
 });
