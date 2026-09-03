@@ -16,9 +16,14 @@ export interface Correction {
 
 export const feedbackLog = {
   /** Every correction in the history, not just the ones printed. */
-  total: 57,
+  total: 58,
   /** The most recent, newest first. */
   corrections: [
+  {
+    "hash": "e480687",
+    "date": "2026-09-03",
+    "said": "The bench on a phone is a filter, not a second list"
+  },
   {
     "hash": "df0dac6",
     "date": "2026-09-03",
@@ -53,11 +58,6 @@ export const feedbackLog = {
     "hash": "11ab9a9",
     "date": "2026-09-03",
     "said": "The fact-checker found three fabrications and I had graded my own claims too well"
-  },
-  {
-    "hash": "84f0ee7",
-    "date": "2026-09-03",
-    "said": "Stop announcing the cache over the hero's primary button"
   }
 ] as Correction[],
   /** When this was harvested. */

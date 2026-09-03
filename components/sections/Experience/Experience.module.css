@@ -66,6 +66,31 @@
     pointer-events: none;
 }
 
+/* The year gridlines. Drawn once behind every track rather than per row, so a
+   bar's position can be read against a year without tracing four hundred
+   pixels down to the axis. `--grid-*` are the same fractions the axis labels
+   are placed at, computed in the component from the real dates. */
+/* The field the gridlines and the tracks share, so the lines end where the
+   bars do rather than running on through the note beneath them. */
+.trackField {
+    position: relative;
+}
+
+.grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.gridLine {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgb(255 255 255 / 0.055);
+}
+
 .tracks {
     position: relative;
     z-index: 1;
@@ -83,7 +108,7 @@
 
 .trackButton {
     display: grid;
-    grid-template-columns: minmax(7rem, 12rem) minmax(0, 1fr);
+    grid-template-columns: clamp(7rem, 22%, 14rem) minmax(0, 1fr);
     align-items: center;
     gap: 1.25rem;
     width: 100%;
@@ -101,14 +126,16 @@
     outline-offset: 3px;
 }
 
+/* Two lines, not an ellipsis. "Australian Taxation Office (A…" and
+   "Independent AI Consulting & …" are the two longest employers on the chart
+   and both were being cut mid-word — a truncated employer name is the one
+   thing a career chart cannot afford to get wrong. */
 .trackCompany {
-    font-size: 0.82rem;
-    line-height: 1.3;
+    font-size: 0.8rem;
+    line-height: 1.25;
     color: var(--mist-400);
     transition: color var(--motion-fast) var(--motion-ease-standard);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    text-wrap: balance;
 }
 
 .trackButton[data-active] .trackCompany {

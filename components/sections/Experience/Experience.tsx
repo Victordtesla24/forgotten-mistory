@@ -25,6 +25,12 @@ function track(start: number, end: number | null) {
 }
 
 const DECADES = [2010, 2015, 2020, 2025];
+/**
+ * The employer column's width, as the track grid declares it, plus its gap. The
+ * gridlines are positioned across the whole chart, so they have to skip that
+ * column by hand to line up with the bars they are there to measure.
+ */
+const LABEL_COLUMN = 'clamp(7rem, 22%, 14rem) + 1.25rem';
 
 /**
  * Experience — sixteen years on one axis, then the detail.
@@ -66,6 +72,25 @@ export default function Experience() {
 
           {/* The chart itself. These percentages are the only encoding of the
               career on the page; nothing else may restate them. */}
+          {/* The same years the axis labels, drawn through the tracks and
+              stopping with them. The chart's claim is that the bars are to
+              scale; a reader can only check that against something. */}
+          <div className={styles.trackField}>
+          <div className={styles.grid} aria-hidden="true">
+            {DECADES.map((year) => (
+              <span
+                key={`grid-${year}`}
+                className={styles.gridLine}
+                style={{
+                  left: `calc(${LABEL_COLUMN} + (100% - (${LABEL_COLUMN})) * ${(
+                    (year - TIMELINE_START) /
+                    (NOW - TIMELINE_START)
+                  ).toFixed(4)})`,
+                }}
+              />
+            ))}
+          </div>
+
           <ol className={styles.tracks} onMouseLeave={() => setActive(-1)}>
             {roles.map((role, index) => (
               <li key={role.id} className={styles.trackRow}>
@@ -99,6 +124,7 @@ export default function Experience() {
               </li>
             ))}
           </ol>
+          </div>
 
           {/* Printed once. Five roles carry an open bracket below, and this is
               what all five of them mean. */}

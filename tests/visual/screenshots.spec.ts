@@ -72,11 +72,18 @@ async function shootSection(page: Page, id: string, name: string, settle = 500) 
   await page.waitForTimeout(120);
   const clip = await section.evaluate((el) => {
     const r = el.getBoundingClientRect();
+    const box = el as HTMLElement;
     return {
       x: Math.round(r.left + window.scrollX),
       y: Math.round(r.top + window.scrollY),
-      width: Math.round(r.width),
-      height: Math.round(r.height),
+      // `offsetWidth`/`offsetHeight` are already integers and are a pure
+      // layout property. Rounding the fractional `getBoundingClientRect`
+      // height instead put the size one pixel either side of the boundary
+      // depending on where the scroll had landed, which is the same
+      // one-pixel flake this helper was written to remove — just moved from
+      // the element screenshot into the clip.
+      width: box.offsetWidth,
+      height: box.offsetHeight,
     };
   });
   await expect(page).toHaveScreenshot(name, { ...SHOT, fullPage: true, clip });
