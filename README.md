@@ -1,165 +1,310 @@
-# Forgotten Mistory — Vikram Deshpande · Portfolio
+<div align="center">
 
-A monochromatic, cinematic portfolio for **Vikram Deshpande** — Scrum Master / Project
-Manager on the Australian Taxation Office's Payday Super program, and AI solutions
-architect. Built for two audiences: **potential employers** and **business clients**.
+```
+        ┌─────────────────────────────────────────────────────────┐
+        │                                                         │
+        │   ⌐               V I K R A M                       ¬   │
+        │                 D E S H P A N D E                       │
+        │   └        delivery leadership · ai solutions        ┘   │
+        │                                                         │
+        └─────────────────────────────────────────────────────────┘
+```
 
-- **Production:** https://forgotten-mistory.web.app (Firebase Hosting, static export)
-- **Repo:** https://github.com/Victordtesla24/forgotten-mistory
-- **Design language:** monochrome (near-black → luminous cool-white; no hue), restrained
-  evidence-led copy, Marvel/WB/Disney-grade *but purposeful* motion. See
-  [`docs/overhaul/SPEC.md`](docs/overhaul/SPEC.md).
+# Forgotten Mistory
 
-> **Overhaul complete** — the `overhaul/marvel-grade-portfolio` branch has been merged to
-> `main`. The pre-overhaul production state is preserved at git tag `pre-overhaul-baseline`.
-> Read the [documentation index](#documentation) before changing anything.
+**A portfolio that asks to be checked.**
+
+[![Live](https://img.shields.io/badge/live-forgotten--mistory.web.app-c9a84c?style=for-the-badge)](https://forgotten-mistory.web.app)
+[![Build](https://img.shields.io/badge/static%20export-Next.js%2014-f4f6fa?style=for-the-badge)](https://nextjs.org)
+[![Audit](https://img.shields.io/badge/static%20audit-9%2F9-c9a84c?style=for-the-badge)](scripts/validate/overhaul_static_audit.mjs)
+[![A11y](https://img.shields.io/badge/WCAG%20A%2FAA-0%20violations-f4f6fa?style=for-the-badge)](scripts/validate/axe_live_audit.mjs)
+
+*"I have been wrong often enough to want to hear it early."*
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  SIX SECTIONS · ZERO PROFICIENCY BARS · EVERY FIGURE SOURCED     ║
+║  static export · no analytics · no trackers · no cookies         ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+</div>
 
 ---
 
-## Tech stack (summary)
+## ◆ Table of contents
 
-Next.js 14.2 (App Router, strict TS) · React 18.2 · TypeScript 5.3 · Tailwind CSS 4.1 ·
-**GSAP + ScrollTrigger** (scroll orchestration) + Framer Motion 11 (component motion) ·
-three 0.165 + @react-three/fiber 8 + drei 9 + postprocessing 2 (**+ custom GLSL shaders &
-volumetric stage lighting**) · Playwright + axe + Lighthouse. Optional dynamic backend
-(`services/`): Node/TS api-gateway (multi-LLM), gRPC realtime-orchestrator, **D-ID ↔ ElevenLabs
-WebSocket** viseme smoother (frame-accurate lip-sync), Redis, Prometheus/Grafana/Loki. Full
-detail: [`docs/overhaul/TECH-STACK.md`](docs/overhaul/TECH-STACK.md).
+- [What this is](#-what-this-is)
+- [The argument](#-the-argument)
+- [The six sections](#-the-six-sections)
+- [The caliper bracket](#-the-caliper-bracket)
+- [Design system](#-design-system)
+- [Architecture](#-architecture)
+- [Content model](#-content-model)
+- [The avatar](#-the-avatar)
+- [Repository layout](#-repository-layout)
+- [Getting started](#-getting-started)
+- [Quality gates](#-quality-gates)
+- [Deployment](#-deployment)
+- [Known limitations](#-known-limitations)
 
-## Two-tier architecture
+---
 
-1. **Static site (default, public):** `npm run build:static` → `out/` → Firebase Hosting.
-   Fast, cacheable, durable (works after the visitor goes offline). No server.
-2. **Dynamic backend (optional enhancement):** the `services/` stack (Docker) powers the
-   live MiniVic clone — real-time LLM streaming, ElevenLabs voice, D-ID lip-sync via the
-   viseme bridge. The static site degrades gracefully without it.
+## ◆ What this is
 
-Full picture: [`docs/overhaul/ARCHITECTURE.md`](docs/overhaul/ARCHITECTURE.md) ·
-[`docs/overhaul/SYSTEM-DESIGN.md`](docs/overhaul/SYSTEM-DESIGN.md).
+The portfolio of **Vikram Deshpande** — Scrum Master and Project Manager on the Australian
+Taxation Office's Payday Super program, and an AI solutions architect — written for three
+readers: hiring executives, recruitment agents, and prospective business clients.
 
-## Content model (single source of truth)
+It is a Next.js 14 static export on Firebase Hosting. There is no server at request time,
+no analytics, no tracker and no contact form.
 
-All biographical/career content is typed and kept in **strict parity** with the standalone
-CV at `public/docs/Vik_Resume_Final.pdf`:
+---
+
+## ◆ The argument
+
+Every portfolio claims competence. This one is built so a reader can **check** the claims
+without leaving the page, and so it says plainly when a claim cannot be checked.
+
+| Principle | How it is enforced |
+| --- | --- |
+| Every figure carries its source | The source is printed under the figure, not in a tooltip |
+| No self-assigned scores | `tests/e2e/about.spec.ts` fails the build if a rating appears |
+| No proficiency bars | `tests/e2e/skills.spec.ts` fails on any bar, meter or star |
+| Unmeasurable is stated, not omitted | The open caliper, with the reason where the value would be |
+| Content matches the CV | The Skills footer prints an MD5 of the PDF, generated from its bytes |
+| Repository metrics are dated | Harvested from the GitHub API on a stated date, never implied live |
+| The synthetic thing says it is synthetic | The avatar's disclosure is visible before it plays |
+
+---
+
+## ◆ The six sections
+
+| # | Section | What it does | Its signature |
+| --- | --- | --- | --- |
+| 01 | **Hero** | Name, one sentence, three figures, two actions | Server-rendered — complete with JavaScript disabled |
+| 02 | **About** | The ten dimensions his own job-fit engine scores a candidate on, answered | A ten-spoke compass that points, and refuses to score |
+| 03 | **Experience** | Sixteen years on one time axis | Bar length **is** duration — nothing else is encoded |
+| 04 | **Skills** | A calibration card: capability, evidence, where, status | The row that says a certificate is *not yet held* |
+| 05 | **What is keeping me busy** | Six of thirty-eight repositories | A bespoke mechanism drawing per repo, and a named-exclusions block |
+| 06 | **Always willing to listen** | The closing screen | The emptiest screen on the site, after the densest |
+
+```mermaid
+flowchart LR
+    A["01 HERO<br/>three sourced figures"] --> B["02 ABOUT<br/>ten dimensions"]
+    B --> C["03 EXPERIENCE<br/>duration to scale"]
+    C --> D["04 SKILLS<br/>calibration card"]
+    D --> E["05 VITRINE<br/>six of thirty-eight"]
+    E --> F["06 LISTEN<br/>one sentence"]
+    F -.-> G(["a conversation"])
+```
+
+---
+
+## ◆ The caliper bracket
+
+One mark, three states, and the only thing the site asks a reader to learn.
+
+| State | Drawing | Meaning |
+| --- | --- | --- |
+| **Closed, gold** | Solid hairline jaws | Measured, and its source is printed with it |
+| **Closed, grey** | Solid jaws, grey value, `◐` | Self-reported: a CV figure with no published methodology |
+| **Open** | Dashed jaws that do not meet, over a hatch | Measured and found honestly **unmeasurable** — the reason stands where the value would be |
+
+The open bracket is a *positive mark*, not a hole. That distinction is the whole device: it
+separates *"I could not honestly measure this"* from *"I forgot to fill this in."*
+
+Gold appears **only** on marks of verified evidence. The static audit permits the accent in
+`app/globals.css` and `lib/palette.ts` and nowhere else — a component writing the hex
+directly fails the build.
+
+---
+
+## ◆ Design system
+
+| Role | Face | Where it is allowed |
+| --- | --- | --- |
+| Display | **Source Serif 4** (400) | The h1, six section titles, every large figure |
+| Body | **Inter** (400/500/600) | Everything read at length |
+| Data | **IBM Plex Mono** (400/500) | Sources, dates, axis readouts, repository metrics |
+
+Italic appears **exactly once** on the entire site — the closing sentence — and a test
+asserts it.
+
+Colour is achromatic plus one accent, taken verbatim from the Aether brand tokens so the
+product and the portfolio read as the same hand:
+
+| Token | Value |
+| --- | --- |
+| `--ink-900` … `--ink-700` | `#0A0B0D` · `#121317` · `#1B1D23` |
+| `--mist-400` · `--mist-200` · `--white` | `#8A8F9A` · `#C9CDD6` · `#F4F6FA` |
+| `--gold` · `--gold-light` · `--gold-pale` | `#c9a84c` · `#d4b65c` · `#e8d5a3` |
+
+---
+
+## ◆ Architecture
+
+```mermaid
+flowchart TB
+    subgraph Build
+        H["app/data/**<br/>facts, in TypeScript"] --> N[next build · static export]
+        CV["public/docs/Vik_Resume_Final.pdf"] --> FP["cv_fingerprint.mjs<br/>MD5 into the page"]
+        GH["GitHub API"] --> HV["harvest_repos.mjs<br/>dated metrics"]
+        FP --> N
+        HV --> N
+        N --> OUT["out/ — 68 files"]
+        OUT --> OG["og_card.mjs<br/>social card from the served page"]
+    end
+    subgraph Runtime
+        OUT --> FB[Firebase Hosting]
+        FB --> P["the page — no server"]
+        P -.-> FN["/api/chat · Firebase Function<br/>the AI clone, optional"]
+    end
+```
+
+**WebGL policy.** At most one context per section, mounted only while its slot is within
+half a viewport and torn down when it leaves. Nothing mounts on a software renderer or
+under `prefers-reduced-motion`, and **every section is complete without it** — the About
+compass, which used to be a scene, is now inline SVG for exactly that reason.
+
+---
+
+## ◆ Content model
+
+Facts live in typed modules and nowhere else. A section renders them; it never restates
+them.
 
 | File | Purpose |
 | --- | --- |
-| `app/data/siteContent.ts` | Hero, about, experience, skills, projects, contact |
-| `app/data/resumeContent.ts` | Hero outcome cards + FloatingDetailBox expansions |
-| `app/data/miniVicKnowledge.ts` | MiniVic AI-clone persona + grounded Q&A knowledge base |
+| `app/data/siteContent.ts` | Roles, dates, skills, contact — parity with the CV PDF |
+| `app/data/portfolio/hero.ts` | The front door: one sentence, three figures with sources |
+| `app/data/portfolio/about.ts` | The ten fit dimensions, verbatim from the engine that emits them |
+| `app/data/portfolio/experience.ts` | Month-precision spans; a role without one fails the build |
+| `app/data/portfolio/skills.ts` | Capabilities, evidence, and where each was measured |
+| `app/data/portfolio/vitrine.ts` | The six repositories, and the three excluded with reasons |
+| `app/data/portfolio/listen.ts` | Sixty-six words |
+| `app/data/portfolio/avatar.ts` | The clip's disclosure, provenance and transcript |
+| `app/data/generated/*` | Written by build scripts — CV fingerprint, repo harvest |
 
-To change career facts: edit these files, regenerate the CV PDF, and run
-`node scripts/validate/overhaul_static_audit.mjs` (parity check). Nothing else changes.
+---
 
-## Project structure
+## ◆ The avatar
+
+Twenty-nine seconds, at the end of the page, waiting to be asked.
+
+| Component | Source |
+| --- | --- |
+| Face | His own photograph |
+| Voice | His own voice, cloned from a recording of him |
+| Script | Written by him — the transcript is on the page, verbatim |
+| Render | ByteDance OmniHuman 1.5, single take, 1440×1440, no edit |
+
+Three rules, each held by a test: the disclosure is visible **before** playing and not only
+in the audio; the transcript is on the page as text so nobody must watch a synthetic face to
+get the content; and it never autoplays and never loops. A visitor who does not press play
+pays for a 29 kB poster and nothing else.
+
+---
+
+## ◆ Repository layout
 
 ```
 app/
-  layout.tsx              Root layout: fonts, metadata, JSON-LD (Person + WebSite)
-  page.tsx                Single-page composition of all sections
-  globals.css             Monochrome design tokens (:root) + component styles
-  data/                   Typed content layer (siteContent, resumeContent, miniVicKnowledge)
-  components/SpaceScene   R3F starfield (monochrome; colours via lib/palette.ts)
-  api/                    chat-with-vic, realtime/session (DYNAMIC only — not in export)
-  performance-benchmark/  Isolated perf harness page (excluded from static export)
-  robots.ts, sitemap.ts   SEO (generated at build)
+  page.tsx                 74 lines — a composition, nothing else
+  layout.tsx               Fonts, metadata, JSON-LD
+  globals.css              Tokens, and the styles the six sections do not own
+  data/                    The facts (see Content model)
 components/
-  site/                   26 DOM/Framer components: Preloader, Navigation, CursorGlow,
-                          Reveal, TelemetryPanel, ExperienceAccordion, ExpandableCard,
-                          ArchitectureMap, ProjectsCarousel, GithubFeed, HiddenTerminal,
-                          HeroAvatar, ScrollRail, HeroScroll, ProofScroll, WorkScroll,
-                          CatalogueScroll, SkillsScroll, ContactScroll, ProofBar,
-                          MindsetProjection, SynthesisProvenance, Dossier, CardDepth,
-                          CursorDepthField, ServiceWorkerRegister
-  fx/                     23 signature VFX: PacketFlowGraph, SprintBurndown, TokenReflow,
-                          AtoEvidenceBar, CelestialSphere, OrchestrationGraph,
-                          ClearanceStepper, InboxTriage, JourneyTimeline, TokenStreamMatch,
-                          AstroChartSphere, JarvisRepairLoop, TeslaDashboard, JarvisTelemetry,
-                          SparklineGL, PanelDepthScene, HudFrame, TelemetryHud,
-                          DetailMaterialize, CardFlipCanvas, FloatingGlassPanel,
-                          ImageEnhancer, KeySigningPulse
-  MiniVicBot.tsx          AI clone UI (degrades gracefully on static hosting)
-  FloatingDetailBox.tsx   Outcome-card flyout
-  MotionProvider.tsx      Framer Motion config / reduced-motion provider
-  ui/button.tsx           Glass-morphism button primitive
-lib/
-  palette.ts              Single source for raw scene colours (monochrome)
-  miniVicBrain.ts         3-tier client brain: realtime API → browser-Gemini → local KB
-  utils.ts                cn() etc.
-services/                 Optional dynamic backend (api-gateway, realtime-orchestrator,
-                          llm-engine) — see docs/overhaul/SYSTEM-DESIGN.md
-config/                   Observability/proxy configs (loki, prometheus, promtail, traefik)
-scripts/validate/         21 validation phases + overhaul_static_audit.mjs (8 gates)
-tests/                    Categorized test suites: e2e, a11y, perf, visual, monochrome,
-                          content, overhaul (120 tests in 15 files)
-docs/overhaul/            The overhaul spec + this documentation set
+  sections/                One folder per section: markup, styles, data, scene
+    Hero/  About/  Experience/  Skills/  Vitrine/  Listen/
+  marks/Caliper.tsx        The one mark the site asks a reader to learn
+  gl/                      Scene + capability probe — the only place a Canvas may exist
+  site/Navigation.tsx      Menu; every anchor must resolve to a real section
+  MiniVicBot.tsx           The AI clone (optional Firebase Function behind it)
+scripts/
+  build/cv_fingerprint.mjs Stamps the CV's MD5 into the calibration card
+  build/harvest_repos.mjs  Dated repository metrics from the GitHub API
+  build/og_card.mjs        Renders the social card from the served page
+  validate/                The audit gates
+tests/
+  e2e/                     One spec per section — the contracts above
 ```
 
-## Getting started
+---
 
-Requires Node 20.x (see `engines`) and npm.
+## ◆ Getting started
 
 ```bash
-npm install
-npm run dev          # Next dev server on http://localhost:8080 (API routes active)
+npm ci
+npm run dev                     # http://localhost:8080
+
+npm run build:static            # → out/  (also stamps the CV fingerprint)
+python3 -m http.server 5599 --directory out
+PLAYWRIGHT_BASE_URL=http://localhost:5599 npx playwright test tests/e2e
 ```
 
-## Scripts
+> Playwright launches the **system Chrome** (`channel: 'chrome'`). The config's default
+> base URL is port 8080, so pass `PLAYWRIGHT_BASE_URL` when testing the static export.
 
-| Script | Purpose |
-| --- | --- |
-| `npm run dev` | Dev server, port 8080, API routes active |
-| `npm run build` | Production build (server mode) |
-| `npm run build:static` | Static export → `out/` (Firebase) |
-| `npm run lint` | Next/ESLint |
-| `npm test` | Playwright smoke suite |
-| `npm run test:e2e:bot` | Provider-backed MiniVic E2E (needs API keys) |
-| `npm run validate:*` | Validation phases (Lighthouse, axe, infra, TTS, viseme…) |
-| `node scripts/validate/overhaul_static_audit.mjs` | 8 static gates: tone / monochrome / asset-budget / parity / fonts (≤2 families) / secret scan / no `/performance-benchmark` in `out/` / no incomplete-code markers |
+---
 
-## Deployment
+## ◆ Quality gates
 
-Static export on Firebase Hosting (autonomous deploy — agents may publish when gates are green):
+| Gate | Command | Bar |
+| --- | --- | --- |
+| Types | `npx tsc --noEmit` | clean |
+| Lint | `npx next lint` | clean |
+| Static audit | `node scripts/validate/overhaul_static_audit.mjs` | 9/9 |
+| Section suites | `npx playwright test tests/e2e` | all green |
+| Accessibility | `node scripts/validate/axe_live_audit.mjs` | 0 serious/critical |
+
+The static audit enforces: achromatic-plus-one-accent, the three-face type system, asset
+budgets (image ≤ 0.5 MB · video ≤ 2.5 MB · audio ≤ 1 MB), CV parity, no client secrets, no
+placeholder markers, and design-token agreement.
+
+---
+
+## ◆ Deployment
 
 ```bash
+git fetch origin && git log --oneline HEAD..origin/main   # must be empty
 npm run build:static
 firebase deploy --only hosting
 ```
 
-CI (`.github/workflows/deploy.yml`): parallel gate jobs — **quality** (`tsc --noEmit` + static
-audit), **lint**, **test** (chromium + webkit + firefox), **lighthouse**, **axe** — fan into
-**build** → **deploy** on `main` (requires `FIREBASE_SERVICE_ACCOUNT` secret and `GEMINI_API_KEY`
-env var). Post-deploy verification against https://forgotten-mistory.web.app.
+> **`firebase deploy` publishes the working tree, not `HEAD`.** Uncommitted work ships.
+> Check `git status --short` before deploying.
 
-> API routes (`/api/chat-with-vic`, `/api/realtime/session`) are **not** in the static
-> export. MiniVicBot detects this and falls back. Run `npm run dev` or deploy the
-> `services/` stack to enable the live clone.
+---
 
-## Environment variables
+## ◆ Known limitations
 
-Local dev: copy `.env.example` → `.env.local`. Never commit real keys. Required keys must
-fail loud (the app crashes clearly — non-zero exit naming the missing key, never a silent
-fallback — see SECURITY notes in [`docs/overhaul/SYSTEM-DESIGN.md`]). Provider keys: `OPENAI_API_KEY`, `GEMINI_API_KEY`,
-`ELEVENLABS_API_KEY` (+ `ELEVENLABS_VOICE_ID`), `DID_API_KEY`.
+Stated here for the same reason the site states its own: a reader should not have to
+discover them.
 
-> **Known config gotcha:** `.env.production` uses `DI_D_API_KEY`, `.env.example` uses
-> `DID_API_KEY`, older docs say `D_ID_API_KEY`. Canonicalise to **`DID_API_KEY`** when wiring
-> the live clone (tracked in EDGE-CASES EC-CFG-01).
+- **`/api/tts` returns 502.** `ELEVENLABS_API_KEY` in the environment file holds a key *ID*
+  rather than a key (they begin `sk_`). The AI clone's text path (`/api/chat`) works; its
+  speech path does not until the key is replaced.
+- **`DI_D_API_KEY` returns 403.** The D-ID pipeline described in `services/` is not
+  reachable with the current credential.
+- Repository metrics are **harvested and dated**, not live — a static export cannot query
+  an API at request time, and the page says so rather than implying otherwise.
+- The WebGL scenes do not mount on software renderers by design, so a headless browser
+  sees the fallback. That is correct behaviour, not a missing feature.
 
-## Documentation
+---
 
-| Doc | What it covers |
-| --- | --- |
-| [`docs/prompt.md`](docs/prompt.md) | **Binding source of truth** — the owner's requirements & success criteria. Everything else is kept in parity with it. |
-| [`docs/overhaul/SPEC.md`](docs/overhaul/SPEC.md) | Requirements, acceptance criteria, **1 test case per requirement**, test plan, V&V (1:1 parity with `prompt.md`) |
-| [`docs/overhaul/MVP-AND-ROLLOUT.md`](docs/overhaul/MVP-AND-ROLLOUT.md) | MVP scope, fan-out lanes, publish/rollback |
-| [`docs/overhaul/ARCHITECTURE.md`](docs/overhaul/ARCHITECTURE.md) | System architecture (frontend + backend + infra + data flow) |
-| [`docs/overhaul/SYSTEM-DESIGN.md`](docs/overhaul/SYSTEM-DESIGN.md) | Deployment topologies, sequence flows, state, security, scaling |
-| [`docs/overhaul/MOTION-AND-FX-SPEC.md`](docs/overhaul/MOTION-AND-FX-SPEC.md) | UI/UX animation, visualisation, visual & after-effects specs |
-| [`docs/overhaul/TECH-STACK.md`](docs/overhaul/TECH-STACK.md) | Stack, versions, rationale, constraints, upgrades |
-| [`docs/overhaul/EDGE-CASES.md`](docs/overhaul/EDGE-CASES.md) | Exhaustive edge-case catalogue (the hard scenarios) |
-| [`CLAUDE.md`](CLAUDE.md) | Operating guide for AI agents working in this repo |
+<div align="center">
 
-## License
+```
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║   Some of the brackets on this site are deliberately left open.  ║
+║   That was a choice, and it is the point.                        ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+```
 
-MIT — see `LICENSE`.
+*Built in Melbourne. Every claim on the page has somewhere you can go and check it.*
+
+</div>
