@@ -137,6 +137,14 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
+        {/* WCAG 2.4.1 Bypass Blocks. The styles for this have existed in
+            globals.css since the rebuild; the element itself never did, so the
+            rule styled nothing and a keyboard reader had to tab the whole
+            navigation on every visit. It is the first focusable node in the
+            document and visible only while focused. */}
+        <a className="skip-link" href="#main">
+          Skip to the evidence
+        </a>
         <AvatarSpeakingProvider>
           <MotionProvider>
             {children}

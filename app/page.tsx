@@ -49,7 +49,7 @@ export default function Home() {
       />
       <Navigation />
 
-      <main>
+      <main id="main">
         <Hero />
 
         <About />

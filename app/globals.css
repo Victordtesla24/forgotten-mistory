@@ -504,6 +504,40 @@ footer {
     .nav-cv { display: none; }
 }
 
+/* Bypass Blocks (WCAG 2.4.1). Off-canvas until focused, then it arrives as a
+   real chip in the site's own language rather than a browser default. It never
+   moves layout: it is fixed, so the page beneath it does not shift when a
+   keyboard reader tabs into it. */
+.skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 1000;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--card-border-hover);
+    border-radius: 10px;
+    background: var(--token-bg-elevated);
+    box-shadow: var(--card-shadow);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    /* Off-canvas rather than display:none, so it stays focusable. */
+    transform: translateY(calc(-100% - 1rem));
+    transition: transform var(--motion-fast) var(--motion-ease-standard);
+}
+
+.skip-link:focus-visible {
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skip-link {
+        transition: none;
+    }
+}
+
 /* Keyboard focus ring for the interactive family (a11y ≥95) — achromatic accent,
    mirrors the existing .detail-close/.detail-cta pattern. :focus-visible keeps
    pointer clicks ring-free; modern browsers trace the element's own border-radius. */
