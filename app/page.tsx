@@ -8,6 +8,7 @@ import About from '@/components/sections/About/About';
 import Experience from '@/components/sections/Experience/Experience';
 import Skills from '@/components/sections/Skills/Skills';
 import Vitrine from '@/components/sections/Vitrine/Vitrine';
+import Listen from '@/components/sections/Listen/Listen';
 import Navigation from '@/components/site/Navigation';
 
 /**
@@ -58,14 +59,9 @@ export default function Home() {
         <Skills />
 
         <Vitrine />
-      </main>
 
-      <footer role="contentinfo">
-        <div className="footer-content">
-          {/* Fixed year avoids SSR/CSR Date drift hydration warnings (D-CRASH-01). */}
-          <p>&copy; 2026 Vikram Deshpande. All rights reserved.</p>
-        </div>
-      </footer>
+        <Listen />
+      </main>
     </>
   );
 }

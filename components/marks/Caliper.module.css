@@ -131,8 +131,10 @@
     opacity: 0.32;
 }
 
+/* Not italic. The dashed jaws and the hatch already say "open", and italic is
+   spoken for: it appears exactly once on the site, on the closing sentence, and
+   a second use would spend that distinction for no gain here. */
 .caliper[data-state="open"] .value {
-    font-style: italic;
     opacity: 0.85;
 }
 

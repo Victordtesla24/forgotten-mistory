@@ -1,0 +1,167 @@
+/**
+ * The closing screen.
+ *
+ * Almost nothing is here, and that is the design. The section carries no scene,
+ * no chart and no card — after five screens of instrumentation the emptiness is
+ * what a reader is left holding.
+ */
+
+.listen {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 88svh;
+    padding: clamp(6rem, 14vh, 10rem) var(--page-gutter, clamp(1.5rem, 5vw, 5rem))
+        clamp(2rem, 5vh, 3rem);
+}
+
+.inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 46rem;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.kicker {
+    margin: 0 0 1rem;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist-400);
+}
+
+.title {
+    margin: 0 0 clamp(2.5rem, 6vh, 4rem);
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--white);
+}
+
+/* The one italic on the site. */
+.sentence {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    line-height: 1.4;
+    letter-spacing: -0.015em;
+    color: var(--white);
+    max-width: 26ch;
+}
+
+/* The last stroke: a hairline the width of the sentence, drawn once on entry.
+   It is the caliper bracket at one pixel — the instrument closing for good. */
+.rule {
+    display: block;
+    height: 1px;
+    max-width: 26ch;
+    margin: clamp(2rem, 4vh, 2.75rem) 0 clamp(2.5rem, 5vh, 3.5rem);
+    background: var(--gold);
+    opacity: 0.55;
+    transform-origin: left center;
+    animation: ruleDraw 720ms var(--motion-ease-emphasized) 200ms both;
+}
+
+@keyframes ruleDraw {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+/* ── The four channels ───────────────────────────────────────────────────── */
+.channels {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.channel {
+    display: inline-block;
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: clamp(0.82rem, 1vw, 0.92rem);
+    letter-spacing: 0.01em;
+    color: var(--mist-200);
+    text-decoration: none;
+}
+
+/* The closing hairline gesture at one-sixth scale — identical on hover and on
+   focus, so a keyboard reader gets exactly the same affordance as a mouse. */
+.channel::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 120ms var(--motion-ease-standard);
+}
+
+.channel:hover,
+.channel:focus-visible {
+    color: var(--white);
+}
+
+.channel:hover::after,
+.channel:focus-visible::after {
+    transform: scaleX(1);
+}
+
+.channel:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 4px;
+}
+
+.coffee {
+    margin: clamp(2.5rem, 5vh, 3.5rem) 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.85;
+}
+
+/* ── Colophon ────────────────────────────────────────────────────────────── */
+.colophon {
+    margin: clamp(4rem, 10vh, 7rem) auto 0;
+    max-width: 78rem;
+    width: 100%;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--token-border-default);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    color: var(--ink-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /* The rule is already drawn; only the movement is dropped. */
+    .rule {
+        animation: none;
+    }
+
+    .channel::after {
+        transition: none;
+    }
+}
