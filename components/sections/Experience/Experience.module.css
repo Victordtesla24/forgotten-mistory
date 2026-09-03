@@ -389,3 +389,14 @@
     font-size: clamp(1rem, 1.4vw, 1.15rem);
     line-height: 1.2;
 }
+
+/* The one printed explanation of the open brackets below the chart. */
+.openNote {
+    position: relative;
+    z-index: 1;
+    margin: 1.5rem 0 0;
+    max-width: 62ch;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--mist-400);
+}

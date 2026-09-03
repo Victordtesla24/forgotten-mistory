@@ -32,7 +32,10 @@ const SPANS: Record<string, RoleSpan> = {
     id: 'independent',
     start: 2025 + 5 / 12, // June 2025
     end: 2026 + 1 / 12, // February 2026
-    headline: { value: '−38%', label: 'simulated LLM error-budget breaches' },
+    headline: {
+      value: '−38%',
+      label: 'error-budget breaches — measured against a simulated budget, not live traffic',
+    },
   },
   anz: {
     id: 'anz',

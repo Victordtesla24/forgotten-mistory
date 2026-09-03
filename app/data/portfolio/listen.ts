@@ -32,5 +32,5 @@ export const listenContent = {
   ],
   coffee: 'Coffee · Melbourne CBD · I’ll come to you',
   colophon:
-    '© 2026 Vikram Deshpande · Melbourne · static export · one WebGL context per section · no analytics, no trackers, no cookies',
+    '© 2026 Vikram Deshpande · Melbourne · static export · at most one WebGL context per section, and none on a phone · no analytics, no trackers, no cookies',
 } as const;

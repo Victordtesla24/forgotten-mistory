@@ -165,6 +165,11 @@ const hexToRgba = (hex: string, alpha: number): string => {
 
 const MiniVicBot = () => {
   const [isOpen, setIsOpen] = useState(false);
+  // The launcher waits until the hero has been read. On a 390 px phone its
+  // 64 px bubble sat directly on top of the hero's Download CV button — the one
+  // action a recruiter is most likely to want — and an assistant that covers
+  // the thing it is meant to assist with is worse than no assistant.
+  const [pastHero, setPastHero] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -252,6 +257,20 @@ const MiniVicBot = () => {
   const setAvatarSpeaking = useSetAvatarSpeaking();
 
   // Expose cloned-voice greeting hash for e2e test verification (TC-FR-VOICE).
+  useEffect(() => {
+    const hero = document.getElementById('hero');
+    if (!hero) {
+      setPastHero(true);
+      return undefined;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => setPastHero(!entry.isIntersecting),
+      { threshold: 0.35 },
+    );
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       (window as any).__CLONED_VOICE_GREETING_HASH__ = CLONED_VOICE_GREETING_HASH;
@@ -1160,7 +1179,15 @@ const MiniVicBot = () => {
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-[10030] flex flex-col items-end font-sans">
+    <div
+      className="fixed bottom-5 right-5 z-[10030] flex flex-col items-end font-sans transition-opacity duration-300"
+      data-past-hero={pastHero || undefined}
+      style={{
+        opacity: pastHero || isOpen ? 1 : 0,
+        pointerEvents: pastHero || isOpen ? 'auto' : 'none',
+      }}
+      aria-hidden={!pastHero && !isOpen}
+    >
       {isOpen && (
         <div
           ref={panelRef}

@@ -47,7 +47,7 @@ export const aboutContent = {
       name: 'Experience Level',
       side: 'candidate',
       answer:
-        'Fifteen years. Senior delivery lead and AI/ML solutions architect since 2017; before that, business analysis and project delivery from 2010.',
+        'Sixteen years. Senior delivery lead and AI/ML solutions architect since 2017; before that, business analysis and project delivery from 2010.',
       evidence: 'ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MYOB',
     },
     {

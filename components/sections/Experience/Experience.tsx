@@ -100,6 +100,13 @@ export default function Experience() {
             ))}
           </ol>
 
+          {/* Printed once. Five roles carry an open bracket below, and this is
+              what all five of them mean. */}
+          <p className={styles.openNote}>
+            Three roles state a figure in the CV. The other five state none, and none was
+            invented for them — those carry an open bracket instead.
+          </p>
+
           <div className={styles.axis} aria-hidden="true">
             {DECADES.map((year) => (
               <span
@@ -146,16 +153,13 @@ export default function Experience() {
                     <span className={styles.roleHeadlineLabel}>{role.span.headline.label}</span>
                   </p>
                 ) : (
-                  /* Five of the eight roles state no figure in the CV. Rather
-                     than invent one — or leave a silence a reader could read as
-                     an oversight — the bracket stays open and says why. */
+                  /* Five of the eight roles state no figure in the CV. The open
+                     bracket says so on each of them; the reason is printed once,
+                     under the chart, rather than five times in identical words. */
                   <p className={styles.roleHeadline}>
                     <Caliper state="open" className={styles.roleHeadlineOpen}>
                       no published figure
                     </Caliper>
-                    <span className={styles.roleHeadlineLabel}>
-                      the CV states none for this role, and none was invented
-                    </span>
                   </p>
                 )}
 

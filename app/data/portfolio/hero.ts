@@ -26,7 +26,7 @@ export const heroContent = {
   availability: 'Open to delivery-leadership and AI engagements',
   /** One sentence. Twenty-nine words. It is the whole pitch. */
   statement:
-    "Fifteen years leading delivery across government, banking and telecommunications — currently Scrum Master and Project Manager on the Australian Taxation Office's Payday Super program.",
+    "Sixteen years leading delivery across government, banking and telecommunications — currently Scrum Master and Project Manager on the Australian Taxation Office's Payday Super program.",
   ledger: [
     {
       value: '≈92%',

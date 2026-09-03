@@ -66,7 +66,7 @@ export const hero = {
   location: 'Melbourne, VIC, Australia',
   availability: 'Actively exploring Scrum Master and delivery-leadership roles in Melbourne',
   subtitle: [
-    "I'm a technical delivery leader and AI solutions architect based in Melbourne, currently leading agile delivery as Scrum Master / Project Manager on the Australian Taxation Office's Payday Super program. Over 15+ years across government, finance, and telecommunications I've helped teams ship complex systems — from mainframe test automation to real-time AI platforms — with a focus on measurable business value.",
+    "I'm a technical delivery leader and AI solutions architect based in Melbourne, currently leading agile delivery as Scrum Master / Project Manager on the Australian Taxation Office's Payday Super program. Over sixteen years across government, finance, and telecommunications I've helped teams ship complex systems — from mainframe test automation to real-time AI platforms — with a focus on measurable business value.",
   ],
 };
 
@@ -477,7 +477,7 @@ export const projectionDimensions: ProjectionDimension[] = [
   {
     key: 'longevity',
     label: 'Sustained execution',
-    claim: '15+ years across government, finance and telecommunications; nearly 8 sustained years at ANZ (2017–2025).',
+    claim: 'sixteen years across government, finance and telecommunications; nearly 8 sustained years at ANZ (2017–2025).',
     source: 'Career record, MYOB (2010) through to the ATO',
   },
   {
@@ -559,7 +559,7 @@ export const dossier = {
   downloadHref: '/docs/Vik_Resume_Final.pdf',
   downloadLabel: 'Download the CV dossier (PDF)',
   highlights: [
-    '15+ years across government, finance and telecommunications',
+    'sixteen years across government, finance and telecommunications',
     '$5M+ program portfolio led across 5+ squads at 100% compliance',
     '≈92% test-evidence effort cut on the ATO Payday Super harness',
     '10k+ concurrent devices at P95 under 200 ms (ANZ telemetry)',
@@ -569,7 +569,7 @@ export const dossier = {
       persona: 'employer',
       label: 'For employers',
       takeaway:
-        '15+ years of delivery leadership and a 92% evidence-effort cut — the full record is in the dossier.',
+        'sixteen years of delivery leadership and a 92% evidence-effort cut — the full record is in the dossier.',
     },
     {
       persona: 'client',
