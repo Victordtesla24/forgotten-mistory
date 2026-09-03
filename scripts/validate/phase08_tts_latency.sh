@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/gateway_ready.sh"
 REPORT_DIR="${ROOT_DIR}/reports/phase08"
 REPORT_FILE="${REPORT_DIR}/phase08-elevenlabs-latency-report.md"
 
@@ -11,7 +12,7 @@ cd "${ROOT_DIR}/services/api-gateway"
 : "${ELEVENLABS_API_KEY:?ELEVENLABS_API_KEY is required for Phase 08 validation}"
 : "${ELEVENLABS_VOICE_ID:?ELEVENLABS_VOICE_ID is required for Phase 08 validation}"
 
-PORT=8000 LLM_PROVIDER=mock JWT_SECRET=phase08-secret ELEVENLABS_API_KEY="${ELEVENLABS_API_KEY}" ELEVENLABS_VOICE_ID="${ELEVENLABS_VOICE_ID}" npm run start >/tmp/phase08-gateway-start.log 2>&1 &
+PORT="${PHASE_GATEWAY_PORT}" LLM_PROVIDER=mock JWT_SECRET=phase08-secret ELEVENLABS_API_KEY="${ELEVENLABS_API_KEY}" ELEVENLABS_VOICE_ID="${ELEVENLABS_VOICE_ID}" npm run start >/tmp/phase08-gateway-start.log 2>&1 &
 GATEWAY_PID=$!
 
 cleanup() {
@@ -21,19 +22,14 @@ cleanup() {
 }
 trap cleanup EXIT
 
-for _ in {1..45}; do
-  if curl -fsS "http://127.0.0.1:8000/health" >/dev/null 2>&1; then
-    break
-  fi
-  sleep 1
-done
+await_gateway "${GATEWAY_PID}" "/tmp/phase08-gateway-start.log"
 
 DEFAULT_VOICE_FALLBACK="JBFqnCBsd6RMkjVDRZzb"
 TIME_LOG="/tmp/phase08-times.log"
 
 run_tts_request() {
   local voice_id="$1"
-  curl -sS -X POST "http://127.0.0.1:8000/api/tts/stream" \
+  curl -sS -X POST "${PHASE_GATEWAY_BASE}/api/tts/stream" \
     -H "content-type: application/json" \
     -d "{\"text\":\"Hi\",\"voiceId\":\"${voice_id}\",\"optimizeStreamingLatency\":3}" \
     --output /tmp/phase08-audio.pcm \

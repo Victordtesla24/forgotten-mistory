@@ -2,13 +2,14 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/gateway_ready.sh"
 REPORT_DIR="${ROOT_DIR}/reports/phase10"
 REPORT_FILE="${REPORT_DIR}/phase10-viseme-report.md"
 
 mkdir -p "${REPORT_DIR}"
 cd "${ROOT_DIR}/services/api-gateway"
 
-PORT=8000 LLM_PROVIDER=mock JWT_SECRET=phase10-secret npm run start >/tmp/phase10-gateway-start.log 2>&1 &
+PORT="${PHASE_GATEWAY_PORT}" LLM_PROVIDER=mock JWT_SECRET=phase10-secret npm run start >/tmp/phase10-gateway-start.log 2>&1 &
 GATEWAY_PID=$!
 
 cleanup() {
@@ -18,16 +19,11 @@ cleanup() {
 }
 trap cleanup EXIT
 
-for _ in {1..45}; do
-  if curl -fsS "http://127.0.0.1:8000/health" >/dev/null 2>&1; then
-    break
-  fi
-  sleep 1
-done
+await_gateway "${GATEWAY_PID}" "/tmp/phase10-gateway-start.log"
 
 PASS_COUNT=0
 for i in {1..10}; do
-  RESPONSE="$(curl -sS -X POST "http://127.0.0.1:8000/api/viseme/smooth" \
+  RESPONSE="$(curl -sS -X POST "${PHASE_GATEWAY_BASE}/api/viseme/smooth" \
     -H "content-type: application/json" \
     -d '{"streamId":"benchmark", "events":[{"viseme":"A","startMs":0,"endMs":25,"confidence":0.9,"source":"elevenlabs"},{"viseme":"A","startMs":30,"endMs":50,"confidence":0.8,"source":"elevenlabs"},{"viseme":"E","startMs":52,"endMs":80,"confidence":0.75,"source":"elevenlabs"}]}' )"
 

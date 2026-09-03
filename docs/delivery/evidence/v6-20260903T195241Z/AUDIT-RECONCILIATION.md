@@ -35,7 +35,7 @@ production serves — the codebase and the live site are one artefact for audit 
 | # | Defect | Evidence |
 |---|---|---|
 | C-1 | **`forgotten-mistory`'s OWN CI is red on `main`.** | Playwright a11y specs hit `ERR_CONNECTION_REFUSED at localhost:8080` (the workflow has no `webServer`); the Firebase deploy job exits **127** with an IAM **403**; `npm audit` gates on high-severity `brace-expansion` / `browserslist` / `glob`. R-105 guarantees a technical reviewer will look at this before anything else. |
-| C-2 | **No `<canvas>` element renders in the DOM at any section, at either viewport.** Exactly **one** `webgl2` context exists, on a detached 300×150 probe canvas, never lost. | R-170 preserves "one WebGL context per section with no context loss" — but as rendered scenes this is **not observable** on the baseline. R-96 assigns the Front Door a WebGL signature scene. Both facts must be reconciled by the Front Door swarm rather than assumed. |
+| C-2 | ~~**No `<canvas>` element renders in the DOM at any section.**~~ **WITHDRAWN — false positive in this run's own audit (see §F).** | Re-tested with `reducedMotion: 'no-preference'` and `?gl=force`: **hero → 1 canvas, experience → 1 canvas.** The site behaves exactly as designed. |
 | C-3 | **The caliper's `sourced` state is never rendered.** | 15 caliper marks live, in states `self-reported` and `open` only. `"Measured; source given."` is defined at `Caliper.tsx:44` and used by nothing. The mark's three-state grammar is therefore only two-thirds legible to a visitor. **It must not be fixed by inventing a sourced mark** — grading a claim above its evidence is the one thing this site may never do. |
 | C-4 | **An orphan, billable Cloud Function is live.** | `ssrforgottenmistory` (v2, us-central1) appears in neither `firebase.json` nor `functions/index.js` — a leftover webframeworks SSR function. Removal is a deliverable under R-162. |
 | C-5 | **False-positive readiness gates.** | `scripts/validate/phase07..phase10` and `phase21` break out of their readiness loop when `127.0.0.1:8000/health` returns 200 — which on this host is the **Aether production API**, a foreign service. The gates pass instantly and their assertions then 404. They also attempt to *bind* :8000, colliding with a guardian-owned production service. §13 bans false-positive results; §11 bans a gate that cannot fail. |
@@ -60,3 +60,47 @@ Rows A-1, A-2 and A-7 run the other way: the contract's audit was **wrong in the
 under-stating the work** for A-1 (a real removal) and **over-stating it** for A-2 (an uplift, not a
 build) and A-7 (an absence, not boilerplate). Observation governs in every case; the requirement
 text does not get to overrule the artefact in front of it.
+
+
+## F · False-positive register (§10.3) — including this run's own
+
+§10.3 requires every unreproducible "finding" to be named, **including the reviewer's own**. One
+qualifies so far.
+
+### FP-01 · C-2, "no `<canvas>` renders anywhere" — WITHDRAWN
+
+**The claim.** The T-37 baseline capture recorded 0 `<canvas>` elements at every section, at both
+viewports, with exactly one `webgl2` context on a detached probe canvas. It was written up as a
+defect: that the WebGL scenes were not rendering as visible artefacts.
+
+**Why it did not reproduce.** Two independent measurement artifacts, both in the *capture
+environment*, neither in the site:
+
+1. **Headless Chrome reports `prefers-reduced-motion: reduce` by default.** `components/gl/Scene.tsx`
+   deliberately renders no canvas at all under reduced motion — *"A scene renders nothing at all
+   when WebGL is unavailable or the reader has asked for reduced motion."* The capture asked for
+   reduced motion without knowing it.
+2. **This host has no GPU.** `components/gl/useGLCapability.ts` correctly classifies the
+   SwiftShader software rasteriser as unsupported — *"a static page beats a stuttering one"* —
+   and the probe confirmed the renderer string
+   `ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero)), SwiftShader driver)`.
+
+**The re-test.** Same live URL, Playwright with `reducedMotion: 'no-preference'` and the codebase's
+own `?gl=force` escape hatch:
+
+```
+rm reduce? false
+hero        canvases: 1
+experience  canvases: 1
+```
+
+**Verdict.** No defect. The site renders exactly one WebGL context per section that has one, and
+tears it down on exit — which is precisely the R-170 posture the Preservation Register protects.
+The original reading had it backwards: the gate firing was the feature working, not the scene
+failing.
+
+**The lesson, recorded because it will recur.** A capture harness's own defaults are part of the
+measurement. Any future audit of this site MUST state its `prefers-reduced-motion` and GPU
+condition alongside its findings, or it will keep re-discovering this non-defect. T-39's
+degraded-state audit is the right place for the reduced-motion pass — as a *deliberate* condition,
+never as an unexamined default.

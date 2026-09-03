@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/gateway_ready.sh"
 REPORT_DIR="${ROOT_DIR}/reports/phase09"
 REPORT_FILE="${REPORT_DIR}/phase09-avatar-sync-report.md"
 
@@ -10,7 +11,7 @@ cd "${ROOT_DIR}/services/api-gateway"
 
 : "${DID_API_KEY:?DID_API_KEY is required for Phase 09 validation}"
 
-PORT=8000 LLM_PROVIDER=mock JWT_SECRET=phase09-secret DID_API_KEY="${DID_API_KEY}" npm run start >/tmp/phase09-gateway-start.log 2>&1 &
+PORT="${PHASE_GATEWAY_PORT}" LLM_PROVIDER=mock JWT_SECRET=phase09-secret DID_API_KEY="${DID_API_KEY}" npm run start >/tmp/phase09-gateway-start.log 2>&1 &
 GATEWAY_PID=$!
 
 cleanup() {
@@ -20,12 +21,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-for _ in {1..45}; do
-  if curl -fsS "http://127.0.0.1:8000/health" >/dev/null 2>&1; then
-    break
-  fi
-  sleep 1
-done
+await_gateway "${GATEWAY_PID}" "/tmp/phase09-gateway-start.log"
 
 JWT="$(node - <<'NODE'
 const jwt = require('jsonwebtoken');
@@ -34,7 +30,7 @@ NODE
 )"
 
 STREAM_PAYLOAD='{"source_url":"https://create-images-results.d-id.com/DefaultPresenters/Noelle_f/image.png"}'
-curl -sS -X POST "http://127.0.0.1:8000/api/avatar/streams" \
+curl -sS -X POST "${PHASE_GATEWAY_BASE}/api/avatar/streams" \
   -H "authorization: Bearer ${JWT}" \
   -H "content-type: application/json" \
   -d "${STREAM_PAYLOAD}" >/tmp/phase09-create-stream.json
@@ -46,11 +42,11 @@ if [[ -z "${STREAM_ID}" ]]; then
   exit 1
 fi
 
-curl -sS -X POST "http://127.0.0.1:8000/api/avatar/streams/${STREAM_ID}/stats" \
+curl -sS -X POST "${PHASE_GATEWAY_BASE}/api/avatar/streams/${STREAM_ID}/stats" \
   -H "content-type: application/json" \
   -d '{"latencyMs": 180, "frameDropRate": 0.01}' >/tmp/phase09-stats-update.json
 
-STATS_JSON="$(curl -sS "http://127.0.0.1:8000/api/avatar/streams/${STREAM_ID}/stats")"
+STATS_JSON="$(curl -sS "${PHASE_GATEWAY_BASE}/api/avatar/streams/${STREAM_ID}/stats")"
 LATENCY_MS="$(echo "${STATS_JSON}" | jq -r '.latencyMs')"
 
 awk "BEGIN {exit !(${LATENCY_MS} < 200)}"

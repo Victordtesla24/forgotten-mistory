@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/gateway_ready.sh"
 REPORT_DIR="${ROOT_DIR}/reports/phase07"
 REPORT_FILE="${REPORT_DIR}/phase07-llm-ttft-report.md"
 
@@ -10,7 +11,7 @@ cd "${ROOT_DIR}"
 
 cd services/api-gateway
 npm install >/tmp/phase07-gateway-install.log 2>&1
-LLM_PROVIDER=mock PORT=8000 JWT_SECRET=phase07-secret npm run start >/tmp/phase07-gateway-start.log 2>&1 &
+LLM_PROVIDER=mock PORT="${PHASE_GATEWAY_PORT}" JWT_SECRET=phase07-secret npm run start >/tmp/phase07-gateway-start.log 2>&1 &
 GATEWAY_PID=$!
 
 cleanup() {
@@ -20,12 +21,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-for _ in {1..45}; do
-  if curl -fsS "http://127.0.0.1:8000/health" >/dev/null 2>&1; then
-    break
-  fi
-  sleep 1
-done
+await_gateway "${GATEWAY_PID}" "/tmp/phase07-gateway-start.log"
 
 TTFT_JSON="$(npm run -s test:ttft)"
 TTFT_MS="$(echo "${TTFT_JSON}" | jq -r '.ttftMs')"
