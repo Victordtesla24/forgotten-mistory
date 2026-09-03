@@ -65,10 +65,22 @@
 }
 
 /* ── State: sourced ───────────────────────────────────────────────────────
-   Solid arms, luminous value. The figure was measured and its source is
-   printed with it. */
+   Luminous value in white, jaws in gold. Gold on this site means one thing
+   only — this figure has a source you could go and check — and the closed
+   caliper is where a reader learns that, without a legend. */
 .caliper[data-state="sourced"] {
     color: var(--white);
+}
+
+.caliper[data-state="sourced"] .arm::before,
+.caliper[data-state="sourced"] .arm::after {
+    border-color: var(--gold);
+    background: var(--gold);
+    opacity: 0.85;
+}
+
+.caliper[data-state="sourced"] .arm::after {
+    background: none;
 }
 
 /* ── State: self-reported ─────────────────────────────────────────────────

@@ -253,10 +253,16 @@
     gap: 0.5rem;
 }
 
+/* The production mark is the card's strongest claim, so it carries the accent:
+   gold means the evidence beside it was taken from something that really ran. */
 .statusGlyph {
     font-size: 0.7rem;
     line-height: 1.6;
     color: var(--mist-200);
+}
+
+tr[data-status="production"] .statusGlyph {
+    color: var(--gold);
 }
 
 .statusLabel {

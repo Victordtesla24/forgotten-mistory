@@ -89,11 +89,20 @@ function checkTone() {
 
 // ── TC-NFR-MONO — no chromatic colour in app/components ──────────────────────
 function checkMono() {
-  // Monochrome = near-neutral. We flag CHROMATIC colour (real hue) anywhere in
-  // app/** and components/**: #hex, rgb()/rgba(), hsl()/hsla(), AND Tailwind
-  // chromatic utility classes. The cool-grey token ramp (saturation ≤ ~0.28) and
-  // pure white/black/greys are allowed. (design-tokens.json is the token source.)
+  // Achromatic, with exactly ONE sanctioned accent.
+  //
+  // Everything in app/** and components/** must be near-neutral: the cool-grey
+  // token ramp (saturation <= ~0.28), white, black. The single exception is the
+  // gold used to mark a figure that has a checkable source — and it is only
+  // permitted in the two files that DEFINE it. A component that writes the gold
+  // hex directly instead of referencing var(--gold) still fails this check,
+  // because the discipline being enforced is "one accent, one definition, one
+  // meaning", not "gold is allowed somewhere".
   const skip = new Set(['design-tokens.json', 'components.json']);
+  const ACCENT_DEFINITION_FILES = new Set(['app/globals.css', 'lib/palette.ts']);
+  // The Aether brand golds, and only these.
+  const ACCENT_HEXES = new Set(['c9a84c', 'd4b65c', 'e8d5a3', 'b0923f']);
+  const ACCENT_RGB = '201,168,76';
   const files = [...walk(join(ROOT, 'app')), ...walk(join(ROOT, 'components'))]
     .filter((p) => /\.(ts|tsx|css)$/.test(p) && !skip.has(relative(ROOT, p)));
 
@@ -111,13 +120,16 @@ function checkMono() {
     const text = stripComments(read(f));
     const rel = relative(ROOT, f);
     for (const m of text.matchAll(TW)) hits.push(`${rel} :: ${m[0]}`);
+    const definesAccent = ACCENT_DEFINITION_FILES.has(rel);
     for (const m of text.matchAll(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g)) {
       let h = m[1];
       if (h.length === 3) h = h.split('').map((c) => c + c).join('');
+      if (definesAccent && ACCENT_HEXES.has(h.toLowerCase())) continue;
       if (chromatic(parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)))
         hits.push(`${rel} :: #${m[1]}`);
     }
     for (const m of text.matchAll(/rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/g)) {
+      if (definesAccent && `${m[1]},${m[2]},${m[3]}` === ACCENT_RGB) continue;
       if (chromatic(+m[1], +m[2], +m[3])) hits.push(`${rel} :: rgb(${m[1]} ${m[2]} ${m[3]})`);
     }
     for (const m of text.matchAll(/hsla?\(\s*[\d.]+[\s,]+([\d.]+)%/g)) {
@@ -134,8 +146,10 @@ function checkMono() {
   }
 
   const uniq = [...new Set(hits)];
-  record('TC-NFR-MONO', 'Monochrome — no chromatic hue in app/components', uniq.length === 0,
-    uniq.length ? `${uniq.length} chromatic: ${uniq.slice(0, 16).join(' | ')}` : 'clean');
+  record('TC-NFR-MONO', 'Achromatic, with one sanctioned accent defined in one place',
+    uniq.length === 0,
+    uniq.length ? `${uniq.length} chromatic: ${uniq.slice(0, 16).join(' | ')}`
+                : 'clean — greys plus the gold token, defined only in globals.css and lib/palette.ts');
 }
 
 // ── TC-NFR-PERF — asset budget (no oversized media) ─────────────────────────

@@ -13,6 +13,31 @@
     --accent: #E8EBF0;
     --steel: #AEB6C2;
 
+    /* ── The one hue on the site ───────────────────────────────────────────
+       Taken verbatim from the Aether brand palette
+       (aether-job-career-agent/apps/web/src/app/globals.css), so his product
+       and his portfolio are visibly the same hand. Same token names, same
+       values — this is not a portfolio approximating a brand, it is the brand.
+
+       Gold is not decoration here; it is a claim. It appears ONLY where a
+       figure has a source a reader could go and check: the jaws of a closed
+       caliper, the "measured in production" mark on the calibration card, and
+       the live URL of a repository that is actually running. Nothing else on
+       the page is allowed to be gold, which is what keeps it meaning something
+       — the moment it becomes an accent for things that merely look important,
+       it stops being evidence and becomes brass.
+
+       Everything else remains achromatic. The static audit permits these values
+       here, in lib/palette.ts and in design-tokens.json, and nowhere else: a
+       component must reference the token, never the hex. */
+    --gold: #c9a84c;
+    --gold-light: #d4b65c;
+    --gold-pale: #e8d5a3;
+    --gold-dark: #b0923f;
+    --gold-muted: rgb(201 168 76 / 0.08);
+    --gold-border: rgb(201 168 76 / 0.2);
+    --gold-veil: rgb(201 168 76 / 0.13);
+
     --token-bg-base: var(--ink-900);
     --token-bg-surface: var(--ink-800);
     --token-bg-elevated: var(--ink-700);

@@ -229,14 +229,22 @@
         border-color var(--motion-fast) var(--motion-ease-standard);
 }
 
+/* The live URL is evidence a reader can verify by clicking it, so it takes the
+   accent. The source link beside it stays grey: code is a claim, a running
+   deployment is a fact. */
 .live {
     font-family: var(--font-mono);
     font-size: 0.72rem;
-    color: var(--mist-400);
+    color: var(--gold);
+    border-bottom-color: var(--gold-veil);
 }
 
-.source:hover,
 .live:hover {
+    color: var(--gold-light);
+    border-bottom-color: var(--gold);
+}
+
+.source:hover {
     color: var(--white);
     border-bottom-color: var(--card-border-hover);
 }

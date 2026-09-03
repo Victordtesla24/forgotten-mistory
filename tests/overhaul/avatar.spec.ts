@@ -1,70 +1,44 @@
 import { test, expect, type Page } from '@playwright/test';
 
 /**
- * SPEC §10 TC-FR-CLONE — Static avatar audio/mouth aligned within ≤120 ms
- * across a sampled window; zero layout shift in avatar container on load;
- * audio-start latency below threshold.
+ * SPEC §10 TC-FR-CLONE — the conversational clone's front-of-house.
  *
- * SPEC §10 TC-INT-CLONE — D-ID stream session + ElevenLabs WebSocket lifecycle
- * handles open, stream audio packets, and dispose cleanly (no leaked
- * sockets/listeners); reconnection path covered.
+ * This file used to carry two subjects. The first was the static hero portrait
+ * (HeroAvatar, rendered into `.hero-image-container`): its container, its
+ * reserved-dimension CLS guard and its post-preloader crossfade. The hero
+ * rebuild (components/sections/Hero/Hero.tsx) removed the portrait from the page
+ * altogether — the front door is now type, a three-figure ledger and two links,
+ * with no image — so those three tests had no subject left and were deleted
+ * rather than weakened into assertions that would pass on an empty page.
  *
- * The static avatar (HeroAvatar) renders in the hero section inside
- * `.hero-image-container`. MiniVicBot renders in layout.tsx with:
+ * The second subject survives untouched: MiniVicBot still mounts from
+ * app/layout.tsx and is independent of the hero. It exposes
  *   - data-testid="minivic-toggle" — the clone toggle button
  *   - data-testid="minivic-panel" — the open panel (when expanded)
  *   - data-testid="minivic-input" — the chat input
  *
+ * SPEC §10 TC-INT-CLONE — D-ID stream session + ElevenLabs WebSocket lifecycle
+ * handles open, stream audio packets, and dispose cleanly (no leaked
+ * sockets/listeners); reconnection path covered. Still gated on a live backend.
+ *
+ * Navigation waits on `#hero` rather than on a preloader: components/site/
+ * Preloader.tsx is deleted, and the hero is server-rendered, so the first paint
+ * is the finished page and there is no boot wipe to sit out.
+ *
  * PASS:
- *   - Hero avatar container renders without layout shift (CLS≈0)
- *   - MiniVicBot clone toggle is present and interactive
- *   - Avatar dimensions are reserved before image loads
- *   - Crossfade from preloader to avatar is smooth (no jarring pop-in)
+ *   - MiniVicBot's clone toggle is present and interactive on the static build
+ *   - Clicking the toggle yields a panel carrying real clone content
  */
 
 const INTEGRATION_BASE_URL = process.env.INTEGRATION_BASE_URL;
 
 async function gotoHome(page: Page) {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  const pre = page.locator('.preloader');
-  if (await pre.isVisible().catch(() => false)) {
-    await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-  }
   await page.locator('#hero').waitFor({ state: 'visible', timeout: 15000 });
 }
 
-test.describe('TC-FR-CLONE: Static Avatar & Clone Rendering', () => {
+test.describe('TC-FR-CLONE: Clone Rendering (MiniVicBot)', () => {
   test.describe.configure({ timeout: 90000 });
-
-  test('TC-CLONE-01: Hero avatar container renders', async ({ page }) => {
-    await gotoHome(page);
-    const container = page.locator('.hero-image-container');
-    await expect(container).toBeVisible();
-  });
-
-  test('TC-CLONE-02: Avatar container has reserved dimensions — zero CLS on load', async ({ page }) => {
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-
-    const container = page.locator('.hero-image-container');
-    await expect(container).toBeAttached();
-
-    const box = await container.boundingBox();
-    if (box) {
-      expect(box.width).toBeGreaterThan(0);
-      expect(box.height).toBeGreaterThan(0);
-    }
-
-    const pre = page.locator('.preloader');
-    if (await pre.isVisible().catch(() => false)) {
-      await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-    }
-
-    const boxAfter = await container.boundingBox();
-    if (box && boxAfter) {
-      expect(Math.abs(boxAfter.width - box.width)).toBeLessThan(5);
-      expect(Math.abs(boxAfter.height - box.height)).toBeLessThan(5);
-    }
-  });
 
   test('TC-CLONE-03: MiniVicBot toggle button is present in the DOM', async ({ page }) => {
     await gotoHome(page);
@@ -75,26 +49,6 @@ test.describe('TC-FR-CLONE: Static Avatar & Clone Rendering', () => {
 
     // The toggle button should be interactive
     await expect(toggle).toBeVisible();
-  });
-
-  test('TC-CLONE-04: Avatar crossfade — no jarring pop-in after preloader', async ({ page }) => {
-    await gotoHome(page);
-
-    const container = page.locator('.hero-image-container');
-    const img = container.locator('img, canvas, [role="img"]').first();
-    const imgCount = await img.count();
-
-    if (imgCount > 0) {
-      await expect(img).toBeVisible();
-    }
-
-    await expect(container).toBeVisible();
-    const box = await container.boundingBox();
-    expect(box).not.toBeNull();
-    if (box) {
-      expect(box.width).toBeGreaterThan(50);
-      expect(box.height).toBeGreaterThan(50);
-    }
   });
 
   test('TC-CLONE-05: MiniVicBot panel opens when toggle is clicked', async ({ page }) => {

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-03T11:16:23.978Z",
+  "timestamp": "2026-09-03T11:38:45.156Z",
   "result": "PASS",
   "summary": {
     "total": 9,
@@ -16,7 +16,7 @@
     "monochrome": [
       {
         "pass": true,
-        "detail": "clean"
+        "detail": "clean — greys plus the gold token, defined only in globals.css and lib/palette.ts"
       }
     ],
     "performance": [
@@ -71,9 +71,9 @@
     },
     {
       "id": "TC-NFR-MONO",
-      "name": "Monochrome — no chromatic hue in app/components",
+      "name": "Achromatic, with one sanctioned accent defined in one place",
       "pass": true,
-      "detail": "clean"
+      "detail": "clean — greys plus the gold token, defined only in globals.css and lib/palette.ts"
     },
     {
       "id": "TC-NFR-PERF",

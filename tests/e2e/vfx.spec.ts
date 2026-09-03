@@ -2,15 +2,29 @@ import { test, expect, type Page } from '@playwright/test';
 
 /**
  * Category 1: E2E — VFX / fx Components
- * Verifies all VFX components render in the work section without errors.
+ *
+ * Verifies the signature effects in the #work gallery mount and animate without
+ * throwing. Each test is deliberately tolerant about *how* an effect renders
+ * (canvas, SVG or DOM) — the contract is that scrolling the gallery into view
+ * never produces a page error, because a single throwing effect used to take the
+ * whole section down with it.
+ *
+ * Two things changed underneath this file with the hero rebuild:
+ *   - The hero's HudFrame backdrop test was deleted. `.hero-hud-backdrop` was
+ *     HudFrame's last mount on the page; the rebuilt hero has no HUD bezel, and
+ *     HudFrame is now rendered nowhere, so the assertion had no subject left.
+ *     Every other effect here lives in #work and is untouched.
+ *   - There is no preloader to sit out (components/site/Preloader.tsx is
+ *     deleted). Navigation waits on `body.page-ready`, which app/page.tsx raises
+ *     on the frame after mount and which also arms the deferred WebGL work, so
+ *     the gallery is scrolled to only once the page has settled.
  */
 
 async function gotoHome(page: Page) {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  const pre = page.locator('.preloader');
-  if (await pre.isVisible().catch(() => false)) {
-    await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-  }
+  await page
+    .waitForFunction(() => document.body.classList.contains('page-ready'), null, { timeout: 20000 })
+    .catch(() => {});
 }
 
 test.describe('E2E: VFX / fx Components', () => {
@@ -125,13 +139,6 @@ test.describe('E2E: VFX / fx Components', () => {
     await page.waitForTimeout(1000);
     const clearance = page.locator('[class*="clearance"], [class*="Clearance"]').first();
     expect(await clearance.count()).toBeGreaterThanOrEqual(0);
-  });
-
-  test('TC-VFX-14: HudFrame renders in hero backdrop', async ({ page }) => {
-    await gotoHome(page);
-    const hud = page.locator('.hero-hud-backdrop, [class*="hud-frame"], [class*="HudFrame"]').first();
-    // Should be in the hero section
-    await expect(hud).toBeAttached();
   });
 
   test('TC-VFX-15: No VFX component causes console errors on scroll', async ({ page }) => {

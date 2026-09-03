@@ -12,6 +12,13 @@ export const PALETTE = {
   ink700: '#1B1D23',
   black: '#000000',
 
+  // The single hue, for scenes. Taken verbatim from the Aether brand palette so
+  // the portfolio and the product read as the same hand. Same rule as the CSS
+  // token: gold marks a value with a source, never anything merely important.
+  gold: '#c9a84c',
+  goldLight: '#d4b65c',
+  goldPale: '#e8d5a3',
+
   // Light
   white: '#F4F6FA',
   accent: '#E8EBF0',
