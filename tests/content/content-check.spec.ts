@@ -215,10 +215,10 @@ test.describe('Content Preservation', () => {
     await gotoHome(page);
     await page.locator('#listen').scrollIntoViewIfNeeded();
     const listen = page.locator('#listen');
-    // The profile, specifically. The corrections ledger below links every one
-    // of its rows to a commit under the same owner, so a bare substring match
-    // on the owner now finds nine anchors and proves nothing about whether the
-    // reader can reach him.
+    // The profile, specifically — an exact-href match, not a substring on the
+    // owner. Substring matching here has been wrong before, and an assertion
+    // that can be satisfied by an unrelated link to the same account proves
+    // nothing about whether the reader can reach him.
     await expect(
       listen.locator('a[href="https://github.com/Victordtesla24"]'),
     ).toHaveCount(1);

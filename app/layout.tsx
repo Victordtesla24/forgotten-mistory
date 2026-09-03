@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { IBM_Plex_Mono, Inter, Source_Serif_4 } from 'next/font/google';
 import './globals.css';
+import { buildStamp } from '@/app/data/generated/build-stamp';
 import MiniVicBot from '../components/MiniVicBot';
 import Footer from '@/components/site/Footer';
 import MotionProvider from '../components/MotionProvider';
@@ -127,6 +128,16 @@ export default function RootLayout({
     // compute to empty and headings would fall back to the UA sans stack.
     <html lang="en" className={`${bodyFont.variable} ${displayFont.variable} ${displayItalic.variable} ${dataFont.variable}`} suppressHydrationWarning>
       <head>
+        {/* The commit these bytes were built from. It used to render as a visible
+            line in the footer; the footer is now a single legal line, so it lives
+            here instead — invisible to a reader, still checkable by anyone who
+            looks, and still the thing `scripts/deploy.mjs` verifies after every
+            deploy. `build_stamp.mjs` writes null unless the tree matched HEAD
+            exactly, so the tag is absent rather than wrong when a build was taken
+            from uncommitted source. That is the whole point of it: INCIDENT-01
+            was production serving code that existed in no commit, under a
+            signature saying otherwise. */}
+        {buildStamp.sha ? <meta name="build-commit" content={buildStamp.sha} /> : null}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}

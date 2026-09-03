@@ -31,10 +31,8 @@ test.describe('Listen', () => {
 
   test('TC-LISTEN-02: the closing copy stays under sixty-five words', async ({ page }) => {
     // Measured on the closing copy itself — the sentence, the four channels and
-    // the coffee line — and not on the corrections ledger or the colophon. The
-    // ledger is a record, printed under its own rule and its own heading, and a
-    // record is not copy. What this budget guards is the invitation, which is
-    // the thing that has to stay short.
+    // the coffee line. What this budget guards is the invitation, which is the
+    // thing that has to stay short.
     const words = await page.evaluate(() => {
       const section = document.querySelector('#listen')!;
       const clone = section.cloneNode(true) as HTMLElement;
@@ -85,50 +83,4 @@ test.describe('Listen', () => {
     expect(hovered).not.toContain('0, 0, 0, 0');
   });
 
-  test('TC-LISTEN-06: the colophon states what the page does not do', async ({ page }) => {
-    const colophon = page.locator(LISTEN).getByText('no analytics');
-    await expect(colophon).toBeVisible();
-    await expect(colophon).toContainText('static export');
-  });
-});
-
-test.describe('Listen · the corrections ledger', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await page.locator('#listen').scrollIntoViewIfNeeded();
-  });
-
-  test('TC-LEDGER-01: every correction is a link to the commit that made it', async ({
-    page,
-  }) => {
-    const rows = page.locator('#listen ol li');
-    const count = await rows.count();
-    // A ledger of one is not a ledger, and a ledger of forty is a changelog.
-    expect(count).toBeGreaterThanOrEqual(5);
-
-    for (let i = 0; i < count; i += 1) {
-      const row = rows.nth(i);
-      const href = await row.locator('a').first().getAttribute('href');
-      // The claim this section makes is checkable only if each line goes to the
-      // diff. A row without one is an assertion about being corrected, which is
-      // the exact thing the section is trying not to be.
-      expect(href, `correction ${i} does not link to a commit`).toMatch(
-        /^https:\/\/github\.com\/Victordtesla24\/forgotten-mistory\/commit\/[0-9a-f]{7,40}$/,
-      );
-      await expect(row.locator('time')).toHaveAttribute('datetime', /^\d{4}-\d{2}-\d{2}$/);
-    }
-  });
-
-  test('TC-LEDGER-02: the ledger says how much of the history it is showing', async ({
-    page,
-  }) => {
-    const shown = await page.locator('#listen ol li').count();
-    const foot = page.locator('#listen').getByText(/corrections in the history/);
-    await expect(foot).toContainText(`${shown} of `);
-    // The total has to exceed what is printed, or the section is quietly
-    // implying the list is complete when it is the most recent page of it.
-    const text = (await foot.textContent()) ?? '';
-    const total = Number(text.match(/of (\d+) corrections/)?.[1] ?? 0);
-    expect(total).toBeGreaterThan(shown);
-  });
 });

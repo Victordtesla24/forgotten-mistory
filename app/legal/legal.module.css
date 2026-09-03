@@ -1,0 +1,142 @@
+/*
+ * The legal pages — Privacy Policy and Terms.
+ *
+ * Deliberately the plainest surface on the site. No WebGL, no scroll
+ * choreography, no reveal: someone reading a privacy policy is looking for a
+ * specific sentence, and anything that delays or animates it is working against
+ * them. What it keeps from the rest of the site is the type, the palette and the
+ * measure, so it reads as the same document rather than a bolted-on page.
+ */
+
+.page {
+  min-height: 100vh;
+  background: var(--token-bg-base);
+  color: var(--token-text-primary);
+  padding: calc(var(--nav-height) + var(--space-8)) clamp(var(--space-3), 5vw, 4.5rem)
+    clamp(var(--space-8), 8vw, var(--space-10));
+}
+
+.inner {
+  margin: 0 auto;
+  max-width: 44rem;
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: var(--space-6);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mist-400);
+  text-decoration: none;
+  border-bottom: 1px solid rgb(244 246 250 / 0.2);
+  padding-bottom: 0.15em;
+}
+
+.back:hover,
+.back:focus-visible {
+  color: var(--white);
+  border-bottom-color: rgb(244 246 250 / 0.6);
+}
+
+.title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  line-height: var(--lh-tight);
+  color: var(--white);
+}
+
+/* Data, so it takes the mono face — the same rule the rest of the site follows. */
+.updated {
+  margin: 0 0 var(--space-8);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  color: var(--mist-400);
+}
+
+.lede {
+  margin: 0 0 var(--space-8);
+  font-family: var(--font-body);
+  font-size: var(--fs-lede);
+  line-height: var(--lh-prose);
+  color: var(--mist-200);
+  text-wrap: pretty;
+}
+
+.section {
+  margin-bottom: var(--space-8);
+}
+
+.heading {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-heading);
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  line-height: var(--lh-tight);
+  color: var(--white);
+}
+
+.body {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-prose);
+  color: var(--mist-200);
+  text-wrap: pretty;
+}
+
+.body:last-child {
+  margin-bottom: 0;
+}
+
+.list {
+  margin: 0 0 var(--space-3);
+  padding-left: var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-prose);
+  color: var(--mist-200);
+}
+
+.list li {
+  margin-bottom: var(--space-2);
+}
+
+.list li:last-child {
+  margin-bottom: 0;
+}
+
+.term {
+  color: var(--white);
+}
+
+.link {
+  color: var(--mist-200);
+  text-decoration: none;
+  border-bottom: 1px solid rgb(244 246 250 / 0.28);
+  padding-bottom: 0.05em;
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--white);
+  border-bottom-color: rgb(244 246 250 / 0.6);
+}
+
+.link:focus-visible,
+.back:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.footNote {
+  margin-top: var(--space-10);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-color);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  line-height: var(--lh-prose);
+  color: var(--ink-400);
+}

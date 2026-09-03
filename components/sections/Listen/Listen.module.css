@@ -12,7 +12,7 @@
     flex-direction: column;
     justify-content: center;
     min-height: 88svh;
-    padding: clamp(6rem, 14vh, 10rem) var(--page-gutter, clamp(1.5rem, 5vw, 5rem))
+    padding: clamp(6rem, 14vh, var(--space-20)) var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)))
         clamp(2rem, 5vh, 3rem);
 }
 
@@ -27,8 +27,8 @@
 }
 
 .kicker {
-    margin: 0 0 1rem;
-    font-size: 0.74rem;
+    margin: 0 0 var(--space-2);
+    font-size: var(--fs-small);
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -36,12 +36,12 @@
 }
 
 .title {
-    margin: 0 0 clamp(2.5rem, 6vh, 4rem);
+    margin: 0 0 clamp(var(--space-5), 6vh, var(--space-8));
     font-family: var(--font-heading);
-    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    font-size: var(--fs-title);
     font-weight: 400;
-    line-height: 1.05;
-    letter-spacing: -0.025em;
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-title);
     color: var(--white);
 }
 
@@ -52,11 +52,15 @@
     font-family: var(--font-heading-italic);
     font-style: italic;
     font-weight: 300;
-    font-size: clamp(1.5rem, 3vw, 2.1rem);
-    line-height: 1.4;
+    font-size: var(--fs-title);
+    /* Step 4 sets 1.05, which is right for a title of one or two lines. This is
+       four, held at a 26ch measure, so it takes the next leading down the scale:
+       still one of the six the type system binds, chosen because the object is a
+       paragraph shaped like a title rather than a title. */
+    line-height: var(--lh-snug);
     letter-spacing: -0.015em;
     color: var(--white);
-    max-width: 26ch;
+    max-width: var(--measure-display);
 }
 
 /* The last stroke: a hairline the width of the sentence, drawn once on entry.
@@ -64,12 +68,12 @@
 .rule {
     display: block;
     height: 1px;
-    max-width: 26ch;
-    margin: clamp(2rem, 4vh, 2.75rem) 0 clamp(2.5rem, 5vh, 3.5rem);
+    max-width: var(--measure-display);
+    margin: clamp(var(--space-4), 4vh, var(--space-5)) 0 clamp(var(--space-5), 5vh, 3.5rem);
     background: var(--gold);
     opacity: 0.55;
     transform-origin: left center;
-    animation: ruleDraw 720ms var(--motion-ease-emphasized) 200ms both;
+    animation: ruleDraw var(--motion-cine-in) var(--motion-ease-emphasized) var(--stagger-loose) both;
 }
 
 @keyframes ruleDraw {
@@ -86,7 +90,7 @@
 .channels {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--space-1);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -96,7 +100,7 @@
     display: inline-block;
     position: relative;
     font-family: var(--font-mono);
-    font-size: clamp(0.82rem, 1vw, 0.92rem);
+    font-size: var(--fs-small);
     letter-spacing: 0.01em;
     color: var(--mist-200);
     text-decoration: none;
@@ -110,12 +114,14 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -3px;
+    /* One hairline step below the baseline box — --space-05 is the only sub-8
+       value the grid allows, and an underline offset is exactly what it is for. */
+    bottom: calc(var(--space-05) * -1);
     height: 1px;
     background: var(--white);
     transform: scaleX(0);
     transform-origin: left center;
-    transition: transform 120ms var(--motion-ease-standard);
+    transition: transform var(--motion-fast) var(--motion-ease-standard);
 }
 
 .channel:hover,
@@ -137,29 +143,15 @@
    and an offer of coffee is not evidence — an accent spent on warmth is an
    accent that stops meaning anything where it matters. */
 .coffee {
-    margin: clamp(2.5rem, 5vh, 3.5rem) 0 0;
+    margin: clamp(var(--space-5), 5vh, 3.5rem) 0 0;
     font-family: var(--font-mono);
-    font-size: 0.74rem;
+    font-size: var(--fs-small);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--mist-400);
 }
 
-/* ── Colophon ────────────────────────────────────────────────────────────── */
-.colophon {
-    margin: clamp(4rem, 10vh, 7rem) auto 0;
-    max-width: 78rem;
-    width: 100%;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--token-border-default);
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    line-height: 1.7;
-    letter-spacing: 0.02em;
-    color: var(--ink-300);
-}
-
-@media (prefers-reduced-motion: reduce) {
+/* ── Colophon ────────────────────────────────────────────────────────────── */@media (prefers-reduced-motion: reduce) {
     /* The rule is already drawn; only the movement is dropped. */
     .rule {
         animation: none;
@@ -167,107 +159,5 @@
 
     .channel::after {
         transition: none;
-    }
-}
-
-/* ── The corrections ledger ──────────────────────────────────────────────── */
-/* Set as a record, not as a feature: mono, hairline rules, tabular dates. The
-   section's claim is that feedback is wanted and acted on, and a decorated
-   list of one's own corrections would undercut it — a ledger is the register
-   this belongs in. */
-.ledger {
-    margin-top: clamp(3rem, 7vh, 4.5rem);
-    padding-top: clamp(1.75rem, 3.5vh, 2.5rem);
-    border-top: 1px solid var(--token-border-default);
-}
-
-.ledgerTitle {
-    margin: 0 0 0.75rem;
-    font-family: var(--font-heading);
-    font-size: clamp(1.15rem, 1.8vw, 1.45rem);
-    font-weight: 400;
-    letter-spacing: -0.015em;
-    color: var(--white);
-}
-
-.ledgerLede {
-    margin: 0 0 clamp(1.5rem, 3vh, 2rem);
-    max-width: 62ch;
-    font-size: 0.92rem;
-    line-height: 1.65;
-    color: var(--mist-400);
-}
-
-.corrections {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    border-top: 1px solid rgb(255 255 255 / 0.05);
-}
-
-.correction {
-    display: grid;
-    grid-template-columns: 5.2rem 6rem minmax(0, 1fr);
-    align-items: baseline;
-    gap: 1rem;
-    padding: 0.7rem 0;
-    border-bottom: 1px solid rgb(255 255 255 / 0.05);
-}
-
-.correctionHash {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.04em;
-    color: var(--mist-400);
-    text-decoration: none;
-    border-bottom: 1px solid var(--card-border);
-    transition:
-        color var(--motion-fast) var(--motion-ease-standard),
-        border-color var(--motion-fast) var(--motion-ease-standard);
-}
-
-.correctionHash:hover {
-    color: var(--white);
-    border-bottom-color: var(--card-border-hover);
-}
-
-.correctionHash:focus-visible {
-    outline: 2px solid var(--white);
-    outline-offset: 3px;
-}
-
-.correctionDate {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.04em;
-    color: var(--ink-300);
-    font-variant-numeric: tabular-nums;
-}
-
-.correctionSaid {
-    min-width: 0;
-    font-size: 0.92rem;
-    line-height: 1.5;
-    color: var(--mist-200);
-    overflow-wrap: anywhere;
-}
-
-.ledgerFoot {
-    margin: 1.1rem 0 0;
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    letter-spacing: 0.04em;
-    line-height: 1.6;
-    color: var(--ink-300);
-}
-
-@media (max-width: 720px) {
-    .correction {
-        grid-template-columns: 5.2rem minmax(0, 1fr);
-        row-gap: 0.3rem;
-    }
-
-    .correctionSaid {
-        grid-column: 1 / -1;
     }
 }

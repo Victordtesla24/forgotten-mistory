@@ -114,16 +114,17 @@ try {
 // The deploy command reporting success is testimony; the served bytes are evidence.
 await new Promise((r) => setTimeout(r, 5000));
 const live = await fetch(SITE).then((r) => r.text());
-// Anchored on the footer's own sentence. A bare /commit\/[0-9a-f]+/ also matches
-// every entry in the corrections ledger, and the first of those is whatever
-// commit the ledger last harvested — which is how an earlier version of this
-// check read the ledger and reported a deploy as stale when it was fine.
-const stamped = live.match(/built from commit<\/span>\s*<a[^>]*>([0-9a-f]{7,40})<\/a>/)?.[1];
+// Read from <meta name="build-commit">, written by scripts/build/build_stamp.mjs.
+// It was previously scraped from a visible footer sentence, which is exactly the
+// kind of coupling that breaks the moment someone redesigns a footer — and it did.
+// A meta tag is the page stating its own provenance for a machine, and it is
+// absent rather than wrong when the build was not taken from a clean commit.
+const stamped = live.match(/<meta[^>]+name="build-commit"[^>]+content="([0-9a-f]{7,40})"/)?.[1];
 
 if (!stamped) {
   die(
-    'The live page carries no build stamp.\n' +
-      'The stamp suppresses itself when the tree it was built from was dirty, so this means the\n' +
+    'The live page carries no build-commit meta tag.\n' +
+      'build_stamp.mjs omits it when the tree it was built from was dirty, so this means the\n' +
       'deployed bytes came from source that no commit contains.',
   );
 }
