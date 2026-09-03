@@ -1,7 +1,6 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useRef } from 'react';
 
 import Scene from '@/components/gl/Scene';
 import { heroContent } from '@/app/data/portfolio/hero';
@@ -27,14 +26,11 @@ const HeroAtmosphere = dynamic(() => import('./HeroAtmosphere'), { ssr: false })
  *    except that the backdrop stays a flat ink gradient.
  */
 export default function Hero() {
-  const sceneRef = useRef<HTMLDivElement>(null);
-
   return (
     <section id="hero" className={styles.hero} aria-labelledby="hero-name">
-      {/* The scene is scissored onto this element by the shared GL stage. It is
-          decorative: the section is complete and legible without it. */}
-      <div ref={sceneRef} className={styles.stage} aria-hidden="true" />
-      <Scene track={sceneRef} lazy={false}>
+      {/* The backdrop slot. Its gradient is the entire backdrop when there is
+          no WebGL; the scene, when it mounts, draws over that gradient. */}
+      <Scene className={styles.stage}>
         <HeroAtmosphere />
       </Scene>
 

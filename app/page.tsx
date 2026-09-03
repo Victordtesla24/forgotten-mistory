@@ -15,8 +15,8 @@ import {
 } from 'lucide-react';
 
 import ErrorBoundary from '@/components/ErrorBoundary';
-import GLStage from '@/components/gl/GLStage';
 import Hero from '@/components/sections/Hero/Hero';
+import About from '@/components/sections/About/About';
 const SpaceScene = dynamic(() => import('./components/SpaceScene'), { ssr: false });
 import CursorGlow from '@/components/site/CursorGlow';
 import CardDepth from '@/components/site/CardDepth';
@@ -94,7 +94,6 @@ import Dossier from '@/components/site/Dossier';
 import CursorDepthField from '@/components/site/CursorDepthField';
 
 import {
-  about,
   contact,
   credibility,
   experience,
@@ -250,10 +249,6 @@ export default function Home() {
 
       <Navigation />
 
-      {/* The page's only WebGL context. Sections render into it through
-          <Scene track={ref}>; nothing else may create a <Canvas>. */}
-      <GLStage />
-
       <main>
         <Hero />
 
@@ -284,130 +279,7 @@ export default function Home() {
         {/* T2 — ProofScroll: GSAP onEnter cue anchor */}
         <ProofScroll />
 
-        <section id="about" className="about-section beat">
-          <div className="container">
-            <Reveal className="section-header" variant="depth">
-              <h2 className="section-title">About Me</h2>
-            </Reveal>
-            <div className="about-content">
-              {about.paragraphs.map((paragraph, index) => (
-                <Reveal key={paragraph.slice(0, 32)} delay={index * 0.08}>
-                  <p className="about-text">{paragraph}</p>
-                </Reveal>
-              ))}
-
-              <Reveal delay={0.16} y={24}>
-              <div className="snap-grid" role="list">
-                <ExpandableCard
-                  baseClass="snap-card"
-                  headerClass="snap-header"
-                  bodyClass="snap-body"
-                  role="listitem"
-                  header={
-                    <>
-                      <div>
-                        <p className="snap-kicker">What I aim to deliver</p>
-                        <h3 className="snap-title">Career Objective</h3>
-                        <p className="snap-summary">
-                          Bridge technical depth with executive strategy so AI/ML pilots land in production with
-                          business value.
-                        </p>
-                      </div>
-                      <span className="snap-icon" aria-hidden="true">
-                        +
-                      </span>
-                    </>
-                  }
-                >
-                  <ul>
-                    <li>Translate strategy into roadmaps that improve delivery efficiency and de-risk cloud modernisations.</li>
-                    <li>Align AI/ML delivery with compliance and risk models from the start.</li>
-                    <li>Use telemetry and dashboards to provide transparency for leaders and teams.</li>
-                  </ul>
-                </ExpandableCard>
-
-                <ExpandableCard
-                  baseClass="snap-card"
-                  headerClass="snap-header"
-                  bodyClass="snap-body"
-                  role="listitem"
-                  header={
-                    <>
-                      <div>
-                        <p className="snap-kicker">Measurable outcomes</p>
-                        <h3 className="snap-title">Delivery Impact</h3>
-                        <p className="snap-summary">Programs built around latency, resilience, and cost controls.</p>
-                      </div>
-                      <span className="snap-icon" aria-hidden="true">
-                        +
-                      </span>
-                    </>
-                  }
-                >
-                  <ul>
-                    <li>≈92% reduction in test-evidence effort across 200+ mainframe SIT/E2E scenarios (ATO Payday Super).</li>
-                    <li>P95 &lt; 200 ms realtime WebSocket telemetry across 10k+ device concurrency (ANZ).</li>
-                    <li>Core banking transformation (.NET/Azure) trimmed delivery time by &gt;30% and infra cost by &gt;15%.</li>
-                    <li>$5M+ portfolio oversight with 100% compliance to enterprise standards and risk models.</li>
-                  </ul>
-                </ExpandableCard>
-
-                <ExpandableCard
-                  baseClass="snap-card"
-                  headerClass="snap-header"
-                  bodyClass="snap-body"
-                  role="listitem"
-                  header={
-                    <>
-                      <div>
-                        <p className="snap-kicker">How teams experience it</p>
-                        <h3 className="snap-title">Leadership &amp; Governance</h3>
-                        <p className="snap-summary">Servant leadership with clear guardrails and steady cadence.</p>
-                      </div>
-                      <span className="snap-icon" aria-hidden="true">
-                        +
-                      </span>
-                    </>
-                  }
-                >
-                  <ul>
-                    <li>Lead the Agile Kookaburras squad at the ATO within an eight-team SIT program.</li>
-                    <li>Led 5+ squads (up to 40 resources including offshore) through Agile/Scrum/SAFe rituals.</li>
-                    <li>Exec workshops for 40+ leaders improved decision clarity by ~55%.</li>
-                    <li>Certified Scrum Master; governance first to keep risk, budget, and delivery aligned.</li>
-                  </ul>
-                </ExpandableCard>
-
-                <ExpandableCard
-                  baseClass="snap-card"
-                  headerClass="snap-header"
-                  bodyClass="snap-body"
-                  role="listitem"
-                  header={
-                    <>
-                      <div>
-                        <p className="snap-kicker">Live proof points</p>
-                        <h3 className="snap-title">Recent Builds</h3>
-                        <p className="snap-summary">Hands-on shipping to validate decisions with working software.</p>
-                      </div>
-                      <span className="snap-icon" aria-hidden="true">
-                        +
-                      </span>
-                    </>
-                  }
-                >
-                  <ul>
-                    <li>Next.js + Supabase JIRA analytics dashboard surfacing sprint velocity and LLM retro insights.</li>
-                    <li>Node.js/Express public-key server with full Mocha/Chai coverage for API signing.</li>
-                    <li>React/TypeScript + D3 relationship timeline visualiser for customer journeys.</li>
-                    <li>Langfuse + Phoenix evaluation stack reducing simulated LLM error-budget breaches by 38%.</li>
-                  </ul>
-                </ExpandableCard>
-              </div>
-              </Reveal>
-            </div>
-          </div>
-        </section>
+        <About />
 
         <section id="experience" className="experience-section beat">
           <ScrollRail targetId="experience" label="Experience" />

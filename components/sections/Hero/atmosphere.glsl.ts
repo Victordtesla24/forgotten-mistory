@@ -16,10 +16,14 @@ export const atmosphereVertexShader = /* glsl */ `
   varying vec2 vUv;
 
   void main() {
-    vUv = uv;
-    // ScreenQuad already supplies clip-space coordinates; pass them straight
-    // through so no projection matrix work happens per vertex.
+    // The screen-filling triangle carries clip-space positions, so they pass
+    // straight through with no projection work per vertex.
     gl_Position = vec4(position.xy, 0.0, 1.0);
+    // Derive the coordinate from the position rather than reading a uv
+    // attribute: the triangle's geometry does not carry one, and sampling a
+    // missing attribute yields zero for every fragment — which renders the
+    // whole shader as one flat colour, indistinguishable from not drawing.
+    vUv = gl_Position.xy * 0.5 + 0.5;
   }
 `;
 

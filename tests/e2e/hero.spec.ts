@@ -122,14 +122,14 @@ test.describe('Hero', () => {
     await expect(page.locator('.preloader')).toHaveCount(0);
   });
 
-  test('TC-HERO-11: no stray WebGL context is created outside the shared stage', async ({
-    page,
-  }) => {
-    // The page may legitimately have zero canvases here: the shared stage
-    // declines to mount on a software renderer, which is what headless uses.
-    // What must never happen is the hero minting a context of its own.
+  test('TC-HERO-11: the hero holds at most one WebGL context', async ({ page }) => {
+    // Headless runs on a software renderer, which components/gl/useGLCapability
+    // declines — so zero canvases here is the expected result, not a failure.
+    // What must never happen is the hero mounting more than one: the old design
+    // let seventeen components each mint their own, and production logged
+    // THREE.WebGLRenderer: Context Lost on every load.
     await page.waitForTimeout(1500);
-    const strayCanvases = await page.locator(`${HERO} canvas`).count();
-    expect(strayCanvases).toBe(0);
+    const canvases = await page.locator(`${HERO} canvas`).count();
+    expect(canvases).toBeLessThanOrEqual(1);
   });
 });

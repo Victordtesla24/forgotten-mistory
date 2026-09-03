@@ -7,9 +7,12 @@
  * never happens at all, and it costs no main-thread time during the load.
  */
 
+/* No `isolation: isolate` here on purpose. The shared WebGL canvas is fixed at
+   z-index 0 in the ROOT stacking context; isolating the hero would trap the
+   z-index -1 backdrop slot below inside the section and paint it over the
+   canvas, hiding the scene entirely. */
 .hero {
     position: relative;
-    isolation: isolate;
     display: flex;
     align-items: center;
     min-height: 100svh;
@@ -62,12 +65,13 @@
     }
 }
 
-/* The GL scene is scissored onto this rectangle. Behind it sits a flat ink
-   gradient, which is the entire backdrop when there is no WebGL. */
+/* The backdrop slot, and the scene's own container. The gradient below is the
+   entire backdrop when there is no WebGL; when the scene mounts, its canvas is
+   absolutely positioned to fill this element and draws over the gradient. */
 .stage {
     position: absolute;
     inset: 0;
-    z-index: -1;
+    z-index: 0;
     background:
         radial-gradient(120% 90% at 22% 18%, rgb(27 29 35 / 0.85), transparent 62%),
         linear-gradient(180deg, var(--ink-900) 0%, var(--ink-800) 58%, var(--ink-900) 100%);

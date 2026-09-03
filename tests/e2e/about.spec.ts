@@ -1,86 +1,109 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 /**
- * Category 1: E2E — About Section
- * Verifies about section content matches siteContent.ts.
+ * About — the ten dimensions his own job-fit engine scores a candidate on,
+ * answered one at a time.
+ *
+ * The section's argument is that a self-assigned number is not evidence, so
+ * these tests pin two things above all: that all ten dimensions are present and
+ * named exactly as the product names them, and that no score appears anywhere
+ * near them. If a future change adds a percentage or a progress bar to this
+ * section, that is not a styling regression — it contradicts the copy sitting
+ * directly above it, and this file should fail.
  */
 
-async function gotoHome(page: Page) {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
-  const pre = page.locator('.preloader');
-  if (await pre.isVisible().catch(() => false)) {
-    await pre.waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
-  }
-  await page.locator('#about').scrollIntoViewIfNeeded();
-}
+const ABOUT = '#about';
 
-test.describe('E2E: About Section', () => {
-  test.describe.configure({ timeout: 60000 });
+const DIMENSIONS = [
+  'Technical Skills',
+  'Experience Level',
+  'Industry Match',
+  'Role Alignment',
+  'Culture Fit',
+  'Salary Fit',
+  'Location Match',
+  'Career Growth',
+  'Company Stability',
+  'North Star Align',
+];
 
-  test('TC-ABOUT-01: About section renders with ID and title', async ({ page }) => {
-    await gotoHome(page);
-    const section = page.locator('#about');
-    await expect(section).toBeVisible();
-    await expect(section).toContainText('About Me');
+test.beforeEach(async ({ page }) => {
+  await page.goto('/');
+  await page.locator(ABOUT).scrollIntoViewIfNeeded();
+});
+
+test.describe('About', () => {
+  test('TC-ABOUT-01: all ten dimensions render, in the engine’s own order', async ({ page }) => {
+    const names = await page.locator(`${ABOUT} ol li h3`).allInnerTexts();
+    expect(names).toHaveLength(10);
+    names.forEach((text, index) => {
+      expect(text).toContain(DIMENSIONS[index]);
+    });
   });
 
-  test('TC-ABOUT-02: About paragraphs match siteContent about text', async ({ page }) => {
-    await gotoHome(page);
-    const aboutText = page.locator('#about .about-text');
-    const count = await aboutText.count();
-    expect(count).toBeGreaterThanOrEqual(2);
-
-    await expect(aboutText.first()).toContainText('15');
-    await expect(aboutText.first()).toContainText('Senior Technical Leader');
-    await expect(aboutText.nth(1)).toContainText('cross-functional squads');
+  test('TC-ABOUT-02: every dimension carries an answer and its evidence', async ({ page }) => {
+    const items = page.locator(`${ABOUT} ol li`);
+    const count = await items.count();
+    for (let i = 0; i < count; i++) {
+      const paragraphs = items.nth(i).locator('p');
+      await expect(paragraphs).toHaveCount(2);
+      const answer = (await paragraphs.nth(0).innerText()).trim();
+      const evidence = (await paragraphs.nth(1).innerText()).trim();
+      expect(answer.length, `answer ${i}`).toBeGreaterThan(40);
+      expect(evidence.length, `evidence ${i}`).toBeGreaterThan(10);
+    }
   });
 
-  test('TC-ABOUT-03: Expandable cards (snap-cards) render in about section', async ({ page }) => {
-    await gotoHome(page);
-    const snapCards = page.locator('#about .snap-card');
-    const count = await snapCards.count();
-    expect(count).toBeGreaterThanOrEqual(4);
+  test('TC-ABOUT-03: no dimension is given a score', async ({ page }) => {
+    // The check is scoped to the headings and the answers, not the evidence
+    // lines: a sourced figure like "-38% simulated error-budget breaches" is
+    // exactly the kind of number this site wants, because it names where it
+    // came from. What must never appear is a rating attached to a dimension —
+    // a percentage, an "8/10", or a bar — since the copy directly above says
+    // there are none and explains why.
+    const headings = (await page.locator(`${ABOUT} ol li h3`).allInnerTexts()).join(' ');
+    const answers = (await page.locator(`${ABOUT} ol li p:first-of-type`).allInnerTexts()).join(' ');
+    for (const scored of [headings, answers]) {
+      expect(scored).not.toMatch(/\b\d{1,3}\s?%/);
+      expect(scored).not.toMatch(/\b\d{1,2}\s?\/\s?10\b/);
+      expect(scored).not.toMatch(/\b\d{1,2}\s+out of\s+10\b/i);
+    }
+    // No meters, progress bars or sliders either.
+    await expect(page.locator(`${ABOUT} progress, ${ABOUT} meter, ${ABOUT} [role="progressbar"]`)).toHaveCount(0);
+    await expect(page.locator(ABOUT)).toContainText('There are no scores below');
   });
 
-  test('TC-ABOUT-04: Snap cards expand on click and show content', async ({ page }) => {
-    await gotoHome(page);
-    const firstCard = page.locator('#about .snap-card').first();
-    const header = firstCard.locator('.snap-header');
-
-    // Card should not be open initially
-    await expect(firstCard).not.toHaveClass(/open/);
-
-    await header.click();
-    await expect(firstCard).toHaveClass(/open/);
-    const body = firstCard.locator('.snap-body');
-    await expect(body).toBeVisible();
+  test('TC-ABOUT-04: the dimensions name their source', async ({ page }) => {
+    const link = page.locator(`${ABOUT} a[href*="aether-job-career-agent"]`);
+    await expect(link).toBeVisible();
+    await expect(page.locator(ABOUT)).toContainText('apps/api/app/routers/jobs.py');
   });
 
-  test('TC-ABOUT-05: Career Objective card has correct content', async ({ page }) => {
-    await gotoHome(page);
-    const cards = page.locator('#about .snap-card');
-    await expect(cards.first()).toContainText('Career Objective');
-    await expect(cards.first()).toContainText('Bridge technical depth');
+  test('TC-ABOUT-05: job-side dimensions are labelled as such', async ({ page }) => {
+    // Salary Fit, Location Match and Company Stability are computed from the
+    // role, not the candidate. Answering them about oneself without saying so
+    // would misrepresent what the engine measures.
+    const tagged = page.locator(`${ABOUT} ol li[data-side="role"]`);
+    await expect(tagged).toHaveCount(3);
+    for (const name of ['Salary Fit', 'Location Match', 'Company Stability']) {
+      await expect(
+        page.locator(`${ABOUT} ol li[data-side="role"]`, { hasText: name }),
+      ).toHaveCount(1);
+    }
   });
 
-  test('TC-ABOUT-06: Delivery Impact card has measurable outcome content', async ({ page }) => {
-    await gotoHome(page);
-    const aboutSection = page.locator('#about');
-    await expect(aboutSection).toContainText('Delivery Impact');
-    await expect(aboutSection).toContainText('92%');
-    await expect(aboutSection).toContainText('200 ms');
+  test('TC-ABOUT-06: each dimension is keyboard reachable', async ({ page }) => {
+    const first = page.locator(`${ABOUT} ol li`).first();
+    await first.focus();
+    await expect(first).toBeFocused();
+    await expect(first).toHaveAttribute('data-active', 'true');
   });
 
-  test('TC-ABOUT-07: Leadership & Governance card renders', async ({ page }) => {
-    await gotoHome(page);
-    await expect(page.locator('#about')).toContainText('Leadership');
-    await expect(page.locator('#about')).toContainText('Servant leadership');
-  });
-
-  test('TC-ABOUT-08: Recent Builds card renders', async ({ page }) => {
-    await gotoHome(page);
-    await expect(page.locator('#about')).toContainText('Recent Builds');
-    await expect(page.locator('#about')).toContainText('Langfuse');
-    await expect(page.locator('#about')).toContainText('Next.js');
+  test('TC-ABOUT-07: the section is complete without WebGL', async ({ page }) => {
+    // Headless runs a software renderer, which the capability check declines —
+    // so this run IS the no-WebGL path, and all ten answers must still be here.
+    await expect(page.locator(`${ABOUT} ol li`)).toHaveCount(10);
+    await expect(page.locator(`${ABOUT} canvas`)).toHaveCount(0);
+    await expect(page.locator(ABOUT)).toContainText('Ten axes · no scores');
   });
 });

@@ -1,0 +1,245 @@
+/**
+ * About — a reading column beside a sticky instrument.
+ *
+ * The list is the content and the compass is the accompaniment, so the layout
+ * gives the list the wider column and lets the instrument hold its own space
+ * without competing for attention.
+ */
+
+.about {
+    position: relative;
+    padding: clamp(5rem, 12vh, 9rem) var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
+    /* No background of its own: the page body supplies the ink, which keeps the
+       section rhythm continuous with the hero above it. */
+}
+
+.inner {
+    position: relative;
+    /* Above the shared canvas, so text is never drawn over by a scene. */
+    z-index: 1;
+    max-width: 78rem;
+    margin: 0 auto;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.header {
+    max-width: 58rem;
+    margin-bottom: clamp(3rem, 7vh, 5rem);
+}
+
+.kicker {
+    margin: 0 0 1rem;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist-400);
+}
+
+.title {
+    margin: 0 0 clamp(1.5rem, 3vh, 2.2rem);
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--white);
+}
+
+.lede {
+    margin: 0 0 1.1rem;
+    max-width: 52ch;
+    font-size: clamp(1rem, 1.25vw, 1.12rem);
+    line-height: 1.68;
+    color: var(--mist-200);
+}
+
+.lede + .lede {
+    color: var(--mist-400);
+}
+
+.provenance {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 1.75rem 0 0;
+    font-size: 0.78rem;
+    color: var(--ink-300);
+}
+
+.provenance a {
+    font-family: var(--font-mono);
+    color: var(--mist-200);
+    text-decoration: none;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.provenance a:hover {
+    color: var(--white);
+    border-bottom-color: var(--card-border-hover);
+}
+
+.provenancePath {
+    font-family: var(--font-mono);
+    color: var(--ink-300);
+}
+
+/* ── Body: instrument + list ─────────────────────────────────────────────── */
+.body {
+    display: grid;
+    grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+}
+
+.instrument {
+    position: sticky;
+    top: clamp(6rem, 18vh, 10rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.instrumentStage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 20rem;
+    /* A faint pool of light so the space reads as occupied on a device with no
+       WebGL. When the scene mounts its canvas fills this element. */
+    background:
+        radial-gradient(circle at 50% 50%, rgb(244 246 250 / 0.05), transparent 62%);
+    border-radius: 50%;
+}
+
+.instrumentCaption {
+    margin: 0;
+    min-height: 1.4em;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mist-400);
+    text-align: center;
+    transition: color var(--motion-fast) var(--motion-ease-standard);
+}
+
+/* ── The ten ─────────────────────────────────────────────────────────────── */
+.list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: dimension;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: clamp(1.25rem, 2.5vh, 1.75rem) 0;
+    border-top: 1px solid var(--token-border-default);
+    transition: border-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.item:last-child {
+    border-bottom: 1px solid var(--token-border-default);
+}
+
+.item[data-active] {
+    border-top-color: var(--card-border-hover);
+}
+
+.item:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 4px;
+}
+
+.index {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.9;
+    color: var(--ink-300);
+    font-variant-numeric: tabular-nums;
+    transition: color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.item[data-active] .index {
+    color: var(--white);
+}
+
+.itemBody {
+    min-width: 0;
+}
+
+.name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin: 0 0 0.55rem;
+    font-family: var(--font-heading);
+    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--white);
+}
+
+.sideTag {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-300);
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--token-border-default);
+    border-radius: 3px;
+}
+
+.answer {
+    margin: 0 0 0.6rem;
+    max-width: 60ch;
+    font-size: clamp(0.95rem, 1.1vw, 1.03rem);
+    line-height: 1.65;
+    color: var(--mist-200);
+}
+
+.evidence {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    color: var(--ink-300);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .body {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .instrument {
+        position: static;
+        /* Below the fold on a phone the compass is a header ornament, so it
+           gets less of the screen than it does beside the list. */
+        max-width: 14rem;
+        margin: 0 auto;
+    }
+
+    .item {
+        grid-template-columns: 2.25rem minmax(0, 1fr);
+        gap: 0.75rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .instrumentCaption,
+    .item,
+    .index {
+        transition: none;
+    }
+}

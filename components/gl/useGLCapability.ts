@@ -31,7 +31,15 @@ function probe(): GLCapability {
     const renderer = debugInfo
       ? String(gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) ?? '')
       : '';
-    const isSoftware = /swiftshader|llvmpipe|software|basic render/i.test(renderer);
+    let isSoftware = /swiftshader|llvmpipe|software|basic render/i.test(renderer);
+
+    // `?gl=force` overrides the software check. The build and verification host
+    // has no GPU, so without this escape hatch every scene would be shipped
+    // having only ever been tested down its fallback path. Opt-in per URL, so a
+    // real visitor on a software rasteriser still gets the static page.
+    if (isSoftware && window.location.search.includes('gl=force')) {
+      isSoftware = false;
+    }
 
     // Release the probe context immediately — it counts against the browser's cap.
     gl.getExtension('WEBGL_lose_context')?.loseContext();

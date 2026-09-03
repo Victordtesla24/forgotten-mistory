@@ -1,46 +1,41 @@
 'use client';
 
-import { View } from '@react-three/drei';
-import {
-  useEffect,
-  useRef,
-  useState,
-  type MutableRefObject,
-  type ReactNode,
-  type RefObject,
-} from 'react';
+import { Canvas } from '@react-three/fiber';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import { useGLCapability } from './useGLCapability';
 
 interface SceneProps {
-  /** The DOM element the scene is scissored onto. */
-  track: RefObject<HTMLElement>;
-  /**
-   * Mount the scene only once its element has been near the viewport. Scenes
-   * far below the fold cost nothing until the reader approaches them.
-   */
-  lazy?: boolean;
+  /** Class applied to the slot element, which is present whether or not the scene renders. */
+  className?: string;
+  /** Camera for this scene. Defaults to a 45° perspective five units back. */
+  camera?: { position?: [number, number, number]; fov?: number };
   children: ReactNode;
 }
 
 /**
- * Scene — the ONLY way a section may put something on screen in 3D.
+ * Scene — the only way a section may render 3D.
  *
- * No component outside `components/gl/` may create an R3F `<Canvas>`. A Scene
- * renders into the single shared context owned by `GLStage`, scissored to the
- * rectangle of `track`. That keeps the page at exactly one WebGL context
- * regardless of how many sections have a visual (see GLStage for why).
+ * The problem this replaces: seventeen components could each mount their own
+ * R3F `<Canvas>`, held back only by a five-ticket semaphore, and production
+ * logged `THREE.WebGLRenderer: Context Lost` on every page load.
  *
- * A Scene renders nothing at all when WebGL is unavailable or the reader has
- * asked for reduced motion — so every section must be complete and legible with
- * its scene absent. That is the contract: scenes are evidence rendered, never
- * the evidence itself.
+ * The rule here is visibility, not rationing. A scene's canvas exists only
+ * while its slot is within half a viewport of the screen and is torn down as
+ * soon as it leaves, so the number of live contexts is bounded by how many
+ * scenes can be on screen at once — one, in this layout, occasionally two
+ * mid-scroll — rather than by how much 3D the page contains in total.
+ *
+ * A scene renders nothing at all when WebGL is unavailable or the reader has
+ * asked for reduced motion. Every section must therefore be complete and
+ * legible with its scene absent: the slot keeps its own CSS treatment, and the
+ * scenes are evidence rendered, never the evidence itself.
  */
-export default function Scene({ track, lazy = true, children }: SceneProps) {
+export default function Scene({ className, camera, children }: SceneProps) {
   const capability = useGLCapability();
-  const [near, setNear] = useState(!lazy);
+  const slotRef = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState(false);
   const [allowMotion, setAllowMotion] = useState(false);
-  const observedRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const query = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -51,31 +46,45 @@ export default function Scene({ track, lazy = true, children }: SceneProps) {
   }, []);
 
   useEffect(() => {
-    if (!lazy) return undefined;
-    const element = track.current;
-    if (!element || observedRef.current === element) return undefined;
-    observedRef.current = element;
+    const element = slotRef.current;
+    if (!element) return undefined;
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setNear(true);
-          observer.disconnect();
-        }
-      },
-      // One viewport of lead-in: the scene is warm by the time it is read.
-      { rootMargin: '100% 0px' },
+      (entries) => setNear(entries.some((entry) => entry.isIntersecting)),
+      // Half a viewport of lead-in: warm by the time it is read, released soon
+      // after it is passed.
+      { rootMargin: '50% 0px' },
     );
     observer.observe(element);
     return () => observer.disconnect();
-  }, [lazy, track]);
+  }, []);
 
-  if (capability !== 'supported' || !allowMotion || !near || !track.current) return null;
+  const show = capability === 'supported' && allowMotion && near;
 
-  // drei types `track` as a non-nullable MutableRefObject, but every React DOM
-  // ref is nullable until mount. The `!track.current` guard above is the real
-  // proof the element exists; this cast just reconciles the signature.
   return (
-    <View track={track as MutableRefObject<HTMLElement>}>{children}</View>
+    <div ref={slotRef} className={className} aria-hidden="true">
+      {show && (
+        <Canvas
+          style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
+          // Retina is capped at 1.75: past that the fill cost doubles for a
+          // difference no one can see on these low-contrast monochrome scenes.
+          dpr={[1, 1.75]}
+          gl={{
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance',
+            // These scenes composite over near-black ink and never depth-sort
+            // against a cleared background, so a stencil buffer is dead weight.
+            stencil: false,
+          }}
+          camera={{
+            position: camera?.position ?? [0, 0, 5],
+            fov: camera?.fov ?? 45,
+          }}
+        >
+          {children}
+        </Canvas>
+      )}
+    </div>
   );
 }
