@@ -47,14 +47,20 @@ jobs:
           fi
           echo "FIREBASE_SERVICE_ACCOUNT exists (value not shown)"
 
-      - name: Check secret rotation age (warn if >90 days)
-        run: |
-          echo "::notice::Secret rotation check would run here (GitHub API call to get secret metadata)"
-          echo "::warning::Secret rotation check not implemented - manual verification needed"
-
-      - name: Mask any derived tokens
-        run: |
-          echo "::add-mask::***"  # Placeholder for any derived tokens that need masking
+      # A "secret rotation age" step used to sit here. It emitted a notice saying the
+      # check "would run here" and a warning saying it was "not implemented", and it
+      # could not fail. A step named after a check it does not perform is worse than
+      # no step: it puts a green tick beside an unexamined question, and the next
+      # reader assumes rotation is covered.
+      #
+      # It was removed rather than stubbed out further. GitHub's API exposes
+      # `created_at` and `updated_at` per repository secret, so the check is
+      # implementable — as a real gate that fails, when someone wants it. Until then
+      # this workflow does not claim it.
+      #
+      # The "Mask any derived tokens" step went the same way: `::add-mask::***`
+      # registers the literal string `***` and masks nothing. Both secrets above are
+      # consumed through `secrets.*`, which GitHub masks in logs automatically.
   # ── Static quality gates (SPEC §11): strict typecheck + monochrome/tone/perf/parity/secret audit ──
   quality:
     runs-on: ubuntu-latest
