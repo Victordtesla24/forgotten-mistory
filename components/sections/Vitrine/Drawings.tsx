@@ -149,7 +149,8 @@ function VerifierLoop() {
       <title id="d3t">An agent loop with a single signed exit</title>
       <desc id="d3d">
         Four stages — generate, critique, judge, remediate — run as a closed circuit. The one
-        exit on the right stays shut until a signed verifier reports a pass.
+        exit on the right stays shut until a signed verifier reports a pass; the repository
+        generates and checks those contract hashes in its own hooks.
       </desc>
       <circle cx={cx} cy={cy} r={r} fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.3" />
       {stages.map((label, i) => {
@@ -177,7 +178,7 @@ function VerifierLoop() {
         EXIT
       </text>
       <text x="272" y={cy + 18} className={styles.label} textAnchor="end">
-        hmac 3f9c…
+        SIGNED VERIFIER
       </text>
     </svg>
   );
@@ -265,8 +266,8 @@ function DiamondChart() {
       <title id="d5t">A North Indian chart and its ephemeris accuracy gate</title>
       <desc id="d5d">
         The twelve houses of a North Indian chart drawn in hairlines. One house is isolated by a
-        caliper reading the ayanamsa the production API returns; a drift beyond tolerance fails
-        the build.
+        caliper reading the Lahiri ayanamsa the repository configures as its default; a drift
+        beyond tolerance fails the build.
       </desc>
       <rect x="70" y="26" width="148" height="148" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.5" />
       <line x1="70" y1="26" x2="218" y2="174" stroke="currentColor" strokeWidth="0.75" opacity="0.35" />
@@ -288,7 +289,7 @@ function DiamondChart() {
         ayanamsa
       </text>
       <text x="242" y="72" className={styles.label}>
-        23.658909°
+        23.85° LAHIRI
       </text>
     </svg>
   );

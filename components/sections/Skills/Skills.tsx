@@ -180,8 +180,9 @@ export default function Skills() {
 
           <p className={styles.footer}>
             Calibrated against <code>public/docs/Vik_Resume_Final.pdf</code> · MD5{' '}
-            <code>{cvFingerprint.short}</code> · {cvFingerprint.bytes.toLocaleString()} bytes ·
-            document dated {cvFingerprint.modified}
+            <code>{cvFingerprint.short}</code> · {cvFingerprint.bytes.toLocaleString()} bytes.
+            Run <code>md5sum</code> against the PDF this page links to and you should get the
+            same eight characters.
           </p>
         </div>
       </div>

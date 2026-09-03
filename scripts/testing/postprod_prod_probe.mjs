@@ -10,14 +10,17 @@ const baseUrl = process.argv[2] || "https://forgotten-mistory.web.app";
 
 fs.mkdirSync(evidenceDir, { recursive: true });
 
+// The six sections app/page.tsx renders, in page order. #architecture-lab,
+// #work and #contact were deleted in the rebuild; probing for them made every
+// production run report three false failures, which is worse than no probe at
+// all because it trains the reader to ignore the report.
 const sections = [
   { id: "hero", name: "Hero" },
   { id: "about", name: "About" },
   { id: "experience", name: "Experience" },
   { id: "skills", name: "Skills" },
-  { id: "architecture-lab", name: "Architecture Lab" },
-  { id: "work", name: "Work" },
-  { id: "contact", name: "Contact" }
+  { id: "vitrine", name: "Vitrine" },
+  { id: "listen", name: "Listen" }
 ];
 
 const uiChecks = [];
@@ -52,7 +55,10 @@ for (const section of sections) {
   });
 }
 
-const navAnchors = ["#hero", "#about", "#experience", "#skills", "#architecture-lab", "#work", "#contact"];
+// Every in-page anchor the navigation offers. Kept in step with NAV_LINKS in
+// components/site/Navigation.tsx; a link here that no longer resolves is the
+// exact regression tests/e2e/navigation.spec.ts TC-NAV-04 guards against.
+const navAnchors = ["#hero", "#about", "#experience", "#skills", "#vitrine", "#listen"];
 await desktop.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
 await desktop.waitForTimeout(700);
 for (const anchor of navAnchors) {
@@ -268,11 +274,11 @@ const mobileShot = await screenshot(mobile, "mobile-home.png");
 uiChecks.push({ feature: "Mobile render", status: "PASS", evidence: mobileShot });
 
 await mobile.evaluate(() => {
-  document.querySelector("#contact")?.scrollIntoView({ behavior: "instant", block: "start" });
+  document.querySelector("#listen")?.scrollIntoView({ behavior: "instant", block: "start" });
 });
 await mobile.waitForTimeout(800);
-const mobileContact = await screenshot(mobile, "mobile-contact.png");
-uiChecks.push({ feature: "Mobile contact section", status: "PASS", evidence: mobileContact });
+const mobileContact = await screenshot(mobile, "mobile-listen.png");
+uiChecks.push({ feature: "Mobile closing section", status: "PASS", evidence: mobileContact });
 
 await mobileContext.close();
 await browser.close();

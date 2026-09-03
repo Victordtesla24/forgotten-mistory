@@ -84,10 +84,16 @@
 }
 
 /* ── State: self-reported ─────────────────────────────────────────────────
-   Solid arms, grey value: a CV figure with no published methodology. It is
-   still a claim worth making — it is simply not the same kind of claim. */
+   A CV figure with no published methodology behind it. The grade is carried by
+   the jaws and the ◐, not by dimming the number: the figure is still true and
+   still the point, and washing it out would punish the honesty rather than the
+   claim. Grey jaws, white value. */
 .caliper[data-state="self-reported"] {
     color: var(--mist-400);
+}
+
+.caliper[data-state="self-reported"] .value {
+    color: var(--white);
 }
 
 .caliper[data-state="self-reported"] .value::after {

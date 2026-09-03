@@ -53,17 +53,19 @@ export default function Hero() {
           {heroContent.statement}
         </p>
 
-        <ul
-          className={styles.ledger}
-          aria-label="Delivery record"
-          style={{ '--step': 4 } as React.CSSProperties}
-        >
+        {/* The ledger and the note that grades it sit side by side on a wide
+            screen: the note explains the marks without costing the fold, and it
+            occupies space the hero was otherwise leaving empty. */}
+        <div className={styles.ledgerRow} style={{ '--step': 4 } as React.CSSProperties}>
+        <ul className={styles.ledger} aria-label="Delivery record">
           {heroContent.ledger.map((entry) => (
             <li key={entry.label} className={styles.ledgerItem}>
-              {/* Every hero figure is measured and carries its source on the
-                  next line but one, so all three close. A reader meets the mark
-                  here, and meets the open one later without needing a legend. */}
-              <Caliper state="sourced" className={styles.ledgerValue}>
+              {/* Self-reported, not sourced. These three are his own account of
+                  his own programmes: the line beneath each says where the work
+                  happened, but no third party published a methodology a reader
+                  could go and check. Grading them as measured would be the
+                  first dishonest thing on a page arguing for the opposite. */}
+              <Caliper state="self-reported" className={styles.ledgerValue}>
                 {entry.value}
               </Caliper>
               <span className={styles.ledgerLabel}>{entry.label}</span>
@@ -73,6 +75,12 @@ export default function Hero() {
             </li>
           ))}
         </ul>
+
+        {/* The mark is learned here, with its grade stated once. */}
+        <p className={styles.grading}>
+          ◐ self-reported, from my CV. Repository figures below are harvested and dated.
+        </p>
+        </div>
 
         <div className={styles.actions} style={{ '--step': 5 } as React.CSSProperties}>
           <a className={styles.primaryAction} href={heroContent.actions.primary.href}>

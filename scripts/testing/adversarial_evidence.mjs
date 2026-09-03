@@ -29,21 +29,19 @@ const VIEWPORTS = [
   { name: "mobile", width: 390, height: 844 },
 ];
 
+// The six sections app/page.tsx renders, in page order. This list used to name
+// fourteen: #proof, #architecture-lab, #arch-explainer, #work,
+// #projects-carousel, #github-projects, #mindset, #synthesis, #dossier and
+// #contact were all deleted in the rebuild, and an adversarial probe that
+// reports eight guaranteed misses is reporting on itself rather than on the
+// site.
 const SECTIONS = [
   "hero",
-  "proof",
   "about",
   "experience",
   "skills",
-  "architecture-lab",
-  "arch-explainer",
-  "work",
-  "projects-carousel",
-  "github-projects",
-  "mindset",
-  "synthesis",
-  "dossier",
-  "contact",
+  "vitrine",
+  "listen",
 ];
 
 const CHAT_QUESTIONS = [
@@ -92,7 +90,9 @@ async function captureViewport(browser, vp) {
   });
 
   await page.goto(BASE_URL, { waitUntil: "domcontentloaded", timeout: 60000 });
-  // Let the preloader clear and hero animations settle.
+  // There is no preloader to clear — the hero is server-rendered. The wait is
+  // for the CSS entrance and the deferred scenes to settle before evidence is
+  // captured.
   await sleep(6000);
 
   // Scroll through the whole page in steps to trigger scroll-driven animations,

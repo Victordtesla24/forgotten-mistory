@@ -147,7 +147,7 @@ export default function Experience() {
 
                 {role.span.headline ? (
                   <p className={styles.roleHeadline}>
-                    <Caliper state="sourced" className={styles.roleHeadlineValue}>
+                    <Caliper state="self-reported" className={styles.roleHeadlineValue}>
                       {role.span.headline.value}
                     </Caliper>
                     <span className={styles.roleHeadlineLabel}>{role.span.headline.label}</span>

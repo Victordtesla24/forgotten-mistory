@@ -61,7 +61,10 @@ async function readHero(page) {
       location: paragraphs[0]?.textContent?.trim() ?? '',
       name: hero.querySelector('h1')?.textContent?.trim() ?? '',
       role: paragraphs[1]?.textContent?.trim() ?? '',
-      availability: paragraphs[3]?.textContent?.split('LinkedIn')[0]?.trim() ?? '',
+      availability:
+        paragraphs
+          .map((el) => el.textContent?.split('LinkedIn')[0]?.trim() ?? '')
+          .find((text) => text.startsWith('Open to')) ?? '',
       ledger: [...hero.querySelectorAll('ul li')].map((li) => {
         // The caliper carries a visually-hidden gloss ("(Measured; source
         // given.)") for screen readers. It is one more <span> in the same

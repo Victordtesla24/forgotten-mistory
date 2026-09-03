@@ -96,8 +96,10 @@ test.describe('Skills', () => {
     await expect(page.locator(`${SKILLS} table tbody tr[data-status="pending"]`)).toBeHidden();
 
     // The card holds its height, so nothing below the section moves under the
-    // reader while they are using it.
-    expect(await sectionHeight()).toBe(before);
+    // reader while they are using it. A one-pixel tolerance covers sub-pixel
+    // rounding of a fractional layout — the wrapper's min-height is pinned to
+    // the unfiltered table, and that is what actually prevents the shift.
+    expect(Math.abs((await sectionHeight()) - before)).toBeLessThanOrEqual(1);
 
     await page.locator(`${SKILLS} button`, { hasText: 'Everything' }).click();
     expect(await visibleRows()).toBe(all);

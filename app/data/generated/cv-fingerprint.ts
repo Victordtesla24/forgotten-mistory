@@ -11,7 +11,5 @@ export const cvFingerprint = {
   md5: '16b856c0f3f4ec0d801fdde6d084452c',
   /** The short form printed in the calibration footer. */
   short: '16b856c0',
-  /** Last modification time of the CV file itself, not of this build. */
-  modified: '2026-07-09',
   bytes: 157615,
 } as const;

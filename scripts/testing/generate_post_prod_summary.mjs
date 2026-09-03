@@ -31,7 +31,7 @@ const clsValue = lighthouse?.audits?.["cumulative-layout-shift"]?.numericValue ?
 
 const gateRows = [
   ["Background Gate", rendering.gates.backgroundGate.pass],
-  ["Preloader Gate", rendering.gates.preloaderGate.pass],
+  ["First-Paint Gate", rendering.gates.firstPaintGate.pass],
   ["Layering Gate", rendering.gates.layeringGate.pass],
   ["Console Gate", rendering.gates.consoleGate.pass],
   ["Stability Gate (3 reloads)", rendering.gates.stabilityGate.pass],
@@ -47,13 +47,17 @@ const runRows = rendering.runs.flatMap((run) => {
       evidence: run.firstPaintEvidence
     },
     {
-      check: `Run ${run.run}: preloader visible mid-load`,
-      pass: run.preloaderState.preloaderVisible,
-      evidence: run.preloaderEvidence
+      // Reads the renamed field from rendering_stability_validation.mjs. The
+      // preloader is deleted, so "was the boot wipe visible?" became "was the
+      // server-rendered hero copy already painted?" — the opposite expectation
+      // about the same frame.
+      check: `Run ${run.run}: hero copy painted early`,
+      pass: run.earlyState.heroCopyPainted,
+      evidence: run.earlyEvidence
     },
     {
-      check: `Run ${run.run}: settled render after preloader`,
-      pass: run.gates.preloaderPass,
+      check: `Run ${run.run}: settled render is ready and layered`,
+      pass: run.gates.firstPaintPass,
       evidence: run.settledEvidence
     }
   ];

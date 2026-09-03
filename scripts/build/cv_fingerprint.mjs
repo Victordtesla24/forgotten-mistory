@@ -32,7 +32,9 @@ try {
 
 const digest = createHash('md5').update(bytes).digest('hex');
 const short = digest.slice(0, 8);
-const { mtime, size } = statSync(CV_PATH);
+// Size only. The file's mtime is when this checkout wrote it, not when the
+// document was authored, and the page previously printed it as "document dated".
+const { size } = statSync(CV_PATH);
 
 const file = `/**
  * GENERATED FILE — do not edit.
@@ -47,12 +49,10 @@ export const cvFingerprint = {
   md5: '${digest}',
   /** The short form printed in the calibration footer. */
   short: '${short}',
-  /** Last modification time of the CV file itself, not of this build. */
-  modified: '${mtime.toISOString().slice(0, 10)}',
   bytes: ${size},
 } as const;
 `;
 
 mkdirSync(dirname(OUT_PATH), { recursive: true });
 writeFileSync(OUT_PATH, file, 'utf8');
-console.log(`[cv-fingerprint] ${short} · ${size} bytes · modified ${mtime.toISOString().slice(0, 10)}`);
+console.log(`[cv-fingerprint] ${short} · ${size} bytes`);

@@ -11,20 +11,31 @@ const baseUrlInput = process.argv[2] || "https://forgotten-mistory.web.app";
 const baseUrl = baseUrlInput.replace(/\/$/, "");
 
 const runCount = 3;
-const sections = ["hero", "about", "experience", "skills", "architecture-lab", "work", "contact"];
-const navAnchors = ["#hero", "#about", "#experience", "#skills", "#architecture-lab", "#work", "#contact"];
+
+// The six sections app/page.tsx renders, and the six in-page anchors the
+// navigation offers for them. The rebuild deleted #architecture-lab, #work and
+// #contact, so probing for those turned every production run into three
+// guaranteed failures — a report that always fails is a report nobody reads.
+const sections = ["hero", "about", "experience", "skills", "vitrine", "listen"];
+const navAnchors = ["#hero", "#about", "#experience", "#skills", "#vitrine", "#listen"];
+
+// The mid-load frame is no longer a preloader wipe. components/site/Preloader.tsx
+// is deleted and the hero is server-rendered, so what this run captures at ~900 ms
+// is the real page settling rather than a boot animation being sat out — the
+// filenames say "early" instead of "preloader-mid" so the evidence is not
+// mislabelled for whoever reads the report.
 const requiredEvidence = [
   "stability-run1-first-paint.png",
-  "stability-run1-preloader-mid.png",
+  "stability-run1-early.png",
   "stability-run1-settled.png",
   "stability-run2-first-paint.png",
-  "stability-run2-preloader-mid.png",
+  "stability-run2-early.png",
   "stability-run2-settled.png",
   "stability-run3-first-paint.png",
-  "stability-run3-preloader-mid.png",
+  "stability-run3-early.png",
   "stability-run3-settled.png",
   "stability-mobile-home.png",
-  "stability-mobile-contact.png"
+  "stability-mobile-listen.png"
 ];
 
 fs.mkdirSync(evidenceDir, { recursive: true });
@@ -81,48 +92,39 @@ const evaluateState = async (page) => {
       return [Number(match[0]), Number(match[1]), Number(match[2])];
     };
 
-    const preloader = document.querySelector(".preloader");
-    const preloaderStyle = preloader ? getComputedStyle(preloader) : null;
-    const preloaderVisible = Boolean(
-      preloader &&
-      preloaderStyle &&
-      preloaderStyle.display !== "none" &&
-      Number.parseFloat(preloaderStyle.opacity || "0") > 0.15
-    );
-    const preloaderGone = Boolean(
-      !preloader ||
-      (preloaderStyle && (preloaderStyle.display === "none" || Number.parseFloat(preloaderStyle.opacity || "0") < 0.05))
-    );
+    // What replaced the preloader gate. The hero is server-rendered, so the
+    // very first paint must already carry the name — a blank first frame is now
+    // the defect, where before it was the expected boot state.
+    const heroName = document.querySelector("#hero h1");
+    const heroCopyPainted = Boolean(heroName && (heroName.textContent || "").trim().length > 0);
 
     const bodyStyle = getComputedStyle(document.body);
     const htmlStyle = getComputedStyle(document.documentElement);
     const bodyBackgroundColor = bodyStyle.backgroundColor;
     const htmlBackgroundColor = htmlStyle.backgroundColor;
 
-    const spaceScene = document.querySelector("div.fixed.top-0.left-0.w-full.h-full.-z-10.bg-black");
-    const cosmicBackdrop = document.querySelector(".cosmic-backdrop");
+    // What replaced the starfield-layering gate. There is no page-wide
+    // SpaceScene or .cosmic-backdrop any more; each section owns its own scene,
+    // mounted into an aria-hidden slot that must sit behind that section's copy.
+    // The hero's is the one that has to be right on first paint.
+    const zOf = (el) => {
+      if (!el) return null;
+      const raw = getComputedStyle(el).zIndex;
+      return raw === "auto" ? 0 : Number(raw);
+    };
+    const heroStage = document.querySelector("#hero > div[aria-hidden='true']");
+    const heroContent = document.querySelector("#hero > div:not([aria-hidden='true'])");
 
     return {
-      preloaderVisible,
-      preloaderGone,
+      heroCopyPainted,
       pageReady: document.body.classList.contains("page-ready"),
       bodyBackground: bodyStyle.background,
       bodyBackgroundColor,
       bodyRgb: parseRgb(bodyBackgroundColor),
       htmlBackgroundColor,
       htmlRgb: parseRgb(htmlBackgroundColor),
-      spaceScene: spaceScene
-        ? {
-            present: true,
-            zIndex: getComputedStyle(spaceScene).zIndex
-          }
-        : { present: false, zIndex: null },
-      cosmicBackdrop: cosmicBackdrop
-        ? {
-            present: true,
-            zIndex: getComputedStyle(cosmicBackdrop).zIndex
-          }
-        : { present: false, zIndex: null }
+      heroStage: heroStage ? { present: true, zIndex: zOf(heroStage) } : { present: false, zIndex: null },
+      heroContent: heroContent ? { present: true, zIndex: zOf(heroContent) } : { present: false, zIndex: null }
     };
   });
 };
@@ -147,9 +149,9 @@ for (let i = 1; i <= runCount; i += 1) {
   allEvidence.add(firstPaintShot);
 
   await page.waitForTimeout(900);
-  const preloaderShot = await screenshot(page, `stability-run${i}-preloader-mid.png`);
-  allEvidence.add(preloaderShot);
-  const preloaderState = await evaluateState(page);
+  const earlyShot = await screenshot(page, `stability-run${i}-early.png`);
+  allEvidence.add(earlyShot);
+  const earlyState = await evaluateState(page);
 
   await page.waitForTimeout(2500);
   const settledShot = await screenshot(page, `stability-run${i}-settled.png`);
@@ -240,30 +242,30 @@ for (let i = 1; i <= runCount; i += 1) {
   const [bodyR, bodyG, bodyB] = settledState.bodyRgb;
   const [htmlR, htmlG, htmlB] = settledState.htmlRgb;
   const backgroundPass = luminance(bodyR, bodyG, bodyB) < 45 && luminance(htmlR, htmlG, htmlB) < 35;
-  const preloaderPass = preloaderState.preloaderVisible && settledState.preloaderGone && settledState.pageReady;
+  // The hero must be readable early and the page must announce itself ready.
+  const firstPaintPass = earlyState.heroCopyPainted && settledState.heroCopyPainted && settledState.pageReady;
   const layeringPass =
-    settledState.spaceScene.present &&
-    settledState.cosmicBackdrop.present &&
-    Number.parseInt(settledState.spaceScene.zIndex || "0", 10) <= -10 &&
-    Number.parseInt(settledState.cosmicBackdrop.zIndex || "0", 10) === -9;
+    settledState.heroStage.present &&
+    settledState.heroContent.present &&
+    Number(settledState.heroStage.zIndex) < Number(settledState.heroContent.zIndex);
   const consolePass = consoleSummary.appWarningsOrErrors === 0 && consoleSummary.gsapWarnings === 0;
 
   runs.push({
     run: i,
     url: runUrl,
     firstPaintEvidence: firstPaintShot,
-    preloaderEvidence: preloaderShot,
+    earlyEvidence: earlyShot,
     settledEvidence: settledShot,
-    preloaderState,
+    earlyState,
     settledState,
     consoleSummary,
     gates: {
       backgroundPass,
-      preloaderPass,
+      firstPaintPass,
       layeringPass,
       consolePass
     },
-    pass: backgroundPass && preloaderPass && layeringPass && consolePass
+    pass: backgroundPass && firstPaintPass && layeringPass && consolePass
   });
 
   await context.close();
@@ -282,17 +284,17 @@ await mobilePage.waitForTimeout(3200);
 const mobileHome = await screenshot(mobilePage, "stability-mobile-home.png");
 allEvidence.add(mobileHome);
 await mobilePage.evaluate(() => {
-  document.getElementById("contact")?.scrollIntoView({ behavior: "instant", block: "start" });
+  document.getElementById("listen")?.scrollIntoView({ behavior: "instant", block: "start" });
 });
 await mobilePage.waitForTimeout(700);
-const mobileContact = await screenshot(mobilePage, "stability-mobile-contact.png");
+const mobileContact = await screenshot(mobilePage, "stability-mobile-listen.png");
 allEvidence.add(mobileContact);
 await mobileContext.close();
 await browser.close();
 
 functionalChecks.push(
   { check: "Mobile render: home", pass: true, evidence: mobileHome },
-  { check: "Mobile render: contact", pass: true, evidence: mobileContact }
+  { check: "Mobile render: listen", pass: true, evidence: mobileContact }
 );
 
 const stabilityPass = runs.every((run) => run.pass);
@@ -306,8 +308,8 @@ const result = {
     backgroundGate: {
       pass: runs.every((run) => run.gates.backgroundPass)
     },
-    preloaderGate: {
-      pass: runs.every((run) => run.gates.preloaderPass)
+    firstPaintGate: {
+      pass: runs.every((run) => run.gates.firstPaintPass)
     },
     layeringGate: {
       pass: runs.every((run) => run.gates.layeringPass)

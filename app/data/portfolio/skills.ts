@@ -71,7 +71,7 @@ export const capabilities: Capability[] = [
   },
   {
     capability: 'Multi-agent system design — Python, FastAPI, Postgres, Redis',
-    evidence: '20 agent engines · 23 routers · 4,272 backend tests · live on a VPS',
+    evidence: '20 agent engines · 22 routers · 4,272 backend tests · live on a VPS',
     where: 'aether-job-career-agent',
     status: 'production',
   },
@@ -84,7 +84,7 @@ export const capabilities: Capability[] = [
   },
   {
     capability: 'Next.js and TypeScript at production scale',
-    evidence: '39 routes · 151 components · 2,326 unit cases · 26 Playwright specs',
+    evidence: '39 page routes · 2,326 unit cases · 26 Playwright specs',
     where: 'aether-job-career-agent',
     status: 'production',
   },
@@ -101,11 +101,11 @@ export const capabilities: Capability[] = [
     status: 'production',
   },
   {
-    capability: 'Kubernetes and Terraform',
-    evidence: 'gateway, AI service and Redis manifests authored',
+    capability: 'Multi-service orchestration — Docker Compose',
+    evidence: 'gateway, AI service and Redis composed across separate stacks',
     where: 'containerised-birth-time-rectifier',
     status: 'non-production',
-    caveat: 'manifests exist and are reviewed; no cluster of his is running them today',
+    caveat: 'Compose, not Kubernetes — there are no cluster manifests in that repository',
   },
   {
     capability: 'WebGL and GLSL — three.js, React Three Fiber',
@@ -114,8 +114,8 @@ export const capabilities: Capability[] = [
     status: 'production',
   },
   {
-    capability: 'Data visualisation — D3, React',
-    evidence: 'customer-journey timeline; sprint velocity and LLM retrospectives',
+    capability: 'Data visualisation',
+    evidence: 'customer-journey timeline in React/TypeScript; sprint-velocity dashboard in Python',
     where: 'relationship-timeline-feature · EFDDH-Jira-Analytics-Dashboard',
     status: 'production',
   },
