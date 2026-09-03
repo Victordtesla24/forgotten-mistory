@@ -109,7 +109,7 @@ export default function Footer() {
                 href={`https://github.com/Victordtesla24/forgotten-mistory/commit/${stamp.sha}`}
               >
                 {stamp.sha}
-              </a>{' '}
+              </a>
               <span className={styles.buildLabel}>
                 , authored {readableDate(stamp.authored)}. The source is open; so is the record of
                 what changed.

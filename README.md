@@ -16,7 +16,7 @@
 
 [![Live](https://img.shields.io/badge/live-forgotten--mistory.web.app-c9a84c?style=for-the-badge)](https://forgotten-mistory.web.app)
 [![Build](https://img.shields.io/badge/static%20export-Next.js%2014-f4f6fa?style=for-the-badge)](https://nextjs.org)
-[![Audit](https://img.shields.io/badge/static%20audit-9%2F9-c9a84c?style=for-the-badge)](scripts/validate/overhaul_static_audit.mjs)
+[![Audit](https://img.shields.io/badge/static%20audit-10%2F10-c9a84c?style=for-the-badge)](scripts/validate/overhaul_static_audit.mjs)
 [![A11y](https://img.shields.io/badge/WCAG%20A%2FAA-0%20violations-f4f6fa?style=for-the-badge)](scripts/validate/axe_live_audit.mjs)
 
 *"I have been wrong often enough to want to hear it early."*
@@ -41,7 +41,7 @@
 - [Design system](#-design-system)
 - [Architecture](#-architecture)
 - [Content model](#-content-model)
-- [The avatar](#-the-avatar)
+- [Synthetic media, and where it is declared](#-synthetic-media-and-where-it-is-declared)
 - [Repository layout](#-repository-layout)
 - [Getting started](#-getting-started)
 - [Quality gates](#-quality-gates)
@@ -65,7 +65,6 @@ no analytics, no tracker and no contact form.
 
 Every portfolio claims competence. This one is built so a reader can **check** the claims
 without leaving the page, and so it says plainly when a claim cannot be checked.
-
 | Principle | How it is enforced |
 | --- | --- |
 | Every figure carries its source | The source is printed under the figure, not in a tooltip |
@@ -74,12 +73,11 @@ without leaving the page, and so it says plainly when a claim cannot be checked.
 | Unmeasurable is stated, not omitted | The open caliper, with the reason where the value would be |
 | Content matches the CV | The Skills footer prints an MD5 of the PDF, generated from its bytes |
 | Repository metrics are dated | Harvested from the GitHub API on a stated date, never implied live |
-| The synthetic thing says it is synthetic | The avatar's disclosure is visible before it plays |
+| The synthetic thing says it is synthetic | One production credit in the footer names the assistant's generated likeness and cloned voice |
 
 ---
 
 ## ◆ The six sections
-
 | # | Section | What it does | Its signature |
 | --- | --- | --- | --- |
 | 01 | **Hero** | Name, one sentence, three figures, two actions | Server-rendered — complete with JavaScript disabled |
@@ -104,7 +102,6 @@ flowchart LR
 ## ◆ The caliper bracket
 
 One mark, three states, and the only thing the site asks a reader to learn.
-
 | State | Drawing | Meaning |
 | --- | --- | --- |
 | **Closed, gold** | Solid hairline jaws | Measured, and its source is printed with it |
@@ -121,7 +118,6 @@ directly fails the build.
 ---
 
 ## ◆ Design system
-
 | Role | Face | Where it is allowed |
 | --- | --- | --- |
 | Display | **Source Serif 4** (400) | The h1, six section titles, every large figure |
@@ -133,7 +129,6 @@ asserts it.
 
 Colour is achromatic plus one accent, taken verbatim from the Aether brand tokens so the
 product and the portfolio read as the same hand:
-
 | Token | Value |
 | --- | --- |
 | `--ink-900` … `--ink-700` | `#0A0B0D` · `#121317` · `#1B1D23` |
@@ -173,7 +168,6 @@ compass, which used to be a scene, is now inline SVG for exactly that reason.
 
 Facts live in typed modules and nowhere else. A section renders them; it never restates
 them.
-
 | File | Purpose |
 | --- | --- |
 | `app/data/siteContent.ts` | Roles, dates, skills, contact — parity with the CV PDF |
@@ -183,26 +177,30 @@ them.
 | `app/data/portfolio/skills.ts` | Capabilities, evidence, and where each was measured |
 | `app/data/portfolio/vitrine.ts` | The six repositories, and the three excluded with reasons |
 | `app/data/portfolio/listen.ts` | Sixty-six words |
-| `app/data/portfolio/avatar.ts` | The clip's disclosure, provenance and transcript |
 | `app/data/generated/*` | Written by build scripts — CV fingerprint, repo harvest |
 
 ---
 
-## ◆ The avatar
+## ◆ Synthetic media, and where it is declared
 
-Twenty-nine seconds, at the end of the page, waiting to be asked.
+The site used to end with a twenty-nine-second clip of a synthetic Vikram introducing himself.
+It was removed: a self-introduction is the one thing a page arguing *check my claims* cannot
+ask you to take on trust, and four sentences of "what you're watching is an AI-generated
+avatar" is a disclaimer, not a demonstration. The player, its stylesheet, its data module and
+4,078,491 bytes of assets went with it, and the asset URL returns 404.
 
-| Component | Source |
-| --- | --- |
-| Face | His own photograph |
-| Voice | His own voice, cloned from a recording of him |
-| Script | Written by him — the transcript is on the page, verbatim |
-| Render | ByteDance OmniHuman 1.5, single take, 1440×1440, no edit |
+What remains synthetic is the assistant. Its launcher plays a model-generated likeness built
+from his own photograph, and on first open it greets you in his own cloned voice.
 
-Three rules, each held by a test: the disclosure is visible **before** playing and not only
-in the audio; the transcript is on the page as text so nobody must watch a synthetic face to
-get the content; and it never autoplays and never loops. A visitor who does not press play
-pays for a 29 kB poster and nothing else.
+That is declared exactly once, in the footer, as a line of authorship — the way a film names
+its cinematographer:
+
+> The assistant's face is a model-generated likeness built from my own photograph, and its
+> greeting is my own voice, cloned. Everything else here — every figure, every drawing, every
+> line — is not.
+
+No modal, no banner, no badge, no asterisk, no warning icon, and nothing pre-emptive beside it.
+Removing an apology never removes the accuracy it happened to carry.
 
 ---
 
@@ -220,12 +218,18 @@ components/
   marks/Caliper.tsx        The one mark the site asks a reader to learn
   gl/                      Scene + capability probe — the only place a Canvas may exist
   site/Navigation.tsx      Menu; every anchor must resolve to a real section
+  site/Footer.tsx          The statement, the production credit, and a build stamp read
+                           from git at build time — the short SHA links to the commit
+                           that produced the bytes you are reading
   MiniVicBot.tsx           The AI clone (optional Firebase Function behind it)
 scripts/
   build/cv_fingerprint.mjs Stamps the CV's MD5 into the calibration card
   build/harvest_repos.mjs  Dated repository metrics from the GitHub API
   build/og_card.mjs        Renders the social card from the served page
   validate/                The audit gates
+  validate/lib/            Shared guards — including the readiness probe that asserts
+                           WHICH service answered, after six phase gates spent months
+                           passing against an unrelated API that happened to hold :8000
 tests/
   e2e/                     One spec per section — the contracts above
 ```
@@ -249,12 +253,11 @@ PLAYWRIGHT_BASE_URL=http://localhost:5599 npx playwright test tests/e2e
 ---
 
 ## ◆ Quality gates
-
 | Gate | Command | Bar |
 | --- | --- | --- |
 | Types | `npx tsc --noEmit` | clean |
 | Lint | `npx next lint` | clean |
-| Static audit | `node scripts/validate/overhaul_static_audit.mjs` | 9/9 |
+| Static audit | `node scripts/validate/overhaul_static_audit.mjs` | 10/10 |
 | Section suites | `npx playwright test tests/e2e` | all green |
 | Accessibility | `node scripts/validate/axe_live_audit.mjs` | 0 serious/critical |
 

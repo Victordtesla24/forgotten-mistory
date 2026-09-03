@@ -83,11 +83,106 @@
        on the closing sentence, and has no business on the critical path. */
     --font-heading-italic: var(--font-serif-italic), 'Source Serif 4', ui-serif, Georgia, serif;
     --font-mono: var(--font-plex-mono), 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
-    --motion-fast: 220ms;
-    --motion-base: 360ms;
-    --motion-slow: 520ms;
+    /* ── Motion (R-46 / SC-27.1) ───────────────────────────────────────────
+       Two bands, and nothing is allowed to sit between them. Interface motion
+       answers a gesture in 200-450ms — fast enough to feel like a response,
+       slow enough to be seen. Cinematic motion carries a reveal in 600-1200ms.
+       The retired --motion-slow (520ms) fell in the dead zone: too slow to
+       read as feedback, too quick to read as staging.
+
+       Stagger intervals are the gap BETWEEN two entrances, not the length of
+       one, so they are outside the bands by construction.
+
+       Easing is always a custom cubic-bezier. The browser keywords (ease,
+       linear, ease-in-out) are not part of this system: they describe no
+       physical object and give every site the same acceleration. */
+    /* Interface — 200-450ms */
+    --motion-fast: 200ms;
+    --motion-base: 320ms;
+    --motion-emphatic: 440ms;
+    /* Cinematic — 600-1200ms */
+    --motion-cine-in: 720ms;
+    --motion-cine: 900ms;
+    --motion-cine-long: 1160ms;
+    /* Stagger intervals — not durations. */
+    --stagger-tight: 60ms;
+    --stagger: 90ms;
+    --stagger-loose: 140ms;
+    /* Easing — custom bezier only, no keywords, ever. */
     --motion-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
     --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+    --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+    --motion-ease-chrome: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    /* ── The 8-point spatial scale (R-48 / SC-29.1) ─────────────────────────
+       Declared here so a module author reaches for a step instead of typing a
+       literal. Every margin, padding, gap and inset under components/** is one
+       of these, a clamp() whose BOTH endpoints are one of these, or a calc()
+       over them. --space-05 (4px) is the only sub-8 step and is permitted only
+       for an intra-component hairline gap (a dot beside its label); it is not
+       a layout step. --space-20 is the shipped section rhythm. */
+    --space-0: 0;
+    --space-05: 0.25rem;  /*   4px */
+    --space-1: 0.5rem;    /*   8px */
+    --space-2: 1rem;      /*  16px */
+    --space-3: 1.5rem;    /*  24px */
+    --space-4: 2rem;      /*  32px */
+    --space-5: 2.5rem;    /*  40px */
+    --space-6: 3rem;      /*  48px */
+    --space-8: 4rem;      /*  64px */
+    --space-10: 5rem;     /*  80px */
+    --space-14: 7rem;     /* 112px */
+    --space-20: 10rem;    /* 160px */
+
+    /* ── The modular type scale (R-47 / SC-28.1) ────────────────────────────
+       Ratio 1.20 (minor third) at the small end, opening to 1.25 above step 4,
+       anchored on the shipped 1rem body and the shipped section-title clamp
+       (which is --fs-title, unchanged). Every step is fluid: the clamp's slope
+       is what keeps the measure inside 55-75ch across the whole viewport range
+       instead of only at the breakpoints someone remembered to check.
+
+       Optical tuning belongs to the step, not to the call site: tracking opens
+       as size falls and tightens as it rises, and leading is bound to the step
+       — which is why there are six leading values on this site and not
+       nineteen. --lh-* names them so a module can say which step it is on. */
+    --fs-micro: clamp(0.625rem, 0.20vw + 0.58rem, 0.6875rem);
+    --fs-caption: clamp(0.6875rem, 0.22vw + 0.64rem, 0.75rem);
+    --fs-small: clamp(0.8125rem, 0.25vw + 0.75rem, 0.875rem);
+    --fs-body: clamp(0.9375rem, 0.30vw + 0.87rem, 1rem);
+    --fs-lede: clamp(1rem, 0.40vw + 0.90rem, 1.125rem);
+    --fs-h3: clamp(1.1875rem, 0.75vw + 1rem, 1.4375rem);
+    --fs-h2: clamp(1.4375rem, 1.4vw + 1.1rem, 1.875rem);
+    --fs-title: clamp(2rem, 4.2vw, 3.4rem);
+    --fs-display: clamp(2.4rem, 5.6vw, 4rem);
+    --fs-name: clamp(3rem, 8.2vw, 7.5rem);
+    /* Tracking, per step. */
+    --ls-micro: 0.08em;
+    --ls-caption: 0.06em;
+    --ls-small: 0.02em;
+    --ls-body: 0;
+    --ls-lede: -0.005em;
+    --ls-h3: -0.012em;
+    --ls-h2: -0.018em;
+    --ls-title: -0.025em;
+    --ls-display: -0.03em;
+    --ls-name: -0.035em;
+    /* Leading, per step — nineteen values collapse to six. */
+    --lh-tight: 1.05;   /* steps 4-6 */
+    --lh-heading: 1.2;  /* step 3 */
+    --lh-snug: 1.35;    /* step 2 */
+    --lh-label: 1.5;    /* steps -3/-2 */
+    --lh-caption: 1.55; /* step -1 */
+    --lh-prose: 1.68;   /* steps 0-1 */
+
+    /* ── Measure (R-47 / SC-28.1) ───────────────────────────────────────────
+       Two classes, and nothing between 27ch and 57ch is permitted for prose.
+       --measure-read is running text; because it is expressed in ch it tracks
+       the font-size clamp, so it holds 55-75 characters at every breakpoint
+       rather than only at the one the layout was drawn at. --measure-display
+       is for a display-size single sentence, which is a typographic object and
+       not a paragraph. */
+    --measure-read: clamp(58ch, 64ch + 0.4vw, 72ch);
+    --measure-display: 26ch;
 
     /* ── Cinematic-monochrome design language (overhaul INC1) — derived only, no new hue.
        Every colour below is a locked token or an achromatic rgb()/rgba() of a token RGB
@@ -174,7 +269,7 @@ body {
     height: 100%;
     z-index: -1;
     pointer-events: none;
-    transition: opacity 0.4s ease;
+    transition: opacity var(--motion-emphatic) var(--motion-ease-standard);
 }
 
 /* Raise space scene opacity during modal so FX is visible through light scrim (IV-3) */
@@ -222,21 +317,6 @@ body::before {
    (framer transform); only opacity transitions here. */
 /* Cursor state machine — the outline reshapes per body[data-cursor-state]. */
 
-/* Magnetic hover zones — pull toward the pointer via --mag-x/--mag-y (CursorGlow).
-   The composed :hover rules fold the pull into each zone's existing lift so neither
-   gesture clobbers the other. */
-[data-magnetic] {
-    transform: translate(var(--mag-x, 0px), var(--mag-y, 0px));
-    transition: transform 0.22s var(--motion-ease-emphasized);
-    will-change: transform;
-}
-@media (prefers-reduced-motion: reduce) {
-    [data-magnetic] {
-        transform: none;
-        transition: none;
-    }
-}
-
 /* Typography & Links */
 /* 400 and negative tracking, not 700 and +0.5px.
    Source Serif 4 is loaded at one normal weight — 400 — because that is the
@@ -256,7 +336,7 @@ h1, h2, h3, .role {
 a {
     text-decoration: none;
     color: inherit;
-    transition: color 0.3s ease;
+    transition: color var(--motion-base) var(--motion-ease-standard);
 }
 
 /* Navigation */
@@ -279,7 +359,7 @@ nav {
 
     /* FR-NAV "again-on-scroll": smooth slide-out/in on scroll direction change.
        Disabled under prefers-reduced-motion via the media query below. */
-    transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition: transform var(--motion-emphatic) var(--motion-ease-chrome);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -292,7 +372,7 @@ nav {
     text-decoration: none;
     /* 600, which is a weight Inter is actually loaded at. 700 was synthesised. */
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: var(--fs-lede);
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--white);
@@ -304,7 +384,7 @@ nav {
     color: inherit;
     font-family: inherit;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: var(--fs-small);
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 500;
@@ -373,10 +453,10 @@ nav {
 .nav-link {
     display: block;
     font-family: var(--font-heading);
-    font-size: 4rem;
+    font-size: var(--fs-display);
     color: var(--white);
     transform: translateY(100%);
-    transition: transform 0.5s ease;
+    transition: transform var(--motion-emphatic) var(--motion-ease-emphasized);
 }
 
 .nav-link:hover {
@@ -393,7 +473,7 @@ nav {
         padding: 5.5rem 1.5rem 3rem;
     }
     .nav-link {
-        font-size: clamp(2rem, 9vw, 3rem);
+        font-size: var(--fs-title);
     }
     .nav-links li {
         margin: 0.6rem 0;
@@ -420,41 +500,6 @@ footer {
 
 /* Hero Section */
 
-/* ── Parallax Depth Layers ────────────────────────────────────────── */
-/* Driven by script.js which reads data-speed & data-parallax="true"  */
-/* and sets --parallax-y / --parallax-x custom properties per element */
-[data-parallax="true"] {
-    will-change: transform;
-    transition: transform 0.08s linear;
-}
-
-/* Outcome / hero meta cards — pulse-glow on hover */
-@keyframes outcomeGlow {
-    0%   { box-shadow: 0 0 0px transparent; }
-    50%  { box-shadow: 0 0 22px rgba(244, 246, 250, 0.45), 0 0 6px rgba(244, 246, 250, 0.2) inset; }
-    100% { box-shadow: 0 0 0px transparent; }
-}
-
-[data-outcome-card="true"] {
-    position: relative;
-    transition:
-        transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.25s ease,
-        border-color 0.25s ease;
-}
-
-[data-outcome-card="true"]:hover,
-[data-outcome-card="true"]:focus-visible {
-    transform: translateY(-4px) scale(1.03);
-    animation: outcomeGlow 1.4s ease-in-out infinite;
-    border-color: rgba(244, 246, 250, 0.5) !important;
-    outline: none;
-}
-
-[data-outcome-card="true"]:active {
-    transform: translateY(-1px) scale(1.01);
-}
-
 /* ── Hire-conversion first paint (fable5-plan) ─────────────────────────────────
    Scannable positioning, ATF proof strip, LinkedIn/CV CTAs and the credibility
    band. Monochrome only — achromatic tokens + near-white glows, no hue. */
@@ -480,11 +525,11 @@ footer {
     border: 1px solid var(--white);
     border-radius: 50px;
     color: var(--white);
-    font-size: 0.85rem;
+    font-size: var(--fs-small);
     font-weight: 600;
-    letter-spacing: 0.02em;
+    letter-spacing: var(--ls-small);
     white-space: nowrap;
-    transition: background 0.25s, color 0.25s;
+    transition: background var(--motion-fast) var(--motion-ease-standard), color var(--motion-fast) var(--motion-ease-standard);
 }
 .nav-cv:hover {
     background: var(--white);
@@ -515,7 +560,7 @@ footer {
     box-shadow: var(--card-shadow);
     color: var(--white);
     font-family: var(--font-body);
-    font-size: 0.8125rem;
+    font-size: var(--fs-small);
     letter-spacing: 0.01em;
     text-decoration: none;
     /* Off-canvas rather than display:none, so it stays focusable. */
@@ -599,26 +644,6 @@ footer {
 .red { background: var(--ink-300); }
 
 
-/* 2. Waveform Viz */
-
-.bar {
-    width: 6px;
-    background: var(--accent-color);
-    border-radius: 4px;
-    height: 20px;
-    animation: wave 1.2s ease-in-out infinite;
-}
-
-.bar:nth-child(odd) { animation-duration: 0.9s; }
-.bar:nth-child(2n) { animation-duration: 1.1s; }
-.bar:nth-child(3n) { animation-duration: 1.3s; }
-.bar:nth-child(4n) { animation-duration: 1.0s; }
-
-@keyframes wave {
-    0%, 100% { height: 20px; opacity: 0.4; }
-    50% { height: 60px; opacity: 1; }
-}
-
 /* 3. Dashboard Viz */
 
 /* Animated bar charts inside dashboard */
@@ -669,16 +694,6 @@ footer {
 /* Contact */
 /* Keyboard focus needs an explicit indicator (a border tint alone isn't a
    reliable focus cue) — matches the site-wide focus-visible treatment. */
-
-/* Footer */
-footer {
-    padding: 3rem;
-    text-align: center;
-    border-top: 1px solid var(--ink-700);
-    color: var(--mist-400); /* AA contrast on the near-black footer (TC-NFR-A11Y) */
-    font-size: 0.9rem;
-    background: var(--ink-900);
-}
 
 /* Skills */ /* card 3's long title was pushing the chevron to 0-width */
 /* Equal-height cards across the row (grid stretches the wrapper; propagate it
@@ -868,7 +883,7 @@ footer {
 nav {
     border-bottom: 1px solid transparent;
     transition:
-        transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+        transform var(--motion-emphatic) var(--motion-ease-chrome),
         background var(--motion-base) var(--motion-ease-standard),
         backdrop-filter var(--motion-base) var(--motion-ease-standard),
         border-color var(--motion-base) var(--motion-ease-standard);
@@ -922,11 +937,11 @@ nav[data-scrolled="true"] {
     background: rgb(10 11 13 / 0.92);
     backdrop-filter: blur(4px);
     font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.06em;
+    font-size: var(--fs-caption);
+    letter-spacing: var(--ls-caption);
     color: var(--mist-200);
     pointer-events: auto;
-    animation: swToastIn 320ms var(--motion-ease-standard) both;
+    animation: swToastIn var(--motion-base) var(--motion-ease-standard) both;
 }
 
 @keyframes swToastIn {
