@@ -31,13 +31,10 @@ test.describe('Listen', () => {
 
   test('TC-LISTEN-02: the closing copy stays under sixty-five words', async ({ page }) => {
     // Measured on the closing copy itself — the sentence, the four channels and
-    // the coffee line — and not on the avatar module, the corrections ledger or
-    // the colophon. Each of those has its own contract: the avatar's words are
-    // a disclosure that has to be there, and shrinking a disclosure to protect
-    // a word budget would be the wrong trade every time; the ledger is a
-    // record, printed under its own rule and its own heading, and a record is
-    // not copy. What this budget guards is the invitation, which is the thing
-    // that has to stay short.
+    // the coffee line — and not on the corrections ledger or the colophon. The
+    // ledger is a record, printed under its own rule and its own heading, and a
+    // record is not copy. What this budget guards is the invitation, which is
+    // the thing that has to stay short.
     const words = await page.evaluate(() => {
       const section = document.querySelector('#listen')!;
       const clone = section.cloneNode(true) as HTMLElement;
@@ -48,37 +45,6 @@ test.describe('Listen', () => {
     });
     // The emptiest screen on the site, immediately after the densest.
     expect(words).toBeLessThanOrEqual(65);
-  });
-
-  test('TC-LISTEN-07: the avatar states what it is before it is played', async ({ page }) => {
-    // The disclosure is visible text next to the play control, not a tooltip,
-    // not a footnote, and not something you only learn by watching. A synthetic
-    // face on a site whose argument is "check my claims" has to say so first.
-    const figure = page.locator(`${LISTEN} figure`);
-    await expect(figure).toContainText('AI-generated');
-    await expect(figure).toContainText('my photograph');
-    await expect(figure).toContainText('my cloned voice');
-    await expect(figure).toContainText('Nothing else on this site is synthetic');
-    // Nothing has been fetched yet: at rest it is a poster and a button.
-    await expect(figure.locator('video')).toHaveCount(0);
-  });
-
-  test('TC-LISTEN-08: the clip has a text alternative that needs no playback', async ({ page }) => {
-    // Located by what it controls, not by its label: the label flips to "Hide
-    // transcript" on the first click, and a text-filtered locator stops matching
-    // the element it just operated on.
-    const toggle = page.locator(`${LISTEN} button[aria-controls="avatar-transcript"]`);
-    await expect(toggle).toBeVisible();
-    await expect(toggle).toContainText('Read it instead');
-    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
-    await toggle.click();
-    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
-    const transcript = page.locator('#avatar-transcript');
-    await expect(transcript).toBeVisible();
-    await expect(transcript).toContainText('Hello. I');
-    await expect(transcript).toContainText('rendered by a model');
-    // And it says how it was made, down to the model that made it.
-    await expect(transcript).toContainText('OmniHuman');
   });
 
   test('TC-LISTEN-03: no form, no input, no third-party embed', async ({ page }) => {

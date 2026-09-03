@@ -89,9 +89,6 @@ test.describe('A11y: axe-core Accessibility Audit', () => {
     await page.waitForTimeout(2000);
     const results = await new AxeBuilder({ page })
       .withTags(WCAG)
-      // The only remaining <iframe>-shaped content is the avatar's <video>, which
-      // axe cannot reach into; nothing else on the page is third-party.
-      .exclude('iframe, iframe *')
       .analyze();
 
     if (results.violations.length > 0) {
@@ -214,7 +211,6 @@ test.describe('A11y: axe-core Accessibility Audit', () => {
     await page.waitForTimeout(1500);
     const results = await new AxeBuilder({ page })
       .withTags(WCAG)
-      .exclude('iframe, iframe *')
       .analyze();
     const named = results.violations.filter(
       (v) => v.id === 'image-alt' || v.id === 'link-name' || v.id === 'button-name',
