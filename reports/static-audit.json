@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-09-03T12:04:48.552Z",
-  "result": "FAIL",
+  "timestamp": "2026-09-03T12:05:54.181Z",
+  "result": "PASS",
   "summary": {
     "total": 9,
-    "passed": 8,
-    "failed": 1
+    "passed": 9,
+    "failed": 0
   },
   "categories": {
     "tone": [
@@ -21,8 +21,8 @@
     ],
     "performance": [
       {
-        "pass": false,
-        "detail": "1 oversized: public/assets/avatar/source-portrait.png = 0.79MB (cap 0.5MB)"
+        "pass": true,
+        "detail": "within budget"
       }
     ],
     "parity": [
@@ -78,8 +78,8 @@
     {
       "id": "TC-NFR-PERF",
       "name": "Asset budgets (img ≤0.5MB · video ≤2.5MB · audio ≤1MB)",
-      "pass": false,
-      "detail": "1 oversized: public/assets/avatar/source-portrait.png = 0.79MB (cap 0.5MB)"
+      "pass": true,
+      "detail": "within budget"
     },
     {
       "id": "TC-FR-PARITY",
