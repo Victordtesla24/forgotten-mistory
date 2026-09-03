@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { IBM_Plex_Mono, Inter, Source_Serif_4 } from 'next/font/google';
 import './globals.css';
 import MiniVicBot from '../components/MiniVicBot';
+import Footer from '@/components/site/Footer';
 import MotionProvider from '../components/MotionProvider';
 import ServiceWorkerRegister from '../components/site/ServiceWorkerRegister';
 import { AvatarSpeakingProvider } from '@/lib/avatarContext';
@@ -139,6 +140,7 @@ export default function RootLayout({
         <AvatarSpeakingProvider>
           <MotionProvider>
             {children}
+            <Footer />
             <MiniVicBot />
           </MotionProvider>
         </AvatarSpeakingProvider>

@@ -1,0 +1,133 @@
+/*
+ * Footer — the closing register.
+ *
+ * Quiet by construction: no rule across the top competing with the section
+ * above it, no logo, no columns of links. A single hairline sets it apart, the
+ * statement reads at body measure, and the provenance line drops to the mono
+ * face because it is data, not voice.
+ */
+
+.footer {
+  border-top: 1px solid var(--border-color);
+  background: var(--token-bg-base);
+  padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4.5rem) clamp(2.5rem, 5vw, 4rem);
+}
+
+.inner {
+  margin: 0 auto;
+  max-width: 68rem;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 4vw, 3rem);
+}
+
+/* The statement. Body face, generous measure, deliberately not centred — it is
+   a sentence someone wrote, not a tagline. */
+.statement {
+  margin: 0;
+  max-width: 46ch;
+  font-family: var(--font-body);
+  font-size: clamp(0.9375rem, 0.9rem + 0.25vw, 1.0625rem);
+  line-height: 1.65;
+  color: var(--mist-200);
+  text-wrap: pretty;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--mist-400);
+}
+
+.sep {
+  padding: 0 0.5rem;
+  color: var(--ink-500);
+}
+
+.link {
+  color: var(--mist-200);
+  text-decoration: none;
+  border-bottom: 1px solid rgb(244 246 250 / 0.22);
+  padding-bottom: 0.05em;
+  transition: color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--white);
+  border-bottom-color: rgb(244 246 250 / 0.6);
+}
+
+/* Provenance line: mono, because it is a measurement of this document. */
+.build {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  color: var(--mist-400);
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+
+.buildLabel {
+  color: var(--mist-400);
+}
+
+/* The short SHA is the one checkable figure in this block, so it is the one
+   thing that reads as a value: luminous, and it opens the commit that produced
+   the bytes being read. Not gold — gold is reserved for a figure whose source
+   is external and checkable, and this is the page describing itself. */
+.sha {
+  color: var(--white);
+  text-decoration: none;
+  border-bottom: 1px solid rgb(244 246 250 / 0.28);
+  padding-bottom: 0.05em;
+  transition: color var(--motion-fast) var(--motion-ease-standard),
+    border-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.sha:hover,
+.sha:focus-visible {
+  color: var(--white);
+  border-bottom-color: rgb(244 246 250 / 0.7);
+}
+
+.link:focus-visible,
+.sha:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link,
+  .sha {
+    transition: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .statement {
+    max-width: none;
+  }
+
+  .name {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .sep {
+    display: none;
+  }
+}
