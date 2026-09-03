@@ -42,11 +42,17 @@
     --card-shadow-hover: 0 22px 60px -12px rgb(0 0 0 / 0.62), 0 0 28px rgb(244 246 250 / 0.06);
     --card-sheen: radial-gradient(120% 90% at 18% 0%, rgb(244 246 250 / 0.06), transparent 58%);
     --cursor-size: 20px;
-    /* Two families only (SPEC §3.2): Inter (body) + Space Grotesk (display).
-       Both self-hosted via next/font; literal names are fallbacks only. */
+    /* Three faces, one job each (design direction §1.1). All self-hosted via
+       next/font; the literal names are fallbacks only.
+         --font-heading  a document serif, for the h1, the six section titles and
+                         every large figure. Institutional record, not product
+                         marketing — which is the register the site argues in.
+         --font-body     Inter, for everything a reader reads at length.
+         --font-mono     IBM Plex Mono, for provenance: sources, dates, axis
+                         readouts, repository metrics. Data, never emphasis. */
     --font-body: var(--font-inter), 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --font-heading: var(--font-space-grotesk), 'Space Grotesk', system-ui, -apple-system, sans-serif;
-    --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Monaco, 'Courier New', monospace;
+    --font-heading: var(--font-serif), 'Source Serif 4', ui-serif, Georgia, 'Times New Roman', serif;
+    --font-mono: var(--font-plex-mono), 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
     --motion-fast: 220ms;
     --motion-base: 360ms;
     --motion-slow: 520ms;

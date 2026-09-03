@@ -53,11 +53,18 @@ test.describe('Content Preservation', () => {
     await expect(page.locator('#hero')).not.toContainText('Vedic astronomy');
   });
 
-  test('CT-05: About paragraphs from siteContent appear verbatim', async ({ page }) => {
+  // The two-paragraph biography that used to live in siteContent.about was
+  // replaced by the ten-dimension About section, whose copy lives in
+  // app/data/portfolio/about.ts. The export was deleted rather than left
+  // unreferenced. tests/e2e/about.spec.ts owns that section's contract; this
+  // check only guards that the section still carries the career facts a
+  // recruiter is scanning for.
+  test('CT-05: About carries the career facts', async ({ page }) => {
     await gotoHome(page);
     await page.locator('#about').scrollIntoViewIfNeeded();
-    await expect(page.locator('#about')).toContainText('15');
-    await expect(page.locator('#about')).toContainText('Senior Technical Leader');
+    await expect(page.locator('#about')).toContainText('Fifteen years');
+    await expect(page.locator('#about')).toContainText('Melbourne, Victoria');
+    await expect(page.locator('#about')).toContainText('Australian Taxation Office');
   });
 
   test('CT-06: All 4 project cards from siteContent appear in HTML', async ({ page }) => {

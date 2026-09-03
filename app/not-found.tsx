@@ -96,7 +96,7 @@ export default function NotFound() {
           }
 
           .notfound-eyebrow {
-            font-family: var(--font-space-grotesk, monospace);
+            font-family: var(--font-plex-mono, ui-monospace, monospace);
             font-size: 0.7rem;
             font-weight: 500;
             letter-spacing: 0.15em;
@@ -106,7 +106,7 @@ export default function NotFound() {
           }
 
           .notfound-heading {
-            font-family: var(--font-space-grotesk, sans-serif);
+            font-family: var(--font-serif, ui-serif, Georgia, serif);
             font-size: 1.5rem;
             font-weight: 600;
             color: var(--white, #F4F6FA);

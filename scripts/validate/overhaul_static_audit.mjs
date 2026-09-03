@@ -175,17 +175,19 @@ function checkParity() {
 
 // ── TC-NFR-TYPE — at most two font families (SPEC §3.2) ──────────────────────
 function checkFonts() {
-  // The shipped site loads exactly two webfont families: Inter (body) and
-  // Space Grotesk (high-contrast grotesque display). The pre-overhaul stack
-  // (Playfair Display, Roboto/Roboto Condensed, Source Sans Pro/3, Source Code
-  // Pro) must be gone from the typography sources. System/generic keywords
-  // (system-ui, sans-serif, monospace, the cool-grey monospace fallback chain)
-  // are not "families" and are allowed.
+  // The shipped site loads exactly three webfont families, one job each
+  // (design direction §1.1): Source Serif 4 for display, Inter for body, IBM
+  // Plex Mono for provenance and data. The pre-overhaul stack (Playfair
+  // Display, Roboto/Roboto Condensed, Source Sans Pro/3, Source Code Pro) must
+  // be gone, and so must Space Grotesk — the geometric grotesque every rival
+  // portfolio in this category uses, dropped deliberately. System/generic
+  // keywords (system-ui, sans-serif, monospace) are not "families".
   const BANNED = [
     'Playfair Display', 'Source Sans Pro', 'Source Sans 3', 'Roboto Condensed',
-    'Roboto', 'Source Code Pro',
+    'Roboto', 'Source Code Pro', 'Space Grotesk', 'Space_Grotesk',
     // stale next/font variable names belonging to the dropped faces
     '--font-source-sans', '--font-roboto-condensed', '--font-roboto', '--font-alt',
+    '--font-space-grotesk',
   ];
   const sources = new Set([
     join(ROOT, 'app', 'globals.css'),
@@ -198,17 +200,18 @@ function checkFonts() {
     const text = read(f);
     for (const w of BANNED) if (text.includes(w)) hits.push(`${relative(ROOT, f)} :: "${w}"`);
   }
-  // Both chosen families must be wired in (next/font import + CSS fallback).
+  // All three chosen faces must be wired in (next/font import + CSS fallback).
   const layout = read(join(ROOT, 'app', 'layout.tsx'));
   const css = read(join(ROOT, 'app', 'globals.css'));
   const wired =
-    /Space_Grotesk\s*\(/.test(layout) && /\bInter\s*\(/.test(layout) &&
-    css.includes('Space Grotesk') && css.includes("'Inter'");
+    /Source_Serif_4\s*\(/.test(layout) && /\bInter\s*\(/.test(layout) &&
+    /IBM_Plex_Mono\s*\(/.test(layout) &&
+    css.includes('Source Serif 4') && css.includes("'Inter'") && css.includes('IBM Plex Mono');
   const uniq = [...new Set(hits)];
-  record('TC-NFR-TYPE', 'Two font families only — Inter + Space Grotesk (Playfair/Roboto/Source Sans dropped)',
+  record('TC-NFR-TYPE', 'Three font families — Source Serif 4 (display) + Inter (body) + IBM Plex Mono (data)',
     uniq.length === 0 && wired,
-    !wired ? 'chosen families Inter + Space Grotesk are not wired in app/layout.tsx + app/globals.css'
-           : (uniq.length ? `${uniq.length} banned family ref(s): ${uniq.slice(0, 12).join('; ')}` : 'clean — exactly 2 families'));
+    !wired ? 'the three faces are not all wired in app/layout.tsx + app/globals.css'
+           : (uniq.length ? `${uniq.length} banned family ref(s): ${uniq.slice(0, 12).join('; ')}` : 'clean — exactly 3 families'));
 }
 
 // ── TC-NFR-SEC — no obvious secrets in client source ────────────────────────

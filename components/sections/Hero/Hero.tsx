@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 
+import Caliper from '@/components/marks/Caliper';
 import Scene from '@/components/gl/Scene';
 import { heroContent } from '@/app/data/portfolio/hero';
 
@@ -59,7 +60,12 @@ export default function Hero() {
         >
           {heroContent.ledger.map((entry) => (
             <li key={entry.label} className={styles.ledgerItem}>
-              <span className={styles.ledgerValue}>{entry.value}</span>
+              {/* Every hero figure is measured and carries its source on the
+                  next line but one, so all three close. A reader meets the mark
+                  here, and meets the open one later without needing a legend. */}
+              <Caliper state="sourced" className={styles.ledgerValue}>
+                {entry.value}
+              </Caliper>
               <span className={styles.ledgerLabel}>{entry.label}</span>
               {/* Provenance sits with the figure. A number a reader cannot
                   trace is a claim, not evidence. */}

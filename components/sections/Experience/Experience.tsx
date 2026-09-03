@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import { useCallback, useState } from 'react';
 
+import Caliper from '@/components/marks/Caliper';
 import Scene from '@/components/gl/Scene';
 import {
   NOW,
@@ -137,10 +138,24 @@ export default function Experience() {
                   </button>
                 </h3>
 
-                {role.span.headline && (
+                {role.span.headline ? (
                   <p className={styles.roleHeadline}>
-                    <span className={styles.roleHeadlineValue}>{role.span.headline.value}</span>
+                    <Caliper state="sourced" className={styles.roleHeadlineValue}>
+                      {role.span.headline.value}
+                    </Caliper>
                     <span className={styles.roleHeadlineLabel}>{role.span.headline.label}</span>
+                  </p>
+                ) : (
+                  /* Five of the eight roles state no figure in the CV. Rather
+                     than invent one — or leave a silence a reader could read as
+                     an oversight — the bracket stays open and says why. */
+                  <p className={styles.roleHeadline}>
+                    <Caliper state="open" className={styles.roleHeadlineOpen}>
+                      no published figure
+                    </Caliper>
+                    <span className={styles.roleHeadlineLabel}>
+                      the CV states none for this role, and none was invented
+                    </span>
                   </p>
                 )}
 

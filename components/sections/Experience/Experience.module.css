@@ -38,7 +38,7 @@
     margin: 0 0 1.5rem;
     font-family: var(--font-heading);
     font-size: clamp(2rem, 4.2vw, 3.4rem);
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.05;
     letter-spacing: -0.025em;
     color: var(--white);
@@ -223,7 +223,7 @@
 .roleTitle {
     font-family: var(--font-heading);
     font-size: clamp(1.05rem, 1.6vw, 1.4rem);
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.25;
     letter-spacing: -0.015em;
     color: var(--white);
@@ -295,7 +295,7 @@
 .roleHeadlineValue {
     font-family: var(--font-heading);
     font-size: clamp(1.4rem, 2.2vw, 1.9rem);
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1;
     letter-spacing: -0.02em;
     color: var(--white);
@@ -380,4 +380,12 @@
     .roleChevron::after {
         transition: none;
     }
+}
+
+/* The open-bracket variant of a role headline: same rhythm as a figure, but at
+   reading size, because the words are the content there rather than a number. */
+.roleHeadlineOpen {
+    font-family: var(--font-heading);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: 1.2;
 }

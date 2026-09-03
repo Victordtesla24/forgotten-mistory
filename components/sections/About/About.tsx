@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import { useCallback, useState } from 'react';
 
+import Caliper from '@/components/marks/Caliper';
 import Scene from '@/components/gl/Scene';
 import { aboutContent } from '@/app/data/portfolio/about';
 
@@ -78,11 +79,17 @@ export default function About() {
                   <h3 className={styles.name}>
                     {dimension.name}
                     {dimension.side === 'role' && (
-                      <span className={styles.sideTag}>
-                        {/* Naming which side of the match a dimension is computed
-                            from is the honest way to answer it about oneself. */}
+                      /* An open caliper: this dimension is computed from the job,
+                         not the candidate, so there is nothing here that could
+                         honestly be measured about a person. The mark says so
+                         rather than leaving a gap that reads as an omission. */
+                      <Caliper
+                        state="open"
+                        className={styles.sideTag}
+                        label="Computed from the role, not the candidate; answered as what he looks for."
+                      >
                         measured from the role
-                      </span>
+                      </Caliper>
                     )}
                   </h3>
                   <p className={styles.answer}>{dimension.answer}</p>

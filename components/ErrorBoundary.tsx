@@ -82,7 +82,7 @@ export default class ErrorBoundary extends React.Component<
               gap: 0.5rem;
             }
             .error-boundary-fallback-label {
-              font-family: var(--font-space-grotesk, sans-serif);
+              font-family: var(--font-serif, ui-serif, Georgia, serif);
               font-size: 0.7rem;
               font-weight: 500;
               letter-spacing: 0.1em;

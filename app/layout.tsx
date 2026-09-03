@@ -1,27 +1,47 @@
 import type { Metadata } from 'next';
-import { Inter, Space_Grotesk } from 'next/font/google';
+import { IBM_Plex_Mono, Inter, Source_Serif_4 } from 'next/font/google';
 import './globals.css';
 import MiniVicBot from '../components/MiniVicBot';
 import MotionProvider from '../components/MotionProvider';
 import ServiceWorkerRegister from '../components/site/ServiceWorkerRegister';
 import { AvatarSpeakingProvider } from '@/lib/avatarContext';
 
-// Two families only (SPEC §3.2). Both are variable fonts self-hosted by
-// next/font at build time (no runtime Google Fonts request):
-//   • Inter — body / UI text.
-//   • Space Grotesk — high-contrast grotesque display/heading face.
-const bodyFont = Inter({
+// Three faces, each with one job (design direction §1.1).
+//
+// The display face is a document serif, not a grotesque. Every rival portfolio in
+// this category sets its headings in a geometric sans with a mono accent; a serif
+// at display size reads as institutional record rather than as product marketing,
+// which is the register this site is arguing in. The geometric grotesque this
+// replaced was dropped for exactly that reason — it was the trend-following tell.
+//
+// All three self-host their woff2 at build time through next/font (mandatory under
+// a static export: no runtime font request), and `adjustFontFallback` generates the
+// metric-matched fallback, so there is no layout shift when the real face lands.
+const displayFont = Source_Serif_4({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-inter',
+  weight: ['300', '400'],
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
   display: 'swap',
+  preload: true,
 });
 
-const headingFont = Space_Grotesk({
+const bodyFont = Inter({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-space-grotesk',
+  weight: ['400', '500', '600'],
+  variable: '--font-inter',
   display: 'swap',
+  preload: true,
+});
+
+// Every provenance line, date stamp, axis readout and repository metric. One
+// weight only: this face carries data, and data does not need emphasis.
+const dataFont = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-plex-mono',
+  display: 'swap',
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -88,7 +108,7 @@ export default function RootLayout({
     // tokens (which reference these next/font vars) resolve at :root. Placing
     // them on <body> would leave :root unable to see them — the tokens would
     // compute to empty and headings would fall back to the UA sans stack.
-    <html lang="en" className={`${bodyFont.variable} ${headingFont.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable} ${dataFont.variable}`} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"

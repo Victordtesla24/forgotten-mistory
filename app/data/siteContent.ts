@@ -70,12 +70,6 @@ export const hero = {
   ],
 };
 
-export const about = {
-  paragraphs: [
-    'With over 15 years in the technology industry, I work as a Senior Technical Leader and Certified Scrum Master (CSM) across government, financial services, and telecommunications — currently leading agile delivery for the Australian Taxation Office’s Payday Super reform program. My focus is program delivery, enterprise transformation, and architecting AI/ML-driven solutions.',
-    'I lead cross-functional squads, guide cloud-based modernisations, and automate away systemic delivery friction. My technical background spans Python, TypeScript, and cloud-native infrastructure (Kubernetes, GCP, AWS, Azure). I focus on fostering an agile culture and translating complex technical roadmaps into measurable business value.',
-  ],
-};
 
 export const experience: ExperienceRole[] = [
   {
