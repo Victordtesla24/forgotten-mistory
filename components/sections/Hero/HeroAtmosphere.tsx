@@ -28,6 +28,11 @@ export default function HeroAtmosphere() {
       uResolution: { value: new THREE.Vector2(1, 1) },
       uPointer: { value: new THREE.Vector2(0, 0) },
       uIntensity: { value: 0 },
+      // Full strata above the width where a phone stops being a phone. Below
+      // it the ridged near layer and the shafts are dropped: sixteen noise
+      // lookups a pixel is the wrong budget for a backdrop on a device whose
+      // whole frame is the width of one of these light shafts.
+      uQuality: { value: 1 },
       // Colours come from lib/palette.ts — the single place raw hex is allowed
       // to live for WebGL, so the scene can never drift off the ink palette.
       uInk: { value: new THREE.Color(PALETTE.ink900) },
@@ -42,6 +47,7 @@ export default function HeroAtmosphere() {
 
     material.uniforms.uTime.value = state.clock.elapsedTime;
     material.uniforms.uResolution.value.set(size.width, size.height);
+    material.uniforms.uQuality.value = size.width >= 900 ? 1 : 0;
 
     // Pointer in -1..1, then a critically-damped follow so the parallax lags the
     // cursor by a beat instead of snapping to it.
