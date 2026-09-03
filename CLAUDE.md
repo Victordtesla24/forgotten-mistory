@@ -1,90 +1,139 @@
-# CLAUDE.md — operating guide for AI agents (and humans)
+# CLAUDE.md — operating guide for agents working on this portfolio
 
-You are working on **Vikram Deshpande's portfolio** (`forgotten-mistory`). This file gives
-you the agency to maintain, improve, support, and scale the site without re-deriving
-everything. **User instructions always take precedence over this file.**
+This is **Vikram Deshpande's portfolio** (`forgotten-mistory`), a Next.js static export
+deployed to Firebase Hosting at <https://forgotten-mistory.web.app>. **User instructions
+always take precedence over this file.**
 
-**Binding source of truth:** `docs/prompt.md` (the owner's prompt) defines the requirements and
-success criteria; `docs/overhaul/SPEC.md` is kept in 1:1 parity with it and records any
-reality-forced deviations explicitly (§0.1). Read both before non-trivial work. Mandated stack
-beyond the obvious: **GSAP + ScrollTrigger** (scroll orchestration), **custom GLSL shaders +
-volumetric stage lighting** on flagship scenes, and a **native D-ID ↔ ElevenLabs WebSocket**
-frame-accurate (~40 ms) live lip-sync pipeline on the dynamic deployment.
+The binding requirements live in `docs/prompt.md`. This file is the map: what the site is
+now, where things are, and the gates a change has to clear.
 
-## Prime directives (do not violate)
+---
 
-1. **Two audiences are first-class:** potential employers and business clients. Every change
-   must serve at least one without harming the other. (SPEC §2, non-negotiable NN-1.)
-2. **Memorable takeaway:** a visitor must leave with something concrete — the CV dossier, a
-   booking path, and a signature visual motif. (NN-2.)
-3. **Restrained, evidence-led tone.** No boastful/superlative copy or bragging visualisations.
-   Numbers over adjectives, every claim traceable to the resume. (NN-3.) Enforced by
-   `node scripts/validate/overhaul_static_audit.mjs` (tone linter).
-4. **Monochrome only.** Near-black inks, cool greys, one luminous white accent — no hue.
-   Colours come from `:root` tokens in `app/globals.css` and `lib/palette.ts`. Never hardcode
-   hex in components (the audit fails the build if you do).
-5. **Tests before features.** Add/extend the test case before changing behaviour. The owner's
-   hard rule: no feature code lands without a corresponding test (SPEC §10).
-6. **No secrets in client code or commits.** Read keys from env; required keys fail loud
-   (explicit non-zero crash naming the missing key — never a silent fallback; SPEC NFR-SEC).
-   `.env.production` contains an SSH key, GitHub PAT, and a macOS sudo password — treat the
-   whole file as radioactive. Never print or commit it.
+## What the site is
 
-## Repo orientation (where things live)
+One page, six sections, in this order. Each is a directory under `components/sections/`
+with its own CSS module and its own data file under `app/data/portfolio/`.
 
-- **Content (single source of truth):** `app/data/{siteContent,resumeContent,miniVicKnowledge}.ts`,
-  kept in parity with `public/docs/Vik_Resume_Final.pdf`. Change facts only here.
-- **Page composition:** `app/page.tsx` (one page, all sections), `app/layout.tsx` (metadata/JSON-LD).
-- **Styling/tokens:** `app/globals.css` (`:root` monochrome tokens), `design-tokens.json`.
-- **Scene colours:** `lib/palette.ts` (the ONLY place raw hex lives for WebGL/Canvas).
-- **Components:** `components/site/*` (26 DOM/Framer components: Preloader, Navigation, CursorGlow, Reveal, TelemetryPanel, ExperienceAccordion, ExpandableCard, ArchitectureMap, ProjectsCarousel, GithubFeed, HiddenTerminal, HeroAvatar, ScrollRail, HeroScroll, ProofScroll, WorkScroll, CatalogueScroll, SkillsScroll, ContactScroll, ProofBar, MindsetProjection, SynthesisProvenance, Dossier, CardDepth, CursorDepthField, ServiceWorkerRegister), `components/fx/*` (23 signature VFX: PacketFlowGraph, SprintBurndown, TokenReflow, AtoEvidenceBar, CelestialSphere, OrchestrationGraph, ClearanceStepper, InboxTriage, JourneyTimeline, TokenStreamMatch, AstroChartSphere, JarvisRepairLoop, TeslaDashboard, JarvisTelemetry, SparklineGL, PanelDepthScene, HudFrame, TelemetryHud, DetailMaterialize, CardFlipCanvas, FloatingGlassPanel, ImageEnhancer, KeySigningPulse), `app/components/SpaceScene.tsx` (R3F starfield), `components/MiniVicBot.tsx` (clone UI), `components/MotionProvider.tsx` (Framer/reduced-motion config), `components/FloatingDetailBox.tsx` (outcome-card flyout), `lib/miniVicBrain.ts` (clone reasoning ladder).
-- **Dynamic backend (optional):** `services/api-gateway` (multi-LLM), `services/realtime-orchestrator`,
-  viseme bridge. Powers the live clone; the static site works without it.
-- **Tests/validation:** `tests/{e2e,a11y,perf,visual,monochrome,content,overhaul}/*` (120 tests, 15 files), `scripts/validate/*` (21 phases + `overhaul_static_audit.mjs` 8 gates).
-- **Docs:** `docs/overhaul/` (SPEC, ARCHITECTURE, SYSTEM-DESIGN, MOTION-AND-FX-SPEC, TECH-STACK, EDGE-CASES).
+| # | id | heading | what it does |
+|---|----|---------|--------------|
+| 1 | `#hero` | Vikram Deshpande | the front door — name, role, three graded figures, two actions |
+| 2 | `#about` | Ten dimensions, answered | the ten dimensions his own job-fit engine scores a candidate on, answered about himself |
+| 3 | `#experience` | Sixteen years, to scale | every role drawn to its real duration on one axis, over a WebGL strata field |
+| 4 | `#skills` | Calibration card | what was tested, where, and what was not — no proficiency bars |
+| 5 | `#vitrine` | Six of thirty-eight | a horizontal carousel of six repositories, each with its limits printed beside what it does |
+| 6 | `#listen` | Feedback & coffee? | four ways to reach him, plus the synthetic introduction, labelled as one |
 
-## Workflow (every change)
+Anything not in that list was removed in the rebuild. Do not restore a deleted section
+by reintroducing its component — the sections after Skills were replaced deliberately
+(`docs/prompt.md` R-16).
 
-1. **Read** the relevant doc(s) in `docs/overhaul/` first.
-2. **Branch:** work on feature branches or directly on `main` — the overhaul has been merged.
-   Baseline is recoverable at tag `pre-overhaul-baseline`.
-3. **Test-first:** add/extend a test (`tests/*` Playwright, or a check in the audit script).
-4. **Implement** to green. Keep diffs small and one-concern.
-5. **Verify:** `npm run lint` + `npx tsc --noEmit` + `node scripts/validate/overhaul_static_audit.mjs`
-   + relevant `npm run validate:*`. For UI, capture a screenshot.
-6. **Log:** append the result row to `docs/execution-log.md`.
-7. **Deploy/push:** autonomous. Once tsc/lint/audit/tests are green, agents may `git commit`,
-   `git push` (the active branch, and to `main` via `git push origin HEAD:main`), and run
-   `firebase deploy` **without manual approval**, then conduct production verification against
-   the live site (<https://forgotten-mistory.web.app>); fix and redeploy if verification fails.
-   Still **ask before any _paid_ D-ID/ElevenLabs API call** (that's a cost gate, not a deploy
-   gate). Never force-push, hard-reset, or rewrite history (data-loss guard stays). (This
-   restores the prompt's "Total Autonomy / publish directly to production" clause — see
-   SPEC §0.1 DEV-5, now flipped to auto-deploy per the owner's 2026-06-15 directive.)
+## Prime directives
 
-## How to add a project "signature effect" (common task)
+1. **Two audiences are first-class:** employers and business clients. Every change serves
+   at least one without harming the other.
+2. **Evidence, not adjectives.** Every claim traces to the CV, LinkedIn, or a named
+   repository. The tone linter in `scripts/validate/overhaul_static_audit.mjs` fails the
+   build on boastful copy.
+3. **Never grade a claim higher than its evidence.** The caliper mark
+   (`components/marks/Caliper.tsx`) has three states and they are not interchangeable:
+   `sourced` — measured, with a source a reader can go and check; `self-reported` — a CV
+   figure with no published methodology behind it; `open` — sought, honestly not
+   measurable, reason printed where the number would be. The hero's three figures are
+   `self-reported`. An earlier pass marked them `sourced`; a test now fails if that
+   happens again (`tests/content/content-check.spec.ts` CT-10).
+4. **Monochrome, with gold as a claim.** Near-black inks, cool greys, luminous white.
+   Gold (`--gold`) means one thing only: *this figure has a source*. It appears on closed
+   caliper jaws, the "measured in production" mark, and live repository URLs. Nothing
+   else. It is never a fill, a background, or a theme. Raw hex outside `app/globals.css`
+   and `lib/palette.ts` fails the audit.
+5. **Tests before features.** No behaviour change lands without a test that would have
+   caught its absence.
+6. **No secrets in client code or commits.** `~/.claude/.env.production` holds live keys
+   and is read-only — never print it, never commit it, never modify it.
 
-Each GitHub project maps to one monochrome micro-visualisation (SPEC §7, MOTION-AND-FX-SPEC).
-1. Pick the project + its effect from the SPEC §7 catalogue.
-2. New component under `components/fx/<Effect>.tsx`. Colours from `lib/palette.ts` / CSS vars.
-3. Provide a `prefers-reduced-motion` static fallback (mandatory).
-4. Add an entry to the project catalogue data; link to the real repo (must resolve 200).
-5. Test: mounts, animates, no console errors, FPS budget, reduced-motion fallback.
+## Where things live
 
-## Definition of done (any task)
+- **Content:** `app/data/portfolio/{hero,about,experience,skills,vitrine,listen,avatar}.ts`.
+  This is the single source of truth for every word on the page — change facts only here.
+  `app/data/generated/cv-fingerprint.ts` is written at build time by
+  `scripts/build/cv_fingerprint.mjs`; do not hand-edit it.
+- **Composition:** `app/page.tsx` (all six sections), `app/layout.tsx` (fonts, metadata,
+  JSON-LD, the persistent chrome).
+- **Sections:** `components/sections/<Name>/` — component, CSS module, and any WebGL
+  child and GLSL beside it.
+- **Shared:** `components/marks/Caliper.tsx` (the one mark the site asks a reader to
+  learn), `components/gl/Scene.tsx` + `useGLCapability.ts` (every WebGL canvas mounts
+  through these, which handle capability detection and context loss),
+  `components/site/Navigation.tsx`, `components/MiniVicBot.tsx`.
+- **Tokens:** `app/globals.css` `:root` — plus the nav, the MiniVic chrome, and element
+  defaults. Everything else is a CSS module. `lib/palette.ts` is the only place raw hex
+  lives for WebGL.
+- **Tests:** `tests/{e2e,a11y,perf,visual,monochrome,content,overhaul}/` — 167 Playwright
+  tests. Visual baselines in `tests/baselines/`.
+- **Validation:** `scripts/validate/overhaul_static_audit.mjs` — 10 gates, run on every
+  change.
 
-- `tsc` clean, `lint` clean, static audit 8/8, relevant Playwright green.
-- Lighthouse mobile: perf ≥90, a11y ≥95; LCP<2.5s; CLS<0.05; no asset >500KB.
-- Reduced-motion path works; keyboard-navigable; monochrome; tone clean; parity intact.
-- Execution log updated.
+## Workflow
+
+1. **Read** the section's data file and CSS module before changing it.
+2. **Test first** — add or extend the assertion, then make it pass.
+3. **Verify, all four:**
+   ```bash
+   npx tsc --noEmit
+   npm run lint
+   npm run build:static
+   node scripts/validate/overhaul_static_audit.mjs     # must be 10/10
+   PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test
+   ```
+4. **Look at it.** Screenshot the section at 1440, 1280, 834 and 390 CSS px. The suite
+   catches broken; only your eyes catch ugly.
+5. **Deploy** — autonomous, no approval needed:
+   ```bash
+   git push origin main && firebase deploy --only hosting
+   ```
+   Then verify against the live URL and fix forward if it fails. Never force-push, never
+   rewrite history. **Ask before any paid ElevenLabs / D-ID / video-render call** — that
+   is a cost gate, not a deploy gate.
+
+## Running the tests
+
+Playwright has no `webServer` and no `globalSetup`. Build the static export once and
+serve `out/` yourself, then point the suite at it:
+
+```bash
+npm run build:static
+python3 -m http.server 5599 --directory out &     # or any static server
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test
+```
+
+This is deliberate. Each spec used to run `npm run build:static` from its own
+`beforeAll`; under `fullyParallel` those builds raced and corrupted each other's build
+directory, failing ~46 specs at once for reasons unrelated to any of them.
+
+To accept an intended visual change: `UPDATE_SNAPSHOTS=1 npx playwright test tests/visual`.
+Look at the regenerated PNG before you commit it.
 
 ## Gotchas
 
-- **Static export ≠ server.** `app/api/*` does not run on Firebase. Don't rely on it for the
-  public site; use the 3-tier brain fallback or the `services/` deployment.
-- **mix-blend-mode: screen** in SpaceScene blows out bright colours — keep scene values dark.
-- **DPR is capped** in scenes for mobile FPS; don't raise it blindly.
-- **Env key name drift:** canonicalise D-ID to `DID_API_KEY` (see EDGE-CASES EC-CFG-01).
-- **Contact icons (RESOLVED, D-4):** the two 6 MB JPEG contact icons
-  (`public/assets/{EMAIL,TELEPHONE}.jpeg`) were deleted and replaced with inline SVG; the
-  perf-budget breach is fixed. Don't go hunting for these files — they no longer exist.
+- **Static export ≠ server.** `app/api/*` does not run on Firebase. The public site is
+  entirely static; anything needing a server lives in `services/` and is optional.
+- **`out/` is the deploy artifact.** `firebase.json` points at it. A stale `out/` deploys
+  a stale site — always `npm run build:static` first. And always `git fetch` before
+  working: a stale checkout once rolled production back a month.
+- **Reachability is computed from Next.js convention files.** `page`, `layout`, `error`,
+  `loading`, `not-found`, `robots`, `sitemap` are entry points the framework wires up and
+  nothing imports. A dead-code scan that does not seed from all of them will report them,
+  and everything they own, as dead.
+- **Dead CSS is a build failure.** `TC-NFR-DEADCSS` fails the audit if `app/globals.css`
+  contains a rule whose class selectors name classes no source file can render. If you
+  delete a component, delete its styles in the same commit.
+- **`prefers-reduced-motion` is not optional.** Every animation needs a static path, and
+  the hero must be fully readable with WebGL unavailable — the scene is never the content.
+- **DPR is capped** in the WebGL scenes for mobile frame rate. Don't raise it blindly.
+
+## Definition of done
+
+`tsc` clean · `lint` clean · static audit 10/10 · 167 Playwright green · build clean ·
+LCP < 2.5 s · CLS < 0.05 · no asset over 500 kB · reduced-motion path works ·
+keyboard-navigable · monochrome with gold only as a claim · every new sentence traceable ·
+deployed and verified against the live URL.
