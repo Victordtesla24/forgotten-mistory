@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 type SwToast =
   | null
-  | { kind: 'offline' }
   | { kind: 'update'; reload: () => void }
   | { kind: 'dev'; version: string };
 
@@ -13,7 +12,7 @@ type SwToast =
  * (SPEC NFR-DURABLE / §10 TC-NFR-DURABLE; prompt §2 NN-2). Registration is deferred to the
  * `load` event so it never competes with first-view rendering, and is feature-gated on
  * `'serviceWorker' in navigator`. It also surfaces three quiet, polite-live notifications:
- * an "offline-ready" confirmation on first install, an "update available" prompt with a
+ * an "update available" prompt with a
  * Reload action when a fresh worker is waiting, and (development only) the precache version
  * it tears down. The toast region is always in the DOM (an empty aria-live status) so the
  * notifications are announced in place without layout shift.
@@ -51,16 +50,20 @@ export default function ServiceWorkerRegister() {
         .register('/sw.js')
         .then((reg) => {
           // A new worker installing while one already controls the page ⇒ an update is
-          // available; the first install (no controller yet) ⇒ the site is offline-ready.
+          // available. A first install (no controller yet) is silent: the
+          // visitor did not ask about the cache.
           reg.addEventListener('updatefound', () => {
             const installing = reg.installing;
             if (!installing) return;
             installing.addEventListener('statechange', () => {
               if (installing.state !== 'installed') return;
+              // Only the actionable case surfaces. A first install used to
+              // announce "Ready to work offline." over the hero's primary
+              // button on a 1280x720 screen — an implementation detail the
+              // visitor never asked about, covering the one thing they might
+              // click. An available update is different: it asks for a decision.
               if (navigator.serviceWorker.controller) {
                 setToast({ kind: 'update', reload: () => window.location.reload() });
-              } else {
-                setToast({ kind: 'offline' });
               }
             });
           });
@@ -81,7 +84,6 @@ export default function ServiceWorkerRegister() {
 
   return (
     <div className="sw-toast-region" data-sw-toast role="status" aria-live="polite">
-      {toast?.kind === 'offline' && <span className="sw-toast">Ready to work offline.</span>}
       {toast?.kind === 'update' && (
         <span className="sw-toast">
           A new version is available.
