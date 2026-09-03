@@ -211,11 +211,6 @@ body::before {
 
 /* Preloader */
 /* Reveal wipe: clip away left→right while fading out (FR-BOOT / QT-8). */
-@media (prefers-reduced-motion: reduce) {
-    /* No directional wipe under reduced motion — fade only. */
-    
-    
-}
 /* Preloader SVG circles — monochrome tokens via CSS (NFR-MONO) */
 
 /* Spring-physics "completion" pop when the arc closes at 100% (neutralised under
@@ -715,13 +710,6 @@ footer {
 
 /* Responsive */
 
-@media (max-width: 768px) {
-
-    /* Two-column proof grid that fits the phone (base is 4-col @660px). */
-
-    /* Disable 3D transforms on mobile */
-}
-
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: 0.001ms !important;
@@ -751,10 +739,6 @@ footer {
    Single keyframe run ends at opacity:0 + visibility:hidden so overlays cannot
    permanently obscure trailing glyphs after the entrance beat. */
 
-@media (prefers-reduced-motion: reduce) {
-    /* Keep the static resting halo but do not brighten on hover under reduced motion. */
-}
-
 /* --- Animated Gradient Border on Hover (New Addition) --- */
 
 /* System B — Living Sparkline: gradient area-fill + glowing scan node. */
@@ -770,8 +754,6 @@ footer {
 /* Positioning based on SVG coordinates (approx percentages) */
 
 /* Mobile Adjustments for Diagram */
-@media (max-width: 768px) { /* hide desc on tiny screens */
-}
 
 /* Connections */
 
@@ -779,79 +761,13 @@ footer {
 
 /* 5. Konami / Terminal Overlay */
 
-#terminal-close {
-    background: none;
-    border: none;
-    color: var(--mist-400);
-    font-size: 1.2rem;
-    cursor: pointer;
-}
-
-#terminal-form {
-    display: flex;
-    background: var(--ink-900);
-    padding: 10px 15px;
-    border-top: 1px solid var(--ink-500);
-    align-items: center;
-}
-
 .prompt {
     color: var(--mist-200);
     margin-right: 10px;
     font-weight: bold;
 }
 
-#terminal-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: var(--white);
-    font-family: inherit;
-    font-size: 0.9rem;
-    outline: none;
-}
-
 /* 6. Mini-Vic Chatbot */
-
-#mini-vic-form {
-    padding: 1rem;
-    display: flex;
-    gap: 0.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-#mini-vic-input {
-    flex: 1;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 8px 16px;
-    color: var(--white);
-    outline: none;
-    font-size: 0.9rem;
-}
-
-#mini-vic-input:focus {
-    border-color: var(--accent-color);
-}
-
-#mini-vic-form button {
-    background: var(--accent-color);
-    color: var(--ink-900);
-    border: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s;
-}
-
-#mini-vic-form button:hover {
-    transform: scale(1.1);
-}
 
 /* 6. Video/GIF Hover (Project Preview) */
 
@@ -979,9 +895,6 @@ nav[data-scrolled="true"] {
       (no hidden-content trap). Bars are decorative — pointer-events:none, z-index above
       content. Content reveal itself stays owned by the existing <Reveal> wrappers, so
       there is no double-mask. */
-@media (prefers-reduced-motion: reduce) {
-    /* Curtains open instantly (no sweep); content is always visible. */
-}
 
 /* ── Service-worker toast ────────────────────────────────────────────────────
    The offline notice had no styles at all: it rendered as browser-default text
