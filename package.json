@@ -38,7 +38,8 @@
     "validate:phase21": "bash scripts/validate/phase21_realtime_pipeline.sh",
     "validate:provider-keys": "node scripts/validate/provider_api_keys.mjs",
     "validate:final": "bash scripts/validate/final_full_system_validation.sh",
-    "validate:postprod": "bash scripts/testing/run_post_prod_validation.sh"
+    "validate:postprod": "bash scripts/testing/run_post_prod_validation.sh",
+    "deploy": "node scripts/deploy.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.2.4",
