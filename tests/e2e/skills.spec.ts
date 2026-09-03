@@ -109,7 +109,12 @@ test.describe('Skills', () => {
     const production = page.locator(`${SKILLS} button`, { hasText: 'Production only' });
     await production.click();
     await expect(production).toHaveAttribute('aria-pressed', 'true');
-    await expect(page.locator(`${SKILLS} [role="status"]`)).toContainText('capabilities shown');
+    // Scoped to the record's own count. The bench above has a readout of its
+    // own, and it is deliberately not a live region — see Bench.tsx — so this
+    // section has exactly one, and it is this.
+    const live = page.locator(`${SKILLS} [role="status"]`);
+    await expect(live).toHaveCount(1);
+    await expect(live).toContainText('capabilities shown');
   });
 
   test('TC-SKILL-08: the footer fingerprints the CV it claims to be calibrated against', async ({
@@ -120,5 +125,75 @@ test.describe('Skills', () => {
     // Eight hex characters, generated at build time from the file's bytes by
     // scripts/build/cv_fingerprint.mjs — never hand-typed.
     await expect(footer).toContainText(/MD5\s+[0-9a-f]{8}/);
+  });
+});
+
+test.describe('Skills · the bench', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.locator(SKILLS).scrollIntoViewIfNeeded();
+    // The wires trace themselves in, then the animation is taken off them.
+    await page.waitForTimeout(2200);
+  });
+
+  test('TC-BENCH-01: every link the data asserts is actually drawn', async ({ page }) => {
+    const wires = page.locator(`${SKILLS} svg path`);
+    // Seventeen capabilities, twenty links: three of them cite two sources, and
+    // the one with no evidence yet cites none.
+    await expect(wires).toHaveCount(20);
+
+    // A wire that does not reach both rails is a drawing of nothing. Each one
+    // must start at the source rail's right edge and end at the capability
+    // rail's left edge, within a pixel.
+    const spans = await wires.evaluateAll((paths) =>
+      paths.map((p) => {
+        const el = p as unknown as SVGPathElement;
+        const end = el.getPointAtLength(el.getTotalLength());
+        const start = el.getPointAtLength(0);
+        return { x0: Math.round(start.x), x1: Math.round(end.x), len: el.getTotalLength() };
+      }),
+    );
+    const starts = new Set(spans.map((s) => s.x0));
+    const ends = new Set(spans.map((s) => s.x1));
+    expect(starts.size, 'wires start at more than one x — the left rail moved').toBe(1);
+    expect(ends.size, 'wires end at more than one x — the right rail moved').toBe(1);
+    for (const s of spans) expect(s.len).toBeGreaterThan(80);
+  });
+
+  test('TC-BENCH-02: gold is still only a claim about production evidence', async ({ page }) => {
+    const golds = await page.locator(`${SKILLS} svg path`).evaluateAll((paths) =>
+      paths.filter((p) => (p.getAttribute('stroke') ?? '').includes('gold')).length,
+    );
+    // Seventeen of the twenty links carry production evidence. The three that
+    // do not are the two sources behind the LLM guardrails — measured against a
+    // simulated error budget, not live traffic — and the Compose orchestration.
+    // If a future edit paints one of those gold, gold has stopped meaning
+    // anything.
+    expect(golds).toBe(17);
+  });
+
+  test('TC-BENCH-03: tracing a source dims what it is not wired to', async ({ page }) => {
+    const anz = page.locator(`${SKILLS} button[aria-label^="ANZ Banking Group"]`);
+    await anz.hover();
+    await page.waitForTimeout(400);
+    const lit = await page.locator(`${SKILLS} svg path[data-lit]`).count();
+    expect(lit, 'ANZ carries three capabilities').toBe(3);
+    // And the board says so: everything else falls back rather than vanishing.
+    const faded = await page
+      .locator(`${SKILLS} svg path:not([data-lit])`)
+      .evaluateAll((paths) =>
+        paths.every((p) => Number(getComputedStyle(p).strokeOpacity) < 0.2),
+      );
+    expect(faded).toBe(true);
+  });
+
+  test('TC-BENCH-04: each node speaks its own evidence', async ({ page }) => {
+    // The readout beside the board is not a live region, so the label is where
+    // a screen-reader user gets the evidence — it has to carry it.
+    const label = await page
+      .locator(`${SKILLS} button[aria-label^="Real-time telemetry platforms"]`)
+      .getAttribute('aria-label');
+    expect(label).toContain('10,000+ concurrent devices');
+    expect(label).toContain('measured in production');
   });
 });

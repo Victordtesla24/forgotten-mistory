@@ -3,6 +3,7 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import Caliper from '@/components/marks/Caliper';
+import Bench from './Bench';
 import { cvFingerprint } from '@/app/data/generated/cv-fingerprint';
 import {
   capabilities,
@@ -34,6 +35,10 @@ type Filter = 'all' | 'production' | 'pending';
  */
 export default function Skills() {
   const [filter, setFilter] = useState<Filter>('all');
+  // Which capability the bench above currently has under attention. The record
+  // marks that row rather than filtering to it: a table that emptied itself as
+  // the reader moved across a diagram would be unusable.
+  const [traced, setTraced] = useState<number | null>(null);
   const tableRef = useRef<HTMLTableElement>(null);
   const [floor, setFloor] = useState<number>();
 
@@ -92,6 +97,13 @@ export default function Skills() {
           </h2>
           <p className={styles.lede}>{skillsContent.lede}</p>
         </header>
+
+        {/* The instrument, then the certificate. The board draws the claim the
+            section makes — every capability wired to the place its evidence
+            came from — and the record beneath it holds the evidence itself.
+            Reading either one alone is enough; the board is what makes anyone
+            want to read the other. */}
+        <Bench onSelect={setTraced} />
 
         <div className={styles.card}>
           <div className={styles.controls}>
@@ -152,10 +164,15 @@ export default function Skills() {
               </tr>
             </thead>
             <tbody>
-              {capabilities.map((row) => {
+              {capabilities.map((row, index) => {
                 const shown = visible.includes(row);
                 return (
-                  <tr key={row.capability} hidden={!shown} data-status={row.status}>
+                  <tr
+                    key={row.capability}
+                    hidden={!shown}
+                    data-status={row.status}
+                    data-traced={traced === index ? '' : undefined}
+                  >
                     <th scope="row" className={styles.capability}>
                       {row.capability}
                     </th>

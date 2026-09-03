@@ -364,3 +364,15 @@ tr[data-status="pending"] .statusLabel {
         transition: none;
     }
 }
+
+/* The row the bench above is currently tracing. A rule and a lift, not a fill:
+   the record is a document, and a highlighted band across it would read as a
+   spreadsheet selection rather than as a pointer. */
+.table tbody tr[data-traced] {
+    background: rgb(244 246 250 / 0.035);
+    box-shadow: inset 2px 0 0 var(--gold);
+}
+
+.table tbody tr[data-traced] .capability {
+    color: var(--white);
+}
