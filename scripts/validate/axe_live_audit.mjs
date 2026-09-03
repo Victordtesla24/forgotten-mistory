@@ -18,7 +18,8 @@ const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
 const allViolations = [];
 const perRoute = [];
 
-const browser = await chromium.launch();
+// This host has no ms-playwright download; it runs the system Chrome.
+const browser = await chromium.launch({ channel: 'chrome', args: ['--no-sandbox'] });
 try {
   const ctx = await browser.newContext({ viewport: { width: 1366, height: 900 } });
   const page = await ctx.newPage();
