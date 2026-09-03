@@ -311,6 +311,15 @@ tr[data-status="pending"] .statusLabel {
         width: auto;
     }
 
+    /* The caption must be told to become a block too. Left as `table-caption`
+       inside a table that is now `display: block`, it has no table box to
+       measure against and shrink-wraps to its longest word — the sentence came
+       out one word per line on a phone. */
+    .caption {
+        display: block;
+        width: 100%;
+    }
+
     .table thead {
         position: absolute;
         width: 1px;
