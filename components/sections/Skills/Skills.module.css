@@ -1,0 +1,345 @@
+/**
+ * Skills — a lab certificate.
+ *
+ * Ruled, dense and silent. The only animated property in this section is the
+ * card's own opacity on entry; the section before it scrubs a sixteen-year
+ * chart, and the page needs one flat screen after that.
+ *
+ * Filtering uses the `hidden` attribute inside a container with a floor height,
+ * so using the filters never moves anything else on the page.
+ */
+
+.skills {
+    position: relative;
+    padding: clamp(5rem, 12vh, 9rem) var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
+}
+
+.inner {
+    position: relative;
+    z-index: 1;
+    max-width: 78rem;
+    margin: 0 auto;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.header {
+    max-width: 56rem;
+    margin-bottom: clamp(2.5rem, 6vh, 3.5rem);
+}
+
+.kicker {
+    margin: 0 0 1rem;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mist-400);
+}
+
+.title {
+    margin: 0 0 1.5rem;
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--white);
+}
+
+.lede {
+    margin: 0;
+    max-width: 56ch;
+    font-size: clamp(1rem, 1.25vw, 1.12rem);
+    line-height: 1.68;
+    color: var(--mist-200);
+}
+
+/* ── The card ────────────────────────────────────────────────────────────── */
+.card {
+    border: 1px solid var(--token-border-default);
+    border-radius: 4px;
+    background: rgb(244 246 250 / 0.015);
+    animation: cardSettle 240ms var(--motion-ease-standard) both;
+}
+
+@keyframes cardSettle {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.25rem clamp(1rem, 2.5vw, 2rem);
+    border-bottom: 1px solid var(--token-border-default);
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.legendItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.legendGlyph {
+    font-size: 0.8rem;
+    line-height: 1;
+    color: var(--mist-200);
+}
+
+.legendLabel {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-300);
+}
+
+.filters {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.filter {
+    min-height: 34px;
+    padding: 0 0.9rem;
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--mist-200);
+    cursor: pointer;
+    transition:
+        color var(--motion-fast) var(--motion-ease-standard),
+        border-color var(--motion-fast) var(--motion-ease-standard),
+        background var(--motion-fast) var(--motion-ease-standard);
+}
+
+.filter:hover {
+    border-color: var(--card-border-hover);
+    color: var(--white);
+}
+
+.filter[aria-pressed="true"] {
+    background: var(--white);
+    border-color: var(--white);
+    color: var(--ink-900);
+}
+
+.filter:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+}
+
+.count {
+    margin: 0;
+    padding: 0.75rem clamp(1rem, 2.5vw, 2rem) 0;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-300);
+}
+
+/* ── The table ───────────────────────────────────────────────────────────── */
+/* The floor lives here, never on the table: constraining the element whose
+   height is being measured makes the measurement inflate itself. */
+.tableWrap {
+    display: block;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.caption {
+    padding: 0.5rem clamp(1rem, 2.5vw, 2rem) 1rem;
+    text-align: left;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--ink-300);
+}
+
+.table thead th {
+    padding: 0.6rem clamp(0.6rem, 1.4vw, 1rem);
+    border-bottom: 1px solid var(--token-border-default);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--mist-400);
+    white-space: nowrap;
+}
+
+.table thead th:first-child {
+    padding-left: clamp(1rem, 2.5vw, 2rem);
+}
+
+.table tbody tr {
+    border-bottom: 1px solid rgb(255 255 255 / 0.045);
+}
+
+.table tbody tr:last-child {
+    border-bottom: 0;
+}
+
+.table td,
+.table tbody th {
+    padding: 0.85rem clamp(0.6rem, 1.4vw, 1rem);
+    vertical-align: top;
+    text-align: left;
+    font-weight: 400;
+}
+
+.capability {
+    padding-left: clamp(1rem, 2.5vw, 2rem) !important;
+    width: 26%;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: var(--white);
+}
+
+.evidence {
+    width: 36%;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--mist-200);
+}
+
+/* A caveat is not small print — it is the reason the row is believable. */
+.caveat {
+    display: block;
+    margin-top: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    line-height: 1.5;
+    color: var(--ink-300);
+}
+
+.where {
+    width: 22%;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    line-height: 1.5;
+    color: var(--mist-400);
+}
+
+.statusHead {
+    width: 16%;
+}
+
+.status {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.statusGlyph {
+    font-size: 0.7rem;
+    line-height: 1.6;
+    color: var(--mist-200);
+}
+
+.statusLabel {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    line-height: 1.6;
+    letter-spacing: 0.03em;
+    color: var(--ink-300);
+}
+
+tr[data-status="pending"] .statusGlyph,
+tr[data-status="pending"] .statusLabel {
+    color: var(--mist-400);
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.footer {
+    margin: 0;
+    padding: 1.1rem clamp(1rem, 2.5vw, 2rem);
+    border-top: 1px solid var(--token-border-default);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    color: var(--ink-300);
+}
+
+.footer code {
+    font-family: inherit;
+    color: var(--mist-400);
+}
+
+/* ── Mobile: the table becomes stacked rows ──────────────────────────────── */
+@media (max-width: 860px) {
+    .controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .table,
+    .table tbody,
+    .table tbody tr,
+    .table tbody th,
+    .table td {
+        display: block;
+        width: auto;
+    }
+
+    .table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+    }
+
+    .table tbody tr {
+        padding: 1rem clamp(1rem, 4vw, 1.5rem);
+    }
+
+    .capability,
+    .table td {
+        padding: 0.2rem 0 !important;
+    }
+
+    .capability {
+        font-size: 0.95rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .where::before {
+        content: "at ";
+        color: var(--ink-300);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card {
+        animation: none;
+    }
+
+    .filter {
+        transition: none;
+    }
+}

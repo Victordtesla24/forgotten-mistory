@@ -3,28 +3,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import {
-  ArrowRight,
-  BadgeCheck,
-  Brain,
-  Crown,
-  GitBranch,
-  GraduationCap,
-  Mail,
-  Phone,
-} from 'lucide-react';
+import { ArrowRight, Mail, Phone } from 'lucide-react';
 
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Hero from '@/components/sections/Hero/Hero';
 import About from '@/components/sections/About/About';
 import Experience from '@/components/sections/Experience/Experience';
+import Skills from '@/components/sections/Skills/Skills';
 const SpaceScene = dynamic(() => import('./components/SpaceScene'), { ssr: false });
 import CursorGlow from '@/components/site/CursorGlow';
 import CardDepth from '@/components/site/CardDepth';
 import SectionBeats from '@/components/site/SectionBeats';
 import Navigation from '@/components/site/Navigation';
 import Reveal from '@/components/site/Reveal';
-import ExpandableCard from '@/components/site/ExpandableCard';
 import ArchitectureMap from '@/components/site/ArchitectureMap';
 import ProjectsCarousel from '@/components/site/ProjectsCarousel';
 import GithubFeed from '@/components/site/GithubFeed';
@@ -35,7 +26,6 @@ import InViewGate from '@/components/site/InViewGate';
 import ProofScroll from '@/components/site/ProofScroll';
 import WorkScroll from '@/components/site/WorkScroll';
 import CatalogueScroll from '@/components/site/CatalogueScroll';
-import SkillsScroll from '@/components/site/SkillsScroll';
 import ContactScroll from '@/components/site/ContactScroll';
 import HudFrame from '@/components/fx/HudFrame';
 import SprintBurndown from '@/components/fx/SprintBurndown';
@@ -58,26 +48,6 @@ const PacketFlowGraph = dynamic(() => import('@/components/fx/PacketFlowGraph'),
 // R2 skill visualizations — compact R3F scenes for the #skills section.
 // Each renders a unique monochrome micro-visualization bound to a skill group
 // per SPEC §9.3 (one dedicated effect per tangible skill domain).
-const SkillVizAI = dynamic(() => import('@/components/fx/SkillVizAI'), {
-  loading: () => <div className="skill-viz-placeholder" />,
-  ssr: false,
-});
-const SkillVizEngineering = dynamic(() => import('@/components/fx/SkillVizEngineering'), {
-  loading: () => <div className="skill-viz-placeholder" />,
-  ssr: false,
-});
-const SkillVizLeadership = dynamic(() => import('@/components/fx/SkillVizLeadership'), {
-  loading: () => <div className="skill-viz-placeholder" />,
-  ssr: false,
-});
-const SkillVizCertifications = dynamic(() => import('@/components/fx/SkillVizCertifications'), {
-  loading: () => <div className="skill-viz-placeholder" />,
-  ssr: false,
-});
-const SkillVizEducation = dynamic(() => import('@/components/fx/SkillVizEducation'), {
-  loading: () => <div className="skill-viz-placeholder" />,
-  ssr: false,
-});
 import ClearanceStepper from '@/components/fx/ClearanceStepper';
 import InboxTriage from '@/components/fx/InboxTriage';
 import JourneyTimeline from '@/components/fx/JourneyTimeline';
@@ -100,7 +70,6 @@ import {
   hero,
   proof,
   projects,
-  skillGroups,
 } from './data/siteContent';
 
 // FR-CONTACT: booking CTA — owner can set NEXT_PUBLIC_BOOKING_URL to a Calendly/Cal.com
@@ -110,22 +79,6 @@ const BOOKING_HREF =
   `mailto:${contact.email}?subject=${encodeURIComponent('Conversation request — portfolio')}`;
 const CV_HREF = '/docs/Vik_Resume_Final.pdf';
 
-
-const SKILL_ICONS = {
-  brain: Brain,
-  gitBranch: GitBranch,
-  crown: Crown,
-  badgeCheck: BadgeCheck,
-  graduationCap: GraduationCap,
-} as const;
-
-const SKILL_VIZ_MAP: Record<string, React.ComponentType> = {
-  'ai-ml': SkillVizAI,
-  'engineering': SkillVizEngineering,
-  'leadership': SkillVizLeadership,
-  'certifications': SkillVizCertifications,
-  'education': SkillVizEducation,
-};
 
 // Entrance is triggered by the preloader handoff (`fm:page-ready`), not a fixed
 // delay — so `delayChildren` is just a short beat after the wipe starts.
@@ -252,7 +205,7 @@ export default function Home() {
         <Hero />
 
         {/* D-TRUST-01 — scannable credibility band: recognised employers + CSM + degrees,
-            all sourced from `experience`/`skillGroups`. Establishes pedigree near the top. */}
+            sourced from the roles in siteContent. Establishes pedigree near the top. */}
         <aside className="credibility-band" aria-label="Career credibility">
           <div className="container credibility-inner">
             <span className="credibility-label">{credibility.label}</span>
@@ -282,61 +235,7 @@ export default function Home() {
 
         <Experience />
 
-        <section id="skills" className="skills-section beat">
-          {/* T6 — SkillsScroll: GSAP ScrollTrigger enter stagger, per-skill micro-viz cue */}
-          <SkillsScroll />
-          <div className="container">
-            <Reveal className="section-header">
-              <h2 className="section-title">Skills &amp; Certifications</h2>
-            </Reveal>
-            <div className="skills-grid">
-              {skillGroups.map((group, index) => {
-                const Icon = SKILL_ICONS[group.icon];
-                const Viz = SKILL_VIZ_MAP[group.id];
-                return (
-                  <div key={group.id} className="skill-card-wrapper" style={{ opacity: 0 }}>
-                    <Reveal delay={index * 0.06}>
-                    <ExpandableCard
-                      baseClass="skill-card"
-                      headerClass="skill-header"
-                      bodyClass="skill-body"
-                      header={
-                        <>
-                          <div className="skill-title">
-                            <span className="skill-icon">
-                              <Icon size={20} strokeWidth={1.7} aria-hidden="true" />
-                            </span>
-                            <div>
-                              <p className="skill-kicker">{group.kicker}</p>
-                              <h3 className="skill-name">{group.name}</h3>
-                            </div>
-                          </div>
-                          <span className="skill-chevron" aria-hidden="true">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                          </span>
-                        </>
-                      }
-                    >
-                      <div className="skill-content-layout">
-                        <ul className="skill-list">
-                          {group.items.map((item) => (
-                            <li key={item}>{item}</li>
-                          ))}
-                        </ul>
-                        {Viz && (
-                          <div className="skill-viz-wrapper">
-                            <Viz />
-                          </div>
-                        )}
-                      </div>
-                    </ExpandableCard>
-                    </Reveal>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
+        <Skills />
 
         <section
           id="architecture-lab"
