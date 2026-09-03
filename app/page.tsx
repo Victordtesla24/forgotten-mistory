@@ -17,13 +17,13 @@ import {
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Hero from '@/components/sections/Hero/Hero';
 import About from '@/components/sections/About/About';
+import Experience from '@/components/sections/Experience/Experience';
 const SpaceScene = dynamic(() => import('./components/SpaceScene'), { ssr: false });
 import CursorGlow from '@/components/site/CursorGlow';
 import CardDepth from '@/components/site/CardDepth';
 import SectionBeats from '@/components/site/SectionBeats';
 import Navigation from '@/components/site/Navigation';
 import Reveal from '@/components/site/Reveal';
-import ExperienceAccordion from '@/components/site/ExperienceAccordion';
 import ExpandableCard from '@/components/site/ExpandableCard';
 import ArchitectureMap from '@/components/site/ArchitectureMap';
 import ProjectsCarousel from '@/components/site/ProjectsCarousel';
@@ -96,7 +96,6 @@ import CursorDepthField from '@/components/site/CursorDepthField';
 import {
   contact,
   credibility,
-  experience,
   featuredRepos,
   hero,
   proof,
@@ -281,17 +280,7 @@ export default function Home() {
 
         <About />
 
-        <section id="experience" className="experience-section beat">
-          <ScrollRail targetId="experience" label="Experience" />
-          <div className="container">
-            <Reveal className="section-header">
-              <h2 className="section-title">Experience</h2>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <ExperienceAccordion roles={experience} />
-            </Reveal>
-          </div>
-        </section>
+        <Experience />
 
         <section id="skills" className="skills-section beat">
           {/* T6 — SkillsScroll: GSAP ScrollTrigger enter stagger, per-skill micro-viz cue */}
