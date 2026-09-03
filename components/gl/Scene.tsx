@@ -1,9 +1,14 @@
 'use client';
 
-import { Canvas } from '@react-three/fiber';
+import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import { useGLCapability } from './useGLCapability';
+
+// `three` and `@react-three/fiber` are fetched only once a scene has cleared
+// every gate below — not as part of the page, which is where a static import
+// of `Canvas` from this file put them.
+const GLCanvas = dynamic(() => import('./GLCanvas'), { ssr: false });
 
 interface SceneProps {
   /** Class applied to the slot element, which is present whether or not the scene renders. */
@@ -36,6 +41,7 @@ export default function Scene({ className, camera, children }: SceneProps) {
   const slotRef = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
   const [allowMotion, setAllowMotion] = useState(false);
+  const [pageSettled, setPageSettled] = useState(false);
 
   useEffect(() => {
     const query = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -43,6 +49,29 @@ export default function Scene({ className, camera, children }: SceneProps) {
     apply();
     query.addEventListener('change', apply);
     return () => query.removeEventListener('change', apply);
+  }, []);
+
+  // Nothing 3D is fetched until the page has finished loading and the main
+  // thread has gone idle once. The hero's shader is pure enhancement over a CSS
+  // gradient that is already painted, so a scene arriving a second late costs
+  // nothing; a scene arriving *early* costs the hero's own display face its
+  // place in the download queue, which is what took LCP over the 2.5 s budget
+  // on a throttled phone.
+  useEffect(() => {
+    let cancelled = false;
+    const settle = () => {
+      const idle =
+        window.requestIdleCallback ?? ((cb: IdleRequestCallback) => window.setTimeout(cb, 200));
+      idle(() => {
+        if (!cancelled) setPageSettled(true);
+      });
+    };
+    if (document.readyState === 'complete') settle();
+    else window.addEventListener('load', settle, { once: true });
+    return () => {
+      cancelled = true;
+      window.removeEventListener('load', settle);
+    };
   }, []);
 
   useEffect(() => {
@@ -59,31 +88,12 @@ export default function Scene({ className, camera, children }: SceneProps) {
     return () => observer.disconnect();
   }, []);
 
-  const show = capability === 'supported' && allowMotion && near;
+  const show = capability === 'supported' && allowMotion && near && pageSettled;
 
   return (
     <div ref={slotRef} className={className} aria-hidden="true">
       {show && (
-        <Canvas
-          style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
-          // Retina is capped at 1.75: past that the fill cost doubles for a
-          // difference no one can see on these low-contrast monochrome scenes.
-          dpr={[1, 1.75]}
-          gl={{
-            antialias: true,
-            alpha: true,
-            powerPreference: 'high-performance',
-            // These scenes composite over near-black ink and never depth-sort
-            // against a cleared background, so a stencil buffer is dead weight.
-            stencil: false,
-          }}
-          camera={{
-            position: camera?.position ?? [0, 0, 5],
-            fov: camera?.fov ?? 45,
-          }}
-        >
-          {children}
-        </Canvas>
+        <GLCanvas camera={camera}>{children}</GLCanvas>
       )}
     </div>
   );
