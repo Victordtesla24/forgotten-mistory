@@ -1169,7 +1169,7 @@ const MiniVicBot = () => {
           role="dialog"
           aria-modal="false"
           aria-label="MiniVic assistant panel"
-          className="mb-4 flex h-[min(37rem,calc(100dvh-7rem))] w-[22rem] md:w-[27rem] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-3xl border border-zinc-300/20 bg-[linear-gradient(150deg,rgba(14,15,20,0.92),rgba(10,8,24,0.9))] backdrop-blur-xl shadow-[0_24px_70px_rgba(4,8,22,0.65),0_0_40px_rgba(201,205,214,0.14)] ring-1 ring-neutral-400/25 animate-in slide-in-from-bottom-8 duration-300 focus:outline-none"
+          className="mb-4 flex h-[min(37rem,calc(100dvh-7rem))] w-[22rem] md:w-[27rem] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded border border-white/12 bg-[rgb(10_11_13/0.97)] backdrop-blur-sm shadow-[0_24px_60px_rgba(0,0,0,0.55)] animate-in slide-in-from-bottom-4 duration-200 focus:outline-none"
         >
           <div className="relative h-40 w-full shrink-0 overflow-hidden border-b border-white/10 bg-neutral-950">
             <video
@@ -1212,7 +1212,10 @@ const MiniVicBot = () => {
             </div>
             <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-3 py-2.5">
               <div className="flex items-center gap-2 rounded-full border border-white/15 bg-black/45 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-md">
-                <span className={`h-1.5 w-1.5 rounded-full ${isSpeaking ? "bg-white animate-pulse" : "bg-white/70"}`} />
+                <span
+                  className="h-1.5 w-1.5 rounded-full"
+                  style={{ background: isSpeaking ? "var(--gold-light)" : "var(--gold)" }}
+                />
                 <span>MiniVic Live</span>
               </div>
               <div className="flex gap-1.5">
@@ -1259,7 +1262,7 @@ const MiniVicBot = () => {
                 isSpeaking
                   ? "border-white/40 bg-white/15 text-white"
                   : isListening
-                    ? "animate-pulse border-white/40 bg-white/15 text-white"
+                    ? "border-white/40 bg-white/15 text-white"
                     : "border-white/20 bg-white/5 text-white/85"
               }`}>
                 {isSpeaking ? (isVideoPlaying ? "On video" : "Speaking") : isListening ? "Listening" : "Online"}
@@ -1269,14 +1272,14 @@ const MiniVicBot = () => {
           <div className="shrink-0 border-b border-white/10 bg-black/30 px-3 py-3">
             <div className="flex items-center gap-2.5">
               {/* Persona segmented control — one clean toggle instead of three cramped pills */}
-              <div className="flex flex-1 rounded-xl border border-white/12 bg-white/[0.03] p-0.5">
+              <div className="flex flex-1 rounded border border-white/12 bg-white/[0.02] p-0.5">
                 {PERSONA_MODES.map((mode) => (
                   <button
                     key={mode.key}
                     data-testid={`minivic-mode-${mode.key}`}
                     onClick={() => setActiveMode(mode.key)}
                     aria-pressed={activeMode === mode.key}
-                    className={`flex-1 rounded-lg px-2 py-1.5 text-[12px] font-medium transition-all ${
+                    className={`flex-1 rounded-[3px] px-2 py-1.5 text-[12px] font-medium transition-colors ${
                       activeMode === mode.key
                         ? "bg-white text-neutral-950 shadow-sm"
                         : "text-white/55 hover:text-white/90"
@@ -1336,10 +1339,10 @@ const MiniVicBot = () => {
                 transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
               >
                 <div
-                  className={`max-w-[86%] px-3.5 py-2.5 text-[13.5px] leading-relaxed rounded-2xl shadow-sm border ${
+                  className={`max-w-[86%] px-3.5 py-2.5 text-[13.5px] leading-relaxed rounded shadow-none border ${
                     msg.role === "user"
-                      ? "rounded-tr-sm border-white/25 bg-white/90 text-neutral-950"
-                      : "rounded-tl-sm border-white/10 bg-white/[0.04] text-white/90"
+                      ? "border-white/25 bg-white/90 text-neutral-950"
+                      : "border-white/10 bg-white/[0.04] text-white/90"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-2 text-[11px] mb-1 opacity-80">
