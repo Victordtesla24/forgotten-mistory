@@ -2,6 +2,7 @@
 
 import { listenContent } from '@/app/data/portfolio/listen';
 
+import Avatar from './Avatar';
 import styles from './Listen.module.css';
 
 /**
@@ -16,6 +17,11 @@ import styles from './Listen.module.css';
  * about where the message goes or hands the visitor to a third party, and
  * neither is a good last impression. The four channels are real anchors — a
  * mailto, a tel, and two profiles — so the visitor's own client does the work.
+ *
+ * The avatar sits here rather than in the hero for the same reason the rest of
+ * the section is quiet: a synthetic talking head at the front door is an
+ * advertisement, and at the end, after five screens of checkable evidence, it
+ * is an offer. It costs the page nothing until someone asks for it.
  */
 export default function Listen() {
   return (
@@ -50,6 +56,8 @@ export default function Listen() {
         </ul>
 
         <p className={styles.coffee}>{listenContent.coffee}</p>
+
+        <Avatar />
       </div>
 
       <p className={styles.colophon}>{listenContent.colophon}</p>
