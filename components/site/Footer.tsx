@@ -59,10 +59,15 @@ function readBuildStamp(): BuildStamp | null {
     // there is the build working, not source that never got committed. Without
     // the exclusion the guard would suppress the stamp on every build including
     // a perfectly clean one — a check that always fires is a check nobody reads.
+    // `diff --name-only HEAD` rather than `status --porcelain`: it returns bare
+    // paths. Porcelain prefixes each line with a two-character status and a
+    // space, and trimming that output eats the leading space of the first line,
+    // so slicing a fixed offset silently cuts into the first path — which is
+    // exactly the bug that made this guard mask every build, clean or not.
     const BUILD_WRITES = /^app\/data\/generated\/|^reports\//;
-    const dirty = git('status', '--porcelain', '--untracked-files=no')
+    const dirty = git('diff', '--name-only', 'HEAD')
       .split('\n')
-      .map((line) => line.slice(3).trim())
+      .map((path) => path.trim())
       .filter((path) => path && !BUILD_WRITES.test(path));
     if (dirty.length > 0) return null;
 
