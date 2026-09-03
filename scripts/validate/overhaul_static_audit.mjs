@@ -154,12 +154,25 @@ function checkMono() {
 
 // ── TC-NFR-PERF — asset budget (no oversized media) ─────────────────────────
 function checkAssetBudget() {
-  // Differentiated budgets: eager images/fonts must be small (first-view LCP);
-  // video/audio are lazy-loaded below the fold so they get a larger, still-bounded cap.
-  const IMG = 500 * 1024, VIDEO = 2.5 * 1024 * 1024, AUDIO = 1024 * 1024;
+  // Differentiated budgets, by what the asset costs a reader who did not ask
+  // for it. Eager images and fonts are on the first-view path and must be
+  // small. Video and audio are below the fold and lazily fetched.
+  //
+  // `assets/avatar/*` is a third case: the <video> element is not in the DOM at
+  // all until someone presses play, so those bytes are only ever spent by a
+  // reader who has already decided to watch. Holding it to the same cap as an
+  // auto-loading clip is what shipped a 1440x1440 master downscaled to 720x720
+  // at 430 kbps — soft, mushy in the beard and the fabric, and visibly worse
+  // than the render it came from. The generous cap buys back the resolution;
+  // it is still a cap, and still checked.
+  const IMG = 500 * 1024,
+    VIDEO = 2.5 * 1024 * 1024,
+    ON_DEMAND_VIDEO = 5 * 1024 * 1024,
+    AUDIO = 1024 * 1024;
+  const onDemand = (f) => /(^|\/)assets\/avatar\//.test(relative(ROOT, f).replace(/\\/g, '/'));
   const budgetFor = (f) => {
     if (/\.(png|jpe?g|gif|webp|avif|svg|woff2?|ttf)$/i.test(f)) return IMG;
-    if (/\.(mp4|mov|webm)$/i.test(f)) return VIDEO;
+    if (/\.(mp4|mov|webm)$/i.test(f)) return onDemand(f) ? ON_DEMAND_VIDEO : VIDEO;
     if (/\.(mp3|wav|ogg|m4a)$/i.test(f)) return AUDIO;
     return null;
   };
@@ -170,7 +183,9 @@ function checkAssetBudget() {
     const sz = statSync(f).size;
     if (sz > b) over.push(`${relative(ROOT, f)} = ${(sz / 1048576).toFixed(2)}MB (cap ${(b / 1048576).toFixed(1)}MB)`);
   }
-  record('TC-NFR-PERF', 'Asset budgets (img ≤0.5MB · video ≤2.5MB · audio ≤1MB)', over.length === 0,
+  record('TC-NFR-PERF',
+    'Asset budgets (img ≤0.5MB · video ≤2.5MB, ≤5MB click-to-play · audio ≤1MB)',
+    over.length === 0,
     over.length ? `${over.length} oversized: ${over.join('; ')}` : 'within budget');
 }
 

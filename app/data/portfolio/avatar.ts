@@ -30,6 +30,7 @@ export const avatarContent = {
     { label: 'Face', value: 'my own photograph, unretouched framing' },
     { label: 'Voice', value: 'my own voice, cloned from a recording of me' },
     { label: 'Render', value: 'ByteDance OmniHuman 1.5, one take, no edit' },
+    { label: 'Master', value: '1440 × 1440 · delivered at 1080 × 1080, H.264' },
     { label: 'Script', value: 'written by me; the transcript is below, verbatim' },
   ],
   poster: '/assets/avatar/poster.jpg',
