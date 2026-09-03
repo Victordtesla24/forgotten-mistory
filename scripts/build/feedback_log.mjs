@@ -14,6 +14,13 @@
  * matter how nicely its message reads.
  *
  * Run from `npm run build:static`, before `next build`.
+ *
+ * The output is committed rather than ignored, so a fresh clone typechecks and
+ * builds without having to run the harvest first. One consequence is
+ * unavoidable and worth stating: writing this file is itself a commit, so the
+ * committed copy trails HEAD by exactly one. The page never claims otherwise —
+ * it prints how many of the total it is showing, and the date it was
+ * harvested.
  */
 
 import { execFileSync } from 'node:child_process';
