@@ -132,3 +132,41 @@ than leaving it as undocumented live infrastructure. Verified by re-listing depl
 after the change.
 
 **Reversal cost.** None — it serves no route the static export uses.
+
+---
+
+## D-07 · The 12 dependency advisories, and why `npm audit` stays red for now
+
+**Advertised.** `.github/workflows/security.yml` runs `npm audit --audit-level=high` as a **gating**
+job: *"fails the job (and therefore the required check) on any high or critical severity advisory."*
+It is currently failing, and has been throughout this run.
+
+**Actually there** (measured with `--package-lock-only`, so `node_modules` was not touched while two
+swarms were building against it):
+
+| Severity | Package | Fix |
+|---|---|---|
+| **critical** | `tar` | non-breaking |
+| high | `brace-expansion`, `browserslist`, `js-yaml`, `nanoid` | non-breaking |
+| high | `sharp` | breaking → `sharp@0.35.4` (devDependency; libvips CVEs) |
+| high | `next`, `postcss`, `glob`, `eslint-config-next`, `@next/eslint-plugin-next` | breaking → **`next@16.3.4`** |
+
+**Decision.** Two work items, in this order:
+
+1. **Now, once the concurrent swarms release the tree:** apply the non-breaking fixes and the
+   `sharp` major. That clears the **critical** and five of the ten highs, and `sharp` is a
+   build-time image dependency whose major bump cannot reach a visitor.
+2. **Separately, with its own full gate run:** `next@14 → 16`. Five of the remaining advisories
+   resolve only through it. It is a major framework upgrade against a 167-spec suite, a strict
+   static audit and a WebGL-bearing static export, and R-43 forbids regression — so it gets planned,
+   tested and verified as a feature, not smuggled in behind a security fix.
+
+**What is NOT on the table.** Raising `--audit-level`, adding an exception file, or making the job
+non-gating. §13 bans satisfying a check by weakening it, and a security gate is the last place to
+start. The job stays red and honest until the code makes it green.
+
+**Why the tree is being waited on rather than worked around.** `npm audit fix` runs an install, and
+`/var/tmp/v6-wt/data-backend` symlinks this checkout's `node_modules`. Changing packages under a
+running build is how a green suite becomes meaningless.
+
+**Reversal cost.** Low for item 1 (lockfile revert). High for item 2, which is why it is separate.
