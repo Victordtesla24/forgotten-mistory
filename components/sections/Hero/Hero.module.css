@@ -1,0 +1,369 @@
+/**
+ * Hero — layout and entrance.
+ *
+ * The entrance is CSS, not JavaScript: `heroRise` runs on its own with a
+ * per-element delay derived from the `--step` custom property set in the JSX.
+ * That means the hero animates identically whether hydration takes 200 ms or
+ * never happens at all, and it costs no main-thread time during the load.
+ */
+
+.hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    min-height: 100svh;
+    padding: clamp(6rem, 14vh, 10rem) var(--page-gutter, clamp(1.5rem, 5vw, 5rem)) clamp(4rem, 10vh, 7rem);
+    overflow: hidden;
+}
+
+/* The hero is one screen — never one-and-a-bit. On a 1280×720 laptop the
+   default rhythm ran 806 px tall, pushing the actions below the fold for
+   exactly the reader who scans for five seconds and leaves. Short viewports get
+   a tighter scale rather than a scrollbar. */
+@media (max-height: 860px) {
+    .hero {
+        padding-top: clamp(4rem, 9vh, 6rem);
+        padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
+    }
+
+    .name {
+        font-size: clamp(2.5rem, 6.2vw, 4.5rem);
+    }
+
+    .eyebrow {
+        margin-bottom: 1rem;
+    }
+
+    .role {
+        margin-top: 0.75rem;
+    }
+
+    .statement {
+        margin-top: 1rem;
+        font-size: 1rem;
+        line-height: 1.55;
+    }
+
+    .ledger {
+        margin-top: 1.4rem;
+    }
+
+    .ledgerItem {
+        padding-top: 0.7rem;
+    }
+
+    .actions {
+        margin-top: 1.5rem;
+    }
+
+    .availability {
+        margin-top: 1rem;
+    }
+}
+
+/* The GL scene is scissored onto this rectangle. Behind it sits a flat ink
+   gradient, which is the entire backdrop when there is no WebGL. */
+.stage {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(120% 90% at 22% 18%, rgb(27 29 35 / 0.85), transparent 62%),
+        linear-gradient(180deg, var(--ink-900) 0%, var(--ink-800) 58%, var(--ink-900) 100%);
+}
+
+.inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 68rem;
+    margin: 0 auto;
+}
+
+/* Every direct child of the grid rises on its own beat. */
+.eyebrow,
+.name,
+.role,
+.statement,
+.ledger,
+.actions,
+.availability {
+    animation: heroRise 900ms var(--motion-ease-emphasized) both;
+    animation-delay: calc(var(--step, 0) * 90ms + 120ms);
+}
+
+@keyframes heroRise {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 clamp(1.5rem, 4vh, 2.5rem);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mist-400);
+}
+
+.locationDot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 0 0 4px rgb(244 246 250 / 0.08);
+}
+
+.name {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: clamp(3rem, 8.2vw, 7.5rem);
+    font-weight: 500;
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+    color: var(--white);
+}
+
+.role {
+    margin: clamp(1rem, 2.4vh, 1.6rem) 0 0;
+    font-size: clamp(1rem, 1.55vw, 1.35rem);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--mist-200);
+}
+
+.statement {
+    margin: clamp(1.4rem, 3vh, 2.2rem) 0 0;
+    max-width: 46ch;
+    font-size: clamp(1rem, 1.35vw, 1.18rem);
+    line-height: 1.62;
+    color: var(--mist-400);
+}
+
+/* ── The ledger ───────────────────────────────────────────────────────────
+   Three figures, each carrying its own provenance line. Rules, not cards:
+   a card implies a dashboard, and a dashboard of one's own achievements is
+   exactly the register this site is trying not to write in. */
+.ledger {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 3rem);
+    margin: clamp(2.5rem, 6vh, 4rem) 0 0;
+    padding: 0;
+    list-style: none;
+    max-width: 54rem;
+}
+
+.ledgerItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--token-border-default);
+}
+
+.ledgerValue {
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 2.9vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    font-variant-numeric: tabular-nums;
+}
+
+.ledgerLabel {
+    font-size: 0.92rem;
+    line-height: 1.4;
+    color: var(--mist-200);
+}
+
+.ledgerSource {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    color: var(--ink-300);
+}
+
+/* ── Actions ─────────────────────────────────────────────────────────────── */
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin: clamp(2.5rem, 5vh, 3.5rem) 0 0;
+}
+
+.primaryAction,
+.secondaryAction {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 1.6rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition:
+        background var(--motion-fast) var(--motion-ease-standard),
+        border-color var(--motion-fast) var(--motion-ease-standard),
+        color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.primaryAction {
+    background: var(--white);
+    color: var(--ink-900);
+    border: 1px solid var(--white);
+}
+
+.primaryAction:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.secondaryAction {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid var(--card-border);
+}
+
+.secondaryAction:hover {
+    border-color: var(--card-border-hover);
+    background: rgb(244 246 250 / 0.04);
+}
+
+.primaryAction:focus-visible,
+.secondaryAction:focus-visible,
+.link:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+}
+
+/* ── Availability + links ────────────────────────────────────────────────── */
+.availability {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin: clamp(2rem, 4vh, 3rem) 0 0;
+    font-size: 0.85rem;
+    color: var(--mist-400);
+}
+
+.linkRule {
+    width: 2.5rem;
+    height: 1px;
+    background: var(--token-border-default);
+}
+
+.link {
+    color: var(--mist-200);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+    transition:
+        color var(--motion-fast) var(--motion-ease-standard),
+        border-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.link:hover {
+    color: var(--white);
+    border-bottom-color: var(--card-border-hover);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+    .ledger {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+
+    .statement {
+        max-width: none;
+    }
+}
+
+/* On a phone the ledger stacks, and three full-height entries pushed the two
+   actions a screen and a half down — so the reader who arrived from a CV link
+   saw the claims but not the way to act on them. Each entry becomes a single
+   row instead: the figure on the left, its label and provenance beside it. */
+@media (max-width: 600px) {
+    .ledger {
+        gap: 0.85rem;
+    }
+
+    .ledgerItem {
+        display: grid;
+        grid-template-columns: minmax(4.5rem, auto) 1fr;
+        column-gap: 1rem;
+        align-items: baseline;
+        padding-top: 0.7rem;
+    }
+
+    .ledgerValue {
+        grid-row: span 2;
+        font-size: 1.5rem;
+    }
+
+    .ledgerLabel {
+        font-size: 0.88rem;
+    }
+
+    .ledgerSource {
+        font-size: 0.68rem;
+    }
+
+    .statement {
+        font-size: 0.98rem;
+        line-height: 1.55;
+    }
+
+    .actions {
+        gap: 0.6rem;
+    }
+
+    .primaryAction,
+    .secondaryAction {
+        flex: 1 1 auto;
+        padding: 0 1.1rem;
+    }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────────────
+   The rise becomes a plain fade. The content still arrives on the same beat, so
+   the reading order is unchanged — only the movement is dropped. */
+@media (prefers-reduced-motion: reduce) {
+    .eyebrow,
+    .name,
+    .role,
+    .statement,
+    .ledger,
+    .actions,
+    .availability {
+        animation: heroFade 320ms linear both;
+        animation-delay: calc(var(--step, 0) * 40ms);
+    }
+
+    @keyframes heroFade {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+}

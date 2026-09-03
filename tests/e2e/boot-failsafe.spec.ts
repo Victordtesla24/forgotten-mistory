@@ -1,54 +1,62 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * D-BOOT-02 — the front door must never depend on hydration finishing.
+ * D-BOOT-02 — the front door must not depend on JavaScript at all.
  *
- * Production measurement (2026-09-03): with a cold cache the hero stayed blank
- * behind the preloader for 4–8 s while the 450 kB first-load bundle parsed,
- * because framer-motion server-renders the hero blocks at `opacity: 0` and the
- * preloader unmounts from a rAF loop. These tests simulate the pathological
- * case — hydration never completes at all — by refusing every JS chunk, and
- * assert the server-rendered markup still becomes visible on its own.
+ * Production measurement (2026-09-03, cold cache): the hero stayed blank behind
+ * the "Calibrating stars & telemetry" preloader for four to eight seconds while
+ * the 450 kB first-load bundle parsed, because framer-motion server-rendered
+ * every hero block at `opacity: 0` and the preloader only unmounted from a
+ * requestAnimationFrame loop.
+ *
+ * The rebuild removed both mechanisms: the hero is plain server-rendered markup
+ * revealed by a CSS animation, and there is no preloader. These tests refuse
+ * every client chunk — hydration never happens at all — and assert the hero is
+ * still complete, legible and usable.
  */
-test.describe('boot failsafe (no hydration)', () => {
+test.describe('the hero without JavaScript', () => {
   test.beforeEach(async ({ page }) => {
-    // Kill every client chunk: the page is now pure server-rendered HTML + CSS.
+    // Kill every client chunk: what remains is server-rendered HTML plus CSS.
     await page.route('**/_next/static/chunks/**', (route) => route.abort());
+    await page.goto('/');
   });
 
-  test('hero content reveals itself without JavaScript', async ({ page }) => {
-    await page.goto('/');
-    const title = page.locator('.hero-title');
-    await expect(title).toContainText('Vikram');
-    // The failsafe fires at 2.2 s + 0.52 s; allow the animation to settle.
-    await page.waitForTimeout(3200);
-    const opacity = await title.evaluate((el) => Number(getComputedStyle(el).opacity));
+  test('the name, positioning and statement are visible', async ({ page }) => {
+    const name = page.locator('#hero h1');
+    await expect(name).toHaveText('Vikram Deshpande');
+    await expect(name).toBeVisible();
+
+    // The CSS entrance is ~1 s including its longest stagger delay.
+    await page.waitForTimeout(1600);
+    const opacity = await name.evaluate((el) => Number(getComputedStyle(el).opacity));
     expect(opacity).toBeGreaterThan(0.95);
-    await expect(title).toBeVisible();
+
+    await expect(page.locator('#hero')).toContainText('Delivery leadership');
+    await expect(page.locator('#hero')).toContainText('Australian Taxation Office');
   });
 
-  test('preloader dismisses itself without JavaScript', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForTimeout(3200);
-    const preloader = page.locator('.preloader');
-    if ((await preloader.count()) > 0) {
-      const state = await preloader.evaluate((el) => {
-        const s = getComputedStyle(el);
-        return { opacity: Number(s.opacity), visibility: s.visibility };
-      });
-      expect(state.opacity).toBeLessThan(0.05);
-      expect(state.visibility).toBe('hidden');
-    }
+  test('the evidence ledger is intact', async ({ page }) => {
+    await expect(page.locator('#hero ul li')).toHaveCount(3);
+    await expect(page.locator('#hero')).toContainText('≈92%');
+    await expect(page.locator('#hero')).toContainText('ATO Payday Super');
   });
 
-  test('the failsafe stands down once the real boot completes', async ({ page }) => {
-    // With `.page-ready` set (what the preloader does on reveal), the failsafe
-    // rules must no longer match — framer-motion owns the hero from then on.
-    await page.goto('/');
-    await page.evaluate(() => document.body.classList.add('page-ready'));
-    const applied = await page.locator('.hero-title').evaluate(
-      (el) => getComputedStyle(el).animationName,
-    );
-    expect(applied).not.toContain('boot-failsafe');
+  test('both actions still work as links', async ({ page }) => {
+    // Plain anchors, so they function with no runtime whatsoever.
+    await expect(page.locator('#hero a[href="#experience"]')).toBeVisible();
+    const cv = page.locator('#hero a[href$=".pdf"]');
+    await expect(cv).toBeVisible();
+    await expect(cv).toHaveAttribute('href', '/docs/Vik_Resume_Final.pdf');
+  });
+
+  test('nothing covers the viewport', async ({ page }) => {
+    await page.waitForTimeout(1600);
+    // Whatever is painted at the centre of the screen must belong to the hero —
+    // no overlay, no loading curtain, no invisible full-page shim.
+    const owner = await page.evaluate(() => {
+      const el = document.elementFromPoint(window.innerWidth / 2, window.innerHeight / 2);
+      return el?.closest('#hero') ? 'hero' : (el?.className?.toString() ?? 'unknown');
+    });
+    expect(owner).toBe('hero');
   });
 });

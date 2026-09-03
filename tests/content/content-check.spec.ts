@@ -20,20 +20,27 @@ test.describe('Content Preservation', () => {
 
   // ── siteContent.ts ──
 
-  test('CT-01: Hero greeting from siteContent appears verbatim', async ({ page }) => {
+  // The hero's copy now lives in app/data/portfolio/hero.ts, deliberately
+  // separate from siteContent.ts: it is a fifty-word front door, not a summary
+  // of the page below it. The old greeting ("Hello, I'm") and the two-paragraph
+  // subtitle were removed with the hero rebuild.
+
+  test('CT-01: Hero name from hero.ts appears verbatim', async ({ page }) => {
     await gotoHome(page);
-    await expect(page.locator('#hero')).toContainText("Hello, I'm");
+    await expect(page.locator('#hero h1')).toHaveText('Vikram Deshpande');
   });
 
-  test('CT-02: Hero name from siteContent appears verbatim', async ({ page }) => {
+  test('CT-02: Hero positioning line appears verbatim', async ({ page }) => {
     await gotoHome(page);
-    await expect(page.locator('#hero')).toContainText('Vikram.');
+    await expect(page.locator('#hero')).toContainText(
+      'Delivery leadership \u00b7 AI solutions architecture',
+    );
   });
 
-  test('CT-03: Hero subtitle contains "technical delivery leader" and "AI solutions architect"', async ({ page }) => {
+  test('CT-03: Hero statement names the current engagement', async ({ page }) => {
     await gotoHome(page);
-    await expect(page.locator('#hero')).toContainText('technical delivery leader');
-    await expect(page.locator('#hero')).toContainText('AI solutions architect');
+    await expect(page.locator('#hero')).toContainText('Fifteen years leading delivery');
+    await expect(page.locator('#hero')).toContainText("Australian Taxation Office's Payday Super");
   });
 
   test('CT-04: Vedic-astronomy work is preserved in the projects section (demoted out of the hero ATF)', async ({ page }) => {
@@ -126,31 +133,14 @@ test.describe('Content Preservation', () => {
   });
 
   // ── resumeContent.ts ──
-
-  test('CT-12: Outcome cards from resumeContent render with correct values', async ({ page }) => {
-    await gotoHome(page);
-    // The 6 outcome cards show in the hero section
-    await expect(page.locator('#hero')).toContainText('-92%');
-    await expect(page.locator('#hero')).toContainText('10k+');
-    await expect(page.locator('#hero')).toContainText('-38%');
-    await expect(page.locator('#hero')).toContainText('$5M+');
-    await expect(page.locator('#hero')).toContainText('-30%');
-    await expect(page.locator('#hero')).toContainText('40+');
-  });
-
-  test('CT-13: Outcome card details from resumeContent appear on hover/click', async ({ page }) => {
-    await gotoHome(page);
-    const card = page.locator('[data-outcome-card="true"]').first();
-    await card.scrollIntoViewIfNeeded();
-    await card.click();
-    await page.waitForTimeout(500);
-    // FloatingDetailBox should show detail content
-    const detailBox = page.locator('[class*="floating-detail"], [class*="FloatingDetail"]').first();
-    const detailCount = await detailBox.count();
-    if (detailCount > 0) {
-      await expect(detailBox).toBeVisible();
-    }
-  });
+  //
+  // CT-12 and CT-13 covered the six outcome cards and their hover/click detail
+  // flyout, which lived in the old hero. The hero rebuild removed them: the
+  // front door now carries three figures with their provenance inline, and the
+  // full outcome evidence belongs to #experience, which states the same facts
+  // in its role bullets. Both tests were deleted rather than re-pointed because
+  // the components they exercised (`.meta-card`, `FloatingDetailBox`) no longer
+  // exist. CT-10 below still pins the quantified claims themselves.
 
   // ── miniVicKnowledge.ts ──
 

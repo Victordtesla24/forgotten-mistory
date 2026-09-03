@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import {
@@ -8,29 +8,21 @@ import {
   BadgeCheck,
   Brain,
   Crown,
-  Gauge,
   GitBranch,
   GraduationCap,
   Mail,
   Phone,
-  ShieldCheck,
-  TrendingUp,
-  UploadCloud,
-  Users,
-  Workflow,
-  type LucideIcon,
 } from 'lucide-react';
 
-import FloatingDetailBox from '@/components/FloatingDetailBox';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import GLStage from '@/components/gl/GLStage';
+import Hero from '@/components/sections/Hero/Hero';
 const SpaceScene = dynamic(() => import('./components/SpaceScene'), { ssr: false });
-import Preloader from '@/components/site/Preloader';
 import CursorGlow from '@/components/site/CursorGlow';
 import CardDepth from '@/components/site/CardDepth';
 import SectionBeats from '@/components/site/SectionBeats';
 import Navigation from '@/components/site/Navigation';
 import Reveal from '@/components/site/Reveal';
-import TelemetryPanel from '@/components/site/TelemetryPanel';
 import ExperienceAccordion from '@/components/site/ExperienceAccordion';
 import ExpandableCard from '@/components/site/ExpandableCard';
 import ArchitectureMap from '@/components/site/ArchitectureMap';
@@ -38,10 +30,8 @@ import ProjectsCarousel from '@/components/site/ProjectsCarousel';
 import GithubFeed from '@/components/site/GithubFeed';
 import LiteYouTube from '@/components/site/LiteYouTube';
 import HiddenTerminal from '@/components/site/HiddenTerminal';
-import HeroAvatar from '@/components/site/HeroAvatar';
 import ScrollRail from '@/components/site/ScrollRail';
 import InViewGate from '@/components/site/InViewGate';
-import HeroScroll from '@/components/site/HeroScroll';
 import ProofScroll from '@/components/site/ProofScroll';
 import WorkScroll from '@/components/site/WorkScroll';
 import CatalogueScroll from '@/components/site/CatalogueScroll';
@@ -103,7 +93,6 @@ import MindsetProjection from '@/components/site/MindsetProjection';
 import Dossier from '@/components/site/Dossier';
 import CursorDepthField from '@/components/site/CursorDepthField';
 
-import { resumeContent } from './data/resumeContent';
 import {
   about,
   contact,
@@ -123,14 +112,6 @@ const BOOKING_HREF =
   `mailto:${contact.email}?subject=${encodeURIComponent('Conversation request — portfolio')}`;
 const CV_HREF = '/docs/Vik_Resume_Final.pdf';
 
-const OUTCOME_ICONS: Record<string, LucideIcon> = {
-  'Test Automation at Scale': Workflow,
-  'Cloud Modernisation': UploadCloud,
-  'Realtime Reliability': Gauge,
-  'AI Quality & Risk': ShieldCheck,
-  'Leadership Scale': Users,
-  'Portfolio Value': TrendingUp,
-};
 
 const SKILL_ICONS = {
   brain: Brain,
@@ -150,24 +131,21 @@ const SKILL_VIZ_MAP: Record<string, React.ComponentType> = {
 
 // Entrance is triggered by the preloader handoff (`fm:page-ready`), not a fixed
 // delay — so `delayChildren` is just a short beat after the wipe starts.
-const heroStagger = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.085, delayChildren: 0.12 },
-  },
-};
-
-const heroItem = {
-  hidden: { opacity: 0, y: 22 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.62, ease: [0.16, 1, 0.3, 1] } },
-};
 
 export default function Home() {
   const prefersReducedMotion = useReducedMotion();
-  const [activeKey, setActiveKey] = useState<string | null>(null);
-  const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null);
-  const [isLocked, setIsLocked] = useState(false);
-  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // `page-ready` used to be the preloader's handoff. The preloader is gone — the
+  // hero is server-rendered and reveals itself in CSS — so the page raises the
+  // signal itself on the frame after mount. Everything downstream (the remaining
+  // sections' entrance, the deferred starfield) keeps its existing contract.
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      document.body.classList.add('page-ready');
+      window.dispatchEvent(new Event('fm:page-ready'));
+    });
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   // Hero entrance is choreographed to the preloader handoff. `initial="hidden"`
   // stays identical on the server and first client paint (no hydration branch);
@@ -241,64 +219,11 @@ export default function Home() {
     };
   }, []);
 
-  // Subtle scroll parallax across the hero.
-  const heroRef = useRef<HTMLElement | null>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end start'],
-  });
-  const titleY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -60]);
-  const panelY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : -24]);
-  const avatarY = useTransform(scrollYProgress, [0, 1], [0, prefersReducedMotion ? 0 : 48]);
 
   // Whole-document progress drives the slim reading indicator pinned to the top edge.
   const { scrollYProgress: pageProgress } = useScroll();
 
-  const openDetail = useCallback((key: string, element: HTMLElement, locked: boolean) => {
-    setTriggerRect(element.getBoundingClientRect());
-    setActiveKey(key);
-    setIsLocked(locked);
-  }, []);
 
-  const handleMetaClick = (key: string, e: React.MouseEvent) => {
-    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-    openDetail(key, e.currentTarget as HTMLElement, true);
-  };
-
-  const handleMetaKeyDown = (key: string, e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      openDetail(key, e.currentTarget as HTMLElement, true);
-    }
-  };
-
-  const handleMetaHover = (key: string, e: React.MouseEvent) => {
-    if (isLocked || activeKey === key) return;
-    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-    const target = e.currentTarget as HTMLElement;
-    hoverTimeoutRef.current = setTimeout(() => openDetail(key, target, false), 200);
-  };
-
-  const handleMetaLeave = () => {
-    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-    if (!isLocked) setActiveKey(null);
-  };
-
-  const handleClose = useCallback(() => {
-    setActiveKey(null);
-    setIsLocked(false);
-  }, []);
-
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') handleClose();
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => {
-      window.removeEventListener('keydown', handleEsc);
-      if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-    };
-  }, [handleClose]);
 
   return (
     <>
@@ -308,8 +233,6 @@ export default function Home() {
         aria-hidden="true"
         style={{ scaleX: pageProgress }}
       />
-
-      <Preloader />
       <CursorGlow />
       <CardDepth />
       <SectionBeats />
@@ -324,169 +247,15 @@ export default function Home() {
           never competes with the hero's critical LCP paint (see heavyReady above). */}
       {heavyReady && <CursorDepthField />}
 
-      <FloatingDetailBox
-        activeKey={activeKey}
-        triggerRect={triggerRect}
-        onClose={handleClose}
-        isLocked={isLocked}
-      />
 
       <Navigation />
 
+      {/* The page's only WebGL context. Sections render into it through
+          <Scene track={ref}>; nothing else may create a <Canvas>. */}
+      <GLStage />
+
       <main>
-        <section id="hero" className="hero-section cine-stage" ref={heroRef}>
-          <div className="cine-spotlight" aria-hidden="true" />
-          <div className="cine-vignette" aria-hidden="true" />
-          <div className="hero-hud-backdrop">
-            <HudFrame variant="backdrop" label="" scene={false} />
-          </div>
-          <motion.div
-            className="hero-content"
-            variants={heroStagger}
-            // `initial` is kept identical on server and first client paint (it cannot
-            // branch on useReducedMotion without a hydration mismatch). MotionConfig
-            // reducedMotion="user" makes the transform legs instant for reduced-motion
-            // users, leaving only a gentle opacity fade.
-            initial="hidden"
-            animate={revealed ? 'visible' : 'hidden'}
-            data-revealed={revealed ? 'true' : 'false'}
-          >
-            <motion.h1 className="hero-title cine-title" variants={heroItem} style={{ y: titleY }}>
-              <span className="line">{hero.greeting}</span>{' '}
-              <span className="line reveal-text glitch-text" data-text={hero.name}>
-                {hero.name}
-              </span>
-            </motion.h1>
-
-            {/* D-HERO-01 / D-AVAIL-01 — scannable first-paint positioning: one CV-aligned
-                target role, location, and a truthful open-to-work signal. */}
-            <motion.div className="hero-positioning" variants={heroItem} style={{ y: titleY }}>
-              <p className="hero-role">{hero.title}</p>
-              <p className="hero-location">{hero.location}</p>
-              <p className="hero-availability" data-availability="open">
-                <span className="availability-dot" aria-hidden="true" />
-                {hero.availability}
-              </p>
-            </motion.div>
-
-            {/* D-PROOF-01 — ≥3 quantified metrics in the first viewport (reuses `proof`). */}
-            <motion.ul className="hero-proof-strip" variants={heroItem} aria-label="Career proof points">
-              {proof.slice(0, 4).map((m) => (
-                <li key={m.label} className="hero-proof-item" data-hero-proof>
-                  <span className="hero-proof-value">
-                    {m.prefix ?? ''}
-                    {m.value}
-                    {m.suffix ?? ''}
-                  </span>
-                  <span className="hero-proof-label">{m.label}</span>
-                </li>
-              ))}
-            </motion.ul>
-
-            {/* Dual-pillar CTAs (NN-1) sit above the narrative subtitle so a
-                recruiter's first paint lands on role + actions, not a wall of copy. */}
-            <motion.div className="hero-cta-pillars" variants={heroItem}>
-              <a
-                href="#experience"
-                data-pillar="employer"
-                className="btn-pillar"
-                data-magnetic=""
-                data-cursor-label="Experience"
-              >
-                Review experience
-              </a>
-              <a
-                href="#proof"
-                data-pillar="client"
-                className="btn-pillar"
-                data-magnetic=""
-                data-cursor-label="Outcomes"
-              >
-                See outcomes
-              </a>
-            </motion.div>
-
-            <motion.div variants={heroItem} style={{ y: titleY }}>
-              <p className="hero-subtitle">
-                {hero.subtitle.map((paragraph, index) => (
-                  <React.Fragment key={paragraph.slice(0, 32)}>
-                    {index > 0 && (
-                      <>
-                        <br />
-                        <br />
-                      </>
-                    )}
-                    {paragraph}
-                  </React.Fragment>
-                ))}
-              </p>
-            </motion.div>
-            <motion.div className="hero-links" variants={heroItem}>
-              {/* D-CONTACT-01 + D-CV-01 — LinkedIn (primary recruiter channel) and a
-                  clearly-labelled Download CV lead the row. */}
-              <a href={contact.linkedin} target="_blank" rel="noreferrer" className="btn-link btn-link--linkedin">
-                LinkedIn
-              </a>
-              <a href="/docs/Vik_Resume_Final.pdf" className="btn-link btn-link--cv" download target="_blank" rel="noreferrer">
-                Download CV
-              </a>
-              <a href={contact.github} target="_blank" rel="noreferrer" className="btn-link">
-                GitHub
-              </a>
-              <a href={contact.youtube} target="_blank" rel="noreferrer" className="btn-link">
-                YouTube
-              </a>
-              <a href="#contact" className="btn-primary">
-                Let&apos;s Talk
-              </a>
-            </motion.div>
-            <motion.div variants={heroItem} style={{ y: panelY }}>
-              <TelemetryPanel />
-            </motion.div>
-            <motion.div className="hero-meta" variants={heroItem}>
-              {Object.entries(resumeContent).map(([key, outcome], index) => {
-                const Icon = OUTCOME_ICONS[key] ?? TrendingUp;
-                return (
-                  // Plain div: the magnetic depth-parallax transform is driven via
-                  // CSS custom properties (--rx/--ry/--tx/--ty from CursorGlow), so a
-                  // framer-motion inline transform would shadow it. Hover lift/scale
-                  // moved to CSS (System C).
-                  <div
-                    key={key}
-                    className="meta-card glass-card cursor-pointer"
-                    role="button"
-                    tabIndex={0}
-                    data-outcome-card="true"
-                    data-outcome-index={index}
-                    onClick={(e) => handleMetaClick(key, e)}
-                    onKeyDown={(e) => handleMetaKeyDown(key, e)}
-                    onMouseEnter={(e) => handleMetaHover(key, e)}
-                    onMouseLeave={handleMetaLeave}
-                  >
-                    <div className="meta-icon">
-                      <Icon size={22} strokeWidth={1.7} />
-                    </div>
-                    <div className="meta-content">
-                      <span className="meta-label">{outcome.title}</span>
-                      <div className="meta-stats">
-                        <span className="meta-value">{outcome.stats.value}</span>
-                        <span className="meta-subvalue">{outcome.stats.label}</span>
-                      </div>
-                      <span className="meta-note">{outcome.details[0]}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </motion.div>
-          </motion.div>
-
-          <motion.div className="hero-image-container" style={{ y: avatarY }}>
-            <HeroAvatar />
-          </motion.div>
-
-          {/* T1 — HeroScroll: GSAP ScrollTrigger scrubs HUD backdrop, headline clip-reveal, avatar crossfade */}
-          <HeroScroll />
-        </section>
+        <Hero />
 
         {/* D-TRUST-01 — scannable credibility band: recognised employers + CSM + degrees,
             all sourced from `experience`/`skillGroups`. Establishes pedigree near the top. */}
