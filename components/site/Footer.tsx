@@ -85,6 +85,21 @@ export default function Footer() {
             </a>
           </p>
 
+          {/* The production credit (R-154, R-157): one line of authorship, in one
+              place, in the site's own typography. Not a disclaimer, not a modal,
+              not a badge, and never adjacent pre-emptive language — it names who
+              made what, the way a film names its cinematographer.
+
+              It has to exist because the assistant's face and greeting are
+              synthetic and nothing else on the page says so. Removing the
+              apologetic register from the old avatar module did not remove the
+              accuracy it carried (R-158); this is where that accuracy now lives. */}
+          <p className={styles.credit}>
+            The assistant&rsquo;s face is a model-generated likeness built from my own photograph,
+            and its greeting is my own voice, cloned. Everything else here — every figure, every
+            drawing, every line — is not.
+          </p>
+
           {/* The build signal. Present only when it is real. */}
           {stamp ? (
             <p className={styles.build}>

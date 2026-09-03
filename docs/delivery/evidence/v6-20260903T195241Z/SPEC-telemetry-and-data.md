@@ -1940,3 +1940,223 @@ matches the implementation exactly, naming what is measured and what is never co
 (steps 4 and 7, SC-10).
 
 **T-40 runs last, before every certification.** It is the failure mode that would cost the most.
+
+---
+---
+
+## Adversarial critique
+
+**Verdict: NEEDS-REVISION.** The spec is unusually well-sourced — §27.1's audit table
+reproduces `npm audit --json` at HEAD *exactly* (12 advisories, 1 critical / 10 high /
+1 moderate; every `isDirect` and `isSemVerMajor` flag correct), every file:line citation
+checked out (`listen.ts:47`, `vitrine.ts:46/92/93`, `Vitrine.tsx:201-202`,
+`HeroAtmosphere.tsx:50`, `functions/index.js:111`, `harvest_repos.mjs:3` and `:44-58`),
+and §28 is faithful to `R184-flagship-ci-diagnosis.md`. SC-10 (§29.1) is the best idea in
+the run. But the mechanism Part 2 rests its whole argument on has a hole, and Part 1's
+aggregation arithmetic is not sound. These must close before a line is written.
+
+### FAILURES — must fix before build
+
+**F-1 · R-183 VIOLATION AT THE CENTRE OF §16. `EVENT_COPY` is keyed by event *type*, not
+by *field*, so the generated disclosure does not describe what the beacon actually sends —
+and it is already wrong as specified.** `view_start` carries three fields
+(`viewport`, `reducedMotion`, `gl`); its copy discloses one (*"at one of four screen
+widths"*). `reducedMotion` and `gl` are collected, written to `telemetry_daily`, and
+**never disclosed anywhere on the page**. §16 claims *"a new event type that nobody
+described fails `tsc`, not review"* — true, and irrelevant: adding a *field* to an existing
+event fails nothing. `TC-TELEMETRY-04` compares key sets of the union's `t` values only.
+The site would ship a generated sentence that is provably incomplete about its own code —
+the exact failure R-183 names. **Fix: key the copy by field.** `EVENT_COPY:
+Record<TelemetryEventType, { event: string; fields: Record<string, string> }>` with a
+`tsc`-enforced exhaustive field map, and a `TC-TELEMETRY-05` that parses each union
+member's property names and asserts equality with its `fields` keys.
+
+**F-2 · §9.2 divides by zero and reads an object as a number; both produce a false verdict,
+and one of them opens a public GitHub issue.**
+- `dwellₛ = dwellMs[s] / dwellN[s]`. A section never `qualified` in the window has
+  `dwellN[s] === 0` → `NaN`. `NaN < 0.40 * readTimeMs` is `false`, so the chain falls
+  through to **`'holding'`**. An unmeasured section is reported as fine. That is the exact
+  inversion of §9.2's own ruling that *"`insufficient-evidence` is not `holding`"*, and it
+  is not hypothetical: `SectionId` includes `'contact'`, but the section ships today as
+  `id="listen"` (`Listen.tsx:30`) and `#contact` arrives only from
+  `SPEC-closing-section.md` — which §0.2 explicitly permits to land *after* Part 1.
+- `Iₛ` for contact is defined as `conversions / V`, but `conversions` is an **object** in
+  §7.2 (`{"contact-canonical": 0, …}`). `object / number` is `NaN`. Same fall-through.
+  **Fix:** guard `dwellN[s] < 30` → `'insufficient-evidence'` per section (a per-section
+  floor, not only the page-level `V < 100`); sum `Object.values(conversions)` explicitly.
+
+**F-3 · §6.3's abuse argument is backwards.** *"An attacker can inflate counters"* is
+dismissed because *"a figure below the evidence threshold is reported as
+`insufficient-evidence`"*. Inflation pushes `V` **above** 100, not below. Cheap, unauthenticated,
+identifier-free POSTs convert `insufficient-evidence` into confident `under-performing`
+verdicts that **open public issues on the real repository** and permanently poison a
+`telemetry_daily` document the spec says is *kept forever* with no identifier to filter by.
+`maxInstances: 3` bounds *cost*, not *counts*. **Fix:** either (a) `aggregateTelemetry` reads
+from `telemetry_events` and applies a per-`view` cap (one `view_start` per view id, ≥ N
+distinct views per day), or (b) state plainly in §9.3 that the numbers are not
+attack-resistant and have the issue body say so. Do not claim harmlessness it does not have.
+
+**F-4 · §7.3's topic matcher cannot match the knowledge base it is generated from.**
+Measured against `app/data/miniVicKnowledge.ts` this run: **34 entries, 440 keywords, 259
+of them multi-word (59 %)**. The algorithm splits the question on whitespace into single
+tokens and counts *"tokens present in `keywords`"*, requiring **≥ 2** to win. A multi-word
+keyword (`"test automation"`, `"ATO role"`) can never equal a single token, so 59 % of the
+taxonomy is dead on arrival and most questions fall to `'unmatched'`. `chatTopics` would be
+a chart of nothing. Separately, `kb_topics.mjs` must read a **TypeScript** file from a
+`node` build script and the spec never says how. **Fix:** tokenise keywords too and match
+n-grams (or `String.includes` over the normalised question); state the parse strategy.
+
+**F-5 · §15.2's `never` sentence is ungrammatical, and the spec reproduces the broken output
+as shipped copy.** `buildNeverSentence` joins on `", "` but three `NEVER_COLLECTED` entries
+contain internal commas, so the rendered line — quoted verbatim in §15.2 — reads *"…the page
+you came from, **a cookie, or anything stored on your device, a fingerprint, or any
+identifier that survives the tab closing,** or one word of anything you typed."* Four
+clauses now read as seven, and *"a cookie"* and *"anything stored on your device"* become
+separate list items joined by a stray *"or"*. `TM-26` enforces grammar on `EVENT_COPY` and
+**nothing** on `NEVER_COLLECTED`. This is the page's single most load-bearing sentence.
+**Fix:** forbid `,` in `NEVER_COLLECTED` entries (a `TM-27`), or join on `` ` · ` ``.
+
+**F-6 · §0.1's "gold spend: zero marks" is contradicted by §21.4.** §21.4 specifies a caliper
+gloss reading *"Measured 2026-09-01T04:22Z; GitHub was unreachable at this deploy."* —
+`Measured` is the **`sourced`** state, which is gold. Part 3 gives six plates' metrics a
+checkable API provenance, i.e. it is the first thing in this run to legitimately light the
+`sourced` state (ground truth: `sourced` renders **nowhere** today; all 15 marks are
+`self-reported` or `open`). That is a real and welcome gain in honesty, but it is an
+**unbudgeted** one, and six sourced metric marks in one vitrine view breaks *at most one
+gold mark per view*. **Fix:** §21.4 must either (a) declare the retained/unreachable gloss
+an `open` caliper (it is a statement about a *failed* observation, so `open` is the honest
+grade), and (b) hand the `sourced` budget for refreshed plate metrics to
+`SPEC-dimensions-artefact.md` / the vitrine owner with an explicit one-mark-per-visible-plate
+ruling. As written, Part 3 silently spends gold a sibling spec has already allocated.
+
+**F-7 · Unowned DOM dependencies; `gl` is structurally always `'off'`.**
+`grep -rn 'data-gl-scene\|data-contact-route\|data-role="route"\|data-role="identity-link"\|data-conversation-open\|data-explainer-video' app components lib` returns **zero hits today.**
+§0.2's dependency table covers the conversion attributes and `data-explainer-video` but
+**omits `data-gl-scene`** — it is promised by no spec. §4.1 step 5 would therefore record
+`gl: 'off'` on every view forever, and `telemetry_daily.gl` becomes a fabricated field
+nothing can falsify (TM-02 only checks that `t` is in the union). **Fix:** name the owner of
+`data-gl-scene` in §0.2, or read `document.querySelectorAll('canvas').length > 0` — a fact
+the page already commits to (`AUDIT-RECONCILIATION.md` §F: hero → 1 canvas, experience → 1
+canvas, with `?gl=force`), and add a Playwright assertion that at least one view in a normal
+run reports `gl: 'on'`.
+
+**F-8 · Two tests require a second build that nothing provides.** `TM-04` (*"axe tree
+byte-identical with telemetry on and off"*) and `TM-11` (*"CLS unchanged versus a build with
+`TelemetryBoot` removed"*) both compare against an artefact that does not exist: Playwright
+serves one prebuilt `out/`, and §25.2's `serve_static.mjs` **cannot build** by design.
+Neither test can run as specified. Also `TM-04`'s "byte-identical axe tree" is not a thing
+axe produces. **Fix:** gate the runtime behind `?telemetry=off` (read once, inside `start()`,
+never rendered — R3-safe) so both comparisons are two navigations of one build; restate
+`TM-04` as *identical violation list and identical accessible-node count*.
+
+**F-9 · `TM-10` is a flaky proxy for a real property.** *"the runtime chunk's `startTime` >
+the LCP entry's `startTime`"* is not implied by a correct implementation:
+`requestIdleCallback` can fire at ~300 ms on a fast connection while LCP lands at 1.2 s, and
+the test fails on code that is right. Conversely it passes on a runtime that blocks the main
+thread for 200 ms at t=2.1 s. **Fix:** assert the two things actually claimed — LCP value is
+within noise of a `?telemetry=off` navigation, and zero `longtask` entries overlap the
+chunk's `[startTime, responseEnd]`.
+
+**F-10 · Miscounts and off-by-ones that tests are written against.**
+- §4.6: *"resolving `event.target.closest` against **six** selectors"* — the table has
+  **five** rows. `conversation-seed` arrives via `fm:ask`, not a selector.
+- §6.2 / `TM-31`: *"the **eleven** strings above"* — the list has **nine**
+  (eight request reads + `Set-Cookie`). A test asserting eleven against nine cannot be
+  written from this spec.
+- §22.1 `formatCurrency`: `.replace('T', 'T')` is a **no-op** — dead code, in a spec whose
+  §23 bans dead code; and the regex `/:\d{2}\.\d+Z$/` silently no-ops on a millisecond-free
+  ISO string, leaving seconds in a line documented as minute-precision. `failure!` will throw
+  at render if `outcome === 'partial'` arrives without a failure object.
+- §5 compares `body.length` (UTF-16 code units) against a limit §3 documents as *"bytes of
+  UTF-8"*, while the collector checks `req.rawBody.length` (bytes). `TM-23` asserts the wrong
+  quantity. Harmless today (ASCII only) — but the spec's own §3.1 argues no free text can
+  ever enter, so say `new TextEncoder().encode(body).length` and make it true by construction.
+
+**F-11 · Test-id namespace collision.** §17 defines `SC-01 … SC-10` as Playwright cases while
+§0, §14 and §30 use `SC-01a`, `SC-02`, `SC-04b`, `SC-05`, `SC-23`, `SC-94.1` as *contract
+success criteria*. `SC-02` and `SC-05` therefore mean two unrelated things in one document
+(§17's SC-05 is a network-host assertion; §0's SC-05 is the pipeline criterion). Rename the
+tests `T40-01 … T40-10`.
+
+**F-12 · Comment drift the spec creates and then forbids fixing.**
+- §13.3 orders that `telemetry-stability.spec.ts`'s header comment is *"not edited"* because
+  it is *"a preserved artefact"*. That comment currently asserts *"TS-03 was deleted with its
+  subject"* while **`TS-03` exists at line 134** — the file already carries a false statement
+  about itself. §25.2 rules that R-183 governs comments (*"a file must not describe a machine
+  that does not exist"*). Preserve the outage paragraph; correct the TS-03 paragraph.
+- §25.2 re-adds `webServer` but only deletes the two *trailing* comments. The **header**
+  comment (`playwright.config.ts:5-15`) opens *"No globalSetup and no webServer"* and becomes
+  false in the same commit. It must be rewritten, keeping its anti-race reasoning verbatim.
+
+**F-13 · Part 3 leaves three hardcoded `38`s behind.** §22.1 claims *"one expression, zero
+literals"*, but that covers only `Vitrine.tsx:201-202`. `vitrine.ts:4` (*"Thirty-eight public
+repositories exist"*), `:116` (`title: 'Six of thirty-eight'`) and `:117` (the lede) all
+hardcode the count that §19.2 makes live. `CU-08` greps only for `harvestedAt`. Verified
+today: `/user`.public_repos **= 38** and `corpus-repositories.json` agrees (41 owned, 3
+private) — so the number is right *now*, which is precisely why it will rot unnoticed.
+**Fix:** derive all three, and add `CU-12`: no rendered string contains a repository count
+literal.
+
+**F-14 · Missing from the §1.1 manifest.** `functions/read-time.json` is required by §9.1 and
+appears in no create/change table. `scripts/telemetry/replay.mjs` (§9.4) is referenced by a
+public issue body and is likewise unlisted. §25.3's *"every spec that does not depend on
+hardware GL is tagged `@gating`"* is an unbounded edit across a 167-test suite that no table
+enumerates — name the files.
+
+---
+
+### Critique (≤ 500 words)
+
+**Fabrication.** Almost none, and that is the spec's strongest quality. Every citation I
+pulled was real. The one number driving an automated public issue with no provenance is
+**240 wpm** (§9.1) — the spec is candid that it is *"a stated assumption rather than a magic
+number"*, but a site whose thesis is *never grade a claim above its evidence* should carry
+the source or mark the derived `readTimeMs` `self-reported` in the issue body. §9.3's worked
+example is worse than unsourced, it is **internally inconsistent**: it labels
+`dwellMs/dwellN` — a **mean** — as *"median dwell"* (§7.2's own comment says *"the median
+comes from raw"*), and prints `interaction rate 0.31` for `#skills`, which §9.2 defines as
+`null` for every section that owns no R-97 interactive. The issue template is the loop's
+public face; it must not overstate its own statistic.
+
+**Design law.** Monochrome and *every visual is data* are honoured trivially — §0.1's
+zero-mark ruling is correct and well argued, and refusing to publish traffic (§0.1.2) is the
+right call. The gold breach is F-6 only. The Preservation Register holds: dropping *"and
+none on a phone"* is remediation (b) of `T40` SC-01c, justified by `AUDIT-RECONCILIATION.md`
+§F (hero and experience each render one canvas at 390/393 px), and §29's *Limits* rewrite
+preserves the instrument rather than deleting it.
+
+**Buildability.** Parts 2 and 4 are executable today. Part 1 is not, for F-1/F-2/F-4/F-7/F-8.
+Part 3 is executable only downstream of `dataset-layer-design.md` and correctly refuses to
+fork it. §2.1's five structural rules are the right answer to the July outage — making the
+bug class *unrepresentable* rather than *watched for* is exactly right, and R4 (writing the
+frozen-snapshot contract for a file that does not ship, then testing it) is excellent.
+
+**Would it survive its own tests?** Mostly yes — `TM-30` (collector key set == union key
+set), `TM-32`, `TM-31`, `CU-04`, `CU-05` and `CU-09` are all genuinely falsifiable and would
+each fail a mediocre implementation. The weak ones are `TM-04`, `TM-10`, `TM-11` (F-8, F-9),
+`TM-25` (`≥ 8 entries` passes on any padding), and `SC-09`, which asserts the footer is
+*unchanged* under GPC — true but toothless.
+
+**Honesty, net.** More honest, clearly. It closes S-1/S-2 before they can go false, it makes
+the disclosure a computed property of the code, and §29.1 binds a sentence to a live CI
+conclusion in **both** directions. The one regression is F-1: a generated sentence that
+looks mechanical while quietly under-reporting two collected fields is *worse* than a
+hand-written one, because it borrows authority it has not earned. R-171 applies to the spec
+itself.
+
+---
+
+### The single strongest improvement
+
+**Move the disclosure contract from event *types* to event *fields*, and make the beacon
+serialiser the only thing allowed to emit them.** Declare
+`EVENT_SCHEMA: Record<TelemetryEventType, { event: string; fields: Record<FieldName, string> }>`,
+have `runtime.ts` build every payload **through** `serialise(type, values)` — which copies
+only keys present in `EVENT_SCHEMA[type].fields` and drops everything else — and generate
+the footer sentence from the field phrases, not the event phrases. Then `tsc` fails on an
+undescribed field, `TC-TELEMETRY-04` extends to field sets, the collector's allowed-key
+switch (`TM-30`) is compared against the *same* map, and it becomes structurally impossible
+for the runtime to transmit a datum the page does not disclose — closing F-1, hardening F-7
+(an undisclosed `gl` cannot be sent at all), and turning §16's diagram from an argument into
+a guarantee. That one change is what §16 already claims to be, and it costs about thirty
+lines.

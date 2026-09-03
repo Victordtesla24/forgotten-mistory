@@ -1085,3 +1085,240 @@ suite green.
 | R-110 | §2.10, §6.3 — exactly one gold mark, and it means what gold means | `TC-CALIPER-07/08` |
 | R-183 | §8.3 — the colophon changes in the endpoint's own commit | `TC-FOOTER-02` |
 | R-75, R-135 | §4.1 — the bot's composed home, no floating widget | owned by the chatbot spec, contract fixed here |
+
+---
+
+## Adversarial critique
+
+**Verdict: NEEDS-REVISION.** The design argument is sound and most of the geometry is buildable.
+Four blockers would each cost a wave if discovered after implementation.
+
+### Failures — blockers
+
+**F-1 · BLOCKER · The footer already exists. §6 and §1.1 would destroy it and then fail their own
+test.** `components/site/Footer.tsx` (108 lines) and `Footer.module.css` are **committed and
+shipping** — `544c4f9 feat(footer): give the page a last word, and a checkable build stamp`, landed
+at 21:34 by a concurrent wave, thirty minutes after this spec was written. It is mounted at
+`app/layout.tsx:143`, renders `<footer class="Footer_footer__TWDx3">` in `out/index.html`, already
+reads the git stamp via `execFileSync` and already implements the correct absence policy ("omitted
+entirely… never approximated"). Consequences:
+- §1.1 lists `Footer.tsx`/`Footer.module.css` under **Create** → a `Write` over a landed component.
+  §0's own rule ("§13 forbids a duplicate implementation where one already exists") forbids this.
+- §1.2 mounts `<Footer />` in `app/page.tsx` after `</main>` while it is already mounted in
+  `layout.tsx` → **two `<footer>` elements**, and `TC-FOOTER-01` ("exactly one `<footer>`") fails
+  against the spec's own instructions.
+- The landed footer's authored statement is a Preservation-Register asset the spec never rules on,
+  and it carries `<a href="mailto:sarkar.vikram@gmail.com">` **outside `#contact`**, which
+  `TC-CONTACT-02` forbids. Neither is mentioned.
+- The premise is inherited uncritically: `AUDIT-RECONCILIATION.md` A-7 and
+  `T37-baseline-inventory.md:454` both say "no `<footer>` element at all". Both are now stale. The
+  spec asserts it as present-tense fact ("**The site has no `<footer>` element at all**") without
+  checking the tree it forbids itself to write to.
+- **Fix:** §6 becomes *change*, not *create*: keep the mount in `layout.tsx`, replace
+  `readBuildStamp()` with `deploy-stamp.ts`, delete the footer's `mailto:`, and rule explicitly on
+  the existing statement (which over-claims — *"Every figure on this page carries the source it
+  came from"* is false while zero marks are `sourced`, so replacing it is an honesty *gain*, but it
+  must be argued, not silently overwritten).
+
+**F-2 · BLOCKER · The drill-down targets an attribute that does not exist and no file is scheduled
+to create it.** `grep -c data-mark-id out/index.html` → **0**; the string appears nowhere in
+`app/`, `components/` or `lib/`. §2.5's `markId`, §2.8 interaction 2 (scroll-and-highlight, R-97
+depth 2) and the example ids `hero-ledger-1` / `exp-anz-portfolio` are invented. §1.2 does not list
+`Hero.tsx`, `About.tsx`, `Experience.tsx`, `Skills.tsx` or `Vitrine.tsx`, so nothing in this build
+order adds the attribute. R-97's second depth is unbuildable as written. Either add those five
+files to §1.2 with the exact attribute placement, or drill down to `section` only and delete
+`markId`.
+
+**F-3 · BLOCKER · §2.6's parity gate is unsatisfiable, and its stated source is the wrong file.**
+- The selector `[data-caliper]` does not exist. `Caliper.tsx:50` emits `data-state`, nothing else.
+  The DOM count that grounds "fifteen" is `data-state="open"` (9) + `data-state="self-reported"`
+  (6) — but that same attribute value space also contains `data-state="answered"` and
+  `data-state="role"` from unrelated components, so the gate needs a selector that does not yet
+  exist.
+- Two of the nine `open` marks are **not claims**. `Skills.tsx:114` is a *legend glyph*
+  (`label=""`, rendering `statusLegend.pending.glyph`); `Vitrine.tsx:149` renders `not harvested`
+  once per repository metric that came back `null`. A strict both-directions parity gate forces the
+  register to carry a row — with `claim`, `sourceId`, `settledBy` — for a legend key. There is no
+  honest `settledBy` for a legend.
+- §2.6 instructs the implementer to author "the remaining thirteen rows … from the fifteen live
+  marks recorded in `T40-self-claim-register.json`, one row per entry, in that file's order."
+  **That file records 36 self-claims about the site (telemetry, WebGL, sitemap, MiniVic), not 15
+  caliper marks.** `claims: 36`, `claimsExamined: 36`. An implementer cannot execute this
+  sentence. The register must be derived from the rendered marks, with an explicit exclusion rule
+  for legends and per-item "not harvested" cells.
+
+**F-4 · BLOCKER · The `#listen` → `#contact` rename silently voids about fifteen existing spec
+files.** `#listen` appears **40 times across 17 files** (`tests/a11y/accessibility.spec.ts`,
+`tests/monochrome/monochrome.spec.ts`, `tests/visual/screenshots.spec.ts`,
+`tests/overhaul/{complete,cinematic,durability,telemetry-stability,render,voiceover}.spec.ts`,
+`tests/content/content-check.spec.ts`, `tests/e2e/clone-voice.spec.ts`,
+`scripts/testing/postprod_prod_probe.mjs`, `scripts/testing/rendering_stability_validation.mjs`, …).
+§9's zero-height `<span id="listen">` keeps *anchor navigation* working and makes every
+`#listen`-scoped **assertion** resolve to an empty span — passing vacuously rather than failing
+loudly. §11.5 flags exactly one of these (`TC-RM-05`) and calls it "a cross-spec amendment"; the
+other ~15 are not mentioned. This is the failure mode the spec is meant to prevent: a suite that
+goes green because it is now measuring nothing.
+
+### Fabrications and unsourced numbers
+
+| Claim | Status |
+|---|---|
+| CV `157,615` bytes, MD5 `16b856c0…452c`, `/docs/Vik_Resume_Final.pdf` | **TRUE** — `md5sum` and `ls -l` both confirm; `cv-fingerprint.ts` matches |
+| `sarkar.vikram@gmail.com` = `corpus-cv.json → contact[0]`, `{CV, p.1, CONTACT INFO}` | **TRUE**, verbatim |
+| ATO "≈92% … 200+ SIT scenarios" | **TRUE** — CV: *"200+ SIT/E2E scenarios across all eight squads, cutting evidence effort from ~3 hours to ~15 minutes per scenario (≈92% reduction)"* |
+| ANZ "$5M+ … 5+ squads and **40+ practitioners**" (§2.6 worked example) | **INFLATED.** The CV says *"leading 5+ cross-functional squads (**up to 40** resources)"*. "Up to 40" is a ceiling; "40+" is a floor. This is the row every other row is told to copy, so the error propagates fifteen times. |
+| "15 marks live, all `self-reported` or `open`" | **TRUE** — 9 + 6 in `out/index.html` |
+| `Listen.tsx` 103 lines; hairline gold at `Listen.module.css:69`; no-form rationale at `Listen.tsx:18-21`; `hero.ts:49/51/52/53`; `Hero.tsx:89-95`; `Navigation.tsx:25/26/154-157`; `page.tsx:29-35` | **ALL TRUE**, line-exact. Good work. |
+| `feedback_log.mjs`: `SHOWN = 8`, `-400`, `CORRECTION`/`REVIEW_WORDS`, the prefix regex at `:65` | **ALL TRUE**, quoted byte-exact |
+| "CSP unchanged; `connect-src 'self'` already permits `/api/caliper`" | **TRUE** |
+| `MiniVicBot` mounted at `app/layout.tsx:142` | Off by two — it is `:144` |
+| `⌐ 7a3f9c1 · … LCP 1.42 s · CLS 0.019 ¬` and `214 marks set by readers` | Illustrative, but **unlabelled as such** in a document that forbids further design decisions. Mark them `EXAMPLE — not a value to type`. |
+
+### Design-law violations
+
+**V-1 · The spec contradicts itself on whether the aperture is `sourced`.** §2.4 grades the
+aperture **`sourced`** ("the endpoint, the count and the retrieval time all printed"). §2.10 states
+"**Nothing in it is `sourced`**". Under the site's own grammar — gold means *this figure has a
+source you can go and check* — a sourced figure drawn in `--mist-400` teaches the reader that the
+grammar is decorative after all. Pick one and say why: either the aperture is outside the caliper
+grammar (it is not a claim about Vikram) and must not be described as `sourced` anywhere, or it is
+inside it and the gold budget has to be argued. Do not leave both sentences in the file.
+
+**V-2 · §8.3 re-ships a sentence the run's own audit grades CONTRADICTED.** The rewritten colophon
+carries *"at most one WebGL context per section, and none on a phone"* **verbatim**.
+`T40-self-claim-register.json` records `SC-01c` as `CONTRADICTED` — *"a WebGL canvas mounts on
+iPhone 13 and Pixel 5"* — and names it as one of the five failures driving `gateRVerdict: "FAIL"`.
+`AUDIT-RECONCILIATION.md` independently records that **no `<canvas>` renders in the DOM at any
+section**, which contradicts the clause from the other direction. R-183's whole point is that the
+colophon may not outrun the code; `TC-FOOTER-02` only checks the *counter* sentence, so the false
+clause ships through a green suite. The rewrite must either drop the WebGL clause or restate it
+against what is observably true.
+
+**V-3 · The "curiosity-rewarding state" is not actually gated, and the spec says twice that it
+is.** §2.1: two lines "the visitor could not have seen before participating". But §2.11 puts
+`settledBy` in the visually-hidden table for every row, and §2.13's low-power path renders "the
+whole hidden table" **with JavaScript off**. So `settledBy` is in the static HTML for every reader,
+every crawler and every View-Source. R-97 depth 4 is therefore satisfied by a *visual* flourish
+only. That is the right accessibility call and the wrong claim about it — delete "could not have
+seen before participating" and say what is actually true: the reward is watching the instrument
+move.
+
+**V-4 · §3.4 refuses server-side rate limiting; `hero-visualisation-register.md` §6.6 — an
+Authority this spec names — requires it** ("One same-origin POST per submission, **rate-limited**
+and length-capped server-side"). The refusal rests on a false dichotomy: "there is no identifier,
+so there is no per-identity rate limit." Firebase App Check, a per-instance token bucket, or a
+Hosting-layer cap all bound writes **without retaining an identifier**. As specified, `/api/caliper`
+is an unauthenticated endpoint where one request equals one billable Firestore write, behind
+`maxInstances: 3` — which bounds concurrency, not spend. Say what the cap is, or say that the
+register is capped at 15 documents and the *cost* of an amplification run, in dollars, is bounded
+by X.
+
+**V-5 · Firestore is a new Firebase product on a project whose deploy is already red.** Wave 1
+records `firebase deploy` exiting **127 on an IAM 403**. §12 step 4 says "Deployed and verified
+before the client calls it" and never mentions the blocker, the API enablement, or the database
+provisioning. Name the prerequisite or step 4 stalls the whole build order.
+
+### Buildability
+
+**B-1 · Roughly fifteen of the design tokens the geometry is written in do not exist.**
+`--motion-emphatic`, `--motion-cine-in`, `--motion-cine`, `--stagger-tight`, `--motion-ease-exit`,
+`--space-1`, `--space-8`, `--space-10`, `--space-14`, `--fs-micro`, `--fs-caption`, `--fs-small`,
+`--fs-lede`, `--measure-read`, `--measure-display` — **zero occurrences** in `app/globals.css` or
+anywhere under `app/`, `components/`, `lib/`. They are *prescribed* by `design-system-lock.md`
+§4.1–§4.2, so the values are legitimate; but `app/globals.css` is **not** in §1.2's change list and
+§12's build order never mentions the token migration. Worse, two tokens that *do* exist carry
+different values than the spec asserts: shipped `--motion-fast: 220ms` (spec says 200 ms) and
+`--motion-base: 360ms` (spec says 320 ms). Declare the dependency: "this spec does not build until
+`design-system-lock.md` §4 has landed", or add `app/globals.css` to §1.2 and own the migration.
+
+**B-2 · Reusing `applyCors` breaks the `GET`.** `functions/index.js:44` sets
+`Access-Control-Allow-Methods: "POST, OPTIONS"`. §3.1 says the endpoint shares that helper *and*
+answers `GET` with a CORS preflight on "the same allow-list". Same-origin requests through the
+Hosting rewrite are fine, but the spec's own `OPTIONS` row is then wrong. Either add `GET` to the
+helper (and say the other two functions are unaffected) or drop the preflight row.
+
+**B-3 · §11.5's amended `TC-LISTEN-03` collides with §4.1.** The amendment demands "exactly one
+`<input>`/`<textarea>` on the page". `MiniVicBot.tsx:1469` renders an `<input>`, and §4.1 de-floats
+the bot into `#contact`, in flow. Once the composer is composed rather than hidden behind a bubble,
+the count is two and the test fails. Rescope it to "exactly one field that is not the conversation
+composer", and say so.
+
+**B-4 · Hydration.** `useCaliperCounts` reads `localStorage['fm.caliper.v1']` for `mine`. On a
+static export that must be read in an effect, never in initial state, or `TC-CALIPER-03`'s
+JS-disabled markup and the hydrated markup diverge. React 18.2 will warn and re-render. Say it.
+
+### Would it survive its own tests?
+
+Mostly yes, and `TC-FOOTER-02` is the best test in the document — it welds the colophon's claim to
+the presence of the code it describes, so the two cannot drift. `TC-CALIPER-07`'s saturation ≤ 0.28
+is a genuinely falsifiable gold gate: `--gold #c9a84c` computes to S≈0.54 and fails it;
+`--mist-400 #8A8F9A` computes to S≈0.07 and passes. Three tests would pass against a mediocre
+implementation:
+
+- **`TC-CALIPER-09`** asserts "no element's `transform` changes during entrance" under reduced
+  motion, while §2.7 puts the aperture width **in** a `<g>` transform and §2.5 defers the fetch
+  until intersection. The SSR transform is at rest; the settled transform is not. Either the
+  assertion is unsatisfiable or "entrance" is undefined enough that any implementation passes.
+  Define the window: from `[data-observed="true"]` to +1 frame.
+- **`TC-FOOTER-03`** compares a **build-machine** LCP (Lighthouse CI, or a Playwright report from
+  another run) against **this run's** emulated-4G measurement, with a **35 %** tolerance. Those two
+  numbers have no causal relationship; a 35 % band makes the assertion decorative. Assert instead
+  that the printed value equals `perf-stamp.ts` byte-for-byte and that `perf-stamp.ts` names its
+  run URL.
+- **`TC-CALIPER-10`** ("layout-shift attributable to `#contact` is 0.000") needs a stated method.
+  `LayoutShift.sources[].node` makes it possible; without naming that, an implementer will assert
+  page CLS and pass trivially.
+
+Three test ids are cited in §7, §12 and §14 but **specified nowhere**: `TC-TAKEAWAY-01`,
+`TC-LEDGER-01…03`. R-97's third interaction depth — the ledger facet filter, the whole of §10 — has
+**no specified test at all**. Add a `tests/e2e/ledger.spec.ts` row to §1.1 and write the three.
+
+### Does it make the site more honest?
+
+**Net yes, and substantially** — with two regressions to fix. The gains are real: the hairline
+loses its decorative gold (item #8 in the lock's own audit); `tel:` and a second `mailto:` go;
+LinkedIn stops being cited in the argument because it is auth-walled at HTTP 999; the CV stops
+being the opening bid; the build stamp says "built from" rather than "last deployed" and refuses to
+invent a hash; and the site finally renders a `sourced` caliper on the one thing it can prove
+absolutely. C-2 — claims stay `open`, only the aperture is sourced — is the correct ruling and is
+argued properly. The regressions are V-2 (a CONTRADICTED sentence re-shipped verbatim inside the
+very rewrite that exists to stop that) and V-3 (a claim of gating that the markup does not make).
+
+Two smaller editorial notes. §2.12's takeaway line opens with the same eleven words as the
+preserved italic sentence — *"I have been wrong often enough to want to hear it early"* — and both
+render inside `#contact`. On one scroll that reads as a stutter, not a refrain; the takeaway needs
+its own opening. And `listen.ts:33`'s coffee line — *"Coffee · Melbourne CBD · I'll come to you"* —
+is in the T37 baseline (`:461`) and in the section's mandated title, and §8's copy block neither
+carries it forward nor deletes it. That is a design decision left to the implementer, which §0
+promises not to do.
+
+### The single strongest improvement
+
+**Draw reader demand with a mark that is not the caliper.**
+
+Right now the aperture of the row's open bracket *is* the reader count — which forces the spec to
+spend §2.4, §2.10 and decision C-2 defending why the instrument that grades evidence is also
+measuring clicks, and still leaves V-1's contradiction unresolved. Every visitor learns the caliper
+across five screens as one thing: *how well is this claim evidenced*. On the sixth screen the same
+arms move because people clicked. That is the one dilution the site cannot afford, and no amount of
+copy beneath the rail undoes it.
+
+Instead: **the row's open caliper renders at its authored rest width and never moves.** Beneath it,
+on the row's second line, a plain tally rule — a different mark, obviously not a bracket, no arms,
+no serifs — grows to `demand / maxDemand`, direct-labelled with the count, the endpoint and
+`observedAt`. The reader's own contribution is a 1 px `--white` tick on **that** rule, labelled
+`yours`.
+
+What this buys, at the cost of one geometry block:
+- **V-1 dissolves.** The tally is a sourced figure drawn in its own grammar; the caliper keeps its
+  single meaning; the gold budget stays on the footer bracket, uncontested.
+- **C-2 stops needing a defence.** Nothing about the claim moves when a reader clicks, so the
+  spec no longer has to argue that widening an aperture is not grading.
+- **The instrument still visibly moves**, which is the entire reward in §2.2 — it just moves in the
+  right register.
+- **`TC-CALIPER-09` becomes satisfiable**: the caliper's transform genuinely never changes, so
+  "no element's `transform` changes during entrance" applies cleanly to the caliper and the tally
+  rule's settle is a separately-asserted, separately-windowed beat.
+- **The rail gets more honest, not less.** The reader sees, on one line, *this claim is not
+  measured* and, on the next, *this many people said measure it first* — two facts, two marks, no
+  conflation. That is the section's own thesis, drawn.

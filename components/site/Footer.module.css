@@ -67,6 +67,19 @@
   border-bottom-color: rgb(244 246 250 / 0.6);
 }
 
+/* The production credit. Body face, not mono: it is a sentence of authorship,
+   not a measurement — and it reads at the same weight as the statement above it
+   rather than shrinking into a footnote, which is the treatment R-157 forbids. */
+.credit {
+    margin: 0;
+    max-width: 52ch;
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--mist-400);
+    text-wrap: pretty;
+}
+
 /* Provenance line: mono, because it is a measurement of this document. */
 .build {
   margin: 0;

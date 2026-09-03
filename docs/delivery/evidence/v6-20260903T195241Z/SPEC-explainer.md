@@ -1019,3 +1019,177 @@ Gate P passes when **all** of the following hold, each with a recorded verdict a
 **Gate P cannot pass while §7.3's voice verification is unresolved** — the credit branch is undecided until
 `TC-VOICE-01` has a recorded result, and shipping either sentence without it would be a claim graded above
 its evidence.
+
+---
+
+## Adversarial critique
+
+**Verdict: NEEDS-REVISION.** Do not begin §5 or §7 until F-1 … F-4 are closed. §1 (the removal) may
+proceed today, *except* the disclosure clause in F-2.
+
+### What survived the attack
+
+Every corpus claim I could check, checked out. Verified independently, not taken from the spec:
+`git hash-object apps/api/app/services/resume_tailor.py` → **`a0197fba84554d5d250d85c746db425a005d397c`**,
+132,909 B, 2,771 lines; `git ls-tree origin/main` carries the same blob, so "line numbers on `main` are
+identical" is **true**. Every quoted line lands: `:96` financial-institutions, `:100-119` prompt, `:111-116`
+different-employer, `:119` response contract, `:140-145` token rule, `:2559-2562` evidence-only, `:2582-2590`
+context-binding, `:2656` def, `:2663`, `:2687-2695` fail-safe revert, `:2691` log, `:2700-2709` revert loop,
+`:2711` `_entailment_rejections`, `:6-9` module docstring. Six avatar files match their stated bytes and all
+three md5s. `Listen.tsx:5/23-26/97`, `accessibility.spec.ts:92-93`, `skills.ts:131` (index **6**, confirmed by
+counting from `:83`), `about.ts:103-107` all correct. Script word counts are **exact** (29/49/69/45 = 192);
+durations sum to 80.0 and the rail percentages are arithmetically right. Gold on `--ink-900` (`#0A0B0D`)
+computes to **8.6153:1** — "8.62:1" is honest. `channel-analysis.md` "4 of 17", "6 of 10", "0 of 11 records
+yielded transcript" all verbatim. `corpus-cv.json /roles[0]/bullets[1]` is the ATO harness bullet as quoted.
+Rail widths with the 1px separators stay inside `TC-EXP-06`'s ±0.5pp even at 320px (worst case 0.334pp).
+This is the most source-disciplined document in the run. The failures below are structural, not sloppy.
+
+---
+
+### FAILURES
+
+**F-1 · BLOCKER · The single gold mark points at a 404.** §4.3, §5.2 `pinnedSha`, §6.1 and dossier item 2 all
+pin the permalink to **blob sha** `a0197fb…`. GitHub's `/blob/<ref>/` segment resolves branches, tags and
+**commit** shas — never blob shas. Probed live:
+
+```
+https://github.com/…/blob/a0197fba84554d5d250d85c746db425a005d397c/apps/api/…/resume_tailor.py  → 404
+https://github.com/…/blob/main/apps/api/…/resume_tailor.py                                      → 200
+```
+
+The artefact whose entire thesis is *"go and check"*, whose one gold mark is defined as "this figure has a
+source you can go and check", and which "closes defect C-3 honestly" by rendering the caliper's `sourced`
+state for the first time — ships a dead link. `TC-EXP-05` would fail the build, which is correct behaviour but
+means the spec as written orders a build that cannot pass its own gate. **Fix:** pin the **commit** sha
+`d803629efa2ebd6bce844f4384e814ead6637ae5` (`origin/main` tip carrying that blob), keep the blob sha as a
+separate `blobSha` field for content verification, and add to `TC-EXP-05`: *the resolved page body contains the
+verbatim `quote`* — otherwise a 200 on a moved file passes.
+
+**F-2 · BLOCKER · R-165 / R-171 regression: the spec deletes the site's only synthetic-media disclosure and
+does not replace its coverage.** `app/data/portfolio/avatar.ts:27` is the **only** user-facing disclosure
+string on the site: *"AI-generated: my photograph, my cloned voice, animated by a model. Nothing else on this
+site is synthetic."* `grep -rln synthetic app components lib` returns exactly `avatar.ts`, `Avatar.tsx`,
+`Listen.tsx` and a `globals.css` comment. §1.1 deletes all three. §1.1 row 18 then **retains**
+`public/assets/my-avatar.mp4` (147 KB), `my-avatar-voice.mp3` (501 KB) and `my_avatar.{png,webp,avif}` because
+`MiniVicBot` uses them — and `MiniVicBot.tsx` carries **zero** disclosure of its own (its only mentions of
+"cloned voice" are code comments at `:236,:249,:409,:1121,:1151`). Post-spec state: a synthetic face and a
+cloned voice still greet and answer the visitor from the widget, and the site says nothing about it. The new
+credit (§6.4) is scoped to the explainer and rendered inside its `<figcaption>` — it does not reach MiniVicBot.
+R-165 requires provenance labelling carried forward *"intact in meaning and prominence … into the chatbot and
+the live presence"*; R-171 makes softening it a Gate G / Gate R failure irrespective of what improves alongside.
+R-158 says the same thing from the other side. Note also that the deleted sentence is **already false today**
+(MiniVicBot is synthetic) — so the correct resolution is not "keep it" but "make it true somewhere it applies".
+**Fix:** §1.1 gains a row: MiniVicBot renders the disclosure in its own chrome, once, in R-157 treatment, and
+`TC-RM-05`/`TC-REG-02` gain an assertion that the shipped HTML contains a synthetic-media disclosure covering
+every synthetic asset it serves. This is not optional and it is not the engagement swarm's to defer.
+
+**F-3 · BLOCKER · The timeline is fixed to the centisecond on a model the spec itself says cannot be timed.**
+§7.1's own table: `heygen/avatar-iv` → durations **`null` — "length is set by the script/audio"** — and
+**seed: NO**. §3 then fixes cue boundaries at 12.0 / 32.0 / 60.5 / 80.0 s; §5.3 derives the rail geometry from
+them to three decimal places; `TC-EXP-03` fails the build on *any* drift between `movements[].{start,end}` and
+the VTT; `TC-EXP-10` requires ±1.0 s of 80. Nothing in §7 specifies how an emergent render duration is
+reconciled with an authored VTT. There are only three honest resolutions and the spec must name one: (a) branch
+A only — the ElevenLabs track is rendered first, **measured**, and the VTT and `explainer.ts` are generated
+*from the measured audio* rather than authored ahead of it, with §3's numbers relabelled as targets; (b) the
+delivered master is cut to the authored boundaries in post and the cut is a recorded ladder step; (c) the rail
+reads its boundaries from the VTT at build time and §3's table is advisory. As written, an implementer whose
+rung-4 take returns 83.4 s has no instruction and must invent one — which §0's opening sentence forbids.
+
+**F-4 · BLOCKER · Nothing constrains the video frame to the design system.** §5.3 fixes every CSS colour,
+stroke and easing, and §5.3's closing paragraph states *"Nothing else in this component may be gold"* — then
+mounts a **1920×1080 full-colour `heygen/avatar-iv` render of a photograph** at `min(100%, 44rem)` into
+Section 4, the calibration section, with **no** stated treatment: no grade, no LUT, no desaturation target, no
+background rule, no wardrobe/backdrop constraint in the rung-4 prompt, no frame-sampling test.
+`TC-NFR-MONO` checks raw hex in **source**; `TC-EXP-09` counts **elements resolving to a gold token**. Neither
+can see a pixel. The removed clip had the same hole but occupied 3.5rem in the deliberately-quiet closing
+section; this one is the largest single rectangle in the site's most instrument-like section. Compounding it,
+rung 3 is *"supporting/ambient motion **behind the citation panel**"* and rung 7 is *"the single site-defining
+opening shot"* — generated decoration placed behind the exact surface whose job is verifiable provenance, which
+is the most direct available reading of an R-95 violation. **Fix:** the rung-4 and rung-6 prompts carry an
+explicit monochrome/near-monochrome direction and a fixed `--ink-900` backdrop; add `TC-EXP-11` sampling N
+frames of the shipped mp4 and failing if mean chroma exceeds a stated threshold or if any pixel cluster falls
+within a stated ΔE of `#c9a84c`; and either delete the ambient-motion-behind-the-citation-panel clause or
+justify it against R-95 in writing.
+
+**F-5 · MAJOR · Gate P item 7 is unexecutable and nothing says so.** §9 requires **13 human participants**
+(10 + 3 arm B), *"none has read this repository"*, observed single viewings, and **two independent blind
+raters** plus a tie-breaker. R-39 forbids owner interactivity; no recruitment mechanism, budget, panel,
+timeline or owner is named. §10 makes Gate P conditional on it. This is the one place the spec should have used
+its own formula — *"where a fact could not be established, this document says so in those words and names the
+gate that must resolve it"* — and did not. Name the recruiter and the panel, or declare T-34 an owner-blocked
+item with an explicit interim state, exactly as §7.3 does for the voice. §7.3 is the model; §9 should copy it.
+
+**F-6 · MAJOR · Three assertions are unfalsifiable — they would pass against a mediocre build.**
+- `TC-EXP-08` ("activating the player produces a cumulative layout shift of `0.000`"). Activation is
+  user-initiated; every shift within 500 ms of input carries `hadRecentInput: true` and is **excluded from CLS
+  by definition**. The test therefore passes against an implementation that visibly janks 7.5rem → ~27rem.
+  §5.3 only reserves the **rest** height (7.5/9rem) while the active frame at 44rem × 16:9 is ~24.75rem tall,
+  so the spec's own geometry and its own "zero CLS" claim are in tension and the test cannot detect it.
+  Replace with a measured assertion on the *rest* block only, plus an explicit statement that expansion is a
+  deliberate input-driven reflow.
+- **The 26 MB memory ceiling is unmeasurable by either specified method.** `performance
+  .measureUserAgentSpecificMemory()` requires `crossOriginIsolated`; `firebase.json` sets **no** COOP/COEP
+  (`grep -c Cross-Origin firebase.json` → 0), and adding them would break the `youtube-nocookie` facade. The
+  heap-snapshot fallback measures the **JS heap** and cannot see an H.264 decode surface at all. Either name a
+  real instrument (`chrome://` media-internals, a devtools protocol capture in the perf spec) or restate the
+  ceiling as what is actually measurable.
+- `TC-EXP-07` requires the mp4 to "report 1920×1080 and `moov` before `mdat`" from a Playwright spec. No tool,
+  no parser, no fixture is named. Name `ffprobe` (and add it to the CI image) or a byte-scan helper.
+
+**F-7 · MINOR · Citation drift in the "adjudicate" rows.** `lib/avatarContext.tsx` is **57 lines**, not 68.
+`app/layout.tsx:139,144` are `<body>` and `<MiniVicBot />`; the provider opens at **140** and closes at
+**146**. `overhaul_static_audit.mjs`'s justification comment runs **157–167 (11 lines)**, not "12 lines at
+:161-167"; the `ON_DEMAND_VIDEO` constant is at **:170**. The delete rows were freshly stat'd and are exact;
+these were not. Re-verify before the removal commit.
+
+**F-8 · MINOR · `scripts/generate/explainer_ladder.mjs` is load-bearing and never ordered created.** It is the
+sole `--confirm` gate on billable, uncancellable jobs (§7.2) and one of the three places the $60 ceiling is
+enforced (§7.5 item 1) — and it is absent from §5.1's Create list. Add it, with its CLI contract.
+
+**F-9 · MINOR · §7.5 publishes the number §7.1 forbids.** §7.1 consequence 3: *"Publishing a projected figure
+for [the token-priced rungs] would be exactly the unsourced number this site refuses."* §7.5 then places the
+rung-2 and rung-5 **caps** ($6.00, $8.00) in a column headed **"Predicted cost"** and sums them into a
+**"Predicted total $40.04"**. The arithmetic is right; the label is not. Split the column into *predicted* and
+*capped*, and report two totals — a predicted $25.04 over five rungs and a $14.00 cap over two.
+
+**F-10 · MINOR · Two internal contradictions an implementer must resolve by inventing.** (a) §5.4 presents the
+two-verdict overlay as an on-demand curiosity state triggered by `S`; `TC-A11Y-EXP-04` requires the two-verdict
+**table** present in the HTML with JavaScript disabled. Say explicitly that the table is always server-rendered
+inside `#explainer-transcript` and the overlay is its animated projection. (b) §1.1 row 14 conditions deleting
+axe's `iframe` exclusion on *"no `<iframe>` and no `<video>` remaining in the DOM"* — but §5 puts a `<video>`
+back on the same page, on activation. State the condition as *at rest*, which is when A11Y-01 runs.
+
+**F-11 · NOTE, not a failure · R-148 says "in its place"; §4.1 moves it to Section 4.** The argument from
+R-152 is the better one and §4.1 makes it well. But it is a departure from R-148's plain words and it leaves
+Listen with a deletion and no replacement while Section 4 gains the largest rectangle on the site. Flag it at
+Gate P as an interpretation for the Owner to ratify, alongside corrections 0-A and 0-B, rather than letting it
+pass as settled.
+
+---
+
+### Does it make the site more honest?
+
+**On balance, materially yes — and F-2 is the one place it does not.** It replaces an unfalsifiable
+self-introduction with a mechanism a reader can open; it renders the caliper's third state for the first time
+on evidence that genuinely reaches that grade while explicitly refusing to promote the −38 % beside it; it
+publishes a spend ledger including its own $0.00 failed job; it records `seed: null` with the reason travelling
+with it; §7.3 states an unresolved credential in plain words and blocks the gate on it rather than assuming;
+and §6.3's edge is drawn in the honest direction against the channel's own "not proven" row. That is a rebuild
+that gains truths. F-2 is the single truth it loses, and it loses it by omission rather than by intent —
+which is exactly how R-171 says a downgrade arrives wearing better clothes.
+
+---
+
+### The single strongest improvement
+
+**Make the production credit site-wide rather than explainer-local, and let the explainer be where it is
+*explained*.** Today the spec writes one beautiful sentence for one artefact and, in the same commit, deletes
+the only sentence that covered the two synthetic assets it deliberately keeps. Invert it: promote §6.4 into a
+single `syntheticMedia` provenance record in the canonical dataset — one entry per synthetic asset (the
+explainer render, the MiniVicBot avatar loop, the pre-rendered cloned-voice greeting, `/api/tts`), each naming
+likeness, voice and pipeline — rendered in R-157 treatment at each asset's own point of use, and asserted by a
+single test: *for every synthetic asset served by the shipped HTML there exists exactly one credit naming its
+likeness, its voice and its pipeline.* That test is falsifiable, it fails today's baseline, it fails the spec
+as currently written, and it converts the credit from a line of copy about one video into the same kind of
+instrument the caliper already is — a rule the site keeps everywhere, which is the only form of honesty this
+page has ever argued for.

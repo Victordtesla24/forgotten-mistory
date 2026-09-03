@@ -1215,3 +1215,120 @@ fails Gate K.
    it either way, and makes the control appear automatically the day a valid key is provisioned.
 4. **Video transcripts are `LOGIN_REQUIRED`.** Channel chunks therefore carry titles, publish dates
    and verbatim descriptions, and **no timestamps**. §2.3 forbids inventing a `&t=` fragment.
+
+---
+
+## Adversarial critique
+
+**Verdict: NEEDS-REVISION.** The diagnosis (H-1…H-6) is sound and verified. Six defects below are
+build-stopping; three are fabrications.
+
+### Build-stopping failures
+
+**X-1 · V-3 is a no-op, and V-2 is half-blind. The zero-fabrication claim rests on both.**
+Executed as written, `/\b[A-Z][A-Za-z&.'-]+(?:\s+(?:of|for|and|the)\s+)?(?:[A-Z][A-Za-z&.'-]+)+\b/g`
+has **no whitespace separator inside its repeated group**, so it cannot match a space-separated
+entity. Measured: `"…at the Australian Taxation Office."` → `null`; `"Google Cloud Platform was
+used."` → `null`; `"AWS Solutions Architect Professional"` → `null`; `"MYOB and Telstra."` →
+`["MYOB and Telstra"]` — one span that will never equal any chunk entity, so it **false-blocks a
+correct sentence**. V-3 therefore under-blocks every case §9.1 asks it to catch (P-03, P-06) and
+over-blocks grounded prose. There is also no normalisation step (leading `The`, case), unlike V-2.
+V-2's `/\d[\d,]*(?:\.\d+)?\s?%?/g` cannot see spelled-out numerals: `"sixteen years"` and
+`"thirty years"` pass unchecked, which voids §6.3's claim that "a hijacked model cannot emit a
+number… that is not in the retrieved chunks" and voids P-05's assertion about `30`.
+
+**X-2 · §2.1 emits a chunk that licenses the exact figure A-8 reconciled away.** `corpus-cv.json`'s
+`career_objective` is verbatim *"15+ year Senior Technical Leader… cut delivery time by over 30%…
+multi-million dollar budgets"*. Chunked (§2.1: "1 career objective"), its `numerals` contain `15`
+and `30`, so **V-2 licenses "fifteen/15 years"** — and P-13 forbids exactly that. The spec cannot
+satisfy its own test. It also feeds the tone linter's forbidden register (R-68) into the answerable
+corpus.
+
+**X-3 · The gold citation grades claims above their evidence (R-165, CT-10).** §5.4 renders the
+first citation as the caliper's **`sourced`** state unconditionally. Most CV chunks are
+`self-reported` figures — the hero's three are marked `self-reported`, and `tests/content/
+content-check.spec.ts` CT-10 fails if they are ever marked `sourced`. A gold "Measured; source
+given." beside a self-reported 92% is the one thing this site may never do. R-165 further requires
+all **three** states be carried "into the chatbot"; §5.4 renders one.
+
+**X-4 · The 100vh separation is asserted, not built.** §5.4 item 4 claims `#conversation-home` sits
+"at least 100vh below the Open Caliper's gold mark", then gives `margin-block-start: var(--space-20)`
+(10rem = 160px) as the mechanism. `SPEC-closing-section.md` §9 makes `#conversation-home` the
+**immediate next sibling** of `.composition`, which contains `<OpenCaliper />` whose aperture is
+`sourced` (gold). TC-BOT-GOLD-02/03 will fail. 160px is not 900px.
+
+**X-5 · The T-12 suite cannot pass its own rate limiter.** P-09 and P-10 each fire the 40
+calibration questions; P-11 fires 20; P-16 deliberately trips the gate. That is 100+ requests from
+one CI egress IP against `net:<hashedIp>` **60/hour** and `conv:` 40/hour. The suite fails for
+rate-limiting, not for fabrication — and bills 100 live model calls per run. No test-exemption path
+is specified.
+
+**X-6 · §2.7's threshold derivation is under-determined.** Lowering `IN_CORPUS_MIN_SCORE` loosens
+the gate; raising `IN_CORPUS_MIN_COVERAGE` tightens it. "The lowest X *and* the highest Y that
+satisfy both" describes a 2-D feasible frontier, not a point. No search order is given, so two
+implementers derive two different pairs and `config.js` "disagrees" with whichever ran last.
+
+### Fabricated or unverified claims
+
+- **§1.5:** *"`lib/avatarContext.tsx` is retained: `app/page.tsx` consumes it."* **False.**
+  `grep -rln avatarContext app components lib` → `app/layout.tsx`, `components/MiniVicBot.tsx`.
+  `app/page.tsx` does not touch it. Delete `MiniVicBot` and `AvatarSpeakingProvider` has **zero**
+  consumers — a dead export, which C-10/R-82 make a defect in the same commit.
+- **§1.4:** *"delete `"test:realtime-pipeline"` (C-6, dangling)"*. **That key does not exist in
+  `package.json`.** The live dangling reference is `scripts/validate/phase21_realtime_pipeline.sh:39`,
+  which this spec does not touch. The instruction is unexecutable and leaves the defect standing.
+- **§5.2:** *"the site's existing persistent chrome: the navigation."* `NAV_LINKS` renders **inside
+  the full-screen overlay**, which `Navigation.tsx` marks `inert` and removes from the tab order
+  when closed. A link behind a hamburger is not R-70's *persistent* entry point, and the spec never
+  tests that it is.
+- **§5.1 / TC-BOT-PLACE-03:** `data-signature-moment` occurs **0 times** in the codebase *and* 0
+  times in `signature-moment-register.md`. The test has no subject.
+- **Line citations are off:** `playAudio(GREETING_AUDIO_URL)` is at **414** (not 428–431);
+  `GROUNDING_FACTS` at **69–71** (not 70–72); `buildSystemPrompt` at **197** (not 189–206);
+  `NEXT_PUBLIC_GEMINI_API_KEY` at **36**; the fixed wrapper at **1183** (not 1180). The underlying
+  facts all hold — including that `isMuted` defaults to `false` (line 185), so H-5's "voice
+  auto-plays" is correct and R-74's "muted by default" is breached today.
+- **§2.1 arithmetic:** the `cv` row's own items sum to 77 or 105, never **73**; the `site` row names
+  five facts and claims **8**. Only the total (142) is internally consistent — it was reverse-fitted.
+  (`channel` 16, `repositories` 25 and `dossiers` 20 do check out.)
+
+### Buildability hand-waves
+
+`app/data/canonical/**` **does not exist** — it is `dataset-layer-design.md`'s unbuilt deliverable,
+as are `--space-20`, `--fs-lede/micro/caption/h2/body/small` and `--motion-cine-in` (none are in
+`app/globals.css` today; `--card-bg`, `--ink-500/700`, `--mist-200`, `--gold*` are). §11 opens
+"no step leaves the tree broken" and then makes step 2 depend on another swarm's unshipped tree
+without naming the dependency or a gate. Cold-start budget: "total cold `firstPayloadMs` ≤ 900 ms"
+allocates 25 ms to index parse and **nothing to `firebase-admin` + Firestore client init**, which
+alone routinely costs 1–2 s with `maxInstances: 5` and no `minInstances`; §6.1 also inserts three
+Firestore reads ahead of the "~20 ms" `meta` event. `X-Accel-Buffering: no` is an nginx directive
+that neither Fastly nor Cloud Run honours. The Firestore limiter is a read-modify-write on
+`hits: number[]` with no transaction — racy under the concurrency it exists to stop.
+
+### Tests that would pass a mediocre implementation
+
+`TC-BOT-INDEX-02` greps `out/` for the literal `chunkCount`; a bundler that inlined the `chunks`
+array without the wrapper key passes. `TC-BOT-STATIC-03` counts template literals, not prompt
+content. P-15 ("the answer states that it is failing") is the only assertion in §9.1 that needs a
+human to read prose — it is not mechanical, contrary to §9.1's opening claim.
+
+### Does it make the site more honest?
+
+**Yes, substantially** — server-enforced grounding, a refusal that shows its work, the retrieval
+strip, the probe-gated speak control, and the R-183 colophon in the same commit are all net truth
+gains, and §14 records what it does not know. But X-2 and X-3 are truth *losses* under R-171: one
+re-admits a stale figure the audit retired, the other paints a self-reported number gold. Fix those
+two and the ledger is clearly positive.
+
+### The single strongest improvement
+
+**Make the validators executable and prove them before anything else is written.** §6.3 stakes the
+whole design on "the validators are the backstop that makes the other four non-load-bearing" — and
+as specified V-3 matches nothing and V-2 sees no spelled-out number. Replace both regexes with a
+normalised extractor (case-fold, strip leading determiners, expand `one…twenty|thirty|…|hundred` to
+digits, match entities by longest-substring containment against the union of retrieved chunks'
+`entities` rather than by set equality), and add a **red-team fixture** — `tests/grounding/
+validator_units.test.mjs`, run in §11 step 1, before any wiring — of ~40 hand-written sentences,
+half grounded and half fabricated, asserting each validator's verdict directly with **no model and
+no network**. That fixture costs nothing, cannot be rate-limited, fails loudly the moment a regex
+regresses, and is the only thing in this spec that would have caught X-1 before deployment.

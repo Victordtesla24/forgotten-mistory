@@ -971,3 +971,115 @@ keep passing**. Two amendments:
    §2.2, §3.3 and §4.2 deliverables. This spec consumes them. If the token commit has not landed
    when this one does, each use ships with the shipped literal as a `var(--token, literal)` fallback
    and a follow-up removes the fallback; it does **not** ship a bare literal.
+
+---
+
+## Adversarial critique
+
+**Verdict: NEEDS-REVISION.** The corpus work is near-flawless — every CV metric, role id,
+video id, title, duration, date, repo field, commit sha, rejected tie and the
+`ZOOM_BOX`/centroid trigonometry were re-derived and hold. What fails is four load-bearing
+premises, one binding-grammar violation, and three tests the spec declares safe that are
+provably not.
+
+### Failures (blocking)
+
+- **F1 · §4's premise is false, twice over.** `about.ts:115` is
+  `…/blob/main/apps/api/app/routers/jobs.py` — a blob URL to the exact file, **not** the
+  repository root. C-8 says root; C-8 is wrong and the spec inherited it unchecked. Worse,
+  R-172's own text reads *"Cite it exactly, as the site already does"* — R-172's defect is
+  inherited `aether-career-agent` name references, not a broken href. §3.4 orders this
+  written into the corrections ledger, which would put a falsehood in the site's own
+  history (R-171). The **fix** in §4 is right and keep it; restate the defect as *"pinned
+  to a moving branch, with no line anchor, and the path unlinked."*
+- **F2 · TC-ABOUT-07 and TC-ABOUT-03 break; §12 says they are untouched.** TC-ABOUT-07
+  asserts `#about` contains `'Ten axes · no scores'` (`about.spec.ts:107`) — §7 replaces
+  `.instrumentCaption` and never carries that string. TC-ABOUT-03 asserts
+  `#about ol li p:first-of-type` matches no `\d{1,3}\s?%` (`:65,67`); §11.3's `.railWhat`
+  is a `<p>` inside a `<li>` inside `#about ol`, and tie 08's copy contains **"38%"**.
+  Both fail on first run. TC-ABOUT-02's amendment also names `[data-answer]`/`[data-evidence]`,
+  which §11 never adds to `About.tsx`.
+- **F3 · §12.7 / grammar §2.3 violation.** `encoding-grammar.md` §2.3 is binding: caliper
+  states are drawn *"with texture and terminal form, **not intensity**"*, never mapped to
+  size or ordering; §12 prohibition 7 fails Gate K on "a calibration state rendered as a
+  size". §2.1 gives `sourced` `stroke-width 1.0` + `--white`@0.90 and `self-reported`
+  `0.6` + `--steel`@0.50, and fill 0.055 vs 0.022 — an intensity **and** weight ramp keyed
+  to calibration state. §2.1's own sentence concedes it ("no channel — luminance or stroke
+  — varies with anything but `terminalForm`"). TC-DIM-08 then *licenses* it ("at most 3
+  distinct stroke-widths"). **Fix:** hold stroke-width and stroke colour identical across
+  `sourced` and `self-reported`; let the `.jaw` pair be the sole differentiator. Terminal
+  form only, as the grammar says.
+- **F4 · The dataset layer does not exist.** `app/data/canonical/` (selectors, dossiers,
+  schema), `scripts/dataset/`, `scripts/validate/dataset_integrity.mjs`,
+  `public/dataset-provenance.json` and `reports/viz-perf.json` are all **absent** from the
+  tree. §11 lists five of them under **Change**, not Create. §14.8 declares the *token*
+  dependency but not this one. TC-DIM-07/18 read `/dataset-provenance.json`. §3.1 asserts
+  "no dataset scope extension is required" while §4 adds `DimensionsSource` and §14.6
+  admits `testFileCount` is missing. Declare the hard ordering dependency on
+  SPEC-telemetry-and-data, or the implementer starts with a missing import.
+
+### Critique
+
+**Fabrication check: clean.** 200+ SIT/E2E · REXX/SMF/SDSF/PCOMM/PowerShell/VBA →
+`role-ato-2026`; 75+ vs 64 hours → `role-ato-2026`; 38% *simulated* → `role-independent-2025`;
+$5M / 5+ squads / up to 40 → `role-anz-arch-2017`; 392 `pythonTestFiles`; README line 39
+verbatim; CI red on `main`; sha `bb5f5f01…` @ 2026-09-02T20:59:41Z; `p9pGAmqJCSk` 2:01
+16 Apr 2026 with "60fps via SwiftUI Canvas + Metal … Go telemetry daemon streams JSON at
+1Hz"; `gMe4FZbjcQE` 10:05 25 Nov 2025; all three rejected-tie descriptions and dates —
+all verified. `--motion-base 320` / `--motion-emphatic 440` / `--motion-cine-in 720` /
+`--stagger-tight 60` match the lock; gold 8.62:1 on `--ink-900` matches. Every centroid,
+the bbox, `3.3613 = 100/29.75`, and the `translate`-then-`scale` composition check out.
+
+**Smaller defects.**
+1. **§3.4 relocates nothing.** "38 public repositories" is deleted; no rail row, no
+   `datasetFields` entry, no `retrievedAt` carries it. Say *deleted (the figure stands in
+   the vitrine lede)*, or actually bind `repositories.totals.public`.
+2. **§3.4's "one bare figure" is false.** `evidence[4]` "5+ squads, 40+ practitioners",
+   `[7]` "−38%", `[8]` "75+ hours … against 64" all survive unbound — and `[8]`'s figure is
+   the same fact §3.2 binds under tie 10·role, which now sits sourced in one place and
+   naked in another.
+3. **§6 and §7 contradict.** §7's DOM is svg → `.sectors` → `.hubProbe` → figcaption, with
+   the filters *after* the `<figure>`; §6 demands citation → filters → probe → sectors.
+   Unreachable without positive `tabindex` or a DOM reorder. Neither is specified.
+4. **The readout cannot go off-screen.** §7 places `.readNumber`/`.readState`/`.index`
+   as siblings of `.stage`, so they do **not** transform; §5.2 asserts "while zoomed the
+   hub readout is off-screen". They sit dead-centre over the magnified wedge.
+5. **The zoom bbox omits what the zoom exists to reveal.** Derived over `r ∈ [22, 43.2]`;
+   `.tieLabel` is at `r = 45.4`. It happens to fall inside the frame — state that, don't
+   leave it to luck. `.tieLabel` also lands inside the 43.2→47.0 graduation band; collision
+   unaddressed.
+6. **`Compass.tsx:78` is not the only stale gold prose.** `:211` also says *"and the one
+   gold mark on the instrument."* Delete both.
+7. **Verbatim drift in "never authored" labels.** §3.2 prints the JARVIS title with an
+   em-dash (observed: hyphen), drops "(ATO)" from the employer, and drops **"per team"**
+   and "manual" from *"75+ hours of manual evidence **per team** against 64 available
+   hours"* — the omitted words change the magnitude's meaning.
+8. **Test rigour.** TC-DIM-15 asserts no computed `transform !== none` during entrance —
+   `.rose` computes `matrix(1,0,0,1,0,0)`, so it fails on shipped markup. TC-DIM-04/05 hit
+   live YouTube and GitHub unauthenticated; the corpus itself records YouTube bot-gating
+   and GitHub allows 60 req/hr — guaranteed CI flake on a pipeline already red. TC-DIM-08
+   is the weakest test in the set: it permits F3.
+9. **Arithmetic.** "the ten slots are 53.8 px apart" at a 17 rem plate: `2 × 0.315 × 272 ×
+   sin 18° = 52.95 px`. The conclusion (44 < spacing) survives; the number does not.
+10. **§4 step 4 hand-waves.** "Extract the ten dimension name string literals from the
+    function body" — no parse strategy, no regex, no behaviour if the literals are built
+    dynamically, and this gates the build.
+
+**Is it more honest? Yes — materially.** Eleven real links, six named gaps, a
+commit-pinned citation the build verifies against the ten rendered names, and the
+first-ever rendered `sourced` caliper closing C-3 **from data**. §3.1's rejection ledger
+(AGSVA, Error-Management-System, global-ticketing-initiative, the nine Vedic videos) and
+§14.4's refusal to pad the channel past two of ten are the best writing in the run. The
+honesty debt is only F1's ledger entry and defects 1, 2 and 7.
+
+### The single strongest improvement
+
+**Delete the `Experience.tsx` change and point the role ties at the anchors that already
+ship.** `Experience.tsx:156` already renders `id={\`role-${role.id}\`}` on each role entry,
+and `:107` already scrolls to it — so `#role-ato`, `#role-anz`, `#role-myob` and
+`#role-independent` resolve **today**. §14.3's *"The Experience anchors do not exist yet"*
+is false, and minting a parallel `#experience-{spanId}` scheme gives every role two ids for
+one thing — exactly the divergence SC-88.1 exists to prevent. Retargeting removes a file
+from the change list, removes a cross-section build-stopping coupling, and makes TC-DIM-12
+pass on the first run instead of gating About behind an edit to a section this spec does
+not own. Fix F3 in the same pass and the plate is conformant.
