@@ -289,7 +289,7 @@
 
     .bench {
         grid-template-columns: minmax(0, 1fr);
-        gap: 1.75rem;
+        gap: 1.5rem;
     }
 
     .rail[data-side='sources'],
@@ -298,11 +298,52 @@
         text-align: left;
     }
 
-    .rail[data-side='sources'] .node {
-        justify-content: flex-start;
+    /* The sources become a wrapping row of tappable chips. As a column they ran
+       to seven hundred pixels of list before the capabilities they belong to
+       even started — a diagram's worth of scrolling with the diagram removed.
+       As chips they are a filter, which is what tapping one does. */
+    .rail[data-side='sources'] {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+    }
+
+    .band {
+        display: contents;
+    }
+
+    .bandLabel {
+        flex: 0 0 100%;
+        margin: 0.5rem 0 0.1rem;
     }
 
     .band + .band {
-        margin-top: 0.75rem;
+        margin-top: 0;
+    }
+
+    .band + .band .bandLabel {
+        margin-top: 0.9rem;
+    }
+
+    .rail[data-side='sources'] .node {
+        width: auto;
+        justify-content: flex-start;
+        padding: 0.34rem 0.6rem;
+        border: 1px solid var(--token-border-default);
+        border-radius: 999px;
+        font-size: 0.66rem;
+    }
+
+    .rail[data-side='sources'] .node[data-lit] {
+        border-color: var(--card-border-hover);
+    }
+
+    .rail[data-side='capabilities'] {
+        gap: 0;
+    }
+
+    .rail[data-side='capabilities'] .node {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid rgb(255 255 255 / 0.05);
     }
 }
