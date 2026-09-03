@@ -45,10 +45,11 @@
     color: var(--white);
 }
 
-/* The one italic on the site. */
+/* The one italic on the site — and the only user of the italic face, which is
+   loaded without preload for exactly that reason. */
 .sentence {
     margin: 0;
-    font-family: var(--font-heading);
+    font-family: var(--font-heading-italic);
     font-style: italic;
     font-weight: 300;
     font-size: clamp(1.5rem, 3vw, 2.1rem);

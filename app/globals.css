@@ -77,6 +77,9 @@
                          readouts, repository metrics. Data, never emphasis. */
     --font-body: var(--font-inter), 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --font-heading: var(--font-serif), 'Source Serif 4', ui-serif, Georgia, 'Times New Roman', serif;
+    /* The italic is a separate, non-preloaded face — it appears exactly once,
+       on the closing sentence, and has no business on the critical path. */
+    --font-heading-italic: var(--font-serif-italic), 'Source Serif 4', ui-serif, Georgia, serif;
     --font-mono: var(--font-plex-mono), 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
     --motion-fast: 220ms;
     --motion-base: 360ms;

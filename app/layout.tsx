@@ -20,10 +20,22 @@ import { AvatarSpeakingProvider } from '@/lib/avatarContext';
 const displayFont = Source_Serif_4({
   subsets: ['latin'],
   weight: ['300', '400'],
-  style: ['normal', 'italic'],
+  style: ['normal'],
   variable: '--font-serif',
   display: 'swap',
   preload: true,
+});
+
+// The italic is loaded separately and NOT preloaded. It is used exactly once on
+// the site — the closing sentence, five screens down — and preloading it cost
+// 50 kB on the critical path for a face nobody sees until the end.
+const displayItalic = Source_Serif_4({
+  subsets: ['latin'],
+  weight: ['300', '400'],
+  style: ['italic'],
+  variable: '--font-serif-italic',
+  display: 'swap',
+  preload: false,
 });
 
 const bodyFont = Inter({
@@ -108,7 +120,7 @@ export default function RootLayout({
     // tokens (which reference these next/font vars) resolve at :root. Placing
     // them on <body> would leave :root unable to see them — the tokens would
     // compute to empty and headings would fall back to the UA sans stack.
-    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable} ${dataFont.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${bodyFont.variable} ${displayFont.variable} ${displayItalic.variable} ${dataFont.variable}`} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
