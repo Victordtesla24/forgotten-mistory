@@ -1,9 +1,15 @@
 /**
- * The compass. Hairlines only, one accent, and one moving part.
+ * The engine's face. Hairlines, engraving, and one moving part.
  *
- * The rose turns; the bearing mark at twelve o'clock does not. That is the
- * whole mechanism: the instrument moves under a fixed reading position, which
- * is how a real compass is read and why it needs no legend.
+ * The face turns; the index at twelve o'clock does not. That is the whole
+ * mechanism, and it is why the instrument needs no legend: a reader watches a
+ * dimension be carried up to the reading position and understands the device in
+ * one movement.
+ *
+ * The index is white, not gold. Gold on this site means one thing — this figure
+ * has a source you can go and check — and a mark showing where the reader is
+ * standing is not evidence. An accent that also means "here" stops meaning
+ * "sourced".
  */
 
 .compass {
@@ -15,72 +21,165 @@
 
 .rose {
     transform-origin: 50% 50%;
-    transition: transform 620ms var(--motion-ease-emphasized);
+    transition: transform 680ms var(--motion-ease-emphasized);
 }
 
-.ring,
-.ringInner {
+/* ── Bezel ───────────────────────────────────────────────────────────────── */
+.bezel,
+.bezelInner {
     fill: none;
     stroke: var(--steel);
     vector-effect: non-scaling-stroke;
 }
 
-.ring {
-    stroke-width: 0.6;
-    opacity: 0.38;
+.bezel {
+    stroke-width: 0.9;
+    opacity: 0.42;
 }
 
-.ringInner {
+.bezelInner {
     stroke-width: 0.5;
-    opacity: 0.2;
+    opacity: 0.22;
 }
 
 .tick,
 .tickMajor {
     stroke: var(--steel);
     vector-effect: non-scaling-stroke;
-    stroke-width: 0.5;
 }
 
 .tick {
-    opacity: 0.16;
+    stroke-width: 0.5;
+    opacity: 0.2;
 }
 
 .tickMajor {
-    opacity: 0.3;
+    stroke-width: 0.8;
+    opacity: 0.46;
 }
 
-.spoke {
+/* ── The ten sectors ─────────────────────────────────────────────────────── */
+/* Seven are computed from the candidate and answered on the page. Three are
+   computed from the role, and are drawn open over the hatch — the same mark
+   the open caliper uses, for the same reason: sought, and honestly not
+   measurable about a person. */
+.sector {
+    fill: rgb(244 246 250 / 0.022);
     stroke: var(--steel);
-    stroke-width: 0.6;
-    opacity: 0.28;
+    stroke-width: 0.4;
+    opacity: 0.5;
     vector-effect: non-scaling-stroke;
     transition:
         opacity var(--motion-base) var(--motion-ease-standard),
+        fill var(--motion-base) var(--motion-ease-standard),
         stroke var(--motion-base) var(--motion-ease-standard);
 }
 
-/* The lit spoke is white, not gold. Gold on this site means "this figure has a
-   source you can check"; a bearing showing where the reader is standing is not
-   evidence, and an accent that also means "here" stops meaning "sourced". */
-.spoke[data-active] {
+[data-side='role'] .sector {
+    fill: url(#compass-open);
+    stroke-dasharray: 1.6 1.4;
+    opacity: 0.42;
+}
+
+.sector[data-active] {
+    fill: rgb(244 246 250 / 0.075);
     stroke: var(--white);
-    stroke-width: 0.9;
+    stroke-width: 0.7;
     opacity: 1;
 }
 
-.bearing {
+[data-side='role'] .sector[data-active] {
+    fill: url(#compass-open);
     stroke: var(--white);
-    stroke-width: 0.8;
-    opacity: 0.8;
+}
+
+.hatch {
+    stroke: var(--mist-400);
+    stroke-width: 0.7;
+    opacity: 0.34;
+}
+
+/* Engraved graduations inside a measurable sector. Absent from the open ones,
+   because there is nothing there to graduate. */
+.rule {
+    fill: none;
+    stroke: var(--steel);
+    stroke-width: 0.35;
+    opacity: 0.16;
     vector-effect: non-scaling-stroke;
 }
 
+.numeral {
+    font-family: var(--font-mono);
+    font-size: 3.1px;
+    letter-spacing: 0.08px;
+    fill: var(--steel);
+    opacity: 0.5;
+    transition:
+        fill var(--motion-base) var(--motion-ease-standard),
+        opacity var(--motion-base) var(--motion-ease-standard);
+}
+
+.numeral[data-active] {
+    fill: var(--white);
+    opacity: 1;
+}
+
+.hubRing {
+    fill: none;
+    stroke: var(--steel);
+    stroke-width: 0.5;
+    opacity: 0.26;
+    vector-effect: non-scaling-stroke;
+}
+
+/* ── The reading position ────────────────────────────────────────────────── */
+.index {
+    opacity: 0.55;
+    transition: opacity var(--motion-base) var(--motion-ease-standard);
+}
+
+.index[data-pointing] {
+    opacity: 1;
+}
+
+.indexCaret {
+    fill: var(--white);
+}
+
+.indexStem {
+    stroke: var(--white);
+    stroke-width: 0.7;
+    opacity: 0.65;
+    vector-effect: non-scaling-stroke;
+}
+
+/* ── The hub readout ─────────────────────────────────────────────────────── */
+/* The number of the axis being read and which side of the match it comes from.
+   Never a score: the section's argument is that a number nobody can source is
+   not worth printing, and the instrument would be the loudest place to break
+   it. */
+.readNumber {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    fill: var(--white);
+    letter-spacing: -0.2px;
+}
+
+.readState {
+    font-family: var(--font-mono);
+    font-size: 2.6px;
+    letter-spacing: 0.42px;
+    fill: var(--mist-400);
+}
+
 @media (prefers-reduced-motion: reduce) {
-    /* The rose still points — that is information, not decoration. It simply
-       arrives rather than travels. */
+    /* The face still points — that is information, not decoration. It arrives
+       rather than travels. */
     .rose,
-    .spoke {
+    .sector,
+    .numeral,
+    .index {
         transition: none;
     }
 }

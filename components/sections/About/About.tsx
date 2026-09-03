@@ -19,6 +19,10 @@ import styles from './About.module.css';
  * ten answers and a compass sitting at rest, which is the content.
  */
 const DIMENSION_NAMES = aboutContent.dimensions.map((dimension) => dimension.name);
+// Which side of the match each dimension is computed from. Seven from the
+// candidate, three from the role — and the instrument draws that difference
+// rather than flattening ten axes into one uniform ring.
+const DIMENSION_SIDES = aboutContent.dimensions.map((dimension) => dimension.side);
 
 export default function About() {
   const [active, setActive] = useState(-1);
@@ -52,13 +56,31 @@ export default function About() {
               it sits above the list and stops being sticky. */}
           <div className={styles.instrument}>
             <div className={styles.instrumentStage}>
-              <Compass active={active} labels={DIMENSION_NAMES} />
+              <Compass active={active} labels={DIMENSION_NAMES} sides={DIMENSION_SIDES} />
             </div>
             <p className={styles.instrumentCaption}>
               {active >= 0
                 ? aboutContent.dimensions[active].name
                 : 'Ten axes · no scores'}
             </p>
+
+            {/* Two states, stated once, so nothing on the face has to be
+                inferred. */}
+            <dl className={styles.key}>
+              <div className={styles.keyRow}>
+                <dt className={styles.keySwatch} data-state="answered" aria-hidden="true" />
+                <dd style={{ margin: 0 }}>
+                  Seven axes the engine computes from the candidate — answered on this page.
+                </dd>
+              </div>
+              <div className={styles.keyRow}>
+                <dt className={styles.keySwatch} data-state="role" aria-hidden="true" />
+                <dd style={{ margin: 0 }}>
+                  Three it computes from the role. Nothing about a person to measure, so the
+                  sector stays open.
+                </dd>
+              </div>
+            </dl>
           </div>
 
           <ol className={styles.list} onMouseLeave={clear}>
