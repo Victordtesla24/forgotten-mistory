@@ -41,8 +41,8 @@ export default function Footer() {
           ·
         </span>
         <span className={styles.legal}>
-          © 2026 Portfolio Website · Vikram Deshpande · A product of V2 Group of Companies Pty.
-          Ltd. · All rights reserved.
+          © 2026 Portfolio Website · Vikram Deshpande · A product of V
+          <sup className={styles.sup}>2</sup> Group of Companies Pty. Ltd. · All rights reserved.
         </span>
       </p>
     </footer>

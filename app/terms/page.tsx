@@ -32,8 +32,8 @@ export default function Terms() {
         <p className={styles.updated}>Last updated 3 September 2026</p>
 
         <p className={styles.lede}>
-          This site is the professional portfolio of Vikram Deshpande, published by V2 Group of
-          Companies Pty. Ltd. Using it means accepting the terms below. They are short because the
+          This site is the professional portfolio of Vikram Deshpande, published by V<sup className={styles.sup}>2</sup>{' '}
+          Group of Companies Pty. Ltd. Using it means accepting the terms below. They are short because the
           site asks nothing of you: there is no account, no payment and no data to hand over.
         </p>
 
@@ -41,7 +41,7 @@ export default function Terms() {
           <h2 className={styles.heading}>1 · Ownership</h2>
           <p className={styles.body}>
             The text, design, code, diagrams, data visualisations and media on this site are owned
-            by V2 Group of Companies Pty. Ltd. and Vikram Deshpande. All rights reserved.
+            by V<sup className={styles.sup}>2</sup> Group of Companies Pty. Ltd. and Vikram Deshpande. All rights reserved.
           </p>
           <p className={styles.body}>
             You are welcome to read it, quote it with attribution, and link to it. You may not
@@ -68,7 +68,7 @@ export default function Terms() {
           <p className={styles.body}>
             The conversational assistant is powered by a language model and can be wrong, out of
             date, or confidently mistaken. Its answers are not statements by Vikram Deshpande or by
-            V2 Group of Companies Pty. Ltd., are not an offer or a representation, and should not be
+            V<sup className={styles.sup}>2</sup> Group of Companies Pty. Ltd., are not an offer or a representation, and should not be
             relied on for any decision. If something matters, confirm it with a person — the{' '}
             <a className={styles.link} href={`mailto:${contact.email}`}>
               contact address
@@ -87,7 +87,7 @@ export default function Terms() {
           <p className={styles.body}>
             The site is published as-is and as-available, without warranty of any kind. It may be
             changed, taken down, or unavailable at any time without notice. To the maximum extent
-            the law allows, V2 Group of Companies Pty. Ltd. and Vikram Deshpande are not liable for
+            the law allows, V<sup className={styles.sup}>2</sup> Group of Companies Pty. Ltd. and Vikram Deshpande are not liable for
             any loss arising from use of, or inability to use, this site.
           </p>
           <p className={styles.body}>
@@ -133,8 +133,7 @@ export default function Terms() {
         </section>
 
         <p className={styles.footNote}>
-          © 2026 Portfolio Website · Vikram Deshpande · A product of V2 Group of Companies Pty.
-          Ltd. · All rights reserved.
+          © 2026 Portfolio Website · Vikram Deshpande · A product of V<sup className={styles.sup}>2</sup> Group of Companies Pty. Ltd. · All rights reserved.
         </p>
       </div>
     </main>

@@ -50,14 +50,14 @@
 
 /* Data, so it takes the mono face — the same rule the rest of the site follows. */
 .updated {
-  margin: 0 0 var(--space-8);
+  margin: 0 0 var(--space-5);
   font-family: var(--font-mono);
   font-size: var(--fs-caption);
   color: var(--mist-400);
 }
 
 .lede {
-  margin: 0 0 var(--space-8);
+  margin: 0 0 var(--space-6);
   font-family: var(--font-body);
   font-size: var(--fs-lede);
   line-height: var(--lh-prose);
@@ -65,8 +65,17 @@
   text-wrap: pretty;
 }
 
+/* `app/globals.css` sets `section { padding: 10rem 0 }` for the six full-bleed
+   sections of the portfolio. These are prose subsections inside one page, and
+   inheriting 160px above and below each heading made a policy read like six
+   separate documents. Reset, and spaced on the same scale as everything else. */
 .section {
-  margin-bottom: var(--space-8);
+  padding: 0;
+  margin-bottom: var(--space-6);
+}
+
+.section:last-of-type {
+  margin-bottom: 0;
 }
 
 .heading {
@@ -139,4 +148,14 @@
   font-size: var(--fs-small);
   line-height: var(--lh-prose);
   color: var(--ink-400);
+}
+
+/* The company mark is V-squared. `vertical-align: super` on a default-sized
+   <sup> pushes the line box open and makes one line of a paragraph taller than
+   its neighbours; setting the size and the offset explicitly keeps the rhythm. */
+.sup {
+  font-size: 0.72em;
+  line-height: 0;
+  vertical-align: 0.42em;
+  padding-left: 0.02em;
 }

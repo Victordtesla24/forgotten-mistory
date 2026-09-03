@@ -56,6 +56,15 @@
   color: var(--ink-400);
 }
 
+/* V-squared. Sized and offset explicitly so the superscript does not open up
+   the footer's single line box. */
+.sup {
+  font-size: 0.72em;
+  line-height: 0;
+  vertical-align: 0.42em;
+  padding-left: 0.02em;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .link {
     transition: none;
