@@ -3506,12 +3506,12 @@ footer {
        tracking the cursor. Reads as light gliding across glass, not a flat wash. */
     background:
         radial-gradient(
-            190px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            circle 190px at var(--mouse-x, 50%) var(--mouse-y, 50%),
             rgba(244, 246, 250, 0.16),
             transparent 60%
         ),
         radial-gradient(
-            600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            circle 600px at var(--mouse-x, 50%) var(--mouse-y, 50%),
             rgba(244, 246, 250, 0.06),
             transparent 45%
         );
@@ -4035,8 +4035,8 @@ footer {
         linear-gradient(rgb(244 246 250 / 0.035) 1px, transparent 1px),
         linear-gradient(90deg, rgb(244 246 250 / 0.035) 1px, transparent 1px);
     background-size: 44px 44px;
-    -webkit-mask-image: radial-gradient(120% 100% at 50% 0%, #000 35%, transparent 80%);
-    mask-image: radial-gradient(120% 100% at 50% 0%, #000 35%, transparent 80%);
+    -webkit-mask-image: radial-gradient(120% 100% at center top, #000 35%, transparent 80%);
+    mask-image: radial-gradient(120% 100% at center top, #000 35%, transparent 80%);
     pointer-events: none;
     z-index: 0;
 }
@@ -4955,7 +4955,7 @@ footer {
     pointer-events: none;
     z-index: 1;
     background: radial-gradient(
-        440px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        circle 440px at var(--mouse-x, 50%) var(--mouse-y, 50%),
         rgba(244, 246, 250, 0.08),
         transparent 58%
     );
