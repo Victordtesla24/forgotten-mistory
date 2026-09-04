@@ -7,13 +7,8 @@
     "dev:raw": "rm -rf .next && NODE_ENV=development next dev -p 8080",
     "fmctl": "node scripts/fmctl",
     "test:fmctl": "node --test tests/fmctl.test.mjs",
-<<<<<<< HEAD
     "build": "rm -rf .next && node scripts/build/build_stamp.mjs && node scripts/build/cv_fingerprint.mjs && NODE_ENV=production next build",
-    "build:static": "rm -rf .next out && node scripts/build/build_stamp.mjs && node scripts/build/cv_fingerprint.mjs && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs",
-=======
-    "build": "rm -rf .next && NODE_ENV=production next build",
-    "build:static": "rm -rf .next out && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs && node scripts/validate/built_output_secret_scan.mjs --dir out",
->>>>>>> 9588cff (Merging everythig on nain)
+    "build:static": "rm -rf .next out && node scripts/build/build_stamp.mjs && node scripts/build/cv_fingerprint.mjs && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs && node scripts/validate/built_output_secret_scan.mjs --dir out",
     "start": "next start",
     "lint": "next lint",
     "test": "playwright test",
@@ -44,12 +39,9 @@
     "validate:provider-keys": "node scripts/validate/provider_api_keys.mjs",
     "validate:final": "bash scripts/validate/final_full_system_validation.sh",
     "validate:postprod": "bash scripts/testing/run_post_prod_validation.sh",
-<<<<<<< HEAD
-    "deploy": "node scripts/deploy.mjs"
-=======
+    "deploy": "node scripts/deploy.mjs",
     "test:realtime-pipeline": "node tests/test_realtime_pipeline.js",
     "validate:secrets": "node scripts/validate/built_output_secret_scan.mjs --dir out"
->>>>>>> 9588cff (Merging everythig on nain)
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.2.4",
