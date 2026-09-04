@@ -44,6 +44,7 @@ export const atmosphereFragmentShader = /* glsl */ `
   uniform vec2 uResolution;
   uniform vec2 uPointer;     // -1..1, already smoothed on the CPU
   uniform float uIntensity;  // 0..1 master fade, drives the entrance
+  uniform vec2 uScroll;      // page scroll depth 0..1 (drives deep-space parallax)
   uniform vec3 uInk;         // deep background ink
   uniform vec3 uLight;       // luminous accent
   uniform float uQuality;    // 1 = full strata, 0 = the two cheap layers only
@@ -102,17 +103,31 @@ export const atmosphereFragmentShader = /* glsl */ `
     // Aspect-corrected coordinates centred on the frame.
     vec2 p = (uv - 0.5) * vec2(uResolution.x / max(uResolution.y, 1.0), 1.0);
 
-    // Pointer parallax is deliberately tiny — a few pixels of drift. It should
-    // register as the room breathing, never as an effect responding to input.
-    vec2 parallax = uPointer * 0.035;
+    // Deep-space parallax: pointer drift + scroll depth, scaled by layer distance.
+    // Far field moves least; near filaments move most — readable depth without gimmick.
+    vec2 parallax = uPointer * 0.055 + vec2(0.0, -uScroll.x * 0.12);
 
     // The key. High and to the left, the same direction everything else on the
     // page is lit from, so the whole site reads as having one light source.
-    vec2 lightPos = vec2(-0.62, 0.40) + parallax * 0.5;
+    vec2 lightPos = vec2(-0.62, 0.40) + parallax * 0.35;
     vec2 toLight = p - lightPos;
     float distLight = length(toLight);
 
     float t = uTime * 0.012;
+
+    // ── Deep space starfield (sparse, monochrome) ─────────────────────────
+    // Hash-scattered points behind the mist so scroll/pointer parallax reads as
+    // void depth rather than as a flat fog sheet.
+    float stars = 0.0;
+    {
+      vec2 sp = p * 48.0 + parallax * 0.15 + vec2(t * 0.2, -t * 0.08);
+      vec2 si = floor(sp);
+      vec2 sf = fract(sp) - 0.5;
+      float sh = hash(si);
+      float cell = step(0.992, sh);
+      float glow = exp(-dot(sf, sf) * 90.0) * cell;
+      stars = glow * (0.35 + 0.65 * hash(si + 17.0));
+    }
 
     // ── The strata ────────────────────────────────────────────────────────
     // Three depths, three speeds. The near layer is ridged and stretched along
@@ -121,8 +136,8 @@ export const atmosphereFragmentShader = /* glsl */ `
     vec2 beamAxis = normalize(vec2(0.86, -0.5));
     mat2 alignBeam = mat2(beamAxis.x, -beamAxis.y, beamAxis.y, beamAxis.x);
 
-    float far = fbm(p * 1.55 + vec2(t, -t * 0.35) + parallax * 0.30);
-    float mid = fbm(p * 2.9 - vec2(t * 1.7, t * 0.5) + parallax * 0.65);
+    float far = fbm(p * 1.55 + vec2(t, -t * 0.35) + parallax * 0.18);
+    float mid = fbm(p * 2.9 - vec2(t * 1.7, t * 0.5) + parallax * 0.55);
     // The near layer and the shafts are the expensive half of this program.
     // On a phone they are also the half nobody can resolve, so uQuality
     // drops them rather than shipping a frame budget the device cannot hold.
@@ -131,10 +146,10 @@ export const atmosphereFragmentShader = /* glsl */ `
     float near = 0.0;
     if (uQuality > 0.5) {
       vec2 nearP = alignBeam * (p * vec2(1.0, 2.6)) * 3.4;
-      near = ridged(nearP + vec2(t * 3.1, -t * 1.1) + parallax);
+      near = ridged(nearP + vec2(t * 3.1, -t * 1.1) + parallax * 1.15);
     }
 
-    float mist = far * 0.52 + mid * 0.30 + near * 0.30;
+    float mist = far * 0.48 + mid * 0.28 + near * 0.34 + stars * 0.55;
 
     // A low horizon: density gathers toward the bottom of the frame and thins
     // out above, the way air does over a plain at night.
