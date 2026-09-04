@@ -37,12 +37,6 @@ import { settleBoot } from '../helpers/boot';
 
 async function gotoHome(page: Page) {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-<<<<<<< HEAD
-=======
-  // Skip the boot wipe via the component's own control. Never DOM-remove
-  // `.preloader` — it is React-owned. See tests/helpers/boot.ts.
-  await settleBoot(page);
->>>>>>> 9588cff (Merging everythig on nain)
   await page.locator('#hero').first().waitFor({ state: 'visible', timeout: 15000 });
   await page.waitForTimeout(300);
 }
