@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "explainer-gen-1",
+  "runId": "v7-20260904T110107Z",
+  "executionId": 30,
+  "unused_rungs": [
+    {
+      "modelId": "google/veo-3.1-lite",
+      "reason": "Previz not requested in this brief."
+    },
+    {
+      "modelId": "bytedance/seedance-2.0-mini",
+      "reason": "Iterate not requested in this brief."
+    },
+    {
+      "modelId": "bytedance/seedance-2.5",
+      "reason": "Cinematic inserts are padding for this talking-head artefact."
+    },
+    {
+      "modelId": "alibaba/wan-3.0",
+      "reason": "No ambient supporting surface; R-95 forbids decorative generation."
+    },
+    {
+      "modelId": "alibaba/wan-3.0-prime",
+      "reason": "Quantitative marks are data-drawn SVG; no elevated motion asset."
+    },
+    {
+      "modelId": "minimax/hailuo-3-max",
+      "reason": "No hero opening shot; greeting/title padding forbidden."
+    }
+  ],
+  "records": [
+    {
+      "schemaVersion": "explainer-gen-1",
+      "recordId": "EXP-R4-T01",
+      "rung": 4,
+      "rungName": "presenter",
+      "role": "heygen/avatar-iv \u2192 R-140 role",
+      "modelId": "heygen/avatar-iv",
+      "endpoint": "POST https://openrouter.ai/api/v1/videos",
+      "submittedAt": "2026-09-04T11:40:40.230Z",
+      "requestBody": {
+        "model": "heygen/avatar-iv",
+        "aspect_ratio": "16:9",
+        "resolution": "1080p",
+        "input_references": [
+          {
+            "type": "image_url",
+            "image_url": {
+              "url": "https://forgotten-mistory.web.app/assets/my_avatar.png"
+            }
+          },
+          {
+            "type": "audio_url",
+            "audio_url": {
+              "url": "https://raw.githubusercontent.com/Victordtesla24/forgotten-mistory/main/public/assets/avatar-studio-voice.mp3"
+            }
+          }
+        ],
+        "provider": {
+          "heygen": {
+            "motion_prompt": "Head-and-shoulders framing, camera locked off at eye level, subject centred in frame. Minimal head movement, occasional slow deliberate nod on key phrases. Neutral background, soft frontal key light, no gestures above the collarbone. Blink rate natural, gaze steady into lens.",
+            "expressiveness": 0.55,
+            "fit": "cover",
+            "title": "How an Entailment Guard Reverts an Unsupported LLM Claim"
+          }
+        }
+      },
+      "prompt": "Token grounding catches missing words; it cannot catch a real phrase attached to the wrong employer. Entailment asks a different question: does this bullet's own evidence actually support this claim? In resume_tailor.py, not entailed reverts the bullet; verifier failure reverts everything.",
+      "seed": null,
+      "seedUnsupported": true,
+      "seedUnsupportedEvidence": "GET /api/v1/videos/models \u2192 seed:false",
+      "parameters": {
+        "resolution": "1080p",
+        "aspect_ratio": "16:9",
+        "duration": null
+      },
+      "jobId": "AlQ02SHZKgWD4VFQC3Do",
+      "generationId": "gen-vid-1788522035-d5vww60bWzhSHALhK4u1",
+      "pollCount": 10,
+      "status": "completed",
+      "failureReason": null,
+      "actualCostUsd": 1.80329985,
+      "costSource": "openrouter job usage.cost measured",
+      "shipped": true,
+      "outputUrl": "https://openrouter.ai/api/v1/videos/AlQ02SHZKgWD4VFQC3Do/content?index=0"
+    }
+  ]
+}

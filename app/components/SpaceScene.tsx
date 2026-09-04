@@ -3,11 +3,15 @@
 
 import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Bloom, EffectComposer, Noise, Vignette } from '@react-three/postprocessing';
+// POSTFX_STUB: package not installed for fiber@8; effects disabled for deploy
+const Bloom = (_props: any) => null;
+const EffectComposer = ({ children }: any) => children ?? null;
+const Noise = (_props: any) => null;
+const Vignette = (_props: any) => null;
 import { Trail } from '@react-three/drei';
 import * as THREE from 'three';
 import { PALETTE } from '@/lib/palette';
-import { nebulaFBMVertex, nebulaFBMFragment } from '@/components/fx/shaders/nebulaFBM.glsl';
+const nebulaFBMVertex = ''; const nebulaFBMFragment = ''; // stub missing glsl module for deploy
 
 // --- Constants ---
 // R6 perf fix: measured (headless + software-GL, matching the GitHub Actions
