@@ -9,7 +9,7 @@
 
 .experience {
     position: relative;
-    padding: clamp(5rem, 12vh, 9rem) var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
+    padding: clamp(var(--space-10), 12vh, 9rem) var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)));
 }
 
 .inner {
@@ -22,12 +22,12 @@
 /* ── Header ──────────────────────────────────────────────────────────────── */
 .header {
     max-width: 56rem;
-    margin-bottom: clamp(2.5rem, 6vh, 4rem);
+    margin-bottom: clamp(var(--space-5), 6vh, var(--space-8));
 }
 
 .kicker {
-    margin: 0 0 1rem;
-    font-size: 0.74rem;
+    margin: 0 0 var(--space-2);
+    font-size: var(--fs-small);
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -35,28 +35,29 @@
 }
 
 .title {
-    margin: 0 0 1.5rem;
+    margin: 0 0 var(--space-3);
     font-family: var(--font-heading);
-    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    font-size: var(--fs-title);
     font-weight: 400;
-    line-height: 1.05;
-    letter-spacing: -0.025em;
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-title);
     color: var(--white);
 }
 
 .lede {
     margin: 0;
-    max-width: 54ch;
-    font-size: clamp(1rem, 1.25vw, 1.12rem);
-    line-height: 1.68;
+    max-width: var(--measure-read);
+    font-size: var(--fs-lede);
+    line-height: var(--lh-prose);
+    letter-spacing: var(--ls-lede);
     color: var(--mist-200);
 }
 
 /* ── The chart ───────────────────────────────────────────────────────────── */
 .chart {
     position: relative;
-    margin-bottom: clamp(3rem, 8vh, 5.5rem);
-    padding: clamp(1.5rem, 3vh, 2.5rem) 0 0;
+    margin-bottom: clamp(var(--space-6), 8vh, 5.5rem);
+    padding: clamp(var(--space-3), 3vh, var(--space-5)) 0 0;
 }
 
 .chartScene {
@@ -99,7 +100,7 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: var(--space-05);
 }
 
 .trackRow {
@@ -110,9 +111,9 @@
     display: grid;
     grid-template-columns: clamp(7rem, 22%, 14rem) minmax(0, 1fr);
     align-items: center;
-    gap: 1.25rem;
+    gap: var(--space-2);
     width: 100%;
-    padding: 0.4rem 0;
+    padding: var(--space-1) 0;
     background: none;
     border: 0;
     text-align: left;
@@ -131,8 +132,8 @@
    and both were being cut mid-word — a truncated employer name is the one
    thing a career chart cannot afford to get wrong. */
 .trackCompany {
-    font-size: 0.8rem;
-    line-height: 1.25;
+    font-size: var(--fs-small);
+    line-height: var(--lh-caption);
     color: var(--mist-400);
     transition: color var(--motion-fast) var(--motion-ease-standard);
     text-wrap: balance;
@@ -150,33 +151,46 @@
     border-bottom: 1px solid rgb(255 255 255 / 0.05);
 }
 
+/* The bar's geometry — left and width are the role's real span, written inline
+   from the same numbers the axis is drawn from. It carries the year readout as
+   a child, so the bar's own paint lives on ::before: scaling the element itself
+   would scale the label with it. */
 .trackBar {
     position: absolute;
-    top: 0.35rem;
+    top: var(--space-05);
     height: 0.55rem;
-    border-radius: 2px;
-    background: rgb(244 246 250 / 0.22);
-    transition:
-        background var(--motion-fast) var(--motion-ease-standard),
-        height var(--motion-fast) var(--motion-ease-standard),
-        top var(--motion-fast) var(--motion-ease-standard);
 }
 
-.trackButton[data-active] .trackBar,
-.trackButton:hover .trackBar {
+.trackBar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 2px;
+    background: rgb(244 246 250 / 0.22);
+    /* The bar thickens about its own centre line. Animating `height` and `top`
+       would ask the browser to lay the row out again on every frame of a hover;
+       a scale about the centre is the same picture drawn on the compositor. */
+    transform-origin: center;
+    transition:
+        background var(--motion-fast) var(--motion-ease-standard),
+        transform var(--motion-fast) var(--motion-ease-standard);
+}
+
+.trackButton[data-active] .trackBar::before,
+.trackButton:hover .trackBar::before {
     background: var(--white);
-    top: 0.2rem;
-    height: 0.85rem;
+    /* 0.55rem → 0.85rem, centre held: 0.85 / 0.55 = 1.5455. */
+    transform: scaleY(1.5455);
 }
 
 .trackYears {
     position: absolute;
-    left: calc(100% + 0.6rem);
+    left: calc(100% + var(--space-1));
     top: 50%;
     transform: translateY(-50%);
     font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.02em;
+    font-size: var(--fs-caption);
+    letter-spacing: var(--ls-small);
     color: var(--ink-300);
     white-space: nowrap;
     transition: color var(--motion-fast) var(--motion-ease-standard);
@@ -191,8 +205,8 @@
     z-index: 1;
     height: 1.5rem;
     /* Aligns with .trackLine, which starts after the company column. */
-    margin-left: calc(min(12rem, max(7rem, 20%)) + 1.25rem);
-    margin-top: 0.5rem;
+    margin-left: calc(min(12rem, max(var(--space-14), 20%)) + var(--space-2));
+    margin-top: var(--space-1);
 }
 
 .axisTick {
@@ -200,8 +214,8 @@
     top: 0;
     transform: translateX(-50%);
     font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.06em;
+    font-size: var(--fs-caption);
+    letter-spacing: var(--ls-caption);
     color: var(--ink-300);
 }
 
@@ -216,7 +230,7 @@
 
 .role {
     border-top: 1px solid var(--token-border-default);
-    padding: clamp(1.25rem, 2.5vh, 1.75rem) 0;
+    padding: clamp(var(--space-2), 2.5vh, var(--space-3)) 0;
 }
 
 .role:last-child {
@@ -231,7 +245,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto 1.5rem;
     align-items: baseline;
-    gap: 1.5rem;
+    gap: var(--space-3);
     width: 100%;
     padding: 0;
     background: none;
@@ -247,12 +261,29 @@
     outline-offset: 4px;
 }
 
+/* Hover. The row itself stays exactly where it is — eight of these stacked, and
+   any movement reads as the list breathing — so the pointer is answered by the
+   two quiet marks instead: the chevron opens up a fraction and comes to white,
+   and the dates step out of the non-text grey. */
+.roleToggle:hover .roleChevron {
+    transform: scale(1.12);
+}
+
+.roleToggle:hover .roleChevron::before,
+.roleToggle:hover .roleChevron::after {
+    background: var(--white);
+}
+
+.roleToggle:hover .roleDates {
+    color: var(--mist-400);
+}
+
 .roleTitle {
     font-family: var(--font-heading);
-    font-size: clamp(1.05rem, 1.6vw, 1.4rem);
+    font-size: var(--fs-h3);
     font-weight: 400;
-    line-height: 1.25;
-    letter-spacing: -0.015em;
+    line-height: var(--lh-snug);
+    letter-spacing: var(--ls-h3);
     color: var(--white);
 }
 
@@ -260,18 +291,18 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0.2rem;
+    gap: var(--space-05);
     text-align: right;
 }
 
 .roleCompany {
-    font-size: 0.88rem;
+    font-size: var(--fs-body);
     color: var(--mist-200);
 }
 
 .roleDates {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--fs-caption);
     letter-spacing: 0.02em;
     color: var(--ink-300);
     white-space: nowrap;
@@ -282,6 +313,7 @@
     width: 1rem;
     height: 1rem;
     align-self: center;
+    transition: transform var(--motion-fast) var(--motion-ease-standard);
 }
 
 .roleChevron::before,
@@ -315,28 +347,28 @@
     display: flex;
     align-items: baseline;
     flex-wrap: wrap;
-    gap: 0.6rem;
-    margin: 1rem 0 0;
+    gap: var(--space-1);
+    margin: var(--space-2) 0 0;
 }
 
 .roleHeadlineValue {
     font-family: var(--font-heading);
-    font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+    font-size: var(--fs-h2);
     font-weight: 400;
-    line-height: 1;
-    letter-spacing: -0.02em;
+    line-height: var(--lh-heading);
+    letter-spacing: var(--ls-h2);
     color: var(--white);
     font-variant-numeric: tabular-nums;
 }
 
 .roleHeadlineLabel {
-    font-size: 0.88rem;
-    line-height: 1.5;
+    font-size: var(--fs-body);
+    line-height: var(--lh-prose);
     color: var(--mist-400);
 }
 
 .roleBody {
-    padding-top: 1.1rem;
+    padding-top: var(--space-2);
 }
 
 .bullets {
@@ -345,15 +377,15 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
-    max-width: 74ch;
+    gap: var(--space-2);
+    max-width: var(--measure-read);
 }
 
 .bullets li {
     position: relative;
-    padding-left: 1.25rem;
-    font-size: clamp(0.94rem, 1.05vw, 1rem);
-    line-height: 1.68;
+    padding-left: var(--space-2);
+    font-size: var(--fs-body);
+    line-height: var(--lh-prose);
     color: var(--mist-200);
 }
 
@@ -371,11 +403,11 @@
 @media (max-width: 760px) {
     .trackButton {
         grid-template-columns: minmax(5.5rem, 7rem) minmax(0, 1fr);
-        gap: 0.75rem;
+        gap: var(--space-1);
     }
 
     .trackCompany {
-        font-size: 0.74rem;
+        font-size: var(--fs-small);
     }
 
     .trackYears {
@@ -383,24 +415,24 @@
     }
 
     .axis {
-        margin-left: calc(7rem + 0.75rem);
+        margin-left: calc(var(--space-14) + var(--space-1));
     }
 
     .roleToggle {
         grid-template-columns: minmax(0, 1fr) 1.25rem;
-        gap: 0.75rem;
+        gap: var(--space-1);
     }
 
     .roleMeta {
         grid-column: 1 / -1;
         align-items: flex-start;
         text-align: left;
-        margin-top: 0.4rem;
+        margin-top: var(--space-1);
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .trackBar,
+    .trackBar::before,
     .trackCompany,
     .trackYears,
     .roleChevron::before,
@@ -413,17 +445,17 @@
    reading size, because the words are the content there rather than a number. */
 .roleHeadlineOpen {
     font-family: var(--font-heading);
-    font-size: clamp(1rem, 1.4vw, 1.15rem);
-    line-height: 1.2;
+    font-size: var(--fs-lede);
+    line-height: var(--lh-prose);
 }
 
 /* The one printed explanation of the open brackets below the chart. */
 .openNote {
     position: relative;
     z-index: 1;
-    margin: 1.5rem 0 0;
-    max-width: 62ch;
-    font-size: 0.85rem;
-    line-height: 1.6;
+    margin: var(--space-3) 0 0;
+    max-width: var(--measure-read);
+    font-size: var(--fs-body);
+    line-height: var(--lh-prose);
     color: var(--mist-400);
 }

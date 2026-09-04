@@ -14,7 +14,7 @@
     gap: 0.3em;
     /* The arms are positioned against the line box, not the glyph box, so the
        bracket encloses the value's full height rather than its ink. */
-    line-height: 1;
+    line-height: var(--lh-tight);
 }
 
 .arm {

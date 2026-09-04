@@ -113,6 +113,11 @@
     --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
     --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
     --motion-ease-chrome: cubic-bezier(0.22, 0.61, 0.36, 1);
+    /* --motion-cine-long, --stagger-tight and --motion-ease-exit are the far
+       edges of the system and currently have no call site: nothing on this page
+       runs for 1160ms, staggers as tightly as 60ms, or exits (nothing here is
+       dismissed). They are declared because a band with only its middle named
+       is not a band, and because design-tokens.json publishes the same set. */
 
     /* ── The 8-point spatial scale (R-48 / SC-29.1) ─────────────────────────
        Declared here so a module author reaches for a step instead of typing a
@@ -121,7 +126,7 @@
        over them. --space-05 (4px) is the only sub-8 step and is permitted only
        for an intra-component hairline gap (a dot beside its label); it is not
        a layout step. --space-20 is the shipped section rhythm. */
-    --space-0: 0;
+    --space-0: 0;        /*   0px — the anchor; a zero is still written `0` */
     --space-05: 0.25rem;  /*   4px */
     --space-1: 0.5rem;    /*   8px */
     --space-2: 1rem;      /*  16px */
@@ -155,7 +160,12 @@
     --fs-title: clamp(2rem, 4.2vw, 3.4rem);
     --fs-display: clamp(2.4rem, 5.6vw, 4rem);
     --fs-name: clamp(3rem, 8.2vw, 7.5rem);
-    /* Tracking, per step. */
+    /* Tracking, per step. The label steps (micro/caption/small) also carry
+       deliberate all-caps tracking of 0.12em-0.2em at some call sites: that is
+       legibility work on uppercase runs, a different job from optical
+       compensation, and it is left as authored. --ls-body is 0 and --ls-micro
+       is currently unclaimed for that reason; both are declared so the ladder
+       reads whole, and design-tokens.json publishes the same ten. */
     --ls-micro: 0.08em;
     --ls-caption: 0.06em;
     --ls-small: 0.02em;
@@ -206,6 +216,21 @@
     --hair: inset 0 0 0 1px rgb(58 61 70 / 0.70);
     /* Volumetric key light (steel #AEB6C2 = 174 182 194, saturation 0.103). */
     --keylight: radial-gradient(60% 52% at 50% 36%, rgb(174 182 194 / 0.12), transparent 70%);
+
+    /* ── Interaction states (R-49 / SC-30.1 / R-90) ─────────────────────────
+       The six-state library of lock §5.3, reduced to the five values every
+       state is built from. They live here rather than in the modules because a
+       press that is 1px in one section and 3px in another is not a system, and
+       because a ring whose width is written out at nine call sites is a ring
+       that will eventually be nine different rings. */
+    --state-ring-width: 2px;
+    --state-ring-color: var(--white);
+    --state-ring-offset: 3px;
+    /* A press is felt, not watched: one pixel down, half a percent in. */
+    --press-settle: translateY(1px) scale(0.995);
+    /* Disabled spends ink, never opacity — a fade takes the contrast with it. */
+    --state-disabled-ink: var(--ink-300);
+    --state-disabled-edge: var(--ink-500);
 }
 
 @property --angle {
@@ -597,6 +622,176 @@ footer {
     outline-offset: 3px;
 }
 
+/* ══ The interaction-state library (R-49 / R-90 / SC-30.1 — lock §5.3) ══════
+   Six states, defined once, carried by every control on the site: rest, hover,
+   focus-visible, active, disabled and loading. Two rules govern all of them.
+
+   First, no state is left to the user agent. SC-30.1 is "zero browser-default
+   states", and a control that falls through to Chromium's `outline-style: auto`
+   has not been designed — it has been forgotten. Second, no state depends on
+   colour alone: each moves a colour and a geometry, so it survives a reader who
+   cannot separate two greys.
+
+   The rules below sit at element-and-attribute specificity. A section module
+   may refine a state for its own material — the Vitrine's plates light rather
+   than lift — but it may not delete one, and this stylesheet declares
+   `outline: none` nowhere, for nothing to inherit. */
+
+/* ── Focus ─────────────────────────────────────────────────────────────────
+   One ring for every control the site owns: 2px of --white at 18.20:1 on the
+   ink, held 3px clear so it reads as a ring around the element rather than a
+   border on it. `:focus-visible`, never `:focus` — a pointer click leaves
+   nothing behind. */
+:where(a[href], button, input, select, textarea, summary,
+       [tabindex]:not([tabindex="-1"])) {
+    /* The ring's colour is declared at rest as well as on focus, where
+       `outline-style: none` means nothing is painted. `outline-color` is one of
+       the properties Tailwind's `transition-colors` animates, so a control that
+       transitions its colours would otherwise fade its focus ring up from
+       `currentColor` over 150ms — and on the clone's selected persona chip,
+       whose text is near-black on white, that fade starts at 1.02:1. A focus
+       indicator that arrives late, or arrives invisible, is one a keyboard
+       reader moving at speed never sees. Declared at rest, it has nothing to
+       animate from. */
+    outline-color: var(--state-ring-color);
+}
+
+:where(a[href], button, input, select, textarea, summary,
+       [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline-width: var(--state-ring-width);
+    outline-style: solid;
+    outline-color: var(--state-ring-color);
+    outline-offset: var(--state-ring-offset);
+}
+
+/* ── Cursor ────────────────────────────────────────────────────────────────
+   Three states and nothing between them. `default` is the `* { cursor: auto }`
+   reset near the top of this file: the text cursor over text, the arrow over
+   everything else. `interactive` is here — every element a reader can activate
+   says so before they press it, which is what the site was not doing at all.
+   `dragging` belongs to the one surface that is dragged rather than clicked and
+   is declared beside it, in Vitrine.module.css. */
+a[href],
+button,
+summary,
+[tabindex]:not([tabindex="-1"]) {
+    cursor: pointer;
+}
+
+input:not([type="button"]):not([type="submit"]):not([type="reset"]),
+textarea {
+    cursor: text;
+}
+
+/* ── Pressed ───────────────────────────────────────────────────────────────
+   The control settles one pixel into the page and gives back half a percent of
+   its size: enough to read as a press, small enough that nothing around it
+   reflows. It eases in over --motion-fast and releases instantly, which is what
+   a key does. Text links are exempt and handled in their own modules — a
+   transform smears type, so they darken and close their underline instead. */
+:where(button, summary, [tabindex]:not([tabindex="-1"])):active,
+.logo:active,
+.nav-cv:active,
+.skip-link:active,
+.sw-toast__reload:active {
+    transform: var(--press-settle);
+    transition: transform var(--motion-fast) var(--motion-ease-exit);
+}
+
+/* The overlay links are positioned by framer-motion, which writes `transform`
+   as an inline style; a CSS press there would never be seen. They acknowledge
+   the press by coming back to full white and closing their underline as the
+   navigation commits. */
+.nav-link:active {
+    color: var(--white);
+    text-decoration: underline;
+    text-underline-offset: 0.12em;
+}
+
+/* ── Disabled ──────────────────────────────────────────────────────────────
+   Never a fade. Dropping a control to 30% opacity takes its contrast down with
+   it, and a control that cannot be read is worse than one that cannot be
+   pressed. Full opacity is kept and the ink is spent instead: --ink-300 on the
+   ink measures 4.03:1, which 1.4.3 exempts for a disabled control and which is
+   still legible. The control stops being a pointer target and says so in the
+   cursor; the `disabled` attribute, not a class, is what carries the fact to a
+   screen reader. */
+:where(button, input, select, textarea, fieldset):disabled {
+    opacity: 1;
+    color: var(--state-disabled-ink);
+    border-color: var(--state-disabled-edge);
+    background-color: transparent;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ── Loading ───────────────────────────────────────────────────────────────
+   No spinner and no label swap: the words stay exactly where they were and a
+   1px rule traverses the bottom edge of the surface that is waiting, so the
+   reader is told what is happening in language and shown that it is still
+   happening in motion. `aria-busy` on the region carries the same fact to a
+   screen reader. Under reduced motion the rule stops travelling and holds at
+   40% — still present, still announced. */
+.state-loading-rule {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    height: 1px;
+    background: var(--card-border);
+}
+
+.state-loading-rule::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 40%;
+    background: var(--mist-400);
+    animation: stateLoadingTraverse var(--motion-cine) var(--motion-ease-standard) infinite;
+}
+
+@keyframes stateLoadingTraverse {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(250%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .state-loading-rule::after {
+        animation: none;
+        transform: none;
+    }
+}
+
+/* ── The chrome's own hover states ─────────────────────────────────────────
+   The wordmark and the menu toggle are the first two controls a reader meets
+   and were the only two that answered a pointer with nothing at all. The
+   wordmark dims and its drawn underline recedes with it; the toggle dims and
+   its bars tuck in from the right, which is the gesture the menu is about to
+   complete. */
+.logo-underline {
+    transition: opacity var(--motion-fast) var(--motion-ease-standard);
+}
+
+.logo:hover {
+    color: var(--mist-200);
+}
+
+.logo:hover .logo-underline {
+    opacity: 0.6;
+}
+
+.menu-toggle:hover {
+    color: var(--mist-200);
+}
+
+.menu-toggle:hover .menu-toggle__bar {
+    width: 18px;
+}
+
 /* Dual-pillar CTAs (NN-1): two co-equal, outlined actions — visually distinct
    from the single filled contact pill, monochrome (achromatic tokens only). */
 
@@ -725,13 +920,39 @@ footer {
 
 /* Responsive */
 
+/* ── Reduced motion: a parallel score, not a kill switch ──────────────────
+   R-46 asks for "a parallel reduced-motion choreography that stays memorable",
+   and what stood here instead was `animation-duration: 0.001ms !important` on
+   every element on the page — twice. That is not a choreography, it is an
+   amputation: it crushes the colour fades that tell a reader a control
+   responded, alongside the parallax that might actually make them queasy, and
+   leaves an interface that reads as broken rather than as calm.
+
+   What is actually contraindicated is APPARENT MOTION — things that travel,
+   grow, spin or loop. Colour and opacity do none of that and carry most of the
+   interface's feedback, so they keep their transitions.
+
+   Three rules, and no duration is crushed:
+     1. Smooth scrolling off. It is the one genuine vestibular trigger here.
+     2. Loops run once and settle, so nothing pulses or breathes indefinitely.
+     3. Transitions are restricted to the properties that cannot move anything.
+        Restricting `transition-property` is what stops a transform or a size
+        from animating — without touching how long a colour takes to arrive. */
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
+    html {
         scroll-behavior: auto !important;
-        cursor: auto !important;
+    }
+
+    *,
+    *::before,
+    *::after {
+        /* Ambient loops resolve to their end state instead of repeating. */
+        animation-iteration-count: 1 !important;
+        /* Nothing translates, scales or rotates; colour, opacity and depth cues
+           still transition at their authored speed. */
+        transition-property: opacity, color, background-color, border-color,
+            box-shadow, fill, stroke, text-decoration-color, outline-color,
+            backdrop-filter !important;
     }
 }
 
@@ -803,15 +1024,9 @@ footer {
 /* --- GitHub feed status + footer terminal trigger (React runtime) --- */
 
 /* --- Global reduced-motion guard --- */
+/* The section-level reduced-motion treatments live with their sections; the
+   universal policy above is the only global one. */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
     /* Floating-panel depth parallax (Systems A/B/C) collapses to a flat, static
        surface — no perspective tilt, magnetic offset, or pulsing scan node. */
     /* Real-3D WebGL enhancement layers are not mounted under reduced motion; hide

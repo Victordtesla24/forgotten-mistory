@@ -1,0 +1,63 @@
+{
+  "generatedAt": "2026-09-03T22:18:06.190Z",
+  "results": [
+    {
+      "id": "TC-RM-BLANKET",
+      "name": "No universal-selector duration override inside prefers-reduced-motion",
+      "pass": false,
+      "count": 4,
+      "failures": [
+        "app/globals.css:714 — *, *::before, *::after { animation-duration: 0.001ms !important }",
+        "app/globals.css:714 — *, *::before, *::after { transition-duration: 0.001ms !important }",
+        "app/globals.css:792 — *, *::before, *::after { animation-duration: 0.01ms !important }",
+        "app/globals.css:792 — *, *::before, *::after { transition-duration: 0.01ms !important }"
+      ],
+      "detail": "A global duration crush amputates motion instead of re-scoring it (R-46, lock §4.3)."
+    },
+    {
+      "id": "TC-RM-SCORE",
+      "name": "Every section re-scores its entrance under reduced motion",
+      "pass": false,
+      "count": 5,
+      "failures": [
+        "components/sections/About/About.module.css — no reduced-motion entrance: the section has no named opacity keyframe inside @media (prefers-reduced-motion: reduce). R-46 requires a parallel choreography in every section.",
+        "components/sections/Experience/Experience.module.css — no reduced-motion entrance: the section has no named opacity keyframe inside @media (prefers-reduced-motion: reduce). R-46 requires a parallel choreography in every section.",
+        "components/sections/Skills/Skills.module.css — no reduced-motion entrance: the section has no named opacity keyframe inside @media (prefers-reduced-motion: reduce). R-46 requires a parallel choreography in every section.",
+        "components/sections/Vitrine/Vitrine.module.css — no reduced-motion entrance: the section has no named opacity keyframe inside @media (prefers-reduced-motion: reduce). R-46 requires a parallel choreography in every section.",
+        "components/sections/Listen/Listen.module.css — no reduced-motion entrance: the section has no named opacity keyframe inside @media (prefers-reduced-motion: reduce). R-46 requires a parallel choreography in every section."
+      ],
+      "detail": "Lock §4.3 instrument 1: generalise Hero.module.css:389-398 to all six sections."
+    },
+    {
+      "id": "TC-RM-SAFE",
+      "name": "Reduced-motion keyframes animate no position or size",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "Nothing may animate position or size under reduced motion (R-46, vestibular safety)."
+    },
+    {
+      "id": "TC-RM-AFFORD",
+      "name": "Colour affordances survive under reduced motion",
+      "pass": false,
+      "count": 14,
+      "failures": [
+        "components/sections/About/About.module.css:240 — .instrumentCaption { transition: none } removes the color transition it declares outside the block",
+        "components/sections/About/About.module.css:240 — .item { transition: none } removes the border-color transition it declares outside the block",
+        "components/sections/About/About.module.css:240 — .index { transition: none } removes the color transition it declares outside the block",
+        "components/sections/About/Compass.module.css:179 — .sector { transition: none } removes the fill, stroke transition it declares outside the block",
+        "components/sections/About/Compass.module.css:179 — .numeral { transition: none } removes the fill transition it declares outside the block",
+        "components/sections/Experience/Experience.module.css:403 — .trackBar { transition: none } removes the background transition it declares outside the block",
+        "components/sections/Experience/Experience.module.css:403 — .trackCompany { transition: none } removes the color transition it declares outside the block",
+        "components/sections/Experience/Experience.module.css:403 — .trackYears { transition: none } removes the color transition it declares outside the block",
+        "components/sections/Skills/Skills.module.css:363 — .filter { transition: none } removes the color, border-color, background transition it declares outside the block",
+        "components/sections/Vitrine/Vitrine.module.css:342 — .plate { transition: none } removes the border-color transition it declares outside the block",
+        "components/site/Footer.module.css:126 — .link { transition: none } removes the color, border-color transition it declares outside the block",
+        "components/site/Footer.module.css:126 — .sha { transition: none } removes the color, border-color transition it declares outside the block",
+        "app/globals.css:286 — nav { transition: none } removes the background, border-color transition it declares outside the block",
+        "app/globals.css:887 — nav { transition: none } removes the background, border-color transition it declares outside the block"
+      ],
+      "detail": "Lock §4.3 instrument 3: a colour or weight transition causes no vestibular response and is the primary affordance signal; killing it makes the interface feel broken rather than calm."
+    }
+  ]
+}

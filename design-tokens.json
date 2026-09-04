@@ -2,43 +2,273 @@
   "$schema": "https://design-tokens.github.io/community-group/format/",
   "metadata": {
     "name": "Forgotten Mistory — Monochrome System",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "grid": "8pt",
-    "fontFamily": "Inter Variable",
-    "note": "Monochromatic by mandate (docs/overhaul/SPEC.md §3.1). No hue; depth via light, blur, motion. The ONLY accent is a luminous cool-white."
+    "fontFamily": "Source Serif 4 (display) · Inter (text) · IBM Plex Mono (data)",
+    "note": "Monochromatic by mandate (docs/overhaul/SPEC.md §3.1). No hue; depth via light, blur, motion. The ONLY accent is a luminous cool-white, and gold appears only where a figure has a checkable source. Spacing lists the true 8-point steps declared as --space-* in app/globals.css; the single sub-grid value --space-05 (0.25rem / 4px) is a hairline exemption for an intra-component gap and is deliberately not a step of the grid. Typography mirrors the --fs-* modular scale (1.20 opening to 1.25) declared in the same :root block; sizes are the clamp maxima, leading and tracking are the values bound to the step."
   },
   "spacing": {
-    "0": { "value": "0rem" },
-    "1": { "value": "0.25rem" },
-    "2": { "value": "0.5rem" },
-    "3": { "value": "0.75rem" },
-    "4": { "value": "1rem" },
-    "6": { "value": "1.5rem" },
-    "8": { "value": "2rem" },
-    "10": { "value": "2.5rem" },
-    "12": { "value": "3rem" },
-    "16": { "value": "4rem" }
+    "0": {
+      "value": "0rem",
+      "comment": "--space-0"
+    },
+    "1": {
+      "value": "0.5rem",
+      "comment": "--space-1 · 8px"
+    },
+    "2": {
+      "value": "1rem",
+      "comment": "--space-2 · 16px"
+    },
+    "3": {
+      "value": "1.5rem",
+      "comment": "--space-3 · 24px"
+    },
+    "4": {
+      "value": "2rem",
+      "comment": "--space-4 · 32px"
+    },
+    "5": {
+      "value": "2.5rem",
+      "comment": "--space-5 · 40px"
+    },
+    "6": {
+      "value": "3rem",
+      "comment": "--space-6 · 48px"
+    },
+    "8": {
+      "value": "4rem",
+      "comment": "--space-8 · 64px"
+    },
+    "10": {
+      "value": "5rem",
+      "comment": "--space-10 · 80px"
+    },
+    "14": {
+      "value": "7rem",
+      "comment": "--space-14 · 112px"
+    },
+    "20": {
+      "value": "10rem",
+      "comment": "--space-20 · 160px — the shipped section rhythm"
+    }
   },
   "typography": {
-    "display": { "value": { "fontFamily": "Inter Variable", "fontWeight": 700, "fontSize": "3.5rem", "lineHeight": 1.05, "letterSpacing": "-0.02em" } },
-    "h1": { "value": { "fontFamily": "Inter Variable", "fontWeight": 700, "fontSize": "2.5rem", "lineHeight": 1.1, "letterSpacing": "-0.015em" } },
-    "h2": { "value": { "fontFamily": "Inter Variable", "fontWeight": 600, "fontSize": "2rem", "lineHeight": 1.2 } },
-    "body": { "value": { "fontFamily": "Inter Variable", "fontWeight": 400, "fontSize": "1rem", "lineHeight": 1.6 } },
-    "caption": { "value": { "fontFamily": "Inter Variable", "fontWeight": 500, "fontSize": "0.875rem", "lineHeight": 1.4 } }
+    "micro": {
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": 500,
+        "fontSize": "0.6875rem",
+        "lineHeight": 1.5,
+        "letterSpacing": "0.08em"
+      },
+      "comment": "--fs-micro — step -3 · smallest label"
+    },
+    "caption": {
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": 500,
+        "fontSize": "0.75rem",
+        "lineHeight": 1.5,
+        "letterSpacing": "0.06em"
+      },
+      "comment": "--fs-caption — step -2 · kickers and axis labels"
+    },
+    "small": {
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": 500,
+        "fontSize": "0.875rem",
+        "lineHeight": 1.55,
+        "letterSpacing": "0.02em"
+      },
+      "comment": "--fs-small — step -1 · secondary and UI text"
+    },
+    "body": {
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": 400,
+        "fontSize": "1rem",
+        "lineHeight": 1.68,
+        "letterSpacing": "0"
+      },
+      "comment": "--fs-body — step 0 · running prose"
+    },
+    "lede": {
+      "value": {
+        "fontFamily": "Inter",
+        "fontWeight": 400,
+        "fontSize": "1.125rem",
+        "lineHeight": 1.68,
+        "letterSpacing": "-0.005em"
+      },
+      "comment": "--fs-lede — step 1 · section lede"
+    },
+    "h3": {
+      "value": {
+        "fontFamily": "Source Serif 4",
+        "fontWeight": 400,
+        "fontSize": "1.4375rem",
+        "lineHeight": 1.35,
+        "letterSpacing": "-0.012em"
+      },
+      "comment": "--fs-h3 — step 2"
+    },
+    "h2": {
+      "value": {
+        "fontFamily": "Source Serif 4",
+        "fontWeight": 400,
+        "fontSize": "1.875rem",
+        "lineHeight": 1.2,
+        "letterSpacing": "-0.018em"
+      },
+      "comment": "--fs-h2 — step 3"
+    },
+    "title": {
+      "value": {
+        "fontFamily": "Source Serif 4",
+        "fontWeight": 400,
+        "fontSize": "3.4rem",
+        "lineHeight": 1.05,
+        "letterSpacing": "-0.025em"
+      },
+      "comment": "--fs-title — step 4 · the six section titles"
+    },
+    "display": {
+      "value": {
+        "fontFamily": "Source Serif 4",
+        "fontWeight": 400,
+        "fontSize": "4rem",
+        "lineHeight": 1.05,
+        "letterSpacing": "-0.03em"
+      },
+      "comment": "--fs-display — step 5"
+    },
+    "name": {
+      "value": {
+        "fontFamily": "Source Serif 4",
+        "fontWeight": 400,
+        "fontSize": "7.5rem",
+        "lineHeight": 1.05,
+        "letterSpacing": "-0.035em"
+      },
+      "comment": "--fs-name — step 6 · the hero name"
+    },
+    "data": {
+      "value": {
+        "fontFamily": "IBM Plex Mono",
+        "fontWeight": 400,
+        "fontSize": "0.75rem",
+        "lineHeight": 1.5,
+        "letterSpacing": "0.08em"
+      },
+      "comment": "--fs-caption + --ls-caption + 0.02em — the data instrument: provenance, dates, axis readouts, never a voice"
+    }
+  },
+  "measure": {
+    "read": {
+      "value": "clamp(58ch, 64ch + 0.4vw, 72ch)",
+      "comment": "--measure-read · running prose, 55-75ch at every breakpoint"
+    },
+    "display": {
+      "value": "26ch",
+      "comment": "--measure-display · a display-size single sentence, not a paragraph"
+    }
+  },
+  "motion": {
+    "fast": {
+      "value": "200ms",
+      "comment": "--motion-fast · interface band 200-450ms"
+    },
+    "base": {
+      "value": "320ms",
+      "comment": "--motion-base · interface"
+    },
+    "emphatic": {
+      "value": "440ms",
+      "comment": "--motion-emphatic · interface ceiling"
+    },
+    "cine-in": {
+      "value": "720ms",
+      "comment": "--motion-cine-in · cinematic band 600-1200ms"
+    },
+    "cine": {
+      "value": "900ms",
+      "comment": "--motion-cine · cinematic"
+    },
+    "cine-long": {
+      "value": "1160ms",
+      "comment": "--motion-cine-long · cinematic ceiling"
+    },
+    "stagger-tight": {
+      "value": "60ms",
+      "comment": "--stagger-tight · interval between entrances, not a duration"
+    },
+    "stagger": {
+      "value": "90ms",
+      "comment": "--stagger"
+    },
+    "stagger-loose": {
+      "value": "140ms",
+      "comment": "--stagger-loose"
+    },
+    "ease-standard": {
+      "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+      "comment": "--motion-ease-standard"
+    },
+    "ease-emphasized": {
+      "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "comment": "--motion-ease-emphasized"
+    },
+    "ease-exit": {
+      "value": "cubic-bezier(0.4, 0, 1, 1)",
+      "comment": "--motion-ease-exit"
+    },
+    "ease-chrome": {
+      "value": "cubic-bezier(0.22, 0.61, 0.36, 1)",
+      "comment": "--motion-ease-chrome"
+    }
   },
   "colors": {
     "ink": {
-      "900": { "value": "#0A0B0D", "comment": "page background, near-black" },
-      "800": { "value": "#121317", "comment": "raised surface" },
-      "700": { "value": "#1B1D23", "comment": "card / panel" },
-      "500": { "value": "#3A3D46", "comment": "border / hairline" }
+      "900": {
+        "value": "#0A0B0D",
+        "comment": "page background, near-black"
+      },
+      "800": {
+        "value": "#121317",
+        "comment": "raised surface"
+      },
+      "700": {
+        "value": "#1B1D23",
+        "comment": "card / panel"
+      },
+      "500": {
+        "value": "#3A3D46",
+        "comment": "border / hairline"
+      }
     },
     "mist": {
-      "400": { "value": "#8A8F9A", "comment": "secondary text" },
-      "200": { "value": "#C9CDD6", "comment": "body text" }
+      "400": {
+        "value": "#8A8F9A",
+        "comment": "secondary text"
+      },
+      "200": {
+        "value": "#C9CDD6",
+        "comment": "body text"
+      }
     },
-    "white": { "value": "#F4F6FA", "comment": "primary text / highlight" },
-    "accent": { "value": "#E8EBF0", "comment": "THE only accent — luminous cool-white" },
-    "steel": { "value": "#AEB6C2", "comment": "low-saturation glow tint, never large fills" }
+    "white": {
+      "value": "#F4F6FA",
+      "comment": "primary text / highlight"
+    },
+    "accent": {
+      "value": "#E8EBF0",
+      "comment": "THE only accent — luminous cool-white"
+    },
+    "steel": {
+      "value": "#AEB6C2",
+      "comment": "low-saturation glow tint, never large fills"
+    }
   }
 }

@@ -1196,7 +1196,7 @@ const MiniVicBot = () => {
           role="dialog"
           aria-modal="false"
           aria-label="MiniVic assistant panel"
-          className="mb-4 flex h-[min(37rem,calc(100dvh-7rem))] w-[22rem] md:w-[27rem] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded border border-white/12 bg-[rgb(10_11_13/0.97)] backdrop-blur-sm shadow-[0_24px_60px_rgba(0,0,0,0.55)] animate-in slide-in-from-bottom-4 duration-200 focus:outline-none"
+          className="mb-4 flex h-[min(37rem,calc(100dvh-7rem))] w-[22rem] md:w-[27rem] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded border border-white/12 bg-[rgb(10_11_13/0.97)] backdrop-blur-sm shadow-[0_24px_60px_rgba(0,0,0,0.55)] animate-in slide-in-from-bottom-4 duration-200"
         >
           <div className="relative h-40 w-full shrink-0 overflow-hidden border-b border-white/10 bg-neutral-950">
             <video
@@ -1239,9 +1239,14 @@ const MiniVicBot = () => {
             </div>
             <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-3 py-2.5">
               <div className="flex items-center gap-2 rounded-full border border-white/15 bg-black/45 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-md">
+                {/* Luminous white, not gold. Gold on this site means exactly one
+                    thing — "this figure has a source you can go and check" — and a
+                    liveness dot is not a figure. Spending the accent on "switched
+                    on" is what turns a claim into a decoration. It brightens while
+                    speaking and sits back when idle, which is the whole signal. */}
                 <span
                   className="h-1.5 w-1.5 rounded-full"
-                  style={{ background: isSpeaking ? "var(--gold-light)" : "var(--gold)" }}
+                  style={{ background: isSpeaking ? "var(--white)" : "var(--mist-400)" }}
                 />
                 <span>MiniVic Live</span>
               </div>
@@ -1319,7 +1324,7 @@ const MiniVicBot = () => {
               <button
                 onClick={handleReplay}
                 disabled={!lastAudio || isMuted}
-                className="rounded-lg border border-white/12 p-2 text-white/70 transition-colors hover:border-white/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+                className="rounded-lg border border-white/12 p-2 text-white/70 transition-colors hover:border-white/30 hover:text-white"
                 aria-label="Replay last voice"
                 title="Replay"
               >
@@ -1355,7 +1360,14 @@ const MiniVicBot = () => {
             aria-live="polite"
             aria-relevant="additions text"
             aria-atomic="false"
+            aria-busy={isLoading}
           >
+            {messages.length === 0 && (
+              <p className="px-1 py-2 text-[12px] leading-relaxed text-white/55">
+                Nothing has been said yet. Ask about delivery, architecture or how a team
+                was run, and the answer arrives here.
+              </p>
+            )}
             {messages.map((msg) => (
               <motion.div
                 key={msg.id}
@@ -1392,7 +1404,7 @@ const MiniVicBot = () => {
                         <button
                           onClick={() => playAudio(msg.audio!)}
                           disabled={isMuted}
-                          className="rounded-md border border-neutral-300/40 bg-neutral-500/10 px-2 py-1 text-neutral-100 hover:bg-neutral-500/20 disabled:opacity-40"
+                          className="rounded-md border border-neutral-300/40 bg-neutral-500/10 px-2 py-1 text-neutral-100 hover:bg-neutral-500/20"
                         >
                           <div className="flex items-center gap-1">
                             <Play size={12} />
@@ -1409,7 +1421,7 @@ const MiniVicBot = () => {
                         <button
                           onClick={() => playGeneratedVideo(msg.videoUrl!)}
                           disabled={isMuted}
-                          className="rounded-md border border-zinc-300/40 bg-zinc-500/10 px-2 py-1 text-zinc-100 hover:bg-zinc-500/20 disabled:opacity-40"
+                          className="rounded-md border border-zinc-300/40 bg-zinc-500/10 px-2 py-1 text-zinc-100 hover:bg-zinc-500/20"
                         >
                           <div className="flex items-center gap-1">
                             <Video size={12} />
@@ -1432,14 +1444,10 @@ const MiniVicBot = () => {
               </motion.div>
             ))}
             {isLoading && (
-              <div className="flex justify-start">
-                <div className="rounded-2xl rounded-tl-none border border-zinc-300/20 bg-slate-950/90 p-3 shadow-[0_0_15px_rgba(201,205,214,0.15)]">
-                  <div className="flex gap-1.5">
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-300" style={{ animationDelay: "0ms" }} />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-300" style={{ animationDelay: "150ms" }} />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-zinc-300" style={{ animationDelay: "300ms" }} />
-                  </div>
-                  <div className="mt-1 animate-pulse text-[10px] text-zinc-100">Composing a reply…</div>
+              <div className="flex justify-start" data-testid="minivic-loading" aria-busy="true">
+                <div className="w-44 rounded border border-white/10 bg-white/[0.04] px-3 py-2.5">
+                  <div className="text-[11px] text-white/80">Composing a reply…</div>
+                  <span className="state-loading-rule mt-2" aria-hidden="true" />
                 </div>
               </div>
             )}
@@ -1451,7 +1459,7 @@ const MiniVicBot = () => {
                 key={item.label}
                 onClick={() => handleSend(item.prompt, item.mode)}
                 disabled={isLoading}
-                className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-[12px] text-white/80 transition-colors hover:border-white/30 hover:bg-white/10 hover:text-white disabled:opacity-40"
+                className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-[12px] text-white/80 transition-colors hover:border-white/30 hover:bg-white/10 hover:text-white"
               >
                 <Sparkles size={13} className="text-white/55" />
                 <span>{item.label}</span>
@@ -1472,10 +1480,10 @@ const MiniVicBot = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder={isListening ? "Listening..." : "Ask me anything…"}
-                className={`w-full rounded-xl border bg-white/[0.06] backdrop-blur-sm py-2.5 pl-4 pr-10 text-[13.5px] text-white placeholder-white/55 transition-all ${
+                className={`w-full rounded-xl border bg-white/[0.06] backdrop-blur-sm py-2.5 pl-4 pr-10 text-[13.5px] text-white placeholder-white/55 transition-colors ${
                   isListening
                     ? "border-white/40 bg-white/10 ring-1 ring-white/30"
-                    : "border-white/15 focus:border-white/45 focus:outline-none focus:ring-1 focus:ring-white/25"
+                    : "border-white/15 focus-visible:border-white/45 focus-visible:ring-1 focus-visible:ring-white/25"
                 }`}
               />
               <button
@@ -1510,7 +1518,7 @@ const MiniVicBot = () => {
               type="submit"
               disabled={!input.trim() || isLoading}
               aria-label="Send message"
-              className="rounded-xl bg-white p-2.5 text-neutral-950 shadow-sm transition-all hover:bg-white/90 disabled:cursor-not-allowed disabled:bg-white/25 disabled:text-white/50"
+              className="rounded-xl bg-white p-2.5 text-neutral-950 shadow-sm transition-all hover:bg-white/90"
             >
               <Send size={18} />
             </button>

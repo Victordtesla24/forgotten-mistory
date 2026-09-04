@@ -1,0 +1,116 @@
+{
+  "timestamp": "2026-09-03T23:23:06.718Z",
+  "result": "PASS",
+  "summary": {
+    "total": 13,
+    "passed": 13,
+    "failed": 0,
+    "assertionFailures": 0
+  },
+  "checks": [
+    {
+      "id": "TC-NFR-GRID",
+      "name": "R-48/SC-29.1 — every spacing literal resolves to the 8-point scale",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "0 non-conforming spacing value(s) across 11 module(s)"
+    },
+    {
+      "id": "TC-NFR-GRID-TOKENS",
+      "name": "R-48/SC-29.1 — the 8-point scale is declared as --space-* custom properties",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "12/12 --space-* tokens declared"
+    },
+    {
+      "id": "TC-NFR-MOTION-TOKENS",
+      "name": "R-46/SC-27.1 — every --motion-* duration token sits inside an R-46 band",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "0 out-of-band motion token(s)"
+    },
+    {
+      "id": "TC-NFR-MOTION-BAND",
+      "name": "R-46/SC-27.1 — every authored duration sits inside an R-46 band",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "0 out-of-band duration(s)"
+    },
+    {
+      "id": "TC-NFR-MOTION-EASE",
+      "name": "R-46/SC-27.1 — custom cubic-bezier only, no timing keywords",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "0 keyword-eased or unspecified timing function(s)"
+    },
+    {
+      "id": "TC-NFR-MOTION-TOKENISED",
+      "name": "R-46/SC-27.1 — every duration is a --motion-* token, never a literal",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "0 untokenised duration(s)"
+    },
+    {
+      "id": "TC-NFR-MOTION-COMPOSITOR",
+      "name": "R-46/SC-27.1 — transitions target compositor-safe properties only",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "0 layout-triggering transition(s)"
+    },
+    {
+      "id": "TC-NFR-SCALE-TOKENS",
+      "name": "R-47/SC-28.1 — a 10-step modular type scale is declared as --fs-* tokens",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "10/10 --fs-* tokens declared"
+    },
+    {
+      "id": "TC-NFR-SCALE-MEASURE-TOKENS",
+      "name": "R-47/SC-28.1 — the 55–75ch measure is declared as a token",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "2/2 measure tokens declared"
+    },
+    {
+      "id": "TC-NFR-SCALE-CONSUMED",
+      "name": "R-47/SC-28.1 — every module font-size consumes the scale, never a literal",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "0 literal font-size declaration(s), 0 distinct value(s)"
+    },
+    {
+      "id": "TC-NFR-SCALE-LEADING",
+      "name": "R-47/SC-28.1 — line-height is bound to the step, collapsing to six values",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "0 unbound line-height value(s)"
+    },
+    {
+      "id": "TC-NFR-SCALE-MEASURE",
+      "name": "R-47/SC-28.1 — every measure is a token, and prose sits in the 55–75ch band",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "0 literal ch measure(s)"
+    },
+    {
+      "id": "TC-NFR-TOKENS-FILE",
+      "name": "R-47/R-48 — design-tokens.json describes the shipped type and grid",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "0 stale token declaration(s)"
+    }
+  ]
+}

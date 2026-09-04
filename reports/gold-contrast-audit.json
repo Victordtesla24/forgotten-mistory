@@ -1,0 +1,90 @@
+{
+  "timestamp": "2026-09-03T21:16:10.960Z",
+  "result": "FAIL",
+  "tokens": {
+    "--gold": "#c9a84c",
+    "--ink-300": "#6E7178",
+    "--ink-500": "#3A3D46",
+    "--ink-900": "#0A0B0D",
+    "--mist-400": "#8A8F9A"
+  },
+  "summary": {
+    "total": 4,
+    "passed": 2,
+    "failed": 2,
+    "assertionFailures": 37
+  },
+  "checks": [
+    {
+      "id": "TC-GOLD-SEM",
+      "name": "R-21/R-110 — every gold declaration is on the sanctioned evidence inventory",
+      "pass": false,
+      "count": 4,
+      "failures": [
+        "app/globals.css:973  .sw-toast { border: 1px solid var(--gold-border) }  -> gold spent on something that is not a figure with a checkable source",
+        "app/globals.css:1008  .sw-toast__reload:hover { border-color: var(--gold) }  -> gold spent on something that is not a figure with a checkable source",
+        "app/globals.css:1009  .sw-toast__reload:hover { color: var(--gold-light) }  -> gold spent on something that is not a figure with a checkable source",
+        "components/MiniVicBot.tsx:1244  style={{ background: isSpeaking ? \"var(--gold-light)\" : \"var(--gold)\" }}  -> gold spent on something that is not a figure with a checkable source"
+      ],
+      "detail": "19 gold usage(s) found, 4 outside lock §1.3's inventory"
+    },
+    {
+      "id": "TC-GOLD-GROUND",
+      "name": "7.2 — gold text is never set on --ink-500",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "--gold on --ink-500 recomputes to 4.75:1 (AA only, banned for text under 24px); 0 rule(s) do it"
+    },
+    {
+      "id": "TC-AA-INK300",
+      "name": "7.2 — --ink-300 is a non-text token (4.03:1 fails 1.4.3 under 24px)",
+      "pass": false,
+      "count": 33,
+      "failures": [
+        "components/sections/About/About.module.css:68  .provenance { color: var(--ink-300) }  -> 4.03:1 at ~12.48px, needs 4.5:1",
+        "components/sections/About/About.module.css:85  .provenancePath { color: var(--ink-300) }  -> 4.03:1 at ~16px, needs 4.5:1",
+        "components/sections/About/About.module.css:163  .index { color: var(--ink-300) }  -> 4.03:1 at ~12.48px, needs 4.5:1",
+        "components/sections/About/About.module.css:195  .sideTag { color: var(--ink-300) }  -> 4.03:1 at ~10.56px, needs 4.5:1",
+        "components/sections/About/About.module.css:215  .evidence { color: var(--ink-300) }  -> 4.03:1 at ~11.52px, needs 4.5:1",
+        "components/sections/About/About.module.css:271  .keyRow { color: var(--ink-300) }  -> 4.03:1 at ~10.56px, needs 4.5:1",
+        "components/sections/Experience/Experience.module.css:180  .trackYears { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1",
+        "components/sections/Experience/Experience.module.css:205  .axisTick { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1",
+        "components/sections/Experience/Experience.module.css:276  .roleDates { color: var(--ink-300) }  -> 4.03:1 at ~11.52px, needs 4.5:1",
+        "components/sections/Hero/Hero.module.css:219  .ledgerSource { color: var(--ink-300) }  -> 4.03:1 at ~11.52px, needs 4.5:1",
+        "components/sections/Hero/Hero.module.css:230  .grading { color: var(--ink-300) }  -> 4.03:1 at ~11.2px, needs 4.5:1",
+        "components/sections/Listen/Avatar.module.css:196  .provenance dt { color: var(--ink-300) }  -> 4.03:1 at ~9.92px, needs 4.5:1",
+        "components/sections/Listen/Listen.module.css:159  .colophon { color: var(--ink-300) }  -> 4.03:1 at ~10.56px, needs 4.5:1",
+        "components/sections/Listen/Listen.module.css:243  .correctionDate { color: var(--ink-300) }  -> 4.03:1 at ~11.2px, needs 4.5:1",
+        "components/sections/Listen/Listen.module.css:261  .ledgerFoot { color: var(--ink-300) }  -> 4.03:1 at ~10.56px, needs 4.5:1",
+        "components/sections/Skills/Bench.module.css:147  .bandLabel { color: var(--ink-300) }  -> 4.03:1 at ~9.6px, needs 4.5:1",
+        "components/sections/Skills/Bench.module.css:203  .nodeCount { color: var(--ink-300) }  -> 4.03:1 at ~9.92px, needs 4.5:1",
+        "components/sections/Skills/Bench.module.css:270  .readoutCaveat { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1",
+        "components/sections/Skills/Bench.module.css:277  .readoutRest { color: var(--ink-300) }  -> 4.03:1 at ~11.2px, needs 4.5:1",
+        "components/sections/Skills/Skills.module.css:117  .legendLabel { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1",
+        "components/sections/Skills/Skills.module.css:163  .count { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1",
+        "components/sections/Skills/Skills.module.css:183  .caption { color: var(--ink-300) }  -> 4.03:1 at ~12.8px, needs 4.5:1",
+        "components/sections/Skills/Skills.module.css:241  .caveat { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1",
+        "components/sections/Skills/Skills.module.css:279  .statusLabel { color: var(--ink-300) }  -> 4.03:1 at ~10.56px, needs 4.5:1",
+        "components/sections/Skills/Skills.module.css:296  .footer { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1",
+        "components/sections/Skills/Skills.module.css:354  .where::before { color: var(--ink-300) }  -> 4.03:1 at ~16px, needs 4.5:1",
+        "components/sections/Vitrine/Vitrine.module.css:131  .repo { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1",
+        "components/sections/Vitrine/Vitrine.module.css:181  .metric dt { color: var(--ink-300) }  -> 4.03:1 at ~9.92px, needs 4.5:1",
+        "components/sections/Vitrine/Vitrine.module.css:213  .limitsLabel { color: var(--ink-300) }  -> 4.03:1 at ~9.92px, needs 4.5:1",
+        "components/sections/Vitrine/Vitrine.module.css:310  .exclusion dd { color: var(--ink-300) }  -> 4.03:1 at ~13.12px, needs 4.5:1",
+        "components/sections/Vitrine/Vitrine.module.css:318  .stamp { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1",
+        "components/sections/Vitrine/Vitrine.module.css:355  .notDeployed { color: var(--ink-300) }  -> 4.03:1 at ~11.52px, needs 4.5:1",
+        "app/globals.css:1013  .sw-toast--dev { color: var(--ink-300) }  -> 4.03:1 at ~16px, needs 4.5:1"
+      ],
+      "detail": "--ink-300 on --ink-900 recomputes to 4.03:1; the lock's replacement --mist-400 is 6.07:1; 33 text declaration(s) still on --ink-300"
+    },
+    {
+      "id": "TC-GUARD-NEG",
+      "name": "negative corpus — every predicate above flags a deliberate violation",
+      "pass": true,
+      "count": 0,
+      "failures": [],
+      "detail": "0 predicate(s) failed to detect or over-fired on the synthetic corpus"
+    }
+  ]
+}

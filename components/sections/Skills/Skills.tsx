@@ -149,6 +149,16 @@ export default function Skills() {
             className={styles.tableWrap}
             style={floor ? { minHeight: `${Math.round(floor)}px` } : undefined}
           >
+          {/* A filter that matches nothing is still an answer, and a blank box
+              is not how to give it (lock §5.3). The line says what is absent
+              and why, inside the container that already holds the table's
+              measured height, so nothing below it moves. */}
+          {visible.length === 0 ? (
+            <p className={styles.empty} role="status">
+              No capability carries that status. The filter is working; there is nothing
+              under it to show.
+            </p>
+          ) : null}
           <table ref={tableRef} className={styles.table}>
             <caption className={styles.caption}>
               Capabilities, the evidence for each, and where that evidence was measured.

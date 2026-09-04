@@ -8,7 +8,7 @@
 
 .about {
     position: relative;
-    padding: clamp(5rem, 12vh, 9rem) var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
+    padding: clamp(var(--space-10), 12vh, 9rem) var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)));
     /* No background of its own: the page body supplies the ink, which keeps the
        section rhythm continuous with the hero above it. */
 }
@@ -24,12 +24,12 @@
 /* ── Header ──────────────────────────────────────────────────────────────── */
 .header {
     max-width: 58rem;
-    margin-bottom: clamp(3rem, 7vh, 5rem);
+    margin-bottom: clamp(var(--space-6), 7vh, var(--space-10));
 }
 
 .kicker {
-    margin: 0 0 1rem;
-    font-size: 0.74rem;
+    margin: 0 0 var(--space-2);
+    font-size: var(--fs-small);
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -37,20 +37,21 @@
 }
 
 .title {
-    margin: 0 0 clamp(1.5rem, 3vh, 2.2rem);
+    margin: 0 0 clamp(var(--space-3), 3vh, var(--space-4));
     font-family: var(--font-heading);
-    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    font-size: var(--fs-title);
     font-weight: 400;
-    line-height: 1.05;
-    letter-spacing: -0.025em;
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-title);
     color: var(--white);
 }
 
 .lede {
-    margin: 0 0 1.1rem;
-    max-width: 52ch;
-    font-size: clamp(1rem, 1.25vw, 1.12rem);
-    line-height: 1.68;
+    margin: 0 0 var(--space-2);
+    max-width: var(--measure-read);
+    font-size: var(--fs-lede);
+    line-height: var(--lh-prose);
+    letter-spacing: var(--ls-lede);
     color: var(--mist-200);
 }
 
@@ -62,9 +63,9 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 0.5rem;
-    margin: 1.75rem 0 0;
-    font-size: 0.78rem;
+    gap: var(--space-1);
+    margin: var(--space-3) 0 0;
+    font-size: var(--fs-small);
     color: var(--ink-300);
 }
 
@@ -80,6 +81,21 @@
     border-bottom-color: var(--card-border-hover);
 }
 
+/* Pressed. Type does not move; the ink comes back down from the hover's white
+   and the underline closes to solid. */
+.provenance a:active {
+    color: var(--mist-200);
+    border-bottom-color: var(--white);
+}
+
+/* The provenance link had no focus ring of its own — it inherited the site
+   library's, which is correct, but the citation sits on a rule and needs the
+   extra pixel of clearance to read as a ring rather than a second underline. */
+.provenance a:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 4px;
+}
+
 .provenancePath {
     font-family: var(--font-mono);
     color: var(--ink-300);
@@ -89,17 +105,17 @@
 .body {
     display: grid;
     grid-template-columns: minmax(0, 25rem) minmax(0, 1fr);
-    gap: clamp(2rem, 5vw, 5rem);
+    gap: clamp(var(--space-4), 5vw, var(--space-10));
     align-items: start;
 }
 
 .instrument {
     position: sticky;
-    top: clamp(6rem, 18vh, 10rem);
+    top: clamp(6rem, 18vh, var(--space-20));
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.25rem;
+    gap: var(--space-2);
 }
 
 .instrumentStage {
@@ -118,7 +134,7 @@
     margin: 0;
     min-height: 1.4em;
     font-family: var(--font-mono);
-    font-size: 0.74rem;
+    font-size: var(--fs-small);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--mist-400);
@@ -137,8 +153,8 @@
 .item {
     display: grid;
     grid-template-columns: 3rem minmax(0, 1fr);
-    gap: 1rem;
-    padding: clamp(1.25rem, 2.5vh, 1.75rem) 0;
+    gap: var(--space-2);
+    padding: clamp(var(--space-2), 2.5vh, var(--space-3)) 0;
     border-top: 1px solid var(--token-border-default);
     transition: border-color var(--motion-fast) var(--motion-ease-standard);
 }
@@ -158,8 +174,8 @@
 
 .index {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
-    line-height: 1.9;
+    font-size: var(--fs-small);
+    line-height: var(--lh-caption);
     color: var(--ink-300);
     font-variant-numeric: tabular-nums;
     transition: color var(--motion-fast) var(--motion-ease-standard);
@@ -177,40 +193,40 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 0.75rem;
-    margin: 0 0 0.55rem;
+    gap: var(--space-1);
+    margin: 0 0 var(--space-1);
     font-family: var(--font-heading);
-    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+    font-size: var(--fs-h3);
     font-weight: 400;
-    letter-spacing: -0.01em;
+    letter-spacing: var(--ls-h3);
     color: var(--white);
 }
 
 .sideTag {
     font-family: var(--font-mono);
-    font-size: 0.66rem;
+    font-size: var(--fs-caption);
     font-weight: 400;
-    letter-spacing: 0.06em;
+    letter-spacing: var(--ls-caption);
     text-transform: uppercase;
     color: var(--ink-300);
-    padding: 0.2rem 0.5rem;
+    padding: var(--space-05) var(--space-1);
     border: 1px solid var(--token-border-default);
     border-radius: 3px;
 }
 
 .answer {
-    margin: 0 0 0.6rem;
-    max-width: 60ch;
-    font-size: clamp(0.95rem, 1.1vw, 1.03rem);
-    line-height: 1.65;
+    margin: 0 0 var(--space-1);
+    max-width: var(--measure-read);
+    font-size: var(--fs-body);
+    line-height: var(--lh-prose);
     color: var(--mist-200);
 }
 
 .evidence {
     margin: 0;
     font-family: var(--font-mono);
-    font-size: 0.72rem;
-    line-height: 1.6;
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
     letter-spacing: 0.01em;
     color: var(--ink-300);
 }
@@ -219,7 +235,7 @@
 @media (max-width: 900px) {
     .body {
         grid-template-columns: 1fr;
-        gap: 2.5rem;
+        gap: var(--space-5);
     }
 
     .instrument {
@@ -232,7 +248,7 @@
 
     .item {
         grid-template-columns: 2.25rem minmax(0, 1fr);
-        gap: 0.75rem;
+        gap: var(--space-1);
     }
 }
 
@@ -251,11 +267,11 @@
 .key {
     display: flex;
     flex-direction: column;
-    gap: 0.55rem;
+    gap: var(--space-1);
     width: 100%;
     max-width: 24rem;
     margin: 0;
-    padding-top: 1.1rem;
+    padding-top: var(--space-2);
     border-top: 1px solid var(--token-border-default);
 }
 
@@ -263,10 +279,10 @@
     display: grid;
     grid-template-columns: 1.6rem minmax(0, 1fr);
     align-items: start;
-    gap: 0.7rem;
+    gap: var(--space-1);
     font-family: var(--font-mono);
-    font-size: 0.66rem;
-    line-height: 1.5;
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
     letter-spacing: 0.03em;
     color: var(--ink-300);
 }

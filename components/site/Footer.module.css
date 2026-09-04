@@ -46,6 +46,13 @@
   border-radius: 2px;
 }
 
+/* Pressed. The same text-link press the rest of the site makes: the ink comes
+   back down from the hover's white and the underline closes to solid. */
+.link:active {
+  color: var(--mist-200);
+  border-bottom-color: var(--white);
+}
+
 .sep {
   padding: 0 var(--space-1);
   color: var(--ink-500);

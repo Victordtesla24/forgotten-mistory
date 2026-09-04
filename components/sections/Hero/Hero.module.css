@@ -18,7 +18,7 @@
     min-height: 100svh;
     /* The top padding never drops below the fixed nav's height plus a little
        air: at 1280x720 the bar was crossing the hero's first line. */
-    padding: max(clamp(6rem, 14vh, 10rem), calc(var(--nav-height) + 1.5rem))
+    padding: max(clamp(6rem, 14vh, var(--space-20)), calc(var(--nav-height) + var(--space-3)))
         var(--page-gutter, clamp(1.5rem, 5vw, 5rem)) clamp(4rem, 10vh, 7rem);
     overflow: hidden;
 }
@@ -29,47 +29,44 @@
    a tighter scale rather than a scrollbar. */
 @media (max-height: 860px) {
     .hero {
-        padding-top: max(clamp(4rem, 9vh, 6rem), calc(var(--nav-height) + 0.75rem));
-        padding-bottom: clamp(1.25rem, 3vh, 2rem);
+        padding-top: max(clamp(var(--space-8), 9vh, 6rem), calc(var(--nav-height) + var(--space-1)));
+        padding-bottom: clamp(var(--space-2), 3vh, var(--space-4));
     }
 
     .name {
-        font-size: clamp(2.4rem, 5.6vw, 4rem);
+        font-size: var(--fs-display);
+        letter-spacing: var(--ls-display);
     }
 
     .eyebrow {
-        margin-bottom: 0.7rem;
-    }
-
-    .name {
-        line-height: 0.92;
+        margin-bottom: var(--space-1);
     }
 
     .role {
-        margin-top: 0.6rem;
-        font-size: 1.05rem;
+        margin-top: var(--space-1);
+        font-size: var(--fs-h3);
     }
 
     .statement {
-        margin-top: 0.85rem;
-        font-size: 0.98rem;
-        line-height: 1.5;
+        margin-top: var(--space-2);
+        font-size: var(--fs-body);
+        line-height: var(--lh-prose);
     }
 
     .ledger {
-        margin-top: 1.1rem;
+        margin-top: var(--space-2);
     }
 
     .ledgerItem {
-        padding-top: 0.7rem;
+        padding-top: var(--space-1);
     }
 
     .actions {
-        margin-top: 1rem;
+        margin-top: var(--space-2);
     }
 
     .availability {
-        margin-top: 0.85rem;
+        margin-top: var(--space-2);
     }
 }
 
@@ -101,8 +98,8 @@
 .ledgerRow,
 .actions,
 .availability {
-    animation: heroRise 900ms var(--motion-ease-emphasized) both;
-    animation-delay: calc(var(--step, 0) * 90ms + 120ms);
+    animation: heroRise var(--motion-cine) var(--motion-ease-emphasized) both;
+    animation-delay: calc(var(--step, 0) * var(--stagger) + 120ms);
 }
 
 @keyframes heroRise {
@@ -120,9 +117,9 @@
 .eyebrow {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    margin: 0 0 clamp(1.5rem, 4vh, 2.5rem);
-    font-size: 0.78rem;
+    gap: var(--space-1);
+    margin: 0 0 clamp(var(--space-3), 4vh, var(--space-5));
+    font-size: var(--fs-small);
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -140,26 +137,27 @@
 .name {
     margin: 0;
     font-family: var(--font-heading);
-    font-size: clamp(3rem, 8.2vw, 7.5rem);
+    font-size: var(--fs-name);
     font-weight: 400;
-    line-height: 0.94;
-    letter-spacing: -0.035em;
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-name);
     color: var(--white);
 }
 
 .role {
-    margin: clamp(1rem, 2.4vh, 1.6rem) 0 0;
-    font-size: clamp(1rem, 1.55vw, 1.35rem);
+    margin: clamp(var(--space-2), 2.4vh, var(--space-3)) 0 0;
+    font-size: var(--fs-h3);
     font-weight: 400;
     letter-spacing: 0.01em;
     color: var(--mist-200);
 }
 
 .statement {
-    margin: clamp(1.4rem, 3vh, 2.2rem) 0 0;
-    max-width: 46ch;
-    font-size: clamp(1rem, 1.35vw, 1.18rem);
-    line-height: 1.62;
+    margin: clamp(var(--space-3), 3vh, var(--space-4)) 0 0;
+    max-width: var(--measure-read);
+    font-size: var(--fs-lede);
+    line-height: var(--lh-prose);
+    letter-spacing: var(--ls-lede);
     color: var(--mist-400);
 }
 
@@ -171,16 +169,16 @@
 .ledgerRow {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 15rem);
-    gap: clamp(1.5rem, 4vw, 3.5rem);
+    gap: clamp(var(--space-3), 4vw, 3.5rem);
     align-items: end;
-    margin: clamp(2.5rem, 6vh, 4rem) 0 0;
+    margin: clamp(var(--space-5), 6vh, var(--space-8)) 0 0;
     max-width: 72rem;
 }
 
 .ledger {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(1.5rem, 3vw, 3rem);
+    gap: clamp(var(--space-3), 3vw, var(--space-6));
     margin: 0;
     padding: 0;
     list-style: none;
@@ -190,31 +188,31 @@
 .ledgerItem {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
-    padding-top: 1rem;
+    gap: var(--space-05);
+    padding-top: var(--space-2);
     border-top: 1px solid var(--token-border-default);
 }
 
 .ledgerValue {
     font-family: var(--font-heading);
-    font-size: clamp(1.6rem, 2.9vw, 2.5rem);
+    font-size: var(--fs-h2);
     font-weight: 400;
-    line-height: 1;
-    letter-spacing: -0.02em;
+    line-height: var(--lh-heading);
+    letter-spacing: var(--ls-h2);
     color: var(--white);
     font-variant-numeric: tabular-nums;
 }
 
 .ledgerLabel {
-    font-size: 0.92rem;
-    line-height: 1.4;
+    font-size: var(--fs-body);
+    line-height: var(--lh-prose);
     color: var(--mist-200);
 }
 
 .ledgerSource {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
-    line-height: 1.5;
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
     letter-spacing: 0.02em;
     color: var(--ink-300);
 }
@@ -222,10 +220,10 @@
 /* The line that teaches the mark, beside the figures it grades. */
 .grading {
     margin: 0;
-    max-width: 58ch;
+    max-width: var(--measure-read);
     font-family: var(--font-mono);
-    font-size: 0.7rem;
-    line-height: 1.6;
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
     letter-spacing: 0.01em;
     color: var(--ink-300);
 }
@@ -234,8 +232,8 @@
 .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.9rem;
-    margin: clamp(2.5rem, 5vh, 3.5rem) 0 0;
+    gap: var(--space-2);
+    margin: clamp(var(--space-5), 5vh, 3.5rem) 0 0;
 }
 
 .primaryAction,
@@ -244,9 +242,9 @@
     align-items: center;
     justify-content: center;
     min-height: 48px;
-    padding: 0 1.6rem;
+    padding: 0 var(--space-3);
     border-radius: 999px;
-    font-size: 0.95rem;
+    font-size: var(--fs-body);
     font-weight: 500;
     letter-spacing: 0.01em;
     text-decoration: none;
@@ -285,14 +283,23 @@
     outline-offset: 3px;
 }
 
+/* Pressed. The two actions are anchors drawn as buttons, so they take the
+   library's settle (globals.css, --press-settle) rather than the text-link
+   treatment their element type would otherwise get. */
+.primaryAction:active,
+.secondaryAction:active {
+    transform: var(--press-settle);
+    transition: transform var(--motion-fast) var(--motion-ease-exit);
+}
+
 /* ── Availability + links ────────────────────────────────────────────────── */
 .availability {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.9rem;
-    margin: clamp(2rem, 4vh, 3rem) 0 0;
-    font-size: 0.85rem;
+    gap: var(--space-2);
+    margin: clamp(var(--space-4), 4vh, var(--space-6)) 0 0;
+    font-size: var(--fs-body);
     color: var(--mist-400);
 }
 
@@ -317,11 +324,19 @@
     border-bottom-color: var(--card-border-hover);
 }
 
+/* Pressed. A text link does not move — a transform on type smears it — so the
+   press is the ink coming back down from the hover's white while the underline
+   closes to solid. Colour and geometry, as every state on this site is. */
+.link:active {
+    color: var(--mist-200);
+    border-bottom-color: var(--white);
+}
+
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 1100px) {
     .ledgerRow {
         grid-template-columns: 1fr;
-        gap: 1.1rem;
+        gap: var(--space-2);
         align-items: start;
     }
 }
@@ -329,7 +344,7 @@
 @media (max-width: 860px) {
     .ledger {
         grid-template-columns: 1fr;
-        gap: 1.25rem;
+        gap: var(--space-2);
     }
 
     .statement {
@@ -343,43 +358,34 @@
    row instead: the figure on the left, its label and provenance beside it. */
 @media (max-width: 600px) {
     .ledger {
-        gap: 0.85rem;
+        gap: var(--space-2);
     }
 
     .ledgerItem {
         display: grid;
         grid-template-columns: minmax(4.5rem, auto) 1fr;
-        column-gap: 1rem;
+        column-gap: var(--space-2);
         align-items: baseline;
-        padding-top: 0.7rem;
+        padding-top: var(--space-1);
     }
 
     .ledgerValue {
         grid-row: span 2;
-        font-size: 1.5rem;
-    }
-
-    .ledgerLabel {
-        font-size: 0.88rem;
-    }
-
-    .ledgerSource {
-        font-size: 0.68rem;
     }
 
     .statement {
-        font-size: 0.98rem;
-        line-height: 1.55;
+        font-size: var(--fs-body);
+        line-height: var(--lh-prose);
     }
 
     .actions {
-        gap: 0.6rem;
+        gap: var(--space-1);
     }
 
     .primaryAction,
     .secondaryAction {
         flex: 1 1 auto;
-        padding: 0 1.1rem;
+        padding: 0 var(--space-2);
     }
 }
 

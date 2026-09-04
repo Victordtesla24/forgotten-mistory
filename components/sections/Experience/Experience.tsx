@@ -30,7 +30,7 @@ const DECADES = [2010, 2015, 2020, 2025];
  * gridlines are positioned across the whole chart, so they have to skip that
  * column by hand to line up with the bars they are there to measure.
  */
-const LABEL_COLUMN = 'clamp(7rem, 22%, 14rem) + 1.25rem';
+const LABEL_COLUMN = 'clamp(7rem, 22%, 14rem) + var(--space-2)';
 
 /**
  * Experience — sixteen years on one axis, then the detail.

@@ -10,7 +10,7 @@
 
 .vitrine {
     position: relative;
-    padding: clamp(5rem, 12vh, 9rem) 0;
+    padding: clamp(var(--space-10), 12vh, 9rem) 0;
     overflow: hidden;
 }
 
@@ -18,12 +18,12 @@
 .foot {
     max-width: 78rem;
     margin: 0 auto;
-    padding: 0 var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
+    padding: 0 var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)));
 }
 
 .kicker {
-    margin: 0 0 1rem;
-    font-size: 0.74rem;
+    margin: 0 0 var(--space-2);
+    font-size: var(--fs-small);
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -31,29 +31,30 @@
 }
 
 .title {
-    margin: 0 0 1.5rem;
+    margin: 0 0 var(--space-3);
     font-family: var(--font-heading);
-    font-size: clamp(2rem, 4.2vw, 3.4rem);
+    font-size: var(--fs-title);
     font-weight: 400;
-    line-height: 1.05;
-    letter-spacing: -0.025em;
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-title);
     color: var(--white);
 }
 
 .lede {
-    margin: 0 0 clamp(2.5rem, 6vh, 4rem);
-    max-width: 56ch;
-    font-size: clamp(1rem, 1.25vw, 1.12rem);
-    line-height: 1.68;
+    margin: 0 0 clamp(var(--space-5), 6vh, var(--space-8));
+    max-width: var(--measure-read);
+    font-size: var(--fs-lede);
+    line-height: var(--lh-prose);
+    letter-spacing: var(--ls-lede);
     color: var(--mist-200);
 }
 
 /* ── The rail ────────────────────────────────────────────────────────────── */
 .rail {
     display: flex;
-    gap: clamp(1rem, 2vw, 1.75rem);
+    gap: clamp(var(--space-2), 2vw, var(--space-3));
     margin: 0;
-    padding: 0.5rem var(--page-gutter, clamp(1.5rem, 5vw, 5rem)) 2rem;
+    padding: var(--space-1) var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10))) var(--space-4);
     list-style: none;
     overflow-x: auto;
     overflow-y: hidden;
@@ -80,8 +81,8 @@
     width: min(30rem, 82vw);
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
-    padding: clamp(1.5rem, 2.5vw, 2.25rem);
+    gap: var(--space-2);
+    padding: clamp(var(--space-3), 2.5vw, var(--space-4));
     border: 1px solid var(--token-border-default);
     border-radius: 4px;
     scroll-snap-align: center;
@@ -99,6 +100,21 @@
     outline-offset: 4px;
 }
 
+/* Hover. The pointer is a second, weaker source: it brings an unlit plate part
+   of the way up without taking the spot off the one the rail has lit. */
+.plate:not([data-lit]):hover {
+    opacity: 0.72;
+    border-color: var(--card-border-hover);
+}
+
+/* The lit plate is already at full brightness, so the pointer can only add
+   edge and depth to it — deliberately not a transform, because the press below
+   is the transform and the two must not cancel. */
+.plate[data-lit]:hover {
+    border-color: var(--mist-400);
+    box-shadow: var(--elev-1);
+}
+
 /* The lit plate: the gallery spot has tracked to it. The light is a gradient
    anchored to the top-left of the plate, the same direction the hero is lit
    from, so the whole page reads as having one light source. */
@@ -114,19 +130,19 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 1rem;
+    gap: var(--space-2);
 }
 
 .accession {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--fs-caption);
     letter-spacing: 0.14em;
     color: var(--mist-400);
 }
 
 .repo {
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: var(--fs-caption);
     letter-spacing: 0.02em;
     color: var(--ink-300);
     overflow: hidden;
@@ -137,23 +153,23 @@
 .plateTitle {
     margin: 0;
     font-family: var(--font-heading);
-    font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+    font-size: var(--fs-h2);
     font-weight: 400;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
+    line-height: var(--lh-heading);
+    letter-spacing: var(--ls-h2);
     color: var(--white);
 }
 
 .description {
     margin: 0;
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: var(--fs-body);
+    line-height: var(--lh-prose);
     color: var(--mist-200);
 }
 
 .drawingFrame {
-    margin: 0.4rem 0;
-    padding: 0.75rem 0;
+    margin: var(--space-1) 0;
+    padding: var(--space-1) 0;
     border-top: 1px solid rgb(255 255 255 / 0.05);
     border-bottom: 1px solid rgb(255 255 255 / 0.05);
 }
@@ -162,52 +178,56 @@
 .metrics {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.75rem;
+    gap: var(--space-1);
     margin: 0;
 }
 
 .metric {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: var(--space-05);
     min-width: 0;
 }
 
 .metric dt {
     font-family: var(--font-mono);
-    font-size: 0.62rem;
+    font-size: var(--fs-micro);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ink-300);
 }
 
+/* The caption step, not the small one: this is a mono figure in a three-column
+   band whose whole job is to rule across the rail on one line. A step up in size
+   wraps the longer values to a third line on some plates and not on others, and
+   the band stops being a band (TC-VIT-09). */
 .metric dd {
     margin: 0;
     font-family: var(--font-mono);
-    font-size: 0.76rem;
-    line-height: 1.4;
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
     color: var(--mist-200);
     overflow-wrap: anywhere;
     /* Two lines are reserved whether or not the value needs them. A plate whose
        stack fits on one line otherwise pulls its LIMITS block up by 17px, and
        the rail loses the horizontal line the metrics are supposed to draw
        across it. */
-    min-height: calc(2 * 1.4em);
+    min-height: calc(2 * var(--lh-label) * 1em);
 }
 
 /* ── Limits ──────────────────────────────────────────────────────────────── */
 .limits {
-    margin: 0.35rem 0 0;
-    font-size: 0.82rem;
-    line-height: 1.55;
+    margin: var(--space-05) 0 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-caption);
     color: var(--mist-400);
 }
 
 .limitsLabel {
     display: block;
-    margin-bottom: 0.25rem;
+    margin-bottom: var(--space-05);
     font-family: var(--font-mono);
-    font-size: 0.62rem;
+    font-size: var(--fs-micro);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink-300);
@@ -217,14 +237,14 @@
 .links {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: var(--space-2);
     margin-top: auto;
-    padding-top: 0.75rem;
+    padding-top: var(--space-1);
 }
 
 .source,
 .live {
-    font-size: 0.82rem;
+    font-size: var(--fs-small);
     text-decoration: none;
     color: var(--mist-200);
     border-bottom: 1px solid var(--card-border);
@@ -239,7 +259,7 @@
    deployment is a fact. */
 .live {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--fs-caption);
     color: var(--gold);
     border-bottom-color: var(--gold-veil);
 }
@@ -260,14 +280,28 @@
     outline-offset: 3px;
 }
 
+/* Pressed. The source link darkens and closes its underline. The live URL stays
+   gold through the press — gold is the claim that this deployment is running,
+   and a press is not an argument about that — so it darkens within the accent
+   instead of leaving it. */
+.source:active {
+    color: var(--mist-200);
+    border-bottom-color: var(--white);
+}
+
+.live:active {
+    color: var(--gold-dark);
+    border-bottom-color: var(--gold-light);
+}
+
 /* ── Foot: the exclusions ────────────────────────────────────────────────── */
 .foot {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 2rem;
-    margin-top: clamp(2.5rem, 5vh, 3.5rem);
+    gap: var(--space-4);
+    margin-top: clamp(var(--space-5), 5vh, 3.5rem);
 }
 
 .exclusions {
@@ -275,9 +309,9 @@
 }
 
 .exclusionsTitle {
-    margin: 0 0 1rem;
+    margin: 0 0 var(--space-2);
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: var(--fs-caption);
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -287,34 +321,34 @@
 .exclusionList {
     margin: 0;
     display: grid;
-    gap: 0.5rem;
+    gap: var(--space-1);
 }
 
 .exclusion {
     display: grid;
     grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
-    gap: 1rem;
+    gap: var(--space-2);
 }
 
 .exclusion dt {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--fs-caption);
     color: var(--mist-200);
     overflow-wrap: anywhere;
 }
 
 .exclusion dd {
     margin: 0;
-    font-size: 0.82rem;
-    line-height: 1.5;
+    font-size: var(--fs-small);
+    line-height: var(--lh-caption);
     color: var(--ink-300);
 }
 
 .stamp {
     margin: 0;
     font-family: var(--font-mono);
-    font-size: 0.68rem;
-    line-height: 1.7;
+    font-size: var(--fs-caption);
+    line-height: var(--lh-label);
     color: var(--ink-300);
     max-width: 22rem;
 }
@@ -331,7 +365,7 @@
 
     .exclusion {
         grid-template-columns: 1fr;
-        gap: 0.15rem;
+        gap: var(--space-05);
     }
 }
 
@@ -351,7 +385,7 @@
 /* The counterpart to a live URL, for the repositories that have none. */
 .notDeployed {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--fs-caption);
     color: var(--ink-300);
     align-self: center;
 }

@@ -139,6 +139,18 @@
     outline-offset: 4px;
 }
 
+/* Pressed. The ink comes down from the hover's white and the underline the
+   hover drew doubles in weight — the channel is being opened, and this is the
+   half-second where that is acknowledged. */
+.channel:active {
+    color: var(--mist-200);
+}
+
+.channel:active::after {
+    transform: scaleX(1) scaleY(2);
+    transform-origin: left bottom;
+}
+
 /* Not gold. Gold on this site means "this figure has a source you can check",
    and an offer of coffee is not evidence — an accent spent on warmth is an
    accent that stops meaning anything where it matters. */
