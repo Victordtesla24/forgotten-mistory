@@ -1,0 +1,307 @@
+{
+  "artifactPath": "/root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/B-understand/02-sections-hero-about-experience.json",
+  "run_id": "v9-20260904T2312Z",
+  "role": "Code explorer - sections Hero, About, Experience (REVIEW mode, read-only)",
+  "head_at_capture": "22d11a071925b04f52f0dac1157ed8e8ef4fce49",
+  "evidence_legend": "Verified = command run or file read in this session with the artifact cited; Inferred = derived from read source without executing it; Assumed = not checked.",
+  "sections": [
+    {
+      "id": "hero",
+      "files": [
+        "/root/forgotten-mistory/components/sections/Hero/Hero.tsx",
+        "/root/forgotten-mistory/components/sections/Hero/Hero.module.css",
+        "/root/forgotten-mistory/components/sections/Hero/HeroAtmosphere.tsx",
+        "/root/forgotten-mistory/components/sections/Hero/atmosphere.glsl.ts",
+        "/root/forgotten-mistory/app/data/portfolio/hero.ts",
+        "/root/forgotten-mistory/app/data/siteContent.ts (contact block, lines 492-504)",
+        "/root/forgotten-mistory/components/gl/Scene.tsx",
+        "/root/forgotten-mistory/components/gl/GLCanvas.tsx",
+        "/root/forgotten-mistory/components/gl/useGLCapability.ts",
+        "/root/forgotten-mistory/components/marks/Caliper.tsx",
+        "/root/forgotten-mistory/components/marks/Caliper.module.css",
+        "/root/forgotten-mistory/lib/palette.ts",
+        "/root/forgotten-mistory/components/site/HeroAvatar.tsx (UNMOUNTED - no importer)",
+        "/root/forgotten-mistory/lib/avatarContext.tsx (provider mounted in app/layout.tsx:159; consumer HeroAvatar unmounted)"
+      ],
+      "currentVisual": "[Verified by reading] TWO moving things today. (1) Backdrop: HeroAtmosphere.tsx - one drei <ScreenQuad> with a hand-written GLSL fragment program (atmosphere.glsl.ts): 4-octave value-noise fbm far + mid layers, a 3-octave ridged near layer stretched along a beam axis plus radial light shafts (both only when uQuality=1, i.e. canvas width >= 900 px, HeroAtmosphere.tsx:201), a sparse hash starfield, one key light high-left at (-0.62, 0.40), vignette, highlight shoulder, 1.8% grain; final colour is mix(uInk, uLight, luma) with uInk=PALETTE.ink900 #0A0B0D and uLight=PALETTE.white #F4F6FA so it is achromatic by construction. Pointer parallax (uPointer*0.055) and page-scroll parallax (uScroll*-0.12) are CPU-lerped (delta*1.6 / delta*1.4); entrance is uIntensity += delta*0.65 (~1.5 s fade). Cost per glsl comment: 16 noise lookups/pixel at up to 1.75x DPR; R3F+three arrive in a separate chunk (GLCanvas.tsx comment cites 132 kB kept off the critical path); dpr [1,1.75], antialias on, stencil off, powerPreference high-performance. Mount gates (Scene.tsx:91): WebGL probe 'supported' (software rasterisers such as SwiftShader rejected unless ?gl=force, useGLCapability.ts:179-187) AND prefers-reduced-motion not matched AND slot within rootMargin 50% AND window load + requestIdleCallback fired. (2) Type entrance: pure CSS `heroRise` (opacity 0->1, translateY 14px->0), duration --motion-cine 900 ms, easing --motion-ease-emphasized, delay = --step * --stagger(90 ms) + 120 ms across seven --step values 0..6 (Hero.module.css:94-115, Hero.tsx:39-98). Reduced-motion path: Scene never mounts (no canvas), backdrop is the CSS `.stage` gradient (radial rgb(27 29 35/0.85) at 22% 18% over linear ink-900 -> ink-800 -> ink-900, Hero.module.css:76-83); entrance swaps to `heroFade` 320 ms linear, delay --step*40 ms (Hero.module.css:395-416). No-WebGL path: identical to reduced-motion backdrop; every word is server-rendered. [Verified live 2026-09-04 via host CDP 127.0.0.1:9222 at 1440x900 on https://forgotten-mistory.web.app] #hero canvas count 0 (host Chrome is SwiftShader, expected), h1 class Hero_name__vovn8, .hero-title absent, .avatar-placeholder absent, 0 gold-painted elements in #hero.",
+      "story": "The front door argues 'evidence, not adjectives': name, role line, one 29-word statement (hero.ts:29), three self-reported figures (~92% / $5M+ / 10k+) each carrying a caliper grade (Caliper state='self-reported', Hero.tsx:68) and a provenance line (ATO / ANZ), a one-line key explaining the mark (Hero.tsx:80-82), two actions (See the evidence -> #experience; Download CV), availability + LinkedIn/GitHub/Email. The atmosphere shader is explicitly 'never the content' (Hero.tsx:25-27): it supplies one light source high-left shared with the rest of the page and encodes nothing about Vikram. So today the section's story (sixteen years, three graded figures) is carried entirely by type; the animation is mood, not narrative. Gold is absent by rule - all three figures are self-reported, so the only gold path (Caliper sourced -> --gold jaws, Caliper.module.css:71-84) never fires, and CT-10 (tests/content/content-check.spec.ts:201-204) fails the build if any hero figure is ever marked sourced. Verified: 0 gold elements in #hero on the live page.",
+      "colorTokens": [
+        "--ink-900 #0A0B0D (stage gradient ends; body ground)",
+        "--ink-800 #121317 (stage gradient mid)",
+        "rgb(27 29 35 / 0.85) = --ink-700 #1B1D23 at alpha (stage radial)",
+        "--white #F4F6FA (name, ledger values, location dot, primary action fill, focus rings)",
+        "--accent #E8EBF0 (primary action hover)",
+        "--mist-200 #C9CDD6 (role, ledger labels, links)",
+        "--mist-400 #8A8F9A (eyebrow, statement, availability; Caliper self-reported jaws)",
+        "--ink-300 #6E7178 (ledger source, grading note)",
+        "--token-border-default rgb(255 255 255 / 0.10) (ledger rules, link rule)",
+        "--card-border rgb(255 255 255 / 0.09) / --card-border-hover rgb(255 255 255 / 0.18) (secondary action, link underline)",
+        "rgb(244 246 250 / 0.08) (location dot halo) and rgb(244 246 250 / 0.04) (secondary hover)",
+        "PALETTE.ink900 #0A0B0D and PALETTE.white #F4F6FA (shader uniforms uInk/uLight)",
+        "--gold #c9a84c: NOT rendered in hero (Caliper 'sourced' path unused here)"
+      ],
+      "defects": [
+        {
+          "severity": "medium",
+          "file": "tests/perf/performance.spec.ts",
+          "line": 183,
+          "description": "PERF-06 targets a `.hero-title` class on the hero <h1> (regex at :183, locator `#hero .hero-title` at :191) that no source file renders; the h1 is `<h1 id=\"hero-name\" className={styles.name}>` (Hero.tsx:44), hashed to Hero_name__vovn8. `expect(heroTitleTag).toBeTruthy()` will fail, so PERF-06 is red irrespective of LCP. It also hardcodes http://localhost:5599 (:182,:189,:229) instead of baseURL.",
+          "evidence": "grep -rn hero-title app components => 0 hits; live CDP: heroTitleClassExists=false, heroH1Class='Hero_name__vovn8'; Hero.tsx:44.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "medium",
+          "file": "tests/overhaul/cinematic.spec.ts",
+          "line": 208,
+          "description": "TC-CINE-06 asserts the hero h1 animation-duration under reduced motion is < 20 ms, but Hero.module.css:403 authors `heroFade 320ms` and globals.css:941-957 no longer crushes durations (it only sets animation-iteration-count:1 and restricts transition-property). tests/a11y/reduced-motion-choreography.spec.ts:118-119,473-482 requires the same fade to be 150-600 ms. The two specs contradict each other; with the current CSS TC-CINE-06 fails.",
+          "evidence": "cinematic.spec.ts:196-208; Hero.module.css:395-405; globals.css:941-957; reduced-motion-choreography.spec.ts:118-123. Not executed (Playwright discovery is 0 tests per run manifest).",
+          "tag": "Inferred"
+        },
+        {
+          "severity": "low",
+          "file": "components/sections/Hero/HeroAtmosphere.tsx",
+          "line": 168,
+          "description": "The component's own prefers-reduced-motion handling (matchMedia listener :168-193, uTime=0 at :199, pointer reset :205-209) is unreachable: Scene.tsx:91 never mounts children while reduced motion is matched, and unmounts on change. Dead branch, harmless, but it suggests a reduced-motion shader path exists when none does.",
+          "evidence": "Scene.tsx:46-52,91; HeroAtmosphere.tsx:168-209.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "low",
+          "file": "components/sections/Hero/HeroAtmosphere.tsx",
+          "line": 130,
+          "description": "Doc comment says the scene renders inside `components/gl/GLStage.tsx`; that file does not exist (components/gl contains GLCanvas.tsx, Scene.tsx, useGLCapability.ts).",
+          "evidence": "ls components/gl (this session).",
+          "tag": "Verified"
+        },
+        {
+          "severity": "low",
+          "file": "components/sections/Hero/HeroAtmosphere.tsx",
+          "line": 184,
+          "description": "Scroll parallax normalises scrollY over the whole document (scrollHeight - innerHeight). The hero occupies roughly the first viewport of a six-section page, so uScroll.x stays under ~0.15 while the hero is visible and the shader's -0.12 multiplier (atmosphere.glsl.ts:347) yields <= ~0.02 units of drift - the 'deep-space parallax' committed in 22d11a0 is close to imperceptible in the only place it can be seen.",
+          "evidence": "HeroAtmosphere.tsx:182-186; atmosphere.glsl.ts:345-347; arithmetic only, not measured.",
+          "tag": "Inferred"
+        },
+        {
+          "severity": "info",
+          "file": "components/sections/Hero/HeroAtmosphere.tsx",
+          "line": 1,
+          "description": "Run manifest lists HeroAtmosphere.tsx and atmosphere.glsl.ts as dirty at HEAD c0ab52e; commit 22d11a0 'feat(hero): carry the v8 deep-space parallax into the v9 run' landed at 2026-09-04T23:16:06Z (manifest opened 23:15:04Z). Worktree now equals HEAD for both files; HEAD is 22d11a0 not c0ab52e.",
+          "evidence": "git status --short; git show HEAD:<file> | diff => IDENTICAL x2; git log -3 --date=iso.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "info",
+          "file": "components/sections/Hero/Hero.tsx",
+          "line": 34,
+          "description": "Against the owner's 'exactly ONE cinematic animation per section' target the hero owns two today (GLSL atmosphere + seven-step CSS rise) and would own three if HeroAvatar (framer entrance + looping video) is mounted as written.",
+          "evidence": "Hero.tsx:34-36,39-98; Hero.module.css:94-115; HeroAvatar.tsx:177-201,405-416.",
+          "tag": "Verified"
+        }
+      ],
+      "testsCovering": [
+        "tests/e2e/hero.spec.ts TC-HERO-01..11 (h1, positioning, 35-word budget, 3-figure ledger with ATO/ANZ provenance, actions, links, availability, one-viewport fold at 1.1x, above-the-fold elements, no preloader, <=1 canvas)",
+        "tests/content/content-check.spec.ts CT-01, CT-02, CT-03, CT-07 (#hero must not contain 'Vedic'), CT-10 (each ledger item has exactly one [data-state=self-reported] and zero [data-state=sourced]; 'self-reported' text present)",
+        "tests/overhaul/cinematic.spec.ts TC-CINE-01 (one aria-hidden backdrop div behind content), TC-CINE-02 (CTA click not intercepted), TC-CINE-04 (0 canvases + >200 chars per section under reduce), TC-CINE-05 (no clip-path on h1), TC-CINE-06 (heroFade, <20 ms - contradicts RM-1), TC-CINE-07 (h1 opacity >0.9 under reduce)",
+        "tests/a11y/accessibility.spec.ts A11Y-02 (axe on #hero), A11Y-12 (section accessible name)",
+        "tests/a11y/reduced-motion-choreography.spec.ts 'Hero keeps a parallel reduced-motion choreography' (RM-1..4 on '#hero [aria-label=\"Delivery record\"]' and '#hero h1') and RM-5 (no universal duration crush)",
+        "tests/monochrome/monochrome.spec.ts MONO-04 (achromatic-or-gold sweep of #hero), MONO-05 (gold renders somewhere in #hero/#skills/#vitrine/#listen)",
+        "tests/a11y/gold-contrast.spec.ts GC-03 (no gold text on --ink-500 in #hero)",
+        "tests/overhaul/render.spec.ts TC-RENDER-01/02/06 (?gl=force mounts HeroAtmosphere; no context loss / shader errors), TC-RENDER-07 (hero-section.png baseline, fallback path), TC-RENDER-09 (full scroll, no page error)",
+        "tests/visual/screenshots.spec.ts VIS-01 hero-full.png, VIS-06 viewport-top-1440x900.png (both under reducedMotion: reduce)",
+        "tests/perf/performance.spec.ts PERF-02 LCP<2.5 s, PERF-03 CLS<0.05, PERF-06 (stale .hero-title), PERF-07 (LCP entry not CANVAS)",
+        "tests/e2e/boot-failsafe.spec.ts, tests/overhaul/durability.spec.ts (CV link count 1), tests/overhaul/complete.spec.ts (no stub markers), tests/overhaul/telemetry-stability.spec.ts, tests/e2e/navigation.spec.ts, tests/e2e/clone-voice.spec.ts (all wait on #hero)",
+        "Baselines on disk: tests/baselines/visual/screenshots.spec.ts-snapshots/hero-full-chromium-{linux,darwin}.png, viewport-top-1440x900-chromium-{linux,darwin}.png; tests/baselines/overhaul/render.spec.ts-snapshots/hero-section-chromium-{linux,darwin}.png (darwin files documented as stale)"
+      ],
+      "cinematicOpportunity": "ONE visual, 'The ledger drawn': make the three graded figures the animation instead of the mood. On first paint the caliper jaws (white hairlines, Caliper.module.css geometry) close onto each value in sequence - ~92%, $5M+, 10k+ - while the provenance line prints beneath in mono grey, and the atmosphere's single high-left key light rakes once across the ledger as each pair of jaws closes (drive uIntensity/lightPos from the same --step clock so shader and type share one beat). The existing seven-step type rise is folded into that one sequence, so the hero owns one choreography, not two. Palette: black ground, white type and hairlines, grey provenance; gold NONE unless a figure is upgraded to `sourced` with a public methodology (CT-10 forbids it for these three; prime directive 3 forbids it anyway) - so the hero stays black/white by design and the gold budget is spent later on the page. Reduced motion: jaws pre-closed, opacity-only stagger at 320 ms / step*40 ms (already satisfies RM-1..3), no shader. No-WebGL: identical, because the caliper drawing is CSS in the DOM; the shader remains optional atmosphere or is retired. If the Owner instead chooses the hero video avatar as the hero's one moving thing, the atmosphere must go static and the type rise become a plain fade - a portrait video + a shader + a seven-step rise is three animations, and the portrait must be graded black-and-white (see sharedFindings for the twelve missing CSS classes, fold/LCP/baseline consequences and the tests that must be written first)."
+    },
+    {
+      "id": "about",
+      "files": [
+        "/root/forgotten-mistory/components/sections/About/About.tsx",
+        "/root/forgotten-mistory/components/sections/About/About.module.css",
+        "/root/forgotten-mistory/components/sections/About/Compass.tsx",
+        "/root/forgotten-mistory/components/sections/About/Compass.module.css",
+        "/root/forgotten-mistory/app/data/portfolio/about.ts",
+        "/root/forgotten-mistory/components/marks/Caliper.tsx",
+        "/root/forgotten-mistory/components/marks/Caliper.module.css"
+      ],
+      "currentVisual": "[Verified by reading] Inline SVG only - no WebGL, no Scene import, no framer, no shader (Compass.tsx:206-209 records the shader version was abandoned). The 'instrument face' (viewBox 0 0 100 100): 10 annular sectors (7 candidate sectors filled rgb(244 246 250/0.022) with three engraved arcs each; 3 role sectors filled with a 45-degree hatch pattern #compass-open and dashed stroke), 100 bezel ticks (every 10th major), 10 numerals that counter-rotate to stay upright, a hub radial gradient (white at 5.5% alpha), a hub ring, a fixed index caret + stem at twelve o'clock (fill --white, stroke --white), and a hub readout ('--'/'NO SCORES' at rest, '0N'/'ANSWERED' or 'FROM THE ROLE' when a dimension is active). Interaction: hovering or focusing a list item (About.tsx:86-97, tabIndex=0) sets active; the `.rose` group rotates by -36 deg * index via CSS `transition: transform var(--motion-cine-in) 720ms var(--motion-ease-emphasized)` (Compass.module.css:336-339); sector/numeral fill+opacity transition 320 ms; caption/index colour 200 ms. Layout: instrument column minmax(0,25rem) sticky at top clamp(6rem,18vh,10rem) beside the list on >900 px; static, centred, max-width 14rem on <=900 px. Entrance: none - neither About.module.css nor Compass.module.css declares a @keyframes. Reduced motion: About.module.css:255-261 and Compass.module.css:490-498 set `transition: none` on caption/item/index and rose/sector/numeral/index (rotation snaps, colour transitions also die); globals.css:946-956 additionally restricts transition-property page-wide. No-WebGL: identical (nothing depends on GL); TC-ABOUT-07 asserts 0 canvases and 'Ten axes - no scores'. Cost: ~140 SVG nodes, one compositor transform on hover, zero extra bundle. [Verified live via CDP] #about canvas 0; index caret fill rgb(244,246,250) = --white; 0 gold-painted elements.",
+      "story": "The ten dimensions Vikram's own job-fit engine (aether-job-career-agent, apps/api/app/routers/jobs.py) scores a candidate on, answered about himself with evidence but deliberately with NO scores (about.ts:66-70; TC-ABOUT-03 fails on any percentage/x-of-10/meter). The instrument enacts that refusal: a face with no needle and no magnitude, seven closed sectors for what the engine measures from the candidate, three open hatched sectors for what it measures from the role (same hatch as the open Caliper, so the mark is learned once). Turning the bezel to bring the read dimension to the index is a reading aid. The visual carries the argument correctly but not as a story: at rest it reads '--' / 'NO SCORES' and does nothing until hovered; on a phone (no hover, static, 14rem) the dial never turns unless an item receives focus; there is no entrance, no sequence and no scroll-driven state, so a reader who does not hover sees a static dial beside a list.",
+      "colorTokens": [
+        "--white #F4F6FA (title, names, active sector stroke/numeral, index caret + stem, hub readNumber, focus rings)",
+        "--steel #AEB6C2 (bezel, ticks, sector strokes, rules, numerals at rest, hub ring, key swatch border)",
+        "--mist-400 #8A8F9A (kicker, second lede, caption, hatch lines, readState, Caliper open colour)",
+        "--mist-200 #C9CDD6 (first lede, answers, provenance link)",
+        "--ink-300 #6E7178 (index numbers, side tag, evidence lines, key rows, provenance path)",
+        "--token-border-default rgb(255 255 255 / 0.10), --card-border / --card-border-hover (rules, links)",
+        "rgb(244 246 250 / 0.045) (instrumentStage pool), rgb(244 246 250 / 0.022 | 0.075) (sector rest/active fill), rgb(244 246 250 / 0.05) (key swatch answered)",
+        "rgb(138 143 154 / 0.34) = --mist-400 alpha (key swatch hatch); rgb(58 61 70 / 0.55) = --ink-500 alpha (Caliper open hatch)",
+        "SVG radialGradient stops: var(--white) at stopOpacity 0.055 -> 0",
+        "--gold: NOT rendered (index is --white by design; 3 role dimensions use Caliper state='open')"
+      ],
+      "defects": [
+        {
+          "severity": "medium",
+          "file": "components/sections/About/About.module.css",
+          "line": 255,
+          "description": "About has no entrance choreography at all (no @keyframes in About.module.css or Compass.module.css). tests/a11y/reduced-motion-choreography.spec.ts RM-1 (:455-501) requires, per section under prefers-reduced-motion, >=3 elements with an opacity keyframe entrance of 150-600 ms across >=3 distinct delays; About supplies zero, so the 'About keeps a parallel reduced-motion choreography' test fails on RM-1.",
+          "evidence": "grep -n '@keyframes' components/sections/About/*.css => none (About.module.css read in full, 314 lines; Compass.module.css 185 lines); spec lines 168-206, 455-501. Not executed.",
+          "tag": "Inferred"
+        },
+        {
+          "severity": "medium",
+          "file": "components/sections/About/Compass.module.css",
+          "line": 490,
+          "description": "Reduced motion kills the colour affordances RM-4 requires to survive. About.module.css:255-261 (`transition: none` on .instrumentCaption/.item/.index) and Compass.module.css:490-498 (on .rose/.sector/.numeral/.index) remove the colour/opacity transitions that the default mode declares at 200-320 ms (About.module.css:142,159,181; Compass.module.css:386-389,432-434,453). RM-4 (spec :570-592) fails when a default-mode colour transition drops below 150 ms under reduce. The site-wide policy at globals.css:941-957 already handles this correctly by restricting transition-property instead of zeroing durations; the module-level `transition: none` blocks are now counter to it.",
+          "evidence": "About.module.css:255-261; Compass.module.css:490-498; globals.css:923-957; reduced-motion-choreography.spec.ts:570-592. Not executed.",
+          "tag": "Inferred"
+        },
+        {
+          "severity": "low",
+          "file": "components/sections/About/Compass.tsx",
+          "line": 78,
+          "description": "Doc comments at :78 ('The index is the one gold mark') and :211 ('the one gold mark on the instrument') describe gold that the stylesheet deliberately does not paint - Compass.module.css:9-12 and :460-468 make the index --white and explain why (gold means sourced, not 'here'). On a site whose colour rule is gold-as-claim, a comment asserting gold where there is none will mislead the next implementer into 'restoring' it.",
+          "evidence": "Compass.tsx:78,211; Compass.module.css:9-12,460-468; live CDP compassIndexFill = rgb(244, 246, 250).",
+          "tag": "Verified"
+        },
+        {
+          "severity": "low",
+          "file": "tests/overhaul/render.spec.ts",
+          "line": 16,
+          "description": "render.spec.ts:16-17 and SCENE_SECTIONS (:46) list `Compass` in `#about` as a GLSL scene mounted through components/gl/Scene.tsx. About.tsx imports no Scene and Compass is inline SVG; TC-RENDER-01 tolerates the resulting 0 canvases via `continue` (:89) so it passes, but the inventory the test documents is wrong and TC-RENDER-02/06 spend 2 s x 2 settling a section that has no shader.",
+          "evidence": "About.tsx:1-9 imports (no Scene); Compass.tsx:206-209; render.spec.ts:15-17,46,86-95.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "low",
+          "file": "components/sections/About/About.module.css",
+          "line": 241,
+          "description": "At <=900 px `.instrument` is capped at max-width 14rem (224 px) and `.key` (width 100%, max-width none at :310-313) inherits that width, so the two-row mono legend at --fs-caption wraps inside a 224 px column beneath a 224 px dial. Cramped legend on phones; not screenshotted this session.",
+          "evidence": "About.module.css:235-253,267-276,310-314. No 390 px capture taken.",
+          "tag": "Assumed"
+        }
+      ],
+      "testsCovering": [
+        "tests/e2e/about.spec.ts TC-ABOUT-01 (ten names in engine order), 02 (answer >40 chars + evidence >10), 03 (no %, x/10, meter/progress; 'There are no scores below'), 04 (aether-job-career-agent link + jobs.py path), 05 (exactly 3 li[data-side=role]), 06 (focus sets data-active=true), 07 (0 canvas, 'Ten axes - no scores')",
+        "tests/content/content-check.spec.ts CT-05 (tenure regex, 'Melbourne, Victoria', 'Australian Taxation Office')",
+        "tests/overhaul/cinematic.spec.ts TC-CINE-04 (0 canvas + >200 chars under reduce), TC-CINE-07 (h2 opacity >0.9 under reduce)",
+        "tests/a11y/accessibility.spec.ts A11Y-03 (axe on #about), A11Y-12",
+        "tests/a11y/reduced-motion-choreography.spec.ts 'About keeps a parallel reduced-motion choreography' (RM-1..4 on '#about svg[role=\"img\"]' and '#about h2')",
+        "tests/monochrome/monochrome.spec.ts MONO-04; tests/a11y/gold-contrast.spec.ts GC-03",
+        "tests/overhaul/render.spec.ts TC-RENDER-01/02/06 (stale: treat #about as a scene section), TC-RENDER-09",
+        "tests/overhaul/complete.spec.ts (#about ol > li count 10, no stub markers); tests/e2e/navigation.spec.ts:122 (#about anchor)",
+        "tests/visual/screenshots.spec.ts VIS-02 about-section.png (reducedMotion: reduce) - baselines tests/baselines/visual/screenshots.spec.ts-snapshots/about-section-chromium-{linux,darwin}.png"
+      ],
+      "cinematicOpportunity": "ONE visual, 'The face wakes': a scroll-triggered sequence on the existing SVG (IntersectionObserver on `.instrumentStage`, once). Bezel ticks and hub ring fade in; the ten sectors light in engine order 01->10 on a 90 ms stagger, the seven candidate sectors filling white-grey and the three role sectors hatching in rather than filling; the rose then sweeps one full turn and settles on 01 with the hub reading '01 / ANSWERED'; from there the existing hover/focus indexing takes over. Add scroll-indexing: as the reader scrolls the list, the item nearest the viewport centre becomes `active` (About.tsx already owns the state), so the dial turns for phones, keyboard-less readers and screen-recorded demos - the instrument then narrates the list instead of waiting for a pointer. Palette: black ground, --white/--steel hairlines, grey; gold NONE (no dimension here is sourced; keep the index white - do not 'restore' the gold the stale comment describes). Reduced motion: the same sequence as an opacity-only stagger (satisfies RM-1..3; stroke-dashoffset drawing is banned under reduce by RM-3 so use opacity there), rose snaps to the active sector (already), and delete the `transition: none` blocks in About.module.css:255-261 / Compass.module.css:490-498 so colour transitions survive (RM-4) - globals.css:941-957 already removes transform from transition-property. No-WebGL: identical; it is SVG."
+    },
+    {
+      "id": "experience",
+      "files": [
+        "/root/forgotten-mistory/components/sections/Experience/Experience.tsx",
+        "/root/forgotten-mistory/components/sections/Experience/Experience.module.css",
+        "/root/forgotten-mistory/components/sections/Experience/CareerStrata.tsx",
+        "/root/forgotten-mistory/components/sections/Experience/strata.glsl.ts",
+        "/root/forgotten-mistory/app/data/portfolio/experience.ts",
+        "/root/forgotten-mistory/app/data/siteContent.ts (experience[] lines 74-169)",
+        "/root/forgotten-mistory/components/gl/Scene.tsx",
+        "/root/forgotten-mistory/components/gl/GLCanvas.tsx",
+        "/root/forgotten-mistory/components/gl/useGLCapability.ts",
+        "/root/forgotten-mistory/components/marks/Caliper.tsx",
+        "/root/forgotten-mistory/components/marks/Caliper.module.css"
+      ],
+      "currentVisual": "[Verified by reading] The data is DOM: eight `<button>` rows (Experience.tsx:94-126), each bar an absolutely positioned span with inline `left`/`width` percentages of one axis TIMELINE_START 2010 -> NOW 2026.67 (track(), :20-25; min width 0.6%), a mono year readout beside it, four decade gridlines placed by `calc(LABEL_COLUMN + (100% - LABEL_COLUMN) * fraction)` where LABEL_COLUMN = `clamp(7rem, 22%, 14rem) + var(--space-2)` (:33,:85-88), and an axis row 2010/2015/2020/2025/now (:136-149). Hover/focus: bar ::before scaleY(1.5455) + background -> --white at 200 ms; company/years colour 200 ms (Experience.module.css:164-201). Click: opens that role's accordion and smooth-scrolls to it (:105-111); accordion plus->minus chevron via transform scaleY 320 ms (:311-344); default open = ato. Behind the chart: CareerStrata.tsx - one ScreenQuad GLSL program (strata.glsl.ts) drawing three depth bands of horizontal noise-smeared lines, a horizon fade toward the heading, a four-edge dissolve so the canvas rectangle is invisible, a soft left key, 1.2% grain; alpha = uIntensity (fade 0.5/s) * 0.85; pointer parallax 0.02; uTime * 0.008 so it is nearly still; colours mix(PALETTE.ink900, PALETTE.white) - achromatic. The shader encodes nothing by design (strata.glsl.ts:2-15: an earlier 3D copy of the bars misaligned and read as a bug). Slot `.chartScene` inset -6% -2% 8%, pointer-events none, same Scene gates as the hero. Entrance: none (no @keyframes in Experience.module.css). Reduced motion: no canvas; Experience.module.css:434-442 `transition: none` on bar/company/years/chevron. No-WebGL: identical chart. [Verified live via CDP at 1440x900] #experience canvas 0; 0 gold-painted elements; axis/track/grid geometry measured (see defect 1).",
+      "story": "'Sixteen years, to scale': every bar is drawn to its real duration on one axis and encodes nothing else; the eight-year ANZ bar in the middle is the point of the picture (experience.ts:280; TC-EXP-02 asserts ANZ is the longest and 5-12x NAB). Three roles carry a self-reported headline figure in a caliper (~92%, -38% 'measured against a simulated budget', 10k+); five carry an open bracket 'no published figure' with the reason printed once under the chart (Experience.tsx:131-134,174-190). The DOM chart carries the story well and survives no-WebGL, reduced motion and screen readers; the strata shader carries no story at all - it is texture, and the section's one animation therefore says nothing. The story is undermined by one measured defect: the year labels do not sit under the gridlines and bars they label (32 px off at the left edge at 1440 px), so the reader invited to 'check the bars against the axis' finds the axis lying.",
+      "colorTokens": [
+        "--white #F4F6FA (title, role titles, headline values, active company, active/hover bar fill, focus rings, chevron hover)",
+        "--mist-200 #C9CDD6 (lede, role company, bullets, active years)",
+        "--mist-400 #8A8F9A (kicker, track company, headline label, open note, chevron rest, dates on hover; Caliper self-reported jaws and open colour)",
+        "--ink-300 #6E7178 (years readout, axis ticks, role dates, bullet dashes)",
+        "--token-border-default rgb(255 255 255 / 0.10) (role rules)",
+        "rgb(255 255 255 / 0.055) (gridLine), rgb(255 255 255 / 0.05) (trackLine baseline), rgb(244 246 250 / 0.22) (bar at rest)",
+        "rgb(58 61 70 / 0.55) = --ink-500 alpha (Caliper open hatch on five roles)",
+        "PALETTE.ink900 #0A0B0D / PALETTE.white #F4F6FA (strata uniforms)",
+        "--gold: NOT rendered (all headline figures are Caliper 'self-reported'; five are 'open')"
+      ],
+      "defects": [
+        {
+          "severity": "high",
+          "file": "components/sections/Experience/Experience.module.css",
+          "line": 208,
+          "description": "`.axis { margin-left: calc(min(12rem, max(var(--space-14), 20%)) + var(--space-2)) }` uses a different formula from the employer column the bars and gridlines are measured from - `.trackButton { grid-template-columns: clamp(7rem, 22%, 14rem) minmax(0,1fr) }` (:112) and LABEL_COLUMN in Experience.tsx:33. Measured live at 1440x900: axis left = 297 px, first track line / first gridline = 329 px; tick centres vs gridlines: 2010 297 vs 329 (32 px), 2015 609 vs 631 (22 px), 2020 921 vs 933 (12 px), 2025 1233 vs 1236 (3 px), 'now' 1337 = track right 1337. The axis is stretched over 1040 px while the bars span 1008 px, so every year label except 'now' is left of the line it labels - on a chart whose only claim is 'to scale, check it against the axis'. No test guards alignment (TC-EXP-02 checks widths, TC-EXP-03 checks text) and there is no visual baseline for #experience. Fix: `.axis { margin-left: calc(clamp(7rem, 22%, 14rem) + var(--space-2)) }` and, at <=760 px, match `minmax(5.5rem, 7rem) + var(--space-1)` (:404-407 vs :417-419 - those agree only when the column resolves to 7rem).",
+          "evidence": "Live CDP measurement 2026-09-04 (host Chrome 152, viewport 1440x900): axisLeft 297, trackLineLeft 329, gridLefts [329,631,933,1236], axisTicks 2010@297 2015@609 2020@921 2025@1233 now@1337, trackLineRight 1337. Live CSS /_next/static/css/919eb0e54054940c.css contains the identical `margin-left:calc(min(12rem, max(var(--space-14), 20%)) + var(--space-2))` and `grid-template-columns:clamp(7rem,22%,14rem)` strings as the tree (Experience.module.css:112,208).",
+          "tag": "Verified"
+        },
+        {
+          "severity": "medium",
+          "file": "components/sections/Experience/Experience.module.css",
+          "line": 434,
+          "description": "No entrance choreography (no @keyframes anywhere in Experience.module.css), so reduced-motion-choreography RM-1 (>=3 opacity-entrance elements, 150-600 ms, >=3 delays) fails for 'Experience'.",
+          "evidence": "Experience.module.css read in full (461 lines) - no @keyframes; spec :455-501. Not executed.",
+          "tag": "Inferred"
+        },
+        {
+          "severity": "medium",
+          "file": "components/sections/Experience/Experience.module.css",
+          "line": 434,
+          "description": "`@media (prefers-reduced-motion: reduce)` sets `transition: none` on .trackBar::before, .trackCompany, .trackYears and the chevron pseudo-elements (:434-442), killing the 200 ms colour transitions declared at :138, :175, :196 and :324 that RM-4 requires to survive under reduce. globals.css:941-957 already strips transform from transition-property page-wide, so the block removes only what should stay.",
+          "evidence": "Experience.module.css:134-201,319-325,434-442; globals.css:923-957; reduced-motion-choreography.spec.ts:570-592. Not executed.",
+          "tag": "Inferred"
+        },
+        {
+          "severity": "low",
+          "file": "components/sections/Experience/Experience.module.css",
+          "line": 6,
+          "description": "Header comment ('The scene sits behind it and draws the same spans in space') describes the abandoned 3D-bars scene; strata.glsl.ts:2-15 and CareerStrata.tsx:10-13 state the opposite (texture, not data). Doc drift on the very point the shader was rewritten over.",
+          "evidence": "Experience.module.css:1-8; strata.glsl.ts:1-15; CareerStrata.tsx:9-14.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "low",
+          "file": "components/sections/Experience/Experience.tsx",
+          "line": 107,
+          "description": "`scrollIntoView({ behavior: 'smooth' })` on chart-row click animates the scroll even when prefers-reduced-motion is set: the `behavior` option takes precedence over CSS scroll-behavior, so the `html { scroll-behavior: auto !important }` guard at globals.css:942-944 does not apply to this call.",
+          "evidence": "Experience.tsx:105-111; globals.css:941-944. Behaviour-precedence from CSSOM View spec, not measured here.",
+          "tag": "Inferred"
+        },
+        {
+          "severity": "low",
+          "file": "components/sections/Experience/Experience.module.css",
+          "line": 413,
+          "description": "At <=760 px `.trackYears { display: none }` removes the duration readout, so on a phone a bar's length is the only statement of its duration and the 'no published figure' roles show a bar with no number at all; the axis then carries the whole claim - and the axis is the misaligned element (defect 1).",
+          "evidence": "Experience.module.css:403-419.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "info",
+          "file": "app/data/portfolio/experience.ts",
+          "line": 263,
+          "description": "NOW is hard-coded to September 2026 (2026 + 8/12) by design; the 'now' tick and the open ATO bar freeze there until the constant is edited with the CV. Stated in the file; recorded so the next run does not 'fix' it with new Date().",
+          "evidence": "experience.ts:257-263.",
+          "tag": "Verified"
+        }
+      ],
+      "testsCovering": [
+        "tests/e2e/experience.spec.ts TC-EXP-01 (8 rows, 7 employers), 02 (ANZ longest, 5-12x NAB), 03 (2010/2015/2020/2025 text), 04 (8 buttons with aria-label incl. 'March 2026'), 05 (#role-ato open by default, 'Agile Kookaburras'), 06 (keyboard expand/collapse on #role-anz), 07 (~92% in ato, 10k+ in anz, no % in microsoft), 08 (0 canvas, 8 rows)",
+        "tests/content/content-check.spec.ts CT-04 (every CV employer named in #experience)",
+        "tests/overhaul/cinematic.spec.ts TC-CINE-04, TC-CINE-07",
+        "tests/a11y/accessibility.spec.ts A11Y-04 (axe on #experience), A11Y-12",
+        "tests/a11y/reduced-motion-choreography.spec.ts 'Experience keeps a parallel reduced-motion choreography' (RM-1..4 on '#experience ol li span[style]' and '#experience h2')",
+        "tests/monochrome/monochrome.spec.ts MONO-04; tests/a11y/gold-contrast.spec.ts GC-03",
+        "tests/overhaul/render.spec.ts TC-RENDER-01/02/06 (?gl=force mounts CareerStrata), TC-RENDER-09",
+        "tests/overhaul/complete.spec.ts (#experience stub markers); tests/overhaul/telemetry-stability.spec.ts:150",
+        "NO visual baseline: tests/visual/screenshots.spec.ts covers #hero, #about, nav overlay, #listen, #vitrine and viewport-top only; find tests/baselines -type f lists no experience PNG. The axis misalignment (defect 1) therefore has no pixel guard."
+      ],
+      "cinematicOpportunity": "ONE visual, 'Drawn to scale': retire the strata backdrop (it encodes nothing and costs a GL context) and make the chart itself the animation. On first intersection the axis rule draws left to right from 2010 to now; then the eight bars extend from their start year at one constant px-per-year rate, so the ANZ bar visibly takes eight times longer to arrive than the ten-month NAB bar - the duration IS the animation and restates the section's one claim; each bar ends by fading in its year readout, and for the three roles with a headline figure the caliper jaws close beneath as the bar completes while the five open brackets stay dashed; a hairline 'now' cursor holds at the right edge. Hover, focus, click and the accordion are unchanged. Palette: black ground, --white bars, --ink-300/--mist-400 readouts; gold NONE (no figure here has a published methodology; -38% is explicitly simulated). Reduced motion: bars pre-drawn at full width with an opacity-only stagger (RM-1), colour transitions kept by deleting Experience.module.css:434-442 (RM-4), no width/transform animation (RM-3). No-WebGL: identical - it is CSS on the existing DOM bars (scaleX from transform-origin left under no-preference). Prerequisite: fix the axis margin (defect 1) first, and add a Playwright assertion that each axis tick centre is within 2 px of its gridline plus a VIS baseline for #experience, or the bars will animate onto the wrong ticks."
+    }
+  ],
+  "sharedFindings": [
+    "[Verified] HEAD moved during the run: the run manifest (docs/delivery/evidence/v9-20260904T2312Z/00-run-manifest.json, opened 2026-09-04T23:15:04Z) records HEAD c0ab52e and HeroAtmosphere.tsx/atmosphere.glsl.ts as dirty; commit 22d11a0 'feat(hero): carry the v8 deep-space parallax into the v9 run' landed at 23:16:06Z by Victordtesla24. `git rev-parse HEAD` = 22d11a071925b04f52f0dac1157ed8e8ef4fce49; both hero files are byte-identical to HEAD. Remaining dirty: public/assets/my-avatar.mp4 (14,282,701 -> 58,370,772 B), public/assets/my-hero-avatar.mp4 (14,282,701 -> 160,156 B), reports/static-audit.json; untracked: v8/v9 evidence dirs, public/assets/explainer/, minivic-greeting*.mp4.",
+    "[Verified] Gold-as-claim across the three sections: a live CDP sweep of color/backgroundColor/border colours/fill/stroke plus ::before/::after on every element of #hero, #about and #experience found 0 elements painted in any of the four sanctioned golds. Reason: every figure in these sections is Caliper 'self-reported' (hero ledger x3, ato/independent/anz headlines) or 'open' (three role-side dimensions, five roles with no published figure), and the only gold path is Caliper 'sourced' (Caliper.module.css:71-84). The rule (globals.css:16-32) is obeyed. Consequence for the Owner's 'black, white and gold' brief: gold cannot honestly appear in Hero/About/Experience unless a figure gains a public methodology and is regraded `sourced` - CT-10 fails the build if the hero's three are; prime directive 3 covers the rest. The three sections stay black/white by design; the page's gold budget lives in Skills (production mark), Vitrine (live URLs) and Listen.",
+    "[Verified] 'One animation per section' audit: Hero owns two (GLSL atmosphere + seven-step CSS heroRise) and would own three with HeroAvatar (framer entrance + looping video); About owns one (SVG rose rotation, hover/focus only, no entrance); Experience owns two (GLSL strata that encodes nothing + hover bar-scale/accordion transitions). None of the three animations currently tells its section's story - the hero and experience shaders are mood; the compass rotation is a reading aid that only runs under a pointer.",
+    "[Verified by reading] Shared scene gating: every canvas mounts through components/gl/Scene.tsx and is skipped when prefers-reduced-motion matches (Scene.tsx:46-52,91), on software rasterisers unless `?gl=force` (useGLCapability.ts:175-192), before window load + requestIdleCallback (Scene.tsx:60-75), and outside a 50% rootMargin (Scene.tsx:77-89). GLCanvas.tsx caps dpr at [1,1.75], antialias on, stencil off. Both shaders end in mix(uInk, uLight, luma) with PALETTE.ink900/white so cannot leave the achromatic ramp. The reduced-motion and no-WebGL paths are therefore the same path for every scene: the CSS/DOM underneath.",
+    "[Verified by reading; consequences Inferred] Reduced-motion policy changed under the tests. globals.css:923-957 now sets `scroll-behavior: auto`, `animation-iteration-count: 1 !important` and a restricted `transition-property` list; it no longer crushes any duration. tests/a11y/reduced-motion-choreography.spec.ts:12-20 still cites globals.css:691-699/841-854 duration kill switches that no longer exist (RM-5 should pass). But: RM-1 will fail About and Experience (no entrance keyframes); RM-4 will fail About and Experience (module-level `transition: none` blocks at About.module.css:255-261, Compass.module.css:490-498, Experience.module.css:434-442); and TC-CINE-06 (cinematic.spec.ts:208, hero fade < 20 ms) contradicts RM-1's 150-600 ms band - one of the two must fail. Nothing was executed: the manifest records Playwright discovery at 0 tests (tests/minivic_chat_function.test.mjs breaks collection).",
+    "[Verified] HeroAvatar (components/site/HeroAvatar.tsx, 263 lines) mount requirements. (a) It is imported nowhere: grep across app/ components/ lib/ finds only its own file and a comment in lib/voiceoverController.ts:14; live DOM has no .avatar-placeholder. The context half IS live: AvatarSpeakingProvider wraps the app (app/layout.tsx:9,159-165) and MiniVicBot already calls useSetAvatarSpeaking (components/MiniVicBot.tsx:8,257,281). (b) Twelve class names it renders have no rule in any app/**/*.css or components/**/*.css: .avatar-placeholder, .avatar-frame, .hud-frame__corner (+ --tl/--tr/--bl/--br), .avatar-tag, .avatar-tag__scan, .avatar-tilt-entrance, .avatar-tilt (reads --rx/--ry set at HeroAvatar.tsx:341-342), .avatar-glass, .avatar-pulse-ring, .avatar-circle, .avatar-img; globals.css:798-818 retains only their orphaned comments, so the zero-CLS reserved box (520x650 desktop / 340x440 mobile per HeroAvatar.tsx:210-212), the frame, the scan label, the tilt transform and the speaking pulse ring all need re-authoring - per CLAUDE.md as a CSS module beside the component, not in globals.css. Tailwind utilities it uses (relative overflow-hidden absolute inset-0 w-full h-full object-cover z-10 z-0) resolve through `@import \"tailwindcss\"` at globals.css:1. (c) Assets present and under the 500 kB cap: public/assets/my_avatar.avif 41,343 B, .webp 66,470 B, .png 178,777 B, my-hero-avatar.mp4 160,156 B (uncommitted; HEAD has 14,282,701 B, which would fail TC-NFR-PERF). (d) Signals it needs exist: `fm:page-ready` + body.page-ready (app/page.tsx:29-35), framer-motion 11.18.2 (package.json:54). (e) Layout: Hero.tsx has no slot and `.inner` is one column max-width 68rem (Hero.module.css:85-91); a portrait column touches TC-HERO-08/09 (section <= 1.1x viewport, every element above the fold at 1280x720), the 6 hero PNG baselines (VIS-01, VIS-06, TC-RENDER-07, linux+darwin), PERF-02/07 (the eager fetchPriority=high still becomes the LCP candidate; its opacity is never 0), TC-CINE-01 (mount it inside `.inner`, not as a direct child of <section>, or the z-order probe reads it as the content div), TC-HERO-11 (video is not a canvas - fine), and MONO-04 (photo pixels are not computed styles, so the test passes, but the portrait would be the only chromatic surface on the page - grade the still and the mp4 black-and-white, with no gold on the frame). (f) Reduced motion: the effect at HeroAvatar.tsx:273 returns early so the video never loads and the still stays - acceptable. (g) Its framer `initial='hidden'` serialises opacity:0 into the static export for the frame and tag spans (not the portrait); PERF-06's own comment records why that pattern was banned on the hero. (h) tests/overhaul/avatar.spec.ts:7-13 records the portrait tests were deleted with the old hero; container-present, reserved-box/CLS, still-visible-with-JS-blocked, no-video-under-reduce and no-gold-on-frame assertions must be written before mounting (prime directive 5).",
+    "[Verified] Test-suite drift touching these sections: PERF-06 targets `.hero-title` (absent); render.spec.ts:16-17,46 lists Compass as a GLSL scene in #about (it is SVG); reduced-motion-choreography.spec.ts:12-20 cites deleted globals.css lines; tests/helpers/boot.ts still drives a `.preloader` that no longer exists (tolerant). `grep -rhoE '^\\s*test\\(' tests --include=*.spec.ts | wc -l` = 220 test() call sites (CLAUDE.md says 167); not a run count.",
+    "[Verified] Live site state used for measurements: https://forgotten-mistory.web.app returned HTTP 200 (113,442 B index); CSS bundles /_next/static/css/5db96c3f1bf30be9.css and /_next/static/css/919eb0e54054940c.css; the latter contains `.Compass_indexCaret__utAWk{fill:var(--white)}`, `grid-template-columns:clamp(7rem,22%,14rem)` and the `.axis` margin-left formula identical to the tree, so the live measurements apply to this checkout. No build-commit meta in the live HTML (manifest: deployed from an uncommitted tree)."
+  ]
+}

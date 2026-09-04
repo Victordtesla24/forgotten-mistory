@@ -1,0 +1,100 @@
+{
+  "run_id": "v9-20260904T2312Z",
+  "opened_utc": "2026-09-04T23:15:04Z",
+  "repo": "/root/forgotten-mistory",
+  "head": "c0ab52e8fe9a075a80198d949a9b32dbfd151b4d",
+  "origin_main": "c0ab52e8fe9a075a80198d949a9b32dbfd151b4d",
+  "dirty_paths": [
+    "M components/sections/Hero/HeroAtmosphere.tsx",
+    " M components/sections/Hero/atmosphere.glsl.ts",
+    " M public/assets/my-avatar.mp4",
+    " M public/assets/my-hero-avatar.mp4",
+    " M reports/static-audit.json",
+    "?? docs/delivery/evidence/v8-20260904T220000Z/",
+    "?? public/assets/explainer/",
+    "?? public/assets/minivic-greeting-2160p.mp4",
+    "?? public/assets/minivic-greeting.mp4"
+  ],
+  "live_url": "https://forgotten-mistory.web.app",
+  "live_http": "200",
+  "live_build_commit_meta": "ABSENT (deployed from an uncommitted tree)",
+  "live_api_chat": "returns HTML index (rewrite to Cloud Function not serving) \u2014 verified 23:14Z",
+  "baseline": {
+    "tsc": "exit 2 \u2014 ContactScroll.tsx imports missing @/lib/gsap; GithubFeed.tsx imports missing @/lib/useReducedMotionSafe",
+    "lint": "exit 0",
+    "static_audit": "8/10 \u2014 TC-NFR-PERF (9 oversized mp4s), TC-NFR-COMPLETE (app/components/SpaceScene.tsx:14 stub)",
+    "playwright_discovery": "0 tests \u2014 tests/minivic_chat_function.test.mjs collected by default testMatch and throws SyntaxError from functions/index.js:452 (duplicate const messages)",
+    "ci_main": "CI & Deploy c0ab52e: quality FAIL, lint FAIL, test FAIL, lighthouse FAIL (no lhr reports), build/deploy SKIPPED; Security: npm audit FAIL (next 14.2.35 high; browserslist high; fflate moderate)",
+    "elevenlabs": "tier payg, can_use_instant_voice_cloning=false, voice 0ZJ4kFDo6bZUNQsuULOW exists (cloned) \u2014 TTS with it blocked (ivc_not_permitted)",
+    "openrouter": "key valid; 28 video models; heygen/avatar-iv 720p/1080p; flux-video-upscale; veo-3.1 & seedance-2.0 list 3840x2160",
+    "n8n": {
+      "instance": "http://127.0.0.1:5678 (agentops-n8n, HTTP 200)",
+      "workflows": [
+        "YYNSZMYApt7N3U3B AI Video Avatar Studio - Orchestrated Generation and Adversarial QA (70 nodes, webhook, last exec 30 success)",
+        "dfs7PNjfoTZxzaw4 AI Video Avatar Studio (62 nodes, form, execs 20-22 error)"
+      ]
+    }
+  },
+  "host_services_probed": {
+    "steel": {
+      "url": "http://127.0.0.1:3030",
+      "http": 200,
+      "cdp": "http://127.0.0.1:9223 Chrome/151.0.7922.173"
+    },
+    "host_chrome_cdp": "http://127.0.0.1:9222 Chrome/152.0.7977.82",
+    "searxng": {
+      "url": "http://127.0.0.1:8890",
+      "http": 200,
+      "json_api": "25 results for test query"
+    },
+    "n8n": {
+      "url": "http://127.0.0.1:5678",
+      "http": 200
+    },
+    "ldr": {
+      "url": "http://127.0.0.1:5050",
+      "http": 302,
+      "note": "auth-gated"
+    },
+    "coder": {
+      "url": "http://127.0.0.1:3020",
+      "http": 200
+    },
+    "harness": {
+      "url": "http://127.0.0.1:3010",
+      "http": 200
+    },
+    "agentmemory": {
+      "url": "http://127.0.0.1:3111",
+      "http": 404,
+      "note": "do not depend on"
+    },
+    "static": {
+      "url": "http://127.0.0.1:3040",
+      "http": 404,
+      "note": "empty"
+    }
+  },
+  "resources": {
+    "nproc": "4",
+    "mem_available_mb": "2921",
+    "disk": "/dev/sda1       193G  150G   44G  78% /"
+  },
+  "worktrees": [
+    "/root/forgotten-mistory     c0ab52e [main]",
+    "/var/tmp/dbg-wt             4e8f11c (detached HEAD)",
+    "/var/tmp/v6-clean           1672d17 (detached HEAD)",
+    "/var/tmp/v6-wt/data-backend 8050ec6 [wt/data-backend]"
+  ],
+  "tools": {
+    "node": "v22.23.1",
+    "npm": "12.0.2",
+    "ffmpeg": "ffmpeg version 8.0.1-3ubuntu2 Copyright (c) 2000-2025 the FFmpeg developers",
+    "firebase_project": "forgotten-mistory",
+    "gh": "Victordtesla24 authenticated"
+  },
+  "spend_policy": {
+    "paid_generation_cap_usd": 10,
+    "rationale": "v7 decision log set owner cap $35 with auto-approve; this run caps any test generation at $10 and records every paid call in explainer-spend-ledger.md"
+  }
+}

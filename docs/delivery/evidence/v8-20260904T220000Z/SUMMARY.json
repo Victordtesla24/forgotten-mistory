@@ -1,0 +1,28 @@
+{
+  "run": "v8-option2",
+  "videos": {
+    "minivic-greeting": {
+      "1080p": "public/assets/minivic-greeting.mp4",
+      "2160p": "public/assets/minivic-greeting-2160p.mp4 / my-avatar.mp4",
+      "voice": "ELEVENLABS_ARCHIVE audio_url (minivic-greeting.mp3)",
+      "heygen_job": "nlVBJdGLPPoXzUfMeYnN",
+      "upscale_job": "DmXfNWGCGCahED5P0vnO",
+      "upscale_cost": 9.702
+    },
+    "entailment-explainer": {
+      "1080p": "public/assets/explainer/entailment-explainer.mp4 (now 2160 after replace)",
+      "2160p": "public/assets/explainer/entailment-explainer-2160p.mp4",
+      "voice": "MODEL_NATIVE HeyGen Andrew (IVC TTS blocked ivc_not_permitted)",
+      "heygen_job": "ifAWsK6Nbi15imOiUcJz",
+      "upscale": "chunked 3x11.3s then concat (full-length flux rejected: input exceeds max size)",
+      "chunk_jobs": {
+        "0": "PPUkgG2DsrLBF809tCes",
+        "1": "qf9KxNJ0xil7AcqfADgq",
+        "2": "NYhoLvdRgPXTrEaVbsvw"
+      },
+      "chunk_cost_each": 8.9199
+    }
+  },
+  "parallax": "HeroAtmosphere uScroll+uPointer deep-space starfield; reduced-motion safe",
+  "spend_note": "OpenRouter usage ~488.95 -> ~527.70 this session (~$38.7 incl flux upscales). Owner chose option 2 UHD via flux."
+}

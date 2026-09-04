@@ -1,0 +1,1302 @@
+{
+  "requirements": [
+    {
+      "id": "R-01",
+      "verbatim": "Using Orchestration skill and documents from '/root/.sub-agents' and its sub-folder",
+      "interpretation": "The run executes under the Orchestration Execution Order skill (/root/.sub-agents/orchestrator/orchestration-skill.md §0–§17) and treats every file under /root/.sub-agents/** as binding prerequisite reading (skill §0: 'Everything in this dir is User/Owner-mandated and are binding, prerequisites, not background reading'). Derived: the skill's Aether-specific ground truth (§3.1–§3.12, §5, §11.1, §11.7, §11.11, §11.12, §14's four ledger items) does not describe this repository; the protocol layer (§0–§2, §4, §6–§10, §11.2–§11.6, §11.8–§11.10, §12–§17) applies in full and every non-applicable gate is recorded with a non-empty reason (orchestrator no-bypass register item 99997).",
+      "successCriteria": [
+        {
+          "id": "SC-01.1",
+          "observableCheck": "00-run-manifest.json or 99-final-report.md lists every /root/.sub-agents file read with its sha256 equal to the entry in /root/.sub-agents/MANIFEST.sha256.json.",
+          "command": "cd /root/.sub-agents && find . -type f ! -path '*/.git/*' | sort | xargs sha256sum"
+        },
+        {
+          "id": "SC-01.2",
+          "observableCheck": "Evidence tree follows skill §9.1: 00-run-manifest.json, one <ITEM-ID>/ folder per work item with 01-scout…09-no-regression artifacts, and 99-final-report.md.",
+          "command": "ls -R /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/"
+        },
+        {
+          "id": "SC-01.3",
+          "observableCheck": "Every worker return and every evidence .md tags material claims Verified / Inferred / Assumed (skill §4); zero files lacking a tag.",
+          "command": "grep -rL 'Verified\\|Inferred\\|Assumed' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/ --include=*.md"
+        },
+        {
+          "id": "SC-01.4",
+          "observableCheck": "99-final-report.md is failures-first (§12) and carries a §3 exit report (test counts, console-error count, breakpoints 375/768/1280/1920, traceability count/total) whose numbers each cite a tool-call artifact; zero softening phrases.",
+          "command": "grep -n -i 'should be working\\|appears to pass\\|good enough\\|broadly ok\\|minor issues remain' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/99-final-report.md"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/.sub-agents/orchestrator/orchestration-skill.md",
+        "/root/.sub-agents/claude-roles/orchestrator.system-prompt.md",
+        "/root/.sub-agents/claude-roles/analyst.system-prompt.md",
+        "/root/.sub-agents/claude-roles/verifier.system-prompt.md",
+        "/root/.sub-agents/hierarchy/role_matrix.yaml",
+        "/root/.sub-agents/hierarchy/effort_cascade.yaml",
+        "/root/.sub-agents/MANIFEST.sha256.json",
+        "/root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/00-run-manifest.json",
+        "/root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/99-final-report.md"
+      ],
+      "currentStatus": "Verified: /root/.sub-agents holds 110 files (find, this session) — 18 claude-roles files (8 roles × SOUL + system-prompt + INDEX.md), council/, orchestrator/ (orchestration-skill.md = 128.6 KB, 1739 lines; the document body is duplicated, second copy starts at line 989), verifier/, hierarchy/ (role_matrix.yaml, effort_cascade.yaml). Verified: 00-run-manifest.json (4019 B, opened 2026-09-04T23:15:04Z) and 01-discoveries.md (sibling, 23:23) exist; B-understand/ did not exist until created by this task at 23:26. Verified: pipeline order per orchestrator.system-prompt.md §3 = Analyst → Researcher → Solution Architect → Senior SME → Coder → Tester → Senior SME → Verifier; exit only on HMAC-signed verifier PASS. Not observable: whether an HMAC key / verifier hook exists on this host (not probed)."
+    },
+    {
+      "id": "R-02",
+      "verbatim": "Fix the UI/UX of my portolio website ensuring it meets every requirement.",
+      "interpretation": "Umbrella requirement. The deliverable is the live site https://forgotten-mistory.web.app (Next.js 14 static export on Firebase Hosting, CLAUDE.md) repaired and redesigned so that every requirement in this map (R-01…R-12 with children) and every binding gate (B-01…B-07) passes with cited evidence — Prompt Execution Accuracy = criteria passed ÷ total = 100%. 'Fix' includes the red baseline (tsc, functions syntax, Playwright discovery, audit 8/10, CI red, live /api/chat, build-commit meta) because a site whose gates are red cannot be shown to meet anything.",
+      "successCriteria": [
+        {
+          "id": "SC-02.1",
+          "observableCheck": "Coverage table in 99-final-report.md lists every R-id and SC-id of this file with PASS and an evidence path; zero PARTIAL / DEFERRED / WONTFIX rows."
+        },
+        {
+          "id": "SC-02.2",
+          "observableCheck": "Production serves the final commit: the live page carries <meta name=\"build-commit\"> whose content equals the short SHA of origin/main, and git status is clean.",
+          "command": "curl -s https://forgotten-mistory.web.app/ | grep -o '<meta name=\"build-commit\" content=\"[0-9a-f]*\"'; cd /root/forgotten-mistory && git rev-parse --short origin/main && git status --porcelain | wc -l"
+        },
+        {
+          "id": "SC-02.3",
+          "observableCheck": "CLAUDE.md verification battery is green on the final commit: tsc exit 0, lint exit 0, build:static exit 0, static audit 10/10, Playwright 0 failed with ≥1 test discovered.",
+          "command": "cd /root/forgotten-mistory && npx tsc --noEmit && npm run lint && npm run build:static && node scripts/validate/overhaul_static_audit.mjs && (python3 -m http.server 5599 --directory out & sleep 2; PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test; kill %1)"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/CLAUDE.md",
+        "/root/forgotten-mistory/app/page.tsx",
+        "/root/forgotten-mistory/app/layout.tsx",
+        "/root/forgotten-mistory/app/globals.css",
+        "/root/forgotten-mistory/components/sections/",
+        "/root/forgotten-mistory/scripts/validate/overhaul_static_audit.mjs",
+        "/root/forgotten-mistory/playwright.config.ts",
+        "/root/forgotten-mistory/.github/workflows/deploy.yml",
+        "/root/forgotten-mistory/firebase.json",
+        "/root/forgotten-mistory/firebase.static.json"
+      ],
+      "currentStatus": "Verified (this session): six sections mounted in app/page.tsx:53-63 (Hero, About, Experience, Skills, Vitrine, Listen) plus Navigation; live / returns HTTP 200, 113,442 B; live has NO build-commit meta (grep → 0 matches) and app/data/generated/build-stamp.ts has sha:null, clean:false; live POST /api/chat returns 200 text/html (the index), not JSON; npx tsc --noEmit → 2× TS2307 (components/site/ContactScroll.tsx:4 missing @/lib/gsap; components/site/GithubFeed.tsx:5 missing @/lib/useReducedMotionSafe), non-zero exit (observed 1 through the npx wrapper; the brief recorded 2 — same two errors); node --check functions/index.js → SyntaxError 'messages' already declared at functions/index.js:452; reports/static-audit.json (2026-09-04T23:10:42Z) = 8/10 FAIL (TC-NFR-PERF 9 oversized mp4s, TC-NFR-COMPLETE app/components/SpaceScene.tsx:14 stub); gh run list → CI & Deploy and Security both 'failure' on c0ab52e; HEAD 22d11a0 is 1 ahead of origin/main c0ab52e (unpushed 'feat(hero): carry the v8 deep-space parallax'), working tree dirty (my-avatar.mp4, my-hero-avatar.mp4 modified; explainer/, minivic-greeting*.mp4, evidence dirs untracked). Inferred (config read, --list not re-run because the json reporter writes test-results.json outside the evidence dir): Playwright discovers 0 tests because playwright.config.ts sets testDir './tests' with no testMatch, the default at node_modules/playwright/lib/common/config.js:163 is **/*.@(spec|test).?(c|m)[jt]s?(x), so tests/ci_pipeline.test.mjs, github-telemetry.test.mjs, minivic_chat_function.test.mjs, static_audit_fail.test.mjs are collected and the SyntaxError aborts discovery — matches the orchestrator's Verified R3."
+    },
+    {
+      "id": "R-03",
+      "verbatim": "Each section has one animation, visualisation, interactive infographic, cinematic, realistic, UHD, high quality visuals like made by MARVEL STUDIOS.",
+      "interpretation": "Parent of R-03.1–R-03.4. 'Each section' = the six CLAUDE.md sections #hero, #about, #experience, #skills, #vitrine, #listen (Navigation, Footer and the MiniVic widget are chrome, not sections). Read as ONE signature visual per section that is at once animated (R-03.1), a visualisation of that section's own data (R-03.2) and an interactive infographic (R-03.3), rendered to the quality bar of R-03.4 — not three separate artefacts per section (see ambiguity A-01).",
+      "successCriteria": [
+        {
+          "id": "SC-03.0",
+          "observableCheck": "A design decision record in the evidence bundle names, for each of the six section ids, exactly one signature visual, its data source file, its animation, its interaction and its reduced-motion static form.",
+          "command": "grep -c '^| #\\(hero\\|about\\|experience\\|skills\\|vitrine\\|listen\\)' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/C-design/*.md"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/components/sections/Hero/Hero.tsx",
+        "/root/forgotten-mistory/components/sections/Hero/HeroAtmosphere.tsx",
+        "/root/forgotten-mistory/components/sections/Hero/atmosphere.glsl.ts",
+        "/root/forgotten-mistory/components/sections/About/About.tsx",
+        "/root/forgotten-mistory/components/sections/About/Compass.tsx",
+        "/root/forgotten-mistory/components/sections/Experience/Experience.tsx",
+        "/root/forgotten-mistory/components/sections/Experience/CareerStrata.tsx",
+        "/root/forgotten-mistory/components/sections/Experience/strata.glsl.ts",
+        "/root/forgotten-mistory/components/sections/Skills/Skills.tsx",
+        "/root/forgotten-mistory/components/sections/Skills/Bench.tsx",
+        "/root/forgotten-mistory/components/sections/Vitrine/Vitrine.tsx",
+        "/root/forgotten-mistory/components/sections/Vitrine/Drawings.tsx",
+        "/root/forgotten-mistory/components/sections/Listen/Listen.tsx",
+        "/root/forgotten-mistory/components/gl/Scene.tsx",
+        "/root/forgotten-mistory/components/gl/GLCanvas.tsx",
+        "/root/forgotten-mistory/components/gl/useGLCapability.ts",
+        "/root/forgotten-mistory/docs/overhaul/MOTION-AND-FX-SPEC.md"
+      ],
+      "currentStatus": "Verified (component headers read this session): #hero — HeroAtmosphere full-screen shader quad with pointer+scroll deep-space parallax, disabled under prefers-reduced-motion (HeroAtmosphere.tsx:11-21); animated + pointer-interactive, but decorative, not a data visualisation. #about — Compass SVG rotates to the current dimension as the reader moves through the ten-item list (About.tsx:11-19, Compass.tsx): visualisation + interaction + motion present. #experience — DOM bars drawn to real duration on one axis (Experience.tsx:35-40) over CareerStrata shader texture (CareerStrata.tsx:11-17): all three present. #skills — Bench: 13 sources × 17 capabilities wired in SVG, rails are real <button>s (Bench.tsx:15-31); 'Motion here is deliberately nil beyond the card's own fade' (Skills.tsx:31-32): visualisation + interaction present, animation absent by design. #vitrine — six mechanism drawings (Drawings.tsx:7-21) on a scroll-snap rail with an IntersectionObserver-driven raking light (Vitrine.tsx:16-29): all three present. #listen — 'nearly empty on purpose', no chart/scene (Listen.tsx:7-19): none of the three present. Gaps against R-03: hero (no data visualisation/infographic), skills (no animation), listen (nothing)."
+    },
+    {
+      "id": "R-03.1",
+      "verbatim": "Each section has one animation",
+      "interpretation": "Every one of the six sections has one deliberate motion piece (entrance, scroll-driven or pointer-driven) inside the design-token bands (interface 200–450 ms, cinematic 600–1200 ms, custom cubic-bezier only, compositor-safe properties only — design-tokens.json motion.*, grid_motion_type_audit TC-NFR-MOTION) with a parallel static, information-complete path under prefers-reduced-motion (CLAUDE.md gotchas; MOTION-AND-FX-SPEC §8; reduced_motion_audit TC-RM-SCORE).",
+      "successCriteria": [
+        {
+          "id": "SC-03.1a",
+          "observableCheck": "For each section id, a Playwright assertion observes a computed animation/transition or a WebGL frame delta on the section's signature element after scroll-into-view; six passing assertions.",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/overhaul/cinematic.spec.ts tests/e2e"
+        },
+        {
+          "id": "SC-03.1b",
+          "observableCheck": "Static motion/grid/type audit passes (timing bands, custom easing, compositor-safe properties).",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/grid_motion_type_audit.mjs"
+        },
+        {
+          "id": "SC-03.1c",
+          "observableCheck": "Reduced-motion audit and choreography spec pass for all six sections; no universal kill-switch; each section re-scores its entrance with a named opacity keyframe.",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/reduced_motion_audit.mjs && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/a11y/reduced-motion-choreography.spec.ts"
+        },
+        {
+          "id": "SC-03.1d",
+          "observableCheck": "Frame-rate floor holds on every scene: ≥55 fps desktop and ≥30 fps mobile emulation over 60 s, no heap growth (MOTION-AND-FX-SPEC §7).",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 node scripts/validate/phase04_fps_probe.mjs"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/components/sections/Skills/Skills.tsx",
+        "/root/forgotten-mistory/components/sections/Skills/Skills.module.css",
+        "/root/forgotten-mistory/components/sections/Listen/Listen.tsx",
+        "/root/forgotten-mistory/components/sections/Listen/Listen.module.css",
+        "/root/forgotten-mistory/design-tokens.json",
+        "/root/forgotten-mistory/scripts/validate/grid_motion_type_audit.mjs",
+        "/root/forgotten-mistory/scripts/validate/reduced_motion_audit.mjs",
+        "/root/forgotten-mistory/scripts/validate/phase04_fps_probe.mjs",
+        "/root/forgotten-mistory/tests/a11y/reduced-motion-choreography.spec.ts",
+        "/root/forgotten-mistory/tests/overhaul/cinematic.spec.ts"
+      ],
+      "currentStatus": "Verified: motion tokens exist (design-tokens.json lines 178-230: fast 200 ms, base 320 ms, emphatic 440 ms, cine-in 720 ms, cine 900 ms, cine-long 1160 ms, three easings). Verified: tests/overhaul/cinematic.spec.ts holds TC-CINE-01…07 and tests/a11y/reduced-motion-choreography.spec.ts iterates the six sections (line 446-448) — none of these currently execute because Playwright discovery is broken (R-02). Verified gaps: #skills declares nil motion (Skills.tsx:31-32); #listen has no motion (Listen.tsx:7-19)."
+    },
+    {
+      "id": "R-03.2",
+      "verbatim": "Each section has one … visualisation",
+      "interpretation": "Every section's signature visual is bound to that section's own content file (app/data/portfolio/{hero,about,experience,skills,vitrine,listen}.ts) or the generated repo harvest — it draws the section's facts, never decoration alone (CLAUDE.md #2 'Evidence, not adjectives'; preservation register T-37: provenance labels, three-state calibration, Limits lines, ten dimensions, duration-true timeline, per-repository diagrams must survive).",
+      "successCriteria": [
+        {
+          "id": "SC-03.2a",
+          "observableCheck": "Each section's visual component imports its section data module (or cv-fingerprint / repo-harvest) and renders at least one value from it; six grep hits, one per section.",
+          "command": "cd /root/forgotten-mistory && grep -ln \"app/data/portfolio\\|app/data/generated\" components/sections/*/*.tsx"
+        },
+        {
+          "id": "SC-03.2b",
+          "observableCheck": "Baseline preservation diff passes (nothing the register protects was removed).",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/preservation_diff.mjs"
+        },
+        {
+          "id": "SC-03.2c",
+          "observableCheck": "Every figure drawn carries a Caliper state consistent with its evidence (self-reported hero figures stay self-reported — CT-10).",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/content/content-check.spec.ts tests/monochrome/gold-semantics.spec.ts"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/app/data/portfolio/hero.ts",
+        "/root/forgotten-mistory/app/data/portfolio/about.ts",
+        "/root/forgotten-mistory/app/data/portfolio/experience.ts",
+        "/root/forgotten-mistory/app/data/portfolio/skills.ts",
+        "/root/forgotten-mistory/app/data/portfolio/vitrine.ts",
+        "/root/forgotten-mistory/app/data/portfolio/listen.ts",
+        "/root/forgotten-mistory/app/data/generated/cv-fingerprint.ts",
+        "/root/forgotten-mistory/app/data/generated/repo-harvest.json",
+        "/root/forgotten-mistory/components/marks/Caliper.tsx",
+        "/root/forgotten-mistory/scripts/validate/preservation_diff.mjs",
+        "/root/forgotten-mistory/tests/content/content-check.spec.ts"
+      ],
+      "currentStatus": "Verified: hero.ts ledger has three self-reported figures (≈92%, $5M+, 10k+) each with a source line (hero.ts:30-46) and Hero.tsx grades them self-reported (Hero.tsx:63-68); about.ts has ten dimensions verbatim from aether-job-career-agent (about.ts:38-116); experience.ts has month-precision spans for eight roles and NOW = September 2026 (experience.ts:24-90); Compass, Bench, Drawings and the Experience bars are data-bound. Verified gap: HeroAtmosphere renders no data; Listen renders no visual."
+    },
+    {
+      "id": "R-03.3",
+      "verbatim": "Each section has one … interactive infographic",
+      "interpretation": "The section's visual responds to the reader (pointer, scroll position, keyboard or focus) and is operable without a pointer: real HTML controls or role/aria on SVG/canvas, focus-visible states, WCAG AA (CLAUDE.md 'keyboard-navigable'; interaction_state_audit SC-30.1: designed hover/focus/active/disabled states, zero browser-default focus rings).",
+      "successCriteria": [
+        {
+          "id": "SC-03.3a",
+          "observableCheck": "For each section, a Playwright test drives the infographic by keyboard (Tab/Arrow/Enter) and asserts a visible state change; six passing tests.",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/e2e/about.spec.ts tests/e2e/experience.spec.ts tests/e2e/skills.spec.ts tests/e2e/vitrine.spec.ts tests/e2e/hero.spec.ts tests/e2e/listen.spec.ts"
+        },
+        {
+          "id": "SC-03.3b",
+          "observableCheck": "axe-core reports zero WCAG AA violations on the full page and the interaction-state audit passes.",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/interaction_state_audit.mjs && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/a11y/accessibility.spec.ts tests/a11y/interaction-states.spec.ts"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/components/sections/About/About.tsx",
+        "/root/forgotten-mistory/components/sections/Experience/Experience.tsx",
+        "/root/forgotten-mistory/components/sections/Skills/Bench.tsx",
+        "/root/forgotten-mistory/components/sections/Vitrine/Vitrine.tsx",
+        "/root/forgotten-mistory/components/sections/Listen/Listen.tsx",
+        "/root/forgotten-mistory/scripts/validate/interaction_state_audit.mjs",
+        "/root/forgotten-mistory/tests/a11y/accessibility.spec.ts",
+        "/root/forgotten-mistory/tests/a11y/interaction-states.spec.ts",
+        "/root/forgotten-mistory/tests/e2e/"
+      ],
+      "currentStatus": "Verified: About (list navigation turns the compass), Experience (useState/useCallback selection, Experience.tsx:4), Skills (button rails, Bench.tsx:26-31), Vitrine (native scroll-snap rail, Vitrine.tsx:25-29) are interactive; Hero interaction is pointer-parallax only (no keyboard-operable infographic); Listen has none. Per-section e2e specs exist (tests/e2e/{about,experience,skills,vitrine,hero,listen}.spec.ts) but do not run today (R-02)."
+    },
+    {
+      "id": "R-03.4",
+      "verbatim": "cinematic, realistic, UHD, high quality visuals like made by MARVEL STUDIOS",
+      "interpretation": "Quality bar for every signature visual. Measurable parts: cinematic = motion inside the cinematic band with light-driven depth (SPEC §3.1 'depth via light, blur, motion'); realistic = physically-plausible light/atmosphere in shaders, no clip-art/emoji (DESIGN-SYSTEM.md 'No emoji'); UHD = resolution-independent rendering (WebGL/SVG/CSS) that is pixel-crisp at a 3840×2160 viewport, raster assets never displayed above 1.0× their intrinsic pixels, video masters archived at 2160p per Config.md §2.3 while shipped bytes obey Config.md §2.1 and the asset gate (A-02). 'Like MARVEL STUDIOS' is a matter of judgement: closed on the stated verdict of an independent design-judge panel with a written rubric (skill §2 loop step 4), never a proxy metric.",
+      "successCriteria": [
+        {
+          "id": "SC-03.4a",
+          "observableCheck": "Screenshots of each section at 3840×2160 (DPR 1) and 1920×1080 (DPR 2) exist in the evidence bundle and a script asserts every <img>/<video> inside a section renders at clientWidth × devicePixelRatio ≤ naturalWidth/videoWidth.",
+          "command": "ls /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/*/07-prod-verification/*3840x2160*.png"
+        },
+        {
+          "id": "SC-03.4b",
+          "observableCheck": "Independent design-judge panel record (≥3 reviewers, rubric with per-section scores for cinematic / realistic / UHD crispness / memorability) returns PASS for all six sections; reviewers are not the implementers.",
+          "command": "grep -n 'verdict' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/C-design/*judge*.md"
+        },
+        {
+          "id": "SC-03.4c",
+          "observableCheck": "Zero browser console errors and zero uncaught exceptions while scrolling through all six sections on production (skill §9.2 capture).",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/perf/performance.spec.ts -g 'PERF-04'"
+        },
+        {
+          "id": "SC-03.4d",
+          "observableCheck": "No emoji code points in app/, components/, lib/ source or in shipped copy.",
+          "command": "cd /root/forgotten-mistory && grep -rP '[\\x{1F300}-\\x{1FAFF}\\x{2600}-\\x{27BF}]' app components lib | wc -l"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/components/sections/Hero/atmosphere.glsl.ts",
+        "/root/forgotten-mistory/components/sections/Experience/strata.glsl.ts",
+        "/root/forgotten-mistory/components/gl/Scene.tsx",
+        "/root/forgotten-mistory/lib/palette.ts",
+        "/root/forgotten-mistory/tests/visual/screenshots.spec.ts",
+        "/root/forgotten-mistory/tests/baselines/",
+        "/root/forgotten-mistory/docs/avatar/Config.md",
+        "/root/dev/aether-job-career-agent/.claude/DESIGN-SYSTEM.md"
+      ],
+      "currentStatus": "Verified: DPR is capped in WebGL scenes by design (CLAUDE.md gotchas; MOTION-AND-FX-SPEC §7 'dpr 1–1.5'). Verified: the only UHD-resolution assets in the tree are video masters that breach the shipping gate — public/assets/my-avatar.mp4 3840×2160 24/1 h264 High yuv420p + AAC 12.325 s 58,370,772 B; public/assets/minivic-greeting-2160p.mp4 58,370,772 B; public/assets/explainer/entailment-explainer{,-2160p}.mp4 110,822,497 B each (ffprobe/ls this session). Verified: no emoji scan has been run (not observable yet). Judge-panel record: not yet produced (Phase C pending per task list)."
+    },
+    {
+      "id": "R-04",
+      "verbatim": "Conduct research and find the best place to integrate my original hero video avatar.",
+      "interpretation": "Parent of R-04.1–R-04.3: a Researcher pass with cited sources (R-04.1), a placement decision selected from ≥3 scored candidates (R-04.2), and the mounting of the Owner's original hero video avatar asset — public/assets/my-hero-avatar.mp4 with its still portrait public/assets/my_avatar.{png,webp,avif} — at that place (R-04.3).",
+      "successCriteria": [
+        {
+          "id": "SC-04.0",
+          "observableCheck": "The live page references the hero avatar asset and renders it inside the chosen section; today's count is 0.",
+          "command": "curl -s https://forgotten-mistory.web.app/ | grep -c 'my-hero-avatar\\|my_avatar'"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/components/site/HeroAvatar.tsx",
+        "/root/forgotten-mistory/components/sections/Hero/Hero.tsx",
+        "/root/forgotten-mistory/components/sections/Hero/Hero.module.css",
+        "/root/forgotten-mistory/public/assets/my-hero-avatar.mp4",
+        "/root/forgotten-mistory/public/assets/my_avatar.png",
+        "/root/forgotten-mistory/public/assets/my_avatar.webp",
+        "/root/forgotten-mistory/public/assets/my_avatar.avif",
+        "/root/forgotten-mistory/lib/avatarContext.tsx",
+        "/root/forgotten-mistory/docs/avatar/Config.md"
+      ],
+      "currentStatus": "Verified (this session): components/site/HeroAvatar.tsx (263 lines: still→video crossfade, IntersectionObserver-armed load after fm:page-ready, speaking pulse from AvatarSpeakingContext, ±5° tilt) is imported by nothing — grep across app/ components/ lib/ finds only comments in lib/avatarContext.tsx:7,43 and lib/voiceoverController.ts:14; app/page.tsx and Hero.tsx do not mount it; the live HTML contains 0 occurrences of my-hero-avatar / HeroAvatar / avatar-placeholder. Verified: app/globals.css contains 0 '.avatar-*' or '.hud-frame' class rules (grep -c avatar = 0; only orphaned comments at lines 795-815), so re-mounting HeroAvatar.tsx unchanged would render its nine classes unstyled. Verified (ffprobe): my-hero-avatar.mp4 = h264 High 640×360 24/1 yuv420p, 5.875 s, no audio, 160,156 B — conforms to Config.md §2.1 WEB_PARITY hero profile; note Config.md §1.1 records 228,228 B, and git status shows the file modified in the working tree. Verified: AvatarSpeakingProvider is mounted in app/layout.tsx:159 and MiniVicBot sets speaking state (MiniVicBot.tsx:256-282), so the pulse wiring is live but has no consumer."
+    },
+    {
+      "id": "R-04.1",
+      "verbatim": "Conduct research",
+      "interpretation": "A Researcher-role pass (role_matrix.yaml research: level 3, effort high; researcher.system-prompt.md citation discipline: every claim ships as {claim, source_url, fetch_date}, ≥2 primary sources for a binding decision, INSUFFICIENT EVIDENCE rather than guesswork) covering: where award-circuit / top portfolio sites place a personal video avatar, LCP/CLS cost of autoplaying video in the first viewport, autoplay + reduced-motion + a11y rules for muted looping video, and what employers expect from a hero. Host tools: SearXNG JSON API http://127.0.0.1:8890, Perplexity MCP, firecrawl MCP.",
+      "successCriteria": [
+        {
+          "id": "SC-04.1a",
+          "observableCheck": "A research digest exists in the evidence bundle with ≥5 findings, each carrying a URL fetched in this run and a fetch date; zero findings without a URL.",
+          "command": "grep -c 'https\\?://' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/B-understand/*research*.md"
+        },
+        {
+          "id": "SC-04.1b",
+          "observableCheck": "Every cited URL resolves (HTTP 200/301/302) at verification time.",
+          "command": "grep -oh 'https\\?://[^ )>\"]*' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/B-understand/*research*.md | sort -u | xargs -I{} curl -s -o /dev/null -w '%{http_code} {}\\n' {}"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/B-understand/",
+        "/root/.sub-agents/claude-roles/researcher.system-prompt.md"
+      ],
+      "currentStatus": "Not observable: no research digest exists in the evidence dir yet (ls this session shows only 00-run-manifest.json, 01-discoveries.md and this task's folder). Verified: SearXNG at 127.0.0.1:8890 answered 200 with 25 JSON results per 00-run-manifest.json host_services_probed (orchestrator's probe; not re-probed here)."
+    },
+    {
+      "id": "R-04.2",
+      "verbatim": "find the best place to integrate",
+      "interpretation": "Produce a placement decision memo scoring ≥3 candidates — (a) hero right column, the original R1 AVATAR design (.avatar-placeholder 520×650 desktop / 340×440 mobile per Config.md §1.5, subject framed in the central 56% width); (b) inside the MiniVic panel as the narrator; (c) the Listen (closing) section — against fixed criteria: LCP < 2.5 s and CLS < 0.05 (tests/perf), hero fits the first viewport at 1440/1280/834/390 (TC-HERO-08/09), at most one WebGL context in the hero (TC-HERO-11), hero asset ≤ 500 KB silent loop (Config.md §2.1), reduced-motion shows the still, and the research findings of R-04.1. 'Best' is closed on the memo's stated judgement plus those objective floors.",
+      "successCriteria": [
+        {
+          "id": "SC-04.2a",
+          "observableCheck": "Decision memo lists ≥3 candidates with scores against every criterion above, names the winner, and records reversal cost (skill §14 memo shape).",
+          "command": "grep -n -i 'candidate\\|reversal' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/C-design/*avatar*.md"
+        },
+        {
+          "id": "SC-04.2b",
+          "observableCheck": "With the avatar mounted, LCP ≤ 2500 ms and CLS < 0.05 on the static build and on production; hero tests TC-HERO-01…11 pass.",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/perf/performance.spec.ts tests/e2e/hero.spec.ts"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/components/sections/Hero/Hero.tsx",
+        "/root/forgotten-mistory/components/sections/Hero/Hero.module.css",
+        "/root/forgotten-mistory/components/MiniVicBot.tsx",
+        "/root/forgotten-mistory/components/sections/Listen/Listen.tsx",
+        "/root/forgotten-mistory/tests/e2e/hero.spec.ts",
+        "/root/forgotten-mistory/tests/perf/performance.spec.ts",
+        "/root/forgotten-mistory/docs/avatar/Config.md"
+      ],
+      "currentStatus": "Verified: tests/e2e/hero.spec.ts asserts TC-HERO-08 (fills first viewport without overflow), TC-HERO-09 (legible in first viewport), TC-HERO-11 (at most one WebGL context); tests/perf/performance.spec.ts budgets LCP 2500 ms / CLS 0.05 / first-view transfer ≤ 2.5 MB, and PERF-06 guards the mobile LCP collapse that an opacity:0 portrait once caused (performance.spec.ts:162-173). Verified: Hero.module.css has no avatar column today (grid columns at lines 170-180 serve the ledger row); Config.md §1.5 framing rule and §2.1 hero profile define the box. Not observable: no placement memo exists yet."
+    },
+    {
+      "id": "R-04.3",
+      "verbatim": "my original hero video avatar",
+      "interpretation": "Asset identity (A-05): the original is public/assets/my-hero-avatar.mp4 — the silent 640×360 24 fps loop that HeroAvatar.tsx already wires as VIDEO_SRC — crossfaded from the still portrait public/assets/my_avatar.png (LCP element, also the input_references image for generation, Config.md §1.3), not the 4K HeyGen master now sitting at public/assets/my-avatar.mp4. Integration must keep the still as LCP, load the video only after fm:page-ready and only when in view, stay muted/loop/playsInline, revert to the still on pause/error and under reduced motion, and restore the CSS the component needs (the .avatar-* rules were deleted from globals.css).",
+      "successCriteria": [
+        {
+          "id": "SC-04.3a",
+          "observableCheck": "The mounted component's video src resolves to /assets/my-hero-avatar.mp4 and ffprobe on the shipped file reports h264 High 640×360 24/1 yuv420p with no audio stream and size ≤ 512,000 B.",
+          "command": "cd /root/forgotten-mistory && ffprobe -v error -show_entries stream=codec_type,codec_name,profile,width,height,r_frame_rate,pix_fmt -of csv=p=0 public/assets/my-hero-avatar.mp4 && stat -c %s public/assets/my-hero-avatar.mp4"
+        },
+        {
+          "id": "SC-04.3b",
+          "observableCheck": "A Playwright test asserts: still portrait visible at first paint; video element has no src before fm:page-ready; after play the video is visible and the still fades; under prefers-reduced-motion the video never receives a src.",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/overhaul/avatar.spec.ts tests/e2e/hero.spec.ts"
+        },
+        {
+          "id": "SC-04.3c",
+          "observableCheck": "Every class HeroAvatar renders has a rule in a CSS module or globals.css; TC-NFR-DEADCSS still passes.",
+          "command": "cd /root/forgotten-mistory && for c in avatar-placeholder avatar-frame avatar-tag avatar-tilt avatar-glass avatar-pulse-ring avatar-circle avatar-img hud-frame__corner; do printf '%s ' $c; grep -rl \"\\.$c\" app components | wc -l; done"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/components/site/HeroAvatar.tsx",
+        "/root/forgotten-mistory/app/globals.css",
+        "/root/forgotten-mistory/public/assets/my-hero-avatar.mp4",
+        "/root/forgotten-mistory/public/assets/my_avatar.png",
+        "/root/forgotten-mistory/tests/overhaul/avatar.spec.ts",
+        "/root/forgotten-mistory/scripts/assets/generate_hero_formats.mjs"
+      ],
+      "currentStatus": "Verified: HeroAvatar.tsx VIDEO_SRC = '/assets/my-hero-avatar.mp4' (line 7); it renders classes avatar-placeholder, avatar-frame, hud-frame__corner ×4, avatar-tag, avatar-tag__scan, avatar-tilt-entrance, avatar-tilt, avatar-glass, avatar-pulse-ring, avatar-circle, avatar-img (lines 198-258) and none of these has a CSS rule in app/globals.css (grep -c avatar → 0) or any CSS module. Verified: tests/overhaul/avatar.spec.ts currently tests only the MiniVic launcher/panel (TC-CLONE-03, TC-CLONE-05) — no hero-avatar assertion exists. Verified: my-hero-avatar.mp4 conforms to the WEB_PARITY hero profile (ffprobe above)."
+    },
+    {
+      "id": "R-05",
+      "verbatim": "Only black, while and gold from my claude design sysytems are allowed.",
+      "interpretation": "Palette constraint ('while' = white). 'My claude design systems' = the Aether design system the Owner's DESIGN-SYSTEM.md points at (/root/dev/aether-job-career-agent/.claude/DESIGN-SYSTEM.md → design/aether-design-system/readme.md): obsidian #08080A ground with ink ramp #0F0F12 / #16161A / #1E1E23 / #26262C, gilt #C9A84C (+ #D4B65C light, #E8D5A3 pale, #B0923F dark, gold borders at 8/20/45% alpha), text on parchment #F5F1E8, 'Gold is never a state', 'No emoji'. Sapphire #3E5A8C, coral and indigo are excluded by the Owner's clause (and would fail TC-NFR-MONO). Every colour token in app/globals.css, lib/palette.ts and design-tokens.json therefore resolves to (a) a black from that ink set, (b) that white, (c) a gold from that gilt set, or (d) an alpha/luminance mix of (a) and (b) with no hue cast. The current cool-tinted greys (--mist-400 #8A8F9A, --mist-200 #C9CDD6, --steel #AEB6C2, --accent #E8EBF0, --white #F4F6FA) are replaced (A-03). Gold keeps its CLAUDE.md meaning on text and figures (a sourced figure) and is additionally allowed as the single light/accent hue in scenes and hairlines, never as a fill, background, state or unsourced figure (A-04).",
+      "successCriteria": [
+        {
+          "id": "SC-05.1",
+          "observableCheck": "Every hex literal in app/globals.css, lib/palette.ts and design-tokens.json is a member of the allowed set {#000000,#08080A,#0F0F12,#16161A,#1E1E23,#26262C,#FFFFFF,#F5F1E8,#C9A84C,#D4B65C,#E8D5A3,#B0923F}; every rgb()/rgba() literal uses one of those triplets; zero other hexes.",
+          "command": "cd /root/forgotten-mistory && grep -ohi '#[0-9a-f]\\{6\\}\\b' app/globals.css lib/palette.ts design-tokens.json | tr a-f A-F | sort -u | grep -v -x -e '#000000' -e '#08080A' -e '#0F0F12' -e '#16161A' -e '#1E1E23' -e '#26262C' -e '#FFFFFF' -e '#F5F1E8' -e '#C9A84C' -e '#D4B65C' -e '#E8D5A3' -e '#B0923F' | wc -l"
+        },
+        {
+          "id": "SC-05.2",
+          "observableCheck": "TC-NFR-MONO and TC-NFR-TOKEN pass after design-tokens.json, globals.css and palette.ts are changed together (token parity).",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/overhaul_static_audit.mjs | grep -E 'TC-NFR-MONO|TC-NFR-TOKEN'"
+        },
+        {
+          "id": "SC-05.3",
+          "observableCheck": "Gold semantics hold: gold_contrast_audit (TC-GOLD-SEM + WCAG AA text contrast) passes with an inventory that lists every gold use, and tests/monochrome pass; no gold background/fill on any element that is not a sourced figure, live repository URL or scene light.",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/gold_contrast_audit.mjs && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/monochrome tests/a11y/gold-contrast.spec.ts"
+        },
+        {
+          "id": "SC-05.4",
+          "observableCheck": "Computed styles on production: sampling every visible element's color/background-color/border-color yields only allowed triplets (or alpha blends of black/white); zero chromatic values outside the gold set; zero emoji glyphs.",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/monochrome/monochrome.spec.ts"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/app/globals.css",
+        "/root/forgotten-mistory/lib/palette.ts",
+        "/root/forgotten-mistory/design-tokens.json",
+        "/root/forgotten-mistory/components/marks/Caliper.module.css",
+        "/root/forgotten-mistory/components/sections/*/*.module.css",
+        "/root/forgotten-mistory/components/MiniVicBot.tsx",
+        "/root/forgotten-mistory/scripts/validate/overhaul_static_audit.mjs",
+        "/root/forgotten-mistory/scripts/validate/gold_contrast_audit.mjs",
+        "/root/forgotten-mistory/tests/monochrome/monochrome.spec.ts",
+        "/root/forgotten-mistory/tests/monochrome/gold-semantics.spec.ts",
+        "/root/forgotten-mistory/tests/a11y/gold-contrast.spec.ts",
+        "/root/dev/aether-job-career-agent/.claude/DESIGN-SYSTEM.md",
+        "/root/dev/aether-job-career-agent/design/aether-design-system/readme.md"
+      ],
+      "currentStatus": "Verified (this session): app/globals.css :root lines 6-14 declare --ink-900 #0A0B0D, --ink-800 #121317, --ink-700 #1B1D23, --ink-500 #3A3D46, --mist-400 #8A8F9A, --mist-200 #C9CDD6, --white #F4F6FA, --accent #E8EBF0, --steel #AEB6C2 and lines 33-39 the gold family (#c9a84c, #d4b65c, #e8d5a3, #b0923f + rgb(201 168 76 / .08/.2/.13)); lib/palette.ts mirrors them and adds black #000000; design-tokens.json colors = the same nine (its note calls cool-white 'THE only accent'); TC-NFR-MONO allows the four Aether golds only in globals.css and lib/palette.ts (audit lines 101-105) and flags any other chromatic value (saturation > 0.28); TC-NFR-TOKEN compares globals.css against design-tokens.json. Verified: none of the nine current non-gold tokens is in the Owner's black/white set (#08080A / #F5F1E8 do not appear anywhere in the three files). Verified: MiniVicBot.tsx uses Tailwind white/alpha classes (e.g. text-white/55, line 1343-1346) — inside the allowed set. Inferred: gold_contrast_audit's sanctioned inventory will need deliberate extension for any scene light (changing the check is part of the requested work and must be stated in the delivery note per skill §1.1)."
+    },
+    {
+      "id": "R-06",
+      "verbatim": "Create high quality website deisng and visuak effects for exceptional UI/UX.",
+      "interpretation": "Design and VFX craftsmanship across the whole page, not only inside sections: typography scale and 8-pt grid (design-tokens.json, TC-NFR-GRID/TC-NFR-SCALE), motion bands, interaction states, lighting/atmosphere in the GL scenes, chrome (nav, footer, MiniVic) consistent with the R-05 palette, layouts intact at 390/834/1280/1440 (CLAUDE.md) and 375/768/1280/1920 (verifier), zero console errors, Lighthouse and axe budgets. The word 'exceptional' is on the site's tone ban-list (TC-NFR-TONE) and must not appear in copy.",
+      "successCriteria": [
+        {
+          "id": "SC-06.1",
+          "observableCheck": "Screenshots of the full page at 375, 390, 768, 834, 1280, 1440 and 1920 px exist in the evidence bundle with zero horizontal overflow (document.scrollWidth ≤ innerWidth) at each width.",
+          "command": "ls /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/*/07-prod-verification/ | grep -c -E '(375|390|768|834|1280|1440|1920)'"
+        },
+        {
+          "id": "SC-06.2",
+          "observableCheck": "Lighthouse CI assertions in lighthouserc.json pass in the deploy pipeline (accessibility ≥ 0.8 error, FCP ≤ 2000 ms, LCP ≤ 3500 ms, TBT ≤ 400 ms, CLS ≤ 0.05) and the local perf spec passes (LCP ≤ 2500 ms, CLS < 0.05).",
+          "command": "cd /root/forgotten-mistory && gh run view --job \"$(gh run list --branch main --limit 1 --json databaseId -q '.[0].databaseId')\" 2>/dev/null | grep -i lighthouse; PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/perf"
+        },
+        {
+          "id": "SC-06.3",
+          "observableCheck": "Static design-system audits pass: grid/motion/type, interaction states, gold contrast, reduced motion, dead CSS, three font families only.",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/grid_motion_type_audit.mjs && node scripts/validate/interaction_state_audit.mjs && node scripts/validate/gold_contrast_audit.mjs && node scripts/validate/reduced_motion_audit.mjs && node scripts/validate/overhaul_static_audit.mjs"
+        },
+        {
+          "id": "SC-06.4",
+          "observableCheck": "Visual-regression baselines updated deliberately and reviewed: tests/visual pass and every changed PNG under tests/baselines is listed in the evidence with a reviewer sign-off line.",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/visual && git diff --stat -- tests/baselines"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/app/globals.css",
+        "/root/forgotten-mistory/app/layout.tsx",
+        "/root/forgotten-mistory/components/site/Navigation.tsx",
+        "/root/forgotten-mistory/components/site/Footer.tsx",
+        "/root/forgotten-mistory/components/MiniVicBot.tsx",
+        "/root/forgotten-mistory/design-tokens.json",
+        "/root/forgotten-mistory/lighthouserc.json",
+        "/root/forgotten-mistory/tests/visual/screenshots.spec.ts",
+        "/root/forgotten-mistory/tests/baselines/",
+        "/root/forgotten-mistory/scripts/validate/grid_motion_type_audit.mjs",
+        "/root/forgotten-mistory/scripts/validate/interaction_state_audit.mjs"
+      ],
+      "currentStatus": "Verified: lighthouserc.json asserts performance ≥ 0.8 (warn), accessibility ≥ 0.8 (error), best-practices ≥ 0.8, FCP ≤ 2000, LCP ≤ 3500, TBT ≤ 400, CLS ≤ 0.05, collecting http://127.0.0.1:3000/ and /performance-benchmark with the desktop preset. Verified: the CI lighthouse job failed on main ('no lhr reports' per 00-run-manifest.json; gh run list shows failure). Verified: design-tokens.json declares the 8-pt spacing steps, the 1.20→1.25 modular type scale (micro…name 7.5rem) and Source Serif 4 / Inter / IBM Plex Mono. Verified: TC-NFR-TONE ban list includes 'exceptional', 'amazing', 'cutting-edge', 'passionate', 'world-class', 'commander', 'mission' (audit lines 50-59)."
+    },
+    {
+      "id": "R-07",
+      "verbatim": "No User interactions, validation or permissions.",
+      "interpretation": "Process constraint on the agents, not on the site (the same prompt demands 'interactive infographic'). The run is fully autonomous: zero questions to the Owner, zero waits for approval or validation, zero permission prompts; every ambiguity is decided and recorded (skill §2 'do not punt decisions back', hos-orchestrator 'Zero Clarification Requests'; this file's ambiguities list). Boundary (A-06): paid generation is capped by the run manifest ($10) and is presently impossible (OpenRouter balance negative → HTTP 402), so no money is spent; the n8n product's own Owner-approval nodes (Config.md §6) are a product requirement and remain in the workflow — they are exercised with the run's own approval in test mode, never removed.",
+      "successCriteria": [
+        {
+          "id": "SC-07.1",
+          "observableCheck": "The final report and every worker artifact contain zero blocked-on-owner entries, zero AskUserQuestion calls and zero 'awaiting approval' states; every decision has a memo with rationale and reversal cost.",
+          "command": "grep -rn -i 'awaiting owner\\|needs_input\\|AskUserQuestion\\|blocked on the owner' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/99-final-report.md | wc -l"
+        },
+        {
+          "id": "SC-07.2",
+          "observableCheck": "Spend ledger records every paid call with cost; total ≤ the $10 cap; zero ElevenLabs cloning or D-ID calls.",
+          "command": "cat /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/*spend*ledger*.md"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/00-run-manifest.json",
+        "/root/forgotten-mistory/docs/avatar/Config.md",
+        "/root/.sub-agents/orchestrator/orchestration-skill.md"
+      ],
+      "currentStatus": "Verified: 00-run-manifest.json spend_policy.paid_generation_cap_usd = 10. Verified by orchestrator (01-discoveries.md P5; not re-probed here): OpenRouter balance −$5.38, every chat/video call returns 402. Verified by orchestrator (P7) and stated in Config.md lines 11-17: ElevenLabs instant voice cloning not permitted on the payg tier; D-ID 403. Verified: Config.md §6 makes generation and publication two explicit Owner approvals inside the workflow."
+    },
+    {
+      "id": "R-08",
+      "verbatim": "0 regression on the website functionality.",
+      "interpretation": "Everything the site does today keeps working after the change, measured against three baselines (A-08): (1) the Playwright corpus at HEAD once discovery is repaired — no test deleted, skipped or weakened (skill §11.4, §13); (2) the preservation register (scripts/validate/preservation_diff.mjs T-37: provenance labels, three-state calibration, Limits lines, 'Excluded, and why', ten dimensions with cited source, duration-true timeline, per-repository drawings); (3) the enumerated live behaviours: six sections and their ids/headings, navigation, scroll-progress bar, CV download (/docs/Vik_Resume_Final.pdf → 200), LinkedIn/GitHub/email/tel anchors, MiniVic launcher after the hero, open/close, greeting audio, quick prompts, three persona modes, mute/pause/replay, offline knowledge-base answers, legal/privacy/terms pages, robots.txt, sitemap.xml, service worker, footer, JSON-LD, security headers. A currently broken behaviour (live /api/chat) being fixed is not a regression.",
+      "successCriteria": [
+        {
+          "id": "SC-08.1",
+          "observableCheck": "Test-corpus diff between the baseline commit and the final commit shows only additions or reviewed, justified changes; zero removed test() blocks, zero new test.skip / test.fixme / xfail.",
+          "command": "cd /root/forgotten-mistory && git diff c0ab52e..HEAD --stat -- tests && git diff c0ab52e..HEAD -- tests | grep -c '^-.*test(' ; git diff c0ab52e..HEAD -- tests | grep -c 'test\\.skip\\|test\\.fixme'"
+        },
+        {
+          "id": "SC-08.2",
+          "observableCheck": "Full Playwright suite green against the static export AND against production; discovered test count ≥ the count at the first green baseline of this run (recorded in evidence).",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test --list | tail -1; PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test"
+        },
+        {
+          "id": "SC-08.3",
+          "observableCheck": "Preservation diff passes and node:test suites pass.",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/preservation_diff.mjs && node --test tests/ci_pipeline.test.mjs tests/github-telemetry.test.mjs tests/minivic_chat_function.test.mjs tests/static_audit_fail.test.mjs"
+        },
+        {
+          "id": "SC-08.4",
+          "observableCheck": "Live smoke: /, /privacy, /terms, /legal, /robots.txt, /sitemap.xml, /docs/Vik_Resume_Final.pdf, /assets/my_avatar.png all return HTTP 200 on production after deploy.",
+          "command": "for p in / /privacy /terms /legal /robots.txt /sitemap.xml /docs/Vik_Resume_Final.pdf /assets/my_avatar.png; do curl -s -o /dev/null -w \"%{http_code} $p\\n\" https://forgotten-mistory.web.app$p; done"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/tests/",
+        "/root/forgotten-mistory/playwright.config.ts",
+        "/root/forgotten-mistory/scripts/validate/preservation_diff.mjs",
+        "/root/forgotten-mistory/app/page.tsx",
+        "/root/forgotten-mistory/app/legal/",
+        "/root/forgotten-mistory/app/privacy/",
+        "/root/forgotten-mistory/app/terms/",
+        "/root/forgotten-mistory/app/robots.ts",
+        "/root/forgotten-mistory/app/sitemap.ts",
+        "/root/forgotten-mistory/components/site/ServiceWorkerRegister.tsx",
+        "/root/forgotten-mistory/components/MiniVicBot.tsx"
+      ],
+      "currentStatus": "Verified: 37 files under tests/ (find, this session): 33 Playwright specs across a11y/content/e2e/monochrome/overhaul/perf/visual plus 4 node:test .mjs files and tests/helpers/boot.ts; the suite is not runnable today (0 discovered — R-02), so the true baseline count is not observable until discovery is repaired (CLAUDE.md's '167' is a claim, not a measurement). Verified: MiniVicBot on the static export throws OFFLINE_MESSAGE when NEXT_PUBLIC_STATIC_EXPORT === '1' (MiniVicBot.tsx:1063-1065; next.config.js:89 sets it from FIREBASE_STATIC_EXPORT) and answers from lib/miniVicBrain.ts (ladder: /api/chat → deterministic local knowledge base, miniVicBrain.ts:4-14) — the only tier working live. Verified: app/ holds legal/, privacy/, terms/, robots.ts, sitemap.ts, error.tsx, loading.tsx, not-found.tsx, performance-benchmark/ (excluded from the export by TC-ARCH-BENCH)."
+    },
+    {
+      "id": "R-09",
+      "verbatim": "strictly followung agentic protocols, instructions and heirarchy and work distribution from the provided ones in the '~/.sub-agents/' dir.",
+      "interpretation": "Binding process rules, all from /root/.sub-agents: (1) hierarchy — hierarchy/effort_cascade.yaml: orchestrator at ultracode (orchestration only), level_1 max, level_2 xhigh, level_3 high, level_4 medium, depth cap 4; hierarchy/role_matrix.yaml: requirements_analysis / verification / validation / architecture / 3rd-party adversarial review = level 1 max; coding / testing / qa = level 2 xhigh; research / security / performance / mapping = level 3 high; documentation / cleanup = level 4 medium. (2) work distribution — claude-roles/orchestrator.system-prompt.md §3 pipeline Analyst → Researcher → Solution Architect → Senior SME plan audit → Coder → Tester → Senior SME build audit → §3 exit report → Verifier; orchestration-skill §7.4 Scout → Test Author → Implementer → Regression Runner → Deployer → Prod Verifier → Adversarial Reviewer; implementer ≠ verifier (§6); one implementer per git worktree (§7.3); ≤3 heavy jobs on the host (§7.3) tightened to 1 build/browser at a time by the run brief. (3) protocols — status token on every orchestrator response, §3 exit report as the only exit, no softening language, deployment containment until verifier PASS, approval phrases are feedback only, evidence tags (skill §4), §9.1 artifact layout, §13 banned behaviours, §15 branch hygiene (main only, zero PRs, no dirty tree), TDD with tests observed failing first (§8.2), three-attempt iteration ceiling (§1.1), Coder rules (Read → Edit → Write, Conventional Commits ≤ 72 chars, README updated on every commit), Tester rules (real dependencies, no mocks of the system under test, breakpoints 375/768/1280/1920, console free of exceptions), Researcher rules (URL per claim), Senior SME Fortune-500 audit at the four breakpoints.",
+      "successCriteria": [
+        {
+          "id": "SC-09.1",
+          "observableCheck": "The run record maps every work item to the role sequence above with the role name, tier and effort used for each dispatch, and no role graded its own output (implementer ≠ reviewer on every item).",
+          "command": "grep -n -E 'Scout|Test Author|Implementer|Regression Runner|Deployer|Prod Verifier|Adversarial Reviewer' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/99-final-report.md | wc -l"
+        },
+        {
+          "id": "SC-09.2",
+          "observableCheck": "Every work-item folder contains 02-tests-failing.log captured before 03-implementation.diff (TDD proof) and 08-adversarial-review.md from a different agent than the diff author.",
+          "command": "ls /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/*/02-tests-failing.log /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/*/08-adversarial-review.md"
+        },
+        {
+          "id": "SC-09.3",
+          "observableCheck": "Branch hygiene at the end: remote holds main only, zero open PRs, zero unpushed commits, clean tree, no stale worktrees.",
+          "command": "cd /root/forgotten-mistory && git ls-remote --heads origin && gh pr list --state open && git status -sb --porcelain=v1 | head -3 && git worktree list"
+        },
+        {
+          "id": "SC-09.4",
+          "observableCheck": "Commit subjects follow Conventional Commits ≤ 72 chars and README.md changed in each commit of this run.",
+          "command": "cd /root/forgotten-mistory && git log c0ab52e..HEAD --format='%h %s' | awk 'length($0)>80 || $2 !~ /^(feat|fix|chore|docs|test|refactor|perf|ci|build|style)(\\(.+\\))?:/' ; git log c0ab52e..HEAD --format='%h' | while read c; do git show --stat --format= $c | grep -q README.md || echo \"no README in $c\"; done"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/.sub-agents/hierarchy/effort_cascade.yaml",
+        "/root/.sub-agents/hierarchy/role_matrix.yaml",
+        "/root/.sub-agents/claude-roles/orchestrator.system-prompt.md",
+        "/root/.sub-agents/claude-roles/coder.system-prompt.md",
+        "/root/.sub-agents/claude-roles/tester.system-prompt.md",
+        "/root/.sub-agents/claude-roles/researcher.system-prompt.md",
+        "/root/.sub-agents/claude-roles/senior-sme.system-prompt.md",
+        "/root/.sub-agents/claude-roles/solution-architect.system-prompt.md",
+        "/root/.sub-agents/claude-roles/verifier.system-prompt.md",
+        "/root/.sub-agents/orchestrator/orchestration-skill.md",
+        "/root/forgotten-mistory/README.md",
+        "/root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/"
+      ],
+      "currentStatus": "Verified: all files named above were read this session (contents summarised in interpretation). Verified: git state violates §15 today — HEAD 22d11a0 unpushed (ahead 1), working tree dirty, three stale worktrees listed in 00-run-manifest.json (/var/tmp/dbg-wt, /var/tmp/v6-clean, /var/tmp/v6-wt/data-backend on branch wt/data-backend); remote holds main only (git ls-remote → refs/heads/main only). Verified: the unpushed commit's subject 'feat(hero): carry the v8 deep-space parallax into the v9 run' is Conventional-Commits-shaped; whether README.md changed in it: git show --stat lists only HeroAtmosphere.tsx and atmosphere.glsl.ts → README not updated (Coder rule 9 / CLAUDE.md global README-on-every-commit not met by that commit)."
+    },
+    {
+      "id": "R-10",
+      "verbatim": "Fix the n8n workflows to ensure it generates equally high standard and quality AI Avatatr videos to be used on my website.",
+      "interpretation": "Parent of R-10.1–R-10.3. 'The n8n workflows' (plural) = the two active workflows on the host instance http://127.0.0.1:5678: YYNSZMYApt7N3U3B 'AI Video Avatar Studio - Orchestrated Generation and Adversarial QA' (70 nodes, webhook POST /webhook/avatar-studio-run + GET /webhook/avatar-asset) and dfs7PNjfoTZxzaw4 'AI Video Avatar Studio' (62 nodes, form trigger). Their binding contract is docs/avatar/Config.md (asset contract §2, conformance gate §4, content contract §5, review integrity §5.2b, approvals §6).",
+      "successCriteria": [
+        {
+          "id": "SC-10.0",
+          "observableCheck": "Both workflows validate with zero errors and remain active; the latest execution of each after the fix terminates in a designed state (success, or a named Halt node) — never 'error'/'crashed'.",
+          "command": "n8n MCP: validate_workflow(YYNSZMYApt7N3U3B); validate_workflow(dfs7PNjfoTZxzaw4); search_workflow_executions(workflowId, limit 3) → status"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/docs/avatar/Config.md",
+        "/root/forgotten-mistory/docs/delivery/evidence/v7-20260904T110107Z/n8n-YYNSZMYApt7N3U3B.current.json",
+        "/root/forgotten-mistory/docs/delivery/evidence/v7-20260904T110107Z/n8n-YYNSZMYApt7N3U3B.post.json",
+        "/root/forgotten-mistory/docs/delivery/evidence/v7-20260904T110107Z/ACCEPTANCE.md",
+        "/root/forgotten-mistory/public/assets/",
+        "/root/forgotten-mistory/scripts/validate/overhaul_static_audit.mjs"
+      ],
+      "currentStatus": "Verified (n8n MCP this session): YYNSZMYApt7N3U3B active, 70 nodes, triggerCount 2, updated 2026-09-04T11:58:38Z; executions (newest first) 30 success, 29 error, 27 success, 26 success, 25 success (7 total). dfs7PNjfoTZxzaw4 active, 62 nodes, form trigger (fields: concept, expertise_anchor, portrait_url default https://forgotten-mistory.web.app/assets/my_avatar.png, heygen_voice, duration_seconds 6–15, aspect_ratio, delivery_profile WEB_PARITY/MASTER_1080/UHD_4K, models incl. heygen/avatar-iv, seedance-2.0/2.5, hailuo-3-max, wan-3.0(-prime), veo-3.1(-lite), max_spend_usd default 5, notify_email), updated 2026-09-04T09:14:01Z; executions 22 error, 21 error, 20 error, 19 success, 18 error (9 total); its versionId ≠ activeVersionId (unpublished edits). Verified (repo snapshot): the 70-node graph = preflight (OpenRouter key, ElevenLabs voice + entitlement) → plan → script agent (Claude Sonnet 4.6 via OpenRouter) → register ban-list → plan/spend approval → voice route (live clone / archived clone / model voice) → dispatch → wait/poll → download → byte-level MP4 probe → conformance gate vs Config.md → adversarial review (Gemini 3.1 Pro) → publish approval → CI dispatch → verify production → feedback data table; halts for preflight/register/QA-after-3. Not observable here: the error payloads of executions 29 and 20–22 (scout job)."
+    },
+    {
+      "id": "R-10.1",
+      "verbatim": "Fix the n8n workflows",
+      "interpretation": "Reproduce each failing execution (29 on the webhook workflow; 20, 21, 22 on the form workflow), classify the defect (workflow logic vs external denial), and change the workflow so every path ends in success or a designed Halt with a precise message. External denials are facts to encode, not to hide: OpenRouter returns 402 while the balance is negative; ElevenLabs cloning is ivc_not_permitted; HeyGen native fps is 25 (Config.md §3.0a) so CONFIG-2 always routes to the conform step. Fixes are made through the n8n API/MCP with a before/after export saved in the evidence bundle; node count changes are documented.",
+      "successCriteria": [
+        {
+          "id": "SC-10.1a",
+          "observableCheck": "Evidence holds, per failing execution id, the captured error node + message (scout reproduction) and the classification.",
+          "command": "ls /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/E-n8n/01-scout-reproduction.log"
+        },
+        {
+          "id": "SC-10.1b",
+          "observableCheck": "Before/after workflow JSON exports for both ids are saved and a diff of node names/parameters is recorded.",
+          "command": "ls /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/E-n8n/n8n-*.pre.json /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/E-n8n/n8n-*.post.json"
+        },
+        {
+          "id": "SC-10.1c",
+          "observableCheck": "A $0 test execution of each workflow (preflight → plan → register gate → probe/conform on an existing rendered file) completes in a designed terminal state; zero 'error' status.",
+          "command": "n8n MCP: search_workflow_executions(workflowId: 'YYNSZMYApt7N3U3B', limit: 1) and ('dfs7PNjfoTZxzaw4', limit: 1) → status ∈ {success} or execution stopped at a Halt node"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/docs/avatar/Config.md",
+        "/root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/E-n8n/"
+      ],
+      "currentStatus": "Verified: failing execution ids listed in R-10 (29; 18, 20, 21, 22). Verified by orchestrator (01-discoveries.md N1/N2, P5): paid proof runs are blocked by the negative OpenRouter balance. Not observable yet: root cause of each error (no execution payloads pulled in this session)."
+    },
+    {
+      "id": "R-10.2",
+      "verbatim": "to ensure it generates equally high standard and quality AI Avatatr videos",
+      "interpretation": "'Equally' = equal to the site's own visual bar (R-03/R-06) and to Config.md's mechanical contract, which is the only measurable form: every generated asset is probed byte-for-byte (§3.4 verified parser) and must satisfy §2.1 WEB_PARITY exactly — mp4 faststart, h264 High, yuv420p, 24/1 fps exact, 16:9, 1280×720 spoken / 640×360 hero, AAC 48 kHz mono for spoken, no audio for hero, ≤ 5 MB / ≤ 500 KB, bt709 tagged, subject inside the central 56% width (§1.5) — with §2.2 MASTER_1080 and §2.3 UHD_4K (3840×2160, via veo-3.1 / seedance-2.0 native or flux-video-upscale ×2, §3.1) kept as archive tiers; the script passes the §5.1 register ban-list, §5.2 declarative evidence-led register, §5.2a word budget (≥ 38 words floor), and §5.2b usable independent review (verdict CONFIRMED/REJECTED, confidence > 0, ≥ 20 chars evidence, auto-fix never on the judgement). Provenance: voice_is_cloned=false on every run and advisory VOICE-1 emitted (§1.4a) — never published as Vik's own voice.",
+      "successCriteria": [
+        {
+          "id": "SC-10.2a",
+          "observableCheck": "Conformance-gate node output for a real rendered file (e.g. the v8 master in the tree) lists all seven §4 checks with measured values and the defect classes; the emitted ffmpeg conform command matches §4.2 and its output re-probes as 24/1, 1280×720, h264 High, yuv420p, aac 48 kHz, ≤ 5,242,880 B.",
+          "command": "ffprobe -v error -show_entries stream=codec_name,profile,width,height,r_frame_rate,pix_fmt,sample_rate,channels -show_entries format=size -of csv=p=0 <conformed>.mp4"
+        },
+        {
+          "id": "SC-10.2b",
+          "observableCheck": "Register gate rejects a script containing any §5.1 banned phrase and accepts one that does not; word-budget warning fires below 38 words (unit run of the Code node logic captured).",
+          "command": "node /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/E-n8n/register-gate.test.mjs"
+        },
+        {
+          "id": "SC-10.2c",
+          "observableCheck": "Review parser has auto-fix disabled (Review Schema node parameter) and a malformed verdict routes to 'Halt - Review Unavailable'; verified in the post-fix export.",
+          "command": "node -e \"const w=require('/root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/E-n8n/n8n-YYNSZMYApt7N3U3B.post.json');const n=(w.workflow||w).nodes.find(n=>n.name==='Review Schema');console.log(JSON.stringify(n.parameters))\""
+        },
+        {
+          "id": "SC-10.2d",
+          "observableCheck": "Every run's delivery note carries voice_is_cloned:false and the VOICE-1 advisory.",
+          "command": "grep -n 'VOICE-1\\|voice_is_cloned' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/E-n8n/*.json | head"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/docs/avatar/Config.md",
+        "/root/forgotten-mistory/public/assets/my-avatar.mp4",
+        "/root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/E-n8n/"
+      ],
+      "currentStatus": "Verified: Config.md §2.1 table, §4 seven checks, §4.1 defect classes, §4.2 conform command, §5.1 ban-list, §5.2a floor (38 words), §5.2b review rules read this session. Verified: v7 ACCEPTANCE.md line 8 accepted 'fps 25 (heygen native, 24±1 accepted)' — that tolerance contradicts §2.1 'none — exact' and §3.3 'The frame rate never does. Conform is mandatory', so the v7 acceptance is a false positive against the current contract (skill §10.3 register). Verified: the 4K master in the tree (my-avatar.mp4) is 24/1 but 3840×2160 with audio and 58 MB — a UHD_4K archive-tier asset, non-conformant for shipping."
+    },
+    {
+      "id": "R-10.3",
+      "verbatim": "to be used on my website",
+      "interpretation": "The workflow's WEB_PARITY output is the asset the site actually wires, and the site wires only conformant assets: MiniVic's AVATAR_VIDEO_URL must point at a ≤ 5 MB 1280×720 clip served click-to-play from public/assets/avatar/ (the audit's on-demand budget), the hero loop at ≤ 500 KB 640×360, greeting audio ≤ 1 MB; 4K masters and explainer masters are archived outside public/ (or under an ignored path) so TC-NFR-PERF passes; every shipped avatar carries a visible provenance label (synthetic narration, not Vik's voice — Config.md §1.4a; CLAUDE.md section 6 'labelled as one').",
+      "successCriteria": [
+        {
+          "id": "SC-10.3a",
+          "observableCheck": "No file under public/ exceeds its audit budget; TC-NFR-PERF passes.",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/overhaul_static_audit.mjs | grep -A1 TC-NFR-PERF"
+        },
+        {
+          "id": "SC-10.3b",
+          "observableCheck": "MiniVicBot's avatar video src resolves to a file ≤ 5,242,880 B at 1280×720 24/1 h264 High yuv420p with aac 48 kHz; the hero loop file ≤ 512,000 B.",
+          "command": "cd /root/forgotten-mistory && grep -n 'AVATAR_VIDEO_URL\\s*=' components/MiniVicBot.tsx && f=public$(grep -o '\"/assets/[^\"]*\\.mp4\"' components/MiniVicBot.tsx | head -1 | tr -d '\"') && stat -c %s $f && ffprobe -v error -show_entries stream=codec_name,profile,width,height,r_frame_rate,pix_fmt,sample_rate -of csv=p=0 $f"
+        },
+        {
+          "id": "SC-10.3c",
+          "observableCheck": "The rendered MiniVic panel and any avatar-video placement show a provenance label containing 'synthetic' or 'not his voice' text; Playwright asserts it.",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/overhaul/avatar.spec.ts tests/overhaul/voiceover.spec.ts"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/components/MiniVicBot.tsx",
+        "/root/forgotten-mistory/public/assets/my-avatar.mp4",
+        "/root/forgotten-mistory/public/assets/minivic-greeting.mp4",
+        "/root/forgotten-mistory/public/assets/minivic-greeting-2160p.mp4",
+        "/root/forgotten-mistory/public/assets/minivic-greeting.mp3",
+        "/root/forgotten-mistory/public/assets/avatar-studio-voice.mp3",
+        "/root/forgotten-mistory/public/assets/explainer/",
+        "/root/forgotten-mistory/scripts/validate/overhaul_static_audit.mjs",
+        "/root/forgotten-mistory/tests/overhaul/voiceover.spec.ts",
+        "/root/forgotten-mistory/.gitignore"
+      ],
+      "currentStatus": "Verified (ls/ffprobe this session): public/assets contains my-avatar.mp4 58,370,772 B (3840×2160, wired as MiniVic AVATAR_VIDEO_URL at MiniVicBot.tsx:225 → a 56 MB fetch on first open), minivic-greeting-2160p.mp4 58,370,772 B, minivic-greeting.mp4 4,754,189 B, avatar-studio-voice.mp3 600,961 B, explainer/ (entailment-explainer.mp4 and -2160p.mp4 110,822,497 B each, -1080p 9,247,115 B, three chunks 2.95–3.04 MB), minivic-greeting.mp3 198,156 B, my-hero-avatar.mp4 160,156 B; no public/assets/avatar/ directory exists, so no file gets the 5 MB on-demand budget; reports/static-audit.json lists exactly these nine mp4s as oversized. Verified: MiniVicBot.tsx:244-249 documents the greeting MP3 as 'a professional British-male voice', not a clone, while the hiring greeting text says 'answering in his voice' (app/data/miniVicKnowledge.ts:32) — a provenance contradiction against Config.md §1.4a."
+    },
+    {
+      "id": "R-11",
+      "verbatim": "Fix the chatbot ad its introduction using research based findings on what employers wsnt to hear and not just collections of words.",
+      "interpretation": "Parent of R-11.1–R-11.4 ('ad' = and, 'wsnt' = want). The chatbot is MiniVic (components/MiniVicBot.tsx, 1569 lines) with the server brain in functions/index.js (minivicChat) and the client ladder in lib/miniVicBrain.ts; its introduction is the greeting set GREETING.{hiring,engineering,story} in app/data/miniVicKnowledge.ts:30-37, the pre-rendered greeting audio /assets/minivic-greeting.mp3, the persona labels/blurbs and quick prompts in MiniVicBot.tsx:112-143, and the server persona in functions/index.js:205-242.",
+      "successCriteria": [
+        {
+          "id": "SC-11.0",
+          "observableCheck": "On production, opening MiniVic and asking 'Where is Vikram based and when is he available?' returns a JSON answer from /api/chat (not the offline fallback) containing 'Melbourne' and the CV availability statement, within 5 s, with no console error.",
+          "command": "curl -s -X POST -H 'content-type: application/json' --data '{\"messages\":[{\"role\":\"user\",\"content\":\"Where is Vikram based and when is he available?\"}]}' https://forgotten-mistory.web.app/api/chat | head -c 600"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/components/MiniVicBot.tsx",
+        "/root/forgotten-mistory/app/data/miniVicKnowledge.ts",
+        "/root/forgotten-mistory/lib/miniVicBrain.ts",
+        "/root/forgotten-mistory/functions/index.js",
+        "/root/forgotten-mistory/firebase.json",
+        "/root/forgotten-mistory/firebase.static.json",
+        "/root/forgotten-mistory/scripts/deploy/firebase_static_deploy.sh",
+        "/root/forgotten-mistory/tests/e2e/chatbot.spec.ts",
+        "/root/forgotten-mistory/tests/content/minivic-knowledge.spec.ts",
+        "/root/forgotten-mistory/tests/minivic_chat_function.test.mjs"
+      ],
+      "currentStatus": "Verified (this session): live POST /api/chat → 200 text/html 113,442 B (the SPA index); firebase.json has the /api/chat → minivicChat and /api/tts → elevenLabsTts rewrites plus CSP/HSTS headers, but firebase.static.json (used by scripts/deploy/firebase_static_deploy.sh per orchestrator P2) has only the ** → /index.html rewrite and no-store cache headers (firebase.static.json:16-24); functions/index.js:452 redeclares const messages (SyntaxError — the function cannot load); MiniVicBot.tsx fetches /api/chat-with-vic (lines 480, 1081) and /api/realtime/session (line 929) which have no rewrite anywhere, while lib/miniVicBrain.ts:244 fetches /api/chat; on the static export handleSend throws OFFLINE_MESSAGE first (MiniVicBot.tsx:1063) so only askMiniVicBrain runs. Verified by orchestrator (P4–P6, not re-probed): deployed minivicChat answers 502 chat_upstream_failed (OpenRouter 402); DeepSeek and Z.ai rungs out of balance; OpenAI gpt-4.1-mini answers with the local key; deployed secrets differ from ~/.claude/.env.production except OPENROUTER."
+    },
+    {
+      "id": "R-11.1",
+      "verbatim": "Fix the chatbot",
+      "interpretation": "Make the live chat answer from a real model grounded in the CV facts: repair functions/index.js (duplicate const; keep server-owned grounding, client cannot inject system), deploy the function, serve the /api/chat rewrite through whichever firebase config the deploy script actually uses (and restore the security headers that firebase.static.json drops), align client paths (/api/chat-with-vic vs /api/chat), put a funded rung first in the provider ladder (OpenAI answered in the orchestrator's probe; OpenRouter 402 until credited) with real secrets from ~/.claude/.env.production set in Secret Manager, keep the deterministic offline brain as the last rung, and make the node:test suite and chatbot e2e run.",
+      "successCriteria": [
+        {
+          "id": "SC-11.1a",
+          "observableCheck": "functions/index.js loads and its unit tests pass.",
+          "command": "cd /root/forgotten-mistory && node --check functions/index.js && node --test tests/minivic_chat_function.test.mjs"
+        },
+        {
+          "id": "SC-11.1b",
+          "observableCheck": "Live /api/chat returns application/json with a non-empty text field and a provider id for a grounded question; HTTP 200; ≤ 5 s.",
+          "command": "curl -s -o /tmp/c.json -w '%{http_code} %{content_type} %{time_total}s\\n' -X POST -H 'content-type: application/json' --data '{\"messages\":[{\"role\":\"user\",\"content\":\"How many years of experience does Vikram have?\"}]}' https://forgotten-mistory.web.app/api/chat; cat /tmp/c.json | head -c 400; rm -f /tmp/c.json"
+        },
+        {
+          "id": "SC-11.1c",
+          "observableCheck": "Live security headers present on / (CSP, HSTS, X-Frame-Options DENY, Referrer-Policy) — i.e. the deploy used a config carrying firebase.json's headers.",
+          "command": "curl -sI https://forgotten-mistory.web.app/ | grep -i -E 'content-security-policy|strict-transport|x-frame-options|referrer-policy' | wc -l"
+        },
+        {
+          "id": "SC-11.1d",
+          "observableCheck": "Chatbot e2e TC-BOT-01…11 pass on the static export and on production; a grounded-answer test asserts the reply cites a CV fact and never a fabricated employer.",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/e2e/chatbot.spec.ts tests/content/minivic-knowledge.spec.ts"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/functions/index.js",
+        "/root/forgotten-mistory/functions/package.json",
+        "/root/forgotten-mistory/firebase.json",
+        "/root/forgotten-mistory/firebase.static.json",
+        "/root/forgotten-mistory/scripts/deploy/firebase_static_deploy.sh",
+        "/root/forgotten-mistory/scripts/deploy.mjs",
+        "/root/forgotten-mistory/.github/workflows/deploy.yml",
+        "/root/forgotten-mistory/lib/miniVicBrain.ts",
+        "/root/forgotten-mistory/components/MiniVicBot.tsx",
+        "/root/forgotten-mistory/tests/minivic_chat_function.test.mjs",
+        "/root/forgotten-mistory/tests/e2e/chatbot.spec.ts"
+      ],
+      "currentStatus": "Verified: functions/index.js exports elevenLabsTts (line 58) and minivicChat (line 404) via firebase-functions v2 onRequest; the client-supplied system role is rejected and the server prepends GROUNDING (lines 434-471) — sound design, broken by the duplicate declaration at line 452. Verified: live headers were not captured by me; orchestrator P2 states live headers match firebase.static.json (no CSP). Verified: CI deploy job is skipped because quality/lint/test/lighthouse fail upstream (deploy.yml build needs [quality, lint, lighthouse, axe], line 782)."
+    },
+    {
+      "id": "R-11.2",
+      "verbatim": "and its introduction",
+      "interpretation": "Rewrite the introduction as one coherent set: the three GREETING strings, the greeting audio (must speak the new text, be produced with a permitted voice — HeyGen built-in or browser TTS since cloning is denied — and be labelled synthetic), the persona labels/blurbs and quick prompts, the launcher aria copy, and the server persona lines so voice and text agree. The intro must be honest about provenance (Config.md §1.4a: never presented as Vik's own voice; the current 'answering in his voice' is removed), be traceable to the CV, pass the tone gate, and fit the panel at 390 px.",
+      "successCriteria": [
+        {
+          "id": "SC-11.2a",
+          "observableCheck": "GREETING.hiring/engineering/story replaced; each ≤ 60 words; each contains: what MiniVic is (AI clone, synthetic), one concrete CV fact with a number, what the visitor can ask, and one next step (email / CV); zero tone-ban words.",
+          "command": "cd /root/forgotten-mistory && sed -n '30,37p' app/data/miniVicKnowledge.ts && node scripts/validate/overhaul_static_audit.mjs | grep -A1 TC-NFR-TONE"
+        },
+        {
+          "id": "SC-11.2b",
+          "observableCheck": "Greeting audio transcript equals the new hiring greeting text (transcription captured in evidence), file ≤ 1 MB, sha256 recorded in MiniVicBot CLONED_VOICE_GREETING_HASH and asserted by tests/overhaul/voiceover.spec.ts.",
+          "command": "cd /root/forgotten-mistory && sha256sum public/assets/minivic-greeting.mp3 && grep -n 'GREETING_HASH' components/MiniVicBot.tsx"
+        },
+        {
+          "id": "SC-11.2c",
+          "observableCheck": "The panel shows a provenance line ('synthetic voice' or equivalent) and no copy claims the voice is Vikram's; Playwright asserts both.",
+          "command": "cd /root/forgotten-mistory && grep -n -i 'his voice\\|cloned voice' app/data/miniVicKnowledge.ts components/MiniVicBot.tsx | grep -v -i 'not\\|synthetic' | wc -l"
+        },
+        {
+          "id": "SC-11.2d",
+          "observableCheck": "Mobile shell test TC-BOT-09 passes with the new intro (no overflow at 390 px).",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/e2e/chatbot.spec.ts -g 'TC-BOT-09'"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/app/data/miniVicKnowledge.ts",
+        "/root/forgotten-mistory/components/MiniVicBot.tsx",
+        "/root/forgotten-mistory/public/assets/minivic-greeting.mp3",
+        "/root/forgotten-mistory/functions/index.js",
+        "/root/forgotten-mistory/tests/overhaul/voiceover.spec.ts",
+        "/root/forgotten-mistory/tests/e2e/chatbot.spec.ts",
+        "/root/forgotten-mistory/app/data/portfolio/listen.ts"
+      ],
+      "currentStatus": "Verified: current hiring greeting (miniVicKnowledge.ts:31-32): 'I'm an AI clone of Vikram, answering in his voice from his CV and his repositories. Ask me about the ATO programme, how he leads, what he has actually shipped, or where he is available — and if I do not have it on file, I will say so rather than guess.'; engineering (33-34) 'Hey, MiniVic here — Vikram's AI clone, engineering mode engaged…'; story (35-36) 'Hello! I'm MiniVic… Pull up a chair…'. Verified: persona modes Hiring Fit / Engineering / Story with blurbs and five quick prompts (MiniVicBot.tsx:112-143), greeting MP3 hash pinned at MiniVicBot.tsx:253 and played on first open (lines 409-415). Verified: the MP3 is a non-cloned male voice (MiniVicBot.tsx:244-249) while the text claims 'his voice' — provenance defect."
+    },
+    {
+      "id": "R-11.3",
+      "verbatim": "using research based findings on what employers want to hear",
+      "interpretation": "A Researcher pass (cited, ≥ 2 primary sources per binding claim, URLs fetched this run) on what recruiters and hiring managers look for in the first exchange with a candidate's proxy: role/seniority fit, quantified outcomes, current status and availability, location/work mode, how to contact, honesty about gaps; plus the business-client audience (engagement model, how to start). Findings map 1:1 onto sentences of the new introduction and quick prompts; every fact still traces to the CV (CLAUDE.md #2).",
+      "successCriteria": [
+        {
+          "id": "SC-11.3a",
+          "observableCheck": "Research digest lists ≥ 6 findings with source URLs and fetch dates; each new intro sentence and each quick prompt cites a finding id.",
+          "command": "grep -c 'https\\?://' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/B-understand/*employer*.md"
+        },
+        {
+          "id": "SC-11.3b",
+          "observableCheck": "A mapping table intro-sentence → finding id → CV line exists with zero unmapped sentences.",
+          "command": "grep -n 'CV line\\|Vik_Resume_Final' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/C-design/*intro*.md | wc -l"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/B-understand/",
+        "/root/forgotten-mistory/docs/Vik_Resume_Final.pdf",
+        "/root/forgotten-mistory/app/data/siteContent.ts",
+        "/root/forgotten-mistory/app/data/miniVicKnowledge.ts",
+        "/root/.sub-agents/claude-roles/researcher.system-prompt.md"
+      ],
+      "currentStatus": "Not observable: no employer-research digest exists in the evidence dir yet. Verified: the CV facts the intro may draw on are already codified in functions/index.js GROUNDING_FACTS (lines 185-203: 15+ years, ATO Payday Super since Mar 2026, ~92% evidence-effort reduction, $5M+ portfolio, P95 < 200 ms across 10k+ devices, availability and engagement models, contact channels) and app/data/siteContent.ts."
+    },
+    {
+      "id": "R-11.4",
+      "verbatim": "and not just collections of words",
+      "interpretation": "Anti-generic bar: the introduction must be specific to Vikram and to the visitor's decision, not template copy. Measurable form: (a) every sentence carries either a CV-traceable fact, a named capability of the bot, or a next step; (b) zero sentences that could be pasted unchanged into another person's portfolio (adversarial reviewer test: replace the name and check whether any sentence still reads true of anyone); (c) tone gate clean; (d) an independent reviewer rates specificity PASS.",
+      "successCriteria": [
+        {
+          "id": "SC-11.4a",
+          "observableCheck": "Adversarial review of the introduction records the name-swap test per sentence with zero generic sentences and a PASS verdict.",
+          "command": "grep -n -i 'name-swap\\|generic' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/*/08-adversarial-review.md"
+        },
+        {
+          "id": "SC-11.4b",
+          "observableCheck": "Tone linter and TC-NFR-TONE clean on app/data and layout meta.",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/tone-linter.mjs; node scripts/validate/overhaul_static_audit.mjs | grep -A1 TC-NFR-TONE"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/app/data/miniVicKnowledge.ts",
+        "/root/forgotten-mistory/components/MiniVicBot.tsx",
+        "/root/forgotten-mistory/scripts/validate/tone-linter.mjs",
+        "/root/forgotten-mistory/scripts/validate/overhaul_static_audit.mjs"
+      ],
+      "currentStatus": "Verified: the current story-mode greeting ('Pull up a chair — ask me about his career… the war rooms, the impossible deadlines') and the engineering greeting ('engineering mode engaged') are register/persona flourishes without a CV fact — they would fail the name-swap test; the hiring greeting carries one specific anchor (the ATO programme) and an honesty clause. Verified: TC-NFR-TONE currently passes (reports/static-audit.json tone: clean)."
+    },
+    {
+      "id": "R-12",
+      "verbatim": "Every sections tells a story narrated visually experienced by the high end visualisations, interactive infographics, graphs, diagrams etc., and my AI video avatars and chatbot, intellectually expericed by the text, the visuals and the narrative blend in one, and left with the remembering me after leaving my website ensuring the \"WoW\" factor and providing best experience can land you in places one never expects",
+      "interpretation": "Parent of R-12.1–R-12.7. The page reads as one narrative in six chapters, each chapter carried simultaneously by its signature visual (R-03), by the AI avatar videos and the chatbot as narrators, and by the copy — all three drawing on the same facts — leaving a memorable, distinctive impression that moves both audiences (employers, business clients) to act.",
+      "successCriteria": [
+        {
+          "id": "SC-12.0",
+          "observableCheck": "A narrative map in the design record states, per section, the chapter's one-line story beat, the visual that carries it, the text that carries it, and the avatar/chatbot touchpoint (or 'none, by design' with reason).",
+          "command": "grep -c '^| #' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/C-design/*narrative*.md"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/app/data/portfolio/",
+        "/root/forgotten-mistory/components/sections/",
+        "/root/forgotten-mistory/components/MiniVicBot.tsx",
+        "/root/forgotten-mistory/components/site/HeroAvatar.tsx",
+        "/root/forgotten-mistory/app/layout.tsx"
+      ],
+      "currentStatus": "Verified: the six section headings already form an arc (CLAUDE.md table: front door → ten dimensions answered → sixteen years to scale → calibration card → six of thirty-eight → feedback & coffee) and each data file states its narrative intent in its header comment (hero.ts:1-10, about.ts:1-18, experience.ts:1-9, listen.ts:1-13). Verified gap: no avatar video is mounted anywhere on the page; the chatbot is a floating widget with no section touchpoint beyond the hero-pulse context."
+    },
+    {
+      "id": "R-12.1",
+      "verbatim": "Every sections tells a story",
+      "interpretation": "Each section has a stated beat (setup → evidence → consequence) expressed in its kicker/title/lede in the data file and reinforced by the visual; nothing is a bare list.",
+      "successCriteria": [
+        {
+          "id": "SC-12.1a",
+          "observableCheck": "Each of the six data files exports kicker + title + lede/statement and each section renders them; six section headings present on production in order.",
+          "command": "curl -s https://forgotten-mistory.web.app/ | grep -o 'id=\"\\(hero\\|about\\|experience\\|skills\\|vitrine\\|listen\\)\"' | tr '\\n' ' '"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/app/data/portfolio/hero.ts",
+        "/root/forgotten-mistory/app/data/portfolio/about.ts",
+        "/root/forgotten-mistory/app/data/portfolio/experience.ts",
+        "/root/forgotten-mistory/app/data/portfolio/skills.ts",
+        "/root/forgotten-mistory/app/data/portfolio/vitrine.ts",
+        "/root/forgotten-mistory/app/data/portfolio/listen.ts"
+      ],
+      "currentStatus": "Verified: hero.ts (name/role/location/statement/ledger/actions), about.ts (kicker/title/lede[2]/dimensions[10]/provenance), experience.ts (kicker/title/lede), listen.ts (kicker/title/sentence/channels/coffee) read this session; skills.ts and vitrine.ts exist (9,048 B and 6,067 B) but were not opened."
+    },
+    {
+      "id": "R-12.2",
+      "verbatim": "narrated visually experienced by the high end visualisations, interactive infographics, graphs, diagrams etc.",
+      "interpretation": "Same obligation as R-03.1–R-03.4 phrased as narration: the visual of each section carries the beat (e.g. the timeline shows scale, the bench shows where evidence was measured, the drawings show mechanism). 'Graphs, diagrams' are satisfied by data-bound SVG/WebGL, never by screenshots, logos or stock art (Drawings.tsx rules).",
+      "successCriteria": [
+        {
+          "id": "SC-12.2a",
+          "observableCheck": "Every visual is data-bound (SC-03.2a) and no <img> in components/sections is a screenshot/logo/stock asset (alt text audit shows only the portrait).",
+          "command": "cd /root/forgotten-mistory && grep -rn '<img\\|<Image' components/sections | wc -l"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/components/sections/Vitrine/Drawings.tsx",
+        "/root/forgotten-mistory/components/sections/Skills/Bench.tsx",
+        "/root/forgotten-mistory/components/sections/Experience/Experience.tsx",
+        "/root/forgotten-mistory/components/sections/About/Compass.tsx"
+      ],
+      "currentStatus": "Verified: Drawings.tsx forbids screenshots/logos/mockups and renders role=img SVG with title + description (Drawings.tsx:13-21); Bench and Compass are SVG/HTML data drawings; Experience bars are DOM. See R-03 gaps."
+    },
+    {
+      "id": "R-12.3",
+      "verbatim": "and my AI video avatars and chatbot",
+      "interpretation": "The Owner's AI avatar videos (plural) and MiniVic are narrators of the story: the original hero loop at the R-04 placement; the spoken avatar in the MiniVic panel; explainer avatars generated by the n8n studio placed click-to-play where they narrate a section's concept (Config.md §5.2: one difficult concept per video) — only when a WEB_PARITY-conformant asset exists, never autoplaying with sound, always labelled synthetic (A-10). The chatbot narrates by answering in Vikram's register from the same facts (functions/index.js persona) and by section-aware quick prompts.",
+      "successCriteria": [
+        {
+          "id": "SC-12.3a",
+          "observableCheck": "At least two avatar placements are live (hero loop + MiniVic spoken clip); every placement's asset conforms to Config.md §2.1 for its tier and carries a provenance label; none autoplays audio.",
+          "command": "cd /root/forgotten-mistory && grep -rn 'autoPlay\\|autoplay' components app | grep -v muted | wc -l"
+        },
+        {
+          "id": "SC-12.3b",
+          "observableCheck": "Quick prompts include at least one prompt per section theme (fit, experience, skills, projects, contact) and each prompt's answer on production cites a CV fact.",
+          "command": "cd /root/forgotten-mistory && sed -n '/const QUICK_PROMPTS/,/^];/p' components/MiniVicBot.tsx"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/components/site/HeroAvatar.tsx",
+        "/root/forgotten-mistory/components/MiniVicBot.tsx",
+        "/root/forgotten-mistory/public/assets/",
+        "/root/forgotten-mistory/docs/avatar/Config.md",
+        "/root/forgotten-mistory/lib/avatarContext.tsx"
+      ],
+      "currentStatus": "Verified: MiniVicBot lazy-loads AVATAR_VIDEO_URL on open (MiniVicBot.tsx:404-408) and its Tier-1 realtime path is gated on NEXT_PUBLIC_REALTIME_WS_URL (line 883) which the static export does not set — so 'real-time' avatar claims are not true of production. Verified: five quick prompts exist (fit, roadmap, stack, services & rates, teams); none targets the ten dimensions, the timeline or the vitrine projects directly."
+    },
+    {
+      "id": "R-12.4",
+      "verbatim": "intellectually expericed by the text, the visuals and the narrative blend in one",
+      "interpretation": "Text, visual and narration are one system: the copy names what the visual shows, the visual draws what the copy claims, and the same source line backs both (single source of truth in app/data/portfolio; CLAUDE.md 'change facts only here'). No visual-only or text-only claims.",
+      "successCriteria": [
+        {
+          "id": "SC-12.4a",
+          "observableCheck": "Content parity: every figure rendered by a visual also appears in the section's text or Caliper label with its source; content-check spec and TC-FR-PARITY pass.",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/overhaul_static_audit.mjs | grep -A1 TC-FR-PARITY && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/content"
+        },
+        {
+          "id": "SC-12.4b",
+          "observableCheck": "Every new sentence added in this run is listed in the evidence with its CV/LinkedIn/repository source (CLAUDE.md definition of done 'every new sentence traceable').",
+          "command": "grep -c '^| ' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/C-design/*sentence-trace*.md"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/app/data/portfolio/",
+        "/root/forgotten-mistory/app/data/siteContent.ts",
+        "/root/forgotten-mistory/app/data/generated/cv-fingerprint.ts",
+        "/root/forgotten-mistory/scripts/build/cv_fingerprint.mjs",
+        "/root/forgotten-mistory/tests/content/content-check.spec.ts"
+      ],
+      "currentStatus": "Verified: TC-FR-PARITY passes today (reports/static-audit.json parity: 'all key facts present'); cv-fingerprint.ts is generated at build by scripts/build/cv_fingerprint.mjs and consumed by Skills.tsx:7."
+    },
+    {
+      "id": "R-12.5",
+      "verbatim": "and left with the remembering me after leaving my website",
+      "interpretation": "Memorability. A matter of judgement closed on stated judgement (skill §2 step 4) with objective supports: one consistent signature motif across all six sections (the Caliper mark + gold-as-source rule), a closing section that ends on a single memorable line with the name and one action, a share surface (OG image/title/description) that carries the same signature, and the judge panel's memorability score.",
+      "successCriteria": [
+        {
+          "id": "SC-12.5a",
+          "observableCheck": "Judge-panel rubric includes 'memorable signature' and 'recall after 24 h' items; ≥ 3 independent reviewers; PASS recorded.",
+          "command": "grep -n -i 'memorab\\|recall' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/C-design/*judge*.md"
+        },
+        {
+          "id": "SC-12.5b",
+          "observableCheck": "OG/Twitter meta present on production with title, description and image (200), and the closing section renders the single italic sentence plus name/contact.",
+          "command": "curl -s https://forgotten-mistory.web.app/ | grep -o '<meta property=\"og:[a-z:]*\" content=\"[^\"]*\"' | head -5; curl -s -o /dev/null -w '%{http_code}\\n' https://forgotten-mistory.web.app/assets/og-image.png"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/app/layout.tsx",
+        "/root/forgotten-mistory/public/assets/og-image.png",
+        "/root/forgotten-mistory/scripts/build/og_card.mjs",
+        "/root/forgotten-mistory/components/sections/Listen/Listen.tsx",
+        "/root/forgotten-mistory/components/marks/Caliper.tsx"
+      ],
+      "currentStatus": "Verified: public/assets/og-image.png exists (182,547 B) and scripts/build/og_card.mjs generates it; listen.ts states the intended residue ('the absence of the instrument after five screens of it', listen.ts:4-7) with a 20-word sentence; Caliper is the one mark the site asks a reader to learn (CLAUDE.md). Not observable: OG meta on the live page was not captured in this session."
+    },
+    {
+      "id": "R-12.6",
+      "verbatim": "ensuring the \"WoW\" factor",
+      "interpretation": "Judgement item with objective floors: no jank (≥ 55 fps desktop / ≥ 30 fps mobile), cinematic timing, zero console errors, zero layout breaks at 375/768/1280/1920 and 390/834/1280/1440, first paint of the hero within budget, and a judge-panel 'wow' score at or above the rubric threshold from reviewers who did not build it.",
+      "successCriteria": [
+        {
+          "id": "SC-12.6a",
+          "observableCheck": "Judge-panel record shows each section's 'wow' score ≥ the stated threshold and the overall verdict PASS.",
+          "command": "grep -n -i 'wow' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/C-design/*judge*.md"
+        },
+        {
+          "id": "SC-12.6b",
+          "observableCheck": "Objective floors: SC-03.1d fps, SC-03.4c console, SC-06.1 breakpoints, SC-06.2 budgets all PASS.",
+          "command": "see SC-03.1d, SC-03.4c, SC-06.1, SC-06.2"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/components/sections/",
+        "/root/forgotten-mistory/scripts/validate/phase04_fps_probe.mjs",
+        "/root/forgotten-mistory/tests/perf/performance.spec.ts"
+      ],
+      "currentStatus": "Not observable: no judge record yet; no fps capture in this session. Verified: fps probe script exists (scripts/validate/phase04_fps_probe.mjs, 1,503 B)."
+    },
+    {
+      "id": "R-12.7",
+      "verbatim": "and providing best experience can land you in places one never expects",
+      "interpretation": "Purpose: the experience converts both first-class audiences (CLAUDE.md #1; prompt.md R4) — an employer reaches the CV and a contact channel, a business client reaches an engagement path — with every path completing on production.",
+      "successCriteria": [
+        {
+          "id": "SC-12.7a",
+          "observableCheck": "Employer path: hero 'Download CV' href → /docs/Vik_Resume_Final.pdf returns 200 with application/pdf; LinkedIn, GitHub, mailto and tel anchors present in hero and Listen.",
+          "command": "curl -s -o /dev/null -w '%{http_code} %{content_type}\\n' https://forgotten-mistory.web.app/docs/Vik_Resume_Final.pdf; curl -s https://forgotten-mistory.web.app/ | grep -o 'href=\"\\(mailto:[^\"]*\\|tel:[^\"]*\\|https://www.linkedin.com[^\"]*\\|https://github.com/Victordtesla24[^\"]*\\)\"' | sort -u"
+        },
+        {
+          "id": "SC-12.7b",
+          "observableCheck": "Client path: MiniVic answers 'What engagement models do you offer?' on production with the CV's advisory / embedded / hands-on models and the email channel; Listen section renders the coffee line and four channels.",
+          "command": "curl -s -X POST -H 'content-type: application/json' --data '{\"messages\":[{\"role\":\"user\",\"content\":\"What engagement models do you offer?\"}]}' https://forgotten-mistory.web.app/api/chat | head -c 500"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/app/data/portfolio/hero.ts",
+        "/root/forgotten-mistory/app/data/portfolio/listen.ts",
+        "/root/forgotten-mistory/app/data/siteContent.ts",
+        "/root/forgotten-mistory/public/docs/Vik_Resume_Final.pdf",
+        "/root/forgotten-mistory/functions/index.js"
+      ],
+      "currentStatus": "Verified: hero actions = 'See the evidence' (#experience) and 'Download CV' (/docs/Vik_Resume_Final.pdf) with LinkedIn/GitHub/Email links (hero.ts:47-55); Listen channels = email, phone, LinkedIn, GitHub + coffee line (listen.ts:23-33); GROUNDING_FACTS carry availability and engagement models (functions/index.js:198-200). Verified gap: the client path through the chatbot cannot complete on production today (R-11)."
+    },
+    {
+      "id": "B-01",
+      "verbatim": "CLAUDE.md — 'One page, six sections, in this order' · prime directives 1–6 · 'Definition of done: tsc clean · lint clean · static audit 10/10 · 167 Playwright green · build clean · LCP < 2.5 s · CLS < 0.05 · no asset over 500 kB · reduced-motion path works · keyboard-navigable · monochrome with gold only as a claim · every new sentence traceable · deployed and verified against the live URL.'",
+      "interpretation": "Binding repository charter folded in as gates. Six sections in fixed order (no restored deleted sections, prompt.md R-16 reference); two audiences first-class; evidence not adjectives (tone linter); never grade a claim above its evidence (Caliper sourced / self-reported / open; hero figures self-reported — CT-10); gold means 'this figure has a source' (now widened to the single accent hue by R-05 — A-04); tests before features; no secrets in client code; ~/.claude/.env.production read-only, never printed. Verification battery (tsc, lint, build:static, audit, Playwright against a served out/) and the deploy rule (git push origin main && firebase deploy --only hosting, verify live, fix forward, never force-push; ask before paid ElevenLabs/D-ID/video-render — reconciled with R-07 in A-06). 'No asset over 500 kB' is reconciled with the executable gate's differentiated budgets (A-19).",
+      "successCriteria": [
+        {
+          "id": "SC-B01.1",
+          "observableCheck": "Section order on production is hero, about, experience, skills, vitrine, listen and no other <section> id exists in <main>.",
+          "command": "curl -s https://forgotten-mistory.web.app/ | grep -o '<section[^>]*id=\"[a-z]*\"' "
+        },
+        {
+          "id": "SC-B01.2",
+          "observableCheck": "No secret pattern in app/, components/, lib/ or out/ (TC-NFR-SEC + built_output_secret_scan).",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/built_output_secret_scan.mjs --dir out && node scripts/validate/overhaul_static_audit.mjs | grep -A1 TC-NFR-SEC"
+        },
+        {
+          "id": "SC-B01.3",
+          "observableCheck": "Hero ledger items carry data-state=self-reported and never sourced (CT-10).",
+          "command": "cd /root/forgotten-mistory && PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test tests/content/content-check.spec.ts -g 'CT-10'"
+        },
+        {
+          "id": "SC-B01.4",
+          "observableCheck": "Deployed and verified: firebase deploy log + live build-commit meta = origin/main (SC-02.2).",
+          "command": "cat /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/*/06-deploy.log | tail -20"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/CLAUDE.md",
+        "/root/forgotten-mistory/components/marks/Caliper.tsx",
+        "/root/forgotten-mistory/scripts/validate/built_output_secret_scan.mjs",
+        "/root/forgotten-mistory/tests/content/content-check.spec.ts"
+      ],
+      "currentStatus": "Verified: six sections mounted in order (app/page.tsx:53-63); Caliper has the three states (CLAUDE.md #3; Hero.tsx:68 uses self-reported); TC-NFR-SEC passes (reports/static-audit.json security: clean). Verified gaps: definition-of-done items not met today — tsc, audit 10/10, Playwright, deployed-from-commit (build-commit meta absent), CI green."
+    },
+    {
+      "id": "B-02",
+      "verbatim": "docs/prompt.md §3 Requirements Matrix — R1 'Net-new, posh, top-5-class UI/UX (full reinvention)'; R2 'Three.js/R3F + HyperFrames + GLSL signature scenes, fully animated/interactive — ≥7 signature scenes hold 60 fps desktop + 2021+ phone; reduced-motion fallback on each'; R3 'Real-time AI video-avatar agent (ElevenLabs voice + Higgsfield avatar + OpenRouter brain) — Live Q→A end-to-end; perceived real-time (<~1.5 s first frame/word); lip-sync drift ≤40 ms'; R4 'Both audiences persuaded — Employer reaches CV dossier; client reaches booking/engagement CTA'; R5 '4K / ultra-realistic / cinematic / UHD / 2160p60 everything — Every surface + asset audited ≥3840×2160 / 60 fps; raster assets ≥4K; no layout breaks'; R6 'All generation via Higgsfield + OpenRouter, latest models, disciplined — every asset planned→prompt-reviewed→verified at 4K; zero blind re-fires'; R7 'Resume-traceable content — Content-parity audit: every claim maps to resume; zero fabricated facts'; R8 'Build + deploy on the VPS, CI/CD, production-verified — Live on VPS over HTTPS; CI green; production verified against live URL each cycle'; R9 'Documentation + tests BEFORE code (TDD)'; R10 'MVP then 3 iterations; loop to 100% / ≤120'; R11 'Fusion Council final gate, directions implemented'; R12 'Use ALL skills, plugins, MCP servers, public tools — Higgsfield/Figma/chrome-devtools/research MCP + skills actively used; evidenced on the board'.",
+      "interpretation": "Folded in as binding context with conflicts resolved by recency and specificity (A-09): R1, R4, R7, R9, R11, R12 apply as written. R2's 'HyperFrames' and '≥7 scenes at 60 fps' are narrowed to the six-section signature visuals at the MOTION-AND-FX-SPEC §7 floor (≥55/≥30 fps) because CLAUDE.md fixes six sections and the DPR cap; R3's ElevenLabs + Higgsfield real-time avatar is superseded by Config.md (OpenRouter only; cloning denied) — the honest deliverable is a pre-rendered spoken avatar with provenance label and a grounded text chat, never advertised as real-time (skill §14 'narrow the promise to what's true'); R5/R6 '2160p60 everything' is narrowed to UHD masters in the archive tier + resolution-independent rendering, 24 fps shipped per Config.md §2.1; R8 'VPS/nginx' is superseded by the actual production (Firebase Hosting + Cloud Functions, CLAUDE.md) — CI green and live verification still apply; R10's MVP + 3 iterations is honoured as the run's phase loop with the skill's three-attempt ceiling per unit; R11 Fusion Council per docs/fusion-os.md runs once before COMPLETE.",
+      "successCriteria": [
+        {
+          "id": "SC-B02.1",
+          "observableCheck": "Final report has an R1–R12 row each marked PASS or HONESTLY-RELABELLED with the decision memo reference and evidence path; zero rows silently dropped.",
+          "command": "grep -c -E '^\\| R(1[0-2]|[1-9]) ' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/99-final-report.md"
+        },
+        {
+          "id": "SC-B02.2",
+          "observableCheck": "Fusion Council record exists per docs/fusion-os.md with scores and directions, and every direction maps to a closed work item.",
+          "command": "ls /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/*fusion*"
+        },
+        {
+          "id": "SC-B02.3",
+          "observableCheck": "MCP/skill usage evidenced: run record lists each MCP server and skill used with the artifact it produced (n8n, Perplexity/SearXNG, chrome-devtools/Steel CDP, Playwright, Higgsfield if used).",
+          "command": "grep -n -i 'mcp__\\|SearXNG\\|CDP' /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/99-final-report.md | wc -l"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/docs/prompt.md",
+        "/root/forgotten-mistory/docs/fusion-os.md",
+        "/root/forgotten-mistory/docs/avatar/Config.md",
+        "/root/forgotten-mistory/CLAUDE.md",
+        "/root/forgotten-mistory/firebase.json"
+      ],
+      "currentStatus": "Verified: prompt.md (552 lines, dated Jul 9) §3 table lines 51-64 read verbatim; Config.md (Sep 4) lines 11-17 declares ElevenLabs and D-ID out of scope and OpenRouter-only; CLAUDE.md declares Firebase Hosting; MiniVicBot's Tier-1 realtime (D-ID streaming ← ElevenLabs WS) is dormant (NEXT_PUBLIC_REALTIME_WS_URL unset). Verified: the Fusion Council has no record in this run's evidence dir."
+    },
+    {
+      "id": "B-03",
+      "verbatim": "docs/prompt.md §14 — C-1 '4K everything — every UI/UX element + generated asset is 4K, ultra-realistic, cinematic, UHD, 2160p60. No placeholders, no fake data, no layout breaks, no console errors.' C-2 'VPS-only — build, generate, run, deploy EVERYTHING on the VPS (187.77.12.13, root), Dockerized, HTTPS behind nginx.' C-3 'Provider routing — OpenRouter for all LLM/agent reasoning; Higgsfield for all image/video/avatar; ElevenLabs for voice; Claude council turns bill Max.' C-4 'Generation discipline — generate ONLY after a written plan + prompt review; one confirmed, tested, verified pass per asset; no senseless, unplanned, unverified, repeatedly-failing generation; re-spec a failed asset, never blindly re-fire.' C-5 'Use everything — actively employ ALL skills, plugins, MCP servers, and public tools.' C-6 'Performance + a11y — honour the budget even with 4K media (stream/lazy-load, KTX2/AVIF/AV1, DPR cap, instancing); keyboard-navigable; WCAG AA; reduced-motion on every scene; graceful named failures (never silent fallback).' C-7 'Integrity — no suppressed errors, no false-positive tests, no truncated output, no secrets in client code, single source of env truth.'",
+      "interpretation": "C-1's 'no placeholders, no fake data, no layout breaks, no console errors' and C-4, C-5, C-6, C-7 apply verbatim. C-1's 2160p60 and C-2/C-3 provider and host clauses are reconciled as in B-02 (A-09): builds and browser verification run on this VPS host (skill §7.3 host services), the site deploys to Firebase; generation is OpenRouter-only per Config.md; C-4 is enforced by the n8n plan/approval nodes and the $10 cap; 'graceful named failures' = every fallback in MiniVic and the GL scenes names itself (no silent catch).",
+      "successCriteria": [
+        {
+          "id": "SC-B03.1",
+          "observableCheck": "TC-NFR-COMPLETE passes (zero TODO/FIXME/mock/stub markers in app|components|lib) — the SpaceScene.tsx:14 stub is removed or the dead file deleted with its CSS.",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/overhaul_static_audit.mjs | grep -A1 TC-NFR-COMPLETE"
+        },
+        {
+          "id": "SC-B03.2",
+          "observableCheck": "No silent catch: every catch block in app/, components/, lib/ logs or rethrows (grep for empty catch bodies returns 0).",
+          "command": "cd /root/forgotten-mistory && grep -rn -E 'catch\\s*(\\([^)]*\\))?\\s*\\{\\s*\\}' app components lib | wc -l"
+        },
+        {
+          "id": "SC-B03.3",
+          "observableCheck": "Every paid generation in the run has a written plan + prompt review artifact before dispatch and one verified pass; spend ledger reconciles.",
+          "command": "ls /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/E-n8n/*plan* 2>/dev/null; cat /root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/*spend*ledger*.md"
+        },
+        {
+          "id": "SC-B03.4",
+          "observableCheck": "Single source of env truth: no default-to-fake-key pattern (process.env.X || 'fake') in functions/, lib/, app/.",
+          "command": "cd /root/forgotten-mistory && grep -rn -E \"process\\.env\\.[A-Z_]+\\s*\\|\\|\\s*['\\\"]\" app components lib functions/index.js | wc -l"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/docs/prompt.md",
+        "/root/forgotten-mistory/app/components/SpaceScene.tsx",
+        "/root/forgotten-mistory/components/gl/Scene.tsx",
+        "/root/forgotten-mistory/components/MiniVicBot.tsx",
+        "/root/forgotten-mistory/functions/index.js"
+      ],
+      "currentStatus": "Verified: app/components/SpaceScene.tsx:14 — `const nebulaFBMVertex = ''; const nebulaFBMFragment = ''; // stub missing glsl module for deploy` is the only TC-NFR-COMPLETE hit; SpaceScene is referenced only by itself and a comment in HeroAvatar.tsx:90 (dead code). Verified: HeroAvatar.tsx:128-130 and MiniVicBot.tsx:437-438 contain catch blocks with comment-only bodies (autoplay rejection, AudioContext close) — named non-fatal paths, to be judged against C-6 by the reviewer. Not observable: env-default patterns not grepped in this session."
+    },
+    {
+      "id": "B-04",
+      "verbatim": "docs/avatar/Config.md §2 — '2.1 Web delivery profile (WEB_PARITY) — hard requirement … container mp4 (faststart) · video codec h264 profile High · pixel format yuv420p · frame rate 24/1 none — exact · aspect 16:9 · dimensions 1280×720 (master) · 640×360 (hero) exact · audio (hero loop) none — must be stripped · audio (spoken clip) aac 48 kHz mono · max file size 500 KB (hero) · 5 MB (spoken) hard fail above · colour bt709 tagged. 2.2 MASTER_1080 1920×1080 · 24/1 · h264 High · yuv420p · AAC 48 kHz. Archive/edit source. 2.3 UHD_4K 3840×2160 · 24/1 · yuv420p · AAC 48 kHz. Archive only — never shipped to the site.'",
+      "interpretation": "The asset contract for every avatar video on the site and every n8n output; it is the arbiter of the 'UHD' clauses (A-02, A-19): UHD lives in the archive tier, the site ships WEB_PARITY.",
+      "successCriteria": [
+        {
+          "id": "SC-B04.1",
+          "observableCheck": "Every .mp4 under public/ that the site references matches its profile row exactly (ffprobe fields) and the size cap; every non-referenced master is outside public/.",
+          "command": "cd /root/forgotten-mistory && for f in $(grep -rho '/assets/[^\"'\"'\"' ]*\\.mp4' app components lib | sort -u); do echo \"$f\"; ffprobe -v error -show_entries stream=codec_type,codec_name,profile,width,height,r_frame_rate,pix_fmt,sample_rate,channels,color_primaries -show_entries format=size -of csv=p=0 public$f; done"
+        },
+        {
+          "id": "SC-B04.2",
+          "observableCheck": "faststart: the moov atom precedes mdat in each shipped mp4.",
+          "command": "cd /root/forgotten-mistory && for f in public/assets/my-hero-avatar.mp4 public/assets/avatar/*.mp4; do printf '%s ' $f; head -c 4096 $f | grep -c moov; done"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/docs/avatar/Config.md",
+        "/root/forgotten-mistory/public/assets/my-hero-avatar.mp4",
+        "/root/forgotten-mistory/public/assets/my-avatar.mp4",
+        "/root/forgotten-mistory/components/MiniVicBot.tsx",
+        "/root/forgotten-mistory/components/site/HeroAvatar.tsx"
+      ],
+      "currentStatus": "Verified (ffprobe this session): my-hero-avatar.mp4 conforms (h264 High 640×360 24/1 yuv420p, no audio, 160,156 B); my-avatar.mp4 does NOT conform for shipping (3840×2160, AAC present, 58,370,772 B) yet is the file MiniVicBot references (MiniVicBot.tsx:225). Not observable: faststart/bt709 tags not probed."
+    },
+    {
+      "id": "B-05",
+      "verbatim": "DESIGN-SYSTEM.md — 'Obsidian #08080A + gilt #C9A84C. Sapphire #3E5A8C only for agent cues. No coral #FF6B35. No indigo #4F46E5. No emoji. Gold is never a state (warn is copper #C8873A).' · design-tokens.json — 'Forgotten Mistory — Monochrome System' v3.0.0, 8pt grid, Source Serif 4 / Inter / IBM Plex Mono, spacing --space-0…20, typography micro…name, motion fast/base/emphatic/cine-in/cine/cine-long + staggers + four easings, colors ink-900/800/700/500, mist-400/200, white, accent, steel.",
+      "interpretation": "Two token systems must become one: design-tokens.json is the executable spec (TC-NFR-TOKEN compares globals.css to it; TC-NFR-TYPE enforces the three faces; grid_motion_type_audit enforces spacing/type/motion), so the R-05 palette lands by editing design-tokens.json + app/globals.css + lib/palette.ts in one commit while spacing, typography and motion tokens are kept unchanged. Sapphire and copper are excluded on this site by R-05; 'No emoji' and 'gold is never a state' apply.",
+      "successCriteria": [
+        {
+          "id": "SC-B05.1",
+          "observableCheck": "design-tokens.json colors section lists only the R-05 allowed values, metadata note updated; TC-NFR-TOKEN and TC-NFR-TYPE pass; spacing/typography/motion sections byte-identical to the baseline.",
+          "command": "cd /root/forgotten-mistory && git diff c0ab52e..HEAD -- design-tokens.json | grep -E '^[+-]\\s*\"(spacing|typography|measure|motion)\"' | wc -l; node scripts/validate/overhaul_static_audit.mjs | grep -E 'TC-NFR-TOKEN|TC-NFR-TYPE'"
+        },
+        {
+          "id": "SC-B05.2",
+          "observableCheck": "No state colour is gold and no gold is used to signal warn/error/ok anywhere (grep of state class names against gold vars returns 0).",
+          "command": "cd /root/forgotten-mistory && grep -rn -E '(warn|error|danger|success|ok)[^;]*var\\(--gold' app components | wc -l"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/design-tokens.json",
+        "/root/forgotten-mistory/app/globals.css",
+        "/root/forgotten-mistory/lib/palette.ts",
+        "/root/forgotten-mistory/app/layout.tsx",
+        "/root/dev/aether-job-career-agent/.claude/DESIGN-SYSTEM.md",
+        "/root/dev/aether-job-career-agent/design/aether-design-system/readme.md"
+      ],
+      "currentStatus": "Verified: design-tokens.json v3.0.0 read in full (274 lines); its colour families are ink/mist/white/accent/steel with no black (#000000 lives only in lib/palette.ts) and no gold (golds live in globals.css/palette.ts, exempted by the audit); TC-NFR-TOKEN and TC-NFR-TYPE pass today. Verified: Aether readme lines 72-84 define the ink ramp, gilt set, parchment text and the six state tones."
+    },
+    {
+      "id": "B-06",
+      "verbatim": "scripts/validate/overhaul_static_audit.mjs — the 10 gates: TC-NFR-TONE 'No boastful/sci-fi copy (data + layout meta + alt/aria)'; TC-NFR-MONO 'Achromatic, with one sanctioned accent defined in one place'; TC-NFR-PERF 'Asset budgets (img ≤0.5MB · video ≤2.5MB, ≤5MB click-to-play · audio ≤1MB)'; TC-FR-PARITY 'Resume facts present in siteContent'; TC-NFR-TYPE 'Three font families — Source Serif 4 (display) + Inter (body) + IBM Plex Mono (data)'; TC-NFR-SEC 'No hardcoded secrets in client source'; TC-ARCH-BENCH 'No /performance-benchmark route in static export'; TC-NFR-COMPLETE 'No truncation/placeholder/stub markers (app|components|lib)'; TC-NFR-TOKEN 'CSS custom properties match design token spec'; TC-NFR-DEADCSS 'No globals.css rules for classes that do not exist'.",
+      "interpretation": "All ten must PASS on every change and at the final commit (CLAUDE.md 'must be 10/10'). Note the audit writes reports/static-audit.json — in REVIEW mode it is run only by agents permitted to write outside the evidence dir.",
+      "successCriteria": [
+        {
+          "id": "SC-B06.1",
+          "observableCheck": "Audit prints 'RESULT: ALL PASS (10/10)' and exit 0 at the final commit; reports/static-audit.json result PASS.",
+          "command": "cd /root/forgotten-mistory && node scripts/validate/overhaul_static_audit.mjs; echo exit=$?"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/scripts/validate/overhaul_static_audit.mjs",
+        "/root/forgotten-mistory/reports/static-audit.json",
+        "/root/forgotten-mistory/public/",
+        "/root/forgotten-mistory/app/components/SpaceScene.tsx",
+        "/root/forgotten-mistory/app/globals.css",
+        "/root/forgotten-mistory/design-tokens.json"
+      ],
+      "currentStatus": "Verified (reports/static-audit.json 2026-09-04T23:10:42Z, read this session; script not re-run because it writes outside the evidence dir): PASS — TONE, MONO, PARITY, TYPE, SEC, ARCH-BENCH, TOKEN, DEADCSS; FAIL — PERF (9 oversized mp4s listed under R-10.3) and COMPLETE (app/components/SpaceScene.tsx:14 stub). Result 8/10."
+    },
+    {
+      "id": "B-07",
+      "verbatim": "Run brief — known verified baseline: 'tsc exit 2 (ContactScroll.tsx and GithubFeed.tsx import missing libs), functions/index.js:452 duplicate const messages (SyntaxError), Playwright discovers 0 tests because tests/*.test.mjs node:test files are collected, static audit 8/10, CI on main red, live /api/chat returns the HTML index, live page has no build-commit meta (deployed from an uncommitted tree), ElevenLabs instant voice cloning is not permitted (payg tier), the hero has NO avatar mounted today (components/site/HeroAvatar.tsx is unreferenced).'",
+      "interpretation": "The red baseline that must be repaired before any requirement above can be shown green (task list Phase A). Derived fixes: delete or wire the two dead components (ContactScroll.tsx, GithubFeed.tsx are imported by nothing — deleting is the smallest change; their tests tests/e2e/contact.spec.ts and github-feed-fallback.spec.ts must be reconciled, not weakened); fix functions/index.js:452; add a Playwright testMatch (or testIgnore for *.test.mjs) and run node:test files separately in CI; clear the nine oversized assets and the SpaceScene stub; make CI green (quality, lint, test, lighthouse lhr collection, npm audit high → next upgrade path per task #6); deploy from a committed tree so build-commit is stamped; mount the hero avatar (R-04).",
+      "successCriteria": [
+        {
+          "id": "SC-B07.1",
+          "observableCheck": "tsc exit 0; node --check functions/index.js exit 0; Playwright lists ≥ 1 test; node:test suites pass separately; audit 10/10; gh run list shows success for both workflows on the final commit; live /api/chat JSON; live build-commit present; HeroAvatar mounted.",
+          "command": "cd /root/forgotten-mistory && npx tsc --noEmit; echo tsc=$?; node --check functions/index.js; echo fn=$?; npx playwright test --list 2>/dev/null | tail -1; gh run list --branch main --limit 2; curl -s -o /dev/null -w '%{content_type}\\n' -X POST -H 'content-type: application/json' --data '{\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}' https://forgotten-mistory.web.app/api/chat; curl -s https://forgotten-mistory.web.app/ | grep -c 'build-commit'; grep -rln 'HeroAvatar' app components | grep -v components/site/HeroAvatar.tsx"
+        },
+        {
+          "id": "SC-B07.2",
+          "observableCheck": "npm audit at high level reports 0 vulnerabilities (next upgraded per the security workflow) or the Security workflow is green.",
+          "command": "cd /root/forgotten-mistory && npm audit --audit-level=high; echo exit=$?"
+        }
+      ],
+      "repoTouchpoints": [
+        "/root/forgotten-mistory/components/site/ContactScroll.tsx",
+        "/root/forgotten-mistory/components/site/GithubFeed.tsx",
+        "/root/forgotten-mistory/components/site/ContactForm.tsx",
+        "/root/forgotten-mistory/functions/index.js",
+        "/root/forgotten-mistory/playwright.config.ts",
+        "/root/forgotten-mistory/tests/ci_pipeline.test.mjs",
+        "/root/forgotten-mistory/tests/github-telemetry.test.mjs",
+        "/root/forgotten-mistory/tests/minivic_chat_function.test.mjs",
+        "/root/forgotten-mistory/tests/static_audit_fail.test.mjs",
+        "/root/forgotten-mistory/tests/e2e/contact.spec.ts",
+        "/root/forgotten-mistory/tests/e2e/github-feed-fallback.spec.ts",
+        "/root/forgotten-mistory/.github/workflows/deploy.yml",
+        "/root/forgotten-mistory/.github/workflows/security.yml",
+        "/root/forgotten-mistory/package.json",
+        "/root/forgotten-mistory/scripts/build/build_stamp.mjs",
+        "/root/forgotten-mistory/app/components/SpaceScene.tsx"
+      ],
+      "currentStatus": "Verified (this session, itemised in R-02, R-04, R-11, B-06): all nine baseline facts re-observed except two taken from the orchestrator's Verified findings without re-probing — ElevenLabs IVC denial (01-discoveries.md P7) and Playwright '0 tests' (mechanism verified from config; count not re-run). Additional Verified facts: ContactScroll.tsx, GithubFeed.tsx and ContactForm.tsx are imported by nothing in app/, components/, lib/ (grep → only a comment in lib/voiceoverContext.tsx:118); installed next 14.2.35, react 18.2.0, framer-motion 11.18.2, @react-three/fiber 8.18.0, three 0.165.0, @playwright/test 1.57.0; deploy.yml build job needs [quality, lint, lighthouse, axe] (line 782) so deploy is skipped while any of them fails; security.yml runs npm audit --audit-level=high (line 50)."
+    }
+  ],
+  "ambiguities": [
+    {
+      "text": "A-01 — 'Each section has one animation, visualisation, interactive infographic …' could mean three separate artefacts per section or one composite piece.",
+      "decisionTaken": "One signature visual per section that is animated, data-bound and interactive at once (R-03.1–R-03.3 are properties of the same element).",
+      "rationale": "Three artefacts per section would triple GPU/first-view cost against the perf budgets (LCP < 2.5 s, first view ≤ 2.5 MB, DPR cap) and contradict the site's evidence-not-decoration directive; the sections that already satisfy the Owner (Experience, Vitrine, About) each do it with one composite piece. Verified basis: component headers read this session."
+    },
+    {
+      "text": "A-02 — 'UHD … like MARVEL STUDIOS' and prompt.md C-1 '2160p60 everything' versus Config.md §2.1 (ship 640×360 / 1280×720 at exactly 24/1, ≤ 500 KB / ≤ 5 MB) and §2.3 ('UHD_4K … never shipped to the site').",
+      "decisionTaken": "UHD is satisfied by (a) resolution-independent WebGL/SVG/CSS visuals verified crisp at a 3840×2160 viewport and (b) 2160p masters kept in the archive tier; shipped video bytes obey Config.md §2.1 and the asset gate. Frame rate ships at 24/1.",
+      "rationale": "Config.md is dated 2026-09-04 and declares itself 'binding source of truth for every avatar asset shipped'; prompt.md is dated Jul 9; CLAUDE.md's definition of done caps assets. Verified: the only 2160p files in the tree are 56–110 MB and fail TC-NFR-PERF today."
+    },
+    {
+      "text": "A-03 — 'Only black, white and gold from my claude design systems': which system (Aether obsidian/gilt vs the repo's cool-grey monochrome tokens), which white (#F5F1E8 parchment vs #F4F6FA cool white), and whether greys are allowed.",
+      "decisionTaken": "Adopt the Aether values named by DESIGN-SYSTEM.md (obsidian #08080A + ink ramp, gilt #C9A84C family, parchment #F5F1E8); greys only as alpha/luminance blends of that black and white; the cool-tinted mist/steel/accent tokens are retired; sapphire, copper, coral, indigo excluded.",
+      "rationale": "The Owner named 'my claude design systems' and the only file by that name on the host is /root/dev/aether-job-career-agent/.claude/DESIGN-SYSTEM.md, which fixes #08080A and #C9A84C; its readme fixes the ramp and the text white. Verified: none of the current nine non-gold tokens is in that set, and the audit already exempts exactly the Aether golds (audit lines 104-105)."
+    },
+    {
+      "text": "A-04 — Gold as a palette colour (Owner) versus CLAUDE.md #4 'Gold means one thing only: this figure has a source' enforced by gold-semantics.spec and gold_contrast_audit TC-GOLD-SEM.",
+      "decisionTaken": "Keep the gold-as-source rule for every figure, label and text; additionally allow gold as the single accent hue for scene light, hairlines and active indicators (as the Aether system itself does), never as a fill, background, state or unsourced figure. The gold inventory in gold_contrast_audit is extended deliberately and the change is declared in the delivery note.",
+      "rationale": "Both rules are the Owner's; the narrower reading of each is compatible. DESIGN-SYSTEM.md: 'Gold is never a state'; Aether readme: 'Gold is punctuation'. Skill §1.1: changing a check is permitted only when it is the requested work and is stated plainly."
+    },
+    {
+      "text": "A-05 — 'my original hero video avatar': public/assets/my-hero-avatar.mp4 (640×360 silent loop wired by HeroAvatar.tsx) vs public/assets/my-avatar.mp4 (now the 3840×2160 v8 HeyGen master) vs the studio renders.",
+      "decisionTaken": "The original is my-hero-avatar.mp4 with the still portrait my_avatar.{png,webp,avif}; the 4K master is an R-10/R-12.3 'AI avatar video', not the original hero avatar.",
+      "rationale": "The file is literally named hero avatar, Config.md §1.1 documents it as 'Hero loop', HeroAvatar.tsx wires it, and it is the only asset that conforms to the hero profile (ffprobe this session)."
+    },
+    {
+      "text": "A-06 — 'No User interactions, validation or permissions' versus Config.md §6 (two explicit Owner approvals inside the n8n workflow) and CLAUDE.md ('Ask before any paid ElevenLabs / D-ID / video-render call').",
+      "decisionTaken": "The clause governs the agents' run: zero questions, zero approval waits, decisions recorded. The n8n approval nodes stay (they are the Owner's product requirement) and are exercised by the run's own approval in test mode; no paid render is attempted because OpenRouter returns 402 and the run cap is $10.",
+      "rationale": "The same prompt demands 'interactive infographic', so it cannot mean no user-facing interaction. Verified by orchestrator: balance −$5.38 (01-discoveries.md P5)."
+    },
+    {
+      "text": "A-07 — 'Fix the n8n workflows': which of the two active workflows is canonical, and how to prove a fix when paid generation is blocked.",
+      "decisionTaken": "Both are in scope (the Owner said workflows); each is repaired to terminate in a designed state and proven with $0 executions through preflight → plan → register gate → probe/conform on an existing rendered file; the end-to-end paid render is recorded as unverified at the boundary (skill §1.1).",
+      "rationale": "Verified via n8n MCP: both active, both with recent error executions (29; 18, 20, 21, 22). Firing a paid render would fail on 402 and would violate the spend cap if it did not."
+    },
+    {
+      "text": "A-08 — '0 regression': the reference baseline is undefined because the Playwright suite discovers 0 tests today and CLAUDE.md's '167 tests' is unverified.",
+      "decisionTaken": "Regression is measured against (1) the test corpus at HEAD once discovery is repaired — no test deleted/skipped/weakened, count recorded; (2) preservation_diff.mjs; (3) an enumerated list of live behaviours captured in 07-prod-verification before any change.",
+      "rationale": "Skill §11.4 forbids weakening tests; a baseline that cannot run cannot be a baseline, so it must be repaired first and its count recorded rather than assumed."
+    },
+    {
+      "text": "A-09 — prompt.md R2/R3/R5/R6/R8 and C-1/C-2/C-3 (HyperFrames, ≥7 scenes at 60 fps, ElevenLabs + Higgsfield real-time avatar, 2160p60 everything, VPS/nginx deploy) conflict with Config.md (OpenRouter only, 24/1 WEB_PARITY, cloning denied) and CLAUDE.md (six sections, Firebase Hosting, DPR cap).",
+      "decisionTaken": "The newer, more specific binding documents win; the conflicting prompt.md acceptance lines are honestly relabelled with a decision memo each (skill §14 'narrow the promise to what's true'), never faked.",
+      "rationale": "Config.md 2026-09-04 and CLAUDE.md describe the deployed reality; prompt.md (Jul 9) predates the ElevenLabs/D-ID denials and the Firebase architecture. Verified: MiniVic's real-time tier is dormant on the static export."
+    },
+    {
+      "text": "A-10 — 'my AI video avatars and chatbot' narrate every section: where avatar videos go and whether any may autoplay.",
+      "decisionTaken": "Hero: the original silent loop (autoplay muted, still as LCP). MiniVic panel: the spoken WEB_PARITY clip, click/open-to-play. Explainers: click-to-play placements only where a conformant asset exists (≤ 5 MB under public/assets/avatar/), otherwise 'none, by design' is recorded. No autoplay with sound anywhere; every placement labelled synthetic.",
+      "rationale": "a11y (WCAG autoplay), perf budgets, and Config.md §1.4a provenance. Verified: the explainer assets in the tree are 9–110 MB and cannot ship as they are."
+    },
+    {
+      "text": "A-11 — 'Fix … its introduction': greeting text only, or also the audio greeting, persona copy, quick prompts and server persona.",
+      "decisionTaken": "All of them, as one coherent set; the audio must speak the new text and the copy must stop claiming the voice is Vikram's.",
+      "rationale": "Verified contradiction: miniVicKnowledge.ts:32 says 'answering in his voice' while MiniVicBot.tsx:244-249 documents a non-cloned male voice; Config.md §1.4a forbids presenting generated speech as Vik's voice."
+    },
+    {
+      "text": "A-12 — 'research based findings on what employers want to hear': the evidence bar for the research.",
+      "decisionTaken": "Researcher charter applies: every finding carries a URL fetched in this run and a date; binding claims need ≥ 2 primary sources; recency preferred; findings map 1:1 to intro sentences and every fact still traces to the CV.",
+      "rationale": "/root/.sub-agents/claude-roles/researcher.system-prompt.md citation discipline; CLAUDE.md #2."
+    },
+    {
+      "text": "A-13 — 'WoW factor', 'remembering me', 'best experience', 'like MARVEL STUDIOS' are judgements with no intrinsic metric.",
+      "decisionTaken": "Closed on the stated verdict of an independent design-judge panel (≥ 3 reviewers who did not build it, written rubric, per-section scores) plus objective floors (fps, console, breakpoints, budgets). No proxy metric is invented.",
+      "rationale": "Orchestration skill §2 loop step 4: 'a countable stand-in for a quality you cannot count is verification theatre'; §6 implementer ≠ verifier."
+    },
+    {
+      "text": "A-14 — Spend: prompt.md C-4 and the run cap ($10) versus a negative OpenRouter balance (−$5.38) and denied ElevenLabs cloning.",
+      "decisionTaken": "No paid generation in this run unless credits appear; every paid call, if any, is planned, prompt-reviewed and logged; the final report states plainly which paths were verified at the boundary only.",
+      "rationale": "Skill §1.1 'verify at the boundary … never resolve this tension by firing the real thing'; 00-run-manifest.json spend_policy."
+    },
+    {
+      "text": "A-15 — Baseline detail: the brief records tsc 'exit 2'; this session observed exit 1 through the npx wrapper with the identical two TS2307 errors.",
+      "decisionTaken": "Record both; the criterion is exit 0 with zero errors, so the discrepancy changes nothing.",
+      "rationale": "Verified this session: npx tsc --noEmit → ContactScroll.tsx(4,37) and GithubFeed.tsx(5,38) TS2307."
+    },
+    {
+      "text": "A-16 — The orchestration skill's ground truth and several exit gates describe the Aether project (remediation ledger with 27 items, /root/prod/app, Postgres 5436, /api/health, PH0-PAUSE-1, commercial readiness) and do not exist for this repository.",
+      "decisionTaken": "Apply the protocol layer in full; mark §3.x, §5, §11.1, §11.7, §11.11, §11.12 and §14's four named items 'NOT APPLICABLE — Aether-specific' with that reason in the final report; do not fabricate a ledger.",
+      "rationale": "Skill §5.2 forbids reconstructing a ledger from memory; orchestrator register item 99997 requires a non-empty reason for any NOT APPLICABLE gate."
+    },
+    {
+      "text": "A-17 — CLAUDE.md's 'no asset over 500 kB' versus the executable gate's differentiated budgets (img ≤ 0.5 MB, video ≤ 2.5 MB, ≤ 5 MB click-to-play under assets/avatar/, audio ≤ 1 MB).",
+      "decisionTaken": "The executable gate is the enforced rule; 500 kB applies to first-view (eager) assets, including the hero loop per Config.md §2.1.",
+      "rationale": "The audit's comment (lines 157-167) records why the on-demand budget exists; CLAUDE.md names the audit as the gate that must be 10/10."
+    },
+    {
+      "text": "A-18 — 'Each section': whether Navigation, Footer or the MiniVic widget count as sections.",
+      "decisionTaken": "Six sections only (#hero, #about, #experience, #skills, #vitrine, #listen); chrome is styled to the palette but carries no signature visual obligation.",
+      "rationale": "CLAUDE.md's section table is explicit and forbids restoring removed sections."
+    },
+    {
+      "text": "A-19 — Where the 4K masters and the un-conformed explainer/greeting videos live so that TC-NFR-PERF passes without losing the archive.",
+      "decisionTaken": "Move masters out of public/ (an ignored archive path recorded in the evidence, or the n8n data table), ship only conformed WEB_PARITY derivatives; the MiniVic spoken clip moves under public/assets/avatar/ to use the click-to-play budget.",
+      "rationale": "Verified: nine files fail the gate today; the audit grants 5 MB only to assets/avatar/*; Config.md §2.3 'archive only'."
+    }
+  ],
+  "artifactPath": "/root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/B-understand/01-requirements-map.json"
+}

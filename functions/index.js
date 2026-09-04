@@ -425,53 +425,16 @@ exports.minivicChat = onRequest(
       res.status(400).json({ error: conversation.error });
       return;
     }
-    // Whitelist roles, coerce to strings, and bound total payload to cap cost/abuse.
-    let total = 0;
-    const messages = [];
-    for (const m of incoming) {
-      const role = m && typeof m.role === "string" ? m.role : "";
-      const content = m && typeof m.content === "string" ? m.content : "";
-      // `system` is deliberately NOT accepted from the client. It used to be, and
-      // that was the whole bypass: the function injected no instructions of its
-      // own, so whatever the caller sent became the entire prompt. A probe with
-      // no system message at all answered "what is the boiling point of water in
-      // Fahrenheit" with "212" — the endpoint was a general-purpose language
-      // model open to anyone who found the URL, on the owner's credential.
-      // Grounding a client cannot override is the only kind that is worth
-      // anything (R-66, R-73, R-131).
-      if (!["user", "assistant"].includes(role) || !content.trim()) continue;
-      const trimmed = content.slice(0, 4000);
-      total += trimmed.length;
-      messages.push({ role, content: trimmed });
-    }
-    if (messages.length === 0 || total > 16000) {
-      res.status(400).json({ error: "messages_invalid" });
-      return;
-    }
-
+    // The server's instructions go first and always. The client supplies turns
+    // (already whitelisted to user/assistant by normaliseConversation); it never
+    // supplies the brief. The persona style comes from the optional `mode` field.
     const messages = [
       { role: "system", content: buildMiniVicSystemPrompt(resolveMode(req.body)) },
       ...conversation.messages,
     ];
 
     try {
-      const upstream = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${OPENROUTER_API_KEY.value()}`,
-          "content-type": "application/json",
-          "HTTP-Referer": "https://forgotten-mistory.web.app",
-          "X-Title": "MiniVic - Vikram Deshpande portfolio",
-        },
-        body: JSON.stringify({
-          model: MINIVIC_MODEL,
-          // The server's instructions go first and always. The client supplies
-          // turns; it does not supply the brief.
-          messages: [{ role: "system", content: GROUNDING }, ...messages],
-          temperature: 0.6,
-          max_tokens: 512,
-        }),
-      });
+      const result = await completeChat({ messages, providers: resolveChatProviders() });
       res.set("Cache-Control", "no-store");
       res.status(200).json({ text: result.text, provider: result.provider, model: result.model });
     } catch (err) {

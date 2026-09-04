@@ -1,0 +1,288 @@
+{
+  "artifactPath": "/root/forgotten-mistory/docs/delivery/evidence/v9-20260904T2312Z/B-understand/03-sections-skills-vitrine-listen.json",
+  "run_id": "v9-20260904T2312Z",
+  "role": "Code explorer - sections Skills, Vitrine, Listen + page chrome (REVIEW mode, read-only)",
+  "head_at_capture": "22d11a071925b04f52f0dac1157ed8e8ef4fce49 (manifest opened at c0ab52e; the delta c0ab52e..22d11a0 touches only components/sections/Hero/HeroAtmosphere.tsx and atmosphere.glsl.ts - none of this brief's files)",
+  "evidence_legend": "Verified = command run or file read in this session with the artifact cited; Inferred = derived from read source or spec knowledge without executing it in a browser; Assumed = not checked.",
+  "sections": [
+    {
+      "id": "skills",
+      "files": [
+        "/root/forgotten-mistory/components/sections/Skills/Skills.tsx (218 lines)",
+        "/root/forgotten-mistory/components/sections/Skills/Skills.module.css (399 lines)",
+        "/root/forgotten-mistory/components/sections/Skills/Bench.tsx (432 lines)",
+        "/root/forgotten-mistory/components/sections/Skills/Bench.module.css (349 lines)",
+        "/root/forgotten-mistory/app/data/portfolio/skills.ts (232 lines: 13 sources, 17 capabilities, 20 source->capability links)",
+        "/root/forgotten-mistory/app/data/generated/cv-fingerprint.ts (build-generated, read by Skills.tsx:7)",
+        "/root/forgotten-mistory/components/marks/Caliper.tsx (legend 'open' glyph, Skills.tsx:114)"
+      ],
+      "currentVisual": "[Verified by reading] Two things move. (1) THE BENCH (Bench.tsx, mounted at Skills.tsx:106 above the table): a bipartite 'cabling' diagram. Rails are real HTML <button>s - 13 sources in three bands (Programmes/Repositories/Credentials, Bench.tsx:73-77) on the left, 17 capabilities on the right - and only the 20 wires are SVG: cubic Beziers with flat tangents (Bench.tsx:138-139) whose endpoints are measured from layout (getBoundingClientRect on every node, Bench.tsx:114-150), re-measured by a ResizeObserver with a two-rAF settle and again on document.fonts.ready (Bench.tsx:152-184). Stroke is one of two userSpaceOnUse linearGradients spanning the board width: gold (stops 0.06/0.62/0.62/0.06 alpha, Bench.tsx:289-301) for the 17 production wires, --mist-400 grey (0.05/0.5/0.5/0.05, Bench.tsx:302-314) for the 3 non-production wires; the pending capability has no wire. Trace-in: once, when an IntersectionObserver at threshold 0.15 fires (Bench.tsx:196-207), CSS keyframe `trace` (stroke-dasharray 1 1, dashoffset 1->0 with pathLength=1, Bench.module.css:72-83) at --motion-cine 900ms / --motion-ease-emphasized with per-wire delay 120+index*38ms (Bench.tsx:333, Bench.module.css:56); a 1780ms timer (120+20*38+820+80, Bench.tsx:209-214) then flags data-settled and the animation is removed so resizes never replay it. Attention: hover/focus on any node sets data-dimmed on the board; unconnected wires drop to stroke-opacity 0.12, connected ones go to 1 and width 1.4 (Bench.module.css:100-107); unconnected nodes to opacity 0.3 (Bench.module.css:186-194); a fixed-height readout (min-height 5.2rem, Bench.module.css:241-251) prints the capability's evidence or the source's link count; selecting a capability also marks the table row data-traced with a 2px inset gold rule (Skills.tsx:41,184; Skills.module.css:392-395). Status marks: gold filled dot for production, half-filled grey for non-production, open ring for pending (Bench.module.css:210-238). (2) THE CARD: `cardSettle` opacity 0->1 at --motion-fast 200ms on mount (Skills.module.css:59-74); filter chips transition colour/border/background 200ms. Filtering hides rows with the `hidden` attribute inside a wrapper whose min-height is the measured unfiltered table (Skills.tsx:43-78,148-151). Tech: SVG + CSS + React state; NO WebGL, NO framer-motion in this section. Reduced-motion path: Bench.tsx:195-198 short-circuits to drawn=true, Bench.module.css:85-90 sets `.wire[data-drawn]{animation:none;opacity:1}`, Skills.module.css:379-387 removes the card fade and chip transitions; the global whitelist at app/globals.css:941-957 drops the stroke-opacity/stroke-width transitions so dimming is instant. No-WebGL path: identical to default (nothing here uses GL). Narrow path (<=900px, Bench.module.css:285-349): the wires SVG is display:none, the source rail becomes a row of tappable chips and the capability rail a plain list - the diagram is absent on phones and portrait tablets. Cost: 20 <path>s, 30 buttons, one ResizeObserver, one IntersectionObserver, ~30 getBoundingClientRect reads per measure, two rAFs per resize; no per-frame work at rest.",
+      "story": "[Verified by reading skills.ts:1-20 and Skills.tsx:19-35] The section argues 'calibration card, not skill cloud': every capability has evidence, the status names the ENVIRONMENT the evidence came from (production / outside production / not yet held), never a proficiency, and the last row - 'AWS and GCP certification: studying; no certificate issued' (skills.ts:213-220) - is the credibility anchor that makes the rows above it believable. The Bench draws that argument: each capability wired to the programme, repository or issuing body it came from, gold only where it ran in production. On a desktop the drawing carries the story well - the graph IS the proof that the list is not adjectives. It fails to carry it in three places: (a) below 900px the wires vanish and the reader gets a chip filter plus a list, i.e. exactly the 'list of adjectives' the component's own docblock says it exists to avoid (Bench.tsx:15-20 vs Bench.module.css:285-288); (b) the same fact is echoed on three surfaces at once (readout, gold-ruled table row, node label), so the 'one visual' is diluted; (c) the trace-in is a one-shot time-based reveal rather than something the reader's own scroll or attention drives, so on a fast scroll it has finished before it is watched.",
+      "colorTokens": [
+        "--gold (production wires via gradient stops Bench.tsx:297-300; production mark Bench.module.css:219-222; legend glyph Skills.module.css:109-111; production status glyph Skills.module.css:292-294; traced-row inset rule Skills.module.css:394)",
+        "--mist-400 (non-production wire gradient Bench.tsx:310-313; kicker, table head, where column, pending status)",
+        "--mist-200 (node ink, evidence column, legend glyph rest, half-filled mark)",
+        "--white (title, capability column, active chip fill, focus rings, hover ink)",
+        "--ink-900 (pressed-chip ink)",
+        "--ink-300 (band labels, counts, captions, caveats, pending ring border, readout caveat)",
+        "--accent (selected chip hover fill, Skills.module.css:156-159)",
+        "--token-border-default, --card-border, --card-border-hover",
+        "rgb(244 246 250 / 0.015) card ground Skills.module.css:62",
+        "rgb(244 246 250 / 0.035) traced-row ground Skills.module.css:393",
+        "rgb(255 255 255 / 0.045), rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.05) hairline row/band rules",
+        "gradient stop alphas 0.06/0.62 (gold) and 0.05/0.5 (grey) as literals in Bench.tsx:297-313",
+        "motion: --motion-fast, --motion-base, --motion-cine, --motion-ease-standard, --motion-ease-emphasized"
+      ],
+      "defects": [
+        {
+          "severity": "medium",
+          "file": "/root/forgotten-mistory/components/sections/Skills/Bench.module.css",
+          "line": 285,
+          "description": "The section's one visual does not exist below 900px: `.wires { display: none }` removes every wire, so phones and portrait tablets get chips plus a list with no drawing of the source->capability graph. There is no narrow-form rendering of the relationships (the chips are a filter, the adjacency is only discoverable by tapping).",
+          "evidence": "Bench.module.css:284-288 `@media (max-width: 900px) { .wires { display: none; } ... }`; the docblock at Bench.tsx:15-20 says the drawing is the section's proof.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "low",
+          "file": "/root/forgotten-mistory/components/sections/Skills/Skills.module.css",
+          "line": 394,
+          "description": "Gold used as a pointer, not a claim: the row the bench is tracing gets `box-shadow: inset 2px 0 0 var(--gold)`. CLAUDE.md prime directive 4 and app/globals.css:22-28 reserve gold for 'this figure has a source'; a hover/focus indicator is an affordance (Listen.module.css:113-115 states the same rule explicitly: 'an affordance is not evidence, and gold is reserved for evidence'). No test guards gold outside #vitrine (GS-02) and the MiniVic dot (GS-01).",
+          "evidence": "Skills.module.css:392-395; tests/monochrome/gold-semantics.spec.ts:130-140 scopes GS-02 to `#vitrine` only.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "low",
+          "file": "/root/forgotten-mistory/components/sections/Skills/Bench.tsx",
+          "line": 211,
+          "description": "The settle timer hard-codes the CSS durations as arithmetic (`120 + LINKS.length * 38 + 820 + 80`, i.e. 900ms --motion-cine written as 820+80). If --motion-cine or the 38ms stagger in Bench.tsx:333 changes, data-settled (which sets `animation: none`, Bench.module.css:66-71) fires before or after the last wire finishes, snapping it.",
+          "evidence": "Bench.tsx:209-214; Bench.module.css:56 uses var(--motion-cine); app/globals.css:105 `--motion-cine: 900ms`.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "low",
+          "file": "/root/forgotten-mistory/app/data/portfolio/skills.ts",
+          "line": 176,
+          "description": "Evidence text for 'WebGL and GLSL' reads 'bespoke shaders and scenes, one context per section, no context loss'. On the current six-section page only Hero and Experience mount a WebGL scene (CLAUDE.md section map; Skills, Vitrine and Listen source files contain no Scene/GL import), so 'one context per section' overstates what this site does.",
+          "evidence": "skills.ts:173-179; grep of components/sections/{Skills,Vitrine,Listen} shows no `components/gl` import (files read in full this session).",
+          "tag": "Inferred"
+        },
+        {
+          "severity": "info",
+          "file": "/root/forgotten-mistory/tests/visual/screenshots.spec.ts",
+          "line": 95,
+          "description": "No visual baseline exists for #skills: VIS-01..06 cover hero, about, nav overlay, listen, vitrine and viewport-top. A regression in the bench drawing (wrong anchors, missing gradient) is caught only by TC-BENCH-01's geometry checks, not by pixels.",
+          "evidence": "tests/visual/screenshots.spec.ts:95-129 test list (grep this session).",
+          "tag": "Verified"
+        }
+      ],
+      "testsCovering": [
+        "tests/e2e/skills.spec.ts TC-SKILL-01..08 (table semantics, evidence per row, no bars/ratings, pending row stated, status spoken, filter keeps section height within 1px, aria-pressed + single role=status, CV MD5 footer)",
+        "tests/e2e/skills.spec.ts TC-BENCH-01..04 (exactly 20 <path>s spanning rail to rail; exactly 17 gold strokes; hovering ANZ lights 3 wires and fades the rest below 0.2 stroke-opacity; node aria-label carries evidence)",
+        "tests/a11y/accessibility.spec.ts A11Y-05 (axe on #skills)",
+        "tests/a11y/gold-contrast.spec.ts GC-02 (status labels >= 4.5:1), GC-03 (no gold text on --ink-500, all sections)",
+        "tests/a11y/reduced-motion-choreography.spec.ts 'Skills keeps a parallel reduced-motion choreography' (artefacts `#skills table`, `#skills svg`)",
+        "tests/e2e/interaction-states.spec.ts rows 8 (filter), 9 (bench source node), 10 (bench capability node, index 20), 15 (selected filter)",
+        "tests/monochrome/monochrome.spec.ts MONO-04 (every rendered colour achromatic or sanctioned gold, all sections)",
+        "tests/overhaul/voiceover.spec.ts TC-VOICE-DYN-01/02 (scroll sweep through #skills: no audio, no scroll/observer console errors)",
+        "NOTE [Verified from 00-run-manifest.json baseline]: Playwright discovery currently collects 0 tests (tests/minivic_chat_function.test.mjs throws at functions/index.js:452), so none of the above is known to pass at HEAD in this run."
+      ],
+      "cinematicOpportunity": "Keep the Bench as the ONE visual and make it the 'calibration trace', present on every viewport. Desktop: a single 1px probe line - --white at low alpha, never gold - descends the capability rail driven by the section's scroll progress (IntersectionObserver ratio or a scroll-linked animation-timeline with a JS fallback), and as it crosses each capability that capability's wires trace in with the existing pathLength=1 dash technique; gold stays exactly where it is today (the 17 production wires and the production dots), grey for the 3 non-production wires, and at the pending row the probe stops and draws an open caliper bracket instead of a wire - the honest gap is the climax, not a footnote. The readout becomes the only echo (drop the gold traced-row rule, defect 2). Narrow (<=900px): do not hide the graph - render a 'ladder' variant in the same SVG: sources as a single column of ticks in the left margin, capabilities as the list, and short horizontal stubs from each capability to a bracket spanning its sources' ticks, traced by the same probe; same data, same marks, no chips. Reduced motion: every wire and stub already drawn, the probe rests at the row nearest the viewport centre (no travel), dimming by opacity only - the global whitelist at globals.css:941-957 already permits exactly that, so zero regression to TC-BENCH-01..04 and RM-1/RM-2. No-WebGL: unchanged (the section is SVG+CSS; do not introduce a canvas). Cost: no new dependency; the probe is one <line> and one requestAnimationFrame on scroll, throttled the same way Vitrine.tsx:63-66 throttles.",
+      "notes": [
+        "[Verified] Bench gradient stops use `stopColor=\"var(--gold)\"` as an SVG presentation attribute (Bench.tsx:297-300); TC-BENCH-02 asserts on the `stroke` attribute string, not the painted colour, so a var() that failed to resolve would not be caught by that test.",
+        "[Verified] Skills.tsx:114 wraps the legend's pending glyph in <Caliper state=\"open\" label=\"\">; Caliper.tsx:41-54 then renders a visually-hidden gloss of ' ()' (Caliper.module.css:149-157 is the sr-only rule). Screen readers get an empty parenthesis on the legend; cosmetic."
+      ]
+    },
+    {
+      "id": "vitrine",
+      "files": [
+        "/root/forgotten-mistory/components/sections/Vitrine/Vitrine.tsx (207 lines)",
+        "/root/forgotten-mistory/components/sections/Vitrine/Vitrine.module.css (391 lines)",
+        "/root/forgotten-mistory/components/sections/Vitrine/Drawings.tsx (348 lines; six SVG mechanism drawings)",
+        "/root/forgotten-mistory/components/sections/Vitrine/Drawings.module.css (32 lines)",
+        "/root/forgotten-mistory/app/data/portfolio/vitrine.ts (151 lines; six plates, three exclusions, metricsFor())",
+        "/root/forgotten-mistory/app/data/generated/repo-harvest.json (2092 bytes; harvestedAt 2026-09-03, publicRepoCount 38, six repos)",
+        "/root/forgotten-mistory/components/marks/Caliper.tsx (open bracket for null metrics, Vitrine.tsx:149)"
+      ],
+      "currentVisual": "[Verified by reading] One effect, the 'raking light', over a native rail. The rail is an <ol> with `overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: page gutter` (Vitrine.module.css:53-67) holding six <li> plates of width min(30rem, 82vw) (86vw under 700px), `scroll-snap-align: center`, `tabIndex=0`, `aria-roledescription=\"plate\"`. A passive scroll listener on the rail plus a window resize listener, both rAF-throttled to one measurement per frame, find the plate whose centre is nearest the rail's centre and set `data-lit` on it (Vitrine.tsx:36-76). Lit plate: opacity 1, border --card-border-hover, a radial sheen `rgb(244 246 250 / 0.075)` anchored at 18% 0% over --ink-900 (Vitrine.module.css:121-127). Unlit plates: opacity 0.42 (Vitrine.module.css:90); hover raises an unlit plate to 0.72 and gives the lit plate --elev-1 (Vitrine.module.css:105-116). Transitions: opacity / border-color / transform at --motion-base 320ms (Vitrine.module.css:92-95). Keyboard: ArrowLeft/ArrowRight move focus to the neighbour and `scrollIntoView({inline:'center', behavior:'smooth'})` it; focus also lights the plate (Vitrine.tsx:78-96,127). Each plate carries one of six STATIC inline SVG mechanism drawings in `currentColor` hairlines (stroke 0.75, viewBox 320x200; the deploy loop is cropped to 320x122) with role=img, <title> and <desc> (Drawings.tsx:21-348); the drawing frame is forced to aspect-ratio 320/200 so all six plates rule their metrics on one line (Drawings.module.css:20-21). Below: three harvested metrics (commits / active / stack) with an open Caliper for any null, a LIMITS line, a grey Source link and a gold live URL or the mono line 'no public deployment' (Vitrine.tsx:141-182; Vitrine.module.css:260-295). Tech: CSS + one scroll listener; NO WebGL, NO framer, NO drag physics, NO autoplay. Reduced-motion path: `.plate { transition: none }` and `.rail { scroll-behavior: auto }` (Vitrine.module.css:375-383) - the light still tracks, it just arrives without a glide; the drawings are static so nothing changes for them. No-WebGL path: identical to default. Cost: one getBoundingClientRect on the rail and six on plates per scrolled frame; six SVGs of ~20-40 nodes each; nothing per-frame at rest.",
+      "story": "[Verified by reading vitrine.ts:1-14 and Vitrine.tsx:16-30] 'Six of thirty-eight': the section argues that selection is an editorial act - six plates, each printing what its repository does NOT do (limits), three named exclusions with reasons, and metrics harvested from the GitHub API on a printed date rather than typed or live. The visual metaphor is a gallery vitrine: the reader's own scroll moves the spotlight, neighbours fall into shadow. The drawings are the strongest idea - 'never a screenshot, a logo or a laptop mockup; a mechanism drawing shows what it does' (Drawings.tsx:8-17) - but today they are still frames: the guard never strikes the claim, the push never rebuilds, the loop never runs, the caliper never closes. So the 'cinematic' content of the section is an opacity change, and the six drawings that actually tell each repository's story tell it silently. Gold is used correctly here and only on live URLs (Vitrine.module.css:257-265) - the one section where the gold rule is fully honoured.",
+      "colorTokens": [
+        "--ink-900 (plate ground and lit-plate gradient base)",
+        "--mist-200 (drawing currentColor Drawings.module.css:8; description, metric values, source link, exclusion dt)",
+        "--mist-400 (kicker, accession, limits, lit-plate hover border, exclusions title)",
+        "--ink-300 (repo name, metric labels, limits label, not-deployed line, stamp, exclusion dd)",
+        "--white (title, plate title, focus rings, source hover)",
+        "--gold (live URL ink Vitrine.module.css:263; underline on hover 268)",
+        "--gold-light (live URL hover ink 268), --gold-dark (live URL active 293), --gold-veil (live URL underline rest 264)",
+        "--card-border, --card-border-hover, --token-border-default, --elev-1",
+        "rgb(244 246 250 / 0.18) scrollbar thumb Vitrine.module.css:66,74",
+        "rgb(244 246 250 / 0.075) lit-plate sheen Vitrine.module.css:125",
+        "rgb(255 255 255 / 0.05) drawing-frame rules Vitrine.module.css:173-174",
+        "currentColor with per-element opacity literals 0.07-0.95 inside Drawings.tsx",
+        "motion: --motion-base, --motion-fast, --motion-ease-standard"
+      ],
+      "defects": [
+        {
+          "severity": "medium",
+          "file": "/root/forgotten-mistory/components/sections/Vitrine/Vitrine.module.css",
+          "line": 90,
+          "description": "Unlit plates sit at `opacity: 0.42`, which multiplies every text colour on five of the six plates - description, metrics, limits, the gold live URL - toward the ink. Full-opacity --mist-200 on --ink-900 is a high-contrast pair; at 0.42 the composited pair is far darker and the reader is invited (scroll-snap) to read the neighbours. The exact composited ratio was not measured in this session; GC-01 is the test that measures the live URL in both lit and unlit states (tests/a11y/gold-contrast.spec.ts:293-326) and the current run cannot execute it (0 tests discovered).",
+          "evidence": "Vitrine.module.css:89-91 comment 'Unlit plates sit back'; GC-01 sweeps the rail from both ends and keeps the lowest ratio per href.",
+          "tag": "Inferred"
+        },
+        {
+          "severity": "low",
+          "file": "/root/forgotten-mistory/components/sections/Vitrine/Drawings.module.css",
+          "line": 23,
+          "description": "`vector-effect: non-scaling-stroke` is declared on the `.drawing` (the root <svg>) with the comment 'Hairlines must stay hairlines at every size'. vector-effect applies to the graphics element that owns the stroke and is not inherited, so a declaration on the <svg> root does nothing for the child <line>/<circle>/<path>/<rect> elements - the 0.75-unit strokes scale with the 320-unit viewBox (about 1.1px on a 480px plate, about 0.8px on a 335px phone plate). The comment's promise is not delivered.",
+          "evidence": "Drawings.module.css:22-23; every stroke in Drawings.tsx sets strokeWidth on the shape element, none sets vector-effect.",
+          "tag": "Inferred"
+        },
+        {
+          "severity": "low",
+          "file": "/root/forgotten-mistory/components/sections/Vitrine/Vitrine.tsx",
+          "line": 81,
+          "description": "Keyboard navigation always calls `scrollIntoView({ behavior: 'smooth' })`. The reduced-motion handling for this rail is CSS-only (`scroll-behavior: auto`, Vitrine.module.css:380-382, plus the global `html { scroll-behavior: auto !important }` at globals.css:942-944); an explicit JS `behavior: 'smooth'` is honoured regardless of the CSS property, so ArrowLeft/ArrowRight glide under reduced motion.",
+          "evidence": "Vitrine.tsx:78-83; Vitrine.module.css:375-383; globals.css:941-944.",
+          "tag": "Inferred"
+        },
+        {
+          "severity": "low",
+          "file": "/root/forgotten-mistory/app/data/portfolio/vitrine.ts",
+          "line": 88,
+          "description": "Plate 05 (jyotish-shastra) has no `live` entry and renders 'no public deployment', while the harvest it cites records `homepage: \"https://jjyotish-shastra.vercel.app\"` (repo-harvest.json). That URL answers HTTP 402 today (Vercel deployment blocked) and the single-j variant answers 404, so omitting the link is correct - but the stamp says metrics were 'harvested from the GitHub API' and the harvest disagrees with the plate about whether a deployment exists; the harvester should record the probe result so the plate copy and the JSON agree.",
+          "evidence": "curl -L this session: https://jjyotish-shastra.vercel.app => 402; https://jyotish-shastra.vercel.app => 404; https://aether.srv1356245.hstgr.cloud => 200; https://abentertainment.com.au => 200; https://forgotten-mistory.web.app => 200.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "low",
+          "file": "/root/forgotten-mistory/components/sections/Vitrine/Vitrine.tsx",
+          "line": 126,
+          "description": "`onKeyDown={(event) => onKeyDown(event as never, index)}` - an `as never` cast to satisfy the handler's `React.KeyboardEvent<HTMLOListElement>` signature on an <li>; the typed element is wrong (should be HTMLLIElement). Also only ArrowLeft/ArrowRight are handled; Home/End are not, so a keyboard reader on plate 6 needs five presses to return to plate 1.",
+          "evidence": "Vitrine.tsx:85-96,126.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "info",
+          "file": "/root/forgotten-mistory/components/sections/Vitrine/Drawings.tsx",
+          "line": 280,
+          "description": "PipelineGate defines `<marker id=\"arrow\">` - a document-global id inside an inline SVG. It is unique today because that drawing renders once, but a second instance of the drawing (or any other drawing reusing the id) would collide silently.",
+          "evidence": "Drawings.tsx:274-283.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "info",
+          "file": "/root/forgotten-mistory/app/globals.css",
+          "line": 673,
+          "description": "globals.css says the `dragging` cursor state 'is declared beside it, in Vitrine.module.css'. Vitrine.module.css contains no `cursor` declaration at all and the rail is not draggable (native scroll only, Vitrine.tsx:16-30). Stale comment.",
+          "evidence": "`grep -n cursor components/sections/Vitrine/Vitrine.module.css` returned nothing this session; globals.css:667-673.",
+          "tag": "Verified"
+        }
+      ],
+      "testsCovering": [
+        "tests/e2e/vitrine.spec.ts TC-VIT-01..09 (six plates each with one GitHub link; LIMITS text > 30 chars per plate; 'harvested YYYY-MM-DD ... not live' + '1,664' commits; exclusions named; zero <img>, six svg[role=img] with title+desc; light tracks the centred plate after a 1.5-width scroll; ArrowRight moves focus and Tab leaves the rail; '38 public repositories' + 'Six of thirty-eight'; metrics/limits/links rows align within 2px across all plates)",
+        "tests/content/content-check.spec.ts CT-06 (six curated repos as plates with real links), CT-07 (Vedic-astronomy plate survives)",
+        "tests/overhaul/complete.spec.ts TC-COMPLETE-07 (every plate states what it does not do)",
+        "tests/a11y/accessibility.spec.ts A11Y-06 (axe on #vitrine incl. scrollable-region-focusable)",
+        "tests/a11y/gold-contrast.spec.ts GC-01 (every live URL >= 4.5:1 in lit AND unlit state), GC-03",
+        "tests/monochrome/gold-semantics.spec.ts GS-02 x4 breakpoints (390, 768, 1280, 1920: at most one saturated gold mark visible in the vitrine viewport)",
+        "tests/a11y/reduced-motion-choreography.spec.ts 'Vitrine keeps a parallel reduced-motion choreography' (artefacts `#vitrine ol > li`, `#vitrine svg[role=\"img\"]`; RM-2 explicitly permits an unlit plate's designed opacity)",
+        "tests/e2e/interaction-states.spec.ts rows 11 (plate), 12 (source link), 13 (live URL), 16 (lit plate)",
+        "tests/visual/screenshots.spec.ts VIS-05 (vitrine-section.png, full-section clip at 1440)",
+        "tests/monochrome/monochrome.spec.ts MONO-04; tests/overhaul/voiceover.spec.ts TC-VOICE-DYN-01/02 scroll sweep",
+        "NOTE [Verified from 00-run-manifest.json]: Playwright currently discovers 0 tests in this run; pass state at HEAD is unknown."
+      ],
+      "cinematicOpportunity": "The six mechanism drawings become the ONE visual and the raking light RUNS them: when a plate acquires `data-lit`, its drawing plays one attention-driven trace and then holds - (01) the application token travels the 20-node line and is struck through and reverted at the GUARD; (02) a pulse moves PUSH -> BUILD -> PROBE -> LIVE, then the rollback path draws itself; (03) the token orbits GENERATE -> CRITIQUE -> JUDGE -> REMEDIATE and the EXIT bar lifts only after SIGNED VERIFIER draws; (04) the seven noise bands straighten into the five ruled passes and the four specification lines; (05) the caliper arms close onto '23.85 deg LAHIRI'; (06) the YOU-ARE-HERE node slides down the rail to VITRINE. All in currentColor white/grey hairlines using the same pathLength=1 stroke-dashoffset keyframes the Bench already ships (Bench.module.css:72-83), gated by `[data-lit] .drawing` and played once per lighting (an `animation-play-state`/class toggle in Vitrine.tsx where setLit already runs); the light itself stays the opacity change it is today. Gold: the only gold remains the live URL, so GS-02's one-gold-per-viewport holds; a drawing may end on a single gold tick only on the three plates whose URL is live (01, 02, 06), and only if GS-02 is re-run at all four breakpoints. Reduced motion: drawings render at their END state (which is exactly today's static frame, so VIS-05 and RM-2 see no change), the light tracks without a glide as now. No-WebGL: unchanged - this must stay SVG+CSS. Regression guards to extend: TC-VIT-05 (still six svg[role=img] with title/desc), TC-VIT-09 (the aspect-ratio band must not change when strokes animate), and raise the unlit floor from 0.42 toward the value GC-01 proves is AA once the suite is discoverable again.",
+      "notes": [
+        "[Verified] repo-harvest.json head: aether-job-career-agent commits 1664 (2026-07-01 -> 2026-09-02, Python/TypeScript/HTML/JavaScript); abentertainment 243; ralph-loop-infinite 31; prompt-reconstruction-engine 34; jyotish-shastra 214 (homepage jjyotish-shastra.vercel.app); forgotten-mistory 205 (openIssues 10, homepage forgotten-mistory.web.app). TC-VIT-03's '1,664' literal is coupled to this snapshot.",
+        "[Verified] ScrollRail drawing (Drawings.tsx:306-341) hard-codes the active tick at index 4 (VITRINE) - correct for where it is rendered; it is not wired to actual page position."
+      ]
+    },
+    {
+      "id": "listen",
+      "files": [
+        "/root/forgotten-mistory/components/sections/Listen/Listen.tsx (58 lines)",
+        "/root/forgotten-mistory/components/sections/Listen/Listen.module.css (175 lines)",
+        "/root/forgotten-mistory/app/data/portfolio/listen.ts (34 lines; imports contact from app/data/siteContent.ts:492-504)",
+        "/root/forgotten-mistory/app/data/siteContent.ts (contact block lines 492-504: email, phone, phoneHref, linkedin, github, youtube)"
+      ],
+      "currentVisual": "[Verified by reading] One animation and one hover gesture; nothing else. (1) `.rule` - a 1px hairline the width of the sentence's 26ch measure, `background: var(--gold)` at opacity 0.55, `transform-origin: left center`, keyframe `ruleDraw` scaleX(0 -> 1) at --motion-cine-in 720ms / --motion-ease-emphasized, delay --stagger-loose 140ms, fill-mode both (Listen.module.css:68-87; element Listen.tsx:34 `<span className={styles.rule} aria-hidden>`). It is a plain CSS animation on a server-rendered element with no viewport gate, so it starts when the stylesheet applies at page load and has finished (~860ms) long before a reader scrolls five screens down to it. (2) `.channel::after` - a 1px --white underline scaleX(0 -> 1) on hover and focus-visible at --motion-fast 200ms, doubled to scaleY(2) on :active (Listen.module.css:112-152). The sentence is the site's only italic (--font-heading-italic, Source Serif 4 300 italic, loaded without preload at app/layout.tsx:105-112). Tech: CSS only; NO WebGL, NO framer, NO JS. Reduced-motion path: `.rule { animation: none }` (the rule is simply drawn at full width because with no animation the transform is `none`), `.channel::after { transition: none }` (Listen.module.css:166-175). No-WebGL path: identical. Cost: effectively zero - two transforms, no listeners.",
+      "story": "[Verified by reading listen.ts:1-14 and Listen.tsx:8-18] 'Always willing to listen - Feedback & coffee?': the closing screen is designed as the silence after five screens of instrumentation - one sentence of disposition (the only line on the site that carries no source, because it makes no factual claim), one hairline, four real anchors (mailto, tel, LinkedIn, GitHub), and a coffee line. No form by design: on a static export a form either lies about where the message goes or hands the visitor to a third party (Listen.tsx:14-17). The visual is meant to be 'the caliper at one-pixel scale: the last stroke the instrument makes' (Listen.tsx:33). It half-carries that: the stroke is never seen (it plays at load, not on arrival), and it is painted gold - the one colour the site reserves for a sourced figure - under a sentence the copy itself says is unsourced. The section's own CSS comments argue against the choice twice (Listen.module.css:113-115 'gold is reserved for evidence'; 152-154 'an offer of coffee is not evidence'). For the Owner's brief this section is the hardest: its stated intent is to own almost nothing, so its one cinematic beat must be the quietest on the page.",
+      "colorTokens": [
+        "--gold (the rule's background Listen.module.css:73, at opacity 0.55)",
+        "--white (title, sentence, channel hover/focus ink, underline, focus rings)",
+        "--mist-200 (channel rest ink, channel active ink)",
+        "--mist-400 (kicker, coffee line)",
+        "--font-heading-italic (sentence face), --measure-display 26ch",
+        "motion: --motion-cine-in 720ms, --motion-ease-emphasized, --stagger-loose 140ms, --motion-fast, --motion-ease-standard"
+      ],
+      "defects": [
+        {
+          "severity": "medium",
+          "file": "/root/forgotten-mistory/components/sections/Listen/Listen.module.css",
+          "line": 73,
+          "description": "Gold as a decorative fill: `.rule { background: var(--gold) }` under a sentence that the data file (listen.ts:8-11) and the component (Listen.tsx:31-32) both describe as the one line with no source. CLAUDE.md prime directive 4 states gold 'is never a fill, a background, or a theme'; globals.css:22-28 says the same. No automated guard covers it: GS-01 checks the MiniVic dot, GS-02 is scoped to #vitrine, GC-03 only inspects gold TEXT on --ink-500, MONO-04 accepts gold anywhere.",
+          "evidence": "Listen.module.css:68-77; tests/monochrome/gold-semantics.spec.ts:75,130; tests/a11y/gold-contrast.spec.ts:343.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "medium",
+          "file": "/root/forgotten-mistory/tests/e2e/listen.spec.ts",
+          "line": 32,
+          "description": "TC-LISTEN-02 (the 65-word budget) is vacuous. It clones #listen, removes `figure` (none), `section` (none) and then `clone.lastElementChild` - which is `.inner`, the ONLY child of the section (Listen.tsx:22-46) - so it counts words in an empty node. The removals are remnants of the deleted ledger/clip (commit 9733a85); the budget the test's own comment says it guards is not measured by it.",
+          "evidence": "tests/e2e/listen.spec.ts:30-43; Listen.tsx:21-47 (section > div.inner > [p, h2, p, span, ul, p]).",
+          "tag": "Verified"
+        },
+        {
+          "severity": "low",
+          "file": "/root/forgotten-mistory/components/sections/Listen/Listen.module.css",
+          "line": 76,
+          "description": "The rule's draw-in runs at page load (CSS animation on a server-rendered element, no IntersectionObserver or data-attribute gate, unlike the Bench which gates on intersection at Bench.tsx:196-207). The section's only motion is finished before any visitor reaches it; the 'last stroke the instrument makes' is never watched.",
+          "evidence": "Listen.module.css:68-87; Listen.tsx:34 has no state or observer.",
+          "tag": "Verified"
+        },
+        {
+          "severity": "info",
+          "file": "/root/forgotten-mistory/components/sections/Listen/Listen.module.css",
+          "line": 166,
+          "description": "`/* -- Colophon -- */@media (prefers-reduced-motion: reduce) {` - a section-header comment for a colophon block that was removed (9a99215 / 9733a85) is glued to the reduced-motion at-rule on one line; the file's section map is now misleading.",
+          "evidence": "grep -n Colophon components/sections/Listen/Listen.module.css => 166.",
+          "tag": "Verified"
+        }
+      ],
+      "testsCovering": [
+        "tests/e2e/listen.spec.ts TC-LISTEN-01 (exactly one italic element under main, and it is the sentence), TC-LISTEN-02 (word budget - vacuous, see defect), TC-LISTEN-03 (no form/input/iframe on the page), TC-LISTEN-04 (mailto:sarkar.vikram@gmail.com, tel:+61433224556, linkedin.com/in/vikramd-profile, github.com/Victordtesla24 visible), TC-LISTEN-05 (hover and focus produce the identical ::after transform)",
+        "tests/content/content-check.spec.ts CT-09 (siteContent contact channels appear verbatim in the closing section)",
+        "tests/a11y/accessibility.spec.ts A11Y-07 (axe on #listen)",
+        "tests/a11y/gold-contrast.spec.ts GC-03 (sweeps #listen for gold text on --ink-500 - the rule is a background, so it is not inspected)",
+        "tests/a11y/reduced-motion-choreography.spec.ts 'Listen keeps a parallel reduced-motion choreography' (artefacts `#listen ul li a`, `#listen h2`)",
+        "tests/e2e/interaction-states.spec.ts row 14 (Listen channel link)",
+        "tests/visual/screenshots.spec.ts VIS-04 (listen-section.png)",
+        "tests/monochrome/monochrome.spec.ts MONO-04; tests/overhaul/voiceover.spec.ts TC-VOICE-DYN-01/02 scroll sweep",
+        "NOTE [Verified from 00-run-manifest.json]: Playwright currently discovers 0 tests in this run; pass state at HEAD is unknown."
+      ],
+      "cinematicOpportunity": "'The instrument set down': one beat, white and grey only, seen on arrival. Replace the gold rule with the site's own caliper mark at display scale - two hairline arms in --white at low alpha that close from the left and right edges of the 26ch measure onto the sentence, gated by an IntersectionObserver so the stroke plays when the section actually enters (the first time only), at --motion-cine-in; as the arms meet, the four channels rise beneath at --stagger 90ms and the coffee line last. No gold anywhere in the section (nothing here is sourced; the data file says so), which also removes the only unguarded gold fill on the page. Reduced motion: arms already closed, channels and coffee line at rest - byte-for-byte the section's current reduced-motion state, so RM-1/RM-2 and VIS-04 (which shoots after settle) see the same composition. No-WebGL: unchanged, CSS + one observer. Cost: ~0. Pair it with a real TC-LISTEN-02 (count words of `#listen .inner` directly) and a gold-semantics assertion that #listen renders zero gold in any of color/background/border/fill/stroke.",
+      "notes": [
+        "[Verified] Channel anchors: mailto and tel have no target; LinkedIn/GitHub open with `rel=\"me noreferrer noopener\" target=_blank` (Listen.tsx:33-35). listen.ts:20-27 prints the LinkedIn label as 'linkedin.com/in/vikramd-profile' while the href is the www. form from siteContent.ts:501; CT-09/TC-LISTEN-04 cover the href."
+      ]
+    }
+  ],
+  "sharedFindings": [
+    "[Verified] Page composition: app/page.tsx:42-66 renders a framer-motion `scroll-progress` bar (useScroll -> scaleX), <Navigation/>, then <main id=main> with Hero, About, Experience, Skills, Vitrine, Listen; app/layout.tsx:217-234 wraps children in AvatarSpeakingProvider > MotionProvider (MotionConfig reducedMotion=\"user\" + VoiceoverProvider, components/MotionProvider.tsx:12-16) and appends <Footer/>, <MiniVicBot/>, <ServiceWorkerRegister/>; a `.skip-link` to #main is the first focusable node (layout.tsx:223-225, styled globals.css:576-604).",
+    "[Verified] The scroll-progress bar has NO stylesheet: `.scroll-progress` appears in app/page.tsx:45 and app/loading.tsx but in no CSS file (grep of app/globals.css and every *.css this session returned nothing). It renders as an unstyled empty <div> with an inline scaleX - invisible. A useScroll subscription runs on every scroll frame for nothing.",
+    "[Verified] Two permanent full-screen fixed overlays above everything: `body::before` vignette (radial to rgba(0,0,0,0.4), opacity 0.3, z-index 9998, globals.css:318-330) and `body::after` CRT scanline + vertical stripe pattern (opacity 0.1, z-index 9998, globals.css:303-316). They sit above the nav (z 100), the nav overlay (z 99) and every section; the scanline motif is the sci-fi register the tone linter bans in copy, and both are compositor layers over the whole viewport on every frame. Any per-section visual will be read through these two screens.",
+    "[Verified] Dead rules that TC-NFR-DEADCSS cannot see. The gate (scripts/validate/overhaul_static_audit.mjs:519-526) treats EVERY word inside ANY string literal in app/, components/, lib/ as a live class name, so `.red` (globals.css:839, 'Terminal Viz' leftover), `.prompt` (globals.css:1000-1004, Konami terminal leftover) and `.scroll-rail` (globals.css:1037-1050, GSAP rail leftover) survive because 'red', 'prompt' and the drawing id 'scroll-rail' (vitrine.ts:'scroll-rail') occur as prose/ids. `grep className=...\\b(red|prompt|scroll-rail)\\b` over app/, components/, lib/ found zero call sites. reports/static-audit.json records TC-NFR-DEADCSS pass 'clean'. Also `#webgl` (globals.css:289-298) styles an id no element carries (grep id=\"webgl\" => none) and is exempt from the gate because it has no class.",
+    "[Verified] Unmounted site components carrying ~300 lines of live-looking CSS: components/site/ContactForm.tsx (440 lines), ContactScroll.tsx (123), GithubFeed.tsx (194) and HeroAvatar.tsx (263) have NO importer (grep 'site/<Name>' over app/, components/, lib/ => only Footer, Navigation, ServiceWorkerRegister are imported). globals.css:1199-1484 (`.contact-console` ... `.contact-direct-*`) and the focus-ring list at globals.css:610-620 (`.btn-primary` lives only in ContactForm.tsx, `.repo-card` only in GithubFeed.tsx; `.btn-link`, `.btn-pillar`, `.social-btn`, `.project-card`, `.accordion-header`, `.snap-header` have no className call site anywhere) are kept alive by those dead files' string literals. The run manifest's tsc baseline failures (ContactScroll.tsx missing @/lib/gsap; GithubFeed.tsx missing @/lib/useReducedMotionSafe) are in exactly these unmounted files.",
+    "[Verified] The voiceover layer is a dead subsystem that still costs an AudioContext. lib/voiceoverContext.tsx:123-149 listens for `gsap:{hero,proof,experience,work,skills,contact}:enter`; the ONLY dispatcher in the tree is components/site/ContactScroll.tsx:70 (unmounted), three of the six ids (proof, work, contact) are deleted sections, and `useVoiceover`/`triggerCue` have zero consumers outside the provider (grep). Yet VoiceoverProvider (mounted via MotionProvider) installs once-only click/keydown/touchstart listeners that construct a `new AudioContext()` on every visitor's first interaction (voiceoverContext.tsx:76-106 -> voiceoverController.ts:82-123) and attaches the controller to `window.__voiceoverController` (voiceoverContext.tsx:63). muted defaults to true so nothing sounds (controller state, voiceoverController.ts:64-71), which is why TC-VOICE-DYN-01 passes; the graph is created for nothing.",
+    "[Verified] Navigation.tsx owns three chrome animations: the wordmark underline path-draw (framer pathLength 0->1, 1.1s, delay 0.4s; reduced motion => duration 0, Navigation.tsx:131-150), the hamburger->X spring morph (168-169), and the overlay spring with 80ms link stagger (OVERLAY_VARIANTS/LINK_VARIANTS 34-41). Body scroll is locked and the overlay set `inert` when closed (60-76), focus is trapped and returned to the toggle (82-112), and `data-scrolled` frosts the bar past 24px via a ref (116-125). globals.css:478-485 still declares `.nav-link { transform: translateY(100%); transition: transform ... }` - dead declarations, because framer writes `transform` inline (globals.css:465-466 acknowledges this for the overlay).",
+    "[Verified] globals.css duplicates: `nav` is declared twice with competing `transition` lists (368-388 and 1098-1105) and its reduced-motion override twice (390-394, 1116-1120); `body { overflow-x: hidden }` twice (281, 283). The second `nav` block wins; harmless but the file's own comment at 1083-1090 says INC1 'wraps rather than renames' - i.e. the duplication is design debt, not accident.",
+    "[Verified] Reduced-motion policy is global and sound: globals.css:941-957 sets `scroll-behavior: auto`, `animation-iteration-count: 1` and restricts `transition-property` to opacity/colour/box-shadow/fill/stroke/outline/backdrop-filter on every element (RM-5 at tests/a11y/reduced-motion-choreography.spec.ts:595 asserts no blanket kill switch survives). Consequence for the sections: any transform- or size-based transition is silently frozen, and Bench's `stroke-opacity`/`stroke-width` transitions are NOT in the whitelist so bench dimming is instant under reduced motion (acceptable, but a new visual must animate only whitelisted properties or use `animation`, which the policy runs once to its end state).",
+    "[Verified] Gold outside the sections: `.sw-toast { border: 1px solid var(--gold-border) }` and `.sw-toast__reload:hover { border-color: var(--gold); color: var(--gold-light) }` (globals.css:1145-1187) paint the service-worker offline toast in gold - decoration, not a sourced figure - and nothing tests it. :root defines SEVEN gold tokens (--gold, -light, -pale, -dark, -muted, -border, -veil; globals.css:33-39) while MONO-01 (tests/monochrome/monochrome.spec.ts:118-146) asserts only the first four; --gold-muted/--gold-border/--gold-veil are unasserted.",
+    "[Verified] Footer (components/site/Footer.tsx, 50 lines; Footer.module.css 98 lines): one line - Privacy Policy (/privacy exists: app/privacy/page.tsx), Terms (/terms exists: app/terms/page.tsx), 'Contact support' mailto with subject 'Portfolio - support', and the legal clause with a V-squared superscript. Rendered outside <main> (layout.tsx:229) so TC-LISTEN-* and A11Y-11 landmarks are unaffected. Tokens: --border-color, --token-bg-base, --mist-400, --mist-200, --white, --ink-500, --ink-400, --accent (focus ring), rgb(244 246 250 / 0.22|0.6). No animation beyond colour transitions; reduced motion handled (Footer.module.css:72-76). Owns no visual and should own none.",
+    "[Verified] layout.tsx metadata: the JSON-LD Person `sameAs` lists GitHub and YouTube only (layout.tsx:178) while siteContent.contact.linkedin is the stated primary recruiter channel (siteContent.ts:499-501) and the nav/Listen link it - LinkedIn is absent from structured data. `image: /assets/my_avatar.png` exists (178,777 bytes). Title/description cite 'Scrum Master / Project Manager at the Australian Taxation Office' consistent with siteContent.experience[0].",
+    "[Verified] Fonts (layout.tsx:93-130): Source Serif 4 400 (preload), Source Serif 4 300 italic (no preload; used only by Listen's sentence), Inter 400/500/600 (preload), IBM Plex Mono 400/500 (no preload); variables are on <html> (layout.tsx:196) per the memory note that :root tokens compute to empty otherwise.",
+    "[Verified] Tests naming these sections (grep tests/ for skills|vitrine|listen|navigation|footer|bench|drawing): tests/e2e/{skills,vitrine,listen,navigation,interaction-states}.spec.ts, tests/a11y/{accessibility,gold-contrast,interaction-states,reduced-motion-choreography}.spec.ts, tests/content/content-check.spec.ts (CT-06, CT-07, CT-09, CT-15), tests/monochrome/{gold-semantics,monochrome}.spec.ts, tests/visual/screenshots.spec.ts (VIS-03 nav overlay, VIS-04 listen, VIS-05 vitrine), tests/overhaul/{cinematic (TC-CINE-03 nav frost), complete (TC-COMPLETE-07), durability (TC-DURABLE-04 CV in nav), voiceover, telemetry-stability, render}.spec.ts, tests/perf/performance.spec.ts. Navigation: TC-NAV-01..08 pin the eight overlay labels in order and resolve every hash to a real section; A11Y-08/10/11 and MONO-06 cover the open overlay.",
+    "[Verified] Ownership of 'one visual per section' as of HEAD: Skills owns the Bench (SVG cabling, desktop only); Vitrine owns the raking light (opacity) over six static drawings; Listen owns a gold hairline draw that plays at load. Page chrome additionally owns: nav wordmark path-draw, hamburger morph, overlay spring, an invisible scroll-progress bar, two fixed body overlays, and the MiniVic launcher - so a reader sees chrome motion before any section's own motion on every viewport.",
+    "[Verified] Nothing in Skills, Vitrine or Listen imports components/gl/*, three, @react-three/*, framer-motion or gsap; all three are SVG/CSS/React only. Any 'no-WebGL path' requirement for these sections is therefore satisfied by construction today and must stay so unless a Scene.tsx-gated canvas is deliberately added.",
+    "[Verified] Working-tree state for this brief's files at capture: `git status --short components/sections/{Skills,Vitrine,Listen} app/globals.css` reported no modifications; the dirty paths are Hero files and media assets (see 00-run-manifest.json). Nothing was written outside docs/delivery/evidence/v9-20260904T2312Z/ by this agent."
+  ]
+}

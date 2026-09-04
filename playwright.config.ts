@@ -2,6 +2,12 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
+  // Only Playwright specs. The node:test contract files (tests/*.test.mjs —
+  // ci_pipeline, static_audit_fail, github-telemetry, minivic_chat_function)
+  // are run by `node --test` in the CI test job, not by Playwright. Without
+  // this filter Playwright loaded them too, and a SyntaxError in one aborted
+  // discovery for the whole suite: "Total: 0 tests in 0 files" (v9 baseline).
+  testMatch: '**/*.spec.ts',
   // No globalSetup and no webServer: the static export in `out/` is built and
   // served separately, and the suite is pointed at it with PLAYWRIGHT_BASE_URL.
   // This is deliberate. Each spec used to kick off `npm run build:static` from

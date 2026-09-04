@@ -271,12 +271,26 @@ placeholder markers, and design-token agreement.
 
 ```bash
 git fetch origin && git log --oneline HEAD..origin/main   # must be empty
-npm run build:static
-firebase deploy --only hosting
+git push origin HEAD:main
+node scripts/deploy.mjs                                   # builds HEAD in a detached worktree, deploys, verifies the live commit
 ```
 
-> **`firebase deploy` publishes the working tree, not `HEAD`.** Uncommitted work ships.
-> Check `git status --short` before deploying.
+`scripts/deploy.mjs` refuses to ship a commit that is not on `origin/main`, builds from a
+detached worktree at `HEAD` (so uncommitted edits cannot reach production), deploys with
+`firebase.json` (rewrites for `/api/chat` and `/api/tts`, the security headers) and then
+reads the `build-commit` meta tag back from the live page. Never deploy with
+`firebase.static.json` — it replaces the rewrites with a catch-all to `index.html`.
+
+The delivery cadence is continuous: every verified increment lands on `main` and is
+deployed within about ten minutes; no single agent workflow runs longer than thirty.
+
+---
+
+## ◆ Delivery log
+
+| When (UTC) | Commit | What changed | Verified by |
+| --- | --- | --- | --- |
+| 2026-09-05 00:0x | cycle 1 | Toolchain back to green: dead components with missing imports removed, `functions/index.js` chat handler repaired, Playwright limited to `*.spec.ts` (276 tests discovered), 4K masters moved out of `public/`, MiniVic idle loop re-encoded to 1.1 MB 720p, 43 orphaned CSS rules removed | tsc · lint · static audit 10/10 · node --test 68/68 · smoke suite · live `build-commit` meta |
 
 ---
 
