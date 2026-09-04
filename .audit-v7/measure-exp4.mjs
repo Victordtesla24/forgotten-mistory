@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch({ headless:true, args:['--use-gl=angle','--use-angle=metal','--enable-gpu','--ignore-gpu-blocklist'] });
+const ctx = await browser.newContext({ viewport:{width:1440,height:1100}, deviceScaleFactor:2, reducedMotion:'no-preference' });
+const page = await ctx.newPage();
+await page.goto('https://forgotten-mistory.web.app/', { waitUntil:'networkidle', timeout:90000 });
+await page.evaluate(()=>{const c=document.querySelector('#experience [class*="chart"]'); window.scrollTo(0, c.getBoundingClientRect().top+scrollY-60);});
+await page.waitForTimeout(5000);
+const box = await page.evaluate(()=>{ const c=document.querySelector('#experience [class*="chart"]'); const b=c.getBoundingClientRect();
+  return {x:40, y:Math.max(0,b.bottom-260), width:1360, height:300}; });
+await page.screenshot({ path:'/Users/vic/claude/forgotten-mistory/.audit-v7/shots/exp-caption-axis-1440.png', clip:box });
+await browser.close();

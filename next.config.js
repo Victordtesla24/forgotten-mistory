@@ -1,21 +1,22 @@
 /** @type {import('next').NextConfig} */
 const isStaticExport = process.env.FIREBASE_STATIC_EXPORT === '1';
-const isProduction = process.env.NODE_ENV === 'production';
 
-// ── Fail loud, not fail safe (SPEC NFR-SEC / §0.1 DEV-8 / CLAUDE.md rule 6) ──
-// The static Firebase export inlines a RESTRICTED, HTTP-referrer-locked *public*
-// Gemini key for the client-side MiniVic brain (the true secret is reserved for
-// the services/ gateway deployment — a static client cannot hold a real secret).
-// That public key is still REQUIRED at build time: a missing key must crash the
-// build naming the variable rather than silently inlining an empty string that
-// ships a broken brain tier. (Workspace rule: never silently degrade.)
-if (isStaticExport && isProduction && !process.env.GEMINI_API_KEY) {
-  throw new Error(
-    '[fail-loud] Missing required environment variable GEMINI_API_KEY for the ' +
-      'static export (FIREBASE_STATIC_EXPORT=1). Set it in .env.production. ' +
-      'Refusing to build a degraded MiniVic brain. See SPEC §0.1 DEV-8 / NFR-SEC.',
-  );
-}
+// ── NFR-SEC: the client bundle carries NO credential of any kind ──
+// A previous design inlined a Gemini key as NEXT_PUBLIC_GEMINI_API_KEY so the
+// browser could call generativelanguage.googleapis.com directly. `NEXT_PUBLIC_*`
+// is substituted into the emitted JavaScript, so that key shipped in cleartext in
+// /_next/static/chunks/app/layout-*.js — readable by anyone who views source.
+// "Restrict it by HTTP referrer" is not a mitigation: referrer headers are
+// attacker-controlled, so the key was fully usable off-site.
+//
+// The tier is also unnecessary. MiniVic's primary brain is the same-origin
+// /api/chat Firebase Function, which holds its key in Google Secret Manager and
+// works on the static export through a Hosting rewrite (verified live: HTTP 200).
+// The deterministic local knowledge base backs it up offline. So the browser
+// never needs a model credential, and none is inlined here.
+//
+// Enforced by scripts/validate/built_output_secret_scan.mjs, which greps the
+// emitted out/ bundle — source-only scanning cannot catch build-time inlining.
 
 // ── Security headers (TC-NFR-SEC). Emitted by `next dev` / the dynamic runtime via
 // headers(); `output: 'export'` strips headers(), so production (static Firebase)
@@ -79,12 +80,7 @@ const nextConfig = {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
   env: {
-    // Inlined at build time for the client-side MiniVic brain. Next.js
-    // auto-loads .env.production during `next build`. Restrict this key by
-    // HTTP referrer (https://forgotten-mistory.web.app/*) in Google AI
-    // Studio so it is only usable from the production site.
-    NEXT_PUBLIC_GEMINI_API_KEY: process.env.GEMINI_API_KEY ?? '',
-    NEXT_PUBLIC_GEMINI_MODEL: process.env.NEXT_PUBLIC_GEMINI_MODEL ?? '',
+    // No model credential is exposed to the client — see the NFR-SEC note above.
     // '1' on static exports: MiniVic skips the backend API tiers entirely
     // (no /api/* probes that 404 on Firebase Hosting) and answers via the
     // client-side brain immediately.

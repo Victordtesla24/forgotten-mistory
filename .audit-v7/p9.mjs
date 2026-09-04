@@ -1,0 +1,20 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch({ args:['--use-gl=angle','--ignore-gpu-blocklist'] });
+const ctx = await browser.newContext({viewport:{width:390,height:844}, reducedMotion:'no-preference', deviceScaleFactor:2, isMobile:true, hasTouch:true});
+const page = await ctx.newPage();
+const cdp = await ctx.newCDPSession(page);
+await cdp.send('Network.enable');
+await cdp.send('Network.emulateNetworkConditions',{offline:false, latency:150, downloadThroughput:1.6*1024*1024/8, uploadThroughput:750*1024/8});
+await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});
+const t0=Date.now();
+await page.goto('https://forgotten-mistory.web.app/?gl=force',{waitUntil:'load', timeout:120000});
+const perf = await page.evaluate(()=>new Promise(r=>{
+  let lcp=0, cls=0;
+  new PerformanceObserver(l=>{ for(const e of l.getEntries()) lcp=Math.max(lcp,e.startTime); }).observe({type:'largest-contentful-paint',buffered:true});
+  new PerformanceObserver(l=>{ for(const e of l.getEntries()) if(!e.hadRecentInput) cls+=e.value; }).observe({type:'layout-shift',buffered:true});
+  const fcp = performance.getEntriesByName('first-contentful-paint')[0]?.startTime;
+  setTimeout(()=>r({lcp:Math.round(lcp), cls:+cls.toFixed(4), fcp:Math.round(fcp||0)}), 8000);
+}));
+console.log('mobile 4G+4x CPU:', JSON.stringify(perf), 'wall', Date.now()-t0,'ms');
+console.log('canvases:', await page.evaluate(()=>document.querySelectorAll('canvas').length));
+await browser.close();

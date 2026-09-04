@@ -195,4 +195,23 @@ artifacts/
 
 # Adversarial review evidence (screenshots, logs, report — working artifacts)
 reports/adversarial/
+<<<<<<< HEAD
 functions/node_modules
+=======
+
+# Verification evidence (multi-MB PNG screenshots + probe dumps). Regenerated on demand by
+# scripts/testing/run_post_prod_validation.sh and npm run validate:phase02:screenshots, so
+# they are never committed. Still tracked and NOT matched here: reports/static-audit.json
+# (CI artifact, deploy.yml) and the phase reports that
+# scripts/validate/final_full_system_validation.sh greps as inputs.
+reports/verification/
+reports/post-prod/evidence/
+reports/phase02/screenshots/
+
+# Playwright JSON reporter output (playwright.config.ts -> reporter json outputFile)
+/test-results.json
+
+# npm is the canonical package manager (every script + CI uses npm ci); a pnpm lockfile
+# would silently diverge from package-lock.json
+/pnpm-lock.yaml
+>>>>>>> 9588cff (Merging everythig on nain)

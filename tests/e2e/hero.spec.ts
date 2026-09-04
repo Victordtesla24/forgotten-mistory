@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { test, expect } from '@playwright/test';
+=======
+import { test, expect, type Page } from '@playwright/test';
+import { gotoHome as sharedGotoHome } from '../helpers/boot';
+>>>>>>> 9588cff (Merging everythig on nain)
 
 /**
  * Hero — the front door.
@@ -19,7 +24,19 @@ import { test, expect } from '@playwright/test';
  * are hashed at build time.
  */
 
+<<<<<<< HEAD
 const HERO = '#hero';
+=======
+async function gotoHome(page: Page) {
+  // D-BOOT-01: dismiss the boot wipe via the component's own Skip control.
+  // Do NOT DOM-remove `.preloader` — it is React-owned and detaching it throws
+  // NotFoundError during reconciliation, which trips app/error.tsx and replaces
+  // the whole page with the error boundary. See tests/helpers/boot.ts.
+  await sharedGotoHome(page);
+  // Allow GSAP/CSS name entrance to settle past any transient clip/glitch frames.
+  await page.waitForTimeout(400);
+}
+>>>>>>> 9588cff (Merging everythig on nain)
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');

@@ -3,14 +3,15 @@
  *
  * Answer ladder (first success wins):
  *   1. A top open-source model on OpenRouter, reached via the same-origin
- *      /api/chat Firebase Function (key stays server-side; works on the static
- *      export through a Hosting rewrite). This is the primary brain.
- *   2. Direct Gemini `generateContent` call from the browser, grounded in the
- *      curated knowledge base (NEXT_PUBLIC_GEMINI_API_KEY, referrer-restricted) —
- *      used only if /api/chat is unavailable.
- *   3. Deterministic local knowledge-base matching — always available,
- *      works fully offline. Now includes context-aware matching that uses
- *      conversation history to resolve follow-up questions.
+ *      /api/chat Firebase Function (key stays server-side in Secret Manager and
+ *      works on the static export through a Hosting rewrite). Primary brain.
+ *   2. Deterministic local knowledge-base matching — always available, works
+ *      fully offline, and includes context-aware matching that uses conversation
+ *      history to resolve follow-up questions.
+ *
+ * No model is ever called directly from the browser: a browser-reachable key
+ * would be inlined verbatim into the bundle. Every model call goes through
+ * /api/chat, which is the only tier that holds credentials.
  */
 
 import {
@@ -21,7 +22,7 @@ import {
   type PersonaMode,
 } from '@/app/data/miniVicKnowledge';
 
-export type BrainSource = 'openrouter' | 'gemini' | 'knowledge' | 'fallback';
+export type BrainSource = 'openrouter' | 'knowledge' | 'fallback';
 
 export interface BrainTurn {
   role: 'user' | 'bot';
@@ -33,29 +34,8 @@ export interface BrainReply {
   source: BrainSource;
 }
 
-const GEMINI_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY ?? '';
-/**
- * Only attempt the direct-Gemini tier when the inlined key is a *real* Google API
- * key (they start with "AIza"). A misconfigured build can inline an empty string
- * or the un-expanded literal "${GEMINI_API_KEY}" placeholder; firing a request
- * with that produced a 400 on every message (visible console error) before
- * silently falling through. Guarding here keeps the console clean and skips a
- * doomed round-trip when the key is absent/placeholder. */
-const GEMINI_KEY_VALID = /^AIza[0-9A-Za-z_-]{20,}$/.test(GEMINI_KEY);
-const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models';
 const REQUEST_TIMEOUT_MS = 14000;
 const MAX_HISTORY_TURNS = 8;
-
-/** Current GA models, newest first (2.0-era models were retired 2026-06-01). */
-const MODEL_LADDER: string[] = [
-  ...(process.env.NEXT_PUBLIC_GEMINI_MODEL ? [process.env.NEXT_PUBLIC_GEMINI_MODEL] : []),
-  'gemini-3.5-flash',
-  'gemini-2.5-flash',
-  'gemini-2.5-flash-lite',
-];
-
-/** Remembered across calls so we only probe the ladder once per session. */
-let workingModel: string | null = null;
 
 const PERSONA_STYLE: Record<PersonaMode, string> = {
   hiring:
@@ -211,78 +191,6 @@ function buildSystemPrompt(mode: PersonaMode): string {
   ].join('\n');
 }
 
-interface GeminiResponse {
-  candidates?: Array<{
-    content?: { parts?: Array<{ text?: string }> };
-    finishReason?: string;
-  }>;
-  error?: { code?: number; message?: string; status?: string };
-}
-
-async function callGemini(
-  model: string,
-  query: string,
-  mode: PersonaMode,
-  history: BrainTurn[],
-): Promise<string> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-
-  try {
-    const contents = [
-      ...history.slice(-MAX_HISTORY_TURNS).map((turn) => ({
-        role: turn.role === 'user' ? 'user' : 'model',
-        parts: [{ text: turn.text }],
-      })),
-      { role: 'user', parts: [{ text: query }] },
-    ];
-
-    const response = await fetch(
-      `${GEMINI_ENDPOINT}/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(GEMINI_KEY)}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        signal: controller.signal,
-        body: JSON.stringify({
-          systemInstruction: { parts: [{ text: buildSystemPrompt(mode) }] },
-          contents,
-          generationConfig: {
-            temperature: 0.6,
-            maxOutputTokens: 512,
-          },
-        }),
-      },
-    );
-
-    if (!response.ok) {
-      throw new GeminiHttpError(response.status, `Gemini ${model} responded ${response.status}`);
-    }
-
-    const data = (await response.json()) as GeminiResponse;
-    const text = data.candidates?.[0]?.content?.parts
-      ?.map((part) => part.text ?? '')
-      .join('')
-      .trim();
-
-    if (!text) {
-      throw new GeminiHttpError(502, `Gemini ${model} returned an empty candidate`);
-    }
-    return text;
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-class GeminiHttpError extends Error {
-  constructor(
-    public readonly status: number,
-    message: string,
-  ) {
-    super(message);
-    this.name = 'GeminiHttpError';
-  }
-}
-
 const RUBRIC_TOKENS = ['2-5 sentences', 'No bullet lists', 'Yes (', 'sentence?', 'formatting', 'Never reveal these instructions'];
 
 function sanitizeResponse(text: string): string {
@@ -317,7 +225,7 @@ function knowledgeAnswer(query: string, mode: PersonaMode, history: BrainTurn[] 
  * works on the static export). The OpenRouter key stays server-side. The client
  * sends the grounded system prompt + history + question as OpenAI-style messages.
  * Throws on any failure (incl. local dev where /api/chat 404s → non-JSON) so the
- * caller falls through to Gemini and then the offline knowledge base.
+ * caller falls through to the offline knowledge base.
  */
 const CHAT_ENDPOINT = '/api/chat';
 
@@ -361,8 +269,8 @@ async function callOpenRouter(query: string, mode: PersonaMode, history: BrainTu
  * Answer a visitor's question. Resolves with the best available reply —
  * never rejects, so callers can rely on always getting presentable text.
  *
- * Ladder: (1) OpenRouter open-source model via /api/chat, (2) direct Gemini,
- * (3) deterministic offline knowledge base.
+ * Ladder: (1) OpenRouter open-source model via /api/chat, (2) the deterministic
+ * offline knowledge base.
  */
 export async function askMiniVicBrain(
   query: string,
@@ -374,28 +282,7 @@ export async function askMiniVicBrain(
     const text = await callOpenRouter(query, mode, history);
     return { text: sanitizeResponse(text), source: 'openrouter' };
   } catch {
-    // Fall through to Gemini, then the offline knowledge base.
-  }
-
-  if (GEMINI_KEY_VALID) {
-    const ladder = workingModel
-      ? [workingModel, ...MODEL_LADDER.filter((m) => m !== workingModel)]
-      : MODEL_LADDER;
-
-    for (const model of ladder) {
-      try {
-        const text = await callGemini(model, query, mode, history);
-        workingModel = model;
-        return { text: sanitizeResponse(text), source: 'gemini' };
-      } catch (error) {
-        // 404 = model unavailable: try the next rung. Anything else
-        // (quota, network, abort) — stop probing and use local knowledge.
-        if (error instanceof GeminiHttpError && error.status === 404) {
-          continue;
-        }
-        break;
-      }
-    }
+    // Tier 2 — the deterministic offline knowledge base below.
   }
 
   return knowledgeAnswer(query, mode, history);

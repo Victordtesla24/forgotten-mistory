@@ -504,6 +504,50 @@ export const contact = {
 };
 
 /**
+ * Copy for the on-site message form (D-CONTACT-02). Before this existed the only
+ * way to start a conversation was a bare `mailto:` — which is a silent no-op on a
+ * machine with no mail handler, so a visitor could "act" and send nothing.
+ *
+ * Every visitor-readable string lives here so tone stays reviewable in one place
+ * (NN-3). Nothing here promises a response time or anything else unverifiable.
+ * `terminal states` are deliberately blunt: the UI never claims a send succeeded
+ * unless the endpoint confirmed it.
+ */
+export const contactForm = {
+  heading: 'Send a message',
+  lead: 'Three fields. Roles, engagements, or a question about the work — all reach the same inbox.',
+  nameLabel: 'Your name',
+  emailLabel: 'Your email',
+  messageLabel: 'Your message',
+  messageHint: 'Role, timeline, or the problem you need delivered.',
+  submitLabel: 'Send message',
+  submittingLabel: 'Sending…',
+  submittingStatus: 'Sending your message.',
+  resetLabel: 'Send another message',
+  successTitle: 'Message sent.',
+  successBody: 'The server confirmed delivery. The direct channels below reach the same inbox if you need to add anything.',
+  rejectedTitle: 'The message did not send.',
+  rejectedBody: 'Your text is still in the fields — nothing was lost. Retry, or use one of the direct channels below.',
+  unavailableTitle: 'Direct send is unavailable right now.',
+  unavailableBody: 'The message endpoint did not answer, so nothing was delivered. Your text is still in the fields — open a prefilled draft or copy the address below.',
+  draftLabel: 'Open a prefilled draft in your mail app',
+  draftSubject: 'Portfolio message',
+  errorSummary: 'Check the highlighted fields.',
+  nameRequired: 'Enter your name.',
+  emailRequired: 'Enter your email address.',
+  emailInvalid: 'Enter a valid email address, for example name@company.com.',
+  messageRequired: 'Enter a short message.',
+  directHeading: 'Direct channels',
+  emailChannelLabel: 'Email',
+  linkedinChannelLabel: 'LinkedIn',
+  copyEmailLabel: 'Copy email address',
+  copyLinkedinLabel: 'Copy LinkedIn URL',
+  openLinkedinLabel: 'Open LinkedIn profile',
+  copyUnsupported: 'Copying is blocked in this browser — the text above is selectable.',
+  copyFailed: 'Copy did not complete — the text above is selectable.',
+};
+
+/**
  * Scannable credibility band shown near the top of the page (D-TRUST-01). Every
  * item is drawn from `experience` and `skillGroups` above — recognised employers,
  * the CSM credential, and the two degrees — so a recruiter gets pedigree at a glance.

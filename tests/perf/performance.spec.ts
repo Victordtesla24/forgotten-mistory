@@ -157,4 +157,108 @@ test.describe('Performance Budgets', () => {
     expect(dcl, 'no navigation timing was reported').toBeGreaterThan(0);
     expect(dcl).toBeLessThan(5000);
   });
+
+  /**
+   * PERF-06 — regression guard for the mobile LCP collapse (perf 66, LCP 6.393 s
+   * against FCP 1.270 s on the Moto G Power profile).
+   *
+   * Root cause: every hero block was serialised into the export as
+   * `style="opacity:0;transform:translateY(22px)"` by the framer `hidden` variant,
+   * and on mobile the portrait — the desktop LCP element — is laid out ~3158 px
+   * below the fold. That left the <h1> as the largest in-viewport candidate, and
+   * an opacity:0 element is not a paint candidate for Chrome, so LCP could not
+   * resolve until React had hydrated, the preloader had finished its 1.9 s boot
+   * sequence and the 0.62 s fade had run.
+   *
+   * The guard runs with ALL JavaScript aborted, so it passes only if the LCP
+   * element is painted by the static document itself — no hydration, no framer,
+   * no WebGL.
+   */
+  test('PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked', async ({ browser }) => {
+    const ctx = await browser.newContext({ viewport: { width: 412, height: 823 } });
+    const page = await ctx.newPage();
+
+    // The served markup must not ship the LCP element hidden.
+    const html = await (await page.request.get('http://localhost:5599/')).text();
+    const heroTitleTag = /<h1[^>]*class="[^"]*\bhero-title\b[^"]*"[^>]*>/.exec(html)?.[0];
+    expect(heroTitleTag, 'hero <h1> must be present in the server-rendered HTML').toBeTruthy();
+    expect(heroTitleTag, 'hero <h1> must not be served with opacity:0 — it is the mobile LCP element')
+      .not.toMatch(/opacity\s*:\s*0(?![.\d])/);
+
+    await page.route('**/*.js', (route) => route.abort());
+    await page.goto('http://localhost:5599/', { waitUntil: 'domcontentloaded' });
+
+    const title = page.locator('#hero .hero-title');
+    await expect(title).toBeVisible();
+
+    const painted = await title.evaluate((el) => {
+      const rect = el.getBoundingClientRect();
+      return {
+        opacity: Number.parseFloat(getComputedStyle(el).opacity),
+        visibility: getComputedStyle(el).visibility,
+        area: rect.width * rect.height,
+        withinFirstViewport: rect.top < window.innerHeight,
+        text: (el.textContent ?? '').trim().length,
+      };
+    });
+
+    console.log(`No-JS hero title: ${JSON.stringify(painted)}`);
+    expect(painted.opacity).toBeGreaterThanOrEqual(0.99);
+    expect(painted.visibility).toBe('visible');
+    expect(painted.text).toBeGreaterThan(0);
+    expect(painted.area).toBeGreaterThan(10000);
+    expect(painted.withinFirstViewport).toBe(true);
+
+    // Nothing WebGL may exist at this point — the LCP element cannot be waiting
+    // on a Canvas/shader compile if no Canvas has been created.
+    expect(await page.locator('canvas').count()).toBe(0);
+
+    await ctx.close();
+  });
+
+  /**
+   * PERF-07 — with JS enabled, Chrome must actually emit a largest-contentful-paint
+   * entry, and it must be hero text rather than something that only appears after
+   * the WebGL layers mount. A page whose only candidates are opacity:0 emits NO
+   * entry at all (measured on production: zero entries after 9 s), which is what
+   * made Lighthouse fall back to a TTI-shaped LCP of 6.393 s.
+   */
+  test('PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer', async ({ browser }) => {
+    const ctx = await browser.newContext({ viewport: { width: 412, height: 823 } });
+    const page = await ctx.newPage();
+    await page.goto('http://localhost:5599/', { waitUntil: 'load' });
+
+    const entry = await page.evaluate(() => {
+      return new Promise<{ startTime: number; tag: string; className: string } | null>((resolve) => {
+        const read = () => {
+          const entries = performance.getEntriesByType(
+            'largest-contentful-paint',
+          ) as (PerformanceEntry & { element?: Element })[];
+          const last = entries[entries.length - 1];
+          if (!last) return null;
+          return {
+            startTime: last.startTime,
+            tag: last.element?.tagName ?? '',
+            className: last.element?.className ?? '',
+          };
+        };
+        const immediate = read();
+        if (immediate) {
+          resolve(immediate);
+          return;
+        }
+        new PerformanceObserver(() => {
+          const next = read();
+          if (next) resolve(next);
+        }).observe({ type: 'largest-contentful-paint', buffered: true });
+        setTimeout(() => resolve(read()), 5000);
+      });
+    });
+    await ctx.close();
+
+    console.log(`LCP entry: ${JSON.stringify(entry)}`);
+    expect(entry, 'Chrome must report a largest-contentful-paint entry').not.toBeNull();
+    expect(entry!.tag, 'LCP element must be real content, not a WebGL canvas').not.toBe('CANVAS');
+    expect(entry!.startTime).toBeLessThanOrEqual(LCP_BUDGET_MS);
+  });
 });

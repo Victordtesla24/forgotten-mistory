@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { settleBoot } from '../helpers/boot';
 
 /**
  * E2E — MiniVicBot, the conversational clone.
@@ -40,6 +41,7 @@ import { test, expect, type Page } from '@playwright/test';
 
 async function gotoHome(page: Page) {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
+<<<<<<< HEAD
   await page.waitForFunction(
     () => {
       const btn = document.querySelector('[data-testid="minivic-toggle"]');
@@ -50,6 +52,21 @@ async function gotoHome(page: Page) {
     },
     { timeout: 30000 },
   );
+=======
+  // Wait for React hydration before mutating the boot overlay — removing the
+  // preloader DOM pre-hydration forces Suspense remounts and pageerror noise.
+  await page.waitForFunction(() => {
+    const btn = document.querySelector('[data-testid="minivic-toggle"]');
+    if (!btn) return false;
+    return Object.keys(btn).some((key) => key.startsWith('__reactFiber') || key.startsWith('__reactProps'));
+  }, { timeout: 30000 });
+  // Dismiss the boot wipe via the component's own Skip control. Preloader's
+  // handleSkip already sets body.page-ready and dispatches fm:page-ready, so
+  // the hero handoff fires without us forging the event — and, critically,
+  // without DOM-removing the React-owned `.preloader` node, which throws
+  // NotFoundError during reconciliation and trips app/error.tsx.
+  await settleBoot(page);
+>>>>>>> 9588cff (Merging everythig on nain)
 }
 
 async function openMiniVic(page: Page) {

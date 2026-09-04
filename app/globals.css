@@ -1195,3 +1195,290 @@ nav[data-scrolled="true"] {
         animation: none;
     }
 }
+
+/* ── Contact message form (D-CONTACT-02) ──────────────────────────────────────
+   The only on-page path that completes a contact action. Deliberately NOT
+   animated in: a conversion-critical control must never depend on a scroll
+   trigger or an opacity tween to be visible. Monochrome tokens only — errors are
+   marked with weight + a rim rule + text, never by hue, so the state survives
+   both the palette law and colour-blind users. */
+.contact-console-mount {
+    display: block;
+}
+
+.contact-console {
+    max-width: min(700px, 100%);
+    margin: 0 auto 4.5rem;
+    padding: 2.25rem 2rem;
+    text-align: left;
+    border-radius: var(--card-radius);
+    border: 1px solid var(--card-border);
+    background: var(--card-sheen), var(--card-bg);
+    box-shadow: var(--card-shadow), var(--card-rim);
+}
+
+.contact-console-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 3.2vw, 2rem);
+    line-height: 1.15;
+    margin: 0 0 0.6rem;
+    color: var(--white);
+}
+
+.contact-console-lead {
+    margin: 0 0 1.75rem;
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: var(--mist-200);
+}
+
+.contact-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.15rem;
+}
+
+.contact-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+/* Message + submit always span the full console width. */
+.contact-field--full,
+.contact-form-submit {
+    grid-column: 1 / -1;
+}
+
+.contact-field-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--mist-200);
+}
+
+.contact-field-input {
+    width: 100%;
+    padding: 0.8rem 0.95rem;
+    border-radius: 12px;
+    border: 1px solid var(--card-border-hover);
+    background: rgb(10 11 13 / 0.55);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: border-color var(--motion-fast) var(--motion-ease-standard),
+                box-shadow var(--motion-fast) var(--motion-ease-standard);
+}
+
+.contact-field-textarea {
+    resize: vertical;
+    min-height: 7.5rem;
+}
+
+.contact-field-input:hover {
+    border-color: rgb(244 246 250 / 0.34);
+}
+
+.contact-field-input[aria-invalid="true"] {
+    border-color: var(--white);
+    box-shadow: inset 3px 0 0 var(--white);
+}
+
+.contact-field-hint {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--secondary-text);
+}
+
+.contact-field-error {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--white);
+    border-left: 2px solid var(--white);
+    padding-left: 0.6rem;
+}
+
+.contact-form-submit {
+    justify-self: start;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 1rem;
+}
+
+.contact-form-submit:disabled {
+    cursor: progress;
+    opacity: 0.62;
+    transform: none;
+}
+
+.contact-form-submit:disabled:hover {
+    transform: none;
+    background: var(--accent-color);
+}
+
+/* Live region: empty in `idle`, so it must not reserve space or draw a border. */
+.contact-form-status:not([data-state="idle"]) {
+    margin-top: 1.5rem;
+}
+
+.contact-form-status-line {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--mist-200);
+}
+
+.contact-form-status[data-state="submitting"] .contact-form-status-line::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--white);
+    animation: contact-send-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes contact-send-pulse {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 1; }
+}
+
+.contact-form-outcome {
+    border-left: 2px solid var(--white);
+    padding: 0.15rem 0 0.15rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+}
+
+.contact-form-outcome-title {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--white);
+}
+
+.contact-form-outcome-body {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--mist-200);
+}
+
+.contact-form-reset,
+.contact-form-draft,
+.contact-direct-action {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    border: 1px solid var(--card-border-hover);
+    background: transparent;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color var(--motion-fast) ease, background var(--motion-fast) ease;
+}
+
+.contact-form-reset:hover,
+.contact-form-draft:hover,
+.contact-direct-action:hover {
+    border-color: rgb(244 246 250 / 0.55);
+    background: rgb(244 246 250 / 0.08);
+}
+
+/* Always-visible direct channels: a `mailto:` can be a silent no-op, selectable
+   text never is. */
+.contact-direct {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--card-border);
+}
+
+.contact-direct-heading {
+    margin: 0 0 0.9rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--mist-200);
+}
+
+.contact-direct-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.contact-direct-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.contact-direct-label {
+    min-width: 5.25rem;
+    font-size: 0.78rem;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    color: var(--secondary-text);
+}
+
+.contact-direct-value {
+    font-size: 0.95rem;
+    color: var(--white);
+    word-break: break-word;
+    user-select: all;
+}
+
+.contact-copy-status {
+    margin: 0.9rem 0 0;
+    min-height: 1.2rem;
+    font-size: 0.85rem;
+    color: var(--mist-200);
+}
+
+.contact-field-input:focus-visible,
+.contact-form-reset:focus-visible,
+.contact-form-draft:focus-visible,
+.contact-direct-action:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+    .contact-console {
+        padding: 1.6rem 1.25rem;
+    }
+    .contact-form {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .contact-field-input,
+    .contact-form-reset,
+    .contact-form-draft,
+    .contact-direct-action {
+        transition: none;
+    }
+    .contact-form-status[data-state="submitting"] .contact-form-status-line::before {
+        animation: none;
+        opacity: 1;
+    }
+}
