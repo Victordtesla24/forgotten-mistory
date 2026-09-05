@@ -39,3 +39,9 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-05T13:31:34.465Z)
 running — dispatched 13:31Z — analyst-programmer xhigh, isolated worktree, port 5619
+
+## COMMENT (2026-09-05T13:54:12.392Z)
+LANE RESULT (8978c2c + 16144a0 evidence, live 8978c2c4+): browser Enter→first visible token on LIVE — P50 683 ms / P95 799 (1440, n=5 warm), P50 711 / P95 1285 (390); cold 774/980 ms; route = origin root https://minivicchat-hjdyjsrzvq-uc.a.run.app/ 200 on 12/12 sends; fallback to the Hosting rewrite proven on the wire (MV-ORIGIN-01 aborts the origin at network layer → origin,hosting + rendered reply); MV-ROUTE-01..09 9/9, 72/72 node contract, 6/6 e2e; CSP connect-src carries the origin on live, 0 CSP violations / 0 pageerrors in 12 loads; function CORS max-age deployed. Was 1836 ms via Hosting. Awaiting INDEPENDENT reviewer on live before R3-latency PASS.
+
+## COMPLETE (2026-09-05T14:04:38.070Z)
+INDEPENDENT REVIEWER PASS on live 753bc5ad/5a8c8c34 (G-REV/411650c2/08-adversarial-review.md, 1062dc6, own probe): Enter→first visible bot text 1440 cold 821 / warm P50 732 / P95 994 ms; 390 cold 644 / P50 594 / P95 741 — 12/12 under 1500 ms; one chat request per send (POST origin 200 text/event-stream), 0 dead endpoints, 0 WebSockets; warm pings on open 15/15; CSP connect-src carries the origin, 0 violations, 0 pageerrors in 15 loads; reply grounded (ATO, Payday Super, Agile Kookaburras…) and progressive (31→172→355 chars over 300 ms samples); fallback REAL: origin refused → /api/chat 200 with a grounded reply 3/3 (1655–2134 ms, one shot — Hosting buffering, recorded as a limitation, never a latency PASS). Caveats recorded: observer stops on bubble chrome (<1 frame overstatement), 'cold' is metronome-warm. False-positive register empty.

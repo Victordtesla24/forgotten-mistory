@@ -33,3 +33,9 @@ role_matrix: cleanup → level 4 → effort **medium** (effort_cascade.yaml; dep
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## STATUS (2026-09-05T13:56:18.590Z)
+running — dispatched 13:57Z — cleanup-agent (sonnet, medium): merged+clean worktrees only; running lanes/reviewers protected by the cwd + dirty + ahead checks
+
+## COMPLETE (2026-09-05T14:04:38.194Z)
+cleanup-agent ccaab4c (hyg/clean01, consolidating): 32 merged/clean/unheld worktrees + branches removed; 9 kept with reasons (3 running lanes, 1 unmerged, 3 held by static servers on 5601/5602/5604 from the pre-resume era, 2 dirty); 0 orphan servers; local main ff-merged to origin/main (non-destructive). Inventory: docs/delivery/evidence/v10-20260905T0515Z/HYG-worktrees/01-removals.log.

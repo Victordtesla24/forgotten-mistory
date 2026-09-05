@@ -1,0 +1,48 @@
+{
+  "cycle": "v10-c13",
+  "window_utc": "2026-09-05T13:50Z → 14:06Z",
+  "pea_numerator": 13,
+  "pea_denominator": 25,
+  "pea_basis": "+2 vs c12: R3's latency clause PASS on live (independent: first visible token P50 732 ms @1440 / 594 ms @390, grounded + progressive, real fallback) and R8/O6 strengthened by the first fully green adversarial sweep (13/13). ADV-FAIL P0 scorecard (11): PASS 10 — G-A1, G-A2, G-V1, G-V2, G-M1, G-M2, G-M3 (latency), G-H1, G-H3, G-S1; OPEN 1 — G-H2 (desktop wash gone, phone scene lit, priority mechanism proven; FAIL on the poster clause: no url() still, luminance 0.053/0.081 < 0.10, and the JS-disabled page shows only the loading fallback) → t_x1_02c (real rendered poster) + t_nojs01 (Suspense fallback) + t_x1_03 (graded plate) in flight. R2: 4/7 scenes gated (hero, about, experience, skills); S5/S6 sceneIds lane + fps harness in flight. R3 overall stays OPEN (no real-time Higgsfield avatar; lip-sync ≤40 ms unmet) — not claimed.",
+  "adversarial_verdicts": [
+    "G-H1 phase-3 PASS (1 CTA group everywhere, margins +65…+432 px, CLS 0/9, keyboard contract intact) — e3f0206c review",
+    "G-H2a phase-3 FAIL (no poster url(); luminance below 0.10; JS-disabled = 'LOADING PORTFOLIO'; canvas 1.4 s after DCL) — same review",
+    "G-M3 latency PASS both widths; fallback real but buffered (1.7–2.1 s) — 411650c2 review, own probe, empty false-positive register",
+    "Sweep 13/13 PASS (CLS 0.0000 ×9 unskipped, AA 0 failures 4 walks, openNote 6.20, band labels 6.17, InfoCentric 12.45, skills field, 0 errors 13 contexts, SW freshness) — abc475e3 review",
+    "G-S1c lane confirmed the 'InfoCentric 1.06:1' as a probe artefact (fixed nav CV pill, mix-blend difference) and fixed the three band labels"
+  ],
+  "deploy_commit": "cbec7c28 (hero phase-3 evidence) — live at 14:02; hyg/clean01 consolidating",
+  "visible_ships": [
+    "13:56:16Z 753bc5ad — H2a evidence + merged head (no UI delta beyond 13:49)",
+    "14:02:25Z cbec7c28 — docs only"
+  ],
+  "o1_o5_note": "13:50–14:00: no recruiter-visible delta (all lanes in review/measure phase; last visible ship 13:49:21 e3f0206c) — explicit: P0 UI WIP existed only as in-flight corrections (H2b, no-JS) not yet buildable; 14:00–14:10: pending H2b/no-JS pushes. Deploy runs 13:50→14:02: 6, all success.",
+  "closed_this_window": [
+    "t_g_h1 + t_g_h1c (PASS)",
+    "t_g_s1c (sweep PASS)",
+    "t_g_m3 + t_g_m3b (PASS)",
+    "t_stab01 (+4 bundled) (sweep PASS)",
+    "t_flagvis0c",
+    "t_clean01 (32 worktrees removed, 9 kept with reasons)"
+  ],
+  "in_flight": [
+    "t_x1_03 G-H2b graded plate (measure-first)",
+    "t_nojs01 no-JS first paint (P0)",
+    "t_x1_05+06 vitrine/listen sceneIds",
+    "t_x1_01 fps harness (tester, software-rasteriser labelled)"
+  ],
+  "queued": [
+    "t_x1_02c real poster (after t_x1_03 + t_nojs01)",
+    "t_x1_07 MiniVic viseme stage",
+    "t_x1_08/09 R5 proofs",
+    "t_x1_10/11 HyperFrames pipeline + overture",
+    "t_vit_desc01",
+    "P1 G-H4/G-E1/G-R1"
+  ],
+  "incidents": [
+    "none new; 735ea66 + cfee6a6 branch-wins merges closed out (dead block removed 87c9667; audit report untracked f3fb02e)"
+  ],
+  "provider": "Anthropic via OAuth; OpenRouter 402 → §0.4; no ANTHROPIC_API_KEY; Hermes not started",
+  "verification_snippet": "$ date -u\n2026-09-05T14:05:18Z\n$ systemctl is-active fm-deploy-cadence.timer\nactive\n$ pgrep -af 'hermes gateway'\n(empty)\n$ tail -3 /var/log/fm-deploy/cadence.log\n[2026-09-05T13:55:09Z] cadence tick\n[2026-09-05T13:55:09Z] skip: 1 Deploy run(s) already in_progress\n[2026-09-05T14:05:18Z] cadence tick\n$ gh run list --workflow=deploy.yml --limit 8\n2026-09-05T14:02:57Z workflow_dispatch success cbec7c28\n2026-09-05T14:00:54Z workflow_dispatch success 5a8c8c34\n2026-09-05T13:57:20Z workflow_dispatch success 753bc5ad\n2026-09-05T13:54:46Z workflow_dispatch success 411650c2\n2026-09-05T13:53:13Z workflow_dispatch success e658709b\n2026-09-05T13:51:16Z push success e658709b\n2026-09-05T13:49:09Z workflow_dispatch success e3f0206c\n2026-09-05T13:47:35Z workflow_dispatch success 8978c2c4\n$ live build-commit\nbuild-commit\" content=\"79a6f555\"\n$ cache-control\ncache-control: public, max-age=0, must-revalidate\n$ git worktree list | wc -l\n14\n",
+  "next": "Land H2b + no-JS → dispatch t_x1_02c → reviewer on G-H2 (poster, JS-off, first paint); S5/S6 + fps harness → R2 scorecard; c14 at the next visible ship."
+}
