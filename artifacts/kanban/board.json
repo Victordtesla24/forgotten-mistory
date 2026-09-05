@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T07:11:25.807Z",
+  "updated": "2026-09-05T07:14:16.915Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -706,7 +706,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:11:25.807Z",
+      "updated": "2026-09-05T07:14:16.915Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": [
@@ -734,6 +734,11 @@
           "at": "2026-09-05T07:11:25.807Z",
           "by": "orchestrator",
           "text": "Cadence: 07:05:48Z deploy be53be4e (about field + tts evidence via pipeline); 07:1xZ a11dfe7 (P100 hotfix) pushed."
+        },
+        {
+          "at": "2026-09-05T07:14:16.915Z",
+          "by": "orchestrator",
+          "text": "Cadence: 07:12Z deploy f103462f success — P100 hotfix live; site renders again for GPU browsers."
         }
       ]
     },
@@ -1187,7 +1192,7 @@
     {
       "id": "t_p100hotfx",
       "title": "P100 INCIDENT — WebGL scenes crash into app/error.tsx on every GPU browser since 18c6beb (next 15.5.25 vendors React 19; @react-three/fiber 8 reads removed internals): pin next 14.2.35 now",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 100,
       "parents": [],
@@ -1199,7 +1204,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:05:13.071Z",
-      "updated": "2026-09-05T07:11:25.764Z",
+      "updated": "2026-09-05T07:14:16.869Z",
       "summary": "Proof: C16-about-field/09-verification.md (baseline main build at ?gl=force → TypeError ReactCurrentBatchConfig, app/error.tsx shell) and R-c13 adversarial recheck on LIVE 15fb165b with a hardware-GPU spoof, no query string: h1 \"Something went wrong\", sections 0, errorBoundary true, 4 console errors. Live since 5ec231d3 (06:18Z). Owner reported at 06:57Z that no visible improvement is seen — GPU visitors see the error shell. Hotfix lane wf_7910f160-45a (analyst-programmer opus xhigh → reviewer max): pin next+eslint-config-next 14.2.35, keep checks.yml/.gitignore/root:true, prove ?gl=force canvases + 0 pageerrors at 1440/390, push; orchestrator merges to main immediately. Durable fix: t_r19r3f9.",
       "decisions": [],
       "comments": [
@@ -1209,7 +1214,8 @@
           "text": "07:1xZ: hotfix branch f91843f (feb12ef pin next 14.2.35; evidence 02-repro-after.json: canvases 1 at hero, h1 'Vikram Deshpande', six sections) merged --no-ff as 5c0e01d and pushed to main as a11dfe7; Deploy triggered on push. Live verification pending (background probe)."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "LIVE VERIFIED 07:13Z on build f103462f (contains a11dfe7): ?gl=force SwiftShader probe → 1440: canvases 1 at hero, 2 after #experience, h1 'Vikram Deshpande', 6 sections, 0 pageerrors, 0 console errors, 0 failed requests; 390: canvases 1, h1 present, 0 errors. Outage window for GPU visitors: 06:18Z (5ec231d3) → 07:12Z. Durable fix t_r19r3f9 in flight; npm audit high on next 14 re-accepted until then (recorded)."
     },
     {
       "id": "t_r19r3f9",
