@@ -291,6 +291,8 @@ deployed within about ten minutes; no single agent workflow runs longer than thi
 | When (UTC) | Commit | What changed | Verified by |
 | --- | --- | --- | --- |
 | 2026-09-05 00:0x | cycle 1 | Toolchain back to green: dead components with missing imports removed, `functions/index.js` chat handler repaired, Playwright limited to `*.spec.ts` (276 tests discovered), 4K masters moved out of `public/`, MiniVic idle loop re-encoded to 1.1 MB 720p, 43 orphaned CSS rules removed | tsc · lint · static audit 10/10 · node --test 68/68 · smoke suite · live `build-commit` meta |
+| 2026-09-05 00:1x | cycle 2 | `/api/chat` answers again on production (secrets refreshed, function handler repaired and redeployed); hosting deploys with `firebase.json` so rewrites and security headers are back | live POST probe returns JSON from a real model · headers verified |
+| 2026-09-05 00:2x | cycle 3 | MiniVic introduction rewritten to what hiring managers decide on first (role + Melbourne availability, one checkable figure, one-clause AI disclosure); six research-ordered quick prompts; fallback states the boundary and redirects | tsc · lint · audit 10/10 · 78 chatbot/content specs green on the static export · live `build-commit` meta |
 
 ---
 

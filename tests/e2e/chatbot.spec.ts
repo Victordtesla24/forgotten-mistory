@@ -94,8 +94,10 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
     await gotoHome(page);
 
     const { panel } = await openMiniVic(page);
-    await expect(panel.getByRole('button', { name: 'Fit me to a role' })).toBeVisible();
-    await expect(panel.getByRole('button', { name: 'Ship a roadmap' })).toBeVisible();
+    // The first two prompts are the two things a recruiter decides on first —
+    // availability/location and one measured result (research-backed, v9 cycle 3).
+    await expect(panel.getByRole('button', { name: 'Available when, and where?' })).toBeVisible();
+    await expect(panel.getByRole('button', { name: 'Biggest measured result' })).toBeVisible();
   });
 
   test('TC-BOT-04: Closing MiniVic via the launcher hides the panel and clears greeting audio state', async ({ page }) => {

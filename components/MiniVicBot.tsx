@@ -116,29 +116,37 @@ const PERSONA_MODES: { key: ModeKey; label: string; blurb: string }[] = [
 ];
 
 const QUICK_PROMPTS: QuickPrompt[] = [
+  // Ordered by what an employer decides on first (availability and location,
+  // then a measured result, then the present role), with one prompt for a
+  // business client last. See docs/delivery/evidence/v9-20260904T2312Z/B-research/01-employer-expectations.md §3.
   {
-    label: "Fit me to a role",
-    prompt: "Give me a 2-sentence fit for an enterprise AI delivery role and what you would do in week 1.",
+    label: "Available when, and where?",
+    prompt: "What roles are you open to right now, and are you based in Melbourne?",
     mode: "recruiter",
   },
   {
-    label: "Ship a roadmap",
-    prompt: "How would you land a 90-day roadmap for an AI telemetry platform in a bank?",
+    label: "Biggest measured result",
+    prompt: "What is the biggest measured result you have delivered, and how was it measured?",
     mode: "recruiter",
   },
   {
-    label: "Tech stack read",
-    prompt: "Summarize your preferred stack for building reliable real-time dashboards.",
-    mode: "engineer",
-  },
-  {
-    label: "Services & rates",
-    prompt: "What services do you offer and what engagement models do you work with for AI consulting?",
+    label: "Day to day at the ATO",
+    prompt: "What do you own day to day on the ATO Payday Super program?",
     mode: "recruiter",
   },
   {
-    label: "Teams at scale",
-    prompt: "Describe how you manage large distributed teams with onsite and offshore practitioners.",
+    label: "How you run a squad",
+    prompt: "How do you run sprint cadence, PI planning and executive reporting across a squad?",
+    mode: "recruiter",
+  },
+  {
+    label: "First two weeks in the role",
+    prompt: "For a Scrum Master or delivery-lead role, what would you do in the first two weeks?",
+    mode: "recruiter",
+  },
+  {
+    label: "Engagements you take on",
+    prompt: "What AI delivery engagements do you take on, and what has one produced before?",
     mode: "recruiter",
   },
 ];

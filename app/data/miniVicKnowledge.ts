@@ -25,15 +25,23 @@ export interface KnowledgeEntry {
 }
 
 export const FALLBACK_ANSWER: string =
-  "Good question — I don't have that on file in my knowledge base. The real Vikram can answer it directly: email sarkar.vikram@gmail.com or call +61 433 224 556. Meanwhile, try asking me about his ATO role, the 92% test-automation win, his AI/ML work, leadership style, tech stack, or availability.";
+  'That is outside my knowledge base, which is built from Vikram\'s CV and repositories. Ask him directly: sarkar.vikram@gmail.com or +61 433 224 556. On file here: the ATO Payday Super work, the 92% evidence-automation cut, ANZ telemetry, leadership style, stack, and availability.';
 
+/**
+ * The introduction. Written to what recruiters and hiring managers say they
+ * decide on in the first sentence (present role and location first, then one
+ * checkable number, then an offer of what to ask), with the AI-clone
+ * disclosure stated once as a clause and never hedged. Every fact traces to
+ * app/data/siteContent.ts; the research and its sources are recorded in
+ * docs/delivery/evidence/v9-20260904T2312Z/B-research/01-employer-expectations.md.
+ */
 export const GREETING: Record<PersonaMode, string> = {
   hiring:
-    "I'm an AI clone of Vikram, answering in his voice from his CV and his repositories. Ask me about the ATO programme, how he leads, what he has actually shipped, or where he is available — and if I do not have it on file, I will say so rather than guess.",
+    "I'm Vikram — his AI clone, speaking from his CV. I'm Scrum Master / Project Manager on the ATO's Payday Super program and open to Scrum Master and delivery-leadership roles in Melbourne. Sixteen years across government, finance and telecommunications; at ANZ I ran a $5M+ portfolio across 40+ practitioners. Ask about availability, the ATO work, or how I lead.",
   engineering:
-    "Hey, MiniVic here — Vikram's AI clone, engineering mode engaged. Ask me about his stack, the mainframe test-evidence automation (REXX/SMF/SDSF), LLM eval pipelines, or how this site was built.",
+    "I'm Vikram — his AI clone, answering from his CV and repositories. Latest build: ATO mainframe test-evidence automation, 200+ SIT scenarios cut from ~3 hours to ~15 minutes each (≈92%) with REXX, SMF and SDSF and zero new InfoSec approvals. At ANZ: WebSocket telemetry holding P95 under 200 ms across 10,000+ devices. Ask about the stack, LLM evals, or trade-offs.",
   story:
-    "Hello! I'm MiniVic, Vikram's AI clone. Pull up a chair — ask me about his career and I'll tell it the way he would: the war rooms, the impossible deadlines, and the automation that saved them.",
+    "I'm Vikram — his AI clone, telling it the way he would. Latest chapter: a SIT window needing 75+ hours of manual evidence against 64 available, closed by a six-day harness build and a war room that produced a binding recommendation in under three hours. Sixteen years of those, MYOB in 2010 to the ATO now. Ask for one.",
 };
 
 export const knowledgeBase: KnowledgeEntry[] = [

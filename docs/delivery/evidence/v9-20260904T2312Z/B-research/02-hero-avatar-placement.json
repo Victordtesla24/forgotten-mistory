@@ -1,0 +1,159 @@
+{
+  "run": "v9-20260904T2312Z",
+  "task": "B-research/02 — where to integrate the Owner's original hero video avatar",
+  "generated": "2026-09-05T00:10Z",
+  "site": "https://forgotten-mistory.web.app",
+  "tag_legend": "Verified = URL fetched or file read/probed this session; Inferred = derived from verified facts or from a second-hand citation not fetched directly; Assumed = standards/knowledge not fetched this session",
+  "assets": {
+    "hero_loop": {
+      "path": "public/assets/my-hero-avatar.mp4",
+      "facts": "h264 High@L3.0, 640x360, 24 fps, 5.875 s, 160156 B, 218 kbit/s, no audio stream, ftyp isom + moov atom at byte 32 (faststart, streams before full download), start_time 0.000",
+      "composition": "frame at 2 s: head centred at x≈50% / y≈32% of frame, shoulders+shearling collar fill the lower third, warm sunset city bokeh behind (colour, not monochrome)",
+      "tag": "Verified (ffprobe, xxd, extracted frame hero-avatar-frame-2s.png in this directory)"
+    },
+    "still": {
+      "png": "public/assets/my_avatar.png 900x502 178777 B",
+      "webp": "public/assets/my_avatar.webp 1480x826 66470 B",
+      "avif": "public/assets/my_avatar.avif 1480x826 yuv444p 41343 B",
+      "note": "same shoot as both videos (same jacket, collar, background); the task brief said 900x502 for all three — only the PNG is 900x502, the WebP/AVIF are 1480x826",
+      "tag": "Verified (PIL + ffprobe)"
+    },
+    "panel_loop": {
+      "path": "public/assets/my-avatar.mp4",
+      "facts": "1280x720, 12.29 s, 1096301 B, used by components/MiniVicBot.tsx line 225 (AVATAR_VIDEO_URL), lazy-loaded only when the panel opens (line 404)",
+      "tag": "Verified (ffprobe + grep)"
+    }
+  },
+  "current_hero": {
+    "component": "components/sections/Hero/Hero.tsx — <section id=hero> > Scene(.stage, GLSL atmosphere via dynamic import ssr:false) + div.inner containing, in DOM order: p.eyebrow, h1.name, p.role, p.statement, div.ledgerRow(ul.ledger ×3 li + p.grading), div.actions(2 anchors), p.availability(3 links)",
+    "layout": ".inner is a single-column block, max-width 68rem (1088px), margin auto; .hero is flex/align-center, min-height 100svh, overflow hidden, padding-top max(clamp(6rem,14vh,10rem), nav-height 5.5rem + 0.75rem); @media (max-height:860px) tightens every margin and drops h1 from --fs-name clamp(3rem,8.2vw,7.5rem) to --fs-display clamp(2.4rem,5.6vw,4rem); .ledgerRow is a 2-col grid (ledger | grading note 15rem) above 1100px and single-column below; ledger collapses to 1 column at ≤860px and to figure|label rows at ≤600px",
+    "entrance": "pure CSS heroRise (opacity 0→1 + 14px rise, 900ms, stagger 90ms × --step); under prefers-reduced-motion it becomes heroFade 320ms",
+    "unmounted_original": "components/site/HeroAvatar.tsx is not imported anywhere (grep: only lib/avatarContext.tsx and lib/voiceoverController.ts mention it in comments). It depends on framer-motion, useAvatarSpeaking(), and CSS classes .avatar-placeholder/.avatar-circle/.avatar-frame/.avatar-tag/.avatar-tilt/.avatar-glass/.avatar-pulse-ring/.hud-frame__corner that no longer exist in app/globals.css (grep 'avatar' in globals.css returns nothing). Its comment claims the mp4 is 228 kB; it is 160 kB now. Its load-gating pattern (preload=none, src set by IntersectionObserver after a page-ready signal, crossfade only when !paused && currentTime>0.04 && videoWidth>0, poster returns on pause/error) is sound and is reused in the spec below; its HUD chrome, tilt and 'SUBJECT · LIVE' tag are not — they are the register the rebuild removed.",
+    "tag": "Verified (files read)"
+  },
+  "tests_that_constrain_the_change": [
+    {"id": "TC-HERO-03", "asserts": "innerText of `#hero p` nth(2) ≤ 35 words — the statement is the THIRD <p> in the hero. Any <p> inserted before it (a caption) breaks this test; use <figure>/<figcaption> or <span>, and place the portrait after the statement in DOM order or keep it <p>-free.", "tag": "Verified"},
+    {"id": "TC-HERO-04", "asserts": "`#hero ul li` count === 3 — the portrait must not contain a list", "tag": "Verified"},
+    {"id": "TC-HERO-08", "asserts": "section box height between 0.9× and 1.1× viewport height (single Playwright project: Desktop Chrome 1280x720)", "tag": "Verified"},
+    {"id": "TC-HERO-09", "asserts": "h1, first ledger li, a[href=#experience], a[href$=.pdf] each have bottom edge ≤ viewport height at 1280x720 — the portrait must not push the ledger or actions down at 1280x720", "tag": "Verified"},
+    {"id": "TC-HERO-11", "asserts": "≤ 1 canvas in #hero — a <video> is not a canvas; unaffected", "tag": "Verified"},
+    {"id": "PERF-02/03/06/07", "asserts": "LCP ≤ 2500 ms; CLS < 0.05; h1 not served at opacity 0; LCP element tag ≠ CANVAS and startTime ≤ 2500 — an <img> poster that becomes LCP is allowed provided it paints from static HTML", "tag": "Verified (tests/perf/performance.spec.ts)"},
+    {"id": "MONO-04", "asserts": "computed style colour properties in the six sections are achromatic or sanctioned gold — it reads getComputedStyle, NOT pixels, so a colour video passes the test while violating prime directive 4 (gold means 'sourced'); the warm sunset in the loop reads as gold", "tag": "Verified (tests/monochrome/monochrome.spec.ts lines 60-116, 207-217)"},
+    {"id": "VIS-01", "asserts": "hero screenshot vs tests/baselines — will need UPDATE_SNAPSHOTS=1 after an intended change", "tag": "Verified"},
+    {"id": "TC-CINE-06/07", "asserts": "under reduced motion the hero entrance is a fade and every heading is opacity > 0.9", "tag": "Verified (grep)"},
+    {"id": "CSP", "asserts": "firebase.json: media-src 'self' blob: — same-origin mp4 is allowed", "tag": "Verified"},
+    {"id": "Static audit asset budget", "asserts": "img ≤ 0.5 MB, video ≤ 2.5 MB (≤ 5 MB click-to-play) — 160 kB passes", "tag": "Verified (scripts/validate/overhaul_static_audit.mjs line 187)"}
+  ],
+  "external_evidence": [
+    {"topic": "Chrome autoplay policy", "claim": "Muted autoplay is always allowed; autoplay with sound needs a prior user interaction with the domain or a high Media Engagement Index; play() without permission rejects with NotAllowedError", "source": "https://developer.chrome.com/blog/autoplay", "tag": "Verified"},
+    {"topic": "WebKit/iOS autoplay policy", "claim": "Since iOS 10, <video autoplay> and video.play() without a gesture are allowed when the source has no audio track OR the element is muted; autoplaying videos start only when visible and pause when scrolled out; playsinline is required or iPhone forces fullscreen; play() returns a Promise that rejects when conditions fail", "source": "https://webkit.org/blog/6784/new-video-policies-for-ios/", "tag": "Verified"},
+    {"topic": "LCP and <video>", "claim": "<video> is an LCP candidate using the poster image load time or the first-frame presentation time, whichever is earlier; <img> uses first-frame time for animated content; elements at opacity 0, full-viewport elements, and low-entropy placeholder images are excluded; size counted is the visible size (clipped/overflow parts excluded); the LCP element can change to a later-rendering larger element", "source": "https://web.dev/articles/lcp (updated 2025-09-04)", "tag": "Verified"},
+    {"topic": "Eye-tracking: real people photos", "claim": "NN/g eyetracking: users scrutinise photos of real people and ignore stock/decorative imagery; on a team page the user spent 10% more time on portraits than on bios that took 316% more space; 'on personal websites, users want to see the person behind the site'", "source": "https://www.nngroup.com/articles/photos-as-web-content/", "tag": "Verified"},
+    {"topic": "Face bias", "claim": "Cerf, Frady & Koch 2009 (J. Vision 9(12)): faces attracted gaze 16.6× more than expected from size/position, text 11.1×, independent of task; Djamasbi et al. 2010 (IJHCS): Generation Y users fixated a face within their first two fixations on homepages", "source": "https://jov.arvojournals.org/article.aspx?articleid=2122098 (direct fetch returned HTTP 403 this session), https://users.wpi.edu/~djamasbi/PDFS/2010%20djamasbi%20et%20al-%20IJHCS%20(journal%20version).pdf — both reached only through a Perplexity citation", "tag": "Inferred"},
+    {"topic": "Moving vs still face", "claim": "No fetched source quantifies a video face beating a still portrait for attention; motion attracts transients but competes with the headline. The recommendation therefore keeps the loop small, silent, grayscale and slower than the type — the face is a credibility signal, not the message", "source": "Perplexity synthesis, no primary source verified", "tag": "Inferred"},
+    {"topic": "Award-listed monochrome portfolios with a video portrait", "claim": "Two searches (Perplexity search + ask, high context) could not verify a named Awwwards/CSSDA/FWA portfolio that is both monochrome AND shows a looping filmed self-portrait in the hero with checkable desktop/phone placement. Candidates surfaced but unverified: awwwards.com/sites/personal-design-portfolio, awwwards.com/sites/portfolio-2025 (Reksa Andhika), awwwards.com/inspiration/video-portfolio-michele-verze-portfolio, awwwards.com/awwwards_collections/collections/black-and-white-websites/. Treat any placement claim about them as unverified; do not cite them in copy.", "source": "https://www.awwwards.com/websites/winner_category_portfolio/ and the URLs above", "tag": "Inferred (existence of listings verified via search results; portrait behaviour NOT verified)"},
+    {"topic": "WCAG 2.2.2 Pause, Stop, Hide", "claim": "Moving content that starts automatically, lasts more than 5 s and is presented alongside other content needs a user mechanism to pause, stop or hide it — a 5.875 s loop that repeats indefinitely meets all three conditions, so a keyboard-operable pause control is required on any autoplaying placement", "source": "WCAG 2.1 SC 2.2.2 (not fetched this session)", "tag": "Assumed"},
+    {"topic": "React muted attribute", "claim": "React does not serialise the boolean `muted` prop into server-rendered HTML (long-standing facebook/react issue #10389), so a <video muted> in JSX can reach WebKit un-muted at parse time; set video.muted = true imperatively before play() and/or use defaultMuted", "source": "training knowledge, not fetched", "tag": "Assumed"}
+  ],
+  "placements": [
+    {
+      "id": "P1",
+      "name": "Right column beside role · statement · ledger (recommended)",
+      "where": ".inner becomes a two-column grid at ≥720px: `grid-template-columns: minmax(0,1fr) var(--portrait-w)`; eyebrow, h1, actions, availability span both columns (grid-column 1 / -1); the portrait <figure> sits in column 2, grid-row 3 / 6 (role → ledgerRow), align-self start. .ledgerRow stays in column 1 and uses its existing ≤1100px single-column form (grading note under the ledger) at every width, since the portrait now owns the right side. Below 720px the figure becomes an 88px square stamp absolutely positioned top-right of .inner on the eyebrow row.",
+      "scores": {"impact": 4, "lcp_cls_risk_5_is_safest": 4, "mobile_behaviour": 4, "effort_5_is_least": 3, "total": 15},
+      "why": "The name keeps its full 7.5rem measure (a 2-column split at h1 height would wrap 'Vikram Deshpande' at 1440 where it runs ≈900px wide); the face sits at the reader's eye line next to the sentence that is the pitch; the 4:5 box is defined by CSS width + aspect-ratio so it reserves space at first paint (CLS 0); with width capped so height ≤ the role+statement+ledger rows at 1280x720, TC-HERO-08/09 hold by construction.",
+      "risks": "At 1280x720 the poster (≈205×256 CSS px ≈ 52k px²) out-sizes the h1 (≈490×67 ≈ 33k px²) and becomes the LCP element — acceptable because it is a 41 kB AVIF in static HTML with fetchpriority=high; assert LCP tag ∈ {IMG, H1}. The 640x360 source cropped 4:5 is 288×360 px, so at 230 CSS px on a 2× screen it is upscaled ≈1.6× (soft, not broken); the still poster is sharp. VIS-01 baseline changes."
+    },
+    {
+      "id": "P2",
+      "name": "Full-bleed grayscale backdrop behind the type (replacing/over the atmosphere)",
+      "where": "<video> absolutely positioned in .stage, object-fit cover, dimmed to ~35% with a top-to-bottom ink gradient, grayscale; type unchanged on top.",
+      "scores": {"impact": 3, "lcp_cls_risk_5_is_safest": 3, "mobile_behaviour": 2, "effort_5_is_least": 3, "total": 11},
+      "why": "Cinematic, and full-viewport elements are excluded from LCP by heuristic so it cannot become the LCP element.",
+      "risks": "640×360 stretched to 1920 is a 3× upscale — visibly soft on every desktop; a face behind type fights the type (contrast over eyes/glasses); it violates 'the scene is never the content' and would need dimming so heavy the face stops reading as a person; on phones a cover-cropped 16:9 shows a shoulder, not a face, unless a second portrait cut is produced; keeps the GPU busy alongside the GLSL atmosphere (two layers) — the hero explicitly caps DPR for mobile frame rate. Not recommended with this source file."
+    },
+    {
+      "id": "P3",
+      "name": "Stamp: small rounded square (112–128px) at the eyebrow row's right, all breakpoints",
+      "where": "position absolute top-right of .inner, aligned with the eyebrow baseline; no grid change; poster only below 720px, loop above.",
+      "scores": {"impact": 2, "lcp_cls_risk_5_is_safest": 5, "mobile_behaviour": 5, "effort_5_is_least": 5, "total": 17},
+      "why": "Zero layout risk, one CSS rule set, identical on every device, never LCP (smaller than the h1 everywhere), the 1:1 crop is 360×360 source so it is sharp at 128 CSS px @2×.",
+      "risks": "Too small to carry the credibility signal NN/g documents — at 112px on a 1440 screen it reads as an avatar chip, not a portrait; the face is 40px tall. Highest total score only because it risks nothing; it also achieves little. Choose it only if P1's VIS-01 rebaseline or grid change is judged out of scope for this cycle."
+    }
+  ],
+  "recommendation": {
+    "placement": "P1",
+    "one_line": "A silent, grayscale 4:5 portrait of the same face that speaks in the MiniVic panel, standing in the hero's empty right half beside the sentence that is the pitch — poster first, loop later, never moving for a reader who asked it not to.",
+    "dom": "<figure class={styles.portrait} data-testid=\"hero-portrait\"> <div class={styles.portraitMedia}> <picture> <source srcSet=\"/assets/my_avatar.avif\" type=\"image/avif\"/> <source srcSet=\"/assets/my_avatar.webp\" type=\"image/webp\"/> <img src=\"/assets/my_avatar.png\" width={1480} height={826} alt=\"Portrait of Vikram Deshpande\" loading=\"eager\" decoding=\"async\" fetchPriority=\"high\"/> </picture> <video ref muted loop playsInline preload=\"none\" aria-hidden=\"true\" tabIndex={-1} data-state=\"idle|playing|paused\"/> </div> <button type=\"button\" class={styles.portraitToggle} aria-pressed={paused} aria-label=\"Pause the portrait\"|\"Play the portrait\">…</button> <figcaption class={styles.portraitCaption}>Silent loop · he speaks in the panel</figcaption> </figure> — placed in JSX AFTER p.statement and BEFORE div.ledgerRow so `#hero p` nth(2) is still the statement (TC-HERO-03) and no <ul> is added (TC-HERO-04). The figcaption text is optional; if used it must be a <figcaption>, never a <p>.",
+    "grid": {
+      "min_width_720": ".inner { display:grid; grid-template-columns: minmax(0,1fr) var(--portrait-w); column-gap: clamp(var(--space-4), 4vw, var(--space-8)); align-items:start } .eyebrow,.name,.actions,.availability { grid-column: 1 / -1 } .role,.statement,.ledgerRow { grid-column: 1 } .portrait { grid-column: 2; grid-row: 3 / 6; align-self:start; margin-top: clamp(var(--space-2), 2.4vh, var(--space-3)) /* = .role's top margin so the top edges align */ } .ledgerRow { grid-template-columns: 1fr; gap: var(--space-2); align-items:start /* the ≤1100 form, now at all widths */ } .statement { max-width: min(var(--measure-read), 100%) }",
+      "below_720": ".inner { position:relative } .portrait { position:absolute; top:0; right:0; width:88px; aspect-ratio:1 } .eyebrow { padding-right: calc(88px + var(--space-2)) } .portraitToggle,.portraitCaption { display:none } .portrait video { display:none }",
+      "reduced_motion": "@media (prefers-reduced-motion: reduce) { .portrait video { display:none } .portraitToggle { display:none } } — plus the JS gate below never assigns src, so no request is made",
+      "tag": "Inferred (derived from the measured CSS and the 1280x720 fold arithmetic below)"
+    },
+    "sizes": {
+      "token": "--portrait-w: clamp(11rem, 16vw, 20rem); aspect-ratio 4 / 5 at ≥720px; 88px square below 720px",
+      "390": "88 × 88 CSS px stamp, top-right of the eyebrow row; poster only (1:1 crop from the 1480×826 still, object-position 50% 22%); no video, no button; the h1 at --fs-name 3rem already wraps to two lines at 390 so the stamp overlaps nothing",
+      "834": "176 × 220 (clamp floor 11rem); beside role/statement/ledger; ledger is single-column at ≤860 so rows 3–5 are ≈400px tall — the portrait sits at their top with air beneath",
+      "1280": "205 × 256 (16vw=204.8); rows 3–5 under the max-height:860 rhythm at 720 tall ≈ 28+24+52+40+110+36 ≈ 290px, so 256 fits without pushing .actions — TC-HERO-09 holds",
+      "1440": "230 × 288 (16vw); h1 at 118px stays one line because it spans both columns",
+      "1920": "307 × 384 (16vw), capped at 320 × 400 by the 20rem ceiling from 2000px up; .inner is capped at 68rem so the text column is ≈ 1088 − 320 − 64 ≈ 700px, still ≥ the statement's 58–72ch measure at --fs-lede",
+      "crop": "object-fit: cover; object-position: 50% 50% on both img and video — the 4:5 window on a 16:9 frame is full-height and 288px wide, centred on the head at x≈50%",
+      "tag": "Inferred (arithmetic from Verified CSS tokens; confirm with the 1280/1440/834/390 screenshots the workflow already requires)"
+    },
+    "poster": {
+      "file": "public/assets/my_avatar.avif (41 343 B, 1480×826) via <picture>, WebP 66 470 B second, PNG 178 777 B last; the <img> is the LCP candidate and stays at opacity 1 from first paint — it must NOT take the heroRise opacity entrance (LCP excludes opacity-0 elements and the old HeroAvatar comment records the same rule)",
+      "eager_weight": "41 kB image; the 160 kB mp4 is never eager (preload=\"none\", no src attribute in HTML) — eager assets total ≤ 500 kB with ≥ 450 kB headroom",
+      "no_video_poster_attribute": "<video poster> takes a single URL and cannot use AVIF/WebP negotiation, so the poster is the <picture> layered UNDER the video, not the attribute",
+      "tag": "Verified sizes / Inferred design"
+    },
+    "video_attributes": {
+      "markup": "muted loop playsInline preload=\"none\" aria-hidden=\"true\" tabIndex={-1} disablePictureInPicture disableRemotePlayback; NO autoplay attribute (play is programmatic after the gate so the file never joins the load path); NO src/<source> in server HTML; NO controls",
+      "imperative": "before play(): video.muted = true; video.defaultMuted = true (React may not serialise `muted` — Assumed); video.play().catch(() => keep poster)",
+      "gate_sequence": "1) matchMedia('(min-width: 720px)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches && !(navigator.connection?.saveData) — else stop, poster only; 2) wait for window load (or readyState === 'complete') then requestIdleCallback (setTimeout 1200 ms fallback); 3) IntersectionObserver on the figure, threshold 0.25: entering → set src=/assets/my-hero-avatar.mp4, load(), play() on canplay; leaving → pause(); 4) document visibilitychange hidden → pause; 5) matchMedia change listeners for reduced-motion and width → pause + remove src if the condition turns false",
+      "why_this_order": "Chrome: muted autoplay always allowed (Verified). WebKit: play() without gesture allowed when muted, and it will refuse when not visible — the observer only calls play() when in view (Verified). The load-event + idle gate keeps the decode off the LCP path, which is what the old HeroAvatar learned the hard way (its comment: the observer fired 'immediately after hydration' and put the download on the load path).",
+      "tag": "Verified policies / Inferred sequence"
+    },
+    "crossfade": {
+      "rule": "Poster never animates. Video sits above the poster at opacity 0 and transitions to 1 over 600 ms var(--motion-ease-standard) only when ALL of: 'playing' fired, !video.paused, video.currentTime > 0.04, video.videoWidth > 0 (the old component's guard, kept verbatim — it stops the 'dark empty panel' bug it documents). On pause / error / stalled / visibilitychange hidden / out of view → opacity back to 0 over 300 ms so the still shows through. Both layers share `filter: grayscale(1) contrast(1.04)` on .portraitMedia (one composited filter, not two), object-fit cover, identical object-position, so the still and the first video frame are the same crop of the same shoot and the fade is a change of breath, not of picture.",
+      "loop_seam": "5.875 s loop: the first and last frames are not identical (talking head), so a hard cut is visible every 6 s. Cheap mitigation without touching the asset: on 'timeupdate' when currentTime > duration − 0.25 begin a 250 ms fade to 0.55 opacity and back to 1 on 'seeked'/'playing' — the poster is underneath so the seam is a soft blink. Better fix later (cost gate, ask first): re-render the loop as a palindrome or a 10–12 s idle at 720p.",
+      "tag": "Inferred"
+    },
+    "monochrome": {
+      "rule": ".portraitMedia { filter: grayscale(1) contrast(1.04); } on the wrapper around <picture> and <video>. Mandatory: the source frames are warm sunset colour, and on this site gold means 'this figure has a source' (CLAUDE.md prime directive 4). MONO-04 would not catch it (it reads computed CSS colours, not pixels), so a new assertion must (TC-HERO-18 below). No gold border, no gold ring, no gold caption — the portrait is not a sourced claim. Border: 1px var(--card-border); background: var(--ink-800) while the poster loads; border-radius: 4px (the ledger uses rules, not cards — keep the radius small so it reads as a print, not a chip).",
+      "tag": "Verified (MONO-04 method) / Inferred (rule)"
+    },
+    "keyboard_and_a11y": {
+      "pause_control": "<button type=button aria-pressed=false aria-label=\"Pause the portrait\"> at the figure's bottom-right, 40×40 hit area (min 24×24 per WCAG 2.5.8; 48 preferred by this site's actions), glyph ‖ / ▶ drawn in CSS or inline SVG in --white; focus-visible: outline 2px solid var(--white); outline-offset 3px (matches .primaryAction:focus-visible). Toggling sets a `paused` state that the gate respects (a user pause wins over the IntersectionObserver re-entry). Rendered only when the video is eligible (≥720px, motion allowed) so nothing focusable exists for a reader who has no motion to stop. Tab order: it comes after the statement and before the ledger, matching DOM order.",
+      "img_alt": "\"Portrait of Vikram Deshpande\" — truthful and short; do not name the city (the backdrop is not verifiably Melbourne)",
+      "video": "aria-hidden=true, tabIndex=-1 — it is a decorative re-rendering of the image the <img> already describes",
+      "reduced_motion": "poster only; the video never receives a src, the button is not rendered, and TC-CINE-06/07 stay satisfied because the poster is not part of the heroRise/heroFade set",
+      "tag": "Inferred (WCAG figures Assumed)"
+    },
+    "relation_to_minivic": {
+      "same_face": "Both loops and the still are the same shoot; the hero loop (640×360, silent, 5.9 s) is the quiet presence, the panel loop (1280×720, 12.3 s) is the one that speaks. The hero never plays audio and never carries a 'LIVE' label — the old HeroAvatar's 'SUBJECT · LIVE' tag is exactly the boast the tone linter exists to fail.",
+      "wiring": "lib/avatarContext.tsx already exposes useAvatarSpeaking() (Verified). Rule: while the MiniVic panel is open (or speaking === true) the hero loop pauses and fades to the poster — one face does not talk in two places, and a phone should not run two decoders. Resume on panel close via the normal gate. The caption 'Silent loop · he speaks in the panel' (figcaption, mono caption style .grading) is the only copy; it is literally true and points the reader to the synthetic introduction, which the Listen section already labels as synthetic.",
+      "do_not": "Do not reuse my-avatar.mp4 (1.1 MB) in the hero — it would be the largest eager-adjacent asset on the page for a 12 s idle that the panel already owns.",
+      "tag": "Verified wiring / Inferred rule"
+    },
+    "playwright_guards": [
+      {"id": "TC-HERO-12", "assert": "`#hero [data-testid=hero-portrait] img` is visible, naturalWidth > 0, alt === 'Portrait of Vikram Deshpande', currentSrc ends with .avif in Chromium; computed opacity ≥ 0.99 within 200 ms of #hero visible (the poster never fades in)"},
+      {"id": "TC-HERO-13", "assert": "`#hero video` has attributes muted, loop, playsinline, preload=none, aria-hidden=true, no autoplay, no controls; at DOMContentLoaded its src is empty; after `load` + 2500 ms it has src ending my-hero-avatar.mp4, paused === false, currentTime > 0.04, and computed opacity > 0.9 (Chromium muted autoplay is always allowed — if CI's software renderer still refuses, launch with --autoplay-policy=no-user-gesture-required for this spec only)"},
+      {"id": "TC-HERO-14", "assert": "with page.emulateMedia({reducedMotion:'reduce'}): no request whose URL contains my-hero-avatar.mp4 is made within 4 s (page.on('request')), the video has no src, the pause button has count 0, the poster img is visible at opacity ≥ 0.99"},
+      {"id": "TC-HERO-15", "assert": "boundingBox of the portrait figure captured at first visible and again after the video reports playing differ by ≤ 1 px in x/y/width/height; PERF-03 CLS stays < 0.05 (already asserted globally)"},
+      {"id": "TC-HERO-16", "assert": "with page.route('**/my-hero-avatar.mp4', r => r.abort()): the poster stays visible, video computed opacity ≤ 0.05, no uncaught page error (page.on('pageerror'))"},
+      {"id": "TC-HERO-17", "assert": "Tab from the statement reaches `#hero button[aria-pressed]`; Enter toggles aria-pressed to true, video.paused === true, aria-label becomes 'Play the portrait'; Space toggles back; focus-visible outline colour is achromatic (white)"},
+      {"id": "TC-HERO-18", "assert": "getComputedStyle(portraitMedia).filter includes 'grayscale(1)'; no element inside the figure has a computed colour that is chromatic (reuse chromaticOffenders from tests/monochrome); the figure contains no --gold token usage"},
+      {"id": "TC-HERO-19", "assert": "sum of transferSize for image resources under /assets/ loaded before the load event ≤ 500 000 B, and the mp4's requestStart is after loadEventEnd (performance.getEntriesByType('resource'))"},
+      {"id": "TC-HERO-20", "assert": "PERF-07 extension: the final LCP entry's tag is 'IMG' or 'H1' (never 'VIDEO' or 'CANVAS') and startTime ≤ 2500 at 1280x720"},
+      {"id": "TC-HERO-21", "assert": "at viewport 390×844 the figure's box is ≤ 96×96 and its top ≤ the eyebrow's bottom; `#hero video` count 0 after 3 s (no video below 720px)"},
+      {"id": "unchanged", "assert": "TC-HERO-01…11 unchanged; TC-HERO-03 must still read the statement at `#hero p` nth(2); TC-HERO-04 still counts exactly 3 li; VIS-01 rebaselined once and the PNG inspected before commit"}
+    ],
+    "effort": "≈ 1 focused cycle: Hero.tsx (+ ~90 lines: figure, gate hook, toggle), Hero.module.css (+ ~110 lines incl. 3 media queries), 10 new hero.spec.ts tests, VIS-01 rebaseline, screenshots at 390/834/1280/1440(/1920). Delete components/site/HeroAvatar.tsx in the same commit (dead, references vanished classes) or the dead-code posture of the repo is weaker than before the change.",
+    "open_limits": [
+      "Source resolution: 640×360 cropped 4:5 is 288×360; at 230 CSS px on 2× it is upscaled ≈1.6×. A 720p re-render of the same loop (cost gate — ask) would remove the softness; the spec does not depend on it.",
+      "The loop's seam every 5.875 s is visible; the fade mitigation above hides it, a palindrome re-render fixes it.",
+      "No verified award-listed monochrome portfolio with a filmed self-portrait was found within the search budget; the placement rests on the eye-tracking evidence and this site's own constraints, not on precedent."
+    ]
+  }
+}
