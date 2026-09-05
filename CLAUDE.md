@@ -7,6 +7,12 @@ always take precedence over this file.**
 The binding requirements live in `docs/prompt.md`. This file is the map: what the site is
 now, where things are, and the gates a change has to clear.
 
+## ON RESUME (read first)
+
+1. **`docs/prompt.md`** — sole source of truth. Maximum prompt execution accuracy. Non-interactive (§0.1). O1/O5: visible UI/UX to production every **≤10 minutes**.
+2. **`docs/ORCHESTRATOR-REALIGN.md`** — host restored the 10-min Deploy metronome (`fm-deploy-cadence.timer`); Hermes is disabled; §5 profile files exist. Follow the resume playbook.
+3. Claim board task **`t_realign01`**, then continue unfinished UI tasks. Never start Hermes. Never ask for `ANTHROPIC_API_KEY`.
+
 ---
 
 ## What the site is
