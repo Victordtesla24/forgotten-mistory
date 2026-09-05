@@ -37,3 +37,6 @@ role_matrix: 3rd_party_independent_adversarial_review → level 1 → effort **m
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## STATUS (2026-09-05T06:34:52.590Z)
+running — R-c13 workflow dispatched 06:3xZ: adversarial → composition → motion → merge (sequential, opus max), gated on live meta f86b125

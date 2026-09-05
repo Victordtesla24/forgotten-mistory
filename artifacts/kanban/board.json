@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T06:32:52.011Z",
+  "updated": "2026-09-05T06:34:52.633Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -148,7 +148,7 @@
     {
       "id": "t_4adf34f7",
       "title": "R-c13 — adversarial + composition + motion council review of the LIVE site after cycles 11/13 land (O2/O6)",
-      "status": "todo",
+      "status": "running",
       "assignee": "reviewer",
       "priority": 95,
       "parents": [
@@ -163,7 +163,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:34:52.590Z",
       "summary": "Three independent reviewers (adversarial, composition, motion) against https://forgotten-mistory.web.app/?gl=force at 1440/1920/834/390 + reduced-motion + no-GL; merged verdict with a prioritised, file:line-exact backlog like R-c8. Also grades the §0.3 mandates (one flagship visualisation per section; black/white/gold only; narrative) and R2 (≥7 signature scenes — currently 2 GLSL + 4 SVG/CSS).",
       "decisions": [],
       "comments": []
@@ -676,7 +676,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:21:18.313Z",
+      "updated": "2026-09-05T06:34:52.633Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": [
@@ -689,6 +689,11 @@
           "at": "2026-09-05T06:21:18.313Z",
           "by": "orchestrator",
           "text": "Cadence: 06:16Z/06:18Z deploy 5ec231d3 (cycle 13, first site-affecting deploy of the session: Next 15.5.25, npm audit 0); 06:19Z c9ad4f39 docs; e998e79 docs."
+        },
+        {
+          "at": "2026-09-05T06:34:52.633Z",
+          "by": "orchestrator",
+          "text": "Cadence: cycle 11 merged f86b125 pushed 06:33Z (site-affecting: vitrine rail/trace-on, contrast, hero 390)."
         }
       ]
     },
