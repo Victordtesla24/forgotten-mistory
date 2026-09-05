@@ -52,3 +52,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## DECISION (2026-09-05T06:01:51.406Z)
+S-5/S-6 (full 276-spec regression) re-assigned to cycle 14 (t_d0066b7a) on the merged main so the unit fits the 30-min cap (O1) and the verified upgrade ships on the 10-min cadence; deterministic gates (tsc/lint/audit/build/npm audit/node tests) + independent verification remain the merge gate. Dispatched: Workflow wf_74bc3c5b-f9d (analyst-programmer:c13 opus xhigh → reviewer:v-c13 opus max).

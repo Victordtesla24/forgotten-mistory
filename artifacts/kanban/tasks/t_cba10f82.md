@@ -35,3 +35,6 @@ role_matrix: architecture / requirements_analysis → level 1 → effort **max**
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## STATUS (2026-09-05T06:01:51.566Z)
+running — Workflow wf_fd340253-7ea (solutions-architect:spec-v10 opus max)

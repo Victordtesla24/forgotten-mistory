@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T05:58:06.011Z",
+  "updated": "2026-09-05T06:02:50.271Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -48,9 +48,14 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:01:51.406Z",
       "summary": "Worktree .claude/worktrees/wf_18f926b0-2a4-1 (base 8dc4cf4). Battery already green there: tsc 0, lint 0, audit 10/10, build exit 0, secret scan PASS, root npm audit 0 vulns; regression log stopped at 243/276 (8 ✘, all in the CI-red list). Nothing committed yet.",
-      "decisions": [],
+      "decisions": [
+        {
+          "at": "2026-09-05T06:01:51.406Z",
+          "text": "S-5/S-6 (full 276-spec regression) re-assigned to cycle 14 (t_d0066b7a) on the merged main so the unit fits the 30-min cap (O1) and the verified upgrade ships on the 10-min cadence; deterministic gates (tsc/lint/audit/build/npm audit/node tests) + independent verification remain the merge gate. Dispatched: Workflow wf_74bc3c5b-f9d (analyst-programmer:c13 opus xhigh → reviewer:v-c13 opus max)."
+        }
+      ],
       "comments": []
     },
     {
@@ -68,9 +73,14 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:01:51.444Z",
       "summary": "Worktree .claude/worktrees/wf_18f926b0-2a4-2 (base 8dc4cf4). Patch applied + real fixes D-1…D-6 written (07-decisions.md); TDD failing log captured (7 failed / 10 passed on unpatched main). NOT yet done: passing battery, regression, screenshots, D-7+, commit.",
-      "decisions": [],
+      "decisions": [
+        {
+          "at": "2026-09-05T06:01:51.444Z",
+          "text": "S-5 (full suite in halves) re-assigned to cycle 14 (t_d0066b7a) on the merged main (30-min cap, O1). Targeted acceptance specs + screenshots + independent verification remain the merge gate. Dispatched: Workflow wf_3136d81b-e67 (analyst-programmer:c11 opus xhigh → reviewer:v-c11 opus max, port 5602)."
+        }
+      ],
       "comments": []
     },
     {
@@ -163,9 +173,9 @@
       "comments": []
     },
     {
-      "id": "t_3e553558",
+      "id": "t_927a093b",
       "title": "V-C13 — independent verification of cycle 13 (Next 15.5.25) from git + logs only",
-      "status": "todo",
+      "status": "running",
       "assignee": "reviewer",
       "priority": 92,
       "parents": [
@@ -179,15 +189,20 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:02:50.271Z",
       "summary": "Fresh reviewer; reads only the branch diff and the committed evidence logs; re-runs the deterministic gates itself.",
-      "decisions": [],
+      "decisions": [
+        {
+          "at": "2026-09-05T06:02:50.271Z",
+          "text": "Id swap 06:1xZ: the orchestrator quoted t_927a093b to workflow wf_74bc3c5b-f9d as the V-C13 spec; the board ids were swapped consistently (t_927a093b ⇄ t_3e553558, t_329d1673 ⇄ t_2331f031, parents updated) so the running verifiers read the right spec. Ids are opaque; no history lost."
+        }
+      ],
       "comments": []
     },
     {
-      "id": "t_2331f031",
+      "id": "t_329d1673",
       "title": "V-C11 — independent verification of cycle 11 (Vitrine / contrast / hero 390) from git + logs + screenshots",
-      "status": "todo",
+      "status": "running",
       "assignee": "reviewer",
       "priority": 90,
       "parents": [
@@ -201,7 +216,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:02:50.162Z",
       "summary": "Fresh reviewer; verifies acceptance lines of R-c8 C-02 and C-06 plus TC-CONTRAST-01/TC-HERO-12 against the branch build, not the author's report.",
       "decisions": [],
       "comments": []
@@ -213,7 +228,7 @@
       "assignee": "orchestrator",
       "priority": 93,
       "parents": [
-        "t_3e553558"
+        "t_927a093b"
       ],
       "skills": [],
       "hierarchy": {
@@ -235,7 +250,7 @@
       "assignee": "orchestrator",
       "priority": 91,
       "parents": [
-        "t_2331f031"
+        "t_329d1673"
       ],
       "skills": [],
       "hierarchy": {
@@ -434,7 +449,7 @@
     {
       "id": "t_cba10f82",
       "title": "R9/TDD — requirements spec + test-case list for every unmet R-item and §0.3 mandate before any further code",
-      "status": "ready",
+      "status": "running",
       "assignee": "solutions-architect",
       "priority": 96,
       "parents": [],
@@ -446,7 +461,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:01:51.566Z",
       "summary": "solutions-architect (level 1, max). Produces docs/delivery/evidence/v10-20260905T0515Z/SPEC-v10.md: for each of R1–R12, O1–O6, M1–M7 the current state (Verified from the live site/repo, with the command), the gap, the binary acceptance test (spec file + assertion), and the cycle that closes it. Inputs: docs/prompt.md §2–§3, §0.2, §0.3, §14; R-c8 review; C13/C11 evidence; this board.",
       "decisions": [],
       "comments": []
@@ -468,9 +483,14 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:01:51.604Z",
       "summary": "Blocked in part: Higgsfield 0 credits, ElevenLabs IVC refused, OpenRouter −$5.38 (all Owner-blocked, re-probed 2026-09-05T05:50Z). The achievable slice (stock synthetic voice + pre-rendered avatar loop + envelope-driven mouth state + the working chat ladder) is specified by t_spec-r-matrix S-3 and built as cycles 22+.",
-      "decisions": [],
+      "decisions": [
+        {
+          "at": "2026-09-05T06:01:51.604Z",
+          "text": "Production chat brain routing (§0.4 applied to the site): the deployed Cloud Function ladder tries OpenRouter first and, while the balance is −$5.38 (402), answers on the OpenAI rung (live probe 05:5xZ: HTTP 200, 4.0 s, resume-grounded). The Owner's Anthropic OAuth session token is for claude-cli council reasoning only and is never placed in a Cloud Function; no ANTHROPIC_API_KEY is requested. Unblocks when OPENROUTER credits are added."
+        }
+      ],
       "comments": []
     },
     {
@@ -582,7 +602,7 @@
       "comments": []
     },
     {
-      "id": "t_927a093b",
+      "id": "t_3e553558",
       "title": "O1/O5 — a production publish within every 10-minute window while work exists; no workflow > 30 min",
       "status": "running",
       "assignee": "orchestrator",
@@ -596,13 +616,13 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:02:50.162Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": []
     },
     {
-      "id": "t_329d1673",
+      "id": "t_2331f031",
       "title": "O2/O6 — every production deploy gets an independent adversarial review + senior creative UI council; FAIL → refactor loop until PASS",
       "status": "running",
       "assignee": "reviewer",
@@ -616,7 +636,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:02:50.162Z",
       "summary": "Standing duty: R-c1, R-c5, R-c8 done (v9); R-c12 capture only; R-c13 queued (t_4adf34f7) for the first deploy of this session. Every later deploy gets an R-c<n> task with the same three lenses.",
       "decisions": [],
       "comments": []

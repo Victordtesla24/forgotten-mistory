@@ -49,3 +49,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## DECISION (2026-09-05T06:01:51.444Z)
+S-5 (full suite in halves) re-assigned to cycle 14 (t_d0066b7a) on the merged main (30-min cap, O1). Targeted acceptance specs + screenshots + independent verification remain the merge gate. Dispatched: Workflow wf_3136d81b-e67 (analyst-programmer:c11 opus xhigh → reviewer:v-c11 opus max, port 5602).
