@@ -158,51 +158,23 @@
         linear-gradient(180deg, var(--ink-900) 0%, var(--ink-800) 58%, var(--ink-900) 100%);
 }
 
-/* The scrim again, this time over the canvas rather than under it.
-   `.stage`'s own background is *below* the canvas, so it protects the reading
-   column only on the no-GL path; a visitor with a GPU gets the shader, and the
-   shader's fog is near-white — photographed at 1440 with ?gl=force the frame is
-   96.55% lit and `.statement` is grey on milk. `::after` paints after the
-   canvas and before `.inner` (z-index 1, a sibling above `.stage`), so one
-   layer covers both paths.
-
-   0.88 is not a taste decision: over the brightest fog this shader produces
-   (0.8308 relative luminance, about `#ECECEC`) it lands the ground on
-   `#252525`, which is where `--mist-400` still clears AA at 4.8:1. It is
-   transparent past 66% so the pool, the portrait plate and the light the
-   flagship-visibility gate measures are all untouched — the frame keeps its
-   bright side, and the copy gets its dark one. */
-.stage::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    /* Where the dark side stops is a decision about the picture, and it was
-       tried the other way. The ledger is wider than the statement — it ends at
-       about 68% of a 1440 frame — and its third entry stood past this scrim's
-       edge at 1.34:1, so the scrim was carried out to 94% to cover it. That
-       covered the light with it: the reduced-motion still fell to 5.38% of its
-       slot against an 8% floor and the shader's measured movement to 0.00327
-       against 0.004 (04-tests-passing.log, this lane's first green run). The
-       right-hand half of this frame *is* the picture — both pools, the key,
-       the end of the shafts — and a scrim over it is not a fix, it is the same
-       defect as the phone's flat one wearing a gradient. So the scrim keeps
-       the statement's measure, and the ledger entries carry their own plates
-       (`.ledgerItem` below). Each layer covers what it is for and nothing
-       further. */
-    background: linear-gradient(
-        90deg,
-        rgb(10 10 10 / 0.88) 0%,
-        rgb(10 10 10 / 0.86) 44%,
-        rgb(10 10 10 / 0.45) 56%,
-        transparent 66%
-    );
-}
+/* There is no second scrim over the canvas. `.stage::after` used to paint one —
+   `rgb(10 10 10 / 0.88)` from 0% to 44% of the frame, `0.86 → 0.45` out to 56%,
+   transparent past 66% — so that on `?gl=force` the shader's near-white fog
+   never reached the reading column. It protected the copy by switching off the
+   half of the frame the eye enters through, and an independent review named
+   the result: "polished hire landing, not cinematic stage … the atmosphere is a
+   strip on the right" (HERO-FOLD-v2 §1, measured on `G-REV/66199cba`). The
+   contrast is bought locally now — every run of copy carries its own plate at
+   every width (the block near the foot of this file, promoted from the phone,
+   where it had already been measured green) — and the light crosses the whole
+   frame on both paths. Decision D-1 of the brief; reversal is this one block. */
 
 /* At 390 the column is the whole frame: there is no right-hand third to give
-   the light to, because the copy is standing in it. The scrim therefore stops
-   being a layer over the scene and becomes a ground under the type. */
+   the light to, because the copy is standing in it. The type carries its own
+   ground at every width now (see the plate block near the foot of this file);
+   what is still the phone's own here is the *still* — the poster's gradients
+   reshaped to the room the plates leave. */
 @media (max-width: 700px) {
     /* The phone keeps the light — and the copy keeps its ground.
        Two things had to be true at once here and no single layer can do both.
@@ -224,10 +196,6 @@
        `#212121`, inside the `#2A2A2A` ceiling `--mist-400` needs for 4.5:1.
        The one bar that already had a ground keeps it (`.primaryAction` is
        white); the one that did not, gets one. */
-    .stage::after {
-        display: none;
-    }
-
     .eyebrow,
     .name,
     .role,
@@ -645,9 +613,14 @@
     border: 1px solid var(--card-border);
 }
 
+/* Hover lifts the ground one ink step and brightens the rule; it never takes
+   the plate away. The faint white tint this replaces (`rgb(246 246 246 / 0.04)`)
+   was written for a bar standing on the scrim's dark; with the scrim gone it
+   would have set white type on the shader's fog for as long as the pointer
+   rested on it. */
 .secondaryAction:hover {
     border-color: var(--card-border-hover);
-    background: rgb(246 246 246 / 0.04);
+    background: var(--ink-800);
 }
 
 .primaryAction:focus-visible,
@@ -1106,11 +1079,61 @@
     }
 }
 
-/* The phone's plates. Declared here rather than beside the scrim they replace,
-   because the base rules further down this file set `margin` and `background`
-   as shorthands and would otherwise reset both — the copy would move 7 px right
-   and `.secondaryAction` would go back to transparent over the fog. The padding
-   is given back as a negative margin, so no glyph moves. */
+/* ── The plates ─────────────────────────────────────────────────────────────
+   Every run of copy carries its own ground, at every width. This is the phone's
+   instrument (the `@media (max-width: 700px)` block below, where it was first
+   measured) promoted to the whole range, and it is what replaced the half-frame
+   scrim `.stage::after` used to paint over the canvas (HERO-FOLD-v2 §2 M1,
+   decision D-1). The light now crosses the whole frame on both paths, and the
+   contrast is bought on the type alone.
+
+   0.90 is the measured number, not a taste: over the brightest fog this shader
+   draws (0.8308 relative luminance, about `#ECECEC`) it lands the ground on
+   `#212121`, inside the `#2A2A2A` ceiling `--mist-400` needs for 4.5:1. Do not
+   lower it without re-running tests/overhaul/hero-plates.spec.ts
+   TC-HERO-PLATE-03, which prints the ten worst hero nodes on both paths.
+
+   Each plate is exactly its run's box. `fit-content` is what makes that true
+   above 720 px, where these are blocks in a 600–700 px column: without it the
+   eyebrow's plate would be a 690 px band under 219 px of type — the scrim
+   again, one line at a time. It changes no box's height and moves no glyph: a
+   run that wraps still wraps at the same width (`fit-content` is capped by the
+   available space, and `.statement` keeps its own `max-width`), and a run that
+   does not wrap only loses the empty width to its right. The inline padding is
+   given back as a negative margin, so the glyphs stay where they were and the
+   plate stands `.45rem` proud of them on either side — the same `.4rem`
+   pattern `.grading` and `.portraitCaption` already use. Nothing here touches
+   the block axis, so the fold's height and CLS are untouched.
+
+   `.availability` is in the set because the proof band stood under the old
+   scrim too: it is `--mist-400` at body size, and on the shader's fog without a
+   ground it is under AA. `.ledgerItem`, `.grading` and `.portraitCaption`
+   already carry their own plates above and are not repeated here.
+
+   Declared here rather than beside the scrim it replaces, because the base
+   rules further up this file set `margin` and `background` as shorthands and
+   would otherwise reset both — the copy would move 7 px right and
+   `.secondaryAction` would go back to transparent over the fog. */
+.eyebrow,
+.name,
+.role,
+.statement,
+.availability {
+    width: fit-content;
+    background: rgb(10 10 10 / 0.90);
+    border-radius: 3px;
+    padding-inline: 0.45rem;
+    margin-inline: -0.45rem;
+}
+
+.secondaryAction {
+    background: rgb(10 10 10 / 0.90);
+}
+
+/* The phone's plates — the instrument above, at the width it was first written
+   for. Kept, not replaced (HERO-FOLD-v2 §8): it still carries the proof band's
+   `.grading` and `.ledgerItem` at the phone's 0.90 rather than their desktop
+   0.88, and it is the record of where the measurement was made. */
 @media (max-width: 700px) {
     .eyebrow,
     .name,

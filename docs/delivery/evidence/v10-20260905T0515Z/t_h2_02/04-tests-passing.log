@@ -1,0 +1,174 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-plates.spec.ts --workers=1 --reporter=list
+
+Running 9 tests using 1 worker
+
+[TC-HERO-PLATE-01] washes over the scene at 1440: 0
+  ✓  1 [chromium] › tests/overhaul/hero-plates.spec.ts:102:7 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-01: no wash covers the fold at 1440 on ?gl=force (4.4s)
+[TC-HERO-PLATE-02] 1440×900 p "Melbourne, Australia": alpha=0.90 lines=1 Δleft=-7.2 Δtop=-2.0 Δbottom=-2.0 Δright=7.2 (widest line 219 px)
+[TC-HERO-PLATE-02] 1440×900 h1 "Vikram Deshpande": alpha=0.90 lines=2 Δleft=-7.2 Δtop=20.0 Δbottom=18.0 Δright=61.0 (widest line 589 px)
+  ✘  2 [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 1440×900 (3.9s)
+[TC-HERO-PLATE-02] 1280×800 p "Melbourne, Australia": alpha=0.90 lines=1 Δleft=-7.2 Δtop=-2.0 Δbottom=-2.0 Δright=7.2 (widest line 219 px)
+[TC-HERO-PLATE-02] 1280×800 h1 "Vikram Deshpande": alpha=0.90 lines=2 Δleft=-7.2 Δtop=17.0 Δbottom=16.8 Δright=97.7 (widest line 524 px)
+  ✘  3 [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 1280×800 (4.0s)
+[TC-HERO-PLATE-02] 834×1194 p "Melbourne, Australia": alpha=0.90 lines=1 Δleft=-7.2 Δtop=-2.0 Δbottom=-2.0 Δright=7.2 (widest line 219 px)
+[TC-HERO-PLATE-02] 834×1194 h1 "Vikram Deshpande": alpha=0.90 lines=2 Δleft=-7.2 Δtop=12.0 Δbottom=10.2 Δright=66.2 (widest line 341 px)
+  ✘  4 [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 834×1194 (3.7s)
+[TC-HERO-PLATE-02] 390×844 p "Melbourne, Australia": alpha=0.90 lines=1 Δleft=-7.2 Δtop=-1.0 Δbottom=-2.5 Δright=7.2 (widest line 203 px)
+[TC-HERO-PLATE-02] 390×844 h1 "Vikram Deshpande": alpha=0.90 lines=2 Δleft=-7.2 Δtop=8.0 Δbottom=7.6 Δright=109.6 (widest line 240 px)
+[TC-HERO-PLATE-02] 390×844 p "Delivery leadership · AI": alpha=0.90 lines=2 Δleft=-7.2 Δtop=-2.0 Δbottom=-3.5 Δright=49.5 (widest line 300 px)
+[TC-HERO-PLATE-02] 390×844 p "Sixteen years leading de": alpha=0.90 lines=6 Δleft=-7.2 Δtop=-3.0 Δbottom=-3.3 Δright=18.7 (widest line 331 px)
+[TC-HERO-PLATE-02] 390×844 a "Download CV": alpha=0.90 lines=1 Δleft=-26.9 Δtop=-13.7 Δbottom=-15.3 Δright=26.9 (widest line 100 px)
+  ✘  5 [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 390×844 (3.5s)
+[TC-HERO-PLATE-03] 1440 gl: 21 nodes, worst ten:
+  4.74:1 ul > li > span > span — "ANZ · real-time telemetry platform" fg rgb(144,144,144) on bg rgb(38,38,38) @ 12px
+  5.40:1 div[data-testid="hero-fold"] > div > p — "Melbourne, Australia" fg rgb(144,144,144) on bg rgb(27,27,27) @ 14px
+  5.62:1 div[data-testid="hero-fold"] > div > p — "Sixteen years leading delivery across go" fg rgb(144,144,144) on bg rgb(23,23,23) @ 18px
+  5.67:1 ul > li > span > span — "ATO Payday Super · 200+ SIT scenarios" fg rgb(144,144,144) on bg rgb(22,22,22) @ 12px
+  5.67:1 ul > li > span > span — "ANZ · 5+ squads, up to 40 practitioners" fg rgb(144,144,144) on bg rgb(22,22,22) @ 12px
+  5.82:1 div[data-testid="hero-proof"] > p[data-testid="hero-availability"] — "Open to delivery-leadership and AI engag" fg rgb(144,144,144) on bg rgb(19,19,19) @ 16px
+  6.81:1 div[data-testid="hero-proof"] > div > p — "self-reported, from my CV. Repository fi" fg rgb(181,181,181) on bg rgb(44,44,44) @ 12px
+  9.52:1 ul > li > span > span — "devices at P95 < 200 ms" fg rgb(205,205,205) on bg rgb(38,38,38) @ 16px
+  10.60:1 div[data-testid="hero-fold"] > figure[data-testid="hero-portrait"] > figcaption[data-testid="portrait-caption"] — "Photograph · Melbourne" fg rgb(205,205,205) on bg rgb(29,29,29) @ 11px
+  10.83:1 div[data-testid="hero-proof"] > p[data-testid="hero-availability"] > a — "Email" fg rgb(205,205,205) on bg rgb(27,27,27) @ 16px
+  ✓  6 [chromium] › tests/overhaul/hero-plates.spec.ts:510:11 › Hero — AA over #hero, gl › TC-HERO-PLATE-03 [1440, gl]: the ten worst hero text nodes clear 4.5:1 (9.0s)
+[TC-HERO-PLATE-03] 390 gl: 21 nodes, worst ten:
+  5.10:1 div[data-testid="hero-fold"] > div > p — "Sixteen years leading delivery across go" fg rgb(144,144,144) on bg rgb(32,32,32) @ 15.09px
+  5.28:1 div[data-testid="hero-fold"] > div > p — "Melbourne, Australia" fg rgb(144,144,144) on bg rgb(29,29,29) @ 13px
+  5.28:1 ul > li > span > span — "ATO Payday Super · 200+ SIT scenarios" fg rgb(144,144,144) on bg rgb(29,29,29) @ 11.098px
+  5.28:1 ul > li > span > span — "ANZ · 5+ squads, up to 40 practitioners" fg rgb(144,144,144) on bg rgb(29,29,29) @ 11.098px
+  5.34:1 ul > li > span > span — "ANZ · real-time telemetry platform" fg rgb(144,144,144) on bg rgb(28,28,28) @ 11.098px
+  5.51:1 div[data-testid="hero-proof"] > p[data-testid="hero-availability"] — "Open to delivery-leadership and AI engag" fg rgb(144,144,144) on bg rgb(25,25,25) @ 15.09px
+  6.23:1 div[data-testid="hero-proof"] > div > p — "self-reported, from my CV. Repository fi" fg rgb(182,182,182) on bg rgb(51,51,51) @ 11.098px
+  10.25:1 div[data-testid="hero-fold"] > div > p — "Delivery leadership · AI solutions archi" fg rgb(205,205,205) on bg rgb(32,32,32) @ 19px
+  10.72:1 ul > li > span > span — "evidence effort removed" fg rgb(205,205,205) on bg rgb(28,28,28) @ 13px
+  10.83:1 ul > li > span > span — "program portfolio led" fg rgb(205,205,205) on bg rgb(27,27,27) @ 13px
+  ✓  7 [chromium] › tests/overhaul/hero-plates.spec.ts:510:11 › Hero — AA over #hero, gl › TC-HERO-PLATE-03 [390, gl]: the ten worst hero text nodes clear 4.5:1 (7.5s)
+[TC-HERO-PLATE-03] 1440 still: 21 nodes, worst ten:
+  5.10:1 ul > li > span > span — "ANZ · real-time telemetry platform" fg rgb(144,144,144) on bg rgb(32,32,32) @ 12px
+  5.34:1 div[data-testid="hero-proof"] > p[data-testid="hero-availability"] — "Open to delivery-leadership and AI engag" fg rgb(144,144,144) on bg rgb(28,28,28) @ 16px
+  5.45:1 ul > li > span > span — "ANZ · 5+ squads, up to 40 practitioners" fg rgb(144,144,144) on bg rgb(26,26,26) @ 12px
+  5.56:1 ul > li > span > span — "ATO Payday Super · 200+ SIT scenarios" fg rgb(144,144,144) on bg rgb(24,24,24) @ 12px
+  5.72:1 div[data-testid="hero-fold"] > div > p — "Melbourne, Australia" fg rgb(144,144,144) on bg rgb(21,21,21) @ 14px
+  5.82:1 div[data-testid="hero-fold"] > div > p — "Sixteen years leading delivery across go" fg rgb(144,144,144) on bg rgb(19,19,19) @ 18px
+  6.14:1 div[data-testid="hero-proof"] > div > p — "self-reported, from my CV. Repository fi" fg rgb(182,182,182) on bg rgb(52,52,52) @ 12px
+  10.83:1 ul > li > span > span — "devices at P95 < 200 ms" fg rgb(205,205,205) on bg rgb(27,27,27) @ 16px
+  10.95:1 div[data-testid="hero-proof"] > p[data-testid="hero-availability"] > a — "LinkedIn" fg rgb(205,205,205) on bg rgb(26,26,26) @ 16px
+  11.17:1 ul > li > span > span — "evidence effort removed" fg rgb(205,205,205) on bg rgb(24,24,24) @ 16px
+  ✓  8 [chromium] › tests/overhaul/hero-plates.spec.ts:510:11 › Hero — AA over #hero, still › TC-HERO-PLATE-03 [1440, still]: the ten worst hero text nodes clear 4.5:1 (8.0s)
+[TC-HERO-PLATE-03] 390 still: 21 nodes, worst ten:
+  5.51:1 div[data-testid="hero-proof"] > p[data-testid="hero-availability"] — "Open to delivery-leadership and AI engag" fg rgb(144,144,144) on bg rgb(25,25,25) @ 15.09px
+  5.62:1 ul > li > span > span — "ATO Payday Super · 200+ SIT scenarios" fg rgb(144,144,144) on bg rgb(23,23,23) @ 11.098px
+  5.62:1 ul > li > span > span — "ANZ · 5+ squads, up to 40 practitioners" fg rgb(144,144,144) on bg rgb(23,23,23) @ 11.098px
+  5.67:1 ul > li > span > span — "ANZ · real-time telemetry platform" fg rgb(144,144,144) on bg rgb(22,22,22) @ 11.098px
+  6.00:1 div[data-testid="hero-fold"] > div > p — "Melbourne, Australia" fg rgb(144,144,144) on bg rgb(15,15,15) @ 13px
+  6.00:1 div[data-testid="hero-fold"] > div > p — "Sixteen years leading delivery across go" fg rgb(144,144,144) on bg rgb(15,15,15) @ 15.09px
+  7.77:1 div[data-testid="hero-proof"] > div > p — "self-reported, from my CV. Repository fi" fg rgb(179,179,179) on bg rgb(32,32,32) @ 11.098px
+  11.06:1 div[data-testid="hero-proof"] > p[data-testid="hero-availability"] > a — "LinkedIn" fg rgb(205,205,205) on bg rgb(25,25,25) @ 15.09px
+  11.17:1 div[data-testid="hero-proof"] > p[data-testid="hero-availability"] > a — "GitHub" fg rgb(205,205,205) on bg rgb(24,24,24) @ 15.09px
+  11.28:1 div[data-testid="hero-proof"] > p[data-testid="hero-availability"] > a — "Email" fg rgb(205,205,205) on bg rgb(23,23,23) @ 15.09px
+  ✓  9 [chromium] › tests/overhaul/hero-plates.spec.ts:510:11 › Hero — AA over #hero, still › TC-HERO-PLATE-03 [390, still]: the ten worst hero text nodes clear 4.5:1 (4.2s)
+
+
+  1) [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 1440×900 
+
+    Error: h1 "Vikram Deshpande" at 1440×900: top edge of the plate vs the text
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m8[39m
+    Received:    [31m20[39m
+
+      279 |         // ground, and the ground is never wider than the run it is for.
+      280 |         expect(Math.abs(dl), `${run.name} at ${vp.label}: left edge of the plate vs the text`).toBeLessThanOrEqual(PLATE_TOLERANCE_PX);
+    > 281 |         expect(Math.abs(dt), `${run.name} at ${vp.label}: top edge of the plate vs the text`).toBeLessThanOrEqual(PLATE_TOLERANCE_PX);
+          |                                                                                               ^
+      282 |         expect(Math.abs(db), `${run.name} at ${vp.label}: bottom edge of the plate vs the text`).toBeLessThanOrEqual(PLATE_TOLERANCE_PX);
+      283 |         expect(dr, `${run.name} at ${vp.label}: the text overruns its plate on the right`).toBeGreaterThanOrEqual(-PLATE_TOLERANCE_PX);
+      284 |         if (run.lineCount <= 1) {
+        at /root/forgotten-mistory/.claude/worktrees/wf_b87d138f-c96-1/tests/overhaul/hero-plates.spec.ts:281:95
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-plates-Hero--052e5-s-its-own-plate-at-1440×900-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-plates-Hero--052e5-s-its-own-plate-at-1440×900-chromium/error-context.md
+
+  2) [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 1280×800 
+
+    Error: h1 "Vikram Deshpande" at 1280×800: top edge of the plate vs the text
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m8[39m
+    Received:    [31m17[39m
+
+      279 |         // ground, and the ground is never wider than the run it is for.
+      280 |         expect(Math.abs(dl), `${run.name} at ${vp.label}: left edge of the plate vs the text`).toBeLessThanOrEqual(PLATE_TOLERANCE_PX);
+    > 281 |         expect(Math.abs(dt), `${run.name} at ${vp.label}: top edge of the plate vs the text`).toBeLessThanOrEqual(PLATE_TOLERANCE_PX);
+          |                                                                                               ^
+      282 |         expect(Math.abs(db), `${run.name} at ${vp.label}: bottom edge of the plate vs the text`).toBeLessThanOrEqual(PLATE_TOLERANCE_PX);
+      283 |         expect(dr, `${run.name} at ${vp.label}: the text overruns its plate on the right`).toBeGreaterThanOrEqual(-PLATE_TOLERANCE_PX);
+      284 |         if (run.lineCount <= 1) {
+        at /root/forgotten-mistory/.claude/worktrees/wf_b87d138f-c96-1/tests/overhaul/hero-plates.spec.ts:281:95
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-plates-Hero--e7017-s-its-own-plate-at-1280×800-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-plates-Hero--e7017-s-its-own-plate-at-1280×800-chromium/error-context.md
+
+  3) [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 834×1194 
+
+    Error: h1 "Vikram Deshpande" at 834×1194: top edge of the plate vs the text
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m8[39m
+    Received:    [31m12[39m
+
+      279 |         // ground, and the ground is never wider than the run it is for.
+      280 |         expect(Math.abs(dl), `${run.name} at ${vp.label}: left edge of the plate vs the text`).toBeLessThanOrEqual(PLATE_TOLERANCE_PX);
+    > 281 |         expect(Math.abs(dt), `${run.name} at ${vp.label}: top edge of the plate vs the text`).toBeLessThanOrEqual(PLATE_TOLERANCE_PX);
+          |                                                                                               ^
+      282 |         expect(Math.abs(db), `${run.name} at ${vp.label}: bottom edge of the plate vs the text`).toBeLessThanOrEqual(PLATE_TOLERANCE_PX);
+      283 |         expect(dr, `${run.name} at ${vp.label}: the text overruns its plate on the right`).toBeGreaterThanOrEqual(-PLATE_TOLERANCE_PX);
+      284 |         if (run.lineCount <= 1) {
+        at /root/forgotten-mistory/.claude/worktrees/wf_b87d138f-c96-1/tests/overhaul/hero-plates.spec.ts:281:95
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-plates-Hero--9b075-s-its-own-plate-at-834×1194-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-plates-Hero--9b075-s-its-own-plate-at-834×1194-chromium/error-context.md
+
+  4) [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 390×844 
+
+    Error: a "Download CV" at 390×844: left edge of the plate vs the text
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m8[39m
+    Received:    [31m26.875[39m
+
+      278 |         // The plate contains the run and hugs it: the glyphs never leave the
+      279 |         // ground, and the ground is never wider than the run it is for.
+    > 280 |         expect(Math.abs(dl), `${run.name} at ${vp.label}: left edge of the plate vs the text`).toBeLessThanOrEqual(PLATE_TOLERANCE_PX);
+          |                                                                                                ^
+      281 |         expect(Math.abs(dt), `${run.name} at ${vp.label}: top edge of the plate vs the text`).toBeLessThanOrEqual(PLATE_TOLERANCE_PX);
+      282 |         expect(Math.abs(db), `${run.name} at ${vp.label}: bottom edge of the plate vs the text`).toBeLessThanOrEqual(PLATE_TOLERANCE_PX);
+      283 |         expect(dr, `${run.name} at ${vp.label}: the text overruns its plate on the right`).toBeGreaterThanOrEqual(-PLATE_TOLERANCE_PX);
+        at /root/forgotten-mistory/.claude/worktrees/wf_b87d138f-c96-1/tests/overhaul/hero-plates.spec.ts:280:96
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-plates-Hero--2d92b-es-its-own-plate-at-390×844-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-plates-Hero--2d92b-es-its-own-plate-at-390×844-chromium/error-context.md
+
+  4 failed
+    [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 1440×900 
+    [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 1280×800 
+    [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 834×1194 
+    [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 390×844 
+  5 passed (53.9s)

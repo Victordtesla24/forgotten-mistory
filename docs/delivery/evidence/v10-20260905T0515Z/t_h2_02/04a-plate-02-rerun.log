@@ -1,0 +1,31 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-plates.spec.ts --grep TC-HERO-PLATE-02 --workers=1 --reporter=list
+
+Running 4 tests using 1 worker
+
+[TC-HERO-PLATE-02] 1440×900 p "Melbourne, Australia": alpha=0.90 lines=1 Δleft=-7.2 Δtop=-2.0 Δbottom=-2.0 Δright=7.2 height=21.0 (1×21.0 line-height, block slack 0.0; widest line 219 px)
+[TC-HERO-PLATE-02] 1440×900 h1 "Vikram Deshpande": alpha=0.90 lines=2 Δleft=-7.2 Δtop=20.0 Δbottom=18.0 Δright=61.0 height=247.9 (2×124.0 line-height, block slack -0.0; widest line 589 px)
+[TC-HERO-PLATE-02] 1440×900 p "Delivery leadership · AI": alpha=0.90 lines=1 Δleft=-7.2 Δtop=-3.0 Δbottom=-3.5 Δright=7.2 height=34.5 (1×34.5 line-height, block slack 0.0; widest line 502 px)
+[TC-HERO-PLATE-02] 1440×900 p "Sixteen years leading de": alpha=0.90 lines=4 Δleft=-7.2 Δtop=-4.0 Δbottom=-5.2 Δright=51.7 height=120.9 (4×30.2 line-height, block slack -0.0; widest line 599 px)
+[TC-HERO-PLATE-02] 1440×900 a "Download CV": alpha=0.90 lines=1 Δleft=-25.0 Δtop=-14.0 Δbottom=-14.0 Δright=25.0 height=48.0 (1×24.0 line-height, block slack 24.0; widest line 106 px)
+  ✓  1 [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 1440×900 (5.6s)
+[TC-HERO-PLATE-02] 1280×800 p "Melbourne, Australia": alpha=0.90 lines=1 Δleft=-7.2 Δtop=-2.0 Δbottom=-2.0 Δright=7.2 height=21.0 (1×21.0 line-height, block slack 0.0; widest line 219 px)
+[TC-HERO-PLATE-02] 1280×800 h1 "Vikram Deshpande": alpha=0.90 lines=2 Δleft=-7.2 Δtop=17.0 Δbottom=16.8 Δright=97.7 height=220.4 (2×110.2 line-height, block slack -0.0; widest line 524 px)
+[TC-HERO-PLATE-02] 1280×800 p "Delivery leadership · AI": alpha=0.90 lines=1 Δleft=-7.2 Δtop=-3.0 Δbottom=-3.5 Δright=7.2 height=34.5 (1×34.5 line-height, block slack 0.0; widest line 502 px)
+[TC-HERO-PLATE-02] 1280×800 p "Sixteen years leading de": alpha=0.90 lines=4 Δleft=-7.2 Δtop=-4.0 Δbottom=-5.2 Δright=22.9 height=120.9 (4×30.2 line-height, block slack -0.0; widest line 599 px)
+[TC-HERO-PLATE-02] 1280×800 a "Download CV": alpha=0.90 lines=1 Δleft=-25.0 Δtop=-14.0 Δbottom=-14.0 Δright=25.0 height=48.0 (1×24.0 line-height, block slack 24.0; widest line 106 px)
+  ✓  2 [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 1280×800 (4.7s)
+[TC-HERO-PLATE-02] 834×1194 p "Melbourne, Australia": alpha=0.90 lines=1 Δleft=-7.2 Δtop=-2.0 Δbottom=-2.0 Δright=7.2 height=21.0 (1×21.0 line-height, block slack 0.0; widest line 219 px)
+[TC-HERO-PLATE-02] 834×1194 h1 "Vikram Deshpande": alpha=0.90 lines=2 Δleft=-7.2 Δtop=12.0 Δbottom=10.2 Δright=66.2 height=143.6 (2×71.8 line-height, block slack -0.0; widest line 341 px)
+[TC-HERO-PLATE-02] 834×1194 p "Delivery leadership · AI": alpha=0.90 lines=2 Δleft=-7.2 Δtop=-3.0 Δbottom=-3.4 Δright=56.6 height=66.8 (2×33.4 line-height, block slack -0.0; widest line 351 px)
+[TC-HERO-PLATE-02] 834×1194 p "Sixteen years leading de": alpha=0.90 lines=6 Δleft=-7.2 Δtop=-4.0 Δbottom=-4.8 Δright=19.1 height=178.7 (6×29.8 line-height, block slack -0.1; widest line 388 px)
+[TC-HERO-PLATE-02] 834×1194 a "Download CV": alpha=0.90 lines=1 Δleft=-25.0 Δtop=-14.0 Δbottom=-14.0 Δright=25.0 height=48.0 (1×24.0 line-height, block slack 24.0; widest line 106 px)
+  ✓  3 [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 834×1194 (4.2s)
+[TC-HERO-PLATE-02] 390×844 p "Melbourne, Australia": alpha=0.90 lines=1 Δleft=-7.2 Δtop=-1.0 Δbottom=-2.5 Δright=7.2 height=19.5 (1×19.5 line-height, block slack 0.0; widest line 203 px)
+[TC-HERO-PLATE-02] 390×844 h1 "Vikram Deshpande": alpha=0.90 lines=2 Δleft=-7.2 Δtop=8.0 Δbottom=7.6 Δright=109.6 height=100.8 (2×50.4 line-height, block slack -0.0; widest line 240 px)
+[TC-HERO-PLATE-02] 390×844 p "Delivery leadership · AI": alpha=0.90 lines=2 Δleft=-7.2 Δtop=-2.0 Δbottom=-3.5 Δright=49.5 height=57.0 (2×28.5 line-height, block slack 0.0; widest line 300 px)
+[TC-HERO-PLATE-02] 390×844 p "Sixteen years leading de": alpha=0.90 lines=6 Δleft=-7.2 Δtop=-3.0 Δbottom=-3.3 Δright=18.7 height=152.1 (6×25.4 line-height, block slack -0.0; widest line 331 px)
+[TC-HERO-PLATE-02] 390×844 a "Download CV": alpha=0.90 lines=1 Δleft=-26.9 Δtop=-13.7 Δbottom=-15.3 Δright=26.9 height=48.0 (1×22.6 line-height, block slack 25.4; widest line 100 px)
+  ✓  4 [chromium] › tests/overhaul/hero-plates.spec.ts:193:9 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-02: every copy run carries its own plate at 390×844 (3.4s)
+
+  4 passed (20.1s)
