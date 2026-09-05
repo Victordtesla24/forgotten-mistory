@@ -59,9 +59,6 @@ import styles from './Hero.module.css';
 
 const REDUCE_QUERY = '(prefers-reduced-motion: reduce)';
 
-/** Corner order is drawing order, clockwise from the top-left. */
-const CORNERS = ['tl', 'tr', 'br', 'bl'] as const;
-
 // React 18.2 does not know the camelCase `fetchPriority` prop; the lowercase
 // attribute reaches the DOM unchanged and Chromium honours it.
 const PRIORITY_HINT = { fetchpriority: 'high' } as const;
@@ -304,21 +301,16 @@ export default function HeroPortrait() {
             disableRemotePlayback
           />
 
-          {/* The drafting frame: one hairline rule inset from the edge, with a
-              caliper tick opening each corner, and a registration cross at the
-              top right — the same language the caliper mark speaks. Nothing in
-              here is pressable: the figure is a figure, not a second call. */}
-          <span className={styles.portraitFrame} aria-hidden="true">
-            {CORNERS.map((corner) => (
-              <span
-                key={corner}
-                className={styles.portraitTick}
-                data-testid="portrait-tick"
-                data-corner={corner}
-              />
-            ))}
-          </span>
-          <span className={styles.portraitCross} aria-hidden="true" />
+          {/* HERO-FOLD-v2 §5.1 / decision D-3 (g2h1-04): the photograph loses
+              its card. The hairline rule, the four caliper ticks and the
+              registration cross are gone from the fold — a closed rectangle with
+              registration marks is a card beside a column, which is exactly what
+              the 1451Z reviewer called out. The drafting language survives where
+              it belongs, on the caliper mark and in the proof band; here the
+              media box's outer edges dissolve into the light through a composite
+              mask on `.portraitMedia` (Hero.module.css), so the figure reads as a
+              body standing in the plane rather than an object framed beside it.
+              Nothing pressable is added: the figure is a figure, not a call. */}
         </div>
       </div>
 

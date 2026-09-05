@@ -1,3 +1,4 @@
+import { PNG } from 'pngjs';
 import { expect, test, type Page } from '@playwright/test';
 
 /* -------------------------------------------------------------------------- */
@@ -29,6 +30,43 @@ const TICK = '[data-testid="portrait-tick"]';
 const CAPTION = '[data-testid="portrait-caption"]';
 const CAPTION_TEXT = 'Photograph · Melbourne'; // app/data/portfolio/avatar.ts → caption
 const LOOP = 'my-avatar.mp4';
+
+/** WCAG relative luminance of one 8-bit sRGB triple — the same helper
+ *  tests/overhaul/flagship-visibility.spec.ts measures light with. */
+function relativeLuminance(r: number, g: number, b: number): number {
+  const channel = (v: number) => {
+    const c = v / 255;
+    return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  };
+  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+}
+
+interface LumaField {
+  values: Float64Array;
+  width: number;
+  height: number;
+}
+
+/** Decode a PNG buffer to a row-major relative-luminance field. `pngjs` already
+ *  resolves from this repo's node_modules (it ships with the Playwright
+ *  toolchain), so no package is added to measure a picture. */
+function decodeLuma(buffer: Buffer): LumaField {
+  const png = PNG.sync.read(buffer);
+  const values = new Float64Array(png.width * png.height);
+  for (let i = 0; i < values.length; i += 1) {
+    const o = i * 4;
+    values[i] = relativeLuminance(png.data[o], png.data[o + 1], png.data[o + 2]);
+  }
+  return { values, width: png.width, height: png.height };
+}
+
+/** Luminance at a field pixel, clamped to the field so a sample can never read
+ *  outside the capture. */
+function lumaAt(field: LumaField, x: number, y: number): number {
+  const cx = Math.max(0, Math.min(field.width - 1, Math.round(x)));
+  const cy = Math.max(0, Math.min(field.height - 1, Math.round(y)));
+  return field.values[cy * field.width + cx];
+}
 
 /** One round trip for the loop's playback state. */
 async function loopState(page: Page) {
@@ -257,11 +295,16 @@ test.describe('Hero photograph', () => {
     expect(box!.y + box!.height, 'See the evidence must end inside the first 844 px').toBeLessThanOrEqual(844);
   });
 
-  test('TC-PHOTO-09: the decorations are present — four corner ticks and the caption plate', async ({ page }) => {
-    const ticks = page.locator(`${FIGURE} ${TICK}`);
-    await expect(ticks, 'four caliper-style corner ticks').toHaveCount(4);
-    const corners = await ticks.evaluateAll((els) => els.map((el) => el.getAttribute('data-corner')));
-    expect(new Set(corners), 'one tick per corner').toEqual(new Set(['tl', 'tr', 'br', 'bl']));
+  test('TC-PHOTO-09: the decoration that remains — the caption plate and the bloom (no ticks, no frame)', async ({
+    page,
+  }) => {
+    // REWRITTEN (g2h1-04, HERO-FOLD-v2 §5.1 / D-3): the drafting frame, the four
+    // caliper ticks and the registration cross left the fold — a closed
+    // rectangle with registration marks is a card, and the mask on the media box
+    // now carries the edge. What the figure still owns is the mono caption plate
+    // and the achromatic bloom behind it. PH-1 owns the assertion that the ticks
+    // are gone; here we only prove nothing was collateral-damaged.
+    await expect(page.locator(`${HERO} ${TICK}`), 'no caliper ticks remain in the fold').toHaveCount(0);
 
     const caption = page.locator(`${FIGURE} ${CAPTION}`);
     await expect(caption).toHaveCount(1);
@@ -408,5 +451,235 @@ test.describe('Hero photograph at 834', () => {
     expect(statement, 'the statement is laid out at 834').not.toBeNull();
     expect(figure!.width, 'the right column is a real column, not a stamp').toBeGreaterThanOrEqual(240);
     expect(figure!.x, 'the figure sits to the right of the prose').toBeGreaterThan(statement!.x);
+  });
+});
+
+/* -------------------------------------------------------------------------- */
+/* g2h1-04 — the photograph loses its card (HERO-FOLD-v2 §5.1 / decision D-3).  */
+/*                                                                            */
+/* The drafting frame, the four caliper ticks and the registration cross leave */
+/* the fold; the media box's outer edges dissolve into the plane through a      */
+/* composite mask instead of ending on a rule. Five clauses (PH-1..PH-5) from   */
+/* the brief. None of them samples inside the media rect, so they are           */
+/* colour-agnostic: the t_g2_h6 decision moves one filter and nothing here.     */
+/* -------------------------------------------------------------------------- */
+
+const MEDIA = `${FIGURE} picture`; // `.locator('..')` climbs to the media box .portraitMedia
+
+/** The media box element handle (`.portraitMedia`), climbed from its <picture>. */
+function mediaBox(page: Page) {
+  return page.locator(MEDIA).first().locator('..');
+}
+
+test.describe('Hero photograph — masked into the plane (g2h1-04)', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/', { waitUntil: 'load' });
+    await page.locator(HERO).waitFor({ state: 'visible', timeout: 15000 });
+  });
+
+  test('PH-1: no closed rectangle — border, outline and box-shadow are none on the box and its children; zero ticks in the fold', async ({
+    page,
+  }) => {
+    const box = mediaBox(page);
+    const nodes = await box.evaluate((root) => {
+      const read = (el: Element) => {
+        const cs = getComputedStyle(el);
+        return {
+          tag: el.tagName.toLowerCase(),
+          borderStyle: cs.borderStyle,
+          borderWidth: cs.borderWidth,
+          outlineStyle: cs.outlineStyle,
+          outlineWidth: cs.outlineWidth,
+          boxShadow: cs.boxShadow,
+        };
+      };
+      return [root, ...Array.from(root.querySelectorAll('*'))].map(read);
+    });
+
+    for (const n of nodes) {
+      expect(n.boxShadow, `box-shadow on ${n.tag}: ${n.boxShadow}`).toBe('none');
+      const borderVisible =
+        n.borderStyle.split(' ').some((s) => s !== 'none') &&
+        n.borderWidth.split(' ').some((w) => Number.parseFloat(w) > 0);
+      expect(borderVisible, `border on ${n.tag}: ${n.borderStyle} / ${n.borderWidth}`).toBe(false);
+      const outlineVisible =
+        n.outlineStyle !== 'none' && n.outlineWidth.split(' ').some((w) => Number.parseFloat(w) > 0);
+      expect(outlineVisible, `outline on ${n.tag}: ${n.outlineStyle} / ${n.outlineWidth}`).toBe(false);
+    }
+
+    await expect(page.locator(`${HERO} ${TICK}`), 'zero portrait-tick nodes in the fold').toHaveCount(0);
+  });
+
+  test('PH-2: the edges dissolve — 4 px inside vs 4 px outside, mean |ΔL| ≤ 0.04 on ≥ 3 of 4 edges', async ({
+    page,
+  }) => {
+    const box = mediaBox(page);
+    await box.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(250);
+    const rect = await box.boundingBox();
+    expect(rect, 'the media box is laid out').not.toBeNull();
+
+    // A capture that surrounds the box with an 8 px margin, so a sample 4 px
+    // outside every edge is inside the frame. Clip is clamped into the viewport.
+    const margin = 8;
+    const clip = {
+      x: Math.max(0, rect!.x - margin),
+      y: Math.max(0, rect!.y - margin),
+      width: rect!.width + 2 * margin,
+      height: rect!.height + 2 * margin,
+    };
+    const field = decodeLuma(await page.screenshot({ clip }));
+
+    // The box origin inside the field (margin, unless the clamp above bit).
+    const ox = rect!.x - clip.x;
+    const oy = rect!.y - clip.y;
+    const w = rect!.width;
+    const h = rect!.height;
+
+    // Sample each edge along its central 60 %, away from the corners where two
+    // ramps meet and the falloff is by construction the steepest.
+    const meanAbs = (samples: number[]) =>
+      samples.length ? samples.reduce((a, b) => a + b, 0) / samples.length : 1;
+
+    const vertical = (edgeX: number) => {
+      const diffs: number[] = [];
+      for (let t = 0.2; t <= 0.8; t += 0.02) {
+        const y = oy + t * h;
+        diffs.push(Math.abs(lumaAt(field, edgeX + 4, y) - lumaAt(field, edgeX - 4, y)));
+      }
+      return meanAbs(diffs);
+    };
+    const horizontal = (edgeY: number) => {
+      const diffs: number[] = [];
+      for (let t = 0.2; t <= 0.8; t += 0.02) {
+        const x = ox + t * w;
+        diffs.push(Math.abs(lumaAt(field, x, edgeY + 4) - lumaAt(field, x, edgeY - 4)));
+      }
+      return meanAbs(diffs);
+    };
+
+    const edges = {
+      left: vertical(ox),
+      right: vertical(ox + w),
+      top: horizontal(oy),
+      bottom: horizontal(oy + h),
+    };
+    const passed = Object.values(edges).filter((d) => d <= 0.04).length;
+    expect(passed, `edges dissolving (≤0.04): ${JSON.stringify(edges)}`).toBeGreaterThanOrEqual(3);
+  });
+
+  test('PH-3: the face survives — the mask is opaque over the upper-centre; no gradient crosses it', async ({
+    page,
+  }) => {
+    const box = mediaBox(page);
+    await box.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(250);
+    const rect = await box.boundingBox();
+    expect(rect).not.toBeNull();
+
+    const clip = { x: rect!.x, y: rect!.y, width: rect!.width, height: rect!.height };
+    const masked = decodeLuma(await page.screenshot({ clip }));
+
+    // Lift the mask and re-shoot: over an opaque region the two frames are the
+    // same pixels, so the difference there is ~0; a gradient crossing the face
+    // would show up as a real ΔL. The face sits at object-position 50% 42%, so
+    // the tested window (x 30–70 %, y 20–60 %) is centred on it and lands inside
+    // the mask's opaque core (16–84 % on both axes).
+    await box.evaluate((el) => {
+      (el as HTMLElement).style.webkitMaskImage = 'none';
+      (el as HTMLElement).style.maskImage = 'none';
+    });
+    await page.waitForTimeout(120);
+    const bare = decodeLuma(await page.screenshot({ clip }));
+    await box.evaluate((el) => {
+      (el as HTMLElement).style.removeProperty('-webkit-mask-image');
+      (el as HTMLElement).style.removeProperty('mask-image');
+    });
+
+    let sum = 0;
+    let n = 0;
+    for (let ty = 0.2; ty <= 0.6; ty += 0.02) {
+      for (let tx = 0.3; tx <= 0.7; tx += 0.02) {
+        const x = tx * masked.width;
+        const y = ty * masked.height;
+        sum += Math.abs(lumaAt(masked, x, y) - lumaAt(bare, x, y));
+        n += 1;
+      }
+    }
+    const meanFaceDelta = n ? sum / n : 1;
+    expect(meanFaceDelta, `the mask must not touch the face (mean |ΔL| ${meanFaceDelta})`).toBeLessThanOrEqual(
+      0.02,
+    );
+  });
+
+  test('PH-4: it is still a <figure> with a <figcaption>, and nothing in it is pressable', async ({ page }) => {
+    const figure = page.locator(FIGURE);
+    await expect(figure).toHaveCount(1);
+    expect(await figure.evaluate((el) => el.tagName.toLowerCase()), 'the element is a <figure>').toBe('figure');
+    await expect(page.locator(`${FIGURE} figcaption`), 'it keeps its caption').toHaveCount(1);
+
+    const pressables = await figure.evaluate(
+      (el) =>
+        el.querySelectorAll(
+          'a[href],button,[role="button"],input,select,textarea,[onclick],[tabindex]:not([tabindex="-1"])',
+        ).length,
+    );
+    expect(pressables, 'figurePressables === 0 — the figure never becomes a second call to action').toBe(0);
+  });
+
+  test('PH-5: costs nothing — the mask is compositing only; the box never resizes and figure CLS is 0 across 9 loads', async ({
+    page,
+  }) => {
+    // Compositing only: lifting the mask must not change the box's geometry.
+    const box = mediaBox(page);
+    await box.scrollIntoViewIfNeeded();
+    const before = await box.boundingBox();
+    await box.evaluate((el) => {
+      (el as HTMLElement).style.webkitMaskImage = 'none';
+      (el as HTMLElement).style.maskImage = 'none';
+    });
+    await page.waitForTimeout(120);
+    const after = await box.boundingBox();
+    await box.evaluate((el) => {
+      (el as HTMLElement).style.removeProperty('-webkit-mask-image');
+      (el as HTMLElement).style.removeProperty('mask-image');
+    });
+    for (const key of ['width', 'height'] as const) {
+      expect(Math.abs(after![key] - before![key]), `media ${key} unchanged when the mask is toggled`).toBeLessThanOrEqual(
+        0.5,
+      );
+    }
+
+    // Layout shift attributed to the figure, across 9 cold loads.
+    let worst = 0;
+    for (let load = 0; load < 9; load += 1) {
+      await page.goto('/', { waitUntil: 'load' });
+      await page.locator(HERO).waitFor({ state: 'visible', timeout: 15000 });
+      const figureShift = await page.evaluate(
+        () =>
+          new Promise<number>((resolve) => {
+            let total = 0;
+            new PerformanceObserver((list) => {
+              for (const entry of list.getEntries() as (PerformanceEntry & {
+                value: number;
+                hadRecentInput: boolean;
+                sources?: { node?: Node | null }[];
+              })[]) {
+                if (entry.hadRecentInput) continue;
+                const fromFigure = (entry.sources ?? []).some((s) => {
+                  const node = s.node;
+                  const el = node && node.nodeType === 1 ? (node as Element) : node?.parentElement;
+                  return !!el?.closest('[data-testid="hero-portrait"]');
+                });
+                if (fromFigure) total += entry.value;
+              }
+            }).observe({ type: 'layout-shift', buffered: true });
+            setTimeout(() => resolve(total), 500);
+          }),
+      );
+      worst = Math.max(worst, figureShift);
+    }
+    expect(worst, `worst figure-attributed CLS across 9 loads: ${worst}`).toBeLessThan(0.01);
   });
 });
