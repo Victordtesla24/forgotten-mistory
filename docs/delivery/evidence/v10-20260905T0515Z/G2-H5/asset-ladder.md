@@ -149,3 +149,35 @@ Do **not** synthesise a 1920×1080 or 3840×2160 portrait by upscaling; that wou
 - `retire_360p`: **true** (`my-hero-avatar.mp4` is a true orphan).
 - `png_mismatch`: **true** (`my_avatar.png` 900×502 vs declared 1480×826 — fix to master resolution).
 - `portrait_r5`: **FAIL** — stop claiming R5 for the portrait until a real 4K@60 source or Higgsfield credits exist.
+
+---
+
+## 8. AP execution log — changes actually made (identity: analyst-programmer / t_g2_h5 / ADV-1556Z)
+
+Executed on a fresh worktree `worktree-gh5-1556` cut from `origin/main` (`2806ede`, "consolidate: merge worktree-rev1556-base into main"). No new generation, no upscale, no Higgsfield, OAuth only.
+
+**(1) Retired the 360p orphan.** `grep -rn "my-hero-avatar" app components public firebase.json` returned zero shipping hits, so:
+
+```bash
+git rm public/assets/my-hero-avatar.mp4        # 640×360@24, 160,156 B — unreferenced
+```
+
+No test referenced it (`grep -rn my-hero-avatar tests/` → empty; `tests/content/asset-resolution.spec.ts` from `t_x1_09` is not yet on `main`), so the delete breaks nothing.
+
+**(2) Fixed the PNG fallback to the declared 1480×826 master — format match, NOT an upscale.** The WebP master is already 1480×826, so re-deriving the PNG from it is a same-resolution format conversion, not a synthesized higher resolution:
+
+```bash
+magick public/assets/my_avatar.webp -resize 1480x826 -dither FloydSteinberg \
+  -colors 176 -strip -define png:compression-level=9 PNG8:public/assets/my_avatar.png
+identify -format '%f %wx%h %m %B bytes\n' public/assets/my_avatar.png
+# → my_avatar.png 1480x826 PNG 496176 bytes   (was 900×502 / 178,777 B)
+```
+
+- New PNG: **1480×826**, **496,176 B** — matches the declared master and the AVIF/WebP siblings; **under the 500 kB image budget** (a 176-colour palette was the max that stays < 500,000 B for this portrait). The 900×502 declared-vs-actual mismatch is resolved.
+- This is a fallback/schema raster only (browsers with AVIF/WebP never fetch it); the palette PNG is an acceptable-fidelity fallback at the honest master resolution.
+
+**(3) Kept the 720p24 loop as the best honest portrait video.** `my-avatar.mp4` (1280×720@24) is unchanged — it is the honest ceiling; no ≥1080p source exists (§4).
+
+**(4) Retracted the portrait R5 claim in shipped code.** `app/data/portfolio/avatar.ts` comments now state R5 = FAIL for the portrait (still and loop) and point here. The R5 register `t_x1_09` already scores the portrait assets as FAIL/waiver (never PASS); nothing claimed portrait R5 = PASS, and this doc keeps `portrait_r5 = FAIL` until a real ≥4K@60 capture or generation credits land.
+
+**Files changed by AP:** `public/assets/my-hero-avatar.mp4` (deleted), `public/assets/my_avatar.png` (regenerated 1480×826), `app/data/portfolio/avatar.ts` (comments corrected), this file (§8).
