@@ -1,0 +1,454 @@
+{
+  "site": "https://forgotten-mistory.web.app",
+  "mode": "fallback",
+  "viewport": "1440x900",
+  "buildCommit": "5a8c8c34",
+  "cold": 1655,
+  "warmTrials": [
+    2134,
+    1956
+  ],
+  "warmP50": 1956,
+  "warmP95": 2134,
+  "trials": [
+    {
+      "index": 0,
+      "viewport": "1440x900",
+      "phase": "send",
+      "requests": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616725040,
+          "status": null,
+          "contentType": null,
+          "failure": "net::ERR_CONNECTION_REFUSED"
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616725045,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616726408,
+          "status": null,
+          "contentType": null,
+          "failure": "net::ERR_CONNECTION_REFUSED"
+        },
+        {
+          "phase": "send",
+          "kind": "chat:hosting",
+          "method": "POST",
+          "url": "https://forgotten-mistory.web.app/api/chat",
+          "resourceType": "fetch",
+          "at": 1788616726428,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "pageerrors": [],
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+        "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+      ],
+      "websockets": [],
+      "buildCommit": "5a8c8c34",
+      "sendWall": 1788616726371,
+      "ttft": 1655,
+      "csp": [],
+      "samples": [
+        {
+          "t": 245,
+          "len": 0
+        },
+        {
+          "t": 544,
+          "len": 0
+        },
+        {
+          "t": 844,
+          "len": 0
+        },
+        {
+          "t": 1145,
+          "len": 0
+        },
+        {
+          "t": 1448,
+          "len": 0
+        },
+        {
+          "t": 1744,
+          "len": 469
+        },
+        {
+          "t": 2044,
+          "len": 469
+        }
+      ],
+      "reply": "VicHiring Fit01:58 PMAt the ATO, I have been Scrum Master and Project Manager on the Payday Super reform program since March 2026, leading the Agile Kookaburras squad and managing sprint cadence, PI planning, capacity, and executive reporting. I architected test-evidence automation for COBOL/mainframe scenarios, cutting effort by about 92%, and authored a key executive change request to re-baseline test capacity from 30 to 90 person-days with full traceability.Copy",
+      "chatRequestsOnSend": [
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616726408,
+          "status": null,
+          "contentType": null,
+          "failure": "net::ERR_CONNECTION_REFUSED"
+        },
+        {
+          "phase": "send",
+          "kind": "chat:hosting",
+          "method": "POST",
+          "url": "https://forgotten-mistory.web.app/api/chat",
+          "resourceType": "fetch",
+          "at": 1788616726428,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "chatRequestsOnOpen": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616725040,
+          "status": null,
+          "contentType": null,
+          "failure": "net::ERR_CONNECTION_REFUSED"
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616725045,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        }
+      ],
+      "forbidden": []
+    },
+    {
+      "index": 1,
+      "viewport": "1440x900",
+      "phase": "send",
+      "requests": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616731523,
+          "status": null,
+          "contentType": null,
+          "failure": "net::ERR_CONNECTION_REFUSED"
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616731525,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616732776,
+          "status": null,
+          "contentType": null,
+          "failure": "net::ERR_CONNECTION_REFUSED"
+        },
+        {
+          "phase": "send",
+          "kind": "chat:hosting",
+          "method": "POST",
+          "url": "https://forgotten-mistory.web.app/api/chat",
+          "resourceType": "fetch",
+          "at": 1788616732828,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "pageerrors": [],
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+        "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+      ],
+      "websockets": [],
+      "buildCommit": "5a8c8c34",
+      "sendWall": 1788616732673,
+      "ttft": 2134,
+      "csp": [],
+      "samples": [
+        {
+          "t": 190,
+          "len": 0
+        },
+        {
+          "t": 490,
+          "len": 0
+        },
+        {
+          "t": 790,
+          "len": 0
+        },
+        {
+          "t": 1090,
+          "len": 0
+        },
+        {
+          "t": 1390,
+          "len": 0
+        },
+        {
+          "t": 1690,
+          "len": 0
+        },
+        {
+          "t": 1990,
+          "len": 0
+        },
+        {
+          "t": 2292,
+          "len": 485
+        },
+        {
+          "t": 2590,
+          "len": 485
+        }
+      ],
+      "reply": "VicHiring Fit01:58 PMAt the ATO, I have been Scrum Master and Project Manager on the Payday Super reform program since March 2026, leading the Agile Kookaburras squad and managing sprint cadence, PI planning, capacity, and executive reporting. I architected test-evidence automation for COBOL/mainframe scenarios that cut effort by about 92%, and authored a key executive change request that re-baselined test capacity from 30 to 90 person-days with full Azure DevOps traceability.Copy",
+      "chatRequestsOnSend": [
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616732776,
+          "status": null,
+          "contentType": null,
+          "failure": "net::ERR_CONNECTION_REFUSED"
+        },
+        {
+          "phase": "send",
+          "kind": "chat:hosting",
+          "method": "POST",
+          "url": "https://forgotten-mistory.web.app/api/chat",
+          "resourceType": "fetch",
+          "at": 1788616732828,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "chatRequestsOnOpen": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616731523,
+          "status": null,
+          "contentType": null,
+          "failure": "net::ERR_CONNECTION_REFUSED"
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616731525,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        }
+      ],
+      "forbidden": []
+    },
+    {
+      "index": 2,
+      "viewport": "1440x900",
+      "phase": "send",
+      "requests": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616737394,
+          "status": null,
+          "contentType": null,
+          "failure": "net::ERR_CONNECTION_REFUSED"
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616737395,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616738488,
+          "status": null,
+          "contentType": null,
+          "failure": "net::ERR_CONNECTION_REFUSED"
+        },
+        {
+          "phase": "send",
+          "kind": "chat:hosting",
+          "method": "POST",
+          "url": "https://forgotten-mistory.web.app/api/chat",
+          "resourceType": "fetch",
+          "at": 1788616738535,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "pageerrors": [],
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+        "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+      ],
+      "websockets": [],
+      "buildCommit": "5a8c8c34",
+      "sendWall": 1788616738443,
+      "ttft": 1956,
+      "csp": [],
+      "samples": [
+        {
+          "t": 235,
+          "len": 0
+        },
+        {
+          "t": 536,
+          "len": 0
+        },
+        {
+          "t": 835,
+          "len": 0
+        },
+        {
+          "t": 1137,
+          "len": 0
+        },
+        {
+          "t": 1435,
+          "len": 0
+        },
+        {
+          "t": 1736,
+          "len": 0
+        },
+        {
+          "t": 2061,
+          "len": 549
+        },
+        {
+          "t": 2347,
+          "len": 549
+        },
+        {
+          "t": 2635,
+          "len": 549
+        }
+      ],
+      "reply": "VicHiring Fit01:59 PMAt the ATO since March 2026, I lead the Agile Kookaburras squad on the Payday Super reform program, managing sprint cadence, PI planning, capacity, and executive reporting. I steered the Distribution UI delivery past 95% completion and unblocked stalled NTP function testing by resolving L2 environment instability. I also architected COBOL/mainframe test-evidence automation across 200+ scenarios, cutting effort by about 92%, and authored an executive change request to re-baseline test capacity from 30 to 90 person-days.Copy",
+      "chatRequestsOnSend": [
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616738488,
+          "status": null,
+          "contentType": null,
+          "failure": "net::ERR_CONNECTION_REFUSED"
+        },
+        {
+          "phase": "send",
+          "kind": "chat:hosting",
+          "method": "POST",
+          "url": "https://forgotten-mistory.web.app/api/chat",
+          "resourceType": "fetch",
+          "at": 1788616738535,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "chatRequestsOnOpen": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616737394,
+          "status": null,
+          "contentType": null,
+          "failure": "net::ERR_CONNECTION_REFUSED"
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616737395,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        }
+      ],
+      "forbidden": []
+    }
+  ]
+}
