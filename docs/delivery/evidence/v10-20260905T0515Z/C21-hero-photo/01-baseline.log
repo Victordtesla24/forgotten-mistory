@@ -1,0 +1,42 @@
+== C21 hero photo — baseline, 2026-09-05T10:05Z
+worktree /root/forgotten-mistory/.claude/worktrees/wf_31b6f314-9ff-1 @ 7ae763a (main)
+
+== assets measured in this session (ls -la + ffprobe), not assumed
+-rw-r--r-- 1 root root   41343 public/assets/my_avatar.avif    1480x826
+-rw-r--r-- 1 root root   66470 public/assets/my_avatar.webp    1480x826
+-rw-r--r-- 1 root root  178777 public/assets/my_avatar.png      900x502
+-rw-r--r-- 1 root root  160156 public/assets/my-hero-avatar.mp4  640x360  24/1  5.875 s  h264
+-rw-r--r-- 1 root root 1096301 public/assets/my-avatar.mp4      1280x720  24/1 12.291667 s  h264
+
+$ ffprobe -v error -show_entries stream=width,height,r_frame_rate,duration -of default=noprint_wrappers=1 public/assets/my-hero-avatar.mp4
+codec_name=h264
+width=640
+height=360
+r_frame_rate=24/1
+duration=5.875000
+
+$ ffprobe -v error -show_entries stream=width,height,r_frame_rate,duration -of default=noprint_wrappers=1 public/assets/my-avatar.mp4
+codec_name=h264
+width=1280
+height=720
+r_frame_rate=24/1
+duration=12.291667
+
+== framing check (ffmpeg -frames:v 1 on each loop, both frames read)
+Landmarks compared against my_avatar.png: bin at ~12 % of frame width, dark tower spanning
+~23–39 %, face ~15.6 % of frame width, head top at ~7–8 % of frame height. Identical fractions
+in my_avatar.png (900x502), my-hero-avatar.mp4 (640x360) and my-avatar.mp4 (1280x720): one
+composition at three resolutions, aspect 1.792 / 1.778 / 1.778. The 1280x720 loop is therefore a
+drop-in for the still's framing at twice the pixels of the 640x360 loop, with no scale jump on
+the crossfade.
+
+== behaviour before this change (the thing the owner instruction overrides)
+components/sections/Hero/Hero.module.css:484:    --portrait-w: clamp(11rem, 16vw, 20rem);
+components/sections/Hero/Hero.module.css:497:    aspect-ratio: 4 / 5;
+components/sections/Hero/Hero.module.css:501:    filter: grayscale(1) contrast(1.04);
+components/sections/Hero/Hero.module.css:640 (max-width: 719.98px): width: 88px; aspect-ratio: 1
+components/sections/Hero/HeroPortrait.tsx:29: const LOOP_SRC = '/assets/my-hero-avatar.mp4';
+components/sections/Hero/HeroPortrait.tsx:33: const IN_VIEW_RATIO = 0.25;  // load -> idle -> intersection: it autoplays
+
+Portrait figure width at 1440x900 before the change: --portrait-w = clamp(11rem, 16vw, 20rem)
+= 16vw = 230.4 px = 16.0 % of the viewport (owner requires >= 34 % and >= 440 px).

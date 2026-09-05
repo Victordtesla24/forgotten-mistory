@@ -16,10 +16,13 @@
     display: flex;
     align-items: center;
     min-height: 100svh;
+    /* Named once, so the photograph below 720 px can cancel exactly this much
+       and bleed to both screen edges without a magic number. */
+    --hero-gutter: var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
     /* The top padding never drops below the fixed nav's height plus a little
        air: at 1280x720 the bar was crossing the hero's first line. */
     padding: max(clamp(6rem, 14vh, var(--space-20)), calc(var(--nav-height) + var(--space-3)))
-        var(--page-gutter, clamp(1.5rem, 5vw, 5rem)) clamp(4rem, 10vh, 7rem);
+        var(--hero-gutter) clamp(4rem, 10vh, 7rem);
     overflow: hidden;
 }
 
@@ -581,14 +584,22 @@
     }
 }
 
+
 /* ── Portrait ────────────────────────────────────────────────────────────────
-   The original video portrait, poster first, in the right column beside role,
-   statement and ledger. The figure is NOT in the heroRise set: the poster is
-   the LCP candidate and Chrome does not count an opacity-0 element. Both layers
-   share one grayscale filter on the wrapper — the frames are warm colour, and
-   gold here means "this figure has a source". No gold anywhere in the figure. */
+   Owner instruction, 2026-09-05 09:10Z: the photograph is the hero's anchor —
+   full size, full colour, with the loop on hover and never by default. Two
+   earlier rules are superseded for this one element: the grayscale filter, and
+   the 88 px phone stamp. What does NOT move is the ink rule around it — every
+   rule, tick, plate and control here is achromatic, and gold (which means "this
+   figure has a source") appears nowhere in or near the figure.
+
+   The decorations are the site's own drafting language: a hairline rule inset
+   12 px from the frame, a caliper tick opening each of its four corners, a
+   registration cross at the top right, and a mono caption plate below, lit from
+   behind by one achromatic bloom so the photograph sits in light, not on black. */
 .inner {
-    --portrait-w: clamp(11rem, 16vw, 20rem);
+    --portrait-w: clamp(17rem, 36vw, 34rem);
+    --portrait-inset: 12px;
 }
 
 .portrait {
@@ -597,19 +608,44 @@
     width: 100%;
 }
 
+/* The stage carries the light. It is deliberately not clipped: the bloom
+   spills past the frame and under the caption plate. */
+.portraitStage {
+    position: relative;
+}
+
+.portraitGlow {
+    position: absolute;
+    inset: -14% -10% -34%;
+    z-index: 0;
+    pointer-events: none;
+    /* Two achromatic washes: one behind the frame, one under the plate. The
+       white is --white's own value at low alpha, the same way .locationDot
+       draws its halo. No hue enters the figure. */
+    background:
+        radial-gradient(58% 58% at 50% 44%, rgb(246 246 246 / 0.12), transparent 72%),
+        radial-gradient(78% 42% at 50% 96%, rgb(246 246 246 / 0.09), transparent 74%);
+}
+
 .portraitMedia {
     position: relative;
+    z-index: 1;
     box-sizing: border-box;
     overflow: hidden;
-    aspect-ratio: 4 / 5;
+    /* Native 1480×826. Nothing is cropped, so the face cannot be cropped out. */
+    aspect-ratio: 1480 / 826;
     border: 1px solid var(--card-border);
     border-radius: 4px;
     background: var(--ink-800);
-    filter: grayscale(1) contrast(1.04);
+    /* Colour, per the instruction. The grade is a whisper — a point of
+       saturation and three of contrast — so the golden-hour frame keeps its
+       warmth without shouting over near-black inks. No grayscale. */
+    filter: saturate(1.02) contrast(1.03);
+    box-shadow: 0 26px 64px -34px rgb(0 0 0 / 0.9);
 }
 
-/* Identical crop on both layers, so the still and the first frame are the
-   same window on the same shoot. */
+/* Identical box on both layers, so the still and the first frame are the same
+   window on the same shoot (measured: one composition, three resolutions). */
 .portraitMedia img,
 .portraitMedia video {
     position: absolute;
@@ -618,40 +654,95 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 50% 50%;
+    object-position: 50% 42%;
 }
 
 .portraitMedia img {
     z-index: 0;
 }
 
-/* The loop sits above the poster and fades in only once it is genuinely
-   playing; anything less and the poster shows through at full strength. */
+/* The loop sits above the still and fades in only once it is genuinely
+   playing; 320 ms on the site's decelerating curve. */
 .portraitVideo {
     z-index: 1;
     opacity: 0;
-    transition: opacity 300ms var(--motion-ease-standard);
+    transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .portraitVideoLive {
     opacity: 1;
-    transition-duration: 600ms;
 }
 
-/* Across the loop's join (first frame ≠ last) the layer dips so the poster
-   beneath makes the seam a soft blink rather than a cut. */
-.portraitVideoSeam {
-    opacity: 0.55;
-    transition-duration: 250ms;
+/* The drafting frame. */
+.portraitFrame {
+    position: absolute;
+    inset: var(--portrait-inset);
+    z-index: 2;
+    pointer-events: none;
+    border: 1px solid var(--card-border);
 }
 
-/* Pause / play, bottom-right of the figure. Rendered only when the loop is
-   eligible, so a reader with no motion has nothing to stop. */
+/* Caliper jaws: an L at each corner of the inset rule, in white at 0.7 so the
+   corner reads as a measurement, not a decoration. */
+.portraitTick {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    opacity: 0.7;
+    border: 0 solid var(--white);
+}
+
+.portraitTick[data-corner='tl'] {
+    top: -1px;
+    left: -1px;
+    border-top-width: 1px;
+    border-left-width: 1px;
+}
+
+.portraitTick[data-corner='tr'] {
+    top: -1px;
+    right: -1px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+}
+
+.portraitTick[data-corner='br'] {
+    right: -1px;
+    bottom: -1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+}
+
+.portraitTick[data-corner='bl'] {
+    bottom: -1px;
+    left: -1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+}
+
+/* The registration cross: two hairlines crossing, top right, inside the rule. */
+.portraitCross {
+    position: absolute;
+    top: calc(var(--portrait-inset) + 11px);
+    right: calc(var(--portrait-inset) + 11px);
+    z-index: 2;
+    width: 15px;
+    height: 15px;
+    pointer-events: none;
+    opacity: 0.6;
+    background:
+        linear-gradient(var(--white), var(--white)) 50% 0 / 1px 100% no-repeat,
+        linear-gradient(var(--white), var(--white)) 0 50% / 100% 1px no-repeat;
+}
+
+/* Play / pause, bottom-right inside the rule. It is rendered at every width and
+   under reduced motion: on a touch screen it is the only way to start the loop,
+   and a reader's own press is allowed however little motion they asked for. */
 .portraitToggle {
     position: absolute;
-    right: var(--space-1);
-    bottom: var(--space-1);
-    z-index: 2;
+    right: calc(var(--portrait-inset) + var(--space-1));
+    bottom: calc(var(--portrait-inset) + var(--space-1));
+    z-index: 3;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -661,13 +752,10 @@
     margin: 0;
     border: 1px solid var(--card-border);
     border-radius: 999px;
-    background: var(--ink-800);
+    background: rgb(10 10 10 / 0.72);
     color: var(--white);
     cursor: pointer;
-    /* No colour transition here on purpose. The button exists only when the
-       loop is eligible and is absent under reduced motion (TC-HERO-14), so a
-       hover fade declared by default would register as an affordance that
-       reduced motion "kills" (RM-4). Its hover is a plain state change. */
+    backdrop-filter: blur(6px);
 }
 
 .portraitToggle svg {
@@ -686,9 +774,36 @@
     outline-offset: 3px;
 }
 
-/* ≥720 px: the hero becomes two columns. Eyebrow, name, actions and
-   availability span both; role, statement and ledger keep the left; the
-   figure takes the right across their three rows, its top edge on the role's. */
+/* The caption plate: the photograph's provenance, in the mono face, at micro
+   size, on the bloom. Its words come from app/data/portfolio/avatar.ts. */
+.portraitCaption {
+    position: relative;
+    z-index: 1;
+    margin: var(--space-2) 0 0;
+    padding-left: 1.1rem;
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    line-height: var(--lh-label);
+    letter-spacing: var(--ls-caption);
+    color: var(--mist-400);
+}
+
+/* The leader line a draughtsman would rule to the label. */
+.portraitCaption::before {
+    content: '';
+    position: absolute;
+    top: 0.62em;
+    left: 0;
+    width: 0.7rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.7;
+}
+
+/* ≥720 px: the hero is two columns. Eyebrow, name, actions and availability
+   span both; role, statement and ledger keep the left; the photograph takes the
+   whole right column across their three rows, its top edge on the role's. It is
+   placed explicitly, so it holds that cell wherever it sits in the source. */
 @media (min-width: 720px) {
     .inner {
         display: grid;
@@ -718,14 +833,12 @@
     }
 }
 
-/* Short viewports. The grading note now sits under the ledger instead of
-   beside it, which costs ~50 px on a 1280×720 laptop — the one screen where
-   the hero must still be a single fold (TC-HERO-08/09). The margin rules in
-   the `max-height: 860px` block at the top of this file never applied to
-   these rows: the base rules below them set the `margin` shorthand later in
-   the source and win on order (measured: `.role` at 17.28 px, not 8). This
-   block sits after the base rules, so it does apply. The figure keeps the
-   role's own top margin at every height so their top edges stay aligned. */
+/* Short viewports. The grading note sits under the ledger instead of beside it,
+   which costs ~50 px on a 1280×720 laptop — the one screen where the hero must
+   still be a single fold (TC-HERO-08/09). The margin rules in the
+   `max-height: 860px` block at the top of this file never applied to these rows:
+   the base rules below them set the `margin` shorthand later in the source and
+   win on order. This block sits after the base rules, so it does apply. */
 @media (max-height: 860px) {
     .ledgerRow {
         margin-top: var(--space-2);
@@ -740,33 +853,26 @@
     }
 }
 
-/* <720 px: an 88 px stamp at the eyebrow row's right, poster only. A phone
-   does not run a decoder for an 88 px face. */
+/* <720 px: the photograph runs the full width of the screen, edge to edge,
+   BELOW the actions — so the fold still ends on "See the evidence" (TC-HERO-12)
+   and the reader meets the face on the way down rather than as an 88 px stamp
+   beside the eyebrow. The bleed cancels the hero's own gutter exactly, so the
+   page never scrolls sideways. */
 @media (max-width: 719.98px) {
     .portrait {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 88px;
-        aspect-ratio: 1;
-        margin: 0;
+        width: calc(100% + 2 * var(--hero-gutter));
+        margin: clamp(var(--space-4), 5vh, var(--space-6)) 0 0 calc(-1 * var(--hero-gutter));
     }
 
     .portraitMedia {
-        aspect-ratio: 1;
+        border-right: 0;
+        border-left: 0;
+        border-radius: 0;
     }
 
-    .portraitMedia img {
-        object-position: 50% 22%;
-    }
-
-    .portrait video,
-    .portraitToggle {
-        display: none;
-    }
-
-    .eyebrow {
-        padding-right: calc(88px + var(--space-2));
+    .portraitCaption {
+        margin-right: var(--hero-gutter);
+        margin-left: var(--hero-gutter);
     }
 }
 
@@ -795,9 +901,11 @@
         }
     }
 
-    /* Poster only. The gate never assigns a source either. */
-    .portrait video,
-    .portraitToggle {
-        display: none;
+    /* Nothing starts on hover or focus here — the component refuses both — and
+       the loop never fades: it appears when the reader presses the button and
+       goes when they press it again. The button itself stays, because a
+       reader's own action is allowed (WCAG 2.2.2). */
+    .portraitVideo {
+        transition: none;
     }
 }

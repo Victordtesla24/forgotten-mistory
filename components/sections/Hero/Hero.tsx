@@ -54,12 +54,6 @@ export default function Hero() {
           {heroContent.statement}
         </p>
 
-        {/* The portrait stands in the right column beside role, statement and
-            ledger — poster first, the silent loop only through its gate. It is
-            a <figure>, never a <p>: the statement is still the second
-            paragraph, and the ledger is still the only list. */}
-        <HeroPortrait />
-
         {/* The ledger and the note that grades it sit side by side on a wide
             screen: the note explains the marks without costing the fold, and it
             occupies space the hero was otherwise leaving empty. */}
@@ -106,6 +100,15 @@ export default function Hero() {
             {heroContent.actions.secondary.label}
           </a>
         </div>
+
+        {/* The photograph. On a wide screen the CSS places it explicitly in the
+            right column beside role, statement and ledger; below 720 px it
+            follows the actions in the flow, full-bleed, so the fold still ends
+            on "See the evidence" (TC-HERO-12) and the face is met on the way
+            down. It is a <figure> with a <figcaption>, never a <p>: the
+            statement is still the third paragraph and the ledger the only
+            list. */}
+        <HeroPortrait />
 
         <p className={styles.availability} style={{ '--step': 6 } as React.CSSProperties}>
           {heroContent.availability}
