@@ -1,0 +1,37 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-listen.spec.ts tests/e2e/audience-paths.spec.ts tests/content/content-check.spec.ts tests/a11y/text-contrast.spec.ts --workers=1 --reporter=list
+
+Running 30 tests using 1 worker
+
+  ✓   1 [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground (16.1s)
+  ✓   2 [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground (36.7s)
+  ✓   3 [chromium] › tests/a11y/text-contrast.spec.ts:495:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes (1.1m)
+  ✓   4 [chromium] › tests/a11y/text-contrast.spec.ts:495:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes (1.3m)
+  ✓   5 [chromium] › tests/content/content-check.spec.ts:43:7 › Content Preservation › CT-01: Hero name from hero.ts appears verbatim (1.1s)
+  ✓   6 [chromium] › tests/content/content-check.spec.ts:48:7 › Content Preservation › CT-02: Hero positioning line appears verbatim (1.1s)
+  ✓   7 [chromium] › tests/content/content-check.spec.ts:55:7 › Content Preservation › CT-03: Hero statement states a tenure and names the current engagement (966ms)
+  ✓   8 [chromium] › tests/content/content-check.spec.ts:74:7 › Content Preservation › CT-05: About carries the career facts (1.0s)
+  ✓   9 [chromium] › tests/content/content-check.spec.ts:87:7 › Content Preservation › CT-04: Every employer on the CV is named in the experience timeline (1.0s)
+  ✓  10 [chromium] › tests/content/content-check.spec.ts:106:7 › Content Preservation › CT-06: All six curated repositories render as plates with real GitHub links (1.1s)
+  ✓  11 [chromium] › tests/content/content-check.spec.ts:126:7 › Content Preservation › CT-07: The Vedic-astronomy work survives the rebuild as a vitrine plate (1.2s)
+  ✓  12 [chromium] › tests/content/content-check.spec.ts:139:7 › Content Preservation › CT-08: Credentials and the un-held certification both appear in the calibration table (1.3s)
+  ✓  13 [chromium] › tests/content/content-check.spec.ts:161:7 › Content Preservation › CT-09: Contact channels from siteContent appear verbatim in the closing section (1.2s)
+  ✓  14 [chromium] › tests/content/content-check.spec.ts:180:7 › Content Preservation › CT-10: Every hero figure is printed with the source it came from (1.3s)
+  ✓  15 [chromium] › tests/content/content-check.spec.ts:222:7 › Content Preservation › CT-11: GitHub and LinkedIn are linked from the closing section (1.2s)
+  ✓  16 [chromium] › tests/content/content-check.spec.ts:240:7 › Content Preservation › CT-15: LinkedIn (primary recruiter channel) is linked from the persistent navigation (1.2s)
+  ✓  17 [chromium] › tests/content/content-check.spec.ts:249:7 › Content Preservation › CT-14: MiniVicBot mounts from the layout without throwing (3.0s)
+  ✓  18 [chromium] › tests/content/content-check.spec.ts:263:7 › Content Preservation › CT-17: MiniVic availability default and hiring copy keep active-intent ATO wording (9ms)
+  ✓  19 [chromium] › tests/content/content-check.spec.ts:308:7 › Content Preservation › CT-11: every tenure claim on the page carries its evidence (2.2s)
+  ✓  20 [chromium] › tests/e2e/audience-paths.spec.ts:51:7 › Audience paths › AP-01: the employer reaches the CV in two clicks or fewer, at 1440 and 390 (5.1s)
+  ✓  21 [chromium] › tests/e2e/audience-paths.spec.ts:80:7 › Audience paths › AP-02: the CV control is reachable with the keyboard alone (1.7s)
+  ✓  22 [chromium] › tests/e2e/audience-paths.spec.ts:111:7 › Audience paths › AP-03: the CV the control points at is a real PDF the server returns (32ms)
+  ✓  23 [chromium] › tests/e2e/audience-paths.spec.ts:122:7 › Audience paths › AP-04: #listen carries exactly one engagement action, named for a client (2.4s)
+  ✓  24 [chromium] › tests/e2e/audience-paths.spec.ts:150:7 › Audience paths › AP-05: activating the engagement action completes — a live URL, or a mailto with a subject (1.2s)
+  ✓  25 [chromium] › tests/overhaul/scene-listen.spec.ts:68:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-01: exactly one canvas mounts in #listen once the section is in view (5.4s)
+  ✓  26 [chromium] › tests/overhaul/scene-listen.spec.ts:82:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-02: the canvas is aria-hidden, behind the heading and behind the caliper (5.1s)
+  ✓  27 [chromium] › tests/overhaul/scene-listen.spec.ts:111:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-03: the field is bound to the caliper beat, not a clock of its own (4.7s)
+  ✓  28 [chromium] › tests/overhaul/scene-listen.spec.ts:130:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-04: under reduced motion there is no canvas and the caliper is drawn closed (3.7s)
+  ✓  29 [chromium] › tests/overhaul/scene-listen.spec.ts:151:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-05: with WebGL unavailable the closing screen is whole and silent (3.6s)
+  ✓  30 [chromium] › tests/overhaul/scene-listen.spec.ts:181:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-06: the field is monochrome, palette-sourced and cheap per pixel (9ms)
+
+  30 passed (4.1m)
