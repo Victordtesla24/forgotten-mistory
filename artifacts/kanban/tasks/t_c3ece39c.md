@@ -43,3 +43,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## COMMENT (2026-09-05T06:20:07.208Z)
 Also: CLAUDE.md says 276 Playwright tests; the suite reports 288 (V-C13 finding V-5) — correct CLAUDE.md and README in the same hygiene commit.
+
+## COMMENT (2026-09-05T06:32:27.806Z)
+Also move docs/delivery/evidence/v9-20260904T2312Z/C11-vitrine-integration/apply_edits.py under v10-20260905T0515Z/C11-vitrine-integration/ (misfiled, V-C11 F-4).

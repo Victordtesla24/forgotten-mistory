@@ -33,3 +33,14 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-05T06:32:27.869Z)
+## CORRECTION: TC-CONTRAST-01 @390 (from V-C11 F-1, 127b2ab)
+Original output: cycle 11 leaves exactly one node red — #role-body-ato > ul.Experience_bullets > li:nth-of-type(1) at 1.79:1, fg rgb(205,205,205) on the sampled ground rgb(153,153,157), which is the MiniVic launcher's light portrait disc painted over the prose (elementsFromPoint at [304,779] → button.group.relative → div.fixed.bottom-6; launcher box {l:302,t:756,r:366,b:820} at 390 px, position fixed, z-index 10030).
+Failing criteria: tests/a11y/text-contrast.spec.ts:275 TC-CONTRAST-01 @390 expects 0 nodes below AA (expect(failures.length).toBe(0) at :287 — do not weaken).
+Required fix: the closed launcher must never paint an opaque light surface over body prose at ≤ 480 px — put the grayscale portrait on a dark in-palette plate (var(--ink-900)/var(--card)) with the 1px var(--card-border) ring, or dock the launcher clear of the reading column on phones (e.g. bottom-right inset inside the page gutter with the prose column ending before x=302), whichever keeps the 44 px hit area and data-testid=minivic-toggle. Do this together with C-04 (labelled affordance, pill 'Ask Mini Vic' ≥834, achromatic pip: bg-zinc-400/500 → var(--mist-400)/var(--ink-500)), ADV-F-3 (aria-hidden ancestor check) and ADV-F-2 (skip link 'Ask Mini Vic'). Also fix TC-BOT-12 (tests/e2e/chatbot.spec.ts:257 — the open panel stacks above the launcher on its axis and never covers the h1; red on CI run 33936783382).
+File: components/MiniVicBot.tsx:1191 (launcher className), the MiniVic chrome block in app/globals.css, components/site/Navigation.tsx (skip link).
+Verification: PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test tests/a11y/text-contrast.spec.ts → '2 passed'; tests/e2e/chatbot.spec.ts (TC-BOT-12 green); tests/monochrome; tests/a11y; plus the new occlusion spec: at 390×844 for every scrollY step of the contrast walk, no element with position:fixed inside [data-testid=minivic-toggle]'s ancestry intersects a visible text node's box in main — or equivalently the launcher's box never overlaps a <p>/<li> box in #experience/#about/#skills at 390.
+
+## STATUS (2026-09-05T06:32:27.914Z)
+running — cycle 16 dispatched with the V-C11 correction; priority raised to 93; port 5602

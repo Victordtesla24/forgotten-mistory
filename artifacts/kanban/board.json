@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T06:21:18.460Z",
+  "updated": "2026-09-05T06:32:27.914Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -74,12 +74,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:01:51.444Z",
+      "updated": "2026-09-05T06:32:27.639Z",
       "summary": "Worktree .claude/worktrees/wf_18f926b0-2a4-2 (base 8dc4cf4). Patch applied + real fixes D-1…D-6 written (07-decisions.md); TDD failing log captured (7 failed / 10 passed on unpatched main). NOT yet done: passing battery, regression, screenshots, D-7+, commit.",
       "decisions": [
         {
           "at": "2026-09-05T06:01:51.444Z",
           "text": "S-5 (full suite in halves) re-assigned to cycle 14 (t_d0066b7a) on the merged main (30-min cap, O1). Targeted acceptance specs + screenshots + independent verification remain the merge gate. Dispatched: Workflow wf_3136d81b-e67 (analyst-programmer:c11 opus xhigh → reviewer:v-c11 opus max, port 5602)."
+        },
+        {
+          "at": "2026-09-05T06:32:27.639Z",
+          "text": "V-C11 FAIL on one gate only: TC-CONTRAST-01 @390 red on 1 node (#role-body-ato li:first, 1.79:1) because the MiniVic launcher (MiniVicBot.tsx:1191, fixed bottom-6 right-6 z-[10030]) paints a light disc over body prose at ≤480 px — pre-existing, outside this cycle's files (reviewer F-1 confirmed by re-walking the gate's own sample points). All 19 other acceptance lines pass; the cycle cut contrast failures 68→0 @1440 and 30→1 @390. Orchestrator decision (§0.1 preserve functionality + O5 every cycle improves production; deploy path is gate-free by Owner directive O3): MERGE AND DEPLOY NOW, task stays open until cycle 16 (t_cc03ed93) turns the @390 gate green; correction prompt issued there. F-2: R-c8 C-06 clause 'portrait below the lede' is superseded by B-research/02-hero-avatar-placement.md P1 + TC-HERO-21 (portrait beside the eyebrow, H1 owns the 342 px measure) — recorded as a deliberate overrule. F-3: C-06 clause 4 names .figureNote which no longer exists; rewritten against .ledgerItem (equal heights 123.88 px @1440 — already true). F-4: apply_edits.py misfiled under the v9 evidence path → hygiene task."
         }
       ],
       "comments": []
@@ -102,7 +106,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:20:07.208Z",
+      "updated": "2026-09-05T06:32:27.806Z",
       "summary": "decision.md (HYG-branches) already abandoned wt/data-backend and pruned 5 worktrees/4 branches. Left: .claude/worktrees/wf_7658aeb2-d07-1 (base 4f1d659, superseded by wf_18f926b0-2a4-2) and wf_dc0c232e-59d-1 (base 0c02861, superseded by wf_18f926b0-2a4-1); empty dir /var/tmp/v6-wt.",
       "decisions": [],
       "comments": [
@@ -110,6 +114,11 @@
           "at": "2026-09-05T06:20:07.208Z",
           "by": "orchestrator",
           "text": "Also: CLAUDE.md says 276 Playwright tests; the suite reports 288 (V-C13 finding V-5) — correct CLAUDE.md and README in the same hygiene commit."
+        },
+        {
+          "at": "2026-09-05T06:32:27.806Z",
+          "by": "orchestrator",
+          "text": "Also move docs/delivery/evidence/v9-20260904T2312Z/C11-vitrine-integration/apply_edits.py under v10-20260905T0515Z/C11-vitrine-integration/ (misfiled, V-C11 F-4)."
         }
       ]
     },
@@ -210,7 +219,7 @@
     {
       "id": "t_329d1673",
       "title": "V-C11 — independent verification of cycle 11 (Vitrine / contrast / hero 390) from git + logs + screenshots",
-      "status": "running",
+      "status": "done",
       "assignee": "reviewer",
       "priority": 90,
       "parents": [
@@ -224,7 +233,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:02:50.162Z",
+      "updated": "2026-09-05T06:32:27.740Z",
       "summary": "Fresh reviewer; verifies acceptance lines of R-c8 C-02 and C-06 plus TC-CONTRAST-01/TC-HERO-12 against the branch build, not the author's report.",
       "decisions": [],
       "comments": []
@@ -326,9 +335,9 @@
     {
       "id": "t_cc03ed93",
       "title": "Cycle 16 — C-04 + ADV-F-3 + ADV-F-2: the MiniVic launcher reads as a labelled chat affordance, is achromatic, is reachable in 3 tab stops",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
-      "priority": 84,
+      "priority": 93,
       "parents": [
         "t_3bf56e4a",
         "t_6fb8914b"
@@ -341,10 +350,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:32:27.914Z",
       "summary": "R-c8 items 7, 12, 13. Files: components/MiniVicBot.tsx, app/globals.css (MiniVic chrome block), components/site/Navigation.tsx; tests/monochrome + tests/a11y (TDD first).",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T06:32:27.869Z",
+          "by": "orchestrator",
+          "text": "## CORRECTION: TC-CONTRAST-01 @390 (from V-C11 F-1, 127b2ab)\nOriginal output: cycle 11 leaves exactly one node red — #role-body-ato > ul.Experience_bullets > li:nth-of-type(1) at 1.79:1, fg rgb(205,205,205) on the sampled ground rgb(153,153,157), which is the MiniVic launcher's light portrait disc painted over the prose (elementsFromPoint at [304,779] → button.group.relative → div.fixed.bottom-6; launcher box {l:302,t:756,r:366,b:820} at 390 px, position fixed, z-index 10030).\nFailing criteria: tests/a11y/text-contrast.spec.ts:275 TC-CONTRAST-01 @390 expects 0 nodes below AA (expect(failures.length).toBe(0) at :287 — do not weaken).\nRequired fix: the closed launcher must never paint an opaque light surface over body prose at ≤ 480 px — put the grayscale portrait on a dark in-palette plate (var(--ink-900)/var(--card)) with the 1px var(--card-border) ring, or dock the launcher clear of the reading column on phones (e.g. bottom-right inset inside the page gutter with the prose column ending before x=302), whichever keeps the 44 px hit area and data-testid=minivic-toggle. Do this together with C-04 (labelled affordance, pill 'Ask Mini Vic' ≥834, achromatic pip: bg-zinc-400/500 → var(--mist-400)/var(--ink-500)), ADV-F-3 (aria-hidden ancestor check) and ADV-F-2 (skip link 'Ask Mini Vic'). Also fix TC-BOT-12 (tests/e2e/chatbot.spec.ts:257 — the open panel stacks above the launcher on its axis and never covers the h1; red on CI run 33936783382).\nFile: components/MiniVicBot.tsx:1191 (launcher className), the MiniVic chrome block in app/globals.css, components/site/Navigation.tsx (skip link).\nVerification: PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test tests/a11y/text-contrast.spec.ts → '2 passed'; tests/e2e/chatbot.spec.ts (TC-BOT-12 green); tests/monochrome; tests/a11y; plus the new occlusion spec: at 390×844 for every scrollY step of the contrast walk, no element with position:fixed inside [data-testid=minivic-toggle]'s ancestry intersects a visible text node's box in main — or equivalently the launcher's box never overlaps a <p>/<li> box in #experience/#about/#skills at 390."
+        }
+      ]
     },
     {
       "id": "t_3729f57e",
@@ -893,12 +908,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:05.274Z",
-      "updated": "2026-09-05T06:21:18.460Z",
+      "updated": "2026-09-05T06:23:26.224Z",
       "summary": "SPEC-v10.md §R3(a): live POST /api/tts → 502 {tts_upstream_failed, status 401} while ELEVENLABS_API_KEY in /root/.claude/.env.production authenticates (GET /v1/user/subscription → 200, tier payg, IVC/PVC false). Classified as Secret Manager drift, not a credit block. The cloned voice 0ZJ4kFDo6bZUNQsuULOW is refused on payg (ivc_not_permitted) — orchestrator decision (§0.1): the site speaks with an ElevenLabs premade (stock) voice and every place it is heard is labelled synthetic. Spend cap for this task: ONE verification call ≤ 200 characters (≈ $0.03 on payg); log the character count.",
       "decisions": [
         {
           "at": "2026-09-05T06:21:18.460Z",
           "text": "Spend decision (§0.1, C-4): exactly one ElevenLabs TTS verification call ≤ 200 characters (≈$0.03 on payg) is authorised for this task; recovery path for the production change: Secret Manager keeps the prior version (record its number) and the previous function revision can be redeployed from main."
+        },
+        {
+          "at": "2026-09-05T06:23:26.224Z",
+          "text": "06:2xZ: the first dispatch was denied by the claude-cli auto-mode classifier (the brief piped the ElevenLabs secret into Secret Manager). Not worked around. Re-scoped: diagnose from the function's own logs first (logger.error at functions/index.js:98 records the upstream detail); if the cause is the cloned-voice permission, switch VOICE_ID to a premade voice chosen via the ElevenLabs MCP (no key handling) and redeploy elevenLabsTts; if the cause is an invalid key, return blocked (capability) and the orchestrator handles the rotation as a named production action. No agent reads /root/.claude/.env.production in this task."
         }
       ],
       "comments": [],
