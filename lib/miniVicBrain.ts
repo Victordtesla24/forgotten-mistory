@@ -2,16 +2,30 @@
  * miniVicBrain.ts — client-side reasoning layer for the MiniVic AI clone.
  *
  * Answer ladder (first success wins):
- *   1. A top open-source model on OpenRouter, reached via the same-origin
- *      /api/chat Firebase Function (key stays server-side in Secret Manager and
- *      works on the static export through a Hosting rewrite). Primary brain.
+ *   1. The MiniVic chat Firebase Function, which owns the provider keys. It is
+ *      reached at its own Cloud Run origin first and through the same-origin
+ *      /api/chat Hosting rewrite second — one function, two URLs, and the order
+ *      matters (see below). Primary brain.
  *   2. Deterministic local knowledge-base matching — always available, works
  *      fully offline, and includes context-aware matching that uses conversation
  *      history to resolve follow-up questions.
  *
  * No model is ever called directly from the browser: a browser-reachable key
- * would be inlined verbatim into the bundle. Every model call goes through
- * /api/chat, which is the only tier that holds credentials.
+ * would be inlined verbatim into the bundle. Every model call goes through the
+ * chat function, which is the only tier that holds credentials — both of its
+ * URLs are that same function.
+ *
+ * WHY THE ORIGIN COMES FIRST
+ * --------------------------
+ * The function streams its reply one SSE frame per token. Firebase Hosting's
+ * rewrite buffers that body and hands the visitor the whole answer at the end:
+ * measured first byte 1836 ms through Hosting against 665 ms direct to the Cloud
+ * Run origin, same function, same request
+ * (docs/delivery/evidence/v10-20260905T0515Z/G-M3/08-decision-first-token.md).
+ * R3 asks for a first word inside ~1.5 s, so the direct route is tried first and
+ * the Hosting rewrite — same-origin, reachable whenever the site is — stays
+ * behind it as a real fallback that answers with the real function. The ordering
+ * policy itself lives in ./miniVicRoute.mjs, where node:test can execute it.
  */
 
 import {
@@ -21,6 +35,12 @@ import {
   type KnowledgeEntry,
   type PersonaMode,
 } from '@/app/data/miniVicKnowledge';
+import { MINIVIC_CHAT_ORIGIN } from '@/app/data/generated/minivic-origin';
+import {
+  DIRECT_FIRST_BYTE_TIMEOUT_MS,
+  buildChatRoutes,
+  runWithFallback,
+} from './miniVicRoute.mjs';
 
 export type BrainSource = 'openrouter' | 'knowledge' | 'fallback';
 
@@ -190,9 +210,9 @@ function knowledgeAnswer(query: string, mode: PersonaMode, history: BrainTurn[] 
 }
 
 /**
- * Tier 1 brain: the model behind the same-origin /api/chat Firebase Function
- * (reached through a Hosting rewrite, so it works on the static export). Every
- * provider key stays server-side.
+ * Tier 1 brain: the model behind the MiniVic chat Firebase Function, reached at
+ * its Cloud Run origin first and through the /api/chat Hosting rewrite second.
+ * Every provider key stays server-side.
  *
  * The client sends turns and a persona `mode` — nothing else. It used to ship a
  * ~6 kB grounded system prompt with every send; the function discards every
@@ -204,7 +224,13 @@ function knowledgeAnswer(query: string, mode: PersonaMode, history: BrainTurn[] 
  * Throws on any failure (incl. local dev where /api/chat 404s → non-JSON) so the
  * caller falls through to the offline knowledge base.
  */
-const CHAT_ENDPOINT = '/api/chat';
+/**
+ * The ladder for this build: the Cloud Run origin (when one is configured) then
+ * the Hosting rewrite. Resolved once — `MINIVIC_CHAT_ORIGIN` is a build-time
+ * constant generated from config/minivic-origin.json, so nothing about it can
+ * change while the page is open.
+ */
+const CHAT_ROUTES = buildChatRoutes(MINIVIC_CHAT_ORIGIN);
 
 /** Reply fragments arrive here as the model writes them, when the reply streams. */
 export type BrainDeltaHandler = (fragment: string) => void;
@@ -219,49 +245,65 @@ export type BrainDeltaHandler = (fragment: string) => void;
  * when the panel opens, that start is paid while the visitor is still reading
  * the greeting and typing, instead of while they wait on an answer.
  *
+ * Every route in the ladder is warmed, not just the one a send will probably
+ * take: the direct origin because that is the fast path and the browser has
+ * never opened a connection to that host, the Hosting rewrite because a visitor
+ * whose network refuses the direct route lands there and deserves a hot
+ * instance too. Both are 204s that do no upstream work.
+ *
  * Never rejects and never blocks a send: a warm-up that failed is a warm-up
  * that did nothing, which is exactly what the code did before it existed.
  */
 export function warmMiniVicBrain(): void {
-  try {
-    void fetch(`${CHAT_ENDPOINT}?warm=1`, { method: 'GET', cache: 'no-store' }).catch(() => {});
-  } catch {
-    // `fetch` itself being absent (or blocked) is not a reason to fail an open.
+  for (const route of CHAT_ROUTES) {
+    try {
+      void fetch(route.warmUrl, { method: 'GET', cache: 'no-store' }).catch(() => {});
+    } catch {
+      // `fetch` itself being absent (or blocked) is not a reason to fail an open.
+    }
   }
 }
 
-async function callOpenRouter(
-  query: string,
-  mode: PersonaMode,
-  history: BrainTurn[],
+/**
+ * One attempt at one route.
+ *
+ * The direct rung carries a first-byte deadline as well as the overall one: it
+ * was chosen because its response headers arrive in ~665 ms, so if they have not
+ * arrived inside the R3 bar the reason to prefer it is gone and the send is
+ * better off on the certain path. The Hosting rung gets no such deadline —
+ * buffering means its headers legitimately arrive at the end of the whole reply,
+ * and cutting it at 1.5 s would kill the fallback the direct rung depends on.
+ */
+async function callChatRoute(
+  route: { sendUrl: string; kind: string },
+  body: string,
+  wantsStream: boolean,
   onDelta?: BrainDeltaHandler,
 ): Promise<string> {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const overall = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const firstByte =
+    route.kind === 'direct'
+      ? setTimeout(() => controller.abort(), DIRECT_FIRST_BYTE_TIMEOUT_MS)
+      : null;
   try {
-    const messages: Array<{ role: 'user' | 'assistant'; content: string }> = [
-      ...history.slice(-MAX_HISTORY_TURNS).map((turn) => ({
-        role: (turn.role === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
-        content: turn.text,
-      })),
-      { role: 'user', content: query },
-    ];
-    const wantsStream = typeof onDelta === 'function';
-    const response = await fetch(CHAT_ENDPOINT, {
+    const response = await fetch(route.sendUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: wantsStream ? 'text/event-stream, application/json' : 'application/json',
       },
       signal: controller.signal,
-      body: JSON.stringify({ messages, mode, ...(wantsStream ? { stream: true } : null) }),
+      body,
     });
+    // Headers are in; the rest of the reply is bounded by the overall timeout.
+    if (firstByte) clearTimeout(firstByte);
     if (!response.ok) {
       throw new Error(`chat endpoint responded ${response.status}`);
     }
     const contentType = response.headers.get('content-type') || '';
     if (contentType.includes('text/event-stream')) {
-      return await readStreamedReply(response, onDelta as BrainDeltaHandler);
+      return await readStreamedReply(response, (onDelta ?? (() => {})) as BrainDeltaHandler);
     }
     // On static hosting an absent function rewrites to HTML; treat non-JSON as "unavailable".
     if (!contentType.includes('application/json')) {
@@ -274,8 +316,47 @@ async function callOpenRouter(
     }
     return text;
   } finally {
-    clearTimeout(timer);
+    clearTimeout(overall);
+    if (firstByte) clearTimeout(firstByte);
   }
+}
+
+/**
+ * Ask the chat function, trying each route in order until one answers.
+ *
+ * Only the first attempt streams. If a rung fails *after* it has already handed
+ * fragments to `onDelta`, the next rung answers without streaming: the caller
+ * replaces what it rendered with the resolved text when this settles, so the
+ * visitor sees one whole answer rather than two half ones interleaved.
+ */
+async function callChatFunction(
+  query: string,
+  mode: PersonaMode,
+  history: BrainTurn[],
+  onDelta?: BrainDeltaHandler,
+): Promise<string> {
+  const messages: Array<{ role: 'user' | 'assistant'; content: string }> = [
+    ...history.slice(-MAX_HISTORY_TURNS).map((turn) => ({
+      role: (turn.role === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
+      content: turn.text,
+    })),
+    { role: 'user', content: query },
+  ];
+  let emitted = false;
+  const relay: BrainDeltaHandler | undefined =
+    typeof onDelta === 'function'
+      ? (fragment) => {
+          emitted = true;
+          onDelta(fragment);
+        }
+      : undefined;
+
+  const { value } = await runWithFallback(CHAT_ROUTES, async (route) => {
+    const wantsStream = typeof relay === 'function' && !emitted;
+    const body = JSON.stringify({ messages, mode, ...(wantsStream ? { stream: true } : null) });
+    return callChatRoute(route, body, wantsStream, wantsStream ? relay : undefined);
+  });
+  return value;
 }
 
 /**
@@ -345,8 +426,9 @@ async function readStreamedReply(
  * Answer a visitor's question. Resolves with the best available reply —
  * never rejects, so callers can rely on always getting presentable text.
  *
- * Ladder: (1) the server-side model via /api/chat, (2) the deterministic
- * offline knowledge base.
+ * Ladder: (1) the server-side model — the chat function at its Cloud Run origin,
+ * then the same function through the /api/chat Hosting rewrite — (2) the
+ * deterministic offline knowledge base.
  *
  * Pass `onDelta` to read the answer as it is written. Fragments handed to it
  * are raw model output; the resolved `text` is the sanitised version, so a
@@ -359,9 +441,9 @@ export async function askMiniVicBrain(
   history: BrainTurn[] = [],
   onDelta?: BrainDeltaHandler,
 ): Promise<BrainReply> {
-  // Tier 1 — the server-side brain. Provider keys never leave /api/chat.
+  // Tier 1 — the server-side brain. Provider keys never leave the function.
   try {
-    const text = await callOpenRouter(query, mode, history, onDelta);
+    const text = await callChatFunction(query, mode, history, onDelta);
     return { text: sanitizeResponse(text), source: 'openrouter' };
   } catch {
     // Tier 2 — the deterministic offline knowledge base below.

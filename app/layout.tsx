@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { IBM_Plex_Mono, Inter, Source_Serif_4 } from 'next/font/google';
 import './globals.css';
 import { buildStamp } from '@/app/data/generated/build-stamp';
+import { MINIVIC_CHAT_ORIGIN } from '@/app/data/generated/minivic-origin';
 import MiniVicBot from '../components/MiniVicBot';
 import Footer from '@/components/site/Footer';
 import MotionProvider from '../components/MotionProvider';
@@ -138,6 +139,18 @@ export default function RootLayout({
             was production serving code that existed in no commit, under a
             signature saying otherwise. */}
         {buildStamp.sha ? <meta name="build-commit" content={buildStamp.sha} /> : null}
+        {/* MiniVic answers from the chat function's own Cloud Run origin, because
+            the Firebase Hosting rewrite in front of it buffers the streamed reply
+            (first byte 1836 ms through Hosting vs 665 ms direct — G-M3's
+            08-decision-first-token.md). That is a cross-origin host the browser
+            has never seen when the panel opens, so its DNS, TCP and TLS are paid
+            here, on the critical path of nothing, instead of inside the first
+            send. `crossOrigin` must be set: the send is a CORS fetch, which uses
+            an anonymous connection, and a preconnect without it opens the
+            credentialed one the fetch will not reuse. */}
+        {MINIVIC_CHAT_ORIGIN ? (
+          <link rel="preconnect" href={MINIVIC_CHAT_ORIGIN} crossOrigin="anonymous" />
+        ) : null}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}

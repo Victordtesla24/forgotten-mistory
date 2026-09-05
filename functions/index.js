@@ -71,6 +71,15 @@ function applyCors(req, res) {
   }
   res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.set("Access-Control-Allow-Headers", "Content-Type, Accept");
+  // The browser now talks to this service directly rather than through the
+  // Hosting rewrite (which buffered the streamed reply and cost ~1.2 s of first
+  // token — G-M3/08-decision-first-token.md). A direct POST carrying
+  // `Content-Type: application/json` is preflighted, and with no max-age the
+  // browser's default cache is ~5 s, so nearly every send in a conversation
+  // pays a second round trip to us-central1 before the question leaves. One
+  // hour is the same answer for the same origin either way; nothing here varies
+  // per request.
+  res.set("Access-Control-Max-Age", "3600");
 }
 
 exports.elevenLabsTts = onRequest(
