@@ -55,24 +55,25 @@ import { PNG } from 'pngjs';
  * ## Why the still is photographed with the bundle blocked, not with JS off
  *
  * The architecture note specifies this measurement with JavaScript disabled
- * outright, and that is the right shape for it — but on this build it measures
- * something else, and the difference is a defect this lane found rather than one
- * it introduced. `app/loading.tsx` puts the whole route behind a Suspense
- * boundary, so the export ships the page's real markup inside a `<div hidden>`
- * and swaps it in with React's inline streaming script. Probed at 1440 with
- * `javaScriptEnabled: false`, `#hero` measures 0×0 and the only thing on screen
- * is the shell's "Loading portfolio" — the hero, all six sections, and every
- * word of the copy are in the document but hidden, indefinitely, for any client
- * that does not run script (this lane's `01-js-blocked-shell.log`).
+ * outright, and that is the right shape for it. When this lane ran, it measured
+ * something else: `app/loading.tsx` put the whole route behind a Suspense
+ * boundary, so the export shipped the page's real markup inside a `<div hidden>`
+ * and swapped it in with React's inline streaming script. Probed at 1440 with
+ * `javaScriptEnabled: false`, `#hero` measured 0×0 and the only thing on screen
+ * was the shell's "Loading portfolio" (this lane's `01-js-blocked-shell.log`).
+ * That was a route-level defect in a file this lane did not own, so it was filed
+ * as `t_nojs01` rather than fixed blind next to a concurrent hero lane; the
+ * boundary has since been deleted, and `tests/e2e/no-js.spec.ts` now holds the
+ * script-disabled guarantee for the whole page — the hero's name, role,
+ * statement, actions and photograph, and all six section headings, painted with
+ * script off at 1440 and 390.
  *
- * That is a real production finding — it is what a non-executing crawler sees —
- * but it is a route-level defect in a file this lane does not own, and fixing it
- * blind, next to a concurrent hero lane, risks the whole page for a slice about
- * one prop. It is filed for its own task. Blocking the WebGL chunk instead gives
- * the same guarantee for the property actually under test: the slot with no
- * canvas in it, on the code path a reader with no GPU or reduced motion is
- * already served. Part (a) below keeps the "out of the static HTML" half honest
- * by reading the served bytes directly, which the shell cannot affect.
+ * This file still blocks the WebGL chunk rather than disabling script, because
+ * that is the property actually under test here: the slot with no canvas in it,
+ * on the code path a reader with no GPU or reduced motion is already served.
+ * Disabling script would also disable the scene's own mount, which is the thing
+ * whose absence the poster has to survive. Part (a) below keeps the "out of the
+ * static HTML" half honest by reading the served bytes directly.
  */
 
 /**
@@ -105,7 +106,7 @@ test.use({
  * host it does not measure the gate. Measured at `?gl=force`
  * (`05-priority-timing.log`): 820–907 ms at 390 and 1175–1230 ms at 1440 on an
  * idle box; 1614–2465 ms for the same code with a `tsc` beside it; and
- * 2215–3369 ms after the `app/loading.tsx` height-reservation fix landed, which
+ * 2215–3369 ms while `app/loading.tsx`'s height reservation was in place, which
  * made the shell a full viewport and moved hydration later. The figure tracks
  * what else the host is doing and what the shell is doing — not the term this
  * file is about — and it has already moved by 3× without the scene changing at
