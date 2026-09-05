@@ -43,3 +43,9 @@ running — dispatched 12:1xZ — Workflow wf_d606e4cb-b3e phase 2 (after flagsh
 
 ## COMMENT (2026-09-05T12:22:59.940Z)
 REVIEWER BASELINE (G-S1 FAIL, measured): #skills 0 canvases, 1 svg at 1440 normal AND /?gl=force; 3086 px tall with no WebGL. Council: a depth-sorted lattice whose nodes are the tested capabilities behind the Bench; settle once on enter (~1.2 s) then hold, no loop; reduced-motion = aligned end state; gold ONLY on the measured-in-production mark — production dots/legend swatches lose gold (that is P1 gap 'gold as status chrome', include it if the gold-semantics budget forces it).
+
+## COMMENT (2026-09-05T12:58:11.271Z)
+ORCHESTRATOR PUSH under host RECTIFY 12:52Z (O3): 66b0872 on worktree-wf_c06ca2f9-9de-1 at 12:57Z — build fresh (out/ 12:51:47 > last edit 12:49:59), tsc exit 0; BenchField.tsx + bench.glsl.ts + Bench.tsx <Scene sceneId=skills-bench>, scene-skills.spec.ts, flagship-visibility skills case. Lane agent's battery continues → follow-up evidence commit; reviewer probes live after Deploy. Ledger +7.
+
+## COMMENT (2026-09-05T13:00:10.258Z)
+LIVE 9b864752 at 12:59:23Z — consolidated cleanly (no forced conflict; flagship-C plate rules and the new .fold/.proof structure both present on main). Reviewer phase-2 dispatched on 9b864752 for G-H1 + G-S1.

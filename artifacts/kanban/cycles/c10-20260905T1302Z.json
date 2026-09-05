@@ -1,0 +1,64 @@
+{
+  "cycle": "v10-c10",
+  "window_utc": "2026-09-05T12:28Z → 13:02Z",
+  "orchestrator": "Fable 5.1 ultracode — RECTIFY 12:52Z (host compliance audit PARTIAL) applied at 12:55–13:01Z",
+  "pea_numerator": 10,
+  "pea_denominator": 25,
+  "pea_basis": "+1 vs c09: §0.3-2/C-8 palette moves from FAIL toward PASS (About hatch PASS, G-H3 palette purge shipped, About gold semantics corrected) — counted only once the reviewer confirms on live. ADV-FAIL P0 scorecard (11 gaps): PASS 3 (G-A2, G-V1, G-V2); shipped + reviewer in flight 6 (G-A1 correction 37cbb52c, G-M1/G-M2 874f1ee9, G-H1/G-S1 9b864752, G-H3 5d733ad consolidating); no remediation yet 2 (G-H2 partial via flagship-C scrim/plates — architecture tasks t_x1_02/03 ready; G-M3 specced, parent G-M1 pending PASS).",
+  "adversarial_verdicts": [
+    "G-A1 phase-2 FAIL (semantics: 4 gold lines were self-reported) → correction d958917 live 37cbb52c → phase-3 reviewer running",
+    "G-A2 PASS (843b679d)",
+    "G-V1 PASS, G-V2 PASS (843b679d, 7e6617f)",
+    "flagship-C review on 577d45af: evidence pushed 13:01Z (rev/577d45af-flagship-c), verdict pending",
+    "G-M1/G-M2 + G-M3 baseline (874f1ee9): running",
+    "G-H1/G-S1 (9b864752): running",
+    "HOST AUDIT (docs/adversarial/ORCH-COMPLIANCE-20260905T1245Z.md): PARTIAL — first visible ship 26 min (FAIL), Playwright soft-gating (FAIL), MiniVic spawn failed in wave 1 (recovered 12:33Z), Hermes gateway zombie (host killed). RECTIFY applied: suite is evidence not a gate; WIP pushed within 5 min; board lag closed."
+  ],
+  "deploy_commit": "9b864752 (13:02 run consolidating 5d733ad + rev/577d45af-flagship-c)",
+  "visible_ships": [
+    "12:30:55Z 843b679d — a80d00e vitrine: six plates drawn at rest (stroke-opacity .5→1 when lit), 'Start a project' mailto CTA after the work (G-V1, G-V2) — reviewer PASS",
+    "12:40:05Z 577d45af — d7adf27+13f1b82 flagship-C: phone hero scene lit (scrim removed <700px, text plates), AA on /?gl=force at 1440+390 (TC-CONTRAST-02), compass numerals, nav ground (t_flagvis0c) — reviewer verdict pending",
+    "12:50:05Z 874f1ee9 — 91f46e9 minivic: send path = /api/chat only (−319 lines), greeting MP3 regenerated from GREETING.hiring via a real ElevenLabs generation (premade male voice; REST key is a key ID → recorded) (G-M1, G-M2) — reviewer running",
+    "12:53:10Z 37cbb52c — d958917 about: gold only on 5 checkable-record lines; role-side dimensions grey; data-derived test counts (G-A1 correction) — reviewer running",
+    "12:59:23Z 9b864752 — 0506e7e hero fold (one name, one sentence, one CTA group; ledger/grading/availability moved to .proof below 100vh) + 66b0872 skills GLSL bench field <Scene sceneId=skills-bench> (G-H1, G-S1) — pushed by the orchestrator under RECTIFY before their batteries finished (tsc + build clean); reviewer running"
+  ],
+  "non_visible_ships": [
+    "5d22bca chore(hygiene): reports/static-audit.json untracked (no forced merges)",
+    "72ba583 / 7e6617f docs(evidence): reviewer phase-2 About + Vitrine",
+    "7d46777 docs(adv): host compliance audit + rectify prompt (host-authored)"
+  ],
+  "o1_o5": "Windows since 12:28Z: 12:28–12:38 visible (843b679d 12:30); 12:38–12:48 visible (577d45af 12:40); 12:48–12:58 visible (874f1ee9 12:50, 37cbb52c 12:53); 12:58–13:08 visible (9b864752 12:59; 5d733ad consolidating). Deploy runs 12:28→13:02: 11, all success. Cadence log tick 12:54 skipped (Deploy already in progress).",
+  "o3_rule_change": "Per RECTIFY: lanes push when tsc + lint + build:static + static audit are green; Playwright batteries run in parallel and land as follow-up evidence commits; the independent live reviewer is the gate. Applied to G-H1, G-S1, G-H3 at 12:57–13:01Z.",
+  "in_flight": [
+    "reviewer: G-A1 phase 3 (37cbb52c)",
+    "reviewer: G-M1/M2/M3 (874f1ee9)",
+    "reviewer: G-H1/G-S1 (9b864752)",
+    "reviewer: flagship-C (577d45af) — evidence pushed",
+    "lane agents finishing batteries: G-H1 (5607), G-S1 (5609), G-H3 (5611)"
+  ],
+  "queued": [
+    "t_g_m3 TTFB/warm path (after G-M1 PASS)",
+    "t_x1_01 fps harness → t_x1_02/03 hero first paint + graded plate (G-H2)",
+    "t_stab01 stability lane",
+    "t_vit_desc01 vitrine description contrast + resting weight",
+    "P1: G-H4, G-E1, G-R1"
+  ],
+  "alerts": [
+    "Wave-1 Workflow slot for lane G-M failed at spawn (no agent id) — re-dispatched 12:33Z; now: re-dispatch within 2 min on any 'failed' journal entry",
+    "ELEVENLABS_API_KEY in .env.production is a key ID (ElevenLabs 400 api_key_id_used_as_api_key) — /api/tts likely failing on live; recorded on t_g_m3 as the credential blocker for the voice half of R3 (Owner-held; not asked)",
+    "Host load 8–14 on 4 cores with 3–4 build lanes + 2 reviewer browsers"
+  ],
+  "provider": "Anthropic via OAuth (council claude-opus Max; orchestrator Fable 5.1 ultracode); OpenRouter 402 → §0.4 failover; no ANTHROPIC_API_KEY; Hermes not started (gateway pgrep empty; 7050 defunct)",
+  "verification_snippet": "$ date -u\n2026-09-05T13:02:17Z\n$ systemctl is-active fm-deploy-cadence.timer\nactive\n$ pgrep -af 'hermes gateway'\n(empty; pid 7050 is <defunct>)\n$ tail -5 /var/log/fm-deploy/cadence.log\n[2026-09-05T12:44:39Z] skip: successful Deploy within last 8m (push already covered cadence)\n[2026-09-05T12:44:39Z] live build-commit\" content=\"7ebf3254\"\n[2026-09-05T12:54:40Z] cadence tick\n[2026-09-05T12:54:41Z] skip: successful Deploy within last 8m (push already covered cadence)\n[2026-09-05T12:54:41Z] live build-commit\" content=\"7d467770\"\n$ gh run list --workflow=deploy.yml --limit 10\n2026-09-05T13:02:07Z workflow_dispatch  9b864752\n2026-09-05T12:57:59Z workflow_dispatch success 7d467770\n2026-09-05T12:53:10Z push success 7d467770\n2026-09-05T12:51:20Z workflow_dispatch success 874f1ee9\n2026-09-05T12:48:46Z workflow_dispatch success 5d22bcab\n2026-09-05T12:45:42Z workflow_dispatch success 7ebf3254\n2026-09-05T12:41:06Z workflow_dispatch success 577d45af\n2026-09-05T12:38:33Z workflow_dispatch success e2a8d925\n2026-09-05T12:35:59Z workflow_dispatch success 843b679d\n2026-09-05T12:28:59Z push success 675eea1b\n$ live build-commit\nbuild-commit\" content=\"9b864752\"\n$ cache-control\ncache-control: public, max-age=0, must-revalidate\n",
+  "tools_used": [
+    "Workflow ×13 (opus council)",
+    "Monitor",
+    "branch watcher → gh workflow run",
+    "gh",
+    "git",
+    "curl",
+    "systemctl",
+    "firebase CLI"
+  ],
+  "next": "Close each gap on reviewer PASS; FAIL → fresh correction lane within the same window; dispatch t_x1_01/02 (G-H2) and t_g_m3 as slots free; c11 at the next visible ship."
+}

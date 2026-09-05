@@ -43,3 +43,9 @@ running — dispatched 12:1xZ — Workflow wf_b908a7a9-f5d lane:vitrine-plates+c
 
 ## COMMENT (2026-09-05T12:22:59.803Z)
 REVIEWER BASELINE (G-V1/G-V2 FAIL, measured): neighbour plates at element opacity 0.3–0.5 with stroke-dasharray 1px / dashoffset 1px read as loading states; council target: every plate fully drawn at opacity ≥0.55, lit plate gains weight not existence. #vitrine has 9 links, 0 engagement CTAs (mailto/'start a project' = []); council: the CTA styled as a plate so it reads as the seventh drawing. Evidence: G-REV/9ba97a5c/captures/probe-a.json → vitrine.plates / vitrine.ctas
+
+## COMMENT (2026-09-05T12:32:06.267Z)
+PUSHED a80d00e (12:2xZ) → consolidated 843b679d (only reports/static-audit.json conflicted; About change verified intact) → LIVE 12:30:55Z (Deploy 33966157228 success). Drawings.module.css: strokes drawn at rest (dashoffset 0, stroke-opacity .5 → 1 when lit/drawn), labels .85 at rest; 'Start a project' mailto CTA after the rail; TC-VIT-V1/V2 added. Reviewer phase-2 dispatched on 843b679d.
+
+## COMPLETE (2026-09-05T12:42:06.751Z)
+REVIEWER PHASE-2 PASS on live 843b679d (G-REV/843b679d/08-adversarial-review.md, commit 7e6617f): G-V1 PASS — all six plates stroke-dashoffset 0 at 1440/390 in normal, gl=force and reduced-motion; each resting plate holds 1798–4950 ink px (1.7–4.6% of its box) on rgb(8,8,8); lit plate measurably heavier (+16–21% ink, ~3.2× alpha). G-V2 PASS — exactly one achromatic 'Start a project' mailto CTA in #vitrine after the rail, contrast 18.3:1, first Tab from the rail, :focus-visible ring, 48px target. 0 pageerrors in 6 contexts; #vitrine gold = 1 (live URL); no regression. DECISION (§0.1): 'Start a project' appears in #vitrine AND #listen with an identical href — intentional: the client path (R4) needs a door where the work ends and where the conversation ends; both count as one engagement action, not duplication.

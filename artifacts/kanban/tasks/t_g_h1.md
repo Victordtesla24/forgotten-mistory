@@ -46,3 +46,12 @@ running — dispatched 12:1xZ (queued; host cap) — Workflow wf_b908a7a9-f5d la
 
 ## COMMENT (2026-09-05T12:22:59.736Z)
 REVIEWER BASELINE 9ba97a5c (G-H1 FAIL, measured): 21 text-bearing leaf nodes in the 1440×900 fold, 4 paragraphs >12 words (longest 29), 6 in-fold CTAs in 3 groups (See the evidence+Download CV; Play the portrait; LinkedIn/GitHub/Email), ledger at top:535 with 15 caliper marks, availability at top:840, dominant media covers 11.4% of the fold (516×287). Council targets for the re-probe: ≤8 text leaves in fold; dominant visual coverage ≥0.75 (the stage IS the fold); one CTA group; ledger/note/availability start ≥100vh; the 'Play the portrait' control counts as a CTA — fold it into the photograph or move it with the proof band. Evidence: docs/delivery/evidence/v10-20260905T0515Z/G-REV/9ba97a5c/captures/probe-a.json → 1440-normal.measure.hero
+
+## COMMENT (2026-09-05T12:39:54.870Z)
+HEADS-UP 12:40Z: flagship-C landed on the remote (d7adf27, 13f1b82 → consolidating): Hero.module.css .stage::after display:none below 700px + per-run text plates rgb(10 10 10/.90) on .eyebrow/.name/.role/.statement/.grading/.availability/.ledgerItem, atmosphere.glsl.ts reframed to the viewport half-width, TC-CONTRAST-02 on /?gl=force, nav::before ground below 700px. Your merge of origin/main before push must keep those plate rules; your new .fold/.proof structure should give the moved elements their plates too (any text over the scene needs AA on /?gl=force at 390).
+
+## COMMENT (2026-09-05T12:58:11.002Z)
+ORCHESTRATOR PUSH under host RECTIFY 12:52Z (O3): 0506e7e on worktree-wf_b908a7a9-f5d-4 at 12:57Z — build:static fresh (out/ 12:52:22 > last source edit 12:39:51), tsc exit 0; Hero.tsx/Hero.module.css restructured (data-testid hero-fold / hero-proof), tests/e2e/hero-fold.spec.ts added, hero.spec updated. The lane agent's green battery is still running and lands as a follow-up evidence commit; reviewer probes live after Deploy. Ledger +4.
+
+## COMMENT (2026-09-05T13:00:10.132Z)
+LIVE 9b864752 at 12:59:23Z — consolidated cleanly (no forced conflict; flagship-C plate rules and the new .fold/.proof structure both present on main). Reviewer phase-2 dispatched on 9b864752 for G-H1 + G-S1.

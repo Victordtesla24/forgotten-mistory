@@ -43,3 +43,9 @@ running — continued 12:0xZ by a fresh analyst-programmer in the paused worktre
 
 ## COMMENT (2026-09-05T12:13:28.099Z)
 dispatched 12:1xZ — Workflow wf_d606e4cb-b3e phase 1 lane:flagship-c-finish in worktree wf_09ff65b8-0fb-1, port 5610; owns .stage/scrim/atmosphere + About/Experience styling; H1 lane owns hero layout
+
+## COMMENT (2026-09-05T12:39:54.789Z)
+PUSHED d7adf27 + 13f1b82 on worktree-wf_09ff65b8-0fb-1 (12:38Z), goal_complete per agent: F1 phone scrim removed below 700px, copy on rgb(10 10 10/.90) plates, hero@390 gl=force coverage 100% / peak .83 / motion .0587 (was 0/.02/.0001); F2 TC-CONTRAST-02 added (same AA walk on /?gl=force at 1440+390) and green; compass numerals AA via ink stroke + field groove; nav ground below 700px (globals.css). 05b log shows the PRE-fix 4 failures, 05c re-run 30/30 incl. TC-HERO-09, EXP-05/06/08. Orchestrator reviewed the test diff: no thresholds lowered, viewports added. Awaiting consolidation + reviewer phase 2 on live before Done.
+
+## COMMENT (2026-09-05T12:40:55.953Z)
+LIVE 577d45af at 12:40:05Z (Deploy 33966616680 success) — third visible ship of the run. Reviewer phase-2 dispatched on 577d45af (F1 phone scene, F2 AA on both paths, reduced-motion, perf, G-H2 scrim re-measure).

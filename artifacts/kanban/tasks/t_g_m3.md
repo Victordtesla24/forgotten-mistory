@@ -36,3 +36,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-05T12:49:33.997Z)
+PREREQ FINDING (from G-M2): ELEVENLABS_API_KEY in /root/.claude/.env.production is a key ID (ElevenLabs 400 api_key_id_used_as_api_key) — the live /api/tts function (elevenLabsTts, Secret Manager ELEVENLABS_API_KEY) very likely fails the same way → speakReply falls back to browser TTS. Measure /api/tts on live in this lane and report honestly; the fix (a real sk_ key) is a credential the Owner holds — record as the blocker for the voice half of R3 while the chat TTFB half proceeds.

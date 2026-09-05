@@ -42,3 +42,9 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). OpenRout
 
 ## STATUS (2026-09-05T12:13:27.915Z)
 running — dispatched 12:1xZ (queued behind the first two lanes; host cap) — Workflow wf_b908a7a9-f5d lane:minivic-ladder+greeting, port 5606
+
+## COMMENT (2026-09-05T12:33:58.713Z)
+PROTOCOL EVENT 12:33Z: the wave-1 Workflow (wf_b908a7a9-f5d) recorded 'failed' for this lane at spawn — no agent id, no worktree (-3 never created), so no code was touched; §10 requeue applied: re-dispatched as its own Workflow wf_0a064191-152 (lane:minivic-ladder+greeting, fresh isolated worktree, port 5606, opus xhigh, 30-min cap). Reviewer baseline facts + the headless-panel caveat were included in the prompt.
+
+## COMMENT (2026-09-05T12:49:33.916Z)
+PUSHED with G-M1 (91f46e9). DECISION RECORD (03-generation.log): ATTEMPT 1 REST call → HTTP 400 invalid_api_key / api_key_id_used_as_api_key — the stored ELEVENLABS_API_KEY is a key ID (corroborates the pre-existing MiniVicBot note); no asset written, no fabrication. ATTEMPT 2 — the authenticated ElevenLabs connector (real generation in the account workspace): premade male Indian-English professional voice hg1icMxI2KADq9a81ecq ('Sanket'), eleven_multilingual_v2, one take, 24.98 s, 365 credits / USD 0.133 (the single authorised paid call). Text = GREETING.hiring verbatim (single source imported by MiniVicBot.tsx and the generation script; transcript public/assets/minivic-greeting.txt + digest module emitted together). New MP3 417,702 B (<500 kB), sha dd65f259…; tests/minivic_greeting.test.mjs asserts transcript == GREETING.hiring and hash == digest. FOLLOW-UP for the Owner's credential store (not a blocker): ELEVENLABS_API_KEY holds a key ID, not an sk_ key — the REST path and functions/index.js elevenLabsTts (/api/tts) cannot authenticate until a real key is stored; recorded on t_g_m3 / R3.

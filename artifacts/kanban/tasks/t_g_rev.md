@@ -47,3 +47,6 @@ WAVE-2 PLAN 12:2xZ: t_g_h3 (palette purge, port 5611) + t_stab01 (stability, por
 
 ## COMMENT (2026-09-05T12:22:18.207Z)
 PHASE 1 BASELINE landed (branch worktree-wf_2cd21f31-055-1, commit 77cd9a3): 11/11 P0 gaps FAIL on live 9ba97a5c with fresh captures under docs/delivery/evidence/v10-20260905T0515Z/G-REV/9ba97a5c/. Watcher dispatched deploy.yml 12:21:42Z to consolidate it with the O3 verify fix (6f59312).
+
+## COMMENT (2026-09-05T12:55:40.850Z)
+RECTIFY 12:52Z applied — Playwright unblocked; WIP push; board closes on PASS.

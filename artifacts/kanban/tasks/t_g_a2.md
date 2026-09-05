@@ -41,3 +41,6 @@ running — dispatched 12:1xZ — analyst-programmer xhigh opus, Workflow wf_b90
 
 ## COMMENT (2026-09-05T12:26:15.282Z)
 PUSHED with G-A1 (03aa1ed): hatch rgb(138 143 154/.34) → rgb(144 144 144/.34) (the --mist-400 triple, zero chroma, same alpha); CC-A2 red→green. Awaiting live verify.
+
+## COMPLETE (2026-09-05T12:37:56.067Z)
+REVIEWER PHASE-2 PASS on live 843b679d (G-REV/e47221ed/08-adversarial-review.md): .keySwatch[data-state='role'] background-image = repeating-linear-gradient(45deg, rgba(144,144,144,.34) …) — channel spread 0, zero occurrences of rgb(138,143,154) at 1440 and 390; swatch intact 25.6×13.6 px. 0 pageerrors in 4 contexts.

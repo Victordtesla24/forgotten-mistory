@@ -44,3 +44,12 @@ running — dispatched 12:1xZ (queued behind the first two lanes; host cap) — 
 
 ## COMMENT (2026-09-05T12:23:00.045Z)
 REVIEWER BASELINE (G-M1/G-M2/G-M3 FAIL, measured): /api/chat-with-vic poller IS in the served bundle (setInterval … fetch('/api/chat-with-vic?taskId=')); /api/realtime 0 in the 14 eager chunks (lazy chunks not enumerated); greeting MP3 sha 369e1eb2… byte-identical to the stale asset while the intro text changed in 45eb252/3720832; text/event-stream 0. NOTE: the launcher (button.minivic-launcher) clicked in headless Chrome but no input became visible and zero /api/* requests fired — your e2e must open the panel the way tests/monochrome/minivic-launcher.spec.ts does (scroll past the hero first if the launcher gates on pastHero) and prove the send path on the wire.
+
+## COMMENT (2026-09-05T12:33:58.654Z)
+PROTOCOL EVENT 12:33Z: the wave-1 Workflow (wf_b908a7a9-f5d) recorded 'failed' for this lane at spawn — no agent id, no worktree (-3 never created), so no code was touched; §10 requeue applied: re-dispatched as its own Workflow wf_0a064191-152 (lane:minivic-ladder+greeting, fresh isolated worktree, port 5606, opus xhigh, 30-min cap). Reviewer baseline facts + the headless-panel caveat were included in the prompt.
+
+## COMMENT (2026-09-05T12:49:33.759Z)
+PUSHED 91f46e9 on worktree-wf_0a064191-152-1 (12:48Z): handleSend → askMiniVicBrain directly; sendRealtimeMessage, chat-with-vic POST, poller, liveSocketsRef, wsBaseUrl, playGeneratedVideo and 2 unreachable UI branches removed (net −319 lines; 0 references left in components/lib/app). MV-WIRE-01/02 e2e prove on the wire: one send → exactly ['/api/chat'], no poller in a 7 s window, panel opened like minivic-launcher.spec; node:test scans source + all 33 emitted chunks. 57/57 Playwright, node:test 5/5, tsc, lint, audit 10/10. Orchestrator reviewed. Awaiting consolidation + reviewer phase 2.
+
+## COMMENT (2026-09-05T12:51:04.218Z)
+LIVE 874f1ee9 at 12:50:05Z (Deploy 33967099706 success) — fourth ship of the run; served greeting sha now dd65f259… (verified by curl). Reviewer phase-2 dispatched on 874f1ee9 (G-M1/G-M2 verdicts + G-M3 TTFB and /api/tts baseline).
