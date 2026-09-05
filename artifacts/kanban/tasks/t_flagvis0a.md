@@ -32,3 +32,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-05T10:11:52.983Z)
+SHIPPED via pipeline consolidation (39f4211, 8f81ae8) and LIVE on 8f81ae86 at 10:1xZ: 9fd78ef feat(hero) volumetric light the visitor can actually see; c6bf7ff feat(about) ten luminous sectors; b200958 feat(experience) sediment strata with real weight; a78d9f0 fix(scenes) scrims protect the copy. Live probe 0 errors, canvases mount at 1440/390. Verifier lane still running; orchestrator visual check in progress.

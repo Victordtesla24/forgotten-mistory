@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T10:10:33.309Z",
+  "updated": "2026-09-05T10:11:53.074Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -835,7 +835,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T09:59:14.409Z",
+      "updated": "2026-09-05T10:11:53.074Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": [
@@ -883,6 +883,11 @@
           "at": "2026-09-05T09:59:14.409Z",
           "by": "orchestrator",
           "text": "Cadence: 09:36 5c15f5b3 (host docs), 09:4x 5ff191f5 (board), c5d808c cycle 20 pushed 09:5xZ (visible: Listen CTA/weight, About baseline, tenure derivation); flagship A branch b200958 pushed — consolidation due."
+        },
+        {
+          "at": "2026-09-05T10:11:53.074Z",
+          "by": "orchestrator",
+          "text": "Cadence: 10:0xZ 8f81ae86 — flagship visibility A (hero/about/experience) + cycle 20 close live; monitor: PROD OK on 8f81ae86."
         }
       ]
     },
@@ -1833,10 +1838,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T09:16:20.775Z",
-      "updated": "2026-09-05T09:16:20.775Z",
+      "updated": "2026-09-05T10:11:52.983Z",
       "summary": "Owner: I still cannot see flagship UI/UX for each section. Orchestrator confirmed on live captures (c76459d0, 1440, gl=force): hero faint, About field invisible, Experience strata invisible. The quiet/text-primary bar is revoked for these scenes. Gate: tests/overhaul/flagship-visibility.spec.ts — scene-only capture ≥ 15% pixels at L ≥ ground+0.06, max L ≥ 0.35, motion between captures, reduced-motion static fallback visible, TC-CONTRAST-01 green. Lane wf flagship-visibility-a (port 5602/5604).",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T10:11:52.983Z",
+          "by": "orchestrator",
+          "text": "SHIPPED via pipeline consolidation (39f4211, 8f81ae8) and LIVE on 8f81ae86 at 10:1xZ: 9fd78ef feat(hero) volumetric light the visitor can actually see; c6bf7ff feat(about) ten luminous sectors; b200958 feat(experience) sediment strata with real weight; a78d9f0 fix(scenes) scrims protect the copy. Live probe 0 errors, canvases mount at 1440/390. Verifier lane still running; orchestrator visual check in progress."
+        }
+      ],
       "blocker": null
     },
     {
