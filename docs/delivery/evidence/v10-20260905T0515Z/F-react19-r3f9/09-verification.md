@@ -321,3 +321,28 @@ consolidated tree.
    summary line. Worth a longer `waitForPageReady` budget or a serial project for the
    timing-sensitive specs, so a future reviewer does not have to isolate five tests to find
    out nothing was wrong.
+
+---
+
+## Addendum — the pipeline consolidated during this review
+
+Between §V-6 being written and this file being pushed, `deploy.yml` merged and deleted the
+branch: `89a6803 consolidate: merge worktree-wf_a0a1850a-28a-1 into main (branch wins
+conflicts)`, then `79691ed`, then `6333c9a docs(board): react 19 build verified live`.
+`origin/main` is now `6333c9a` and carries **both** sides:
+
+```
+react 19.2.8 · react-dom 19.2.8 · next 15.5.25 · eslint-config-next 15.5.25
+@react-three/fiber 9.7.0 · @react-three/drei 10.7.8 · lucide-react 1.41.0
+components/sections/Vitrine/Drawings.tsx  -> import type { JSX } from 'react'
+components/MiniVicBot.tsx                 -> cycle 16 labelled launcher present
+tests/a11y/minivic-launcher.spec.ts, tests/a11y/minivic-occlusion.spec.ts  -> present
+```
+
+So Finding 2's merge risk did not materialise — the two changes touched disjoint files and
+consolidated cleanly. **The testing half of Finding 2 is still open:** nothing in this
+evidence trail shows `tests/a11y/minivic-launcher.spec.ts`,
+`tests/a11y/minivic-occlusion.spec.ts` or `tests/monochrome/minivic-launcher.spec.ts` ever
+executed against React 19. They now run on every `checks.yml` push; the first such run is
+the artefact to read. §V-6's ask stands, narrowed to: **read that run rather than assume
+it.** The verdict is unchanged — the React 19 upgrade this file reviewed is what shipped.
