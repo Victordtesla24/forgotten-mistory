@@ -240,7 +240,11 @@
 /* The line that teaches the mark, beside the figures it grades. */
 .grading {
     margin: 0;
-    max-width: 22ch;
+    /* A running measure, not a 22ch block: R-47/SC-28.1 holds every prose
+       measure between 55 and 75 characters, and the design-scale spec
+       enforces it. The legibility fix below (mist-200 at 0.85) is what the
+       note needed; the portrait now owns the column beside the ledger. */
+    max-width: var(--measure-read);
     font-family: var(--font-mono);
     font-size: var(--fs-caption);
     line-height: var(--lh-label);
