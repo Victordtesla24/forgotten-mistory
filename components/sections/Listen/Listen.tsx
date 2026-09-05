@@ -218,9 +218,12 @@ export default function Listen() {
         <span className={styles.rule} aria-hidden="true" />
 
         {/* The routes. The engagement plate leads — it is the one action a
-            business client can finish on this page — then the four addresses,
-            laid across the column rather than stacked in a narrow file with
-            the right half of the frame empty (R-c8 C-09, R-c13 CC-02/CC-05).
+            business client can finish on this page, and the one filled ground
+            in the section — then the four addresses as plain channels, laid
+            across the column rather than stacked in a narrow file with the
+            right half of the frame empty (R-c8 C-09, R-c13 CC-02/CC-05). The
+            email is a channel like the other three: a second filled pill under
+            the plate was the same route wearing different type (ADV-1451Z P1).
             The plate is chrome, not a claim, so it is white and never gold. */}
         <ul className={styles.channels}>
           <li className={styles.engageRow}>
@@ -229,9 +232,9 @@ export default function Listen() {
             </a>
           </li>
           {listenContent.channels.map((channel) => (
-            <li key={channel.href} className={channel.kind === 'email' ? styles.pillRow : undefined}>
+            <li key={channel.href}>
               <a
-                className={channel.kind === 'email' ? styles.pill : styles.channel}
+                className={styles.channel}
                 href={channel.href}
                 {...(channel.kind === 'external'
                   ? { target: '_blank', rel: 'me noreferrer noopener' }

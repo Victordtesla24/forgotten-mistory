@@ -46,7 +46,7 @@
    ground of about rgb(42 42 42) before they reach 4.5:1. So the light is held
    between 30% and 78% of the section: the kicker sits at about 14% and the
    coffee at about 88%, and neither is ever on it. Everything the band does
-   reach — the sentence, the routes, the two filled pills — is --white, which
+   reach — the sentence, the routes, the one filled plate — is --white, which
    carries this ground at better than 8:1. TC-CONTRAST-01/02 measure that
    rather than trusting it. */
 .fieldSlot {
@@ -273,11 +273,12 @@
        288 px tracks at 1440 and the three short addresses fill three of them —
        the fourth stays empty and the routes stop at 0.70 of the frame, which is
        the emptiness the direction was written to close, one column narrower.
-       A 20 rem floor lays three tracks instead, the three addresses take one
-       each, and the rightmost ends at 0.85 (`06-measurements.log`). The two
-       wide objects — the engagement plate and the email pill — take a row each
-       above them, so no track ever has to hold the 412 px address. At 834 the
-       row is two tracks and at 390 it is one, with no second declaration. */
+       A 20 rem floor lays three tracks instead, and every address fits one:
+       the widest, the 31-character LinkedIn path, is about 340 px of mono at
+       --fs-lede against a 394 px track. The engagement plate takes the row
+       above them; the four channels flow three and one beneath it, and the
+       rightmost ends past 0.85 of the frame. At 834 the row is two tracks and
+       at 390 it is one, with no second declaration. */
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     gap: var(--space-4);
     margin: 0;
@@ -291,17 +292,12 @@
     grid-column: 1 / -1;
 }
 
-/* The email takes the row under the plate. It is the widest route and the one a
-   client will actually take, so it sits on the spine directly beneath the
-   action rather than squeezing a 25 rem floor onto every track and leaving the
-   short addresses stranded in the left half of the frame. */
-.pillRow {
-    grid-column: 1 / -1;
-}
-
-/* The client's action. The hero's primary plate, in this section's place: a
-   filled white ground with the page's own ink on it. Not gold — an invitation
-   is chrome, and gold on this site means a figure has a source. */
+/* The client's action, and the one filled ground in the section. The hero's
+   primary plate, in this section's place: a filled white ground with the page's
+   own ink on it. Not gold — an invitation is chrome, and gold on this site
+   means a figure has a source. The email beneath it used to be a second filled
+   pill; that was the same route wearing different type, so it is a channel
+   like the other three (ADV-1451Z P1, LISTEN-FLAGSHIP.md §3.3). */
 .engage {
     display: inline-flex;
     align-items: center;
@@ -330,39 +326,6 @@
 }
 
 .engage:active {
-    opacity: 1;
-}
-
-/* The email, as a filled pill. It is the route a client will actually take, so
-   it carries the same ground as the plate at route weight rather than being the
-   quietest line on the page (R-c8 C-09). */
-.pill {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    padding: var(--space-2) var(--space-4);
-    border-radius: 999px;
-    background: var(--white);
-    color: var(--ink-900);
-    font-family: var(--font-mono);
-    font-size: var(--fs-lede);
-    letter-spacing: 0.01em;
-    line-height: var(--lh-snug);
-    text-decoration: none;
-    transition: opacity var(--motion-fast) var(--motion-ease-standard);
-}
-
-.pill:hover,
-.pill:focus-visible {
-    opacity: 0.86;
-}
-
-.pill:focus-visible {
-    outline: 2px solid var(--white);
-    outline-offset: 4px;
-}
-
-.pill:active {
     opacity: 1;
 }
 
