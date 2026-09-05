@@ -1,0 +1,20 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/perf/performance.spec.ts --workers=1 --reporter=list --grep PERF-03
+
+Running 1 test using 1 worker
+
+CLS: 0.0000
+  ✓  1 [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05 (5.6s)
+
+  1 passed (6.9s)
+PERF-03 CLS on the BASELINE build (this lane changes stashed, HEAD 6224a7f), 3 consecutive runs
+port 5617, phone viewport, no ?gl=force
+
+run 1: CLS 0.0000  PASS
+run 2: CLS 0.0000  PASS
+run 3: CLS 0.2559  FAIL
+
+The 0.2559 seen in this lane 04-tests-passing.log reproduces on unmodified main at the
+same value, so PERF-03 is intermittently red before this change and not a regression from
+it. The identical figure across builds indicates one deterministic shift that either races
+in or does not (late portrait/font), which is the concurrent t_g_h1c CLS lane.

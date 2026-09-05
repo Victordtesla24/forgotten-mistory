@@ -1,0 +1,60 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-first-paint.spec.ts tests/overhaul/cinematic.spec.ts tests/perf/performance.spec.ts --workers=1 --reporter=list
+
+Running 20 tests using 1 worker
+
+  ✓   1 [chromium] › tests/overhaul/cinematic.spec.ts:47:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-01: the hero backdrop is decorative — hidden from AT and behind the content (1.6s)
+  ✓   2 [chromium] › tests/overhaul/cinematic.spec.ts:83:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-02: nothing intercepts clicks on the hero CTA (3.1s)
+  ✓   3 [chromium] › tests/overhaul/cinematic.spec.ts:120:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-03: nav is transparent at top and frosts (data-scrolled) after scroll (3.8s)
+  ✓   4 [chromium] › tests/overhaul/cinematic.spec.ts:143:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-04: with every scene suppressed the page is still the whole page (4.8s)
+  ✓   5 [chromium] › tests/overhaul/cinematic.spec.ts:170:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-05: the hero name renders in full with no glyph-masking clip-path (D-NAME-01) (3.0s)
+  ✓   6 [chromium] › tests/overhaul/cinematic.spec.ts:184:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-06: under reduced motion the hero entrance is a fade, not a rise (4.3s)
+  ✓   7 [chromium] › tests/overhaul/cinematic.spec.ts:243:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-07: under reduced motion every section is readable, not left behind a curtain (3.6s)
+Total transfer size: 1.15 MB
+  ✓   8 [chromium] › tests/perf/performance.spec.ts:41:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB (1.4s)
+LCP: 904 ms
+  ✓   9 [chromium] › tests/perf/performance.spec.ts:61:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s (1.4s)
+CLS: 0.2559
+  ✘  10 [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05 (5.5s)
+  ✓  11 [chromium] › tests/perf/performance.spec.ts:132:7 › Performance Budgets › PERF-04: Page loads without page errors (4.0s)
+DOMContentLoaded: 193 ms
+  ✓  12 [chromium] › tests/perf/performance.spec.ts:143:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s (1.3s)
+No-JS hero title: {"opacity":1,"visibility":"visible","area":38133.10546875,"withinFirstViewport":true,"text":16}
+  ✓  13 [chromium] › tests/perf/performance.spec.ts:177:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked (1.4s)
+LCP entry: {"startTime":328,"tag":"SPAN","className":"Footer_legal__OXVTL"}
+  ✓  14 [chromium] › tests/perf/performance.spec.ts:230:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer (1.2s)
+[TC-HERO-FIRSTPAINT-01] still mean luminance @1440: 0.0605
+  ✓  15 [chromium] › tests/overhaul/hero-first-paint.spec.ts:194:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [1440]: the hero slot carries a lit still, served and painted without the scene (4.0s)
+[TC-HERO-FIRSTPAINT-01] still mean luminance @390: 0.0902
+  ✓  16 [chromium] › tests/overhaul/hero-first-paint.spec.ts:194:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [390]: the hero slot carries a lit still, served and painted without the scene (2.3s)
+[TC-HERO-FIRSTPAINT-02] canvas_after_dcl_ms_glforce_1440: 1802
+  ✓  17 [chromium] › tests/overhaul/hero-first-paint.spec.ts:253:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [1440]: the hero canvas mounts on a cold load (3.9s)
+[TC-HERO-FIRSTPAINT-02] canvas_after_dcl_ms_glforce_390: 1657
+  ✓  18 [chromium] › tests/overhaul/hero-first-paint.spec.ts:253:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [390]: the hero canvas mounts on a cold load (2.3s)
+  ✓  19 [chromium] › tests/overhaul/hero-first-paint.spec.ts:281:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02b: the hero scene mounts even though the page never settles (3.6s)
+  ✓  20 [chromium] › tests/overhaul/hero-first-paint.spec.ts:327:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-03: priority is opt-in — no other scene jumps the idle gate (1.4s)
+
+
+  1) [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: < [32m0.05[39m
+    Received:   [31m0.2559241706161137[39m
+
+      127 |
+      128 |     console.log(`CLS: ${cls.toFixed(4)}`);
+    > 129 |     expect(cls).toBeLessThan(CLS_BUDGET);
+          |                 ^
+      130 |   });
+      131 |
+      132 |   test('PERF-04: Page loads without page errors', async ({ page }) => {
+        at /root/forgotten-mistory/.claude/worktrees/wf_b036b9b4-123-1/tests/perf/performance.spec.ts:129:17
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/perf-performance-Performan-9ada0-umulative-Layout-Shift-0-05-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05 
+  19 passed (1.1m)
