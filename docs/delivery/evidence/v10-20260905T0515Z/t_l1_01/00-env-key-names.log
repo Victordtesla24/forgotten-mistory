@@ -1,0 +1,6 @@
+# t_l1_01 — booking-tool check by key NAME only (values never read, never printed) — 2026-09-05T15:29:00Z
+$ grep -E '^[A-Z][A-Z0-9_]*=' /root/.claude/.env.production | sed 's/=.*//' | sort -u | wc -l
+45
+$ grep -E '^[A-Z][A-Z0-9_]*=' /root/.claude/.env.production | sed 's/=.*//' | sort -u | grep -ciE 'cal|calendar|book|schedul|meet'
+0
+# 45 key names, 0 booking-related: no booking URL ships (LISTEN-FLAGSHIP.md §3.1)
