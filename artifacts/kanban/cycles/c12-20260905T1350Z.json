@@ -1,0 +1,46 @@
+{
+  "cycle": "v10-c12",
+  "window_utc": "2026-09-05T13:22Z → 13:50Z",
+  "pea_numerator": 11,
+  "pea_denominator": 25,
+  "pea_basis": "Unchanged 11/25 pending reviewer verdicts on the three lanes that landed this window. ADV-FAIL P0 scorecard (11): PASS 8 (G-A1, G-A2, G-V1, G-V2, G-M1, G-M2, G-H3, G-S1) + live and under review: G-H1 correction (70a04a8/46379f1), G-H2a first paint (9dfaacd), G-S1c contrast correction (cf64912), G-M3b direct-origin streaming (8978c2c — lane measuring live TTFT now). G-M3 honestly FAIL on the 1.5 s bar via Hosting (P50 1836 ms; origin 665 ms) → G-M3b is the fix under measurement.",
+  "adversarial_verdicts": [
+    "G-S1 PASS (e48e5bea) — canvases at 1440/390 gl=force, field cov .447/peak .75",
+    "G-H1 FAIL (e48e5bea) → correction 70a04a8 live 13:49 → phase-3 reviewer running",
+    "G-H3 PASS (87cb1c5) + FAIL-A contrast regression → cf64912 (band labels --mist-400 4.68:1; InfoCentric = probe artefact under the fixed nav CV pill, walk now drops occluded samples) live 13:40 → sweep reviewer running",
+    "stability: CLS root cause (loading.tsx styled-jsx unshipped → footer painted at y=24) fixed → 0.0000 unskipped at 3 widths; TC-SKEW-02 3/3; openNote 6.20:1 (87c9667 live 13:20) → sweep reviewer running",
+    "G-M3 lane: FAIL on bar, PROVED Firebase Hosting buffers SSE; rung order fix + warm ping + SSE shipped (ddb2476); G-M3b streams from the Cloud Run origin with /api/chat fallback + CSP connect-src (8978c2c live 13:47) — lane's live browser measurement pending"
+  ],
+  "deploy_commit": "e3f0206c",
+  "visible_ships": [
+    "13:38:35Z cfee6a6c — 0861658 skills: bench light held inside the plate, graticule thinned, band labels green in the lane's battery",
+    "13:40:07Z abc475e3 — cf64912 a11y: band labels --mist-400; contrast walk drops occluded samples (probe artefact named)",
+    "13:47:49Z 8978c2c4 — G-M3b: MiniVic streams from the Cloud Run origin (SSE), /api/chat fallback, CSP + preconnect",
+    "13:49:21Z e3f0206c — 70a04a8 hero: one CTA group in the fold at 1440/1280/834/390, play control moved to the proof band (keyboard contract rewritten), ledger margin ≥40 px, CLS 0.00000 ×9; 9dfaacd hero atmosphere in the first paint (Scene priority + lit poster)"
+  ],
+  "non_visible_ships": [
+    "615a8a4 / e44fe99 board; f3fb02e untrack static-audit again; 71e2811 / 0df240f stability evidence; ca2b442 / 8b351a7 / 87cb1c5 reviewer evidence"
+  ],
+  "o1_o5": "Windows: 13:22–13:32 visible (a3edeff4 13:20 counted in c11; 48748c41 13:31 = M3 client slice + function order fix); 13:32–13:42 visible (cfee6a6c 13:38, abc475e3 13:40); 13:42–13:52 visible (8978c2c4 13:47, e3f0206c 13:49). Deploy runs 13:22→13:49: 11, all success.",
+  "incidents": [
+    "735ea66 branch-wins merge (orchestrator WIP push without merge) reinstated a dead block on main 13:04–13:20 — removed by 87c9667; rule added (merge + merge-tree before any WIP push)",
+    "cfee6a6 branch-wins (modify/delete on reports/static-audit.json) re-tracked the audit report — untracked again f3fb02e; pre-5d22bca lanes are now all merged so it will not recur",
+    "M3 lane copied functions/index.js into the main checkout to deploy — restored by the orchestrator; lane prompts now say deploy from the worktree"
+  ],
+  "in_flight": [
+    "reviewer phase 3 hero (G-H1 + G-H2a) on e3f0206c",
+    "reviewer sweep (stability + skills + S1c) on cfee6a6c+",
+    "t_g_m3b live TTFT measurement"
+  ],
+  "queued": [
+    "t_x1_01 fps harness (tester) — load still 10–13",
+    "t_x1_03 hero graded plate",
+    "t_x1_05/06 vitrine + listen sceneIds",
+    "t_vit_desc01",
+    "t_clean01 worktree cleanup",
+    "P1 G-H4/G-E1/G-R1"
+  ],
+  "provider": "Anthropic via OAuth; OpenRouter 402 → §0.4; no ANTHROPIC_API_KEY; Hermes not started (gateway pgrep empty)",
+  "verification_snippet": "$ date -u\n2026-09-05T13:51:10Z\n$ systemctl is-active fm-deploy-cadence.timer\nactive\n$ pgrep -af 'hermes gateway'\n(empty)\n$ tail -3 /var/log/fm-deploy/cadence.log\n[2026-09-05T13:45:06Z] cadence tick\n[2026-09-05T13:45:08Z] skip: successful Deploy within last 8m (push already covered cadence)\n[2026-09-05T13:45:08Z] live build-commit\" content=\"f3fb02e6\"\n$ gh run list --workflow=deploy.yml --limit 10\n2026-09-05T13:49:09Z workflow_dispatch success e3f0206c\n2026-09-05T13:47:35Z workflow_dispatch success 8978c2c4\n2026-09-05T13:46:01Z workflow_dispatch success f3fb02e6\n2026-09-05T13:39:33Z push success f3fb02e6\n2026-09-05T13:38:54Z workflow_dispatch success cfee6a6c\n2026-09-05T13:36:50Z workflow_dispatch success 615a8a47\n2026-09-05T13:34:09Z schedule success 615a8a47\n2026-09-05T13:32:32Z push success 615a8a47\n2026-09-05T13:29:43Z workflow_dispatch success 71e2811e\n2026-09-05T13:27:40Z workflow_dispatch success e247598c\n$ live build-commit\nbuild-commit\" content=\"34755d6c\"\n$ cache-control\ncache-control: public, max-age=0, must-revalidate\n",
+  "next": "Close G-H1/G-H2a/G-S1c on PASS; G-M3b PASS only if browser P50 < 1500 ms; then dispatch t_x1_01 + t_x1_03 + cleanup as load allows; c13 at the next visible ship."
+}

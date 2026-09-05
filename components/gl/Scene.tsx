@@ -148,6 +148,32 @@ interface SceneProps {
   sceneId?: string;
   /** Camera for this scene. Defaults to a 45° perspective five units back. */
   camera?: { position?: [number, number, number]; fov?: number };
+  /**
+   * Mount this scene as soon as it is on screen, without waiting for the page
+   * to settle. Opt-in, default `false`: every scene but one is unchanged.
+   *
+   * The idle gate below is not overhead, it is a measured protection —
+   * `GLCanvas.tsx:14` records that an eager R3F canvas took LCP from ~1.6 s to
+   * 2.7 s — so it stays in force for S2…S7, which are all below the fold and
+   * lose nothing by arriving a second late.
+   *
+   * The hero is the one scene the gate actually costs something. It is the
+   * flagship and it is *above* the fold, so "a second late" means the first
+   * screen a reader sees has no atmosphere in it at all; the independent
+   * production review measured exactly that — zero canvases on a normal load,
+   * the hero shader visible only under `?gl=force`. Waiting for `window.load`
+   * plus an idle callback to draw the thing the page opens on is not a
+   * performance win, it is the defect (docs/architecture/SIGNATURE-SCENES-v1.md
+   * §4.1(a), decision D3).
+   *
+   * This is safe for LCP only because the hero's slot is already painted before
+   * any of this runs: `.stage` carries a still of the same light as its own CSS
+   * background, out of the static HTML, so the LCP candidate is settled by the
+   * document and the canvas composites over a frame that is already there. A
+   * `priority` scene on a slot with no still would be the 2.7 s regression
+   * again. `tests/overhaul/hero-first-paint.spec.ts` holds both halves.
+   */
+  priority?: boolean;
   children: ReactNode;
 }
 
@@ -169,7 +195,7 @@ interface SceneProps {
  * legible with its scene absent: the slot keeps its own CSS treatment, and the
  * scenes are evidence rendered, never the evidence itself.
  */
-export default function Scene({ className, camera, sceneId, children }: SceneProps) {
+export default function Scene({ className, camera, sceneId, priority = false, children }: SceneProps) {
   const capability = useGLCapability();
   const slotRef = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
@@ -185,11 +211,12 @@ export default function Scene({ className, camera, sceneId, children }: ScenePro
   }, []);
 
   // Nothing 3D is fetched until the page has finished loading and the main
-  // thread has gone idle once. The hero's shader is pure enhancement over a CSS
-  // gradient that is already painted, so a scene arriving a second late costs
-  // nothing; a scene arriving *early* costs the hero's own display face its
-  // place in the download queue, which is what took LCP over the 2.5 s budget
-  // on a throttled phone.
+  // thread has gone idle once — unless this scene asked for `priority`. A scene
+  // arriving *early* costs the hero's own display face its place in the download
+  // queue, which is what took LCP over the 2.5 s budget on a throttled phone, so
+  // every below-the-fold scene still waits: a second late is free when the
+  // reader has not scrolled that far yet. It is not free for the scene the page
+  // opens on, which is the one exception `priority` names.
   useEffect(() => {
     let cancelled = false;
     const settle = () => {
@@ -221,7 +248,10 @@ export default function Scene({ className, camera, sceneId, children }: ScenePro
     return () => observer.disconnect();
   }, []);
 
-  const show = capability === 'supported' && allowMotion && near && pageSettled;
+  // Capability, reduced motion and proximity are non-negotiable for every scene:
+  // `priority` buys a place in the first paint, never an exemption from the
+  // reader's hardware or their stated preference. It relaxes exactly one term.
+  const show = capability === 'supported' && allowMotion && near && (priority || pageSettled);
 
   return (
     <div ref={slotRef} className={className} data-scene={sceneId} aria-hidden="true">

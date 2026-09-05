@@ -30,9 +30,19 @@ const HeroAtmosphere = dynamic(() => import('./HeroAtmosphere'), { ssr: false })
 export default function Hero() {
   return (
     <section id="hero" className={styles.hero} aria-labelledby="hero-name">
-      {/* The backdrop slot. Its gradient is the entire backdrop when there is
-          no WebGL; the scene, when it mounts, draws over that gradient. */}
-      <Scene className={styles.stage} sceneId="hero-atmosphere">
+      {/* The backdrop slot. Its still is the entire backdrop when there is no
+          WebGL; the scene, when it mounts, draws over that still.
+
+          `priority` is the one place on the site that opts out of Scene's idle
+          gate, and it is the hero because the hero is the only scene that is
+          already on screen when the page opens. Left on the default the
+          atmosphere waits for `window.load` and an idle callback — which is how
+          the independent review came to measure zero canvases on a normal load
+          and the flagship only under `?gl=force`. The still below is what makes
+          it safe: the frame is lit from the static HTML, so the canvas is an
+          enhancement over a painted picture rather than the thing the first
+          paint is waiting on (Scene.tsx `priority`, TC-HERO-FIRSTPAINT-01/02). */}
+      <Scene className={styles.stage} sceneId="hero-atmosphere" priority>
         <HeroAtmosphere />
       </Scene>
 

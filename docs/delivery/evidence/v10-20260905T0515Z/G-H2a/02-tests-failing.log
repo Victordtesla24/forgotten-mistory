@@ -1,0 +1,76 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-first-paint.spec.ts --workers=1 --reporter=list
+
+Running 3 tests using 1 worker
+
+  ✘  1 [chromium] › tests/overhaul/hero-first-paint.spec.ts:147:9 › G-H2a: the hero atmosphere is in the first paint › with JavaScript blocked › TC-HERO-FIRSTPAINT-01: the hero slot carries a lit still out of the static HTML (16.1s)
+  ✘  2 [chromium] › tests/overhaul/hero-first-paint.spec.ts:185:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02: the hero canvas mounts without waiting for the page to settle (4.6s)
+  ✓  3 [chromium] › tests/overhaul/hero-first-paint.spec.ts:210:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-03: priority is opt-in — no other scene jumps the idle gate (4.4s)
+
+
+  1) [chromium] › tests/overhaul/hero-first-paint.spec.ts:147:9 › G-H2a: the hero atmosphere is in the first paint › with JavaScript blocked › TC-HERO-FIRSTPAINT-01: the hero slot carries a lit still out of the static HTML 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator:  locator('[data-scene="hero-atmosphere"]')
+    Expected: visible
+    Received: hidden
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 15000ms[22m
+    [2m  - waiting for locator('[data-scene="hero-atmosphere"]')[22m
+    [2m    19 × locator resolved to <div aria-hidden="true" class="Hero_stage__T4wJx" data-scene="hero-atmosphere"></div>[22m
+    [2m       - unexpected value "hidden"[22m
+
+
+      156 |       // has become client-only and there is no first paint to light.
+      157 |       await expect(slot).toHaveCount(1);
+    > 158 |       await expect(slot).toBeVisible();
+          |                          ^
+      159 |
+      160 |       // Half the check: something is declared. `none` is the value that means
+      161 |       // the slot paints nothing of its own and waits for the canvas.
+        at /root/forgotten-mistory/.claude/worktrees/wf_b036b9b4-123-1/tests/overhaul/hero-first-paint.spec.ts:158:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-first-paint--64f23-till-out-of-the-static-HTML-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-first-paint--64f23-till-out-of-the-static-HTML-chromium/error-context.md
+
+  2) [chromium] › tests/overhaul/hero-first-paint.spec.ts:185:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02: the hero canvas mounts without waiting for the page to settle 
+
+    Error: no canvas inside [data-scene="hero-atmosphere"] within 1200 ms of domcontentloaded — the hero scene is still behind Scene's idle gate, so the flagship is absent from the first paint
+
+    [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('[data-scene="hero-atmosphere"]').locator('canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  1200ms
+
+    Call log:
+    [2m  - no canvas inside [data-scene="hero-atmosphere"] within 1200 ms of domcontentloaded — the hero scene is still behind Scene's idle gate, so the flagship is absent from the first paint with timeout 1200ms[22m
+    [2m  - waiting for locator('[data-scene="hero-atmosphere"]').locator('canvas')[22m
+
+
+      200 |         `${PRIORITY_BUDGET_MS} ms of domcontentloaded — the hero scene is still behind ` +
+      201 |         "Scene's idle gate, so the flagship is absent from the first paint",
+    > 202 |     ).toHaveCount(1, { timeout: PRIORITY_BUDGET_MS });
+          |       ^
+      203 |
+      204 |     const elapsed = Date.now() - started;
+      205 |     expect(elapsed).toBeLessThanOrEqual(PRIORITY_BUDGET_MS);
+        at /root/forgotten-mistory/.claude/worktrees/wf_b036b9b4-123-1/tests/overhaul/hero-first-paint.spec.ts:202:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-first-paint--4cdb2-ting-for-the-page-to-settle-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-first-paint--4cdb2-ting-for-the-page-to-settle-chromium/error-context.md
+
+  2 failed
+    [chromium] › tests/overhaul/hero-first-paint.spec.ts:147:9 › G-H2a: the hero atmosphere is in the first paint › with JavaScript blocked › TC-HERO-FIRSTPAINT-01: the hero slot carries a lit still out of the static HTML 
+    [chromium] › tests/overhaul/hero-first-paint.spec.ts:185:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02: the hero canvas mounts without waiting for the page to settle 
+  1 passed (38.4s)
