@@ -1,0 +1,24 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-plane-dominance.spec.ts --workers=1 --reporter=list
+
+Running 16 tests using 1 worker
+
+  -   1 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1440×900 [gl] — SPD ≥ 0.75: the plane carries the light
+  -   2 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1440×900 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit
+  -   3 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1440×900 [still] — SPD ≥ 0.75: the plane carries the light
+  -   4 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1440×900 [still] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit
+  -   5 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1280×800 [gl] — SPD ≥ 0.75: the plane carries the light
+  -   6 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1280×800 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit
+  -   7 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1280×800 [still] — SPD ≥ 0.75: the plane carries the light
+  -   8 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1280×800 [still] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit
+  -   9 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-01 @ 834×1194 [gl] — SPD ≥ 0.75: the plane carries the light
+  -  10 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-02 @ 834×1194 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit
+  -  11 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-01 @ 834×1194 [still] — SPD ≥ 0.75: the plane carries the light
+  -  12 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-02 @ 834×1194 [still] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit
+  -  13 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 390×844 — the plane dominates the fold › TC-HERO-PLANE-01 @ 390×844 [gl] — SPD ≥ 0.75: the plane carries the light
+  -  14 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 390×844 — the plane dominates the fold › TC-HERO-PLANE-02 @ 390×844 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit
+  -  15 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 390×844 — the plane dominates the fold › TC-HERO-PLANE-01 @ 390×844 [still] — SPD ≥ 0.75: the plane carries the light
+  -  16 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 390×844 — the plane dominates the fold › TC-HERO-PLANE-02 @ 390×844 [still] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit
+
+  16 skipped
+exit=0
