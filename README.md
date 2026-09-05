@@ -299,9 +299,15 @@ deployed within about ten minutes; no single agent workflow runs longer than thi
 Stated here for the same reason the site states its own: a reader should not have to
 discover them.
 
-- **`/api/tts` returns 502.** `ELEVENLABS_API_KEY` in the environment file holds a key *ID*
-  rather than a key (they begin `sk_`). The AI clone's text path (`/api/chat`) works; its
-  speech path does not until the key is replaced.
+- **`/api/tts` returns 502 (`tts_upstream_failed`, upstream 401).** The ElevenLabs key is
+  valid, but the account tier (`payg`, `can_use_instant_voice_cloning: false`) refuses
+  text-to-speech in the cloned voice the function asks for. The AI clone's text path
+  (`/api/chat`) answers from a live model; its speech path needs an Owner decision — a
+  plan that permits instant voice cloning, or a non-cloned voice labelled as synthetic.
+- **`/api/chat` currently answers from the OpenAI rung.** OpenRouter (first in the ladder)
+  returns 402 because the account balance is negative; DeepSeek and Z.ai are also out of
+  balance. The ladder falls through automatically, and OpenRouter takes over again the
+  moment credits are added.
 - **`DI_D_API_KEY` returns 403.** The D-ID pipeline described in `services/` is not
   reachable with the current credential.
 - Repository metrics are **harvested and dated**, not live — a static export cannot query

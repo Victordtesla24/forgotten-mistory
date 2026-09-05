@@ -1,0 +1,205 @@
+{
+  "run": "v9-20260904T2312Z",
+  "task": "B-research/01 — what employers and recruiters want to hear in a candidate introduction, applied to MiniVic",
+  "generated": "2026-09-05",
+  "fact_source_policy": "Every fact in the proposed copy traces to /root/forgotten-mistory/app/data/siteContent.ts (read this session). The brief's mention of the job-fit engine 'aether-job-career-agent' is NOT in siteContent.ts and is therefore excluded from all proposed copy.",
+  "inputs_read": {
+    "siteContent": "/root/forgotten-mistory/app/data/siteContent.ts (564 lines, full read)",
+    "miniVicKnowledge_1_40": "/root/forgotten-mistory/app/data/miniVicKnowledge.ts lines 1-40 — FALLBACK_ANSWER and GREETING {hiring, engineering, story}",
+    "MiniVicBot_100_150": "/root/forgotten-mistory/components/MiniVicBot.tsx lines 100-150 — PERSONA_MODES keys recruiter/engineer/story (labels 'Hiring Fit', 'Engineering', 'Story') and five QUICK_PROMPTS",
+    "audit_BANNED": "/root/forgotten-mistory/scripts/validate/overhaul_static_audit.mjs lines 50-59 — TC-NFR-TONE list: world-class, best-in-class, ninja, guru, rockstar, unparalleled, revolutionary, cutting-edge, passionate, industry-leading, market-leading, world-leading, leading expert, exceptional, amazing, genius, visionary, unmatched, second to none, game-changing, commander, fleet, mission, decorated, squadron, sci-fi, star wars, star trek, starship, jedi",
+    "Config_5_1": "/root/forgotten-mistory/docs/avatar/Config.md §5.1 lines 290-295 — banned register: sorry, apolog*, I'm just, I'm only, unfortunately, I'm afraid, disclaimer, I can't really, I'm not an expert, hopefully, I might be wrong, please forgive, bear with me, to be honest, I hope this helps",
+    "Config_1_4_and_header": "/root/forgotten-mistory/docs/avatar/Config.md lines 10-16 and 44-50 — ElevenLabs tier reports can_use_instant_voice_cloning:false → 401 ivc_not_permitted; deployed MP3 is 12.356 s, eleven_turbo_v2",
+    "greeting_script": "/root/forgotten-mistory/scripts/generate-cloned-greeting.ts line 26-27 — GREETING_TEXT of the deployed MP3"
+  },
+  "findings": [
+    {
+      "claim": "Indeed's interview guidance recommends a 'present, past, future' (or past-present-future) formula for 'tell me about yourself': present = current role and recent accomplishments; past = relevant roles, a key quantifiable achievement; future = why this role is the next step.",
+      "source": "https://www.indeed.com/career-advice/interviewing/interview-question-tell-me-about-yourself and https://www.indeed.com/career-advice/interviewing/words-and-adjectives-to-describe-yourself (direct fetch returned HTTP 403; wording obtained via Perplexity retrieval of the page this session)",
+      "tag": "Inferred"
+    },
+    {
+      "claim": "SEEK (Australia) career advice, quoting interview coach Leah Lambart: the answer should lead with current professional title and years of experience, then the most relevant experience, transferable skills and standout achievements, then why this role; do not recount the whole career history; interviewers often decide in the first few minutes.",
+      "source": "https://www.seek.com.au/career-advice/article/how-to-answer-so-tell-me-about-yourself (fetched this session, steps 1-3 and 'Common mistakes' section)",
+      "tag": "Verified"
+    },
+    {
+      "claim": "Ladders Inc. 2018 eye-tracking study: recruiters spend an average of 7.4 seconds on an initial resume screen (up from ~6 s in the 2012 study); the two-stage method combined a timed selection exercise with laboratory eye-tracking.",
+      "source": "https://www.theladders.com/static/images/basicSite/pdfs/TheLadders-EyeTracking-StudyC2.pdf (direct fetch blocked by robots.txt 403; figure and method obtained via Perplexity retrieval of the PDF; secondary confirmation https://www.hrdive.com/news/eye-tracking-study-shows-recruiters-look-at-resumes-for-7-seconds/541582/)",
+      "tag": "Inferred"
+    },
+    {
+      "claim": "EU AI Act Article 50(1): providers of AI systems intended to interact directly with natural persons must ensure those persons are informed they are interacting with an AI system, unless obvious to a reasonably well-informed, observant and circumspect person. Applies from 2 August 2026.",
+      "source": "https://artificialintelligenceact.eu/article/50/ (fetched this session)",
+      "tag": "Verified"
+    },
+    {
+      "claim": "European Commission FAQ on Article 50: chatbots, AI agents and avatars are in scope; people must be notified 'from the start of the first interaction in a clear and distinguishable manner', so they can 'calibrate their trust in the content accordingly'.",
+      "source": "https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act (fetched this session)",
+      "tag": "Verified"
+    },
+    {
+      "claim": "Luo et al. (2019), 'Machines vs. Humans: The Impact of AI Chatbot Disclosure on Customer Purchases', Management Science — the standard experimental reference on disclosure timing; the exact effect sizes were not retrievable this session and are not quoted.",
+      "source": "https://doi.org/10.1287/mnsc.2018.3093 (not fetched; DOI only)",
+      "tag": "Assumed"
+    },
+    {
+      "claim": "No LinkedIn Talent Solutions, Indeed Hiring Lab, Gallup, CIPD or AHRI primary statistic on introduction content was retrievable within the fetch budget; no callback-rate percentage for quantified achievements is claimed in this document.",
+      "source": "Two Perplexity queries this session returned no primary URL for these organisations on this topic; LinkedIn pages are blocked to autonomous fetch by robots.txt",
+      "tag": "Verified"
+    },
+    {
+      "claim": "The current hiring greeting opens with the disclosure and a hedge ('if I do not have it on file, I will say so rather than guess') and names no role, location, availability or number; the engineering greeting opens 'Hey, MiniVic here'; the story greeting opens 'Pull up a chair'. None states availability or a measured result in the first sentence.",
+      "source": "/root/forgotten-mistory/app/data/miniVicKnowledge.ts lines 30-37",
+      "tag": "Verified"
+    },
+    {
+      "claim": "Current QUICK_PROMPTS ask about an 'enterprise AI delivery role', an 'AI telemetry platform in a bank', 'real-time dashboards', 'services & rates' and 'large distributed teams'; none asks about availability, location, the ATO role, or a measured result — the items siteContent.ts positions first (hero.title, hero.availability, contact.headline).",
+      "source": "/root/forgotten-mistory/components/MiniVicBot.tsx lines 118-144; /root/forgotten-mistory/app/data/siteContent.ts hero and contact objects",
+      "tag": "Verified"
+    },
+    {
+      "claim": "The deployed greeting MP3 (public/assets/minivic-greeting.mp3, 12.356 s, eleven_turbo_v2) speaks a fixed sentence beginning 'Hi, I'm Mini Vic — Vikram's AI clone. I can answer questions about his experience delivering AI programs...'. It cannot be regenerated in Vikram's cloned voice: the ElevenLabs account tier reports can_use_instant_voice_cloning:false and text-to-speech returns 401 ivc_not_permitted on any key; architecture as of 2026-09-04 is OpenRouter-only and OpenRouter exposes no TTS models.",
+      "source": "/root/forgotten-mistory/scripts/generate-cloned-greeting.ts lines 26-27; /root/forgotten-mistory/docs/avatar/Config.md lines 10-16, 44-50, §1.4a",
+      "tag": "Verified"
+    },
+    {
+      "claim": "siteContent.ts positions Vikram as 'Scrum Master / Project Manager · Technical Delivery Leader', Melbourne, 'Actively exploring Scrum Master and delivery-leadership roles in Melbourne', contact headline 'Open to Scrum Master / Project Manager roles in Melbourne — and selected AI delivery engagements.'",
+      "source": "/root/forgotten-mistory/app/data/siteContent.ts hero and contact objects",
+      "tag": "Verified"
+    }
+  ],
+  "principles": [
+    {
+      "id": "P1",
+      "name": "Present first, then one measured past result, then what next",
+      "statement": "Open with the current title, employer and location, then a single quantified achievement, then the role sought. This is the Indeed present-past-future formula and SEEK's three-step formula; SEEK adds that interviewers decide within the first few minutes, so the first sentence carries the decision.",
+      "applied_to_minivic": "Every greeting's first sentence after the disclosure clause names the ATO Scrum Master / Project Manager role and Melbourne availability (hiring), the latest shipped result (engineering) or the latest chapter (story).",
+      "citations": [
+        "https://www.indeed.com/career-advice/interviewing/interview-question-tell-me-about-yourself",
+        "https://www.seek.com.au/career-advice/article/how-to-answer-so-tell-me-about-yourself"
+      ]
+    },
+    {
+      "id": "P2",
+      "name": "Numbers the reader can check, not adjectives",
+      "statement": "Recruiters' initial screen averages 7.4 seconds (Ladders 2018), so the introduction must carry the load-bearing figures a scanner would look for: title, years, employer names, one or two measured outcomes. Superlatives are excluded by the site's own tone gate (TC-NFR-TONE) and Config.md §5.2 ('numbers over adjectives').",
+      "applied_to_minivic": "Each greeting carries at most three figures drawn from siteContent.ts (sixteen years; $5M+ / 40+; 200+ scenarios ≈92%; P95 <200 ms / 10,000+ devices) and zero words from the BANNED list.",
+      "citations": [
+        "https://www.theladders.com/static/images/basicSite/pdfs/TheLadders-EyeTracking-StudyC2.pdf",
+        "/root/forgotten-mistory/scripts/validate/overhaul_static_audit.mjs lines 50-59",
+        "/root/forgotten-mistory/docs/avatar/Config.md §5.2"
+      ]
+    },
+    {
+      "id": "P3",
+      "name": "Disclose the AI in one clause at the first turn, then stop talking about it",
+      "statement": "EU AI Act Art. 50(1) and the Commission FAQ require that a person be told they are interacting with an AI system from the start of the first interaction, clearly, so they can calibrate trust. The disclosure is one clause, not a paragraph, and it is not followed by hedging or apology (Config.md §5.1 bans 'sorry', 'unfortunately', 'I'm afraid', 'disclaimer', 'hopefully').",
+      "applied_to_minivic": "Every greeting and the spoken script contain exactly one clause 'his AI clone' / 'my AI clone speaking'; the fallback answer states the boundary of the knowledge base as a fact and redirects, with no apology.",
+      "citations": [
+        "https://artificialintelligenceact.eu/article/50/",
+        "https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act",
+        "/root/forgotten-mistory/docs/avatar/Config.md §5.1"
+      ]
+    }
+  ],
+  "greetings": {
+    "hiring": "I'm Vikram — his AI clone, speaking from his CV. I'm Scrum Master / Project Manager on the ATO's Payday Super program and open to Scrum Master and delivery-leadership roles in Melbourne. Sixteen years across government, finance and telecommunications; at ANZ I ran a $5M+ portfolio across 40+ practitioners. Ask about availability, the ATO work, or how I lead.",
+    "engineering": "I'm Vikram — his AI clone, answering from his CV and repositories. Latest build: ATO mainframe test-evidence automation, 200+ SIT scenarios cut from ~3 hours to ~15 minutes each (≈92%) with REXX, SMF and SDSF and zero new InfoSec approvals. At ANZ: WebSocket telemetry holding P95 under 200 ms across 10,000+ devices. Ask about the stack, LLM evals, or trade-offs.",
+    "story": "I'm Vikram — his AI clone, telling it the way he would. Latest chapter: a SIT window needing 75+ hours of manual evidence against 64 available, closed by a six-day harness build and a war room that produced a binding recommendation in under three hours. Sixteen years of those, MYOB in 2010 to the ATO now. Ask for one.",
+    "fact_trace": {
+      "hiring": [
+        "experience[ato].role, .company, .dates (March 2026 - Present)",
+        "hero.availability / contact.headline (Scrum Master, delivery-leadership, Melbourne)",
+        "hero.subtitle (sixteen years across government, finance, and telecommunications)",
+        "experience[anz].bullets[2] ($5M+ portfolio, 40+ onsite and offshore practitioners)"
+      ],
+      "engineering": [
+        "experience[ato].bullets[1] (200+ SIT/E2E scenarios, ~3 hours to ~15 minutes, ≈92%, REXX/SMF/SDSF, zero-new-approvals)",
+        "projectionDimensions[depth] (zero new InfoSec approvals)",
+        "experience[anz].bullets[0] (WebSocket telemetry, P95 under 200 ms, 10,000+ concurrent devices)",
+        "skillGroups[ai-ml] (LLM Pipelines — Langfuse, Phoenix)"
+      ],
+      "story": [
+        "experience[ato].bullets[2] (75+ hours vs 64 available, six-day tiered harness build)",
+        "experience[ato].bullets[3] (war room, binding recommendation in under three hours)",
+        "synthesisSources[resume].tracedFact / projectionDimensions[longevity] (MYOB 2010 through to the ATO)"
+      ]
+    }
+  },
+  "quick_prompts": [
+    {
+      "rank": 1,
+      "audience": "employer",
+      "label": "Available when, and where?",
+      "prompt": "What roles are you open to right now, and are you based in Melbourne?",
+      "mode": "recruiter",
+      "why_first": "Ladders eye-tracking: title, current employer, dates and location are the first fixation points; siteContent hero.availability answers it directly."
+    },
+    {
+      "rank": 2,
+      "audience": "employer",
+      "label": "Biggest measured result",
+      "prompt": "What is the biggest measured result you have delivered, and how was it measured?",
+      "mode": "recruiter",
+      "why": "P2 — one checkable number (≈92% across 200+ ATO scenarios, or $5M+ at 100% compliance)."
+    },
+    {
+      "rank": 3,
+      "audience": "employer",
+      "label": "Day to day at the ATO",
+      "prompt": "What do you own day to day on the ATO Payday Super program?",
+      "mode": "recruiter",
+      "why": "Indeed/SEEK 'present' step — current responsibilities: sprint cadence, PI planning 47-48, capacity, executive reporting."
+    },
+    {
+      "rank": 4,
+      "audience": "employer",
+      "label": "How you run a squad",
+      "prompt": "How do you run sprint cadence, PI planning and executive reporting across a squad?",
+      "mode": "recruiter",
+      "why": "Scrum Master / PM competency the hero title leads with."
+    },
+    {
+      "rank": 5,
+      "audience": "employer",
+      "label": "First two weeks in the role",
+      "prompt": "For a Scrum Master or delivery-lead role, what would you do in the first two weeks?",
+      "mode": "recruiter",
+      "why": "Time-to-value; replaces the existing 'Fit me to a role' prompt which names an 'enterprise AI delivery role' that is not the hero positioning."
+    },
+    {
+      "rank": 6,
+      "audience": "business client",
+      "label": "Engagements you take on",
+      "prompt": "What AI delivery engagements do you take on, and what has one produced before?",
+      "mode": "recruiter",
+      "why": "contact.headline 'selected AI delivery engagements'; answerable with the Langfuse + Phoenix evaluation stack (−38% simulated error-budget breaches) and the Next.js/Supabase JIRA dashboard."
+    }
+  ],
+  "fallback_answer": "That is outside my knowledge base, which is built from Vikram's CV and repositories. Ask him directly: sarkar.vikram@gmail.com or +61 433 224 556. On file here: the ATO Payday Super work, the 92% evidence-automation cut, ANZ telemetry, leadership style, stack, and availability.",
+  "spoken_intro": {
+    "duration_target_seconds": "12-16",
+    "script": "I'm Vikram — this is my AI clone speaking. I lead delivery on the ATO's Payday Super program, after eight years at ANZ running a five-million-dollar portfolio. Sixteen years across government, finance and telecommunications. Open to Scrum Master and delivery-leadership roles in Melbourne. Ask me anything.",
+    "fact_trace": [
+      "experience[ato].role/company",
+      "experience[anz].dates Sept 2017 - Jun 2025 (nearly 8 years, projectionDimensions[longevity])",
+      "experience[anz].bullets[2] ($5M+)",
+      "hero.subtitle (sixteen years)",
+      "hero.availability"
+    ],
+    "existing_mp3_note": "public/assets/minivic-greeting.mp3 (12.356 s) speaks a different fixed sentence: 'Hi, I'm Mini Vic — Vikram's AI clone. I can answer questions about his experience delivering AI programs, leading squads, and architecting platforms. Ask me anything about his work at the ATO, ANZ, or the open-source projects on his GitHub. What would you like to know?' It cannot be regenerated in Vikram's cloned voice on the current ElevenLabs tier (can_use_instant_voice_cloning:false → 401 ivc_not_permitted; Config.md lines 12-13). Any new spoken intro is either a HeyGen built-in voice via OpenRouter (voice_is_cloned:false, advisory VOICE-1) or waits for a tier change — a paid decision the owner must make (CLAUDE.md cost gate)."
+  },
+  "compliance_checks": {
+    "word_limits": "greetings ≤60, fallback ≤45, spoken ≤45 — verified by script in the .md companion",
+    "banned_tone_words": "none of the 30 TC-NFR-TONE terms present — verified by script",
+    "banned_register_5_1": "none of the 15 Config.md §5.1 terms present — verified by script",
+    "ai_disclosure": "exactly one clause per greeting and in the spoken script",
+    "facts": "all traceable to siteContent.ts; 'aether-job-career-agent' deliberately excluded"
+  },
+  "open_points_for_the_owner": [
+    "PERSONA_MODES keys are recruiter/engineer/story in MiniVicBot.tsx but GREETING keys are hiring/engineering/story in miniVicKnowledge.ts — the implementer must map them; not changed here (read-only agent).",
+    "SEEK's step 3 recommends stating why this employer; a static greeting cannot know the employer, so the greetings end with an offer of what to ask instead.",
+    "Two Indeed URLs and the Ladders PDF are blocked to autonomous fetch; the implementer or reviewer can open them in a browser to upgrade the two 'Inferred' findings to 'Verified'."
+  ]
+}
