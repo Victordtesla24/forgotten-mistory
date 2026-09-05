@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T07:06:43.395Z",
+  "updated": "2026-09-05T07:11:25.807Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -706,7 +706,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:36:10.615Z",
+      "updated": "2026-09-05T07:11:25.807Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": [
@@ -729,6 +729,11 @@
           "at": "2026-09-05T06:36:10.615Z",
           "by": "orchestrator",
           "text": "Cadence: 06:32:55Z deploy 3adf126a success (carries cycle 11); note — a push queued behind an in-progress deploy cancels the older PENDING run, so sha-literal deploy checks must use ancestry, not equality."
+        },
+        {
+          "at": "2026-09-05T07:11:25.807Z",
+          "by": "orchestrator",
+          "text": "Cadence: 07:05:48Z deploy be53be4e (about field + tts evidence via pipeline); 07:1xZ a11dfe7 (P100 hotfix) pushed."
         }
       ]
     },
@@ -1194,10 +1199,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:05:13.071Z",
-      "updated": "2026-09-05T07:05:13.071Z",
+      "updated": "2026-09-05T07:11:25.764Z",
       "summary": "Proof: C16-about-field/09-verification.md (baseline main build at ?gl=force → TypeError ReactCurrentBatchConfig, app/error.tsx shell) and R-c13 adversarial recheck on LIVE 15fb165b with a hardware-GPU spoof, no query string: h1 \"Something went wrong\", sections 0, errorBoundary true, 4 console errors. Live since 5ec231d3 (06:18Z). Owner reported at 06:57Z that no visible improvement is seen — GPU visitors see the error shell. Hotfix lane wf_7910f160-45a (analyst-programmer opus xhigh → reviewer max): pin next+eslint-config-next 14.2.35, keep checks.yml/.gitignore/root:true, prove ?gl=force canvases + 0 pageerrors at 1440/390, push; orchestrator merges to main immediately. Durable fix: t_r19r3f9.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T07:11:25.764Z",
+          "by": "orchestrator",
+          "text": "07:1xZ: hotfix branch f91843f (feb12ef pin next 14.2.35; evidence 02-repro-after.json: canvases 1 at hero, h1 'Vikram Deshpande', six sections) merged --no-ff as 5c0e01d and pushed to main as a11dfe7; Deploy triggered on push. Live verification pending (background probe)."
+        }
+      ],
       "blocker": null
     },
     {

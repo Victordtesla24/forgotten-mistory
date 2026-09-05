@@ -34,3 +34,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-05T07:11:25.764Z)
+07:1xZ: hotfix branch f91843f (feb12ef pin next 14.2.35; evidence 02-repro-after.json: canvases 1 at hero, h1 'Vikram Deshpande', six sections) merged --no-ff as 5c0e01d and pushed to main as a11dfe7; Deploy triggered on push. Live verification pending (background probe).
