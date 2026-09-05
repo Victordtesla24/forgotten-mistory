@@ -1,0 +1,69 @@
+# G-H3 - S-4 GREEN: bundle palette test after the fix
+date: 2026-09-05T12:54:10Z
+
+$ npm run build:static   # exit 0, see build log tail below
+  ----------------------------------------------------------
+  RESULT: PASS — no credential material in the emitted bundle.
+
+
+$ ls -l out/_next/static/css/
+total 136
+-rw-r--r-- 1 root root 61986 Sep  5 12:53 b6ca1a1e79117a86.css
+-rw-r--r-- 1 root root 35782 Sep  5 12:53 c5672913266e1766.css
+-rw-r--r-- 1 root root  2632 Sep  5 12:53 f1997129dcf85dfd.css
+-rw-r--r-- 1 root root 29849 Sep  5 12:53 f5fd55b6698ae52f.css
+
+$ node --test tests/palette_bundle.test.mjs
+TAP version 13
+# Subtest: Served CSS palette (bundle level)
+    # Subtest: the static export ships stylesheets to scan
+    ok 1 - the static export ships stylesheets to scan
+      ---
+      duration_ms: 19.208552
+      type: 'test'
+      ...
+    # Subtest: carries no chromatic non-gold colour and no Tailwind hue utility
+    ok 2 - carries no chromatic non-gold colour and no Tailwind hue utility
+      ---
+      duration_ms: 44.666954
+      type: 'test'
+      ...
+    1..2
+ok 1 - Served CSS palette (bundle level)
+  ---
+  duration_ms: 64.802604
+  type: 'suite'
+  ...
+# Subtest: Tailwind source detection
+    # Subtest: scans only the directories that render markup
+    ok 1 - scans only the directories that render markup
+      ---
+      duration_ms: 0.583995
+      type: 'test'
+      ...
+    1..1
+ok 2 - Tailwind source detection
+  ---
+  duration_ms: 0.691295
+  type: 'suite'
+  ...
+1..2
+# tests 3
+# suites 2
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 698.997503
+node --test exit=0
+
+$ node scripts/validate/css_chroma_scan.mjs out/_next/static/css
+PASS  out/_next/static/css/b6ca1a1e79117a86.css  (0 finding(s))
+PASS  out/_next/static/css/c5672913266e1766.css  (0 finding(s))
+PASS  out/_next/static/css/f1997129dcf85dfd.css  (0 finding(s))
+PASS  out/_next/static/css/f5fd55b6698ae52f.css  (0 finding(s))
+
+4 stylesheet(s) scanned · 0 finding(s)
+rule: channel spread > 6, OKLCH chroma > 0.01, HSL saturation > 3%, or a Tailwind hue utility; gold is the one sanctioned hue
+chroma scan exit=0
