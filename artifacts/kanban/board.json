@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T07:41:49.002Z",
+  "updated": "2026-09-05T07:51:49.066Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -103,7 +103,7 @@
     {
       "id": "t_c3ece39c",
       "title": "Hygiene — remove the two superseded worktrees + /var/tmp/v6-wt once cycles 11/13 are on main; remote = main only",
-      "status": "ready",
+      "status": "done",
       "assignee": "cleanup-agent",
       "priority": 60,
       "parents": [
@@ -118,7 +118,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:41:49.002Z",
+      "updated": "2026-09-05T07:51:49.066Z",
       "summary": "decision.md (HYG-branches) already abandoned wt/data-backend and pruned 5 worktrees/4 branches. Left: .claude/worktrees/wf_7658aeb2-d07-1 (base 4f1d659, superseded by wf_18f926b0-2a4-2) and wf_dc0c232e-59d-1 (base 0c02861, superseded by wf_18f926b0-2a4-1); empty dir /var/tmp/v6-wt.",
       "decisions": [],
       "comments": [
@@ -137,7 +137,8 @@
           "by": "orchestrator",
           "text": "Also (V-C14a F1/F2): README.md:304 still says '58 TTS characters spent' (true figure 63, 07-decisions.md §6); and evidence .log files under docs/delivery/evidence/**/ are untracked because .gitignore:42 is a blanket *.log — add '!docs/delivery/evidence/**/*.log' so red-run proofs travel with the repo, then git add the C14a/C11/C13 logs."
         }
-      ]
+      ],
+      "result": "H-2 done (947e7a8): 8 worktrees + branches removed (all rev-list 0 ahead, superseded diffs archived), remote heads = main + live lanes only, 0 PRs, node tests 26/26, CLAUDE.md 308 tests, README 63 chars, .gitignore !docs/delivery/evidence/**/*.log, apply_edits.py re-filed. Orchestrator verified: git worktree list shows main + 3 live lanes."
     },
     {
       "id": "t_d0066b7a",
