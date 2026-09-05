@@ -33,9 +33,9 @@
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { join } from 'node:path';
+import { join, relative, sep } from 'node:path';
 
 const ROOT = process.cwd();
 const swSource = readFileSync(join(ROOT, 'public', 'sw.js'), 'utf8');
@@ -151,5 +151,128 @@ describe('an updated worker shows the new build without being asked', () => {
 
   it('still offers the explicit Reload action for a worker that is merely waiting', () => {
     assert.match(registrar, /kind: 'update'/);
+  });
+});
+
+/**
+ * DEPLOY SKEW (P95, monitor 10:09Z on build c5d808c3 — evidence
+ * docs/delivery/evidence/v10-20260905T0515Z/P95-deploy-skew/01-incident.md).
+ *
+ *   pageerrors: "Loading chunk 427.8222755a6b18eedc.js failed."
+ *               "Loading chunk 743.9672a1f959c17edf.js failed."
+ *   canvasesAfterExperience: 0
+ *
+ * The document was the previous build's. Firebase Hosting serves exactly one version of a
+ * site, so the next deploy 404s every hashed file of the version before it, and the HTML is
+ * the only file that names them. Deploys run every ten minutes, so any reader who scrolls
+ * to #experience after one cadence window asks for chunk filenames that no longer exist.
+ *
+ * The worker could not help: it precached two stable URLs and captured hashed assets only
+ * as they were *requested*, so a chunk that is fetched on scroll was never in the cache
+ * when the deploy removed it — and `activate` deleted every non-current cache, destroying
+ * build N's chunks under the page still running build N.
+ *
+ * Two contract changes are asserted below:
+ *   1. install precaches THIS build's whole static manifest, injected at build time.
+ *   2. activate keeps two generations — current and immediately previous — so a page
+ *      running build N still finds its chunks after N+1 activates.
+ */
+const PRECACHE_ASSETS_PLACEHOLDER = '__PRECACHE_ASSETS__';
+
+/** Every file the worker is expected to precache, relative to out/, as absolute paths. */
+function builtStaticAssets() {
+  const staticRoot = join(ROOT, 'out', '_next', 'static');
+  const found = [];
+  const walk = (dir) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (/\.(js|css|woff2)$/.test(entry.name)) found.push(`/${relative(join(ROOT, 'out'), full).split(sep).join('/')}`);
+    }
+  };
+  walk(staticRoot);
+  return found.sort();
+}
+
+describe('the worker precaches the build it shipped with', () => {
+  it('declares a build-time PRECACHE_ASSETS placeholder in the source', () => {
+    assert.match(
+      swSource,
+      new RegExp(`const PRECACHE_ASSETS = ${PRECACHE_ASSETS_PLACEHOLDER}`),
+      `public/sw.js must declare PRECACHE_ASSETS as the ${PRECACHE_ASSETS_PLACEHOLDER} placeholder — a hard-coded list would name last build's hashes`,
+    );
+  });
+
+  it('caches the manifest in batches that survive an individual 404', () => {
+    const install = swSource.slice(swSource.indexOf("addEventListener('install'"), swSource.indexOf("addEventListener('activate'"));
+    assert.match(install, /cache\.addAll\(PRECACHE_URLS\)/, 'the stable shell must still be an all-or-nothing addAll');
+    assert.match(install, /Promise\.allSettled/, 'one missing chunk must not abort the whole install');
+    assert.match(install, /PRECACHE_BATCH|slice\(/, 'the manifest must be added in batches, not as one addAll');
+  });
+
+  it('stamps out/sw.js with a non-empty manifest of exactly this build\'s static files', () => {
+    const built = join(ROOT, 'out', 'sw.js');
+    assert.ok(existsSync(built), 'out/sw.js is missing — run `npm run build:static` before this test');
+    const deployed = readFileSync(built, 'utf8');
+    assert.ok(
+      !deployed.includes(PRECACHE_ASSETS_PLACEHOLDER),
+      'out/sw.js still carries the PRECACHE_ASSETS placeholder — the build step did not rewrite it',
+    );
+    const match = deployed.match(/const PRECACHE_ASSETS = (\[[^\n]*\]);/);
+    assert.ok(match, 'out/sw.js declares no PRECACHE_ASSETS array');
+    const assets = JSON.parse(match[1]);
+    assert.ok(Array.isArray(assets) && assets.length > 0, 'the shipped precache manifest is empty');
+    assert.ok(
+      assets.every((entry) => typeof entry === 'string' && entry.startsWith('/_next/static/')),
+      'every precache entry must be an absolute /_next/static path',
+    );
+    const expected = builtStaticAssets();
+    assert.equal(
+      assets.length,
+      expected.length,
+      `the manifest lists ${assets.length} files but out/_next/static holds ${expected.length}`,
+    );
+    assert.deepEqual(assets, expected, 'the manifest must be the sorted list of the build\'s static files');
+  });
+});
+
+describe('activate keeps the previous generation alive', () => {
+  const activate = swSource.slice(swSource.indexOf("addEventListener('activate'"), swSource.indexOf("addEventListener('fetch'"));
+
+  it('keeps two cache generations, not one', () => {
+    assert.match(
+      swSource,
+      /KEEP_GENERATIONS\s*=\s*2/,
+      'the number of retained generations must be a named constant equal to 2',
+    );
+    assert.match(
+      activate,
+      /slice\(0,\s*KEEP_GENERATIONS\)/,
+      'activate must truncate the generation ledger to the last KEEP_GENERATIONS entries',
+    );
+  });
+
+  it('deletes only the generations outside the keep set', () => {
+    assert.match(
+      activate,
+      /keep\.includes\(key\)/,
+      'the delete filter must test membership of the keep set, not inequality with the current cache',
+    );
+    assert.match(activate, /caches\.delete\(key\)/);
+  });
+
+  it('records the generation order so "previous" is knowable, not guessed', () => {
+    assert.match(swSource, /LEDGER_CACHE/, 'the worker needs a ledger cache to know which generation preceded it');
+    assert.match(activate, /ledger\.put\(/, 'activate must write the new generation order back');
+  });
+
+  it('rescues a 404 for a hashed chunk from any surviving generation', () => {
+    assert.match(fetchHandler, /matchAcrossGenerations/, 'a 404 on /_next/static must search the other generations');
+    assert.match(fetchHandler, /status === 404/, 'the rescue must trigger on a 404, not only on a network failure');
+    assert.match(
+      swSource,
+      /generation\.match\(request,\s*\{\s*ignoreSearch:\s*true\s*\}\)/,
+      'the cross-generation lookup must ignore the query string',
+    );
   });
 });
