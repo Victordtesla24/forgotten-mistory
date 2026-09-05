@@ -40,33 +40,31 @@ function PipelineGate() {
         end, a vertical gate intercepts a proposed sentence and strikes it through, reverting
         any claim the résumé does not support.
       </desc>
-      {/* The line the application travels. */}
-      <line pathLength="1" className={styles.stroke} x1="12" y1="96" x2="308" y2="96" stroke="currentColor" strokeWidth="0.75" opacity="0.742" />
+      {/* The line the application travels — scaffolding, held below the gate. */}
+      <line pathLength="1" className={`${styles.stroke} ${styles.guide}`} x1="12" y1="96" x2="308" y2="96" stroke="currentColor" />
       {nodes.map((x, i) => (
-        <circle pathLength="1" className={styles.stroke}
+        <circle pathLength="1" className={`${styles.stroke} ${i === 19 ? styles.primary : styles.guide}`}
           key={x}
           cx={x}
           cy="96"
           r={i === 19 ? 3 : 1.8}
           fill="none"
           stroke="currentColor"
-          strokeWidth="0.75"
-          opacity={i === 19 ? 0.978 : 0.806}
         />
       ))}
-      {/* The gate. */}
-      <line pathLength="1" className={styles.stroke} x1="248" y1="34" x2="248" y2="158" stroke="currentColor" strokeWidth="1" opacity="0.978" />
+      {/* The gate — the mechanism, at primary weight. */}
+      <line pathLength="1" className={`${styles.stroke} ${styles.primary}`} x1="248" y1="34" x2="248" y2="158" stroke="currentColor" />
       <text x="248" y="28" className={styles.label} textAnchor="middle">
         GUARD
       </text>
-      {/* A proposed sentence, struck through and reverted. */}
+      {/* A proposed sentence, struck through and reverted. The wide halo behind
+          the overstrike is a decorative accent (bare .stroke); the overstrike
+          itself and the revert arrow carry the mechanism. */}
       <line pathLength="1" className={styles.stroke} x1="196" y1="62" x2="292" y2="62" stroke="currentColor" strokeWidth="3" opacity="0.66" />
-      <line pathLength="1" className={styles.stroke} x1="196" y1="62" x2="292" y2="62" stroke="currentColor" strokeWidth="0.75" opacity="0.914" />
-      <path pathLength="1" className={styles.stroke}
+      <line pathLength="1" className={`${styles.stroke} ${styles.primary}`} x1="196" y1="62" x2="292" y2="62" stroke="currentColor" />
+      <path pathLength="1" className={`${styles.stroke} ${styles.guide}`}
         d="M292 74 L262 74"
         stroke="currentColor"
-        strokeWidth="0.75"
-        opacity="0.849"
         markerEnd="url(#arrow)"
       />
       <text x="196" y="86" className={styles.label}>
@@ -99,40 +97,34 @@ function RebuildLoop() {
         const x = 22 + i * (width + gap);
         return (
           <g key={label}>
-            <rect pathLength="1" className={styles.stroke}
+            <rect pathLength="1" className={`${styles.stroke} ${styles.primary}`}
               x={x}
               y="76"
               width={width}
               height="34"
               fill="none"
               stroke="currentColor"
-              strokeWidth="0.75"
-              opacity={label === 'LIVE' ? 0.978 : 0.806}
             />
             <text x={x + width / 2} y="97" className={styles.label} textAnchor="middle">
               {label}
             </text>
             {i < 3 && (
-              <line pathLength="1" className={styles.stroke}
+              <line pathLength="1" className={`${styles.stroke} ${styles.guide}`}
                 x1={x + width}
                 y1="93"
                 x2={x + width + gap}
                 y2="93"
                 stroke="currentColor"
-                strokeWidth="0.75"
-                opacity="0.763"
               />
             )}
           </g>
         );
       })}
       {/* The rollback path: solid, because it is a real branch, not a caveat. */}
-      <path pathLength="1" className={styles.stroke}
+      <path pathLength="1" className={`${styles.stroke} ${styles.primary}`}
         d="M250 110 L250 148 L50 148 L50 110"
         fill="none"
         stroke="currentColor"
-        strokeWidth="0.75"
-        opacity="0.828"
       />
       <text x="150" y="162" className={styles.label} textAnchor="middle">
         PROBE FAILS → PREVIOUS IMAGE
@@ -155,14 +147,15 @@ function VerifierLoop() {
         exit on the right stays shut until a signed verifier reports a pass; the repository
         generates and checks those contract hashes in its own hooks.
       </desc>
-      <circle pathLength="1" className={styles.stroke} cx={cx} cy={cy} r={r} fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.72" />
+      {/* The circuit itself is the mechanism — primary weight. */}
+      <circle pathLength="1" className={`${styles.stroke} ${styles.primary}`} cx={cx} cy={cy} r={r} fill="none" stroke="currentColor" />
       {stages.map((label, i) => {
         const angle = (i / stages.length) * Math.PI * 2 - Math.PI / 2;
         const x = cx + Math.cos(angle) * r;
         const y = cy + Math.sin(angle) * r;
         return (
           <g key={label}>
-            <circle pathLength="1" className={styles.stroke} cx={x} cy={y} r="3" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.935" />
+            <circle pathLength="1" className={`${styles.stroke} ${styles.primary}`} cx={x} cy={y} r="3" fill="none" stroke="currentColor" />
             <text
               x={x + Math.cos(angle) * 16}
               y={y + Math.sin(angle) * 16 + 3}
@@ -174,9 +167,9 @@ function VerifierLoop() {
           </g>
         );
       })}
-      {/* The exit, and the signature holding it. */}
-      <line pathLength="1" className={styles.stroke} x1={cx + r} y1={cy} x2="272" y2={cy} stroke="currentColor" strokeWidth="0.75" opacity="0.892" />
-      <line pathLength="1" className={styles.stroke} x1="252" y1="82" x2="252" y2="118" stroke="currentColor" strokeWidth="1" opacity="0.978" />
+      {/* The exit (guide), and the signature holding it shut (primary). */}
+      <line pathLength="1" className={`${styles.stroke} ${styles.guide}`} x1={cx + r} y1={cy} x2="272" y2={cy} stroke="currentColor" />
+      <line pathLength="1" className={`${styles.stroke} ${styles.primary}`} x1="252" y1="82" x2="252" y2="118" stroke="currentColor" />
       <text x="272" y={cy - 8} className={styles.label} textAnchor="end">
         EXIT
       </text>
@@ -197,47 +190,41 @@ function ReconstructionBands() {
         ruled lines leaving the bottom. A brighter hairline marks the fallback taken when a
         model declines the request.
       </desc>
-      {/* Noise entering. */}
+      {/* Noise entering — scaffolding the passes resolve, so it stays a guide. */}
       {Array.from({ length: 7 }, (_, i) => {
         const y = 22 + i * 5;
         const x = 40 + ((i * 37) % 60);
         const w = 40 + ((i * 53) % 90);
         return (
-          <line pathLength="1" className={styles.stroke}
+          <line pathLength="1" className={`${styles.stroke} ${styles.guide}`}
             key={y}
             x1={x}
             y1={y}
             x2={x + w}
             y2={y}
             stroke="currentColor"
-            strokeWidth="0.75"
-            opacity={0.686 + (i % 3) * 0.034}
           />
         );
       })}
-      {/* The five passes. */}
+      {/* The five passes — the mechanism resolving noise into rule. */}
       {Array.from({ length: 5 }, (_, i) => {
         const y = 74 + i * 12;
         return (
-          <line pathLength="1" className={styles.stroke}
+          <line pathLength="1" className={`${styles.stroke} ${styles.primary}`}
             key={y}
             x1="32"
             y1={y}
             x2="288"
             y2={y}
             stroke="currentColor"
-            strokeWidth="0.75"
-            opacity={0.72 + i * 0.026}
           />
         );
       })}
       {/* The fallback branch: brighter, never a second colour. */}
-      <path pathLength="1" className={styles.stroke}
+      <path pathLength="1" className={`${styles.stroke} ${styles.primary}`}
         d="M288 86 L302 86 L302 122 L288 122"
         fill="none"
         stroke="currentColor"
-        strokeWidth="0.9"
-        opacity="0.957"
       />
       <text x="302" y="134" className={styles.label} textAnchor="end">
         FALLBACK
@@ -246,15 +233,13 @@ function ReconstructionBands() {
       {Array.from({ length: 4 }, (_, i) => {
         const y = 150 + i * 8;
         return (
-          <line pathLength="1" className={styles.stroke}
+          <line pathLength="1" className={`${styles.stroke} ${styles.primary}`}
             key={y}
             x1="60"
             y1={y}
             x2="228"
             y2={y}
             stroke="currentColor"
-            strokeWidth="0.75"
-            opacity="0.914"
           />
         );
       })}
@@ -272,22 +257,22 @@ function DiamondChart() {
         caliper reading the Lahiri ayanamsa the repository configures as its default; a drift
         beyond tolerance fails the build.
       </desc>
-      <rect pathLength="1" className={styles.stroke} x="70" y="26" width="148" height="148" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.806" />
-      <line pathLength="1" className={styles.stroke} x1="70" y1="26" x2="218" y2="174" stroke="currentColor" strokeWidth="0.75" opacity="0.742" />
-      <line pathLength="1" className={styles.stroke} x1="218" y1="26" x2="70" y2="174" stroke="currentColor" strokeWidth="0.75" opacity="0.742" />
-      <path pathLength="1" className={styles.stroke}
+      {/* The chart frame and its inner diamond are the mechanism (primary); the
+          two diagonals are scaffolding (guide). */}
+      <rect pathLength="1" className={`${styles.stroke} ${styles.primary}`} x="70" y="26" width="148" height="148" fill="none" stroke="currentColor" />
+      <line pathLength="1" className={`${styles.stroke} ${styles.guide}`} x1="70" y1="26" x2="218" y2="174" stroke="currentColor" />
+      <line pathLength="1" className={`${styles.stroke} ${styles.guide}`} x1="218" y1="26" x2="70" y2="174" stroke="currentColor" />
+      <path pathLength="1" className={`${styles.stroke} ${styles.primary}`}
         d="M144 26 L218 100 L144 174 L70 100 Z"
         fill="none"
         stroke="currentColor"
-        strokeWidth="0.75"
-        opacity="0.806"
       />
       {/* The isolated house. */}
       <path d="M144 26 L181 63 L144 100 L107 63 Z" fill="currentColor" opacity="0.07" />
       {/* A caliper closing onto the measurement. */}
-      <line pathLength="1" className={styles.stroke} x1="232" y1="40" x2="232" y2="86" stroke="currentColor" strokeWidth="0.75" opacity="0.935" />
-      <line pathLength="1" className={styles.stroke} x1="228" y1="40" x2="236" y2="40" stroke="currentColor" strokeWidth="0.75" opacity="0.935" />
-      <line pathLength="1" className={styles.stroke} x1="228" y1="86" x2="236" y2="86" stroke="currentColor" strokeWidth="0.75" opacity="0.935" />
+      <line pathLength="1" className={`${styles.stroke} ${styles.primary}`} x1="232" y1="40" x2="232" y2="86" stroke="currentColor" />
+      <line pathLength="1" className={`${styles.stroke} ${styles.primary}`} x1="228" y1="40" x2="236" y2="40" stroke="currentColor" />
+      <line pathLength="1" className={`${styles.stroke} ${styles.primary}`} x1="228" y1="86" x2="236" y2="86" stroke="currentColor" />
       <text x="242" y="60" className={styles.label}>
         ayanamsa
       </text>
@@ -307,28 +292,28 @@ function ScrollRail() {
         A vertical rail with six ticks, one for each section of this site, and a single node
         travelling down it — the position you are currently reading from.
       </desc>
-      <line pathLength="1" className={styles.stroke} x1="160" y1="20" x2="160" y2="180" stroke="currentColor" strokeWidth="0.75" opacity="0.742" />
+      {/* The rail is the mechanism — primary weight down its full length. */}
+      <line pathLength="1" className={`${styles.stroke} ${styles.primary}`} x1="160" y1="20" x2="160" y2="180" stroke="currentColor" />
       {Array.from({ length: 6 }, (_, i) => {
         const y = 26 + i * 29;
         const active = i === 4;
         return (
           <g key={y}>
-            <line pathLength="1" className={styles.stroke}
+            <line pathLength="1" className={`${styles.stroke} ${active ? styles.primary : styles.guide}`}
               x1={active ? 142 : 150}
               y1={y}
               x2={active ? 178 : 170}
               y2={y}
               stroke="currentColor"
-              strokeWidth="0.75"
-              opacity={active ? 0.978 : 0.763}
             />
-            <text x="188" y={y + 3} className={styles.label} opacity={active ? 0.95 : 0.45}>
+            <text x="188" y={y + 3} className={styles.label} opacity={active ? 1 : 0.55}>
               {['HERO', 'ABOUT', 'EXPERIENCE', 'SKILLS', 'VITRINE', 'LISTEN'][i]}
             </text>
           </g>
         );
       })}
-      <circle pathLength="1" className={styles.stroke} cx="160" cy="142" r="3.5" fill="none" stroke="currentColor" strokeWidth="1" opacity="1" />
+      {/* The node marking the reader's position — primary. */}
+      <circle pathLength="1" className={`${styles.stroke} ${styles.primary}`} cx="160" cy="142" r="3.5" fill="none" stroke="currentColor" />
       <text x="132" y="146" className={styles.label} textAnchor="end">
         YOU ARE HERE
       </text>
