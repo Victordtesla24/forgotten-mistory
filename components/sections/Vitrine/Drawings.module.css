@@ -68,47 +68,79 @@
        initial value so the rule that used to hide the drawing cannot come back
        silently (TC-VIT-V1 reads this exact property). */
     stroke-dashoffset: 0;
-    /* The resting trace weight (G-V3). At 0.5 the whole drawing was a rumour:
-       through the plate's 0.62 the principal lines painted at an effective
-       0.28 and measured under 2:1 on the plate's ground, which is a texture,
-       not a mechanism. This is one of the four multiplications behind a stroke
-       (colour × stroke-opacity × element opacity × plate opacity); it is held
-       at 0.9 rather than raised to 1.0 on purpose, because the lit plate
-       traces at 1.0 and the light must stay strictly heavier than any resting
-       stroke (TC-VIT-V1 reads the trace channel alone). The margin that
-       ADV-1556Z asked for — live primaries at 3.60–4.24:1 where the field and
-       shader light brighten the plate ground — is bought in the plate-opacity
-       factor instead: lifting the resting plate from 0.62 to 0.82
-       (Vitrine.module.css) both raises the stroke's effective alpha
-       (0.9 × 1.0 × 0.82 ≈ 0.74) and darkens the ground the light bleeds
-       through, so a principal line clears 4.5:1 with margin on the brightest
-       live ground while the tonal hierarchy authored into Drawings.tsx
-       (0.66 for a guide rule, 1.0 for a principal line) is preserved intact
-       above it and the faintest guide still clears 3:1. */
-    stroke-opacity: 0.9;
+    /* Base weight for a bare `.stroke` — only the decorative accents (a strike
+       backing, a fallback halo) carry `.stroke` alone; every load-bearing line
+       is promoted to `.primary` or `.guide` below, which override this. */
+    stroke-opacity: 0.85;
 }
 
+/* ── Contrast tiers (G-V3 CORRECTION) ────────────────────────────────────────
+   G-V3 shipped every line as a 0.75px hairline in currentColor at a stacked
+   element × trace opacity. Two things then defeated the contrast gate:
+
+     1. A 0.75px stroke never fully covers a device pixel, so anti-aliasing
+        paints even its darkest core at ~0.75 coverage. Through the plate's
+        rest opacity an independent reviewer measured the principal lines at
+        ~3.1:1 — under the 4.5:1 a visualisation's own load-bearing strokes owe
+        (ADV G-V3, b0513692). And two plates (verifier-loop, scroll-rail) drew
+        their mechanism entirely in <line>/<circle> with no <path> at all, so a
+        path-sampling probe read `stroke=null` and could measure nothing.
+
+     2. A hairline is the wrong tool for a stroke that must be *read*. The fix
+        is not more opacity on a sub-pixel line but a real width on the lines
+        that carry the mechanism, with the scaffolding held deliberately below
+        them so the drawing still reads as draughtsmanship rather than a
+        wireframe.
+
+   So every stroke now declares its rank. `.primary` — the lines that ARE the
+   mechanism — paint at a full, non-hairline width and full opacity; measured
+   through the plate's rest ground they clear 4.5:1 with wide margin, and every
+   plate carries at least one (scripts/testing/vitrine-plate-contrast.mjs
+   asserts both). `.guide` — the scaffolding the mechanism sits on — is thinner
+   and dimmer, subordinate to the primaries but still clearing 3:1. The ink is
+   one colour (var(--white) via .drawing); only weight separates the ranks, so
+   the raking light still reads as one gesture over one drawing. */
+.primary {
+    stroke-width: 1.7;
+    stroke-opacity: 1;
+    opacity: 1;
+}
+
+.guide {
+    stroke-width: 1.4;
+    stroke-opacity: 0.7;
+    opacity: 1;
+}
+
+/* The light raises the whole drawing (data-lit), and it must stay strictly
+   heavier than the resting weight: the guides run up to full opacity and the
+   primaries thicken, so a lit plate is unmistakably the one the spot is on. */
 [data-lit] .stroke,
 [data-drawn] .stroke {
     stroke-opacity: 1;
-    transition: stroke-opacity var(--motion-base, 320ms) cubic-bezier(0.16, 1, 0.3, 1);
+    transition:
+        stroke-opacity var(--motion-base, 320ms) cubic-bezier(0.16, 1, 0.3, 1),
+        stroke-width var(--motion-base, 320ms) cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: calc(var(--k, 0) * min(28ms, 520ms / max(1, var(--n, 1) - 1)));
 }
 
+[data-lit] .primary,
+[data-drawn] .primary {
+    stroke-width: 2.2;
+}
+
 /* Labels are set in --white on their own `color`, not only their fill: the
-   contrast gate reads the text's computed colour, and through a resting
-   plate's 0.62 the white at 0.85 composites to 5.4:1 where --mist-200 at the
-   old 0.65 was 2.8:1. That 0.85 is the resting alpha, not a lit one: a label
-   that reads at rest is what makes the resting drawing legible rather than
-   decorative, and it is the same composite the drawn-but-unlit plates already
-   passed the contrast gate at. */
+   contrast gate reads the text's computed colour, and through the resting
+   plate's 0.82 a solid glyph at 0.9 composites well past 4.5:1. That 0.9 is
+   the resting alpha, not a lit one: a label that reads at rest is what makes
+   the resting drawing legible rather than decorative. */
 .label {
     font-family: var(--font-mono);
     font-size: 7px;
     letter-spacing: 0.1em;
     color: var(--white);
     fill: currentColor;
-    opacity: 0.85;
+    opacity: 0.9;
 }
 
 /* The labels arrive after the last stroke has landed — 520 ms of stagger plus a
@@ -127,14 +159,28 @@
     [data-lit] .stroke,
     [data-drawn] .stroke {
         stroke-dashoffset: 0;
-        stroke-opacity: 1;
         transition: none;
+    }
+
+    /* The rank hierarchy is held at rest even without the light: primaries at
+       full weight, guides subordinate, so the drawing still reads as one. */
+    .primary,
+    [data-lit] .primary,
+    [data-drawn] .primary {
+        stroke-width: 1.7;
+        stroke-opacity: 1;
+    }
+
+    .guide,
+    [data-lit] .guide,
+    [data-drawn] .guide {
+        stroke-opacity: 0.7;
     }
 
     .label,
     [data-lit] .label,
     [data-drawn] .label {
-        opacity: 0.85;
+        opacity: 0.9;
         transition: none;
     }
 }
