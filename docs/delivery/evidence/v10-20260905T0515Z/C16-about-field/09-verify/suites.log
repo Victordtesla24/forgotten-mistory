@@ -1,0 +1,216 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-about.spec.ts tests/e2e/about.spec.ts tests/monochrome tests/a11y/text-contrast.spec.ts --reporter=list
+
+[2mRunning [22m32[2m tests using [22m2[2m workers[22m
+
+  [31m✘[39m  [2m 1 [22m[31m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground[39m[2m (18.4s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/e2e/about.spec.ts:39:7 › About › TC-ABOUT-01: all ten dimensions render, in the engine’s own order[2m (1.3s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/e2e/about.spec.ts:47:7 › About › TC-ABOUT-02: every dimension carries an answer and its evidence[2m (2.0s)[22m
+  [31m✘[39m  [2m 2 [22m[31m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground[39m[2m (23.2s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/e2e/about.spec.ts:60:7 › About › TC-ABOUT-03: no dimension is given a score[2m (1.3s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/e2e/about.spec.ts:85:7 › About › TC-ABOUT-05: job-side dimensions are labelled as such[2m (1.5s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/e2e/about.spec.ts:79:7 › About › TC-ABOUT-04: the dimensions name their source[2m (1.9s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/e2e/about.spec.ts:98:7 › About › TC-ABOUT-06: the ten items are reading aids, not tab stops[2m (2.1s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/e2e/about.spec.ts:152:7 › About › TC-ABOUT-07: the section is complete without WebGL[2m (1.8s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/e2e/about.spec.ts:191:7 › About › TC-ABOUT-08: the compass turns as the reader scrolls — item 6 centred reads 06 / FROM THE ROLE[2m (4.0s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/e2e/about.spec.ts:215:7 › About › TC-ABOUT-09: hover overrides the scroll index, and leaving the list hands it back[2m (4.0s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/e2e/about.spec.ts:234:7 › About › TC-ABOUT-10: on first entry the bezel sweeps once — 1160 ms, emphasised ease, never again[2m (3.4s)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/e2e/about.spec.ts:277:7 › About › TC-ABOUT-11: under reduced motion the index snaps — no sweep, no travel, still swept[2m (2.7s)[22m
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(246, 246, 246)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+  [32m✓[39m  [2m15 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold[2m (1.9s)[22m
+  [32m✓[39m  [2m14 [22m[chromium] › tests/e2e/about.spec.ts:305:7 › About › TC-ABOUT-12: no gold on the face — the active sector, its numeral and the ring stay achromatic[2m (3.2s)[22m
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m16 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine[2m (2.6s)[22m
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m17 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine[2m (2.4s)[22m
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m18 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine[2m (2.5s)[22m
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m19 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine[2m (2.9s)[22m
+  [32m✓[39m  [2m20 [22m[chromium] › tests/monochrome/monochrome.spec.ts:118:7 › Monochrome Compliance › MONO-01: :root publishes the grey ramp and exactly the four sanctioned gold tokens[2m (1.4s)[22m
+  [32m✓[39m  [2m21 [22m[chromium] › tests/monochrome/monochrome.spec.ts:146:7 › Monochrome Compliance › MONO-02: Body background is achromatic[2m (1.9s)[22m
+  [32m✓[39m  [2m22 [22m[chromium] › tests/monochrome/monochrome.spec.ts:153:7 › Monochrome Compliance › MONO-03: No inline style declares a colour outside the palette[2m (4.4s)[22m
+  [32m✓[39m  [2m23 [22m[chromium] › tests/monochrome/monochrome.spec.ts:207:7 › Monochrome Compliance › MONO-04: Every rendered colour in every section is achromatic or the sanctioned gold[2m (3.8s)[22m
+  [32m✓[39m  [2m25 [22m[chromium] › tests/monochrome/monochrome.spec.ts:244:7 › Monochrome Compliance › MONO-06: Navigation overlay is achromatic when open[2m (1.4s)[22m
+  [32m✓[39m  [2m26 [22m[chromium] › tests/monochrome/monochrome.spec.ts:252:7 › Monochrome Compliance › MONO-07: The check still rejects an unsanctioned hue[2m (1.3s)[22m
+  [32m✓[39m  [2m24 [22m[chromium] › tests/monochrome/monochrome.spec.ts:218:7 › Monochrome Compliance › MONO-05: The sanctioned accent is actually in use, and only as the accent[2m (4.0s)[22m
+  [31m✘[39m  [2m27 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:87:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view[39m[2m (19.2s)[22m
+  [31m✘[39m  [2m28 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:101:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column[39m[2m (19.2s)[22m
+  [32m✓[39m  [2m30 [22m[chromium] › tests/overhaul/scene-about.spec.ts:157:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-04: under reduced motion there is no canvas, and the rose is still the instrument[2m (4.2s)[22m
+  [32m✓[39m  [2m31 [22m[chromium] › tests/overhaul/scene-about.spec.ts:184:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-05: with WebGL unavailable the section is whole and silent[2m (3.8s)[22m
+  [32m✓[39m  [2m32 [22m[chromium] › tests/overhaul/scene-about.spec.ts:214:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-06: the field is monochrome, palette-sourced and cheap per pixel[2m (27ms)[22m
+  [31m✘[39m  [2m29 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose[39m[2m (2.0m)[22m
+
+
+[31m  1) [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground [39m
+
+    Error: 68 text node(s) below AA — worst ten:
+    1.03:1 (needs 4.5) [about] div.About_inner__s8EsR > div.About_body__cuZQw > div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > text.Compass_readNumber__sW29s:nth-of-type(1) — "05" fg rgb(246,246,246) on bg rgb(243,243,243) @ 11px/400
+    1.74:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > div.Vitrine_plateHead__OEq9D:nth-of-type(1) > span.Vitrine_repo__MvlDQ:nth-of-type(2) — "ralph-loop-infinite" fg rgb(58,58,58) on bg rgb(10,10,10) @ 12px/400
+    1.74:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(3) > dt — "stack" fg rgb(58,58,58) on bg rgb(10,10,10) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > div.Vitrine_plateHead__OEq9D:nth-of-type(1) > span.Vitrine_repo__MvlDQ:nth-of-type(2) — "aether-job-career-agent" fg rgb(59,59,59) on bg rgb(11,11,11) @ 12px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(1) > dt — "commits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(2) > dt — "active" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(3) > dt — "stack" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > p.Vitrine_limits__WugAS:nth-of-type(2) > span.Vitrine_limitsLabel__19XEy — "Limits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(1) > dt — "commits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(2) > dt — "active" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m68[39m
+
+    [0m [90m 285 |[39m         )
+     [90m 286 |[39m         [33m.[39mjoin([32m'\n'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 287 |[39m       expect(failures[33m.[39mlength[33m,[39m [32m`${failures.length} text node(s) below AA — worst ten:\n${report}`[39m)[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m     |[39m                                                                                                   [31m[1m^[22m[39m
+     [90m 288 |[39m     })[33m;[39m
+     [90m 289 |[39m   }
+     [90m 290 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/a11y/text-contrast.spec.ts:287:99[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground [39m
+
+    Error: 30 text node(s) below AA — worst ten:
+    1.12:1 (needs 4.5) [about] ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(6) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_ > span.Caliper_value__usbAF:nth-of-type(2) — "measured from the role" fg rgb(146,146,146) on bg rgb(155,155,158) @ 11.098px/400
+    3.07:1 (needs 4.5) [about] div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_sweep__DIKqO:nth-of-type(1) > g.Compass_rose__PW3GF > g:nth-of-type(5) > text.Compass_numeral__9WSmf — "05" fg rgb(214,215,215) on bg rgb(119,120,121) @ 3.4px/400
+    3.39:1 (needs 4.5) [about] div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_sweep__DIKqO:nth-of-type(1) > g.Compass_rose__PW3GF > g:nth-of-type(6) > text.Compass_numeral__9WSmf — "06" fg rgb(212,212,213) on bg rgb(111,111,112) @ 3.4px/400
+    3.64:1 (needs 4.5) [about] ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(7) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_ > span.Caliper_value__usbAF:nth-of-type(2) — "measured from the role" fg rgb(129,129,129) on bg rgb(42,43,44) @ 11.098px/400
+    3.71:1 (needs 4.5) [about] div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_sweep__DIKqO:nth-of-type(1) > g.Compass_rose__PW3GF > g:nth-of-type(1) > text.Compass_numeral__9WSmf — "01" fg rgb(211,211,211) on bg rgb(104,104,106) @ 3.4px/400
+    3.73:1 (needs 4.5) [about] ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(9) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_ > span.Caliper_value__usbAF:nth-of-type(2) — "measured from the role" fg rgb(129,129,129) on bg rgb(41,41,42) @ 11.098px/400
+    3.91:1 (needs 4.5) [skills] section#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > p.Skills_footer__N8hs4:nth-of-type(2) — "against the PDF this page links to and you shoul" fg rgb(125,125,125) on bg rgb(33,33,34) @ 11.098px/400
+    4.27:1 (needs 4.5) [about] div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(9) > div.About_itemBody__sd_yL > p.About_evidence__WwIMJ:nth-of-type(2) — "75+ hours of evidence against 64 available — esc" fg rgb(125,125,125) on bg rgb(24,25,28) @ 11.098px/400
+    4.35:1 (needs 4.5) [about] div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_sweep__DIKqO:nth-of-type(1) > g.Compass_rose__PW3GF > g:nth-of-type(7) > text.Compass_numeral__9WSmf — "07" fg rgb(207,207,208) on bg rgb(91,91,93) @ 3.4px/400
+    4.35:1 (needs 4.5) [about] div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(1) > div.About_itemBody__sd_yL > p.About_evidence__WwIMJ:nth-of-type(2) — "38 public repositories · ATO evidence harness · " fg rgb(125,125,125) on bg rgb(22,23,26) @ 11.098px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m30[39m
+
+    [0m [90m 285 |[39m         )
+     [90m 286 |[39m         [33m.[39mjoin([32m'\n'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 287 |[39m       expect(failures[33m.[39mlength[33m,[39m [32m`${failures.length} text node(s) below AA — worst ten:\n${report}`[39m)[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m     |[39m                                                                                                   [31m[1m^[22m[39m
+     [90m 288 |[39m     })[33m;[39m
+     [90m 289 |[39m   }
+     [90m 290 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/a11y/text-contrast.spec.ts:287:99[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-text-contrast-Text-co-2adeb--against-its-sampled-ground-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-text-contrast-Text-co-2adeb--against-its-sampled-ground-chromium/error-context.md[22m
+
+[31m  3) [chromium] › tests/overhaul/scene-about.spec.ts:87:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#about canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#about canvas')[22m
+    [2m    19 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 91 |[39m
+     [90m 92 |[39m     [36mconst[39m canvases [33m=[39m page[33m.[39mlocator([32m`${ABOUT} canvas`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 93 |[39m     [36mawait[39m expect(canvases)[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m    |[39m                            [31m[1m^[22m[39m
+     [90m 94 |[39m
+     [90m 95 |[39m     [36mconst[39m box [33m=[39m [36mawait[39m canvases[33m.[39mfirst()[33m.[39mboundingBox()[33m;[39m
+     [90m 96 |[39m     expect(box[33m,[39m [32m'the #about canvas has no box'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/overhaul/scene-about.spec.ts:93:28[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-79971-once-the-section-is-in-view-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-79971-once-the-section-is-in-view-chromium/error-context.md[22m
+
+[31m  4) [chromium] › tests/overhaul/scene-about.spec.ts:101:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#about canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#about canvas')[22m
+    [2m    19 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 103 |[39m   }) [33m=>[39m {
+     [90m 104 |[39m     [36mawait[39m settleAboutWithGL(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 105 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m`${ABOUT} canvas`[39m))[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m     |[39m                                                   [31m[1m^[22m[39m
+     [90m 106 |[39m
+     [90m 107 |[39m     [90m// Silent to assistive technology: the field is texture, not testimony.[39m
+     [90m 108 |[39m     [36mconst[39m hidden [33m=[39m [36mawait[39m page[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/overhaul/scene-about.spec.ts:105:51[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-4544b-ind-the-rose-and-the-column-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-4544b-ind-the-rose-and-the-column-chromium/error-context.md[22m
+
+[31m  5) [chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose [39m
+
+    [31mTest timeout of 120000ms exceeded.[39m
+
+    Error: locator.evaluate: Test timeout of 120000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#about ol li').nth(5)[22m
+
+
+    [0m [90m 75 |[39m     [33m.[39mlocator([32m`${ABOUT} ol li`[39m)
+     [90m 76 |[39m     [33m.[39mnth(n [33m-[39m [35m1[39m)
+    [31m[1m>[22m[39m[90m 77 |[39m     [33m.[39mevaluate((el) [33m=>[39m {
+     [90m    |[39m      [31m[1m^[22m[39m
+     [90m 78 |[39m       [36mconst[39m r [33m=[39m el[33m.[39mgetBoundingClientRect()[33m;[39m
+     [90m 79 |[39m       window[33m.[39mscrollTo([35m0[39m[33m,[39m window[33m.[39mscrollY [33m+[39m r[33m.[39mtop [33m+[39m r[33m.[39mheight [33m/[39m [35m2[39m [33m-[39m window[33m.[39minnerHeight [33m/[39m [35m2[39m)[33m;[39m
+     [90m 80 |[39m     })[33m;[39m[0m
+    [2m    at centreItem (/root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/overhaul/scene-about.spec.ts:77:6)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/overhaul/scene-about.spec.ts:148:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-5d765-me-scroll-index-as-the-rose-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-5d765-me-scroll-index-as-the-rose-chromium/error-context.md[22m
+
+[31m  5 failed[39m
+[31m    [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground [39m
+[31m    [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground [39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:87:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view [39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:101:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column [39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose [39m
+[32m  27 passed[39m[2m (3.3m)[22m
+PW_EXIT=1

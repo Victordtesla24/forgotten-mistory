@@ -1,0 +1,26 @@
+Captured stdout of the decisive baseline run. Not re-runnable from this file: the
+baseline build it was taken against was overwritten by the restoring rebuild
+(09-verify/rebuild.log). To reproduce: move components/sections/About/AboutField.tsx and
+field.glsl.ts aside, `git checkout d6396d2 -- components/sections/About/About.tsx
+components/sections/About/About.module.css`, `npm run build:static`, serve out/ on 5601,
+then `node 09-verify/probe-hero-hold.mjs hero`.
+
+Command: node /tmp/c16-hero-probe.mjs hero      (script archived as probe-hero-hold.mjs)
+Build:   09-verify/baseline-build.log — BASE_BUILD_EXIT=0, `scanned : 43 files under out/`
+Point:   the page is held at #hero and never scrolled, so Hero.tsx:35's <Scene> is the one
+         asked to mount. It crashes with c16 absent from the tree.
+
+{
+  "target": "hero",
+  "sections": [],
+  "perSection": {},
+  "total": 0,
+  "slots": 4,
+  "errorShell": true,
+  "consoleErrors": [
+    "TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')",
+    "[app/error.tsx] Unhandled error: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')",
+    "TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')",
+    "[app/error.tsx] Unhandled error: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')"
+  ]
+}
