@@ -204,10 +204,32 @@ const providerCooldowns = new Map();
  * see docs/delivery/evidence/v10-20260905T0515Z/G-M3/01-live-baseline.log.
  *
  * `CHAT_PROVIDER_ORDER` (a comma-separated list of rung ids, set in the
- * functions env) reorders or drops rungs without a code change, and unlike the
- * cooldown map it survives every cold start. Ids not named keep their original
- * relative order behind the named ones, so a partial list is safe.
+ * functions env) reorders rungs without a code change, and unlike the cooldown
+ * map it survives every cold start. Ids not named keep their original relative
+ * order behind the named ones, so a partial list is safe and no rung is ever
+ * dropped — the ladder still self-heals the moment an account is topped up.
  */
+/**
+ * Default order: the rung that is actually answering in production goes first.
+ *
+ * Measured on live 2026-09-05T13:18Z from this function's own rung log — the
+ * top three rungs are all sitting on the credential cooldown and `openai` is
+ * the one answering:
+ *
+ *   rungs: [openrouter cooling_down, deepseek cooling_down, zai cooling_down,
+ *           openai answered 1736 ms]   firstTokenMs 493
+ *
+ * That cooldown map lives in one warm instance's memory. On a COLD instance it
+ * is empty, so a visitor pays three failing round trips before reaching the
+ * rung that works — the OpenRouter 402 alone measured 0.169 s and the DeepSeek
+ * 402 measured 1.174 s. Putting the working rung first removes that tax from
+ * exactly the request that is already the slowest one a visitor ever makes.
+ *
+ * This is a statement about which accounts currently have credit, not about
+ * which provider is better. Top an account up and reorder it back — that is
+ * what the env override is for, and every rung is still in the ladder.
+ */
+const DEFAULT_PROVIDER_ORDER = "openai,openrouter,deepseek,zai";
 function orderChatProviders(providers, orderSpec) {
   const wanted = String(orderSpec || "")
     .split(",")
@@ -621,7 +643,7 @@ exports.minivicChat = onRequest(
 
     const providers = orderChatProviders(
       resolveChatProviders(),
-      process.env.CHAT_PROVIDER_ORDER,
+      process.env.CHAT_PROVIDER_ORDER || DEFAULT_PROVIDER_ORDER,
     );
     const wantsStream = wantsStreamedReply(req);
     const receivedAt = Date.now();
@@ -720,5 +742,6 @@ exports.resolveMode = resolveMode;
 exports.resolveChatProviders = resolveChatProviders;
 exports.completeChat = completeChat;
 exports.orderChatProviders = orderChatProviders;
+exports.DEFAULT_PROVIDER_ORDER = DEFAULT_PROVIDER_ORDER;
 exports.isWarmRequest = isWarmRequest;
 exports.wantsStreamedReply = wantsStreamedReply;

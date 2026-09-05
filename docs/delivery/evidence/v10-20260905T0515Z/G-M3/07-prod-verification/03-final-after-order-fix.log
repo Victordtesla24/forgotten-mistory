@@ -1,0 +1,20 @@
+=== G-M3 final live measurement (ladder-order deploy) — 2026-09-05T13:27:16Z ===
+
+--- warm ping ---
+http=204 total=0.213989
+http=204 total=0.148476
+http=204 total=0.192509
+
+--- through Hosting (what a visitor gets today) ---
+starttransfer=2.940100 total=2.940230 http=200
+starttransfer=1.837559 total=1.837667 http=200
+starttransfer=1.733963 total=1.734071 http=200
+starttransfer=1.835989 total=1.836094 http=200
+starttransfer=1.740067 total=1.740171 http=200
+
+--- direct to the Cloud Run origin (what the function itself delivers) ---
+starttransfer=0.665314 total=1.854920 http=200
+starttransfer=0.759418 total=1.486269 http=200
+starttransfer=0.954171 total=1.697630 http=200
+starttransfer=0.541984 total=1.379111 http=200
+starttransfer=0.562579 total=1.520997 http=200
