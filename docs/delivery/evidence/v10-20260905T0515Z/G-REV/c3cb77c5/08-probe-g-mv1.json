@@ -1,0 +1,1124 @@
+{
+  "task": "t_rev_mv1_v3",
+  "clause_scope": "G-MV1 only (G-V3 not in build)",
+  "target": "https://forgotten-mistory.web.app/",
+  "started": "2026-09-05T15:23:21.603Z",
+  "finished": "2026-09-05T15:23:47.304Z",
+  "chrome": "152.0.7977.82",
+  "launch": {
+    "channel": "chrome",
+    "headless": true,
+    "args": [
+      "--no-sandbox",
+      "--disable-lcd-text",
+      "--disable-dev-shm-usage"
+    ]
+  },
+  "buildCommitsSeen": [
+    "c3cb77c5"
+  ],
+  "results": [
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "http": 200,
+      "loadMs": 3771,
+      "buildCommit": "c3cb77c5",
+      "pageerrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "initial": {
+        "scrollY": 0,
+        "dockPainted": 0,
+        "dockPointerEvents": "none",
+        "launcher": {
+          "left": 207.63,
+          "top": 776,
+          "right": 366,
+          "bottom": 820
+        },
+        "portrait": {
+          "left": 0,
+          "top": 623.69,
+          "right": 390,
+          "bottom": 874.97
+        },
+        "portraitSelector": "[data-testid=\"hero-portrait\"]",
+        "actions": {
+          "left": 24,
+          "top": 533.52,
+          "right": 366,
+          "bottom": 581.52
+        },
+        "actionsSelector": "[data-testid=\"hero-actions\"]",
+        "geometricIntersectPortrait": true,
+        "geometricIntersectActions": false,
+        "labelEffectiveOpacity": 0,
+        "hitAtLauncherCentre": {
+          "tag": "video",
+          "testid": null,
+          "cls": "Hero_portraitVideo__e3yop",
+          "insideLauncher": false
+        },
+        "capture": "captures/fold-390-initial.jpg"
+      },
+      "paint": {
+        "steps": 2,
+        "scrollY": 1688,
+        "painted": 1
+      },
+      "painted": {
+        "scrollY": 1688,
+        "accessibleName": "Ask Mini Vic — Vikram's AI clone",
+        "ariaExpanded": "false",
+        "dock": {
+          "opacity": 1,
+          "pointerEvents": "auto",
+          "pastHero": "true"
+        },
+        "button": {
+          "rect": {
+            "left": 207.63,
+            "top": 776,
+            "right": 366,
+            "bottom": 820,
+            "width": 158.38,
+            "height": 44
+          },
+          "effectiveOpacity": 1,
+          "hit": {
+            "tag": "span",
+            "testid": "minivic-launcher-label",
+            "cls": "minivic-launcher__pill",
+            "insideLauncher": true
+          }
+        },
+        "disc": {
+          "rect": {
+            "left": 322,
+            "top": 776,
+            "right": 366,
+            "bottom": 820,
+            "width": 44,
+            "height": 44
+          }
+        },
+        "label": {
+          "text": "Ask Mini Vic",
+          "display": "block",
+          "visibility": "visible",
+          "ownOpacity": 1,
+          "effectiveOpacity": 1,
+          "color": "rgb(205, 205, 205)",
+          "backgroundColor": "rgb(10, 10, 10)",
+          "borderColor": "rgba(255, 255, 255, 0.09)",
+          "fontSize": "11.098px",
+          "fontFamily": "Inter, \"Inter Fallback\", Inter, system-ui, -apple-system, \"S",
+          "rect": {
+            "left": 207.63,
+            "top": 783.45,
+            "right": 314,
+            "bottom": 812.55,
+            "width": 106.38,
+            "height": 29.09
+          },
+          "inViewport": true,
+          "hit": {
+            "tag": "span",
+            "testid": "minivic-launcher-label",
+            "cls": "minivic-launcher__pill",
+            "insideLauncher": true
+          },
+          "ariaHidden": "true",
+          "computedContrast": 12.45,
+          "colourParsed": {
+            "r": 205,
+            "g": 205,
+            "b": 205,
+            "a": 1
+          },
+          "plateParsed": {
+            "r": 10,
+            "g": 10,
+            "b": 10,
+            "a": 1
+          },
+          "borderParsed": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 0.09
+          }
+        },
+        "launcherAfterScroll": {
+          "left": 207.63,
+          "top": 776,
+          "right": 366,
+          "bottom": 820
+        },
+        "capture": "captures/launcher-390-painted.png"
+      },
+      "pixelSample": {
+        "file": "captures/label-390-clip.png",
+        "clip": {
+          "x": 199,
+          "y": 775,
+          "width": 123,
+          "height": 46
+        },
+        "pixels": 3180,
+        "ground": {
+          "median": [
+            9,
+            9,
+            9
+          ],
+          "min": [
+            9,
+            9,
+            9
+          ],
+          "max": [
+            10,
+            10,
+            10
+          ]
+        },
+        "text": {
+          "median": [
+            158,
+            158,
+            158
+          ],
+          "peak": [
+            205,
+            205,
+            205
+          ]
+        },
+        "contrastSampled": 7.43,
+        "contrastGroundVsPeak": 12.53,
+        "goldishPixels": 0,
+        "nonGreyPixels": 0,
+        "surroundings": {
+          "pixels": 2478,
+          "median": [
+            20,
+            20,
+            20
+          ],
+          "brightest": [
+            125,
+            125,
+            125
+          ],
+          "darkest": [
+            15,
+            15,
+            15
+          ]
+        }
+      },
+      "verdicts": {
+        "c1_visible_label": true,
+        "c2_target_44": true,
+        "c3_sampled_AA": true,
+        "c4_initial_not_covering": true,
+        "c6_no_gold": true
+      }
+    },
+    {
+      "viewport": {
+        "width": 640,
+        "height": 900
+      },
+      "http": 200,
+      "loadMs": 3621,
+      "buildCommit": "c3cb77c5",
+      "pageerrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "initial": {
+        "scrollY": 0,
+        "dockPainted": 0,
+        "dockPointerEvents": "none",
+        "launcher": {
+          "left": 434.05,
+          "top": 812,
+          "right": 616,
+          "bottom": 876
+        },
+        "portrait": {
+          "left": 0,
+          "top": 564.64,
+          "right": 640,
+          "bottom": 956.2
+        },
+        "portraitSelector": "[data-testid=\"hero-portrait\"]",
+        "actions": {
+          "left": 32,
+          "top": 471.64,
+          "right": 608,
+          "bottom": 519.64
+        },
+        "actionsSelector": "[data-testid=\"hero-actions\"]",
+        "geometricIntersectPortrait": true,
+        "geometricIntersectActions": false,
+        "labelEffectiveOpacity": 0,
+        "hitAtLauncherCentre": {
+          "tag": "video",
+          "testid": null,
+          "cls": "Hero_portraitVideo__e3yop",
+          "insideLauncher": false
+        },
+        "capture": "captures/fold-640-initial.jpg"
+      },
+      "paint": {
+        "steps": 2,
+        "scrollY": 1800,
+        "painted": 1
+      },
+      "painted": {
+        "scrollY": 1800,
+        "accessibleName": "Ask Mini Vic — Vikram's AI clone",
+        "ariaExpanded": "false",
+        "dock": {
+          "opacity": 1,
+          "pointerEvents": "auto",
+          "pastHero": "true"
+        },
+        "button": {
+          "rect": {
+            "left": 434.05,
+            "top": 812,
+            "right": 616,
+            "bottom": 876,
+            "width": 181.95,
+            "height": 64
+          },
+          "effectiveOpacity": 1,
+          "hit": {
+            "tag": "span",
+            "testid": "minivic-launcher-label",
+            "cls": "minivic-launcher__pill",
+            "insideLauncher": true
+          }
+        },
+        "disc": {
+          "rect": {
+            "left": 552,
+            "top": 812,
+            "right": 616,
+            "bottom": 876,
+            "width": 64,
+            "height": 64
+          }
+        },
+        "label": {
+          "text": "Ask Mini Vic",
+          "display": "block",
+          "visibility": "visible",
+          "ownOpacity": 1,
+          "effectiveOpacity": 1,
+          "color": "rgb(205, 205, 205)",
+          "backgroundColor": "rgb(10, 10, 10)",
+          "borderColor": "rgba(255, 255, 255, 0.09)",
+          "fontSize": "11.648px",
+          "fontFamily": "Inter, \"Inter Fallback\", Inter, system-ui, -apple-system, \"S",
+          "rect": {
+            "left": 434.05,
+            "top": 829.17,
+            "right": 544,
+            "bottom": 858.81,
+            "width": 109.95,
+            "height": 29.64
+          },
+          "inViewport": true,
+          "hit": {
+            "tag": "span",
+            "testid": "minivic-launcher-label",
+            "cls": "minivic-launcher__pill",
+            "insideLauncher": true
+          },
+          "ariaHidden": "true",
+          "computedContrast": 12.45,
+          "colourParsed": {
+            "r": 205,
+            "g": 205,
+            "b": 205,
+            "a": 1
+          },
+          "plateParsed": {
+            "r": 10,
+            "g": 10,
+            "b": 10,
+            "a": 1
+          },
+          "borderParsed": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 0.09
+          }
+        },
+        "launcherAfterScroll": {
+          "left": 434.05,
+          "top": 812,
+          "right": 616,
+          "bottom": 876
+        },
+        "capture": "captures/launcher-640-painted.png"
+      },
+      "pixelSample": {
+        "file": "captures/label-640-clip.png",
+        "clip": {
+          "x": 426,
+          "y": 821,
+          "width": 126,
+          "height": 46
+        },
+        "pixels": 3300,
+        "ground": {
+          "median": [
+            9,
+            9,
+            9
+          ],
+          "min": [
+            9,
+            9,
+            9
+          ],
+          "max": [
+            10,
+            10,
+            10
+          ]
+        },
+        "text": {
+          "median": [
+            170,
+            170,
+            170
+          ],
+          "peak": [
+            205,
+            205,
+            205
+          ]
+        },
+        "contrastSampled": 8.57,
+        "contrastGroundVsPeak": 12.53,
+        "goldishPixels": 0,
+        "nonGreyPixels": 0,
+        "surroundings": {
+          "pixels": 2496,
+          "median": [
+            20,
+            20,
+            20
+          ],
+          "brightest": [
+            22,
+            22,
+            22
+          ],
+          "darkest": [
+            15,
+            15,
+            15
+          ]
+        }
+      },
+      "verdicts": {
+        "c1_visible_label": true,
+        "c2_target_44": true,
+        "c3_sampled_AA": true,
+        "c4_initial_not_covering": true,
+        "c6_no_gold": true
+      }
+    },
+    {
+      "viewport": {
+        "width": 834,
+        "height": 1194
+      },
+      "http": 200,
+      "loadMs": 3192,
+      "buildCommit": "c3cb77c5",
+      "pageerrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "initial": {
+        "scrollY": 0,
+        "dockPainted": 0,
+        "dockPointerEvents": "none",
+        "launcher": {
+          "left": 625.63,
+          "top": 1106,
+          "right": 810,
+          "bottom": 1170
+        },
+        "portrait": {
+          "left": 475.41,
+          "top": 355.11,
+          "right": 792.31,
+          "bottom": 566.92
+        },
+        "portraitSelector": "[data-testid=\"hero-portrait\"]",
+        "actions": {
+          "left": 41.69,
+          "top": 714.1,
+          "right": 442.05,
+          "bottom": 762.1
+        },
+        "actionsSelector": "[data-testid=\"hero-actions\"]",
+        "geometricIntersectPortrait": false,
+        "geometricIntersectActions": false,
+        "labelEffectiveOpacity": 0,
+        "hitAtLauncherCentre": {
+          "tag": "div",
+          "testid": "hero-fold",
+          "cls": "Hero_inner__2iGTj",
+          "insideLauncher": false
+        },
+        "capture": null
+      },
+      "paint": {
+        "steps": 2,
+        "scrollY": 2388,
+        "painted": 1
+      },
+      "painted": {
+        "scrollY": 2388,
+        "accessibleName": "Ask Mini Vic — Vikram's AI clone",
+        "ariaExpanded": "false",
+        "dock": {
+          "opacity": 1,
+          "pointerEvents": "auto",
+          "pastHero": "true"
+        },
+        "button": {
+          "rect": {
+            "left": 625.63,
+            "top": 1106,
+            "right": 810,
+            "bottom": 1170,
+            "width": 184.38,
+            "height": 64
+          },
+          "effectiveOpacity": 1,
+          "hit": {
+            "tag": "span",
+            "testid": "minivic-launcher-label",
+            "cls": "minivic-launcher__pill",
+            "insideLauncher": true
+          }
+        },
+        "disc": {
+          "rect": {
+            "left": 746,
+            "top": 1106,
+            "right": 810,
+            "bottom": 1170,
+            "width": 64,
+            "height": 64
+          }
+        },
+        "label": {
+          "text": "Ask Mini Vic",
+          "display": "block",
+          "visibility": "visible",
+          "ownOpacity": 1,
+          "effectiveOpacity": 1,
+          "color": "rgb(205, 205, 205)",
+          "backgroundColor": "rgb(10, 10, 10)",
+          "borderColor": "rgba(255, 255, 255, 0.09)",
+          "fontSize": "12px",
+          "fontFamily": "Inter, \"Inter Fallback\", Inter, system-ui, -apple-system, \"S",
+          "rect": {
+            "left": 625.63,
+            "top": 1123,
+            "right": 738,
+            "bottom": 1153,
+            "width": 112.38,
+            "height": 30
+          },
+          "inViewport": true,
+          "hit": {
+            "tag": "span",
+            "testid": "minivic-launcher-label",
+            "cls": "minivic-launcher__pill",
+            "insideLauncher": true
+          },
+          "ariaHidden": "true",
+          "computedContrast": 12.45,
+          "colourParsed": {
+            "r": 205,
+            "g": 205,
+            "b": 205,
+            "a": 1
+          },
+          "plateParsed": {
+            "r": 10,
+            "g": 10,
+            "b": 10,
+            "a": 1
+          },
+          "borderParsed": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 0.09
+          }
+        },
+        "launcherAfterScroll": {
+          "left": 625.63,
+          "top": 1106,
+          "right": 810,
+          "bottom": 1170
+        },
+        "capture": "captures/launcher-834-painted.png"
+      },
+      "pixelSample": {
+        "file": "captures/label-834-clip.png",
+        "clip": {
+          "x": 617,
+          "y": 1115,
+          "width": 129,
+          "height": 46
+        },
+        "pixels": 3360,
+        "ground": {
+          "median": [
+            9,
+            9,
+            9
+          ],
+          "min": [
+            7,
+            7,
+            7
+          ],
+          "max": [
+            10,
+            10,
+            10
+          ]
+        },
+        "text": {
+          "median": [
+            166,
+            166,
+            166
+          ],
+          "peak": [
+            205,
+            205,
+            205
+          ]
+        },
+        "contrastSampled": 8.18,
+        "contrastGroundVsPeak": 12.53,
+        "goldishPixels": 0,
+        "nonGreyPixels": 0,
+        "surroundings": {
+          "pixels": 2574,
+          "median": [
+            9,
+            9,
+            9
+          ],
+          "brightest": [
+            9,
+            9,
+            9
+          ],
+          "darkest": [
+            7,
+            7,
+            7
+          ]
+        }
+      },
+      "verdicts": {
+        "c5_no_errors": true,
+        "c5_launcher_present": true
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "http": 200,
+      "loadMs": 3111,
+      "buildCommit": "c3cb77c5",
+      "pageerrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "initial": {
+        "scrollY": 0,
+        "dockPainted": 0,
+        "dockPointerEvents": "none",
+        "launcher": {
+          "left": 1231.63,
+          "top": 812,
+          "right": 1416,
+          "bottom": 876
+        },
+        "portrait": {
+          "left": 796.81,
+          "top": 254.53,
+          "right": 1344,
+          "bottom": 594.94
+        },
+        "portraitSelector": "[data-testid=\"hero-portrait\"]",
+        "actions": {
+          "left": 96,
+          "top": 675.47,
+          "right": 739.22,
+          "bottom": 723.47
+        },
+        "actionsSelector": "[data-testid=\"hero-actions\"]",
+        "geometricIntersectPortrait": false,
+        "geometricIntersectActions": false,
+        "labelEffectiveOpacity": 0,
+        "hitAtLauncherCentre": {
+          "tag": "div",
+          "testid": "hero-fold",
+          "cls": "Hero_inner__2iGTj",
+          "insideLauncher": false
+        },
+        "capture": null
+      },
+      "paint": {
+        "steps": 1,
+        "scrollY": 900,
+        "painted": 1
+      },
+      "painted": {
+        "scrollY": 900,
+        "accessibleName": "Ask Mini Vic — Vikram's AI clone",
+        "ariaExpanded": "false",
+        "dock": {
+          "opacity": 1,
+          "pointerEvents": "auto",
+          "pastHero": "true"
+        },
+        "button": {
+          "rect": {
+            "left": 1231.63,
+            "top": 812,
+            "right": 1416,
+            "bottom": 876,
+            "width": 184.38,
+            "height": 64
+          },
+          "effectiveOpacity": 1,
+          "hit": {
+            "tag": "span",
+            "testid": "minivic-launcher-label",
+            "cls": "minivic-launcher__pill",
+            "insideLauncher": true
+          }
+        },
+        "disc": {
+          "rect": {
+            "left": 1352,
+            "top": 812,
+            "right": 1416,
+            "bottom": 876,
+            "width": 64,
+            "height": 64
+          }
+        },
+        "label": {
+          "text": "Ask Mini Vic",
+          "display": "block",
+          "visibility": "visible",
+          "ownOpacity": 1,
+          "effectiveOpacity": 1,
+          "color": "rgb(205, 205, 205)",
+          "backgroundColor": "rgb(10, 10, 10)",
+          "borderColor": "rgba(255, 255, 255, 0.09)",
+          "fontSize": "12px",
+          "fontFamily": "Inter, \"Inter Fallback\", Inter, system-ui, -apple-system, \"S",
+          "rect": {
+            "left": 1231.63,
+            "top": 829,
+            "right": 1344,
+            "bottom": 859,
+            "width": 112.38,
+            "height": 30
+          },
+          "inViewport": true,
+          "hit": {
+            "tag": "span",
+            "testid": "minivic-launcher-label",
+            "cls": "minivic-launcher__pill",
+            "insideLauncher": true
+          },
+          "ariaHidden": "true",
+          "computedContrast": 12.45,
+          "colourParsed": {
+            "r": 205,
+            "g": 205,
+            "b": 205,
+            "a": 1
+          },
+          "plateParsed": {
+            "r": 10,
+            "g": 10,
+            "b": 10,
+            "a": 1
+          },
+          "borderParsed": {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 0.09
+          }
+        },
+        "launcherAfterScroll": {
+          "left": 1231.63,
+          "top": 812,
+          "right": 1416,
+          "bottom": 876
+        },
+        "capture": "captures/launcher-1440-painted.png"
+      },
+      "pixelSample": {
+        "file": "captures/label-1440-clip.png",
+        "clip": {
+          "x": 1223,
+          "y": 821,
+          "width": 129,
+          "height": 46
+        },
+        "pixels": 3360,
+        "ground": {
+          "median": [
+            9,
+            9,
+            9
+          ],
+          "min": [
+            9,
+            9,
+            9
+          ],
+          "max": [
+            10,
+            10,
+            10
+          ]
+        },
+        "text": {
+          "median": [
+            166,
+            166,
+            166
+          ],
+          "peak": [
+            205,
+            205,
+            205
+          ]
+        },
+        "contrastSampled": 8.18,
+        "contrastGroundVsPeak": 12.53,
+        "goldishPixels": 0,
+        "nonGreyPixels": 0,
+        "surroundings": {
+          "pixels": 2574,
+          "median": [
+            19,
+            19,
+            19
+          ],
+          "brightest": [
+            21,
+            21,
+            21
+          ],
+          "darkest": [
+            14,
+            14,
+            14
+          ]
+        }
+      },
+      "verdicts": {
+        "c5_no_errors": true,
+        "c5_launcher_present": true
+      }
+    }
+  ],
+  "persistent": {
+    "profileDir": "/tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/g-mv1-profile",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "swReadyAfterFirstLoad": {
+      "ready": true,
+      "scope": "https://forgotten-mistory.web.app/"
+    },
+    "loads": [
+      {
+        "how": "goto",
+        "buildCommit": "c3cb77c5",
+        "sw": {
+          "supported": true,
+          "registrations": [
+            {
+              "scope": "https://forgotten-mistory.web.app/",
+              "active": true,
+              "activeUrl": "https://forgotten-mistory.web.app/sw.js",
+              "state": "activated"
+            }
+          ],
+          "controller": "https://forgotten-mistory.web.app/sw.js"
+        },
+        "paint": {
+          "steps": 2,
+          "scrollY": 1688,
+          "painted": 1
+        },
+        "label": {
+          "text": "Ask Mini Vic",
+          "display": "block",
+          "visibility": "visible",
+          "effectiveOpacity": 1,
+          "rect": {
+            "left": 207.63,
+            "top": 783.45,
+            "right": 314,
+            "bottom": 812.55,
+            "width": 106.38,
+            "height": 29.09
+          },
+          "inViewport": true,
+          "color": "rgb(205, 205, 205)",
+          "backgroundColor": "rgb(10, 10, 10)"
+        },
+        "labelVisible": true
+      },
+      {
+        "how": "reload",
+        "buildCommit": "c3cb77c5",
+        "sw": {
+          "supported": true,
+          "registrations": [
+            {
+              "scope": "https://forgotten-mistory.web.app/",
+              "active": true,
+              "activeUrl": "https://forgotten-mistory.web.app/sw.js",
+              "state": "activated"
+            }
+          ],
+          "controller": "https://forgotten-mistory.web.app/sw.js"
+        },
+        "paint": {
+          "steps": 0,
+          "scrollY": 1688,
+          "painted": 1
+        },
+        "label": {
+          "text": "Ask Mini Vic",
+          "display": "block",
+          "visibility": "visible",
+          "effectiveOpacity": 1,
+          "rect": {
+            "left": 207.63,
+            "top": 783.45,
+            "right": 314,
+            "bottom": 812.55,
+            "width": 106.38,
+            "height": 29.09
+          },
+          "inViewport": true,
+          "color": "rgb(205, 205, 205)",
+          "backgroundColor": "rgb(10, 10, 10)"
+        },
+        "labelVisible": true
+      },
+      {
+        "how": "goto",
+        "buildCommit": "c3cb77c5",
+        "sw": {
+          "supported": true,
+          "registrations": [
+            {
+              "scope": "https://forgotten-mistory.web.app/",
+              "active": true,
+              "activeUrl": "https://forgotten-mistory.web.app/sw.js",
+              "state": "activated"
+            }
+          ],
+          "controller": "https://forgotten-mistory.web.app/sw.js"
+        },
+        "paint": {
+          "steps": 2,
+          "scrollY": 1688,
+          "painted": 1
+        },
+        "label": {
+          "text": "Ask Mini Vic",
+          "display": "block",
+          "visibility": "visible",
+          "effectiveOpacity": 1,
+          "rect": {
+            "left": 207.63,
+            "top": 783.45,
+            "right": 314,
+            "bottom": 812.55,
+            "width": 106.38,
+            "height": 29.09
+          },
+          "inViewport": true,
+          "color": "rgb(205, 205, 205)",
+          "backgroundColor": "rgb(10, 10, 10)"
+        },
+        "labelVisible": true
+      }
+    ],
+    "pageerrors": [],
+    "consoleErrors": [],
+    "verdicts": {
+      "c7_label_visible_on_reload": true,
+      "c7_label_visible_on_second_navigation": true,
+      "c7_build_commit_stable": true
+    }
+  },
+  "summary": {
+    "c1_visible_label": [
+      {
+        "width": 390,
+        "pass": true
+      },
+      {
+        "width": 640,
+        "pass": true
+      }
+    ],
+    "c2_target_44": [
+      {
+        "width": 390,
+        "pass": true,
+        "rect": {
+          "left": 207.63,
+          "top": 776,
+          "right": 366,
+          "bottom": 820,
+          "width": 158.38,
+          "height": 44
+        }
+      },
+      {
+        "width": 640,
+        "pass": true,
+        "rect": {
+          "left": 434.05,
+          "top": 812,
+          "right": 616,
+          "bottom": 876,
+          "width": 181.95,
+          "height": 64
+        }
+      }
+    ],
+    "c3_sampled_AA": [
+      {
+        "width": 390,
+        "pass": true,
+        "sampled": 7.43,
+        "computed": 12.45
+      },
+      {
+        "width": 640,
+        "pass": true,
+        "sampled": 8.57,
+        "computed": 12.45
+      }
+    ],
+    "c4_initial_not_covering": [
+      {
+        "width": 390,
+        "pass": true,
+        "dockPainted": 0,
+        "geometricIntersectPortrait": true,
+        "geometricIntersectActions": false
+      },
+      {
+        "width": 640,
+        "pass": true,
+        "dockPainted": 0,
+        "geometricIntersectPortrait": true,
+        "geometricIntersectActions": false
+      }
+    ],
+    "c5_desktop": [
+      {
+        "width": 834,
+        "noErrors": true,
+        "launcherPresent": true,
+        "pageerrors": 0,
+        "consoleErrors": 0,
+        "label": {
+          "display": "block",
+          "effectiveOpacity": 1,
+          "text": "Ask Mini Vic"
+        }
+      },
+      {
+        "width": 1440,
+        "noErrors": true,
+        "launcherPresent": true,
+        "pageerrors": 0,
+        "consoleErrors": 0,
+        "label": {
+          "display": "block",
+          "effectiveOpacity": 1,
+          "text": "Ask Mini Vic"
+        }
+      }
+    ],
+    "c6_no_gold": [
+      {
+        "width": 390,
+        "pass": true,
+        "color": "rgb(205, 205, 205)",
+        "goldishPixels": 0,
+        "nonGreyPixels": 0
+      },
+      {
+        "width": 640,
+        "pass": true,
+        "color": "rgb(205, 205, 205)",
+        "goldishPixels": 0,
+        "nonGreyPixels": 0
+      }
+    ],
+    "c7_persistent": {
+      "c7_label_visible_on_reload": true,
+      "c7_label_visible_on_second_navigation": true,
+      "c7_build_commit_stable": true
+    },
+    "phoneErrors": [
+      {
+        "width": 390,
+        "pageerrors": 0,
+        "consoleErrors": 0
+      },
+      {
+        "width": 640,
+        "pageerrors": 0,
+        "consoleErrors": 0
+      }
+    ]
+  }
+}
