@@ -822,16 +822,16 @@
    rule, tick, plate and control here is achromatic, and gold (which means "this
    figure has a source") appears nowhere in or near the figure.
 
-   The decorations are the site's own drafting language: a hairline rule inset
-   12 px from the frame, a caliper tick opening each of its four corners, a
-   registration cross at the top right, and a mono caption plate below, lit from
-   behind by one achromatic bloom so the photograph sits in light, not on black. */
+   The frame is gone (g2h1-04, HERO-FOLD-v2 §5.1): the outer edges of the media
+   box dissolve into the plane through a composite mask instead of ending on a
+   hairline rule with caliper ticks and a registration cross. What remains is the
+   mono caption plate below, lit from behind by one achromatic bloom so the
+   photograph sits in light, not on black. */
 .inner {
     /* Wider than it was: the reviewer measured the dominant visual at 11.4% of
        the fold and called the composition a CV dump. The right column is the
        photograph's whole share of the screen now. */
     --portrait-w: clamp(18rem, 38vw, 36rem);
-    --portrait-inset: 12px;
 }
 
 .portrait {
@@ -866,14 +866,29 @@
     overflow: hidden;
     /* Native 1480×826. Nothing is cropped, so the face cannot be cropped out. */
     aspect-ratio: 1480 / 826;
-    border: 1px solid var(--card-border);
-    border-radius: 4px;
     background: var(--ink-800);
-    /* Colour, per the instruction. The grade is a whisper — a point of
+    /* Colour, per the instruction (t_g2_h6). The grade is a whisper — a point of
        saturation and three of contrast — so the golden-hour frame keeps its
-       warmth without shouting over near-black inks. No grayscale. */
+       warmth without shouting over near-black inks. No grayscale. This is the
+       one declaration the colour decision touches; the mask below is
+       colour-agnostic — it never samples inside the rect. */
     filter: saturate(1.02) contrast(1.03);
-    box-shadow: 0 26px 64px -34px rgb(0 0 0 / 0.9);
+    /* HERO-FOLD-v2 §5.1 (g2h1-04): the photograph loses its card. No rule, no
+       ticks, no cross, no box-shadow — the four outer edges dissolve into the
+       plane through a composite mask instead of ending on a closed rectangle
+       (PH-1). Two orthogonal ramps intersected: each fades transparent → opaque
+       over the outer 16 % of its axis, so the pixel 4 px inside every edge reads
+       as the plane it sits in (PH-2), while the opaque core (16 %–84 % on both
+       axes) leaves the upper-centre face untouched (PH-3). A mask composites
+       only — the box never changes size, so CLS is unmoved (PH-5). */
+    -webkit-mask-image:
+        linear-gradient(to right, transparent 0, #000 16%, #000 84%, transparent 100%),
+        linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+        linear-gradient(to right, transparent 0, #000 16%, #000 84%, transparent 100%),
+        linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%);
+    mask-composite: intersect;
 }
 
 /* Identical box on both layers, so the still and the first frame are the same
@@ -905,67 +920,12 @@
     opacity: 1;
 }
 
-/* The drafting frame. */
-.portraitFrame {
-    position: absolute;
-    inset: var(--portrait-inset);
-    z-index: 2;
-    pointer-events: none;
-    border: 1px solid var(--card-border);
-}
-
-/* Caliper jaws: an L at each corner of the inset rule, in white at 0.7 so the
-   corner reads as a measurement, not a decoration. */
-.portraitTick {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-    opacity: 0.7;
-    border: 0 solid var(--white);
-}
-
-.portraitTick[data-corner='tl'] {
-    top: -1px;
-    left: -1px;
-    border-top-width: 1px;
-    border-left-width: 1px;
-}
-
-.portraitTick[data-corner='tr'] {
-    top: -1px;
-    right: -1px;
-    border-top-width: 1px;
-    border-right-width: 1px;
-}
-
-.portraitTick[data-corner='br'] {
-    right: -1px;
-    bottom: -1px;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-}
-
-.portraitTick[data-corner='bl'] {
-    bottom: -1px;
-    left: -1px;
-    border-bottom-width: 1px;
-    border-left-width: 1px;
-}
-
-/* The registration cross: two hairlines crossing, top right, inside the rule. */
-.portraitCross {
-    position: absolute;
-    top: calc(var(--portrait-inset) + 11px);
-    right: calc(var(--portrait-inset) + 11px);
-    z-index: 2;
-    width: 15px;
-    height: 15px;
-    pointer-events: none;
-    opacity: 0.6;
-    background:
-        linear-gradient(var(--white), var(--white)) 50% 0 / 1px 100% no-repeat,
-        linear-gradient(var(--white), var(--white)) 0 50% / 100% 1px no-repeat;
-}
+/* The drafting frame, the four caliper ticks and the registration cross that
+   used to close a rectangle around the media box left the fold in g2h1-04
+   (HERO-FOLD-v2 §5.1 / D-3). Their CSS is deleted in the same commit as the
+   nodes so the audit stays dead-CSS clean (TC-NFR-DEADCSS); the mask on
+   `.portraitMedia` now carries the edge treatment, and the drafting language
+   lives on where it belongs — the caliper mark and the proof band. */
 
 /* Play / pause — in the proof band, not on the face.
    It used to be a glyph button pinned inside the photograph's frame. That put a
@@ -1199,12 +1159,6 @@
     .portrait {
         width: calc(100% + 2 * var(--hero-gutter));
         margin: clamp(var(--space-4), 5vh, var(--space-6)) 0 0 calc(-1 * var(--hero-gutter));
-    }
-
-    .portraitMedia {
-        border-right: 0;
-        border-left: 0;
-        border-radius: 0;
     }
 
     .portraitCaption {
