@@ -128,6 +128,7 @@ test.describe('Monochrome: the MiniVic launcher', () => {
 
   for (const { width, height } of [
     { width: 1440, height: 900 },
+    { width: 640, height: 900 },
     { width: 390, height: 844 },
   ]) {
     test(`MONO-MV-01 @ ${width}: every colour inside the launcher is R==G==B and never gold`, async ({
@@ -153,6 +154,202 @@ test.describe('Monochrome: the MiniVic launcher', () => {
         open,
         `open-state launcher carries ${open.length} non-achromatic or gold colour(s):\n${open.join('\n')}`,
       ).toEqual([]);
+    });
+  }
+});
+
+/* ── G-MV1: the launcher says what it is on a phone ─────────────────────────
+   ADV-REVIEW-20260905T1451Z §Chrome/Hero, P0. The pill carrying the words
+   "Ask Mini Vic" was painted only from 52.125rem up, so on a 390px phone the
+   control was an unlabelled disc floating over the page — legible only to
+   someone who already knew what it was, which is nobody arriving from a job
+   ad. The name is now carried at every width.
+
+   Two things have to be true at once and they are measured separately here:
+   the label has to be *visible* (a real box, real ink, not an aria-label), and
+   it has to clear AA against the plate it is set on. The plate is required to
+   be fully opaque, so that ratio is the one a visitor actually sees rather
+   than one that depends on whatever the pill happens to be floating over, and
+   so the prose underneath is covered rather than showing through the type.
+   What the launcher is allowed to do to that prose is a separate rule and it
+   is unchanged: tests/a11y/minivic-occlusion.spec.ts. */
+
+const AA_NORMAL = 4.5;
+
+const srgbChannel = (c: number) => {
+  const s = c / 255;
+  return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+};
+const relLuminance = ([r, g, b]: [number, number, number]) =>
+  0.2126 * srgbChannel(r) + 0.7152 * srgbChannel(g) + 0.0722 * srgbChannel(b);
+const contrastRatio = (a: [number, number, number], b: [number, number, number]) => {
+  const l1 = relLuminance(a);
+  const l2 = relLuminance(b);
+  return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+};
+const rgbaParts = (value: string): [number, number, number, number] | null => {
+  const m = value.match(/rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)(?:[\s,/]+([\d.]+))?\s*\)/);
+  if (!m) return null;
+  return [+m[1], +m[2], +m[3], m[4] === undefined ? 1 : +m[4]];
+};
+
+type LabelReading = {
+  text: string;
+  display: string;
+  visibility: string;
+  opacity: number;
+  color: string;
+  background: string;
+  rect: { x: number; y: number; width: number; height: number };
+  target: { width: number; height: number };
+};
+
+async function readLabel(page: Page): Promise<LabelReading | null> {
+  return page.evaluate(() => {
+    const label = document.querySelector('[data-testid="minivic-launcher-label"]');
+    const button = document.querySelector('[data-testid="minivic-toggle"]');
+    if (!label || !button) return null;
+    const cs = getComputedStyle(label);
+    let opacity = 1;
+    let node: Element | null = label;
+    while (node && node !== document.documentElement) {
+      opacity *= parseFloat(getComputedStyle(node).opacity) || 0;
+      node = node.parentElement;
+    }
+    const r = label.getBoundingClientRect();
+    const b = button.getBoundingClientRect();
+    return {
+      text: (label.textContent || '').replace(/\s+/g, ' ').trim(),
+      display: cs.display,
+      visibility: cs.visibility,
+      opacity,
+      color: cs.color,
+      background: cs.backgroundColor,
+      rect: { x: r.x, y: r.y, width: r.width, height: r.height },
+      target: { width: b.width, height: b.height },
+    };
+  });
+}
+
+/** Rects of the launcher and of the two hero elements it must never sit on. */
+async function foldGeometry(page: Page) {
+  return page.evaluate(() => {
+    const rectOf = (selector: string) => {
+      const el = document.querySelector(selector);
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return { left: r.left, top: r.top, right: r.right, bottom: r.bottom };
+    };
+    const dock = document.querySelector('.minivic-dock');
+    let painted = 1;
+    let node: Element | null = dock;
+    while (node && node !== document.documentElement) {
+      painted *= parseFloat(getComputedStyle(node).opacity) || 0;
+      node = node.parentElement;
+    }
+    return {
+      painted,
+      launcher: rectOf('[data-testid="minivic-toggle"]'),
+      portrait: rectOf('[data-testid="hero-portrait"]'),
+      actions: rectOf('[data-testid="hero-actions"]'),
+    };
+  });
+}
+
+const intersects = (
+  a: { left: number; top: number; right: number; bottom: number },
+  b: { left: number; top: number; right: number; bottom: number },
+) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+
+test.describe('G-MV1: the MiniVic launcher carries its name at phone widths', () => {
+  test.describe.configure({ timeout: 90000 });
+
+  for (const { width, height } of [
+    { width: 390, height: 844 },
+    { width: 640, height: 900 },
+  ]) {
+    test(`MONO-MV-02 @ ${width}: the launcher shows a visible "Ask Mini Vic" label at AA`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height });
+      await gotoHome(page);
+      // The dock only paints once the hero has been read, and the hero is
+      // taller than 1.5 viewports on a phone: scroll until it is actually on
+      // screen, which is the state this test is about.
+      for (let step = 0; step < 12; step += 1) {
+        const painted = await page.evaluate(() => {
+          const dock = document.querySelector('.minivic-dock');
+          return dock ? parseFloat(getComputedStyle(dock).opacity) || 0 : 0;
+        });
+        if (painted > 0.9) break;
+        await page.evaluate((h) => window.scrollBy(0, h), height);
+        await page.waitForTimeout(400);
+      }
+
+      const label = await readLabel(page);
+      expect(label, '[data-testid="minivic-launcher-label"] is not in the document').not.toBeNull();
+
+      expect(label!.text, 'the launcher label must read "Ask Mini Vic"').toBe('Ask Mini Vic');
+      expect(
+        label!.display,
+        `the label is display:${label!.display} at ${width} — an aria-only name is not a visible affordance`,
+      ).not.toBe('none');
+      expect(label!.visibility, 'the label must be visible').toBe('visible');
+      expect(label!.opacity, 'the label must be painted, not faded out').toBeGreaterThan(0.9);
+      expect(label!.rect.width, 'the label must occupy real width').toBeGreaterThan(40);
+      expect(label!.rect.height, 'the label must occupy real height').toBeGreaterThan(10);
+
+      // ≥ 44 × 44 for the control the label belongs to.
+      expect(label!.target.width, 'launcher target width').toBeGreaterThanOrEqual(44);
+      expect(label!.target.height, 'launcher target height').toBeGreaterThanOrEqual(44);
+
+      // AA on its own ground, and the ground is opaque so that ratio is real.
+      const ink = rgbaParts(label!.color);
+      const plate = rgbaParts(label!.background);
+      expect(ink, `unreadable label colour ${label!.color}`).not.toBeNull();
+      expect(plate, `unreadable label background ${label!.background}`).not.toBeNull();
+      expect(
+        plate![3],
+        `the label plate is ${label!.background} — a translucent plate makes its contrast depend on whatever it floats over`,
+      ).toBe(1);
+      const ratio = contrastRatio([ink![0], ink![1], ink![2]], [plate![0], plate![1], plate![2]]);
+      expect(
+        ratio,
+        `label ${label!.color} on ${label!.background} is ${ratio.toFixed(2)}:1, below AA`,
+      ).toBeGreaterThanOrEqual(AA_NORMAL);
+
+      // Nothing of the launcher — least of all a wider, labelled one — is
+      // allowed on top of the hero's portrait or its one action group in the
+      // first viewport. At 390 the portrait is a full-bleed block that reaches
+      // both edges and runs to the bottom of the fold, so *no* bottom-anchored
+      // dock can clear it geometrically; what keeps it off is the pastHero
+      // gate (MiniVicBot.tsx), which paints nothing until the hero has been
+      // read. Both halves of that are asserted: the gate holds, and if the
+      // gate were ever removed the boxes would have to be clear anyway.
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.waitForTimeout(400);
+      const geometry = await foldGeometry(page);
+      expect(geometry.launcher, 'launcher must have a box').not.toBeNull();
+      expect(
+        geometry.painted,
+        `the dock is painted (opacity ${geometry.painted}) over the fold at ${width} — ` +
+          'the pastHero gate is the only thing keeping it off the portrait and the CV button',
+      ).toBeLessThan(0.05);
+      const covering = geometry.painted >= 0.05;
+      if (geometry.portrait) {
+        expect(
+          covering && intersects(geometry.launcher!, geometry.portrait),
+          `the docked launcher paints over [data-testid="hero-portrait"] at ${width}: ` +
+            `launcher ${JSON.stringify(geometry.launcher)} vs portrait ${JSON.stringify(geometry.portrait)}`,
+        ).toBe(false);
+      }
+      if (geometry.actions) {
+        expect(
+          covering && intersects(geometry.launcher!, geometry.actions),
+          `the docked launcher paints over [data-testid="hero-actions"] at ${width}: ` +
+            `launcher ${JSON.stringify(geometry.launcher)} vs actions ${JSON.stringify(geometry.actions)}`,
+        ).toBe(false);
+      }
     });
   }
 });

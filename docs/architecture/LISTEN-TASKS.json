@@ -1,0 +1,177 @@
+[
+  {
+    "slug": "g-l1-01-listen-cta-agenda",
+    "title": "Listen CTA — one door, and it books a 20-minute call (G-C1 / R4 P1, recruiter-visible in one window)",
+    "assignee": "analyst-programmer",
+    "priority": 95,
+    "parents": [],
+    "summary": "ADV-1451Z: 'Dual mailto engage pills; no booking (P1)'. LISTEN-FLAGSHIP.md §3 settles it: there is NO booking tool on this account — `grep -E '^[A-Z][A-Z0-9_]*=' /root/.claude/.env.production | sed 's/=.*//' | sort -u` returns 45 key names and `| grep -ciE 'cal|calendar|book|schedul|meet'` returns 0. Do NOT invent a Cal.com/Calendly URL and do NOT print a response-time promise (app/data/siteContent.ts:512 forbids unverifiable promises; no sourced figure exists). Ship the honest achievable CTA instead: in app/data/portfolio/listen.ts change engage.label to 'Book a 20-minute call', engage.subject to a 20-minute-call subject, and add a prefilled body of exactly four agenda lines ('What you're building:', 'The decision you need made:', 'Two or three times that suit you (Melbourne time):', 'Anything I should read first:') encodeURIComponent'd into the mailto. Then demote the duplicate email pill in Listen.tsx/Listen.module.css from a filled plate to a plain channel so the section has exactly ONE filled action. DOM + data only — no GL, no new copy sentence.",
+    "order": [
+      "Read docs/architecture/LISTEN-FLAGSHIP.md §3 and app/data/portfolio/listen.ts",
+      "Re-run the two env key-NAME greps yourself and paste both outputs into the evidence log; never source the file, never print a value",
+      "Write tests/overhaul/listen-flagship.spec.ts with TC-LISTEN-CTA-01..04 first and capture them red (02-tests-failing.log)",
+      "Edit listen.ts: engage.label/subject/body + href; keep href <= 900 chars encoded",
+      "Edit Listen.tsx + Listen.module.css: the email channel drops styles.pill/pillRow and uses styles.channel like the other three",
+      "Re-run tests/e2e/listen.spec.ts TC-LISTEN-02 (<=65 words) and TC-LISTEN-10 (routes span the column) and fix layout fallout, never the thresholds",
+      "npm run build:static, serve out/, capture 04-tests-passing.log, push the branch"
+    ],
+    "gates": [
+      "No booking URL of any kind ships — grep -rniE 'cal\\.com|calendly|savvycal' out/ returns 0",
+      "No response-time promise — #listen text matches /within\\s+\\d+\\s*(h|hours|business\\s+days)/i zero times",
+      "Exactly one [data-cta=\"engage\"] filled plate in #listen; total anchors stay 5 so TC-SCENE-LISTEN-04/05 stay green",
+      "mailto carries both subject= and body=; decoded body has >= 4 agenda lines; whole href <= 900 characters",
+      "TC-LISTEN-02 word cap <= 65 still green; no threshold in any existing spec weakened",
+      "No secret value from .env.production appears in any file, log or commit message"
+    ],
+    "verify": [
+      "npm run build:static",
+      "python3 -m http.server 5635 --directory out & sleep 2",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5635 npx playwright test tests/overhaul/listen-flagship.spec.ts tests/e2e/listen.spec.ts",
+      "grep -rniE 'cal\\.com|calendly|savvycal' out/ | wc -l   # expect 0",
+      "node scripts/validate/overhaul_static_audit.mjs"
+    ]
+  },
+  {
+    "slug": "g-l1-02-greeting-envelope-band",
+    "title": "Listen field — the band becomes the greeting's own envelope, not sin() (G-L1 P0, clause C1)",
+    "assignee": "analyst-programmer",
+    "priority": 94,
+    "parents": ["g-l1-01-listen-cta-agenda"],
+    "summary": "listen.glsl.ts drives its only time-varying term from `float breath = 0.5 + 0.5 * sin(p.x * 1.7 - uTime * 1.05)` — a sine tuned by the shader's own comment to clear a motion floor. Replace it with real data. Add scripts/build/greeting_envelope.mjs (beside cv_fingerprint.mjs in both `build` and `build:static`): ffmpeg -i public/assets/minivic-greeting.mp3 -ac 1 -ar 8000 -f s16le - piped to 256 RMS buckets, peak-normalised to 0..1, emitted as app/data/generated/greeting-envelope.ts with { envelope, durationSeconds, sourceSha256 } where sourceSha256 is the sha256 of the MP3 (it MUST equal greetingAudioSha256 in app/data/generated/greeting-asset.ts). ffprobe on the current file reads 24.984671 s. ListenField.tsx uploads the 256 samples as a 256x1 THREE.DataTexture (LinearFilter, RedFormat) uniform uEnvelope; the shader samples it at p.x and the band's amplitude becomes the voice's loudness at that moment. Recruiter-visible: the closing light stops being a wave and becomes him speaking.",
+    "order": [
+      "Read docs/architecture/LISTEN-FLAGSHIP.md §1-§2 C1, components/sections/Listen/listen.glsl.ts and ListenField.tsx",
+      "Write TC-LISTEN-FLAG-01/02 in tests/overhaul/listen-flagship.spec.ts and capture red",
+      "Author scripts/build/greeting_envelope.mjs; wire it into package.json `build` and `build:static` next to cv_fingerprint.mjs",
+      "Add the uEnvelope uniform + DataTexture in ListenField.tsx; delete the sin() breath term from listen.glsl.ts and drive the band from the sample",
+      "Re-tune only the lift/reach constants if a floor is missed — never the floor",
+      "Run flagship-visibility for listen-field at 1440 and 390 and capture the numbers"
+    ],
+    "gates": [
+      "app/data/generated/greeting-envelope.ts is GENERATED, never hand-edited, and its sourceSha256 === greetingAudioSha256",
+      "Exactly 256 samples, all in [0,1], at least one >= 0.9 and one <= 0.1",
+      "No sin( in the fragment program's main; noise() calls still <= 3; no hex literal; no 'gold' in the shader (TC-SCENE-LISTEN-06 stays green)",
+      "flagship-visibility listen-field still clears COVERAGE >= 0.15 at +0.06, PEAK >= 0.35, fallback >= 0.08 at BOTH 1440 and 390 — thresholds untouched",
+      "Frame budget unchanged: one ScreenQuad, no new geometry, no second noise lookup"
+    ],
+    "verify": [
+      "node scripts/build/greeting_envelope.mjs && grep -c 'envelope' app/data/generated/greeting-envelope.ts",
+      "ffprobe -v error -show_entries format=duration -of csv=p=0 public/assets/minivic-greeting.mp3   # expect 24.98…",
+      "npx tsc --noEmit",
+      "npm run build:static",
+      "python3 -m http.server 5636 --directory out & sleep 2",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5636 npx playwright test tests/overhaul/listen-flagship.spec.ts tests/overhaul/scene-listen.spec.ts tests/overhaul/flagship-visibility.spec.ts"
+    ]
+  },
+  {
+    "slug": "g-l1-03-four-arrivals",
+    "title": "Listen field — the four routes arrive as four marks on the timeline (G-L1 P0, clause C2)",
+    "assignee": "analyst-programmer",
+    "priority": 93,
+    "parents": ["g-l1-02-greeting-envelope-band"],
+    "summary": "Give the band a subject the reader can name. In Listen.tsx render one <g data-arrival=\"{channel.kind}\"> per listenContent.channels entry inside the existing caliper SVG, positioned at strictly increasing x along the beam — four beats arriving on the voice's line. Each mark is a caliper jaw pair at hairline weight (the site's own mark), drawn in --ink-1. They close in sequence INSIDE the jaws' single --motion-cine-long window via animation-delay only: no new keyframes clock, no loop, nothing with animation-iteration-count other than 1 (MOT-F-4, TC-SCENE-LISTEN-03 stays green). Recruiter-visible: the closing screen now shows four ways to reach him drawn as arrivals, not just listed as text.",
+    "order": [
+      "Read docs/architecture/LISTEN-FLAGSHIP.md §2 C2/C4 and components/sections/Listen/Listen.module.css (caliper geometry, --motion-cine-long)",
+      "Write TC-LISTEN-FLAG-04 and TC-LISTEN-FLAG-06 and capture red",
+      "Render the four <g data-arrival> marks from listenContent.channels in DOM order in Listen.tsx",
+      "Style them in Listen.module.css: hairline, --ink-1, staggered animation-delay inside the jaws' window, iteration-count 1",
+      "Add the reduced-motion branch: final state drawn at 0s (mirror the jaws' existing rule)",
+      "Screenshot #listen at 1440, 1280, 834 and 390 and look at it before pushing"
+    ],
+    "gates": [
+      "#listen [data-arrival] count === listenContent.channels.length and DOM order matches data order",
+      "Arrival x positions strictly increasing — a timeline, not a cluster",
+      "Every animated element in #listen resolves animation-iteration-count 1 and duration --motion-cine-long; delay + duration <= the jaws' window",
+      "TC-SCENE-LISTEN-03 (no animation/transition on the scene slot) still green",
+      "Caliper aria-hidden unchanged; the marks add zero accessible text"
+    ],
+    "verify": [
+      "npm run build:static",
+      "python3 -m http.server 5637 --directory out & sleep 2",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5637 npx playwright test tests/overhaul/listen-flagship.spec.ts tests/overhaul/scene-listen.spec.ts tests/e2e/listen.spec.ts",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5637 npx playwright test tests/a11y"
+    ]
+  },
+  {
+    "slug": "g-l1-04-gold-on-records-only",
+    "title": "Listen — gold on the two channels that are checkable records, and nowhere else (G-L1, clause C3)",
+    "assignee": "analyst-programmer",
+    "priority": 92,
+    "parents": ["g-l1-03-four-arrivals"],
+    "summary": "The site's one semantic colour has never appeared in its closing frame, so the grammar the whole page teaches is absent where it lands last. Of the four channels exactly two are records a reader can OPEN and CHECK — linkedin.com/in/vikramd-profile and github.com/Victordtesla24 (kind === 'external'). The email and the phone are addresses: there is nothing at mailto: or tel: to verify, so they stay white. Mark the two record arrivals with --gold at hairline weight, derived from channel.kind, never hardcoded per index. Gold stays in the DOM — NOT in the shader (SIGNATURE-SCENES-v1 §4.2-4.6 reserves shader gold for S5 vitrine-field; TC-SCENE-LISTEN-06 asserts no 'gold' in listen.glsl.ts). This AMENDS tests/e2e/listen.spec.ts TC-LISTEN-08 from 'nothing in #listen is gold' to 'exactly the two record marks are gold and nothing else' — update that spec's assertion and its comment to state the new rule and why. Reversal cost: one commit returns it to toHaveCount(0).",
+    "order": [
+      "Read LISTEN-FLAGSHIP.md §2 C3 and tests/e2e/listen.spec.ts TC-LISTEN-08",
+      "Write TC-LISTEN-FLAG-05 (exactly 2 gold marks, and they are the kind==='external' ones, and nothing else in #listen is gold) and capture red",
+      "Amend TC-LISTEN-08 in place with a comment naming the design doc and the reversal cost — do not delete the test",
+      "Style the record arrivals from channel.kind in Listen.module.css using var(--gold); no raw hex outside globals.css/lib/palette.ts",
+      "Verify contrast: gold hairline against the field's brightest pixel still clears the a11y suite"
+    ],
+    "gates": [
+      "Exactly 2 gold arrival marks; they are precisely the kind === 'external' channels; derived from data, not an index literal",
+      "No other gold anywhere in #listen — not type, not the plate, not the beam, not the reading, not a shader pixel",
+      "listen.glsl.ts and ListenField.tsx still contain no 'gold' (TC-SCENE-LISTEN-06 green)",
+      "No raw hex added outside app/globals.css and lib/palette.ts (static audit TC-NFR gates)",
+      "tests/a11y green"
+    ],
+    "verify": [
+      "npm run build:static",
+      "python3 -m http.server 5638 --directory out & sleep 2",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5638 npx playwright test tests/overhaul/listen-flagship.spec.ts tests/e2e/listen.spec.ts tests/monochrome tests/a11y",
+      "node scripts/validate/overhaul_static_audit.mjs"
+    ]
+  },
+  {
+    "slug": "g-l1-05-caliper-reads-the-voice",
+    "title": "Listen — the instrument's last reading stops being '—' and measures the voice (G-L1, clause C5)",
+    "assignee": "analyst-programmer",
+    "priority": 90,
+    "parents": ["g-l1-04-gold-on-records-only"],
+    "summary": "The caliper reading has been '—' because the section made no claim. It now has one honest, measured figure to carry: the synthetic introduction's own length, 24.98 s (ffprobe on public/assets/minivic-greeting.mp3 reads 24.984671). Read durationSeconds from app/data/generated/greeting-envelope.ts — never type the number — and render `${durationSeconds.toFixed(2)} s` in the reading. The closing instrument finally measures the one artefact the site itself produced. Watch the word budget: TC-LISTEN-02 caps the section at 65 words and the reading adds two; if it tips over 64, trim listenContent.coffee rather than the cap.",
+    "order": [
+      "Read LISTEN-FLAGSHIP.md §2 C5 and tests/e2e/listen.spec.ts TC-LISTEN-02/06/11",
+      "Write TC-LISTEN-FLAG-08 (reading === durationSeconds.toFixed(2) + ' s', and within 0.01 s of ffprobe on the MP3) and capture red",
+      "Render the reading from the generated file in Listen.tsx",
+      "Re-check the jaws' closed-width floor: the reading is wider than '—', so READING_AIR/floor must still hold (TC-LISTEN-06/11)",
+      "Count the section's visible words; trim coffee if > 64",
+      "Screenshot at 1440 and 390 and look at it"
+    ],
+    "gates": [
+      "The figure is read from app/data/generated/greeting-envelope.ts — a hand-typed literal fails TC-LISTEN-FLAG-08",
+      "TC-LISTEN-02 <= 65 words still green",
+      "TC-LISTEN-06 (jaws close once on entry) and TC-LISTEN-11 (vertical symmetry at every width) still green",
+      "The reading is not gold — it is a measurement printed by the instrument, and gold in this section is reserved for the two record marks"
+    ],
+    "verify": [
+      "ffprobe -v error -show_entries format=duration -of csv=p=0 public/assets/minivic-greeting.mp3",
+      "npm run build:static",
+      "python3 -m http.server 5639 --directory out & sleep 2",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5639 npx playwright test tests/overhaul/listen-flagship.spec.ts tests/e2e/listen.spec.ts tests/visual"
+    ]
+  },
+  {
+    "slug": "g-l1-06-independent-live-verify",
+    "title": "Independent verification on live — #listen flagship + CTA, against ADV-1451Z (O2/O6)",
+    "assignee": "reviewer",
+    "priority": 89,
+    "parents": ["g-l1-05-caliper-reads-the-voice"],
+    "summary": "3rd-party adversarial pass on https://forgotten-mistory.web.app AFTER the deploy that carries slices 01-05, not on a local build. Confirm or refute, each with a command or a screenshot: (a) the ADV-1451Z P0 'deliberately sparse caliper field' — does #listen now show a subject a viewer can name in one sentence? (b) the P1 'dual mailto engage pills' — is there exactly one filled action, and does it prefill an agenda? (c) no invented booking link anywhere; (d) no unsourced response-time promise; (e) gold appears on exactly the two record marks. Report FAIL loudly if any clause is cosmetic-only. Do NOT mark G-L1 closed without a live build-commit meta matching the shipped commit.",
+    "order": [
+      "Probe the live build-commit meta and record it with a timestamp",
+      "Navigate live at 1440 and 390, screenshot #listen in normal and ?gl=force contexts",
+      "Read the section aloud in one sentence: if the field's subject cannot be named, that is a FAIL, not a nit",
+      "Check the mailto by copying the href out of the live DOM and decoding subject+body",
+      "grep the served bundle for cal.com|calendly|savvycal and for a response-time promise",
+      "Write docs/delivery/evidence/<cycle>/G-L1/08-adversarial-review.md with a false-positive register"
+    ],
+    "gates": [
+      "Verdict cites the live build-commit and the probe timestamp — never a local build",
+      "Every claim carries the command or screenshot path that produced it",
+      "Anything not reproducible is recorded in a false-positive register, not asserted either way",
+      "Reviewer does not edit production code"
+    ],
+    "verify": [
+      "curl -s https://forgotten-mistory.web.app | grep -o 'build-commit[^>]*' | head -1",
+      "python3 -m http.server 5640 --directory out & sleep 2   # only if a local A/B is needed",
+      "PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/overhaul/listen-flagship.spec.ts"
+    ]
+  }
+]

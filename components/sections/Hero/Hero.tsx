@@ -42,7 +42,13 @@ export default function Hero() {
           it safe: the frame is lit from the static HTML, so the canvas is an
           enhancement over a painted picture rather than the thing the first
           paint is waiting on (Scene.tsx `priority`, TC-HERO-FIRSTPAINT-01/02). */}
-      <Scene className={styles.stage} sceneId="hero-atmosphere" priority>
+      {/* Half resolution. The atmosphere is the most expensive frame on the site
+          — 366.6 ms on a median frame at 1440x900, measured, against a 16.7 ms
+          budget (G-X1-01) — and it is expensive because it fills, not because it
+          computes: fog, two Gaussian shafts and two pools, none of which has an
+          edge sharp enough for a reader to find the upscale. The grain is the one
+          term that resolution touches and it is a 1.8% dither. */}
+      <Scene className={styles.stage} sceneId="hero-atmosphere" priority resolutionScale={0.5}>
         <HeroAtmosphere />
       </Scene>
 

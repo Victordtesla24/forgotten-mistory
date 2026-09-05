@@ -24,10 +24,13 @@ import { test, expect, type Page } from '@playwright/test';
  *
  * TC-MV-OCCLUDE-02 is the absolute form of the same rule, and does not depend
  * on which paragraph happens to be under the launcher on the day: on a phone
- * the launcher may never paint a light surface at all. The ceiling is derived,
- * not chosen — it is the brightest ground that still carries the site's body
- * ink (`--mist-200`, #CDCDCD) at 4.5:1 — so if the body ink is ever re-tokened
- * the ceiling follows it instead of going stale.
+ * the launcher may never paint a light *surface* at all. The ceiling is
+ * derived, not chosen — it is the brightest ground that still carries the
+ * site's body ink (`--mist-200`, #CDCDCD) at 4.5:1 — so if the body ink is ever
+ * re-tokened the ceiling follows it instead of going stale. Its own type is
+ * held to the stricter pair of conditions stated on that test: an opaque plate,
+ * itself under the ceiling, carrying the words at AA — because a label that a
+ * visitor can read and a label the page shows through cannot be the same label.
  *
  * Both are phone-only by design. At 1440 the page's own gutter is 96px and the
  * launcher sits inside it, clear of the measure; below that it floats over the
@@ -301,6 +304,19 @@ test.describe('The MiniVic launcher over the reading column (390)', () => {
     ).toEqual([]);
   });
 
+  /**
+   * The rule is about *surfaces*: the ceiling is derived as the brightest
+   * ground that still carries body ink at 4.5:1, and a ground is what a
+   * launcher pixel becomes for the prose behind it. So the sample is taken with
+   * type masked out, exactly as TC-MV-OCCLUDE-01 takes its ground samples —
+   * the plate, the portrait, the pip and every shadow are measured; the
+   * launcher's own glyphs are not a ground for anything and are held to a
+   * separate, stricter rule immediately below: they have to sit on an opaque
+   * plate that is itself under the ceiling, so no prose ever shows through
+   * them, and they have to clear AA on that plate. Type that is legible and
+   * type that is transparent to the page are mutually exclusive, and the phone
+   * needs the first (G-MV1) without giving up the second.
+   */
   test('TC-MV-OCCLUDE-02: the closed launcher never paints a light surface on a phone', async ({
     page,
   }) => {
@@ -319,7 +335,66 @@ test.describe('The MiniVic launcher over the reading column (390)', () => {
       }
     }
 
+    // Every element inside the launcher that carries words: its plate must be
+    // opaque, under the ceiling, and carry its ink at AA.
+    const typeFaults = await page.evaluate(
+      ([ceiling]) => {
+        const chan = (c: number) => {
+          const s = c / 255;
+          return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+        };
+        const lum = (rgb: number[]) =>
+          0.2126 * chan(rgb[0]) + 0.7152 * chan(rgb[1]) + 0.0722 * chan(rgb[2]);
+        const parse = (v: string) => {
+          const m = v.match(/rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)(?:[\s,/]+([\d.]+))?\s*\)/);
+          return m ? [+m[1], +m[2], +m[3], m[4] === undefined ? 1 : +m[4]] : null;
+        };
+        const root = document.querySelector('[data-testid="minivic-toggle"]');
+        if (!root) return ['launcher missing'];
+        const faults: string[] = [];
+        for (const el of Array.from(root.querySelectorAll('*'))) {
+          const own = Array.from(el.childNodes).some(
+            (n) => n.nodeType === Node.TEXT_NODE && (n.textContent || '').trim().length > 1,
+          );
+          if (!own) continue;
+          const cs = getComputedStyle(el);
+          const ink = parse(cs.color);
+          const plate = parse(cs.backgroundColor);
+          const where = `${el.tagName.toLowerCase()}.${String(el.className).slice(0, 40)}`;
+          if (!ink || !plate) {
+            faults.push(`${where}: unreadable colours ${cs.color} / ${cs.backgroundColor}`);
+            continue;
+          }
+          if (plate[3] !== 1) {
+            faults.push(
+              `${where}: type sits on a translucent plate (${cs.backgroundColor}) — the prose ` +
+                'behind it shows through the words',
+            );
+          }
+          const pl = lum(plate);
+          if (pl > (ceiling as number)) {
+            faults.push(
+              `${where}: its plate rgb(${plate.slice(0, 3).join(',')}) is above the ground ceiling`,
+            );
+          }
+          const il = lum(ink);
+          const ratio = (Math.max(il, pl) + 0.05) / (Math.min(il, pl) + 0.05);
+          if (ratio < 4.5) {
+            faults.push(`${where}: ${ratio.toFixed(2)}:1 on its own plate, below AA`);
+          }
+        }
+        return faults;
+      },
+      [GROUND_CEILING] as const,
+    );
+    expect(
+      typeFaults,
+      `the launcher's own type breaks the plate rule at 390:\n${typeFaults.join('\n')}`,
+    ).toEqual([]);
+
+    await maskGlyphs(page, true);
     const png = await page.screenshot({ fullPage: false, animations: 'disabled' });
+    await maskGlyphs(page, false);
     const pixels = await samplePixels(page, png, points);
 
     let brightest: [number, number, number] = [0, 0, 0];
@@ -334,7 +409,7 @@ test.describe('The MiniVic launcher over the reading column (390)', () => {
 
     expect(
       maxL,
-      `the brightest pixel the closed launcher paints at 390 is rgb(${brightest.join(',')}) ` +
+      `the brightest ground the closed launcher paints at 390 is rgb(${brightest.join(',')}) ` +
         `(relative luminance ${maxL.toFixed(4)}); the ceiling that keeps rgb(${BODY_INK.join(',')}) ` +
         `body ink at 4.5:1 is ${GROUND_CEILING.toFixed(4)}`,
     ).toBeLessThanOrEqual(GROUND_CEILING);

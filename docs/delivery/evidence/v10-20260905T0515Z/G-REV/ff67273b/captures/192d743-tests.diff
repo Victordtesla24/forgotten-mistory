@@ -1,0 +1,60 @@
+commit 192d7438af8a48a85244f77be3c897f7c0673164
+Author: forgotten-mistory-orchestrator <sarkar.vikram@gmail.com>
+Date:   Sat Sep 5 14:39:49 2026 +0000
+
+    feat(scenes): vitrine and listen fields carry sceneIds and are held to the flagship floors (S5, S6) — checkpoint
+    
+    Orchestrator checkpoint under the host RECTIFY (lane past 30 min): build:static
+    fresh (14:37:00) and tsc clean in this worktree; the lane's flagship-visibility
+    battery for the two new scenes continues and lands as a follow-up evidence
+    commit; the per-Deploy reviewer probes live. Tasks t_x1_05, t_x1_06.
+    
+    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+    Claude-Session: https://claude.ai/code/session_012RR7HPCk7pg9KNiJ3UerX9
+
+diff --git a/tests/a11y/text-contrast.spec.ts b/tests/a11y/text-contrast.spec.ts
+index 5a4b184..b4f9930 100644
+--- a/tests/a11y/text-contrast.spec.ts
++++ b/tests/a11y/text-contrast.spec.ts
+@@ -104,7 +104,18 @@ test.use({ launchOptions: { args: GL_ARGS } });
+  * actually sit on. Warming it is what puts the band labels on the ground a
+  * reader with a GPU sees.
+  */
+-const SCENE_SLOTS = ['hero-atmosphere', 'about-field', 'career-strata', 'skills-bench'];
++const SCENE_SLOTS = [
++  'hero-atmosphere',
++  'about-field',
++  'career-strata',
++  'skills-bench',
++  // `vitrine-field` and `listen-field` (SIGNATURE-SCENES-v1 S5/S6) join for the
++  // same reason `skills-bench` did: the plates' captions and the closing
++  // screen's routes stand on those fields, and a walk that never warmed them
++  // would photograph the CSS still and grade a shader nobody measured.
++  'vitrine-field',
++  'listen-field',
++];
+ 
+ interface AuditOptions {
+   /** What to load. `/?gl=force` is the shader path. */
+diff --git a/tests/overhaul/flagship-visibility.spec.ts b/tests/overhaul/flagship-visibility.spec.ts
+index 940d954..9f1f39c 100644
+--- a/tests/overhaul/flagship-visibility.spec.ts
++++ b/tests/overhaul/flagship-visibility.spec.ts
+@@ -150,6 +150,17 @@ const SCENES: readonly SceneCase[] = [
+   // both widths: the plate stops short of both rails of type (`bench.glsl.ts`),
+   // so nothing here is traded against contrast and nothing has to be relaxed.
+   { section: 'skills', scene: 'skills-bench', label: 'skills bench field' },
++  // SIGNATURE-SCENES-v1 F6: `Vitrine.tsx` and `Listen.tsx` each mounted
++  // `<Scene className={styles.fieldSlot}>` with no `sceneId`, so two of the
++  // seven signature scenes had no handle and could not be photographed at all.
++  // They are held to the full default bar at both widths: the vitrine's light
++  // is behind plates that are 62% opaque over their own ink (the field lifts a
++  // plate's foreground more than its ground, so every plate token gains
++  // contrast rather than losing it), and the listen band sits at the caliper's
++  // own height, which is the one full-width stripe of that section with no type
++  // in it. Neither trades a floor for a threshold.
++  { section: 'vitrine', scene: 'vitrine-field', label: 'vitrine cabinet light' },
++  { section: 'listen', scene: 'listen-field', label: 'listen beat field' },
+ ];
+ 
+ /** >= 15% of the slot at least this far above ground. */

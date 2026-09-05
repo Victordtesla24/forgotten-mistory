@@ -1,0 +1,317 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts tests/a11y/text-contrast.spec.ts tests/overhaul/hero-first-paint.spec.ts --workers=1 --reporter=line
+
+Running 38 tests using 1 worker
+
+[1A[2K[1/38] [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+[1A[2K[2/38] [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground
+[1A[2K[3/38] [chromium] › tests/a11y/text-contrast.spec.ts:495:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes
+[1A[2K[4/38] [chromium] › tests/a11y/text-contrast.spec.ts:495:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes
+[1A[2K[5/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 1440 — hero atmosphere reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 1440 — hero atmosphere reads as light
+[flagship-visibility] hero@1440: ground=0.0030 coverage=46.63% peak=0.8308 motion=0.02881 box=1440x900
+
+[1A[2K[6/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light
+[flagship-visibility] about@1440: ground=0.0030 coverage=46.98% peak=0.6514 motion=0.01466 box=384x384
+
+[1A[2K[7/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 1440 — experience strata reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 1440 — experience strata reads as light
+[flagship-visibility] experience@1440: ground=0.0030 coverage=25.77% peak=0.8308 motion=0.02970 box=1298x536
+
+[1A[2K[8/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light
+[flagship-visibility] skills@1440: ground=0.0030 coverage=34.66% peak=0.5029 motion=0.01477 box=1248x580
+
+[1A[2K[9/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 1440 — vitrine cabinet light reads as light
+[1A[2K  1) [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 1440 — vitrine cabinet light reads as light 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="vitrine-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:318:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-62d0f-abinet-light-reads-as-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-62d0f-abinet-light-reads-as-light-chromium/error-context.md
+
+
+[1A[2K[10/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light
+[1A[2K  2) [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="listen-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:318:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-9a6bc-n-beat-field-reads-as-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-9a6bc-n-beat-field-reads-as-light-chromium/error-context.md
+
+
+[1A[2K[11/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 1440 — hero atmosphere fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 1440 — hero atmosphere fallback
+[flagship-visibility:still] hero@1440: ground=0.0030 coverage=42.61% peak=0.7454
+
+[1A[2K[12/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback
+[flagship-visibility:still] about@1440: ground=0.0030 coverage=35.59% peak=0.0802
+
+[1A[2K[13/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 1440 — experience strata fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 1440 — experience strata fallback
+[flagship-visibility:still] experience@1440: ground=0.0030 coverage=4.10% peak=0.1529
+
+[1A[2K[14/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback
+[flagship-visibility:still] skills@1440: ground=0.0030 coverage=32.77% peak=0.0953
+
+[1A[2K[15/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 1440 — vitrine cabinet light fallback
+[1A[2K  3) [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 1440 — vitrine cabinet light fallback 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="vitrine-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:378:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-08f59-rine-cabinet-light-fallback-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-08f59-rine-cabinet-light-fallback-chromium/error-context.md
+
+
+[1A[2K[16/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 1440 — listen beat field fallback
+[1A[2K  4) [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 1440 — listen beat field fallback 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="listen-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:378:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-2bdd3--listen-beat-field-fallback-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-2bdd3--listen-beat-field-fallback-chromium/error-context.md
+
+
+[1A[2K[17/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 390 — hero atmosphere reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 390 — hero atmosphere reads as light
+[flagship-visibility] hero@390: ground=0.0030 coverage=100.00% peak=0.8308 motion=0.03526 box=390x844
+
+[1A[2K[18/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light
+[flagship-visibility] about@390: ground=0.0030 coverage=45.87% peak=0.4179 motion=0.01495 box=224x224
+
+[1A[2K[19/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 390 — experience strata reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 390 — experience strata reads as light
+[flagship-visibility] experience@390: ground=0.0030 coverage=37.02% peak=0.8308 motion=0.03811 box=356x661
+
+[1A[2K[20/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light
+[flagship-visibility] skills@390: ground=0.0030 coverage=44.31% peak=0.4910 motion=0.00711 box=342x152
+
+[1A[2K[21/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 390 — vitrine cabinet light reads as light
+[1A[2K  5) [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 390 — vitrine cabinet light reads as light 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="vitrine-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:318:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-557e5-abinet-light-reads-as-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-557e5-abinet-light-reads-as-light-chromium/error-context.md
+
+
+[1A[2K[22/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light
+[1A[2K  6) [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="listen-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:318:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-0fa9c-n-beat-field-reads-as-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-0fa9c-n-beat-field-reads-as-light-chromium/error-context.md
+
+
+[1A[2K[23/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 390 — hero atmosphere fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 390 — hero atmosphere fallback
+[flagship-visibility:still] hero@390: ground=0.0030 coverage=90.73% peak=0.3864
+
+[1A[2K[24/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback
+[flagship-visibility:still] about@390: ground=0.0030 coverage=36.36% peak=0.0823
+
+[1A[2K[25/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 390 — experience strata fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 390 — experience strata fallback
+[flagship-visibility:still] experience@390: ground=0.0030 coverage=4.18% peak=0.1590
+
+[1A[2K[26/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback
+[flagship-visibility:still] skills@390: ground=0.0030 coverage=69.07% peak=0.0908
+
+[1A[2K[27/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 390 — vitrine cabinet light fallback
+[1A[2K  7) [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 390 — vitrine cabinet light fallback 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="vitrine-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:378:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-e5c58-rine-cabinet-light-fallback-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-e5c58-rine-cabinet-light-fallback-chromium/error-context.md
+
+
+[1A[2K[28/38] [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 390 — listen beat field fallback
+[1A[2K  8) [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 390 — listen beat field fallback 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="listen-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/overhaul/flagship-visibility.spec.ts:378:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-b2d1d--listen-beat-field-fallback-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-b2d1d--listen-beat-field-fallback-chromium/error-context.md
+
+
+[1A[2K[29/38] [chromium] › tests/overhaul/hero-first-paint.spec.ts:213:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [1440]: the hero slot carries a lit still, served and painted without the scene
+[1A[2K[chromium] › tests/overhaul/hero-first-paint.spec.ts:213:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [1440]: the hero slot carries a lit still, served and painted without the scene
+[TC-HERO-FIRSTPAINT-01] still mean luminance @1440: 0.1326
+
+[1A[2K[30/38] [chromium] › tests/overhaul/hero-first-paint.spec.ts:213:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [390]: the hero slot carries a lit still, served and painted without the scene
+[1A[2K[chromium] › tests/overhaul/hero-first-paint.spec.ts:213:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [390]: the hero slot carries a lit still, served and painted without the scene
+[TC-HERO-FIRSTPAINT-01] still mean luminance @390: 0.1380
+
+[1A[2K[31/38] [chromium] › tests/overhaul/hero-first-paint.spec.ts:284:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [1440]: the hero canvas mounts on a cold load
+[1A[2K[chromium] › tests/overhaul/hero-first-paint.spec.ts:284:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [1440]: the hero canvas mounts on a cold load
+[TC-HERO-FIRSTPAINT-02] canvas_after_dcl_ms_glforce_1440: 2340
+
+[1A[2K[32/38] [chromium] › tests/overhaul/hero-first-paint.spec.ts:284:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [390]: the hero canvas mounts on a cold load
+[1A[2K[chromium] › tests/overhaul/hero-first-paint.spec.ts:284:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [390]: the hero canvas mounts on a cold load
+[TC-HERO-FIRSTPAINT-02] canvas_after_dcl_ms_glforce_390: 2300
+
+[1A[2K[33/38] [chromium] › tests/overhaul/hero-first-paint.spec.ts:312:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02b: the hero scene mounts even though the page never settles
+[1A[2K[34/38] [chromium] › tests/overhaul/hero-first-paint.spec.ts:358:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-03: priority is opt-in — no other scene jumps the idle gate
+[1A[2K[35/38] [chromium] › tests/overhaul/hero-first-paint.spec.ts:565:11 › G-H2b: the hero scrim is a column-bound grade, over the shader › TC-HERO-SCRIM-01 [1440, gl]: the light crosses the frame the type does not stand on
+[1A[2K[chromium] › tests/overhaul/hero-first-paint.spec.ts:565:11 › G-H2b: the hero scrim is a column-bound grade, over the shader › TC-HERO-SCRIM-01 [1440, gl]: the light crosses the frame the type does not stand on
+[TC-HERO-SCRIM-01] 1440 gl: column=0.067..0.667 (18 nodes) under_type=0.0898 lit_window=0.4406 at=0.717 delta=0.3508
+
+[1A[2K[36/38] [chromium] › tests/overhaul/hero-first-paint.spec.ts:565:11 › G-H2b: the hero scrim is a column-bound grade, over the shader › TC-HERO-SCRIM-01 [390, gl]: the light crosses the frame the type does not stand on
+[1A[2K[chromium] › tests/overhaul/hero-first-paint.spec.ts:565:11 › G-H2b: the hero scrim is a column-bound grade, over the shader › TC-HERO-SCRIM-01 [390, gl]: the light crosses the frame the type does not stand on
+[TC-HERO-SCRIM-01] 390 gl: column=0.043..0.957 (18 nodes) under_type=0.2074 lit_window=0.4362 at=0.950 delta=0.2288
+
+[1A[2K[37/38] [chromium] › tests/overhaul/hero-first-paint.spec.ts:565:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [1440, still]: the light crosses the frame the type does not stand on
+[1A[2K[chromium] › tests/overhaul/hero-first-paint.spec.ts:565:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [1440, still]: the light crosses the frame the type does not stand on
+[TC-HERO-SCRIM-01] 1440 still: column=0.067..0.667 (18 nodes) under_type=0.0630 lit_window=0.3167 at=0.864 delta=0.2537
+
+[1A[2K[38/38] [chromium] › tests/overhaul/hero-first-paint.spec.ts:565:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [390, still]: the light crosses the frame the type does not stand on
+[1A[2K[chromium] › tests/overhaul/hero-first-paint.spec.ts:565:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [390, still]: the light crosses the frame the type does not stand on
+[TC-HERO-SCRIM-01] 390 still: column=0.043..0.957 (18 nodes) under_type=0.1331 lit_window=0.2067 at=0.950 delta=0.0736
+
+[1A[2K  8 failed
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 1440 — vitrine cabinet light reads as light 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 1440 — vitrine cabinet light fallback 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 1440 — listen beat field fallback 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 390 — vitrine cabinet light reads as light 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 390 — vitrine cabinet light fallback 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 390 — listen beat field fallback 
+  30 passed (8.0m)

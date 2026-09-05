@@ -167,7 +167,11 @@ export default function About() {
                   and it is not the content — with reduced motion or no WebGL
                   `Scene` mounts nothing and the instrument is unchanged. */}
               <div className={styles.field} data-axis={active}>
-                <Scene className={styles.fieldSlot} sceneId="about-field">
+                {/* Half resolution: the field is an annulus of light with
+                    smoothstepped edges and no line in it, and it cost 333.3 ms a
+                    frame at full resolution (G-X1-01). The engraving over it is
+                    SVG and is not touched by this. */}
+                <Scene className={styles.fieldSlot} sceneId="about-field" resolutionScale={0.5}>
                   <AboutField active={active} />
                 </Scene>
               </div>

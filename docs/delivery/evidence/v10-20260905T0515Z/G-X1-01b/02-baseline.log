@@ -1,0 +1,230 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/perf/scene-framerate.spec.ts --workers=1 --reporter=line
+
+Running 8 tests using 1 worker
+
+[1A[2K[1/8] [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 about-field: median frame <= 16.7 ms
+[1A[2K  1) [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 about-field: median frame <= 16.7 ms 
+
+    Error: TC-SCENE-FPS-01 about-field @ 1440x900 dsf1 cpu-x1 — renderer="ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)" [software-rasteriser] — SIGNATURE-SCENES-v1 D9: this is NOT GPU proof, and a miss here is still a real failure. host loadavg=[6.75, 6.55, 8.52] cores=4; artefact=docs/delivery/evidence/v10-20260905T0515Z/G-X1-01b/02-baseline/TC-SCENE-FPS-01-about-field.json — median rAF delta 274.95 ms over 120 frames (p95 366.7 ms, min 183.3 ms, max 433.3 ms); budget 16.7 ms. The budget is fixed — fix the scene or carry the failure, never the threshold.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m16.7[39m
+    Received:    [31m274.9499999999998[39m
+
+      400 |       `max ${round(Math.max(...sample.deltas))} ms); budget ${budget.budgetMs} ms. ` +
+      401 |       `The budget is fixed — fix the scene or carry the failure, never the threshold.`,
+    > 402 |   ).toBeLessThanOrEqual(budget.budgetMs);
+          |     ^
+      403 | }
+      404 |
+      405 | test.describe('TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms', () => {
+        at measureScene (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:402:5)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:413:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/perf-scene-framerate-TC-SC-eddc1--field-median-frame-16-7-ms-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/perf-scene-framerate-TC-SC-eddc1--field-median-frame-16-7-ms-chromium/error-context.md
+
+
+[1A[2K[2/8] [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 career-strata: median frame <= 16.7 ms
+[1A[2K  2) [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 career-strata: median frame <= 16.7 ms 
+
+    Error: TC-SCENE-FPS-01 career-strata @ 1440x900 dsf1 cpu-x1 — renderer="ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)" [software-rasteriser] — SIGNATURE-SCENES-v1 D9: this is NOT GPU proof, and a miss here is still a real failure. host loadavg=[6.86, 6.59, 8.51] cores=4; artefact=docs/delivery/evidence/v10-20260905T0515Z/G-X1-01b/02-baseline/TC-SCENE-FPS-01-career-strata.json — median rAF delta 66.7 ms over 120 frames (p95 100 ms, min 49.9 ms, max 116.7 ms); budget 16.7 ms. The budget is fixed — fix the scene or carry the failure, never the threshold.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m16.7[39m
+    Received:    [31m66.69999999999982[39m
+
+      400 |       `max ${round(Math.max(...sample.deltas))} ms); budget ${budget.budgetMs} ms. ` +
+      401 |       `The budget is fixed — fix the scene or carry the failure, never the threshold.`,
+    > 402 |   ).toBeLessThanOrEqual(budget.budgetMs);
+          |     ^
+      403 | }
+      404 |
+      405 | test.describe('TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms', () => {
+        at measureScene (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:402:5)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:413:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/perf-scene-framerate-TC-SC-c53bc-strata-median-frame-16-7-ms-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/perf-scene-framerate-TC-SC-c53bc-strata-median-frame-16-7-ms-chromium/error-context.md
+
+
+[1A[2K[3/8] [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 hero-atmosphere: median frame <= 16.7 ms
+[1A[2K  3) [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 hero-atmosphere: median frame <= 16.7 ms 
+
+    Error: TC-SCENE-FPS-01 hero-atmosphere @ 1440x900 dsf1 cpu-x1 — renderer="ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)" [software-rasteriser] — SIGNATURE-SCENES-v1 D9: this is NOT GPU proof, and a miss here is still a real failure. host loadavg=[11.45, 7.81, 8.82] cores=4; artefact=docs/delivery/evidence/v10-20260905T0515Z/G-X1-01b/02-baseline/TC-SCENE-FPS-01-hero-atmosphere.json — median rAF delta 433.35 ms over 100 frames (p95 666.6 ms, min 250.1 ms, max 766.7 ms); budget 16.7 ms. The budget is fixed — fix the scene or carry the failure, never the threshold.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m16.7[39m
+    Received:    [31m433.3500000000022[39m
+
+      400 |       `max ${round(Math.max(...sample.deltas))} ms); budget ${budget.budgetMs} ms. ` +
+      401 |       `The budget is fixed — fix the scene or carry the failure, never the threshold.`,
+    > 402 |   ).toBeLessThanOrEqual(budget.budgetMs);
+          |     ^
+      403 | }
+      404 |
+      405 | test.describe('TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms', () => {
+        at measureScene (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:402:5)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:413:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/perf-scene-framerate-TC-SC-4326a-sphere-median-frame-16-7-ms-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/perf-scene-framerate-TC-SC-4326a-sphere-median-frame-16-7-ms-chromium/error-context.md
+
+
+[1A[2K[4/8] [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 skills-bench: median frame <= 16.7 ms
+[1A[2K  4) [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 skills-bench: median frame <= 16.7 ms 
+
+    Error: TC-SCENE-FPS-01 skills-bench @ 1440x900 dsf1 cpu-x1 — renderer="ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)" [software-rasteriser] — SIGNATURE-SCENES-v1 D9: this is NOT GPU proof, and a miss here is still a real failure. host loadavg=[15.20, 9.14, 9.22] cores=4; artefact=docs/delivery/evidence/v10-20260905T0515Z/G-X1-01b/02-baseline/TC-SCENE-FPS-01-skills-bench.json — median rAF delta 116.7 ms over 120 frames (p95 183.4 ms, min 66.6 ms, max 566.6 ms); budget 16.7 ms. The budget is fixed — fix the scene or carry the failure, never the threshold.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m16.7[39m
+    Received:    [31m116.70000000000073[39m
+
+      400 |       `max ${round(Math.max(...sample.deltas))} ms); budget ${budget.budgetMs} ms. ` +
+      401 |       `The budget is fixed — fix the scene or carry the failure, never the threshold.`,
+    > 402 |   ).toBeLessThanOrEqual(budget.budgetMs);
+          |     ^
+      403 | }
+      404 |
+      405 | test.describe('TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms', () => {
+        at measureScene (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:402:5)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:413:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/perf-scene-framerate-TC-SC-9a0b5--bench-median-frame-16-7-ms-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/perf-scene-framerate-TC-SC-9a0b5--bench-median-frame-16-7-ms-chromium/error-context.md
+
+
+[1A[2K[5/8] [chromium] › tests/perf/scene-framerate.spec.ts:428:9 › TC-SCENE-FPS-02 — phone 390x844 dsf3, CPU x4, median rAF <= 20.0 ms › TC-SCENE-FPS-02 about-field: median frame <= 20 ms
+[1A[2K  5) [chromium] › tests/perf/scene-framerate.spec.ts:428:9 › TC-SCENE-FPS-02 — phone 390x844 dsf3, CPU x4, median rAF <= 20.0 ms › TC-SCENE-FPS-02 about-field: median frame <= 20 ms 
+
+    Error: TC-SCENE-FPS-02 about-field @ 390x844 dsf3 cpu-x4 — renderer="ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)" [software-rasteriser] — SIGNATURE-SCENES-v1 D9: this is NOT GPU proof, and a miss here is still a real failure. host loadavg=[15.34, 10.08, 9.53] cores=4; artefact=docs/delivery/evidence/v10-20260905T0515Z/G-X1-01b/02-baseline/TC-SCENE-FPS-02-about-field.json — median rAF delta 491.65 ms over 86 frames (p95 833.3 ms, min 216.6 ms, max 1399.9 ms); budget 20 ms. The budget is fixed — fix the scene or carry the failure, never the threshold.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m20[39m
+    Received:    [31m491.65000000000146[39m
+
+      400 |       `max ${round(Math.max(...sample.deltas))} ms); budget ${budget.budgetMs} ms. ` +
+      401 |       `The budget is fixed — fix the scene or carry the failure, never the threshold.`,
+    > 402 |   ).toBeLessThanOrEqual(budget.budgetMs);
+          |     ^
+      403 | }
+      404 |
+      405 | test.describe('TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms', () => {
+        at measureScene (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:402:5)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:429:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/perf-scene-framerate-TC-SC-1cd18-ut-field-median-frame-20-ms-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/perf-scene-framerate-TC-SC-1cd18-ut-field-median-frame-20-ms-chromium/error-context.md
+
+
+[1A[2K[6/8] [chromium] › tests/perf/scene-framerate.spec.ts:428:9 › TC-SCENE-FPS-02 — phone 390x844 dsf3, CPU x4, median rAF <= 20.0 ms › TC-SCENE-FPS-02 career-strata: median frame <= 20 ms
+[1A[2K  6) [chromium] › tests/perf/scene-framerate.spec.ts:428:9 › TC-SCENE-FPS-02 — phone 390x844 dsf3, CPU x4, median rAF <= 20.0 ms › TC-SCENE-FPS-02 career-strata: median frame <= 20 ms 
+
+    Error: TC-SCENE-FPS-02 career-strata @ 390x844 dsf3 cpu-x4 — renderer="ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)" [software-rasteriser] — SIGNATURE-SCENES-v1 D9: this is NOT GPU proof, and a miss here is still a real failure. host loadavg=[14.26, 10.33, 9.64] cores=4; artefact=docs/delivery/evidence/v10-20260905T0515Z/G-X1-01b/02-baseline/TC-SCENE-FPS-02-career-strata.json — median rAF delta 183.3 ms over 120 frames (p95 266.7 ms, min 100 ms, max 383.3 ms); budget 20 ms. The budget is fixed — fix the scene or carry the failure, never the threshold.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m20[39m
+    Received:    [31m183.29999999999927[39m
+
+      400 |       `max ${round(Math.max(...sample.deltas))} ms); budget ${budget.budgetMs} ms. ` +
+      401 |       `The budget is fixed — fix the scene or carry the failure, never the threshold.`,
+    > 402 |   ).toBeLessThanOrEqual(budget.budgetMs);
+          |     ^
+      403 | }
+      404 |
+      405 | test.describe('TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms', () => {
+        at measureScene (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:402:5)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:429:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/perf-scene-framerate-TC-SC-154b7-r-strata-median-frame-20-ms-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/perf-scene-framerate-TC-SC-154b7-r-strata-median-frame-20-ms-chromium/error-context.md
+
+
+[1A[2K[7/8] [chromium] › tests/perf/scene-framerate.spec.ts:428:9 › TC-SCENE-FPS-02 — phone 390x844 dsf3, CPU x4, median rAF <= 20.0 ms › TC-SCENE-FPS-02 hero-atmosphere: median frame <= 20 ms
+[1A[2K  7) [chromium] › tests/perf/scene-framerate.spec.ts:428:9 › TC-SCENE-FPS-02 — phone 390x844 dsf3, CPU x4, median rAF <= 20.0 ms › TC-SCENE-FPS-02 hero-atmosphere: median frame <= 20 ms 
+
+    Error: TC-SCENE-FPS-02 hero-atmosphere @ 390x844 dsf3 cpu-x4 — renderer="ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)" [software-rasteriser] — SIGNATURE-SCENES-v1 D9: this is NOT GPU proof, and a miss here is still a real failure. host loadavg=[13.69, 10.82, 9.85] cores=4; artefact=docs/delivery/evidence/v10-20260905T0515Z/G-X1-01b/02-baseline/TC-SCENE-FPS-02-hero-atmosphere.json — median rAF delta 433.3 ms over 101 frames (p95 583.4 ms, min 266.6 ms, max 799.9 ms); budget 20 ms. The budget is fixed — fix the scene or carry the failure, never the threshold.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m20[39m
+    Received:    [31m433.3000000000011[39m
+
+      400 |       `max ${round(Math.max(...sample.deltas))} ms); budget ${budget.budgetMs} ms. ` +
+      401 |       `The budget is fixed — fix the scene or carry the failure, never the threshold.`,
+    > 402 |   ).toBeLessThanOrEqual(budget.budgetMs);
+          |     ^
+      403 | }
+      404 |
+      405 | test.describe('TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms', () => {
+        at measureScene (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:402:5)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:429:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/perf-scene-framerate-TC-SC-df9ed-mosphere-median-frame-20-ms-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/perf-scene-framerate-TC-SC-df9ed-mosphere-median-frame-20-ms-chromium/error-context.md
+
+
+[1A[2K[8/8] [chromium] › tests/perf/scene-framerate.spec.ts:428:9 › TC-SCENE-FPS-02 — phone 390x844 dsf3, CPU x4, median rAF <= 20.0 ms › TC-SCENE-FPS-02 skills-bench: median frame <= 20 ms
+[1A[2K  8) [chromium] › tests/perf/scene-framerate.spec.ts:428:9 › TC-SCENE-FPS-02 — phone 390x844 dsf3, CPU x4, median rAF <= 20.0 ms › TC-SCENE-FPS-02 skills-bench: median frame <= 20 ms 
+
+    Error: TC-SCENE-FPS-02 skills-bench @ 390x844 dsf3 cpu-x4 — renderer="ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)" [software-rasteriser] — SIGNATURE-SCENES-v1 D9: this is NOT GPU proof, and a miss here is still a real failure. host loadavg=[14.18, 11.06, 9.94] cores=4; artefact=docs/delivery/evidence/v10-20260905T0515Z/G-X1-01b/02-baseline/TC-SCENE-FPS-02-skills-bench.json — median rAF delta 33.3 ms over 120 frames (p95 66.7 ms, min 16.6 ms, max 249.9 ms); budget 20 ms. The budget is fixed — fix the scene or carry the failure, never the threshold.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m20[39m
+    Received:    [31m33.30000000000018[39m
+
+      400 |       `max ${round(Math.max(...sample.deltas))} ms); budget ${budget.budgetMs} ms. ` +
+      401 |       `The budget is fixed — fix the scene or carry the failure, never the threshold.`,
+    > 402 |   ).toBeLessThanOrEqual(budget.budgetMs);
+          |     ^
+      403 | }
+      404 |
+      405 | test.describe('TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms', () => {
+        at measureScene (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:402:5)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:429:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/perf-scene-framerate-TC-SC-39e60-ls-bench-median-frame-20-ms-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/perf-scene-framerate-TC-SC-39e60-ls-bench-median-frame-20-ms-chromium/error-context.md
+
+
+[1A[2K  8 failed
+    [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 about-field: median frame <= 16.7 ms 
+    [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 career-strata: median frame <= 16.7 ms 
+    [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 hero-atmosphere: median frame <= 16.7 ms 
+    [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 skills-bench: median frame <= 16.7 ms 
+    [chromium] › tests/perf/scene-framerate.spec.ts:428:9 › TC-SCENE-FPS-02 — phone 390x844 dsf3, CPU x4, median rAF <= 20.0 ms › TC-SCENE-FPS-02 about-field: median frame <= 20 ms 
+    [chromium] › tests/perf/scene-framerate.spec.ts:428:9 › TC-SCENE-FPS-02 — phone 390x844 dsf3, CPU x4, median rAF <= 20.0 ms › TC-SCENE-FPS-02 career-strata: median frame <= 20 ms 
+    [chromium] › tests/perf/scene-framerate.spec.ts:428:9 › TC-SCENE-FPS-02 — phone 390x844 dsf3, CPU x4, median rAF <= 20.0 ms › TC-SCENE-FPS-02 hero-atmosphere: median frame <= 20 ms 
+    [chromium] › tests/perf/scene-framerate.spec.ts:428:9 › TC-SCENE-FPS-02 — phone 390x844 dsf3, CPU x4, median rAF <= 20.0 ms › TC-SCENE-FPS-02 skills-bench: median frame <= 20 ms 

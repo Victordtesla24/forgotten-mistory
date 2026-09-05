@@ -145,7 +145,10 @@ export default function Experience() {
         </header>
 
         <div className={styles.chart} ref={chartRef} data-chart>
-          <Scene className={styles.chartScene} sceneId="career-strata">
+          {/* Half resolution. The sediment is three slow horizontal smears and
+              eight span lifts, all of them soft; the bars above it are DOM and
+              stay pixel-sharp. 183.3 ms a frame at full resolution (G-X1-01). */}
+          <Scene className={styles.chartScene} sceneId="career-strata" resolutionScale={0.5}>
             <CareerStrata spans={spans} hover={active} entered={entered} />
           </Scene>
 

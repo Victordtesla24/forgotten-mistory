@@ -313,10 +313,12 @@
    of the measure, so there the portrait is dimmed to a silhouette and every
    pixel the launcher paints stays darker than the brightest ground that still
    carries --mist-200 body ink at 4.5:1. The launcher may float over prose; it
-   may never brighten it. From 52.125rem up it also carries its own name,
-   because an icon-only circle is legible only to someone who already knows what
-   it is. Enforced by tests/a11y/minivic-occlusion.spec.ts and
-   tests/monochrome/minivic-launcher.spec.ts. */
+   may never brighten the *ground* under it. It carries its own name at every
+   width, because an icon-only circle is legible only to someone who already
+   knows what it is (G-MV1, ADV-REVIEW-20260905T1451Z §Chrome/Hero) — and that
+   name is set on its own opaque plate, so the type it paints is never mixed
+   with the type underneath. Enforced by tests/a11y/minivic-occlusion.spec.ts
+   and tests/monochrome/minivic-launcher.spec.ts. */
 
 /* The dock fades out above the hero, but its button stays in the tab order —
    it no longer carries aria-hidden, which was a focusable control inside a
@@ -383,23 +385,26 @@
     background: none;
 }
 
+/* The name, at every width (G-MV1). It used to appear only from 52.125rem up,
+   which left the phone — where the control is smallest and the page busiest —
+   with a bare disc and no way to know it opened a conversation. The plate is
+   fully opaque rather than the old rgb(10 10 10 / 0.72): a translucent plate
+   makes the label's contrast depend on whatever it is floating over, and lets
+   the prose underneath show through the type. Opaque, the label is --mist-200
+   on --ink-900 at 12.5:1 wherever it lands, and what is beneath it is covered
+   rather than muddled. */
 .minivic-launcher__pill {
-    display: none;
+    display: inline-block;
     padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--card-border);
     border-radius: 999px;
-    background: rgb(10 10 10 / 0.72);
+    background: var(--ink-900);
     color: var(--mist-200);
     font-family: var(--font-body);
     font-size: var(--fs-caption);
     letter-spacing: var(--ls-caption);
     line-height: 1;
     white-space: nowrap;
-}
-
-@media (min-width: 52.125rem) {
-    .minivic-launcher__pill {
-        display: inline-block;
-    }
 }
 
 .minivic-launcher__disc {

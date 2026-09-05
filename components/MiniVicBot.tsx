@@ -1416,8 +1416,15 @@ const MiniVicBot = () => {
             user who reads the control aloud never reaches it. The name is
             therefore constant and the panel's state rides on `aria-expanded`,
             which is what a disclosure button is for. The pill itself stays
-            decorative — it would otherwise be announced twice. */}
-        <span className="minivic-launcher__pill" aria-hidden="true">
+            decorative — it would otherwise be announced twice — but it is no
+            longer optional: it is painted at every width, phones included
+            (G-MV1), and tests/monochrome/minivic-launcher.spec.ts reads it
+            through this test id. */}
+        <span
+          className="minivic-launcher__pill"
+          data-testid="minivic-launcher-label"
+          aria-hidden="true"
+        >
           Ask Mini Vic
         </span>
         <span className="minivic-launcher__disc">

@@ -1,0 +1,211 @@
+[
+  {
+    "slug": "g2h1-01-spd-instrument",
+    "title": "SPD instrument — luminance-weighted plane dominance, baseline red printed",
+    "assignee": "tester",
+    "priority": 96,
+    "parents": [],
+    "summary": "HERO-FOLD-v2 §3 turns 'the plane dominates' into a number. Author scripts/validate/hero_plane_dominance.mjs and tests/overhaul/hero-plane-dominance.spec.ts. Capture the fold at dsf 1; L = WCAG relative luminance (reuse the helper in tests/overhaul/flagship-visibility.spec.ts); ground G = 10th-percentile L of the fold; light mass m = max(0, L - G). Ink set I = union of fold text-leaf rects + media rects (img/video/svg) + every element whose computed background-color alpha >= 0.5, each dilated 8px, read from the live DOM. Plane P = fold minus I. TC-HERO-PLANE-01 asserts SPD = sum_P(m)/sum_fold(m) >= 0.75; TC-HERO-PLANE-02 asserts the PLANE-2 floor sum_fold(m)/(W*H) >= 0.045 so a black fold cannot score 1.0. Run at 1440x900, 1280x800, 834x1194, 390x844 on BOTH /?gl=force and the reduced-motion still. Print G, sum_fold m, sum_P m, SPD and the excluded rect list in every assertion message so a reviewer re-derives rather than trusts. Record the red baseline; change no production file. Runs in parallel with g2h1-02 — this lane is the gate, that lane is the first visible pixel.",
+    "order": [
+      "Read tests/overhaul/flagship-visibility.spec.ts for the luminance helper, the isolated-slot capture and the ?gl=force + settle pattern",
+      "Read tests/e2e/hero-fold.spec.ts for FOLD/STAGE/PORTRAIT_IMG selectors and the foldArea helper",
+      "Author scripts/validate/hero_plane_dominance.mjs as the shared measurement (importable by the spec, runnable standalone with --base)",
+      "Author tests/overhaul/hero-plane-dominance.spec.ts with TC-HERO-PLANE-01 and TC-HERO-PLANE-02 parameterised over 4 widths x 2 paths",
+      "Capture the baseline: docs/delivery/evidence/v10-20260905T0515Z/G2H1/01/02-tests-failing.log with the real SPD per width per path",
+      "Confirm the DOM rect exclusion list is printed, not summarised — a reviewer must be able to reproduce I"
+    ],
+    "gates": [
+      "Thresholds are exactly 0.75 (SPD) and 0.045 (PLANE-2); lowering either to make a run green is a violation",
+      "Ground G is measured from the capture, never assumed from a declared background-color",
+      "Both paths measured — a GPU-only number is not evidence for the no-GL reader",
+      "Zero production files touched; git diff --name-only shows only scripts/validate, tests/ and docs/delivery/evidence"
+    ],
+    "verify": [
+      "npm run build:static",
+      "python3 -m http.server 5635 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5635 npx playwright test tests/overhaul/hero-plane-dominance.spec.ts",
+      "node scripts/validate/hero_plane_dominance.mjs --base http://127.0.0.1:5635"
+    ]
+  },
+  {
+    "slug": "g2h1-02-retire-halfframe-scrim",
+    "title": "M1 — the light reaches the left: retire the desktop half-frame scrim for per-run plates",
+    "assignee": "analyst-programmer",
+    "priority": 96,
+    "parents": [],
+    "summary": "HERO-FOLD-v2 §2 M1 / decision D-1. Hero.module.css .stage::after paints rgb(10 10 10 / 0.88) from 0% to 44% and 0.86->0.45 out to 56% — the half of the frame the eye enters through is switched off, which is the whole of 'cinematic stage reads as wallpaper'. Delete that wash above 700px and buy the contrast locally instead: promote the phone instrument (@media (max-width: 700px): background rgb(10 10 10 / 0.90), border-radius 3px, padding-inline .45rem, margin-inline -.45rem on .eyebrow/.name/.role/.statement plus the secondary action) to every width, sized to each run's own box and not a pixel wider. The 0.90 alpha is measured, not chosen: over this shader's brightest fog (0.8308 relative luminance) it lands the ground on #212121, inside the #2A2A2A ceiling --mist-400 needs for 4.5:1. Do NOT remove the <=700px rule — this extends it upward. VISIBLE: the atmosphere appears behind the copy at 1440/1280 where today it is 88% black. This is the first visible slice of the lane.",
+    "order": [
+      "Read Hero.module.css .stage, .stage::after and the @media (max-width: 700px) plate block end to end, including the notes that record why each number is what it is",
+      "Delete .stage::after's wash above 700px; keep the element only if a slice still needs it, otherwise remove the rule and its display:none override together",
+      "Give .eyebrow/.name/.role/.statement/.actions their own plate at every width, each sized to its own box",
+      "Re-run the AA walk over #hero on ?gl=force at 1440 and 390: worst of ten must stay >= 4.5:1 (today 6.20:1)",
+      "Re-run TC-HERO-SCRIM-01 (4 contexts) and the flagship floors; capture 04-tests-passing.log",
+      "Screenshot the fold at 1440, 1280, 834, 390 into the evidence directory and look at every one"
+    ],
+    "gates": [
+      "Worst-of-ten AA over #hero >= 4.5:1 on ?gl=force AND on the reduced-motion still, at 1440 and 390",
+      "TC-HERO-SCRIM-01 >= 0.06 in all four contexts",
+      "Flagship floors hold: coverage >= 0.15, peak >= 0.35, motion >= 0.004, still coverage >= 0.08",
+      "The <=700px plate rule is preserved, not replaced",
+      "CLS 0 — a plate is a background on an existing box and must not change any box's size",
+      "No plate alpha below 0.90 without re-measuring the ten worst nodes and recording the numbers"
+    ],
+    "verify": [
+      "npx tsc --noEmit && npm run lint",
+      "npm run build:static && node scripts/validate/overhaul_static_audit.mjs",
+      "python3 -m http.server 5636 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5636 npx playwright test tests/a11y/text-contrast.spec.ts tests/overhaul/flagship-visibility.spec.ts tests/e2e/hero-fold.spec.ts",
+      "node scripts/validate/hero_plane_dominance.mjs --base http://127.0.0.1:5636"
+    ]
+  },
+  {
+    "slug": "g2h1-03-brand-mark-one-line",
+    "title": "M2 — the name becomes a mark: one line, full measure, display tracking",
+    "assignee": "analyst-programmer",
+    "priority": 95,
+    "parents": ["g2h1-02-retire-halfframe-scrim"],
+    "summary": "HERO-FOLD-v2 §4 / decision D-2, D-6. 'Vikram Deshpande' wraps to two lines today: --fs-name is clamp(3rem, 8.2vw, 7.5rem) = 118px at 1440 inside a ~660px column (h1 top 183, .role top 453 on live e3f0206c). A wrapped name is a heading; a single line set to the measure is a mark. Collapse the @media (min-width: 720px) two-column grid so the copy takes the full --page-max measure, then DERIVE --fs-name from a real browser measurement of the text advance — do not ship the brief's 166px/11.5vw arithmetic, it is an estimate with a stated metric assumption. Acceptance BM-1 (h1 height <= 1.30x font-size at 1440/1280/834), BM-2 (advance 0.86-1.00 of the column), BM-3 (font-size >= 0.10 x fold height), BM-4 (letter-spacing -0.035em..-0.015em), BM-6 (no other fold node > 40px), BM-7 (scrollWidth <= innerWidth), BM-8 (>= 6x the nav wordmark cap-height). At 390 ship BM-1b instead: exactly two line boxes from an authored break, leading <= 0.92em. .name keeps heroRiseSolid — transform only, never opacity — or the LCP entry disappears.",
+    "order": [
+      "Measure the real advance of the name at the heading face and tracking in the browser; record the number in the commit body",
+      "Collapse the fold grid to one measure above 720px and re-home the portrait (its final placement is g2h1-04's; here it must simply not constrain the type)",
+      "Derive and set --fs-name / --ls-name from the measurement, with the 390 lockup authored explicitly",
+      "Extend tests/e2e/hero-fold.spec.ts with TC-FOLD-05 asserting BM-1, BM-1b, BM-2, BM-3, BM-4, BM-6, BM-7; capture red first",
+      "Re-run the LCP battery: element must remain h1#hero-name at 1280/1440, LCP < 2500ms, CLS 0, 3 cold loads x 3 widths",
+      "Screenshot 1440/1280/834/390 and look at the rag, the tracking and the mark's relation to the nav wordmark"
+    ],
+    "gates": [
+      ".name animates transform only — any opacity fade, mask-to-transparent or reveal on the h1 destroys the LCP candidate (PERF-06/07)",
+      "BM-7: no horizontal scroll at any of 390/834/1280/1440",
+      "TC-FOLD-03 still passes: fold band 0.95-1.12 x innerHeight and stage covers >= 90% of the fold",
+      "The clamp is derived from a measured advance recorded in the commit, never from the brief's estimate",
+      "CLS < 0.05 on every load — the type scale changes at first paint, not after it"
+    ],
+    "verify": [
+      "npx tsc --noEmit && npm run lint",
+      "npm run build:static && node scripts/validate/overhaul_static_audit.mjs",
+      "python3 -m http.server 5637 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5637 npx playwright test tests/e2e/hero-fold.spec.ts tests/perf",
+      "node scripts/validate/hero_plane_dominance.mjs --base http://127.0.0.1:5637"
+    ]
+  },
+  {
+    "slug": "g2h1-04-photo-into-the-plane",
+    "title": "M3 — the photograph loses its card: drafting frame out, edges masked into the light",
+    "assignee": "analyst-programmer",
+    "priority": 95,
+    "parents": ["g2h1-03-brand-mark-one-line"],
+    "summary": "HERO-FOLD-v2 §5.1 / decision D-3. HeroPortrait.tsx draws .portraitFrame (a hairline inset 12px), four .portraitTick corners and .portraitCross — a closed rectangle with registration marks parked in a second column, which is exactly what the 1451Z reviewer called 'a framed card beside a column'. Remove those three from the FOLD only (the drafting language stays on the caliper mark and in the proof band) and apply a composite mask-image to .portraitMedia so the outer edges fall off into the plane. Place the figure overlapping the mark's right end rather than beside it. Acceptance PH-1 (no border/outline/box-shadow on the media box or its children; zero portrait-tick nodes in the fold), PH-2 (mean |dL| across the rect boundary <= 0.04 on >= 3 of 4 edges, sampled 4px in vs 4px out), PH-3 (mask opaque over the upper-centre 46% — no gradient crosses the face), PH-4 (still a <figure> with a <figcaption>, figurePressables === 0), PH-5 (CLS 0 — a mask is compositing, no box resizes). Colour-agnostic by construction: nothing here samples inside the media rect, so the t_g2_h6 decision changes one filter declaration and nothing else.",
+    "order": [
+      "Read HeroPortrait.tsx and the .portrait* rules in Hero.module.css; note which marks are fold-only and which the proof band still needs",
+      "Extend tests/e2e/hero-photo.spec.ts with PH-1..PH-5; capture red",
+      "Remove the frame/ticks/cross from the fold render path and delete their now-dead CSS in the same commit (TC-NFR-DEADCSS fails the audit otherwise)",
+      "Apply the composite mask to .portraitMedia and place the figure against the mark",
+      "Verify the reduced-motion and no-JS paths still show the still at full opacity — the mask must not depend on JavaScript",
+      "Screenshot 1440/1280/834/390 on both paths and look at the edge falloff against the pool"
+    ],
+    "gates": [
+      "Dead CSS removed in the same commit as the elements — TC-NFR-DEADCSS",
+      "figurePressables === 0 — the figure never becomes a second call to action",
+      "The <picture> still server-renders at full opacity and stays the LCP candidate at 390",
+      "PH-3: the mask never crosses the face",
+      "CLS 0 across 9 loads"
+    ],
+    "verify": [
+      "npx tsc --noEmit && npm run lint",
+      "npm run build:static && node scripts/validate/overhaul_static_audit.mjs",
+      "python3 -m http.server 5638 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5638 npx playwright test tests/e2e/hero-photo.spec.ts tests/e2e/hero-fold.spec.ts tests/a11y",
+      "node scripts/validate/hero_plane_dominance.mjs --base http://127.0.0.1:5638"
+    ]
+  },
+  {
+    "slug": "g2h1-05-pool-follows-the-figure",
+    "title": "M4 — the pool comes to the figure: bind poolPlate to the portrait, re-render the poster",
+    "assignee": "analyst-programmer",
+    "priority": 94,
+    "parents": ["g2h1-04-photo-into-the-plane"],
+    "summary": "HERO-FOLD-v2 §5.2 / decision D-7. atmosphere.glsl.ts already writes the pool for this — 'vec2 q2 = (p - vec2(0.75 * halfWidth, -0.04) ...)', whose own comment says it stands behind the portrait plate — but the pool is a constant and the figure is a layout, so after g2h1-04 they no longer coincide. Add a uPortrait uniform (normalised centre, defaulting to today's constant so the shader is byte-equivalent until it is fed), set it from the figure's measured rect in HeroAtmosphere.tsx, and mirror the same centre in .stage's radial fallback so the no-GL reader gets the same picture. Then re-run node scripts/assets/render-hero-poster.mjs IN THE SAME COMMIT: the poster is rendered from this shader, so a shader change without a re-render silently desynchronises the first-paint path. Acceptance PL-1 (of the fold's brightest 5% of pixels, >= 60% lie within 1.3x the media rect's half-diagonal of its centre, ?gl=force at 1440), PL-2 (same on the reduced-motion still, >= 50%), PL-3 (the commit touches both the shader and the poster), PL-4 (poster <= 500 kB, 3840x2160).",
+    "order": [
+      "Read atmosphere.glsl.ts pools/shafts section and scripts/assets/render-hero-poster.mjs determinism notes",
+      "Add uPortrait with today's constant as its default and prove the default frame is unchanged before feeding it",
+      "Feed the measured figure centre from HeroAtmosphere.tsx; mirror it in the .stage radial fallback at both breakpoints",
+      "Re-run node scripts/assets/render-hero-poster.mjs and record its printed uTime sweep and argmax",
+      "Author PL-1/PL-2 in tests/overhaul/hero-plane-dominance.spec.ts (or a sibling spec) and capture red then green",
+      "Re-run the first-paint battery: stage-box mean luminance >= 0.10 chunk-blocked and JS-off at 1440 and 390"
+    ],
+    "gates": [
+      "PL-3: git show --name-only for this commit contains both atmosphere.glsl.ts and public/assets/hero-atmosphere-poster.avif",
+      "TC-HERO-FIRSTPAINT-01/02 >= 0.10 mean luminance on the chunk-blocked and JS-off paths at both widths",
+      "Flagship floors hold at 390 as well as 1440 — the pool must not be re-centred off a phone frame",
+      "Poster <= 500 kB and 3840x2160 (today 12,935 B)",
+      "prefers-reduced-motion still shows the same picture stopped, never a different one"
+    ],
+    "verify": [
+      "node scripts/assets/render-hero-poster.mjs",
+      "npx tsc --noEmit && npm run lint",
+      "npm run build:static && node scripts/validate/overhaul_static_audit.mjs",
+      "python3 -m http.server 5639 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5639 npx playwright test tests/overhaul/hero-first-paint.spec.ts tests/overhaul/flagship-visibility.spec.ts tests/overhaul/hero-plane-dominance.spec.ts"
+    ]
+  },
+  {
+    "slug": "g2h1-06-one-quiet-bar",
+    "title": "The CTA group as one quiet bar — one row, one plate, contrast kept, area cut",
+    "assignee": "analyst-programmer",
+    "priority": 93,
+    "parents": ["g2h1-02-retire-halfframe-scrim"],
+    "summary": "HERO-FOLD-v2 §6 / decision D-4. With the frame lit again, the filled white .primaryAction is the second-brightest object in the fold and it is not the subject. Reshape hero-actions into one bar: both links on one row sharing a single plate, the primary carrying a hairline rule under a white label rather than a white fill. Acceptance CTA-1 (still exactly one CTA group in the fold — TC-FOLD-04 unchanged), CTA-2 (|delta top| <= 4px, group height <= 56px at >= 720px), CTA-3 (the group's summed light mass <= 0.06 of the fold's), CTA-4 (one element carries the ground — the bar is one box in the ink set, not two pills), CTA-5 (primary label contrast >= 7:1 against its own plate; the words are unchanged), CTA-6 (marginToFoldBottom >= 40px; today 177). Contrast is not reduced — area is, and CTA-5 is what forbids trading one for the other. Gold does not appear: it means 'this figure has a source'.",
+    "order": [
+      "Read .actions/.primaryAction/.secondaryAction in Hero.module.css and the TC-FOLD-04 rule in tests/e2e/hero-fold.spec.ts",
+      "Extend the fold spec with CTA-2..CTA-5 as TC-FOLD-06; capture red",
+      "Reshape the bar: one plate, one row, hairline under the primary label",
+      "Measure the primary label's contrast against its own plate and record it",
+      "Re-run the keyboard contract: both links reachable in DOM order, focus rings visible at >= 3:1 against their local ground, no new tabindex",
+      "Screenshot 1440/1280/834/390 and confirm the bar still reads unmistakably as the action"
+    ],
+    "gates": [
+      "CTA-5: primary label >= 7:1 against its plate — quieter must never mean less legible",
+      "CTA-1/CTA-6: one group, in the fold, with >= 40px of air below it",
+      "Focus rings >= 3:1 against the local ground at both widths; keyboard order unchanged",
+      "No --gold anywhere in the fold",
+      "Touch target >= 44x44 CSS px for both links"
+    ],
+    "verify": [
+      "npx tsc --noEmit && npm run lint",
+      "npm run build:static && node scripts/validate/overhaul_static_audit.mjs",
+      "python3 -m http.server 5640 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5640 npx playwright test tests/e2e/hero-fold.spec.ts tests/a11y",
+      "node scripts/validate/hero_plane_dominance.mjs --base http://127.0.0.1:5640"
+    ]
+  },
+  {
+    "slug": "g2h1-07-live-independent-reprobe",
+    "title": "Independent live re-probe — every HERO-FOLD-v2 clause plus the whole regression table",
+    "assignee": "reviewer",
+    "priority": 92,
+    "parents": [
+      "g2h1-03-brand-mark-one-line",
+      "g2h1-05-pool-follows-the-figure",
+      "g2h1-06-one-quiet-bar"
+    ],
+    "summary": "Nothing in HERO-FOLD-v2 is closed by the lane that wrote it. Re-probe the DEPLOYED build at https://forgotten-mistory.web.app (read build-commit at runtime and report it on every capture) against: PLANE-1 SPD >= 0.75 shipped at >= 0.78, PLANE-2 >= 0.045, at 1440/1280/834/390 on ?gl=force and the reduced-motion still; BM-1..BM-8 and BM-1b; PH-1..PH-5; PL-1..PL-4; CTA-1..CTA-6; CHROMA-1/CHROMA-2 for whichever t_g2_h6 outcome shipped; and the entire HERO-FOLD-v2 §8 regression table — CT-10, TC-FOLD-01/02/03/04, the <=700px plates, worst-of-ten AA on ?gl=force, TC-HERO-SCRIM-01 x4, TC-HERO-FIRSTPAINT-01/02 >= 0.10, the flagship floors, CLS < 0.05, LCP < 2.5s with the element named, the keyboard contract, and no asset over 500 kB. Failures first. Record anything not measurable in this environment as not-established rather than inferring it either way.",
+    "order": [
+      "Read HERO-FOLD-v2.md §3-§8 and the predecessor method in G-REV/66199cba/08-adversarial-review.md",
+      "Probe live with google-chrome + swiftshader, 4 widths x (normal, ?gl=force, reduced-motion, chunk-blocked, JS-off)",
+      "Run the SPD instrument against the live origin and print G, sum_fold m, sum_P m, SPD and the excluded rects",
+      "Walk AA over #hero on both paths and report the worst ten",
+      "Write 08-adversarial-review.md with failures first, every number citing its capture file"
+    ],
+    "gates": [
+      "Read-only — nothing is implemented, tuned or re-run until it passes",
+      "Every claim cites a capture path; no number is quoted from HERO-FOLD-v2 §3.4 (it is an estimate, and the brief says so)",
+      "build-commit recorded on every capture; a build that moves under the probe is reported, not smoothed over",
+      "Unmeasurable claims declared as unmeasurable, never as PASS or FAIL"
+    ],
+    "verify": [
+      "curl -fsS https://forgotten-mistory.web.app/ | grep -o 'build-commit\" content=\"[^\"]*\"'",
+      "node scripts/validate/hero_plane_dominance.mjs --base https://forgotten-mistory.web.app",
+      "PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/overhaul/hero-plane-dominance.spec.ts tests/e2e/hero-fold.spec.ts tests/a11y"
+    ]
+  }
+]

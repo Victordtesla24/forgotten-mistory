@@ -1,0 +1,70 @@
+// Attribution probe: is the About field's 275 ms median frame its own shader?
+import { chromium } from '@playwright/test';
+
+const base = 'http://127.0.0.1:5625';
+const browser = await chromium.launch({
+  channel: 'chrome',
+  args: ['--no-sandbox', '--use-gl=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
+});
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+await page.goto(`${base}/?gl=force`, { waitUntil: 'domcontentloaded' });
+const skip = page.locator('button.preloader-skip');
+if (await skip.isVisible().catch(() => false)) await skip.click({ timeout: 5000 }).catch(() => {});
+await page.locator('.preloader').waitFor({ state: 'hidden', timeout: 20000 }).catch(() => {});
+await page.locator('#hero').waitFor({ state: 'visible', timeout: 15000 });
+
+const sample = () =>
+  page.evaluate(
+    () =>
+      new Promise((resolve) => {
+        const d = [];
+        let prev = 0;
+        const start = performance.now();
+        const tick = (now) => {
+          if (now < start + 700) { prev = now; requestAnimationFrame(tick); return; }
+          if (prev > 0) d.push(now - prev);
+          prev = now;
+          if (d.length >= 30 || now - start > 20000) {
+            const s = [...d].sort((a, b) => a - b);
+            resolve({ median: s[s.length >> 1], n: d.length });
+            return;
+          }
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }),
+  );
+
+const scene = process.argv[2] ?? 'about-field';
+const slot = page.locator(`[data-scene="${scene}"]`);
+await slot.waitFor({ state: 'attached', timeout: 15000 });
+await slot.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+await page.locator(`[data-scene="${scene}"] canvas`).first().waitFor({ state: 'attached', timeout: 20000 });
+await page.waitForTimeout(1500);
+
+console.log(`${scene} A: scene mounted        ->`, JSON.stringify(await sample()));
+
+// B: hide the canvas (compositor still has the page; the shader no longer paints)
+await page.evaluate((s) => {
+  document.querySelector(`[data-scene="${s}"] canvas`).style.visibility = 'hidden';
+}, scene);
+await page.waitForTimeout(500);
+console.log(`${scene} B: canvas hidden        ->`, JSON.stringify(await sample()));
+
+// C: also stop the nav's backdrop blur, the other software-composited effect on screen
+await page.evaluate(() => {
+  const style = document.createElement('style');
+  style.textContent = 'nav[data-scrolled="true"]{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}';
+  document.head.appendChild(style);
+});
+await page.waitForTimeout(500);
+console.log(`${scene} C: + nav blur off       ->`, JSON.stringify(await sample()));
+
+// D: remove the canvas element entirely (three keeps rendering into a detached context)
+await page.evaluate((s) => {
+  document.querySelector(`[data-scene="${s}"] canvas`).style.display = 'none';
+}, scene);
+await page.waitForTimeout(500);
+console.log(`${scene} D: + canvas display:none->`, JSON.stringify(await sample()));
+
+await browser.close();

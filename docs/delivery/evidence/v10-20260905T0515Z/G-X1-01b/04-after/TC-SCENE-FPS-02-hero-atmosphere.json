@@ -1,0 +1,31 @@
+{
+  "testCase": "TC-SCENE-FPS-02",
+  "sceneId": "hero-atmosphere",
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "deviceScaleFactor": 3
+  },
+  "cpuThrottlingRate": 4,
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "rendererLabel": "software-rasteriser",
+  "medianMs": 66.6,
+  "p95Ms": 133.4,
+  "minMs": 33.2,
+  "maxMs": 183.3,
+  "sampleCount": 120,
+  "targetSamples": 120,
+  "samplingElapsedMs": 9832.6,
+  "budgetMs": 20,
+  "pass": false,
+  "host": {
+    "loadavg": [
+      8.07,
+      9.76,
+      9.96
+    ],
+    "cores": 4
+  },
+  "measuredAt": "2026-09-05T14:56:16.493Z",
+  "note": "renderer=\"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)\" [software-rasteriser] — SIGNATURE-SCENES-v1 D9: this is NOT GPU proof, and a miss here is still a real failure."
+}

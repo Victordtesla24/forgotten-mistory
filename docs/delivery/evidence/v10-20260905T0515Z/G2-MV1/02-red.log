@@ -1,0 +1,62 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/monochrome/minivic-launcher.spec.ts --workers=1 --reporter=list
+
+Running 5 tests using 1 worker
+
+  ✓  1 [chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold (2.8s)
+  ✓  2 [chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 640: every colour inside the launcher is R==G==B and never gold (2.9s)
+  ✓  3 [chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold (2.2s)
+  ✘  4 [chromium] › tests/monochrome/minivic-launcher.spec.ts:263:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 390: the launcher shows a visible "Ask Mini Vic" label at AA (1.8s)
+  ✘  5 [chromium] › tests/monochrome/minivic-launcher.spec.ts:263:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 640: the launcher shows a visible "Ask Mini Vic" label at AA (2.3s)
+
+
+  1) [chromium] › tests/monochrome/minivic-launcher.spec.ts:263:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 390: the launcher shows a visible "Ask Mini Vic" label at AA 
+
+    Error: [data-testid="minivic-launcher-label"] is not in the document
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBeNull[2m()[22m
+
+    Received: [31mnull[39m
+
+      268 |
+      269 |       const label = await readLabel(page);
+    > 270 |       expect(label, '[data-testid="minivic-launcher-label"] is not in the document').not.toBeNull();
+          |                                                                                          ^
+      271 |
+      272 |       expect(label!.text, 'the launcher label must read "Ask Mini Vic"').toBe('Ask Mini Vic');
+      273 |       expect(
+        at /root/forgotten-mistory/.claude/worktrees/wf_b8a7f13a-b92-1/tests/monochrome/minivic-launcher.spec.ts:270:90
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/monochrome-minivic-launche-d5989-le-Ask-Mini-Vic-label-at-AA-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/monochrome-minivic-launche-d5989-le-Ask-Mini-Vic-label-at-AA-chromium/error-context.md
+
+  2) [chromium] › tests/monochrome/minivic-launcher.spec.ts:263:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 640: the launcher shows a visible "Ask Mini Vic" label at AA 
+
+    Error: [data-testid="minivic-launcher-label"] is not in the document
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBeNull[2m()[22m
+
+    Received: [31mnull[39m
+
+      268 |
+      269 |       const label = await readLabel(page);
+    > 270 |       expect(label, '[data-testid="minivic-launcher-label"] is not in the document').not.toBeNull();
+          |                                                                                          ^
+      271 |
+      272 |       expect(label!.text, 'the launcher label must read "Ask Mini Vic"').toBe('Ask Mini Vic');
+      273 |       expect(
+        at /root/forgotten-mistory/.claude/worktrees/wf_b8a7f13a-b92-1/tests/monochrome/minivic-launcher.spec.ts:270:90
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/monochrome-minivic-launche-0a39b-le-Ask-Mini-Vic-label-at-AA-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/monochrome-minivic-launche-0a39b-le-Ask-Mini-Vic-label-at-AA-chromium/error-context.md
+
+  2 failed
+    [chromium] › tests/monochrome/minivic-launcher.spec.ts:263:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 390: the launcher shows a visible "Ask Mini Vic" label at AA 
+    [chromium] › tests/monochrome/minivic-launcher.spec.ts:263:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 640: the launcher shows a visible "Ask Mini Vic" label at AA 
+  3 passed (15.5s)
