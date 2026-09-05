@@ -300,6 +300,23 @@
     color: var(--white);
 }
 
+/* Gold marks an employer a reader can open and check (CLAUDE.md directive 3;
+   the same allow-list as tests/about_sourced_semantics.test.mjs). Eight
+   employers share one chart, so the mark cannot be a saturated "look here" on
+   every row at once — that is the fill gold is forbidden to become. At rest a
+   sourced employer takes the recessed --gold-pale, which reads as gold without
+   competing; the active row's employer steps up to the saturated token. Gold
+   never touches a date: the readout and the axis stay grey/white throughout.
+   --gold-pale on the label's own #0A0A0A plate composites well clear of AA. */
+.trackCompany[data-sourced] {
+    color: var(--gold-pale);
+}
+
+.trackButton[data-active] .trackCompany[data-sourced],
+.trackButton:hover .trackCompany[data-sourced] {
+    color: var(--gold);
+}
+
 /* The room C-03 asks for is reserved one level up, as the track grid's third
    column (`--readout-column`, 4.5rem, declared on .chart). A `padding-right`
    here would be inert: the bar and the readout are absolutely positioned, and
@@ -517,6 +534,19 @@
 .roleCompany {
     font-size: var(--fs-body);
     color: var(--mist-200);
+    transition: color var(--motion-fast) var(--motion-ease-standard);
+}
+
+/* The same rule in the detail list: a sourced employer is recessed --gold-pale
+   until its role is the open one, at which point it takes the saturated mark.
+   Only one role is open at a time, so at most one saturated employer gold sits
+   in the reader's view — the per-view budget the vitrine and skills hold. */
+.roleCompany[data-sourced] {
+    color: var(--gold-pale);
+}
+
+.role[data-open] .roleCompany[data-sourced] {
+    color: var(--gold);
 }
 
 .roleDates {

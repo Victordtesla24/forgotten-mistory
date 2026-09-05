@@ -9,6 +9,7 @@
  */
 
 import { experience, type ExperienceRole } from '../siteContent';
+import { matchRecord } from './checkableRecords';
 
 export interface RoleSpan {
   id: string;
@@ -79,6 +80,21 @@ export interface TimelineRole extends ExperienceRole {
   span: RoleSpan;
   /** Length in years, with the current role measured to `NOW`. */
   years: number;
+  /**
+   * Whether this role's employer names a record a reader can open and check —
+   * an organisation on the CV, or the one documented program. Gold is the
+   * site's one claim mark (CLAUDE.md prime directive 3), so it lands on the
+   * employer string only where that string is `sourced`, and never on the
+   * dates: a date is self-reported, and self-reported is never gold. Every
+   * organisation on the CV is checkable; "Independent AI Consulting &
+   * Upskilling" names none, so that one role stays grey. Graded against the
+   * same allow-list as `tests/about_sourced_semantics.test.mjs`
+   * (`checkableRecords.ts`), asserted in
+   * `tests/experience_sourced_semantics.test.mjs`.
+   */
+  sourced: boolean;
+  /** The record the employer string matches, for the mark's accessible gloss. */
+  record: string | null;
 }
 
 /**
@@ -98,7 +114,12 @@ export const roles: TimelineRole[] = experience.map((role) => {
       `experience.ts: no date span for role "${role.id}". Every role in siteContent needs one.`,
     );
   }
-  return { ...role, span, years: (span.end ?? NOW) - span.start };
+  // Gold is graded off the employer string only. The program a role ran under
+  // (e.g. "Payday Super") is also a checkable record, so a role whose title
+  // names one earns the mark even if its employer somehow did not — but the
+  // mark itself is always painted on the company, never on a date.
+  const record = matchRecord(role.company) ?? matchRecord(role.role);
+  return { ...role, span, years: (span.end ?? NOW) - span.start, sourced: Boolean(record), record };
 });
 
 export const experienceContent = {

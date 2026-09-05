@@ -30,11 +30,17 @@ import { test, expect, type Page } from '@playwright/test';
  *    band under each bar as that bar arrives. The header that disclaimed any
  *    meaning is gone, because the disclaimer is no longer true.
  *
- * 3. **The playhead is white, and that is a rule, not a taste.** Gold on this
- *    site means one thing: this figure has a source. `Experience.tsx` grades
- *    every date `self-reported` (Caliper state), so nothing in this section may
- *    paint `--gold`. The "today" mark ships in `--white`. R-c8 resolved this
- *    contradiction explicitly against the motion reviewer's gold proposal.
+ * 3. **Gold marks a sourced employer, and never a date.** Gold on this site
+ *    means one thing: this claim has a source a reader can open. An employer on
+ *    the CV is such a source, so `#experience` now spends gold on the employer
+ *    strings graded `sourced` (`app/data/portfolio/experience.ts`, the same
+ *    allow-list as `tests/about_sourced_semantics.test.mjs`) — recessed at rest,
+ *    saturated under the active row. Dates are self-reported, so nothing on the
+ *    time axis may paint gold: the playhead, the axis ticks and the duration
+ *    readouts stay `--white`/`--mist`. The "today" mark ships in `--white`
+ *    (R-c8 resolved the motion reviewer's gold-playhead proposal against it).
+ *    G-E2 (ADV-1451Z P1) is what moved the mark from "nowhere in the section"
+ *    to "the sourced employer, and only there".
  *
  * 4. **Every readout sits inside the card.** At 390, 834, 1280, 1440 and 1920
  *    the duration labels stay at least 16 px inside the chart's right edge and
@@ -218,35 +224,79 @@ test.describe('#experience — the narrated signature (c18 / MOT-F-1)', () => {
     }
   });
 
-  test('TC-SCENE-EXP-03: nothing in the section paints gold', async ({ page }) => {
-    // The dates are graded `self-reported` (Experience.tsx, Caliper state).
-    // Gold is licensed for `sourced` only — CLAUDE.md prime directive 3, and
-    // R-c8 resolved the motion reviewer's gold playhead against it explicitly.
+  test('TC-SCENE-EXP-03: gold paints only sourced employers, never a date', async ({ page }) => {
+    // Gold is licensed for `sourced` only — CLAUDE.md prime directive 3. G-E2
+    // moved the mark onto the employer strings graded `sourced` in
+    // app/data/portfolio/experience.ts; the invariant this holds is that every
+    // gold pixel in #experience sits inside a [data-sourced] employer and none
+    // sits on a date (the playhead, the axis, or a duration readout).
     await page.goto('/?gl=force', { waitUntil: 'domcontentloaded' });
     await waitForPageReady(page);
     await page.locator(EXPERIENCE).scrollIntoViewIfNeeded();
     await page.waitForTimeout(2000);
 
-    const offenders = await page.evaluate((gold) => {
+    const anyGold = [
+      'rgb(201, 168, 76)', // --gold
+      'rgb(212, 182, 92)', // --gold-light
+      'rgb(232, 213, 163)', // --gold-pale
+      'rgb(176, 146, 63)', // --gold-dark
+    ];
+
+    const offenders = await page.evaluate((golds) => {
       const found: string[] = [];
       const section = document.querySelector('#experience');
       if (!section) return ['#experience is missing'];
       const props = ['color', 'backgroundColor', 'borderTopColor', 'borderRightColor',
         'borderBottomColor', 'borderLeftColor', 'outlineColor', 'stroke', 'fill'] as const;
-      for (const el of Array.from(section.querySelectorAll('*')).concat(section)) {
+      for (const el of Array.from(section.querySelectorAll('*'))) {
         for (const pseudo of [null, '::before', '::after']) {
           const cs = getComputedStyle(el, pseudo ?? undefined);
           for (const prop of props) {
-            if (String(cs[prop] ?? '').includes(gold)) {
-              found.push(`${el.tagName}.${el.className}${pseudo ?? ''} ${prop}`);
+            const value = String(cs[prop] ?? '');
+            if (!golds.some((g) => value.includes(g))) continue;
+            // Gold is licensed on a sourced employer string and nowhere else.
+            const onSourced = (el as HTMLElement).closest('[data-sourced]');
+            if (!onSourced) {
+              found.push(`${el.tagName}.${el.className}${pseudo ?? ''} ${prop}=${value}`);
             }
           }
         }
       }
       return found;
+    }, anyGold);
+
+    expect(
+      offenders,
+      `gold outside a sourced employer in #experience: ${offenders.join(' | ')}`,
+    ).toEqual([]);
+  });
+
+  test('TC-SCENE-EXP-03b: at most one saturated employer gold shares the chart at rest', async ({
+    page,
+  }) => {
+    // Eight employers sit in one chart; the per-view budget (as the vitrine and
+    // skills hold it) is one saturated "look here". At rest — no row active —
+    // the sourced employers are all recessed --gold-pale, so the saturated
+    // count is zero; it rises to one only under the active row.
+    await page.goto('/?gl=force', { waitUntil: 'domcontentloaded' });
+    await waitForPageReady(page);
+    await page.locator(EXPERIENCE).scrollIntoViewIfNeeded();
+    await page.waitForTimeout(1600);
+
+    const saturated = await page.evaluate((gold) => {
+      const section = document.querySelector('#experience');
+      if (!section) return -1;
+      let count = 0;
+      for (const el of Array.from(section.querySelectorAll('[data-sourced]'))) {
+        const box = el.getBoundingClientRect();
+        if (box.width < 1 || box.height < 1) continue;
+        if (box.bottom <= 0 || box.top >= window.innerHeight) continue;
+        if (getComputedStyle(el).color === gold) count += 1;
+      }
+      return count;
     }, GOLD);
 
-    expect(offenders, `gold painted inside #experience: ${offenders.join(' | ')}`).toEqual([]);
+    expect(saturated, 'at rest no employer is a saturated gold mark').toBeLessThanOrEqual(1);
   });
 
   test('TC-SCENE-EXP-04: the today playhead is white', async ({ page }) => {
