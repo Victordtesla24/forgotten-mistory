@@ -667,17 +667,34 @@ test.describe('Hero portrait', () => {
     }
     expect(reached, 'Tab reaches button[aria-pressed]').toBe(true);
 
-    // Keyboard focus is intent, so the loop is armed by the time it is reached.
+    // REWRITTEN (G-H1 correction): reaching the control is not the same as
+    // asking for the loop. The control no longer stands on the photograph — it
+    // stands in the proof band, below the fold — so focus on it is a reader
+    // moving through the page, not a reader pointing at the face. Arming on
+    // focus there would start a 1.1 MB video for anyone who tabs past it. The
+    // pointer path (hover over the figure) is unchanged and still armed by
+    // intent; the keyboard path is now explicit: focus offers, a press decides.
+    await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    await expect(toggle).toHaveAttribute('aria-label', 'Play the portrait');
+    await expect
+      .poll(async () => (await loopState(page)).paused, { message: 'still paused on focus alone' })
+      .toBe(true);
+
+    // Enter plays. A reader's own press is allowed however little motion they
+    // asked for (WCAG 2.2.2).
+    await page.keyboard.press('Enter');
     await expect(toggle).toHaveAttribute('aria-pressed', 'true');
     await expect(toggle).toHaveAttribute('aria-label', 'Pause the portrait');
+    await expect
+      .poll(async () => (await loopState(page)).paused, { message: 'video.paused after Enter' })
+      .toBe(false);
 
-    // Enter pauses. A user pause is the reader's decision (WCAG 2.2.2).
+    // Enter again pauses — the reader's decision, both ways.
     await page.keyboard.press('Enter');
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');
     await expect(toggle).toHaveAttribute('aria-label', 'Play the portrait');
-    await expect.poll(async () => (await loopState(page)).paused, { message: 'video.paused after Enter' }).toBe(true);
 
-    // Space toggles back.
+    // Space toggles too: it is a real <button>, not a div with a handler.
     await page.keyboard.press('Space');
     await expect(toggle).toHaveAttribute('aria-pressed', 'true');
     await expect(toggle).toHaveAttribute('aria-label', 'Pause the portrait');

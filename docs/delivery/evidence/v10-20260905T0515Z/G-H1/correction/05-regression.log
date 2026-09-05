@@ -1,0 +1,180 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/perf/performance.spec.ts tests/a11y/text-contrast.spec.ts tests/overhaul/flagship-visibility.spec.ts --workers=1 --reporter=line
+
+Running 28 tests using 1 worker
+
+[1A[2K[1/28] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+[1A[2K  1) [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 
+
+    Error: 4 text node(s) below AA — worst ten:
+    1.01:1 (needs 4.5) [vitrine] section#vitrine > div.Vitrine_railStage__SIf3G:nth-of-type(2) > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > div.Vitrine_links__gewEw:nth-of-type(3) > a.Vitrine_source__vBcGL — "Source" fg rgb(205,204,203) on bg rgb(204,203,201) @ 14px/400
+    3.58:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(2) > p.Bench_bandLabel__rA2BG — "Repositories" fg rgb(125,125,125) on bg rgb(40,40,40) @ 11px/400
+    3.96:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(3) > p.Bench_bandLabel__rA2BG — "Credentials" fg rgb(125,125,125) on bg rgb(32,32,32) @ 11px/400
+    4.10:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(1) > p.Bench_bandLabel__rA2BG — "Programmes" fg rgb(125,125,125) on bg rgb(29,29,29) @ 11px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m4[39m
+
+      366 |         failures.length,
+      367 |         `${failures.length} text node(s) below AA — worst ten:\n${worstTen(failures)}`,
+    > 368 |       ).toBe(0);
+          |         ^
+      369 |     });
+      370 |   }
+      371 | });
+        at /root/forgotten-mistory/.claude/worktrees/wf_ea3bd443-1d9-1/tests/a11y/text-contrast.spec.ts:368:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/error-context.md
+
+
+[1A[2K[2/28] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground
+[1A[2K[3/28] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes
+[1A[2K  2) [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes 
+
+    Error: 4 text node(s) below AA on ?gl=force — worst ten:
+    1.01:1 (needs 4.5) [vitrine] section#vitrine > div.Vitrine_railStage__SIf3G:nth-of-type(2) > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > div.Vitrine_links__gewEw:nth-of-type(3) > a.Vitrine_source__vBcGL — "Source" fg rgb(205,204,203) on bg rgb(204,203,201) @ 14px/400
+    3.58:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(2) > p.Bench_bandLabel__rA2BG — "Repositories" fg rgb(125,125,125) on bg rgb(40,40,40) @ 11px/400
+    3.96:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(3) > p.Bench_bandLabel__rA2BG — "Credentials" fg rgb(125,125,125) on bg rgb(32,32,32) @ 11px/400
+    4.14:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(1) > p.Bench_bandLabel__rA2BG — "Programmes" fg rgb(125,125,125) on bg rgb(28,28,28) @ 11px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m4[39m
+
+      399 |         failures.length,
+      400 |         `${failures.length} text node(s) below AA on ?gl=force — worst ten:\n${worstTen(failures)}`,
+    > 401 |       ).toBe(0);
+          |         ^
+      402 |     });
+      403 |   }
+      404 | });
+        at /root/forgotten-mistory/.claude/worktrees/wf_ea3bd443-1d9-1/tests/a11y/text-contrast.spec.ts:401:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-text-contrast-TC-CONT-4de2e-low-AA-over-the-live-scenes-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-text-contrast-TC-CONT-4de2e-low-AA-over-the-live-scenes-chromium/error-context.md
+
+
+[1A[2K[4/28] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes
+[1A[2K[5/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 1440 — hero atmosphere reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 1440 — hero atmosphere reads as light
+[flagship-visibility] hero@1440: ground=0.0030 coverage=46.23% peak=0.8308 motion=0.01209 box=1440x900
+
+[1A[2K[6/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light
+[flagship-visibility] about@1440: ground=0.0030 coverage=46.84% peak=0.6308 motion=0.03956 box=384x384
+
+[1A[2K[7/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 1440 — experience strata reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 1440 — experience strata reads as light
+[flagship-visibility] experience@1440: ground=0.0030 coverage=25.70% peak=0.7011 motion=0.03892 box=1298x505
+
+[1A[2K[8/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light
+[flagship-visibility] skills@1440: ground=0.0030 coverage=43.85% peak=0.5457 motion=0.03247 box=1248x580
+
+[1A[2K[9/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 1440 — hero atmosphere fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 1440 — hero atmosphere fallback
+[flagship-visibility:still] hero@1440: ground=0.0030 coverage=23.71% peak=0.0931
+
+[1A[2K[10/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback
+[flagship-visibility:still] about@1440: ground=0.0030 coverage=35.62% peak=0.0802
+
+[1A[2K[11/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 1440 — experience strata fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 1440 — experience strata fallback
+[flagship-visibility:still] experience@1440: ground=0.0030 coverage=4.09% peak=0.1559
+
+[1A[2K[12/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback
+[flagship-visibility:still] skills@1440: ground=0.0030 coverage=36.97% peak=0.0762
+
+[1A[2K[13/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 390 — hero atmosphere reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 390 — hero atmosphere reads as light
+[flagship-visibility] hero@390: ground=0.0030 coverage=100.00% peak=0.8308 motion=0.08854 box=390x844
+
+[1A[2K[14/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light
+[flagship-visibility] about@390: ground=0.0030 coverage=45.51% peak=0.4233 motion=0.01725 box=224x224
+
+[1A[2K[15/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 390 — experience strata reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 390 — experience strata reads as light
+[flagship-visibility] experience@390: ground=0.0030 coverage=36.39% peak=0.8308 motion=0.04220 box=356x605
+
+[1A[2K[16/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light
+[flagship-visibility] skills@390: ground=0.0030 coverage=49.20% peak=0.5333 motion=0.01447 box=342x152
+
+[1A[2K[17/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 390 — hero atmosphere fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 390 — hero atmosphere fallback
+[flagship-visibility:still] hero@390: ground=0.0030 coverage=16.99% peak=0.1746
+
+[1A[2K[18/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback
+[flagship-visibility:still] about@390: ground=0.0030 coverage=36.36% peak=0.0823
+
+[1A[2K[19/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 390 — experience strata fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 390 — experience strata fallback
+[flagship-visibility:still] experience@390: ground=0.0030 coverage=4.12% peak=0.1590
+
+[1A[2K[20/28] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback
+[flagship-visibility:still] skills@390: ground=0.0030 coverage=69.04% peak=0.0908
+
+[1A[2K[21/28] [chromium] › tests/perf/performance.spec.ts:41:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB
+[1A[2K[chromium] › tests/perf/performance.spec.ts:41:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB
+Total transfer size: 1.11 MB
+
+[1A[2K[22/28] [chromium] › tests/perf/performance.spec.ts:61:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s
+[1A[2K[chromium] › tests/perf/performance.spec.ts:61:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s
+LCP: 432 ms
+
+[1A[2K[23/28] [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05
+[1A[2K[chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05
+CLS: 0.0000
+
+[1A[2K[24/28] [chromium] › tests/perf/performance.spec.ts:149:7 › Performance Budgets › PERF-08: CLS < 0.05 on three cold loads at 1280x720, 1440x900 and 390x844
+[1A[2K[chromium] › tests/perf/performance.spec.ts:149:7 › Performance Budgets › PERF-08: CLS < 0.05 on three cold loads at 1280x720, 1440x900 and 390x844
+CLS 1280x720 load 0: 0.00000
+
+[1A[2KCLS 1280x720 load 1: 0.00000
+
+[1A[2KCLS 1280x720 load 2: 0.00000
+
+[1A[2KCLS 1440x900 load 0: 0.00000
+
+[1A[2KCLS 1440x900 load 1: 0.00000
+
+[1A[2KCLS 1440x900 load 2: 0.00000
+
+[1A[2KCLS 390x844 load 0: 0.00000
+
+[1A[2KCLS 390x844 load 1: 0.00000
+
+[1A[2KCLS 390x844 load 2: 0.00000
+
+[1A[2K[25/28] [chromium] › tests/perf/performance.spec.ts:216:7 › Performance Budgets › PERF-04: Page loads without page errors
+[1A[2K[26/28] [chromium] › tests/perf/performance.spec.ts:227:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s
+[1A[2K[chromium] › tests/perf/performance.spec.ts:227:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s
+DOMContentLoaded: 85 ms
+
+[1A[2K[27/28] [chromium] › tests/perf/performance.spec.ts:261:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked
+[1A[2K[chromium] › tests/perf/performance.spec.ts:261:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked
+No-JS hero title: {"opacity":1,"visibility":"visible","area":38133.10546875,"withinFirstViewport":true,"text":16}
+
+[1A[2K[28/28] [chromium] › tests/perf/performance.spec.ts:314:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer
+[1A[2K[chromium] › tests/perf/performance.spec.ts:314:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer
+LCP entry: {"startTime":924,"tag":"IMG","className":""}
+
+[1A[2K  2 failed
+    [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 
+    [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes 
+  26 passed (6.9m)
