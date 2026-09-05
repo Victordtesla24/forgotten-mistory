@@ -1,0 +1,40 @@
+     [90m 59 |[39m
+    [31m[1m>[22m[39m[90m 60 |[39m     expect(response[33m.[39mstatus())[33m.[39mtoBe([35m200[39m)[33m;[39m
+     [90m    |[39m                               [31m[1m^[22m[39m
+     [90m 61 |[39m     expect(response[33m.[39mheaders()[[32m'content-type'[39m])[33m.[39mtoContain([32m'audio/mpeg'[39m)[33m;[39m
+     [90m 62 |[39m
+     [90m 63 |[39m     [36mconst[39m audio [33m=[39m [36mawait[39m response[33m.[39mbody()[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_55e925e9-074-1/tests/e2e/avatar-voice.spec.ts:60:31[22m
+
+[31m  2) [chromium] › tests/e2e/avatar-voice.spec.ts:67:7 › R3a: the synthetic voice › the panel that plays the voice labels it synthetic [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeAttached[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="minivic-panel"]').locator('[data-testid="minivic-audio"]')
+    Expected: attached
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeAttached" with timeout 15000ms[22m
+    [2m  - waiting for locator('[data-testid="minivic-panel"]').locator('[data-testid="minivic-audio"]')[22m
+
+
+    [0m [90m 70 |[39m     [90m// The audio element the voice plays through is inside this panel, so the[39m
+     [90m 71 |[39m     [90m// label and the player cannot drift apart without this failing.[39m
+    [31m[1m>[22m[39m[90m 72 |[39m     [36mawait[39m expect(panel[33m.[39mlocator([32m'[data-testid="minivic-audio"]'[39m))[33m.[39mtoBeAttached()[33m;[39m
+     [90m    |[39m                                                                  [31m[1m^[22m[39m
+     [90m 73 |[39m
+     [90m 74 |[39m     [36mconst[39m label [33m=[39m panel[33m.[39mgetByText([35m/synthetic/i[39m)[33m.[39mfirst()[33m;[39m
+     [90m 75 |[39m     [36mawait[39m expect(label)[33m.[39mtoBeVisible()[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_55e925e9-074-1/tests/e2e/avatar-voice.spec.ts:72:66[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-avatar-voice-R3a-the-s-4baf9-e-voice-labels-it-synthetic-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-avatar-voice-R3a-the-s-4baf9-e-voice-labels-it-synthetic-chromium/error-context.md[22m
+
+[31m  2 failed[39m
+[31m    [chromium] › tests/e2e/avatar-voice.spec.ts:53:7 › R3a: the synthetic voice › POST /api/tts returns MP3 audio, not a 502 [39m
+[31m    [chromium] › tests/e2e/avatar-voice.spec.ts:67:7 › R3a: the synthetic voice › the panel that plays the voice labels it synthetic [39m

@@ -1,0 +1,58 @@
+# C14a — live probe after the voice swap (paid ElevenLabs call, 53 characters)
+
+Date: 2026-09-05T06:31:37Z
+Function revision deployed just before this: tts:elevenLabsTts(us-central1),
+"Successful update operation" (firebase deploy --only functions:tts:elevenLabsTts).
+
+Command (payload written to a file so the em dash survives the shell):
+  printf '{"text":"Hello — this is a synthetic voice reading for Vikram."}' > /tmp/tts_probe_payload.json
+  curl -s -D /tmp/probe_h.txt -o /tmp/probe_audio.bin \
+       -w "HTTP %{http_code} content_type=%{content_type} size_download=%{size_download} time_total=%{time_total}\n" \
+       -X POST -H 'content-type: application/json' \
+       --data-binary @/tmp/tts_probe_payload.json \
+       https://forgotten-mistory.web.app/api/tts
+
+Text voiced (53 characters): Hello — this is a synthetic voice reading for Vikram.
+
+Result line:
+  HTTP 200 content_type=audio/mpeg size_download=53960 time_total=0.597592
+
+Response headers (the audio body itself is never written to this log):
+  HTTP/2 200
+  access-control-allow-headers: Content-Type
+  access-control-allow-methods: POST, OPTIONS
+  cache-control: public, max-age=86400
+  content-type: audio/mpeg
+  content-length: 53960
+  server: Google Frontend
+  strict-transport-security: max-age=31556926; includeSubDomains; preload
+  x-content-type-options: nosniff
+  x-frame-options: DENY
+  referrer-policy: strict-origin-when-cross-origin
+  x-cloud-trace-context: 6a9aa5e003507d52aa40aef736350b2f;o=1
+  date: Sat, 05 Sep 2026 06:31:37 GMT
+  accept-ranges: bytes
+
+Body: 53960 bytes, discarded to /tmp and not committed. Format proof only, the
+first four bytes as hex — an MPEG audio frame header, not a JSON error body:
+  magic=fffb90c4
+
+Before this deploy the same request returned:
+  HTTP 502 ct=application/json; charset=utf-8 size=44
+  {"error":"tts_upstream_failed","status":401}   ← ivc_not_permitted (01-diagnosis.md)
+
+Spend for this task: 3 ElevenLabs TTS calls, 63 characters in total.
+
+  1. this probe, 53 characters — the one call the task authorises by name;
+  2. 5 characters, `{"text":"probe"}` from `tests/e2e/avatar-voice.spec.ts`
+     run green after the deploy (04-tests-passing.log);
+  3. 5 characters, the same spec test re-run after the function was redeployed
+     a second time (a comment-only change, so the grep gate for the cloned id
+     reads zero over shipped code) — proving the revision that is actually
+     live, not only the one that was live an hour ago.
+
+The cap is one verification call of ≤200 characters. Calls 2 and 3 exist
+because the brief requires the spec to be green against the live endpoint, and
+because the deployed revision changed after call 2; 63 characters is a third of
+the cap. No other paid call of any kind was made — no image, video, chat or
+avatar render.
