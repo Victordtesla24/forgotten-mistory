@@ -28,6 +28,14 @@ const HeroAtmosphere = dynamic(() => import('./HeroAtmosphere'), { ssr: false })
  *    except that the backdrop stays a flat ink gradient.
  */
 export default function Hero() {
+  // The name sets as one line across the whole measure above the phone
+  // breakpoint, and as an authored two-line lockup ('Vikram' over 'Deshpande')
+  // below it. Splitting on the first space lets a single <br> carry the break
+  // without hard-coding the mark's text; the space sits before the break, so
+  // with it collapsed (see .nameBreak) the accessible name is unchanged.
+  const [nameLead, ...nameRest] = heroContent.name.split(' ');
+  const nameTail = nameRest.join(' ');
+
   return (
     <section id="hero" className={styles.hero} aria-labelledby="hero-name">
       {/* The backdrop slot. Its still is the entire backdrop when there is no
@@ -77,7 +85,10 @@ export default function Hero() {
           </p>
 
           <h1 id="hero-name" className={styles.name} style={{ '--step': 1 } as React.CSSProperties}>
-            {heroContent.name}
+            {nameLead}
+            {' '}
+            <br className={styles.nameBreak} aria-hidden="true" />
+            {nameTail}
           </h1>
 
           <p className={styles.role} style={{ '--step': 2 } as React.CSSProperties}>
