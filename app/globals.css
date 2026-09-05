@@ -743,6 +743,19 @@ nav {
     padding: 5rem 1.25rem;
     /* translateY + opacity are owned by framer-motion (m.div) — no CSS transform or
        transition here, or it would fight the spring. */
+    /* Closed, it is out of the hit-test tree, not merely transparent (ADV-4).
+       framer-motion animates it to `opacity: 0`, which left its "Download CV"
+       link as an unseeable 548x96 target lying across the whole nav band. The
+       visibility flip is delayed by the exit spring's own length so the close
+       animation is still watched, and it is the only property CSS owns here —
+       nothing that could fight the spring. */
+    visibility: hidden;
+    transition: visibility 0s linear var(--motion-emphatic);
+}
+
+.nav-overlay.open {
+    visibility: visible;
+    transition: visibility 0s linear 0s;
 }
 
 .nav-links {
@@ -824,6 +837,14 @@ footer {
     gap: 1.1rem;
     mix-blend-mode: difference;
 }
+/* The CV action defers to the hero until the reader scrolls (R-c13 ADV-4).
+   At the top of the page this pill and the hero's own "Download CV" button were
+   two identical controls in one screen — the reader's first job on arriving was
+   to work out which of the two was the real one. The hero owns the first
+   screen, because that is where it makes its case; the pill takes the action
+   over the moment the reader leaves it, and holds its space in the bar meanwhile
+   so nothing shifts when it arrives. Hidden, not merely transparent: a control
+   that cannot be seen must not be in the hit-test or accessibility tree. */
 .nav-cv {
     padding: 0.5rem 1.1rem;
     border: 1px solid var(--white);
@@ -833,7 +854,23 @@ footer {
     font-weight: 600;
     letter-spacing: var(--ls-small);
     white-space: nowrap;
-    transition: background var(--motion-fast) var(--motion-ease-standard), color var(--motion-fast) var(--motion-ease-standard);
+    visibility: hidden;
+    opacity: 0;
+    transition:
+        background var(--motion-fast) var(--motion-ease-standard),
+        color var(--motion-fast) var(--motion-ease-standard),
+        opacity var(--motion-base) var(--motion-ease-standard),
+        visibility 0s linear var(--motion-base);
+}
+
+nav[data-scrolled="true"] .nav-cv {
+    visibility: visible;
+    opacity: 1;
+    transition:
+        background var(--motion-fast) var(--motion-ease-standard),
+        color var(--motion-fast) var(--motion-ease-standard),
+        opacity var(--motion-base) var(--motion-ease-standard),
+        visibility 0s linear 0s;
 }
 .nav-cv:hover {
     background: var(--white);
