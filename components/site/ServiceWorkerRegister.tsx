@@ -17,6 +17,32 @@ type SwToast =
  * it tears down. The toast region is always in the DOM (an empty aria-live status) so the
  * notifications are announced in place without layout shift.
  */
+/**
+ * One automatic reload per tab session. `sessionStorage` is read inside try/catch because
+ * merely touching it throws where site data is blocked (Safari private browsing, a browser
+ * configured to refuse storage). The failure is not swallowed: it resolves to "already
+ * reloaded", the direction that can never loop, and the visitor still gets the explicit
+ * Reload action from the update toast.
+ */
+const RELOADED_KEY = 'fm-sw-reloaded';
+
+function hasAutoReloaded(): boolean {
+  try {
+    return window.sessionStorage.getItem(RELOADED_KEY) === '1';
+  } catch {
+    return true;
+  }
+}
+
+function markAutoReloaded(): boolean {
+  try {
+    window.sessionStorage.setItem(RELOADED_KEY, '1');
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export default function ServiceWorkerRegister() {
   const [toast, setToast] = useState<SwToast>(null);
 
@@ -44,6 +70,22 @@ export default function ServiceWorkerRegister() {
       }
       return;
     }
+
+    // Captured before registration: a page that has no controller yet is a first visit,
+    // and the install that follows will claim it (clients.claim in sw.js) — which fires
+    // controllerchange for a page that is already showing the current build. Only a
+    // controller REPLACING another means a newer build installed underneath the visitor.
+    const hadController = Boolean(navigator.serviceWorker.controller);
+
+    const onControllerChange = () => {
+      if (!hadController || hasAutoReloaded()) return;
+      // The new worker has claimed this page, so the next request is served by it — and
+      // with network-first navigations that means the document this reload fetches is the
+      // one that was just deployed. Waiting for the visitor to notice a toast is what let
+      // a deploy sit unseen for an hour.
+      if (markAutoReloaded()) window.location.reload();
+    };
+    navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
 
     const register = () => {
       navigator.serviceWorker
@@ -74,12 +116,17 @@ export default function ServiceWorkerRegister() {
         });
     };
 
+    const unlisten = () => navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+
     if (document.readyState === 'complete') {
       register();
-      return;
+      return unlisten;
     }
     window.addEventListener('load', register, { once: true });
-    return () => window.removeEventListener('load', register);
+    return () => {
+      window.removeEventListener('load', register);
+      unlisten();
+    };
   }, []);
 
   return (
