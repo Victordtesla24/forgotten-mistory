@@ -37,3 +37,6 @@ ROOT CAUSE PROVEN 09:2xZ (returning-visitor probe, persistent Chrome profile aga
 
 ## COMMENT (2026-09-05T09:24:32.569Z)
 Merged to main by the orchestrator (--no-ff) and pushed for immediate deploy; verifier lane still running against the branch and will poll the live headers. Pre-fix returning-visitor profile saved (visitor-prefix: old worker fm-static-v1, load2 deliveryType cache-storage) to prove the upgrade path after deploy.
+
+## COMPLETE (2026-09-05T09:28:12.705Z)
+LIVE + PROVEN 09:27Z: deploy 966f497 success; live cache-control: public, max-age=0, must-revalidate; sw.js cache name fm-static-4a003ba0 (build-stamped). Pre-fix visitor profile (old worker, stale b69bc97b): first load after the fix still served the stale shell while the new worker installed, the worker's one-time reload then showed 4a003ba0 from the network; every later load shows the live build (HTTP cache revalidated, 304). Returning visitors now see each deploy on their next load. Verifier lane result pending (recorded when it lands).
