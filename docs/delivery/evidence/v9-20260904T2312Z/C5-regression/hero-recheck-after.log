@@ -1,0 +1,20 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/cinematic.spec.ts tests/a11y/reduced-motion-choreography.spec.ts --reporter=line
+
+[2mRunning [22m14[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/14] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › About keeps a parallel reduced-motion choreography
+[1A[2K[2/14] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Hero keeps a parallel reduced-motion choreography
+[1A[2K[3/14] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Experience keeps a parallel reduced-motion choreography
+[1A[2K[4/14] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Skills keeps a parallel reduced-motion choreography
+[1A[2K[5/14] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Vitrine keeps a parallel reduced-motion choreography
+[1A[2K[6/14] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Listen keeps a parallel reduced-motion choreography
+[1A[2K[7/14] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:595:7 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › RM-5 no blanket universal kill switch survives in the shipped CSS
+[1A[2K[8/14] [chromium] › tests/overhaul/cinematic.spec.ts:47:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-01: the hero backdrop is decorative — hidden from AT and behind the content
+[1A[2K[9/14] [chromium] › tests/overhaul/cinematic.spec.ts:83:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-02: nothing intercepts clicks on the hero CTA
+[1A[2K[10/14] [chromium] › tests/overhaul/cinematic.spec.ts:120:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-03: nav is transparent at top and frosts (data-scrolled) after scroll
+[1A[2K[11/14] [chromium] › tests/overhaul/cinematic.spec.ts:143:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-04: with every scene suppressed the page is still the whole page
+[1A[2K[12/14] [chromium] › tests/overhaul/cinematic.spec.ts:170:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-05: the hero name renders in full with no glyph-masking clip-path (D-NAME-01)
+[1A[2K[13/14] [chromium] › tests/overhaul/cinematic.spec.ts:184:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-06: under reduced motion the hero entrance is a fade, not a rise
+[1A[2K[14/14] [chromium] › tests/overhaul/cinematic.spec.ts:243:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-07: under reduced motion every section is readable, not left behind a curtain
+[1A[2K[32m  14 passed[39m[2m (35.4s)[22m

@@ -174,21 +174,25 @@ test.describe('Performance Budgets', () => {
    * element is painted by the static document itself — no hydration, no framer,
    * no WebGL.
    */
-  test('PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked', async ({ browser }) => {
-    const ctx = await browser.newContext({ viewport: { width: 412, height: 823 } });
+  test('PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked', async ({ browser, baseURL }) => {
+    // `browser.newContext()` does not inherit the config's `use.baseURL`, so it is
+    // threaded through explicitly: the suite runs against whatever static server
+    // PLAYWRIGHT_BASE_URL names, never a hardcoded :5599. The hero <h1> is
+    // `#hero-name` (Hero.tsx) — the `.hero-title` class left with the old hero.
+    const ctx = await browser.newContext({ baseURL, viewport: { width: 412, height: 823 } });
     const page = await ctx.newPage();
 
     // The served markup must not ship the LCP element hidden.
-    const html = await (await page.request.get('http://localhost:5599/')).text();
-    const heroTitleTag = /<h1[^>]*class="[^"]*\bhero-title\b[^"]*"[^>]*>/.exec(html)?.[0];
+    const html = await (await page.request.get('/')).text();
+    const heroTitleTag = /<h1[^>]*\bid="hero-name"[^>]*>/.exec(html)?.[0];
     expect(heroTitleTag, 'hero <h1> must be present in the server-rendered HTML').toBeTruthy();
     expect(heroTitleTag, 'hero <h1> must not be served with opacity:0 — it is the mobile LCP element')
       .not.toMatch(/opacity\s*:\s*0(?![.\d])/);
 
     await page.route('**/*.js', (route) => route.abort());
-    await page.goto('http://localhost:5599/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    const title = page.locator('#hero .hero-title');
+    const title = page.locator('#hero h1#hero-name');
     await expect(title).toBeVisible();
 
     const painted = await title.evaluate((el) => {
@@ -223,35 +227,32 @@ test.describe('Performance Budgets', () => {
    * entry at all (measured on production: zero entries after 9 s), which is what
    * made Lighthouse fall back to a TTI-shaped LCP of 6.393 s.
    */
-  test('PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer', async ({ browser }) => {
-    const ctx = await browser.newContext({ viewport: { width: 412, height: 823 } });
+  test('PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer', async ({ browser, baseURL }) => {
+    // Same origin handling as PERF-06: the config's baseURL, never a hardcoded port.
+    const ctx = await browser.newContext({ baseURL, viewport: { width: 412, height: 823 } });
     const page = await ctx.newPage();
-    await page.goto('http://localhost:5599/', { waitUntil: 'load' });
+    await page.goto('/', { waitUntil: 'load' });
 
+    // `largest-contentful-paint` entries are only ever delivered through a
+    // PerformanceObserver's list — `performance.getEntriesByType()` returns none
+    // for this type, so the previous reader resolved null on every page (the
+    // observer callback ignored its list and re-polled the timeline). Read the
+    // observed list, exactly as PERF-02 does; the assertions below are unchanged.
     const entry = await page.evaluate(() => {
       return new Promise<{ startTime: number; tag: string; className: string } | null>((resolve) => {
-        const read = () => {
-          const entries = performance.getEntriesByType(
-            'largest-contentful-paint',
-          ) as (PerformanceEntry & { element?: Element })[];
+        let latest: { startTime: number; tag: string; className: string } | null = null;
+        new PerformanceObserver((list) => {
+          const entries = list.getEntries() as (PerformanceEntry & { element?: Element })[];
           const last = entries[entries.length - 1];
-          if (!last) return null;
-          return {
+          if (!last) return;
+          latest = {
             startTime: last.startTime,
             tag: last.element?.tagName ?? '',
-            className: last.element?.className ?? '',
+            className: typeof last.element?.className === 'string' ? last.element.className : '',
           };
-        };
-        const immediate = read();
-        if (immediate) {
-          resolve(immediate);
-          return;
-        }
-        new PerformanceObserver(() => {
-          const next = read();
-          if (next) resolve(next);
+          resolve(latest);
         }).observe({ type: 'largest-contentful-paint', buffered: true });
-        setTimeout(() => resolve(read()), 5000);
+        setTimeout(() => resolve(latest), 5000);
       });
     });
     await ctx.close();

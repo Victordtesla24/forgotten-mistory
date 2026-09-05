@@ -186,10 +186,16 @@ test.describe('Overhaul: Cinematic-Monochrome Design Language', () => {
     await gotoHome(page);
 
     // Replaces the old spotlight-is-static assertion, which lost its subject with
-    // the `.cine-spotlight` plane. The equivalent contract on the new hero is that
-    // the `heroRise` entrance (opacity + 14px translate) swaps for `heroFade`
-    // (opacity only), and the site-wide guard in globals.css collapses its
-    // duration to ~0 — so the copy is present and still, never animating in.
+    // the `.cine-spotlight` plane. The contract on the new hero is that the
+    // `heroRise` entrance (opacity + 14px translate) swaps for `heroFade`
+    // (opacity only). This test used to also demand the fade be collapsed to
+    // <20 ms by a site-wide duration guard in globals.css; that guard was the
+    // R-46 kill switch the design-system lock (§4.3) condemns, and
+    // tests/a11y/reduced-motion-choreography.spec.ts (RM-1 / RM-5) requires a
+    // perceptible 150–600 ms fade with no universal override. Two live specs
+    // cannot demand both, so this one asserts the contract that survives: the
+    // entrance interpolates opacity and nothing else, runs inside the R-46 fade
+    // band, and leaves the copy untransformed.
     const name = page.locator('#hero h1');
     await expect(name).toBeVisible();
 
@@ -199,13 +205,39 @@ test.describe('Overhaul: Cinematic-Monochrome Design Language', () => {
       let ms = parseFloat(first) || 0;
       if (first.endsWith('ms')) ms = parseFloat(first);
       else if (first.endsWith('s')) ms = parseFloat(first) * 1000;
-      return { name: s.animationName, durationMs: ms };
+      // Read the keyframes the running animation actually interpolates off the
+      // shipped CSSOM, so a transform smuggled back into the fade is caught.
+      const props = new Set<string>();
+      const walk = (rules: CSSRuleList): void => {
+        for (const rule of Array.from(rules)) {
+          const keyframes = rule as CSSKeyframesRule;
+          if (keyframes.name === s.animationName && keyframes.cssRules) {
+            for (const frame of Array.from(keyframes.cssRules)) {
+              const style = (frame as CSSKeyframeRule).style;
+              for (let i = 0; i < style.length; i++) props.add(style[i]);
+            }
+          }
+          const grouping = rule as CSSGroupingRule;
+          if (grouping.cssRules) walk(grouping.cssRules);
+        }
+      };
+      for (const sheet of Array.from(document.styleSheets)) {
+        try {
+          walk(sheet.cssRules);
+        } catch {
+          // Cross-origin sheet: not part of this build's CSS.
+        }
+      }
+      return { name: s.animationName, durationMs: ms, keyframeProps: Array.from(props), transform: s.transform };
     });
 
     // CSS Modules hashes the keyframe name (e.g. `Hero_heroFade__GnbNG`), so match
     // on the stem rather than the build-specific hash.
     expect(entrance.name).toMatch(/heroFade/);
-    expect(entrance.durationMs).toBeLessThan(20);
+    expect(entrance.keyframeProps, 'the reduced-motion entrance is opacity only — no rise').toEqual(['opacity']);
+    expect(entrance.durationMs).toBeGreaterThanOrEqual(150);
+    expect(entrance.durationMs).toBeLessThanOrEqual(600);
+    expect(entrance.transform).toBe('none');
   });
 
   test('TC-CINE-07: under reduced motion every section is readable, not left behind a curtain', async ({ page }) => {

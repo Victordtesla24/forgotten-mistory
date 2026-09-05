@@ -431,13 +431,54 @@
     }
 }
 
+/* Reduced motion (R-46 / lock §4.3) is a parallel score, not a kill switch.
+   Colour transitions stay — a hover that changes colour causes no vestibular
+   response and is the affordance signal (RM-4). Only movement is dropped
+   (RM-3), and the entrance becomes an opacity-only fade, staggered so the
+   section still arrives in an order (RM-1). Mirrors Hero.module.css. */
 @media (prefers-reduced-motion: reduce) {
-    .trackBar::before,
-    .trackCompany,
-    .trackYears,
+    .kicker,
+    .title,
+    .lede,
+    .chart,
+    .roles {
+        animation: experienceFade 320ms linear both;
+    }
+
+    .title {
+        animation-delay: 40ms;
+    }
+
+    .lede {
+        animation-delay: 80ms;
+    }
+
+    .chart {
+        animation-delay: 120ms;
+    }
+
+    .roles {
+        animation-delay: 160ms;
+    }
+
+    .trackBar::before {
+        transition: background var(--motion-fast) var(--motion-ease-standard);
+    }
+
+    .roleChevron,
     .roleChevron::before,
     .roleChevron::after {
         transition: none;
+    }
+
+    @keyframes experienceFade {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 }
 

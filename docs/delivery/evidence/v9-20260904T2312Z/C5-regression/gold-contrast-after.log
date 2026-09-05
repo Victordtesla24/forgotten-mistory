@@ -1,0 +1,72 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/gold-contrast.spec.ts --reporter=line
+
+[2mRunning [22m3[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/3] [chromium] › tests/a11y/gold-contrast.spec.ts:328:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-02: every skills status label clears 4.5:1
+[1A[2K[2/3] [chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited
+[1A[2K[2m[chromium] › tests/a11y/gold-contrast.spec.ts:328:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-02: every skills status label clears 4.5:1[22m
+
+=== GC-02 status labels (#skills) ===
+
+[1A[2K  "measured in production"  6.27:1  (fg #8f93a3 on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 6.32–6.22:1)
+
+[1A[2K  "measured in production"  6.27:1  (fg #8f93a3 on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 6.32–6.22:1)
+
+[1A[2K  "measured in production"  6.27:1  (fg #8f93a3 on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 6.32–6.22:1)
+
+[1A[2K  "measured in production"  6.27:1  (fg #8f93a3 on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 6.32–6.23:1)
+
+[1A[2K  "measured in production"  6.27:1  (fg #8f93a3 on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 6.32–6.23:1)
+
+[1A[2K  "measured in production"  6.27:1  (fg #8f93a3 on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 6.32–1:1)
+
+[1A[2K[3/3] [chromium] › tests/a11y/gold-contrast.spec.ts:343:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-03: no gold text is ever painted on an --ink-500 ground
+[1A[2K[2m[chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited[22m
+
+=== GC-01 live repository URLs (#vitrine) ===
+
+[1A[2K  "https://aether.srv1356245.hstgr.cloud"  3.15:1  (fg #68604d on modal bg #0b0c0e, 12px/400, opacity chain 0.42, ground rgb(10, 11, 13); spread 3.14–3.16:1)
+
+[1A[2K  "https://abentertainment.com.au"  8.62:1  (fg #c9a84c on modal bg #0a0b0d, 12px/400, opacity chain 1, ground rgb(10, 11, 13); spread 8.67–8.62:1)
+
+[1A[2K  "https://forgotten-mistory.web.app"  3.16:1  (fg #68614d on modal bg #0c0d0f, 12px/400, opacity chain 0.42, ground rgb(10, 11, 13); spread 3.14–3.16:1)
+
+[1A[2K[31m  1) [chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited [39m
+
+    Error: gold is the site's evidence mark; a reader who cannot read it cannot check the evidence
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "https://aether.srv1356245.hstgr.cloud = 3.15:1 (needs 4.5:1)",[39m
+    [31m+   "https://forgotten-mistory.web.app = 3.16:1 (needs 4.5:1)",[39m
+    [31m+ ][39m
+
+    [0m [90m 323 |[39m       failures[33m.[39mmap((m) [33m=>[39m [32m`${m.label} = ${r2(m.ratio)}:1 (needs ${AA_TEXT}:1)`[39m)[33m,[39m
+     [90m 324 |[39m       [32m'gold is the site\'s evidence mark; a reader who cannot read it cannot check the evidence'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 325 |[39m     )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 326 |[39m   })[33m;[39m
+     [90m 327 |[39m
+     [90m 328 |[39m   test([32m'GC-02: every skills status label clears 4.5:1'[39m[33m,[39m [36masync[39m ({ page }) [33m=>[39m {[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_d2c0a366-fd2-1/tests/a11y/gold-contrast.spec.ts:325:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-gold-contrast-WCAG-2--1078e--clears-4-5-1-as-composited-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-gold-contrast-WCAG-2--1078e--clears-4-5-1-as-composited-chromium/error-context.md[22m
+
+
+[1A[2K[2m[chromium] › tests/a11y/gold-contrast.spec.ts:343:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-03: no gold text is ever painted on an --ink-500 ground[22m
+
+=== GC-03 gold-on---ink-500 sweep === 0 offender(s)
+
+[1A[2K[31m  1 failed[39m
+[31m    [chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited [39m
+[32m  2 passed[39m[2m (7.3s)[22m

@@ -167,12 +167,49 @@
 }
 
 /* ── Colophon ────────────────────────────────────────────────────────────── */@media (prefers-reduced-motion: reduce) {
-    /* The rule is already drawn; only the movement is dropped. */
+    /* R-46 / lock §4.3: a parallel score. The copy and the channels arrive on
+       an opacity-only fade in order; the rule is already drawn (its default
+       entrance is a scaleX, which is movement) and the underline no longer
+       travels. Mirrors Hero.module.css. */
+    .kicker,
+    .title,
+    .sentence,
+    .channels,
+    .coffee {
+        animation: listenFade 320ms linear both;
+    }
+
+    .title {
+        animation-delay: 40ms;
+    }
+
+    .sentence {
+        animation-delay: 80ms;
+    }
+
+    .channels {
+        animation-delay: 120ms;
+    }
+
+    .coffee {
+        animation-delay: 160ms;
+    }
+
     .rule {
         animation: none;
     }
 
     .channel::after {
         transition: none;
+    }
+
+    @keyframes listenFade {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 }
