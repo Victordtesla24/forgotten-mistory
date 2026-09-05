@@ -251,13 +251,25 @@
        runs the full width, so it lifts every column by the same amount and
        cancels out of that difference exactly the way an ink wash would. Only
        the two radials are *shaped*, and the pool — the light the reader's eye
-       actually goes to, at the right edge beside the photograph — was landing
-       about `#5E5E5E` where the plates sit on about `#151515`. Carrying it to
-       0.44 puts a tenth of the frame clear of the copy's ground while leaving
-       the copy's ground where it was: the plates are `rgb(10 10 10 / 0.90)`, so
-       nine tenths of any change here never reaches a glyph, and `--mist-400`
-       over the brightest point of this pool under a plate still measures
-       5.8:1 (`tests/a11y/text-contrast.spec.ts`, 390, no `?gl=force`). */
+       actually goes to, at the right edge beside the photograph — was both too
+       shallow and too short.
+
+       Too short mattered more, and alpha alone could not fix it. The gate reads
+       a column of the frame over its whole height, and this pool's vertical
+       radius was 40% of a 1490 px stage centred at 34%: it reached y = 1103 and
+       left the bottom quarter — the ledger, the contact links, the foot of the
+       photograph — on flat ink. Taking the alpha from 0.34 to 0.46 alone moved
+       the measurement by 0.010, to 0.0614, which clears 0.06 by 0.0014 and is
+       not a passing test. Carrying the radius to 58% at 38% instead lights the
+       right edge for the full drop of the frame — which is what the note beside
+       it already said this pool was for — and measures 0.0775.
+
+       The copy's ground is left where it was: the plates are
+       `rgb(10 10 10 / 0.90)`, so nine tenths of any change here never reaches a
+       glyph. Measured rather than argued — the band under the type moved 0.0796
+       to 0.0826 while the lit tenth moved 0.1307 to 0.1601, and every hero text
+       node still clears AA at 390 on both paths
+       (`tests/a11y/text-contrast.spec.ts`, `05-regression.log`). */
     .stage {
         background:
             linear-gradient(
@@ -268,9 +280,9 @@
                 transparent 30%
             ),
             radial-gradient(
-                42% 40% at 100% 34%,
-                rgb(246 246 246 / 0.44) 0%,
-                rgb(246 246 246 / 0.34) 44%,
+                42% 58% at 100% 38%,
+                rgb(246 246 246 / 0.46) 0%,
+                rgb(246 246 246 / 0.36) 44%,
                 transparent 86%
             ),
             radial-gradient(

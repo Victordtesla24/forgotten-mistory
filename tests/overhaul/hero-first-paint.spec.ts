@@ -431,11 +431,18 @@ test.describe('G-H2a: the hero atmosphere is in the first paint', () => {
  * 0.06 is the architecture note's own figure (§4.1(b)) and is not re-derived
  * here. What is worth recording is the room it has on the build that ships it,
  * so a later reader can tell a real regression from host noise — measured in
- * this lane's `04-tests-passing.log`: 0.32 at 1440 and 0.23 at 390 on
- * `?gl=force`, 0.088 at 1440 and 0.075 at 390 on the reduced-motion still. The
- * still is the tight one by construction: it has no shader to be bright with,
- * only the site's own gradient, so it is the surface a careless scrim edit
- * breaks first and the reason the still is measured at all.
+ * this lane's `04-tests-passing.log`: **0.399** at 1440 and **0.205** at 390 on
+ * `?gl=force`, **0.102** at 1440 and **0.078** at 390 on the reduced-motion
+ * still. The two `?gl=force` figures move by a few hundredths run to run — the
+ * shader's fog is still ramping when the frame is taken — and the two stills do
+ * not move at all, being CSS.
+ *
+ * The 390 still is the tight one, by construction and permanently: it is the
+ * only one of the four with no shader to be bright with, so its whole picture
+ * is `.stage`'s own gradient. It is therefore the surface a careless scrim edit
+ * breaks first, and the reason the still is measured at all rather than trusted
+ * to follow the shader path. It is also the one that was red when this
+ * assertion was first run (0.0511, `02-tests-failing.log`).
  */
 const SCRIM_MIN_DELTA = 0.06;
 

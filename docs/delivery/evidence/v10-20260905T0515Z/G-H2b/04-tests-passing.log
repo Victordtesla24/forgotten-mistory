@@ -1,0 +1,25 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-first-paint.spec.ts --workers=1 --reporter=list
+
+Running 10 tests using 1 worker
+
+[TC-HERO-FIRSTPAINT-01] still mean luminance @1440: 0.0515
+  ✓   1 [chromium] › tests/overhaul/hero-first-paint.spec.ts:201:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [1440]: the hero slot carries a lit still, served and painted without the scene (2.8s)
+[TC-HERO-FIRSTPAINT-01] still mean luminance @390: 0.0731
+  ✓   2 [chromium] › tests/overhaul/hero-first-paint.spec.ts:201:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [390]: the hero slot carries a lit still, served and painted without the scene (1.5s)
+[TC-HERO-FIRSTPAINT-02] canvas_after_dcl_ms_glforce_1440: 1485
+  ✓   3 [chromium] › tests/overhaul/hero-first-paint.spec.ts:260:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [1440]: the hero canvas mounts on a cold load (2.1s)
+[TC-HERO-FIRSTPAINT-02] canvas_after_dcl_ms_glforce_390: 1212
+  ✓   4 [chromium] › tests/overhaul/hero-first-paint.spec.ts:260:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [390]: the hero canvas mounts on a cold load (1.7s)
+  ✓   5 [chromium] › tests/overhaul/hero-first-paint.spec.ts:288:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02b: the hero scene mounts even though the page never settles (3.0s)
+  ✓   6 [chromium] › tests/overhaul/hero-first-paint.spec.ts:334:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-03: priority is opt-in — no other scene jumps the idle gate (1.3s)
+[TC-HERO-SCRIM-01] 1440 gl: column=0.067..0.667 (18 nodes) under_type=0.0885 lit_window=0.4291 at=0.717 delta=0.3406
+  ✓   7 [chromium] › tests/overhaul/hero-first-paint.spec.ts:541:11 › G-H2b: the hero scrim is a column-bound grade, over the shader › TC-HERO-SCRIM-01 [1440, gl]: the light crosses the frame the type does not stand on (15.3s)
+[TC-HERO-SCRIM-01] 390 gl: column=0.043..0.957 (18 nodes) under_type=0.2017 lit_window=0.4260 at=0.950 delta=0.2242
+  ✓   8 [chromium] › tests/overhaul/hero-first-paint.spec.ts:541:11 › G-H2b: the hero scrim is a column-bound grade, over the shader › TC-HERO-SCRIM-01 [390, gl]: the light crosses the frame the type does not stand on (6.7s)
+[TC-HERO-SCRIM-01] 1440 still: column=0.067..0.667 (18 nodes) under_type=0.0408 lit_window=0.1425 at=0.883 delta=0.1017
+  ✓   9 [chromium] › tests/overhaul/hero-first-paint.spec.ts:541:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [1440, still]: the light crosses the frame the type does not stand on (3.5s)
+[TC-HERO-SCRIM-01] 390 still: column=0.043..0.957 (18 nodes) under_type=0.0827 lit_window=0.1603 at=0.950 delta=0.0776
+  ✓  10 [chromium] › tests/overhaul/hero-first-paint.spec.ts:541:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [390, still]: the light crosses the frame the type does not stand on (2.6s)
+
+  10 passed (42.1s)
