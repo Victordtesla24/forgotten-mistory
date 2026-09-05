@@ -242,4 +242,48 @@ test.describe('TC-SCENE-ABOUT: the compass turns over a field of light', () => {
     // A context that goes away must take the field with it, not freeze it.
     expect(component).toContain('webglcontextlost');
   });
+
+  test('TC-SCENE-ABOUT-07: the field is driven by the section data — answered/role/sourced, not scroll alone', () => {
+    const glsl = readFileSync(GLSL_SOURCE, 'utf8');
+    const component = readFileSync(FIELD_SOURCE, 'utf8');
+
+    // G-A3: a recruiter's recall of #about must be the GL field carrying the
+    // story, not the SVG widget. That only holds if the light knows the three
+    // states the ten dimensions are actually in — answered from the candidate,
+    // computed from the role (open), and sourced (a record a reader can open) —
+    // rather than lighting every sector identically and only moving the index.
+
+    // Two state masks reach the shader as uniforms and are read per sector.
+    expect(glsl).toContain('uniform float uAnsweredMask;');
+    expect(glsl).toContain('uniform float uSourcedMask;');
+
+    // Read without indexing a uniform array (unreliable in a WebGL1 fragment
+    // shader): a bit test with exp2, applied to this pixel's own sector.
+    const body = glsl.slice(glsl.lastIndexOf('void main'));
+    expect(body).toMatch(/maskBit\s*\(\s*uAnsweredMask/);
+    expect(body).toMatch(/maskBit\s*\(\s*uSourcedMask/);
+    expect(glsl).toMatch(/float\s+maskBit\s*\([^)]*\)\s*\{[\s\S]*?exp2\(/);
+
+    // Both states must actually shape the light, and additively — the light may
+    // gain from the data but never drop a sector below its floor. The answered
+    // bloom and the sourced lift are both `+=` onto `sector`.
+    expect(body).toMatch(/sector\s*\+=\s*answered\b/);
+    expect(body).toMatch(/sector\s*\+=\s*sourced\b/);
+
+    // The section, not the shader, owns which sectors those are: the masks are
+    // reduced from about.ts (the same source the rose and the list read), so
+    // the field can never disagree with the chrome about a sector's state.
+    expect(component).toContain("from '@/app/data/portfolio/about'");
+    expect(component).toMatch(/ANSWERED_MASK[\s\S]*?dimension\.side === 'candidate'/);
+    expect(component).toMatch(/SOURCED_MASK[\s\S]*?dimension\.sourced/);
+    expect(component).toContain('uAnsweredMask: { value: ANSWERED_MASK }');
+    expect(component).toContain('uSourcedMask: { value: SOURCED_MASK }');
+
+    // The masks are integer bitfields, not colour: the site's one accent marks
+    // a sourced figure in the DOM and never enters the shader (TC-SCENE-ABOUT-06
+    // pins the absence of the accent by name; this pins that the data path added
+    // here did not smuggle it back in as a hex).
+    expect(glsl).not.toMatch(/#[0-9a-fA-F]{3,8}\b/);
+    expect(component).not.toMatch(/#[0-9a-fA-F]{6}\b/);
+  });
 });

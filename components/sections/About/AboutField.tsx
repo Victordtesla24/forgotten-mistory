@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
 import { PALETTE } from '@/lib/palette';
+import { aboutContent } from '@/app/data/portfolio/about';
 import { aboutFieldFragmentShader, aboutFieldVertexShader } from './field.glsl';
 
 /**
@@ -20,6 +21,29 @@ import { aboutFieldFragmentShader, aboutFieldVertexShader } from './field.glsl';
  */
 
 const SECTORS = 10;
+
+/**
+ * The two facts the field draws besides "which one is being read", packed one
+ * bit per dimension so the fragment program reads a sector's state without
+ * indexing a uniform array (unreliable in a WebGL1 fragment shader). These come
+ * straight from `about.ts`, the same source the SVG rose and the list read, so
+ * the light can never disagree with the chrome about which sectors are answered
+ * or which carry a source.
+ *
+ * `uAnsweredMask`: the seven the engine computes from the candidate and that are
+ * answered on the page (`side === 'candidate'`); the three role-side sectors the
+ * rose draws open are clear. `uSourcedMask`: the sectors whose answer names a
+ * record a reader can open — the ones the DOM marks with the site's one accent.
+ * The field lifts their light; the accent itself never leaves the SVG chrome.
+ */
+const ANSWERED_MASK = aboutContent.dimensions.reduce(
+  (mask, dimension, index) => (dimension.side === 'candidate' ? mask | (1 << index) : mask),
+  0,
+);
+const SOURCED_MASK = aboutContent.dimensions.reduce(
+  (mask, dimension, index) => (dimension.sourced ? mask | (1 << index) : mask),
+  0,
+);
 
 /** The angle, in radians, that carries dimension `index` to twelve o'clock. */
 function indexAngle(index: number): number {
@@ -55,6 +79,11 @@ export default function AboutField({ active }: AboutFieldProps) {
       uIntensity: { value: 0 },
       uInk: { value: new THREE.Color(PALETTE.ink900) },
       uLight: { value: new THREE.Color(PALETTE.white) },
+      // Section data, one bit per dimension. Constant for the section's life —
+      // the ten dimensions do not change — so these are set once and never
+      // touched in the frame loop.
+      uAnsweredMask: { value: ANSWERED_MASK },
+      uSourcedMask: { value: SOURCED_MASK },
     }),
     [],
   );
