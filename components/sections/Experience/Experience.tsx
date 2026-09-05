@@ -205,7 +205,16 @@ export default function Experience() {
                     });
                   }}
                 >
-                  <span className={styles.trackCompany}>{role.company}</span>
+                  {/* Gold is the site's one claim mark: an employer a reader
+                      can open and check carries it, on the name itself and
+                      never on the dates. Recessed at rest (--gold-pale) so a
+                      chart of eight employers is not eight "look here"s; the
+                      active row's employer steps up to saturated --gold. The
+                      flag is on the data (experience.ts), so the grade and the
+                      colour cannot drift apart. */}
+                  <span className={styles.trackCompany} data-sourced={role.sourced || undefined}>
+                    {role.company}
+                  </span>
                   <span className={styles.trackLine}>
                     {/* The bar grows from nothing about its own left edge, one
                         row behind the last. The readout is its sibling, not its
@@ -272,7 +281,9 @@ export default function Experience() {
                   >
                     <span className={styles.roleTitle}>{role.role}</span>
                     <span className={styles.roleMeta}>
-                      <span className={styles.roleCompany}>{role.company}</span>
+                      <span className={styles.roleCompany} data-sourced={role.sourced || undefined}>
+                        {role.company}
+                      </span>
                       <span className={styles.roleDates}>{role.dates}</span>
                     </span>
                     <span className={styles.roleChevron} aria-hidden="true" />

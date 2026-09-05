@@ -64,6 +64,7 @@ export default function CareerStrata({ spans, hover, entered }: CareerStrataProp
       },
       uProgress: { value: still ? 1 : 0 },
       uHover: { value: -1 },
+      uScroll: { value: 0 },
     };
   }, []);
 
@@ -99,6 +100,18 @@ export default function CareerStrata({ spans, hover, entered }: CareerStrataProp
       const progress = material.uniforms.uProgress;
       progress.value = Math.min(progress.value + delta / PROGRESS_SECONDS, 1);
     }
+
+    // Scroll parallax. The canvas fills the chart's slot, so its own rect is the
+    // chart's travel through the viewport: 0 when its top sits at the foot of
+    // the screen, 1 as it climbs off the top. One layout read of a single
+    // element per frame — the same element three.js already measures for `size`
+    // — feeds uScroll, which the shader spreads across the depth planes so they
+    // slide past one another rather than moving as one sheet.
+    const canvas = state.gl.domElement;
+    const rect = canvas.getBoundingClientRect();
+    const viewport = window.innerHeight || 1;
+    const travel = (viewport - rect.top) / (viewport + rect.height);
+    material.uniforms.uScroll.value = Math.min(Math.max(travel, 0), 1);
 
     const intensity = material.uniforms.uIntensity;
     intensity.value = Math.min(intensity.value + delta * 0.5, 1);

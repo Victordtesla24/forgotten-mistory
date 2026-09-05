@@ -74,6 +74,13 @@ export const strataFragmentShader = /* glsl */ `
   uniform float uProgress;
   // Row index under the pointer, CPU-lerped; negative means no row.
   uniform float uHover;
+  // The chart's travel through the viewport, 0 at the foot of the screen and 1
+  // as it climbs off the top. Drives the depth parallax below: each band is
+  // shifted by this by a factor of its own depth, so the three planes slide
+  // past one another as the reader scrolls rather than moving as one sheet.
+  // Zero when the field is not mounted (reduced motion / no WebGL), so the
+  // no-motion still is unaffected.
+  uniform float uScroll;
 
   // Half-height of a lit sediment band. A bar is ~9 px tall in a ~500 px
   // canvas; lighting only that would be invisible, and lighting much more
@@ -107,7 +114,12 @@ export const strataFragmentShader = /* glsl */ `
     float bands = 0.0;
     for (int i = 0; i < 3; i++) {
       float depth = float(i) + 1.0;
-      float y = uv.y * (7.0 + depth * 4.0) + parallax.y * depth + uTime * 0.045 * depth;
+      // Depth parallax on scroll: the near plane (depth 1) travels slowest, the
+      // far planes faster, so the strata separate as the chart crosses the
+      // screen. The rate is uScroll scaled by depth — the two-position offset
+      // test measures exactly this per-plane difference.
+      float scrollShift = uScroll * (0.9 + depth * 1.1);
+      float y = uv.y * (7.0 + depth * 4.0) + parallax.y * depth + uTime * 0.045 * depth + scrollShift;
       float drift = noise(vec2(uv.x * 2.0 + t * depth, floor(y)));
       // A stratum, not a hairline: the band occupies two thirds of its own
       // period, softened by the drift value so no two are the same width. At

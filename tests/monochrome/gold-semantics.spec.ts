@@ -734,3 +734,110 @@ test.describe('G-A — #about spends gold on its sourced evidence and nothing el
     ).toEqual([]);
   });
 });
+
+/**
+ * G-E2 — #experience spends gold on a sourced employer, and budgets it.
+ *
+ * The section used to teach the site's evidence language with no gold at all.
+ * G-E2 (ADV-1451Z P1) gives the employer strings graded `sourced`
+ * (`app/data/portfolio/experience.ts`, the same allow-list as
+ * `tests/about_sourced_semantics.test.mjs`) the mark — but eight employers sit
+ * in one chart, so the same per-view rule the vitrine and skills hold applies:
+ * one saturated "look here", not eight. The sourced employers are recessed
+ * `--gold-pale` at rest and step up to saturated `--gold` only under the active
+ * or open row.
+ *
+ * These two tests read the composited colour off the page, so they cannot be
+ * satisfied by renaming a class: GE-01 holds the saturated budget at rest, and
+ * GE-02 holds that every gold pixel sits on a `[data-sourced]` employer and
+ * none on a date.
+ */
+const EXPERIENCE_SATURATED_BUDGET = 1;
+
+test.describe('G-E2 — #experience gold marks a sourced employer, once per view', () => {
+  test('GE-01: at rest at most one saturated gold employer shares the viewport', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.locator('#experience').scrollIntoViewIfNeeded();
+    await settle(page);
+
+    const saturated = await page.evaluate((gold: number[]) => {
+      const parse = (s: string) => {
+        const m = String(s).match(/rgba?\(([^)]+)\)/);
+        if (!m) return null;
+        const p = m[1].split(/[,\s/]+/).filter(Boolean).map(Number);
+        return { rgb: [p[0], p[1], p[2]], a: p.length > 3 ? p[3] : 1 };
+      };
+      const isGold = (s: string) => {
+        const c = parse(s);
+        if (!c || c.a === 0) return false;
+        return (
+          Math.abs(c.rgb[0] - gold[0]) <= 1 &&
+          Math.abs(c.rgb[1] - gold[1]) <= 1 &&
+          Math.abs(c.rgb[2] - gold[2]) <= 1
+        );
+      };
+      const section = document.querySelector('#experience');
+      if (!section) return -1;
+      let count = 0;
+      for (const el of Array.from(section.querySelectorAll('[data-sourced]'))) {
+        const box = el.getBoundingClientRect();
+        if (box.width < 1 || box.height < 1) continue;
+        if (box.bottom <= 0 || box.top >= window.innerHeight) continue;
+        if (isGold(getComputedStyle(el).color)) count += 1;
+      }
+      return count;
+    }, SATURATED_GOLD[0] as unknown as number[]);
+
+    expect(
+      saturated,
+      'R-110 — one saturated gold mark per view; sourced employers rest at --gold-pale',
+    ).toBeLessThanOrEqual(EXPERIENCE_SATURATED_BUDGET);
+  });
+
+  test('GE-02: gold in #experience sits only on a sourced employer, never a date', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.locator('#experience').scrollIntoViewIfNeeded();
+    await settle(page);
+
+    const offenders = await page.evaluate((golds: number[][]) => {
+      const parse = (s: string) => {
+        const m = String(s).match(/rgba?\(([^)]+)\)/);
+        if (!m) return null;
+        const p = m[1].split(/[,\s/]+/).filter(Boolean).map(Number);
+        return { rgb: [p[0], p[1], p[2]], a: p.length > 3 ? p[3] : 1 };
+      };
+      const isGold = (s: string) => {
+        const c = parse(s);
+        if (!c || c.a === 0) return false;
+        return golds.some(
+          (g) =>
+            Math.abs(c.rgb[0] - g[0]) <= 1 &&
+            Math.abs(c.rgb[1] - g[1]) <= 1 &&
+            Math.abs(c.rgb[2] - g[2]) <= 1,
+        );
+      };
+      const props = ['color', 'backgroundColor', 'borderTopColor', 'borderBottomColor', 'fill', 'stroke'] as const;
+      const out: string[] = [];
+      const section = document.querySelector('#experience');
+      if (!section) return ['#experience is missing'];
+      for (const el of Array.from(section.querySelectorAll('*'))) {
+        const cs = getComputedStyle(el);
+        for (const p of props) {
+          if (!isGold(cs[p] as unknown as string)) continue;
+          if (!(el as HTMLElement).closest('[data-sourced]')) {
+            out.push(`${el.tagName.toLowerCase()}.${(el.className || '').toString().slice(0, 40)} via ${p}`);
+          }
+          break;
+        }
+      }
+      return out;
+    }, ANY_GOLD as unknown as number[][]);
+
+    expect(
+      offenders,
+      `gold outside a sourced employer (a date must never be gold): ${offenders.join(' | ')}`,
+    ).toEqual([]);
+  });
+});
