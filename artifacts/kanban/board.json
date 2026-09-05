@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T06:03:37.506Z",
+  "updated": "2026-09-05T06:20:07.521Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -36,7 +36,7 @@
     {
       "id": "t_62c9ee4d",
       "title": "Cycle 13 — Next 15.5.25 security upgrade + checks.yml installs functions deps + .gitignore conflict markers",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 92,
       "parents": [],
@@ -48,7 +48,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:01:51.406Z",
+      "updated": "2026-09-05T06:20:07.405Z",
       "summary": "Worktree .claude/worktrees/wf_18f926b0-2a4-1 (base 8dc4cf4). Battery already green there: tsc 0, lint 0, audit 10/10, build exit 0, secret scan PASS, root npm audit 0 vulns; regression log stopped at 243/276 (8 ✘, all in the CI-red list). Nothing committed yet.",
       "decisions": [
         {
@@ -56,7 +56,8 @@
           "text": "S-5/S-6 (full 276-spec regression) re-assigned to cycle 14 (t_d0066b7a) on the merged main so the unit fits the 30-min cap (O1) and the verified upgrade ships on the 10-min cadence; deterministic gates (tsc/lint/audit/build/npm audit/node tests) + independent verification remain the merge gate. Dispatched: Workflow wf_74bc3c5b-f9d (analyst-programmer:c13 opus xhigh → reviewer:v-c13 opus max)."
         }
       ],
-      "comments": []
+      "comments": [],
+      "result": "Commits 18c6beb + 878adab on worktree-wf_18f926b0-2a4-1; gates tsc/lint/audit 10-10/build/npm-audit 0/node tests 59-59 all exit 0 (re-run by V-C13); merged to main as 5ec231d."
     },
     {
       "id": "t_8cdf3b61",
@@ -101,10 +102,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:20:07.208Z",
       "summary": "decision.md (HYG-branches) already abandoned wt/data-backend and pruned 5 worktrees/4 branches. Left: .claude/worktrees/wf_7658aeb2-d07-1 (base 4f1d659, superseded by wf_18f926b0-2a4-2) and wf_dc0c232e-59d-1 (base 0c02861, superseded by wf_18f926b0-2a4-1); empty dir /var/tmp/v6-wt.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T06:20:07.208Z",
+          "by": "orchestrator",
+          "text": "Also: CLAUDE.md says 276 Playwright tests; the suite reports 288 (V-C13 finding V-5) — correct CLAUDE.md and README in the same hygiene commit."
+        }
+      ]
     },
     {
       "id": "t_d0066b7a",
@@ -175,7 +182,7 @@
     {
       "id": "t_927a093b",
       "title": "V-C13 — independent verification of cycle 13 (Next 15.5.25) from git + logs only",
-      "status": "running",
+      "status": "done",
       "assignee": "reviewer",
       "priority": 92,
       "parents": [
@@ -189,7 +196,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:02:50.271Z",
+      "updated": "2026-09-05T06:20:07.521Z",
       "summary": "Fresh reviewer; reads only the branch diff and the committed evidence logs; re-runs the deterministic gates itself.",
       "decisions": [
         {
@@ -197,7 +204,8 @@
           "text": "Id swap 06:1xZ: the orchestrator quoted t_927a093b to workflow wf_74bc3c5b-f9d as the V-C13 spec; the board ids were swapped consistently (t_927a093b ⇄ t_3e553558, t_329d1673 ⇄ t_2331f031, parents updated) so the running verifiers read the right spec. Ids are opaque; no history lost."
         }
       ],
-      "comments": []
+      "comments": [],
+      "result": "PASS (fbc7253): 14 gates re-run by the reviewer, all 8 regression ✘ matched line-for-line to CI run 33936783382 on main@debd25b; qualification V-3: 45 specs never reached (cycle 14 owns them)."
     },
     {
       "id": "t_329d1673",
@@ -303,10 +311,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:20:06.837Z",
       "summary": "R-c8 items 5 and 6. Gold rejected for the playhead (dates are self-reported). Files: components/sections/Experience/{CareerStrata.tsx,strata.glsl.ts,Experience.module.css,Experience.tsx}; tests/overhaul/experience-signature.spec.ts (TDD first).",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T06:20:06.837Z",
+          "by": "orchestrator",
+          "text": "Merged with SPEC-v10 c18-experience-narrative-glsl (same files, same acceptance): spec file tests/overhaul/scene-experience.spec.ts; add the SA line: strata.glsl.ts header no longer says it encodes nothing."
+        }
+      ]
     },
     {
       "id": "t_cc03ed93",
@@ -349,10 +363,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:20:06.972Z",
       "summary": "R-c8 item 10. Files: components/sections/Skills/{Bench.module.css,Bench.tsx,Skills.module.css}. Terminal node dots stay gold at full opacity.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T06:20:06.972Z",
+          "by": "orchestrator",
+          "text": "Merged with SPEC-v10 c15 gold half: elements painting rgb(201,168,76) inside #skills ≤ 6 (29 today per live probe); every remaining gold element sits inside [data-caliper-state=sourced], .measuredMark, or a[href^=https://github.com/] — spec tests/monochrome/gold-semantics.spec.ts."
+        }
+      ]
     },
     {
       "id": "t_2cc9a990",
@@ -372,10 +392,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:20:07.113Z",
       "summary": "R-c8 item 11. Files: components/site/Navigation.tsx, app/globals.css nav block.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T06:20:07.113Z",
+          "by": "orchestrator",
+          "text": "Merged with SPEC-v10 c15 dedupe: visible a[href$=Vik_Resume_Final.pdf] count ≤ 2 at 1440×900 (three today: nav pill, hero button, hero card link)."
+        }
+      ]
     },
     {
       "id": "t_052675d5",
@@ -418,10 +444,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:20:06.903Z",
       "summary": "R-c8 items 15 and 16. Files: components/sections/Listen/{Listen.module.css,Listen.tsx}, components/sections/About/About.module.css. No second motion beat in #listen (MOT-F-4 confirms the caliper-close is the one).",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T06:20:06.903Z",
+          "by": "orchestrator",
+          "text": "Merged with SPEC-v10 c15 (R4 client path): #listen must also carry exactly one [data-cta=engage] ≥ 44 px tall whose accessible name matches /engagement|book|start a project|work together/i and reaches HTTP < 400 or a mailto with a non-empty subject (no calendly link exists today; a mailto with subject is the sanctioned route until the Owner names a booking tool). Spec: tests/e2e/audience-paths.spec.ts (t_7cb992f4 writes it first)."
+        }
+      ]
     },
     {
       "id": "t_652f383d",
@@ -449,7 +481,7 @@
     {
       "id": "t_cba10f82",
       "title": "R9/TDD — requirements spec + test-case list for every unmet R-item and §0.3 mandate before any further code",
-      "status": "running",
+      "status": "done",
       "assignee": "solutions-architect",
       "priority": 96,
       "parents": [],
@@ -461,10 +493,11 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:01:51.566Z",
+      "updated": "2026-09-05T06:20:07.325Z",
       "summary": "solutions-architect (level 1, max). Produces docs/delivery/evidence/v10-20260905T0515Z/SPEC-v10.md: for each of R1–R12, O1–O6, M1–M7 the current state (Verified from the live site/repo, with the command), the gap, the binary acceptance test (spec file + assertion), and the cycle that closes it. Inputs: docs/prompt.md §2–§3, §0.2, §0.3, §14; R-c8 review; C13/C11 evidence; this board.",
       "decisions": [],
-      "comments": []
+      "comments": [],
+      "result": "SPEC-v10.md written (25 rows R1–R12/O1–O6/M1–M7; scene inventory 2 GLSL + 4 SVG/CSS + avatar stage; 13 proposed tasks → 9 created, 4 merged into existing). Orchestrator verified the file exists and the rows parse."
     },
     {
       "id": "t_1e4e053e",
@@ -836,6 +869,222 @@
           "text": "Tools used this cycle (orchestrator): Higgsfield MCP balance; n8n MCP get_workflow_details ×2; gh CLI (run list); sqlite3 read-only migration of the retired Hermes board; Workflow tool ×3 (opus council agents)."
         }
       ]
+    },
+    {
+      "id": "t_28011b3d",
+      "title": "Cycle 14a — restore /api/tts: ElevenLabs Secret Manager drift fixed, premade voice labelled synthetic (R3 voice, M5 prerequisite)",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 94,
+      "parents": [
+        "t_cba10f82"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T06:20:05.274Z",
+      "updated": "2026-09-05T06:20:05.274Z",
+      "summary": "SPEC-v10.md §R3(a): live POST /api/tts → 502 {tts_upstream_failed, status 401} while ELEVENLABS_API_KEY in /root/.claude/.env.production authenticates (GET /v1/user/subscription → 200, tier payg, IVC/PVC false). Classified as Secret Manager drift, not a credit block. The cloned voice 0ZJ4kFDo6bZUNQsuULOW is refused on payg (ivc_not_permitted) — orchestrator decision (§0.1): the site speaks with an ElevenLabs premade (stock) voice and every place it is heard is labelled synthetic. Spend cap for this task: ONE verification call ≤ 200 characters (≈ $0.03 on payg); log the character count.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_4e30d620",
+      "title": "Scene 3 — #about flagship: GLSL compass field behind the SVG rose (R2, M1)",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 90,
+      "parents": [
+        "t_cba10f82"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T06:20:05.604Z",
+      "updated": "2026-09-05T06:20:05.604Z",
+      "summary": "SPEC-v10.md §R2 / c16: promote #about from SVG-only (0 canvases, 138 paths) to an R2-grade scene mounted through components/gl/Scene.tsx — a shader field that turns with the compass (cycle-12 scroll-drive semantics kept), no new npm dependency, no new network asset; reduced motion → zero canvases and the SVG stays. Files: components/sections/About/AboutField.tsx, field.glsl.ts, About.tsx, Compass.tsx, About.module.css; tests/overhaul/scene-about.spec.ts (TDD first).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_cbff57b0",
+      "title": "Scene 4 — #skills flagship: GLSL bench field behind the wire diagram (R2, M1)",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 86,
+      "parents": [
+        "t_cba10f82",
+        "t_3729f57e"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T06:20:05.764Z",
+      "updated": "2026-09-05T06:20:05.764Z",
+      "summary": "SPEC-v10.md c19: #skills has 0 canvases (20-path SVG bench). Add a shader field mounted through components/gl/Scene.tsx that lights the sourced edges; gold stays a mark (≤ 6 gold-painting elements after cycle 17). Files: components/sections/Skills/BenchField.tsx, bench.glsl.ts, Skills.tsx, Skills.module.css; tests/overhaul/scene-skills.spec.ts (TDD first).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_60d9cd7a",
+      "title": "Scenes 5 + 6 — #vitrine and #listen flagships: GLSL fields under the plates and the caliper (R2, M1)",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 84,
+      "parents": [
+        "t_cba10f82",
+        "t_6fb8914b"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T06:20:05.931Z",
+      "updated": "2026-09-05T06:20:05.931Z",
+      "summary": "SPEC-v10.md c20 minus the C-02 rail fix (cycle 11 lands it). #vitrine: 6 SVG drawings, 0 canvases → a shader field under the rail that answers the lit plate; #listen: CSS caliper beat, 0 canvases → a field that answers the caliper-close (the CSS beat stays the single motion beat, MOT-F-4). Files: components/sections/Vitrine/VitrineField.tsx, vitrine.glsl.ts, Vitrine.tsx, Vitrine.module.css, components/sections/Listen/ListenField.tsx, listen.glsl.ts, Listen.tsx, Listen.module.css; tests/overhaul/scene-vitrine.spec.ts + scene-listen.spec.ts (TDD first). Two commits; if the 30-min cap approaches, ship #vitrine and return goal_complete:false naming #listen.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_dc096608",
+      "title": "Scene 7 — MiniVic mouth canvas becomes a GLSL viseme stage driven by the audio envelope (R2 seventh scene, R3 lip-motion slice)",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 83,
+      "parents": [
+        "t_cba10f82",
+        "t_28011b3d"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T06:20:06.191Z",
+      "updated": "2026-09-05T06:20:06.191Z",
+      "summary": "SPEC-v10.md c20b: the 7th scene lives in the chrome (§0.3-1 allows one flagship per section). Scaffolding exists: lib/visemeMap.ts (21 visemes), MiniVicBot.tsx:209 mouth canvas (Canvas2D), :214 AnalyserNode. Achievable now: a WebGL stage mounted through components/gl/Scene.tsx rendering viseme shapes from the audio envelope while /api/tts audio plays, labelled synthetic. OWNER-BLOCKED remainder (recorded, never faked): phoneme-accurate ≤ 40 ms lip-sync needs a generated viseme/phoneme track — Higgsfield 0 credits, ElevenLabs IVC/PVC refused. Files: components/avatar/VisemeStage.tsx, viseme.glsl.ts, components/MiniVicBot.tsx, lib/visemeMap.ts; tests/e2e/avatar-mouth.spec.ts (TDD first).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_1173cd73",
+      "title": "R3 latency + M5 greeting — first word ≤ 1.5 s (streamed reply / warm function) and a researched, synthetic-labelled MiniVic greeting",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 89,
+      "parents": [
+        "t_cba10f82",
+        "t_28011b3d"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T06:20:06.472Z",
+      "updated": "2026-09-05T06:20:06.472Z",
+      "summary": "SPEC-v10.md c17: live /api/chat answers in 3.42 s end-to-end (OpenAI rung) vs the ≤ 1.5 s perceived-real-time budget. Stream the reply (chunked/SSE) or keep the instance warm (minInstances 1 — record the Blaze estimate) and start speaking on the first sentence. Greeting: the deployed greeting MP3 still speaks the old sentence; re-voice the researched introduction (docs/delivery/evidence/v9-20260904T2312Z/B-research/01-employer-expectations.md) with the premade voice from cycle 14a — ONE generation ≤ 600 characters, logged. Files: functions/index.js, components/MiniVicBot.tsx, app/data/miniVicKnowledge.ts, public/assets/minivic-greeting.mp3; tests/e2e/avatar-latency.spec.ts, tests/content/minivic-knowledge.spec.ts (TDD first).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_7e0f060c",
+      "title": "R2 fps proof — median rAF delta ≤ 16.7 ms (1440) / ≤ 20 ms (390) for all 7 scenes, measured on GPU hardware only",
+      "status": "todo",
+      "assignee": "tester",
+      "priority": 82,
+      "parents": [
+        "t_cba10f82",
+        "t_4e30d620",
+        "t_cbff57b0",
+        "t_60d9cd7a",
+        "t_dc096608",
+        "t_86cdd156"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T06:20:06.545Z",
+      "updated": "2026-09-05T06:20:06.545Z",
+      "summary": "SPEC-v10.md c20c: this VPS has no GPU (useGLCapability.ts:33-36 rejects SwiftShader) so fps is never claimed from it. tests/perf/scene-framerate.spec.ts samples 240 frames per scene and runs only when GPU_RUNNER=1 (test.skip with a printed reason otherwise — never a stubbed pass, never ?gl=force). Evidence comes from GPU hardware (the owner Mac self-hosted runner when online, or the orchestrator running the spec on the Mac control plane and committing the JSON). Never in the deploy path (O3).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_49d8560b",
+      "title": "R5/R6 register — OWNER-BLOCKED.md names every sub-4K asset with the exact credit that unblocks it; asset_resolution contract test",
+      "status": "todo",
+      "assignee": "solutions-architect",
+      "priority": 85,
+      "parents": [
+        "t_cba10f82"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "architecture / requirements_analysis",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T06:20:06.662Z",
+      "updated": "2026-09-05T06:20:06.662Z",
+      "summary": "SPEC-v10.md c19b: every raster/video is sub-4K (my-avatar.mp4 1280×720@24, my-hero-avatar.mp4 640×360@24, og-image.png 1200×630, my_avatar.png 900×502, my_avatar.webp/.avif 1480×826). Generation is Owner-blocked (Higgsfield 0 credits / free; OpenRouter −$5.38). Write docs/delivery/evidence/v10-20260905T0515Z/OWNER-BLOCKED.md (asset, measured, target 3840×2160 / 2160p60, generator + model, written prompt plan, credit that unblocks, cost estimate) and tests/asset_resolution.test.mjs (node --test): every asset ≥ 4K OR listed in OWNER-BLOCKED.md with a reason; an unlisted sub-4K asset fails. The register + test are not blocked; only the generation half is.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_bb67c9bd",
+      "title": "R10/R12 — contract test: every closed cycle has artifacts/kanban/cycles/<cycle>.json with PEA numerator/denominator, adversarial verdict, deploy commit and tools_used",
+      "status": "todo",
+      "assignee": "coder",
+      "priority": 60,
+      "parents": [
+        "t_cba10f82"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding / documentation",
+        "level": 4,
+        "effort": "medium (xhigh when coding)"
+      },
+      "provider": "openrouter→anthropic-oauth",
+      "created": "2026-09-05T06:20:06.758Z",
+      "updated": "2026-09-05T06:20:06.758Z",
+      "summary": "SPEC-v10.md c21 (the report files are written by the orchestrator every cycle; this task adds the guard). tests/cycle_reports.test.mjs (node --test): parse every artifacts/kanban/cycles/*.json — required keys {cycle, pea_numerator, pea_denominator: 25, adversarial_verdict, deploy_commit, tools_used (≥ 1 entry)}; a malformed file fails.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
     }
   ]
 }

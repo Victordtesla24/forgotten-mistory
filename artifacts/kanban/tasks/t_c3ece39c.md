@@ -40,3 +40,6 @@ role_matrix: cleanup → level 4 → effort **medium** (effort_cascade.yaml; dep
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-05T06:20:07.208Z)
+Also: CLAUDE.md says 276 Playwright tests; the suite reports 288 (V-C13 finding V-5) — correct CLAUDE.md and README in the same hygiene commit.

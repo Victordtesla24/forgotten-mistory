@@ -55,3 +55,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## DECISION (2026-09-05T06:01:51.406Z)
 S-5/S-6 (full 276-spec regression) re-assigned to cycle 14 (t_d0066b7a) on the merged main so the unit fits the 30-min cap (O1) and the verified upgrade ships on the 10-min cadence; deterministic gates (tsc/lint/audit/build/npm audit/node tests) + independent verification remain the merge gate. Dispatched: Workflow wf_74bc3c5b-f9d (analyst-programmer:c13 opus xhigh → reviewer:v-c13 opus max).
+
+## COMPLETE (2026-09-05T06:20:07.405Z)
+Commits 18c6beb + 878adab on worktree-wf_18f926b0-2a4-1; gates tsc/lint/audit 10-10/build/npm-audit 0/node tests 59-59 all exit 0 (re-run by V-C13); merged to main as 5ec231d.
