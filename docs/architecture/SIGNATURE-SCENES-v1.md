@@ -1,8 +1,14 @@
 # SIGNATURE-SCENES-v1 — architecture to MEET R2 / R5 / §0.3-1 / G-H2
 
-**Task:** `t_g_h2` (ADV-FAIL P0, lane G-H2 / G-X1) · **Author:** solutions-architect (§5, effort max)
-**Date:** 2026-09-05 · **Baseline:** `bdf4edc4` / `9ba97a5c` · **Contract:** `docs/prompt.md` (sole SoT)
+**Task:** `t_g_h2` (authored) → **`t_g2_x2` (this refresh, ADV-1451Z P0, lane G-X2)**
+**Author:** solutions-architect (§5, effort max) · **Contract:** `docs/prompt.md` (sole SoT)
+**Authored:** 2026-09-05 against `bdf4edc4` / `9ba97a5c` · **Refreshed:** 2026-09-05T15:16Z against live **`b0d41a20`**
 **Status:** binding architecture. No implementation in this document; no Owner decision parked (§0.1).
+
+> **Read §0.5 first.** §0–§9 below were written when four scenes existed and none had been timed.
+> Seven are mounted now and the frame cost has been measured. Where the two disagree, **§0.5 and
+> §4.1(b)'s superseding note are the current state**; the original text is kept because the reasoning
+> that produced the design is still the reasoning that has to be argued with to change it.
 
 ---
 
@@ -28,6 +34,115 @@ unless the line says **[ESTIMATE]**.
 **Root cause the reviewer named (#3): prior agents renegotiated the bar.** This document does the opposite —
 each clause below is either *designed to meet* with a named test file and assertion, or declared infeasible
 **with the measurement that proves it** and the honest substitute. Section 7 is the ledger of which is which.
+
+---
+
+## 0.5 Status on LIVE `b0d41a20` (refresh, `t_g2_x2`)
+
+```
+curl -fsS https://forgotten-mistory.web.app/ | grep -o 'build-commit" content="[^"]*"'
+→ build-commit" content="b0d41a20"
+grep -rn 'sceneId=' components/     → 7 hits
+```
+
+**All seven named scenes are mounted.** F5, F6 and F7 above are closed; F1, F2, F8, F9, F10 and F11
+are not. The seventh (`minivic-viseme`) landed in **`c1df356`** and reached production as
+`c1df3565` at 14:54Z — after the reviewer report that said "only ~4 named data-scene mounts"
+(`ADV-REVIEW-20260905T1451Z`, probed `ff67273b` at 14:41Z, before S5/S6 in `192d743` and before S7).
+That finding is **stale by construction, not wrong when written**.
+
+### Per-scene status
+
+| # | `sceneId` | Mount (file:line) | Landed | Gate | Live status | Reviewer evidence |
+|---|---|---|---|---|---|---|
+| S1 | `hero-atmosphere` | `Hero.tsx:51` (`priority resolutionScale={0.5}`) | pre-existing; `priority`+poster `ee334cc`, grade `3d25643` | `flagship-visibility` + `hero-first-paint` | **PASS** 1440 & 390 | `G-REV/66199cba/`, `G-REV/e3f0206c/` |
+| S2 | `about-field` | `About.tsx:174` (`resolutionScale={0.5}`) | pre-existing | `flagship-visibility` | **PASS** | `G-REV/9b864752/`, `G-REV/e47221ed/` |
+| S3 | `career-strata` | `Experience.tsx:151` (`resolutionScale={0.5}`) | pre-existing | `flagship-visibility` (`fallbackCoverageMin 0.02`) | **PASS** | `G-REV/abc475e3/` |
+| S4 | `skills-bench` | `Bench.tsx:304` | landed (F7 closed) | `flagship-visibility` | **PASS** | `G-REV/abc475e3/`, `G-REV/577d45af/` |
+| S5 | `vitrine-field` | `Vitrine.tsx:167` | `192d743` | `flagship-visibility` | **1440 PASS · 390 FAIL** — peak **0.2918** < 0.35 | **`G-REV/ff67273b/08-adversarial-review.md` F-S5-390** |
+| S6 | `listen-field` | `Listen.tsx:161` | `192d743` | `flagship-visibility` | **PASS** both widths | `G-REV/ff67273b/` (S6-b, S6-c) |
+| S7 | `minivic-viseme` | `MiniVicBot.tsx:1052` | **`c1df356`** (live `c1df3565`, 14:54Z) | `tests/overhaul/viseme-stage.spec.ts` (`TC-VISEME-GL-01/02/03`) | **not yet independently re-probed on live** | — (post-dates every G-REV report) |
+
+`SCENES` in `tests/overhaul/flagship-visibility.spec.ts:138-164` now holds **six** entries at **both**
+1440×900 and 390×844 (`VIEWPORTS`, `:190-193`). S7 is held by its own spec instead, because the stage
+lives inside the bot panel and has to be opened before it can be photographed.
+
+### Open findings carried forward (not closed by this refresh)
+
+| ID | Finding | Number | Owner lane |
+|---|---|---|---|
+| **F-S5-390** | `vitrine-field` has no core at 390: the narrow branch spreads its light instead of concentrating it (coverage is already 66%) | peak **0.2918** vs floor **0.35** — the repo gate and the independent probe agree to four decimals | **`t_g2_v3`** (running) |
+| **F-CLAIM-01** | the `SCENES` comment added in `192d743` claims both widths for S5; one width was never measured | comment at `flagship-visibility.spec.ts:152-163` | `t_g2_v3` |
+| **M-1** | `listen-field` motion @1440 = **0.00428** vs floor 0.004 (×1.07); the repo gate read 0.00607 on the same build | thin margin | any lane touching `listen.glsl.ts` |
+| **M-2** | `vitrine-field` peak @1440 = **0.3763** vs floor 0.35 (×1.08) | thin margin | `t_g2_v3` |
+| **M-3** | worst AA node in `#vitrine`, all four contexts = **4.69:1** vs 4.5 (×1.04) | thin margin — **coupled to F-S5-390**: brightening the field to raise peak spends this margin | `t_g2_v3` |
+
+Margins M-1…M-3 are recorded so a later pass does not mistake them for headroom
+(`G-REV/ff67273b/08-adversarial-review.md`, "Sub-threshold margins"). Any further dimming of either
+field, at either width, lands under a floor; any further brightening of the vitrine lands under AA.
+
+### 0.5.1 Frame-rate reality — measured, and still red
+
+The 60 fps half of R2 has now been measured for the first time (`tests/perf/scene-framerate.spec.ts`,
+landed `9d30641`). **It is red, and this document does not round it up.**
+
+**Baseline, `t_x1_01` harness** (`G-X1-01/TC-SCENE-FPS-0*.json`, renderer
+`ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero)), SwiftShader driver)`, label
+`software-rasteriser`, 4 cores):
+
+| scene | `TC-SCENE-FPS-01` median @1440×900 | `TC-SCENE-FPS-02` median @390×844 dsf3 ×4 CPU |
+|---|---|---|
+| `hero-atmosphere` | **366.6 ms** (p95 583.3, 118 samples, loadavg 15.43) | 308.3 ms |
+| `about-field` | **333.3 ms** | 333.3 ms |
+| `career-strata` | **183.3 ms** | 166.6 ms |
+| `skills-bench` | **66.7 ms** | 33.4 ms |
+
+The budgets are **16.7 ms** desktop and **20 ms** phone. On the committed baseline every scene sits between
+**66.7 ms and 366.6 ms per frame** at 1440 — four to twenty-two times over, i.e. **≈ 2.7 to 15 fps**, not 60.
+(The `t_x1_01b` re-baseline, taken in a worktree at a different load band, reads hero 433.35 / about 274.95 /
+strata 66.70 / bench 116.70 at 1440. The two disagree by more than 3× on `skills-bench`, which no lane
+touched — see the host-noise note below. Both are printed; neither is chosen for being flattering.)
+
+**After `af7355a`** (`resolutionScale={0.5}` on hero / about / strata; `skills-bench` deliberately
+untouched — its graticule is a hairline and it was not driving the cost). Backing stores read off the
+running page: hero 1440×1328 → **720×664**, about 384×384 → **192×192**, strata 1297×536 → **648×268**;
+CSS boxes unchanged (`G-X1-01b/08-screens/{before,after}.log`):
+
+| scene | before → after @1440 | ratio | before → after @390 | ratio |
+|---|---|---|---|---|
+| `hero-atmosphere` | 433.35 → **100.00 ms** | **4.33×** | 433.30 → **66.60 ms** | **6.51×** |
+| `about-field` | 274.95 → **100.00 ms** | 2.75× | 491.65 → **66.70 ms** | **7.37×** |
+| `career-strata` | 66.70 → **50.00 ms** | 1.33× | 183.30 → **33.40 ms** | 5.49× |
+| `skills-bench` (untouched) | 116.70 → 33.30 ms | — | 33.30 → 33.30 ms | 1.00× |
+
+`skills-bench` was **not modified** and moved 116.7 → 33.3 ms between the two runs. That is a 3.5×
+swing from host load alone (loadavg 4.33 → 11.1), so every ratio above carries a host term of the same
+order in either direction. The honest readings, from `G-X1-01b/04-results.md`:
+
+- **hero is a real, large win** — the mechanism predicts 4×, the measurement is 4.33× / 6.51×.
+- **`career-strata` @1440 (1.33×) is inside the host's noise band** — against the committed `t_x1_01`
+  baseline the same after-run reads 3.67×. Both figures are printed; the flattering one is not chosen.
+- **`about-field` @1440 misses at 2.75× and was never going to reach 3× from there.** At 1440 its canvas
+  is 384×384 and the attribution probe puts **~60% of its per-frame cost in the page's own composite at
+  `#about`**, not in its fragments — 1866 ns/px against `career-strata`'s 96 ns/px on the *same* three-lookup
+  shader budget, a 19× gap that fragments cannot explain (`G-X1-01b/03b-about-attribution.md`).
+  **That composite is lane `t_x1_01d`, not another octave cut out of the shader.**
+
+**After the change every scene is still over budget** (best case 33 ms against 16.7 ms). This lane moved
+the cost, not the threshold: no frame-rate limiter, no `frameloop` change, no threshold edited.
+
+**GPU-class confirmation has never run.** The `scene-fps-gpu` job exists (`.github/workflows/checks.yml:96`,
+landed `f5eb4c8`) and is gated on `vars.E2E_RUNNER_LABELS != ''`, so it is skipped unless a self-hosted
+runner is registered. Measured this session:
+
+```
+gh api repos/:owner/:repo/actions/variables → {"variables":[],"total_count":0}
+gh api repos/:owner/:repo/actions/runners   → {"total_count":0,"runners":[]}
+```
+
+**Zero runners, variable unset ⇒ the job has never executed.** D7 (non-gating) and D9 (software-rasteriser
+is not GPU proof) are unchanged and remain correct: a job that cannot run must never hang a deploy, and a
+SwiftShader number is not a phone's number. **No 60 fps claim is made anywhere in this document.**
 
 ---
 
@@ -119,6 +234,12 @@ lazy GL chunk, not the first-view budget (`PERF-01`: first view ≤ 2.5 MB).
 ---
 
 ## 2. What already exists (survey)
+
+> **Superseded by §0.5 for the `sceneId` / measured columns.** The table below is the survey taken at
+> `bdf4edc4`, kept because §2's closing paragraph (what the five-part gap was) is what the plan was
+> built on. On live `b0d41a20` all seven rows carry an id and six are in the flagship gate; (a), (b)
+> and (c) of the five-part gap are **done**, (d) is **measured and red** (§0.5.1), (e) is **not started**
+> (§10.1).
 
 | Section | Scene component | Shader | Mounted through `Scene` | `sceneId` | Measured by flagship gate |
 |---------|-----------------|--------|--------------------------|-----------|---------------------------|
@@ -217,11 +338,49 @@ flat gradient — and the LCP element is still static HTML (`PERF-06`/`PERF-07` 
 a CSS background on an existing element, not a new LCP candidate).
 
 **(b) Scrim is a 0.86 full-frame wash (F4).** Replace with a **graded text plate**: the darkening is bound to
-the reading column, not the frame — `radial-gradient`/`linear-gradient` reaching ~0.72 under the type and
-**≤ 0.25 outside the column**, so the light crosses the frame and the copy still clears AA. The existing
+the reading column, not the frame, so the light crosses the frame and the copy still clears AA. The existing
 `tests/a11y/text-contrast.spec.ts` is the guard on one side, `flagship-visibility` COVERAGE/PEAK on the other
 — brightening until type fails AA is a different bug (`flagship-visibility.spec.ts:45-49`), and the pair is
 run together.
+
+> #### ⚠ CORRECTION (`t_g2_x2`) — the geometry and the alpha this clause originally named are **superseded**
+>
+> The first draft of (b) wrote the acceptance as *"the outer thirds (x < 22% and x > 78%) are ≥ 0.06
+> brighter than the centre reading band"*, with the plate *"reaching ~0.72 under the type and ≤ 0.25
+> outside the column"*. **Both halves of that are wrong on the build that shipped, and the implementing
+> lane was right to reject them.** The reasoning is `tests/overhaul/hero-first-paint.spec.ts:388-470`.
+>
+> **The geometry was an assumption, and it stopped being true.** *x < 22%* was written when the copy ran
+> down the middle of the frame. The fold lane (`44c3e08`, `70a04a8`) moved the reading column to one grid
+> item hard against the left gutter, beside a `38vw` photograph. Measured on the shipped build at 1440,
+> the hero's text runs **x = 96…960 — 6.7% to 66.7% of the frame**. So `x < 22%` is not an outer third at
+> all: it is the `<h1>`, the role line and the statement, and *lighting* it is the one thing this lane is
+> forbidden to do. At 390 there is no right-hand third to point at either: the copy runs x = 17…373 of 390,
+> `.stage::after` is `display: none`, and every run of copy carries its own plate.
+> **Replacement, shipped:** the reading column is **measured from the DOM** every run
+> (`readingColumnFractions`, `:522-556`) and the lit band is *"the brightest tenth of the frame, wherever
+> it is"* (`LIT_WINDOW_FRACTION = 0.1`, `brightestWindow`, `:498-520`) — one assertion that asks the same
+> question of both layouts and keeps asking it if the column moves again.
+>
+> **The alpha was a WCAG failure.** `--mist-400` (`#909090`, relative luminance 0.2789) over the brightest
+> fog this shader draws (0.8308, about `#ECECEC`) needs its ground at or below `#2A2A2A` to clear 4.5:1.
+> **0.72** composites that ground to `#494949` and lands `--mist-400` on it at **2.82:1** — a fail, which
+> `tests/a11y/text-contrast.spec.ts` TC-CONTRAST-02 would have caught.
+> **Shipped instead: `rgb(10 10 10 / 0.88)`** (`Hero.module.css:196`), which composites to `#252525` and
+> **4.79:1** — and is transparent past 66% so the pool, the portrait plate and everything the
+> flagship-visibility gate measures are untouched (`Hero.module.css:168-173`, `:181-199`).
+>
+> **What survives verbatim is the *quantity*:** the **0.06 relative-luminance margin** between the band
+> the type reads on and a lit band elsewhere. That is this document's own figure and the spec adopts it
+> unchanged (`SCRIM_MIN_DELTA = 0.06`, `:472`). Room on the shipped build, from that lane's
+> `04-tests-passing.log`: **0.399** @1440 and **0.205** @390 on `?gl=force`; **0.102** @1440 and
+> **0.078** @390 on the reduced-motion still. The 390 still is permanently the tight one — it is the only
+> one of the four with no shader to be bright with — and it is the surface a careless scrim edit breaks
+> first (it read **0.0511**, red, when the assertion was first run).
+>
+> **Nothing was renegotiated here:** the bar (AA *and* a visible flagship) got harder, not softer — the
+> original clause would have passed a frame whose type failed AA. Reversal cost: one CSS value and one
+> spec constant.
 
 **(c) HyperFrames overture.** A 2.4 s composition (`assets/compositions/hero-overture.html`,
 `data-width="3840" data-height="2160"`) whose GSAP timeline strikes the name and rakes the first shaft.
@@ -234,8 +393,11 @@ run together.
 - `TC-HERO-FIRSTPAINT-02` — at `?gl=force`, a canvas exists inside `[data-scene="hero-atmosphere"]` **without
   waiting for network idle** (`waitUntil: 'domcontentloaded'` + ≤ 1200 ms), proving `priority` bypassed the
   idle gate.
-- `TC-HERO-SCRIM-01` — the hero's outer thirds (x < 22 % and x > 78 % of the slot) are ≥ 0.06 luminance
-  brighter than the reading column's centre band, proving the scrim is graded, not a wash.
+- `TC-HERO-SCRIM-01` — ~~the hero's outer thirds (x < 22 % and x > 78 % of the slot) are ≥ 0.06 luminance
+  brighter than the reading column's centre band~~ **[superseded — see the correction above]** → the
+  brightest tenth of the frame is ≥ 0.06 luminance above the DOM-measured reading column's band, at 1440
+  and 390, on `?gl=force` **and** on the reduced-motion still. Shipped as `G-H2b` in
+  `tests/overhaul/hero-first-paint.spec.ts:558+`.
 - `TC-CINE-*` and `tests/a11y/text-contrast.spec.ts` stay green (no regression, C-7).
 
 ### 4.2–4.6 S2…S6
@@ -277,6 +439,10 @@ saying*. The 2D mouth path stays exactly as-is and is the no-GL fallback, so lip
 ```
 scroll scene into view → discard 30 warm-up frames → sample 120 rAF deltas → median
 ```
+
+**RESULT (refresh): the harness landed in `9d30641` and is RED. See §0.5.1 for every number.** The
+budgets below are unchanged and unreachable on this host: measured 67–367 ms/frame before `af7355a`,
+33–100 ms/frame after. No PASS is claimed on either case.
 
 - `TC-SCENE-FPS-01` (desktop, 1440×900): median rAF ≤ **16.7 ms**, p95 ≤ 33 ms.
 - `TC-SCENE-FPS-02` (phone, 390×844, `deviceScaleFactor: 3`, CPU throttle ×4 — the 2021-phone proxy):
@@ -355,6 +521,13 @@ never a PASS.**
 > Unblock in flight: HyperFrames local render at 3840×2160@60 (zero credits). Higgsfield remains at 0
 > credits/free plan; buying credits would be an alternative route and is **not** required by this plan.
 
+**Refresh (`t_g2_x2`): unchanged, and still un-started.** Re-`ffprobe`d on `b0d41a20` — `my-avatar.mp4`
+**1280,720,24/1**; `my-hero-avatar.mp4` **640,360,24/1**; `my_avatar.avif` **1480,826**. Neither
+`tests/perf/resolution-independence.spec.ts` nor `tests/content/asset-resolution.spec.ts` exists
+(`ls tests/perf tests/content`), so R5 has **no proof in either direction**: the GL/SVG half is
+*unproven*, not passing, and the raster half is *FAIL* with no waiver list to shrink. Both specs are
+re-issued in `SIGNATURE-SCENES-NEXT.json` (§10.1), re-sequenced behind `t_x1_10` per D13.
+
 ---
 
 ## 6. Perf, palette and a11y guard-rails (C-6, C-8)
@@ -374,26 +547,32 @@ never a PASS.**
 
 ## 7. Clause ledger — meet, or infeasible-with-substitute (zero silent narrowing)
 
-| Clause | Verdict | Where |
-|---|---|---|
-| R2 · Three.js / R3F | **MEET** (exists) | §2 |
-| R2 · **HyperFrames** | **MEET** — `@hyperframes/player` in page + `hyperframes` CLI render pipeline | §1.2, §4.1 |
-| R2 · GLSL | **MEET** (7 shaders) | §4 |
-| R2 · ≥ 7 signature scenes | **MEET** — 7 enumerated, each with an id and a test | §4 |
-| R2 · 60 fps desktop | **MEET, with a labelled caveat** — `TC-SCENE-FPS-01`; software-rasteriser evidence, GPU confirmation non-gating | §4.8 |
-| R2 · 60 fps 2021+ phone | **MEET, with a labelled caveat** — `TC-SCENE-FPS-02` at 390×844 ×4 CPU throttle; no physical device on this host, stated as such | §4.8 |
-| R2 · reduced-motion fallback on each | **MEET** — flagship FALLBACK case × 7 | §4 |
-| R5 · GL/SVG surfaces ≥ 3840×2160 | **MEET** — `TC-R5-GL-01/02`, `TC-R5-SVG-01` | §5.1 |
-| R5 · 60 fps at 4K | **MEET** — `TC-R5-GL-02` | §5.1 |
-| R5 · raster assets ≥ 4K | **FAIL today; unblock designed** — HyperFrames local render; waiver list is the scoreboard | §5.2 |
-| R5 · no layout breaks at 4K | **MEET** — `TC-R5-LAYOUT-01` | §5.1 |
-| §0.3-1 · one flagship per section | **MEET** — S1…S6, one per section, each measured | §4 |
-| §0.3-2 · black/white/gold | **MEET** — palette uniforms + `TC-NFR-MONO` | §6 |
-| §2.1 · GSAP + ScrollTrigger | **MEET** — adopted, lazy, bundle-gated | §1.3 |
-| G-H2 · scrim / first paint / HyperFrames | **MEET** — poster-first + `priority`, graded plate, overture | §4.1 |
+The **Designed** column is the verdict this document argued for at authoring time. The **Live `b0d41a20`**
+column is where each clause actually stands, and it is the only one anyone may quote. "Designed to MEET"
+is a plan, not a pass.
 
-Nothing in R2/R5/§0.3-1 is narrowed. The one **FAIL** (R5 raster) is stated as a FAIL with a measurement, a
-named unblock, and a test that keeps it visible.
+| Clause | Designed | **Live `b0d41a20`** | Evidence |
+|---|---|---|---|
+| R2 · Three.js / R3F | MEET | **MET** | `package.json`: `@react-three/fiber 9.7.0`, `three 0.165.0` |
+| R2 · **HyperFrames** | MEET | **NOT MET — F1 stands** | `grep -i hyperframes package.json` → 0. §10.1 is the plan |
+| R2 · GLSL | MEET | **MET** — 7 shaders | `components/sections/*/*.glsl.ts`, `MiniVicBot` stage |
+| R2 · ≥ 7 signature scenes mounted | MEET | **MET (7/7 mounted)** — but **5/7 verified passing on live** | §0.5: S5@390 FAIL, S7 not yet re-probed |
+| R2 · 60 fps desktop | MEET w/ caveat | **NOT MET — measured red** | §0.5.1: 100 ms best case @1440 vs 16.7 ms budget |
+| R2 · 60 fps 2021+ phone | MEET w/ caveat | **NOT MET — measured red** | §0.5.1: 33.4 ms best case @390 vs 20 ms budget |
+| R2 · 60 fps on a real GPU | non-gating confirm | **UNMEASURED** | 0 runners, `E2E_RUNNER_LABELS` unset (§0.5.1). D7/D9 unchanged |
+| R2 · reduced-motion fallback on each | MEET | **MET for S1…S6**, S7 by `TC-VISEME-GL-02` | flagship FALLBACK × 6 at both widths |
+| R5 · GL/SVG surfaces ≥ 3840×2160 | MEET | **UNPROVEN** — `tests/perf/resolution-independence.spec.ts` does not exist | `ls tests/perf/` → `performance`, `scene-framerate` only. Lane `t_x1_08` (todo) |
+| R5 · 60 fps at 4K | MEET | **NOT MET** — it is not met at 1440 (§0.5.1) | — |
+| R5 · raster assets ≥ 4K | FAIL; unblock designed | **FAIL, unchanged** | re-`ffprobe`d this session: `my-avatar.mp4` 1280×720@24, `my-hero-avatar.mp4` 640×360@24, `my_avatar.avif` 1480×826 |
+| R5 · no layout breaks at 4K | MEET | **UNPROVEN** — same missing spec | lane `t_x1_08` (todo) |
+| §0.3-1 · one flagship per section | MEET | **MET as mounts; 5/6 sections verified lit at both widths** | §0.5 (`#vitrine` @390 is the exception) |
+| §0.3-2 · black/white/gold | MEET | **MET** | `TC-NFR-MONO` green in the static audit |
+| §2.1 · GSAP + ScrollTrigger | MEET | **NOT MET — F2 stands** | `grep -rn gsap package.json` → 0; only prose/CSS comments. Lane `t_x1_12` (todo) |
+| G-H2 · scrim / first paint | MEET | **MET** — poster + `priority` (`ee334cc`), column-bound grade (`3d25643`) | `G-REV/66199cba/`, `G-REV/e3f0206c/`; §4.1(b) correction |
+| G-H2 · HyperFrames overture | MEET | **NOT MET** | §10.1, lane `t_x1_11` |
+
+**Score: 8 met · 5 not met · 3 unproven · 1 unmeasured.** Nothing in R2/R5/§0.3-1 is narrowed here; the
+plan is unchanged and the distance to it is now stated in numbers instead of intentions (§10.2).
 
 ---
 
@@ -409,6 +588,16 @@ named unblock, and a test that keeps it visible.
 | D6 | Adopt GSAP + ScrollTrigger | §2.1 names it; HyperFrames uses it as a frame adapter — one timeline, two outputs | 1 commit; scenes keep `useFrame` |
 | D7 | GPU-class fps confirmation is **non-gating** CI | an offline self-hosted runner must never hang deploy (O3, and the CI memory) | flip one `continue-on-error` |
 | D8 | Promote MiniVic's *stage* to GL, keep the 2D mouth as the fallback | gives the 7th scene without risking lip-sync accuracy (R3) | delete one `<Scene>` block |
+
+**Added by this refresh (`t_g2_x2`):**
+
+| # | Decision | Why | Reversal cost |
+|---|---|---|---|
+| D9 | A software-rasteriser number is **never** reported as a frame-rate pass, and the word "60 fps" does not appear as a claim anywhere in this document or on the board | root cause #3 was renegotiating the bar; `rendererLabel` is written into every JSON so the label travels with the number | n/a — this is a reporting rule |
+| D10 | §4.1(b)'s *geometry* is superseded by the DOM-measured column and its *alpha* by the WCAG arithmetic; the **0.06 margin is kept verbatim** | the shipped composition moved the column and 0.72 fails AA at 2.82:1; the implementing lane measured rather than complied | one CSS value + one spec constant |
+| D11 | The About field's remaining cost is attacked as a **page-composite** problem (`t_x1_01d`), not as more shader cuts | 1866 ns/px vs `career-strata`'s 96 ns/px on the same shader budget; ~60% of the frame is the page's own composite at `#about` | none — it is a routing decision |
+| D12 | **HyperFrames (`t_x1_10` → `t_x1_11`) is the next lane after `t_g2_v3`**, ahead of GSAP (`t_x1_12`) and ahead of any further fps tuning | it is the only unmet R2 clause that no other work closes, and it is the R5 unblock; fps is bounded by a host with no GPU, HyperFrames is not | both are ≤ 1 commit to undo (D1) |
+| D13 | `t_x1_08` (4K proof) is **re-sequenced to run after** `t_x1_10`, not before | `t_x1_08` proves surfaces reach 2160; `t_x1_10` is what makes any *asset* reach 2160. Proving the cheap half first has produced two "unproven" rows and no pixels | reorder two board rows |
 
 ---
 
@@ -430,11 +619,77 @@ named unblock, and a test that keeps it visible.
 
 ## 10. Delivery shape
 
-`docs/architecture/SIGNATURE-SCENES-TASKS.json` holds **14 board tasks**, each ≤ 30 minutes, each shipping a
-**recruiter-visible** slice on the 10-minute cadence, each with `order[]`, `gates[]` and a runnable
-`verify[]`. The chain is: measurement harness first (so every later claim is falsifiable) → the G-H2 hero fix
-(the most visible defect) → one scene per task → R5 proof → HyperFrames overture → the 4K render pipeline.
+`docs/architecture/SIGNATURE-SCENES-TASKS.json` holds the original **14 board tasks**, each ≤ 30 minutes,
+each shipping a **recruiter-visible** slice on the 10-minute cadence, each with `order[]`, `gates[]` and a
+runnable `verify[]`. The chain was: measurement harness first (so every later claim is falsifiable) → the
+G-H2 hero fix (the most visible defect) → one scene per task → R5 proof → HyperFrames overture → the 4K
+render pipeline.
 
 Every task is TDD-first: the failing assertion is captured red (`02-tests-failing.log`) before implementation
 and green (`04-tests-passing.log`) after, into
 `docs/delivery/evidence/v10-20260905T0515Z/G-H2/<slug>/`.
+
+**Delivered from that file:** `g-x1-01` (harness, `9d30641`), `g-h2-02` (poster + `priority`, `ee334cc`),
+`g-h2-03` (graded plate, `3d25643`), `g-s1-04` (skills bench), `g-x1-05` + `g-x1-06` (`192d743`),
+`g-x1-07` (`c1df356`). **Not started:** `g-x1-08`…`g-x1-14`.
+
+### 10.1 The next two slices — HyperFrames, re-validated against the current tree
+
+`docs/architecture/SIGNATURE-SCENES-NEXT.json` holds the four re-validated tasks
+(`t_x1_10`, `t_x1_11`, and the re-checked `t_x1_08` / `t_x1_09`) with concrete `verify[]` commands on
+**ports 5635+** — `:5599` and `:8080` are held by other tenants and `:5601`/`:5602` by the council
+batteries, so this document's own task file may not use them. Re-validation performed this session:
+
+| Precondition the specs assume | Re-checked on `b0d41a20` | Verdict |
+|---|---|---|
+| `node >= 22`, FFmpeg, headless Chrome present | `node -v` → **v22.23.1**; `which ffmpeg` → **/usr/bin/ffmpeg**; `which google-chrome` → **/usr/bin/google-chrome** | **holds** — the zero-credit path is still open |
+| zero HyperFrames packages | `grep -i hyperframes package.json` → **0** | **holds** (F1) |
+| zero GSAP | `grep -rn "gsap" package.json` → **0** (5 prose/CSS comments only) | **holds** (F2) — so `t_x1_10`'s composition cannot assume a GSAP timeline is already available; it brings its own, or uses WAAPI/CSS, which HyperFrames also accepts |
+| Higgsfield at 0 credits | not re-called (paid gate, §0.1) — **assumed unchanged**, and the design does not need it | **irrelevant by design** (D4) |
+| audit caps: img 500 kB, video 2.5 MB, `assets/avatar/*` 5 MB, audio 1 MB | `scripts/validate/overhaul_static_audit.mjs:168-171` — **byte-identical**, `onDemand` still keys on `assets/avatar/` | **holds** |
+| `public/assets/avatar/` exists | `ls public/assets/avatar/` → **no such directory** | **CHANGED** — `t_x1_10` must create it; nothing under the 5 MB on-demand cap exists yet |
+| a hero poster to crossfade from | `public/assets/hero-atmosphere-poster.avif` — **12,935 B**, shipped `ee334cc` | **CHANGED for the better** — `t_x1_11` crossfades from a poster that already exists and is a real rendered frame of `atmosphere.glsl.ts`, not one this lane has to invent |
+| `Scene` accepts `priority` | `Scene.tsx:176,221,280` | **holds** |
+| `Scene`/`GLCanvas` accept `resolutionScale` | `Scene.tsx:195`, `GLCanvas.tsx:16` — **new since authoring** (`af7355a`) | **NEW** — the overture must not fight it: the hero canvas is now 720×664, so the player's element sits above the poster and below the canvas at CSS size, unscaled |
+
+**Consequences folded into `SIGNATURE-SCENES-NEXT.json`:** `t_x1_10` gains a step that creates
+`public/assets/avatar/` and an `ffprobe` gate that must print `3840,2160,60/1` before any claim; `t_x1_11`
+drops the "author a poster" step (one exists) and gains a reduced-motion gate naming the poster by path.
+
+### 10.2 The honest distance to R2 and to the Marvel bar
+
+**R2, clause by clause, on live `b0d41a20`:** four of its named clauses are met (R3F, GLSL, ≥ 7 mounted
+scenes, per-scene reduced-motion), three are not (HyperFrames, 60 fps desktop, 60 fps phone), and one is
+unmeasurable here (GPU-class fps). **R2 is FAIL.** Nothing about seven mounts changes that: mounting a
+scene is the cheap half, and this project has now done the cheap half seven times.
+
+The two remaining distances are different in kind, and it matters:
+
+- **HyperFrames is a distance in work, not in physics.** Everything it needs is installed on this host and
+  costs nothing. It is two lanes (§10.1). There is no honest reason it is still open, and no substitute is
+  offered — Alternative A was rejected precisely because substituting for it is the silent narrowing the
+  reviewer named.
+- **60 fps is a distance in hardware.** The best measurement on this host is **33 ms/frame** on a 4-core
+  VPS whose only rasteriser is SwiftShader, against a 16.7 ms budget. `af7355a` bought 4.3–7.4× and the
+  scenes are *still* 2–6× over. No further shader work on this host can produce a trustworthy 60 fps
+  number, because the number would be about SwiftShader, not about a visitor. **The honest substitute is
+  not a lower budget — it is a different instrument:** `scene-fps-gpu` on a registered runner (currently
+  zero), or a Lighthouse/CrUX-style field signal from real devices. Until one exists, the correct board
+  text is *"frame cost measured and red on a software rasteriser; GPU-class fps unmeasured"* — never
+  "60 fps", and never a PASS.
+
+**The Marvel bar (§0.3-1: one flagship visualisation per section, main-title grade).** Measured against
+what an art director would actually say, not against the gate:
+
+| | Status |
+|---|---|
+| Every section has a lit, moving, reduced-motion-safe scene | **yes** — this is real and it is new |
+| Every scene clears the floor a reader would notice | **no** — `#vitrine` at 390 has no core (0.2918), and three more measures sit within ×1.08 of their floors (§0.5) |
+| The scenes are *composed* — one continuous move, a subject, a key | **partly.** The hero is: poster → grade → shader, and the creative council's three hero directions (`G-REV/9ba97a5c/08-adversarial-review.md` §3) are what it was built against. The other five are **fields** — beautiful grounds with nothing staged on them. The council asked `#experience` for depth planes and a dossier beat, `#about` for the dial at ≥ 60% of the section's weight, `#skills` for a lattice that resolves once and holds, `#vitrine` for six plates all drawn. **None of those five has been done.** `docs/architecture/LISTEN-FLAGSHIP.md` is the first of them to be specified. |
+| It runs like a title sequence | **no.** A title sequence is 60 fps and choreographed; this is 10–30 fps on the only instrument available and has no choreography layer at all (F2). |
+
+**So: the floors are nearly held and the bar is not.** The gap between "every section has a shader" and
+"a Marvel main title" is composition and choreography — GSAP (`t_x1_12`), the five council directions,
+and the HyperFrames overture that makes one authored artifact drive both the page and the 2160p60 file.
+That is the honest distance, and it is stated here so that no later pass can read seven green mounts as
+seven flagships.
