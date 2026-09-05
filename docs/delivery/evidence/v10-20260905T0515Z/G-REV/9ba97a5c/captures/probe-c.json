@@ -1,0 +1,53 @@
+{
+  "minivic": {
+    "tried": [
+      "open:button[aria-label*=\"Mini Vic\" i]",
+      "open-fail:button[aria-label*=\"Mini Vic\" i]:TimeoutError: elementHandle.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - attempting c",
+      "open:button:has-text(\"Ask Mini Vic\")",
+      "open-fail:button:has-text(\"Ask Mini Vic\"):TimeoutError: elementHandle.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - attempting c",
+      "open:[class*=\"launcher\" i]",
+      "open-fail:[class*=\"launcher\" i]:TimeoutError: elementHandle.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - attempting c",
+      "open:button:has-text(\"Mini Vic\")",
+      "open-fail:button:has-text(\"Mini Vic\"):TimeoutError: elementHandle.click: Timeout 4000ms exceeded.\nCall log:\n\u001b[2m  - attempting c",
+      "input:textarea",
+      "input:input[type=\"text\"]",
+      "input:[contenteditable=\"true\"]",
+      "input:input"
+    ],
+    "api": [],
+    "opened": false,
+    "sent": false,
+    "apiPaths": [],
+    "allRequestPaths": [],
+    "console": [],
+    "pageerrors": [],
+    "failed": []
+  },
+  "persistent": {
+    "firstLoad": {
+      "build": "9ba97a5c",
+      "sw": "https://forgotten-mistory.web.app/sw.js"
+    },
+    "secondLoadBuild": "9ba97a5c",
+    "secondCanvases": {
+      "total": 0,
+      "bySection": {
+        "hero": 0,
+        "about": 0,
+        "experience": 0,
+        "skills": 0,
+        "vitrine": 0,
+        "listen": 0
+      }
+    },
+    "pageerrors": [],
+    "console": [
+      {
+        "type": "warning",
+        "text": "The resource https://forgotten-mistory.web.app/_next/static/css/f1997129dcf85dfd.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."
+      }
+    ],
+    "failed": [],
+    "swController": "https://forgotten-mistory.web.app/sw.js"
+  }
+}

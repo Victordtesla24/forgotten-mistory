@@ -1,0 +1,21 @@
+# MiniVic greeting MP3 — served vs repo blob at deployed commit 9ba97a5c
+
+$ curl -fsS https://forgotten-mistory.web.app/assets/minivic-greeting.mp3 | sha256sum
+369e1eb2e0e072a8b07a56976cc5479f2187a06066f0ab696b540d8f8f9dddb3   198156 bytes
+
+$ git cat-file -p 9ba97a5c:public/assets/minivic-greeting.mp3 | sha256sum
+369e1eb2e0e072a8b07a56976cc5479f2187a06066f0ab696b540d8f8f9dddb3   198156 bytes
+
+IDENTICAL -> the deployed audio is exactly the repo blob at the deployed commit.
+
+$ git log --oneline -3 -- public/assets/minivic-greeting.mp3
+f944d97 fix(overhaul): adversarial UI/UX pass - real-AI chatbot, male voice, crash fix, hero/monochrome/a11y polish
+41ca230 chore(cleanup): commit all uncommitted changes
+2b11091 feat(minivic): HiggsField video avatar + ElevenLabs cloned-voice greeting (TC-FR-VOICE, Stage 1)
+
+$ git log --oneline -3 -- lib/miniVicBrain.ts components/MiniVicBot.tsx
+45eb252 fix(minivic): panel clears the hero name, launcher carries a mark
+1802b87 consolidate: merge worktree-wf_75ffef1b-684-1 into main (branch wins conflicts)
+3720832 feat(minivic): a labelled launcher, reachable in three tab stops
+
+The intro-text component changed in commits AFTER the last MP3 change -> audio predates the rewritten text intro. G-M2 FAIL.
