@@ -174,6 +174,25 @@ interface SceneProps {
    * again. `tests/overhaul/hero-first-paint.spec.ts` holds both halves.
    */
   priority?: boolean;
+  /**
+   * Fraction of the display's own resolution this scene's fragments are computed
+   * at. Default 1; 0.5 is a quarter of the fragments, upscaled into the slot by
+   * the browser.
+   *
+   * Every scene here is a single full-screen fragment program, so a frame costs
+   * what it fills: measured on `tests/perf/scene-framerate.spec.ts` the hero and
+   * the About field sat within a factor of two of each other at 1440x900 —
+   * 366.6 ms and 333.3 ms on a median frame — although the hero's shader does
+   * roughly three times the per-pixel arithmetic. Scenes that are fill-bound buy
+   * a frame back by filling less of it, and these are soft-edged by
+   * construction: fog, a ring of light, drifting sediment. The bench in
+   * `#skills` is not, and does not ask for this — its graticule is a hairline,
+   * and a hairline does not survive an upscale.
+   *
+   * `components/gl/GLCanvas.tsx` holds the floor and the ceiling this is applied
+   * within, and the reasoning in full.
+   */
+  resolutionScale?: number;
   children: ReactNode;
 }
 
@@ -195,7 +214,14 @@ interface SceneProps {
  * legible with its scene absent: the slot keeps its own CSS treatment, and the
  * scenes are evidence rendered, never the evidence itself.
  */
-export default function Scene({ className, camera, sceneId, priority = false, children }: SceneProps) {
+export default function Scene({
+  className,
+  camera,
+  sceneId,
+  priority = false,
+  resolutionScale = 1,
+  children,
+}: SceneProps) {
   const capability = useGLCapability();
   const slotRef = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
@@ -257,7 +283,11 @@ export default function Scene({ className, camera, sceneId, priority = false, ch
     <div ref={slotRef} className={className} data-scene={sceneId} aria-hidden="true">
       {show && (
         <SceneErrorBoundary sceneName={sceneId ?? 'unnamed'}>
-          <GLCanvas camera={camera} sceneName={sceneId ?? 'unnamed'}>
+          <GLCanvas
+            camera={camera}
+            sceneName={sceneId ?? 'unnamed'}
+            resolutionScale={resolutionScale}
+          >
             {children}
           </GLCanvas>
         </SceneErrorBoundary>

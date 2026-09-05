@@ -1,0 +1,31 @@
+{
+  "testCase": "TC-SCENE-FPS-02",
+  "sceneId": "skills-bench",
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "deviceScaleFactor": 3
+  },
+  "cpuThrottlingRate": 4,
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "rendererLabel": "software-rasteriser",
+  "medianMs": 33.3,
+  "p95Ms": 66.7,
+  "minMs": 16.6,
+  "maxMs": 249.9,
+  "sampleCount": 120,
+  "targetSamples": 120,
+  "samplingElapsedMs": 5103.3,
+  "budgetMs": 20,
+  "pass": false,
+  "host": {
+    "loadavg": [
+      14.18,
+      11.06,
+      9.94
+    ],
+    "cores": 4
+  },
+  "measuredAt": "2026-09-05T14:46:56.734Z",
+  "note": "renderer=\"ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)\" [software-rasteriser] — SIGNATURE-SCENES-v1 D9: this is NOT GPU proof, and a miss here is still a real failure."
+}

@@ -7,6 +7,13 @@ export interface GLCanvasProps {
   camera?: { position?: [number, number, number]; fov?: number };
   /** The scene's `sceneId`, so a contained failure can say which scene it was. */
   sceneName?: string;
+  /**
+   * Fraction of the display's own resolution this scene's fragments are computed
+   * at, 0.5 = half-resolution. Default 1 — every scene keeps its full-resolution
+   * frame unless it asks for less. See `renderResolution` below for what this
+   * buys and what it costs.
+   */
+  resolutionScale?: number;
   children: ReactNode;
 }
 
@@ -28,6 +35,53 @@ const GL_ATTRIBUTES = {
 
 /** One report per scene per page load. Three scenes must not print the same line thrice. */
 const reported = new Set<string>();
+
+/**
+ * Retina ceiling. Past 1.75 the fill cost doubles for a difference no one can
+ * see on these low-contrast monochrome scenes. It is a cap on mobile frame rate
+ * and it is never raised.
+ */
+const DPR_CEILING = 1.75;
+
+/**
+ * The lowest resolution a scene may be computed at.
+ *
+ * Below a half of one CSS pixel the browser's bilinear upscale stops hiding the
+ * grid: the grain term in every one of these shaders is a per-pixel hash, and at
+ * a third resolution it stops being grain and starts being blocks.
+ */
+const DPR_FLOOR = 0.5;
+
+/**
+ * How many fragments this scene actually computes, per CSS pixel.
+ *
+ * These are full-screen fragment programs — no geometry, no textures — so a
+ * frame costs almost exactly the number of pixels it is asked to fill, and the
+ * cheapest way to buy back a frame is to fill fewer of them. Measured on the
+ * harness (`tests/perf/scene-framerate.spec.ts`, evidence G-X1-01/G-X1-01b) the
+ * hero at 1440x900 spent 366.6 ms on a median frame and the About field 333.3 ms
+ * on a software rasteriser, against a 16.7 ms budget; the two scenes are within
+ * a factor of two of each other despite the hero doing three times the per-pixel
+ * work, which is what it looks like when a scene is fill-bound rather than
+ * arithmetic-bound.
+ *
+ * A scene at `scale` 0.5 therefore computes a quarter of the fragments and the
+ * browser upscales the result into the slot. What that costs is sharpness — and
+ * these three scenes have none to lose: they are fog, a ring of light and drifting
+ * sediment, all of them soft-edged by construction and all of them under a scrim.
+ * The bench in `#skills` is deliberately *not* one of them: its graticule is a
+ * hairline ruled to a 64 px pitch, and a hairline is exactly what a half-resolution
+ * upscale destroys.
+ *
+ * Read once, at mount, on the same terms as the context probe: a display's device
+ * ratio does not change while a canvas is on screen, and re-reading it per frame
+ * would resize the render target mid-scroll.
+ */
+function renderResolution(scale: number): number {
+  const device = typeof window === 'undefined' ? 1 : window.devicePixelRatio || 1;
+  const full = Math.min(device, DPR_CEILING);
+  return scale >= 1 ? full : Math.max(DPR_FLOOR, full * scale);
+}
 
 /**
  * Can this driver actually give us a context on these terms?
@@ -97,18 +151,25 @@ function report(sceneName: string, error: unknown) {
  * bandwidth and pushed LCP from ~1.6 s to 2.7 s. The scene is never the
  * content; it should never be in the way of the content either.
  */
-export default function GLCanvas({ camera, sceneName = 'unnamed', children }: GLCanvasProps) {
+export default function GLCanvas({
+  camera,
+  sceneName = 'unnamed',
+  resolutionScale = 1,
+  children,
+}: GLCanvasProps) {
   // Lazy `useState` initialiser: asked once, during the first render, before the
   // renderer is constructed — and never again on a re-render.
   const [usable] = useState(() => canCreateContext(sceneName));
+  const [dpr] = useState(() => renderResolution(resolutionScale));
   if (!usable) return null;
 
   return (
     <Canvas
       style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
-      // Retina is capped at 1.75: past that the fill cost doubles for a
+      // Retina is capped at 1.75 and a scene may ask for a fraction of that —
+      // see `renderResolution`. Past the cap the fill cost doubles for a
       // difference no one can see on these low-contrast monochrome scenes.
-      dpr={[1, 1.75]}
+      dpr={dpr}
       gl={GL_ATTRIBUTES}
       camera={{
         position: camera?.position ?? [0, 0, 5],
