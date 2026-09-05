@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
@@ -49,7 +50,7 @@ export default function PerformanceBenchmarkPage() {
           the primary route while this benchmark route validates build and delivery quality thresholds.
         </p>
         <Button asChild variant="secondary">
-          <a href="/">Open Main Experience</a>
+          <Link href="/">Open Main Experience</Link>
         </Button>
       </section>
     </main>

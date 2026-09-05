@@ -195,9 +195,7 @@ artifacts/
 
 # Adversarial review evidence (screenshots, logs, report — working artifacts)
 reports/adversarial/
-<<<<<<< HEAD
 functions/node_modules
-=======
 
 # Verification evidence (multi-MB PNG screenshots + probe dumps). Regenerated on demand by
 # scripts/testing/run_post_prod_validation.sh and npm run validate:phase02:screenshots, so
@@ -214,7 +212,6 @@ reports/phase02/screenshots/
 # npm is the canonical package manager (every script + CI uses npm ci); a pnpm lockfile
 # would silently diverge from package-lock.json
 /pnpm-lock.yaml
->>>>>>> 9588cff (Merging everythig on nain)
 
 # Claude Code agent worktrees (created by the Workflow tool, never shipped)
 .claude/worktrees/

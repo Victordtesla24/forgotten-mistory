@@ -105,6 +105,27 @@ describe('checks report and never gate', () => {
     assert.ok(/npm audit --audit-level=high/.test(checksText));
   });
 
+  it('installs the Cloud Functions dependencies before the node contract tests run', () => {
+    // tests/minivic_chat_function.test.mjs imports functions/index.js, which requires
+    // firebase-functions/v2/https from functions/node_modules. The root `npm ci` does not
+    // install that tree, so the static job has to install it itself or the contract
+    // tests fail in CI with "Cannot find module" while passing on any machine that has
+    // run `npm ci --prefix functions` by hand.
+    const runs = checks.jobs.static.steps.map((s) => (s.run || '').trim());
+    const rootInstall = runs.indexOf('npm ci');
+    const functionsInstall = runs.indexOf('npm ci --prefix functions');
+    const nodeTests = runs.findIndex((r) => /^node --test /.test(r));
+    assert.ok(rootInstall !== -1, 'static job must run "npm ci"');
+    assert.ok(functionsInstall !== -1, 'static job must run "npm ci --prefix functions"');
+    assert.ok(nodeTests !== -1, 'static job must run the node contract tests');
+    assert.ok(rootInstall < functionsInstall, '"npm ci --prefix functions" follows the root "npm ci"');
+    assert.ok(functionsInstall < nodeTests, 'functions deps are installed before "node --test" runs');
+    assert.ok(
+      checksText.indexOf('npm ci --prefix functions') < checksText.indexOf('node --test'),
+      'in the file text too, the functions install precedes the node tests'
+    );
+  });
+
   it('uploads hidden report directories (upload-artifact v4 skips dot-paths by default)', () => {
     const e2e = checks.jobs.e2e.steps.find((s) => (s.uses || '').startsWith('actions/upload-artifact'));
     assert.ok(e2e, 'playwright report upload missing');
