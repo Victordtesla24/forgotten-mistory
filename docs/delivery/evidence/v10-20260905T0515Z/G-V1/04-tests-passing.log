@@ -1,0 +1,55 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-vitrine.spec.ts tests/overhaul/cta-duplication.spec.ts tests/e2e/vitrine.spec.ts --workers=1 --reporter=list
+
+Running 31 tests using 1 worker
+
+  ✓   1 [chromium] › tests/e2e/vitrine.spec.ts:22:7 › Vitrine › TC-VIT-01: exactly six plates, each with a source link (1.9s)
+  ✓   2 [chromium] › tests/e2e/vitrine.spec.ts:32:7 › Vitrine › TC-VIT-02: every plate states its limits (2.2s)
+  ✓   3 [chromium] › tests/e2e/vitrine.spec.ts:46:7 › Vitrine › TC-VIT-03: metrics are harvested and dated, not live (3.7s)
+  ✓   4 [chromium] › tests/e2e/vitrine.spec.ts:54:7 › Vitrine › TC-VIT-04: the exclusions are named with reasons (2.3s)
+  ✓   5 [chromium] › tests/e2e/vitrine.spec.ts:61:7 › Vitrine › TC-VIT-05: no screenshots, logos or raster images (1.4s)
+  ✓   6 [chromium] › tests/e2e/vitrine.spec.ts:73:7 › Vitrine › TC-VIT-06: the light tracks the plate at the centre of the rail (3.0s)
+  ✓   7 [chromium] › tests/e2e/vitrine.spec.ts:88:7 › Vitrine › TC-VIT-07: the rail is keyboard operable and traps nothing (3.1s)
+  ✓   8 [chromium] › tests/e2e/vitrine.spec.ts:101:7 › Vitrine › TC-VIT-08: the kicker denominator matches the harvest (2.1s)
+  ✓   9 [chromium] › tests/e2e/vitrine.spec.ts:106:7 › Vitrine › TC-VIT-09: every plate rules its metrics on the same line (2.1s)
+  ✓  10 [chromium] › tests/e2e/vitrine.spec.ts:141:7 › Vitrine › TC-VIT-10: a plate traces its drawing when the light reaches it (2.5s)
+  ✓  11 [chromium] › tests/e2e/vitrine.spec.ts:180:7 › Vitrine › TC-VIT-11: under reduced motion the drawings are present, untraced (3.8s)
+  ✓  12 [chromium] › tests/e2e/vitrine.spec.ts:204:9 › Vitrine › TC-VIT-12 @ 1440: card 01 stands on the heading's spine, lit at rest, and the rail fades rather than cuts (4.3s)
+  ✓  13 [chromium] › tests/e2e/vitrine.spec.ts:204:9 › Vitrine › TC-VIT-12 @ 1920: card 01 stands on the heading's spine, lit at rest, and the rail fades rather than cuts (4.9s)
+  ✓  14 [chromium] › tests/e2e/vitrine.spec.ts:258:7 › Vitrine › TC-VIT-13: every stroke of a lit plate lands inside the cinematic band (2.9s)
+
+=== CTA-01 @ 390x844 (phone) === 1 visible CV control(s)
+  Hero_secondaryAction__jCqGE "Download CV" (213, 775) 153x48 visibility=visible display=flex
+  ✓  15 [chromium] › tests/overhaul/cta-duplication.spec.ts:78:9 › ADV-4 — one CV control in the first screen › CTA-01 @ 390x844 (phone): exactly one visible CV control at scroll top (2.4s)
+
+=== CTA-01 @ 834x1112 (tablet) === 1 visible CV control(s)
+  Hero_secondaryAction__jCqGE "Download CV" (242, 1079) 156x48 visibility=visible display=flex
+  ✓  16 [chromium] › tests/overhaul/cta-duplication.spec.ts:78:9 › ADV-4 — one CV control in the first screen › CTA-01 @ 834x1112 (tablet): exactly one visible CV control at scroll top (2.8s)
+
+=== CTA-01 @ 1280x800 (laptop) === 1 visible CV control(s)
+  Hero_secondaryAction__jCqGE "Download CV" (265, 693) 156x48 visibility=visible display=flex
+  ✓  17 [chromium] › tests/overhaul/cta-duplication.spec.ts:78:9 › ADV-4 — one CV control in the first screen › CTA-01 @ 1280x800 (laptop): exactly one visible CV control at scroll top (2.4s)
+
+=== CTA-01 @ 1440x900 (laptop) === 1 visible CV control(s)
+  Hero_secondaryAction__jCqGE "Download CV" (297, 757) 156x48 visibility=visible display=flex
+  ✓  18 [chromium] › tests/overhaul/cta-duplication.spec.ts:78:9 › ADV-4 — one CV control in the first screen › CTA-01 @ 1440x900 (laptop): exactly one visible CV control at scroll top (2.4s)
+
+=== CTA-01 @ 1920x1080 (desktop) === 1 visible CV control(s)
+  Hero_secondaryAction__jCqGE "Download CV" (537, 871) 156x48 visibility=visible display=flex
+  ✓  19 [chromium] › tests/overhaul/cta-duplication.spec.ts:78:9 › ADV-4 — one CV control in the first screen › CTA-01 @ 1920x1080 (desktop): exactly one visible CV control at scroll top (2.8s)
+
+=== CTA-02 restored nav pill === {"visibility":"visible","opacity":"0.999963","borderStyle":"solid"}
+  ✓  20 [chromium] › tests/overhaul/cta-duplication.spec.ts:100:7 › ADV-4 — one CV control in the first screen › CTA-02: the nav pill returns once the reader leaves the hero (2.7s)
+  ✓  21 [chromium] › tests/overhaul/cta-duplication.spec.ts:133:7 › ADV-4 — one CV control in the first screen › CTA-03: the closed overlay is out of the hit-test tree entirely (2.3s)
+  ✓  22 [chromium] › tests/overhaul/scene-vitrine.spec.ts:78:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-01: exactly one canvas mounts under the rail once the section is in view (6.2s)
+  ✓  23 [chromium] › tests/overhaul/scene-vitrine.spec.ts:92:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-02: the canvas is aria-hidden, behind the plates and behind the heading (7.7s)
+  ✓  24 [chromium] › tests/overhaul/scene-vitrine.spec.ts:123:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-03: the field reads the same lit plate the rail does (7.8s)
+  ✓  25 [chromium] › tests/overhaul/scene-vitrine.spec.ts:142:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-04: under reduced motion there is no canvas and the six drawings are whole (4.3s)
+  ✓  26 [chromium] › tests/overhaul/scene-vitrine.spec.ts:161:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-05: with WebGL unavailable the cabinet is whole and silent (4.6s)
+  ✓  27 [chromium] › tests/overhaul/scene-vitrine.spec.ts:188:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-06: the field is monochrome, palette-sourced and cheap per pixel (57ms)
+  ✓  28 [chromium] › tests/overhaul/scene-vitrine.spec.ts:213:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-07: the trace-on reads as a trace and still lands inside 900 ms (MOT-C13-03) (6.5s)
+  ✓  29 [chromium] › tests/overhaul/scene-vitrine.spec.ts:252:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-08: the rail travels under no-preference and jumps under reduce (MOT-C13-06) (5.8s)
+  ✓  30 [chromium] › tests/overhaul/scene-vitrine.spec.ts:305:7 › TC-VIT: a plate at rest is still a drawing, and the work ends in an invitation › TC-VIT-V1: a resting (unlit, undrawn) plate renders visible strokes (8.4s)
+  ✓  31 [chromium] › tests/overhaul/scene-vitrine.spec.ts:354:7 › TC-VIT: a plate at rest is still a drawing, and the work ends in an invitation › TC-VIT-V2: an engagement CTA follows the curated work (8.5s)
+
+  31 passed (2.0m)

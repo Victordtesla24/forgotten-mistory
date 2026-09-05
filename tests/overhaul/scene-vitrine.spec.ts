@@ -260,3 +260,149 @@ test.describe('TC-SCENE-VITRINE: a field of light under the cabinet', () => {
     await expect(page.locator(RAIL)).toHaveCSS('scroll-behavior', 'auto');
   });
 });
+
+/**
+ * G-V1 / G-V2 — the ADV-FAIL P0 on `#vitrine`.
+ *
+ * The trace-on was authored as a reveal from nothing: every stroke sat at
+ * `stroke-dashoffset: 1` until its plate was lit or had been lit once
+ * (`Drawings.module.css`). At rest that is one drawing and five empty frames —
+ * a reader scrolling past the rail sees five plates that look like they failed
+ * to load, and the mechanism drawing is the whole argument of a plate.
+ *
+ * The rule these two tests hold: a drawing is always present. The lit plate is
+ * still the emphasis — the trace sweeps its strokes up to full weight in
+ * document order and the labels still arrive after the last stroke — but it is
+ * raised from a resting weight, never from nothing.
+ *
+ * TC-VIT-V2 is the other half of the same directive (R4): a business client who
+ * has just read the work has a route out of it in the section they read it in,
+ * rather than having to reach `#listen` to find one. It is chrome — achromatic
+ * — because gold in this section is already spent on the live repository URLs,
+ * which are the plates' sourced claims.
+ */
+test.describe('TC-VIT: a plate at rest is still a drawing, and the work ends in an invitation', () => {
+  test.describe.configure({ timeout: 120000 });
+
+  /**
+   * Every stroke's dash offset and the two independent weights on it.
+   *
+   * `stroke-opacity` is the trace channel — the one thing the raking light
+   * moves, and the one this directive is about. The per-element `opacity` is
+   * the drawing's own tonal hierarchy, authored into `Drawings.tsx` (0.16 for a
+   * shadow rule, 0.95 for the principal line) and identical whether the plate
+   * is lit or not. They are read apart because multiplying them would judge a
+   * deliberately faint guide line as a withheld stroke.
+   */
+  const weigh = (plate: SVGElement | HTMLElement) =>
+    Array.from(plate.querySelectorAll('[class*="stroke"]')).map((stroke) => {
+      const cs = getComputedStyle(stroke);
+      const trace = parseFloat(cs.strokeOpacity) || 0;
+      const tone = parseFloat(cs.opacity) || 0;
+      return { offset: parseFloat(cs.strokeDashoffset) || 0, trace, painted: trace * tone };
+    });
+
+  test('TC-VIT-V1: a resting (unlit, undrawn) plate renders visible strokes', async ({ page }) => {
+    await settleVitrineWithGL(page);
+
+    // At rest the rail has snapped to plate 01: it is the only plate the light
+    // has ever reached, so the last plate is genuinely at rest.
+    await expect(page.locator(PLATE).nth(0)).toHaveAttribute('data-lit', 'true');
+    const resting = page.locator(PLATE).nth(5);
+    expect(
+      await resting.evaluate((el) => el.hasAttribute('data-lit') || el.hasAttribute('data-drawn')),
+      'plate 06 has been lit or drawn, so it is not the resting case this test is about',
+    ).toBe(false);
+
+    const restingStrokes = await resting.evaluate(weigh);
+    expect(restingStrokes.length, 'the resting plate has no strokes to read').toBeGreaterThan(5);
+
+    // Nothing is withheld: every stroke is fully drawn, not dashed out of sight.
+    const dashed = restingStrokes.filter((s) => s.offset !== 0).length;
+    expect(
+      dashed,
+      `${dashed} of ${restingStrokes.length} strokes on the resting plate are dashed away — ` +
+        'five of the six frames read as empty',
+    ).toBe(0);
+
+    // And drawn at a weight a reader can actually see: no stroke is held below
+    // the resting trace weight, and the drawing's principal lines are painted.
+    const faintestTrace = Math.min(...restingStrokes.map((s) => s.trace));
+    expect(
+      faintestTrace,
+      `faintest resting stroke-opacity: ${faintestTrace}`,
+    ).toBeGreaterThanOrEqual(0.4);
+
+    const strongest = Math.max(...restingStrokes.map((s) => s.painted));
+    expect(
+      strongest,
+      `the resting plate's most present stroke paints at ${strongest}`,
+    ).toBeGreaterThanOrEqual(0.4);
+
+    // The lit plate is still the emphasis: its trace weight is strictly above
+    // every resting one, so the light adds something rather than being the only
+    // thing that makes a drawing exist.
+    const litStrokes = await page.locator(PLATE).nth(0).evaluate(weigh);
+    const litTrace = Math.min(...litStrokes.map((s) => s.trace));
+    const brightestResting = Math.max(...restingStrokes.map((s) => s.trace));
+    expect(
+      litTrace,
+      `lit trace ${litTrace} must outweigh the brightest resting trace ${brightestResting}`,
+    ).toBeGreaterThan(brightestResting);
+  });
+
+  test('TC-VIT-V2: an engagement CTA follows the curated work', async ({ page }) => {
+    await settleVitrineWithGL(page);
+
+    const cta = page.locator(`${VITRINE} a`, { hasText: /^Start a project$/ });
+    await expect(cta, 'one engagement action in #vitrine, not two').toHaveCount(1);
+    await expect(cta).toBeVisible();
+
+    const href = await cta.getAttribute('href');
+    expect(href ?? '', `#vitrine CTA href: ${href}`).toMatch(/^mailto:/);
+
+    // It follows the work rather than preceding it.
+    const afterRail = await cta.evaluate((el) => {
+      const rail = document.querySelector('#vitrine ol');
+      if (!rail) return false;
+      // Node.DOCUMENT_POSITION_FOLLOWING === 4
+      return (rail.compareDocumentPosition(el) & 4) !== 0;
+    });
+    expect(
+      afterRail,
+      'the invitation sits before the rail, so it is not a route out of the work',
+    ).toBe(true);
+
+    // Achromatic: gold in this section belongs to the live repository URLs.
+    const painted = await cta.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { color: cs.color, background: cs.backgroundColor, border: cs.borderTopColor };
+    });
+    const chromatic = Object.entries(painted).filter(([, value]) => {
+      const m = value.match(/rgba?\(([^)]+)\)/);
+      if (!m) return false;
+      const parts = m[1].split(/[,\s/]+/).filter(Boolean).map(Number);
+      const [r, g, b] = parts;
+      const a = parts.length > 3 ? parts[3] : 1;
+      if (a === 0) return false;
+      return Math.max(r, g, b) - Math.min(r, g, b) > 4;
+    });
+    expect(
+      chromatic,
+      `chromatic channels on the #vitrine CTA: ${JSON.stringify(painted)}`,
+    ).toHaveLength(0);
+
+    // Keyboard-reachable, and it says so when it has the focus.
+    const focus = await cta.evaluate((el) => {
+      (el as HTMLElement).focus();
+      return {
+        focused: document.activeElement === el,
+        tabIndex: (el as HTMLElement).tabIndex,
+        outline: getComputedStyle(el).outlineWidth,
+      };
+    });
+    expect(focus.focused, 'the CTA cannot take keyboard focus').toBe(true);
+    expect(focus.tabIndex).toBeGreaterThanOrEqual(0);
+    expect(parseFloat(focus.outline), 'no visible focus ring on the CTA').toBeGreaterThan(0);
+  });
+});
