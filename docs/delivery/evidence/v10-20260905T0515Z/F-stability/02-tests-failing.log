@@ -1,0 +1,90 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-error-boundary.spec.ts -g TC-SKEW-02 --workers=1 --repeat-each=3 --reporter=line
+
+Running 3 tests using 1 worker
+
+[1A[2K[1/3] [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot
+[1A[2K  1) [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot 
+
+    Error: an uncaught page error escaped: Error: fm-test: forced WebGL context creation failure
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected length: [32m0[39m
+    Received length: [31m1[39m
+    Received array:  [31m["Error: fm-test: forced WebGL context creation failure"][39m
+
+      163 |     const body = (await page.locator('body').innerText()) || '';
+      164 |     expect(body, 'a scene fault replaced the document with the error shell').not.toMatch(ERROR_SHELL);
+    > 165 |     expect(pageErrors, `an uncaught page error escaped: ${pageErrors.join(' | ')}`).toHaveLength(0);
+          |                                                                                     ^
+      166 |     expect(sceneErrors, `expected exactly one scene report, got: ${sceneErrors.join(' | ')}`).toHaveLength(1);
+      167 |     expect(sceneErrors[0], 'the report must name the scene that failed').toMatch(/\[Scene:[a-z-]+\]/i);
+      168 |
+        at /root/forgotten-mistory/.claude/worktrees/wf_38db9d7d-ce3-1/tests/overhaul/scene-error-boundary.spec.ts:165:85
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-scene-error-bound-26d47-s-stays-inside-its-own-slot-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-scene-error-bound-26d47-s-stays-inside-its-own-slot-chromium/error-context.md
+
+
+[1A[2K[2/3] [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot
+[1A[2K  2) [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot 
+
+    Error: an uncaught page error escaped: Error: fm-test: forced WebGL context creation failure
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected length: [32m0[39m
+    Received length: [31m1[39m
+    Received array:  [31m["Error: fm-test: forced WebGL context creation failure"][39m
+
+      163 |     const body = (await page.locator('body').innerText()) || '';
+      164 |     expect(body, 'a scene fault replaced the document with the error shell').not.toMatch(ERROR_SHELL);
+    > 165 |     expect(pageErrors, `an uncaught page error escaped: ${pageErrors.join(' | ')}`).toHaveLength(0);
+          |                                                                                     ^
+      166 |     expect(sceneErrors, `expected exactly one scene report, got: ${sceneErrors.join(' | ')}`).toHaveLength(1);
+      167 |     expect(sceneErrors[0], 'the report must name the scene that failed').toMatch(/\[Scene:[a-z-]+\]/i);
+      168 |
+        at /root/forgotten-mistory/.claude/worktrees/wf_38db9d7d-ce3-1/tests/overhaul/scene-error-boundary.spec.ts:165:85
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-scene-error-bound-26d47-s-stays-inside-its-own-slot-chromium-repeat1/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-scene-error-bound-26d47-s-stays-inside-its-own-slot-chromium-repeat1/error-context.md
+
+
+[1A[2K[3/3] [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot
+[1A[2K  3) [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot 
+
+    Error: an uncaught page error escaped: Error: fm-test: forced WebGL context creation failure
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected length: [32m0[39m
+    Received length: [31m1[39m
+    Received array:  [31m["Error: fm-test: forced WebGL context creation failure"][39m
+
+      163 |     const body = (await page.locator('body').innerText()) || '';
+      164 |     expect(body, 'a scene fault replaced the document with the error shell').not.toMatch(ERROR_SHELL);
+    > 165 |     expect(pageErrors, `an uncaught page error escaped: ${pageErrors.join(' | ')}`).toHaveLength(0);
+          |                                                                                     ^
+      166 |     expect(sceneErrors, `expected exactly one scene report, got: ${sceneErrors.join(' | ')}`).toHaveLength(1);
+      167 |     expect(sceneErrors[0], 'the report must name the scene that failed').toMatch(/\[Scene:[a-z-]+\]/i);
+      168 |
+        at /root/forgotten-mistory/.claude/worktrees/wf_38db9d7d-ce3-1/tests/overhaul/scene-error-boundary.spec.ts:165:85
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-scene-error-bound-26d47-s-stays-inside-its-own-slot-chromium-repeat2/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-scene-error-bound-26d47-s-stays-inside-its-own-slot-chromium-repeat2/error-context.md
+
+
+[1A[2K  3 failed
+    [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot 
+    [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot 
+    [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot 

@@ -1192,23 +1192,6 @@ const MiniVicBot = () => {
                           </div>
                         </button>
                       )}
-                      {msg.polloTaskId && !msg.videoUrl && (
-                         <span className="flex animate-pulse items-center gap-1 rounded-md border border-neutral-300/40 bg-neutral-500/10 px-2 py-1 text-neutral-200">
-                           <Sparkles size={12} /> Generating Video...
-                         </span>
-                      )}
-                      {msg.videoUrl && (
-                        <button
-                          onClick={() => playGeneratedVideo(msg.videoUrl!)}
-                          disabled={isMuted}
-                          className="rounded-md border border-neutral-300/40 bg-neutral-500/10 px-2 py-1 text-neutral-100 hover:bg-neutral-500/20"
-                        >
-                          <div className="flex items-center gap-1">
-                            <Video size={12} />
-                            <span>Play HD Video</span>
-                          </div>
-                        </button>
-                      )}
                       <button
                         onClick={() => handleCopy(msg.text, msg.id)}
                         className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-neutral-200 hover:border-neutral-300/70 hover:bg-neutral-500/10"
