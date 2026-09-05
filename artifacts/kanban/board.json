@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T08:25:47.637Z",
+  "updated": "2026-09-05T08:30:41.924Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -68,7 +68,7 @@
     {
       "id": "t_8cdf3b61",
       "title": "Cycle 11 — Vitrine rail mask/trace-on + lit-plate fix, Skills/About contrast, hero 390 one-fold (R-c8 C-02/C-06, TC-CONTRAST-01, TC-HERO-12)",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 90,
       "parents": [],
@@ -80,7 +80,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:30:51.271Z",
+      "updated": "2026-09-05T08:30:41.749Z",
       "summary": "Worktree .claude/worktrees/wf_18f926b0-2a4-2 (base 8dc4cf4). Patch applied + real fixes D-1…D-6 written (07-decisions.md); TDD failing log captured (7 failed / 10 passed on unpatched main). NOT yet done: passing battery, regression, screenshots, D-7+, commit.",
       "decisions": [
         {
@@ -97,8 +97,14 @@
           "at": "2026-09-05T07:30:51.271Z",
           "by": "orchestrator",
           "text": "R-c13 #15 CC-08 (minor, Verified, composition) — The rail scrolls 3192 px inside 1440 px — 55% of the content off-screen — with no thumb, no counter and no arrow; the only affordance is a 64 px mask fade\nDIRECTION: Add the unbuilt rail thumb the R-c8 C-02 direction specified: a 2 px track in var(--ink-500) spanning the column (96 px to 1344 px at 1440), thumb height 2 px, background var(--mist-400), border-radius 1px, width calc(clientWidth / scrollWidth * 100%), translated by scrollLeft / scrollWidth, sitting var(--space-2) below the cards on the same spine. Pair it with an '01 / 06' counter at var(--fs-micro) in var(--mist-400) at the track's right end. Reduced motion: position updates without transition. No gold.\nFILES: components/sections/Vitrine/Vitrine.module.css:56,307+, components/sections/Vitrine/Vitrine.tsx\nACCEPTANCE: At 1440 and 1920, #vitrine contains an element whose computed width is < rail.clientWidth and whose left offset changes after rail.scrollBy(600); its track's left edge equals the #vitrine heading's left edge within 1 px."
+        },
+        {
+          "at": "2026-09-05T08:30:41.710Z",
+          "by": "orchestrator",
+          "text": "Cycle 11's one open gate (TC-CONTRAST-01 @390) is green since cycle 16 — closing."
         }
-      ]
+      ],
+      "result": "All 20 acceptance lines now hold (the @390 contrast node was the launcher, fixed in cycle 16). Live since f86b125."
     },
     {
       "id": "t_c3ece39c",
@@ -158,10 +164,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T08:30:41.789Z",
       "summary": "Checks run 33936783382 on debd25b: 15 failed / 272 passed. C13 regression (Next 15) showed 8 ✘: GC-01 gold-contrast, TC-CONTRAST-01 @390/@1440, TC-BOT-12, TC-EXP-11, TC-HERO-12, TC-STATE-HOVER, TC-STATE-ACTIVE. Cycle 11 fixes CONTRAST + HERO-12. Remaining after landing: GC-01, TC-BOT-12, TC-EXP-11, TC-STATE-HOVER/ACTIVE + whatever the merged main shows.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T08:30:41.789Z",
+          "by": "orchestrator",
+          "text": "Add to the regression triage: VIS-04 listen-section snapshot (ratio 0.04, pre-existing since cycle 11 era), MiniVic transcript 32 px at 1366×768 (16b trade — consider trimming the persona status line at short heights), TC-LISTEN-05 flake."
+        }
+      ]
     },
     {
       "id": "t_4adf34f7",
@@ -378,7 +390,7 @@
     {
       "id": "t_cc03ed93",
       "title": "Cycle 16 — C-04 + ADV-F-3 + ADV-F-2: the MiniVic launcher reads as a labelled chat affordance, is achromatic, is reachable in 3 tab stops",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 93,
       "parents": [
@@ -393,7 +405,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:31:25.246Z",
+      "updated": "2026-09-05T08:30:41.673Z",
       "summary": "R-c8 items 7, 12, 13. Files: components/MiniVicBot.tsx, app/globals.css (MiniVic chrome block), components/site/Navigation.tsx; tests/monochrome + tests/a11y (TDD first).",
       "decisions": [],
       "comments": [
@@ -422,7 +434,8 @@
           "by": "orchestrator",
           "text": "Merged to main (pipeline 1802b87 + verification 614b8ce). V-c16 FAIL on 2/13 lines → correction cycle 16b (t_c16b0001) dispatched; this task closes when 16b passes."
         }
-      ]
+      ],
+      "result": "Cycle 16 + 16b closed: labelled achromatic launcher on a dark plate, occlusion fixed (TC-CONTRAST-01 @390 green), skip link, aria chain clean, TC-BOT-12/14 green, CC-03a/CC-07/ADV-3 closed. Live."
     },
     {
       "id": "t_3729f57e",
@@ -1130,7 +1143,7 @@
     {
       "id": "t_60d9cd7a",
       "title": "Scenes 5 + 6 — #vitrine and #listen flagships: GLSL fields under the plates and the caliper (R2, M1)",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 84,
       "parents": [
@@ -1145,7 +1158,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:05.931Z",
-      "updated": "2026-09-05T06:20:05.931Z",
+      "updated": "2026-09-05T08:30:41.924Z",
       "summary": "SPEC-v10.md c20 minus the C-02 rail fix (cycle 11 lands it). #vitrine: 6 SVG drawings, 0 canvases → a shader field under the rail that answers the lit plate; #listen: CSS caliper beat, 0 canvases → a field that answers the caliper-close (the CSS beat stays the single motion beat, MOT-F-4). Files: components/sections/Vitrine/VitrineField.tsx, vitrine.glsl.ts, Vitrine.tsx, Vitrine.module.css, components/sections/Listen/ListenField.tsx, listen.glsl.ts, Listen.tsx, Listen.module.css; tests/overhaul/scene-vitrine.spec.ts + scene-listen.spec.ts (TDD first). Two commits; if the 30-min cap approaches, ship #vitrine and return goal_complete:false naming #listen.",
       "decisions": [],
       "comments": [],
@@ -1553,7 +1566,7 @@
     {
       "id": "t_c16b0001",
       "title": "Cycle 16b — MiniVic correction: open panel never covers the H1 at 1280×800/1366×768, accessible name contains the visible label, a permanent white mark under the portrait at ≤834, no source-less <video> (V-c16 F-V16-1/2 + R-c13 CC-03a)",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 92,
       "parents": [
@@ -1567,11 +1580,12 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:31:25.195Z",
-      "updated": "2026-09-05T07:31:25.195Z",
+      "updated": "2026-09-05T08:30:41.636Z",
       "summary": "V-c16 (b712c3d) FAIL on 2 of 13 lines: (F-V16-2) at 1280×800 and 1366×768 the open panel {l:824,t:232,r:1256,b:712} intersects #hero h1 glyph rects (~135×69 px of the name covered; TC-BOT-12 only checks the block box); (F-V16-1) the launcher box still overlaps <p>/<li> boxes in #about at 390 (luminance is now safe — dark plate — so the remaining question is legibility of the covered words, not contrast). Non-blocking: WCAG 2.5.3 Label in Name — visible pill says Ask Mini Vic while the accessible name is Open Mini Vic assistant; at 390 the affordance is a near-black disc with a faint face and no word. R-c13 CC-03a: never ship a source-less <video> (render it only with a resolved source, poster first) and give the button a permanent 24×24 white mark (speech-mark svg or VIC monogram) rendered UNDER the video as the resting state.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "result": "V-c16b PASS (e73b1c9): panel clears the H1 glyphs at 1280×800/1366×768/1440×900 (+51/+62/+26 px), accessible name 'Ask Mini Vic — Vikram's AI clone' + aria-expanded, 24×24 white speech-mark under the portrait, no source-less video (rendered only with src+poster), 111 colours achromatic, tab stop 2; 66/66 + text-contrast 2/2; consolidated b37e18d, LIVE (monitor PROD OK b37e18d3). Open observations → t_d0066b7a: VIS-04 listen snapshot (pre-existing) and the 32 px transcript at 1366×768 (disclosed trade)."
     },
     {
       "id": "t_rc14rev01",
