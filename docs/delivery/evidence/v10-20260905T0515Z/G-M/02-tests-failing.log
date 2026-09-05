@@ -1,0 +1,134 @@
+TAP version 13
+# Subtest: MV-GREET-01: the recorded transcript is exactly the on-screen introduction
+not ok 1 - MV-GREET-01: the recorded transcript is exactly the on-screen introduction
+  ---
+  duration_ms: 1.24062
+  type: 'test'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_0a064191-152-1/tests/minivic_greeting.test.mjs:47:1'
+  failureType: 'testCodeFailure'
+  error: 'public/assets/minivic-greeting.txt is missing — the generation script must record the words it spoke so audio and text can be compared'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_0a064191-152-1/tests/minivic_greeting.test.mjs:48:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: MV-GREET-02: the shipped MP3 hashes to the digest the app asserts
+not ok 2 - MV-GREET-02: the shipped MP3 hashes to the digest the app asserts
+  ---
+  duration_ms: 0.230292
+  type: 'test'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_0a064191-152-1/tests/minivic_greeting.test.mjs:61:1'
+  failureType: 'testCodeFailure'
+  error: 'app/data/generated/greeting-asset.ts is missing — the generation script writes it so the runtime hash constant can never be hand-edited out of step with the audio'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_0a064191-152-1/tests/minivic_greeting.test.mjs:63:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: MV-GREET-03: the greeting asset stays inside the 500 kB budget
+ok 3 - MV-GREET-03: the greeting asset stays inside the 500 kB budget
+  ---
+  duration_ms: 0.416362
+  type: 'test'
+  ...
+# Subtest: MV-SEND-01: no client source names the dead realtime / chat-with-vic ladder
+not ok 4 - MV-SEND-01: no client source names the dead realtime / chat-with-vic ladder
+  ---
+  duration_ms: 64.237823
+  type: 'test'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_0a064191-152-1/tests/minivic_send_path.test.mjs:47:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    the dead API ladder is still referenced in client source:
+    components/MiniVicBot.tsx:68 → polloTaskId
+    components/MiniVicBot.tsx:524 → polloTaskId
+    components/MiniVicBot.tsx:531 → polloTaskId
+    components/MiniVicBot.tsx:541 → chat-with-vic
+    components/MiniVicBot.tsx:541 → polloTaskId
+    components/MiniVicBot.tsx:566 → polloTaskId
+    components/MiniVicBot.tsx:1020 → api/realtime
+    components/MiniVicBot.tsx:1172 → chat-with-vic
+    components/MiniVicBot.tsx:1530 → polloTaskId
+    + actual - expected
+    
+    + [
+    +   'components/MiniVicBot.tsx:68 → polloTaskId',
+    +   'components/MiniVicBot.tsx:524 → polloTaskId',
+    +   'components/MiniVicBot.tsx:531 → polloTaskId',
+    +   'components/MiniVicBot.tsx:541 → chat-with-vic',
+    +   'components/MiniVicBot.tsx:541 → polloTaskId',
+    +   'components/MiniVicBot.tsx:566 → polloTaskId',
+    +   'components/MiniVicBot.tsx:1020 → api/realtime',
+    +   'components/MiniVicBot.tsx:1172 → chat-with-vic',
+    +   'components/MiniVicBot.tsx:1530 → polloTaskId'
+    + ]
+    - []
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+    0: 'components/MiniVicBot.tsx:68 → polloTaskId'
+    1: 'components/MiniVicBot.tsx:524 → polloTaskId'
+    2: 'components/MiniVicBot.tsx:531 → polloTaskId'
+    3: 'components/MiniVicBot.tsx:541 → chat-with-vic'
+    4: 'components/MiniVicBot.tsx:541 → polloTaskId'
+    5: 'components/MiniVicBot.tsx:566 → polloTaskId'
+    6: 'components/MiniVicBot.tsx:1020 → api/realtime'
+    7: 'components/MiniVicBot.tsx:1172 → chat-with-vic'
+    8: 'components/MiniVicBot.tsx:1530 → polloTaskId'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_0a064191-152-1/tests/minivic_send_path.test.mjs:57:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: MV-SEND-02: the built bundle ships no reference to the dead ladder
+not ok 5 - MV-SEND-02: the built bundle ships no reference to the dead ladder
+  ---
+  duration_ms: 0.477495
+  type: 'test'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_0a064191-152-1/tests/minivic_send_path.test.mjs:64:1'
+  failureType: 'testCodeFailure'
+  error: 'out/_next/static/chunks is missing — run "npm run build:static" before this test; the bundle assertion must never be skipped silently'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_0a064191-152-1/tests/minivic_send_path.test.mjs:66:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 1
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 149.789795

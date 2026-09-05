@@ -1,0 +1,137 @@
+G-M lane regression — t_g_m1 (send path) + t_g_m2 (greeting)
+Worktree: /root/forgotten-mistory/.claude/worktrees/wf_0a064191-152-1
+Branch:   worktree-wf_0a064191-152-1
+Date:     2026-09-05
+
+============================================================
+1. Typecheck
+============================================================
+$ npx tsc --noEmit
+TSC=0        (clean — no dangling symbols after the ladder removal)
+
+============================================================
+2. Lint
+============================================================
+$ npm run lint
+LINT_EXIT=0  (clean)
+
+Note: the first pass after wiring the hash to a generated module raised
+  components/MiniVicBot.tsx 286:6  Warning: React Hook useEffect has a missing
+  dependency: 'CLONED_VOICE_GREETING_HASH'
+That warning was fixed at source rather than suppressed — the constant is a
+build-time fact, so it was hoisted to module scope and is no longer a hook
+dependency at all. Re-run is clean, with no eslint-disable added.
+
+============================================================
+3. Build
+============================================================
+$ npm run build:static
+BUILD_EXIT=0
+  scanned : 49 files under out/
+  shapes  : 12 credential patterns
+  identity: 50 real credential value(s) from 1 file(s)
+  RESULT: PASS — no credential material in the emitted bundle.
+
+============================================================
+4. Static audit
+============================================================
+$ node scripts/validate/overhaul_static_audit.mjs
+  RESULT: ALL PASS (10/10)
+AUDIT_EXIT=0
+
+============================================================
+5. node:test
+============================================================
+$ node --test tests/minivic_send_path.test.mjs tests/minivic_greeting.test.mjs
+ok 1 - MV-GREET-01: the recorded transcript is exactly the on-screen introduction
+ok 2 - MV-GREET-02: the shipped MP3 hashes to the digest the app asserts
+ok 3 - MV-GREET-03: the greeting asset stays inside the 500 kB budget
+ok 4 - MV-SEND-01: no client source names the dead realtime / chat-with-vic ladder
+ok 5 - MV-SEND-02: the built bundle ships no reference to the dead ladder
+# pass 5
+# fail 0
+
+(All five were captured RED first in 02-tests-failing.log except MV-GREET-03,
+which asserted the size budget the stale asset already met. MV-SEND-01 failed a
+second time after implementation, on my own explanatory comment naming the dead
+endpoints — the gate was right and the comment was reworded, not the gate.)
+
+============================================================
+6. Playwright — the specs the two task specs name
+============================================================
+$ python3 -m http.server 5606 --directory out --bind 127.0.0.1 &
+$ PLAYWRIGHT_BASE_URL=http://127.0.0.1:5606 npx playwright test \
+    tests/e2e/minivic-send-path.spec.ts \
+    tests/content/minivic-knowledge.spec.ts \
+    tests/monochrome/minivic-launcher.spec.ts \
+    tests/overhaul/voiceover.spec.ts \
+    tests/overhaul/avatar.spec.ts --workers=1 --reporter=line
+
+  57 passed (1.4m)
+PW_EXIT=0
+
+The two that carry this lane's claim:
+  MV-WIRE-01: one send makes exactly one /api request, and it is /api/chat
+  MV-WIRE-02: no poller keeps running after the reply lands
+
+MV-WIRE-01 asserts on the wire, not the source: it records every request the
+page makes from the moment the send starts and requires the list to equal
+exactly ['/api/chat'] — no /api/realtime*, no /api/chat-with-vic*, no WebSocket,
+no page errors — and requires a real reply (>40 chars) to render. The panel is
+opened the way tests/monochrome/minivic-launcher.spec.ts opens it (wait for
+React hydration on the launcher, scroll past the hero, click through the
+element); that is the step the independent reviewer was missing when the panel
+would not open for them in headless Chrome and they measured zero /api/*
+requests.
+
+MV-WIRE-02 watches a 7-second window after the reply — wider than the removed
+poller's 3-second interval — and requires silence.
+
+============================================================
+7. Bundle
+============================================================
+$ du -b out/_next/static/chunks   →  2,052,244 bytes across 33 .js chunks (after)
+
+A byte-level before/after delta for the MiniVic chunk is NOT reported here,
+because no pre-change build artifact survived to measure against: out/ was first
+built in this worktree after the ladder had already been removed, and
+reconstructing the prior bundle would mean a second full build this lane's host
+budget does not have. Rather than quote a number I did not measure, the size
+claim rests on what is measured:
+
+  - source: components/MiniVicBot.tsx  418 lines changed, net −319
+            (git diff --stat: 139 insertions, 458 deletions across the two files)
+  - bundle: MV-SEND-02 greps all 33 emitted chunks for 'api/realtime',
+            'chat-with-vic' and 'polloTaskId' and finds zero — the reviewer
+            measured the poller present in the served bundle before this change,
+            and it is absent from it now.
+
+Removed from the shipped component: sendRealtimeMessage (WebSocket session +
+envelope protocol), the /api/chat-with-vic compatibility POST, the 3-second
+task poller and its interval ref, liveSocketsRef and its teardown, wsBaseUrl,
+isJsonResponse, formatProviderError, parseProviderErrorPayload, OFFLINE_MESSAGE,
+the RealtimeServerEnvelope and ProviderErrorPayload types, the polloTaskId /
+videoUrl message fields, playGeneratedVideo and the two unreachable UI branches
+it fed, and the now-unused Video icon import.
+
+============================================================
+8. Greeting asset
+============================================================
+$ ffprobe public/assets/minivic-greeting.mp3
+  duration = 24.984671 s
+  size     = 417,702 bytes   (under the 500 kB budget)
+  bit_rate = 133,746
+$ ffmpeg -v error -i public/assets/minivic-greeting.mp3 -f null -
+  (no output — clean decode, no errors)
+
+Plausibility: 365 characters ≈ 62 words at ~2.5 words/s ≈ 25 s. Measured 24.98 s.
+
+sha256(public/assets/minivic-greeting.mp3)
+  = dd65f259d1bf57728c254763c56399cc5a0dceed5694b4d07b6147d0115c6ccb
+  (was 369e1eb2e0e072a8b07a56976cc5479f2187a06066f0ab696b540d8f8f9dddb3 —
+   the stale 2026-09-03 asset the reviewer measured)
+
+Served over the lane's static server:
+$ curl -o /dev/null -w "%{http_code} %{size_download}" \
+    http://127.0.0.1:5606/assets/minivic-greeting.mp3
+  200 417702
