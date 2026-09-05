@@ -170,3 +170,6 @@ Fast-forward
  create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/probeB-gl.mjs
  create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/probeC-final.json
  create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/probeC-final.mjs again immediately and once more right before you push, resolve any Hero.tsx/Hero.module.css conflict keeping both intents (never let consolidation's 'branch wins conflicts' throw 44c3e08 away), then re-measure the reviewer's four failing clauses on your build before deciding what is still open.
+
+## COMMENT (2026-09-05T13:49:05.857Z)
+PUSHED: fix commit consolidated ('fix(hero): the action sits in the fold…') + 46379f1 tests/baseline follow-up (TC-HERO-17/TC-PHOTO-06 rewritten to 'focus offers, a press decides' — the play control now lives in the proof band with min-height 40px; hero-section visual baseline regenerated and inspected). Lane-measured on :5616 — hero-fold+hero+hero-photo+content-check 65/65; PERF-08 CLS 0.00000 on 9/9 cold loads (1280/1440/390); PERF-01..07 + flagship-visibility green; text-contrast: 0 failures in #hero (4 elsewhere: Vitrine_source 1.01:1 — new, to verify — and 3 band labels already fixed upstream). Reviewer probe after the deploy.

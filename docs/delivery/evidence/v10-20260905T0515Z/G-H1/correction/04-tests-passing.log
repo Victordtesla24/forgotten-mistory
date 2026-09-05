@@ -1,0 +1,80 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero-fold.spec.ts tests/e2e/hero.spec.ts tests/e2e/hero-photo.spec.ts tests/content/content-check.spec.ts --workers=1 --reporter=line
+
+Running 65 tests using 1 worker
+
+[1A[2K[1/65] [chromium] › tests/content/content-check.spec.ts:43:7 › Content Preservation › CT-01: Hero name from hero.ts appears verbatim
+[1A[2K[2/65] [chromium] › tests/content/content-check.spec.ts:48:7 › Content Preservation › CT-02: Hero positioning line appears verbatim
+[1A[2K[3/65] [chromium] › tests/content/content-check.spec.ts:55:7 › Content Preservation › CT-03: Hero statement states a tenure and names the current engagement
+[1A[2K[4/65] [chromium] › tests/content/content-check.spec.ts:74:7 › Content Preservation › CT-05: About carries the career facts
+[1A[2K[5/65] [chromium] › tests/content/content-check.spec.ts:87:7 › Content Preservation › CT-04: Every employer on the CV is named in the experience timeline
+[1A[2K[6/65] [chromium] › tests/content/content-check.spec.ts:106:7 › Content Preservation › CT-06: All six curated repositories render as plates with real GitHub links
+[1A[2K[7/65] [chromium] › tests/content/content-check.spec.ts:126:7 › Content Preservation › CT-07: The Vedic-astronomy work survives the rebuild as a vitrine plate
+[1A[2K[8/65] [chromium] › tests/content/content-check.spec.ts:139:7 › Content Preservation › CT-08: Credentials and the un-held certification both appear in the calibration table
+[1A[2K[9/65] [chromium] › tests/content/content-check.spec.ts:161:7 › Content Preservation › CT-09: Contact channels from siteContent appear verbatim in the closing section
+[1A[2K[10/65] [chromium] › tests/content/content-check.spec.ts:180:7 › Content Preservation › CT-10: Every hero figure is printed with the source it came from
+[1A[2K[11/65] [chromium] › tests/content/content-check.spec.ts:222:7 › Content Preservation › CT-11: GitHub and LinkedIn are linked from the closing section
+[1A[2K[12/65] [chromium] › tests/content/content-check.spec.ts:240:7 › Content Preservation › CT-15: LinkedIn (primary recruiter channel) is linked from the persistent navigation
+[1A[2K[13/65] [chromium] › tests/content/content-check.spec.ts:249:7 › Content Preservation › CT-14: MiniVicBot mounts from the layout without throwing
+[1A[2K[14/65] [chromium] › tests/content/content-check.spec.ts:263:7 › Content Preservation › CT-17: MiniVic availability default and hiring copy keep active-intent ATO wording
+[1A[2K[15/65] [chromium] › tests/content/content-check.spec.ts:308:7 › Content Preservation › CT-11: every tenure claim on the page carries its evidence
+[1A[2K[16/65] [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 1440×900 › TC-FOLD-01: one headline, one sentence, one action group at 1440×900
+[1A[2K[17/65] [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 1440×900 › TC-FOLD-04: one CTA group, with margin, at 1440×900
+[1A[2K[18/65] [chromium] › tests/e2e/hero-fold.spec.ts:250:11 › Hero — the first fold › at 1440×900 › TC-FOLD-02: the evidence sits below the fold at 1440×900
+[1A[2K[19/65] [chromium] › tests/e2e/hero-fold.spec.ts:280:11 › Hero — the first fold › at 1440×900 › TC-FOLD-03: the visual is the fold at 1440×900
+[1A[2K[20/65] [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 1280×800 › TC-FOLD-01: one headline, one sentence, one action group at 1280×800
+[1A[2K[21/65] [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 1280×800 › TC-FOLD-04: one CTA group, with margin, at 1280×800
+[1A[2K[22/65] [chromium] › tests/e2e/hero-fold.spec.ts:250:11 › Hero — the first fold › at 1280×800 › TC-FOLD-02: the evidence sits below the fold at 1280×800
+[1A[2K[23/65] [chromium] › tests/e2e/hero-fold.spec.ts:280:11 › Hero — the first fold › at 1280×800 › TC-FOLD-03: the visual is the fold at 1280×800
+[1A[2K[24/65] [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 834×1194 › TC-FOLD-01: one headline, one sentence, one action group at 834×1194
+[1A[2K[25/65] [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 834×1194 › TC-FOLD-04: one CTA group, with margin, at 834×1194
+[1A[2K[26/65] [chromium] › tests/e2e/hero-fold.spec.ts:250:11 › Hero — the first fold › at 834×1194 › TC-FOLD-02: the evidence sits below the fold at 834×1194
+[1A[2K[27/65] [chromium] › tests/e2e/hero-fold.spec.ts:280:11 › Hero — the first fold › at 834×1194 › TC-FOLD-03: the visual is the fold at 834×1194
+[1A[2K[28/65] [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 390×844 › TC-FOLD-01: one headline, one sentence, one action group at 390×844
+[1A[2K[29/65] [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 390×844 › TC-FOLD-04: one CTA group, with margin, at 390×844
+[1A[2K[30/65] [chromium] › tests/e2e/hero-fold.spec.ts:250:11 › Hero — the first fold › at 390×844 › TC-FOLD-02: the evidence sits below the fold at 390×844
+[1A[2K[31/65] [chromium] › tests/e2e/hero-fold.spec.ts:280:11 › Hero — the first fold › at 390×844 › TC-FOLD-03: the visual is the fold at 390×844
+[1A[2K[32/65] [chromium] › tests/e2e/hero-photo.spec.ts:55:7 › Hero photograph › TC-PHOTO-01: at 1440 the figure owns the right column — ≥34 % of the viewport and ≥440 px
+[1A[2K[33/65] [chromium] › tests/e2e/hero-photo.spec.ts:77:7 › Hero photograph › TC-PHOTO-02: at 390 the photo is full width and sits below the last hero action
+[1A[2K[34/65] [chromium] › tests/e2e/hero-photo.spec.ts:100:7 › Hero photograph › TC-PHOTO-03: the still is in colour — no grayscale filter, and the pixels are saturated
+[1A[2K[35/65] [chromium] › tests/e2e/hero-photo.spec.ts:149:7 › Hero photograph › TC-PHOTO-04: at rest the loop has no source and never plays
+[1A[2K[36/65] [chromium] › tests/e2e/hero-photo.spec.ts:163:7 › Hero photograph › TC-PHOTO-05: hover starts the loop; leaving pauses it
+[1A[2K[37/65] [chromium] › tests/e2e/hero-photo.spec.ts:181:7 › Hero photograph › TC-PHOTO-06: the control is keyboard-operable — Enter plays, Enter pauses
+[1A[2K[38/65] [chromium] › tests/e2e/hero-photo.spec.ts:220:7 › Hero photograph › TC-PHOTO-07: reduced motion plays nothing at rest and runs no animation
+[1A[2K[39/65] [chromium] › tests/e2e/hero-photo.spec.ts:248:7 › Hero photograph › TC-PHOTO-08: TC-HERO-12 still holds — an action ends inside the first 844 px at 390
+[1A[2K[40/65] [chromium] › tests/e2e/hero-photo.spec.ts:260:7 › Hero photograph › TC-PHOTO-09: the decorations are present — four corner ticks and the caption plate
+[1A[2K[41/65] [chromium] › tests/e2e/hero-photo.spec.ts:284:7 › Hero photograph › TC-PHOTO-10: no gold anywhere in or around the figure
+[1A[2K[42/65] [chromium] › tests/e2e/hero-photo.spec.ts:335:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts
+[1A[2K[chromium] › tests/e2e/hero-photo.spec.ts:335:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts
+Hover shifts: []
+
+[1A[2K[43/65] [chromium] › tests/e2e/hero-photo.spec.ts:401:7 › Hero photograph at 834 › TC-PHOTO-12: at 834 the figure still owns the whole right column
+[1A[2K[44/65] [chromium] › tests/e2e/hero.spec.ts:36:7 › Hero › TC-HERO-01: the name is the page h1
+[1A[2K[45/65] [chromium] › tests/e2e/hero.spec.ts:44:7 › Hero › TC-HERO-02: positioning, location and one-sentence statement render
+[1A[2K[46/65] [chromium] › tests/e2e/hero.spec.ts:52:7 › Hero › TC-HERO-03: the statement stays within its word budget
+[1A[2K[47/65] [chromium] › tests/e2e/hero.spec.ts:60:7 › Hero › TC-HERO-04: the ledger shows three figures, each with its source
+[1A[2K[48/65] [chromium] › tests/e2e/hero.spec.ts:74:7 › Hero › TC-HERO-05: both actions are present and reachable
+[1A[2K[49/65] [chromium] › tests/e2e/hero.spec.ts:85:7 › Hero › TC-HERO-06: recruiter channels are linked
+[1A[2K[50/65] [chromium] › tests/e2e/hero.spec.ts:93:7 › Hero › TC-HERO-07: a truthful availability signal is shown
+[1A[2K[51/65] [chromium] › tests/e2e/hero.spec.ts:99:7 › Hero › TC-HERO-08: the fold band fills the first viewport without overflowing it
+[1A[2K[52/65] [chromium] › tests/e2e/hero.spec.ts:124:7 › Hero › TC-HERO-09: the fold carries the name and the one action group; the evidence follows it
+[1A[2K[53/65] [chromium] › tests/e2e/hero.spec.ts:159:7 › Hero › TC-HERO-10: the preloader is gone
+[1A[2K[54/65] [chromium] › tests/e2e/hero.spec.ts:165:7 › Hero › TC-HERO-11: the hero holds at most one WebGL context
+[1A[2K[55/65] [chromium] › tests/e2e/hero.spec.ts:176:7 › Hero › TC-HERO-12: at 390×844 the three caliper jaws align and an action sits in the first screen
+[1A[2K[56/65] [chromium] › tests/e2e/hero.spec.ts:364:7 › Hero portrait › TC-HERO-12: the poster is eager, AVIF, correctly named, and never faded in
+[1A[2K[57/65] [chromium] › tests/e2e/hero.spec.ts:419:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate
+[1A[2K[58/65] [chromium] › tests/e2e/hero.spec.ts:505:7 › Hero portrait › TC-HERO-14: reduced motion is poster only — no source, no request, no motion
+[1A[2K[59/65] [chromium] › tests/e2e/hero.spec.ts:547:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+[1A[2K[chromium] › tests/e2e/hero.spec.ts:547:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+Crossfade shifts: []
+
+[1A[2K[60/65] [chromium] › tests/e2e/hero.spec.ts:618:7 › Hero portrait › TC-HERO-16: a failed loop leaves the poster in place and throws nothing
+[1A[2K[61/65] [chromium] › tests/e2e/hero.spec.ts:646:7 › Hero portrait › TC-HERO-17: the pause button is keyboard-operable and its focus ring is achromatic
+[1A[2K[62/65] [chromium] › tests/e2e/hero.spec.ts:727:7 › Hero portrait › TC-HERO-18: the photograph is in colour and its chrome is achromatic
+[1A[2K[63/65] [chromium] › tests/e2e/hero.spec.ts:755:7 › Hero portrait › TC-HERO-19: eager image weight ≤ 500 kB and the loop is fetched only on intent
+[1A[2K[64/65] [chromium] › tests/e2e/hero.spec.ts:793:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720
+[1A[2K[chromium] › tests/e2e/hero.spec.ts:793:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720
+Hero LCP: H1 at 520 ms
+
+[1A[2K[65/65] [chromium] › tests/e2e/hero.spec.ts:819:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the photograph is full-bleed below the actions
+[1A[2K  65 passed (3.2m)
