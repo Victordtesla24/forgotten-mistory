@@ -1399,6 +1399,34 @@ nav {
         backdrop-filter var(--motion-base) var(--motion-ease-standard),
         border-color var(--motion-base) var(--motion-ease-standard);
 }
+/* The bar's own ground, on phones.
+   At rest the nav paints nothing, which is right over a dark page and wrong
+   over a lit one: at 390 the hero's scene now reaches the top of the frame
+   (the copy carries its own plates instead of the scene carrying a scrim), and
+   photographed on ?gl=force the wordmark sampled 1.70:1 and MENU 1.96:1
+   against the shader's fog (C22c 02-tests-failing.log). This is the same
+   answer given everywhere else in this pass — the type carries its ground —
+   applied to the one piece of chrome that floats over a section it does not
+   own. It fades out at the bar's own foot, so it reads as the top of the page
+   going dark rather than as a bar landing on it, and it is scoped to the width
+   where the hero has no dark column to offer. */
+@media (max-width: 700px) {
+    nav::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto;
+        height: calc(100% + var(--space-3));
+        z-index: -1;
+        pointer-events: none;
+        background: linear-gradient(
+            180deg,
+            rgb(10 10 10 / 0.92) 0%,
+            rgb(10 10 10 / 0.86) 62%,
+            transparent 100%
+        );
+    }
+}
+
 nav[data-scrolled="true"] {
     /* Raised from 0.72 → 0.92: at 0.72 busy scrolling content bled through and
        collided with the VIKRAM. wordmark / MENU, especially on mobile. */

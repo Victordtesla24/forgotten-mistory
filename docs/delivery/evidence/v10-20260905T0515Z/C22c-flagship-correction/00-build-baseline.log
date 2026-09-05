@@ -1,0 +1,62 @@
+npm notice run forgotten-mistory@2.0.0 build:static
+npm notice run rm -rf .next out && node scripts/build/build_stamp.mjs && node scripts/build/cv_fingerprint.mjs && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs && node scripts/validate/built_output_secret_scan.mjs --dir out
+[build-stamp] 2c7846c0 (2026-09-05T10:12:40Z)
+[cv-fingerprint] 16b856c0 · 157615 bytes
+ [33m[1m⚠[22m[39m Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /root/forgotten-mistory/package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * /root/forgotten-mistory/.claude/worktrees/wf_09ff65b8-0fb-1/package-lock.json
+
+   [1m[38;2;173;127;168m▲ Next.js 15.5.25[39m[22m
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+ [37m[1m [22m[39m Creating an optimized production build ...
+ [32m[1m✓[22m[39m Compiled successfully in 39.6s
+ [37m[1m [22m[39m Skipping validation of types
+ [37m[1m [22m[39m Skipping linting
+ [37m[1m [22m[39m Collecting page data ...
+ [37m[1m [22m[39m Generating static pages (0/11) ...
+ [37m[1m [22m[39m Generating static pages (2/11) 
+ [37m[1m [22m[39m Generating static pages (5/11) 
+ [37m[1m [22m[39m Generating static pages (8/11) 
+ [32m[1m✓[22m[39m Generating static pages (11/11)
+ [37m[1m [22m[39m Finalizing page optimization ...
+ [37m[1m [22m[39m Collecting build traces ...
+ [37m[1m [22m[39m Exporting (0/2) ...
+ [32m[1m✓[22m[39m Exporting (2/2)
+
+[4mRoute (app)[24m                                 [4mSize[24m  [4mFirst Load JS[24m  [4m[24m  [4m[24m
+┌ ○ /                                    30.9 kB         [37m[1m205 kB[22m[39m
+├ ○ /_not-found                            131 B         [37m[1m103 kB[22m[39m
+├ ○ /apple-icon.png                          0 B            [37m[1m0 B[22m[39m
+├ ○ /icon.png                                0 B            [37m[1m0 B[22m[39m
+├ ○ /performance-benchmark               10.2 kB         [37m[1m117 kB[22m[39m
+├ ○ /privacy                               398 B         [37m[1m107 kB[22m[39m
+├ ○ /robots.txt                            131 B         [37m[1m103 kB[22m[39m
+├ ○ /sitemap.xml                           131 B         [37m[1m103 kB[22m[39m
+└ ○ /terms                                 398 B         [37m[1m107 kB[22m[39m
++ First Load JS shared by all             [37m[1m103 kB[22m[39m
+  ├ chunks/255-f7c4c205ddd80098.js       46.5 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  └ other shared chunks (total)          2.17 kB
+
+
+○  (Static)  prerendered as static content
+
+[prune] removed out/performance-benchmark.html
+[prune] removed out/performance-benchmark.txt
+[prune] removed out/_next/static/chunks/app/performance-benchmark
+[prune] done — 3 artifact(s) removed from the static export
+[sw-stamp] out/sw.js cache name is fm-static-2c7846c0 (git HEAD)
+  BUILT-OUTPUT SECRET SCAN (NFR-SEC)
+  ----------------------------------------------------------
+  scanned : 48 files under out/
+  shapes  : 12 credential patterns
+  identity: 50 real credential value(s) from 1 file(s)
+  ----------------------------------------------------------
+  RESULT: PASS — no credential material in the emitted bundle.
+
+BUILD_EXIT=0

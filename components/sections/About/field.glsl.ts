@@ -114,6 +114,17 @@ export const aboutFieldFragmentShader = /* glsl */ `
     // so the light is under the engraving rather than around it.
     float ring = smoothstep(0.34, 0.52, r) * smoothstep(0.98, 0.74, r);
 
+    // The numerals' own groove.
+    // The ten labels are drawn at r = 36.2 in the rose's 100-unit viewBox —
+    // 0.724 here — and over a lit annulus they sampled 2.49-3.67:1 even with
+    // the ink outline the SVG now gives them (02-tests-failing.log, and the
+    // run after the outline landed). The field cannot be dimmed as a whole
+    // without taking the scene back under the visibility floor it was rebuilt
+    // to clear, so it is dimmed exactly where the numbers are and nowhere
+    // else. A channel at the numeral radius is also what an instrument face
+    // does with its numerals: they sit in the metal, not on the light.
+    ring *= 1.0 - 0.90 * exp(-pow((r - 0.724) / 0.055, 2.0));
+
     // How far this sector is from the one being read, wrapped around the face.
     // At rest (uActive < 0) nothing is favoured, which is the rose's rest state
     // too: an instrument with no reading is not an instrument pointing at zero.
@@ -144,11 +155,19 @@ export const aboutFieldFragmentShader = /* glsl */ `
 
     // The floor is what makes this a ring of ten rather than one lit wedge; the
     // 'lit' term is what makes it an instrument with a reading.
-    float sector = band * ring * (0.36 + 0.60 * lit);
+    // 0.42, not 0.36: at 1440 the compass is beside the list and a dimension is
+    // always indexed, so the 'lit' term carries the peak. At 390 it is a header
+    // ornament and uActive is -1 for most of the section's scroll — the ring
+    // runs on its floor alone, and that floor composited to 0.2965 relative
+    // luminance against the 0.35 the flagship gate calls a core the eye lands
+    // on (C22 09-verification.md). The floor and the gleam below are what a
+    // reader at rest actually sees, so that is where the light was added,
+    // rather than in a term a phone never reaches.
+    float sector = band * ring * (0.42 + 0.58 * lit);
     sector *= 0.86 + 0.16 * drift;
     sector *= 0.88 + 0.16 * shimmer;
     sector *= 0.90 + 0.14 * wash;
-    sector += band * ring * (0.13 * gleam + 0.42 * sweep);
+    sector += band * ring * (0.26 * gleam + 0.42 * sweep);
 
     float luma = sector;
 

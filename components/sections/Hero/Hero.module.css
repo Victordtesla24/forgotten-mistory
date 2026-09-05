@@ -151,6 +151,19 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
+    /* Where the dark side stops is a decision about the picture, and it was
+       tried the other way. The ledger is wider than the statement — it ends at
+       about 68% of a 1440 frame — and its third entry stood past this scrim's
+       edge at 1.34:1, so the scrim was carried out to 94% to cover it. That
+       covered the light with it: the reduced-motion still fell to 5.38% of its
+       slot against an 8% floor and the shader's measured movement to 0.00327
+       against 0.004 (04-tests-passing.log, this lane's first green run). The
+       right-hand half of this frame *is* the picture — both pools, the key,
+       the end of the shafts — and a scrim over it is not a fix, it is the same
+       defect as the phone's flat one wearing a gradient. So the scrim keeps
+       the statement's measure, and the ledger entries carry their own plates
+       (`.ledgerItem` below). Each layer covers what it is for and nothing
+       further. */
     background: linear-gradient(
         90deg,
         rgb(10 10 10 / 0.88) 0%,
@@ -161,33 +174,89 @@
 }
 
 /* At 390 the column is the whole frame: there is no right-hand third to give
-   the light, because the copy is standing in it. So the scrim covers the frame
-   instead of a side of it, and the still keeps its structure as a grading
-   rather than as a pool — `#1F1F1F` at the pool's core, which `--mist-400`
-   clears at 6.1:1. The shader path is unaffected: the canvas fills `.stage`
-   and draws over all of this. */
+   the light to, because the copy is standing in it. The scrim therefore stops
+   being a layer over the scene and becomes a ground under the type. */
 @media (max-width: 700px) {
+    /* The phone keeps the light — and the copy keeps its ground.
+       Two things had to be true at once here and no single layer can do both.
+       The version this replaces was a flat, full-frame `rgb(10 10 10 / 0.86)`
+       on `.stage::after`; because `::after` paints after the canvas it
+       extinguished the shader on every phone with a GPU (0.00% coverage,
+       0.0212 peak, 0.00011 motion at 390 on ?gl=force, canvas mounted — C22
+       09-verification.md F1). Grading that scrim the way the desktop one is
+       graded does not work either, because at 390 there is no column to grade
+       towards: measured, the copy runs x=24..355 of 390 and y=97..920 of a
+       941 px stage, so a scrim shaped to clear it leaves the scene about a
+       sixth of the frame and almost none of its movement.
+
+       So on a phone the protection moves off the scene and onto the type. Each
+       run of copy carries its own plate; the light stays whole behind them and
+       shows in the gutters and in every gap between the lines. 0.90 is the
+       measured number, not a taste: over the brightest fog this shader draws
+       (0.8308 relative luminance, about `#ECECEC`) it lands the ground on
+       `#212121`, inside the `#2A2A2A` ceiling `--mist-400` needs for 4.5:1.
+       The one bar that already had a ground keeps it (`.primaryAction` is
+       white); the one that did not, gets one. */
     .stage::after {
-        background: linear-gradient(90deg, rgb(10 10 10 / 0.86), rgb(10 10 10 / 0.86));
+        display: none;
     }
 
+    .eyebrow,
+    .name,
+    .role,
+    .statement,
+    .grading,
+    .availability,
+    .ledgerItem {
+        background: rgb(10 10 10 / 0.90);
+        border-radius: 3px;
+        padding-inline: 0.45rem;
+        margin-inline: -0.45rem;
+    }
+
+    .secondaryAction {
+        background: rgb(10 10 10 / 0.90);
+    }
+
+    /* The still, reshaped to the room the plates leave. On a phone the copy is
+       the middle of the frame, so the light is at its edges: a wash along the
+       top under the nav's clearance, the pool pushed out to the right edge, the
+       rake down the left. The flat `rgb(10 10 10 / 0.72)` wash this replaces
+       put every luminous layer under a second permanent attenuation and
+       measured 0.00% of the slot above the ink at 390 — the reduced-motion
+       reader was looking at the empty rectangle R-c13 MOT-C13-04 exists to
+       forbid.
+
+       The numbers are sized to that floor rather than chosen. The gate counts
+       pixels at least 0.04 relative luminance above the section's ground, and
+       over `--ink-900` that is about `#3A3A3A` — which a white layer reaches at
+       0.20 alpha and no lower. So every stop that is meant to be *seen* is
+       written above 0.20 and the ramps out of them are short: the first draft
+       crossed 0.20 a tenth of the way down the frame and covered 5.48% of the
+       slot. The wash now holds above the threshold for the first quarter of
+       the stage — which, with the photograph below the actions, is the whole
+       of the first screen — and both radials reach further into it. */
     .stage {
         background:
-            linear-gradient(90deg, rgb(10 10 10 / 0.72), rgb(10 10 10 / 0.72)),
-            radial-gradient(
-                44% 50% at 80% 40%,
-                rgb(246 246 246 / 0.30) 0%,
-                rgb(246 246 246 / 0.25) 44%,
-                rgb(246 246 246 / 0.08) 72%,
-                transparent 88%
+            linear-gradient(
+                180deg,
+                rgb(246 246 246 / 0.46) 0%,
+                rgb(246 246 246 / 0.42) 18%,
+                rgb(246 246 246 / 0.24) 24%,
+                transparent 30%
             ),
             radial-gradient(
-                34% 40% at 4% 2%,
-                rgb(246 246 246 / 0.26) 0%,
-                rgb(246 246 246 / 0.18) 46%,
-                transparent 82%
+                40% 40% at 100% 34%,
+                rgb(246 246 246 / 0.34) 0%,
+                rgb(246 246 246 / 0.26) 44%,
+                transparent 86%
             ),
-            linear-gradient(154deg, rgb(246 246 246 / 0.09) 0%, transparent 30%),
+            radial-gradient(
+                34% 26% at 0% 10%,
+                rgb(246 246 246 / 0.32) 0%,
+                rgb(246 246 246 / 0.22) 46%,
+                transparent 84%
+            ),
             linear-gradient(180deg, var(--ink-900) 0%, var(--ink-800) 58%, var(--ink-900) 100%);
     }
 }
@@ -321,8 +390,28 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-05);
+    /* Each entry stands on its own ground.
+       The ledger is 54rem wide and ends at about 68% of a 1440 frame, so its
+       third entry stands to the right of where the scrim above lets go —
+       measured on ?gl=force, `.ledgerSource` "ANZ · real-time telemetry
+       platform" sampled 1.34:1 and `.ledgerLabel` 2.55:1 (C22
+       09-verification.md, F2). Carrying the scrim out to the ledger's own edge
+       fixed the type and cost the picture: with the dark side running to 94%
+       the reduced-motion still covered 5.38% of its slot against the 8% floor
+       and the shader's own movement fell to 0.00327 against 0.004, because
+       what the scrim now covered was the half of the frame the light is in.
+       So the answer is the same one the phone gets and the company labels on
+       the strata get: the type carries its ground, the scene keeps its light.
+       0.88 over the brightest fog this shader draws lands the ground inside
+       the `#2A2A2A` ceiling `--mist-400` needs for 4.5:1. The plate is exactly
+       the entry's own column and its existing box — no padding, no negative
+       margin, not a pixel of extra height. The first version gave it 0.35rem of
+       bottom padding and TC-HERO-09 caught it immediately: nine pixels of new
+       hero is enough to push "Download CV" under the fold at 1280x720, and the
+       fold is the one thing in this section a recruiter is guaranteed to see. */
     padding-top: var(--space-2);
     border-top: 1px solid var(--token-border-default);
+    background: rgb(10 10 10 / 0.88);
 }
 
 .ledgerValue {
@@ -370,6 +459,22 @@
        text on the page (3.9:1). --mist-200 at 0.85 samples above 8:1. */
     color: var(--mist-200);
     opacity: 0.85;
+    /* …on the ground it is measured against. This note is the ledger's other
+       half — it sits directly under the entries and runs to the reading
+       measure, on the same rows where `.ledgerSource` was found at 1.34:1 over
+       the pool. It is not separately measured below AA; it carries the same
+       plate as `.ledgerItem` because it stands on the same ground, and a
+       sentence whose whole job is to keep three figures honest is the last one
+       that should depend on where a gradient happens to stop. `fit-content`
+       keeps it the sentence's own box rather than a band ruled across the
+       fold, and the inline padding is given back as a negative margin so no
+       glyph moves. */
+    width: fit-content;
+    max-width: 100%;
+    padding-inline: 0.4rem;
+    margin-inline: -0.4rem;
+    border-radius: 2px;
+    background: rgb(10 10 10 / 0.88);
 }
 
 /* The same half-disc the caliper draws beside a self-reported figure, so the
@@ -779,8 +884,24 @@
 .portraitCaption {
     position: relative;
     z-index: 1;
-    margin: var(--space-2) 0 0;
-    padding-left: 1.1rem;
+    /* The plate under the provenance line.
+       "on the bloom" above is the problem, not the description: the portrait
+       sits in the right-hand column, which is exactly where the atmosphere's
+       second pool gathers (`poolPlate`, at 0.75 of the frame's half-width), and
+       the caption is 10 px mono in `--mist-400` laid straight onto the
+       brightest part of it. The same answer the rest of this pass gives —
+       the type carries its own ground — sized the same way: 0.88 over the
+       brightest fog this shader draws lands the ground inside the `#2A2A2A`
+       ceiling `--mist-400` clears 4.5:1 on. `fit-content` keeps it the
+       caption's own box rather than a bar ruled across the column, and the
+       block padding is taken back out of the top margin so nothing below the
+       photograph moves. */
+    width: fit-content;
+    max-width: 100%;
+    margin: calc(var(--space-2) - 0.16rem) 0 0;
+    padding: 0.16rem 0.4rem 0.16rem 1.1rem;
+    border-radius: 2px;
+    background: rgb(10 10 10 / 0.88);
     font-family: var(--font-mono);
     font-size: var(--fs-micro);
     line-height: var(--lh-label);
@@ -788,12 +909,13 @@
     color: var(--mist-400);
 }
 
-/* The leader line a draughtsman would rule to the label. */
+/* The leader line a draughtsman would rule to the label. Offset by the plate's
+   own top padding, so it still meets the first line of type. */
 .portraitCaption::before {
     content: '';
     position: absolute;
-    top: 0.62em;
-    left: 0;
+    top: calc(0.62em + 0.16rem);
+    left: 0.4rem;
     width: 0.7rem;
     height: 1px;
     background: currentColor;
@@ -850,6 +972,30 @@
 
     .availability {
         margin-top: var(--space-2);
+    }
+}
+
+/* The phone's plates. Declared here rather than beside the scrim they replace,
+   because the base rules further down this file set `margin` and `background`
+   as shorthands and would otherwise reset both — the copy would move 7 px right
+   and `.secondaryAction` would go back to transparent over the fog. The padding
+   is given back as a negative margin, so no glyph moves. */
+@media (max-width: 700px) {
+    .eyebrow,
+    .name,
+    .role,
+    .statement,
+    .grading,
+    .availability,
+    .ledgerItem {
+        background: rgb(10 10 10 / 0.90);
+        border-radius: 3px;
+        padding-inline: 0.45rem;
+        margin-inline: -0.45rem;
+    }
+
+    .secondaryAction {
+        background: rgb(10 10 10 / 0.90);
     }
 }
 

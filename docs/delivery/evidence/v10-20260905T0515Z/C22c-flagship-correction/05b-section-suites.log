@@ -1,0 +1,158 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero.spec.ts tests/e2e/hero-photo.spec.ts tests/overhaul/scene-about.spec.ts tests/overhaul/scene-experience.spec.ts tests/monokey --reporter=list --workers=2
+
+Running 48 tests using 2 workers
+
+  ✓   1 [chromium] › tests/e2e/hero-photo.spec.ts:51:7 › Hero photograph › TC-PHOTO-01: at 1440 the figure owns the right column — ≥34 % of the viewport and ≥440 px (2.4s)
+  ✓   2 [chromium] › tests/e2e/hero-photo.spec.ts:73:7 › Hero photograph › TC-PHOTO-02: at 390 the photo is full width and sits below the last hero action (2.9s)
+  ✓   3 [chromium] › tests/e2e/hero-photo.spec.ts:96:7 › Hero photograph › TC-PHOTO-03: the still is in colour — no grayscale filter, and the pixels are saturated (1.7s)
+  ✓   5 [chromium] › tests/e2e/hero-photo.spec.ts:159:7 › Hero photograph › TC-PHOTO-05: hover starts the loop; leaving pauses it (1.5s)
+  ✓   6 [chromium] › tests/e2e/hero-photo.spec.ts:177:7 › Hero photograph › TC-PHOTO-06: the toggle is keyboard-operable — Enter pauses, Enter plays (1.3s)
+  ✓   4 [chromium] › tests/e2e/hero-photo.spec.ts:145:7 › Hero photograph › TC-PHOTO-04: at rest the loop has no source and never plays (4.2s)
+  ✓   8 [chromium] › tests/e2e/hero-photo.spec.ts:240:7 › Hero photograph › TC-PHOTO-08: TC-HERO-12 still holds — an action ends inside the first 844 px at 390 (3.0s)
+  ✓   9 [chromium] › tests/e2e/hero-photo.spec.ts:252:7 › Hero photograph › TC-PHOTO-09: the decorations are present — four corner ticks and the caption plate (880ms)
+  ✓   7 [chromium] › tests/e2e/hero-photo.spec.ts:212:7 › Hero photograph › TC-PHOTO-07: reduced motion plays nothing at rest and runs no animation (4.7s)
+  ✓  10 [chromium] › tests/e2e/hero-photo.spec.ts:276:7 › Hero photograph › TC-PHOTO-10: no gold anywhere in or around the figure (2.5s)
+  ✓  12 [chromium] › tests/e2e/hero-photo.spec.ts:393:7 › Hero photograph at 834 › TC-PHOTO-12: at 834 the figure still owns the whole right column (1.1s)
+Hover shifts: []
+  ✓  11 [chromium] › tests/e2e/hero-photo.spec.ts:327:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts (3.6s)
+  ✓  13 [chromium] › tests/e2e/hero.spec.ts:30:7 › Hero › TC-HERO-01: the name is the page h1 (1.1s)
+  ✓  14 [chromium] › tests/e2e/hero.spec.ts:38:7 › Hero › TC-HERO-02: positioning, location and one-sentence statement render (2.0s)
+  ✓  15 [chromium] › tests/e2e/hero.spec.ts:46:7 › Hero › TC-HERO-03: the statement stays within its word budget (1.6s)
+  ✓  16 [chromium] › tests/e2e/hero.spec.ts:54:7 › Hero › TC-HERO-04: the ledger shows three figures, each with its source (1.6s)
+  ✓  17 [chromium] › tests/e2e/hero.spec.ts:68:7 › Hero › TC-HERO-05: both actions are present and reachable (1.8s)
+  ✓  19 [chromium] › tests/e2e/hero.spec.ts:87:7 › Hero › TC-HERO-07: a truthful availability signal is shown (1.3s)
+  ✓  18 [chromium] › tests/e2e/hero.spec.ts:79:7 › Hero › TC-HERO-06: recruiter channels are linked (2.0s)
+  ✓  20 [chromium] › tests/e2e/hero.spec.ts:93:7 › Hero › TC-HERO-08: the hero fills the first viewport without overflowing it (1.6s)
+  ✘  21 [chromium] › tests/e2e/hero.spec.ts:107:7 › Hero › TC-HERO-09: the whole hero is legible in the first viewport (2.1s)
+  ✓  22 [chromium] › tests/e2e/hero.spec.ts:123:7 › Hero › TC-HERO-10: the preloader is gone (1.4s)
+  ✓  23 [chromium] › tests/e2e/hero.spec.ts:140:7 › Hero › TC-HERO-12: at 390×844 the three caliper jaws align and an action sits in the first screen (2.3s)
+  ✓  24 [chromium] › tests/e2e/hero.spec.ts:129:7 › Hero › TC-HERO-11: the hero holds at most one WebGL context (2.5s)
+  ✓  25 [chromium] › tests/e2e/hero.spec.ts:316:7 › Hero portrait › TC-HERO-12: the poster is eager, AVIF, correctly named, and never faded in (1.9s)
+  ✓  26 [chromium] › tests/e2e/hero.spec.ts:371:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate (4.5s)
+  ✓  27 [chromium] › tests/e2e/hero.spec.ts:457:7 › Hero portrait › TC-HERO-14: reduced motion is poster only — no source, no request, no motion (5.9s)
+Crossfade shifts: []
+  ✓  28 [chromium] › tests/e2e/hero.spec.ts:499:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget (2.8s)
+  ✓  30 [chromium] › tests/e2e/hero.spec.ts:598:7 › Hero portrait › TC-HERO-17: the pause button is keyboard-operable and its focus ring is achromatic (3.8s)
+  ✓  29 [chromium] › tests/e2e/hero.spec.ts:570:7 › Hero portrait › TC-HERO-16: a failed loop leaves the poster in place and throws nothing (5.2s)
+  ✓  31 [chromium] › tests/e2e/hero.spec.ts:662:7 › Hero portrait › TC-HERO-18: the photograph is in colour and its chrome is achromatic (3.2s)
+  ✓  32 [chromium] › tests/e2e/hero.spec.ts:690:7 › Hero portrait › TC-HERO-19: eager image weight ≤ 500 kB and the loop is fetched only on intent (5.2s)
+Hero LCP: H1 at 268 ms
+  ✓  33 [chromium] › tests/e2e/hero.spec.ts:728:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720 (3.3s)
+  ✓  34 [chromium] › tests/e2e/hero.spec.ts:754:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the photograph is full-bleed below the actions (4.0s)
+  ✓  35 [chromium] › tests/overhaul/scene-about.spec.ts:87:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view (4.6s)
+  ✓  36 [chromium] › tests/overhaul/scene-about.spec.ts:101:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column (5.2s)
+  ✓  37 [chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose (6.7s)
+  ✓  38 [chromium] › tests/overhaul/scene-about.spec.ts:157:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-04: under reduced motion there is no canvas, and the rose is still the instrument (4.3s)
+  ✓  40 [chromium] › tests/overhaul/scene-about.spec.ts:214:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-06: the field is monochrome, palette-sourced and cheap per pixel (10ms)
+  ✓  39 [chromium] › tests/overhaul/scene-about.spec.ts:184:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-05: with WebGL unavailable the section is whole and silent (3.5s)
+  ✓  41 [chromium] › tests/overhaul/scene-experience.spec.ts:195:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-01: the bars are still growing 100 ms after the section commits (2.9s)
+  ✓  42 [chromium] › tests/overhaul/scene-experience.spec.ts:208:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-02: every bar reaches its real length within 1500 ms (3.5s)
+  ✓  44 [chromium] › tests/overhaul/scene-experience.spec.ts:252:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-04: the today playhead is white (2.1s)
+  ✓  43 [chromium] › tests/overhaul/scene-experience.spec.ts:221:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-03: nothing in the section paints gold (5.2s)
+  ✘  45 [chromium] › tests/overhaul/scene-experience.spec.ts:262:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-05: every duration label stays inside the chart card (35.4s)
+  ✘  46 [chromium] › tests/overhaul/scene-experience.spec.ts:297:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-06: one canvas behind the chart at ?gl=force (35.4s)
+  ✓  47 [chromium] › tests/overhaul/scene-experience.spec.ts:306:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-07: the shader is bound to the spans it sits under (29ms)
+  ✘  48 [chromium] › tests/overhaul/scene-experience.spec.ts:316:7 › #experience under reduced motion › TC-SCENE-EXP-08: no bar is ever shorter than its real duration (35.3s)
+
+
+  1) [chromium] › tests/e2e/hero.spec.ts:107:7 › Hero › TC-HERO-09: the whole hero is legible in the first viewport 
+
+    Error: #hero a[href="#experience"]
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m720[39m
+    Received:    [31m732.9302368164062[39m
+
+      117 |       const box = await page.locator(selector).first().boundingBox();
+      118 |       expect(box, selector).not.toBeNull();
+    > 119 |       expect(box!.y + box!.height, selector).toBeLessThanOrEqual(viewport.height);
+          |                                              ^
+      120 |     }
+      121 |   });
+      122 |
+        at /root/forgotten-mistory/.claude/worktrees/wf_09ff65b8-0fb-1/tests/e2e/hero.spec.ts:119:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-Hero-TC-HERO-09-t-1f1de-gible-in-the-first-viewport-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-Hero-TC-HERO-09-t-1f1de-gible-in-the-first-viewport-chromium/error-context.md
+
+  2) [chromium] › tests/overhaul/scene-experience.spec.ts:262:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-05: every duration label stays inside the chart card 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#hero') to be visible[22m
+
+
+      82 |     .waitForFunction(() => document.body.classList.contains('page-ready'), null, { timeout: 20000 })
+      83 |     .catch(() => {});
+    > 84 |   await page.locator('#hero').waitFor({ state: 'visible', timeout: 15000 });
+         |                               ^
+      85 | }
+      86 |
+      87 | /**
+        at waitForPageReady (/root/forgotten-mistory/.claude/worktrees/wf_09ff65b8-0fb-1/tests/overhaul/scene-experience.spec.ts:84:31)
+        at /root/forgotten-mistory/.claude/worktrees/wf_09ff65b8-0fb-1/tests/overhaul/scene-experience.spec.ts:266:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-scene-experience--fa987-stays-inside-the-chart-card-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-scene-experience--fa987-stays-inside-the-chart-card-chromium/error-context.md
+
+  3) [chromium] › tests/overhaul/scene-experience.spec.ts:297:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-06: one canvas behind the chart at ?gl=force 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#hero') to be visible[22m
+
+
+      82 |     .waitForFunction(() => document.body.classList.contains('page-ready'), null, { timeout: 20000 })
+      83 |     .catch(() => {});
+    > 84 |   await page.locator('#hero').waitFor({ state: 'visible', timeout: 15000 });
+         |                               ^
+      85 | }
+      86 |
+      87 | /**
+        at waitForPageReady (/root/forgotten-mistory/.claude/worktrees/wf_09ff65b8-0fb-1/tests/overhaul/scene-experience.spec.ts:84:31)
+        at /root/forgotten-mistory/.claude/worktrees/wf_09ff65b8-0fb-1/tests/overhaul/scene-experience.spec.ts:299:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-scene-experience--225a5-ehind-the-chart-at-gl-force-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-scene-experience--225a5-ehind-the-chart-at-gl-force-chromium/error-context.md
+
+  4) [chromium] › tests/overhaul/scene-experience.spec.ts:316:7 › #experience under reduced motion › TC-SCENE-EXP-08: no bar is ever shorter than its real duration 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#hero') to be visible[22m
+
+
+      82 |     .waitForFunction(() => document.body.classList.contains('page-ready'), null, { timeout: 20000 })
+      83 |     .catch(() => {});
+    > 84 |   await page.locator('#hero').waitFor({ state: 'visible', timeout: 15000 });
+         |                               ^
+      85 | }
+      86 |
+      87 | /**
+        at waitForPageReady (/root/forgotten-mistory/.claude/worktrees/wf_09ff65b8-0fb-1/tests/overhaul/scene-experience.spec.ts:84:31)
+        at /root/forgotten-mistory/.claude/worktrees/wf_09ff65b8-0fb-1/tests/overhaul/scene-experience.spec.ts:319:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-scene-experience--eb69d-rter-than-its-real-duration-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-scene-experience--eb69d-rter-than-its-real-duration-chromium/error-context.md
+
+  4 failed
+    [chromium] › tests/e2e/hero.spec.ts:107:7 › Hero › TC-HERO-09: the whole hero is legible in the first viewport 
+    [chromium] › tests/overhaul/scene-experience.spec.ts:262:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-05: every duration label stays inside the chart card 
+    [chromium] › tests/overhaul/scene-experience.spec.ts:297:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-06: one canvas behind the chart at ?gl=force 
+    [chromium] › tests/overhaul/scene-experience.spec.ts:316:7 › #experience under reduced motion › TC-SCENE-EXP-08: no bar is ever shorter than its real duration 
+  44 passed (2.4m)
+SUITES_EXIT=1
