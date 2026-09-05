@@ -36,3 +36,6 @@ running — resilience lane dispatched (GLCanvas error boundary + footer CLS), p
 
 ## COMMENT (2026-09-05T09:09:06.142Z)
 09:0xZ: resilience lane killed by the restart before any code change (only build-stamp touched); relaunched fresh after the two heavier lanes, to keep the host at ≤2 batteries.
+
+## STATUS (2026-09-05T10:10:33.309Z)
+running — folded into t_skew0001 (deploy-skew lane)

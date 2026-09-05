@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T09:59:14.409Z",
+  "updated": "2026-09-05T10:10:33.309Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -1634,7 +1634,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:30:51.764Z",
-      "updated": "2026-09-05T09:09:06.142Z",
+      "updated": "2026-09-05T10:10:33.309Z",
       "summary": "components/gl · major · Verified. A fault inside a scene replaces the whole document: GLCanvas mounts with no scene-local error boundary, so a component-level throw reaches app/error.tsx — 'the scene is never the content' is not enforced in code",
       "decisions": [],
       "comments": [
@@ -1858,6 +1858,29 @@
       "created": "2026-09-05T09:16:20.880Z",
       "updated": "2026-09-05T09:16:20.880Z",
       "summary": "Second half of the owner correction: #skills has no scene (t_cbff57b0), #vitrine field invisible on live captures (black behind the cards), #listen a faint band. Reuse tests/overhaul/flagship-visibility.spec.ts from lane A; skills bench field brief in t_cbff57b0; vitrine/listen fields exist (1150e3e, d53d228) and need their intensity/structure raised to the gate.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_skew0001",
+      "title": "P95 — deploy skew: a page loaded under build N lazy-loads scene chunks that deploy N+1 has replaced (Loading chunk 427/743 failed) — precache the build chunk manifest in the worker, keep the previous cache generation, recover chunk-load failures, scene-local error boundary",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 95,
+      "parents": [
+        "t_cachefr01"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T10:10:33.089Z",
+      "updated": "2026-09-05T10:10:33.089Z",
+      "summary": "Monitor 10:09Z on c5d808c3: pageerrors Loading chunk 427.8222755a6b18eedc.js / 743.9672a1f959c17edf.js failed; canvasesAfterExperience 0 — the HTML was the previous build, the hashed chunks were gone after the next deploy (Firebase serves only the current version). With 10-min deploys every mid-visit scroll can hit this. Fix: (1) scripts/build/stamp_service_worker.mjs also injects PRECACHE_ASSETS = every out/_next/static/**/*.{js,css} + fonts of THIS build; install precaches them (cache-first already), activate keeps the previous generation (delete caches older than the last two) so a page still running build N can lazy-load from cache after N+1 activates; (2) components/gl/Scene.tsx dynamic import: on ChunkLoadError retry once, then one reload per session (sessionStorage guard) — and never the error shell; (3) fold t_e9d4e10f: scene-local error boundary so any scene fault stays in its slot. Tests: tests/sw_strategy.test.mjs (precache list present and stamped, two-generation cleanup), tests/overhaul/scene-error-boundary.spec.ts (inject a failing chunk via route interception → six sections stay, one console error, no error shell), node --test.",
       "decisions": [],
       "comments": [],
       "blocker": null
