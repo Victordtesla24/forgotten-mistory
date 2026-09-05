@@ -1,0 +1,288 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero-photo.spec.ts --reporter=list
+
+[2mRunning [22m12[2m tests using [22m2[2m workers[22m
+
+  [31m✘[39m  [2m 1 [22m[31m[chromium] › tests/e2e/hero-photo.spec.ts:51:7 › Hero photograph › TC-PHOTO-01: at 1440 the figure owns the right column — ≥34 % of the viewport and ≥440 px[39m[2m (3.9s)[22m
+  [31m✘[39m  [2m 2 [22m[31m[chromium] › tests/e2e/hero-photo.spec.ts:73:7 › Hero photograph › TC-PHOTO-02: at 390 the photo is full width and sits below the last hero action[39m[2m (3.8s)[22m
+  [31m✘[39m  [2m 3 [22m[31m[chromium] › tests/e2e/hero-photo.spec.ts:96:7 › Hero photograph › TC-PHOTO-03: the still is in colour — no grayscale filter, and the pixels are saturated[39m[2m (622ms)[22m
+  [31m✘[39m  [2m 4 [22m[31m[chromium] › tests/e2e/hero-photo.spec.ts:145:7 › Hero photograph › TC-PHOTO-04: at rest the loop has no source and never plays[39m[2m (615ms)[22m
+  [31m✘[39m  [2m 5 [22m[31m[chromium] › tests/e2e/hero-photo.spec.ts:159:7 › Hero photograph › TC-PHOTO-05: hover starts the loop; leaving pauses it[39m[2m (590ms)[22m
+  [31m✘[39m  [2m 6 [22m[31m[chromium] › tests/e2e/hero-photo.spec.ts:177:7 › Hero photograph › TC-PHOTO-06: the toggle is keyboard-operable — Enter pauses, Enter plays[39m[2m (18.8s)[22m
+  [31m✘[39m  [2m 7 [22m[31m[chromium] › tests/e2e/hero-photo.spec.ts:212:7 › Hero photograph › TC-PHOTO-07: reduced motion plays nothing at rest and runs no animation[39m[2m (21.6s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/e2e/hero-photo.spec.ts:240:7 › Hero photograph › TC-PHOTO-08: TC-HERO-12 still holds — an action ends inside the first 844 px at 390[2m (5.6s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/e2e/hero-photo.spec.ts:276:7 › Hero photograph › TC-PHOTO-10: no gold anywhere in or around the figure[2m (4.3s)[22m
+  [31m✘[39m  [2m11 [22m[31m[chromium] › tests/e2e/hero-photo.spec.ts:327:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts[39m[2m (5.1s)[22m
+  [31m✘[39m  [2m12 [22m[31m[chromium] › tests/e2e/hero-photo.spec.ts:367:7 › Hero photograph at 834 › TC-PHOTO-12: at 834 the figure still owns the whole right column[39m[2m (3.3s)[22m
+  [31m✘[39m  [2m10 [22m[31m[chromium] › tests/e2e/hero-photo.spec.ts:252:7 › Hero photograph › TC-PHOTO-09: the decorations are present — four corner ticks and the caption plate[39m[2m (17.8s)[22m
+
+
+[31m  1) [chromium] › tests/e2e/hero-photo.spec.ts:51:7 › Hero photograph › TC-PHOTO-01: at 1440 the figure owns the right column — ≥34 % of the viewport and ≥440 px [39m
+
+    Error: figure width 230 px of 1440 px
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m489.6[39m
+    Received:    [31m230.390625[39m
+
+    [0m [90m 58 |[39m     expect(box[33m,[39m [32m'the figure is laid out at 1440'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m 59 |[39m     [36mconst[39m inner [33m=[39m [36mawait[39m page[33m.[39mevaluate(() [33m=>[39m window[33m.[39minnerWidth)[33m;[39m
+    [31m[1m>[22m[39m[90m 60 |[39m     expect(box[33m![39m[33m.[39mwidth[33m,[39m [32m`figure width ${Math.round(box!.width)} px of ${inner} px`[39m)[33m.[39mtoBeGreaterThanOrEqual(
+     [90m    |[39m                                                                                    [31m[1m^[22m[39m
+     [90m 61 |[39m       [35m0.34[39m [33m*[39m inner[33m,[39m
+     [90m 62 |[39m     )[33m;[39m
+     [90m 63 |[39m     expect(box[33m![39m[33m.[39mwidth[33m,[39m [32m'figure width in px'[39m)[33m.[39mtoBeGreaterThanOrEqual([35m440[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_31b6f314-9ff-1/tests/e2e/hero-photo.spec.ts:60:84[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-photo-Hero-photog-9d05e-of-the-viewport-and-≥440-px-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-photo-Hero-photog-9d05e-of-the-viewport-and-≥440-px-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/e2e/hero-photo.spec.ts:73:7 › Hero photograph › TC-PHOTO-02: at 390 the photo is full width and sits below the last hero action [39m
+
+    Error: figure width 88 px of 390 px
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m351[39m
+    Received:    [31m88[39m
+
+    [0m [90m 80 |[39m     expect(box[33m,[39m [32m'the figure is laid out at 390'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m 81 |[39m     [36mconst[39m inner [33m=[39m [36mawait[39m page[33m.[39mevaluate(() [33m=>[39m window[33m.[39minnerWidth)[33m;[39m
+    [31m[1m>[22m[39m[90m 82 |[39m     expect(box[33m![39m[33m.[39mwidth[33m,[39m [32m`figure width ${Math.round(box!.width)} px of ${inner} px`[39m)[33m.[39mtoBeGreaterThanOrEqual(
+     [90m    |[39m                                                                                    [31m[1m^[22m[39m
+     [90m 83 |[39m       [35m0.9[39m [33m*[39m inner[33m,[39m
+     [90m 84 |[39m     )[33m;[39m
+     [90m 85 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_31b6f314-9ff-1/tests/e2e/hero-photo.spec.ts:82:84[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-photo-Hero-photog-dd313--below-the-last-hero-action-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-photo-Hero-photog-dd313--below-the-last-hero-action-chromium/error-context.md[22m
+
+[31m  3) [chromium] › tests/e2e/hero-photo.spec.ts:96:7 › Hero photograph › TC-PHOTO-03: the still is in colour — no grayscale filter, and the pixels are saturated [39m
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5601/
+    Call log:
+    [2m  - navigating to "http://127.0.0.1:5601/", waiting until "load"[22m
+
+
+    [0m [90m 45 |[39m test[33m.[39mdescribe([32m'Hero photograph'[39m[33m,[39m () [33m=>[39m {
+     [90m 46 |[39m   test[33m.[39mbeforeEach([36masync[39m ({ page }) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 47 |[39m     [36mawait[39m page[33m.[39mgoto([32m'/'[39m[33m,[39m { waitUntil[33m:[39m [32m'load'[39m })[33m;[39m
+     [90m    |[39m                [31m[1m^[22m[39m
+     [90m 48 |[39m     [36mawait[39m page[33m.[39mlocator([33mHERO[39m)[33m.[39mwaitFor({ state[33m:[39m [32m'visible'[39m[33m,[39m timeout[33m:[39m [35m15000[39m })[33m;[39m
+     [90m 49 |[39m   })[33m;[39m
+     [90m 50 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_31b6f314-9ff-1/tests/e2e/hero-photo.spec.ts:47:16[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-photo-Hero-photog-6fdd0-nd-the-pixels-are-saturated-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-photo-Hero-photog-6fdd0-nd-the-pixels-are-saturated-chromium/error-context.md[22m
+
+[31m  4) [chromium] › tests/e2e/hero-photo.spec.ts:145:7 › Hero photograph › TC-PHOTO-04: at rest the loop has no source and never plays [39m
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5601/
+    Call log:
+    [2m  - navigating to "http://127.0.0.1:5601/", waiting until "load"[22m
+
+
+    [0m [90m 45 |[39m test[33m.[39mdescribe([32m'Hero photograph'[39m[33m,[39m () [33m=>[39m {
+     [90m 46 |[39m   test[33m.[39mbeforeEach([36masync[39m ({ page }) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 47 |[39m     [36mawait[39m page[33m.[39mgoto([32m'/'[39m[33m,[39m { waitUntil[33m:[39m [32m'load'[39m })[33m;[39m
+     [90m    |[39m                [31m[1m^[22m[39m
+     [90m 48 |[39m     [36mawait[39m page[33m.[39mlocator([33mHERO[39m)[33m.[39mwaitFor({ state[33m:[39m [32m'visible'[39m[33m,[39m timeout[33m:[39m [35m15000[39m })[33m;[39m
+     [90m 49 |[39m   })[33m;[39m
+     [90m 50 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_31b6f314-9ff-1/tests/e2e/hero-photo.spec.ts:47:16[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-photo-Hero-photog-f5fdc-s-no-source-and-never-plays-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-photo-Hero-photog-f5fdc-s-no-source-and-never-plays-chromium/error-context.md[22m
+
+[31m  5) [chromium] › tests/e2e/hero-photo.spec.ts:159:7 › Hero photograph › TC-PHOTO-05: hover starts the loop; leaving pauses it [39m
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:5601/
+    Call log:
+    [2m  - navigating to "http://127.0.0.1:5601/", waiting until "load"[22m
+
+
+    [0m [90m 45 |[39m test[33m.[39mdescribe([32m'Hero photograph'[39m[33m,[39m () [33m=>[39m {
+     [90m 46 |[39m   test[33m.[39mbeforeEach([36masync[39m ({ page }) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 47 |[39m     [36mawait[39m page[33m.[39mgoto([32m'/'[39m[33m,[39m { waitUntil[33m:[39m [32m'load'[39m })[33m;[39m
+     [90m    |[39m                [31m[1m^[22m[39m
+     [90m 48 |[39m     [36mawait[39m page[33m.[39mlocator([33mHERO[39m)[33m.[39mwaitFor({ state[33m:[39m [32m'visible'[39m[33m,[39m timeout[33m:[39m [35m15000[39m })[33m;[39m
+     [90m 49 |[39m   })[33m;[39m
+     [90m 50 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_31b6f314-9ff-1/tests/e2e/hero-photo.spec.ts:47:16[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-photo-Hero-photog-987b7--the-loop-leaving-pauses-it-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-photo-Hero-photog-987b7--the-loop-leaving-pauses-it-chromium/error-context.md[22m
+
+[31m  6) [chromium] › tests/e2e/hero-photo.spec.ts:177:7 › Hero photograph › TC-PHOTO-06: the toggle is keyboard-operable — Enter pauses, Enter plays [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveAttribute[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('[data-testid="hero-portrait"] button[aria-pressed]')
+    Expected: [32m"[7mtru[27me"[39m
+    Received: [31m"[7mfals[27me"[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveAttribute" with timeout 15000ms[22m
+    [2m  - waiting for locator('[data-testid="hero-portrait"] button[aria-pressed]')[22m
+    [2m    18 × locator resolved to <button type="button" aria-pressed="false" aria-label="Pause the portrait" class="Hero_portraitToggle__c_1yw">…</button>[22m
+    [2m       - unexpected value "false"[22m
+
+
+    [0m [90m 192 |[39m
+     [90m 193 |[39m     [90m// Keyboard focus is intent: focus-visible arms the loop the way hover does.[39m
+    [31m[1m>[22m[39m[90m 194 |[39m     [36mawait[39m expect(toggle)[33m.[39mtoHaveAttribute([32m'aria-pressed'[39m[33m,[39m [32m'true'[39m)[33m;[39m
+     [90m     |[39m                          [31m[1m^[22m[39m
+     [90m 195 |[39m     [36mawait[39m expect
+     [90m 196 |[39m       [33m.[39mpoll([36masync[39m () [33m=>[39m ([36mawait[39m loopState(page))[33m.[39mpaused[33m,[39m { timeout[33m:[39m [35m2000[39m[33m,[39m message[33m:[39m [32m'playing after focus-visible'[39m })
+     [90m 197 |[39m       [33m.[39mtoBe([36mfalse[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_31b6f314-9ff-1/tests/e2e/hero-photo.spec.ts:194:26[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-photo-Hero-photog-37e7b--—-Enter-pauses-Enter-plays-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-photo-Hero-photog-37e7b--—-Enter-pauses-Enter-plays-chromium/error-context.md[22m
+
+[31m  7) [chromium] › tests/e2e/hero-photo.spec.ts:212:7 › Hero photograph › TC-PHOTO-07: reduced motion plays nothing at rest and runs no animation [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('[data-testid="hero-portrait"] button[aria-pressed]')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('[data-testid="hero-portrait"] button[aria-pressed]')[22m
+    [2m    18 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 227 |[39m
+     [90m 228 |[39m     [90m// The toggle survives: a user action is allowed (WCAG 2.2.2 works both ways).[39m
+    [31m[1m>[22m[39m[90m 229 |[39m     [36mawait[39m expect(page[33m.[39mlocator([33mTOGGLE[39m))[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m     |[39m                                        [31m[1m^[22m[39m
+     [90m 230 |[39m
+     [90m 231 |[39m     [36mconst[39m running [33m=[39m [36mawait[39m page[33m.[39mlocator([33mFIGURE[39m)[33m.[39mevaluate((el) [33m=>[39m {
+     [90m 232 |[39m       [36mconst[39m nodes [33m=[39m [el[33m,[39m [33m...[39m[33mArray[39m[33m.[39m[36mfrom[39m(el[33m.[39mquerySelectorAll([32m'*'[39m))][33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_31b6f314-9ff-1/tests/e2e/hero-photo.spec.ts:229:40[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-photo-Hero-photog-6ca60--rest-and-runs-no-animation-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-photo-Hero-photog-6ca60--rest-and-runs-no-animation-chromium/error-context.md[22m
+
+[31m  8) [chromium] › tests/e2e/hero-photo.spec.ts:252:7 › Hero photograph › TC-PHOTO-09: the decorations are present — four corner ticks and the caption plate [39m
+
+    Error: four caliper-style corner ticks
+
+    [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('[data-testid="hero-portrait"] [data-testid="portrait-tick"]')
+    Expected: [32m4[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - four caliper-style corner ticks with timeout 15000ms[22m
+    [2m  - waiting for locator('[data-testid="hero-portrait"] [data-testid="portrait-tick"]')[22m
+    [2m    18 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 252 |[39m   test([32m'TC-PHOTO-09: the decorations are present — four corner ticks and the caption plate'[39m[33m,[39m [36masync[39m ({ page }) [33m=>[39m {
+     [90m 253 |[39m     [36mconst[39m ticks [33m=[39m page[33m.[39mlocator([32m`${FIGURE} ${TICK}`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 254 |[39m     [36mawait[39m expect(ticks[33m,[39m [32m'four caliper-style corner ticks'[39m)[33m.[39mtoHaveCount([35m4[39m)[33m;[39m
+     [90m     |[39m                                                            [31m[1m^[22m[39m
+     [90m 255 |[39m     [36mconst[39m corners [33m=[39m [36mawait[39m ticks[33m.[39mevaluateAll((els) [33m=>[39m els[33m.[39mmap((el) [33m=>[39m el[33m.[39mgetAttribute([32m'data-corner'[39m)))[33m;[39m
+     [90m 256 |[39m     expect([36mnew[39m [33mSet[39m(corners)[33m,[39m [32m'one tick per corner'[39m)[33m.[39mtoEqual([36mnew[39m [33mSet[39m([[32m'tl'[39m[33m,[39m [32m'tr'[39m[33m,[39m [32m'br'[39m[33m,[39m [32m'bl'[39m]))[33m;[39m
+     [90m 257 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_31b6f314-9ff-1/tests/e2e/hero-photo.spec.ts:254:60[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-photo-Hero-photog-ce852-ticks-and-the-caption-plate-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-photo-Hero-photog-ce852-ticks-and-the-caption-plate-chromium/error-context.md[22m
+
+[31m  9) [chromium] › tests/e2e/hero-photo.spec.ts:327:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts [39m
+
+    Error: cumulative layout shift: 0.1763888888888889
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: < [32m0.05[39m
+    Received:   [31m0.1763888888888889[39m
+
+    [0m [90m 358 |[39m         })[33m,[39m
+     [90m 359 |[39m     )[33m;[39m
+    [31m[1m>[22m[39m[90m 360 |[39m     expect(cls[33m,[39m [32m`cumulative layout shift: ${cls}`[39m)[33m.[39mtoBeLessThan([35m0.05[39m)[33m;[39m
+     [90m     |[39m                                                    [31m[1m^[22m[39m
+     [90m 361 |[39m   })[33m;[39m
+     [90m 362 |[39m })[33m;[39m
+     [90m 363 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_31b6f314-9ff-1/tests/e2e/hero-photo.spec.ts:360:52[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-photo-Hero-photog-8cdb2-ht-and-the-box-never-shifts-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-photo-Hero-photog-8cdb2-ht-and-the-box-never-shifts-chromium/error-context.md[22m
+
+[31m  10) [chromium] › tests/e2e/hero-photo.spec.ts:367:7 › Hero photograph at 834 › TC-PHOTO-12: at 834 the figure still owns the whole right column [39m
+
+    Error: the right column is a real column, not a stamp
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m240[39m
+    Received:    [31m176[39m
+
+    [0m [90m 373 |[39m     expect(figure[33m,[39m [32m'the figure is laid out at 834'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m 374 |[39m     expect(statement[33m,[39m [32m'the statement is laid out at 834'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+    [31m[1m>[22m[39m[90m 375 |[39m     expect(figure[33m![39m[33m.[39mwidth[33m,[39m [32m'the right column is a real column, not a stamp'[39m)[33m.[39mtoBeGreaterThanOrEqual([35m240[39m)[33m;[39m
+     [90m     |[39m                                                                             [31m[1m^[22m[39m
+     [90m 376 |[39m     expect(figure[33m![39m[33m.[39mx[33m,[39m [32m'the figure sits to the right of the prose'[39m)[33m.[39mtoBeGreaterThan(statement[33m![39m[33m.[39mx)[33m;[39m
+     [90m 377 |[39m   })[33m;[39m
+     [90m 378 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_31b6f314-9ff-1/tests/e2e/hero-photo.spec.ts:375:77[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-photo-Hero-photog-8c13e-owns-the-whole-right-column-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-photo-Hero-photog-8c13e-owns-the-whole-right-column-chromium/error-context.md[22m
+
+[31m  10 failed[39m
+[31m    [chromium] › tests/e2e/hero-photo.spec.ts:51:7 › Hero photograph › TC-PHOTO-01: at 1440 the figure owns the right column — ≥34 % of the viewport and ≥440 px [39m
+[31m    [chromium] › tests/e2e/hero-photo.spec.ts:73:7 › Hero photograph › TC-PHOTO-02: at 390 the photo is full width and sits below the last hero action [39m
+[31m    [chromium] › tests/e2e/hero-photo.spec.ts:96:7 › Hero photograph › TC-PHOTO-03: the still is in colour — no grayscale filter, and the pixels are saturated [39m
+[31m    [chromium] › tests/e2e/hero-photo.spec.ts:145:7 › Hero photograph › TC-PHOTO-04: at rest the loop has no source and never plays [39m
+[31m    [chromium] › tests/e2e/hero-photo.spec.ts:159:7 › Hero photograph › TC-PHOTO-05: hover starts the loop; leaving pauses it [39m
+[31m    [chromium] › tests/e2e/hero-photo.spec.ts:177:7 › Hero photograph › TC-PHOTO-06: the toggle is keyboard-operable — Enter pauses, Enter plays [39m
+[31m    [chromium] › tests/e2e/hero-photo.spec.ts:212:7 › Hero photograph › TC-PHOTO-07: reduced motion plays nothing at rest and runs no animation [39m
+[31m    [chromium] › tests/e2e/hero-photo.spec.ts:252:7 › Hero photograph › TC-PHOTO-09: the decorations are present — four corner ticks and the caption plate [39m
+[31m    [chromium] › tests/e2e/hero-photo.spec.ts:327:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts [39m
+[31m    [chromium] › tests/e2e/hero-photo.spec.ts:367:7 › Hero photograph at 834 › TC-PHOTO-12: at 834 the figure still owns the whole right column [39m
+[32m  2 passed[39m[2m (59.6s)[22m
