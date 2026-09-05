@@ -38,3 +38,6 @@ running — skills bench field built inside flagship B
 
 ## STATUS (2026-09-05T12:09:07Z)
 running — continued 12:0xZ as t_g_s1 (G-S1) in worktree wf_c06ca2f9-9de-1
+
+## COMPLETE (2026-09-05T13:12:44.813Z)
+Closed via t_g_s1 (Skills bench GLSL field live on 9b864752, independent reviewer PASS).

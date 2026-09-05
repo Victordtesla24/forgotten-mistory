@@ -34,3 +34,9 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-05T13:03:55.747Z)
+ADD (reviewer 62e1e10): (a) p.Experience_openNote at 390 on /?gl=force measures 4.496:1 — give it margin (plate a shade darker than the #2A2A2A ceiling, or a shader groove) so one frame of shader phase cannot decide the gate; extend TC-CONTRAST-02 to require ≥ 4.6:1 worst-pixel on that node. (b) CLS 0.176 at 1280×720 measured with a preloader-Skip click — first re-measure on an unskipped boot (PerformanceObserver layout-shift, list sources), then reserve whatever shifts (footer per PERF-03, or the hero entrance). Priority raised to 96.
+
+## STATUS (2026-09-05T13:04:41.179Z)
+running — dispatched 13:04Z — analyst-programmer in the paused worktree wf_38db9d7d-ce3-1, port 5613; RECTIFY push rule (tsc/lint/build/audit gate, battery in parallel)
