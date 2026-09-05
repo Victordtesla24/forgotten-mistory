@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T08:41:56.737Z",
+  "updated": "2026-09-05T08:48:54.077Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -440,7 +440,7 @@
     {
       "id": "t_3729f57e",
       "title": "Cycle 17 — C-08 (+Motion F-6): #skills gold as a mark, not a mass — dim sourced strands at rest, hovered path lit",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 78,
       "parents": [
@@ -455,7 +455,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T08:06:43.814Z",
+      "updated": "2026-09-05T08:48:53.495Z",
       "summary": "R-c8 item 10. Files: components/sections/Skills/{Bench.module.css,Bench.tsx,Skills.module.css}. Terminal node dots stay gold at full opacity.",
       "decisions": [],
       "comments": [
@@ -469,12 +469,13 @@
           "by": "orchestrator",
           "text": "R-c13 #19 CC-10 (polish, Verified, composition (doctrine half corrected by merge)) — Two parallel gold columns 71 px apart (14 bench dots at x=1088, 14 status glyphs at x=1159.6) ask the reader to learn two marks in one table\nDIRECTION: Collapse the two parallel gold columns into one. Keep the licensed mark that carries the most meaning per row — the caliper/source mark — in var(--gold), and render the second column's glyph in var(--mist-200) so the row reads as one gold mark plus neutral chrome. Do not remove the production mark: CLAUDE.md prime directive 4 enumerates 'the measured in production mark' as a licensed gold surface, so composition's claim that it smuggles in a second meaning is rejected. Do not introduce a third gold surface.\nFILES: components/sections/Skills/Skills.tsx:114-118,195, components/sections/Skills/Skills.module.css:103-109,286-306\nACCEPTANCE: #skills contains at most one vertical run of gold-painted elements sharing an x within 2 px; the total count of gold-painted elements in #skills is <= 16; every gold element in #skills sits in a row whose caliper state is 'sourced' or whose status is 'production'."
         }
-      ]
+      ],
+      "result": "V-c17 PASS (f05f96c): saturated gold in #skills 29→1 (legend mark), any-gold 15 ≤ 16, one column, strands 0.28/0.35 at rest → 1/0.18 on hover in 300 ms, reduced motion colour-only; deviation accepted (unsourced strands mist-400 for legibility). Live c8fc4b04."
     },
     {
       "id": "t_2cc9a990",
       "title": "Cycle 18 — C-07: one \"Download CV\" in the first viewport (nav action demoted to text until scrolled)",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 70,
       "parents": [
@@ -489,7 +490,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T08:06:43.900Z",
+      "updated": "2026-09-05T08:48:53.663Z",
       "summary": "R-c8 item 11. Files: components/site/Navigation.tsx, app/globals.css nav block.",
       "decisions": [],
       "comments": [
@@ -503,7 +504,8 @@
           "by": "orchestrator",
           "text": "R-c13 #10 ADV-4 (major, Verified, adversarial + composition (CC-04)) — Repeat of R-c8 C-07: two identical 'Download CV' controls in the 1440 first screen (nav pill at x=1140.5, hero button at x=296.6), plus a third 548x96 anchor with the same text and href overlapping the nav band\nDIRECTION: Keep exactly one per viewport band. The nav pill is the persistent recruiter action (Navigation.tsx:154-157) — keep it, or demote it to plain text until [data-scrolled]. Then change the hero's copy from a bordered button to the section's text-link treatment (drop the border, keep var(--mist-200) at var(--fs-small) with the ::after underline .channel uses), OR relabel it to something the nav does not offer. Remove the third phantom anchor at (445.9, 6, 548x96) — a 548x96 hit area across the chrome must not be in the accessibility or hit-test tree while the desktop nav shows.\nFILES: components/site/Navigation.tsx:26,154-157, components/sections/Hero/Hero.tsx, components/sections/Hero/Hero.module.css, app/globals.css, tests/overhaul/\nACCEPTANCE: At 390/834/1280/1440/1920 with scrollY === 0: the count of elements matching a[href=\"/docs/Vik_Resume_Final.pdf\"] whose rect intersects the viewport AND whose computed visibility !== 'hidden' is exactly 1. Add as tests/overhaul/cta-duplication.spec.ts."
         }
-      ]
+      ],
+      "result": "V-c18 PASS: exactly one visible CV control at scrollY 0 at 390/834/1280/1440/1920 (was 1/1/3/3/3), phantom overlay anchor out of the hit-test tree, pill returns past the hero, TC-CINE-03 green. Live c8fc4b04. F-2 → follow-up task (phone has no CV control below the hero)."
     },
     {
       "id": "t_052675d5",
@@ -1548,7 +1550,7 @@
     {
       "id": "t_e9d4e10f",
       "title": "R-c13 MOT-C13-01d — scene-local error boundary: a fault inside one GL scene never replaces the whole document",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 90,
       "parents": [
@@ -1562,7 +1564,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:30:51.764Z",
-      "updated": "2026-09-05T07:30:51.764Z",
+      "updated": "2026-09-05T08:48:53.863Z",
       "summary": "components/gl · major · Verified. A fault inside a scene replaces the whole document: GLCanvas mounts with no scene-local error boundary, so a component-level throw reaches app/error.tsx — 'the scene is never the content' is not enforced in code",
       "decisions": [],
       "comments": [],
@@ -1620,7 +1622,7 @@
     {
       "id": "t_2d068068",
       "title": "PERF-03 / TC-HERO-15 root cause — footer.Footer_footer layout shift (~0.16 CLS at ~508 ms) under load; reserve the footer box so CLS < 0.05 on a busy host too",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 80,
       "parents": [
@@ -1634,7 +1636,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T08:06:43.493Z",
-      "updated": "2026-09-05T08:06:43.493Z",
+      "updated": "2026-09-05T08:48:54.077Z",
       "summary": "V-react19 finding 1: the only layout shift captured names footer.Footer_footer__TWDx3 at ~508 ms worth 0.1556 — the two off-list ✘ (TC-HERO-15, PERF-03) attributed to the hero crossfade are this. Files: components/site/Footer.tsx + its CSS block (app/globals.css or module). TDD: tests/perf/performance.spec.ts PERF-03 must pass with --workers=2 under load (repeat-each=3) and a new assertion that no LayoutShift entry names the footer.",
       "decisions": [],
       "comments": [],
@@ -1659,6 +1661,29 @@
       "created": "2026-09-05T08:25:47.491Z",
       "updated": "2026-09-05T08:25:47.491Z",
       "summary": "V-c15 findings F-1/F-2/F-3 (906ccd5 09-verification.md). Files: components/sections/Experience/Experience.module.css (.trackBar delay calc, .trackYears opacity transition calc(var(--i) * 70ms + 620ms) 320 ms, .axis/.axisTick spacing at ≤30rem), Experience.tsx if --i is missing; tests/overhaul/scene-experience.spec.ts gains the two assertions + a 390 axis-label non-overlap assertion (getBoundingClientRect of the last two axis labels).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_62b5c4d3",
+      "title": "Cycle 18b — at ≤640 px the CV control exists below the hero (nav-cv is display:none there since before cycle 18): give the phone a scrolled-state CV affordance without a second control in the first screen",
+      "status": "todo",
+      "assignee": "coder",
+      "priority": 66,
+      "parents": [
+        "t_2cc9a990"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding / documentation",
+        "level": 4,
+        "effort": "medium (xhigh when coding)"
+      },
+      "provider": "openrouter→anthropic-oauth",
+      "created": "2026-09-05T08:48:53.769Z",
+      "updated": "2026-09-05T08:48:53.769Z",
+      "summary": "V-c17/18 finding F-2: app/globals.css:803-804 hides .nav-cv at max-width 640px, so once a phone reader passes the hero the only CV route is behind the menu. Direction: show the nav CV pill at ≤640 under [data-scrolled] only (text-only, var(--fs-small)), keeping CTA-01 (one control at scrollY 0) green; or add the CV route to the frosted bar as an icon-only 44 px control with accessible name. TDD: extend tests/overhaul/cta-duplication.spec.ts with CTA-04 (at 390 after scrollTo 1200 exactly one visible CV control exists).",
       "decisions": [],
       "comments": [],
       "blocker": null
