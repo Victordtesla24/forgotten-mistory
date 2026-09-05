@@ -36,8 +36,11 @@ actually achieves, with the real cost named for a child task, rather than report
 against a lever that does not reach it.
 
 Cutting octaves and taps was the second lever in the task's own order of least
-risk (levers 2–4). It is not needed to clear the acceptance ratio, and it is not
-free: `atmosphere.glsl.ts` is the source the hero poster is rendered from
+risk (levers 2–4). It was not needed where the ratio was reached — the hero clears
+3× on resolution alone, at 4.33× — and it could not have reached the one place the
+ratio was missed, because `about-field` at 1440 is not spending its frame on
+fragments at all. It is also not free: `atmosphere.glsl.ts` is the source the hero
+poster is rendered from
 (`scripts/assets/render-hero-poster.mjs`, TC-HERO-FIRSTPAINT-01), so every edit to
 it puts a new binary in the repo and a new first paint in front of the reader.
 Lever 1 alone buys a factor of four in fragments and leaves both the shader source
