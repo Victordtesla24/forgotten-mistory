@@ -234,9 +234,11 @@
 
 /* ── The four arrivals ────────────────────────────────────────────────────────
    One caliper jaw pair per channel, laid along the beam at strictly increasing
-   x (LISTEN-FLAGSHIP.md §2 C2). Each is the site's own mark at hairline weight,
-   drawn in the caliper's own ink — currentColor, the section's --mist-400 — so
-   it never introduces a colour. Gold on the two record channels is t_l1_04. */
+   x (LISTEN-FLAGSHIP.md §2 C2). Each is the site's own mark at hairline weight.
+   The email and phone are drawn in the caliper's own ink — currentColor, the
+   section's --mist-400 — because they are addresses with nothing to verify. The
+   two record channels (LinkedIn, GitHub) carry --gold instead, keyed off
+   channel.kind below (t_l1_04, G-L1 clause C3). */
 .arrival {
     /* How far each half stands open before it closes, in the SVG's own units. */
     --arrival-open: 9px;
@@ -250,6 +252,25 @@
     stroke-linecap: butt;
     /* The mark's own opacity, identical to the closing jaws above. */
     opacity: 0.55;
+}
+
+/* The two record channels arrive in the site's one semantic colour.
+   Gold means "this figure has a source you can OPEN and CHECK"
+   (SIGNATURE-SCENES-v1, LISTEN-FLAGSHIP.md §2 C3): of the four channels exactly
+   two are records a reader can open — the LinkedIn and GitHub profiles, which
+   are the kind === 'external' ones — while the email and phone are addresses
+   with nothing at mailto:/tel: to verify, so they keep the caliper's own grey.
+   The mark is selected by the data attribute it carries — data-arrival is set
+   from channel.kind in Listen.tsx, never a hardcoded index — and the gold lives
+   here in the DOM, never in listen.glsl.ts, which reserves shader gold for the
+   S5 vitrine-field (§4.2-4.6; TC-SCENE-LISTEN-06 stays green). Hairline weight
+   throughout; only the ink changes. t_l1_04, G-L1 clause C3. */
+.arrival[data-arrival='external'] .arrivalJawLeft,
+.arrival[data-arrival='external'] .arrivalJawRight {
+    stroke: var(--gold);
+    /* The one accent reads a shade firmer than the grey marks so the record
+       arrivals stay legible against the bench light — still one hairline. */
+    opacity: 0.85;
 }
 
 /* At rest — and with no script at all — every mark is drawn closed on its

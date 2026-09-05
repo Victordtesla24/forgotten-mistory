@@ -180,30 +180,62 @@ test.describe('Listen', () => {
     expect(rule.transform).toBe('none');
   });
 
-  test('TC-LISTEN-08: nothing in the closing section is gold', async ({ page }) => {
-    // Gold means "this figure has a source". The closing section makes no
-    // claim, so every colour it renders — text, background, and the caliper's
-    // strokes — must be achromatic: channel spread of eight or less.
-    const offenders = await page.evaluate(() => {
+  test('TC-LISTEN-08: exactly the two record marks are gold and nothing else', async ({ page }) => {
+    // AMENDED — t_l1_04, G-L1 clause C3. This assertion used to read "nothing in
+    // #listen is gold" (toEqual([]) over every chromatic colour). It was
+    // inverted because the site's one semantic colour had never appeared in its
+    // closing frame, so the grammar the whole page teaches — gold means "this
+    // figure has a source you can OPEN and CHECK" (SIGNATURE-SCENES-v1,
+    // LISTEN-FLAGSHIP.md §2 C3) — was absent exactly where it lands last. Of the
+    // four channels precisely two are checkable records: linkedin.com/in/
+    // vikramd-profile and github.com/Victordtesla24, the kind === 'external'
+    // ones. The email and phone are addresses — there is nothing at mailto:/tel:
+    // to verify — so they stay achromatic. The rule is now: the two external
+    // arrival marks are gold, they are derived from channel.kind (never an index
+    // literal), and nothing else in the section is chromatic. Gold stays in the
+    // DOM; the shader stays gold-free (TC-SCENE-LISTEN-06). Reversal cost: one
+    // commit returns this to the achromatic sweep asserting toHaveCount(0).
+    const probe = await page.evaluate(() => {
       const props = ['color', 'backgroundColor', 'stroke', 'fill', 'borderTopColor', 'borderBottomColor'] as const;
       const root = document.querySelector('#listen')!;
-      const hits: string[] = [];
+      const stray: string[] = [];
+      const goldMarks = new Set<Element>();
       for (const el of [root, ...Array.from(root.querySelectorAll('*'))]) {
         const cs = getComputedStyle(el);
+        let chromatic = false;
         for (const p of props) {
           const raw = cs[p] as string;
           const m = raw?.match(/rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)(?:[\s,/]+([\d.]+))?/);
           if (!m) continue;
           if (m[4] !== undefined && Number(m[4]) === 0) continue;
           const rgb = [Number(m[1]), Number(m[2]), Number(m[3])];
-          if (Math.max(...rgb) - Math.min(...rgb) > 8) {
-            hits.push(`${el.tagName.toLowerCase()} ${p}=${raw}`);
-          }
+          if (Math.max(...rgb) - Math.min(...rgb) > 8) chromatic = true;
+        }
+        if (!chromatic) continue;
+        // Every chromatic stroke must belong to a record arrival — the
+        // kind === 'external' marks and only those.
+        const mark = el.closest('[data-arrival]');
+        if (mark && mark.getAttribute('data-arrival') === 'external') {
+          goldMarks.add(mark);
+        } else {
+          stray.push(`${el.tagName.toLowerCase()} chromatic outside an external arrival mark`);
         }
       }
-      return Array.from(new Set(hits));
+      return {
+        stray: Array.from(new Set(stray)),
+        goldMarkCount: goldMarks.size,
+        externalCount: root.querySelectorAll('[data-arrival="external"]').length,
+        arrivalCount: root.querySelectorAll('[data-arrival]').length,
+      };
     });
-    expect(offenders).toEqual([]);
+    // Nothing chromatic anywhere except the record arrivals.
+    expect(probe.stray).toEqual([]);
+    // There are four arrivals — one per channel — and exactly two are the
+    // checkable records, so the email and phone marks cannot have leaked gold.
+    expect(probe.arrivalCount).toBe(4);
+    expect(probe.externalCount).toBe(2);
+    // And precisely those two record marks carry the gold ink.
+    expect(probe.goldMarkCount).toBe(2);
   });
 
   /**
