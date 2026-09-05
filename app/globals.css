@@ -315,6 +315,55 @@
     pointer-events: auto !important;
 }
 
+/* ── The panel's height is the hero's name, measured ─────────────────────────
+   V-c16 F-V16-2. The dock is anchored 24px from the bottom and the launcher is
+   64px tall, so the panel's bottom edge sits at 100svh − 5.5rem and its top
+   edge is that minus its own height. At 30rem tall the top edge lands at 232px
+   on a 1280×800 laptop, and the hero name's glyphs run to y=301 — the panel
+   painted over ~135×69px of "Vikram Deshpande" (measured with
+   Range.getClientRects, 01-baseline.log). Shifting the panel sideways cannot
+   help: at 1280 the name's glyphs reach x=959 and a 27rem panel flush with the
+   right gutter starts at x=824, so clearing them horizontally would need a
+   viewport 175px wider than the one it is on.
+
+   So the height is capped instead. Across a 5-width × 9-height grid
+   (390…1920 × 640…1400) the name's lowest glyph never fell below y=330, so the
+   panel's top edge is held at 22rem — 352px, the measured floor plus 22px —
+   whenever the viewport is short enough for that to bind:
+
+       height = 100svh − 5.5rem − 22rem = 100svh − 27.5rem
+
+   Below 46.5rem of viewport height that formula leaves less than the dialog's
+   own chrome, so a 19rem floor takes over — enough for the stage, the persona
+   strip, the prompts and the composer. The clearance is guaranteed wherever
+   the cap binds and, by measurement, down to about 700px of viewport height
+   where the floor does; below that the hero's name sits lower than the panel
+   can start and the trade is stated rather than hidden. */
+.minivic-panel {
+    height: max(19rem, min(30rem, calc(100svh - 27.5rem)));
+    max-height: max(19rem, min(30rem, calc(100svh - 27.5rem)));
+}
+
+/* A shorter panel has to give the height back from its chrome, not from the
+   conversation: on a 1366×768 laptop the cap leaves 328px, and with the stage
+   and the padding at their full size the transcript was 32px — one line. The
+   persona strip and the log tighten below 52rem of viewport height, which is
+   where the cap starts binding; from 900px up nothing here applies and the
+   panel is unchanged. The stage keeps its 6.5rem floor at every height — it
+   carries the identity block and the synthetic-voice disclosure, and squeezing
+   it further pushed that block over the transport buttons. */
+@media (max-height: 52rem) {
+    .minivic-panel__controls {
+        padding-top: var(--space-1);
+        padding-bottom: var(--space-1);
+    }
+
+    .minivic-panel__log {
+        padding-top: var(--space-1);
+        padding-bottom: var(--space-1);
+    }
+}
+
 .minivic-launcher {
     display: flex;
     align-items: center;
@@ -383,8 +432,11 @@
     object-fit: cover;
     object-position: 50% 18%;
     /* Dimmed by default: every viewport narrower than 87.5rem floats this over
-       body text at some scroll position. */
-    filter: grayscale(1) contrast(1.05) brightness(0.32);
+       body text at some scroll position, and below 87.5rem the speech mark —
+       not the face — is what has to read, so the portrait steps back far enough
+       to leave the mark the brightest thing on the plate without breaching the
+       phone ceiling. */
+    filter: grayscale(1) contrast(1.05) brightness(0.12);
 }
 
 .minivic-launcher__portrait {
@@ -393,12 +445,41 @@
     background-size: cover;
 }
 
+/* The resting mark (R-c13 CC-03a). It sits above the portrait and below the
+   video, so it is what the control paints before anything has loaded and the
+   avatar is the enhancement over it, not the other way round. --white is the
+   ink; the drop shadow is what lets it stay legible once the face behind it is
+   shown at full value. */
+.minivic-launcher__mark {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    transform: translate(-50%, -50%);
+    color: var(--white);
+    /* Bounded, not chosen. TC-MV-OCCLUDE-02 caps every pixel the closed
+       launcher paints at 390 at the brightest ground that still carries
+       --mist-200 body ink at 4.5:1 (luminance 0.0968 ≈ rgb(87,87,87)). The
+       portrait peaks at rgb(33) under brightness(0.12), so white composited at
+       α over it lands at 33 + 222α; α = 0.22 puts the mark at rgb(82) —
+       2.4:1 against its own plate, and inside the ceiling with room to spare. */
+    opacity: 0.22;
+    filter: drop-shadow(0 0 3px rgb(0 0 0 / 0.92));
+    pointer-events: none;
+}
+
 @media (min-width: 87.5rem) {
     /* From 1400px the page's own gutter (96px at --page-max) holds the disc
-       clear of the measure, so the face is shown at full value. */
+       clear of the measure, so the face is shown at full value and the mark
+       with it. */
     .minivic-launcher__portrait,
     .minivic-launcher__video {
         filter: grayscale(1) contrast(1.05);
+    }
+
+    .minivic-launcher__mark {
+        opacity: 0.92;
     }
 }
 
