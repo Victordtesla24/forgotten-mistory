@@ -1,0 +1,266 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-about.spec.ts tests/e2e/about.spec.ts tests/monochrome --reporter=list
+
+[2mRunning [22m30[2m tests using [22m2[2m workers[22m
+
+  [32m✓[39m  [2m 1 [22m[chromium] › tests/e2e/about.spec.ts:39:7 › About › TC-ABOUT-01: all ten dimensions render, in the engine’s own order[2m (2.1s)[22m
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/e2e/about.spec.ts:47:7 › About › TC-ABOUT-02: every dimension carries an answer and its evidence[2m (2.2s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/e2e/about.spec.ts:79:7 › About › TC-ABOUT-04: the dimensions name their source[2m (1.5s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/e2e/about.spec.ts:60:7 › About › TC-ABOUT-03: no dimension is given a score[2m (2.7s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/e2e/about.spec.ts:85:7 › About › TC-ABOUT-05: job-side dimensions are labelled as such[2m (2.0s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/e2e/about.spec.ts:98:7 › About › TC-ABOUT-06: the ten items are reading aids, not tab stops[2m (2.2s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/e2e/about.spec.ts:152:7 › About › TC-ABOUT-07: the section is complete without WebGL[2m (1.5s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/e2e/about.spec.ts:191:7 › About › TC-ABOUT-08: the compass turns as the reader scrolls — item 6 centred reads 06 / FROM THE ROLE[2m (3.8s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/e2e/about.spec.ts:215:7 › About › TC-ABOUT-09: hover overrides the scroll index, and leaving the list hands it back[2m (3.6s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/e2e/about.spec.ts:277:7 › About › TC-ABOUT-11: under reduced motion the index snaps — no sweep, no travel, still swept[2m (3.9s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/e2e/about.spec.ts:234:7 › About › TC-ABOUT-10: on first entry the bezel sweeps once — 1160 ms, emphasised ease, never again[2m (4.9s)[22m
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(246, 246, 246)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+  [32m✓[39m  [2m13 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold[2m (2.6s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/e2e/about.spec.ts:305:7 › About › TC-ABOUT-12: no gold on the face — the active sector, its numeral and the ring stay achromatic[2m (4.1s)[22m
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m14 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine[2m (3.8s)[22m
+  [32m✓[39m  [2m15 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine[2m (3.2s)[22m
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m16 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine[2m (2.5s)[22m
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m17 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine[2m (2.9s)[22m
+  [32m✓[39m  [2m18 [22m[chromium] › tests/monochrome/monochrome.spec.ts:118:7 › Monochrome Compliance › MONO-01: :root publishes the grey ramp and exactly the four sanctioned gold tokens[2m (2.2s)[22m
+  [32m✓[39m  [2m19 [22m[chromium] › tests/monochrome/monochrome.spec.ts:146:7 › Monochrome Compliance › MONO-02: Body background is achromatic[2m (2.7s)[22m
+  [32m✓[39m  [2m20 [22m[chromium] › tests/monochrome/monochrome.spec.ts:153:7 › Monochrome Compliance › MONO-03: No inline style declares a colour outside the palette[2m (4.7s)[22m
+  [32m✓[39m  [2m21 [22m[chromium] › tests/monochrome/monochrome.spec.ts:207:7 › Monochrome Compliance › MONO-04: Every rendered colour in every section is achromatic or the sanctioned gold[2m (5.1s)[22m
+  [32m✓[39m  [2m23 [22m[chromium] › tests/monochrome/monochrome.spec.ts:244:7 › Monochrome Compliance › MONO-06: Navigation overlay is achromatic when open[2m (4.8s)[22m
+  [32m✓[39m  [2m22 [22m[chromium] › tests/monochrome/monochrome.spec.ts:218:7 › Monochrome Compliance › MONO-05: The sanctioned accent is actually in use, and only as the accent[2m (7.6s)[22m
+  [32m✓[39m  [2m24 [22m[chromium] › tests/monochrome/monochrome.spec.ts:252:7 › Monochrome Compliance › MONO-07: The check still rejects an unsanctioned hue[2m (2.4s)[22m
+  [31m✘[39m  [2m25 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:87:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view[39m[2m (19.9s)[22m
+  [31m✘[39m  [2m26 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:101:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column[39m[2m (19.7s)[22m
+  [31m✘[39m  [2m27 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose[39m[2m (5.2s)[22m
+  [32m✓[39m  [2m28 [22m[chromium] › tests/overhaul/scene-about.spec.ts:157:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-04: under reduced motion there is no canvas, and the rose is still the instrument[2m (7.3s)[22m
+  [31m✘[39m  [2m30 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:214:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-06: the field is monochrome, palette-sourced and cheap per pixel[39m[2m (509ms)[22m
+  [32m✓[39m  [2m29 [22m[chromium] › tests/overhaul/scene-about.spec.ts:184:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-05: with WebGL unavailable the section is whole and silent[2m (9.7s)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/scene-about.spec.ts:87:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#about canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#about canvas')[22m
+    [2m    18 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 91 |[39m
+     [90m 92 |[39m     [36mconst[39m canvases [33m=[39m page[33m.[39mlocator([32m`${ABOUT} canvas`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 93 |[39m     [36mawait[39m expect(canvases)[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m    |[39m                            [31m[1m^[22m[39m
+     [90m 94 |[39m
+     [90m 95 |[39m     [36mconst[39m box [33m=[39m [36mawait[39m canvases[33m.[39mfirst()[33m.[39mboundingBox()[33m;[39m
+     [90m 96 |[39m     expect(box[33m,[39m [32m'the #about canvas has no box'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/overhaul/scene-about.spec.ts:93:28[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-79971-once-the-section-is-in-view-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-79971-once-the-section-is-in-view-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/overhaul/scene-about.spec.ts:101:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#about canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#about canvas')[22m
+    [2m    18 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 103 |[39m   }) [33m=>[39m {
+     [90m 104 |[39m     [36mawait[39m settleAboutWithGL(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 105 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m`${ABOUT} canvas`[39m))[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m     |[39m                                                   [31m[1m^[22m[39m
+     [90m 106 |[39m
+     [90m 107 |[39m     [90m// Silent to assistive technology: the field is texture, not testimony.[39m
+     [90m 108 |[39m     [36mconst[39m hidden [33m=[39m [36mawait[39m page[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/overhaul/scene-about.spec.ts:105:51[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-4544b-ind-the-rose-and-the-column-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-4544b-ind-the-rose-and-the-column-chromium/error-context.md[22m
+
+[31m  3) [chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose [39m
+
+    Error: locator.scrollIntoViewIfNeeded: Element is not attached to the DOM
+    Call log:
+    [2m  - attempting scroll into view action[22m
+    [2m    - waiting for element to be stable[22m
+
+
+    [0m [90m 65 |[39m   [36mawait[39m page[33m.[39mgoto([32m'/?gl=force'[39m[33m,[39m { waitUntil[33m:[39m [32m'domcontentloaded'[39m })[33m;[39m
+     [90m 66 |[39m   [36mawait[39m waitForPageReady(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 67 |[39m   [36mawait[39m page[33m.[39mlocator([33mABOUT[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                             [31m[1m^[22m[39m
+     [90m 68 |[39m   [36mawait[39m page[33m.[39mwaitForTimeout([35m2500[39m)[33m;[39m
+     [90m 69 |[39m }
+     [90m 70 |[39m[0m
+    [2m    at settleAboutWithGL (/root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/overhaul/scene-about.spec.ts:67:29)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/overhaul/scene-about.spec.ts:146:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-5d765-me-scroll-index-as-the-rose-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-5d765-me-scroll-index-as-the-rose-chromium/error-context.md[22m
+
+[31m  4) [chromium] › tests/overhaul/scene-about.spec.ts:214:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-06: the field is monochrome, palette-sourced and cheap per pixel [39m
+
+    Error: noise() calls in the fragment program: 4
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m3[39m
+    Received:    [31m4[39m
+
+    [0m [90m 235 |[39m       lookups[33m.[39mlength[33m,[39m
+     [90m 236 |[39m       [32m`noise() calls in the fragment program: ${lookups.length}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 237 |[39m     )[33m.[39mtoBeLessThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 238 |[39m
+     [90m 239 |[39m     [90m// One quad. Not a mesh, not a particle system.[39m
+     [90m 240 |[39m     expect(component)[33m.[39mtoContain([32m'ScreenQuad'[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/overhaul/scene-about.spec.ts:237:7[22m
+
+[31m  4 failed[39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:87:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view [39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:101:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column [39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose [39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:214:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-06: the field is monochrome, palette-sourced and cheap per pixel [39m
+[32m  26 passed[39m[2m (1.4m)[22m
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-about.spec.ts --reporter=list
+
+[2mRunning [22m6[2m tests using [22m2[2m workers[22m
+
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:87:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view[39m[2m (19.0s)[22m
+  [31m✘[39m  [2m2 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:101:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column[39m[2m (19.4s)[22m
+  [32m✓[39m  [2m4 [22m[chromium] › tests/overhaul/scene-about.spec.ts:157:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-04: under reduced motion there is no canvas, and the rose is still the instrument[2m (4.4s)[22m
+  [32m✓[39m  [2m5 [22m[chromium] › tests/overhaul/scene-about.spec.ts:184:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-05: with WebGL unavailable the section is whole and silent[2m (4.3s)[22m
+  [32m✓[39m  [2m6 [22m[chromium] › tests/overhaul/scene-about.spec.ts:214:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-06: the field is monochrome, palette-sourced and cheap per pixel[2m (21ms)[22m
+  [31m✘[39m  [2m3 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose[39m[2m (2.0m)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/scene-about.spec.ts:87:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#about canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#about canvas')[22m
+    [2m    19 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 91 |[39m
+     [90m 92 |[39m     [36mconst[39m canvases [33m=[39m page[33m.[39mlocator([32m`${ABOUT} canvas`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 93 |[39m     [36mawait[39m expect(canvases)[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m    |[39m                            [31m[1m^[22m[39m
+     [90m 94 |[39m
+     [90m 95 |[39m     [36mconst[39m box [33m=[39m [36mawait[39m canvases[33m.[39mfirst()[33m.[39mboundingBox()[33m;[39m
+     [90m 96 |[39m     expect(box[33m,[39m [32m'the #about canvas has no box'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/overhaul/scene-about.spec.ts:93:28[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-79971-once-the-section-is-in-view-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-79971-once-the-section-is-in-view-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/overhaul/scene-about.spec.ts:101:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#about canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#about canvas')[22m
+    [2m    19 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 103 |[39m   }) [33m=>[39m {
+     [90m 104 |[39m     [36mawait[39m settleAboutWithGL(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 105 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m`${ABOUT} canvas`[39m))[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m     |[39m                                                   [31m[1m^[22m[39m
+     [90m 106 |[39m
+     [90m 107 |[39m     [90m// Silent to assistive technology: the field is texture, not testimony.[39m
+     [90m 108 |[39m     [36mconst[39m hidden [33m=[39m [36mawait[39m page[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/overhaul/scene-about.spec.ts:105:51[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-4544b-ind-the-rose-and-the-column-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-4544b-ind-the-rose-and-the-column-chromium/error-context.md[22m
+
+[31m  3) [chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose [39m
+
+    [31mTest timeout of 120000ms exceeded.[39m
+
+    Error: locator.evaluate: Test timeout of 120000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#about ol li').nth(5)[22m
+
+
+    [0m [90m 75 |[39m     [33m.[39mlocator([32m`${ABOUT} ol li`[39m)
+     [90m 76 |[39m     [33m.[39mnth(n [33m-[39m [35m1[39m)
+    [31m[1m>[22m[39m[90m 77 |[39m     [33m.[39mevaluate((el) [33m=>[39m {
+     [90m    |[39m      [31m[1m^[22m[39m
+     [90m 78 |[39m       [36mconst[39m r [33m=[39m el[33m.[39mgetBoundingClientRect()[33m;[39m
+     [90m 79 |[39m       window[33m.[39mscrollTo([35m0[39m[33m,[39m window[33m.[39mscrollY [33m+[39m r[33m.[39mtop [33m+[39m r[33m.[39mheight [33m/[39m [35m2[39m [33m-[39m window[33m.[39minnerHeight [33m/[39m [35m2[39m)[33m;[39m
+     [90m 80 |[39m     })[33m;[39m[0m
+    [2m    at centreItem (/root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/overhaul/scene-about.spec.ts:77:6)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/overhaul/scene-about.spec.ts:148:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-5d765-me-scroll-index-as-the-rose-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-5d765-me-scroll-index-as-the-rose-chromium/error-context.md[22m
+
+[31m  3 failed[39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:87:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view [39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:101:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column [39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose [39m
+[32m  3 passed[39m[2m (2.4m)[22m
