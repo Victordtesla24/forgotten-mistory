@@ -68,7 +68,7 @@ by reintroducing its component — the sections after Skills were replaced delib
 - **Tokens:** `app/globals.css` `:root` — plus the nav, the MiniVic chrome, and element
   defaults. Everything else is a CSS module. `lib/palette.ts` is the only place raw hex
   lives for WebGL.
-- **Tests:** `tests/{e2e,a11y,perf,visual,monochrome,content,overhaul}/` — 276 Playwright
+- **Tests:** `tests/{e2e,a11y,perf,visual,monochrome,content,overhaul}/` — 308 Playwright
   tests (`*.spec.ts`; the `tests/*.test.mjs` node:test files run with `node --test`). Visual baselines in `tests/baselines/`.
 - **Validation:** `scripts/validate/overhaul_static_audit.mjs` — 10 gates, run on every
   change.
@@ -137,7 +137,7 @@ Look at the regenerated PNG before you commit it.
 
 ## Definition of done
 
-`tsc` clean · `lint` clean · static audit 10/10 · 276 Playwright green · build clean ·
+`tsc` clean · `lint` clean · static audit 10/10 · 308 Playwright green · build clean ·
 LCP < 2.5 s · CLS < 0.05 · no asset over 500 kB · reduced-motion path works ·
 keyboard-navigable · monochrome with gold only as a claim · every new sentence traceable ·
 deployed and verified against the live URL.
