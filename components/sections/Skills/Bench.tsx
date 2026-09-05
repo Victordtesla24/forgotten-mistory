@@ -294,10 +294,16 @@ export default function Bench({
               y1="0"
               y2="0"
             >
-              <stop offset="0%" stopColor="var(--gold)" stopOpacity="0.06" />
-              <stop offset="14%" stopColor="var(--gold)" stopOpacity="0.62" />
-              <stop offset="86%" stopColor="var(--gold)" stopOpacity="0.62" />
-              <stop offset="100%" stopColor="var(--gold)" stopOpacity="0.06" />
+              {/* The ramp carries the shape of the fade and nothing else: its
+                  body is opaque and the level the strand is drawn at lives in
+                  `stroke-opacity` (Bench.module.css), which is the property the
+                  attention state animates. Baking a level into both meant the
+                  two multiplied, and a wire asked to come to full strength on
+                  hover arrived at 0.62 of it. */}
+              <stop offset="0%" stopColor="var(--gold)" stopOpacity="0.1" />
+              <stop offset="14%" stopColor="var(--gold)" stopOpacity="1" />
+              <stop offset="86%" stopColor="var(--gold)" stopOpacity="1" />
+              <stop offset="100%" stopColor="var(--gold)" stopOpacity="0.1" />
             </linearGradient>
             <linearGradient
               id={`${gradientId}-grey`}
@@ -307,10 +313,10 @@ export default function Bench({
               y1="0"
               y2="0"
             >
-              <stop offset="0%" stopColor="var(--mist-400)" stopOpacity="0.05" />
-              <stop offset="14%" stopColor="var(--mist-400)" stopOpacity="0.5" />
-              <stop offset="86%" stopColor="var(--mist-400)" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="var(--mist-400)" stopOpacity="0.05" />
+              <stop offset="0%" stopColor="var(--mist-400)" stopOpacity="0.08" />
+              <stop offset="14%" stopColor="var(--mist-400)" stopOpacity="1" />
+              <stop offset="86%" stopColor="var(--mist-400)" stopOpacity="1" />
+              <stop offset="100%" stopColor="var(--mist-400)" stopOpacity="0.08" />
             </linearGradient>
           </defs>
           {wires.map((wire, index) => (

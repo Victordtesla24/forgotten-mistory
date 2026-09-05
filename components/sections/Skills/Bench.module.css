@@ -40,14 +40,24 @@
     pointer-events: none;
 }
 
+/* At rest the cabling is a whisper (C-08 / Motion F-6). The gold strands used
+   to sit at full stroke-opacity, which left the board's one accent with nowhere
+   to go when the reader actually asked a question of it: gold that is always
+   loud cannot get louder. The ramp in `<defs>` now owns only the *shape* of the
+   fade at the rails; the level is set here, and it is the thing that moves. */
 .wire {
     stroke-width: 1;
     stroke-linecap: round;
-    stroke-opacity: 1;
+    stroke-opacity: 0.35;
     transition:
-        stroke-opacity var(--motion-base) var(--motion-ease-standard),
-        stroke-width var(--motion-base) var(--motion-ease-standard);
+        stroke-opacity 200ms cubic-bezier(0.22, 1, 0.36, 1),
+        stroke-width 200ms cubic-bezier(0.22, 1, 0.36, 1);
     opacity: 1;
+}
+
+/* Gold is the claim, so it is the one held furthest back until it is asked for. */
+.wire.production {
+    stroke-opacity: 0.28;
 }
 
 /* The trace-in. Each path carries `pathLength="1"`, so the dash geometry is
@@ -87,6 +97,17 @@
         animation: none;
         opacity: 1;
     }
+
+    /* Colour only. The attention state still reads — the strands the reader is
+       tracing come forward and the rest fall back — but nothing about the
+       drawing's geometry moves to say so. */
+    .wire {
+        transition: stroke-opacity var(--motion-fast) linear;
+    }
+
+    .bench[data-dimmed] .wire[data-lit] {
+        stroke-width: 1;
+    }
 }
 
 /* Attention: everything the current node does not touch falls back, and the
@@ -97,13 +118,15 @@
    there did nothing at all while the board was still drawing itself in.
    `stroke-opacity` multiplies with the gradient's own stops and is untouched by
    the keyframes, so the two effects compose instead of fighting. */
-.bench[data-dimmed] .wire {
-    stroke-opacity: 0.12;
+.bench[data-dimmed] .wire,
+.bench[data-dimmed] .wire.production {
+    stroke-opacity: 0.18;
 }
 
-.bench[data-dimmed] .wire[data-lit] {
+.bench[data-dimmed] .wire[data-lit],
+.bench[data-dimmed] .wire.production[data-lit] {
     stroke-opacity: 1;
-    stroke-width: 1.4;
+    stroke-width: 1.5;
 }
 
 /* ── The rails ───────────────────────────────────────────────────────────── */
@@ -216,9 +239,19 @@
     align-self: center;
 }
 
+/* The one gold column on the board, and it is held one step back from full
+   strength (R-110's step-down, applied here by C-08). Fourteen saturated dots
+   down a rail read as a fill; fourteen recessed ones read as a column of
+   evidence, and the mark comes to full gold on the row the reader is actually
+   tracing — which is the only moment the accent has anything to add. */
 .mark.production {
+    background: var(--gold-dark);
+    opacity: 1;
+    transition: background var(--motion-fast) var(--motion-ease-standard);
+}
+
+.node[data-lit] .mark.production {
     background: var(--gold);
-    opacity: 0.9;
 }
 
 .mark.nonProduction {
