@@ -155,6 +155,48 @@ describe('Edge cases', () => {
     assert.ok(/lhci/.test(lhBlock[0]), 'lighthouse must use lhci');
     assert.ok(/lighthouserc\.json/.test(lhBlock[0]), 'lighthouse must reference config');
   });
+
+  // Run 33933075366 (2026-09-05): collect + assert + composite all passed, then
+  // "Upload Lighthouse reports" failed with "No files were found with the provided
+  // path: .lighthouseci/". actions/upload-artifact@v4 (>= 4.4.0) excludes hidden
+  // files by default, and "hidden" means any file under a directory whose name
+  // starts with "." — so a dot-directory path uploads nothing unless the step
+  // opts in with include-hidden-files: true. This test fails if that opt-in is
+  // ever dropped again, or if the fail-loud guards around it are weakened.
+  it('lighthouse report upload reads .lighthouseci/ with include-hidden-files and stays fail-loud', () => {
+    const lhBlock = yaml.match(/^  lighthouse:[\s\S]*?(?=^  axe:)/m);
+    assert.ok(lhBlock, 'lighthouse block not found');
+    const upload = lhBlock[0].match(/- name: Upload Lighthouse reports[\s\S]*?retention-days:[^\n]*/);
+    assert.ok(upload, 'Upload Lighthouse reports step not found');
+    const step = upload[0];
+    assert.ok(/uses:\s*actions\/upload-artifact@v4/.test(step), 'must use actions/upload-artifact@v4');
+    assert.ok(/^\s+path:\s*\.lighthouseci\/?\s*$/m.test(step),
+      'must upload .lighthouseci/ — the directory `lhci collect` writes lhr-*.json / lhr-*.html into');
+    assert.ok(/^\s+include-hidden-files:\s*true\s*$/m.test(step),
+      'upload-artifact@v4 skips every file under a dot-directory unless include-hidden-files: true (run 33933075366 uploaded nothing and failed the job)');
+    assert.ok(/^\s+if-no-files-found:\s*error\s*$/m.test(step),
+      'must keep if-no-files-found: error so an empty collect still fails the job');
+    assert.ok(!/continue-on-error/.test(step), 'upload step must not be continue-on-error');
+    // The composite step is the other half of the contract: zero reports is a failure, not a pass.
+    assert.ok(/reports=\(\.lighthouseci\/lhr-\*\.json\)/.test(lhBlock[0]),
+      'composite step must glob .lighthouseci/lhr-*.json');
+    assert.ok(/"\$\{#reports\[@\]\}" -eq 0[\s\S]*?exit 1/.test(lhBlock[0]),
+      'composite step must exit 1 when collect produced no reports');
+  });
+
+  it('every upload-artifact step whose path starts with "." sets include-hidden-files: true', () => {
+    const steps = yaml.split(/\n(?=\s+- (?:name|uses):)/);
+    const uploads = steps.filter(s => /uses:\s*actions\/upload-artifact@v4/.test(s));
+    assert.ok(uploads.length >= 1, 'no upload-artifact steps found');
+    for (const step of uploads) {
+      const pathMatch = step.match(/^\s+path:\s*(\S+)/m);
+      assert.ok(pathMatch, `upload-artifact step without a single-line path:\n${step}`);
+      if (pathMatch[1].startsWith('.')) {
+        assert.ok(/^\s+include-hidden-files:\s*true\s*$/m.test(step),
+          `upload-artifact@v4 would upload nothing from hidden path ${pathMatch[1]} without include-hidden-files: true`);
+      }
+    }
+  });
 });
 
 describe('CI-CD-4: Static audit hardening', () => {
