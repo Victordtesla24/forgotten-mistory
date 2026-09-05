@@ -333,4 +333,43 @@ test.describe('About', () => {
       .map((p) => `${p.tag} fill=${p.fill} stroke=${p.stroke}`);
     expect(offenders).toEqual([]);
   });
+
+  /**
+   * The dial and the list start on the same line (R-c8 C-11).
+   *
+   * The instrument is the accompaniment and the ten are the content; when the
+   * face floats a dozen pixels below the list's first rule the two read as two
+   * unrelated objects that happen to share a row. They are one row, and the row
+   * has one top.
+   */
+  test('TC-ABOUT-13: at 1440 the dial and the first dimension share a baseline', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/');
+    await page.locator(ABOUT).scrollIntoViewIfNeeded();
+    await page.waitForTimeout(300);
+    // Measured from the top of the document, with the page scrolled back to the
+    // start: the instrument is `position: sticky`, so a viewport-relative
+    // reading taken mid-section would compare a pinned element against a
+    // scrolled one and say nothing about where the row begins.
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(300);
+
+    const tops = await page.evaluate(() => {
+      const about = document.querySelector('#about')!;
+      const dial = about.querySelector('svg[class*="compass"]') ?? about.querySelector('svg');
+      const first = about.querySelector('ol li');
+      const docTop = (el: Element) => el.getBoundingClientRect().top + window.scrollY;
+      return {
+        dial: dial ? docTop(dial) : null,
+        list: first ? docTop(first) : null,
+      };
+    });
+
+    expect(tops.dial, 'no dial svg in #about').not.toBeNull();
+    expect(tops.list, 'no list item in #about').not.toBeNull();
+    expect(
+      Math.abs(tops.dial! - tops.list!),
+      `dial top ${tops.dial}, first item top ${tops.list}`,
+    ).toBeLessThanOrEqual(4);
+  });
 });
