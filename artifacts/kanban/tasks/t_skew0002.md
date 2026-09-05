@@ -33,3 +33,9 @@ OpenRouter (OPENROUTER_API_KEY) — balance negative (402), so this task runs on
 
 ## STATUS (2026-09-05T10:50:00.876Z)
 running — bundled into the stability lane
+
+## STATUS (2026-09-05T12:09:07Z)
+ready — reclaimed by the orchestrator on resume 12:0xZ: no worker process alive (ps), partial edits preserved in the paused worktree (wf_38db9d7d-ce3-1 / wf_d69fe804-9d9-1); re-dispatch in the stability lane after the ADV-FAIL P0 wave.
+
+## COMMENT (2026-09-05T12:19:26.557Z)
+bundled into t_stab01 (stability lane, worktree wf_38db9d7d-ce3-1, port 5613) — dispatch when a build slot frees after the ADV-FAIL wave-1 lanes

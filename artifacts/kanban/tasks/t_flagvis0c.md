@@ -37,3 +37,9 @@ ADD to the correction: About numeral '01' at 1440 measures 4.42:1 (needs 4.5) on
 
 ## COMMENT (2026-09-05T10:47:59.287Z)
 ADD: the new hero photo caption ('Photograph · Melbourne', mono, --mist-400) sits on the brightest part of the pool at 1440 — include it in the hero text-plate / uTextRect fix; measure it on /?gl=force.
+
+## STATUS (2026-09-05T12:09:07Z)
+running — continued 12:0xZ by a fresh analyst-programmer in the paused worktree wf_09ff65b8-0fb-1 (8 dirty files, 493 insertions, uncommitted): finish gates, merge origin/main, push (lane G-FLAGC, port 5610)
+
+## COMMENT (2026-09-05T12:13:28.099Z)
+dispatched 12:1xZ — Workflow wf_d606e4cb-b3e phase 1 lane:flagship-c-finish in worktree wf_09ff65b8-0fb-1, port 5610; owns .stage/scrim/atmosphere + About/Experience styling; H1 lane owns hero layout

@@ -1,0 +1,54 @@
+{
+  "cycle": "v10-c09",
+  "window_utc": "2026-09-05T12:00Z → 12:28Z",
+  "orchestrator": "Fable 5.1 ultracode (claude-cli) — new session after ADV-FAIL-20260905 intake",
+  "pea_numerator": 9,
+  "pea_denominator": 25,
+  "pea_basis": "Unchanged from c08 on the R/O/M matrix (9/25): no P0 gap has an independent PASS yet. ADV-FAIL P0 gap scorecard: 0/11 PASS; 2/11 shipped to live and awaiting the reviewer's phase-2 re-probe (G-A1, G-A2 on e47221ed); 5/11 in flight (G-V1+G-V2, G-M1+G-M2, G-H1 build lanes; G-S1 + flagship-C continuity lanes); G-H3, G-M3 specced and ready; G-H2/G-X1 architecture DONE (14 board tasks imported). O3: the flaky deploy-verify step (curl EPIPE false failure, run 33965475659) fixed and proven on run 33965890266.",
+  "adversarial_verdict": "G-REV phase 1 on live 9ba97a5c: FAIL 11/11 P0 gaps (docs/delivery/evidence/v10-20260905T0515Z/G-REV/9ba97a5c/08-adversarial-review.md, failures first, false-positive register incl. the board's 'flagship' framing of the hero photo). Phase 2 on e47221ed dispatched 12:27Z (G-A1/G-A2).",
+  "deploy_commit": "e47221ed",
+  "visible_ships": [
+    "03aa1ed fix(about): nine sourced evidence lines carry the gold claim mark; 'Salary Fit' intention stays grey (data flag `sourced`, About.tsx data-sourced, .evidence[data-sourced='true'] → --gold); role-swatch hatch rgb(138 143 154/.34) → rgb(144 144 144/.34) (G-A1, G-A2) — LIVE e47221ed at 12:27:05Z (Deploy 33965987341 success)"
+  ],
+  "non_visible_ships": [
+    "6f59312 ci(deploy): live-verify reads curl output from a file — O3 flaky false failure removed (t_ci_verify01, proven on run 33965890266)",
+    "77cd9a3 docs(evidence): G-REV phase-1 live FAIL baseline",
+    "0b0bf02 docs(architecture): SIGNATURE-SCENES-v1.md + SIGNATURE-SCENES-TASKS.json (HyperFrames adopted in both roles: @hyperframes/player 17.6 kB gz in page for hero overture + viseme stage; CLI+engine render 3840×2160@60 masters on the VPS at zero credits; GSAP+ScrollTrigger; Scene priority prop; R5 raster kept FAIL with waivers)"
+  ],
+  "o1_o5": "First recruiter-visible change reached production at 12:27:05Z, 15 min after dispatch (12:12Z) and 27 min after intake began (12:00Z) — the ≤10-min first-ship target in the launch prompt was MISSED by ~5 min from dispatch; the fresh worktrees needed npm ci + a 4-min static build before any lane could push. Deploys in the window: 12:04 ✓, 12:14 ✗(false failure, fixed), 12:21 ✓, 12:23 ✓, 12:25 ✓ — cadence held; idle deploys carried docs only until 12:27.",
+  "verdicts": [
+    "O3 deploy-verify: run 33965475659 FAIL was a false failure (live already served 9ba97a5c) → fixed, run 33965890266 PASS with the new step"
+  ],
+  "in_flight": [
+    "t_g_v1 (vitrine plates+CTA, wf_b908a7a9-f5d-2, port 5608)",
+    "t_g_m1+t_g_m2 (minivic ladder+greeting, W1 queue)",
+    "t_g_h1 (hero fold, W1 queue)",
+    "t_flagvis0c (flagship-C finish, wf_09ff65b8-0fb-1, port 5610)",
+    "t_g_s1 (skills GL, W2 after flagship-C)",
+    "t_g_rev phase 2 (reviewer on e47221ed)"
+  ],
+  "queued": [
+    "t_g_h3 palette purge (port 5611)",
+    "t_stab01 stability lane (port 5613)",
+    "t_g_m3 TTFB (after t_g_m1)",
+    "t_x1_01 fps harness (tester) → t_x1_02/03 hero first paint + graded plate → t_x1_05…14"
+  ],
+  "board_reconciliation": "No worker process alive at 12:0xZ → t_skew0001, t_skew0002, t_2d068068, t_e9d4e10f reclaimed to ready and bundled into t_stab01; t_flagvis0b/t_cbff57b0 continued as t_g_s1 in their worktree; t_flagvis0c continued in its worktree; t_g_h2 done; t_ci_verify01 done; 13 architecture tasks imported (t_x1_*).",
+  "provider": "Anthropic via OAuth (council = claude-opus Max; orchestrator = Fable 5.1 ultracode). OpenRouter 402 → §0.4 failover standing. No ANTHROPIC_API_KEY. Hermes inactive.",
+  "alerts": [
+    "Host load 8–14 on 4 cores with 3 concurrent build lanes — wave-2 lanes held until a slot frees (O4 without thrash).",
+    "Reviewer could not open the MiniVic panel headless (no input visible, 0 /api requests) — G-M1/G-M3 e2e must open it the way minivic-launcher.spec does; flagged to lane G-M."
+  ],
+  "verification_snippet": "$ date -u\n2026-09-05T12:27:56Z\n$ systemctl is-active fm-deploy-cadence.timer\nactive\n$ systemctl is-active hermes-gateway || true\ninactive\n$ tail -5 /var/log/fm-deploy/cadence.log\n[2026-09-05T12:14:22Z] cadence tick\nhttps://github.com/Victordtesla24/forgotten-mistory/actions/runs/33965475659\n[2026-09-05T12:14:24Z] workflow_dispatch ok\n[2026-09-05T12:24:29Z] cadence tick\n[2026-09-05T12:24:30Z] skip: 1 Deploy run(s) already in_progress\n$ gh run list --workflow=deploy.yml --limit 8\n2026-09-05T12:25:21Z workflow_dispatch success 0c6f9f9f\n2026-09-05T12:23:17Z workflow_dispatch success f4c4dbb5\n2026-09-05T12:21:42Z workflow_dispatch success 9ba97a5c\n2026-09-05T12:14:24Z workflow_dispatch failure 9ba97a5c\n2026-09-05T12:04:20Z workflow_dispatch success 9ba97a5c\n2026-09-05T11:54:20Z workflow_dispatch success 9ba97a5c\n2026-09-05T11:43:51Z workflow_dispatch success 9ba97a5c\n2026-09-05T11:33:50Z workflow_dispatch success 9ba97a5c\n$ live build-commit\nbuild-commit\" content=\"e47221ed\"\n$ cache-control\ncache-control: public, max-age=0, must-revalidate\n$ git log origin/main --oneline -6\ne47221e consolidate: merge worktree-wf_b908a7a9-f5d-1 into main\n03aa1ed fix(about): sourced evidence lines carry the gold claim mark (G-A1)\n0c6f9f9 consolidate: merge worktree-wf_2cd21f31-055-2 into main\n0b0bf02 docs(architecture): signature-scene architecture to meet R2/R5/§0.3-1 and G-H2\nf4c4dbb consolidate: merge worktree-wf_2cd21f31-055-1 into main\nff44168 chore(worktree): drop stray node_modules symlink from evidence commit\n",
+  "tools_used": [
+    "Workflow ×5 (opus council lanes)",
+    "Monitor (branches/deploys/live)",
+    "background branch watcher → gh workflow run",
+    "gh CLI",
+    "git",
+    "curl",
+    "systemctl",
+    "firebase CLI (functions:list)"
+  ],
+  "next": "Reviewer phase-2 PASS/FAIL on G-A1/G-A2 → Done or correction loop; Vitrine + MiniVic + Hero lanes push → Deploy → phase-2 per gap; dispatch t_g_h3 + t_x1_01 as slots free; c10 report at the next visible ship."
+}

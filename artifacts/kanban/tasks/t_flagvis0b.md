@@ -34,3 +34,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-05T10:50:00.946Z)
 running — flagship B lane dispatched, port 5603
+
+## STATUS (2026-09-05T12:09:07Z)
+running — continued 12:0xZ as t_g_s1 (G-S1) in the paused worktree wf_c06ca2f9-9de-1 (BenchField.tsx + bench.glsl.ts uncommitted)
