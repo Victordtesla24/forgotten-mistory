@@ -1,0 +1,60 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-first-paint.spec.ts -g TC-HERO-FIRSTPAINT-01 --workers=1 --reporter=list
+
+Running 2 tests using 1 worker
+
+  ✘  1 [chromium] › tests/overhaul/hero-first-paint.spec.ts:212:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [1440]: the hero slot carries a lit still, served and painted without the scene (1.5s)
+  ✘  2 [chromium] › tests/overhaul/hero-first-paint.spec.ts:212:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [390]: the hero slot carries a lit still, served and painted without the scene (1.8s)
+
+
+  1) [chromium] › tests/overhaul/hero-first-paint.spec.ts:212:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [1440]: the hero slot carries a lit still, served and painted without the scene 
+
+    Error: the hero slot carries no poster layer — its first paint is a hand-drawn impression of the scene rather than a rendered frame of it (background-image: linear-gradient(90deg, rgba(10, 10, 10, 0.68) 0px, rgba(10, 10, 10, 0.66) 46%, rgba(10, 10, 10, 0.3) 60%, rgba(0, 0, 0, 0) 70%), radial-gradient(44% 50% at 80% 40%, rgba(246, 246, 246, 0.3) 0px, rgba(246, 246, 246, 0.25) 44%, rgba(246, 246, 246, 0.08) 72%, rgba(0, 0, 0, 0) 88%), radial-gradient(34% 40% at 4% 2%, rgba(246, 246, 246, 0.26) 0px, rgba(246, 246, 246, 0.18) 46%, rgba(0, 0, 0, 0) 82%), linear-gradient(154deg, rgba(246, 246, 246, 0.09) 0px, rgba(0, 0, 0, 0) 30%), linear-gradient(rgb(10, 10, 10) 0px, rgb(19, 19, 19) 58%, rgb(10, 10, 10) 100%))
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected pattern: [32m/url\((["']?)[^"')]*\/assets\/[^"')]+\1\)/[39m
+    Received string:  [31m"linear-gradient(90deg, rgba(10, 10, 10, 0.68) 0px, rgba(10, 10, 10, 0.66) 46%, rgba(10, 10, 10, 0.3) 60%, rgba(0, 0, 0, 0) 70%), radial-gradient(44% 50% at 80% 40%, rgba(246, 246, 246, 0.3) 0px, rgba(246, 246, 246, 0.25) 44%, rgba(246, 246, 246, 0.08) 72%, rgba(0, 0, 0, 0) 88%), radial-gradient(34% 40% at 4% 2%, rgba(246, 246, 246, 0.26) 0px, rgba(246, 246, 246, 0.18) 46%, rgba(0, 0, 0, 0) 82%), linear-gradient(154deg, rgba(246, 246, 246, 0.09) 0px, rgba(0, 0, 0, 0) 30%), linear-gradient(rgb(10, 10, 10) 0px, rgb(19, 19, 19) 58%, rgb(10, 10, 10) 100%)"[39m
+
+      252 |         'the hero slot carries no poster layer — its first paint is a hand-drawn impression of ' +
+      253 |           `the scene rather than a rendered frame of it (background-image: ${backgroundImage})`,
+    > 254 |       ).toMatch(POSTER_LAYER);
+          |         ^
+      255 |
+      256 |       // (c) The still is *lit* — the half that cannot be satisfied by a promise.
+      257 |       // A `url()` that 404s and a gradient of transparent stops both pass (b).
+        at /root/forgotten-mistory/.claude/worktrees/wf_558d588c-262-1/tests/overhaul/hero-first-paint.spec.ts:254:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-first-paint--965ce-d-painted-without-the-scene-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-first-paint--965ce-d-painted-without-the-scene-chromium/error-context.md
+
+  2) [chromium] › tests/overhaul/hero-first-paint.spec.ts:212:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [390]: the hero slot carries a lit still, served and painted without the scene 
+
+    Error: the hero slot carries no poster layer — its first paint is a hand-drawn impression of the scene rather than a rendered frame of it (background-image: linear-gradient(rgba(246, 246, 246, 0.46) 0px, rgba(246, 246, 246, 0.42) 18%, rgba(246, 246, 246, 0.24) 24%, rgba(0, 0, 0, 0) 30%), radial-gradient(42% 40% at 100% 34%, rgba(246, 246, 246, 0.44) 0px, rgba(246, 246, 246, 0.34) 44%, rgba(0, 0, 0, 0) 86%), radial-gradient(34% 26% at 0px 10%, rgba(246, 246, 246, 0.32) 0px, rgba(246, 246, 246, 0.22) 46%, rgba(0, 0, 0, 0) 84%), linear-gradient(rgb(10, 10, 10) 0px, rgb(19, 19, 19) 58%, rgb(10, 10, 10) 100%))
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected pattern: [32m/url\((["']?)[^"')]*\/assets\/[^"')]+\1\)/[39m
+    Received string:  [31m"linear-gradient(rgba(246, 246, 246, 0.46) 0px, rgba(246, 246, 246, 0.42) 18%, rgba(246, 246, 246, 0.24) 24%, rgba(0, 0, 0, 0) 30%), radial-gradient(42% 40% at 100% 34%, rgba(246, 246, 246, 0.44) 0px, rgba(246, 246, 246, 0.34) 44%, rgba(0, 0, 0, 0) 86%), radial-gradient(34% 26% at 0px 10%, rgba(246, 246, 246, 0.32) 0px, rgba(246, 246, 246, 0.22) 46%, rgba(0, 0, 0, 0) 84%), linear-gradient(rgb(10, 10, 10) 0px, rgb(19, 19, 19) 58%, rgb(10, 10, 10) 100%)"[39m
+
+      252 |         'the hero slot carries no poster layer — its first paint is a hand-drawn impression of ' +
+      253 |           `the scene rather than a rendered frame of it (background-image: ${backgroundImage})`,
+    > 254 |       ).toMatch(POSTER_LAYER);
+          |         ^
+      255 |
+      256 |       // (c) The still is *lit* — the half that cannot be satisfied by a promise.
+      257 |       // A `url()` that 404s and a gradient of transparent stops both pass (b).
+        at /root/forgotten-mistory/.claude/worktrees/wf_558d588c-262-1/tests/overhaul/hero-first-paint.spec.ts:254:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-first-paint--9d57a-d-painted-without-the-scene-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-first-paint--9d57a-d-painted-without-the-scene-chromium/error-context.md
+
+  2 failed
+    [chromium] › tests/overhaul/hero-first-paint.spec.ts:212:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [1440]: the hero slot carries a lit still, served and painted without the scene 
+    [chromium] › tests/overhaul/hero-first-paint.spec.ts:212:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [390]: the hero slot carries a lit still, served and painted without the scene 
