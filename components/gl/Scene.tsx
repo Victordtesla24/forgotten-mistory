@@ -227,7 +227,9 @@ export default function Scene({ className, camera, sceneId, children }: ScenePro
     <div ref={slotRef} className={className} data-scene={sceneId} aria-hidden="true">
       {show && (
         <SceneErrorBoundary sceneName={sceneId ?? 'unnamed'}>
-          <GLCanvas camera={camera}>{children}</GLCanvas>
+          <GLCanvas camera={camera} sceneName={sceneId ?? 'unnamed'}>
+            {children}
+          </GLCanvas>
         </SceneErrorBoundary>
       )}
     </div>

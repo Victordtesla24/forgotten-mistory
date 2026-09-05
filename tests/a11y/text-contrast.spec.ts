@@ -39,6 +39,28 @@ const VIEWPORTS = [
 ];
 
 /**
+ * Nodes held above AA by a stated margin, not merely at it.
+ *
+ * 4.5:1 is a threshold, and a node that lands on 4.496 or 4.51 has not passed or
+ * failed a design decision — it has reported which frame of a shader's phase the
+ * screenshot caught. `p.Experience_openNote` measured exactly 4.496:1 at 390 on
+ * `?gl=force` (reviewer 62e1e10): `--mist-400` over strata the scrim had left at
+ * #2A2A2A. The remedy was to give the note its own opaque ground so the number
+ * stops depending on the shader at all, and this floor is what stops the ground
+ * being taken away again — one frame of drift can no longer decide the gate.
+ *
+ * These are *additional* requirements. Nothing here relaxes the 4.5 / 3.0 AA
+ * thresholds every other node is still measured against.
+ */
+const PINNED_FLOORS: { pattern: RegExp; min: number; why: string }[] = [
+  {
+    pattern: /\bopenNote\b/,
+    min: 4.6,
+    why: 'the open-bracket note sits over the career strata; it must clear AA with margin',
+  },
+];
+
+/**
  * Software rasteriser, explicitly enabled.
  *
  * This host has no GPU, and `components/gl/useGLCapability.ts` treats SwiftShader
@@ -323,7 +345,9 @@ async function auditViewport(
         }
       }
       const large = node.fontSize >= 24 || (node.fontSize >= 18.66 && node.fontWeight >= 700);
-      const need = large ? 3 : 4.5;
+      // AA first, then any floor pinned for this node — whichever is stricter wins.
+      const pinned = PINNED_FLOORS.find((floor) => floor.pattern.test(node.path));
+      const need = Math.max(large ? 3 : 4.5, pinned?.min ?? 0);
       if (worst < need) {
         failures.push({
           selector: node.path,
