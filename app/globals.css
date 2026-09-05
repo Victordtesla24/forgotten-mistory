@@ -394,6 +394,12 @@
    on --ink-900 at 12.5:1 wherever it lands, and what is beneath it is covered
    rather than muddled. */
 .minivic-launcher__pill {
+    /* G-NEW-1 FREEZE (ADV-1556Z): display is inline-block at EVERY width and
+       must never become display:none at any breakpoint. A prior dirty working
+       tree hid the pill below 52.125rem (834px); that regression must never
+       ship. Asserted by tests/monochrome/minivic-launcher.spec.ts MONO-MV-02
+       (390/640) and tests/a11y/minivic-launcher.spec.ts TC-MV-LABEL-01
+       (390/1440). */
     display: inline-block;
     padding: var(--space-1) var(--space-2);
     border: 1px solid var(--card-border);
