@@ -1,0 +1,54 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/no-js.spec.ts tests/perf/performance.spec.ts tests/overhaul/hero-first-paint.spec.ts --workers=1 --reporter=list
+
+Running 22 tests using 1 worker
+
+no-js #hero box at 1440x900: 1440x1329
+  ✓   1 [chromium] › tests/e2e/no-js.spec.ts:117:9 › No JavaScript › TC-NOJS-01: the hero and all six sections paint with script disabled at 1440x900 (4.8s)
+no-js #hero box at 390x844: 390x1490
+  ✓   2 [chromium] › tests/e2e/no-js.spec.ts:117:9 › No JavaScript › TC-NOJS-02: the hero and all six sections paint with script disabled at 390x844 (2.9s)
+  ✓   3 [chromium] › tests/e2e/no-js.spec.ts:178:7 › No JavaScript › TC-NOJS-03: the served HTML carries no Suspense fallback in front of the route (29ms)
+  ✓   4 [chromium] › tests/e2e/no-js.spec.ts:215:7 › No JavaScript › TC-NOJS-04: the static route has no loading.tsx (8ms)
+Total transfer size: 1.10 MB
+  ✓   5 [chromium] › tests/perf/performance.spec.ts:60:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB (1.6s)
+LCP: 668 ms
+  ✓   6 [chromium] › tests/perf/performance.spec.ts:84:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s (1.3s)
+CLS: 0.0000
+  ✓   7 [chromium] › tests/perf/performance.spec.ts:115:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05 (5.7s)
+CLS 1280x720 load 0: 0.00000
+CLS 1280x720 load 1: 0.00000
+CLS 1280x720 load 2: 0.00000
+CLS 1440x900 load 0: 0.00000
+CLS 1440x900 load 1: 0.00000
+CLS 1440x900 load 2: 0.00000
+CLS 390x844 load 0: 0.00000
+CLS 390x844 load 1: 0.00000
+CLS 390x844 load 2: 0.00000
+  ✓   8 [chromium] › tests/perf/performance.spec.ts:179:7 › Performance Budgets › PERF-08: CLS < 0.05 on three cold loads at 1280x720, 1440x900 and 390x844 (50.7s)
+  ✓   9 [chromium] › tests/perf/performance.spec.ts:246:7 › Performance Budgets › PERF-04: Page loads without page errors (3.9s)
+DOMContentLoaded: 104 ms
+  ✓  10 [chromium] › tests/perf/performance.spec.ts:261:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s (1.0s)
+No-JS hero title: {"opacity":1,"visibility":"visible","area":38133.10546875,"withinFirstViewport":true,"text":16}
+  ✓  11 [chromium] › tests/perf/performance.spec.ts:294:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked (1.5s)
+LCP entry: {"startTime":768,"tag":"IMG","className":""}
+  ✓  12 [chromium] › tests/perf/performance.spec.ts:358:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer (1.4s)
+[TC-HERO-FIRSTPAINT-01] still mean luminance @1440: 0.0530
+  ✓  13 [chromium] › tests/overhaul/hero-first-paint.spec.ts:202:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [1440]: the hero slot carries a lit still, served and painted without the scene (4.0s)
+[TC-HERO-FIRSTPAINT-01] still mean luminance @390: 0.0810
+  ✓  14 [chromium] › tests/overhaul/hero-first-paint.spec.ts:202:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [390]: the hero slot carries a lit still, served and painted without the scene (3.1s)
+[TC-HERO-FIRSTPAINT-02] canvas_after_dcl_ms_glforce_1440: 2068
+  ✓  15 [chromium] › tests/overhaul/hero-first-paint.spec.ts:261:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [1440]: the hero canvas mounts on a cold load (5.6s)
+[TC-HERO-FIRSTPAINT-02] canvas_after_dcl_ms_glforce_390: 2173
+  ✓  16 [chromium] › tests/overhaul/hero-first-paint.spec.ts:261:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [390]: the hero canvas mounts on a cold load (3.9s)
+  ✓  17 [chromium] › tests/overhaul/hero-first-paint.spec.ts:289:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02b: the hero scene mounts even though the page never settles (5.3s)
+  ✓  18 [chromium] › tests/overhaul/hero-first-paint.spec.ts:335:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-03: priority is opt-in — no other scene jumps the idle gate (2.2s)
+[TC-HERO-SCRIM-01] 1440 gl: column=0.067..0.667 (18 nodes) under_type=0.0966 lit_window=0.4830 at=0.717 delta=0.3864
+  ✓  19 [chromium] › tests/overhaul/hero-first-paint.spec.ts:535:11 › G-H2b: the hero scrim is a column-bound grade, over the shader › TC-HERO-SCRIM-01 [1440, gl]: the light crosses the frame the type does not stand on (19.9s)
+[TC-HERO-SCRIM-01] 390 gl: column=0.043..0.957 (18 nodes) under_type=0.1816 lit_window=0.3819 at=0.950 delta=0.2003
+  ✓  20 [chromium] › tests/overhaul/hero-first-paint.spec.ts:535:11 › G-H2b: the hero scrim is a column-bound grade, over the shader › TC-HERO-SCRIM-01 [390, gl]: the light crosses the frame the type does not stand on (9.2s)
+[TC-HERO-SCRIM-01] 1440 still: column=0.067..0.667 (18 nodes) under_type=0.0409 lit_window=0.1423 at=0.883 delta=0.1015
+  ✓  21 [chromium] › tests/overhaul/hero-first-paint.spec.ts:535:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [1440, still]: the light crosses the frame the type does not stand on (4.0s)
+[TC-HERO-SCRIM-01] 390 still: column=0.043..0.957 (18 nodes) under_type=0.0805 lit_window=0.1415 at=0.950 delta=0.0610
+  ✓  22 [chromium] › tests/overhaul/hero-first-paint.spec.ts:535:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [390, still]: the light crosses the frame the type does not stand on (3.2s)
+
+  22 passed (2.4m)
