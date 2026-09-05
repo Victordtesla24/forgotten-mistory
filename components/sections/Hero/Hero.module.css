@@ -184,14 +184,15 @@
    Three figures, each carrying its own provenance line. Rules, not cards:
    a card implies a dashboard, and a dashboard of one's own achievements is
    exactly the register this site is trying not to write in. */
-/* Ledger left, its grading note right — the hero's right half was empty. */
+/* Ledger, then the note that grades it. The row used to put the note in the
+   hero's empty right half; the portrait owns that side now, so the note sits
+   under the figures at every width. */
 .ledgerRow {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 15rem);
-    gap: clamp(var(--space-3), 4vw, 3.5rem);
-    align-items: end;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    align-items: start;
     margin: clamp(var(--space-5), 6vh, var(--space-8)) 0 0;
-    max-width: 72rem;
 }
 
 .ledger {
@@ -368,14 +369,6 @@
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
-@media (max-width: 1100px) {
-    .ledgerRow {
-        grid-template-columns: 1fr;
-        gap: var(--space-2);
-        align-items: start;
-    }
-}
-
 @media (max-width: 860px) {
     .ledger {
         grid-template-columns: 1fr;
@@ -424,6 +417,195 @@
     }
 }
 
+/* ── Portrait ────────────────────────────────────────────────────────────────
+   The original video portrait, poster first, in the right column beside role,
+   statement and ledger. The figure is NOT in the heroRise set: the poster is
+   the LCP candidate and Chrome does not count an opacity-0 element. Both layers
+   share one grayscale filter on the wrapper — the frames are warm colour, and
+   gold here means "this figure has a source". No gold anywhere in the figure. */
+.inner {
+    --portrait-w: clamp(11rem, 16vw, 20rem);
+}
+
+.portrait {
+    position: relative;
+    margin: 0;
+    width: 100%;
+}
+
+.portraitMedia {
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    background: var(--ink-800);
+    filter: grayscale(1) contrast(1.04);
+}
+
+/* Identical crop on both layers, so the still and the first frame are the
+   same window on the same shoot. */
+.portraitMedia img,
+.portraitMedia video {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+.portraitMedia img {
+    z-index: 0;
+}
+
+/* The loop sits above the poster and fades in only once it is genuinely
+   playing; anything less and the poster shows through at full strength. */
+.portraitVideo {
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 300ms var(--motion-ease-standard);
+}
+
+.portraitVideoLive {
+    opacity: 1;
+    transition-duration: 600ms;
+}
+
+/* Across the loop's join (first frame ≠ last) the layer dips so the poster
+   beneath makes the seam a soft blink rather than a cut. */
+.portraitVideoSeam {
+    opacity: 0.55;
+    transition-duration: 250ms;
+}
+
+/* Pause / play, bottom-right of the figure. Rendered only when the loop is
+   eligible, so a reader with no motion has nothing to stop. */
+.portraitToggle {
+    position: absolute;
+    right: var(--space-1);
+    bottom: var(--space-1);
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid var(--card-border);
+    border-radius: 999px;
+    background: var(--ink-800);
+    color: var(--white);
+    cursor: pointer;
+    /* No colour transition here on purpose. The button exists only when the
+       loop is eligible and is absent under reduced motion (TC-HERO-14), so a
+       hover fade declared by default would register as an affordance that
+       reduced motion "kills" (RM-4). Its hover is a plain state change. */
+}
+
+.portraitToggle svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
+
+.portraitToggle:hover {
+    border-color: var(--card-border-hover);
+    background: var(--ink-900);
+}
+
+.portraitToggle:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 3px;
+}
+
+/* ≥720 px: the hero becomes two columns. Eyebrow, name, actions and
+   availability span both; role, statement and ledger keep the left; the
+   figure takes the right across their three rows, its top edge on the role's. */
+@media (min-width: 720px) {
+    .inner {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) var(--portrait-w);
+        column-gap: clamp(var(--space-4), 4vw, var(--space-8));
+        align-items: start;
+    }
+
+    .eyebrow,
+    .name,
+    .actions,
+    .availability {
+        grid-column: 1 / -1;
+    }
+
+    .role,
+    .statement,
+    .ledgerRow {
+        grid-column: 1;
+    }
+
+    .portrait {
+        grid-column: 2;
+        grid-row: 3 / 6;
+        align-self: start;
+        margin-top: clamp(var(--space-2), 2.4vh, var(--space-3));
+    }
+}
+
+/* Short viewports. The grading note now sits under the ledger instead of
+   beside it, which costs ~50 px on a 1280×720 laptop — the one screen where
+   the hero must still be a single fold (TC-HERO-08/09). The margin rules in
+   the `max-height: 860px` block at the top of this file never applied to
+   these rows: the base rules below them set the `margin` shorthand later in
+   the source and win on order (measured: `.role` at 17.28 px, not 8). This
+   block sits after the base rules, so it does apply. The figure keeps the
+   role's own top margin at every height so their top edges stay aligned. */
+@media (max-height: 860px) {
+    .ledgerRow {
+        margin-top: var(--space-3);
+    }
+
+    .actions {
+        margin-top: var(--space-3);
+    }
+
+    .availability {
+        margin-top: var(--space-2);
+    }
+}
+
+/* <720 px: an 88 px stamp at the eyebrow row's right, poster only. A phone
+   does not run a decoder for an 88 px face. */
+@media (max-width: 719.98px) {
+    .portrait {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 88px;
+        aspect-ratio: 1;
+        margin: 0;
+    }
+
+    .portraitMedia {
+        aspect-ratio: 1;
+    }
+
+    .portraitMedia img {
+        object-position: 50% 22%;
+    }
+
+    .portrait video,
+    .portraitToggle {
+        display: none;
+    }
+
+    .eyebrow {
+        padding-right: calc(88px + var(--space-2));
+    }
+}
+
 /* ── Reduced motion ──────────────────────────────────────────────────────────
    The rise becomes a plain fade. The content still arrives on the same beat, so
    the reading order is unchanged — only the movement is dropped. */
@@ -447,5 +629,11 @@
         to {
             opacity: 1;
         }
+    }
+
+    /* Poster only. The gate never assigns a source either. */
+    .portrait video,
+    .portraitToggle {
+        display: none;
     }
 }

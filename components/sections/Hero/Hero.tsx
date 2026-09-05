@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 
 import Caliper from '@/components/marks/Caliper';
 import Scene from '@/components/gl/Scene';
+import HeroPortrait from './HeroPortrait';
 import { heroContent } from '@/app/data/portfolio/hero';
 
 import styles from './Hero.module.css';
@@ -52,6 +53,12 @@ export default function Hero() {
         <p className={styles.statement} style={{ '--step': 3 } as React.CSSProperties}>
           {heroContent.statement}
         </p>
+
+        {/* The portrait stands in the right column beside role, statement and
+            ledger — poster first, the silent loop only through its gate. It is
+            a <figure>, never a <p>: the statement is still the second
+            paragraph, and the ledger is still the only list. */}
+        <HeroPortrait />
 
         {/* The ledger and the note that grades it sit side by side on a wide
             screen: the note explains the marks without costing the fold, and it
