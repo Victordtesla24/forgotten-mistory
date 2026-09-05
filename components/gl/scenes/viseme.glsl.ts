@@ -78,16 +78,31 @@ export const visemeStageFragmentShader = /* glsl */ `
     // The pool is as wide as the lips are and as tall as the jaw is dropped:
     // a rounded 'oo' pulls it in, an open 'aa' opens it up. Rounding narrows
     // the horizontal reach because that is what rounding does to a mouth.
-    float wide = 0.55 * clamp(uWide, 0.5, 1.4) * (1.0 - 0.18 * round_);
-    float tall = 0.40 + 0.16 * open;
+    float wide = 0.62 * clamp(uWide, 0.5, 1.4) * (1.0 - 0.18 * round_);
+    float tall = 0.30 + 0.12 * open;
 
-    // The pool sits where the face is: the plate is 'object-top', so the light
-    // gathers a little above centre rather than at it.
-    vec2 q = vec2((p.x - 0.5) / wide, (p.y - 0.56) / tall);
+    // The pool is low and wide — it gathers on his shoulders and the plate he
+    // is sitting against, not on his face. The plate is 'object-top', so the
+    // head occupies the upper half of the frame and the light stays under it.
+    vec2 q = vec2((p.x - 0.5) / wide, (p.y - 0.30) / tall);
     float r2 = dot(q, q);
 
-    float pool = exp(-r2 * 1.15);
-    float core = exp(-r2 * 4.20);
+    // …and it is taken *out* of its own middle, which is the whole difference
+    // between a stage light and a fog. The first version of this shader was a
+    // filled pool centred on the frame: it cleared every floor in this spec by
+    // a wide margin and, looked at, veiled the face it was supposed to light —
+    // a haze over the one thing in the panel a visitor came to see (compare
+    // 08-screens/ against the reduced-motion capture, which is the plate with
+    // no scene at all). So the centre is subtracted and the whole pool sits
+    // low: what is lit is the plate he is against, never the face.
+    //
+    // The hole is the aperture. It is widest when the mouth is shut and closes
+    // as the jaw drops, so the ring brightens and tightens on the phoneme —
+    // the same signal, read on the light around him rather than painted over
+    // him.
+    float pool = exp(-r2 * 1.05);
+    float hole = exp(-r2 * 4.60);
+    float ring = max(pool - (0.80 - 0.16 * open) * hole, 0.0);
     float room = exp(-r2 * 0.28);
 
     // Gone at every edge of the plate, so the canvas boundary is never a seam a
@@ -108,16 +123,15 @@ export const visemeStageFragmentShader = /* glsl */ `
     // that nothing about it reads as an animation playing next to a face.
     float breath = 0.5 + 0.5 * sin(p.x * 1.6 - uTime * 1.05);
 
-    // Speaking widens the core's swing rather than raising the whole plate:
-    // the type in the panel sits below this slot, and lifting the ground under
-    // it would buy brightness with legibility.
+    // Speaking widens the ring's swing rather than raising the whole plate:
+    // the transcript sits directly below this slot, and lifting the ground
+    // under it would buy brightness with legibility.
     float speak = clamp(uSpeak, 0.0, 1.0);
 
     float luma = across
       * (
-          pool * (0.30 + 0.14 * open + 0.05 * speak)
-          + core * (0.36 + 0.22 * open + 0.08 * speak)
-          + room * (0.11 + 0.075 * breath)
+          ring * (1.30 + 0.30 * open + 0.14 * speak)
+          + room * (0.055 + 0.050 * breath)
         )
       * (0.88 + 0.20 * wash)
       * (0.92 + 0.14 * along);
