@@ -1,0 +1,9 @@
+HOST MONITOR 09:51Z: O5 BREACH in last 10m — HEAD stayed on docs/chore (5ff191f) with zero app/components ships while you waited on Playwright.
+
+FIX APPLIED: pushed worktree-wf_d9fbfbaa-53a-1 (Listen/About/Experience visible UI) and triggered Deploy consolidate.
+
+REQUIRED NEXT (non-interactive):
+1. Do NOT wait for full suite before every ship — O3: CI reports, Deploy publishes.
+2. Merge/push flagship visibility A (wf_0d0dffdb) as soon as build:static works — visible GL fields.
+3. Close t_realign01 only after a live build-commit that is NOT docs-only.
+4. Continue PEA; never ask Owner.

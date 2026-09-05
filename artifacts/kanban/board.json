@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T09:38:57.471Z",
+  "updated": "2026-09-05T09:59:14.409Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -21,7 +21,7 @@
       "priority": 0,
       "assignee": "orchestrator",
       "created_at": "2026-09-05T09:32:35Z",
-      "updated_at": "2026-09-05T09:36:11Z",
+      "updated_at": "2026-09-05T09:54:52Z",
       "labels": [
         "P0",
         "resume",
@@ -29,7 +29,7 @@
         "O5",
         "PEA"
       ],
-      "summary": "On resume: read docs/prompt.md + docs/ORCHESTRATOR-REALIGN.md; claim this; ship visible UI each 10-min window. Hermes off. fm-deploy-cadence.timer active.",
+      "summary": "On resume: read docs/prompt.md + docs/ORCHESTRATOR-REALIGN.md; claim this; ship visible UI each 10-min window. Hermes off. fm-deploy-cadence.timer active. | HOST MONITOR 2026-09-05T09:54:52Z: O5 idle breach during 09:39-09:50Z; host pushed cycle-20 UI branch; live now c5d808c with engage CTA + tenure copy.",
       "updated": "2026-09-05T09:38:57.471Z",
       "comments": [
         {
@@ -580,7 +580,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T09:09:06.101Z",
+      "updated": "2026-09-05T09:59:14.282Z",
       "summary": "R-c8 items 15 and 16. Files: components/sections/Listen/{Listen.module.css,Listen.tsx}, components/sections/About/About.module.css. No second motion beat in #listen (MOT-F-4 confirms the caliper-close is the one).",
       "decisions": [],
       "comments": [
@@ -598,6 +598,11 @@
           "at": "2026-09-05T09:09:06.101Z",
           "by": "orchestrator",
           "text": "09:0xZ: the cycle-20 implementer was killed by the orchestrator process restart with 12 files modified but uncommitted in worktree wf_d9fbfbaa-53a-1 (07-decisions.md §1–6 written; red log + battery audit/lint/build logs present; 04-tests-passing not yet). Resumed IN PLACE (no re-do): the relaunched agent continues from that worktree."
+        },
+        {
+          "at": "2026-09-05T09:59:14.282Z",
+          "by": "orchestrator",
+          "text": "SHIPPED 09:5xZ: 701971c (client engagement CTA + route weight), 14f1215 (About dial baseline), c5d808c (CTA weight finish) on main; implementer battery 110 passed + 56 regression passed, audit/lint/tsc/build green; verifier running; live check pending."
         }
       ]
     },
@@ -619,7 +624,7 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T08:25:47.637Z",
+      "updated": "2026-09-05T09:59:14.348Z",
       "summary": "R-c8 item 17 (content parity, R7). Files: app/data/portfolio/{vitrine,experience,hero}.ts, app/data/siteContent.ts (grep \"ixteen\"), tests/content/content-check.spec.ts. Source: public/docs/Vik_Resume_Final.pdf line 3 (\"15+ year\") — or, if the roles sum to ≥16 years on the CV's own dates, keep sixteen and print the arithmetic beside it. Decide from the PDF text, record the decision.",
       "decisions": [],
       "comments": [
@@ -627,6 +632,11 @@
           "at": "2026-09-05T07:30:51.547Z",
           "by": "orchestrator",
           "text": "R-c13 #20 ADV-6 (polish, Verified, adversarial) — Repeat of R-c8 ADV-F-4: the page says 'Sixteen years' while the CV's own headline says '15+ year Senior Technical Leader'\nDIRECTION: Either set the copy to 'Fifteen years' / '15+ years', or print the derivation (2010 -> 2026) beside the claim so a reader can check the arithmetic. One decision applied to all three data files. Under the prime directive 'never grade a claim higher than its evidence', the page should not out-round its own source.\nFILES: app/data/portfolio/hero.ts:29, app/data/portfolio/experience.ts:106, app/data/portfolio/about.ts:50, tests/content/content-check.spec.ts\nACCEPTANCE: A content test asserts the tenure string rendered on the page is either present verbatim in cv-text.txt or accompanied by its two anchor years within the same element."
+        },
+        {
+          "at": "2026-09-05T09:59:14.348Z",
+          "by": "orchestrator",
+          "text": "SHIPPED 3209d47: the sixteen-years claim now prints its derivation (CV role dates) beside it; CT-11 content check added."
         }
       ]
     },
@@ -825,7 +835,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T08:41:56.737Z",
+      "updated": "2026-09-05T09:59:14.409Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": [
@@ -868,6 +878,11 @@
           "at": "2026-09-05T08:41:56.737Z",
           "by": "orchestrator",
           "text": "Cadence: 08:2xZ 84644262 cycle 15; 08:3xZ b37e18d3 cycle 16b; 08:4xZ c8fc4b04 cycles 17+18 (skills gold as a mark, nav CV defers) — all pipeline-consolidated, monitor PROD OK each."
+        },
+        {
+          "at": "2026-09-05T09:59:14.409Z",
+          "by": "orchestrator",
+          "text": "Cadence: 09:36 5c15f5b3 (host docs), 09:4x 5ff191f5 (board), c5d808c cycle 20 pushed 09:5xZ (visible: Listen CTA/weight, About baseline, tenure derivation); flagship A branch b200958 pushed — consolidation due."
         }
       ]
     },
