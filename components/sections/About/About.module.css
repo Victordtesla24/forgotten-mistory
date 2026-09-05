@@ -143,9 +143,28 @@
     pointer-events: none;
 }
 
+/* The still of the same light (R-c13 MOT-C13-04). The shader draws ten lit
+   sectors in an annulus; with no WebGL — or with reduced motion asked for —
+   this gradient draws that annulus as one unbroken ring, at the same radii, so
+   the engraving still sits on light rather than on bare ink. Before it, the
+   fallback measured 0.00% of the slot above the ground: the rose floated on
+   nothing, which is most of why `#about` read as having no scene at all.
+
+   The ring is placed outside the radii the rose's own labels occupy, so the
+   light is under the engraving's sector band and not under its type. */
 .fieldSlot {
     position: absolute;
     inset: 0;
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            transparent 30%,
+            rgb(246 246 246 / 0.12) 36%,
+            rgb(246 246 246 / 0.26) 44%,
+            rgb(246 246 246 / 0.26) 56%,
+            rgb(246 246 246 / 0.10) 66%,
+            transparent 76%
+        );
 }
 
 /* The engraving is always over the light, whether or not the light is there. */
