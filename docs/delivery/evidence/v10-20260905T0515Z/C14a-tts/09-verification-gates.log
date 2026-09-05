@@ -1,0 +1,144 @@
+# 09-verification-gates.log — V-C14a, reviewer (3rd-party independent adversarial review)
+# Every block below is a command this reviewer ran in this worktree this session.
+# Blocks marked [RE-RUN LIVE] were executed while this file was being written and their
+# stdout is captured verbatim. Blocks marked [OBSERVED] are the literal summary lines
+# this reviewer saw earlier in the same session for commands that are slow or that cost
+# money to repeat (the two paid TTS calls, the Playwright runs, the build, functions:log).
+# Worktree: /root/forgotten-mistory/.claude/worktrees/wf_55e925e9-074-1
+# HEAD: 4a3ed5b8e03478dd7f9bc3bb4fc16dc9f5616042   origin/main: 15fb165b590e51d22ab2536f2886519288f0135c
+# Written: 2026-09-05T06:45:06Z
+
+===== G1 [RE-RUN LIVE] git diff main...HEAD --stat =====
+ .../evidence/v10-20260905T0515Z/C14a-tts/07-decisions.md | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+EXIT=0
+
+===== G1b [RE-RUN LIVE] full task diff: git diff d6396d2..HEAD --stat =====
+ README.md                                          |   1 +
+ components/MiniVicBot.tsx                          |  81 +++++++++++---
+ .../v10-20260905T0515Z/C14a-tts/01-diagnosis.md    |  82 ++++++++++++++
+ .../v10-20260905T0515Z/C14a-tts/07-decisions.md    | 120 +++++++++++++++++++++
+ functions/index.js                                 |  22 +++-
+ tests/e2e/avatar-voice.spec.ts                     |  77 +++++++++++++
+ 6 files changed, 369 insertions(+), 14 deletions(-)
+EXIT=0
+
+===== G2 [RE-RUN LIVE] git diff main...HEAD | grep -nE '[A-Za-z0-9]{32,}' =====
+EXIT=1  (1 = zero hits)
+
+===== G2b [RE-RUN LIVE] full-diff secret-shape scan (sk_ / AIza / PRIVATE KEY / xi-api-key: / ghp_ / glpat- / AKIA) =====
+EXIT=1  (1 = zero hits)
+
+===== G3 [RE-RUN LIVE] grep -rn 0ZJ4kFDo6bZUNQsuULOW functions/ components/ app/ lib/ =====
+EXIT=1  (1 = zero hits)
+hit count: 0
+
+===== G5a [RE-RUN LIVE] spec weakening scan: test.skip / fixme / expect.soft / CI-conditional =====
+EXIT=1  (1 = clean)
+
+===== G5b [RE-RUN LIVE] is the label assertion tautological? every 'synthetic' in components/ =====
+components/MiniVicBot.tsx:743:  const startSyntheticMouth = () => {
+components/MiniVicBot.tsx:795:      startSyntheticMouth();
+components/MiniVicBot.tsx:850:   * an ElevenLabs **premade** voice, labelled synthetic in the panel above.
+components/MiniVicBot.tsx:862:   * synthetic, and the label says so in both.
+components/MiniVicBot.tsx:1349:                    not only in the privacy page's synthetic-media section.
+components/MiniVicBot.tsx:1352:                  data-testid="minivic-synthetic-label"
+components/MiniVicBot.tsx:1355:                  Synthetic voice · not a recording of Vikram
+(only MiniVicBot.tsx:1355 is rendered text; 743/795 are an identifier, the rest are comments)
+
+===== G5c [RE-RUN LIVE] was the label absent before the fix? git show d6396d2:components/MiniVicBot.tsx | grep -i synthetic =====
+728:  const startSyntheticMouth = () => {
+780:      startSyntheticMouth();
+(identifier only — no rendered text, so the label assertion is genuinely red-before)
+
+===== G5d [RE-RUN LIVE] audio element nesting (is it inside the panel?) =====
+1248:          data-testid="minivic-panel"
+1629:      <audio ref={audioRef} data-testid="minivic-audio" className="hidden" />
+(the <audio> at 1629 is a sibling of the panel, not a descendant — see finding F3)
+
+===== G7 [RE-RUN LIVE] author evidence fingerprints (sha256, unmodified by this reviewer) =====
+5c480c1dc374142bda09c2d96318da89da65d529b4da1f4132f654435035d547  docs/delivery/evidence/v10-20260905T0515Z/C14a-tts/01-diagnosis.md
+6977e230391105a04f9803240af08e524934ba1a389e61a54c0ab2a7dd4e12b7  docs/delivery/evidence/v10-20260905T0515Z/C14a-tts/02-tests-failing.log
+4611c339eb16cdb7c54e1c8e89571b199afc1e3880a311749a9f93202a1bfff6  docs/delivery/evidence/v10-20260905T0515Z/C14a-tts/04-probe.log
+97383f026a15739abe9e33a75deae7b06cd557d3c1717afb740b28e4019b622c  docs/delivery/evidence/v10-20260905T0515Z/C14a-tts/04-tests-passing.log
+4b5bc903a432876eaee25a83cc06b83c99108267b7dfebc5f66cda6fd405c73f  docs/delivery/evidence/v10-20260905T0515Z/C14a-tts/07-decisions.md
+
+===== G4 [OBSERVED] live probe — this reviewer's ONE authorised paid call, 5 characters =====
+$ curl -s -o /tmp/verif-tts-body.bin -w "%{http_code} %{content_type} %{size_download} time_total=%{time_total}\n" \
+       -X POST -H 'content-type: application/json' -d '{"text":"probe"}' \
+       https://forgotten-mistory.web.app/api/tts
+200 audio/mpeg 14254 time_total=0.437682
+CURL_EXIT=0
+$ head -c 4 /tmp/verif-tts-body.bin | xxd -p
+49443304
+$ file /tmp/verif-tts-body.bin
+/tmp/verif-tts-body.bin: Audio file with ID3 version 2.4.0, contains: MPEG ADTS, layer III, v1, 128 kbps, 44.1 kHz, Monaural
+(The body was written to /tmp and never committed. 14 254 B clears the spec's 8 kB floor.
+ Note the prefix is an ID3v2.4 tag, not the raw frame header 04-probe.log records — see F6.)
+
+===== G5 [OBSERVED] the spec, run once against the live origin =====
+$ PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/e2e/avatar-voice.spec.ts --reporter=list
+Running 2 tests using 2 workers
+  ✓  1 [chromium] › tests/e2e/avatar-voice.spec.ts:53:7 › R3a: the synthetic voice › POST /api/tts returns MP3 audio, not a 502 (381ms)
+  ✓  2 [chromium] › tests/e2e/avatar-voice.spec.ts:67:7 › R3a: the synthetic voice › the panel that plays the voice labels it synthetic (1.8s)
+  2 passed (3.2s)
+PW_EXIT=0
+(Both tests green against production — including the label test, which the author's
+ 04-tests-passing.log could only run against a local export. The client half is live.)
+
+===== G5e [OBSERVED] NEGATIVE CONTROL — proves the endpoint assertion bites (free, no ElevenLabs call) =====
+$ TTS_ORIGIN=https://forgotten-mistory.web.app/nonexistent PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app \
+  npx playwright test tests/e2e/avatar-voice.spec.ts -g "POST /api/tts" --reporter=list
+  ✘  1 [chromium] › tests/e2e/avatar-voice.spec.ts:53:7 › ... › POST /api/tts returns MP3 audio, not a 502 (192ms)
+    Error: expect(received).toBe(expected) // Object.is equality
+    Expected: 200
+    Received: 404
+    > 60 |     expect(response.status()).toBe(200);
+  1 failed
+NEGCTL_EXIT=1
+(POST to a Hosting 404 never reaches the function, so this cost nothing.)
+
+===== G6 [OBSERVED] firebase functions:log --only elevenLabsTts -n 20 =====
+$ npx firebase-tools functions:log --only elevenLabsTts -n 20 --project forgotten-mistory
+FBLOG_EXIT=0
+Serving revision ...................... elevenlabstts-00009-sez
+UpdateFunction (2nd deploy) ........... 2026-09-05T06:35:06Z, functions-hash 848dee288b48b6bbcb3adad2d2bea9d52a4d5b5e
+UpdateFunction (1st deploy) ........... 2026-09-05T06:30:27Z, functions-hash 3aa91b81b58d5742040ffdf9c7d7682a750893b2
+secretEnvironmentVariables ............ {"secret":"ELEVENLABS_API_KEY","version":"2"}   ← UNCHANGED; no rotation occurred
+Error (E) entries after 06:35:56Z ..... none through 06:40:54Z; every entry is I (info), one W at 06:36:16Z with an empty body
+(The pre-fix `E elevenlabstts: {"status":401,...,"status":"ivc_not_permitted"}` entries have
+ fallen out of this 20-entry window; the fix's window contains no E entry at all.)
+
+===== G8 [OBSERVED] battery — client code changed, so all four were run =====
+$ npx tsc --noEmit
+TSC_EXIT=0            (no diagnostics emitted)
+$ npm run lint
+LINT_EXIT=0           ✔ No ESLint warnings or errors
+$ npm run build:static
+BUILD_EXIT=0          [prune] done — 3 artifact(s) removed from the static export
+                      RESULT: PASS — no credential material in the emitted bundle.  (43 files under out/)
+$ node scripts/validate/overhaul_static_audit.mjs
+AUDIT_EXIT=0          RESULT: ALL PASS (10/10)
+(The two build-generated tracked files the build rewrote — app/data/generated/build-stamp.ts
+ and reports/static-audit.json — were restored with `git checkout --`; `git status --porcelain`
+ printed nothing afterwards.)
+
+===== G9 [OBSERVED] deployment reality check =====
+$ curl -s https://forgotten-mistory.web.app/ | grep -o '<meta name="build-commit" content="[^"]*"'
+<meta name="build-commit" content="15fb165b"
+$ git log --oneline -3 origin/main
+15fb165 consolidate: merge worktree-wf_55e925e9-074-1 into main
+4a3ed5b docs(evidence): correct the C14a spend to what was actually spent
+078ba39 docs(ledger): cycle 14a rows for the pipeline-consolidated TTS fix
+$ for each /_next/static/chunks/*.js referenced by /: grep -q 'Synthetic voice'
+HIT: /_next/static/chunks/app/layout-983fd1e49cc1f867.js
+(All four commits are on origin/main and the label string is in the deployed bundle.)
+
+===== Reviewer spend =====
+Two paid ElevenLabs calls, 5 characters each = 10 characters total:
+  1. the curl probe in G4;  2. the spec's own {"text":"probe"} in G5.
+Everything else was free: the negative control 404s at Hosting, functions:log is a read,
+and no image / video / chat / avatar render was made.
+No secret was read, printed, compared or rotated. /root/.claude/.env.production was never
+opened; no `firebase functions:secrets:*` command was run. No static server was started,
+so no port was bound and none needed killing.
