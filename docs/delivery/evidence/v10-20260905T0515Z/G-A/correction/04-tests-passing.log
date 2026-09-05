@@ -1,0 +1,53 @@
+TAP version 13
+# Subtest: \#about grades gold only where the evidence names a checkable record
+    # Subtest: loads the ten dimensions the page actually renders
+    ok 1 - loads the ten dimensions the page actually renders
+      ---
+      duration_ms: 137.029743
+      type: 'test'
+      ...
+    # Subtest: never marks a role-side dimension sourced — the component already calls it unmeasurable
+    ok 2 - never marks a role-side dimension sourced — the component already calls it unmeasurable
+      ---
+      duration_ms: 28.376966
+      type: 'test'
+      ...
+    # Subtest: keeps the open caliper bound to side==="role", so the invariant above still means something
+    ok 3 - keeps the open caliper bound to side==="role", so the invariant above still means something
+      ---
+      duration_ms: 0.485164
+      type: 'test'
+      ...
+    # Subtest: gives every gold line a record from the allow-list
+    ok 4 - gives every gold line a record from the allow-list
+      ---
+      duration_ms: 50.898116
+      type: 'test'
+      ...
+    # Subtest: lets no gold line rest on a self-reported figure
+    ok 5 - lets no gold line rest on a self-reported figure
+      ---
+      duration_ms: 40.675184
+      type: 'test'
+      ...
+    # Subtest: leaves the grey lines grey for a stated reason, not by accident
+    ok 6 - leaves the grey lines grey for a stated reason, not by accident
+      ---
+      duration_ms: 26.110439
+      type: 'test'
+      ...
+    1..6
+ok 1 - \#about grades gold only where the evidence names a checkable record
+  ---
+  duration_ms: 288.191748
+  type: 'suite'
+  ...
+1..1
+# tests 6
+# suites 1
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 833.706248
