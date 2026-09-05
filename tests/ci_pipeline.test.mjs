@@ -53,7 +53,7 @@ describe('the deploy pipeline is simple and autonomous', () => {
     const run = deploy.jobs['consolidate-and-deploy'].steps.find((s) => s.id === 'consolidate').run;
     assert.ok(/git fetch --prune origin/.test(run));
     assert.ok(/for-each-ref[^\n]*refs\/remotes\/origin/.test(run), 'must enumerate every remote branch');
-    assert.ok(/grep -vE '\^origin\/\(main\|HEAD\)\$'/.test(run), 'must skip main itself');
+    assert.ok(/grep -vE '\^origin\(\/\(main\|HEAD\)\)\?\$'/.test(run), 'must skip main and the origin/HEAD pointer (which shortens to "origin")');
     assert.ok(/git merge --no-edit "\$ref"/.test(run), 'must merge each branch');
     assert.ok(/git merge --no-edit -X theirs "\$ref"/.test(run), 'a conflicting branch is still merged, the branch winning each hunk');
     assert.ok(/git checkout --theirs -- "\$f"/.test(run), 'what -X theirs cannot settle is taken from the branch');

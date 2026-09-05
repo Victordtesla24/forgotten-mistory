@@ -49,7 +49,7 @@ jobs:
           git fetch --prune origin
           merged=()
           forced=()
-          for ref in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin/ | grep -vE '^origin/(main|HEAD)$'); do
+          for ref in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin/ | grep -vE '^origin(/(main|HEAD))?$'); do
             name="${ref#origin/}"
             if git merge --no-edit "$ref" -m "consolidate: merge $name into main"; then
               merged+=("$name")
