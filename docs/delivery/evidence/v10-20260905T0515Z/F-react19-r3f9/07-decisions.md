@@ -157,3 +157,161 @@ not observe.
 `node scripts/validate/overhaul_static_audit.mjs`, `node` with `playwright` for the two
 probes, `python3` to edit `package.json`, `python3 -m http.server` on port 5603,
 `grep`, `sed`, `git`). No paid API was called. `~/.claude/.env.production` was never read.
+
+---
+
+# Continuation — tester pass, `t_r19r3f9` level 2
+
+Same worktree, same branch, port 5603. This pass merges `origin/main` (which had pinned
+`next` back to 14.2.35 under P100), re-proves the scene mount, and runs the full suite the
+first pass could not reach.
+
+## S-1 The merge with `origin/main` (`3dae601`)
+
+Two conflicts, both in the dependency manifest — `README.md` and `reports/static-audit.json`
+merged without one.
+
+| File | Resolution |
+|---|---|
+| `package.json` | this branch's versions, whole. `next` and `eslint-config-next` stay **15.5.25** |
+| `package-lock.json` | this branch's lock — already generated against exactly this `package.json` |
+| `README.md` | auto-merged; both sides' delivery-log rows are present |
+| `reports/static-audit.json` | auto-merged, then rewritten by the audit run in S-5 |
+
+`main`'s only source-level change since the merge base is that pin
+(`git diff <base> origin/main -- package.json`: `next` 15.5.25→14.2.35,
+`eslint-config-next` 15.5.25→14.2.35). It was a hotfix for the crash *this branch removes at
+the root*, so it is superseded here — deliberately, not accidentally, and the merge commit
+body says so.
+
+`npm install --package-lock-only` cannot run on this host: npm refuses one optional tarball
+with `EALLOWREMOTE — Fetching packages of type "remote" have been disabled`
+(`@tailwindcss/oxide-wasm32-wasi@4.1.13`), with and without the sandbox. It is not needed:
+the resolved `package.json` is byte-identical to this branch's, so the committed lock is
+already its regeneration, and `npm ci` proves the two agree.
+
+| Gate | Command | Result | Log |
+|---|---|---|---|
+| install | `npm ci` | exit **0** | `08-npmci.log` |
+| single tree | `npm ls react react-dom next @react-three/fiber three` | exit **0** — one deduped `react@19.2.8`, `react-dom@19.2.8`, `next@15.5.25`, `@react-three/fiber@9.7.0`, `three@0.165.0`; every dependent `deduped` | `08-npmls.log` |
+
+## S-2 Build and the `?gl=force` probe, after the merge
+
+`npm run build:static` exit **0**, `RESULT: PASS — no credential material in the emitted
+bundle.` **First Load JS for `/` = 170 kB** (route 29.9 kB + 103 kB shared) — unchanged from
+both this branch's pre-merge figure and `main`'s baseline. `08-build.log`.
+
+`03-probe.mjs` re-run against the merged build → `03b-probe-after-merge.json`. Identical to
+the pre-merge `03-probe.json` in every field:
+
+| | 1440×900 | 390×844 |
+|---|---|---|
+| `#hero h1` | 1 — "Vikram Deshpande" | 1 — "Vikram Deshpande" |
+| canvases at hero | 1 | 1 |
+| `errorShell` | false | false |
+| `pageErrors` / console errors | [] / [] | [] / [] |
+| section ids | all six | all six |
+
+Reduced motion: 0 running animations, 0 canvases, `#hero h1` present. No-GL: 0 canvases,
+all six sections, 14 870 characters of body text. No errors in any run.
+
+### The open question from the first pass, answered: by design, not a defect
+
+The first pass reported `#about` and `#experience` mounting **0** canvases at 390×844 and
+declined to guess why. Measured now (`08-probe-390-slots.mjs` → `08-probe-390-slots.json`),
+scrolling the *slot* rather than the *section*:
+
+| 390×844 | after section scroll | after slot scroll | computed | box |
+|---|---|---|---|---|
+| `#about` `.fieldSlot` | 0 | **1** | `display: block`, `visibility: visible` | 224×224 |
+| `#experience` `.chartScene` | 0 | **1** | `display: block`, `visibility: visible` | 356×605 |
+
+Both scenes mount at 390. **It was a measurement artefact, not a narrow-viewport gate.** The
+governing line is `components/gl/Scene.tsx`:
+
+```ts
+const observer = new IntersectionObserver(
+  (entries) => setNear(entries.some((entry) => entry.isIntersecting)),
+  { rootMargin: '50% 0px' },
+);
+…
+const show = capability === 'supported' && allowMotion && near && pageSettled;
+```
+
+A canvas exists only while its slot is within half a viewport. At 390 each section's header
+is tall enough that `scrollIntoViewIfNeeded()` on the *section* leaves the slot outside that
+lead-in; at 1440 it does not. Neither `Scene.tsx` nor `useGLCapability.ts` has a width
+threshold, and neither `About.module.css` nor `Experience.module.css` hides the slot — the
+`@media (max-width: 900px)` and `(max-width: 760px)` blocks change the instrument's size and
+the chart's columns, never the slot's `display`. **No finding.**
+
+## S-3 The three scene suites — green
+
+`PLAYWRIGHT_BASE_URL=http://127.0.0.1:5603 npx playwright test tests/overhaul/render.spec.ts
+tests/overhaul/scene-about.spec.ts tests/overhaul/cinematic.spec.ts` → **18 passed**, exit
+**0** (`08-scenespecs.log`). `scene-about` — blocked entirely by the crash before this
+branch — passes all six, including TC-SCENE-ABOUT-01 "exactly one canvas mounts in `#about`
+once the section is in view".
+
+## S-4 Full suite — 292 passed, 9 failed, 0 caused by this change
+
+`05-regression.log`: **301 tests, 292 passed, 9 failed**, 8.6 min, exit **1**.
+
+| # | ✘ | On the known list? |
+|---|---|---|
+| 1 | `a11y/text-contrast.spec.ts:275` TC-CONTRAST-01 @ 390 | yes (@1440 now passes) |
+| 2 | `e2e/chatbot.spec.ts:257` TC-BOT-12 | yes |
+| 3 | `e2e/experience.spec.ts:172` TC-EXP-11 | yes |
+| 4 | `e2e/hero.spec.ts:475` TC-HERO-15 | **no** — see below |
+| 5 | `e2e/interaction-states.spec.ts:204` TC-STATE-HOVER | yes |
+| 6 | `e2e/interaction-states.spec.ts:248` TC-STATE-ACTIVE | yes |
+| 7 | `e2e/listen.spec.ts:65` TC-LISTEN-05 | yes (the known flake) |
+| 8 | `perf/performance.spec.ts:88` PERF-03 CLS | **no** — see below |
+| 9 | `visual/screenshots.spec.ts:113` VIS-04 listen-section | yes |
+
+Known failures that did **not** recur: GC-01, TC-HERO-12, `interaction-states` :362 and
+:415, VIS-01/02/06, text-contrast @1440. Nine ✘ against a known list of fourteen.
+
+**The two off-list failures are the same failure, and it is host load — not this upgrade.**
+Both are the CLS budget, measured while the other Playwright worker and two sibling agents
+shared four cores:
+
+- TC-HERO-15 — `Error: CLS (PERF-03 budget) … Expected: < 0.05  Received: 0.1763888888888889`
+- PERF-03 — `CLS: 0.2559 … Expected: < 0.05  Received: 0.2559241706161137`
+
+Re-run alone, `--repeat-each=2 --workers=1`, against the same server and the same build:
+
+| Spec | Result | Log |
+|---|---|---|
+| PERF-03 | **2 passed**, `CLS: 0.0000` both runs, exit **0** | `08-perf03-repeat.log` |
+| TC-HERO-15 | **2 passed**, exit **0** | `08-hero15-repeat.log` |
+
+Four isolated runs, zero shift. Nothing in React 19 or `@react-three/fiber@9` touches the
+hero portrait's crossfade — it is a `<video>` layered over a poster with a fixed
+`aspect-ratio` box, no R3F in it — and the same specs pass on the same bytes the moment the
+CPU is free. Recorded as **load-sensitive, not a regression**; no code was changed for
+them, because changing code to chase a contention artefact would be the false positive this
+role exists to refuse. If they recur on an idle host they are a real defect and this note is
+wrong.
+
+## S-5 Battery, after the merge
+
+| Gate | Command | Result | Log |
+|---|---|---|---|
+| `tsc` | `npx tsc --noEmit` | exit **0** | `08-tsc.log` |
+| `lint` | `npm run lint` | `✔ No ESLint warnings or errors`, exit **0** | `08-lint.log` |
+| static audit | `node scripts/validate/overhaul_static_audit.mjs` | `RESULT: ALL PASS (10/10)`, exit **0** | `08-audit-static.log` |
+| build | `npm run build:static` | exit **0**, 170 kB First Load JS | `08-build.log` |
+| npm audit | `npm audit --audit-level=high` | exit **0**, `found 0 vulnerabilities` | `08-audit-npm.log` |
+
+`npm audit` is the figure that retires the README's standing acceptance: the P100 pin bought
+0 crashes at the cost of one high advisory against `next@14.2.35`, and the README said in as
+many words that the acceptance "expires when React 19 + `@react-three/fiber@9` +
+`@react-three/drei@10` land together". They land here, and the audit is clean, so the
+limitation is deleted rather than left to read as true.
+
+## What this pass did not do
+
+No screenshots at 1440/1280/834/390 — the composition was not touched, and the visual suite
+(bar the known VIS-04 baseline) is green. No deploy: pushing the branch is where this role
+stops; `deploy.yml` consolidates and ships.

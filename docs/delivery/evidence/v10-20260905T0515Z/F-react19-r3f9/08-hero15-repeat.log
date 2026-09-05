@@ -1,0 +1,9 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero.spec.ts -g TC-HERO-15 --repeat-each=2 --workers=1
+
+[2mRunning [22m2[2m tests using [22m1[2m worker[22m
+
+  [32m✓[39m  [2m1 [22m[chromium] › tests/e2e/hero.spec.ts:475:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget[2m (2.9s)[22m
+  [32m✓[39m  [2m2 [22m[chromium] › tests/e2e/hero.spec.ts:475:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget[2m (2.9s)[22m
+
+[32m  2 passed[39m[2m (8.8s)[22m

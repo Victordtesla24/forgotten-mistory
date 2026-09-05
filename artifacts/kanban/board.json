@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T06:53:43.127Z",
+  "updated": "2026-09-05T07:14:16.915Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -48,7 +48,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:20:07.405Z",
+      "updated": "2026-09-05T07:05:13.212Z",
       "summary": "Worktree .claude/worktrees/wf_18f926b0-2a4-1 (base 8dc4cf4). Battery already green there: tsc 0, lint 0, audit 10/10, build exit 0, secret scan PASS, root npm audit 0 vulns; regression log stopped at 243/276 (8 ✘, all in the CI-red list). Nothing committed yet.",
       "decisions": [
         {
@@ -56,7 +56,13 @@
           "text": "S-5/S-6 (full 276-spec regression) re-assigned to cycle 14 (t_d0066b7a) on the merged main so the unit fits the 30-min cap (O1) and the verified upgrade ships on the 10-min cadence; deterministic gates (tsc/lint/audit/build/npm audit/node tests) + independent verification remain the merge gate. Dispatched: Workflow wf_74bc3c5b-f9d (analyst-programmer:c13 opus xhigh → reviewer:v-c13 opus max)."
         }
       ],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T07:05:13.212Z",
+          "by": "orchestrator",
+          "text": "REGRESSION FOUND 06:5xZ: cycle 13 shipped the WebGL crash (R3F 8 vs next 15's vendored React 19). The C13 battery could not see it: this VPS has no GPU and useGLCapability marks SwiftShader unsupported, so no Scene mounts on a normal load; the 3 WebGL ✘ in v9 F-security-upgrade and TC-RENDER-01 were classified 'headless-only'. Lesson recorded in memory: a WebGL ✘ is never headless-only until a ?gl=force SwiftShader probe shows 0 pageerrors. Hotfix t_p100hotfx; durable t_r19r3f9."
+        }
+      ],
       "result": "Commits 18c6beb + 878adab on worktree-wf_18f926b0-2a4-1; gates tsc/lint/audit 10-10/build/npm-audit 0/node tests 59-59 all exit 0 (re-run by V-C13); merged to main as 5ec231d."
     },
     {
@@ -216,7 +222,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:20:07.521Z",
+      "updated": "2026-09-05T07:05:13.256Z",
       "summary": "Fresh reviewer; reads only the branch diff and the committed evidence logs; re-runs the deterministic gates itself.",
       "decisions": [
         {
@@ -224,7 +230,13 @@
           "text": "Id swap 06:1xZ: the orchestrator quoted t_927a093b to workflow wf_74bc3c5b-f9d as the V-C13 spec; the board ids were swapped consistently (t_927a093b ⇄ t_3e553558, t_329d1673 ⇄ t_2331f031, parents updated) so the running verifiers read the right spec. Ids are opaque; no history lost."
         }
       ],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T07:05:13.256Z",
+          "by": "orchestrator",
+          "text": "V-C13 PASS was WRONG on the one thing that mattered: the 45 unreached specs included render/WebGL cases, and the reviewer's regression-failure proof (matched to CI-red) did not exercise a Scene mount. Recorded as a verification-process defect: every dependency upgrade must include a ?gl=force SwiftShader probe (0 pageerrors, canvases ≥ 1) before PASS."
+        }
+      ],
       "result": "PASS (fbc7253): 14 gates re-run by the reviewer, all 8 regression ✘ matched line-for-line to CI run 33936783382 on main@debd25b; qualification V-3: 45 specs never reached (cycle 14 owns them)."
     },
     {
@@ -694,7 +706,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:36:10.615Z",
+      "updated": "2026-09-05T07:14:16.915Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": [
@@ -717,6 +729,16 @@
           "at": "2026-09-05T06:36:10.615Z",
           "by": "orchestrator",
           "text": "Cadence: 06:32:55Z deploy 3adf126a success (carries cycle 11); note — a push queued behind an in-progress deploy cancels the older PENDING run, so sha-literal deploy checks must use ancestry, not equality."
+        },
+        {
+          "at": "2026-09-05T07:11:25.807Z",
+          "by": "orchestrator",
+          "text": "Cadence: 07:05:48Z deploy be53be4e (about field + tts evidence via pipeline); 07:1xZ a11dfe7 (P100 hotfix) pushed."
+        },
+        {
+          "at": "2026-09-05T07:14:16.915Z",
+          "by": "orchestrator",
+          "text": "Cadence: 07:12Z deploy f103462f success — P100 hotfix live; site renders again for GPU browsers."
         }
       ]
     },
@@ -966,11 +988,12 @@
     {
       "id": "t_4e30d620",
       "title": "Scene 3 — #about flagship: GLSL compass field behind the SVG rose (R2, M1)",
-      "status": "running",
+      "status": "blocked",
       "assignee": "analyst-programmer",
       "priority": 90,
       "parents": [
-        "t_cba10f82"
+        "t_cba10f82",
+        "t_r19r3f9"
       ],
       "skills": [],
       "hierarchy": {
@@ -980,11 +1003,21 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:05.604Z",
-      "updated": "2026-09-05T06:21:18.415Z",
+      "updated": "2026-09-05T07:06:43.395Z",
       "summary": "SPEC-v10.md §R2 / c16: promote #about from SVG-only (0 canvases, 138 paths) to an R2-grade scene mounted through components/gl/Scene.tsx — a shader field that turns with the compass (cycle-12 scroll-drive semantics kept), no new npm dependency, no new network asset; reduced motion → zero canvases and the SVG stays. Files: components/sections/About/AboutField.tsx, field.glsl.ts, About.tsx, Compass.tsx, About.module.css; tests/overhaul/scene-about.spec.ts (TDD first).",
       "decisions": [],
-      "comments": [],
-      "blocker": null
+      "comments": [
+        {
+          "at": "2026-09-05T07:06:43.395Z",
+          "by": "orchestrator",
+          "text": "07:0xZ: the pipeline consolidated worktree-wf_697f0e83-f46-1 into main (6dbb799) although V-c16 was FAIL (blocked by the P100 crash, not by the field). The field is inert until a Scene can mount; once the hotfix deploys it mounts on GPU browsers WITHOUT a GPU visual check — the post-hotfix live verification must screenshot #about at ?gl=force (SwiftShader) at 1440 and 390 and judge loudness; if it is loud, a one-line uIntensity cap is the correction."
+        }
+      ],
+      "blocker": {
+        "kind": "dependency",
+        "reason": "P100 WebGL crash on main — no Scene mounts until t_p100hotfx/t_r19r3f9",
+        "at": "2026-09-05T07:05:13.332Z"
+      }
     },
     {
       "id": "t_cbff57b0",
@@ -1152,6 +1185,78 @@
       "created": "2026-09-05T06:20:06.758Z",
       "updated": "2026-09-05T06:20:06.758Z",
       "summary": "SPEC-v10.md c21 (the report files are written by the orchestrator every cycle; this task adds the guard). tests/cycle_reports.test.mjs (node --test): parse every artifacts/kanban/cycles/*.json — required keys {cycle, pea_numerator, pea_denominator: 25, adversarial_verdict, deploy_commit, tools_used (≥ 1 entry)}; a malformed file fails.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_p100hotfx",
+      "title": "P100 INCIDENT — WebGL scenes crash into app/error.tsx on every GPU browser since 18c6beb (next 15.5.25 vendors React 19; @react-three/fiber 8 reads removed internals): pin next 14.2.35 now",
+      "status": "done",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T07:05:13.071Z",
+      "updated": "2026-09-05T07:14:16.869Z",
+      "summary": "Proof: C16-about-field/09-verification.md (baseline main build at ?gl=force → TypeError ReactCurrentBatchConfig, app/error.tsx shell) and R-c13 adversarial recheck on LIVE 15fb165b with a hardware-GPU spoof, no query string: h1 \"Something went wrong\", sections 0, errorBoundary true, 4 console errors. Live since 5ec231d3 (06:18Z). Owner reported at 06:57Z that no visible improvement is seen — GPU visitors see the error shell. Hotfix lane wf_7910f160-45a (analyst-programmer opus xhigh → reviewer max): pin next+eslint-config-next 14.2.35, keep checks.yml/.gitignore/root:true, prove ?gl=force canvases + 0 pageerrors at 1440/390, push; orchestrator merges to main immediately. Durable fix: t_r19r3f9.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-05T07:11:25.764Z",
+          "by": "orchestrator",
+          "text": "07:1xZ: hotfix branch f91843f (feb12ef pin next 14.2.35; evidence 02-repro-after.json: canvases 1 at hero, h1 'Vikram Deshpande', six sections) merged --no-ff as 5c0e01d and pushed to main as a11dfe7; Deploy triggered on push. Live verification pending (background probe)."
+        }
+      ],
+      "blocker": null,
+      "result": "LIVE VERIFIED 07:13Z on build f103462f (contains a11dfe7): ?gl=force SwiftShader probe → 1440: canvases 1 at hero, 2 after #experience, h1 'Vikram Deshpande', 6 sections, 0 pageerrors, 0 console errors, 0 failed requests; 390: canvases 1, h1 present, 0 errors. Outage window for GPU visitors: 06:18Z (5ec231d3) → 07:12Z. Durable fix t_r19r3f9 in flight; npm audit high on next 14 re-accepted until then (recorded)."
+    },
+    {
+      "id": "t_r19r3f9",
+      "title": "Durable fix — react 19 + @react-three/fiber 9 (+ drei 10 if used) on next 15.5.25; every scene proven at ?gl=force; full battery; lands only on PASS",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 97,
+      "parents": [
+        "t_p100hotfx"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T07:05:13.118Z",
+      "updated": "2026-09-05T07:05:13.118Z",
+      "summary": "Lane wf_a0a1850a-28a (port 5603). Keeps the npm-audit-clean next 15 while restoring WebGL. Push only when S-3 probe and the full suite are green; independent reviewer then gates the merge. Supersedes the next-14 pin of t_p100hotfx when it lands.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_prodmon01",
+      "title": "Production runtime monitor — every 10 min probe the live site (1440/390, normal + ?gl=force + reduced-motion + GPU-spoof) for pageerrors, console errors, failed requests, error boundary; plus Cloud Functions logs; findings become P100/P90 tasks",
+      "status": "todo",
+      "assignee": "tester",
+      "priority": 96,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T07:05:13.160Z",
+      "updated": "2026-09-05T07:05:13.160Z",
+      "summary": "Owner directive 06:53Z: monitor the production console logs and fix every runtime error at runtime. Deliverable: scripts/monitor/prod_console_probe.mjs (playwright, channel chrome, --no-sandbox, SwiftShader flags for ?gl=force, a hardware-GPU spoof pass like R-c13/adv4-recheck.mjs) writing artifacts/monitor/<UTC>.json + a one-line summary, exit 1 on any error; scripts/monitor/functions_log_probe.sh (firebase functions:log --only minivicChat,elevenLabsTts -n 50, grep error/status ≥ 400); tests/monitor_probe.test.mjs proving the probe fails on a page that throws. The orchestrator schedules it every 10 min (cron) and files each new error as a task within one cycle.",
       "decisions": [],
       "comments": [],
       "blocker": null

@@ -1,0 +1,25 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/render.spec.ts tests/overhaul/scene-about.spec.ts tests/overhaul/cinematic.spec.ts
+
+[2mRunning [22m18[2m tests using [22m2[2m workers[22m
+
+  [32m✓[39m  [2m 1 [22m[chromium] › tests/overhaul/cinematic.spec.ts:47:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-01: the hero backdrop is decorative — hidden from AT and behind the content[2m (1.7s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/overhaul/cinematic.spec.ts:120:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-03: nav is transparent at top and frosts (data-scrolled) after scroll[2m (1.7s)[22m
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/overhaul/cinematic.spec.ts:83:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-02: nothing intercepts clicks on the hero CTA[2m (3.6s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/overhaul/cinematic.spec.ts:170:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-05: the hero name renders in full with no glyph-masking clip-path (D-NAME-01)[2m (1.6s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/overhaul/cinematic.spec.ts:143:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-04: with every scene suppressed the page is still the whole page[2m (3.4s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/overhaul/cinematic.spec.ts:184:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-06: under reduced motion the hero entrance is a fade, not a rise[2m (1.7s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/overhaul/cinematic.spec.ts:243:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-07: under reduced motion every section is readable, not left behind a curtain[2m (2.5s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/overhaul/render.spec.ts:102:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss[2m (10.8s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/overhaul/render.spec.ts:79:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it[2m (13.1s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium)[2m (6.9s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/overhaul/render.spec.ts:173:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-09: A full-page scroll never trips a page error or the error boundary[2m (7.3s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/overhaul/render.spec.ts:131:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page[2m (15.6s)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/overhaul/scene-about.spec.ts:87:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view[2m (4.3s)[22m
+  [32m✓[39m  [2m14 [22m[chromium] › tests/overhaul/scene-about.spec.ts:101:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column[2m (4.7s)[22m
+  [32m✓[39m  [2m16 [22m[chromium] › tests/overhaul/scene-about.spec.ts:157:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-04: under reduced motion there is no canvas, and the rose is still the instrument[2m (4.1s)[22m
+  [32m✓[39m  [2m15 [22m[chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose[2m (6.2s)[22m
+  [32m✓[39m  [2m18 [22m[chromium] › tests/overhaul/scene-about.spec.ts:214:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-06: the field is monochrome, palette-sourced and cheap per pixel[2m (44ms)[22m
+  [32m✓[39m  [2m17 [22m[chromium] › tests/overhaul/scene-about.spec.ts:184:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-05: with WebGL unavailable the section is whole and silent[2m (3.7s)[22m
+
+[32m  18 passed[39m[2m (50.4s)[22m

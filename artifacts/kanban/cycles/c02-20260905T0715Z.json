@@ -1,0 +1,15 @@
+{
+  "cycle": "v10-c02",
+  "window_utc": "2026-09-05T06:20Z → 07:15Z",
+  "pea_numerator": 5,
+  "pea_denominator": 25,
+  "pea_basis": "unchanged from c01 on the R/O/M matrix; site-level: cycle 11 (vitrine rail/trace-on, contrast, hero 390), 14a (voice live, labelled synthetic), scene 3 field (inert until GPU) shipped; P100 WebGL crash found and fixed",
+  "adversarial_verdict": "R-c13 in progress on the broken build (adversarial lens: FAIL — error boundary on GPU); re-review required on f103462f+",
+  "deploy_commit": "f103462f",
+  "deploys": ["5a07ac07 06:36Z tts fix (pipeline)", "15fb165b 06:5xZ", "be53be4e 07:05Z about field + evidence", "f103462f 07:12Z P100 hotfix (next 14.2.35)"],
+  "incident": {"id": "t_p100hotfx", "severity": 100, "started": "2026-09-05T06:18Z (5ec231d3, cycle 13)", "detected": "06:5xZ (V-c16 verifier + R-c13 adversarial recheck + owner report 06:57Z)", "restored": "07:12Z (f103462f)", "cause": "@react-three/fiber 8.18.0 vs React 19 vendored by next 15.5.25 — ReactCurrentBatchConfig TypeError at first Scene mount → app/error.tsx", "why_missed": "GPU-less VPS: useGLCapability marks SwiftShader unsupported, no Scene mounts on a normal load; WebGL ✘ dismissed as headless-only", "prevention": "memory forgotten-mistory-webgl-headless-verify: ?gl=force SwiftShader probe + GPU-spoof pass in every upgrade/verifier brief; production console monitor t_prodmon01"},
+  "landed": ["t_8cdf3b61 cycle 11 (merged f86b125; V-C11 FAIL on one pre-existing launcher-occlusion node → cycle 16 correction)", "t_28011b3d cycle 14a voice (V-C14a PASS)", "t_p100hotfx hotfix (live verified)"],
+  "in_flight": ["t_cc03ed93 cycle 16 launcher (commit 3720832, evidence in progress)", "t_r19r3f9 react 19 + fiber 9 (package.json at fiber 9.7.0 / react 19.2.8, battery pending)", "t_4adf34f7 R-c13 (motion lens running)"],
+  "tools_used": ["Workflow (opus council ×10 agents this cycle)", "playwright (live probes, SwiftShader gl=force)", "firebase-tools functions:log", "gh CLI", "git"],
+  "next": "arm the production console monitor (10-min cadence); R-c13 lands → correction tasks; re-review on the fixed build; cycle 16 merge; cycle 15 experience signature; r19 lands only on PASS"
+}

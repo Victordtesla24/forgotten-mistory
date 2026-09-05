@@ -15,7 +15,7 @@ export interface BuildStamp {
 }
 
 export const buildStamp: BuildStamp = {
-  "sha": "6dcb4f53",
-  "authored": "2026-09-04T23:56:41Z",
-  "clean": true
+  "sha": null,
+  "authored": null,
+  "clean": false
 } as const;
