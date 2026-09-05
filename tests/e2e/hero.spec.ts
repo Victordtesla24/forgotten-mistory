@@ -239,7 +239,18 @@ test.describe('Hero', () => {
 const PORTRAIT = '[data-testid="hero-portrait"]';
 const PORTRAIT_IMG = `${PORTRAIT} img`;
 const PORTRAIT_VIDEO = `${PORTRAIT} video`;
-const PORTRAIT_TOGGLE = `${PORTRAIT} button[aria-pressed]`;
+/**
+ * The play/pause control. It used to be a glyph button pinned inside
+ * `[data-testid="hero-portrait"]`, and that is exactly what an independent
+ * reviewer measured as a second call to action standing in the first fold on
+ * live `9b864752`. It now stands in the proof band, below the fold, carrying
+ * its name in words and its own test id. TC-HERO-13/14/16/17 are rewritten
+ * against that id rather than deleted: the contract they assert — one button
+ * with `aria-pressed`, reachable by Tab, Enter and Space toggling it, an
+ * achromatic focus ring, and no motion under `prefers-reduced-motion` without a
+ * press — is unchanged. Only where the button stands has changed.
+ */
+const PORTRAIT_TOGGLE = '#hero [data-testid="portrait-control"]';
 const PORTRAIT_ALT = 'Portrait of Vikram Deshpande';
 const HERO_LOOP = 'my-avatar.mp4';
 

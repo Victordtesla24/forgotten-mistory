@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 import Caliper from '@/components/marks/Caliper';
 import Scene from '@/components/gl/Scene';
-import HeroPortrait from './HeroPortrait';
+import HeroPortrait, { HeroPortraitControl, PortraitIntentProvider } from './HeroPortrait';
 import { heroContent } from '@/app/data/portfolio/hero';
 
 import styles from './Hero.module.css';
@@ -36,10 +36,19 @@ export default function Hero() {
         <HeroAtmosphere />
       </Scene>
 
-      {/* The fold. One name, one sentence, one action group, and the
-          photograph — nothing else stands in the first screen. The evidence is
-          not deleted; it is one scroll away, in `.proof` below. */}
-      <div className={styles.inner} data-testid="hero-fold">
+      {/* Both bands, and only both bands, sit inside the portrait's intent
+          provider: the figure stands in the fold and its named play/pause
+          control stands in the proof band, and one state has to serve the two.
+          `<Scene>` is outside it on purpose — a pointer crossing the
+          photograph must not re-render the shader's tree. */}
+      <PortraitIntentProvider>
+        {/* The fold. One name, one sentence, ONE action group — `hero-actions`,
+            and nothing else pressable — and the photograph. An independent
+            reviewer measured two competing CTA groups in this screen on live
+            `9b864752`; the second was the button stamped on the face, and it
+            is now in the proof band below. The evidence is not deleted; it is
+            one scroll away, in `.proof`. */}
+        <div className={styles.inner} data-testid="hero-fold">
         {/* The reading column, as one box. It is a grid item at 720 px and up
             and `display: contents` below, so the photograph beside it can
             never stretch the rhythm of the type: a figure spanning five grid
@@ -89,7 +98,7 @@ export default function Hero() {
             a <figure> with a <figcaption>, never a <p>: the statement is still
             the fold's only paragraph over twelve words. */}
         <HeroPortrait />
-      </div>
+        </div>
 
       {/* The proof band. Everything the fold used to carry and could not
           justify carrying: the three figures with their provenance, the line
@@ -97,7 +106,7 @@ export default function Hero() {
           channels. Not one word was deleted — the band starts below 100vh,
           inside #hero and before #about, so `#hero ul` still resolves and
           CT-10 still finds 92 / $5M+ / 10k+ printed with their sources. */}
-      <div className={styles.proof} data-testid="hero-proof">
+        <div className={styles.proof} data-testid="hero-proof">
         {/* The three figures, each carrying its own provenance, and the line
             that grades them: sourced would be a lie, so the mark says
             self-reported and says why. */}
@@ -151,8 +160,17 @@ export default function Hero() {
               {link.label}
             </a>
           ))}
-        </p>
-      </div>
+          </p>
+
+          {/* The photograph's own control, where a control belongs: named, in
+              text, below the fold, beside the evidence — not a glyph stamped on
+              a face in the first screen. The loop still follows the pointer
+              over the figure; this is the keyboard and touch path to it, and it
+              works under reduced motion because a reader's own press is allowed
+              (WCAG 2.2.2). */}
+          <HeroPortraitControl />
+        </div>
+      </PortraitIntentProvider>
     </section>
   );
 }

@@ -129,6 +129,90 @@ test.describe('Performance Budgets', () => {
     expect(cls).toBeLessThan(CLS_BUDGET);
   });
 
+  /**
+   * PERF-08 — CLS on a COLD load, three times, at three viewports.
+   *
+   * PERF-03 measures one warm phone load and scrolls it. That is not the load
+   * that failed: an independent reviewer took three cold loads of live
+   * `9b864752` at 1280x720 and read CLS 0.17639 in two of them, identical to
+   * five decimal places, with `IMG my_avatar.avif` as the LCP element — one
+   * deterministic reflow that sometimes lands before the observer's first
+   * frame, not noise. A single warm sample cannot see it, and a single cold
+   * sample sees it two times in three.
+   *
+   * So: a fresh context per load, the observer installed before navigation via
+   * an init script, `hadRecentInput` excluded, and every load asserted
+   * separately — 3 of 3 under the budget at each of the three viewports the
+   * correction names. The shift sources are printed on failure, because the
+   * fix for a layout shift is always the node that moved.
+   */
+  test('PERF-08: CLS < 0.05 on three cold loads at 1280x720, 1440x900 and 390x844', async ({
+    browser,
+    baseURL,
+  }) => {
+    test.setTimeout(180000);
+    const VIEWPORTS = [
+      { width: 1280, height: 720 },
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 },
+    ];
+
+    for (const viewport of VIEWPORTS) {
+      for (let load = 0; load < 3; load += 1) {
+        const ctx = await browser.newContext({ viewport, baseURL });
+        const page = await ctx.newPage();
+        await page.addInitScript(() => {
+          const w = window as typeof window & {
+            __cls?: number;
+            __shifts?: string[];
+          };
+          w.__cls = 0;
+          w.__shifts = [];
+          try {
+            new PerformanceObserver((list) => {
+              for (const entry of list.getEntries()) {
+                const shift = entry as PerformanceEntry & {
+                  hadRecentInput?: boolean;
+                  value?: number;
+                  sources?: { node?: Element | null }[];
+                };
+                if (shift.hadRecentInput) continue;
+                w.__cls = (w.__cls ?? 0) + (shift.value ?? 0);
+                for (const source of shift.sources ?? []) {
+                  const node = source.node;
+                  w.__shifts?.push(
+                    `${(shift.value ?? 0).toFixed(5)} ${
+                      node ? `${node.tagName}${node.id ? `#${node.id}` : ''}` : 'detached'
+                    }`,
+                  );
+                }
+              }
+            }).observe({ type: 'layout-shift', buffered: true });
+          } catch {
+            /* layout-shift is not supported in every browser */
+          }
+        });
+        await page.goto('/', { waitUntil: 'load' });
+        await page.waitForTimeout(4000);
+        const measured = await page.evaluate(() => {
+          const w = window as typeof window & { __cls?: number; __shifts?: string[] };
+          return { cls: w.__cls ?? 0, shifts: w.__shifts ?? [] };
+        });
+        await ctx.close();
+
+        console.log(
+          `CLS ${viewport.width}x${viewport.height} load ${load}: ${measured.cls.toFixed(5)}`,
+        );
+        expect(
+          measured.cls,
+          `CLS at ${viewport.width}x${viewport.height}, cold load ${load}; shift sources: ${
+            measured.shifts.join(' | ') || 'none'
+          }`,
+        ).toBeLessThan(CLS_BUDGET);
+      }
+    }
+  });
+
   test('PERF-04: Page loads without page errors', async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', (err) => errors.push(err.message));

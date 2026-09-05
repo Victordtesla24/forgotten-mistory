@@ -158,7 +158,10 @@ export default function RootLayout({
         </a>
         <AvatarSpeakingProvider>
           <MotionProvider>
-            {children}
+            {/* The page's own reservation — see `.page-frame` in globals.css.
+                Without it the footer, which is shell and paints first, lands
+                under the nav until the sections stream in. */}
+            <div className="page-frame">{children}</div>
             <Footer />
             <MiniVicBot />
           </MotionProvider>
