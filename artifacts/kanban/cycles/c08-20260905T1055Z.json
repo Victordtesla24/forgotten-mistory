@@ -1,0 +1,41 @@
+{
+  "cycle": "v10-c08",
+  "window_utc": "2026-09-05T10:15Z → 10:55Z",
+  "pea_numerator": 9,
+  "pea_denominator": 25,
+  "pea_basis": "M3 re-met per owner instruction (photo full size, colour, hover loop); R8 stability improves (deploy-skew resilience live); rest unchanged. Still partial: R1 R3 R7 R10 R12 O2 O3 O5 O6 M1 M2 M5 M6; unmet R2(5/7) R11; owner-limited R5 R6 M4 (no generation possible — no paid credits; not parked: achievable slices shipped)",
+  "adversarial_verdict": "R-c13 FAIL (crash, fixed); R-c14 queued after flagship C + hero photo verify",
+  "deploy_commit": "ccb15241",
+  "visible_ships": [
+    "364c0dd hero: full-colour photograph, drafting frame, loop on hover only (owner request 09:10Z) — live, orchestrator visual check PASS",
+    "fdad940+e86a159 deploy-skew resilience: worker precaches the build (68 assets), keeps the previous generation, chunk-loss reload — live",
+    "cycle 20 close (1143801) — live"
+  ],
+  "verdicts": [
+    "V-c20 FAIL on one node outside the cycle (About numeral 4.42:1 over the new field) → t_flagvis0c; cycle acceptance all green",
+    "V-skew FAIL on one clause (uncaught context-creation error) → t_skew0002; SW half PASS end to end",
+    "V-flagship-A FAIL (phone hero extinguished; gl-path contrast) → t_flagvis0c running"
+  ],
+  "in_flight": [
+    "t_flagvis0c correction (5602)",
+    "t_heroph001 verifier (5601)"
+  ],
+  "queued": [
+    "t_flagvis0b flagship B (skills scene 4, vitrine/listen intensity)",
+    "t_skew0002",
+    "t_9487806b cycle 20 polish",
+    "t_rc14rev01 R-c14"
+  ],
+  "monitor": "PROD OK on ccb15241; returning-visitor freshness now ancestry-aware (one false positive at 10:45Z corrected)",
+  "verification_snippet": "$ systemctl is-active fm-deploy-cadence.timer → active\n$ tail -5 /var/log/fm-deploy/cadence.log\n[2026-09-05T10:32:30Z] skip: successful Deploy within last 8m (push already covered cadence)\n[2026-09-05T10:32:30Z] live build-commit\" content=\"ce6799ec\"\n[2026-09-05T10:42:44Z] cadence tick\nhttps://github.com/Victordtesla24/forgotten-mistory/actions/runs/33961390452\n[2026-09-05T10:42:46Z] workflow_dispatch ok\n$ gh run list --workflow=deploy.yml --limit 6\n2026-09-05T10:46:52Z push  ba6268a1\n2026-09-05T10:46:08Z push success 02faea27\n2026-09-05T10:45:12Z schedule success ccb15241\n2026-09-05T10:42:46Z workflow_dispatch failure ce6799ec\n2026-09-05T10:26:30Z push success ce6799ec\n2026-09-05T10:16:46Z push success 58820cc1\n$ live build-commit → build-commit\" content=\"02faea27\"\n$ cache-control → cache-control: public, max-age=0, must-revalidate\r\n",
+  "tools_used": [
+    "Workflow (opus council)",
+    "Monitor",
+    "playwright screenshots read by the orchestrator",
+    "gh CLI",
+    "systemctl",
+    "curl",
+    "git"
+  ],
+  "next": "V-hero-photo + flagship C land → merge → flagship B + skew correction → R-c14 on the live site"
+}

@@ -35,3 +35,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## COMMENT (2026-09-05T10:46:49.700Z)
 SHIPPED 364c0dd feat(hero): full-colour photograph with a loop on intent — consolidated e88ba4c, LIVE on ccb15241 (10:4xZ). Verifier running; orchestrator visual check in progress.
+
+## COMMENT (2026-09-05T10:47:59.242Z)
+ORCHESTRATOR VISUAL CHECK on live ccb15241: 1440 — full-colour photograph fills the right column (518×322), drafting frame + four corner ticks + registration cross, caption '— Photograph · Melbourne' below, play affordance bottom-right; at rest no video source; on hover the 1280×720 loop plays (pause glyph shows) and stops on leave; 390 — the photo sits full-width after the actions, TC-HERO-12 fold holds. Verdict by eye: this is the owner's request delivered. Defect seen: the caption sits on the hero's brightest light pool and is nearly unreadable (also the third ledger source) — folded into t_flagvis0c (hero text plates on the shader path must include .portraitCaption).
