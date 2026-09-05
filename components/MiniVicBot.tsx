@@ -163,6 +163,21 @@ const logMiniVicIssue = (...args: unknown[]) => {
   }
 };
 
+/**
+ * `/api/tts` contract, mirrored on the client.
+ *
+ * The Cloud Function caps the text it will voice at 600 characters
+ * (`functions/index.js` MAX_CHARS) and silently truncates past it; sending the
+ * same cap from here means what a visitor hears is what the transcript shows,
+ * rather than a sentence that stops mid-word.
+ *
+ * The byte floor is the smallest body worth playing: a real MP3 clears it
+ * easily, and anything under it is a truncated or empty response that should
+ * fall through to the browser voice instead of playing silence.
+ */
+const TTS_MAX_CHARS = 600;
+const MIN_TTS_AUDIO_BYTES = 1024;
+
 /** Convert a PALETTE hex color to an rgba() string for canvas 2D contexts. */
 const hexToRgba = (hex: string, alpha: number): string => {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -831,20 +846,50 @@ const MiniVicBot = () => {
   };
 
   /**
-   * Voice a dynamic answer in a MALE voice via the browser's speech synthesis.
-   * (Server-side cloned-voice TTS is not provisioned — see the body — so we no
-   * longer POST /api/tts, which only 502'd per reply.)
+   * Voice a dynamic answer through the site's own `/api/tts` Cloud Function —
+   * an ElevenLabs **premade** voice, labelled synthetic in the panel above.
+   *
+   * This fetch was removed while the function was down: it asked for Vikram's
+   * cloned voice, which the account's plan refuses (`ivc_not_permitted`), so
+   * every reply cost a 502 and a console error before falling back anyway. The
+   * function now asks for a stock voice and answers with real MP3 bytes
+   * (`docs/delivery/evidence/v10-20260905T0515Z/C14a-tts/`), so the fetch is
+   * back — and the fallback stays, because a static preview or a cold function
+   * must still be able to speak.
+   *
+   * The fallback is the browser's own speech synthesis, which never selects a
+   * female voice and stays silent rather than risk one. Either path is
+   * synthetic, and the label says so in both.
    */
   const speakReply = (text: string) => {
-    if (isMuted || !text.trim()) return;
-    // No server-side cloned-voice TTS is provisioned on this deployment (the
-    // ElevenLabs key is invalid and OpenAI/Gemini TTS are not accessible on this
-    // account). Calling /api/tts only produced a 502 per reply — a visible
-    // console error — before falling back anyway. Voice the reply directly with
-    // the browser's speech synthesis in a MALE voice (speakText never selects a
-    // female voice, and stays silent rather than risk one). Restore the /api/tts
-    // fetch here once a valid ElevenLabs `sk_` key is set for the function.
-    speakText(text);
+    const trimmed = text.trim();
+    if (isMuted || !trimmed) return;
+
+    void (async () => {
+      try {
+        const response = await fetch("/api/tts", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ text: trimmed.slice(0, TTS_MAX_CHARS) }),
+        });
+        if (!response.ok) throw new Error(`tts_http_${response.status}`);
+        if (!(response.headers.get("content-type") ?? "").includes("audio/")) {
+          throw new Error("tts_not_audio");
+        }
+        const blob = await response.blob();
+        // A truncated or empty body is a failure, not a silent no-op: fall
+        // through to the browser voice rather than "play" nothing.
+        if (blob.size < MIN_TTS_AUDIO_BYTES) throw new Error("tts_body_too_small");
+
+        const objectUrl = URL.createObjectURL(blob);
+        objectUrlsRef.current.add(objectUrl);
+        rememberLastAudio(objectUrl);
+        playAudio(objectUrl);
+      } catch (error) {
+        logMiniVicIssue("Server voice unavailable; using browser speech", error);
+        speakText(trimmed);
+      }
+    })();
   };
 
   const playGeneratedVideo = (videoSrc: string) => {
@@ -1297,6 +1342,18 @@ const MiniVicBot = () => {
                   <Sparkles size={14} className={isSpeaking ? "animate-spin-slow text-white" : "text-white/70"} />
                 </h3>
                 <p className="mt-0.5 truncate text-[11px] text-white/55">Vikram&apos;s AI clone · ask me anything</p>
+                {/* The one disclosure this panel may never lose. The audio it
+                    plays is an ElevenLabs stock voice, not a recording of
+                    Vikram and not a clone of him — his plan refuses voice
+                    cloning — so the panel says so where the voice is heard,
+                    not only in the privacy page's synthetic-media section.
+                    tests/e2e/avatar-voice.spec.ts fails if it disappears. */}
+                <p
+                  data-testid="minivic-synthetic-label"
+                  className="mt-0.5 truncate text-[10px] uppercase tracking-[0.16em] text-white/45"
+                >
+                  Synthetic voice · not a recording of Vikram
+                </p>
               </div>
               <span className={`shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-medium tracking-wide backdrop-blur transition-colors ${
                 isSpeaking
