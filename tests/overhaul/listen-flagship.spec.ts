@@ -276,3 +276,112 @@ test.describe('Listen flagship — the client CTA', () => {
     expect(booking, '#listen links to a booking host').toEqual([]);
   });
 });
+
+/** A CSS time value ('1.16s' / '1160ms' / '0s') in milliseconds. */
+function cssTimeToMs(value: string): number {
+  const trimmed = value.trim();
+  if (trimmed.endsWith('ms')) return parseFloat(trimmed);
+  if (trimmed.endsWith('s')) return parseFloat(trimmed) * 1000;
+  return parseFloat(trimmed) || 0;
+}
+
+test.describe('Listen flagship — four routes arrive on the line (C2)', () => {
+  test('TC-LISTEN-FLAG-04: one arrival mark per channel, in data order, at strictly increasing x', async ({
+    page,
+  }) => {
+    await gotoListen(page);
+
+    const marks = await page.locator(`${LISTEN} [data-arrival]`).evaluateAll((els) =>
+      els.map((el) => {
+        const box = el.getBoundingClientRect();
+        return { kind: el.getAttribute('data-arrival'), centre: box.left + box.width / 2 };
+      }),
+    );
+
+    // One mark per channel — no more, no fewer — and in the data's own order.
+    expect(marks.map((m) => m.kind), 'the arrival marks do not match listenContent.channels in count or order').toEqual(
+      listenContent.channels.map((c) => c.kind),
+    );
+
+    // A timeline, not a cluster: each mark sits to the right of the one before it.
+    for (let i = 1; i < marks.length; i += 1) {
+      expect(
+        marks[i].centre,
+        `arrival ${i} (${marks[i].kind}) is not to the right of arrival ${i - 1} (${marks[i - 1].kind})`,
+      ).toBeGreaterThan(marks[i - 1].centre);
+    }
+  });
+});
+
+test.describe('Listen flagship — one beat, still (C4)', () => {
+  test('TC-LISTEN-FLAG-06: jaws, rule and arrivals run once, and every arrival lands inside the jaws\u2019 own window', async ({
+    page,
+  }) => {
+    await gotoListen(page);
+    // The section closes its jaws once, on entry — the animations are declared.
+    await expect(page.locator(LISTEN)).toHaveAttribute('data-closed', '');
+
+    const motion = await page.evaluate(() => {
+      const root = getComputedStyle(document.documentElement);
+      const section = document.querySelector('#listen')!;
+
+      const jaw = (side: string) => {
+        const el = section.querySelector(`[data-jaw="${side}"]`);
+        if (!el) return null;
+        const cs = getComputedStyle(el);
+        return { duration: cs.animationDuration, iteration: cs.animationIterationCount, name: cs.animationName };
+      };
+
+      const arrivals = Array.from(section.querySelectorAll('[data-arrival] > path')).map((el) => {
+        const cs = getComputedStyle(el);
+        return { duration: cs.animationDuration, delay: cs.animationDelay, iteration: cs.animationIterationCount };
+      });
+
+      // No element anywhere in the section may loop — the section has one beat.
+      const iterations = Array.from(section.querySelectorAll('*')).map(
+        (el) => getComputedStyle(el).animationIterationCount,
+      );
+
+      return {
+        cineLong: root.getPropertyValue('--motion-cine-long'),
+        cineIn: root.getPropertyValue('--motion-cine-in'),
+        left: jaw('left'),
+        right: jaw('right'),
+        arrivals,
+        iterations,
+      };
+    });
+
+    const cineLong = cssTimeToMs(motion.cineLong);
+    const cineIn = cssTimeToMs(motion.cineIn);
+    expect(cineLong, '--motion-cine-long is not a positive duration').toBeGreaterThan(0);
+
+    // The jaws are the window every arrival has to land inside of.
+    for (const side of [motion.left, motion.right]) {
+      expect(side, 'a caliper jaw is missing').not.toBeNull();
+      expect(cssTimeToMs(side!.duration), 'a jaw does not run for --motion-cine-long').toBeCloseTo(cineLong, 0);
+      expect(side!.iteration, 'a jaw does not run exactly once').toBe('1');
+    }
+
+    // Four marks (two halves each), each running once and finishing — delay plus
+    // its own duration — no later than the jaws do.
+    expect(motion.arrivals.length, 'expected two path halves per arrival mark').toBe(
+      listenContent.channels.length * 2,
+    );
+    for (const arrival of motion.arrivals) {
+      expect(arrival.iteration, 'an arrival mark does not run exactly once').toBe('1');
+      expect(cssTimeToMs(arrival.duration), 'an arrival close is not the cinematic in-time').toBeCloseTo(cineIn, 0);
+      const finish = cssTimeToMs(arrival.delay) + cssTimeToMs(arrival.duration);
+      expect(finish, `an arrival finishes at ${finish}ms, past the jaws' ${cineLong}ms window`).toBeLessThanOrEqual(
+        cineLong + 1,
+      );
+    }
+
+    // Nothing in the section carries an infinite (or other non-1) iteration count.
+    for (const iteration of motion.iterations) {
+      expect(iteration === '1' || iteration === 'none', `an element loops with iteration-count ${iteration}`).toBe(
+        true,
+      );
+    }
+  });
+});
