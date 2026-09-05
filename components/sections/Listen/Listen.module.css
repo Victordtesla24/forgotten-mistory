@@ -232,6 +232,78 @@
     }
 }
 
+/* ── The four arrivals ────────────────────────────────────────────────────────
+   One caliper jaw pair per channel, laid along the beam at strictly increasing
+   x (LISTEN-FLAGSHIP.md §2 C2). Each is the site's own mark at hairline weight,
+   drawn in the caliper's own ink — currentColor, the section's --mist-400 — so
+   it never introduces a colour. Gold on the two record channels is t_l1_04. */
+.arrival {
+    /* How far each half stands open before it closes, in the SVG's own units. */
+    --arrival-open: 9px;
+}
+
+.arrivalJawLeft,
+.arrivalJawRight {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1;
+    stroke-linecap: butt;
+    /* The mark's own opacity, identical to the closing jaws above. */
+    opacity: 0.55;
+}
+
+/* At rest — and with no script at all — every mark is drawn closed on its
+   point: the final state is the default state, exactly as the jaws are. */
+.arrivalJawLeft,
+.arrivalJawRight {
+    transform: translateX(0);
+}
+
+/* Armed — script present, section not yet arrived — the marks stand open, in
+   step with the full-width jaws above them. */
+.listen[data-armed]:not([data-closed]) .arrivalJawLeft {
+    transform: translateX(calc(-1 * var(--arrival-open)));
+}
+
+.listen[data-armed]:not([data-closed]) .arrivalJawRight {
+    transform: translateX(var(--arrival-open));
+}
+
+/* Entered: the arrivals close in sequence INSIDE the jaws' single
+   --motion-cine-long window (MOT-F-4). Each mark's close runs for the shorter
+   cinematic in-time and is offset only by animation-delay, spread across the
+   slack between that in-time and the jaws' window so the last mark lands
+   exactly as the jaws finish — no new clock, no loop, iteration-count 1. */
+.listen[data-closed] .arrivalJawLeft {
+    animation: arrivalCloseLeft var(--motion-cine-in) var(--motion-ease-emphasized) both;
+    animation-delay: calc((var(--motion-cine-long) - var(--motion-cine-in)) * var(--arrival-progress, 0));
+}
+
+.listen[data-closed] .arrivalJawRight {
+    animation: arrivalCloseRight var(--motion-cine-in) var(--motion-ease-emphasized) both;
+    animation-delay: calc((var(--motion-cine-long) - var(--motion-cine-in)) * var(--arrival-progress, 0));
+}
+
+@keyframes arrivalCloseLeft {
+    from {
+        transform: translateX(calc(-1 * var(--arrival-open)));
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes arrivalCloseRight {
+    from {
+        transform: translateX(var(--arrival-open));
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
 /* The last stroke: a hairline the width of the instrument, drawn once the
    caliper has closed. It is the caliper bracket at one pixel — the instrument
    closing for good. */
@@ -435,6 +507,16 @@
     .listen[data-closed] .rule {
         animation: none;
         transform: none;
+    }
+
+    /* The arrivals mirror the jaws: drawn closed at once, the same final state
+       the beat arrives at, with nothing in motion. */
+    .listen[data-armed]:not([data-closed]) .arrivalJawLeft,
+    .listen[data-closed] .arrivalJawLeft,
+    .listen[data-armed]:not([data-closed]) .arrivalJawRight,
+    .listen[data-closed] .arrivalJawRight {
+        animation: none;
+        transform: translateX(0);
     }
 
     /* The copy is never hidden behind the beat (TC-CINE-07: under reduced

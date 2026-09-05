@@ -25,6 +25,29 @@ const READING_AIR = 3;
 const FALLBACK_HALF = 20;
 
 /**
+ * The four routes arrive as four marks along the beam (LISTEN-FLAGSHIP.md §2 C2).
+ * The marks are laid at strictly increasing x inside this margin from each edge,
+ * so they read as a timeline across the instrument rather than a cluster at its
+ * centre where the reading and the closing jaws already are.
+ */
+const ARRIVAL_MARGIN = 40;
+/** How far each half of an arrival mark stands open before it closes, in viewBox units. */
+const ARRIVAL_OPEN = 9;
+/** Half the closed gap of an arrival mark — the small bracket its two jaws close to. */
+const ARRIVAL_GAP = 2;
+/** The arrival jaw's vertical reach on the beam, hairline-scale (the beam sits at y=20). */
+const ARRIVAL_TOP = 13;
+const ARRIVAL_BOTTOM = 27;
+/** Each arrival jaw's inward return, the mark's own hairline step. */
+const ARRIVAL_RETURN = 3;
+
+/** The x of the i-th arrival mark of `count`, strictly increasing across the beam. */
+const arrivalX = (index: number, count: number) =>
+  count <= 1
+    ? CALIPER_CENTRE
+    : ARRIVAL_MARGIN + (index * (CALIPER_WIDTH - 2 * ARRIVAL_MARGIN)) / (count - 1);
+
+/**
  * Always willing to listen — feedback & coffee?
  *
  * The instrument is set down. After five screens of rules, readouts, brackets
@@ -202,6 +225,41 @@ export default function Listen() {
               vectorEffect="non-scaling-stroke"
             />
           </g>
+
+          {/* The four routes arrive as four marks on the voice's line: one
+              caliper jaw pair per channel, in DOM order, at strictly increasing
+              x. Each closes in sequence inside the jaws' single cinematic window
+              — animation-delay only, iteration-count 1 — four beats arriving on
+              the beam, not a second clock (MOT-F-4, LISTEN-FLAGSHIP.md §2 C2/C4).
+              Drawn in the caliper's own ink at hairline weight; the gold on the
+              two record channels (LinkedIn, GitHub) is t_l1_04. */}
+          {listenContent.channels.map((channel, index) => {
+            const count = listenContent.channels.length;
+            const cx = arrivalX(index, count);
+            const arrivalStyle = {
+              '--arrival-progress': count > 1 ? index / (count - 1) : 0,
+            } as CSSProperties;
+            return (
+              <g
+                key={channel.href}
+                data-arrival={channel.kind}
+                className={styles.arrival}
+                style={arrivalStyle}
+              >
+                <path
+                  className={styles.arrivalJawLeft}
+                  d={`M${cx - ARRIVAL_GAP} ${ARRIVAL_TOP} V${ARRIVAL_BOTTOM} M${cx - ARRIVAL_GAP} ${ARRIVAL_TOP} h${ARRIVAL_RETURN} M${cx - ARRIVAL_GAP} ${ARRIVAL_BOTTOM} h${ARRIVAL_RETURN}`}
+                  vectorEffect="non-scaling-stroke"
+                />
+                <path
+                  className={styles.arrivalJawRight}
+                  d={`M${cx + ARRIVAL_GAP} ${ARRIVAL_TOP} V${ARRIVAL_BOTTOM} M${cx + ARRIVAL_GAP} ${ARRIVAL_TOP} h-${ARRIVAL_RETURN} M${cx + ARRIVAL_GAP} ${ARRIVAL_BOTTOM} h-${ARRIVAL_RETURN}`}
+                  vectorEffect="non-scaling-stroke"
+                />
+              </g>
+            );
+          })}
+
           <text
             ref={readingRef}
             className={styles.reading}
