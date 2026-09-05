@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 
+import { greetingEnvelope } from '../../app/data/generated/greeting-envelope';
+
 /**
  * Always willing to listen — the closing screen.
  *
@@ -138,8 +140,11 @@ test.describe('Listen', () => {
     expect(Math.abs(settled.left + settled.half)).toBeLessThan(0.5);
     expect(Math.abs(settled.right - settled.half)).toBeLessThan(0.5);
 
-    // The reading is '—', in the mono face, and stays '—'.
-    await expect(caliper.locator('text')).toHaveText('—');
+    // The reading is the greeting's measured length, in the mono face, read
+    // from the generated envelope (LISTEN-FLAGSHIP.md §2 C5) — no longer '—'.
+    await expect(caliper.locator('text')).toHaveText(
+      `${greetingEnvelope.durationSeconds.toFixed(2)} s`,
+    );
   });
 
   test('TC-LISTEN-07: under reduced motion the caliper is drawn closed and nothing moves', async ({ page }) => {

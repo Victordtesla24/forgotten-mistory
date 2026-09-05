@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { extname, join, relative } from 'node:path';
 
@@ -382,6 +383,65 @@ test.describe('Listen flagship — one beat, still (C4)', () => {
       expect(iteration === '1' || iteration === 'none', `an element loops with iteration-count ${iteration}`).toBe(
         true,
       );
+    }
+  });
+});
+
+test.describe('Listen flagship — the instrument finally measures something (C5)', () => {
+  /** The one artefact the site itself produced, whose length the caliper reads. */
+  const GREETING_MP3 = join(process.cwd(), 'public/assets/minivic-greeting.mp3');
+
+  test('TC-LISTEN-FLAG-08: the caliper reading is `${durationSeconds.toFixed(2)} s` from the generated envelope, within 0.01 s of ffprobe', async ({
+    page,
+  }) => {
+    // The figure the DOM must show — derived from the generated file, never a
+    // literal. `greeting_envelope.mjs` writes durationSeconds from ffprobe on
+    // the MP3 at build time, so the reading is pinned to the shipped artefact.
+    const expected = `${greetingEnvelope.durationSeconds.toFixed(2)} s`;
+
+    await gotoListen(page);
+    const reading = page.locator(`${LISTEN} svg[data-caliper] [data-reading]`);
+    await expect(reading, 'the caliper has no reading element').toHaveCount(1);
+    // No longer '—': the closing instrument prints the greeting's own length.
+    await expect(reading, 'the reading is not the greeting length from the envelope').toHaveText(expected);
+
+    // Anti-hand-typing: the generated durationSeconds must itself agree with
+    // ffprobe on the MP3 on disk to within 0.01 s. A stale or invented figure
+    // in greeting-envelope.ts fails here even though the DOM would still match.
+    expect(existsSync(GREETING_MP3), `greeting MP3 missing at ${GREETING_MP3}`).toBe(true);
+    const probed = Number(
+      execFileSync(
+        'ffprobe',
+        ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', GREETING_MP3],
+        { encoding: 'utf8' },
+      ).trim(),
+    );
+    expect(Number.isFinite(probed), 'ffprobe did not return a numeric duration').toBe(true);
+    expect(
+      Math.abs(probed - greetingEnvelope.durationSeconds),
+      `envelope durationSeconds ${greetingEnvelope.durationSeconds} is ${Math.abs(
+        probed - greetingEnvelope.durationSeconds,
+      )} s from ffprobe's ${probed}`,
+    ).toBeLessThanOrEqual(0.01);
+
+    // And the rounded figure a visitor reads is ffprobe's own, to two places.
+    expect(expected, 'the displayed reading disagrees with ffprobe rounded to 0.01 s').toBe(`${probed.toFixed(2)} s`);
+  });
+
+  test('TC-LISTEN-FLAG-08b: the reading is achromatic — a measurement, not a record (C3/C5)', async ({ page }) => {
+    // Gold in this section is reserved for the two external record marks; the
+    // reading is a figure the instrument prints, so it stays in the section's
+    // own ink. This complements TC-LISTEN-08 without re-sweeping the section.
+    await gotoListen(page);
+    const stroke = await page.locator(`${LISTEN} svg[data-caliper] [data-reading]`).evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { fill: cs.fill, color: cs.color };
+    });
+    for (const raw of [stroke.fill, stroke.color]) {
+      const m = raw.match(/rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/);
+      if (!m) continue;
+      const rgb = [Number(m[1]), Number(m[2]), Number(m[3])];
+      expect(Math.max(...rgb) - Math.min(...rgb), `the reading is chromatic (${raw})`).toBeLessThanOrEqual(8);
     }
   });
 });

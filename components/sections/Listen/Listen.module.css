@@ -181,7 +181,9 @@
     transform: translateX(var(--caliper-half, 1.25rem));
 }
 
-/* The reading. '—' in the mono face at caption size, and it stays '—'. */
+/* The reading: the greeting's measured length in the mono face at caption
+   size, in the section's own ink (currentColor) and never gold — it is a
+   measurement the instrument prints, not a record a reader can open. */
 .reading {
     font-family: var(--font-mono);
     font-size: var(--fs-caption);

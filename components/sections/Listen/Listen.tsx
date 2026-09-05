@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 
 import Scene from '@/components/gl/Scene';
 import { listenContent } from '@/app/data/portfolio/listen';
+import { greetingEnvelope } from '@/app/data/generated/greeting-envelope';
 
 import type { BeatState } from './ListenField';
 import styles from './Listen.module.css';
@@ -23,6 +24,15 @@ const JAW_RETURN = 3;
 const READING_AIR = 3;
 /** The closed half-width before anything has been measured (a 2.5rem gap at a 16px root). */
 const FALLBACK_HALF = 20;
+
+/**
+ * The one figure the closing instrument can honestly measure: the synthetic
+ * introduction's own length, read from the generated envelope — never typed
+ * here (LISTEN-FLAGSHIP.md §2 C5, TC-LISTEN-FLAG-08). `greeting_envelope.mjs`
+ * writes `durationSeconds` from `ffprobe` on the MP3 on every build, so this
+ * stays pinned to the artefact the site itself produced.
+ */
+const READING = `${greetingEnvelope.durationSeconds.toFixed(2)} s`;
 
 /**
  * The four routes arrive as four marks along the beam (LISTEN-FLAGSHIP.md §2 C2).
@@ -59,18 +69,21 @@ const arrivalX = (index: number, count: number) =>
  * — the one mark the site asks a reader to learn — is drawn here at instrument
  * scale, jaws open at full width when the section arrives. Over the long
  * cinematic beat the jaws close to the width of the sentence's first word, and
- * the reading between them stays '—': the section makes no claim, so there is
- * no figure and no gold. Then the hairline draws beneath it as the last stroke.
- * The instrument that measured everything above is set down, still honest,
- * with nothing to measure.
+ * the reading between them is the one thing the instrument can honestly measure
+ * here — the synthetic introduction's own length, `24.98 s`, read from the
+ * generated envelope (LISTEN-FLAGSHIP.md §2 C5). It is a measurement, not a
+ * claim, so it carries no gold. Then the hairline draws beneath it as the last
+ * stroke. The instrument that measured everything above is set down, still
+ * honest, and finally measures the one artefact the site itself produced.
  *
  * The closed width is measured, not guessed: a DOM Range over the sentence's
  * first word gives its rendered width in place, without adding an element to
- * the one italic line on the site. The reading's own width sets a floor, so the
- * jaws never close onto the '—'. With no script at all the instrument renders
- * closed and the rule drawn — the final state is the default state — and under
- * reduced motion the same final state is drawn at once while the copy arrives
- * as a short, sequenced fade instead.
+ * the one italic line on the site. The reading is wider than the old '—', so
+ * its own rendered width sets a floor and the jaws never close onto the figure.
+ * With no script at all the instrument renders closed and the rule drawn — the
+ * final state is the default state — and under reduced motion the same final
+ * state is drawn at once while the copy arrives as a short, sequenced fade
+ * instead.
  *
  * There is deliberately no contact form. On a static export a form either lies
  * about where the message goes or hands the visitor to a third party, and
@@ -198,9 +211,11 @@ export default function Listen() {
           {listenContent.sentence}
         </p>
 
-        {/* The instrument, set down. Two jaws close on a reading that stays
-            '—'; decorative to assistive technology because it says nothing the
-            sentence above it does not. */}
+        {/* The instrument, set down. Two jaws close on the one figure it can
+            honestly measure — the synthetic introduction's own length, read
+            from the generated envelope (LISTEN-FLAGSHIP.md §2 C5). Decorative
+            to assistive technology: the section's copy already names the
+            greeting, so the reading repeats nothing a screen reader needs. */}
         <svg
           ref={caliperRef}
           data-caliper
@@ -262,13 +277,14 @@ export default function Listen() {
 
           <text
             ref={readingRef}
+            data-reading
             className={styles.reading}
             x={CALIPER_CENTRE}
             y="20"
             textAnchor="middle"
             dominantBaseline="central"
           >
-            —
+            {READING}
           </text>
         </svg>
 
