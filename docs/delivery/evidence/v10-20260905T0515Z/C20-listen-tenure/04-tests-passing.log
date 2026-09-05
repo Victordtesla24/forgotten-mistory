@@ -1,0 +1,161 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/listen.spec.ts tests/e2e/about.spec.ts tests/e2e/audience-paths.spec.ts tests/content tests/a11y/text-contrast.spec.ts tests/monochrome
+
+[2mRunning [22m110[2m tests using [22m2[2m workers[22m
+
+  [32m✓[39m  [2m  2 [22m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground[2m (14.0s)[22m
+  [32m✓[39m  [2m  3 [22m[chromium] › tests/content/content-check.spec.ts:43:7 › Content Preservation › CT-01: Hero name from hero.ts appears verbatim[2m (989ms)[22m
+  [32m✓[39m  [2m  4 [22m[chromium] › tests/content/content-check.spec.ts:48:7 › Content Preservation › CT-02: Hero positioning line appears verbatim[2m (835ms)[22m
+  [32m✓[39m  [2m  1 [22m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground[2m (16.8s)[22m
+  [32m✓[39m  [2m  5 [22m[chromium] › tests/content/content-check.spec.ts:55:7 › Content Preservation › CT-03: Hero statement states a tenure and names the current engagement[2m (837ms)[22m
+  [32m✓[39m  [2m  6 [22m[chromium] › tests/content/content-check.spec.ts:87:7 › Content Preservation › CT-04: Every employer on the CV is named in the experience timeline[2m (1.3s)[22m
+  [32m✓[39m  [2m  7 [22m[chromium] › tests/content/content-check.spec.ts:74:7 › Content Preservation › CT-05: About carries the career facts[2m (1.4s)[22m
+  [32m✓[39m  [2m  8 [22m[chromium] › tests/content/content-check.spec.ts:106:7 › Content Preservation › CT-06: All six curated repositories render as plates with real GitHub links[2m (1.5s)[22m
+  [32m✓[39m  [2m  9 [22m[chromium] › tests/content/content-check.spec.ts:126:7 › Content Preservation › CT-07: The Vedic-astronomy work survives the rebuild as a vitrine plate[2m (1.4s)[22m
+  [32m✓[39m  [2m 11 [22m[chromium] › tests/content/content-check.spec.ts:161:7 › Content Preservation › CT-09: Contact channels from siteContent appear verbatim in the closing section[2m (1.2s)[22m
+  [32m✓[39m  [2m 10 [22m[chromium] › tests/content/content-check.spec.ts:139:7 › Content Preservation › CT-08: Credentials and the un-held certification both appear in the calibration table[2m (1.4s)[22m
+  [32m✓[39m  [2m 13 [22m[chromium] › tests/content/content-check.spec.ts:222:7 › Content Preservation › CT-11: GitHub and LinkedIn are linked from the closing section[2m (1.1s)[22m
+  [32m✓[39m  [2m 12 [22m[chromium] › tests/content/content-check.spec.ts:180:7 › Content Preservation › CT-10: Every hero figure is printed with the source it came from[2m (1.2s)[22m
+  [32m✓[39m  [2m 14 [22m[chromium] › tests/content/content-check.spec.ts:240:7 › Content Preservation › CT-15: LinkedIn (primary recruiter channel) is linked from the persistent navigation[2m (1.1s)[22m
+  [32m✓[39m  [2m 16 [22m[chromium] › tests/content/content-check.spec.ts:263:7 › Content Preservation › CT-17: MiniVic availability default and hiring copy keep active-intent ATO wording[2m (5ms)[22m
+  [32m✓[39m  [2m 17 [22m[chromium] › tests/content/content-check.spec.ts:308:7 › Content Preservation › CT-11: every tenure claim on the page carries its evidence[2m (1.3s)[22m
+  [32m✓[39m  [2m 18 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:48:7 › MiniVic brain — direct-Gemini tier removed › KB-01: no lib/ source calls generativelanguage.googleapis.com[2m (6ms)[22m
+  [32m✓[39m  [2m 19 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:55:7 › MiniVic brain — direct-Gemini tier removed › KB-02: no lib/ source reads a NEXT_PUBLIC_GEMINI_* env var[2m (2ms)[22m
+  [32m✓[39m  [2m 20 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:62:7 › MiniVic brain — direct-Gemini tier removed › KB-03: the removed Gemini machinery is absent from miniVicBrain[2m (5ms)[22m
+  [32m✓[39m  [2m 21 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:78:7 › MiniVic brain — direct-Gemini tier removed › KB-04: BrainSource is exactly openrouter | knowledge | fallback[2m (2ms)[22m
+  [32m✓[39m  [2m 22 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "how many years of experience do you have" is answered offline by "years-of-experience"[2m (2ms)[22m
+  [32m✓[39m  [2m 23 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "years of experience" is answered offline by "years-of-experience"[2m (2ms)[22m
+  [32m✓[39m  [2m 24 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "how long have you been working" is answered offline by "years-of-experience"[2m (2ms)[22m
+  [32m✓[39m  [2m 25 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your seniority level" is answered offline by "years-of-experience"[2m (4ms)[22m
+  [32m✓[39m  [2m 26 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what certifications do you hold" is answered offline by "certifications"[2m (2ms)[22m
+  [32m✓[39m  [2m 27 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "list your certifications with dates" is answered offline by "certifications"[2m (2ms)[22m
+  [32m✓[39m  [2m 28 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "when did you get your CSM" is answered offline by "certifications"[2m (2ms)[22m
+  [32m✓[39m  [2m 29 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what accreditations do you have" is answered offline by "certifications"[2m (3ms)[22m
+  [32m✓[39m  [2m 30 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what technologies do you use for AI" is answered offline by "tech-stack"[2m (2ms)[22m
+  [32m✓[39m  [2m 31 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your tech stack" is answered offline by "tech-stack"[2m (2ms)[22m
+  [32m✓[39m  [2m 32 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you know python" is answered offline by "tech-stack"[2m (2ms)[22m
+  [32m✓[39m  [2m 33 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you know kubernetes" is answered offline by "tech-stack"[2m (2ms)[22m
+  [32m✓[39m  [2m 34 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your availability" is answered offline by "availability"[2m (2ms)[22m
+  [32m✓[39m  [2m 35 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "can you start immediately" is answered offline by "availability"[2m (2ms)[22m
+  [32m✓[39m  [2m 36 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "where are you located" is answered offline by "location-remote"[2m (2ms)[22m
+  [32m✓[39m  [2m 37 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you work remotely" is answered offline by "location-remote"[2m (1ms)[22m
+  [32m✓[39m  [2m 38 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "are you open to relocating" is answered offline by "location-remote"[2m (2ms)[22m
+  [32m✓[39m  [2m 39 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your linkedin" is answered offline by "contact"[2m (1ms)[22m
+  [32m✓[39m  [2m 40 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "linkedin profile" is answered offline by "contact"[2m (2ms)[22m
+  [32m✓[39m  [2m 41 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your github" is answered offline by "contact"[2m (2ms)[22m
+  [32m✓[39m  [2m 42 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "send me your resume" is answered offline by "resume-cv"[2m (2ms)[22m
+  [32m✓[39m  [2m 43 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "can I download your CV" is answered offline by "resume-cv"[2m (1ms)[22m
+  [32m✓[39m  [2m 44 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "give me three quantified outcomes" is answered offline by "delivery-metrics"[2m (2ms)[22m
+  [32m✓[39m  [2m 45 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what results have you delivered" is answered offline by "delivery-metrics"[2m (1ms)[22m
+  [32m✓[39m  [2m 46 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what are your top achievements with numbers" is answered offline by "delivery-metrics"[2m (2ms)[22m
+  [32m✓[39m  [2m 47 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "tell me about yourself" is answered offline by "profile-summary"[2m (1ms)[22m
+  [32m✓[39m  [2m 48 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "who are you" is answered offline by "profile-summary"[2m (5ms)[22m
+  [32m✓[39m  [2m 49 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "summarise your experience" is answered offline by "profile-summary"[2m (3ms)[22m
+  [32m✓[39m  [2m 50 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what industries have you worked in" is answered offline by "industries-sectors"[2m (2ms)[22m
+  [32m✓[39m  [2m 51 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "have you worked in government" is answered offline by "industries-sectors"[2m (3ms)[22m
+  [32m✓[39m  [2m 52 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "have you managed budgets" is answered offline by "leadership"[2m (4ms)[22m
+  [32m✓[39m  [2m 53 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "how big were the teams you led" is answered offline by "leadership"[2m (2ms)[22m
+  [32m✓[39m  [2m 54 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you have a visa" is answered offline by "work-rights"[2m (1ms)[22m
+  [32m✓[39m  [2m 55 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "are you an australian citizen" is answered offline by "work-rights"[2m (2ms)[22m
+  [32m✓[39m  [2m 56 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "tell me about ANZ" is answered offline by "anz-experience"[2m (2ms)[22m
+  [32m✓[39m  [2m 57 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you have banking experience" is answered offline by "banking-financial-services"[2m (2ms)[22m
+  [32m✓[39m  [2m 58 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "did you work at microsoft" is answered offline by "early-career"[2m (3ms)[22m
+  [32m✓[39m  [2m 59 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:150:7 › MiniVic offline knowledge base — recruiter coverage › KB-05: the offline corpus carries the load-bearing recruiter facts[2m (1ms)[22m
+  [32m✓[39m  [2m 60 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:185:7 › MiniVic offline knowledge base — recruiter coverage › KB-06: no knowledge-base answer still claims a Gemini-powered brain[2m (1ms)[22m
+  [32m✓[39m  [2m 61 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:194:7 › MiniVic offline knowledge base — recruiter coverage › KB-07: entry ids are unique[2m (4ms)[22m
+  [32m✓[39m  [2m 15 [22m[chromium] › tests/content/content-check.spec.ts:249:7 › Content Preservation › CT-14: MiniVicBot mounts from the layout without throwing[2m (3.8s)[22m
+  [32m✓[39m  [2m 62 [22m[chromium] › tests/e2e/about.spec.ts:39:7 › About › TC-ABOUT-01: all ten dimensions render, in the engine’s own order[2m (1.1s)[22m
+  [32m✓[39m  [2m 63 [22m[chromium] › tests/e2e/about.spec.ts:47:7 › About › TC-ABOUT-02: every dimension carries an answer and its evidence[2m (1.6s)[22m
+  [32m✓[39m  [2m 64 [22m[chromium] › tests/e2e/about.spec.ts:60:7 › About › TC-ABOUT-03: no dimension is given a score[2m (2.0s)[22m
+  [32m✓[39m  [2m 65 [22m[chromium] › tests/e2e/about.spec.ts:79:7 › About › TC-ABOUT-04: the dimensions name their source[2m (1.6s)[22m
+  [32m✓[39m  [2m 66 [22m[chromium] › tests/e2e/about.spec.ts:85:7 › About › TC-ABOUT-05: job-side dimensions are labelled as such[2m (2.4s)[22m
+  [32m✓[39m  [2m 67 [22m[chromium] › tests/e2e/about.spec.ts:98:7 › About › TC-ABOUT-06: the ten items are reading aids, not tab stops[2m (2.5s)[22m
+  [32m✓[39m  [2m 68 [22m[chromium] › tests/e2e/about.spec.ts:152:7 › About › TC-ABOUT-07: the section is complete without WebGL[2m (1.6s)[22m
+  [32m✓[39m  [2m 69 [22m[chromium] › tests/e2e/about.spec.ts:191:7 › About › TC-ABOUT-08: the compass turns as the reader scrolls — item 6 centred reads 06 / FROM THE ROLE[2m (3.5s)[22m
+  [32m✓[39m  [2m 70 [22m[chromium] › tests/e2e/about.spec.ts:215:7 › About › TC-ABOUT-09: hover overrides the scroll index, and leaving the list hands it back[2m (3.5s)[22m
+  [32m✓[39m  [2m 72 [22m[chromium] › tests/e2e/about.spec.ts:277:7 › About › TC-ABOUT-11: under reduced motion the index snaps — no sweep, no travel, still swept[2m (1.7s)[22m
+  [32m✓[39m  [2m 71 [22m[chromium] › tests/e2e/about.spec.ts:234:7 › About › TC-ABOUT-10: on first entry the bezel sweeps once — 1160 ms, emphasised ease, never again[2m (2.9s)[22m
+  [32m✓[39m  [2m 73 [22m[chromium] › tests/e2e/about.spec.ts:305:7 › About › TC-ABOUT-12: no gold on the face — the active sector, its numeral and the ring stay achromatic[2m (2.6s)[22m
+  [32m✓[39m  [2m 74 [22m[chromium] › tests/e2e/about.spec.ts:345:7 › About › TC-ABOUT-13: at 1440 the dial and the first dimension share a baseline[2m (2.6s)[22m
+  [32m✓[39m  [2m 76 [22m[chromium] › tests/e2e/audience-paths.spec.ts:80:7 › Audience paths › AP-02: the CV control is reachable with the keyboard alone[2m (1.3s)[22m
+  [32m✓[39m  [2m 77 [22m[chromium] › tests/e2e/audience-paths.spec.ts:111:7 › Audience paths › AP-03: the CV the control points at is a real PDF the server returns[2m (24ms)[22m
+  [32m✓[39m  [2m 75 [22m[chromium] › tests/e2e/audience-paths.spec.ts:51:7 › Audience paths › AP-01: the employer reaches the CV in two clicks or fewer, at 1440 and 390[2m (1.9s)[22m
+  [32m✓[39m  [2m 79 [22m[chromium] › tests/e2e/audience-paths.spec.ts:150:7 › Audience paths › AP-05: activating the engagement action completes — a live URL, or a mailto with a subject[2m (1.5s)[22m
+  [32m✓[39m  [2m 78 [22m[chromium] › tests/e2e/audience-paths.spec.ts:122:7 › Audience paths › AP-04: #listen carries exactly one engagement action, named for a client[2m (2.6s)[22m
+  [32m✓[39m  [2m 80 [22m[chromium] › tests/e2e/listen.spec.ts:22:7 › Listen › TC-LISTEN-01: the closing sentence is the only italic on the page[2m (1.3s)[22m
+  [32m✓[39m  [2m 81 [22m[chromium] › tests/e2e/listen.spec.ts:32:7 › Listen › TC-LISTEN-02: the closing copy stays under sixty-five words[2m (1.3s)[22m
+  [32m✓[39m  [2m 82 [22m[chromium] › tests/e2e/listen.spec.ts:48:7 › Listen › TC-LISTEN-03: no form, no input, no third-party embed[2m (1.2s)[22m
+  [32m✓[39m  [2m 83 [22m[chromium] › tests/e2e/listen.spec.ts:54:7 › Listen › TC-LISTEN-04: all four channels are real anchors matching the CV[2m (1.2s)[22m
+  [32m✓[39m  [2m 84 [22m[chromium] › tests/e2e/listen.spec.ts:65:7 › Listen › TC-LISTEN-05: hover and focus produce the identical underline[2m (2.0s)[22m
+  [32m✓[39m  [2m 85 [22m[chromium] › tests/e2e/listen.spec.ts:99:7 › Listen › TC-LISTEN-06: the caliper closes once, on entry, over the long cinematic beat[2m (2.5s)[22m
+  [32m✓[39m  [2m 86 [22m[chromium] › tests/e2e/listen.spec.ts:145:7 › Listen › TC-LISTEN-07: under reduced motion the caliper is drawn closed and nothing moves[2m (1.7s)[22m
+  [32m✓[39m  [2m 87 [22m[chromium] › tests/e2e/listen.spec.ts:183:7 › Listen › TC-LISTEN-08: nothing in the closing section is gold[2m (1.8s)[22m
+  [32m✓[39m  [2m 89 [22m[chromium] › tests/e2e/listen.spec.ts:269:7 › Listen › TC-LISTEN-10: the routes span the column and the email is a filled plate[2m (2.1s)[22m
+  [32m✓[39m  [2m 88 [22m[chromium] › tests/e2e/listen.spec.ts:218:7 › Listen › TC-LISTEN-09: the contact routes are read-weight type, not caption grey[2m (4.0s)[22m
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(246, 246, 246)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+  [32m✓[39m  [2m 91 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold[2m (1.5s)[22m
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m 92 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine[2m (2.3s)[22m
+  [32m✓[39m  [2m 90 [22m[chromium] › tests/e2e/listen.spec.ts:320:7 › Listen › TC-LISTEN-11: the closing section is vertically symmetric at every width[2m (5.4s)[22m
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m 93 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine[2m (2.2s)[22m
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m 94 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine[2m (2.1s)[22m
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m 95 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine[2m (2.3s)[22m
+
+=== GS-10 saturated gold inside #skills @1440 === 1
+  span.Skills_legendGlyph__ZFNcO Skills_measuredMark__VkK_a x=129 via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m 96 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:314:7 › C-08 / CC-10 — the calibration card spends gold once › GS-10: at most six elements paint saturated gold inside #skills at rest[2m (4.4s)[22m
+
+=== GS-11 any-gold inside #skills @1440 === 15
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Skills_legendGlyph__ZFNcO Skills_measuredMark__VkK_a x=129 licensed=true via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m 97 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:328:7 › C-08 / CC-10 — the calibration card spends gold once › GS-11: every gold mark in #skills sits on a licensed surface[2m (4.3s)[22m
+
+=== GS-12 gold columns === [[1088,14],[129,1]] → 1 run(s)
+  [32m✓[39m  [2m 98 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:346:7 › C-08 / CC-10 — the calibration card spends gold once › GS-12: the card carries one vertical run of gold, not two[2m (4.4s)[22m
+
+=== GS-13 strands at rest === sourced=17 others=3 stops={"gold":[{"color":"rgb(201, 168, 76)","opacity":0.1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":0.1}],"grey":[{"color":"rgb(144, 144, 144)","opacity":0.08},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":0.08}]}
+  sourced stroke-opacity: 0.28
+  other  stroke-opacity: 0.35
+  [32m✓[39m  [2m 99 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:371:7 › C-08 / CC-10 — the calibration card spends gold once › GS-13: at rest the sourced strands are dim gold and the rest are grey[2m (4.4s)[22m
+
+=== GS-14 stroke-opacity under hover === [1,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18]
+
+=== GS-15 reduced-motion strand transition === {"property":"stroke-opacity","animation":"none"}
+  [32m✓[39m  [2m100 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:423:7 › C-08 / CC-10 — the calibration card spends gold once › GS-14 (Motion F-6): hovering a capability lights its strands and recedes the rest[2m (4.8s)[22m
+  [32m✓[39m  [2m101 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:449:9 › C-08 / CC-10 — the calibration card spends gold once › reduced motion › GS-15: under reduced motion the strand transition is colour only[2m (3.8s)[22m
+  [32m✓[39m  [2m102 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold[2m (2.6s)[22m
+  [32m✓[39m  [2m103 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold[2m (2.5s)[22m
+  [32m✓[39m  [2m104 [22m[chromium] › tests/monochrome/monochrome.spec.ts:118:7 › Monochrome Compliance › MONO-01: :root publishes the grey ramp and exactly the four sanctioned gold tokens[2m (1.3s)[22m
+  [32m✓[39m  [2m105 [22m[chromium] › tests/monochrome/monochrome.spec.ts:146:7 › Monochrome Compliance › MONO-02: Body background is achromatic[2m (1.4s)[22m
+  [32m✓[39m  [2m106 [22m[chromium] › tests/monochrome/monochrome.spec.ts:153:7 › Monochrome Compliance › MONO-03: No inline style declares a colour outside the palette[2m (3.8s)[22m
+  [32m✓[39m  [2m107 [22m[chromium] › tests/monochrome/monochrome.spec.ts:207:7 › Monochrome Compliance › MONO-04: Every rendered colour in every section is achromatic or the sanctioned gold[2m (3.8s)[22m
+  [32m✓[39m  [2m109 [22m[chromium] › tests/monochrome/monochrome.spec.ts:244:7 › Monochrome Compliance › MONO-06: Navigation overlay is achromatic when open[2m (1.4s)[22m
+  [32m✓[39m  [2m110 [22m[chromium] › tests/monochrome/monochrome.spec.ts:252:7 › Monochrome Compliance › MONO-07: The check still rejects an unsanctioned hue[2m (1.4s)[22m
+  [32m✓[39m  [2m108 [22m[chromium] › tests/monochrome/monochrome.spec.ts:218:7 › Monochrome Compliance › MONO-05: The sanctioned accent is actually in use, and only as the accent[2m (4.1s)[22m
+
+[32m  110 passed[39m[2m (1.5m)[22m
