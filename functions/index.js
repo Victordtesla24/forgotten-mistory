@@ -32,8 +32,24 @@ const DEEPSEEK_API_KEY = defineSecret("DEEPSEEK_API_KEY");
 const ZAI_API_KEY = defineSecret("ZAI_API_KEY");
 const OPENAI_API_KEY = defineSecret("OPENAI_API_KEY");
 
-// Vikram's cloned voice (ElevenLabs voice ID). Not a secret — unusable without the key.
-const VOICE_ID = "0ZJ4kFDo6bZUNQsuULOW";
+/**
+ * The voice the site speaks with: ElevenLabs' premade "George" (British male,
+ * middle-aged, narrative). An identifier, not a secret — unusable without the key.
+ *
+ * It is deliberately NOT Vikram's cloned voice. This function used to ask for
+ * `0ZJ4kFDo6bZUNQsuULOW` (category `cloned`), and the account's `payg` plan
+ * refuses instantly-cloned voices at any credit balance, so every request came
+ * back 401 `{"detail":{"status":"ivc_not_permitted","code":"subscription_required"}}`
+ * and the browser saw a 502 — the voice was simply down
+ * (`docs/delivery/evidence/v10-20260905T0515Z/C14a-tts/01-diagnosis.md`).
+ *
+ * A stock voice is the honest substitute rather than a lesser one: it is not
+ * Vikram, the UI says so wherever it can be heard (`components/MiniVicBot.tsx`
+ * prints "Synthetic voice" beside the player), and nothing on the page claims
+ * a visitor is hearing him. Restoring the clone needs a plan with Instant Voice
+ * Cloning, not a code change.
+ */
+const VOICE_ID = "JBFqnCBsd6RMkjVDRZzb";
 // Low-latency model for realtime chat replies.
 const MODEL_ID = "eleven_turbo_v2_5";
 const MAX_CHARS = 600;
