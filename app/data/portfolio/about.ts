@@ -26,6 +26,15 @@ export interface Dimension {
   answer: string;
   /** Where a reader can check it. */
   evidence: string;
+  /**
+   * Whether that evidence names a record a reader can actually go and check —
+   * an employer, a program, a named repository, a figure from the CV. Gold is
+   * the site's one claim mark and it means exactly this, so a line that states
+   * an intention rather than a record (an availability, a preference) is
+   * `false` and stays in the caption grey. Grading it gold would say the site
+   * can source a claim it cannot.
+   */
+  sourced: boolean;
 }
 
 export const aboutContent = {
@@ -42,6 +51,7 @@ export const aboutContent = {
       answer:
         'Python and TypeScript to production, and REXX on a mainframe when the program actually needs it. Cloud-native across Azure, GCP and AWS; Kubernetes, Terraform, Postgres.',
       evidence: '38 public repositories · ATO evidence harness · ANZ platform migrations',
+      sourced: true,
     },
     {
       name: 'Experience Level',
@@ -49,6 +59,7 @@ export const aboutContent = {
       answer:
         'Sixteen years. Senior delivery lead and AI/ML solutions architect since 2017; before that, business analysis and project delivery from May 2010 — sixteen years and four months to September 2026.',
       evidence: 'ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MYOB',
+      sourced: true,
     },
     {
       name: 'Industry Match',
@@ -56,6 +67,7 @@ export const aboutContent = {
       answer:
         'Government, banking and telecommunications — three regulated industries where the delivery constraint is usually assurance, not engineering.',
       evidence: 'Australian Taxation Office, ANZ, NAB, Telstra',
+      sourced: true,
     },
     {
       name: 'Role Alignment',
@@ -63,6 +75,7 @@ export const aboutContent = {
       answer:
         'Scrum Master and Project Manager who architects. I have never found the two halves to be separate jobs: the eight-squad test-evidence problem at the ATO was a delivery problem solved with a toolchain.',
       evidence: 'Payday Super program · Agile Kookaburras squad · PI 47–48',
+      sourced: true,
     },
     {
       name: 'Culture Fit',
@@ -70,6 +83,7 @@ export const aboutContent = {
       answer:
         'Agile as practice rather than ceremony. Cadence and PI planning when the plan holds; a cross-discipline war room, inside three hours, when it does not.',
       evidence: '5+ squads, up to 40 practitioners onshore and offshore',
+      sourced: true,
     },
     {
       name: 'Salary Fit',
@@ -77,6 +91,7 @@ export const aboutContent = {
       answer:
         'Melbourne market band for senior delivery leadership. I would rather agree the scope first and let the rate follow it.',
       evidence: 'Open to permanent and contract engagements',
+      sourced: false,
     },
     {
       name: 'Location Match',
@@ -84,6 +99,7 @@ export const aboutContent = {
       answer:
         'Melbourne, Victoria. Hybrid locally, or remote across Australian and New Zealand time zones.',
       evidence: 'Currently on site with the ATO, Melbourne',
+      sourced: true,
     },
     {
       name: 'Career Growth',
@@ -91,6 +107,7 @@ export const aboutContent = {
       answer:
         'Programs where AI delivery and AI assurance are the hard part — where somebody has to be accountable for whether the model output can be trusted, not just whether it shipped.',
       evidence: 'Langfuse + Phoenix evaluation stack · −38% simulated error-budget breaches',
+      sourced: true,
     },
     {
       name: 'Company Stability',
@@ -98,6 +115,7 @@ export const aboutContent = {
       answer:
         'I look for organisations that can absorb an honest status report. Every program I have rescued was one where somebody said the number out loud early enough.',
       evidence: '75+ hours of evidence against 64 available — escalated, then re-baselined',
+      sourced: true,
     },
     {
       name: 'North Star Align',
@@ -105,6 +123,7 @@ export const aboutContent = {
       answer:
         'Build systems whose claims can be checked. Everything I ship is designed to refuse to fabricate its own evidence, and to say so when it cannot measure something.',
       evidence: 'aether-job-career-agent · unmeasured signals read "not measured", never zero',
+      sourced: true,
     },
   ] satisfies Dimension[],
   /** Named so the reader knows the ten are not invented for the occasion. */

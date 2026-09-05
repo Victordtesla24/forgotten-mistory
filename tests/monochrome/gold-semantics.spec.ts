@@ -467,3 +467,232 @@ test.describe('C-08 / CC-10 — the calibration card spends gold once', () => {
     });
   });
 });
+
+/**
+ * G-A1 / G-A2 — the About section obeys the same two rules as the rest of the
+ * page: gold marks a sourced claim, and everything that is not gold is grey.
+ *
+ * The independent production review (artifacts/adversarial/ADV-REVIEW-20260905.md,
+ * `#about`) found both halves broken in the same section. Every evidence line
+ * under an answered dimension — "38 public repositories · ATO evidence harness
+ * · ANZ platform migrations", "Payday Super program · Agile Kookaburras squad ·
+ * PI 47-48" — was painted `var(--mist-400)`, the same grey as the caption that
+ * introduces it, so the one place on the page where a claim actually names a
+ * checkable source spent no gold at all (`anyGoldColorInAbout: false`). And the
+ * key's role swatch was hatched with `rgb(138 143 154 / 0.34)`, a cool steel
+ * whose channels differ by 16 — under the audit's 0.28 saturation ceiling, so
+ * neither existing gate could see it, and still a blue hue on a monochrome page.
+ *
+ * CC-A1 reads the composited colour off each evidence line and, for the ones
+ * that name a source, requires the gold token *and* AA contrast against the
+ * pixels actually behind the text — gold that a reader cannot read is not a
+ * mark. The one dimension whose evidence is a stated availability rather than a
+ * checkable record ("Open to permanent and contract engagements", Salary Fit)
+ * must stay grey: grading it gold would say the site can source a claim it
+ * cannot, which is the failure the caliper exists to prevent.
+ *
+ * CC-A2 holds the hatch to zero chroma, reading the resolved
+ * `background-image` rather than the source literal so a `var()` cannot hide a
+ * hue behind indirection.
+ */
+
+/** Class-based, not data-attribute-based, so a missing attribute reads as a
+ *  failure rather than as an empty set. */
+const ABOUT_EVIDENCE = '#about p[class*="evidence"]';
+
+/** Mask every glyph so a screenshot shows only what sits *behind* the text. */
+async function maskGlyphs(page: Page, on: boolean) {
+  await page.evaluate((enable) => {
+    const id = '__ga1_glyph_mask__';
+    document.getElementById(id)?.remove();
+    if (!enable) return;
+    const style = document.createElement('style');
+    style.id = id;
+    style.textContent =
+      '*,*::before,*::after{color:transparent!important;-webkit-text-fill-color:transparent!important;' +
+      'text-shadow:none!important;transition:none!important}';
+    document.head.appendChild(style);
+  }, on);
+}
+
+/** Decode a viewport PNG in the page and read the pixels at the given points. */
+async function samplePixels(page: Page, pngB64: string, points: [number, number][]) {
+  return page.evaluate(
+    async ([b64, pts]) => {
+      const img = new Image();
+      img.src = `data:image/png;base64,${b64 as string}`;
+      await img.decode();
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true })!;
+      ctx.drawImage(img, 0, 0);
+      const scale = img.naturalWidth / window.innerWidth;
+      return (pts as [number, number][]).map(([x, y]) => {
+        const d = ctx.getImageData(
+          Math.min(canvas.width - 1, Math.round(x * scale)),
+          Math.min(canvas.height - 1, Math.round(y * scale)),
+          1,
+          1,
+        ).data;
+        return [d[0], d[1], d[2]] as [number, number, number];
+      });
+    },
+    [pngB64, points] as const,
+  );
+}
+
+const srgbChannel = (c: number) => {
+  const s = c / 255;
+  return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+};
+const relLuminance = ([r, g, b]: [number, number, number]) =>
+  0.2126 * srgbChannel(r) + 0.7152 * srgbChannel(g) + 0.0722 * srgbChannel(b);
+const contrastRatio = (a: [number, number, number], b: [number, number, number]) => {
+  const l1 = relLuminance(a);
+  const l2 = relLuminance(b);
+  return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+};
+const rgbTriples = (value: string): [number, number, number][] =>
+  Array.from(value.matchAll(/rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/g)).map(
+    (m) => [Number(m[1]), Number(m[2]), Number(m[3])] as [number, number, number],
+  );
+const isOneOf = (c: [number, number, number], palette: [number, number, number][]) =>
+  palette.some(
+    (g) => Math.abs(c[0] - g[0]) <= 1 && Math.abs(c[1] - g[1]) <= 1 && Math.abs(c[2] - g[2]) <= 1,
+  );
+
+test.describe('G-A — #about spends gold on its sourced evidence and nothing else', () => {
+  test.describe.configure({ timeout: 180000 });
+
+  for (const bp of [
+    { name: '1440x900 (desktop)', width: 1440, height: 900 },
+    { name: '390x844 (phone)', width: 390, height: 844 },
+  ]) {
+    test(`CC-A1 @ ${bp.name}: every sourced About evidence line is painted in the gold token, legibly`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width: bp.width, height: bp.height });
+      await gotoHome(page);
+
+      const lines = page.locator(ABOUT_EVIDENCE);
+      const count = await lines.count();
+      expect(
+        count,
+        'the ten dimensions each print an evidence line; if this is 0 the selector, not the colour, is what broke',
+      ).toBeGreaterThanOrEqual(10);
+
+      const sourced: { text: string; color: string; ratio: number; bg: string }[] = [];
+      const unsourced: { text: string; color: string }[] = [];
+
+      for (let i = 0; i < count; i++) {
+        const line = lines.nth(i);
+        await line.scrollIntoViewIfNeeded();
+        await settle(page);
+
+        const probe = await line.evaluate((el) => {
+          const cs = getComputedStyle(el);
+          const r = el.getBoundingClientRect();
+          return {
+            text: (el.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 56),
+            color: cs.color,
+            isSourced: el.getAttribute('data-sourced') === 'true',
+            point: [
+              Math.round(r.left + Math.min(r.width * 0.25, 60)),
+              Math.round(r.top + r.height / 2),
+            ] as [number, number],
+          };
+        });
+
+        if (!probe.isSourced) {
+          unsourced.push({ text: probe.text, color: probe.color });
+          continue;
+        }
+
+        await maskGlyphs(page, true);
+        const png = await page.screenshot({ fullPage: false, animations: 'disabled' });
+        await maskGlyphs(page, false);
+        const [bg] = await samplePixels(page, png.toString('base64'), [probe.point]);
+        const fgRgb = rgbTriples(probe.color)[0];
+        sourced.push({
+          text: probe.text,
+          color: probe.color,
+          bg: `rgb(${bg.join(',')})`,
+          ratio: fgRgb ? Math.round(contrastRatio(fgRgb, bg) * 100) / 100 : 0,
+        });
+      }
+
+      console.log(`\n=== CC-A1 @ ${bp.name} — About evidence lines ===`);
+      for (const s of sourced)
+        console.log(`  SOURCED   ${s.color} on ${s.bg} = ${s.ratio}:1  "${s.text}"`);
+      for (const u of unsourced) console.log(`  UNSOURCED ${u.color}  "${u.text}"`);
+
+      expect(
+        sourced.length,
+        'at least nine of the ten evidence lines name a source a reader can go and check',
+      ).toBeGreaterThanOrEqual(9);
+
+      const notGold = sourced.filter((s) => {
+        const c = rgbTriples(s.color)[0];
+        return !c || !isOneOf(c, SATURATED_GOLD);
+      });
+      expect(
+        notGold.map((s) => `${s.color} "${s.text}"`),
+        'gold marks a figure with a source: the evidence line under an answered dimension IS that source, ' +
+          'so it takes --gold (or --gold-light), never the caption grey',
+      ).toEqual([]);
+
+      const illegible = sourced.filter((s) => s.ratio < 4.5);
+      expect(
+        illegible.map((s) => `${s.ratio}:1 — ${s.color} on ${s.bg} "${s.text}"`),
+        'WCAG 1.4.3 AA — a mark a reader cannot read is not a mark',
+      ).toEqual([]);
+
+      const goldenLies = unsourced.filter((u) => {
+        const c = rgbTriples(u.color)[0];
+        return c ? isOneOf(c, ANY_GOLD) : false;
+      });
+      expect(
+        goldenLies.map((u) => `${u.color} "${u.text}"`),
+        'an evidence line that names no checkable record stays grey — never grade a claim higher than its evidence',
+      ).toEqual([]);
+    });
+  }
+
+  test('CC-A2: the About key hatch has zero chroma', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.locator('#about').scrollIntoViewIfNeeded();
+    await settle(page);
+
+    const swatch = page.locator('#about [data-state="role"]').first();
+    await expect(swatch, 'the key names the two states the dial can be in').toHaveCount(1);
+
+    const painted = await swatch.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return {
+        backgroundImage: cs.backgroundImage,
+        backgroundColor: cs.backgroundColor,
+        borderTopColor: cs.borderTopColor,
+      };
+    });
+    console.log(`\n=== CC-A2 role swatch === ${JSON.stringify(painted)}`);
+
+    const offenders: string[] = [];
+    for (const [prop, value] of Object.entries(painted)) {
+      for (const c of rgbTriples(value)) {
+        if (isOneOf(c, ANY_GOLD)) continue; // the one sanctioned hue
+        const mx = Math.max(...c);
+        const mn = Math.min(...c);
+        if (mx <= 24) continue; // near-black: hue is imperceptible
+        if (mx - mn > 2) offenders.push(`${prop}: rgb(${c.join(' ')})`);
+      }
+    }
+
+    expect(
+      offenders,
+      'monochrome greys and white only — the hatch was a cool steel rgb(138 143 154), a blue hue under ' +
+        "the audit's saturation ceiling and therefore invisible to every other gate",
+    ).toEqual([]);
+  });
+});
