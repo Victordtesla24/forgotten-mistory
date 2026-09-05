@@ -1,0 +1,81 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts --reporter=list
+
+[2mRunning [22m2[2m tests using [22m2[2m workers[22m
+
+  [31m✘[39m  [2m2 [22m[31m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground[39m[2m (20.8s)[22m
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground[39m[2m (30.3s)[22m
+
+
+[31m  1) [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground [39m
+
+    Error: 68 text node(s) below AA — worst ten:
+    1.03:1 (needs 4.5) [about] div.About_inner__s8EsR > div.About_body__cuZQw > div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > text.Compass_readNumber__sW29s:nth-of-type(1) — "05" fg rgb(246,246,246) on bg rgb(243,243,243) @ 11px/400
+    1.74:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > div.Vitrine_plateHead__OEq9D:nth-of-type(1) > span.Vitrine_repo__MvlDQ:nth-of-type(2) — "ralph-loop-infinite" fg rgb(58,58,58) on bg rgb(10,10,10) @ 12px/400
+    1.74:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(3) > dt — "stack" fg rgb(58,58,58) on bg rgb(10,10,10) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > div.Vitrine_plateHead__OEq9D:nth-of-type(1) > span.Vitrine_repo__MvlDQ:nth-of-type(2) — "aether-job-career-agent" fg rgb(59,59,59) on bg rgb(11,11,11) @ 12px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(1) > dt — "commits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(2) > dt — "active" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(3) > dt — "stack" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > p.Vitrine_limits__WugAS:nth-of-type(2) > span.Vitrine_limitsLabel__19XEy — "Limits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(1) > dt — "commits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(2) > dt — "active" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m68[39m
+
+    [0m [90m 285 |[39m         )
+     [90m 286 |[39m         [33m.[39mjoin([32m'\n'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 287 |[39m       expect(failures[33m.[39mlength[33m,[39m [32m`${failures.length} text node(s) below AA — worst ten:\n${report}`[39m)[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m     |[39m                                                                                                   [31m[1m^[22m[39m
+     [90m 288 |[39m     })[33m;[39m
+     [90m 289 |[39m   }
+     [90m 290 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/a11y/text-contrast.spec.ts:287:99[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground [39m
+
+    Error: 30 text node(s) below AA — worst ten:
+    1.12:1 (needs 4.5) [about] ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(6) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_ > span.Caliper_value__usbAF:nth-of-type(2) — "measured from the role" fg rgb(146,146,146) on bg rgb(155,155,158) @ 11.098px/400
+    3.07:1 (needs 4.5) [about] div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_sweep__DIKqO:nth-of-type(1) > g.Compass_rose__PW3GF > g:nth-of-type(5) > text.Compass_numeral__9WSmf — "05" fg rgb(214,215,215) on bg rgb(119,120,121) @ 3.4px/400
+    3.39:1 (needs 4.5) [about] div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_sweep__DIKqO:nth-of-type(1) > g.Compass_rose__PW3GF > g:nth-of-type(6) > text.Compass_numeral__9WSmf — "06" fg rgb(212,212,213) on bg rgb(111,111,112) @ 3.4px/400
+    3.64:1 (needs 4.5) [about] ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(7) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_ > span.Caliper_value__usbAF:nth-of-type(2) — "measured from the role" fg rgb(129,129,129) on bg rgb(42,43,44) @ 11.098px/400
+    3.71:1 (needs 4.5) [about] div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_sweep__DIKqO:nth-of-type(1) > g.Compass_rose__PW3GF > g:nth-of-type(1) > text.Compass_numeral__9WSmf — "01" fg rgb(211,211,211) on bg rgb(104,104,106) @ 3.4px/400
+    3.73:1 (needs 4.5) [about] ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(9) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_ > span.Caliper_value__usbAF:nth-of-type(2) — "measured from the role" fg rgb(129,129,129) on bg rgb(41,41,42) @ 11.098px/400
+    3.91:1 (needs 4.5) [skills] section#skills > div.Skills_inner__FWoEr > div.Skills_card__IAS_z > p.Skills_footer__N8hs4:nth-of-type(2) — "against the PDF this page links to and you shoul" fg rgb(125,125,125) on bg rgb(33,33,34) @ 11.098px/400
+    4.27:1 (needs 4.5) [about] div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(9) > div.About_itemBody__sd_yL > p.About_evidence__WwIMJ:nth-of-type(2) — "75+ hours of evidence against 64 available — esc" fg rgb(125,125,125) on bg rgb(24,25,28) @ 11.098px/400
+    4.35:1 (needs 4.5) [about] div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_sweep__DIKqO:nth-of-type(1) > g.Compass_rose__PW3GF > g:nth-of-type(7) > text.Compass_numeral__9WSmf — "07" fg rgb(207,207,208) on bg rgb(91,91,93) @ 3.4px/400
+    4.35:1 (needs 4.5) [about] div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(1) > div.About_itemBody__sd_yL > p.About_evidence__WwIMJ:nth-of-type(2) — "38 public repositories · ATO evidence harness · " fg rgb(125,125,125) on bg rgb(22,23,26) @ 11.098px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m30[39m
+
+    [0m [90m 285 |[39m         )
+     [90m 286 |[39m         [33m.[39mjoin([32m'\n'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 287 |[39m       expect(failures[33m.[39mlength[33m,[39m [32m`${failures.length} text node(s) below AA — worst ten:\n${report}`[39m)[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m     |[39m                                                                                                   [31m[1m^[22m[39m
+     [90m 288 |[39m     })[33m;[39m
+     [90m 289 |[39m   }
+     [90m 290 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_697f0e83-f46-1/tests/a11y/text-contrast.spec.ts:287:99[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-text-contrast-Text-co-2adeb--against-its-sampled-ground-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-text-contrast-Text-co-2adeb--against-its-sampled-ground-chromium/error-context.md[22m
+
+[31m  2 failed[39m
+[31m    [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground [39m
+[31m    [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground [39m
+BASE_CONTRAST_EXIT=1
