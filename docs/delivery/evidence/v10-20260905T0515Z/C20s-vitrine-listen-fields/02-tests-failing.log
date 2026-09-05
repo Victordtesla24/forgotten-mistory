@@ -1,0 +1,433 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-vitrine.spec.ts tests/overhaul/scene-listen.spec.ts --reporter=line
+
+[2mRunning [22m14[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/14] [chromium] › tests/overhaul/scene-listen.spec.ts:63:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-01: exactly one canvas mounts in #listen once the section is in view
+[1A[2K[2/14] [chromium] › tests/overhaul/scene-listen.spec.ts:77:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-02: the canvas is aria-hidden, behind the heading and behind the caliper
+[1A[2K[31m  1) [chromium] › tests/overhaul/scene-listen.spec.ts:63:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-01: exactly one canvas mounts in #listen once the section is in view [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#listen canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#listen canvas')[22m
+    [2m    19 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 67 |[39m
+     [90m 68 |[39m     [36mconst[39m canvases [33m=[39m page[33m.[39mlocator([32m`${LISTEN} canvas`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 69 |[39m     [36mawait[39m expect(canvases)[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m    |[39m                            [31m[1m^[22m[39m
+     [90m 70 |[39m
+     [90m 71 |[39m     [36mconst[39m box [33m=[39m [36mawait[39m canvases[33m.[39mfirst()[33m.[39mboundingBox()[33m;[39m
+     [90m 72 |[39m     expect(box[33m,[39m [32m'the #listen canvas has no box'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_a2f5922d-8e7-1/tests/overhaul/scene-listen.spec.ts:69:28[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-listen-TC-S-d1848-once-the-section-is-in-view-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-listen-TC-S-d1848-once-the-section-is-in-view-chromium/error-context.md[22m
+
+
+[1A[2K[31m  2) [chromium] › tests/overhaul/scene-listen.spec.ts:77:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-02: the canvas is aria-hidden, behind the heading and behind the caliper [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#listen canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#listen canvas')[22m
+    [2m    18 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 79 |[39m   }) [33m=>[39m {
+     [90m 80 |[39m     [36mawait[39m settleListenWithGL(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 81 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m`${LISTEN} canvas`[39m))[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m    |[39m                                                    [31m[1m^[22m[39m
+     [90m 82 |[39m
+     [90m 83 |[39m     [36mconst[39m hidden [33m=[39m [36mawait[39m page
+     [90m 84 |[39m       [33m.[39mlocator([32m`${LISTEN} canvas`[39m)[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_a2f5922d-8e7-1/tests/overhaul/scene-listen.spec.ts:81:52[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-listen-TC-S-15f90-ding-and-behind-the-caliper-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-listen-TC-S-15f90-ding-and-behind-the-caliper-chromium/error-context.md[22m
+
+
+[1A[2K[3/14] [chromium] › tests/overhaul/scene-listen.spec.ts:106:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-03: the field is bound to the caliper beat, not a clock of its own
+[1A[2K[4/14] [chromium] › tests/overhaul/scene-listen.spec.ts:125:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-04: under reduced motion there is no canvas and the caliper is drawn closed
+[1A[2K[5/14] [chromium] › tests/overhaul/scene-listen.spec.ts:142:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-05: with WebGL unavailable the closing screen is whole and silent
+[1A[2K[6/14] [chromium] › tests/overhaul/scene-listen.spec.ts:168:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-06: the field is monochrome, palette-sourced and cheap per pixel
+[1A[2K[31m  3) [chromium] › tests/overhaul/scene-listen.spec.ts:168:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-06: the field is monochrome, palette-sourced and cheap per pixel [39m
+
+    Error: ENOENT: no such file or directory, open '/root/forgotten-mistory/.claude/worktrees/wf_a2f5922d-8e7-1/components/sections/Listen/listen.glsl.ts'
+
+    [0m [90m 167 |[39m
+     [90m 168 |[39m   test([32m'TC-SCENE-LISTEN-06: the field is monochrome, palette-sourced and cheap per pixel'[39m[33m,[39m [36masync[39m () [33m=>[39m {
+    [31m[1m>[22m[39m[90m 169 |[39m     [36mconst[39m glsl [33m=[39m readFileSync([33mGLSL_SOURCE[39m[33m,[39m [32m'utf8'[39m)[33m;[39m
+     [90m     |[39m                              [31m[1m^[22m[39m
+     [90m 170 |[39m     [36mconst[39m component [33m=[39m readFileSync([33mFIELD_SOURCE[39m[33m,[39m [32m'utf8'[39m)[33m;[39m
+     [90m 171 |[39m
+     [90m 172 |[39m     expect(glsl[33m.[39mtoLowerCase())[33m.[39mnot[33m.[39mtoContain([32m'gold'[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_a2f5922d-8e7-1/tests/overhaul/scene-listen.spec.ts:169:30[22m
+
+
+[1A[2K[7/14] [chromium] › tests/overhaul/scene-vitrine.spec.ts:78:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-01: exactly one canvas mounts under the rail once the section is in view
+[1A[2K[31m  4) [chromium] › tests/overhaul/scene-listen.spec.ts:106:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-03: the field is bound to the caliper beat, not a clock of its own [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveAttribute[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('#listen [data-close]')
+    Expected: [32m"closed"[39m
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toHaveAttribute" with timeout 15000ms[22m
+    [2m  - waiting for locator('#listen [data-close]')[22m
+
+
+    [0m [90m 111 |[39m     [90m// The section closes its jaws once, on entry; the field says so too.[39m
+     [90m 112 |[39m     [36mawait[39m expect(page[33m.[39mlocator([33mLISTEN[39m))[33m.[39mtoHaveAttribute([32m'data-closed'[39m[33m,[39m [32m''[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 113 |[39m     [36mawait[39m expect(page[33m.[39mlocator([33mFIELD[39m))[33m.[39mtoHaveAttribute([32m'data-close'[39m[33m,[39m [32m'closed'[39m)[33m;[39m
+     [90m     |[39m                                       [31m[1m^[22m[39m
+     [90m 114 |[39m
+     [90m 115 |[39m     [90m// The one beat stays one beat: no animation or transition is declared on[39m
+     [90m 116 |[39m     [90m// the scene slot itself (MOT-F-4).[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_a2f5922d-8e7-1/tests/overhaul/scene-listen.spec.ts:113:39[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-listen-TC-S-104e6-beat-not-a-clock-of-its-own-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-listen-TC-S-104e6-beat-not-a-clock-of-its-own-chromium/error-context.md[22m
+
+
+[1A[2K[8/14] [chromium] › tests/overhaul/scene-vitrine.spec.ts:92:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-02: the canvas is aria-hidden, behind the plates and behind the heading
+[1A[2K[31m  5) [chromium] › tests/overhaul/scene-vitrine.spec.ts:78:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-01: exactly one canvas mounts under the rail once the section is in view [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#vitrine canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#vitrine canvas')[22m
+    [2m    19 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 82 |[39m
+     [90m 83 |[39m     [36mconst[39m canvases [33m=[39m page[33m.[39mlocator([32m`${VITRINE} canvas`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 84 |[39m     [36mawait[39m expect(canvases)[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m    |[39m                            [31m[1m^[22m[39m
+     [90m 85 |[39m
+     [90m 86 |[39m     [36mconst[39m box [33m=[39m [36mawait[39m canvases[33m.[39mfirst()[33m.[39mboundingBox()[33m;[39m
+     [90m 87 |[39m     expect(box[33m,[39m [32m'the #vitrine canvas has no box'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_a2f5922d-8e7-1/tests/overhaul/scene-vitrine.spec.ts:84:28[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-vitrine-TC--2cd55-once-the-section-is-in-view-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-vitrine-TC--2cd55-once-the-section-is-in-view-chromium/error-context.md[22m
+
+
+[1A[2K[9/14] [chromium] › tests/overhaul/scene-vitrine.spec.ts:123:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-03: the field reads the same lit plate the rail does
+[1A[2K[31m  6) [chromium] › tests/overhaul/scene-vitrine.spec.ts:92:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-02: the canvas is aria-hidden, behind the plates and behind the heading [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#vitrine canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#vitrine canvas')[22m
+    [2m    19 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 94 |[39m   }) [33m=>[39m {
+     [90m 95 |[39m     [36mawait[39m settleVitrineWithGL(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 96 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m`${VITRINE} canvas`[39m))[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m    |[39m                                                     [31m[1m^[22m[39m
+     [90m 97 |[39m
+     [90m 98 |[39m     [36mconst[39m hidden [33m=[39m [36mawait[39m page
+     [90m 99 |[39m       [33m.[39mlocator([32m`${VITRINE} canvas`[39m)[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_a2f5922d-8e7-1/tests/overhaul/scene-vitrine.spec.ts:96:53[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-vitrine-TC--6846c-ates-and-behind-the-heading-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-vitrine-TC--6846c-ates-and-behind-the-heading-chromium/error-context.md[22m
+
+
+[1A[2K[10/14] [chromium] › tests/overhaul/scene-vitrine.spec.ts:142:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-04: under reduced motion there is no canvas and the six drawings are whole
+[1A[2K[11/14] [chromium] › tests/overhaul/scene-vitrine.spec.ts:161:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-05: with WebGL unavailable the cabinet is whole and silent
+[1A[2K[12/14] [chromium] › tests/overhaul/scene-vitrine.spec.ts:188:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-06: the field is monochrome, palette-sourced and cheap per pixel
+[1A[2K[31m  7) [chromium] › tests/overhaul/scene-vitrine.spec.ts:188:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-06: the field is monochrome, palette-sourced and cheap per pixel [39m
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: not [32m"gold"[39m
+    Received string:        [31m"/**[39m
+    [31m * the cabinet's light — the raking light the rail already has, made a field.[39m
+    [31m *[39m
+    [31m * `#vitrine` is a lit cabinet: the plate the rail has snapped to takes the[39m
+    [31m * light and its neighbours fall into shadow. that effect is css and stays css,[39m
+    [31m * because it has to survive on a phone and on a machine with no webgl. this[39m
+    [31m * shader does not repeat it and does not draw a seventh plate: it draws the[39m
+    [31m * pool of light the cabinet is standing in, under the rail, and lets the plates[39m
+    [31m * sit in it.[39m
+    [31m *[39m
+    [31m * two things drive it, and both come from the section's own state rather than[39m
+    [31m * from a clock of the shader's own — the same discipline `careerstrata` keeps:[39m
+    [31m *[39m
+    [31m * - `ucentre` is where the lit plate actually is, across the field, 0 → 1. the[39m
+    [31m *   pool goes there, so the light under the cabinet and the light on the plate[39m
+    [31m *   can never disagree.[39m
+    [31m * - `uscroll` is the rail's own progress (`scrollleft / scrollwidth`). the[39m
+    [31m *   grain of the pool drifts with it, so scrolling the rail moves the light[39m
+    [31m *   over the cabinet instead of sliding a static gradient sideways.[39m
+    [31m * - `ulit` is the plate's index, 0 → 5. it seeds the pool, so no two plates[39m
+    [31m *   stand in an identical light — a cabinet lit six ways, not one gradient[39m
+    [31m *   translated.[39m
+    [31m *[39m
+    [31m * monochrome, and never the site's one accent: [7mgold[27m means a figure has a source[39m
+    [31m * a reader can go and check, and a pool of light is not a figure. the two[39m
+    [31m * colours arrive as uniforms from `lib/palette.ts`.[39m
+    [31m *[39m
+    [31m * budget: one full-screen quad, no geometry, no textures, three value-noise[39m
+    [31m * lookups per pixel — the ceiling `careerstrata` and `aboutfield` hold to —[39m
+    [31m * plus one hash for grain.[39m
+    [31m */[39m
+    [31m[39m
+    [31mexport const vitrinefieldvertexshader = /* glsl */ `[39m
+    [31m  varying vec2 vuv;[39m
+    [31m[39m
+    [31m  void main() {[39m
+    [31m    gl_position = vec4(position.xy, 0.0, 1.0);[39m
+    [31m    vuv = gl_position.xy * 0.5 + 0.5;[39m
+    [31m  }[39m
+    [31m`;[39m
+    [31m[39m
+    [31mexport const vitrinefieldfragmentshader = /* glsl */ `[39m
+    [31m  precision highp float;[39m
+    [31m[39m
+    [31m  varying vec2 vuv;[39m
+    [31m[39m
+    [31m  uniform float utime;[39m
+    [31m  uniform vec2 uresolution;[39m
+    [31m  /** the lit plate's index, 0 → 5. seeds the pool so six plates read six ways. */[39m
+    [31m  uniform float ulit;[39m
+    [31m  /** where the lit plate sits across the field, 0 → 1, eased toward its target. */[39m
+    [31m  uniform float ucentre;[39m
+    [31m  /** the rail's own progress: scrollleft / scrollwidth. */[39m
+    [31m  uniform float uscroll;[39m
+    [31m  /** 0 → 1 over the mount ramp; back to 0 if the context is lost. */[39m
+    [31m  uniform float uintensity;[39m
+    [31m  uniform vec3 uink;[39m
+    [31m  uniform vec3 ulight;[39m
+    [31m[39m
+    [31m  float hash(vec2 p) {[39m
+    [31m    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);[39m
+    [31m  }[39m
+    [31m[39m
+    [31m  float noise(vec2 p) {[39m
+    [31m    vec2 i = floor(p);[39m
+    [31m    vec2 f = fract(p);[39m
+    [31m    vec2 u = f * f * (3.0 - 2.0 * f);[39m
+    [31m    return mix([39m
+    [31m      mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), u.x),[39m
+    [31m      mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),[39m
+    [31m      u.y[39m
+    [31m    );[39m
+    [31m  }[39m
+    [31m[39m
+    [31m  void main() {[39m
+    [31m    // the field is the rail's own band, so it is measured in the rail's own[39m
+    [31m    // frame: x across the cabinet, y from its floor to its top.[39m
+    [31m    float aspect = uresolution.x / max(uresolution.y, 1.0);[39m
+    [31m    vec2 p = vuv;[39m
+    [31m[39m
+    [31m    // a gallery spot, not a spotlight: wide across the cabinet, shallow through[39m
+    [31m    // it, centred on the plate that has the light. the width is a plate and a[39m
+    [31m    // half, so the neighbours are grazed rather than cut off — the same[39m
+    [31m    // falloff the css raking light has, in light rather than in opacity.[39m
+    [31m    float dx = (p.x - ucentre) * aspect;[39m
+    [31m    float pool = exp(-dx * dx * 5.4);[39m
+    [31m[39m
+    [31m    // the light comes from above the cabinet and dies before its floor, which[39m
+    [31m    // is where the rail's own hairline rule is: a pool that reached the rule[39m
+    [31m    // would read as a glow on it.[39m
+    [31m    float fall = smoothstep(-0.12, 0.62, p.y) * smoothstep(1.02, 0.58, p.y);[39m
+    [31m[39m
+    [31m    // three lookups, and no more. one slow wash so the pool is not a clean[39m
+    [31m    // ellipse; one drift carried by the rail's own scroll, so the grain travels[39m
+    [31m    // when the reader travels; one very low frequency variation seeded by the[39m
+    [31m    // plate index, so each plate stands in a light of its own.[39m
+    [31m    float wash = noise(vec2(p.x * 2.6 + uscroll * 3.1, p.y * 1.7 - utime * 0.035));[39m
+    [31m    float drift = noise(vec2(p.x * 1.1 - uscroll * 6.2, utime * 0.05));[39m
+    [31m    float seed = noise(vec2(ulit * 5.3, p.y * 0.9 + utime * 0.02));[39m
+    [31m[39m
+    [31m    float luma = pool * fall[39m
+    [31m      * (0.10 + 0.24 * (0.55 + 0.45 * seed))[39m
+    [31m      * (0.66 + 0.40 * wash)[39m
+    [31m      * (0.74 + 0.34 * drift);[39m
+    [31m[39m
+    [31m    // the scene has to end somewhere and it must not be anywhere a reader can[39m
+    [31m    // find: the field dies inside its own frame, so the canvas rectangle never[39m
+    [31m    // shows as a faintly lighter box against the page.[39m
+    [31m    luma *= smoothstep(0.0, 0.10, p.x) * smoothstep(1.0, 0.90, p.x);[39m
+    [31m[39m
+    [31m    // grain, from the cheap hash rather than a fourth noise lookup.[39m
+    [31m    luma += (hash(vuv * uresolution + fract(utime)) - 0.5) * 0.010;[39m
+    [31m    luma = clamp(luma, 0.0, 1.0);[39m
+    [31m[39m
+    [31m    // light only. alpha follows the luminance, so where the field is dark it[39m
+    [31m    // paints nothing at all and the plates keep their own contrast — the scene[39m
+    [31m    // is never in the way of the cabinet.[39m
+    [31m    vec3 colour = mix(uink, ulight, clamp(luma * 3.0, 0.0, 1.0));[39m
+    [31m    gl_fragcolor = vec4(colour, luma * clamp(uintensity, 0.0, 1.0) * 0.92);[39m
+    [31m  }[39m
+    [31m`;[39m
+    [31m"[39m
+
+    [0m [90m 190 |[39m     [36mconst[39m component [33m=[39m readFileSync([33mFIELD_SOURCE[39m[33m,[39m [32m'utf8'[39m)[33m;[39m
+     [90m 191 |[39m
+    [31m[1m>[22m[39m[90m 192 |[39m     expect(glsl[33m.[39mtoLowerCase())[33m.[39mnot[33m.[39mtoContain([32m'gold'[39m)[33m;[39m
+     [90m     |[39m                                    [31m[1m^[22m[39m
+     [90m 193 |[39m     expect(component)[33m.[39mnot[33m.[39mtoContain([32m'gold'[39m)[33m;[39m
+     [90m 194 |[39m     expect(glsl)[33m.[39mnot[33m.[39mtoMatch([35m/#[0-9a-fA-F]{3,8}\b/[39m)[33m;[39m
+     [90m 195 |[39m     expect(component)[33m.[39mnot[33m.[39mtoMatch([35m/#[0-9a-fA-F]{6}\b/[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_a2f5922d-8e7-1/tests/overhaul/scene-vitrine.spec.ts:192:36[22m
+
+
+[1A[2K[13/14] [chromium] › tests/overhaul/scene-vitrine.spec.ts:213:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-07: the trace-on reads as a trace and still lands inside 900 ms (MOT-C13-03)
+[1A[2K[31m  8) [chromium] › tests/overhaul/scene-vitrine.spec.ts:123:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-03: the field reads the same lit plate the rail does [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveAttribute[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('#vitrine [data-lit-index]')
+    Expected: [32m"0"[39m
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toHaveAttribute" with timeout 15000ms[22m
+    [2m  - waiting for locator('#vitrine [data-lit-index]')[22m
+
+
+    [0m [90m 126 |[39m     [36mawait[39m settleVitrineWithGL(page)[33m;[39m
+     [90m 127 |[39m
+    [31m[1m>[22m[39m[90m 128 |[39m     [36mawait[39m expect(page[33m.[39mlocator([33mFIELD[39m))[33m.[39mtoHaveAttribute([32m'data-lit-index'[39m[33m,[39m [32m'0'[39m)[33m;[39m
+     [90m     |[39m                                       [31m[1m^[22m[39m
+     [90m 129 |[39m     [36mawait[39m expect(page[33m.[39mlocator([33mPLATE[39m)[33m.[39mnth([35m0[39m))[33m.[39mtoHaveAttribute([32m'data-lit'[39m[33m,[39m [32m''[39m)[33m;[39m
+     [90m 130 |[39m
+     [90m 131 |[39m     [90m// Move the rail to the third plate the way the section's own keyboard path[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_a2f5922d-8e7-1/tests/overhaul/scene-vitrine.spec.ts:128:39[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-vitrine-TC--2571f-ame-lit-plate-the-rail-does-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-vitrine-TC--2571f-ame-lit-plate-the-rail-does-chromium/error-context.md[22m
+
+
+[1A[2K[14/14] [chromium] › tests/overhaul/scene-vitrine.spec.ts:252:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-08: the rail travels under no-preference and jumps under reduce (MOT-C13-06)
+[1A[2K[31m  9) [chromium] › tests/overhaul/scene-vitrine.spec.ts:213:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-07: the trace-on reads as a trace and still lands inside 900 ms (MOT-C13-03) [39m
+
+    Error: stroke duration is not the 320 ms base
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeCloseTo[2m([22m[32mexpected[39m[2m, [22mprecision[2m)[22m
+
+    Expected: [32m320[39m
+    Received: [31m720[39m
+
+    Expected precision:    0
+    Expected difference: < [32m0.5[39m
+    Received difference:   [31m400[39m
+
+    [0m [90m 233 |[39m
+     [90m 234 |[39m     expect(trace[33m.[39mcount[33m,[39m [32m'the first plate has no strokes to trace'[39m)[33m.[39mtoBeGreaterThan([35m5[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 235 |[39m     expect(trace[33m.[39mduration[33m,[39m [32m'stroke duration is not the 320 ms base'[39m)[33m.[39mtoBeCloseTo([35m320[39m[33m,[39m [35m0[39m)[33m;[39m
+     [90m     |[39m                                                                      [31m[1m^[22m[39m
+     [90m 236 |[39m
+     [90m 237 |[39m     [90m// Consecutive strokes are far enough apart to read as a sequence rather[39m
+     [90m 238 |[39m     [90m// than one event: >= 20 ms, per MOT-C13-03's acceptance.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_a2f5922d-8e7-1/tests/overhaul/scene-vitrine.spec.ts:235:70[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-vitrine-TC--83838-s-inside-900-ms-MOT-C13-03--chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-vitrine-TC--83838-s-inside-900-ms-MOT-C13-03--chromium/error-context.md[22m
+
+
+[1A[2K[31m  10) [chromium] › tests/overhaul/scene-vitrine.spec.ts:252:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-08: the rail travels under no-preference and jumps under reduce (MOT-C13-06) [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCSS[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#vitrine ol')
+    Expected: [32m"smooth"[39m
+    Received: [31m"auto"[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCSS" with timeout 15000ms[22m
+    [2m  - waiting for locator('#vitrine ol')[22m
+    [2m    19 × locator resolved to <ol role="list" class="Vitrine_rail__UCX1h" aria-label="Six repositories, scrollable horizontally">…</ol>[22m
+    [2m       - unexpected value "auto"[22m
+
+
+    [0m [90m 254 |[39m   }) [33m=>[39m {
+     [90m 255 |[39m     [36mawait[39m settleVitrineWithGL(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 256 |[39m     [36mawait[39m expect(page[33m.[39mlocator([33mRAIL[39m))[33m.[39mtoHaveCSS([32m'scroll-behavior'[39m[33m,[39m [32m'smooth'[39m)[33m;[39m
+     [90m     |[39m                                      [31m[1m^[22m[39m
+     [90m 257 |[39m
+     [90m 258 |[39m     [36mawait[39m page[33m.[39memulateMedia({ reducedMotion[33m:[39m [32m'reduce'[39m })[33m;[39m
+     [90m 259 |[39m     [36mawait[39m page[33m.[39mwaitForTimeout([35m200[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_a2f5922d-8e7-1/tests/overhaul/scene-vitrine.spec.ts:256:38[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-vitrine-TC--a507c-ps-under-reduce-MOT-C13-06--chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-vitrine-TC--a507c-ps-under-reduce-MOT-C13-06--chromium/error-context.md[22m
+
+
+[1A[2K[31m  10 failed[39m
+[31m    [chromium] › tests/overhaul/scene-listen.spec.ts:63:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-01: exactly one canvas mounts in #listen once the section is in view [39m
+[31m    [chromium] › tests/overhaul/scene-listen.spec.ts:77:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-02: the canvas is aria-hidden, behind the heading and behind the caliper [39m
+[31m    [chromium] › tests/overhaul/scene-listen.spec.ts:106:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-03: the field is bound to the caliper beat, not a clock of its own [39m
+[31m    [chromium] › tests/overhaul/scene-listen.spec.ts:168:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-06: the field is monochrome, palette-sourced and cheap per pixel [39m
+[31m    [chromium] › tests/overhaul/scene-vitrine.spec.ts:78:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-01: exactly one canvas mounts under the rail once the section is in view [39m
+[31m    [chromium] › tests/overhaul/scene-vitrine.spec.ts:92:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-02: the canvas is aria-hidden, behind the plates and behind the heading [39m
+[31m    [chromium] › tests/overhaul/scene-vitrine.spec.ts:123:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-03: the field reads the same lit plate the rail does [39m
+[31m    [chromium] › tests/overhaul/scene-vitrine.spec.ts:188:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-06: the field is monochrome, palette-sourced and cheap per pixel [39m
+[31m    [chromium] › tests/overhaul/scene-vitrine.spec.ts:213:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-07: the trace-on reads as a trace and still lands inside 900 ms (MOT-C13-03) [39m
+[31m    [chromium] › tests/overhaul/scene-vitrine.spec.ts:252:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-08: the rail travels under no-preference and jumps under reduce (MOT-C13-06) [39m
+[32m  4 passed[39m[2m (1.5m)[22m
+EXIT=1

@@ -39,9 +39,16 @@
    The stagger is budgeted, not fixed. Council R-c8 (C-02) accepts a drawing
    only when every stroke has landed by 900 ms; at a flat 40 ms per stroke the
    twenty-five strokes of plate 01 ran to 1.9 s. The frame carries the stroke
-   count (--n, Drawings.tsx), and the stagger is 40 ms or 160 ms shared across
-   the strokes, whichever is smaller — so the last stroke lands by 880 ms
-   whatever the count, and a seven-stroke drawing still reads as a sequence. */
+   count (--n, Drawings.tsx), and the stagger is shared across the strokes.
+
+   Where that budget is spent decides whether the gesture survives. Spending it
+   on stroke duration left 6.67 ms between consecutive strokes against a 720 ms
+   stroke, so a 25-stroke plate finished its whole stagger in ~160 ms and read
+   as one mechanism fading up rather than one being drawn (council R-c13,
+   MOT-C13-03). It is spent on sequence instead: a 320 ms stroke and up to
+   520 ms of stagger — 28 ms apart, above the ~24 ms at which a sequence stops
+   reading as one event — so twenty-five strokes land at 840 ms, still inside
+   C-02, and a seven-stroke drawing still reads as a sequence. */
 .stroke {
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
@@ -50,8 +57,8 @@
 [data-lit] .stroke,
 [data-drawn] .stroke {
     stroke-dashoffset: 0;
-    transition: stroke-dashoffset 720ms cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: calc(var(--k, 0) * min(40ms, 160ms / max(1, var(--n, 1) - 1)));
+    transition: stroke-dashoffset var(--motion-base, 320ms) cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc(var(--k, 0) * min(28ms, 520ms / max(1, var(--n, 1) - 1)));
 }
 
 /* Labels are set in --white on their own `color`, not only their fill: the
@@ -67,10 +74,12 @@
     opacity: 0;
 }
 
+/* The labels arrive after the last stroke has landed — 520 ms of stagger plus a
+   320 ms stroke is 840 ms — and never over it (council R-c13, MOT-C13-03). */
 [data-lit] .label,
 [data-drawn] .label {
     opacity: 0.85;
-    transition: opacity 320ms linear 880ms;
+    transition: opacity 320ms linear 860ms;
 }
 
 /* Reduced motion: the strokes and labels are simply present. The drawing is

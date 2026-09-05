@@ -1,7 +1,9 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import Scene from '@/components/gl/Scene';
 import Caliper from '@/components/marks/Caliper';
 import {
   exclusions,
@@ -11,7 +13,12 @@ import {
 } from '@/app/data/portfolio/vitrine';
 
 import Drawing from './Drawings';
+import type { RailState } from './VitrineField';
 import styles from './Vitrine.module.css';
+
+// The field under the rail. Dynamic so `three` lands in the chunk `Scene`
+// fetches when a scene actually mounts, not in this section's own bundle.
+const VitrineField = dynamic(() => import('./VitrineField'), { ssr: false });
 
 /**
  * What is keeping me busy — a long vitrine of six plates.
@@ -30,8 +37,15 @@ import styles from './Vitrine.module.css';
  */
 export default function Vitrine() {
   const railRef = useRef<HTMLOListElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const plateRefs = useRef<Array<HTMLLIElement | null>>([]);
   const [lit, setLit] = useState(0);
+  // The continuous half of the rail's state — where the lit plate sits across
+  // the stage, and how far the rail has travelled. A ref, not state: the rail
+  // scrolls at frame rate and re-rendering six plates for each frame of it
+  // would cost more than the light it feeds. `VitrineField` reads it inside
+  // `useFrame`, which is where a per-frame value belongs.
+  const railState = useRef<RailState>({ centre: 0.5, scroll: 0 });
   // A plate's drawing is traced the first time the light reaches it and stays
   // drawn after the light has moved on (Drawings.module.css `[data-drawn]`).
   const [drawn, setDrawn] = useState<boolean[]>(() => plates.map((_, index) => index === 0));
@@ -77,6 +91,25 @@ export default function Vitrine() {
         }
       });
       setLit(best);
+
+      // The same measurement, carried to the field: where the lit plate
+      // actually is across the stage, and how far the rail has travelled. The
+      // field's frame is the stage, not the rail — the rail bleeds out through
+      // the section's gutter and the light does not follow it out there.
+      const stage = stageRef.current;
+      const plate = plateRefs.current[best];
+      if (stage && plate) {
+        const stageBox = stage.getBoundingClientRect();
+        const plateBox = plate.getBoundingClientRect();
+        railState.current.centre =
+          stageBox.width > 0
+            ? Math.min(
+                1,
+                Math.max(0, (plateBox.left + plateBox.width / 2 - stageBox.left) / stageBox.width),
+              )
+            : 0.5;
+      }
+      railState.current.scroll = rail.scrollWidth > 0 ? current / rail.scrollWidth : 0;
     };
 
     const onScroll = () => {
@@ -124,86 +157,98 @@ export default function Vitrine() {
         <p className={styles.lede}>{vitrineContent.lede}</p>
       </div>
 
-      <ol
-        ref={railRef}
-        className={styles.rail}
-        role="list"
-        aria-label="Six repositories, scrollable horizontally"
-      >
-        {plates.map((plate, index) => {
-          const metrics = metricsFor(plate.repo);
-          return (
-            <li
-              key={plate.repo}
-              ref={(node) => {
-                plateRefs.current[index] = node;
-              }}
-              className={styles.plate}
-              data-lit={index === lit || undefined}
-              data-drawn={drawn[index] || undefined}
-              aria-roledescription="plate"
-              tabIndex={0}
-              onKeyDown={(event) => onKeyDown(event as never, index)}
-              onFocus={() => setLit(index)}
-            >
-              <div className={styles.plateHead}>
-                <span className={styles.accession}>{plate.accession}</span>
-                <span className={styles.repo}>{plate.repo}</span>
-              </div>
+      <div ref={stageRef} className={styles.railStage}>
+        {/* The light the cabinet stands in: the same lit plate the rail reads,
+            as a pool under it. With no WebGL, reduced motion, or the section
+            off screen, `Scene` mounts nothing and the cabinet is unchanged —
+            the raking light on the plates is CSS and always has been. */}
+        <div className={styles.field} data-lit-index={lit}>
+          <Scene className={styles.fieldSlot}>
+            <VitrineField lit={lit} rail={railState} />
+          </Scene>
+        </div>
 
-              <h3 className={styles.plateTitle}>{plate.title}</h3>
-              <p className={styles.description}>{plate.description}</p>
+        <ol
+          ref={railRef}
+          className={styles.rail}
+          role="list"
+          aria-label="Six repositories, scrollable horizontally"
+        >
+          {plates.map((plate, index) => {
+            const metrics = metricsFor(plate.repo);
+            return (
+              <li
+                key={plate.repo}
+                ref={(node) => {
+                  plateRefs.current[index] = node;
+                }}
+                className={styles.plate}
+                data-lit={index === lit || undefined}
+                data-drawn={drawn[index] || undefined}
+                aria-roledescription="plate"
+                tabIndex={0}
+                onKeyDown={(event) => onKeyDown(event as never, index)}
+                onFocus={() => setLit(index)}
+              >
+                <div className={styles.plateHead}>
+                  <span className={styles.accession}>{plate.accession}</span>
+                  <span className={styles.repo}>{plate.repo}</span>
+                </div>
 
-              <div className={styles.drawingFrame}>
-                <Drawing id={plate.drawing} />
-              </div>
+                <h3 className={styles.plateTitle}>{plate.title}</h3>
+                <p className={styles.description}>{plate.description}</p>
 
-              <dl className={styles.metrics}>
-                {metrics.map((metric) => (
-                  <div key={metric.label} className={styles.metric}>
-                    <dt>{metric.label}</dt>
-                    <dd>
-                      {metric.value === null ? (
-                        // Never a blank cell: a value that was sought and not
-                        // found is a fact, and it is drawn as one.
-                        <Caliper state="open">not harvested</Caliper>
-                      ) : (
-                        metric.value
-                      )}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
+                <div className={styles.drawingFrame}>
+                  <Drawing id={plate.drawing} />
+                </div>
 
-              <p className={styles.limits}>
-                <span className={styles.limitsLabel}>Limits</span>
-                {plate.limits}
-              </p>
+                <dl className={styles.metrics}>
+                  {metrics.map((metric) => (
+                    <div key={metric.label} className={styles.metric}>
+                      <dt>{metric.label}</dt>
+                      <dd>
+                        {metric.value === null ? (
+                          // Never a blank cell: a value that was sought and not
+                          // found is a fact, and it is drawn as one.
+                          <Caliper state="open">not harvested</Caliper>
+                        ) : (
+                          metric.value
+                        )}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
 
-              <div className={styles.links}>
-                <a className={styles.source} href={plate.href} target="_blank" rel="noreferrer noopener">
-                  Source
-                </a>
-                {plate.live ? (
-                  <a
-                    className={styles.live}
-                    href={plate.live.href}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    {plate.live.label}
+                <p className={styles.limits}>
+                  <span className={styles.limitsLabel}>Limits</span>
+                  {plate.limits}
+                </p>
+
+                <div className={styles.links}>
+                  <a className={styles.source} href={plate.href} target="_blank" rel="noreferrer noopener">
+                    Source
                   </a>
-                ) : (
-                  /* Three of the six have nothing running to link to. Saying so
-                     is better than leaving the row half-empty and letting a
-                     reader wonder whether a link failed to render. */
-                  <span className={styles.notDeployed}>no public deployment</span>
-                )}
-              </div>
-            </li>
-          );
-        })}
-      </ol>
+                  {plate.live ? (
+                    <a
+                      className={styles.live}
+                      href={plate.live.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      {plate.live.label}
+                    </a>
+                  ) : (
+                    /* Three of the six have nothing running to link to. Saying so
+                       is better than leaving the row half-empty and letting a
+                       reader wonder whether a link failed to render. */
+                    <span className={styles.notDeployed}>no public deployment</span>
+                  )}
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
 
       <div className={styles.foot}>
         <div className={styles.exclusions}>
