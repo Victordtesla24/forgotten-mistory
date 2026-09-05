@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { askMiniVicBrain, type BrainTurn } from "@/lib/miniVicBrain";
+import { askMiniVicBrain, warmMiniVicBrain, type BrainTurn } from "@/lib/miniVicBrain";
 import { GREETING, type PersonaMode } from "@/app/data/miniVicKnowledge";
 import { greetingAudioSha256 } from "@/app/data/generated/greeting-asset";
 import { Copy, Pause, Play, RefreshCcw, Send, Sparkles, Volume2, VolumeX, X, Mic, MicOff } from "lucide-react";
@@ -386,6 +386,16 @@ const MiniVicBot = () => {
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Boot the chat function the moment the panel opens, so the container start
+  // is paid while the visitor is reading the greeting rather than while they
+  // wait on their first answer. It spends nothing upstream (the function's
+  // warm branch returns 204 without touching a provider) and it is fired once
+  // per open, never on send.
+  useEffect(() => {
+    if (!isOpen) return;
+    warmMiniVicBrain();
+  }, [isOpen]);
 
   // Move focus into the panel once, on open, so keyboard/SR users get an anchor.
   // Keyed on isOpen alone — mid-session re-renders (e.g. avatar video toggling
@@ -886,16 +896,57 @@ const MiniVicBot = () => {
         role: m.role === "user" ? "user" : "bot",
         text: m.text,
       }));
-      const reply = await askMiniVicBrain(textToSend, PERSONA_FOR_MODE[modeToSend], brainHistory);
+      // The reply streams. The first fragment opens the bot bubble and each one
+      // after it grows the same bubble, so the visitor reads the answer while
+      // the model is still writing it instead of watching a spinner until the
+      // whole completion is buffered. When the function does not stream (an
+      // older deploy, or an intermediary that buffers) no fragment ever
+      // arrives, the bubble is created once at the end, and the behaviour is
+      // exactly what it was before.
+      const botMessageId = nextChatMessageId("bot");
+      let streamed = "";
+      const reply = await askMiniVicBrain(
+        textToSend,
+        PERSONA_FOR_MODE[modeToSend],
+        brainHistory,
+        (fragment) => {
+          const first = streamed === "";
+          streamed += fragment;
+          const partial = streamed;
+          setMessages((prev) =>
+            first
+              ? [
+                  ...prev,
+                  {
+                    id: botMessageId,
+                    role: "bot",
+                    text: partial,
+                    mode: modeToSend,
+                    timestamp: Date.now(),
+                  } as ChatMessage,
+                ]
+              : prev.map((m) => (m.id === botMessageId ? { ...m, text: partial } : m)),
+          );
+          if (first) setIsLoading(false);
+        },
+      );
 
       const botMessage: ChatMessage = {
-        id: nextChatMessageId("bot"),
+        id: botMessageId,
         role: "bot",
         text: reply.text,
         mode: modeToSend,
         timestamp: Date.now(),
       };
-      setMessages((prev) => [...prev, botMessage]);
+      // The streamed fragments are raw model output; `reply.text` is the
+      // sanitised answer. Replacing the bubble rather than leaving the
+      // fragments in place means the visitor never keeps text that the
+      // sanitiser would have stripped.
+      setMessages((prev) =>
+        prev.some((m) => m.id === botMessageId)
+          ? prev.map((m) => (m.id === botMessageId ? botMessage : m))
+          : [...prev, botMessage],
+      );
       setLastAnswerId(botMessage.id);
       setLatencyMs(Math.round(performance.now() - startedAt));
 
