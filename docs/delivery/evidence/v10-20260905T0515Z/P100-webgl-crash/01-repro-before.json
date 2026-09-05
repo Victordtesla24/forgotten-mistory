@@ -1,0 +1,42 @@
+{
+  "probe": "P100 ?gl=force hero-hold + experience-scroll",
+  "url": "http://127.0.0.1:5601/?gl=force",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "chromium": {
+    "channel": "chrome",
+    "args": [
+      "--no-sandbox",
+      "--use-gl=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "httpStatus": 200,
+  "atHero": {
+    "holdMs": 4000,
+    "canvases": 0,
+    "heroH1Present": false,
+    "heroH1Text": null,
+    "sectionIds": [],
+    "bodyHead": "Skip to the evidence SYSTEM INTERRUPT Something went wrong An unexpected error occurred while rendering this page. The system state has been preserved and a recovery attempt is available. Try again Privacy Policy·Terms·C"
+  },
+  "atExperience": {
+    "holdMs": 4000,
+    "canvases": 0,
+    "heroH1Present": false
+  },
+  "errorShellShowing": true,
+  "pageErrors": [],
+  "consoleErrors": [
+    "TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (http://127.0.0.1:5601/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at http://127.0.0.1:5601/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (http://127.0.0.1:5601/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (http://127.0.0.1:5601/_next/static/chunks/webpack-37506d6496e49079.js:1:127)\n    at 2368 (http://127.0.0.1:5601/_next/static/chunks/368.8129db46e42577ff.js:1:142)\n    at r (http://127.0.0.1:5601/_next/static/chunks/webpack-37506d6496e49079.js:1:127)",
+    "[app/error.tsx] Unhandled error: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (http://127.0.0.1:5601/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at http://127.0.0.1:5601/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (http://127.0.0.1:5601/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (http://127.0.0.1:5601/_next/static/chunks/webpack-37506d6496e49079.js:1:127)\n    at 2368 (http://127.0.0.1:5601/_next/static/chunks/368.8129db46e42577ff.js:1:142)\n    at r (http://127.0.0.1:5601/_next/static/chunks/webpack-37506d6496e49079.js:1:127)",
+    "TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (http://127.0.0.1:5601/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at http://127.0.0.1:5601/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (http://127.0.0.1:5601/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (http://127.0.0.1:5601/_next/static/chunks/webpack-37506d6496e49079.js:1:127)\n    at 2368 (http://127.0.0.1:5601/_next/static/chunks/368.8129db46e42577ff.js:1:142)\n    at r (http://127.0.0.1:5601/_next/static/chunks/webpack-37506d6496e49079.js:1:127)",
+    "[app/error.tsx] Unhandled error: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (http://127.0.0.1:5601/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at http://127.0.0.1:5601/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (http://127.0.0.1:5601/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (http://127.0.0.1:5601/_next/static/chunks/webpack-37506d6496e49079.js:1:127)\n    at 2368 (http://127.0.0.1:5601/_next/static/chunks/368.8129db46e42577ff.js:1:142)\n    at r (http://127.0.0.1:5601/_next/static/chunks/webpack-37506d6496e49079.js:1:127)"
+  ],
+  "pageErrorCount": 0,
+  "consoleErrorCount": 4,
+  "recordedAt": "2026-09-05T07:04:55.616Z"
+}
