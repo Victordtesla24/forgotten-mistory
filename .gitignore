@@ -190,8 +190,11 @@ node_modules.corrupted/
 # Hermes kanban artifacts (auto-generated, keep out of repo)
 docs/PM-KANBAN-OPERATIONS.md
 
-# Fable 5 orchestration artifacts (audit screenshots, ledger, backlog — scratch, keep out of repo)
-artifacts/
+# Fable 5 orchestration artifacts (audit screenshots, scratch) stay out of the repo —
+# except the PM operating surface (docs/prompt.md §4): the file-backed board and the delegation ledger
+artifacts/*
+!artifacts/kanban/
+!artifacts/delegation-ledger.jsonl
 
 # Adversarial review evidence (screenshots, logs, report — working artifacts)
 reports/adversarial/
@@ -218,7 +221,3 @@ reports/phase02/screenshots/
 
 # Claude Code agent worktrees (created by the Workflow tool, never shipped)
 .claude/worktrees/
-
-# PM operating surface (docs/prompt.md §4): the file-backed board and the delegation ledger are versioned
-!artifacts/kanban/
-!artifacts/delegation-ledger.jsonl

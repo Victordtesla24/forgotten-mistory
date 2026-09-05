@@ -1,0 +1,797 @@
+{
+  "version": 1,
+  "run_id": "v10-20260905T0515Z",
+  "updated": "2026-09-05T05:58:06.011Z",
+  "live_url": "https://forgotten-mistory.web.app",
+  "columns": [
+    "triage",
+    "todo",
+    "ready",
+    "running",
+    "blocked",
+    "done",
+    "archived"
+  ],
+  "tasks": [
+    {
+      "id": "t_c51b34a7",
+      "title": "Run v10 open — docs/prompt.md + v9 evidence (F-lighthouse-ci, F-security-upgrade, R-c12) recorded",
+      "status": "done",
+      "assignee": "orchestrator",
+      "priority": 95,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "feedback_refactor_loop",
+        "level": "orchestrator",
+        "effort": "ultracode"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Commit 8dc4cf4 on origin/main; live build-commit 8dc4cf46; deploy run 05:18Z success.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_62c9ee4d",
+      "title": "Cycle 13 — Next 15.5.25 security upgrade + checks.yml installs functions deps + .gitignore conflict markers",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 92,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Worktree .claude/worktrees/wf_18f926b0-2a4-1 (base 8dc4cf4). Battery already green there: tsc 0, lint 0, audit 10/10, build exit 0, secret scan PASS, root npm audit 0 vulns; regression log stopped at 243/276 (8 ✘, all in the CI-red list). Nothing committed yet.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_8cdf3b61",
+      "title": "Cycle 11 — Vitrine rail mask/trace-on + lit-plate fix, Skills/About contrast, hero 390 one-fold (R-c8 C-02/C-06, TC-CONTRAST-01, TC-HERO-12)",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 90,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Worktree .claude/worktrees/wf_18f926b0-2a4-2 (base 8dc4cf4). Patch applied + real fixes D-1…D-6 written (07-decisions.md); TDD failing log captured (7 failed / 10 passed on unpatched main). NOT yet done: passing battery, regression, screenshots, D-7+, commit.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_c3ece39c",
+      "title": "Hygiene — remove the two superseded worktrees + /var/tmp/v6-wt once cycles 11/13 are on main; remote = main only",
+      "status": "todo",
+      "assignee": "cleanup-agent",
+      "priority": 60,
+      "parents": [
+        "t_62c9ee4d",
+        "t_8cdf3b61"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "cleanup",
+        "level": 4,
+        "effort": "medium"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "decision.md (HYG-branches) already abandoned wt/data-backend and pruned 5 worktrees/4 branches. Left: .claude/worktrees/wf_7658aeb2-d07-1 (base 4f1d659, superseded by wf_18f926b0-2a4-2) and wf_dc0c232e-59d-1 (base 0c02861, superseded by wf_18f926b0-2a4-1); empty dir /var/tmp/v6-wt.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_d0066b7a",
+      "title": "Cycle 14 — every remaining red Playwright spec on main triaged and fixed until Checks e2e is green (0 regression, R8/C-7)",
+      "status": "todo",
+      "assignee": "tester",
+      "priority": 85,
+      "parents": [
+        "t_62c9ee4d",
+        "t_8cdf3b61"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Checks run 33936783382 on debd25b: 15 failed / 272 passed. C13 regression (Next 15) showed 8 ✘: GC-01 gold-contrast, TC-CONTRAST-01 @390/@1440, TC-BOT-12, TC-EXP-11, TC-HERO-12, TC-STATE-HOVER, TC-STATE-ACTIVE. Cycle 11 fixes CONTRAST + HERO-12. Remaining after landing: GC-01, TC-BOT-12, TC-EXP-11, TC-STATE-HOVER/ACTIVE + whatever the merged main shows.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_4adf34f7",
+      "title": "R-c13 — adversarial + composition + motion council review of the LIVE site after cycles 11/13 land (O2/O6)",
+      "status": "todo",
+      "assignee": "reviewer",
+      "priority": 95,
+      "parents": [
+        "t_dc02ded1",
+        "t_6fb8914b"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Three independent reviewers (adversarial, composition, motion) against https://forgotten-mistory.web.app/?gl=force at 1440/1920/834/390 + reduced-motion + no-GL; merged verdict with a prioritised, file:line-exact backlog like R-c8. Also grades the §0.3 mandates (one flagship visualisation per section; black/white/gold only; narrative) and R2 (≥7 signature scenes — currently 2 GLSL + 4 SVG/CSS).",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_3bf56e4a",
+      "title": "EPIC — cycles 15+: fold the R-c8 / R-c13 backlog (children below carry the work; this task closes when every child is Done)",
+      "status": "todo",
+      "assignee": "orchestrator",
+      "priority": 80,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "feedback_refactor_loop",
+        "level": "orchestrator",
+        "effort": "ultracode"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Open R-c8 items after cycles 7/11/12/13: MOT-F-1, C-03 (verify), C-04 (+ADV-F-3), C-07, C-08, ADV-F-2, MOT-F-3, C-09, C-11, ADV-F-4. Each is a child task with the R-c8 direction verbatim as spec.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_3e553558",
+      "title": "V-C13 — independent verification of cycle 13 (Next 15.5.25) from git + logs only",
+      "status": "todo",
+      "assignee": "reviewer",
+      "priority": 92,
+      "parents": [
+        "t_62c9ee4d"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Fresh reviewer; reads only the branch diff and the committed evidence logs; re-runs the deterministic gates itself.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_2331f031",
+      "title": "V-C11 — independent verification of cycle 11 (Vitrine / contrast / hero 390) from git + logs + screenshots",
+      "status": "todo",
+      "assignee": "reviewer",
+      "priority": 90,
+      "parents": [
+        "t_8cdf3b61"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Fresh reviewer; verifies acceptance lines of R-c8 C-02 and C-06 plus TC-CONTRAST-01/TC-HERO-12 against the branch build, not the author's report.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_dc02ded1",
+      "title": "D-C13 — merge cycle 13 into main, push, verify the live build-commit",
+      "status": "todo",
+      "assignee": "orchestrator",
+      "priority": 93,
+      "parents": [
+        "t_3e553558"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "feedback_refactor_loop",
+        "level": "orchestrator",
+        "effort": "ultracode"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Orchestrator consolidation duty (O3/O4). git merge --no-ff worktree-wf_18f926b0-2a4-1 into main; git push origin HEAD:main; deploy.yml deploys; verify meta.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_6fb8914b",
+      "title": "D-C11 — merge cycle 11 into main, push, verify the live build-commit",
+      "status": "todo",
+      "assignee": "orchestrator",
+      "priority": 91,
+      "parents": [
+        "t_2331f031"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "feedback_refactor_loop",
+        "level": "orchestrator",
+        "effort": "ultracode"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Same as D-C13 for worktree-wf_18f926b0-2a4-2; .eslintrc.json root:true is identical on both sides (no conflict expected).",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_cfc110c5",
+      "title": "Board bootstrap — file-backed Kanban (artifacts/kanban), ledger, owner prompt refresh committed",
+      "status": "done",
+      "assignee": "orchestrator",
+      "priority": 100,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "feedback_refactor_loop",
+        "level": "orchestrator",
+        "effort": "ultracode"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "docs/prompt.md refreshed by the Owner (Fable 5.1 ultracode, no Hermes, file-backed board); Hermes board `default` retired — its 7 tasks migrated with ids preserved; artifacts/kanban/ un-ignored so the ledger is versioned.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_86cdd156",
+      "title": "Cycle 15 — MOT-F-1 + C-03: #experience becomes the narrated signature (bars grow on entry, strata bound to spans, white playhead; labels inside the card)",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 82,
+      "parents": [
+        "t_3bf56e4a",
+        "t_6fb8914b"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "R-c8 items 5 and 6. Gold rejected for the playhead (dates are self-reported). Files: components/sections/Experience/{CareerStrata.tsx,strata.glsl.ts,Experience.module.css,Experience.tsx}; tests/overhaul/experience-signature.spec.ts (TDD first).",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_cc03ed93",
+      "title": "Cycle 16 — C-04 + ADV-F-3 + ADV-F-2: the MiniVic launcher reads as a labelled chat affordance, is achromatic, is reachable in 3 tab stops",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 84,
+      "parents": [
+        "t_3bf56e4a",
+        "t_6fb8914b"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "R-c8 items 7, 12, 13. Files: components/MiniVicBot.tsx, app/globals.css (MiniVic chrome block), components/site/Navigation.tsx; tests/monochrome + tests/a11y (TDD first).",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_3729f57e",
+      "title": "Cycle 17 — C-08 (+Motion F-6): #skills gold as a mark, not a mass — dim sourced strands at rest, hovered path lit",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 78,
+      "parents": [
+        "t_3bf56e4a",
+        "t_6fb8914b"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "R-c8 item 10. Files: components/sections/Skills/{Bench.module.css,Bench.tsx,Skills.module.css}. Terminal node dots stay gold at full opacity.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_2cc9a990",
+      "title": "Cycle 18 — C-07: one \"Download CV\" in the first viewport (nav action demoted to text until scrolled)",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 70,
+      "parents": [
+        "t_3bf56e4a",
+        "t_6fb8914b"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "R-c8 item 11. Files: components/site/Navigation.tsx, app/globals.css nav block.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_052675d5",
+      "title": "Cycle 19 — MOT-F-3: the no-WebGL / reduced-motion hero carries a still of the same light (radial + grain), GL fades it out",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 68,
+      "parents": [
+        "t_3bf56e4a",
+        "t_6fb8914b"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "R-c8 item 14. Files: components/sections/Hero/{Hero.module.css,HeroAtmosphere.tsx,Hero.tsx}.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_a88c6767",
+      "title": "Cycle 20 — C-09 + C-11: #listen contact routes carry the page's business end; #about dial and list share a baseline",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 66,
+      "parents": [
+        "t_3bf56e4a",
+        "t_6fb8914b"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "R-c8 items 15 and 16. Files: components/sections/Listen/{Listen.module.css,Listen.tsx}, components/sections/About/About.module.css. No second motion beat in #listen (MOT-F-4 confirms the caliper-close is the one).",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_652f383d",
+      "title": "Cycle 21 — ADV-F-4: headline tenure matches the CV (\"15+ years\", not \"Sixteen years\") everywhere the number appears",
+      "status": "todo",
+      "assignee": "coder",
+      "priority": 64,
+      "parents": [
+        "t_3bf56e4a",
+        "t_6fb8914b"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding / documentation",
+        "level": 4,
+        "effort": "medium (xhigh when coding)"
+      },
+      "provider": "openrouter→anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "R-c8 item 17 (content parity, R7). Files: app/data/portfolio/{vitrine,experience,hero}.ts, app/data/siteContent.ts (grep \"ixteen\"), tests/content/content-check.spec.ts. Source: public/docs/Vik_Resume_Final.pdf line 3 (\"15+ year\") — or, if the roles sum to ≥16 years on the CV's own dates, keep sixteen and print the arithmetic beside it. Decide from the PDF text, record the decision.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_cba10f82",
+      "title": "R9/TDD — requirements spec + test-case list for every unmet R-item and §0.3 mandate before any further code",
+      "status": "ready",
+      "assignee": "solutions-architect",
+      "priority": 96,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "architecture / requirements_analysis",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "solutions-architect (level 1, max). Produces docs/delivery/evidence/v10-20260905T0515Z/SPEC-v10.md: for each of R1–R12, O1–O6, M1–M7 the current state (Verified from the live site/repo, with the command), the gap, the binary acceptance test (spec file + assertion), and the cycle that closes it. Inputs: docs/prompt.md §2–§3, §0.2, §0.3, §14; R-c8 review; C13/C11 evidence; this board.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_1e4e053e",
+      "title": "R3 — real-time AI video-avatar agent (brain → voice → avatar), perceived real-time, within the credit state",
+      "status": "blocked",
+      "assignee": "analyst-programmer",
+      "priority": 88,
+      "parents": [
+        "t_cba10f82"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Blocked in part: Higgsfield 0 credits, ElevenLabs IVC refused, OpenRouter −$5.38 (all Owner-blocked, re-probed 2026-09-05T05:50Z). The achievable slice (stock synthetic voice + pre-rendered avatar loop + envelope-driven mouth state + the working chat ladder) is specified by t_spec-r-matrix S-3 and built as cycles 22+.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_01071b79",
+      "title": "R2 — ≥7 signature Three.js/GLSL scenes at 60 fps with reduced-motion fallbacks (currently 2 GLSL + 4 SVG/CSS)",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 86,
+      "parents": [
+        "t_cba10f82"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Gap owner: SPEC-v10.md §R2 names the scenes to add/upgrade (candidates: About compass → GLSL rose; Skills bench → instanced wires; Vitrine → shader plates; Listen → caliper field; a page-level transition scene) under LCP/asset budgets. Each scene = one cycle with its own spec.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_7cb992f4",
+      "title": "R4 — employer reaches the CV dossier and client reaches the engagement CTA, both click-through complete",
+      "status": "todo",
+      "assignee": "tester",
+      "priority": 84,
+      "parents": [
+        "t_cba10f82"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Verify on the live site; fix any gap found by SPEC-v10.md S-2.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_787e6c40",
+      "title": "R5/R6 — every raster/video asset ≥4K (3840×2160 / 2160p60), generated only via Higgsfield after a written plan + prompt review",
+      "status": "blocked",
+      "assignee": "researcher",
+      "priority": 60,
+      "parents": [
+        "t_cba10f82"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "research",
+        "level": 3,
+        "effort": "high"
+      },
+      "provider": "openrouter→anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Owner-blocked: Higgsfield MCP shows 0 credits / free plan; OpenRouter negative. No generation is fired without credits (C-4). The inventory (SPEC-v10.md S-4) records what exists at 4K (v8 masters under artifacts/masters/) and what waits.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_7db91f53",
+      "title": "R7 — every claim traces to the CV / LinkedIn / a named repository; zero fabricated facts",
+      "status": "todo",
+      "assignee": "reviewer",
+      "priority": 70,
+      "parents": [
+        "t_652f383d"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Held by tests/content/content-check.spec.ts + scripts/build/cv_fingerprint.mjs (v9 cycle \"content\": ANZ headcount fixed, function grounding pinned). Open: ADV-F-4 tenure (cycle 21). Re-audited by every adversarial review.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_2a908d01",
+      "title": "R8/O3 — simple autonomous CI/CD: deploy.yml consolidates every branch into main and deploys every push + every 10 min; checks.yml reports only",
+      "status": "done",
+      "assignee": "solutions-architect",
+      "priority": 90,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "architecture / requirements_analysis",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Shipped 2026-09-05 (3d5ef60, 283ce4e, debd25b): Deploy runs 05:18Z/01:38Z/01:37Z/01:35Z all success; live build-commit == origin/main (8dc4cf46). Checks red on known items (fixed by cycles 13/14). Remaining: keep it that way — never add a gate to the deploy path.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_927a093b",
+      "title": "O1/O5 — a production publish within every 10-minute window while work exists; no workflow > 30 min",
+      "status": "running",
+      "assignee": "orchestrator",
+      "priority": 90,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "feedback_refactor_loop",
+        "level": "orchestrator",
+        "effort": "ultracode"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_329d1673",
+      "title": "O2/O6 — every production deploy gets an independent adversarial review + senior creative UI council; FAIL → refactor loop until PASS",
+      "status": "running",
+      "assignee": "reviewer",
+      "priority": 95,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Standing duty: R-c1, R-c5, R-c8 done (v9); R-c12 capture only; R-c13 queued (t_4adf34f7) for the first deploy of this session. Every later deploy gets an R-c<n> task with the same three lenses.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_28a539a9",
+      "title": "O4 — parallel workflows never deadlock; conflicts consolidated into main by the orchestrator",
+      "status": "running",
+      "assignee": "orchestrator",
+      "priority": 80,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "feedback_refactor_loop",
+        "level": "orchestrator",
+        "effort": "ultracode"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Two batteries max on this host (4 cores, ~4.5 GB free): ports 5601 and 5602. Worktrees are independent; merges are the orchestrator's; a conflict is resolved locally, never escalated.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_b5b81d5f",
+      "title": "§0.3-3 — original hero video avatar placed by research (P1 beside the pitch, poster-first)",
+      "status": "done",
+      "assignee": "analyst-programmer",
+      "priority": 60,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Done in v9 cycle 4 (9321998b, C4-hero-portrait, TC-HERO-12..21) from B-research/02-avatar-placement; cycle 11 fixes the 390 fold (C-06). Re-graded by R-c13.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_5529f5c4",
+      "title": "§0.3-4 — n8n avatar workflows produce site-grade avatar video (credit preflight, 24 fps, autonomous gates)",
+      "status": "blocked",
+      "assignee": "researcher",
+      "priority": 55,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "research",
+        "level": 3,
+        "effort": "high"
+      },
+      "provider": "openrouter→anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Repaired + published in v9 (E-n8n/n8n-fix.md, publish.log) — workflows YYNSZMYApt7N3U3B and dfs7PNjfoTZxzaw4. End-to-end 4K proof run is Owner-blocked (OpenRouter/Higgsfield credits). Re-verify the published state each run; fire nothing paid.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_63755a3b",
+      "title": "§0.3-5 — MiniVic introduction rewritten from employer research (substance, six employer-ordered prompts)",
+      "status": "done",
+      "assignee": "analyst-programmer",
+      "priority": 55,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Done in v9 cycle 3 (5f05575, B-research/01-employer-expectations.md, 78 specs). Live probe 05:5xZ: /api/chat 200, resume-grounded ANZ answer in 4.0 s on the OpenAI rung. Open: the deployed greeting MP3 still speaks the old sentence (ElevenLabs IVC refused) — folded into R3.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_fc52fa8b",
+      "title": "§0.3-2 / C-8 — black, white, gold only; gold = sourced-claim mark",
+      "status": "todo",
+      "assignee": "reviewer",
+      "priority": 75,
+      "parents": [
+        "t_cc03ed93",
+        "t_3729f57e"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Held by the static audit raw-hex gate + tests/monochrome; v9 cycle 5 moved tokens to neutral AA. Open: C-08 gold mass in #skills (cycle 17) and the zinc pip on the launcher (cycle 16).",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_43c471b2",
+      "title": "§0.3-1 / §0.3-6 — every section has exactly one flagship visualisation that tells its story (visual + text as one)",
+      "status": "todo",
+      "assignee": "reviewer",
+      "priority": 85,
+      "parents": [
+        "t_86cdd156",
+        "t_4adf34f7"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Graded by R-c8 motion council: #about and #experience failed; About compass fixed (cycle 12), Experience is cycle 15. R-c13 re-grades all six.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_f5ad9394",
+      "title": "R11 — one-time Fusion Council final gate (docs/fusion-os.md) after PEA 100% + adversarial PASS; every direction folded back",
+      "status": "todo",
+      "assignee": "orchestrator",
+      "priority": 50,
+      "parents": [
+        "t_3bf56e4a",
+        "t_4adf34f7",
+        "t_01071b79",
+        "t_7cb992f4",
+        "t_d0066b7a"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "feedback_refactor_loop",
+        "level": "orchestrator",
+        "effort": "ultracode"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Not before every other task is Done and the latest R-c<n> verdict is PASS. Panel per non-trivial item: researcher → solutions-architect → analyst-programmer; scores + surgical directions; PM re-delegates all of them.",
+      "decisions": [],
+      "comments": []
+    },
+    {
+      "id": "t_2acdaa58",
+      "title": "R12 — MCP servers / skills actively used and evidenced (Higgsfield balance probe, n8n, chrome-devtools/Playwright, Perplexity research, Figma where a design is exchanged)",
+      "status": "running",
+      "assignee": "orchestrator",
+      "priority": 40,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "feedback_refactor_loop",
+        "level": "orchestrator",
+        "effort": "ultracode"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T05:58:06.011Z",
+      "summary": "Evidence so far: n8n MCP (v9 E-n8n), Higgsfield MCP balance (v10 manifest), Playwright (every battery), Perplexity/Firecrawl (v9 B-research). Each future cycle names the tool it used in its decisions file.",
+      "decisions": [],
+      "comments": []
+    }
+  ]
+}
