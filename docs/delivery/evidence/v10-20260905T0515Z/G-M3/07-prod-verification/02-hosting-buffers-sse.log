@@ -1,0 +1,17 @@
+=== Does Firebase Hosting pass SSE chunks through, or buffer them? ===
+Method: the SAME function, the SAME request, reached two ways. If the origin
+streams and Hosting does not, starttransfer << total direct and
+starttransfer == total through Hosting.
+
+--- A. direct to the Cloud Run origin (no Hosting CDN in the path) ---
+starttransfer=0.763406 total=1.913416 http=200
+starttransfer=0.644017 total=1.872622 http=200
+starttransfer=0.671206 total=1.930907 http=200
+content-type: content-type: text/event-stream; charset=utf-8
+
+--- B. through Firebase Hosting (/api/chat rewrite) ---
+starttransfer=2.050830 total=2.051010 http=200
+starttransfer=1.797588 total=1.797824 http=200
+starttransfer=1.691258 total=1.691454 http=200
+content-type: content-type: text/event-stream; charset=utf-8
+x-served-by:  x-served-by: cache-bos-kbos510038-BOS

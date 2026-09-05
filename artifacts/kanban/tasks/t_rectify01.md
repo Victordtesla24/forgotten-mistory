@@ -37,3 +37,90 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## COMMENT (2026-09-05T13:02:17.158Z)
 13:01Z status: WIP pushes done — G-H1 0506e7e + G-S1 66b0872 (LIVE 9b864752 at 12:59:23Z, 7 min after the order), G-H3 5d733ad (consolidating). Reviewers on live: G-A1c (37cbb52c), G-M1/M2 (874f1ee9), G-H1/G-S1 (9b864752), flagship-C (577d45af, evidence pushed 13:01Z). Board lag: t_g_v1, t_g_a2, t_g_h2, t_ci_verify01, t_hyg_audit01 done. Hermes: pgrep 'hermes gateway' empty (7050 defunct zombie only). Timer active.
+
+## COMMENT (2026-09-05T13:29:44.994Z)
+INCIDENT (orchestrator-caused, recorded): my 13:01Z WIP push of the palette lane (5d733ad, branched at 7ebf325) was made WITHOUT merging origin/main first; consolidation 735ea66 hit hunk conflicts in components/MiniVicBot.tsx against the MiniVic lane's 91f46e9 and resolved them 'branch wins' → an orphan block with one dead-ladder string and 6 tsc errors sat on main 13:04–13:20Z (builds still shipped: next build does not fail the export on those). The stability lane removed it (87c9667); origin/main and the live bundle now show 0 dead-endpoint references (verified 13:29Z by grepping every served chunk). RULE ADDED: an orchestrator WIP push runs Updating 6227914..71e2811
+Fast-forward
+ app/globals.css                                    |   76 +
+ app/loading.tsx                                    |   97 +-
+ components/MiniVicBot.tsx                          |   76 +-
+ components/gl/GLCanvas.tsx                         |   96 +-
+ components/gl/Scene.tsx                            |    4 +-
+ .../sections/Experience/Experience.module.css      |   24 +-
+ .../F-stability/00-build-baseline.log              |   73 +
+ .../F-stability/01-cls-attribution.json            |  145 +
+ .../F-stability/01-cls-attribution.log             |   10 +
+ .../F-stability/01-cls-probe.mjs                   |  120 +
+ .../F-stability/02-tests-failing.log               |   90 +
+ .../F-stability/03-cls-unskipped-after.log         |    9 +
+ .../F-stability/03-hero-growth-probe.mjs           |   52 +
+ .../F-stability/03-hero-growth.log                 |   19 +
+ .../F-stability/04-tests-passing.log               |   72 +
+ .../F-stability/05-contrast-02.log                 |    7 +
+ .../08-screens/experience-openNote-390-glforce.png |  Bin 0 -> 14718 bytes
+ .../F-stability/08-screens/footer-1440.png         |  Bin 0 -> 28904 bytes
+ .../F-stability/08-screens/footer-390.png          |  Bin 0 -> 20006 bytes
+ .../v10-20260905T0515Z/G-M3/01-live-baseline.log   |   68 +
+ .../v10-20260905T0515Z/G-M3/02-tests-failing.log   |  502 ++++
+ .../v10-20260905T0515Z/G-M3/04-tests-passing.log   |  344 +++
+ .../v10-20260905T0515Z/G-M3/05-regression.log      |   10 +
+ .../evidence/v10-20260905T0515Z/G-M3/06-deploy.log |   30 +
+ .../G-M3/07-prod-verification/01-curl-after.log    |   37 +
+ .../02-hosting-buffers-sse.log                     |   17 +
+ .../G-M3/08-decision-first-token.md                |   90 +
+ .../G-REV/ceca1fa5/08-adversarial-review.md        |  325 +++
+ .../captures/1440-glforce-nolcd-fullpage.png       |  Bin 0 -> 395272 bytes
+ .../captures/1440-still-nolcd-fullpage.png         |  Bin 0 -> 382655 bytes
+ .../captures/390-glforce-nolcd-fullpage.png        |  Bin 0 -> 453478 bytes
+ .../ceca1fa5/captures/390-still-nolcd-fullpage.png |  Bin 0 -> 447193 bytes
+ .../ceca1fa5/captures/css-chroma-scan-ceca1fa5.txt |   36 +
+ .../captures/css-chroma-scan-lazy-chunk.txt        |    7 +
+ .../captures/dom-computed-colour-sweep.json        |  163 ++
+ .../ceca1fa5/captures/probe-lcd-off-histogram.json |  202 ++
+ .../G-REV/ceca1fa5/captures/probe-lcd-on.json      | 3034 ++++++++++++++++++++
+ .../G-REV/ceca1fa5/captures/probe2.mjs             |   73 +
+ .../G-REV/ceca1fa5/captures/scan.mjs               |  108 +
+ .../captures/subpixel-aa-artefact-1440-about.png   |  Bin 0 -> 12019 bytes
+ .../G-REV/ceca1fa5/captures/text-contrast-live.log |   71 +
+ functions/index.js                                 |  267 +-
+ lib/miniVicBrain.ts                                |  168 +-
+ tests/a11y/text-contrast.spec.ts                   |   50 +-
+ tests/e2e/minivic-send-path.spec.ts                |   94 +
+ tests/minivic_chat_function.test.mjs               |  220 ++
+ tests/perf/performance.spec.ts                     |  321 ++-
+ 47 files changed, 6997 insertions(+), 210 deletions(-)
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/00-build-baseline.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/01-cls-attribution.json
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/01-cls-attribution.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/01-cls-probe.mjs
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/02-tests-failing.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/03-cls-unskipped-after.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/03-hero-growth-probe.mjs
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/03-hero-growth.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/04-tests-passing.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/05-contrast-02.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/08-screens/experience-openNote-390-glforce.png
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/08-screens/footer-1440.png
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/08-screens/footer-390.png
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/01-live-baseline.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/02-tests-failing.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/04-tests-passing.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/05-regression.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/06-deploy.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/07-prod-verification/01-curl-after.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/07-prod-verification/02-hosting-buffers-sse.log
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/08-decision-first-token.md
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/08-adversarial-review.md
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/1440-glforce-nolcd-fullpage.png
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/1440-still-nolcd-fullpage.png
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/390-glforce-nolcd-fullpage.png
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/390-still-nolcd-fullpage.png
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/css-chroma-scan-ceca1fa5.txt
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/css-chroma-scan-lazy-chunk.txt
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/dom-computed-colour-sweep.json
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/probe-lcd-off-histogram.json
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/probe-lcd-on.json
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/probe2.mjs
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/scan.mjs
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/subpixel-aa-artefact-1440-about.png
+ create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/text-contrast-live.log in the worktree first and 715995a088b2660b99773e96687da8810a860815 must report no conflicts; lanes merge origin/main immediately before every push.

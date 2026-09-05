@@ -829,6 +829,22 @@ footer {
     z-index: 5;
 }
 
+/* The shell's reservation for the page.
+   `<Footer />` is part of the layout shell; the six sections are `children` and
+   stream in after it. On a slow connection Chrome therefore paints the footer
+   at y=24, directly under the nav with nothing above it, and then moves it
+   ~11 900 px down the moment the page's HTML arrives — one deterministic
+   reflow, measured at CLS 0.15556 at 1440x900 here and 0.17639 at 1280x720 on
+   live 9b864752, with FOOTER named as the only shift source. Reserving the
+   first screen in the shell means the footer's first painted position is
+   already at or below the fold, so the arriving content pushes it from
+   off-screen to further off-screen and the shift has no visible area to
+   count. The min-height is inert once the sections are in: they are far
+   taller than one screen. */
+.page-frame {
+    min-height: 100svh;
+}
+
 /* Morphing Background */
 
 /* Hero Section */
@@ -1543,3 +1559,79 @@ nav[data-scrolled="true"] {
    text never is. */@media (max-width: 640px) {}
 
 @media (prefers-reduced-motion: reduce) {}
+
+/* ── The Suspense fallback, and the height it reserves (PERF-03 / TC-HERO-15) ──
+   These rules live here, and not in `app/loading.tsx`, because they are the
+   page's layout reservation and a reservation that arrives late reserves
+   nothing. styled-jsx injects a client component's `<style>` from its client
+   runtime, which in a static export means the exported HTML carries the class
+   attributes and no rules: the shell painted 24 px tall and `<footer>` — which
+   the streaming shell emits before `<main>` — painted at y = 24, then travelled
+   11 600 px when the page streamed in. One entry, 0.1556 / 0.1764 / 0.2559 CLS
+   at 1440 / 1280 / 390. `globals.css` is render-blocking in `<head>`, so from
+   the first painted frame the shell is a full viewport tall and the footer
+   starts below the fold, where movement costs nothing. */
+.loading-shell {
+    min-height: 100vh;
+    min-height: 100svh;
+    background: var(--ink-900);
+    color: var(--white);
+    font-family: var(--font-body);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.loading-bar-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgb(246 246 246 / 0.08);
+    overflow: hidden;
+}
+
+.loading-bar-fill {
+    height: 100%;
+    width: 30%;
+    background: var(--mist-200);
+    border-radius: 0 1px 1px 0;
+    animation: loading-slide 1.4s var(--motion-ease-standard) infinite;
+}
+
+@keyframes loading-slide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
+}
+
+.loading-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.loading-label {
+    font-family: var(--font-heading);
+    font-size: var(--fs-small);
+    font-weight: 500;
+    letter-spacing: var(--ls-small);
+    text-transform: uppercase;
+    color: var(--mist-200);
+    margin: 0;
+    animation: loading-fade 2s ease-in-out infinite;
+}
+
+@keyframes loading-fade {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loading-bar-fill,
+    .loading-label {
+        animation: none;
+    }
+}

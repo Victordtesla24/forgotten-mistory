@@ -39,6 +39,42 @@ const VIEWPORTS = [
 ];
 
 /**
+ * Nodes held above AA by a stated margin, not merely at it.
+ *
+ * 4.5:1 is a threshold, and a node that lands on 4.496 or 4.51 has not passed or
+ * failed a design decision — it has reported which frame of a shader's phase the
+ * screenshot caught. `p.Experience_openNote` measured exactly 4.496:1 at 390 on
+ * `?gl=force` (reviewer 62e1e10): `--mist-400` over strata the scrim had left at
+ * #2A2A2A. The remedy was to give the note its own opaque ground so the number
+ * stops depending on the shader at all, and this floor is what stops the ground
+ * being taken away again — one frame of drift can no longer decide the gate.
+ *
+ * These are *additional* requirements. Nothing here relaxes the 4.5 / 3.0 AA
+ * thresholds every other node is still measured against.
+ */
+const PINNED_FLOORS: { pattern: RegExp; min: number; why: string }[] = [
+  {
+    // No `\b` anchors: the audit reports hashed CSS-module paths like
+    // `p.Experience_openNote__aBc12`, and `_` is a word character — so a word
+    // boundary before `openNote` never matches and the floor would be dead code
+    // that always passes. `pinsSeen` below is what proves it is not.
+    pattern: /openNote/,
+    min: 4.6,
+    why: 'the open-bracket note sits over the career strata; it must clear AA with margin',
+  },
+];
+
+/**
+ * Which pinned floors actually matched a node on the last audit.
+ *
+ * A floor that matches nothing passes silently, which is the same as not having
+ * it — one rename of a CSS module class and the margin this lane was opened for
+ * is gone with no test going red. So the audit records what it matched and the
+ * tests assert that every pin was exercised.
+ */
+const pinsSeen = new Set<RegExp>();
+
+/**
  * Software rasteriser, explicitly enabled.
  *
  * This host has no GPU, and `components/gl/useGLCapability.ts` treats SwiftShader
@@ -59,8 +95,16 @@ const GL_ARGS = [
 
 test.use({ launchOptions: { args: GL_ARGS } });
 
-/** Every `sceneId` stamped by `components/gl/Scene.tsx`, in document order. */
-const SCENE_SLOTS = ['hero-atmosphere', 'about-field', 'career-strata'];
+/**
+ * Every `sceneId` stamped by `components/gl/Scene.tsx`, in document order.
+ *
+ * `skills-bench` (66b0872) was missing here, so TC-CONTRAST-02 walked past the
+ * Skills bench before its canvas had ever been asked for and photographed the
+ * three `.bandLabel`s on the CSS still instead of the lit, animating field they
+ * actually sit on. Warming it is what puts the band labels on the ground a
+ * reader with a GPU sees.
+ */
+const SCENE_SLOTS = ['hero-atmosphere', 'about-field', 'career-strata', 'skills-bench'];
 
 interface AuditOptions {
   /** What to load. `/?gl=force` is the shader path. */
@@ -184,14 +228,44 @@ async function collectNodes(page: Page) {
       range.selectNodeContents(textNode);
       const rects = Array.from(range.getClientRects()).filter((r) => r.width > 1 && r.height > 1);
       if (!rects.length) continue;
+      // A point is only honest if the glyph it names is the thing painted
+      // there. The site's chrome is `position: fixed` — `nav` is 96 px tall,
+      // opaque at `rgba(10 11 13 / 0.92)` once scrolled, and carries the
+      // `.nav-actions` group at `mix-blend-mode: difference`, so the white
+      // border of the "Download CV" pill composites to about rgb(226,225,223)
+      // over it. Text scrolled under that bar is not dim, it is *covered*: the
+      // walk was reading the pill's border as the ground behind
+      // `span.Skills_statusLabel` at scrollY 9000 and calling 2.29:1 on a node
+      // no reader can see there (band probe, 09-culprit.md). Same idiom as the
+      // `clip: rect(0,0,0,0)` exclusion above — 1.4.3 governs visible text.
+      //
+      // `elementsFromPoint` returns hit-testable elements front to back, so
+      // anything ahead of `el` that `el` does not contain is painted over it.
+      // Decorative layers opt out of hit testing (`pointer-events: none` on the
+      // canvases, `.fieldSlot`, the vignette), so they never appear here and go
+      // on being sampled as the ground — which is exactly their job.
+      const covered = (x: number, y: number) => {
+        const stack = document.elementsFromPoint(x, y);
+        const idx = stack.indexOf(el);
+        if (idx < 0) return true;
+        return stack.slice(0, idx).some((over) => !el.contains(over));
+      };
+
       const points: [number, number][] = [];
       for (const r of rects.slice(0, 3)) {
         const y = r.top + r.height / 2;
         for (const f of [0.15, 0.5, 0.85]) {
           const x = r.left + r.width * f;
-          if (x >= 0 && x < vw && y >= 0 && y < vh) points.push([Math.round(x), Math.round(y)]);
+          if (x < 0 || x >= vw || y < 0 || y >= vh) continue;
+          const px = Math.round(x);
+          const py = Math.round(y);
+          if (covered(px, py)) continue;
+          points.push([px, py]);
         }
       }
+      // Nothing measurable in this band. The node is left un-`seen` so the
+      // overlapping band below picks it up clear of the chrome, rather than
+      // being scored against a bar it is hidden behind.
       if (!points.length) continue;
 
       out.push({
@@ -208,6 +282,14 @@ async function collectNodes(page: Page) {
     return out;
   });
 }
+
+/**
+ * How much each scroll band overlaps the one above it, in CSS px. Comfortably
+ * more than the 96 px `nav` (plus its shadow) that covers the top of every
+ * viewport, so no row of type is only ever offered to the walk while it is
+ * hidden behind the bar.
+ */
+const BAND_OVERLAP = 160;
 
 const GLYPH_MASK_ID = '__text_contrast_glyph_mask__';
 
@@ -290,9 +372,15 @@ async function auditViewport(
   await page.waitForTimeout(2500);
   if (options.warmScenes) await warmScenes(page);
 
+  pinsSeen.clear();
   const failures: Sample[] = [];
   const seen = new Set<string>();
-  for (let top = 0; top < total; top += height) {
+  // Bands overlap by more than the fixed chrome is tall. Stepping a clean
+  // viewport at a time gave every document row exactly one band, so a row that
+  // landed in the top 96 px — under `nav` — had no other chance to be measured
+  // once the occlusion guard dropped it. With the overlap every row appears at
+  // least once clear of the bar, and `seen` still measures it only once.
+  for (let top = 0; top < total; top += height - BAND_OVERLAP) {
     await page.evaluate((y) => window.scrollTo(0, y), top);
     await page.waitForTimeout(options.settleMs);
     const nodes = await collectNodes(page);
@@ -323,7 +411,10 @@ async function auditViewport(
         }
       }
       const large = node.fontSize >= 24 || (node.fontSize >= 18.66 && node.fontWeight >= 700);
-      const need = large ? 3 : 4.5;
+      // AA first, then any floor pinned for this node — whichever is stricter wins.
+      const pinned = PINNED_FLOORS.find((floor) => floor.pattern.test(node.path));
+      if (pinned) pinsSeen.add(pinned.pattern);
+      const need = Math.max(large ? 3 : 4.5, pinned?.min ?? 0);
       if (worst < need) {
         failures.push({
           selector: node.path,
@@ -399,6 +490,14 @@ test.describe('TC-CONTRAST-02 (WebGL path) — contrast is measured over the sha
         failures.length,
         `${failures.length} text node(s) below AA on ?gl=force — worst ten:\n${worstTen(failures)}`,
       ).toBe(0);
+      // The pinned floors are only a gate while they still address a node that exists.
+      for (const floor of PINNED_FLOORS) {
+        expect(
+          pinsSeen.has(floor.pattern),
+          `no text node matched ${floor.pattern} — the pinned ${floor.min}:1 floor ` +
+            `(${floor.why}) measured nothing and would have passed regardless`,
+        ).toBe(true);
+      }
     });
   }
 });

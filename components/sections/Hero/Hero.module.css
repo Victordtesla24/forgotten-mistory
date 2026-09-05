@@ -312,7 +312,15 @@
     width: 100%;
     max-width: var(--page-max);
     margin: 0 auto;
-    padding: clamp(var(--space-6), 8vh, var(--space-10)) 0 clamp(var(--space-8), 12vh, var(--space-12));
+    /* `--space-12` does not exist in app/globals.css (the scale runs
+       …8, 10, 14, 20). One invalid value in a shorthand invalidates the whole
+       declaration, so this band shipped with NO padding at all: the ledger's
+       first row started 1 px under the fold — measured at 901 / 801 / 1195 /
+       892 against folds of 900 / 800 / 1194 / 844. A reader on a 900 px screen
+       saw the top of the evidence in their first screen, and the correction
+       asks for 40 px of daylight. Real tokens, and the ledger now clears the
+       fold by the padding's own height. */
+    padding: clamp(var(--space-6), 8vh, var(--space-10)) 0 clamp(var(--space-8), 12vh, var(--space-14));
     border-top: 1px solid var(--token-border-default);
 }
 
@@ -892,41 +900,50 @@
         linear-gradient(var(--white), var(--white)) 0 50% / 100% 1px no-repeat;
 }
 
-/* Play / pause, bottom-right inside the rule. It is rendered at every width and
-   under reduced motion: on a touch screen it is the only way to start the loop,
-   and a reader's own press is allowed however little motion they asked for. */
-.portraitToggle {
-    position: absolute;
-    right: calc(var(--portrait-inset) + var(--space-1));
-    bottom: calc(var(--portrait-inset) + var(--space-1));
-    z-index: 3;
+/* Play / pause — in the proof band, not on the face.
+   It used to be a glyph button pinned inside the photograph's frame. That put a
+   second pressable thing in the first screen: an independent reviewer measured
+   two CTA groups in the fold at 834 and 390 on live `9b864752`, and at 1440 and
+   1280 the only one a reader could see was this one, with `hero-actions` below
+   the fold entirely. The photograph is a figure now — the loop follows the
+   pointer across it — and the explicit control stands below, named in words,
+   where a control is read rather than tripped over. It is rendered at every
+   width and under reduced motion: it is the keyboard and touch path, and a
+   reader's own press is allowed however little motion they asked for. */
+.portraitControlRow {
+    margin: var(--space-3) 0 0;
+}
+
+.portraitControl {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    padding: 0;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-2);
     margin: 0;
     border: 1px solid var(--card-border);
     border-radius: 999px;
     background: rgb(10 10 10 / 0.72);
-    color: var(--white);
+    color: var(--mist-200);
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    line-height: var(--lh-label);
+    letter-spacing: var(--ls-caption);
     cursor: pointer;
-    backdrop-filter: blur(6px);
 }
 
-.portraitToggle svg {
-    width: 14px;
-    height: 14px;
+.portraitControlGlyph {
+    width: 10px;
+    height: 10px;
     fill: currentColor;
 }
 
-.portraitToggle:hover {
+.portraitControl:hover {
     border-color: var(--card-border-hover);
+    color: var(--white);
     background: var(--ink-900);
 }
 
-.portraitToggle:focus-visible {
+.portraitControl:focus-visible {
     outline: 2px solid var(--white);
     outline-offset: 3px;
 }

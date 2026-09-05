@@ -53,3 +53,9 @@ PUSHED 91f46e9 on worktree-wf_0a064191-152-1 (12:48Z): handleSend → askMiniVic
 
 ## COMMENT (2026-09-05T12:51:04.218Z)
 LIVE 874f1ee9 at 12:50:05Z (Deploy 33967099706 success) — fourth ship of the run; served greeting sha now dd65f259… (verified by curl). Reviewer phase-2 dispatched on 874f1ee9 (G-M1/G-M2 verdicts + G-M3 TTFB and /api/tts baseline).
+
+## COMPLETE (2026-09-05T13:05:54.316Z)
+REVIEWER PHASE-2 PASS on live 874f1ee9/7d467770 (G-REV/874f1ee9/08-adversarial-review.md, ca2b442): 8 browser sends + 5 curl → /api/chat 200 13/13, exactly one /api request per send, 0 /api/realtime*, 0 chat-with-vic*, 0 WebSockets, no poller in a 10 s window; 15 served chunks scanned → 0 dead-endpoint strings; provider:/model: literals in the payload = 0; 0 pageerrors.
+
+## COMMENT (2026-09-05T13:29:45.069Z)
+NOTE: between 13:04Z and 13:20Z live carried a consolidation (735ea66, branch-wins) that reinstated one dead-ladder string in MiniVicBot.tsx; removed by 87c9667. The reviewer's PASS was measured on 874f1ee9/7d467770 (before) and the current bundle (e247598c+) again has 0 references (orchestrator grep of all served chunks 13:29Z). G-M1 stands; incident recorded on t_rectify01.

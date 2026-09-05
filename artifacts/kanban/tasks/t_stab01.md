@@ -34,3 +34,12 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-05T13:03:55.747Z)
+ADD (reviewer 62e1e10): (a) p.Experience_openNote at 390 on /?gl=force measures 4.496:1 — give it margin (plate a shade darker than the #2A2A2A ceiling, or a shader groove) so one frame of shader phase cannot decide the gate; extend TC-CONTRAST-02 to require ≥ 4.6:1 worst-pixel on that node. (b) CLS 0.176 at 1280×720 measured with a preloader-Skip click — first re-measure on an unskipped boot (PerformanceObserver layout-shift, list sources), then reserve whatever shifts (footer per PERF-03, or the hero entrance). Priority raised to 96.
+
+## STATUS (2026-09-05T13:04:41.179Z)
+running — dispatched 13:04Z — analyst-programmer in the paused worktree wf_38db9d7d-ce3-1, port 5613; RECTIFY push rule (tsc/lint/build/audit gate, battery in parallel)
+
+## COMPLETE (2026-09-05T13:29:44.437Z)
+LANE COMPLETE 87c9667 (live a3edeff4 13:20Z) + evidence 0df240f: CLS root cause = app/loading.tsx styled-jsx rules never shipped in the static export → fallback 24 px tall, footer painted inside the fold then travelled ~11,600 px (single layout-shift entry, source footer.Footer_footer) → rules moved into globals.css → CLS 0.0000 / 0 entries at 1440, 1280, 390 on an unskipped boot under 6× throttle (was 0.156 / 0.176 / 0.256); TC-SKEW-02 3/3 (GLCanvas pre-flights a context on a detached canvas, one console.error per scene, nothing swallowed); PERF-03/03b + TC-HERO-15 3/3 under 2 workers; openNote on an --ink-900 plate → 6.20:1 on both paths (TC-CONTRAST-02 pin 4.6 with a liveness guard, self-caught regex bug fixed); removed the orphan MiniVicBot block that 735ea66's branch-wins merge had reinstated (6 tsc errors on main). 21 passed --repeat-each=3.

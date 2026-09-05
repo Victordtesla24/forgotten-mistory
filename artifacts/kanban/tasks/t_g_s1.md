@@ -49,3 +49,9 @@ ORCHESTRATOR PUSH under host RECTIFY 12:52Z (O3): 66b0872 on worktree-wf_c06ca2f
 
 ## COMMENT (2026-09-05T13:00:10.258Z)
 LIVE 9b864752 at 12:59:23Z — consolidated cleanly (no forced conflict; flagship-C plate rules and the new .fold/.proof structure both present on main). Reviewer phase-2 dispatched on 9b864752 for G-H1 + G-S1.
+
+## COMPLETE (2026-09-05T13:12:44.689Z)
+REVIEWER PHASE-2 PASS on live 9b864752 (G-REV/9b864752/08-adversarial-review.md): #skills mounts 1 webgl2-live canvas at /?gl=force at 1440 AND 390 (six scroll-and-wait cycles 1>1>1>1>1>1 — the reviewer withdrew its own first-pass '0 canvases @390' as a settle-time artefact); field coverage 0.447 / peak 0.753 / motion 0.0148; reduced-motion 0 canvases with the SVG bench visible; no-GL readable; gold: 1 saturated mark within budget 6, 0 unlicensed; AA on gl=force 0 failures (min 4.70); 0 pageerrors across 12 loads. Continues t_flagvis0b + t_cbff57b0.
+
+## COMMENT (2026-09-05T13:37:33.569Z)
+LANE FOLLOW-UP pushed 0861658 'fix(skills): hold the bench light inside the plate, thin the graticule' + battery evidence (04/06 logs, 4 screenshots) — consolidating (only reports/static-audit.json conflicts, modify/delete → will be re-tracked by checkout --theirs; orchestrator untracks it again on main after the deploy).

@@ -753,12 +753,32 @@ p.roleHeadline .roleHeadlineOpen {
     color: var(--mist-200);
 }
 
-/* The one printed explanation of the open brackets below the chart. */
+/* The one printed explanation of the open brackets below the chart.
+
+   TC-CONTRAST-02 (reviewer 62e1e10, 390 on /?gl=force): this note measured
+   4.496:1 against its worst sampled pixel — `--mist-400` (#909090, relative
+   luminance 0.2789) over a ground that the lit strata push all the way to
+   #2A2A2A (0.02316). That is 4.496 against a 4.5 requirement: not a pass with
+   a small margin, a fail decided by which frame of the shader phase the audit
+   happened to photograph. The scrim on `.chartScene::after` already takes this
+   region to 86% ink, and the remaining 14% of a near-white stratum is the whole
+   difference.
+
+   So the note stops borrowing its ground and brings its own. The plate is the
+   page's own ink at full opacity, so what is behind it — shader phase, entrance
+   ramp, reduced-motion still — cannot change the measurement at all: the ratio
+   is 6.20:1 in every frame, on both paths, at both viewports. It costs the
+   strata the one strip they were already 86% scrimmed out of, and it buys a
+   number that holds. The negative inline margin keeps the glyphs on the same
+   left edge as the chart above them; the plate simply extends past them. */
 .openNote {
     position: relative;
     z-index: 1;
-    margin: var(--space-3) 0 0;
+    margin: var(--space-3) 0 0 calc(var(--space-3) * -1);
     max-width: var(--measure-read);
+    padding: var(--space-2) var(--space-3);
+    background: var(--ink-900);
+    border-radius: 2px;
     font-size: var(--fs-body);
     line-height: var(--lh-prose);
     color: var(--mist-400);

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T13:02:17.158Z",
+  "updated": "2026-09-05T13:38:44.472Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -17,7 +17,7 @@
       "id": "t_g_a1",
       "title": "ADV-FAIL P0 — G-A1 About evidence → gold",
       "column": "ready",
-      "status": "running",
+      "status": "done",
       "priority": 99,
       "assignee": "analyst-programmer",
       "created_at": "2026-09-05T11:12:20Z",
@@ -36,7 +36,7 @@
         "effort": "xhigh"
       },
       "provider": "anthropic-oauth",
-      "updated": "2026-09-05T12:37:56.120Z",
+      "updated": "2026-09-05T13:03:55.616Z",
       "parents": [],
       "comments": [
         {
@@ -55,7 +55,8 @@
           "text": "REVIEWER PHASE-2 FAIL (semantics, prime directive 3) on live 843b679d: colour/contrast PASS (9× rgb(201,168,76), AA 7.99–8.72:1) but 4 of 9 gold lines are not checkable records — #4 Culture Fit '5+ squads, up to 40 practitioners…' (self-reported), #8 Company Stability '75+ hours of evidence against 64 available…' (bare numbers), #7 Career Growth '… −38% simulated error-budget breaches' (its own text says simulated), #6 Location Match 'Currently on site with the ATO' sits on a side==='role' dimension rendering the OPEN caliper 'measured from the role'. Structural cause: the new  flag was never reconciled with the pre-existing  flag (About.tsx:220). False positive named: commit 03aa1ed's 'a figure off the CV' criterion contradicts CLAUDE.md (CV figure = self-reported, not sourced). → CORRECTION t_g_a1c dispatched."
         }
       ],
-      "decisions": []
+      "decisions": [],
+      "result": "DONE via correction t_g_a1c — independent reviewer PASS on live (phase 3, 8b351a7). Lineage: 03aa1ed (gold mechanics) → phase-2 FAIL on semantics → d958917 (sourced only where a checkable record is named) → PASS."
     },
     {
       "id": "t_g_a2",
@@ -96,7 +97,7 @@
       "id": "t_g_m1",
       "title": "ADV-FAIL P0 — G-M1 MiniVic drop dead API ladder",
       "column": "ready",
-      "status": "running",
+      "status": "done",
       "priority": 99,
       "assignee": "analyst-programmer",
       "created_at": "2026-09-05T11:12:20Z",
@@ -115,7 +116,7 @@
         "effort": "xhigh"
       },
       "provider": "anthropic-oauth",
-      "updated": "2026-09-05T12:51:04.218Z",
+      "updated": "2026-09-05T13:29:45.069Z",
       "parents": [],
       "comments": [
         {
@@ -137,15 +138,21 @@
           "at": "2026-09-05T12:51:04.218Z",
           "by": "orchestrator",
           "text": "LIVE 874f1ee9 at 12:50:05Z (Deploy 33967099706 success) — fourth ship of the run; served greeting sha now dd65f259… (verified by curl). Reviewer phase-2 dispatched on 874f1ee9 (G-M1/G-M2 verdicts + G-M3 TTFB and /api/tts baseline)."
+        },
+        {
+          "at": "2026-09-05T13:29:45.069Z",
+          "by": "orchestrator",
+          "text": "NOTE: between 13:04Z and 13:20Z live carried a consolidation (735ea66, branch-wins) that reinstated one dead-ladder string in MiniVicBot.tsx; removed by 87c9667. The reviewer's PASS was measured on 874f1ee9/7d467770 (before) and the current bundle (e247598c+) again has 0 references (orchestrator grep of all served chunks 13:29Z). G-M1 stands; incident recorded on t_rectify01."
         }
       ],
-      "decisions": []
+      "decisions": [],
+      "result": "REVIEWER PHASE-2 PASS on live 874f1ee9/7d467770 (G-REV/874f1ee9/08-adversarial-review.md, ca2b442): 8 browser sends + 5 curl → /api/chat 200 13/13, exactly one /api request per send, 0 /api/realtime*, 0 chat-with-vic*, 0 WebSockets, no poller in a 10 s window; 15 served chunks scanned → 0 dead-endpoint strings; provider:/model: literals in the payload = 0; 0 pageerrors."
     },
     {
       "id": "t_g_m2",
       "title": "ADV-FAIL P0 — G-M2 Regenerate greeting MP3 to match text",
       "column": "ready",
-      "status": "running",
+      "status": "done",
       "priority": 99,
       "assignee": "analyst-programmer",
       "created_at": "2026-09-05T11:12:20Z",
@@ -164,7 +171,7 @@
         "effort": "xhigh"
       },
       "provider": "anthropic-oauth",
-      "updated": "2026-09-05T12:49:33.916Z",
+      "updated": "2026-09-05T13:05:54.375Z",
       "parents": [],
       "comments": [
         {
@@ -178,7 +185,8 @@
           "text": "PUSHED with G-M1 (91f46e9). DECISION RECORD (03-generation.log): ATTEMPT 1 REST call → HTTP 400 invalid_api_key / api_key_id_used_as_api_key — the stored ELEVENLABS_API_KEY is a key ID (corroborates the pre-existing MiniVicBot note); no asset written, no fabrication. ATTEMPT 2 — the authenticated ElevenLabs connector (real generation in the account workspace): premade male Indian-English professional voice hg1icMxI2KADq9a81ecq ('Sanket'), eleven_multilingual_v2, one take, 24.98 s, 365 credits / USD 0.133 (the single authorised paid call). Text = GREETING.hiring verbatim (single source imported by MiniVicBot.tsx and the generation script; transcript public/assets/minivic-greeting.txt + digest module emitted together). New MP3 417,702 B (<500 kB), sha dd65f259…; tests/minivic_greeting.test.mjs asserts transcript == GREETING.hiring and hash == digest. FOLLOW-UP for the Owner's credential store (not a blocker): ELEVENLABS_API_KEY holds a key ID, not an sk_ key — the REST path and functions/index.js elevenLabsTts (/api/tts) cannot authenticate until a real key is stored; recorded on t_g_m3 / R3."
         }
       ],
-      "decisions": []
+      "decisions": [],
+      "result": "REVIEWER PHASE-2 PASS (pipeline invariant) on live: served /assets/minivic-greeting.mp3 sha dd65f259… = window.__CLONED_VOICE_GREETING_HASH__ = greetingAudioSha256; 417,702 B, 24.98 s, 128 kbps mono; served transcript == on-screen GREETING.hiring character-for-character; previous asset 369e1eb2… (12.3 s) gone. Spoken words not verifiable without paid ASR — stated honestly. Voice identity/provenance (premade 'Sanket') unverifiable on the wire — registered as unverified, not false."
     },
     {
       "id": "t_g_h1",
@@ -203,7 +211,7 @@
         "effort": "xhigh"
       },
       "provider": "anthropic-oauth",
-      "updated": "2026-09-05T13:00:10.132Z",
+      "updated": "2026-09-05T13:14:27.740Z",
       "parents": [],
       "comments": [
         {
@@ -225,6 +233,21 @@
           "at": "2026-09-05T13:00:10.132Z",
           "by": "orchestrator",
           "text": "LIVE 9b864752 at 12:59:23Z — consolidated cleanly (no forced conflict; flagship-C plate rules and the new .fold/.proof structure both present on main). Reviewer phase-2 dispatched on 9b864752 for G-H1 + G-S1."
+        },
+        {
+          "at": "2026-09-05T13:10:25.297Z",
+          "by": "orchestrator",
+          "text": "FOLLOW-UP from lane G-H3's battery: tests/overhaul visual baseline hero-section.png (TC-RENDER-07) is stale (1280×742 → 782 after the photo/plates/fold changes) — the hero lane owns this pixel set: regenerate deliberately with UPDATE_SNAPSHOTS=1 for the hero baselines after the fold lands, look at the PNG, commit it with the evidence."
+        },
+        {
+          "at": "2026-09-05T13:12:44.900Z",
+          "by": "orchestrator",
+          "text": "REVIEWER PHASE-2 FAIL on live 9b864752 (G-REV/9b864752/08-adversarial-review.md, measured at 1440/1280/834/390): PASS parts — text leaves in fold 4/4/6/5 (was 21), paragraphs>12w = 1, ledger top 1110/1005/1195/892 vs innerHeight 900/800/1194/844 (below the fold everywhere, but only by 1 px at 834), availability below, stage coverage 1.0, CT-10 holds, plates + phone scene intact, AA 0 failures, 0 pageerrors, LCP 1032 ms. FAIL parts — (1) at 834 and 390 the fold has TWO CTA groups: hero-actions AND the 'Play the portrait' <button> (counts as a CTA); (2) INVERSION at 1440/1280: the actions group (See the evidence + Download CV) is BELOW the fold — the only in-fold CTA is the portrait toggle; (3) CLS 0.176 at 1280×720 in 2/3 cold loads (gate <0.05), LCP element = the photograph my_avatar.avif → a deterministic reflow attributable to the moved band; (4) 834 ledger clears the fold by 1 px. → CORRECTION t_g_h1c."
+        },
+        {
+          "at": "2026-09-05T13:14:27.740Z",
+          "by": "orchestrator",
+          "text": "ORIGINAL LANE FOLLOW-UP LIVE 6224a7f8 at 13:14:01Z: 44c3e08 'the fold is one column of type beside the photograph' — reading column is one grid item beside the figure (38vw right column), band anchored at top; lane-measured: 6–7 text leaves in fold, actions end at 723/656/762/582 (inside 900/800/1194/844), ledger tops 901/801/1195/889, CLS 0.0000, LCP 588 ms; hero-fold 12/12, hero/hero-photo/content-check/cinematic/performance green; portrait caption --mist-400 → --mist-200 (3.35:1 → AA). Still open for t_g_h1c: the 'Play the portrait' button as a second in-fold CTA group at 834/390, and the 1-px ledger margin at 1440/834 (≥40 px required); reviewer re-probe after the correction lands."
         }
       ],
       "decisions": []
@@ -273,7 +296,7 @@
       "id": "t_g_s1",
       "title": "ADV-FAIL P0 — G-S1 Skills real GL flagship",
       "column": "ready",
-      "status": "running",
+      "status": "done",
       "priority": 96,
       "assignee": "analyst-programmer",
       "created_at": "2026-09-05T11:12:20Z",
@@ -292,7 +315,7 @@
         "effort": "xhigh"
       },
       "provider": "anthropic-oauth",
-      "updated": "2026-09-05T13:00:10.258Z",
+      "updated": "2026-09-05T13:37:33.569Z",
       "parents": [],
       "comments": [
         {
@@ -309,9 +332,15 @@
           "at": "2026-09-05T13:00:10.258Z",
           "by": "orchestrator",
           "text": "LIVE 9b864752 at 12:59:23Z — consolidated cleanly (no forced conflict; flagship-C plate rules and the new .fold/.proof structure both present on main). Reviewer phase-2 dispatched on 9b864752 for G-H1 + G-S1."
+        },
+        {
+          "at": "2026-09-05T13:37:33.569Z",
+          "by": "orchestrator",
+          "text": "LANE FOLLOW-UP pushed 0861658 'fix(skills): hold the bench light inside the plate, thin the graticule' + battery evidence (04/06 logs, 4 screenshots) — consolidating (only reports/static-audit.json conflicts, modify/delete → will be re-tracked by checkout --theirs; orchestrator untracks it again on main after the deploy)."
         }
       ],
-      "decisions": []
+      "decisions": [],
+      "result": "REVIEWER PHASE-2 PASS on live 9b864752 (G-REV/9b864752/08-adversarial-review.md): #skills mounts 1 webgl2-live canvas at /?gl=force at 1440 AND 390 (six scroll-and-wait cycles 1>1>1>1>1>1 — the reviewer withdrew its own first-pass '0 canvases @390' as a settle-time artefact); field coverage 0.447 / peak 0.753 / motion 0.0148; reduced-motion 0 canvases with the SVG bench visible; no-GL readable; gold: 1 saturated mark within budget 6, 0 unlicensed; AA on gl=force 0 failures (min 4.70); 0 pageerrors across 12 loads. Continues t_flagvis0b + t_cbff57b0."
     },
     {
       "id": "t_g_h2",
@@ -1581,7 +1610,7 @@
     {
       "id": "t_cbff57b0",
       "title": "Scene 4 — #skills flagship: GLSL bench field behind the wire diagram (R2, M1)",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 86,
       "parents": [
@@ -1596,7 +1625,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:05.764Z",
-      "updated": "2026-09-05T12:09:07Z",
+      "updated": "2026-09-05T13:12:44.813Z",
       "summary": "SPEC-v10.md c19: #skills has 0 canvases (20-path SVG bench). Add a shader field mounted through components/gl/Scene.tsx that lights the sourced edges; gold stays a mark (≤ 6 gold-painting elements after cycle 17). Files: components/sections/Skills/BenchField.tsx, bench.glsl.ts, Skills.tsx, Skills.module.css; tests/overhaul/scene-skills.spec.ts (TDD first).",
       "decisions": [],
       "comments": [
@@ -1606,7 +1635,8 @@
           "text": "running — continued 12:0xZ as t_g_s1 (G-S1) in worktree wf_c06ca2f9-9de-1"
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "Closed via t_g_s1 (Skills bench GLSL field live on 9b864752, independent reviewer PASS)."
     },
     {
       "id": "t_60d9cd7a",
@@ -2028,7 +2058,7 @@
     {
       "id": "t_e9d4e10f",
       "title": "R-c13 MOT-C13-01d — scene-local error boundary: a fault inside one GL scene never replaces the whole document",
-      "status": "ready",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 90,
       "parents": [
@@ -2042,7 +2072,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:30:51.764Z",
-      "updated": "2026-09-05T12:19:26.719Z",
+      "updated": "2026-09-05T13:29:44.626Z",
       "summary": "components/gl · major · Verified. A fault inside a scene replaces the whole document: GLCanvas mounts with no scene-local error boundary, so a component-level throw reaches app/error.tsx — 'the scene is never the content' is not enforced in code",
       "decisions": [],
       "comments": [
@@ -2058,7 +2088,8 @@
         }
       ],
       "blocker": null,
-      "column": "ready"
+      "column": "ready",
+      "result": "Closed via t_stab01 (87c9667 live): see its COMPLETE record."
     },
     {
       "id": "t_c16b0001",
@@ -2112,7 +2143,7 @@
     {
       "id": "t_2d068068",
       "title": "PERF-03 / TC-HERO-15 root cause — footer.Footer_footer layout shift (~0.16 CLS at ~508 ms) under load; reserve the footer box so CLS < 0.05 on a busy host too",
-      "status": "ready",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 80,
       "parents": [
@@ -2126,7 +2157,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T08:06:43.493Z",
-      "updated": "2026-09-05T12:19:26.511Z",
+      "updated": "2026-09-05T13:29:44.480Z",
       "summary": "V-react19 finding 1: the only layout shift captured names footer.Footer_footer__TWDx3 at ~508 ms worth 0.1556 — the two off-list ✘ (TC-HERO-15, PERF-03) attributed to the hero crossfade are this. Files: components/site/Footer.tsx + its CSS block (app/globals.css or module). TDD: tests/perf/performance.spec.ts PERF-03 must pass with --workers=2 under load (repeat-each=3) and a new assertion that no LayoutShift entry names the footer.",
       "decisions": [],
       "comments": [
@@ -2137,7 +2168,8 @@
         }
       ],
       "blocker": null,
-      "column": "ready"
+      "column": "ready",
+      "result": "Closed via t_stab01 (87c9667 live): see its COMPLETE record."
     },
     {
       "id": "t_d9e77919",
@@ -2291,7 +2323,7 @@
     {
       "id": "t_flagvis0b",
       "title": "Flagship visibility B: Skills bench field (scene 4, new), Vitrine field and Listen caliper field become unmistakable — same visibility gate; MiniVic viseme stage after",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 98,
       "parents": [
@@ -2305,7 +2337,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T09:16:20.880Z",
-      "updated": "2026-09-05T12:09:07Z",
+      "updated": "2026-09-05T13:12:44.766Z",
       "summary": "Second half of the owner correction: #skills has no scene (t_cbff57b0), #vitrine field invisible on live captures (black behind the cards), #listen a faint band. Reuse tests/overhaul/flagship-visibility.spec.ts from lane A; skills bench field brief in t_cbff57b0; vitrine/listen fields exist (1150e3e, d53d228) and need their intensity/structure raised to the gate.",
       "decisions": [],
       "comments": [
@@ -2315,12 +2347,13 @@
           "text": "running — continued 12:0xZ as t_g_s1 (G-S1) in the paused worktree wf_c06ca2f9-9de-1 (BenchField.tsx + bench.glsl.ts uncommitted)"
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "Closed via t_g_s1 (Skills bench GLSL field live on 9b864752, independent reviewer PASS)."
     },
     {
       "id": "t_skew0001",
       "title": "P95 — deploy skew: a page loaded under build N lazy-loads scene chunks that deploy N+1 has replaced (Loading chunk 427/743 failed) — precache the build chunk manifest in the worker, keep the previous cache generation, recover chunk-load failures, scene-local error boundary",
-      "status": "ready",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 95,
       "parents": [
@@ -2334,7 +2367,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T10:10:33.089Z",
-      "updated": "2026-09-05T12:19:26.600Z",
+      "updated": "2026-09-05T13:29:44.585Z",
       "summary": "Monitor 10:09Z on c5d808c3: pageerrors Loading chunk 427.8222755a6b18eedc.js / 743.9672a1f959c17edf.js failed; canvasesAfterExperience 0 — the HTML was the previous build, the hashed chunks were gone after the next deploy (Firebase serves only the current version). With 10-min deploys every mid-visit scroll can hit this. Fix: (1) scripts/build/stamp_service_worker.mjs also injects PRECACHE_ASSETS = every out/_next/static/**/*.{js,css} + fonts of THIS build; install precaches them (cache-first already), activate keeps the previous generation (delete caches older than the last two) so a page still running build N can lazy-load from cache after N+1 activates; (2) components/gl/Scene.tsx dynamic import: on ChunkLoadError retry once, then one reload per session (sessionStorage guard) — and never the error shell; (3) fold t_e9d4e10f: scene-local error boundary so any scene fault stays in its slot. Tests: tests/sw_strategy.test.mjs (precache list present and stamped, two-generation cleanup), tests/overhaul/scene-error-boundary.spec.ts (inject a failing chunk via route interception → six sections stay, one console error, no error shell), node --test.",
       "decisions": [],
       "comments": [
@@ -2350,12 +2383,13 @@
         }
       ],
       "blocker": null,
-      "column": "ready"
+      "column": "ready",
+      "result": "Closed via t_stab01 (87c9667 live): see its COMPLETE record."
     },
     {
       "id": "t_flagvis0c",
       "title": "CORRECTION P97 — flagship A live defects: hero scene extinguished on phones (flat mobile scrim), AA contrast regressions on the WebGL path (Experience company labels over strata, hero ledger source), single-viewport gate; About @390 peak",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 97,
       "parents": [
@@ -2369,7 +2403,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T10:15:48.659Z",
-      "updated": "2026-09-05T12:40:55.953Z",
+      "updated": "2026-09-05T13:29:44.675Z",
       "summary": "## CORRECTION: V-flagship-A F1/F2 (09-verification.md c3bc139). Original output: 9fd78ef/c6bf7ff/b200958/a78d9f0 live on 8f81ae86. Failing criteria: (F1) at 390 ?gl=force hero coverage 0.00%/peak 0.0212 with canvas mounted — Hero.module.css @media (max-width:700px) .stage::after flat rgb(10 10 10 / 0.86); (F2) text-contrast algorithm on /?gl=force: 9 nodes <AA @1440, 12 @390 (.trackCompany Telstra 1.10:1, InfoCentric 1.11:1, Microsoft 1.85:1, ANZ 2.16:1, NAB 2.73:1, ATO 3.84:1; .trackYears 3.3 yr 3.84:1; hero .ledgerSource 1.34:1 @1440; 5 compass numerals 2.66–3.45:1 @390); (gap) flagship-visibility.spec.ts test.use 1440 only; About @390 peak 0.2965 < 0.35. Required fix: graded mobile scrim (same shape as desktop: transparent past the reading column) so the hero scene stays visible on phones while the copy sits on a ≥4.5:1 ground; a ?gl=force variant of TC-CONTRAST-01 (tests/a11y/text-contrast.spec.ts gains a second describe that loads /?gl=force with the SwiftShader launch args and waits for the canvases) — then fix every node it reports with local text plates (token rgb(10 10 10 / α) behind .trackCompany/.trackYears columns and the ledger sources) or by dimming the shader under the text rects (uTextRect uniform), never by dimming the scene overall below the visibility floors; flagship-visibility.spec.ts iterates viewports [1440×900, 390×844]; About field peak ≥ 0.35 at 390. Files: components/sections/Hero/Hero.module.css, Experience/Experience.module.css + strata.glsl.ts + CareerStrata.tsx, About/field.glsl.ts + AboutField.tsx, tests/a11y/text-contrast.spec.ts, tests/overhaul/flagship-visibility.spec.ts. Verification: both specs green at 1440 and 390 on ?gl=force and on the still; section suites; battery.",
       "decisions": [],
       "comments": [
@@ -2402,9 +2436,15 @@
           "at": "2026-09-05T12:40:55.953Z",
           "by": "orchestrator",
           "text": "LIVE 577d45af at 12:40:05Z (Deploy 33966616680 success) — third visible ship of the run. Reviewer phase-2 dispatched on 577d45af (F1 phone scene, F2 AA on both paths, reduced-motion, perf, G-H2 scrim re-measure)."
+        },
+        {
+          "at": "2026-09-05T13:03:55.691Z",
+          "by": "orchestrator",
+          "text": "REVIEWER on live (G-REV/577d45af/08-adversarial-review.md, 62e1e10; measured on 874f1ee9…9b864752 with the reviewed CSS/GLSL byte-identical): F1 phone scene PASS (390 gl=force isolated coverage 100%, peak .83, motion .08; composited 65% > L.12; .stage::after display:none); F2-still PASS (0/159 @1440, 0/145 @390 below AA); F2-gl @1440 PASS (0/159); F2-gl @390 FAIL hairline — p.Experience_openNote 4.496:1 vs 4.5 (rgb(144,144,144) on sampled rgb(42,42,42) — designed to the #2A2A2A ceiling with zero margin); reduced-motion PASS; G-H2 scrim: the 0.68 wash is gone, fold dominant visual = lit hero canvas 104% of the 1440 fold; PERF: LCP 1488 ms PASS, CLS 0.176 FAIL at 1280×720 (method caveat: probe clicked the preloader Skip, entrance ran past the 500 ms input window — re-measure on an unskipped boot before designing a fix). False positives named: motion .0587 quoted to 4 decimals varies .049–.080 run to run; desktop coverage ~44% measured 40.3% (gate 15%). → correction folded into t_stab01 (openNote margin + CLS re-measure)."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "Reviewer on live (62e1e10): F1 phone hero scene PASS (390 gl=force coverage 100%, peak .83), F2-still PASS, F2-gl @1440 PASS, reduced-motion PASS, G-H2 desktop 0.68 wash gone (fold dominant visual = lit hero canvas). The two findings — openNote 4.496:1 hairline @390 gl and CLS 0.176 — were fixed by the stability lane (87c9667: openNote 6.20:1 pinned; CLS 0.0000). Next hero/experience reviewer probe re-checks both on live."
     },
     {
       "id": "t_9487806b",
@@ -2432,7 +2472,7 @@
     {
       "id": "t_skew0002",
       "title": "Correction — GLCanvas: a WebGL context-creation failure is caught and reported once via console.error (never an uncaught pageerror); TC-SKEW-02 green 3/3",
-      "status": "ready",
+      "status": "done",
       "assignee": "coder",
       "priority": 80,
       "parents": [
@@ -2446,7 +2486,7 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-05T10:46:49.784Z",
-      "updated": "2026-09-05T12:19:26.557Z",
+      "updated": "2026-09-05T13:29:44.532Z",
       "summary": "V-skew (0ece403) single red clause: tests/overhaul/scene-error-boundary.spec.ts:165 expects 0 uncaught page errors when getContext throws; GLCanvas.tsx lets the error propagate before the boundary sees it. Fix: try/catch around context creation (and the webglcontextcreationerror event) → boundary fallback + one console.error naming the scene; keep the spec strict. Files: components/gl/GLCanvas.tsx, components/gl/Scene.tsx.",
       "decisions": [],
       "comments": [
@@ -2457,7 +2497,8 @@
         }
       ],
       "blocker": null,
-      "column": "ready"
+      "column": "ready",
+      "result": "Closed via t_stab01 (87c9667 live): see its COMPLETE record."
     },
     {
       "id": "t_ci_verify01",
@@ -2490,7 +2531,7 @@
     {
       "id": "t_g_h3",
       "title": "ADV-FAIL P0 — G-H3 Purge non-B/W/gold chrome from the served CSS (Tailwind hue utilities, blue-steel body washes, off-token literals)",
-      "status": "ready",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 95,
       "parents": [],
@@ -2502,7 +2543,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T12:19:26.316Z",
-      "updated": "2026-09-05T13:02:16.762Z",
+      "updated": "2026-09-05T13:21:54.937Z",
       "summary": "Orchestrator live scan 12:1xZ of build 9ba97a5c (curl of the three served CSS bundles): 959f3ad2cd114a93.css carries Tailwind hue utilities `.bg-red-500 .border-red-500 .text-red-500 .border-orange-400 .bg-blue-600 .text-blue-500 .bg-green-400 .bg-green-500` with their literals (#fb2c36, #ff7350, #71717b, #9f9fa9, #1e2939) — none is referenced by any file under app/ components/ lib/ (grep = 0): Tailwind v4 (`@import \"tailwindcss\"` in app/globals.css:1) auto-scans the whole repo and picked the class names up from reports/post-prod/lighthouse-production.json (the v3-style `content` array in tailwind.config.js is ignored by v4). The `body` rule paints blue-steel washes `radial-gradient(… #282a32 …)` = rgba(40,42,50) ×2 and rgba(36,36,42) (app/globals.css:554-557). The same bundle carries cool-steel literals #e8ebf0 #aeb6c2 #c9cdd6 #080b11 whose source is NOT in app/components/lib source greps — trace them through the build (a stale generated token block, a vendored stylesheet, or an inline style) and remove/neutralise. bff4d398763861e9.css carries rgb(138 143 154) — that is the About hatch, owned by lane G-A (t_g_a2); do not touch About. §0.3-2 / C-8 / QA gate 'Palette': black, white, gold only; gold = sourced-claim mark.",
       "decisions": [],
       "comments": [
@@ -2510,14 +2551,20 @@
           "at": "2026-09-05T13:02:16.762Z",
           "by": "orchestrator",
           "text": "ORCHESTRATOR PUSH under RECTIFY (O3): 5d733ad on worktree-wf_2c7160af-27e-1 at 13:01Z — build fresh (12:53:45 > last edit 12:51:42), tsc exit 0. Tailwind v4 source(none) + @source app/components; body washes → equal-luminance neutrals (42/36); rim/key tints → --accent/--steel neutrals; MiniVic zinc/slate → neutral; tailwind.config.js removed; css_chroma_scan.mjs + palette_bundle.test.mjs (red→green logs). Lane battery continues in parallel. Ledger +6."
+        },
+        {
+          "at": "2026-09-05T13:10:24.972Z",
+          "by": "orchestrator",
+          "text": "LANE COMPLETE (5d733ad + evidence 82a2beb/5ea67ce): palette_bundle node:test red (47 findings) → green (0); LIVE served CSS at ceca1fa5 scanned → 0 findings (was 47 on 9ba97a5c); root cause of the 'chromatic :root' = globals.css --rim/--rim-strong/--keylight written as space-separated rgb() of the retired cool-white/steel values (invisible to hex greps; TC-NFR-MONO's 0.28 saturation ratio let 3–10% casts through) → now --accent/--steel neutrals; Tailwind v4 source(none)+@source (installed 4.1.13 supports it) — main stylesheet 69,883 → 61,986 B; MiniVic zinc/slate → neutral (13 sites); tailwind.config.js (v3, never read) deleted. Battery 31/32: the 1 failure is TC-RENDER-07 hero-section.png baseline 1280×742 vs 782 — pre-existing stale baseline from the hero photo/plates commits, not this lane. Awaiting reviewer phase 2 (running) before Done."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "REVIEWER PHASE-2 PASS on live ceca1fa5 (G-REV/… 87cb1c5): four served CSS bundles (incl. one lazy chunk) → ZERO hue utilities (all 11 baseline hits gone), 7 chromatic literals all gold tokens, body washes rgba(42,42,42,.26/.22)+rgba(36,36,36,.18), :root tokens all spread 0; rendered histogram with LCD-AA disabled: 0.0000% non-gold chromatic pixels at 1440/390 on both paths (photograph + launcher portrait excluded and stated); DOM-wide computed-colour sweep empty; 0 pageerrors. Empty false-positive register. Separate FAIL-A raised (not G-H3): text-contrast regression at 1440 — 'InfoCentric' 1.06:1 on a near-white ground under #experience + three .Bench_bandLabel 3.63–4.10:1 (new with 66b0872) → t_g_s1c."
     },
     {
       "id": "t_g_m3",
       "title": "ADV-FAIL P0 — G-M3 MiniVic first visible answer token < 1.5 s on live (warm path / streaming), client payload carries no provider/model",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 94,
       "parents": [
@@ -2531,7 +2578,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T12:19:26.382Z",
-      "updated": "2026-09-05T12:49:33.997Z",
+      "updated": "2026-09-05T13:31:34.342Z",
       "summary": "R3 acceptance: perceived real-time (< ~1.5 s to first word). The reviewer measured a latency tax on live. After G-M1 lands (send path = /api/chat only) the remaining budget is the Firebase Function `minivicChat` (functions/index.js — v2 onRequest, us-central1, 256 MiB, provider ladder OpenRouter → DeepSeek → Z.ai → OpenAI, per-warm-instance cooldowns) reached through the Hosting rewrite `/api/chat` (firebase.json). Cold starts + a full non-streamed completion dominate. Directive: measure first, then remove the tax with cost-neutral mechanisms first — (a) a warm-up request fired when the MiniVic panel opens (GET /api/chat?warm=1 → 204 from the function, no upstream call) so the instance is hot before the visitor finishes typing; (b) drop any `provider`/`model` fields from the client payload (server decides); (c) stream the completion (SSE / chunked) IF Firebase Hosting rewrites to Cloud Functions v2 pass chunks through — verify against current Firebase docs via context7/WebFetch and by a live measurement, do not assume; (d) trim the function's cold-start (lazy requires, smaller bundle). `minInstances` is a paid setting — record it as the fallback decision with monthly cost if (a)-(d) cannot reach the bar; never claim R3 PASS while the bar is unmet. Functions deploy from the VPS: `/usr/bin/firebase deploy --only functions:minivicChat --project forgotten-mistory` (auth verified 12:15Z; `firebase functions:list` shows elevenLabsTts + minivicChat v2 nodejs20).",
       "decisions": [],
       "comments": [
@@ -2539,6 +2586,16 @@
           "at": "2026-09-05T12:49:33.997Z",
           "by": "orchestrator",
           "text": "PREREQ FINDING (from G-M2): ELEVENLABS_API_KEY in /root/.claude/.env.production is a key ID (ElevenLabs 400 api_key_id_used_as_api_key) — the live /api/tts function (elevenLabsTts, Secret Manager ELEVENLABS_API_KEY) very likely fails the same way → speakReply falls back to browser TTS. Measure /api/tts on live in this lane and report honestly; the fix (a real sk_ key) is a credential the Owner holds — record as the blocker for the voice half of R3 while the chat TTFB half proceeds."
+        },
+        {
+          "at": "2026-09-05T13:06:01.934Z",
+          "by": "orchestrator",
+          "text": "BASELINE MEASURED by the reviewer on live (ca2b442): Enter→first visible bot text, 5 warm trials @1440 muted: 1677/2089/2121/2451/2813 ms → P50 2121 / P95 2813 (budget <1500); cold first sends 6151 (1440) / 1875 (390) / 3093 (unmuted); curl POST /api/chat time_starttransfer P50 1674 / P95 2564 ms (best 1450) — the FUNCTION itself is the budget, not the client; text/event-stream = 0. CORRECTION to my earlier note: POST /api/tts on live → 200 audio/mpeg 36.8 kB in 0.395 s (real MP3) — the deployed function's ELEVENLABS secret is a valid key; only the local .env.production value is a key ID. Suspect the provider ladder: OpenRouter (rung 1) is at 402 — if every warm instance pays a failing rung before DeepSeek answers, that is ~0.5–1 s of the budget; check 2026-09-05T06:04:38.624591Z W minivicchat: \n2026-09-05T06:04:48.548228Z I minivicchat: \n2026-09-05T06:38:03.618255Z I minivicchat: \n2026-09-05T06:38:03.656366Z I minivicchat: Starting new instance. Reason: AUTOSCALING - Instance started due to configured scaling factors (e.g. CPU utilization, request throughput, etc.) or no existing capacity for current traffic.\n2026-09-05T06:38:04.608450Z I minivicchat: Default STARTUP TCP probe succeeded after 1 attempt for container \"worker\" on port 8080.\n2026-09-05T06:38:10.122790Z I minivicchat: \n2026-09-05T07:03:48.177573Z W minivicchat: \n2026-09-05T07:03:48.210237Z I minivicchat: Starting new instance. Reason: AUTOSCALING - Instance started due to configured scaling factors (e.g. CPU utilization, request throughput, etc.) or no existing capacity for current traffic.\n2026-09-05T07:03:49.123893Z I minivicchat: Default STARTUP TCP probe succeeded after 1 attempt for container \"worker\" on port 8080.\n2026-09-05T10:56:51.469930Z I minivicchat: \n2026-09-05T10:56:51.500215Z I minivicchat: Starting new instance. Reason: AUTOSCALING - Instance started due to configured scaling factors (e.g. CPU utilization, request throughput, etc.) or no existing capacity for current traffic.\n2026-09-05T10:56:52.507821Z I minivicchat: Default STARTUP TCP probe succeeded after 1 attempt for container \"worker\" on port 8080.\n2026-09-05T11:00:07.164164Z I minivicchat: \n2026-09-05T11:00:09.335663Z W minivicchat: \n2026-09-05T11:00:09.633814Z W minivicchat: \n2026-09-05T11:00:09.932674Z W minivicchat: \n2026-09-05T11:00:59.807147Z I minivicchat: \n2026-09-05T11:04:40.118839Z I minivicchat: \n2026-09-05T11:04:42.453065Z I minivicchat: \n2026-09-05T11:04:43.520194Z I minivicchat: \n2026-09-05T12:54:06.345209Z I minivicchat: \n2026-09-05T12:54:06.372378Z I minivicchat: Starting new instance. Reason: AUTOSCALING - Instance started due to configured scaling factors (e.g. CPU utilization, request throughput, etc.) or no existing capacity for current traffic.\n2026-09-05T12:54:07.356052Z I minivicchat: Default STARTUP TCP probe succeeded after 1 attempt for container \"worker\" on port 8080.\n2026-09-05T12:54:58.185140Z I minivicchat: \n2026-09-05T12:55:39.378541Z I minivicchat: \n2026-09-05T12:56:18.466908Z I minivicchat: \n2026-09-05T12:56:22.610193Z I minivicchat: \n2026-09-05T12:56:26.126500Z I minivicchat: \n2026-09-05T12:56:29.220244Z I minivicchat: \n2026-09-05T12:56:33.648564Z I minivicchat: \n2026-09-05T12:57:18.256336Z I minivicchat: \n2026-09-05T12:57:20.850314Z I minivicchat: \n2026-09-05T12:57:22.859578Z I minivicchat: \n2026-09-05T12:57:24.530559Z I minivicchat: \n2026-09-05T12:57:26.172564Z I minivicchat:  rung timings and make the cooldown/ordering survive cold starts (env-driven rung order), plus warm ping + streaming if Hosting passes chunks. Parent t_g_m1 done → READY."
+        },
+        {
+          "at": "2026-09-05T13:31:34.342Z",
+          "by": "orchestrator",
+          "text": "LANE RESULT (ddb2476 + d8983e5, function deployed twice, client slice consolidating): HONEST FAIL on the bar — live first byte through Hosting P50 1836 / P95 2940 ms (was 2016/4178); the function itself first-token 639 ms; direct to the Cloud Run origin P50 665 ms first byte (SSE streams there); PROVEN by experiment that Firebase Hosting buffers SSE (first byte == last byte on every trial, both text/event-stream) — docs silent. Shipped: answering rung (openai) first via CHAT_PROVIDER_ORDER (three dead 402 rungs off the cold path — rung log now [openai answered 1618ms]); GET /api/chat?warm=1 → 204 in 192 ms fired on panel open (MV-WARM-01); payload without provider/model and mode now reaches the server (MV-PAYLOAD-01); SSE implemented end to end (real per-token frames); 45/45 node:test, 4/4 e2e, tsc/lint/build/audit clean; minInstances rejected (cold start is not the gap). REMAINING FIX → t_g_m3b: stream from the Cloud Run origin directly. R3 stays OPEN."
         }
       ],
       "blocker": null
@@ -2546,9 +2603,9 @@
     {
       "id": "t_stab01",
       "title": "Stability lane (continuity) — finish footer CLS reserve (t_2d068068), GLCanvas context-error containment TC-SKEW-02 (t_skew0002 / t_skew0001 clause), scene-local error boundary (t_e9d4e10f) from the paused worktrees",
-      "status": "ready",
+      "status": "done",
       "assignee": "analyst-programmer",
-      "priority": 90,
+      "priority": 96,
       "parents": [],
       "skills": [],
       "hierarchy": {
@@ -2558,11 +2615,18 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T12:19:26.429Z",
-      "updated": "2026-09-05T12:24:54.384Z",
+      "updated": "2026-09-05T13:29:44.437Z",
       "summary": "§0 continuity: two paused worktrees hold partial work — wf_38db9d7d-ce3-1 (tests/perf/performance.spec.ts +126 lines, docs/delivery/evidence/v10-20260905T0515Z/F-stability/, no node_modules) and wf_d69fe804-9d9-1 (untracked tests/overhaul/scene-error-boundary.spec.ts). V-skew FAIL on one clause (0ece403): TC-SKEW-02 line 165 — a forced WebGL context-creation error escapes as an uncaught pageerror (containment holds: 6 sections, no error shell), deterministic 3/3. PERF-03 / TC-HERO-15: footer.Footer_footer layout shift ≈0.16 CLS at ≈508 ms under 2-worker load — reserve the footer box so CLS < 0.05 at 1440 and 390. Consolidate into ONE worktree (wf_38db9d7d-ce3-1 after `npm ci`; copy the untracked spec in from wf_d69fe804-9d9-1), finish, push.",
       "decisions": [],
-      "comments": [],
-      "blocker": null
+      "comments": [
+        {
+          "at": "2026-09-05T13:03:55.747Z",
+          "by": "orchestrator",
+          "text": "ADD (reviewer 62e1e10): (a) p.Experience_openNote at 390 on /?gl=force measures 4.496:1 — give it margin (plate a shade darker than the #2A2A2A ceiling, or a shader groove) so one frame of shader phase cannot decide the gate; extend TC-CONTRAST-02 to require ≥ 4.6:1 worst-pixel on that node. (b) CLS 0.176 at 1280×720 measured with a preloader-Skip click — first re-measure on an unskipped boot (PerformanceObserver layout-shift, list sources), then reserve whatever shifts (footer per PERF-03, or the hero entrance). Priority raised to 96."
+        }
+      ],
+      "blocker": null,
+      "result": "LANE COMPLETE 87c9667 (live a3edeff4 13:20Z) + evidence 0df240f: CLS root cause = app/loading.tsx styled-jsx rules never shipped in the static export → fallback 24 px tall, footer painted inside the fold then travelled ~11,600 px (single layout-shift entry, source footer.Footer_footer) → rules moved into globals.css → CLS 0.0000 / 0 entries at 1440, 1280, 390 on an unskipped boot under 6× throttle (was 0.156 / 0.176 / 0.256); TC-SKEW-02 3/3 (GLCanvas pre-flights a context on a detached canvas, one console.error per scene, nothing swallowed); PERF-03/03b + TC-HERO-15 3/3 under 2 workers; openNote on an --ink-900 plate → 6.20:1 on both paths (TC-CONTRAST-02 pin 4.6 with a liveness guard, self-caught regex bug fixed); removed the orphan MiniVicBot block that 735ea66's branch-wins merge had reinstated (6 tsc errors on main). 21 passed --repeat-each=3."
     },
     {
       "id": "t_x1_01",
@@ -2588,7 +2652,7 @@
     {
       "id": "t_x1_02",
       "title": "G-H2a — hero scene mounts on first paint (Scene priority prop + poster frame)",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 97,
       "parents": [
@@ -2602,7 +2666,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T12:24:51.459Z",
-      "updated": "2026-09-05T12:24:51.459Z",
+      "updated": "2026-09-05T13:15:22.190Z",
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. components/gl/Scene.tsx:216 gates every scene on pageSettled (window.load + requestIdleCallback), so the hero flagship is structurally absent from the first paint. Add an opt-in priority?:boolean prop (default false, so S2..S7 are byte-identical) making show = capability && allowMotion && near && (priority || pageSettled), and pass priority on the hero only. Render the composition's frame 0 as the slot's CSS background from the static HTML so the first paint is lit, and crossfade the canvas over it on onCreated.",
       "decisions": [],
       "comments": [],
@@ -2886,7 +2950,7 @@
     {
       "id": "t_g_a1c",
       "title": "CORRECTION — G-A1: gold only on About evidence lines that name a checkable record; reconcile `sourced` with `side`; data-derived test counts",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 99,
       "parents": [],
@@ -2898,7 +2962,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T12:37:56.168Z",
-      "updated": "2026-09-05T12:52:08.026Z",
+      "updated": "2026-09-05T13:03:55.534Z",
       "summary": "## CORRECTION: G-A1 reviewer FAIL (semantics). Original output: 03aa1ed set sourced:true on 9/10 About dimensions using the criterion 'an employer, a program, a named repository, a figure off the CV'. Failing criteria: CLAUDE.md prime directive 3 — gold = `sourced` = measured WITH a source a reader can go and check; a CV figure with no published methodology is `self-reported`, never gold. Reviewer evidence (docs/delivery/evidence/v10-20260905T0515Z/G-REV/e47221ed/08-adversarial-review.md): #4 Culture Fit and #8 Company Stability are bare self-reported numbers; #7 Career Growth carries gold over a figure its own text calls 'simulated'; #6 Location Match is a side==='role' dimension that renders the OPEN caliper 'measured from the role' (About.tsx:220) while also painted gold — the same claim graded both 'sourced' and 'honestly not measurable'. Required fix (data + test, no styling change): in app/data/portfolio/about.ts set sourced:false on Culture Fit, Company Stability and Location Match; for Career Growth either rewrite the evidence line so it names ONLY a checkable record (a named repository or the evaluation stack without the simulated figure — the −38% may move into the answer prose as a plainly self-reported statement) and keep sourced:true, or set sourced:false — decide by whether a reader can open something and check it, and record the decision on the task. Invariant: every dimension with side==='role' has sourced:false. Tests derive expected counts from the data (import aboutContent), never hardcode 9.",
       "decisions": [],
       "comments": [
@@ -2908,12 +2972,13 @@
           "text": "PUSHED d958917 on worktree-wf_d917eafb-f9f-1 (12:51Z): sourced:false on Culture Fit, Location Match, Company Stability, Career Growth (4 flips, data only); gold-semantics CC-A1 now derives EXPECTED_SOURCED/UNSOURCED from aboutContent; tests/about_sourced_semantics.test.mjs 6/6 (role-side ⇒ unsourced, open-caliper binding asserted in About.tsx source, allow-list of checkable records for every gold line); about.spec adjusted. Orchestrator reviewed the diff. Awaiting consolidation + reviewer phase 3 on live."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "REVIEWER PHASE-3 PASS on live 7d467770 (= 37cbb52c for every rendered file; G-REV/37cbb52c/08-adversarial-review.md, 8b351a7): 5 gold / 5 grey exactly as claimed at 1440 and 390; the four over-graded lines now grey; each gold line names a checkable record — two verified externally (GitHub API public_repos=38; aether-job-career-agent HTTP 200); all three side==='role' dimensions grey under their open caliper; grey lines still print evidence (41–74 chars, byte-identical); AA worst-case gold 7.84:1 / grey 5.22:1; page-wide gold census exactly 7 (5 About + Skills measured mark + Vitrine live URL); 0 pageerrors, 0 failed requests."
     },
     {
       "id": "t_vit_desc01",
       "title": "P1 — Vitrine plate description flashes 1.12:1 (light-on-light) mid-entrance at 1440 (TC-CONTRAST-02 caught it 1 in 3 runs)",
-      "status": "todo",
+      "status": "ready",
       "assignee": "analyst-programmer",
       "priority": 80,
       "parents": [
@@ -2927,7 +2992,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T12:39:54.833Z",
-      "updated": "2026-09-05T12:42:06.830Z",
+      "updated": "2026-09-05T13:06:02.039Z",
       "summary": "Found by the flagship-C lane's new TC-CONTRAST-02 (WebGL path): p.Vitrine_description on the third plate ('An agent loop whose only exit is a signed verifier') measured fg rgb(213,213,212) on bg rgb(226,225,223) = 1.12:1 once in three runs at 1440 on both paths, green on the other two — the description is sampled mid-entrance over the plate's drawing/light. A flaky AA failure is a real intermittent legibility defect, not a test problem. Fix the composition (plate ground under the description, or the entrance order so text never sits on the light) and make the contrast walk deterministic for that node (wait for the plate's entrance to settle before sampling, without lengthening the whole suite).",
       "decisions": [],
       "comments": [
@@ -2954,7 +3019,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T12:58:11.438Z",
-      "updated": "2026-09-05T13:02:17.158Z",
+      "updated": "2026-09-05T13:29:44.994Z",
       "summary": "Host audit docs/adversarial/ORCH-COMPLIANCE-20260905T1245Z.md + artifacts/kanban/INBOX/RECTIFY-20260905T1252Z.md. Applied: (1) Playwright no longer gates a push — lanes push when tsc+lint+build:static+audit are green and run the battery in parallel (evidence lands in a follow-up commit; the live reviewer is the gate); (2) 12:57Z orchestrator pushed G-H1 WIP 0506e7e and G-S1 WIP 66b0872 (both tsc clean on fresh builds); (3) board lag closed: t_g_v1 done (reviewer PASS 843b679d), t_g_a2 done, t_g_h2 done, t_ci_verify01 done, t_hyg_audit01 done; (4) G-A1 correction d958917 live 37cbb52c, reviewer phase 3 running; (5) MiniVic live 874f1ee9, reviewer phase 2 running; (6) pgrep -af 'hermes gateway' → empty (pid 7050 is a <defunct> zombie, not running; host-owned ttyd wrapper on :4860 left to the host guardian); fm-deploy-cadence.timer active; (7) cadence truth: cycle reports state visible vs docs-only deploys explicitly; (8) spawn discipline: a failed Workflow slot is re-dispatched within 2 minutes (a poll on journal.jsonl 'failed' entries).",
       "decisions": [],
       "comments": [
@@ -2962,8 +3027,114 @@
           "at": "2026-09-05T13:02:17.158Z",
           "by": "orchestrator",
           "text": "13:01Z status: WIP pushes done — G-H1 0506e7e + G-S1 66b0872 (LIVE 9b864752 at 12:59:23Z, 7 min after the order), G-H3 5d733ad (consolidating). Reviewers on live: G-A1c (37cbb52c), G-M1/M2 (874f1ee9), G-H1/G-S1 (9b864752), flagship-C (577d45af, evidence pushed 13:01Z). Board lag: t_g_v1, t_g_a2, t_g_h2, t_ci_verify01, t_hyg_audit01 done. Hermes: pgrep 'hermes gateway' empty (7050 defunct zombie only). Timer active."
+        },
+        {
+          "at": "2026-09-05T13:29:44.994Z",
+          "by": "orchestrator",
+          "text": "INCIDENT (orchestrator-caused, recorded): my 13:01Z WIP push of the palette lane (5d733ad, branched at 7ebf325) was made WITHOUT merging origin/main first; consolidation 735ea66 hit hunk conflicts in components/MiniVicBot.tsx against the MiniVic lane's 91f46e9 and resolved them 'branch wins' → an orphan block with one dead-ladder string and 6 tsc errors sat on main 13:04–13:20Z (builds still shipped: next build does not fail the export on those). The stability lane removed it (87c9667); origin/main and the live bundle now show 0 dead-endpoint references (verified 13:29Z by grepping every served chunk). RULE ADDED: an orchestrator WIP push runs Updating 6227914..71e2811\nFast-forward\n app/globals.css                                    |   76 +\n app/loading.tsx                                    |   97 +-\n components/MiniVicBot.tsx                          |   76 +-\n components/gl/GLCanvas.tsx                         |   96 +-\n components/gl/Scene.tsx                            |    4 +-\n .../sections/Experience/Experience.module.css      |   24 +-\n .../F-stability/00-build-baseline.log              |   73 +\n .../F-stability/01-cls-attribution.json            |  145 +\n .../F-stability/01-cls-attribution.log             |   10 +\n .../F-stability/01-cls-probe.mjs                   |  120 +\n .../F-stability/02-tests-failing.log               |   90 +\n .../F-stability/03-cls-unskipped-after.log         |    9 +\n .../F-stability/03-hero-growth-probe.mjs           |   52 +\n .../F-stability/03-hero-growth.log                 |   19 +\n .../F-stability/04-tests-passing.log               |   72 +\n .../F-stability/05-contrast-02.log                 |    7 +\n .../08-screens/experience-openNote-390-glforce.png |  Bin 0 -> 14718 bytes\n .../F-stability/08-screens/footer-1440.png         |  Bin 0 -> 28904 bytes\n .../F-stability/08-screens/footer-390.png          |  Bin 0 -> 20006 bytes\n .../v10-20260905T0515Z/G-M3/01-live-baseline.log   |   68 +\n .../v10-20260905T0515Z/G-M3/02-tests-failing.log   |  502 ++++\n .../v10-20260905T0515Z/G-M3/04-tests-passing.log   |  344 +++\n .../v10-20260905T0515Z/G-M3/05-regression.log      |   10 +\n .../evidence/v10-20260905T0515Z/G-M3/06-deploy.log |   30 +\n .../G-M3/07-prod-verification/01-curl-after.log    |   37 +\n .../02-hosting-buffers-sse.log                     |   17 +\n .../G-M3/08-decision-first-token.md                |   90 +\n .../G-REV/ceca1fa5/08-adversarial-review.md        |  325 +++\n .../captures/1440-glforce-nolcd-fullpage.png       |  Bin 0 -> 395272 bytes\n .../captures/1440-still-nolcd-fullpage.png         |  Bin 0 -> 382655 bytes\n .../captures/390-glforce-nolcd-fullpage.png        |  Bin 0 -> 453478 bytes\n .../ceca1fa5/captures/390-still-nolcd-fullpage.png |  Bin 0 -> 447193 bytes\n .../ceca1fa5/captures/css-chroma-scan-ceca1fa5.txt |   36 +\n .../captures/css-chroma-scan-lazy-chunk.txt        |    7 +\n .../captures/dom-computed-colour-sweep.json        |  163 ++\n .../ceca1fa5/captures/probe-lcd-off-histogram.json |  202 ++\n .../G-REV/ceca1fa5/captures/probe-lcd-on.json      | 3034 ++++++++++++++++++++\n .../G-REV/ceca1fa5/captures/probe2.mjs             |   73 +\n .../G-REV/ceca1fa5/captures/scan.mjs               |  108 +\n .../captures/subpixel-aa-artefact-1440-about.png   |  Bin 0 -> 12019 bytes\n .../G-REV/ceca1fa5/captures/text-contrast-live.log |   71 +\n functions/index.js                                 |  267 +-\n lib/miniVicBrain.ts                                |  168 +-\n tests/a11y/text-contrast.spec.ts                   |   50 +-\n tests/e2e/minivic-send-path.spec.ts                |   94 +\n tests/minivic_chat_function.test.mjs               |  220 ++\n tests/perf/performance.spec.ts                     |  321 ++-\n 47 files changed, 6997 insertions(+), 210 deletions(-)\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/00-build-baseline.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/01-cls-attribution.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/01-cls-attribution.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/01-cls-probe.mjs\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/02-tests-failing.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/03-cls-unskipped-after.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/03-hero-growth-probe.mjs\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/03-hero-growth.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/04-tests-passing.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/05-contrast-02.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/08-screens/experience-openNote-390-glforce.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/08-screens/footer-1440.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/08-screens/footer-390.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/01-live-baseline.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/02-tests-failing.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/04-tests-passing.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/05-regression.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/06-deploy.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/07-prod-verification/01-curl-after.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/07-prod-verification/02-hosting-buffers-sse.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/08-decision-first-token.md\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/08-adversarial-review.md\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/1440-glforce-nolcd-fullpage.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/1440-still-nolcd-fullpage.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/390-glforce-nolcd-fullpage.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/390-still-nolcd-fullpage.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/css-chroma-scan-ceca1fa5.txt\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/css-chroma-scan-lazy-chunk.txt\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/dom-computed-colour-sweep.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/probe-lcd-off-histogram.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/probe-lcd-on.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/probe2.mjs\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/scan.mjs\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/subpixel-aa-artefact-1440-about.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/text-contrast-live.log in the worktree first and 715995a088b2660b99773e96687da8810a860815 must report no conflicts; lanes merge origin/main immediately before every push."
         }
       ],
+      "blocker": null
+    },
+    {
+      "id": "t_g_h1c",
+      "title": "CORRECTION — G-H1: the actions group sits INSIDE the fold at every viewport, the portrait control does not read as a second CTA, CLS < 0.05 on cold loads, ledger margin ≥ 40 px",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 99,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T13:12:45.009Z",
+      "updated": "2026-09-05T13:14:01.792Z",
+      "summary": "## CORRECTION: G-H1 reviewer FAIL on live 9b864752 (docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/08-adversarial-review.md — read it fully; captures/probeA-hero.json has the per-viewport numbers). Original output: 0506e7e split Hero.tsx into [data-testid=hero-fold] and [data-testid=hero-proof]. Failing criteria: (1) at 1440×900 and 1280×800 the actions group [data-testid=hero-actions] (See the evidence + Download CV) renders BELOW the first viewport — the fold's only CTA is the portrait toggle (the letter of 'one CTA group' met by the wrong group); (2) at 834×1194 and 390×844 the fold holds TWO CTA groups — hero-actions AND the 'Play the portrait' <button class=Hero_portraitToggle> inside [data-testid=hero-portrait]; (3) CLS 0.176 at 1280×720 in 2 of 3 cold loads (gate < 0.05), LCP element = IMG my_avatar.avif — the moved photograph reflows; (4) #hero ul clears the fold by 1 px at 834 (top 1195 vs 1194). Required fix: the fold is a layout the four viewports all satisfy with margin — name, statement, ONE actions group (both links) fully inside y < innerHeight − 40 px, photograph inside the fold at ≥ 1280; the portrait's play/pause affordance must not present as a CTA in the fold: either make the figure itself the control (focusable figure, role=button semantics via a single icon-only control that the reviewer's probe — buttons/links with an accessible name grouped by nearest data-testid ancestor — would still count… so prefer: pointer hover / keyboard focus on the figure toggles the loop, reduced-motion = still, and the explicit text control moves into the proof band next to the photograph's caption) — decide, record the decision, and keep TC-HERO-13/14/16/17 semantics (keyboard operability) by rewriting those tests deliberately; the ledger starts ≥ innerHeight + 40 px at every viewport; CLS < 0.05 on 3/3 cold loads at 1280×720, 1440×900, 390×844 (reserve the photograph's box with explicit aspect-ratio/width/height and make sure nothing below the LCP image shifts it — inspect PerformanceObserver layout-shift sources). Regenerate the stale hero visual baselines (TC-RENDER-07 hero-section.png 1280×742→782) deliberately and look at the PNG.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-05T13:14:01.792Z",
+          "by": "orchestrator",
+          "text": "NOTE 13:13Z (read before you push): the ORIGINAL hero lane finished its battery and pushed 44c3e08 'fix(hero): the fold is one column of type beside the photograph (G-H1)' + a merge of origin/main; it is on main as 6224a7f and live within minutes. It may already move the actions group into the fold — BUILD ON IT: run Updating d58c5c7..6224a7f\nFast-forward\n app/data/generated/build-stamp.ts                  |    6 +-\n components/sections/Hero/Hero.module.css           |   45 +-\n components/sections/Hero/Hero.tsx                  |   61 +-\n .../v10-20260905T0515Z/G-H1/04-tests-passing.log   |  224 +--\n .../v10-20260905T0515Z/G-H1/05-regression.log      |  124 ++\n .../v10-20260905T0515Z/G-H1/06-post-merge.log      |   34 +\n .../G-H1/08-screens/hero-fold-1280x800.png         |  Bin 0 -> 425236 bytes\n .../G-H1/08-screens/hero-fold-1440x900.png         |  Bin 0 -> 499390 bytes\n .../G-H1/08-screens/hero-fold-390x844.png          |  Bin 0 -> 192763 bytes\n .../G-H1/08-screens/hero-fold-834x1194.png         |  Bin 0 -> 339887 bytes\n .../G-H1/08-screens/hero-proof-1280x800.png        |  Bin 0 -> 320261 bytes\n .../G-H1/08-screens/hero-proof-1440x900.png        |  Bin 0 -> 457568 bytes\n .../G-H1/08-screens/hero-proof-390x844.png         |  Bin 0 -> 120015 bytes\n .../G-H1/08-screens/hero-proof-834x1194.png        |  Bin 0 -> 297760 bytes\n .../v10-20260905T0515Z/G-H3/05-regression.log      |   69 +\n .../G-H3/08-screens/page-top-1440.png              |  Bin 0 -> 488897 bytes\n .../v10-20260905T0515Z/G-H3/09-live-after.log      |   12 +\n .../G-REV/874f1ee9/08-adversarial-review.md        |  127 ++\n .../G-REV/874f1ee9/captures/api-chat-timings.csv   |    6 +\n .../G-REV/874f1ee9/captures/api-tts-headers.txt    |   24 +\n .../874f1ee9/captures/css-chroma-scan-874f1ee9.txt |   14 +\n .../874f1ee9/captures/greeting-text-compare.json   |   41 +\n .../874f1ee9/captures/live-headers-874f1ee9.txt    |   21 +\n .../G-REV/874f1ee9/captures/minivic-1440-muted.png |  Bin 0 -> 681251 bytes\n .../874f1ee9/captures/minivic-1440-unmuted.png     |  Bin 0 -> 684376 bytes\n .../G-REV/874f1ee9/captures/minivic-390-muted.png  |  Bin 0 -> 154618 bytes\n .../874f1ee9/captures/minivic-ttft-trials.png      |  Bin 0 -> 681194 bytes\n .../G-REV/874f1ee9/captures/mp3-ffprobe.txt        |   12 +\n .../G-REV/874f1ee9/captures/mp3-hash.txt           |    4 +\n .../G-REV/874f1ee9/captures/mp3-headers.txt        |   21 +\n .../G-REV/874f1ee9/captures/probe2-a.json          |   60 +\n .../G-REV/874f1ee9/captures/probe2-b.json          |   61 +\n .../G-REV/874f1ee9/captures/probe2-c.json          |   75 +\n .../G-REV/874f1ee9/captures/probe2-d.json          |  132 ++\n .../G-REV/874f1ee9/captures/probe2.mjs             |  156 ++\n .../captures/served-greeting-transcript.txt        |    1 +\n .../G-REV/874f1ee9/captures/served-js-scan.txt     |   47 +\n .../G-REV/9b864752/08-adversarial-review.md        |  210 +++\n .../G-REV/9b864752/captures/1280-normal-fold.png   |  Bin 0 -> 459623 bytes\n .../captures/1440-glforce-benchfield-t0.png        |  Bin 0 -> 379946 bytes\n .../captures/1440-glforce-benchfield-t1.png        |  Bin 0 -> 380794 bytes\n .../G-REV/9b864752/captures/1440-glforce-fold.png  |  Bin 0 -> 543022 bytes\n .../9b864752/captures/1440-glforce-long-skills.png |  Bin 0 -> 575560 bytes\n .../9b864752/captures/1440-glforce-skills.png      |  Bin 0 -> 405450 bytes\n .../9b864752/captures/1440-nogl-normal-skills.png  |  Bin 0 -> 230745 bytes\n .../9b864752/captures/1440-nogl-reduced-skills.png |  Bin 0 -> 230737 bytes\n .../captures/1440-normal-benchfield-t0.png         |  Bin 0 -> 158746 bytes\n .../captures/1440-normal-benchfield-t1.png         |  Bin 0 -> 158746 bytes\n .../G-REV/9b864752/captures/1440-normal-fold.png   |  Bin 0 -> 542724 bytes\n .../G-REV/9b864752/captures/1440-normal-skills.png |  Bin 0 -> 283341 bytes\n .../captures/1440-reduced-benchfield-t0.png        |  Bin 0 -> 158746 bytes\n .../captures/1440-reduced-benchfield-t1.png        |  Bin 0 -> 158746 bytes\n .../9b864752/captures/1440-reduced-skills.png      |  Bin 0 -> 283774 bytes\n .../captures/390-glforce-benchfield-t0.png         |  Bin 0 -> 22681 bytes\n .../captures/390-glforce-benchfield-t1.png         |  Bin 0 -> 33502 bytes\n .../G-REV/9b864752/captures/390-glforce-fold.png   |  Bin 0 -> 199432 bytes\n .../9b864752/captures/390-glforce-long-skills.png  |  Bin 0 -> 126261 bytes\n .../G-REV/9b864752/captures/390-glforce-skills.png |  Bin 0 -> 112482 bytes\n .../G-REV/9b864752/captures/390-normal-fold.png    |  Bin 0 -> 199588 bytes\n .../G-REV/9b864752/captures/834-normal-fold.png    |  Bin 0 -> 356800 bytes\n .../G-REV/9b864752/captures/probeA-hero.json       | 1663 ++++++++++++++++++++\n .../G-REV/9b864752/captures/probeA-hero.mjs        |  187 +++\n .../G-REV/9b864752/captures/probeB-gl.json         | 1406 +++++++++++++++++\n .../G-REV/9b864752/captures/probeB-gl.mjs          |  128 ++\n .../G-REV/9b864752/captures/probeC-final.json      |  586 +++++++\n .../G-REV/9b864752/captures/probeC-final.mjs       |  133 ++\n 66 files changed, 5549 insertions(+), 141 deletions(-)\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-H1/05-regression.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-H1/06-post-merge.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-H1/08-screens/hero-fold-1280x800.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-H1/08-screens/hero-fold-1440x900.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-H1/08-screens/hero-fold-390x844.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-H1/08-screens/hero-fold-834x1194.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-H1/08-screens/hero-proof-1280x800.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-H1/08-screens/hero-proof-1440x900.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-H1/08-screens/hero-proof-390x844.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-H1/08-screens/hero-proof-834x1194.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-H3/05-regression.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-H3/08-screens/page-top-1440.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-H3/09-live-after.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/08-adversarial-review.md\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/api-chat-timings.csv\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/api-tts-headers.txt\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/css-chroma-scan-874f1ee9.txt\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/greeting-text-compare.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/live-headers-874f1ee9.txt\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/minivic-1440-muted.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/minivic-1440-unmuted.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/minivic-390-muted.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/minivic-ttft-trials.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/mp3-ffprobe.txt\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/mp3-hash.txt\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/mp3-headers.txt\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/probe2-a.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/probe2-b.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/probe2-c.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/probe2-d.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/probe2.mjs\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/served-greeting-transcript.txt\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/874f1ee9/captures/served-js-scan.txt\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/08-adversarial-review.md\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1280-normal-fold.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-glforce-benchfield-t0.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-glforce-benchfield-t1.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-glforce-fold.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-glforce-long-skills.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-glforce-skills.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-nogl-normal-skills.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-nogl-reduced-skills.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-normal-benchfield-t0.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-normal-benchfield-t1.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-normal-fold.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-normal-skills.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-reduced-benchfield-t0.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-reduced-benchfield-t1.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/1440-reduced-skills.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/390-glforce-benchfield-t0.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/390-glforce-benchfield-t1.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/390-glforce-fold.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/390-glforce-long-skills.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/390-glforce-skills.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/390-normal-fold.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/834-normal-fold.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/probeA-hero.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/probeA-hero.mjs\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/probeB-gl.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/probeB-gl.mjs\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/probeC-final.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/captures/probeC-final.mjs again immediately and once more right before you push, resolve any Hero.tsx/Hero.module.css conflict keeping both intents (never let consolidation's 'branch wins conflicts' throw 44c3e08 away), then re-measure the reviewer's four failing clauses on your build before deciding what is still open."
+        }
+      ],
+      "blocker": null
+    },
+    {
+      "id": "t_clean01",
+      "title": "O3/O4 hygiene — remove merged, clean worktrees and prune gone branches; keep every worktree that still holds uncommitted or unpushed work",
+      "status": "todo",
+      "assignee": "cleanup-agent",
+      "priority": 60,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "cleanup",
+        "level": 4,
+        "effort": "medium"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T13:15:01.019Z",
+      "updated": "2026-09-05T13:15:01.019Z",
+      "summary": "27+ worktrees under /root/forgotten-mistory/.claude/worktrees/ after the ADV-FAIL waves. Every lane branch is consolidated into main and deleted on the remote by deploy.yml (`git ls-remote --heads origin` = main only when idle). Remove a worktree ONLY IF: its branch is fully contained in origin/main (`git merge-base --is-ancestor <branch> origin/main`), `git -C <wt> status --porcelain` is empty (ignoring out/, .next/, node_modules/), and no agent process has it as cwd (`ls -l /proc/*/cwd 2>/dev/null | grep <wt>` empty). NEVER touch: the main checkout, worktrees with dirty files, worktrees whose branch has commits not in origin/main, or any worktree named in a RUNNING board task (t_stab01 → wf_38db9d7d-ce3-1; t_g_s1 battery → wf_c06ca2f9-9de-1 until its agent exits; t_g_h1c / t_g_m3 → their fresh wf_* worktrees). Also kill orphaned `python3 -m http.server 56xx --directory out` processes whose cwd is a removed worktree, and `git worktree prune` + `git branch -d` for merged local branches. Log every removal with the evidence checks in docs/delivery/evidence/v10-20260905T0515Z/HYG-worktrees/01-removals.log.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_g_s1c",
+      "title": "CORRECTION — live text-contrast regression at 1440 (both paths): three .Bench_bandLabel at 3.63–4.10:1 (new with the Skills bench field 66b0872) and 'InfoCentric' role company 1.06:1 on a near-white ground under #experience",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 98,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T13:21:54.983Z",
+      "updated": "2026-09-05T13:38:44.472Z",
+      "summary": "## CORRECTION: reviewer FAIL-A on live ceca1fa5 (docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/08-adversarial-review.md — palette review; read its FAIL-A section and captures). Repo gate run against PRODUCTION: `PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/a11y/text-contrast.spec.ts --workers=1` → 2 failed (1440 on / and /?gl=force), 2 passed (390). Failing nodes: (1) li#role-infocentric > h3.Experience_roleHeading > button.Experience_roleToggle > span.Experience_roleMeta:nth-of-type(2) > span.Experience_roleCompany 'InfoCentric' fg rgb(205,205,205) on sampled ground rgb(200,199,199) — 1.06:1 — a NEAR-WHITE panel under #experience that did not exist at the 577d45af baseline (0/159): find what paints it (a bloom/keylight from the new Skills bench field canvas or CSS bleeding upward? an Experience light panel? the palette lane's --keylight/--rim change?) — use the reviewer's screenshot + a DOM/pixel probe at that node; (2)(3)(4) p.Bench_bandLabel 'Repositories' 3.63:1, 'Credentials' 4.00:1, 'Programmes' 4.10:1 — fg rgb(125,125,125) (--ink-300) at 11px/400 on rgb(39,39,39)/(31,31,31)/(29,29,29): introduced by 66b0872 (Bench.module.css). Fix: band labels to a token that clears 4.5:1 on the lit field at every phase (e.g. --mist-400 #909090 → ~5.9:1 on #272727; verify on /?gl=force with the bench field mounted and animating, worst-pixel), and remove/ground the near-white panel so the role company clears 4.5:1 on both paths. Extend tests: TC-CONTRAST-02 must include the #skills band labels with the field mounted (scroll the section into view, wait for the canvas, then sample).",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-05T13:37:33.614Z",
+          "by": "orchestrator",
+          "text": "HEADS-UP 13:37Z: the original Skills lane pushed 0861658 touching components/sections/Skills/Bench.module.css and bench.glsl.ts (light held inside the plate, thinner graticule) — it lands on main within minutes; merge origin/main immediately before your push and keep both intents."
+        },
+        {
+          "at": "2026-09-05T13:38:44.472Z",
+          "by": "orchestrator",
+          "text": "SCOPE UPDATE 13:39Z: the original Skills lane's 0861658 (consolidating now) already fixes the three .Bench_bandLabel ratios at 1440 (its TC-CONTRAST-01/02 green after correcting the CSS still's cone radii). After merging origin/main, re-run text-contrast on your build: if the band labels are green, your remaining target is the 'InfoCentric' role company on the near-white ground (1.06:1) — name the culprit and fix it; keep the band-label test sampling improvement if you already wrote it."
+        }
+      ],
+      "blocker": null
+    },
+    {
+      "id": "t_g_m3b",
+      "title": "G-M3b — stream MiniVic answers from the Cloud Run origin directly (Firebase Hosting buffers SSE): browser first token < 1.5 s on live, /api/chat kept as the real fallback",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 97,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T13:31:34.400Z",
+      "updated": "2026-09-05T13:31:34.465Z",
+      "summary": "From t_g_m3's decision memo (docs/delivery/evidence/v10-20260905T0515Z/G-M3/08-decision-first-token.md): Hosting rewrite /api/chat → minivicChat returns first byte == last byte (1836 ms P50) while the same SSE request direct to https://minivicchat-hjdyjsrzvq-uc.a.run.app streams (665 ms P50 first byte, 1521 ms total). The function already applies CORS for https://forgotten-mistory.web.app (functions/index.js applyCors). Implement: (1) lib/miniVicBrain.ts streams from the origin URL when configured — the run.app hostname is deploy-specific so it lives in ONE config point (a NEXT_PUBLIC_MINIVIC_ORIGIN build-time value written by scripts/build (read from a committed config, not a secret — the URL is public) or app/data/generated/), never hard-coded in a component; (2) on any failure of the direct route (network/CORS/5xx/timeout 1.5 s to first byte) fall back to the existing POST /api/chat through Hosting — a REAL fallback that keeps answering, never a fabricated reply; (3) firebase.json CSP connect-src extended to the origin host (and any preconnect <link> for it in app/layout.tsx); (4) the warm ping also targets the origin so the instance is hot on the direct path; (5) tests: node:test for the route selection + fallback, e2e MV-WIRE on the static server (origin unreachable locally → fallback to /api/chat path exercised), and a LIVE browser measurement after deploy: Enter→first visible token, 5 warm trials at 1440 + 5 at 390 — PASS only if P50 < 1500 ms; record P95 and the cold first send. (6) Keep the client light: no new dependency.",
+      "decisions": [],
+      "comments": [],
       "blocker": null
     }
   ],

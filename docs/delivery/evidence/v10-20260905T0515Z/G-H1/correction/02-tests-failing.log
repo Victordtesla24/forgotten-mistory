@@ -1,0 +1,114 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero-fold.spec.ts -g TC-FOLD-04 --workers=1 --reporter=line
+
+Running 4 tests using 1 worker
+
+[1A[2K[1/4] [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 1440×900 › TC-FOLD-04: one CTA group, with margin, at 1440×900
+[1A[2K  1) [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 1440×900 › TC-FOLD-04: one CTA group, with margin, at 1440×900 
+
+    Error: CTA groups inside the fold: hero-actions → See the evidence + Download CV | Hero_portraitMedia__gBrPy → Play the portrait
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m1[39m
+    Received: [31m2[39m
+
+      226 |           .join(' | ');
+      227 |
+    > 228 |         expect(probe.groups.length, `CTA groups inside the fold: ${described}`).toBe(1);
+          |                                                                                 ^
+      229 |         expect(probe.groups[0].group, 'the one group in the fold is hero-actions').toBe(
+      230 |           'hero-actions',
+      231 |         );
+        at /root/forgotten-mistory/.claude/worktrees/wf_ea3bd443-1d9-1/tests/e2e/hero-fold.spec.ts:228:81
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-8ac14-oup-with-margin-at-1440×900-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-8ac14-oup-with-margin-at-1440×900-chromium/error-context.md
+
+
+[1A[2K[2/4] [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 1280×800 › TC-FOLD-04: one CTA group, with margin, at 1280×800
+[1A[2K  2) [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 1280×800 › TC-FOLD-04: one CTA group, with margin, at 1280×800 
+
+    Error: CTA groups inside the fold: hero-actions → See the evidence + Download CV | Hero_portraitMedia__gBrPy → Play the portrait
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m1[39m
+    Received: [31m2[39m
+
+      226 |           .join(' | ');
+      227 |
+    > 228 |         expect(probe.groups.length, `CTA groups inside the fold: ${described}`).toBe(1);
+          |                                                                                 ^
+      229 |         expect(probe.groups[0].group, 'the one group in the fold is hero-actions').toBe(
+      230 |           'hero-actions',
+      231 |         );
+        at /root/forgotten-mistory/.claude/worktrees/wf_ea3bd443-1d9-1/tests/e2e/hero-fold.spec.ts:228:81
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-2b524-oup-with-margin-at-1280×800-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-2b524-oup-with-margin-at-1280×800-chromium/error-context.md
+
+
+[1A[2K[3/4] [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 834×1194 › TC-FOLD-04: one CTA group, with margin, at 834×1194
+[1A[2K  3) [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 834×1194 › TC-FOLD-04: one CTA group, with margin, at 834×1194 
+
+    Error: CTA groups inside the fold: hero-actions → See the evidence + Download CV | Hero_portraitMedia__gBrPy → Play the portrait
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m1[39m
+    Received: [31m2[39m
+
+      226 |           .join(' | ');
+      227 |
+    > 228 |         expect(probe.groups.length, `CTA groups inside the fold: ${described}`).toBe(1);
+          |                                                                                 ^
+      229 |         expect(probe.groups[0].group, 'the one group in the fold is hero-actions').toBe(
+      230 |           'hero-actions',
+      231 |         );
+        at /root/forgotten-mistory/.claude/worktrees/wf_ea3bd443-1d9-1/tests/e2e/hero-fold.spec.ts:228:81
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-a4735-oup-with-margin-at-834×1194-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-a4735-oup-with-margin-at-834×1194-chromium/error-context.md
+
+
+[1A[2K[4/4] [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 390×844 › TC-FOLD-04: one CTA group, with margin, at 390×844
+[1A[2K  4) [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 390×844 › TC-FOLD-04: one CTA group, with margin, at 390×844 
+
+    Error: CTA groups inside the fold: hero-actions → See the evidence + Download CV | Hero_portraitMedia__gBrPy → Play the portrait
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m1[39m
+    Received: [31m2[39m
+
+      226 |           .join(' | ');
+      227 |
+    > 228 |         expect(probe.groups.length, `CTA groups inside the fold: ${described}`).toBe(1);
+          |                                                                                 ^
+      229 |         expect(probe.groups[0].group, 'the one group in the fold is hero-actions').toBe(
+      230 |           'hero-actions',
+      231 |         );
+        at /root/forgotten-mistory/.claude/worktrees/wf_ea3bd443-1d9-1/tests/e2e/hero-fold.spec.ts:228:81
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-1e463-roup-with-margin-at-390×844-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-1e463-roup-with-margin-at-390×844-chromium/error-context.md
+
+
+[1A[2K  4 failed
+    [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 1440×900 › TC-FOLD-04: one CTA group, with margin, at 1440×900 
+    [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 1280×800 › TC-FOLD-04: one CTA group, with margin, at 1280×800 
+    [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 834×1194 › TC-FOLD-04: one CTA group, with margin, at 834×1194 
+    [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 390×844 › TC-FOLD-04: one CTA group, with margin, at 390×844 

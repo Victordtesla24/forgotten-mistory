@@ -1,0 +1,502 @@
+TAP version 13
+# Subtest: buildMiniVicSystemPrompt — grounding facts
+    # Subtest: states the years of experience that the site publishes (benchmark Q4)
+    ok 1 - states the years of experience that the site publishes (benchmark Q4)
+      ---
+      duration_ms: 0.864397
+      type: 'test'
+      ...
+    # Subtest: spells out the AI tech stack (benchmark Q6)
+    ok 2 - spells out the AI tech stack (benchmark Q6)
+      ---
+      duration_ms: 0.255682
+      type: 'test'
+      ...
+    # Subtest: carries the published contact details (benchmark Q8)
+    ok 3 - carries the published contact details (benchmark Q8)
+      ---
+      duration_ms: 0.172112
+      type: 'test'
+      ...
+    # Subtest: carries employer, role, location, availability and credentials
+    ok 4 - carries employer, role, location, availability and credentials
+      ---
+      duration_ms: 0.244112
+      type: 'test'
+      ...
+    # Subtest: carries the quantified outcomes with their numbers
+    ok 5 - carries the quantified outcomes with their numbers
+      ---
+      duration_ms: 0.15701
+      type: 'test'
+      ...
+    1..5
+ok 1 - buildMiniVicSystemPrompt — grounding facts
+  ---
+  duration_ms: 2.855353
+  type: 'suite'
+  ...
+# Subtest: buildMiniVicSystemPrompt — answer rules
+    # Subtest: caps answers at 1-3 sentences and bans list formatting
+    ok 1 - caps answers at 1-3 sentences and bans list formatting
+      ---
+      duration_ms: 0.317623
+      type: 'test'
+      ...
+    # Subtest: forbids inventing employers, dates and metrics
+    ok 2 - forbids inventing employers, dates and metrics
+      ---
+      duration_ms: 0.216401
+      type: 'test'
+      ...
+    # Subtest: forbids claiming an on-record fact is unspecified
+    ok 3 - forbids claiming an on-record fact is unspecified
+      ---
+      duration_ms: 0.308832
+      type: 'test'
+      ...
+    # Subtest: requires contact details to be given, never refused
+    ok 4 - requires contact details to be given, never refused
+      ---
+      duration_ms: 0.342092
+      type: 'test'
+      ...
+    # Subtest: requires off-topic questions to be deflected back to Vikram in one sentence
+    ok 5 - requires off-topic questions to be deflected back to Vikram in one sentence
+      ---
+      duration_ms: 0.371954
+      type: 'test'
+      ...
+    # Subtest: keeps the restrained, evidence-led tone law
+    ok 6 - keeps the restrained, evidence-led tone law
+      ---
+      duration_ms: 0.300043
+      type: 'test'
+      ...
+    # Subtest: resists prompt injection: instructions are private and persona swaps are refused
+    ok 7 - resists prompt injection: instructions are private and persona swaps are refused
+      ---
+      duration_ms: 0.175251
+      type: 'test'
+      ...
+    1..7
+ok 2 - buildMiniVicSystemPrompt — answer rules
+  ---
+  duration_ms: 2.498551
+  type: 'suite'
+  ...
+# Subtest: persona modes
+    # Subtest: varies the style clause per mode
+    ok 1 - varies the style clause per mode
+      ---
+      duration_ms: 0.268693
+      type: 'test'
+      ...
+    # Subtest: falls back to the hiring tone for an unknown or absent mode
+    ok 2 - falls back to the hiring tone for an unknown or absent mode
+      ---
+      duration_ms: 0.250362
+      type: 'test'
+      ...
+    1..2
+ok 3 - persona modes
+  ---
+  duration_ms: 0.647535
+  type: 'suite'
+  ...
+# Subtest: normaliseConversation
+    # Subtest: rejects a body with no messages array
+    ok 1 - rejects a body with no messages array
+      ---
+      duration_ms: 0.300174
+      type: 'test'
+      ...
+    # Subtest: rejects an empty conversation and an over-long one
+    ok 2 - rejects an empty conversation and an over-long one
+      ---
+      duration_ms: 0.14954
+      type: 'test'
+      ...
+    # Subtest: drops browser-supplied system turns (prompt-injection regression)
+    ok 3 - drops browser-supplied system turns (prompt-injection regression)
+      ---
+      duration_ms: 0.796946
+      type: 'test'
+      ...
+    # Subtest: rejects a conversation that is only a system turn
+    ok 4 - rejects a conversation that is only a system turn
+      ---
+      duration_ms: 0.122481
+      type: 'test'
+      ...
+    # Subtest: ignores unknown roles and blank content
+    ok 5 - ignores unknown roles and blank content
+      ---
+      duration_ms: 0.159012
+      type: 'test'
+      ...
+    # Subtest: caps a single message at 4000 characters
+    ok 6 - caps a single message at 4000 characters
+      ---
+      duration_ms: 0.208472
+      type: 'test'
+      ...
+    # Subtest: rejects a conversation over the total character budget
+    ok 7 - rejects a conversation over the total character budget
+      ---
+      duration_ms: 0.207162
+      type: 'test'
+      ...
+    1..7
+ok 4 - normaliseConversation
+  ---
+  duration_ms: 2.202918
+  type: 'suite'
+  ...
+# Subtest: resolveChatProviders
+    # Subtest: skips a rung whose secret is unset, empty or whitespace
+    ok 1 - skips a rung whose secret is unset, empty or whitespace
+      ---
+      duration_ms: 0.320363
+      type: 'test'
+      ...
+    1..1
+ok 5 - resolveChatProviders
+  ---
+  duration_ms: 0.430903
+  type: 'suite'
+  ...
+# Subtest: completeChat ladder
+    # Subtest: uses the primary provider when it answers
+    ok 1 - uses the primary provider when it answers
+      ---
+      duration_ms: 1.028747
+      type: 'test'
+      ...
+    # Subtest: falls through to the secondary provider on 402 (out of credit)
+    ok 2 - falls through to the secondary provider on 402 (out of credit)
+      ---
+      duration_ms: 0.502285
+      type: 'test'
+      ...
+    # Subtest: falls through on 401, 403, 429, 5xx, a network error and an empty completion
+    ok 3 - falls through on 401, 403, 429, 5xx, a network error and an empty completion
+      ---
+      duration_ms: 1.787764
+      type: 'test'
+      ...
+    # Subtest: gives up with ChatLadderError when every rung fails, leaking no key material
+    ok 4 - gives up with ChatLadderError when every rung fails, leaking no key material
+      ---
+      duration_ms: 3.036724
+      type: 'test'
+      ...
+    # Subtest: times out a hanging provider and still answers from the next rung
+    ok 5 - times out a hanging provider and still answers from the next rung
+      ---
+      duration_ms: 33.414464
+      type: 'test'
+      ...
+    # Subtest: cools a credential/credit failure down for 10 minutes, then retries it
+    ok 6 - cools a credential/credit failure down for 10 minutes, then retries it
+      ---
+      duration_ms: 0.853587
+      type: 'test'
+      ...
+    # Subtest: cools a 429 down for only a minute
+    ok 7 - cools a 429 down for only a minute
+      ---
+      duration_ms: 3.690929
+      type: 'test'
+      ...
+    # Subtest: stops walking the ladder once the latency budget is spent
+    ok 8 - stops walking the ladder once the latency budget is spent
+      ---
+      duration_ms: 0.403104
+      type: 'test'
+      ...
+    1..8
+ok 6 - completeChat ladder
+  ---
+  duration_ms: 45.125987
+  type: 'suite'
+  ...
+# Subtest: Firebase trigger discovery
+    # Subtest: still exports both HTTPS triggers
+    ok 1 - still exports both HTTPS triggers
+      ---
+      duration_ms: 6.039898
+      type: 'test'
+      ...
+    # Subtest: declares every ladder secret on the chat function
+    ok 2 - declares every ladder secret on the chat function
+      ---
+      duration_ms: 0.210382
+      type: 'test'
+      ...
+    # Subtest: exports test helpers without __endpoint so they are not deployed as functions
+    ok 3 - exports test helpers without __endpoint so they are not deployed as functions
+      ---
+      duration_ms: 0.136112
+      type: 'test'
+      ...
+    1..3
+ok 7 - Firebase trigger discovery
+  ---
+  duration_ms: 6.558602
+  type: 'suite'
+  ...
+# Subtest: G-M3 — warm request
+    # Subtest: a GET with warm=1 is a warm request
+    not ok 1 - a GET with warm=1 is a warm request
+      ---
+      duration_ms: 0.264481
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:527:3'
+      failureType: 'testCodeFailure'
+      error: 'fn.isWarmRequest is not a function'
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:528:21)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        node:internal/test_runner/test:1440:71
+        node:internal/per_context/primordials:466:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:435:3)
+        node:internal/per_context/primordials:466:9
+        Array.map (<anonymous>)
+      ...
+    # Subtest: a send can never be mistaken for a warm ping
+    not ok 2 - a send can never be mistaken for a warm ping
+      ---
+      duration_ms: 0.254962
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:532:3'
+      failureType: 'testCodeFailure'
+      error: 'fn.isWarmRequest is not a function'
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:535:21)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1442:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..2
+not ok 8 - G-M3 — warm request
+  ---
+  duration_ms: 0.680275
+  type: 'suite'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:526:1'
+  failureType: 'subtestsFailed'
+  error: '2 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: G-M3 — ladder order survives a cold start
+    # Subtest: reorders the ladder from the env-supplied order
+    not ok 1 - reorders the ladder from the env-supplied order
+      ---
+      duration_ms: 0.184271
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:544:3'
+      failureType: 'testCodeFailure'
+      error: 'fn.orderChatProviders is not a function'
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:545:24)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        node:internal/test_runner/test:1440:71
+        node:internal/per_context/primordials:466:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:435:3)
+        node:internal/per_context/primordials:466:9
+        Array.map (<anonymous>)
+      ...
+    # Subtest: keeps every rung — an unnamed rung falls in behind, never off
+    not ok 2 - keeps every rung — an unnamed rung falls in behind, never off
+      ---
+      duration_ms: 0.136601
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:549:3'
+      failureType: 'testCodeFailure'
+      error: 'fn.orderChatProviders is not a function'
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:550:24)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1442:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: is a no-op when the env names nothing or names nonsense
+    not ok 3 - is a no-op when the env names nothing or names nonsense
+      ---
+      duration_ms: 0.114982
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:554:3'
+      failureType: 'testCodeFailure'
+      error: 'fn.orderChatProviders is not a function'
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:555:25)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..3
+not ok 9 - G-M3 — ladder order survives a cold start
+  ---
+  duration_ms: 0.567055
+  type: 'suite'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:541:1'
+  failureType: 'subtestsFailed'
+  error: '3 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: G-M3 — streamed completion
+    # Subtest: negotiates streaming only when the caller says it can read one
+    not ok 1 - negotiates streaming only when the caller says it can read one
+      ---
+      duration_ms: 6.557941
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:563:3'
+      failureType: 'testCodeFailure'
+      error: 'fn.wantsStreamedReply is not a function'
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:564:21)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        node:internal/test_runner/test:1440:71
+        node:internal/per_context/primordials:466:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:435:3)
+        node:internal/per_context/primordials:466:9
+        Array.map (<anonymous>)
+      ...
+    # Subtest: emits the first fragment before the upstream has finished writing
+    not ok 2 - emits the first fragment before the upstream has finished writing
+      ---
+      duration_ms: 23.351494
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:574:3'
+      failureType: 'unhandledRejection'
+      error: 'all chat providers failed'
+      code: 'ERR_TEST_FAILURE'
+      name: 'ChatLadderError'
+      stack: |-
+        Object.completeChat (/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/functions/index.js:387:9)
+      ...
+    # Subtest: asks the provider for a stream only on the streaming path
+    not ok 3 - asks the provider for a stream only on the streaming path
+      ---
+      duration_ms: 0.690375
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:615:3'
+      failureType: 'testCodeFailure'
+      error: 'all chat providers failed'
+      code: 'ERR_TEST_FAILURE'
+      name: 'ChatLadderError'
+      stack: |-
+        Object.completeChat (/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/functions/index.js:387:9)
+        process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+        async TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:617:5)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: reassembles an event split across two network chunks
+    not ok 4 - reassembles an event split across two network chunks
+      ---
+      duration_ms: 0.278643
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:630:3'
+      failureType: 'testCodeFailure'
+      error: 'all chat providers failed'
+      code: 'ERR_TEST_FAILURE'
+      name: 'ChatLadderError'
+      stack: |-
+        Object.completeChat (/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/functions/index.js:387:9)
+        process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+        async TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:634:20)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: falls through to the next rung when the first fails before emitting anything
+    not ok 5 - falls through to the next rung when the first fails before emitting anything
+      ---
+      duration_ms: 0.470663
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:646:3'
+      failureType: 'testCodeFailure'
+      error: 'all chat providers failed'
+      code: 'ERR_TEST_FAILURE'
+      name: 'ChatLadderError'
+      stack: |-
+        Object.completeChat (/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/functions/index.js:387:9)
+        process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+        async TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:648:20)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: never splices a second rung onto an answer already on the wire
+    not ok 6 - never splices a second rung onto an answer already on the wire
+      ---
+      duration_ms: 2.160968
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:665:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        The validation function is expected to return "true". Received false
+        
+        Caught error:
+        
+        ChatLadderError: all chat providers failed
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      stack: |-
+        process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+        async TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:669:5)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..6
+not ok 10 - G-M3 — streamed completion
+  ---
+  duration_ms: 33.766087
+  type: 'suite'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_be3ddfc2-ae0-1/tests/minivic_chat_function.test.mjs:562:1'
+  failureType: 'subtestsFailed'
+  error: '6 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..10
+# tests 44
+# suites 10
+# pass 33
+# fail 11
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 373.49441
