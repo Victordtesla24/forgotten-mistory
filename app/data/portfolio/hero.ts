@@ -36,7 +36,7 @@ export const heroContent = {
     {
       value: '$5M+',
       label: 'program portfolio led',
-      source: 'ANZ · 5+ squads, 40+ practitioners',
+      source: 'ANZ · 5+ squads, up to 40 practitioners',
     },
     {
       value: '10k+',

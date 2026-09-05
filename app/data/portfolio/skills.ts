@@ -115,7 +115,7 @@ export const capabilities: Capability[] = [
     capability: 'Programme and portfolio management',
     short: 'Programme & portfolio',
     sources: ['anz'],
-    evidence: '$5M+ portfolio · 5+ squads · 40+ practitioners onshore and offshore',
+    evidence: '$5M+ portfolio · 5+ squads · up to 40 practitioners onshore and offshore',
     where: 'ANZ',
     status: 'production',
   },

@@ -69,7 +69,7 @@ export const aboutContent = {
       side: 'candidate',
       answer:
         'Agile as practice rather than ceremony. Cadence and PI planning when the plan holds; a cross-discipline war room, inside three hours, when it does not.',
-      evidence: '5+ squads, 40+ practitioners onshore and offshore',
+      evidence: '5+ squads, up to 40 practitioners onshore and offshore',
     },
     {
       name: 'Salary Fit',

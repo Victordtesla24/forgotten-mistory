@@ -111,7 +111,7 @@ export const experience: ExperienceRole[] = [
     bullets: [
       'Led the delivery of AI/ML solutions, including real-time WebSocket telemetry sustaining P95 latency under 200 ms across 10,000+ concurrent devices for critical banking services.',
       'Guided the transition of core banking platforms to cloud-native architectures (.NET/Azure), improving delivery efficiency by more than 30% and reducing infrastructure costs by over 15%.',
-      'Managed a program portfolio valued at over $5M across 5+ cross-functional squads (40+ onsite and offshore practitioners) with 100% compliance to enterprise standards and risk frameworks.',
+      'Managed a program portfolio valued at over $5M across 5+ cross-functional squads (up to 40 onsite and offshore practitioners) with 100% compliance to enterprise standards and risk frameworks.',
       'Owned the technical vision and product backlog for platform modernisations; executive workshops for 40+ leaders improved strategic decision clarity by approximately 55%.',
     ],
   },
@@ -471,7 +471,7 @@ export const projectionDimensions: ProjectionDimension[] = [
   {
     key: 'scale',
     label: 'Program scale',
-    claim: '$5M+ program portfolio across 5+ squads and 40+ practitioners, delivered at 100% compliance.',
+    claim: '$5M+ program portfolio across 5+ squads and up to 40 practitioners, delivered at 100% compliance.',
     source: 'ANZ Banking Group program leadership',
   },
   {
