@@ -1,0 +1,71 @@
+{
+  "run_id": "v10-20260905T0515Z",
+  "opened_utc": "2026-09-05T05:16:12Z",
+  "continues": "v9-20260904T2312Z",
+  "repo": "/root/forgotten-mistory",
+  "head": "debd25b910d530c4f48c3f4a588ba9636aa48a17",
+  "origin_main": "debd25b910d530c4f48c3f4a588ba9636aa48a17",
+  "dirty_paths": [
+    "M docs/prompt.md",
+    " M reports/static-audit.json",
+    "?? docs/delivery/evidence/v9-20260904T2312Z/F-lighthouse-ci/",
+    "?? docs/delivery/evidence/v9-20260904T2312Z/F-security-upgrade/",
+    "?? docs/delivery/evidence/v9-20260904T2312Z/R-c12/"
+  ],
+  "live_url": "https://forgotten-mistory.web.app",
+  "live_http": "200",
+  "live_build_commit_meta": "name=\"build-commit\" content=\"debd25b9\"",
+  "live_api_chat": "HTTP 200, provider openai/gpt-4.1-mini, 5.9 s (probe 05:14Z)",
+  "baseline": {
+    "tsc": "exit 0 (05:14Z)",
+    "lint": "exit 0 \u2014 No ESLint warnings or errors",
+    "static_audit": "10/10 PASS",
+    "node_tests_local": "tests/minivic_chat_function.test.mjs 33/33 pass locally (functions/node_modules present)",
+    "ci_checks_33936783382": "FAIL \u2014 audit: next 14.2.35 high; static: minivic_chat_function.test.mjs cannot find firebase-functions/v2/https (functions deps not installed in CI); e2e: 15 failed / 272 passed (16 distinct specs)",
+    "ci_deploy_33936783375": "success 1m55s \u2014 live build-commit debd25b9",
+    "openrouter": "total_credits 2890.5, total_usage 2895.88 \u2192 balance \u2212$5.38 (402 on every call) \u2014 unchanged, Owner-blocked",
+    "elevenlabs": "tier payg, IVC false, PVC false, 28916/37471 chars \u2014 unchanged, Owner-blocked",
+    "higgsfield_mcp": "credits 0, plan free \u2014 no paid generation possible"
+  },
+  "unmerged_work_found": {
+    "c11_vitrine_integration": "worktree .claude/worktrees/wf_7658aeb2-d07-1 (base 4f1d659): 13 files, applies cleanly on main (git apply --check --3way exit 0) \u2014 patch archived in job tmp",
+    "next15_security_upgrade": "worktree .claude/worktrees/wf_dc0c232e-59d-1 (base 0c02861): next 15.5.25 + eslint root + tsconfig target + 2 Link swaps + lockfile; applies cleanly on main; F-security-upgrade evidence 129/134 (5 fails: CLS\u00d72, WebGL\u00d73 headless)",
+    "wt_data_backend": "3 test-only commits from v6 (R-66..R-183 ids absent from docs/overhaul/SPEC.md), 67 behind main, 808 files / 100k deletions vs main \u2014 to be abandoned with a decision memo; patches archived"
+  },
+  "worktrees": [
+    "/root/forgotten-mistory                                     debd25b [main]",
+    "/root/forgotten-mistory/.claude/worktrees/wf_4452cec1-084-1 debd25b [worktree-wf_4452cec1-084-1]",
+    "/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1 57a3232 [worktree-wf_71e5419d-c2e-1]",
+    "/root/forgotten-mistory/.claude/worktrees/wf_7658aeb2-d07-1 4f1d659 [worktree-wf_7658aeb2-d07-1]",
+    "/root/forgotten-mistory/.claude/worktrees/wf_dc0c232e-59d-1 0c02861 [worktree-wf_dc0c232e-59d-1]",
+    "/var/tmp/dbg-wt                                             4e8f11c (detached HEAD)",
+    "/var/tmp/fm-c7                                              0cad7ba (detached HEAD)",
+    "/var/tmp/v6-clean                                           1672d17 (detached HEAD)",
+    "/var/tmp/v6-wt/data-backend                                 8050ec6 [wt/data-backend]"
+  ],
+  "remote": {
+    "branches": [
+      "refs/heads/main"
+    ],
+    "open_prs": "0"
+  },
+  "kanban": {
+    "db": "/root/.hermes/kanban.db",
+    "board": "default",
+    "tasks_at_open": 0
+  },
+  "resources": {
+    "nproc": "4",
+    "mem_available_mb": "2301",
+    "disk": "/dev/sda1       193G  153G   41G  80% /"
+  },
+  "tools": {
+    "node": "v22.23.1",
+    "npm": "12.0.2",
+    "gh": "Logged in to github.com account Victordtesla24"
+  },
+  "spend_policy": {
+    "paid_generation_cap_usd": 0,
+    "rationale": "OpenRouter negative, Higgsfield 0 credits, ElevenLabs IVC refused \u2014 no paid generation is possible this run; every generation path is recorded as Owner-blocked"
+  }
+}

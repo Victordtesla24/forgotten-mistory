@@ -1,0 +1,31 @@
+BEFORE - Next.js 14.2.35 (source: C8-listen-beat/03-build-feature.log, last Next 14 build on this branch)
+Route (app)                              Size     First Load JS
+┌ ○ /                                    27.3 kB         153 kB
+├ ○ /_not-found                          138 B          87.7 kB
+├ ○ /apple-icon.png                      0 B                0 B
+├ ○ /icon.png                            0 B                0 B
+├ ○ /performance-benchmark               10.2 kB        97.8 kB
+├ ○ /privacy                             408 B          96.7 kB
+├ ○ /robots.txt                          0 B                0 B
+├ ○ /sitemap.xml                         0 B                0 B
+└ ○ /terms                               408 B          96.7 kB
++ First Load JS shared by all            87.6 kB
+  ├ chunks/146-d3c95e4537c242d4.js       31.8 kB
+  ├ chunks/b6261da7-736e5ed275a9f3f9.js  53.6 kB
+
+AFTER - Next.js 15.5.25 (this run, 02-build-static.log)
+Route (app)                                 Size  First Load JS    
+┌ ○ /                                    29.2 kB         170 kB
+├ ○ /_not-found                            131 B         103 kB
+├ ○ /apple-icon.png                          0 B            0 B
+├ ○ /icon.png                                0 B            0 B
+├ ○ /performance-benchmark               10.2 kB         113 kB
+├ ○ /privacy                               399 B         107 kB
+├ ○ /robots.txt                            131 B         103 kB
+├ ○ /sitemap.xml                           131 B         103 kB
+└ ○ /terms                                 399 B         107 kB
++ First Load JS shared by all             103 kB
+  ├ chunks/255-f7c4c205ddd80098.js       46.5 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+
+Delta: / First Load JS 153 kB -> 170 kB (+17 kB); shared-by-all 87.6 kB -> 103 kB (+15.4 kB); route / size 27.3 kB -> 29.2 kB. Largest single static asset still < 500 kB (see 02-build-static.log prune + secret-scan lines).
