@@ -40,38 +40,45 @@ export default function Hero() {
           photograph — nothing else stands in the first screen. The evidence is
           not deleted; it is one scroll away, in `.proof` below. */}
       <div className={styles.inner} data-testid="hero-fold">
-        <p className={styles.eyebrow} style={{ '--step': 0 } as React.CSSProperties}>
-          <span className={styles.locationDot} aria-hidden="true" />
-          {heroContent.location}
-        </p>
+        {/* The reading column, as one box. It is a grid item at 720 px and up
+            and `display: contents` below, so the photograph beside it can
+            never stretch the rhythm of the type: a figure spanning five grid
+            rows distributes its own height across all five, which is how the
+            name ended up 390 px below the location line. */}
+        <div className={styles.copy}>
+          <p className={styles.eyebrow} style={{ '--step': 0 } as React.CSSProperties}>
+            <span className={styles.locationDot} aria-hidden="true" />
+            {heroContent.location}
+          </p>
 
-        <h1 id="hero-name" className={styles.name} style={{ '--step': 1 } as React.CSSProperties}>
-          {heroContent.name}
-        </h1>
+          <h1 id="hero-name" className={styles.name} style={{ '--step': 1 } as React.CSSProperties}>
+            {heroContent.name}
+          </h1>
 
-        <p className={styles.role} style={{ '--step': 2 } as React.CSSProperties}>
-          {heroContent.role}
-        </p>
+          <p className={styles.role} style={{ '--step': 2 } as React.CSSProperties}>
+            {heroContent.role}
+          </p>
 
-        <p className={styles.statement} style={{ '--step': 3 } as React.CSSProperties}>
-          {heroContent.statement}
-        </p>
+          <p className={styles.statement} style={{ '--step': 3 } as React.CSSProperties}>
+            {heroContent.statement}
+          </p>
 
-        <div
-          className={styles.actions}
-          data-testid="hero-actions"
-          style={{ '--step': 4 } as React.CSSProperties}
-        >
-          <a className={styles.primaryAction} href={heroContent.actions.primary.href}>
-            {heroContent.actions.primary.label}
-          </a>
-          <a
-            className={styles.secondaryAction}
-            href={heroContent.actions.secondary.href}
-            download
+          <div
+            className={styles.actions}
+            data-testid="hero-actions"
+            style={{ '--step': 4 } as React.CSSProperties}
           >
-            {heroContent.actions.secondary.label}
-          </a>
+            <a className={styles.primaryAction} href={heroContent.actions.primary.href}>
+              {heroContent.actions.primary.label}
+            </a>
+            <a
+              className={styles.secondaryAction}
+              href={heroContent.actions.secondary.href}
+              download
+            >
+              {heroContent.actions.secondary.label}
+            </a>
+          </div>
         </div>
 
         {/* The photograph. At 720 px and above the CSS gives it the whole

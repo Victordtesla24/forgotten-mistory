@@ -193,7 +193,7 @@
     z-index: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
     /* The fold is the viewport. `svh` rather than `vh`: on a phone the dynamic
        toolbar must not push the action group out of the screen it is measured
@@ -208,6 +208,13 @@
     max-width: var(--page-max);
     margin: 0 auto;
     box-sizing: border-box;
+}
+
+/* The reading column. Below 720 px it is not a box at all, so the phone's
+   single-column flow — and the photograph's full-bleed negative margin — are
+   exactly what they were. */
+.copy {
+    display: contents;
 }
 
 /* ── The proof band ───────────────────────────────────────────────────────
@@ -629,7 +636,7 @@
     /* Wider than it was: the reviewer measured the dominant visual at 11.4% of
        the fold and called the composition a CV dump. The right column is the
        photograph's whole share of the screen now. */
-    --portrait-w: clamp(19rem, 44vw, 42rem);
+    --portrait-w: clamp(18rem, 38vw, 36rem);
     --portrait-inset: 12px;
 }
 
@@ -816,7 +823,12 @@
     font-size: var(--fs-micro);
     line-height: var(--lh-label);
     letter-spacing: var(--ls-caption);
-    color: var(--mist-400);
+    /* --mist-400 measured 3.35:1 here (tests/a11y/text-contrast.spec.ts at
+       1440): the plate sits on the portrait's own bloom, which lifts the
+       ground to about `#3E3E3E`, and eleven pixels of mono on that is under
+       AA. --mist-200 samples above 8:1 on the same ground — the same swap the
+       grading note took, and the same achromatic ink. */
+    color: var(--mist-200);
 }
 
 /* The leader line a draughtsman would rule to the label. */
@@ -836,32 +848,31 @@
    whole right column across their three rows, its top edge on the role's. It is
    placed explicitly, so it holds that cell wherever it sits in the source. */
 @media (min-width: 720px) {
+    /* Two items, one row: the reading column and the photograph. Not five rows
+       with a figure spanning them — a spanning item hands its own height to
+       every track it crosses, and that is what pushed the name half a screen
+       below the location line. */
     .inner {
         display: grid;
         grid-template-columns: minmax(0, 1fr) var(--portrait-w);
         column-gap: clamp(var(--space-4), 4vw, var(--space-8));
-        /* The rows are the type; the fold is the screen. Centring the row box
-           inside it is what lets the photograph stand floor-to-ceiling beside
-           a short column of copy. */
-        align-content: center;
+        /* Anchored at the top. Centring the row inside a screen-tall band moves
+           every line by half of any late reflow — the display face landing, the
+           statement rewrapping — and CLS is a gate, not a preference. */
+        align-content: start;
         align-items: start;
     }
 
-    /* Every line of type keeps the left column: the right one is the
-       photograph's, top to bottom. */
-    .eyebrow,
-    .name,
-    .role,
-    .statement,
-    .actions {
+    .copy {
+        display: block;
         grid-column: 1;
+        min-width: 0;
     }
 
-    /* The photograph spans every row of the fold and is centred against them —
-       it is the composition, not an inset beside the ledger. */
+    /* The photograph takes the whole right column and stands against the middle
+       of the copy: it is the composition, not an inset beside the ledger. */
     .portrait {
         grid-column: 2;
-        grid-row: 1 / -1;
         align-self: center;
         margin-top: 0;
     }
