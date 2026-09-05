@@ -43,3 +43,9 @@ LIVE VERIFIED 07:13Z on build f103462f (contains a11dfe7): ?gl=force SwiftShader
 
 ## COMMENT (2026-09-05T07:25:31.666Z)
 Hotfix lane verifier (wf_7910f160 stage 2) also PASS: 34/34 render+cinematic+hero specs, 02-repro-after.json canvases 1/h1 present/0 errors; D-3 re-accepts the next 14 advisory chain (all server-side surfaces absent on a static export) until t_r19r3f9 lands.
+
+## COMMENT (2026-09-05T07:30:49.899Z)
+R-c13 #4 MOT-C13-01d (major, Verified, motion) — A fault inside a scene replaces the whole document: GLCanvas mounts with no scene-local error boundary, so a component-level throw reaches app/error.tsx — 'the scene is never the content' is not enforced in code
+DIRECTION: Wrap the GLCanvas mount at Scene.tsx:94-98 in a scene-local error boundary whose componentDidCatch sets capability = 'unsupported' and renders the slot empty, so any scene failure degrades to the no-GL path already built and tested. Log once to the console with the scene's name; do not re-throw. Keep app/error.tsx for genuine page-level faults.
+FILES: components/gl/Scene.tsx:91,94-98, components/gl/GLCanvas.tsx:3,22-44, app/error.tsx:28-46, tests/e2e/
+ACCEPTANCE: A spec that forces a throw inside the GL subtree (stub GLCanvas's default export to throw, or dispatch a webglcontextlost the renderer cannot recover) asserts: document.querySelectorAll('section[id]').length === 6, #hero h1 text 'Vikram Deshpande', zero elements matching /SYSTEM INTERRUPT|Something went wrong/, and #hero canvas count 0 (the slot fell back). Add as tests/e2e/scene-failure-contained.spec.ts.

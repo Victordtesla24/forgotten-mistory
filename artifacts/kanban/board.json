@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T07:25:31.745Z",
+  "updated": "2026-09-05T07:31:25.246Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -80,7 +80,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:32:27.639Z",
+      "updated": "2026-09-05T07:30:51.271Z",
       "summary": "Worktree .claude/worktrees/wf_18f926b0-2a4-2 (base 8dc4cf4). Patch applied + real fixes D-1…D-6 written (07-decisions.md); TDD failing log captured (7 failed / 10 passed on unpatched main). NOT yet done: passing battery, regression, screenshots, D-7+, commit.",
       "decisions": [
         {
@@ -92,7 +92,13 @@
           "text": "V-C11 FAIL on one gate only: TC-CONTRAST-01 @390 red on 1 node (#role-body-ato li:first, 1.79:1) because the MiniVic launcher (MiniVicBot.tsx:1191, fixed bottom-6 right-6 z-[10030]) paints a light disc over body prose at ≤480 px — pre-existing, outside this cycle's files (reviewer F-1 confirmed by re-walking the gate's own sample points). All 19 other acceptance lines pass; the cycle cut contrast failures 68→0 @1440 and 30→1 @390. Orchestrator decision (§0.1 preserve functionality + O5 every cycle improves production; deploy path is gate-free by Owner directive O3): MERGE AND DEPLOY NOW, task stays open until cycle 16 (t_cc03ed93) turns the @390 gate green; correction prompt issued there. F-2: R-c8 C-06 clause 'portrait below the lede' is superseded by B-research/02-hero-avatar-placement.md P1 + TC-HERO-21 (portrait beside the eyebrow, H1 owns the 342 px measure) — recorded as a deliberate overrule. F-3: C-06 clause 4 names .figureNote which no longer exists; rewritten against .ledgerItem (equal heights 123.88 px @1440 — already true). F-4: apply_edits.py misfiled under the v9 evidence path → hygiene task."
         }
       ],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T07:30:51.271Z",
+          "by": "orchestrator",
+          "text": "R-c13 #15 CC-08 (minor, Verified, composition) — The rail scrolls 3192 px inside 1440 px — 55% of the content off-screen — with no thumb, no counter and no arrow; the only affordance is a 64 px mask fade\nDIRECTION: Add the unbuilt rail thumb the R-c8 C-02 direction specified: a 2 px track in var(--ink-500) spanning the column (96 px to 1344 px at 1440), thumb height 2 px, background var(--mist-400), border-radius 1px, width calc(clientWidth / scrollWidth * 100%), translated by scrollLeft / scrollWidth, sitting var(--space-2) below the cards on the same spine. Pair it with an '01 / 06' counter at var(--fs-micro) in var(--mist-400) at the track's right end. Reduced motion: position updates without transition. No gold.\nFILES: components/sections/Vitrine/Vitrine.module.css:56,307+, components/sections/Vitrine/Vitrine.tsx\nACCEPTANCE: At 1440 and 1920, #vitrine contains an element whose computed width is < rail.clientWidth and whose left offset changes after rail.scrollBy(600); its track's left edge equals the #vitrine heading's left edge within 1 px."
+        }
+      ]
     },
     {
       "id": "t_c3ece39c",
@@ -159,7 +165,7 @@
     {
       "id": "t_4adf34f7",
       "title": "R-c13 — adversarial + composition + motion council review of the LIVE site after cycles 11/13 land (O2/O6)",
-      "status": "running",
+      "status": "done",
       "assignee": "reviewer",
       "priority": 95,
       "parents": [
@@ -174,7 +180,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:36:10.564Z",
+      "updated": "2026-09-05T07:30:51.833Z",
       "summary": "Three independent reviewers (adversarial, composition, motion) against https://forgotten-mistory.web.app/?gl=force at 1440/1920/834/390 + reduced-motion + no-GL; merged verdict with a prioritised, file:line-exact backlog like R-c8. Also grades the §0.3 mandates (one flagship visualisation per section; black/white/gold only; narrative) and R2 (≥7 signature scenes — currently 2 GLSL + 4 SVG/CSS).",
       "decisions": [],
       "comments": [
@@ -183,7 +189,8 @@
           "by": "orchestrator",
           "text": "06:36Z: first R-c13 run stopped after 2 min — its precondition named f86b125 literally, but that run was cancelled by the queued 3adf126a deploy (GitHub keeps one pending run per concurrency group); relaunched with the precondition 'live build is a descendant of f86b125' (3adf126a qualifies)."
         }
-      ]
+      ],
+      "result": "R-c13 merged verdict FAIL on builds 3adf126a→3dae601a (review.md, 3 lens reports, 16 holds, 7 contradictions resolved, 22 ranked items). Blocker ADV-1 = the WebGL crash (fixed by t_p100hotfx at 07:12Z). 16 holds incl. R-c8 C-01, ADV-F-1, MOT-F-3, C-08(gold discipline) closed; 0 console errors on the fallback path; axe 0; headers; LCP 668/320 ms; CLS 0; /api/chat grounded; /api/tts 200. Backlog folded: 15 items → existing tasks (comments), 7 new tasks. Next review R-c14 after cycles 15/16/16b + react19 land."
     },
     {
       "id": "t_3bf56e4a",
@@ -350,7 +357,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:25:31.745Z",
+      "updated": "2026-09-05T07:30:46.458Z",
       "summary": "R-c8 items 5 and 6. Gold rejected for the playhead (dates are self-reported). Files: components/sections/Experience/{CareerStrata.tsx,strata.glsl.ts,Experience.module.css,Experience.tsx}; tests/overhaul/experience-signature.spec.ts (TDD first).",
       "decisions": [],
       "comments": [
@@ -358,6 +365,11 @@
           "at": "2026-09-05T06:20:06.837Z",
           "by": "orchestrator",
           "text": "Merged with SPEC-v10 c18-experience-narrative-glsl (same files, same acceptance): spec file tests/overhaul/scene-experience.spec.ts; add the SA line: strata.glsl.ts header no longer says it encodes nothing."
+        },
+        {
+          "at": "2026-09-05T07:30:46.458Z",
+          "by": "orchestrator",
+          "text": "R-c13 #2 MOT-C13-02 (major, Verified, motion) — 'Sixteen years, to scale' is the one heading that describes an animation and the section has none — getAnimations() scoped to #experience is [] on arrival and after 1600 ms; the only animation: in the module is inside the reduced-motion block\nDIRECTION: Give the chart the beat its heading promises — bars grow to their real duration on entry. 1) IntersectionObserver at threshold 0.2 in Experience.tsx setting data-drawn on the chart, mirroring Bench.tsx:189-206 (already solves once-only + reduced-motion). 2) Animate .trackBar::before (Experience.module.css:175) transform scaleX(0)->scaleX(1), transform-origin: left center, 900 ms (--motion-cine), cubic-bezier(0.16,1,0.3,1), animation-delay: calc(var(--i) * 70ms) — eight roles land the last bar at 1390 ms. 3) Roll .trackYears (line 211) opacity 0->1 over 320 ms at calc(var(--i) * 70ms + 620ms) so each number lands as its bar stops. 4) In the existing RM block (line 473) add .trackBar::before { animation: none; transform: none } and keep experienceFade. 5) Drive CareerStrata's uIntensity (CareerStrata.tsx:45-47) from the same data-drawn flag instead of ramping unconditionally at delta*0.5, so the strata rise with the bars.\nFILES: components/sections/Experience/Experience.tsx:100,156, components/sections/Experience/Experience.module.css:169,175,211,473-486, components/sections/Experience/CareerStrata.tsx:45-47, components/sections/Skills/Bench.tsx:189-206, tests/overhaul/experience-signature.spec.ts\nACCEPTANCE: With normal motion at 1440x900, scrolling #experience into view yields >= 8 entries in document.getAnimations() scoped to #experience, each duration === 900 and easing === 'cubic-bezier(0.16, 1, 0.3, 1)', the last starting at >= 490 ms; .trackBar::before computed transform is not matrix(1,0,0,1,0,0) at t=100 ms and is at t=1600 ms. Under reducedMotion 'reduce', #experience still reports zero running animations after 2200 ms."
         }
       ]
     },
@@ -379,7 +391,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:32:27.914Z",
+      "updated": "2026-09-05T07:31:25.246Z",
       "summary": "R-c8 items 7, 12, 13. Files: components/MiniVicBot.tsx, app/globals.css (MiniVic chrome block), components/site/Navigation.tsx; tests/monochrome + tests/a11y (TDD first).",
       "decisions": [],
       "comments": [
@@ -387,6 +399,26 @@
           "at": "2026-09-05T06:32:27.869Z",
           "by": "orchestrator",
           "text": "## CORRECTION: TC-CONTRAST-01 @390 (from V-C11 F-1, 127b2ab)\nOriginal output: cycle 11 leaves exactly one node red — #role-body-ato > ul.Experience_bullets > li:nth-of-type(1) at 1.79:1, fg rgb(205,205,205) on the sampled ground rgb(153,153,157), which is the MiniVic launcher's light portrait disc painted over the prose (elementsFromPoint at [304,779] → button.group.relative → div.fixed.bottom-6; launcher box {l:302,t:756,r:366,b:820} at 390 px, position fixed, z-index 10030).\nFailing criteria: tests/a11y/text-contrast.spec.ts:275 TC-CONTRAST-01 @390 expects 0 nodes below AA (expect(failures.length).toBe(0) at :287 — do not weaken).\nRequired fix: the closed launcher must never paint an opaque light surface over body prose at ≤ 480 px — put the grayscale portrait on a dark in-palette plate (var(--ink-900)/var(--card)) with the 1px var(--card-border) ring, or dock the launcher clear of the reading column on phones (e.g. bottom-right inset inside the page gutter with the prose column ending before x=302), whichever keeps the 44 px hit area and data-testid=minivic-toggle. Do this together with C-04 (labelled affordance, pill 'Ask Mini Vic' ≥834, achromatic pip: bg-zinc-400/500 → var(--mist-400)/var(--ink-500)), ADV-F-3 (aria-hidden ancestor check) and ADV-F-2 (skip link 'Ask Mini Vic'). Also fix TC-BOT-12 (tests/e2e/chatbot.spec.ts:257 — the open panel stacks above the launcher on its axis and never covers the h1; red on CI run 33936783382).\nFile: components/MiniVicBot.tsx:1191 (launcher className), the MiniVic chrome block in app/globals.css, components/site/Navigation.tsx (skip link).\nVerification: PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test tests/a11y/text-contrast.spec.ts → '2 passed'; tests/e2e/chatbot.spec.ts (TC-BOT-12 green); tests/monochrome; tests/a11y; plus the new occlusion spec: at 390×844 for every scrollY step of the contrast walk, no element with position:fixed inside [data-testid=minivic-toggle]'s ancestry intersects a visible text node's box in main — or equivalently the launcher's box never overlaps a <p>/<li> box in #experience/#about/#skills at 390."
+        },
+        {
+          "at": "2026-09-05T07:30:50.572Z",
+          "by": "orchestrator",
+          "text": "R-c13 #8 CC-03a (major, Verified, composition + merge) — The launcher is a 64x64 ring around emptiness: innerText empty, 0 svg, 0 img, and its only child is a <video> with no src, no <source> and no poster (readyState: 0)\nDIRECTION: (a) Read as chat: give the button a permanent 24x24 mark in var(--white) — an inline <svg> speech-mark or a 'VIC' monogram at var(--fs-micro), letter-spacing 0.12em — rendered UNDER the video so it is the resting state and the avatar is the enhancement; add a title and a one-line label plate on hover/focus (var(--ink-800) ground, var(--white) ink, var(--fs-caption), padding var(--space-05) var(--space-1), offset 12 px left of the ring). (b) Never ship a source-less video: render <video> only when a resolved source exists, and give it poster={avatarPoster} so first paint is the face; keep preload=\"none\" on the clip only. (The panel behind it already carries role=\"dialog\" and data-testid=\"minivic-panel\" — no change needed there.)\nFILES: components/MiniVicBot.tsx:1595-1626, app/data/portfolio/avatar.ts, tests/e2e/\nACCEPTANCE: At 1440x900 and 390x844 against the live URL: [data-testid=\"minivic-toggle\"] contains at least one svg OR non-empty innerText; every video inside it has a non-empty currentSrc OR a poster; the toggle is visible; after click(), [data-testid=\"minivic-panel\"] is attached and visible within 1500 ms; Escape returns focus to the toggle. Add as tests/e2e/minivic-affordance.spec.ts."
+        },
+        {
+          "at": "2026-09-05T07:30:50.661Z",
+          "by": "orchestrator",
+          "text": "R-c13 #9 ADV-3 (major, Verified, adversarial) — Repeat of R-c8 ADV-F-2: the launcher is tab stop 83 of 83 — a keyboard user traverses the entire page before reaching the channel the brief names for employers and clients\nDIRECTION: As R-c8 specified: add a second visually-hidden-until-focused anchor beside 'Skip to the evidence' in components/site/Navigation.tsx reading 'Ask Mini Vic', whose handler focuses toggleRef.current in components/MiniVicBot.tsx and calls setIsOpen(true); reuse the existing skip-link focus rule. The first three stops are currently 1 'Skip to the evidence', 2 'Back to top', 3 'Download CV'.\nFILES: components/site/Navigation.tsx, components/MiniVicBot.tsx:1595, tests/a11y/\nACCEPTANCE: Tab from the top at 1440x900: within the first 3 tab stops one focused element exposes the accessible name 'Ask Mini Vic'; pressing Enter leaves document.activeElement with data-testid='minivic-toggle' and the panel open."
+        },
+        {
+          "at": "2026-09-05T07:30:51.131Z",
+          "by": "orchestrator",
+          "text": "R-c13 #13 CC-07 (major, Verified, composition + merge) — Monochrome breached in a colour space the gate cannot see: the two pip spans are bg-zinc-400 / bg-zinc-500 -> oklch(... 0.015 286deg) / oklch(... 0.016 286deg), and the audit's colour parser reads rgb() only\nDIRECTION: Replace bg-zinc-400 / bg-zinc-500 on the two pip spans with the site's own tokens: outer ping background var(--mist-400) at opacity 0.75, inner dot background var(--mist-200). Both are R=G=B by construction. Do not substitute another Tailwind neutral — zinc, slate, stone and neutral all carry chroma in Tailwind v4's oklch ramp; only --mist-*/--ink-* are provably achromatic here. Then extend the audit's colour parser to oklch(L C H) and fail on C > 0.005 unless the resolved colour is a --gold-* token.\nFILES: components/MiniVicBot.tsx:1625-1626, app/globals.css, scripts/validate/overhaul_static_audit.mjs, tests/monochrome/\nACCEPTANCE: For every element under [data-testid=\"minivic-toggle\"], every computed color/background-color/border-color/fill/stroke parsed via oklch(), oklab() AND rgb() is either achromatic (C <= 0.005, or R=G=B) or exactly a --gold-* value. Extend the existing spec under tests/monochrome/."
+        },
+        {
+          "at": "2026-09-05T07:31:25.246Z",
+          "by": "orchestrator",
+          "text": "Merged to main (pipeline 1802b87 + verification 614b8ce). V-c16 FAIL on 2/13 lines → correction cycle 16b (t_c16b0001) dispatched; this task closes when 16b passes."
         }
       ]
     },
@@ -408,7 +440,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:20:06.972Z",
+      "updated": "2026-09-05T07:30:51.489Z",
       "summary": "R-c8 item 10. Files: components/sections/Skills/{Bench.module.css,Bench.tsx,Skills.module.css}. Terminal node dots stay gold at full opacity.",
       "decisions": [],
       "comments": [
@@ -416,6 +448,11 @@
           "at": "2026-09-05T06:20:06.972Z",
           "by": "orchestrator",
           "text": "Merged with SPEC-v10 c15 gold half: elements painting rgb(201,168,76) inside #skills ≤ 6 (29 today per live probe); every remaining gold element sits inside [data-caliper-state=sourced], .measuredMark, or a[href^=https://github.com/] — spec tests/monochrome/gold-semantics.spec.ts."
+        },
+        {
+          "at": "2026-09-05T07:30:51.489Z",
+          "by": "orchestrator",
+          "text": "R-c13 #19 CC-10 (polish, Verified, composition (doctrine half corrected by merge)) — Two parallel gold columns 71 px apart (14 bench dots at x=1088, 14 status glyphs at x=1159.6) ask the reader to learn two marks in one table\nDIRECTION: Collapse the two parallel gold columns into one. Keep the licensed mark that carries the most meaning per row — the caliper/source mark — in var(--gold), and render the second column's glyph in var(--mist-200) so the row reads as one gold mark plus neutral chrome. Do not remove the production mark: CLAUDE.md prime directive 4 enumerates 'the measured in production mark' as a licensed gold surface, so composition's claim that it smuggles in a second meaning is rejected. Do not introduce a third gold surface.\nFILES: components/sections/Skills/Skills.tsx:114-118,195, components/sections/Skills/Skills.module.css:103-109,286-306\nACCEPTANCE: #skills contains at most one vertical run of gold-painted elements sharing an x within 2 px; the total count of gold-painted elements in #skills is <= 16; every gold element in #skills sits in a row whose caliper state is 'sourced' or whose status is 'production'."
         }
       ]
     },
@@ -437,7 +474,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:20:07.113Z",
+      "updated": "2026-09-05T07:30:50.817Z",
       "summary": "R-c8 item 11. Files: components/site/Navigation.tsx, app/globals.css nav block.",
       "decisions": [],
       "comments": [
@@ -445,6 +482,11 @@
           "at": "2026-09-05T06:20:07.113Z",
           "by": "orchestrator",
           "text": "Merged with SPEC-v10 c15 dedupe: visible a[href$=Vik_Resume_Final.pdf] count ≤ 2 at 1440×900 (three today: nav pill, hero button, hero card link)."
+        },
+        {
+          "at": "2026-09-05T07:30:50.817Z",
+          "by": "orchestrator",
+          "text": "R-c13 #10 ADV-4 (major, Verified, adversarial + composition (CC-04)) — Repeat of R-c8 C-07: two identical 'Download CV' controls in the 1440 first screen (nav pill at x=1140.5, hero button at x=296.6), plus a third 548x96 anchor with the same text and href overlapping the nav band\nDIRECTION: Keep exactly one per viewport band. The nav pill is the persistent recruiter action (Navigation.tsx:154-157) — keep it, or demote it to plain text until [data-scrolled]. Then change the hero's copy from a bordered button to the section's text-link treatment (drop the border, keep var(--mist-200) at var(--fs-small) with the ::after underline .channel uses), OR relabel it to something the nav does not offer. Remove the third phantom anchor at (445.9, 6, 548x96) — a 548x96 hit area across the chrome must not be in the accessibility or hit-test tree while the desktop nav shows.\nFILES: components/site/Navigation.tsx:26,154-157, components/sections/Hero/Hero.tsx, components/sections/Hero/Hero.module.css, app/globals.css, tests/overhaul/\nACCEPTANCE: At 390/834/1280/1440/1920 with scrollY === 0: the count of elements matching a[href=\"/docs/Vik_Resume_Final.pdf\"] whose rect intersects the viewport AND whose computed visibility !== 'hidden' is exactly 1. Add as tests/overhaul/cta-duplication.spec.ts."
         }
       ]
     },
@@ -466,10 +508,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T07:30:50.409Z",
       "summary": "R-c8 item 14. Files: components/sections/Hero/{Hero.module.css,HeroAtmosphere.tsx,Hero.tsx}.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T07:30:50.409Z",
+          "by": "orchestrator",
+          "text": "R-c13 #7 MOT-C13-04 (major, Verified, motion + adversarial) — The two shader sections have no still of that light when the shader is absent — both scene slots compute background-image: none, so the fallback and reduced-motion paths are flat near-black\nDIRECTION: Give each slot a static gradient that is the shader's own first frame — the same light, not a substitute idea. 1) #hero scene slot in Hero.module.css: background: radial-gradient(120% 80% at 50% 18%, color-mix(in oklab, var(--white) 7%, transparent) 0%, transparent 62%), linear-gradient(180deg, color-mix(in oklab, var(--white) 3%, transparent) 0%, transparent 45%). 2) #experience .chartScene (Experience.module.css:73): background: repeating-linear-gradient(178deg, color-mix(in oklab, var(--white) 4%, transparent) 0 1px, transparent 1px 14px) with mask-image: linear-gradient(180deg, #000 0%, transparent 88%), so the field reads as sedimentary layers behind the bars as the shader does. 3) Tokens only, no raw hex, so the palette gate and TC-NFR-DEADCSS stay green; both are unconditional CSS so they are correct under reduced motion, under no-GL, and behind the canvas when it does mount (canvas is position:absolute; inset:0, GLCanvas.tsx:25).\nFILES: components/sections/Hero/Hero.module.css, components/sections/Experience/Experience.module.css:73, components/sections/Hero/atmosphere.glsl.ts, components/sections/Experience/strata.glsl.ts, components/gl/Scene.tsx:94\nACCEPTANCE: At 1440x900 with getContext stubbed null, getComputedStyle of the hero scene slot and of .chartScene each returns a background-image that is not 'none'; the 1440-nogl-hero visual baseline differs from a flat fill; the monochrome gate and TC-NFR-DEADCSS still pass; both values resolve through tokens with no raw hex outside app/globals.css and lib/palette.ts."
+        }
+      ]
     },
     {
       "id": "t_a88c6767",
@@ -489,7 +537,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:20:06.903Z",
+      "updated": "2026-09-05T07:30:50.960Z",
       "summary": "R-c8 items 15 and 16. Files: components/sections/Listen/{Listen.module.css,Listen.tsx}, components/sections/About/About.module.css. No second motion beat in #listen (MOT-F-4 confirms the caliper-close is the one).",
       "decisions": [],
       "comments": [
@@ -497,6 +545,11 @@
           "at": "2026-09-05T06:20:06.903Z",
           "by": "orchestrator",
           "text": "Merged with SPEC-v10 c15 (R4 client path): #listen must also carry exactly one [data-cta=engage] ≥ 44 px tall whose accessible name matches /engagement|book|start a project|work together/i and reaches HTTP < 400 or a mailto with a non-empty subject (no calendly link exists today; a mailto with subject is the sanctioned route until the Owner names a booking tool). Spec: tests/e2e/audience-paths.spec.ts (t_7cb992f4 writes it first)."
+        },
+        {
+          "at": "2026-09-05T07:30:50.960Z",
+          "by": "orchestrator",
+          "text": "R-c13 #11 CC-05 (major, Verified, composition + merge) — The page's business end is its quietest type: every contact line is 14 px rgb(205,205,205) with a 21 px box, under a 54.4 px pull-quote — a 3.9x ratio pointing the wrong way\nDIRECTION: Listen.module.css .channel (line 206, font-size at :210): raise font-size to var(--fs-body) (16 px) and color to var(--white); keep IBM Plex Mono — the monospace is right for an address, the greyness is not. Give each channel a 44 px minimum hit box via padding-block: var(--space-1). Reduce the pull-quote from --fs-h2 to var(--fs-h3) (~23 px at 1440) so the quote:address ratio is about 1.4x rather than 3.9x. Keep the ::after underline reveal (:223, :243) as the hover state. Distinct from CC-02: that adds the missing client action, this is the weight of the four channels that already exist.\nFILES: components/sections/Listen/Listen.module.css:63,203,206-260\nACCEPTANCE: At 1440 and 390: every #listen .channel has computed font-size >= 16px, color rgb(246, 246, 246), and getBoundingClientRect().height >= 44; the #listen quote's computed font-size divided by a channel's is <= 1.6."
         }
       ]
     },
@@ -518,10 +571,16 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T07:30:51.547Z",
       "summary": "R-c8 item 17 (content parity, R7). Files: app/data/portfolio/{vitrine,experience,hero}.ts, app/data/siteContent.ts (grep \"ixteen\"), tests/content/content-check.spec.ts. Source: public/docs/Vik_Resume_Final.pdf line 3 (\"15+ year\") — or, if the roles sum to ≥16 years on the CV's own dates, keep sixteen and print the arithmetic beside it. Decide from the PDF text, record the decision.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T07:30:51.547Z",
+          "by": "orchestrator",
+          "text": "R-c13 #20 ADV-6 (polish, Verified, adversarial) — Repeat of R-c8 ADV-F-4: the page says 'Sixteen years' while the CV's own headline says '15+ year Senior Technical Leader'\nDIRECTION: Either set the copy to 'Fifteen years' / '15+ years', or print the derivation (2010 -> 2026) beside the claim so a reader can check the arithmetic. One decision applied to all three data files. Under the prime directive 'never grade a claim higher than its evidence', the page should not out-round its own source.\nFILES: app/data/portfolio/hero.ts:29, app/data/portfolio/experience.ts:106, app/data/portfolio/about.ts:50, tests/content/content-check.spec.ts\nACCEPTANCE: A content test asserts the tenure string rendered on the page is either present verbatim in cv-text.txt or accompanied by its two anchor years within the same element."
+        }
+      ]
     },
     {
       "id": "t_cba10f82",
@@ -594,10 +653,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T07:30:50.275Z",
       "summary": "Gap owner: SPEC-v10.md §R2 names the scenes to add/upgrade (candidates: About compass → GLSL rose; Skills bench → instanced wires; Vitrine → shader plates; Listen → caliper field; a page-level transition scene) under LCP/asset budgets. Each scene = one cycle with its own spec.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T07:30:50.275Z",
+          "by": "orchestrator",
+          "text": "R-c13 #6 M-2 (major, Verified, merge (supersedes ADV-2)) — Three of seven signature GL scenes: #hero, #about, #experience mount a canvas; #skills, #vitrine, #listen mount none; scenes unmount on scroll so at most one canvas is live\nDIRECTION: Build the remaining scenes on the board's own plan — t_cbff57b0 (#skills bench field), t_60d9cd7a (#vitrine and #listen fields), t_dc096608 (MiniVic viseme stage as the seventh) — each mounting through components/gl/Scene.tsx so capability detection and the reduced-motion gate stay in one place, and each with the static counterpart item 7 specifies. Keep the one-canvas-at-a-time unmount behaviour; it is correct for a 4-core mobile budget, so state it in the R2 evidence rather than counting simultaneous canvases. Prove 60 fps on GPU hardware only (t_7e0f060c), never with ?gl=force on a software rasteriser — the only sample this run read median rAF delta 116.7 ms / p95 150 ms because ?gl=force overrides the software-rasteriser decline.\nFILES: components/sections/Skills/, components/sections/Vitrine/, components/sections/Listen/, components/MiniVicBot.tsx, components/gl/Scene.tsx, docs/delivery/evidence/\nACCEPTANCE: With a hardware GPU (or a spoofed hardware renderer string) at 1440x900, scrolling each of the six sections to centre mounts a <canvas> in that section for at least seven distinct scenes across the page; each holds median rAF delta <= 16.7 ms at 1440 and <= 20 ms at 390 over a 3 s sample on GPU hardware; under reducedMotion 'reduce' every section reports 0 canvases."
+        }
+      ]
     },
     {
       "id": "t_7cb992f4",
@@ -616,10 +681,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T07:30:46.353Z",
       "summary": "Verify on the live site; fix any gap found by SPEC-v10.md S-2.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T07:30:46.353Z",
+          "by": "orchestrator",
+          "text": "R-c13 #1 CC-02 (blocker, Verified, composition + merge) — No engagement CTA for business clients anywhere on the page: #listen holds four plain anchors, 14 px rgb(205,205,205), 0 filled actions at 1440 and 1280\nDIRECTION: Add one engagement action to #listen with equal weight to the hero's primary: filled var(--white) plate, color var(--ink-900), padding var(--space-2) var(--space-4), font-size var(--fs-small), min height 48 px, placed as the FIRST item in .channels above the four channels, on the 96 px spine. Label it for the client not the recruiter ('Start a project' / 'Book a 30-minute call') and point it at a destination the visitor can complete (a scheduling URL; a mailto: with a pre-filled subject only if the copy says so). Keep the four channels as the quiet secondary row beneath, retaining the .channel::after underline (Listen.module.css:223) on them only. No gold — this is chrome, not a sourced claim.\nFILES: app/data/portfolio/listen.ts, components/sections/Listen/Listen.tsx:184-196, components/sections/Listen/Listen.module.css:195-260, tests/content/\nACCEPTANCE: At 390/834/1280/1440/1920: #listen contains exactly one element matching a,button whose computed background-color is not rgba(0, 0, 0, 0); its getBoundingClientRect().height >= 48; its left edge equals the #listen heading's left edge within 1px; its href is non-empty and resolves (HTTP < 400, or a mailto:/https: scheme); and it precedes the four .channel anchors in DOM order. Add as tests/content/client-cta.spec.ts."
+        }
+      ]
     },
     {
       "id": "t_787e6c40",
@@ -757,10 +828,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:02:50.162Z",
+      "updated": "2026-09-05T07:30:51.911Z",
       "summary": "Standing duty: R-c1, R-c5, R-c8 done (v9); R-c12 capture only; R-c13 queued (t_4adf34f7) for the first deploy of this session. Every later deploy gets an R-c<n> task with the same three lenses.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T07:30:51.911Z",
+          "by": "orchestrator",
+          "text": "R-c13 recorded (FAIL, crash). Every later deploy: R-c14 queued as a task once cycles 15, 16b and t_r19r3f9 are live."
+        }
+      ]
     },
     {
       "id": "t_28a539a9",
@@ -1109,10 +1186,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:06.472Z",
-      "updated": "2026-09-05T06:20:06.472Z",
+      "updated": "2026-09-05T07:30:51.380Z",
       "summary": "SPEC-v10.md c17: live /api/chat answers in 3.42 s end-to-end (OpenAI rung) vs the ≤ 1.5 s perceived-real-time budget. Stream the reply (chunked/SSE) or keep the instance warm (minInstances 1 — record the Blaze estimate) and start speaking on the first sentence. Greeting: the deployed greeting MP3 still speaks the old sentence; re-voice the researched introduction (docs/delivery/evidence/v9-20260904T2312Z/B-research/01-employer-expectations.md) with the premade voice from cycle 14a — ONE generation ≤ 600 characters, logged. Files: functions/index.js, components/MiniVicBot.tsx, app/data/miniVicKnowledge.ts, public/assets/minivic-greeting.mp3; tests/e2e/avatar-latency.spec.ts, tests/content/minivic-knowledge.spec.ts (TDD first).",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T07:30:51.380Z",
+          "by": "orchestrator",
+          "text": "R-c13 #17 ADV-5 (minor, Verified, adversarial) — The public chat endpoint returns its routing internals to any caller ({\"provider\":\"openai\",\"model\":\"gpt-4.1-mini\"}) and answers in 6.40 s unstreamed, against R3's <~1.5 s first word\nDIRECTION: Drop the provider and model keys from the client payload (keep them in the function's server log). Confirm the deployed function's routing against §0.4 — a live response naming openai / gpt-4.1-mini is evidence the deployed function is on neither OpenRouter nor Anthropic-via-OAuth — and record the decision in evidence. Stream the response (SSE or chunked) so the first word lands under 1.5 s.\nFILES: services/, components/MiniVicBot.tsx, firebase.json\nACCEPTANCE: POST /api/chat body contains no 'provider' or 'model' key; time to first byte of answer text < 1.5 s; the routing recorded in evidence matches §0.4."
+        }
+      ],
       "blocker": null
     },
     {
@@ -1204,7 +1287,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:05:13.071Z",
-      "updated": "2026-09-05T07:25:31.666Z",
+      "updated": "2026-09-05T07:30:49.899Z",
       "summary": "Proof: C16-about-field/09-verification.md (baseline main build at ?gl=force → TypeError ReactCurrentBatchConfig, app/error.tsx shell) and R-c13 adversarial recheck on LIVE 15fb165b with a hardware-GPU spoof, no query string: h1 \"Something went wrong\", sections 0, errorBoundary true, 4 console errors. Live since 5ec231d3 (06:18Z). Owner reported at 06:57Z that no visible improvement is seen — GPU visitors see the error shell. Hotfix lane wf_7910f160-45a (analyst-programmer opus xhigh → reviewer max): pin next+eslint-config-next 14.2.35, keep checks.yml/.gitignore/root:true, prove ?gl=force canvases + 0 pageerrors at 1440/390, push; orchestrator merges to main immediately. Durable fix: t_r19r3f9.",
       "decisions": [],
       "comments": [
@@ -1217,6 +1300,11 @@
           "at": "2026-09-05T07:25:31.666Z",
           "by": "orchestrator",
           "text": "Hotfix lane verifier (wf_7910f160 stage 2) also PASS: 34/34 render+cinematic+hero specs, 02-repro-after.json canvases 1/h1 present/0 errors; D-3 re-accepts the next 14 advisory chain (all server-side surfaces absent on a static export) until t_r19r3f9 lands."
+        },
+        {
+          "at": "2026-09-05T07:30:49.899Z",
+          "by": "orchestrator",
+          "text": "R-c13 #4 MOT-C13-01d (major, Verified, motion) — A fault inside a scene replaces the whole document: GLCanvas mounts with no scene-local error boundary, so a component-level throw reaches app/error.tsx — 'the scene is never the content' is not enforced in code\nDIRECTION: Wrap the GLCanvas mount at Scene.tsx:94-98 in a scene-local error boundary whose componentDidCatch sets capability = 'unsupported' and renders the slot empty, so any scene failure degrades to the no-GL path already built and tested. Log once to the console with the scene's name; do not re-throw. Keep app/error.tsx for genuine page-level faults.\nFILES: components/gl/Scene.tsx:91,94-98, components/gl/GLCanvas.tsx:3,22-44, app/error.tsx:28-46, tests/e2e/\nACCEPTANCE: A spec that forces a throw inside the GL subtree (stub GLCanvas's default export to throw, or dispatch a webglcontextlost the renderer cannot recover) asserts: document.querySelectorAll('section[id]').length === 6, #hero h1 text 'Vikram Deshpande', zero elements matching /SYSTEM INTERRUPT|Something went wrong/, and #hero canvas count 0 (the slot fell back). Add as tests/e2e/scene-failure-contained.spec.ts."
         }
       ],
       "blocker": null,
@@ -1239,7 +1327,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:05:13.118Z",
-      "updated": "2026-09-05T07:25:31.704Z",
+      "updated": "2026-09-05T07:30:49.561Z",
       "summary": "Lane wf_a0a1850a-28a (port 5603). Keeps the npm-audit-clean next 15 while restoring WebGL. Push only when S-3 probe and the full suite are green; independent reviewer then gates the merge. Supersedes the next-14 pin of t_p100hotfx when it lands.",
       "decisions": [],
       "comments": [
@@ -1247,6 +1335,11 @@
           "at": "2026-09-05T07:25:31.704Z",
           "by": "orchestrator",
           "text": "07:2xZ lane 1 result: implemented + probed clean (react 19.2.8, fiber 9.7.0, drei 10.7.8, unused @react-three/postprocessing removed, lucide-react 1.41.0, JSX namespace fix), tsc/lint/audit/build/npm-audit 0 green, First Load JS +0 kB; per-section canvases hero/about/experience = 1 at 1440; NOT pushed (full suite unrun at the 30-min cap; #about/#experience 0 canvases at 390 unexplained). Completion lane dispatched: tester merges current main (next-14 pin → superseded to 15.5.25), full suite on :5603, then verifier; merge only on PASS."
+        },
+        {
+          "at": "2026-09-05T07:30:49.561Z",
+          "by": "orchestrator",
+          "text": "R-c13 #3 M-1 (major, Verified, merge) — The P100 hotfix reverted cycle 13's security upgrade — package.json:56 is back to next 14.2.35 against react 18.2.0 + @react-three/fiber 8.18.0; the durable React-19 / R3F-9 alignment is still open\nDIRECTION: Land the durable fix rather than living on the revert: @react-three/fiber ^9.0.0 and @react-three/drei ^10.0.0 (the React-19 line) together with react/react-dom ^19 and next back to 15.5.25, in one commit, re-locking package-lock.json in the same commit. Before shipping, forgotten-mistory@2.0.0 /root/forgotten-mistory\n├─┬ @radix-ui/react-slot@1.2.4\n│ ├─┬ @radix-ui/react-compose-refs@1.1.2\n│ │ └── react@18.2.0 deduped\n│ └── react@18.2.0 deduped\n├─┬ @react-three/drei@9.122.0\n│ ├─┬ @react-spring/three@9.7.5\n│ │ ├─┬ @react-spring/animated@9.7.5\n│ │ │ └── react@18.2.0 deduped\n│ │ ├─┬ @react-spring/core@9.7.5\n│ │ │ └── react@18.2.0 deduped\n│ │ ├─┬ @react-spring/shared@9.7.5\n│ │ │ └── react@18.2.0 deduped\n│ │ ├── @react-three/fiber@8.18.0 deduped\n│ │ └── react@18.2.0 deduped\n│ ├── @react-three/fiber@8.18.0 deduped\n│ ├─┬ @use-gesture/react@10.3.1\n│ │ └── react@18.2.0 deduped\n│ ├─┬ react-composer@5.0.3\n│ │ └── react@18.2.0 deduped\n│ ├── react-dom@18.2.0 deduped\n│ ├── react@18.2.0 deduped\n│ ├─┬ suspend-react@0.1.3\n│ │ └── react@18.2.0 deduped\n│ ├─┬ tunnel-rat@0.1.2\n│ │ └─┬ zustand@4.5.7\n│ │   └── react@18.2.0 deduped\n│ └─┬ zustand@5.0.8\n│   ├── react@18.2.0 deduped\n│   └─┬ use-sync-external-store@1.6.0\n│     └── react@18.2.0 deduped\n├─┬ @react-three/fiber@8.18.0\n│ ├─┬ its-fine@1.2.5\n│ │ └── react@18.2.0 deduped\n│ ├── react-dom@18.2.0 deduped\n│ ├─┬ react-reconciler@0.27.0\n│ │ └── react@18.2.0 deduped\n│ ├─┬ react-use-measure@2.1.7\n│ │ ├── react-dom@18.2.0 deduped\n│ │ └── react@18.2.0 deduped\n│ ├── react@18.2.0 deduped\n│ └─┬ zustand@3.7.2\n│   └── react@18.2.0 deduped\n├─┬ @react-three/postprocessing@2.16.3\n│ ├── @react-three/fiber@8.18.0 deduped\n│ └── react@18.2.0 deduped\n├─┬ framer-motion@11.18.2\n│ ├── react-dom@18.2.0 deduped\n│ └── react@18.2.0 deduped\n├─┬ lucide-react@0.344.0\n│ └── react@18.2.0 deduped\n├─┬ next@14.2.35\n│ ├── react-dom@18.2.0 deduped\n│ ├── react@18.2.0 deduped\n│ └─┬ styled-jsx@5.1.1\n│   └── react@18.2.0 deduped\n├─┬ react-dom@18.2.0\n│ └── react@18.2.0 deduped\n└── react@18.2.0 must show one React major matching R3F's generation. Add the guard the motion lens specified to scripts/validate/overhaul_static_audit.mjs: fail the build when an emitted chunk contains ReactCurrentBatchConfig while the React runtime chunk contains __CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, and fail when require('./node_modules/next/package.json').version does not equal the package.json pin.\nFILES: package.json:48-49,56-58, package-lock.json, scripts/validate/overhaul_static_audit.mjs, components/gl/GLCanvas.tsx\nACCEPTANCE: next is back at the cycle-13 pin with React 19 and R3F 9 resolved together; forgotten-mistory@2.0.0 /root/forgotten-mistory\n├─┬ @radix-ui/react-slot@1.2.4\n│ ├─┬ @radix-ui/react-compose-refs@1.1.2\n│ │ └── react@18.2.0 deduped\n│ └── react@18.2.0 deduped\n├─┬ @react-three/drei@9.122.0\n│ ├─┬ @react-spring/three@9.7.5\n│ │ ├─┬ @react-spring/animated@9.7.5\n│ │ │ └── react@18.2.0 deduped\n│ │ ├─┬ @react-spring/core@9.7.5\n│ │ │ └── react@18.2.0 deduped\n│ │ ├─┬ @react-spring/shared@9.7.5\n│ │ │ └── react@18.2.0 deduped\n│ │ ├── @react-three/fiber@8.18.0 deduped\n│ │ └── react@18.2.0 deduped\n│ ├── @react-three/fiber@8.18.0 deduped\n│ ├─┬ @use-gesture/react@10.3.1\n│ │ └── react@18.2.0 deduped\n│ ├─┬ react-composer@5.0.3\n│ │ └── react@18.2.0 deduped\n│ ├── react-dom@18.2.0 deduped\n│ ├── react@18.2.0 deduped\n│ ├─┬ suspend-react@0.1.3\n│ │ └── react@18.2.0 deduped\n│ ├─┬ tunnel-rat@0.1.2\n│ │ └─┬ zustand@4.5.7\n│ │   └── react@18.2.0 deduped\n│ └─┬ zustand@5.0.8\n│   ├── react@18.2.0 deduped\n│   └─┬ use-sync-external-store@1.6.0\n│     └── react@18.2.0 deduped\n├─┬ @react-three/fiber@8.18.0\n│ ├─┬ its-fine@1.2.5\n│ │ └── react@18.2.0 deduped\n│ ├── react-dom@18.2.0 deduped\n│ ├─┬ react-reconciler@0.27.0\n│ │ └── react@18.2.0 deduped\n│ ├─┬ react-use-measure@2.1.7\n│ │ ├── react-dom@18.2.0 deduped\n│ │ └── react@18.2.0 deduped\n│ ├── react@18.2.0 deduped\n│ └─┬ zustand@3.7.2\n│   └── react@18.2.0 deduped\n├─┬ @react-three/postprocessing@2.16.3\n│ ├── @react-three/fiber@8.18.0 deduped\n│ └── react@18.2.0 deduped\n├─┬ framer-motion@11.18.2\n│ ├── react-dom@18.2.0 deduped\n│ └── react@18.2.0 deduped\n├─┬ lucide-react@0.344.0\n│ └── react@18.2.0 deduped\n├─┬ next@14.2.35\n│ ├── react-dom@18.2.0 deduped\n│ ├── react@18.2.0 deduped\n│ └─┬ styled-jsx@5.1.1\n│   └── react@18.2.0 deduped\n├─┬ react-dom@18.2.0\n│ └── react@18.2.0 deduped\n└── react@18.2.0 reports a single React major; the audit fails a deliberately mismatched tree; and /?gl=force plus a spoofed-hardware-GPU load at 1440x900 and 390x844 both return 6 sections, 0 pageerrors, 0 console errors and >= 1 canvas in #hero."
         }
       ],
       "blocker": null
@@ -1266,8 +1359,198 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:05:13.160Z",
-      "updated": "2026-09-05T07:05:13.160Z",
+      "updated": "2026-09-05T07:30:50.124Z",
       "summary": "Owner directive 06:53Z: monitor the production console logs and fix every runtime error at runtime. Deliverable: scripts/monitor/prod_console_probe.mjs (playwright, channel chrome, --no-sandbox, SwiftShader flags for ?gl=force, a hardware-GPU spoof pass like R-c13/adv4-recheck.mjs) writing artifacts/monitor/<UTC>.json + a one-line summary, exit 1 on any error; scripts/monitor/functions_log_probe.sh (firebase functions:log --only minivicChat,elevenLabsTts -n 50, grep error/status ≥ 400); tests/monitor_probe.test.mjs proving the probe fails on a page that throws. The orchestrator schedules it every 10 min (cron) and files each new error as a task within one cycle.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-05T07:30:50.124Z",
+          "by": "orchestrator",
+          "text": "R-c13 #5 B-3 (major, Verified, merge) — Deploy verification is blind to the path that broke: scripts/deploy.mjs:116-126 reads only the build-commit meta on the plain URL, so a total GPU-path outage shipped and sat unseen\nDIRECTION: Extend the post-deploy verification in scripts/deploy.mjs beyond the meta tag: after the build-commit assertion, drive one headless load of /, one of /?gl=force, and one of / with UNMASKED_RENDERER_WEBGL spoofed to a hardware string, at 1440x900 and 390x844, asserting six section[id], #hero h1 === 'Vikram Deshpande', zero pageerrors, zero console errors and no /SYSTEM INTERRUPT/ in body.innerText. Fail the deploy script (not the deploy workflow's merge step) on any of those, and print the failing probe. Then stand up t_prodmon01 on the same probe on its ten-minute cadence so a regression is caught without a reviewer in the loop.\nFILES: scripts/deploy.mjs:116-126, .github/workflows/deploy.yml, scripts/validate/overhaul_static_audit.mjs, tests/e2e/\nACCEPTANCE: node scripts/deploy.mjs exits non-zero against a build that renders the error boundary on any of the three paths, and zero against the current build; the probe writes its results to docs/delivery/evidence/<run>/deploy-verify.json with the build-commit it measured."
+        }
+      ],
+      "blocker": null
+    },
+    {
+      "id": "t_31f33ce7",
+      "title": "R-c13 CC-06 — Five running-text blocks blow past the 55-75ch measure — #skills provenance at 173ch (1246 px at 12 px), four more at 12",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 85,
+      "parents": [
+        "t_4adf34f7"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T07:30:51.049Z",
+      "updated": "2026-09-05T07:30:51.049Z",
+      "summary": "#skills, #hero, #experience, #about · major · Verified · source composition. Finding: Five running-text blocks blow past the 55-75ch measure — #skills provenance at 173ch (1246 px at 12 px), four more at 124ch — while the site already owns --measure-read",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_6075351d",
+      "title": "R-c13 MOT-C13-03 — The trace-on is real but not legible as a trace: 6.67 ms between consecutive strokes against a 720 ms stroke, so a 25-st",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 85,
+      "parents": [
+        "t_4adf34f7"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T07:30:51.204Z",
+      "updated": "2026-09-05T07:30:51.204Z",
+      "summary": "#vitrine · major · Verified · source motion. Finding: The trace-on is real but not legible as a trace: 6.67 ms between consecutive strokes against a 720 ms stroke, so a 25-stroke plate finishes its whole stagger in ~160 ms and reads as one fade",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_1a2c2984",
+      "title": "R-c13 CC-09 — Section padding is not on one scale and the page closes tighter than it opens: #listen is 126 top / 45 bottom at 1440 ag",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 70,
+      "parents": [
+        "t_4adf34f7"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T07:30:51.316Z",
+      "updated": "2026-09-05T07:30:51.316Z",
+      "summary": "page (vertical rhythm) · minor · Verified · source composition. Finding: Section padding is not on one scale and the page closes tighter than it opens: #listen is 126 top / 45 bottom at 1440 against a symmetric 108/108 for the middle four",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_f26bd0ff",
+      "title": "R-c13 MOT-C13-05 — At the one sampled pointer position the compass readout did not change; one sample is not a proof of absence, and this s",
+      "status": "todo",
+      "assignee": "tester",
+      "priority": 70,
+      "parents": [
+        "t_4adf34f7"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T07:30:51.433Z",
+      "updated": "2026-09-05T07:30:51.433Z",
+      "summary": "#about · minor · Inferred · source motion. Finding: At the one sampled pointer position the compass readout did not change; one sample is not a proof of absence, and this state has now been reported twice",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_d3e82b17",
+      "title": "R-c13 MOT-C13-06 — The rail is a real snap carousel at 390 but scroll-behavior is auto in the no-preference path, so plate-to-plate moves j",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 60,
+      "parents": [
+        "t_4adf34f7"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T07:30:51.608Z",
+      "updated": "2026-09-05T07:30:51.608Z",
+      "summary": "#vitrine · polish · Verified · source motion. Finding: The rail is a real snap carousel at 390 but scroll-behavior is auto in the no-preference path, so plate-to-plate moves jump rather than travel",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_9cd97adc",
+      "title": "R-c13 MOT-C13-07 — HeroAtmosphere carries a full reduced-motion implementation that can never run — Scene.tsx:91 gates the mount first — le",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 60,
+      "parents": [
+        "t_4adf34f7"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T07:30:51.696Z",
+      "updated": "2026-09-05T07:30:51.696Z",
+      "summary": "#hero · polish · Verified · source motion. Finding: HeroAtmosphere carries a full reduced-motion implementation that can never run — Scene.tsx:91 gates the mount first — leaving two competing policies with no note",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_e9d4e10f",
+      "title": "R-c13 MOT-C13-01d — scene-local error boundary: a fault inside one GL scene never replaces the whole document",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 90,
+      "parents": [
+        "t_4adf34f7"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T07:30:51.764Z",
+      "updated": "2026-09-05T07:30:51.764Z",
+      "summary": "components/gl · major · Verified. A fault inside a scene replaces the whole document: GLCanvas mounts with no scene-local error boundary, so a component-level throw reaches app/error.tsx — 'the scene is never the content' is not enforced in code",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_c16b0001",
+      "title": "Cycle 16b — MiniVic correction: open panel never covers the H1 at 1280×800/1366×768, accessible name contains the visible label, a permanent white mark under the portrait at ≤834, no source-less <video> (V-c16 F-V16-1/2 + R-c13 CC-03a)",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 92,
+      "parents": [
+        "t_cc03ed93"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T07:31:25.195Z",
+      "updated": "2026-09-05T07:31:25.195Z",
+      "summary": "V-c16 (b712c3d) FAIL on 2 of 13 lines: (F-V16-2) at 1280×800 and 1366×768 the open panel {l:824,t:232,r:1256,b:712} intersects #hero h1 glyph rects (~135×69 px of the name covered; TC-BOT-12 only checks the block box); (F-V16-1) the launcher box still overlaps <p>/<li> boxes in #about at 390 (luminance is now safe — dark plate — so the remaining question is legibility of the covered words, not contrast). Non-blocking: WCAG 2.5.3 Label in Name — visible pill says Ask Mini Vic while the accessible name is Open Mini Vic assistant; at 390 the affordance is a near-black disc with a faint face and no word. R-c13 CC-03a: never ship a source-less <video> (render it only with a resolved source, poster first) and give the button a permanent 24×24 white mark (speech-mark svg or VIC monogram) rendered UNDER the video as the resting state.",
       "decisions": [],
       "comments": [],
       "blocker": null

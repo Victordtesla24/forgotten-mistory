@@ -1,0 +1,4357 @@
+{
+  "lens": "adversarial",
+  "reviewer": "3rd_party_independent_adversarial_review (R-c13)",
+  "target": "https://forgotten-mistory.web.app",
+  "reviewedBuild": {
+    "atStart": "3adf126a",
+    "duringPass1": "d59621de",
+    "atEnd": "15fb165b",
+    "note": "three deploys landed during the review window (06:36Z-06:44Z); all three contain cycle-11 merge f86b125 (git merge-base --is-ancestor). Findings below reproduce on d59621de and 15fb165b."
+  },
+  "verdict": "FAIL",
+  "headers": "HTTP/2 200 \r\ncache-control: max-age=3600\r\ncontent-security-policy: default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data: blob: https:; media-src 'self' blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; worker-src 'self'; connect-src 'self' ws: wss: https://api.github.com https://generativelanguage.googleapis.com https://*.googleapis.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors 'none'\r\ncontent-type: text/html; charset=utf-8\r\netag: \"b7d6ad20623d0cd3f03cd7af234a94ff0c0b2f7df1594dd65d9ac97165e72504\"\r\nlast-modified: Sat, 05 Sep 2026 06:36:28 GMT\r\npermissions-policy: camera=(), microphone=(self), geolocation=(), browsing-topics=()\r\nreferrer-policy: strict-origin-when-cross-origin\r\nstrict-transport-security: max-age=31556926; includeSubDomains; preload\r\nx-content-type-options: nosniff\r\nx-frame-options: DENY\r\naccept-ranges: bytes\r\ndate: Sat, 05 Sep 2026 06:36:30 GMT\r\nx-served-by: cache-bos-kbos510049-BOS\r\nx-cache: MISS\r\nx-cache-hits: 0\r\nx-timer: S1788590190.478661,VS0,VE67\r\nvary: x-fh-requested-host, accept-encoding\r\nalt-svc: h3=\":443\";ma=86400,h3-29=\":443\";ma=86400,h3-27=\":443\";ma=86400\r\ncontent-length: 121106\r\n\r\n",
+  "api": {
+    "chat": {
+      "status": 200,
+      "timeSeconds": 6.4,
+      "provider": "openai",
+      "model": "gpt-4.1-mini",
+      "grounded": true,
+      "groundedEvidence": "every figure in the answer maps to cv-text.txt: $5M+ (l.64,75), up to 40 practitioners (l.76), P95 <200ms (l.62), >30% delivery / >15% infra (l.72-73), 40+ execs / >55% (l.84-85)",
+      "bodyFile": "api-chat-body.txt"
+    },
+    "tts": {
+      "status": 200,
+      "contentType": "audio/mpeg",
+      "bytes": 13000,
+      "charactersSpent": 5,
+      "bodyFile": "api-tts-body.txt"
+    }
+  },
+  "pass1_viewports": [
+    {
+      "viewport": "1440x900",
+      "meta": {
+        "buildCommit": "d59621de",
+        "title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+        "lang": "en"
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "present": true,
+          "tag": "H1",
+          "heading": "Vikram Deshpande",
+          "docTop": 0,
+          "height": 956
+        },
+        {
+          "id": "about",
+          "present": true,
+          "tag": "H2",
+          "heading": "Ten dimensions, answered",
+          "docTop": 956,
+          "height": 2378
+        },
+        {
+          "id": "experience",
+          "present": true,
+          "tag": "H2",
+          "heading": "Sixteen years, to scale",
+          "docTop": 3334,
+          "height": 2968
+        },
+        {
+          "id": "skills",
+          "present": true,
+          "tag": "H2",
+          "heading": "Calibration card",
+          "docTop": 6302,
+          "height": 3086
+        },
+        {
+          "id": "vitrine",
+          "present": true,
+          "tag": "H2",
+          "heading": "Six of thirty-eight",
+          "docTop": 9389,
+          "height": 1368
+        },
+        {
+          "id": "listen",
+          "present": true,
+          "tag": "H2",
+          "heading": "Feedback & coffee?",
+          "docTop": 10757,
+          "height": 937
+        }
+      ],
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 374
+          }
+        ],
+        "passes": 32
+      },
+      "perf": {
+        "cls": 0.00009429253472222223,
+        "lcp": 1084,
+        "lcpEl": "H1#hero-name"
+      },
+      "overflow": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440
+      },
+      "gold": {
+        "hero": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        },
+        "about": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        },
+        "experience": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        },
+        "skills": {
+          "count": 29,
+          "byClass": {
+            "SPAN|Bench_mark__NJTKw Bench_production__Hr6n2": 14,
+            "SPAN|Skills_legendGlyph__ZFNcO": 1,
+            "SPAN|Skills_statusGlyph__sSwV_": 14
+          },
+          "sample": [
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_legendGlyph__ZFNcO",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 12,
+              "h": 22
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            }
+          ]
+        },
+        "vitrine": {
+          "count": 1,
+          "byClass": {
+            "A|Vitrine_live__PwDxH": 1
+          },
+          "sample": [
+            {
+              "tag": "A",
+              "cls": "Vitrine_live__PwDxH",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderLeftColor",
+                "textDecorationColor"
+              ],
+              "text": "aether.srv1356245.hstgr.cloud",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": "https://aether.srv1356245.hstgr.cloud",
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 209,
+              "h": 23
+            }
+          ]
+        },
+        "listen": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        }
+      },
+      "consoleErrors": [],
+      "consoleErrorCount": 0,
+      "consoleWarningCount": 1,
+      "consoleWarnings": [
+        "The resource https://forgotten-mistory.web.app/_next/static/css/f1997129dcf85dfd.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."
+      ],
+      "pageErrors": [],
+      "pageErrorCount": 0,
+      "failedRequests": [],
+      "failedRequestCount": 0,
+      "assetCount": 29,
+      "totalBytes": 555449,
+      "totalKB": 542,
+      "largest": [
+        {
+          "url": "https://forgotten-mistory.web.app/assets/my-hero-avatar.mp4",
+          "status": 206,
+          "type": "video/mp4",
+          "bytes": 160156
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/media/e4af272ccee01ff0-s.p.woff2",
+          "status": 200,
+          "type": "font/woff2",
+          "bytes": 48432
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 46750
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/assets/my_avatar.avif",
+          "status": 200,
+          "type": "image/avif",
+          "bytes": 41343
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/255-f7c4c205ddd80098.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 38188
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/619-9e557218126bfd0e.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 33349
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/app/layout-983fd1e49cc1f867.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 30197
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/app/page-c14d22386aedd3c8.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 22018
+        }
+      ],
+      "over500kB": []
+    },
+    {
+      "viewport": "1920x1080",
+      "meta": {
+        "buildCommit": "d59621de",
+        "title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+        "lang": "en"
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "present": true,
+          "tag": "H1",
+          "heading": "Vikram Deshpande",
+          "docTop": 0,
+          "height": 1080
+        },
+        {
+          "id": "about",
+          "present": true,
+          "tag": "H2",
+          "heading": "Ten dimensions, answered",
+          "docTop": 1080,
+          "height": 2469
+        },
+        {
+          "id": "experience",
+          "present": true,
+          "tag": "H2",
+          "heading": "Sixteen years, to scale",
+          "docTop": 3549,
+          "height": 3065
+        },
+        {
+          "id": "skills",
+          "present": true,
+          "tag": "H2",
+          "heading": "Calibration card",
+          "docTop": 6614,
+          "height": 3152
+        },
+        {
+          "id": "vitrine",
+          "present": true,
+          "tag": "H2",
+          "heading": "Six of thirty-eight",
+          "docTop": 9766,
+          "height": 1430
+        },
+        {
+          "id": "listen",
+          "present": true,
+          "tag": "H2",
+          "heading": "Feedback & coffee?",
+          "docTop": 11196,
+          "height": 997
+        }
+      ],
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 382
+          }
+        ],
+        "passes": 32
+      },
+      "perf": {
+        "cls": 0.00005465952555338541,
+        "lcp": 1008,
+        "lcpEl": "H1#hero-name"
+      },
+      "overflow": {
+        "scrollWidth": 1920,
+        "innerWidth": 1920
+      },
+      "gold": {
+        "hero": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        },
+        "about": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        },
+        "experience": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        },
+        "skills": {
+          "count": 29,
+          "byClass": {
+            "SPAN|Bench_mark__NJTKw Bench_production__Hr6n2": 14,
+            "SPAN|Skills_legendGlyph__ZFNcO": 1,
+            "SPAN|Skills_statusGlyph__sSwV_": 14
+          },
+          "sample": [
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_legendGlyph__ZFNcO",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 12,
+              "h": 22
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 18
+            }
+          ]
+        },
+        "vitrine": {
+          "count": 1,
+          "byClass": {
+            "A|Vitrine_live__PwDxH": 1
+          },
+          "sample": [
+            {
+              "tag": "A",
+              "cls": "Vitrine_live__PwDxH",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderLeftColor",
+                "textDecorationColor"
+              ],
+              "text": "aether.srv1356245.hstgr.cloud",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": "https://aether.srv1356245.hstgr.cloud",
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 209,
+              "h": 23
+            }
+          ]
+        },
+        "listen": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        }
+      },
+      "consoleErrors": [],
+      "consoleErrorCount": 0,
+      "consoleWarningCount": 0,
+      "consoleWarnings": [],
+      "pageErrors": [],
+      "pageErrorCount": 0,
+      "failedRequests": [],
+      "failedRequestCount": 0,
+      "assetCount": 29,
+      "totalBytes": 555449,
+      "totalKB": 542,
+      "largest": [
+        {
+          "url": "https://forgotten-mistory.web.app/assets/my-hero-avatar.mp4",
+          "status": 206,
+          "type": "video/mp4",
+          "bytes": 160156
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/media/e4af272ccee01ff0-s.p.woff2",
+          "status": 200,
+          "type": "font/woff2",
+          "bytes": 48432
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 46750
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/assets/my_avatar.avif",
+          "status": 200,
+          "type": "image/avif",
+          "bytes": 41343
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/255-f7c4c205ddd80098.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 38188
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/619-9e557218126bfd0e.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 33349
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/app/layout-983fd1e49cc1f867.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 30197
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/app/page-c14d22386aedd3c8.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 22018
+        }
+      ],
+      "over500kB": []
+    },
+    {
+      "viewport": "834x1194",
+      "meta": {
+        "buildCommit": "d59621de",
+        "title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+        "lang": "en"
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "present": true,
+          "tag": "H1",
+          "heading": "Vikram Deshpande",
+          "docTop": 0,
+          "height": 1254
+        },
+        {
+          "id": "about",
+          "present": true,
+          "tag": "H2",
+          "heading": "Ten dimensions, answered",
+          "docTop": 1254,
+          "height": 3004
+        },
+        {
+          "id": "experience",
+          "present": true,
+          "tag": "H2",
+          "heading": "Sixteen years, to scale",
+          "docTop": 4258,
+          "height": 3124
+        },
+        {
+          "id": "skills",
+          "present": true,
+          "tag": "H2",
+          "heading": "Calibration card",
+          "docTop": 7382,
+          "height": 4957
+        },
+        {
+          "id": "vitrine",
+          "present": true,
+          "tag": "H2",
+          "heading": "Six of thirty-eight",
+          "docTop": 12339,
+          "height": 1499
+        },
+        {
+          "id": "listen",
+          "present": true,
+          "tag": "H2",
+          "heading": "Feedback & coffee?",
+          "docTop": 13838,
+          "height": 1051
+        }
+      ],
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 313
+          }
+        ],
+        "passes": 32
+      },
+      "perf": {
+        "cls": 0.00017080127721261795,
+        "lcp": 10180,
+        "lcpEl": "P"
+      },
+      "overflow": {
+        "scrollWidth": 834,
+        "innerWidth": 834
+      },
+      "gold": {
+        "hero": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        },
+        "about": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        },
+        "experience": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        },
+        "skills": {
+          "count": 29,
+          "byClass": {
+            "SPAN|Bench_mark__NJTKw Bench_production__Hr6n2": 14,
+            "SPAN|Skills_legendGlyph__ZFNcO": 1,
+            "SPAN|Skills_statusGlyph__sSwV_": 14
+          },
+          "sample": [
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_legendGlyph__ZFNcO",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 12,
+              "h": 22
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 15
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 15
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 15
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 15
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 15
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 15
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 15
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 15
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 15
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 15
+            }
+          ]
+        },
+        "vitrine": {
+          "count": 1,
+          "byClass": {
+            "A|Vitrine_live__PwDxH": 1
+          },
+          "sample": [
+            {
+              "tag": "A",
+              "cls": "Vitrine_live__PwDxH",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderLeftColor",
+                "textDecorationColor"
+              ],
+              "text": "aether.srv1356245.hstgr.cloud",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": "https://aether.srv1356245.hstgr.cloud",
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 209,
+              "h": 23
+            }
+          ]
+        },
+        "listen": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        }
+      },
+      "consoleErrors": [],
+      "consoleErrorCount": 0,
+      "consoleWarningCount": 0,
+      "consoleWarnings": [],
+      "pageErrors": [],
+      "pageErrorCount": 0,
+      "failedRequests": [],
+      "failedRequestCount": 0,
+      "assetCount": 29,
+      "totalBytes": 555449,
+      "totalKB": 542,
+      "largest": [
+        {
+          "url": "https://forgotten-mistory.web.app/assets/my-hero-avatar.mp4",
+          "status": 206,
+          "type": "video/mp4",
+          "bytes": 160156
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/media/e4af272ccee01ff0-s.p.woff2",
+          "status": 200,
+          "type": "font/woff2",
+          "bytes": 48432
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 46750
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/assets/my_avatar.avif",
+          "status": 200,
+          "type": "image/avif",
+          "bytes": 41343
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/255-f7c4c205ddd80098.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 38188
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/619-9e557218126bfd0e.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 33349
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/app/layout-983fd1e49cc1f867.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 30197
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/app/page-c14d22386aedd3c8.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 22018
+        }
+      ],
+      "over500kB": []
+    },
+    {
+      "viewport": "390x844",
+      "meta": {
+        "buildCommit": "d59621de",
+        "title": "Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect",
+        "lang": "en"
+      },
+      "sections": [
+        {
+          "id": "hero",
+          "present": true,
+          "tag": "H1",
+          "heading": "Vikram Deshpande",
+          "docTop": 0,
+          "height": 915
+        },
+        {
+          "id": "about",
+          "present": true,
+          "tag": "H2",
+          "heading": "Ten dimensions, answered",
+          "docTop": 915,
+          "height": 3551
+        },
+        {
+          "id": "experience",
+          "present": true,
+          "tag": "H2",
+          "heading": "Sixteen years, to scale",
+          "docTop": 4466,
+          "height": 4193
+        },
+        {
+          "id": "skills",
+          "present": true,
+          "tag": "H2",
+          "heading": "Calibration card",
+          "docTop": 8659,
+          "height": 5730
+        },
+        {
+          "id": "vitrine",
+          "present": true,
+          "tag": "H2",
+          "heading": "Six of thirty-eight",
+          "docTop": 14389,
+          "height": 1478
+        },
+        {
+          "id": "listen",
+          "present": true,
+          "tag": "H2",
+          "heading": "Feedback & coffee?",
+          "docTop": 15867,
+          "height": 830
+        }
+      ],
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-hidden-focus",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 290
+          }
+        ],
+        "passes": 31
+      },
+      "perf": {
+        "cls": 0,
+        "lcp": 9680,
+        "lcpEl": "P"
+      },
+      "overflow": {
+        "scrollWidth": 390,
+        "innerWidth": 390
+      },
+      "gold": {
+        "hero": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        },
+        "about": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        },
+        "experience": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        },
+        "skills": {
+          "count": 29,
+          "byClass": {
+            "SPAN|Bench_mark__NJTKw Bench_production__Hr6n2": 14,
+            "SPAN|Skills_legendGlyph__ZFNcO": 1,
+            "SPAN|Skills_statusGlyph__sSwV_": 14
+          },
+          "sample": [
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Bench_mark__NJTKw Bench_production__Hr6n2",
+              "props": [
+                "backgroundColor"
+              ],
+              "text": "",
+              "strokeOpacity": "1",
+              "opacity": "0.9",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 7,
+              "h": 7
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_legendGlyph__ZFNcO",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 11,
+              "h": 20
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 14
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 14
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 14
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 14
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 14
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 14
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 14
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 14
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 14
+            },
+            {
+              "tag": "SPAN",
+              "cls": "Skills_statusGlyph__sSwV_",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderBottomColor",
+                "borderLeftColor",
+                "outlineColor",
+                "textDecorationColor"
+              ],
+              "text": "●",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": null,
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 10,
+              "h": 14
+            }
+          ]
+        },
+        "vitrine": {
+          "count": 1,
+          "byClass": {
+            "A|Vitrine_live__PwDxH": 1
+          },
+          "sample": [
+            {
+              "tag": "A",
+              "cls": "Vitrine_live__PwDxH",
+              "props": [
+                "color",
+                "borderTopColor",
+                "borderRightColor",
+                "borderLeftColor",
+                "textDecorationColor"
+              ],
+              "text": "aether.srv1356245.hstgr.cloud",
+              "strokeOpacity": "1",
+              "opacity": "1",
+              "href": "https://aether.srv1356245.hstgr.cloud",
+              "inCaliper": false,
+              "caliperState": null,
+              "w": 193,
+              "h": 22
+            }
+          ]
+        },
+        "listen": {
+          "count": 0,
+          "byClass": {},
+          "sample": []
+        }
+      },
+      "consoleErrors": [],
+      "consoleErrorCount": 0,
+      "consoleWarningCount": 0,
+      "consoleWarnings": [],
+      "pageErrors": [],
+      "pageErrorCount": 0,
+      "failedRequests": [],
+      "failedRequestCount": 0,
+      "assetCount": 28,
+      "totalBytes": 395293,
+      "totalKB": 386,
+      "largest": [
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/media/e4af272ccee01ff0-s.p.woff2",
+          "status": 200,
+          "type": "font/woff2",
+          "bytes": 48432
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 46750
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/assets/my_avatar.avif",
+          "status": 200,
+          "type": "image/avif",
+          "bytes": 41343
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/255-f7c4c205ddd80098.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 38188
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/619-9e557218126bfd0e.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 33349
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/app/layout-983fd1e49cc1f867.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 30197
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/chunks/app/page-c14d22386aedd3c8.js",
+          "status": 200,
+          "type": "text/javascript; charset=utf-8",
+          "bytes": 22018
+        },
+        {
+          "url": "https://forgotten-mistory.web.app/_next/static/media/adc34f647e3c68e5-s.woff2",
+          "status": 200,
+          "type": "font/woff2",
+          "bytes": 21316
+        }
+      ],
+      "over500kB": []
+    }
+  ],
+  "pass1_reducedMotion": [
+    {
+      "viewport": "1440x900",
+      "runningCount": 0,
+      "detail": [],
+      "videos": [
+        {
+          "paused": true,
+          "src": "",
+          "autoplay": false,
+          "loop": true
+        },
+        {
+          "paused": true,
+          "src": "",
+          "autoplay": true,
+          "loop": true
+        }
+      ],
+      "videoCount": 2,
+      "h1": {
+        "text": "Vikram Deshpande",
+        "opacity": "1",
+        "transform": "none"
+      },
+      "consoleErrorCount": 0,
+      "pageErrorCount": 0,
+      "failedRequestCount": 0,
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "viewport": "390x844",
+      "runningCount": 0,
+      "detail": [],
+      "videos": [
+        {
+          "paused": true,
+          "src": "",
+          "autoplay": true,
+          "loop": true
+        }
+      ],
+      "videoCount": 1,
+      "h1": {
+        "text": "Vikram Deshpande",
+        "opacity": "1",
+        "transform": "none"
+      },
+      "consoleErrorCount": 0,
+      "pageErrorCount": 0,
+      "failedRequestCount": 0,
+      "consoleErrors": [],
+      "pageErrors": []
+    }
+  ],
+  "pass1_noGL": [
+    {
+      "viewport": "1440x900",
+      "canvases": 0,
+      "heroTextLength": 721,
+      "heroTextHead": "MELBOURNE, AUSTRALIA\n\nVikram Deshpande\n\nDelivery leadership · AI solutions architecture\n\nSixteen years leading delivery across government, banking and telecommunications — currently Scrum Master and Project Manager on th",
+      "h1": {
+        "text": "Vikram Deshpande",
+        "opacity": "1",
+        "color": "rgb(246, 246, 246)",
+        "fontSize": "118.08px",
+        "visibility": "visible"
+      },
+      "heroBg": "rgba(0, 0, 0, 0)",
+      "stageBgImage": "radial-gradient(120% 90% at 22% 18%, rgba(27, 29, 35, 0.85), rgba(0, 0, 0, 0) 62%), linear-gradient(rgb(10, 10, 10) 0px, rgb(19, 19, 19) 58%, rgb(10, 10, 10) 100%)",
+      "ctas": [
+        {
+          "t": "",
+          "vis": true
+        },
+        {
+          "t": "See the evidence",
+          "vis": true
+        },
+        {
+          "t": "Download CV",
+          "vis": true
+        },
+        {
+          "t": "LinkedIn",
+          "vis": true
+        },
+        {
+          "t": "GitHub",
+          "vis": true
+        },
+        {
+          "t": "Email",
+          "vis": true
+        }
+      ],
+      "consoleErrorCount": 0,
+      "consoleErrors": [],
+      "pageErrorCount": 0,
+      "pageErrors": [],
+      "failedRequestCount": 0,
+      "failedRequests": []
+    },
+    {
+      "viewport": "390x844",
+      "canvases": 0,
+      "heroTextLength": 718,
+      "heroTextHead": "MELBOURNE, AUSTRALIA\n\nVikram Deshpande\n\nDelivery leadership · AI solutions architecture\n\nSixteen years leading delivery across government, banking and telecommunications — currently Scrum Master and Project Manager on th",
+      "h1": {
+        "text": "Vikram Deshpande",
+        "opacity": "1",
+        "color": "rgb(246, 246, 246)",
+        "fontSize": "48px",
+        "visibility": "visible"
+      },
+      "heroBg": "rgba(0, 0, 0, 0)",
+      "stageBgImage": "radial-gradient(120% 90% at 22% 18%, rgba(27, 29, 35, 0.85), rgba(0, 0, 0, 0) 62%), linear-gradient(rgb(10, 10, 10) 0px, rgb(19, 19, 19) 58%, rgb(10, 10, 10) 100%)",
+      "ctas": [
+        {
+          "t": "See the evidence",
+          "vis": true
+        },
+        {
+          "t": "Download CV",
+          "vis": true
+        },
+        {
+          "t": "LinkedIn",
+          "vis": true
+        },
+        {
+          "t": "GitHub",
+          "vis": true
+        },
+        {
+          "t": "Email",
+          "vis": true
+        }
+      ],
+      "consoleErrorCount": 0,
+      "consoleErrors": [],
+      "pageErrorCount": 0,
+      "pageErrors": [],
+      "failedRequestCount": 0,
+      "failedRequests": []
+    }
+  ],
+  "pass1_glForce": {
+    "canvasTotal": 0,
+    "perSection": [
+      {
+        "id": "hero",
+        "canvases": -1
+      },
+      {
+        "id": "about",
+        "canvases": -1
+      },
+      {
+        "id": "experience",
+        "canvases": -1
+      },
+      {
+        "id": "skills",
+        "canvases": -1
+      },
+      {
+        "id": "vitrine",
+        "canvases": -1
+      },
+      {
+        "id": "listen",
+        "canvases": -1
+      }
+    ],
+    "consoleErrorCount": 4,
+    "consoleErrors": [
+      "TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https:/",
+      "[app/error.tsx] Unhandled error: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d",
+      "TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https:/",
+      "[app/error.tsx] Unhandled error: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d"
+    ],
+    "pageErrorCount": 0,
+    "pageErrors": [],
+    "failedRequestCount": 1,
+    "failedRequests": [
+      {
+        "url": "https://forgotten-mistory.web.app/assets/my-hero-avatar.mp4",
+        "err": "net::ERR_ABORTED"
+      }
+    ]
+  },
+  "pass1_keyboard": {
+    "totalStops": 83,
+    "minivicTabStop": 83,
+    "minivicName": "Open Mini Vic assistant",
+    "stops": [
+      {
+        "i": 1,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Skip to the evidence",
+        "href": "#main",
+        "section": "chrome",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(235, 235, 235)",
+        "boxShadow": "rgba(0, 0, 0, 0.5) 0px 14px 44px -10px",
+        "visible": true
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Back to top",
+        "href": "#hero",
+        "section": "nav",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(235, 235, 235)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Download CV",
+        "href": "/docs/Vik_Resume_Final.pdf",
+        "section": "nav",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(235, 235, 235)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 4,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Menu",
+        "href": null,
+        "section": "nav",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(235, 235, 235)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 5,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Pause the portrait",
+        "href": null,
+        "section": "hero",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "See the evidence",
+        "href": "#experience",
+        "section": "hero",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Download CV",
+        "href": "/docs/Vik_Resume_Final.pdf",
+        "section": "hero",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 8,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "LinkedIn",
+        "href": "https://www.linkedin.com/in/vikramd-profile",
+        "section": "hero",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 9,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "GitHub",
+        "href": "https://github.com/Victordtesla24",
+        "section": "hero",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 10,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Email",
+        "href": "mailto:sarkar.vikram@gmail.com",
+        "section": "hero",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 11,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Victordtesla24/aether-job-career-agent",
+        "href": "https://github.com/Victordtesla24/aether-job-career-agent/blob/main/apps/api/app/routers/jobs.py",
+        "section": "about",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Scrum Master / Project Manager — Payday Super ",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "AI Solutions Consultant — Applied LLM Engineer",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 14,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Senior Delivery Lead / AI-ML Solutions Archite",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 15,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Senior Project Manager & Business Analyst, Nat",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 16,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Lead Business Analyst, Microsoft, Oct 2015 - O",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 17,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Business Analyst / Project Coordinator, Telstr",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 18,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Senior Business Analyst, InfoCentric, Aug 2011",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 19,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Developer Support / Software Testing / Analyst",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 20,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Scrum Master / Project Manager — Payday Super ",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 21,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "AI Solutions Consultant — Applied LLM Engineer",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 22,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Senior Delivery Lead / AI-ML Solutions Archite",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 23,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Senior Project Manager & Business AnalystNatio",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 24,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Lead Business AnalystMicrosoftOct 2015 - Oct 2",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 25,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Business Analyst / Project CoordinatorTelstraN",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 26,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Senior Business AnalystInfoCentricAug 2011 - N",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 27,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Developer Support / Software Testing / Analyst",
+        "href": null,
+        "section": "experience",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 28,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "ATO · Payday Super — 2 capabilities",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 29,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "ANZ Banking Group — 3 capabilities",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 30,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Independent consulting — 1 capability",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 31,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "aether-job-career-agent — 4 capabilities",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 32,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "abentertainment — 2 capabilities",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 33,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "this site — 1 capability",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 34,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "public-key-server — 1 capability",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 35,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "containerised-birth-time-rectifier — 1 capabil",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 36,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "relationship-timeline-feature — 1 capability",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 37,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "EFDDH-Jira-Analytics-Dashboard — 1 capability",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 38,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Scrum Alliance — 1 capability",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 39,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Monash University — 1 capability",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 40,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "University of Melbourne — 1 capability",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 41,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Mainframe test automation — REXX, SMF, SDSF, P",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 42,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Agile delivery at programme scale. 8 squads · ",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 43,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Real-time telemetry platforms. 10,000+ concurr",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 44,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Cloud-native migration — .NET, Azure. >30% del",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 45,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Programme and portfolio management. $5M+ portf",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 46,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Multi-agent system design — Python, FastAPI, P",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 47,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "LLM evaluation and guardrails — Langfuse, Phoe",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 48,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Next.js and TypeScript at production scale. 39",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 49,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Node.js / Express services. PEM key-distributi",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 50,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Containerised delivery — Docker, systemd, self",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 51,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Multi-service orchestration — Docker Compose. ",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 52,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "WebGL and GLSL — three.js, React Three Fiber. ",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 53,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Data visualisation. customer-journey timeline ",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 54,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Certified Scrum Master (CSM). Scrum Alliance c",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 55,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Master of Computer Science (Honours). conferre",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 56,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Bachelor of Engineering, Computer Science. con",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 57,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "AWS and GCP certification. studying; no certif",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 58,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Everything",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 59,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Production only",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 60,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": null,
+        "name": "Not yet held",
+        "href": null,
+        "section": "skills",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 61,
+        "tag": "LI",
+        "id": null,
+        "testid": null,
+        "name": "01aether-job-career-agentAetherA job-applicati",
+        "href": null,
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 62,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Source",
+        "href": "https://github.com/Victordtesla24/aether-job-career-agent",
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 63,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "aether.srv1356245.hstgr.cloud",
+        "href": "https://aether.srv1356245.hstgr.cloud",
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 64,
+        "tag": "LI",
+        "id": null,
+        "testid": null,
+        "name": "02abentertainmentAB EntertainmentA live event ",
+        "href": null,
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 65,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Source",
+        "href": "https://github.com/Victordtesla24/abentertainment",
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 66,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "abentertainment.com.au",
+        "href": "https://abentertainment.com.au",
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 67,
+        "tag": "LI",
+        "id": null,
+        "testid": null,
+        "name": "03ralph-loop-infiniteRalph LoopAn agent loop w",
+        "href": null,
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 68,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Source",
+        "href": "https://github.com/Victordtesla24/ralph-loop-infinite",
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 69,
+        "tag": "LI",
+        "id": null,
+        "testid": null,
+        "name": "04prompt-reconstruction-enginePrompt Reconstru",
+        "href": null,
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 70,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Source",
+        "href": "https://github.com/Victordtesla24/prompt-reconstruction-engine",
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 71,
+        "tag": "LI",
+        "id": null,
+        "testid": null,
+        "name": "05jyotish-shastraJyotish ShastraA Vedic astrol",
+        "href": null,
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 72,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Source",
+        "href": "https://github.com/Victordtesla24/jyotish-shastra",
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 73,
+        "tag": "LI",
+        "id": null,
+        "testid": null,
+        "name": "06forgotten-mistoryThis siteThe page you are r",
+        "href": null,
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 74,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Source",
+        "href": "https://github.com/Victordtesla24/forgotten-mistory",
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 75,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "forgotten-mistory.web.app",
+        "href": "https://forgotten-mistory.web.app",
+        "section": "vitrine",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 76,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "sarkar.vikram@gmail.com",
+        "href": "mailto:sarkar.vikram@gmail.com",
+        "section": "listen",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 77,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "+61 433 224 556",
+        "href": "tel:+61433224556",
+        "section": "listen",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 78,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "linkedin.com/in/vikramd-profile",
+        "href": "https://www.linkedin.com/in/vikramd-profile",
+        "section": "listen",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 79,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "github.com/Victordtesla24",
+        "href": "https://github.com/Victordtesla24",
+        "section": "listen",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 80,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Privacy Policy",
+        "href": "/privacy",
+        "section": "footer",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(235, 235, 235)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 81,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Terms",
+        "href": "/terms",
+        "section": "footer",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(235, 235, 235)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 82,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Contact support",
+        "href": "mailto:sarkar.vikram@gmail.com?subject=Portfolio%20%E2%80%94%20support",
+        "section": "footer",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(235, 235, 235)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 83,
+        "tag": "BUTTON",
+        "id": null,
+        "testid": "minivic-toggle",
+        "name": "Open Mini Vic assistant",
+        "href": null,
+        "section": "chrome",
+        "outlineWidth": "3px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0",
+        "visible": true
+      }
+    ],
+    "ctas": [
+      {
+        "i": 3,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Download CV",
+        "href": "/docs/Vik_Resume_Final.pdf",
+        "section": "nav",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(235, 235, 235)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "See the evidence",
+        "href": "#experience",
+        "section": "hero",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Download CV",
+        "href": "/docs/Vik_Resume_Final.pdf",
+        "section": "hero",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 8,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "LinkedIn",
+        "href": "https://www.linkedin.com/in/vikramd-profile",
+        "section": "hero",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 9,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "GitHub",
+        "href": "https://github.com/Victordtesla24",
+        "section": "hero",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 10,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Email",
+        "href": "mailto:sarkar.vikram@gmail.com",
+        "section": "hero",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 78,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "linkedin.com/in/vikramd-profile",
+        "href": "https://www.linkedin.com/in/vikramd-profile",
+        "section": "listen",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 79,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "github.com/Victordtesla24",
+        "href": "https://github.com/Victordtesla24",
+        "section": "listen",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(246, 246, 246)",
+        "boxShadow": "none",
+        "visible": true
+      },
+      {
+        "i": 82,
+        "tag": "A",
+        "id": null,
+        "testid": null,
+        "name": "Contact support",
+        "href": "mailto:sarkar.vikram@gmail.com?subject=Portfolio%20%E2%80%94%20support",
+        "section": "footer",
+        "outlineWidth": "2px",
+        "outlineStyle": "solid",
+        "outlineColor": "rgb(235, 235, 235)",
+        "boxShadow": "none",
+        "visible": true
+      }
+    ],
+    "noFocusRingCount": 0,
+    "noFocusRing": []
+  },
+  "pass2": {
+    "generatedAt": "2026-09-05T06:40:59.168Z",
+    "cleanPerf": [
+      {
+        "name": "1440x900",
+        "wallMs": 6475,
+        "cls": 0,
+        "lcp": 668,
+        "lcpEl": "H1#hero-name",
+        "domContentLoaded": 318.3999999910593,
+        "loadEvent": 430.8999999910593,
+        "fcp": 668,
+        "ceCount": 0,
+        "peCount": 0,
+        "frCount": 0
+      },
+      {
+        "name": "390x844",
+        "wallMs": 6489,
+        "cls": 0,
+        "lcp": 320,
+        "lcpEl": "H1#hero-name",
+        "domContentLoaded": 86.79999999701977,
+        "loadEvent": 461.59999999403954,
+        "fcp": 320,
+        "ceCount": 0,
+        "peCount": 0,
+        "frCount": 0
+      }
+    ],
+    "glDefault": {
+      "label": "default",
+      "url": "https://forgotten-mistory.web.app/",
+      "doc": {
+        "canvasTotal": 0,
+        "bodyTextHead": "Skip to the evidence\nVIKRAM.\nDownload CV\nMENU\nHome\nAbout\nExperience\nSkills\nKeeping me busy\nFeedback & coffee\nLinkedIn\nDownload CV\n\nMELBOURNE, AUSTRALIA\n\nVikram Deshpande\n\nDelivery leadership · AI solu",
+        "hasErrorBoundary": false,
+        "h1": "Vikram Deshpande",
+        "sectionCount": 6,
+        "runningAnims": 2
+      },
+      "perSection": [
+        {
+          "id": "hero",
+          "present": true,
+          "canvases": 0,
+          "canvasDetail": [],
+          "svgs": 1,
+          "videos": 1,
+          "animatedSvg": 0
+        },
+        {
+          "id": "about",
+          "present": true,
+          "canvases": 0,
+          "canvasDetail": [],
+          "svgs": 1,
+          "videos": 0,
+          "animatedSvg": 0
+        },
+        {
+          "id": "experience",
+          "present": true,
+          "canvases": 0,
+          "canvasDetail": [],
+          "svgs": 0,
+          "videos": 0,
+          "animatedSvg": 0
+        },
+        {
+          "id": "skills",
+          "present": true,
+          "canvases": 0,
+          "canvasDetail": [],
+          "svgs": 1,
+          "videos": 0,
+          "animatedSvg": 0
+        },
+        {
+          "id": "vitrine",
+          "present": true,
+          "canvases": 0,
+          "canvasDetail": [],
+          "svgs": 6,
+          "videos": 0,
+          "animatedSvg": 0
+        },
+        {
+          "id": "listen",
+          "present": true,
+          "canvases": 0,
+          "canvasDetail": [],
+          "svgs": 1,
+          "videos": 0,
+          "animatedSvg": 0
+        }
+      ],
+      "ce": [],
+      "ceCount": 0,
+      "pe": [],
+      "peCount": 0,
+      "fr": [],
+      "frCount": 0
+    },
+    "glForce": {
+      "label": "gl=force",
+      "url": "https://forgotten-mistory.web.app/?gl=force",
+      "doc": {
+        "canvasTotal": 0,
+        "bodyTextHead": "Skip to the evidence\n\nSYSTEM INTERRUPT\n\nSomething went wrong\n\nAn unexpected error occurred while rendering this page. The system state has been preserved and a recovery attempt is available.\n\nTry agai",
+        "hasErrorBoundary": true,
+        "h1": "Something went wrong",
+        "sectionCount": 0,
+        "runningAnims": 1
+      },
+      "perSection": [
+        {
+          "id": "hero",
+          "present": false
+        },
+        {
+          "id": "about",
+          "present": false
+        },
+        {
+          "id": "experience",
+          "present": false
+        },
+        {
+          "id": "skills",
+          "present": false
+        },
+        {
+          "id": "vitrine",
+          "present": false
+        },
+        {
+          "id": "listen",
+          "present": false
+        }
+      ],
+      "ce": [
+        "TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7bf212.js:1:127)\n    at 2368 (https",
+        "[app/error.tsx] Unhandled error: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7b",
+        "TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7bf212.js:1:127)\n    at 2368 (https",
+        "[app/error.tsx] Unhandled error: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7b"
+      ],
+      "ceCount": 4,
+      "pe": [],
+      "peCount": 0,
+      "fr": [],
+      "frCount": 0
+    },
+    "probes": [
+      {
+        "url": "https://forgotten-mistory.web.app/?utm_source=linkedin",
+        "h1": "Vikram Deshpande",
+        "sections": 6,
+        "canvases": 0,
+        "head": "Skip to the evidence\nVIKRAM.\nDownload CV\nMENU\nHome\nAbout\nExperience\nSkills\nKeeping me busy\nFeedback & coffee\nLinkedIn\nDownload CV\n\nMELBOURNE, AUSTRALIA\n\nVikram ",
+        "ceCount": 0,
+        "ce": [],
+        "peCount": 0
+      },
+      {
+        "url": "https://forgotten-mistory.web.app/?gl=force",
+        "h1": "Something went wrong",
+        "sections": 0,
+        "canvases": 0,
+        "head": "Skip to the evidence\n\nSYSTEM INTERRUPT\n\nSomething went wrong\n\nAn unexpected error occurred while rendering this page. The system state has been preserved and a ",
+        "ceCount": 4,
+        "ce": [
+          "TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7bf212.js:1:127)\n    at 2368 (https",
+          "[app/error.tsx] Unhandled error: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7b"
+        ],
+        "peCount": 0
+      },
+      {
+        "url": "https://forgotten-mistory.web.app/?gl=auto",
+        "h1": "Vikram Deshpande",
+        "sections": 6,
+        "canvases": 0,
+        "head": "Skip to the evidence\nVIKRAM.\nDownload CV\nMENU\nHome\nAbout\nExperience\nSkills\nKeeping me busy\nFeedback & coffee\nLinkedIn\nDownload CV\n\nMELBOURNE, AUSTRALIA\n\nVikram ",
+        "ceCount": 0,
+        "ce": [],
+        "peCount": 0
+      },
+      {
+        "url": "https://forgotten-mistory.web.app/#experience",
+        "h1": "Vikram Deshpande",
+        "sections": 6,
+        "canvases": 0,
+        "head": "Skip to the evidence\nVIKRAM.\nDownload CV\nMENU\nHome\nAbout\nExperience\nSkills\nKeeping me busy\nFeedback & coffee\nLinkedIn\nDownload CV\n\nMELBOURNE, AUSTRALIA\n\nVikram ",
+        "ceCount": 0,
+        "ce": [],
+        "peCount": 0
+      }
+    ]
+  },
+  "pass3_hardwareGpu": {
+    "generatedAt": "2026-09-05T06:43:05.320Z",
+    "method": "UNMASKED_RENDERER_WEBGL spoofed to a hardware GPU string; no query parameters",
+    "runs": [
+      {
+        "name": "1440x900-hardware-gpu",
+        "rendererSeenByPage": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2 Pro, Unspecified Version)",
+        "h1": "Something went wrong",
+        "sectionCount": 0,
+        "sectionIds": [],
+        "canvasTotal": 0,
+        "errorBoundary": true,
+        "bodyHead": "Skip to the evidence\n\nSYSTEM INTERRUPT\n\nSomething went wrong\n\nAn unexpected error occurred while rendering this page. The system state has been preserved and a recovery attempt is available.\n\nTry again\n\nPrivacy Policy·Terms·Contact support·© 2026 Portfolio Web",
+        "ceCount": 4,
+        "ce": [
+          "TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7bf212.js:1:127)\n    at 2368 (https://forgotten-mistory.web.app/_next/static/chunks/368.8129db46e42577ff.js:1:142)\n    at r (https://fo",
+          "[app/error.tsx] Unhandled error: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7bf212.js:1:127)\n    at 2368 (https://forgotten-mistory.web.app/_next/static/chunks/368.8129db46e42577",
+          "TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7bf212.js:1:127)\n    at 2368 (https://forgotten-mistory.web.app/_next/static/chunks/368.8129db46e42577ff.js:1:142)\n    at r (https://fo",
+          "[app/error.tsx] Unhandled error: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7bf212.js:1:127)\n    at 2368 (https://forgotten-mistory.web.app/_next/static/chunks/368.8129db46e42577"
+        ],
+        "peCount": 0,
+        "pe": [],
+        "frCount": 0,
+        "fr": []
+      },
+      {
+        "name": "390x844-hardware-gpu",
+        "rendererSeenByPage": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2 Pro, Unspecified Version)",
+        "h1": "Something went wrong",
+        "sectionCount": 0,
+        "sectionIds": [],
+        "canvasTotal": 0,
+        "errorBoundary": true,
+        "bodyHead": "Skip to the evidence\n\nSYSTEM INTERRUPT\n\nSomething went wrong\n\nAn unexpected error occurred while rendering this page. The system state has been preserved and a recovery attempt is available.\n\nTry again\n\nPrivacy Policy\nTerms\nContact support\n© 2026 Portfolio Web",
+        "ceCount": 4,
+        "ce": [
+          "TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7bf212.js:1:127)\n    at 2368 (https://forgotten-mistory.web.app/_next/static/chunks/368.8129db46e42577ff.js:1:142)\n    at r (https://fo",
+          "[app/error.tsx] Unhandled error: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7bf212.js:1:127)\n    at 2368 (https://forgotten-mistory.web.app/_next/static/chunks/368.8129db46e42577",
+          "TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7bf212.js:1:127)\n    at 2368 (https://forgotten-mistory.web.app/_next/static/chunks/368.8129db46e42577ff.js:1:142)\n    at r (https://fo",
+          "[app/error.tsx] Unhandled error: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')\n    at e.exports (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:10329)\n    at https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:101807\n    at 4904 (https://forgotten-mistory.web.app/_next/static/chunks/904.66d19854a4ab6d3a.js:1:104350)\n    at r (https://forgotten-mistory.web.app/_next/static/chunks/webpack-1055d1714d7bf212.js:1:127)\n    at 2368 (https://forgotten-mistory.web.app/_next/static/chunks/368.8129db46e42577"
+        ],
+        "peCount": 0,
+        "pe": [],
+        "frCount": 0,
+        "fr": []
+      }
+    ]
+  },
+  "perfNote": "LCP/CLS in pass1_viewports were contaminated by the harness scroll (LCP keeps updating under programmatic scroll). Authoritative clean numbers are pass2.cleanPerf: 1440 LCP 668ms CLS 0; 390 LCP 320ms CLS 0.",
+  "recheck": {
+    "build": "15fb165b",
+    "h1": "Something went wrong",
+    "sections": 0,
+    "errorBoundary": true,
+    "consoleErrors": 4,
+    "firstError": "TypeError: Cannot read properties of undefined (reading ReactCurrentBatchConfig)",
+    "script": "adv4-recheck.mjs",
+    "log": "recheck-15fb165b.txt"
+  }
+}

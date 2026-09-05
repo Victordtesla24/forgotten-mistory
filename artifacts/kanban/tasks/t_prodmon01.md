@@ -32,3 +32,9 @@ role_matrix: testing / qa → level 2 → effort **xhigh** (effort_cascade.yaml;
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-05T07:30:50.124Z)
+R-c13 #5 B-3 (major, Verified, merge) — Deploy verification is blind to the path that broke: scripts/deploy.mjs:116-126 reads only the build-commit meta on the plain URL, so a total GPU-path outage shipped and sat unseen
+DIRECTION: Extend the post-deploy verification in scripts/deploy.mjs beyond the meta tag: after the build-commit assertion, drive one headless load of /, one of /?gl=force, and one of / with UNMASKED_RENDERER_WEBGL spoofed to a hardware string, at 1440x900 and 390x844, asserting six section[id], #hero h1 === 'Vikram Deshpande', zero pageerrors, zero console errors and no /SYSTEM INTERRUPT/ in body.innerText. Fail the deploy script (not the deploy workflow's merge step) on any of those, and print the failing probe. Then stand up t_prodmon01 on the same probe on its ten-minute cadence so a regression is caught without a reviewer in the loop.
+FILES: scripts/deploy.mjs:116-126, .github/workflows/deploy.yml, scripts/validate/overhaul_static_audit.mjs, tests/e2e/
+ACCEPTANCE: node scripts/deploy.mjs exits non-zero against a build that renders the error boundary on any of the three paths, and zero against the current build; the probe writes its results to docs/delivery/evidence/<run>/deploy-verify.json with the build-commit it measured.

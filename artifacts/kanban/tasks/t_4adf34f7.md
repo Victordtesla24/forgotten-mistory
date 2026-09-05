@@ -43,3 +43,6 @@ running — R-c13 workflow dispatched 06:3xZ: adversarial → composition → mo
 
 ## COMMENT (2026-09-05T06:36:10.564Z)
 06:36Z: first R-c13 run stopped after 2 min — its precondition named f86b125 literally, but that run was cancelled by the queued 3adf126a deploy (GitHub keeps one pending run per concurrency group); relaunched with the precondition 'live build is a descendant of f86b125' (3adf126a qualifies).
+
+## COMPLETE (2026-09-05T07:30:51.833Z)
+R-c13 merged verdict FAIL on builds 3adf126a→3dae601a (review.md, 3 lens reports, 16 holds, 7 contradictions resolved, 22 ranked items). Blocker ADV-1 = the WebGL crash (fixed by t_p100hotfx at 07:12Z). 16 holds incl. R-c8 C-01, ADV-F-1, MOT-F-3, C-08(gold discipline) closed; 0 console errors on the fallback path; axe 0; headers; LCP 668/320 ms; CLS 0; /api/chat grounded; /api/tts 200. Backlog folded: 15 items → existing tasks (comments), 7 new tasks. Next review R-c14 after cycles 15/16/16b + react19 land.

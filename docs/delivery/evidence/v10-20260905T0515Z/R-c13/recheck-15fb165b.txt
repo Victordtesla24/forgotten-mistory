@@ -1,0 +1,5 @@
+R-c13 ADV-1 re-confirmation against the final live build of the review window.
+Command: node adv4-recheck.mjs   (hardware-GPU spoof, no query string, 1440x900)
+Result:
+{"build":"15fb165b","h1":"Something went wrong","sections":0,"errorBoundary":true}
+consoleErrors=4  first: TypeError: Cannot read properties of undefined (reading 'ReactCurrentBatchConfig')

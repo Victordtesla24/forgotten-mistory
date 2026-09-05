@@ -44,3 +44,24 @@ Verification: PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test test
 
 ## STATUS (2026-09-05T06:32:27.914Z)
 running — cycle 16 dispatched with the V-C11 correction; priority raised to 93; port 5602
+
+## COMMENT (2026-09-05T07:30:50.572Z)
+R-c13 #8 CC-03a (major, Verified, composition + merge) — The launcher is a 64x64 ring around emptiness: innerText empty, 0 svg, 0 img, and its only child is a <video> with no src, no <source> and no poster (readyState: 0)
+DIRECTION: (a) Read as chat: give the button a permanent 24x24 mark in var(--white) — an inline <svg> speech-mark or a 'VIC' monogram at var(--fs-micro), letter-spacing 0.12em — rendered UNDER the video so it is the resting state and the avatar is the enhancement; add a title and a one-line label plate on hover/focus (var(--ink-800) ground, var(--white) ink, var(--fs-caption), padding var(--space-05) var(--space-1), offset 12 px left of the ring). (b) Never ship a source-less video: render <video> only when a resolved source exists, and give it poster={avatarPoster} so first paint is the face; keep preload="none" on the clip only. (The panel behind it already carries role="dialog" and data-testid="minivic-panel" — no change needed there.)
+FILES: components/MiniVicBot.tsx:1595-1626, app/data/portfolio/avatar.ts, tests/e2e/
+ACCEPTANCE: At 1440x900 and 390x844 against the live URL: [data-testid="minivic-toggle"] contains at least one svg OR non-empty innerText; every video inside it has a non-empty currentSrc OR a poster; the toggle is visible; after click(), [data-testid="minivic-panel"] is attached and visible within 1500 ms; Escape returns focus to the toggle. Add as tests/e2e/minivic-affordance.spec.ts.
+
+## COMMENT (2026-09-05T07:30:50.661Z)
+R-c13 #9 ADV-3 (major, Verified, adversarial) — Repeat of R-c8 ADV-F-2: the launcher is tab stop 83 of 83 — a keyboard user traverses the entire page before reaching the channel the brief names for employers and clients
+DIRECTION: As R-c8 specified: add a second visually-hidden-until-focused anchor beside 'Skip to the evidence' in components/site/Navigation.tsx reading 'Ask Mini Vic', whose handler focuses toggleRef.current in components/MiniVicBot.tsx and calls setIsOpen(true); reuse the existing skip-link focus rule. The first three stops are currently 1 'Skip to the evidence', 2 'Back to top', 3 'Download CV'.
+FILES: components/site/Navigation.tsx, components/MiniVicBot.tsx:1595, tests/a11y/
+ACCEPTANCE: Tab from the top at 1440x900: within the first 3 tab stops one focused element exposes the accessible name 'Ask Mini Vic'; pressing Enter leaves document.activeElement with data-testid='minivic-toggle' and the panel open.
+
+## COMMENT (2026-09-05T07:30:51.131Z)
+R-c13 #13 CC-07 (major, Verified, composition + merge) — Monochrome breached in a colour space the gate cannot see: the two pip spans are bg-zinc-400 / bg-zinc-500 -> oklch(... 0.015 286deg) / oklch(... 0.016 286deg), and the audit's colour parser reads rgb() only
+DIRECTION: Replace bg-zinc-400 / bg-zinc-500 on the two pip spans with the site's own tokens: outer ping background var(--mist-400) at opacity 0.75, inner dot background var(--mist-200). Both are R=G=B by construction. Do not substitute another Tailwind neutral — zinc, slate, stone and neutral all carry chroma in Tailwind v4's oklch ramp; only --mist-*/--ink-* are provably achromatic here. Then extend the audit's colour parser to oklch(L C H) and fail on C > 0.005 unless the resolved colour is a --gold-* token.
+FILES: components/MiniVicBot.tsx:1625-1626, app/globals.css, scripts/validate/overhaul_static_audit.mjs, tests/monochrome/
+ACCEPTANCE: For every element under [data-testid="minivic-toggle"], every computed color/background-color/border-color/fill/stroke parsed via oklch(), oklab() AND rgb() is either achromatic (C <= 0.005, or R=G=B) or exactly a --gold-* value. Extend the existing spec under tests/monochrome/.
+
+## COMMENT (2026-09-05T07:31:25.246Z)
+Merged to main (pipeline 1802b87 + verification 614b8ce). V-c16 FAIL on 2/13 lines → correction cycle 16b (t_c16b0001) dispatched; this task closes when 16b passes.
