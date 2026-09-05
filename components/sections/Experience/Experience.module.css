@@ -87,6 +87,44 @@
     position: relative;
 }
 
+/* Today. The right-hand end of the axis, drawn once rather than eight times:
+   a 1 px rule down the whole field and a 4 px tick across its foot, sitting
+   exactly where `.axis`'s `now` label sits (both are inset by the reserved
+   readout column plus the grid's gap). --white, and only ever --white: the
+   dates this marks are graded `self-reported`, and gold on this site is
+   reserved for a figure a reader can go and check (CLAUDE.md directive 3;
+   council R-c8 resolved the gold proposal against it explicitly). */
+.playhead {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(var(--readout-column) + var(--space-2));
+    z-index: 2;
+    width: 1px;
+    color: var(--white);
+    pointer-events: none;
+}
+
+.playhead::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: currentcolor;
+    opacity: 0.24;
+}
+
+.playhead::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 4px;
+    height: 1px;
+    transform: translateX(-50%);
+    background: currentcolor;
+    opacity: 0.85;
+}
+
 .grid {
     position: absolute;
     inset: 0;
@@ -154,6 +192,13 @@
     color: var(--white);
 }
 
+/* The room C-03 asks for is reserved one level up, as the track grid's third
+   column (`--readout-column`, 4.5rem, declared on .chart). A `padding-right`
+   here would be inert: the bar and the readout are absolutely positioned, and
+   their percentages resolve against this element's *padding* box, not its
+   content box (CSS 2.1 §10.1). Making it bite would need the bars inside a
+   content-box wrapper, which would end the sixteen-year axis 4.5rem short of
+   the `now` tick below it — a misalignment worse than the overflow it fixes. */
 .trackLine {
     position: relative;
     display: block;
@@ -163,13 +208,31 @@
 }
 
 /* The bar's geometry — left and width are the role's real span, written inline
-   from the same numbers the axis is drawn from. It carries the year readout as
-   a child, so the bar's own paint lives on ::before: scaling the element itself
-   would scale the label with it. */
+   from the same numbers the axis is drawn from.
+ *
+ * The entry beat (council R-c8, MOT-F-1): the bar mounts at nothing and is
+ * measured out from its own left edge, 900 ms on a curve that leaves fast and
+ * lands soft, each row a beat behind the last. Eight rows settle by
+ * 60 + 7 × 60 + 900 = 1380 ms. `--row` is written inline from the map index.
+ * The one-beat head start is not decoration: without it the first bar is
+ * already past half length by the time a reader's eye reaches it.
+ *
+ * The bar's own paint lives on ::before so the hover weight (scaleY) and the
+ * entry length (scaleX) are two transforms on two elements rather than one
+ * transform fighting itself. */
 .trackBar {
     position: absolute;
     top: var(--space-05);
     height: 0.55rem;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: calc((var(--row) + 1) * 60ms);
+    will-change: transform;
+}
+
+.trackField[data-entered] .trackBar {
+    transform: scaleX(1);
 }
 
 .trackBar::before {
@@ -181,7 +244,11 @@
        22 % white was 1.89:1, under the 3:1 floor WCAG 1.4.11 sets for a
        graphic that carries information (council R-c1, C4a). */
     background: var(--mist-400);
-    opacity: 0.85;
+    /* Council R-c8, C-03: 0.72 rather than 0.85. #909090 at 0.72 composites to
+       #6D6D6D on the plot's #131313 ground — 3.39:1, clear of the 3:1 floor
+       WCAG 1.4.11 sets for a graphic that carries information — and leaves the
+       hover/active white a step of its own to make. */
+    opacity: 0.72;
     /* The bar thickens about its own centre line. Animating `height` and `top`
        would ask the browser to lay the row out again on every frame of a hover;
        a scale about the centre is the same picture drawn on the compositor. */
@@ -208,10 +275,16 @@
     opacity: 0.9;
 }
 
+/* The duration readout. A sibling of the bar, not a child: `left` is written
+   inline as the bar's own end plus a hair, from the same percentages, so the
+   label still follows its bar while staying outside the bar's transform.
+   `max-width` holds it inside the 4.5rem the grid reserves (council R-c8,
+   C-03: at 834 the newest role's `6 mo` used to run past the card's right
+   border and stop four pixels from the viewport edge). */
 .trackYears {
     position: absolute;
-    left: calc(100% + var(--space-1));
     top: 50%;
+    max-width: 4rem;
     transform: translateY(-50%);
     font-family: var(--font-mono);
     font-size: var(--fs-caption);
@@ -428,6 +501,19 @@
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
+/* Below 52rem the readout is dropped rather than made static. Every bar in this
+   chart is measured up to the same right-hand edge — the newest role runs to
+   `now` — so a readout parked in a fixed column at that edge sits on top of the
+   bar it describes. The duration is still in the accessible name of every row
+   ("…, Feb 2024 – present") and printed in full in the detail list below, so
+   nothing is lost with it gone; what is lost with it overlapping is the chart.
+   The playhead keeps its own inset here, so it stays on the axis's `now`. */
+@media (max-width: 52rem) {
+    .trackYears {
+        display: none;
+    }
+}
+
 @media (max-width: 760px) {
     .chart {
         /* `7.8 yr` at --fs-caption needs ~2.6rem; 3.25rem leaves the air. */
@@ -443,8 +529,10 @@
         font-size: var(--fs-small);
     }
 
-    .trackYears {
-        display: none;
+    /* The grid's gap narrows here, so the plot's right edge — and the `now`
+       mark standing on it — comes in by the same amount. */
+    .playhead {
+        right: calc(var(--readout-column) + var(--space-1));
     }
 
     .axis {
@@ -493,6 +581,21 @@
 
     .roles {
         animation-delay: 160ms;
+    }
+
+    /* The entry beat is movement, so it goes (RM-3): the bars are their real
+       length from the first frame and the section arrives on the 320 ms
+       opacity fade alone. The chart is never briefly wrong for a reader who
+       asked not to be moved. */
+    .trackBar {
+        transform: none;
+        transition: none;
+        transition-delay: 0s;
+        will-change: auto;
+    }
+
+    .trackField[data-entered] .trackBar {
+        transform: none;
     }
 
     .trackBar::before {

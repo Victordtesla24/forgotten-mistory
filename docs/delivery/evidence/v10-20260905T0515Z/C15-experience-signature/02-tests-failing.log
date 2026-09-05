@@ -1,0 +1,252 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-experience.spec.ts --reporter=list
+
+[2mRunning [22m8[2m tests using [22m2[2m workers[22m
+
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/overhaul/scene-experience.spec.ts:167:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-01: the bars are still growing 100 ms after the section commits[39m[2m (4.2s)[22m
+  [31m✘[39m  [2m2 [22m[31m[chromium] › tests/overhaul/scene-experience.spec.ts:182:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-02: every bar reaches its real length within 1500 ms[39m[2m (3.9s)[22m
+  [32m✓[39m  [2m3 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:197:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-03: nothing in the section paints gold[2m (5.0s)[22m
+  [31m✘[39m  [2m5 [22m[31m[chromium] › tests/overhaul/scene-experience.spec.ts:238:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-05: every duration label stays inside the chart card[39m[2m (1.8s)[22m
+  [32m✓[39m  [2m6 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:273:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-06: one canvas behind the chart at ?gl=force[2m (6.5s)[22m
+  [31m✘[39m  [2m7 [22m[31m[chromium] › tests/overhaul/scene-experience.spec.ts:282:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-07: the shader is bound to the spans it sits under[39m[2m (13ms)[22m
+  [31m✘[39m  [2m4 [22m[31m[chromium] › tests/overhaul/scene-experience.spec.ts:228:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-04: the today playhead is white[39m[2m (17.6s)[22m
+  [31m✘[39m  [2m8 [22m[31m[chromium] › tests/overhaul/scene-experience.spec.ts:294:7 › #experience under reduced motion › TC-SCENE-EXP-08: no bar is ever shorter than its real duration[39m[2m (19.2s)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/scene-experience.spec.ts:167:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-01: the bars are still growing 100 ms after the section commits [39m
+
+    Error: eight roles, eight bars
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m8[39m
+    Received: [31m0[39m
+
+    [0m [90m 175 |[39m     [36mconst[39m result [33m=[39m [36mawait[39m beat[33m;[39m
+     [90m 176 |[39m
+    [31m[1m>[22m[39m[90m 177 |[39m     expect(result[33m.[39mrows[33m,[39m [32m'eight roles, eight bars'[39m)[33m.[39mtoBe([35m8[39m)[33m;[39m
+     [90m     |[39m                                                    [31m[1m^[22m[39m
+     [90m 178 |[39m     expect(result[33m.[39mat100[33m,[39m [32m'the first bar reports a scaleX 100 ms in'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m 179 |[39m     expect(result[33m.[39mat100[33m![39m[33m,[39m [32m'at 100 ms the first bar is under half its length'[39m)[33m.[39mtoBeLessThan([35m0.5[39m)[33m;[39m
+     [90m 180 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_eefd9de5-b04-1/tests/overhaul/scene-experience.spec.ts:177:52[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-experience--2f0eb-s-after-the-section-commits-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-experience--2f0eb-s-after-the-section-commits-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/overhaul/scene-experience.spec.ts:182:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-02: every bar reaches its real length within 1500 ms [39m
+
+    Error: the chart settles
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBeNull[2m()[22m
+
+    Received: [31mnull[39m
+
+    [0m [90m 188 |[39m     [36mconst[39m result [33m=[39m [36mawait[39m beat[33m;[39m
+     [90m 189 |[39m
+    [31m[1m>[22m[39m[90m 190 |[39m     expect(result[33m.[39msettledAt[33m,[39m [32m'the chart settles'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m     |[39m                                                       [31m[1m^[22m[39m
+     [90m 191 |[39m     expect(result[33m.[39msettledAt[33m![39m[33m,[39m [32m'settled inside 1.5 s'[39m)[33m.[39mtoBeLessThanOrEqual([35m1500[39m)[33m;[39m
+     [90m 192 |[39m     [36mfor[39m ([36mconst[39m transform [36mof[39m result[33m.[39mfinalTransforms) {
+     [90m 193 |[39m       expect(transform)[33m.[39mtoBe([32m'matrix(1, 0, 0, 1, 0, 0)'[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_eefd9de5-b04-1/tests/overhaul/scene-experience.spec.ts:190:55[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-experience--e101b--real-length-within-1500-ms-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-experience--e101b--real-length-within-1500-ms-chromium/error-context.md[22m
+
+[31m  3) [chromium] › tests/overhaul/scene-experience.spec.ts:228:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-04: the today playhead is white [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#experience [data-playhead]')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#experience [data-playhead]')[22m
+    [2m    18 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 232 |[39m
+     [90m 233 |[39m     [36mconst[39m playhead [33m=[39m page[33m.[39mlocator([33mPLAYHEAD[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 234 |[39m     [36mawait[39m expect(playhead)[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m     |[39m                            [31m[1m^[22m[39m
+     [90m 235 |[39m     [36mawait[39m expect(playhead)[33m.[39mtoHaveCSS([32m'color'[39m[33m,[39m [33mWHITE[39m)[33m;[39m
+     [90m 236 |[39m   })[33m;[39m
+     [90m 237 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_eefd9de5-b04-1/tests/overhaul/scene-experience.spec.ts:234:28[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-experience--25ea4-the-today-playhead-is-white-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-experience--25ea4-the-today-playhead-is-white-chromium/error-context.md[22m
+
+[31m  4) [chromium] › tests/overhaul/scene-experience.spec.ts:238:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-05: every duration label stays inside the chart card [39m
+
+    Error: chart card present at 390
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+    [0m [90m 265 |[39m       )[33m;[39m
+     [90m 266 |[39m
+    [31m[1m>[22m[39m[90m 267 |[39m       expect(report[33m.[39mhasChart[33m,[39m [32m`chart card present at ${width}`[39m)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m     |[39m                                                                 [31m[1m^[22m[39m
+     [90m 268 |[39m       expect(report[33m.[39moverflowing[33m,[39m [32m`labels outside the card at ${width}`[39m)[33m.[39mtoEqual([])[33m;[39m
+     [90m 269 |[39m       expect(report[33m.[39mscrollWidth[33m,[39m [32m`no sideways scroll at ${width}`[39m)[33m.[39mtoBe(report[33m.[39minnerWidth)[33m;[39m
+     [90m 270 |[39m     }[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_eefd9de5-b04-1/tests/overhaul/scene-experience.spec.ts:267:65[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-experience--fa987-stays-inside-the-chart-card-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-experience--fa987-stays-inside-the-chart-card-chromium/error-context.md[22m
+
+[31m  5) [chromium] › tests/overhaul/scene-experience.spec.ts:282:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-07: the shader is bound to the spans it sits under [39m
+
+    Error: uSpans carries the eight bars into the shader
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: [32m"uSpans"[39m
+    Received string:    [31m"/**[39m
+    [31m * Experience strata — sediment, not data.[39m
+    [31m *[39m
+    [31m * An earlier version of this scene drew the roles as 3D bars alongside the DOM[39m
+    [31m * chart. Two drawings of the same eight spans, in two coordinate systems that[39m
+    [31m * could not be kept in agreement, read as a rendering bug: bars appeared[39m
+    [31m * doubled and slightly offset. Worse, it made a reader wonder which one was[39m
+    [31m * right.[39m
+    [31m *[39m
+    [31m * So the scene stopped competing. The DOM chart is the data — real percentages[39m
+    [31m * on a real axis, legible to a screen reader and correct with no WebGL at all.[39m
+    [31m * This shader draws what is behind it: fine horizontal strata, like a section[39m
+    [31m * cut through sediment, drifting slowly at different depths. It encodes[39m
+    [31m * nothing, and is written not to look as though it does.[39m
+    [31m */·[39m
+    [31mexport const strataVertexShader = /* glsl */ `[39m
+    [31m  varying vec2 vUv;·[39m
+    [31m  void main() {[39m
+    [31m    gl_Position = vec4(position.xy, 0.0, 1.0);[39m
+    [31m    vUv = gl_Position.xy * 0.5 + 0.5;[39m
+    [31m  }[39m
+    [31m`;·[39m
+    [31mexport const strataFragmentShader = /* glsl */ `[39m
+    [31m  precision highp float;·[39m
+    [31m  varying vec2 vUv;·[39m
+    [31m  uniform float uTime;[39m
+    [31m  uniform vec2 uResolution;[39m
+    [31m  uniform vec2 uPointer;[39m
+    [31m  uniform float uIntensity;[39m
+    [31m  uniform vec3 uInk;[39m
+    [31m  uniform vec3 uLight;·[39m
+    [31m  float hash(vec2 p) {[39m
+    [31m    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);[39m
+    [31m  }·[39m
+    [31m  float noise(vec2 p) {[39m
+    [31m    vec2 i = floor(p);[39m
+    [31m    vec2 f = fract(p);[39m
+    [31m    vec2 u = f * f * (3.0 - 2.0 * f);[39m
+    [31m    return mix([39m
+    [31m      mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), u.x),[39m
+    [31m      mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),[39m
+    [31m      u.y[39m
+    [31m    );[39m
+    [31m  }·[39m
+    [31m  void main() {[39m
+    [31m    vec2 uv = vUv;[39m
+    [31m    vec2 parallax = uPointer * 0.02;·[39m
+    [31m    // Layers: each band is a slow horizontal smear, wider apart toward the[39m
+    [31m    // bottom of the frame so the field reads as receding rather than tiled.[39m
+    [31m    float t = uTime * 0.008;[39m
+    [31m    float bands = 0.0;[39m
+    [31m    for (int i = 0; i < 3; i++) {[39m
+    [31m      float depth = float(i) + 1.0;[39m
+    [31m      float y = uv.y * (7.0 + depth * 4.0) + parallax.y * depth;[39m
+    [31m      float drift = noise(vec2(uv.x * 2.0 + t * depth, floor(y))) ;[39m
+    [31m      // A thin line at each band boundary, softened by the drift value.[39m
+    [31m      float line = smoothstep(0.94, 1.0, fract(y + drift * 0.35));[39m
+    [31m      bands += line * (0.34 / depth);[39m
+    [31m    }·[39m
+    [31m    // Horizon falloff: the field thins toward the top, where the heading sits.[39m
+    [31m    float fade = smoothstep(1.05, 0.1, uv.y);[39m
+    [31m    float luma = bands * fade * 0.34;·[39m
+    [31m    // Dissolve at all four edges. Without this the canvas rectangle itself is[39m
+    [31m    // visible as a faintly lighter box against the page — the scene has to end[39m
+    [31m    // somewhere, and it must not be anywhere a reader can find.[39m
+    [31m    vec2 edge = smoothstep(vec2(0.0), vec2(0.16), uv)[39m
+    [31m              * smoothstep(vec2(0.0), vec2(0.16), 1.0 - uv);[39m
+    [31m    luma *= edge.x * edge.y;·[39m
+    [31m    // A wide, very soft key from the left so the strata are not evenly lit.[39m
+    [31m    vec2 p = (uv - vec2(0.18, 0.5)) * vec2(uResolution.x / max(uResolution.y, 1.0), 1.0);[39m
+    [31m    float key = pow(1.0 - clamp(length(p) * 0.5, 0.0, 1.0), 2.2);[39m
+    [31m    luma += key * 0.07 * edge.x * edge.y;·[39m
+    [31m    float grain = (hash(uv * uResolution + fract(uTime)) - 0.5) * 0.012;·[39m
+    [31m    vec3 colour = mix(uInk, uLight, clamp(luma + grain, 0.0, 1.0));[39m
+    [31m    gl_FragColor = vec4(colour, clamp(uIntensity, 0.0, 1.0) * 0.85);[39m
+    [31m  }[39m
+    [31m`;[39m
+    [31m"[39m
+
+    [0m [90m 282 |[39m   test([32m'TC-SCENE-EXP-07: the shader is bound to the spans it sits under'[39m[33m,[39m [36masync[39m () [33m=>[39m {
+     [90m 283 |[39m     [36mconst[39m source [33m=[39m readFileSync([33mGLSL_SOURCE[39m[33m,[39m [32m'utf8'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 284 |[39m     expect(source[33m,[39m [32m'uSpans carries the eight bars into the shader'[39m)[33m.[39mtoContain([32m'uSpans'[39m)[33m;[39m
+     [90m     |[39m                                                                     [31m[1m^[22m[39m
+     [90m 285 |[39m     expect(source[33m,[39m [32m'uProgress shares the entry beat'[39m)[33m.[39mtoContain([32m'uProgress'[39m)[33m;[39m
+     [90m 286 |[39m     expect(source[33m,[39m [32m'uHover carries the pointed-at row'[39m)[33m.[39mtoContain([32m'uHover'[39m)[33m;[39m
+     [90m 287 |[39m     expect(source[33m,[39m [32m'the header no longer disclaims meaning'[39m)[33m.[39mnot[33m.[39mtoMatch([35m/encodes nothing/i[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_eefd9de5-b04-1/tests/overhaul/scene-experience.spec.ts:284:69[22m
+
+[31m  6) [chromium] › tests/overhaul/scene-experience.spec.ts:294:7 › #experience under reduced motion › TC-SCENE-EXP-08: no bar is ever shorter than its real duration [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#experience [data-playhead]')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#experience [data-playhead]')[22m
+    [2m    18 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 326 |[39m     expect(minScaleX[33m,[39m [32m'bars are full length from the first frame'[39m)[33m.[39mtoBeGreaterThanOrEqual([35m1[39m)[33m;[39m
+     [90m 327 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m`${EXPERIENCE} canvas`[39m))[33m.[39mtoHaveCount([35m0[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 328 |[39m     [36mawait[39m expect(page[33m.[39mlocator([33mPLAYHEAD[39m))[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m     |[39m                                          [31m[1m^[22m[39m
+     [90m 329 |[39m   })[33m;[39m
+     [90m 330 |[39m })[33m;[39m
+     [90m 331 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_eefd9de5-b04-1/tests/overhaul/scene-experience.spec.ts:328:42[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-experience--eb69d-rter-than-its-real-duration-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-experience--eb69d-rter-than-its-real-duration-chromium/error-context.md[22m
+
+[31m  6 failed[39m
+[31m    [chromium] › tests/overhaul/scene-experience.spec.ts:167:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-01: the bars are still growing 100 ms after the section commits [39m
+[31m    [chromium] › tests/overhaul/scene-experience.spec.ts:182:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-02: every bar reaches its real length within 1500 ms [39m
+[31m    [chromium] › tests/overhaul/scene-experience.spec.ts:228:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-04: the today playhead is white [39m
+[31m    [chromium] › tests/overhaul/scene-experience.spec.ts:238:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-05: every duration label stays inside the chart card [39m
+[31m    [chromium] › tests/overhaul/scene-experience.spec.ts:282:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-07: the shader is bound to the spans it sits under [39m
+[31m    [chromium] › tests/overhaul/scene-experience.spec.ts:294:7 › #experience under reduced motion › TC-SCENE-EXP-08: no bar is ever shorter than its real duration [39m
+[32m  2 passed[39m[2m (50.1s)[22m
+exit=1
