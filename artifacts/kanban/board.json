@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T10:15:48.659Z",
+  "updated": "2026-09-05T10:17:15.770Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -17,7 +17,7 @@
       "id": "t_realign01",
       "title": "P0 RESUME — docs/prompt.md max PEA; ship visible UI every ≤10 min (O1/O5)",
       "column": "ready",
-      "status": "running",
+      "status": "done",
       "priority": 0,
       "assignee": "orchestrator",
       "created_at": "2026-09-05T09:32:35Z",
@@ -30,14 +30,15 @@
         "PEA"
       ],
       "summary": "On resume: read docs/prompt.md + docs/ORCHESTRATOR-REALIGN.md; claim this; ship visible UI each 10-min window. Hermes off. fm-deploy-cadence.timer active. | HOST MONITOR 2026-09-05T09:54:52Z: O5 idle breach during 09:39-09:50Z; host pushed cycle-20 UI branch; live now c5d808c with engage CTA + tenure copy.",
-      "updated": "2026-09-05T09:38:57.471Z",
+      "updated": "2026-09-05T10:17:15.770Z",
       "comments": [
         {
           "at": "2026-09-05T09:38:57.471Z",
           "by": "orchestrator",
           "text": "Verification 09:3xZ: fm-deploy-cadence.timer active; hermes-gateway/hermes-dashboard inactive; Deploy runs 09:16/09:24/09:24/09:28/09:30(dispatch)/09:36 all success; live build-commit 5c15f5b3; cache-control public, max-age=0, must-revalidate; cadence log ticks 09:31/09:36 (skip: Deploy already in progress). profile_map.yaml read — spawns use reviewer/solutions-architect/analyst-programmer/tester/cleanup-agent/researcher/coder only. Resumed 09:4xZ: cycle 20 (in place, wf_d9fbfbaa-53a-1) + flagship visibility A (in place, wf_0d0dffdb-8bf-1); hero photo next when a battery frees (two-battery cap); monitor restarted with the returning-visitor pass."
         }
-      ]
+      ],
+      "result": "Gates: fm-deploy-cadence.timer active ✓; hermes-gateway/dashboard inactive ✓; Deploy evidence ≤10 min ✓ (09:36, 09:39, 09:51, 09:59, 10:0x runs all success; cadence log records skips only when a Deploy is already running); live cache-control public, max-age=0, must-revalidate ✓; visible UI shipped after resume ✓ (cycle 20 c5d808c3 at 09:5xZ; flagship A 8f81ae86 at 10:0xZ, orchestrator visual check). Continuing: t_flagvis0c correction, t_heroph001, t_skew0001, then flagship B and R-c14."
     },
     {
       "id": "t_c51b34a7",
@@ -565,7 +566,7 @@
     {
       "id": "t_a88c6767",
       "title": "Cycle 20 — C-09 + C-11: #listen contact routes carry the page's business end; #about dial and list share a baseline",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 66,
       "parents": [
@@ -580,7 +581,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T09:59:14.282Z",
+      "updated": "2026-09-05T10:17:15.597Z",
       "summary": "R-c8 items 15 and 16. Files: components/sections/Listen/{Listen.module.css,Listen.tsx}, components/sections/About/About.module.css. No second motion beat in #listen (MOT-F-4 confirms the caliper-close is the one).",
       "decisions": [],
       "comments": [
@@ -604,12 +605,13 @@
           "by": "orchestrator",
           "text": "SHIPPED 09:5xZ: 701971c (client engagement CTA + route weight), 14f1215 (About dial baseline), c5d808c (CTA weight finish) on main; implementer battery 110 passed + 56 regression passed, audit/lint/tsc/build green; verifier running; live check pending."
         }
-      ]
+      ],
+      "result": "SHIPPED + verified: AP-01..05, TC-LISTEN-01..11, TC-ABOUT-13, CT-09/10/11 green; #listen routes to 0.85 × width, channels 18 px white ≥ 44 px, quote:channel 1.28, padding 108/108 at five widths; LIVE since c5d808c3. V-c20 FAIL was on one node outside this cycle's files — Compass numeral '01' 4.42:1 at 1440 over the brighter About field (flagship A) → folded into t_flagvis0c. Minor: two filled plates in #listen (email pill + engage plate) vs listen.ts comment, duplicate test id CT-11 → t_c20polish."
     },
     {
       "id": "t_652f383d",
       "title": "Cycle 21 — ADV-F-4: headline tenure matches the CV (\"15+ years\", not \"Sixteen years\") everywhere the number appears",
-      "status": "running",
+      "status": "done",
       "assignee": "coder",
       "priority": 64,
       "parents": [
@@ -624,7 +626,7 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T09:59:14.348Z",
+      "updated": "2026-09-05T10:17:15.652Z",
       "summary": "R-c8 item 17 (content parity, R7). Files: app/data/portfolio/{vitrine,experience,hero}.ts, app/data/siteContent.ts (grep \"ixteen\"), tests/content/content-check.spec.ts. Source: public/docs/Vik_Resume_Final.pdf line 3 (\"15+ year\") — or, if the roles sum to ≥16 years on the CV's own dates, keep sixteen and print the arithmetic beside it. Decide from the PDF text, record the decision.",
       "decisions": [],
       "comments": [
@@ -638,7 +640,8 @@
           "by": "orchestrator",
           "text": "SHIPPED 3209d47: the sixteen-years claim now prints its derivation (CV role dates) beside it; CT-11 content check added."
         }
-      ]
+      ],
+      "result": "SHIPPED 3209d47: 'Sixteen years' kept with the derivation 'May 2010 → September 2026' printed beside it (role spans sum 16.17 y; elapsed 16.33 y; CV headline says 15+); CT-11 tenure gate green."
     },
     {
       "id": "t_cba10f82",
@@ -1923,8 +1926,37 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T10:15:48.659Z",
-      "updated": "2026-09-05T10:15:48.659Z",
+      "updated": "2026-09-05T10:17:15.689Z",
       "summary": "## CORRECTION: V-flagship-A F1/F2 (09-verification.md c3bc139). Original output: 9fd78ef/c6bf7ff/b200958/a78d9f0 live on 8f81ae86. Failing criteria: (F1) at 390 ?gl=force hero coverage 0.00%/peak 0.0212 with canvas mounted — Hero.module.css @media (max-width:700px) .stage::after flat rgb(10 10 10 / 0.86); (F2) text-contrast algorithm on /?gl=force: 9 nodes <AA @1440, 12 @390 (.trackCompany Telstra 1.10:1, InfoCentric 1.11:1, Microsoft 1.85:1, ANZ 2.16:1, NAB 2.73:1, ATO 3.84:1; .trackYears 3.3 yr 3.84:1; hero .ledgerSource 1.34:1 @1440; 5 compass numerals 2.66–3.45:1 @390); (gap) flagship-visibility.spec.ts test.use 1440 only; About @390 peak 0.2965 < 0.35. Required fix: graded mobile scrim (same shape as desktop: transparent past the reading column) so the hero scene stays visible on phones while the copy sits on a ≥4.5:1 ground; a ?gl=force variant of TC-CONTRAST-01 (tests/a11y/text-contrast.spec.ts gains a second describe that loads /?gl=force with the SwiftShader launch args and waits for the canvases) — then fix every node it reports with local text plates (token rgb(10 10 10 / α) behind .trackCompany/.trackYears columns and the ledger sources) or by dimming the shader under the text rects (uTextRect uniform), never by dimming the scene overall below the visibility floors; flagship-visibility.spec.ts iterates viewports [1440×900, 390×844]; About field peak ≥ 0.35 at 390. Files: components/sections/Hero/Hero.module.css, Experience/Experience.module.css + strata.glsl.ts + CareerStrata.tsx, About/field.glsl.ts + AboutField.tsx, tests/a11y/text-contrast.spec.ts, tests/overhaul/flagship-visibility.spec.ts. Verification: both specs green at 1440 and 390 on ?gl=force and on the still; section suites; battery.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-05T10:17:15.689Z",
+          "by": "orchestrator",
+          "text": "ADD to the correction: About numeral '01' at 1440 measures 4.42:1 (needs 4.5) on the lit sector — text.Compass_numeral fg rgb(224,224,224); V-c20 reproduced it twice. Every compass numeral must clear 4.5:1 at 1440 and 390 on both paths."
+        }
+      ],
+      "blocker": null
+    },
+    {
+      "id": "t_9487806b",
+      "title": "Cycle 20 polish — one filled plate in #listen (email as an outlined pill, the engage action stays the filled one, per listen.ts), unique test ids (second CT-11 → CT-12), Compass.module.css stale contrast comment",
+      "status": "todo",
+      "assignee": "coder",
+      "priority": 58,
+      "parents": [
+        "t_a88c6767"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding / documentation",
+        "level": 4,
+        "effort": "medium (xhigh when coding)"
+      },
+      "provider": "openrouter→anthropic-oauth",
+      "created": "2026-09-05T10:17:15.726Z",
+      "updated": "2026-09-05T10:17:15.726Z",
+      "summary": "V-c20 minor findings: Listen.module.css .pill gives the email the same filled background as the engage plate although app/data/portfolio/listen.ts:24 says the engagement action is the only filled plate; tests/content/content-check.spec.ts has two CT-11 ids (:222 links, :308 tenure); Compass.module.css:142-146 comment claims numerals stay above 4.5:1 (false at 4.42:1 until t_flagvis0c lands).",
       "decisions": [],
       "comments": [],
       "blocker": null

@@ -31,3 +31,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-05T10:17:15.689Z)
+ADD to the correction: About numeral '01' at 1440 measures 4.42:1 (needs 4.5) on the lit sector — text.Compass_numeral fg rgb(224,224,224); V-c20 reproduced it twice. Every compass numeral must clear 4.5:1 at 1440 and 390 on both paths.
