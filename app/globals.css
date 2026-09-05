@@ -701,6 +701,21 @@ nav {
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--white);
+    /* Its own ground. The wordmark stands over the hero's stage at the top-left
+       of the frame, where the atmosphere's rake is brightest, and it used to
+       read on the hero's half-frame scrim. That scrim is retired (HERO-FOLD-v2
+       M1 / D-1, components/sections/Hero/Hero.module.css) and every run of
+       type over the scene carries its own plate instead — this one included.
+       Measured without it: 2.88:1 on the still at 1440, white on `#929292`
+       (t_h2_02, 05a-contrast-01-1440.log). Same instrument as the fold's:
+       0.90 lands the ground inside the `#2A2A2A` ceiling over the brightest
+       fog, the inline padding is given back as a negative margin so the mark
+       does not move, and no block padding is added. Once the page scrolls the
+       nav has its own ground and the plate disappears into it. */
+    background: rgb(10 10 10 / 0.90);
+    border-radius: 3px;
+    padding-inline: 0.45rem;
+    margin-inline: -0.45rem;
 }
 
 .menu-toggle {

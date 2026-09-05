@@ -1,0 +1,35 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts --grep TC-CONTRAST-01 @ 1440 --workers=1 --reporter=list
+
+Running 1 test using 1 worker
+
+  ✘  1 [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground (26.2s)
+
+
+  1) [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 
+
+    Error: 1 text node(s) below AA — worst ten:
+    2.88:1 (needs 4.5) [chrome] div.page-frame:nth-of-type(2) > nav > a.logo — "VIKRAM." fg rgb(246,246,246) on bg rgb(146,146,146) @ 18px/600
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m1[39m
+
+      468 |         failures.length,
+      469 |         `${failures.length} text node(s) below AA — worst ten:\n${worstTen(failures)}`,
+    > 470 |       ).toBe(0);
+          |         ^
+      471 |     });
+      472 |   }
+      473 | });
+        at /root/forgotten-mistory/.claude/worktrees/wf_b87d138f-c96-1/tests/a11y/text-contrast.spec.ts:470:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/error-context.md
+
+  1 failed
+    [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 

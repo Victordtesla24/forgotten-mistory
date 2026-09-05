@@ -1,0 +1,10 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts tests/overhaul/hero-plates.spec.ts --grep TC-CONTRAST-01 @ 1440|TC-HERO-PLATE-01 --workers=1 --reporter=list
+
+Running 2 tests using 1 worker
+
+  ✓  1 [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground (16.0s)
+[TC-HERO-PLATE-01] washes over the scene at 1440: 0
+  ✓  2 [chromium] › tests/overhaul/hero-plates.spec.ts:102:7 › Hero — the plates carry the contrast, not the frame › TC-HERO-PLATE-01: no wash covers the fold at 1440 on ?gl=force (3.9s)
+
+  2 passed (22.0s)
