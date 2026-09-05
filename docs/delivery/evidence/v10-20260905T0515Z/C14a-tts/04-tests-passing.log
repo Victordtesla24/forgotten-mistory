@@ -1,0 +1,46 @@
+$ npm run build:static     # BUILD_EXIT=0, credential scan PASS
+$ python3 -m http.server 5603 --directory out &     # local server 200
+$ PLAYWRIGHT_BASE_URL=http://127.0.0.1:5603 npx playwright test tests/e2e/avatar-voice.spec.ts --reporter=list
+
+Running 2 tests using 2 workers
+
+  ✓  2 [chromium] › tests/e2e/avatar-voice.spec.ts:53:7 › R3a: the synthetic voice › POST /api/tts returns MP3 audio, not a 502 (408ms)
+  ✓  1 [chromium] › tests/e2e/avatar-voice.spec.ts:67:7 › R3a: the synthetic voice › the panel that plays the voice labels it synthetic (1.6s)
+
+  2 passed (3.1s)
+
+Exit code: 0
+
+Which target each test measured
+-------------------------------
+Test 1 (the endpoint) always hits PRODUCTION: the spec names
+`https://forgotten-mistory.web.app/api/tts` absolutely, because `/api/tts` is a
+Cloud Function behind a Hosting rewrite and does not exist in a static export.
+So this pass is a live pass against the function deployed in this task — the
+same request that returned `502 {"error":"tts_upstream_failed","status":401}`
+in `02-tests-failing.log` half an hour earlier.
+
+Test 2 (the label) follows `PLAYWRIGHT_BASE_URL`, and was run here against the
+static export built from this branch's working tree, because the label is a
+client change and Hosting has not been redeployed yet — the pipeline
+(`.github/workflows/deploy.yml`) consolidates this branch into `main` and
+deploys within ten minutes of the push. Against the live origin it still fails
+until that deploy lands, exactly as it did in `02-tests-failing.log`; the
+function half is already live.
+
+Paid calls in this run: one, the spec's own 5-character `{"text":"probe"}`.
+
+Re-run after the second (comment-only) function deploy, against the live
+endpoint, to prove the revision that is actually serving:
+
+$ TTS_ORIGIN=https://forgotten-mistory.web.app npx playwright test tests/e2e/avatar-voice.spec.ts -g "POST /api/tts" --reporter=list
+  ✓  1 [chromium] › tests/e2e/avatar-voice.spec.ts:53:7 › R3a: the synthetic voice › POST /api/tts returns MP3 audio, not a 502 (552ms)
+  1 passed (1.5s)
+
+A free validation probe against the same revision, which never reaches
+ElevenLabs and so costs nothing:
+
+$ curl -X POST -H 'content-type: application/json' -d '{"text":""}' https://forgotten-mistory.web.app/api/tts
+  HTTP 400        # text_required — the handler is up and validating
+
+See `04-probe.log` for the full spend accounting (3 calls, 63 characters).
