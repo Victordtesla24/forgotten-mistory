@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T07:31:25.246Z",
+  "updated": "2026-09-05T07:41:49.002Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -103,7 +103,7 @@
     {
       "id": "t_c3ece39c",
       "title": "Hygiene — remove the two superseded worktrees + /var/tmp/v6-wt once cycles 11/13 are on main; remote = main only",
-      "status": "todo",
+      "status": "ready",
       "assignee": "cleanup-agent",
       "priority": 60,
       "parents": [
@@ -118,7 +118,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:53:43.054Z",
+      "updated": "2026-09-05T07:41:49.002Z",
       "summary": "decision.md (HYG-branches) already abandoned wt/data-backend and pruned 5 worktrees/4 branches. Left: .claude/worktrees/wf_7658aeb2-d07-1 (base 4f1d659, superseded by wf_18f926b0-2a4-2) and wf_dc0c232e-59d-1 (base 0c02861, superseded by wf_18f926b0-2a4-1); empty dir /var/tmp/v6-wt.",
       "decisions": [],
       "comments": [
@@ -1551,6 +1551,31 @@
       "created": "2026-09-05T07:31:25.195Z",
       "updated": "2026-09-05T07:31:25.195Z",
       "summary": "V-c16 (b712c3d) FAIL on 2 of 13 lines: (F-V16-2) at 1280×800 and 1366×768 the open panel {l:824,t:232,r:1256,b:712} intersects #hero h1 glyph rects (~135×69 px of the name covered; TC-BOT-12 only checks the block box); (F-V16-1) the launcher box still overlaps <p>/<li> boxes in #about at 390 (luminance is now safe — dark plate — so the remaining question is legibility of the covered words, not contrast). Non-blocking: WCAG 2.5.3 Label in Name — visible pill says Ask Mini Vic while the accessible name is Open Mini Vic assistant; at 390 the affordance is a near-black disc with a faint face and no word. R-c13 CC-03a: never ship a source-less <video> (render it only with a resolved source, poster first) and give the button a permanent 24×24 white mark (speech-mark svg or VIC monogram) rendered UNDER the video as the resting state.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_rc14rev01",
+      "title": "R-c14 — adversarial + composition + motion council review of the LIVE site after the P100 fix, cycles 15/16/16b and the React 19 upgrade (O2/O6); PASS required to close the refactor loop",
+      "status": "todo",
+      "assignee": "reviewer",
+      "priority": 95,
+      "parents": [
+        "t_86cdd156",
+        "t_c16b0001",
+        "t_r19r3f9"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T07:41:48.957Z",
+      "updated": "2026-09-05T07:41:48.957Z",
+      "summary": "Same three lenses and merge as R-c13 (docs/delivery/evidence/v10-20260905T0515Z/R-c13/review.md is the template and the open backlog); precondition: live build is a descendant of the last of the three parent merges; must include the hardware-GPU spoof pass and the ?gl=force SwiftShader pass (0 pageerrors, canvases per section), every R-c13 item re-graded (closed / open), and the §0.3 mandates.",
       "decisions": [],
       "comments": [],
       "blocker": null

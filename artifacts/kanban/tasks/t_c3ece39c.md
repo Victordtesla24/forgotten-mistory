@@ -49,3 +49,6 @@ Also move docs/delivery/evidence/v9-20260904T2312Z/C11-vitrine-integration/apply
 
 ## COMMENT (2026-09-05T06:53:43.054Z)
 Also (V-C14a F1/F2): README.md:304 still says '58 TTS characters spent' (true figure 63, 07-decisions.md §6); and evidence .log files under docs/delivery/evidence/**/ are untracked because .gitignore:42 is a blanket *.log — add '!docs/delivery/evidence/**/*.log' so red-run proofs travel with the repo, then git add the C14a/C11/C13 logs.
+
+## STATUS (2026-09-05T07:41:49.002Z)
+ready — parents C13/C11 done; dispatched as a cleanup-agent lane (sonnet, medium)
