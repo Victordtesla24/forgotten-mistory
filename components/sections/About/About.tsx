@@ -67,6 +67,15 @@ export default function About() {
 
   const sectionRef = useRef<HTMLElement>(null);
   const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
+  // The three boxes the field measures itself against every frame. The plane is
+  // one screen tall and travels with the reader, the instrument is sticky inside
+  // it, and the reading column is wherever the ten actually are — so none of
+  // these can be a constant, and all three are read from the DOM rather than
+  // guessed at in the shader. See AboutField.tsx.
+  const fieldRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const captionRef = useRef<HTMLParagraphElement>(null);
+  const listRef = useRef<HTMLOListElement>(null);
 
   const clearHover = useCallback(() => setHovered(-1), []);
 
@@ -158,28 +167,44 @@ export default function About() {
         </header>
 
         <div className={styles.body}>
+          {/* The field. It is the plane the whole of `#about` is drawn on — the
+              width of both columns and one screen tall, travelling with the
+              reader — not a backing behind the dial. Until c24 the slot was the
+              dial's own box, and two independent reviews in a row recorded a
+              recruiter's recall of this section as "the 384x384 SVG radar",
+              which is exactly what a field confined to the widget's footprint
+              gets you (G-A3). The engraving is now chrome over the light rather
+              than the light's reason for existing.
+
+              Still aria-hidden, still not the content: with reduced motion or
+              no WebGL `Scene` mounts nothing, the CSS still underneath carries
+              the same light, and the ten and the instrument are unchanged. */}
+          <div className={styles.field} data-axis={active} aria-hidden="true">
+            <div ref={fieldRef} className={styles.fieldViewport}>
+              {/* Half resolution: the field is broad, smoothstepped light with
+                  no line in it, and it cost 333.3 ms a frame at full resolution
+                  (G-X1-01). The engraving over it is SVG and is untouched. */}
+              <Scene className={styles.fieldSlot} sceneId="about-field" resolutionScale={0.5}>
+                <AboutField
+                  active={active}
+                  hostRef={fieldRef}
+                  stageRef={stageRef}
+                  captionRef={captionRef}
+                  listRef={listRef}
+                />
+              </Scene>
+            </div>
+          </div>
+
           {/* The instrument. Sticky beside the list on a wide screen; on a phone
               it sits above the list and stops being sticky. */}
           <div className={styles.instrument}>
-            <div className={styles.instrumentStage}>
-              {/* The field the rose turns over: the same ten sectors, lit, on
-                  the same index. It is behind the engraving and aria-hidden,
-                  and it is not the content — with reduced motion or no WebGL
-                  `Scene` mounts nothing and the instrument is unchanged. */}
-              <div className={styles.field} data-axis={active}>
-                {/* Half resolution: the field is an annulus of light with
-                    smoothstepped edges and no line in it, and it cost 333.3 ms a
-                    frame at full resolution (G-X1-01). The engraving over it is
-                    SVG and is not touched by this. */}
-                <Scene className={styles.fieldSlot} sceneId="about-field" resolutionScale={0.5}>
-                  <AboutField active={active} />
-                </Scene>
-              </div>
+            <div ref={stageRef} className={styles.instrumentStage}>
               <Compass active={active} labels={DIMENSION_NAMES} sides={DIMENSION_SIDES} sweep={swept} />
             </div>
             {/* The reading, then the constant. The argument — no scores — stays
                 printed under the face whichever axis is being read. */}
-            <p className={styles.instrumentCaption}>
+            <p ref={captionRef} className={styles.instrumentCaption}>
               <span className={styles.instrumentReading}>
                 {active >= 0 ? aboutContent.dimensions[active].name : '—'}
               </span>
@@ -205,7 +230,7 @@ export default function About() {
             </dl>
           </div>
 
-          <ol className={styles.list} onMouseLeave={clearHover}>
+          <ol ref={listRef} className={styles.list} onMouseLeave={clearHover}>
             {aboutContent.dimensions.map((dimension, index) => (
               <li
                 key={dimension.name}
