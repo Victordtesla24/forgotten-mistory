@@ -1,0 +1,1765 @@
+TAP version 13
+# Subtest: Served CSS palette (bundle level)
+    # Subtest: the static export ships stylesheets to scan
+    ok 1 - the static export ships stylesheets to scan
+      ---
+      duration_ms: 5.017099
+      type: 'test'
+      ...
+    # Subtest: carries no chromatic non-gold colour and no Tailwind hue utility
+    not ok 2 - carries no chromatic non-gold colour and no Tailwind hue utility
+      ---
+      duration_ms: 18.639358
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_2c7160af-27e-1/tests/palette_bundle.test.mjs:45:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        47 chromatic value(s) in the served CSS (rule: sRGB channel spread > 6, OKLCH chroma, HSL saturation, or a hue utility; gold is the one sanctioned hue):
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .border-orange-400
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .border-red-500
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .border-zinc-200
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .border-zinc-300
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-blue-600
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-gray-800
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-green-400
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-green-500
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-red-500
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-zinc-400
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-zinc-500
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .stroke-amber-400
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-blue-500
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-gray-50
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-red-500
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-slate-200
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-slate-300
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-slate-400
+          out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-zinc-100
+          out/_next/static/css/5665d0342d4e5f0e.css :: #fb2c3666 (spread 207)
+          out/_next/static/css/5665d0342d4e5f0e.css :: #080b11 (spread 9)
+          out/_next/static/css/5665d0342d4e5f0e.css :: #1e2939cc (spread 27)
+          out/_next/static/css/5665d0342d4e5f0e.css :: #fb2c3633 (spread 207)
+          out/_next/static/css/5665d0342d4e5f0e.css :: #9f9fa9 (spread 10)
+          out/_next/static/css/5665d0342d4e5f0e.css :: #71717b1a (spread 10)
+          out/_next/static/css/5665d0342d4e5f0e.css :: #ff735066 (spread 175)
+          out/_next/static/css/5665d0342d4e5f0e.css :: #c9cdd673 (spread 13)
+          out/_next/static/css/5665d0342d4e5f0e.css :: #71717b33 (spread 10)
+          out/_next/static/css/5665d0342d4e5f0e.css :: #e8ebf042 (spread 8)
+          out/_next/static/css/5665d0342d4e5f0e.css :: #e8ebf06b (spread 8)
+          out/_next/static/css/5665d0342d4e5f0e.css :: #aeb6c21f (spread 20)
+          out/_next/static/css/5665d0342d4e5f0e.css :: #282a3242 (spread 10)
+          out/_next/static/css/5665d0342d4e5f0e.css :: #282a3238 (spread 10)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .237 …)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .183 …)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .189 …)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .209 …)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .219 …)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .214 …)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .245 …)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .013 …)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .022 …)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .04 …)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .041 …)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .033 …)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .015 …)
+          out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .016 …)
+        + actual - expected
+        
+        + [
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .border-orange-400',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .border-red-500',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .border-zinc-200',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .border-zinc-300',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-blue-600',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-gray-800',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-green-400',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-green-500',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-red-500',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-zinc-400',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-zinc-500',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .stroke-amber-400',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-blue-500',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-gray-50',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-red-500',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-slate-200',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-slate-300',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-slate-400',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-zinc-100',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #fb2c3666 (spread 207)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #080b11 (spread 9)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #1e2939cc (spread 27)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #fb2c3633 (spread 207)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #9f9fa9 (spread 10)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #71717b1a (spread 10)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #ff735066 (spread 175)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #c9cdd673 (spread 13)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #71717b33 (spread 10)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #e8ebf042 (spread 8)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #e8ebf06b (spread 8)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #aeb6c21f (spread 20)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #282a3242 (spread 10)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: #282a3238 (spread 10)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .237 …)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .183 …)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .189 …)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .209 …)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .219 …)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .214 …)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .245 …)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .013 …)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .022 …)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .04 …)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .041 …)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .033 …)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .015 …)',
+        +   'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .016 …)'
+        + ]
+        - []
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual:
+        0: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .border-orange-400'
+        1: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .border-red-500'
+        2: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .border-zinc-200'
+        3: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .border-zinc-300'
+        4: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-blue-600'
+        5: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-gray-800'
+        6: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-green-400'
+        7: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-green-500'
+        8: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-red-500'
+        9: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-zinc-400'
+        10: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .bg-zinc-500'
+        11: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .stroke-amber-400'
+        12: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-blue-500'
+        13: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-gray-50'
+        14: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-red-500'
+        15: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-slate-200'
+        16: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-slate-300'
+        17: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-slate-400'
+        18: 'out/_next/static/css/5665d0342d4e5f0e.css :: hue utility .text-zinc-100'
+        19: 'out/_next/static/css/5665d0342d4e5f0e.css :: #fb2c3666 (spread 207)'
+        20: 'out/_next/static/css/5665d0342d4e5f0e.css :: #080b11 (spread 9)'
+        21: 'out/_next/static/css/5665d0342d4e5f0e.css :: #1e2939cc (spread 27)'
+        22: 'out/_next/static/css/5665d0342d4e5f0e.css :: #fb2c3633 (spread 207)'
+        23: 'out/_next/static/css/5665d0342d4e5f0e.css :: #9f9fa9 (spread 10)'
+        24: 'out/_next/static/css/5665d0342d4e5f0e.css :: #71717b1a (spread 10)'
+        25: 'out/_next/static/css/5665d0342d4e5f0e.css :: #ff735066 (spread 175)'
+        26: 'out/_next/static/css/5665d0342d4e5f0e.css :: #c9cdd673 (spread 13)'
+        27: 'out/_next/static/css/5665d0342d4e5f0e.css :: #71717b33 (spread 10)'
+        28: 'out/_next/static/css/5665d0342d4e5f0e.css :: #e8ebf042 (spread 8)'
+        29: 'out/_next/static/css/5665d0342d4e5f0e.css :: #e8ebf06b (spread 8)'
+        30: 'out/_next/static/css/5665d0342d4e5f0e.css :: #aeb6c21f (spread 20)'
+        31: 'out/_next/static/css/5665d0342d4e5f0e.css :: #282a3242 (spread 10)'
+        32: 'out/_next/static/css/5665d0342d4e5f0e.css :: #282a3238 (spread 10)'
+        33: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .237 …)'
+        34: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .183 …)'
+        35: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .189 …)'
+        36: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .209 …)'
+        37: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .219 …)'
+        38: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .214 …)'
+        39: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .245 …)'
+        40: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .013 …)'
+        41: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .022 …)'
+        42: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .04 …)'
+        43: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .041 …)'
+        44: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .033 …)'
+        45: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .015 …)'
+        46: 'out/_next/static/css/5665d0342d4e5f0e.css :: oklch(… .016 …)'
+      operator: 'deepStrictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_2c7160af-27e-1/tests/palette_bundle.test.mjs:51:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1442:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+      ...
+    1..2
+not ok 1 - Served CSS palette (bundle level)
+  ---
+  duration_ms: 24.618854
+  type: 'suite'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_2c7160af-27e-1/tests/palette_bundle.test.mjs:39:1'
+  failureType: 'subtestsFailed'
+  error: '1 subtest failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: Tailwind source detection
+    # Subtest: scans only the directories that render markup
+    not ok 1 - scans only the directories that render markup
+      ---
+      duration_ms: 0.643495
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_2c7160af-27e-1/tests/palette_bundle.test.mjs:62:3'
+      failureType: 'testCodeFailure'
+      error: 'app/globals.css must import Tailwind with source(none) — a bare `@import "tailwindcss"` lets v4 scan the whole repository'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual: |-
+        @import "tailwindcss";
+        
+        :root {
+            /* ── Monochrome design tokens — single source (docs/overhaul/SPEC.md §3.1).
+               No hue: depth comes from light, blur and motion. Accent = luminous white. ── */
+            --ink-900: #0A0A0A;
+            --ink-800: #131313;
+            --ink-700: #1C1C1C;
+            --ink-500: #3C3C3C;
+            --mist-400: #909090;
+            --mist-200: #CDCDCD;
+            --white: #F6F6F6;
+            --accent: #EBEBEB;
+            --steel: #B8B8B8;
+        
+            /* ── The one hue on the site ───────────────────────────────────────────
+               Taken verbatim from the Aether brand palette
+               (aether-job-career-agent/apps/web/src/app/globals.css), so his product
+               and his portfolio are visibly the same hand. Same token names, same
+               values — this is not a portfolio approximating a brand, it is the brand.
+        
+               Gold is not decoration here; it is a claim. It appears ONLY where a
+               figure has a source a reader could go and check: the jaws of a closed
+               caliper, the "measured in production" mark on the calibration card, and
+               the live URL of a repository that is actually running. Nothing else on
+               the page is allowed to be gold, which is what keeps it meaning something
+               — the moment it becomes an accent for things that merely look important,
+               it stops being evidence and becomes brass.
+        
+               Everything else remains achromatic. The static audit permits these values
+               here, in lib/palette.ts and in design-tokens.json, and nowhere else: a
+               component must reference the token, never the hex. */
+            --gold: #c9a84c;
+            --gold-light: #d4b65c;
+            --gold-pale: #e8d5a3;
+            --gold-dark: #b0923f;
+            --gold-muted: rgb(201 168 76 / 0.08);
+            --gold-border: rgb(201 168 76 / 0.2);
+            --gold-veil: rgb(201 168 76 / 0.13);
+        
+            --token-bg-base: var(--ink-900);
+            --token-bg-surface: var(--ink-800);
+            --token-bg-elevated: var(--ink-700);
+            --token-text-primary: var(--white);
+            --token-text-secondary: var(--mist-400);
+            --token-brand-primary: var(--white);
+            --token-brand-accent: var(--steel);
+            --token-border-default: rgb(255 255 255 / 0.10);
+            --bg-color: var(--token-bg-base);
+            --text-color: var(--token-text-primary);
+            --accent-color: var(--accent);
+            --secondary-text: var(--token-text-secondary);
+            --border-color: var(--token-border-default);
+        
+            --mist-100: #D8D8D8;
+            --ink-400: #939393;
+            --ink-300: #7D7D7D;
+            --card-bg: rgb(246 246 246 / 0.03);
+            /* ── Shared card depth system (coherence pass): one radius, one shadow ramp,
+               one rim-light, one border ramp + sheen so every card surface reads as the
+               same lit glass instead of drifting per-section. ── */
+            --card-radius: 18px;
+            --card-border: rgb(255 255 255 / 0.09);
+            --card-border-hover: rgb(255 255 255 / 0.18);
+            --card-rim: inset 0 1px 0 rgb(246 246 246 / 0.07);
+            --card-shadow: 0 14px 44px -10px rgb(0 0 0 / 0.5);
+            --card-shadow-hover: 0 22px 60px -12px rgb(0 0 0 / 0.62), 0 0 28px rgb(246 246 246 / 0.06);
+            --card-sheen: radial-gradient(120% 90% at 18% 0%, rgb(246 246 246 / 0.06), transparent 58%);
+            --cursor-size: 20px;
+            /* The rendered height of the fixed bar, used by the hero to clear it. */
+            --nav-height: 5.5rem;
+        
+            /* ── The page's one column ────────────────────────────────────────────
+               Every section used to invent its own container width and centre it, so
+               at 1440 the page carried four different left edges (design council
+               R-c1, C2). `--page-gutter` is the breathing room either side of the
+               viewport; `--page-max` is the single content column that every
+               section's first heading stands on. Sections read both — never a
+               literal width — so the spine is one number in one place. */
+            --page-gutter: clamp(1.5rem, 5vw, 5rem);
+            --page-max: 78rem;
+            /* Three faces, one job each (design direction §1.1). All self-hosted via
+               next/font; the literal names are fallbacks only.
+                 --font-heading  a document serif, for the h1, the six section titles and
+                                 every large figure. Institutional record, not product
+                                 marketing — which is the register the site argues in.
+                 --font-body     Inter, for everything a reader reads at length.
+                 --font-mono     IBM Plex Mono, for provenance: sources, dates, axis
+                                 readouts, repository metrics. Data, never emphasis. */
+            --font-body: var(--font-inter), 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            --font-heading: var(--font-serif), 'Source Serif 4', ui-serif, Georgia, 'Times New Roman', serif;
+            /* The italic is a separate, non-preloaded face — it appears exactly once,
+               on the closing sentence, and has no business on the critical path. */
+            --font-heading-italic: var(--font-serif-italic), 'Source Serif 4', ui-serif, Georgia, serif;
+            --font-mono: var(--font-plex-mono), 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+            /* ── Motion (R-46 / SC-27.1) ───────────────────────────────────────────
+               Two bands, and nothing is allowed to sit between them. Interface motion
+               answers a gesture in 200-450ms — fast enough to feel like a response,
+               slow enough to be seen. Cinematic motion carries a reveal in 600-1200ms.
+               The retired --motion-slow (520ms) fell in the dead zone: too slow to
+               read as feedback, too quick to read as staging.
+        
+               Stagger intervals are the gap BETWEEN two entrances, not the length of
+               one, so they are outside the bands by construction.
+        
+               Easing is always a custom cubic-bezier. The browser keywords (ease,
+               linear, ease-in-out) are not part of this system: they describe no
+               physical object and give every site the same acceleration. */
+            /* Interface — 200-450ms */
+            --motion-fast: 200ms;
+            --motion-base: 320ms;
+            --motion-emphatic: 440ms;
+            /* Cinematic — 600-1200ms */
+            --motion-cine-in: 720ms;
+            --motion-cine: 900ms;
+            --motion-cine-long: 1160ms;
+            /* Stagger intervals — not durations. */
+            --stagger-tight: 60ms;
+            --stagger: 90ms;
+            --stagger-loose: 140ms;
+            /* Easing — custom bezier only, no keywords, ever. */
+            --motion-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+            --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+            --motion-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+            --motion-ease-chrome: cubic-bezier(0.22, 0.61, 0.36, 1);
+            /* --motion-cine-long, --stagger-tight and --motion-ease-exit are the far
+               edges of the system and currently have no call site: nothing on this page
+               runs for 1160ms, staggers as tightly as 60ms, or exits (nothing here is
+               dismissed). They are declared because a band with only its middle named
+               is not a band, and because design-tokens.json publishes the same set. */
+        
+            /* ── The 8-point spatial scale (R-48 / SC-29.1) ─────────────────────────
+               Declared here so a module author reaches for a step instead of typing a
+               literal. Every margin, padding, gap and inset under components/** is one
+               of these, a clamp() whose BOTH endpoints are one of these, or a calc()
+               over them. --space-05 (4px) is the only sub-8 step and is permitted only
+               for an intra-component hairline gap (a dot beside its label); it is not
+               a layout step. --space-20 is the shipped section rhythm. */
+            --space-0: 0;        /*   0px — the anchor; a zero is still written `0` */
+            --space-05: 0.25rem;  /*   4px */
+            --space-1: 0.5rem;    /*   8px */
+            --space-2: 1rem;      /*  16px */
+            --space-3: 1.5rem;    /*  24px */
+            --space-4: 2rem;      /*  32px */
+            --space-5: 2.5rem;    /*  40px */
+            --space-6: 3rem;      /*  48px */
+            --space-8: 4rem;      /*  64px */
+            --space-10: 5rem;     /*  80px */
+            --space-14: 7rem;     /* 112px */
+            --space-20: 10rem;    /* 160px */
+        
+            /* ── The modular type scale (R-47 / SC-28.1) ────────────────────────────
+               Ratio 1.20 (minor third) at the small end, opening to 1.25 above step 4,
+               anchored on the shipped 1rem body and the shipped section-title clamp
+               (which is --fs-title, unchanged). Every step is fluid: the clamp's slope
+               is what keeps the measure inside 55-75ch across the whole viewport range
+               instead of only at the breakpoints someone remembered to check.
+        
+               Optical tuning belongs to the step, not to the call site: tracking opens
+               as size falls and tightens as it rises, and leading is bound to the step
+               — which is why there are six leading values on this site and not
+               nineteen. --lh-* names them so a module can say which step it is on. */
+            --fs-micro: clamp(0.625rem, 0.20vw + 0.58rem, 0.6875rem);
+            --fs-caption: clamp(0.6875rem, 0.22vw + 0.64rem, 0.75rem);
+            --fs-small: clamp(0.8125rem, 0.25vw + 0.75rem, 0.875rem);
+            --fs-body: clamp(0.9375rem, 0.30vw + 0.87rem, 1rem);
+            --fs-lede: clamp(1rem, 0.40vw + 0.90rem, 1.125rem);
+            --fs-h3: clamp(1.1875rem, 0.75vw + 1rem, 1.4375rem);
+            --fs-h2: clamp(1.4375rem, 1.4vw + 1.1rem, 1.875rem);
+            --fs-title: clamp(2rem, 4.2vw, 3.4rem);
+            --fs-display: clamp(2.4rem, 5.6vw, 4rem);
+            --fs-name: clamp(3rem, 8.2vw, 7.5rem);
+            /* Tracking, per step. The label steps (micro/caption/small) also carry
+               deliberate all-caps tracking of 0.12em-0.2em at some call sites: that is
+               legibility work on uppercase runs, a different job from optical
+               compensation, and it is left as authored. --ls-body is 0 and --ls-micro
+               is currently unclaimed for that reason; both are declared so the ladder
+               reads whole, and design-tokens.json publishes the same ten. */
+            --ls-micro: 0.08em;
+            --ls-caption: 0.06em;
+            --ls-small: 0.02em;
+            --ls-body: 0;
+            --ls-lede: -0.005em;
+            --ls-h3: -0.012em;
+            --ls-h2: -0.018em;
+            --ls-title: -0.025em;
+            --ls-display: -0.03em;
+            --ls-name: -0.035em;
+            /* Leading, per step — nineteen values collapse to six. */
+            --lh-tight: 1.05;   /* steps 4-6 */
+            --lh-heading: 1.2;  /* step 3 */
+            --lh-snug: 1.35;    /* step 2 */
+            --lh-label: 1.5;    /* steps -3/-2 */
+            --lh-caption: 1.55; /* step -1 */
+            --lh-prose: 1.68;   /* steps 0-1 */
+        
+            /* ── Measure (R-47 / SC-28.1) ───────────────────────────────────────────
+               Two classes, and nothing between 27ch and 57ch is permitted for prose.
+               --measure-read is running text; because it is expressed in ch it tracks
+               the font-size clamp, so it holds 55-75 characters at every breakpoint
+               rather than only at the one the layout was drawn at. --measure-display
+               is for a display-size single sentence, which is a typographic object and
+               not a paragraph. */
+            --measure-read: clamp(58ch, 64ch + 0.4vw, 72ch);
+            --measure-display: 26ch;
+        
+            /* ── Cinematic-monochrome design language (overhaul INC1) — derived only, no new hue.
+               Every colour below is a locked token or an achromatic rgb()/rgba() of a token RGB
+               (channels equal, or steel 174/182/194 → (max-min)/max = 0.103 < audit SAT_MAX 0.28). ── */
+            /* Rhythm + geometry */
+            --beat-pad: clamp(6rem, 12vh, 11rem);
+            --letterbox-h: clamp(40px, 7vh, 88px);
+            --rail-gap: clamp(1rem, 2vw, 1.75rem);
+            --tile-w: clamp(240px, 24vw, 340px);
+            --gutter: clamp(1.25rem, 5vw, 4rem);
+            /* Cursor spotlight anchor — static default (touch / no-JS safe); CursorGlow eases it. */
+            --spot-x: 50%;
+            --spot-y: 18%;
+            /* Achromatic elevation ramp */
+            --elev-1: 0 8px 24px -10px rgb(0 0 0 / 0.55), inset 0 1px 0 rgb(246 246 246 / 0.06);
+            --elev-2: 0 20px 60px -18px rgb(0 0 0 / 0.66), inset 0 1px 0 rgb(246 246 246 / 0.08);
+            --elev-3: 0 34px 90px -24px rgb(0 0 0 / 0.74), inset 0 1px 0 rgb(246 246 246 / 0.10);
+            /* Rim-light — the only "glow": a still box-shadow, no per-frame paint. */
+            --rim: 0 0 0 1px rgb(246 246 246 / 0.10), 0 0 28px -8px rgb(232 235 240 / 0.26);
+            --rim-strong: 0 0 0 1px rgb(246 246 246 / 0.22), 0 0 44px -6px rgb(232 235 240 / 0.42);
+            --hair: inset 0 0 0 1px rgb(60 60 60 / 0.70);
+            /* Volumetric key light (steel #B8B8B8 = 174 182 194, saturation 0.103). */
+            --keylight: radial-gradient(60% 52% at 50% 36%, rgb(174 182 194 / 0.12), transparent 70%);
+        
+            /* ── Interaction states (R-49 / SC-30.1 / R-90) ─────────────────────────
+               The six-state library of lock §5.3, reduced to the five values every
+               state is built from. They live here rather than in the modules because a
+               press that is 1px in one section and 3px in another is not a system, and
+               because a ring whose width is written out at nine call sites is a ring
+               that will eventually be nine different rings. */
+            --state-ring-width: 2px;
+            --state-ring-color: var(--white);
+            --state-ring-offset: 3px;
+            /* A press is felt, not watched: one pixel down, half a percent in. */
+            --press-settle: translateY(1px) scale(0.995);
+            /* Disabled spends ink, never opacity — a fade takes the contrast with it. */
+            --state-disabled-ink: var(--ink-300);
+            --state-disabled-edge: var(--ink-500);
+        }
+        
+        @property --angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+        
+        * {
+            margin: 0;
+            box-sizing: border-box;
+            cursor: auto;
+        }
+        
+        /*
+         * Padding reset lives in Tailwind's `base` layer so that layered padding
+         * utilities (p-*, px-*, pl-*, …) win over it. An UNLAYERED `* { padding: 0 }`
+         * beats every Tailwind utility regardless of specificity (unlayered CSS always
+         * outranks @layer rules) — which silently zeroed the padding on every element
+         * that relies on Tailwind padding utilities, leaving the MiniVic chatbot with
+         * no internal spacing at all. Only MiniVicBot, FloatingDetailBox and the shared
+         * Button use these utilities, so the effect is contained to them.
+         */
+        @layer base {
+            * {
+                padding: 0;
+            }
+        }
+        
+        /* MiniVic quick-reply strip scrolls horizontally; a fade at the right edge
+           signals the overflow is intentional rather than a hard clip, and the row
+           snaps chip-by-chip so a swipe lands on a whole prompt, never mid-word
+           (design council R-c1, C5). The left edge stays crisp so the first chip is
+           read in full. */
+        .minivic-quickstrip {
+            -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+            mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+            scroll-snap-type: x proximity;
+        }
+        
+        .minivic-quickstrip > * {
+            scroll-snap-align: start;
+        }
+        
+        /* ══ The MiniVic launcher ═══════════════════════════════════════════════════
+           Design council R-c8 items 7 (C-04), 12 (ADV-F-3) and 13 (ADV-F-2), plus the
+           V-C11 F-1 correction.
+        
+           Three faults, and they were one fault: the floating control was drawn as an
+           empty ring with a pale glow, so it read as a loading spinner rather than as a
+           person you can talk to; it was painted in Tailwind zinc, a blue-leaning grey
+           that is not R == G == B; and on a phone that light surface sat straight on
+           top of the reading column — one Experience bullet measured 1.79:1 against it
+           (rgb(205,205,205) ink on a sampled ground of rgb(153,153,157)).
+        
+           It is a portrait on a plate now: the same grayscale face the open panel
+           header shows, inset two pixels inside a single hairline of --card-border, on
+           --ink-900. Below 87.5rem the page gutter is too narrow to keep the disc clear
+           of the measure, so there the portrait is dimmed to a silhouette and every
+           pixel the launcher paints stays darker than the brightest ground that still
+           carries --mist-200 body ink at 4.5:1. The launcher may float over prose; it
+           may never brighten it. From 52.125rem up it also carries its own name,
+           because an icon-only circle is legible only to someone who already knows what
+           it is. Enforced by tests/a11y/minivic-occlusion.spec.ts and
+           tests/monochrome/minivic-launcher.spec.ts. */
+        
+        /* The dock fades out above the hero, but its button stays in the tab order —
+           it no longer carries aria-hidden, which was a focusable control inside a
+           hidden subtree (ADV-F-3). Focusing it therefore has to bring it back. */
+        .minivic-dock:focus-within {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+        }
+        
+        /* ── The panel's height is the hero's name, measured ─────────────────────────
+           V-c16 F-V16-2. The dock is anchored 24px from the bottom and the launcher is
+           64px tall, so the panel's bottom edge sits at 100svh − 5.5rem and its top
+           edge is that minus its own height. At 30rem tall the top edge lands at 232px
+           on a 1280×800 laptop, and the hero name's glyphs run to y=301 — the panel
+           painted over ~135×69px of "Vikram Deshpande" (measured with
+           Range.getClientRects, 01-baseline.log). Shifting the panel sideways cannot
+           help: at 1280 the name's glyphs reach x=959 and a 27rem panel flush with the
+           right gutter starts at x=824, so clearing them horizontally would need a
+           viewport 175px wider than the one it is on.
+        
+           So the height is capped instead. Across a 5-width × 9-height grid
+           (390…1920 × 640…1400) the name's lowest glyph never fell below y=330, so the
+           panel's top edge is held at 22rem — 352px, the measured floor plus 22px —
+           whenever the viewport is short enough for that to bind:
+        
+               height = 100svh − 5.5rem − 22rem = 100svh − 27.5rem
+        
+           Below 46.5rem of viewport height that formula leaves less than the dialog's
+           own chrome, so a 19rem floor takes over — enough for the stage, the persona
+           strip, the prompts and the composer. The clearance is guaranteed wherever
+           the cap binds and, by measurement, down to about 700px of viewport height
+           where the floor does; below that the hero's name sits lower than the panel
+           can start and the trade is stated rather than hidden. */
+        .minivic-panel {
+            height: max(19rem, min(30rem, calc(100svh - 27.5rem)));
+            max-height: max(19rem, min(30rem, calc(100svh - 27.5rem)));
+        }
+        
+        /* A shorter panel has to give the height back from its chrome, not from the
+           conversation: on a 1366×768 laptop the cap leaves 328px, and with the stage
+           and the padding at their full size the transcript was 32px — one line. The
+           persona strip and the log tighten below 52rem of viewport height, which is
+           where the cap starts binding; from 900px up nothing here applies and the
+           panel is unchanged. The stage keeps its 6.5rem floor at every height — it
+           carries the identity block and the synthetic-voice disclosure, and squeezing
+           it further pushed that block over the transport buttons. */
+        @media (max-height: 52rem) {
+            .minivic-panel__controls {
+                padding-top: var(--space-1);
+                padding-bottom: var(--space-1);
+            }
+        
+            .minivic-panel__log {
+                padding-top: var(--space-1);
+                padding-bottom: var(--space-1);
+            }
+        }
+        
+        .minivic-launcher {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            border: 0;
+            background: none;
+        }
+        
+        .minivic-launcher__pill {
+            display: none;
+            padding: var(--space-1) var(--space-2);
+            border-radius: 999px;
+            background: rgb(10 10 10 / 0.72);
+            color: var(--mist-200);
+            font-family: var(--font-body);
+            font-size: var(--fs-caption);
+            letter-spacing: var(--ls-caption);
+            line-height: 1;
+            white-space: nowrap;
+        }
+        
+        @media (min-width: 52.125rem) {
+            .minivic-launcher__pill {
+                display: inline-block;
+            }
+        }
+        
+        .minivic-launcher__disc {
+            position: relative;
+            display: block;
+            flex: 0 0 auto;
+            width: 4rem;
+            height: 4rem;
+            border: 1px solid var(--card-border);
+            border-radius: 50%;
+            background: var(--ink-900);
+            box-shadow: 0 10px 30px rgb(0 0 0 / 0.55);
+            overflow: hidden;
+            transition:
+                transform var(--motion-fast) var(--motion-ease-standard),
+                border-color var(--motion-fast) var(--motion-ease-standard);
+        }
+        
+        .minivic-launcher:hover .minivic-launcher__disc,
+        .minivic-launcher:focus-visible .minivic-launcher__disc {
+            border-color: var(--card-border-hover);
+            transform: scale(1.06);
+        }
+        
+        /* Open: a second hairline outside the first, not a ring of colour. */
+        .minivic-launcher[data-open] .minivic-launcher__disc {
+            box-shadow:
+                0 0 0 4px rgb(255 255 255 / 0.12),
+                0 10px 30px rgb(0 0 0 / 0.55);
+        }
+        
+        /* The portrait and the hover video occupy the same two-pixel inset, so the
+           video simply plays over the still when it has loaded. */
+        .minivic-launcher__portrait,
+        .minivic-launcher__video {
+            position: absolute;
+            inset: 2px;
+            width: calc(100% - 4px);
+            height: calc(100% - 4px);
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: 50% 18%;
+            /* Dimmed by default: every viewport narrower than 87.5rem floats this over
+               body text at some scroll position, and below 87.5rem the speech mark —
+               not the face — is what has to read, so the portrait steps back far enough
+               to leave the mark the brightest thing on the plate without breaching the
+               phone ceiling. */
+            filter: grayscale(1) contrast(1.05) brightness(0.12);
+        }
+        
+        .minivic-launcher__portrait {
+            background-image: url('/assets/my_avatar.webp');
+            background-position: 50% 18%;
+            background-size: cover;
+        }
+        
+        /* The resting mark (R-c13 CC-03a). It sits above the portrait and below the
+           video, so it is what the control paints before anything has loaded and the
+           avatar is the enhancement over it, not the other way round. --white is the
+           ink; the drop shadow is what lets it stay legible once the face behind it is
+           shown at full value. */
+        .minivic-launcher__mark {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 1.5rem;
+            height: 1.5rem;
+            transform: translate(-50%, -50%);
+            color: var(--white);
+            /* Bounded, not chosen. TC-MV-OCCLUDE-02 caps every pixel the closed
+               launcher paints at 390 at the brightest ground that still carries
+               --mist-200 body ink at 4.5:1 (luminance 0.0968 ≈ rgb(87,87,87)). The
+               portrait peaks at rgb(33) under brightness(0.12), so white composited at
+               α over it lands at 33 + 222α; α = 0.22 puts the mark at rgb(82) —
+               2.4:1 against its own plate, and inside the ceiling with room to spare. */
+            opacity: 0.22;
+            filter: drop-shadow(0 0 3px rgb(0 0 0 / 0.92));
+            pointer-events: none;
+        }
+        
+        @media (min-width: 87.5rem) {
+            /* From 1400px the page's own gutter (96px at --page-max) holds the disc
+               clear of the measure, so the face is shown at full value and the mark
+               with it. */
+            .minivic-launcher__portrait,
+            .minivic-launcher__video {
+                filter: grayscale(1) contrast(1.05);
+            }
+        
+            .minivic-launcher__mark {
+                opacity: 0.92;
+            }
+        }
+        
+        @media (max-width: 30rem) {
+            .minivic-launcher__disc {
+                /* The 44px minimum target, and not one pixel of the column more. */
+                width: 2.75rem;
+                height: 2.75rem;
+            }
+        }
+        
+        /* Status pip: dark on the dark plate, because it sits on the same surface the
+           contrast ceiling governs. The ping ring is the one bright mark on the
+           launcher and it is shown only where the launcher never covers prose. */
+        .minivic-launcher__pip {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            display: flex;
+            width: 0.625rem;
+            height: 0.625rem;
+        }
+        
+        .minivic-launcher__pulse {
+            display: none;
+            position: absolute;
+            inset: 0;
+            border-radius: 999px;
+            background: var(--mist-400);
+            opacity: 0.75;
+        }
+        
+        @media (min-width: 87.5rem) {
+            .minivic-launcher__pulse {
+                display: inline-flex;
+            }
+        }
+        
+        .minivic-launcher__dot {
+            position: relative;
+            display: inline-flex;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--ink-900);
+            border-radius: 999px;
+            background: var(--ink-500);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .minivic-launcher__disc {
+                transition: none;
+            }
+        
+            .minivic-launcher:hover .minivic-launcher__disc,
+            .minivic-launcher:focus-visible .minivic-launcher__disc {
+                transform: none;
+            }
+        }
+        
+        /* The second bypass block (ADV-F-2) reuses .skip-link and sits one row below
+           the first so the two never land on the same pixels. */
+        .minivic-skip {
+            top: 4.25rem;
+            cursor: pointer;
+        }
+        
+        html {
+            background-color: var(--ink-900); /* Fallback */
+        }
+        
+        body {
+            background:
+              radial-gradient(circle at 15% 20%, rgba(40, 42, 50, 0.26), transparent 42%),
+              radial-gradient(circle at 82% 14%, rgba(40, 42, 50, 0.22), transparent 36%),
+              radial-gradient(circle at 60% 85%, rgba(36, 36, 42, 0.18), transparent 40%),
+              var(--ink-900);
+            color: var(--text-color);
+            overflow-x: hidden;
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+        }
+        
+        /* Canvas Background */
+        #webgl {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            transition: opacity var(--motion-emphatic) var(--motion-ease-standard);
+        }
+        
+        /* Raise space scene opacity during modal so FX is visible through light scrim (IV-3) */
+        
+        /* CRT/Vignette Overlay */
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.03));
+            z-index: 9998;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            opacity: 0.1;
+        }
+        
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.4) 100%);
+            z-index: 9998;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        /* Preloader */
+        /* Reveal wipe: clip away left→right while fading out (FR-BOOT / QT-8). */
+        /* Preloader SVG circles — monochrome tokens via CSS (NFR-MONO) */
+        
+        /* Spring-physics "completion" pop when the arc closes at 100% (neutralised under
+           reduced motion by the global animation-duration override). */
+        /* Custom Cursor */
+        
+        /* Contextual cursor label (CursorGlow) — a small pill that trails the pointer and
+           surfaces a magnetic zone's data-cursor-label. Position is spring-driven inline
+           (framer transform); only opacity transitions here. */
+        /* Cursor state machine — the outline reshapes per body[data-cursor-state]. */
+        
+        /* Typography & Links */
+        /* 400 and negative tracking, not 700 and +0.5px.
+           Source Serif 4 is loaded at one normal weight — 400 — because that is the
+           only normal weight the design uses. This rule asked for 700, so every
+           heading that did not override it (the Experience role headings, and through
+           `font: inherit` on their toggles, every company name and date beside them)
+           was drawn in *synthetic* bold: the browser algorithmically smearing the 400
+           outlines. Forty elements of fake bold, in the most closely read section on
+           a site whose argument is craft. The +0.5px tracking was the same leftover,
+           opening headings out while every section module tightens them. */
+        h1, h2, h3, .role {
+            font-family: var(--font-heading);
+            font-weight: 400;
+            letter-spacing: -0.015em;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color var(--motion-base) var(--motion-ease-standard);
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            /* --nav-height is what the hero clears; keep the two in step. */
+            padding: 1.75rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            /* NOTE: mix-blend-mode was previously set on the whole <nav>. Because the
+               full-screen .nav-overlay is a child of <nav>, `difference` blended its
+               opaque #0a0a0a fill into a near-no-op — the page bled straight through the
+               open menu. The blend now lives only on the persistent .logo / .menu-toggle
+               (the bits that must stay legible over scrolling content); the overlay
+               renders as a normal opaque layer. */
+        
+            /* FR-NAV "again-on-scroll": smooth slide-out/in on scroll direction change.
+               Disabled under prefers-reduced-motion via the media query below. */
+            transition: transform var(--motion-emphatic) var(--motion-ease-chrome);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            nav {
+                transition: none;
+            }
+        }
+        
+        .logo {
+            text-decoration: none;
+            /* 600, which is a weight Inter is actually loaded at. 700 was synthesised. */
+            font-weight: 600;
+            font-size: var(--fs-lede);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--white);
+        }
+        
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: inherit;
+            font-family: inherit;
+            cursor: pointer;
+            font-size: var(--fs-small);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+            position: relative;
+            z-index: 101;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            mix-blend-mode: difference; /* legible over any scrolling content (scoped — not on <nav>) */
+        }
+        
+        .menu-toggle__label {
+            display: inline-block;
+            min-width: 3.2ch; /* reserve width so Menu↔Close swap does not shift the icon */
+            text-align: right;
+        }
+        
+        /* Hamburger↔X glyph: two centred bars framer rotates/translates into an X. */
+        .menu-toggle__icon {
+            position: relative;
+            display: inline-block;
+            width: 22px;
+            height: 14px;
+        }
+        
+        .menu-toggle__bar {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 22px;
+            height: 2px;
+            margin-top: -1px;
+            border-radius: 2px;
+            background: currentColor;
+        }
+        
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100dvh;
+            background: var(--ink-900);
+            z-index: 99;
+            display: flex;
+            justify-content: center;
+            /* `safe center` keeps the links centred when they fit but falls back to
+               start-aligned + scrollable when 9 links exceed a short phone's height
+               (otherwise `center` clipped "Contact"). overflow-y provides the scroll. */
+            align-items: safe center;
+            overflow-y: auto;
+            padding: 5rem 1.25rem;
+            /* translateY + opacity are owned by framer-motion (m.div) — no CSS transform or
+               transition here, or it would fight the spring. */
+            /* Closed, it is out of the hit-test tree, not merely transparent (ADV-4).
+               framer-motion animates it to `opacity: 0`, which left its "Download CV"
+               link as an unseeable 548x96 target lying across the whole nav band. The
+               visibility flip is delayed by the exit spring's own length so the close
+               animation is still watched, and it is the only property CSS owns here —
+               nothing that could fight the spring. */
+            visibility: hidden;
+            transition: visibility 0s linear var(--motion-emphatic);
+        }
+        
+        .nav-overlay.open {
+            visibility: visible;
+            transition: visibility 0s linear 0s;
+        }
+        
+        .nav-links {
+            list-style: none;
+            text-align: center;
+        }
+        
+        .nav-links li {
+            margin: 1rem 0;
+        }
+        
+        .nav-link {
+            display: block;
+            font-family: var(--font-heading);
+            font-size: var(--fs-display);
+            color: var(--white);
+            transform: translateY(100%);
+            transition: transform var(--motion-emphatic) var(--motion-ease-emphasized);
+        }
+        
+        .nav-link:hover {
+            font-style: italic;
+            color: var(--mist-400);
+        }
+        
+        /* Mobile: the 8-item menu at 4rem overran a short viewport with no scroll. Shrink the
+           type, tighten the rhythm, and top-align so the list scrolls cleanly if it still
+           exceeds the screen. */
+        @media (max-width: 768px) {
+            .nav-overlay {
+                align-items: flex-start;
+                padding: 5.5rem 1.5rem 3rem;
+            }
+            .nav-link {
+                font-size: var(--fs-title);
+            }
+            .nav-links li {
+                margin: 0.6rem 0;
+            }
+        }
+        
+        /* Layout */
+        
+        section {
+            padding: 10rem 0;
+            position: relative;
+            background: transparent; /* Ensure sections are transparent */
+            z-index: 5;
+            scroll-margin-top: 6rem; /* clears the fixed frosted nav on anchor-scroll */
+        }
+        
+        main,
+        footer {
+            position: relative;
+            z-index: 5;
+        }
+        
+        /* Morphing Background */
+        
+        /* Hero Section */
+        
+        /* ── Hire-conversion first paint (fable5-plan) ─────────────────────────────────
+           Scannable positioning, ATF proof strip, LinkedIn/CV CTAs and the credibility
+           band. Monochrome only — achromatic tokens + near-white glows, no hue. */
+        /* Proof cards lift and catch the light on hover — the resting state is left
+           untouched so the ATF composition stays exactly as designed. GPU-only
+           transform/opacity; flattened under reduced motion. */
+        
+        /* LinkedIn + Download CV read as chips (the two recruiter actions), while the
+           secondary GitHub/YouTube stay as underline links. */
+        
+        /* Credibility band — recognised employers + CSM + degrees, one scannable strip. */
+        
+        /* Preloader Skip — keyboard-reachable bypass (D-BOOT-01). */
+        /* Persistent nav actions: always-visible Download CV + the menu toggle. */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+            mix-blend-mode: difference;
+        }
+        /* The CV action defers to the hero until the reader scrolls (R-c13 ADV-4).
+           At the top of the page this pill and the hero's own "Download CV" button were
+           two identical controls in one screen — the reader's first job on arriving was
+           to work out which of the two was the real one. The hero owns the first
+           screen, because that is where it makes its case; the pill takes the action
+           over the moment the reader leaves it, and holds its space in the bar meanwhile
+           so nothing shifts when it arrives. Hidden, not merely transparent: a control
+           that cannot be seen must not be in the hit-test or accessibility tree. */
+        .nav-cv {
+            padding: 0.5rem 1.1rem;
+            border: 1px solid var(--white);
+            border-radius: 50px;
+            color: var(--white);
+            font-size: var(--fs-small);
+            font-weight: 600;
+            letter-spacing: var(--ls-small);
+            white-space: nowrap;
+            visibility: hidden;
+            opacity: 0;
+            transition:
+                background var(--motion-fast) var(--motion-ease-standard),
+                color var(--motion-fast) var(--motion-ease-standard),
+                opacity var(--motion-base) var(--motion-ease-standard),
+                visibility 0s linear var(--motion-base);
+        }
+        
+        nav[data-scrolled="true"] .nav-cv {
+            visibility: visible;
+            opacity: 1;
+            transition:
+                background var(--motion-fast) var(--motion-ease-standard),
+                color var(--motion-fast) var(--motion-ease-standard),
+                opacity var(--motion-base) var(--motion-ease-standard),
+                visibility 0s linear 0s;
+        }
+        .nav-cv:hover {
+            background: var(--white);
+            color: var(--ink-900);
+        }
+        .nav-cv:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 3px;
+        }
+        
+        @media (max-width: 640px) {
+            .nav-cv { display: none; }
+        }
+        
+        /* Bypass Blocks (WCAG 2.4.1). Off-canvas until focused, then it arrives as a
+           real chip in the site's own language rather than a browser default. It never
+           moves layout: it is fixed, so the page beneath it does not shift when a
+           keyboard reader tabs into it. */
+        .skip-link {
+            position: fixed;
+            top: 0.75rem;
+            left: 0.75rem;
+            z-index: 1000;
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--card-border-hover);
+            border-radius: 10px;
+            background: var(--token-bg-elevated);
+            box-shadow: var(--card-shadow);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: var(--fs-small);
+            letter-spacing: 0.01em;
+            text-decoration: none;
+            /* Off-canvas rather than display:none, so it stays focusable. */
+            transform: translateY(calc(-100% - 1rem));
+            transition: transform var(--motion-fast) var(--motion-ease-standard);
+        }
+        
+        .skip-link:focus-visible {
+            transform: translateY(0);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .skip-link {
+                transition: none;
+            }
+        }
+        
+        /* Keyboard focus ring for the interactive family (a11y ≥95) — achromatic accent,
+           mirrors the existing .detail-close/.detail-cta pattern. :focus-visible keeps
+           pointer clicks ring-free; modern browsers trace the element's own border-radius. */
+        .btn-primary:focus-visible,
+        .btn-link:focus-visible,
+        .btn-pillar:focus-visible,
+        .social-btn:focus-visible,
+        .nav-link:focus-visible,
+        .menu-toggle:focus-visible,
+        .logo:focus-visible,
+        .project-card:focus-visible,
+        .repo-card:focus-visible,
+        .accordion-header:focus-visible,
+        .snap-header:focus-visible,
+        .skip-link:focus-visible {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 3px;
+        }
+        
+        /* ══ The interaction-state library (R-49 / R-90 / SC-30.1 — lock §5.3) ══════
+           Six states, defined once, carried by every control on the site: rest, hover,
+           focus-visible, active, disabled and loading. Two rules govern all of them.
+        
+           First, no state is left to the user agent. SC-30.1 is "zero browser-default
+           states", and a control that falls through to Chromium's `outline-style: auto`
+           has not been designed — it has been forgotten. Second, no state depends on
+           colour alone: each moves a colour and a geometry, so it survives a reader who
+           cannot separate two greys.
+        
+           The rules below sit at element-and-attribute specificity. A section module
+           may refine a state for its own material — the Vitrine's plates light rather
+           than lift — but it may not delete one, and this stylesheet declares
+           `outline: none` nowhere, for nothing to inherit. */
+        
+        /* ── Focus ─────────────────────────────────────────────────────────────────
+           One ring for every control the site owns: 2px of --white at 18.20:1 on the
+           ink, held 3px clear so it reads as a ring around the element rather than a
+           border on it. `:focus-visible`, never `:focus` — a pointer click leaves
+           nothing behind. */
+        :where(a[href], button, input, select, textarea, summary,
+               [tabindex]:not([tabindex="-1"])) {
+            /* The ring's colour is declared at rest as well as on focus, where
+               `outline-style: none` means nothing is painted. `outline-color` is one of
+               the properties Tailwind's `transition-colors` animates, so a control that
+               transitions its colours would otherwise fade its focus ring up from
+               `currentColor` over 150ms — and on the clone's selected persona chip,
+               whose text is near-black on white, that fade starts at 1.02:1. A focus
+               indicator that arrives late, or arrives invisible, is one a keyboard
+               reader moving at speed never sees. Declared at rest, it has nothing to
+               animate from. */
+            outline-color: var(--state-ring-color);
+        }
+        
+        :where(a[href], button, input, select, textarea, summary,
+               [tabindex]:not([tabindex="-1"])):focus-visible {
+            outline-width: var(--state-ring-width);
+            outline-style: solid;
+            outline-color: var(--state-ring-color);
+            outline-offset: var(--state-ring-offset);
+        }
+        
+        /* ── Cursor ────────────────────────────────────────────────────────────────
+           Three states and nothing between them. `default` is the `* { cursor: auto }`
+           reset near the top of this file: the text cursor over text, the arrow over
+           everything else. `interactive` is here — every element a reader can activate
+           says so before they press it, which is what the site was not doing at all.
+           `dragging` belongs to the one surface that is dragged rather than clicked and
+           is declared beside it, in Vitrine.module.css. */
+        a[href],
+        button,
+        summary,
+        [tabindex]:not([tabindex="-1"]) {
+            cursor: pointer;
+        }
+        
+        input:not([type="button"]):not([type="submit"]):not([type="reset"]),
+        textarea {
+            cursor: text;
+        }
+        
+        /* ── Pressed ───────────────────────────────────────────────────────────────
+           The control settles one pixel into the page and gives back half a percent of
+           its size: enough to read as a press, small enough that nothing around it
+           reflows. It eases in over --motion-fast and releases instantly, which is what
+           a key does. Text links are exempt and handled in their own modules — a
+           transform smears type, so they darken and close their underline instead. */
+        :where(button, summary, [tabindex]:not([tabindex="-1"])):active,
+        .logo:active,
+        .nav-cv:active,
+        .skip-link:active,
+        .sw-toast__reload:active {
+            transform: var(--press-settle);
+            transition: transform var(--motion-fast) var(--motion-ease-exit);
+        }
+        
+        /* The overlay links are positioned by framer-motion, which writes `transform`
+           as an inline style; a CSS press there would never be seen. They acknowledge
+           the press by coming back to full white and closing their underline as the
+           navigation commits. */
+        .nav-link:active {
+            color: var(--white);
+            text-decoration: underline;
+            text-underline-offset: 0.12em;
+        }
+        
+        /* ── Disabled ──────────────────────────────────────────────────────────────
+           Never a fade. Dropping a control to 30% opacity takes its contrast down with
+           it, and a control that cannot be read is worse than one that cannot be
+           pressed. Full opacity is kept and the ink is spent instead: --ink-300 on the
+           ink measures 4.03:1, which 1.4.3 exempts for a disabled control and which is
+           still legible. The control stops being a pointer target and says so in the
+           cursor; the `disabled` attribute, not a class, is what carries the fact to a
+           screen reader. */
+        :where(button, input, select, textarea, fieldset):disabled {
+            opacity: 1;
+            color: var(--state-disabled-ink);
+            border-color: var(--state-disabled-edge);
+            background-color: transparent;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        /* ── Loading ───────────────────────────────────────────────────────────────
+           No spinner and no label swap: the words stay exactly where they were and a
+           1px rule traverses the bottom edge of the surface that is waiting, so the
+           reader is told what is happening in language and shown that it is still
+           happening in motion. `aria-busy` on the region carries the same fact to a
+           screen reader. Under reduced motion the rule stops travelling and holds at
+           40% — still present, still announced. */
+        .state-loading-rule {
+            position: relative;
+            display: block;
+            overflow: hidden;
+            height: 1px;
+            background: var(--card-border);
+        }
+        
+        .state-loading-rule::after {
+            content: "";
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 40%;
+            background: var(--mist-400);
+            animation: stateLoadingTraverse var(--motion-cine) var(--motion-ease-standard) infinite;
+        }
+        
+        @keyframes stateLoadingTraverse {
+            from {
+                transform: translateX(-100%);
+            }
+        
+            to {
+                transform: translateX(250%);
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .state-loading-rule::after {
+                animation: none;
+                transform: none;
+            }
+        }
+        
+        /* ── The chrome's own hover states ─────────────────────────────────────────
+           The wordmark and the menu toggle are the first two controls a reader meets
+           and were the only two that answered a pointer with nothing at all. The
+           wordmark dims and its drawn underline recedes with it; the toggle dims and
+           its bars tuck in from the right, which is the gesture the menu is about to
+           complete. */
+        .logo-underline {
+            transition: opacity var(--motion-fast) var(--motion-ease-standard);
+        }
+        
+        .logo:hover {
+            color: var(--mist-200);
+        }
+        
+        .logo:hover .logo-underline {
+            opacity: 0.6;
+        }
+        
+        .menu-toggle:hover {
+            color: var(--mist-200);
+        }
+        
+        .menu-toggle:hover .menu-toggle__bar {
+            width: 18px;
+        }
+        
+        /* Dual-pillar CTAs (NN-1): two co-equal, outlined actions — visually distinct
+           from the single filled contact pill, monochrome (achromatic tokens only). */
+        
+        /* Soft instrument glow behind the portrait so the right column reads as lit,
+           not as empty negative space. */
+        
+        /* Rectangular HUD bracket frame around the portrait (reuses .hud-frame__corner). */
+        /* Glass subject label. Horizontal centring is owned by framer (x:'-50%' in the
+           entrance variants) so the inline transform it writes never drops the centring —
+           hence no `transform` here. */
+        
+        /* Scan-line sweep across the subject label (signature HUD motif). Neutralised under
+           reduced motion by the global animation-duration override below. */
+        
+        /* Entrance wrapper (framer animates opacity/scale/y) holding the magnetic tilt. */
+        
+        /* Magnetic 3D tilt. --rx/--ry are written by the pointer handler (±5deg). */
+        
+        /* Glass depth frame: a blurred translucent rim behind the portrait that lifts it
+           off the starfield. */
+        
+        /* R1 AVATAR speaking pulse ring — absolutely positioned to never shift layout.
+           When MiniVicBot voice is active the ring fades in with a subtle scale-breathe
+           animation. Reduced-motion disables the animation entirely. */
+        
+        /* Sections Global */
+        
+        /* About */
+        
+        /* Snapshot Cards (expandable) */
+        
+        /* Experience (Accordion) */
+        
+        /* ATO evidence-harness emphasis — the 92% reduction bullet gets a subtle
+           monochrome accent: a luminous left-border pulse on the one bullet that
+           anchors Vikram's most distinctive delivery proof (FR-EXP, TC-FR-EXP). */
+        
+        /* Work - Carousel Layout */
+        
+        /* Native scroll only under reduced motion: kill smooth-scroll + any residual tilt. */
+        
+        /* --- Infographics (CSS-only Visuals) --- */
+        
+        /* 1. Terminal Viz */
+        .red { background: var(--ink-300); }
+        
+        /* 3. Dashboard Viz */
+        
+        /* Animated bar charts inside dashboard */
+        
+        /* 4. Doc Viz */
+        
+        /* ═══ R7 Disney+ catalogue — dark full-bleed horizontal poster-row (T5) ═══ */
+        
+        /* Wrapper — full-bleed dark (Disney+ brand-first treatment) */
+        
+        /* Horizontal scroll container — hidden scrollbar, snap behaviour */
+        
+        /* GSAP-targeted horizontal row — flex, no wrap, transform only */
+        
+        /* Reduced-motion: vertical static grid fallback */
+        
+        /* ── Poster-style card (Disney+ / Marvel-grade collection tile) ── */
+        
+        /* Poster canvas — signature micro-effect is visible at rest (Disney+ poster). */
+        
+        /* Effect stage — the signature micro-effect fills most of the poster. */
+        
+        /* Micro-effect SVG sizing — visible + present at rest, not hidden behind a hover gate */
+        
+        /* Scrim — lets the effect read through the top while the bottom text stays legible */
+        
+        /* Metadata block anchored to the poster bottom, over the scrim */
+        
+        /* ── Responsive ── */
+        
+        /* Signature-effects showreel label */
+        
+        /* VFX Gallery (SPEC §7 infographics) — cinematic framed showreel */
+        
+        /* R3F Canvas loading placeholder — shown by next/dynamic while the WebGL
+           bundle resolves. Matches the max-width/aspect-ratio of the scene cards
+           so the gallery grid doesn't jump when components mount. */
+        
+        /* R2 signature 3D scene cards (CelestialSphere + OrchestrationGraph) */
+        
+        /* R2 — skills-bound signature scenes (mounted under #skills with labels) */
+        
+        /* Click-to-load YouTube facade (LiteYouTube) — monochrome poster + play button.
+           Only mounts the (cookie-less) YouTube iframe on click, so no ad/tracker
+           requests fire on load. */
+        
+        /* Contact */
+        /* Keyboard focus needs an explicit indicator (a border tint alone isn't a
+           reliable focus cue) — matches the site-wide focus-visible treatment. */
+        
+        /* Skills */ /* card 3's long title was pushing the chevron to 0-width */
+        /* Equal-height cards across the row (grid stretches the wrapper; propagate it
+           down through the Reveal wrapper into the card so short cards don't look ragged). */*/
+        
+        /* System C — parallax depth layers: the icon lifts further toward the viewer than
+           the text, both driven by the GSAP --depth Z-lift (CardDepth). preserve-3d on the
+           card makes the translateZ read as real depth. */
+        
+        /* CardDepth tier 3 — the icon lifts most (folded into the hover transform so the
+           parallax and the rotate/scale never clobber one another) with a shadow that
+           deepens as the card rises toward the pointer (--card-lift). */
+        
+        /* Responsive */
+        
+        /* ── Reduced motion: a parallel score, not a kill switch ──────────────────
+           R-46 asks for "a parallel reduced-motion choreography that stays memorable",
+           and what stood here instead was `animation-duration: 0.001ms !important` on
+           every element on the page — twice. That is not a choreography, it is an
+           amputation: it crushes the colour fades that tell a reader a control
+           responded, alongside the parallax that might actually make them queasy, and
+           leaves an interface that reads as broken rather than as calm.
+        
+           What is actually contraindicated is APPARENT MOTION — things that travel,
+           grow, spin or loop. Colour and opacity do none of that and carry most of the
+           interface's feedback, so they keep their transitions.
+        
+           Three rules, and no duration is crushed:
+             1. Smooth scrolling off. It is the one genuine vestibular trigger here.
+             2. Loops run once and settle, so nothing pulses or breathes indefinitely.
+             3. Transitions are restricted to the properties that cannot move anything.
+                Restricting `transition-property` is what stops a transform or a size
+                from animating — without touching how long a colour takes to arrive. */
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto !important;
+            }
+        
+            *,
+            *::before,
+            *::after {
+                /* Ambient loops resolve to their end state instead of repeating. */
+                animation-iteration-count: 1 !important;
+                /* Nothing translates, scales or rotates; colour, opacity and depth cues
+                   still transition at their authored speed. */
+                transition-property: opacity, color, background-color, border-color,
+                    box-shadow, fill, stroke, text-decoration-color, outline-color,
+                    backdrop-filter !important;
+            }
+        }
+        
+        /* --- Added for WOW Factor --- */
+        
+        /* Scramble Text Effect */
+        
+        /* --- Spotlight / Glow Effect --- */
+        
+        /* --- Magnetic Button Enhancements --- */
+        
+        /* --- Hero name fill (D-NAME-01) ---
+           Solid monochrome fill — background-clip:text + transparent fill left trailing
+           glyphs unpainted / corrupted ("Vikrar") under some GPU/compositor paths. */
+        
+        /* Pointer proximity brings the halo up a touch (glass-instrument feel). */
+        
+        /* Entrance glitch effect using ::before/::after (VFX-4 / D-NAME-01).
+           Single keyframe run ends at opacity:0 + visibility:hidden so overlays cannot
+           permanently obscure trailing glyphs after the entrance beat. */
+        
+        /* --- Animated Gradient Border on Hover (New Addition) --- */
+        
+        /* System B — Living Sparkline: gradient area-fill + glowing scan node. */
+        
+        /* G2 — Project-bound telemetry grid (JARVIS + Tesla, 2-col). */
+        
+        /* 3. Interactive Architecture Diagram */
+        
+        /* Architecture section frame (from architecture-lab worktree) */
+        
+        /* Engineering graticule + corner ticks on the board for premium texture (zero per-frame cost). */
+        
+        /* Positioning based on SVG coordinates (approx percentages) */
+        
+        /* Mobile Adjustments for Diagram */
+        
+        /* Connections */
+        
+        /* 4. Domain Fix (already in main CSS, just helper) */
+        
+        /* 5. Konami / Terminal Overlay */
+        
+        .prompt {
+            color: var(--mist-200);
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        /* 6. Mini-Vic Chatbot */
+        
+        /* 6. Video/GIF Hover (Project Preview) */
+        
+        /* Specific Visuals for Previews (reusing styles from style.css) */
+        
+        /* End WOW Factor Additions */
+        
+        /* Telemetry Panel Spacing */
+        
+        /* System A — real-3D depth backdrop (PanelDepthScene). Sits behind the crisp DOM
+           content (which is lifted above via z-index). pointer-events stay off so the panel
+           remains fully interactive. */
+        
+        /* System B — living sparkline (SparklineGL) layered over the structural SVG. The SVG
+           stays as the reduced-motion fallback; the GL canvas adds the animated GLSL glow. */
+        
+        /* --- GitHub feed status + footer terminal trigger (React runtime) --- */
+        
+        /* --- Global reduced-motion guard --- */
+        /* The section-level reduced-motion treatments live with their sections; the
+           universal policy above is the only global one. */
+        @media (prefers-reduced-motion: reduce) {
+            /* Floating-panel depth parallax (Systems A/B/C) collapses to a flat, static
+               surface — no perspective tilt, magnetic offset, or pulsing scan node. */
+            /* Real-3D WebGL enhancement layers are not mounted under reduced motion; hide
+               them defensively so only the static SVG / DOM fallbacks remain. */
+        }
+        
+        /* ── Scroll rail — GSAP ScrollTrigger orchestral timeline (FR-SCROLL) ── */
+        .scroll-rail {
+            position: absolute;
+            top: 0;
+            left: clamp(0.75rem, 3vw, 3rem);
+            height: 100%;
+            width: 2px;
+            z-index: 4;
+            pointer-events: none;
+        }
+        /* Fixed index marks along the track — a faint second tone over the dim base. */
+        /* Glow pulse head — rides the fill's leading edge (top driven by ScrollTrigger). */
+        @media (max-width: 768px) {
+            .scroll-rail { display: none; }
+        }
+        
+        /* ── HUD frame — recurring signature motif (NN-2; P0-2) ── */
+        /* ── Work section — rail host + catalogue depth (T4/T5) ── */
+        
+        /* ── Proof bar (FR-PROOF) ── */
+        
+        /* ── Synthesis provenance (FR-SYNTH) ── */
+        /* Provenance chain — a vertical timeline: every consulted source sits on a single
+           luminous monochrome rail with its own node, so the synthesis reads as an
+           evidence chain rather than a flat list (UI/UX §8). */
+        /* Timeline node — a glowing station marker pinned to the rail. */
+        
+        /* ── Dossier leave-behind (NN-2 / TC-NN-2) ── */
+        /* Decorative HUD frame around the dossier content (replaces the old empty 16:10 panel). */
+        /* Particle accent burst on clone CTA hover — concentric monochrome rings pulse
+           outward once on hover (decorative, reduced-motion safe). */
+        
+        /* ── Contact CTAs (FR-CONTACT) ── */
+        /* Promote "Download CV" from plain text into a co-equal ghost pill beside the
+           filled primary so the closing CTA reads as two deliberate choices. */
+        
+        /* Decorative card-viz terminal must not be a keyboard scroll-trap (TC-NFR-A11Y).
+           Scoped to the viz only so the real #terminal-log keeps its scroll. */
+        
+        /* ── Floating capability panel (FloatingDetailBox) — self-contained HUD
+           materialization. Monochrome; accent channels arrive via --detail-accent-rgb
+           (set inline from lib/palette.ts). Replaces the old shared-scene WebGL overlay. */
+        
+        /* HUD corner brackets — draw in clockwise from the top-left. */
+        
+        /* Single scanline sweep on open — never loops. */
+        
+        /* ══════════════════════════════════════════════════════════════════════════
+           CINEMATIC-MONOCHROME DESIGN LANGUAGE (overhaul INC1)
+           Disney+/Marvel-grade cinematics in strict monochrome. Wraps rather than
+           renames load-bearing selectors. Every colour is a locked :root token or an
+           achromatic rgb()/rgba() (channels equal, or steel 174/182/194 → saturation
+           0.103 < audit SAT_MAX 0.28). No hsl(), no hue. INC1 applies the hero stage +
+           frosted nav; the .beat/.rail/.tile primitives roll out (with tests) in INC2.
+           ══════════════════════════════════════════════════════════════════════════ */
+        
+        /* 1. Hero volumetric stage — applied ALONGSIDE .hero-section (wrap, not replace). */
+        
+        /* 2. Title-sequence typography ONLY — no clip-path wipe. HeroScroll owns the name
+              entrance with opacity (D-NAME-01); a mask here would re-clip "Vikr". */
+        
+        /* 3. Transparent → frosted nav on scroll (keep the bare <nav> element + .nav-overlay). */
+        nav {
+            border-bottom: 1px solid transparent;
+            transition:
+                transform var(--motion-emphatic) var(--motion-ease-chrome),
+                background var(--motion-base) var(--motion-ease-standard),
+                backdrop-filter var(--motion-base) var(--motion-ease-standard),
+                border-color var(--motion-base) var(--motion-ease-standard);
+        }
+        /* The bar's own ground, on phones.
+           At rest the nav paints nothing, which is right over a dark page and wrong
+           over a lit one: at 390 the hero's scene now reaches the top of the frame
+           (the copy carries its own plates instead of the scene carrying a scrim), and
+           photographed on ?gl=force the wordmark sampled 1.70:1 and MENU 1.96:1
+           against the shader's fog (C22c 02-tests-failing.log). This is the same
+           answer given everywhere else in this pass — the type carries its ground —
+           applied to the one piece of chrome that floats over a section it does not
+           own. It fades out at the bar's own foot, so it reads as the top of the page
+           going dark rather than as a bar landing on it, and it is scoped to the width
+           where the hero has no dark column to offer. */
+        @media (max-width: 700px) {
+            nav::before {
+                content: "";
+                position: absolute;
+                inset: 0 0 auto;
+                height: calc(100% + var(--space-3));
+                z-index: -1;
+                pointer-events: none;
+                background: linear-gradient(
+                    180deg,
+                    rgb(10 10 10 / 0.92) 0%,
+                    rgb(10 10 10 / 0.86) 62%,
+                    transparent 100%
+                );
+            }
+        }
+        
+        nav[data-scrolled="true"] {
+            /* Raised from 0.72 → 0.92: at 0.72 busy scrolling content bled through and
+               collided with the VIKRAM. wordmark / MENU, especially on mobile. */
+            background: rgb(10 11 13 / 0.92);
+            backdrop-filter: blur(16px) saturate(1); /* saturate(1) injects no chroma */
+            -webkit-backdrop-filter: blur(16px) saturate(1);
+            border-bottom-color: rgb(60 60 60 / 0.60);
+        }
+        
+        /* 4. Reduced motion — static key-light (no cursor tracking); nav transitions off. */
+        @media (prefers-reduced-motion: reduce) {
+            nav {
+                transition: none;
+            }
+        }
+        
+        /* 5. .beat — cinematic letterbox curtain per section (Marvel title-sequence beat, INC2).
+              Progressive enhancement: the bars only exist once SectionBeats arms
+              [data-beats-armed] on <html>; if the JS never runs, sections render fully open
+              (no hidden-content trap). Bars are decorative — pointer-events:none, z-index above
+              content. Content reveal itself stays owned by the existing <Reveal> wrappers, so
+              there is no double-mask. */
+        
+        /* ── Service-worker toast ────────────────────────────────────────────────────
+           The offline notice had no styles at all: it rendered as browser-default text
+           in the bottom-left corner, so the last thing on the page was an unstyled
+           sentence sitting on the ink. It is now a small mono pill in the site's own
+           language, and it stays out of the way of the clone launcher on the right. */
+        .sw-toast-region {
+            position: fixed;
+            left: clamp(1rem, 3vw, 2rem);
+            bottom: clamp(1rem, 3vw, 1.75rem);
+            z-index: 10020;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            pointer-events: none;
+        }
+        
+        .sw-toast {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.5rem 0.85rem;
+            border: 1px solid var(--gold-border);
+            border-radius: 3px;
+            background: rgb(10 11 13 / 0.92);
+            backdrop-filter: blur(4px);
+            font-family: var(--font-mono);
+            font-size: var(--fs-caption);
+            letter-spacing: var(--ls-caption);
+            color: var(--mist-200);
+            pointer-events: auto;
+            animation: swToastIn var(--motion-base) var(--motion-ease-standard) both;
+        }
+        
+        @keyframes swToastIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+        
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+        
+        .sw-toast__reload {
+            padding: 0.15rem 0.5rem;
+            border: 1px solid var(--card-border);
+            border-radius: 999px;
+            background: transparent;
+            font: inherit;
+            color: var(--white);
+            cursor: pointer;
+        }
+        
+        .sw-toast__reload:hover {
+            border-color: var(--gold);
+            color: var(--gold-light);
+        }
+        
+        .sw-toast--dev {
+            color: var(--ink-300);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .sw-toast {
+                animation: none;
+            }
+        }
+        
+        /* Message + submit always span the full console width. *//* Live region: empty in `idle`, so it must not reserve space or draw a border. */@keyframes contact-send-pulse {
+            0%, 100% { opacity: 0.25; }
+            50% { opacity: 1; }
+        }/* Always-visible direct channels: a `mailto:` can be a silent no-op, selectable
+           text never is. */@media (max-width: 640px) {}
+        
+        @media (prefers-reduced-motion: reduce) {}
+        
+      operator: 'match'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_2c7160af-27e-1/tests/palette_bundle.test.mjs:68:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        node:internal/test_runner/test:1440:71
+        node:internal/per_context/primordials:466:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:435:3)
+        node:internal/per_context/primordials:466:9
+        Array.map (<anonymous>)
+      ...
+    1..1
+not ok 2 - Tailwind source detection
+  ---
+  duration_ms: 0.757866
+  type: 'suite'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_2c7160af-27e-1/tests/palette_bundle.test.mjs:61:1'
+  failureType: 'subtestsFailed'
+  error: '1 subtest failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..2
+# tests 3
+# suites 2
+# pass 1
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 244.428974

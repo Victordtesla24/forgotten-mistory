@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Scene from '@/components/gl/Scene';
 import Caliper from '@/components/marks/Caliper';
 import {
+  engagement,
   exclusions,
   metricsFor,
   plates,
@@ -248,6 +249,18 @@ export default function Vitrine() {
             );
           })}
         </ol>
+      </div>
+
+      {/* The route out of the work (G-V2, R4). A client who has just read the
+          six plates can act on them here rather than having to reach #listen
+          two sections down. It is chrome, not a claim, so it is achromatic —
+          the gold in this section belongs to the plates' live URLs, which are
+          the only figures here with a source a reader can go and check. */}
+      <div className={styles.engagement}>
+        <p className={styles.engagementNote}>{engagement.note}</p>
+        <a className={styles.engage} data-cta="engage" href={engagement.href}>
+          {engagement.label}
+        </a>
       </div>
 
       <div className={styles.foot}>

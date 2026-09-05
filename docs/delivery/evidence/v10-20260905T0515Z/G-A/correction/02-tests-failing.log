@@ -1,0 +1,142 @@
+TAP version 13
+# Subtest: \#about grades gold only where the evidence names a checkable record
+    # Subtest: loads the ten dimensions the page actually renders
+    ok 1 - loads the ten dimensions the page actually renders
+      ---
+      duration_ms: 55.646343
+      type: 'test'
+      ...
+    # Subtest: never marks a role-side dimension sourced — the component already calls it unmeasurable
+    not ok 2 - never marks a role-side dimension sourced — the component already calls it unmeasurable
+      ---
+      duration_ms: 12.808713
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_d917eafb-f9f-1/tests/about_sourced_semantics.test.mjs:125:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        About.tsx renders <Caliper state="open">measured from the role</Caliper> for every side==="role" dimension. Grading one of those `sourced` marks the same claim both "has a checkable source" and "nothing here could honestly be measured" — CLAUDE.md prime directive 3
+        + actual - expected
+        
+        + [
+        +   'Location Match — "Currently on site with the ATO, Melbourne"',
+        +   'Company Stability — "75+ hours of evidence against 64 available — escalated, then re-baselined"'
+        + ]
+        - []
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual:
+        0: 'Location Match — "Currently on site with the ATO, Melbourne"'
+        1: 'Company Stability — "75+ hours of evidence against 64 available — escalated, then re-baselined"'
+      operator: 'deepStrictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_d917eafb-f9f-1/tests/about_sourced_semantics.test.mjs:130:12)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: keeps the open caliper bound to side==="role", so the invariant above still means something
+    ok 3 - keeps the open caliper bound to side==="role", so the invariant above still means something
+      ---
+      duration_ms: 0.861467
+      type: 'test'
+      ...
+    # Subtest: gives every gold line a record from the allow-list
+    not ok 4 - gives every gold line a record from the allow-list
+      ---
+      duration_ms: 10.579504
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_d917eafb-f9f-1/tests/about_sourced_semantics.test.mjs:158:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        gold means a reader can open something and check it. These lines name no employer, no program and no repository, so they are self-reported figures and belong in the caption grey
+        + actual - expected
+        
+        + [
+        +   'Culture Fit — "5+ squads, up to 40 practitioners onshore and offshore"',
+        +   'Career Growth — "Langfuse + Phoenix evaluation stack · −38% simulated error-budget breaches"',
+        +   'Company Stability — "75+ hours of evidence against 64 available — escalated, then re-baselined"'
+        + ]
+        - []
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual:
+        0: 'Culture Fit — "5+ squads, up to 40 practitioners onshore and offshore"'
+        1: 'Career Growth — "Langfuse + Phoenix evaluation stack · −38% simulated error-budget breaches"'
+        2: 'Company Stability — "75+ hours of evidence against 64 available — escalated, then re-baselined"'
+      operator: 'deepStrictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_d917eafb-f9f-1/tests/about_sourced_semantics.test.mjs:173:12)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: lets no gold line rest on a self-reported figure
+    not ok 5 - lets no gold line rest on a self-reported figure
+      ---
+      duration_ms: 7.740171
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_d917eafb-f9f-1/tests/about_sourced_semantics.test.mjs:181:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        a figure the copy itself calls simulated, or a bare count of hours or practitioners with no published methodology, is `self-reported` — CLAUDE.md prime directive 3 says that is never gold
+        + actual - expected
+        
+        + [
+        +   'Culture Fit — "5+ squads, up to 40 practitioners onshore and offshore"',
+        +   'Career Growth — "Langfuse + Phoenix evaluation stack · −38% simulated error-budget breaches"',
+        +   'Company Stability — "75+ hours of evidence against 64 available — escalated, then re-baselined"'
+        + ]
+        - []
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual:
+        0: 'Culture Fit — "5+ squads, up to 40 practitioners onshore and offshore"'
+        1: 'Career Growth — "Langfuse + Phoenix evaluation stack · −38% simulated error-budget breaches"'
+        2: 'Company Stability — "75+ hours of evidence against 64 available — escalated, then re-baselined"'
+      operator: 'deepStrictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_d917eafb-f9f-1/tests/about_sourced_semantics.test.mjs:192:12)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: leaves the grey lines grey for a stated reason, not by accident
+    not ok 6 - leaves the grey lines grey for a stated reason, not by accident
+      ---
+      duration_ms: 8.942331
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_d917eafb-f9f-1/tests/about_sourced_semantics.test.mjs:200:3'
+      failureType: 'testCodeFailure'
+      error: 'the three role-side dimensions alone are grey; fewer than three means the invariant above was satisfied by deleting a dimension rather than by regrading it'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: false
+      operator: '=='
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_d917eafb-f9f-1/tests/about_sourced_semantics.test.mjs:203:12)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..6
+not ok 1 - \#about grades gold only where the evidence names a checkable record
+  ---
+  duration_ms: 98.012882
+  type: 'suite'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_d917eafb-f9f-1/tests/about_sourced_semantics.test.mjs:108:1'
+  failureType: 'subtestsFailed'
+  error: '4 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 6
+# suites 1
+# pass 2
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 383.715989

@@ -203,12 +203,19 @@ functions/node_modules
 
 # Verification evidence (multi-MB PNG screenshots + probe dumps). Regenerated on demand by
 # scripts/testing/run_post_prod_validation.sh and npm run validate:phase02:screenshots, so
-# they are never committed. Still tracked and NOT matched here: reports/static-audit.json
-# (CI artifact, deploy.yml) and the phase reports that
+# they are never committed. Still tracked and NOT matched here: the phase reports that
 # scripts/validate/final_full_system_validation.sh greps as inputs.
 reports/verification/
 reports/post-prod/evidence/
 reports/phase02/screenshots/
+
+# The static audit rewrites this on every run (fresh timestamp, this build's numbers). While
+# it was tracked, every lane committed a different version and every consolidation conflicted
+# on it — deploy.yml then force-resolved the merge in the branch's favour, which would hand
+# the branch any real conflict riding along. Nothing reads the committed copy: the audit
+# writes it (mkdir -p included) for whoever runs the audit, and tests/static_audit_fail.test.mjs
+# runs the audit itself before reading it. Guarded by tests/ci_pipeline.test.mjs.
+reports/static-audit.json
 
 # Playwright JSON reporter output (playwright.config.ts -> reporter json outputFile)
 /test-results.json

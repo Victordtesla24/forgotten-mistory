@@ -39,3 +39,9 @@ running — resilience lane dispatched (GLCanvas error boundary + footer CLS), p
 
 ## STATUS (2026-09-05T10:10:33.309Z)
 running — folded into t_skew0001 (deploy-skew lane)
+
+## STATUS (2026-09-05T12:09:07Z)
+ready — reclaimed by the orchestrator on resume 12:0xZ: no worker process alive (ps), partial edits preserved in the paused worktree (wf_38db9d7d-ce3-1 / wf_d69fe804-9d9-1); re-dispatch in the stability lane after the ADV-FAIL P0 wave.
+
+## COMMENT (2026-09-05T12:19:26.719Z)
+bundled into t_stab01 (stability lane, worktree wf_38db9d7d-ce3-1, port 5613) — dispatch when a build slot frees after the ADV-FAIL wave-1 lanes

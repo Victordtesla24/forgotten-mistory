@@ -36,3 +36,9 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## COMMENT (2026-09-05T10:46:49.737Z)
 V-skew FAIL on one clause only (0ece403): TC-SKEW-02 line 165 — the forced WebGL context-creation error escapes as an uncaught pageerror (containment itself holds: 6 sections, no error shell); deterministic 3/3. SW half PASS end to end (cutover with 7 re-hashed lazy chunks, KEEP_GENERATIONS=2 observed, manifest 68 assets). Shipped via pipeline (ccb1524, live). Correction → t_skew0002.
+
+## STATUS (2026-09-05T12:09:07Z)
+ready — reclaimed by the orchestrator on resume 12:0xZ: no worker process alive (ps), partial edits preserved in the paused worktree (wf_38db9d7d-ce3-1 / wf_d69fe804-9d9-1); re-dispatch in the stability lane after the ADV-FAIL P0 wave.
+
+## COMMENT (2026-09-05T12:19:26.600Z)
+bundled into t_stab01 (stability lane, worktree wf_38db9d7d-ce3-1, port 5613) — dispatch when a build slot frees after the ADV-FAIL wave-1 lanes

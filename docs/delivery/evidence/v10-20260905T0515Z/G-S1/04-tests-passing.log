@@ -1,0 +1,187 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-skills.spec.ts --workers=1 --reporter=line
+
+Running 7 tests using 1 worker
+
+[1A[2K[1/7] [chromium] › tests/overhaul/scene-skills.spec.ts:85:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-01: exactly one canvas mounts behind the board once the section is in view
+[1A[2K[2/7] [chromium] › tests/overhaul/scene-skills.spec.ts:99:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-02: the canvas is aria-hidden, behind the board and never over the type
+[1A[2K[3/7] [chromium] › tests/overhaul/scene-skills.spec.ts:134:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-03: taking a node on the bench is the state the field is lit from
+[1A[2K[4/7] [chromium] › tests/overhaul/scene-skills.spec.ts:154:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-04: under reduced motion there is no canvas and the wire bench is whole
+[1A[2K[5/7] [chromium] › tests/overhaul/scene-skills.spec.ts:170:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-05: with WebGL unavailable the section is complete and silent
+[1A[2K[6/7] [chromium] › tests/overhaul/scene-skills.spec.ts:197:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-06: the field is monochrome, palette-sourced and cheap per pixel
+[1A[2K  1) [chromium] › tests/overhaul/scene-skills.spec.ts:197:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-06: the field is monochrome, palette-sourced and cheap per pixel 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: not [32m"gold"[39m
+    Received string:        [31m"/**[39m
+    [31m * the calibration bench — the field the wire diagram is measured on.[39m
+    [31m *[39m
+    [31m * `#skills` is the one section that shipped with no scene at all: a twenty-path[39m
+    [31m * svg bench drawn on nothing. the section's claim is that every capability was[39m
+    [31m * *measured somewhere*, so the field under it is not an atmosphere — it is a[39m
+    [31m * bench: a lit plate with a hairline graticule ruled across it, and the[39m
+    [31m * engraving (the rails, the wires, the [7mgold[27m marks) sitting on top of it.[39m
+    [31m *[39m
+    [31m * three things drive it, and all three come from the section's own state rather[39m
+    [31m * than from a clock of the shader's own — the discipline `careerstrata` and[39m
+    [31m * `aboutfield` keep:[39m
+    [31m *[39m
+    [31m * - `uintensity` is the mount ramp, and it also carries the entry pulse: one[39m
+    [31m *   wavefront runs down the plate as the bench arrives and hands over to the[39m
+    [31m *   steady state, so the pulse can never desynchronise from the fade-in.[39m
+    [31m * - `uhover` is 0 → 1 as the reader takes a node on either rail. the graticule[39m
+    [31m *   brightens with it: the bench lights up along the wires being traced.[39m
+    [31m * - `uhovery` is that node's own height within the bench, 0 (top) → 1, so the[39m
+    [31m *   brightening is *where the reader is looking* rather than everywhere.[39m
+    [31m *[39m
+    [31m * ## why the light stops before the rails[39m
+    [31m *[39m
+    [31m * the two rails are real text — thirteen sources on the left, seventeen[39m
+    [31m * capabilities on the right — and text over a lit plate is the failure this[39m
+    [31m * whole lane exists to avoid. `across` therefore holds the plate inside the[39m
+    [31m * middle span of the grid (`bench.module.css` gives it `minmax(4rem, 1fr)`[39m
+    [31m * between two fixed rails), ramping in at 0.19 and out at 0.81 of the slot.[39m
+    [31m * nothing bright ever reaches the columns the labels stand in. below 900 px the[39m
+    [31m * slot is not behind the bench at all — it is the bench plate above the list —[39m
+    [31m * so there is no type over it to protect.[39m
+    [31m *[39m
+    [31m * monochrome, and never the site's one accent: gold means a figure has a source[39m
+    [31m * a reader can go and check, and a bench is not a figure. `#skills` spends its[39m
+    [31m * gold on the production wires and the legend mark, and this field must not add[39m
+    [31m * a fourteenth. the two colours arrive as uniforms from `lib/palette.ts`.[39m
+    [31m *[39m
+    [31m * budget: one full-screen quad, no geometry, no textures, three value-noise[39m
+    [31m * lookups per pixel — the ceiling every other scene here holds to — plus one[39m
+    [31m * hash for grain.[39m
+    [31m */[39m
+    [31m[39m
+    [31mexport const benchfieldvertexshader = /* glsl */ `[39m
+    [31m  varying vec2 vuv;[39m
+    [31m[39m
+    [31m  void main() {[39m
+    [31m    gl_position = vec4(position.xy, 0.0, 1.0);[39m
+    [31m    vuv = gl_position.xy * 0.5 + 0.5;[39m
+    [31m  }[39m
+    [31m`;[39m
+    [31m[39m
+    [31mexport const benchfieldfragmentshader = /* glsl */ `[39m
+    [31m  precision highp float;[39m
+    [31m[39m
+    [31m  varying vec2 vuv;[39m
+    [31m[39m
+    [31m  uniform float utime;[39m
+    [31m  uniform vec2 uresolution;[39m
+    [31m  /** 0 → 1 as a node on either rail takes the reader's attention. */[39m
+    [31m  uniform float uhover;[39m
+    [31m  /** that node's height within the bench, 0 (top) → 1 (bottom). */[39m
+    [31m  uniform float uhovery;[39m
+    [31m  /** 0 → 1 over the mount ramp; back to 0 if the context is lost. */[39m
+    [31m  uniform float uintensity;[39m
+    [31m  uniform vec3 uink;[39m
+    [31m  uniform vec3 ulight;[39m
+    [31m[39m
+    [31m  const float tau = 6.283185307179586;[39m
+    [31m  /** graticule pitch, in device pixels. a ruled bench, not a drawing grid. */[39m
+    [31m  const float pitch = 38.0;[39m
+    [31m[39m
+    [31m  float hash(vec2 p) {[39m
+    [31m    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);[39m
+    [31m  }[39m
+    [31m[39m
+    [31m  float noise(vec2 p) {[39m
+    [31m    vec2 i = floor(p);[39m
+    [31m    vec2 f = fract(p);[39m
+    [31m    vec2 u = f * f * (3.0 - 2.0 * f);[39m
+    [31m    return mix([39m
+    [31m      mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), u.x),[39m
+    [31m      mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),[39m
+    [31m      u.y[39m
+    [31m    );[39m
+    [31m  }[39m
+    [31m[39m
+    [31m  void main() {[39m
+    [31m    vec2 p = vuv;[39m
+    [31m    // screen-space, so a hairline is a hairline at every width and the pitch[39m
+    [31m    // does not stretch with the box.[39m
+    [31m    vec2 px = vuv * uresolution;[39m
+    [31m[39m
+    [31m    // the plate. it stops well short of both rails — see the header — and dies[39m
+    [31m    // inside its own frame top and bottom, so the canvas rectangle is never a[39m
+    [31m    // faintly lighter box on the page.[39m
+    [31m    float across = smoothstep(0.19, 0.32, p.x) * smoothstep(0.81, 0.68, p.x);[39m
+    [31m    float down = smoothstep(-0.02, 0.15, p.y) * smoothstep(1.02, 0.85, p.y);[39m
+    [31m    float plate = across * down;[39m
+    [31m[39m
+    [31m    // three lookups, and no more. one slow wash so the plate is not a flat[39m
+    [31m    // panel; one drift along it so the light has a length; one very low[39m
+    [31m    // frequency variation so the two never beat against each other.[39m
+    [31m    float wash = noise(vec2(p.x * 2.3, p.y * 1.9 - utime * 0.06));[39m
+    [31m    float drift = noise(vec2(p.x * 0.9 + utime * 0.045, p.y * 1.2));[39m
+    [31m    float slow = noise(vec2(p.y * 0.7, utime * 0.031));[39m
+    [31m[39m
+    [31m    // the graticule: hairlines ruled both ways, raised to a power so each is a[39m
+    [31m    // line rather than a wave. this is what makes the field a measuring surface[39m
+    [31m    // instead of a glow.[39m
+    [31m    float gx = pow(0.5 + 0.5 * cos(px.x * tau / pitch), 20.0);[39m
+    [31m    float gy = pow(0.5 + 0.5 * cos(px.y * tau / pitch), 20.0);[39m
+    [31m    float graticule = clamp(gx + gy, 0.0, 1.0);[39m
+    [31m[39m
+    [31m    // the reader's own row. where a node is taken, the rule at its height comes[39m
+    [31m    // up — the bench lighting along the wires being traced.[39m
+    [31m    float row = exp(-pow((p.y - uhovery) / 0.10, 2.0)) * clamp(uhover, 0.0, 1.0);[39m
+    [31m[39m
+    [31m    // the entry pulse: one wavefront down the plate, carried by the mount ramp[39m
+    [31m    // so it costs no uniform and cannot drift from the fade-in.[39m
+    [31m    float phase = clamp(uintensity, 0.0, 1.0);[39m
+    [31m    float pulse = exp(-pow((p.y - phase) * 3.2, 2.0)) * (1.0 - phase);[39m
+    [31m[39m
+    [31m    // a slow breath travelling across the plate, so a bench nobody is touching[39m
+    [31m    // is still alive. it is the term the motion floor is met by at rest, and it[39m
+    [31m    // is carried by both the plate and its rules rather than by the rules[39m
+    [31m    // alone: a graticule is a quarter of the lit pixels, so a breath confined[39m
+    [31m    // to it moved a quarter of the frame and the measured mean |dl| sat on the[39m
+    [31m    // floor rather than above it.[39m
+    [31m    float breath = 0.5 + 0.5 * sin(p.x * 2.1 - utime * 0.9);[39m
+    [31m[39m
+    [31m    // the plate reads at roughly a third of the ink's own weight: below that[39m
+    [31m    // the coverage floor (15% of the slot at +0.06 relative luminance over the[39m
+    [31m    // section's own ground, which lands around 45/255 grey) is met only on the[39m
+    [31m    // graticule, and a bench whose only visible structure is its ruling is a[39m
+    [31m    // grid, not a lit surface. the mask still stops the plate well short of[39m
+    [31m    // both rails of type.[39m
+    [31m    float base = plate * (0.30 + 0.12 * wash) * (0.86 + 0.18 * drift + 0.12 * breath);[39m
+    [31m    float rules = plate * graticule * (0.34 + 0.26 * breath + 0.34 * row + 0.16 * slow);[39m
+    [31m[39m
+    [31m    float luma = base + rules + plate * (0.34 * pulse + 0.22 * row);[39m
+    [31m[39m
+    [31m    // grain, from the cheap hash rather than a fourth noise lookup.[39m
+    [31m    luma += (hash(vuv * uresolution + fract(utime)) - 0.5) * 0.012;[39m
+    [31m    luma = clamp(luma, 0.0, 1.0);[39m
+    [31m[39m
+    [31m    // light only, and the light carried by alpha alone — the mistake that cost[39m
+    [31m    // aboutfield its visibility the first time was ramping the colour toward[39m
+    [31m    // white *and* setting alpha to the same figure, which paints a fraction of[39m
+    [31m    // a fraction. where the field is dark it paints nothing at all and the[39m
+    [31m    // section's ground shows through undisturbed.[39m
+    [31m    gl_fragcolor = vec4(ulight, luma * clamp(uintensity, 0.0, 1.0));[39m
+    [31m[39m
+    [31m    // uink participates in no branch above; it is kept in the signature because[39m
+    [31m    // every scene on this site takes its two colours from lib/palette.ts and a[39m
+    [31m    // field that quietly stopped reading one of them would be the first place a[39m
+    [31m    // palette drift could hide.[39m
+    [31m    gl_fragcolor.rgb = mix(uink, gl_fragcolor.rgb, clamp(luma * 4.0, 0.0, 1.0));[39m
+    [31m  }[39m
+    [31m`;[39m
+    [31m"[39m
+
+      200 |
+      201 |     // Gold means "this figure has a source". A bench is not a figure.
+    > 202 |     expect(glsl.toLowerCase()).not.toContain('gold');
+          |                                    ^
+      203 |     expect(component.toLowerCase()).not.toContain('gold');
+      204 |
+      205 |     // Raw hex lives in app/globals.css and lib/palette.ts, nowhere else.
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/scene-skills.spec.ts:202:36
+
+

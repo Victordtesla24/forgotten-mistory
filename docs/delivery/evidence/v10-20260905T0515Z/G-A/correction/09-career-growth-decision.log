@@ -1,0 +1,13 @@
+G-A1 correction — Career Growth (dimension 08) grading decision
+
+Evidence line (unchanged): "Langfuse + Phoenix evaluation stack · -38% simulated error-budget breaches"
+Decision: sourced = false (self-reported, caption grey). NOT rewritten to keep a gold half.
+
+Why: the task allowed either naming a checkable record and keeping gold, or dropping to false.
+There is no record to name. app/data/siteContent.ts:98 places the Langfuse + Phoenix evaluation
+stack in independent AI consulting (Jun 2025 - Feb 2026); grep over /root/dev/aether-job-career-agent
+finds langfuse/phoenix only in README.md and scripts/generate_ba_resume.py prose, not as a wired
+evaluation stack, so citing that repository as the record would have been a fabrication.
+The -38% figure says *simulated* in its own text and publishes no methodology.
+Both halves are self-reported; CLAUDE.md prime directive 3 says self-reported is never gold.
+The line keeps its wording verbatim - only the grade was wrong, and grey is a grade, not a deletion.

@@ -1,0 +1,93 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'tsx' --env-file=<scratchpad>/el.env scripts/generate-cloned-greeting.ts
+🎤  Generating the spoken greeting from GREETING.hiring...
+    Voice ID: 0ZJ4kFDo6bZUNQsuULOW
+    Characters: 365
+    HTTP 400 Bad Request
+❌  ElevenLabs returned 400: {"detail":{"type":"authentication_error","code":"invalid_api_key","message":"API key ID used as API key - only valid API keys can be used. API keys start with 'sk_' and are shown when the key is created or rotated.","status":"api_key_id_used_as_api_key","request_id":"4b6e2a60fa6b09ace4a1380bd8d884bd","param":"api_key","docs_url":"https://elevenlabs.io/docs/api-reference/authentication"}}
+    No asset was written. If the voice id is rejected, choose a voice from
+    GET https://api.elevenlabs.io/v1/voices and pass it as ELEVENLABS_VOICE_ID.
+
+============================================================
+DECISION RECORD — t_g_m2 greeting generation (2026-09-05)
+============================================================
+
+ATTEMPT 1 — scripts/generate-cloned-greeting.ts against the ElevenLabs REST API,
+credentials loaded from /root/.claude/.env.production via a scratch env file
+(node --env-file), never sourced into this shell and never printed.
+
+  Key names read (values never printed, never committed):
+    ELEVENLABS_API_KEY
+    ELEVENLABS_VOICE_ID
+
+  POST https://api.elevenlabs.io/v1/text-to-speech/{ELEVENLABS_VOICE_ID}
+  →  HTTP 400 Bad Request
+  →  code "invalid_api_key" / status "api_key_id_used_as_api_key"
+
+  The failure is the CREDENTIAL, not the voice id: authentication is rejected
+  before the voice is ever resolved. The stored value does begin with 'sk_' but
+  is a key *ID*, which ElevenLabs distinguishes from a key. Both ELEVENLABS_*
+  pairs in .env.production are byte-identical (verified with `sort -u | wc -l`
+  → 1), so there is no second credential to try. No asset was written; the
+  script exits non-zero rather than falling back to anything fabricated.
+
+  This corroborates the note that was already sitting in MiniVicBot.tsx before
+  this change: "A true ElevenLabs voice-clone of Vikram requires a valid
+  ElevenLabs `sk_` key (none is provisioned; the stored value is a key *ID*)".
+
+ATTEMPT 2 — the same generation through the authenticated ElevenLabs connector
+available to this session. This is a real ElevenLabs generation against the
+account's own workspace, not a mock and not a substitute provider; it is the
+single paid call the task authorises (ADV-REVIEW immediate patch order, lane D).
+§0.1: decided, recorded, continued — the Owner was not asked.
+
+  Voice decision — the configured voice id was never reachable (auth failed
+  first), so a premade voice was chosen per the task's explicit allowance.
+  Selected from creative_list_voices:
+
+    voice_id : hg1icMxI2KADq9a81ecq
+    name     : "Sanket - Professional Indian English"
+    labels   : gender=male, language=en, accent=en-indian, age=middle-aged
+    category : professional (premade library voice)
+
+  Rationale: the greeting is spoken in the first person as Vikram — an
+  Australia-based professional of Indian origin — so a male Indian-English
+  professional voice is the closest honest premade stand-in. The alternative
+  shortlist was British-English male (Frazer E3MHpxAogw45xwi3vBsd, MarkB
+  78U3k8D8W1rkhXUE5SDH); those were passed over because the prior asset's whole
+  recorded defect history is about a voice that did not sound like the person
+  speaking. This is a stand-in, not a clone, and nothing in the UI claims it is
+  a clone of his voice — the panel labels the introduction as synthetic.
+
+  model_id          : eleven_multilingual_v2
+  generations_count : 1        (one take — no retries, no variations)
+  flow_id           : 0qfPaLZ90BOjd8YohTac
+  generation_id     : CEuFqGOYgkk6CWCKBIPD
+  status            : completed, has_failures=false
+  duration          : 24.98 s
+  cost              : 365 credits / USD 0.133
+
+  Text spoken: GREETING.hiring, read from app/data/miniVicKnowledge.ts — the
+  same definition the panel renders. Verbatim, no edits.
+
+  Audio retrieved with curl from the generation's signed URL into
+  public/assets/minivic-greeting.mp3:
+    HTTP 200, 417,702 bytes
+    file(1): "Audio file with ID3 version 2.4.0, contains: MPEG ADTS, layer III,
+              v1, 128 kbps, 44.1 kHz, Monaural"
+    sha256 : dd65f259d1bf57728c254763c56399cc5a0dceed5694b4d07b6147d0115c6ccb
+
+  public/assets/minivic-greeting.txt and app/data/generated/greeting-asset.ts
+  were then emitted from GREETING.hiring + the downloaded bytes, using the same
+  emitter shape scripts/generate-cloned-greeting.ts writes, so the transcript,
+  the digest and the on-screen text all come from one definition.
+
+  Scratch env files holding the credentials were deleted immediately after use;
+  no secret value appears in this log, in the repo, or in any committed file.
+
+STANDING ISSUE FOR THE OWNER (not a blocker for this lane)
+  scripts/generate-cloned-greeting.ts remains the correct, wired path — it now
+  imports GREETING.hiring so it can never drift again — but it cannot run until
+  a real ElevenLabs API key (an `sk_` key, not a key ID) replaces the value
+  currently stored as ELEVENLABS_API_KEY. Until then a regeneration must go
+  through the connector as it did here.

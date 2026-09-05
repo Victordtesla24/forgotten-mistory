@@ -27,12 +27,24 @@ export interface Dimension {
   /** Where a reader can check it. */
   evidence: string;
   /**
-   * Whether that evidence names a record a reader can actually go and check —
-   * an employer, a program, a named repository, a figure from the CV. Gold is
-   * the site's one claim mark and it means exactly this, so a line that states
-   * an intention rather than a record (an availability, a preference) is
-   * `false` and stays in the caption grey. Grading it gold would say the site
-   * can source a claim it cannot.
+   * Whether that evidence names a record a reader can actually go and open —
+   * an employer, the named program, a named repository. Gold is the site's one
+   * claim mark and `CLAUDE.md` prime directive 3 fixes what it means: `sourced`
+   * is *measured, with a source a reader can go and check*. A figure off the CV
+   * with no published methodology behind it is `self-reported`, which is a
+   * different grade and never gold — so "5+ squads, up to 40 practitioners",
+   * "75+ hours of evidence against 64 available" and a −38% the copy itself
+   * calls *simulated* are `false`, and so is a line that states an intention
+   * rather than a record. Grading any of them gold would say the site can
+   * source a claim it cannot, which is the one thing this section exists to
+   * argue against.
+   *
+   * Invariant, asserted in `tests/about_sourced_semantics.test.mjs`:
+   * `side === 'role'` ⇒ `sourced === false`. `About.tsx` renders the OPEN
+   * caliper "measured from the role" for every role-side dimension, and a claim
+   * cannot honestly be both "has a checkable source" and "nothing here could be
+   * measured". The two flags were added at different times and did drift apart;
+   * the test is what stops them.
    */
   sourced: boolean;
 }
@@ -82,8 +94,10 @@ export const aboutContent = {
       side: 'candidate',
       answer:
         'Agile as practice rather than ceremony. Cadence and PI planning when the plan holds; a cross-discipline war room, inside three hours, when it does not.',
+      // A figure of scale off the CV: no employer, no program, no repository
+      // and no published methodology behind the count. Self-reported, so grey.
       evidence: '5+ squads, up to 40 practitioners onshore and offshore',
-      sourced: true,
+      sourced: false,
     },
     {
       name: 'Salary Fit',
@@ -98,24 +112,34 @@ export const aboutContent = {
       side: 'role',
       answer:
         'Melbourne, Victoria. Hybrid locally, or remote across Australian and New Zealand time zones.',
+      // Role-side: the heading already carries the open caliper "measured from
+      // the role". Gold on the same line would grade one claim both sourced and
+      // unmeasurable, so the engagement is stated and the line stays grey.
       evidence: 'Currently on site with the ATO, Melbourne',
-      sourced: true,
+      sourced: false,
     },
     {
       name: 'Career Growth',
       side: 'candidate',
       answer:
         'Programs where AI delivery and AI assurance are the hard part — where somebody has to be accountable for whether the model output can be trusted, not just whether it shipped.',
+      // The eval stack is real and the line names the two tools, but it was
+      // built in independent consulting (app/data/siteContent.ts) and is not
+      // published anywhere a reader can open — and the −38% says *simulated* in
+      // its own text, with no methodology behind it. Both halves are
+      // self-reported, so the whole line is grey rather than half-marked.
       evidence: 'Langfuse + Phoenix evaluation stack · −38% simulated error-budget breaches',
-      sourced: true,
+      sourced: false,
     },
     {
       name: 'Company Stability',
       side: 'role',
       answer:
         'I look for organisations that can absorb an honest status report. Every program I have rescued was one where somebody said the number out loud early enough.',
+      // Role-side, and a bare pair of numbers with no employer, program or
+      // methodology attached. Both reasons point the same way: grey.
       evidence: '75+ hours of evidence against 64 available — escalated, then re-baselined',
-      sourced: true,
+      sourced: false,
     },
     {
       name: 'North Star Align',

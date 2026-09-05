@@ -1,4 +1,14 @@
-@import "tailwindcss";
+/* Tailwind v4 ignores the v3 `content` array and auto-detects its own sources
+   from the repository root — so every JSON report, markdown note and kanban
+   task that merely QUOTED a class name compiled that rule into the served
+   bundle. That is how a dozen hue utilities reached production out of
+   reports/post-prod/lighthouse-production.json while no component rendered one
+   of them (G-H3; the class names are deliberately not spelled out here, since
+   this file is itself scanned). `source(none)` turns the auto-detection off;
+   the two @source lines put back exactly the directories that render markup. */
+@import "tailwindcss" source(none);
+@source "../app";
+@source "../components";
 
 :root {
     /* ── Monochrome design tokens — single source (docs/overhaul/SPEC.md §3.1).
@@ -220,12 +230,13 @@
     --elev-1: 0 8px 24px -10px rgb(0 0 0 / 0.55), inset 0 1px 0 rgb(246 246 246 / 0.06);
     --elev-2: 0 20px 60px -18px rgb(0 0 0 / 0.66), inset 0 1px 0 rgb(246 246 246 / 0.08);
     --elev-3: 0 34px 90px -24px rgb(0 0 0 / 0.74), inset 0 1px 0 rgb(246 246 246 / 0.10);
-    /* Rim-light — the only "glow": a still box-shadow, no per-frame paint. */
-    --rim: 0 0 0 1px rgb(246 246 246 / 0.10), 0 0 28px -8px rgb(232 235 240 / 0.26);
-    --rim-strong: 0 0 0 1px rgb(246 246 246 / 0.22), 0 0 44px -6px rgb(232 235 240 / 0.42);
+    /* Rim-light — the only "glow": a still box-shadow, no per-frame paint.
+       Tinted at --accent (#EBEBEB = 235 235 235), not the retired cool white. */
+    --rim: 0 0 0 1px rgb(246 246 246 / 0.10), 0 0 28px -8px rgb(235 235 235 / 0.26);
+    --rim-strong: 0 0 0 1px rgb(246 246 246 / 0.22), 0 0 44px -6px rgb(235 235 235 / 0.42);
     --hair: inset 0 0 0 1px rgb(60 60 60 / 0.70);
-    /* Volumetric key light (steel #B8B8B8 = 174 182 194, saturation 0.103). */
-    --keylight: radial-gradient(60% 52% at 50% 36%, rgb(174 182 194 / 0.12), transparent 70%);
+    /* Volumetric key light at --steel (#B8B8B8 = 184 184 184). */
+    --keylight: radial-gradient(60% 52% at 50% 36%, rgb(184 184 184 / 0.12), transparent 70%);
 
     /* ── Interaction states (R-49 / SC-30.1 / R-90) ─────────────────────────
        The six-state library of lock §5.3, reduced to the five values every
@@ -551,10 +562,15 @@ html {
 }
 
 body {
+    /* Three washes that lift the ground away from flat black. They were
+       rgb(40 42 50) and rgb(36 36 42) — a blue-steel cast at 26/22/18% alpha
+       over near-black. Replaced by the greys of the same relative luminance
+       (0.2126R + 0.7152G + 0.0722B → 42 and 36), so the depth is unchanged and
+       the hue is gone. */
     background:
-      radial-gradient(circle at 15% 20%, rgba(40, 42, 50, 0.26), transparent 42%),
-      radial-gradient(circle at 82% 14%, rgba(40, 42, 50, 0.22), transparent 36%),
-      radial-gradient(circle at 60% 85%, rgba(36, 36, 42, 0.18), transparent 40%),
+      radial-gradient(circle at 15% 20%, rgba(42, 42, 42, 0.26), transparent 42%),
+      radial-gradient(circle at 82% 14%, rgba(42, 42, 42, 0.22), transparent 36%),
+      radial-gradient(circle at 60% 85%, rgba(36, 36, 36, 0.18), transparent 40%),
       var(--ink-900);
     color: var(--text-color);
     overflow-x: hidden;
@@ -1399,6 +1415,34 @@ nav {
         backdrop-filter var(--motion-base) var(--motion-ease-standard),
         border-color var(--motion-base) var(--motion-ease-standard);
 }
+/* The bar's own ground, on phones.
+   At rest the nav paints nothing, which is right over a dark page and wrong
+   over a lit one: at 390 the hero's scene now reaches the top of the frame
+   (the copy carries its own plates instead of the scene carrying a scrim), and
+   photographed on ?gl=force the wordmark sampled 1.70:1 and MENU 1.96:1
+   against the shader's fog (C22c 02-tests-failing.log). This is the same
+   answer given everywhere else in this pass — the type carries its ground —
+   applied to the one piece of chrome that floats over a section it does not
+   own. It fades out at the bar's own foot, so it reads as the top of the page
+   going dark rather than as a bar landing on it, and it is scoped to the width
+   where the hero has no dark column to offer. */
+@media (max-width: 700px) {
+    nav::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto;
+        height: calc(100% + var(--space-3));
+        z-index: -1;
+        pointer-events: none;
+        background: linear-gradient(
+            180deg,
+            rgb(10 10 10 / 0.92) 0%,
+            rgb(10 10 10 / 0.86) 62%,
+            transparent 100%
+        );
+    }
+}
+
 nav[data-scrolled="true"] {
     /* Raised from 0.72 → 0.92: at 0.72 busy scrolling content bled through and
        collided with the VIKRAM. wordmark / MENU, especially on mobile. */

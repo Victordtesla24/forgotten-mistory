@@ -59,9 +59,10 @@ test.describe('About', () => {
 
   test('TC-ABOUT-03: no dimension is given a score', async ({ page }) => {
     // The check is scoped to the headings and the answers, not the evidence
-    // lines: a sourced figure like "-38% simulated error-budget breaches" is
-    // exactly the kind of number this site wants, because it names where it
-    // came from. What must never appear is a rating attached to a dimension —
+    // lines: an evidence line is where a figure is allowed to appear at all,
+    // graded honestly — "−38% simulated error-budget breaches" prints in the
+    // caption grey precisely because it is self-reported, not gold.
+    // What must never appear is a rating attached to a dimension —
     // a percentage, an "8/10", or a bar — since the copy directly above says
     // there are none and explains why.
     const headings = (await page.locator(`${ABOUT} ol li h3`).allInnerTexts()).join(' ');

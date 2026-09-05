@@ -1,0 +1,69 @@
+# G-H3 - S-4 regression battery
+date: 2026-09-05T13:06:50Z
+commit under test: 5d733ad
+static server: http://127.0.0.1:5611 (python3 -m http.server 5611 --directory out)
+
+$ npx tsc --noEmit
+tsc exit=0
+
+$ npm run lint
+   * /root/forgotten-mistory/.claude/worktrees/wf_2c7160af-27e-1/package-lock.json
+
+✔ No ESLint warnings or errors
+
+$ node scripts/validate/overhaul_static_audit.mjs
+  [PASS] TC-NFR-TONE   No boastful/sci-fi copy (data + layout meta + alt/aria)
+  [PASS] TC-NFR-MONO   Achromatic, with one sanctioned accent defined in one place
+  [PASS] TC-NFR-PERF   Asset budgets (img ≤0.5MB · video ≤2.5MB, ≤5MB click-to-play · audio ≤1MB)
+  [PASS] TC-FR-PARITY  Resume facts present in siteContent
+  [PASS] TC-NFR-TYPE   Three font families — Source Serif 4 (display) + Inter (body) + IBM Plex Mono (data)
+  [PASS] TC-NFR-SEC    No hardcoded secrets in client source
+  [PASS] TC-ARCH-BENCH No /performance-benchmark route in static export
+  [PASS] TC-NFR-COMPLETE No truncation/placeholder/stub markers (app|components|lib)
+  [PASS] TC-NFR-TOKEN  CSS custom properties match design token spec
+  [PASS] TC-NFR-DEADCSS No globals.css rules for classes that do not exist
+  RESULT: ALL PASS (10/10)
+audit exit=0
+
+$ PLAYWRIGHT_BASE_URL=http://127.0.0.1:5611 npx playwright test --workers=1 tests/monochrome tests/a11y/text-contrast.spec.ts tests/overhaul/render.spec.ts
+  ✘  31 [chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium) (11.7s)
+  ✓  32 [chromium] › tests/overhaul/render.spec.ts:173:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-09: A full-page scroll never trips a page error or the error boundary (11.9s)
+  1) [chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium) 
+  1 failed
+    [chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium) 
+  31 passed (7.8m)
+
+--- the one failure, and why it is not this lane ---
+TC-RENDER-07 (hero-section.png) fails on a STALE BASELINE, not on this change.
+Expected 1280x742, received 1280x782 - a layout delta no colour token can produce.
+
+$ git show --stat --format="" HEAD   # this lane touches no Hero, no Navigation, no hero data
+ app/globals.css                                    |   34 +-
+ components/MiniVicBot.tsx                          |   10 +-
+ .../v10-20260905T0515Z/G-H3/01-live-baseline.log   |   65 +
+ .../v10-20260905T0515Z/G-H3/02-tests-failing.log   | 1765 ++++++++++++++++++++
+ .../v10-20260905T0515Z/G-H3/04-tests-passing.log   |   69 +
+ scripts/validate/css_chroma_scan.mjs               |  189 +++
+ scripts/validate/overhaul_static_audit.mjs         |    7 +-
+ tailwind.config.js                                 |   12 -
+ tests/palette_bundle.test.mjs                      |   82 +
+ 9 files changed, 2204 insertions(+), 29 deletions(-)
+
+$ git log --oneline -1 -- tests/baselines/overhaul/render.spec.ts-snapshots/hero-section-chromium-linux.png
+96732ff 2026-09-05 06:15:20 +0000 feat(vitrine): rail on the page spine, plates trace on when lit, hero holds one fold at 390
+
+$ git log --oneline <baseline-commit>..HEAD -- components/sections/Hero components/site/Navigation.tsx
+  (hero pixels changed by other lanes AFTER the baseline was last regenerated)
+d7adf27 2026-09-05 12:37:43 +0000 fix(hero): the plates cost the fold nothing
+13f1b82 2026-09-05 12:30:54 +0000 fix(flagship): keep the phone's hero scene lit and clear AA over every shader
+e88ba4c 2026-09-05 10:43:04 +0000 consolidate: merge worktree-wf_31b6f314-9ff-1 into main
+364c0dd 2026-09-05 10:36:02 +0000 feat(hero): full-colour photograph with a loop on intent
+8f81ae8 2026-09-05 10:04:11 +0000 consolidate: merge worktree-wf_0d0dffdb-8bf-1 into main
+a78d9f0 2026-09-05 10:01:01 +0000 fix(scenes): scrim the copy from the shader, not only from the still
+39f4211 2026-09-05 09:59:38 +0000 consolidate: merge worktree-wf_0d0dffdb-8bf-1 into main (branch wins conflicts)
+9fd78ef 2026-09-05 09:54:28 +0000 feat(hero): volumetric light the visitor can actually see
+3209d47 2026-09-05 09:40:17 +0000 content(experience): print the sixteen years' derivation beside the claim
+3720832 2026-09-05 06:55:12 +0000 feat(minivic): a labelled launcher, reachable in three tab stops
+
+Verdict: pre-existing on main, owned by the hero-photograph lane (364c0dd) and the
+MiniVic-launcher lane (3720832). G-H3 does not rebaseline another lane pixels.

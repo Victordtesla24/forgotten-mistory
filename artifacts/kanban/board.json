@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T10:50:01.011Z",
+  "updated": "2026-09-05T13:02:17.158Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -13,6 +13,390 @@
     "archived"
   ],
   "tasks": [
+    {
+      "id": "t_g_a1",
+      "title": "ADV-FAIL P0 — G-A1 About evidence → gold",
+      "column": "ready",
+      "status": "running",
+      "priority": 99,
+      "assignee": "analyst-programmer",
+      "created_at": "2026-09-05T11:12:20Z",
+      "updated_at": "2026-09-05T12:09:07Z",
+      "labels": [
+        "ADV-FAIL",
+        "P0",
+        "parallel"
+      ],
+      "summary": "From artifacts/adversarial/GAP-BACKLOG.md. Ship visible UI ≤10m. See INBOX/ADV-FAIL-20260905.md. Live FAIL build bdf4edc4.",
+      "lane": "G-A",
+      "port": 5605,
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "updated": "2026-09-05T12:37:56.120Z",
+      "parents": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:22:59.848Z",
+          "by": "orchestrator",
+          "text": "REVIEWER BASELINE (G-A1/G-A2 FAIL, measured): all 10 .About_evidence nodes rgb(144,144,144); --gold = rgb(201,168,76). keySwatch hatch rgba(138,143,154,.34) chroma 16. Council: sourced evidence on var(--gold); un-sourced answers stay neutral so sourced vs self-reported sorts at a glance; hatch to a neutral ramp value (e.g. rgba(205,205,205,.28)). Evidence: G-REV/9ba97a5c/captures/probe-a.json → about.evidenceColors / about.offTokenChroma"
+        },
+        {
+          "at": "2026-09-05T12:26:15.214Z",
+          "by": "orchestrator",
+          "text": "PUSHED 03aa1ed on worktree-wf_b908a7a9-f5d-1 (12:25Z): .evidence[data-sourced='true'] → var(--gold); CC-A1 @1440+390 red→green (02/04 logs), 29 specs green incl. scene-about + monochrome, lint clean, audit 10/10, screenshots about-1440/390 + key swatch. Orchestrator reviewed the diff. Deploy dispatched 12:25:21Z by the watcher; awaiting live build-commit + reviewer phase-2 re-probe before Done."
+        },
+        {
+          "at": "2026-09-05T12:37:56.120Z",
+          "by": "orchestrator",
+          "text": "REVIEWER PHASE-2 FAIL (semantics, prime directive 3) on live 843b679d: colour/contrast PASS (9× rgb(201,168,76), AA 7.99–8.72:1) but 4 of 9 gold lines are not checkable records — #4 Culture Fit '5+ squads, up to 40 practitioners…' (self-reported), #8 Company Stability '75+ hours of evidence against 64 available…' (bare numbers), #7 Career Growth '… −38% simulated error-budget breaches' (its own text says simulated), #6 Location Match 'Currently on site with the ATO' sits on a side==='role' dimension rendering the OPEN caliper 'measured from the role'. Structural cause: the new  flag was never reconciled with the pre-existing  flag (About.tsx:220). False positive named: commit 03aa1ed's 'a figure off the CV' criterion contradicts CLAUDE.md (CV figure = self-reported, not sourced). → CORRECTION t_g_a1c dispatched."
+        }
+      ],
+      "decisions": []
+    },
+    {
+      "id": "t_g_a2",
+      "title": "ADV-FAIL P0 — G-A2 About hatch on-token",
+      "column": "ready",
+      "status": "done",
+      "priority": 99,
+      "assignee": "analyst-programmer",
+      "created_at": "2026-09-05T11:12:20Z",
+      "updated_at": "2026-09-05T12:09:07Z",
+      "labels": [
+        "ADV-FAIL",
+        "P0",
+        "parallel"
+      ],
+      "summary": "From artifacts/adversarial/GAP-BACKLOG.md. Ship visible UI ≤10m. See INBOX/ADV-FAIL-20260905.md. Live FAIL build bdf4edc4.",
+      "lane": "G-A",
+      "port": 5605,
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "updated": "2026-09-05T12:37:56.067Z",
+      "parents": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:26:15.282Z",
+          "by": "orchestrator",
+          "text": "PUSHED with G-A1 (03aa1ed): hatch rgb(138 143 154/.34) → rgb(144 144 144/.34) (the --mist-400 triple, zero chroma, same alpha); CC-A2 red→green. Awaiting live verify."
+        }
+      ],
+      "decisions": [],
+      "result": "REVIEWER PHASE-2 PASS on live 843b679d (G-REV/e47221ed/08-adversarial-review.md): .keySwatch[data-state='role'] background-image = repeating-linear-gradient(45deg, rgba(144,144,144,.34) …) — channel spread 0, zero occurrences of rgb(138,143,154) at 1440 and 390; swatch intact 25.6×13.6 px. 0 pageerrors in 4 contexts."
+    },
+    {
+      "id": "t_g_m1",
+      "title": "ADV-FAIL P0 — G-M1 MiniVic drop dead API ladder",
+      "column": "ready",
+      "status": "running",
+      "priority": 99,
+      "assignee": "analyst-programmer",
+      "created_at": "2026-09-05T11:12:20Z",
+      "updated_at": "2026-09-05T12:09:07Z",
+      "labels": [
+        "ADV-FAIL",
+        "P0",
+        "parallel"
+      ],
+      "summary": "From artifacts/adversarial/GAP-BACKLOG.md. Ship visible UI ≤10m. See INBOX/ADV-FAIL-20260905.md. Live FAIL build bdf4edc4.",
+      "lane": "G-M",
+      "port": 5606,
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "updated": "2026-09-05T12:51:04.218Z",
+      "parents": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:23:00.045Z",
+          "by": "orchestrator",
+          "text": "REVIEWER BASELINE (G-M1/G-M2/G-M3 FAIL, measured): /api/chat-with-vic poller IS in the served bundle (setInterval … fetch('/api/chat-with-vic?taskId=')); /api/realtime 0 in the 14 eager chunks (lazy chunks not enumerated); greeting MP3 sha 369e1eb2… byte-identical to the stale asset while the intro text changed in 45eb252/3720832; text/event-stream 0. NOTE: the launcher (button.minivic-launcher) clicked in headless Chrome but no input became visible and zero /api/* requests fired — your e2e must open the panel the way tests/monochrome/minivic-launcher.spec.ts does (scroll past the hero first if the launcher gates on pastHero) and prove the send path on the wire."
+        },
+        {
+          "at": "2026-09-05T12:33:58.654Z",
+          "by": "orchestrator",
+          "text": "PROTOCOL EVENT 12:33Z: the wave-1 Workflow (wf_b908a7a9-f5d) recorded 'failed' for this lane at spawn — no agent id, no worktree (-3 never created), so no code was touched; §10 requeue applied: re-dispatched as its own Workflow wf_0a064191-152 (lane:minivic-ladder+greeting, fresh isolated worktree, port 5606, opus xhigh, 30-min cap). Reviewer baseline facts + the headless-panel caveat were included in the prompt."
+        },
+        {
+          "at": "2026-09-05T12:49:33.759Z",
+          "by": "orchestrator",
+          "text": "PUSHED 91f46e9 on worktree-wf_0a064191-152-1 (12:48Z): handleSend → askMiniVicBrain directly; sendRealtimeMessage, chat-with-vic POST, poller, liveSocketsRef, wsBaseUrl, playGeneratedVideo and 2 unreachable UI branches removed (net −319 lines; 0 references left in components/lib/app). MV-WIRE-01/02 e2e prove on the wire: one send → exactly ['/api/chat'], no poller in a 7 s window, panel opened like minivic-launcher.spec; node:test scans source + all 33 emitted chunks. 57/57 Playwright, node:test 5/5, tsc, lint, audit 10/10. Orchestrator reviewed. Awaiting consolidation + reviewer phase 2."
+        },
+        {
+          "at": "2026-09-05T12:51:04.218Z",
+          "by": "orchestrator",
+          "text": "LIVE 874f1ee9 at 12:50:05Z (Deploy 33967099706 success) — fourth ship of the run; served greeting sha now dd65f259… (verified by curl). Reviewer phase-2 dispatched on 874f1ee9 (G-M1/G-M2 verdicts + G-M3 TTFB and /api/tts baseline)."
+        }
+      ],
+      "decisions": []
+    },
+    {
+      "id": "t_g_m2",
+      "title": "ADV-FAIL P0 — G-M2 Regenerate greeting MP3 to match text",
+      "column": "ready",
+      "status": "running",
+      "priority": 99,
+      "assignee": "analyst-programmer",
+      "created_at": "2026-09-05T11:12:20Z",
+      "updated_at": "2026-09-05T12:09:07Z",
+      "labels": [
+        "ADV-FAIL",
+        "P0",
+        "parallel"
+      ],
+      "summary": "From artifacts/adversarial/GAP-BACKLOG.md. Ship visible UI ≤10m. See INBOX/ADV-FAIL-20260905.md. Live FAIL build bdf4edc4.",
+      "lane": "G-M",
+      "port": 5606,
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "updated": "2026-09-05T12:49:33.916Z",
+      "parents": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:33:58.713Z",
+          "by": "orchestrator",
+          "text": "PROTOCOL EVENT 12:33Z: the wave-1 Workflow (wf_b908a7a9-f5d) recorded 'failed' for this lane at spawn — no agent id, no worktree (-3 never created), so no code was touched; §10 requeue applied: re-dispatched as its own Workflow wf_0a064191-152 (lane:minivic-ladder+greeting, fresh isolated worktree, port 5606, opus xhigh, 30-min cap). Reviewer baseline facts + the headless-panel caveat were included in the prompt."
+        },
+        {
+          "at": "2026-09-05T12:49:33.916Z",
+          "by": "orchestrator",
+          "text": "PUSHED with G-M1 (91f46e9). DECISION RECORD (03-generation.log): ATTEMPT 1 REST call → HTTP 400 invalid_api_key / api_key_id_used_as_api_key — the stored ELEVENLABS_API_KEY is a key ID (corroborates the pre-existing MiniVicBot note); no asset written, no fabrication. ATTEMPT 2 — the authenticated ElevenLabs connector (real generation in the account workspace): premade male Indian-English professional voice hg1icMxI2KADq9a81ecq ('Sanket'), eleven_multilingual_v2, one take, 24.98 s, 365 credits / USD 0.133 (the single authorised paid call). Text = GREETING.hiring verbatim (single source imported by MiniVicBot.tsx and the generation script; transcript public/assets/minivic-greeting.txt + digest module emitted together). New MP3 417,702 B (<500 kB), sha dd65f259…; tests/minivic_greeting.test.mjs asserts transcript == GREETING.hiring and hash == digest. FOLLOW-UP for the Owner's credential store (not a blocker): ELEVENLABS_API_KEY holds a key ID, not an sk_ key — the REST path and functions/index.js elevenLabsTts (/api/tts) cannot authenticate until a real key is stored; recorded on t_g_m3 / R3."
+        }
+      ],
+      "decisions": []
+    },
+    {
+      "id": "t_g_h1",
+      "title": "ADV-FAIL P0 — G-H1 Hero fold reinvention (cut CV dump)",
+      "column": "ready",
+      "status": "running",
+      "priority": 99,
+      "assignee": "analyst-programmer",
+      "created_at": "2026-09-05T11:12:20Z",
+      "updated_at": "2026-09-05T12:09:07Z",
+      "labels": [
+        "ADV-FAIL",
+        "P0",
+        "parallel"
+      ],
+      "summary": "From artifacts/adversarial/GAP-BACKLOG.md. Ship visible UI ≤10m. See INBOX/ADV-FAIL-20260905.md. Live FAIL build bdf4edc4.",
+      "lane": "G-H1",
+      "port": 5607,
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "updated": "2026-09-05T13:00:10.132Z",
+      "parents": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:22:59.736Z",
+          "by": "orchestrator",
+          "text": "REVIEWER BASELINE 9ba97a5c (G-H1 FAIL, measured): 21 text-bearing leaf nodes in the 1440×900 fold, 4 paragraphs >12 words (longest 29), 6 in-fold CTAs in 3 groups (See the evidence+Download CV; Play the portrait; LinkedIn/GitHub/Email), ledger at top:535 with 15 caliper marks, availability at top:840, dominant media covers 11.4% of the fold (516×287). Council targets for the re-probe: ≤8 text leaves in fold; dominant visual coverage ≥0.75 (the stage IS the fold); one CTA group; ledger/note/availability start ≥100vh; the 'Play the portrait' control counts as a CTA — fold it into the photograph or move it with the proof band. Evidence: docs/delivery/evidence/v10-20260905T0515Z/G-REV/9ba97a5c/captures/probe-a.json → 1440-normal.measure.hero"
+        },
+        {
+          "at": "2026-09-05T12:39:54.870Z",
+          "by": "orchestrator",
+          "text": "HEADS-UP 12:40Z: flagship-C landed on the remote (d7adf27, 13f1b82 → consolidating): Hero.module.css .stage::after display:none below 700px + per-run text plates rgb(10 10 10/.90) on .eyebrow/.name/.role/.statement/.grading/.availability/.ledgerItem, atmosphere.glsl.ts reframed to the viewport half-width, TC-CONTRAST-02 on /?gl=force, nav::before ground below 700px. Your merge of origin/main before push must keep those plate rules; your new .fold/.proof structure should give the moved elements their plates too (any text over the scene needs AA on /?gl=force at 390)."
+        },
+        {
+          "at": "2026-09-05T12:58:11.002Z",
+          "by": "orchestrator",
+          "text": "ORCHESTRATOR PUSH under host RECTIFY 12:52Z (O3): 0506e7e on worktree-wf_b908a7a9-f5d-4 at 12:57Z — build:static fresh (out/ 12:52:22 > last source edit 12:39:51), tsc exit 0; Hero.tsx/Hero.module.css restructured (data-testid hero-fold / hero-proof), tests/e2e/hero-fold.spec.ts added, hero.spec updated. The lane agent's green battery is still running and lands as a follow-up evidence commit; reviewer probes live after Deploy. Ledger +4."
+        },
+        {
+          "at": "2026-09-05T13:00:10.132Z",
+          "by": "orchestrator",
+          "text": "LIVE 9b864752 at 12:59:23Z — consolidated cleanly (no forced conflict; flagship-C plate rules and the new .fold/.proof structure both present on main). Reviewer phase-2 dispatched on 9b864752 for G-H1 + G-S1."
+        }
+      ],
+      "decisions": []
+    },
+    {
+      "id": "t_g_v1",
+      "title": "ADV-FAIL P0 — G-V1 Vitrine plates always visible",
+      "column": "ready",
+      "status": "done",
+      "priority": 99,
+      "assignee": "analyst-programmer",
+      "created_at": "2026-09-05T11:12:20Z",
+      "updated_at": "2026-09-05T12:09:07Z",
+      "labels": [
+        "ADV-FAIL",
+        "P0",
+        "parallel"
+      ],
+      "summary": "From artifacts/adversarial/GAP-BACKLOG.md. Ship visible UI ≤10m. See INBOX/ADV-FAIL-20260905.md. Live FAIL build bdf4edc4.",
+      "lane": "G-V1",
+      "port": 5608,
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "updated": "2026-09-05T12:42:06.751Z",
+      "parents": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:22:59.803Z",
+          "by": "orchestrator",
+          "text": "REVIEWER BASELINE (G-V1/G-V2 FAIL, measured): neighbour plates at element opacity 0.3–0.5 with stroke-dasharray 1px / dashoffset 1px read as loading states; council target: every plate fully drawn at opacity ≥0.55, lit plate gains weight not existence. #vitrine has 9 links, 0 engagement CTAs (mailto/'start a project' = []); council: the CTA styled as a plate so it reads as the seventh drawing. Evidence: G-REV/9ba97a5c/captures/probe-a.json → vitrine.plates / vitrine.ctas"
+        },
+        {
+          "at": "2026-09-05T12:32:06.267Z",
+          "by": "orchestrator",
+          "text": "PUSHED a80d00e (12:2xZ) → consolidated 843b679d (only reports/static-audit.json conflicted; About change verified intact) → LIVE 12:30:55Z (Deploy 33966157228 success). Drawings.module.css: strokes drawn at rest (dashoffset 0, stroke-opacity .5 → 1 when lit/drawn), labels .85 at rest; 'Start a project' mailto CTA after the rail; TC-VIT-V1/V2 added. Reviewer phase-2 dispatched on 843b679d."
+        }
+      ],
+      "decisions": [],
+      "result": "REVIEWER PHASE-2 PASS on live 843b679d (G-REV/843b679d/08-adversarial-review.md, commit 7e6617f): G-V1 PASS — all six plates stroke-dashoffset 0 at 1440/390 in normal, gl=force and reduced-motion; each resting plate holds 1798–4950 ink px (1.7–4.6% of its box) on rgb(8,8,8); lit plate measurably heavier (+16–21% ink, ~3.2× alpha). G-V2 PASS — exactly one achromatic 'Start a project' mailto CTA in #vitrine after the rail, contrast 18.3:1, first Tab from the rail, :focus-visible ring, 48px target. 0 pageerrors in 6 contexts; #vitrine gold = 1 (live URL); no regression. DECISION (§0.1): 'Start a project' appears in #vitrine AND #listen with an identical href — intentional: the client path (R4) needs a door where the work ends and where the conversation ends; both count as one engagement action, not duplication."
+    },
+    {
+      "id": "t_g_s1",
+      "title": "ADV-FAIL P0 — G-S1 Skills real GL flagship",
+      "column": "ready",
+      "status": "running",
+      "priority": 96,
+      "assignee": "analyst-programmer",
+      "created_at": "2026-09-05T11:12:20Z",
+      "updated_at": "2026-09-05T12:09:07Z",
+      "labels": [
+        "ADV-FAIL",
+        "P1",
+        "parallel"
+      ],
+      "summary": "From artifacts/adversarial/GAP-BACKLOG.md. Ship visible UI ≤10m. See INBOX/ADV-FAIL-20260905.md. Live FAIL build bdf4edc4.",
+      "lane": "G-S1",
+      "port": 5609,
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "updated": "2026-09-05T13:00:10.258Z",
+      "parents": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:22:59.940Z",
+          "by": "orchestrator",
+          "text": "REVIEWER BASELINE (G-S1 FAIL, measured): #skills 0 canvases, 1 svg at 1440 normal AND /?gl=force; 3086 px tall with no WebGL. Council: a depth-sorted lattice whose nodes are the tested capabilities behind the Bench; settle once on enter (~1.2 s) then hold, no loop; reduced-motion = aligned end state; gold ONLY on the measured-in-production mark — production dots/legend swatches lose gold (that is P1 gap 'gold as status chrome', include it if the gold-semantics budget forces it)."
+        },
+        {
+          "at": "2026-09-05T12:58:11.271Z",
+          "by": "orchestrator",
+          "text": "ORCHESTRATOR PUSH under host RECTIFY 12:52Z (O3): 66b0872 on worktree-wf_c06ca2f9-9de-1 at 12:57Z — build fresh (out/ 12:51:47 > last edit 12:49:59), tsc exit 0; BenchField.tsx + bench.glsl.ts + Bench.tsx <Scene sceneId=skills-bench>, scene-skills.spec.ts, flagship-visibility skills case. Lane agent's battery continues → follow-up evidence commit; reviewer probes live after Deploy. Ledger +7."
+        },
+        {
+          "at": "2026-09-05T13:00:10.258Z",
+          "by": "orchestrator",
+          "text": "LIVE 9b864752 at 12:59:23Z — consolidated cleanly (no forced conflict; flagship-C plate rules and the new .fold/.proof structure both present on main). Reviewer phase-2 dispatched on 9b864752 for G-H1 + G-S1."
+        }
+      ],
+      "decisions": []
+    },
+    {
+      "id": "t_g_h2",
+      "title": "ADV-FAIL P0 — G-H2/G-X1 Signature scene architecture",
+      "column": "ready",
+      "status": "done",
+      "priority": 96,
+      "assignee": "solutions-architect",
+      "created_at": "2026-09-05T11:12:20Z",
+      "updated_at": "2026-09-05T12:09:07Z",
+      "labels": [
+        "ADV-FAIL",
+        "P1",
+        "parallel"
+      ],
+      "summary": "From artifacts/adversarial/GAP-BACKLOG.md. Ship visible UI ≤10m. See INBOX/ADV-FAIL-20260905.md. Live FAIL build bdf4edc4.",
+      "lane": "G-H2",
+      "port": null,
+      "hierarchy": {
+        "role": "architecture / requirements_analysis",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "updated": "2026-09-05T12:24:54.561Z",
+      "parents": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:23:00.168Z",
+          "by": "orchestrator",
+          "text": "REVIEWER BASELINE for G-H2 (measured): 0 canvases on a NORMAL load at 1440 and 390 (GL only under /?gl=force — capability gate or deferral: establish which, with the real-GPU spoof pass); .Hero_stage scrim linear-gradient(90deg, rgba(10,10,10,.68) …) covers the left of the frame; HyperFrames string count in served chunks = 0. Council: full-bleed single-layer stage, directional key ≤0.35 alpha + text-protection no larger than the headline box, scene on the critical path with a 900 ms settle, reduced-motion = the same picture stopped."
+        }
+      ],
+      "decisions": [],
+      "result": "solutions-architect delivered docs/architecture/SIGNATURE-SCENES-v1.md + SIGNATURE-SCENES-TASKS.json (0b0bf02, consolidated to main). Orchestrator verified: 14 tasks validate (assignees §5, verify commands present), HyperFrames decision grounded in fetched README + npm (v0.8.29: player 17.6 kB gz in-page for hero overture + viseme stage; CLI+engine at build time render 3840×2160@60 masters on this VPS at zero credits — the R5 unblock), GSAP+ScrollTrigger adopted, Scene priority prop for hero first paint, R5 raster reported FAIL with waivers (no re-scoping). Imported as t_x1_01…t_x1_14 (g-s1-04 = t_g_s1). Next lanes: t_x1_01 (fps harness, tester) → t_x1_02/03 (hero first paint + graded plate)."
+    },
+    {
+      "id": "t_g_rev",
+      "title": "ADV-FAIL P0 — G-REV Live adversarial re-probe after each Deploy",
+      "column": "ready",
+      "status": "running",
+      "priority": 99,
+      "assignee": "reviewer",
+      "created_at": "2026-09-05T11:12:20Z",
+      "updated_at": "2026-09-05T12:09:07Z",
+      "labels": [
+        "ADV-FAIL",
+        "P0",
+        "parallel"
+      ],
+      "summary": "From artifacts/adversarial/GAP-BACKLOG.md. Ship visible UI ≤10m. See INBOX/ADV-FAIL-20260905.md. Live FAIL build bdf4edc4.",
+      "lane": "G-REV",
+      "port": null,
+      "hierarchy": {
+        "role": "verification / 3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "updated": "2026-09-05T12:55:40.850Z",
+      "parents": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:09:07.786Z",
+          "by": "orchestrator",
+          "text": "INTAKE 12:0xZ (orchestrator, Fable 5.1 ultracode): read prompt.md end-to-end, ADV-REVIEW-20260905 (FAIL), GAP-BACKLOG, INBOX/ADV-FAIL-20260905, ORCHESTRATOR-REALIGN. Verified: fm-deploy-cadence.timer active; hermes-gateway/dashboard inactive; Deploy runs 11:12/11:23/11:33/11:43/11:54 all success; live build-commit 9ba97a5c = main HEAD; cache-control public, max-age=0, must-revalidate; all 15 worktrees ahead=0 (nothing merged-ready to push); in-flight uncommitted work in wf_09ff65b8 (flagship C) and wf_c06ca2f9 (flagship B = Skills GL) continues, not restarted (§0). No worker processes alive → 4 stale running tasks reclaimed to ready. Specs written for t_g_a1/a2/m1/m2/h1/v1/s1/h2/rev. First wave dispatching now as parallel worktree lanes; first visible ship target ≤12:15Z."
+        },
+        {
+          "at": "2026-09-05T12:19:26.770Z",
+          "by": "orchestrator",
+          "text": "WAVE-2 PLAN 12:2xZ: t_g_h3 (palette purge, port 5611) + t_stab01 (stability, port 5613) dispatch as wave-1 build slots free; t_g_m3 (TTFB, port 5612) after t_g_m1 lands; t_ci_verify01 (O3 deploy-verify EPIPE false failure — run 33965475659 reported failure while live served 9ba97a5c) already dispatched to coder."
+        },
+        {
+          "at": "2026-09-05T12:22:18.207Z",
+          "by": "orchestrator",
+          "text": "PHASE 1 BASELINE landed (branch worktree-wf_2cd21f31-055-1, commit 77cd9a3): 11/11 P0 gaps FAIL on live 9ba97a5c with fresh captures under docs/delivery/evidence/v10-20260905T0515Z/G-REV/9ba97a5c/. Watcher dispatched deploy.yml 12:21:42Z to consolidate it with the O3 verify fix (6f59312)."
+        },
+        {
+          "at": "2026-09-05T12:55:40.850Z",
+          "by": "orchestrator",
+          "text": "RECTIFY 12:52Z applied — Playwright unblocked; WIP push; board closes on PASS."
+        }
+      ],
+      "decisions": []
+    },
     {
       "id": "t_realign01",
       "title": "P0 RESUME — docs/prompt.md max PEA; ship visible UI every ≤10 min (O1/O5)",
@@ -176,7 +560,7 @@
     {
       "id": "t_d0066b7a",
       "title": "Cycle 14 — every remaining red Playwright spec on main triaged and fixed until Checks e2e is green (0 regression, R8/C-7)",
-      "status": "todo",
+      "status": "ready",
       "assignee": "tester",
       "priority": 85,
       "parents": [
@@ -191,7 +575,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T10:46:05.202Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "Checks run 33936783382 on debd25b: 15 failed / 272 passed. C13 regression (Next 15) showed 8 ✘: GC-01 gold-contrast, TC-CONTRAST-01 @390/@1440, TC-BOT-12, TC-EXP-11, TC-HERO-12, TC-STATE-HOVER, TC-STATE-ACTIVE. Cycle 11 fixes CONTRAST + HERO-12. Remaining after landing: GC-01, TC-BOT-12, TC-EXP-11, TC-STATE-HOVER/ACTIVE + whatever the merged main shows.",
       "decisions": [],
       "comments": [
@@ -240,7 +624,7 @@
     {
       "id": "t_3bf56e4a",
       "title": "EPIC — cycles 15+: fold the R-c8 / R-c13 backlog (children below carry the work; this task closes when every child is Done)",
-      "status": "todo",
+      "status": "ready",
       "assignee": "orchestrator",
       "priority": 80,
       "parents": [],
@@ -252,7 +636,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "Open R-c8 items after cycles 7/11/12/13: MOT-F-1, C-03 (verify), C-04 (+ADV-F-3), C-07, C-08, ADV-F-2, MOT-F-3, C-09, C-11, ADV-F-4. Each is a child task with the R-c8 direction verbatim as spec.",
       "decisions": [],
       "comments": []
@@ -705,7 +1089,7 @@
     {
       "id": "t_01071b79",
       "title": "R2 — ≥7 signature Three.js/GLSL scenes at 60 fps with reduced-motion fallbacks (currently 2 GLSL + 4 SVG/CSS)",
-      "status": "todo",
+      "status": "ready",
       "assignee": "analyst-programmer",
       "priority": 86,
       "parents": [
@@ -719,7 +1103,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:30:50.275Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "Gap owner: SPEC-v10.md §R2 names the scenes to add/upgrade (candidates: About compass → GLSL rose; Skills bench → instanced wires; Vitrine → shader plates; Listen → caliper field; a page-level transition scene) under LCP/asset budgets. Each scene = one cycle with its own spec.",
       "decisions": [],
       "comments": [
@@ -733,7 +1117,7 @@
     {
       "id": "t_7cb992f4",
       "title": "R4 — employer reaches the CV dossier and client reaches the engagement CTA, both click-through complete",
-      "status": "todo",
+      "status": "ready",
       "assignee": "tester",
       "priority": 84,
       "parents": [
@@ -747,7 +1131,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:30:46.353Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "Verify on the live site; fix any gap found by SPEC-v10.md S-2.",
       "decisions": [],
       "comments": [
@@ -789,7 +1173,7 @@
     {
       "id": "t_7db91f53",
       "title": "R7 — every claim traces to the CV / LinkedIn / a named repository; zero fabricated facts",
-      "status": "todo",
+      "status": "ready",
       "assignee": "reviewer",
       "priority": 70,
       "parents": [
@@ -803,7 +1187,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "Held by tests/content/content-check.spec.ts + scripts/build/cv_fingerprint.mjs (v9 cycle \"content\": ANZ headcount fixed, function grounding pinned). Open: ADV-F-4 tenure (cycle 21). Re-audited by every adversarial review.",
       "decisions": [],
       "comments": []
@@ -1020,7 +1404,7 @@
     {
       "id": "t_fc52fa8b",
       "title": "§0.3-2 / C-8 — black, white, gold only; gold = sourced-claim mark",
-      "status": "todo",
+      "status": "ready",
       "assignee": "reviewer",
       "priority": 75,
       "parents": [
@@ -1035,7 +1419,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "Held by the static audit raw-hex gate + tests/monochrome; v9 cycle 5 moved tokens to neutral AA. Open: C-08 gold mass in #skills (cycle 17) and the zinc pip on the launcher (cycle 16).",
       "decisions": [],
       "comments": []
@@ -1043,7 +1427,7 @@
     {
       "id": "t_43c471b2",
       "title": "§0.3-1 / §0.3-6 — every section has exactly one flagship visualisation that tells its story (visual + text as one)",
-      "status": "todo",
+      "status": "ready",
       "assignee": "reviewer",
       "priority": 85,
       "parents": [
@@ -1058,7 +1442,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T09:14:38.849Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "Graded by R-c8 motion council: #about and #experience failed; About compass fixed (cycle 12), Experience is cycle 15. R-c13 re-grades all six.",
       "decisions": [],
       "comments": [
@@ -1212,10 +1596,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:05.764Z",
-      "updated": "2026-09-05T10:50:01.011Z",
+      "updated": "2026-09-05T12:09:07Z",
       "summary": "SPEC-v10.md c19: #skills has 0 canvases (20-path SVG bench). Add a shader field mounted through components/gl/Scene.tsx that lights the sourced edges; gold stays a mark (≤ 6 gold-painting elements after cycle 17). Files: components/sections/Skills/BenchField.tsx, bench.glsl.ts, Skills.tsx, Skills.module.css; tests/overhaul/scene-skills.spec.ts (TDD first).",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:09:07Z",
+          "by": "orchestrator",
+          "text": "running — continued 12:0xZ as t_g_s1 (G-S1) in worktree wf_c06ca2f9-9de-1"
+        }
+      ],
       "blocker": null
     },
     {
@@ -1252,7 +1642,7 @@
     {
       "id": "t_dc096608",
       "title": "Scene 7 — MiniVic mouth canvas becomes a GLSL viseme stage driven by the audio envelope (R2 seventh scene, R3 lip-motion slice)",
-      "status": "todo",
+      "status": "ready",
       "assignee": "analyst-programmer",
       "priority": 83,
       "parents": [
@@ -1267,7 +1657,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:06.191Z",
-      "updated": "2026-09-05T06:20:06.191Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "SPEC-v10.md c20b: the 7th scene lives in the chrome (§0.3-1 allows one flagship per section). Scaffolding exists: lib/visemeMap.ts (21 visemes), MiniVicBot.tsx:209 mouth canvas (Canvas2D), :214 AnalyserNode. Achievable now: a WebGL stage mounted through components/gl/Scene.tsx rendering viseme shapes from the audio envelope while /api/tts audio plays, labelled synthetic. OWNER-BLOCKED remainder (recorded, never faked): phoneme-accurate ≤ 40 ms lip-sync needs a generated viseme/phoneme track — Higgsfield 0 credits, ElevenLabs IVC/PVC refused. Files: components/avatar/VisemeStage.tsx, viseme.glsl.ts, components/MiniVicBot.tsx, lib/visemeMap.ts; tests/e2e/avatar-mouth.spec.ts (TDD first).",
       "decisions": [],
       "comments": [],
@@ -1276,7 +1666,7 @@
     {
       "id": "t_1173cd73",
       "title": "R3 latency + M5 greeting — first word ≤ 1.5 s (streamed reply / warm function) and a researched, synthetic-labelled MiniVic greeting",
-      "status": "todo",
+      "status": "ready",
       "assignee": "analyst-programmer",
       "priority": 89,
       "parents": [
@@ -1291,7 +1681,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:06.472Z",
-      "updated": "2026-09-05T07:30:51.380Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "SPEC-v10.md c17: live /api/chat answers in 3.42 s end-to-end (OpenAI rung) vs the ≤ 1.5 s perceived-real-time budget. Stream the reply (chunked/SSE) or keep the instance warm (minInstances 1 — record the Blaze estimate) and start speaking on the first sentence. Greeting: the deployed greeting MP3 still speaks the old sentence; re-voice the researched introduction (docs/delivery/evidence/v9-20260904T2312Z/B-research/01-employer-expectations.md) with the premade voice from cycle 14a — ONE generation ≤ 600 characters, logged. Files: functions/index.js, components/MiniVicBot.tsx, app/data/miniVicKnowledge.ts, public/assets/minivic-greeting.mp3; tests/e2e/avatar-latency.spec.ts, tests/content/minivic-knowledge.spec.ts (TDD first).",
       "decisions": [],
       "comments": [
@@ -1334,7 +1724,7 @@
     {
       "id": "t_49d8560b",
       "title": "R5/R6 register — OWNER-BLOCKED.md names every sub-4K asset with the exact credit that unblocks it; asset_resolution contract test",
-      "status": "todo",
+      "status": "ready",
       "assignee": "solutions-architect",
       "priority": 85,
       "parents": [
@@ -1348,7 +1738,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:06.662Z",
-      "updated": "2026-09-05T06:20:06.662Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "SPEC-v10.md c19b: every raster/video is sub-4K (my-avatar.mp4 1280×720@24, my-hero-avatar.mp4 640×360@24, og-image.png 1200×630, my_avatar.png 900×502, my_avatar.webp/.avif 1480×826). Generation is Owner-blocked (Higgsfield 0 credits / free; OpenRouter −$5.38). Write docs/delivery/evidence/v10-20260905T0515Z/OWNER-BLOCKED.md (asset, measured, target 3840×2160 / 2160p60, generator + model, written prompt plan, credit that unblocks, cost estimate) and tests/asset_resolution.test.mjs (node --test): every asset ≥ 4K OR listed in OWNER-BLOCKED.md with a reason; an unlisted sub-4K asset fails. The register + test are not blocked; only the generation half is.",
       "decisions": [],
       "comments": [],
@@ -1357,7 +1747,7 @@
     {
       "id": "t_bb67c9bd",
       "title": "R10/R12 — contract test: every closed cycle has artifacts/kanban/cycles/<cycle>.json with PEA numerator/denominator, adversarial verdict, deploy commit and tools_used",
-      "status": "todo",
+      "status": "ready",
       "assignee": "coder",
       "priority": 60,
       "parents": [
@@ -1371,7 +1761,7 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-05T06:20:06.758Z",
-      "updated": "2026-09-05T06:20:06.758Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "SPEC-v10.md c21 (the report files are written by the orchestrator every cycle; this task adds the guard). tests/cycle_reports.test.mjs (node --test): parse every artifacts/kanban/cycles/*.json — required keys {cycle, pea_numerator, pea_denominator: 25, adversarial_verdict, deploy_commit, tools_used (≥ 1 entry)}; a malformed file fails.",
       "decisions": [],
       "comments": [],
@@ -1463,7 +1853,7 @@
     {
       "id": "t_prodmon01",
       "title": "Production runtime monitor — every 10 min probe the live site (1440/390, normal + ?gl=force + reduced-motion + GPU-spoof) for pageerrors, console errors, failed requests, error boundary; plus Cloud Functions logs; findings become P100/P90 tasks",
-      "status": "todo",
+      "status": "ready",
       "assignee": "tester",
       "priority": 96,
       "parents": [],
@@ -1475,7 +1865,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:05:13.160Z",
-      "updated": "2026-09-05T10:46:05.235Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "Owner directive 06:53Z: monitor the production console logs and fix every runtime error at runtime. Deliverable: scripts/monitor/prod_console_probe.mjs (playwright, channel chrome, --no-sandbox, SwiftShader flags for ?gl=force, a hardware-GPU spoof pass like R-c13/adv4-recheck.mjs) writing artifacts/monitor/<UTC>.json + a one-line summary, exit 1 on any error; scripts/monitor/functions_log_probe.sh (firebase functions:log --only minivicChat,elevenLabsTts -n 50, grep error/status ≥ 400); tests/monitor_probe.test.mjs proving the probe fails on a page that throws. The orchestrator schedules it every 10 min (cron) and files each new error as a task within one cycle.",
       "decisions": [],
       "comments": [
@@ -1500,7 +1890,7 @@
     {
       "id": "t_31f33ce7",
       "title": "R-c13 CC-06 — Five running-text blocks blow past the 55-75ch measure — #skills provenance at 173ch (1246 px at 12 px), four more at 12",
-      "status": "todo",
+      "status": "ready",
       "assignee": "analyst-programmer",
       "priority": 85,
       "parents": [
@@ -1514,7 +1904,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:30:51.049Z",
-      "updated": "2026-09-05T07:30:51.049Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "#skills, #hero, #experience, #about · major · Verified · source composition. Finding: Five running-text blocks blow past the 55-75ch measure — #skills provenance at 173ch (1246 px at 12 px), four more at 124ch — while the site already owns --measure-read",
       "decisions": [],
       "comments": [],
@@ -1523,7 +1913,7 @@
     {
       "id": "t_6075351d",
       "title": "R-c13 MOT-C13-03 — The trace-on is real but not legible as a trace: 6.67 ms between consecutive strokes against a 720 ms stroke, so a 25-st",
-      "status": "todo",
+      "status": "ready",
       "assignee": "analyst-programmer",
       "priority": 85,
       "parents": [
@@ -1537,7 +1927,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:30:51.204Z",
-      "updated": "2026-09-05T07:30:51.204Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "#vitrine · major · Verified · source motion. Finding: The trace-on is real but not legible as a trace: 6.67 ms between consecutive strokes against a 720 ms stroke, so a 25-stroke plate finishes its whole stagger in ~160 ms and reads as one fade",
       "decisions": [],
       "comments": [],
@@ -1546,7 +1936,7 @@
     {
       "id": "t_1a2c2984",
       "title": "R-c13 CC-09 — Section padding is not on one scale and the page closes tighter than it opens: #listen is 126 top / 45 bottom at 1440 ag",
-      "status": "todo",
+      "status": "ready",
       "assignee": "analyst-programmer",
       "priority": 70,
       "parents": [
@@ -1560,7 +1950,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:30:51.316Z",
-      "updated": "2026-09-05T07:30:51.316Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "page (vertical rhythm) · minor · Verified · source composition. Finding: Section padding is not on one scale and the page closes tighter than it opens: #listen is 126 top / 45 bottom at 1440 against a symmetric 108/108 for the middle four",
       "decisions": [],
       "comments": [],
@@ -1569,7 +1959,7 @@
     {
       "id": "t_f26bd0ff",
       "title": "R-c13 MOT-C13-05 — At the one sampled pointer position the compass readout did not change; one sample is not a proof of absence, and this s",
-      "status": "todo",
+      "status": "ready",
       "assignee": "tester",
       "priority": 70,
       "parents": [
@@ -1583,7 +1973,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:30:51.433Z",
-      "updated": "2026-09-05T07:30:51.433Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "#about · minor · Inferred · source motion. Finding: At the one sampled pointer position the compass readout did not change; one sample is not a proof of absence, and this state has now been reported twice",
       "decisions": [],
       "comments": [],
@@ -1592,7 +1982,7 @@
     {
       "id": "t_d3e82b17",
       "title": "R-c13 MOT-C13-06 — The rail is a real snap carousel at 390 but scroll-behavior is auto in the no-preference path, so plate-to-plate moves j",
-      "status": "todo",
+      "status": "ready",
       "assignee": "analyst-programmer",
       "priority": 60,
       "parents": [
@@ -1606,7 +1996,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:30:51.608Z",
-      "updated": "2026-09-05T07:30:51.608Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "#vitrine · polish · Verified · source motion. Finding: The rail is a real snap carousel at 390 but scroll-behavior is auto in the no-preference path, so plate-to-plate moves jump rather than travel",
       "decisions": [],
       "comments": [],
@@ -1615,7 +2005,7 @@
     {
       "id": "t_9cd97adc",
       "title": "R-c13 MOT-C13-07 — HeroAtmosphere carries a full reduced-motion implementation that can never run — Scene.tsx:91 gates the mount first — le",
-      "status": "todo",
+      "status": "ready",
       "assignee": "analyst-programmer",
       "priority": 60,
       "parents": [
@@ -1629,7 +2019,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:30:51.696Z",
-      "updated": "2026-09-05T07:30:51.696Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "#hero · polish · Verified · source motion. Finding: HeroAtmosphere carries a full reduced-motion implementation that can never run — Scene.tsx:91 gates the mount first — leaving two competing policies with no note",
       "decisions": [],
       "comments": [],
@@ -1638,7 +2028,7 @@
     {
       "id": "t_e9d4e10f",
       "title": "R-c13 MOT-C13-01d — scene-local error boundary: a fault inside one GL scene never replaces the whole document",
-      "status": "running",
+      "status": "ready",
       "assignee": "analyst-programmer",
       "priority": 90,
       "parents": [
@@ -1652,7 +2042,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:30:51.764Z",
-      "updated": "2026-09-05T10:10:33.309Z",
+      "updated": "2026-09-05T12:19:26.719Z",
       "summary": "components/gl · major · Verified. A fault inside a scene replaces the whole document: GLCanvas mounts with no scene-local error boundary, so a component-level throw reaches app/error.tsx — 'the scene is never the content' is not enforced in code",
       "decisions": [],
       "comments": [
@@ -1660,9 +2050,15 @@
           "at": "2026-09-05T09:09:06.142Z",
           "by": "orchestrator",
           "text": "09:0xZ: resilience lane killed by the restart before any code change (only build-stamp touched); relaunched fresh after the two heavier lanes, to keep the host at ≤2 batteries."
+        },
+        {
+          "at": "2026-09-05T12:19:26.719Z",
+          "by": "orchestrator",
+          "text": "bundled into t_stab01 (stability lane, worktree wf_38db9d7d-ce3-1, port 5613) — dispatch when a build slot frees after the ADV-FAIL wave-1 lanes"
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_c16b0001",
@@ -1691,7 +2087,7 @@
     {
       "id": "t_rc14rev01",
       "title": "R-c14 — adversarial + composition + motion council review of the LIVE site after the P100 fix, cycles 15/16/16b and the React 19 upgrade (O2/O6); PASS required to close the refactor loop",
-      "status": "todo",
+      "status": "ready",
       "assignee": "reviewer",
       "priority": 95,
       "parents": [
@@ -1707,7 +2103,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:41:48.957Z",
-      "updated": "2026-09-05T07:41:48.957Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "Same three lenses and merge as R-c13 (docs/delivery/evidence/v10-20260905T0515Z/R-c13/review.md is the template and the open backlog); precondition: live build is a descendant of the last of the three parent merges; must include the hardware-GPU spoof pass and the ?gl=force SwiftShader pass (0 pageerrors, canvases per section), every R-c13 item re-graded (closed / open), and the §0.3 mandates.",
       "decisions": [],
       "comments": [],
@@ -1716,7 +2112,7 @@
     {
       "id": "t_2d068068",
       "title": "PERF-03 / TC-HERO-15 root cause — footer.Footer_footer layout shift (~0.16 CLS at ~508 ms) under load; reserve the footer box so CLS < 0.05 on a busy host too",
-      "status": "running",
+      "status": "ready",
       "assignee": "analyst-programmer",
       "priority": 80,
       "parents": [
@@ -1730,16 +2126,23 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T08:06:43.493Z",
-      "updated": "2026-09-05T10:50:00.766Z",
+      "updated": "2026-09-05T12:19:26.511Z",
       "summary": "V-react19 finding 1: the only layout shift captured names footer.Footer_footer__TWDx3 at ~508 ms worth 0.1556 — the two off-list ✘ (TC-HERO-15, PERF-03) attributed to the hero crossfade are this. Files: components/site/Footer.tsx + its CSS block (app/globals.css or module). TDD: tests/perf/performance.spec.ts PERF-03 must pass with --workers=2 under load (repeat-each=3) and a new assertion that no LayoutShift entry names the footer.",
       "decisions": [],
-      "comments": [],
-      "blocker": null
+      "comments": [
+        {
+          "at": "2026-09-05T12:19:26.511Z",
+          "by": "orchestrator",
+          "text": "bundled into t_stab01 (stability lane, worktree wf_38db9d7d-ce3-1, port 5613) — dispatch when a build slot frees after the ADV-FAIL wave-1 lanes"
+        }
+      ],
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_d9e77919",
       "title": "Cycle 15b — #experience polish: stagger to the R-c13 spec (60 ms + 70 ms roll), .trackYears opacity roll-in as each bar stops, fix the 2025/now axis-label overlap at 390",
-      "status": "todo",
+      "status": "ready",
       "assignee": "coder",
       "priority": 72,
       "parents": [
@@ -1753,7 +2156,7 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-05T08:25:47.491Z",
-      "updated": "2026-09-05T08:25:47.491Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "V-c15 findings F-1/F-2/F-3 (906ccd5 09-verification.md). Files: components/sections/Experience/Experience.module.css (.trackBar delay calc, .trackYears opacity transition calc(var(--i) * 70ms + 620ms) 320 ms, .axis/.axisTick spacing at ≤30rem), Experience.tsx if --i is missing; tests/overhaul/scene-experience.spec.ts gains the two assertions + a 390 axis-label non-overlap assertion (getBoundingClientRect of the last two axis labels).",
       "decisions": [],
       "comments": [],
@@ -1762,7 +2165,7 @@
     {
       "id": "t_62b5c4d3",
       "title": "Cycle 18b — at ≤640 px the CV control exists below the hero (nav-cv is display:none there since before cycle 18): give the phone a scrolled-state CV affordance without a second control in the first screen",
-      "status": "todo",
+      "status": "ready",
       "assignee": "coder",
       "priority": 66,
       "parents": [
@@ -1776,7 +2179,7 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-05T08:48:53.769Z",
-      "updated": "2026-09-05T08:48:53.769Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "V-c17/18 finding F-2: app/globals.css:803-804 hides .nav-cv at max-width 640px, so once a phone reader passes the hero the only CV route is behind the menu. Direction: show the nav CV pill at ≤640 under [data-scrolled] only (text-only, var(--fs-small)), keeping CTA-01 (one control at scrollY 0) green; or add the CV route to the frosted bar as an icon-only 44 px control with accessible name. TDD: extend tests/overhaul/cta-duplication.spec.ts with CTA-04 (at 390 after scrollTo 1200 exactly one visible CV control exists).",
       "decisions": [],
       "comments": [],
@@ -1902,16 +2305,22 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T09:16:20.880Z",
-      "updated": "2026-09-05T10:50:00.946Z",
+      "updated": "2026-09-05T12:09:07Z",
       "summary": "Second half of the owner correction: #skills has no scene (t_cbff57b0), #vitrine field invisible on live captures (black behind the cards), #listen a faint band. Reuse tests/overhaul/flagship-visibility.spec.ts from lane A; skills bench field brief in t_cbff57b0; vitrine/listen fields exist (1150e3e, d53d228) and need their intensity/structure raised to the gate.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:09:07Z",
+          "by": "orchestrator",
+          "text": "running — continued 12:0xZ as t_g_s1 (G-S1) in the paused worktree wf_c06ca2f9-9de-1 (BenchField.tsx + bench.glsl.ts uncommitted)"
+        }
+      ],
       "blocker": null
     },
     {
       "id": "t_skew0001",
       "title": "P95 — deploy skew: a page loaded under build N lazy-loads scene chunks that deploy N+1 has replaced (Loading chunk 427/743 failed) — precache the build chunk manifest in the worker, keep the previous cache generation, recover chunk-load failures, scene-local error boundary",
-      "status": "running",
+      "status": "ready",
       "assignee": "analyst-programmer",
       "priority": 95,
       "parents": [
@@ -1925,7 +2334,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T10:10:33.089Z",
-      "updated": "2026-09-05T10:46:49.737Z",
+      "updated": "2026-09-05T12:19:26.600Z",
       "summary": "Monitor 10:09Z on c5d808c3: pageerrors Loading chunk 427.8222755a6b18eedc.js / 743.9672a1f959c17edf.js failed; canvasesAfterExperience 0 — the HTML was the previous build, the hashed chunks were gone after the next deploy (Firebase serves only the current version). With 10-min deploys every mid-visit scroll can hit this. Fix: (1) scripts/build/stamp_service_worker.mjs also injects PRECACHE_ASSETS = every out/_next/static/**/*.{js,css} + fonts of THIS build; install precaches them (cache-first already), activate keeps the previous generation (delete caches older than the last two) so a page still running build N can lazy-load from cache after N+1 activates; (2) components/gl/Scene.tsx dynamic import: on ChunkLoadError retry once, then one reload per session (sessionStorage guard) — and never the error shell; (3) fold t_e9d4e10f: scene-local error boundary so any scene fault stays in its slot. Tests: tests/sw_strategy.test.mjs (precache list present and stamped, two-generation cleanup), tests/overhaul/scene-error-boundary.spec.ts (inject a failing chunk via route interception → six sections stay, one console error, no error shell), node --test.",
       "decisions": [],
       "comments": [
@@ -1933,9 +2342,15 @@
           "at": "2026-09-05T10:46:49.737Z",
           "by": "orchestrator",
           "text": "V-skew FAIL on one clause only (0ece403): TC-SKEW-02 line 165 — the forced WebGL context-creation error escapes as an uncaught pageerror (containment itself holds: 6 sections, no error shell); deterministic 3/3. SW half PASS end to end (cutover with 7 re-hashed lazy chunks, KEEP_GENERATIONS=2 observed, manifest 68 assets). Shipped via pipeline (ccb1524, live). Correction → t_skew0002."
+        },
+        {
+          "at": "2026-09-05T12:19:26.600Z",
+          "by": "orchestrator",
+          "text": "bundled into t_stab01 (stability lane, worktree wf_38db9d7d-ce3-1, port 5613) — dispatch when a build slot frees after the ADV-FAIL wave-1 lanes"
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_flagvis0c",
@@ -1954,7 +2369,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T10:15:48.659Z",
-      "updated": "2026-09-05T10:47:59.287Z",
+      "updated": "2026-09-05T12:40:55.953Z",
       "summary": "## CORRECTION: V-flagship-A F1/F2 (09-verification.md c3bc139). Original output: 9fd78ef/c6bf7ff/b200958/a78d9f0 live on 8f81ae86. Failing criteria: (F1) at 390 ?gl=force hero coverage 0.00%/peak 0.0212 with canvas mounted — Hero.module.css @media (max-width:700px) .stage::after flat rgb(10 10 10 / 0.86); (F2) text-contrast algorithm on /?gl=force: 9 nodes <AA @1440, 12 @390 (.trackCompany Telstra 1.10:1, InfoCentric 1.11:1, Microsoft 1.85:1, ANZ 2.16:1, NAB 2.73:1, ATO 3.84:1; .trackYears 3.3 yr 3.84:1; hero .ledgerSource 1.34:1 @1440; 5 compass numerals 2.66–3.45:1 @390); (gap) flagship-visibility.spec.ts test.use 1440 only; About @390 peak 0.2965 < 0.35. Required fix: graded mobile scrim (same shape as desktop: transparent past the reading column) so the hero scene stays visible on phones while the copy sits on a ≥4.5:1 ground; a ?gl=force variant of TC-CONTRAST-01 (tests/a11y/text-contrast.spec.ts gains a second describe that loads /?gl=force with the SwiftShader launch args and waits for the canvases) — then fix every node it reports with local text plates (token rgb(10 10 10 / α) behind .trackCompany/.trackYears columns and the ledger sources) or by dimming the shader under the text rects (uTextRect uniform), never by dimming the scene overall below the visibility floors; flagship-visibility.spec.ts iterates viewports [1440×900, 390×844]; About field peak ≥ 0.35 at 390. Files: components/sections/Hero/Hero.module.css, Experience/Experience.module.css + strata.glsl.ts + CareerStrata.tsx, About/field.glsl.ts + AboutField.tsx, tests/a11y/text-contrast.spec.ts, tests/overhaul/flagship-visibility.spec.ts. Verification: both specs green at 1440 and 390 on ?gl=force and on the still; section suites; battery.",
       "decisions": [],
       "comments": [
@@ -1967,6 +2382,26 @@
           "at": "2026-09-05T10:47:59.287Z",
           "by": "orchestrator",
           "text": "ADD: the new hero photo caption ('Photograph · Melbourne', mono, --mist-400) sits on the brightest part of the pool at 1440 — include it in the hero text-plate / uTextRect fix; measure it on /?gl=force."
+        },
+        {
+          "at": "2026-09-05T12:09:07Z",
+          "by": "orchestrator",
+          "text": "running — continued 12:0xZ by a fresh analyst-programmer in the paused worktree wf_09ff65b8-0fb-1 (8 dirty files, 493 insertions, uncommitted): finish gates, merge origin/main, push (lane G-FLAGC, port 5610)"
+        },
+        {
+          "at": "2026-09-05T12:13:28.099Z",
+          "by": "orchestrator",
+          "text": "dispatched 12:1xZ — Workflow wf_d606e4cb-b3e phase 1 lane:flagship-c-finish in worktree wf_09ff65b8-0fb-1, port 5610; owns .stage/scrim/atmosphere + About/Experience styling; H1 lane owns hero layout"
+        },
+        {
+          "at": "2026-09-05T12:39:54.789Z",
+          "by": "orchestrator",
+          "text": "PUSHED d7adf27 + 13f1b82 on worktree-wf_09ff65b8-0fb-1 (12:38Z), goal_complete per agent: F1 phone scrim removed below 700px, copy on rgb(10 10 10/.90) plates, hero@390 gl=force coverage 100% / peak .83 / motion .0587 (was 0/.02/.0001); F2 TC-CONTRAST-02 added (same AA walk on /?gl=force at 1440+390) and green; compass numerals AA via ink stroke + field groove; nav ground below 700px (globals.css). 05b log shows the PRE-fix 4 failures, 05c re-run 30/30 incl. TC-HERO-09, EXP-05/06/08. Orchestrator reviewed the test diff: no thresholds lowered, viewports added. Awaiting consolidation + reviewer phase 2 on live before Done."
+        },
+        {
+          "at": "2026-09-05T12:40:55.953Z",
+          "by": "orchestrator",
+          "text": "LIVE 577d45af at 12:40:05Z (Deploy 33966616680 success) — third visible ship of the run. Reviewer phase-2 dispatched on 577d45af (F1 phone scene, F2 AA on both paths, reduced-motion, perf, G-H2 scrim re-measure)."
         }
       ],
       "blocker": null
@@ -1974,7 +2409,7 @@
     {
       "id": "t_9487806b",
       "title": "Cycle 20 polish — one filled plate in #listen (email as an outlined pill, the engage action stays the filled one, per listen.ts), unique test ids (second CT-11 → CT-12), Compass.module.css stale contrast comment",
-      "status": "todo",
+      "status": "ready",
       "assignee": "coder",
       "priority": 58,
       "parents": [
@@ -1988,7 +2423,7 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-05T10:17:15.726Z",
-      "updated": "2026-09-05T10:17:15.726Z",
+      "updated": "2026-09-05T12:24:54.384Z",
       "summary": "V-c20 minor findings: Listen.module.css .pill gives the email the same filled background as the engage plate although app/data/portfolio/listen.ts:24 says the engagement action is the only filled plate; tests/content/content-check.spec.ts has two CT-11 ids (:222 links, :308 tenure); Compass.module.css:142-146 comment claims numerals stay above 4.5:1 (false at 4.42:1 until t_flagvis0c lands).",
       "decisions": [],
       "comments": [],
@@ -1997,7 +2432,7 @@
     {
       "id": "t_skew0002",
       "title": "Correction — GLCanvas: a WebGL context-creation failure is caught and reported once via console.error (never an uncaught pageerror); TC-SKEW-02 green 3/3",
-      "status": "running",
+      "status": "ready",
       "assignee": "coder",
       "priority": 80,
       "parents": [
@@ -2011,12 +2446,526 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-05T10:46:49.784Z",
-      "updated": "2026-09-05T10:50:00.876Z",
+      "updated": "2026-09-05T12:19:26.557Z",
       "summary": "V-skew (0ece403) single red clause: tests/overhaul/scene-error-boundary.spec.ts:165 expects 0 uncaught page errors when getContext throws; GLCanvas.tsx lets the error propagate before the boundary sees it. Fix: try/catch around context creation (and the webglcontextcreationerror event) → boundary fallback + one console.error naming the scene; keep the spec strict. Files: components/gl/GLCanvas.tsx, components/gl/Scene.tsx.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:19:26.557Z",
+          "by": "orchestrator",
+          "text": "bundled into t_stab01 (stability lane, worktree wf_38db9d7d-ce3-1, port 5613) — dispatch when a build slot frees after the ADV-FAIL wave-1 lanes"
+        }
+      ],
+      "blocker": null,
+      "column": "ready"
+    },
+    {
+      "id": "t_ci_verify01",
+      "title": "O3 — deploy.yml live-verify step fails on curl exit 23 (EPIPE from awk early-exit) while the deploy succeeded — make the check deterministic",
+      "status": "done",
+      "assignee": "coder",
+      "priority": 96,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding / documentation",
+        "level": 4,
+        "effort": "medium (xhigh when coding)"
+      },
+      "provider": "openrouter→anthropic-oauth",
+      "created": "2026-09-05T12:17:08.269Z",
+      "updated": "2026-09-05T12:25:22.920Z",
+      "summary": "Deploy run 33965475659 (workflow_dispatch 12:14:24Z, HEAD 9ba97a5c) deployed hosting successfully, then the step 'Verify the live page carries the deployed commit' died with `curl: (23) Failure writing output to destination` — under `set -euo pipefail`, `live=\"$(curl … | awk '… exit')\"` fails whenever awk exits before curl finishes writing (EPIPE race). The live page DID serve 9ba97a5c. This is an O3 flaky blocker: a healthy deploy reported as failure. Fix the step so it never depends on pipe timing (curl to a temp file with `-o`, then parse the file; keep the 12×10 s retry, keep the exact-prefix comparison; compare the short 8-char commit as the meta prints it), and add a regression check to the existing pipeline-robustness test so the pattern cannot return.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:22:18.277Z",
+          "by": "orchestrator",
+          "text": "Pushed 6f59312 on worktree-wf_22129a5e-0d0-1 — orchestrator reviewed the diff: curl -o mktemp file + grep -m1 parse, 12×10 s retries, prefix match, exit 1 on exhaustion preserved; test extended with 10 assertions (red→green logs in CI-verify/). Consolidating via Deploy dispatched 12:21:42Z; the fixed step takes effect on the run AFTER that one — close when a subsequent Deploy run passes Verify."
+        }
+      ],
+      "blocker": null,
+      "result": "VERIFIED on production pipeline: Deploy run 33965890266 (dispatched 12:23:17Z, after 6f59312 consolidated into main as f4c4dbb5) executed the NEW verify step (log shows tmp=\"$(mktemp)\" and curl -fsS --max-time 20 -o) and concluded success; live now 0c6f9f9f. Orchestrator reviewed the diff independently (no pipe, 12×10 s retries, prefix match, exit 1 preserved; test 12/12 with red-first evidence in CI-verify/). O3 flaky blocker removed."
+    },
+    {
+      "id": "t_g_h3",
+      "title": "ADV-FAIL P0 — G-H3 Purge non-B/W/gold chrome from the served CSS (Tailwind hue utilities, blue-steel body washes, off-token literals)",
+      "status": "ready",
+      "assignee": "analyst-programmer",
+      "priority": 95,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:19:26.316Z",
+      "updated": "2026-09-05T13:02:16.762Z",
+      "summary": "Orchestrator live scan 12:1xZ of build 9ba97a5c (curl of the three served CSS bundles): 959f3ad2cd114a93.css carries Tailwind hue utilities `.bg-red-500 .border-red-500 .text-red-500 .border-orange-400 .bg-blue-600 .text-blue-500 .bg-green-400 .bg-green-500` with their literals (#fb2c36, #ff7350, #71717b, #9f9fa9, #1e2939) — none is referenced by any file under app/ components/ lib/ (grep = 0): Tailwind v4 (`@import \"tailwindcss\"` in app/globals.css:1) auto-scans the whole repo and picked the class names up from reports/post-prod/lighthouse-production.json (the v3-style `content` array in tailwind.config.js is ignored by v4). The `body` rule paints blue-steel washes `radial-gradient(… #282a32 …)` = rgba(40,42,50) ×2 and rgba(36,36,42) (app/globals.css:554-557). The same bundle carries cool-steel literals #e8ebf0 #aeb6c2 #c9cdd6 #080b11 whose source is NOT in app/components/lib source greps — trace them through the build (a stale generated token block, a vendored stylesheet, or an inline style) and remove/neutralise. bff4d398763861e9.css carries rgb(138 143 154) — that is the About hatch, owned by lane G-A (t_g_a2); do not touch About. §0.3-2 / C-8 / QA gate 'Palette': black, white, gold only; gold = sourced-claim mark.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-05T13:02:16.762Z",
+          "by": "orchestrator",
+          "text": "ORCHESTRATOR PUSH under RECTIFY (O3): 5d733ad on worktree-wf_2c7160af-27e-1 at 13:01Z — build fresh (12:53:45 > last edit 12:51:42), tsc exit 0. Tailwind v4 source(none) + @source app/components; body washes → equal-luminance neutrals (42/36); rim/key tints → --accent/--steel neutrals; MiniVic zinc/slate → neutral; tailwind.config.js removed; css_chroma_scan.mjs + palette_bundle.test.mjs (red→green logs). Lane battery continues in parallel. Ledger +6."
+        }
+      ],
+      "blocker": null
+    },
+    {
+      "id": "t_g_m3",
+      "title": "ADV-FAIL P0 — G-M3 MiniVic first visible answer token < 1.5 s on live (warm path / streaming), client payload carries no provider/model",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 94,
+      "parents": [
+        "t_g_m1"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:19:26.382Z",
+      "updated": "2026-09-05T12:49:33.997Z",
+      "summary": "R3 acceptance: perceived real-time (< ~1.5 s to first word). The reviewer measured a latency tax on live. After G-M1 lands (send path = /api/chat only) the remaining budget is the Firebase Function `minivicChat` (functions/index.js — v2 onRequest, us-central1, 256 MiB, provider ladder OpenRouter → DeepSeek → Z.ai → OpenAI, per-warm-instance cooldowns) reached through the Hosting rewrite `/api/chat` (firebase.json). Cold starts + a full non-streamed completion dominate. Directive: measure first, then remove the tax with cost-neutral mechanisms first — (a) a warm-up request fired when the MiniVic panel opens (GET /api/chat?warm=1 → 204 from the function, no upstream call) so the instance is hot before the visitor finishes typing; (b) drop any `provider`/`model` fields from the client payload (server decides); (c) stream the completion (SSE / chunked) IF Firebase Hosting rewrites to Cloud Functions v2 pass chunks through — verify against current Firebase docs via context7/WebFetch and by a live measurement, do not assume; (d) trim the function's cold-start (lazy requires, smaller bundle). `minInstances` is a paid setting — record it as the fallback decision with monthly cost if (a)-(d) cannot reach the bar; never claim R3 PASS while the bar is unmet. Functions deploy from the VPS: `/usr/bin/firebase deploy --only functions:minivicChat --project forgotten-mistory` (auth verified 12:15Z; `firebase functions:list` shows elevenLabsTts + minivicChat v2 nodejs20).",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:49:33.997Z",
+          "by": "orchestrator",
+          "text": "PREREQ FINDING (from G-M2): ELEVENLABS_API_KEY in /root/.claude/.env.production is a key ID (ElevenLabs 400 api_key_id_used_as_api_key) — the live /api/tts function (elevenLabsTts, Secret Manager ELEVENLABS_API_KEY) very likely fails the same way → speakReply falls back to browser TTS. Measure /api/tts on live in this lane and report honestly; the fix (a real sk_ key) is a credential the Owner holds — record as the blocker for the voice half of R3 while the chat TTFB half proceeds."
+        }
+      ],
+      "blocker": null
+    },
+    {
+      "id": "t_stab01",
+      "title": "Stability lane (continuity) — finish footer CLS reserve (t_2d068068), GLCanvas context-error containment TC-SKEW-02 (t_skew0002 / t_skew0001 clause), scene-local error boundary (t_e9d4e10f) from the paused worktrees",
+      "status": "ready",
+      "assignee": "analyst-programmer",
+      "priority": 90,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:19:26.429Z",
+      "updated": "2026-09-05T12:24:54.384Z",
+      "summary": "§0 continuity: two paused worktrees hold partial work — wf_38db9d7d-ce3-1 (tests/perf/performance.spec.ts +126 lines, docs/delivery/evidence/v10-20260905T0515Z/F-stability/, no node_modules) and wf_d69fe804-9d9-1 (untracked tests/overhaul/scene-error-boundary.spec.ts). V-skew FAIL on one clause (0ece403): TC-SKEW-02 line 165 — a forced WebGL context-creation error escapes as an uncaught pageerror (containment holds: 6 sections, no error shell), deterministic 3/3. PERF-03 / TC-HERO-15: footer.Footer_footer layout shift ≈0.16 CLS at ≈508 ms under 2-worker load — reserve the footer box so CLS < 0.05 at 1440 and 390. Consolidate into ONE worktree (wf_38db9d7d-ce3-1 after `npm ci`; copy the untracked spec in from wf_d69fe804-9d9-1), finish, push.",
       "decisions": [],
       "comments": [],
       "blocker": null
+    },
+    {
+      "id": "t_x1_01",
+      "title": "Scene frame-rate harness — median rAF per sceneId (R2 60fps, first measurement)",
+      "status": "ready",
+      "assignee": "tester",
+      "priority": 96,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:24:51.081Z",
+      "updated": "2026-09-05T12:24:54.384Z",
+      "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. R2's 60 fps clause has never been measured (grep 'rAF|16.7|median' tests/perf/performance.spec.ts = 0 hits). Author tests/perf/scene-framerate.spec.ts: for each sceneId at ?gl=force, scroll into view, discard 30 warm-up frames, sample 120 rAF deltas, assert median. TC-SCENE-FPS-01 desktop 1440x900 <=16.7ms; TC-SCENE-FPS-02 phone 390x844 dsf3 CPU throttle x4 <=20ms. Record WEBGL_debug_renderer_info alongside every number and label the result software-rasteriser — a SwiftShader pass is NOT GPU proof and the test output must say so.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_x1_02",
+      "title": "G-H2a — hero scene mounts on first paint (Scene priority prop + poster frame)",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 97,
+      "parents": [
+        "t_x1_01"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:24:51.459Z",
+      "updated": "2026-09-05T12:24:51.459Z",
+      "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. components/gl/Scene.tsx:216 gates every scene on pageSettled (window.load + requestIdleCallback), so the hero flagship is structurally absent from the first paint. Add an opt-in priority?:boolean prop (default false, so S2..S7 are byte-identical) making show = capability && allowMotion && near && (priority || pageSettled), and pass priority on the hero only. Render the composition's frame 0 as the slot's CSS background from the static HTML so the first paint is lit, and crossfade the canvas over it on onCreated.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_x1_03",
+      "title": "G-H2b — hero scrim becomes a graded text plate, not a 0.86 full-frame wash",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 97,
+      "parents": [
+        "t_x1_02"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:24:51.635Z",
+      "updated": "2026-09-05T12:24:51.635Z",
+      "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. Hero.module.css:157 and :171 lay rgb(10 10 10 / 0.86) across the whole frame, which is why the reviewer called the atmosphere a shy backdrop. Bind the darkening to the reading column: ~0.72 under the type, <= 0.25 outside it, so the light crosses the frame and the copy still clears AA.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_x1_05",
+      "title": "S5 — give the Vitrine field a sceneId and hold it to the flagship bar",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 94,
+      "parents": [
+        "t_g_s1"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:24:51.827Z",
+      "updated": "2026-09-05T12:24:51.827Z",
+      "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. grep -rn 'sceneId=' components/ returns only 3 hits; Vitrine.tsx mounts <Scene className={styles.fieldSlot}> with no id, so the cabinet light is structurally unmeasurable. Add sceneId=vitrine-field, add it to SCENES, and raise the field until it passes — the unlit neighbour plates must read as waiting, not empty (G-V1 from the scene side).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_x1_06",
+      "title": "S6 — give the Listen field a sceneId and hold it to the flagship bar",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 94,
+      "parents": [
+        "t_x1_05"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:24:52.102Z",
+      "updated": "2026-09-05T12:24:52.102Z",
+      "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. Listen.tsx:161 mounts <Scene className={styles.fieldSlot}> with no sceneId, so the beat field the voice arrives on is unmeasurable. Add sceneId=listen-field, add it to SCENES, and raise the field until it passes.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_x1_07",
+      "title": "S7 — MiniVic viseme stage: the seventh signature scene",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 93,
+      "parents": [
+        "t_x1_06"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:24:52.348Z",
+      "updated": "2026-09-05T12:24:52.348Z",
+      "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. R2 wants >= 7 scenes; six are sections. The seventh is MiniVic's viseme stage. Promote the STAGE only: a Scene-mounted R3F plane behind the avatar plate whose shader is driven by the existing viseme refs (lib/visemeMap.ts getVisemeShape/lerpVisemeShapes), so the avatar is lit by what he is saying. The 2D canvas mouth in MiniVicBot.tsx stays exactly as-is and becomes the no-GL fallback, so lip-sync accuracy (R3) cannot regress.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_x1_08",
+      "title": "R5 proof — GL and SVG surfaces render natively at 3840x2160",
+      "status": "todo",
+      "assignee": "tester",
+      "priority": 92,
+      "parents": [
+        "t_x1_07"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:24:52.571Z",
+      "updated": "2026-09-05T12:24:52.571Z",
+      "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. R5 says every surface is audited >= 3840x2160 / 60fps. 'Vector scales' is an assertion; the proof is the backing store. Author tests/perf/resolution-independence.spec.ts at viewport 3840x2160, deviceScaleFactor 1, ?gl=force: TC-R5-GL-01 every canvas reports drawingBufferWidth >= 3840 and Height >= 2160; TC-R5-GL-02 median rAF at 4K <= 16.7ms; TC-R5-LAYOUT-01 no horizontal overflow and every section heading in the viewport box; TC-R5-SVG-01 the Compass, Bench and Vitrine drawings carry a viewBox and no fixed pixel width/height.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_x1_09",
+      "title": "R5 asset audit — every shipped raster/video measured, waivers are recorded FAILs",
+      "status": "todo",
+      "assignee": "tester",
+      "priority": 92,
+      "parents": [
+        "t_x1_08"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:24:52.762Z",
+      "updated": "2026-09-05T12:24:52.762Z",
+      "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. Measured 2026-09-05: my-avatar.mp4 = 1280x720@24, my-hero-avatar.mp4 = 640x360@24, my_avatar.avif = 1480x826 — all fail R5. Author tests/content/asset-resolution.spec.ts (node --test, ffprobe over public/): every section-referenced raster/video either reports >= 3840x2160 or appears in an explicit dated waiver list carrying the reason and the unblock. The waiver list is the R5 scoreboard and shrinks to zero as renders land.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_x1_10",
+      "title": "HyperFrames render pipeline — 3840x2160@60 masters on this VPS, zero credits",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 91,
+      "parents": [
+        "t_x1_09"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:24:53.074Z",
+      "updated": "2026-09-05T12:24:53.074Z",
+      "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. hyperframes@0.8.29 (CLI) + @hyperframes/engine@0.8.29 render an HTML composition to a deterministic MP4 by seeking each frame in headless Chrome and encoding with FFmpeg. All three requirements are already installed here: node v22.23.1 (README requires >= 22), /usr/bin/ffmpeg, /usr/bin/google-chrome. Add them as devDependencies only, plus scripts/assets/hyperframes_render.mjs. This is the R5 unblock that needs no credits.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_x1_11",
+      "title": "HyperFrames in page — hero overture via @hyperframes/player (17.6 kB gz, lazy)",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 91,
+      "parents": [
+        "t_x1_10"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:24:53.402Z",
+      "updated": "2026-09-05T12:24:53.402Z",
+      "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. R2 names HyperFrames explicitly and package.json has zero HyperFrames packages. @hyperframes/player@0.8.29 is an embeddable web component whose dist/hyperframes-player.global.js measures 64,037 bytes raw / 17,645 bytes gzip -9 (measured via npm pack). Mount the same hero-overture composition in page behind next/dynamic, after the poster paints, crossfading into the GL atmosphere. One authored artifact drives the in-page motion and the 2160p60 file.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_x1_12",
+      "title": "GSAP + ScrollTrigger — the choreography layer §2.1 names and the repo lacks",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 90,
+      "parents": [
+        "t_x1_11"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:24:53.655Z",
+      "updated": "2026-09-05T12:24:53.655Z",
+      "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. grep -rn 'gsap|ScrollTrigger' package.json components/ app/ lib/ returns 5 hits, all prose or CSS comments (app/globals.css:1332,1343; lib/voiceoverContext.tsx:116,119,125) — the library itself is absent, and lib/voiceoverContext.tsx already listens for gsap:<section>:enter CustomEvents that nothing dispatches. Adopt gsap core + ScrollTrigger, lazy, riding the existing GL chunk, and dispatch the section-enter cues the voiceover controller is already written against.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_x1_13",
+      "title": "R5 raster unblock — re-render the avatar plate at 3840x2160@60 and drop its waiver",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 89,
+      "parents": [
+        "t_x1_12"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:24:54.014Z",
+      "updated": "2026-09-05T12:24:54.014Z",
+      "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. my-avatar.mp4 is 1280x720@24 and my-hero-avatar.mp4 is 640x360@24 (ffprobe, 2026-09-05). Re-render the avatar plate through the HyperFrames pipeline at 3840x2160@60 from the existing footage and stills — no generative call, so Higgsfield's 0-credit balance is irrelevant and C-4 generation discipline is not engaged. Ship AV1 WebM + H.264 MP4 under public/assets/avatar/ within the 5MB click-to-play cap, and remove the two waivers from the R5 asset audit.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_x1_14",
+      "title": "Independent verification on the live URL — R2 / R5 / §0.3-1 scorecard",
+      "status": "todo",
+      "assignee": "reviewer",
+      "priority": 88,
+      "parents": [
+        "t_x1_13"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:24:54.144Z",
+      "updated": "2026-09-05T12:24:54.144Z",
+      "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. After the chain deploys, verify against https://forgotten-mistory.web.app/ (not a local build): all 7 sceneIds present and passing the flagship bar, median rAF within budget at 1440 and 390, 4K backing store proven, HyperFrames present in package.json and absent from the critical path, R5 raster waiver list empty or honestly non-empty. Report FAIL for anything not proven by a command output you ran yourself.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_hyg_audit01",
+      "title": "O4 hygiene — stop committing the generated reports/static-audit.json (every lane rewrites it → every consolidation is a forced 'branch wins conflicts' merge)",
+      "status": "done",
+      "assignee": "coder",
+      "priority": 85,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding / documentation",
+        "level": 4,
+        "effort": "medium (xhigh when coding)"
+      },
+      "provider": "openrouter→anthropic-oauth",
+      "created": "2026-09-05T12:33:05.199Z",
+      "updated": "2026-09-05T12:46:43.776Z",
+      "summary": "scripts/validate/overhaul_static_audit.mjs:609 rewrites reports/static-audit.json on every run (timestamps + per-build numbers), each lane commits it, and deploy.yml then hits a conflict on every consolidation and resolves it with `-X theirs` / checkout --theirs (seen on 843b679d: 'merge worktree-wf_b908a7a9-f5d-2 into main (branch wins conflicts)'). A forced merge is a standing risk: if a real conflict coexists, the branch silently wins it. The report is a build artifact for CI upload (checks.yml) and is read by tests/static_audit_fail.test.mjs only after that test runs the audit itself. Untrack it.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "result": "coder 5d22bca on worktree-wf_1790b40a-e53-1: reports/static-audit.json untracked (git rm --cached) + .gitignore:218; audit still writes it (mkdir at :578 precedes write at :609, pinned by test); checks.yml never uploaded it; docs/ci-audit-contract.md stale header corrected; ci_pipeline.test.mjs +4 assertions red→green (22/22). WATCH: lanes branched before 5d22bca (H1, S1) may still commit the file → modify/delete conflict resolved by checkout --theirs re-tracks it; orchestrator will git rm --cached on main if ci_pipeline.test.mjs goes red in checks.yml."
+    },
+    {
+      "id": "t_g_a1c",
+      "title": "CORRECTION — G-A1: gold only on About evidence lines that name a checkable record; reconcile `sourced` with `side`; data-derived test counts",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 99,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:37:56.168Z",
+      "updated": "2026-09-05T12:52:08.026Z",
+      "summary": "## CORRECTION: G-A1 reviewer FAIL (semantics). Original output: 03aa1ed set sourced:true on 9/10 About dimensions using the criterion 'an employer, a program, a named repository, a figure off the CV'. Failing criteria: CLAUDE.md prime directive 3 — gold = `sourced` = measured WITH a source a reader can go and check; a CV figure with no published methodology is `self-reported`, never gold. Reviewer evidence (docs/delivery/evidence/v10-20260905T0515Z/G-REV/e47221ed/08-adversarial-review.md): #4 Culture Fit and #8 Company Stability are bare self-reported numbers; #7 Career Growth carries gold over a figure its own text calls 'simulated'; #6 Location Match is a side==='role' dimension that renders the OPEN caliper 'measured from the role' (About.tsx:220) while also painted gold — the same claim graded both 'sourced' and 'honestly not measurable'. Required fix (data + test, no styling change): in app/data/portfolio/about.ts set sourced:false on Culture Fit, Company Stability and Location Match; for Career Growth either rewrite the evidence line so it names ONLY a checkable record (a named repository or the evaluation stack without the simulated figure — the −38% may move into the answer prose as a plainly self-reported statement) and keep sourced:true, or set sourced:false — decide by whether a reader can open something and check it, and record the decision on the task. Invariant: every dimension with side==='role' has sourced:false. Tests derive expected counts from the data (import aboutContent), never hardcode 9.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:52:08.026Z",
+          "by": "orchestrator",
+          "text": "PUSHED d958917 on worktree-wf_d917eafb-f9f-1 (12:51Z): sourced:false on Culture Fit, Location Match, Company Stability, Career Growth (4 flips, data only); gold-semantics CC-A1 now derives EXPECTED_SOURCED/UNSOURCED from aboutContent; tests/about_sourced_semantics.test.mjs 6/6 (role-side ⇒ unsourced, open-caliper binding asserted in About.tsx source, allow-list of checkable records for every gold line); about.spec adjusted. Orchestrator reviewed the diff. Awaiting consolidation + reviewer phase 3 on live."
+        }
+      ],
+      "blocker": null
+    },
+    {
+      "id": "t_vit_desc01",
+      "title": "P1 — Vitrine plate description flashes 1.12:1 (light-on-light) mid-entrance at 1440 (TC-CONTRAST-02 caught it 1 in 3 runs)",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 80,
+      "parents": [
+        "t_g_v1"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:39:54.833Z",
+      "updated": "2026-09-05T12:42:06.830Z",
+      "summary": "Found by the flagship-C lane's new TC-CONTRAST-02 (WebGL path): p.Vitrine_description on the third plate ('An agent loop whose only exit is a signed verifier') measured fg rgb(213,213,212) on bg rgb(226,225,223) = 1.12:1 once in three runs at 1440 on both paths, green on the other two — the description is sampled mid-entrance over the plate's drawing/light. A flaky AA failure is a real intermittent legibility defect, not a test problem. Fix the composition (plate ground under the description, or the entrance order so text never sits on the light) and make the contrast walk deterministic for that node (wait for the plate's entrance to settle before sampling, without lengthening the whole suite).",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-05T12:42:06.830Z",
+          "by": "orchestrator",
+          "text": "ADD (from reviewer 843b679d + creative council): composited resting alpha of a plate's strokes is 0.31 (stroke .5 × plate opacity .62 pre-existing at Vitrine.module.css:170) and individual strokes go as faint as element opacity .07; council target: every plate reads as drawn work at ≥0.55 composite, the lit plate gains weight. Fold the resting-weight uplift into this task with the description-contrast fix (same files)."
+        }
+      ],
+      "blocker": null
+    },
+    {
+      "id": "t_rectify01",
+      "title": "RECTIFY 12:52Z (host compliance audit PARTIAL) — O3 suite-as-evidence, ≤5-min WIP push, board lag closed, Hermes process check, cadence truth, 2-min re-dispatch",
+      "status": "running",
+      "assignee": "orchestrator",
+      "priority": 100,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "feedback_refactor_loop",
+        "level": "orchestrator",
+        "effort": "ultracode"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T12:58:11.438Z",
+      "updated": "2026-09-05T13:02:17.158Z",
+      "summary": "Host audit docs/adversarial/ORCH-COMPLIANCE-20260905T1245Z.md + artifacts/kanban/INBOX/RECTIFY-20260905T1252Z.md. Applied: (1) Playwright no longer gates a push — lanes push when tsc+lint+build:static+audit are green and run the battery in parallel (evidence lands in a follow-up commit; the live reviewer is the gate); (2) 12:57Z orchestrator pushed G-H1 WIP 0506e7e and G-S1 WIP 66b0872 (both tsc clean on fresh builds); (3) board lag closed: t_g_v1 done (reviewer PASS 843b679d), t_g_a2 done, t_g_h2 done, t_ci_verify01 done, t_hyg_audit01 done; (4) G-A1 correction d958917 live 37cbb52c, reviewer phase 3 running; (5) MiniVic live 874f1ee9, reviewer phase 2 running; (6) pgrep -af 'hermes gateway' → empty (pid 7050 is a <defunct> zombie, not running; host-owned ttyd wrapper on :4860 left to the host guardian); fm-deploy-cadence.timer active; (7) cadence truth: cycle reports state visible vs docs-only deploys explicitly; (8) spawn discipline: a failed Workflow slot is re-dispatched within 2 minutes (a poll on journal.jsonl 'failed' entries).",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-05T13:02:17.158Z",
+          "by": "orchestrator",
+          "text": "13:01Z status: WIP pushes done — G-H1 0506e7e + G-S1 66b0872 (LIVE 9b864752 at 12:59:23Z, 7 min after the order), G-H3 5d733ad (consolidating). Reviewers on live: G-A1c (37cbb52c), G-M1/M2 (874f1ee9), G-H1/G-S1 (9b864752), flagship-C (577d45af, evidence pushed 13:01Z). Board lag: t_g_v1, t_g_a2, t_g_h2, t_ci_verify01, t_hyg_audit01 done. Hermes: pgrep 'hermes gateway' empty (7050 defunct zombie only). Timer active."
+        }
+      ],
+      "blocker": null
     }
   ],
-  "updated_at": "2026-09-05T09:36:11Z"
+  "updated_at": "2026-09-05T12:09:07Z"
 }

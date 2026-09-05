@@ -144,6 +144,12 @@ const SCENES: readonly SceneCase[] = [
     label: 'experience strata',
     fallbackCoverageMin: 0.02,
   },
+  // ADV-REVIEW-20260905's P0: `#skills` measured 0 canvases and 1 svg at 1440
+  // on both `/` and `/?gl=force` — the one section claiming production
+  // calibration had no bench to calibrate on. Held to the full default bar at
+  // both widths: the plate stops short of both rails of type (`bench.glsl.ts`),
+  // so nothing here is traded against contrast and nothing has to be relaxed.
+  { section: 'skills', scene: 'skills-bench', label: 'skills bench field' },
 ];
 
 /** >= 15% of the slot at least this far above ground. */
@@ -156,6 +162,25 @@ const MOTION_MIN = 0.004;
 /** The reduced-motion still is dimmer than the live scene, but it is not dark. */
 const FALLBACK_DELTA = 0.04;
 const FALLBACK_COVERAGE_MIN = 0.08;
+
+/**
+ * Every floor above is asked at *both* of these widths.
+ *
+ * The first version of this file declared one `test.use({ viewport: 1440x900 })`
+ * for the whole file, and a defect walked straight through it: the hero's
+ * `@media (max-width: 700px)` scrim was a flat full-frame `rgb(10 10 10 / 0.86)`
+ * painted after the canvas, so on a phone with a GPU the flagship scene measured
+ * 0.00% coverage / 0.0212 peak / 0.00011 motion — the exact signature of the
+ * defect this suite exists to catch, at the one width it never asked about
+ * (C22 09-verification.md, F1). A gate that only asks at desktop is a gate that
+ * ships a black rectangle to every phone.
+ *
+ * Same floors at both widths. A scene is not allowed to be a desktop feature.
+ */
+const VIEWPORTS = [
+  { width: 1440, height: 900 },
+  { width: 390, height: 844 },
+] as const;
 
 const GL_ARGS = [
   '--no-sandbox',
@@ -171,7 +196,6 @@ const GL_ARGS = [
  * host has no GPU and `?gl=force` only lifts the *application's* guard.
  */
 test.use({
-  viewport: { width: 1440, height: 900 },
   deviceScaleFactor: 1,
   launchOptions: { args: GL_ARGS },
 });
@@ -268,99 +292,105 @@ async function slotClip(page: Page, scene: string) {
   };
 }
 
-test.describe('TC-FLAGSHIP-VIS — signature scenes are visible', () => {
-  for (const item of SCENES) {
-    test(`TC-FLAGSHIP-VIS-${item.section.toUpperCase()} — ${item.label} reads as light`, async ({
-      page,
-    }) => {
-      test.setTimeout(120000);
-      await bootAt(page, '/?gl=force');
+for (const viewport of VIEWPORTS) {
+  test.describe(`TC-FLAGSHIP-VIS @ ${viewport.width} — signature scenes are visible`, () => {
+    test.use({ viewport: { width: viewport.width, height: viewport.height } });
 
-      const ground = await groundLuminance(page, item.section);
-      const clip = await slotClip(page, item.scene);
+    for (const item of SCENES) {
+      test(`TC-FLAGSHIP-VIS-${item.section.toUpperCase()} @ ${viewport.width} — ${item.label} reads as light`, async ({
+        page,
+      }) => {
+        test.setTimeout(120000);
+        await bootAt(page, '/?gl=force');
 
-      // The canvas has to exist before anything is measured: without it this
-      // test would silently grade the CSS fallback and call the shader visible.
-      const canvas = page.locator(`[data-scene="${item.scene}"] canvas`);
-      await canvas.waitFor({ state: 'attached', timeout: 30000 });
-      await page.waitForTimeout(2500);
+        const ground = await groundLuminance(page, item.section);
+        const clip = await slotClip(page, item.scene);
 
-      await isolateScene(page, item.scene);
-      const first = decodeLuma(await page.screenshot({ clip }));
-      await page.waitForTimeout(1500);
-      const second = decodeLuma(await page.screenshot({ clip }));
-      await restorePage(page);
+        // The canvas has to exist before anything is measured: without it this
+        // test would silently grade the CSS fallback and call the shader visible.
+        const canvas = page.locator(`[data-scene="${item.scene}"] canvas`);
+        await canvas.waitFor({ state: 'attached', timeout: 30000 });
+        await page.waitForTimeout(2500);
 
-      const cover = coverage(first, ground, COVERAGE_DELTA);
-      const top = peak(first);
-      const motion = meanDelta(first, second);
+        await isolateScene(page, item.scene);
+        const first = decodeLuma(await page.screenshot({ clip }));
+        await page.waitForTimeout(1500);
+        const second = decodeLuma(await page.screenshot({ clip }));
+        await restorePage(page);
 
-      // eslint-disable-next-line no-console
-      console.log(
-        `[flagship-visibility] ${item.section}: ground=${ground.toFixed(4)} ` +
-          `coverage=${(cover * 100).toFixed(2)}% peak=${top.toFixed(4)} ` +
-          `motion=${motion.toFixed(5)} box=${Math.round(clip.width)}x${Math.round(clip.height)}`,
-      );
+        const cover = coverage(first, ground, COVERAGE_DELTA);
+        const top = peak(first);
+        const motion = meanDelta(first, second);
 
-      expect(
-        cover,
-        `${item.label}: only ${(cover * 100).toFixed(2)}% of the scene is more than ` +
-          `${COVERAGE_DELTA} luminance above its ground — the structure has no area`,
-      ).toBeGreaterThanOrEqual(COVERAGE_MIN);
+        // eslint-disable-next-line no-console
+        console.log(
+          `[flagship-visibility] ${item.section}@${viewport.width}: ground=${ground.toFixed(4)} ` +
+            `coverage=${(cover * 100).toFixed(2)}% peak=${top.toFixed(4)} ` +
+            `motion=${motion.toFixed(5)} box=${Math.round(clip.width)}x${Math.round(clip.height)}`,
+        );
 
-      expect(
-        top,
-        `${item.label}: brightest pixel is ${top.toFixed(3)} — the scene has no core`,
-      ).toBeGreaterThanOrEqual(PEAK_MIN);
+        expect(
+          cover,
+          `${item.label}: only ${(cover * 100).toFixed(2)}% of the scene is more than ` +
+            `${COVERAGE_DELTA} luminance above its ground — the structure has no area`,
+        ).toBeGreaterThanOrEqual(COVERAGE_MIN);
 
-      expect(
-        motion,
-        `${item.label}: mean |dL| over 1.5 s is ${motion.toFixed(5)} — the scene does not move`,
-      ).toBeGreaterThanOrEqual(MOTION_MIN);
-    });
-  }
-});
+        expect(
+          top,
+          `${item.label}: brightest pixel is ${top.toFixed(3)} — the scene has no core`,
+        ).toBeGreaterThanOrEqual(PEAK_MIN);
 
-test.describe('TC-FLAGSHIP-VIS-STILL — the reduced-motion still is still light', () => {
-  for (const item of SCENES) {
-    test(`TC-FLAGSHIP-VIS-STILL-${item.section.toUpperCase()} — ${item.label} fallback`, async ({
-      page,
-    }) => {
-      test.setTimeout(120000);
-      // Emulated on the page rather than declared as a fixture: the installed
-      // Playwright's `test.use` does not accept `reducedMotion`, and this runs
-      // before the first navigation, so the preference is in force for the
-      // whole load — which is what `Scene` reads when it decides to mount.
-      await page.emulateMedia({ reducedMotion: 'reduce' });
-      await bootAt(page, '/?gl=force');
+        expect(
+          motion,
+          `${item.label}: mean |dL| over 1.5 s is ${motion.toFixed(5)} — the scene does not move`,
+        ).toBeGreaterThanOrEqual(MOTION_MIN);
+      });
+    }
+  });
 
-      const ground = await groundLuminance(page, item.section);
-      const clip = await slotClip(page, item.scene);
+  test.describe(`TC-FLAGSHIP-VIS-STILL @ ${viewport.width} — the reduced-motion still is still light`, () => {
+    test.use({ viewport: { width: viewport.width, height: viewport.height } });
 
-      // Reduced motion mounts no 3D at all — that is `Scene`'s contract, and
-      // the light in the frame below is therefore entirely CSS.
-      const canvases = await page.locator(`#${item.section} canvas`).count();
-      expect(canvases, `${item.label}: reduced motion must mount no canvas`).toBe(0);
+    for (const item of SCENES) {
+      test(`TC-FLAGSHIP-VIS-STILL-${item.section.toUpperCase()} @ ${viewport.width} — ${item.label} fallback`, async ({
+        page,
+      }) => {
+        test.setTimeout(120000);
+        // Emulated on the page rather than declared as a fixture: the installed
+        // Playwright's `test.use` does not accept `reducedMotion`, and this runs
+        // before the first navigation, so the preference is in force for the
+        // whole load — which is what `Scene` reads when it decides to mount.
+        await page.emulateMedia({ reducedMotion: 'reduce' });
+        await bootAt(page, '/?gl=force');
 
-      await page.waitForTimeout(400);
-      await isolateScene(page, item.scene);
-      const still = decodeLuma(await page.screenshot({ clip }));
-      await restorePage(page);
+        const ground = await groundLuminance(page, item.section);
+        const clip = await slotClip(page, item.scene);
 
-      const cover = coverage(still, ground, FALLBACK_DELTA);
-      const required = item.fallbackCoverageMin ?? FALLBACK_COVERAGE_MIN;
-      // eslint-disable-next-line no-console
-      console.log(
-        `[flagship-visibility:still] ${item.section}: ground=${ground.toFixed(4)} ` +
-          `coverage=${(cover * 100).toFixed(2)}% peak=${peak(still).toFixed(4)}`,
-      );
+        // Reduced motion mounts no 3D at all — that is `Scene`'s contract, and
+        // the light in the frame below is therefore entirely CSS.
+        const canvases = await page.locator(`#${item.section} canvas`).count();
+        expect(canvases, `${item.label}: reduced motion must mount no canvas`).toBe(0);
 
-      expect(
-        cover,
-        `${item.label}: the reduced-motion still covers only ${(cover * 100).toFixed(2)}% ` +
-          `at +${FALLBACK_DELTA} luminance against a floor of ${(required * 100).toFixed(0)}% — ` +
-          `the fallback is an empty rectangle, not a still of the same light`,
-      ).toBeGreaterThanOrEqual(required);
-    });
-  }
-});
+        await page.waitForTimeout(400);
+        await isolateScene(page, item.scene);
+        const still = decodeLuma(await page.screenshot({ clip }));
+        await restorePage(page);
+
+        const cover = coverage(still, ground, FALLBACK_DELTA);
+        const required = item.fallbackCoverageMin ?? FALLBACK_COVERAGE_MIN;
+        // eslint-disable-next-line no-console
+        console.log(
+          `[flagship-visibility:still] ${item.section}@${viewport.width}: ground=${ground.toFixed(4)} ` +
+            `coverage=${(cover * 100).toFixed(2)}% peak=${peak(still).toFixed(4)}`,
+        );
+
+        expect(
+          cover,
+          `${item.label}: the reduced-motion still covers only ${(cover * 100).toFixed(2)}% ` +
+            `at +${FALLBACK_DELTA} luminance against a floor of ${(required * 100).toFixed(0)}% — ` +
+            `the fallback is an empty rectangle, not a still of the same light`,
+        ).toBeGreaterThanOrEqual(required);
+      });
+    }
+  });
+}

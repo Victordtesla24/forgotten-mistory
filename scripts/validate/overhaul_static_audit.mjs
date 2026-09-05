@@ -352,8 +352,10 @@ function checkTokens() {
   // canonical design-tokens.json color values. Also flags CSS vars that reference
   // color tokens not defined in the token spec (drift prevention).
   //
-  // Scanned files: app/globals.css, tailwind.config.js, and any .css/.tsx files
-  //                in app/** and components/**.
+  // Scanned files: app/globals.css and any .css/.tsx files in app/** and
+  //                components/**. (tailwind.config.js is gone — it was a v3
+  //                `content` array that Tailwind v4 never read; @source in
+  //                globals.css scopes source detection now.)
   //
   // Violations:
   //   - A CSS custom property (--ink-*, --mist-*, --accent, --steel, --white)
@@ -449,7 +451,6 @@ function checkTokens() {
     ...walk(join(ROOT, 'app')).filter((p) => /\.(css|tsx|ts)$/.test(p)),
     ...walk(join(ROOT, 'components')).filter((p) => /\.(css|tsx|ts)$/.test(p)),
     join(ROOT, 'app', 'layout.tsx'),
-    join(ROOT, 'tailwind.config.js'),
   ];
 
   // Known token families from design-tokens.json — only these trigger drift checks.
