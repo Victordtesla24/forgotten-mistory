@@ -1,0 +1,36 @@
+### (a) hue-named utility class selectors
+  4x  .bg-neutral-500
+  4x  .bg-neutral-500\/
+  1x  .bg-neutral-950
+  2x  .border-neutral-200
+  2x  .border-neutral-200\/
+  2x  .border-neutral-300
+  2x  .border-neutral-300\/
+  1x  .from-neutral-950
+  1x  .text-neutral-100
+  1x  .text-neutral-200
+  1x  .text-neutral-300
+  1x  .text-neutral-400
+  1x  .text-neutral-950
+  3x  .to-neutral-950
+  3x  .to-neutral-950\/
+  3x  .via-neutral-950
+  3x  .via-neutral-950\/
+
+### (b) colour literals with chroma above threshold
+    1x  #c9a84c|spread=125|hue=44|GOLD-HUE   [b6ca1a1e79117a86.css]
+         ctx: ...t-200:#cdcdcd;--white:#f6f6f6;--accent:#ebebeb;--steel:#b8b8b8;--gold:#c9a84c;--gold-light:#d4b65c;-...
+    1x  #d4b65c|spread=120|hue=45|GOLD-HUE   [b6ca1a1e79117a86.css]
+         ctx: ...:#f6f6f6;--accent:#ebebeb;--steel:#b8b8b8;--gold:#c9a84c;--gold-light:#d4b65c;--gold-pale:#e8d5a3;--...
+    1x  #e8d5a3|spread=69|hue=43|GOLD-HUE   [b6ca1a1e79117a86.css]
+         ctx: ...bebeb;--steel:#b8b8b8;--gold:#c9a84c;--gold-light:#d4b65c;--gold-pale:#e8d5a3;--gold-dark:#b0923f;--...
+    1x  #b0923f|spread=113|hue=44|GOLD-HUE   [b6ca1a1e79117a86.css]
+         ctx: ...8;--gold:#c9a84c;--gold-light:#d4b65c;--gold-pale:#e8d5a3;--gold-dark:#b0923f;--gold-muted:#c9a84c14...
+    1x  #c9a84c14|spread=125|hue=44|GOLD-HUE   [b6ca1a1e79117a86.css]
+         ctx: ...ld-light:#d4b65c;--gold-pale:#e8d5a3;--gold-dark:#b0923f;--gold-muted:#c9a84c14;--gold-border:#c9a84...
+    1x  #c9a84c33|spread=125|hue=44|GOLD-HUE   [b6ca1a1e79117a86.css]
+         ctx: ...pale:#e8d5a3;--gold-dark:#b0923f;--gold-muted:#c9a84c14;--gold-border:#c9a84c33;--gold-veil:#c9a84c2...
+    1x  #c9a84c21|spread=125|hue=44|GOLD-HUE   [b6ca1a1e79117a86.css]
+         ctx: ...rk:#b0923f;--gold-muted:#c9a84c14;--gold-border:#c9a84c33;--gold-veil:#c9a84c21;--token-bg-base:var(...
+
+### summary: 7 distinct chromatic literals, 0 NON-GOLD, 17 hue utilities
