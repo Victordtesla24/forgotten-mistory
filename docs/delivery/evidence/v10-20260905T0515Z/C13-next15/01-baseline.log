@@ -1,0 +1,52 @@
+# 01-baseline.log — C13-next15 — 2026-09-05T05:24:15Z
+node v22.23.1 npm 12.0.2
+
+## branch / HEAD / status before any change
+worktree-wf_18f926b0-2a4-1
+8dc4cf4 docs(run): open v10 — owner prompt refreshed, v9 phase F and c12 evidence recorded
+
+## pre-patch values (pre-image lines of next15.patch; the clean 3-way apply below proves they matched the tree)
+7:+  "root": true,
+18:+import Link from 'next/link';
+27:-              <a
+28:+              <Link
+43:+import Link from "next/link";
+51:-          <a href="/">Open Main Experience</a>
+52:+          <Link href="/">Open Main Experience</Link>
+64:-        "next": "^14.2.35",
+65:+        "next": "15.5.25",
+73:-        "eslint-config-next": "^14.2.35",
+74:+        "eslint-config-next": "15.5.25",
+1854:-    "next": "^14.2.35",
+1855:+    "next": "15.5.25",
+1863:-    "eslint-config-next": "^14.2.35",
+1864:+    "eslint-config-next": "15.5.25",
+1878:+    "target": "ES2017"
+
+## patch apply result (S-1)
+Applied patch to .eslintrc.json, app/not-found.tsx, app/performance-benchmark/page.tsx, package-lock.json, package.json, tsconfig.json cleanly (3-way)
+
+## S-1 post-checks
+56:    "next": "15.5.25",
+75:    "eslint-config-next": "15.5.25",
+2:  "root": true,
+29:    "target": "ES2017"
+app/not-found.tsx:3:import Link from 'next/link';
+app/performance-benchmark/page.tsx:1:import Link from "next/link";
+2596:      "version": "15.5.25",
+2602:      "version": "15.5.25",
+2612:      "version": "15.5.25",
+
+## host before run: node_modules=no functions/node_modules=no ports=:8080 :5599  free_mb=2194 cores=4
+
+## .gitignore conflict markers before fix
+198:<<<<<<< HEAD
+200:=======
+217:>>>>>>> 9588cff (Merging everythig on nain)
+
+## checks.yml static job steps before fix
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run lint
+      - run: node scripts/validate/overhaul_static_audit.mjs
+      - run: node --test tests/ci_pipeline.test.mjs tests/static_audit_fail.test.mjs tests/github-telemetry.test.mjs tests/minivic_chat_function.test.mjs

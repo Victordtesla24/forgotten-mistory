@@ -27,6 +27,7 @@ jobs:
           node-version-file: .node-version
           cache: npm
       - run: npm ci
+      - run: npm ci --prefix functions
       - run: npx tsc --noEmit
       - run: npm run lint
       - run: node scripts/validate/overhaul_static_audit.mjs

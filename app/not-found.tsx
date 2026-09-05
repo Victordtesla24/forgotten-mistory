@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 /**
  * not-found.tsx — Next.js App Router custom 404 page.
  *
@@ -30,12 +32,12 @@ export default function NotFound() {
                 The page you requested does not exist or has been relocated.
               </p>
 
-              <a
+              <Link
                 href="/"
                 className="notfound-home-btn"
               >
                 Return home
-              </a>
+              </Link>
             </div>
           </div>
         </div>
