@@ -35,3 +35,9 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-05T13:57:29.279Z)
 running — dispatched 13:58Z — analyst-programmer xhigh, isolated worktree, port 5621, RECTIFY push rule
+
+## COMMENT (2026-09-05T14:10:29.079Z)
+PUSHED 6f4ba6c 'fix(app): the page paints without JavaScript — no Suspense fallback in front of a static route' + merge 4424d5c (14:10Z): app/loading.tsx removed (option a — nothing on the static route suspends), .loading-* rules dropped from globals.css, tests/e2e/no-js.spec.ts (+232) added, hero-first-paint.spec adjusted; no conflicts; consolidating. Awaiting the lane's structured result (CLS on unskipped boots must stay 0) and the G-H2 reviewer.
+
+## COMPLETE (2026-09-05T14:21:11.584Z)
+LANE COMPLETE 6f4ba6c + 48aaeb0 (live 5108c3ce 14:20Z): app/loading.tsx deleted (nothing on the static route suspends — 0 Suspense markers in out/index.html, route prerendered static), .loading-* rules removed (DEADCSS clean), tests/e2e/no-js.spec.ts TC-NOJS-01..04 (red 2/4 → green 4/4): with JS disabled #hero 1440×1329 / 390×1490, six section headings at opacity 1, hero name/statement/actions/photo painted; CLS 0.00000 ×9 unskipped; LCP 668 ms; hero/hero-fold/cinematic/render 50/50; first-paint + scrim specs 22/22. HONEST NOTE from the lane: the 'Loading portfolio only' state did not reproduce on 5a8c8c3 (87c9667 had already changed loading.tsx) — the boundary was removed as dead risk with tests, not as a proven causal fix. Reviewer re-checks JS-off in the G-H2 probe.

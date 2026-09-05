@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T14:04:38.275Z",
+  "updated": "2026-09-05T14:24:22.399Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -16,12 +16,12 @@
     {
       "id": "t_g_a1",
       "title": "ADV-FAIL P0 — G-A1 About evidence → gold",
-      "column": "ready",
+      "column": "done",
       "status": "done",
       "priority": 99,
       "assignee": "analyst-programmer",
       "created_at": "2026-09-05T11:12:20Z",
-      "updated_at": "2026-09-05T12:09:07Z",
+      "updated_at": "2026-09-05T14:15:03Z",
       "labels": [
         "ADV-FAIL",
         "P0",
@@ -61,12 +61,12 @@
     {
       "id": "t_g_a2",
       "title": "ADV-FAIL P0 — G-A2 About hatch on-token",
-      "column": "ready",
+      "column": "done",
       "status": "done",
       "priority": 99,
       "assignee": "analyst-programmer",
       "created_at": "2026-09-05T11:12:20Z",
-      "updated_at": "2026-09-05T12:09:07Z",
+      "updated_at": "2026-09-05T14:15:03Z",
       "labels": [
         "ADV-FAIL",
         "P0",
@@ -96,12 +96,12 @@
     {
       "id": "t_g_m1",
       "title": "ADV-FAIL P0 — G-M1 MiniVic drop dead API ladder",
-      "column": "ready",
+      "column": "done",
       "status": "done",
       "priority": 99,
       "assignee": "analyst-programmer",
       "created_at": "2026-09-05T11:12:20Z",
-      "updated_at": "2026-09-05T12:09:07Z",
+      "updated_at": "2026-09-05T14:15:03Z",
       "labels": [
         "ADV-FAIL",
         "P0",
@@ -151,12 +151,12 @@
     {
       "id": "t_g_m2",
       "title": "ADV-FAIL P0 — G-M2 Regenerate greeting MP3 to match text",
-      "column": "ready",
+      "column": "done",
       "status": "done",
       "priority": 99,
       "assignee": "analyst-programmer",
       "created_at": "2026-09-05T11:12:20Z",
-      "updated_at": "2026-09-05T12:09:07Z",
+      "updated_at": "2026-09-05T14:15:03Z",
       "labels": [
         "ADV-FAIL",
         "P0",
@@ -191,12 +191,12 @@
     {
       "id": "t_g_h1",
       "title": "ADV-FAIL P0 — G-H1 Hero fold reinvention (cut CV dump)",
-      "column": "ready",
+      "column": "done",
       "status": "done",
       "priority": 99,
       "assignee": "analyst-programmer",
       "created_at": "2026-09-05T11:12:20Z",
-      "updated_at": "2026-09-05T12:09:07Z",
+      "updated_at": "2026-09-05T14:15:03Z",
       "labels": [
         "ADV-FAIL",
         "P0",
@@ -256,12 +256,12 @@
     {
       "id": "t_g_v1",
       "title": "ADV-FAIL P0 — G-V1 Vitrine plates always visible",
-      "column": "ready",
+      "column": "done",
       "status": "done",
       "priority": 99,
       "assignee": "analyst-programmer",
       "created_at": "2026-09-05T11:12:20Z",
-      "updated_at": "2026-09-05T12:09:07Z",
+      "updated_at": "2026-09-05T14:15:03Z",
       "labels": [
         "ADV-FAIL",
         "P0",
@@ -296,12 +296,12 @@
     {
       "id": "t_g_s1",
       "title": "ADV-FAIL P0 — G-S1 Skills real GL flagship",
-      "column": "ready",
+      "column": "done",
       "status": "done",
       "priority": 96,
       "assignee": "analyst-programmer",
       "created_at": "2026-09-05T11:12:20Z",
-      "updated_at": "2026-09-05T12:09:07Z",
+      "updated_at": "2026-09-05T14:15:03Z",
       "labels": [
         "ADV-FAIL",
         "P1",
@@ -351,18 +351,18 @@
     {
       "id": "t_g_h2",
       "title": "ADV-FAIL P0 — G-H2/G-X1 Signature scene architecture",
-      "column": "ready",
-      "status": "done",
+      "column": "running",
+      "status": "running",
       "priority": 96,
       "assignee": "solutions-architect",
       "created_at": "2026-09-05T11:12:20Z",
-      "updated_at": "2026-09-05T12:09:07Z",
+      "updated_at": "2026-09-05T14:15:03Z",
       "labels": [
         "ADV-FAIL",
         "P1",
         "parallel"
       ],
-      "summary": "From artifacts/adversarial/GAP-BACKLOG.md. Ship visible UI ≤10m. See INBOX/ADV-FAIL-20260905.md. Live FAIL build bdf4edc4.",
+      "summary": "From artifacts/adversarial/GAP-BACKLOG.md. Ship visible UI ≤10m. See INBOX/ADV-FAIL-20260905.md. Live FAIL build bdf4edc4. | HOST RECTIFY 2026-09-05T14:15:03Z: reopened — docs≠PASS; await live G-H2a/b PASS.",
       "lane": "G-H2",
       "port": null,
       "hierarchy": {
@@ -371,13 +371,18 @@
         "effort": "max"
       },
       "provider": "anthropic-oauth",
-      "updated": "2026-09-05T12:24:54.561Z",
+      "updated": "2026-09-05T14:22:58.142Z",
       "parents": [],
       "comments": [
         {
           "at": "2026-09-05T12:23:00.168Z",
           "by": "orchestrator",
           "text": "REVIEWER BASELINE for G-H2 (measured): 0 canvases on a NORMAL load at 1440 and 390 (GL only under /?gl=force — capability gate or deferral: establish which, with the real-GPU spoof pass); .Hero_stage scrim linear-gradient(90deg, rgba(10,10,10,.68) …) covers the left of the frame; HyperFrames string count in served chunks = 0. Council: full-bleed single-layer stage, directional key ≤0.35 alpha + text-protection no larger than the headline box, scene on the critical path with a 900 ms settle, reduced-motion = the same picture stopped."
+        },
+        {
+          "at": "2026-09-05T14:22:58.142Z",
+          "by": "orchestrator",
+          "text": "Architecture docs are not PASS; awaiting live first-paint/poster PASS via t_x1_02/t_x1_03. Live state 14:22Z: desktop wash gone + column-bound grade (9e41474), phone scene lit, priority Scene mechanism proven, JS-off page paints (6f4ba6c); FAIL clauses open: real url() poster ≥ 0.10 luminance (t_x1_02c running), first-paint canvas timing (SwiftShader 1.4 s after DCL — GPU numbers via t_x1_01c). Closes only on a live reviewer PASS."
         }
       ],
       "decisions": [],
@@ -386,8 +391,8 @@
     {
       "id": "t_g_rev",
       "title": "ADV-FAIL P0 — G-REV Live adversarial re-probe after each Deploy",
-      "column": "ready",
-      "status": "running",
+      "column": "done",
+      "status": "done",
       "priority": 99,
       "assignee": "reviewer",
       "created_at": "2026-09-05T11:12:20Z",
@@ -406,7 +411,7 @@
         "effort": "max"
       },
       "provider": "anthropic-oauth",
-      "updated": "2026-09-05T12:55:40.850Z",
+      "updated": "2026-09-05T14:24:22.353Z",
       "parents": [],
       "comments": [
         {
@@ -428,14 +433,20 @@
           "at": "2026-09-05T12:55:40.850Z",
           "by": "orchestrator",
           "text": "RECTIFY 12:52Z applied — Playwright unblocked; WIP push; board closes on PASS."
+        },
+        {
+          "at": "2026-09-05T14:24:22.234Z",
+          "by": "orchestrator",
+          "text": "RECTIFY 14:12Z (INBOX/RECTIFY-20260905.md + dir-mgmt/ORCHESTRATOR-ADHERENCE-20260905.md) INTAKE 14:24Z — applied: (1) t_g_h2 reopened → running (docs ≠ PASS; closes only on live poster/first-paint/JS-off PASS via t_x1_02c/t_x1_03); (2) board hygiene: 93 tasks had column≠status → synced; scripts/pm/kanban.mjs now keeps column in step with status on every verb; (3) concurrency: ≤2 Chrome-heavy workflows while load>8 — three stale http.servers (5601/5602/5604) killed, no new heavy dispatch until the poster + scenes lanes end; (4) O5-MISS filed for 14:11:36–14:20:49Z (docs/evidence-only deploys 8beeda9d, 5108c3ce) — next tick ships the hero poster (G-H2a); (5) overruns: H2b lane at 27 min checkpointed by its own push at 14:23; no lane restarted; (6) t_g_rev is completed as the standing probe and replaced by one task per Deploy (t_rev_<gap>_<build>) closed on verdict. VERIFICATION: systemctl is-active fm-deploy-cadence.timer → active systemctl is-active hermes-gateway → inactive gh run list deploy.yml --limit 6:   2026-09-05T14:22:49Z workflow_dispatch success 5108c3ce   2026-09-05T14:19:15Z workflow_dispatch success 8beeda9d   2026-09-05T14:15:43Z push success 53548a1a   2026-09-05T14:15:41Z workflow_dispatch success 4424d5c2   2026-09-05T14:10:06Z workflow_dispatch success 1d25b7ab   2026-09-05T14:07:31Z workflow_dispatch success 2f694fd9 live: build-commit\" content=\"66199cba\" t_g_h2 status: running "
         }
       ],
-      "decisions": []
+      "decisions": [],
+      "result": "Standing reviewer task closed per RECTIFY 14:12Z ('no zombie running'): phase 1 baseline 11/11 FAIL (9ba97a5c); phase-2/3 probes issued per Deploy — G-A2 PASS, G-A1 FAIL→PASS, G-V1/V2 PASS, G-M1/M2 PASS, G-S1 PASS, G-H1 FAIL→PASS, G-H3 PASS, G-M3 latency PASS, flagship-C F1 PASS, sweep 13/13 PASS, G-H2a FAIL (poster/JS-off). From here every Deploy that changes a gap gets its own reviewer task t_rev_<gap>_<build>, completed on verdict."
     },
     {
       "id": "t_realign01",
       "title": "P0 RESUME — docs/prompt.md max PEA; ship visible UI every ≤10 min (O1/O5)",
-      "column": "ready",
+      "column": "done",
       "status": "done",
       "priority": 0,
       "assignee": "orchestrator",
@@ -477,7 +488,8 @@
       "updated": "2026-09-05T05:58:06.011Z",
       "summary": "Commit 8dc4cf4 on origin/main; live build-commit 8dc4cf46; deploy run 05:18Z success.",
       "decisions": [],
-      "comments": []
+      "comments": [],
+      "column": "done"
     },
     {
       "id": "t_62c9ee4d",
@@ -509,7 +521,8 @@
           "text": "REGRESSION FOUND 06:5xZ: cycle 13 shipped the WebGL crash (R3F 8 vs next 15's vendored React 19). The C13 battery could not see it: this VPS has no GPU and useGLCapability marks SwiftShader unsupported, so no Scene mounts on a normal load; the 3 WebGL ✘ in v9 F-security-upgrade and TC-RENDER-01 were classified 'headless-only'. Lesson recorded in memory: a WebGL ✘ is never headless-only until a ?gl=force SwiftShader probe shows 0 pageerrors. Hotfix t_p100hotfx; durable t_r19r3f9."
         }
       ],
-      "result": "Commits 18c6beb + 878adab on worktree-wf_18f926b0-2a4-1; gates tsc/lint/audit 10-10/build/npm-audit 0/node tests 59-59 all exit 0 (re-run by V-C13); merged to main as 5ec231d."
+      "result": "Commits 18c6beb + 878adab on worktree-wf_18f926b0-2a4-1; gates tsc/lint/audit 10-10/build/npm-audit 0/node tests 59-59 all exit 0 (re-run by V-C13); merged to main as 5ec231d.",
+      "column": "done"
     },
     {
       "id": "t_8cdf3b61",
@@ -550,7 +563,8 @@
           "text": "Cycle 11's one open gate (TC-CONTRAST-01 @390) is green since cycle 16 — closing."
         }
       ],
-      "result": "All 20 acceptance lines now hold (the @390 contrast node was the launcher, fixed in cycle 16). Live since f86b125."
+      "result": "All 20 acceptance lines now hold (the @390 contrast node was the launcher, fixed in cycle 16). Live since f86b125.",
+      "column": "done"
     },
     {
       "id": "t_c3ece39c",
@@ -590,7 +604,8 @@
           "text": "Also (V-C14a F1/F2): README.md:304 still says '58 TTS characters spent' (true figure 63, 07-decisions.md §6); and evidence .log files under docs/delivery/evidence/**/ are untracked because .gitignore:42 is a blanket *.log — add '!docs/delivery/evidence/**/*.log' so red-run proofs travel with the repo, then git add the C14a/C11/C13 logs."
         }
       ],
-      "result": "H-2 done (947e7a8): 8 worktrees + branches removed (all rev-list 0 ahead, superseded diffs archived), remote heads = main + live lanes only, 0 PRs, node tests 26/26, CLAUDE.md 308 tests, README 63 chars, .gitignore !docs/delivery/evidence/**/*.log, apply_edits.py re-filed. Orchestrator verified: git worktree list shows main + 3 live lanes."
+      "result": "H-2 done (947e7a8): 8 worktrees + branches removed (all rev-list 0 ahead, superseded diffs archived), remote heads = main + live lanes only, 0 PRs, node tests 26/26, CLAUDE.md 308 tests, README 63 chars, .gitignore !docs/delivery/evidence/**/*.log, apply_edits.py re-filed. Orchestrator verified: git worktree list shows main + 3 live lanes.",
+      "column": "done"
     },
     {
       "id": "t_d0066b7a",
@@ -624,7 +639,8 @@
           "by": "orchestrator",
           "text": "Add: TC-RENDER-07 hero screenshot baseline is stale after flagship A (0.09 pixel ratio) — rebaseline tests/baselines for hero/about/experience/vitrine/listen after the flagship corrections land, by eye."
         }
-      ]
+      ],
+      "column": "ready"
     },
     {
       "id": "t_4adf34f7",
@@ -654,7 +670,8 @@
           "text": "06:36Z: first R-c13 run stopped after 2 min — its precondition named f86b125 literally, but that run was cancelled by the queued 3adf126a deploy (GitHub keeps one pending run per concurrency group); relaunched with the precondition 'live build is a descendant of f86b125' (3adf126a qualifies)."
         }
       ],
-      "result": "R-c13 merged verdict FAIL on builds 3adf126a→3dae601a (review.md, 3 lens reports, 16 holds, 7 contradictions resolved, 22 ranked items). Blocker ADV-1 = the WebGL crash (fixed by t_p100hotfx at 07:12Z). 16 holds incl. R-c8 C-01, ADV-F-1, MOT-F-3, C-08(gold discipline) closed; 0 console errors on the fallback path; axe 0; headers; LCP 668/320 ms; CLS 0; /api/chat grounded; /api/tts 200. Backlog folded: 15 items → existing tasks (comments), 7 new tasks. Next review R-c14 after cycles 15/16/16b + react19 land."
+      "result": "R-c13 merged verdict FAIL on builds 3adf126a→3dae601a (review.md, 3 lens reports, 16 holds, 7 contradictions resolved, 22 ranked items). Blocker ADV-1 = the WebGL crash (fixed by t_p100hotfx at 07:12Z). 16 holds incl. R-c8 C-01, ADV-F-1, MOT-F-3, C-08(gold discipline) closed; 0 console errors on the fallback path; axe 0; headers; LCP 668/320 ms; CLS 0; /api/chat grounded; /api/tts 200. Backlog folded: 15 items → existing tasks (comments), 7 new tasks. Next review R-c14 after cycles 15/16/16b + react19 land.",
+      "column": "done"
     },
     {
       "id": "t_3bf56e4a",
@@ -674,7 +691,8 @@
       "updated": "2026-09-05T12:24:54.384Z",
       "summary": "Open R-c8 items after cycles 7/11/12/13: MOT-F-1, C-03 (verify), C-04 (+ADV-F-3), C-07, C-08, ADV-F-2, MOT-F-3, C-09, C-11, ADV-F-4. Each is a child task with the R-c8 direction verbatim as spec.",
       "decisions": [],
-      "comments": []
+      "comments": [],
+      "column": "ready"
     },
     {
       "id": "t_927a093b",
@@ -708,7 +726,8 @@
           "text": "V-C13 PASS was WRONG on the one thing that mattered: the 45 unreached specs included render/WebGL cases, and the reviewer's regression-failure proof (matched to CI-red) did not exercise a Scene mount. Recorded as a verification-process defect: every dependency upgrade must include a ?gl=force SwiftShader probe (0 pageerrors, canvases ≥ 1) before PASS."
         }
       ],
-      "result": "PASS (fbc7253): 14 gates re-run by the reviewer, all 8 regression ✘ matched line-for-line to CI run 33936783382 on main@debd25b; qualification V-3: 45 specs never reached (cycle 14 owns them)."
+      "result": "PASS (fbc7253): 14 gates re-run by the reviewer, all 8 regression ✘ matched line-for-line to CI run 33936783382 on main@debd25b; qualification V-3: 45 specs never reached (cycle 14 owns them).",
+      "column": "done"
     },
     {
       "id": "t_329d1673",
@@ -730,7 +749,8 @@
       "updated": "2026-09-05T06:32:27.740Z",
       "summary": "Fresh reviewer; verifies acceptance lines of R-c8 C-02 and C-06 plus TC-CONTRAST-01/TC-HERO-12 against the branch build, not the author's report.",
       "decisions": [],
-      "comments": []
+      "comments": [],
+      "column": "done"
     },
     {
       "id": "t_dc02ded1",
@@ -753,7 +773,8 @@
       "summary": "Orchestrator consolidation duty (O3/O4). git merge --no-ff worktree-wf_18f926b0-2a4-1 into main; git push origin HEAD:main; deploy.yml deploys; verify meta.",
       "decisions": [],
       "comments": [],
-      "result": "Merged 5ec231d (--no-ff) and pushed 06:15Z; Deploy runs 06:16:24Z + 06:18:14Z success; live build-commit meta = 5ec231d3 (curl 06:20Z). Ledger: 11 rows (0e690f1)."
+      "result": "Merged 5ec231d (--no-ff) and pushed 06:15Z; Deploy runs 06:16:24Z + 06:18:14Z success; live build-commit meta = 5ec231d3 (curl 06:20Z). Ledger: 11 rows (0e690f1).",
+      "column": "done"
     },
     {
       "id": "t_6fb8914b",
@@ -781,7 +802,8 @@
         }
       ],
       "comments": [],
-      "result": "Cycle 11 merged f86b125 (conflict in the generated reports/static-audit.json resolved to the branch version); the f86b125 Deploy run was superseded by 3adf126a (same tree + board docs) which deployed 06:32:55Z success; live build-commit 3adf126a verified 06:36Z and contains f86b125 (git merge-base --is-ancestor)."
+      "result": "Cycle 11 merged f86b125 (conflict in the generated reports/static-audit.json resolved to the branch version); the f86b125 Deploy run was superseded by 3adf126a (same tree + board docs) which deployed 06:32:55Z success; live build-commit 3adf126a verified 06:36Z and contains f86b125 (git merge-base --is-ancestor).",
+      "column": "done"
     },
     {
       "id": "t_cfc110c5",
@@ -801,7 +823,8 @@
       "updated": "2026-09-05T05:58:06.011Z",
       "summary": "docs/prompt.md refreshed by the Owner (Fable 5.1 ultracode, no Hermes, file-backed board); Hermes board `default` retired — its 7 tasks migrated with ids preserved; artifacts/kanban/ un-ignored so the ledger is versioned.",
       "decisions": [],
-      "comments": []
+      "comments": [],
+      "column": "done"
     },
     {
       "id": "t_86cdd156",
@@ -836,7 +859,8 @@
           "text": "R-c13 #2 MOT-C13-02 (major, Verified, motion) — 'Sixteen years, to scale' is the one heading that describes an animation and the section has none — getAnimations() scoped to #experience is [] on arrival and after 1600 ms; the only animation: in the module is inside the reduced-motion block\nDIRECTION: Give the chart the beat its heading promises — bars grow to their real duration on entry. 1) IntersectionObserver at threshold 0.2 in Experience.tsx setting data-drawn on the chart, mirroring Bench.tsx:189-206 (already solves once-only + reduced-motion). 2) Animate .trackBar::before (Experience.module.css:175) transform scaleX(0)->scaleX(1), transform-origin: left center, 900 ms (--motion-cine), cubic-bezier(0.16,1,0.3,1), animation-delay: calc(var(--i) * 70ms) — eight roles land the last bar at 1390 ms. 3) Roll .trackYears (line 211) opacity 0->1 over 320 ms at calc(var(--i) * 70ms + 620ms) so each number lands as its bar stops. 4) In the existing RM block (line 473) add .trackBar::before { animation: none; transform: none } and keep experienceFade. 5) Drive CareerStrata's uIntensity (CareerStrata.tsx:45-47) from the same data-drawn flag instead of ramping unconditionally at delta*0.5, so the strata rise with the bars.\nFILES: components/sections/Experience/Experience.tsx:100,156, components/sections/Experience/Experience.module.css:169,175,211,473-486, components/sections/Experience/CareerStrata.tsx:45-47, components/sections/Skills/Bench.tsx:189-206, tests/overhaul/experience-signature.spec.ts\nACCEPTANCE: With normal motion at 1440x900, scrolling #experience into view yields >= 8 entries in document.getAnimations() scoped to #experience, each duration === 900 and easing === 'cubic-bezier(0.16, 1, 0.3, 1)', the last starting at >= 490 ms; .trackBar::before computed transform is not matrix(1,0,0,1,0,0) at t=100 ms and is at t=1600 ms. Under reducedMotion 'reduce', #experience still reports zero running animations after 2200 ms."
         }
       ],
-      "result": "V-c15 PASS (906ccd5): scene-experience 8/8 + experience 13/13 (TC-EXP-11 now green), 0 gold, playhead rgb(246,246,246), labels inside the card at 5 widths, reduced motion static, canvases 1 at ?gl=force; consolidated by the pipeline (8464426) and LIVE on 84644262 (monitor PROD OK). Minor: F-1 stagger misses R-c13 by 10 ms, F-2 .trackYears opacity roll-in not implemented, F-3 pre-existing 2025/now axis label overlap at 390 → t_c15b polish."
+      "result": "V-c15 PASS (906ccd5): scene-experience 8/8 + experience 13/13 (TC-EXP-11 now green), 0 gold, playhead rgb(246,246,246), labels inside the card at 5 widths, reduced motion static, canvases 1 at ?gl=force; consolidated by the pipeline (8464426) and LIVE on 84644262 (monitor PROD OK). Minor: F-1 stagger misses R-c13 by 10 ms, F-2 .trackYears opacity roll-in not implemented, F-3 pre-existing 2025/now axis label overlap at 390 → t_c15b polish.",
+      "column": "done"
     },
     {
       "id": "t_cc03ed93",
@@ -886,7 +910,8 @@
           "text": "Merged to main (pipeline 1802b87 + verification 614b8ce). V-c16 FAIL on 2/13 lines → correction cycle 16b (t_c16b0001) dispatched; this task closes when 16b passes."
         }
       ],
-      "result": "Cycle 16 + 16b closed: labelled achromatic launcher on a dark plate, occlusion fixed (TC-CONTRAST-01 @390 green), skip link, aria chain clean, TC-BOT-12/14 green, CC-03a/CC-07/ADV-3 closed. Live."
+      "result": "Cycle 16 + 16b closed: labelled achromatic launcher on a dark plate, occlusion fixed (TC-CONTRAST-01 @390 green), skip link, aria chain clean, TC-BOT-12/14 green, CC-03a/CC-07/ADV-3 closed. Live.",
+      "column": "done"
     },
     {
       "id": "t_3729f57e",
@@ -921,7 +946,8 @@
           "text": "R-c13 #19 CC-10 (polish, Verified, composition (doctrine half corrected by merge)) — Two parallel gold columns 71 px apart (14 bench dots at x=1088, 14 status glyphs at x=1159.6) ask the reader to learn two marks in one table\nDIRECTION: Collapse the two parallel gold columns into one. Keep the licensed mark that carries the most meaning per row — the caliper/source mark — in var(--gold), and render the second column's glyph in var(--mist-200) so the row reads as one gold mark plus neutral chrome. Do not remove the production mark: CLAUDE.md prime directive 4 enumerates 'the measured in production mark' as a licensed gold surface, so composition's claim that it smuggles in a second meaning is rejected. Do not introduce a third gold surface.\nFILES: components/sections/Skills/Skills.tsx:114-118,195, components/sections/Skills/Skills.module.css:103-109,286-306\nACCEPTANCE: #skills contains at most one vertical run of gold-painted elements sharing an x within 2 px; the total count of gold-painted elements in #skills is <= 16; every gold element in #skills sits in a row whose caliper state is 'sourced' or whose status is 'production'."
         }
       ],
-      "result": "V-c17 PASS (f05f96c): saturated gold in #skills 29→1 (legend mark), any-gold 15 ≤ 16, one column, strands 0.28/0.35 at rest → 1/0.18 on hover in 300 ms, reduced motion colour-only; deviation accepted (unsourced strands mist-400 for legibility). Live c8fc4b04."
+      "result": "V-c17 PASS (f05f96c): saturated gold in #skills 29→1 (legend mark), any-gold 15 ≤ 16, one column, strands 0.28/0.35 at rest → 1/0.18 on hover in 300 ms, reduced motion colour-only; deviation accepted (unsourced strands mist-400 for legibility). Live c8fc4b04.",
+      "column": "done"
     },
     {
       "id": "t_2cc9a990",
@@ -956,7 +982,8 @@
           "text": "R-c13 #10 ADV-4 (major, Verified, adversarial + composition (CC-04)) — Repeat of R-c8 C-07: two identical 'Download CV' controls in the 1440 first screen (nav pill at x=1140.5, hero button at x=296.6), plus a third 548x96 anchor with the same text and href overlapping the nav band\nDIRECTION: Keep exactly one per viewport band. The nav pill is the persistent recruiter action (Navigation.tsx:154-157) — keep it, or demote it to plain text until [data-scrolled]. Then change the hero's copy from a bordered button to the section's text-link treatment (drop the border, keep var(--mist-200) at var(--fs-small) with the ::after underline .channel uses), OR relabel it to something the nav does not offer. Remove the third phantom anchor at (445.9, 6, 548x96) — a 548x96 hit area across the chrome must not be in the accessibility or hit-test tree while the desktop nav shows.\nFILES: components/site/Navigation.tsx:26,154-157, components/sections/Hero/Hero.tsx, components/sections/Hero/Hero.module.css, app/globals.css, tests/overhaul/\nACCEPTANCE: At 390/834/1280/1440/1920 with scrollY === 0: the count of elements matching a[href=\"/docs/Vik_Resume_Final.pdf\"] whose rect intersects the viewport AND whose computed visibility !== 'hidden' is exactly 1. Add as tests/overhaul/cta-duplication.spec.ts."
         }
       ],
-      "result": "V-c18 PASS: exactly one visible CV control at scrollY 0 at 390/834/1280/1440/1920 (was 1/1/3/3/3), phantom overlay anchor out of the hit-test tree, pill returns past the hero, TC-CINE-03 green. Live c8fc4b04. F-2 → follow-up task (phone has no CV control below the hero)."
+      "result": "V-c18 PASS: exactly one visible CV control at scrollY 0 at 390/834/1280/1440/1920 (was 1/1/3/3/3), phantom overlay anchor out of the hit-test tree, pill returns past the hero, TC-CINE-03 green. Live c8fc4b04. F-2 → follow-up task (phone has no CV control below the hero).",
+      "column": "done"
     },
     {
       "id": "t_052675d5",
@@ -985,7 +1012,8 @@
           "by": "orchestrator",
           "text": "R-c13 #7 MOT-C13-04 (major, Verified, motion + adversarial) — The two shader sections have no still of that light when the shader is absent — both scene slots compute background-image: none, so the fallback and reduced-motion paths are flat near-black\nDIRECTION: Give each slot a static gradient that is the shader's own first frame — the same light, not a substitute idea. 1) #hero scene slot in Hero.module.css: background: radial-gradient(120% 80% at 50% 18%, color-mix(in oklab, var(--white) 7%, transparent) 0%, transparent 62%), linear-gradient(180deg, color-mix(in oklab, var(--white) 3%, transparent) 0%, transparent 45%). 2) #experience .chartScene (Experience.module.css:73): background: repeating-linear-gradient(178deg, color-mix(in oklab, var(--white) 4%, transparent) 0 1px, transparent 1px 14px) with mask-image: linear-gradient(180deg, #000 0%, transparent 88%), so the field reads as sedimentary layers behind the bars as the shader does. 3) Tokens only, no raw hex, so the palette gate and TC-NFR-DEADCSS stay green; both are unconditional CSS so they are correct under reduced motion, under no-GL, and behind the canvas when it does mount (canvas is position:absolute; inset:0, GLCanvas.tsx:25).\nFILES: components/sections/Hero/Hero.module.css, components/sections/Experience/Experience.module.css:73, components/sections/Hero/atmosphere.glsl.ts, components/sections/Experience/strata.glsl.ts, components/gl/Scene.tsx:94\nACCEPTANCE: At 1440x900 with getContext stubbed null, getComputedStyle of the hero scene slot and of .chartScene each returns a background-image that is not 'none'; the 1440-nogl-hero visual baseline differs from a flat fill; the monochrome gate and TC-NFR-DEADCSS still pass; both values resolve through tokens with no raw hex outside app/globals.css and lib/palette.ts."
         }
-      ]
+      ],
+      "column": "todo"
     },
     {
       "id": "t_a88c6767",
@@ -1030,7 +1058,8 @@
           "text": "SHIPPED 09:5xZ: 701971c (client engagement CTA + route weight), 14f1215 (About dial baseline), c5d808c (CTA weight finish) on main; implementer battery 110 passed + 56 regression passed, audit/lint/tsc/build green; verifier running; live check pending."
         }
       ],
-      "result": "SHIPPED + verified: AP-01..05, TC-LISTEN-01..11, TC-ABOUT-13, CT-09/10/11 green; #listen routes to 0.85 × width, channels 18 px white ≥ 44 px, quote:channel 1.28, padding 108/108 at five widths; LIVE since c5d808c3. V-c20 FAIL was on one node outside this cycle's files — Compass numeral '01' 4.42:1 at 1440 over the brighter About field (flagship A) → folded into t_flagvis0c. Minor: two filled plates in #listen (email pill + engage plate) vs listen.ts comment, duplicate test id CT-11 → t_c20polish."
+      "result": "SHIPPED + verified: AP-01..05, TC-LISTEN-01..11, TC-ABOUT-13, CT-09/10/11 green; #listen routes to 0.85 × width, channels 18 px white ≥ 44 px, quote:channel 1.28, padding 108/108 at five widths; LIVE since c5d808c3. V-c20 FAIL was on one node outside this cycle's files — Compass numeral '01' 4.42:1 at 1440 over the brighter About field (flagship A) → folded into t_flagvis0c. Minor: two filled plates in #listen (email pill + engage plate) vs listen.ts comment, duplicate test id CT-11 → t_c20polish.",
+      "column": "done"
     },
     {
       "id": "t_652f383d",
@@ -1065,7 +1094,8 @@
           "text": "SHIPPED 3209d47: the sixteen-years claim now prints its derivation (CV role dates) beside it; CT-11 content check added."
         }
       ],
-      "result": "SHIPPED 3209d47: 'Sixteen years' kept with the derivation 'May 2010 → September 2026' printed beside it (role spans sum 16.17 y; elapsed 16.33 y; CV headline says 15+); CT-11 tenure gate green."
+      "result": "SHIPPED 3209d47: 'Sixteen years' kept with the derivation 'May 2010 → September 2026' printed beside it (role spans sum 16.17 y; elapsed 16.33 y; CV headline says 15+); CT-11 tenure gate green.",
+      "column": "done"
     },
     {
       "id": "t_cba10f82",
@@ -1086,7 +1116,8 @@
       "summary": "solutions-architect (level 1, max). Produces docs/delivery/evidence/v10-20260905T0515Z/SPEC-v10.md: for each of R1–R12, O1–O6, M1–M7 the current state (Verified from the live site/repo, with the command), the gap, the binary acceptance test (spec file + assertion), and the cycle that closes it. Inputs: docs/prompt.md §2–§3, §0.2, §0.3, §14; R-c8 review; C13/C11 evidence; this board.",
       "decisions": [],
       "comments": [],
-      "result": "SPEC-v10.md written (25 rows R1–R12/O1–O6/M1–M7; scene inventory 2 GLSL + 4 SVG/CSS + avatar stage; 13 proposed tasks → 9 created, 4 merged into existing). Orchestrator verified the file exists and the rows parse."
+      "result": "SPEC-v10.md written (25 rows R1–R12/O1–O6/M1–M7; scene inventory 2 GLSL + 4 SVG/CSS + avatar stage; 13 proposed tasks → 9 created, 4 merged into existing). Orchestrator verified the file exists and the rows parse.",
+      "column": "done"
     },
     {
       "id": "t_1e4e053e",
@@ -1124,7 +1155,8 @@
           "by": "orchestrator",
           "text": "R3 STATUS 14:05Z: latency clause PASS on live (chat first token P50 732/594 ms via direct Cloud Run SSE; reviewer 1062dc6); voice: /api/tts 200 (ElevenLabs) — but the greeting is a premade voice (REST key in .env.production is a key ID; the deployed function's secret is valid); avatar: pre-rendered loop MP4 + canvas-2D mouth — Higgsfield real-time (0 credits, free plan) and ≤40 ms lip-sync NOT met. Architecture t_x1_07 (MiniVic GL viseme stage, honest substitute) queued; R3 remains open and is not claimed."
         }
-      ]
+      ],
+      "column": "blocked"
     },
     {
       "id": "t_01071b79",
@@ -1152,7 +1184,8 @@
           "by": "orchestrator",
           "text": "R-c13 #6 M-2 (major, Verified, merge (supersedes ADV-2)) — Three of seven signature GL scenes: #hero, #about, #experience mount a canvas; #skills, #vitrine, #listen mount none; scenes unmount on scroll so at most one canvas is live\nDIRECTION: Build the remaining scenes on the board's own plan — t_cbff57b0 (#skills bench field), t_60d9cd7a (#vitrine and #listen fields), t_dc096608 (MiniVic viseme stage as the seventh) — each mounting through components/gl/Scene.tsx so capability detection and the reduced-motion gate stay in one place, and each with the static counterpart item 7 specifies. Keep the one-canvas-at-a-time unmount behaviour; it is correct for a 4-core mobile budget, so state it in the R2 evidence rather than counting simultaneous canvases. Prove 60 fps on GPU hardware only (t_7e0f060c), never with ?gl=force on a software rasteriser — the only sample this run read median rAF delta 116.7 ms / p95 150 ms because ?gl=force overrides the software-rasteriser decline.\nFILES: components/sections/Skills/, components/sections/Vitrine/, components/sections/Listen/, components/MiniVicBot.tsx, components/gl/Scene.tsx, docs/delivery/evidence/\nACCEPTANCE: With a hardware GPU (or a spoofed hardware renderer string) at 1440x900, scrolling each of the six sections to centre mounts a <canvas> in that section for at least seven distinct scenes across the page; each holds median rAF delta <= 16.7 ms at 1440 and <= 20 ms at 390 over a 3 s sample on GPU hardware; under reducedMotion 'reduce' every section reports 0 canvases."
         }
-      ]
+      ],
+      "column": "ready"
     },
     {
       "id": "t_7cb992f4",
@@ -1180,7 +1213,8 @@
           "by": "orchestrator",
           "text": "R-c13 #1 CC-02 (blocker, Verified, composition + merge) — No engagement CTA for business clients anywhere on the page: #listen holds four plain anchors, 14 px rgb(205,205,205), 0 filled actions at 1440 and 1280\nDIRECTION: Add one engagement action to #listen with equal weight to the hero's primary: filled var(--white) plate, color var(--ink-900), padding var(--space-2) var(--space-4), font-size var(--fs-small), min height 48 px, placed as the FIRST item in .channels above the four channels, on the 96 px spine. Label it for the client not the recruiter ('Start a project' / 'Book a 30-minute call') and point it at a destination the visitor can complete (a scheduling URL; a mailto: with a pre-filled subject only if the copy says so). Keep the four channels as the quiet secondary row beneath, retaining the .channel::after underline (Listen.module.css:223) on them only. No gold — this is chrome, not a sourced claim.\nFILES: app/data/portfolio/listen.ts, components/sections/Listen/Listen.tsx:184-196, components/sections/Listen/Listen.module.css:195-260, tests/content/\nACCEPTANCE: At 390/834/1280/1440/1920: #listen contains exactly one element matching a,button whose computed background-color is not rgba(0, 0, 0, 0); its getBoundingClientRect().height >= 48; its left edge equals the #listen heading's left edge within 1px; its href is non-empty and resolves (HTTP < 400, or a mailto:/https: scheme); and it precedes the four .channel anchors in DOM order. Add as tests/content/client-cta.spec.ts."
         }
-      ]
+      ],
+      "column": "ready"
     },
     {
       "id": "t_787e6c40",
@@ -1208,7 +1242,8 @@
           "by": "orchestrator",
           "text": "Re-probed 2026-09-05T06:1xZ via Higgsfield MCP balance: credits 0, plan free. OpenRouter /credits: total_credits 2890.5, usage 2895.88 (−$5.38). Still Owner-blocked; nothing fired."
         }
-      ]
+      ],
+      "column": "blocked"
     },
     {
       "id": "t_7db91f53",
@@ -1230,7 +1265,8 @@
       "updated": "2026-09-05T12:24:54.384Z",
       "summary": "Held by tests/content/content-check.spec.ts + scripts/build/cv_fingerprint.mjs (v9 cycle \"content\": ANZ headcount fixed, function grounding pinned). Open: ADV-F-4 tenure (cycle 21). Re-audited by every adversarial review.",
       "decisions": [],
-      "comments": []
+      "comments": [],
+      "column": "ready"
     },
     {
       "id": "t_2a908d01",
@@ -1250,7 +1286,8 @@
       "updated": "2026-09-05T05:58:06.011Z",
       "summary": "Shipped 2026-09-05 (3d5ef60, 283ce4e, debd25b): Deploy runs 05:18Z/01:38Z/01:37Z/01:35Z all success; live build-commit == origin/main (8dc4cf46). Checks red on known items (fixed by cycles 13/14). Remaining: keep it that way — never add a gate to the deploy path.",
       "decisions": [],
-      "comments": []
+      "comments": [],
+      "column": "done"
     },
     {
       "id": "t_3e553558",
@@ -1267,7 +1304,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T10:11:53.074Z",
+      "updated": "2026-09-05T14:24:22.306Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": [
@@ -1320,8 +1357,14 @@
           "at": "2026-09-05T10:11:53.074Z",
           "by": "orchestrator",
           "text": "Cadence: 10:0xZ 8f81ae86 — flagship visibility A (hero/about/experience) + cycle 20 close live; monitor: PROD OK on 8f81ae86."
+        },
+        {
+          "at": "2026-09-05T14:24:22.306Z",
+          "by": "orchestrator",
+          "text": "O5-MISS 14:11:36Z–14:20:49Z: Deploys 8beeda9d (fps harness + evidence) and 5108c3ce (no-JS evidence follow-up) carried no recruiter-visible delta; last visible deltas 14:09:17 (column-bound hero scrim 9e41474) and 14:11:36 (no-Suspense first paint 6f4ba6c — structural). P0 UI WIP existed (poster t_x1_02c, scenes S5/S6) but was not buildable inside the window. Next tick: hero poster + vitrine/listen fields."
         }
-      ]
+      ],
+      "column": "running"
     },
     {
       "id": "t_2331f031",
@@ -1347,7 +1390,8 @@
           "by": "orchestrator",
           "text": "R-c13 recorded (FAIL, crash). Every later deploy: R-c14 queued as a task once cycles 15, 16b and t_r19r3f9 are live."
         }
-      ]
+      ],
+      "column": "running"
     },
     {
       "id": "t_28a539a9",
@@ -1373,7 +1417,8 @@
           "by": "orchestrator",
           "text": "O4 incident 09:03Z: three implementers + verifiers (5601/5602/5603 batteries, 2 workers each) drove load to 72 on 4 cores and the orchestrator process exited; three lanes and the monitor stopped. Rule from now: at most TWO Playwright batteries concurrently (one per free port), verifiers count as a battery; the third lane waits."
         }
-      ]
+      ],
+      "column": "running"
     },
     {
       "id": "t_b5b81d5f",
@@ -1393,7 +1438,8 @@
       "updated": "2026-09-05T05:58:06.011Z",
       "summary": "Done in v9 cycle 4 (9321998b, C4-hero-portrait, TC-HERO-12..21) from B-research/02-avatar-placement; cycle 11 fixes the 390 fold (C-06). Re-graded by R-c13.",
       "decisions": [],
-      "comments": []
+      "comments": [],
+      "column": "done"
     },
     {
       "id": "t_5529f5c4",
@@ -1419,7 +1465,8 @@
           "by": "orchestrator",
           "text": "Verified 2026-09-05T06:1xZ via n8n MCP get_workflow_details: YYNSZMYApt7N3U3B (71 nodes, active, webhook /avatar-studio-run + /avatar-asset, updated 2026-09-05T00:14Z) and dfs7PNjfoTZxzaw4 (63 nodes, active, form trigger, models incl. bytedance/seedance-2.0, delivery_profile UHD_4K, max_spend_usd gate, notify sarkar.vikram@gmail.com). Published state intact; proof run still Owner-blocked (credits)."
         }
-      ]
+      ],
+      "column": "blocked"
     },
     {
       "id": "t_63755a3b",
@@ -1439,7 +1486,8 @@
       "updated": "2026-09-05T05:58:06.011Z",
       "summary": "Done in v9 cycle 3 (5f05575, B-research/01-employer-expectations.md, 78 specs). Live probe 05:5xZ: /api/chat 200, resume-grounded ANZ answer in 4.0 s on the OpenAI rung. Open: the deployed greeting MP3 still speaks the old sentence (ElevenLabs IVC refused) — folded into R3.",
       "decisions": [],
-      "comments": []
+      "comments": [],
+      "column": "done"
     },
     {
       "id": "t_fc52fa8b",
@@ -1462,7 +1510,8 @@
       "updated": "2026-09-05T12:24:54.384Z",
       "summary": "Held by the static audit raw-hex gate + tests/monochrome; v9 cycle 5 moved tokens to neutral AA. Open: C-08 gold mass in #skills (cycle 17) and the zinc pip on the launcher (cycle 16).",
       "decisions": [],
-      "comments": []
+      "comments": [],
+      "column": "ready"
     },
     {
       "id": "t_43c471b2",
@@ -1491,7 +1540,8 @@
           "by": "orchestrator",
           "text": "OWNER 09:10Z: still cannot see flagship UI/UX per section. Orchestrator looked at live 1440 gl=force screenshots (c76459d0): hero atmosphere faint, About field invisible, Experience strata invisible, bars grey — the quiet/text-primary bar produced flagships nobody can see. Correction: a flagship-visibility cycle per section with a measurable criterion (slot capture with text hidden: ≥ 15% of pixels at luminance ≥ ground+0.06, max luminance ≥ 0.35, a visible entry beat and scroll response) — dispatched after the hero photo lane (two-battery cap)."
         }
-      ]
+      ],
+      "column": "ready"
     },
     {
       "id": "t_f5ad9394",
@@ -1517,7 +1567,8 @@
       "updated": "2026-09-05T05:58:06.011Z",
       "summary": "Not before every other task is Done and the latest R-c<n> verdict is PASS. Panel per non-trivial item: researcher → solutions-architect → analyst-programmer; scores + surgical directions; PM re-delegates all of them.",
       "decisions": [],
-      "comments": []
+      "comments": [],
+      "column": "todo"
     },
     {
       "id": "t_2acdaa58",
@@ -1543,7 +1594,8 @@
           "by": "orchestrator",
           "text": "Tools used this cycle (orchestrator): Higgsfield MCP balance; n8n MCP get_workflow_details ×2; gh CLI (run list); sqlite3 read-only migration of the retired Hermes board; Workflow tool ×3 (opus council agents)."
         }
-      ]
+      ],
+      "column": "running"
     },
     {
       "id": "t_28011b3d",
@@ -1582,7 +1634,8 @@
         }
       ],
       "blocker": null,
-      "result": "V-C14a PASS (ad10049): 15 gates green incl. reviewer's own live probe 200 audio/mpeg; voice = ElevenLabs premade JBFqnCBsd6RMkjVDRZzb 'George' (payg refuses cloned voices: ivc_not_permitted / subscription_required — the invalid_api_key era ended at secret version 2 on 2026-09-05T00:01Z, so no rotation was needed); spend 63 + 10 characters; consolidated into main by the pipeline (5a07ac0, 15fb165); live 15fb165b carries the 'Synthetic voice · not a recording of Vikram' label. Orchestrator probe 06:5xZ: HTTP 200 audio/mpeg 10075 B in 0.35 s."
+      "result": "V-C14a PASS (ad10049): 15 gates green incl. reviewer's own live probe 200 audio/mpeg; voice = ElevenLabs premade JBFqnCBsd6RMkjVDRZzb 'George' (payg refuses cloned voices: ivc_not_permitted / subscription_required — the invalid_api_key era ended at secret version 2 on 2026-09-05T00:01Z, so no rotation was needed); spend 63 + 10 characters; consolidated into main by the pipeline (5a07ac0, 15fb165); live 15fb165b carries the 'Synthetic voice · not a recording of Vikram' label. Orchestrator probe 06:5xZ: HTTP 200 audio/mpeg 10075 B in 0.35 s.",
+      "column": "done"
     },
     {
       "id": "t_4e30d620",
@@ -1616,7 +1669,8 @@
         "kind": "dependency",
         "reason": "P100 WebGL crash on main — no Scene mounts until t_p100hotfx/t_r19r3f9",
         "at": "2026-09-05T07:05:13.332Z"
-      }
+      },
+      "column": "blocked"
     },
     {
       "id": "t_cbff57b0",
@@ -1647,7 +1701,8 @@
         }
       ],
       "blocker": null,
-      "result": "Closed via t_g_s1 (Skills bench GLSL field live on 9b864752, independent reviewer PASS)."
+      "result": "Closed via t_g_s1 (Skills bench GLSL field live on 9b864752, independent reviewer PASS).",
+      "column": "done"
     },
     {
       "id": "t_60d9cd7a",
@@ -1678,7 +1733,8 @@
         }
       ],
       "blocker": null,
-      "result": "V-scenes5+6 PASS (7cc9ae0): one canvas each at 1440/390 gl=force, reduced motion 0/0, no-GL readable, trace stagger 21.7 ms ≥ 20 ms, scroll-behavior smooth/auto, +0 kB; LIVE since c76459d0. Verifier: #vitrine @390 'close to imperceptible' — folded into flagship visibility B (t_flagvis0b). Minor F-1..F-4 (greyscale evidence PNGs, ListenField comment, stale Listen.module.css doc, cascade ordering) → t_flagvis0b."
+      "result": "V-scenes5+6 PASS (7cc9ae0): one canvas each at 1440/390 gl=force, reduced motion 0/0, no-GL readable, trace stagger 21.7 ms ≥ 20 ms, scroll-behavior smooth/auto, +0 kB; LIVE since c76459d0. Verifier: #vitrine @390 'close to imperceptible' — folded into flagship visibility B (t_flagvis0b). Minor F-1..F-4 (greyscale evidence PNGs, ListenField comment, stale Listen.module.css doc, cascade ordering) → t_flagvis0b.",
+      "column": "done"
     },
     {
       "id": "t_dc096608",
@@ -1702,7 +1758,8 @@
       "summary": "SPEC-v10.md c20b: the 7th scene lives in the chrome (§0.3-1 allows one flagship per section). Scaffolding exists: lib/visemeMap.ts (21 visemes), MiniVicBot.tsx:209 mouth canvas (Canvas2D), :214 AnalyserNode. Achievable now: a WebGL stage mounted through components/gl/Scene.tsx rendering viseme shapes from the audio envelope while /api/tts audio plays, labelled synthetic. OWNER-BLOCKED remainder (recorded, never faked): phoneme-accurate ≤ 40 ms lip-sync needs a generated viseme/phoneme track — Higgsfield 0 credits, ElevenLabs IVC/PVC refused. Files: components/avatar/VisemeStage.tsx, viseme.glsl.ts, components/MiniVicBot.tsx, lib/visemeMap.ts; tests/e2e/avatar-mouth.spec.ts (TDD first).",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_1173cd73",
@@ -1732,7 +1789,8 @@
           "text": "R-c13 #17 ADV-5 (minor, Verified, adversarial) — The public chat endpoint returns its routing internals to any caller ({\"provider\":\"openai\",\"model\":\"gpt-4.1-mini\"}) and answers in 6.40 s unstreamed, against R3's <~1.5 s first word\nDIRECTION: Drop the provider and model keys from the client payload (keep them in the function's server log). Confirm the deployed function's routing against §0.4 — a live response naming openai / gpt-4.1-mini is evidence the deployed function is on neither OpenRouter nor Anthropic-via-OAuth — and record the decision in evidence. Stream the response (SSE or chunked) so the first word lands under 1.5 s.\nFILES: services/, components/MiniVicBot.tsx, firebase.json\nACCEPTANCE: POST /api/chat body contains no 'provider' or 'model' key; time to first byte of answer text < 1.5 s; the routing recorded in evidence matches §0.4."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_7e0f060c",
@@ -1760,7 +1818,8 @@
       "summary": "SPEC-v10.md c20c: this VPS has no GPU (useGLCapability.ts:33-36 rejects SwiftShader) so fps is never claimed from it. tests/perf/scene-framerate.spec.ts samples 240 frames per scene and runs only when GPU_RUNNER=1 (test.skip with a printed reason otherwise — never a stubbed pass, never ?gl=force). Evidence comes from GPU hardware (the owner Mac self-hosted runner when online, or the orchestrator running the spec on the Mac control plane and committing the JSON). Never in the deploy path (O3).",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "todo"
     },
     {
       "id": "t_49d8560b",
@@ -1783,7 +1842,8 @@
       "summary": "SPEC-v10.md c19b: every raster/video is sub-4K (my-avatar.mp4 1280×720@24, my-hero-avatar.mp4 640×360@24, og-image.png 1200×630, my_avatar.png 900×502, my_avatar.webp/.avif 1480×826). Generation is Owner-blocked (Higgsfield 0 credits / free; OpenRouter −$5.38). Write docs/delivery/evidence/v10-20260905T0515Z/OWNER-BLOCKED.md (asset, measured, target 3840×2160 / 2160p60, generator + model, written prompt plan, credit that unblocks, cost estimate) and tests/asset_resolution.test.mjs (node --test): every asset ≥ 4K OR listed in OWNER-BLOCKED.md with a reason; an unlisted sub-4K asset fails. The register + test are not blocked; only the generation half is.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_bb67c9bd",
@@ -1806,7 +1866,8 @@
       "summary": "SPEC-v10.md c21 (the report files are written by the orchestrator every cycle; this task adds the guard). tests/cycle_reports.test.mjs (node --test): parse every artifacts/kanban/cycles/*.json — required keys {cycle, pea_numerator, pea_denominator: 25, adversarial_verdict, deploy_commit, tools_used (≥ 1 entry)}; a malformed file fails.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_p100hotfx",
@@ -1844,7 +1905,8 @@
         }
       ],
       "blocker": null,
-      "result": "LIVE VERIFIED 07:13Z on build f103462f (contains a11dfe7): ?gl=force SwiftShader probe → 1440: canvases 1 at hero, 2 after #experience, h1 'Vikram Deshpande', 6 sections, 0 pageerrors, 0 console errors, 0 failed requests; 390: canvases 1, h1 present, 0 errors. Outage window for GPU visitors: 06:18Z (5ec231d3) → 07:12Z. Durable fix t_r19r3f9 in flight; npm audit high on next 14 re-accepted until then (recorded)."
+      "result": "LIVE VERIFIED 07:13Z on build f103462f (contains a11dfe7): ?gl=force SwiftShader probe → 1440: canvases 1 at hero, 2 after #experience, h1 'Vikram Deshpande', 6 sections, 0 pageerrors, 0 console errors, 0 failed requests; 390: canvases 1, h1 present, 0 errors. Outage window for GPU visitors: 06:18Z (5ec231d3) → 07:12Z. Durable fix t_r19r3f9 in flight; npm audit high on next 14 re-accepted until then (recorded).",
+      "column": "done"
     },
     {
       "id": "t_r19r3f9",
@@ -1889,7 +1951,8 @@
         }
       ],
       "blocker": null,
-      "result": "V-react19 PASS (640ab59): independent re-execution of the six-file diff, no suppressions, hardware-GPU spoof (RTX 3080 renderer string) on the branch build renders all six sections, gl=force per-slot probe 1/1 at 1440 and 390; named-spec battery 48/53 under host loadavg 10–24 with only known/load-sensitive ✘. Live verified by the orchestrator on 79691eda (hero+experience canvases, 0 errors, GPU spoof clean). Finding 1 → new task: the CLS shift is footer.Footer_footer at ~508 ms (0.1556), not the hero crossfade."
+      "result": "V-react19 PASS (640ab59): independent re-execution of the six-file diff, no suppressions, hardware-GPU spoof (RTX 3080 renderer string) on the branch build renders all six sections, gl=force per-slot probe 1/1 at 1440 and 390; named-spec battery 48/53 under host loadavg 10–24 with only known/load-sensitive ✘. Live verified by the orchestrator on 79691eda (hero+experience canvases, 0 errors, GPU spoof clean). Finding 1 → new task: the CLS shift is footer.Footer_footer at ~508 ms (0.1556), not the hero crossfade.",
+      "column": "done"
     },
     {
       "id": "t_prodmon01",
@@ -1926,7 +1989,8 @@
           "text": "Monitor false positive 10:45Z: 'STALE FOR RETURNING VISITOR live=ce6799ec page=ccb15241' — the page was NEWER than the curl taken a moment earlier (deploy landed between the two). Refine: flag only when the page build is an ancestor of the live build (git merge-base --is-ancestor page live && page != live)."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_31f33ce7",
@@ -1949,7 +2013,8 @@
       "summary": "#skills, #hero, #experience, #about · major · Verified · source composition. Finding: Five running-text blocks blow past the 55-75ch measure — #skills provenance at 173ch (1246 px at 12 px), four more at 124ch — while the site already owns --measure-read",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_6075351d",
@@ -1972,7 +2037,8 @@
       "summary": "#vitrine · major · Verified · source motion. Finding: The trace-on is real but not legible as a trace: 6.67 ms between consecutive strokes against a 720 ms stroke, so a 25-stroke plate finishes its whole stagger in ~160 ms and reads as one fade",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_1a2c2984",
@@ -1995,7 +2061,8 @@
       "summary": "page (vertical rhythm) · minor · Verified · source composition. Finding: Section padding is not on one scale and the page closes tighter than it opens: #listen is 126 top / 45 bottom at 1440 against a symmetric 108/108 for the middle four",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_f26bd0ff",
@@ -2018,7 +2085,8 @@
       "summary": "#about · minor · Inferred · source motion. Finding: At the one sampled pointer position the compass readout did not change; one sample is not a proof of absence, and this state has now been reported twice",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_d3e82b17",
@@ -2041,7 +2109,8 @@
       "summary": "#vitrine · polish · Verified · source motion. Finding: The rail is a real snap carousel at 390 but scroll-behavior is auto in the no-preference path, so plate-to-plate moves jump rather than travel",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_9cd97adc",
@@ -2064,7 +2133,8 @@
       "summary": "#hero · polish · Verified · source motion. Finding: HeroAtmosphere carries a full reduced-motion implementation that can never run — Scene.tsx:91 gates the mount first — leaving two competing policies with no note",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_e9d4e10f",
@@ -2099,7 +2169,7 @@
         }
       ],
       "blocker": null,
-      "column": "ready",
+      "column": "done",
       "result": "Closed via t_stab01 (87c9667 live): see its COMPLETE record."
     },
     {
@@ -2124,7 +2194,8 @@
       "decisions": [],
       "comments": [],
       "blocker": null,
-      "result": "V-c16b PASS (e73b1c9): panel clears the H1 glyphs at 1280×800/1366×768/1440×900 (+51/+62/+26 px), accessible name 'Ask Mini Vic — Vikram's AI clone' + aria-expanded, 24×24 white speech-mark under the portrait, no source-less video (rendered only with src+poster), 111 colours achromatic, tab stop 2; 66/66 + text-contrast 2/2; consolidated b37e18d, LIVE (monitor PROD OK b37e18d3). Open observations → t_d0066b7a: VIS-04 listen snapshot (pre-existing) and the 32 px transcript at 1366×768 (disclosed trade)."
+      "result": "V-c16b PASS (e73b1c9): panel clears the H1 glyphs at 1280×800/1366×768/1440×900 (+51/+62/+26 px), accessible name 'Ask Mini Vic — Vikram's AI clone' + aria-expanded, 24×24 white speech-mark under the portrait, no source-less video (rendered only with src+poster), 111 colours achromatic, tab stop 2; 66/66 + text-contrast 2/2; consolidated b37e18d, LIVE (monitor PROD OK b37e18d3). Open observations → t_d0066b7a: VIS-04 listen snapshot (pre-existing) and the 32 px transcript at 1366×768 (disclosed trade).",
+      "column": "done"
     },
     {
       "id": "t_rc14rev01",
@@ -2149,7 +2220,8 @@
       "summary": "Same three lenses and merge as R-c13 (docs/delivery/evidence/v10-20260905T0515Z/R-c13/review.md is the template and the open backlog); precondition: live build is a descendant of the last of the three parent merges; must include the hardware-GPU spoof pass and the ?gl=force SwiftShader pass (0 pageerrors, canvases per section), every R-c13 item re-graded (closed / open), and the §0.3 mandates.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_2d068068",
@@ -2179,7 +2251,7 @@
         }
       ],
       "blocker": null,
-      "column": "ready",
+      "column": "done",
       "result": "Closed via t_stab01 (87c9667 live): see its COMPLETE record."
     },
     {
@@ -2203,7 +2275,8 @@
       "summary": "V-c15 findings F-1/F-2/F-3 (906ccd5 09-verification.md). Files: components/sections/Experience/Experience.module.css (.trackBar delay calc, .trackYears opacity transition calc(var(--i) * 70ms + 620ms) 320 ms, .axis/.axisTick spacing at ≤30rem), Experience.tsx if --i is missing; tests/overhaul/scene-experience.spec.ts gains the two assertions + a 390 axis-label non-overlap assertion (getBoundingClientRect of the last two axis labels).",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_62b5c4d3",
@@ -2226,7 +2299,8 @@
       "summary": "V-c17/18 finding F-2: app/globals.css:803-804 hides .nav-cv at max-width 640px, so once a phone reader passes the hero the only CV route is behind the menu. Direction: show the nav CV pill at ≤640 under [data-scrolled] only (text-only, var(--fs-small)), keeping CTA-01 (one control at scrollY 0) green; or add the CV route to the frosted bar as an icon-only 44 px control with accessible name. TDD: extend tests/overhaul/cta-duplication.spec.ts with CTA-04 (at 390 after scrollTo 1200 exactly one visible CV control exists).",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_heroph001",
@@ -2259,7 +2333,8 @@
         }
       ],
       "blocker": null,
-      "result": "OWNER REQUEST DELIVERED — V-hero-photo (b45b456): 13/14 acceptance lines PASS by independent measurement (figure 36.0% of viewport at 1440/1280/834, full-bleed at 390 below the actions; saturation 0.29 no grayscale; native 1480×826; corner ticks/rule/cross/caption; hover plays my-avatar.mp4 1280×720 and pauses on leave; nothing requested at rest; keyboard; reduced motion refuses hover, press allowed; no gold; LCP H1 < 2.5 s). The one FAIL is PERF-03 CLS 0.256 intermittent from footer.Footer_footer collapsing 215.77→0 px under load — pre-existing root cause (t_2d068068), not the photo (0.0002); fixed in the stability lane now. Orchestrator visual check on live ccb15241 PASS; caption contrast on the light pool → t_flagvis0c."
+      "result": "OWNER REQUEST DELIVERED — V-hero-photo (b45b456): 13/14 acceptance lines PASS by independent measurement (figure 36.0% of viewport at 1440/1280/834, full-bleed at 390 below the actions; saturation 0.29 no grayscale; native 1480×826; corner ticks/rule/cross/caption; hover plays my-avatar.mp4 1280×720 and pauses on leave; nothing requested at rest; keyboard; reduced motion refuses hover, press allowed; no gold; LCP H1 < 2.5 s). The one FAIL is PERF-03 CLS 0.256 intermittent from footer.Footer_footer collapsing 215.77→0 px under load — pre-existing root cause (t_2d068068), not the photo (0.0002); fixed in the stability lane now. Orchestrator visual check on live ccb15241 PASS; caption contrast on the light pool → t_flagvis0c.",
+      "column": "done"
     },
     {
       "id": "t_cachefr01",
@@ -2292,7 +2367,8 @@
         }
       ],
       "blocker": null,
-      "result": "LIVE + PROVEN 09:27Z: deploy 966f497 success; live cache-control: public, max-age=0, must-revalidate; sw.js cache name fm-static-4a003ba0 (build-stamped). Pre-fix visitor profile (old worker, stale b69bc97b): first load after the fix still served the stale shell while the new worker installed, the worker's one-time reload then showed 4a003ba0 from the network; every later load shows the live build (HTTP cache revalidated, 304). Returning visitors now see each deploy on their next load. Verifier lane result pending (recorded when it lands)."
+      "result": "LIVE + PROVEN 09:27Z: deploy 966f497 success; live cache-control: public, max-age=0, must-revalidate; sw.js cache name fm-static-4a003ba0 (build-stamped). Pre-fix visitor profile (old worker, stale b69bc97b): first load after the fix still served the stale shell while the new worker installed, the worker's one-time reload then showed 4a003ba0 from the network; every later load shows the live build (HTTP cache revalidated, 304). Returning visitors now see each deploy on their next load. Verifier lane result pending (recorded when it lands).",
+      "column": "done"
     },
     {
       "id": "t_flagvis0a",
@@ -2329,7 +2405,8 @@
           "text": "ORCHESTRATOR VISUAL CHECK on live 8f81ae86 (1440, gl=force): HERO — volumetric light shafts + fog + particle glints, a bright pool behind the portrait: visible within a second, text still legible on the scrim. ABOUT — the rose now sits on ten luminous sectors with a lit top sector: visible; note 'NO SCORES' still reads at rest until the entry sweep fires (the sweep needs ~40% of the svg in view) — R-c14 should decide whether the sweep should fire earlier. EXPERIENCE — visible sediment strata bands with grain across the chart card, brighter under the ANZ span, bars remain the brightest objects: visible and on-story. Judgement: the owner's 'cannot see flagship UI/UX' is answered for these three sections; verifier lane pending for the numbers."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "column": "running"
     },
     {
       "id": "t_flagvis0b",
@@ -2359,7 +2436,8 @@
         }
       ],
       "blocker": null,
-      "result": "Closed via t_g_s1 (Skills bench GLSL field live on 9b864752, independent reviewer PASS)."
+      "result": "Closed via t_g_s1 (Skills bench GLSL field live on 9b864752, independent reviewer PASS).",
+      "column": "done"
     },
     {
       "id": "t_skew0001",
@@ -2394,7 +2472,7 @@
         }
       ],
       "blocker": null,
-      "column": "ready",
+      "column": "done",
       "result": "Closed via t_stab01 (87c9667 live): see its COMPLETE record."
     },
     {
@@ -2455,7 +2533,8 @@
         }
       ],
       "blocker": null,
-      "result": "Reviewer on live (62e1e10): F1 phone hero scene PASS (390 gl=force coverage 100%, peak .83), F2-still PASS, F2-gl @1440 PASS, reduced-motion PASS, G-H2 desktop 0.68 wash gone (fold dominant visual = lit hero canvas). The two findings — openNote 4.496:1 hairline @390 gl and CLS 0.176 — were fixed by the stability lane (87c9667: openNote 6.20:1 pinned; CLS 0.0000). Next hero/experience reviewer probe re-checks both on live."
+      "result": "Reviewer on live (62e1e10): F1 phone hero scene PASS (390 gl=force coverage 100%, peak .83), F2-still PASS, F2-gl @1440 PASS, reduced-motion PASS, G-H2 desktop 0.68 wash gone (fold dominant visual = lit hero canvas). The two findings — openNote 4.496:1 hairline @390 gl and CLS 0.176 — were fixed by the stability lane (87c9667: openNote 6.20:1 pinned; CLS 0.0000). Next hero/experience reviewer probe re-checks both on live.",
+      "column": "done"
     },
     {
       "id": "t_9487806b",
@@ -2478,7 +2557,8 @@
       "summary": "V-c20 minor findings: Listen.module.css .pill gives the email the same filled background as the engage plate although app/data/portfolio/listen.ts:24 says the engagement action is the only filled plate; tests/content/content-check.spec.ts has two CT-11 ids (:222 links, :308 tenure); Compass.module.css:142-146 comment claims numerals stay above 4.5:1 (false at 4.42:1 until t_flagvis0c lands).",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_skew0002",
@@ -2508,7 +2588,7 @@
         }
       ],
       "blocker": null,
-      "column": "ready",
+      "column": "done",
       "result": "Closed via t_stab01 (87c9667 live): see its COMPLETE record."
     },
     {
@@ -2537,7 +2617,8 @@
         }
       ],
       "blocker": null,
-      "result": "VERIFIED on production pipeline: Deploy run 33965890266 (dispatched 12:23:17Z, after 6f59312 consolidated into main as f4c4dbb5) executed the NEW verify step (log shows tmp=\"$(mktemp)\" and curl -fsS --max-time 20 -o) and concluded success; live now 0c6f9f9f. Orchestrator reviewed the diff independently (no pipe, 12×10 s retries, prefix match, exit 1 preserved; test 12/12 with red-first evidence in CI-verify/). O3 flaky blocker removed."
+      "result": "VERIFIED on production pipeline: Deploy run 33965890266 (dispatched 12:23:17Z, after 6f59312 consolidated into main as f4c4dbb5) executed the NEW verify step (log shows tmp=\"$(mktemp)\" and curl -fsS --max-time 20 -o) and concluded success; live now 0c6f9f9f. Orchestrator reviewed the diff independently (no pipe, 12×10 s retries, prefix match, exit 1 preserved; test 12/12 with red-first evidence in CI-verify/). O3 flaky blocker removed.",
+      "column": "done"
     },
     {
       "id": "t_g_h3",
@@ -2570,7 +2651,9 @@
         }
       ],
       "blocker": null,
-      "result": "REVIEWER PHASE-2 PASS on live ceca1fa5 (G-REV/… 87cb1c5): four served CSS bundles (incl. one lazy chunk) → ZERO hue utilities (all 11 baseline hits gone), 7 chromatic literals all gold tokens, body washes rgba(42,42,42,.26/.22)+rgba(36,36,36,.18), :root tokens all spread 0; rendered histogram with LCD-AA disabled: 0.0000% non-gold chromatic pixels at 1440/390 on both paths (photograph + launcher portrait excluded and stated); DOM-wide computed-colour sweep empty; 0 pageerrors. Empty false-positive register. Separate FAIL-A raised (not G-H3): text-contrast regression at 1440 — 'InfoCentric' 1.06:1 on a near-white ground under #experience + three .Bench_bandLabel 3.63–4.10:1 (new with 66b0872) → t_g_s1c."
+      "result": "REVIEWER PHASE-2 PASS on live ceca1fa5 (G-REV/… 87cb1c5): four served CSS bundles (incl. one lazy chunk) → ZERO hue utilities (all 11 baseline hits gone), 7 chromatic literals all gold tokens, body washes rgba(42,42,42,.26/.22)+rgba(36,36,36,.18), :root tokens all spread 0; rendered histogram with LCD-AA disabled: 0.0000% non-gold chromatic pixels at 1440/390 on both paths (photograph + launcher portrait excluded and stated); DOM-wide computed-colour sweep empty; 0 pageerrors. Empty false-positive register. Separate FAIL-A raised (not G-H3): text-contrast regression at 1440 — 'InfoCentric' 1.06:1 on a near-white ground under #experience + three .Bench_bandLabel 3.63–4.10:1 (new with 66b0872) → t_g_s1c.",
+      "column": "done",
+      "updated_at": "2026-09-05T14:15:03Z"
     },
     {
       "id": "t_g_m3",
@@ -2615,7 +2698,9 @@
         }
       ],
       "blocker": null,
-      "result": "DONE via t_g_m3b — R3 latency clause (first word < ~1.5 s) independently PASS on live; this task's slice (rung order, warm ping, lean payload, SSE) is live and the Hosting-buffering proof stands. R3 as a whole stays OPEN on t_1e4e053e (Higgsfield real-time avatar + ≤40 ms lip-sync not met; voice via /api/tts works)."
+      "result": "DONE via t_g_m3b — R3 latency clause (first word < ~1.5 s) independently PASS on live; this task's slice (rung order, warm ping, lean payload, SSE) is live and the Hosting-buffering proof stands. R3 as a whole stays OPEN on t_1e4e053e (Higgsfield real-time avatar + ≤40 ms lip-sync not met; voice via /api/tts works).",
+      "column": "done",
+      "updated_at": "2026-09-05T14:15:03Z"
     },
     {
       "id": "t_stab01",
@@ -2648,12 +2733,13 @@
         }
       ],
       "blocker": null,
-      "result": "LANE COMPLETE 87c9667 (live a3edeff4 13:20Z) + evidence 0df240f: CLS root cause = app/loading.tsx styled-jsx rules never shipped in the static export → fallback 24 px tall, footer painted inside the fold then travelled ~11,600 px (single layout-shift entry, source footer.Footer_footer) → rules moved into globals.css → CLS 0.0000 / 0 entries at 1440, 1280, 390 on an unskipped boot under 6× throttle (was 0.156 / 0.176 / 0.256); TC-SKEW-02 3/3 (GLCanvas pre-flights a context on a detached canvas, one console.error per scene, nothing swallowed); PERF-03/03b + TC-HERO-15 3/3 under 2 workers; openNote on an --ink-900 plate → 6.20:1 on both paths (TC-CONTRAST-02 pin 4.6 with a liveness guard, self-caught regex bug fixed); removed the orphan MiniVicBot block that 735ea66's branch-wins merge had reinstated (6 tsc errors on main). 21 passed --repeat-each=3."
+      "result": "LANE COMPLETE 87c9667 (live a3edeff4 13:20Z) + evidence 0df240f: CLS root cause = app/loading.tsx styled-jsx rules never shipped in the static export → fallback 24 px tall, footer painted inside the fold then travelled ~11,600 px (single layout-shift entry, source footer.Footer_footer) → rules moved into globals.css → CLS 0.0000 / 0 entries at 1440, 1280, 390 on an unskipped boot under 6× throttle (was 0.156 / 0.176 / 0.256); TC-SKEW-02 3/3 (GLCanvas pre-flights a context on a detached canvas, one console.error per scene, nothing swallowed); PERF-03/03b + TC-HERO-15 3/3 under 2 workers; openNote on an --ink-900 plate → 6.20:1 on both paths (TC-CONTRAST-02 pin 4.6 with a liveness guard, self-caught regex bug fixed); removed the orphan MiniVicBot block that 735ea66's branch-wins merge had reinstated (6 tsc errors on main). 21 passed --repeat-each=3.",
+      "column": "done"
     },
     {
       "id": "t_x1_01",
       "title": "Scene frame-rate harness — median rAF per sceneId (R2 60fps, first measurement)",
-      "status": "running",
+      "status": "done",
       "assignee": "tester",
       "priority": 96,
       "parents": [],
@@ -2665,11 +2751,13 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T12:24:51.081Z",
-      "updated": "2026-09-05T14:03:18.561Z",
+      "updated": "2026-09-05T14:17:46.597Z",
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. R2's 60 fps clause has never been measured (grep 'rAF|16.7|median' tests/perf/performance.spec.ts = 0 hits). Author tests/perf/scene-framerate.spec.ts: for each sceneId at ?gl=force, scroll into view, discard 30 warm-up frames, sample 120 rAF deltas, assert median. TC-SCENE-FPS-01 desktop 1440x900 <=16.7ms; TC-SCENE-FPS-02 phone 390x844 dsf3 CPU throttle x4 <=20ms. Record WEBGL_debug_renderer_info alongside every number and label the result software-rasteriser — a SwiftShader pass is NOT GPU proof and the test output must say so.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "result": "tester 9d30641 (worktree-wf_ed340980-e0d-1, consolidating): tests/perf/scene-framerate.spec.ts + tests/helpers/scenes.ts (sceneIds DISCOVERED from components at collection time; throws on a computed id so the list can never silently shrink); median asserted (never mean), P95 recorded; thresholds exactly 16.7 / 20.0; renderer string + 'software-rasteriser' label in every assertion and 8 JSON artefacts; calibration probe on the no-GL path = 16.7 ms median (instrument sound). RESULT — R2 60 fps NOT met on SwiftShader (host load 8.8→11): hero 366.6 ms/frame @1440 (308 @390), about 333 (333), strata 183 (167), skills 66.7 (33.4) — pushed red per O3 (checks.yml reports, Deploy ungated). No production code touched.",
+      "column": "done"
     },
     {
       "id": "t_x1_02",
@@ -2708,7 +2796,8 @@
           "text": "REVIEWER PHASE-3 FAIL on live 753bc5ad (G-REV/e3f0206c): (1) JS-blocked clause fails ~30× — only 'LOADING PORTFOLIO' renders, #hero has no box (route behind app/loading.tsx Suspense) → t_nojs01 (running); (2) NO POSTER: .stage background-image has no url() layer — five gradient layers only; the commit subject 'over a lit poster' is not true; luminance with the GL chunk blocked 0.053 @1440 / 0.081 @390 — the lane adopted a 0.04 floor where the task acceptance is ≥ 0.10 (renegotiated bar — not accepted); (3) canvas attaches 1374–1477 ms after DCL while LCP settles at 728–1344 ms — 'in the first paint' is not true by wall clock; the MECHANISM is proven (priority bypasses the idle gate; S2..S7 stay deferred). Reproduced: LCP 480–1344 ms, CLS 0/9. → correction t_x1_02c (real rendered poster still ≥ 0.10, after t_x1_03 lands to avoid a .stage collision) + t_nojs01."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "column": "running"
     },
     {
       "id": "t_x1_03",
@@ -2727,11 +2816,18 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T12:24:51.635Z",
-      "updated": "2026-09-05T13:55:19.386Z",
+      "updated": "2026-09-05T14:08:08.217Z",
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. Hero.module.css:157 and :171 lay rgb(10 10 10 / 0.86) across the whole frame, which is why the reviewer called the atmosphere a shy backdrop. Bind the darkening to the reading column: ~0.72 under the type, <= 0.25 outside it, so the light crosses the frame and the copy still clears AA.",
       "decisions": [],
-      "comments": [],
-      "blocker": null
+      "comments": [
+        {
+          "at": "2026-09-05T14:08:08.217Z",
+          "by": "orchestrator",
+          "text": "PUSHED + consolidated 9e41474 'fix(hero): the scrim is a column-bound grade — the light crosses the frame (G-H2b)' + merge 1d25b7a (14:07Z) — TC-HERO-SCRIM-01 was red on main, so .stage::after was reworked; deploying. Awaiting the lane's structured result and a reviewer probe (folded into the G-H2 poster/no-JS review)."
+        }
+      ],
+      "blocker": null,
+      "column": "running"
     },
     {
       "id": "t_x1_05",
@@ -2754,7 +2850,8 @@
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. grep -rn 'sceneId=' components/ returns only 3 hits; Vitrine.tsx mounts <Scene className={styles.fieldSlot}> with no id, so the cabinet light is structurally unmeasurable. Add sceneId=vitrine-field, add it to SCENES, and raise the field until it passes — the unlit neighbour plates must read as waiting, not empty (G-V1 from the scene side).",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "running"
     },
     {
       "id": "t_x1_06",
@@ -2777,7 +2874,8 @@
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. Listen.tsx:161 mounts <Scene className={styles.fieldSlot}> with no sceneId, so the beat field the voice arrives on is unmeasurable. Add sceneId=listen-field, add it to SCENES, and raise the field until it passes.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "running"
     },
     {
       "id": "t_x1_07",
@@ -2800,7 +2898,8 @@
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. R2 wants >= 7 scenes; six are sections. The seventh is MiniVic's viseme stage. Promote the STAGE only: a Scene-mounted R3F plane behind the avatar plate whose shader is driven by the existing viseme refs (lib/visemeMap.ts getVisemeShape/lerpVisemeShapes), so the avatar is lit by what he is saying. The 2D canvas mouth in MiniVicBot.tsx stays exactly as-is and becomes the no-GL fallback, so lip-sync accuracy (R3) cannot regress.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "todo"
     },
     {
       "id": "t_x1_08",
@@ -2823,7 +2922,8 @@
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. R5 says every surface is audited >= 3840x2160 / 60fps. 'Vector scales' is an assertion; the proof is the backing store. Author tests/perf/resolution-independence.spec.ts at viewport 3840x2160, deviceScaleFactor 1, ?gl=force: TC-R5-GL-01 every canvas reports drawingBufferWidth >= 3840 and Height >= 2160; TC-R5-GL-02 median rAF at 4K <= 16.7ms; TC-R5-LAYOUT-01 no horizontal overflow and every section heading in the viewport box; TC-R5-SVG-01 the Compass, Bench and Vitrine drawings carry a viewBox and no fixed pixel width/height.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "todo"
     },
     {
       "id": "t_x1_09",
@@ -2846,7 +2946,8 @@
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. Measured 2026-09-05: my-avatar.mp4 = 1280x720@24, my-hero-avatar.mp4 = 640x360@24, my_avatar.avif = 1480x826 — all fail R5. Author tests/content/asset-resolution.spec.ts (node --test, ffprobe over public/): every section-referenced raster/video either reports >= 3840x2160 or appears in an explicit dated waiver list carrying the reason and the unblock. The waiver list is the R5 scoreboard and shrinks to zero as renders land.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "todo"
     },
     {
       "id": "t_x1_10",
@@ -2869,7 +2970,8 @@
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. hyperframes@0.8.29 (CLI) + @hyperframes/engine@0.8.29 render an HTML composition to a deterministic MP4 by seeking each frame in headless Chrome and encoding with FFmpeg. All three requirements are already installed here: node v22.23.1 (README requires >= 22), /usr/bin/ffmpeg, /usr/bin/google-chrome. Add them as devDependencies only, plus scripts/assets/hyperframes_render.mjs. This is the R5 unblock that needs no credits.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "todo"
     },
     {
       "id": "t_x1_11",
@@ -2892,7 +2994,8 @@
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. R2 names HyperFrames explicitly and package.json has zero HyperFrames packages. @hyperframes/player@0.8.29 is an embeddable web component whose dist/hyperframes-player.global.js measures 64,037 bytes raw / 17,645 bytes gzip -9 (measured via npm pack). Mount the same hero-overture composition in page behind next/dynamic, after the poster paints, crossfading into the GL atmosphere. One authored artifact drives the in-page motion and the 2160p60 file.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "todo"
     },
     {
       "id": "t_x1_12",
@@ -2915,7 +3018,8 @@
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. grep -rn 'gsap|ScrollTrigger' package.json components/ app/ lib/ returns 5 hits, all prose or CSS comments (app/globals.css:1332,1343; lib/voiceoverContext.tsx:116,119,125) — the library itself is absent, and lib/voiceoverContext.tsx already listens for gsap:<section>:enter CustomEvents that nothing dispatches. Adopt gsap core + ScrollTrigger, lazy, riding the existing GL chunk, and dispatch the section-enter cues the voiceover controller is already written against.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "todo"
     },
     {
       "id": "t_x1_13",
@@ -2938,7 +3042,8 @@
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. my-avatar.mp4 is 1280x720@24 and my-hero-avatar.mp4 is 640x360@24 (ffprobe, 2026-09-05). Re-render the avatar plate through the HyperFrames pipeline at 3840x2160@60 from the existing footage and stills — no generative call, so Higgsfield's 0-credit balance is irrelevant and C-4 generation discipline is not engaged. Ship AV1 WebM + H.264 MP4 under public/assets/avatar/ within the 5MB click-to-play cap, and remove the two waivers from the R5 asset audit.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "todo"
     },
     {
       "id": "t_x1_14",
@@ -2961,7 +3066,8 @@
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. After the chain deploys, verify against https://forgotten-mistory.web.app/ (not a local build): all 7 sceneIds present and passing the flagship bar, median rAF within budget at 1440 and 390, 4K backing store proven, HyperFrames present in package.json and absent from the critical path, R5 raster waiver list empty or honestly non-empty. Report FAIL for anything not proven by a command output you ran yourself.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "column": "todo"
     },
     {
       "id": "t_hyg_audit01",
@@ -2983,7 +3089,8 @@
       "decisions": [],
       "comments": [],
       "blocker": null,
-      "result": "coder 5d22bca on worktree-wf_1790b40a-e53-1: reports/static-audit.json untracked (git rm --cached) + .gitignore:218; audit still writes it (mkdir at :578 precedes write at :609, pinned by test); checks.yml never uploaded it; docs/ci-audit-contract.md stale header corrected; ci_pipeline.test.mjs +4 assertions red→green (22/22). WATCH: lanes branched before 5d22bca (H1, S1) may still commit the file → modify/delete conflict resolved by checkout --theirs re-tracks it; orchestrator will git rm --cached on main if ci_pipeline.test.mjs goes red in checks.yml."
+      "result": "coder 5d22bca on worktree-wf_1790b40a-e53-1: reports/static-audit.json untracked (git rm --cached) + .gitignore:218; audit still writes it (mkdir at :578 precedes write at :609, pinned by test); checks.yml never uploaded it; docs/ci-audit-contract.md stale header corrected; ci_pipeline.test.mjs +4 assertions red→green (22/22). WATCH: lanes branched before 5d22bca (H1, S1) may still commit the file → modify/delete conflict resolved by checkout --theirs re-tracks it; orchestrator will git rm --cached on main if ci_pipeline.test.mjs goes red in checks.yml.",
+      "column": "done"
     },
     {
       "id": "t_g_a1c",
@@ -3011,7 +3118,9 @@
         }
       ],
       "blocker": null,
-      "result": "REVIEWER PHASE-3 PASS on live 7d467770 (= 37cbb52c for every rendered file; G-REV/37cbb52c/08-adversarial-review.md, 8b351a7): 5 gold / 5 grey exactly as claimed at 1440 and 390; the four over-graded lines now grey; each gold line names a checkable record — two verified externally (GitHub API public_repos=38; aether-job-career-agent HTTP 200); all three side==='role' dimensions grey under their open caliper; grey lines still print evidence (41–74 chars, byte-identical); AA worst-case gold 7.84:1 / grey 5.22:1; page-wide gold census exactly 7 (5 About + Skills measured mark + Vitrine live URL); 0 pageerrors, 0 failed requests."
+      "result": "REVIEWER PHASE-3 PASS on live 7d467770 (= 37cbb52c for every rendered file; G-REV/37cbb52c/08-adversarial-review.md, 8b351a7): 5 gold / 5 grey exactly as claimed at 1440 and 390; the four over-graded lines now grey; each gold line names a checkable record — two verified externally (GitHub API public_repos=38; aether-job-career-agent HTTP 200); all three side==='role' dimensions grey under their open caliper; grey lines still print evidence (41–74 chars, byte-identical); AA worst-case gold 7.84:1 / grey 5.22:1; page-wide gold census exactly 7 (5 About + Skills measured mark + Vitrine live URL); 0 pageerrors, 0 failed requests.",
+      "column": "done",
+      "updated_at": "2026-09-05T14:15:03Z"
     },
     {
       "id": "t_vit_desc01",
@@ -3040,7 +3149,8 @@
           "text": "ADD (from reviewer 843b679d + creative council): composited resting alpha of a plate's strokes is 0.31 (stroke .5 × plate opacity .62 pre-existing at Vitrine.module.css:170) and individual strokes go as faint as element opacity .07; council target: every plate reads as drawn work at ≥0.55 composite, the lit plate gains weight. Fold the resting-weight uplift into this task with the description-contrast fix (same files)."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "column": "ready"
     },
     {
       "id": "t_rectify01",
@@ -3072,7 +3182,8 @@
           "text": "INCIDENT (orchestrator-caused, recorded): my 13:01Z WIP push of the palette lane (5d733ad, branched at 7ebf325) was made WITHOUT merging origin/main first; consolidation 735ea66 hit hunk conflicts in components/MiniVicBot.tsx against the MiniVic lane's 91f46e9 and resolved them 'branch wins' → an orphan block with one dead-ladder string and 6 tsc errors sat on main 13:04–13:20Z (builds still shipped: next build does not fail the export on those). The stability lane removed it (87c9667); origin/main and the live bundle now show 0 dead-endpoint references (verified 13:29Z by grepping every served chunk). RULE ADDED: an orchestrator WIP push runs Updating 6227914..71e2811\nFast-forward\n app/globals.css                                    |   76 +\n app/loading.tsx                                    |   97 +-\n components/MiniVicBot.tsx                          |   76 +-\n components/gl/GLCanvas.tsx                         |   96 +-\n components/gl/Scene.tsx                            |    4 +-\n .../sections/Experience/Experience.module.css      |   24 +-\n .../F-stability/00-build-baseline.log              |   73 +\n .../F-stability/01-cls-attribution.json            |  145 +\n .../F-stability/01-cls-attribution.log             |   10 +\n .../F-stability/01-cls-probe.mjs                   |  120 +\n .../F-stability/02-tests-failing.log               |   90 +\n .../F-stability/03-cls-unskipped-after.log         |    9 +\n .../F-stability/03-hero-growth-probe.mjs           |   52 +\n .../F-stability/03-hero-growth.log                 |   19 +\n .../F-stability/04-tests-passing.log               |   72 +\n .../F-stability/05-contrast-02.log                 |    7 +\n .../08-screens/experience-openNote-390-glforce.png |  Bin 0 -> 14718 bytes\n .../F-stability/08-screens/footer-1440.png         |  Bin 0 -> 28904 bytes\n .../F-stability/08-screens/footer-390.png          |  Bin 0 -> 20006 bytes\n .../v10-20260905T0515Z/G-M3/01-live-baseline.log   |   68 +\n .../v10-20260905T0515Z/G-M3/02-tests-failing.log   |  502 ++++\n .../v10-20260905T0515Z/G-M3/04-tests-passing.log   |  344 +++\n .../v10-20260905T0515Z/G-M3/05-regression.log      |   10 +\n .../evidence/v10-20260905T0515Z/G-M3/06-deploy.log |   30 +\n .../G-M3/07-prod-verification/01-curl-after.log    |   37 +\n .../02-hosting-buffers-sse.log                     |   17 +\n .../G-M3/08-decision-first-token.md                |   90 +\n .../G-REV/ceca1fa5/08-adversarial-review.md        |  325 +++\n .../captures/1440-glforce-nolcd-fullpage.png       |  Bin 0 -> 395272 bytes\n .../captures/1440-still-nolcd-fullpage.png         |  Bin 0 -> 382655 bytes\n .../captures/390-glforce-nolcd-fullpage.png        |  Bin 0 -> 453478 bytes\n .../ceca1fa5/captures/390-still-nolcd-fullpage.png |  Bin 0 -> 447193 bytes\n .../ceca1fa5/captures/css-chroma-scan-ceca1fa5.txt |   36 +\n .../captures/css-chroma-scan-lazy-chunk.txt        |    7 +\n .../captures/dom-computed-colour-sweep.json        |  163 ++\n .../ceca1fa5/captures/probe-lcd-off-histogram.json |  202 ++\n .../G-REV/ceca1fa5/captures/probe-lcd-on.json      | 3034 ++++++++++++++++++++\n .../G-REV/ceca1fa5/captures/probe2.mjs             |   73 +\n .../G-REV/ceca1fa5/captures/scan.mjs               |  108 +\n .../captures/subpixel-aa-artefact-1440-about.png   |  Bin 0 -> 12019 bytes\n .../G-REV/ceca1fa5/captures/text-contrast-live.log |   71 +\n functions/index.js                                 |  267 +-\n lib/miniVicBrain.ts                                |  168 +-\n tests/a11y/text-contrast.spec.ts                   |   50 +-\n tests/e2e/minivic-send-path.spec.ts                |   94 +\n tests/minivic_chat_function.test.mjs               |  220 ++\n tests/perf/performance.spec.ts                     |  321 ++-\n 47 files changed, 6997 insertions(+), 210 deletions(-)\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/00-build-baseline.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/01-cls-attribution.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/01-cls-attribution.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/01-cls-probe.mjs\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/02-tests-failing.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/03-cls-unskipped-after.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/03-hero-growth-probe.mjs\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/03-hero-growth.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/04-tests-passing.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/05-contrast-02.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/08-screens/experience-openNote-390-glforce.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/08-screens/footer-1440.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/F-stability/08-screens/footer-390.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/01-live-baseline.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/02-tests-failing.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/04-tests-passing.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/05-regression.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/06-deploy.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/07-prod-verification/01-curl-after.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/07-prod-verification/02-hosting-buffers-sse.log\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-M3/08-decision-first-token.md\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/08-adversarial-review.md\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/1440-glforce-nolcd-fullpage.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/1440-still-nolcd-fullpage.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/390-glforce-nolcd-fullpage.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/390-still-nolcd-fullpage.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/css-chroma-scan-ceca1fa5.txt\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/css-chroma-scan-lazy-chunk.txt\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/dom-computed-colour-sweep.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/probe-lcd-off-histogram.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/probe-lcd-on.json\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/probe2.mjs\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/scan.mjs\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/subpixel-aa-artefact-1440-about.png\n create mode 100644 docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/captures/text-contrast-live.log in the worktree first and 715995a088b2660b99773e96687da8810a860815 must report no conflicts; lanes merge origin/main immediately before every push."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "column": "running"
     },
     {
       "id": "t_g_h1c",
@@ -3105,7 +3216,9 @@
         }
       ],
       "blocker": null,
-      "result": "REVIEWER PHASE-3 PASS on live 753bc5ad (G-REV/e3f0206c/08-adversarial-review.md): exactly one CTA group in the fold at 1440/1280/834/390 = hero-actions; 0 pressables inside the figure; actions margin to fold 177/144/432/263 px; ledger clearance +73/+65/+81/+115; CLS 0.00000 on 9/9 unskipped cold loads (zero entries); LCP worst 1344 ms; text leaves 6/6/6/5, 1 long paragraph, stage coverage 1.0, CT-10 intact; keyboard: 10 Tabs to the proof-band control, focus leaves the video paused, Enter plays / Space pauses, achromatic 2px ring; pointer enter/leave arms/pauses; reduced motion: 0 canvases, hover does not start the loop; 12 phone plates intact; 0 pageerrors."
+      "result": "REVIEWER PHASE-3 PASS on live 753bc5ad (G-REV/e3f0206c/08-adversarial-review.md): exactly one CTA group in the fold at 1440/1280/834/390 = hero-actions; 0 pressables inside the figure; actions margin to fold 177/144/432/263 px; ledger clearance +73/+65/+81/+115; CLS 0.00000 on 9/9 unskipped cold loads (zero entries); LCP worst 1344 ms; text leaves 6/6/6/5, 1 long paragraph, stage coverage 1.0, CT-10 intact; keyboard: 10 Tabs to the proof-band control, focus leaves the video paused, Enter plays / Space pauses, achromatic 2px ring; pointer enter/leave arms/pauses; reduced motion: 0 canvases, hover does not start the loop; 12 phone plates intact; 0 pageerrors.",
+      "column": "done",
+      "updated_at": "2026-09-05T14:15:03Z"
     },
     {
       "id": "t_clean01",
@@ -3127,7 +3240,8 @@
       "decisions": [],
       "comments": [],
       "blocker": null,
-      "result": "cleanup-agent ccaab4c (hyg/clean01, consolidating): 32 merged/clean/unheld worktrees + branches removed; 9 kept with reasons (3 running lanes, 1 unmerged, 3 held by static servers on 5601/5602/5604 from the pre-resume era, 2 dirty); 0 orphan servers; local main ff-merged to origin/main (non-destructive). Inventory: docs/delivery/evidence/v10-20260905T0515Z/HYG-worktrees/01-removals.log."
+      "result": "cleanup-agent ccaab4c (hyg/clean01, consolidating): 32 merged/clean/unheld worktrees + branches removed; 9 kept with reasons (3 running lanes, 1 unmerged, 3 held by static servers on 5601/5602/5604 from the pre-resume era, 2 dirty); 0 orphan servers; local main ff-merged to origin/main (non-destructive). Inventory: docs/delivery/evidence/v10-20260905T0515Z/HYG-worktrees/01-removals.log.",
+      "column": "done"
     },
     {
       "id": "t_g_s1c",
@@ -3165,7 +3279,9 @@
         }
       ],
       "blocker": null,
-      "result": "INDEPENDENT SWEEP PASS 13/13 on live abc475e3→34755d6c (G-REV/abc475e3/08-adversarial-review.md, 5e504d3): band labels 6.165:1 ×3 @1440 (were 3.63/4.00/4.10), InfoCentric 12.45:1 (was 1.06 — probe artefact confirmed gone with the occlusion-aware walk), repo gate text-contrast run AGAINST PRODUCTION 4/4 green; AA 0 failures at 1440/390 on both paths."
+      "result": "INDEPENDENT SWEEP PASS 13/13 on live abc475e3→34755d6c (G-REV/abc475e3/08-adversarial-review.md, 5e504d3): band labels 6.165:1 ×3 @1440 (were 3.63/4.00/4.10), InfoCentric 12.45:1 (was 1.06 — probe artefact confirmed gone with the occlusion-aware walk), repo gate text-contrast run AGAINST PRODUCTION 4/4 green; AA 0 failures at 1440/390 on both paths.",
+      "column": "done",
+      "updated_at": "2026-09-05T14:15:03Z"
     },
     {
       "id": "t_g_m3b",
@@ -3193,12 +3309,14 @@
         }
       ],
       "blocker": null,
-      "result": "INDEPENDENT REVIEWER PASS on live 753bc5ad/5a8c8c34 (G-REV/411650c2/08-adversarial-review.md, 1062dc6, own probe): Enter→first visible bot text 1440 cold 821 / warm P50 732 / P95 994 ms; 390 cold 644 / P50 594 / P95 741 — 12/12 under 1500 ms; one chat request per send (POST origin 200 text/event-stream), 0 dead endpoints, 0 WebSockets; warm pings on open 15/15; CSP connect-src carries the origin, 0 violations, 0 pageerrors in 15 loads; reply grounded (ATO, Payday Super, Agile Kookaburras…) and progressive (31→172→355 chars over 300 ms samples); fallback REAL: origin refused → /api/chat 200 with a grounded reply 3/3 (1655–2134 ms, one shot — Hosting buffering, recorded as a limitation, never a latency PASS). Caveats recorded: observer stops on bubble chrome (<1 frame overstatement), 'cold' is metronome-warm. False-positive register empty."
+      "result": "INDEPENDENT REVIEWER PASS on live 753bc5ad/5a8c8c34 (G-REV/411650c2/08-adversarial-review.md, 1062dc6, own probe): Enter→first visible bot text 1440 cold 821 / warm P50 732 / P95 994 ms; 390 cold 644 / P50 594 / P95 741 — 12/12 under 1500 ms; one chat request per send (POST origin 200 text/event-stream), 0 dead endpoints, 0 WebSockets; warm pings on open 15/15; CSP connect-src carries the origin, 0 violations, 0 pageerrors in 15 loads; reply grounded (ATO, Payday Super, Agile Kookaburras…) and progressive (31→172→355 chars over 300 ms samples); fallback REAL: origin refused → /api/chat 200 with a grounded reply 3/3 (1655–2134 ms, one shot — Hosting buffering, recorded as a limitation, never a latency PASS). Caveats recorded: observer stops on bubble chrome (<1 frame overstatement), 'cold' is metronome-warm. False-positive register empty.",
+      "column": "done",
+      "updated_at": "2026-09-05T14:15:03Z"
     },
     {
       "id": "t_nojs01",
       "title": "P0 — with JavaScript disabled the site renders only the loading fallback: the route sits behind app/loading.tsx's Suspense boundary, so the static export's server-rendered hero never paints without JS",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 95,
       "parents": [],
@@ -3210,16 +3328,24 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T13:57:17.217Z",
-      "updated": "2026-09-05T13:57:29.279Z",
+      "updated": "2026-09-05T14:21:11.584Z",
       "summary": "Found by lane G-H2a (docs/delivery/evidence/v10-20260905T0515Z/G-H2a/09-js-blocked-1440.png / -390.png): a JS-disabled load of the static export shows only 'Loading portfolio'; #hero measures 0×0. CLAUDE.md and Hero.tsx promise 'nothing here waits on JavaScript — every word is server-rendered and visible'. Root cause to confirm: Next.js App Router streams the page inside a Suspense boundary provided by app/loading.tsx; in a static export the shell HTML carries the fallback plus the RSC payload, and without JS the fallback is never replaced (the stability lane's fix made the fallback 100vh, so the footer no longer paints inside the fold, but the content still needs JS). Fix options to evaluate with evidence: (a) remove app/loading.tsx (a fully static page has nothing to suspend on — verify no async server component actually suspends; the preloader UX, if wanted, becomes a CSS-only overlay that hides via a JS-added class so no-JS users see content immediately), or (b) keep a preloader but render it as a non-Suspense overlay. Acceptance: with javaScriptEnabled:false at 1440 and 390 the served index.html paints #hero with h1, statement, actions and photograph (poster) and all six sections' text; CLS < 0.05 and LCP < 2.5 s unchanged with JS on; the preloader/Skip behaviour tested in tests/ (grep 'Preloader' / 'Skip') stays coherent or is rewritten deliberately; reduced-motion path unchanged.",
       "decisions": [],
-      "comments": [],
-      "blocker": null
+      "comments": [
+        {
+          "at": "2026-09-05T14:10:29.079Z",
+          "by": "orchestrator",
+          "text": "PUSHED 6f4ba6c 'fix(app): the page paints without JavaScript — no Suspense fallback in front of a static route' + merge 4424d5c (14:10Z): app/loading.tsx removed (option a — nothing on the static route suspends), .loading-* rules dropped from globals.css, tests/e2e/no-js.spec.ts (+232) added, hero-first-paint.spec adjusted; no conflicts; consolidating. Awaiting the lane's structured result (CLS on unskipped boots must stay 0) and the G-H2 reviewer."
+        }
+      ],
+      "blocker": null,
+      "result": "LANE COMPLETE 6f4ba6c + 48aaeb0 (live 5108c3ce 14:20Z): app/loading.tsx deleted (nothing on the static route suspends — 0 Suspense markers in out/index.html, route prerendered static), .loading-* rules removed (DEADCSS clean), tests/e2e/no-js.spec.ts TC-NOJS-01..04 (red 2/4 → green 4/4): with JS disabled #hero 1440×1329 / 390×1490, six section headings at opacity 1, hero name/statement/actions/photo painted; CLS 0.00000 ×9 unskipped; LCP 668 ms; hero/hero-fold/cinematic/render 50/50; first-paint + scrim specs 22/22. HONEST NOTE from the lane: the 'Loading portfolio only' state did not reproduce on 5a8c8c3 (87c9667 had already changed loading.tsx) — the boundary was removed as dead risk with tests, not as a proven causal fix. Reviewer re-checks JS-off in the G-H2 probe.",
+      "column": "done"
     },
     {
       "id": "t_x1_02c",
       "title": "CORRECTION — G-H2a: the first paint carries a REAL rendered still of the hero atmosphere (url() poster ≥ 0.10 mean luminance, ≤ 500 kB, 3840×2160 source) — not gradient layers; acceptance restored to the task's ≥ 0.10",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 96,
       "parents": [
@@ -3234,8 +3360,81 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T14:02:43.429Z",
-      "updated": "2026-09-05T14:02:43.429Z",
+      "updated": "2026-09-05T14:10:29.400Z",
       "summary": "## CORRECTION: reviewer FAIL on G-H2a (docs/delivery/evidence/v10-20260905T0515Z/G-REV/e3f0206c/08-adversarial-review.md). Original output: 9dfaacd claimed 'priority scene over a lit poster'; live .stage background-image has NO url() layer (five gradients), luminance with the GL chunk blocked 0.053 @1440 / 0.081 @390; the lane lowered the floor to 0.04 where t_x1_02's acceptance says ≥ 0.10 — renegotiating the bar is the root cause #3 of the original FAIL review and is not accepted. Required fix: render a real frame of the hero atmosphere as the poster — capture the shader at frame 0 (or its brightest resting phase) at 3840×2160 with headless Chrome (SwiftShader GL_ARGS from tests/overhaul/flagship-visibility.spec.ts; or the HyperFrames engine path from docs/architecture/SIGNATURE-SCENES-v1.md t_x1_10 if it is faster to stand up — same result, a deterministic still of the same picture), encode AVIF (fallback WebP) ≤ 500 kB (asset budget), commit under public/assets/ with a reproducible script under scripts/assets/ (poster regenerates from the shader, never hand-painted), set it as the first background layer of .stage (url() then the existing gradients), keep the crossfade; the reduced-motion still and the no-GL path show the same picture (the photograph stays in colour; text plates keep AA — re-run text-contrast both paths). Mean luminance of the stage box with the GL chunk blocked ≥ 0.10 at 1440 and 390 (TC-HERO-FIRSTPAINT-01 floor raised to 0.10, no lower); with JS disabled (after t_nojs01) the poster paints. LCP < 2.5 s, CLS < 0.05 unchanged.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "column": "running"
+    },
+    {
+      "id": "t_x1_01b",
+      "title": "R2 — cut the fragment cost of the four live GLSL scenes (hero 366 ms, about 333, strata 183, skills 67 ms/frame on SwiftShader) without lowering the flagship floors: half-resolution render targets, fewer taps/octaves, early-outs; prove ≥ 3× on the harness",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 88,
+      "parents": [
+        "t_x1_01"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T14:17:46.711Z",
+      "updated": "2026-09-05T14:17:46.711Z",
+      "summary": "tests/perf/scene-framerate.spec.ts (t_x1_01) measured on SwiftShader (software-rasteriser, 4 cores): hero-atmosphere median 366.6 ms @1440 / 308 @390, about-field 333 / 333, career-strata 183 / 167, skills-bench 66.7 / 33.4 — budgets 16.7 / 20.0. A software rasteriser cannot prove 60 fps on a GPU (D9), but the RELATIVE cost is real and a 2021 phone GPU is not 20× a desktop GPU: the hero and about shaders are doing far more per-pixel work than the picture needs. Reduce fragment cost while keeping every flagship-visibility floor (coverage ≥ 0.15, peak ≥ 0.35, motion ≥ 0.004, still lit) and text-contrast green: render the atmosphere/field quads at half (or third) resolution into an offscreen target and upscale (or use a lower DPR cap per scene via Scene/GLCanvas props), cut noise octaves / sample taps, precompute what does not change per frame, early-out outside the lit region. Acceptance: harness median improves ≥ 3× for hero and about and ≥ 2× for strata (same host, same load band recorded), floors and AA unchanged; visual diff of the 4 scenes at 1440 within tolerance (screenshots before/after side by side, inspected). Record numbers honestly; do not claim 60 fps.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "column": "todo"
+    },
+    {
+      "id": "t_x1_01c",
+      "title": "R2 / D7 — non-gating checks.yml job that runs the scene frame-rate harness on the Owner's Mac (GPU-class) runner when it is online, uploading the per-scene JSON; never gates Deploy",
+      "status": "running",
+      "assignee": "coder",
+      "priority": 70,
+      "parents": [
+        "t_x1_01"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding / documentation",
+        "level": 4,
+        "effort": "medium (xhigh when coding)"
+      },
+      "provider": "openrouter→anthropic-oauth",
+      "created": "2026-09-05T14:17:46.762Z",
+      "updated": "2026-09-05T14:21:22.250Z",
+      "summary": "docs/architecture/SIGNATURE-SCENES-v1.md D7: GPU-class fps confirmation is a NON-GATING CI job on the self-hosted Mac runner (E2E_RUNNER_LABELS gate, continue-on-error) — an offline runner must never hang Deploy (forgotten-mistory-ci-gpu-runner lesson). Add a `scene-fps-gpu` job to .github/workflows/checks.yml: runs only if the repo variable E2E_RUNNER_LABELS is set, runs-on those labels, timeout-minutes 15, continue-on-error: true, builds the static export, serves it, runs tests/perf/scene-framerate.spec.ts with SCENE_FPS_ARTEFACT_DIR, uploads the JSON (include-hidden-files not needed; path under docs/... or a workspace dir). Extend tests/ci_pipeline.test.mjs: deploy.yml still has no needs; the new job is continue-on-error and label-gated. TDD red→green; push branch.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "column": "running"
+    },
+    {
+      "id": "t_rev_h2_next",
+      "title": "Reviewer probe — G-H2 on the next live build carrying the real poster (t_x1_02c) + column grade (9e41474) + no-Suspense first paint (6f4ba6c): url() poster ≥ 0.10 luminance GL-blocked and JS-off, first-paint canvas timing, AA both paths, flagship floors, LCP/CLS",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "reviewer",
+      "priority": 98,
+      "parents": [
+        "t_x1_02c"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T14:24:22.399Z",
+      "updated": "2026-09-05T14:24:22.399Z",
+      "summary": "One-Deploy reviewer task (RECTIFY 14:12Z cadence rule). Re-probe G-H2's FAIL clauses from G-REV/e3f0206c/08-adversarial-review.md on the build that carries t_x1_02c: .stage computed background-image contains url(/assets/…) and the stage box mean luminance ≥ 0.10 at 1440 and 390 with the WebGL chunk blocked AND with javaScriptEnabled:false; poster asset ≤ 500 kB and its source ≥ 3840×2160 (read the committed render script + asset headers); TC-HERO-SCRIM-01 semantics (outer thirds ≥ 0.06 brighter than the reading band) at 1440/390 gl + still; hero canvas mount time after DCL at /?gl=force (report ms, label SwiftShader); AA walk over #hero at 1440/390 on both paths; flagship hero floors; LCP < 2.5 s (LCP element named), CLS < 0.05 on 3 unskipped cold loads ×3 widths; no-JS: full page paints (6 headings, hero h1/statement/actions/photo) at 1440/390; 0 pageerrors. Verdict per clause, failures first, false-positive register (claims in the poster commit you cannot reproduce), one-line status of other open items. Write G-REV/<build>/08-adversarial-review.md, push a docs branch, return the structured verdict; the orchestrator completes this task on receipt.",
       "decisions": [],
       "comments": [],
       "blocker": null

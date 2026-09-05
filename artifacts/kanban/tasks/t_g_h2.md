@@ -47,3 +47,9 @@ REVIEWER BASELINE for G-H2 (measured): 0 canvases on a NORMAL load at 1440 and 3
 
 ## COMPLETE (2026-09-05T12:24:54.561Z)
 solutions-architect delivered docs/architecture/SIGNATURE-SCENES-v1.md + SIGNATURE-SCENES-TASKS.json (0b0bf02, consolidated to main). Orchestrator verified: 14 tasks validate (assignees §5, verify commands present), HyperFrames decision grounded in fetched README + npm (v0.8.29: player 17.6 kB gz in-page for hero overture + viseme stage; CLI+engine at build time render 3840×2160@60 masters on this VPS at zero credits — the R5 unblock), GSAP+ScrollTrigger adopted, Scene priority prop for hero first paint, R5 raster reported FAIL with waivers (no re-scoping). Imported as t_x1_01…t_x1_14 (g-s1-04 = t_g_s1). Next lanes: t_x1_01 (fps harness, tester) → t_x1_02/03 (hero first paint + graded plate).
+
+## STATUS (2026-09-05T14:22:58.094Z)
+running — REOPENED per RECTIFY 14:12Z — Architecture docs are not PASS; awaiting live first-paint/poster PASS via t_x1_02/t_x1_03.
+
+## COMMENT (2026-09-05T14:22:58.142Z)
+Architecture docs are not PASS; awaiting live first-paint/poster PASS via t_x1_02/t_x1_03. Live state 14:22Z: desktop wash gone + column-bound grade (9e41474), phone scene lit, priority Scene mechanism proven, JS-off page paints (6f4ba6c); FAIL clauses open: real url() poster ≥ 0.10 luminance (t_x1_02c running), first-paint canvas timing (SwiftShader 1.4 s after DCL — GPU numbers via t_x1_01c). Closes only on a live reviewer PASS.
