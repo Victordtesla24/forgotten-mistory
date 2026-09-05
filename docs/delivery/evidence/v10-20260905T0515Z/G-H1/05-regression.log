@@ -1,0 +1,124 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts tests/e2e/hero-photo.spec.ts --workers=2 --reporter=list
+
+Running 14 tests using 2 workers
+
+  ✘   1 [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground (18.7s)
+  ✘   2 [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground (21.5s)
+  ✓   3 [chromium] › tests/e2e/hero-photo.spec.ts:51:7 › Hero photograph › TC-PHOTO-01: at 1440 the figure owns the right column — ≥34 % of the viewport and ≥440 px (2.7s)
+  ✓   4 [chromium] › tests/e2e/hero-photo.spec.ts:96:7 › Hero photograph › TC-PHOTO-03: the still is in colour — no grayscale filter, and the pixels are saturated (2.2s)
+  ✓   5 [chromium] › tests/e2e/hero-photo.spec.ts:73:7 › Hero photograph › TC-PHOTO-02: at 390 the photo is full width and sits below the last hero action (3.5s)
+  ✓   7 [chromium] › tests/e2e/hero-photo.spec.ts:159:7 › Hero photograph › TC-PHOTO-05: hover starts the loop; leaving pauses it (2.7s)
+  ✓   6 [chromium] › tests/e2e/hero-photo.spec.ts:145:7 › Hero photograph › TC-PHOTO-04: at rest the loop has no source and never plays (5.0s)
+  ✓   8 [chromium] › tests/e2e/hero-photo.spec.ts:177:7 › Hero photograph › TC-PHOTO-06: the toggle is keyboard-operable — Enter pauses, Enter plays (3.6s)
+  ✓   9 [chromium] › tests/e2e/hero-photo.spec.ts:212:7 › Hero photograph › TC-PHOTO-07: reduced motion plays nothing at rest and runs no animation (5.3s)
+  ✓  10 [chromium] › tests/e2e/hero-photo.spec.ts:240:7 › Hero photograph › TC-PHOTO-08: TC-HERO-12 still holds — an action ends inside the first 844 px at 390 (2.8s)
+  ✓  11 [chromium] › tests/e2e/hero-photo.spec.ts:252:7 › Hero photograph › TC-PHOTO-09: the decorations are present — four corner ticks and the caption plate (2.2s)
+  ✓  12 [chromium] › tests/e2e/hero-photo.spec.ts:276:7 › Hero photograph › TC-PHOTO-10: no gold anywhere in or around the figure (3.0s)
+  ✓  14 [chromium] › tests/e2e/hero-photo.spec.ts:393:7 › Hero photograph at 834 › TC-PHOTO-12: at 834 the figure still owns the whole right column (2.2s)
+Hover shifts: [{"value":0.00009185504913330079,"sources":["page:div.nav-actions"]}]
+  ✓  13 [chromium] › tests/e2e/hero-photo.spec.ts:327:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts (4.7s)
+
+
+  1) [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 
+
+    Error: 1 text node(s) below AA — worst ten:
+    4.35:1 (needs 4.5) [about] div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_sweep__DIKqO:nth-of-type(1) > g.Compass_rose__PW3GF > g:nth-of-type(1) > text.Compass_numeral__9WSmf — "01" fg rgb(224,224,225) on bg rgb(102,102,103) @ 3.4px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m1[39m
+
+      285 |         )
+      286 |         .join('\n');
+    > 287 |       expect(failures.length, `${failures.length} text node(s) below AA — worst ten:\n${report}`).toBe(0);
+          |                                                                                                   ^
+      288 |     });
+      289 |   }
+      290 | });
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/a11y/text-contrast.spec.ts:287:99
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/error-context.md
+
+  2) [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground 
+
+    Error: 1 text node(s) below AA — worst ten:
+    4.41:1 (needs 4.5) [about] div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_sweep__DIKqO:nth-of-type(1) > g.Compass_rose__PW3GF > g:nth-of-type(1) > text.Compass_numeral__9WSmf — "01" fg rgb(224,224,225) on bg rgb(101,101,103) @ 3.4px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m1[39m
+
+      285 |         )
+      286 |         .join('\n');
+    > 287 |       expect(failures.length, `${failures.length} text node(s) below AA — worst ten:\n${report}`).toBe(0);
+          |                                                                                                   ^
+      288 |     });
+      289 |   }
+      290 | });
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/a11y/text-contrast.spec.ts:287:99
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-text-contrast-Text-co-2adeb--against-its-sampled-ground-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-text-contrast-Text-co-2adeb--against-its-sampled-ground-chromium/error-context.md
+
+  2 failed
+    [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 
+    [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground 
+  12 passed (43.6s)
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'tsc' --noEmit
+tsc exit=0
+npm notice run forgotten-mistory@2.0.0 lint
+npm notice run next lint
+`next lint` is deprecated and will be removed in Next.js 16.
+For new projects, use create-next-app to choose your preferred linter.
+For existing projects, migrate to the ESLint CLI:
+npx @next/codemod@canary next-lint-to-eslint-cli .
+
+ ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /root/forgotten-mistory/package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/package-lock.json
+
+✔ No ESLint warnings or errors
+lint exit=0
+
+  OVERHAUL STATIC AUDIT — baseline
+  ------------------------------------------------------------
+  [PASS] TC-NFR-TONE   No boastful/sci-fi copy (data + layout meta + alt/aria)
+         clean
+  [PASS] TC-NFR-MONO   Achromatic, with one sanctioned accent defined in one place
+         clean — greys plus the gold token, defined only in globals.css and lib/palette.ts
+  [PASS] TC-NFR-PERF   Asset budgets (img ≤0.5MB · video ≤2.5MB, ≤5MB click-to-play · audio ≤1MB)
+         within budget
+  [PASS] TC-FR-PARITY  Resume facts present in siteContent
+         all key facts present
+  [PASS] TC-NFR-TYPE   Three font families — Source Serif 4 (display) + Inter (body) + IBM Plex Mono (data)
+         clean — exactly 3 families
+  [PASS] TC-NFR-SEC    No hardcoded secrets in client source
+         clean
+  [PASS] TC-ARCH-BENCH No /performance-benchmark route in static export
+         absent from out/
+  [PASS] TC-NFR-COMPLETE No truncation/placeholder/stub markers (app|components|lib)
+         clean — no incomplete-code markers
+  [PASS] TC-NFR-TOKEN  CSS custom properties match design token spec
+         all tokens match design spec
+  [PASS] TC-NFR-DEADCSS No globals.css rules for classes that do not exist
+         clean — every class selector names a class the source can render
+  ------------------------------------------------------------
+  RESULT: ALL PASS (10/10)
+
+  📄 JSON report → reports/static-audit.json
+
+audit exit=0
