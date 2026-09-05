@@ -296,7 +296,12 @@
     border-bottom-color: var(--white);
 }
 
-.live:active {
+/* Both the shadowed and the lit URL confirm the press. The lit plate's rule
+   (.plate[data-lit] .live) outranks a bare :active, so the pressed state is
+   declared at that specificity too — otherwise the one URL a reader is most
+   likely to press painted nothing while pressed (TC-STATE-ACTIVE). */
+.live:active,
+.plate[data-lit] .live:active {
     color: var(--gold-dark);
     border-bottom-color: var(--gold-light);
 }
