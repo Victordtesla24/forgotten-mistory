@@ -25,8 +25,11 @@
  * capabilities on the right — and text over a lit plate is the failure this
  * whole lane exists to avoid. `across` therefore holds the plate inside the
  * middle span of the grid (`Bench.module.css` gives it `minmax(4rem, 1fr)`
- * between two fixed rails), ramping in at 0.19 and out at 0.81 of the slot.
- * Nothing bright ever reaches the columns the labels stand in. Below 900 px the
+ * between a 15rem and a 16rem rail), ramping in at 0.22 and out at 0.78 of the
+ * slot. In a 1248 px slot the rails end at 0.192 and begin again at 0.795, so
+ * the light is already at zero a full 3% of the width before the nearest
+ * `.bandLabel`. Nothing bright ever reaches the columns the labels stand in —
+ * TC-CONTRAST-01/02 measure that claim rather than taking it. Below 900 px the
  * slot is not behind the bench at all — it is the bench plate above the list —
  * so there is no type over it to protect.
  *
@@ -67,7 +70,7 @@ export const benchFieldFragmentShader = /* glsl */ `
 
   const float TAU = 6.283185307179586;
   /** Graticule pitch, in device pixels. A ruled bench, not a drawing grid. */
-  const float PITCH = 38.0;
+  const float PITCH = 64.0;
 
   float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
@@ -93,8 +96,8 @@ export const benchFieldFragmentShader = /* glsl */ `
     // The plate. It stops well short of both rails — see the header — and dies
     // inside its own frame top and bottom, so the canvas rectangle is never a
     // faintly lighter box on the page.
-    float across = smoothstep(0.19, 0.32, p.x) * smoothstep(0.81, 0.68, p.x);
-    float down = smoothstep(-0.02, 0.15, p.y) * smoothstep(1.02, 0.85, p.y);
+    float across = smoothstep(0.22, 0.38, p.x) * smoothstep(0.78, 0.62, p.x);
+    float down = smoothstep(-0.02, 0.17, p.y) * smoothstep(1.02, 0.83, p.y);
     float plate = across * down;
 
     // Three lookups, and no more. One slow wash so the plate is not a flat
@@ -107,8 +110,15 @@ export const benchFieldFragmentShader = /* glsl */ `
     // The graticule: hairlines ruled both ways, raised to a power so each is a
     // line rather than a wave. This is what makes the field a measuring surface
     // instead of a glow.
-    float gx = pow(0.5 + 0.5 * cos(px.x * TAU / PITCH), 20.0);
-    float gy = pow(0.5 + 0.5 * cos(px.y * TAU / PITCH), 20.0);
+    //
+    // The first draft ruled at a 38 px pitch to the 20th power and the section
+    // came back as a lightbox mesh: ~24% of the plate was line, the squares
+    // read as the subject, and the accent on the production wires — the one
+    // thing in this section licensed to be a colour — was competing with a
+    // backdrop. 64 px to the 60th is a quarter the line area at the same peak,
+    // because a crossing still saturates. A bench is ruled; it is not a grid.
+    float gx = pow(0.5 + 0.5 * cos(px.x * TAU / PITCH), 60.0);
+    float gy = pow(0.5 + 0.5 * cos(px.y * TAU / PITCH), 60.0);
     float graticule = clamp(gx + gy, 0.0, 1.0);
 
     // The reader's own row. Where a node is taken, the rule at its height comes
@@ -134,8 +144,8 @@ export const benchFieldFragmentShader = /* glsl */ `
     // graticule, and a bench whose only visible structure is its ruling is a
     // grid, not a lit surface. The mask still stops the plate well short of
     // both rails of type.
-    float base = plate * (0.30 + 0.12 * wash) * (0.86 + 0.18 * drift + 0.12 * breath);
-    float rules = plate * graticule * (0.34 + 0.26 * breath + 0.34 * row + 0.16 * slow);
+    float base = plate * (0.32 + 0.12 * wash) * (0.86 + 0.18 * drift + 0.12 * breath);
+    float rules = plate * graticule * (0.30 + 0.24 * breath + 0.34 * row + 0.14 * slow);
 
     float luma = base + rules + plate * (0.34 * pulse + 0.22 * row);
 

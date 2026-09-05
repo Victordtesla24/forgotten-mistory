@@ -1,0 +1,968 @@
+=== npx tsc --noEmit ===
+TSC_EXIT=0
+=== npm run lint ===
+   * /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/package-lock.json
+
+✔ No ESLint warnings or errors
+=== overhaul_static_audit ===
+  RESULT: ALL PASS (10/10)
+
+  📄 JSON report → reports/static-audit.json
+
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/monochrome tests/a11y/text-contrast.spec.ts tests/perf/performance.spec.ts --workers=1 --reporter=line
+
+Running 34 tests using 1 worker
+
+[1A[2K[1/34] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+[1A[2K  1) [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 
+
+    Error: 2 text node(s) below AA — worst ten:
+    3.63:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(2) > p.Bench_bandLabel__rA2BG — "Repositories" fg rgb(125,125,125) on bg rgb(39,39,40) @ 11px/400
+    4.10:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(1) > p.Bench_bandLabel__rA2BG — "Programmes" fg rgb(125,125,125) on bg rgb(29,29,29) @ 11px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m2[39m
+
+      366 |         failures.length,
+      367 |         `${failures.length} text node(s) below AA — worst ten:\n${worstTen(failures)}`,
+    > 368 |       ).toBe(0);
+          |         ^
+      369 |     });
+      370 |   }
+      371 | });
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/a11y/text-contrast.spec.ts:368:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/error-context.md
+
+
+[1A[2K[2/34] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground
+[1A[2K[3/34] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes
+[1A[2K  2) [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes 
+
+    Error: 2 text node(s) below AA on ?gl=force — worst ten:
+    3.63:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(2) > p.Bench_bandLabel__rA2BG — "Repositories" fg rgb(125,125,125) on bg rgb(39,39,40) @ 11px/400
+    4.10:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(1) > p.Bench_bandLabel__rA2BG — "Programmes" fg rgb(125,125,125) on bg rgb(29,29,29) @ 11px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m2[39m
+
+      399 |         failures.length,
+      400 |         `${failures.length} text node(s) below AA on ?gl=force — worst ten:\n${worstTen(failures)}`,
+    > 401 |       ).toBe(0);
+          |         ^
+      402 |     });
+      403 |   }
+      404 | });
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/a11y/text-contrast.spec.ts:401:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-text-contrast-TC-CONT-4de2e-low-AA-over-the-live-scenes-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-text-contrast-TC-CONT-4de2e-low-AA-over-the-live-scenes-chromium/error-context.md
+
+
+[1A[2K[4/34] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes
+[1A[2K[5/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(246, 246, 246)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+
+[1A[2K[6/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[7/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[8/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[9/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[10/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:314:7 › C-08 / CC-10 — the calibration card spends gold once › GS-10: at most six elements paint saturated gold inside #skills at rest
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:314:7 › C-08 / CC-10 — the calibration card spends gold once › GS-10: at most six elements paint saturated gold inside #skills at rest
+
+=== GS-10 saturated gold inside #skills @1440 === 1
+
+[1A[2K  span.Skills_legendGlyph__ZFNcO Skills_measuredMark__VkK_a x=129 via color: rgb(201, 168, 76)
+
+[1A[2K[11/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:328:7 › C-08 / CC-10 — the calibration card spends gold once › GS-11: every gold mark in #skills sits on a licensed surface
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:328:7 › C-08 / CC-10 — the calibration card spends gold once › GS-11: every gold mark in #skills sits on a licensed surface
+
+=== GS-11 any-gold inside #skills @1440 === 15
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Skills_legendGlyph__ZFNcO Skills_measuredMark__VkK_a x=129 licensed=true via color: rgb(201, 168, 76)
+
+[1A[2K[12/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:346:7 › C-08 / CC-10 — the calibration card spends gold once › GS-12: the card carries one vertical run of gold, not two
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:346:7 › C-08 / CC-10 — the calibration card spends gold once › GS-12: the card carries one vertical run of gold, not two
+
+=== GS-12 gold columns === [[1088,14],[129,1]] → 1 run(s)
+
+[1A[2K[13/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:371:7 › C-08 / CC-10 — the calibration card spends gold once › GS-13: at rest the sourced strands are dim gold and the rest are grey
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:371:7 › C-08 / CC-10 — the calibration card spends gold once › GS-13: at rest the sourced strands are dim gold and the rest are grey
+
+=== GS-13 strands at rest === sourced=17 others=3 stops={"gold":[{"color":"rgb(201, 168, 76)","opacity":0.1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":0.1}],"grey":[{"color":"rgb(144, 144, 144)","opacity":0.08},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":0.08}]}
+
+[1A[2K  sourced stroke-opacity: 0.28
+
+[1A[2K  other  stroke-opacity: 0.35
+
+[1A[2K[14/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:423:7 › C-08 / CC-10 — the calibration card spends gold once › GS-14 (Motion F-6): hovering a capability lights its strands and recedes the rest
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:423:7 › C-08 / CC-10 — the calibration card spends gold once › GS-14 (Motion F-6): hovering a capability lights its strands and recedes the rest
+
+=== GS-14 stroke-opacity under hover === [1,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18]
+
+[1A[2K[15/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:449:9 › C-08 / CC-10 — the calibration card spends gold once › reduced motion › GS-15: under reduced motion the strand transition is colour only
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:449:9 › C-08 / CC-10 — the calibration card spends gold once › reduced motion › GS-15: under reduced motion the strand transition is colour only
+
+=== GS-15 reduced-motion strand transition === {"property":"stroke-opacity","animation":"none"}
+
+[1A[2K[16/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 1440x900 (desktop): every sourced About evidence line is painted in the gold token, legibly
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 1440x900 (desktop): every sourced About evidence line is painted in the gold token, legibly
+
+=== CC-A1 @ 1440x900 (desktop) — About evidence lines ===
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,23) = 7.99:1  "38 public repositories · ATO evidence harness · ANZ plat"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,20,24) = 8.04:1  "ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MY"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,23) = 7.99:1  "Australian Taxation Office, ANZ, NAB, Telstra"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,24) = 7.99:1  "Payday Super program · Agile Kookaburras squad · PI 47–4"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,23) = 7.99:1  "5+ squads, up to 40 practitioners onshore and offshore"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(21,21,24) = 7.97:1  "Currently on site with the ATO, Melbourne"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(18,19,21) = 8.13:1  "Langfuse + Phoenix evaluation stack · −38% simulated err"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(18,18,21) = 8.18:1  "75+ hours of evidence against 64 available — escalated, "
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(18,19,22) = 8.13:1  "aether-job-career-agent · unmeasured signals read "not m"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "Open to permanent and contract engagements"
+
+[1A[2K[17/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 390x844 (phone): every sourced About evidence line is painted in the gold token, legibly
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 390x844 (phone): every sourced About evidence line is painted in the gold token, legibly
+
+=== CC-A1 @ 390x844 (phone) — About evidence lines ===
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "38 public repositories · ATO evidence harness · ANZ plat"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MY"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "Australian Taxation Office, ANZ, NAB, Telstra"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(9,9,9) = 8.71:1  "Payday Super program · Agile Kookaburras squad · PI 47–4"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "5+ squads, up to 40 practitioners onshore and offshore"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(9,9,9) = 8.71:1  "Currently on site with the ATO, Melbourne"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "Langfuse + Phoenix evaluation stack · −38% simulated err"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "75+ hours of evidence against 64 available — escalated, "
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "aether-job-career-agent · unmeasured signals read "not m"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "Open to permanent and contract engagements"
+
+[1A[2K[18/34] [chromium] › tests/monochrome/gold-semantics.spec.ts:662:7 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A2: the About key hatch has zero chroma
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:662:7 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A2: the About key hatch has zero chroma
+
+=== CC-A2 role swatch === {"backgroundImage":"repeating-linear-gradient(45deg, rgba(144, 144, 144, 0.34) 0px, rgba(144, 144, 144, 0.34) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px)","backgroundColor":"rgba(0, 0, 0, 0)","borderTopColor":"rgb(184, 184, 184)"}
+
+[1A[2K[19/34] [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold
+[1A[2K[20/34] [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold
+[1A[2K[21/34] [chromium] › tests/monochrome/monochrome.spec.ts:118:7 › Monochrome Compliance › MONO-01: :root publishes the grey ramp and exactly the four sanctioned gold tokens
+[1A[2K[22/34] [chromium] › tests/monochrome/monochrome.spec.ts:146:7 › Monochrome Compliance › MONO-02: Body background is achromatic
+[1A[2K[23/34] [chromium] › tests/monochrome/monochrome.spec.ts:153:7 › Monochrome Compliance › MONO-03: No inline style declares a colour outside the palette
+[1A[2K[24/34] [chromium] › tests/monochrome/monochrome.spec.ts:207:7 › Monochrome Compliance › MONO-04: Every rendered colour in every section is achromatic or the sanctioned gold
+[1A[2K[25/34] [chromium] › tests/monochrome/monochrome.spec.ts:218:7 › Monochrome Compliance › MONO-05: The sanctioned accent is actually in use, and only as the accent
+[1A[2K[26/34] [chromium] › tests/monochrome/monochrome.spec.ts:244:7 › Monochrome Compliance › MONO-06: Navigation overlay is achromatic when open
+[1A[2K[27/34] [chromium] › tests/monochrome/monochrome.spec.ts:252:7 › Monochrome Compliance › MONO-07: The check still rejects an unsanctioned hue
+[1A[2K[28/34] [chromium] › tests/perf/performance.spec.ts:41:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB
+[1A[2K[chromium] › tests/perf/performance.spec.ts:41:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB
+Total transfer size: 1.15 MB
+
+[1A[2K[29/34] [chromium] › tests/perf/performance.spec.ts:61:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s
+[1A[2K[chromium] › tests/perf/performance.spec.ts:61:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s
+LCP: 388 ms
+
+[1A[2K[30/34] [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05
+[1A[2K[chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05
+CLS: 0.2613
+
+[1A[2K  3) [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: < [32m0.05[39m
+    Received:   [31m0.2612559241706161[39m
+
+      127 |
+      128 |     console.log(`CLS: ${cls.toFixed(4)}`);
+    > 129 |     expect(cls).toBeLessThan(CLS_BUDGET);
+          |                 ^
+      130 |   });
+      131 |
+      132 |   test('PERF-04: Page loads without page errors', async ({ page }) => {
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/perf/performance.spec.ts:129:17
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/perf-performance-Performan-9ada0-umulative-Layout-Shift-0-05-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+[1A[2K[31/34] [chromium] › tests/perf/performance.spec.ts:132:7 › Performance Budgets › PERF-04: Page loads without page errors
+[1A[2K[32/34] [chromium] › tests/perf/performance.spec.ts:143:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s
+[1A[2K[chromium] › tests/perf/performance.spec.ts:143:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s
+DOMContentLoaded: 99 ms
+
+[1A[2K[33/34] [chromium] › tests/perf/performance.spec.ts:177:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked
+[1A[2K[chromium] › tests/perf/performance.spec.ts:177:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked
+No-JS hero title: {"opacity":1,"visibility":"visible","area":38133.10546875,"withinFirstViewport":true,"text":16}
+
+[1A[2K[34/34] [chromium] › tests/perf/performance.spec.ts:230:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer
+[1A[2K[chromium] › tests/perf/performance.spec.ts:230:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer
+LCP entry: {"startTime":384,"tag":"H1","className":"Hero_name__vovn8"}
+
+[1A[2K  3 failed
+    [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 
+    [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes 
+    [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05 
+  31 passed (6.2m)
+BATTERY_EXIT=1
+=== RERUN after holding the light inside the plate window ===
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts tests/overhaul/flagship-visibility.spec.ts tests/overhaul/scene-skills.spec.ts tests/monochrome/gold-semantics.spec.ts --workers=1 --reporter=line
+
+Running 41 tests using 1 worker
+
+[1A[2K[1/41] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+[1A[2K  1) [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 
+
+    Error: 2 text node(s) below AA — worst ten:
+    3.77:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(2) > p.Bench_bandLabel__rA2BG — "Repositories" fg rgb(125,125,125) on bg rgb(36,36,37) @ 11px/400
+    4.40:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(1) > p.Bench_bandLabel__rA2BG — "Programmes" fg rgb(125,125,125) on bg rgb(22,22,22) @ 11px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m2[39m
+
+      366 |         failures.length,
+      367 |         `${failures.length} text node(s) below AA — worst ten:\n${worstTen(failures)}`,
+    > 368 |       ).toBe(0);
+          |         ^
+      369 |     });
+      370 |   }
+      371 | });
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/a11y/text-contrast.spec.ts:368:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/error-context.md
+
+
+[1A[2K[2/41] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground
+[1A[2K[3/41] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes
+[1A[2K  2) [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes 
+
+    Error: 2 text node(s) below AA on ?gl=force — worst ten:
+    3.77:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(2) > p.Bench_bandLabel__rA2BG — "Repositories" fg rgb(125,125,125) on bg rgb(36,36,37) @ 11px/400
+    4.40:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(1) > p.Bench_bandLabel__rA2BG — "Programmes" fg rgb(125,125,125) on bg rgb(22,22,22) @ 11px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m2[39m
+
+      399 |         failures.length,
+      400 |         `${failures.length} text node(s) below AA on ?gl=force — worst ten:\n${worstTen(failures)}`,
+    > 401 |       ).toBe(0);
+          |         ^
+      402 |     });
+      403 |   }
+      404 | });
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/a11y/text-contrast.spec.ts:401:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-text-contrast-TC-CONT-4de2e-low-AA-over-the-live-scenes-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-text-contrast-TC-CONT-4de2e-low-AA-over-the-live-scenes-chromium/error-context.md
+
+
+[1A[2K[4/41] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes
+[1A[2K[5/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(246, 246, 246)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+
+[1A[2K[6/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[7/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[8/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[9/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[10/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:314:7 › C-08 / CC-10 — the calibration card spends gold once › GS-10: at most six elements paint saturated gold inside #skills at rest
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:314:7 › C-08 / CC-10 — the calibration card spends gold once › GS-10: at most six elements paint saturated gold inside #skills at rest
+
+=== GS-10 saturated gold inside #skills @1440 === 1
+
+[1A[2K  span.Skills_legendGlyph__ZFNcO Skills_measuredMark__VkK_a x=129 via color: rgb(201, 168, 76)
+
+[1A[2K[11/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:328:7 › C-08 / CC-10 — the calibration card spends gold once › GS-11: every gold mark in #skills sits on a licensed surface
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:328:7 › C-08 / CC-10 — the calibration card spends gold once › GS-11: every gold mark in #skills sits on a licensed surface
+
+=== GS-11 any-gold inside #skills @1440 === 15
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Skills_legendGlyph__ZFNcO Skills_measuredMark__VkK_a x=129 licensed=true via color: rgb(201, 168, 76)
+
+[1A[2K[12/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:346:7 › C-08 / CC-10 — the calibration card spends gold once › GS-12: the card carries one vertical run of gold, not two
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:346:7 › C-08 / CC-10 — the calibration card spends gold once › GS-12: the card carries one vertical run of gold, not two
+
+=== GS-12 gold columns === [[1088,14],[129,1]] → 1 run(s)
+
+[1A[2K[13/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:371:7 › C-08 / CC-10 — the calibration card spends gold once › GS-13: at rest the sourced strands are dim gold and the rest are grey
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:371:7 › C-08 / CC-10 — the calibration card spends gold once › GS-13: at rest the sourced strands are dim gold and the rest are grey
+
+=== GS-13 strands at rest === sourced=17 others=3 stops={"gold":[{"color":"rgb(201, 168, 76)","opacity":0.1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":0.1}],"grey":[{"color":"rgb(144, 144, 144)","opacity":0.08},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":0.08}]}
+
+[1A[2K  sourced stroke-opacity: 0.28
+
+[1A[2K  other  stroke-opacity: 0.35
+
+[1A[2K[14/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:423:7 › C-08 / CC-10 — the calibration card spends gold once › GS-14 (Motion F-6): hovering a capability lights its strands and recedes the rest
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:423:7 › C-08 / CC-10 — the calibration card spends gold once › GS-14 (Motion F-6): hovering a capability lights its strands and recedes the rest
+
+=== GS-14 stroke-opacity under hover === [1,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18]
+
+[1A[2K[15/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:449:9 › C-08 / CC-10 — the calibration card spends gold once › reduced motion › GS-15: under reduced motion the strand transition is colour only
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:449:9 › C-08 / CC-10 — the calibration card spends gold once › reduced motion › GS-15: under reduced motion the strand transition is colour only
+
+=== GS-15 reduced-motion strand transition === {"property":"stroke-opacity","animation":"none"}
+
+[1A[2K[16/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 1440x900 (desktop): every sourced About evidence line is painted in the gold token, legibly
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 1440x900 (desktop): every sourced About evidence line is painted in the gold token, legibly
+
+=== CC-A1 @ 1440x900 (desktop) — About evidence lines ===
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,23) = 7.99:1  "38 public repositories · ATO evidence harness · ANZ plat"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,20,24) = 8.04:1  "ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MY"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,23) = 7.99:1  "Australian Taxation Office, ANZ, NAB, Telstra"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,24) = 7.99:1  "Payday Super program · Agile Kookaburras squad · PI 47–4"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,23) = 7.99:1  "5+ squads, up to 40 practitioners onshore and offshore"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(21,21,24) = 7.97:1  "Currently on site with the ATO, Melbourne"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(18,19,21) = 8.13:1  "Langfuse + Phoenix evaluation stack · −38% simulated err"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(18,18,21) = 8.18:1  "75+ hours of evidence against 64 available — escalated, "
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(18,19,22) = 8.13:1  "aether-job-career-agent · unmeasured signals read "not m"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "Open to permanent and contract engagements"
+
+[1A[2K[17/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 390x844 (phone): every sourced About evidence line is painted in the gold token, legibly
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 390x844 (phone): every sourced About evidence line is painted in the gold token, legibly
+
+=== CC-A1 @ 390x844 (phone) — About evidence lines ===
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "38 public repositories · ATO evidence harness · ANZ plat"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MY"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "Australian Taxation Office, ANZ, NAB, Telstra"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(9,9,9) = 8.71:1  "Payday Super program · Agile Kookaburras squad · PI 47–4"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "5+ squads, up to 40 practitioners onshore and offshore"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(9,9,9) = 8.71:1  "Currently on site with the ATO, Melbourne"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "Langfuse + Phoenix evaluation stack · −38% simulated err"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "75+ hours of evidence against 64 available — escalated, "
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "aether-job-career-agent · unmeasured signals read "not m"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "Open to permanent and contract engagements"
+
+[1A[2K[18/41] [chromium] › tests/monochrome/gold-semantics.spec.ts:662:7 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A2: the About key hatch has zero chroma
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:662:7 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A2: the About key hatch has zero chroma
+
+=== CC-A2 role swatch === {"backgroundImage":"repeating-linear-gradient(45deg, rgba(144, 144, 144, 0.34) 0px, rgba(144, 144, 144, 0.34) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px)","backgroundColor":"rgba(0, 0, 0, 0)","borderTopColor":"rgb(184, 184, 184)"}
+
+[1A[2K[19/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 1440 — hero atmosphere reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 1440 — hero atmosphere reads as light
+[flagship-visibility] hero@1440: ground=0.0030 coverage=43.99% peak=0.8308 motion=0.01604 box=1440x900
+
+[1A[2K[20/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light
+[flagship-visibility] about@1440: ground=0.0030 coverage=47.01% peak=0.6584 motion=0.01746 box=384x384
+
+[1A[2K[21/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 1440 — experience strata reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 1440 — experience strata reads as light
+[flagship-visibility] experience@1440: ground=0.0030 coverage=25.80% peak=0.5841 motion=0.03374 box=1298x505
+
+[1A[2K[22/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light
+[flagship-visibility] skills@1440: ground=0.0030 coverage=40.74% peak=0.5210 motion=0.02457 box=1248x580
+
+[1A[2K[23/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 1440 — hero atmosphere fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 1440 — hero atmosphere fallback
+[flagship-visibility:still] hero@1440: ground=0.0030 coverage=17.06% peak=0.0931
+
+[1A[2K[24/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback
+[flagship-visibility:still] about@1440: ground=0.0030 coverage=35.40% peak=0.0805
+
+[1A[2K[25/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 1440 — experience strata fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 1440 — experience strata fallback
+[flagship-visibility:still] experience@1440: ground=0.0030 coverage=4.12% peak=0.1564
+
+[1A[2K[26/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback
+[flagship-visibility:still] skills@1440: ground=0.0030 coverage=40.30% peak=0.0865
+
+[1A[2K[27/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 390 — hero atmosphere reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 390 — hero atmosphere reads as light
+[flagship-visibility] hero@390: ground=0.0030 coverage=100.00% peak=0.8308 motion=0.03894 box=390x844
+
+[1A[2K[28/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light
+[flagship-visibility] about@390: ground=0.0030 coverage=45.54% peak=0.4183 motion=0.01298 box=224x224
+
+[1A[2K[29/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 390 — experience strata reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 390 — experience strata reads as light
+[flagship-visibility] experience@390: ground=0.0030 coverage=36.31% peak=0.8308 motion=0.03830 box=356x605
+
+[1A[2K[30/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light
+[flagship-visibility] skills@390: ground=0.0030 coverage=46.21% peak=0.5520 motion=0.00739 box=342x152
+
+[1A[2K[31/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 390 — hero atmosphere fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 390 — hero atmosphere fallback
+[flagship-visibility:still] hero@390: ground=0.0030 coverage=23.02% peak=0.2346
+
+[1A[2K[32/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback
+[flagship-visibility:still] about@390: ground=0.0030 coverage=36.08% peak=0.0807
+
+[1A[2K[33/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 390 — experience strata fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 390 — experience strata fallback
+[flagship-visibility:still] experience@390: ground=0.0030 coverage=4.14% peak=0.1592
+
+[1A[2K[34/41] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback
+[flagship-visibility:still] skills@390: ground=0.0030 coverage=68.99% peak=0.0908
+
+[1A[2K[35/41] [chromium] › tests/overhaul/scene-skills.spec.ts:85:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-01: exactly one canvas mounts behind the board once the section is in view
+[1A[2K[36/41] [chromium] › tests/overhaul/scene-skills.spec.ts:99:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-02: the canvas is aria-hidden, behind the board and never over the type
+[1A[2K[37/41] [chromium] › tests/overhaul/scene-skills.spec.ts:134:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-03: taking a node on the bench is the state the field is lit from
+[1A[2K[38/41] [chromium] › tests/overhaul/scene-skills.spec.ts:154:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-04: under reduced motion there is no canvas and the wire bench is whole
+[1A[2K[39/41] [chromium] › tests/overhaul/scene-skills.spec.ts:170:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-05: with WebGL unavailable the section is complete and silent
+[1A[2K[40/41] [chromium] › tests/overhaul/scene-skills.spec.ts:197:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-06: the field is monochrome, palette-sourced and cheap per pixel
+[1A[2K[41/41] [chromium] › tests/overhaul/scene-skills.spec.ts:236:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-07: three is fetched with the scene, not with the section
+[1A[2K  2 failed
+    [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 
+    [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes 
+  39 passed (5.9m)
+RERUN_EXIT=1
+=== RERUN 2: radial radii corrected to the plate window ===
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts tests/overhaul/flagship-visibility.spec.ts -g SKILLS|CONTRAST --workers=1 --reporter=line
+
+Running 8 tests using 1 worker
+
+[1A[2K[1/8] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+[1A[2K[2/8] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground
+[1A[2K[3/8] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes
+[1A[2K[4/8] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes
+[1A[2K[5/8] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light
+[flagship-visibility] skills@1440: ground=0.0030 coverage=38.80% peak=0.5841 motion=0.01988 box=1248x580
+
+[1A[2K[6/8] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback
+[flagship-visibility:still] skills@1440: ground=0.0030 coverage=32.78% peak=0.0953
+
+[1A[2K[7/8] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light
+[flagship-visibility] skills@390: ground=0.0030 coverage=46.21% peak=0.5271 motion=0.01442 box=342x152
+
+[1A[2K[8/8] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback
+[flagship-visibility:still] skills@390: ground=0.0030 coverage=68.99% peak=0.0908
+
+[1A[2K  8 passed (3.3m)
+RERUN2_EXIT=0
+=== RERUN 3: graticule thinned to a ruled bench (64px pitch, pow 60) ===
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-skills.spec.ts tests/a11y/text-contrast.spec.ts tests/overhaul/flagship-visibility.spec.ts tests/monochrome --workers=1 --reporter=line
+
+Running 50 tests using 1 worker
+
+[1A[2K[1/50] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+[1A[2K[2/50] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground
+[1A[2K[3/50] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes
+[1A[2K[4/50] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-skills.spec.ts tests/overhaul/flagship-visibility.spec.ts -g SKILLS|SCENE-SKILLS --workers=1 --reporter=line
+
+Running 11 tests using 1 worker
+
+[1A[2K[1/11] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light
+[flagship-visibility] skills@1440: ground=0.0030 coverage=34.77% peak=0.5271 motion=0.01602 box=1248x580
+
+[1A[2K[2/11] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback
+[flagship-visibility:still] skills@1440: ground=0.0030 coverage=32.78% peak=0.0953
+
+[1A[2K[3/11] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light
+[flagship-visibility] skills@390: ground=0.0030 coverage=44.32% peak=0.4910 motion=0.00741 box=342x152
+
+[1A[2K[4/11] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback
+[1A[2K[chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback
+[flagship-visibility:still] skills@390: ground=0.0030 coverage=68.99% peak=0.0908
+
+[1A[2K[5/11] [chromium] › tests/overhaul/scene-skills.spec.ts:85:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-01: exactly one canvas mounts behind the board once the section is in view
+[1A[2K[6/11] [chromium] › tests/overhaul/scene-skills.spec.ts:99:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-02: the canvas is aria-hidden, behind the board and never over the type
+[1A[2K[7/11] [chromium] › tests/overhaul/scene-skills.spec.ts:134:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-03: taking a node on the bench is the state the field is lit from
+[1A[2K[8/11] [chromium] › tests/overhaul/scene-skills.spec.ts:154:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-04: under reduced motion there is no canvas and the wire bench is whole
+[1A[2K[9/11] [chromium] › tests/overhaul/scene-skills.spec.ts:170:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-05: with WebGL unavailable the section is complete and silent
+[1A[2K[10/11] [chromium] › tests/overhaul/scene-skills.spec.ts:197:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-06: the field is monochrome, palette-sourced and cheap per pixel
+[1A[2K  1) [chromium] › tests/overhaul/scene-skills.spec.ts:197:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-06: the field is monochrome, palette-sourced and cheap per pixel 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: not [32m"gold"[39m
+    Received string:        [31m"[39m
+    [31m  precision highp float;[39m
+    [31m[39m
+    [31m  varying vec2 vuv;[39m
+    [31m[39m
+    [31m  uniform float utime;[39m
+    [31m  uniform vec2 uresolution;[39m
+    [31m  /** 0 → 1 as a node on either rail takes the reader's attention. */[39m
+    [31m  uniform float uhover;[39m
+    [31m  /** that node's height within the bench, 0 (top) → 1 (bottom). */[39m
+    [31m  uniform float uhovery;[39m
+    [31m  /** 0 → 1 over the mount ramp; back to 0 if the context is lost. */[39m
+    [31m  uniform float uintensity;[39m
+    [31m  uniform vec3 uink;[39m
+    [31m  uniform vec3 ulight;[39m
+    [31m[39m
+    [31m  const float tau = 6.283185307179586;[39m
+    [31m  /** graticule pitch, in device pixels. a ruled bench, not a drawing grid. */[39m
+    [31m  const float pitch = 64.0;[39m
+    [31m[39m
+    [31m  float hash(vec2 p) {[39m
+    [31m    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);[39m
+    [31m  }[39m
+    [31m[39m
+    [31m  float noise(vec2 p) {[39m
+    [31m    vec2 i = floor(p);[39m
+    [31m    vec2 f = fract(p);[39m
+    [31m    vec2 u = f * f * (3.0 - 2.0 * f);[39m
+    [31m    return mix([39m
+    [31m      mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), u.x),[39m
+    [31m      mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),[39m
+    [31m      u.y[39m
+    [31m    );[39m
+    [31m  }[39m
+    [31m[39m
+    [31m  void main() {[39m
+    [31m    vec2 p = vuv;[39m
+    [31m    // screen-space, so a hairline is a hairline at every width and the pitch[39m
+    [31m    // does not stretch with the box.[39m
+    [31m    vec2 px = vuv * uresolution;[39m
+    [31m[39m
+    [31m    // the plate. it stops well short of both rails — see the header — and dies[39m
+    [31m    // inside its own frame top and bottom, so the canvas rectangle is never a[39m
+    [31m    // faintly lighter box on the page.[39m
+    [31m    float across = smoothstep(0.22, 0.38, p.x) * smoothstep(0.78, 0.62, p.x);[39m
+    [31m    float down = smoothstep(-0.02, 0.17, p.y) * smoothstep(1.02, 0.83, p.y);[39m
+    [31m    float plate = across * down;[39m
+    [31m[39m
+    [31m    // three lookups, and no more. one slow wash so the plate is not a flat[39m
+    [31m    // panel; one drift along it so the light has a length; one very low[39m
+    [31m    // frequency variation so the two never beat against each other.[39m
+    [31m    float wash = noise(vec2(p.x * 2.3, p.y * 1.9 - utime * 0.06));[39m
+    [31m    float drift = noise(vec2(p.x * 0.9 + utime * 0.045, p.y * 1.2));[39m
+    [31m    float slow = noise(vec2(p.y * 0.7, utime * 0.031));[39m
+    [31m[39m
+    [31m    // the graticule: hairlines ruled both ways, raised to a power so each is a[39m
+    [31m    // line rather than a wave. this is what makes the field a measuring surface[39m
+    [31m    // instead of a glow.[39m
+    [31m    //[39m
+    [31m    // the first draft ruled at a 38 px pitch to the 20th power and the section[39m
+    [31m    // came back as a lightbox mesh: ~24% of the plate was line, the squares[39m
+    [31m    // read as the subject, and the [7mgold[27m on the production wires — the one thing[39m
+    [31m    // in the section allowed to be an accent — was competing with a backdrop.[39m
+    [31m    // 64 px to the 60th is a quarter the line area at the same peak, because a[39m
+    [31m    // crossing still saturates. a bench is ruled; it is not a grid.[39m
+    [31m    float gx = pow(0.5 + 0.5 * cos(px.x * tau / pitch), 60.0);[39m
+    [31m    float gy = pow(0.5 + 0.5 * cos(px.y * tau / pitch), 60.0);[39m
+    [31m    float graticule = clamp(gx + gy, 0.0, 1.0);[39m
+    [31m[39m
+    [31m    // the reader's own row. where a node is taken, the rule at its height comes[39m
+    [31m    // up — the bench lighting along the wires being traced.[39m
+    [31m    float row = exp(-pow((p.y - uhovery) / 0.10, 2.0)) * clamp(uhover, 0.0, 1.0);[39m
+    [31m[39m
+    [31m    // the entry pulse: one wavefront down the plate, carried by the mount ramp[39m
+    [31m    // so it costs no uniform and cannot drift from the fade-in.[39m
+    [31m    float phase = clamp(uintensity, 0.0, 1.0);[39m
+    [31m    float pulse = exp(-pow((p.y - phase) * 3.2, 2.0)) * (1.0 - phase);[39m
+    [31m[39m
+    [31m    // a slow breath travelling across the plate, so a bench nobody is touching[39m
+    [31m    // is still alive. it is the term the motion floor is met by at rest, and it[39m
+    [31m    // is carried by both the plate and its rules rather than by the rules[39m
+    [31m    // alone: a graticule is a quarter of the lit pixels, so a breath confined[39m
+    [31m    // to it moved a quarter of the frame and the measured mean |dl| sat on the[39m
+    [31m    // floor rather than above it.[39m
+    [31m    float breath = 0.5 + 0.5 * sin(p.x * 2.1 - utime * 0.9);[39m
+    [31m[39m
+    [31m    // the plate reads at roughly a third of the ink's own weight: below that[39m
+    [31m    // the coverage floor (15% of the slot at +0.06 relative luminance over the[39m
+    [31m    // section's own ground, which lands around 45/255 grey) is met only on the[39m
+    [31m    // graticule, and a bench whose only visible structure is its ruling is a[39m
+    [31m    // grid, not a lit surface. the mask still stops the plate well short of[39m
+    [31m    // both rails of type.[39m
+    [31m    float base = plate * (0.32 + 0.12 * wash) * (0.86 + 0.18 * drift + 0.12 * breath);[39m
+    [31m    float rules = plate * graticule * (0.30 + 0.24 * breath + 0.34 * row + 0.14 * slow);[39m
+    [31m[39m
+    [31m    float luma = base + rules + plate * (0.34 * pulse + 0.22 * row);[39m
+    [31m[39m
+    [31m    // grain, from the cheap hash rather than a fourth noise lookup.[39m
+    [31m    luma += (hash(vuv * uresolution + fract(utime)) - 0.5) * 0.012;[39m
+    [31m    luma = clamp(luma, 0.0, 1.0);[39m
+    [31m[39m
+    [31m    // light only, and the light carried by alpha alone — the mistake that cost[39m
+    [31m    // aboutfield its visibility the first time was ramping the colour toward[39m
+    [31m    // white *and* setting alpha to the same figure, which paints a fraction of[39m
+    [31m    // a fraction. where the field is dark it paints nothing at all and the[39m
+    [31m    // section's ground shows through undisturbed.[39m
+    [31m    gl_fragcolor = vec4(ulight, luma * clamp(uintensity, 0.0, 1.0));[39m
+    [31m[39m
+    [31m    // uink participates in no branch above; it is kept in the signature because[39m
+    [31m    // every scene on this site takes its two colours from lib/palette.ts and a[39m
+    [31m    // field that quietly stopped reading one of them would be the first place a[39m
+    [31m    // palette drift could hide.[39m
+    [31m    gl_fragcolor.rgb = mix(uink, gl_fragcolor.rgb, clamp(luma * 4.0, 0.0, 1.0));[39m
+    [31m  }[39m
+    [31m"[39m
+
+      207 |     expect(programs.length, 'the two shader programs were not found in bench.glsl.ts').toBe(2);
+      208 |     for (const program of programs) {
+    > 209 |       expect(program.toLowerCase()).not.toContain('gold');
+          |                                         ^
+      210 |     }
+      211 |     expect(component.toLowerCase()).not.toContain('gold');
+      212 |
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/scene-skills.spec.ts:209:41
+
+
+[1A[2K[11/11] [chromium] › tests/overhaul/scene-skills.spec.ts:236:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-07: three is fetched with the scene, not with the section
+[1A[2K  1 failed
+    [chromium] › tests/overhaul/scene-skills.spec.ts:197:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-06: the field is monochrome, palette-sourced and cheap per pixel 
+  10 passed (59.5s)
+RERUN3a_EXIT=1
+=== RERUN 4b: text-contrast + monochrome (gold-semantics) ===
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts tests/monochrome --workers=1 --reporter=line
+
+Running 27 tests using 1 worker
+
+[1A[2K[1/27] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+[1A[2K[2/27] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground
+[1A[2K[3/27] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes
+[1A[2K[4/27] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes
+[1A[2K[5/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(246, 246, 246)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+
+[1A[2K[6/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[7/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[8/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[9/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[10/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:314:7 › C-08 / CC-10 — the calibration card spends gold once › GS-10: at most six elements paint saturated gold inside #skills at rest
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:314:7 › C-08 / CC-10 — the calibration card spends gold once › GS-10: at most six elements paint saturated gold inside #skills at rest
+
+=== GS-10 saturated gold inside #skills @1440 === 1
+
+[1A[2K  span.Skills_legendGlyph__ZFNcO Skills_measuredMark__VkK_a x=129 via color: rgb(201, 168, 76)
+
+[1A[2K[11/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:328:7 › C-08 / CC-10 — the calibration card spends gold once › GS-11: every gold mark in #skills sits on a licensed surface
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:328:7 › C-08 / CC-10 — the calibration card spends gold once › GS-11: every gold mark in #skills sits on a licensed surface
+
+=== GS-11 any-gold inside #skills @1440 === 15
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Skills_legendGlyph__ZFNcO Skills_measuredMark__VkK_a x=129 licensed=true via color: rgb(201, 168, 76)
+
+[1A[2K[12/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:346:7 › C-08 / CC-10 — the calibration card spends gold once › GS-12: the card carries one vertical run of gold, not two
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:346:7 › C-08 / CC-10 — the calibration card spends gold once › GS-12: the card carries one vertical run of gold, not two
+
+=== GS-12 gold columns === [[1088,14],[129,1]] → 1 run(s)
+
+[1A[2K[13/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:371:7 › C-08 / CC-10 — the calibration card spends gold once › GS-13: at rest the sourced strands are dim gold and the rest are grey
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:371:7 › C-08 / CC-10 — the calibration card spends gold once › GS-13: at rest the sourced strands are dim gold and the rest are grey
+
+=== GS-13 strands at rest === sourced=17 others=3 stops={"gold":[{"color":"rgb(201, 168, 76)","opacity":0.1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":0.1}],"grey":[{"color":"rgb(144, 144, 144)","opacity":0.08},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":0.08}]}
+
+[1A[2K  sourced stroke-opacity: 0.28
+
+[1A[2K  other  stroke-opacity: 0.35
+
+[1A[2K[14/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:423:7 › C-08 / CC-10 — the calibration card spends gold once › GS-14 (Motion F-6): hovering a capability lights its strands and recedes the rest
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:423:7 › C-08 / CC-10 — the calibration card spends gold once › GS-14 (Motion F-6): hovering a capability lights its strands and recedes the rest
+
+=== GS-14 stroke-opacity under hover === [1,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18]
+
+[1A[2K[15/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:449:9 › C-08 / CC-10 — the calibration card spends gold once › reduced motion › GS-15: under reduced motion the strand transition is colour only
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:449:9 › C-08 / CC-10 — the calibration card spends gold once › reduced motion › GS-15: under reduced motion the strand transition is colour only
+
+=== GS-15 reduced-motion strand transition === {"property":"stroke-opacity","animation":"none"}
+
+[1A[2K[16/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 1440x900 (desktop): every sourced About evidence line is painted in the gold token, legibly
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 1440x900 (desktop): every sourced About evidence line is painted in the gold token, legibly
+
+=== CC-A1 @ 1440x900 (desktop) — About evidence lines ===
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,23) = 7.99:1  "38 public repositories · ATO evidence harness · ANZ plat"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,20,24) = 8.04:1  "ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MY"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,23) = 7.99:1  "Australian Taxation Office, ANZ, NAB, Telstra"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,24) = 7.99:1  "Payday Super program · Agile Kookaburras squad · PI 47–4"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,23) = 7.99:1  "5+ squads, up to 40 practitioners onshore and offshore"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(21,21,24) = 7.97:1  "Currently on site with the ATO, Melbourne"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(18,19,21) = 8.13:1  "Langfuse + Phoenix evaluation stack · −38% simulated err"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(18,18,21) = 8.18:1  "75+ hours of evidence against 64 available — escalated, "
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(18,19,22) = 8.13:1  "aether-job-career-agent · unmeasured signals read "not m"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "Open to permanent and contract engagements"
+
+[1A[2K[17/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 390x844 (phone): every sourced About evidence line is painted in the gold token, legibly
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 390x844 (phone): every sourced About evidence line is painted in the gold token, legibly
+
+=== CC-A1 @ 390x844 (phone) — About evidence lines ===
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "38 public repositories · ATO evidence harness · ANZ plat"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MY"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "Australian Taxation Office, ANZ, NAB, Telstra"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(9,9,9) = 8.71:1  "Payday Super program · Agile Kookaburras squad · PI 47–4"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "5+ squads, up to 40 practitioners onshore and offshore"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(9,9,9) = 8.71:1  "Currently on site with the ATO, Melbourne"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "Langfuse + Phoenix evaluation stack · −38% simulated err"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "75+ hours of evidence against 64 available — escalated, "
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "aether-job-career-agent · unmeasured signals read "not m"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "Open to permanent and contract engagements"
+
+[1A[2K[18/27] [chromium] › tests/monochrome/gold-semantics.spec.ts:662:7 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A2: the About key hatch has zero chroma
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:662:7 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A2: the About key hatch has zero chroma
+
+=== CC-A2 role swatch === {"backgroundImage":"repeating-linear-gradient(45deg, rgba(144, 144, 144, 0.34) 0px, rgba(144, 144, 144, 0.34) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px)","backgroundColor":"rgba(0, 0, 0, 0)","borderTopColor":"rgb(184, 184, 184)"}
+
+[1A[2K[19/27] [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold
+[1A[2K[20/27] [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold
+[1A[2K[21/27] [chromium] › tests/monochrome/monochrome.spec.ts:118:7 › Monochrome Compliance › MONO-01: :root publishes the grey ramp and exactly the four sanctioned gold tokens
+[1A[2K[22/27] [chromium] › tests/monochrome/monochrome.spec.ts:146:7 › Monochrome Compliance › MONO-02: Body background is achromatic
+[1A[2K[23/27] [chromium] › tests/monochrome/monochrome.spec.ts:153:7 › Monochrome Compliance › MONO-03: No inline style declares a colour outside the palette
+[1A[2K[24/27] [chromium] › tests/monochrome/monochrome.spec.ts:207:7 › Monochrome Compliance › MONO-04: Every rendered colour in every section is achromatic or the sanctioned gold
+[1A[2K[25/27] [chromium] › tests/monochrome/monochrome.spec.ts:218:7 › Monochrome Compliance › MONO-05: The sanctioned accent is actually in use, and only as the accent
+[1A[2K[26/27] [chromium] › tests/monochrome/monochrome.spec.ts:244:7 › Monochrome Compliance › MONO-06: Navigation overlay is achromatic when open
+[1A[2K[27/27] [chromium] › tests/monochrome/monochrome.spec.ts:252:7 › Monochrome Compliance › MONO-07: The check still rejects an unsanctioned hue
+[1A[2K  27 passed (4.4m)
+RERUN4b_EXIT=0
+=== FINAL: tsc / lint / audit ===
+TSC_EXIT=1
+
+✔ No ESLint warnings or errors
+
+  📄 JSON report → reports/static-audit.json
+
+TSC_REAL_EXIT=0 (0 = clean)
+  RESULT: ALL PASS (10/10)
