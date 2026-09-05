@@ -125,6 +125,28 @@
     background-repeat: no-repeat, no-repeat, repeat;
 }
 
+/* The foot of the slot, over the canvas. `.openNote` (`--mist-400`) and the
+   axis sit in the last fifth of the chart, and the shader is brightest exactly
+   there — `fade` runs to its maximum at the bottom of the frame. Photographed
+   at ?gl=force the note was grey on lit sediment. This paints after the canvas
+   and below the tracks (z-index 1 on `.trackField` and `.axis`), so it costs
+   the strata their least interesting region and buys the note its ground back.
+   The bright band of the reduced-motion still sits at 4–10% and is untouched. */
+.chartScene::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+        180deg,
+        transparent 0 74%,
+        rgb(10 10 10 / 0.55) 84%,
+        rgb(10 10 10 / 0.86) 94%,
+        rgb(10 10 10 / 0.86) 100%
+    );
+}
+
 /* The year gridlines. Drawn once behind every track rather than per row, so a
    bar's position can be read against a year without tracing four hundred
    pixels down to the axis. `--grid-*` are the same fractions the axis labels

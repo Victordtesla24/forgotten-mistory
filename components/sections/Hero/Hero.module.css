@@ -128,6 +128,35 @@
         linear-gradient(180deg, var(--ink-900) 0%, var(--ink-800) 58%, var(--ink-900) 100%);
 }
 
+/* The scrim again, this time over the canvas rather than under it.
+   `.stage`'s own background is *below* the canvas, so it protects the reading
+   column only on the no-GL path; a visitor with a GPU gets the shader, and the
+   shader's fog is near-white — photographed at 1440 with ?gl=force the frame is
+   96.55% lit and `.statement` is grey on milk. `::after` paints after the
+   canvas and before `.inner` (z-index 1, a sibling above `.stage`), so one
+   layer covers both paths.
+
+   0.88 is not a taste decision: over the brightest fog this shader produces
+   (0.8308 relative luminance, about `#ECECEC`) it lands the ground on
+   `#252525`, which is where `--mist-400` still clears AA at 4.8:1. It is
+   transparent past 66% so the pool, the portrait plate and the light the
+   flagship-visibility gate measures are all untouched — the frame keeps its
+   bright side, and the copy gets its dark one. */
+.stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+        90deg,
+        rgb(10 10 10 / 0.88) 0%,
+        rgb(10 10 10 / 0.86) 44%,
+        rgb(10 10 10 / 0.45) 56%,
+        transparent 66%
+    );
+}
+
 /* At 390 the column is the whole frame: there is no right-hand third to give
    the light, because the copy is standing in it. So the scrim covers the frame
    instead of a side of it, and the still keeps its structure as a grading
@@ -135,6 +164,10 @@
    clears at 6.1:1. The shader path is unaffected: the canvas fills `.stage`
    and draws over all of this. */
 @media (max-width: 700px) {
+    .stage::after {
+        background: linear-gradient(90deg, rgb(10 10 10 / 0.86), rgb(10 10 10 / 0.86));
+    }
+
     .stage {
         background:
             linear-gradient(90deg, rgb(10 10 10 / 0.72), rgb(10 10 10 / 0.72)),
