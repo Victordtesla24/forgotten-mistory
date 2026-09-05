@@ -1,0 +1,95 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/listen.spec.ts tests/e2e/about.spec.ts tests/e2e/audience-paths.spec.ts tests/content
+
+[2mRunning [22m88[2m tests using [22m2[2m workers[22m
+
+  [32m✓[39m  [2m 1 [22m[chromium] › tests/content/content-check.spec.ts:43:7 › Content Preservation › CT-01: Hero name from hero.ts appears verbatim[2m (3.5s)[22m
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/content/content-check.spec.ts:48:7 › Content Preservation › CT-02: Hero positioning line appears verbatim[2m (3.4s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/content/content-check.spec.ts:55:7 › Content Preservation › CT-03: Hero statement states a tenure and names the current engagement[2m (1.5s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/content/content-check.spec.ts:74:7 › Content Preservation › CT-05: About carries the career facts[2m (2.1s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/content/content-check.spec.ts:87:7 › Content Preservation › CT-04: Every employer on the CV is named in the experience timeline[2m (4.0s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/content/content-check.spec.ts:106:7 › Content Preservation › CT-06: All six curated repositories render as plates with real GitHub links[2m (3.5s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/content/content-check.spec.ts:126:7 › Content Preservation › CT-07: The Vedic-astronomy work survives the rebuild as a vitrine plate[2m (3.7s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/content/content-check.spec.ts:139:7 › Content Preservation › CT-08: Credentials and the un-held certification both appear in the calibration table[2m (4.5s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/content/content-check.spec.ts:161:7 › Content Preservation › CT-09: Contact channels from siteContent appear verbatim in the closing section[2m (4.0s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/content/content-check.spec.ts:180:7 › Content Preservation › CT-10: Every hero figure is printed with the source it came from[2m (3.3s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/content/content-check.spec.ts:222:7 › Content Preservation › CT-11: GitHub and LinkedIn are linked from the closing section[2m (2.2s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/content/content-check.spec.ts:240:7 › Content Preservation › CT-15: LinkedIn (primary recruiter channel) is linked from the persistent navigation[2m (1.9s)[22m
+  [32m✓[39m  [2m14 [22m[chromium] › tests/content/content-check.spec.ts:263:7 › Content Preservation › CT-17: MiniVic availability default and hiring copy keep active-intent ATO wording[2m (10ms)[22m
+  [32m✓[39m  [2m15 [22m[chromium] › tests/content/content-check.spec.ts:308:7 › Content Preservation › CT-11: every tenure claim on the page carries its evidence[2m (4.3s)[22m
+  [32m✓[39m  [2m16 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:48:7 › MiniVic brain — direct-Gemini tier removed › KB-01: no lib/ source calls generativelanguage.googleapis.com[2m (3ms)[22m
+  [32m✓[39m  [2m17 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:55:7 › MiniVic brain — direct-Gemini tier removed › KB-02: no lib/ source reads a NEXT_PUBLIC_GEMINI_* env var[2m (3ms)[22m
+  [32m✓[39m  [2m18 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:62:7 › MiniVic brain — direct-Gemini tier removed › KB-03: the removed Gemini machinery is absent from miniVicBrain[2m (16ms)[22m
+  [32m✓[39m  [2m19 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:78:7 › MiniVic brain — direct-Gemini tier removed › KB-04: BrainSource is exactly openrouter | knowledge | fallback[2m (6ms)[22m
+  [32m✓[39m  [2m20 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "how many years of experience do you have" is answered offline by "years-of-experience"[2m (3ms)[22m
+  [32m✓[39m  [2m21 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "years of experience" is answered offline by "years-of-experience"[2m (9ms)[22m
+  [32m✓[39m  [2m22 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "how long have you been working" is answered offline by "years-of-experience"[2m (2ms)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/content/content-check.spec.ts:249:7 › Content Preservation › CT-14: MiniVicBot mounts from the layout without throwing[2m (4.9s)[22m
+  [32m✓[39m  [2m23 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your seniority level" is answered offline by "years-of-experience"[2m (5ms)[22m
+  [32m✓[39m  [2m24 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "list your certifications with dates" is answered offline by "certifications"[2m (3ms)[22m
+  [32m✓[39m  [2m25 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what certifications do you hold" is answered offline by "certifications"[2m (8ms)[22m
+  [32m✓[39m  [2m26 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "when did you get your CSM" is answered offline by "certifications"[2m (2ms)[22m
+  [32m✓[39m  [2m28 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what technologies do you use for AI" is answered offline by "tech-stack"[2m (1ms)[22m
+  [32m✓[39m  [2m27 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what accreditations do you have" is answered offline by "certifications"[2m (4ms)[22m
+  [32m✓[39m  [2m29 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your tech stack" is answered offline by "tech-stack"[2m (3ms)[22m
+  [32m✓[39m  [2m30 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you know python" is answered offline by "tech-stack"[2m (3ms)[22m
+  [32m✓[39m  [2m31 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you know kubernetes" is answered offline by "tech-stack"[2m (5ms)[22m
+  [32m✓[39m  [2m32 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "can you start immediately" is answered offline by "availability"[2m (2ms)[22m
+  [32m✓[39m  [2m33 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your availability" is answered offline by "availability"[2m (6ms)[22m
+  [32m✓[39m  [2m34 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "where are you located" is answered offline by "location-remote"[2m (4ms)[22m
+  [32m✓[39m  [2m35 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you work remotely" is answered offline by "location-remote"[2m (4ms)[22m
+  [32m✓[39m  [2m36 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "are you open to relocating" is answered offline by "location-remote"[2m (3ms)[22m
+  [32m✓[39m  [2m37 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your linkedin" is answered offline by "contact"[2m (4ms)[22m
+  [32m✓[39m  [2m38 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "linkedin profile" is answered offline by "contact"[2m (4ms)[22m
+  [32m✓[39m  [2m40 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your github" is answered offline by "contact"[2m (2ms)[22m
+  [32m✓[39m  [2m39 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "send me your resume" is answered offline by "resume-cv"[2m (3ms)[22m
+  [32m✓[39m  [2m41 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "can I download your CV" is answered offline by "resume-cv"[2m (5ms)[22m
+  [32m✓[39m  [2m42 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "give me three quantified outcomes" is answered offline by "delivery-metrics"[2m (3ms)[22m
+  [32m✓[39m  [2m44 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what results have you delivered" is answered offline by "delivery-metrics"[2m (2ms)[22m
+  [32m✓[39m  [2m43 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what are your top achievements with numbers" is answered offline by "delivery-metrics"[2m (4ms)[22m
+  [32m✓[39m  [2m45 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "tell me about yourself" is answered offline by "profile-summary"[2m (3ms)[22m
+  [32m✓[39m  [2m46 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "who are you" is answered offline by "profile-summary"[2m (2ms)[22m
+  [32m✓[39m  [2m47 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what industries have you worked in" is answered offline by "industries-sectors"[2m (1ms)[22m
+  [32m✓[39m  [2m48 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "summarise your experience" is answered offline by "profile-summary"[2m (2ms)[22m
+  [32m✓[39m  [2m49 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "have you worked in government" is answered offline by "industries-sectors"[2m (2ms)[22m
+  [32m✓[39m  [2m50 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "have you managed budgets" is answered offline by "leadership"[2m (2ms)[22m
+  [32m✓[39m  [2m51 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "how big were the teams you led" is answered offline by "leadership"[2m (2ms)[22m
+  [32m✓[39m  [2m53 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "are you an australian citizen" is answered offline by "work-rights"[2m (2ms)[22m
+  [32m✓[39m  [2m52 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you have a visa" is answered offline by "work-rights"[2m (5ms)[22m
+  [32m✓[39m  [2m54 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "tell me about ANZ" is answered offline by "anz-experience"[2m (2ms)[22m
+  [32m✓[39m  [2m55 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you have banking experience" is answered offline by "banking-financial-services"[2m (4ms)[22m
+  [32m✓[39m  [2m56 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "did you work at microsoft" is answered offline by "early-career"[2m (1ms)[22m
+  [32m✓[39m  [2m57 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:150:7 › MiniVic offline knowledge base — recruiter coverage › KB-05: the offline corpus carries the load-bearing recruiter facts[2m (1ms)[22m
+  [32m✓[39m  [2m58 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:185:7 › MiniVic offline knowledge base — recruiter coverage › KB-06: no knowledge-base answer still claims a Gemini-powered brain[2m (2ms)[22m
+  [32m✓[39m  [2m59 [22m[chromium] › tests/content/minivic-knowledge.spec.ts:194:7 › MiniVic offline knowledge base — recruiter coverage › KB-07: entry ids are unique[2m (1ms)[22m
+  [32m✓[39m  [2m60 [22m[chromium] › tests/e2e/about.spec.ts:39:7 › About › TC-ABOUT-01: all ten dimensions render, in the engine’s own order[2m (2.1s)[22m
+  [32m✓[39m  [2m61 [22m[chromium] › tests/e2e/about.spec.ts:47:7 › About › TC-ABOUT-02: every dimension carries an answer and its evidence[2m (3.2s)[22m
+  [32m✓[39m  [2m62 [22m[chromium] › tests/e2e/about.spec.ts:60:7 › About › TC-ABOUT-03: no dimension is given a score[2m (4.3s)[22m
+  [32m✓[39m  [2m63 [22m[chromium] › tests/e2e/about.spec.ts:79:7 › About › TC-ABOUT-04: the dimensions name their source[2m (4.2s)[22m
+  [32m✓[39m  [2m64 [22m[chromium] › tests/e2e/about.spec.ts:85:7 › About › TC-ABOUT-05: job-side dimensions are labelled as such[2m (4.1s)[22m
+  [32m✓[39m  [2m65 [22m[chromium] › tests/e2e/about.spec.ts:98:7 › About › TC-ABOUT-06: the ten items are reading aids, not tab stops[2m (4.4s)[22m
+  [32m✓[39m  [2m66 [22m[chromium] › tests/e2e/about.spec.ts:152:7 › About › TC-ABOUT-07: the section is complete without WebGL[2m (2.2s)[22m
+  [32m✓[39m  [2m67 [22m[chromium] › tests/e2e/about.spec.ts:191:7 › About › TC-ABOUT-08: the compass turns as the reader scrolls — item 6 centred reads 06 / FROM THE ROLE[2m (4.9s)[22m
+  [32m✓[39m  [2m68 [22m[chromium] › tests/e2e/about.spec.ts:215:7 › About › TC-ABOUT-09: hover overrides the scroll index, and leaving the list hands it back[2m (6.2s)[22m
+  [32m✓[39m  [2m69 [22m[chromium] › tests/e2e/about.spec.ts:234:7 › About › TC-ABOUT-10: on first entry the bezel sweeps once — 1160 ms, emphasised ease, never again[2m (5.2s)[22m
+  [32m✓[39m  [2m70 [22m[chromium] › tests/e2e/about.spec.ts:277:7 › About › TC-ABOUT-11: under reduced motion the index snaps — no sweep, no travel, still swept[2m (5.6s)[22m
+  [32m✓[39m  [2m71 [22m[chromium] › tests/e2e/about.spec.ts:305:7 › About › TC-ABOUT-12: no gold on the face — the active sector, its numeral and the ring stay achromatic[2m (5.0s)[22m
+  [32m✓[39m  [2m72 [22m[chromium] › tests/e2e/about.spec.ts:345:7 › About › TC-ABOUT-13: at 1440 the dial and the first dimension share a baseline[2m (8.7s)[22m
+  [32m✓[39m  [2m73 [22m[chromium] › tests/e2e/audience-paths.spec.ts:51:7 › Audience paths › AP-01: the employer reaches the CV in two clicks or fewer, at 1440 and 390[2m (7.3s)[22m
+  [32m✓[39m  [2m75 [22m[chromium] › tests/e2e/audience-paths.spec.ts:111:7 › Audience paths › AP-03: the CV the control points at is a real PDF the server returns[2m (60ms)[22m
+  [32m✓[39m  [2m74 [22m[chromium] › tests/e2e/audience-paths.spec.ts:80:7 › Audience paths › AP-02: the CV control is reachable with the keyboard alone[2m (4.6s)[22m
+  [32m✓[39m  [2m76 [22m[chromium] › tests/e2e/audience-paths.spec.ts:122:7 › Audience paths › AP-04: #listen carries exactly one engagement action, named for a client[2m (6.4s)[22m
+  [32m✓[39m  [2m77 [22m[chromium] › tests/e2e/audience-paths.spec.ts:150:7 › Audience paths › AP-05: activating the engagement action completes — a live URL, or a mailto with a subject[2m (2.6s)[22m
+  [32m✓[39m  [2m78 [22m[chromium] › tests/e2e/listen.spec.ts:22:7 › Listen › TC-LISTEN-01: the closing sentence is the only italic on the page[2m (3.7s)[22m
+  [32m✓[39m  [2m79 [22m[chromium] › tests/e2e/listen.spec.ts:32:7 › Listen › TC-LISTEN-02: the closing copy stays under sixty-five words[2m (3.5s)[22m
+  [32m✓[39m  [2m80 [22m[chromium] › tests/e2e/listen.spec.ts:48:7 › Listen › TC-LISTEN-03: no form, no input, no third-party embed[2m (3.7s)[22m
+  [32m✓[39m  [2m81 [22m[chromium] › tests/e2e/listen.spec.ts:54:7 › Listen › TC-LISTEN-04: all four channels are real anchors matching the CV[2m (3.5s)[22m
+  [32m✓[39m  [2m82 [22m[chromium] › tests/e2e/listen.spec.ts:65:7 › Listen › TC-LISTEN-05: hover and focus produce the identical underline[2m (4.2s)[22m
+  [32m✓[39m  [2m83 [22m[chromium] › tests/e2e/listen.spec.ts:99:7 › Listen › TC-LISTEN-06: the caliper closes once, on entry, over the long cinematic beat[2m (5.4s)[22m
+  [32m✓[39m  [2m85 [22m[chromium] › tests/e2e/listen.spec.ts:183:7 › Listen › TC-LISTEN-08: nothing in the closing section is gold[2m (2.5s)[22m
+  [32m✓[39m  [2m84 [22m[chromium] › tests/e2e/listen.spec.ts:145:7 › Listen › TC-LISTEN-07: under reduced motion the caliper is drawn closed and nothing moves[2m (6.1s)[22m
+  [32m✓[39m  [2m87 [22m[chromium] › tests/e2e/listen.spec.ts:269:7 › Listen › TC-LISTEN-10: the routes span the column and the email is a filled plate[2m (3.3s)[22m
+  [32m✓[39m  [2m86 [22m[chromium] › tests/e2e/listen.spec.ts:218:7 › Listen › TC-LISTEN-09: the contact routes are read-weight type, not caption grey[2m (5.8s)[22m
+  [32m✓[39m  [2m88 [22m[chromium] › tests/e2e/listen.spec.ts:320:7 › Listen › TC-LISTEN-11: the closing section is vertically symmetric at every width[2m (4.3s)[22m
+
+[32m  88 passed[39m[2m (1.6m)[22m
