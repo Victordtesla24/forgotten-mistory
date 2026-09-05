@@ -40,3 +40,6 @@ ADD (reviewer 62e1e10): (a) p.Experience_openNote at 390 on /?gl=force measures 
 
 ## STATUS (2026-09-05T13:04:41.179Z)
 running — dispatched 13:04Z — analyst-programmer in the paused worktree wf_38db9d7d-ce3-1, port 5613; RECTIFY push rule (tsc/lint/build/audit gate, battery in parallel)
+
+## COMPLETE (2026-09-05T13:29:44.437Z)
+LANE COMPLETE 87c9667 (live a3edeff4 13:20Z) + evidence 0df240f: CLS root cause = app/loading.tsx styled-jsx rules never shipped in the static export → fallback 24 px tall, footer painted inside the fold then travelled ~11,600 px (single layout-shift entry, source footer.Footer_footer) → rules moved into globals.css → CLS 0.0000 / 0 entries at 1440, 1280, 390 on an unskipped boot under 6× throttle (was 0.156 / 0.176 / 0.256); TC-SKEW-02 3/3 (GLCanvas pre-flights a context on a detached canvas, one console.error per scene, nothing swallowed); PERF-03/03b + TC-HERO-15 3/3 under 2 workers; openNote on an --ink-900 plate → 6.20:1 on both paths (TC-CONTRAST-02 pin 4.6 with a liveness guard, self-caught regex bug fixed); removed the orphan MiniVicBot block that 735ea66's branch-wins merge had reinstated (6 tsc errors on main). 21 passed --repeat-each=3.
