@@ -1048,8 +1048,27 @@ const MiniVicBot = () => {
                 closed, `Scene` mounts nothing and the plate is exactly what it
                 has always been — the stage is an enhancement, never the
                 content. The refs are handed over read-only: the viseme stream
-                and the 2D mouth below are untouched (D8). */}
-            <Scene className="absolute inset-0 pointer-events-none" sceneId="minivic-viseme">
+                and the 2D mouth below are untouched (D8).
+
+                `priority` is not a shortcut here, it is the only way this scene
+                can ever mount. `Scene`'s settle gate waits for `window.load`
+                *and then* one `requestIdleCallback`, and this slot does not
+                exist until a visitor has opened the panel — at which point the
+                avatar video, the audio graph and the mouth's own rAF loop are
+                all running and the main thread never goes idle again. Measured
+                on the static export at `?gl=force`: `requestIdleCallback` did
+                not fire within 6 s of the panel opening, so the slot stayed
+                empty forever while the six section scenes (which mount before
+                the panel exists) were live. The gate it relaxes is an LCP
+                protection for the first paint (D3), and a scene that cannot
+                exist until a deliberate click, long after hydration, is past
+                that window by construction. Capability, reduced motion and
+                proximity are all still enforced. */}
+            <Scene
+              className="absolute inset-0 pointer-events-none"
+              sceneId="minivic-viseme"
+              priority
+            >
               <VisemeStage
                 currentViseme={currentVisemeRef}
                 targetViseme={targetVisemeRef}

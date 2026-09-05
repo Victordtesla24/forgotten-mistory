@@ -1,0 +1,123 @@
+[
+  {
+    "slug": "t_x1_10-hyperframes-render-pipeline",
+    "title": "HyperFrames render pipeline — the hero overture rendered at 3840x2160@60 on this VPS, zero credits",
+    "assignee": "analyst-programmer",
+    "priority": 93,
+    "parents": [],
+    "summary": "R2 names HyperFrames and `grep -i hyperframes package.json` still returns 0 (F1, re-checked on live b0d41a20). Re-validated preconditions this session: node -v = v22.23.1 (README requires >= 22), which ffmpeg = /usr/bin/ffmpeg, which google-chrome = /usr/bin/google-chrome — the zero-credit path is open and needs no Higgsfield call (D4; balance was 0 credits on a free plan). CHANGED since the spec was authored: public/assets/avatar/ does NOT exist, so this lane creates it; and public/assets/hero-atmosphere-poster.avif (12,935 B, shipped ee334cc) already exists as a real rendered frame of atmosphere.glsl.ts, so the composition is authored to match that frame rather than to replace it. Recruiter-visible slice: a 2160p60 hero overture clip actually reaches public/assets/avatar/ and is playable — the first asset on this site that meets R5.",
+    "order": [
+      "Add hyperframes@0.8.29 and @hyperframes/engine@0.8.29 to devDependencies at exact pins; set PUPPETEER_SKIP_DOWNLOAD=1 and PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome in the render script's env, never in a committed .env",
+      "mkdir -p public/assets/avatar — it does not exist on b0d41a20 and the 5 MB on-demand cap keys on that exact path (overhaul_static_audit.mjs:168-171)",
+      "Author assets/compositions/hero-overture.html with data-composition-id=hero-overture data-start=0 data-width=3840 data-height=2160; the animation layer is CSS/WAAPI, NOT gsap — gsap is absent from the tree (F2 re-checked) and lands in t_x1_12, so this lane must not depend on it",
+      "Compose the overture to continue hero-atmosphere-poster.avif rather than contradict it: same rake direction, same pool positions, --ink/--mist/--white only, no hue",
+      "Author scripts/assets/hyperframes_render.mjs wrapping the CLI: render 2160p60, emit AV1 WebM + H.264 MP4 into public/assets/avatar/, and frame 0 as AVIF",
+      "Run the render; ffprobe the master and paste the raw output into 04-render-proof.log before writing any claim",
+      "Run the static audit and confirm the shipped clip is under the 5 MB on-demand cap; trim the loop length, not the resolution, if it is over"
+    ],
+    "gates": [
+      "devDependencies ONLY — zero HyperFrames bytes in the shipped bundle; assert with: grep -rl hyperframes out/_next/static | wc -l  →  0",
+      "ffprobe on the master prints 3840,2160,60/1 — no R5 claim exists without that exact line in the evidence",
+      "Shipped clip <= 5 MB and living under public/assets/avatar/ (scripts/validate/overhaul_static_audit.mjs:168-171); audit stays 10/10",
+      "npm run build:static clean; the render is offline and never runs in the deploy path (checks.yml/deploy.yml untouched)",
+      "No Higgsfield call, no paid API, no ANTHROPIC_API_KEY (D4, §0.1, §0.4)",
+      "The poster at public/assets/hero-atmosphere-poster.avif is not deleted or overwritten by this lane"
+    ],
+    "verify": [
+      "node -v && which ffmpeg && which google-chrome",
+      "node scripts/assets/hyperframes_render.mjs --composition hero-overture",
+      "ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate -of csv=p=0 public/assets/avatar/hero-overture-2160p60.mp4",
+      "node scripts/validate/overhaul_static_audit.mjs",
+      "npm run build:static && grep -rl hyperframes out/_next/static | wc -l"
+    ]
+  },
+  {
+    "slug": "t_x1_11-hyperframes-player-overture",
+    "title": "HyperFrames in page — the hero overture plays through @hyperframes/player, lazy, above the poster",
+    "assignee": "analyst-programmer",
+    "priority": 93,
+    "parents": ["t_x1_10-hyperframes-render-pipeline"],
+    "summary": "@hyperframes/player@0.8.29 is an embeddable web component; dist/hyperframes-player.global.js measures 64,037 B raw / 17,645 B gzip -9 (measured via npm pack, §1.1) — an eighth of the 132 kB R3F+three runtime already lazy-loaded. It plays the SAME composition t_x1_10 renders, so the in-page motion and the 2160p60 file cannot drift. CHANGED since the spec was authored: the hero now runs at resolutionScale 0.5 (af7355a — canvas 720x664 upscaled into a 1440x1328 slot), so the player element must sit at CSS size above the poster and below the canvas, and must NOT be scaled; and the poster already exists (ee334cc), so this lane crossfades from it instead of authoring one. Recruiter-visible slice: the hero's first two seconds become an authored title move instead of a still.",
+    "order": [
+      "Author TC-BUNDLE-01 in tests/perf/: no HyperFrames byte appears in the document's initial JS; capture it red if the player is added first, green after",
+      "Add @hyperframes/player@0.8.29 to dependencies at an exact pin; import via next/dynamic with ssr:false, behind the same lazy boundary the GL bundle uses",
+      "Mount the overture inside the hero stage: z-order poster (CSS background) < player < GL canvas < .stage::after scrim < .inner copy",
+      "Crossfade the player out on Scene onCreated so the shader takes over; never leave two moving layers on screen",
+      "Reduced motion: the player must not mount at all and public/assets/hero-atmosphere-poster.avif must still stand as the frame — assert the poster URL in the computed background",
+      "Re-run the hero suites and the perf suite; capture 04-tests-passing.log"
+    ],
+    "gates": [
+      "PERF-01 first-view transfer <= 2.5 MB still green; PERF-02 LCP < 2.5 s and PERF-06/07 still green",
+      "hero-first-paint TC-HERO-FIRSTPAINT-01/02 and G-H2b scrim assertions still green at 1440 AND 390, on ?gl=force AND on the reduced-motion still",
+      "flagship-visibility hero-atmosphere still clears coverage 0.15 / peak 0.35 / motion 0.004 at both widths — the overture must not sit on top of the scene the gate measures",
+      "Under prefers-reduced-motion nothing animates and the hero is fully readable (TC-CINE-06/07)",
+      "grep -ci hyperframes package.json > 0 — R2's named dependency is actually present, which is the point of the lane",
+      "No raw hex outside app/globals.css and lib/palette.ts (TC-NFR-MONO); the overture is monochrome and gold only marks a sourced claim"
+    ],
+    "verify": [
+      "npx tsc --noEmit && npm run lint && npm run build:static",
+      "python3 -m http.server 5635 --directory out & sleep 2",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5635 npx playwright test tests/overhaul/hero-first-paint.spec.ts tests/overhaul/cinematic.spec.ts tests/perf/performance.spec.ts",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5635 npx playwright test tests/overhaul/flagship-visibility.spec.ts -g hero",
+      "node scripts/validate/overhaul_static_audit.mjs"
+    ]
+  },
+  {
+    "slug": "t_x1_08-r5-resolution-independence",
+    "title": "R5 proof — GL and SVG surfaces measured at 3840x2160 (re-checked: the spec does not exist)",
+    "assignee": "tester",
+    "priority": 92,
+    "parents": ["t_x1_10-hyperframes-render-pipeline"],
+    "summary": "Re-checked on live b0d41a20: ls tests/perf/ returns performance.spec.ts and scene-framerate.spec.ts only — tests/perf/resolution-independence.spec.ts was never authored, so R5's GL/SVG half is UNPROVEN, not passing. Re-sequenced behind t_x1_10 per D13: proving surfaces reach 2160 while no asset does produced two 'unproven' rows and no pixels. Two facts have changed since the spec was written and both must be handled: hero/about/strata now run at resolutionScale 0.5 (af7355a), so a naive drawingBuffer >= 3840 assertion will fail by design on three scenes; and the seventh scene minivic-viseme lives inside the bot panel and must be opened before it can be measured. Recruiter-visible slice: the first honest 4K reading this project has, published as a scorecard.",
+    "order": [
+      "Author tests/perf/resolution-independence.spec.ts at viewport 3840x2160, deviceScaleFactor 1, ?gl=force",
+      "TC-R5-GL-01 — per sceneId, assert the canvas backing store against its OWN contract: drawingBufferWidth >= floor(cssWidth * dpr * resolutionScale) and, for scenes at scale 1, >= 3840 where the slot is full-bleed. State the resolutionScale of each scene in the failure message so a reader can tell a cap from a defect",
+      "TC-R5-GL-02 — median rAF at 4K, recorded with the renderer string and labelled software-rasteriser (D9). Report the number; do NOT claim 60 fps under any circumstances",
+      "TC-R5-LAYOUT-01 — at 3840x2160 no horizontal overflow (scrollWidth <= clientWidth) and every section heading inside the viewport box",
+      "TC-R5-SVG-01 — the Compass, the Bench and the Vitrine drawings carry a viewBox and no fixed pixel width/height attributes",
+      "Run it and let it fail wherever it fails; capture 02-tests-failing.log verbatim as the first honest R5 reading",
+      "Fix only genuine defects (an SVG with fixed px dims, an overflowing section); record residual failures as named FAILs, never as a waived pass"
+    ],
+    "gates": [
+      "The dpr cap [1,1.75] is an OVERSAMPLING cap, not a resolution ceiling — do not raise it to pass",
+      "resolutionScale 0.5 is a deliberate, measured perf decision (af7355a) — do not revert it to pass this test; assert against each scene's own contract instead",
+      "Every failing surface is named individually; no aggregate pass",
+      "No threshold below 3840x2160 is introduced, and no fps figure is reported without its renderer label (D9)"
+    ],
+    "verify": [
+      "npm run build:static",
+      "python3 -m http.server 5636 --directory out & sleep 2",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5636 npx playwright test tests/perf/resolution-independence.spec.ts",
+      "grep -rn 'resolutionScale' components/sections/*/*.tsx components/MiniVicBot.tsx"
+    ]
+  },
+  {
+    "slug": "t_x1_09-r5-asset-audit-waivers",
+    "title": "R5 asset audit — every shipped raster/video measured, waivers are recorded FAILs (re-checked: still 3 failing assets)",
+    "assignee": "tester",
+    "priority": 92,
+    "parents": ["t_x1_08-r5-resolution-independence"],
+    "summary": "Re-ffprobed on live b0d41a20, unchanged since authoring: my-avatar.mp4 = 1280,720,24/1; my-hero-avatar.mp4 = 640,360,24/1; my_avatar.avif = 1480,826 — all three fail R5. tests/content/asset-resolution.spec.ts was never authored (ls tests/content/ returns content-check.spec.ts and minivic-knowledge.spec.ts only), so there is no scoreboard and nothing stops a fourth sub-4K asset landing. Sequenced after t_x1_10 so the waiver list opens with at least one asset already retired by the HyperFrames render. Recruiter-visible slice: the R5 scoreboard becomes a real, shrinking list instead of a sentence.",
+    "order": [
+      "Author tests/content/asset-resolution.spec.ts as a node --test file walking public/ with ffprobe",
+      "Seed the waiver list with the three measured assets, each carrying the measured dimensions, the date, the reason and the named unblock (t_x1_13 for the avatar re-render)",
+      "Retire any asset t_x1_10 has already replaced at 3840x2160@60 — the list must open smaller than it did at authoring time",
+      "Capture 02-tests-failing.log with one asset deliberately un-waived, to prove the test bites",
+      "Restore the waivers; capture 04-tests-passing.log",
+      "Write the interim honest state onto the board verbatim from SIGNATURE-SCENES-v1.md 5.2"
+    ],
+    "gates": [
+      "A waiver is labelled FAIL in the output, never PASS, and never counted toward a green R5",
+      "Adding a new asset without meeting the bar or being waived fails the suite",
+      "No Higgsfield call is attempted — 0 credits on a free plan is a cost gate, not a blocker (D4)",
+      "ffprobe output is pasted raw; no dimension is retyped from memory"
+    ],
+    "verify": [
+      "node --test tests/content/asset-resolution.spec.ts",
+      "ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate -of csv=p=0 public/assets/my-avatar.mp4",
+      "ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate -of csv=p=0 public/assets/my-hero-avatar.mp4",
+      "ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 public/assets/my_avatar.avif",
+      "node scripts/validate/overhaul_static_audit.mjs"
+    ]
+  }
+]

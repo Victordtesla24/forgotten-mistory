@@ -1,0 +1,959 @@
+{
+  "site": "https://forgotten-mistory.web.app",
+  "startedAt": "2026-09-05T15:04:29.737Z",
+  "panel": {
+    "390": {
+      "pageerrors": [],
+      "consoleErrors": [],
+      "chat": [
+        {
+          "kind": "chat:origin",
+          "phase": "open",
+          "m": "GET",
+          "at": 1788620708938
+        },
+        {
+          "kind": "chat:hosting",
+          "phase": "open",
+          "m": "GET",
+          "at": 1788620708938
+        },
+        {
+          "kind": "chat:origin",
+          "phase": "send1",
+          "m": "POST",
+          "at": 1788620720121
+        }
+      ],
+      "tts": [],
+      "phase": "send1",
+      "build": "c6ee88ab",
+      "glBefore": {
+        "gl": 5,
+        "canvases": 2
+      },
+      "glAfter": {
+        "gl": 5,
+        "canvases": 3,
+        "list": [
+          {
+            "type": "webgl2",
+            "scene": null
+          },
+          {
+            "type": "webgl2",
+            "scene": null
+          },
+          {
+            "type": "webgl2",
+            "scene": "hero-atmosphere"
+          },
+          {
+            "type": "webgl2",
+            "scene": null
+          },
+          {
+            "type": "webgl2",
+            "scene": "about-field"
+          }
+        ]
+      },
+      "glExtra": 0,
+      "muted": true,
+      "trace": [
+        {
+          "slotCanvases": 0,
+          "panelCanvases": 1,
+          "totalCanvases": 3,
+          "gl": null,
+          "store": null,
+          "box": {
+            "w": 340,
+            "h": 128
+          },
+          "glCount": 5
+        },
+        {
+          "slotCanvases": 0,
+          "panelCanvases": 1,
+          "totalCanvases": 3,
+          "gl": null,
+          "store": null,
+          "box": {
+            "w": 340,
+            "h": 128
+          },
+          "glCount": 5
+        },
+        {
+          "slotCanvases": 1,
+          "panelCanvases": 2,
+          "totalCanvases": 3,
+          "gl": "webgl2-live",
+          "store": {
+            "bw": 340,
+            "bh": 127
+          },
+          "box": {
+            "w": 340,
+            "h": 128
+          },
+          "glCount": 7
+        },
+        {
+          "slotCanvases": 1,
+          "panelCanvases": 2,
+          "totalCanvases": 3,
+          "gl": "webgl2-live",
+          "store": {
+            "bw": 340,
+            "bh": 127
+          },
+          "box": {
+            "w": 340,
+            "h": 128
+          },
+          "glCount": 7
+        },
+        {
+          "slotCanvases": 1,
+          "panelCanvases": 2,
+          "totalCanvases": 2,
+          "gl": "webgl2-live",
+          "store": {
+            "bw": 340,
+            "bh": 127
+          },
+          "box": {
+            "w": 340,
+            "h": 128
+          },
+          "glCount": 7
+        },
+        {
+          "slotCanvases": 1,
+          "panelCanvases": 2,
+          "totalCanvases": 2,
+          "gl": "webgl2-live",
+          "store": {
+            "bw": 340,
+            "bh": 127
+          },
+          "box": {
+            "w": 340,
+            "h": 128
+          },
+          "glCount": 7
+        }
+      ],
+      "idle": {
+        "present": true,
+        "box": {
+          "w": 340,
+          "h": 128
+        },
+        "frames": 12,
+        "meanMotion": 0.00376,
+        "maxMotion": 0.00595,
+        "meanLumaFirst": 0.18357,
+        "meanLumaLast": 0.19274,
+        "peakMax": 1,
+        "coverage": 0.7085,
+        "ground": 0.0033,
+        "gold": {
+          "exactGoldPx": 0,
+          "warmPx": 0,
+          "totalPx": 43180,
+          "exactGoldPct": 0,
+          "warmPct": 0
+        },
+        "samples": [
+          {
+            "t": 158,
+            "mean": 0.18357,
+            "peak": 1,
+            "d": null
+          },
+          {
+            "t": 376,
+            "mean": 0.18347,
+            "peak": 1,
+            "d": 0.00202
+          },
+          {
+            "t": 562,
+            "mean": 0.18514,
+            "peak": 1,
+            "d": 0.00388
+          },
+          {
+            "t": 805,
+            "mean": 0.18785,
+            "peak": 1,
+            "d": 0.00465
+          },
+          {
+            "t": 1204,
+            "mean": 0.18926,
+            "peak": 1,
+            "d": 0.00332
+          },
+          {
+            "t": 1507,
+            "mean": 0.18989,
+            "peak": 1,
+            "d": 0.0053
+          },
+          {
+            "t": 1735,
+            "mean": 0.19205,
+            "peak": 1,
+            "d": 0.00595
+          },
+          {
+            "t": 2005,
+            "mean": 0.19346,
+            "peak": 1,
+            "d": 0.00348
+          },
+          {
+            "t": 2395,
+            "mean": 0.19188,
+            "peak": 1,
+            "d": 0.00413
+          },
+          {
+            "t": 2523,
+            "mean": 0.19146,
+            "peak": 1,
+            "d": 0.0016
+          },
+          {
+            "t": 2769,
+            "mean": 0.19177,
+            "peak": 1,
+            "d": 0.00317
+          },
+          {
+            "t": 2954,
+            "mean": 0.19274,
+            "peak": 1,
+            "d": 0.00388
+          }
+        ]
+      },
+      "streaming": {
+        "present": true,
+        "box": {
+          "w": 340,
+          "h": 128
+        },
+        "frames": 11,
+        "meanMotion": 0.00463,
+        "maxMotion": 0.00796,
+        "meanLumaFirst": 0.19251,
+        "meanLumaLast": 0.18431,
+        "peakMax": 1,
+        "coverage": 0.685,
+        "ground": 0.0033,
+        "gold": {
+          "exactGoldPx": 0,
+          "warmPx": 0,
+          "totalPx": 43180,
+          "exactGoldPct": 0,
+          "warmPct": 0
+        },
+        "samples": [
+          {
+            "t": 123,
+            "mean": 0.19251,
+            "peak": 1,
+            "d": null
+          },
+          {
+            "t": 357,
+            "mean": 0.19065,
+            "peak": 1,
+            "d": 0.00516
+          },
+          {
+            "t": 587,
+            "mean": 0.18861,
+            "peak": 1,
+            "d": 0.00331
+          },
+          {
+            "t": 746,
+            "mean": 0.18782,
+            "peak": 1,
+            "d": 0.00162
+          },
+          {
+            "t": 976,
+            "mean": 0.18843,
+            "peak": 1,
+            "d": 0.00451
+          },
+          {
+            "t": 1127,
+            "mean": 0.18827,
+            "peak": 1,
+            "d": 0.00422
+          },
+          {
+            "t": 1548,
+            "mean": 0.18454,
+            "peak": 1,
+            "d": 0.00738
+          },
+          {
+            "t": 1822,
+            "mean": 0.18356,
+            "peak": 1,
+            "d": 0.00416
+          },
+          {
+            "t": 2282,
+            "mean": 0.1851,
+            "peak": 1,
+            "d": 0.00796
+          },
+          {
+            "t": 2620,
+            "mean": 0.18354,
+            "peak": 1,
+            "d": 0.00275
+          },
+          {
+            "t": 2954,
+            "mean": 0.18431,
+            "peak": 1,
+            "d": 0.00527
+          }
+        ]
+      },
+      "ttft1": 1016,
+      "chatOnSend1": [
+        {
+          "kind": "chat:origin",
+          "phase": "send1",
+          "m": "POST",
+          "at": 1788620720121
+        }
+      ],
+      "replyLen": 502,
+      "sendWall1": 3586,
+      "ttfts": [
+        1016
+      ],
+      "chatPerSend": [
+        1
+      ],
+      "field": {
+        "present": true,
+        "canvases": 1,
+        "box": {
+          "w": 340,
+          "h": 128
+        },
+        "store": {
+          "bw": 340,
+          "bh": 127,
+          "cssW": 340,
+          "cssH": 127.63,
+          "dpr": 1
+        },
+        "ground": 0.0033,
+        "coverage": 0.5428,
+        "peak": 0.521,
+        "motion": 0.00972,
+        "mean": 0.1102,
+        "gold": {
+          "exactGoldPx": 0,
+          "warmPx": 0,
+          "totalPx": 43180,
+          "exactGoldPct": 0,
+          "warmPct": 0
+        },
+        "pass": true
+      },
+      "csp": []
+    },
+    "1440": {
+      "pageerrors": [],
+      "consoleErrors": [],
+      "chat": [
+        {
+          "kind": "chat:origin",
+          "phase": "open",
+          "m": "GET",
+          "at": 1788620675477
+        },
+        {
+          "kind": "chat:hosting",
+          "phase": "open",
+          "m": "GET",
+          "at": 1788620675478
+        },
+        {
+          "kind": "chat:origin",
+          "phase": "send1",
+          "m": "POST",
+          "at": 1788620689318
+        },
+        {
+          "kind": "chat:origin",
+          "phase": "send2",
+          "m": "POST",
+          "at": 1788620693556
+        },
+        {
+          "kind": "chat:origin",
+          "phase": "send3",
+          "m": "POST",
+          "at": 1788620696122
+        }
+      ],
+      "tts": [],
+      "phase": "send3",
+      "build": "c6ee88ab",
+      "glBefore": {
+        "gl": 4,
+        "canvases": 2
+      },
+      "glAfter": {
+        "gl": 5,
+        "canvases": 3,
+        "list": [
+          {
+            "type": "webgl2",
+            "scene": null
+          },
+          {
+            "type": "webgl2",
+            "scene": null
+          },
+          {
+            "type": "webgl2",
+            "scene": "hero-atmosphere"
+          },
+          {
+            "type": "webgl2",
+            "scene": null
+          },
+          {
+            "type": "webgl2",
+            "scene": "about-field"
+          }
+        ]
+      },
+      "glExtra": 1,
+      "muted": true,
+      "trace": [
+        {
+          "slotCanvases": 0,
+          "panelCanvases": 1,
+          "totalCanvases": 3,
+          "gl": null,
+          "store": null,
+          "box": {
+            "w": 430,
+            "h": 146
+          },
+          "glCount": 5
+        },
+        {
+          "slotCanvases": 0,
+          "panelCanvases": 1,
+          "totalCanvases": 3,
+          "gl": null,
+          "store": null,
+          "box": {
+            "w": 430,
+            "h": 146
+          },
+          "glCount": 5
+        },
+        {
+          "slotCanvases": 0,
+          "panelCanvases": 1,
+          "totalCanvases": 2,
+          "gl": null,
+          "store": null,
+          "box": {
+            "w": 430,
+            "h": 146
+          },
+          "glCount": 5
+        },
+        {
+          "slotCanvases": 1,
+          "panelCanvases": 2,
+          "totalCanvases": 3,
+          "gl": "webgl2-live",
+          "store": {
+            "bw": 430,
+            "bh": 145
+          },
+          "box": {
+            "w": 430,
+            "h": 146
+          },
+          "glCount": 7
+        },
+        {
+          "slotCanvases": 1,
+          "panelCanvases": 2,
+          "totalCanvases": 4,
+          "gl": "webgl2-live",
+          "store": {
+            "bw": 430,
+            "bh": 145
+          },
+          "box": {
+            "w": 430,
+            "h": 146
+          },
+          "glCount": 9
+        },
+        {
+          "slotCanvases": 1,
+          "panelCanvases": 2,
+          "totalCanvases": 4,
+          "gl": "webgl2-live",
+          "store": {
+            "bw": 430,
+            "bh": 145
+          },
+          "box": {
+            "w": 430,
+            "h": 146
+          },
+          "glCount": 9
+        }
+      ],
+      "idle": {
+        "present": true,
+        "box": {
+          "w": 430,
+          "h": 146
+        },
+        "frames": 5,
+        "meanMotion": 0.00498,
+        "maxMotion": 0.00669,
+        "meanLumaFirst": 0.18649,
+        "meanLumaLast": 0.1957,
+        "peakMax": 1,
+        "coverage": 0.7096,
+        "ground": 0.0033,
+        "gold": {
+          "exactGoldPx": 0,
+          "warmPx": 0,
+          "totalPx": 62350,
+          "exactGoldPct": 0,
+          "warmPct": 0
+        },
+        "samples": [
+          {
+            "t": 576,
+            "mean": 0.18649,
+            "peak": 1,
+            "d": null
+          },
+          {
+            "t": 1100,
+            "mean": 0.19064,
+            "peak": 1,
+            "d": 0.00669
+          },
+          {
+            "t": 1619,
+            "mean": 0.19183,
+            "peak": 1,
+            "d": 0.00375
+          },
+          {
+            "t": 2378,
+            "mean": 0.19464,
+            "peak": 1,
+            "d": 0.00483
+          },
+          {
+            "t": 2979,
+            "mean": 0.1957,
+            "peak": 1,
+            "d": 0.00467
+          }
+        ]
+      },
+      "streaming": {
+        "present": true,
+        "box": {
+          "w": 430,
+          "h": 146
+        },
+        "frames": 4,
+        "meanMotion": 0.0063,
+        "maxMotion": 0.00798,
+        "meanLumaFirst": 0.19187,
+        "meanLumaLast": 0.18986,
+        "peakMax": 1,
+        "coverage": 0.6949,
+        "ground": 0.0033,
+        "gold": {
+          "exactGoldPx": 0,
+          "warmPx": 0,
+          "totalPx": 62350,
+          "exactGoldPct": 0,
+          "warmPct": 0
+        },
+        "samples": [
+          {
+            "t": 980,
+            "mean": 0.19187,
+            "peak": 1,
+            "d": null
+          },
+          {
+            "t": 1479,
+            "mean": 0.1869,
+            "peak": 1,
+            "d": 0.00798
+          },
+          {
+            "t": 2269,
+            "mean": 0.18753,
+            "peak": 1,
+            "d": 0.00437
+          },
+          {
+            "t": 3187,
+            "mean": 0.18986,
+            "peak": 1,
+            "d": 0.00655
+          }
+        ]
+      },
+      "ttft1": 976,
+      "chatOnSend1": [
+        {
+          "kind": "chat:origin",
+          "phase": "send1",
+          "m": "POST",
+          "at": 1788620689318
+        }
+      ],
+      "replyLen": 547,
+      "sendWall1": 3980,
+      "ttfts": [
+        976,
+        829,
+        755
+      ],
+      "chatPerSend": [
+        1,
+        1,
+        1
+      ],
+      "field": {
+        "present": true,
+        "canvases": 1,
+        "box": {
+          "w": 430,
+          "h": 146
+        },
+        "store": {
+          "bw": 430,
+          "bh": 145,
+          "cssW": 430,
+          "cssH": 145.55,
+          "dpr": 1
+        },
+        "ground": 0.0033,
+        "coverage": 0.5079,
+        "peak": 0.5333,
+        "motion": 0.02293,
+        "mean": 0.104,
+        "gold": {
+          "exactGoldPx": 0,
+          "warmPx": 0,
+          "totalPx": 62350,
+          "exactGoldPct": 0,
+          "warmPct": 0
+        },
+        "pass": true
+      },
+      "csp": []
+    }
+  },
+  "reduced": {
+    "pageerrors": [],
+    "build": "c6ee88ab",
+    "glExtra": 0,
+    "muted": true,
+    "slotCanvases": 0,
+    "panelCanvases": 1,
+    "mouthCanvas": {
+      "w": 200,
+      "h": 100,
+      "present": true
+    },
+    "ttft": 739,
+    "mouthSamples": 36,
+    "mouthUniqueSums": 1,
+    "mouthMin": 0,
+    "mouthMax": 0,
+    "mouthNzRange": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "mouthSeries": [
+      {
+        "t": 7593,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 7760,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 7770,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 7870,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 7970,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 8070,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 8170,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 8273,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 8370,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 8486,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 8580,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 8683,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 8780,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 8893,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 8969,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 9073,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 9170,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 9270,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 9382,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 9470,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 9570,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 9671,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 9770,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 9870,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 9970,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 10070,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 10171,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 10271,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 10370,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 10471,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 10570,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 10670,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 10770,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 10870,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 10969,
+        "sum": 0,
+        "nz": 0
+      },
+      {
+        "t": 11070,
+        "sum": 0,
+        "nz": 0
+      }
+    ],
+    "slotCanvasesAfterSend": 0,
+    "replyLen": 516,
+    "csp": []
+  },
+  "nogl": {
+    "pageerrors": [],
+    "build": "c6ee88ab",
+    "glExtra": 0,
+    "slotCanvases": 0,
+    "slotPresent": 1,
+    "panelParts": {
+      "input": true,
+      "synthetic": true,
+      "modes": 3,
+      "buttons": 17,
+      "textLen": 689,
+      "head": "MiniVic LiveMini VicVikram's AI clone · ask me anythingSynthetic voice · not a recording of VikramSpeakingHiring FitEngineeringStoryHiring Fit·Outcomes, budgets",
+      "rect": {
+        "w": 432,
+        "h": 460
+      }
+    },
+    "muted": true,
+    "ttft": 951,
+    "replyLen": 302,
+    "aa": {
+      "nodes": 0,
+      "below": 0,
+      "worst": [],
+      "belowList": []
+    },
+    "csp": []
+  }
+}
