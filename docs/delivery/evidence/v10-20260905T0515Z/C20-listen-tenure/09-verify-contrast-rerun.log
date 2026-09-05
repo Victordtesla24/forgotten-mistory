@@ -1,0 +1,38 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts --reporter=list
+
+[2mRunning [22m2[2m tests using [22m2[2m workers[22m
+
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground[39m[2m (30.7s)[22m
+  [32m✓[39m  [2m2 [22m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground[2m (31.3s)[22m
+
+
+[31m  1) [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground [39m
+
+    Error: 1 text node(s) below AA — worst ten:
+    4.42:1 (needs 4.5) [about] div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_sweep__DIKqO:nth-of-type(1) > g.Compass_rose__PW3GF > g:nth-of-type(1) > text.Compass_numeral__9WSmf — "01" fg rgb(224,224,224) on bg rgb(100,101,102) @ 3.4px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m1[39m
+
+    [0m [90m 285 |[39m         )
+     [90m 286 |[39m         [33m.[39mjoin([32m'\n'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 287 |[39m       expect(failures[33m.[39mlength[33m,[39m [32m`${failures.length} text node(s) below AA — worst ten:\n${report}`[39m)[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m     |[39m                                                                                                   [31m[1m^[22m[39m
+     [90m 288 |[39m     })[33m;[39m
+     [90m 289 |[39m   }
+     [90m 290 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_d9fbfbaa-53a-1/tests/a11y/text-contrast.spec.ts:287:99[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/error-context.md[22m
+
+[31m  1 failed[39m
+[31m    [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground [39m
+[32m  1 passed[39m[2m (35.6s)[22m
+CONTRAST2_EXIT=1
