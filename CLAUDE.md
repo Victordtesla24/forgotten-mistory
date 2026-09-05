@@ -87,13 +87,15 @@ by reintroducing its component — the sections after Skills were replaced delib
    ```
 4. **Look at it.** Screenshot the section at 1440, 1280, 834 and 390 CSS px. The suite
    catches broken; only your eyes catch ugly.
-5. **Deploy** — autonomous, no approval needed:
+5. **Deploy** — autonomous, no approval needed. Push to `main`; `.github/workflows/deploy.yml`
+   consolidates every branch into `main` and deploys within ten minutes (also on a ten-minute
+   schedule), then verifies the live `build-commit` meta. To ship immediately from the VPS:
    ```bash
-   git push origin main && firebase deploy --only hosting
+   git push origin HEAD:main && node scripts/deploy.mjs
    ```
-   Then verify against the live URL and fix forward if it fails. Never force-push, never
-   rewrite history. **Ask before any paid ElevenLabs / D-ID / video-render call** — that
-   is a cost gate, not a deploy gate.
+   Never force-push, never rewrite history. Tests and audits run in `checks.yml` and report —
+   they do not gate a deploy. **Ask before any paid ElevenLabs / D-ID / video-render call** —
+   that is a cost gate, not a deploy gate.
 
 ## Running the tests
 

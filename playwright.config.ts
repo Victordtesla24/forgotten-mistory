@@ -16,7 +16,7 @@ export default defineConfig({
   // failing ~46 specs at once for a reason that had nothing to do with any of
   // them. The `tests/global-setup.ts` no-op that replaced that arrangement was
   // itself deleted once nothing referenced it. In CI the export is prebuilt as a
-  // dedicated step (deploy.yml).
+  // dedicated step (checks.yml).
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,

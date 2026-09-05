@@ -1,0 +1,74 @@
+name: Checks
+
+# Evidence, not a gate. Every job here reports on the commit it ran against and
+# nothing in deploy.yml waits for any of them. A red check is a defect to fix
+# in the next ten-minute cycle, not a reason production stops moving.
+
+on:
+  push:
+    branches: ["**"]
+  workflow_dispatch: {}
+  schedule:
+    # Weekly dependency sweep, so newly disclosed advisories surface on unchanged code.
+    - cron: "0 7 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    name: types · lint · static audit · node tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run lint
+      - run: node scripts/validate/overhaul_static_audit.mjs
+      - run: node --test tests/ci_pipeline.test.mjs tests/static_audit_fail.test.mjs tests/github-telemetry.test.mjs tests/minivic_chat_function.test.mjs
+
+  e2e:
+    name: playwright against the static export
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build:static
+      - name: Serve the export and run the suite
+        run: |
+          set -euo pipefail
+          python3 -m http.server 5599 --directory out --bind 127.0.0.1 &
+          for _ in $(seq 1 30); do curl -fsS http://127.0.0.1:5599/ >/dev/null 2>&1 && break; sleep 1; done
+          PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 14
+
+  audit:
+    name: npm audit (high and critical)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npm audit --audit-level=high

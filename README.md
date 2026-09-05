@@ -258,31 +258,34 @@ PLAYWRIGHT_BASE_URL=http://localhost:5599 npx playwright test tests/e2e
 | Types | `npx tsc --noEmit` | clean |
 | Lint | `npx next lint` | clean |
 | Static audit | `node scripts/validate/overhaul_static_audit.mjs` | 10/10 |
-| Section suites | `npx playwright test tests/e2e` | all green |
+| Suite | `PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test` | all green |
 | Accessibility | `node scripts/validate/axe_live_audit.mjs` | 0 serious/critical |
 
 The static audit enforces: achromatic-plus-one-accent, the three-face type system, asset
 budgets (image ≤ 0.5 MB · video ≤ 2.5 MB · audio ≤ 1 MB), CV parity, no client secrets, no
-placeholder markers, and design-token agreement.
+placeholder markers, and design-token agreement. The same gates run in `.github/workflows/checks.yml`
+on every push — as evidence. They report; they do not gate.
 
 ---
 
 ## ◆ Deployment
 
-```bash
-git fetch origin && git log --oneline HEAD..origin/main   # must be empty
-git push origin HEAD:main
-node scripts/deploy.mjs                                   # builds HEAD in a detached worktree, deploys, verifies the live commit
+Continuous, autonomous, and simple. `.github/workflows/deploy.yml` has one job:
+
+```
+every push to main · every 10 minutes · on demand
+  → merge every other branch into main (a branch that merges cleanly is merged and deleted;
+    one that conflicts is left in place and named in the run summary)
+  → npm ci → firebase deploy --only hosting (the predeploy hook builds the static export)
+  → read the build-commit meta back from https://forgotten-mistory.web.app and compare it to HEAD
 ```
 
-`scripts/deploy.mjs` refuses to ship a commit that is not on `origin/main`, builds from a
-detached worktree at `HEAD` (so uncommitted edits cannot reach production), deploys with
-`firebase.json` (rewrites for `/api/chat` and `/api/tts`, the security headers) and then
-reads the `build-commit` meta tag back from the live page. Never deploy with
-`firebase.static.json` — it replaces the rewrites with a catch-all to `index.html`.
+Nothing sits between a commit and production except a build that compiles. Tests, lint,
+audits and the Playwright suite run in `checks.yml` and can never block a deploy. At rest the
+repository has one branch, `main`. `tests/ci_pipeline.test.mjs` holds the pipeline to this shape.
 
-The delivery cadence is continuous: every verified increment lands on `main` and is
-deployed within about ten minutes; no single agent workflow runs longer than thirty.
+From the VPS, `node scripts/deploy.mjs` ships `HEAD` immediately (it refuses a commit that is
+not on `origin/main`, builds from a detached worktree, and verifies the live commit).
 
 ---
 

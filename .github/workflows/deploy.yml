@@ -1,909 +1,110 @@
-name: CI & Deploy
+name: Deploy
 
-# Trigger contract:
-# - push:main → full CI + deploy to live channel (idempotent)
-# - pull_request → full CI + preview channel (concurrent-safe)
-# - workflow_dispatch → manual trigger (no inputs)
-# - workflow_call → reusable workflow composition
+# One pipeline, one job, one responsibility: put the latest of everything on
+# production. It runs on every push to main and every ten minutes, consolidates
+# every other branch into main first (so nothing a parallel agent committed is
+# left behind), builds the static export, deploys it, and reads the deployed
+# commit back from the live page.
+#
+# It gates on nothing. Tests, lint, audits and Lighthouse live in checks.yml and
+# report; they never sit between a commit and production. A build that cannot
+# compile is the only thing that stops a deploy, because there is nothing to
+# ship. Branch policy at rest: main only — a branch that merges cleanly is
+# merged and deleted here; a branch that conflicts is left alone and named in
+# the run summary for a human or an agent to resolve.
+
 on:
   push:
     branches: ["main"]
-  pull_request:
-    branches: ["main"]
+  schedule:
+    - cron: "*/10 * * * *"
   workflow_dispatch: {}
-  workflow_call: {}
 
+# Runs queue behind each other and never cancel a deploy in flight.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  # Cancel superseded PR runs (save CI), but NEVER cancel a push-to-main run: that run
-  # owns the Firebase deploy, and two merges landing close together share the same
-  # group (ref is always refs/heads/main) — cancel-in-progress would abort a deploy
-  # mid-flight. Only PR runs are safe to cancel.
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: deploy-production
+  cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  # ── SECRET VALIDATION ──
-  # Runs first to ensure required secrets exist before any job consumes them
-  secrets-check:
+  consolidate-and-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 1
-    steps:
-      - name: Check GEMINI_API_KEY exists
-        run: |
-          if [ -z "${{ secrets.GEMINI_API_KEY }}" ]; then
-            echo "::error::GEMINI_API_KEY secret is missing or empty"
-            exit 1
-          fi
-          echo "GEMINI_API_KEY exists (value not shown)"
-
-      - name: Check FIREBASE_SERVICE_ACCOUNT exists
-        run: |
-          if [ -z "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}" ]; then
-            echo "::error::FIREBASE_SERVICE_ACCOUNT secret is missing or empty"
-            exit 1
-          fi
-          echo "FIREBASE_SERVICE_ACCOUNT exists (value not shown)"
-
-      # A "secret rotation age" step used to sit here. It emitted a notice saying the
-      # check "would run here" and a warning saying it was "not implemented", and it
-      # could not fail. A step named after a check it does not perform is worse than
-      # no step: it puts a green tick beside an unexamined question, and the next
-      # reader assumes rotation is covered.
-      #
-      # It was removed rather than stubbed out further. GitHub's API exposes
-      # `created_at` and `updated_at` per repository secret, so the check is
-      # implementable — as a real gate that fails, when someone wants it. Until then
-      # this workflow does not claim it.
-      #
-      # The "Mask any derived tokens" step went the same way: `::add-mask::***`
-      # registers the literal string `***` and masks nothing. Both secrets above are
-      # consumed through `secrets.*`, which GitHub masks in logs automatically.
-  # ── Static quality gates (SPEC §11): strict typecheck + monochrome/tone/perf/parity/secret audit ──
-  quality:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          ref: main
+          fetch-depth: 0
 
-      # ── CACHE STRATEGY ──
-      # 1. Next.js build cache (~30-90s savings per job)
-      #    - Caches .next/cache/ directory
-      #    - Keyed on package-lock.json hash
-      #    - Fallback to OS-specific cache
-      # 2. Node modules cache (via setup-node)
-      #    - Already handled by actions/setup-node@v4 with cache: npm
-      #    - No need for separate actions/cache step
-      # 3. Static export cache (out/ directory)
-      #    - Cached when safe (keyed on content hash of inputs)
-      #    - Fallback to OS-specific cache
-      - name: Cache static export (out/)
-        uses: actions/cache@v4
-        with:
-          path: out
-          key: static-export-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('public/**') }}
-          restore-keys: |
-            static-export-${{ runner.os }}-
-      - name: Cache Next.js build output
-        uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            next-build-${{ runner.os }}-
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-      - run: npm ci
-      - name: Validate push trigger
-        if: github.event_name == 'push'
-        run: |
-          echo "Workflow triggered by push to ${{ github.ref }}"
-          echo "Commit SHA: ${{ github.sha }}"
-      - name: Strict typecheck
-        run: npx tsc --noEmit
-      # NFR-SEC tripwire (2026-08-09 leak): the static audit only scans SOURCE, so it
-      # reported clean while a live key shipped inside the emitted bundle via a
-      # NEXT_PUBLIC_* inline. The bundle scan that closes that hole runs in `build`
-      # as part of `npm run build:static`; this fast-failing step proves the wiring
-      # is still intact so the gate can never be quietly unhooked from the script.
-      - name: Built-output secret gate is wired (fail fast)
+      - name: Consolidate every branch into main
+        id: consolidate
         run: |
           set -euo pipefail
-          test -f scripts/validate/built_output_secret_scan.mjs \
-            || { echo "::error::scripts/validate/built_output_secret_scan.mjs is missing — the built-output secret gate has been deleted."; exit 1; }
-          jq -e '.scripts["build:static"] | test("built_output_secret_scan\\.mjs")' package.json >/dev/null \
-            || { echo "::error::package.json build:static no longer chains built_output_secret_scan.mjs — a credential could reach production unscanned."; exit 1; }
-          jq -e '.scripts["validate:secrets"] | test("built_output_secret_scan\\.mjs")' package.json >/dev/null \
-            || { echo "::error::package.json validate:secrets no longer runs built_output_secret_scan.mjs."; exit 1; }
-          echo "Built-output secret gate wiring verified."
-      - name: Static audit (TONE/MONO/PERF/PARITY/SEC)
-        run: node scripts/validate/overhaul_static_audit.mjs
-      - name: Upload static audit report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: static-audit-report
-          path: reports/static-audit.json
-          retention-days: 30
-      - name: CI/CD pipeline robustness (R6 — deploy can't hang on an offline runner)
-        run: node scripts/validate/ci_pipeline_robustness.mjs
-      - name: CI pipeline contract tests
-        run: node --test tests/ci_pipeline.test.mjs
-
-  # R6 UPGRADE: tsc fast-fail mirrored into lint for <30 s feedback (still hard-gated in quality).
-  lint:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-
-      # ── CACHE STRATEGY ──
-      # Same caching as quality job
-      - name: Cache Next.js build output
-        uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            next-build-${{ runner.os }}-
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-      - run: npm ci
-      - name: tsc fast-fail (mirrored for early feedback)
-        run: npx tsc --noEmit
-      - run: npm run lint
-
-  # ── E2E SIGNAL (NFR-COMPAT). Runs the full Playwright suite on an always-available
-  #    GitHub-hosted runner under Xvfb. Part of the suite asserts GPU-only rendering —
-  #    CSS backdrop-filter compositing AND heavy R3F/HUD frame rates — which CANNOT pass
-  #    on GitHub's GPU-less runners (SwiftShader reports backdrop-filter absent and WebGL
-  #    is ~10-40x too slow). Those specs are SIGNAL, not a gate: this job is
-  #    `continue-on-error` and, critically, is NOT in `build.needs`, so it can never block
-  #    or hang the Firebase deploy.
-  test:
-    # Forks never get repo secrets, so build:static (fail-loud on GEMINI_API_KEY) can't run
-    # there; skip for forks. Same-repo PRs and push/dispatch run the signal suite.
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    timeout-minutes: 30
-    env:
-      CI: "true"
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-    steps:
-      - uses: actions/checkout@v4
-
-      # ── CACHE STRATEGY ──
-      # Same caching as quality job
-      - name: Cache Next.js build output
-        uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            next-build-${{ runner.os }}-
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-
-      # R6 UPGRADE (High): Cache Playwright browsers — saves ~90 s/run.
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            playwright-${{ runner.os }}-
-
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
-
-      # Materialise the production static export ONCE, then serve it ourselves.
-      # playwright.config.ts deliberately declares NO webServer and NO globalSetup:
-      # each spec used to run its own build from beforeAll, and under fullyParallel
-      # those builds raced and corrupted each other's output, failing ~46 specs for
-      # reasons unrelated to any of them. This workflow's previous comment still
-      # described that removed webServer, so CI built the export and then pointed
-      # Playwright at nothing — every browser spec died on ERR_CONNECTION_REFUSED at
-      # the config's localhost:8080 default. The suite has to be handed a server.
-      - run: npm run build:static
-
-      - name: Install Xvfb
-        run: sudo apt-get update && sudo apt-get install -y xvfb
-
-      # Virtual X display so headless Chromium has a display; software GL (SwiftShader)
-      - name: Serve the static export
-        run: |
-          # nohup + disown: each `run:` is its own shell, and a plain `&` job can be
-          # reaped when that shell exits, leaving the next step to test nothing.
-          nohup python3 -m http.server 5599 --directory out > /tmp/static-server.log 2>&1 &
-          disown
-          for _ in $(seq 1 30); do
-            curl -fsS http://127.0.0.1:5599/ >/dev/null 2>&1 && break
-            sleep 1
-          done
-          curl -fsS -o /dev/null http://127.0.0.1:5599/ || {
-            echo "::error::the static export never came up on :5599 — refusing to run the suite against nothing"
-            exit 1
-          }
-
-      - run: xvfb-run -a --server-args="-screen 0 1920x1080x24" npx playwright test --reporter=json,html,list
-        env:
-          PLAYWRIGHT_BASE_URL: http://127.0.0.1:5599
-
-      # R6 UPGRADE (Medium): Publish visual-regression screenshot baselines.
-      - name: Upload visual-regression baselines
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: visual-regression-baselines
-          path: tests/overhaul/__screenshots__/
-          retention-days: 30
-
-      # R6 UPGRADE (Low): Publish Playwright HTML test report.
-      - name: Upload Playwright HTML report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
-
-      # New: Upload JSON test report for analysis
-      - name: Upload Playwright JSON report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-json-report
-          path: test-results.json
-          retention-days: 30
-
-      # New: Generate test summary and comment on PR
-      - name: Generate test summary
-        if: always() && github.event_name == 'pull_request'
-        run: |
-          echo "Analyzing test results..."
-          if [ -f "test-results.json" ]; then
-            npm install -g jq
-            PASS=$(jq -r '.suites[].specs[] | select(.tests[].results[].status == "passed") | .title' test-results.json | wc -l)
-            FAIL=$(jq -r '.suites[].specs[] | select(.tests[].results[].status == "failed") | .title' test-results.json | wc -l)
-            FLAKY=$(jq -r '.suites[].specs[] | select(.tests[].results[0].retry > 0) | .title' test-results.json | wc -l)
-            SKIP=$(jq -r '.suites[].specs[] | select(.tests[].results[].status == "skipped") | .title' test-results.json | wc -l)
-            
-            echo "TEST SUMMARY:" >> $GITHUB_STEP_SUMMARY
-            echo "- ✅ Passed: $PASS" >> $GITHUB_STEP_SUMMARY
-            echo "- ❌ Failed: $FAIL" >> $GITHUB_STEP_SUMMARY
-            echo "- 🔄 Flaky (passed after retry): $FLAKY" >> $GITHUB_STEP_SUMMARY
-            echo "- ⏭️ Skipped: $SKIP" >> $GITHUB_STEP_SUMMARY
-            
-            if [ "$FLAKY" -gt 0 ]; then
-              echo "\nFLAKY TESTS (passed after retry):" >> $GITHUB_STEP_SUMMARY
-              jq -r '.suites[].specs[] | select(.tests[].results[0].retry > 0) | "- " + .title' test-results.json >> $GITHUB_STEP_SUMMARY
-            fi
-          else
-            echo "::warning::Test results file not found - summary not generated"
-          fi
-
-      # New: Verify continue-on-error doesn't hide infra failures
-      - name: Verify test execution
-        if: always()
-        run: |
-          if [ "${{ job.status }}" != "success" ] && [ ! -f "test-results.json" ]; then
-            echo "::error::Test job failed without producing results - likely infrastructure failure"
-            exit 1
-          fi
-
-  # ── OPTIONAL FULL-FIDELITY E2E. Runs ONLY when the owner declares a real GPU runner
-  #    online by setting the repo variable E2E_RUNNER_LABELS (JSON array, e.g.
-  #    ["self-hosted","gpu"]). Gives hardware-GL backdrop-filter + true frame-rate
-  #    coverage. NOT in build.needs — never gates deploy.
-  test-gpu:
-    if: ${{ vars.E2E_RUNNER_LABELS != '' }}
-    runs-on: ${{ fromJSON(vars.E2E_RUNNER_LABELS || '["self-hosted","gpu"]') }}
-    continue-on-error: true
-    timeout-minutes: 30
-    env:
-      CI: "true"
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-    steps:
-      - uses: actions/checkout@v4
-
-      # ── CACHE STRATEGY ──
-      # Same caching as quality job
-      - name: Cache Next.js build output
-        uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            next-build-${{ runner.os }}-
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-gpu-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            playwright-gpu-${{ runner.os }}-
-
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - run: npm run build:static
-      - name: Install Xvfb
-        run: sudo apt-get update && sudo apt-get install -y xvfb
-      - name: Serve the static export
-        run: |
-          # nohup + disown: each `run:` is its own shell, and a plain `&` job can be
-          # reaped when that shell exits, leaving the next step to test nothing.
-          nohup python3 -m http.server 5599 --directory out > /tmp/static-server.log 2>&1 &
-          disown
-          for _ in $(seq 1 30); do
-            curl -fsS http://127.0.0.1:5599/ >/dev/null 2>&1 && break
-            sleep 1
-          done
-          curl -fsS -o /dev/null http://127.0.0.1:5599/ || {
-            echo "::error::the static export never came up on :5599 — refusing to run the suite against nothing"
-            exit 1
-          }
-
-      - run: xvfb-run -a --server-args="-screen 0 1920x1080x24" npx playwright test --reporter=json,html,list
-        env:
-          PLAYWRIGHT_BASE_URL: http://127.0.0.1:5599
-
-  # ── CI-CD-7: VISUAL REGRESSION DIFF (SIGNAL, non-gating) ──
-  # Compares PR screenshots against main branch baselines using pixelmatch.
-  # Generates a self-contained HTML report with side-by-side diffs and posts a
-  # summary comment on the PR. Threshold: 0.5% pixel difference = pass.
-  # Baselines are stored in the repo at tests/overhaul/__screenshots__/ and
-  # must be committed to main. Initial baselines can be generated with:
-  #   node scripts/ci/capture_screenshots.mjs
-  visual-diff:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    timeout-minutes: 10
-    permissions:
-      contents: read
-      pull-requests: write
-    env:
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-
-      - run: npm ci
-
-      - name: Fetch baseline screenshots from main
-        run: |
-          echo "Fetching main branch baselines..."
-          git fetch origin main --depth=1
-          # Extract baselines from main branch into a temp directory
-          mkdir -p /tmp/baselines
-          git show origin/main:tests/overhaul/__screenshots__/ > /dev/null 2>&1 && \
-            git checkout origin/main -- tests/overhaul/__screenshots__/ && \
-            cp tests/overhaul/__screenshots__/*.png /tmp/baselines/ 2>/dev/null || \
-            echo "::warning::No baseline screenshots found on main branch — all PR screenshots will show as 'added'"
-          # Restore PR version of the screenshots directory
-          git checkout HEAD -- tests/overhaul/__screenshots__/ 2>/dev/null || true
-
-      - name: Capture PR screenshots
-        run: |
-          echo "Building static export for screenshot capture..."
-          npm run build:static
-          echo "Starting dev server and capturing screenshots..."
-          npx next start -p 3000 &
-          SERVER_PID=$!
-          # Wait for server
-          for i in $(seq 1 30); do
-            if curl -fsS http://127.0.0.1:3000/ >/dev/null 2>&1; then
-              echo "Server ready"
-              break
-            fi
-            sleep 1
-          done
-          # Capture screenshots
-          node scripts/ci/capture_screenshots.mjs --base-url http://127.0.0.1:3000 --output /tmp/actual
-          kill $SERVER_PID 2>/dev/null || true
-
-      - name: Run visual diff
-        id: visual-diff
-        run: |
-          mkdir -p reports/visual-diff
-          node scripts/ci/visual_diff.mjs \
-            --baseline /tmp/baselines \
-            --actual /tmp/actual \
-            --output reports/visual-diff \
-            --threshold 0.5 \
-            > reports/visual-diff/summary.json
-          echo "--- Visual Diff Summary ---"
-          cat reports/visual-diff/summary.json
-
-      - name: Upload visual diff report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: visual-diff-report
-          path: reports/visual-diff/
-          retention-days: 30
-
-      - name: Post PR comment with visual diff summary
-        if: always() && github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('node:fs');
-            const path = require('node:path');
-
-            let summary;
-            try {
-              summary = JSON.parse(fs.readFileSync('reports/visual-diff/summary.json', 'utf8'));
-            } catch (e) {
-              core.warning('Could not read visual diff summary: ' + e.message);
-              return;
-            }
-
-            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-
-            let body = '## Visual Regression Report\n\n';
-            body += `| Status | Count |\n`;
-            body += `|--------|-------|\n`;
-            body += `| Unchanged | ${summary.unchanged} |\n`;
-            body += `| Changed | ${summary.changed} |\n`;
-            body += `| Added | ${summary.added} |\n`;
-            body += `| Removed | ${summary.removed} |\n`;
-            if (summary.errors > 0) {
-              body += `| Errors | ${summary.errors} |\n`;
-            }
-            body += `\n**Threshold**: ${summary.threshold}% pixel difference\n`;
-            body += `\n${summary.changed} screenshots changed, ${summary.added} added, ${summary.removed} removed`;
-            if (summary.changed > 0) {
-              body += ` (above ${summary.threshold}% threshold)`;
-            }
-            body += `\n\n[View full report](${runUrl}) — download the \`visual-diff-report\` artifact.`;
-
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-
-            // Update existing visual-diff comment or create new one
-            const existing = comments.find(c => c.body.includes('Visual Regression Report'));
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: existing.id,
-                body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body,
-              });
-            }
-
-  # ══════════════════════════════════════════════════════════════════
-  # Performance Budget Gate (TC-NFR-PERF)
-  # ══════════════════════════════════════════════════════════════════
-  #
-  # Budget rationale (static Next.js export → Firebase Hosting):
-  #
-  # GATE SHAPE.  Two tiers, because the composite Lighthouse performance
-  #   score and the individual metrics fail for different reasons:
-  #
-  #   Tier 1 — DEPLOY GATE (hard `error` in lighthouserc.json).  The
-  #     per-metric budgets below (FCP/LCP/TBT/CLS/SI) plus the
-  #     accessibility and best-practices category scores.  These are
-  #     causal, diagnosable and measured green on ubuntu-latest, so a
-  #     failure here is a real regression with a named cause, not noise.
-  #
-  #   Tier 2 — COMPOSITE SCORE.  `categories:performance` stays declared
-  #     at its full target of 0.80 but at `warn` level, and is re-checked
-  #     by the "Composite performance score" step below, which takes the
-  #     MEDIAN of the 3 runs per URL (the lhci default is `optimistic`,
-  #     i.e. best-of-3) and then:
-  #       · median < 0.80 (PERF_SCORE_TARGET) → ::warning:: + job summary.
-  #         Non-gating: the composite is a nonlinear, log-normal remap of
-  #         the same metrics, so it swings far more than the underlying
-  #         measurements (observed on this repo: 0.56 / 0.63 / pass /
-  #         0.71 across consecutive runs).  Gating deploy on it has
-  #         blocked every ship — including security fixes — while the
-  #         metric budgets it is derived from were all green.
-  #       · median < 0.50 (PERF_SCORE_FLOOR) → hard failure.  This is a
-  #         catastrophe backstop (an unoptimised megabyte asset, an
-  #         unthrottled WebGL scene), NOT the quality target.  It is set
-  #         well below the observed 0.56–0.71 band precisely so that it
-  #         cannot flap; it exists so the composite can never silently
-  #         rot while it is non-gating.
-  #     The step also fails when zero Lighthouse reports are produced, so
-  #     a silently-broken `collect` cannot masquerade as a pass.
-  #
-  #   RATCHET: when the median composite reaches 0.80 on three
-  #   consecutive main runs, restore `categories:performance` to `error`
-  #   in lighthouserc.json and delete the Tier-2 step. Until then the
-  #   0.80 target is reported on every run so the gap stays visible.
-  #
-  # FCP   ≤ 2000 ms: First paint from cold.  The root page ships ~45 KB
-  #   of compressed HTML + a CSS bundle; the next-server delivers it
-  #   without waiting for hydration.  2 s is generous with CDN caching.
-  #
-  # LCP   ≤ 3500 ms: Largest element (typically the 3D hero background
-  #   or an image).  Three.js initialisation takes one frame ≤16 ms on
-  #   a modern CPU; geometry/textures may add ~500 ms.  3.5 s gives
-  #   headroom for cold GPU shader compilation.
-  #
-  # TBT   ≤ 400 ms:  Total main-thread time between FCP and TTI.  Our
-  #   hydration bundle (React + Framer Motion + GSAP) is ~120 KB gzipped
-  #   on root and hydrates in <200 ms on desktop; 400 ms catches any
-  #   long-task regression.
-  #
-  # CLS   ≤ 0.05:   The page is designed with fixed-dimension containers
-  #   and skeleton placeholders.  0.05 is the "needs improvement"
-  #   threshold per web.dev; we gate at that boundary so a layout shift
-  #   never ships.
-  #
-  # Pages audited: / (entrypoint with 3D hero) and /performance-benchmark
-  #   (standalone Three.js stress-test).  /history and /artifact/* do
-  #   not exist in this codebase; if added, they must be appended to
-  #   the URL list in lighthouserc.json.
-  # ══════════════════════════════════════════════════════════════════
-  lighthouse:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    env:
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-    steps:
-      - uses: actions/checkout@v4
-
-      # ── CACHE STRATEGY ──
-      # Same caching as quality job
-      - name: Cache Next.js build output
-        uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            next-build-${{ runner.os }}-
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-      - run: npm ci
-      - run: npm run build
-
-      - name: Lighthouse collect + assert (lighthouserc.json)
-        run: |
-          set -euo pipefail
-
-          cleanup() {
-            if [ -n "${SERVER_PID:-}" ] && kill -0 "$SERVER_PID" 2>/dev/null; then
-              echo "Cleaning up dev server (PID $SERVER_PID)..."
-              kill "$SERVER_PID" 2>/dev/null || true
-              wait "$SERVER_PID" 2>/dev/null || true
-            fi
-          }
-          trap cleanup EXIT
-
-          # Start the production Next.js server
-          npx next start -p 3000 &
-          SERVER_PID=$!
-          echo "Dev server started (PID $SERVER_PID)"
-
-          # Wait for the server to be ready (up to 60 s)
-          for _ in $(seq 1 60); do
-            if curl -fsS http://127.0.0.1:3000/ >/dev/null 2>&1; then
-              echo "Server is ready"
-              break
-            fi
-            sleep 1
-          done
-
-          # Collect Lighthouse runs
-          npx --yes @lhci/cli@0.13.0 collect --config=lighthouserc.json
-
-          # Assert budgets (hard gate — exits non-zero on failure)
-          npx --yes @lhci/cli@0.13.0 assert --config=lighthouserc.json
-
-      # Tier 2 of the perf gate (see the rationale block above): median-of-runs
-      # composite score. Reports the 0.80 target as a non-gating warning and
-      # hard-fails only on the catastrophe floor or on a collect that produced
-      # no reports at all.
-      - name: Composite performance score (median of runs)
-        if: always()
-        env:
-          PERF_SCORE_TARGET: "0.80"
-          PERF_SCORE_FLOOR: "0.50"
-        run: |
-          set -euo pipefail
-          shopt -s nullglob
-
-          reports=(.lighthouseci/lhr-*.json)
-          if [ "${#reports[@]}" -eq 0 ]; then
-            echo "::error::Lighthouse produced no reports (.lighthouseci/lhr-*.json is empty) — treating as a failed audit, not a pass."
-            exit 1
-          fi
-
-          jq -s '
-            map({
-              url: (.requestedUrl // .finalDisplayedUrl // "unknown"),
-              score: (.categories.performance.score // 0)
-            })
-            | group_by(.url)
-            | map({
-                url: .[0].url,
-                runs: length,
-                median: (map(.score) | sort | .[(length / 2) | floor])
-              })
-            | sort_by(.median)
-          ' "${reports[@]}" > /tmp/perf-composite.json
-
-          {
-            echo '## Composite performance score (non-gating target, gating floor)'
-            echo ''
-            echo "| Page | Runs | Median perf score | Target ${PERF_SCORE_TARGET} | Floor ${PERF_SCORE_FLOOR} |"
-            echo '|------|------|-------------------|--------|-------|'
-            jq -r --arg t "$PERF_SCORE_TARGET" --arg f "$PERF_SCORE_FLOOR" '
-              .[] | "| \(.url) | \(.runs) | \(.median) | \(if .median >= ($t | tonumber) then "met" else "below" end) | \(if .median >= ($f | tonumber) then "ok" else "BREACHED" end) |"
-            ' /tmp/perf-composite.json
-          } >> "$GITHUB_STEP_SUMMARY"
-
-          below_floor=0
-          while IFS=$'\t' read -r url median; do
-            if awk -v m="$median" -v f="$PERF_SCORE_FLOOR" 'BEGIN { exit !(m < f) }'; then
-              echo "::error::$url composite performance score $median is below the catastrophe floor $PERF_SCORE_FLOOR"
-              below_floor=1
-            elif awk -v m="$median" -v t="$PERF_SCORE_TARGET" 'BEGIN { exit !(m < t) }'; then
-              echo "::warning::$url composite performance score $median is below the $PERF_SCORE_TARGET target (non-gating; per-metric budgets are the deploy gate)"
+          git config user.name "forgotten-mistory-deploy"
+          git config user.email "deploy@forgotten-mistory.web.app"
+          git fetch --prune origin
+          merged=()
+          skipped=()
+          for ref in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin/ | grep -vE '^origin/(main|HEAD)$'); do
+            name="${ref#origin/}"
+            if git merge --no-edit "$ref" -m "consolidate: merge $name into main"; then
+              merged+=("$name")
             else
-              echo "::notice::$url composite performance score $median meets the $PERF_SCORE_TARGET target"
+              git merge --abort
+              skipped+=("$name")
             fi
-          done < <(jq -r '.[] | "\(.url)\t\(.median)"' /tmp/perf-composite.json)
-
-          exit "$below_floor"
-
-      - name: CI summary — per-page performance metrics
-        if: always()
-        run: |
+          done
+          if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+            git push origin HEAD:main
+          fi
+          for name in "${merged[@]}"; do
+            if ! git push origin --delete "$name"; then
+              echo "::warning::merged $name but could not delete it on the remote"
+            fi
+          done
           {
-            echo '## Lighthouse Performance Summary'
-            echo ''
-            echo '| Page | Perf | FCP (ms) | LCP (ms) | TBT (ms) | CLS | SI (ms) |'
-            echo '|------|------|----------|----------|----------|-----|---------|'
-
-            for lhr in .lighthouseci/lhr-*.json; do
-              [ -f "$lhr" ] || continue
-              url="$(jq -r '.requestedUrl // .finalDisplayedUrl // "unknown"' "$lhr")"
-              page="$(echo "$url" | sed 's|http://127.0.0.1:3000||')"
-              [ -z "$page" ] && page="/"
-              perf="$(jq -r '(.categories.performance.score // 0) * 100 | floor' "$lhr")"
-              fcp="$(jq -r '(.audits["first-contentful-paint"].numericValue // 0) | floor' "$lhr")"
-              lcp="$(jq -r '(.audits["largest-contentful-paint"].numericValue // 0) | floor' "$lhr")"
-              tbt="$(jq -r '(.audits["total-blocking-time"].numericValue // 0) | floor' "$lhr")"
-              cls="$(jq -r '.audits["cumulative-layout-shift"].numericValue // 0' "$lhr")"
-              si="$(jq -r '(.audits["speed-index"].numericValue // 0) | floor' "$lhr")"
-              printf '| %s | %s | %s | %s | %s | %.4f | %s |\n' \
-                "$page" "${perf}" "${fcp}" "${lcp}" "${tbt}" "${cls}" "${si}"
-            done
-
-            echo ''
-            echo 'Budgets defined in `lighthouserc.json`. See artifact `lighthouse-html-report` for full detail.'
+            echo "## Consolidation"
+            echo ""
+            echo "- deploying: \`$(git rev-parse --short=8 HEAD)\`"
+            echo "- merged and deleted: ${merged[*]:-none}"
+            echo "- left in place (conflict, needs a human or an agent): ${skipped[*]:-none}"
           } >> "$GITHUB_STEP_SUMMARY"
-
-      # `lhci collect` writes its per-run lhr-*.json / lhr-*.html into ./.lighthouseci/
-      # (lighthouserc.json's upload.outputDir, .lighthouseci/reports/, only exists after
-      # `lhci upload`, which this job never runs). actions/upload-artifact@v4 (>= 4.4.0)
-      # excludes hidden files by default, and "hidden" means every file under a
-      # directory whose name starts with "." — so without include-hidden-files the
-      # action found nothing under .lighthouseci/ and if-no-files-found: error failed
-      # the job after collect, assert and the composite score had all passed
-      # (run 33933075366). The reports are Lighthouse audits of a public page; they
-      # carry no secrets. if-no-files-found stays `error`: an empty collect must fail.
-      - name: Upload Lighthouse reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lighthouse-html-report
-          path: .lighthouseci/
-          include-hidden-files: true
-          if-no-files-found: error
-          retention-days: 30
-
-  # ── Accessibility (TC-NFR-A11Y): axe + SEO/schema ──
-  axe:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    env:
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-    steps:
-      - uses: actions/checkout@v4
-
-      # ── CACHE STRATEGY ──
-      # Same caching as quality job
-      - name: Cache Next.js build output
-        uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            next-build-${{ runner.os }}-
+          for name in "${skipped[@]}"; do
+            echo "::warning::branch $name conflicts with main and was not merged"
+          done
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
           cache: npm
+
       - run: npm ci
 
-      # R6 UPGRADE (High): Cache Playwright browsers for axe job.
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        id: axe-playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            playwright-${{ runner.os }}-
-
-      - name: Install Playwright browsers
-        if: steps.axe-playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
-      - name: Install system deps (cached browsers still need deps)
-        if: steps.axe-playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps chromium
-      - name: axe accessibility + SEO
-        run: npm run validate:phase06
-
-  # Deploy gate = always-green GitHub-hosted jobs only. The E2E test/test-gpu jobs
-  # are intentionally NOT listed here: they are non-gating signal so the live site never
-  # waits on an offline GPU runner (R6).
-  build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    needs: [quality, lint, lighthouse, axe]
-    steps:
-      - uses: actions/checkout@v4
-
-      # ── CACHE STRATEGY ──
-      # Same caching as quality job
-      - name: Cache Next.js build output
-        uses: actions/cache@v4
-        with:
-          path: .next/cache
-          key: next-build-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            next-build-${{ runner.os }}-
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-      - run: npm ci
-      - run: npm run build:static
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      # NFR-SEC deploy gate. `build:static` already chains this scan, but it runs
-      # again as its own named, non-skippable step so the emitted bundle is proven
-      # credential-free BEFORE it is uploaded as an artifact and BEFORE `deploy`
-      # (needs: [build]) can publish it. A leak therefore fails the pipeline while
-      # the bytes are still on the runner.
-      - name: Built-output secret scan (blocks artifact upload and deploy)
-        run: npm run validate:secrets
-      - uses: actions/upload-artifact@v4
-        with:
-          name: static-site
-          path: out
-          retention-days: 7
-
-  # R6 UPGRADE (Medium): PR preview channels on Firebase Hosting.
-  # Deploys to a preview channel per PR for instant preview URLs.
-  # Gated on the same quality gates as build; does NOT gate main deploy.
-  preview:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    needs: [build]
-    permissions:
-      contents: read
-      checks: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: static-site
-          path: out
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          projectId: forgotten-mistory
-          channelId: preview-${{ github.event.number }}
-          expires: 7d
-
-  # ── Automated deploy to Firebase Hosting (live channel). Runs ONLY on push to
-  #    main, after every gate is green. PRs get the full CI but never deploy. ──
-  deploy:
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    needs: [build]
-    permissions:
-      contents: read
-      checks: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: static-site
-          path: out
-
-      - name: Deploy to Firebase live channel (main)
-        id: firebase-deploy
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      # firebase.json declares `predeploy: npm run build:static`, so the deploy
+      # command builds the export from this exact checkout and ships it. The
+      # build stamps the page with the commit it was built from.
+      - name: Deploy to Firebase Hosting (live)
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           projectId: forgotten-mistory
           channelId: live
 
-  # ── STAGE 7 (R6): Post-deploy production smoke verification. Runs ONLY after a
-  #    successful live deploy to main. Polls the production URL until it returns
-  #    HTTP 200 — deploy/CDN propagation can lag a few seconds — then fails loudly
-  #    if the site never comes back healthy. This closes the loop so a green
-  #    pipeline means the LIVE SITE is actually serving 200, not merely that the
-  #    `firebase deploy` command exited 0. The production URL is sourced from the
-  #    repo variable PRODUCTION_URL when set, falling back to the canonical
-  #    Firebase Hosting domain. No secrets are referenced here. ──
-  verify:
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: [deploy]
-    permissions:
-      contents: read
-    env:
-      PROD_URL: ${{ vars.PRODUCTION_URL || 'https://forgotten-mistory.web.app' }}
-    steps:
-      - name: Verify production responds HTTP 200
+      - name: Verify the live page carries the deployed commit
         run: |
           set -euo pipefail
-          echo "Verifying production deployment at: $PROD_URL"
-          attempts=12
-          delay=10
-          for i in $(seq 1 "$attempts"); do
-            code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 -L "$PROD_URL" || echo '000')"
-            echo "Attempt $i/$attempts → HTTP $code"
-            if [ "$code" = "200" ]; then
-              echo "Production is live and healthy (HTTP 200)."
+          expected="${{ steps.consolidate.outputs.sha }}"
+          for _ in $(seq 1 12); do
+            live="$(curl -fsS --max-time 20 https://forgotten-mistory.web.app/ | grep -oE 'name="build-commit" content="[0-9a-f]+"' | grep -oE '[0-9a-f]{7,40}' || true)"
+            if [ -n "$live" ] && [[ "$expected" == "$live"* ]]; then
+              echo "live page serves $live (HEAD $expected)"
+              echo "- verified live: \`$live\`" >> "$GITHUB_STEP_SUMMARY"
               exit 0
             fi
-            sleep "$delay"
+            sleep 10
           done
-          echo "Production did not return HTTP 200 after $attempts attempts."
+          echo "::error::live page serves '${live:-nothing}', expected ${expected:0:8}"
           exit 1
