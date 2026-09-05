@@ -13,7 +13,15 @@
 
 export const avatarContent = {
   still: {
-    /** 1480x826, measured with ffprobe. AVIF 41 kB → WebP 66 kB → PNG 179 kB. */
+    /**
+     * 1480x826 master, measured with `identify`. AVIF 41 kB → WebP 66 kB → PNG
+     * 496 kB (PNG is the no-modern-format fallback + schema image, regenerated
+     * from the 1480x826 WebP master — a format match at the same resolution,
+     * not an upscale; under the 500 kB image budget). This is the honest
+     * ceiling: no ≥1080p portrait source exists on the host, so R5 (≥4K@60 or
+     * resolution-independent) is a documented FAIL for the portrait — see
+     * docs/delivery/evidence/v10-20260905T0515Z/G2-H5/asset-ladder.md.
+     */
     avif: '/assets/my_avatar.avif',
     webp: '/assets/my_avatar.webp',
     png: '/assets/my_avatar.png',
@@ -23,10 +31,14 @@ export const avatarContent = {
   },
   loop: {
     /**
-     * 1280x720, 24 fps, 12.3 s, 1.1 MB — the same composition as the still
-     * (landmarks measured frame-for-frame), at twice the pixels of the 640x360
-     * hero loop. It is never on the critical path: `preload="none"`, and the
-     * `src` is assigned on the reader's first hover, focus or press.
+     * 1280x720, 24 fps, 12.3 s, 1.1 MB, H.264 — the same composition as the
+     * still (landmarks measured frame-for-frame). This is the best honest
+     * portrait video available: no ≥1080p source exists on the host, so R5 is
+     * a FAIL for the portrait loop until a real ≥4K@60 capture or generation
+     * credits land. The former 640x360 orphan (`my-hero-avatar.mp4`) was
+     * unreferenced and has been retired (t_g2_h5). It is never on the critical
+     * path: `preload="none"`, and the `src` is assigned on the reader's first
+     * hover, focus or press.
      */
     src: '/assets/my-avatar.mp4',
     width: 1280,
