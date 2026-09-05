@@ -1,0 +1,42 @@
+# 01-baseline.log — C11-vitrine-integration, run v10-20260905T0515Z
+
+pwd: /root/forgotten-mistory/.claude/worktrees/wf_18f926b0-2a4-2
+branch: worktree-wf_18f926b0-2a4-2
+head: 8dc4cf4 docs(run): open v10 — owner prompt refreshed, v9 phase F and c12 evidence recorded
+merge-base with origin/main: 8dc4cf46d37eb1634e9821259a2c0bdbc872bbc8 (HEAD == origin/main)
+git status --short before patch: (empty — clean tree)
+git apply --check --3way /root/.claude/jobs/2ca96782/tmp/c11-vitrine.patch: exit 0
+  files the patch touches (14):
+    components/sections/About/About.module.css
+    components/sections/About/Compass.module.css
+    components/sections/Experience/Experience.module.css
+    components/sections/Hero/Hero.module.css
+    components/sections/Hero/Hero.tsx
+    components/sections/Vitrine/Drawings.module.css
+    components/sections/Vitrine/Drawings.tsx
+    components/sections/Vitrine/Vitrine.module.css
+    components/sections/Vitrine/Vitrine.tsx
+    docs/delivery/evidence/v9-20260904T2312Z/C11-vitrine-integration/apply_edits.py
+    tests/baselines/overhaul/render.spec.ts-snapshots/hero-section-chromium-linux.png
+    tests/baselines/visual/screenshots.spec.ts-snapshots/hero-full-chromium-linux.png
+    tests/baselines/visual/screenshots.spec.ts-snapshots/viewport-top-1440x900-chromium-linux.png
+    tests/e2e/vitrine.spec.ts
+node_modules before npm ci: absent (fresh worktree)
+
+CI baseline (Checks run 33936783382 on main): 15 failed / 272 passed. Red list supplied by the orchestrator:
+  tests/a11y/gold-contrast.spec.ts GC-01
+  tests/a11y/interaction-states.spec.ts TC-STATE-FOCUS
+  tests/a11y/interaction-states.spec.ts TC-STATE-FOCUS-REDUCED-MOTION
+  tests/a11y/text-contrast.spec.ts TC-CONTRAST-01 @ 1440
+  tests/a11y/text-contrast.spec.ts TC-CONTRAST-01 @ 390
+  tests/e2e/chatbot.spec.ts TC-BOT-12
+  tests/e2e/experience.spec.ts TC-EXP-11
+  tests/e2e/hero.spec.ts TC-HERO-12
+  tests/e2e/interaction-states.spec.ts TC-STATE-HOVER
+  tests/e2e/interaction-states.spec.ts TC-STATE-ACTIVE
+  tests/e2e/listen.spec.ts TC-LISTEN-05
+  tests/overhaul/render.spec.ts TC-RENDER-07
+  tests/visual/screenshots.spec.ts VIS-01
+  tests/visual/screenshots.spec.ts VIS-02
+  tests/visual/screenshots.spec.ts VIS-04
+  tests/visual/screenshots.spec.ts VIS-06

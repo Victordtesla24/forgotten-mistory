@@ -137,4 +137,180 @@ test.describe('Vitrine', () => {
         .toBeLessThanOrEqual(2);
     }
   });
+
+  test('TC-VIT-10: a plate traces its drawing when the light reaches it', async ({ page }) => {
+    // Council R-c1 (motion, #vitrine): the drawings are the section's story —
+    // what each repository does — so they are traced as the plate is lit, not
+    // printed static. Scroll the rail by 700 and the third plate takes the
+    // light; its first stroke must have run its dash to 0 within 1200 ms.
+    const plates = page.locator(`${VITRINE} ol > li`);
+    const litIndex = () =>
+      plates.evaluateAll((nodes) => nodes.findIndex((n) => n.getAttribute('data-lit') === 'true'));
+    const litBefore = await litIndex();
+    await page.locator(`${VITRINE} ol`).evaluate((rail) => {
+      rail.scrollBy({ left: 700, behavior: 'instant' as ScrollBehavior });
+    });
+    await expect.poll(litIndex, { timeout: 2000 }).toBe(2);
+    expect(litBefore, 'the third plate was not the lit one before the scroll').not.toBe(2);
+
+    const stroke = plates
+      .nth(2)
+      .locator('svg[role="img"] :is(path, line, circle)')
+      .first();
+    await expect(stroke).toHaveAttribute('pathLength', '1');
+    const dashoffset = () =>
+      stroke.evaluate((el) => Number.parseFloat(getComputedStyle(el).strokeDashoffset));
+    await expect
+      .poll(dashoffset, {
+        timeout: 1200,
+        intervals: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+        message: 'first stroke of the lit plate traced to 0',
+      })
+      .toBe(0);
+
+    // Drawn once: the light moving on does not undraw the plate.
+    await page.locator(`${VITRINE} ol`).evaluate((rail) => {
+      rail.scrollTo({ left: 0, behavior: 'instant' as ScrollBehavior });
+    });
+    await expect.poll(litIndex, { timeout: 2000 }).not.toBe(2);
+    await expect(plates.nth(2)).toHaveAttribute('data-drawn', 'true');
+    expect(await dashoffset()).toBe(0);
+  });
+
+  test('TC-VIT-11: under reduced motion the drawings are present, untraced', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    await page.locator(VITRINE).scrollIntoViewIfNeeded();
+    // The fifth plate has never been lit, so it has neither data-lit nor
+    // data-drawn: only the reduced-motion rule can have put its strokes at 0.
+    const plate = page.locator(`${VITRINE} ol > li`).nth(4);
+    await expect(plate).not.toHaveAttribute('data-lit', /.*/);
+    await expect(plate).not.toHaveAttribute('data-drawn', /.*/);
+    const stroke = plate.locator('svg[role="img"] :is(path, line, circle)').first();
+    const style = await stroke.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { offset: Number.parseFloat(cs.strokeDashoffset), transition: cs.transitionProperty };
+    });
+    expect(style.offset, 'strokes are present immediately under reduced motion').toBe(0);
+    expect(style.transition, 'no dash animation under reduced motion').not.toContain('stroke-dashoffset');
+  });
+
+  // Council R-c8, C-02 (blocker): the card rail sat 96 px (1440) / 336 px
+  // (1920) off its own heading's spine, the right-most card was cut mid-word
+  // with a hard edge, card 02 was lit at rest instead of 01, and an unlit
+  // plate at 0.42 composited its captions to 1.75:1. Each half of that finding
+  // is an assertion below, at the two widths the council measured.
+  for (const width of [1440, 1920]) {
+    test(`TC-VIT-12 @ ${width}: card 01 stands on the heading's spine, lit at rest, and the rail fades rather than cuts`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 900 });
+
+      // First paint, before any script: the server-rendered HTML already
+      // carries the light on plate 01. A rail that only lights after hydration
+      // shows six dimmed cards for as long as the bundle takes to arrive.
+      const html = await (await page.request.get('/')).text();
+      const railHtml = html.slice(html.indexOf('id="vitrine"'));
+      const firstPlate = railHtml.slice(railHtml.indexOf('<li'), railHtml.indexOf('>', railHtml.indexOf('<li')) + 1);
+      expect(firstPlate, 'plate 01 carries data-lit in the server-rendered HTML').toContain('data-lit="true"');
+
+      await page.goto('/');
+      await page.locator(VITRINE).scrollIntoViewIfNeeded();
+      await page.waitForTimeout(600);
+
+      const plates = page.locator(`${VITRINE} ol > li`);
+      await expect(plates.first()).toHaveAttribute('data-lit', 'true');
+      await expect(page.locator(`${VITRINE} ol > li[data-lit]`)).toHaveCount(1);
+
+      // One spine. The heading's left edge and the first card's border-left
+      // are the same x, within a pixel of sub-pixel rounding.
+      const headingLeft = (await page.locator(`${VITRINE} h2`).boundingBox())!.x;
+      const cardLeft = (await plates.first().boundingBox())!.x;
+      expect(
+        Math.abs(cardLeft - headingLeft),
+        `heading left ${headingLeft.toFixed(2)} vs card 01 border-left ${cardLeft.toFixed(2)}`,
+      ).toBeLessThanOrEqual(1);
+
+      // The rail ends in a fade, not a cut: a mask is declared and computed.
+      const mask = await page.locator(`${VITRINE} ol`).evaluate((rail) => {
+        const cs = getComputedStyle(rail) as CSSStyleDeclaration & { webkitMaskImage?: string };
+        return cs.maskImage && cs.maskImage !== 'none' ? cs.maskImage : (cs.webkitMaskImage ?? 'none');
+      });
+      expect(mask, 'computed mask-image on the rail').not.toBe('none');
+      expect(mask).toContain('linear-gradient');
+
+      // The shadow half of the raking light is still legible: an unlit plate
+      // composites at 0.62, never the 0.42 that failed AA.
+      const unlit = page.locator(`${VITRINE} ol > li:not([data-lit])`).first();
+      const opacity = await unlit.evaluate((el) => Number.parseFloat(getComputedStyle(el).opacity));
+      expect(opacity, 'unlit plate opacity').toBeGreaterThanOrEqual(0.6);
+
+      // The light moves with the reader, and it is one light: after a scroll
+      // exactly one plate carries it.
+      await page.locator(`${VITRINE} ol`).evaluate((rail) => {
+        rail.scrollBy({ left: 600, behavior: 'instant' as ScrollBehavior });
+      });
+      await page.waitForTimeout(400);
+      await expect(page.locator(`${VITRINE} ol > li[data-lit]`)).toHaveCount(1);
+    });
+  }
+
+  test('TC-VIT-13: every stroke of a lit plate lands inside the cinematic band', async ({ page }) => {
+    // Council R-c8, C-02 acceptance: "lit plate svg paths reach
+    // stroke-dashoffset 0 by 900 ms". Plate 01 has twenty-five strokes, so a
+    // fixed 40 ms stagger on top of a 900 ms draw ran to 1.9 s; the stagger is
+    // budgeted (Drawings.module.css `--n`) so the last stroke lands by 880 ms
+    // whatever the count. Two readings: the timing the stylesheet declares
+    // (deterministic) and the moment the last stroke actually reaches 0
+    // (harness-tolerant, measured from the attribute change itself).
+    const plates = page.locator(`${VITRINE} ol > li`);
+    const target = plates.nth(2);
+    await expect(target).not.toHaveAttribute('data-lit', /.*/);
+
+    // Timestamp the moment the light reaches the plate, from inside the page.
+    await target.evaluate((plate) => {
+      const w = window as unknown as { __litAt: number | null };
+      w.__litAt = null;
+      new MutationObserver(() => {
+        if (plate.hasAttribute('data-lit') && w.__litAt === null) w.__litAt = performance.now();
+      }).observe(plate, { attributes: true, attributeFilter: ['data-lit'] });
+    });
+    await page.locator(`${VITRINE} ol`).evaluate((rail) => {
+      rail.scrollBy({ left: 700, behavior: 'instant' as ScrollBehavior });
+    });
+    await expect(target).toHaveAttribute('data-lit', 'true', { timeout: 2000 });
+
+    const result = await target.evaluate(
+      (plate) =>
+        new Promise<{ strokes: number; declaredMaxMs: number; landedMs: number }>((resolve) => {
+          const w = window as unknown as { __litAt: number | null };
+          const strokes = Array.from(
+            plate.querySelectorAll<SVGElement>('svg[role="img"] :is(path, line, circle, rect)[pathLength]'),
+          );
+          const ms = (v: string) => {
+            const n = Number.parseFloat(v);
+            return v.trim().endsWith('ms') ? n : n * 1000;
+          };
+          // The stylesheet's own promise: duration + delay for every stroke.
+          const declaredMaxMs = Math.max(
+            ...strokes.map((s) => {
+              const cs = getComputedStyle(s);
+              return ms(cs.transitionDuration.split(',')[0]) + ms(cs.transitionDelay.split(',')[0]);
+            }),
+          );
+          const litAt = w.__litAt ?? performance.now();
+          const tick = () => {
+            const now = performance.now();
+            const done = strokes.every((s) => Number.parseFloat(getComputedStyle(s).strokeDashoffset) === 0);
+            if (done) return resolve({ strokes: strokes.length, declaredMaxMs, landedMs: now - litAt });
+            if (now - litAt > 4000) return resolve({ strokes: strokes.length, declaredMaxMs, landedMs: Infinity });
+            requestAnimationFrame(tick);
+          };
+          tick();
+        }),
+    );
+    expect(result.strokes, 'the lit plate has traced strokes').toBeGreaterThan(0);
+    expect(result.declaredMaxMs, `declared duration + delay of the slowest stroke (${result.strokes} strokes)`).toBeLessThanOrEqual(900);
+    expect(result.landedMs, `all ${result.strokes} strokes at dashoffset 0`).toBeLessThanOrEqual(1200);
+  });
 });

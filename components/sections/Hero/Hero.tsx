@@ -75,10 +75,14 @@ export default function Hero() {
               <Caliper state="self-reported" className={styles.ledgerValue}>
                 {entry.value}
               </Caliper>
-              <span className={styles.ledgerLabel}>{entry.label}</span>
-              {/* Provenance sits with the figure. A number a reader cannot
-                  trace is a claim, not evidence. */}
-              <span className={styles.ledgerSource}>{entry.source}</span>
+              {/* One cell on a phone, two rows beside the figure elsewhere:
+                  the wrapper has no box of its own above 600 px. */}
+              <span className={styles.ledgerText}>
+                <span className={styles.ledgerLabel}>{entry.label}</span>
+                {/* Provenance sits with the figure. A number a reader cannot
+                    trace is a claim, not evidence. */}
+                <span className={styles.ledgerSource}>{entry.source}</span>
+              </span>
             </li>
           ))}
         </ul>

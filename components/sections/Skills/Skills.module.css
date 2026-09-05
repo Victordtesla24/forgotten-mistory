@@ -317,12 +317,15 @@ tr[data-status="pending"] .statusLabel {
     font-size: var(--fs-caption);
     line-height: var(--lh-label);
     letter-spacing: 0.02em;
-    color: var(--ink-300);
+    /* --ink-300 measured 3.91:1 over the card's ground at 390 (text-contrast
+       gate). --mist-400 composites above 5:1 there; the path in <code> steps
+       up one token so it still reads brighter than the sentence around it. */
+    color: var(--mist-400);
 }
 
 .footer code {
     font-family: inherit;
-    color: var(--mist-400);
+    color: var(--mist-200);
 }
 
 /* ── Mobile: the table becomes stacked rows ──────────────────────────────── */

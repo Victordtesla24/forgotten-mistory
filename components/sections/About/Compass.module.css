@@ -139,15 +139,21 @@
     font-family: var(--font-mono);
     font-size: 3.4px;
     letter-spacing: 0.08px;
-    fill: var(--mist-200);
-    opacity: 0.75;
+    /* Set on `color` as well as `fill`: the contrast gate reads the computed
+       colour of SVG text, and the numerals are the ten labels that identify
+       the dimensions, not furniture. --white at 0.85 over the darkest ground
+       the dial sits on (#0A0A0A) composites to 7.5:1; over the sector fills
+       and the pool of light behind the face it stays above 4.5:1. */
+    color: var(--white);
+    fill: currentColor;
+    opacity: 0.85;
     transition:
         fill var(--motion-base) var(--motion-ease-standard),
         opacity var(--motion-base) var(--motion-ease-standard);
 }
 
 .numeral[data-active] {
-    fill: var(--white);
+    color: var(--white);
     opacity: 1;
 }
 
@@ -185,10 +191,14 @@
    Never a score: the section's argument is that a number nobody can source is
    not worth printing, and the instrument would be the loudest place to break
    it. */
+/* Both readouts paint through `color`, like the numerals: text whose fill is
+   a literal token cannot be masked by the contrast gate, which then samples
+   the glyph's own pixels as its ground and reports the hub number at 1:1. */
 .readNumber {
     font-family: var(--font-heading);
     font-size: 11px;
-    fill: var(--white);
+    color: var(--white);
+    fill: currentColor;
     letter-spacing: -0.2px;
 }
 
@@ -196,7 +206,8 @@
     font-family: var(--font-mono);
     font-size: 2.6px;
     letter-spacing: 0.42px;
-    fill: var(--mist-400);
+    color: var(--mist-400);
+    fill: currentColor;
 }
 
 @media (prefers-reduced-motion: reduce) {

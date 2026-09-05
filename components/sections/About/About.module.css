@@ -66,7 +66,7 @@
     gap: var(--space-1);
     margin: var(--space-3) 0 0;
     font-size: var(--fs-small);
-    color: var(--ink-300);
+    color: var(--mist-400);
 }
 
 .provenance a {
@@ -98,7 +98,7 @@
 
 .provenancePath {
     font-family: var(--font-mono);
-    color: var(--ink-300);
+    color: var(--mist-400);
 }
 
 /* ── Body: instrument + list ─────────────────────────────────────────────── */
@@ -153,7 +153,11 @@
 .instrumentConstant {
     font-size: var(--fs-caption);
     letter-spacing: var(--ls-caption);
-    color: var(--ink-300);
+    /* Same swap as the rest of this file (D-5): --ink-300 (#7D7D7D) measured
+       4.39:1 at 1440 and 4.40:1 at 390 on the section ground — under AA by a
+       tenth. --mist-400 (#909090) reads 5.6:1 there and is the token every
+       other caption in this module already uses. */
+    color: var(--mist-400);
 }
 
 /* ── The ten ─────────────────────────────────────────────────────────────── */
@@ -185,7 +189,7 @@
     font-family: var(--font-mono);
     font-size: var(--fs-small);
     line-height: var(--lh-caption);
-    color: var(--ink-300);
+    color: var(--mist-400);
     font-variant-numeric: tabular-nums;
     transition: color var(--motion-fast) var(--motion-ease-standard);
 }
@@ -211,13 +215,17 @@
     color: var(--white);
 }
 
-.sideTag {
+.item .name .sideTag {
     font-family: var(--font-mono);
     font-size: var(--fs-caption);
     font-weight: 400;
     letter-spacing: var(--ls-caption);
     text-transform: uppercase;
-    color: var(--ink-300);
+    /* The open caliper draws its value at 0.85 of the mark's colour. --ink-300
+       through that measured 3.7:1 (composition pass, 390); --mist-200 at 0.85
+       composites to #B0B0B0 on the page ground — 8.0:1, and 6.0:1 on the
+       lightest ground the list is ever drawn over. */
+    color: var(--mist-200);
     padding: var(--space-05) var(--space-1);
     border: 1px solid var(--token-border-default);
     border-radius: 3px;
@@ -237,7 +245,7 @@
     font-size: var(--fs-caption);
     line-height: var(--lh-label);
     letter-spacing: 0.01em;
-    color: var(--ink-300);
+    color: var(--mist-400);
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
@@ -248,11 +256,24 @@
     }
 
     .instrument {
-        position: static;
+        /* In flow above the list, never sticky over it: on a phone the
+           instrument is a header ornament the reader scrolls past, and a
+           sticky face behind the answers put the ten paragraphs over the
+           dial (composition pass, 390). `top` is reset with the position so
+           no later rule can pin it again. */
+        position: relative;
+        top: auto;
+        z-index: 0;
         /* Below the fold on a phone the compass is a header ornament, so it
            gets less of the screen than it does beside the list. */
         max-width: 14rem;
         margin: 0 auto;
+    }
+
+    .list {
+        position: relative;
+        z-index: 1;
+        background: var(--token-bg-base);
     }
 
     .item {
@@ -339,7 +360,7 @@
     font-size: var(--fs-caption);
     line-height: var(--lh-label);
     letter-spacing: 0.03em;
-    color: var(--ink-300);
+    color: var(--mist-400);
 }
 
 .keySwatch {
