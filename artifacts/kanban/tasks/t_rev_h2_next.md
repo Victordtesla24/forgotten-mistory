@@ -31,3 +31,9 @@ role_matrix: 3rd_party_independent_adversarial_review → level 1 → effort **m
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## STATUS (2026-09-05T14:24:58.710Z)
+running — dispatched 14:25Z on live 66199cba (poster ee334cc + grade 9e41474/3d25643 + no-Suspense 6f4ba6c)
+
+## COMPLETE (2026-09-05T14:36:52.897Z)
+REVIEWER PASS on live d5227962 (= 66199cba for every shipped hero file; G-REV/66199cba/08-adversarial-review.md, e16521a): 14/14 clauses — poster url() first layer at 1440/390 on all paths, served 12,935 B AVIF decoding at 3840×2160 (not downscaled), stage luminance GL-blocked .110/.120 and JS-off .110/.120 (floor .10), scrim Δ .291/.258 gl and .215/.064 still (floor .06), canvas 1459/1706 ms after DCL on SwiftShader with the poster painting at 200 ms, AA worst 6.2:1, hero floors .466/.831/.0098, LCP worst 1408 ms (h1 / portrait, never the poster), CLS 0 ×9, no-JS page 6/6 headings + hero, 0 pageerrors, G-H1 intact (1 CTA group, ledger 973). False positives: 3d25643's four scrim numbers do not reproduce (all still clear the floor; 390 still 0.064 has 0.004 margin — FRAGILE → t_x1_03b).

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T14:24:22.399Z",
+  "updated": "2026-09-05T14:37:44.157Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -351,8 +351,8 @@
     {
       "id": "t_g_h2",
       "title": "ADV-FAIL P0 — G-H2/G-X1 Signature scene architecture",
-      "column": "running",
-      "status": "running",
+      "column": "done",
+      "status": "done",
       "priority": 96,
       "assignee": "solutions-architect",
       "created_at": "2026-09-05T11:12:20Z",
@@ -371,7 +371,7 @@
         "effort": "max"
       },
       "provider": "anthropic-oauth",
-      "updated": "2026-09-05T14:22:58.142Z",
+      "updated": "2026-09-05T14:36:53.151Z",
       "parents": [],
       "comments": [
         {
@@ -386,7 +386,7 @@
         }
       ],
       "decisions": [],
-      "result": "solutions-architect delivered docs/architecture/SIGNATURE-SCENES-v1.md + SIGNATURE-SCENES-TASKS.json (0b0bf02, consolidated to main). Orchestrator verified: 14 tasks validate (assignees §5, verify commands present), HyperFrames decision grounded in fetched README + npm (v0.8.29: player 17.6 kB gz in-page for hero overture + viseme stage; CLI+engine at build time render 3840×2160@60 masters on this VPS at zero credits — the R5 unblock), GSAP+ScrollTrigger adopted, Scene priority prop for hero first paint, R5 raster reported FAIL with waivers (no re-scoping). Imported as t_x1_01…t_x1_14 (g-s1-04 = t_g_s1). Next lanes: t_x1_01 (fps harness, tester) → t_x1_02/03 (hero first paint + graded plate)."
+      "result": "G-H2 PASS on live d5227962/66199cba by independent reviewer (t_rev_h2_next, e16521a) — the LIVE evidence the RECTIFY demanded: desktop 0.68 wash gone (flagship-C + 9e41474 column-bound grade), phone scene lit (100% coverage @390 gl), hero atmosphere in the first paint as a REAL rendered 4K frame (ee334cc) with the priority Scene crossfading over it, JS-off page paints fully (6f4ba6c), AA and floors hold, CLS 0, LCP < 1.5 s. Architecture docs (0b0bf02) were the plan, not the PASS. Still OPEN elsewhere (not claimed here): R2 60 fps unproven (software rasteriser only), HyperFrames in-page overture (t_x1_11), MiniVic viseme stage (t_x1_07)."
     },
     {
       "id": "t_g_rev",
@@ -1304,7 +1304,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T14:24:22.306Z",
+      "updated": "2026-09-05T14:37:44.157Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": [
@@ -1362,6 +1362,11 @@
           "at": "2026-09-05T14:24:22.306Z",
           "by": "orchestrator",
           "text": "O5-MISS 14:11:36Z–14:20:49Z: Deploys 8beeda9d (fps harness + evidence) and 5108c3ce (no-JS evidence follow-up) carried no recruiter-visible delta; last visible deltas 14:09:17 (column-bound hero scrim 9e41474) and 14:11:36 (no-Suspense first paint 6f4ba6c — structural). P0 UI WIP existed (poster t_x1_02c, scenes S5/S6) but was not buildable inside the window. Next tick: hero poster + vitrine/listen fields."
+        },
+        {
+          "at": "2026-09-05T14:37:44.157Z",
+          "by": "orchestrator",
+          "text": "O5-MISS 14:26:12Z–14:36Z: deploys 44327c5d (board) and d5227962 (CI job) carried no recruiter-visible delta; P0 UI WIP (vitrine/listen fields, t_x1_05+06) was in its battery, not yet pushed. Next tick: S5/S6 fields."
         }
       ],
       "column": "running"
@@ -2762,7 +2767,7 @@
     {
       "id": "t_x1_02",
       "title": "G-H2a — hero scene mounts on first paint (Scene priority prop + poster frame)",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 97,
       "parents": [
@@ -2776,7 +2781,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T12:24:51.459Z",
-      "updated": "2026-09-05T14:02:43.369Z",
+      "updated": "2026-09-05T14:36:53.026Z",
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. components/gl/Scene.tsx:216 gates every scene on pageSettled (window.load + requestIdleCallback), so the hero flagship is structurally absent from the first paint. Add an opt-in priority?:boolean prop (default false, so S2..S7 are byte-identical) making show = capability && allowMotion && near && (priority || pageSettled), and pass priority on the hero only. Render the composition's frame 0 as the slot's CSS background from the static HTML so the first paint is lit, and crossfade the canvas over it on onCreated.",
       "decisions": [],
       "comments": [
@@ -2797,12 +2802,13 @@
         }
       ],
       "blocker": null,
-      "column": "running"
+      "column": "done",
+      "result": "DONE via correction t_x1_02c — priority Scene + real poster; reviewer PASS on live (poster paints at 200 ms; canvas follows; S2..S7 still deferred)."
     },
     {
       "id": "t_x1_03",
       "title": "G-H2b — hero scrim becomes a graded text plate, not a 0.86 full-frame wash",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 97,
       "parents": [
@@ -2816,7 +2822,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T12:24:51.635Z",
-      "updated": "2026-09-05T14:08:08.217Z",
+      "updated": "2026-09-05T14:36:53.084Z",
       "summary": "From docs/architecture/SIGNATURE-SCENES-TASKS.json (solutions-architect t_g_h2, commit 0b0bf02) — read docs/architecture/SIGNATURE-SCENES-v1.md first. Hero.module.css:157 and :171 lay rgb(10 10 10 / 0.86) across the whole frame, which is why the reviewer called the atmosphere a shy backdrop. Bind the darkening to the reading column: ~0.72 under the type, <= 0.25 outside it, so the light crosses the frame and the copy still clears AA.",
       "decisions": [],
       "comments": [
@@ -2824,10 +2830,16 @@
           "at": "2026-09-05T14:08:08.217Z",
           "by": "orchestrator",
           "text": "PUSHED + consolidated 9e41474 'fix(hero): the scrim is a column-bound grade — the light crosses the frame (G-H2b)' + merge 1d25b7a (14:07Z) — TC-HERO-SCRIM-01 was red on main, so .stage::after was reworked; deploying. Awaiting the lane's structured result and a reviewer probe (folded into the G-H2 poster/no-JS review)."
+        },
+        {
+          "at": "2026-09-05T14:24:44.998Z",
+          "by": "orchestrator",
+          "text": "LANE COMPLETE (9e41474 + 3d25643, live 1d25b7ab 14:09Z): measure-first — 3 of 4 surfaces already green (1440 gl Δ0.333, 390 gl Δ0.210, 1440 still Δ0.102 vs floor 0.06); only the 390 reduced-motion still was red (Δ0.051) → pool radius/alpha reshaped → Δ0.078; TC-HERO-SCRIM-01 4/4 with DOM-measured column geometry (the architect's fixed x<22%/x>78% bands measure a layout that no longer exists); the architect's 0.72 scrim alpha REJECTED as a WCAG failure (--mist-400 over the brightest fog = 2.82:1; shipped 0.88 = 4.79:1); text-contrast 4/4, hero floors 46%/.83/.032 @1440, still floors 24–26%; AA 0 failures. Stays RUNNING until the live reviewer PASS (t_rev_h2_next) per RECTIFY — G-H2 closes only on live evidence. FOLLOW-UP: reconcile SIGNATURE-SCENES-v1.md §4.1(b) with these measurements (docs lane)."
         }
       ],
       "blocker": null,
-      "column": "running"
+      "column": "done",
+      "result": "DONE — reviewer PASS on live: TC-HERO-SCRIM-01 Δ .291/.258 (gl) .215/.064 (still) vs floor .06; the 390 still margin is thin (0.004) → t_x1_03b."
     },
     {
       "id": "t_x1_05",
@@ -3345,7 +3357,7 @@
     {
       "id": "t_x1_02c",
       "title": "CORRECTION — G-H2a: the first paint carries a REAL rendered still of the hero atmosphere (url() poster ≥ 0.10 mean luminance, ≤ 500 kB, 3840×2160 source) — not gradient layers; acceptance restored to the task's ≥ 0.10",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 96,
       "parents": [
@@ -3360,12 +3372,13 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T14:02:43.429Z",
-      "updated": "2026-09-05T14:10:29.400Z",
+      "updated": "2026-09-05T14:36:52.956Z",
       "summary": "## CORRECTION: reviewer FAIL on G-H2a (docs/delivery/evidence/v10-20260905T0515Z/G-REV/e3f0206c/08-adversarial-review.md). Original output: 9dfaacd claimed 'priority scene over a lit poster'; live .stage background-image has NO url() layer (five gradients), luminance with the GL chunk blocked 0.053 @1440 / 0.081 @390; the lane lowered the floor to 0.04 where t_x1_02's acceptance says ≥ 0.10 — renegotiating the bar is the root cause #3 of the original FAIL review and is not accepted. Required fix: render a real frame of the hero atmosphere as the poster — capture the shader at frame 0 (or its brightest resting phase) at 3840×2160 with headless Chrome (SwiftShader GL_ARGS from tests/overhaul/flagship-visibility.spec.ts; or the HyperFrames engine path from docs/architecture/SIGNATURE-SCENES-v1.md t_x1_10 if it is faster to stand up — same result, a deterministic still of the same picture), encode AVIF (fallback WebP) ≤ 500 kB (asset budget), commit under public/assets/ with a reproducible script under scripts/assets/ (poster regenerates from the shader, never hand-painted), set it as the first background layer of .stage (url() then the existing gradients), keep the crossfade; the reduced-motion still and the no-GL path show the same picture (the photograph stays in colour; text plates keep AA — re-run text-contrast both paths). Mean luminance of the stage box with the GL chunk blocked ≥ 0.10 at 1440 and 390 (TC-HERO-FIRSTPAINT-01 floor raised to 0.10, no lower); with JS disabled (after t_nojs01) the poster paints. LCP < 2.5 s, CLS < 0.05 unchanged.",
       "decisions": [],
       "comments": [],
       "blocker": null,
-      "column": "running"
+      "column": "done",
+      "result": "DONE — reviewer PASS on live (t_rev_h2_next): rendered 4K shader frame as the first .stage layer, luminance ≥ 0.10 on every path, 12.9 kB."
     },
     {
       "id": "t_x1_01b",
@@ -3394,7 +3407,7 @@
     {
       "id": "t_x1_01c",
       "title": "R2 / D7 — non-gating checks.yml job that runs the scene frame-rate harness on the Owner's Mac (GPU-class) runner when it is online, uploading the per-scene JSON; never gates Deploy",
-      "status": "running",
+      "status": "done",
       "assignee": "coder",
       "priority": 70,
       "parents": [
@@ -3408,18 +3421,19 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-05T14:17:46.762Z",
-      "updated": "2026-09-05T14:21:22.250Z",
+      "updated": "2026-09-05T14:27:22.171Z",
       "summary": "docs/architecture/SIGNATURE-SCENES-v1.md D7: GPU-class fps confirmation is a NON-GATING CI job on the self-hosted Mac runner (E2E_RUNNER_LABELS gate, continue-on-error) — an offline runner must never hang Deploy (forgotten-mistory-ci-gpu-runner lesson). Add a `scene-fps-gpu` job to .github/workflows/checks.yml: runs only if the repo variable E2E_RUNNER_LABELS is set, runs-on those labels, timeout-minutes 15, continue-on-error: true, builds the static export, serves it, runs tests/perf/scene-framerate.spec.ts with SCENE_FPS_ARTEFACT_DIR, uploads the JSON (include-hidden-files not needed; path under docs/... or a workspace dir). Extend tests/ci_pipeline.test.mjs: deploy.yml still has no needs; the new job is continue-on-error and label-gated. TDD red→green; push branch.",
       "decisions": [],
       "comments": [],
       "blocker": null,
-      "column": "running"
+      "column": "done",
+      "result": "coder f5eb4c8 (consolidating): checks.yml job scene-fps-gpu — if vars.E2E_RUNNER_LABELS != '' , runs-on fromJSON(labels), continue-on-error true, timeout 15, no needs anywhere; builds, serves on a discovered port (never 5599/8080), runs the harness --workers=1, uploads per-scene JSON (if: always, warn); deploy.yml byte-identical; ci_pipeline.test.mjs +7 assertions red 18/23 → green 23/23 (blanket no-continue-on-error rule narrowed to exactly the label-gated job). REMAINING (Owner-held, not asked): the repo variable E2E_RUNNER_LABELS is unset, so the job reports skipped until the Mac runner is registered; whether its headless Chromium reaches hardware GL is unverified — the renderer string in every artefact will say."
     },
     {
       "id": "t_rev_h2_next",
       "title": "Reviewer probe — G-H2 on the next live build carrying the real poster (t_x1_02c) + column grade (9e41474) + no-Suspense first paint (6f4ba6c): url() poster ≥ 0.10 luminance GL-blocked and JS-off, first-paint canvas timing, AA both paths, flagship floors, LCP/CLS",
-      "status": "todo",
-      "column": "todo",
+      "status": "done",
+      "column": "done",
       "assignee": "reviewer",
       "priority": 98,
       "parents": [
@@ -3433,8 +3447,31 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T14:24:22.399Z",
-      "updated": "2026-09-05T14:24:22.399Z",
+      "updated": "2026-09-05T14:36:52.897Z",
       "summary": "One-Deploy reviewer task (RECTIFY 14:12Z cadence rule). Re-probe G-H2's FAIL clauses from G-REV/e3f0206c/08-adversarial-review.md on the build that carries t_x1_02c: .stage computed background-image contains url(/assets/…) and the stage box mean luminance ≥ 0.10 at 1440 and 390 with the WebGL chunk blocked AND with javaScriptEnabled:false; poster asset ≤ 500 kB and its source ≥ 3840×2160 (read the committed render script + asset headers); TC-HERO-SCRIM-01 semantics (outer thirds ≥ 0.06 brighter than the reading band) at 1440/390 gl + still; hero canvas mount time after DCL at /?gl=force (report ms, label SwiftShader); AA walk over #hero at 1440/390 on both paths; flagship hero floors; LCP < 2.5 s (LCP element named), CLS < 0.05 on 3 unskipped cold loads ×3 widths; no-JS: full page paints (6 headings, hero h1/statement/actions/photo) at 1440/390; 0 pageerrors. Verdict per clause, failures first, false-positive register (claims in the poster commit you cannot reproduce), one-line status of other open items. Write G-REV/<build>/08-adversarial-review.md, push a docs branch, return the structured verdict; the orchestrator completes this task on receipt.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "result": "REVIEWER PASS on live d5227962 (= 66199cba for every shipped hero file; G-REV/66199cba/08-adversarial-review.md, e16521a): 14/14 clauses — poster url() first layer at 1440/390 on all paths, served 12,935 B AVIF decoding at 3840×2160 (not downscaled), stage luminance GL-blocked .110/.120 and JS-off .110/.120 (floor .10), scrim Δ .291/.258 gl and .215/.064 still (floor .06), canvas 1459/1706 ms after DCL on SwiftShader with the poster painting at 200 ms, AA worst 6.2:1, hero floors .466/.831/.0098, LCP worst 1408 ms (h1 / portrait, never the poster), CLS 0 ×9, no-JS page 6/6 headings + hero, 0 pageerrors, G-H1 intact (1 CTA group, ledger 973). False positives: 3d25643's four scrim numbers do not reproduce (all still clear the floor; 390 still 0.064 has 0.004 margin — FRAGILE → t_x1_03b)."
+    },
+    {
+      "id": "t_x1_03b",
+      "title": "P1 — the 390 reduced-motion hero still clears TC-HERO-SCRIM-01 by 0.004 (Δ 0.064 vs floor 0.06 on live): give it ≥ 0.03 margin without touching AA",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 75,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T14:36:53.204Z",
+      "updated": "2026-09-05T14:36:53.204Z",
+      "summary": "Reviewer G-REV/66199cba: live Δ on the 390 reduced-motion still = 0.064 (lane claimed 0.0776) — one shader/AVIF phase away from red. Raise the right-edge pool of the 390 still (Hero.module.css ≤700px .stage layers, now stacked over the 4K poster) so Δ ≥ 0.09 at 390 still, keeping the phone plates' AA (text-contrast both paths) and the still floors; also reconcile SIGNATURE-SCENES-v1.md §4.1(b) (outer-thirds geometry + 0.72 alpha) with the shipped DOM-measured gate and the WCAG reasoning in tests/overhaul/hero-first-paint.spec.ts.",
       "decisions": [],
       "comments": [],
       "blocker": null
