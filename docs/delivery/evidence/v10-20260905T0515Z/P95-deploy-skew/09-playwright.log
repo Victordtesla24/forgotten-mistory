@@ -1,0 +1,106 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-error-boundary.spec.ts tests/overhaul/render.spec.ts tests/overhaul/cinematic.spec.ts --workers=2 --reporter=list
+
+Running 14 tests using 2 workers
+
+  ✓   1 [chromium] › tests/overhaul/cinematic.spec.ts:83:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-02: nothing intercepts clicks on the hero CTA (6.2s)
+  ✓   2 [chromium] › tests/overhaul/cinematic.spec.ts:47:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-01: the hero backdrop is decorative — hidden from AT and behind the content (4.7s)
+  ✓   3 [chromium] › tests/overhaul/cinematic.spec.ts:120:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-03: nav is transparent at top and frosts (data-scrolled) after scroll (4.7s)
+  ✓   4 [chromium] › tests/overhaul/cinematic.spec.ts:143:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-04: with every scene suppressed the page is still the whole page (6.2s)
+  ✓   5 [chromium] › tests/overhaul/cinematic.spec.ts:170:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-05: the hero name renders in full with no glyph-masking clip-path (D-NAME-01) (3.3s)
+  ✓   6 [chromium] › tests/overhaul/cinematic.spec.ts:184:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-06: under reduced motion the hero entrance is a fade, not a rise (3.1s)
+  ✓   7 [chromium] › tests/overhaul/cinematic.spec.ts:243:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-07: under reduced motion every section is readable, not left behind a curtain (4.4s)
+  ✓   8 [chromium] › tests/overhaul/render.spec.ts:79:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it (16.2s)
+  ✓   9 [chromium] › tests/overhaul/render.spec.ts:102:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss (14.7s)
+  ✘  11 [chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium) (9.9s)
+  ✓  10 [chromium] › tests/overhaul/render.spec.ts:131:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page (21.1s)
+  ✓  12 [chromium] › tests/overhaul/render.spec.ts:173:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-09: A full-page scroll never trips a page error or the error boundary (9.7s)
+  ✘  14 [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot (5.3s)
+  ✓  13 [chromium] › tests/overhaul/scene-error-boundary.spec.ts:72:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-01: a lazy scene chunk that 404s reloads once, then falls back silently (11.5s)
+
+
+  1) [chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium) 
+
+    Error: expect(locator).toHaveScreenshot(expected) failed
+
+    Locator: locator('#hero')
+      81552 pixels (ratio 0.09 of all image pixels) are different.
+
+      Snapshot: hero-section.png
+
+    Call log:
+      - Expect "toHaveScreenshot(hero-section.png)" with timeout 30000ms
+        - verifying given screenshot expectation
+      - waiting for locator('#hero')
+        - locator resolved to <section id="hero" class="Hero_hero__2EmdV" aria-labelledby="hero-name">…</section>
+      - taking element screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - attempting scroll into view action
+        - waiting for element to be stable
+      - 81359 pixels (ratio 0.09 of all image pixels) are different.
+      - waiting 100ms before taking screenshot
+      - waiting for locator('#hero')
+        - locator resolved to <section id="hero" class="Hero_hero__2EmdV" aria-labelledby="hero-name">…</section>
+      - taking element screenshot
+        - disabled all CSS animations
+      - waiting for fonts to load...
+      - fonts loaded
+      - attempting scroll into view action
+        - waiting for element to be stable
+      - captured a stable screenshot
+      - 81552 pixels (ratio 0.09 of all image pixels) are different.
+
+
+      162 |     await page.waitForTimeout(2000); // let the CSS entrance finish
+      163 |
+    > 164 |     await expect(page.locator('#hero')).toHaveScreenshot('hero-section.png', {
+          |                                         ^
+      165 |       maxDiffPixelRatio: 0.01,
+      166 |       threshold: 0.2,
+      167 |       // The default 15s expect timeout is not enough headroom for the capture's
+        at /root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/overhaul/render.spec.ts:164:41
+
+    attachment #1: hero-section (image/png) ────────────────────────────────────────────────────────
+    Expected: tests/baselines/overhaul/render.spec.ts-snapshots/hero-section-chromium-linux.png
+    Received: test-results/overhaul-render-TC-NFR-REN-f6fa0-ne-—-hero-section-chromium--chromium/hero-section-actual.png
+    Diff:     test-results/overhaul-render-TC-NFR-REN-f6fa0-ne-—-hero-section-chromium--chromium/hero-section-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-render-TC-NFR-REN-f6fa0-ne-—-hero-section-chromium--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-render-TC-NFR-REN-f6fa0-ne-—-hero-section-chromium--chromium/error-context.md
+
+  2) [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot 
+
+    Error: an uncaught page error escaped: Error: fm-test: forced WebGL context creation failure
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 0
+    Received length: 1
+    Received array:  ["Error: fm-test: forced WebGL context creation failure"]
+
+      163 |     const body = (await page.locator('body').innerText()) || '';
+      164 |     expect(body, 'a scene fault replaced the document with the error shell').not.toMatch(ERROR_SHELL);
+    > 165 |     expect(pageErrors, `an uncaught page error escaped: ${pageErrors.join(' | ')}`).toHaveLength(0);
+          |                                                                                     ^
+      166 |     expect(sceneErrors, `expected exactly one scene report, got: ${sceneErrors.join(' | ')}`).toHaveLength(1);
+      167 |     expect(sceneErrors[0], 'the report must name the scene that failed').toMatch(/\[Scene:[a-z-]+\]/i);
+      168 |
+        at /root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/overhaul/scene-error-boundary.spec.ts:165:85
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-scene-error-bound-26d47-s-stays-inside-its-own-slot-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-scene-error-bound-26d47-s-stays-inside-its-own-slot-chromium/error-context.md
+
+  2 failed
+    [chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium) 
+    [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot 
+  12 passed (1.2m)
+PW_EXIT:1
