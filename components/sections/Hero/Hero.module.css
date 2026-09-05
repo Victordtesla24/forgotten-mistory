@@ -39,10 +39,12 @@
         padding-bottom: clamp(var(--space-2), 3vh, var(--space-4));
     }
 
-    .name {
-        font-size: var(--fs-display);
-        letter-spacing: var(--ls-display);
-    }
+    /* The name is no longer shrunk to display size on a short laptop. It stayed
+       a heading only because it shared the fold with a right-hand picture
+       column; with the mark set to the full measure and the photograph re-homed
+       below the copy (see the >= 720px block), the single 1280x720 fold the
+       recruiter scans is copy alone, and the mark holds its optical size
+       (BM-3). The eyebrow/role/statement/actions rhythm below still tightens. */
 
     .eyebrow {
         margin-bottom: var(--space-1);
@@ -413,11 +415,34 @@
 .name {
     margin: 0;
     font-family: var(--font-heading);
-    font-size: var(--fs-name);
+    /* The name is a mark, not a heading: one line struck across the whole
+       measure (HERO-FOLD-v2 §4 / D-2, D-6). The scale is DERIVED, not the
+       brief's 166px estimate — a browser measurement of the real advance of
+       'Vikram Deshpande' in the shipped Source Serif 4 at this tracking is
+       8.531x its font-size. The copy column is --page-max (measured 1248px at
+       1440, 1137px at 1280), so the vw term lands the advance at ~0.90 of the
+       column at 1440 and ~0.93 at 1280 (BM-2 ∈ [0.86, 1.00]); the 8.2rem cap
+       holds it under 1.00 as the column stops growing at --page-max, and the
+       3.75rem floor drives the authored two-line phone lockup below. Set here
+       rather than on --fs-name so the token stays the type-scale step and the
+       mark's optical size lives with the mark. */
+    font-size: clamp(3.75rem, 9.7vw, 8.2rem);
     font-weight: 400;
     line-height: var(--lh-tight);
-    letter-spacing: var(--ls-name);
+    /* Display tracking, at the tight edge of BM-4 [-0.035em, -0.015em]. This is
+       the tracking the advance above was measured at; changing it changes the
+       measure. */
+    letter-spacing: -0.035em;
     color: var(--white);
+}
+
+/* The authored break for the phone lockup. Hidden above the phone breakpoint,
+   where the name sets on one line; shown at <= 600px, where 'Vikram Deshpande'
+   no longer fits the measure and a controlled two-line mark (BM-1b) beats a
+   wrap. It carries a leading space on the desktop side, so with the break gone
+   the accessible name is still 'Vikram Deshpande'. */
+.nameBreak {
+    display: none;
 }
 
 .role {
@@ -703,6 +728,20 @@
        entries, and a shorter tail under the actions. */
     .inner {
         padding-bottom: var(--space-2);
+    }
+
+    /* The phone lockup. At 390 the measure is ~342px and the mark at its floor
+       (3.75rem) needs ~300px for 'Deshpande' alone, so one line cannot hold it.
+       The authored break sets it as two line boxes — 'Vikram' over 'Deshpande'
+       — and the leading closes to 0.9em (BM-1b: exactly two boxes, leading
+       <= 0.92em) so the two words read as one struck mark rather than a
+       heading that happened to wrap. */
+    .nameBreak {
+        display: inline;
+    }
+
+    .name {
+        line-height: 0.9;
     }
 
     .ledgerRow {
@@ -1033,33 +1072,31 @@
    whole right column across their three rows, its top edge on the role's. It is
    placed explicitly, so it holds that cell wherever it sits in the source. */
 @media (min-width: 720px) {
-    /* Two items, one row: the reading column and the photograph. Not five rows
-       with a figure spanning them — a spanning item hands its own height to
-       every track it crosses, and that is what pushed the name half a screen
-       below the location line. */
-    .inner {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) var(--portrait-w);
-        column-gap: clamp(var(--space-4), 4vw, var(--space-8));
-        /* Anchored at the top. Centring the row inside a screen-tall band moves
-           every line by half of any late reflow — the display face landing, the
-           statement rewrapping — and CLS is a gate, not a preference. */
-        align-content: start;
-        align-items: start;
-    }
+    /* One measure, not two columns. The fold was a reading column beside a
+       picture column: `grid-template-columns: minmax(0, 1fr) var(--portrait-w)`
+       held the copy to ~660px, and 'Vikram Deshpande' at the mark's optical
+       size wrapped to two lines inside it (HERO-FOLD-v2 §1.2 — h1 top 183,
+       .role top 453, a 270px block where one line belongs). Collapsing the grid
+       gives the copy the whole --page-max measure, which is the room a single
+       line of the mark needs (M2 / BM-1, BM-2).
 
+       The reading column reverts to `.inner`'s own flex column: the copy is one
+       block at the full measure, the photograph the next block below it. */
     .copy {
         display: block;
-        grid-column: 1;
         min-width: 0;
     }
 
-    /* The photograph takes the whole right column and stands against the middle
-       of the copy: it is the composition, not an inset beside the ledger. */
+    /* The photograph is re-homed below the copy for this slice: it no longer
+       forms a column that constrains the type. Its final placement in the plane
+       is g2h1-04's; here it simply flows under the mark at its own width, so the
+       name is freed to the measure without a second composition being invented
+       now. Capped at --portrait-w and left on the spine — not stretched to the
+       full measure — so nothing reflows the mark above it (CLS holds). */
     .portrait {
-        grid-column: 2;
-        align-self: center;
-        margin-top: 0;
+        width: 100%;
+        max-width: var(--portrait-w);
+        margin-top: clamp(var(--space-6), 6vh, var(--space-10));
     }
 }
 
