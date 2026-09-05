@@ -1,0 +1,30 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-first-paint.spec.ts tests/overhaul/render.spec.ts --workers=1 --reporter=list
+
+Running 15 tests using 1 worker
+
+[TC-HERO-FIRSTPAINT-01] still mean luminance @1440: 0.1322
+  ✓   1 [chromium] › tests/overhaul/hero-first-paint.spec.ts:213:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [1440]: the hero slot carries a lit still, served and painted without the scene (3.4s)
+[TC-HERO-FIRSTPAINT-01] still mean luminance @390: 0.1374
+  ✓   2 [chromium] › tests/overhaul/hero-first-paint.spec.ts:213:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [390]: the hero slot carries a lit still, served and painted without the scene (2.2s)
+[TC-HERO-FIRSTPAINT-02] canvas_after_dcl_ms_glforce_1440: 1481
+  ✓   3 [chromium] › tests/overhaul/hero-first-paint.spec.ts:284:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [1440]: the hero canvas mounts on a cold load (3.8s)
+[TC-HERO-FIRSTPAINT-02] canvas_after_dcl_ms_glforce_390: 1664
+  ✓   4 [chromium] › tests/overhaul/hero-first-paint.spec.ts:284:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [390]: the hero canvas mounts on a cold load (2.6s)
+  ✓   5 [chromium] › tests/overhaul/hero-first-paint.spec.ts:312:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02b: the hero scene mounts even though the page never settles (5.2s)
+  ✓   6 [chromium] › tests/overhaul/hero-first-paint.spec.ts:358:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-03: priority is opt-in — no other scene jumps the idle gate (2.0s)
+[TC-HERO-SCRIM-01] 1440 gl: column=0.067..0.667 (18 nodes) under_type=0.0875 lit_window=0.4221 at=0.717 delta=0.3346
+  ✓   7 [chromium] › tests/overhaul/hero-first-paint.spec.ts:565:11 › G-H2b: the hero scrim is a column-bound grade, over the shader › TC-HERO-SCRIM-01 [1440, gl]: the light crosses the frame the type does not stand on (15.2s)
+[TC-HERO-SCRIM-01] 390 gl: column=0.043..0.957 (18 nodes) under_type=0.1953 lit_window=0.4136 at=0.950 delta=0.2182
+  ✓   8 [chromium] › tests/overhaul/hero-first-paint.spec.ts:565:11 › G-H2b: the hero scrim is a column-bound grade, over the shader › TC-HERO-SCRIM-01 [390, gl]: the light crosses the frame the type does not stand on (7.5s)
+[TC-HERO-SCRIM-01] 1440 still: column=0.067..0.667 (18 nodes) under_type=0.0630 lit_window=0.3167 at=0.864 delta=0.2537
+  ✓   9 [chromium] › tests/overhaul/hero-first-paint.spec.ts:565:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [1440, still]: the light crosses the frame the type does not stand on (3.5s)
+[TC-HERO-SCRIM-01] 390 still: column=0.043..0.957 (18 nodes) under_type=0.1331 lit_window=0.2067 at=0.950 delta=0.0736
+  ✓  10 [chromium] › tests/overhaul/hero-first-paint.spec.ts:565:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [390, still]: the light crosses the frame the type does not stand on (3.2s)
+  ✓  11 [chromium] › tests/overhaul/render.spec.ts:79:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it (11.6s)
+  ✓  12 [chromium] › tests/overhaul/render.spec.ts:102:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss (10.0s)
+  ✓  13 [chromium] › tests/overhaul/render.spec.ts:131:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page (14.6s)
+  ✓  14 [chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium) (4.7s)
+  ✓  15 [chromium] › tests/overhaul/render.spec.ts:173:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-09: A full-page scroll never trips a page error or the error boundary (7.3s)
+
+  15 passed (1.7m)
