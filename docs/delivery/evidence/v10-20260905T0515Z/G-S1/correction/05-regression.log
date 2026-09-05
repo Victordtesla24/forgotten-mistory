@@ -1,0 +1,59 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts tests/overhaul/scene-skills.spec.ts tests/overhaul/scene-experience.spec.ts tests/overhaul/flagship-visibility.spec.ts --workers=1 --reporter=list
+
+Running 35 tests using 1 worker
+
+  ✓   1 [chromium] › tests/a11y/text-contrast.spec.ts:452:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground (31.6s)
+  ✓   2 [chromium] › tests/a11y/text-contrast.spec.ts:452:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground (45.9s)
+  ✓   3 [chromium] › tests/a11y/text-contrast.spec.ts:484:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes (1.6m)
+  ✓   4 [chromium] › tests/a11y/text-contrast.spec.ts:484:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes (1.4m)
+[flagship-visibility] hero@1440: ground=0.0030 coverage=46.34% peak=0.8308 motion=0.02434 box=1440x900
+  ✓   5 [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 1440 — hero atmosphere reads as light (15.1s)
+[flagship-visibility] about@1440: ground=0.0030 coverage=46.93% peak=0.6584 motion=0.02680 box=384x384
+  ✓   6 [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light (12.9s)
+[flagship-visibility] experience@1440: ground=0.0030 coverage=25.90% peak=0.8308 motion=0.03617 box=1298x536
+  ✓   7 [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 1440 — experience strata reads as light (9.9s)
+[flagship-visibility] skills@1440: ground=0.0030 coverage=34.70% peak=0.5089 motion=0.01250 box=1248x580
+  ✓   8 [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light (8.5s)
+[flagship-visibility:still] hero@1440: ground=0.0030 coverage=23.64% peak=0.0931
+  ✓   9 [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 1440 — hero atmosphere fallback (3.0s)
+[flagship-visibility:still] about@1440: ground=0.0030 coverage=35.79% peak=0.0823
+  ✓  10 [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback (2.9s)
+[flagship-visibility:still] experience@1440: ground=0.0030 coverage=4.10% peak=0.1559
+  ✓  11 [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 1440 — experience strata fallback (2.3s)
+[flagship-visibility:still] skills@1440: ground=0.0030 coverage=32.88% peak=0.0953
+  ✓  12 [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback (2.1s)
+[flagship-visibility] hero@390: ground=0.0030 coverage=100.00% peak=0.8308 motion=0.04498 box=390x844
+  ✓  13 [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 390 — hero atmosphere reads as light (6.8s)
+[flagship-visibility] about@390: ground=0.0030 coverage=45.50% peak=0.4233 motion=0.01219 box=224x224
+  ✓  14 [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light (7.5s)
+[flagship-visibility] experience@390: ground=0.0030 coverage=37.04% peak=0.8308 motion=0.03898 box=356x661
+  ✓  15 [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 390 — experience strata reads as light (6.4s)
+[flagship-visibility] skills@390: ground=0.0030 coverage=44.59% peak=0.4969 motion=0.00512 box=342x152
+  ✓  16 [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light (5.9s)
+[flagship-visibility:still] hero@390: ground=0.0030 coverage=17.14% peak=0.1779
+  ✓  17 [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 390 — hero atmosphere fallback (1.9s)
+[flagship-visibility:still] about@390: ground=0.0030 coverage=36.39% peak=0.0823
+  ✓  18 [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback (1.8s)
+[flagship-visibility:still] experience@390: ground=0.0030 coverage=4.17% peak=0.1620
+  ✓  19 [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 390 — experience strata fallback (1.8s)
+[flagship-visibility:still] skills@390: ground=0.0030 coverage=69.18% peak=0.0908
+  ✓  20 [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback (1.8s)
+  ✓  21 [chromium] › tests/overhaul/scene-experience.spec.ts:195:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-01: the bars are still growing 100 ms after the section commits (3.2s)
+  ✓  22 [chromium] › tests/overhaul/scene-experience.spec.ts:208:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-02: every bar reaches its real length within 1500 ms (2.8s)
+  ✓  23 [chromium] › tests/overhaul/scene-experience.spec.ts:221:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-03: nothing in the section paints gold (3.6s)
+  ✓  24 [chromium] › tests/overhaul/scene-experience.spec.ts:252:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-04: the today playhead is white (1.0s)
+  ✓  25 [chromium] › tests/overhaul/scene-experience.spec.ts:262:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-05: every duration label stays inside the chart card (4.9s)
+  ✓  26 [chromium] › tests/overhaul/scene-experience.spec.ts:297:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-06: one canvas behind the chart at ?gl=force (4.2s)
+  ✓  27 [chromium] › tests/overhaul/scene-experience.spec.ts:306:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-07: the shader is bound to the spans it sits under (11ms)
+  ✓  28 [chromium] › tests/overhaul/scene-experience.spec.ts:316:7 › #experience under reduced motion › TC-SCENE-EXP-08: no bar is ever shorter than its real duration (2.1s)
+  ✓  29 [chromium] › tests/overhaul/scene-skills.spec.ts:85:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-01: exactly one canvas mounts behind the board once the section is in view (5.0s)
+  ✓  30 [chromium] › tests/overhaul/scene-skills.spec.ts:99:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-02: the canvas is aria-hidden, behind the board and never over the type (4.9s)
+  ✓  31 [chromium] › tests/overhaul/scene-skills.spec.ts:134:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-03: taking a node on the bench is the state the field is lit from (5.0s)
+  ✓  32 [chromium] › tests/overhaul/scene-skills.spec.ts:154:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-04: under reduced motion there is no canvas and the wire bench is whole (3.5s)
+  ✓  33 [chromium] › tests/overhaul/scene-skills.spec.ts:170:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-05: with WebGL unavailable the section is complete and silent (3.7s)
+  ✓  34 [chromium] › tests/overhaul/scene-skills.spec.ts:197:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-06: the field is monochrome, palette-sourced and cheap per pixel (19ms)
+  ✓  35 [chromium] › tests/overhaul/scene-skills.spec.ts:236:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-07: three is fetched with the scene, not with the section (3ms)
+
+  35 passed (6.6m)
+exit=0

@@ -55,3 +55,6 @@ REVIEWER PHASE-2 PASS on live 9b864752 (G-REV/9b864752/08-adversarial-review.md)
 
 ## COMMENT (2026-09-05T13:37:33.569Z)
 LANE FOLLOW-UP pushed 0861658 'fix(skills): hold the bench light inside the plate, thin the graticule' + battery evidence (04/06 logs, 4 screenshots) — consolidating (only reports/static-audit.json conflicts, modify/delete → will be re-tracked by checkout --theirs; orchestrator untracks it again on main after the deploy).
+
+## COMMENT (2026-09-05T13:56:05.546Z)
+INDEPENDENT SWEEP PASS (5e504d3): #skills canvas at 1440 and 390 after scroll-and-wait; field coverage 34.7% / peak .515 / motion .016 (1440), 35.7% / .485 / .010 (390) — all above the flagship floors; 0861658's band-label effect reproduced (6.165:1 ×3).

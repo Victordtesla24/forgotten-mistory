@@ -88,3 +88,34 @@ from `td.Skills_status` up to `div.Skills_card` is `rgba(0,0,0,0)` or
 4. Same file — `SCENE_SLOTS` gains `skills-bench`, so TC-CONTRAST-02 warms the bench
    field and photographs the band labels on the lit, animating ground a reader with a GPU
    actually gets, instead of walking past them on the CSS still.
+
+## After the merge with `origin/main`
+
+A parallel lane reached the same three band labels from the other side while this one was
+running: `0861658 fix(skills): hold the bench light inside the plate` narrowed
+`.fieldSlot`'s radial from a 120 % horizontal radius to 28 %, so the light stops where the
+shader's `across` mask stops and the rails stand on the section's own ink. Both halves are
+kept — a darker ground *and* the brighter secondary ink — and the comment on `.bandLabel`
+was rewritten to describe the merged state rather than the ground it was measured on.
+Nothing was reverted in either direction.
+
+## Verification, post-merge
+
+`05-regression.log` — 35 passed, 0 failed, exit 0, on a fresh `build:static` served at
+`http://127.0.0.1:5618`:
+
+```
+✓ TC-CONTRAST-01 @ 1440   ✓ TC-CONTRAST-01 @ 390
+✓ TC-CONTRAST-02 @ 1440   ✓ TC-CONTRAST-02 @ 390     (both paths, 0 nodes below AA)
+✓ 20 × flagship-visibility (hero / about / experience / skills, live + still, 1440 + 390)
+✓ 7 × scene-skills          ✓ 4 × scene-experience
+```
+
+`04-tests-passing.log` is the same battery run one merge earlier: 34 passed, and the one
+failure was `TC-SCENE-SKILLS-06` on the word "gold" in a `bench.glsl.ts` comment — already
+fixed on `main` by the lane above, and green in `05-regression.log`. Neither this lane's
+CSS nor its spec touches that file.
+
+Screenshots at 1440 in `08-screens/`: the three band labels on the lit field
+(`01-…-glforce.png`) and on the still (`01-…-still.png`), the InfoCentric role row on both
+paths (`02-…`), and the masked band that named the culprit (`00-culprit-masked-band-9000.png`).

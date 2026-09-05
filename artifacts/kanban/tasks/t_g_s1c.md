@@ -44,3 +44,6 @@ SCOPE UPDATE 13:39Z: the original Skills lane's 0861658 (consolidating now) alre
 
 ## COMMENT (2026-09-05T13:47:05.578Z)
 PUSHED + consolidated cf64912 (abc475e, live 13:40Z): .bandLabel --ink-300 → --mist-400 (4.68:1 on the brightest lit rail; three real failures fixed); the 'InfoCentric 1.06:1' was a PROBE ARTEFACT — at scrollY≈9000 the sample point sat under the fixed nav's CV pill (a.nav-cv, .nav-actions mix-blend-mode: difference, 1px --white border → rgb(226,225,223) rim survives the glyph mask) — no near-white panel exists; the contrast walk now drops samples whose text element is occluded by an element that does not contain it (decorative layers are pointer-events:none and still sampled as ground); thresholds unchanged (AA 4.5/3.0, openNote pin 4.6). Culprit stack in 09-culprit.md. Awaiting the sweep reviewer's independent re-measure before Done.
+
+## COMPLETE (2026-09-05T13:56:05.393Z)
+INDEPENDENT SWEEP PASS 13/13 on live abc475e3→34755d6c (G-REV/abc475e3/08-adversarial-review.md, 5e504d3): band labels 6.165:1 ×3 @1440 (were 3.63/4.00/4.10), InfoCentric 12.45:1 (was 1.06 — probe artefact confirmed gone with the occlusion-aware walk), repo gate text-contrast run AGAINST PRODUCTION 4/4 green; AA 0 failures at 1440/390 on both paths.

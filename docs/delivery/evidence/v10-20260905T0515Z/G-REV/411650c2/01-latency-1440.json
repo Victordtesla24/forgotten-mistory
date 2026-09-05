@@ -1,0 +1,662 @@
+{
+  "site": "https://forgotten-mistory.web.app",
+  "mode": "latency",
+  "viewport": "1440x900",
+  "buildCommit": "753bc5ad",
+  "cold": 821,
+  "warmTrials": [
+    732,
+    772,
+    561,
+    994,
+    642
+  ],
+  "warmP50": 732,
+  "warmP95": 994,
+  "trials": [
+    {
+      "index": 0,
+      "viewport": "1440x900",
+      "phase": "send",
+      "requests": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616627685,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616627685,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616629346,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "pageerrors": [],
+      "consoleErrors": [],
+      "websockets": [],
+      "buildCommit": "753bc5ad",
+      "sendWall": 1788616629279,
+      "ttft": 821,
+      "csp": [],
+      "samples": [
+        {
+          "t": 224,
+          "len": 0
+        },
+        {
+          "t": 523,
+          "len": 0
+        },
+        {
+          "t": 879,
+          "len": 31
+        },
+        {
+          "t": 1167,
+          "len": 172
+        },
+        {
+          "t": 1423,
+          "len": 355
+        }
+      ],
+      "reply": "VicHiring Fit01:57 PMAt the ATO since March 2026, I lead the Agile Kookaburras squad on the Payday Super reform program, managing sprint cadence, PI planning, capacity, and executive reporting. I steered Distribution UI delivery past 95% completion and resolved NTP function testing delays by escalating environment instability. I also architected COBOL/mainframe test-evidence automation across 200+ scenariosCopy",
+      "chatRequestsOnSend": [
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616629346,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "chatRequestsOnOpen": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616627685,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616627685,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        }
+      ],
+      "forbidden": []
+    },
+    {
+      "index": 1,
+      "viewport": "1440x900",
+      "phase": "send",
+      "requests": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616634102,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616634103,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616635814,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "pageerrors": [],
+      "consoleErrors": [],
+      "websockets": [],
+      "buildCommit": "753bc5ad",
+      "sendWall": 1788616635636,
+      "ttft": 732,
+      "csp": [],
+      "samples": [
+        {
+          "t": 134,
+          "len": 0
+        },
+        {
+          "t": 388,
+          "len": 0
+        },
+        {
+          "t": 689,
+          "len": 0
+        },
+        {
+          "t": 997,
+          "len": 129
+        },
+        {
+          "t": 1288,
+          "len": 247
+        }
+      ],
+      "reply": "VicHiring Fit01:57 PMAt the ATO, I have been Scrum Master and Project Manager on the Payday Super reform program since March 2026, leading the Agile Kookaburras squad and managing sprint cadence, PI planning, capacity, and executive reporting. I architected test-evidence automation across 200+ SIT/E2E scenariosCopy",
+      "chatRequestsOnSend": [
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616635814,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "chatRequestsOnOpen": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616634102,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616634103,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        }
+      ],
+      "forbidden": []
+    },
+    {
+      "index": 2,
+      "viewport": "1440x900",
+      "phase": "send",
+      "requests": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616639340,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616639340,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616640772,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "pageerrors": [],
+      "consoleErrors": [],
+      "websockets": [],
+      "buildCommit": "753bc5ad",
+      "sendWall": 1788616640711,
+      "ttft": 772,
+      "csp": [],
+      "samples": [
+        {
+          "t": 233,
+          "len": 0
+        },
+        {
+          "t": 520,
+          "len": 0
+        },
+        {
+          "t": 833,
+          "len": 35
+        },
+        {
+          "t": 1143,
+          "len": 133
+        },
+        {
+          "t": 1447,
+          "len": 316
+        }
+      ],
+      "reply": "VicHiring Fit01:57 PMAt the ATO, I have been Scrum Master and Project Manager on the Payday Super reform program since March 2026, leading the Agile Kookaburras squad and managing sprint cadence, PI planning, capacity, and executive reporting. I architected test-evidence automation across 200+ SIT/E2E scenarios, reducing effort by about 92%,Copy",
+      "chatRequestsOnSend": [
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616640772,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "chatRequestsOnOpen": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616639340,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616639340,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        }
+      ],
+      "forbidden": []
+    },
+    {
+      "index": 3,
+      "viewport": "1440x900",
+      "phase": "send",
+      "requests": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616644440,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616644440,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616645676,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "pageerrors": [],
+      "consoleErrors": [],
+      "websockets": [],
+      "buildCommit": "753bc5ad",
+      "sendWall": 1788616645643,
+      "ttft": 561,
+      "csp": [],
+      "samples": [
+        {
+          "t": 259,
+          "len": 0
+        },
+        {
+          "t": 563,
+          "len": 31
+        },
+        {
+          "t": 865,
+          "len": 133
+        },
+        {
+          "t": 1164,
+          "len": 275
+        }
+      ],
+      "reply": "VicHiring Fit01:57 PMAt the ATO since March 2026, I lead the Agile Kookaburras squad on the Payday Super reform program, managing sprint cadence, PI planning, capacity and executive reporting. I drove Distribution UI delivery past 95% completion and resolved NTP function testing delays by escalatingCopy",
+      "chatRequestsOnSend": [
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616645676,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "chatRequestsOnOpen": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616644440,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616644440,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        }
+      ],
+      "forbidden": []
+    },
+    {
+      "index": 4,
+      "viewport": "1440x900",
+      "phase": "send",
+      "requests": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616650084,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616650085,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616651429,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "pageerrors": [],
+      "consoleErrors": [],
+      "websockets": [],
+      "buildCommit": "753bc5ad",
+      "sendWall": 1788616651339,
+      "ttft": 994,
+      "csp": [],
+      "samples": [
+        {
+          "t": 268,
+          "len": 0
+        },
+        {
+          "t": 554,
+          "len": 0
+        },
+        {
+          "t": 854,
+          "len": 0
+        },
+        {
+          "t": 1155,
+          "len": 88
+        },
+        {
+          "t": 1485,
+          "len": 222
+        },
+        {
+          "t": 1767,
+          "len": 416
+        }
+      ],
+      "reply": "VicHiring Fit01:57 PMAt the ATO since March 2026, I lead the Agile Kookaburras squad on the Payday Super reform program, managing sprint cadence, PI planning, capacity and executive reporting. I steered Distribution UI delivery past 95% completion and resolved NTP function testing delays by escalating L2 environment instability. I also architected COBOL/mainframe test automation across 200+ scenarios, cuttingCopy",
+      "chatRequestsOnSend": [
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616651429,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "chatRequestsOnOpen": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616650084,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616650085,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        }
+      ],
+      "forbidden": []
+    },
+    {
+      "index": 5,
+      "viewport": "1440x900",
+      "phase": "send",
+      "requests": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616655664,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616655664,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616656867,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "pageerrors": [],
+      "consoleErrors": [],
+      "websockets": [],
+      "buildCommit": "753bc5ad",
+      "sendWall": 1788616656824,
+      "ttft": 642,
+      "csp": [],
+      "samples": [
+        {
+          "t": 245,
+          "len": 0
+        },
+        {
+          "t": 543,
+          "len": 0
+        },
+        {
+          "t": 844,
+          "len": 129
+        },
+        {
+          "t": 1144,
+          "len": 275
+        }
+      ],
+      "reply": "VicHiring Fit01:57 PMAt the ATO, I have been Scrum Master and Project Manager on the Payday Super reform program since March 2026, leading the Agile Kookaburras squad and managing sprint cadence, PI planning, capacity, and executive reporting. I architected test-evidence automation for COBOL/mainframe scenarios, reducing effort by about 92Copy",
+      "chatRequestsOnSend": [
+        {
+          "phase": "send",
+          "kind": "chat:origin",
+          "method": "POST",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+          "resourceType": "fetch",
+          "at": 1788616656867,
+          "status": 200,
+          "contentType": "text/event-stream; charset=utf-8",
+          "failure": null
+        }
+      ],
+      "chatRequestsOnOpen": [
+        {
+          "phase": "open",
+          "kind": "chat:origin",
+          "method": "GET",
+          "url": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616655664,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        },
+        {
+          "phase": "open",
+          "kind": "chat:hosting",
+          "method": "GET",
+          "url": "https://forgotten-mistory.web.app/api/chat?warm=1",
+          "resourceType": "fetch",
+          "at": 1788616655664,
+          "status": 204,
+          "contentType": "text/html",
+          "failure": null
+        }
+      ],
+      "forbidden": []
+    }
+  ]
+}
