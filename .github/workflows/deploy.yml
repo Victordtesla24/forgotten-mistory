@@ -113,16 +113,34 @@ jobs:
           projectId: forgotten-mistory
           channelId: live
 
+      # The page is downloaded to a file and parsed from the file. It used to be
+      # piped straight into awk, which printed the first match and exited — that
+      # closes the pipe under curl, curl dies with 23 ("Failure writing output to
+      # destination"), and pipefail turns a healthy deploy into a red run (run
+      # 33965475659 shipped 9ba97a5c to production and reported failure). The
+      # result must depend on what the live page says, never on pipe timing, so
+      # there is no pipe here at all: curl -o writes the file, grep -m1 reads it.
       - name: Verify the live page carries the deployed commit
         run: |
           set -euo pipefail
           expected="${{ steps.consolidate.outputs.sha }}"
+          tmp="$(mktemp)"
+          trap 'rm -f "$tmp"' EXIT
+          live=""
           for _ in $(seq 1 12); do
-            live="$(curl -fsS --max-time 20 https://forgotten-mistory.web.app/ | awk 'match($0, /name="build-commit" content="[0-9a-f]+"/) { s = substr($0, RSTART, RLENGTH); sub(/.*content="/, "", s); sub(/"$/, "", s); print s; exit }')"
-            if [ -n "$live" ] && [[ "$expected" == "$live"* ]]; then
-              echo "live page serves $live (HEAD $expected)"
-              echo "- verified live: \`$live\`" >> "$GITHUB_STEP_SUMMARY"
-              exit 0
+            if curl -fsS --max-time 20 -o "$tmp" https://forgotten-mistory.web.app/; then
+              live=""
+              # A page without the meta is a miss, not an error: grep's exit
+              # status is consumed by the `if`, so it never trips set -e.
+              if raw="$(grep -m1 -o 'name="build-commit" content="[0-9a-f]*"' "$tmp")"; then
+                live="${raw##*content=\"}"
+                live="${live%\"}"
+              fi
+              if [ -n "$live" ] && [[ "$expected" == "$live"* ]]; then
+                echo "live page serves $live (HEAD $expected)"
+                echo "- verified live: \`$live\`" >> "$GITHUB_STEP_SUMMARY"
+                exit 0
+              fi
             fi
             sleep 10
           done

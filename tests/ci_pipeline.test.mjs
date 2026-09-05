@@ -74,6 +74,48 @@ describe('the deploy pipeline is simple and autonomous', () => {
     assert.ok(/exit 1/.test(verify.run), 'a mismatch is reported as a failure, not swallowed');
   });
 
+  // Deploy run 33965475659 shipped 9ba97a5c to production and then reported a
+  // failure: the verify step read `live="$(curl … | awk '…; exit')"`, and under
+  // `set -euo pipefail` awk's early `exit` closes the pipe while curl is still
+  // writing, so curl dies with 23 ("Failure writing output to destination") and
+  // takes the whole step — and a healthy deploy — down with it. The check has to
+  // be deterministic: curl writes the page to a file, the file is parsed
+  // afterwards, and nothing about the result depends on pipe timing.
+  it('verifies the live commit without piping curl into a parser (curl exit 23 / EPIPE)', () => {
+    const steps = deploy.jobs['consolidate-and-deploy'].steps;
+    const verify = steps[steps.length - 1];
+    const run = verify.run;
+
+    assert.ok(/set -euo pipefail/.test(run), 'the verify step still runs under set -euo pipefail');
+    assert.ok(
+      !/curl[^\n]*\|/.test(run),
+      'curl must not pipe into a parser: a parser that exits early gives curl EPIPE (exit 23) and fails a healthy deploy'
+    );
+    assert.ok(
+      /curl -fsS --max-time 20 -o "\$tmp"/.test(run),
+      'curl writes the live page to a file with -o instead of to a pipe'
+    );
+    assert.ok(/tmp="?\$\(mktemp\)"?/.test(run), 'the response file comes from mktemp');
+    assert.ok(
+      /(grep|sed|awk)[^\n]*"\$tmp"/.test(run),
+      'the build-commit meta is parsed out of the downloaded file, not out of a stream'
+    );
+
+    // Semantics the fix must preserve, exactly as they were.
+    assert.ok(/for _ in \$\(seq 1 12\); do/.test(run), 'still twelve attempts');
+    assert.ok(/sleep 10/.test(run), 'still ten seconds between attempts');
+    assert.ok(
+      /\[\[ "\$expected" == "\$live"\* \]\]/.test(run),
+      'still an exact prefix match of the deployed sha against the live short sha'
+    );
+    assert.ok(/exit 0/.test(run), 'a match still succeeds');
+    assert.ok(/exit 1/.test(run), 'exhausting the retries still fails the step');
+    assert.ok(
+      !/\|\|\s*(true|:)\b/.test(run) && !/\bset \+e\b/.test(run),
+      'a real mismatch is never masked'
+    );
+  });
+
   it('can push (contents: write), queues runs and never cancels a deploy in flight', () => {
     assert.equal(deploy.permissions.contents, 'write');
     assert.equal(deploy.concurrency['cancel-in-progress'], false);

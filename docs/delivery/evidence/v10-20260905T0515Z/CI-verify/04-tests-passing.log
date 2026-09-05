@@ -1,0 +1,96 @@
+TAP version 13
+# Subtest: the deploy pipeline is simple and autonomous
+    # Subtest: is the only workflow that deploys, and there are exactly two workflows
+    ok 1 - is the only workflow that deploys, and there are exactly two workflows
+      ---
+      duration_ms: 1.404052
+      type: 'test'
+      ...
+    # Subtest: runs on every push to main, every ten minutes, and on demand
+    ok 2 - runs on every push to main, every ten minutes, and on demand
+      ---
+      duration_ms: 0.163942
+      type: 'test'
+      ...
+    # Subtest: has one job with no needs on any check
+    ok 3 - has one job with no needs on any check
+      ---
+      duration_ms: 0.218242
+      type: 'test'
+      ...
+    # Subtest: consolidates every remote branch into main before deploying, resolves conflicts itself, and deletes what it merged
+    ok 4 - consolidates every remote branch into main before deploying, resolves conflicts itself, and deletes what it merged
+      ---
+      duration_ms: 0.203462
+      type: 'test'
+      ...
+    # Subtest: deploys with the Firebase service account to the live channel and reads the commit back
+    ok 5 - deploys with the Firebase service account to the live channel and reads the commit back
+      ---
+      duration_ms: 0.133732
+      type: 'test'
+      ...
+    # Subtest: verifies the live commit without piping curl into a parser (curl exit 23 / EPIPE)
+    ok 6 - verifies the live commit without piping curl into a parser (curl exit 23 / EPIPE)
+      ---
+      duration_ms: 0.293413
+      type: 'test'
+      ...
+    # Subtest: can push (contents: write), queues runs and never cancels a deploy in flight
+    ok 7 - can push (contents: write), queues runs and never cancels a deploy in flight
+      ---
+      duration_ms: 0.130872
+      type: 'test'
+      ...
+    # Subtest: never weakens itself
+    ok 8 - never weakens itself
+      ---
+      duration_ms: 0.229811
+      type: 'test'
+      ...
+    1..8
+ok 1 - the deploy pipeline is simple and autonomous
+  ---
+  duration_ms: 4.195983
+  type: 'suite'
+  ...
+# Subtest: checks report and never gate
+    # Subtest: run on every push and carry no deploy step
+    ok 1 - run on every push and carry no deploy step
+      ---
+      duration_ms: 0.371124
+      type: 'test'
+      ...
+    # Subtest: cover types, lint, the static audit, the node contract tests, the Playwright suite and npm audit
+    ok 2 - cover types, lint, the static audit, the node contract tests, the Playwright suite and npm audit
+      ---
+      duration_ms: 0.227691
+      type: 'test'
+      ...
+    # Subtest: installs the Cloud Functions dependencies before the node contract tests run
+    ok 3 - installs the Cloud Functions dependencies before the node contract tests run
+      ---
+      duration_ms: 0.214481
+      type: 'test'
+      ...
+    # Subtest: uploads hidden report directories (upload-artifact v4 skips dot-paths by default)
+    ok 4 - uploads hidden report directories (upload-artifact v4 skips dot-paths by default)
+      ---
+      duration_ms: 0.133172
+      type: 'test'
+      ...
+    1..4
+ok 2 - checks report and never gate
+  ---
+  duration_ms: 1.224229
+  type: 'suite'
+  ...
+1..2
+# tests 12
+# suites 2
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 111.446289
