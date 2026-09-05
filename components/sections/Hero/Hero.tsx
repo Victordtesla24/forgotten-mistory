@@ -32,7 +32,7 @@ export default function Hero() {
     <section id="hero" className={styles.hero} aria-labelledby="hero-name">
       {/* The backdrop slot. Its gradient is the entire backdrop when there is
           no WebGL; the scene, when it mounts, draws over that gradient. */}
-      <Scene className={styles.stage}>
+      <Scene className={styles.stage} sceneId="hero-atmosphere">
         <HeroAtmosphere />
       </Scene>
 
