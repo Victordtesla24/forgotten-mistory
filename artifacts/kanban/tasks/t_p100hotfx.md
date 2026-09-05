@@ -40,3 +40,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## COMPLETE (2026-09-05T07:14:16.869Z)
 LIVE VERIFIED 07:13Z on build f103462f (contains a11dfe7): ?gl=force SwiftShader probe → 1440: canvases 1 at hero, 2 after #experience, h1 'Vikram Deshpande', 6 sections, 0 pageerrors, 0 console errors, 0 failed requests; 390: canvases 1, h1 present, 0 errors. Outage window for GPU visitors: 06:18Z (5ec231d3) → 07:12Z. Durable fix t_r19r3f9 in flight; npm audit high on next 14 re-accepted until then (recorded).
+
+## COMMENT (2026-09-05T07:25:31.666Z)
+Hotfix lane verifier (wf_7910f160 stage 2) also PASS: 34/34 render+cinematic+hero specs, 02-repro-after.json canvases 1/h1 present/0 errors; D-3 re-accepts the next 14 advisory chain (all server-side surfaces absent on a static export) until t_r19r3f9 lands.
