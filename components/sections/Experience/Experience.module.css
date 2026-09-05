@@ -44,6 +44,22 @@
     color: var(--white);
 }
 
+/* The heading's derivation, set as a caption on its own line under the claim:
+   the two years the sixteen is measured between, so a reader can check the
+   arithmetic without leaving the sentence (R-c13 ADV-6). Not gold — the dates
+   are the CV's own, which the site grades `self-reported`. */
+.titleDerivation {
+    display: block;
+    margin-top: var(--space-1);
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    font-weight: 400;
+    letter-spacing: var(--ls-caption);
+    line-height: var(--lh-caption);
+    text-transform: uppercase;
+    color: var(--mist-400);
+}
+
 .lede {
     margin: 0;
     max-width: var(--measure-read);

@@ -138,6 +138,8 @@ export default function Experience() {
           <p className={styles.kicker}>{experienceContent.kicker}</p>
           <h2 id="experience-title" className={styles.title}>
             {experienceContent.title}
+            {/* The claim's own arithmetic, inside the claim. */}
+            <span className={styles.titleDerivation}>{experienceContent.derivation}</span>
           </h2>
           <p className={styles.lede}>{experienceContent.lede}</p>
         </header>

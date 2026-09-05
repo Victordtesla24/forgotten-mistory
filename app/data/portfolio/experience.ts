@@ -104,5 +104,15 @@ export const roles: TimelineRole[] = experience.map((role) => {
 export const experienceContent = {
   kicker: 'Experience',
   title: 'Sixteen years, to scale',
+  /**
+   * The heading's own arithmetic, printed beside it.
+   *
+   * The CV's headline says "15+ year"; the roles on it run from May 2010 to the
+   * current engagement, which is 16.3 years elapsed and 16.2 years of role
+   * spans summed (SPANS above). Both figures are true, so rather than round the
+   * page down to a number its own dates contradict, the claim shows its working
+   * where a reader can check the subtraction (R-c8 ADV-F-4, R-c13 ADV-6).
+   */
+  derivation: 'May 2010 → September 2026',
   lede: 'Every bar below is drawn to its real duration — the same dates as the CV, on one axis. The long one in the middle is eight years at ANZ, and it is the reason the rest of this reads the way it does.',
 };

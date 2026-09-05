@@ -1,3 +1,5 @@
+import { execFileSync } from 'node:child_process';
+
 import { test, expect, type Page } from '@playwright/test';
 import { knowledgeBase } from '../../app/data/miniVicKnowledge';
 
@@ -162,9 +164,15 @@ test.describe('Content Preservation', () => {
     const listen = page.locator('#listen');
     await expect(listen).toContainText('sarkar.vikram@gmail.com');
     await expect(listen).toContainText('+61 433 224 556');
-    await expect(listen.locator('a[href^="mailto:"]')).toHaveAttribute(
+    // Two anchors now carry the address: the engagement plate, which sends a
+    // pre-addressed enquiry, and the route, which is the address itself. The
+    // route is the one that has to read verbatim; the plate's own contract —
+    // one per section, with a non-empty subject — is AP-04/AP-05 in
+    // tests/e2e/audience-paths.spec.ts.
+    await expect(listen.locator('a[href="mailto:sarkar.vikram@gmail.com"]')).toHaveCount(1);
+    await expect(listen.locator('a[data-cta="engage"]')).toHaveAttribute(
       'href',
-      'mailto:sarkar.vikram@gmail.com',
+      /^mailto:sarkar\.vikram@gmail\.com\?subject=.+/,
     );
     await expect(listen.locator('a[href^="tel:"]')).toHaveAttribute('href', 'tel:+61433224556');
   });
@@ -278,5 +286,78 @@ test.describe('Content Preservation', () => {
         'not on the market',
       );
     }
+  });
+
+  /**
+   * CT-11: the tenure figure is never higher than its evidence (R-c8 ADV-F-4,
+   * R-c13 ADV-6).
+   *
+   * The CV's own headline says "15+ year"; the page says "Sixteen years". Both
+   * are true — the roles in `app/data/portfolio/experience.ts` run May 2010 to
+   * September 2026, which is 16.3 years elapsed and 16.2 years of role spans
+   * summed — but a reader holding the PDF sees the site round up past its
+   * source unless the page shows its working. So every rendered tenure claim
+   * must either appear verbatim in the CV text, or print the two years it is
+   * derived from inside the same element, where a reader can check the
+   * subtraction without leaving the sentence.
+   *
+   * `pdftotext` supplies the verbatim half when poppler is installed. Where it
+   * is not, the escape hatch simply is not available and every claim has to
+   * carry its anchors — a stricter test, never a skipped one.
+   */
+  test('CT-11: every tenure claim on the page carries its evidence', async ({ page }) => {
+    let cvText = '';
+    try {
+      cvText = execFileSync('pdftotext', ['-layout', 'public/docs/Vik_Resume_Final.pdf', '-'], {
+        encoding: 'utf8',
+        maxBuffer: 8 * 1024 * 1024,
+      });
+    } catch {
+      cvText = '';
+    }
+
+    await gotoHome(page);
+    for (const id of ['#about', '#experience', '#vitrine', '#listen']) {
+      await page.locator(id).scrollIntoViewIfNeeded();
+    }
+    await page.locator('#hero').scrollIntoViewIfNeeded();
+
+    const claims = await page.evaluate(() => {
+      const TENURE =
+        /\b(?:fifteen|sixteen|seventeen|eighteen|nineteen|twenty|\d{1,2}\+?)[\s-]*years?\b/i;
+      const out: { path: string; text: string }[] = [];
+      const all = Array.from(document.body.querySelectorAll<HTMLElement>('*'));
+      for (const el of all) {
+        if (el.closest('script,style,noscript,template,[hidden],[aria-hidden="true"]')) continue;
+        const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+        if (!TENURE.test(text)) continue;
+        // Only the deepest element that still states the claim: an ancestor
+        // "carries" it only because its child does.
+        const deeper = Array.from(el.children).some((child) =>
+          TENURE.test((child.textContent || '').replace(/\s+/g, ' ').trim()),
+        );
+        if (deeper) continue;
+        const section = el.closest('section[id]')?.id ?? el.tagName.toLowerCase();
+        out.push({ path: `${section} > ${el.tagName.toLowerCase()}`, text });
+      }
+      return out;
+    });
+
+    expect(claims.length, 'no tenure claim renders on the page at all').toBeGreaterThan(0);
+
+    const cv = cvText.replace(/\s+/g, ' ').toLowerCase();
+    const offenders = claims.filter(({ text }) => {
+      const phrase = text.match(
+        /\b(?:fifteen|sixteen|seventeen|eighteen|nineteen|twenty|\d{1,2}\+?)[\s-]*years?\b/i,
+      )![0];
+      const verbatim = cv.length > 0 && cv.includes(phrase.toLowerCase());
+      const anchored = /\b2010\b/.test(text) && /\b2026\b/.test(text);
+      return !verbatim && !anchored;
+    });
+
+    expect(
+      offenders.map((o) => `${o.path}: ${o.text.slice(0, 120)}`),
+      'a tenure claim states a figure the CV does not, without printing the years it comes from',
+    ).toEqual([]);
   });
 });
