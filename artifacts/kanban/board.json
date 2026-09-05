@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T09:14:38.849Z",
+  "updated": "2026-09-05T09:16:20.880Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -1755,6 +1755,50 @@
       "created": "2026-09-05T09:14:38.798Z",
       "updated": "2026-09-05T09:14:38.798Z",
       "summary": "Owner reported no visible change twice (06:57Z, 09:08Z). Measured 09:09Z: curl -sI / → cache-control: max-age=3600 (firebase.json sets Cache-Control only for /_next/static, /assets, /docs, /sw.js); public/sw.js precaches / cache-first with a static CACHE_VERSION v1 → returning visitors keep the old shell for up to an hour or until the worker updates. Lane wf_b12ab287-6ab.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_flagvis0a",
+      "title": "OWNER CORRECTION 09:10Z — flagship visibility A: hero atmosphere, About compass field, Experience strata become unmistakable cinematic light scenes (measurable luminance + motion gate), text contrast preserved",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 99,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T09:16:20.775Z",
+      "updated": "2026-09-05T09:16:20.775Z",
+      "summary": "Owner: I still cannot see flagship UI/UX for each section. Orchestrator confirmed on live captures (c76459d0, 1440, gl=force): hero faint, About field invisible, Experience strata invisible. The quiet/text-primary bar is revoked for these scenes. Gate: tests/overhaul/flagship-visibility.spec.ts — scene-only capture ≥ 15% pixels at L ≥ ground+0.06, max L ≥ 0.35, motion between captures, reduced-motion static fallback visible, TC-CONTRAST-01 green. Lane wf flagship-visibility-a (port 5602/5604).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_flagvis0b",
+      "title": "Flagship visibility B: Skills bench field (scene 4, new), Vitrine field and Listen caliper field become unmistakable — same visibility gate; MiniVic viseme stage after",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 98,
+      "parents": [
+        "t_flagvis0a"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T09:16:20.880Z",
+      "updated": "2026-09-05T09:16:20.880Z",
+      "summary": "Second half of the owner correction: #skills has no scene (t_cbff57b0), #vitrine field invisible on live captures (black behind the cards), #listen a faint band. Reuse tests/overhaul/flagship-visibility.spec.ts from lane A; skills bench field brief in t_cbff57b0; vitrine/listen fields exist (1150e3e, d53d228) and need their intensity/structure raised to the gate.",
       "decisions": [],
       "comments": [],
       "blocker": null
