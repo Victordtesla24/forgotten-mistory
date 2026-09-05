@@ -1,0 +1,34 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero-fold.spec.ts tests/content/content-check.spec.ts --workers=2 --reporter=list
+
+Running 27 tests using 2 workers
+
+  ✓   2 [chromium] › tests/content/content-check.spec.ts:48:7 › Content Preservation › CT-02: Hero positioning line appears verbatim (4.6s)
+  ✓   1 [chromium] › tests/content/content-check.spec.ts:43:7 › Content Preservation › CT-01: Hero name from hero.ts appears verbatim (5.1s)
+  ✓   3 [chromium] › tests/content/content-check.spec.ts:55:7 › Content Preservation › CT-03: Hero statement states a tenure and names the current engagement (3.6s)
+  ✓   4 [chromium] › tests/content/content-check.spec.ts:74:7 › Content Preservation › CT-05: About carries the career facts (5.1s)
+  ✓   5 [chromium] › tests/content/content-check.spec.ts:87:7 › Content Preservation › CT-04: Every employer on the CV is named in the experience timeline (4.1s)
+  ✓   6 [chromium] › tests/content/content-check.spec.ts:106:7 › Content Preservation › CT-06: All six curated repositories render as plates with real GitHub links (4.5s)
+  ✓   7 [chromium] › tests/content/content-check.spec.ts:126:7 › Content Preservation › CT-07: The Vedic-astronomy work survives the rebuild as a vitrine plate (3.4s)
+  ✓   8 [chromium] › tests/content/content-check.spec.ts:139:7 › Content Preservation › CT-08: Credentials and the un-held certification both appear in the calibration table (3.8s)
+  ✓   9 [chromium] › tests/content/content-check.spec.ts:161:7 › Content Preservation › CT-09: Contact channels from siteContent appear verbatim in the closing section (4.0s)
+  ✓  10 [chromium] › tests/content/content-check.spec.ts:180:7 › Content Preservation › CT-10: Every hero figure is printed with the source it came from (3.9s)
+  ✓  11 [chromium] › tests/content/content-check.spec.ts:222:7 › Content Preservation › CT-11: GitHub and LinkedIn are linked from the closing section (3.8s)
+  ✓  12 [chromium] › tests/content/content-check.spec.ts:240:7 › Content Preservation › CT-15: LinkedIn (primary recruiter channel) is linked from the persistent navigation (4.1s)
+  ✓  14 [chromium] › tests/content/content-check.spec.ts:263:7 › Content Preservation › CT-17: MiniVic availability default and hiring copy keep active-intent ATO wording (96ms)
+  ✓  13 [chromium] › tests/content/content-check.spec.ts:249:7 › Content Preservation › CT-14: MiniVicBot mounts from the layout without throwing (5.0s)
+  ✓  15 [chromium] › tests/content/content-check.spec.ts:308:7 › Content Preservation › CT-11: every tenure claim on the page carries its evidence (4.4s)
+  ✓  16 [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 1440×900 › TC-FOLD-01: one headline, one sentence, one action group at 1440×900 (5.0s)
+  ✓  17 [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 1440×900 › TC-FOLD-02: the evidence sits below the fold at 1440×900 (5.2s)
+  ✓  18 [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 1440×900 › TC-FOLD-03: the visual is the fold at 1440×900 (5.0s)
+  ✓  19 [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 1280×800 › TC-FOLD-01: one headline, one sentence, one action group at 1280×800 (5.5s)
+  ✓  20 [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 1280×800 › TC-FOLD-02: the evidence sits below the fold at 1280×800 (6.6s)
+  ✓  21 [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 1280×800 › TC-FOLD-03: the visual is the fold at 1280×800 (4.9s)
+  ✓  22 [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 834×1194 › TC-FOLD-01: one headline, one sentence, one action group at 834×1194 (5.1s)
+  ✓  23 [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 834×1194 › TC-FOLD-02: the evidence sits below the fold at 834×1194 (5.1s)
+  ✓  24 [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 834×1194 › TC-FOLD-03: the visual is the fold at 834×1194 (4.1s)
+  ✓  25 [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 390×844 › TC-FOLD-01: one headline, one sentence, one action group at 390×844 (4.7s)
+  ✓  26 [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 390×844 › TC-FOLD-02: the evidence sits below the fold at 390×844 (4.4s)
+  ✓  27 [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 390×844 › TC-FOLD-03: the visual is the fold at 390×844 (4.4s)
+
+  27 passed (1.1m)
