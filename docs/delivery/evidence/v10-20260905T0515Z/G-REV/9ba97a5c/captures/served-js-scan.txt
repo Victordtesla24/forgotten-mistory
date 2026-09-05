@@ -1,0 +1,28 @@
+### served JS chunks: 14 files, 832154 bytes
+
+-- /api/realtime occurrences (G-M1) --
+0
+-- /api/chat-with-vic occurrences (G-M1) --
+1
+-- /api/chat occurrences --
+3
+-- endpoint ladder context (200 chars around first realtime hit) --
+
+-- chat-with-vic context --
+current=setInterval(async()=>{let e=eE.current.filter(e=>e.polloTaskId&&!e.videoUrl);if(0===e.length)return;let t=new Map;for(let o of e)try{let e=await fetch("/api/chat-with-vic?taskId=".concat(o.polloTaskId));if(e.ok){var a,r,n,i;let s=await e.json();if("succeeded"===s.status||(null==(a=s.data)?void 0:a.status)==="succeeded"||"completed"===s.status){let e=(null==(n=s.output
+
+-- client payload provider/model fields (G-M3) --
+
+-- streaming indicators --
+0
+3
+
+-- greeting mp3 ref + expected sha constant --
+I)(),eE=(0,n.useRef)(m);eE.current=m;let eO="/assets/my-avatar.mp4",eR="/assets/minivic-greeting.mp3",eD=(0,n.useRef)(!1),eV=(0,N.L)();(0,n.useEffect)(()=>{let e=document.getElementById("hero");if(!e)return void d(!0);let t=new IntersectionObserver(e=>{let[t]=e;return d(!t.isIntersecting)},{threshol
+
+-- HyperFrames / three / R3F presence in served JS --
+hyperframes: 0
+HyperFrames: 0
+@react-three: 0
+three.module: 0
+REVISION: 0
