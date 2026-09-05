@@ -1,9 +1,9 @@
 # CI Static Audit Contract
 
 **Script:** `scripts/validate/overhaul_static_audit.mjs`
-**Trigger:** Runs in the `quality` job of `.github/workflows/deploy.yml` on every push and PR.
-**Gate:** Hard gate — `build` job `needs: [quality]`. Audit failure blocks deploy.
-**Report artifact:** `reports/static-audit.json` (uploaded as `static-audit-report` artifact, 30-day retention).
+**Trigger:** Runs in the `static` job of `.github/workflows/checks.yml` on every push to every branch.
+**Gate:** None. Checks report; nothing in `deploy.yml` waits on them (`tests/ci_pipeline.test.mjs`). A red audit is a defect to fix in the next ten-minute cycle.
+**Report artifact:** `reports/static-audit.json` — written locally by every audit run (the script creates `reports/` first) and **not tracked by git**: it changes on every run, so committing it made every consolidation a forced merge. CI uploads no copy of it; read it where the audit ran.
 
 ---
 

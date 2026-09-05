@@ -1,0 +1,170 @@
+TAP version 13
+# Subtest: the deploy pipeline is simple and autonomous
+    # Subtest: is the only workflow that deploys, and there are exactly two workflows
+    ok 1 - is the only workflow that deploys, and there are exactly two workflows
+      ---
+      duration_ms: 2.078877
+      type: 'test'
+      ...
+    # Subtest: runs on every push to main, every ten minutes, and on demand
+    ok 2 - runs on every push to main, every ten minutes, and on demand
+      ---
+      duration_ms: 0.185571
+      type: 'test'
+      ...
+    # Subtest: has one job with no needs on any check
+    ok 3 - has one job with no needs on any check
+      ---
+      duration_ms: 0.307922
+      type: 'test'
+      ...
+    # Subtest: consolidates every remote branch into main before deploying, resolves conflicts itself, and deletes what it merged
+    ok 4 - consolidates every remote branch into main before deploying, resolves conflicts itself, and deletes what it merged
+      ---
+      duration_ms: 0.234342
+      type: 'test'
+      ...
+    # Subtest: deploys with the Firebase service account to the live channel and reads the commit back
+    ok 5 - deploys with the Firebase service account to the live channel and reads the commit back
+      ---
+      duration_ms: 0.261472
+      type: 'test'
+      ...
+    # Subtest: verifies the live commit without piping curl into a parser (curl exit 23 / EPIPE)
+    ok 6 - verifies the live commit without piping curl into a parser (curl exit 23 / EPIPE)
+      ---
+      duration_ms: 0.360673
+      type: 'test'
+      ...
+    # Subtest: can push (contents: write), queues runs and never cancels a deploy in flight
+    ok 7 - can push (contents: write), queues runs and never cancels a deploy in flight
+      ---
+      duration_ms: 0.136911
+      type: 'test'
+      ...
+    # Subtest: never weakens itself
+    ok 8 - never weakens itself
+      ---
+      duration_ms: 0.841136
+      type: 'test'
+      ...
+    1..8
+ok 1 - the deploy pipeline is simple and autonomous
+  ---
+  duration_ms: 8.118494
+  type: 'suite'
+  ...
+# Subtest: checks report and never gate
+    # Subtest: run on every push and carry no deploy step
+    ok 1 - run on every push and carry no deploy step
+      ---
+      duration_ms: 0.458304
+      type: 'test'
+      ...
+    # Subtest: cover types, lint, the static audit, the node contract tests, the Playwright suite and npm audit
+    ok 2 - cover types, lint, the static audit, the node contract tests, the Playwright suite and npm audit
+      ---
+      duration_ms: 0.336813
+      type: 'test'
+      ...
+    # Subtest: installs the Cloud Functions dependencies before the node contract tests run
+    ok 3 - installs the Cloud Functions dependencies before the node contract tests run
+      ---
+      duration_ms: 0.224882
+      type: 'test'
+      ...
+    # Subtest: uploads hidden report directories (upload-artifact v4 skips dot-paths by default)
+    ok 4 - uploads hidden report directories (upload-artifact v4 skips dot-paths by default)
+      ---
+      duration_ms: 0.122441
+      type: 'test'
+      ...
+    1..4
+ok 2 - checks report and never gate
+  ---
+  duration_ms: 1.395561
+  type: 'suite'
+  ...
+# Subtest: the generated static-audit report is a build artifact, not a tracked file
+    # Subtest: is not tracked, so no consolidation ever has to force-resolve it
+    ok 1 - is not tracked, so no consolidation ever has to force-resolve it
+      ---
+      duration_ms: 26.773324
+      type: 'test'
+      ...
+    # Subtest: is ignored, so running the audit never dirties the working tree
+    ok 2 - is ignored, so running the audit never dirties the working tree
+      ---
+      duration_ms: 8.299766
+      type: 'test'
+      ...
+    # Subtest: is still written by the audit, which creates reports/ first (a clean checkout has no such directory)
+    ok 3 - is still written by the audit, which creates reports/ first (a clean checkout has no such directory)
+      ---
+      duration_ms: 1.33203
+      type: 'test'
+      ...
+    # Subtest: is uploaded tolerantly if CI uploads it at all — an untracked artifact can legitimately be absent
+    ok 4 - is uploaded tolerantly if CI uploads it at all — an untracked artifact can legitimately be absent
+      ---
+      duration_ms: 0.287471
+      type: 'test'
+      ...
+    1..4
+ok 3 - the generated static-audit report is a build artifact, not a tracked file
+  ---
+  duration_ms: 36.876034
+  type: 'suite'
+  ...
+# Subtest: Static audit fail-loud contract
+    # Subtest: baseline: audit passes on clean source (exit 0)
+    ok 1 - baseline: audit passes on clean source (exit 0)
+      ---
+      duration_ms: 351.1207
+      type: 'test'
+      ...
+    # Subtest: TONE violation: injecting banned word in string literal causes exit 1
+    ok 2 - TONE violation: injecting banned word in string literal causes exit 1
+      ---
+      duration_ms: 215.305717
+      type: 'test'
+      ...
+    # Subtest: COMPLETE violation: TODO marker causes exit 1
+    ok 3 - COMPLETE violation: TODO marker causes exit 1
+      ---
+      duration_ms: 341.750834
+      type: 'test'
+      ...
+    # Subtest: MULTI-AXIS violation: multiple failures all reported before exit
+    ok 4 - MULTI-AXIS violation: multiple failures all reported before exit
+      ---
+      duration_ms: 275.693578
+      type: 'test'
+      ...
+    # Subtest: JSON report reflects FAIL when violations present
+    ok 5 - JSON report reflects FAIL when violations present
+      ---
+      duration_ms: 516.448758
+      type: 'test'
+      ...
+    # Subtest: JSON report reflects PASS on clean source
+    ok 6 - JSON report reflects PASS on clean source
+      ---
+      duration_ms: 398.899821
+      type: 'test'
+      ...
+    1..6
+ok 4 - Static audit fail-loud contract
+  ---
+  duration_ms: 2105.909791
+  type: 'suite'
+  ...
+1..4
+# tests 22
+# suites 4
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2304.04999

@@ -13,6 +13,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { createRequire } from 'node:module';
+import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const yaml = require('js-yaml');
@@ -172,5 +173,60 @@ describe('checks report and never gate', () => {
     const e2e = checks.jobs.e2e.steps.find((s) => (s.uses || '').startsWith('actions/upload-artifact'));
     assert.ok(e2e, 'playwright report upload missing');
     assert.equal(e2e.with['include-hidden-files'], true);
+  });
+});
+
+// ── Generated artifacts stay out of the tree ────────────────────────────────
+// scripts/validate/overhaul_static_audit.mjs rewrites reports/static-audit.json on every
+// run — a fresh timestamp and this build's numbers. While that file was tracked, every
+// lane committed its own version and every consolidation conflicted on it, which
+// deploy.yml settled with `-X theirs` / `git checkout --theirs` (843b679d, "merge
+// worktree-wf_b908a7a9-f5d-2 into main (branch wins conflicts)"). A forced merge is a
+// standing risk: any *real* conflict riding along in the same merge is silently given to
+// the branch too. Nothing reads the committed copy — tests/static_audit_fail.test.mjs
+// runs the audit itself and then reads what that run wrote, and checks.yml uploads only
+// playwright-report/ — so the file is a build artifact and belongs outside git.
+describe('the generated static-audit report is a build artifact, not a tracked file', () => {
+  const REPORT = 'reports/static-audit.json';
+  const git = (...args) => spawnSync('git', args, { cwd: ROOT, encoding: 'utf8' });
+
+  it('is not tracked, so no consolidation ever has to force-resolve it', () => {
+    assert.notEqual(
+      git('ls-files', '--error-unmatch', REPORT).status,
+      0,
+      `${REPORT} is tracked — every lane rewrites it, so every merge conflicts on it`
+    );
+    assert.equal(git('ls-files', '--', REPORT).stdout.trim(), '', `git ls-files still lists ${REPORT}`);
+  });
+
+  it('is ignored, so running the audit never dirties the working tree', () => {
+    assert.equal(git('check-ignore', '-q', '--no-index', REPORT).status, 0, `${REPORT} is not covered by .gitignore`);
+    assert.ok(
+      readFileSync(join(ROOT, '.gitignore'), 'utf8').includes(REPORT),
+      '.gitignore should name the path outright, so the reason is readable where the rule lives'
+    );
+  });
+
+  it('is still written by the audit, which creates reports/ first (a clean checkout has no such directory)', () => {
+    const audit = readFileSync(join(ROOT, 'scripts', 'validate', 'overhaul_static_audit.mjs'), 'utf8');
+    const mkdir = audit.indexOf('mkdirSync(REPORT_DIR, { recursive: true })');
+    const write = audit.indexOf("writeFileSync(join(REPORT_DIR, 'static-audit.json')");
+    assert.ok(mkdir !== -1, 'the audit must mkdir -p its report directory');
+    assert.ok(write !== -1, 'the audit must still write reports/static-audit.json');
+    assert.ok(mkdir < write, 'the directory is created before the report is written into it');
+  });
+
+  it('is uploaded tolerantly if CI uploads it at all — an untracked artifact can legitimately be absent', () => {
+    for (const [name, job] of Object.entries(checks.jobs)) {
+      for (const step of job.steps ?? []) {
+        if (!(step.uses || '').startsWith('actions/upload-artifact')) continue;
+        if (!/\breports\b/.test(step.with?.path ?? '')) continue;
+        assert.notEqual(
+          step.with['if-no-files-found'],
+          'error',
+          `checks.yml job "${name}" uploads reports/ and fails when the artifact is missing`
+        );
+      }
+    }
   });
 });

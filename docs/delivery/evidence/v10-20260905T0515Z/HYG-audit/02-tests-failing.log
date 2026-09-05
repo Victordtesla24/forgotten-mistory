@@ -1,0 +1,172 @@
+TAP version 13
+# Subtest: the deploy pipeline is simple and autonomous
+    # Subtest: is the only workflow that deploys, and there are exactly two workflows
+    ok 1 - is the only workflow that deploys, and there are exactly two workflows
+      ---
+      duration_ms: 10.910807
+      type: 'test'
+      ...
+    # Subtest: runs on every push to main, every ten minutes, and on demand
+    ok 2 - runs on every push to main, every ten minutes, and on demand
+      ---
+      duration_ms: 0.204832
+      type: 'test'
+      ...
+    # Subtest: has one job with no needs on any check
+    ok 3 - has one job with no needs on any check
+      ---
+      duration_ms: 0.315312
+      type: 'test'
+      ...
+    # Subtest: consolidates every remote branch into main before deploying, resolves conflicts itself, and deletes what it merged
+    ok 4 - consolidates every remote branch into main before deploying, resolves conflicts itself, and deletes what it merged
+      ---
+      duration_ms: 0.261192
+      type: 'test'
+      ...
+    # Subtest: deploys with the Firebase service account to the live channel and reads the commit back
+    ok 5 - deploys with the Firebase service account to the live channel and reads the commit back
+      ---
+      duration_ms: 0.196661
+      type: 'test'
+      ...
+    # Subtest: verifies the live commit without piping curl into a parser (curl exit 23 / EPIPE)
+    ok 6 - verifies the live commit without piping curl into a parser (curl exit 23 / EPIPE)
+      ---
+      duration_ms: 0.354363
+      type: 'test'
+      ...
+    # Subtest: can push (contents: write), queues runs and never cancels a deploy in flight
+    ok 7 - can push (contents: write), queues runs and never cancels a deploy in flight
+      ---
+      duration_ms: 0.120782
+      type: 'test'
+      ...
+    # Subtest: never weakens itself
+    ok 8 - never weakens itself
+      ---
+      duration_ms: 6.796444
+      type: 'test'
+      ...
+    1..8
+ok 1 - the deploy pipeline is simple and autonomous
+  ---
+  duration_ms: 20.503374
+  type: 'suite'
+  ...
+# Subtest: checks report and never gate
+    # Subtest: run on every push and carry no deploy step
+    ok 1 - run on every push and carry no deploy step
+      ---
+      duration_ms: 0.409292
+      type: 'test'
+      ...
+    # Subtest: cover types, lint, the static audit, the node contract tests, the Playwright suite and npm audit
+    ok 2 - cover types, lint, the static audit, the node contract tests, the Playwright suite and npm audit
+      ---
+      duration_ms: 0.322732
+      type: 'test'
+      ...
+    # Subtest: installs the Cloud Functions dependencies before the node contract tests run
+    ok 3 - installs the Cloud Functions dependencies before the node contract tests run
+      ---
+      duration_ms: 0.230781
+      type: 'test'
+      ...
+    # Subtest: uploads hidden report directories (upload-artifact v4 skips dot-paths by default)
+    ok 4 - uploads hidden report directories (upload-artifact v4 skips dot-paths by default)
+      ---
+      duration_ms: 0.138371
+      type: 'test'
+      ...
+    1..4
+ok 2 - checks report and never gate
+  ---
+  duration_ms: 1.357221
+  type: 'suite'
+  ...
+# Subtest: the generated static-audit report is a build artifact, not a tracked file
+    # Subtest: is not tracked, so no consolidation ever has to force-resolve it
+    not ok 1 - is not tracked, so no consolidation ever has to force-resolve it
+      ---
+      duration_ms: 23.686579
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_1790b40a-e53-1/tests/ci_pipeline.test.mjs:193:3'
+      failureType: 'testCodeFailure'
+      error: 'reports/static-audit.json is tracked — every lane rewrites it, so every merge conflicts on it'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 0
+      actual: 0
+      operator: 'notStrictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_1790b40a-e53-1/tests/ci_pipeline.test.mjs:194:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        node:internal/test_runner/test:1440:71
+        node:internal/per_context/primordials:466:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:435:3)
+        node:internal/per_context/primordials:466:9
+        Array.map (<anonymous>)
+      ...
+    # Subtest: is ignored, so running the audit never dirties the working tree
+    not ok 2 - is ignored, so running the audit never dirties the working tree
+      ---
+      duration_ms: 8.684959
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_1790b40a-e53-1/tests/ci_pipeline.test.mjs:202:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        reports/static-audit.json is not covered by .gitignore
+        
+        1 !== 0
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 0
+      actual: 1
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_1790b40a-e53-1/tests/ci_pipeline.test.mjs:203:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1442:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: is still written by the audit, which creates reports/ first (a clean checkout has no such directory)
+    ok 3 - is still written by the audit, which creates reports/ first (a clean checkout has no such directory)
+      ---
+      duration_ms: 2.254298
+      type: 'test'
+      ...
+    # Subtest: is uploaded tolerantly if CI uploads it at all — an untracked artifact can legitimately be absent
+    ok 4 - is uploaded tolerantly if CI uploads it at all — an untracked artifact can legitimately be absent
+      ---
+      duration_ms: 0.362242
+      type: 'test'
+      ...
+    1..4
+not ok 3 - the generated static-audit report is a build artifact, not a tracked file
+  ---
+  duration_ms: 35.277152
+  type: 'suite'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_1790b40a-e53-1/tests/ci_pipeline.test.mjs:189:1'
+  failureType: 'subtestsFailed'
+  error: '2 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..3
+# tests 16
+# suites 3
+# pass 14
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 445.669293
