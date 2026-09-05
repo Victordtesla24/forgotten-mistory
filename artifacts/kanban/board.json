@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T08:06:43.900Z",
+  "updated": "2026-09-05T08:25:47.637Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -343,7 +343,7 @@
     {
       "id": "t_86cdd156",
       "title": "Cycle 15 — MOT-F-1 + C-03: #experience becomes the narrated signature (bars grow on entry, strata bound to spans, white playhead; labels inside the card)",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 82,
       "parents": [
@@ -358,7 +358,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:30:46.458Z",
+      "updated": "2026-09-05T08:25:47.455Z",
       "summary": "R-c8 items 5 and 6. Gold rejected for the playhead (dates are self-reported). Files: components/sections/Experience/{CareerStrata.tsx,strata.glsl.ts,Experience.module.css,Experience.tsx}; tests/overhaul/experience-signature.spec.ts (TDD first).",
       "decisions": [],
       "comments": [
@@ -372,7 +372,8 @@
           "by": "orchestrator",
           "text": "R-c13 #2 MOT-C13-02 (major, Verified, motion) — 'Sixteen years, to scale' is the one heading that describes an animation and the section has none — getAnimations() scoped to #experience is [] on arrival and after 1600 ms; the only animation: in the module is inside the reduced-motion block\nDIRECTION: Give the chart the beat its heading promises — bars grow to their real duration on entry. 1) IntersectionObserver at threshold 0.2 in Experience.tsx setting data-drawn on the chart, mirroring Bench.tsx:189-206 (already solves once-only + reduced-motion). 2) Animate .trackBar::before (Experience.module.css:175) transform scaleX(0)->scaleX(1), transform-origin: left center, 900 ms (--motion-cine), cubic-bezier(0.16,1,0.3,1), animation-delay: calc(var(--i) * 70ms) — eight roles land the last bar at 1390 ms. 3) Roll .trackYears (line 211) opacity 0->1 over 320 ms at calc(var(--i) * 70ms + 620ms) so each number lands as its bar stops. 4) In the existing RM block (line 473) add .trackBar::before { animation: none; transform: none } and keep experienceFade. 5) Drive CareerStrata's uIntensity (CareerStrata.tsx:45-47) from the same data-drawn flag instead of ramping unconditionally at delta*0.5, so the strata rise with the bars.\nFILES: components/sections/Experience/Experience.tsx:100,156, components/sections/Experience/Experience.module.css:169,175,211,473-486, components/sections/Experience/CareerStrata.tsx:45-47, components/sections/Skills/Bench.tsx:189-206, tests/overhaul/experience-signature.spec.ts\nACCEPTANCE: With normal motion at 1440x900, scrolling #experience into view yields >= 8 entries in document.getAnimations() scoped to #experience, each duration === 900 and easing === 'cubic-bezier(0.16, 1, 0.3, 1)', the last starting at >= 490 ms; .trackBar::before computed transform is not matrix(1,0,0,1,0,0) at t=100 ms and is at t=1600 ms. Under reducedMotion 'reduce', #experience still reports zero running animations after 2200 ms."
         }
-      ]
+      ],
+      "result": "V-c15 PASS (906ccd5): scene-experience 8/8 + experience 13/13 (TC-EXP-11 now green), 0 gold, playhead rgb(246,246,246), labels inside the card at 5 widths, reduced motion static, canvases 1 at ?gl=force; consolidated by the pipeline (8464426) and LIVE on 84644262 (monitor PROD OK). Minor: F-1 stagger misses R-c13 by 10 ms, F-2 .trackYears opacity roll-in not implemented, F-3 pre-existing 2025/now axis label overlap at 390 → t_c15b polish."
     },
     {
       "id": "t_cc03ed93",
@@ -523,7 +524,7 @@
     {
       "id": "t_a88c6767",
       "title": "Cycle 20 — C-09 + C-11: #listen contact routes carry the page's business end; #about dial and list share a baseline",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 66,
       "parents": [
@@ -538,7 +539,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:30:50.960Z",
+      "updated": "2026-09-05T08:25:47.596Z",
       "summary": "R-c8 items 15 and 16. Files: components/sections/Listen/{Listen.module.css,Listen.tsx}, components/sections/About/About.module.css. No second motion beat in #listen (MOT-F-4 confirms the caliper-close is the one).",
       "decisions": [],
       "comments": [
@@ -557,7 +558,7 @@
     {
       "id": "t_652f383d",
       "title": "Cycle 21 — ADV-F-4: headline tenure matches the CV (\"15+ years\", not \"Sixteen years\") everywhere the number appears",
-      "status": "todo",
+      "status": "running",
       "assignee": "coder",
       "priority": 64,
       "parents": [
@@ -572,7 +573,7 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:30:51.547Z",
+      "updated": "2026-09-05T08:25:47.637Z",
       "summary": "R-c8 item 17 (content parity, R7). Files: app/data/portfolio/{vitrine,experience,hero}.ts, app/data/siteContent.ts (grep \"ixteen\"), tests/content/content-check.spec.ts. Source: public/docs/Vik_Resume_Final.pdf line 3 (\"15+ year\") — or, if the roles sum to ≥16 years on the CV's own dates, keep sixteen and print the arithmetic beside it. Decide from the PDF text, record the decision.",
       "decisions": [],
       "comments": [
@@ -1616,6 +1617,29 @@
       "created": "2026-09-05T08:06:43.493Z",
       "updated": "2026-09-05T08:06:43.493Z",
       "summary": "V-react19 finding 1: the only layout shift captured names footer.Footer_footer__TWDx3 at ~508 ms worth 0.1556 — the two off-list ✘ (TC-HERO-15, PERF-03) attributed to the hero crossfade are this. Files: components/site/Footer.tsx + its CSS block (app/globals.css or module). TDD: tests/perf/performance.spec.ts PERF-03 must pass with --workers=2 under load (repeat-each=3) and a new assertion that no LayoutShift entry names the footer.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_d9e77919",
+      "title": "Cycle 15b — #experience polish: stagger to the R-c13 spec (60 ms + 70 ms roll), .trackYears opacity roll-in as each bar stops, fix the 2025/now axis-label overlap at 390",
+      "status": "todo",
+      "assignee": "coder",
+      "priority": 72,
+      "parents": [
+        "t_86cdd156"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding / documentation",
+        "level": 4,
+        "effort": "medium (xhigh when coding)"
+      },
+      "provider": "openrouter→anthropic-oauth",
+      "created": "2026-09-05T08:25:47.491Z",
+      "updated": "2026-09-05T08:25:47.491Z",
+      "summary": "V-c15 findings F-1/F-2/F-3 (906ccd5 09-verification.md). Files: components/sections/Experience/Experience.module.css (.trackBar delay calc, .trackYears opacity transition calc(var(--i) * 70ms + 620ms) 320 ms, .axis/.axisTick spacing at ≤30rem), Experience.tsx if --i is missing; tests/overhaul/scene-experience.spec.ts gains the two assertions + a 390 axis-label non-overlap assertion (getBoundingClientRect of the last two axis labels).",
       "decisions": [],
       "comments": [],
       "blocker": null
