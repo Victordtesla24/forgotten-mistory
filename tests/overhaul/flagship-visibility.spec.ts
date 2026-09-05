@@ -153,12 +153,20 @@ const SCENES: readonly SceneCase[] = [
   // SIGNATURE-SCENES-v1 F6: `Vitrine.tsx` and `Listen.tsx` each mounted
   // `<Scene className={styles.fieldSlot}>` with no `sceneId`, so two of the
   // seven signature scenes had no handle and could not be photographed at all.
-  // They are held to the full default bar at both widths: the vitrine's light
-  // is behind plates that are 62% opaque over their own ink (the field lifts a
+  // They are held to the full default bar at both widths.
+  //
+  // The claim that used to stand here — that the vitrine's light "lifts a
   // plate's foreground more than its ground, so every plate token gains
-  // contrast rather than losing it), and the listen band sits at the caliper's
-  // own height, which is the one full-width stripe of that section with no type
-  // in it. Neither trades a floor for a threshold.
+  // contrast rather than losing it" — was not measured and is not true as
+  // stated: a plate at rest is 62% opaque over --ink-900, so light behind it
+  // reaches its ground and its ink alike, and which of the two gains is a
+  // function of the token, not a property of the field. What is measured is
+  // narrower and is asserted elsewhere: TC-CONTRAST-01/02 reads every plate
+  // token against the composited ground with the field running, and the
+  // caption floors there are what constrain how bright the ambient may be
+  // (see the ambient/gather split in vitrine.glsl.ts). The listen band sits at
+  // the caliper's own height, the one full-width stripe of that section with
+  // no type in it. Neither scene trades a floor for a threshold.
   { section: 'vitrine', scene: 'vitrine-field', label: 'vitrine cabinet light' },
   { section: 'listen', scene: 'listen-field', label: 'listen beat field' },
 ];

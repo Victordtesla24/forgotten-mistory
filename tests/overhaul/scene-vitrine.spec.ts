@@ -406,3 +406,228 @@ test.describe('TC-VIT: a plate at rest is still a drawing, and the work ends in 
     expect(parseFloat(focus.outline), 'no visible focus ring on the CTA').toBeGreaterThan(0);
   });
 });
+
+/* ── G-V3: a drawing that can be read as a drawing ──────────────────────────
+   ADV-REVIEW-20260905T1451Z §Vitrine. The strokes were hairlines at 0.16–0.35
+   element opacity, through a 0.5 resting trace weight, through a plate at 0.62
+   — an effective alpha of 0.05–0.11 in --mist-200, which measured 1.4–2.4:1
+   against the plate's own ground. That is a texture, not a visualisation, and
+   the plate's whole argument is the mechanism it draws.
+
+   The rule here is composited, because every one of those four multiplications
+   is real: stroke colour × stroke-opacity × element opacity × plate opacity,
+   over the ground the plate actually paints at rest — sampled from a
+   screenshot with the drawing hidden, and taken at its *brightest* point,
+   which is the worst case for light ink. Primary strokes (the drawing's
+   principal lines, element opacity ≥ 0.9) clear AA; guide lines are allowed to
+   stay secondary but never fall under 3:1; the labels clear AA; and the lit
+   plate is still heavier than any resting one, so the light adds emphasis
+   rather than being the only thing that makes a drawing exist. */
+
+const AA_TEXT = 4.5;
+const AA_GUIDE = 3;
+/** The drawing's principal lines, as authored in Drawings.tsx. */
+const PRIMARY_TONE = 0.9;
+
+const v3Channel = (c: number) => {
+  const s = c / 255;
+  return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+};
+const v3Luminance = (rgb: number[]) =>
+  0.2126 * v3Channel(rgb[0]) + 0.7152 * v3Channel(rgb[1]) + 0.0722 * v3Channel(rgb[2]);
+const v3Contrast = (a: number[], b: number[]) => {
+  const l1 = v3Luminance(a);
+  const l2 = v3Luminance(b);
+  return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+};
+const v3Parse = (value: string): number[] | null => {
+  const m = value.match(/rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)(?:[\s,/]+([\d.]+))?\s*\)/);
+  return m ? [+m[1], +m[2], +m[3], m[4] === undefined ? 1 : +m[4]] : null;
+};
+const v3Composite = (fg: number[], alpha: number, bg: number[]) =>
+  [0, 1, 2].map((i) => bg[i] + (fg[i] - bg[i]) * alpha);
+
+/** Read a viewport PNG inside the page and return the brightest pixel in a rect. */
+async function brightestIn(page: Page, png: Buffer, rect: { x: number; y: number; width: number; height: number }) {
+  return page.evaluate(
+    async ([b64, r]) => {
+      const img = new Image();
+      img.src = `data:image/png;base64,${b64 as string}`;
+      await img.decode();
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true })!;
+      ctx.drawImage(img, 0, 0);
+      const scale = img.naturalWidth / window.innerWidth;
+      const box = r as { x: number; y: number; width: number; height: number };
+      const chan = (c: number) => {
+        const s = c / 255;
+        return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+      };
+      let best = [0, 0, 0];
+      let bestL = -1;
+      for (let y = box.y + 2; y < box.y + box.height - 2; y += 3) {
+        for (let x = box.x + 2; x < box.x + box.width - 2; x += 3) {
+          const d = ctx.getImageData(
+            Math.min(canvas.width - 1, Math.max(0, Math.round(x * scale))),
+            Math.min(canvas.height - 1, Math.max(0, Math.round(y * scale))),
+            1,
+            1,
+          ).data;
+          const l = 0.2126 * chan(d[0]) + 0.7152 * chan(d[1]) + 0.0722 * chan(d[2]);
+          if (l > bestL) {
+            bestL = l;
+            best = [d[0], d[1], d[2]];
+          }
+        }
+      }
+      return best;
+    },
+    [png.toString('base64'), rect] as const,
+  );
+}
+
+const HIDE_DRAWING_ID = '__vitrine_ground_probe__';
+
+test.describe('TC-VIT-V3: the mechanism drawings read as visualisations', () => {
+  test.describe.configure({ timeout: 180000 });
+
+  test('TC-VIT-V3: every plate at rest carries its strokes and labels at AA on its own ground', async ({
+    page,
+  }) => {
+    await settleVitrineWithGL(page);
+
+    const plates = page.locator(PLATE);
+    const count = await plates.count();
+    expect(count, 'the cabinet holds six plates').toBe(6);
+
+    // The ground each drawing is painted on: the plate as it stands, with the
+    // drawing itself taken out, screenshotted once for all six.
+    await page.evaluate((id) => {
+      const style = document.createElement('style');
+      style.id = id;
+      style.textContent =
+        '#vitrine svg [class*="stroke"]{stroke-opacity:0!important;opacity:0!important}' +
+        '#vitrine svg text{opacity:0!important;fill:transparent!important}';
+      document.head.appendChild(style);
+    }, HIDE_DRAWING_ID);
+    await page.waitForTimeout(300);
+    const groundPng = await page.screenshot({ fullPage: false, animations: 'disabled' });
+
+    const drawingBoxes: ({ x: number; y: number; width: number; height: number } | null)[] = [];
+    for (let i = 0; i < count; i += 1) {
+      drawingBoxes.push(await plates.nth(i).locator('svg').first().boundingBox());
+    }
+    const grounds: number[][] = [];
+    for (let i = 0; i < count; i += 1) {
+      const box = drawingBoxes[i];
+      grounds.push(box ? await brightestIn(page, groundPng, box) : [10, 10, 10]);
+    }
+
+    await page.evaluate((id) => document.getElementById(id)?.remove(), HIDE_DRAWING_ID);
+    await page.waitForTimeout(300);
+
+    // Every stroke and every label, with the four multiplications kept apart so
+    // the failure message says which one is doing the damage.
+    const readings = await plates.evaluateAll((els) =>
+      els.map((plate) => {
+        const plateOpacity = parseFloat(getComputedStyle(plate).opacity) || 0;
+        const lit = plate.hasAttribute('data-lit') || plate.hasAttribute('data-drawn');
+        const strokes = Array.from(plate.querySelectorAll('svg [class*="stroke"]')).map((s) => {
+          const cs = getComputedStyle(s);
+          return {
+            ink: cs.stroke,
+            trace: parseFloat(cs.strokeOpacity) || 0,
+            tone: parseFloat(cs.opacity) || 0,
+          };
+        });
+        const labels = Array.from(plate.querySelectorAll('svg text')).map((t) => {
+          const cs = getComputedStyle(t);
+          return { ink: cs.fill === 'none' ? cs.color : cs.fill, tone: parseFloat(cs.opacity) || 0 };
+        });
+        return { plateOpacity, lit, strokes, labels };
+      }),
+    );
+
+    const faults: string[] = [];
+    const measured: string[] = [];
+    let heaviestResting = 0;
+    let litWeight = 0;
+
+    readings.forEach((plate, i) => {
+      const ground = grounds[i];
+      const painted = (ink: string, alpha: number) => {
+        const rgb = v3Parse(ink);
+        if (!rgb) return null;
+        return v3Composite(rgb, Math.min(1, alpha * (rgb[3] ?? 1)), ground);
+      };
+
+      let primaries = 0;
+      let worstPrimary = Infinity;
+      let worstGuide = Infinity;
+      plate.strokes.forEach((s) => {
+        const alpha = s.trace * s.tone * plate.plateOpacity;
+        const px = painted(s.ink, alpha);
+        if (!px) return;
+        const ratio = v3Contrast(px, ground);
+        if (plate.lit) {
+          litWeight = Math.max(litWeight, alpha);
+        } else {
+          heaviestResting = Math.max(heaviestResting, alpha);
+          if (s.tone >= PRIMARY_TONE) {
+            primaries += 1;
+            worstPrimary = Math.min(worstPrimary, ratio);
+            if (ratio < AA_TEXT) {
+              faults.push(
+                `plate ${i + 1}: a primary stroke (tone ${s.tone}, trace ${s.trace}, plate ` +
+                  `${plate.plateOpacity}) is ${ratio.toFixed(2)}:1 on rgb(${ground.join(',')})`,
+              );
+            }
+          } else {
+            worstGuide = Math.min(worstGuide, ratio);
+            if (ratio < AA_GUIDE) {
+              faults.push(
+                `plate ${i + 1}: a guide line (tone ${s.tone}) is ${ratio.toFixed(2)}:1 on ` +
+                  `rgb(${ground.join(',')})`,
+              );
+            }
+          }
+        }
+      });
+
+      plate.labels.forEach((l) => {
+        if (plate.lit) return;
+        const px = painted(l.ink, l.tone * plate.plateOpacity);
+        if (!px) return;
+        const ratio = v3Contrast(px, ground);
+        if (ratio < AA_TEXT) {
+          faults.push(`plate ${i + 1}: a drawing label is ${ratio.toFixed(2)}:1 on its ground`);
+        }
+      });
+
+      if (!plate.lit) {
+        if (primaries === 0) {
+          faults.push(`plate ${i + 1}: no primary stroke — the drawing has no principal line`);
+        }
+        measured.push(
+          `plate ${i + 1} (rest, ground rgb(${ground.join(',')})): primary ` +
+            `${Number.isFinite(worstPrimary) ? worstPrimary.toFixed(2) : 'n/a'}:1, guide ` +
+            `${Number.isFinite(worstGuide) ? worstGuide.toFixed(2) : 'n/a'}:1`,
+        );
+      }
+    });
+
+    console.log(`\n=== TC-VIT-V3 ===\n${measured.join('\n')}`);
+    expect(faults, `${faults.length} plate reading(s) below the bar:\n${faults.join('\n')}`).toEqual(
+      [],
+    );
+
+    // The light still adds: the lit plate paints its strokes heavier than any
+    // plate at rest.
+    expect(
+      litWeight,
+      `lit plate paints at ${litWeight}, resting plates at up to ${heaviestResting}`,
+    ).toBeGreaterThan(heaviestResting);
+  });
+});
