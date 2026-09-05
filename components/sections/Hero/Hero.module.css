@@ -13,16 +13,19 @@
    canvas, hiding the scene entirely. */
 .hero {
     position: relative;
-    display: flex;
-    align-items: center;
-    min-height: 100svh;
+    /* Two bands, stacked: `.inner` is the fold and owns one whole screen;
+       `.proof` carries the evidence and starts below it. The section was a
+       single centred flexbox when it held both — which is exactly how the
+       ledger, the grading note and the availability line ended up standing in
+       the first viewport beside the name (ADV-FAIL P0, G-H1). */
+    display: block;
     /* Named once, so the photograph below 720 px can cancel exactly this much
        and bleed to both screen edges without a magic number. */
     --hero-gutter: var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
-    /* The top padding never drops below the fixed nav's height plus a little
-       air: at 1280x720 the bar was crossing the hero's first line. */
-    padding: max(clamp(6rem, 14vh, var(--space-20)), calc(var(--nav-height) + var(--space-3)))
-        var(--hero-gutter) clamp(4rem, 10vh, 7rem);
+    /* The vertical rhythm belongs to the bands now: each sets its own, because
+       the fold measures itself against the viewport and the proof band does
+       not. */
+    padding: 0 var(--hero-gutter);
     overflow: hidden;
 }
 
@@ -31,7 +34,7 @@
    exactly the reader who scans for five seconds and leaves. Short viewports get
    a tighter scale rather than a scrollbar. */
 @media (max-height: 860px) {
-    .hero {
+    .inner {
         padding-top: max(clamp(var(--space-8), 9vh, 6rem), calc(var(--nav-height) + var(--space-1)));
         padding-bottom: clamp(var(--space-2), 3vh, var(--space-4));
     }
@@ -56,20 +59,8 @@
         line-height: var(--lh-prose);
     }
 
-    .ledger {
-        margin-top: var(--space-2);
-    }
-
-    .ledgerItem {
-        padding-top: var(--space-1);
-    }
-
     .actions {
-        margin-top: var(--space-2);
-    }
-
-    .availability {
-        margin-top: var(--space-2);
+        margin-top: var(--space-3);
     }
 }
 
@@ -192,14 +183,47 @@
     }
 }
 
+/* ── The fold ─────────────────────────────────────────────────────────────
+   One screen, and the whole of one screen. The name, the kicker, the one
+   sentence that is the pitch, one action group and the photograph stand in it;
+   nothing else does. Its own padding is what used to be the section's, so the
+   proof band below can keep a rhythm of its own. */
 .inner {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 100%;
+    /* The fold is the viewport. `svh` rather than `vh`: on a phone the dynamic
+       toolbar must not push the action group out of the screen it is measured
+       against. */
+    min-height: 100svh;
+    /* The top padding never drops below the fixed nav's height plus a little
+       air: at 1280×720 the bar was crossing the hero's first line. */
+    padding: max(clamp(6rem, 14vh, var(--space-20)), calc(var(--nav-height) + var(--space-3))) 0
+        clamp(2rem, 6vh, 4rem);
     /* The page's one column. The column moves to the spine; the paragraph
        does not — `.statement` keeps its own reading measure below. */
     max-width: var(--page-max);
     margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* ── The proof band ───────────────────────────────────────────────────────
+   The evidence, one scroll down and still inside `#hero`: the three figures
+   with their sources, the line that grades them, and the availability signal
+   with its three channels. Moved, not deleted — `#hero ul` still resolves and
+   CT-10 still reads 92 / $5M+ / 10k+ off it. It is separated from the fold by
+   one hairline rule, the same rule the ledger entries stand on. */
+.proof {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: clamp(var(--space-6), 8vh, var(--space-10)) 0 clamp(var(--space-8), 12vh, var(--space-12));
+    border-top: 1px solid var(--token-border-default);
 }
 
 /* Every direct child of the grid rises on its own beat. */
@@ -304,7 +328,9 @@
     grid-template-columns: 1fr;
     gap: var(--space-2);
     align-items: start;
-    margin: clamp(var(--space-5), 6vh, var(--space-8)) 0 0;
+    /* Zero: the proof band's own padding sets the air above the figures now
+       that they no longer follow the statement. */
+    margin: 0;
 }
 
 .ledger {
@@ -390,7 +416,9 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
-    margin: clamp(var(--space-5), 5vh, 3.5rem) 0 0;
+    /* The fold's last row of type. It follows the statement directly now — the
+       ledger used to stand between them. */
+    margin: clamp(var(--space-4), 4.5vh, 3rem) 0 0;
 }
 
 .primaryAction,
@@ -449,13 +477,14 @@
     transition: transform var(--motion-fast) var(--motion-ease-exit);
 }
 
-/* ── Availability + links ────────────────────────────────────────────────── */
+/* ── Availability + links ──────────────────────────────────────────────────
+   Bottom of the proof band, under the figures it qualifies. */
 .availability {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: var(--space-2);
-    margin: clamp(var(--space-4), 4vh, var(--space-6)) 0 0;
+    margin: clamp(var(--space-5), 5vh, var(--space-7)) 0 0;
     font-size: var(--fs-body);
     color: var(--mist-400);
 }
@@ -510,12 +539,11 @@
        it (council R-c1, P4). The rhythm tightens so `See the evidence` sits
        inside an 844 px phone screen: less air above and between the three
        entries, and a shorter tail under the actions. */
-    .hero {
+    .inner {
         padding-bottom: var(--space-2);
     }
 
     .ledgerRow {
-        margin-top: var(--space-3);
         gap: var(--space-1);
     }
 
@@ -598,7 +626,10 @@
    registration cross at the top right, and a mono caption plate below, lit from
    behind by one achromatic bloom so the photograph sits in light, not on black. */
 .inner {
-    --portrait-w: clamp(17rem, 36vw, 34rem);
+    /* Wider than it was: the reviewer measured the dominant visual at 11.4% of
+       the fold and called the composition a CV dump. The right column is the
+       photograph's whole share of the screen now. */
+    --portrait-w: clamp(19rem, 44vw, 42rem);
     --portrait-inset: 12px;
 }
 
@@ -809,27 +840,30 @@
         display: grid;
         grid-template-columns: minmax(0, 1fr) var(--portrait-w);
         column-gap: clamp(var(--space-4), 4vw, var(--space-8));
+        /* The rows are the type; the fold is the screen. Centring the row box
+           inside it is what lets the photograph stand floor-to-ceiling beside
+           a short column of copy. */
+        align-content: center;
         align-items: start;
     }
 
+    /* Every line of type keeps the left column: the right one is the
+       photograph's, top to bottom. */
     .eyebrow,
     .name,
-    .actions,
-    .availability {
-        grid-column: 1 / -1;
-    }
-
     .role,
     .statement,
-    .ledgerRow {
+    .actions {
         grid-column: 1;
     }
 
+    /* The photograph spans every row of the fold and is centred against them —
+       it is the composition, not an inset beside the ledger. */
     .portrait {
         grid-column: 2;
-        grid-row: 3 / 6;
-        align-self: start;
-        margin-top: clamp(var(--space-2), 2.4vh, var(--space-3));
+        grid-row: 1 / -1;
+        align-self: center;
+        margin-top: 0;
     }
 }
 
@@ -840,16 +874,12 @@
    the base rules below them set the `margin` shorthand later in the source and
    win on order. This block sits after the base rules, so it does apply. */
 @media (max-height: 860px) {
-    .ledgerRow {
-        margin-top: var(--space-2);
-    }
-
     .actions {
-        margin-top: var(--space-2);
+        margin-top: var(--space-3);
     }
 
     .availability {
-        margin-top: var(--space-2);
+        margin-top: var(--space-3);
     }
 }
 
