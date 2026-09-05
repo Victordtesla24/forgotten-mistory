@@ -103,22 +103,46 @@ test.describe('A11y: the MiniVic launcher', () => {
   test('TC-MV-LABEL-01: the accessible name starts with the visible label (WCAG 2.5.3)', async ({
     page,
   }) => {
-    // V-c16 §4. The launcher shows the words "Ask Mini Vic" from 834px up while
-    // its accessible name said "Open Mini Vic assistant": a speech-input user
-    // reading the pill aloud addressed a control that does not answer to it.
-    // axe cannot see this — `label-content-name-mismatch` is an experimental
-    // rule and is not in the wcag2a/2aa/21a/21aa tag set this suite runs — so
-    // the rule is stated here directly, in both panel states.
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await gotoHome(page);
+    // V-c16 §4. The launcher shows the words "Ask Mini Vic" at every width —
+    // phones included, from 390px up (G-MV1) — while its accessible name once
+    // said "Open Mini Vic assistant": a speech-input user reading the pill
+    // aloud addressed a control that does not answer to it. axe cannot see
+    // this — `label-content-name-mismatch` is an experimental rule and is not
+    // in the wcag2a/2aa/21a/21aa tag set this suite runs — so the rule is
+    // stated here directly, in both panel states.
+    //
+    // The label used to be painted only from 52.125rem (834px) up, which left
+    // the phone with a bare, unlabelled disc. The pill is now
+    // display:inline-block at every breakpoint and must never be display:none;
+    // that freeze is asserted first, at 390 and 1440, before the name-in-label
+    // rule that depends on the label actually being on screen.
+    const readPill = () =>
+      page.evaluate(() => {
+        const el = document.querySelector('[data-testid="minivic-toggle"]');
+        const pill = el?.querySelector('.minivic-launcher__pill') ?? null;
+        if (!pill) return { display: 'missing', text: '' };
+        return {
+          display: getComputedStyle(pill).display,
+          text: (pill.textContent || '').replace(/\s+/g, ' ').trim(),
+        };
+      });
 
+    for (const width of [390, 1440]) {
+      await page.setViewportSize({ width, height: width === 390 ? 844 : 900 });
+      await gotoHome(page);
+      const pill = await readPill();
+      expect(
+        pill.display,
+        `the pill is display:${pill.display} at ${width} — G-MV1 freezes it as inline-block at every width, never none`,
+      ).not.toBe('none');
+      expect(pill.display, `the pill must be laid out at ${width}`).not.toBe('missing');
+      expect(pill.text, `the launcher must carry the visible label at ${width}`).toBe('Ask Mini Vic');
+    }
+
+    // The name-in-label rule is read at 1440 (both panel states); the page is
+    // already loaded at 1440, closed, from the freeze loop above.
     const toggle = page.locator('[data-testid="minivic-toggle"]');
-    const visibleLabel = await page.evaluate(() => {
-      const el = document.querySelector('[data-testid="minivic-toggle"]')!;
-      const pill = el.querySelector('.minivic-launcher__pill');
-      if (!pill || getComputedStyle(pill).display === 'none') return '';
-      return (pill.textContent || '').replace(/\s+/g, ' ').trim();
-    });
+    const visibleLabel = (await readPill()).text;
     expect(visibleLabel, 'the launcher must carry a visible label at 1440').not.toBe('');
 
     for (const state of ['closed', 'open'] as const) {

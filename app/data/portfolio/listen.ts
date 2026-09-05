@@ -61,7 +61,7 @@ export const listenContent = {
    * handshake rather than a blank compose window (ADV-1451Z P1, one door).
    */
   engage: {
-    label: 'Book a 20-minute call',
+    label: 'Email a 20-minute-call agenda',
     subject: ENGAGE_SUBJECT,
     agenda: ENGAGE_AGENDA,
     href: ENGAGE_HREF,

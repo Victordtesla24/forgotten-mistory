@@ -71,12 +71,20 @@
     /* The resting trace weight (G-V3). At 0.5 the whole drawing was a rumour:
        through the plate's 0.62 the principal lines painted at an effective
        0.28 and measured under 2:1 on the plate's ground, which is a texture,
-       not a mechanism. At 0.9 the same lines land at ~0.51 — over 5:1 — and
-       the tonal hierarchy authored into Drawings.tsx (0.66 for a guide rule,
-       1.0 for a principal line) is preserved intact above it, with the
-       faintest guide still clearing 3:1. The light still adds: the lit plate
-       traces at 1.0 through an opacity-1 plate, which is strictly heavier
-       than any resting stroke (TC-VIT-V1 asserts exactly that). */
+       not a mechanism. This is one of the four multiplications behind a stroke
+       (colour × stroke-opacity × element opacity × plate opacity); it is held
+       at 0.9 rather than raised to 1.0 on purpose, because the lit plate
+       traces at 1.0 and the light must stay strictly heavier than any resting
+       stroke (TC-VIT-V1 reads the trace channel alone). The margin that
+       ADV-1556Z asked for — live primaries at 3.60–4.24:1 where the field and
+       shader light brighten the plate ground — is bought in the plate-opacity
+       factor instead: lifting the resting plate from 0.62 to 0.82
+       (Vitrine.module.css) both raises the stroke's effective alpha
+       (0.9 × 1.0 × 0.82 ≈ 0.74) and darkens the ground the light bleeds
+       through, so a principal line clears 4.5:1 with margin on the brightest
+       live ground while the tonal hierarchy authored into Drawings.tsx
+       (0.66 for a guide rule, 1.0 for a principal line) is preserved intact
+       above it and the faintest guide still clears 3:1. */
     stroke-opacity: 0.9;
 }
 

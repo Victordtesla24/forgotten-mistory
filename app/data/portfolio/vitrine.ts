@@ -136,7 +136,7 @@ export const vitrineContent = {
 const ENGAGEMENT_SUBJECT = 'Engagement enquiry — Vikram Deshpande';
 
 export const engagement = {
-  label: 'Start a project',
+  label: 'Email a project brief',
   note: 'These six are shipped work. The inbox that answers a role enquiry answers a project brief.',
   subject: ENGAGEMENT_SUBJECT,
   href: `mailto:${contact.email}?subject=${encodeURIComponent(ENGAGEMENT_SUBJECT)}`,
