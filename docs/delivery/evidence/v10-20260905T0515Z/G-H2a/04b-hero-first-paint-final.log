@@ -1,0 +1,17 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-first-paint.spec.ts --workers=1 --reporter=list
+
+Running 6 tests using 1 worker
+
+[TC-HERO-FIRSTPAINT-01] still mean luminance @1440: 0.0531
+  ✓  1 [chromium] › tests/overhaul/hero-first-paint.spec.ts:201:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [1440]: the hero slot carries a lit still, served and painted without the scene (7.2s)
+[TC-HERO-FIRSTPAINT-01] still mean luminance @390: 0.0819
+  ✓  2 [chromium] › tests/overhaul/hero-first-paint.spec.ts:201:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-01 [390]: the hero slot carries a lit still, served and painted without the scene (5.5s)
+[TC-HERO-FIRSTPAINT-02] canvas_after_dcl_ms_glforce_1440: 5166
+  ✓  3 [chromium] › tests/overhaul/hero-first-paint.spec.ts:260:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [1440]: the hero canvas mounts on a cold load (9.9s)
+[TC-HERO-FIRSTPAINT-02] canvas_after_dcl_ms_glforce_390: 2525
+  ✓  4 [chromium] › tests/overhaul/hero-first-paint.spec.ts:260:9 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02 [390]: the hero canvas mounts on a cold load (3.2s)
+  ✓  5 [chromium] › tests/overhaul/hero-first-paint.spec.ts:288:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-02b: the hero scene mounts even though the page never settles (5.2s)
+  ✓  6 [chromium] › tests/overhaul/hero-first-paint.spec.ts:334:7 › G-H2a: the hero atmosphere is in the first paint › TC-HERO-FIRSTPAINT-03: priority is opt-in — no other scene jumps the idle gate (1.5s)
+
+  6 passed (36.5s)
