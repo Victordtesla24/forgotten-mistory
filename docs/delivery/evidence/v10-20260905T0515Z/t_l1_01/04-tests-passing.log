@@ -1,0 +1,11 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/listen-flagship.spec.ts --workers=1 --reporter=list
+
+Running 4 tests using 1 worker
+
+  ✓  1 [chromium] › tests/overhaul/listen-flagship.spec.ts:59:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-01: #listen has exactly one filled action, it reads "Book a 20-minute call", and the email is a plain channel (3.1s)
+  ✓  2 [chromium] › tests/overhaul/listen-flagship.spec.ts:132:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-02: the plate is a mailto with a 20-minute-call subject and a four-line agenda body, under 900 characters (1.9s)
+  ✓  3 [chromium] › tests/overhaul/listen-flagship.spec.ts:167:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-03: no response-time promise, and the closing copy still fits the word budget with the plate on it (1.5s)
+  ✓  4 [chromium] › tests/overhaul/listen-flagship.spec.ts:186:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-04: no booking host ships — not in the built export, not in the section (1.3s)
+
+  4 passed (9.9s)

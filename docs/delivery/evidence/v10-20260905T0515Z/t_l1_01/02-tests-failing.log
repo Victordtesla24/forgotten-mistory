@@ -1,0 +1,95 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/listen-flagship.spec.ts --workers=1 --reporter=list
+
+Running 4 tests using 1 worker
+
+  ✘  1 [chromium] › tests/overhaul/listen-flagship.spec.ts:59:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-01: #listen has exactly one filled action, it reads "Book a 20-minute call", and the email is a plain channel (2.6s)
+  ✘  2 [chromium] › tests/overhaul/listen-flagship.spec.ts:132:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-02: the plate is a mailto with a 20-minute-call subject and a four-line agenda body, under 900 characters (2.3s)
+  ✘  3 [chromium] › tests/overhaul/listen-flagship.spec.ts:167:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-03: no response-time promise, and the closing copy still fits the word budget with the plate on it (1.6s)
+  ✓  4 [chromium] › tests/overhaul/listen-flagship.spec.ts:186:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-04: no booking host ships — not in the built export, not in the section (1.9s)
+
+
+  1) [chromium] › tests/overhaul/listen-flagship.spec.ts:59:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-01: #listen has exactly one filled action, it reads "Book a 20-minute call", and the email is a plain channel 
+
+    Error: 1440px: plate label
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m"Book a 20-minute call"[39m
+    Received: [31m"Start a project"[39m
+
+      112 |       // One door, named for what it does.
+      113 |       expect(probe.engage, `${at}: not exactly one [data-cta="engage"]`).toHaveLength(1);
+    > 114 |       expect(probe.engage[0].text, `${at}: plate label`).toBe(LABEL);
+          |                                                          ^
+      115 |       expect(probe.engage[0].filled, `${at}: the plate is not a filled ground`).toBe(true);
+      116 |       expect(probe.engage[0].height, `${at}: plate hit box`).toBeGreaterThanOrEqual(44);
+      117 |
+        at /root/forgotten-mistory/.claude/worktrees/wf_6f11f90a-6ff-1/tests/overhaul/listen-flagship.spec.ts:114:58
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-listen-flagship-L-88099-he-email-is-a-plain-channel-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-listen-flagship-L-88099-he-email-is-a-plain-channel-chromium/error-context.md
+
+  2) [chromium] › tests/overhaul/listen-flagship.spec.ts:132:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-02: the plate is a mailto with a 20-minute-call subject and a four-line agenda body, under 900 characters 
+
+    Error: agenda line breaks are not percent-encoded
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: [32m"%0A"[39m
+    Received string:    [31m"mailto:sarkar.vikram@gmail.com?subject=Engagement%20enquiry%20%E2%80%94%20Vikram%20Deshpande"[39m
+
+      147 |     // client's parser reads the same four lines.
+      148 |     expect(href, 'mailto href carries raw whitespace').not.toMatch(/\s/);
+    > 149 |     expect(href, 'agenda line breaks are not percent-encoded').toContain('%0A');
+          |                                                                ^
+      150 |
+      151 |     const url = new URL(href!);
+      152 |     expect(url.pathname, 'mailto recipient').toBe(contact.email);
+        at /root/forgotten-mistory/.claude/worktrees/wf_6f11f90a-6ff-1/tests/overhaul/listen-flagship.spec.ts:149:64
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-listen-flagship-L-3ffca-a-body-under-900-characters-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-listen-flagship-L-3ffca-a-body-under-900-characters-chromium/error-context.md
+
+  3) [chromium] › tests/overhaul/listen-flagship.spec.ts:167:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-03: no response-time promise, and the closing copy still fits the word budget with the plate on it 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: [32m"Book a 20-minute call"[39m
+    Received string:    [31m"ALWAYS WILLING TO LISTEN·[39m
+    [31mFeedback & coffee?·[39m
+    [31mI have been wrong often enough to want to hear it early. Tell me what you think — I’ll listen properly.·[39m
+    [31m—[39m
+    [31mStart a project[39m
+    [31msarkar.vikram@gmail.com[39m
+    [31m+61 433 224 556[39m
+    [31mlinkedin.com/in/vikramd-profile[39m
+    [31mgithub.com/Victordtesla24·[39m
+    [31mCOFFEE · MELBOURNE CBD · I’LL COME TO YOU"[39m
+
+      181 |     const words = text.trim().split(/\s+/).filter(Boolean).length;
+      182 |     expect(words, `#listen renders ${words} words`).toBeLessThanOrEqual(WORD_CAP);
+    > 183 |     expect(text).toContain(LABEL);
+          |                  ^
+      184 |   });
+      185 |
+      186 |   test('TC-LISTEN-CTA-04: no booking host ships — not in the built export, not in the section', async ({
+        at /root/forgotten-mistory/.claude/worktrees/wf_6f11f90a-6ff-1/tests/overhaul/listen-flagship.spec.ts:183:18
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-listen-flagship-L-4c71c-budget-with-the-plate-on-it-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-listen-flagship-L-4c71c-budget-with-the-plate-on-it-chromium/error-context.md
+
+  3 failed
+    [chromium] › tests/overhaul/listen-flagship.spec.ts:59:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-01: #listen has exactly one filled action, it reads "Book a 20-minute call", and the email is a plain channel 
+    [chromium] › tests/overhaul/listen-flagship.spec.ts:132:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-02: the plate is a mailto with a 20-minute-call subject and a four-line agenda body, under 900 characters 
+    [chromium] › tests/overhaul/listen-flagship.spec.ts:167:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-03: no response-time promise, and the closing copy still fits the word budget with the plate on it 
+  1 passed (14.4s)

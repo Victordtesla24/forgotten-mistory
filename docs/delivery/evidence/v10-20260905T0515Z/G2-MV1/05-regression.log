@@ -1,0 +1,25 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/minivic-occlusion.spec.ts tests/e2e/hero-fold.spec.ts --workers=1 --reporter=list
+
+Running 18 tests using 1 worker
+
+  ✓   1 [chromium] › tests/a11y/minivic-occlusion.spec.ts:248:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step (13.9s)
+  ✓   2 [chromium] › tests/a11y/minivic-occlusion.spec.ts:320:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-02: the closed launcher never paints a light surface on a phone (5.9s)
+  ✓   3 [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 1440×900 › TC-FOLD-01: one headline, one sentence, one action group at 1440×900 (3.3s)
+  ✓   4 [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 1440×900 › TC-FOLD-04: one CTA group, with margin, at 1440×900 (2.5s)
+  ✓   5 [chromium] › tests/e2e/hero-fold.spec.ts:250:11 › Hero — the first fold › at 1440×900 › TC-FOLD-02: the evidence sits below the fold at 1440×900 (2.6s)
+  ✓   6 [chromium] › tests/e2e/hero-fold.spec.ts:280:11 › Hero — the first fold › at 1440×900 › TC-FOLD-03: the visual is the fold at 1440×900 (3.0s)
+  ✓   7 [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 1280×800 › TC-FOLD-01: one headline, one sentence, one action group at 1280×800 (2.5s)
+  ✓   8 [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 1280×800 › TC-FOLD-04: one CTA group, with margin, at 1280×800 (2.7s)
+  ✓   9 [chromium] › tests/e2e/hero-fold.spec.ts:250:11 › Hero — the first fold › at 1280×800 › TC-FOLD-02: the evidence sits below the fold at 1280×800 (2.5s)
+  ✓  10 [chromium] › tests/e2e/hero-fold.spec.ts:280:11 › Hero — the first fold › at 1280×800 › TC-FOLD-03: the visual is the fold at 1280×800 (2.7s)
+  ✓  11 [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 834×1194 › TC-FOLD-01: one headline, one sentence, one action group at 834×1194 (2.5s)
+  ✓  12 [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 834×1194 › TC-FOLD-04: one CTA group, with margin, at 834×1194 (3.4s)
+  ✓  13 [chromium] › tests/e2e/hero-fold.spec.ts:250:11 › Hero — the first fold › at 834×1194 › TC-FOLD-02: the evidence sits below the fold at 834×1194 (2.4s)
+  ✓  14 [chromium] › tests/e2e/hero-fold.spec.ts:280:11 › Hero — the first fold › at 834×1194 › TC-FOLD-03: the visual is the fold at 834×1194 (2.5s)
+  ✓  15 [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 390×844 › TC-FOLD-01: one headline, one sentence, one action group at 390×844 (2.3s)
+  ✓  16 [chromium] › tests/e2e/hero-fold.spec.ts:186:11 › Hero — the first fold › at 390×844 › TC-FOLD-04: one CTA group, with margin, at 390×844 (2.2s)
+  ✓  17 [chromium] › tests/e2e/hero-fold.spec.ts:250:11 › Hero — the first fold › at 390×844 › TC-FOLD-02: the evidence sits below the fold at 390×844 (2.4s)
+  ✓  18 [chromium] › tests/e2e/hero-fold.spec.ts:280:11 › Hero — the first fold › at 390×844 › TC-FOLD-03: the visual is the fold at 390×844 (2.2s)
+
+  18 passed (1.1m)
