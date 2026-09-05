@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 
 import Caliper from '@/components/marks/Caliper';
 import Scene from '@/components/gl/Scene';
@@ -20,8 +20,13 @@ const CareerStrata = dynamic(() => import('./CareerStrata'), { ssr: false });
 function track(start: number, end: number | null) {
   const span = NOW - TIMELINE_START;
   const left = ((start - TIMELINE_START) / span) * 100;
-  const width = (((end ?? NOW) - start) / span) * 100;
-  return { left: `${left}%`, width: `${Math.max(width, 0.6)}%` };
+  const width = Math.max((((end ?? NOW) - start) / span) * 100, 0.6);
+  return {
+    left: `${left}%`,
+    width: `${width}%`,
+    /** Where the duration readout starts: a hair past the bar's own end. */
+    end: `calc(${left + width}% + var(--space-1))`,
+  };
 }
 
 const DECADES = [2010, 2015, 2020, 2025];
@@ -48,11 +53,83 @@ const LABEL_COLUMN = 'clamp(7rem, 22%, 14rem) + var(--space-2)';
 export default function Experience() {
   const [active, setActive] = useState(-1);
   const [open, setOpen] = useState<string | null>(roles[0]?.id ?? null);
+  const [entered, setEntered] = useState(false);
+  const [spans, setSpans] = useState<readonly (readonly [number, number, number])[]>([]);
+  const chartRef = useRef<HTMLDivElement>(null);
 
   const toggle = useCallback(
     (id: string) => setOpen((current) => (current === id ? null : id)),
     [],
   );
+
+  // The entry beat. The bars mount collapsed and are measured out once a third
+  // of the chart is on screen — the section's claim is "to scale", and a reader
+  // who never sees the scale being laid down has only been told it. One-shot:
+  // a chart that re-draws itself every time it is scrolled past is a fidget,
+  // not an argument.
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Either a third of the chart has arrived, or the reader has already
+        // gone past it — a deep link to a role, or a restored scroll position,
+        // lands below the chart and would otherwise leave every bar at nothing
+        // for as long as the page is open. A chart that is behind you is a
+        // chart that has finished being drawn.
+        const commit = entries.some(
+          (entry) => entry.isIntersecting || entry.boundingClientRect.bottom < 0,
+        );
+        if (commit) {
+          setEntered(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.35 },
+    );
+    observer.observe(chart);
+    return () => observer.disconnect();
+  }, []);
+
+  // The chart's own geometry, handed to the shader behind it so the sediment
+  // is lit under the real bars rather than under a second set of numbers. Read
+  // from `offsetLeft`/`offsetWidth`, which are layout values: the painted rect
+  // is mid-transform during the entry beat, and the shader wants the finished
+  // span with `uProgress` doing the reveal.
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart) return undefined;
+
+    const measure = () => {
+      const slot = chart.querySelector<HTMLElement>(`.${styles.chartScene}`);
+      const bars = Array.from(chart.querySelectorAll<HTMLElement>(`.${styles.trackBar}`));
+      if (!slot || bars.length === 0) return;
+      const canvas = slot.getBoundingClientRect();
+      if (canvas.width < 1 || canvas.height < 1) return;
+
+      setSpans(
+        bars.map((bar) => {
+          const line = (bar.offsetParent ?? bar.parentElement) as HTMLElement;
+          const box = line.getBoundingClientRect();
+          const x = box.left + bar.offsetLeft - canvas.left;
+          const y = box.top + bar.offsetTop + bar.offsetHeight / 2 - canvas.top;
+          // Clip space runs bottom-up, so the row's y is flipped here rather
+          // than in the shader, where it would have to be undone for hover.
+          return [x / canvas.width, bar.offsetWidth / canvas.width, 1 - y / canvas.height] as const;
+        }),
+      );
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(chart);
+    window.addEventListener('resize', measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
+    };
+  }, []);
 
   return (
     <section id="experience" className={styles.experience} aria-labelledby="experience-title">
@@ -65,9 +142,9 @@ export default function Experience() {
           <p className={styles.lede}>{experienceContent.lede}</p>
         </header>
 
-        <div className={styles.chart}>
+        <div className={styles.chart} ref={chartRef} data-chart>
           <Scene className={styles.chartScene}>
-            <CareerStrata />
+            <CareerStrata spans={spans} hover={active} entered={entered} />
           </Scene>
 
           {/* The chart itself. These percentages are the only encoding of the
@@ -75,7 +152,18 @@ export default function Experience() {
           {/* The same years the axis labels, drawn through the tracks and
               stopping with them. The chart's claim is that the bars are to
               scale; a reader can only check that against something. */}
-          <div className={styles.trackField}>
+          <div
+            className={styles.trackField}
+            data-track-field
+            data-entered={entered || undefined}
+          >
+          {/* Today. A 1 px rule and a 4 px tick at the axis's right edge, so
+              the eye can see what every bar is measured up to without reading
+              the word "now" first. It is --white, never --gold: the dates it
+              marks are graded self-reported (see the caliper on each role),
+              and gold on this site means the figure has a source. */}
+          <span className={styles.playhead} data-playhead aria-hidden="true" />
+
           <div className={styles.grid} aria-hidden="true">
             {DECADES.map((year) => (
               <span
@@ -92,7 +180,9 @@ export default function Experience() {
           </div>
 
           <ol className={styles.tracks} onMouseLeave={() => setActive(-1)}>
-            {roles.map((role, index) => (
+            {roles.map((role, index) => {
+              const geometry = track(role.span.start, role.span.end);
+              return (
               <li key={role.id} className={styles.trackRow}>
                 <button
                   type="button"
@@ -112,17 +202,30 @@ export default function Experience() {
                 >
                   <span className={styles.trackCompany}>{role.company}</span>
                   <span className={styles.trackLine}>
-                    <span className={styles.trackBar} style={track(role.span.start, role.span.end)}>
-                      <span className={styles.trackYears}>
-                        {role.years < 1
-                          ? `${Math.round(role.years * 12)} mo`
-                          : `${role.years.toFixed(1)} yr`}
-                      </span>
+                    {/* The bar grows from nothing about its own left edge, one
+                        row behind the last. The readout is its sibling, not its
+                        child: a child would be squashed by the same scaleX that
+                        draws the bar, and would arrive unreadable. */}
+                    <span
+                      className={styles.trackBar}
+                      style={
+                        {
+                          left: geometry.left,
+                          width: geometry.width,
+                          '--row': index,
+                        } as CSSProperties
+                      }
+                    />
+                    <span className={styles.trackYears} style={{ left: geometry.end }}>
+                      {role.years < 1
+                        ? `${Math.round(role.years * 12)} mo`
+                        : `${role.years.toFixed(1)} yr`}
                     </span>
                   </span>
                 </button>
               </li>
-            ))}
+              );
+            })}
           </ol>
           </div>
 

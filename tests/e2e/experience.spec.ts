@@ -39,13 +39,17 @@ test.describe('Experience', () => {
   });
 
   test('TC-EXP-02: bar lengths are proportional to real durations', async ({ page }) => {
-    const bars = page.locator(`${EXPERIENCE} ol`).first().locator('li span[style]');
-    const widths: number[] = [];
-    const count = await bars.count();
-    for (let i = 0; i < count; i++) {
-      const box = await bars.nth(i).boundingBox();
-      widths.push(box?.width ?? 0);
-    }
+    // `offsetWidth`, not `boundingBox`: cycle 15 gave the bars an entry beat
+    // (`scaleX(0)` → `scaleX(1)`), so the painted box is whatever frame the
+    // animation happens to be on when the harness looks. The layout width is
+    // the encoding — the percentage of the sixteen-year axis this role owns —
+    // and it is the same number before, during and after the beat.
+    const widths = await page.evaluate(() =>
+      Array.from(document.querySelectorAll('#experience [class*="trackBar"]')).map(
+        (bar) => (bar as HTMLElement).offsetWidth,
+      ),
+    );
+    expect(widths).toHaveLength(8);
 
     // ANZ (Sept 2017 – June 2025, 7.8 years) is the third row and must be the
     // longest bar by a wide margin — roughly six times the ten-month NAB bar.
@@ -141,8 +145,9 @@ test.describe('Experience', () => {
         const rowBox = (await row.boundingBox())!;
         expect(Math.abs(rowBox.x - spine.left), `row ${i} left`).toBeLessThanOrEqual(1);
         expect(rowBox.x + rowBox.width, `row ${i} right`).toBeLessThanOrEqual(spine.right + 0.5);
-        // The readout is the last span inside the bar; it is what overran.
-        const readout = row.locator('span span span').last();
+        // The readout — a sibling of the bar since cycle 15, so that the bar's
+        // entry transform cannot squash it. It is what overran.
+        const readout = row.locator('[class*="trackYears"]').last();
         const readoutBox = (await readout.boundingBox())!;
         expect(readoutBox.x + readoutBox.width, `readout ${i} right`).toBeLessThanOrEqual(
           spine.right + 0.5,
@@ -162,7 +167,10 @@ test.describe('Experience', () => {
       probe.remove();
       return value;
     });
-    const readouts = page.locator(`${EXPERIENCE} ol`).first().locator('li button span span span');
+    const readouts = page
+      .locator(`${EXPERIENCE} ol`)
+      .first()
+      .locator('li button [class*="trackYears"]');
     await expect(readouts).toHaveCount(8);
     for (let i = 0; i < 8; i += 1) {
       await expect(readouts.nth(i)).toHaveCSS('color', expected);
@@ -173,13 +181,29 @@ test.describe('Experience', () => {
     page,
   }) => {
     // Design council R-c1, C4(a): bar fill was ≈1.89:1 against the plot ground.
-    // Every bar now paints in --mist-400 at 0.85; the eight-year ANZ bar takes
-    // --white at 0.9 so the longest bar is the brightest. The white bar is
-    // selected by its row position, so this pins that the third row *is* ANZ.
+    // Every bar paints in --mist-400 at 0.72 (R-c8 C-03 lowered it from 0.85);
+    // the eight-year ANZ bar takes --white at 0.9 so the longest bar is the
+    // brightest. The white bar is selected by its row position, so this pins
+    // that the third row *is* ANZ.
+    //
+    // Two corrections, both cycle 15, both recorded because this test was red
+    // in CI before either:
+    //
+    // 1. The selector read `button span span > span`, which needs three levels
+    //    of nested span and therefore resolved to `.trackYears` — the label,
+    //    whose ::before has no background at all. Every "brightness" it
+    //    compared was 0, so `expect(0).toBeLessThan(0)` failed and the test
+    //    had never once measured a bar. It now names the bar.
+    // 2. The floor was `≥ 120`, an *uncomposited* stand-in for "≥ 3:1 against
+    //    the plot ground" that ignores the fill's own opacity sitting over
+    //    #131313. At 0.72 the stand-in reads 103.7 and the real ratio is
+    //    3.39:1 — the proxy fails a bar that passes 1.4.11. The ratio itself
+    //    is computed here instead, which is both the thing the old comment
+    //    claimed to check and a check the proxy could not make.
     const rows = page.locator(`${EXPERIENCE} ol`).first().locator('li button');
     await expect(rows.nth(2)).toHaveAttribute('aria-label', /ANZ/);
     const fills = await page.evaluate(() => {
-      const bars = Array.from(document.querySelectorAll('#experience ol li button span span > span'));
+      const bars = Array.from(document.querySelectorAll('#experience [class*="trackBar"]'));
       return bars.map((bar) => {
         const cs = getComputedStyle(bar, '::before');
         return { background: cs.backgroundColor, opacity: parseFloat(cs.opacity) };
@@ -187,15 +211,30 @@ test.describe('Experience', () => {
     });
     expect(fills).toHaveLength(8);
     const rgb = (value: string) => value.match(/\d+/g)!.slice(0, 3).map(Number);
-    const brightness = (f: { background: string; opacity: number }) =>
-      (rgb(f.background).reduce((a, b) => a + b, 0) / 3) * f.opacity;
-    const anz = brightness(fills[2]);
+    /** The fill composited over the plot's #131313 ground, channel by channel. */
+    const composited = (f: { background: string; opacity: number }) =>
+      rgb(f.background).map((channel) => 0x13 + (channel - 0x13) * f.opacity);
+    const relativeLuminance = (channels: number[]) => {
+      const [r, g, b] = channels.map((channel) => {
+        const s = channel / 255;
+        return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+      });
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const GROUND = relativeLuminance([0x13, 0x13, 0x13]);
+    const contrast = (f: { background: string; opacity: number }) =>
+      (relativeLuminance(composited(f)) + 0.05) / (GROUND + 0.05);
+    const anz = relativeLuminance(composited(fills[2]));
     for (let i = 0; i < 8; i += 1) {
       if (i === 2) continue;
-      expect(brightness(fills[i]), `bar ${i} must not outshine ANZ`).toBeLessThan(anz);
-      // 0x90 = 144 at 0.85 ≈ 122 painted on a #131313 ground → ≥ 3:1 (1.4.11).
-      expect(brightness(fills[i]), `bar ${i} fill must clear the non-text floor`).toBeGreaterThanOrEqual(120);
+      expect(
+        relativeLuminance(composited(fills[i])),
+        `bar ${i} must not outshine ANZ`,
+      ).toBeLessThan(anz);
+      // WCAG 1.4.11: a graphic that carries information needs 3:1.
+      expect(contrast(fills[i]), `bar ${i} fill must clear the non-text floor`).toBeGreaterThanOrEqual(3);
     }
+    expect(contrast(fills[2]), 'the ANZ bar clears it too').toBeGreaterThanOrEqual(3);
   });
 
   test('TC-EXP-08: the section is complete without WebGL', async ({ page }) => {
