@@ -16,13 +16,17 @@
         clamp(2rem, 5vh, 3rem);
 }
 
+/* The closing screen stands on the page's one column like the five before
+   it; the 46 rem reading cap moved from the container to the prose children,
+   so the heading lands on the spine and the text keeps its measure
+   (council R-c1, C2). */
 .inner {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    max-width: 46rem;
-    margin: 0 auto;
+    max-width: var(--page-max);
+    margin-inline: auto;
     width: 100%;
 }
 
@@ -196,6 +200,7 @@
     margin: 0;
     padding: 0;
     list-style: none;
+    max-width: 46rem;
 }
 
 .channel {

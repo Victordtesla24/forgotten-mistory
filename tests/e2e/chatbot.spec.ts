@@ -254,6 +254,43 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
     await expect(panel.getByText('Composing a reply…')).toHaveCount(0);
   });
 
+  test('TC-BOT-12: The open panel stacks above the launcher on its axis and never covers the h1', async ({
+    page,
+  }) => {
+    // Design council R-c1, C5: at 1440 the panel occluded the end of
+    // "Vikram Deshpande" and sat 16 px from the right edge beside a launcher
+    // that sits 24 px from it — two elements in one corner on two verticals.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    const { panel, toggle } = await openMiniVic(page);
+    await page.waitForTimeout(400);
+
+    const h1 = (await page.locator('#hero h1').boundingBox())!;
+    const panelBox = (await panel.boundingBox())!;
+    const intersects =
+      panelBox.x < h1.x + h1.width &&
+      panelBox.x + panelBox.width > h1.x &&
+      panelBox.y < h1.y + h1.height &&
+      panelBox.y + panelBox.height > h1.y;
+    expect(intersects, `panel ${JSON.stringify(panelBox)} must not cover h1 ${JSON.stringify(h1)}`).toBe(false);
+
+    const toggleBox = (await toggle.boundingBox())!;
+    const panelRight = 1440 - (panelBox.x + panelBox.width);
+    const toggleRight = 1440 - (toggleBox.x + toggleBox.width);
+    expect(Math.abs(panelRight - toggleRight), `panel right ${panelRight}, launcher right ${toggleRight}`).toBeLessThanOrEqual(1);
+    expect(toggleRight, 'launcher sits 24px from the edge').toBeCloseTo(24, 0);
+    // Stacked, not beside: the panel's bottom clears the launcher's top.
+    expect(panelBox.y + panelBox.height).toBeLessThanOrEqual(toggleBox.y + 0.5);
+
+    const strip = page.locator('.minivic-quickstrip');
+    await expect(strip).toHaveCSS('scroll-snap-type', /x proximity/);
+    const mask = await strip.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return cs.maskImage !== 'none' ? cs.maskImage : cs.webkitMaskImage;
+    });
+    expect(mask, 'chip row must fade at its right edge').toMatch(/linear-gradient/);
+  });
+
   test('TC-BOT-11: The transcript controls are present and say what they do', async ({ page }) => {
     await gotoHome(page);
 

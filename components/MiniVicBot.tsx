@@ -1188,7 +1188,7 @@ const MiniVicBot = () => {
 
   return (
     <div
-      className="fixed bottom-5 right-5 z-[10030] flex flex-col items-end font-sans transition-opacity duration-300"
+      className="fixed bottom-6 right-6 z-[10030] flex flex-col items-end font-sans transition-opacity duration-300"
       data-past-hero={pastHero || undefined}
       style={{
         opacity: pastHero || isOpen ? 1 : 0,
@@ -1204,7 +1204,7 @@ const MiniVicBot = () => {
           role="dialog"
           aria-modal="false"
           aria-label="MiniVic assistant panel"
-          className="mb-4 flex h-[min(37rem,calc(100dvh-7rem))] w-[22rem] md:w-[27rem] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded border border-white/12 bg-[rgb(10_11_13/0.97)] backdrop-blur-sm shadow-[0_24px_60px_rgba(0,0,0,0.55)] animate-in slide-in-from-bottom-4 duration-200"
+          className="mb-4 flex h-[min(30rem,calc(100svh-8rem))] max-h-[min(30rem,calc(100svh-8rem))] w-[22rem] md:w-[27rem] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded border border-white/12 bg-[rgb(10_11_13/0.97)] backdrop-blur-sm shadow-[0_24px_60px_rgba(0,0,0,0.55)] animate-in slide-in-from-bottom-4 duration-200"
         >
           <div className="relative h-40 w-full shrink-0 overflow-hidden border-b border-white/10 bg-neutral-950">
             <video
@@ -1467,7 +1467,7 @@ const MiniVicBot = () => {
                 key={item.label}
                 onClick={() => handleSend(item.prompt, item.mode)}
                 disabled={isLoading}
-                className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-[12px] text-white/80 transition-colors hover:border-white/30 hover:bg-white/10 hover:text-white"
+                className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-white/12 bg-white/[0.04] px-2.5 py-1.5 text-[12px] text-white/80 transition-colors hover:border-white/30 hover:bg-white/10 hover:text-white"
               >
                 <Sparkles size={13} className="text-white/55" />
                 <span>{item.label}</span>
@@ -1565,7 +1565,7 @@ const MiniVicBot = () => {
           onError={() => setToggleVideoSrc("")}
         />
         <span className="absolute right-1 top-1 flex h-3 w-3">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-zinc-400 opacity-75"></span>
+          <span className="absolute inline-flex h-full w-full animate-ping motion-reduce:animate-none rounded-full bg-zinc-400 opacity-75"></span>
           <span className="relative inline-flex h-3 w-3 rounded-full border border-black bg-zinc-500"></span>
         </span>
       </button>

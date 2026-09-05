@@ -99,6 +99,105 @@ test.describe('Experience', () => {
     await expect(page.locator(`${EXPERIENCE} #role-microsoft`)).not.toContainText('%');
   });
 
+  for (const width of [1280, 1440, 1920]) {
+    test(`TC-EXP-09 @ ${width}: every chart row, bar and readout lives inside the spine`, async ({
+      page,
+    }) => {
+      // Design council R-c1, C4(b): the `6 mo` readout for the newest role was
+      // positioned past the end of its bar and overran the section's right
+      // gutter by ~38 px at 1440 and 1920. The readout column is now reserved
+      // inside the content column, so nothing in the chart crosses the edge the
+      // heading sits against.
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/');
+      await page.locator(EXPERIENCE).scrollIntoViewIfNeeded();
+      await page.waitForTimeout(600);
+
+      const spine = await page.evaluate(() => {
+        const section = document.querySelector('#experience') as HTMLElement;
+        const cs = getComputedStyle(section);
+        const rect = section.getBoundingClientRect();
+        const heading = document.querySelector('#experience h2')!.getBoundingClientRect();
+        // The column is `--page-max` wide, centred inside the section's
+        // padding box; the heading stands on its left edge by definition.
+        const root = getComputedStyle(document.documentElement);
+        const pageMax = parseFloat(root.getPropertyValue('--page-max')) * parseFloat(root.fontSize);
+        const contentLeft = rect.left + parseFloat(cs.paddingLeft);
+        const contentRight = rect.right - parseFloat(cs.paddingRight);
+        const columnLeft = Math.max(contentLeft, (contentLeft + contentRight - pageMax) / 2);
+        return {
+          left: columnLeft,
+          right: Math.min(contentRight, columnLeft + pageMax),
+          headingLeft: heading.left,
+        };
+      });
+      // The heading stands on the spine's left edge; the chart must too.
+      expect(Math.abs(spine.headingLeft - spine.left)).toBeLessThanOrEqual(1);
+
+      const rows = page.locator(`${EXPERIENCE} ol`).first().locator('li button');
+      await expect(rows).toHaveCount(8);
+      for (let i = 0; i < 8; i += 1) {
+        const row = rows.nth(i);
+        const rowBox = (await row.boundingBox())!;
+        expect(Math.abs(rowBox.x - spine.left), `row ${i} left`).toBeLessThanOrEqual(1);
+        expect(rowBox.x + rowBox.width, `row ${i} right`).toBeLessThanOrEqual(spine.right + 0.5);
+        // The readout is the last span inside the bar; it is what overran.
+        const readout = row.locator('span span span').last();
+        const readoutBox = (await readout.boundingBox())!;
+        expect(readoutBox.x + readoutBox.width, `readout ${i} right`).toBeLessThanOrEqual(
+          spine.right + 0.5,
+        );
+      }
+    });
+  }
+
+  test('TC-EXP-10: the duration readouts are printed in --mist-200', async ({ page }) => {
+    // Design council R-c1, C4(a): the readouts sampled at ≈3.3:1 at 12 px mono.
+    // --mist-200 on the section ground is ≈ 9.8:1.
+    const expected = await page.evaluate(() => {
+      const probe = document.createElement('span');
+      probe.style.color = 'var(--mist-200)';
+      document.body.appendChild(probe);
+      const value = getComputedStyle(probe).color;
+      probe.remove();
+      return value;
+    });
+    const readouts = page.locator(`${EXPERIENCE} ol`).first().locator('li button span span span');
+    await expect(readouts).toHaveCount(8);
+    for (let i = 0; i < 8; i += 1) {
+      await expect(readouts.nth(i)).toHaveCSS('color', expected);
+    }
+  });
+
+  test('TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ', async ({
+    page,
+  }) => {
+    // Design council R-c1, C4(a): bar fill was ≈1.89:1 against the plot ground.
+    // Every bar now paints in --mist-400 at 0.85; the eight-year ANZ bar takes
+    // --white at 0.9 so the longest bar is the brightest. The white bar is
+    // selected by its row position, so this pins that the third row *is* ANZ.
+    const rows = page.locator(`${EXPERIENCE} ol`).first().locator('li button');
+    await expect(rows.nth(2)).toHaveAttribute('aria-label', /ANZ/);
+    const fills = await page.evaluate(() => {
+      const bars = Array.from(document.querySelectorAll('#experience ol li button span span > span'));
+      return bars.map((bar) => {
+        const cs = getComputedStyle(bar, '::before');
+        return { background: cs.backgroundColor, opacity: parseFloat(cs.opacity) };
+      });
+    });
+    expect(fills).toHaveLength(8);
+    const rgb = (value: string) => value.match(/\d+/g)!.slice(0, 3).map(Number);
+    const brightness = (f: { background: string; opacity: number }) =>
+      (rgb(f.background).reduce((a, b) => a + b, 0) / 3) * f.opacity;
+    const anz = brightness(fills[2]);
+    for (let i = 0; i < 8; i += 1) {
+      if (i === 2) continue;
+      expect(brightness(fills[i]), `bar ${i} must not outshine ANZ`).toBeLessThan(anz);
+      // 0x90 = 144 at 0.85 ≈ 122 painted on a #131313 ground → ≥ 3:1 (1.4.11).
+      expect(brightness(fills[i]), `bar ${i} fill must clear the non-text floor`).toBeGreaterThanOrEqual(120);
+    }
+  });
+
   test('TC-EXP-08: the section is complete without WebGL', async ({ page }) => {
     // Headless runs a software renderer, which the capability check declines.
     await expect(page.locator(`${EXPERIENCE} canvas`)).toHaveCount(0);
