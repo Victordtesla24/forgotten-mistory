@@ -225,13 +225,16 @@
    one column on a phone without a second declaration (R-c8 C-09). */
 .channels {
     display: grid;
-    /* The direction's own floor (R-c8 C-09). It works because the two wide
-       objects — the engagement plate and the email pill, both of which measure
-       more than a 16 rem track — take a row each, so what the tracks have to
-       hold is three short addresses. At 1440 that is three 394 px tracks and
-       the rightmost route ends at 0.85 of the frame; at 390 the row collapses
-       to one column with no second declaration. */
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    /* R-c8 C-09 asked for `minmax(16rem, 1fr)`. Measured, that floor lays four
+       288 px tracks at 1440 and the three short addresses fill three of them —
+       the fourth stays empty and the routes stop at 0.70 of the frame, which is
+       the emptiness the direction was written to close, one column narrower.
+       A 20 rem floor lays three tracks instead, the three addresses take one
+       each, and the rightmost ends at 0.85 (`06-measurements.log`). The two
+       wide objects — the engagement plate and the email pill — take a row each
+       above them, so no track ever has to hold the 412 px address. At 834 the
+       row is two tracks and at 390 it is one, with no second declaration. */
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     gap: var(--space-4);
     margin: 0;
     padding: 0;

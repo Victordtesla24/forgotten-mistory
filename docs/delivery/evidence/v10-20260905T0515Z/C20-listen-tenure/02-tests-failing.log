@@ -1,0 +1,45 @@
+     [90m 300 |[39m       [35m0.7[39m [33m*[39m probe[33m.[39minnerWidth[33m,[39m
+     [90m 301 |[39m     )[33m;[39m
+     [90m 302 |[39m     [90m// The filled pill: --white on --ink-900 text, --space-2/--space-4, fully round.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_d9fbfbaa-53a-1/tests/e2e/listen.spec.ts:299:98[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-listen-Listen-TC-LISTE-5f038-the-email-is-a-filled-plate-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-listen-Listen-TC-LISTE-5f038-the-email-is-a-filled-plate-chromium/error-context.md[22m
+
+[31m  8) [chromium] › tests/e2e/listen.spec.ts:320:7 › Listen › TC-LISTEN-11: the closing section is vertically symmetric at every width [39m
+
+    Error: 390: #listen padding 126 / 45
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m2[39m
+    Received:    [31m81[39m
+
+    [0m [90m 330 |[39m         [33mMath[39m[33m.[39mabs(pad[33m.[39mtop [33m-[39m pad[33m.[39mbottom)[33m,[39m
+     [90m 331 |[39m         [32m`${width}: #listen padding ${pad.top} / ${pad.bottom}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 332 |[39m       )[33m.[39mtoBeLessThanOrEqual([35m2[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 333 |[39m     }
+     [90m 334 |[39m   })[33m;[39m
+     [90m 335 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_d9fbfbaa-53a-1/tests/e2e/listen.spec.ts:332:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-listen-Listen-TC-LISTE-10450-ly-symmetric-at-every-width-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-listen-Listen-TC-LISTE-10450-ly-symmetric-at-every-width-chromium/error-context.md[22m
+
+[31m  8 failed[39m
+[31m    [chromium] › tests/content/content-check.spec.ts:302:7 › Content Preservation › CT-11: every tenure claim on the page carries its evidence [39m
+[31m    [chromium] › tests/e2e/about.spec.ts:345:7 › About › TC-ABOUT-13: at 1440 the dial and the first dimension share a baseline [39m
+[31m    [chromium] › tests/e2e/audience-paths.spec.ts:122:7 › Audience paths › AP-04: #listen carries exactly one engagement action, named for a client [39m
+[31m    [chromium] › tests/e2e/audience-paths.spec.ts:150:7 › Audience paths › AP-05: activating the engagement action completes — a live URL, or a mailto with a subject [39m
+[31m    [chromium] › tests/e2e/listen.spec.ts:65:7 › Listen › TC-LISTEN-05: hover and focus produce the identical underline [39m
+[31m    [chromium] › tests/e2e/listen.spec.ts:218:7 › Listen › TC-LISTEN-09: the contact routes are read-weight type, not caption grey [39m
+[31m    [chromium] › tests/e2e/listen.spec.ts:269:7 › Listen › TC-LISTEN-10: the routes span the column and the email is a filled plate [39m
+[31m    [chromium] › tests/e2e/listen.spec.ts:320:7 › Listen › TC-LISTEN-11: the closing section is vertically symmetric at every width [39m
+[32m  36 passed[39m[2m (2.1m)[22m

@@ -73,13 +73,120 @@
 /* The backdrop slot, and the scene's own container. The gradient below is the
    entire backdrop when there is no WebGL; when the scene mounts, its canvas is
    absolutely positioned to fill this element and draws over the gradient. */
+/* The still of the same light (R-c13 MOT-C13-04). With no WebGL — or with
+   reduced motion asked for — this gradient IS the hero backdrop, so it has to
+   carry the same structure the shader draws: a pool on the right where the
+   portrait plate stands, a rake of light down from the upper-left corner, and
+   the ink ramp underneath both. The version this replaces was a single
+   near-black wash that measured 0.00% of the frame above the ink; a reader on
+   that path was looking at a flat rectangle.
+
+   Both bright figures sit clear of the reading column on purpose. The hero's
+   copy runs down the left of the page column, and nothing luminous is allowed
+   under it — which is what keeps every hero string above AA on the fallback
+   path, where tests/a11y/text-contrast.spec.ts measures the composited pixels
+   (it loads the page without ?gl=force, so this gradient is exactly what it
+   photographs). */
 .stage {
     position: absolute;
     inset: 0;
     z-index: 0;
     background:
-        radial-gradient(120% 90% at 22% 18%, rgb(27 29 35 / 0.85), transparent 62%),
+        /* The scrim. First in the stack, so it sits over every luminous layer
+           below and under nothing: the reading column is dark ground again by
+           the time a glyph is drawn on it. Without it the rake reached
+           `#404040` under `.eyebrow` at 1440 and the pool reached `#525252`
+           under `.statement` at 390, and `--mist-400` on either is 3.25:1 and
+           2.45:1 — measured, in tests/a11y/text-contrast.spec.ts, which
+           photographs this gradient because it loads the page without
+           ?gl=force. The ceiling that number sets is `#2A2A2A`: that is the
+           brightest ground `--mist-400` still clears 4.5:1 on, and the scrim
+           is sized to hold the column under it with room to spare. */
+        linear-gradient(
+            90deg,
+            rgb(10 10 10 / 0.68) 0%,
+            rgb(10 10 10 / 0.66) 46%,
+            rgb(10 10 10 / 0.3) 60%,
+            transparent 70%
+        ),
+        /* The pool the portrait plate stands in. */
+        radial-gradient(
+            44% 50% at 80% 40%,
+            rgb(246 246 246 / 0.30) 0%,
+            rgb(246 246 246 / 0.25) 44%,
+            rgb(246 246 246 / 0.08) 72%,
+            transparent 88%
+        ),
+        /* The rake down from the upper-left corner. */
+        radial-gradient(
+            34% 40% at 4% 2%,
+            rgb(246 246 246 / 0.26) 0%,
+            rgb(246 246 246 / 0.18) 46%,
+            transparent 82%
+        ),
+        linear-gradient(154deg, rgb(246 246 246 / 0.09) 0%, transparent 30%),
         linear-gradient(180deg, var(--ink-900) 0%, var(--ink-800) 58%, var(--ink-900) 100%);
+}
+
+/* The scrim again, this time over the canvas rather than under it.
+   `.stage`'s own background is *below* the canvas, so it protects the reading
+   column only on the no-GL path; a visitor with a GPU gets the shader, and the
+   shader's fog is near-white — photographed at 1440 with ?gl=force the frame is
+   96.55% lit and `.statement` is grey on milk. `::after` paints after the
+   canvas and before `.inner` (z-index 1, a sibling above `.stage`), so one
+   layer covers both paths.
+
+   0.88 is not a taste decision: over the brightest fog this shader produces
+   (0.8308 relative luminance, about `#ECECEC`) it lands the ground on
+   `#252525`, which is where `--mist-400` still clears AA at 4.8:1. It is
+   transparent past 66% so the pool, the portrait plate and the light the
+   flagship-visibility gate measures are all untouched — the frame keeps its
+   bright side, and the copy gets its dark one. */
+.stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+        90deg,
+        rgb(10 10 10 / 0.88) 0%,
+        rgb(10 10 10 / 0.86) 44%,
+        rgb(10 10 10 / 0.45) 56%,
+        transparent 66%
+    );
+}
+
+/* At 390 the column is the whole frame: there is no right-hand third to give
+   the light, because the copy is standing in it. So the scrim covers the frame
+   instead of a side of it, and the still keeps its structure as a grading
+   rather than as a pool — `#1F1F1F` at the pool's core, which `--mist-400`
+   clears at 6.1:1. The shader path is unaffected: the canvas fills `.stage`
+   and draws over all of this. */
+@media (max-width: 700px) {
+    .stage::after {
+        background: linear-gradient(90deg, rgb(10 10 10 / 0.86), rgb(10 10 10 / 0.86));
+    }
+
+    .stage {
+        background:
+            linear-gradient(90deg, rgb(10 10 10 / 0.72), rgb(10 10 10 / 0.72)),
+            radial-gradient(
+                44% 50% at 80% 40%,
+                rgb(246 246 246 / 0.30) 0%,
+                rgb(246 246 246 / 0.25) 44%,
+                rgb(246 246 246 / 0.08) 72%,
+                transparent 88%
+            ),
+            radial-gradient(
+                34% 40% at 4% 2%,
+                rgb(246 246 246 / 0.26) 0%,
+                rgb(246 246 246 / 0.18) 46%,
+                transparent 82%
+            ),
+            linear-gradient(154deg, rgb(246 246 246 / 0.09) 0%, transparent 30%),
+            linear-gradient(180deg, var(--ink-900) 0%, var(--ink-800) 58%, var(--ink-900) 100%);
+    }
 }
 
 .inner {

@@ -1,0 +1,22 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts tests/a11y/text-contrast.spec.ts --reporter=list --workers=3
+
+[2mRunning [22m8[2m tests using [22m3[2m workers[22m
+
+[flagship-visibility] hero: ground=0.0030 coverage=43.05% peak=0.8308 motion=0.00620 box=1440x900
+  [32m✓[39m  [2m3 [22m[chromium] › tests/overhaul/flagship-visibility.spec.ts:273:9 › TC-FLAGSHIP-VIS — signature scenes are visible › TC-FLAGSHIP-VIS-HERO — hero atmosphere reads as light[2m (20.9s)[22m
+  [32m✓[39m  [2m1 [22m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground[2m (28.4s)[22m
+[flagship-visibility] about: ground=0.0030 coverage=44.93% peak=0.6867 motion=0.02435 box=384x384
+  [32m✓[39m  [2m2 [22m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground[2m (43.3s)[22m
+  [32m✓[39m  [2m4 [22m[chromium] › tests/overhaul/flagship-visibility.spec.ts:273:9 › TC-FLAGSHIP-VIS — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT — about compass field reads as light[2m (24.9s)[22m
+[flagship-visibility] experience: ground=0.0030 coverage=25.60% peak=0.7529 motion=0.04156 box=1298x505
+  [32m✓[39m  [2m5 [22m[chromium] › tests/overhaul/flagship-visibility.spec.ts:273:9 › TC-FLAGSHIP-VIS — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE — experience strata reads as light[2m (15.9s)[22m
+[flagship-visibility:still] about: ground=0.0030 coverage=35.29% peak=0.0801
+  [32m✓[39m  [2m6 [22m[chromium] › tests/overhaul/flagship-visibility.spec.ts:326:9 › TC-FLAGSHIP-VIS-STILL — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT — about compass field fallback[2m (5.6s)[22m
+[flagship-visibility:still] experience: ground=0.0030 coverage=4.11% peak=0.1531
+[flagship-visibility:still] hero: ground=0.0030 coverage=17.30% peak=0.0931
+  [32m✓[39m  [2m8 [22m[chromium] › tests/overhaul/flagship-visibility.spec.ts:326:9 › TC-FLAGSHIP-VIS-STILL — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE — experience strata fallback[2m (4.8s)[22m
+  [32m✓[39m  [2m7 [22m[chromium] › tests/overhaul/flagship-visibility.spec.ts:326:9 › TC-FLAGSHIP-VIS-STILL — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO — hero atmosphere fallback[2m (5.2s)[22m
+
+[32m  8 passed[39m[2m (57.3s)[22m
+EXIT=0

@@ -1,0 +1,170 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts --reporter=list --workers=2
+
+[2mRunning [22m6[2m tests using [22m2[2m workers[22m
+
+[flagship-visibility] hero: ground=0.0030 coverage=9.72% peak=0.1329 motion=0.00338 box=1440x900
+[flagship-visibility] about: ground=0.0030 coverage=0.00% peak=0.0331 motion=0.00026 box=384x384
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/overhaul/flagship-visibility.spec.ts:253:9 › TC-FLAGSHIP-VIS — signature scenes are visible › TC-FLAGSHIP-VIS-HERO — hero atmosphere reads as light[39m[2m (18.0s)[22m
+  [31m✘[39m  [2m2 [22m[31m[chromium] › tests/overhaul/flagship-visibility.spec.ts:253:9 › TC-FLAGSHIP-VIS — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT — about compass field reads as light[39m[2m (20.9s)[22m
+[flagship-visibility:still] hero: ground=0.0030 coverage=0.00% peak=0.0109
+  [31m✘[39m  [2m4 [22m[31m[chromium] › tests/overhaul/flagship-visibility.spec.ts:306:9 › TC-FLAGSHIP-VIS-STILL — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO — hero atmosphere fallback[39m[2m (3.3s)[22m
+[flagship-visibility] experience: ground=0.0030 coverage=0.00% peak=0.0168 motion=0.00013 box=1298x505
+  [31m✘[39m  [2m3 [22m[31m[chromium] › tests/overhaul/flagship-visibility.spec.ts:253:9 › TC-FLAGSHIP-VIS — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE — experience strata reads as light[39m[2m (10.2s)[22m
+[flagship-visibility:still] about: ground=0.0030 coverage=0.00% peak=0.0081
+  [31m✘[39m  [2m5 [22m[31m[chromium] › tests/overhaul/flagship-visibility.spec.ts:306:9 › TC-FLAGSHIP-VIS-STILL — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT — about compass field fallback[39m[2m (3.1s)[22m
+[flagship-visibility:still] experience: ground=0.0030 coverage=0.00% peak=0.0064
+  [31m✘[39m  [2m6 [22m[31m[chromium] › tests/overhaul/flagship-visibility.spec.ts:306:9 › TC-FLAGSHIP-VIS-STILL — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE — experience strata fallback[39m[2m (2.6s)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/flagship-visibility.spec.ts:253:9 › TC-FLAGSHIP-VIS — signature scenes are visible › TC-FLAGSHIP-VIS-HERO — hero atmosphere reads as light [39m
+
+    Error: hero atmosphere: only 9.72% of the scene is more than 0.06 luminance above its ground — the structure has no area
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.15[39m
+    Received:    [31m0.09720293209876543[39m
+
+    [0m [90m 287 |[39m         [32m`${item.label}: only ${(cover * 100).toFixed(2)}% of the scene is more than `[39m [33m+[39m
+     [90m 288 |[39m           [32m`${COVERAGE_DELTA} luminance above its ground — the structure has no area`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 289 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mCOVERAGE_MIN[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 290 |[39m
+     [90m 291 |[39m       expect(
+     [90m 292 |[39m         top[33m,[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_0d0dffdb-8bf-1/tests/overhaul/flagship-visibility.spec.ts:289:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-flagship-visibili-1171e-o-atmosphere-reads-as-light-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-flagship-visibili-1171e-o-atmosphere-reads-as-light-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/overhaul/flagship-visibility.spec.ts:253:9 › TC-FLAGSHIP-VIS — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT — about compass field reads as light [39m
+
+    Error: about compass field: only 0.00% of the scene is more than 0.06 luminance above its ground — the structure has no area
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.15[39m
+    Received:    [31m0[39m
+
+    [0m [90m 287 |[39m         [32m`${item.label}: only ${(cover * 100).toFixed(2)}% of the scene is more than `[39m [33m+[39m
+     [90m 288 |[39m           [32m`${COVERAGE_DELTA} luminance above its ground — the structure has no area`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 289 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mCOVERAGE_MIN[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 290 |[39m
+     [90m 291 |[39m       expect(
+     [90m 292 |[39m         top[33m,[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_0d0dffdb-8bf-1/tests/overhaul/flagship-visibility.spec.ts:289:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-flagship-visibili-7e14e-ompass-field-reads-as-light-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-flagship-visibili-7e14e-ompass-field-reads-as-light-chromium/error-context.md[22m
+
+[31m  3) [chromium] › tests/overhaul/flagship-visibility.spec.ts:253:9 › TC-FLAGSHIP-VIS — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE — experience strata reads as light [39m
+
+    Error: experience strata: only 0.00% of the scene is more than 0.06 luminance above its ground — the structure has no area
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.15[39m
+    Received:    [31m0[39m
+
+    [0m [90m 287 |[39m         [32m`${item.label}: only ${(cover * 100).toFixed(2)}% of the scene is more than `[39m [33m+[39m
+     [90m 288 |[39m           [32m`${COVERAGE_DELTA} luminance above its ground — the structure has no area`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 289 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mCOVERAGE_MIN[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 290 |[39m
+     [90m 291 |[39m       expect(
+     [90m 292 |[39m         top[33m,[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_0d0dffdb-8bf-1/tests/overhaul/flagship-visibility.spec.ts:289:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-flagship-visibili-46671-ience-strata-reads-as-light-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-flagship-visibili-46671-ience-strata-reads-as-light-chromium/error-context.md[22m
+
+[31m  4) [chromium] › tests/overhaul/flagship-visibility.spec.ts:306:9 › TC-FLAGSHIP-VIS-STILL — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO — hero atmosphere fallback [39m
+
+    Error: hero atmosphere: the reduced-motion still covers only 0.00% at +0.04 luminance — the fallback is an empty rectangle, not a still of the same light
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.08[39m
+    Received:    [31m0[39m
+
+    [0m [90m 340 |[39m           [32m`at +${FALLBACK_DELTA} luminance — the fallback is an empty rectangle, not a still `[39m [33m+[39m
+     [90m 341 |[39m           [32m`of the same light`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 342 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mFALLBACK_COVERAGE_MIN[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 343 |[39m     })[33m;[39m
+     [90m 344 |[39m   }
+     [90m 345 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_0d0dffdb-8bf-1/tests/overhaul/flagship-visibility.spec.ts:342:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-flagship-visibili-c388f--—-hero-atmosphere-fallback-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-flagship-visibili-c388f--—-hero-atmosphere-fallback-chromium/error-context.md[22m
+
+[31m  5) [chromium] › tests/overhaul/flagship-visibility.spec.ts:306:9 › TC-FLAGSHIP-VIS-STILL — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT — about compass field fallback [39m
+
+    Error: about compass field: the reduced-motion still covers only 0.00% at +0.04 luminance — the fallback is an empty rectangle, not a still of the same light
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.08[39m
+    Received:    [31m0[39m
+
+    [0m [90m 340 |[39m           [32m`at +${FALLBACK_DELTA} luminance — the fallback is an empty rectangle, not a still `[39m [33m+[39m
+     [90m 341 |[39m           [32m`of the same light`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 342 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mFALLBACK_COVERAGE_MIN[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 343 |[39m     })[33m;[39m
+     [90m 344 |[39m   }
+     [90m 345 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_0d0dffdb-8bf-1/tests/overhaul/flagship-visibility.spec.ts:342:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-flagship-visibili-a6a05-bout-compass-field-fallback-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-flagship-visibili-a6a05-bout-compass-field-fallback-chromium/error-context.md[22m
+
+[31m  6) [chromium] › tests/overhaul/flagship-visibility.spec.ts:306:9 › TC-FLAGSHIP-VIS-STILL — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE — experience strata fallback [39m
+
+    Error: experience strata: the reduced-motion still covers only 0.00% at +0.04 luminance — the fallback is an empty rectangle, not a still of the same light
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.08[39m
+    Received:    [31m0[39m
+
+    [0m [90m 340 |[39m           [32m`at +${FALLBACK_DELTA} luminance — the fallback is an empty rectangle, not a still `[39m [33m+[39m
+     [90m 341 |[39m           [32m`of the same light`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 342 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mFALLBACK_COVERAGE_MIN[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 343 |[39m     })[33m;[39m
+     [90m 344 |[39m   }
+     [90m 345 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_0d0dffdb-8bf-1/tests/overhaul/flagship-visibility.spec.ts:342:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-flagship-visibili-cdc33--experience-strata-fallback-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-flagship-visibili-cdc33--experience-strata-fallback-chromium/error-context.md[22m
+
+[31m  6 failed[39m
+[31m    [chromium] › tests/overhaul/flagship-visibility.spec.ts:253:9 › TC-FLAGSHIP-VIS — signature scenes are visible › TC-FLAGSHIP-VIS-HERO — hero atmosphere reads as light [39m
+[31m    [chromium] › tests/overhaul/flagship-visibility.spec.ts:253:9 › TC-FLAGSHIP-VIS — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT — about compass field reads as light [39m
+[31m    [chromium] › tests/overhaul/flagship-visibility.spec.ts:253:9 › TC-FLAGSHIP-VIS — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE — experience strata reads as light [39m
+[31m    [chromium] › tests/overhaul/flagship-visibility.spec.ts:306:9 › TC-FLAGSHIP-VIS-STILL — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO — hero atmosphere fallback [39m
+[31m    [chromium] › tests/overhaul/flagship-visibility.spec.ts:306:9 › TC-FLAGSHIP-VIS-STILL — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT — about compass field fallback [39m
+[31m    [chromium] › tests/overhaul/flagship-visibility.spec.ts:306:9 › TC-FLAGSHIP-VIS-STILL — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE — experience strata fallback [39m
