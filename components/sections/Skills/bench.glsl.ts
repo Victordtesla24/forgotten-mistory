@@ -7,15 +7,24 @@
  * bench: a lit plate with a hairline graticule ruled across it, and the
  * engraving (the rails, the wires, the gold marks) sitting on top of it.
  *
- * Three things drive it, and all three come from the section's own state rather
+ * Four things drive it, and all four come from the section's own state rather
  * than from a clock of the shader's own — the discipline `CareerStrata` and
  * `AboutField` keep:
  *
  * - `uIntensity` is the mount ramp, and it also carries the entry pulse: one
  *   wavefront runs down the plate as the bench arrives and hands over to the
  *   steady state, so the pulse can never desynchronise from the fade-in.
+ * - `uRows` / `uRowCount` are the evidence itself. Every capability measured in
+ *   production lifts the plate at the height its wire lands on the capability
+ *   rail, so at rest the field is bright along the production rows and falls
+ *   dark at the two rows measured outside production and the one not yet held.
+ *   This is what makes the light the section's argument rather than an
+ *   atmosphere beneath it: the bench reads the table (ADV-1451Z §Skills / G-S2).
+ *   The heights arrive already normalised from the bench's own measured layout,
+ *   so the light follows the type wherever it wraps.
  * - `uHover` is 0 → 1 as the reader takes a node on either rail. The graticule
- *   brightens with it: the bench lights up along the wires being traced.
+ *   brightens with it: the bench lights up further along the wire being traced,
+ *   over and above the production set already lit.
  * - `uHoverY` is that node's own height within the bench, 0 (top) → 1, so the
  *   brightening is *where the reader is looking* rather than everywhere.
  *
@@ -55,6 +64,12 @@ export const benchFieldVertexShader = /* glsl */ `
 export const benchFieldFragmentShader = /* glsl */ `
   precision highp float;
 
+  /** The most production rows the plate will ever read at once. Seventeen
+      capabilities ship today, fourteen of them in production; twenty is headroom
+      for the card to grow without touching the shader. A fixed bound keeps the
+      loop legal on WebGL1 (GLSL ES 1.0 requires a constant iteration count). */
+  #define MAX_ROWS 20
+
   varying vec2 vUv;
 
   uniform float uTime;
@@ -65,6 +80,11 @@ export const benchFieldFragmentShader = /* glsl */ `
   uniform float uHoverY;
   /** 0 → 1 over the mount ramp; back to 0 if the context is lost. */
   uniform float uIntensity;
+  /** How many entries of uRows are live — the production capability count. */
+  uniform int uRowCount;
+  /** Each production capability's height within the bench, 0 (top) → 1. The
+      field lifts where these land: the evidence table drawn in luminance. */
+  uniform float uRows[MAX_ROWS];
   uniform vec3 uInk;
   uniform vec3 uLight;
 
@@ -121,8 +141,24 @@ export const benchFieldFragmentShader = /* glsl */ `
     float gy = pow(0.5 + 0.5 * cos(px.y * TAU / PITCH), 60.0);
     float graticule = clamp(gx + gy, 0.0, 1.0);
 
+    // The data the bench is reading. Every capability measured in production
+    // lifts the plate at the height its wire lands on the capability rail, so
+    // the light is the evidence table rendered in luminance rather than an
+    // atmosphere under it. The band is tight — a wire lands on one row, not a
+    // region — so the two rows measured outside production and the one not yet
+    // held stay dark, and the honesty of the section is legible in the light
+    // itself. A constant-bound loop with an early break: legal on WebGL1, and
+    // it costs only the live rows.
+    float data = 0.0;
+    for (int i = 0; i < MAX_ROWS; i++) {
+      if (i >= uRowCount) break;
+      data += exp(-pow((p.y - uRows[i]) / 0.026, 2.0));
+    }
+    data = clamp(data, 0.0, 1.0);
+
     // The reader's own row. Where a node is taken, the rule at its height comes
-    // up — the bench lighting along the wires being traced.
+    // up — the bench lighting further along the wire being traced, over the
+    // production set already lit.
     float row = exp(-pow((p.y - uHoverY) / 0.10, 2.0)) * clamp(uHover, 0.0, 1.0);
 
     // The entry pulse: one wavefront down the plate, carried by the mount ramp
@@ -144,10 +180,15 @@ export const benchFieldFragmentShader = /* glsl */ `
     // graticule, and a bench whose only visible structure is its ruling is a
     // grid, not a lit surface. The mask still stops the plate well short of
     // both rails of type.
+    // The data term is added on top of the resting floor, never subtracted from
+    // it: the coverage floor (the constant 0.32 base, see above) still holds at
+    // every row so the plate never drops below a measuring surface, and the
+    // production rows read as a lift over that floor rather than the gaps
+    // reading as holes punched through it.
     float base = plate * (0.32 + 0.12 * wash) * (0.86 + 0.18 * drift + 0.12 * breath);
-    float rules = plate * graticule * (0.30 + 0.24 * breath + 0.34 * row + 0.14 * slow);
+    float rules = plate * graticule * (0.30 + 0.24 * breath + 0.34 * row + 0.30 * data + 0.14 * slow);
 
-    float luma = base + rules + plate * (0.34 * pulse + 0.22 * row);
+    float luma = base + rules + plate * (0.34 * pulse + 0.22 * row + 0.16 * data);
 
     // Grain, from the cheap hash rather than a fourth noise lookup.
     luma += (hash(vUv * uResolution + fract(uTime)) - 0.5) * 0.012;

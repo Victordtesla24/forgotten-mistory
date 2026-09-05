@@ -219,6 +219,32 @@ export default function Skills() {
             same eight characters.
           </p>
         </div>
+
+        {/* One quiet action at the foot of the section — the employer's path
+            (R4). The bench and the card are the argument; this is the exit the
+            reader who is now convinced takes without hunting back up to the nav.
+            It is deliberately recessed, not a gold fill: the card's one accent
+            is the production mark, and a loud button here would compete with it.
+            It is far below the fold, so the one-CV-control-per-first-screen rule
+            (tests/overhaul/cta-duplication.spec.ts) is untouched; the nav pill
+            still owns the top of the page. */}
+        <div className={styles.dossier}>
+          <p className={styles.dossierNote}>
+            Every calibration above, on one page — exactly as it reads on the CV.
+          </p>
+          <a
+            className={styles.dossierLink}
+            href="/docs/Vik_Resume_Final.pdf"
+            download
+            target="_blank"
+            rel="noreferrer"
+          >
+            Download CV
+            <span className={styles.dossierExt} aria-hidden="true">
+              PDF
+            </span>
+          </a>
+        </div>
       </div>
     </section>
   );

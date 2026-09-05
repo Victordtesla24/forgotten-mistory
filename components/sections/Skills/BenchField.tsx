@@ -23,6 +23,12 @@ import { benchFieldFragmentShader, benchFieldVertexShader } from './bench.glsl';
 const RAMP_IN = 0.72;
 const RAMP_OUT = 0.36;
 
+/**
+ * The most production rows the plate reads at once. Matches `MAX_ROWS` in
+ * `bench.glsl.ts`: the uniform array is fixed-size, so the two must agree.
+ */
+const MAX_ROWS = 20;
+
 /** What the reader currently has under attention, written by `Bench`'s focus handler. */
 export interface HoverState {
   /** 1 while a node on either rail is taken, 0 otherwise. */
@@ -34,9 +40,15 @@ export interface HoverState {
 interface BenchFieldProps {
   /** Live attention state, updated without a render. */
   hover: { current: HoverState };
+  /**
+   * Where each capability measured in production sits within the bench, 0 → 1,
+   * measured from the board's own layout. The field lifts at these heights so
+   * the light reads the evidence table rather than glowing as atmosphere.
+   */
+  rows: number[];
 }
 
-export default function BenchField({ hover }: BenchFieldProps) {
+export default function BenchField({ hover, rows }: BenchFieldProps) {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   /** The attention level actually being drawn, eased toward the bench's own. */
   const lit = useRef(0);
@@ -50,11 +62,27 @@ export default function BenchField({ hover }: BenchFieldProps) {
       uHover: { value: 0 },
       uHoverY: { value: 0.5 },
       uIntensity: { value: 0 },
+      // A full-length array from the start: three uploads a fixed-size `float[]`
+      // and a shorter value would leave the tail undefined. `uRowCount` gates
+      // how many entries the shader actually reads.
+      uRowCount: { value: 0 },
+      uRows: { value: new Array<number>(MAX_ROWS).fill(0) },
       uInk: { value: new THREE.Color(PALETTE.ink900) },
       uLight: { value: new THREE.Color(PALETTE.white) },
     }),
     [],
   );
+
+  // The production rows change only when the board re-measures — a resize, a
+  // font swap — not every frame, so they are written on change rather than in
+  // `useFrame`. The array is mutated in place: three reads the same reference
+  // it was handed, and replacing it would drop the binding.
+  useEffect(() => {
+    const slots = uniforms.uRows.value;
+    const count = Math.min(rows.length, MAX_ROWS);
+    for (let i = 0; i < MAX_ROWS; i++) slots[i] = i < count ? rows[i] : 0;
+    uniforms.uRowCount.value = count;
+  }, [rows, uniforms]);
 
   // A lost context is not a crash and must not be drawn through: the browser
   // keeps presenting the last frame, which would leave a rule frozen at a row
