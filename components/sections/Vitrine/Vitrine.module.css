@@ -74,16 +74,47 @@
     scroll-padding-inline: var(--rail-inset);
     /* A thin rule under the rail, so the plates read as standing on something. */
     border-bottom: 1px solid var(--token-border-default);
-    scrollbar-width: thin;
-    scrollbar-color: rgb(246 246 246 / 0.18) transparent;
+    /* The rail ends; it is not severed. Both edges fade over the gutter so the
+       plate running off the viewport reads as continuing, not cut (council
+       R-c1, C6). The mask covers the rail's own scrollbar too, which is why
+       the thumb below sits inside the fade rather than under it. */
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        rgb(0 0 0) var(--page-gutter, 4.5rem),
+        rgb(0 0 0) calc(100% - 4rem),
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        rgb(0 0 0) var(--page-gutter, 4.5rem),
+        rgb(0 0 0) calc(100% - 4rem),
+        transparent 100%
+    );
 }
 
+/* A 2 px thumb on a hairline track: the horizontal affordance is visible
+   without a hover (council R-c1, C6). Chromium ignores the ::-webkit-scrollbar
+   pseudo-elements once the standard scrollbar-* properties are set, so those
+   are declared only for engines without the pseudo-elements. */
 .rail::-webkit-scrollbar {
-    height: 3px;
+    height: 2px;
+}
+
+.rail::-webkit-scrollbar-track {
+    background: var(--card-border);
 }
 
 .rail::-webkit-scrollbar-thumb {
-    background: rgb(246 246 246 / 0.18);
+    background: rgb(246 246 246 / 0.32);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    .rail {
+        scrollbar-width: thin;
+        scrollbar-color: rgb(246 246 246 / 0.32) var(--card-border);
+    }
 }
 
 /* ── A plate ─────────────────────────────────────────────────────────────── */
@@ -98,8 +129,13 @@
     border: 1px solid var(--token-border-default);
     border-radius: 4px;
     scroll-snap-align: center;
-    /* Unlit plates sit back. This is the shadow half of the raking light. */
-    opacity: 0.42;
+    /* Unlit plates sit back. This is the shadow half of the raking light —
+       but a plate at rest is still read, and at 0.42 its captions composited
+       to 1.75:1 on the page ground (council R-c1, C6). At 0.62 every text
+       token below clears WCAG AA through the plate's own opacity: --white
+       7.2:1, --mist-200 5.2:1, --gold-pale 5.6:1. --mist-400 (3.0:1) and
+       --ink-300 (2.5:1) do not, so no text inside a plate uses them. */
+    opacity: 0.62;
     background: var(--ink-900);
     transition:
         opacity var(--motion-base) var(--motion-ease-standard),
@@ -115,7 +151,7 @@
 /* Hover. The pointer is a second, weaker source: it brings an unlit plate part
    of the way up without taking the spot off the one the rail has lit. */
 .plate:not([data-lit]):hover {
-    opacity: 0.72;
+    opacity: 0.8;
     border-color: var(--card-border-hover);
 }
 
@@ -145,18 +181,20 @@
     gap: var(--space-2);
 }
 
+/* Every text token inside a plate is --mist-200 or --white: the plate's rest
+   opacity is the only dimming the captions get (see .plate). */
 .accession {
     font-family: var(--font-mono);
     font-size: var(--fs-caption);
     letter-spacing: 0.14em;
-    color: var(--mist-400);
+    color: var(--mist-200);
 }
 
 .repo {
     font-family: var(--font-mono);
     font-size: var(--fs-caption);
     letter-spacing: 0.02em;
-    color: var(--ink-300);
+    color: var(--mist-200);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -206,7 +244,18 @@
     font-size: var(--fs-micro);
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--ink-300);
+    color: var(--mist-200);
+}
+
+/* An open caliper on a resting plate composites through the plate's 0.62 and
+   its own 0.85 value opacity — 4.1:1 in --mist-200. Inside a plate the value
+   is shown at full opacity so the mark reads at rest (5.2:1). */
+.metric dd [data-state='open'] {
+    color: var(--mist-200);
+}
+
+.metric dd [data-state='open'] > span:nth-child(2) {
+    opacity: 1;
 }
 
 /* The caption step, not the small one: this is a mono figure in a three-column
@@ -232,7 +281,7 @@
     margin: var(--space-05) 0 0;
     font-size: var(--fs-small);
     line-height: var(--lh-caption);
-    color: var(--mist-400);
+    color: var(--mist-200);
 }
 
 .limitsLabel {
@@ -242,7 +291,7 @@
     font-size: var(--fs-micro);
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--ink-300);
+    color: var(--mist-200);
 }
 
 /* ── Links ───────────────────────────────────────────────────────────────── */
@@ -448,6 +497,6 @@
 .notDeployed {
     font-family: var(--font-mono);
     font-size: var(--fs-caption);
-    color: var(--ink-300);
+    color: var(--mist-200);
     align-self: center;
 }

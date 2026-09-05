@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+
 import type { DrawingId } from '@/app/data/portfolio/vitrine';
 
 import styles from './Drawings.module.css';
@@ -38,9 +40,9 @@ function PipelineGate() {
         any claim the résumé does not support.
       </desc>
       {/* The line the application travels. */}
-      <line x1="12" y1="96" x2="308" y2="96" stroke="currentColor" strokeWidth="0.75" opacity="0.35" />
+      <line pathLength="1" className={styles.stroke} x1="12" y1="96" x2="308" y2="96" stroke="currentColor" strokeWidth="0.75" opacity="0.35" />
       {nodes.map((x, i) => (
-        <circle
+        <circle pathLength="1" className={styles.stroke}
           key={x}
           cx={x}
           cy="96"
@@ -52,14 +54,14 @@ function PipelineGate() {
         />
       ))}
       {/* The gate. */}
-      <line x1="248" y1="34" x2="248" y2="158" stroke="currentColor" strokeWidth="1" opacity="0.9" />
+      <line pathLength="1" className={styles.stroke} x1="248" y1="34" x2="248" y2="158" stroke="currentColor" strokeWidth="1" opacity="0.9" />
       <text x="248" y="28" className={styles.label} textAnchor="middle">
         GUARD
       </text>
       {/* A proposed sentence, struck through and reverted. */}
-      <line x1="196" y1="62" x2="292" y2="62" stroke="currentColor" strokeWidth="3" opacity="0.16" />
-      <line x1="196" y1="62" x2="292" y2="62" stroke="currentColor" strokeWidth="0.75" opacity="0.75" />
-      <path
+      <line pathLength="1" className={styles.stroke} x1="196" y1="62" x2="292" y2="62" stroke="currentColor" strokeWidth="3" opacity="0.16" />
+      <line pathLength="1" className={styles.stroke} x1="196" y1="62" x2="292" y2="62" stroke="currentColor" strokeWidth="0.75" opacity="0.75" />
+      <path pathLength="1" className={styles.stroke}
         d="M292 74 L262 74"
         stroke="currentColor"
         strokeWidth="0.75"
@@ -96,7 +98,7 @@ function RebuildLoop() {
         const x = 22 + i * (width + gap);
         return (
           <g key={label}>
-            <rect
+            <rect pathLength="1" className={styles.stroke}
               x={x}
               y="76"
               width={width}
@@ -110,7 +112,7 @@ function RebuildLoop() {
               {label}
             </text>
             {i < 3 && (
-              <line
+              <line pathLength="1" className={styles.stroke}
                 x1={x + width}
                 y1="93"
                 x2={x + width + gap}
@@ -124,7 +126,7 @@ function RebuildLoop() {
         );
       })}
       {/* The rollback path: solid, because it is a real branch, not a caveat. */}
-      <path
+      <path pathLength="1" className={styles.stroke}
         d="M250 110 L250 148 L50 148 L50 110"
         fill="none"
         stroke="currentColor"
@@ -152,14 +154,14 @@ function VerifierLoop() {
         exit on the right stays shut until a signed verifier reports a pass; the repository
         generates and checks those contract hashes in its own hooks.
       </desc>
-      <circle cx={cx} cy={cy} r={r} fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.3" />
+      <circle pathLength="1" className={styles.stroke} cx={cx} cy={cy} r={r} fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.3" />
       {stages.map((label, i) => {
         const angle = (i / stages.length) * Math.PI * 2 - Math.PI / 2;
         const x = cx + Math.cos(angle) * r;
         const y = cy + Math.sin(angle) * r;
         return (
           <g key={label}>
-            <circle cx={x} cy={y} r="3" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
+            <circle pathLength="1" className={styles.stroke} cx={x} cy={y} r="3" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
             <text
               x={x + Math.cos(angle) * 16}
               y={y + Math.sin(angle) * 16 + 3}
@@ -172,8 +174,8 @@ function VerifierLoop() {
         );
       })}
       {/* The exit, and the signature holding it. */}
-      <line x1={cx + r} y1={cy} x2="272" y2={cy} stroke="currentColor" strokeWidth="0.75" opacity="0.7" />
-      <line x1="252" y1="82" x2="252" y2="118" stroke="currentColor" strokeWidth="1" opacity="0.9" />
+      <line pathLength="1" className={styles.stroke} x1={cx + r} y1={cy} x2="272" y2={cy} stroke="currentColor" strokeWidth="0.75" opacity="0.7" />
+      <line pathLength="1" className={styles.stroke} x1="252" y1="82" x2="252" y2="118" stroke="currentColor" strokeWidth="1" opacity="0.9" />
       <text x="272" y={cy - 8} className={styles.label} textAnchor="end">
         EXIT
       </text>
@@ -200,7 +202,7 @@ function ReconstructionBands() {
         const x = 40 + ((i * 37) % 60);
         const w = 40 + ((i * 53) % 90);
         return (
-          <line
+          <line pathLength="1" className={styles.stroke}
             key={y}
             x1={x}
             y1={y}
@@ -216,7 +218,7 @@ function ReconstructionBands() {
       {Array.from({ length: 5 }, (_, i) => {
         const y = 74 + i * 12;
         return (
-          <line
+          <line pathLength="1" className={styles.stroke}
             key={y}
             x1="32"
             y1={y}
@@ -229,7 +231,7 @@ function ReconstructionBands() {
         );
       })}
       {/* The fallback branch: brighter, never a second colour. */}
-      <path
+      <path pathLength="1" className={styles.stroke}
         d="M288 86 L302 86 L302 122 L288 122"
         fill="none"
         stroke="currentColor"
@@ -243,7 +245,7 @@ function ReconstructionBands() {
       {Array.from({ length: 4 }, (_, i) => {
         const y = 150 + i * 8;
         return (
-          <line
+          <line pathLength="1" className={styles.stroke}
             key={y}
             x1="60"
             y1={y}
@@ -269,10 +271,10 @@ function DiamondChart() {
         caliper reading the Lahiri ayanamsa the repository configures as its default; a drift
         beyond tolerance fails the build.
       </desc>
-      <rect x="70" y="26" width="148" height="148" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.5" />
-      <line x1="70" y1="26" x2="218" y2="174" stroke="currentColor" strokeWidth="0.75" opacity="0.35" />
-      <line x1="218" y1="26" x2="70" y2="174" stroke="currentColor" strokeWidth="0.75" opacity="0.35" />
-      <path
+      <rect pathLength="1" className={styles.stroke} x="70" y="26" width="148" height="148" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.5" />
+      <line pathLength="1" className={styles.stroke} x1="70" y1="26" x2="218" y2="174" stroke="currentColor" strokeWidth="0.75" opacity="0.35" />
+      <line pathLength="1" className={styles.stroke} x1="218" y1="26" x2="70" y2="174" stroke="currentColor" strokeWidth="0.75" opacity="0.35" />
+      <path pathLength="1" className={styles.stroke}
         d="M144 26 L218 100 L144 174 L70 100 Z"
         fill="none"
         stroke="currentColor"
@@ -282,9 +284,9 @@ function DiamondChart() {
       {/* The isolated house. */}
       <path d="M144 26 L181 63 L144 100 L107 63 Z" fill="currentColor" opacity="0.07" />
       {/* A caliper closing onto the measurement. */}
-      <line x1="232" y1="40" x2="232" y2="86" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
-      <line x1="228" y1="40" x2="236" y2="40" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
-      <line x1="228" y1="86" x2="236" y2="86" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
+      <line pathLength="1" className={styles.stroke} x1="232" y1="40" x2="232" y2="86" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
+      <line pathLength="1" className={styles.stroke} x1="228" y1="40" x2="236" y2="40" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
+      <line pathLength="1" className={styles.stroke} x1="228" y1="86" x2="236" y2="86" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
       <text x="242" y="60" className={styles.label}>
         ayanamsa
       </text>
@@ -304,13 +306,13 @@ function ScrollRail() {
         A vertical rail with six ticks, one for each section of this site, and a single node
         travelling down it — the position you are currently reading from.
       </desc>
-      <line x1="160" y1="20" x2="160" y2="180" stroke="currentColor" strokeWidth="0.75" opacity="0.35" />
+      <line pathLength="1" className={styles.stroke} x1="160" y1="20" x2="160" y2="180" stroke="currentColor" strokeWidth="0.75" opacity="0.35" />
       {Array.from({ length: 6 }, (_, i) => {
         const y = 26 + i * 29;
         const active = i === 4;
         return (
           <g key={y}>
-            <line
+            <line pathLength="1" className={styles.stroke}
               x1={active ? 142 : 150}
               y1={y}
               x2={active ? 178 : 170}
@@ -325,7 +327,7 @@ function ScrollRail() {
           </g>
         );
       })}
-      <circle cx="160" cy="142" r="3.5" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.95" />
+      <circle pathLength="1" className={styles.stroke} cx="160" cy="142" r="3.5" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.95" />
       <text x="132" y="146" className={styles.label} textAnchor="end">
         YOU ARE HERE
       </text>
@@ -344,5 +346,24 @@ const DRAWINGS: Record<DrawingId, () => JSX.Element> = {
 
 export default function Drawing({ id }: DrawingProps) {
   const Component = DRAWINGS[id];
-  return <Component />;
+  const frame = useRef<HTMLSpanElement>(null);
+
+  // Draw order is document order. Each stroke learns its index once, and the
+  // frame learns how many there are; the stagger of the trace-on is computed
+  // from both in CSS (Drawings.module.css `.stroke`) so the whole drawing lands
+  // inside one cinematic band whether it has seven strokes or twenty-five, and
+  // a drawing can be re-authored without renumbering anything.
+  useEffect(() => {
+    const host = frame.current;
+    if (!host) return;
+    const strokes = host.querySelectorAll<SVGElement>(`.${styles.stroke}`);
+    host.style.setProperty('--n', String(strokes.length));
+    strokes.forEach((element, k) => element.style.setProperty('--k', String(k)));
+  }, [id]);
+
+  return (
+    <span ref={frame} className={styles.frame}>
+      <Component />
+    </span>
+  );
 }

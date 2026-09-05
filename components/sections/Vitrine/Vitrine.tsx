@@ -32,6 +32,15 @@ export default function Vitrine() {
   const railRef = useRef<HTMLOListElement>(null);
   const plateRefs = useRef<Array<HTMLLIElement | null>>([]);
   const [lit, setLit] = useState(0);
+  // A plate's drawing is traced the first time the light reaches it and stays
+  // drawn after the light has moved on (Drawings.module.css `[data-drawn]`).
+  const [drawn, setDrawn] = useState<boolean[]>(() => plates.map((_, index) => index === 0));
+
+  useEffect(() => {
+    setDrawn((previous) =>
+      previous[lit] ? previous : previous.map((was, index) => was || index === lit),
+    );
+  }, [lit]);
 
   useEffect(() => {
     const rail = railRef.current;
@@ -46,12 +55,22 @@ export default function Vitrine() {
       frame = 0;
       const bounds = rail.getBoundingClientRect();
       const centre = bounds.left + bounds.width / 2;
+      const current = rail.scrollLeft;
+      const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
       let best = 0;
       let bestDistance = Infinity;
       plateRefs.current.forEach((plate, index) => {
         if (!plate) return;
         const box = plate.getBoundingClientRect();
-        const distance = Math.abs(box.left + box.width / 2 - centre);
+        // The lit plate is the one the rail has snapped to: the scroll position
+        // that would centre it, clamped to what the rail can actually reach.
+        // Measuring raw distance to the centre instead lit card 02 at rest on
+        // a wide screen — at scrollLeft 0 the snap cannot centre card 01, so
+        // its neighbour sat nearer the middle and took the light while the
+        // reader was looking at the first card (council R-c8, C-02). The same
+        // clamp keeps the light on the last plate at the far end.
+        const ideal = Math.min(maxScroll, Math.max(0, current + box.left + box.width / 2 - centre));
+        const distance = Math.abs(ideal - current);
         if (distance < bestDistance) {
           bestDistance = distance;
           best = index;
@@ -121,6 +140,7 @@ export default function Vitrine() {
               }}
               className={styles.plate}
               data-lit={index === lit || undefined}
+              data-drawn={drawn[index] || undefined}
               aria-roledescription="plate"
               tabIndex={0}
               onKeyDown={(event) => onKeyDown(event as never, index)}

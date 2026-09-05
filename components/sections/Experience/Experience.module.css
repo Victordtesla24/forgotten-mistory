@@ -524,6 +524,14 @@
     line-height: var(--lh-prose);
 }
 
+/* The bracket's words are the content here, and the mark's own --mist-400 at
+   its 0.85 value opacity measured 3.9:1 over the chart's ground (text-contrast
+   gate, 1440). --mist-200 at the same opacity composites above 7:1. The
+   element selector is what outranks the caliper's own open-state colour. */
+p.roleHeadline .roleHeadlineOpen {
+    color: var(--mist-200);
+}
+
 /* The one printed explanation of the open brackets below the chart. */
 .openNote {
     position: relative;

@@ -225,6 +225,11 @@
     font-variant-numeric: tabular-nums;
 }
 
+/* No box above 600 px: label and source stay two rows of the entry's column. */
+.ledgerText {
+    display: contents;
+}
+
 .ledgerLabel {
     font-size: var(--fs-body);
     line-height: var(--lh-prose);
@@ -236,7 +241,7 @@
     font-size: var(--fs-caption);
     line-height: var(--lh-label);
     letter-spacing: 0.02em;
-    color: var(--ink-300);
+    color: var(--mist-400);
 }
 
 /* The line that teaches the mark, beside the figures it grades. */
@@ -411,16 +416,37 @@
     /* A fixed value column, so the three right jaws land on one vertical:
        each figure used to size its own box and the jaws fell at three
        different x positions while the labels aligned (council R-c1, P3). */
+    /* The label and its provenance share one line beside the figure: three
+       two-row entries ended the first screen 76 px below the actions at
+       390×844 (TC-HERO-12). One run of text each recovers ~45 px; the
+       statement and the actions give up the rest. */
     .ledgerItem {
         display: grid;
-        grid-template-columns: minmax(6.5rem, 6.5rem) 1fr;
+        grid-template-columns: minmax(6.5rem, 6.5rem) minmax(0, 1fr);
         column-gap: var(--space-2);
         align-items: baseline;
         padding-top: var(--space-1);
     }
 
     .ledgerValue {
-        grid-row: span 2;
+        grid-row: auto;
+    }
+
+    .ledgerText {
+        display: block;
+        font-size: var(--fs-small);
+        line-height: var(--lh-caption);
+    }
+
+    .ledgerLabel {
+        display: inline;
+        font-size: inherit;
+        line-height: inherit;
+    }
+
+    .ledgerSource {
+        display: inline;
+        margin-left: var(--space-1);
     }
 
     /* The caliper fills its column: the value grows and pushes the right arm
@@ -431,11 +457,13 @@
     }
 
     .statement {
+        margin-top: var(--space-1);
         font-size: var(--fs-body);
         line-height: var(--lh-prose);
     }
 
     .actions {
+        margin-top: var(--space-1);
         gap: var(--space-1);
     }
 
