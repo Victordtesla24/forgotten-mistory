@@ -167,7 +167,7 @@ export default function About() {
                   and it is not the content — with reduced motion or no WebGL
                   `Scene` mounts nothing and the instrument is unchanged. */}
               <div className={styles.field} data-axis={active}>
-                <Scene className={styles.fieldSlot}>
+                <Scene className={styles.fieldSlot} sceneId="about-field">
                   <AboutField active={active} />
                 </Scene>
               </div>

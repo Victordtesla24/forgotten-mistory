@@ -2,18 +2,28 @@
  * Hero atmosphere — a single full-screen fragment program.
  *
  * One draw call, no geometry, no textures: the entire hero backdrop is computed
- * per pixel. Layered mist strata over a low horizon, lit from high left, with
- * volumetric shafts raked through the near air — drifting at three different
- * speeds so the parallax reads as depth rather than as movement. Nothing
- * pulses, nothing sweeps, nothing announces itself.
+ * per pixel. Two volumetric shafts raked down from the upper left through a fog
+ * whose density visibly varies, and two pools where that light gathers — one
+ * behind the name, one behind the portrait plate — all of it answering the
+ * pointer through a lerped parallax.
  *
- * The first version of this was correct and invisible: the luminance it
- * produced was low enough that on most panels the hero backdrop was
- * indistinguishable from the flat CSS gradient underneath it, which meant a
- * shader compile was being spent on nothing anyone could see. The structure is
- * unchanged; what it now has is a ridged near layer stretched along the light
- * axis, radial shafts about the key, and a highlight shoulder instead of a
- * clamp.
+ * Two earlier versions of this were correct and invisible. The first produced a
+ * luminance low enough that the hero backdrop was indistinguishable from the
+ * flat CSS gradient underneath it. The second added a ridged near layer and
+ * radial striations about the key, and measured — at 1440, with the scene
+ * isolated from the type in front of it — 9.7% coverage and a peak of 0.13
+ * relative luminance. `?gl=force` proved a canvas existed; no test ever asked
+ * whether there was anything in it, and the owner, looking at the live site,
+ * reported that there was not.
+ *
+ * What changed is the structure, not the palette. The radial striation became
+ * two Gaussian shafts about a raked axis, so the light has a width, an edge and
+ * a direction that crosses the whole frame instead of dying a third of a screen
+ * from its source. The single key became two pools with subjects behind them.
+ * The composite gained roughly a factor of two, and a soft scrim over the
+ * reading column, so the frame can be bright where a visitor looks and quiet
+ * where a visitor reads. `tests/overhaul/flagship-visibility.spec.ts` holds the
+ * result to numbers rather than to adjectives.
  *
  * Strictly achromatic: the final colour is a single luminance ramped between two
  * :root ink tokens passed in as uniforms, so the scene can never drift off the
@@ -81,14 +91,12 @@ export const atmosphereFragmentShader = /* glsl */ `
 
   // Ridged noise. Folding the field about its midline turns billows into
   // filaments — the difference between fog, which has no form, and air with
-  // structure moving through it. This is what gives the backdrop something to
-  // look at without giving it anything to read.
+  // structure moving through it.
   float ridged(vec2 p) {
     float value = 0.0;
     float amplitude = 0.5;
     // Three octaves, not four. The fourth is below the visible threshold once
-    // the layer is stretched 2.6x along the beam, and this program already
-    // costs sixteen noise lookups a pixel at up to 1.75x device scale.
+    // the layer is stretched 2.6x along the beam.
     for (int i = 0; i < 3; i++) {
       float n = 1.0 - abs(noise(p) * 2.0 - 1.0);
       value += amplitude * n * n;
@@ -103,21 +111,15 @@ export const atmosphereFragmentShader = /* glsl */ `
     // Aspect-corrected coordinates centred on the frame.
     vec2 p = (uv - 0.5) * vec2(uResolution.x / max(uResolution.y, 1.0), 1.0);
 
-    // Deep-space parallax: pointer drift + scroll depth, scaled by layer distance.
-    // Far field moves least; near filaments move most — readable depth without gimmick.
-    vec2 parallax = uPointer * 0.055 + vec2(0.0, -uScroll.x * 0.12);
-
-    // The key. High and to the left, the same direction everything else on the
-    // page is lit from, so the whole site reads as having one light source.
-    vec2 lightPos = vec2(-0.62, 0.40) + parallax * 0.35;
-    vec2 toLight = p - lightPos;
-    float distLight = length(toLight);
+    // Deep-space parallax: pointer drift + scroll depth, scaled by layer
+    // distance. The pointer term is what makes the light answer the visitor —
+    // the shafts and both pools take it at different rates, so moving the
+    // cursor opens the frame rather than sliding a picture across it.
+    vec2 parallax = uPointer * 0.075 + vec2(0.0, -uScroll.x * 0.14);
 
     float t = uTime * 0.012;
 
-    // ── Deep space starfield (sparse, monochrome) ─────────────────────────
-    // Hash-scattered points behind the mist so scroll/pointer parallax reads as
-    // void depth rather than as a flat fog sheet.
+    // -- Deep space starfield (sparse, monochrome) ------------------------
     float stars = 0.0;
     {
       vec2 sp = p * 48.0 + parallax * 0.15 + vec2(t * 0.2, -t * 0.08);
@@ -129,18 +131,19 @@ export const atmosphereFragmentShader = /* glsl */ `
       stars = glow * (0.35 + 0.65 * hash(si + 17.0));
     }
 
-    // ── The strata ────────────────────────────────────────────────────────
-    // Three depths, three speeds. The near layer is ridged and stretched along
-    // the light direction, so the closest air reads as filaments drawn through
-    // the beam rather than as another sheet of fog.
+    // -- The fog ----------------------------------------------------------
+    // Three depths, three speeds, and — the point of this layer — a density
+    // that visibly varies. An even fog is a grey wash; what makes air read as
+    // air is that some of it is thick and some of it is clear, so the shafts
+    // below are modulated by this field rather than merely drawn over it.
     vec2 beamAxis = normalize(vec2(0.86, -0.5));
     mat2 alignBeam = mat2(beamAxis.x, -beamAxis.y, beamAxis.y, beamAxis.x);
 
-    float far = fbm(p * 1.55 + vec2(t, -t * 0.35) + parallax * 0.18);
-    float mid = fbm(p * 2.9 - vec2(t * 1.7, t * 0.5) + parallax * 0.55);
+    float far = fbm(p * 1.35 + vec2(t, -t * 0.35) + parallax * 0.20);
+    float mid = fbm(p * 2.70 - vec2(t * 1.7, t * 0.5) + parallax * 0.60);
     // The near layer and the shafts are the expensive half of this program.
-    // On a phone they are also the half nobody can resolve, so uQuality
-    // drops them rather than shipping a frame budget the device cannot hold.
+    // On a phone they are also the half nobody can resolve, so uQuality drops
+    // them rather than shipping a frame budget the device cannot hold.
     // Branching on a uniform is uniform control flow: every fragment takes the
     // same path, so it costs nothing to test.
     float near = 0.0;
@@ -149,41 +152,81 @@ export const atmosphereFragmentShader = /* glsl */ `
       near = ridged(nearP + vec2(t * 3.1, -t * 1.1) + parallax * 1.15);
     }
 
-    float mist = far * 0.48 + mid * 0.28 + near * 0.34 + stars * 0.55;
+    float fog = far * 0.66 + mid * 0.34 + near * 0.40;
 
     // A low horizon: density gathers toward the bottom of the frame and thins
     // out above, the way air does over a plain at night.
-    float horizon = smoothstep(1.02, -0.20, uv.y);
-    mist *= 0.30 + horizon * 0.95;
+    float horizon = smoothstep(1.15, -0.35, uv.y);
+    float density = fog * (0.46 + horizon * 0.92);
 
-    // ── Volumetric shafts ─────────────────────────────────────────────────
-    // Radial striations about the key, modulated by the same drifting field, so
-    // the light appears to be passing through the air rather than sitting in
-    // front of it. Cheap: one angle, one noise lookup, no marching.
-    float shafts = 0.0;
+    // -- Two volumetric shafts --------------------------------------------
+    // Rays, not a starburst. Each shaft is a Gaussian band about a line raked
+    // down from the upper left, so it has a width, an edge and a direction the
+    // eye can follow the length of the frame.
+    //
+    // Both widths and both offsets breathe on slow, mutually prime periods, so
+    // the pair never pulses together and the frame is never twice the same.
+    vec2 dir = normalize(vec2(0.60, -0.80));
+    vec2 perp = vec2(-dir.y, dir.x);
+    vec2 rel = p - (vec2(-0.92, 0.78) + parallax * 0.30);
+    float along = dot(rel, dir);
+    float across = dot(rel, perp);
+
+    float breathe = sin(uTime * 0.090);
+    float a1 = across + 0.030 + 0.034 * breathe;
+    float a2 = across - 0.360 + 0.028 * sin(uTime * 0.062 + 1.9);
+    float w1 = 0.168 + 0.022 * breathe;
+    float w2 = 0.104 + 0.018 * sin(uTime * 0.051 + 2.4);
+    float s1 = exp(-(a1 * a1) / (w1 * w1));
+    float s2 = exp(-(a2 * a2) / (w2 * w2));
+    // Brightest where they leave the source, absorbed as they cross: light in
+    // air, not a gradient pinned to the corner.
+    float travel = smoothstep(-0.12, 0.55, along) * exp(-max(along, 0.0) * 0.34);
+    float shafts;
     if (uQuality > 0.5) {
-      float angle = atan(toLight.y, toLight.x);
-      float shaft = fbm(vec2(angle * 2.4, distLight * 0.9 - t * 2.2));
-      shaft = pow(clamp(shaft, 0.0, 1.0), 2.4);
-      // The shafts only exist near the source and die away with distance,
-      // otherwise they read as a starburst filter rather than as light in air.
-      float shaftFall = exp(-distLight * 1.35);
-      shafts = shaft * shaftFall * (0.35 + mist * 0.9);
+      shafts = (s1 + s2 * 0.78) * travel * (0.58 + density * 1.05);
+    } else {
+      // The phone keeps one shaft, unmodulated: the structure survives, only
+      // the second beam and the fog's grip on it are dropped.
+      shafts = s1 * travel * 0.85;
     }
 
+    // -- The pools --------------------------------------------------------
+    // Two places where the light gathers instead of passing through: one on
+    // the left, behind the name, and one on the right, behind the portrait
+    // plate. They are what give the hero backdrop a subject.
+    vec2 q1 = (p - vec2(-0.72, 0.10) - parallax * 0.22) * vec2(1.00, 1.30);
+    float poolName = exp(-dot(q1, q1) * 2.10);
+    vec2 q2 = (p - vec2(0.60, -0.04) - parallax * 0.14) * vec2(1.20, 0.95);
+    float poolPlate = exp(-dot(q2, q2) * 2.60);
+    float pools = poolName * 0.98 + poolPlate * 0.76;
+
     // The key itself, falling off quadratically.
+    float distLight = length(p - (vec2(-0.62, 0.40) + parallax * 0.35));
     float key = 1.0 - clamp(distLight * 0.72, 0.0, 1.0);
     key = pow(key, 2.4);
 
-    float luma = mist * 0.40 + key * 0.42 + shafts * 0.55;
+    float luma = density * 0.46 + shafts * 0.95 + pools * 0.62 + key * 0.30 + stars * 0.60;
 
     // Vignette — closes the frame without crushing the corners to pure black.
-    float vignette = smoothstep(1.42, 0.24, length(p));
-    luma *= 0.26 + vignette * 0.88;
+    float vignette = smoothstep(1.62, 0.20, length(p));
+    luma *= 0.44 + vignette * 0.72;
+
+    // -- The scrim --------------------------------------------------------
+    // The reading column is protected inside the shader rather than by a plate
+    // laid over it: a soft box in screen space, roughly the hero's own text
+    // column, inside which the atmosphere gives up most of its brightness.
+    // Light still wraps the type — the box has no edge a reader can find — but
+    // nothing luminous is allowed to gather directly under a line of copy,
+    // which is what lets the rest of the frame be as bright as the scene needs
+    // while every hero string stays above AA (tests/a11y/text-contrast).
+    float scrimX = smoothstep(0.055, 0.165, uv.x) * smoothstep(0.635, 0.475, uv.x);
+    float scrimY = smoothstep(0.100, 0.215, uv.y) * smoothstep(0.945, 0.855, uv.y);
+    luma *= 1.0 - 0.58 * scrimX * scrimY;
 
     // A shoulder rather than a clamp: the highlights roll off instead of
     // flattening into a disc around the key.
-    luma = luma / (1.0 + luma * 0.55);
+    luma = luma / (1.0 + luma * 0.42);
 
     // Fine grain at ~1.8%: enough to break up gradient banding on 8-bit panels,
     // far below the threshold where it reads as noise.
