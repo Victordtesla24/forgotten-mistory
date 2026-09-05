@@ -6,12 +6,14 @@ name: Deploy
 # left behind), builds the static export, deploys it, and reads the deployed
 # commit back from the live page.
 #
-# It gates on nothing. Tests, lint, audits and Lighthouse live in checks.yml and
-# report; they never sit between a commit and production. A build that cannot
-# compile is the only thing that stops a deploy, because there is nothing to
-# ship. Branch policy at rest: main only — a branch that merges cleanly is
-# merged and deleted here; a branch that conflicts is left alone and named in
-# the run summary for a human or an agent to resolve.
+# It gates on nothing and it escalates nothing. Tests, lint, audits and
+# Lighthouse live in checks.yml and report; they never sit between a commit and
+# production. A branch that merges cleanly is merged and deleted; a branch that
+# conflicts is merged anyway with the branch's newer change winning each
+# conflicting hunk (-X theirs), so parallel agents working on the same files
+# never stall the line — a wrong resolution is fixed forward in the next
+# ten-minute cycle, not by stopping. A build that cannot compile is the only
+# thing that stops a deploy, because then there is nothing to ship.
 
 on:
   push:
@@ -46,20 +48,30 @@ jobs:
           git config user.email "deploy@forgotten-mistory.web.app"
           git fetch --prune origin
           merged=()
-          skipped=()
+          forced=()
           for ref in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin/ | grep -vE '^origin/(main|HEAD)$'); do
             name="${ref#origin/}"
             if git merge --no-edit "$ref" -m "consolidate: merge $name into main"; then
               merged+=("$name")
             else
+              # The branch carries the newer, intentional change: it wins every
+              # conflicting hunk. Anything -X theirs cannot settle (add/add,
+              # binary, delete/modify) is taken from the branch outright.
               git merge --abort
-              skipped+=("$name")
+              if ! git merge --no-edit -X theirs "$ref" -m "consolidate: merge $name into main (branch wins conflicts)"; then
+                git diff --name-only --diff-filter=U | while read -r f; do
+                  if git cat-file -e "$ref:$f" 2>/dev/null; then git checkout --theirs -- "$f"; else git rm -q -- "$f"; fi
+                done
+                git add -A
+                git -c core.editor=true commit --no-edit -m "consolidate: merge $name into main (branch wins conflicts)"
+              fi
+              forced+=("$name")
             fi
           done
           if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
             git push origin HEAD:main
           fi
-          for name in "${merged[@]}"; do
+          for name in "${merged[@]}" "${forced[@]}"; do
             if ! git push origin --delete "$name"; then
               echo "::warning::merged $name but could not delete it on the remote"
             fi
@@ -68,11 +80,11 @@ jobs:
             echo "## Consolidation"
             echo ""
             echo "- deploying: \`$(git rev-parse --short=8 HEAD)\`"
-            echo "- merged and deleted: ${merged[*]:-none}"
-            echo "- left in place (conflict, needs a human or an agent): ${skipped[*]:-none}"
+            echo "- merged cleanly and deleted: ${merged[*]:-none}"
+            echo "- merged with the branch winning conflicts, then deleted: ${forced[*]:-none}"
           } >> "$GITHUB_STEP_SUMMARY"
-          for name in "${skipped[@]}"; do
-            echo "::warning::branch $name conflicts with main and was not merged"
+          for name in "${forced[@]}"; do
+            echo "::warning::branch $name conflicted with main; its hunks won — review the result in the next cycle"
           done
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
@@ -81,7 +93,15 @@ jobs:
           node-version-file: .node-version
           cache: npm
 
-      - run: npm ci
+      # A branch merged above may have moved package.json ahead of the lockfile.
+      # That must not stop the line: fall back to a plain install and say so.
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          if ! npm ci; then
+            echo "::warning::npm ci failed (lockfile drift from a merged branch?) — installing from package.json"
+            npm install --no-audit --no-fund
+          fi
 
       # firebase.json declares `predeploy: npm run build:static`, so the deploy
       # command builds the export from this exact checkout and ships it. The
@@ -98,7 +118,7 @@ jobs:
           set -euo pipefail
           expected="${{ steps.consolidate.outputs.sha }}"
           for _ in $(seq 1 12); do
-            live="$(curl -fsS --max-time 20 https://forgotten-mistory.web.app/ | grep -oE 'name="build-commit" content="[0-9a-f]+"' | grep -oE '[0-9a-f]{7,40}' || true)"
+            live="$(curl -fsS --max-time 20 https://forgotten-mistory.web.app/ | awk 'match($0, /name="build-commit" content="[0-9a-f]+"/) { s = substr($0, RSTART, RLENGTH); sub(/.*content="/, "", s); sub(/"$/, "", s); print s; exit }')"
             if [ -n "$live" ] && [[ "$expected" == "$live"* ]]; then
               echo "live page serves $live (HEAD $expected)"
               echo "- verified live: \`$live\`" >> "$GITHUB_STEP_SUMMARY"

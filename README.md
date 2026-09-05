@@ -274,8 +274,8 @@ Continuous, autonomous, and simple. `.github/workflows/deploy.yml` has one job:
 
 ```
 every push to main · every 10 minutes · on demand
-  → merge every other branch into main (a branch that merges cleanly is merged and deleted;
-    one that conflicts is left in place and named in the run summary)
+  → merge every other branch into main (a clean merge is merged and deleted; a conflicting
+    branch is merged with its newer change winning each hunk, then deleted — nothing is skipped)
   → npm ci → firebase deploy --only hosting (the predeploy hook builds the static export)
   → read the build-commit meta back from https://forgotten-mistory.web.app and compare it to HEAD
 ```

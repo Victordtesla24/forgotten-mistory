@@ -88,8 +88,10 @@ by reintroducing its component — the sections after Skills were replaced delib
 4. **Look at it.** Screenshot the section at 1440, 1280, 834 and 390 CSS px. The suite
    catches broken; only your eyes catch ugly.
 5. **Deploy** — autonomous, no approval needed. Push to `main`; `.github/workflows/deploy.yml`
-   consolidates every branch into `main` and deploys within ten minutes (also on a ten-minute
-   schedule), then verifies the live `build-commit` meta. To ship immediately from the VPS:
+   consolidates every branch into `main` (conflicts resolve in favour of the branch's newer
+   change — nothing is skipped or escalated) and deploys within ten minutes (also on a
+   ten-minute schedule), then verifies the live `build-commit` meta. Agents working in a
+   worktree push their branch to `origin` when done; the pipeline merges and deletes it. To ship immediately from the VPS:
    ```bash
    git push origin HEAD:main && node scripts/deploy.mjs
    ```

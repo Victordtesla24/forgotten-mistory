@@ -49,13 +49,15 @@ describe('the deploy pipeline is simple and autonomous', () => {
     }
   });
 
-  it('consolidates every remote branch into main before deploying and deletes what it merged', () => {
+  it('consolidates every remote branch into main before deploying, resolves conflicts itself, and deletes what it merged', () => {
     const run = deploy.jobs['consolidate-and-deploy'].steps.find((s) => s.id === 'consolidate').run;
     assert.ok(/git fetch --prune origin/.test(run));
     assert.ok(/for-each-ref[^\n]*refs\/remotes\/origin/.test(run), 'must enumerate every remote branch');
     assert.ok(/grep -vE '\^origin\/\(main\|HEAD\)\$'/.test(run), 'must skip main itself');
     assert.ok(/git merge --no-edit "\$ref"/.test(run), 'must merge each branch');
-    assert.ok(/git merge --abort/.test(run), 'a conflicting branch is abandoned for this run, not forced');
+    assert.ok(/git merge --no-edit -X theirs "\$ref"/.test(run), 'a conflicting branch is still merged, the branch winning each hunk');
+    assert.ok(/git checkout --theirs -- "\$f"/.test(run), 'what -X theirs cannot settle is taken from the branch');
+    assert.ok(!/skipped/.test(run), 'no branch is ever skipped or escalated');
     assert.ok(/git push origin HEAD:main/.test(run), 'must push the consolidated main');
     assert.ok(/git push origin --delete "\$name"/.test(run), 'must delete a branch it merged');
   });
@@ -79,7 +81,8 @@ describe('the deploy pipeline is simple and autonomous', () => {
 
   it('never weakens itself', () => {
     assert.ok(!/continue-on-error/.test(deployText), 'no continue-on-error in the deploy path');
-    assert.ok(!/\|\|\s*true/.test(deployText.replace(/\|\| true\)"/g, '')), 'no "|| true" after a command');
+    assert.ok(!/\|\|\s*true/.test(deployText), 'no "|| true" after a command');
+    assert.ok(/if ! npm ci; then/.test(deployText), 'lockfile drift from a merged branch falls back to npm install instead of stopping the line');
   });
 });
 
