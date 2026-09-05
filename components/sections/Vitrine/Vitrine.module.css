@@ -219,12 +219,21 @@
     border-radius: 4px;
     scroll-snap-align: center;
     /* Unlit plates sit back. This is the shadow half of the raking light —
-       but a plate at rest is still read, and at 0.42 its captions composited
-       to 1.75:1 on the page ground (council R-c1, C6). At 0.62 every text
-       token below clears WCAG AA through the plate's own opacity: --white
-       7.2:1, --mist-200 5.2:1, --gold-pale 5.6:1. --mist-400 (3.0:1) and
-       --ink-300 (2.5:1) do not, so no text inside a plate uses them. */
-    opacity: 0.62;
+       but a plate at rest is still read. At 0.42 its captions composited to
+       1.75:1 on the page ground (council R-c1, C6); 0.62 cleared AA for text
+       but left the mechanism drawings' primary hairlines at 3.60–4.24:1 on
+       live where the field/shader light brightens the plate ground
+       (ADV-1556Z §Vitrine, G-V3). The drawing is the plate's whole argument,
+       so the shadow half is lifted to 0.82: the composite that lands a
+       primary stroke (--white × 0.9 trace × 1.0 tone × 0.82 plate) is
+       ~10:1 on --ink-900 and clears 4.5:1 with margin on the brightest live
+       ground, the faintest guide (0.66 tone) still holds ≥3:1, and every text
+       token clears AA more easily than before (--white 8.9:1, --mist-200
+       7.4:1, --gold-pale 7.0:1). The lit plate is opacity 1, strictly heavier
+       than any resting one, so the raking light still adds (TC-VIT-V1,
+       TC-VIT-V3). --mist-400 and --ink-300 remain below AA even at 0.82, so
+       no text inside a plate uses them. */
+    opacity: 0.82;
     background: var(--ink-900);
     transition:
         opacity var(--motion-base) var(--motion-ease-standard),
@@ -238,9 +247,11 @@
 }
 
 /* Hover. The pointer is a second, weaker source: it brings an unlit plate part
-   of the way up without taking the spot off the one the rail has lit. */
+   of the way up without taking the spot off the one the rail has lit. It must
+   sit above the resting 0.82 to read as an addition rather than a dimming, and
+   below the lit 1 so the spot stays on the plate the rail chose. */
 .plate:not([data-lit]):hover {
-    opacity: 0.8;
+    opacity: 0.92;
     border-color: var(--card-border-hover);
 }
 
