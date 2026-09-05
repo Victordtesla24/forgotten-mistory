@@ -1,0 +1,1063 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-plane-dominance.spec.ts --workers=1 --reporter=list
+
+Running 16 tests using 1 worker
+
+[hero-plane-dominance] 1440×900 /?gl=force (shader, settled)
+  fold W×H            = 1440×900 (1296000 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0091    peak L = 1.0000
+  Σ_fold m            = 220054.16
+  Σ_P m               = 134044.70
+  SPD = Σ_P/Σ_fold    = 0.6091    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.1698    PLANE-2 ≥ 0.045 PASS
+  ink I               = 27 rects, dilated 8 px, covering 36.54% of the fold (473601 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div > div > canvas
+    #01 text  a.logo "VIKRAM."  x=72 y=35.47 w=91.92 h=21
+    #02 media svg  x=72 y=59.47 w=91.88 h=3.06
+    #03 text  span.menu-toggle__label "Menu"  x=1290.23 y=39 w=46.17 h=17
+    #04 plate span.menu-toggle__bar α=1  x=1346 y=43 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=1346 y=50 w=22 h=2
+    #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=109 y=128 w=218.94 h=17
+    #07 plate span.Hero_locationDot__CTn_R α=1  x=96 y=134 w=5 h=5
+    #08 text  h1#hero-name "Vikram Deshpande"  x=96 y=163 w=394.03 h=162
+    #09 text  h1#hero-name "Vikram Deshpande"  x=96 y=286.97 w=589.45 h=162
+    #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=96 y=455.53 w=502.36 h=28
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=518.03 w=533.73 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=548.27 w=591.59 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=578.5 w=598.7 h=21
+    #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=608.73 w=131.47 h=21
+    #15 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=96 y=675.47 w=184.58 h=48
+    #16 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=121 y=689.47 w=134.58 h=20
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=321.58 y=689.47 w=105.78 h=20
+    #18 plate div.Hero_portraitMedia__gBrPy α=1  x=796.81 y=254.53 w=547.19 h=305.38
+    #19 media img "Portrait of Vikram Deshpande"  x=797.81 y=255.53 w=545.19 h=303.38
+    #20 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=796.81 y=573.34 w=183.7 h=21.59
+    #21 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=814.41 y=576.89 w=159.72 h=14
+    #22 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1231.63 y=829 w=112.38 h=30
+    #23 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1248.63 y=836 w=78.38 h=15
+    #24 plate span.minivic-launcher__disc α=1  x=1352 y=812 w=64 h=64
+    #25 media svg  x=1372 y=832 w=24 h=24
+    #26 plate span.minivic-launcher__pulse α=1  x=1398.12 y=812.12 w=17.76 h=17.76
+    #27 plate span.minivic-launcher__dot α=1  x=1402 y=816 w=10 h=10
+  ✘   1 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1440×900 [gl] — SPD ≥ 0.75: the plane carries the light (8.3s)
+[hero-plane-dominance] 1440×900 /?gl=force (shader, settled)
+  fold W×H            = 1440×900 (1296000 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0091    peak L = 1.0000
+  Σ_fold m            = 218158.42
+  Σ_P m               = 132259.63
+  SPD = Σ_P/Σ_fold    = 0.6063    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.1683    PLANE-2 ≥ 0.045 PASS
+  ink I               = 27 rects, dilated 8 px, covering 36.55% of the fold (473672 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div > div > canvas
+    #01 text  a.logo "VIKRAM."  x=72 y=35.47 w=91.92 h=21
+    #02 media svg  x=72 y=59.47 w=91.88 h=3.06
+    #03 text  span.menu-toggle__label "Menu"  x=1290.23 y=39 w=46.17 h=17
+    #04 plate span.menu-toggle__bar α=1  x=1346 y=43 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=1346 y=50 w=22 h=2
+    #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=109 y=128 w=218.94 h=17
+    #07 plate span.Hero_locationDot__CTn_R α=1  x=96 y=134 w=5 h=5
+    #08 text  h1#hero-name "Vikram Deshpande"  x=96 y=163 w=394.03 h=162
+    #09 text  h1#hero-name "Vikram Deshpande"  x=96 y=286.97 w=589.45 h=162
+    #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=96 y=455.53 w=502.36 h=28
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=518.03 w=533.73 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=548.27 w=591.59 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=578.5 w=598.7 h=21
+    #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=608.73 w=131.47 h=21
+    #15 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=96 y=675.47 w=184.58 h=48
+    #16 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=121 y=689.47 w=134.58 h=20
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=321.58 y=689.47 w=105.78 h=20
+    #18 plate div.Hero_portraitMedia__gBrPy α=1  x=796.81 y=254.53 w=547.19 h=305.38
+    #19 media img "Portrait of Vikram Deshpande"  x=797.81 y=255.53 w=545.19 h=303.38
+    #20 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=796.81 y=573.34 w=183.7 h=21.59
+    #21 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=814.41 y=576.89 w=159.72 h=14
+    #22 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1231.63 y=829 w=112.38 h=30
+    #23 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1248.63 y=836 w=78.38 h=15
+    #24 plate span.minivic-launcher__disc α=1  x=1352 y=812 w=64 h=64
+    #25 media svg  x=1372 y=832 w=24 h=24
+    #26 plate span.minivic-launcher__pulse α=1  x=1397.01 y=811.01 w=19.99 h=19.99
+    #27 plate span.minivic-launcher__dot α=1  x=1402 y=816 w=10 h=10
+  ✓   2 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1440×900 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit (6.4s)
+[hero-plane-dominance] 1440×900 prefers-reduced-motion still
+  fold W×H            = 1440×900 (1296000 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0060    peak L = 1.0000
+  Σ_fold m            = 135253.09
+  Σ_P m               = 55574.67
+  SPD = Σ_P/Σ_fold    = 0.4109    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.1044    PLANE-2 ≥ 0.045 PASS
+  ink I               = 27 rects, dilated 8 px, covering 36.54% of the fold (473601 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13
+    #01 text  a.logo "VIKRAM."  x=72 y=35.47 w=91.92 h=21
+    #02 media svg  x=72 y=59.47 w=91.88 h=3.06
+    #03 text  span.menu-toggle__label "Menu"  x=1290.23 y=39 w=46.17 h=17
+    #04 plate span.menu-toggle__bar α=1  x=1346 y=43 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=1346 y=50 w=22 h=2
+    #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=109 y=128 w=218.94 h=17
+    #07 plate span.Hero_locationDot__CTn_R α=1  x=96 y=134 w=5 h=5
+    #08 text  h1#hero-name "Vikram Deshpande"  x=96 y=163 w=394.03 h=162
+    #09 text  h1#hero-name "Vikram Deshpande"  x=96 y=286.97 w=589.45 h=162
+    #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=96 y=455.53 w=502.36 h=28
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=518.03 w=533.73 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=548.27 w=591.59 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=578.5 w=598.7 h=21
+    #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=608.73 w=131.47 h=21
+    #15 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=96 y=675.47 w=184.58 h=48
+    #16 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=121 y=689.47 w=134.58 h=20
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=321.58 y=689.47 w=105.78 h=20
+    #18 plate div.Hero_portraitMedia__gBrPy α=1  x=796.81 y=254.53 w=547.19 h=305.38
+    #19 media img "Portrait of Vikram Deshpande"  x=797.81 y=255.53 w=545.19 h=303.38
+    #20 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=796.81 y=573.34 w=183.7 h=21.59
+    #21 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=814.41 y=576.89 w=159.72 h=14
+    #22 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1231.63 y=829 w=112.38 h=30
+    #23 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1248.63 y=836 w=78.38 h=15
+    #24 plate span.minivic-launcher__disc α=1  x=1352 y=812 w=64 h=64
+    #25 media svg  x=1372 y=832 w=24 h=24
+    #26 plate span.minivic-launcher__pulse α=1  x=1402 y=816 w=10 h=10
+    #27 plate span.minivic-launcher__dot α=1  x=1402 y=816 w=10 h=10
+  ✘   3 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1440×900 [still] — SPD ≥ 0.75: the plane carries the light (3.6s)
+[hero-plane-dominance] 1440×900 prefers-reduced-motion still
+  fold W×H            = 1440×900 (1296000 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0060    peak L = 1.0000
+  Σ_fold m            = 135253.09
+  Σ_P m               = 55574.67
+  SPD = Σ_P/Σ_fold    = 0.4109    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.1044    PLANE-2 ≥ 0.045 PASS
+  ink I               = 27 rects, dilated 8 px, covering 36.54% of the fold (473601 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13
+    #01 text  a.logo "VIKRAM."  x=72 y=35.47 w=91.92 h=21
+    #02 media svg  x=72 y=59.47 w=91.88 h=3.06
+    #03 text  span.menu-toggle__label "Menu"  x=1290.23 y=39 w=46.17 h=17
+    #04 plate span.menu-toggle__bar α=1  x=1346 y=43 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=1346 y=50 w=22 h=2
+    #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=109 y=128 w=218.94 h=17
+    #07 plate span.Hero_locationDot__CTn_R α=1  x=96 y=134 w=5 h=5
+    #08 text  h1#hero-name "Vikram Deshpande"  x=96 y=163 w=394.03 h=162
+    #09 text  h1#hero-name "Vikram Deshpande"  x=96 y=286.97 w=589.45 h=162
+    #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=96 y=455.53 w=502.36 h=28
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=518.03 w=533.73 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=548.27 w=591.59 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=578.5 w=598.7 h=21
+    #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=608.73 w=131.47 h=21
+    #15 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=96 y=675.47 w=184.58 h=48
+    #16 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=121 y=689.47 w=134.58 h=20
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=321.58 y=689.47 w=105.78 h=20
+    #18 plate div.Hero_portraitMedia__gBrPy α=1  x=796.81 y=254.53 w=547.19 h=305.38
+    #19 media img "Portrait of Vikram Deshpande"  x=797.81 y=255.53 w=545.19 h=303.38
+    #20 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=796.81 y=573.34 w=183.7 h=21.59
+    #21 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=814.41 y=576.89 w=159.72 h=14
+    #22 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1231.63 y=829 w=112.38 h=30
+    #23 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1248.63 y=836 w=78.38 h=15
+    #24 plate span.minivic-launcher__disc α=1  x=1352 y=812 w=64 h=64
+    #25 media svg  x=1372 y=832 w=24 h=24
+    #26 plate span.minivic-launcher__pulse α=1  x=1402 y=816 w=10 h=10
+    #27 plate span.minivic-launcher__dot α=1  x=1402 y=816 w=10 h=10
+  ✓   4 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1440×900 [still] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit (4.0s)
+[hero-plane-dominance] 1280×800 /?gl=force (shader, settled)
+  fold W×H            = 1280×800 (1024000 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0091    peak L = 1.0000
+  Σ_fold m            = 176160.26
+  Σ_P m               = 104433.97
+  SPD = Σ_P/Σ_fold    = 0.5928    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.1720    PLANE-2 ≥ 0.045 PASS
+  ink I               = 26 rects, dilated 8 px, covering 39.48% of the fold (404281 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div > div > canvas
+    #01 text  a.logo "VIKRAM."  x=64 y=35.47 w=91.92 h=21
+    #02 media svg  x=64 y=59.47 w=91.88 h=3.06
+    #03 text  span.menu-toggle__label "Menu"  x=1138.23 y=39 w=46.17 h=17
+    #04 plate span.menu-toggle__bar α=1  x=1194 y=43 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=1194 y=50 w=22 h=2
+    #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=77 y=114 w=218.94 h=17
+    #07 plate span.Hero_locationDot__CTn_R α=1  x=64 y=120 w=5 h=5
+    #08 text  h1#hero-name "Vikram Deshpande"  x=64 y=148 w=350.23 h=144
+    #09 text  h1#hero-name "Vikram Deshpande"  x=64 y=258.19 w=523.94 h=144
+    #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=64 y=407.56 w=502.36 h=28
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=467.06 w=533.73 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=497.3 w=591.59 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=527.53 w=598.7 h=21
+    #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=557.77 w=131.47 h=21
+    #15 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=64 y=608 w=184.58 h=48
+    #16 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=89 y=622 w=134.58 h=20
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=289.58 y=622 w=105.78 h=20
+    #18 plate div.Hero_portraitMedia__gBrPy α=1  x=729.61 y=230.75 w=486.39 h=271.45
+    #19 media img "Portrait of Vikram Deshpande"  x=730.61 y=231.75 w=484.39 h=269.45
+    #20 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=729.61 y=515.64 w=183.7 h=21.59
+    #21 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=747.2 y=519.19 w=159.72 h=14
+    #22 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1071.63 y=729 w=112.38 h=30
+    #23 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1088.63 y=736 w=78.38 h=15
+    #24 plate span.minivic-launcher__disc α=1  x=1192 y=712 w=64 h=64
+    #25 media svg  x=1212 y=732 w=24 h=24
+    #26 plate span.minivic-launcher__dot α=1  x=1242 y=716 w=10 h=10
+  ✘   5 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1280×800 [gl] — SPD ≥ 0.75: the plane carries the light (6.7s)
+[hero-plane-dominance] 1280×800 /?gl=force (shader, settled)
+  fold W×H            = 1280×800 (1024000 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0091    peak L = 1.0000
+  Σ_fold m            = 177619.89
+  Σ_P m               = 105762.66
+  SPD = Σ_P/Σ_fold    = 0.5954    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.1735    PLANE-2 ≥ 0.045 PASS
+  ink I               = 26 rects, dilated 8 px, covering 39.48% of the fold (404281 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div > div > canvas
+    #01 text  a.logo "VIKRAM."  x=64 y=35.47 w=91.92 h=21
+    #02 media svg  x=64 y=59.47 w=91.88 h=3.06
+    #03 text  span.menu-toggle__label "Menu"  x=1138.23 y=39 w=46.17 h=17
+    #04 plate span.menu-toggle__bar α=1  x=1194 y=43 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=1194 y=50 w=22 h=2
+    #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=77 y=114 w=218.94 h=17
+    #07 plate span.Hero_locationDot__CTn_R α=1  x=64 y=120 w=5 h=5
+    #08 text  h1#hero-name "Vikram Deshpande"  x=64 y=148 w=350.23 h=144
+    #09 text  h1#hero-name "Vikram Deshpande"  x=64 y=258.19 w=523.94 h=144
+    #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=64 y=407.56 w=502.36 h=28
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=467.06 w=533.73 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=497.3 w=591.59 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=527.53 w=598.7 h=21
+    #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=557.77 w=131.47 h=21
+    #15 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=64 y=608 w=184.58 h=48
+    #16 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=89 y=622 w=134.58 h=20
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=289.58 y=622 w=105.78 h=20
+    #18 plate div.Hero_portraitMedia__gBrPy α=1  x=729.61 y=230.75 w=486.39 h=271.45
+    #19 media img "Portrait of Vikram Deshpande"  x=730.61 y=231.75 w=484.39 h=269.45
+    #20 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=729.61 y=515.64 w=183.7 h=21.59
+    #21 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=747.2 y=519.19 w=159.72 h=14
+    #22 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1071.63 y=729 w=112.38 h=30
+    #23 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1088.63 y=736 w=78.38 h=15
+    #24 plate span.minivic-launcher__disc α=1  x=1192 y=712 w=64 h=64
+    #25 media svg  x=1212 y=732 w=24 h=24
+    #26 plate span.minivic-launcher__dot α=1  x=1242 y=716 w=10 h=10
+  ✓   6 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1280×800 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit (6.6s)
+[hero-plane-dominance] 1280×800 prefers-reduced-motion still
+  fold W×H            = 1280×800 (1024000 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0060    peak L = 1.0000
+  Σ_fold m            = 103919.21
+  Σ_P m               = 38761.64
+  SPD = Σ_P/Σ_fold    = 0.3730    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.1015    PLANE-2 ≥ 0.045 PASS
+  ink I               = 26 rects, dilated 8 px, covering 39.48% of the fold (404281 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13
+    #01 text  a.logo "VIKRAM."  x=64 y=35.47 w=91.92 h=21
+    #02 media svg  x=64 y=59.47 w=91.88 h=3.06
+    #03 text  span.menu-toggle__label "Menu"  x=1138.23 y=39 w=46.17 h=17
+    #04 plate span.menu-toggle__bar α=1  x=1194 y=43 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=1194 y=50 w=22 h=2
+    #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=77 y=114 w=218.94 h=17
+    #07 plate span.Hero_locationDot__CTn_R α=1  x=64 y=120 w=5 h=5
+    #08 text  h1#hero-name "Vikram Deshpande"  x=64 y=148 w=350.23 h=144
+    #09 text  h1#hero-name "Vikram Deshpande"  x=64 y=258.19 w=523.94 h=144
+    #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=64 y=407.56 w=502.36 h=28
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=467.06 w=533.73 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=497.3 w=591.59 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=527.53 w=598.7 h=21
+    #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=557.77 w=131.47 h=21
+    #15 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=64 y=608 w=184.58 h=48
+    #16 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=89 y=622 w=134.58 h=20
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=289.58 y=622 w=105.78 h=20
+    #18 plate div.Hero_portraitMedia__gBrPy α=1  x=729.61 y=230.75 w=486.39 h=271.45
+    #19 media img "Portrait of Vikram Deshpande"  x=730.61 y=231.75 w=484.39 h=269.45
+    #20 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=729.61 y=515.64 w=183.7 h=21.59
+    #21 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=747.2 y=519.19 w=159.72 h=14
+    #22 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1071.63 y=729 w=112.38 h=30
+    #23 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1088.63 y=736 w=78.38 h=15
+    #24 plate span.minivic-launcher__disc α=1  x=1192 y=712 w=64 h=64
+    #25 media svg  x=1212 y=732 w=24 h=24
+    #26 plate span.minivic-launcher__dot α=1  x=1242 y=716 w=10 h=10
+  ✘   7 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1280×800 [still] — SPD ≥ 0.75: the plane carries the light (3.4s)
+[hero-plane-dominance] 1280×800 prefers-reduced-motion still
+  fold W×H            = 1280×800 (1024000 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0060    peak L = 1.0000
+  Σ_fold m            = 103919.21
+  Σ_P m               = 38761.64
+  SPD = Σ_P/Σ_fold    = 0.3730    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.1015    PLANE-2 ≥ 0.045 PASS
+  ink I               = 26 rects, dilated 8 px, covering 39.48% of the fold (404281 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13
+    #01 text  a.logo "VIKRAM."  x=64 y=35.47 w=91.92 h=21
+    #02 media svg  x=64 y=59.47 w=91.88 h=3.06
+    #03 text  span.menu-toggle__label "Menu"  x=1138.23 y=39 w=46.17 h=17
+    #04 plate span.menu-toggle__bar α=1  x=1194 y=43 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=1194 y=50 w=22 h=2
+    #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=77 y=114 w=218.94 h=17
+    #07 plate span.Hero_locationDot__CTn_R α=1  x=64 y=120 w=5 h=5
+    #08 text  h1#hero-name "Vikram Deshpande"  x=64 y=148 w=350.23 h=144
+    #09 text  h1#hero-name "Vikram Deshpande"  x=64 y=258.19 w=523.94 h=144
+    #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=64 y=407.56 w=502.36 h=28
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=467.06 w=533.73 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=497.3 w=591.59 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=527.53 w=598.7 h=21
+    #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=557.77 w=131.47 h=21
+    #15 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=64 y=608 w=184.58 h=48
+    #16 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=89 y=622 w=134.58 h=20
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=289.58 y=622 w=105.78 h=20
+    #18 plate div.Hero_portraitMedia__gBrPy α=1  x=729.61 y=230.75 w=486.39 h=271.45
+    #19 media img "Portrait of Vikram Deshpande"  x=730.61 y=231.75 w=484.39 h=269.45
+    #20 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=729.61 y=515.64 w=183.7 h=21.59
+    #21 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=747.2 y=519.19 w=159.72 h=14
+    #22 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1071.63 y=729 w=112.38 h=30
+    #23 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1088.63 y=736 w=78.38 h=15
+    #24 plate span.minivic-launcher__disc α=1  x=1192 y=712 w=64 h=64
+    #25 media svg  x=1212 y=732 w=24 h=24
+    #26 plate span.minivic-launcher__dot α=1  x=1242 y=716 w=10 h=10
+  ✓   8 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1280×800 [still] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit (3.5s)
+[hero-plane-dominance] 834×1194 /?gl=force (shader, settled)
+  fold W×H            = 834×1194 (995796 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0091    peak L = 1.0000
+  Σ_fold m            = 267813.36
+  Σ_P m               = 221007.54
+  SPD = Σ_P/Σ_fold    = 0.8252    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 PASS)
+  Σ_fold m / (W·H)    = 0.2689    PLANE-2 ≥ 0.045 PASS
+  ink I               = 29 rects, dilated 8 px, covering 25.68% of the fold (255679 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div > div > canvas
+    #01 text  a.logo "VIKRAM."  x=41.69 y=34.69 w=90.7 h=21
+    #02 media svg  x=41.69 y=59.28 w=90.47 h=3.02
+    #03 text  span.menu-toggle__label "Menu"  x=714.55 y=39 w=46.17 h=17
+    #04 plate span.menu-toggle__bar α=1  x=770.31 y=43 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=770.31 y=50 w=22 h=2
+    #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=54.69 y=162 w=218.94 h=17
+    #07 plate span.Hero_locationDot__CTn_R α=1  x=41.69 y=168 w=5 h=5
+    #08 text  h1#hero-name "Vikram Deshpande"  x=41.69 y=209 w=228.17 h=94
+    #09 text  h1#hero-name "Vikram Deshpande"  x=41.69 y=280.8 w=341.33 h=94
+    #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=41.69 y=391.59 w=350.91 h=27
+    #11 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=41.69 y=424.97 w=128.59 h=27
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=491.34 w=308.78 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=521.13 w=388.41 h=21
+    #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=550.91 w=347.03 h=21
+    #15 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=580.69 w=350.61 h=21
+    #16 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=610.47 w=346.59 h=21
+    #17 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=640.25 w=75.27 h=21
+    #18 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=41.69 y=714.03 w=184.58 h=48
+    #19 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=66.69 y=728.03 w=134.58 h=20
+    #20 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=267.27 y=728.03 w=105.78 h=20
+    #21 plate div.Hero_portraitMedia__gBrPy α=1  x=475.41 y=355.11 w=316.91 h=176.86
+    #22 media img "Portrait of Vikram Deshpande"  x=476.41 y=356.11 w=314.91 h=174.86
+    #23 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=475.41 y=545.41 w=182.81 h=21.52
+    #24 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=493 y=548.95 w=158.83 h=14
+    #25 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=625.63 y=1123 w=112.38 h=30
+    #26 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=642.63 y=1130 w=78.38 h=15
+    #27 plate span.minivic-launcher__disc α=1  x=746 y=1106 w=64 h=64
+    #28 media svg  x=766 y=1126 w=24 h=24
+    #29 plate span.minivic-launcher__dot α=1  x=796 y=1110 w=10 h=10
+  ✓   9 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-01 @ 834×1194 [gl] — SPD ≥ 0.75: the plane carries the light (5.7s)
+[hero-plane-dominance] 834×1194 /?gl=force (shader, settled)
+  fold W×H            = 834×1194 (995796 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0086    peak L = 1.0000
+  Σ_fold m            = 265482.35
+  Σ_P m               = 218729.02
+  SPD = Σ_P/Σ_fold    = 0.8239    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 PASS)
+  Σ_fold m / (W·H)    = 0.2666    PLANE-2 ≥ 0.045 PASS
+  ink I               = 29 rects, dilated 8 px, covering 25.68% of the fold (255679 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div > div > canvas
+    #01 text  a.logo "VIKRAM."  x=41.69 y=34.69 w=90.7 h=21
+    #02 media svg  x=41.69 y=59.28 w=90.47 h=3.02
+    #03 text  span.menu-toggle__label "Menu"  x=714.55 y=39 w=46.17 h=17
+    #04 plate span.menu-toggle__bar α=1  x=770.31 y=43 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=770.31 y=50 w=22 h=2
+    #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=54.69 y=162 w=218.94 h=17
+    #07 plate span.Hero_locationDot__CTn_R α=1  x=41.69 y=168 w=5 h=5
+    #08 text  h1#hero-name "Vikram Deshpande"  x=41.69 y=209 w=228.17 h=94
+    #09 text  h1#hero-name "Vikram Deshpande"  x=41.69 y=280.8 w=341.33 h=94
+    #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=41.69 y=391.59 w=350.91 h=27
+    #11 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=41.69 y=424.97 w=128.59 h=27
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=491.34 w=308.78 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=521.13 w=388.41 h=21
+    #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=550.91 w=347.03 h=21
+    #15 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=580.69 w=350.61 h=21
+    #16 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=610.47 w=346.59 h=21
+    #17 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=640.25 w=75.27 h=21
+    #18 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=41.69 y=714.03 w=184.58 h=48
+    #19 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=66.69 y=728.03 w=134.58 h=20
+    #20 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=267.27 y=728.03 w=105.78 h=20
+    #21 plate div.Hero_portraitMedia__gBrPy α=1  x=475.41 y=355.11 w=316.91 h=176.86
+    #22 media img "Portrait of Vikram Deshpande"  x=476.41 y=356.11 w=314.91 h=174.86
+    #23 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=475.41 y=545.41 w=182.81 h=21.52
+    #24 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=493 y=548.95 w=158.83 h=14
+    #25 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=625.63 y=1123 w=112.38 h=30
+    #26 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=642.63 y=1130 w=78.38 h=15
+    #27 plate span.minivic-launcher__disc α=1  x=746 y=1106 w=64 h=64
+    #28 media svg  x=766 y=1126 w=24 h=24
+    #29 plate span.minivic-launcher__dot α=1  x=796 y=1110 w=10 h=10
+  ✓  10 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-02 @ 834×1194 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit (6.7s)
+[hero-plane-dominance] 834×1194 prefers-reduced-motion still
+  fold W×H            = 834×1194 (995796 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0052    peak L = 1.0000
+  Σ_fold m            = 71489.36
+  Σ_P m               = 34892.39
+  SPD = Σ_P/Σ_fold    = 0.4881    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.0718    PLANE-2 ≥ 0.045 PASS
+  ink I               = 29 rects, dilated 8 px, covering 25.68% of the fold (255679 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13
+    #01 text  a.logo "VIKRAM."  x=41.69 y=34.69 w=90.7 h=21
+    #02 media svg  x=41.69 y=59.28 w=90.47 h=3.02
+    #03 text  span.menu-toggle__label "Menu"  x=714.55 y=39 w=46.17 h=17
+    #04 plate span.menu-toggle__bar α=1  x=770.31 y=43 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=770.31 y=50 w=22 h=2
+    #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=54.69 y=162 w=218.94 h=17
+    #07 plate span.Hero_locationDot__CTn_R α=1  x=41.69 y=168 w=5 h=5
+    #08 text  h1#hero-name "Vikram Deshpande"  x=41.69 y=209 w=228.17 h=94
+    #09 text  h1#hero-name "Vikram Deshpande"  x=41.69 y=280.8 w=341.33 h=94
+    #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=41.69 y=391.59 w=350.91 h=27
+    #11 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=41.69 y=424.97 w=128.59 h=27
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=491.34 w=308.78 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=521.13 w=388.41 h=21
+    #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=550.91 w=347.03 h=21
+    #15 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=580.69 w=350.61 h=21
+    #16 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=610.47 w=346.59 h=21
+    #17 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=640.25 w=75.27 h=21
+    #18 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=41.69 y=714.03 w=184.58 h=48
+    #19 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=66.69 y=728.03 w=134.58 h=20
+    #20 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=267.27 y=728.03 w=105.78 h=20
+    #21 plate div.Hero_portraitMedia__gBrPy α=1  x=475.41 y=355.11 w=316.91 h=176.86
+    #22 media img "Portrait of Vikram Deshpande"  x=476.41 y=356.11 w=314.91 h=174.86
+    #23 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=475.41 y=545.41 w=182.81 h=21.52
+    #24 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=493 y=548.95 w=158.83 h=14
+    #25 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=625.63 y=1123 w=112.38 h=30
+    #26 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=642.63 y=1130 w=78.38 h=15
+    #27 plate span.minivic-launcher__disc α=1  x=746 y=1106 w=64 h=64
+    #28 media svg  x=766 y=1126 w=24 h=24
+    #29 plate span.minivic-launcher__dot α=1  x=796 y=1110 w=10 h=10
+  ✘  11 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-01 @ 834×1194 [still] — SPD ≥ 0.75: the plane carries the light (3.2s)
+[hero-plane-dominance] 834×1194 prefers-reduced-motion still
+  fold W×H            = 834×1194 (995796 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0052    peak L = 1.0000
+  Σ_fold m            = 71489.36
+  Σ_P m               = 34892.39
+  SPD = Σ_P/Σ_fold    = 0.4881    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.0718    PLANE-2 ≥ 0.045 PASS
+  ink I               = 29 rects, dilated 8 px, covering 25.68% of the fold (255679 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13
+    #01 text  a.logo "VIKRAM."  x=41.69 y=34.69 w=90.7 h=21
+    #02 media svg  x=41.69 y=59.28 w=90.47 h=3.02
+    #03 text  span.menu-toggle__label "Menu"  x=714.55 y=39 w=46.17 h=17
+    #04 plate span.menu-toggle__bar α=1  x=770.31 y=43 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=770.31 y=50 w=22 h=2
+    #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=54.69 y=162 w=218.94 h=17
+    #07 plate span.Hero_locationDot__CTn_R α=1  x=41.69 y=168 w=5 h=5
+    #08 text  h1#hero-name "Vikram Deshpande"  x=41.69 y=209 w=228.17 h=94
+    #09 text  h1#hero-name "Vikram Deshpande"  x=41.69 y=280.8 w=341.33 h=94
+    #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=41.69 y=391.59 w=350.91 h=27
+    #11 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=41.69 y=424.97 w=128.59 h=27
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=491.34 w=308.78 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=521.13 w=388.41 h=21
+    #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=550.91 w=347.03 h=21
+    #15 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=580.69 w=350.61 h=21
+    #16 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=610.47 w=346.59 h=21
+    #17 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=640.25 w=75.27 h=21
+    #18 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=41.69 y=714.03 w=184.58 h=48
+    #19 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=66.69 y=728.03 w=134.58 h=20
+    #20 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=267.27 y=728.03 w=105.78 h=20
+    #21 plate div.Hero_portraitMedia__gBrPy α=1  x=475.41 y=355.11 w=316.91 h=176.86
+    #22 media img "Portrait of Vikram Deshpande"  x=476.41 y=356.11 w=314.91 h=174.86
+    #23 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=475.41 y=545.41 w=182.81 h=21.52
+    #24 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=493 y=548.95 w=158.83 h=14
+    #25 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=625.63 y=1123 w=112.38 h=30
+    #26 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=642.63 y=1130 w=78.38 h=15
+    #27 plate span.minivic-launcher__disc α=1  x=746 y=1106 w=64 h=64
+    #28 media svg  x=766 y=1126 w=24 h=24
+    #29 plate span.minivic-launcher__dot α=1  x=796 y=1110 w=10 h=10
+  ✓  12 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-02 @ 834×1194 [still] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit (3.0s)
+[hero-plane-dominance] 390×844 /?gl=force (shader, settled)
+  fold W×H            = 390×844 (329160 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0080    peak L = 1.0000
+  Σ_fold m            = 77130.41
+  Σ_P m               = 20366.73
+  SPD = Σ_P/Σ_fold    = 0.2641    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.2343    PLANE-2 ≥ 0.045 PASS
+  ink I               = 32 rects, dilated 8 px, covering 81.05% of the fold (266788 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div > div > canvas
+    #01 text  a.logo "VIKRAM."  x=19.5 y=30 w=83.27 h=20
+    #02 media svg  x=19.5 y=52 w=82.97 h=2.77
+    #03 text  span.menu-toggle__label "Menu"  x=295.73 y=32.63 w=43.17 h=16
+    #04 plate span.menu-toggle__bar α=1  x=348.5 y=36.88 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=348.5 y=43.88 w=22 h=2
+    #06 plate p.Hero_eyebrow__oWOD8 α=0.9 "Melbourne, Australia"  x=16.81 y=118.16 w=356.38 h=19.5
+    #07 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=37 y=119.16 w=203.3 h=16
+    #08 plate span.Hero_locationDot__CTn_R α=1  x=24 y=125.41 w=5 h=5
+    #09 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=16.81 y=171.41 w=356.38 h=100.78
+    #10 text  h1#hero-name "Vikram Deshpande"  x=24 y=163.41 w=160.19 h=66
+    #11 text  h1#hero-name "Vikram Deshpande"  x=24 y=213.8 w=239.63 h=66
+    #12 plate p.Hero_role__DCbYG α=0.9 "Delivery leadership · AI solutions archi"  x=16.81 y=292.44 w=356.38 h=57
+    #13 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=24 y=294.44 w=299.66 h=23
+    #14 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=24 y=322.94 w=109.81 h=23
+    #15 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=16.81 y=357.44 w=356.38 h=152.06
+    #16 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=360.44 w=262.77 h=19
+    #17 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=385.78 w=330.53 h=19
+    #18 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=411.13 w=295.31 h=19
+    #19 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=436.47 w=298.36 h=19
+    #20 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=461.81 w=294.95 h=19
+    #21 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=487.16 w=64.05 h=19
+    #22 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=24 y=533.5 w=180.56 h=48
+    #23 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=50.86 y=547.17 w=126.83 h=19
+    #24 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=212.56 y=533.5 w=153.44 h=48
+    #25 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=239.44 y=547.17 w=99.69 h=19
+    #26 plate div.Hero_portraitMedia__gBrPy α=1  x=0 y=623.69 w=390 h=217.66
+    #27 media img "Portrait of Vikram Deshpande"  x=0 y=624.69 w=390 h=215.66
+    #28 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=207.63 y=783.45 w=106.38 h=29.09
+    #29 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=224.63 y=790.45 w=72.38 h=14
+    #30 plate span.minivic-launcher__disc α=1  x=322 y=776 w=44 h=44
+    #31 media svg  x=332 y=786 w=24 h=24
+    #32 plate span.minivic-launcher__dot α=1  x=352 y=780 w=10 h=10
+  ✘  13 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 390×844 — the plane dominates the fold › TC-HERO-PLANE-01 @ 390×844 [gl] — SPD ≥ 0.75: the plane carries the light (4.9s)
+[hero-plane-dominance] 390×844 /?gl=force (shader, settled)
+  fold W×H            = 390×844 (329160 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0080    peak L = 1.0000
+  Σ_fold m            = 77073.75
+  Σ_P m               = 20341.49
+  SPD = Σ_P/Σ_fold    = 0.2639    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.2342    PLANE-2 ≥ 0.045 PASS
+  ink I               = 32 rects, dilated 8 px, covering 81.05% of the fold (266788 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div > div > canvas
+    #01 text  a.logo "VIKRAM."  x=19.5 y=30 w=83.27 h=20
+    #02 media svg  x=19.5 y=52 w=82.97 h=2.77
+    #03 text  span.menu-toggle__label "Menu"  x=295.73 y=32.63 w=43.17 h=16
+    #04 plate span.menu-toggle__bar α=1  x=348.5 y=36.88 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=348.5 y=43.88 w=22 h=2
+    #06 plate p.Hero_eyebrow__oWOD8 α=0.9 "Melbourne, Australia"  x=16.81 y=118.16 w=356.38 h=19.5
+    #07 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=37 y=119.16 w=203.3 h=16
+    #08 plate span.Hero_locationDot__CTn_R α=1  x=24 y=125.41 w=5 h=5
+    #09 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=16.81 y=171.41 w=356.38 h=100.78
+    #10 text  h1#hero-name "Vikram Deshpande"  x=24 y=163.41 w=160.19 h=66
+    #11 text  h1#hero-name "Vikram Deshpande"  x=24 y=213.8 w=239.63 h=66
+    #12 plate p.Hero_role__DCbYG α=0.9 "Delivery leadership · AI solutions archi"  x=16.81 y=292.44 w=356.38 h=57
+    #13 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=24 y=294.44 w=299.66 h=23
+    #14 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=24 y=322.94 w=109.81 h=23
+    #15 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=16.81 y=357.44 w=356.38 h=152.06
+    #16 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=360.44 w=262.77 h=19
+    #17 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=385.78 w=330.53 h=19
+    #18 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=411.13 w=295.31 h=19
+    #19 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=436.47 w=298.36 h=19
+    #20 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=461.81 w=294.95 h=19
+    #21 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=487.16 w=64.05 h=19
+    #22 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=24 y=533.5 w=180.56 h=48
+    #23 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=50.86 y=547.17 w=126.83 h=19
+    #24 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=212.56 y=533.5 w=153.44 h=48
+    #25 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=239.44 y=547.17 w=99.69 h=19
+    #26 plate div.Hero_portraitMedia__gBrPy α=1  x=0 y=623.69 w=390 h=217.66
+    #27 media img "Portrait of Vikram Deshpande"  x=0 y=624.69 w=390 h=215.66
+    #28 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=207.63 y=783.45 w=106.38 h=29.09
+    #29 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=224.63 y=790.45 w=72.38 h=14
+    #30 plate span.minivic-launcher__disc α=1  x=322 y=776 w=44 h=44
+    #31 media svg  x=332 y=786 w=24 h=24
+    #32 plate span.minivic-launcher__dot α=1  x=352 y=780 w=10 h=10
+  ✓  14 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 390×844 — the plane dominates the fold › TC-HERO-PLANE-02 @ 390×844 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit (4.8s)
+[hero-plane-dominance] 390×844 prefers-reduced-motion still
+  fold W×H            = 390×844 (329160 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0040    peak L = 1.0000
+  Σ_fold m            = 38092.09
+  Σ_P m               = 2129.72
+  SPD = Σ_P/Σ_fold    = 0.0559    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.1157    PLANE-2 ≥ 0.045 PASS
+  ink I               = 32 rects, dilated 8 px, covering 81.05% of the fold (266788 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13
+    #01 text  a.logo "VIKRAM."  x=19.5 y=30 w=83.27 h=20
+    #02 media svg  x=19.5 y=52 w=82.97 h=2.77
+    #03 text  span.menu-toggle__label "Menu"  x=295.73 y=32.63 w=43.17 h=16
+    #04 plate span.menu-toggle__bar α=1  x=348.5 y=36.88 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=348.5 y=43.88 w=22 h=2
+    #06 plate p.Hero_eyebrow__oWOD8 α=0.9 "Melbourne, Australia"  x=16.81 y=118.16 w=356.38 h=19.5
+    #07 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=37 y=119.16 w=203.3 h=16
+    #08 plate span.Hero_locationDot__CTn_R α=1  x=24 y=125.41 w=5 h=5
+    #09 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=16.81 y=171.41 w=356.38 h=100.78
+    #10 text  h1#hero-name "Vikram Deshpande"  x=24 y=163.41 w=160.19 h=66
+    #11 text  h1#hero-name "Vikram Deshpande"  x=24 y=213.8 w=239.63 h=66
+    #12 plate p.Hero_role__DCbYG α=0.9 "Delivery leadership · AI solutions archi"  x=16.81 y=292.44 w=356.38 h=57
+    #13 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=24 y=294.44 w=299.66 h=23
+    #14 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=24 y=322.94 w=109.81 h=23
+    #15 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=16.81 y=357.44 w=356.38 h=152.06
+    #16 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=360.44 w=262.77 h=19
+    #17 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=385.78 w=330.53 h=19
+    #18 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=411.13 w=295.31 h=19
+    #19 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=436.47 w=298.36 h=19
+    #20 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=461.81 w=294.95 h=19
+    #21 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=487.16 w=64.05 h=19
+    #22 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=24 y=533.5 w=180.56 h=48
+    #23 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=50.86 y=547.17 w=126.83 h=19
+    #24 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=212.56 y=533.5 w=153.44 h=48
+    #25 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=239.44 y=547.17 w=99.69 h=19
+    #26 plate div.Hero_portraitMedia__gBrPy α=1  x=0 y=623.69 w=390 h=217.66
+    #27 media img "Portrait of Vikram Deshpande"  x=0 y=624.69 w=390 h=215.66
+    #28 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=207.63 y=783.45 w=106.38 h=29.09
+    #29 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=224.63 y=790.45 w=72.38 h=14
+    #30 plate span.minivic-launcher__disc α=1  x=322 y=776 w=44 h=44
+    #31 media svg  x=332 y=786 w=24 h=24
+    #32 plate span.minivic-launcher__dot α=1  x=352 y=780 w=10 h=10
+  ✘  15 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 390×844 — the plane dominates the fold › TC-HERO-PLANE-01 @ 390×844 [still] — SPD ≥ 0.75: the plane carries the light (2.9s)
+[hero-plane-dominance] 390×844 prefers-reduced-motion still
+  fold W×H            = 390×844 (329160 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0040    peak L = 1.0000
+  Σ_fold m            = 38092.09
+  Σ_P m               = 2129.72
+  SPD = Σ_P/Σ_fold    = 0.0559    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.1157    PLANE-2 ≥ 0.045 PASS
+  ink I               = 32 rects, dilated 8 px, covering 81.05% of the fold (266788 px)
+  ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13
+    #01 text  a.logo "VIKRAM."  x=19.5 y=30 w=83.27 h=20
+    #02 media svg  x=19.5 y=52 w=82.97 h=2.77
+    #03 text  span.menu-toggle__label "Menu"  x=295.73 y=32.63 w=43.17 h=16
+    #04 plate span.menu-toggle__bar α=1  x=348.5 y=36.88 w=22 h=2
+    #05 plate span.menu-toggle__bar α=1  x=348.5 y=43.88 w=22 h=2
+    #06 plate p.Hero_eyebrow__oWOD8 α=0.9 "Melbourne, Australia"  x=16.81 y=118.16 w=356.38 h=19.5
+    #07 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=37 y=119.16 w=203.3 h=16
+    #08 plate span.Hero_locationDot__CTn_R α=1  x=24 y=125.41 w=5 h=5
+    #09 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=16.81 y=171.41 w=356.38 h=100.78
+    #10 text  h1#hero-name "Vikram Deshpande"  x=24 y=163.41 w=160.19 h=66
+    #11 text  h1#hero-name "Vikram Deshpande"  x=24 y=213.8 w=239.63 h=66
+    #12 plate p.Hero_role__DCbYG α=0.9 "Delivery leadership · AI solutions archi"  x=16.81 y=292.44 w=356.38 h=57
+    #13 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=24 y=294.44 w=299.66 h=23
+    #14 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=24 y=322.94 w=109.81 h=23
+    #15 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=16.81 y=357.44 w=356.38 h=152.06
+    #16 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=360.44 w=262.77 h=19
+    #17 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=385.78 w=330.53 h=19
+    #18 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=411.13 w=295.31 h=19
+    #19 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=436.47 w=298.36 h=19
+    #20 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=461.81 w=294.95 h=19
+    #21 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=487.16 w=64.05 h=19
+    #22 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=24 y=533.5 w=180.56 h=48
+    #23 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=50.86 y=547.17 w=126.83 h=19
+    #24 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=212.56 y=533.5 w=153.44 h=48
+    #25 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=239.44 y=547.17 w=99.69 h=19
+    #26 plate div.Hero_portraitMedia__gBrPy α=1  x=0 y=623.69 w=390 h=217.66
+    #27 media img "Portrait of Vikram Deshpande"  x=0 y=624.69 w=390 h=215.66
+    #28 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=207.63 y=783.45 w=106.38 h=29.09
+    #29 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=224.63 y=790.45 w=72.38 h=14
+    #30 plate span.minivic-launcher__disc α=1  x=322 y=776 w=44 h=44
+    #31 media svg  x=332 y=786 w=24 h=24
+    #32 plate span.minivic-launcher__dot α=1  x=352 y=780 w=10 h=10
+  ✓  16 [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:164:11 › TC-HERO-PLANE @ 390×844 — the plane dominates the fold › TC-HERO-PLANE-02 @ 390×844 [still] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit (2.9s)
+
+
+  1) [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1440×900 [gl] — SPD ≥ 0.75: the plane carries the light 
+
+    Error: PLANE-1 fails at 1440×900 on /?gl=force (shader, settled): SPD = 0.6091 < 0.75 (ship target 0.78). The ink set carries 39.1% of the light the eye is pulled toward; the plane is not dominant.
+    [hero-plane-dominance] 1440×900 /?gl=force (shader, settled)
+      fold W×H            = 1440×900 (1296000 px)  canvases in #hero = 1
+      G (10th-pct L)      = 0.0091    peak L = 1.0000
+      Σ_fold m            = 220054.16
+      Σ_P m               = 134044.70
+      SPD = Σ_P/Σ_fold    = 0.6091    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+      Σ_fold m / (W·H)    = 0.1698    PLANE-2 ≥ 0.045 PASS
+      ink I               = 27 rects, dilated 8 px, covering 36.54% of the fold (473601 px)
+      ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div > div > canvas
+        #01 text  a.logo "VIKRAM."  x=72 y=35.47 w=91.92 h=21
+        #02 media svg  x=72 y=59.47 w=91.88 h=3.06
+        #03 text  span.menu-toggle__label "Menu"  x=1290.23 y=39 w=46.17 h=17
+        #04 plate span.menu-toggle__bar α=1  x=1346 y=43 w=22 h=2
+        #05 plate span.menu-toggle__bar α=1  x=1346 y=50 w=22 h=2
+        #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=109 y=128 w=218.94 h=17
+        #07 plate span.Hero_locationDot__CTn_R α=1  x=96 y=134 w=5 h=5
+        #08 text  h1#hero-name "Vikram Deshpande"  x=96 y=163 w=394.03 h=162
+        #09 text  h1#hero-name "Vikram Deshpande"  x=96 y=286.97 w=589.45 h=162
+        #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=96 y=455.53 w=502.36 h=28
+        #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=518.03 w=533.73 h=21
+        #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=548.27 w=591.59 h=21
+        #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=578.5 w=598.7 h=21
+        #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=608.73 w=131.47 h=21
+        #15 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=96 y=675.47 w=184.58 h=48
+        #16 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=121 y=689.47 w=134.58 h=20
+        #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=321.58 y=689.47 w=105.78 h=20
+        #18 plate div.Hero_portraitMedia__gBrPy α=1  x=796.81 y=254.53 w=547.19 h=305.38
+        #19 media img "Portrait of Vikram Deshpande"  x=797.81 y=255.53 w=545.19 h=303.38
+        #20 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=796.81 y=573.34 w=183.7 h=21.59
+        #21 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=814.41 y=576.89 w=159.72 h=14
+        #22 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1231.63 y=829 w=112.38 h=30
+        #23 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1248.63 y=836 w=78.38 h=15
+        #24 plate span.minivic-launcher__disc α=1  x=1352 y=812 w=64 h=64
+        #25 media svg  x=1372 y=832 w=24 h=24
+        #26 plate span.minivic-launcher__pulse α=1  x=1398.12 y=812.12 w=17.76 h=17.76
+        #27 plate span.minivic-launcher__dot α=1  x=1402 y=816 w=10 h=10
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.75[39m
+    Received:    [31m0.609144120699456[39m
+
+      159 |             `(ship target ${SPD_SHIP}). The ink set carries ${((1 - d.spd) * 100).toFixed(1)}% of ` +
+      160 |             `the light the eye is pulled toward; the plane is not dominant.\n${report}`,
+    > 161 |         ).toBeGreaterThanOrEqual(SPD_MIN);
+          |           ^
+      162 |       });
+      163 |
+      164 |       test(`TC-HERO-PLANE-02 @ ${size} [${route.id}] — Σ_fold m / (W·H) ≥ ${LIT_FLOOR}: the frame is lit`, async ({
+        at /root/forgotten-mistory/.claude/worktrees/wf_b87d138f-c96-2/tests/overhaul/hero-plane-dominance.spec.ts:161:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-plane-domina-db016-the-plane-carries-the-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-plane-domina-db016-the-plane-carries-the-light-chromium/error-context.md
+
+  2) [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1440×900 [still] — SPD ≥ 0.75: the plane carries the light 
+
+    Error: PLANE-1 fails at 1440×900 on prefers-reduced-motion still: SPD = 0.4109 < 0.75 (ship target 0.78). The ink set carries 58.9% of the light the eye is pulled toward; the plane is not dominant.
+    [hero-plane-dominance] 1440×900 prefers-reduced-motion still
+      fold W×H            = 1440×900 (1296000 px)  canvases in #hero = 0
+      G (10th-pct L)      = 0.0060    peak L = 1.0000
+      Σ_fold m            = 135253.09
+      Σ_P m               = 55574.67
+      SPD = Σ_P/Σ_fold    = 0.4109    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+      Σ_fold m / (W·H)    = 0.1044    PLANE-2 ≥ 0.045 PASS
+      ink I               = 27 rects, dilated 8 px, covering 36.54% of the fold (473601 px)
+      ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13
+        #01 text  a.logo "VIKRAM."  x=72 y=35.47 w=91.92 h=21
+        #02 media svg  x=72 y=59.47 w=91.88 h=3.06
+        #03 text  span.menu-toggle__label "Menu"  x=1290.23 y=39 w=46.17 h=17
+        #04 plate span.menu-toggle__bar α=1  x=1346 y=43 w=22 h=2
+        #05 plate span.menu-toggle__bar α=1  x=1346 y=50 w=22 h=2
+        #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=109 y=128 w=218.94 h=17
+        #07 plate span.Hero_locationDot__CTn_R α=1  x=96 y=134 w=5 h=5
+        #08 text  h1#hero-name "Vikram Deshpande"  x=96 y=163 w=394.03 h=162
+        #09 text  h1#hero-name "Vikram Deshpande"  x=96 y=286.97 w=589.45 h=162
+        #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=96 y=455.53 w=502.36 h=28
+        #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=518.03 w=533.73 h=21
+        #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=548.27 w=591.59 h=21
+        #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=578.5 w=598.7 h=21
+        #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=608.73 w=131.47 h=21
+        #15 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=96 y=675.47 w=184.58 h=48
+        #16 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=121 y=689.47 w=134.58 h=20
+        #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=321.58 y=689.47 w=105.78 h=20
+        #18 plate div.Hero_portraitMedia__gBrPy α=1  x=796.81 y=254.53 w=547.19 h=305.38
+        #19 media img "Portrait of Vikram Deshpande"  x=797.81 y=255.53 w=545.19 h=303.38
+        #20 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=796.81 y=573.34 w=183.7 h=21.59
+        #21 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=814.41 y=576.89 w=159.72 h=14
+        #22 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1231.63 y=829 w=112.38 h=30
+        #23 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1248.63 y=836 w=78.38 h=15
+        #24 plate span.minivic-launcher__disc α=1  x=1352 y=812 w=64 h=64
+        #25 media svg  x=1372 y=832 w=24 h=24
+        #26 plate span.minivic-launcher__pulse α=1  x=1402 y=816 w=10 h=10
+        #27 plate span.minivic-launcher__dot α=1  x=1402 y=816 w=10 h=10
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.75[39m
+    Received:    [31m0.4108939171721345[39m
+
+      159 |             `(ship target ${SPD_SHIP}). The ink set carries ${((1 - d.spd) * 100).toFixed(1)}% of ` +
+      160 |             `the light the eye is pulled toward; the plane is not dominant.\n${report}`,
+    > 161 |         ).toBeGreaterThanOrEqual(SPD_MIN);
+          |           ^
+      162 |       });
+      163 |
+      164 |       test(`TC-HERO-PLANE-02 @ ${size} [${route.id}] — Σ_fold m / (W·H) ≥ ${LIT_FLOOR}: the frame is lit`, async ({
+        at /root/forgotten-mistory/.claude/worktrees/wf_b87d138f-c96-2/tests/overhaul/hero-plane-dominance.spec.ts:161:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-plane-domina-30c55-the-plane-carries-the-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-plane-domina-30c55-the-plane-carries-the-light-chromium/error-context.md
+
+  3) [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1280×800 [gl] — SPD ≥ 0.75: the plane carries the light 
+
+    Error: PLANE-1 fails at 1280×800 on /?gl=force (shader, settled): SPD = 0.5928 < 0.75 (ship target 0.78). The ink set carries 40.7% of the light the eye is pulled toward; the plane is not dominant.
+    [hero-plane-dominance] 1280×800 /?gl=force (shader, settled)
+      fold W×H            = 1280×800 (1024000 px)  canvases in #hero = 1
+      G (10th-pct L)      = 0.0091    peak L = 1.0000
+      Σ_fold m            = 176160.26
+      Σ_P m               = 104433.97
+      SPD = Σ_P/Σ_fold    = 0.5928    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+      Σ_fold m / (W·H)    = 0.1720    PLANE-2 ≥ 0.045 PASS
+      ink I               = 26 rects, dilated 8 px, covering 39.48% of the fold (404281 px)
+      ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div > div > canvas
+        #01 text  a.logo "VIKRAM."  x=64 y=35.47 w=91.92 h=21
+        #02 media svg  x=64 y=59.47 w=91.88 h=3.06
+        #03 text  span.menu-toggle__label "Menu"  x=1138.23 y=39 w=46.17 h=17
+        #04 plate span.menu-toggle__bar α=1  x=1194 y=43 w=22 h=2
+        #05 plate span.menu-toggle__bar α=1  x=1194 y=50 w=22 h=2
+        #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=77 y=114 w=218.94 h=17
+        #07 plate span.Hero_locationDot__CTn_R α=1  x=64 y=120 w=5 h=5
+        #08 text  h1#hero-name "Vikram Deshpande"  x=64 y=148 w=350.23 h=144
+        #09 text  h1#hero-name "Vikram Deshpande"  x=64 y=258.19 w=523.94 h=144
+        #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=64 y=407.56 w=502.36 h=28
+        #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=467.06 w=533.73 h=21
+        #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=497.3 w=591.59 h=21
+        #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=527.53 w=598.7 h=21
+        #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=557.77 w=131.47 h=21
+        #15 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=64 y=608 w=184.58 h=48
+        #16 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=89 y=622 w=134.58 h=20
+        #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=289.58 y=622 w=105.78 h=20
+        #18 plate div.Hero_portraitMedia__gBrPy α=1  x=729.61 y=230.75 w=486.39 h=271.45
+        #19 media img "Portrait of Vikram Deshpande"  x=730.61 y=231.75 w=484.39 h=269.45
+        #20 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=729.61 y=515.64 w=183.7 h=21.59
+        #21 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=747.2 y=519.19 w=159.72 h=14
+        #22 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1071.63 y=729 w=112.38 h=30
+        #23 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1088.63 y=736 w=78.38 h=15
+        #24 plate span.minivic-launcher__disc α=1  x=1192 y=712 w=64 h=64
+        #25 media svg  x=1212 y=732 w=24 h=24
+        #26 plate span.minivic-launcher__dot α=1  x=1242 y=716 w=10 h=10
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.75[39m
+    Received:    [31m0.5928350401675523[39m
+
+      159 |             `(ship target ${SPD_SHIP}). The ink set carries ${((1 - d.spd) * 100).toFixed(1)}% of ` +
+      160 |             `the light the eye is pulled toward; the plane is not dominant.\n${report}`,
+    > 161 |         ).toBeGreaterThanOrEqual(SPD_MIN);
+          |           ^
+      162 |       });
+      163 |
+      164 |       test(`TC-HERO-PLANE-02 @ ${size} [${route.id}] — Σ_fold m / (W·H) ≥ ${LIT_FLOOR}: the frame is lit`, async ({
+        at /root/forgotten-mistory/.claude/worktrees/wf_b87d138f-c96-2/tests/overhaul/hero-plane-dominance.spec.ts:161:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-plane-domina-44855-the-plane-carries-the-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-plane-domina-44855-the-plane-carries-the-light-chromium/error-context.md
+
+  4) [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1280×800 [still] — SPD ≥ 0.75: the plane carries the light 
+
+    Error: PLANE-1 fails at 1280×800 on prefers-reduced-motion still: SPD = 0.3730 < 0.75 (ship target 0.78). The ink set carries 62.7% of the light the eye is pulled toward; the plane is not dominant.
+    [hero-plane-dominance] 1280×800 prefers-reduced-motion still
+      fold W×H            = 1280×800 (1024000 px)  canvases in #hero = 0
+      G (10th-pct L)      = 0.0060    peak L = 1.0000
+      Σ_fold m            = 103919.21
+      Σ_P m               = 38761.64
+      SPD = Σ_P/Σ_fold    = 0.3730    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+      Σ_fold m / (W·H)    = 0.1015    PLANE-2 ≥ 0.045 PASS
+      ink I               = 26 rects, dilated 8 px, covering 39.48% of the fold (404281 px)
+      ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13
+        #01 text  a.logo "VIKRAM."  x=64 y=35.47 w=91.92 h=21
+        #02 media svg  x=64 y=59.47 w=91.88 h=3.06
+        #03 text  span.menu-toggle__label "Menu"  x=1138.23 y=39 w=46.17 h=17
+        #04 plate span.menu-toggle__bar α=1  x=1194 y=43 w=22 h=2
+        #05 plate span.menu-toggle__bar α=1  x=1194 y=50 w=22 h=2
+        #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=77 y=114 w=218.94 h=17
+        #07 plate span.Hero_locationDot__CTn_R α=1  x=64 y=120 w=5 h=5
+        #08 text  h1#hero-name "Vikram Deshpande"  x=64 y=148 w=350.23 h=144
+        #09 text  h1#hero-name "Vikram Deshpande"  x=64 y=258.19 w=523.94 h=144
+        #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=64 y=407.56 w=502.36 h=28
+        #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=467.06 w=533.73 h=21
+        #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=497.3 w=591.59 h=21
+        #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=527.53 w=598.7 h=21
+        #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=557.77 w=131.47 h=21
+        #15 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=64 y=608 w=184.58 h=48
+        #16 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=89 y=622 w=134.58 h=20
+        #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=289.58 y=622 w=105.78 h=20
+        #18 plate div.Hero_portraitMedia__gBrPy α=1  x=729.61 y=230.75 w=486.39 h=271.45
+        #19 media img "Portrait of Vikram Deshpande"  x=730.61 y=231.75 w=484.39 h=269.45
+        #20 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=729.61 y=515.64 w=183.7 h=21.59
+        #21 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=747.2 y=519.19 w=159.72 h=14
+        #22 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1071.63 y=729 w=112.38 h=30
+        #23 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1088.63 y=736 w=78.38 h=15
+        #24 plate span.minivic-launcher__disc α=1  x=1192 y=712 w=64 h=64
+        #25 media svg  x=1212 y=732 w=24 h=24
+        #26 plate span.minivic-launcher__dot α=1  x=1242 y=716 w=10 h=10
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.75[39m
+    Received:    [31m0.37299782392356906[39m
+
+      159 |             `(ship target ${SPD_SHIP}). The ink set carries ${((1 - d.spd) * 100).toFixed(1)}% of ` +
+      160 |             `the light the eye is pulled toward; the plane is not dominant.\n${report}`,
+    > 161 |         ).toBeGreaterThanOrEqual(SPD_MIN);
+          |           ^
+      162 |       });
+      163 |
+      164 |       test(`TC-HERO-PLANE-02 @ ${size} [${route.id}] — Σ_fold m / (W·H) ≥ ${LIT_FLOOR}: the frame is lit`, async ({
+        at /root/forgotten-mistory/.claude/worktrees/wf_b87d138f-c96-2/tests/overhaul/hero-plane-dominance.spec.ts:161:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-plane-domina-5ad0e-the-plane-carries-the-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-plane-domina-5ad0e-the-plane-carries-the-light-chromium/error-context.md
+
+  5) [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-01 @ 834×1194 [still] — SPD ≥ 0.75: the plane carries the light 
+
+    Error: PLANE-1 fails at 834×1194 on prefers-reduced-motion still: SPD = 0.4881 < 0.75 (ship target 0.78). The ink set carries 51.2% of the light the eye is pulled toward; the plane is not dominant.
+    [hero-plane-dominance] 834×1194 prefers-reduced-motion still
+      fold W×H            = 834×1194 (995796 px)  canvases in #hero = 0
+      G (10th-pct L)      = 0.0052    peak L = 1.0000
+      Σ_fold m            = 71489.36
+      Σ_P m               = 34892.39
+      SPD = Σ_P/Σ_fold    = 0.4881    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+      Σ_fold m / (W·H)    = 0.0718    PLANE-2 ≥ 0.045 PASS
+      ink I               = 29 rects, dilated 8 px, covering 25.68% of the fold (255679 px)
+      ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13
+        #01 text  a.logo "VIKRAM."  x=41.69 y=34.69 w=90.7 h=21
+        #02 media svg  x=41.69 y=59.28 w=90.47 h=3.02
+        #03 text  span.menu-toggle__label "Menu"  x=714.55 y=39 w=46.17 h=17
+        #04 plate span.menu-toggle__bar α=1  x=770.31 y=43 w=22 h=2
+        #05 plate span.menu-toggle__bar α=1  x=770.31 y=50 w=22 h=2
+        #06 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=54.69 y=162 w=218.94 h=17
+        #07 plate span.Hero_locationDot__CTn_R α=1  x=41.69 y=168 w=5 h=5
+        #08 text  h1#hero-name "Vikram Deshpande"  x=41.69 y=209 w=228.17 h=94
+        #09 text  h1#hero-name "Vikram Deshpande"  x=41.69 y=280.8 w=341.33 h=94
+        #10 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=41.69 y=391.59 w=350.91 h=27
+        #11 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=41.69 y=424.97 w=128.59 h=27
+        #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=491.34 w=308.78 h=21
+        #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=521.13 w=388.41 h=21
+        #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=550.91 w=347.03 h=21
+        #15 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=580.69 w=350.61 h=21
+        #16 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=610.47 w=346.59 h=21
+        #17 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=640.25 w=75.27 h=21
+        #18 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=41.69 y=714.03 w=184.58 h=48
+        #19 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=66.69 y=728.03 w=134.58 h=20
+        #20 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=267.27 y=728.03 w=105.78 h=20
+        #21 plate div.Hero_portraitMedia__gBrPy α=1  x=475.41 y=355.11 w=316.91 h=176.86
+        #22 media img "Portrait of Vikram Deshpande"  x=476.41 y=356.11 w=314.91 h=174.86
+        #23 plate figcaption[data-testid=portrait-caption] α=0.88 "Photograph · Melbourne"  x=475.41 y=545.41 w=182.81 h=21.52
+        #24 text  figcaption[data-testid=portrait-caption] "Photograph · Melbourne"  x=493 y=548.95 w=158.83 h=14
+        #25 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=625.63 y=1123 w=112.38 h=30
+        #26 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=642.63 y=1130 w=78.38 h=15
+        #27 plate span.minivic-launcher__disc α=1  x=746 y=1106 w=64 h=64
+        #28 media svg  x=766 y=1126 w=24 h=24
+        #29 plate span.minivic-launcher__dot α=1  x=796 y=1110 w=10 h=10
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.75[39m
+    Received:    [31m0.4880780252597494[39m
+
+      159 |             `(ship target ${SPD_SHIP}). The ink set carries ${((1 - d.spd) * 100).toFixed(1)}% of ` +
+      160 |             `the light the eye is pulled toward; the plane is not dominant.\n${report}`,
+    > 161 |         ).toBeGreaterThanOrEqual(SPD_MIN);
+          |           ^
+      162 |       });
+      163 |
+      164 |       test(`TC-HERO-PLANE-02 @ ${size} [${route.id}] — Σ_fold m / (W·H) ≥ ${LIT_FLOOR}: the frame is lit`, async ({
+        at /root/forgotten-mistory/.claude/worktrees/wf_b87d138f-c96-2/tests/overhaul/hero-plane-dominance.spec.ts:161:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-plane-domina-0b96c-the-plane-carries-the-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-plane-domina-0b96c-the-plane-carries-the-light-chromium/error-context.md
+
+  6) [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 390×844 — the plane dominates the fold › TC-HERO-PLANE-01 @ 390×844 [gl] — SPD ≥ 0.75: the plane carries the light 
+
+    Error: PLANE-1 fails at 390×844 on /?gl=force (shader, settled): SPD = 0.2641 < 0.75 (ship target 0.78). The ink set carries 73.6% of the light the eye is pulled toward; the plane is not dominant.
+    [hero-plane-dominance] 390×844 /?gl=force (shader, settled)
+      fold W×H            = 390×844 (329160 px)  canvases in #hero = 1
+      G (10th-pct L)      = 0.0080    peak L = 1.0000
+      Σ_fold m            = 77130.41
+      Σ_P m               = 20366.73
+      SPD = Σ_P/Σ_fold    = 0.2641    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+      Σ_fold m / (W·H)    = 0.2343    PLANE-2 ≥ 0.045 PASS
+      ink I               = 32 rects, dilated 8 px, covering 81.05% of the fold (266788 px)
+      ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div > div > canvas
+        #01 text  a.logo "VIKRAM."  x=19.5 y=30 w=83.27 h=20
+        #02 media svg  x=19.5 y=52 w=82.97 h=2.77
+        #03 text  span.menu-toggle__label "Menu"  x=295.73 y=32.63 w=43.17 h=16
+        #04 plate span.menu-toggle__bar α=1  x=348.5 y=36.88 w=22 h=2
+        #05 plate span.menu-toggle__bar α=1  x=348.5 y=43.88 w=22 h=2
+        #06 plate p.Hero_eyebrow__oWOD8 α=0.9 "Melbourne, Australia"  x=16.81 y=118.16 w=356.38 h=19.5
+        #07 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=37 y=119.16 w=203.3 h=16
+        #08 plate span.Hero_locationDot__CTn_R α=1  x=24 y=125.41 w=5 h=5
+        #09 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=16.81 y=171.41 w=356.38 h=100.78
+        #10 text  h1#hero-name "Vikram Deshpande"  x=24 y=163.41 w=160.19 h=66
+        #11 text  h1#hero-name "Vikram Deshpande"  x=24 y=213.8 w=239.63 h=66
+        #12 plate p.Hero_role__DCbYG α=0.9 "Delivery leadership · AI solutions archi"  x=16.81 y=292.44 w=356.38 h=57
+        #13 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=24 y=294.44 w=299.66 h=23
+        #14 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=24 y=322.94 w=109.81 h=23
+        #15 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=16.81 y=357.44 w=356.38 h=152.06
+        #16 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=360.44 w=262.77 h=19
+        #17 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=385.78 w=330.53 h=19
+        #18 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=411.13 w=295.31 h=19
+        #19 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=436.47 w=298.36 h=19
+        #20 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=461.81 w=294.95 h=19
+        #21 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=487.16 w=64.05 h=19
+        #22 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=24 y=533.5 w=180.56 h=48
+        #23 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=50.86 y=547.17 w=126.83 h=19
+        #24 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=212.56 y=533.5 w=153.44 h=48
+        #25 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=239.44 y=547.17 w=99.69 h=19
+        #26 plate div.Hero_portraitMedia__gBrPy α=1  x=0 y=623.69 w=390 h=217.66
+        #27 media img "Portrait of Vikram Deshpande"  x=0 y=624.69 w=390 h=215.66
+        #28 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=207.63 y=783.45 w=106.38 h=29.09
+        #29 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=224.63 y=790.45 w=72.38 h=14
+        #30 plate span.minivic-launcher__disc α=1  x=322 y=776 w=44 h=44
+        #31 media svg  x=332 y=786 w=24 h=24
+        #32 plate span.minivic-launcher__dot α=1  x=352 y=780 w=10 h=10
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.75[39m
+    Received:    [31m0.2640558163514126[39m
+
+      159 |             `(ship target ${SPD_SHIP}). The ink set carries ${((1 - d.spd) * 100).toFixed(1)}% of ` +
+      160 |             `the light the eye is pulled toward; the plane is not dominant.\n${report}`,
+    > 161 |         ).toBeGreaterThanOrEqual(SPD_MIN);
+          |           ^
+      162 |       });
+      163 |
+      164 |       test(`TC-HERO-PLANE-02 @ ${size} [${route.id}] — Σ_fold m / (W·H) ≥ ${LIT_FLOOR}: the frame is lit`, async ({
+        at /root/forgotten-mistory/.claude/worktrees/wf_b87d138f-c96-2/tests/overhaul/hero-plane-dominance.spec.ts:161:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-plane-domina-95a5b-the-plane-carries-the-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-plane-domina-95a5b-the-plane-carries-the-light-chromium/error-context.md
+
+  7) [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 390×844 — the plane dominates the fold › TC-HERO-PLANE-01 @ 390×844 [still] — SPD ≥ 0.75: the plane carries the light 
+
+    Error: PLANE-1 fails at 390×844 on prefers-reduced-motion still: SPD = 0.0559 < 0.75 (ship target 0.78). The ink set carries 94.4% of the light the eye is pulled toward; the plane is not dominant.
+    [hero-plane-dominance] 390×844 prefers-reduced-motion still
+      fold W×H            = 390×844 (329160 px)  canvases in #hero = 0
+      G (10th-pct L)      = 0.0040    peak L = 1.0000
+      Σ_fold m            = 38092.09
+      Σ_P m               = 2129.72
+      SPD = Σ_P/Σ_fold    = 0.0559    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+      Σ_fold m / (W·H)    = 0.1157    PLANE-2 ≥ 0.045 PASS
+      ink I               = 32 rects, dilated 8 px, covering 81.05% of the fold (266788 px)
+      ground chain (never ink): div[data-scene=hero-atmosphere] > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13
+        #01 text  a.logo "VIKRAM."  x=19.5 y=30 w=83.27 h=20
+        #02 media svg  x=19.5 y=52 w=82.97 h=2.77
+        #03 text  span.menu-toggle__label "Menu"  x=295.73 y=32.63 w=43.17 h=16
+        #04 plate span.menu-toggle__bar α=1  x=348.5 y=36.88 w=22 h=2
+        #05 plate span.menu-toggle__bar α=1  x=348.5 y=43.88 w=22 h=2
+        #06 plate p.Hero_eyebrow__oWOD8 α=0.9 "Melbourne, Australia"  x=16.81 y=118.16 w=356.38 h=19.5
+        #07 text  p.Hero_eyebrow__oWOD8 "Melbourne, Australia"  x=37 y=119.16 w=203.3 h=16
+        #08 plate span.Hero_locationDot__CTn_R α=1  x=24 y=125.41 w=5 h=5
+        #09 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=16.81 y=171.41 w=356.38 h=100.78
+        #10 text  h1#hero-name "Vikram Deshpande"  x=24 y=163.41 w=160.19 h=66
+        #11 text  h1#hero-name "Vikram Deshpande"  x=24 y=213.8 w=239.63 h=66
+        #12 plate p.Hero_role__DCbYG α=0.9 "Delivery leadership · AI solutions archi"  x=16.81 y=292.44 w=356.38 h=57
+        #13 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=24 y=294.44 w=299.66 h=23
+        #14 text  p.Hero_role__DCbYG "Delivery leadership · AI solutions archi"  x=24 y=322.94 w=109.81 h=23
+        #15 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=16.81 y=357.44 w=356.38 h=152.06
+        #16 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=360.44 w=262.77 h=19
+        #17 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=385.78 w=330.53 h=19
+        #18 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=411.13 w=295.31 h=19
+        #19 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=436.47 w=298.36 h=19
+        #20 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=461.81 w=294.95 h=19
+        #21 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=487.16 w=64.05 h=19
+        #22 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=24 y=533.5 w=180.56 h=48
+        #23 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=50.86 y=547.17 w=126.83 h=19
+        #24 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=212.56 y=533.5 w=153.44 h=48
+        #25 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=239.44 y=547.17 w=99.69 h=19
+        #26 plate div.Hero_portraitMedia__gBrPy α=1  x=0 y=623.69 w=390 h=217.66
+        #27 media img "Portrait of Vikram Deshpande"  x=0 y=624.69 w=390 h=215.66
+        #28 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=207.63 y=783.45 w=106.38 h=29.09
+        #29 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=224.63 y=790.45 w=72.38 h=14
+        #30 plate span.minivic-launcher__disc α=1  x=322 y=776 w=44 h=44
+        #31 media svg  x=332 y=786 w=24 h=24
+        #32 plate span.minivic-launcher__dot α=1  x=352 y=780 w=10 h=10
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.75[39m
+    Received:    [31m0.05590969663362025[39m
+
+      159 |             `(ship target ${SPD_SHIP}). The ink set carries ${((1 - d.spd) * 100).toFixed(1)}% of ` +
+      160 |             `the light the eye is pulled toward; the plane is not dominant.\n${report}`,
+    > 161 |         ).toBeGreaterThanOrEqual(SPD_MIN);
+          |           ^
+      162 |       });
+      163 |
+      164 |       test(`TC-HERO-PLANE-02 @ ${size} [${route.id}] — Σ_fold m / (W·H) ≥ ${LIT_FLOOR}: the frame is lit`, async ({
+        at /root/forgotten-mistory/.claude/worktrees/wf_b87d138f-c96-2/tests/overhaul/hero-plane-dominance.spec.ts:161:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-plane-domina-32151-the-plane-carries-the-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-plane-domina-32151-the-plane-carries-the-light-chromium/error-context.md
+
+  7 failed
+    [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1440×900 [gl] — SPD ≥ 0.75: the plane carries the light 
+    [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1440×900 [still] — SPD ≥ 0.75: the plane carries the light 
+    [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1280×800 [gl] — SPD ≥ 0.75: the plane carries the light 
+    [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1280×800 [still] — SPD ≥ 0.75: the plane carries the light 
+    [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-01 @ 834×1194 [still] — SPD ≥ 0.75: the plane carries the light 
+    [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 390×844 — the plane dominates the fold › TC-HERO-PLANE-01 @ 390×844 [gl] — SPD ≥ 0.75: the plane carries the light 
+    [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 390×844 — the plane dominates the fold › TC-HERO-PLANE-01 @ 390×844 [still] — SPD ≥ 0.75: the plane carries the light 
+  9 passed (1.5m)
+exit=1

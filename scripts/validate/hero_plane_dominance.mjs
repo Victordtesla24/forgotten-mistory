@@ -66,7 +66,7 @@
  */
 
 import { pathToFileURL } from 'node:url';
-import { writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { PNG } from 'pngjs';
 
 /** PLANE-1 — the plane carries three quarters of everything the eye is pulled toward. */
@@ -410,9 +410,15 @@ export async function preparePage(page, baseURL, route) {
  * @param {import('playwright-core').Page} page
  * @returns {Promise<Dominance & { canvases: number, groundChain: string[] }>}
  */
-export async function measureFold(page, { alphaMin = PLATE_ALPHA_MIN, dilate = DILATE_PX } = {}) {
+export async function measureFold(
+  page,
+  { alphaMin = PLATE_ALPHA_MIN, dilate = DILATE_PX, shotPath = '' } = {},
+) {
   const dom = await page.evaluate(collectInkRects, { alphaMin });
-  const field = decodeLuma(await page.screenshot({ type: 'png', fullPage: false }));
+  const capture = await page.screenshot({ type: 'png', fullPage: false });
+  // The very buffer that is measured, when a reviewer wants the pixels too.
+  if (shotPath) writeFileSync(shotPath, capture);
+  const field = decodeLuma(capture);
   if (field.width !== dom.width || field.height !== dom.height) {
     throw new Error(
       `capture is ${field.width}x${field.height} but the viewport is ${dom.width}x${dom.height} — ` +
@@ -476,11 +482,12 @@ export function gates(d) {
 /* ── CLI ───────────────────────────────────────────────────────────────────── */
 
 function parseArgs(argv) {
-  const opt = { base: '', out: '', paths: 'gl,still', widths: '' };
+  const opt = { base: '', out: '', shots: '', paths: 'gl,still', widths: '' };
   for (let i = 0; i < argv.length; i += 1) {
     const a = argv[i];
     if (a === '--base') opt.base = argv[++i] || '';
     else if (a === '--out') opt.out = argv[++i] || '';
+    else if (a === '--shots') opt.shots = argv[++i] || '';
     else if (a === '--paths') opt.paths = argv[++i] || opt.paths;
     else if (a === '--widths') opt.widths = argv[++i] || '';
     else if (a === '--help' || a === '-h') opt.help = true;
@@ -493,7 +500,7 @@ async function main() {
   if (opt.help || !opt.base) {
     process.stdout.write(
       'usage: node scripts/validate/hero_plane_dominance.mjs --base <url> [--out <json>] ' +
-        '[--paths gl,still] [--widths 1440,390]\n',
+        '[--shots <dir>] [--paths gl,still] [--widths 1440,390]\n',
     );
     process.exit(opt.help ? 0 : 2);
   }
@@ -503,6 +510,7 @@ async function main() {
     : null;
   const routes = PATHS.filter((p) => wanted.has(p.id));
   const viewports = VIEWPORTS.filter((v) => !widths || widths.has(v.width));
+  if (opt.shots) mkdirSync(opt.shots, { recursive: true });
 
   const { chromium } = await import('playwright');
   let browser;
@@ -528,7 +536,10 @@ async function main() {
         const title = `${vp.width}×${vp.height} ${route.label} @ ${opt.base}`;
         try {
           await preparePage(page, opt.base, route);
-          const d = await measureFold(page);
+          const shotPath = opt.shots
+            ? `${opt.shots}/fold-${vp.width}x${vp.height}-${route.id}.png`
+            : '';
+          const d = await measureFold(page, { shotPath });
           const g = gates(d);
           if (!g.plane1 || !g.plane2) red += 1;
           process.stdout.write(`${formatReport(title, d)}\n\n`);
