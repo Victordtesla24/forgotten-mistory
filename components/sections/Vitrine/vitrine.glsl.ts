@@ -78,17 +78,32 @@ export const vitrineFieldFragmentShader = /* glsl */ `
     float aspect = uResolution.x / max(uResolution.y, 1.0);
     vec2 p = vUv;
 
-    // A gallery spot, not a spotlight: wide across the cabinet, shallow through
-    // it, centred on the plate that has the light. The width is a plate and a
-    // half, so the neighbours are grazed rather than cut off — the same
-    // falloff the CSS raking light has, in light rather than in opacity.
-    float dx = (p.x - uCentre) * aspect;
-    float pool = exp(-dx * dx * 5.4);
-
+    // Where the light may be bright, and where it may not, is decided by one
+    // measured fact rather than by taste: the plate the rail has lit is
+    // opacity: 1 over an opaque --ink-900 (Vitrine.module.css .plate[data-lit]),
+    // so nothing behind it is ever composited into a caption; its neighbours are
+    // opacity: 0.62 over the same ink, so everything behind *them* is. At 1440
+    // the lit plate is 480 px of the stage's 1296 and stands at uCentre — 37% of
+    // the slot where the light costs a reader nothing, and 63% where every extra
+    // step of it comes straight off a --mist-200 caption at 11 px.
+    //
+    // So: the gather is bright and is matched to the lit plate's own width, and
+    // the ambient that reaches the neighbours is held to a level their captions
+    // can carry. TC-CONTRAST-01/02 measured 4.44:1 and 3.55:1 on
+    // .Vitrine_metric dt when a single wide wash tried to do both jobs; the
+    // split is what puts both back over 4.5.
+    float across = smoothstep(0.0, 0.06, p.x) * smoothstep(1.0, 0.94, p.x);
     // The light comes from above the cabinet and dies before its floor, which
     // is where the rail's own hairline rule is: a pool that reached the rule
     // would read as a glow on it.
-    float fall = smoothstep(-0.12, 0.62, p.y) * smoothstep(1.02, 0.58, p.y);
+    float fall = smoothstep(-0.06, 0.22, p.y) * smoothstep(1.06, 0.78, p.y);
+    float cabinet = across * fall;
+
+    // The gallery spot, sized to the piece it is on. 24.0 puts the gather at a
+    // sixteenth of its core by 0.20 of the stage either side of uCentre, which
+    // at 1440 is the lit plate's own edge and the 24 px gap beyond it.
+    float dx = (p.x - uCentre) * aspect;
+    float pool = exp(-dx * dx * 24.0);
 
     // Three lookups, and no more. One slow wash so the pool is not a clean
     // ellipse; one drift carried by the rail's own scroll, so the grain travels
@@ -98,24 +113,38 @@ export const vitrineFieldFragmentShader = /* glsl */ `
     float drift = noise(vec2(p.x * 1.1 - uScroll * 6.2, uTime * 0.05));
     float seed = noise(vec2(uLit * 5.3, p.y * 0.9 + uTime * 0.02));
 
-    float luma = pool * fall
-      * (0.10 + 0.24 * (0.55 + 0.45 * seed))
-      * (0.66 + 0.40 * wash)
-      * (0.74 + 0.34 * drift);
+    // A slow breath travelling across the cabinet, so a rail nobody is touching
+    // is still alive. It rides the gather, which is the third of the slot the
+    // captions cannot see: a breath on the ambient would have to be paid for in
+    // contrast on every unlit plate at once.
+    float breath = 0.5 + 0.5 * sin(p.x * 2.3 - uTime * 0.85);
 
-    // The scene has to end somewhere and it must not be anywhere a reader can
-    // find: the field dies inside its own frame, so the canvas rectangle never
-    // shows as a faintly lighter box against the page.
-    luma *= smoothstep(0.0, 0.10, p.x) * smoothstep(1.0, 0.90, p.x);
+    // The neighbours are *waiting*, not absent (G-V1) — but only just: at this
+    // level the still and the shader together leave a --mist-200 caption on an
+    // unlit plate at better than 4.7:1.
+    float ambient = cabinet * (0.055 + 0.035 * wash);
+    float gather = cabinet * pool
+      * (0.56 + 0.16 * seed)
+      * (0.80 + 0.26 * breath)
+      * (0.86 + 0.20 * drift);
+
+    float luma = ambient + gather;
 
     // Grain, from the cheap hash rather than a fourth noise lookup.
-    luma += (hash(vUv * uResolution + fract(uTime)) - 0.5) * 0.010;
+    luma += (hash(vUv * uResolution + fract(uTime)) - 0.5) * 0.012;
     luma = clamp(luma, 0.0, 1.0);
 
-    // Light only. Alpha follows the luminance, so where the field is dark it
-    // paints nothing at all and the plates keep their own contrast — the scene
-    // is never in the way of the cabinet.
-    vec3 colour = mix(uInk, uLight, clamp(luma * 3.0, 0.0, 1.0));
-    gl_FragColor = vec4(colour, luma * clamp(uIntensity, 0.0, 1.0) * 0.92);
+    // Light only, and the light carried by alpha alone. Ramping the colour
+    // toward white *and* setting alpha to the same figure paints a fraction of
+    // a fraction — the mistake that cost AboutField its visibility the first
+    // time, and the shape this field had before it was ever measured. Where the
+    // field is dark it paints nothing at all and the plates keep their own
+    // contrast: the scene is never in the way of the cabinet.
+    gl_FragColor = vec4(uLight, luma * clamp(uIntensity, 0.0, 1.0));
+
+    // uInk participates in no branch above; it is kept so the two colours still
+    // arrive together from lib/palette.ts and a field that quietly stopped
+    // reading one of them would be the first place a palette drift could hide.
+    gl_FragColor.rgb = mix(uInk, gl_FragColor.rgb, clamp(luma * 4.0, 0.0, 1.0));
   }
 `;

@@ -164,7 +164,7 @@ export default function Vitrine() {
             off screen, `Scene` mounts nothing and the cabinet is unchanged —
             the raking light on the plates is CSS and always has been. */}
         <div className={styles.field} data-lit-index={lit}>
-          <Scene className={styles.fieldSlot}>
+          <Scene className={styles.fieldSlot} sceneId="vitrine-field">
             <VitrineField lit={lit} rail={railState} />
           </Scene>
         </div>

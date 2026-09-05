@@ -1,0 +1,55 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts --workers=1 --reporter=list
+
+Running 24 tests using 1 worker
+
+[flagship-visibility] hero@1440: ground=0.0030 coverage=46.54% peak=0.8308 motion=0.03629 box=1440x900
+  ✓   1 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 1440 — hero atmosphere reads as light (13.4s)
+[flagship-visibility] about@1440: ground=0.0030 coverage=46.92% peak=0.6445 motion=0.02396 box=384x384
+  ✓   2 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light (13.7s)
+[flagship-visibility] experience@1440: ground=0.0030 coverage=25.79% peak=0.8308 motion=0.03517 box=1298x536
+  ✓   3 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 1440 — experience strata reads as light (8.7s)
+[flagship-visibility] skills@1440: ground=0.0030 coverage=34.65% peak=0.4969 motion=0.01332 box=1248x580
+  ✓   4 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light (8.9s)
+[flagship-visibility] vitrine@1440: ground=0.0030 coverage=58.48% peak=0.3613 motion=0.01608 box=1296x759
+  ✓   5 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 1440 — vitrine cabinet light reads as light (10.9s)
+[flagship-visibility] listen@1440: ground=0.0030 coverage=21.96% peak=0.4678 motion=0.00554 box=1440x900
+  ✓   6 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light (12.5s)
+[flagship-visibility:still] hero@1440: ground=0.0030 coverage=23.71% peak=0.0931
+  ✓   7 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 1440 — hero atmosphere fallback (3.4s)
+[flagship-visibility:still] about@1440: ground=0.0030 coverage=35.59% peak=0.0802
+  ✓   8 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback (4.2s)
+[flagship-visibility:still] experience@1440: ground=0.0030 coverage=4.10% peak=0.1529
+  ✓   9 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 1440 — experience strata fallback (4.2s)
+[flagship-visibility:still] skills@1440: ground=0.0030 coverage=32.77% peak=0.0953
+  ✓  10 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback (4.6s)
+[flagship-visibility:still] vitrine@1440: ground=0.0030 coverage=41.32% peak=0.1470
+  ✓  11 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 1440 — vitrine cabinet light fallback (3.2s)
+[flagship-visibility:still] listen@1440: ground=0.0030 coverage=25.43% peak=0.0865
+  ✓  12 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 1440 — listen beat field fallback (3.6s)
+[flagship-visibility] hero@390: ground=0.0030 coverage=100.00% peak=0.8308 motion=0.06472 box=390x844
+  ✓  13 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 390 — hero atmosphere reads as light (7.9s)
+[flagship-visibility] about@390: ground=0.0030 coverage=45.47% peak=0.4125 motion=0.01356 box=224x224
+  ✓  14 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light (7.8s)
+[flagship-visibility] experience@390: ground=0.0030 coverage=37.05% peak=0.8308 motion=0.04160 box=356x661
+  ✓  15 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 390 — experience strata reads as light (7.1s)
+[flagship-visibility] skills@390: ground=0.0030 coverage=44.32% peak=0.4910 motion=0.00785 box=342x152
+  ✓  16 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light (5.9s)
+[flagship-visibility] vitrine@390: ground=0.0030 coverage=66.08% peak=0.4125 motion=0.00833 box=342x746
+  ✓  17 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 390 — vitrine cabinet light reads as light (6.7s)
+[flagship-visibility] listen@390: ground=0.0030 coverage=34.03% peak=0.4020 motion=0.00953 box=390x844
+  ✓  18 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light (7.7s)
+[flagship-visibility:still] hero@390: ground=0.0030 coverage=16.99% peak=0.1746
+  ✓  19 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 390 — hero atmosphere fallback (2.6s)
+[flagship-visibility:still] about@390: ground=0.0030 coverage=36.36% peak=0.0823
+  ✓  20 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback (1.7s)
+[flagship-visibility:still] experience@390: ground=0.0030 coverage=4.18% peak=0.1590
+  ✓  21 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 390 — experience strata fallback (2.2s)
+[flagship-visibility:still] skills@390: ground=0.0030 coverage=69.07% peak=0.0908
+  ✓  22 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback (2.0s)
+[flagship-visibility:still] vitrine@390: ground=0.0030 coverage=41.66% peak=0.1413
+  ✓  23 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 390 — vitrine cabinet light fallback (2.0s)
+[flagship-visibility:still] listen@390: ground=0.0030 coverage=30.25% peak=0.0865
+  ✓  24 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 390 — listen beat field fallback (2.8s)
+
+  24 passed (2.5m)

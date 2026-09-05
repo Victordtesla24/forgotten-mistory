@@ -35,9 +35,53 @@
     pointer-events: none;
 }
 
+/* The bench the instrument is set down on, in CSS, on the element `Scene`
+   stamps `data-scene`. It is the whole of the scene under reduced motion or
+   with no WebGL (TC-FLAGSHIP-VIS-STILL-LISTEN), and the ground the shader
+   composites over for everyone else.
+
+   Where it stops is the whole design of it. The two greys in this section —
+   `.kicker` at the top and `.coffee` at the foot, both --mist-400 at
+   --fs-small — clear AA on the section's own ink at 6.20:1 and can carry a
+   ground of about rgb(42 42 42) before they reach 4.5:1. So the light is held
+   between 30% and 78% of the section: the kicker sits at about 14% and the
+   coffee at about 88%, and neither is ever on it. Everything the band does
+   reach — the sentence, the routes, the two filled pills — is --white, which
+   carries this ground at better than 8:1. TC-CONTRAST-01/02 measure that
+   rather than trusting it. */
 .fieldSlot {
     position: absolute;
     inset: 0;
+    /* Decorative: never the thing under a pointer, never the thing the contrast
+       walk finds ahead of a route. */
+    pointer-events: none;
+    background: linear-gradient(
+        180deg,
+        transparent 0%,
+        transparent 30%,
+        rgb(246 246 246 / 0.13) 38%,
+        rgb(246 246 246 / 0.30) 46%,
+        rgb(246 246 246 / 0.30) 66%,
+        rgb(246 246 246 / 0.11) 74%,
+        transparent 78%,
+        transparent 100%
+    );
+    /* Gone at both gutters, so the canvas edge is never a seam a reader can
+       find down the side of the closing screen. */
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        rgb(0 0 0) 9%,
+        rgb(0 0 0) 91%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        rgb(0 0 0) 9%,
+        rgb(0 0 0) 91%,
+        transparent 100%
+    );
 }
 
 .inner {

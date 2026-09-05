@@ -150,6 +150,17 @@ const SCENES: readonly SceneCase[] = [
   // both widths: the plate stops short of both rails of type (`bench.glsl.ts`),
   // so nothing here is traded against contrast and nothing has to be relaxed.
   { section: 'skills', scene: 'skills-bench', label: 'skills bench field' },
+  // SIGNATURE-SCENES-v1 F6: `Vitrine.tsx` and `Listen.tsx` each mounted
+  // `<Scene className={styles.fieldSlot}>` with no `sceneId`, so two of the
+  // seven signature scenes had no handle and could not be photographed at all.
+  // They are held to the full default bar at both widths: the vitrine's light
+  // is behind plates that are 62% opaque over their own ink (the field lifts a
+  // plate's foreground more than its ground, so every plate token gains
+  // contrast rather than losing it), and the listen band sits at the caliper's
+  // own height, which is the one full-width stripe of that section with no type
+  // in it. Neither trades a floor for a threshold.
+  { section: 'vitrine', scene: 'vitrine-field', label: 'vitrine cabinet light' },
+  { section: 'listen', scene: 'listen-field', label: 'listen beat field' },
 ];
 
 /** >= 15% of the slot at least this far above ground. */

@@ -70,9 +70,66 @@
     pointer-events: none;
 }
 
+/* The cabinet's own light, in CSS, on the element `Scene` stamps `data-scene`.
+   It is the whole of the scene for a reader with no WebGL or with reduced
+   motion — TC-FLAGSHIP-VIS-STILL-VITRINE asks that the fallback be a still of
+   the same light rather than an empty rectangle — and it is the ground the
+   shader composites over for everyone else, so the two never disagree about
+   where the cabinet is lit.
+
+   Where it is bright is decided by the same measured fact the shader is shaped
+   by: the plate the rail has lit is `opacity: 1` over an opaque `--ink-900`, so
+   nothing behind it reaches a caption, while its neighbours are `opacity: 0.62`
+   over the same ink and everything behind them does. At rest the lit plate is
+   the first one — `lit` starts at 0, so the static HTML already carries
+   `data-lit` on it — and it stands at 20% of the stage at 1440 and fills the
+   stage at 390. The gather below is therefore anchored at 20%, and what reaches
+   the neighbours is the thin linear wash, which a `--mist-200` caption carries
+   at better than 4.8:1. A single wide wash at 0.28 measured 4.44:1 on
+   `.Vitrine_metric dt`; TC-CONTRAST-01/02 is the guard on the replacement. */
 .fieldSlot {
     position: absolute;
     inset: 0;
+    /* Decorative, and it must never be the thing under a pointer or the thing
+       the contrast walk finds ahead of a plate. */
+    pointer-events: none;
+    background:
+        /* The gather, on the plate that has the light. The shader takes this
+           over and moves it as the rail scrolls; here it stands where the
+           static HTML says the light is. */
+        radial-gradient(
+            46% 62% at 20% 48%,
+            rgb(246 246 246 / 0.30) 0%,
+            rgb(246 246 246 / 0.13) 55%,
+            transparent 88%
+        ),
+        /* and the cabinet floor: enough light across the whole rail that the
+           plate the rail has *not* lit reads as waiting rather than absent
+           (G-V1), and no more than that. It dies before the rail's own hairline
+           rule at the bottom, which a pool reaching it would read as a glow on. */
+        linear-gradient(
+            180deg,
+            transparent 0%,
+            rgb(246 246 246 / 0.075) 20%,
+            rgb(246 246 246 / 0.075) 78%,
+            transparent 100%
+        );
+    /* Both edges die inside the slot, so the canvas rectangle is never a
+       faintly lighter box against the page. */
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        rgb(0 0 0) 12%,
+        rgb(0 0 0) 88%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        rgb(0 0 0) 12%,
+        rgb(0 0 0) 88%,
+        transparent 100%
+    );
 }
 
 /* ── The rail ────────────────────────────────────────────────────────────── */

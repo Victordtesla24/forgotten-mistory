@@ -1,0 +1,208 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts --workers=1 -g VITRINE|LISTEN --reporter=list
+
+Running 8 tests using 1 worker
+
+  ✘  1 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 1440 — vitrine cabinet light reads as light (22.8s)
+  ✘  2 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light (19.5s)
+  ✘  3 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 1440 — vitrine cabinet light fallback (18.2s)
+  ✘  4 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 1440 — listen beat field fallback (19.9s)
+  ✘  5 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 390 — vitrine cabinet light reads as light (18.5s)
+  ✘  6 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light (19.8s)
+  ✘  7 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 390 — vitrine cabinet light fallback (17.5s)
+  ✘  8 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 390 — listen beat field fallback (17.1s)
+
+
+  1) [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 1440 — vitrine cabinet light reads as light 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="vitrine-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:318:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-62d0f-abinet-light-reads-as-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-62d0f-abinet-light-reads-as-light-chromium/error-context.md
+
+  2) [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="listen-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:318:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-9a6bc-n-beat-field-reads-as-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-9a6bc-n-beat-field-reads-as-light-chromium/error-context.md
+
+  3) [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 1440 — vitrine cabinet light fallback 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="vitrine-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:378:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-08f59-rine-cabinet-light-fallback-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-08f59-rine-cabinet-light-fallback-chromium/error-context.md
+
+  4) [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 1440 — listen beat field fallback 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="listen-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:378:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-2bdd3--listen-beat-field-fallback-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-2bdd3--listen-beat-field-fallback-chromium/error-context.md
+
+  5) [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 390 — vitrine cabinet light reads as light 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="vitrine-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:318:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-557e5-abinet-light-reads-as-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-557e5-abinet-light-reads-as-light-chromium/error-context.md
+
+  6) [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="listen-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:318:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-0fa9c-n-beat-field-reads-as-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-0fa9c-n-beat-field-reads-as-light-chromium/error-context.md
+
+  7) [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 390 — vitrine cabinet light fallback 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="vitrine-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:378:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-e5c58-rine-cabinet-light-fallback-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-e5c58-rine-cabinet-light-fallback-chromium/error-context.md
+
+  8) [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 390 — listen beat field fallback 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="listen-field"]')[22m
+
+
+      284 | async function slotClip(page: Page, scene: string) {
+      285 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 286 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      287 |   await slot.evaluate((el) =>
+      288 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      289 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:286:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_a585633c-963-1/tests/overhaul/flagship-visibility.spec.ts:378:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-b2d1d--listen-beat-field-fallback-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-b2d1d--listen-beat-field-fallback-chromium/error-context.md
+
+  8 failed
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 1440 — vitrine cabinet light reads as light 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 1440 — vitrine cabinet light fallback 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 1440 — listen beat field fallback 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 390 — vitrine cabinet light reads as light 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 390 — vitrine cabinet light fallback 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 390 — listen beat field fallback 

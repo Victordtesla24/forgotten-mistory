@@ -158,7 +158,7 @@ export default function Listen() {
           no WebGL, reduced motion, or the section off screen, `Scene` mounts
           nothing and the closing screen is exactly as empty as it was. */}
       <div className={styles.field} data-close={closed ? 'closed' : 'open'}>
-        <Scene className={styles.fieldSlot}>
+        <Scene className={styles.fieldSlot} sceneId="listen-field">
           <ListenField closed={closed} beat={beat} />
         </Scene>
       </div>
