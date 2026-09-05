@@ -24,9 +24,18 @@
  * the on-screen introduction had been rewritten).
  *
  * Runs before `next build` in both `build` and `build:static`, beside
- * cv_fingerprint.mjs. Fails loudly if the MP3 is missing, if ffmpeg/ffprobe are
- * unavailable, or if the digest does not match the asset module — a waveform
- * with nothing to be the waveform of is worse than a sine.
+ * cv_fingerprint.mjs. Fails loudly if the MP3 is missing or if its digest does
+ * not match the asset module — a waveform with nothing to be the waveform of is
+ * worse than a sine.
+ *
+ * When ffmpeg/ffprobe are unavailable (e.g. a GitHub-hosted deploy runner) the
+ * envelope cannot be regenerated, but the committed
+ * app/data/generated/greeting-envelope.ts was written from these exact MP3
+ * bytes. If its `sourceSha256` still equals the current MP3 digest that file is
+ * already correct, so this script keeps it and exits 0 rather than failing the
+ * deploy. It only FATALs on a missing tool-chain when the committed envelope is
+ * absent or its digest has drifted from the MP3 — the one case where the
+ * shipped band would describe a file the app no longer carries.
  */
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -46,6 +55,47 @@ const SAMPLE_RATE = 8000;
 function fail(message) {
   console.error(`[greeting-envelope] FATAL: ${message}`);
   process.exit(1);
+}
+
+// ffmpeg could not produce PCM (most often: not installed on the deploy
+// runner). The committed envelope was generated from the MP3's exact bytes, so
+// if it still pins the current digest it is already the correct waveform and we
+// keep it instead of breaking the build. FATAL only when there is nothing safe
+// to fall back to: the committed file is missing, unreadable, or its
+// `sourceSha256` has drifted from the MP3 the app now ships.
+function keepCommittedEnvelopeOrFail(ffmpegError, expectedSha256) {
+  const detail = ffmpegError instanceof Error ? ffmpegError.message : String(ffmpegError);
+  let committed;
+  try {
+    committed = readFileSync(OUT_PATH, 'utf8');
+  } catch {
+    fail(
+      `ffmpeg could not decode the greeting (${detail}) and no committed ` +
+        `envelope exists at ${OUT_PATH} to fall back to. Install ffmpeg, or ` +
+        'commit a generated envelope for this greeting.',
+    );
+  }
+  const committedMatch = committed.match(/sourceSha256:\s*'([0-9a-f]{64})'/);
+  if (!committedMatch) {
+    fail(
+      `ffmpeg could not decode the greeting (${detail}) and the committed ` +
+        `envelope at ${OUT_PATH} carries no readable sourceSha256 to verify ` +
+        'against the shipped greeting.',
+    );
+  }
+  if (committedMatch[1] !== expectedSha256) {
+    fail(
+      `ffmpeg could not decode the greeting (${detail}) and the committed ` +
+        `envelope pins ${committedMatch[1]}, which has drifted from the current ` +
+        `MP3 digest ${expectedSha256}. Regenerate the envelope where ffmpeg is ` +
+        'available, then commit it.',
+    );
+  }
+  console.log(
+    `[greeting-envelope] ffmpeg unavailable — kept committed envelope; its ` +
+      `sourceSha256 ${expectedSha256.slice(0, 8)} still matches the MP3. (${detail})`,
+  );
+  process.exit(0);
 }
 
 let mp3Bytes;
@@ -92,7 +142,9 @@ try {
     { maxBuffer: 1 << 28 },
   );
 } catch (error) {
-  fail(`ffmpeg failed to decode the greeting: ${error instanceof Error ? error.message : error}`);
+  // Do not fail the deploy just because this runner has no ffmpeg: keep the
+  // committed envelope when it still pins the current MP3, FATAL otherwise.
+  keepCommittedEnvelopeOrFail(error, sourceSha256);
 }
 
 const sampleCount = Math.floor(pcm.length / 2);
