@@ -1,0 +1,45 @@
+loadavg before: 24.08 19.62 12.89 8/2322 3448539
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-about.spec.ts tests/e2e/hero.spec.ts -g TC-SCENE-ABOUT-03|TC-SCENE-ABOUT-04|TC-HERO-19|TC-HERO-15 --workers=1 --repeat-each=2 --reporter=list
+
+[2mRunning [22m8[2m tests using [22m1[2m worker[22m
+
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/e2e/hero.spec.ts:475:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget[39m[2m (3.2s)[22m
+  [32m✓[39m  [2m2 [22m[chromium] › tests/e2e/hero.spec.ts:623:7 › Hero portrait › TC-HERO-19: eager image weight ≤ 500 kB and the loop is fetched only after load[2m (4.0s)[22m
+  [32m✓[39m  [2m3 [22m[chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose[2m (6.0s)[22m
+  [32m✓[39m  [2m4 [22m[chromium] › tests/overhaul/scene-about.spec.ts:157:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-04: under reduced motion there is no canvas, and the rose is still the instrument[2m (3.9s)[22m
+  [32m✓[39m  [2m5 [22m[chromium] › tests/e2e/hero.spec.ts:475:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget[2m (3.5s)[22m
+  [32m✓[39m  [2m6 [22m[chromium] › tests/e2e/hero.spec.ts:623:7 › Hero portrait › TC-HERO-19: eager image weight ≤ 500 kB and the loop is fetched only after load[2m (4.3s)[22m
+  [32m✓[39m  [2m7 [22m[chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose[2m (6.5s)[22m
+  [32m✓[39m  [2m8 [22m[chromium] › tests/overhaul/scene-about.spec.ts:157:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-04: under reduced motion there is no canvas, and the rose is still the instrument[2m (4.0s)[22m
+
+
+[31m  1) [chromium] › tests/e2e/hero.spec.ts:475:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget [39m
+
+    Error: CLS (PERF-03 budget)
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: < [32m0.05[39m
+    Received:   [31m0.1763888888888889[39m
+
+    [0m [90m 514 |[39m         })[33m,[39m
+     [90m 515 |[39m     )[33m;[39m
+    [31m[1m>[22m[39m[90m 516 |[39m     expect(cls[33m,[39m [32m'CLS (PERF-03 budget)'[39m)[33m.[39mtoBeLessThan([35m0.05[39m)[33m;[39m
+     [90m     |[39m                                         [31m[1m^[22m[39m
+     [90m 517 |[39m   })[33m;[39m
+     [90m 518 |[39m
+     [90m 519 |[39m   test([32m'TC-HERO-16: a failed loop leaves the poster in place and throws nothing'[39m[33m,[39m [36masync[39m ({ page }) [33m=>[39m {[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_a0a1850a-28a-1/tests/e2e/hero.spec.ts:516:41[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-TC--b034a--and-CLS-stays-under-budget-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-TC--b034a--and-CLS-stays-under-budget-chromium/error-context.md[22m
+
+[31m  1 failed[39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:475:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget [39m
+[32m  7 passed[39m[2m (41.6s)[22m
+ISOLATE_EXIT=1
+loadavg after: 13.89 17.53 12.50 4/2320 3452016
