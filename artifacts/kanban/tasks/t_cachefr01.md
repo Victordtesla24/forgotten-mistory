@@ -31,3 +31,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-05T09:23:04.884Z)
+ROOT CAUSE PROVEN 09:2xZ (returning-visitor probe, persistent Chrome profile against production): load 1 installs fm-static-v1 and precaches '/'; load 2 → performance navigation deliveryType 'cache-storage', transferSize 0, workerStart 2 ms — the page is served from CacheStorage with NO revalidation (public/sw.js fetch handler: if (cached) return cached). sw.js is byte-identical to 2b7016f (2026-06-14) so no new worker ever installs → a returning visitor keeps the HTML + immutable chunks of their FIRST visit until a hard refresh. Every orchestrator/reviewer probe used a fresh context (no worker) and therefore saw each new build — which is why the evidence was green while the Owner saw nothing for 4–5 hours. Fix in flight in this lane; after it lands the monitor gains a returning-visitor check (second load pageMeta === live meta).

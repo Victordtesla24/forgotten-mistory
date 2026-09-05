@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T09:16:20.880Z",
+  "updated": "2026-09-05T09:23:41.262Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -1167,7 +1167,7 @@
     {
       "id": "t_60d9cd7a",
       "title": "Scenes 5 + 6 — #vitrine and #listen flagships: GLSL fields under the plates and the caliper (R2, M1)",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 84,
       "parents": [
@@ -1182,7 +1182,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:05.931Z",
-      "updated": "2026-09-05T09:09:06.060Z",
+      "updated": "2026-09-05T09:23:41.262Z",
       "summary": "SPEC-v10.md c20 minus the C-02 rail fix (cycle 11 lands it). #vitrine: 6 SVG drawings, 0 canvases → a shader field under the rail that answers the lit plate; #listen: CSS caliper beat, 0 canvases → a field that answers the caliper-close (the CSS beat stays the single motion beat, MOT-F-4). Files: components/sections/Vitrine/VitrineField.tsx, vitrine.glsl.ts, Vitrine.tsx, Vitrine.module.css, components/sections/Listen/ListenField.tsx, listen.glsl.ts, Listen.tsx, Listen.module.css; tests/overhaul/scene-vitrine.spec.ts + scene-listen.spec.ts (TDD first). Two commits; if the 30-min cap approaches, ship #vitrine and return goal_complete:false naming #listen.",
       "decisions": [],
       "comments": [
@@ -1192,7 +1192,8 @@
           "text": "09:0xZ: implementer done (1150e3e vitrine field + trace stagger; d53d228 listen field; 36/36 section specs, gl=force 1 canvas each at 1440/390, tsc/lint/audit/build green, +0 kB); pipeline consolidated c76459d and it is LIVE (c76459d0). The verifier was killed when the orchestrator process restarted at ~09:03Z (host load 72 with three batteries) — relaunched from the cached implementer result."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "V-scenes5+6 PASS (7cc9ae0): one canvas each at 1440/390 gl=force, reduced motion 0/0, no-GL readable, trace stagger 21.7 ms ≥ 20 ms, scroll-behavior smooth/auto, +0 kB; LIVE since c76459d0. Verifier: #vitrine @390 'close to imperceptible' — folded into flagship visibility B (t_flagvis0b). Minor F-1..F-4 (greyscale evidence PNGs, ListenField comment, stale Listen.module.css doc, cascade ordering) → t_flagvis0b."
     },
     {
       "id": "t_dc096608",
@@ -1753,10 +1754,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T09:14:38.798Z",
-      "updated": "2026-09-05T09:14:38.798Z",
+      "updated": "2026-09-05T09:23:04.884Z",
       "summary": "Owner reported no visible change twice (06:57Z, 09:08Z). Measured 09:09Z: curl -sI / → cache-control: max-age=3600 (firebase.json sets Cache-Control only for /_next/static, /assets, /docs, /sw.js); public/sw.js precaches / cache-first with a static CACHE_VERSION v1 → returning visitors keep the old shell for up to an hour or until the worker updates. Lane wf_b12ab287-6ab.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T09:23:04.884Z",
+          "by": "orchestrator",
+          "text": "ROOT CAUSE PROVEN 09:2xZ (returning-visitor probe, persistent Chrome profile against production): load 1 installs fm-static-v1 and precaches '/'; load 2 → performance navigation deliveryType 'cache-storage', transferSize 0, workerStart 2 ms — the page is served from CacheStorage with NO revalidation (public/sw.js fetch handler: if (cached) return cached). sw.js is byte-identical to 2b7016f (2026-06-14) so no new worker ever installs → a returning visitor keeps the HTML + immutable chunks of their FIRST visit until a hard refresh. Every orchestrator/reviewer probe used a fresh context (no worker) and therefore saw each new build — which is why the evidence was green while the Owner saw nothing for 4–5 hours. Fix in flight in this lane; after it lands the monitor gains a returning-visitor check (second load pageMeta === live meta)."
+        }
+      ],
       "blocker": null
     },
     {
