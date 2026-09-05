@@ -133,27 +133,38 @@ const PRIORITY_BUDGET_MS = 15000;
  * The floor the hero's first-paint still has to clear, as mean WCAG relative
  * luminance over the slot.
  *
- * Calibrated against the thing it is here to catch, which is an unlit slot.
  * `--ink-900` (`#0A0A0A`), the ink the hero's ground is built from, measures
  * 0.0030 — so a slot that had lost its still, or had gained a full-frame wash
- * that extinguished it, lands within a rounding error of zero. The still as it
- * ships measures **0.0605 at 1440×900** and **0.0908 at 390×844** (this lane's
- * `03-still-luminance.log`); the two differ because `.stage::after`, the desktop
- * scrim, is `display: none` on a phone. 0.04 sits under the smaller of the two
- * with a third of it to spare — room for font and rasteriser variation between
- * hosts — and is still more than thirteen times the ink. Anything that actually
- * put the hero's first paint out lands far below it.
+ * that extinguished it, lands within a rounding error of zero.
  *
- * It is deliberately *not* the 0.10 the architecture note names. That number
- * describes the finished composition — the overture's own frame 0 under a
- * **graded** text plate (§4.1(b), a separate lane) — and today's still is the
- * site's gradient under the *existing* 0.88 full-frame scrim, which by
- * construction cannot reach it: the wash is exactly what §4.1(b) is being
- * written to remove. Asserting 0.10 here would fail on correct code and would
- * claim this lane shipped a composition it did not. The floor is raised in the
- * commit that changes the picture it measures.
+ * **0.10 is the acceptance number, and it is here now.** An earlier pass of this
+ * file carried 0.04 with a note explaining that the site's hand-drawn gradient
+ * could not reach the architecture note's 0.10 under the desktop scrim, and that
+ * the floor would rise "in the commit that changes the picture it measures". The
+ * independent production review
+ * (`docs/delivery/evidence/v10-20260905T0515Z/G-REV/e3f0206c/08-adversarial-review.md`)
+ * named that for what it was: a bar renegotiated to fit the code, measuring
+ * 0.0530 at 1440 and 0.0812 at 390 against an acceptance of ≥ 0.10. So this is
+ * that commit. The still is no longer an *impression* of the scene drawn in five
+ * CSS gradients; it is a 3840×2160 frame of `atmosphere.glsl.ts` itself, rendered
+ * by `scripts/assets/render-hero-poster.mjs` at the shader's brightest resting
+ * phase, and the floor is the number the task asked for rather than the number
+ * the gradients happened to reach. It is never to be lowered: a build that cannot
+ * clear it has lost the picture, and the fix is the picture.
  */
-const LIT_STILL_MIN_LUMA = 0.04;
+const LIT_STILL_MIN_LUMA = 0.1;
+
+/**
+ * The poster, as `.stage` has to name it.
+ *
+ * (b) below asks only that the slot declares *something*, which a stack of
+ * gradients satisfies — and did, for two builds, while the reviewer's probe found
+ * "no `url()` layer at any width". A rendered frame is a different claim from a
+ * hand-drawn one, and it is checkable: the computed `background-image` must carry
+ * an image layer served from `/assets/`. Together with the luminance floor this
+ * pins both halves — the still is the shader's own frame, and it is lit.
+ */
+const POSTER_LAYER = /url\((["']?)[^"')]*\/assets\/[^"')]+\1\)/;
 
 /** Relative luminance (WCAG) of one 8-bit sRGB triple. */
 function relativeLuminance(r: number, g: number, b: number): number {
@@ -229,6 +240,18 @@ test.describe('G-H2a: the hero atmosphere is in the first paint', () => {
         backgroundImage,
         'the hero slot declares no background of its own — with the scene absent there is nothing to see',
       ).not.toBe('none');
+
+      // (b2) …and what it declares is the *rendered* still, not a drawing of it.
+      // `scripts/assets/render-hero-poster.mjs` puts a real frame of
+      // `atmosphere.glsl.ts` under `/assets/`; `.stage` names it as the first
+      // layer of its stack, with the gradients kept underneath as the fallback
+      // for a browser that cannot decode it. Lose the layer and the hero's first
+      // paint is an impression of the scene again.
+      expect(
+        backgroundImage,
+        'the hero slot carries no poster layer — its first paint is a hand-drawn impression of ' +
+          `the scene rather than a rendered frame of it (background-image: ${backgroundImage})`,
+      ).toMatch(POSTER_LAYER);
 
       // (c) The still is *lit* — the half that cannot be satisfied by a promise.
       // A `url()` that 404s and a gradient of transparent stops both pass (b).
