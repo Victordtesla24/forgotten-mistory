@@ -112,8 +112,8 @@ describe('buildMiniVicSystemPrompt — grounding facts', () => {
 describe('buildMiniVicSystemPrompt — answer rules', () => {
   const prompt = fn.buildMiniVicSystemPrompt();
 
-  it('caps answers at 1-3 sentences and bans list formatting', () => {
-    assert.match(prompt, /1-3 sentences/);
+  it('caps answers at 1-2 sentences within a word budget and bans list formatting', () => {
+    assert.match(prompt, /1-2 sentences, no more than 45 words/);
     assert.match(prompt, /no bullet lists/i);
   });
 

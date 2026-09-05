@@ -147,7 +147,29 @@ const MAX_TOTAL_CHARS = 16000;
 
 /** Sampling: low temperature keeps answers close to the grounding facts. */
 const CHAT_TEMPERATURE = 0.4;
-const CHAT_MAX_TOKENS = 400;
+/**
+ * Output ceiling, sized for the Hosting-path TTFB budget (G-M4).
+ *
+ * Firebase Hosting serves the `/api/chat` rewrite through its Fastly CDN, which
+ * BUFFERS the whole Cloud Run response before it emits a single byte — the
+ * `x-accel-buffering: no` the origin sends is an nginx directive Fastly ignores,
+ * and the edge log proves it (`x-timer … VE2046`; first byte == last byte). So
+ * the Hosting first-byte time is not the origin's first-token time (~0.6 s) but
+ * its *total completion* time. Measured on live 2026-09-05: origin total
+ * 1.6–2.1 s → Hosting TTFB 1.6–2.0 s, i.e. FAIL against the < 1.5 s budget while
+ * the origin's own first token was fast.
+ *
+ * The only lever that moves a buffered response's first byte is how long the
+ * whole answer takes to generate, which is dominated by the token count. A 400
+ * token ceiling let a two-paragraph answer run ~120 tokens and ~1.0 s of
+ * generation on top of first-token latency. Capping at 128 — paired with the
+ * "1-2 sentences, ≤45 words" rule in the system prompt so a well-formed answer
+ * finishes well before the ceiling rather than being cut mid-word — brings a
+ * typical answer to ~55-70 tokens and origin total under ~1.3 s, so the buffered
+ * Hosting first byte lands under budget. Recruiter chat answers are single
+ * exchanges, not essays; brevity is the right product shape here as well.
+ */
+const CHAT_MAX_TOKENS = 128;
 
 /**
  * Per-rung timeout and whole-ladder budget. The browser aborts at 14 s and then
@@ -304,7 +326,7 @@ function buildMiniVicSystemPrompt(mode = DEFAULT_MODE) {
     'You are "MiniVic", Vikram Deshpande\'s AI clone on his portfolio site. Speak in the first person as Vikram ("I"). Visitors are recruiters, hiring managers and prospective clients.',
     "",
     "RULES",
-    "1. Answer in 1-3 sentences. Prose only — no bullet lists, no headings, no markdown.",
+    "1. Answer in 1-2 sentences, no more than 45 words. Prose only — no bullet lists, no headings, no markdown.",
     "2. Lead with the concrete fact or number, then at most one clause of context.",
     "3. Use only the FACTS below. Never invent or estimate an employer, title, date, metric or credential.",
     '4. Everything in FACTS is on the record. Never reply that something "is not specified", "is not outlined" or "is not available" when it appears in FACTS — state the fact.',
@@ -611,18 +633,23 @@ exports.minivicChat = onRequest(
   {
     secrets: [OPENROUTER_API_KEY, DEEPSEEK_API_KEY, ZAI_API_KEY, OPENAI_API_KEY],
     region: "us-central1",
-    // One always-warm instance. The Hosting rewrite `/api/chat` is served
-    // through Firebase's Fastly edge to this Cloud Run service; a warm instance
-    // returns in ~0.11 s through Hosting (measured), but a COLD instance made a
-    // live probe pay ~2.3 s at the edge (2.295 s Hosting vs 0.941 s origin,
-    // ADV-1556Z) — the whole gap is container start, not SSE buffering, because
-    // the cold-probe request (`{"message":"ping"}`) is rejected 400 before any
-    // provider ladder or stream runs. `minScale=1` removes scale-to-zero so no
-    // visitor's first send — and no cold probe — ever pays that start again.
-    // The `?warm=1` GET still hides the rare secondary cold start for free; this
-    // guarantees the primary one cannot happen. One 256 MiB idle instance in
-    // us-central1 is ~US$9-12/mo — bought deliberately for the site's flagship
-    // surface (G-M4: cold Hosting POST /api/chat TTFB < 1.5 s).
+    // One always-warm instance. `minScale=1` removes scale-to-zero so no
+    // visitor's first send ever pays a ~1 s container start, and the `?warm=1`
+    // GET hides the rare secondary cold start for free. One 256 MiB idle
+    // instance in us-central1 is ~US$9-12/mo — bought for the site's flagship
+    // surface.
+    //
+    // Warmth is necessary but NOT sufficient for the G-M4 gate. An earlier note
+    // here claimed a warm instance returns in ~0.11 s through Hosting; that
+    // number was the `{"message":"ping"}` probe, which is rejected 400 before
+    // any provider runs — not a real answer. On a VALID `messages[]` payload the
+    // Hosting rewrite is served through Firebase's Fastly CDN, which buffers the
+    // entire streamed reply (first byte == last byte; `x-timer … VE2046`), so
+    // Hosting first-byte time equals the origin's TOTAL completion time, not its
+    // ~0.6 s first token. That is why a warm origin measured 1.6–2.0 s at the
+    // edge (independent review on 2806edec). The buffered budget is met by
+    // shortening the answer itself (see CHAT_MAX_TOKENS and system-prompt rule
+    // 1), which lowers origin total under the < 1.5 s Hosting TTFB budget.
     minInstances: 1,
     maxInstances: 5,
     timeoutSeconds: 30,
