@@ -1,0 +1,127 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/chatbot.spec.ts tests/a11y tests/monochrome tests/overhaul/avatar.spec.ts tests/overhaul/voiceover.spec.ts tests/e2e/avatar-voice.spec.ts tests/content/content-check.spec.ts --workers=2 --reporter=list
+
+[2mRunning [22m91[2m tests using [22m2[2m workers[22m
+
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/a11y/accessibility.spec.ts:104:7 › A11y: axe-core Accessibility Audit › A11Y-02: Hero section passes axe check[2m (3.4s)[22m
+  [32m✓[39m  [2m 1 [22m[chromium] › tests/a11y/accessibility.spec.ts:85:7 › A11y: axe-core Accessibility Audit › A11Y-01: Full page passes axe check (wcag2a + wcag2aa + wcag21a + wcag21aa)[2m (6.0s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/a11y/accessibility.spec.ts:109:7 › A11y: axe-core Accessibility Audit › A11Y-03: About section passes axe check[2m (3.9s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/a11y/accessibility.spec.ts:114:7 › A11y: axe-core Accessibility Audit › A11Y-04: Experience section passes axe check[2m (3.5s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/a11y/accessibility.spec.ts:119:7 › A11y: axe-core Accessibility Audit › A11Y-05: Skills section passes axe check[2m (3.5s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/a11y/accessibility.spec.ts:124:7 › A11y: axe-core Accessibility Audit › A11Y-06: Vitrine rail passes axe check, including scrollable-region-focusable[2m (3.1s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/a11y/accessibility.spec.ts:129:7 › A11y: axe-core Accessibility Audit › A11Y-07: Listen (closing) section passes axe check[2m (3.0s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/a11y/accessibility.spec.ts:134:7 › A11y: axe-core Accessibility Audit › A11Y-08: Navigation overlay (open state) passes axe check[2m (2.0s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/a11y/accessibility.spec.ts:175:7 › A11y: axe-core Accessibility Audit › A11Y-10: Keyboard Escape closes the nav overlay and returns focus to the toggle[2m (1.2s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/a11y/accessibility.spec.ts:145:7 › A11y: axe-core Accessibility Audit › A11Y-09: Tab moves focus forward through real, visible controls[2m (2.7s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/a11y/accessibility.spec.ts:189:7 › A11y: axe-core Accessibility Audit › A11Y-11: The page exposes one navigation landmark and one main landmark[2m (1.1s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/a11y/accessibility.spec.ts:195:7 › A11y: axe-core Accessibility Audit › A11Y-12: Every section is reachable by its own accessible name[2m (2.2s)[22m
+
+=== GC-01 live repository URLs (#vitrine) ===
+  "https://aether.srv1356245.hstgr.cloud"  8.71:1  (fg #c9a84c on modal bg #090909, 12px/400, opacity chain 1, ground rgb(10, 10, 10); spread 8.71–8.66:1)
+  "https://abentertainment.com.au"  5.62:1  (fg #948869 on modal bg #0b0b0b, 12px/400, opacity chain 0.62, ground rgb(10, 10, 10); spread 5.63–5.62:1)
+  "https://forgotten-mistory.web.app"  8.71:1  (fg #c9a84c on modal bg #090909, 12px/400, opacity chain 1, ground rgb(10, 10, 10); spread 8.71–8.66:1)
+  [32m✓[39m  [2m14 [22m[chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited[2m (3.9s)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/a11y/accessibility.spec.ts:209:7 › A11y: axe-core Accessibility Audit › A11Y-13: Images have alt text, links and buttons have discernible names[2m (6.1s)[22m
+
+=== GC-02 status labels (#skills) ===
+  "measured in production"  6.28:1  (fg #939393 on modal bg #0e0e0e, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 6.32–6.24:1)
+  "measured in production"  6.28:1  (fg #939393 on modal bg #0e0e0e, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 6.32–6.24:1)
+  "measured in production"  6.28:1  (fg #939393 on modal bg #0e0e0e, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 6.32–6.19:1)
+  "measured in production"  6.28:1  (fg #939393 on modal bg #0e0e0f, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 6.28–6.24:1)
+  "measured in production"  6.28:1  (fg #939393 on modal bg #0e0e0f, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 6.33–6.24:1)
+  "measured in production"  6.44:1  (fg #939393 on modal bg #0a0a0a, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 6.52–1.93:1)
+  [32m✓[39m  [2m15 [22m[chromium] › tests/a11y/gold-contrast.spec.ts:328:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-02: every skills status label clears 4.5:1[2m (2.4s)[22m
+
+=== GC-03 gold-on---ink-500 sweep === 0 offender(s)
+  [32m✓[39m  [2m16 [22m[chromium] › tests/a11y/gold-contrast.spec.ts:343:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-03: no gold text is ever painted on an --ink-500 ground[2m (4.6s)[22m
+  [32m✓[39m  [2m17 [22m[chromium] › tests/a11y/interaction-states.spec.ts:362:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS — every focusable element paints a designed focus ring[2m (6.2s)[22m
+  [32m✓[39m  [2m18 [22m[chromium] › tests/a11y/interaction-states.spec.ts:389:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-MINIVIC — the clone panel paints a designed focus ring on every control[2m (5.2s)[22m
+  [32m✓[39m  [2m19 [22m[chromium] › tests/a11y/interaction-states.spec.ts:415:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-REDUCED-MOTION — the focus ring survives prefers-reduced-motion[2m (6.2s)[22m
+  [32m✓[39m  [2m20 [22m[chromium] › tests/a11y/interaction-states.spec.ts:437:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-DISABLED — disabled controls carry the locked disabled treatment[2m (5.3s)[22m
+  [32m✓[39m  [2m22 [22m[chromium] › tests/a11y/minivic-launcher.spec.ts:70:9 › A11y: the MiniVic launcher › TC-MV-ARIA-01 @ 1440: no aria-hidden ancestor, and axe finds no aria-hidden-focus[2m (3.3s)[22m
+  [32m✓[39m  [2m21 [22m[chromium] › tests/a11y/interaction-states.spec.ts:471:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-CURSOR — no interactive element renders the browser-default cursor[2m (4.7s)[22m
+  [32m✓[39m  [2m24 [22m[chromium] › tests/a11y/minivic-launcher.spec.ts:103:7 › A11y: the MiniVic launcher › TC-MV-LABEL-01: the accessible name starts with the visible label (WCAG 2.5.3)[2m (1.5s)[22m
+  [32m✓[39m  [2m23 [22m[chromium] › tests/a11y/minivic-launcher.spec.ts:70:9 › A11y: the MiniVic launcher › TC-MV-ARIA-01 @ 390: no aria-hidden ancestor, and axe finds no aria-hidden-focus[2m (3.1s)[22m
+  [32m✓[39m  [2m25 [22m[chromium] › tests/a11y/minivic-launcher.spec.ts:140:9 › A11y: the MiniVic launcher › TC-MV-MARK-01 @ 1440: the resting launcher paints a mark, and no video is source-less[2m (1.9s)[22m
+  [32m✓[39m  [2m26 [22m[chromium] › tests/a11y/minivic-launcher.spec.ts:140:9 › A11y: the MiniVic launcher › TC-MV-MARK-01 @ 390: the resting launcher paints a mark, and no video is source-less[2m (1.6s)[22m
+  [32m✓[39m  [2m27 [22m[chromium] › tests/a11y/minivic-launcher.spec.ts:205:7 › A11y: the MiniVic launcher › TC-MV-SKIP-01: the launcher is reachable in three tab stops and opens from the keyboard[2m (3.5s)[22m
+  [32m✓[39m  [2m29 [22m[chromium] › tests/a11y/minivic-occlusion.spec.ts:304:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-02: the closed launcher never paints a light surface on a phone[2m (6.2s)[22m
+  [32m✓[39m  [2m28 [22m[chromium] › tests/a11y/minivic-occlusion.spec.ts:245:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step[2m (14.1s)[22m
+  [32m✓[39m  [2m30 [22m[chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Hero keeps a parallel reduced-motion choreography[2m (6.2s)[22m
+  [32m✓[39m  [2m31 [22m[chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › About keeps a parallel reduced-motion choreography[2m (6.0s)[22m
+  [32m✓[39m  [2m32 [22m[chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Experience keeps a parallel reduced-motion choreography[2m (5.9s)[22m
+  [32m✓[39m  [2m33 [22m[chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Skills keeps a parallel reduced-motion choreography[2m (5.8s)[22m
+  [32m✓[39m  [2m34 [22m[chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Vitrine keeps a parallel reduced-motion choreography[2m (6.1s)[22m
+  [32m✓[39m  [2m36 [22m[chromium] › tests/a11y/reduced-motion-choreography.spec.ts:595:7 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › RM-6 no infinite animation keeps running under reduce (the launcher status dot)[2m (2.5s)[22m
+  [32m✓[39m  [2m37 [22m[chromium] › tests/a11y/reduced-motion-choreography.spec.ts:626:7 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › RM-5 no blanket universal kill switch survives in the shipped CSS[2m (1.3s)[22m
+  [32m✓[39m  [2m35 [22m[chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Listen keeps a parallel reduced-motion choreography[2m (6.3s)[22m
+  [32m✓[39m  [2m39 [22m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground[2m (17.3s)[22m
+  [32m✓[39m  [2m40 [22m[chromium] › tests/content/content-check.spec.ts:41:7 › Content Preservation › CT-01: Hero name from hero.ts appears verbatim[2m (1.0s)[22m
+  [32m✓[39m  [2m41 [22m[chromium] › tests/content/content-check.spec.ts:46:7 › Content Preservation › CT-02: Hero positioning line appears verbatim[2m (1.0s)[22m
+  [32m✓[39m  [2m42 [22m[chromium] › tests/content/content-check.spec.ts:53:7 › Content Preservation › CT-03: Hero statement states a tenure and names the current engagement[2m (857ms)[22m
+  [32m✓[39m  [2m43 [22m[chromium] › tests/content/content-check.spec.ts:72:7 › Content Preservation › CT-05: About carries the career facts[2m (1.2s)[22m
+  [32m✓[39m  [2m38 [22m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground[2m (23.2s)[22m
+  [32m✓[39m  [2m44 [22m[chromium] › tests/content/content-check.spec.ts:85:7 › Content Preservation › CT-04: Every employer on the CV is named in the experience timeline[2m (1.3s)[22m
+  [32m✓[39m  [2m45 [22m[chromium] › tests/content/content-check.spec.ts:104:7 › Content Preservation › CT-06: All six curated repositories render as plates with real GitHub links[2m (1.6s)[22m
+  [32m✓[39m  [2m46 [22m[chromium] › tests/content/content-check.spec.ts:124:7 › Content Preservation › CT-07: The Vedic-astronomy work survives the rebuild as a vitrine plate[2m (1.4s)[22m
+  [32m✓[39m  [2m47 [22m[chromium] › tests/content/content-check.spec.ts:137:7 › Content Preservation › CT-08: Credentials and the un-held certification both appear in the calibration table[2m (1.6s)[22m
+  [32m✓[39m  [2m48 [22m[chromium] › tests/content/content-check.spec.ts:159:7 › Content Preservation › CT-09: Contact channels from siteContent appear verbatim in the closing section[2m (1.6s)[22m
+  [32m✓[39m  [2m49 [22m[chromium] › tests/content/content-check.spec.ts:172:7 › Content Preservation › CT-10: Every hero figure is printed with the source it came from[2m (1.5s)[22m
+  [32m✓[39m  [2m50 [22m[chromium] › tests/content/content-check.spec.ts:214:7 › Content Preservation › CT-11: GitHub and LinkedIn are linked from the closing section[2m (1.3s)[22m
+  [32m✓[39m  [2m51 [22m[chromium] › tests/content/content-check.spec.ts:232:7 › Content Preservation › CT-15: LinkedIn (primary recruiter channel) is linked from the persistent navigation[2m (1.5s)[22m
+  [32m✓[39m  [2m53 [22m[chromium] › tests/content/content-check.spec.ts:255:7 › Content Preservation › CT-17: MiniVic availability default and hiring copy keep active-intent ATO wording[2m (10ms)[22m
+  [32m✓[39m  [2m54 [22m[chromium] › tests/e2e/avatar-voice.spec.ts:53:7 › R3a: the synthetic voice › POST /api/tts returns MP3 audio, not a 502[2m (338ms)[22m
+  [32m✓[39m  [2m55 [22m[chromium] › tests/e2e/avatar-voice.spec.ts:67:7 › R3a: the synthetic voice › the panel that plays the voice labels it synthetic[2m (1.4s)[22m
+  [32m✓[39m  [2m52 [22m[chromium] › tests/content/content-check.spec.ts:241:7 › Content Preservation › CT-14: MiniVicBot mounts from the layout without throwing[2m (3.2s)[22m
+  [32m✓[39m  [2m56 [22m[chromium] › tests/e2e/chatbot.spec.ts:77:7 › E2E: MiniVicBot Chatbot › TC-BOT-01: MiniVicBot toggle button is visible on the page[2m (1.5s)[22m
+  [32m✓[39m  [2m57 [22m[chromium] › tests/e2e/chatbot.spec.ts:85:7 › E2E: MiniVicBot Chatbot › TC-BOT-02: Opening MiniVic reveals the panel and chat input[2m (1.5s)[22m
+  [32m✓[39m  [2m58 [22m[chromium] › tests/e2e/chatbot.spec.ts:93:7 › E2E: MiniVicBot Chatbot › TC-BOT-03: Opening MiniVic shows the curated quick prompts[2m (1.9s)[22m
+  [32m✓[39m  [2m59 [22m[chromium] › tests/e2e/chatbot.spec.ts:103:7 › E2E: MiniVicBot Chatbot › TC-BOT-04: Closing MiniVic via the launcher hides the panel and clears greeting audio state[2m (2.8s)[22m
+  [32m✓[39m  [2m60 [22m[chromium] › tests/e2e/chatbot.spec.ts:136:7 › E2E: MiniVicBot Chatbot › TC-BOT-05: MiniVicBot open/close cycle does not throw page errors[2m (2.4s)[22m
+  [32m✓[39m  [2m61 [22m[chromium] › tests/e2e/chatbot.spec.ts:149:7 › E2E: MiniVicBot Chatbot › TC-BOT-06: MiniVic shell is a labelled dialog and takes focus when it opens[2m (2.1s)[22m
+  [32m✓[39m  [2m62 [22m[chromium] › tests/e2e/chatbot.spec.ts:172:7 › E2E: MiniVicBot Chatbot › TC-BOT-07: The launcher announces which action it will perform[2m (2.3s)[22m
+  [32m✓[39m  [2m63 [22m[chromium] › tests/e2e/chatbot.spec.ts:196:7 › E2E: MiniVicBot Chatbot › TC-BOT-08: Persona selector is a pressed-state toggle group with one active mode[2m (2.2s)[22m
+  [32m✓[39m  [2m64 [22m[chromium] › tests/e2e/chatbot.spec.ts:218:7 › E2E: MiniVicBot Chatbot › TC-BOT-09: Mobile shell stays inside the viewport with composer visible[2m (1.7s)[22m
+  [32m✓[39m  [2m65 [22m[chromium] › tests/e2e/chatbot.spec.ts:233:7 › E2E: MiniVicBot Chatbot › TC-BOT-10: A question gets exactly one answer, and the composing state clears[2m (1.8s)[22m
+  [32m✓[39m  [2m66 [22m[chromium] › tests/e2e/chatbot.spec.ts:263:7 › E2E: MiniVicBot Chatbot › TC-BOT-12: The open panel stacks above the launcher on its axis and never covers the h1[2m (3.1s)[22m
+  [32m✓[39m  [2m68 [22m[chromium] › tests/e2e/chatbot.spec.ts:377:7 › E2E: MiniVicBot Chatbot › TC-BOT-11: The transcript controls are present and say what they do[2m (1.9s)[22m
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(246, 246, 246)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+  [32m✓[39m  [2m69 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold[2m (1.7s)[22m
+  [32m✓[39m  [2m67 [22m[chromium] › tests/e2e/chatbot.spec.ts:306:7 › E2E: MiniVicBot Chatbot › TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width[2m (6.3s)[22m
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m70 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine[2m (2.4s)[22m
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m71 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine[2m (2.6s)[22m
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m72 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine[2m (2.2s)[22m
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m73 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine[2m (2.4s)[22m
+  [32m✓[39m  [2m74 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold[2m (2.7s)[22m
+  [32m✓[39m  [2m75 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold[2m (2.0s)[22m
+  [32m✓[39m  [2m77 [22m[chromium] › tests/monochrome/monochrome.spec.ts:146:7 › Monochrome Compliance › MONO-02: Body background is achromatic[2m (1.3s)[22m
+  [32m✓[39m  [2m76 [22m[chromium] › tests/monochrome/monochrome.spec.ts:118:7 › Monochrome Compliance › MONO-01: :root publishes the grey ramp and exactly the four sanctioned gold tokens[2m (1.6s)[22m
+  [32m✓[39m  [2m78 [22m[chromium] › tests/monochrome/monochrome.spec.ts:153:7 › Monochrome Compliance › MONO-03: No inline style declares a colour outside the palette[2m (4.3s)[22m
+  [32m✓[39m  [2m79 [22m[chromium] › tests/monochrome/monochrome.spec.ts:207:7 › Monochrome Compliance › MONO-04: Every rendered colour in every section is achromatic or the sanctioned gold[2m (4.5s)[22m
+  [32m✓[39m  [2m81 [22m[chromium] › tests/monochrome/monochrome.spec.ts:244:7 › Monochrome Compliance › MONO-06: Navigation overlay is achromatic when open[2m (2.2s)[22m
+  [32m✓[39m  [2m82 [22m[chromium] › tests/monochrome/monochrome.spec.ts:252:7 › Monochrome Compliance › MONO-07: The check still rejects an unsanctioned hue[2m (1.3s)[22m
+  [32m✓[39m  [2m83 [22m[chromium] › tests/overhaul/avatar.spec.ts:39:7 › TC-FR-CLONE: Clone Rendering (MiniVicBot) › TC-CLONE-03: MiniVicBot launcher is present and interactive on the static build[2m (1.1s)[22m
+  [32m✓[39m  [2m80 [22m[chromium] › tests/monochrome/monochrome.spec.ts:218:7 › Monochrome Compliance › MONO-05: The sanctioned accent is actually in use, and only as the accent[2m (5.1s)[22m
+  [32m✓[39m  [2m85 [22m[chromium] › tests/overhaul/voiceover.spec.ts:60:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-01: The greeting asset is the published cloned-voice recording[2m (2.1s)[22m
+  [32m✓[39m  [2m84 [22m[chromium] › tests/overhaul/avatar.spec.ts:51:7 › TC-FR-CLONE: Clone Rendering (MiniVicBot) › TC-CLONE-05: Pressing the launcher yields a panel carrying real clone content[2m (2.6s)[22m
+  [32m✓[39m  [2m87 [22m[chromium] › tests/overhaul/voiceover.spec.ts:109:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-03: Muting stops the voice and releases the asset[2m (1.9s)[22m
+  [32m✓[39m  [2m86 [22m[chromium] › tests/overhaul/voiceover.spec.ts:84:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-02: Play, pause and resume move the greeting as instructed[2m (3.4s)[22m
+  [32m✓[39m  [2m88 [22m[chromium] › tests/overhaul/voiceover.spec.ts:125:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-04: Opening the clone raises no uncaught audio errors[2m (2.7s)[22m
+  [32m✓[39m  [2m89 [22m[chromium] › tests/overhaul/voiceover.spec.ts:146:7 › TC-FR-VOICE-DYN: Voice never starts by itself › TC-VOICE-DYN-01: Nothing plays on load, or on scrolling the whole page[2m (4.1s)[22m
+  [32m✓[39m  [2m90 [22m[chromium] › tests/overhaul/voiceover.spec.ts:170:7 › TC-FR-VOICE-DYN: Voice never starts by itself › TC-VOICE-DYN-02: Scrolling every section raises no scroll or animation errors[2m (3.7s)[22m
+  [32m✓[39m  [2m91 [22m[chromium] › tests/overhaul/voiceover.spec.ts:186:7 › TC-FR-VOICE-DYN: Voice never starts by itself › TC-VOICE-DYN-03: The composer offers a microphone control[2m (1.9s)[22m
+
+[32m  91 passed[39m[2m (2.6m)[22m

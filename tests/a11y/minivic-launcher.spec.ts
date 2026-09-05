@@ -100,6 +100,108 @@ test.describe('A11y: the MiniVic launcher', () => {
     });
   }
 
+  test('TC-MV-LABEL-01: the accessible name starts with the visible label (WCAG 2.5.3)', async ({
+    page,
+  }) => {
+    // V-c16 §4. The launcher shows the words "Ask Mini Vic" from 834px up while
+    // its accessible name said "Open Mini Vic assistant": a speech-input user
+    // reading the pill aloud addressed a control that does not answer to it.
+    // axe cannot see this — `label-content-name-mismatch` is an experimental
+    // rule and is not in the wcag2a/2aa/21a/21aa tag set this suite runs — so
+    // the rule is stated here directly, in both panel states.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+
+    const toggle = page.locator('[data-testid="minivic-toggle"]');
+    const visibleLabel = await page.evaluate(() => {
+      const el = document.querySelector('[data-testid="minivic-toggle"]')!;
+      const pill = el.querySelector('.minivic-launcher__pill');
+      if (!pill || getComputedStyle(pill).display === 'none') return '';
+      return (pill.textContent || '').replace(/\s+/g, ' ').trim();
+    });
+    expect(visibleLabel, 'the launcher must carry a visible label at 1440').not.toBe('');
+
+    for (const state of ['closed', 'open'] as const) {
+      if (state === 'open') {
+        await toggle.evaluate((el: HTMLElement) => el.click());
+        await expect(page.locator('[data-testid="minivic-panel"]')).toBeVisible();
+      }
+      const name = (await toggle.getAttribute('aria-label')) ?? '';
+      expect(
+        name.toLowerCase().startsWith(visibleLabel.toLowerCase()),
+        `${state}: accessible name "${name}" must start with the visible label "${visibleLabel}"`,
+      ).toBe(true);
+      expect(name).toMatch(/ask mini vic/i);
+      await expect(toggle).toHaveAttribute('aria-expanded', state === 'open' ? 'true' : 'false');
+    }
+  });
+
+  for (const { width, height } of VIEWPORTS) {
+    test(`TC-MV-MARK-01 @ ${width}: the resting launcher paints a mark, and no video is source-less`, async ({
+      page,
+    }) => {
+      // R-c13 CC-03a: the launcher was "a ring around emptiness" — `innerText`
+      // empty, 0 svg, 0 img, and one `<video>` with no src, no <source> and no
+      // poster (`readyState: 0`). A control that paints nothing advertises
+      // nothing, and a source-less <video> is not a fallback, it is a hole.
+      // The resting state has to be drawn by the document itself: a mark that
+      // is there before any network request resolves, at every width.
+      await page.setViewportSize({ width, height });
+      await gotoHome(page);
+      await page.evaluate(() => window.scrollTo(0, window.innerHeight * 2));
+      await page.waitForTimeout(400);
+
+      const state = await page.evaluate(() => {
+        const el = document.querySelector('[data-testid="minivic-toggle"]') as HTMLElement;
+        const marks = Array.from(el.querySelectorAll('svg')).map((s) => {
+          const r = s.getBoundingClientRect();
+          const cs = getComputedStyle(s);
+          return {
+            w: Math.round(r.width),
+            h: Math.round(r.height),
+            visible: (s as SVGElement).checkVisibility?.() ?? true,
+            color: cs.color,
+            opacity: Number(cs.opacity),
+          };
+        });
+        return {
+          marks,
+          text: (el.innerText || '').replace(/\s+/g, ' ').trim(),
+          videos: Array.from(el.querySelectorAll('video')).map((v) => ({
+            currentSrc: v.currentSrc,
+            src: v.getAttribute('src') ?? '',
+            poster: v.getAttribute('poster') ?? '',
+            sources: v.querySelectorAll('source').length,
+          })),
+        };
+      });
+
+      const painted = state.marks.filter((m) => m.visible && m.w >= 20 && m.h >= 20 && m.opacity > 0);
+      expect(
+        painted.length,
+        `the launcher must paint at least one mark of its own at ${width}: svgs=${JSON.stringify(
+          state.marks,
+        )}, innerText="${state.text}"`,
+      ).toBeGreaterThan(0);
+      // The mark is the site's one non-negotiable ink, not a tinted glyph.
+      for (const mark of painted) {
+        const rgb = mark.color.match(/\d+/g)!.map(Number);
+        expect(
+          rgb[0] === rgb[1] && rgb[1] === rgb[2],
+          `the mark is painted ${mark.color}, which is not achromatic`,
+        ).toBe(true);
+      }
+
+      const sourceless = state.videos.filter(
+        (v) => !v.currentSrc && !v.src && !v.sources && !v.poster,
+      );
+      expect(
+        sourceless,
+        `every <video> in the launcher needs a resolved source or a poster: ${JSON.stringify(state.videos)}`,
+      ).toEqual([]);
+    });
+  }
+
   test('TC-MV-SKIP-01: the launcher is reachable in three tab stops and opens from the keyboard', async ({
     page,
   }) => {

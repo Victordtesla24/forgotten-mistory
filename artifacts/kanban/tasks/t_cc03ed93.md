@@ -65,3 +65,6 @@ ACCEPTANCE: For every element under [data-testid="minivic-toggle"], every comput
 
 ## COMMENT (2026-09-05T07:31:25.246Z)
 Merged to main (pipeline 1802b87 + verification 614b8ce). V-c16 FAIL on 2/13 lines → correction cycle 16b (t_c16b0001) dispatched; this task closes when 16b passes.
+
+## COMPLETE (2026-09-05T08:30:41.673Z)
+Cycle 16 + 16b closed: labelled achromatic launcher on a dark plate, occlusion fixed (TC-CONTRAST-01 @390 green), skip link, aria chain clean, TC-BOT-12/14 green, CC-03a/CC-07/ADV-3 closed. Live.

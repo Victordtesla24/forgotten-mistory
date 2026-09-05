@@ -99,14 +99,18 @@
 }
 
 /* The legend is a key: each swatch must be drawn exactly as the thing it
-   explains. The production mark is gold in the table, so it is gold here. */
+   explains. */
 .legendGlyph {
     font-size: var(--fs-small);
     line-height: var(--lh-caption);
     color: var(--mist-200);
 }
 
-.legendItem:first-child .legendGlyph {
+/* The one saturated gold in the card (C-08 / CC-10). It is the key to the
+   evidence mark itself — "measured in production" — and it is the only place
+   the section spends `--gold` at full strength, so the reader learns the mark
+   once, here, and meets it recessed everywhere it is actually applied. */
+.measuredMark {
     color: var(--gold);
 }
 
@@ -281,16 +285,15 @@
     gap: var(--space-1);
 }
 
-/* The production mark is the card's strongest claim, so it carries the accent:
-   gold means the evidence beside it was taken from something that really ran. */
+/* The status glyph is chrome, not a second mark (CC-10). It used to be gold on
+   every production row, which put fourteen gold dots in a column 71px to the
+   right of the fourteen the bench already draws — two parallel gold columns,
+   and therefore two marks to learn for one claim. The bench keeps the mark; the
+   table keeps the words. */
 .statusGlyph {
     font-size: var(--fs-caption);
     line-height: var(--lh-label);
     color: var(--mist-200);
-}
-
-tr[data-status="production"] .statusGlyph {
-    color: var(--gold);
 }
 
 .statusLabel {

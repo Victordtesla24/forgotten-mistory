@@ -52,9 +52,41 @@
     color: var(--mist-200);
 }
 
+/* ── The stage the rail stands on ─────────────────────────────────────────
+   A plain block box the width of the section's column, so the rail's own
+   full-bleed margins and `--rail-inset` compute exactly as they did. Its only
+   job is to be the field's frame: the light belongs to the cabinet, and the
+   cabinet is this band — not the heading above it or the exclusions below. */
+.railStage {
+    position: relative;
+}
+
+/* The field, and the slot `Scene` mounts into. Both are inert: no pointer
+   events, no animation of their own, and behind everything the rail draws. */
+.field {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.fieldSlot {
+    position: absolute;
+    inset: 0;
+}
+
 /* ── The rail ────────────────────────────────────────────────────────────── */
 .rail {
     display: flex;
+    position: relative;
+    /* Over the light, whether or not the light is there. */
+    z-index: 1;
+    /* Plate-to-plate moves travel rather than jump: the section's own keyboard
+       path and `scrollIntoView` both ask for smooth, and until now the only
+       `scroll-behavior` in this module was the `auto` inside the reduced-motion
+       block below — so the rail cut between plates and the "one light raking
+       across a cabinet" idea was lost (council R-c13, MOT-C13-06). */
+    scroll-behavior: smooth;
     gap: clamp(var(--space-2), 2vw, var(--space-3));
     /* Full bleed: out through the section's gutter and back in to the spine,
        so card 01 starts on the same left edge as the heading above it and the

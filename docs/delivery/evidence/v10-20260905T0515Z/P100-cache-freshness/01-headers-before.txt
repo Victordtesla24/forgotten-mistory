@@ -1,0 +1,70 @@
+# 01-headers-before.txt — live production headers, measured 2026-09-05T09:13:00Z
+
+$ curl -sI https://forgotten-mistory.web.app/
+HTTP/2 200 
+cache-control: max-age=3600
+content-security-policy: default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data: blob: https:; media-src 'self' blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; worker-src 'self'; connect-src 'self' ws: wss: https://api.github.com https://generativelanguage.googleapis.com https://*.googleapis.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors 'none'
+content-type: text/html; charset=utf-8
+etag: "ffb56b963534e991507dcc1702ad9121279e3eac9368e49ffc3f3a0a739ad610"
+last-modified: Sat, 05 Sep 2026 09:10:13 GMT
+permissions-policy: camera=(), microphone=(self), geolocation=(), browsing-topics=()
+referrer-policy: strict-origin-when-cross-origin
+strict-transport-security: max-age=31556926; includeSubDomains; preload
+x-content-type-options: nosniff
+x-frame-options: DENY
+accept-ranges: bytes
+date: Sat, 05 Sep 2026 09:13:00 GMT
+x-served-by: cache-bos-kbos510040-BOS
+x-cache: MISS
+x-cache-hits: 0
+x-timer: S1788599580.475778,VS0,VE75
+vary: x-fh-requested-host, accept-encoding
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 123034
+
+$ curl -sI https://forgotten-mistory.web.app/sw.js
+HTTP/2 200 
+cache-control: no-cache
+content-security-policy: default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data: blob: https:; media-src 'self' blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; worker-src 'self'; connect-src 'self' ws: wss: https://api.github.com https://generativelanguage.googleapis.com https://*.googleapis.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors 'none'
+content-type: text/javascript; charset=utf-8
+etag: "df468ee797705b36906f016cb3eda656821cdf193204569b267ccffad928f65a"
+last-modified: Sat, 05 Sep 2026 09:10:13 GMT
+permissions-policy: camera=(), microphone=(self), geolocation=(), browsing-topics=()
+referrer-policy: strict-origin-when-cross-origin
+service-worker-allowed: /
+strict-transport-security: max-age=31556926; includeSubDomains; preload
+x-content-type-options: nosniff
+x-frame-options: DENY
+accept-ranges: bytes
+date: Sat, 05 Sep 2026 09:13:00 GMT
+x-served-by: cache-bos-kbos510056-BOS
+x-cache: MISS
+x-cache-hits: 0
+x-timer: S1788599581.594913,VS0,VE97
+vary: x-fh-requested-host, accept-encoding
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+
+
+chunk discovered in the live HTML: /_next/static/chunks/webpack-3e5d94ffc6a7d4c6.js
+$ curl -sI https://forgotten-mistory.web.app/_next/static/chunks/webpack-3e5d94ffc6a7d4c6.js
+HTTP/2 200 
+cache-control: public, max-age=31536000, immutable
+content-security-policy: default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data: blob: https:; media-src 'self' blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; worker-src 'self'; connect-src 'self' ws: wss: https://api.github.com https://generativelanguage.googleapis.com https://*.googleapis.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors 'none'
+content-type: text/javascript; charset=utf-8
+etag: "45c70d485ab8f59386b906386d36cf2370ed545b29ef541b32bb5c17f1c93509"
+last-modified: Sat, 05 Sep 2026 09:10:13 GMT
+permissions-policy: camera=(), microphone=(self), geolocation=(), browsing-topics=()
+referrer-policy: strict-origin-when-cross-origin
+strict-transport-security: max-age=31556926; includeSubDomains; preload
+x-content-type-options: nosniff
+x-frame-options: DENY
+accept-ranges: bytes
+date: Sat, 05 Sep 2026 09:13:07 GMT
+x-served-by: cache-bos-kbos510038-BOS
+x-cache: MISS
+x-cache-hits: 0
+x-timer: S1788599588.536790,VS0,VE120
+vary: x-fh-requested-host, accept-encoding
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 3714
+

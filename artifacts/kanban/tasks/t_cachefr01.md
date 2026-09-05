@@ -1,0 +1,42 @@
+# t_cachefr01 — P100 — every deploy visible on the next load: HTML Cache-Control revalidate (was Firebase default max-age=3600), service worker navigation network-first with build-stamped cache version, controllerchange reload
+
+**Status:** running · **Priority:** 100 · **Parents:** — · **Created:** 2026-09-05T09:14:38.798Z
+
+## YOUR ROLE
+analyst-programmer — coding (docs/prompt.md §5). Owner reported no visible change twice (06:57Z, 09:08Z). Measured 09:09Z: curl -sI / → cache-control: max-age=3600 (firebase.json sets Cache-Control only for /_next/static, /assets, /docs, /sw.js); public/sw.js precaches / cache-first with a static CACHE_VERSION v1 → returning visitors keep the old shell for up to an hour or until the worker updates. Lane wf_b12ab287-6ab.
+
+## PROJECT ROOT
+/root/forgotten-mistory (VPS srv1356245). Evidence: docs/delivery/evidence/v10-20260905T0515Z/. Live: https://forgotten-mistory.web.app. Static servers already bound by other tenants: :5599 and :8080 — never reuse them; council batteries use :5601 / :5602.
+
+## MANDATORY
+Call kanban_complete() when ALL gates pass — i.e. return structured output {task_id, gates:{...}, files_changed:[...], evidence:[...], goal_complete:true}; the orchestrator writes it to the board. Never self-approve; never weaken a check to pass it; every claim cites a command or a path. No secrets in output — read keys by name from /root/.claude/.env.production with a `grep -E '^[A-Z][A-Z0-9_]*='` reader, never `source` it, never print values.
+
+## EXECUTION ORDER
+- S-1 contract test on firebase.json headers
+- S-2 firebase.json HTML rules + sw.js network-first + build-stamped cache name + controllerchange reload
+- S-3 node tests, battery, push; verifier polls live headers
+
+## QUALITY GATES
+- [ ] live curl -sI / shows max-age=0 must-revalidate (or no-cache)
+- [ ] out/sw.js carries the build sha
+- [ ] second load controlled by the worker shows the current build
+
+## VERIFICATION
+```bash
+curl -sI https://forgotten-mistory.web.app/ | grep -i cache-control
+```
+
+## HIERARCHY
+role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth_cap 4). Model: claude-opus · Max OAuth. max_runtime_seconds 1800 (O1) · goal_max_turns 20.
+
+## PROVIDER
+Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-05T09:23:04.884Z)
+ROOT CAUSE PROVEN 09:2xZ (returning-visitor probe, persistent Chrome profile against production): load 1 installs fm-static-v1 and precaches '/'; load 2 → performance navigation deliveryType 'cache-storage', transferSize 0, workerStart 2 ms — the page is served from CacheStorage with NO revalidation (public/sw.js fetch handler: if (cached) return cached). sw.js is byte-identical to 2b7016f (2026-06-14) so no new worker ever installs → a returning visitor keeps the HTML + immutable chunks of their FIRST visit until a hard refresh. Every orchestrator/reviewer probe used a fresh context (no worker) and therefore saw each new build — which is why the evidence was green while the Owner saw nothing for 4–5 hours. Fix in flight in this lane; after it lands the monitor gains a returning-visitor check (second load pageMeta === live meta).
+
+## COMMENT (2026-09-05T09:24:32.569Z)
+Merged to main by the orchestrator (--no-ff) and pushed for immediate deploy; verifier lane still running against the branch and will poll the live headers. Pre-fix returning-visitor profile saved (visitor-prefix: old worker fm-static-v1, load2 deliveryType cache-storage) to prove the upgrade path after deploy.
+
+## COMPLETE (2026-09-05T09:28:12.705Z)
+LIVE + PROVEN 09:27Z: deploy 966f497 success; live cache-control: public, max-age=0, must-revalidate; sw.js cache name fm-static-4a003ba0 (build-stamped). Pre-fix visitor profile (old worker, stale b69bc97b): first load after the fix still served the stale shell while the new worker installed, the worker's one-time reload then showed 4a003ba0 from the network; every later load shows the live build (HTTP cache revalidated, 304). Returning visitors now see each deploy on their next load. Verifier lane result pending (recorded when it lands).

@@ -173,18 +173,24 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
     await gotoHome(page);
 
     const toggle = page.locator('[data-testid="minivic-toggle"]');
-    // The launcher is an icon-only control, so its accessible name is the only
-    // thing telling a screen-reader user what it does — and it has to change
-    // when the panel's state does, or the name becomes a lie half the time.
-    await expect(toggle).toHaveAttribute('aria-label', 'Open Mini Vic assistant');
+    // The launcher carries a visible label from 834px up ("Ask Mini Vic"), so
+    // its accessible name may no longer be an unrelated sentence: WCAG 2.5.3
+    // (Label in Name) requires the visible words to be *in* the name, or a
+    // speech-input user saying what they can read never reaches the control.
+    // The name is therefore constant and starts with the visible label; the
+    // state it used to carry is now on `aria-expanded`, which is what a
+    // disclosure control is supposed to use (V-c16 §4, R-c13 CC-03a).
+    await expect(toggle).toHaveAttribute('aria-label', /^Ask Mini Vic\b/);
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
     await toggle.evaluate((el: HTMLElement) => el.click());
     await expect(page.locator('[data-testid="minivic-panel"]')).toBeVisible();
-    await expect(toggle).toHaveAttribute('aria-label', 'Close Mini Vic assistant');
+    await expect(toggle).toHaveAttribute('aria-label', /^Ask Mini Vic\b/);
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true');
 
     await toggle.click();
     await expect(page.locator('[data-testid="minivic-panel"]')).toBeHidden();
-    await expect(toggle).toHaveAttribute('aria-label', 'Open Mini Vic assistant');
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false');
   });
 
   test('TC-BOT-08: Persona selector is a pressed-state toggle group with one active mode', async ({ page }) => {
@@ -295,6 +301,77 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
       return cs.maskImage !== 'none' ? cs.maskImage : cs.webkitMaskImage;
     });
     expect(mask, 'chip row must fade at its right edge').toMatch(/linear-gradient/);
+  });
+
+  test('TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width', async ({
+    page,
+  }) => {
+    // V-c16 F-V16-2. TC-BOT-12 asserts "never covers the h1" but measures one
+    // viewport (1440) and one box (the h1's block box). Both are too narrow.
+    // At 1280x800 the panel {l:824,t:232,r:1256,b:712} clears the h1's block
+    // box by nothing at all — the box ends at y=284 — while the rendered
+    // glyphs run to y=301 and x=959, so ~135x69 px of "Vikram Deshpande" was
+    // painted over. This test measures what a reader actually sees: every
+    // client rect of every text node in the h1, via Range.getClientRects(),
+    // at the three laptop widths the failure was reproduced on, and requires
+    // a real gap rather than a shared edge.
+    const CLEARANCE = 16;
+    const VIEWPORTS = [
+      { width: 1440, height: 900 },
+      { width: 1366, height: 768 },
+      { width: 1280, height: 800 },
+    ];
+
+    for (const viewport of VIEWPORTS) {
+      await page.setViewportSize(viewport);
+      await gotoHome(page);
+      await page.evaluate(() => window.scrollTo(0, 0));
+      const { panel } = await openMiniVic(page);
+      await page.waitForTimeout(400);
+
+      const measured = await page.evaluate(() => {
+        const panelEl = document.querySelector('[data-testid="minivic-panel"]')!;
+        const p = panelEl.getBoundingClientRect();
+        const h1 = document.querySelector('#hero h1')!;
+        const rects: { l: number; t: number; r: number; b: number; text: string }[] = [];
+        const walk = document.createTreeWalker(h1, NodeFilter.SHOW_TEXT);
+        let node: Node | null;
+        while ((node = walk.nextNode())) {
+          const text = (node.nodeValue || '').trim();
+          if (!text) continue;
+          const range = document.createRange();
+          range.selectNodeContents(node);
+          for (const r of Array.from(range.getClientRects())) {
+            if (r.width < 0.5 || r.height < 0.5) continue;
+            rects.push({ l: r.left, t: r.top, r: r.right, b: r.bottom, text: text.slice(0, 32) });
+          }
+        }
+        const hits = rects.filter(
+          (r) => p.left < r.r && p.right > r.l && p.top < r.b && p.bottom > r.t,
+        );
+        return {
+          panel: { l: Math.round(p.left), t: Math.round(p.top), r: Math.round(p.right), b: Math.round(p.bottom) },
+          glyphBottom: Math.round(Math.max(...rects.map((r) => r.b))),
+          glyphRight: Math.round(Math.max(...rects.map((r) => r.r))),
+          rectCount: rects.length,
+          hits: hits.map((r) => ({
+            l: Math.round(r.l), t: Math.round(r.t), r: Math.round(r.r), b: Math.round(r.b), text: r.text,
+          })),
+        };
+      });
+
+      expect(measured.rectCount, 'the hero name must render at least one glyph rect').toBeGreaterThan(0);
+      expect(
+        measured.hits,
+        `${viewport.width}x${viewport.height}: the open panel ${JSON.stringify(measured.panel)} ` +
+          `covers ${measured.hits.length} glyph rect(s) of the hero name: ${JSON.stringify(measured.hits)}`,
+      ).toEqual([]);
+      expect(
+        measured.panel.t - measured.glyphBottom,
+        `${viewport.width}x${viewport.height}: the panel top ${measured.panel.t} must clear the ` +
+          `lowest glyph of the hero name (${measured.glyphBottom}) by ${CLEARANCE}px, not sit on it`,
+      ).toBeGreaterThanOrEqual(CLEARANCE);
+    }
   });
 
   test('TC-BOT-11: The transcript controls are present and say what they do', async ({ page }) => {

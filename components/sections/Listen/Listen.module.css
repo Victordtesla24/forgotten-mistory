@@ -23,7 +23,27 @@
    it; the 46 rem reading cap moved from the container to the prose children,
    so the heading lands on the spine and the text keeps its measure
    (council R-c1, C2). */
+/* ── The bench light ──────────────────────────────────────────────────────
+   The field, and the slot `Scene` mounts into. Both are inert: no pointer
+   events, and no animation or transition of their own — the caliper's close is
+   the section's one beat (MOT-F-4) and the light is that beat, not a second
+   one. Behind everything the section reads. */
+.field {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.fieldSlot {
+    position: absolute;
+    inset: 0;
+}
+
 .inner {
+    position: relative;
+    /* The reading column is always over the light, whether or not it is there. */
+    z-index: 1;
     flex: 1;
     display: flex;
     flex-direction: column;

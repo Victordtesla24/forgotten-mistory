@@ -1,0 +1,48 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/durability.spec.ts --reporter=line
+
+[2mRunning [22m7[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/7] [chromium] › tests/overhaul/durability.spec.ts:71:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-02: Core hero content renders on first visit
+[1A[2K[2/7] [chromium] › tests/overhaul/durability.spec.ts:47:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-01: The service worker registers, activates and controls the page
+[1A[2K[3/7] [chromium] › tests/overhaul/durability.spec.ts:77:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-03: CV download link is present in the hero and resolves
+[1A[2K[4/7] [chromium] › tests/overhaul/durability.spec.ts:88:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-04: CV is reachable from the persistent navigation, on every screen
+[1A[2K[5/7] [chromium] › tests/overhaul/durability.spec.ts:101:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-05: Offline reload still renders the page and still serves the CV
+[1A[2K[6/7] [chromium] › tests/overhaul/durability.spec.ts:136:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-06: The CV is offered from more than one place on the page
+[1A[2K[7/7] [chromium] › tests/overhaul/durability.spec.ts:148:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-07: No first-party request fails on a warm load
+[1A[2K[31m  1) [chromium] › tests/overhaul/durability.spec.ts:88:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-04: CV is reachable from the persistent navigation, on every screen [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator:  locator('.nav-cv')
+    Expected: visible
+    Received: hidden
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 15000ms[22m
+    [2m  - waiting for locator('.nav-cv')[22m
+    [2m    19 × locator resolved to <a download="" class="nav-cv" target="_blank" rel="noreferrer" href="/docs/Vik_Resume_Final.pdf">Download CV</a>[22m
+    [2m       - unexpected value "hidden"[22m
+
+
+    [0m [90m 92 |[39m     [90m// the deleted `#contact` section's CV button used to play at the bottom.[39m
+     [90m 93 |[39m     [36mconst[39m navCv [33m=[39m page[33m.[39mlocator([32m'.nav-cv'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 94 |[39m     [36mawait[39m expect(navCv)[33m.[39mtoBeVisible()[33m;[39m
+     [90m    |[39m                         [31m[1m^[22m[39m
+     [90m 95 |[39m     [36mawait[39m expect(navCv)[33m.[39mtoHaveAttribute([32m'href'[39m[33m,[39m [32m'/docs/Vik_Resume_Final.pdf'[39m)[33m;[39m
+     [90m 96 |[39m
+     [90m 97 |[39m     [36mawait[39m page[33m.[39mlocator([32m'#listen'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b12ab287-6ab-1/tests/overhaul/durability.spec.ts:94:25[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-durability-TC-NFR-cac56--navigation-on-every-screen-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-durability-TC-NFR-cac56--navigation-on-every-screen-chromium/error-context.md[22m
+
+
+[1A[2K[31m  1 failed[39m
+[31m    [chromium] › tests/overhaul/durability.spec.ts:88:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-04: CV is reachable from the persistent navigation, on every screen [39m
+[32m  6 passed[39m[2m (20.0s)[22m
+playwright durability.spec.ts exit=1 — 6 passed, 1 pre-existing failure; see 07-decisions.md

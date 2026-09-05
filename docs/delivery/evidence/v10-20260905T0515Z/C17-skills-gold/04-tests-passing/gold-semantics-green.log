@@ -1,0 +1,19 @@
+[1A[2K[6/11] [chromium] › tests/monochrome/gold-semantics.spec.ts:314:7 › C-08 / CC-10 — the calibration card spends gold once › GS-10: at most six elements paint saturated gold inside #skills at rest
+[1A[2K[7/11] [chromium] › tests/monochrome/gold-semantics.spec.ts:328:7 › C-08 / CC-10 — the calibration card spends gold once › GS-11: every gold mark in #skills sits on a licensed surface
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:314:7 › C-08 / CC-10 — the calibration card spends gold once › GS-10: at most six elements paint saturated gold inside #skills at rest[22m
+=== GS-10 saturated gold inside #skills @1440 === 1
+[1A[2K[8/11] [chromium] › tests/monochrome/gold-semantics.spec.ts:346:7 › C-08 / CC-10 — the calibration card spends gold once › GS-12: the card carries one vertical run of gold, not two
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:328:7 › C-08 / CC-10 — the calibration card spends gold once › GS-11: every gold mark in #skills sits on a licensed surface[22m
+=== GS-11 any-gold inside #skills @1440 === 15
+[1A[2K[9/11] [chromium] › tests/monochrome/gold-semantics.spec.ts:371:7 › C-08 / CC-10 — the calibration card spends gold once › GS-13: at rest the sourced strands are dim gold and the rest are grey
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:346:7 › C-08 / CC-10 — the calibration card spends gold once › GS-12: the card carries one vertical run of gold, not two[22m
+=== GS-12 gold columns === [[1088,14],[129,1]] → 1 run(s)
+[1A[2K[10/11] [chromium] › tests/monochrome/gold-semantics.spec.ts:423:7 › C-08 / CC-10 — the calibration card spends gold once › GS-14 (Motion F-6): hovering a capability lights its strands and recedes the rest
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:371:7 › C-08 / CC-10 — the calibration card spends gold once › GS-13: at rest the sourced strands are dim gold and the rest are grey[22m
+=== GS-13 strands at rest === sourced=17 others=3 stops={"gold":[{"color":"rgb(201, 168, 76)","opacity":0.1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":0.1}],"grey":[{"color":"rgb(144, 144, 144)","opacity":0.08},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":0.08}]}
+[1A[2K[11/11] [chromium] › tests/monochrome/gold-semantics.spec.ts:449:9 › C-08 / CC-10 — the calibration card spends gold once › reduced motion › GS-15: under reduced motion the strand transition is colour only
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:423:7 › C-08 / CC-10 — the calibration card spends gold once › GS-14 (Motion F-6): hovering a capability lights its strands and recedes the rest[22m
+=== GS-14 stroke-opacity under hover === [1,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18]
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:449:9 › C-08 / CC-10 — the calibration card spends gold once › reduced motion › GS-15: under reduced motion the strand transition is colour only[22m
+=== GS-15 reduced-motion strand transition === {"property":"stroke-opacity","animation":"none"}
+[1A[2K[32m  11 passed[39m[2m (25.3s)[22m

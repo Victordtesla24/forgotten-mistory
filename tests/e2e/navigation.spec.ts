@@ -36,14 +36,25 @@ test.describe('E2E: Navigation', () => {
     await expect(logo).toContainText('VIKRAM.');
   });
 
-  test('TC-NAV-02: Menu toggle and the always-visible Download CV both render', async ({ page }) => {
+  test('TC-NAV-02: Menu toggle renders, and the CV action defers to the hero then returns', async ({ page }) => {
     await gotoHome(page);
     await expect(page.locator('.menu-toggle')).toBeVisible();
-    // D-CV-01: the strongest recruiter action must be reachable without opening
-    // the menu at all, so it sits in the bar rather than only in the overlay.
+
+    // D-CV-01 still holds — the strongest recruiter action is reachable without
+    // opening the menu — but it is offered once per screen (R-c13 ADV-4). At the
+    // top the hero's own "Download CV" is the offer, and the pill waits; past
+    // the hero the pill is the only one left, so it must be there.
     const cv = page.locator('.nav-cv');
-    await expect(cv).toBeVisible();
+    await expect(cv).toHaveCount(1);
     await expect(cv).toHaveAttribute('href', '/docs/Vik_Resume_Final.pdf');
+    expect(
+      await cv.evaluate((el) => getComputedStyle(el).visibility),
+      'two identical CV controls in the first screen make the reader choose between them',
+    ).toBe('hidden');
+    await expect(page.locator('#hero a[href="/docs/Vik_Resume_Final.pdf"]')).toBeVisible();
+
+    await page.evaluate(() => window.scrollTo(0, 900));
+    await expect(cv).toBeVisible();
   });
 
   test('TC-NAV-03: Nav overlay opens on toggle click', async ({ page }) => {

@@ -109,13 +109,20 @@ export default function Skills() {
           <div className={styles.controls}>
             <ul className={styles.legend} aria-label="Status legend">
               {(Object.keys(statusLegend) as EvidenceStatus[]).map((status) => (
-                <li key={status} className={styles.legendItem}>
+                <li key={status} className={styles.legendItem} data-status={status}>
                   {status === 'pending' ? (
                     <Caliper state="open" className={styles.legendGlyph} label="">
                       {statusLegend[status].glyph}
                     </Caliper>
                   ) : (
-                    <span className={styles.legendGlyph} aria-hidden="true">
+                    <span
+                      // The production swatch is the site's "measured in
+                      // production" mark, and the key is the one place it is
+                      // drawn at full strength — so it is named for what it is
+                      // rather than reached by position.
+                      className={`${styles.legendGlyph}${status === 'production' ? ` ${styles.measuredMark}` : ''}`}
+                      aria-hidden="true"
+                    >
                       {statusLegend[status].glyph}
                     </span>
                   )}

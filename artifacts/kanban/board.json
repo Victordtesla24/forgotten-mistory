@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T08:25:47.637Z",
+  "updated": "2026-09-05T09:38:57.471Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -13,6 +13,32 @@
     "archived"
   ],
   "tasks": [
+    {
+      "id": "t_realign01",
+      "title": "P0 RESUME — docs/prompt.md max PEA; ship visible UI every ≤10 min (O1/O5)",
+      "column": "ready",
+      "status": "running",
+      "priority": 0,
+      "assignee": "orchestrator",
+      "created_at": "2026-09-05T09:32:35Z",
+      "updated_at": "2026-09-05T09:36:11Z",
+      "labels": [
+        "P0",
+        "resume",
+        "O1",
+        "O5",
+        "PEA"
+      ],
+      "summary": "On resume: read docs/prompt.md + docs/ORCHESTRATOR-REALIGN.md; claim this; ship visible UI each 10-min window. Hermes off. fm-deploy-cadence.timer active.",
+      "updated": "2026-09-05T09:38:57.471Z",
+      "comments": [
+        {
+          "at": "2026-09-05T09:38:57.471Z",
+          "by": "orchestrator",
+          "text": "Verification 09:3xZ: fm-deploy-cadence.timer active; hermes-gateway/hermes-dashboard inactive; Deploy runs 09:16/09:24/09:24/09:28/09:30(dispatch)/09:36 all success; live build-commit 5c15f5b3; cache-control public, max-age=0, must-revalidate; cadence log ticks 09:31/09:36 (skip: Deploy already in progress). profile_map.yaml read — spawns use reviewer/solutions-architect/analyst-programmer/tester/cleanup-agent/researcher/coder only. Resumed 09:4xZ: cycle 20 (in place, wf_d9fbfbaa-53a-1) + flagship visibility A (in place, wf_0d0dffdb-8bf-1); hero photo next when a battery frees (two-battery cap); monitor restarted with the returning-visitor pass."
+        }
+      ]
+    },
     {
       "id": "t_c51b34a7",
       "title": "Run v10 open — docs/prompt.md + v9 evidence (F-lighthouse-ci, F-security-upgrade, R-c12) recorded",
@@ -68,7 +94,7 @@
     {
       "id": "t_8cdf3b61",
       "title": "Cycle 11 — Vitrine rail mask/trace-on + lit-plate fix, Skills/About contrast, hero 390 one-fold (R-c8 C-02/C-06, TC-CONTRAST-01, TC-HERO-12)",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 90,
       "parents": [],
@@ -80,7 +106,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:30:51.271Z",
+      "updated": "2026-09-05T08:30:41.749Z",
       "summary": "Worktree .claude/worktrees/wf_18f926b0-2a4-2 (base 8dc4cf4). Patch applied + real fixes D-1…D-6 written (07-decisions.md); TDD failing log captured (7 failed / 10 passed on unpatched main). NOT yet done: passing battery, regression, screenshots, D-7+, commit.",
       "decisions": [
         {
@@ -97,8 +123,14 @@
           "at": "2026-09-05T07:30:51.271Z",
           "by": "orchestrator",
           "text": "R-c13 #15 CC-08 (minor, Verified, composition) — The rail scrolls 3192 px inside 1440 px — 55% of the content off-screen — with no thumb, no counter and no arrow; the only affordance is a 64 px mask fade\nDIRECTION: Add the unbuilt rail thumb the R-c8 C-02 direction specified: a 2 px track in var(--ink-500) spanning the column (96 px to 1344 px at 1440), thumb height 2 px, background var(--mist-400), border-radius 1px, width calc(clientWidth / scrollWidth * 100%), translated by scrollLeft / scrollWidth, sitting var(--space-2) below the cards on the same spine. Pair it with an '01 / 06' counter at var(--fs-micro) in var(--mist-400) at the track's right end. Reduced motion: position updates without transition. No gold.\nFILES: components/sections/Vitrine/Vitrine.module.css:56,307+, components/sections/Vitrine/Vitrine.tsx\nACCEPTANCE: At 1440 and 1920, #vitrine contains an element whose computed width is < rail.clientWidth and whose left offset changes after rail.scrollBy(600); its track's left edge equals the #vitrine heading's left edge within 1 px."
+        },
+        {
+          "at": "2026-09-05T08:30:41.710Z",
+          "by": "orchestrator",
+          "text": "Cycle 11's one open gate (TC-CONTRAST-01 @390) is green since cycle 16 — closing."
         }
-      ]
+      ],
+      "result": "All 20 acceptance lines now hold (the @390 contrast node was the launcher, fixed in cycle 16). Live since f86b125."
     },
     {
       "id": "t_c3ece39c",
@@ -158,10 +190,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T08:30:41.789Z",
       "summary": "Checks run 33936783382 on debd25b: 15 failed / 272 passed. C13 regression (Next 15) showed 8 ✘: GC-01 gold-contrast, TC-CONTRAST-01 @390/@1440, TC-BOT-12, TC-EXP-11, TC-HERO-12, TC-STATE-HOVER, TC-STATE-ACTIVE. Cycle 11 fixes CONTRAST + HERO-12. Remaining after landing: GC-01, TC-BOT-12, TC-EXP-11, TC-STATE-HOVER/ACTIVE + whatever the merged main shows.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T08:30:41.789Z",
+          "by": "orchestrator",
+          "text": "Add to the regression triage: VIS-04 listen-section snapshot (ratio 0.04, pre-existing since cycle 11 era), MiniVic transcript 32 px at 1366×768 (16b trade — consider trimming the persona status line at short heights), TC-LISTEN-05 flake."
+        }
+      ]
     },
     {
       "id": "t_4adf34f7",
@@ -378,7 +416,7 @@
     {
       "id": "t_cc03ed93",
       "title": "Cycle 16 — C-04 + ADV-F-3 + ADV-F-2: the MiniVic launcher reads as a labelled chat affordance, is achromatic, is reachable in 3 tab stops",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 93,
       "parents": [
@@ -393,7 +431,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:31:25.246Z",
+      "updated": "2026-09-05T08:30:41.673Z",
       "summary": "R-c8 items 7, 12, 13. Files: components/MiniVicBot.tsx, app/globals.css (MiniVic chrome block), components/site/Navigation.tsx; tests/monochrome + tests/a11y (TDD first).",
       "decisions": [],
       "comments": [
@@ -422,12 +460,13 @@
           "by": "orchestrator",
           "text": "Merged to main (pipeline 1802b87 + verification 614b8ce). V-c16 FAIL on 2/13 lines → correction cycle 16b (t_c16b0001) dispatched; this task closes when 16b passes."
         }
-      ]
+      ],
+      "result": "Cycle 16 + 16b closed: labelled achromatic launcher on a dark plate, occlusion fixed (TC-CONTRAST-01 @390 green), skip link, aria chain clean, TC-BOT-12/14 green, CC-03a/CC-07/ADV-3 closed. Live."
     },
     {
       "id": "t_3729f57e",
       "title": "Cycle 17 — C-08 (+Motion F-6): #skills gold as a mark, not a mass — dim sourced strands at rest, hovered path lit",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 78,
       "parents": [
@@ -442,7 +481,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T08:06:43.814Z",
+      "updated": "2026-09-05T08:48:53.495Z",
       "summary": "R-c8 item 10. Files: components/sections/Skills/{Bench.module.css,Bench.tsx,Skills.module.css}. Terminal node dots stay gold at full opacity.",
       "decisions": [],
       "comments": [
@@ -456,12 +495,13 @@
           "by": "orchestrator",
           "text": "R-c13 #19 CC-10 (polish, Verified, composition (doctrine half corrected by merge)) — Two parallel gold columns 71 px apart (14 bench dots at x=1088, 14 status glyphs at x=1159.6) ask the reader to learn two marks in one table\nDIRECTION: Collapse the two parallel gold columns into one. Keep the licensed mark that carries the most meaning per row — the caliper/source mark — in var(--gold), and render the second column's glyph in var(--mist-200) so the row reads as one gold mark plus neutral chrome. Do not remove the production mark: CLAUDE.md prime directive 4 enumerates 'the measured in production mark' as a licensed gold surface, so composition's claim that it smuggles in a second meaning is rejected. Do not introduce a third gold surface.\nFILES: components/sections/Skills/Skills.tsx:114-118,195, components/sections/Skills/Skills.module.css:103-109,286-306\nACCEPTANCE: #skills contains at most one vertical run of gold-painted elements sharing an x within 2 px; the total count of gold-painted elements in #skills is <= 16; every gold element in #skills sits in a row whose caliper state is 'sourced' or whose status is 'production'."
         }
-      ]
+      ],
+      "result": "V-c17 PASS (f05f96c): saturated gold in #skills 29→1 (legend mark), any-gold 15 ≤ 16, one column, strands 0.28/0.35 at rest → 1/0.18 on hover in 300 ms, reduced motion colour-only; deviation accepted (unsourced strands mist-400 for legibility). Live c8fc4b04."
     },
     {
       "id": "t_2cc9a990",
       "title": "Cycle 18 — C-07: one \"Download CV\" in the first viewport (nav action demoted to text until scrolled)",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 70,
       "parents": [
@@ -476,7 +516,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T08:06:43.900Z",
+      "updated": "2026-09-05T08:48:53.663Z",
       "summary": "R-c8 item 11. Files: components/site/Navigation.tsx, app/globals.css nav block.",
       "decisions": [],
       "comments": [
@@ -490,7 +530,8 @@
           "by": "orchestrator",
           "text": "R-c13 #10 ADV-4 (major, Verified, adversarial + composition (CC-04)) — Repeat of R-c8 C-07: two identical 'Download CV' controls in the 1440 first screen (nav pill at x=1140.5, hero button at x=296.6), plus a third 548x96 anchor with the same text and href overlapping the nav band\nDIRECTION: Keep exactly one per viewport band. The nav pill is the persistent recruiter action (Navigation.tsx:154-157) — keep it, or demote it to plain text until [data-scrolled]. Then change the hero's copy from a bordered button to the section's text-link treatment (drop the border, keep var(--mist-200) at var(--fs-small) with the ::after underline .channel uses), OR relabel it to something the nav does not offer. Remove the third phantom anchor at (445.9, 6, 548x96) — a 548x96 hit area across the chrome must not be in the accessibility or hit-test tree while the desktop nav shows.\nFILES: components/site/Navigation.tsx:26,154-157, components/sections/Hero/Hero.tsx, components/sections/Hero/Hero.module.css, app/globals.css, tests/overhaul/\nACCEPTANCE: At 390/834/1280/1440/1920 with scrollY === 0: the count of elements matching a[href=\"/docs/Vik_Resume_Final.pdf\"] whose rect intersects the viewport AND whose computed visibility !== 'hidden' is exactly 1. Add as tests/overhaul/cta-duplication.spec.ts."
         }
-      ]
+      ],
+      "result": "V-c18 PASS: exactly one visible CV control at scrollY 0 at 390/834/1280/1440/1920 (was 1/1/3/3/3), phantom overlay anchor out of the hit-test tree, pill returns past the hero, TC-CINE-03 green. Live c8fc4b04. F-2 → follow-up task (phone has no CV control below the hero)."
     },
     {
       "id": "t_052675d5",
@@ -539,7 +580,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T08:25:47.596Z",
+      "updated": "2026-09-05T09:09:06.101Z",
       "summary": "R-c8 items 15 and 16. Files: components/sections/Listen/{Listen.module.css,Listen.tsx}, components/sections/About/About.module.css. No second motion beat in #listen (MOT-F-4 confirms the caliper-close is the one).",
       "decisions": [],
       "comments": [
@@ -552,6 +593,11 @@
           "at": "2026-09-05T07:30:50.960Z",
           "by": "orchestrator",
           "text": "R-c13 #11 CC-05 (major, Verified, composition + merge) — The page's business end is its quietest type: every contact line is 14 px rgb(205,205,205) with a 21 px box, under a 54.4 px pull-quote — a 3.9x ratio pointing the wrong way\nDIRECTION: Listen.module.css .channel (line 206, font-size at :210): raise font-size to var(--fs-body) (16 px) and color to var(--white); keep IBM Plex Mono — the monospace is right for an address, the greyness is not. Give each channel a 44 px minimum hit box via padding-block: var(--space-1). Reduce the pull-quote from --fs-h2 to var(--fs-h3) (~23 px at 1440) so the quote:address ratio is about 1.4x rather than 3.9x. Keep the ::after underline reveal (:223, :243) as the hover state. Distinct from CC-02: that adds the missing client action, this is the weight of the four channels that already exist.\nFILES: components/sections/Listen/Listen.module.css:63,203,206-260\nACCEPTANCE: At 1440 and 390: every #listen .channel has computed font-size >= 16px, color rgb(246, 246, 246), and getBoundingClientRect().height >= 44; the #listen quote's computed font-size divided by a channel's is <= 1.6."
+        },
+        {
+          "at": "2026-09-05T09:09:06.101Z",
+          "by": "orchestrator",
+          "text": "09:0xZ: the cycle-20 implementer was killed by the orchestrator process restart with 12 files modified but uncommitted in worktree wf_d9fbfbaa-53a-1 (07-decisions.md §1–6 written; red log + battery audit/lint/build logs present; 04-tests-passing not yet). Resumed IN PLACE (no re-do): the relaunched agent continues from that worktree."
         }
       ]
     },
@@ -779,7 +825,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:56:56.008Z",
+      "updated": "2026-09-05T08:41:56.737Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": [
@@ -817,6 +863,11 @@
           "at": "2026-09-05T07:56:56.008Z",
           "by": "orchestrator",
           "text": "Cadence: 07:51:53Z fa27ccfc (hygiene) → consolidation 89a6803 react19 live; 79691eda live 07:5xZ."
+        },
+        {
+          "at": "2026-09-05T08:41:56.737Z",
+          "by": "orchestrator",
+          "text": "Cadence: 08:2xZ 84644262 cycle 15; 08:3xZ b37e18d3 cycle 16b; 08:4xZ c8fc4b04 cycles 17+18 (skills gold as a mark, nav CV defers) — all pipeline-consolidated, monitor PROD OK each."
         }
       ]
     },
@@ -861,10 +912,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T09:09:06.184Z",
       "summary": "Two batteries max on this host (4 cores, ~4.5 GB free): ports 5601 and 5602. Worktrees are independent; merges are the orchestrator's; a conflict is resolved locally, never escalated.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T09:09:06.184Z",
+          "by": "orchestrator",
+          "text": "O4 incident 09:03Z: three implementers + verifiers (5601/5602/5603 batteries, 2 workers each) drove load to 72 on 4 cores and the orchestrator process exited; three lanes and the monitor stopped. Rule from now: at most TWO Playwright batteries concurrently (one per free port), verifiers count as a battery; the third lane waits."
+        }
+      ]
     },
     {
       "id": "t_b5b81d5f",
@@ -973,10 +1030,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T09:14:38.849Z",
       "summary": "Graded by R-c8 motion council: #about and #experience failed; About compass fixed (cycle 12), Experience is cycle 15. R-c13 re-grades all six.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T09:14:38.849Z",
+          "by": "orchestrator",
+          "text": "OWNER 09:10Z: still cannot see flagship UI/UX per section. Orchestrator looked at live 1440 gl=force screenshots (c76459d0): hero atmosphere faint, About field invisible, Experience strata invisible, bars grey — the quiet/text-primary bar produced flagships nobody can see. Correction: a flagship-visibility cycle per section with a measurable criterion (slot capture with text hidden: ≥ 15% of pixels at luminance ≥ ground+0.06, max luminance ≥ 0.35, a visible entry beat and scroll response) — dispatched after the hero photo lane (two-battery cap)."
+        }
+      ]
     },
     {
       "id": "t_f5ad9394",
@@ -1130,7 +1193,7 @@
     {
       "id": "t_60d9cd7a",
       "title": "Scenes 5 + 6 — #vitrine and #listen flagships: GLSL fields under the plates and the caliper (R2, M1)",
-      "status": "todo",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 84,
       "parents": [
@@ -1145,11 +1208,18 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:05.931Z",
-      "updated": "2026-09-05T06:20:05.931Z",
+      "updated": "2026-09-05T09:23:41.262Z",
       "summary": "SPEC-v10.md c20 minus the C-02 rail fix (cycle 11 lands it). #vitrine: 6 SVG drawings, 0 canvases → a shader field under the rail that answers the lit plate; #listen: CSS caliper beat, 0 canvases → a field that answers the caliper-close (the CSS beat stays the single motion beat, MOT-F-4). Files: components/sections/Vitrine/VitrineField.tsx, vitrine.glsl.ts, Vitrine.tsx, Vitrine.module.css, components/sections/Listen/ListenField.tsx, listen.glsl.ts, Listen.tsx, Listen.module.css; tests/overhaul/scene-vitrine.spec.ts + scene-listen.spec.ts (TDD first). Two commits; if the 30-min cap approaches, ship #vitrine and return goal_complete:false naming #listen.",
       "decisions": [],
-      "comments": [],
-      "blocker": null
+      "comments": [
+        {
+          "at": "2026-09-05T09:09:06.060Z",
+          "by": "orchestrator",
+          "text": "09:0xZ: implementer done (1150e3e vitrine field + trace stagger; d53d228 listen field; 36/36 section specs, gl=force 1 canvas each at 1440/390, tsc/lint/audit/build green, +0 kB); pipeline consolidated c76459d and it is LIVE (c76459d0). The verifier was killed when the orchestrator process restarted at ~09:03Z (host load 72 with three batteries) — relaunched from the cached implementer result."
+        }
+      ],
+      "blocker": null,
+      "result": "V-scenes5+6 PASS (7cc9ae0): one canvas each at 1440/390 gl=force, reduced motion 0/0, no-GL readable, trace stagger 21.7 ms ≥ 20 ms, scroll-behavior smooth/auto, +0 kB; LIVE since c76459d0. Verifier: #vitrine @390 'close to imperceptible' — folded into flagship visibility B (t_flagvis0b). Minor F-1..F-4 (greyscale evidence PNGs, ListenField comment, stale Listen.module.css doc, cascade ordering) → t_flagvis0b."
     },
     {
       "id": "t_dc096608",
@@ -1377,7 +1447,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:05:13.160Z",
-      "updated": "2026-09-05T07:30:50.124Z",
+      "updated": "2026-09-05T09:28:12.772Z",
       "summary": "Owner directive 06:53Z: monitor the production console logs and fix every runtime error at runtime. Deliverable: scripts/monitor/prod_console_probe.mjs (playwright, channel chrome, --no-sandbox, SwiftShader flags for ?gl=force, a hardware-GPU spoof pass like R-c13/adv4-recheck.mjs) writing artifacts/monitor/<UTC>.json + a one-line summary, exit 1 on any error; scripts/monitor/functions_log_probe.sh (firebase functions:log --only minivicChat,elevenLabsTts -n 50, grep error/status ≥ 400); tests/monitor_probe.test.mjs proving the probe fails on a page that throws. The orchestrator schedules it every 10 min (cron) and files each new error as a task within one cycle.",
       "decisions": [],
       "comments": [
@@ -1385,6 +1455,11 @@
           "at": "2026-09-05T07:30:50.124Z",
           "by": "orchestrator",
           "text": "R-c13 #5 B-3 (major, Verified, merge) — Deploy verification is blind to the path that broke: scripts/deploy.mjs:116-126 reads only the build-commit meta on the plain URL, so a total GPU-path outage shipped and sat unseen\nDIRECTION: Extend the post-deploy verification in scripts/deploy.mjs beyond the meta tag: after the build-commit assertion, drive one headless load of /, one of /?gl=force, and one of / with UNMASKED_RENDERER_WEBGL spoofed to a hardware string, at 1440x900 and 390x844, asserting six section[id], #hero h1 === 'Vikram Deshpande', zero pageerrors, zero console errors and no /SYSTEM INTERRUPT/ in body.innerText. Fail the deploy script (not the deploy workflow's merge step) on any of those, and print the failing probe. Then stand up t_prodmon01 on the same probe on its ten-minute cadence so a regression is caught without a reviewer in the loop.\nFILES: scripts/deploy.mjs:116-126, .github/workflows/deploy.yml, scripts/validate/overhaul_static_audit.mjs, tests/e2e/\nACCEPTANCE: node scripts/deploy.mjs exits non-zero against a build that renders the error boundary on any of the three paths, and zero against the current build; the probe writes its results to docs/delivery/evidence/<run>/deploy-verify.json with the build-commit it measured."
+        },
+        {
+          "at": "2026-09-05T09:28:12.772Z",
+          "by": "orchestrator",
+          "text": "Monitor upgraded 09:2xZ: adds a returning-visitor pass (persistent profile, second load pageMeta === live meta, deliveryType not cache-storage) alongside the fresh-context gl=force probe and functions:log scan."
         }
       ],
       "blocker": null
@@ -1530,7 +1605,7 @@
     {
       "id": "t_e9d4e10f",
       "title": "R-c13 MOT-C13-01d — scene-local error boundary: a fault inside one GL scene never replaces the whole document",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 90,
       "parents": [
@@ -1544,16 +1619,22 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:30:51.764Z",
-      "updated": "2026-09-05T07:30:51.764Z",
+      "updated": "2026-09-05T09:09:06.142Z",
       "summary": "components/gl · major · Verified. A fault inside a scene replaces the whole document: GLCanvas mounts with no scene-local error boundary, so a component-level throw reaches app/error.tsx — 'the scene is never the content' is not enforced in code",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T09:09:06.142Z",
+          "by": "orchestrator",
+          "text": "09:0xZ: resilience lane killed by the restart before any code change (only build-stamp touched); relaunched fresh after the two heavier lanes, to keep the host at ≤2 batteries."
+        }
+      ],
       "blocker": null
     },
     {
       "id": "t_c16b0001",
       "title": "Cycle 16b — MiniVic correction: open panel never covers the H1 at 1280×800/1366×768, accessible name contains the visible label, a permanent white mark under the portrait at ≤834, no source-less <video> (V-c16 F-V16-1/2 + R-c13 CC-03a)",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 92,
       "parents": [
@@ -1567,11 +1648,12 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:31:25.195Z",
-      "updated": "2026-09-05T07:31:25.195Z",
+      "updated": "2026-09-05T08:30:41.636Z",
       "summary": "V-c16 (b712c3d) FAIL on 2 of 13 lines: (F-V16-2) at 1280×800 and 1366×768 the open panel {l:824,t:232,r:1256,b:712} intersects #hero h1 glyph rects (~135×69 px of the name covered; TC-BOT-12 only checks the block box); (F-V16-1) the launcher box still overlaps <p>/<li> boxes in #about at 390 (luminance is now safe — dark plate — so the remaining question is legibility of the covered words, not contrast). Non-blocking: WCAG 2.5.3 Label in Name — visible pill says Ask Mini Vic while the accessible name is Open Mini Vic assistant; at 390 the affordance is a near-black disc with a faint face and no word. R-c13 CC-03a: never ship a source-less <video> (render it only with a resolved source, poster first) and give the button a permanent 24×24 white mark (speech-mark svg or VIC monogram) rendered UNDER the video as the resting state.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "result": "V-c16b PASS (e73b1c9): panel clears the H1 glyphs at 1280×800/1366×768/1440×900 (+51/+62/+26 px), accessible name 'Ask Mini Vic — Vikram's AI clone' + aria-expanded, 24×24 white speech-mark under the portrait, no source-less video (rendered only with src+poster), 111 colours achromatic, tab stop 2; 66/66 + text-contrast 2/2; consolidated b37e18d, LIVE (monitor PROD OK b37e18d3). Open observations → t_d0066b7a: VIS-04 listen snapshot (pre-existing) and the 32 px transcript at 1366×768 (disclosed trade)."
     },
     {
       "id": "t_rc14rev01",
@@ -1601,7 +1683,7 @@
     {
       "id": "t_2d068068",
       "title": "PERF-03 / TC-HERO-15 root cause — footer.Footer_footer layout shift (~0.16 CLS at ~508 ms) under load; reserve the footer box so CLS < 0.05 on a busy host too",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 80,
       "parents": [
@@ -1615,7 +1697,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T08:06:43.493Z",
-      "updated": "2026-09-05T08:06:43.493Z",
+      "updated": "2026-09-05T08:48:54.077Z",
       "summary": "V-react19 finding 1: the only layout shift captured names footer.Footer_footer__TWDx3 at ~508 ms worth 0.1556 — the two off-list ✘ (TC-HERO-15, PERF-03) attributed to the hero crossfade are this. Files: components/site/Footer.tsx + its CSS block (app/globals.css or module). TDD: tests/perf/performance.spec.ts PERF-03 must pass with --workers=2 under load (repeat-each=3) and a new assertion that no LayoutShift entry names the footer.",
       "decisions": [],
       "comments": [],
@@ -1643,6 +1725,128 @@
       "decisions": [],
       "comments": [],
       "blocker": null
+    },
+    {
+      "id": "t_62b5c4d3",
+      "title": "Cycle 18b — at ≤640 px the CV control exists below the hero (nav-cv is display:none there since before cycle 18): give the phone a scrolled-state CV affordance without a second control in the first screen",
+      "status": "todo",
+      "assignee": "coder",
+      "priority": 66,
+      "parents": [
+        "t_2cc9a990"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding / documentation",
+        "level": 4,
+        "effort": "medium (xhigh when coding)"
+      },
+      "provider": "openrouter→anthropic-oauth",
+      "created": "2026-09-05T08:48:53.769Z",
+      "updated": "2026-09-05T08:48:53.769Z",
+      "summary": "V-c17/18 finding F-2: app/globals.css:803-804 hides .nav-cv at max-width 640px, so once a phone reader passes the hero the only CV route is behind the menu. Direction: show the nav CV pill at ≤640 under [data-scrolled] only (text-only, var(--fs-small)), keeping CTA-01 (one control at scrollY 0) green; or add the CV route to the frosted bar as an icon-only 44 px control with accessible name. TDD: extend tests/overhaul/cta-duplication.spec.ts with CTA-04 (at 390 after scrollTo 1200 exactly one visible CV control exists).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_heroph001",
+      "title": "OWNER REQUEST 09:10Z — hero photo full size, in colour, with design-matched decorations; hero video avatar plays on hover/focus only, never by default",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 98,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T09:14:38.748Z",
+      "updated": "2026-09-05T09:14:38.748Z",
+      "summary": "Owner instruction verbatim: Integrate my Photo with full size, colours and dimension with creative decorations that match the website UI/UX Design. Include a hover effect that plays the hero video avatar and not by default. Supersedes the grayscale rule and the P1 88 px stamp for this element. Lane wf hero-photo (port 5601): colour still (1480×826 avif/webp), full column on desktop, full width after the actions at ≤720 (TC-HERO-12 holds), drafting frame + corner ticks + provenance caption from avatar.ts, light bloom behind the plate, hover/focus plays the loop (src set on intent, preload none), toggle for touch, reduced motion never autoplays.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_cachefr01",
+      "title": "P100 — every deploy visible on the next load: HTML Cache-Control revalidate (was Firebase default max-age=3600), service worker navigation network-first with build-stamped cache version, controllerchange reload",
+      "status": "done",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T09:14:38.798Z",
+      "updated": "2026-09-05T09:28:12.705Z",
+      "summary": "Owner reported no visible change twice (06:57Z, 09:08Z). Measured 09:09Z: curl -sI / → cache-control: max-age=3600 (firebase.json sets Cache-Control only for /_next/static, /assets, /docs, /sw.js); public/sw.js precaches / cache-first with a static CACHE_VERSION v1 → returning visitors keep the old shell for up to an hour or until the worker updates. Lane wf_b12ab287-6ab.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-05T09:23:04.884Z",
+          "by": "orchestrator",
+          "text": "ROOT CAUSE PROVEN 09:2xZ (returning-visitor probe, persistent Chrome profile against production): load 1 installs fm-static-v1 and precaches '/'; load 2 → performance navigation deliveryType 'cache-storage', transferSize 0, workerStart 2 ms — the page is served from CacheStorage with NO revalidation (public/sw.js fetch handler: if (cached) return cached). sw.js is byte-identical to 2b7016f (2026-06-14) so no new worker ever installs → a returning visitor keeps the HTML + immutable chunks of their FIRST visit until a hard refresh. Every orchestrator/reviewer probe used a fresh context (no worker) and therefore saw each new build — which is why the evidence was green while the Owner saw nothing for 4–5 hours. Fix in flight in this lane; after it lands the monitor gains a returning-visitor check (second load pageMeta === live meta)."
+        },
+        {
+          "at": "2026-09-05T09:24:32.569Z",
+          "by": "orchestrator",
+          "text": "Merged to main by the orchestrator (--no-ff) and pushed for immediate deploy; verifier lane still running against the branch and will poll the live headers. Pre-fix returning-visitor profile saved (visitor-prefix: old worker fm-static-v1, load2 deliveryType cache-storage) to prove the upgrade path after deploy."
+        }
+      ],
+      "blocker": null,
+      "result": "LIVE + PROVEN 09:27Z: deploy 966f497 success; live cache-control: public, max-age=0, must-revalidate; sw.js cache name fm-static-4a003ba0 (build-stamped). Pre-fix visitor profile (old worker, stale b69bc97b): first load after the fix still served the stale shell while the new worker installed, the worker's one-time reload then showed 4a003ba0 from the network; every later load shows the live build (HTTP cache revalidated, 304). Returning visitors now see each deploy on their next load. Verifier lane result pending (recorded when it lands)."
+    },
+    {
+      "id": "t_flagvis0a",
+      "title": "OWNER CORRECTION 09:10Z — flagship visibility A: hero atmosphere, About compass field, Experience strata become unmistakable cinematic light scenes (measurable luminance + motion gate), text contrast preserved",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 99,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T09:16:20.775Z",
+      "updated": "2026-09-05T09:16:20.775Z",
+      "summary": "Owner: I still cannot see flagship UI/UX for each section. Orchestrator confirmed on live captures (c76459d0, 1440, gl=force): hero faint, About field invisible, Experience strata invisible. The quiet/text-primary bar is revoked for these scenes. Gate: tests/overhaul/flagship-visibility.spec.ts — scene-only capture ≥ 15% pixels at L ≥ ground+0.06, max L ≥ 0.35, motion between captures, reduced-motion static fallback visible, TC-CONTRAST-01 green. Lane wf flagship-visibility-a (port 5602/5604).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_flagvis0b",
+      "title": "Flagship visibility B: Skills bench field (scene 4, new), Vitrine field and Listen caliper field become unmistakable — same visibility gate; MiniVic viseme stage after",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 98,
+      "parents": [
+        "t_flagvis0a"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T09:16:20.880Z",
+      "updated": "2026-09-05T09:16:20.880Z",
+      "summary": "Second half of the owner correction: #skills has no scene (t_cbff57b0), #vitrine field invisible on live captures (black behind the cards), #listen a faint band. Reuse tests/overhaul/flagship-visibility.spec.ts from lane A; skills bench field brief in t_cbff57b0; vitrine/listen fields exist (1150e3e, d53d228) and need their intensity/structure raised to the gate.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
     }
-  ]
+  ],
+  "updated_at": "2026-09-05T09:36:11Z"
 }

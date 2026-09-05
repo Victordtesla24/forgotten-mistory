@@ -1,0 +1,153 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/chatbot.spec.ts -g TC-BOT-14|TC-BOT-07 --workers=2 --reporter=list
+
+[2mRunning [22m2[2m tests using [22m2[2m workers[22m
+
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/e2e/chatbot.spec.ts:306:7 › E2E: MiniVicBot Chatbot › TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width[39m[2m (6.6s)[22m
+  [31m✘[39m  [2m2 [22m[31m[chromium] › tests/e2e/chatbot.spec.ts:172:7 › E2E: MiniVicBot Chatbot › TC-BOT-07: The launcher announces which action it will perform[39m[2m (18.7s)[22m
+
+
+[31m  1) [chromium] › tests/e2e/chatbot.spec.ts:172:7 › E2E: MiniVicBot Chatbot › TC-BOT-07: The launcher announces which action it will perform [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveAttribute[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('[data-testid="minivic-toggle"]')
+    Expected pattern: [32m/^Ask Mini Vic\b/[39m
+    Received string:  [31m"Open Mini Vic assistant"[39m
+    Timeout: 15000ms
+
+    Call log:
+    [2m  - Expect "toHaveAttribute" with timeout 15000ms[22m
+    [2m  - waiting for locator('[data-testid="minivic-toggle"]')[22m
+    [2m    18 × locator resolved to <button data-testid="minivic-toggle" class="minivic-launcher group" aria-label="Open Mini Vic assistant">…</button>[22m
+    [2m       - unexpected value "Open Mini Vic assistant"[22m
+
+
+    [0m [90m 181 |[39m     [90m// state it used to carry is now on `aria-expanded`, which is what a[39m
+     [90m 182 |[39m     [90m// disclosure control is supposed to use (V-c16 §4, R-c13 CC-03a).[39m
+    [31m[1m>[22m[39m[90m 183 |[39m     [36mawait[39m expect(toggle)[33m.[39mtoHaveAttribute([32m'aria-label'[39m[33m,[39m [35m/^Ask Mini Vic\b/[39m)[33m;[39m
+     [90m     |[39m                          [31m[1m^[22m[39m
+     [90m 184 |[39m     [36mawait[39m expect(toggle)[33m.[39mtoHaveAttribute([32m'aria-expanded'[39m[33m,[39m [32m'false'[39m)[33m;[39m
+     [90m 185 |[39m
+     [90m 186 |[39m     [36mawait[39m toggle[33m.[39mevaluate((el[33m:[39m [33mHTMLElement[39m) [33m=>[39m el[33m.[39mclick())[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_f79c8e1b-a89-1/tests/e2e/chatbot.spec.ts:183:26[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-chatbot-E2E-MiniVicBot-dd7bd-hich-action-it-will-perform-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-chatbot-E2E-MiniVicBot-dd7bd-hich-action-it-will-perform-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/e2e/chatbot.spec.ts:306:7 › E2E: MiniVicBot Chatbot › TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width [39m
+
+    Error: 1440x900: the panel top 332 must clear the lowest glyph of the hero name (325) by 16px, not sit on it
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m16[39m
+    Received:    [31m7[39m
+
+    [0m [90m 371 |[39m         [32m`${viewport.width}x${viewport.height}: the panel top ${measured.panel.t} must clear the `[39m [33m+[39m
+     [90m 372 |[39m           [32m`lowest glyph of the hero name (${measured.glyphBottom}) by ${CLEARANCE}px, not sit on it`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 373 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mCLEARANCE[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 374 |[39m     }
+     [90m 375 |[39m   })[33m;[39m
+     [90m 376 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_f79c8e1b-a89-1/tests/e2e/chatbot.spec.ts:373:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-chatbot-E2E-MiniVicBot-6404d-ro-name-at-any-laptop-width-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-chatbot-E2E-MiniVicBot-6404d-ro-name-at-any-laptop-width-chromium/error-context.md[22m
+
+[31m  2 failed[39m
+[31m    [chromium] › tests/e2e/chatbot.spec.ts:172:7 › E2E: MiniVicBot Chatbot › TC-BOT-07: The launcher announces which action it will perform [39m
+[31m    [chromium] › tests/e2e/chatbot.spec.ts:306:7 › E2E: MiniVicBot Chatbot › TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width [39m
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/minivic-launcher.spec.ts -g TC-MV-LABEL-01|TC-MV-MARK-01 --workers=2 --reporter=list
+
+[2mRunning [22m3[2m tests using [22m2[2m workers[22m
+
+  [31m✘[39m  [2m2 [22m[31m[chromium] › tests/a11y/minivic-launcher.spec.ts:140:9 › A11y: the MiniVic launcher › TC-MV-MARK-01 @ 1440: the resting launcher paints a mark, and no video is source-less[39m[2m (4.8s)[22m
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/a11y/minivic-launcher.spec.ts:103:7 › A11y: the MiniVic launcher › TC-MV-LABEL-01: the accessible name starts with the visible label (WCAG 2.5.3)[39m[2m (4.9s)[22m
+  [31m✘[39m  [2m3 [22m[31m[chromium] › tests/a11y/minivic-launcher.spec.ts:140:9 › A11y: the MiniVic launcher › TC-MV-MARK-01 @ 390: the resting launcher paints a mark, and no video is source-less[39m[2m (2.6s)[22m
+
+
+[31m  1) [chromium] › tests/a11y/minivic-launcher.spec.ts:103:7 › A11y: the MiniVic launcher › TC-MV-LABEL-01: the accessible name starts with the visible label (WCAG 2.5.3) [39m
+
+    Error: closed: accessible name "Open Mini Vic assistant" must start with the visible label "Ask Mini Vic"
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+    [0m [90m 131 |[39m         name[33m.[39mtoLowerCase()[33m.[39mstartsWith(visibleLabel[33m.[39mtoLowerCase())[33m,[39m
+     [90m 132 |[39m         [32m`${state}: accessible name "${name}" must start with the visible label "${visibleLabel}"`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 133 |[39m       )[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 134 |[39m       expect(name)[33m.[39mtoMatch([35m/ask mini vic/i[39m)[33m;[39m
+     [90m 135 |[39m       [36mawait[39m expect(toggle)[33m.[39mtoHaveAttribute([32m'aria-expanded'[39m[33m,[39m state [33m===[39m [32m'open'[39m [33m?[39m [32m'true'[39m [33m:[39m [32m'false'[39m)[33m;[39m
+     [90m 136 |[39m     }[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_f79c8e1b-a89-1/tests/a11y/minivic-launcher.spec.ts:133:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-minivic-launcher-A11y-20165-e-visible-label-WCAG-2-5-3--chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-minivic-launcher-A11y-20165-e-visible-label-WCAG-2-5-3--chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/a11y/minivic-launcher.spec.ts:140:9 › A11y: the MiniVic launcher › TC-MV-MARK-01 @ 1440: the resting launcher paints a mark, and no video is source-less [39m
+
+    Error: the launcher must paint at least one mark of its own at 1440: svgs=[], innerText="Ask Mini Vic"
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+    [0m [90m 183 |[39m [32m          state.marks,[39m
+     [90m 184 |[39m [32m        )}, innerText="${state.text}"`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 185 |[39m       )[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 186 |[39m       [90m// The mark is the site's one non-negotiable ink, not a tinted glyph.[39m
+     [90m 187 |[39m       [36mfor[39m ([36mconst[39m mark [36mof[39m painted) {
+     [90m 188 |[39m         [36mconst[39m rgb [33m=[39m mark[33m.[39mcolor[33m.[39mmatch([35m/\d+/g[39m)[33m![39m[33m.[39mmap([33mNumber[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_f79c8e1b-a89-1/tests/a11y/minivic-launcher.spec.ts:185:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-minivic-launcher-A11y-34565-and-no-video-is-source-less-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-minivic-launcher-A11y-34565-and-no-video-is-source-less-chromium/error-context.md[22m
+
+[31m  3) [chromium] › tests/a11y/minivic-launcher.spec.ts:140:9 › A11y: the MiniVic launcher › TC-MV-MARK-01 @ 390: the resting launcher paints a mark, and no video is source-less [39m
+
+    Error: the launcher must paint at least one mark of its own at 390: svgs=[], innerText=""
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+    [0m [90m 183 |[39m [32m          state.marks,[39m
+     [90m 184 |[39m [32m        )}, innerText="${state.text}"`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 185 |[39m       )[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 186 |[39m       [90m// The mark is the site's one non-negotiable ink, not a tinted glyph.[39m
+     [90m 187 |[39m       [36mfor[39m ([36mconst[39m mark [36mof[39m painted) {
+     [90m 188 |[39m         [36mconst[39m rgb [33m=[39m mark[33m.[39mcolor[33m.[39mmatch([35m/\d+/g[39m)[33m![39m[33m.[39mmap([33mNumber[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_f79c8e1b-a89-1/tests/a11y/minivic-launcher.spec.ts:185:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-minivic-launcher-A11y-938d6-and-no-video-is-source-less-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-minivic-launcher-A11y-938d6-and-no-video-is-source-less-chromium/error-context.md[22m
+
+[31m  3 failed[39m
+[31m    [chromium] › tests/a11y/minivic-launcher.spec.ts:103:7 › A11y: the MiniVic launcher › TC-MV-LABEL-01: the accessible name starts with the visible label (WCAG 2.5.3) [39m
+[31m    [chromium] › tests/a11y/minivic-launcher.spec.ts:140:9 › A11y: the MiniVic launcher › TC-MV-MARK-01 @ 1440: the resting launcher paints a mark, and no video is source-less [39m
+[31m    [chromium] › tests/a11y/minivic-launcher.spec.ts:140:9 › A11y: the MiniVic launcher › TC-MV-MARK-01 @ 390: the resting launcher paints a mark, and no video is source-less [39m

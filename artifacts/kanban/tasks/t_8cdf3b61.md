@@ -61,3 +61,9 @@ R-c13 #15 CC-08 (minor, Verified, composition) — The rail scrolls 3192 px insi
 DIRECTION: Add the unbuilt rail thumb the R-c8 C-02 direction specified: a 2 px track in var(--ink-500) spanning the column (96 px to 1344 px at 1440), thumb height 2 px, background var(--mist-400), border-radius 1px, width calc(clientWidth / scrollWidth * 100%), translated by scrollLeft / scrollWidth, sitting var(--space-2) below the cards on the same spine. Pair it with an '01 / 06' counter at var(--fs-micro) in var(--mist-400) at the track's right end. Reduced motion: position updates without transition. No gold.
 FILES: components/sections/Vitrine/Vitrine.module.css:56,307+, components/sections/Vitrine/Vitrine.tsx
 ACCEPTANCE: At 1440 and 1920, #vitrine contains an element whose computed width is < rail.clientWidth and whose left offset changes after rail.scrollBy(600); its track's left edge equals the #vitrine heading's left edge within 1 px.
+
+## COMMENT (2026-09-05T08:30:41.710Z)
+Cycle 11's one open gate (TC-CONTRAST-01 @390) is green since cycle 16 — closing.
+
+## COMPLETE (2026-09-05T08:30:41.749Z)
+All 20 acceptance lines now hold (the @390 contrast node was the launcher, fixed in cycle 16). Live since f86b125.

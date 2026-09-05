@@ -258,6 +258,9 @@ const MiniVicBot = () => {
   messagesRef.current = messages;
 
   const AVATAR_VIDEO_URL = "/assets/my-avatar.mp4";
+  // The same still the launcher's portrait layer paints, used as the launcher
+  // video's poster so the clip never renders a black frame while it buffers.
+  const AVATAR_STILL_URL = "/assets/my_avatar.webp";
 
   /**
    * R1 AVATAR — 3-tier video-avatar + cloned-voice greeting (MOTION-AND-FX-SPEC §7.4).
@@ -1290,9 +1293,12 @@ const MiniVicBot = () => {
           role="dialog"
           aria-modal="false"
           aria-label="MiniVic assistant panel"
-          className="mb-4 flex h-[min(30rem,calc(100svh-8rem))] max-h-[min(30rem,calc(100svh-8rem))] w-[22rem] md:w-[27rem] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded border border-white/12 bg-[rgb(10_11_13/0.97)] backdrop-blur-sm shadow-[0_24px_60px_rgba(0,0,0,0.55)] animate-in slide-in-from-bottom-4 duration-200"
+          className="minivic-panel mb-4 flex w-[22rem] md:w-[27rem] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded border border-white/12 bg-[rgb(10_11_13/0.97)] backdrop-blur-sm shadow-[0_24px_60px_rgba(0,0,0,0.55)] animate-in slide-in-from-bottom-4 duration-200"
         >
-          <div className="relative h-40 w-full shrink-0 overflow-hidden border-b border-white/10 bg-neutral-950">
+          {/* The header gives its height back first when the panel is short —
+              a 1366x768 laptop leaves 328px for the whole dialog, and the
+              transcript is worth more than 160px of face. */}
+          <div className="minivic-panel__stage relative h-40 min-h-[6.5rem] max-h-[32%] w-full shrink-0 overflow-hidden border-b border-white/10 bg-neutral-950">
             <video
               ref={videoRef}
               src={currentVideoSrc || undefined}
@@ -1376,7 +1382,10 @@ const MiniVicBot = () => {
               </div>
             </div>
             {/* identity strip — clean text over the gradient, not a heavy boxed card */}
-            <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 px-4 pb-3">
+            {/* Decorative text laid over the stage: it must never eat a click
+                meant for the transport row above it, which is exactly what it
+                did once the stage got shorter than 160px. */}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-3 px-4 pb-3">
               <div className="min-w-0">
                 <h3 className="flex items-center gap-1.5 text-[1.1rem] font-semibold tracking-tight text-white">
                   Mini Vic
@@ -1407,7 +1416,7 @@ const MiniVicBot = () => {
               </span>
             </div>
           </div>
-          <div className="shrink-0 border-b border-white/10 bg-black/30 px-3 py-3">
+          <div className="minivic-panel__controls shrink-0 border-b border-white/10 bg-black/30 px-3 py-3">
             <div className="flex items-center gap-2.5">
               {/* Persona segmented control — one clean toggle instead of three cramped pills */}
               <div className="flex flex-1 rounded border border-white/12 bg-white/[0.02] p-0.5">
@@ -1461,7 +1470,7 @@ const MiniVicBot = () => {
             </p>
           </div>
           <div
-            className="min-h-0 flex-1 space-y-3 overflow-y-auto bg-[linear-gradient(180deg,rgba(10,11,13,0.96),rgba(7,8,10,0.96))] px-4 py-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10"
+            className="minivic-panel__log min-h-0 flex-1 space-y-3 overflow-y-auto bg-[linear-gradient(180deg,rgba(10,11,13,0.96),rgba(7,8,10,0.96))] px-4 py-4 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10"
             role="log"
             aria-live="polite"
             aria-relevant="additions text"
@@ -1654,26 +1663,56 @@ const MiniVicBot = () => {
         onFocus={() => {
           if (!toggleVideoSrc) setToggleVideoSrc(AVATAR_VIDEO_URL);
         }}
-        aria-label={isOpen ? "Close Mini Vic assistant" : "Open Mini Vic assistant"}
+        aria-expanded={isOpen}
+        aria-label="Ask Mini Vic — Vikram's AI clone"
       >
-        {/* The button's accessible name is its aria-label, which has to flip
-            with the state; the pill is the same invitation drawn for people who
-            can see it, so it is decorative to the accessibility tree. */}
+        {/* WCAG 2.5.3, Label in Name: the pill says "Ask Mini Vic", so the
+            accessible name has to begin with those words or a speech-input
+            user who reads the control aloud never reaches it. The name is
+            therefore constant and the panel's state rides on `aria-expanded`,
+            which is what a disclosure button is for. The pill itself stays
+            decorative — it would otherwise be announced twice. */}
         <span className="minivic-launcher__pill" aria-hidden="true">
           Ask Mini Vic
         </span>
         <span className="minivic-launcher__disc">
           <span className="minivic-launcher__portrait" aria-hidden="true" />
-          <video
-            src={toggleVideoSrc || undefined}
-            className="minivic-launcher__video pointer-events-none"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="none"
-            onError={() => setToggleVideoSrc("")}
-          />
+          {/* The resting state is drawn by the document: a speech mark that is
+              there before any network request resolves, under the portrait's
+              enhancement layers. R-c13 CC-03a — the launcher used to paint
+              nothing at all at phone widths. */}
+          <svg
+            className="minivic-launcher__mark"
+            viewBox="0 0 24 24"
+            width="24"
+            height="24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M20.5 12.2c0 3.9-3.8 7.1-8.5 7.1a9.8 9.8 0 0 1-2.6-.35L4.2 20.4l1.3-3.3A6.7 6.7 0 0 1 3.5 12.2c0-3.9 3.8-7.1 8.5-7.1s8.5 3.2 8.5 7.1Z" />
+            <path d="M8.6 12.15h.01M12 12.15h.01M15.4 12.15h.01" />
+          </svg>
+          {/* Never a source-less <video> (R-c13 CC-03a): the element exists only
+              once a source has resolved, and it carries the still as its poster
+              so its own first paint is the face rather than a black hole. */}
+          {toggleVideoSrc ? (
+            <video
+              src={toggleVideoSrc}
+              poster={AVATAR_STILL_URL}
+              className="minivic-launcher__video pointer-events-none"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="none"
+              onError={() => setToggleVideoSrc("")}
+            />
+          ) : null}
           <span className="minivic-launcher__pip" aria-hidden="true">
             <span className="minivic-launcher__pulse animate-ping motion-reduce:animate-none" />
             <span className="minivic-launcher__dot" />

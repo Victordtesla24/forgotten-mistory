@@ -30,3 +30,9 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## STATUS (2026-09-05T08:48:53.863Z)
+running — resilience lane dispatched (GLCanvas error boundary + footer CLS), port 5603
+
+## COMMENT (2026-09-05T09:09:06.142Z)
+09:0xZ: resilience lane killed by the restart before any code change (only build-stamp touched); relaunched fresh after the two heavier lanes, to keep the host at ≤2 batteries.

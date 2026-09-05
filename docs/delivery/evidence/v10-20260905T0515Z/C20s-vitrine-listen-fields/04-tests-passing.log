@@ -1,0 +1,42 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-vitrine.spec.ts tests/overhaul/scene-listen.spec.ts tests/e2e/vitrine.spec.ts tests/e2e/listen.spec.ts --reporter=line
+
+[2mRunning [22m36[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/36] [chromium] › tests/e2e/listen.spec.ts:22:7 › Listen › TC-LISTEN-01: the closing sentence is the only italic on the page
+[1A[2K[2/36] [chromium] › tests/e2e/listen.spec.ts:32:7 › Listen › TC-LISTEN-02: the closing copy stays under sixty-five words
+[1A[2K[3/36] [chromium] › tests/e2e/listen.spec.ts:48:7 › Listen › TC-LISTEN-03: no form, no input, no third-party embed
+[1A[2K[4/36] [chromium] › tests/e2e/listen.spec.ts:54:7 › Listen › TC-LISTEN-04: all four channels are real anchors matching the CV
+[1A[2K[5/36] [chromium] › tests/e2e/listen.spec.ts:65:7 › Listen › TC-LISTEN-05: hover and focus produce the identical underline
+[1A[2K[6/36] [chromium] › tests/e2e/listen.spec.ts:96:7 › Listen › TC-LISTEN-06: the caliper closes once, on entry, over the long cinematic beat
+[1A[2K[7/36] [chromium] › tests/e2e/listen.spec.ts:142:7 › Listen › TC-LISTEN-07: under reduced motion the caliper is drawn closed and nothing moves
+[1A[2K[8/36] [chromium] › tests/e2e/listen.spec.ts:180:7 › Listen › TC-LISTEN-08: nothing in the closing section is gold
+[1A[2K[9/36] [chromium] › tests/e2e/vitrine.spec.ts:22:7 › Vitrine › TC-VIT-01: exactly six plates, each with a source link
+[1A[2K[10/36] [chromium] › tests/e2e/vitrine.spec.ts:32:7 › Vitrine › TC-VIT-02: every plate states its limits
+[1A[2K[11/36] [chromium] › tests/e2e/vitrine.spec.ts:46:7 › Vitrine › TC-VIT-03: metrics are harvested and dated, not live
+[1A[2K[12/36] [chromium] › tests/e2e/vitrine.spec.ts:54:7 › Vitrine › TC-VIT-04: the exclusions are named with reasons
+[1A[2K[13/36] [chromium] › tests/e2e/vitrine.spec.ts:61:7 › Vitrine › TC-VIT-05: no screenshots, logos or raster images
+[1A[2K[14/36] [chromium] › tests/e2e/vitrine.spec.ts:73:7 › Vitrine › TC-VIT-06: the light tracks the plate at the centre of the rail
+[1A[2K[15/36] [chromium] › tests/e2e/vitrine.spec.ts:88:7 › Vitrine › TC-VIT-07: the rail is keyboard operable and traps nothing
+[1A[2K[16/36] [chromium] › tests/e2e/vitrine.spec.ts:101:7 › Vitrine › TC-VIT-08: the kicker denominator matches the harvest
+[1A[2K[17/36] [chromium] › tests/e2e/vitrine.spec.ts:106:7 › Vitrine › TC-VIT-09: every plate rules its metrics on the same line
+[1A[2K[18/36] [chromium] › tests/e2e/vitrine.spec.ts:141:7 › Vitrine › TC-VIT-10: a plate traces its drawing when the light reaches it
+[1A[2K[19/36] [chromium] › tests/e2e/vitrine.spec.ts:180:7 › Vitrine › TC-VIT-11: under reduced motion the drawings are present, untraced
+[1A[2K[20/36] [chromium] › tests/e2e/vitrine.spec.ts:204:9 › Vitrine › TC-VIT-12 @ 1440: card 01 stands on the heading's spine, lit at rest, and the rail fades rather than cuts
+[1A[2K[21/36] [chromium] › tests/e2e/vitrine.spec.ts:204:9 › Vitrine › TC-VIT-12 @ 1920: card 01 stands on the heading's spine, lit at rest, and the rail fades rather than cuts
+[1A[2K[22/36] [chromium] › tests/e2e/vitrine.spec.ts:258:7 › Vitrine › TC-VIT-13: every stroke of a lit plate lands inside the cinematic band
+[1A[2K[23/36] [chromium] › tests/overhaul/scene-listen.spec.ts:63:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-01: exactly one canvas mounts in #listen once the section is in view
+[1A[2K[24/36] [chromium] › tests/overhaul/scene-listen.spec.ts:77:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-02: the canvas is aria-hidden, behind the heading and behind the caliper
+[1A[2K[25/36] [chromium] › tests/overhaul/scene-listen.spec.ts:106:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-03: the field is bound to the caliper beat, not a clock of its own
+[1A[2K[26/36] [chromium] › tests/overhaul/scene-listen.spec.ts:125:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-04: under reduced motion there is no canvas and the caliper is drawn closed
+[1A[2K[27/36] [chromium] › tests/overhaul/scene-listen.spec.ts:142:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-05: with WebGL unavailable the closing screen is whole and silent
+[1A[2K[28/36] [chromium] › tests/overhaul/scene-listen.spec.ts:168:7 › TC-SCENE-LISTEN: the instrument is set down in a field of light › TC-SCENE-LISTEN-06: the field is monochrome, palette-sourced and cheap per pixel
+[1A[2K[29/36] [chromium] › tests/overhaul/scene-vitrine.spec.ts:78:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-01: exactly one canvas mounts under the rail once the section is in view
+[1A[2K[30/36] [chromium] › tests/overhaul/scene-vitrine.spec.ts:92:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-02: the canvas is aria-hidden, behind the plates and behind the heading
+[1A[2K[31/36] [chromium] › tests/overhaul/scene-vitrine.spec.ts:123:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-03: the field reads the same lit plate the rail does
+[1A[2K[32/36] [chromium] › tests/overhaul/scene-vitrine.spec.ts:142:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-04: under reduced motion there is no canvas and the six drawings are whole
+[1A[2K[33/36] [chromium] › tests/overhaul/scene-vitrine.spec.ts:161:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-05: with WebGL unavailable the cabinet is whole and silent
+[1A[2K[34/36] [chromium] › tests/overhaul/scene-vitrine.spec.ts:188:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-06: the field is monochrome, palette-sourced and cheap per pixel
+[1A[2K[35/36] [chromium] › tests/overhaul/scene-vitrine.spec.ts:213:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-07: the trace-on reads as a trace and still lands inside 900 ms (MOT-C13-03)
+[1A[2K[36/36] [chromium] › tests/overhaul/scene-vitrine.spec.ts:252:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-08: the rail travels under no-preference and jumps under reduce (MOT-C13-06)
+[1A[2K[32m  36 passed[39m[2m (1.2m)[22m

@@ -1,0 +1,18 @@
+{
+  "cycle": "v10-c05",
+  "window_utc": "2026-09-05T08:25Z → 09:30Z",
+  "pea_numerator": 6,
+  "pea_denominator": 25,
+  "pea_basis": "unchanged matrix; site-level: cycle 16b, cycles 17+18, scenes 5+6 live (5 of 7 GLSL scenes now mount: hero, about, experience, vitrine, listen); two owner-facing root causes found and one fixed: (1) service worker served the first-visit shell forever (cache-first, fixed cache name, sw.js unchanged since June) + HTML max-age=3600 — fix merged e25ed57, deploying; (2) flagship scenes too quiet to see — visibility gate + correction lanes dispatched",
+  "adversarial_verdict": "R-c13 FAIL (crash, fixed); R-c14 queued after hero photo + flagship A",
+  "deploy_commit": "b69bc97b → e25ed57 (cache fix, deploying)",
+  "incidents": [
+    {"id": "restart-0903Z", "cause": "3 batteries + 2 verifiers on 4 cores → load 72 → orchestrator process exited; 3 lanes + monitor lost", "fix": "two-battery cap (memory forgotten-mistory-host-two-battery-cap); cycle 20 resumed in place; scenes 5+6 verifier resumed from cache"},
+    {"id": "t_cachefr01", "severity": 100, "cause": "public/sw.js cache-first + fixed fm-static-v1 + unchanged bytes since 2026-06-14; HTML cache-control max-age=3600 (Firebase default)", "proof": "persistent-profile probe: load2 deliveryType cache-storage, transferSize 0", "fix": "firebase.json HTML must-revalidate; worker network-first navigations; build-stamped cache name (scripts/build/stamp_service_worker.mjs, fails loudly if unstamped); one controllerchange reload; tests/hosting_cache.test.mjs + tests/sw_strategy.test.mjs"}
+  ],
+  "owner_messages": ["09:08Z no visible change → cache root cause", "09:10Z hero photo colour/full size/hover video → t_heroph001 (lane running)", "09:10Z cannot see flagship UI/UX per section → t_flagvis0a (running) + t_flagvis0b (queued)", "09:17Z verify production yourself, nothing changed 4–5 h → proven and fixed (t_cachefr01)"],
+  "landed": ["t_c16b0001 (V PASS)", "t_3729f57e + t_2cc9a990 (V PASS)", "t_60d9cd7a scenes 5+6 (V PASS)", "t_cachefr01 merged (verifier polling live)"],
+  "in_flight": ["t_heroph001 hero photo (5601)", "t_flagvis0a flagship visibility A (5602)", "t_cachefr01 verifier", "t_a88c6767 cycle 20 resume (queued for a battery slot; work committed-ready in wf_d9fbfbaa-53a-1)"],
+  "tools_used": ["Workflow (opus council)", "Monitor (live probe + functions:log)", "playwright persistent-context returning-visitor probe", "gh CLI", "git", "curl -sI (headers)"],
+  "next": "verify the cache fix with the pre-fix profile → restart the monitor with a returning-visitor pass → land hero photo + flagship A → cycle 20 → flagship B → R-c14"
+}

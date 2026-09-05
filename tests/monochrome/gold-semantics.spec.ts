@@ -200,3 +200,270 @@ test.describe('R-21 / R-110 — gold means "this figure has a source"', () => {
   });
   }
 });
+
+/**
+ * R-c8 C-08 + R-c13 CC-10 — #skills: gold is a mark, not a mass.
+ *
+ * The calibration card printed the same claim three times over. Twenty-nine
+ * elements inside `#skills` painted saturated `--gold` at rest: fourteen bench
+ * dots in a column at x=1088, fourteen status glyphs in a second column 71px
+ * to their right at x=1159.6, and the legend swatch that keys them. Two
+ * parallel gold columns ask a reader to learn two marks in one table, and a
+ * mark repeated twenty-eight times down a page is not a mark — it is a fill,
+ * which is the one thing `app/globals.css` says gold is never allowed to be.
+ *
+ * These tests hold the collapsed shape:
+ *   · at rest at 1440, at most six elements inside `#skills` paint saturated
+ *     gold (`rgb(201, 168, 76)`);
+ *   · every element painting *any* sanctioned gold sits on a licensed surface —
+ *     a sourced caliper, the "measured in production" mark, or a live
+ *     repository URL — so recessing a mark cannot be used to smuggle gold onto
+ *     something with no source behind it;
+ *   · those elements form at most one vertical run, so there is one column of
+ *     evidence rather than two competing ones.
+ *
+ * And Motion F-6, which is the same rule expressed in time: the strands are
+ * dim at rest and light only under the reader's attention. Gold that is always
+ * at full strength cannot get any louder when it has something to say.
+ */
+const SKILLS_GOLD_BUDGET = 6;
+
+/** The surfaces the design system licenses gold to appear on. */
+const LICENSED =
+  '[data-caliper-state="sourced"], [class*="measuredMark"], [class*="mark"][class*="production"], a[href^="https://github.com/"]';
+
+async function goldInSkills(page: Page, golds: [number, number, number][]) {
+  return page.evaluate(
+    ({ palette, licensed }: { palette: number[][]; licensed: string }) => {
+      const parse = (s: string) => {
+        const m = String(s).match(/rgba?\(([^)]+)\)/);
+        if (!m) return null;
+        const p = m[1].split(/[,\s/]+/).filter(Boolean).map(Number);
+        return { rgb: [p[0], p[1], p[2]], a: p.length > 3 ? p[3] : 1 };
+      };
+      const hit = (s: string) => {
+        const c = parse(s);
+        if (!c || c.a === 0) return -1;
+        return palette.findIndex(
+          (g) =>
+            Math.abs(c.rgb[0] - g[0]) <= 1 &&
+            Math.abs(c.rgb[1] - g[1]) <= 1 &&
+            Math.abs(c.rgb[2] - g[2]) <= 1,
+        );
+      };
+      const props = [
+        'color',
+        'backgroundColor',
+        'borderTopColor',
+        'borderRightColor',
+        'borderBottomColor',
+        'borderLeftColor',
+        'fill',
+        'stroke',
+      ] as const;
+      const out: { tag: string; cls: string; x: number; index: number; via: string; licensed: boolean }[] = [];
+      const section = document.querySelector('#skills');
+      if (!section) return out;
+      for (const el of Array.from(section.querySelectorAll('*'))) {
+        const cs = getComputedStyle(el);
+        if (cs.visibility === 'hidden' || cs.display === 'none') continue;
+        const box = el.getBoundingClientRect();
+        if (box.width < 0.5 && box.height < 0.5) continue;
+        for (const p of props) {
+          const v = cs[p] as unknown as string;
+          if (typeof v !== 'string') continue;
+          const index = hit(v);
+          if (index === -1) continue;
+          // Text colour only counts where the element actually owns text.
+          if (p === 'color') {
+            const owns = Array.from(el.childNodes).some(
+              (n) => n.nodeType === 3 && (n.textContent || '').trim().length > 0,
+            );
+            if (!owns) continue;
+          }
+          out.push({
+            tag: el.tagName.toLowerCase(),
+            cls: String((el as HTMLElement).className || '').slice(0, 52),
+            x: Math.round(box.x * 10) / 10,
+            index,
+            via: `${p}: ${v}`,
+            licensed: Boolean(el.closest(licensed)),
+          });
+          break;
+        }
+      }
+      return out;
+    },
+    { palette: golds as unknown as number[][], licensed: LICENSED },
+  );
+}
+
+async function readSkills(page: Page) {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await gotoHome(page);
+  await page.locator('#skills').scrollIntoViewIfNeeded();
+  await settle(page);
+  // The bench traces itself in once; read it after it has settled, which is the
+  // state a reader spends all but the first two seconds looking at.
+  await page.waitForTimeout(2200);
+}
+
+test.describe('C-08 / CC-10 — the calibration card spends gold once', () => {
+  test.describe.configure({ timeout: 120000 });
+
+  test('GS-10: at most six elements paint saturated gold inside #skills at rest', async ({ page }) => {
+    await readSkills(page);
+    const marks = await goldInSkills(page, SATURATED_GOLD);
+
+    console.log(`\n=== GS-10 saturated gold inside #skills @1440 === ${marks.length}`);
+    for (const m of marks) console.log(`  ${m.tag}.${m.cls} x=${m.x} via ${m.via}`);
+
+    expect(
+      marks.length,
+      'twenty-nine saturated gold marks down one section is a fill, not a claim. ' +
+        `Painting gold: ${marks.map((m) => `${m.tag}.${m.cls} (${m.via})`).join(' | ')}`,
+    ).toBeLessThanOrEqual(SKILLS_GOLD_BUDGET);
+  });
+
+  test('GS-11: every gold mark in #skills sits on a licensed surface', async ({ page }) => {
+    await readSkills(page);
+    const marks = await goldInSkills(page, ANY_GOLD);
+
+    console.log(`\n=== GS-11 any-gold inside #skills @1440 === ${marks.length}`);
+    for (const m of marks) console.log(`  ${m.tag}.${m.cls} x=${m.x} licensed=${m.licensed} via ${m.via}`);
+
+    // CC-10's own ceiling: recessing a mark is a step down in value, not a
+    // licence to paint more of them.
+    expect(marks.length, 'CC-10 — no more than sixteen gold marks in the card').toBeLessThanOrEqual(16);
+
+    const unlicensed = marks.filter((m) => !m.licensed);
+    expect(
+      unlicensed.map((m) => `${m.tag}.${m.cls} (${m.via})`),
+      'gold means "this figure has a source": a sourced caliper, the measured-in-production mark, or a live repository URL',
+    ).toEqual([]);
+  });
+
+  test('GS-12: the card carries one vertical run of gold, not two', async ({ page }) => {
+    await readSkills(page);
+    const marks = await goldInSkills(page, ANY_GOLD);
+
+    // A "run" is two or more gold marks stacked on the same x — a column the
+    // reader has to learn. One is the evidence column; two is a second mark.
+    const columns = new Map<number, number>();
+    for (const m of marks) {
+      let key = [...columns.keys()].find((k) => Math.abs(k - m.x) <= 2);
+      if (key === undefined) key = m.x;
+      columns.set(key, (columns.get(key) ?? 0) + 1);
+    }
+    const runs = [...columns.entries()].filter(([, count]) => count >= 2);
+
+    console.log(
+      `\n=== GS-12 gold columns === ${JSON.stringify([...columns.entries()])} → ${runs.length} run(s)`,
+    );
+
+    expect(
+      runs.length,
+      'CC-10 — two parallel gold columns ask the reader to learn two marks in one table. ' +
+        `Columns: ${runs.map(([x, count]) => `x=${x} (${count} marks)`).join(' | ')}`,
+    ).toBeLessThanOrEqual(1);
+  });
+
+  test('GS-13: at rest the sourced strands are dim gold and the rest are grey', async ({ page }) => {
+    await readSkills(page);
+
+    const strands = await page.evaluate(() => {
+      const paths = Array.from(document.querySelectorAll('#skills svg path[class*="wire"]'));
+      return paths.map((p) => {
+        const cs = getComputedStyle(p);
+        const cls = p.getAttribute('class') ?? '';
+        return {
+          production: /production/i.test(cls) && !/nonProduction/i.test(cls),
+          strokeOpacity: Number(cs.strokeOpacity),
+          stroke: cs.stroke,
+        };
+      });
+    });
+
+    const gradientStops = await page.evaluate(() => {
+      const read = (id: string) =>
+        Array.from(document.querySelectorAll(`#${id} stop`)).map((s) => ({
+          color: getComputedStyle(s).stopColor,
+          opacity: Number(getComputedStyle(s).stopOpacity),
+        }));
+      return { gold: read('bench-wire-gold'), grey: read('bench-wire-grey') };
+    });
+
+    const sourced = strands.filter((s) => s.production);
+    const others = strands.filter((s) => !s.production);
+    console.log(
+      `\n=== GS-13 strands at rest === sourced=${sourced.length} others=${others.length} ` +
+        `stops=${JSON.stringify(gradientStops)}`,
+    );
+    console.log(`  sourced stroke-opacity: ${[...new Set(sourced.map((s) => s.strokeOpacity))].join(', ')}`);
+    console.log(`  other  stroke-opacity: ${[...new Set(others.map((s) => s.strokeOpacity))].join(', ')}`);
+
+    expect(sourced.length, 'the bench must draw the production links it exists to draw').toBeGreaterThan(0);
+
+    // The strand is gold — it is stroked with a ramp whose body is var(--gold) —
+    // but at rest that gold is spent at under a third of its strength.
+    expect(
+      gradientStops.gold.every((s) => s.color === 'rgb(201, 168, 76)'),
+      'a sourced strand is stroked with var(--gold)',
+    ).toBe(true);
+    for (const s of sourced) {
+      expect(s.stroke, 'sourced strands take the gold ramp').toContain('bench-wire-gold');
+      expect(s.strokeOpacity, 'gold at full strength at rest has nowhere left to go on hover').toBeLessThanOrEqual(0.3);
+    }
+    for (const s of others) {
+      expect(s.stroke, 'unsourced strands are grey, never gold').toContain('bench-wire-grey');
+      expect(s.strokeOpacity).toBeCloseTo(0.35, 2);
+    }
+  });
+
+  test('GS-14 (Motion F-6): hovering a capability lights its strands and recedes the rest', async ({ page }) => {
+    await readSkills(page);
+
+    const node = page.locator('#skills [data-side="capabilities"] button').first();
+    await node.scrollIntoViewIfNeeded();
+    await node.hover();
+    await page.waitForTimeout(300); // the budget the rule gives it
+
+    const opacities = await page.evaluate(() =>
+      Array.from(document.querySelectorAll('#skills svg path[class*="wire"]')).map((p) =>
+        Number(getComputedStyle(p).strokeOpacity),
+      ),
+    );
+    console.log(`\n=== GS-14 stroke-opacity under hover === ${JSON.stringify(opacities)}`);
+
+    expect(
+      opacities.filter((o) => o >= 0.99).length,
+      'the strands the hovered capability owns come to full strength within 300 ms',
+    ).toBeGreaterThanOrEqual(1);
+    expect(
+      opacities.filter((o) => Math.abs(o - 0.18) < 0.01).length,
+      'everything it does not touch falls back to 0.18 — dimmed, never deleted',
+    ).toBeGreaterThanOrEqual(1);
+  });
+
+  test.describe('reduced motion', () => {
+    test('GS-15: under reduced motion the strand transition is colour only', async ({ page }) => {
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await readSkills(page);
+      const transition = await page.evaluate(() => {
+        const p = document.querySelector('#skills svg path[class*="wire"]');
+        if (!p) return null;
+        const cs = getComputedStyle(p);
+        return { property: cs.transitionProperty, animation: cs.animationName };
+      });
+      console.log(`\n=== GS-15 reduced-motion strand transition === ${JSON.stringify(transition)}`);
+
+      expect(transition, 'the bench must still draw its strands under reduced motion').not.toBeNull();
+      expect(
+        transition!.property,
+        'geometry must not move under reduced motion — only the colour changes',
+      ).not.toContain('stroke-width');
+      expect(transition!.property).toContain('stroke-opacity');
+      expect(transition!.animation, 'and nothing traces itself in').toBe('none');
+    });
+  });
+});
