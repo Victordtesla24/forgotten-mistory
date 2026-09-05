@@ -1,0 +1,37 @@
+=== G-M3 post-deploy live measurement — 2026-09-05T13:17:22Z ===
+
+--- warm ping: GET /api/chat?warm=1 (expect 204, no upstream spend) ---
+http=204 total=0.209498
+http=204 total=0.168847
+http=204 total=0.149421
+
+--- streamed POST: time_starttransfer = first byte of the answer reaches the client ---
+starttransfer=2.915189 total=2.915428 http=200
+starttransfer=2.187370 total=2.187687 http=200
+starttransfer=1.855804 total=1.855979 http=200
+starttransfer=1.673859 total=1.674058 http=200
+starttransfer=2.087931 total=2.088126 http=200
+starttransfer=1.663232 total=1.663383 http=200
+
+--- content-type actually returned by Hosting ---
+content-type: text/event-stream; charset=utf-8
+--- first 200 bytes of the streamed body ---
+data: {"delta":"At"}
+
+data: {"delta":" the"}
+
+data: {"delta":" Australian"}
+
+data: {"delta":" Tax"}
+
+data: {"delta":"ation"}
+
+data: {"delta":" Office"}
+
+data: {"delta":","}
+
+data: {"delta":" I"}
+
+data
+--- non-streaming path still answers JSON (old cached bundles) ---
+http=200 starttransfer=1.109928

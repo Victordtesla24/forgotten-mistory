@@ -20,7 +20,11 @@ const HERO = '#hero';
 const FIGURE = '[data-testid="hero-portrait"]';
 const IMG = `${FIGURE} img`;
 const VIDEO = `${FIGURE} video`;
-const TOGGLE = `${FIGURE} button[aria-pressed]`;
+/* The control moved out of the figure and into the proof band below the fold,
+   so the first screen carries one call to action and not two (G-H1 correction).
+   TC-PHOTO-06's contract — Tab reaches it, Enter and Space toggle it — is
+   unchanged; only the selector is. */
+const TOGGLE = '#hero [data-testid="portrait-control"]';
 const TICK = '[data-testid="portrait-tick"]';
 const CAPTION = '[data-testid="portrait-caption"]';
 const CAPTION_TEXT = 'Photograph · Melbourne'; // app/data/portfolio/avatar.ts → caption

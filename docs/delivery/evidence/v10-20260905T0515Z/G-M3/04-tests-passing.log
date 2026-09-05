@@ -1,0 +1,344 @@
+TAP version 13
+# Subtest: buildMiniVicSystemPrompt — grounding facts
+    # Subtest: states the years of experience that the site publishes (benchmark Q4)
+    ok 1 - states the years of experience that the site publishes (benchmark Q4)
+      ---
+      duration_ms: 0.743256
+      type: 'test'
+      ...
+    # Subtest: spells out the AI tech stack (benchmark Q6)
+    ok 2 - spells out the AI tech stack (benchmark Q6)
+      ---
+      duration_ms: 0.172261
+      type: 'test'
+      ...
+    # Subtest: carries the published contact details (benchmark Q8)
+    ok 3 - carries the published contact details (benchmark Q8)
+      ---
+      duration_ms: 0.275412
+      type: 'test'
+      ...
+    # Subtest: carries employer, role, location, availability and credentials
+    ok 4 - carries employer, role, location, availability and credentials
+      ---
+      duration_ms: 0.178592
+      type: 'test'
+      ...
+    # Subtest: carries the quantified outcomes with their numbers
+    ok 5 - carries the quantified outcomes with their numbers
+      ---
+      duration_ms: 0.153172
+      type: 'test'
+      ...
+    1..5
+ok 1 - buildMiniVicSystemPrompt — grounding facts
+  ---
+  duration_ms: 2.4665
+  type: 'suite'
+  ...
+# Subtest: buildMiniVicSystemPrompt — answer rules
+    # Subtest: caps answers at 1-3 sentences and bans list formatting
+    ok 1 - caps answers at 1-3 sentences and bans list formatting
+      ---
+      duration_ms: 0.295892
+      type: 'test'
+      ...
+    # Subtest: forbids inventing employers, dates and metrics
+    ok 2 - forbids inventing employers, dates and metrics
+      ---
+      duration_ms: 0.219592
+      type: 'test'
+      ...
+    # Subtest: forbids claiming an on-record fact is unspecified
+    ok 3 - forbids claiming an on-record fact is unspecified
+      ---
+      duration_ms: 0.249122
+      type: 'test'
+      ...
+    # Subtest: requires contact details to be given, never refused
+    ok 4 - requires contact details to be given, never refused
+      ---
+      duration_ms: 0.230612
+      type: 'test'
+      ...
+    # Subtest: requires off-topic questions to be deflected back to Vikram in one sentence
+    ok 5 - requires off-topic questions to be deflected back to Vikram in one sentence
+      ---
+      duration_ms: 0.311783
+      type: 'test'
+      ...
+    # Subtest: keeps the restrained, evidence-led tone law
+    ok 6 - keeps the restrained, evidence-led tone law
+      ---
+      duration_ms: 0.224082
+      type: 'test'
+      ...
+    # Subtest: resists prompt injection: instructions are private and persona swaps are refused
+    ok 7 - resists prompt injection: instructions are private and persona swaps are refused
+      ---
+      duration_ms: 0.130791
+      type: 'test'
+      ...
+    1..7
+ok 2 - buildMiniVicSystemPrompt — answer rules
+  ---
+  duration_ms: 2.042086
+  type: 'suite'
+  ...
+# Subtest: persona modes
+    # Subtest: varies the style clause per mode
+    ok 1 - varies the style clause per mode
+      ---
+      duration_ms: 0.194802
+      type: 'test'
+      ...
+    # Subtest: falls back to the hiring tone for an unknown or absent mode
+    ok 2 - falls back to the hiring tone for an unknown or absent mode
+      ---
+      duration_ms: 0.243663
+      type: 'test'
+      ...
+    1..2
+ok 3 - persona modes
+  ---
+  duration_ms: 0.554525
+  type: 'suite'
+  ...
+# Subtest: normaliseConversation
+    # Subtest: rejects a body with no messages array
+    ok 1 - rejects a body with no messages array
+      ---
+      duration_ms: 0.304782
+      type: 'test'
+      ...
+    # Subtest: rejects an empty conversation and an over-long one
+    ok 2 - rejects an empty conversation and an over-long one
+      ---
+      duration_ms: 0.151042
+      type: 'test'
+      ...
+    # Subtest: drops browser-supplied system turns (prompt-injection regression)
+    ok 3 - drops browser-supplied system turns (prompt-injection regression)
+      ---
+      duration_ms: 0.584176
+      type: 'test'
+      ...
+    # Subtest: rejects a conversation that is only a system turn
+    ok 4 - rejects a conversation that is only a system turn
+      ---
+      duration_ms: 0.106671
+      type: 'test'
+      ...
+    # Subtest: ignores unknown roles and blank content
+    ok 5 - ignores unknown roles and blank content
+      ---
+      duration_ms: 0.14055
+      type: 'test'
+      ...
+    # Subtest: caps a single message at 4000 characters
+    ok 6 - caps a single message at 4000 characters
+      ---
+      duration_ms: 0.167211
+      type: 'test'
+      ...
+    # Subtest: rejects a conversation over the total character budget
+    ok 7 - rejects a conversation over the total character budget
+      ---
+      duration_ms: 0.155202
+      type: 'test'
+      ...
+    1..7
+ok 4 - normaliseConversation
+  ---
+  duration_ms: 1.820194
+  type: 'suite'
+  ...
+# Subtest: resolveChatProviders
+    # Subtest: skips a rung whose secret is unset, empty or whitespace
+    ok 1 - skips a rung whose secret is unset, empty or whitespace
+      ---
+      duration_ms: 0.268222
+      type: 'test'
+      ...
+    1..1
+ok 5 - resolveChatProviders
+  ---
+  duration_ms: 0.375263
+  type: 'suite'
+  ...
+# Subtest: completeChat ladder
+    # Subtest: uses the primary provider when it answers
+    ok 1 - uses the primary provider when it answers
+      ---
+      duration_ms: 0.931997
+      type: 'test'
+      ...
+    # Subtest: falls through to the secondary provider on 402 (out of credit)
+    ok 2 - falls through to the secondary provider on 402 (out of credit)
+      ---
+      duration_ms: 1.3371
+      type: 'test'
+      ...
+    # Subtest: falls through on 401, 403, 429, 5xx, a network error and an empty completion
+    ok 3 - falls through on 401, 403, 429, 5xx, a network error and an empty completion
+      ---
+      duration_ms: 1.36114
+      type: 'test'
+      ...
+    # Subtest: gives up with ChatLadderError when every rung fails, leaking no key material
+    ok 4 - gives up with ChatLadderError when every rung fails, leaking no key material
+      ---
+      duration_ms: 0.614725
+      type: 'test'
+      ...
+    # Subtest: times out a hanging provider and still answers from the next rung
+    ok 5 - times out a hanging provider and still answers from the next rung
+      ---
+      duration_ms: 21.62816
+      type: 'test'
+      ...
+    # Subtest: cools a credential/credit failure down for 10 minutes, then retries it
+    ok 6 - cools a credential/credit failure down for 10 minutes, then retries it
+      ---
+      duration_ms: 0.704855
+      type: 'test'
+      ...
+    # Subtest: cools a 429 down for only a minute
+    ok 7 - cools a 429 down for only a minute
+      ---
+      duration_ms: 2.933504
+      type: 'test'
+      ...
+    # Subtest: stops walking the ladder once the latency budget is spent
+    ok 8 - stops walking the ladder once the latency budget is spent
+      ---
+      duration_ms: 0.316113
+      type: 'test'
+      ...
+    1..8
+ok 6 - completeChat ladder
+  ---
+  duration_ms: 30.176049
+  type: 'suite'
+  ...
+# Subtest: Firebase trigger discovery
+    # Subtest: still exports both HTTPS triggers
+    ok 1 - still exports both HTTPS triggers
+      ---
+      duration_ms: 0.10384
+      type: 'test'
+      ...
+    # Subtest: declares every ladder secret on the chat function
+    ok 2 - declares every ladder secret on the chat function
+      ---
+      duration_ms: 1.240071
+      type: 'test'
+      ...
+    # Subtest: exports test helpers without __endpoint so they are not deployed as functions
+    ok 3 - exports test helpers without __endpoint so they are not deployed as functions
+      ---
+      duration_ms: 0.128401
+      type: 'test'
+      ...
+    1..3
+ok 7 - Firebase trigger discovery
+  ---
+  duration_ms: 1.623773
+  type: 'suite'
+  ...
+# Subtest: G-M3 — warm request
+    # Subtest: a GET with warm=1 is a warm request
+    ok 1 - a GET with warm=1 is a warm request
+      ---
+      duration_ms: 0.413754
+      type: 'test'
+      ...
+    # Subtest: a send can never be mistaken for a warm ping
+    ok 2 - a send can never be mistaken for a warm ping
+      ---
+      duration_ms: 0.149492
+      type: 'test'
+      ...
+    1..2
+ok 8 - G-M3 — warm request
+  ---
+  duration_ms: 0.684756
+  type: 'suite'
+  ...
+# Subtest: G-M3 — ladder order survives a cold start
+    # Subtest: reorders the ladder from the env-supplied order
+    ok 1 - reorders the ladder from the env-supplied order
+      ---
+      duration_ms: 0.364983
+      type: 'test'
+      ...
+    # Subtest: keeps every rung — an unnamed rung falls in behind, never off
+    ok 2 - keeps every rung — an unnamed rung falls in behind, never off
+      ---
+      duration_ms: 0.138872
+      type: 'test'
+      ...
+    # Subtest: is a no-op when the env names nothing or names nonsense
+    ok 3 - is a no-op when the env names nothing or names nonsense
+      ---
+      duration_ms: 0.15741
+      type: 'test'
+      ...
+    1..3
+ok 9 - G-M3 — ladder order survives a cold start
+  ---
+  duration_ms: 0.798356
+  type: 'suite'
+  ...
+# Subtest: G-M3 — streamed completion
+    # Subtest: negotiates streaming only when the caller says it can read one
+    ok 1 - negotiates streaming only when the caller says it can read one
+      ---
+      duration_ms: 0.240032
+      type: 'test'
+      ...
+    # Subtest: emits the first fragment before the upstream has finished writing
+    ok 2 - emits the first fragment before the upstream has finished writing
+      ---
+      duration_ms: 10.846305
+      type: 'test'
+      ...
+    # Subtest: asks the provider for a stream only on the streaming path
+    ok 3 - asks the provider for a stream only on the streaming path
+      ---
+      duration_ms: 0.517214
+      type: 'test'
+      ...
+    # Subtest: reassembles an event split across two network chunks
+    ok 4 - reassembles an event split across two network chunks
+      ---
+      duration_ms: 0.740227
+      type: 'test'
+      ...
+    # Subtest: falls through to the next rung when the first fails before emitting anything
+    ok 5 - falls through to the next rung when the first fails before emitting anything
+      ---
+      duration_ms: 0.315692
+      type: 'test'
+      ...
+    # Subtest: never splices a second rung onto an answer already on the wire
+    ok 6 - never splices a second rung onto an answer already on the wire
+      ---
+      duration_ms: 0.529885
+      type: 'test'
+      ...
+    1..6
+ok 10 - G-M3 — streamed completion
+  ---
+  duration_ms: 13.454536
+  type: 'suite'
+  ...
+1..10
+# tests 44
+# suites 10
+# pass 44
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 213.408776

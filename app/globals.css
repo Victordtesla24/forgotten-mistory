@@ -829,6 +829,22 @@ footer {
     z-index: 5;
 }
 
+/* The shell's reservation for the page.
+   `<Footer />` is part of the layout shell; the six sections are `children` and
+   stream in after it. On a slow connection Chrome therefore paints the footer
+   at y=24, directly under the nav with nothing above it, and then moves it
+   ~11 900 px down the moment the page's HTML arrives — one deterministic
+   reflow, measured at CLS 0.15556 at 1440x900 here and 0.17639 at 1280x720 on
+   live 9b864752, with FOOTER named as the only shift source. Reserving the
+   first screen in the shell means the footer's first painted position is
+   already at or below the fold, so the arriving content pushes it from
+   off-screen to further off-screen and the shift has no visible area to
+   count. The min-height is inert once the sections are in: they are far
+   taller than one screen. */
+.page-frame {
+    min-height: 100svh;
+}
+
 /* Morphing Background */
 
 /* Hero Section */

@@ -41,3 +41,6 @@ running — dispatched 12:38Z — fresh analyst-programmer (correction identity)
 
 ## COMMENT (2026-09-05T12:52:08.026Z)
 PUSHED d958917 on worktree-wf_d917eafb-f9f-1 (12:51Z): sourced:false on Culture Fit, Location Match, Company Stability, Career Growth (4 flips, data only); gold-semantics CC-A1 now derives EXPECTED_SOURCED/UNSOURCED from aboutContent; tests/about_sourced_semantics.test.mjs 6/6 (role-side ⇒ unsourced, open-caliper binding asserted in About.tsx source, allow-list of checkable records for every gold line); about.spec adjusted. Orchestrator reviewed the diff. Awaiting consolidation + reviewer phase 3 on live.
+
+## COMPLETE (2026-09-05T13:03:55.534Z)
+REVIEWER PHASE-3 PASS on live 7d467770 (= 37cbb52c for every rendered file; G-REV/37cbb52c/08-adversarial-review.md, 8b351a7): 5 gold / 5 grey exactly as claimed at 1440 and 390; the four over-graded lines now grey; each gold line names a checkable record — two verified externally (GitHub API public_repos=38; aether-job-career-agent HTTP 200); all three side==='role' dimensions grey under their open caliper; grey lines still print evidence (41–74 chars, byte-identical); AA worst-case gold 7.84:1 / grey 5.22:1; page-wide gold census exactly 7 (5 About + Skills measured mark + Vitrine live URL); 0 pageerrors, 0 failed requests.

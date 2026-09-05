@@ -1,0 +1,10 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/minivic-send-path.spec.ts --workers=1 --reporter=line
+
+Running 4 tests using 1 worker
+
+[1A[2K[1/4] [chromium] › tests/e2e/minivic-send-path.spec.ts:59:7 › MiniVic send path › MV-WIRE-01: one send makes exactly one /api request, and it is /api/chat
+[1A[2K[2/4] [chromium] › tests/e2e/minivic-send-path.spec.ts:131:7 › MiniVic send path › MV-WIRE-02: no poller keeps running after the reply lands
+[1A[2K[3/4] [chromium] › tests/e2e/minivic-send-path.spec.ts:170:7 › MiniVic first-token path › MV-WARM-01: opening the panel warms the function, and a send does not
+[1A[2K[4/4] [chromium] › tests/e2e/minivic-send-path.spec.ts:207:7 › MiniVic first-token path › MV-PAYLOAD-01: the send body carries turns and a mode — no provider, model or prompt
+[1A[2K  4 passed (18.0s)

@@ -1,0 +1,49 @@
+{
+  "cycle": "v10-c11",
+  "window_utc": "2026-09-05T13:02Z → 13:22Z",
+  "pea_numerator": 11,
+  "pea_denominator": 25,
+  "pea_basis": "+1 vs c10: §0.3-2 / C-8 palette PASS on live (reviewer 87cb1c5: 0 hue utilities, 0 non-gold chromatic literals, 0.0000% non-gold pixels). ADV-FAIL P0 scorecard (11): PASS 7 (G-A1, G-A2, G-V1, G-V2, G-M1, G-M2, G-H3) + G-S1 PASS on its own acceptance but a live contrast regression from its commit is in correction (t_g_s1c); G-H1 FAIL → correction t_g_h1c in flight after the original lane's 44c3e08 landed; G-H2 partial (desktop scrim gone; first-paint lane t_x1_02 in flight); G-M3 FAIL baseline measured (TTFT P50 2121 ms) → lane t_g_m3 in flight.",
+  "adversarial_verdicts": [
+    "G-A1 phase 3 PASS (8b351a7)",
+    "G-M1 PASS, G-M2 PASS, G-M3 FAIL baseline P50 2121 / P95 2813 ms; /api/tts works 200 (ca2b442)",
+    "G-S1 PASS, G-H1 FAIL — portrait toggle counts as a 2nd in-fold CTA at 834/390; actions below fold at 1440/1280 (fixed by 44c3e08 minutes later); CLS 0.176 (fixed by 44c3e08: 0.0000 lane-measured); ledger 1-px margin (open) (e48e5bea)",
+    "flagship-C: F1 phone scene PASS; F2 hairline FAIL 4.496:1 openNote @390 gl; CLS 0.176 w/ method caveat (62e1e10) → stability lane 87c9667 live 13:20",
+    "G-H3 PASS + FAIL-A raised: contrast regression at 1440 both paths — InfoCentric 1.06:1 on a near-white ground, 3 Bench band labels 3.63–4.10:1 (87cb1c5) → t_g_s1c"
+  ],
+  "deploy_commit": "a3edeff4",
+  "visible_ships": [
+    "13:04:02Z b96d0022 — 5d733ad palette purge (Tailwind source(none), neutral ground, neutral rim/key, MiniVic neutral) — reviewer PASS",
+    "13:14:01Z 6224a7f8 — 44c3e08 hero fold: one column of type beside the photograph; actions in fold at all four widths; CLS 0.0000 lane-measured",
+    "13:20:10Z a3edeff4 — 87c9667 stability: GL context errors contained (one console.error), boot box reserved"
+  ],
+  "non_visible_ships": [
+    "d58c5c7 cycle 10 report",
+    "7168149 / 82a2beb / 87cb1c5 evidence commits"
+  ],
+  "o1_o5": "Windows: 13:02–13:12 visible (b96d0022 13:04); 13:12–13:22 visible (6224a7f8 13:14, a3edeff4 13:20). Deploy runs 13:02→13:21: 7, all success.",
+  "rectify_status": "t_rectify01 running: push rule in force (three orchestrator WIP pushes + all lanes since); board closes on PASS within one cycle (t_g_h3 closed 13:21 on the 13:19 verdict); Hermes gateway pgrep empty; cadence truth table above.",
+  "in_flight": [
+    "t_g_h1c hero correction (portrait control, ledger margin, CLS 3/3)",
+    "t_x1_02 G-H2a hero first paint (priority Scene + poster)",
+    "t_g_m3 MiniVic TTFT (function ladder/warm/stream)",
+    "t_g_s1c contrast regression (bench labels + InfoCentric ground)",
+    "t_g_s1 lane battery follow-up (W2)",
+    "t_stab01 result pending (87c9667 live)"
+  ],
+  "queued": [
+    "t_x1_01 fps harness (tester) when load < 8",
+    "t_x1_03 hero graded plate",
+    "t_vit_desc01",
+    "t_clean01 worktree cleanup",
+    "P1 G-H4/G-E1/G-R1"
+  ],
+  "alerts": [
+    "Wave-1 spawn failure root cause surfaced at workflow end: 'blocked by safety classifier' for the MiniVic lane prompt — rephrased re-dispatch succeeded; feedback drafted",
+    "Host load 6–19 with 4–6 concurrent lanes; reviewers' SwiftShader timings labelled as such",
+    "Reviewer note: builds move under a probe within its run — every report names the measured commit and diffs the reviewed files (all four did)"
+  ],
+  "provider": "Anthropic via OAuth; OpenRouter 402 → §0.4; no ANTHROPIC_API_KEY; Hermes not started",
+  "verification_snippet": "$ date -u\n2026-09-05T13:23:12Z\n$ systemctl is-active fm-deploy-cadence.timer\nactive\n$ pgrep -af 'hermes gateway'\n(empty)\n$ tail -4 /var/log/fm-deploy/cadence.log\n[2026-09-05T13:04:48Z] live build-commit\" content=\"d58c5c7b\"\n[2026-09-05T13:14:57Z] cadence tick\n[2026-09-05T13:14:58Z] skip: successful Deploy within last 8m (push already covered cadence)\n[2026-09-05T13:14:58Z] live build-commit\" content=\"6224a7f8\"\n$ gh run list --workflow=deploy.yml --limit 8\n2026-09-05T13:19:00Z workflow_dispatch success 6224a7f8\n2026-09-05T13:12:24Z workflow_dispatch success 337d3bb0\n2026-09-05T13:10:50Z workflow_dispatch success 15095c05\n2026-09-05T13:07:45Z workflow_dispatch success ceca1fa5\n2026-09-05T13:04:42Z workflow_dispatch success d58c5c7b\n2026-09-05T13:03:18Z push success d58c5c7b\n2026-09-05T13:02:07Z workflow_dispatch success 9b864752\n2026-09-05T12:57:59Z workflow_dispatch success 7d467770\n$ live build-commit\nbuild-commit\" content=\"a3edeff4\"\n$ cache-control\ncache-control: public, max-age=0, must-revalidate\n",
+  "next": "Close G-H1/G-S1c/G-M3/G-H2a on reviewer PASS; dispatch t_x1_01 + t_x1_03 when load allows; c12 at the next visible ship."
+}

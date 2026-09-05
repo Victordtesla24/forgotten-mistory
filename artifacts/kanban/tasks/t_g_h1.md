@@ -55,3 +55,12 @@ ORCHESTRATOR PUSH under host RECTIFY 12:52Z (O3): 0506e7e on worktree-wf_b908a7a
 
 ## COMMENT (2026-09-05T13:00:10.132Z)
 LIVE 9b864752 at 12:59:23Z — consolidated cleanly (no forced conflict; flagship-C plate rules and the new .fold/.proof structure both present on main). Reviewer phase-2 dispatched on 9b864752 for G-H1 + G-S1.
+
+## COMMENT (2026-09-05T13:10:25.297Z)
+FOLLOW-UP from lane G-H3's battery: tests/overhaul visual baseline hero-section.png (TC-RENDER-07) is stale (1280×742 → 782 after the photo/plates/fold changes) — the hero lane owns this pixel set: regenerate deliberately with UPDATE_SNAPSHOTS=1 for the hero baselines after the fold lands, look at the PNG, commit it with the evidence.
+
+## COMMENT (2026-09-05T13:12:44.900Z)
+REVIEWER PHASE-2 FAIL on live 9b864752 (G-REV/9b864752/08-adversarial-review.md, measured at 1440/1280/834/390): PASS parts — text leaves in fold 4/4/6/5 (was 21), paragraphs>12w = 1, ledger top 1110/1005/1195/892 vs innerHeight 900/800/1194/844 (below the fold everywhere, but only by 1 px at 834), availability below, stage coverage 1.0, CT-10 holds, plates + phone scene intact, AA 0 failures, 0 pageerrors, LCP 1032 ms. FAIL parts — (1) at 834 and 390 the fold has TWO CTA groups: hero-actions AND the 'Play the portrait' <button> (counts as a CTA); (2) INVERSION at 1440/1280: the actions group (See the evidence + Download CV) is BELOW the fold — the only in-fold CTA is the portrait toggle; (3) CLS 0.176 at 1280×720 in 2/3 cold loads (gate <0.05), LCP element = the photograph my_avatar.avif → a deterministic reflow attributable to the moved band; (4) 834 ledger clears the fold by 1 px. → CORRECTION t_g_h1c.
+
+## COMMENT (2026-09-05T13:14:27.740Z)
+ORIGINAL LANE FOLLOW-UP LIVE 6224a7f8 at 13:14:01Z: 44c3e08 'the fold is one column of type beside the photograph' — reading column is one grid item beside the figure (38vw right column), band anchored at top; lane-measured: 6–7 text leaves in fold, actions end at 723/656/762/582 (inside 900/800/1194/844), ledger tops 901/801/1195/889, CLS 0.0000, LCP 588 ms; hero-fold 12/12, hero/hero-photo/content-check/cinematic/performance green; portrait caption --mist-400 → --mist-200 (3.35:1 → AA). Still open for t_g_h1c: the 'Play the portrait' button as a second in-fold CTA group at 834/390, and the 1-px ledger margin at 1440/834 (≥40 px required); reviewer re-probe after the correction lands.

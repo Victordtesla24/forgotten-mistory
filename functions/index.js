@@ -69,8 +69,8 @@ function applyCors(req, res) {
     res.set("Access-Control-Allow-Origin", origin);
     res.set("Vary", "Origin");
   }
-  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type, Accept");
 }
 
 exports.elevenLabsTts = onRequest(
@@ -194,6 +194,57 @@ const CHAT_PROVIDER_SPECS = [
 const providerCooldowns = new Map();
 
 /**
+ * Ladder order, deploy-time configurable.
+ *
+ * The cooldown map above lives in one warm instance's memory, so it does
+ * nothing for the visitor who lands on a cold one: that visitor pays a full
+ * failing round trip to a rung whose account is empty before a working rung is
+ * reached. Measured from this project's VPS on 2026-09-05, the OpenRouter rung
+ * answers `402 Insufficient credits` in ~0.17 s, so the tax is real but small —
+ * see docs/delivery/evidence/v10-20260905T0515Z/G-M3/01-live-baseline.log.
+ *
+ * `CHAT_PROVIDER_ORDER` (a comma-separated list of rung ids, set in the
+ * functions env) reorders rungs without a code change, and unlike the cooldown
+ * map it survives every cold start. Ids not named keep their original relative
+ * order behind the named ones, so a partial list is safe and no rung is ever
+ * dropped — the ladder still self-heals the moment an account is topped up.
+ */
+/**
+ * Default order: the rung that is actually answering in production goes first.
+ *
+ * Measured on live 2026-09-05T13:18Z from this function's own rung log — the
+ * top three rungs are all sitting on the credential cooldown and `openai` is
+ * the one answering:
+ *
+ *   rungs: [openrouter cooling_down, deepseek cooling_down, zai cooling_down,
+ *           openai answered 1736 ms]   firstTokenMs 493
+ *
+ * That cooldown map lives in one warm instance's memory. On a COLD instance it
+ * is empty, so a visitor pays three failing round trips before reaching the
+ * rung that works — the OpenRouter 402 alone measured 0.169 s and the DeepSeek
+ * 402 measured 1.174 s. Putting the working rung first removes that tax from
+ * exactly the request that is already the slowest one a visitor ever makes.
+ *
+ * This is a statement about which accounts currently have credit, not about
+ * which provider is better. Top an account up and reorder it back — that is
+ * what the env override is for, and every rung is still in the ladder.
+ */
+const DEFAULT_PROVIDER_ORDER = "openai,openrouter,deepseek,zai";
+function orderChatProviders(providers, orderSpec) {
+  const wanted = String(orderSpec || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  if (wanted.length === 0) return providers;
+  const named = [];
+  for (const id of wanted) {
+    const hit = providers.find((p) => p.id === id);
+    if (hit && !named.includes(hit)) named.push(hit);
+  }
+  return [...named, ...providers.filter((p) => !named.includes(p))];
+}
+
+/**
  * Grounding facts, transcribed from app/data/siteContent.ts,
  * app/data/resumeContent.ts and app/data/miniVicKnowledge.ts (all three are kept
  * in parity with public/docs/Vik_Resume_Final.pdf). The prompt lives here rather
@@ -308,9 +359,10 @@ function extractCompletionText(data) {
 }
 
 /** Call one rung. Rejects with ChatProviderError so the ladder can classify the failure. */
-async function callChatProvider(provider, messages, { fetchImpl, timeoutMs }) {
+async function callChatProvider(provider, messages, { fetchImpl, timeoutMs, onDelta }) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
+  const wantsStream = typeof onDelta === "function";
   try {
     const response = await fetchImpl(provider.url, {
       method: "POST",
@@ -318,6 +370,7 @@ async function callChatProvider(provider, messages, { fetchImpl, timeoutMs }) {
       headers: {
         Authorization: `Bearer ${provider.apiKey}`,
         "content-type": "application/json",
+        ...(wantsStream ? { accept: "text/event-stream" } : null),
         ...(provider.headers || {}),
       },
       body: JSON.stringify({
@@ -325,12 +378,15 @@ async function callChatProvider(provider, messages, { fetchImpl, timeoutMs }) {
         messages,
         temperature: CHAT_TEMPERATURE,
         max_tokens: CHAT_MAX_TOKENS,
+        ...(wantsStream ? { stream: true } : null),
       }),
     });
     if (!response.ok) {
       throw new ChatProviderError(provider.id, response.status, await response.text());
     }
-    const text = extractCompletionText(await response.json());
+    const text = wantsStream
+      ? await consumeProviderStream(provider, response, onDelta)
+      : extractCompletionText(await response.json());
     if (!text) {
       throw new ChatProviderError(provider.id, 502, "empty completion");
     }
@@ -338,6 +394,68 @@ async function callChatProvider(provider, messages, { fetchImpl, timeoutMs }) {
   } finally {
     clearTimeout(timer);
   }
+}
+
+/**
+ * Read an OpenAI-shaped SSE completion, handing every token fragment to
+ * `onDelta` as it lands and returning the assembled answer.
+ *
+ * Only whole `\n\n`-terminated events are parsed — a fragment split across two
+ * network chunks is held in `buffer` until the rest arrives — because a
+ * half-parsed `data:` line would otherwise be dropped and the visitor would
+ * silently lose a word out of the middle of the reply.
+ *
+ * `onDelta` is called with the first fragment BEFORE the upstream completion
+ * finishes; that is the whole point of this path, and the node:test for it
+ * asserts exactly that ordering.
+ */
+async function consumeProviderStream(provider, response, onDelta) {
+  const body = response.body;
+  if (!body || typeof body.getReader !== "function") {
+    throw new ChatProviderError(provider.id, 502, "stream unsupported by upstream");
+  }
+  const reader = body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let text = "";
+
+  const drainEvent = (block) => {
+    for (const line of block.split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed.startsWith("data:")) continue;
+      const payload = trimmed.slice(5).trim();
+      if (!payload || payload === "[DONE]") continue;
+      let parsed;
+      try {
+        parsed = JSON.parse(payload);
+      } catch {
+        // A provider that interleaves a non-JSON keep-alive comment is not a
+        // failure; skip the frame rather than abandoning a live answer.
+        continue;
+      }
+      const choice = parsed && parsed.choices && parsed.choices[0];
+      const fragment = choice && choice.delta && typeof choice.delta.content === "string"
+        ? choice.delta.content
+        : "";
+      if (!fragment) continue;
+      text += fragment;
+      onDelta(fragment);
+    }
+  };
+
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    let split = buffer.indexOf("\n\n");
+    while (split !== -1) {
+      drainEvent(buffer.slice(0, split));
+      buffer = buffer.slice(split + 2);
+      split = buffer.indexOf("\n\n");
+    }
+  }
+  if (buffer.trim()) drainEvent(buffer);
+  return text.trim();
 }
 
 /**
@@ -356,23 +474,49 @@ async function completeChat({
   timeoutMs = PROVIDER_TIMEOUT_MS,
   budgetMs = LADDER_BUDGET_MS,
   cooldowns = providerCooldowns,
+  onDelta,
 }) {
   const startedAt = now();
   const attempts = [];
+  // `attempts` is the failure record the error path already reported; `timings`
+  // is the new one — every rung the ladder touched, the answering rung
+  // included, with the milliseconds it cost. Without the answering rung's own
+  // number there is no way to say how much of a slow reply was the ladder and
+  // how much was the model, which is the question this lane exists to answer.
+  const timings = [];
   let lastStatus = 0;
   for (const provider of providers) {
     if ((cooldowns.get(provider.id) || 0) > now()) {
       attempts.push({ provider: provider.id, outcome: "cooling_down" });
+      timings.push({ provider: provider.id, outcome: "cooling_down", ms: 0 });
       continue;
     }
     if (now() - startedAt >= budgetMs) {
       attempts.push({ provider: provider.id, outcome: "budget_exhausted" });
+      timings.push({ provider: provider.id, outcome: "budget_exhausted", ms: 0 });
       break;
     }
+    const rungStartedAt = now();
+    // A rung that has already emitted a fragment owns the response: the bytes
+    // are on the wire and cannot be taken back, so falling through to the next
+    // rung would splice two different answers together. Such a failure is
+    // re-thrown to the caller instead.
+    let emitted = false;
+    const trackedDelta = onDelta
+      ? (fragment) => {
+          emitted = true;
+          onDelta(fragment);
+        }
+      : undefined;
     try {
-      const text = await callChatProvider(provider, messages, { fetchImpl, timeoutMs });
+      const text = await callChatProvider(provider, messages, {
+        fetchImpl,
+        timeoutMs,
+        onDelta: trackedDelta,
+      });
       cooldowns.delete(provider.id);
-      return { text, provider: provider.id, model: provider.model, attempts };
+      timings.push({ provider: provider.id, outcome: "answered", ms: now() - rungStartedAt });
+      return { text, provider: provider.id, model: provider.model, attempts, timings };
     } catch (err) {
       const status = err instanceof ChatProviderError ? err.status : 0;
       lastStatus = status;
@@ -381,10 +525,20 @@ async function completeChat({
       } else if (status === 429) {
         cooldowns.set(provider.id, now() + RATE_LIMIT_COOLDOWN_MS);
       }
-      attempts.push({ provider: provider.id, outcome: status ? `http_${status}` : "unavailable" });
+      const outcome = status ? `http_${status}` : "unavailable";
+      attempts.push({ provider: provider.id, outcome });
+      timings.push({ provider: provider.id, outcome, ms: now() - rungStartedAt });
+      if (emitted) {
+        const committed = new ChatLadderError(attempts, status);
+        committed.committedTo = provider.id;
+        committed.timings = timings;
+        throw committed;
+      }
     }
   }
-  throw new ChatLadderError(attempts, lastStatus);
+  const exhausted = new ChatLadderError(attempts, lastStatus);
+  exhausted.timings = timings;
+  throw exhausted;
 }
 
 /**
@@ -420,6 +574,30 @@ function resolveMode(body) {
   return Object.prototype.hasOwnProperty.call(PERSONA_STYLES, mode) ? mode : DEFAULT_MODE;
 }
 
+/**
+ * `GET /api/chat?warm=1` — boot an instance and nothing else.
+ *
+ * Deliberately narrow: only GET, only the explicit `warm` flag. A POST cannot
+ * take this branch, so a real conversation can never be answered with an empty
+ * 204, and nothing a visitor can put in a body reaches it.
+ */
+function isWarmRequest(req) {
+  if (req.method !== "GET") return false;
+  const flag = req.query ? req.query.warm : undefined;
+  return flag === "1" || flag === "true";
+}
+
+/**
+ * Stream only when the caller has said it can read one — `stream: true` in the
+ * body, or an `Accept: text/event-stream`. An old cached bundle that asks for
+ * neither keeps getting the JSON reply it knows how to parse.
+ */
+function wantsStreamedReply(req) {
+  if (req.body && req.body.stream === true) return true;
+  const accept = String((req.headers && req.headers.accept) || "");
+  return accept.includes("text/event-stream");
+}
+
 exports.minivicChat = onRequest(
   {
     secrets: [OPENROUTER_API_KEY, DEEPSEEK_API_KEY, ZAI_API_KEY, OPENAI_API_KEY],
@@ -431,6 +609,17 @@ exports.minivicChat = onRequest(
   async (req, res) => {
     applyCors(req, res);
     if (req.method === "OPTIONS") {
+      res.status(204).send("");
+      return;
+    }
+    // Warm-up. The browser fires this the moment the MiniVic panel opens, so
+    // the container is already running by the time the visitor finishes typing
+    // and the cold start (measured at ~2.5 s of the first send on live) is paid
+    // during a period the visitor is not waiting on. It deliberately does no
+    // upstream work: it exists to boot an instance, and a warm ping that spent
+    // provider credit would be a worse bug than the latency it removes.
+    if (isWarmRequest(req)) {
+      res.set("Cache-Control", "no-store");
       res.status(204).send("");
       return;
     }
@@ -452,17 +641,94 @@ exports.minivicChat = onRequest(
       ...conversation.messages,
     ];
 
+    const providers = orderChatProviders(
+      resolveChatProviders(),
+      process.env.CHAT_PROVIDER_ORDER || DEFAULT_PROVIDER_ORDER,
+    );
+    const wantsStream = wantsStreamedReply(req);
+    const receivedAt = Date.now();
+    let firstByteAt = 0;
+
+    // Streaming: the first word reaches the visitor while the model is still
+    // writing the rest, instead of after the whole 400-token completion has
+    // been generated and buffered. Whether Firebase Hosting's CDN passes these
+    // chunks through unbuffered is a measured question, not an assumed one —
+    // the answer is in
+    // docs/delivery/evidence/v10-20260905T0515Z/G-M3/07-prod-verification/.
+    //
+    // The SSE headers are written on the FIRST fragment, not before the ladder
+    // runs: a ladder that fails on every rung must still be able to answer 502,
+    // and a 200 with an error event inside it would report a failure as a
+    // success to anything reading the status line.
+    const beginStream = () => {
+      if (res.headersSent) return;
+      res.set("Content-Type", "text/event-stream; charset=utf-8");
+      res.set("Cache-Control", "no-store");
+      res.set("X-Accel-Buffering", "no");
+      res.status(200);
+      if (typeof res.flushHeaders === "function") res.flushHeaders();
+    };
+    const writeEvent = (payload) => {
+      res.write(`data: ${JSON.stringify(payload)}\n\n`);
+      if (typeof res.flush === "function") res.flush();
+    };
+
     try {
-      const result = await completeChat({ messages, providers: resolveChatProviders() });
+      const result = await completeChat({
+        messages,
+        providers,
+        onDelta: wantsStream
+          ? (fragment) => {
+              if (!firstByteAt) {
+                firstByteAt = Date.now();
+                beginStream();
+              }
+              writeEvent({ delta: fragment });
+            }
+          : undefined,
+      });
+      // Rung timings, so the ladder's cost is measured rather than guessed.
+      // `attempts` names providers and outcomes only — never key material.
+      logger.info("MiniVic chat answered", {
+        rungs: result.timings,
+        streamed: wantsStream,
+        firstTokenMs: firstByteAt ? firstByteAt - receivedAt : null,
+        totalMs: Date.now() - receivedAt,
+      });
+      // `headersSent` is the honest test of whether this actually became a
+      // stream: a rung that answered without ever emitting a fragment gets the
+      // ordinary JSON reply, so the client is never handed an empty SSE body.
+      if (wantsStream && res.headersSent) {
+        writeEvent({ done: true, provider: result.provider, model: result.model });
+        res.end();
+        return;
+      }
       res.set("Cache-Control", "no-store");
       res.status(200).json({ text: result.text, provider: result.provider, model: result.model });
     } catch (err) {
       if (err instanceof ChatLadderError) {
-        logger.error("MiniVic chat ladder exhausted", { attempts: err.attempts });
+        logger.error("MiniVic chat ladder exhausted", {
+          rungs: err.timings || err.attempts,
+          committedTo: err.committedTo || null,
+          totalMs: Date.now() - receivedAt,
+        });
+        // Once fragments are on the wire the status line is already 200 and the
+        // visitor is holding a partial answer. Say the answer was cut short;
+        // never pad it out with invented text.
+        if (wantsStream && res.headersSent) {
+          writeEvent({ error: "chat_upstream_failed", status: err.lastStatus });
+          res.end();
+          return;
+        }
         res.status(502).json({ error: "chat_upstream_failed", status: err.lastStatus });
         return;
       }
       logger.error("MiniVic chat error", err);
+      if (wantsStream && res.headersSent) {
+        writeEvent({ error: "chat_error" });
+        res.end();
+        return;
+      }
       res.status(500).json({ error: "chat_error" });
     }
   },
@@ -475,3 +741,7 @@ exports.normaliseConversation = normaliseConversation;
 exports.resolveMode = resolveMode;
 exports.resolveChatProviders = resolveChatProviders;
 exports.completeChat = completeChat;
+exports.orderChatProviders = orderChatProviders;
+exports.DEFAULT_PROVIDER_ORDER = DEFAULT_PROVIDER_ORDER;
+exports.isWarmRequest = isWarmRequest;
+exports.wantsStreamedReply = wantsStreamedReply;

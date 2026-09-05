@@ -54,11 +54,25 @@ const VIEWPORTS = [
  */
 const PINNED_FLOORS: { pattern: RegExp; min: number; why: string }[] = [
   {
-    pattern: /\bopenNote\b/,
+    // No `\b` anchors: the audit reports hashed CSS-module paths like
+    // `p.Experience_openNote__aBc12`, and `_` is a word character — so a word
+    // boundary before `openNote` never matches and the floor would be dead code
+    // that always passes. `pinsSeen` below is what proves it is not.
+    pattern: /openNote/,
     min: 4.6,
     why: 'the open-bracket note sits over the career strata; it must clear AA with margin',
   },
 ];
+
+/**
+ * Which pinned floors actually matched a node on the last audit.
+ *
+ * A floor that matches nothing passes silently, which is the same as not having
+ * it — one rename of a CSS module class and the margin this lane was opened for
+ * is gone with no test going red. So the audit records what it matched and the
+ * tests assert that every pin was exercised.
+ */
+const pinsSeen = new Set<RegExp>();
 
 /**
  * Software rasteriser, explicitly enabled.
@@ -358,6 +372,7 @@ async function auditViewport(
   await page.waitForTimeout(2500);
   if (options.warmScenes) await warmScenes(page);
 
+  pinsSeen.clear();
   const failures: Sample[] = [];
   const seen = new Set<string>();
   // Bands overlap by more than the fixed chrome is tall. Stepping a clean
@@ -398,6 +413,7 @@ async function auditViewport(
       const large = node.fontSize >= 24 || (node.fontSize >= 18.66 && node.fontWeight >= 700);
       // AA first, then any floor pinned for this node — whichever is stricter wins.
       const pinned = PINNED_FLOORS.find((floor) => floor.pattern.test(node.path));
+      if (pinned) pinsSeen.add(pinned.pattern);
       const need = Math.max(large ? 3 : 4.5, pinned?.min ?? 0);
       if (worst < need) {
         failures.push({
@@ -474,6 +490,14 @@ test.describe('TC-CONTRAST-02 (WebGL path) — contrast is measured over the sha
         failures.length,
         `${failures.length} text node(s) below AA on ?gl=force — worst ten:\n${worstTen(failures)}`,
       ).toBe(0);
+      // The pinned floors are only a gate while they still address a node that exists.
+      for (const floor of PINNED_FLOORS) {
+        expect(
+          pinsSeen.has(floor.pattern),
+          `no text node matched ${floor.pattern} — the pinned ${floor.min}:1 floor ` +
+            `(${floor.why}) measured nothing and would have passed regardless`,
+        ).toBe(true);
+      }
     });
   }
 });
