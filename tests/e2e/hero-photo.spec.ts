@@ -178,7 +178,7 @@ test.describe('Hero photograph', () => {
       .toBe(true);
   });
 
-  test('TC-PHOTO-06: the toggle is keyboard-operable — Enter pauses, Enter plays', async ({ page }) => {
+  test('TC-PHOTO-06: the control is keyboard-operable — Enter plays, Enter pauses', async ({ page }) => {
     const toggle = page.locator(TOGGLE);
     await expect(toggle).toHaveCount(1);
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');
@@ -194,23 +194,27 @@ test.describe('Hero photograph', () => {
     }
     expect(reached, 'Tab reaches the portrait toggle').toBe(true);
 
-    // Keyboard focus is intent: focus-visible arms the loop the way hover does.
-    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
-    await expect
-      .poll(async () => (await loopState(page)).paused, { timeout: 2000, message: 'playing after focus-visible' })
-      .toBe(false);
-
-    await page.keyboard.press('Enter');
+    // REWRITTEN (G-H1 correction): the control moved out of the figure and into
+    // the proof band, so focus on it is a reader tabbing through the page
+    // rather than a reader pointing at the photograph. Focus offers; a press
+    // decides. Nothing is weakened — the same three states are asserted, and
+    // one more: that focus alone fetches and plays nothing.
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');
     await expect
-      .poll(async () => (await loopState(page)).paused, { timeout: 1500, message: 'paused after Enter' })
+      .poll(async () => (await loopState(page)).paused, { timeout: 1500, message: 'still paused on focus alone' })
       .toBe(true);
 
     await page.keyboard.press('Enter');
     await expect(toggle).toHaveAttribute('aria-pressed', 'true');
     await expect
-      .poll(async () => (await loopState(page)).paused, { timeout: 2000, message: 'playing after the second Enter' })
+      .poll(async () => (await loopState(page)).paused, { timeout: 2000, message: 'playing after Enter' })
       .toBe(false);
+
+    await page.keyboard.press('Enter');
+    await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    await expect
+      .poll(async () => (await loopState(page)).paused, { timeout: 1500, message: 'paused after the second Enter' })
+      .toBe(true);
   });
 
   test('TC-PHOTO-07: reduced motion plays nothing at rest and runs no animation', async ({ page }) => {

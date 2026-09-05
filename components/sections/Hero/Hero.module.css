@@ -81,6 +81,20 @@
    path, where tests/a11y/text-contrast.spec.ts measures the composited pixels
    (it loads the page without ?gl=force, so this gradient is exactly what it
    photographs). */
+/* This background is also the hero's FIRST PAINT, and that is now load-bearing.
+   The slot's scene mounts with `priority` (Scene.tsx), so the canvas no longer
+   waits for the page to settle — and the only reason that is safe for LCP is
+   that the frame under it is already lit by the document. The LCP candidate is
+   settled by static HTML and a stylesheet; the canvas composites over a picture
+   that is finished, rather than being the picture the reader is waiting for.
+
+   So: never let this rule resolve to a flat ink fill, and never move it onto an
+   element that JavaScript creates. `tests/overhaul/hero-first-paint.spec.ts`
+   TC-HERO-FIRSTPAINT-01 photographs this slot and fails if its mean luminance
+   drops to the ink it is drawn on. When the overture's frame 0 lands
+   (`hero-overture-poster.avif`, t_x1_13) it becomes the topmost layer of this
+   stack — an image layer above the gradients, which keeps the gradient as the
+   fallback if the asset ever 404s and keeps the assertion above unchanged. */
 .stage {
     position: absolute;
     inset: 0;
@@ -904,6 +918,10 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-1);
+    /* WCAG 2.5.8: the target is at least 40x40 wherever it stands. It used to
+       be a 40 px circle on the photograph; it is a pill in the proof band now,
+       and the floor travels with it (TC-HERO-17). */
+    min-height: 40px;
     padding: var(--space-1) var(--space-2);
     margin: 0;
     border: 1px solid var(--card-border);
