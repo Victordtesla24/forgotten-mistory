@@ -1,12 +1,19 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import Caliper from '@/components/marks/Caliper';
+import Scene from '@/components/gl/Scene';
 import { aboutContent } from '@/app/data/portfolio/about';
 
 import Compass from './Compass';
 import styles from './About.module.css';
+
+// The shader field behind the rose. Dynamic so `three` lands in the chunk
+// `Scene` fetches when a scene actually mounts, not in this section's own
+// module graph — the same arrangement `#experience` uses for CareerStrata.
+const AboutField = dynamic(() => import('./AboutField'), { ssr: false });
 
 /**
  * About — the ten dimensions his own job-fit engine scores a candidate on,
@@ -155,6 +162,15 @@ export default function About() {
               it sits above the list and stops being sticky. */}
           <div className={styles.instrument}>
             <div className={styles.instrumentStage}>
+              {/* The field the rose turns over: the same ten sectors, lit, on
+                  the same index. It is behind the engraving and aria-hidden,
+                  and it is not the content — with reduced motion or no WebGL
+                  `Scene` mounts nothing and the instrument is unchanged. */}
+              <div className={styles.field} data-axis={active}>
+                <Scene className={styles.fieldSlot}>
+                  <AboutField active={active} />
+                </Scene>
+              </div>
               <Compass active={active} labels={DIMENSION_NAMES} sides={DIMENSION_SIDES} sweep={swept} />
             </div>
             {/* The reading, then the constant. The argument — no scores — stays

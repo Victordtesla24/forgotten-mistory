@@ -130,6 +130,30 @@
     border-radius: 50%;
 }
 
+/* ── The field ───────────────────────────────────────────────────────────── */
+/* The shader sits inside the stage, never outside it. An earlier arrangement
+   bled the slot past the stage's edges to halo the instrument, which on a 390
+   px viewport pushed the canvas wider than the column and gave the page a
+   horizontal scrollbar. The light belongs under the rose's own sector ring
+   anyway — see field.glsl.ts — so the slot is exactly the stage. */
+.field {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.fieldSlot {
+    position: absolute;
+    inset: 0;
+}
+
+/* The engraving is always over the light, whether or not the light is there. */
+.instrumentStage > svg {
+    position: relative;
+    z-index: 1;
+}
+
 .instrumentCaption {
     display: grid;
     gap: var(--space-05);
