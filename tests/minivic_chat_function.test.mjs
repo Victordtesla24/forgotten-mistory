@@ -551,6 +551,20 @@ describe('G-M3 — ladder order survives a cold start', () => {
     assert.deepEqual(ordered.map((p) => p.id), ['zai', 'openrouter', 'deepseek', 'openai']);
   });
 
+  it('defaults to the rung that is answering in production, and drops none', () => {
+    // Measured 2026-09-05T13:18Z from the function's own rung log on live:
+    // openrouter, deepseek and zai were all on the credential cooldown and
+    // openai answered. A cold instance has an empty cooldown map, so without
+    // this default a visitor pays three failing round trips first.
+    const ordered = fn.orderChatProviders(resolved, fn.DEFAULT_PROVIDER_ORDER);
+    assert.equal(ordered[0].id, 'openai');
+    assert.deepEqual(
+      [...ordered.map((p) => p.id)].sort(),
+      ['deepseek', 'openai', 'openrouter', 'zai'],
+      'a rung was dropped — the ladder must still self-heal when an account is topped up',
+    );
+  });
+
   it('is a no-op when the env names nothing or names nonsense', () => {
     assert.deepEqual(fn.orderChatProviders(resolved, '').map((p) => p.id),
       ['openrouter', 'deepseek', 'zai', 'openai']);
