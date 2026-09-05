@@ -1,14 +1,136 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { Component, useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
 
+import type { GLCanvasProps } from './GLCanvas';
 import { useGLCapability } from './useGLCapability';
+
+/**
+ * One reload per session, and only ever one — a deterministic chunk failure that reloaded
+ * on every attempt would be a loop, not a recovery.
+ */
+const CHUNK_RELOAD_KEY = 'fm-chunk-reload';
+
+/** How long to wait before the single retry. Long enough for a CDN edge to settle. */
+const CHUNK_RETRY_MS = 800;
+
+/** The report is per page, not per scene: three scenes share one failed import. */
+let chunkFallbackReported = false;
+
+/**
+ * Is this the deploy-skew failure — the requested chunk no longer exists on the origin?
+ *
+ * webpack raises `ChunkLoadError` with the message `Loading chunk <id> failed.`; the CSS
+ * loader raises `Loading CSS chunk <id> failed`. Anything else is a real fault in the
+ * module and must keep propagating to the scene's error boundary.
+ */
+function isChunkLoadError(error: unknown): boolean {
+  if (!error || typeof error !== 'object') return false;
+  const { name, message } = error as { name?: string; message?: string };
+  if (name === 'ChunkLoadError') return true;
+  return typeof message === 'string' && /Loading (CSS )?chunk .+ failed/i.test(message);
+}
+
+/**
+ * Fetch the WebGL bundle, surviving a deploy that has already replaced it.
+ *
+ * P95, monitor 10:09Z on build c5d808c3 (evidence
+ * docs/delivery/evidence/v10-20260905T0515Z/P95-deploy-skew/01-incident.md):
+ *
+ *     "Loading chunk 427.8222755a6b18eedc.js failed."   canvasesAfterExperience: 0
+ *
+ * Firebase Hosting serves one version of a site at a time, deploys run every ten minutes,
+ * and this bundle is imported when the reader scrolls to a scene — so a page open for
+ * longer than one cadence window asks for a filename that no longer exists. Left alone,
+ * next/dynamic re-throws the rejection through React and `app/error.tsx` replaces the
+ * whole document: a recruiter mid-read is shown "Something went wrong" because a
+ * decorative shader could not be fetched.
+ *
+ * So: retry once (the request may simply have raced the deploy), then reload once per
+ * session — a reload is the only way to obtain the current document, which is the only
+ * file that names the chunks that do exist. If it has already reloaded and the chunk is
+ * still missing, the scene resolves to nothing and the section renders exactly as it does
+ * for a reader with no WebGL at all. It never rejects, so it can never reach the error
+ * shell.
+ */
+async function loadGLCanvas(): Promise<{ default: ComponentType<GLCanvasProps> }> {
+  try {
+    return await import('./GLCanvas');
+  } catch (first) {
+    if (!isChunkLoadError(first)) throw first;
+    await new Promise((settle) => setTimeout(settle, CHUNK_RETRY_MS));
+    try {
+      return await import('./GLCanvas');
+    } catch (second) {
+      if (!isChunkLoadError(second)) throw second;
+
+      let alreadyReloaded = true;
+      try {
+        alreadyReloaded = window.sessionStorage.getItem(CHUNK_RELOAD_KEY) === '1';
+        if (!alreadyReloaded) window.sessionStorage.setItem(CHUNK_RELOAD_KEY, '1');
+      } catch {
+        // sessionStorage blocked (private mode, third-party context): treat it as already
+        // reloaded. An unguarded reload with no way to remember it is an infinite loop.
+        alreadyReloaded = true;
+      }
+
+      if (!alreadyReloaded) {
+        window.location.reload();
+      } else if (!chunkFallbackReported) {
+        chunkFallbackReported = true;
+        console.error(
+          '[Scene] the WebGL bundle could not be loaded (chunk missing after a deploy); ' +
+            'rendering the sections without their scenes',
+          second,
+        );
+      }
+      // Resolve to an empty component: the slot stays, the page stays, nothing throws.
+      return { default: function GLCanvasUnavailable() { return null; } };
+    }
+  }
+}
 
 // `three` and `@react-three/fiber` are fetched only once a scene has cleared
 // every gate below — not as part of the page, which is where a static import
 // of `Canvas` from this file put them.
-const GLCanvas = dynamic(() => import('./GLCanvas'), { ssr: false });
+const GLCanvas = dynamic(loadGLCanvas, { ssr: false });
+
+interface SceneBoundaryProps {
+  sceneName: string;
+  children: ReactNode;
+}
+
+/**
+ * SceneErrorBoundary — a fault inside one scene never replaces the document.
+ *
+ * `app/error.tsx` is the route-segment boundary: the nearest one to a throwing GL canvas,
+ * and it renders a full-page "System interrupt". That made the site's own rule — *the
+ * scene is never the content* — true of the layout and false of the code: a driver that
+ * fails to give three a context, a shader that fails to compile, a lost context the
+ * renderer cannot restore, any of them took the whole page down.
+ *
+ * This boundary sits between the two. It renders the slot empty — the same state a reader
+ * with no WebGL, or with reduced motion, already gets, which is the path every section is
+ * built and tested against — and reports once, naming the scene. It does not re-throw, and
+ * it does not reset: a renderer that has failed once will fail again, and re-mounting it
+ * would loop. `app/error.tsx` stays for genuine page-level faults.
+ */
+class SceneErrorBoundary extends Component<SceneBoundaryProps, { failed: boolean }> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error: Error) {
+    console.error(`[Scene:${this.props.sceneName}] scene failed and was removed; the section renders without it`, error);
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
 
 interface SceneProps {
   /** Class applied to the slot element, which is present whether or not the scene renders. */
@@ -104,7 +226,9 @@ export default function Scene({ className, camera, sceneId, children }: ScenePro
   return (
     <div ref={slotRef} className={className} data-scene={sceneId} aria-hidden="true">
       {show && (
-        <GLCanvas camera={camera}>{children}</GLCanvas>
+        <SceneErrorBoundary sceneName={sceneId ?? 'unnamed'}>
+          <GLCanvas camera={camera}>{children}</GLCanvas>
+        </SceneErrorBoundary>
       )}
     </div>
   );
