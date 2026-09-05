@@ -173,8 +173,9 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
     await gotoHome(page);
 
     const toggle = page.locator('[data-testid="minivic-toggle"]');
-    // The launcher carries a visible label from 834px up ("Ask Mini Vic"), so
-    // its accessible name may no longer be an unrelated sentence: WCAG 2.5.3
+    // The launcher carries a visible label at every width ("Ask Mini Vic",
+    // G-MV1 — phones included), so its accessible name may no longer be an
+    // unrelated sentence: WCAG 2.5.3
     // (Label in Name) requires the visible words to be *in* the name, or a
     // speech-input user saying what they can read never reaches the control.
     // The name is therefore constant and starts with the visible label; the
