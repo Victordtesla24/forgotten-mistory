@@ -37,8 +37,10 @@ const OPENAI_API_KEY = defineSecret("OPENAI_API_KEY");
  * middle-aged, narrative). An identifier, not a secret — unusable without the key.
  *
  * It is deliberately NOT Vikram's cloned voice. This function used to ask for
- * `0ZJ4kFDo6bZUNQsuULOW` (category `cloned`), and the account's `payg` plan
- * refuses instantly-cloned voices at any credit balance, so every request came
+ * his instantly-cloned voice id (ElevenLabs category `cloned`; the id itself is
+ * left in the evidence file, not carried here, so a grep for it over shipped
+ * code returns nothing). The account's `payg` plan refuses instantly-cloned
+ * voices at any credit balance, so every request came
  * back 401 `{"detail":{"status":"ivc_not_permitted","code":"subscription_required"}}`
  * and the browser saw a 502 — the voice was simply down
  * (`docs/delivery/evidence/v10-20260905T0515Z/C14a-tts/01-diagnosis.md`).
