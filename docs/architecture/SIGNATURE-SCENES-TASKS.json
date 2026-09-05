@@ -147,11 +147,11 @@
   },
   {
     "slug": "g-x1-07-minivic-viseme-stage",
-    "title": "S7 — MiniVic viseme stage: the seventh signature scene",
+    "title": "MiniVic viseme stage — an R3 avatar accessory (NOT R2's seventh scene; ADV-1556Z, SIGNATURE-SCENES-v1.md 0.6)",
     "assignee": "analyst-programmer",
     "priority": 93,
     "parents": ["g-x1-06-listen-scene-id"],
-    "summary": "R2 wants >= 7 scenes; six are sections. The seventh is MiniVic's viseme stage. Promote the STAGE only: a Scene-mounted R3F plane behind the avatar plate whose shader is driven by the existing viseme refs (lib/visemeMap.ts getVisemeShape/lerpVisemeShapes), so the avatar is lit by what he is saying. The 2D canvas mouth in MiniVicBot.tsx stays exactly as-is and becomes the no-GL fallback, so lip-sync accuracy (R3) cannot regress.",
+    "summary": "SUPERSEDED FRAMING: this was authored as 'the seventh signature scene'. ADV-1556Z ruled that a lie — the viseme stage is a lip-sync mouth plate inside the bot panel, not in the page census (b2ac21be = 6 data-scene mounts), and it counts 0 toward R2. It is a good R3 detail and it stays, but the real seventh cinematic scene is t_x1_10 (the HyperFrames hero-overture, S7*). Promote the STAGE only: a Scene-mounted R3F plane behind the avatar plate whose shader is driven by the existing viseme refs (lib/visemeMap.ts getVisemeShape/lerpVisemeShapes), so the avatar is lit by what he is saying. The 2D canvas mouth in MiniVicBot.tsx stays exactly as-is and becomes the no-GL fallback, so lip-sync accuracy (R3) cannot regress.",
     "order": [
       "Author tests/overhaul/viseme-stage.spec.ts: TC-VISEME-GL-01 (bot open at ?gl=force, [data-scene=minivic-viseme] has a canvas, COVERAGE/PEAK/MOTION hold while a synthetic viseme stream is driven) and TC-VISEME-GL-02 (reduced motion: no canvas AND the 2D mouth still animates)",
       "Capture red: 02-tests-failing.log",
