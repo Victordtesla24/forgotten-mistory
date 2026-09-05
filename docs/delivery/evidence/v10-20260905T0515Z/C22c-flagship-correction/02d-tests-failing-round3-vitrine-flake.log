@@ -1,0 +1,90 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts tests/a11y/text-contrast.spec.ts --reporter=list --workers=2
+
+Running 16 tests using 2 workers
+
+  ✓   1 [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground (20.7s)
+  ✘   2 [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground (30.1s)
+  ✓   4 [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes (1.1m)
+  ✘   3 [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes (1.4m)
+[flagship-visibility] hero@1440: ground=0.0030 coverage=41.94% peak=0.8308 motion=0.01199 box=1440x900
+  ✓   5 [chromium] › tests/overhaul/flagship-visibility.spec.ts:294:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 1440 — hero atmosphere reads as light (18.5s)
+[flagship-visibility] about@1440: ground=0.0030 coverage=47.02% peak=0.6225 motion=0.02836 box=384x384
+  ✓   6 [chromium] › tests/overhaul/flagship-visibility.spec.ts:294:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light (18.2s)
+[flagship-visibility] experience@1440: ground=0.0030 coverage=25.73% peak=0.6867 motion=0.03747 box=1298x505
+[flagship-visibility:still] hero@1440: ground=0.0030 coverage=17.48% peak=0.0908
+  ✓   8 [chromium] › tests/overhaul/flagship-visibility.spec.ts:349:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 1440 — hero atmosphere fallback (3.9s)
+  ✓   7 [chromium] › tests/overhaul/flagship-visibility.spec.ts:294:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 1440 — experience strata reads as light (12.7s)
+[flagship-visibility:still] about@1440: ground=0.0030 coverage=35.41% peak=0.0804
+  ✓   9 [chromium] › tests/overhaul/flagship-visibility.spec.ts:349:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback (4.7s)
+[flagship-visibility:still] experience@1440: ground=0.0030 coverage=4.11% peak=0.1564
+  ✓  10 [chromium] › tests/overhaul/flagship-visibility.spec.ts:349:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 1440 — experience strata fallback (4.4s)
+[flagship-visibility] hero@390: ground=0.0030 coverage=100.00% peak=0.8308 motion=0.04908 box=390x844
+[flagship-visibility] about@390: ground=0.0030 coverage=45.57% peak=0.4167 motion=0.01953 box=224x224
+  ✓  11 [chromium] › tests/overhaul/flagship-visibility.spec.ts:294:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 390 — hero atmosphere reads as light (7.9s)
+  ✓  12 [chromium] › tests/overhaul/flagship-visibility.spec.ts:294:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light (9.1s)
+[flagship-visibility:still] hero@390: ground=0.0030 coverage=22.66% peak=0.2307
+  ✓  14 [chromium] › tests/overhaul/flagship-visibility.spec.ts:349:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 390 — hero atmosphere fallback (2.8s)
+[flagship-visibility:still] about@390: ground=0.0030 coverage=36.13% peak=0.0801
+  ✓  15 [chromium] › tests/overhaul/flagship-visibility.spec.ts:349:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback (2.5s)
+[flagship-visibility] experience@390: ground=0.0030 coverage=36.35% peak=0.8308 motion=0.04086 box=356x605
+  ✓  13 [chromium] › tests/overhaul/flagship-visibility.spec.ts:294:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-EXPERIENCE @ 390 — experience strata reads as light (8.4s)
+[flagship-visibility:still] experience@390: ground=0.0030 coverage=4.14% peak=0.1561
+  ✓  16 [chromium] › tests/overhaul/flagship-visibility.spec.ts:349:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-EXPERIENCE @ 390 — experience strata fallback (2.5s)
+
+
+  1) [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 
+
+    Error: 1 text node(s) below AA — worst ten:
+    1.12:1 (needs 4.5) [vitrine] section#vitrine > div.Vitrine_railStage__SIf3G:nth-of-type(2) > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > p.Vitrine_description__E_Gag:nth-of-type(1) — "An agent loop whose only exit is a signed verifi" fg rgb(213,213,212) on bg rgb(226,225,223) @ 16px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m1[39m
+
+      366 |         failures.length,
+      367 |         `${failures.length} text node(s) below AA — worst ten:\n${worstTen(failures)}`,
+    > 368 |       ).toBe(0);
+          |         ^
+      369 |     });
+      370 |   }
+      371 | });
+        at /root/forgotten-mistory/.claude/worktrees/wf_09ff65b8-0fb-1/tests/a11y/text-contrast.spec.ts:368:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/error-context.md
+
+  2) [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes 
+
+    Error: 1 text node(s) below AA on ?gl=force — worst ten:
+    1.12:1 (needs 4.5) [vitrine] section#vitrine > div.Vitrine_railStage__SIf3G:nth-of-type(2) > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > p.Vitrine_description__E_Gag:nth-of-type(1) — "An agent loop whose only exit is a signed verifi" fg rgb(213,213,212) on bg rgb(226,225,223) @ 16px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m1[39m
+
+      399 |         failures.length,
+      400 |         `${failures.length} text node(s) below AA on ?gl=force — worst ten:\n${worstTen(failures)}`,
+    > 401 |       ).toBe(0);
+          |         ^
+      402 |     });
+      403 |   }
+      404 | });
+        at /root/forgotten-mistory/.claude/worktrees/wf_09ff65b8-0fb-1/tests/a11y/text-contrast.spec.ts:401:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-text-contrast-TC-CONT-4de2e-low-AA-over-the-live-scenes-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-text-contrast-TC-CONT-4de2e-low-AA-over-the-live-scenes-chromium/error-context.md
+
+  2 failed
+    [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 
+    [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes 
+  14 passed (2.6m)
+PW_EXIT=1

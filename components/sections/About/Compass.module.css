@@ -147,6 +147,22 @@
     color: var(--white);
     fill: currentColor;
     opacity: 0.85;
+    /* The numeral carries its own ground.
+       That comment above is true of the SVG face alone. Over the WebGL field
+       it is not: on ?gl=force the annulus under the numerals is lit to
+       rgb(133,133,134) and higher, and the ten labels sampled 2.50–3.44:1 —
+       below AA at both 1440 and 390 (C22 09-verification.md F2). Even on the
+       still path "01" sat at 4.42:1 against the 4.5 it needs. Nothing here can
+       be fixed by dimming the field: the annulus *is* the scene, and the ten
+       lit sectors are the section's argument. So each glyph is drawn on an ink
+       outline instead — `paint-order` puts the stroke under the fill, so the
+       letterform keeps its full weight and gains a dark edge exactly where it
+       meets the light. Ten strokes, no extra nodes, and it works on both
+       paths and at every rotation of the rose. */
+    paint-order: stroke fill;
+    stroke: var(--ink-900);
+    stroke-width: 0.8px;
+    stroke-linejoin: round;
     transition:
         fill var(--motion-base) var(--motion-ease-standard),
         opacity var(--motion-base) var(--motion-ease-standard);

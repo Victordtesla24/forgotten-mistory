@@ -266,10 +266,32 @@
    "Independent AI Consulting & …" are the two longest employers on the chart
    and both were being cut mid-word — a truncated employer name is the one
    thing a career chart cannot afford to get wrong. */
+/* The label stands on its own ground.
+   `.chartScene::after` scrims the foot of the slot, where `.openNote` and the
+   axis sit, but the company column runs the full height of the chart and the
+   strata are lit brightest exactly under the rows: measured on ?gl=force,
+   "Telstra" sampled 1.00:1 at 390 (rgb(144,144,144) on rgb(144,144,144) — grey
+   on grey), "InfoCentric" 1.03:1, "ANZ Banking Group" 1.91:1 at 1440 (C22
+   09-verification.md F2; reproduced in 02-tests-failing.log). The alternative
+   was a `uTextRect` uniform dimming the shader under the whole column, which
+   would have taken a full-height, full-width band of sediment out of the scene
+   — the strata between the bars are most of what there is to see. A plate is
+   the label's own box and nothing more, it costs the field only the glyph runs
+   themselves, and it works identically on the no-GL still, where no uniform
+   exists to read. 0.88 is the same number the hero's scrim carries and for the
+   same reason: over the brightest sediment this shader draws (0.8070 relative
+   luminance, about `#E8E8E8`) it lands the ground on `#2A2A2A`, the brightest
+   ground `--mist-400` still clears 4.5:1 on. The padding is given back as a
+   negative margin, so no glyph moves and no column re-wraps. */
 .trackCompany {
     font-size: var(--fs-small);
     line-height: var(--lh-caption);
     color: var(--mist-400);
+    background: rgb(10 10 10 / 0.88);
+    padding-inline: 0.28rem;
+    margin-inline: -0.28rem;
+    border-radius: 2px;
+    box-decoration-break: clone;
     transition: color var(--motion-fast) var(--motion-ease-standard);
     text-wrap: balance;
 }
@@ -377,6 +399,14 @@
     letter-spacing: var(--ls-small);
     /* ≈ 9.8:1 on the plot ground; the previous grey sampled ≈ 3.3:1 at 12 px. */
     color: var(--mist-200);
+    /* The same plate as `.trackCompany`, for the same measured reason: the
+       readout sits at the right end of its own bar, over lit sediment, and on
+       ?gl=force "3.3 yr" sampled 3.84:1. It is absolutely positioned from a
+       `left` written inline, so the padding is given back on that side only. */
+    background: rgb(10 10 10 / 0.88);
+    padding-inline: 0.28rem;
+    margin-left: -0.28rem;
+    border-radius: 2px;
     white-space: nowrap;
     transition: color var(--motion-fast) var(--motion-ease-standard);
 }

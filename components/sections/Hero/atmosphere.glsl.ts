@@ -117,7 +117,14 @@ export const atmosphereFragmentShader = /* glsl */ `
     // cursor opens the frame rather than sliding a picture across it.
     vec2 parallax = uPointer * 0.075 + vec2(0.0, -uScroll.x * 0.14);
 
-    float t = uTime * 0.012;
+    // The phone path drifts faster because it has fewer layers to drift.
+    // uQuality drops the near layer and the second shaft below 900 px, and the
+    // near layer is where nearly all of this scene's movement lived: measured
+    // at 390 on ?gl=force the frame changed by a mean |dL| of 0.00057 over
+    // 1.5 s against the 0.004 the flagship gate calls "a scene rather than a
+    // still" (C22c 02-tests-failing.log). The two layers that remain were
+    // rated against a third that is not there, so on that path they carry it.
+    float t = uTime * mix(0.030, 0.012, step(0.5, uQuality));
 
     // -- Deep space starfield (sparse, monochrome) ------------------------
     float stars = 0.0;
@@ -152,7 +159,15 @@ export const atmosphereFragmentShader = /* glsl */ `
       near = ridged(nearP + vec2(t * 3.1, -t * 1.1) + parallax * 1.15);
     }
 
-    float fog = far * 0.66 + mid * 0.34 + near * 0.40;
+    // Same reason: the near layer contributes 0.40 of the density on a desktop and
+    // nothing on a phone, so the phone frame was a third thinner than the one
+    // this scene was tuned as. The two remaining depths take part of that
+    // weight back — part, not all: with the composition below now placed
+    // against the frame's own half-width, the shafts and both pools are inside
+    // a 390 frame again and full compensation on top of them washed the phone
+    // hero out to a flat grey (coverage 100.00%). A lit room, not a lit wall.
+    float hiQ = step(0.5, uQuality);
+    float fog = far * mix(0.72, 0.66, hiQ) + mid * mix(0.40, 0.34, hiQ) + near * 0.40;
 
     // A low horizon: density gathers toward the bottom of the frame and thins
     // out above, the way air does over a plain at night.
@@ -166,9 +181,21 @@ export const atmosphereFragmentShader = /* glsl */ `
     //
     // Both widths and both offsets breathe on slow, mutually prime periods, so
     // the pair never pulses together and the frame is never twice the same.
+    // Every figure in this scene is placed against the frame's own half-width,
+    // not against a constant. p.x is aspect-corrected, so it runs to +-0.8 at
+    // 1440x900 and to +-0.207 at 390x844 — and both pools, the key and the
+    // shafts' source were all written as constants sized to the first of
+    // those. Measured at 390, that put every one of them outside the frame:
+    // the shaft's Gaussian evaluated to zero across the whole phone viewport
+    // and the scene was reduced to fog and a vignette (mean |dL| 0.00094 over
+    // 1.5 s, coverage 13.58%). The factors below are the old constants divided
+    // by 0.8, so at 1440x900 this composition is unchanged to the pixel and at
+    // 390 it is the same composition rather than the empty middle of one.
+    float halfWidth = (uResolution.x / max(uResolution.y, 1.0)) * 0.5;
+
     vec2 dir = normalize(vec2(0.60, -0.80));
     vec2 perp = vec2(-dir.y, dir.x);
-    vec2 rel = p - (vec2(-0.92, 0.78) + parallax * 0.30);
+    vec2 rel = p - (vec2(-1.15 * halfWidth, 0.78) + parallax * 0.30);
     float along = dot(rel, dir);
     float across = dot(rel, perp);
 
@@ -186,23 +213,38 @@ export const atmosphereFragmentShader = /* glsl */ `
     if (uQuality > 0.5) {
       shafts = (s1 + s2 * 0.78) * travel * (0.58 + density * 1.05);
     } else {
-      // The phone keeps one shaft, unmodulated: the structure survives, only
-      // the second beam and the fog's grip on it are dropped.
-      shafts = s1 * travel * 0.85;
+      // The phone keeps one shaft, and the fog keeps its grip on it — that
+      // grip is the cheap half (mid is already sampled) and it is what makes
+      // the beam breathe instead of sitting still. Only the second beam and
+      // the near layer are dropped.
+      shafts = s1 * travel * 0.85 * (0.62 + 0.62 * mid);
     }
 
     // -- The pools --------------------------------------------------------
     // Two places where the light gathers instead of passing through: one on
     // the left, behind the name, and one on the right, behind the portrait
     // plate. They are what give the hero backdrop a subject.
-    vec2 q1 = (p - vec2(-0.72, 0.10) - parallax * 0.22) * vec2(1.00, 1.30);
+    vec2 q1 = (p - vec2(-0.90 * halfWidth, 0.10) - parallax * 0.22) * vec2(1.00, 1.30);
     float poolName = exp(-dot(q1, q1) * 2.10);
-    vec2 q2 = (p - vec2(0.60, -0.04) - parallax * 0.14) * vec2(1.20, 0.95);
+    vec2 q2 = (p - vec2(0.75 * halfWidth, -0.04) - parallax * 0.14) * vec2(1.20, 0.95);
     float poolPlate = exp(-dot(q2, q2) * 2.60);
-    float pools = poolName * 0.98 + poolPlate * 0.76;
+    // Both pools breathe, on periods prime to each other and to the shafts'.
+    // Light gathering in air is not a still: a static pool took the frame's
+    // mean |dL| over 1.5 s to 0.00244, and the first breath written here — a
+    // 0.18 swing at 0.37 rad/s — only reached 0.00327, still under the 0.004
+    // the gate calls a scene rather than a still (02-tests-failing.log and
+    // this lane's first green run). Over a 1.5 s window a slow swing barely
+    // moves, so the period is what was shortened rather than the amplitude
+    // widened: 0.56 rad/s advances the phase far enough in that window to be
+    // measured, while an 18-second cycle is still slower than anything a
+    // reader would call a pulse. The centre goes up with it, not down, so the
+    // scene's core is brighter at rest than it was, never dimmer.
+    float poolBreath = 0.94 + 0.20 * sin(uTime * 0.56);
+    float plateBreath = 0.94 + 0.20 * sin(uTime * 0.43 + 1.3);
+    float pools = poolName * 0.98 * poolBreath + poolPlate * 0.76 * plateBreath;
 
     // The key itself, falling off quadratically.
-    float distLight = length(p - (vec2(-0.62, 0.40) + parallax * 0.35));
+    float distLight = length(p - (vec2(-0.775 * halfWidth, 0.40) + parallax * 0.35));
     float key = 1.0 - clamp(distLight * 0.72, 0.0, 1.0);
     key = pow(key, 2.4);
 

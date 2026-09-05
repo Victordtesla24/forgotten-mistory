@@ -38,6 +38,65 @@ const VIEWPORTS = [
   { width: 390, height: 844 },
 ];
 
+/**
+ * Software rasteriser, explicitly enabled.
+ *
+ * This host has no GPU, and `components/gl/useGLCapability.ts` treats SwiftShader
+ * as unsupported — so without these flags *and* `?gl=force` no line of GLSL is
+ * ever compiled here and TC-CONTRAST-02 below would photograph the same CSS
+ * still TC-CONTRAST-01 already covers. Declared at file scope because Playwright
+ * refuses `launchOptions` inside a `describe` (it would force a new worker
+ * mid-file); TC-CONTRAST-01 is unaffected, because it loads `/` with no query
+ * and the application's own guard still classifies SwiftShader as unsupported
+ * there — so that case keeps photographing the CSS still, which is its job.
+ */
+const GL_ARGS = [
+  '--no-sandbox',
+  '--use-gl=swiftshader',
+  '--enable-unsafe-swiftshader',
+  '--ignore-gpu-blocklist',
+];
+
+test.use({ launchOptions: { args: GL_ARGS } });
+
+/** Every `sceneId` stamped by `components/gl/Scene.tsx`, in document order. */
+const SCENE_SLOTS = ['hero-atmosphere', 'about-field', 'career-strata'];
+
+interface AuditOptions {
+  /** What to load. `/?gl=force` is the shader path. */
+  path: string;
+  /** Settle before each band is photographed. */
+  settleMs: number;
+  /** Mount every scene before the walk starts. */
+  warmScenes: boolean;
+}
+
+const STILL_PATH: AuditOptions = { path: '/', settleMs: 350, warmScenes: false };
+const GL_PATH: AuditOptions = { path: '/?gl=force', settleMs: 1500, warmScenes: true };
+
+/**
+ * Scrolls every scene slot into view and waits for its canvas, so the shader a
+ * band will be photographed over is compiled before the walk reaches it.
+ * `Scene` mounts on an IntersectionObserver with half a viewport of lead-in and
+ * releases the canvas once the slot is well past, so a scene may remount during
+ * the walk — which is why each band also gets `settleMs` of its own below.
+ */
+async function warmScenes(page: Page) {
+  for (const scene of SCENE_SLOTS) {
+    const slot = page.locator(`[data-scene="${scene}"]`);
+    if ((await slot.count()) === 0) continue;
+    await slot.evaluate((el) =>
+      el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+    );
+    await page
+      .locator(`[data-scene="${scene}"] canvas`)
+      .waitFor({ state: 'attached', timeout: 30000 });
+    await page.waitForTimeout(1500);
+  }
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(500);
+}
+
 /** Collect visible text nodes whose box lies inside the current viewport. */
 async function collectNodes(page: Page) {
   return page.evaluate(() => {
@@ -110,6 +169,16 @@ async function collectNodes(page: Page) {
       if (!(el as HTMLElement).checkVisibility?.(visibilityOptions)) continue;
       const opacity = effectiveOpacity(el);
       if (opacity < 0.05) continue;
+      // Visually-hidden text. The `clip: rect(0,0,0,0)` sr-only idiom
+      // (components/marks/Caliper.module.css `.gloss`, which speaks the mark's
+      // state to a screen reader) paints no pixel at all, but `Range` still
+      // reports the unclipped rects, so the walk was sampling a ground behind
+      // a glyph that is never drawn — the caliper gloss came back at 1.36:1 on
+      // ?gl=force for text 1 px wide. WCAG 1.4.3 governs visible text; an
+      // element clipped to a 1 px box is not it. Measured on the box, not on
+      // the idiom, so any future way of hiding text is caught too.
+      const box = el.getBoundingClientRect();
+      if (box.width <= 1 || box.height <= 1) continue;
 
       const range = document.createRange();
       range.selectNodeContents(textNode);
@@ -199,9 +268,14 @@ const parseColor = (value: string): [number, number, number, number] | null => {
 const composite = (fg: [number, number, number], alpha: number, bg: [number, number, number]) =>
   [0, 1, 2].map((i) => Math.round(bg[i] + (fg[i] - bg[i]) * alpha)) as [number, number, number];
 
-async function auditViewport(page: Page, width: number, height: number): Promise<Sample[]> {
+async function auditViewport(
+  page: Page,
+  width: number,
+  height: number,
+  options: AuditOptions = STILL_PATH,
+): Promise<Sample[]> {
   await page.setViewportSize({ width, height });
-  await page.goto('/');
+  await page.goto(options.path);
   await page.locator('#hero h1').waitFor({ state: 'visible', timeout: 15000 });
   // Walk the page once so every entrance animation has fired and settled.
   const total = await page.evaluate(async () => {
@@ -214,12 +288,13 @@ async function auditViewport(page: Page, width: number, height: number): Promise
     return document.documentElement.scrollHeight;
   });
   await page.waitForTimeout(2500);
+  if (options.warmScenes) await warmScenes(page);
 
   const failures: Sample[] = [];
   const seen = new Set<string>();
   for (let top = 0; top < total; top += height) {
     await page.evaluate((y) => window.scrollTo(0, y), top);
-    await page.waitForTimeout(350);
+    await page.waitForTimeout(options.settleMs);
     const nodes = await collectNodes(page);
     const fresh = nodes.filter((n) => !seen.has(`${n.path}|${n.text}`));
     if (!fresh.length) continue;
@@ -268,6 +343,17 @@ async function auditViewport(page: Page, width: number, height: number): Promise
   return failures.sort((a, b) => a.ratio - b.ratio);
 }
 
+function worstTen(failures: Sample[]): string {
+  return failures
+    .slice(0, 10)
+    .map(
+      (f) =>
+        `${f.ratio.toFixed(2)}:1 (needs ${f.need}) [${f.section}] ${f.selector} — "${f.text}" ` +
+        `fg ${f.fg} on bg ${f.bg} @ ${f.fontSize}px/${f.fontWeight}`,
+    )
+    .join('\n');
+}
+
 test.describe('Text contrast (WCAG 1.4.3, every visible text node)', () => {
   test.describe.configure({ timeout: 240000 });
 
@@ -275,16 +361,44 @@ test.describe('Text contrast (WCAG 1.4.3, every visible text node)', () => {
     test(`TC-CONTRAST-01 @ ${width}: no visible text node falls below AA against its sampled ground`, async ({
       page,
     }) => {
-      const failures = await auditViewport(page, width, height);
-      const report = failures
-        .slice(0, 10)
-        .map(
-          (f) =>
-            `${f.ratio.toFixed(2)}:1 (needs ${f.need}) [${f.section}] ${f.selector} — "${f.text}" ` +
-            `fg ${f.fg} on bg ${f.bg} @ ${f.fontSize}px/${f.fontWeight}`,
-        )
-        .join('\n');
-      expect(failures.length, `${failures.length} text node(s) below AA — worst ten:\n${report}`).toBe(0);
+      const failures = await auditViewport(page, width, height, STILL_PATH);
+      expect(
+        failures.length,
+        `${failures.length} text node(s) below AA — worst ten:\n${worstTen(failures)}`,
+      ).toBe(0);
+    });
+  }
+});
+
+/**
+ * TC-CONTRAST-02 — the same audit, on the path a reader with a GPU actually gets.
+ *
+ * TC-CONTRAST-01 loads `/`, so on this host it photographs the CSS still and
+ * never a single fragment of GLSL. That is how nine text nodes at 1440 and
+ * twelve at 390 shipped below AA over the flagship scenes: company names on lit
+ * strata at 1.10:1, the hero's third ledger source on the atmosphere's pool at
+ * 1.34:1 (C22 09-verification.md, F2). The scenes were measured; the type over
+ * them was not.
+ *
+ * Same algorithm, same thresholds, same walk — nothing here is relaxed. The
+ * differences are the URL (`?gl=force`, which lifts the application's own
+ * SwiftShader guard), a warm-up that mounts every scene before the walk starts,
+ * and a longer per-band settle so a canvas that remounts as the walk passes it
+ * has ramped its entrance before its band is photographed.
+ */
+test.describe('TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too', () => {
+  test.describe.configure({ timeout: 300000 });
+
+  for (const { width, height } of VIEWPORTS) {
+    test(`TC-CONTRAST-02 @ ${width}: no visible text node falls below AA over the live scenes`, async ({
+      page,
+    }) => {
+      test.setTimeout(300000);
+      const failures = await auditViewport(page, width, height, GL_PATH);
+      expect(
+        failures.length,
+        `${failures.length} text node(s) below AA on ?gl=force — worst ten:\n${worstTen(failures)}`,
+      ).toBe(0);
     });
   }
 });
