@@ -1,6 +1,9 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+
+import Scene from '@/components/gl/Scene';
 
 import {
   capabilities,
@@ -10,7 +13,13 @@ import {
   type EvidenceStatus,
 } from '@/app/data/portfolio/skills';
 
+import type { HoverState } from './BenchField';
+
 import styles from './Bench.module.css';
+
+// The bench's own light. Dynamic so `three` lands in the chunk `Scene` fetches
+// when a scene actually mounts, not in this section's bundle.
+const BenchField = dynamic(() => import('./BenchField'), { ssr: false });
 
 /**
  * The bench — where each capability was measured.
@@ -96,6 +105,10 @@ export default function Bench({
   const benchRef = useRef<HTMLDivElement>(null);
   const sourceRefs = useRef(new Map<string, HTMLElement>());
   const capabilityRefs = useRef(new Map<number, HTMLElement>());
+
+  // What the field under the bench is lighting. A ref, not state: the light
+  // follows the pointer and the board must not re-render twenty wires to say so.
+  const hoverState = useRef<HoverState>({ active: 0, y: 0.5 });
 
   const [wires, setWires] = useState<Wire[]>([]);
   const [box, setBox] = useState({ width: 0, height: 0 });
@@ -239,6 +252,28 @@ export default function Bench({
   const focus = useCallback(
     (next: NodeRef) => {
       setActive(next);
+      // Where the field should light, measured from the node itself rather than
+      // guessed from an index: the rails wrap differently at every width and a
+      // table of row heights would be wrong at the first font swap.
+      const bench = benchRef.current;
+      const node = next
+        ? next.kind === 'source'
+          ? sourceRefs.current.get(next.id)
+          : capabilityRefs.current.get(Number(next.id))
+        : undefined;
+      if (next && bench && node) {
+        const origin = bench.getBoundingClientRect();
+        const rect = node.getBoundingClientRect();
+        hoverState.current = {
+          active: 1,
+          y:
+            origin.height > 0
+              ? Math.min(Math.max((rect.top + rect.height / 2 - origin.top) / origin.height, 0), 1)
+              : 0.5,
+        };
+      } else {
+        hoverState.current = { ...hoverState.current, active: 0 };
+      }
       onSelect?.(next && next.kind === 'capability' ? Number(next.id) : null);
     },
     [onSelect],
@@ -260,12 +295,22 @@ export default function Bench({
         came from. Gold where that evidence was taken in production.
       </figcaption>
 
-      <div
-        ref={benchRef}
-        className={styles.bench}
-        data-dimmed={active ? '' : undefined}
-        onMouseLeave={() => focus(null)}
-      >
+      {/* The bench plate: a lit measuring field with a hairline graticule ruled
+          across it, and the board engraved on top. With no WebGL, reduced
+          motion, or the section off screen, `Scene` mounts nothing and the slot
+          keeps its own still of the same light — the drawing never depended on
+          it. */}
+      <div className={styles.stage}>
+        <Scene className={styles.fieldSlot} sceneId="skills-bench">
+          <BenchField hover={hoverState} />
+        </Scene>
+
+        <div
+          ref={benchRef}
+          className={styles.bench}
+          data-dimmed={active ? '' : undefined}
+          onMouseLeave={() => focus(null)}
+        >
         <svg
           className={styles.wires}
           viewBox={`0 0 ${Math.max(1, box.width)} ${Math.max(1, box.height)}`}
@@ -400,6 +445,7 @@ export default function Bench({
               <span className={styles.nodeLabel}>{row.short}</span>
             </button>
           ))}
+        </div>
         </div>
       </div>
 

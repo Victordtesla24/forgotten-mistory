@@ -1,0 +1,693 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-skills.spec.ts --workers=1 --reporter=line
+
+Running 7 tests using 1 worker
+
+[1A[2K[1/7] [chromium] › tests/overhaul/scene-skills.spec.ts:85:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-01: exactly one canvas mounts behind the board once the section is in view
+[1A[2K  1) [chromium] › tests/overhaul/scene-skills.spec.ts:85:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-01: exactly one canvas mounts behind the board once the section is in view 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#skills canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#skills canvas')[22m
+    [2m    19 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+      89 |
+      90 |     const canvases = page.locator(`${SKILLS} canvas`);
+    > 91 |     await expect(canvases).toHaveCount(1);
+         |                            ^
+      92 |
+      93 |     const box = await canvases.first().boundingBox();
+      94 |     expect(box, 'the #skills canvas has no box').not.toBeNull();
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/scene-skills.spec.ts:91:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-scene-skills-TC-S-96737-once-the-section-is-in-view-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-scene-skills-TC-S-96737-once-the-section-is-in-view-chromium/error-context.md
+
+
+[1A[2K[2/7] [chromium] › tests/overhaul/scene-skills.spec.ts:99:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-02: the canvas is aria-hidden, behind the board and never over the type
+[1A[2K  2) [chromium] › tests/overhaul/scene-skills.spec.ts:99:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-02: the canvas is aria-hidden, behind the board and never over the type 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#skills canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#skills canvas')[22m
+    [2m    19 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+      101 |   }) => {
+      102 |     await settleSkillsWithGL(page);
+    > 103 |     await expect(page.locator(`${SKILLS} canvas`)).toHaveCount(1);
+          |                                                    ^
+      104 |
+      105 |     const hidden = await page
+      106 |       .locator(`${SKILLS} canvas`)
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/scene-skills.spec.ts:103:52
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-scene-skills-TC-S-ac72f-ard-and-never-over-the-type-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-scene-skills-TC-S-ac72f-ard-and-never-over-the-type-chromium/error-context.md
+
+
+[1A[2K[3/7] [chromium] › tests/overhaul/scene-skills.spec.ts:134:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-03: taking a node on the bench is the state the field is lit from
+[1A[2K  3) [chromium] › tests/overhaul/scene-skills.spec.ts:134:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-03: taking a node on the bench is the state the field is lit from 
+
+    [31mTest timeout of 120000ms exceeded.[39m
+
+    Error: locator.focus: Test timeout of 120000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#skills button[class*="capability"]').first()[22m
+
+
+      143 |     // the same path `focus()` takes for the pointer, and it is what writes the
+      144 |     // hover state the shader reads.
+    > 145 |     await page.locator(`${SKILLS} button[class*="capability"]`).first().focus();
+          |                                                                         ^
+      146 |     await page.waitForTimeout(300);
+      147 |     await expect(bench).toHaveAttribute('data-dimmed', '');
+      148 |
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/scene-skills.spec.ts:145:73
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-scene-skills-TC-S-e23b9-state-the-field-is-lit-from-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-scene-skills-TC-S-e23b9-state-the-field-is-lit-from-chromium/error-context.md
+
+
+[1A[2K[4/7] [chromium] › tests/overhaul/scene-skills.spec.ts:154:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-04: under reduced motion there is no canvas and the wire bench is whole
+[1A[2K  4) [chromium] › tests/overhaul/scene-skills.spec.ts:154:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-04: under reduced motion there is no canvas and the wire bench is whole 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('#skills button[class*="capability"]').first()
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 15000ms[22m
+    [2m  - waiting for locator('#skills button[class*="capability"]').first()[22m
+
+
+      163 |     const paths = await page.locator(`${SKILLS} svg path`).count();
+      164 |     expect(paths, `wire paths under reduced motion: ${paths}`).toBeGreaterThan(10);
+    > 165 |     await expect(page.locator(`${SKILLS} button[class*="capability"]`).first()).toBeVisible();
+          |                                                                                 ^
+      166 |   });
+      167 |
+      168 |   test('TC-SCENE-SKILLS-05: with WebGL unavailable the section is complete and silent', async ({
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/scene-skills.spec.ts:165:81
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-scene-skills-TC-S-b3363-and-the-wire-bench-is-whole-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-scene-skills-TC-S-b3363-and-the-wire-bench-is-whole-chromium/error-context.md
+
+
+[1A[2K[5/7] [chromium] › tests/overhaul/scene-skills.spec.ts:168:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-05: with WebGL unavailable the section is complete and silent
+[1A[2K[6/7] [chromium] › tests/overhaul/scene-skills.spec.ts:195:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-06: the field is monochrome, palette-sourced and cheap per pixel
+[1A[2K  5) [chromium] › tests/overhaul/scene-skills.spec.ts:195:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-06: the field is monochrome, palette-sourced and cheap per pixel 
+
+    Error: ENOENT: no such file or directory, open '/root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/components/sections/Skills/bench.glsl.ts'
+
+      194 |
+      195 |   test('TC-SCENE-SKILLS-06: the field is monochrome, palette-sourced and cheap per pixel', async () => {
+    > 196 |     const glsl = readFileSync(GLSL_SOURCE, 'utf8');
+          |                              ^
+      197 |     const component = readFileSync(FIELD_SOURCE, 'utf8');
+      198 |
+      199 |     // Gold means "this figure has a source". A bench is not a figure.
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/scene-skills.spec.ts:196:30
+
+
+[1A[2K[7/7] [chromium] › tests/overhaul/scene-skills.spec.ts:226:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-07: three is fetched with the scene, not with the section
+[1A[2K  6) [chromium] › tests/overhaul/scene-skills.spec.ts:226:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-07: three is fetched with the scene, not with the section 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected pattern: [32m/dynamic\(\s*\(\)\s*=>\s*import\('\.\/BenchField'\)/[39m
+    Received string:  [31m"'use client';·[39m
+    [31mimport { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';·[39m
+    [31mimport {[39m
+    [31m  capabilities,[39m
+    [31m  sources,[39m
+    [31m  statusLegend,[39m
+    [31m  type Capability,[39m
+    [31m  type EvidenceStatus,[39m
+    [31m} from '@/app/data/portfolio/skills';·[39m
+    [31mimport styles from './Bench.module.css';·[39m
+    [31m/**[39m
+    [31m * The bench — where each capability was measured.[39m
+    [31m *[39m
+    [31m * This is the section's argument drawn rather than asserted. Thirteen sources[39m
+    [31m * on the left, seventeen capabilities on the right, and a hairline between[39m
+    [31m * every pair that a line of the CV or a line of a repository actually connects.[39m
+    [31m * A skills section that could not draw this graph would be a list of adjectives;[39m
+    [31m * this one can, and the drawing is the proof.[39m
+    [31m *[39m
+    [31m * Three decisions hold it up.[39m
+    [31m *[39m
+    [31m * **The rails are HTML, the wires are SVG.** Labels rendered as SVG `<text>`[39m
+    [31m * hint differently from the rest of the page and cannot be selected, tabbed to[39m
+    [31m * or read by a screen reader as the buttons they behave like. So the two rails[39m
+    [31m * are real `<button>` elements in normal flow, their anchor points are measured[39m
+    [31m * from layout, and only the curves are drawn — which is the one thing HTML[39m
+    [31m * cannot do.[39m
+    [31m *[39m
+    [31m * **Gold is still a claim.** A wire is gold only where the evidence at its end[39m
+    [31m * was measured in production. Grey where it was measured somewhere that was[39m
+    [31m * not. The one capability with no evidence yet has no wire at all, because a[39m
+    [31m * line to nowhere would be exactly the dishonesty the rest of the section is[39m
+    [31m * built to avoid.[39m
+    [31m *[39m
+    [31m * **Nothing is hidden behind the interaction.** Hovering or focusing a node[39m
+    [31m * dims what it is not connected to, which is a reading aid, not a disclosure —[39m
+    [31m * every wire and every label is present and legible before anyone touches it,[39m
+    [31m * and the full record with its evidence sits directly beneath.[39m
+    [31m */·[39m
+    [31mtype NodeRef = { kind: 'source' | 'capability'; id: string } | null;·[39m
+    [31minterface Point {[39m
+    [31m  x: number;[39m
+    [31m  y: number;[39m
+    [31m}·[39m
+    [31minterface Wire {[39m
+    [31m  key: string;[39m
+    [31m  sourceId: string;[39m
+    [31m  capabilityIndex: number;[39m
+    [31m  status: EvidenceStatus;[39m
+    [31m  d: string;[39m
+    [31m}·[39m
+    [31m/** Every (source → capability) pair the data actually asserts. */[39m
+    [31mconst LINKS: Array<{ sourceId: string; capabilityIndex: number; status: EvidenceStatus }> =[39m
+    [31m  capabilities.flatMap((row, index) =>[39m
+    [31m    row.sources.map((sourceId) => ({ sourceId, capabilityIndex: index, status: row.status })),[39m
+    [31m  );·[39m
+    [31mconst KIND_LABEL: Record<string, string> = {[39m
+    [31m  programme: 'Programmes',[39m
+    [31m  repository: 'Repositories',[39m
+    [31m  credential: 'Credentials',[39m
+    [31m};·[39m
+    [31m/** The source rail, split into its three bands in registry order. */[39m
+    [31mconst BANDS = (['programme', 'repository', 'credential'] as const).map((kind) => ({[39m
+    [31m  kind,[39m
+    [31m  label: KIND_LABEL[kind],[39m
+    [31m  items: sources.filter((source) => source.kind === kind),[39m
+    [31m}));·[39m
+    [31mfunction statusClass(status: EvidenceStatus) {[39m
+    [31m  if (status === 'production') return styles.production;[39m
+    [31m  if (status === 'non-production') return styles.nonProduction;[39m
+    [31m  return styles.pending;[39m
+    [31m}·[39m
+    [31mexport default function Bench({[39m
+    [31m  onSelect,[39m
+    [31m}: {[39m
+    [31m  /** Told which capability is under the reader's attention, so the record below can follow. */[39m
+    [31m  onSelect?: (index: number | null) => void;[39m
+    [31m}) {[39m
+    [31m  // A literal, not `useId()`: React's generated ids contain colons, which are[39m
+    [31m  // legal in an `id` attribute and illegal inside `url(#…)`, so every wire[39m
+    [31m  // referenced a gradient that did not resolve and drew with no stroke at all.[39m
+    [31m  // There is one bench on the page.[39m
+    [31m  const gradientId = 'bench-wire';[39m
+    [31m  const benchRef = useRef<HTMLDivElement>(null);[39m
+    [31m  const sourceRefs = useRef(new Map<string, HTMLElement>());[39m
+    [31m  const capabilityRefs = useRef(new Map<number, HTMLElement>());·[39m
+    [31m  const [wires, setWires] = useState<Wire[]>([]);[39m
+    [31m  const [box, setBox] = useState({ width: 0, height: 0 });[39m
+    [31m  const [active, setActive] = useState<NodeRef>(null);[39m
+    [31m  const [drawn, setDrawn] = useState(false);[39m
+    [31m  // The trace runs once. After it, the animation is taken off the wires[39m
+    [31m  // entirely: a CSS animation whose delay is re-declared on re-render replays[39m
+    [31m  // from the start, so any later resize — a window drag, an orientation[39m
+    [31m  // change — had the whole board redraw itself under the reader.[39m
+    [31m  const [settled, setSettled] = useState(false);·[39m
+    [31m  // ── Geometry ──────────────────────────────────────────────────────────────[39m
+    [31m  // Anchor points come from layout, so the curves follow the type wherever it[39m
+    [31m  // wraps rather than from a hand-kept table of coordinates that would be wrong[39m
+    [31m  // at the first font swap.[39m
+    [31m  const measure = useCallback(() => {[39m
+    [31m    const bench = benchRef.current;[39m
+    [31m    if (!bench) return;[39m
+    [31m    const origin = bench.getBoundingClientRect();[39m
+    [31m    if (origin.width === 0) return;·[39m
+    [31m    const anchor = (el: HTMLElement, side: 'right' | 'left'): Point => {[39m
+    [31m      const r = el.getBoundingClientRect();[39m
+    [31m      return {[39m
+    [31m        x: (side === 'right' ? r.right : r.left) - origin.left,[39m
+    [31m        y: r.top + r.height / 2 - origin.top,[39m
+    [31m      };[39m
+    [31m    };·[39m
+    [31m    const next: Wire[] = [];[39m
+    [31m    for (const link of LINKS) {[39m
+    [31m      const from = sourceRefs.current.get(link.sourceId);[39m
+    [31m      const to = capabilityRefs.current.get(link.capabilityIndex);[39m
+    [31m      if (!from || !to) continue;[39m
+    [31m      const a = anchor(from, 'right');[39m
+    [31m      const b = anchor(to, 'left');[39m
+    [31m      // A flat-tangent cubic: the wire leaves the source horizontally and[39m
+    [31m      // arrives horizontally, so the bundle reads as cabling rather than as a[39m
+    [31m      // spray of diagonals.[39m
+    [31m      const bow = Math.max(48, (b.x - a.x) * 0.46);[39m
+    [31m      const d = `M ${a.x} ${a.y} C ${a.x + bow} ${a.y}, ${b.x - bow} ${b.y}, ${b.x} ${b.y}`;[39m
+    [31m      next.push({[39m
+    [31m        key: `${link.sourceId}-${link.capabilityIndex}`,[39m
+    [31m        sourceId: link.sourceId,[39m
+    [31m        capabilityIndex: link.capabilityIndex,[39m
+    [31m        status: link.status,[39m
+    [31m        d,[39m
+    [31m      });[39m
+    [31m    }[39m
+    [31m    setWires(next);[39m
+    [31m    setBox({ width: origin.width, height: origin.height });[39m
+    [31m  }, []);·[39m
+    [31m  useLayoutEffect(() => {[39m
+    [31m    measure();[39m
+    [31m    const bench = benchRef.current;[39m
+    [31m    if (!bench) return undefined;[39m
+    [31m    // Two frames after the resize, not one. A ResizeObserver fires with the[39m
+    [31m    // box that triggered it, and on a viewport change the rails have not yet[39m
+    [31m    // re-wrapped — the anchors read then are the old ones, and the wires end[39m
+    [31m    // short of the labels they belong to. Waiting a frame lets layout settle[39m
+    [31m    // and re-reads it.[39m
+    [31m    let frame = 0;[39m
+    [31m    const settle = () => {[39m
+    [31m      cancelAnimationFrame(frame);[39m
+    [31m      frame = requestAnimationFrame(() => {[39m
+    [31m        frame = requestAnimationFrame(measure);[39m
+    [31m      });[39m
+    [31m    };[39m
+    [31m    const observer = new ResizeObserver(() => {[39m
+    [31m      measure();[39m
+    [31m      settle();[39m
+    [31m    });[39m
+    [31m    observer.observe(bench);[39m
+    [31m    // The rails wrap differently once the real faces land, which moves every[39m
+    [31m    // anchor point on the board.[39m
+    [31m    let cancelled = false;[39m
+    [31m    document.fonts?.ready.then(() => {[39m
+    [31m      if (!cancelled) measure();[39m
+    [31m    });[39m
+    [31m    return () => {[39m
+    [31m      cancelled = true;[39m
+    [31m      cancelAnimationFrame(frame);[39m
+    [31m      observer.disconnect();[39m
+    [31m    };[39m
+    [31m  }, [measure]);·[39m
+    [31m  // ── The draw-in ───────────────────────────────────────────────────────────[39m
+    [31m  // The wires trace themselves once, when the board first comes into view, and[39m
+    [31m  // never again. Under reduced motion they are simply there.[39m
+    [31m  useEffect(() => {[39m
+    [31m    const bench = benchRef.current;[39m
+    [31m    if (!bench) return undefined;[39m
+    [31m    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {[39m
+    [31m      setDrawn(true);[39m
+    [31m      return undefined;[39m
+    [31m    }[39m
+    [31m    const observer = new IntersectionObserver([39m
+    [31m      (entries) => {[39m
+    [31m        if (entries.some((entry) => entry.isIntersecting)) {[39m
+    [31m          setDrawn(true);[39m
+    [31m          observer.disconnect();[39m
+    [31m        }[39m
+    [31m      },[39m
+    [31m      { threshold: 0.15 },[39m
+    [31m    );[39m
+    [31m    observer.observe(bench);[39m
+    [31m    return () => observer.disconnect();[39m
+    [31m  }, []);·[39m
+    [31m  useEffect(() => {[39m
+    [31m    if (!drawn || settled) return undefined;[39m
+    [31m    const total = 120 + LINKS.length * 38 + 820 + 80;[39m
+    [31m    const timer = window.setTimeout(() => setSettled(true), total);[39m
+    [31m    return () => window.clearTimeout(timer);[39m
+    [31m  }, [drawn, settled]);·[39m
+    [31m  // ── What the current attention connects to ────────────────────────────────[39m
+    [31m  const lit = useMemo(() => {[39m
+    [31m    if (!active) return null;[39m
+    [31m    const litSources = new Set<string>();[39m
+    [31m    const litCapabilities = new Set<number>();[39m
+    [31m    const litWires = new Set<string>();[39m
+    [31m    for (const link of LINKS) {[39m
+    [31m      const hit =[39m
+    [31m        active.kind === 'source'[39m
+    [31m          ? link.sourceId === active.id[39m
+    [31m          : link.capabilityIndex === Number(active.id);[39m
+    [31m      if (!hit) continue;[39m
+    [31m      litSources.add(link.sourceId);[39m
+    [31m      litCapabilities.add(link.capabilityIndex);[39m
+    [31m      litWires.add(`${link.sourceId}-${link.capabilityIndex}`);[39m
+    [31m    }[39m
+    [31m    // A node with no wires — the capability with no evidence yet — still lights[39m
+    [31m    // itself when it is the one being read.[39m
+    [31m    if (active.kind === 'capability') litCapabilities.add(Number(active.id));[39m
+    [31m    else litSources.add(active.id);[39m
+    [31m    return { litSources, litCapabilities, litWires };[39m
+    [31m  }, [active]);·[39m
+    [31m  const focus = useCallback([39m
+    [31m    (next: NodeRef) => {[39m
+    [31m      setActive(next);[39m
+    [31m      onSelect?.(next && next.kind === 'capability' ? Number(next.id) : null);[39m
+    [31m    },[39m
+    [31m    [onSelect],[39m
+    [31m  );·[39m
+    [31m  const readout: Capability | null =[39m
+    [31m    active?.kind === 'capability' ? (capabilities[Number(active.id)] ?? null) : null;[39m
+    [31m  const readoutSource =[39m
+    [31m    active?.kind === 'source' ? (sources.find((s) => s.id === active.id) ?? null) : null;[39m
+    [31m  const readoutSourceCount =[39m
+    [31m    readoutSource != null[39m
+    [31m      ? LINKS.filter((link) => link.sourceId === readoutSource.id).length[39m
+    [31m      : 0;·[39m
+    [31m  return ([39m
+    [31m    <figure className={styles.figure}>[39m
+    [31m      <figcaption className={styles.caption}>[39m
+    [31m        Every capability, wired to the programme, repository or issuing body its evidence[39m
+    [31m        came from. Gold where that evidence was taken in production.[39m
+    [31m      </figcaption>·[39m
+    [31m      <div[39m
+    [31m        ref={benchRef}[39m
+    [31m        className={styles.bench}[39m
+    [31m        data-dimmed={active ? '' : undefined}[39m
+    [31m        onMouseLeave={() => focus(null)}[39m
+    [31m      >[39m
+    [31m        <svg[39m
+    [31m          className={styles.wires}[39m
+    [31m          viewBox={`0 0 ${Math.max(1, box.width)} ${Math.max(1, box.height)}`}[39m
+    [31m          width={box.width || undefined}[39m
+    [31m          height={box.height || undefined}[39m
+    [31m          aria-hidden=\"true\"[39m
+    [31m          focusable=\"false\"[39m
+    [31m        >[39m
+    [31m          <defs>[39m
+    [31m            {/* The wire fades out of its source rather than butting into the[39m
+    [31m                label — a hard join reads as a diagram of boxes, and this is a[39m
+    [31m                drawing of cabling. */}[39m
+    [31m            {/* userSpaceOnUse, not the default. A near-horizontal wire has a[39m
+    [31m                bounding box of almost no height, and an objectBoundingBox[39m
+    [31m                gradient on a zero-area box is not rendered at all — which is[39m
+    [31m                why every short wire between the repository rail and the[39m
+    [31m                capabilities beside it drew nothing while the long diagonals[39m
+    [31m                from the programmes drew fine. Anchoring the ramp to the board[39m
+    [31m                also makes the fade land at the rails on every wire rather than[39m
+    [31m                at each wire's own ends. */}[39m
+    [31m            <linearGradient[39m
+    [31m              id={`${gradientId}-gold`}[39m
+    [31m              gradientUnits=\"userSpaceOnUse\"[39m
+    [31m              x1=\"0\"[39m
+    [31m              x2={Math.max(1, box.width)}[39m
+    [31m              y1=\"0\"[39m
+    [31m              y2=\"0\"[39m
+    [31m            >[39m
+    [31m              {/* The ramp carries the shape of the fade and nothing else: its[39m
+    [31m                  body is opaque and the level the strand is drawn at lives in[39m
+    [31m                  `stroke-opacity` (Bench.module.css), which is the property the[39m
+    [31m                  attention state animates. Baking a level into both meant the[39m
+    [31m                  two multiplied, and a wire asked to come to full strength on[39m
+    [31m                  hover arrived at 0.62 of it. */}[39m
+    [31m              <stop offset=\"0%\" stopColor=\"var(--gold)\" stopOpacity=\"0.1\" />[39m
+    [31m              <stop offset=\"14%\" stopColor=\"var(--gold)\" stopOpacity=\"1\" />[39m
+    [31m              <stop offset=\"86%\" stopColor=\"var(--gold)\" stopOpacity=\"1\" />[39m
+    [31m              <stop offset=\"100%\" stopColor=\"var(--gold)\" stopOpacity=\"0.1\" />[39m
+    [31m            </linearGradient>[39m
+    [31m            <linearGradient[39m
+    [31m              id={`${gradientId}-grey`}[39m
+    [31m              gradientUnits=\"userSpaceOnUse\"[39m
+    [31m              x1=\"0\"[39m
+    [31m              x2={Math.max(1, box.width)}[39m
+    [31m              y1=\"0\"[39m
+    [31m              y2=\"0\"[39m
+    [31m            >[39m
+    [31m              <stop offset=\"0%\" stopColor=\"var(--mist-400)\" stopOpacity=\"0.08\" />[39m
+    [31m              <stop offset=\"14%\" stopColor=\"var(--mist-400)\" stopOpacity=\"1\" />[39m
+    [31m              <stop offset=\"86%\" stopColor=\"var(--mist-400)\" stopOpacity=\"1\" />[39m
+    [31m              <stop offset=\"100%\" stopColor=\"var(--mist-400)\" stopOpacity=\"0.08\" />[39m
+    [31m            </linearGradient>[39m
+    [31m          </defs>[39m
+    [31m          {wires.map((wire, index) => ([39m
+    [31m            <path[39m
+    [31m              key={wire.key}[39m
+    [31m              className={`${styles.wire} ${statusClass(wire.status)}`}[39m
+    [31m              d={wire.d}[39m
+    [31m              // The dash animation runs in normalised units. Estimating a[39m
+    [31m              // curve's length from its chord got it wrong by enough that the[39m
+    [31m              // dash array came out shorter than the path, and every wire drew[39m
+    [31m              // part of the way across and then stopped in mid-air.[39m
+    [31m              pathLength={1}[39m
+    [31m              stroke={`url(#${gradientId}-${wire.status === 'production' ? 'gold' : 'grey'})`}[39m
+    [31m              fill=\"none\"[39m
+    [31m              data-lit={lit ? (lit.litWires.has(wire.key) ? '' : undefined) : undefined}[39m
+    [31m              data-drawn={drawn ? '' : undefined}[39m
+    [31m              data-settled={settled ? '' : undefined}[39m
+    [31m              style={[39m
+    [31m                {[39m
+    [31m                  '--delay': `${120 + index * 38}ms`,[39m
+    [31m                } as React.CSSProperties[39m
+    [31m              }[39m
+    [31m            />[39m
+    [31m          ))}[39m
+    [31m        </svg>·[39m
+    [31m        <div className={styles.rail} data-side=\"sources\">[39m
+    [31m          {BANDS.map((band) => ([39m
+    [31m            <div key={band.kind} className={styles.band}>[39m
+    [31m              <p className={styles.bandLabel}>{band.label}</p>[39m
+    [31m              {band.items.map((source) => {[39m
+    [31m                const count = LINKS.filter((link) => link.sourceId === source.id).length;[39m
+    [31m                return ([39m
+    [31m                  <button[39m
+    [31m                    key={source.id}[39m
+    [31m                    type=\"button\"[39m
+    [31m                    ref={(el) => {[39m
+    [31m                      if (el) sourceRefs.current.set(source.id, el);[39m
+    [31m                      else sourceRefs.current.delete(source.id);[39m
+    [31m                    }}[39m
+    [31m                    className={styles.node}[39m
+    [31m                    data-lit={lit ? (lit.litSources.has(source.id) ? '' : undefined) : undefined}[39m
+    [31m                    onMouseEnter={() => focus({ kind: 'source', id: source.id })}[39m
+    [31m                    onFocus={() => focus({ kind: 'source', id: source.id })}[39m
+    [31m                    onBlur={() => focus(null)}[39m
+    [31m                    aria-label={`${source.label} — ${count} ${count === 1 ? 'capability' : 'capabilities'}`}[39m
+    [31m                  >[39m
+    [31m                    <span className={styles.nodeLabel}>{source.label}</span>[39m
+    [31m                    <span className={styles.nodeCount} aria-hidden=\"true\">[39m
+    [31m                      {count}[39m
+    [31m                    </span>[39m
+    [31m                  </button>[39m
+    [31m                );[39m
+    [31m              })}[39m
+    [31m            </div>[39m
+    [31m          ))}[39m
+    [31m        </div>·[39m
+    [31m        <div className={styles.rail} data-side=\"capabilities\">[39m
+    [31m          {capabilities.map((row, index) => ([39m
+    [31m            <button[39m
+    [31m              key={row.capability}[39m
+    [31m              type=\"button\"[39m
+    [31m              ref={(el) => {[39m
+    [31m                if (el) capabilityRefs.current.set(index, el);[39m
+    [31m                else capabilityRefs.current.delete(index);[39m
+    [31m              }}[39m
+    [31m              className={styles.node}[39m
+    [31m              data-lit={lit ? (lit.litCapabilities.has(index) ? '' : undefined) : undefined}[39m
+    [31m              onMouseEnter={() => focus({ kind: 'capability', id: String(index) })}[39m
+    [31m              onFocus={() => focus({ kind: 'capability', id: String(index) })}[39m
+    [31m              onBlur={() => focus(null)}[39m
+    [31m              aria-label={`${row.capability}. ${row.evidence}. ${statusLegend[row.status].label}.${[39m
+    [31m                row.caveat ? ` ${row.caveat}.` : ''[39m
+    [31m              }`}[39m
+    [31m            >[39m
+    [31m              <span[39m
+    [31m                className={`${styles.mark} ${statusClass(row.status)}`}[39m
+    [31m                aria-hidden=\"true\"[39m
+    [31m              />[39m
+    [31m              <span className={styles.nodeLabel}>{row.short}</span>[39m
+    [31m            </button>[39m
+    [31m          ))}[39m
+    [31m        </div>[39m
+    [31m      </div>·[39m
+    [31m      {/* The readout. It holds its height whether or not anything is being read,[39m
+    [31m          so the record below never jumps as the reader moves across the board.[39m
+    [31m          Deliberately not a live region: it changes on every hover, and a[39m
+    [31m          section that announced itself on each one would be unusable with a[39m
+    [31m          screen reader — the evidence it shows is on each node's own label, so[39m
+    [31m          it is spoken on focus, once, by the thing being focused. */}[39m
+    [31m      <p className={styles.readout}>[39m
+    [31m        {readout ? ([39m
+    [31m          <>[39m
+    [31m            <span className={styles.readoutTitle}>{readout.capability}</span>[39m
+    [31m            <span className={styles.readoutEvidence}>{readout.evidence}</span>[39m
+    [31m            {readout.caveat ? ([39m
+    [31m              <span className={styles.readoutCaveat}>{readout.caveat}</span>[39m
+    [31m            ) : null}[39m
+    [31m          </>[39m
+    [31m        ) : readoutSource ? ([39m
+    [31m          <>[39m
+    [31m            <span className={styles.readoutTitle}>{readoutSource.label}</span>[39m
+    [31m            <span className={styles.readoutEvidence}>[39m
+    [31m              {readoutSourceCount} {readoutSourceCount === 1 ? 'capability' : 'capabilities'} take[39m
+    [31m              their evidence from here.[39m
+    [31m            </span>[39m
+    [31m          </>[39m
+    [31m        ) : ([39m
+    [31m          <span className={styles.readoutRest}>[39m
+    [31m            {LINKS.length} links · {sources.length} sources · {capabilities.length} capabilities.[39m
+    [31m            Hover or tab a node to trace it.[39m
+    [31m          </span>[39m
+    [31m        )}[39m
+    [31m      </p>[39m
+    [31m    </figure>[39m
+    [31m  );[39m
+    [31m}[39m
+    [31m"[39m
+
+      230 |     // `components/gl/Scene.tsx` fetches once a scene has cleared every gate —
+      231 |     // never in this section's own bundle.
+    > 232 |     expect(bench).toMatch(/dynamic\(\s*\(\)\s*=>\s*import\('\.\/BenchField'\)/);
+          |                   ^
+      233 |     expect(bench).toContain("ssr: false");
+      234 |     expect(bench, 'the bench must not import three directly').not.toMatch(/from 'three'/);
+      235 |
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/scene-skills.spec.ts:232:19
+
+
+[1A[2K  6 failed
+    [chromium] › tests/overhaul/scene-skills.spec.ts:85:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-01: exactly one canvas mounts behind the board once the section is in view 
+    [chromium] › tests/overhaul/scene-skills.spec.ts:99:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-02: the canvas is aria-hidden, behind the board and never over the type 
+    [chromium] › tests/overhaul/scene-skills.spec.ts:134:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-03: taking a node on the bench is the state the field is lit from 
+    [chromium] › tests/overhaul/scene-skills.spec.ts:154:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-04: under reduced motion there is no canvas and the wire bench is whole 
+    [chromium] › tests/overhaul/scene-skills.spec.ts:195:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-06: the field is monochrome, palette-sourced and cheap per pixel 
+    [chromium] › tests/overhaul/scene-skills.spec.ts:226:7 › TC-SCENE-SKILLS: the bench sits on a lit field › TC-SCENE-SKILLS-07: three is fetched with the scene, not with the section 
+  1 passed (3.5m)
+EXIT=1
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts -g SKILLS --workers=1 --reporter=line
+
+Running 4 tests using 1 worker
+
+[1A[2K[1/4] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light
+[1A[2K  1) [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="skills-bench"]')[22m
+
+
+      273 | async function slotClip(page: Page, scene: string) {
+      274 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 275 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      276 |   await slot.evaluate((el) =>
+      277 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      278 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/flagship-visibility.spec.ts:275:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/flagship-visibility.spec.ts:307:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-f35ee--bench-field-reads-as-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-f35ee--bench-field-reads-as-light-chromium/error-context.md
+
+
+[1A[2K[2/4] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback
+[1A[2K  2) [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="skills-bench"]')[22m
+
+
+      273 | async function slotClip(page: Page, scene: string) {
+      274 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 275 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      276 |   await slot.evaluate((el) =>
+      277 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      278 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/flagship-visibility.spec.ts:275:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/flagship-visibility.spec.ts:367:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-d07d3-skills-bench-field-fallback-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-d07d3-skills-bench-field-fallback-chromium/error-context.md
+
+
+[1A[2K[3/4] [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light
+[1A[2K  3) [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="skills-bench"]')[22m
+
+
+      273 | async function slotClip(page: Page, scene: string) {
+      274 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 275 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      276 |   await slot.evaluate((el) =>
+      277 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      278 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/flagship-visibility.spec.ts:275:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/flagship-visibility.spec.ts:307:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-d20d3--bench-field-reads-as-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-d20d3--bench-field-reads-as-light-chromium/error-context.md
+
+
+[1A[2K[4/4] [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback
+[1A[2K  4) [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="skills-bench"]')[22m
+
+
+      273 | async function slotClip(page: Page, scene: string) {
+      274 |   const slot = page.locator(`[data-scene="${scene}"]`);
+    > 275 |   await slot.waitFor({ state: 'attached', timeout: 15000 });
+          |              ^
+      276 |   await slot.evaluate((el) =>
+      277 |     el.scrollIntoView({ block: 'center', behavior: 'instant' as ScrollBehavior }),
+      278 |   );
+        at slotClip (/root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/flagship-visibility.spec.ts:275:14)
+        at /root/forgotten-mistory/.claude/worktrees/wf_c06ca2f9-9de-1/tests/overhaul/flagship-visibility.spec.ts:367:28
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-d9ab1-skills-bench-field-fallback-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-d9ab1-skills-bench-field-fallback-chromium/error-context.md
+
+
+[1A[2K  4 failed
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 1440 — skills bench field reads as light 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 1440 — skills bench field fallback 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-SKILLS @ 390 — skills bench field reads as light 
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-SKILLS @ 390 — skills bench field fallback 
+EXIT=1

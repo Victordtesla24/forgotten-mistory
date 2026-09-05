@@ -1,5 +1,7 @@
 /**
- * Flagship scene evidence shots: hero / about / experience at 1440 and 390,
+ * Flagship scene evidence shots: by default hero / about / experience at 1440
+ * and 390 — override with `FM_SECTIONS` (comma-separated section ids) when a
+ * lane owns a different scene,
  * on the shader path (`/?gl=force`, SwiftShader) and on the reduced-motion
  * still. Serve `out/` first, then:
  *
@@ -9,6 +11,11 @@
 import { chromium } from 'playwright-core';
 
 const PORT = process.env.FM_PORT || '5610';
+/** Which sections to photograph. G-S1 shoots `#skills`; the default is lane A's three. */
+const SECTIONS = (process.env.FM_SECTIONS || 'hero,about,experience')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
 const OUT =
   process.env.FM_OUT_DIR ||
   'docs/delivery/evidence/v10-20260905T0515Z/C22c-flagship-correction/08-screens';
@@ -52,11 +59,13 @@ for (const [w, h] of [
   [1440, 900],
   [390, 844],
 ]) {
-  for (const section of ['hero', 'about', 'experience']) {
+  for (const section of SECTIONS) {
     await shoot(w, h, '/?gl=force', `${section}-${w}-glforce`, section, false);
   }
 }
-await shoot(390, 844, '/', 'hero-390-still-reduced', 'hero', true);
-await shoot(1440, 900, '/', 'hero-1440-still-reduced', 'hero', true);
+for (const section of SECTIONS) {
+  await shoot(390, 844, '/', `${section}-390-still-reduced`, section, true);
+  await shoot(1440, 900, '/', `${section}-1440-still-reduced`, section, true);
+}
 
 await browser.close();
