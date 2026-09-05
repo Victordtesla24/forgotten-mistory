@@ -36,7 +36,10 @@ export default function Hero() {
         <HeroAtmosphere />
       </Scene>
 
-      <div className={styles.inner}>
+      {/* The fold. One name, one sentence, one action group, and the
+          photograph — nothing else stands in the first screen. The evidence is
+          not deleted; it is one scroll away, in `.proof` below. */}
+      <div className={styles.inner} data-testid="hero-fold">
         <p className={styles.eyebrow} style={{ '--step': 0 } as React.CSSProperties}>
           <span className={styles.locationDot} aria-hidden="true" />
           {heroContent.location}
@@ -54,41 +57,11 @@ export default function Hero() {
           {heroContent.statement}
         </p>
 
-        {/* The ledger and the note that grades it sit side by side on a wide
-            screen: the note explains the marks without costing the fold, and it
-            occupies space the hero was otherwise leaving empty. */}
-        <div className={styles.ledgerRow} style={{ '--step': 4 } as React.CSSProperties}>
-        <ul className={styles.ledger} aria-label="Delivery record">
-          {heroContent.ledger.map((entry) => (
-            <li key={entry.label} className={styles.ledgerItem}>
-              {/* Self-reported, not sourced. These three are his own account of
-                  his own programmes: the line beneath each says where the work
-                  happened, but no third party published a methodology a reader
-                  could go and check. Grading them as measured would be the
-                  first dishonest thing on a page arguing for the opposite. */}
-              <Caliper state="self-reported" className={styles.ledgerValue}>
-                {entry.value}
-              </Caliper>
-              {/* One cell on a phone, two rows beside the figure elsewhere:
-                  the wrapper has no box of its own above 600 px. */}
-              <span className={styles.ledgerText}>
-                <span className={styles.ledgerLabel}>{entry.label}</span>
-                {/* Provenance sits with the figure. A number a reader cannot
-                    trace is a claim, not evidence. */}
-                <span className={styles.ledgerSource}>{entry.source}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
-
-        {/* The mark is learned here, with its grade stated once. */}
-        <p className={styles.grading}>
-          <span className={styles.gradingMark} aria-hidden="true" />
-          self-reported, from my CV. Repository figures below are harvested and dated.
-        </p>
-        </div>
-
-        <div className={styles.actions} style={{ '--step': 5 } as React.CSSProperties}>
+        <div
+          className={styles.actions}
+          data-testid="hero-actions"
+          style={{ '--step': 4 } as React.CSSProperties}
+        >
           <a className={styles.primaryAction} href={heroContent.actions.primary.href}>
             {heroContent.actions.primary.label}
           </a>
@@ -101,16 +74,62 @@ export default function Hero() {
           </a>
         </div>
 
-        {/* The photograph. On a wide screen the CSS places it explicitly in the
-            right column beside role, statement and ledger; below 720 px it
-            follows the actions in the flow, full-bleed, so the fold still ends
-            on "See the evidence" (TC-HERO-12) and the face is met on the way
-            down. It is a <figure> with a <figcaption>, never a <p>: the
-            statement is still the third paragraph and the ledger the only
-            list. */}
+        {/* The photograph. At 720 px and above the CSS gives it the whole
+            right column of the fold, floor to ceiling — it is the composition,
+            not an inset. Below 720 px it follows the actions in the flow,
+            full-bleed, so the fold still ends on "See the evidence"
+            (TC-HERO-12/TC-PHOTO-08) and the face is met on the way down. It is
+            a <figure> with a <figcaption>, never a <p>: the statement is still
+            the fold's only paragraph over twelve words. */}
         <HeroPortrait />
+      </div>
 
-        <p className={styles.availability} style={{ '--step': 6 } as React.CSSProperties}>
+      {/* The proof band. Everything the fold used to carry and could not
+          justify carrying: the three figures with their provenance, the line
+          that grades them, and the availability signal with its three
+          channels. Not one word was deleted — the band starts below 100vh,
+          inside #hero and before #about, so `#hero ul` still resolves and
+          CT-10 still finds 92 / $5M+ / 10k+ printed with their sources. */}
+      <div className={styles.proof} data-testid="hero-proof">
+        {/* The three figures, each carrying its own provenance, and the line
+            that grades them: sourced would be a lie, so the mark says
+            self-reported and says why. */}
+        <div className={styles.ledgerRow} style={{ '--step': 5 } as React.CSSProperties}>
+          <ul className={styles.ledger} aria-label="Delivery record">
+            {heroContent.ledger.map((entry) => (
+              <li key={entry.label} className={styles.ledgerItem}>
+                {/* Self-reported, not sourced. These three are his own account of
+                    his own programmes: the line beneath each says where the work
+                    happened, but no third party published a methodology a reader
+                    could go and check. Grading them as measured would be the
+                    first dishonest thing on a page arguing for the opposite. */}
+                <Caliper state="self-reported" className={styles.ledgerValue}>
+                  {entry.value}
+                </Caliper>
+                {/* One cell on a phone, two rows beside the figure elsewhere:
+                    the wrapper has no box of its own above 600 px. */}
+                <span className={styles.ledgerText}>
+                  <span className={styles.ledgerLabel}>{entry.label}</span>
+                  {/* Provenance sits with the figure. A number a reader cannot
+                      trace is a claim, not evidence. */}
+                  <span className={styles.ledgerSource}>{entry.source}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          {/* The mark is learned here, with its grade stated once. */}
+          <p className={styles.grading}>
+            <span className={styles.gradingMark} aria-hidden="true" />
+            self-reported, from my CV. Repository figures below are harvested and dated.
+          </p>
+        </div>
+
+        <p
+          className={styles.availability}
+          data-testid="hero-availability"
+          style={{ '--step': 6 } as React.CSSProperties}
+        >
           {heroContent.availability}
           <span className={styles.linkRule} aria-hidden="true" />
           {heroContent.links.map((link) => (

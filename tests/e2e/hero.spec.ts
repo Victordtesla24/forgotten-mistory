@@ -20,6 +20,12 @@ import { test, expect, type Page } from '@playwright/test';
  */
 
 const HERO = '#hero';
+/* The two bands of the section: the fold is one screen, the proof band follows
+   it (ADV-FAIL P0, G-H1). Both are addressed by test id, never by a CSS-module
+   hash. */
+const FOLD = '[data-testid="hero-fold"]';
+const PROOF = '[data-testid="hero-proof"]';
+const AVAILABILITY = '[data-testid="hero-availability"]';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
@@ -90,27 +96,44 @@ test.describe('Hero', () => {
     );
   });
 
-  test('TC-HERO-08: the hero fills the first viewport without overflowing it', async ({ page }) => {
-    const box = await page.locator(HERO).boundingBox();
+  test('TC-HERO-08: the fold band fills the first viewport without overflowing it', async ({
+    page,
+  }) => {
+    // RE-POINTED (ADV-FAIL P0, G-H1). The section is two bands now — the fold
+    // and the proof band beneath it — so `#hero` is deliberately taller than
+    // one screen. What must still be exactly one screen is the fold, which is
+    // the band this measures. tests/e2e/hero-fold.spec.ts carries the rest of
+    // the budget at all four reference viewports.
+    const box = await page.locator(FOLD).boundingBox();
     const viewport = page.viewportSize();
     expect(box).not.toBeNull();
     expect(viewport).not.toBeNull();
     // One screen, not two. The tolerance is 1.10 rather than 1.05 because the
-    // overshoot on a short viewport is the section's bottom padding, not
-    // content — TC-HERO-09 below is the assertion that actually guarantees
-    // every meaningful element sits above the fold, and it measures elements
-    // rather than the section box.
+    // overshoot on a short viewport is the band's bottom padding, not content.
     expect(box!.height).toBeGreaterThanOrEqual(viewport!.height * 0.9);
     expect(box!.height).toBeLessThanOrEqual(viewport!.height * 1.1);
+
+    // The section still owns both bands, and both precede #about.
+    const hero = await page.locator(HERO).boundingBox();
+    const proof = await page.locator(PROOF).boundingBox();
+    expect(hero).not.toBeNull();
+    expect(proof).not.toBeNull();
+    expect(proof!.y + proof!.height).toBeLessThanOrEqual(hero!.y + hero!.height + 2);
   });
 
-  test('TC-HERO-09: the whole hero is legible in the first viewport', async ({ page }) => {
-    // Every element that carries meaning must sit above the fold — a recruiter
-    // scanning for five seconds never scrolls.
+  test('TC-HERO-09: the fold carries the name and the one action group; the evidence follows it', async ({
+    page,
+  }) => {
+    // RE-POINTED (ADV-FAIL P0, G-H1). This assertion used to require the ledger
+    // in the first viewport too, and that requirement is exactly what an
+    // independent reviewer graded a CV dump: 21 text leaves, four long
+    // paragraphs, three CTA groups and fifteen caliper marks inside 1440×900.
+    // The contract now: the name and the single action group are met without
+    // scrolling; the ledger and the availability line are one scroll down —
+    // still inside #hero, still before #about, still asserted by CT-10.
     const viewport = page.viewportSize()!;
     for (const selector of [
       `${HERO} h1`,
-      `${HERO} ul li`,
       `${HERO} a[href="#experience"]`,
       `${HERO} a[href$=".pdf"]`,
     ]) {
@@ -118,6 +141,19 @@ test.describe('Hero', () => {
       expect(box, selector).not.toBeNull();
       expect(box!.y + box!.height, selector).toBeLessThanOrEqual(viewport.height);
     }
+
+    for (const selector of [`${HERO} ul li`, AVAILABILITY]) {
+      const box = await page.locator(selector).first().boundingBox();
+      expect(box, selector).not.toBeNull();
+      expect(box!.y, `${selector} starts below the fold`).toBeGreaterThanOrEqual(viewport.height);
+    }
+
+    // Below the fold, but never below the section: the hero still owns its own
+    // evidence, and #about still follows it.
+    const about = await page.locator('#about').boundingBox();
+    const ledger = await page.locator(`${HERO} ul`).boundingBox();
+    expect(about, '#about is laid out').not.toBeNull();
+    expect(ledger!.y, 'the ledger precedes #about').toBeLessThan(about!.y);
   });
 
   test('TC-HERO-10: the preloader is gone', async ({ page }) => {
@@ -140,10 +176,11 @@ test.describe('Hero', () => {
   test('TC-HERO-12: at 390×844 the three caliper jaws align and an action sits in the first screen', async ({
     page,
   }) => {
-    // Design council R-c1, P3 + P4. On a phone the ledger stacks into three
-    // rows with the figure on the left; each figure sized its own box, so the
-    // right jaws landed at three different x positions and the first screen
-    // ended inside the ledger with both actions below it.
+    // Design council R-c1, P3 + P4, re-pointed by ADV-FAIL P0 (G-H1). The
+    // ledger stacks into three rows with the figure on the left, and the right
+    // jaws must land on one vertical wherever it stands — it now stands in the
+    // proof band below the fold, so the assertion below reads it there. The
+    // fold itself still has to end on "See the evidence".
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/');
     await page.locator(`${HERO} h1`).waitFor({ state: 'visible', timeout: 15000 });
@@ -606,8 +643,8 @@ test.describe('Hero portrait', () => {
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');
     await expect(toggle).toHaveAttribute('aria-label', 'Play the portrait');
 
-    // Tab from the top of the document. The figure sits after the statement
-    // and before the ledger, so the button is a handful of stops in.
+    // Tab from the top of the document. The figure sits after the actions in
+    // the fold, so the button is a handful of stops in.
     await page.evaluate(() => {
       (document.activeElement as HTMLElement | null)?.blur();
       window.scrollTo(0, 0);
@@ -757,6 +794,7 @@ test.describe('Hero portrait', () => {
       // 88 px, so on a phone the photograph now runs edge to edge AFTER the
       // actions — the fold still ends on "See the evidence" (TC-HERO-12, and
       // TC-PHOTO-08 in tests/e2e/hero-photo.spec.ts guards it from this side).
+      // The ledger no longer follows it there: the proof band does (G-H1).
       // The <video> is now present at every width: it carries no source until
       // the reader asks, so a phone still runs no decoder unless it is tapped.
       await page.waitForTimeout(3000);

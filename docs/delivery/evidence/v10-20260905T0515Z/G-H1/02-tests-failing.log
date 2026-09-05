@@ -1,0 +1,320 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero-fold.spec.ts --workers=1 --reporter=list
+
+Running 12 tests using 1 worker
+
+  ✘   1 [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 1440×900 › TC-FOLD-01: one headline, one sentence, one action group at 1440×900 (1.5m)
+  ✘   2 [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 1440×900 › TC-FOLD-02: the evidence sits below the fold at 1440×900 (3.0s)
+  ✘   3 [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 1440×900 › TC-FOLD-03: the visual is the fold at 1440×900 (1.5m)
+  ✘   4 [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 1280×800 › TC-FOLD-01: one headline, one sentence, one action group at 1280×800 (1.5m)
+  ✘   5 [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 1280×800 › TC-FOLD-02: the evidence sits below the fold at 1280×800 (3.4s)
+  ✘   6 [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 1280×800 › TC-FOLD-03: the visual is the fold at 1280×800 (1.5m)
+  ✘   7 [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 834×1194 › TC-FOLD-01: one headline, one sentence, one action group at 834×1194 (1.5m)
+  ✘   8 [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 834×1194 › TC-FOLD-02: the evidence sits below the fold at 834×1194 (2.6s)
+  ✘   9 [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 834×1194 › TC-FOLD-03: the visual is the fold at 834×1194 (1.5m)
+  ✘  10 [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 390×844 › TC-FOLD-01: one headline, one sentence, one action group at 390×844 (1.5m)
+  ✘  11 [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 390×844 › TC-FOLD-02: the evidence sits below the fold at 390×844 (2.9s)
+  ✘  12 [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 390×844 › TC-FOLD-03: the visual is the fold at 390×844 (1.5m)
+
+
+  1) [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 1440×900 › TC-FOLD-01: one headline, one sentence, one action group at 1440×900 
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.boundingBox: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="hero-actions"]')[22m
+
+
+      116 |
+      117 |         // ── one CTA group ─────────────────────────────────────────────────
+    > 118 |         const actions = await page.locator(ACTIONS).boundingBox();
+          |                                                     ^
+      119 |         expect(actions, 'the action group is laid out').not.toBeNull();
+      120 |         expect(
+      121 |           actions!.y + actions!.height,
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/e2e/hero-fold.spec.ts:118:53
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-553aa-ne-action-group-at-1440×900-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-553aa-ne-action-group-at-1440×900-chromium/error-context.md
+
+  2) [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 1440×900 › TC-FOLD-02: the evidence sits below the fold at 1440×900 
+
+    Error: the ledger starts at or below the fold
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m900[39m
+    Received:    [31m534.765625[39m
+
+      174 |         const ledgerBox = await ledger.boundingBox();
+      175 |         expect(ledgerBox, 'the ledger is laid out').not.toBeNull();
+    > 176 |         expect(ledgerBox!.y, 'the ledger starts at or below the fold').toBeGreaterThanOrEqual(fold);
+          |                                                                        ^
+      177 |
+      178 |         const availability = await page.locator(AVAILABILITY).boundingBox();
+      179 |         expect(availability, 'the availability line is laid out').not.toBeNull();
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/e2e/hero-fold.spec.ts:176:72
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-ea2b0--below-the-fold-at-1440×900-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-ea2b0--below-the-fold-at-1440×900-chromium/error-context.md
+
+  3) [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 1440×900 › TC-FOLD-03: the visual is the fold at 1440×900 
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.boundingBox: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="hero-fold"]')[22m
+
+
+      197 |
+      198 |         // The fold band itself is one screen tall — never one and a bit.
+    > 199 |         const foldBox = await page.locator(FOLD).boundingBox();
+          |                                                  ^
+      200 |         expect(foldBox, 'the fold band is laid out').not.toBeNull();
+      201 |         expect(foldBox!.y, 'the fold band starts at the top of the page').toBeLessThanOrEqual(2);
+      202 |         expect(foldBox!.height, 'the fold band is at least one screen').toBeGreaterThanOrEqual(
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/e2e/hero-fold.spec.ts:199:50
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-388e9-ual-is-the-fold-at-1440×900-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-388e9-ual-is-the-fold-at-1440×900-chromium/error-context.md
+
+  4) [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 1280×800 › TC-FOLD-01: one headline, one sentence, one action group at 1280×800 
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.boundingBox: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="hero-actions"]')[22m
+
+
+      116 |
+      117 |         // ── one CTA group ─────────────────────────────────────────────────
+    > 118 |         const actions = await page.locator(ACTIONS).boundingBox();
+          |                                                     ^
+      119 |         expect(actions, 'the action group is laid out').not.toBeNull();
+      120 |         expect(
+      121 |           actions!.y + actions!.height,
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/e2e/hero-fold.spec.ts:118:53
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-cd836-ne-action-group-at-1280×800-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-cd836-ne-action-group-at-1280×800-chromium/error-context.md
+
+  5) [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 1280×800 › TC-FOLD-02: the evidence sits below the fold at 1280×800 
+
+    Error: the ledger starts at or below the fold
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m800[39m
+    Received:    [31m473.8125[39m
+
+      174 |         const ledgerBox = await ledger.boundingBox();
+      175 |         expect(ledgerBox, 'the ledger is laid out').not.toBeNull();
+    > 176 |         expect(ledgerBox!.y, 'the ledger starts at or below the fold').toBeGreaterThanOrEqual(fold);
+          |                                                                        ^
+      177 |
+      178 |         const availability = await page.locator(AVAILABILITY).boundingBox();
+      179 |         expect(availability, 'the availability line is laid out').not.toBeNull();
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/e2e/hero-fold.spec.ts:176:72
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-66d87--below-the-fold-at-1280×800-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-66d87--below-the-fold-at-1280×800-chromium/error-context.md
+
+  6) [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 1280×800 › TC-FOLD-03: the visual is the fold at 1280×800 
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.boundingBox: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="hero-fold"]')[22m
+
+
+      197 |
+      198 |         // The fold band itself is one screen tall — never one and a bit.
+    > 199 |         const foldBox = await page.locator(FOLD).boundingBox();
+          |                                                  ^
+      200 |         expect(foldBox, 'the fold band is laid out').not.toBeNull();
+      201 |         expect(foldBox!.y, 'the fold band starts at the top of the page').toBeLessThanOrEqual(2);
+      202 |         expect(foldBox!.height, 'the fold band is at least one screen').toBeGreaterThanOrEqual(
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/e2e/hero-fold.spec.ts:199:50
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-92fb2-ual-is-the-fold-at-1280×800-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-92fb2-ual-is-the-fold-at-1280×800-chromium/error-context.md
+
+  7) [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 834×1194 › TC-FOLD-01: one headline, one sentence, one action group at 834×1194 
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.boundingBox: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="hero-actions"]')[22m
+
+
+      116 |
+      117 |         // ── one CTA group ─────────────────────────────────────────────────
+    > 118 |         const actions = await page.locator(ACTIONS).boundingBox();
+          |                                                     ^
+      119 |         expect(actions, 'the action group is laid out').not.toBeNull();
+      120 |         expect(
+      121 |           actions!.y + actions!.height,
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/e2e/hero-fold.spec.ts:118:53
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-e8e26-ne-action-group-at-834×1194-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-e8e26-ne-action-group-at-834×1194-chromium/error-context.md
+
+  8) [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 834×1194 › TC-FOLD-02: the evidence sits below the fold at 834×1194 
+
+    Error: the ledger starts at or below the fold
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m1194[39m
+    Received:    [31m628.453125[39m
+
+      174 |         const ledgerBox = await ledger.boundingBox();
+      175 |         expect(ledgerBox, 'the ledger is laid out').not.toBeNull();
+    > 176 |         expect(ledgerBox!.y, 'the ledger starts at or below the fold').toBeGreaterThanOrEqual(fold);
+          |                                                                        ^
+      177 |
+      178 |         const availability = await page.locator(AVAILABILITY).boundingBox();
+      179 |         expect(availability, 'the availability line is laid out').not.toBeNull();
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/e2e/hero-fold.spec.ts:176:72
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-2c847--below-the-fold-at-834×1194-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-2c847--below-the-fold-at-834×1194-chromium/error-context.md
+
+  9) [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 834×1194 › TC-FOLD-03: the visual is the fold at 834×1194 
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.boundingBox: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="hero-fold"]')[22m
+
+
+      197 |
+      198 |         // The fold band itself is one screen tall — never one and a bit.
+    > 199 |         const foldBox = await page.locator(FOLD).boundingBox();
+          |                                                  ^
+      200 |         expect(foldBox, 'the fold band is laid out').not.toBeNull();
+      201 |         expect(foldBox!.y, 'the fold band starts at the top of the page').toBeLessThanOrEqual(2);
+      202 |         expect(foldBox!.height, 'the fold band is at least one screen').toBeGreaterThanOrEqual(
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/e2e/hero-fold.spec.ts:199:50
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-24098-ual-is-the-fold-at-834×1194-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-24098-ual-is-the-fold-at-834×1194-chromium/error-context.md
+
+  10) [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 390×844 › TC-FOLD-01: one headline, one sentence, one action group at 390×844 
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.boundingBox: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="hero-actions"]')[22m
+
+
+      116 |
+      117 |         // ── one CTA group ─────────────────────────────────────────────────
+    > 118 |         const actions = await page.locator(ACTIONS).boundingBox();
+          |                                                     ^
+      119 |         expect(actions, 'the action group is laid out').not.toBeNull();
+      120 |         expect(
+      121 |           actions!.y + actions!.height,
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/e2e/hero-fold.spec.ts:118:53
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-b3e3b-one-action-group-at-390×844-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-b3e3b-one-action-group-at-390×844-chromium/error-context.md
+
+  11) [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 390×844 › TC-FOLD-02: the evidence sits below the fold at 390×844 
+
+    Error: the ledger starts at or below the fold
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m844[39m
+    Received:    [31m503.34375[39m
+
+      174 |         const ledgerBox = await ledger.boundingBox();
+      175 |         expect(ledgerBox, 'the ledger is laid out').not.toBeNull();
+    > 176 |         expect(ledgerBox!.y, 'the ledger starts at or below the fold').toBeGreaterThanOrEqual(fold);
+          |                                                                        ^
+      177 |
+      178 |         const availability = await page.locator(AVAILABILITY).boundingBox();
+      179 |         expect(availability, 'the availability line is laid out').not.toBeNull();
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/e2e/hero-fold.spec.ts:176:72
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-f9804-s-below-the-fold-at-390×844-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-f9804-s-below-the-fold-at-390×844-chromium/error-context.md
+
+  12) [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 390×844 › TC-FOLD-03: the visual is the fold at 390×844 
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.boundingBox: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="hero-fold"]')[22m
+
+
+      197 |
+      198 |         // The fold band itself is one screen tall — never one and a bit.
+    > 199 |         const foldBox = await page.locator(FOLD).boundingBox();
+          |                                                  ^
+      200 |         expect(foldBox, 'the fold band is laid out').not.toBeNull();
+      201 |         expect(foldBox!.y, 'the fold band starts at the top of the page').toBeLessThanOrEqual(2);
+      202 |         expect(foldBox!.height, 'the fold band is at least one screen').toBeGreaterThanOrEqual(
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-4/tests/e2e/hero-fold.spec.ts:199:50
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-fold-Hero-—-the-f-e005e-sual-is-the-fold-at-390×844-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-e005e-sual-is-the-fold-at-390×844-chromium/error-context.md
+
+  12 failed
+    [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 1440×900 › TC-FOLD-01: one headline, one sentence, one action group at 1440×900 
+    [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 1440×900 › TC-FOLD-02: the evidence sits below the fold at 1440×900 
+    [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 1440×900 › TC-FOLD-03: the visual is the fold at 1440×900 
+    [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 1280×800 › TC-FOLD-01: one headline, one sentence, one action group at 1280×800 
+    [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 1280×800 › TC-FOLD-02: the evidence sits below the fold at 1280×800 
+    [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 1280×800 › TC-FOLD-03: the visual is the fold at 1280×800 
+    [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 834×1194 › TC-FOLD-01: one headline, one sentence, one action group at 834×1194 
+    [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 834×1194 › TC-FOLD-02: the evidence sits below the fold at 834×1194 
+    [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 834×1194 › TC-FOLD-03: the visual is the fold at 834×1194 
+    [chromium] › tests/e2e/hero-fold.spec.ts:82:11 › Hero — the first fold › at 390×844 › TC-FOLD-01: one headline, one sentence, one action group at 390×844 
+    [chromium] › tests/e2e/hero-fold.spec.ts:164:11 › Hero — the first fold › at 390×844 › TC-FOLD-02: the evidence sits below the fold at 390×844 
+    [chromium] › tests/e2e/hero-fold.spec.ts:194:11 › Hero — the first fold › at 390×844 › TC-FOLD-03: the visual is the fold at 390×844 
