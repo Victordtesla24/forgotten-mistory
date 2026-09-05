@@ -201,13 +201,22 @@
     border-top: 1px solid rgb(255 255 255 / 0.06);
 }
 
+/* The rail's band headings. `--ink-300` was chosen against flat `--ink-900`,
+   which is the one ground these labels never actually sit on: `.fieldSlot`'s
+   radial is 120% wide and centred, so the light reaches past the middle span
+   and lifts the rails to #1B1B1B–#272727. Eleven pixels of #7D7D7D there
+   measured 3.63 / 3.96 / 4.05:1 at 1440 on both `/` and `/?gl=force`
+   (docs/delivery/evidence/v10-20260905T0515Z/G-S1/correction/02-tests-failing.log).
+   `--mist-400` is the site's own secondary ink (`--token-text-secondary`) and
+   clears AA on the brightest of those grounds — 4.68:1 on #272727 — while
+   staying a clear step below the `--mist-200` nodes it labels. */
 .bandLabel {
     margin: 0 0 var(--space-1);
     font-family: var(--font-mono);
     font-size: var(--fs-micro);
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--ink-300);
+    color: var(--mist-400);
 }
 
 .node {
