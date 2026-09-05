@@ -100,3 +100,39 @@ http.server` on 127.0.0.1:5602), Read (the captured frames), Playwright via
 `playwright-core` with `channel: 'chrome'` and
 `--no-sandbox --use-gl=swiftshader --enable-unsafe-swiftshader --ignore-gpu-blocklist`
 for the `?gl=force` captures. No MCP server was used.
+
+## Addendum — what the gate could not see (10:00Z)
+
+Looking at the captured frames rather than the numbers found a defect no test in
+this lane owns. `tests/a11y/text-contrast.spec.ts` loads the page **without**
+`?gl=force`, so it photographs the CSS still and never the shader. On a machine
+with a GPU:
+
+* the hero fog covered 96.55% of the frame at near-white and `.statement`,
+  `.eyebrow` and the ledger sources were grey on milk;
+* the strata were brightest at the foot of the slot, which is exactly where
+  `.openNote` and the axis sit.
+
+`.stage`'s and `.chartScene`'s own backgrounds sit *below* the canvas, so they
+cannot fix this. Both sections now carry a `::after` scrim, which paints after
+the canvas and below the content (`.inner` and `.trackField`/`.axis` are
+z-index 1 above the slot), so one layer protects both paths. The hero's is
+0.88 ink over the left 44%, transparent past 66% — over the brightest fog this
+shader makes (0.8308, about `#ECECEC`) that lands the ground on `#252525`,
+where `--mist-400` clears AA at 4.8:1, and it leaves the pool, the portrait
+plate and the measured light untouched. The experience one takes the last fifth
+of the slot.
+
+Re-measured after the scrims (`04-tests-passing.log`, exit 0, 8 passed):
+
+| scene | coverage | peak | motion | still |
+|---|---|---|---|---|
+| hero atmosphere | 43.05% | 0.8308 | 0.00620 | 17.30% |
+| about compass field | 44.93% | 0.6867 | 0.02435 | 35.29% |
+| experience strata | 25.60% | 0.7529 | 0.04156 | 4.11% |
+
+**Residual, named:** the GL path has no automated contrast gate. The hero's
+third ledger source is the dimmest node on that path (it sits at 48–66% of the
+frame, where the scrim is ramping out) and is readable in
+`08-screens/hero-1440-glforce-rest.jpg`, but a `?gl=force` variant of
+TC-CONTRAST-01 is the right next test and is not written here.
