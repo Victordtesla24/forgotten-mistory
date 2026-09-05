@@ -171,6 +171,15 @@ const hexToRgba = (hex: string, alpha: number): string => {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
 
+/**
+ * Raised on `window` by the "Ask Mini Vic" bypass block in
+ * components/site/Navigation.tsx. It is an event rather than a shared store
+ * because the launcher and the navigation are siblings under different
+ * providers, and a keyboard shortcut into a chat panel is not state anything
+ * else needs to read.
+ */
+export const MINIVIC_OPEN_EVENT = 'minivic:open';
+
 const MiniVicBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   // The launcher waits until the hero has been read. On a 390 px phone its
@@ -206,6 +215,9 @@ const MiniVicBot = () => {
   const chatEndRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  // Set for exactly one open cycle when the panel is opened from the bypass
+  // block, so the open-focus effect leaves focus on the launcher.
+  const skipEntryRef = useRef(false);
   const mouthCanvasRef = useRef<HTMLCanvasElement>(null);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const currentAudioSrcRef = useRef<string>("");
@@ -388,8 +400,31 @@ const MiniVicBot = () => {
   // Keyed on isOpen alone — mid-session re-renders (e.g. avatar video toggling
   // isVideoPlaying) must never yank focus back off the input the user is typing in.
   useEffect(() => {
-    if (isOpen) panelRef.current?.focus();
+    if (!isOpen) return;
+    // One exception: when the panel was opened from the bypass block, focus is
+    // deliberately left on the launcher (see the listener below).
+    if (skipEntryRef.current) {
+      skipEntryRef.current = false;
+      return;
+    }
+    panelRef.current?.focus();
   }, [isOpen]);
+
+  // ADV-F-2 — the launcher was the 93rd of 100 tab stops, so a keyboard reader
+  // traversed the whole page before reaching the channel the brief names for
+  // employers and clients. The second bypass block in components/site/
+  // Navigation.tsx raises this event as its second tab stop: the panel opens
+  // and focus lands on the launcher itself, which is both the control the
+  // reader just operated and the anchor the dialog is attached to.
+  useEffect(() => {
+    const onSkipToLauncher = () => {
+      skipEntryRef.current = true;
+      setIsOpen(true);
+      requestAnimationFrame(() => toggleRef.current?.focus());
+    };
+    window.addEventListener(MINIVIC_OPEN_EVENT, onSkipToLauncher);
+    return () => window.removeEventListener(MINIVIC_OPEN_EVENT, onSkipToLauncher);
+  }, []);
 
   // While open, Escape closes the panel and returns focus to the toggle.
   useEffect(() => {
@@ -1186,15 +1221,21 @@ const MiniVicBot = () => {
     setLastAnswerId(null);
   };
 
+  // ADV-F-3: the dock used to carry aria-hidden="true" until the reader had
+  // scrolled past the hero, which put a focusable button inside a hidden
+  // subtree — a WCAG 4.1.2 failure for as long as it lasted, and the reason two
+  // instruments disagreed about this launcher in the v9 adversarial pass. The
+  // dock is now always in the accessibility tree; `:focus-within` in
+  // app/globals.css brings it back into view when a keyboard reader reaches it
+  // above the fold.
   return (
     <div
-      className="fixed bottom-6 right-6 z-[10030] flex flex-col items-end font-sans transition-opacity duration-300"
+      className="minivic-dock fixed bottom-6 right-6 z-[10030] flex flex-col items-end font-sans transition-opacity duration-300"
       data-past-hero={pastHero || undefined}
       style={{
         opacity: pastHero || isOpen ? 1 : 0,
         pointerEvents: pastHero || isOpen ? 'auto' : 'none',
       }}
-      aria-hidden={!pastHero && !isOpen}
     >
       {isOpen && (
         <div
@@ -1533,9 +1574,15 @@ const MiniVicBot = () => {
           </form>
         </div>
       )}
+      {/* The launcher is a face on a plate, not a ring (R-c8 C-04). Every rule
+          that gives it its shape lives in the MiniVic block of app/globals.css:
+          the dark plate that keeps it off the reading column at phone widths,
+          the hairline, the dimmed portrait, and the name it carries from
+          834px up. Nothing here paints — the classes are the contract. */}
       <button
         ref={toggleRef}
         data-testid="minivic-toggle"
+        data-open={isOpen || undefined}
         onClick={() => {
           if (isOpen) {
             closePanel(false);
@@ -1543,9 +1590,7 @@ const MiniVicBot = () => {
           }
           setIsOpen(true);
         }}
-        className={`group relative h-16 w-16 overflow-hidden rounded-full border-2 border-zinc-300/70 shadow-[0_0_26px_rgba(201,205,214,0.45)] transition-all duration-300 hover:scale-110 active:scale-95 ${
-          isOpen ? "ring-4 ring-zinc-300/30" : ""
-        }`}
+        className="minivic-launcher group"
         onMouseEnter={() => {
           if (!toggleVideoSrc) setToggleVideoSrc(AVATAR_VIDEO_URL);
         }}
@@ -1554,19 +1599,28 @@ const MiniVicBot = () => {
         }}
         aria-label={isOpen ? "Close Mini Vic assistant" : "Open Mini Vic assistant"}
       >
-        <video
-          src={toggleVideoSrc || undefined}
-          className="pointer-events-none h-full w-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="none"
-          onError={() => setToggleVideoSrc("")}
-        />
-        <span className="absolute right-1 top-1 flex h-3 w-3">
-          <span className="absolute inline-flex h-full w-full animate-ping motion-reduce:animate-none rounded-full bg-zinc-400 opacity-75"></span>
-          <span className="relative inline-flex h-3 w-3 rounded-full border border-black bg-zinc-500"></span>
+        {/* The button's accessible name is its aria-label, which has to flip
+            with the state; the pill is the same invitation drawn for people who
+            can see it, so it is decorative to the accessibility tree. */}
+        <span className="minivic-launcher__pill" aria-hidden="true">
+          Ask Mini Vic
+        </span>
+        <span className="minivic-launcher__disc">
+          <span className="minivic-launcher__portrait" aria-hidden="true" />
+          <video
+            src={toggleVideoSrc || undefined}
+            className="minivic-launcher__video pointer-events-none"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="none"
+            onError={() => setToggleVideoSrc("")}
+          />
+          <span className="minivic-launcher__pip" aria-hidden="true">
+            <span className="minivic-launcher__pulse animate-ping motion-reduce:animate-none" />
+            <span className="minivic-launcher__dot" />
+          </span>
         </span>
       </button>
       <audio ref={audioRef} data-testid="minivic-audio" className="hidden" />

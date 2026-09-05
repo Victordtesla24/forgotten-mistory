@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import { contact } from '@/app/data/siteContent';
+import { MINIVIC_OPEN_EVENT } from '@/components/MiniVicBot';
 
 /**
  * One entry per section that exists, in page order. Three of these used to point
@@ -126,6 +127,22 @@ export default function Navigation() {
 
   return (
     <nav ref={navRef}>
+      {/* The second bypass block (WCAG 2.4.1; design council R-c8 item 13).
+          The chatbot is the channel the brief names for employers and clients,
+          and it was the 93rd of 100 tab stops — a keyboard reader had to
+          traverse the entire page to reach it. Reordering the DOM would have
+          put a floating widget ahead of the page's own content, so the skip
+          pattern that already exists is extended instead: off-canvas until
+          focused, first thing in the navigation, and it hands focus to the
+          launcher with the panel open. */}
+      <button
+        type="button"
+        className="skip-link minivic-skip"
+        data-testid="minivic-skip"
+        onClick={() => window.dispatchEvent(new Event(MINIVIC_OPEN_EVENT))}
+      >
+        Ask Mini Vic
+      </button>
       <a className="logo" href="#hero" aria-label="Back to top">
         VIKRAM.
         <svg className="logo-underline" viewBox="0 0 120 4" fill="none" aria-hidden="true" preserveAspectRatio="none">

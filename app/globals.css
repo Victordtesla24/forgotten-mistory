@@ -285,6 +285,186 @@
     scroll-snap-align: start;
 }
 
+/* ══ The MiniVic launcher ═══════════════════════════════════════════════════
+   Design council R-c8 items 7 (C-04), 12 (ADV-F-3) and 13 (ADV-F-2), plus the
+   V-C11 F-1 correction.
+
+   Three faults, and they were one fault: the floating control was drawn as an
+   empty ring with a pale glow, so it read as a loading spinner rather than as a
+   person you can talk to; it was painted in Tailwind zinc, a blue-leaning grey
+   that is not R == G == B; and on a phone that light surface sat straight on
+   top of the reading column — one Experience bullet measured 1.79:1 against it
+   (rgb(205,205,205) ink on a sampled ground of rgb(153,153,157)).
+
+   It is a portrait on a plate now: the same grayscale face the open panel
+   header shows, inset two pixels inside a single hairline of --card-border, on
+   --ink-900. Below 87.5rem the page gutter is too narrow to keep the disc clear
+   of the measure, so there the portrait is dimmed to a silhouette and every
+   pixel the launcher paints stays darker than the brightest ground that still
+   carries --mist-200 body ink at 4.5:1. The launcher may float over prose; it
+   may never brighten it. From 52.125rem up it also carries its own name,
+   because an icon-only circle is legible only to someone who already knows what
+   it is. Enforced by tests/a11y/minivic-occlusion.spec.ts and
+   tests/monochrome/minivic-launcher.spec.ts. */
+
+/* The dock fades out above the hero, but its button stays in the tab order —
+   it no longer carries aria-hidden, which was a focusable control inside a
+   hidden subtree (ADV-F-3). Focusing it therefore has to bring it back. */
+.minivic-dock:focus-within {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.minivic-launcher {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    border: 0;
+    background: none;
+}
+
+.minivic-launcher__pill {
+    display: none;
+    padding: var(--space-1) var(--space-2);
+    border-radius: 999px;
+    background: rgb(10 10 10 / 0.72);
+    color: var(--mist-200);
+    font-family: var(--font-body);
+    font-size: var(--fs-caption);
+    letter-spacing: var(--ls-caption);
+    line-height: 1;
+    white-space: nowrap;
+}
+
+@media (min-width: 52.125rem) {
+    .minivic-launcher__pill {
+        display: inline-block;
+    }
+}
+
+.minivic-launcher__disc {
+    position: relative;
+    display: block;
+    flex: 0 0 auto;
+    width: 4rem;
+    height: 4rem;
+    border: 1px solid var(--card-border);
+    border-radius: 50%;
+    background: var(--ink-900);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.55);
+    overflow: hidden;
+    transition:
+        transform var(--motion-fast) var(--motion-ease-standard),
+        border-color var(--motion-fast) var(--motion-ease-standard);
+}
+
+.minivic-launcher:hover .minivic-launcher__disc,
+.minivic-launcher:focus-visible .minivic-launcher__disc {
+    border-color: var(--card-border-hover);
+    transform: scale(1.06);
+}
+
+/* Open: a second hairline outside the first, not a ring of colour. */
+.minivic-launcher[data-open] .minivic-launcher__disc {
+    box-shadow:
+        0 0 0 4px rgb(255 255 255 / 0.12),
+        0 10px 30px rgb(0 0 0 / 0.55);
+}
+
+/* The portrait and the hover video occupy the same two-pixel inset, so the
+   video simply plays over the still when it has loaded. */
+.minivic-launcher__portrait,
+.minivic-launcher__video {
+    position: absolute;
+    inset: 2px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 50% 18%;
+    /* Dimmed by default: every viewport narrower than 87.5rem floats this over
+       body text at some scroll position. */
+    filter: grayscale(1) contrast(1.05) brightness(0.32);
+}
+
+.minivic-launcher__portrait {
+    background-image: url('/assets/my_avatar.webp');
+    background-position: 50% 18%;
+    background-size: cover;
+}
+
+@media (min-width: 87.5rem) {
+    /* From 1400px the page's own gutter (96px at --page-max) holds the disc
+       clear of the measure, so the face is shown at full value. */
+    .minivic-launcher__portrait,
+    .minivic-launcher__video {
+        filter: grayscale(1) contrast(1.05);
+    }
+}
+
+@media (max-width: 30rem) {
+    .minivic-launcher__disc {
+        /* The 44px minimum target, and not one pixel of the column more. */
+        width: 2.75rem;
+        height: 2.75rem;
+    }
+}
+
+/* Status pip: dark on the dark plate, because it sits on the same surface the
+   contrast ceiling governs. The ping ring is the one bright mark on the
+   launcher and it is shown only where the launcher never covers prose. */
+.minivic-launcher__pip {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    display: flex;
+    width: 0.625rem;
+    height: 0.625rem;
+}
+
+.minivic-launcher__pulse {
+    display: none;
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: var(--mist-400);
+    opacity: 0.75;
+}
+
+@media (min-width: 87.5rem) {
+    .minivic-launcher__pulse {
+        display: inline-flex;
+    }
+}
+
+.minivic-launcher__dot {
+    position: relative;
+    display: inline-flex;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--ink-900);
+    border-radius: 999px;
+    background: var(--ink-500);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .minivic-launcher__disc {
+        transition: none;
+    }
+
+    .minivic-launcher:hover .minivic-launcher__disc,
+    .minivic-launcher:focus-visible .minivic-launcher__disc {
+        transform: none;
+    }
+}
+
+/* The second bypass block (ADV-F-2) reuses .skip-link and sits one row below
+   the first so the two never land on the same pixels. */
+.minivic-skip {
+    top: 4.25rem;
+    cursor: pointer;
+}
+
 html {
     background-color: var(--ink-900); /* Fallback */
 }
