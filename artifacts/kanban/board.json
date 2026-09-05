@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T08:30:41.924Z",
+  "updated": "2026-09-05T08:41:56.737Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -792,7 +792,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:56:56.008Z",
+      "updated": "2026-09-05T08:41:56.737Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": [
@@ -830,6 +830,11 @@
           "at": "2026-09-05T07:56:56.008Z",
           "by": "orchestrator",
           "text": "Cadence: 07:51:53Z fa27ccfc (hygiene) → consolidation 89a6803 react19 live; 79691eda live 07:5xZ."
+        },
+        {
+          "at": "2026-09-05T08:41:56.737Z",
+          "by": "orchestrator",
+          "text": "Cadence: 08:2xZ 84644262 cycle 15; 08:3xZ b37e18d3 cycle 16b; 08:4xZ c8fc4b04 cycles 17+18 (skills gold as a mark, nav CV defers) — all pipeline-consolidated, monitor PROD OK each."
         }
       ]
     },
