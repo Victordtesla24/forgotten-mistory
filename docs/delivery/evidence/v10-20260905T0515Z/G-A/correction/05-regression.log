@@ -1,0 +1,190 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/monochrome tests/overhaul/scene-about.spec.ts tests/content/content-check.spec.ts --workers=1 --reporter=line
+
+Running 44 tests using 1 worker
+
+[1A[2K[1/44] [chromium] › tests/content/content-check.spec.ts:43:7 › Content Preservation › CT-01: Hero name from hero.ts appears verbatim
+[1A[2K[2/44] [chromium] › tests/content/content-check.spec.ts:48:7 › Content Preservation › CT-02: Hero positioning line appears verbatim
+[1A[2K[3/44] [chromium] › tests/content/content-check.spec.ts:55:7 › Content Preservation › CT-03: Hero statement states a tenure and names the current engagement
+[1A[2K[4/44] [chromium] › tests/content/content-check.spec.ts:74:7 › Content Preservation › CT-05: About carries the career facts
+[1A[2K[5/44] [chromium] › tests/content/content-check.spec.ts:87:7 › Content Preservation › CT-04: Every employer on the CV is named in the experience timeline
+[1A[2K[6/44] [chromium] › tests/content/content-check.spec.ts:106:7 › Content Preservation › CT-06: All six curated repositories render as plates with real GitHub links
+[1A[2K[7/44] [chromium] › tests/content/content-check.spec.ts:126:7 › Content Preservation › CT-07: The Vedic-astronomy work survives the rebuild as a vitrine plate
+[1A[2K[8/44] [chromium] › tests/content/content-check.spec.ts:139:7 › Content Preservation › CT-08: Credentials and the un-held certification both appear in the calibration table
+[1A[2K[9/44] [chromium] › tests/content/content-check.spec.ts:161:7 › Content Preservation › CT-09: Contact channels from siteContent appear verbatim in the closing section
+[1A[2K[10/44] [chromium] › tests/content/content-check.spec.ts:180:7 › Content Preservation › CT-10: Every hero figure is printed with the source it came from
+[1A[2K[11/44] [chromium] › tests/content/content-check.spec.ts:222:7 › Content Preservation › CT-11: GitHub and LinkedIn are linked from the closing section
+[1A[2K[12/44] [chromium] › tests/content/content-check.spec.ts:240:7 › Content Preservation › CT-15: LinkedIn (primary recruiter channel) is linked from the persistent navigation
+[1A[2K[13/44] [chromium] › tests/content/content-check.spec.ts:249:7 › Content Preservation › CT-14: MiniVicBot mounts from the layout without throwing
+[1A[2K[14/44] [chromium] › tests/content/content-check.spec.ts:263:7 › Content Preservation › CT-17: MiniVic availability default and hiring copy keep active-intent ATO wording
+[1A[2K[15/44] [chromium] › tests/content/content-check.spec.ts:308:7 › Content Preservation › CT-11: every tenure claim on the page carries its evidence
+[1A[2K[16/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:76:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:76:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(246, 246, 246)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+
+[1A[2K[17/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:131:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:131:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[18/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:131:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:131:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[19/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:131:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:131:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[20/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:131:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:131:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[21/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:315:7 › C-08 / CC-10 — the calibration card spends gold once › GS-10: at most six elements paint saturated gold inside #skills at rest
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:315:7 › C-08 / CC-10 — the calibration card spends gold once › GS-10: at most six elements paint saturated gold inside #skills at rest
+
+=== GS-10 saturated gold inside #skills @1440 === 1
+
+[1A[2K  span.Skills_legendGlyph__ZFNcO Skills_measuredMark__VkK_a x=129 via color: rgb(201, 168, 76)
+
+[1A[2K[22/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:329:7 › C-08 / CC-10 — the calibration card spends gold once › GS-11: every gold mark in #skills sits on a licensed surface
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:329:7 › C-08 / CC-10 — the calibration card spends gold once › GS-11: every gold mark in #skills sits on a licensed surface
+
+=== GS-11 any-gold inside #skills @1440 === 15
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+
+[1A[2K  span.Skills_legendGlyph__ZFNcO Skills_measuredMark__VkK_a x=129 licensed=true via color: rgb(201, 168, 76)
+
+[1A[2K[23/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:347:7 › C-08 / CC-10 — the calibration card spends gold once › GS-12: the card carries one vertical run of gold, not two
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:347:7 › C-08 / CC-10 — the calibration card spends gold once › GS-12: the card carries one vertical run of gold, not two
+
+=== GS-12 gold columns === [[1088,14],[129,1]] → 1 run(s)
+
+[1A[2K[24/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:372:7 › C-08 / CC-10 — the calibration card spends gold once › GS-13: at rest the sourced strands are dim gold and the rest are grey
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:372:7 › C-08 / CC-10 — the calibration card spends gold once › GS-13: at rest the sourced strands are dim gold and the rest are grey
+
+=== GS-13 strands at rest === sourced=17 others=3 stops={"gold":[{"color":"rgb(201, 168, 76)","opacity":0.1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":0.1}],"grey":[{"color":"rgb(144, 144, 144)","opacity":0.08},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":0.08}]}
+
+[1A[2K  sourced stroke-opacity: 0.28
+
+[1A[2K  other  stroke-opacity: 0.35
+
+[1A[2K[25/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:424:7 › C-08 / CC-10 — the calibration card spends gold once › GS-14 (Motion F-6): hovering a capability lights its strands and recedes the rest
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:424:7 › C-08 / CC-10 — the calibration card spends gold once › GS-14 (Motion F-6): hovering a capability lights its strands and recedes the rest
+
+=== GS-14 stroke-opacity under hover === [1,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18]
+
+[1A[2K[26/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:450:9 › C-08 / CC-10 — the calibration card spends gold once › reduced motion › GS-15: under reduced motion the strand transition is colour only
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:450:9 › C-08 / CC-10 — the calibration card spends gold once › reduced motion › GS-15: under reduced motion the strand transition is colour only
+
+=== GS-15 reduced-motion strand transition === {"property":"stroke-opacity","animation":"none"}
+
+[1A[2K[27/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:597:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 1440x900 (desktop): every sourced About evidence line is painted in the gold token, legibly
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:597:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 1440x900 (desktop): every sourced About evidence line is painted in the gold token, legibly
+
+=== CC-A1 @ 1440x900 (desktop) — About evidence lines ===
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,23) = 7.99:1  "38 public repositories · ATO evidence harness · ANZ plat"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,24) = 7.99:1  "ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MY"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,24) = 7.99:1  "Australian Taxation Office, ANZ, NAB, Telstra"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(20,21,24) = 7.99:1  "Payday Super program · Agile Kookaburras squad · PI 47–4"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(18,19,21) = 8.13:1  "aether-job-career-agent · unmeasured signals read "not m"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "5+ squads, up to 40 practitioners onshore and offshore"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "Open to permanent and contract engagements"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "Currently on site with the ATO, Melbourne"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "Langfuse + Phoenix evaluation stack · −38% simulated err"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "75+ hours of evidence against 64 available — escalated, "
+
+[1A[2K[28/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:597:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 390x844 (phone): every sourced About evidence line is painted in the gold token, legibly
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:597:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 390x844 (phone): every sourced About evidence line is painted in the gold token, legibly
+
+=== CC-A1 @ 390x844 (phone) — About evidence lines ===
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "38 public repositories · ATO evidence harness · ANZ plat"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(9,9,9) = 8.71:1  "ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MY"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "Australian Taxation Office, ANZ, NAB, Telstra"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(9,9,9) = 8.71:1  "Payday Super program · Agile Kookaburras squad · PI 47–4"
+
+[1A[2K  SOURCED   rgb(201, 168, 76) on rgb(10,10,10) = 8.66:1  "aether-job-career-agent · unmeasured signals read "not m"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "5+ squads, up to 40 practitioners onshore and offshore"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "Open to permanent and contract engagements"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "Currently on site with the ATO, Melbourne"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "Langfuse + Phoenix evaluation stack · −38% simulated err"
+
+[1A[2K  UNSOURCED rgb(144, 144, 144)  "75+ hours of evidence against 64 available — escalated, "
+
+[1A[2K[29/44] [chromium] › tests/monochrome/gold-semantics.spec.ts:700:7 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A2: the About key hatch has zero chroma
+[1A[2K[chromium] › tests/monochrome/gold-semantics.spec.ts:700:7 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A2: the About key hatch has zero chroma
+
+=== CC-A2 role swatch === {"backgroundImage":"repeating-linear-gradient(45deg, rgba(144, 144, 144, 0.34) 0px, rgba(144, 144, 144, 0.34) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px)","backgroundColor":"rgba(0, 0, 0, 0)","borderTopColor":"rgb(184, 184, 184)"}
+
+[1A[2K[30/44] [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold
+[1A[2K[31/44] [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold
+[1A[2K[32/44] [chromium] › tests/monochrome/monochrome.spec.ts:118:7 › Monochrome Compliance › MONO-01: :root publishes the grey ramp and exactly the four sanctioned gold tokens
+[1A[2K[33/44] [chromium] › tests/monochrome/monochrome.spec.ts:146:7 › Monochrome Compliance › MONO-02: Body background is achromatic
+[1A[2K[34/44] [chromium] › tests/monochrome/monochrome.spec.ts:153:7 › Monochrome Compliance › MONO-03: No inline style declares a colour outside the palette
+[1A[2K[35/44] [chromium] › tests/monochrome/monochrome.spec.ts:207:7 › Monochrome Compliance › MONO-04: Every rendered colour in every section is achromatic or the sanctioned gold
+[1A[2K[36/44] [chromium] › tests/monochrome/monochrome.spec.ts:218:7 › Monochrome Compliance › MONO-05: The sanctioned accent is actually in use, and only as the accent
+[1A[2K[37/44] [chromium] › tests/monochrome/monochrome.spec.ts:244:7 › Monochrome Compliance › MONO-06: Navigation overlay is achromatic when open
+[1A[2K[38/44] [chromium] › tests/monochrome/monochrome.spec.ts:252:7 › Monochrome Compliance › MONO-07: The check still rejects an unsanctioned hue
+[1A[2K[39/44] [chromium] › tests/overhaul/scene-about.spec.ts:87:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view
+[1A[2K[40/44] [chromium] › tests/overhaul/scene-about.spec.ts:101:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column
+[1A[2K[41/44] [chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose
+[1A[2K[42/44] [chromium] › tests/overhaul/scene-about.spec.ts:157:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-04: under reduced motion there is no canvas, and the rose is still the instrument
+[1A[2K[43/44] [chromium] › tests/overhaul/scene-about.spec.ts:184:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-05: with WebGL unavailable the section is whole and silent
+[1A[2K[44/44] [chromium] › tests/overhaul/scene-about.spec.ts:214:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-06: the field is monochrome, palette-sourced and cheap per pixel
+[1A[2K  44 passed (3.5m)

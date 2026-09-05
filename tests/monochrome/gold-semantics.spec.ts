@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { aboutContent } from '../../app/data/portfolio/about';
 
 /**
  * Gold is a claim, not decoration — asserted on the rendered page.
@@ -486,10 +487,18 @@ test.describe('C-08 / CC-10 — the calibration card spends gold once', () => {
  * CC-A1 reads the composited colour off each evidence line and, for the ones
  * that name a source, requires the gold token *and* AA contrast against the
  * pixels actually behind the text — gold that a reader cannot read is not a
- * mark. The one dimension whose evidence is a stated availability rather than a
- * checkable record ("Open to permanent and contract engagements", Salary Fit)
- * must stay grey: grading it gold would say the site can source a claim it
- * cannot, which is the failure the caliper exists to prevent.
+ * mark. Which lines those are is read from `aboutContent` rather than written
+ * down here. That matters: the first pass at the `sourced` flag graded nine of
+ * ten gold on the criterion "an employer, a program, a named repository, a
+ * figure from the CV", and a spec that hardcoded "at least nine" would have
+ * agreed with it — the number was the thing under review. Deriving the split
+ * from the data means this spec proves the *rendering* matches the grade, and
+ * `tests/about_sourced_semantics.test.mjs` proves the grade itself is honest.
+ * Neither can be satisfied by editing the other.
+ *
+ * The lines graded `false` must stay grey: grading one gold would say the site
+ * can source a claim it cannot, which is the failure the caliper exists to
+ * prevent.
  *
  * CC-A2 holds the hatch to zero chroma, reading the resolved
  * `background-image` rather than the source literal so a `var()` cannot hide a
@@ -499,6 +508,22 @@ test.describe('C-08 / CC-10 — the calibration card spends gold once', () => {
 /** Class-based, not data-attribute-based, so a missing attribute reads as a
  *  failure rather than as an empty set. */
 const ABOUT_EVIDENCE = '#about p[class*="evidence"]';
+
+/** The probe truncates each line for legible failure output; the expectations
+ *  are cut the same way so the two are comparable. */
+const asProbed = (text: string) => text.trim().replace(/\s+/g, ' ').slice(0, 56);
+
+/** The expected split, read from the data the page renders — never a literal.
+ *  See the header: the count was the thing under review, so a number written
+ *  here would ratify whatever the data happened to say. */
+const EXPECTED_SOURCED = aboutContent.dimensions
+  .filter((dimension) => dimension.sourced)
+  .map((dimension) => asProbed(dimension.evidence))
+  .sort();
+const EXPECTED_UNSOURCED = aboutContent.dimensions
+  .filter((dimension) => !dimension.sourced)
+  .map((dimension) => asProbed(dimension.evidence))
+  .sort();
 
 /** Mask every glyph so a screenshot shows only what sits *behind* the text. */
 async function maskGlyphs(page: Page, on: boolean) {
@@ -627,10 +652,23 @@ test.describe('G-A — #about spends gold on its sourced evidence and nothing el
         console.log(`  SOURCED   ${s.color} on ${s.bg} = ${s.ratio}:1  "${s.text}"`);
       for (const u of unsourced) console.log(`  UNSOURCED ${u.color}  "${u.text}"`);
 
+      // Which lines carry the mark is decided in app/data/portfolio/about.ts and
+      // proved honest in tests/about_sourced_semantics.test.mjs. What this spec
+      // proves is that the page renders exactly that grade — no line quietly
+      // gaining or losing the mark between the data and the pixels.
+      expect(
+        sourced.map((s) => s.text).sort(),
+        'the gold lines on the page are exactly the dimensions app/data/portfolio/about.ts grades `sourced`',
+      ).toEqual(EXPECTED_SOURCED);
+      expect(
+        unsourced.map((u) => u.text).sort(),
+        'and the grey lines are exactly the ones it grades `false` — the flag drives the paint',
+      ).toEqual(EXPECTED_UNSOURCED);
       expect(
         sourced.length,
-        'at least nine of the ten evidence lines name a source a reader can go and check',
-      ).toBeGreaterThanOrEqual(9);
+        'some evidence on this page does name a checkable record; a section with no gold at all would ' +
+          'mean the grade collapsed rather than corrected',
+      ).toBeGreaterThan(0);
 
       const notGold = sourced.filter((s) => {
         const c = rgbTriples(s.color)[0];
