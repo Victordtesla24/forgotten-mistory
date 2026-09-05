@@ -17,8 +17,8 @@ switch (verb) {
     break; }
   case 'show': { const t = find(id); console.log(JSON.stringify(t, null, 2)); console.log(fs.readFileSync(path.join(K, 'tasks', `${id}.md`), 'utf8')); break; }
   case 'status': { const t = find(id); const s = rest[0]; if (!board.columns.includes(s)) throw new Error(`bad status ${s}`); t.status = s; t.updated = now; appendMd(id, 'STATUS', `${s}${rest[1] ? ' — ' + rest.slice(1).join(' ') : ''}`); save(); console.log(`${id} → ${s}`); break; }
-  case 'comment': { const t = find(id); const text = rest.join(' '); t.comments.push({ at: now, by: 'orchestrator', text }); t.updated = now; appendMd(id, 'COMMENT', text); save(); console.log(`${id}: comment`); break; }
-  case 'decision': { const t = find(id); const text = rest.join(' '); t.decisions.push({ at: now, text }); t.updated = now; appendMd(id, 'DECISION', text); save(); console.log(`${id}: decision`); break; }
+  case 'comment': { const t = find(id); const text = rest.join(' '); (t.comments ||= []).push({ at: now, by: 'orchestrator', text }); t.updated = now; appendMd(id, 'COMMENT', text); save(); console.log(`${id}: comment`); break; }
+  case 'decision': { const t = find(id); const text = rest.join(' '); (t.decisions ||= []).push({ at: now, text }); t.updated = now; appendMd(id, 'DECISION', text); save(); console.log(`${id}: decision`); break; }
   case 'complete': { const t = find(id); const result = rest.join(' '); t.status = 'done'; t.result = result; t.updated = now; appendMd(id, 'COMPLETE', result); save(); console.log(`${id} → done`); break; }
   case 'block': { const t = find(id); const kind = rest[0]; const reason = rest.slice(1).join(' '); t.status = 'blocked'; t.blocker = { kind, reason, at: now }; t.updated = now; appendMd(id, 'BLOCKED', `${kind}: ${reason}`); save(); console.log(`${id} → blocked (${kind})`); break; }
   case 'unblock': { const t = find(id); t.status = rest[0] || 'ready'; t.blocker = null; t.updated = now; appendMd(id, 'UNBLOCKED', rest.slice(1).join(' ')); save(); console.log(`${id} → ${t.status}`); break; }
