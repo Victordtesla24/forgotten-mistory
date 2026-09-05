@@ -30,3 +30,6 @@ role_matrix: coding / documentation → level 4 → effort **medium (xhigh when 
 
 ## PROVIDER
 OpenRouter (OPENROUTER_API_KEY) — balance negative (402), so this task runs on Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli session). Never ANTHROPIC_API_KEY.
+
+## STATUS (2026-09-05T10:50:00.876Z)
+running — bundled into the stability lane

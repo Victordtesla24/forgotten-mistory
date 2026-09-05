@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T10:47:59.287Z",
+  "updated": "2026-09-05T10:50:01.011Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -1197,7 +1197,7 @@
     {
       "id": "t_cbff57b0",
       "title": "Scene 4 — #skills flagship: GLSL bench field behind the wire diagram (R2, M1)",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 86,
       "parents": [
@@ -1212,7 +1212,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:05.764Z",
-      "updated": "2026-09-05T06:20:05.764Z",
+      "updated": "2026-09-05T10:50:01.011Z",
       "summary": "SPEC-v10.md c19: #skills has 0 canvases (20-path SVG bench). Add a shader field mounted through components/gl/Scene.tsx that lights the sourced edges; gold stays a mark (≤ 6 gold-painting elements after cycle 17). Files: components/sections/Skills/BenchField.tsx, bench.glsl.ts, Skills.tsx, Skills.module.css; tests/overhaul/scene-skills.spec.ts (TDD first).",
       "decisions": [],
       "comments": [],
@@ -1730,7 +1730,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T08:06:43.493Z",
-      "updated": "2026-09-05T08:48:54.077Z",
+      "updated": "2026-09-05T10:50:00.766Z",
       "summary": "V-react19 finding 1: the only layout shift captured names footer.Footer_footer__TWDx3 at ~508 ms worth 0.1556 — the two off-list ✘ (TC-HERO-15, PERF-03) attributed to the hero crossfade are this. Files: components/site/Footer.tsx + its CSS block (app/globals.css or module). TDD: tests/perf/performance.spec.ts PERF-03 must pass with --workers=2 under load (repeat-each=3) and a new assertion that no LayoutShift entry names the footer.",
       "decisions": [],
       "comments": [],
@@ -1785,7 +1785,7 @@
     {
       "id": "t_heroph001",
       "title": "OWNER REQUEST 09:10Z — hero photo full size, in colour, with design-matched decorations; hero video avatar plays on hover/focus only, never by default",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 98,
       "parents": [],
@@ -1797,7 +1797,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T09:14:38.748Z",
-      "updated": "2026-09-05T10:47:59.242Z",
+      "updated": "2026-09-05T10:50:00.707Z",
       "summary": "Owner instruction verbatim: Integrate my Photo with full size, colours and dimension with creative decorations that match the website UI/UX Design. Include a hover effect that plays the hero video avatar and not by default. Supersedes the grayscale rule and the P1 88 px stamp for this element. Lane wf hero-photo (port 5601): colour still (1480×826 avif/webp), full column on desktop, full width after the actions at ≤720 (TC-HERO-12 holds), drafting frame + corner ticks + provenance caption from avatar.ts, light bloom behind the plate, hover/focus plays the loop (src set on intent, preload none), toggle for touch, reduced motion never autoplays.",
       "decisions": [],
       "comments": [
@@ -1812,7 +1812,8 @@
           "text": "ORCHESTRATOR VISUAL CHECK on live ccb15241: 1440 — full-colour photograph fills the right column (518×322), drafting frame + four corner ticks + registration cross, caption '— Photograph · Melbourne' below, play affordance bottom-right; at rest no video source; on hover the 1280×720 loop plays (pause glyph shows) and stops on leave; 390 — the photo sits full-width after the actions, TC-HERO-12 fold holds. Verdict by eye: this is the owner's request delivered. Defect seen: the caption sits on the hero's brightest light pool and is nearly unreadable (also the third ledger source) — folded into t_flagvis0c (hero text plates on the shader path must include .portraitCaption)."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "OWNER REQUEST DELIVERED — V-hero-photo (b45b456): 13/14 acceptance lines PASS by independent measurement (figure 36.0% of viewport at 1440/1280/834, full-bleed at 390 below the actions; saturation 0.29 no grayscale; native 1480×826; corner ticks/rule/cross/caption; hover plays my-avatar.mp4 1280×720 and pauses on leave; nothing requested at rest; keyboard; reduced motion refuses hover, press allowed; no gold; LCP H1 < 2.5 s). The one FAIL is PERF-03 CLS 0.256 intermittent from footer.Footer_footer collapsing 215.77→0 px under load — pre-existing root cause (t_2d068068), not the photo (0.0002); fixed in the stability lane now. Orchestrator visual check on live ccb15241 PASS; caption contrast on the light pool → t_flagvis0c."
     },
     {
       "id": "t_cachefr01",
@@ -1887,7 +1888,7 @@
     {
       "id": "t_flagvis0b",
       "title": "Flagship visibility B: Skills bench field (scene 4, new), Vitrine field and Listen caliper field become unmistakable — same visibility gate; MiniVic viseme stage after",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 98,
       "parents": [
@@ -1901,7 +1902,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T09:16:20.880Z",
-      "updated": "2026-09-05T09:16:20.880Z",
+      "updated": "2026-09-05T10:50:00.946Z",
       "summary": "Second half of the owner correction: #skills has no scene (t_cbff57b0), #vitrine field invisible on live captures (black behind the cards), #listen a faint band. Reuse tests/overhaul/flagship-visibility.spec.ts from lane A; skills bench field brief in t_cbff57b0; vitrine/listen fields exist (1150e3e, d53d228) and need their intensity/structure raised to the gate.",
       "decisions": [],
       "comments": [],
@@ -1996,7 +1997,7 @@
     {
       "id": "t_skew0002",
       "title": "Correction — GLCanvas: a WebGL context-creation failure is caught and reported once via console.error (never an uncaught pageerror); TC-SKEW-02 green 3/3",
-      "status": "todo",
+      "status": "running",
       "assignee": "coder",
       "priority": 80,
       "parents": [
@@ -2010,7 +2011,7 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-05T10:46:49.784Z",
-      "updated": "2026-09-05T10:46:49.784Z",
+      "updated": "2026-09-05T10:50:00.876Z",
       "summary": "V-skew (0ece403) single red clause: tests/overhaul/scene-error-boundary.spec.ts:165 expects 0 uncaught page errors when getContext throws; GLCanvas.tsx lets the error propagate before the boundary sees it. Fix: try/catch around context creation (and the webglcontextcreationerror event) → boundary fallback + one console.error naming the scene; keep the spec strict. Files: components/gl/GLCanvas.tsx, components/gl/Scene.tsx.",
       "decisions": [],
       "comments": [],

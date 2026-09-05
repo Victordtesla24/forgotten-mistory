@@ -32,3 +32,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## STATUS (2026-09-05T10:50:01.011Z)
+running — skills bench field built inside flagship B
