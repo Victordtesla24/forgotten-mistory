@@ -63,7 +63,10 @@ test.describe('Listen', () => {
   });
 
   test('TC-LISTEN-05: hover and focus produce the identical underline', async ({ page }) => {
-    const link = page.locator(`${LISTEN} a`).first();
+    // Pinned to a channel rather than to the section's first anchor: the
+    // engagement plate now leads the routes and carries no underline, so
+    // `a:first` would have quietly stopped testing the gesture it names.
+    const link = page.locator(`${LISTEN} a[href^="tel:"]`).first();
     const scaleOf = () =>
       link.evaluate((el) => {
         const style = getComputedStyle(el, '::after');
@@ -203,4 +206,130 @@ test.describe('Listen', () => {
     expect(offenders).toEqual([]);
   });
 
+  /**
+   * The weight of the business end (R-c13 CC-05, R-c8 C-09).
+   *
+   * The four routes were 14 px of --mist-400 under a 54 px pull-quote: a 3.9×
+   * ratio pointing away from the one thing on the page a visitor is meant to
+   * act on. The mono stays — it is the right face for an address — the
+   * greyness does not, and the quote comes down the scale until the two are
+   * within reading distance of each other.
+   */
+  test('TC-LISTEN-09: the contact routes are read-weight type, not caption grey', async ({ page }) => {
+    for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 },
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.goto('/');
+      await page.locator(LISTEN).scrollIntoViewIfNeeded();
+      await page.waitForTimeout(200);
+
+      const probe = await page.evaluate(() => {
+        const section = document.querySelector('#listen')!;
+        const channels = Array.from(section.querySelectorAll<HTMLElement>('a[class*="channel"]'));
+        const quote = section.querySelector<HTMLElement>('p[class*="sentence"]');
+        return {
+          channels: channels.map((el) => {
+            const cs = getComputedStyle(el);
+            return {
+              text: (el.textContent || '').trim().slice(0, 32),
+              fontSize: parseFloat(cs.fontSize),
+              color: cs.color,
+              family: cs.fontFamily,
+              height: el.getBoundingClientRect().height,
+            };
+          }),
+          quoteSize: quote ? parseFloat(getComputedStyle(quote).fontSize) : 0,
+        };
+      });
+
+      expect(probe.channels.length, `${viewport.width}: no .channel anchors`).toBeGreaterThanOrEqual(3);
+      for (const channel of probe.channels) {
+        expect(channel.fontSize, `${viewport.width} "${channel.text}" font-size`).toBeGreaterThanOrEqual(16);
+        expect(channel.color, `${viewport.width} "${channel.text}" colour`).toBe('rgb(246, 246, 246)');
+        expect(channel.height, `${viewport.width} "${channel.text}" hit box`).toBeGreaterThanOrEqual(44);
+        expect(channel.family.toLowerCase(), `${viewport.width} "${channel.text}" face`).toContain('mono');
+      }
+
+      expect(probe.quoteSize, `${viewport.width}: no pull-quote found`).toBeGreaterThan(0);
+      const ratio = probe.quoteSize / probe.channels[0].fontSize;
+      expect(ratio, `${viewport.width}: quote ${probe.quoteSize}px vs channel ${probe.channels[0].fontSize}px`).toBeLessThanOrEqual(1.6);
+    }
+  });
+
+  /**
+   * The routes hold the column (R-c8 C-09).
+   *
+   * The four contact lines used to stack in a single narrow file with the whole
+   * right half of a 1440 frame empty. They are laid across the page's own
+   * column now, and the email — the route a client will actually take — is a
+   * filled plate rather than another grey line.
+   */
+  test('TC-LISTEN-10: the routes span the column and the email is a filled plate', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/');
+    await page.locator(LISTEN).scrollIntoViewIfNeeded();
+    await page.waitForTimeout(200);
+
+    const probe = await page.evaluate(() => {
+      const section = document.querySelector('#listen')!;
+      const list = section.querySelector<HTMLElement>('ul[class*="channels"]')!;
+      const items = Array.from(list.querySelectorAll<HTMLElement>('li > a'));
+      const email = section.querySelector<HTMLElement>('a[href^="mailto:"]')!;
+      const cs = getComputedStyle(email);
+      const listCs = getComputedStyle(list);
+      return {
+        rightEdge: Math.max(...items.map((el) => el.getBoundingClientRect().right)),
+        innerWidth: window.innerWidth,
+        email: {
+          background: cs.backgroundColor,
+          color: cs.color,
+          padding: `${cs.paddingTop} ${cs.paddingRight}`,
+          radius: cs.borderTopLeftRadius,
+        },
+        list: {
+          display: listCs.display,
+          columns: listCs.gridTemplateColumns.split(/\s+/).length,
+          gap: listCs.columnGap,
+        },
+      };
+    });
+
+    expect(probe.rightEdge, `rightmost route ends at ${probe.rightEdge} of ${probe.innerWidth}`).toBeGreaterThan(
+      0.7 * probe.innerWidth,
+    );
+    // The filled pill: --white on --ink-900 text, --space-2/--space-4, fully round.
+    expect(probe.email.background).toBe('rgb(246, 246, 246)');
+    expect(probe.email.color).toBe('rgb(10, 10, 10)');
+    expect(probe.email.padding).toBe('16px 32px');
+    expect(parseFloat(probe.email.radius)).toBeGreaterThanOrEqual(999);
+    // repeat(auto-fit, minmax(16rem, 1fr)) at 1440 resolves to four tracks.
+    expect(probe.list.display).toBe('grid');
+    expect(probe.list.columns).toBeGreaterThanOrEqual(2);
+    expect(probe.list.gap).toBe('32px');
+  });
+
+  /**
+   * The page closes the way it opens (R-c13 CC-09).
+   *
+   * #listen ran 126 px of air on top and 45 px underneath, so the last section
+   * stopped rather than closed. Its block padding is the same clamp the four
+   * middle sections use.
+   */
+  test('TC-LISTEN-11: the closing section is vertically symmetric at every width', async ({ page }) => {
+    for (const width of [390, 834, 1280, 1440, 1920]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/');
+      await page.locator(LISTEN).scrollIntoViewIfNeeded();
+      const pad = await page.evaluate(() => {
+        const cs = getComputedStyle(document.querySelector('#listen')!);
+        return { top: parseFloat(cs.paddingTop), bottom: parseFloat(cs.paddingBottom) };
+      });
+      expect(
+        Math.abs(pad.top - pad.bottom),
+        `${width}: #listen padding ${pad.top} / ${pad.bottom}`,
+      ).toBeLessThanOrEqual(2);
+    }
+  });
 });

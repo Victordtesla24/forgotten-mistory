@@ -12,8 +12,11 @@
     flex-direction: column;
     justify-content: center;
     min-height: 88svh;
-    padding: clamp(6rem, 14vh, var(--space-20)) var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)))
-        clamp(2rem, 5vh, 3rem);
+    /* Symmetric block padding, on the same clamp the four middle sections use
+       (R-c13 CC-09). The closing screen used to open with 126 px of air and
+       shut with 45, so the page stopped rather than closed — on the one section
+       carrying the contact details. */
+    padding: clamp(var(--space-10), 12vh, 9rem) var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)));
 }
 
 /* The closing screen stands on the page's one column like the five before
@@ -56,7 +59,11 @@
     font-family: var(--font-heading-italic);
     font-style: italic;
     font-weight: 300;
-    font-size: var(--fs-title);
+    /* Down one step from the section title (R-c13 CC-05). At --fs-title the
+       quote ran 54 px over 14 px contact lines — a 3.9× ratio that pointed the
+       reader away from the only thing here they can act on. At --fs-h3 the
+       quote still leads the section and the ratio to a route is about 1.3×. */
+    font-size: var(--fs-h3);
     /* Step 4 sets 1.05, which is right for a title of one or two lines. This is
        four, held at a 26ch measure, so it takes the next leading down the scale:
        still one of the six the type system binds, chosen because the object is a
@@ -192,29 +199,119 @@
     }
 }
 
-/* ── The four channels ───────────────────────────────────────────────────── */
+/* ── The routes ──────────────────────────────────────────────────────────────
+   One engagement plate across the column, then the four addresses laid out on
+   it. The grid is `auto-fit` rather than a fixed four, so the row collapses to
+   one column on a phone without a second declaration (R-c8 C-09). */
 .channels {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
+    display: grid;
+    /* The track floor is the email plate's own measure — 23 mono characters
+       plus its --space-4 padding, about 20 rem at 1440 — not the 16 rem the
+       direction guessed at: 16 rem tracks are 288 px wide there and the plate
+       is 315, so the address overlapped the phone route beside it. At this
+       floor the four routes lay out two-up on a desktop, two rows of two, and
+       collapse to one column on a phone with no second declaration. */
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    gap: var(--space-4);
     margin: 0;
     padding: 0;
     list-style: none;
-    max-width: 46rem;
+}
+
+/* The plate leads the routes and holds the section's spine, so its left edge is
+   the heading's left edge. */
+.engageRow {
+    grid-column: 1 / -1;
+}
+
+/* The client's action. The hero's primary plate, in this section's place: a
+   filled white ground with the page's own ink on it. Not gold — an invitation
+   is chrome, and gold on this site means a figure has a source. */
+.engage {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: var(--space-2) var(--space-4);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--ink-900);
+    font-family: var(--font-mono);
+    font-size: var(--fs-lede);
+    letter-spacing: 0.02em;
+    line-height: var(--lh-snug);
+    text-decoration: none;
+    transition: opacity var(--motion-fast) var(--motion-ease-standard);
+}
+
+.engage:hover,
+.engage:focus-visible {
+    opacity: 0.86;
+}
+
+.engage:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 4px;
+}
+
+.engage:active {
+    opacity: 1;
+}
+
+/* The email, as a filled pill. It is the route a client will actually take, so
+   it carries the same ground as the plate at route weight rather than being the
+   quietest line on the page (R-c8 C-09). */
+.pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: var(--space-2) var(--space-4);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--ink-900);
+    font-family: var(--font-mono);
+    font-size: var(--fs-lede);
+    letter-spacing: 0.01em;
+    line-height: var(--lh-snug);
+    text-decoration: none;
+    transition: opacity var(--motion-fast) var(--motion-ease-standard);
+}
+
+.pill:hover,
+.pill:focus-visible {
+    opacity: 0.86;
+}
+
+.pill:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 4px;
+}
+
+.pill:active {
+    opacity: 1;
 }
 
 .channel {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    /* A route is a target before it is a label: 44 px is the smallest box a
+       thumb can be asked to find (R-c13 CC-05). */
+    min-height: 44px;
+    padding-block: var(--space-1);
     position: relative;
     font-family: var(--font-mono);
-    font-size: var(--fs-small);
+    /* The mono stays — it is the right face for an address. The greyness does
+       not: these lines are the page's business end, not a caption. */
+    font-size: var(--fs-lede);
+    line-height: var(--lh-snug);
     letter-spacing: 0.01em;
-    color: var(--mist-200);
+    color: var(--white);
     text-decoration: none;
-    /* The ink lifts to white on hover and focus. A colour change is the
-       affordance that survives reduced motion, so it is declared here and not
-       withdrawn there. */
-    transition: color var(--motion-fast) var(--motion-ease-standard);
+    /* The ink is already white, so the hover lifts it off the ground by a
+       shade instead. A colour change is the affordance that survives reduced
+       motion, so it is declared here and not withdrawn there. */
+    transition: color var(--motion-fast) var(--motion-ease-standard),
+        opacity var(--motion-fast) var(--motion-ease-standard);
 }
 
 /* The closing hairline gesture at one-sixth scale — identical on hover and on
@@ -225,9 +322,11 @@
     position: absolute;
     left: 0;
     right: 0;
-    /* One hairline step below the baseline box — --space-05 is the only sub-8
-       value the grid allows, and an underline offset is exactly what it is for. */
-    bottom: calc(var(--space-05) * -1);
+    /* One hairline step below the glyphs. The anchor is a 44 px hit box with
+       the text centred in it, so the offset is measured from the middle out
+       rather than from the box's own bottom edge, which is now well clear of
+       the type. */
+    bottom: calc(50% - 0.9em);
     height: 1px;
     background: var(--white);
     transform: scaleX(0);
@@ -238,6 +337,7 @@
 .channel:hover,
 .channel:focus-visible {
     color: var(--white);
+    opacity: 0.86;
 }
 
 .channel:hover::after,
@@ -255,6 +355,7 @@
    half-second where that is acknowledged. */
 .channel:active {
     color: var(--mist-200);
+    opacity: 1;
 }
 
 .channel:active::after {

@@ -181,11 +181,21 @@ export default function Listen() {
         {/* The caliper at one-pixel scale: the last stroke the instrument makes. */}
         <span className={styles.rule} aria-hidden="true" />
 
+        {/* The routes. The engagement plate leads — it is the one action a
+            business client can finish on this page — then the four addresses,
+            laid across the column rather than stacked in a narrow file with
+            the right half of the frame empty (R-c8 C-09, R-c13 CC-02/CC-05).
+            The plate is chrome, not a claim, so it is white and never gold. */}
         <ul className={styles.channels}>
+          <li className={styles.engageRow}>
+            <a className={styles.engage} data-cta="engage" href={listenContent.engage.href}>
+              {listenContent.engage.label}
+            </a>
+          </li>
           {listenContent.channels.map((channel) => (
             <li key={channel.href}>
               <a
-                className={styles.channel}
+                className={channel.kind === 'email' ? styles.pill : styles.channel}
                 href={channel.href}
                 {...(channel.kind === 'external'
                   ? { target: '_blank', rel: 'me noreferrer noopener' }

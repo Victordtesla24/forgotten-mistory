@@ -20,6 +20,23 @@ export const listenContent = {
   /** The only italic on the entire site. Twenty words. */
   sentence:
     'I have been wrong often enough to want to hear it early. Tell me what you think — I’ll listen properly.',
+  /**
+   * The client's action, and the only filled plate in the section.
+   *
+   * A business client had nowhere to finish on this page: the four routes are
+   * addresses, and the two buttons on the site both hand a recruiter the CV
+   * (R-c13 CC-02). There is no booking tool on this account, and inventing a
+   * calendar link that 404s would be worse than none — so the route is a
+   * pre-addressed enquiry the visitor's own client can send. The subject is
+   * what makes it an engagement rather than a blank compose window.
+   */
+  engage: {
+    label: 'Start a project',
+    subject: 'Engagement enquiry — Vikram Deshpande',
+    href: `mailto:${contact.email}?subject=${encodeURIComponent(
+      'Engagement enquiry — Vikram Deshpande',
+    )}`,
+  },
   channels: [
     { label: contact.email, href: `mailto:${contact.email}`, kind: 'email' },
     { label: contact.phone, href: contact.phoneHref, kind: 'phone' },
