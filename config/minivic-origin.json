@@ -1,0 +1,4 @@
+{
+  "$comment": "THE single config point for MiniVic's direct chat origin. Firebase Hosting buffers the function's SSE reply (first byte 1836 ms) while the Cloud Run origin streams it (665 ms) — docs/delivery/evidence/v10-20260905T0515Z/G-M3/08-decision-first-token.md. The hostname below is deploy-specific and PUBLIC (no credential, no secret): it is the URL `firebase deploy --only functions:tts:minivicChat` prints. Change it HERE and nowhere else; scripts/build/minivic_origin.mjs regenerates app/data/generated/minivic-origin.ts from it, tests/minivic_chat_route.test.mjs (MV-ROUTE-08) fails if firebase.json's CSP connect-src disagrees, and NEXT_PUBLIC_MINIVIC_ORIGIN overrides it for a build against a different deployment. Set originUrl to \"\" to ship the Hosting rewrite alone.",
+  "originUrl": "https://minivicchat-hjdyjsrzvq-uc.a.run.app"
+}

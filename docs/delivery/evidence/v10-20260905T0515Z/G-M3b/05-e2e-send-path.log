@@ -1,0 +1,12 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/minivic-send-path.spec.ts --workers=1 --reporter=line
+
+Running 6 tests using 1 worker
+
+[1A[2K[1/6] [chromium] › tests/e2e/minivic-send-path.spec.ts:79:7 › MiniVic send path › MV-WIRE-01: one send makes exactly one /api request, and it is /api/chat
+[1A[2K[2/6] [chromium] › tests/e2e/minivic-send-path.spec.ts:164:7 › MiniVic send path › MV-WIRE-02: no poller keeps running after the reply lands
+[1A[2K[3/6] [chromium] › tests/e2e/minivic-send-path.spec.ts:203:7 › MiniVic first-token path › MV-WARM-01: opening the panel warms the function, and a send does not
+[1A[2K[4/6] [chromium] › tests/e2e/minivic-send-path.spec.ts:252:7 › MiniVic first-token path › MV-PAYLOAD-01: the send body carries turns and a mode — no provider, model or prompt
+[1A[2K[5/6] [chromium] › tests/e2e/minivic-send-path.spec.ts:312:7 › MiniVic direct-origin route › MV-ORIGIN-01: a blocked origin falls back to /api/chat, and the visitor still gets an answer
+[1A[2K[6/6] [chromium] › tests/e2e/minivic-send-path.spec.ts:361:7 › MiniVic direct-origin route › MV-ORIGIN-02: the origin is tried before the Hosting rewrite on an ordinary send
+[1A[2K  6 passed (43.3s)

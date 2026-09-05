@@ -1,4 +1,24 @@
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+
 import { test, expect, type Page, type Request } from '@playwright/test';
+
+/**
+ * The direct chat origin this build ships, read from the same config point the
+ * client is generated from (config/minivic-origin.json → app/data/generated/
+ * minivic-origin.ts). Reading it here rather than repeating the hostname keeps
+ * the spec true when the function is redeployed to a new URL — and correct when
+ * the origin is deliberately switched off, which is a supported configuration.
+ */
+const CHAT_ORIGIN: string = (() => {
+  try {
+    const raw = readFileSync(path.join(process.cwd(), 'config/minivic-origin.json'), 'utf8');
+    return String(JSON.parse(raw).originUrl || '');
+  } catch {
+    return '';
+  }
+})();
+const CHAT_ORIGIN_HOST = CHAT_ORIGIN ? new URL(CHAT_ORIGIN).host : '';
 
 /**
  * G-M1 — what MiniVic actually puts on the wire when a visitor sends a message.
@@ -76,10 +96,14 @@ test.describe('MiniVic send path', () => {
 
     // Only requests made from here on belong to the send.
     const apiRequests: string[] = [];
+    const foreignHosts: string[] = [];
     const socketUrls: string[] = [];
+    const pageHost = new URL(page.url()).host;
     page.on('request', (request) => {
       const path = apiPath(request);
       if (path) apiRequests.push(path);
+      const host = new URL(request.url()).host;
+      if (host !== pageHost && !foreignHosts.includes(host)) foreignHosts.push(host);
     });
     page.on('websocket', (ws) => socketUrls.push(ws.url()));
 
@@ -120,8 +144,17 @@ test.describe('MiniVic send path', () => {
     ).toEqual([]);
     expect(
       apiRequests,
-      `the send should touch /api/chat and nothing else, but made:\n${apiRequests.join('\n')}`,
+      `the send should touch /api/chat and nothing else same-origin, but made:\n${apiRequests.join('\n')}`,
     ).toEqual(['/api/chat']);
+
+    // G-M3b: the send now tries the chat function's own Cloud Run origin before
+    // the Hosting rewrite, because Hosting buffers the streamed reply. That is
+    // the ONLY host a send may reach besides the site's own — a third one would
+    // be a visitor's question leaving for somewhere nobody signed off on.
+    expect(
+      foreignHosts,
+      `the send reached a host that is not the chat origin:\n${foreignHosts.join('\n')}`,
+    ).toEqual(CHAT_ORIGIN_HOST ? [CHAT_ORIGIN_HOST] : []);
 
     expect(pageErrors, `uncaught page errors:\n${pageErrors.join('\n')}`).toEqual([]);
     const crashes = consoleErrors.filter((e) => /uncaught|is not a function|undefined is not/i.test(e));
@@ -171,10 +204,14 @@ test.describe('MiniVic first-token path', () => {
     page,
   }) => {
     const warmRequests: Array<{ method: string; url: string }> = [];
+    const originWarmRequests: string[] = [];
     page.on('request', (request) => {
       const url = new URL(request.url());
       if (url.pathname === '/api/chat' && url.searchParams.has('warm')) {
         warmRequests.push({ method: request.method(), url: request.url() });
+      }
+      if (CHAT_ORIGIN_HOST && url.host === CHAT_ORIGIN_HOST && url.searchParams.has('warm')) {
+        originWarmRequests.push(request.url());
       }
     });
 
@@ -183,6 +220,14 @@ test.describe('MiniVic first-token path', () => {
     await expect.poll(async () => warmRequests.length, { timeout: 10000 }).toBe(1);
     expect(warmRequests[0].method, 'the warm-up must not be a POST').toBe('GET');
     expect(warmRequests[0].url).toContain('warm=1');
+
+    // G-M3b: the direct origin is the path a send actually takes, so it is the
+    // one that most needs to be hot — and it is a host the browser has never
+    // opened a connection to, so this pays its DNS/TLS as well as the container
+    // start. Warming only the rewrite would leave the fast path cold.
+    if (CHAT_ORIGIN_HOST) {
+      await expect.poll(async () => originWarmRequests.length, { timeout: 10000 }).toBe(1);
+    }
 
     await panel.getByRole('button', { name: 'Mute voice' }).click();
     const beforeSend = warmRequests.length;
@@ -246,5 +291,103 @@ test.describe('MiniVic first-token path', () => {
     // back in the hiring persona whichever one the visitor had chosen.
     expect(payload.mode, 'the persona mode is not reaching the server').toBeTruthy();
     expect((payload.messages ?? []).at(-1)?.content).toContain('ATO');
+  });
+});
+
+/**
+ * G-M3b — the direct origin is preferred, and the fallback is real.
+ *
+ * The send now tries the chat function's own Cloud Run origin first, because
+ * Firebase Hosting buffers the function's streamed reply (first byte 1836 ms
+ * through Hosting against 665 ms direct, same function, same request —
+ * docs/delivery/evidence/v10-20260905T0515Z/G-M3/08-decision-first-token.md).
+ *
+ * Preferring a cross-origin, deploy-specific hostname is only safe if a visitor
+ * who cannot reach it still gets an answer. That is what this asserts, on the
+ * wire, by taking the origin away: the request order, and a rendered reply.
+ */
+test.describe('MiniVic direct-origin route', () => {
+  test.describe.configure({ timeout: 120000 });
+
+  test('MV-ORIGIN-01: a blocked origin falls back to /api/chat, and the visitor still gets an answer', async ({
+    page,
+  }) => {
+    test.skip(!CHAT_ORIGIN_HOST, 'no direct chat origin is configured for this build');
+
+    // Every request to the origin fails at the network layer — the shape a
+    // corporate proxy, a withdrawn CORS allowance or a retired service URL all
+    // take from the browser's point of view.
+    await page.route(`${CHAT_ORIGIN}/**`, (route) => route.abort('failed'));
+
+    const { panel, input } = await openMiniVic(page);
+    await panel.getByRole('button', { name: 'Mute voice' }).click();
+    await expect(panel.getByRole('button', { name: 'Unmute voice' })).toBeVisible();
+
+    // Record only what the send does: the warm ping already fired on open.
+    const sends: string[] = [];
+    page.on('request', (request) => {
+      if (request.method() !== 'POST') return;
+      const url = new URL(request.url());
+      if (url.searchParams.has('warm')) return;
+      if (url.host === CHAT_ORIGIN_HOST) sends.push('origin');
+      else if (url.pathname === '/api/chat') sends.push('hosting');
+    });
+
+    await input.fill('What did Vikram do at the ATO?');
+    await input.press('Enter');
+
+    await expect
+      .poll(
+        async () => panel.locator('[data-testid="minivic-loading"]').count().then((n) => n === 0),
+        { timeout: SEND_TIMEOUT },
+      )
+      .toBe(true);
+
+    // The order is the whole point: the fast path is tried, and its failure
+    // hands the send to the path that always works.
+    await expect
+      .poll(async () => sends.join(','), { timeout: SEND_TIMEOUT })
+      .toBe('origin,hosting');
+
+    // And an answer rendered. On this static server /api/chat 404s too, so the
+    // reply is the deterministic tier's — which is the honest end of the ladder,
+    // not a fabricated one.
+    const replies = panel.locator('[data-minivic-message][data-minivic-role="bot"]');
+    await expect.poll(async () => (await replies.count()) >= 2, { timeout: SEND_TIMEOUT }).toBe(true);
+    const lastReply = (await replies.last().innerText()).trim();
+    expect(lastReply.length, `the fallback produced no answer:\n${lastReply}`).toBeGreaterThan(40);
+  });
+
+  test('MV-ORIGIN-02: the origin is tried before the Hosting rewrite on an ordinary send', async ({
+    page,
+  }) => {
+    test.skip(!CHAT_ORIGIN_HOST, 'no direct chat origin is configured for this build');
+
+    const { panel, input } = await openMiniVic(page);
+    await panel.getByRole('button', { name: 'Mute voice' }).click();
+
+    const sends: string[] = [];
+    page.on('request', (request) => {
+      if (request.method() !== 'POST') return;
+      const url = new URL(request.url());
+      if (url.searchParams.has('warm')) return;
+      if (url.host === CHAT_ORIGIN_HOST) sends.push('origin');
+      else if (url.pathname === '/api/chat') sends.push('hosting');
+    });
+
+    await input.fill('How do you lead a squad?');
+    await input.press('Enter');
+    await expect
+      .poll(
+        async () => panel.locator('[data-testid="minivic-loading"]').count().then((n) => n === 0),
+        { timeout: SEND_TIMEOUT },
+      )
+      .toBe(true);
+
+    // From this origin (a local static server) the function's CORS allowance
+    // does not cover us, so the direct rung fails and Hosting follows — but the
+    // ORDER is the invariant this asserts, and it is the same order a visitor on
+    // the live site gets.
+    expect(sends[0], `the send did not try the direct origin first: ${sends.join(',')}`).toBe('origin');
   });
 });
