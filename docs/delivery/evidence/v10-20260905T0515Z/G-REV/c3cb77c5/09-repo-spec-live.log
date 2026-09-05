@@ -1,0 +1,12 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/monochrome/minivic-launcher.spec.ts --workers=1 --reporter=line
+
+Running 5 tests using 1 worker
+
+[1A[2K[1/5] [chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold
+[1A[2K[2/5] [chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 640: every colour inside the launcher is R==G==B and never gold
+[1A[2K[3/5] [chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold
+[1A[2K[4/5] [chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 390: the launcher shows a visible "Ask Mini Vic" label at AA
+[1A[2K[5/5] [chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 640: the launcher shows a visible "Ask Mini Vic" label at AA
+[1A[2K  5 passed (14.6s)
+exit=0
