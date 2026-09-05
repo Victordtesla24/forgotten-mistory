@@ -58,3 +58,6 @@ S-5/S-6 (full 276-spec regression) re-assigned to cycle 14 (t_d0066b7a) on the m
 
 ## COMPLETE (2026-09-05T06:20:07.405Z)
 Commits 18c6beb + 878adab on worktree-wf_18f926b0-2a4-1; gates tsc/lint/audit 10-10/build/npm-audit 0/node tests 59-59 all exit 0 (re-run by V-C13); merged to main as 5ec231d.
+
+## COMMENT (2026-09-05T07:05:13.212Z)
+REGRESSION FOUND 06:5xZ: cycle 13 shipped the WebGL crash (R3F 8 vs next 15's vendored React 19). The C13 battery could not see it: this VPS has no GPU and useGLCapability marks SwiftShader unsupported, so no Scene mounts on a normal load; the 3 WebGL ✘ in v9 F-security-upgrade and TC-RENDER-01 were classified 'headless-only'. Lesson recorded in memory: a WebGL ✘ is never headless-only until a ?gl=force SwiftShader probe shows 0 pageerrors. Hotfix t_p100hotfx; durable t_r19r3f9.
