@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T06:36:48.438Z",
+  "updated": "2026-09-05T06:53:43.127Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -106,7 +106,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:32:27.806Z",
+      "updated": "2026-09-05T06:53:43.054Z",
       "summary": "decision.md (HYG-branches) already abandoned wt/data-backend and pruned 5 worktrees/4 branches. Left: .claude/worktrees/wf_7658aeb2-d07-1 (base 4f1d659, superseded by wf_18f926b0-2a4-2) and wf_dc0c232e-59d-1 (base 0c02861, superseded by wf_18f926b0-2a4-1); empty dir /var/tmp/v6-wt.",
       "decisions": [],
       "comments": [
@@ -119,6 +119,11 @@
           "at": "2026-09-05T06:32:27.806Z",
           "by": "orchestrator",
           "text": "Also move docs/delivery/evidence/v9-20260904T2312Z/C11-vitrine-integration/apply_edits.py under v10-20260905T0515Z/C11-vitrine-integration/ (misfiled, V-C11 F-4)."
+        },
+        {
+          "at": "2026-09-05T06:53:43.054Z",
+          "by": "orchestrator",
+          "text": "Also (V-C14a F1/F2): README.md:304 still says '58 TTS characters spent' (true figure 63, 07-decisions.md §6); and evidence .log files under docs/delivery/evidence/**/ are untracked because .gitignore:42 is a blanket *.log — add '!docs/delivery/evidence/**/*.log' so red-run proofs travel with the repo, then git add the C14a/C11/C13 logs."
         }
       ]
     },
@@ -544,7 +549,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:01:51.604Z",
+      "updated": "2026-09-05T06:53:43.127Z",
       "summary": "Blocked in part: Higgsfield 0 credits, ElevenLabs IVC refused, OpenRouter −$5.38 (all Owner-blocked, re-probed 2026-09-05T05:50Z). The achievable slice (stock synthetic voice + pre-rendered avatar loop + envelope-driven mouth state + the working chat ladder) is specified by t_spec-r-matrix S-3 and built as cycles 22+.",
       "decisions": [
         {
@@ -552,7 +557,13 @@
           "text": "Production chat brain routing (§0.4 applied to the site): the deployed Cloud Function ladder tries OpenRouter first and, while the balance is −$5.38 (402), answers on the OpenAI rung (live probe 05:5xZ: HTTP 200, 4.0 s, resume-grounded). The Owner's Anthropic OAuth session token is for claude-cli council reasoning only and is never placed in a Cloud Function; no ANTHROPIC_API_KEY is requested. Unblocks when OPENROUTER credits are added."
         }
       ],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T06:53:43.127Z",
+          "by": "orchestrator",
+          "text": "R3 voice slice is live (t_28011b3d PASS): /api/tts 200 audio/mpeg on a premade voice labelled synthetic. Remaining: latency ≤1.5 s (t_1173cd73), envelope-driven mouth stage (t_dc096608), ≤40 ms phoneme lip-sync (Owner-blocked)."
+        }
+      ]
     },
     {
       "id": "t_01071b79",
@@ -916,7 +927,7 @@
     {
       "id": "t_28011b3d",
       "title": "Cycle 14a — restore /api/tts: ElevenLabs Secret Manager drift fixed, premade voice labelled synthetic (R3 voice, M5 prerequisite)",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 94,
       "parents": [
@@ -930,7 +941,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:05.274Z",
-      "updated": "2026-09-05T06:36:48.438Z",
+      "updated": "2026-09-05T06:53:42.962Z",
       "summary": "SPEC-v10.md §R3(a): live POST /api/tts → 502 {tts_upstream_failed, status 401} while ELEVENLABS_API_KEY in /root/.claude/.env.production authenticates (GET /v1/user/subscription → 200, tier payg, IVC/PVC false). Classified as Secret Manager drift, not a credit block. The cloned voice 0ZJ4kFDo6bZUNQsuULOW is refused on payg (ivc_not_permitted) — orchestrator decision (§0.1): the site speaks with an ElevenLabs premade (stock) voice and every place it is heard is labelled synthetic. Spend cap for this task: ONE verification call ≤ 200 characters (≈ $0.03 on payg); log the character count.",
       "decisions": [
         {
@@ -949,7 +960,8 @@
           "text": "06:38Z: the implementer's branch worktree-wf_55e925e9-074-1 was consolidated into main by deploy.yml (5a07ac0: 8c09833 fix(tts) premade voice labelled synthetic, 60a474f evidence, 3af523c refactor keeping the cloned id out of shipped code) before V-C14a ran — expected under the Owner's gate-free pipeline (O3); ledger rows appended after the fact; V-C14a verdict still gates the board close, and R-c13 probes /api/tts on the live build."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "V-C14a PASS (ad10049): 15 gates green incl. reviewer's own live probe 200 audio/mpeg; voice = ElevenLabs premade JBFqnCBsd6RMkjVDRZzb 'George' (payg refuses cloned voices: ivc_not_permitted / subscription_required — the invalid_api_key era ended at secret version 2 on 2026-09-05T00:01Z, so no rotation was needed); spend 63 + 10 characters; consolidated into main by the pipeline (5a07ac0, 15fb165); live 15fb165b carries the 'Synthetic voice · not a recording of Vikram' label. Orchestrator probe 06:5xZ: HTTP 200 audio/mpeg 10075 B in 0.35 s."
     },
     {
       "id": "t_4e30d620",
