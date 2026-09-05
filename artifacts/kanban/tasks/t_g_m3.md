@@ -39,3 +39,43 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## COMMENT (2026-09-05T12:49:33.997Z)
 PREREQ FINDING (from G-M2): ELEVENLABS_API_KEY in /root/.claude/.env.production is a key ID (ElevenLabs 400 api_key_id_used_as_api_key) — the live /api/tts function (elevenLabsTts, Secret Manager ELEVENLABS_API_KEY) very likely fails the same way → speakReply falls back to browser TTS. Measure /api/tts on live in this lane and report honestly; the fix (a real sk_ key) is a credential the Owner holds — record as the blocker for the voice half of R3 while the chat TTFB half proceeds.
+
+## COMMENT (2026-09-05T13:06:01.934Z)
+BASELINE MEASURED by the reviewer on live (ca2b442): Enter→first visible bot text, 5 warm trials @1440 muted: 1677/2089/2121/2451/2813 ms → P50 2121 / P95 2813 (budget <1500); cold first sends 6151 (1440) / 1875 (390) / 3093 (unmuted); curl POST /api/chat time_starttransfer P50 1674 / P95 2564 ms (best 1450) — the FUNCTION itself is the budget, not the client; text/event-stream = 0. CORRECTION to my earlier note: POST /api/tts on live → 200 audio/mpeg 36.8 kB in 0.395 s (real MP3) — the deployed function's ELEVENLABS secret is a valid key; only the local .env.production value is a key ID. Suspect the provider ladder: OpenRouter (rung 1) is at 402 — if every warm instance pays a failing rung before DeepSeek answers, that is ~0.5–1 s of the budget; check 2026-09-05T06:04:38.624591Z W minivicchat: 
+2026-09-05T06:04:48.548228Z I minivicchat: 
+2026-09-05T06:38:03.618255Z I minivicchat: 
+2026-09-05T06:38:03.656366Z I minivicchat: Starting new instance. Reason: AUTOSCALING - Instance started due to configured scaling factors (e.g. CPU utilization, request throughput, etc.) or no existing capacity for current traffic.
+2026-09-05T06:38:04.608450Z I minivicchat: Default STARTUP TCP probe succeeded after 1 attempt for container "worker" on port 8080.
+2026-09-05T06:38:10.122790Z I minivicchat: 
+2026-09-05T07:03:48.177573Z W minivicchat: 
+2026-09-05T07:03:48.210237Z I minivicchat: Starting new instance. Reason: AUTOSCALING - Instance started due to configured scaling factors (e.g. CPU utilization, request throughput, etc.) or no existing capacity for current traffic.
+2026-09-05T07:03:49.123893Z I minivicchat: Default STARTUP TCP probe succeeded after 1 attempt for container "worker" on port 8080.
+2026-09-05T10:56:51.469930Z I minivicchat: 
+2026-09-05T10:56:51.500215Z I minivicchat: Starting new instance. Reason: AUTOSCALING - Instance started due to configured scaling factors (e.g. CPU utilization, request throughput, etc.) or no existing capacity for current traffic.
+2026-09-05T10:56:52.507821Z I minivicchat: Default STARTUP TCP probe succeeded after 1 attempt for container "worker" on port 8080.
+2026-09-05T11:00:07.164164Z I minivicchat: 
+2026-09-05T11:00:09.335663Z W minivicchat: 
+2026-09-05T11:00:09.633814Z W minivicchat: 
+2026-09-05T11:00:09.932674Z W minivicchat: 
+2026-09-05T11:00:59.807147Z I minivicchat: 
+2026-09-05T11:04:40.118839Z I minivicchat: 
+2026-09-05T11:04:42.453065Z I minivicchat: 
+2026-09-05T11:04:43.520194Z I minivicchat: 
+2026-09-05T12:54:06.345209Z I minivicchat: 
+2026-09-05T12:54:06.372378Z I minivicchat: Starting new instance. Reason: AUTOSCALING - Instance started due to configured scaling factors (e.g. CPU utilization, request throughput, etc.) or no existing capacity for current traffic.
+2026-09-05T12:54:07.356052Z I minivicchat: Default STARTUP TCP probe succeeded after 1 attempt for container "worker" on port 8080.
+2026-09-05T12:54:58.185140Z I minivicchat: 
+2026-09-05T12:55:39.378541Z I minivicchat: 
+2026-09-05T12:56:18.466908Z I minivicchat: 
+2026-09-05T12:56:22.610193Z I minivicchat: 
+2026-09-05T12:56:26.126500Z I minivicchat: 
+2026-09-05T12:56:29.220244Z I minivicchat: 
+2026-09-05T12:56:33.648564Z I minivicchat: 
+2026-09-05T12:57:18.256336Z I minivicchat: 
+2026-09-05T12:57:20.850314Z I minivicchat: 
+2026-09-05T12:57:22.859578Z I minivicchat: 
+2026-09-05T12:57:24.530559Z I minivicchat: 
+2026-09-05T12:57:26.172564Z I minivicchat:  rung timings and make the cooldown/ordering survive cold starts (env-driven rung order), plus warm ping + streaming if Hosting passes chunks. Parent t_g_m1 done → READY.
+
+## STATUS (2026-09-05T13:07:14.639Z)
+running — dispatched 13:07Z — analyst-programmer xhigh, isolated worktree, port 5612; function deploy from VPS allowed; RECTIFY push rule

@@ -51,3 +51,6 @@ PUSHED 03aa1ed on worktree-wf_b908a7a9-f5d-1 (12:25Z): .evidence[data-sourced='t
 
 ## COMMENT (2026-09-05T12:37:56.120Z)
 REVIEWER PHASE-2 FAIL (semantics, prime directive 3) on live 843b679d: colour/contrast PASS (9× rgb(201,168,76), AA 7.99–8.72:1) but 4 of 9 gold lines are not checkable records — #4 Culture Fit '5+ squads, up to 40 practitioners…' (self-reported), #8 Company Stability '75+ hours of evidence against 64 available…' (bare numbers), #7 Career Growth '… −38% simulated error-budget breaches' (its own text says simulated), #6 Location Match 'Currently on site with the ATO' sits on a side==='role' dimension rendering the OPEN caliper 'measured from the role'. Structural cause: the new  flag was never reconciled with the pre-existing  flag (About.tsx:220). False positive named: commit 03aa1ed's 'a figure off the CV' criterion contradicts CLAUDE.md (CV figure = self-reported, not sourced). → CORRECTION t_g_a1c dispatched.
+
+## COMPLETE (2026-09-05T13:03:55.616Z)
+DONE via correction t_g_a1c — independent reviewer PASS on live (phase 3, 8b351a7). Lineage: 03aa1ed (gold mechanics) → phase-2 FAIL on semantics → d958917 (sourced only where a checkable record is named) → PASS.
