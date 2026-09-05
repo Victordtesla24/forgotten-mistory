@@ -24,6 +24,32 @@
     transition: transform var(--motion-cine-in) var(--motion-ease-emphasized);
 }
 
+/* ── The first-entry sweep ───────────────────────────────────────────────── */
+/* One cinematic beat, once. The carrier around the rose turns a full −360°
+   over the long cinematic band the first time the section is on screen, so
+   the instrument demonstrates itself to a reader who never hovers. A full
+   turn ends where it started, which is why it lives on its own group: the
+   rose beneath keeps its own index rotation and there is nothing to snap back
+   to when the sweep finishes. `data-sweep` is set once and never removed, so
+   the animation runs exactly once. */
+.sweep {
+    transform-origin: 50% 50%;
+}
+
+.sweep[data-sweep] {
+    animation: compassSweep var(--motion-cine-long) var(--motion-ease-emphasized) 1 both;
+}
+
+@keyframes compassSweep {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-360deg);
+    }
+}
+
 /* ── Bezel ───────────────────────────────────────────────────────────────── */
 .bezel,
 .bezelInner {
@@ -180,5 +206,10 @@
        affordance, and it causes no vestibular response (R-46 / lock §4.3). */
     .rose {
         transition: none;
+    }
+
+    /* No sweep: the index snaps to the reader's place instead of travelling. */
+    .sweep[data-sweep] {
+        animation: none;
     }
 }

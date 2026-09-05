@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
 /**
  * About — the ten dimensions his own job-fit engine scores a candidate on,
@@ -13,6 +13,9 @@ import { test, expect } from '@playwright/test';
  */
 
 const ABOUT = '#about';
+/** The hub readout: the number of the axis being read, and which side it is computed from. */
+const READ_NUMBER = `${ABOUT} svg text[class*="readNumber"]`;
+const READ_STATE = `${ABOUT} svg text[class*="readState"]`;
 
 const DIMENSIONS = [
   'Technical Skills',
@@ -92,11 +95,58 @@ test.describe('About', () => {
     }
   });
 
-  test('TC-ABOUT-06: each dimension is keyboard reachable', async ({ page }) => {
-    const first = page.locator(`${ABOUT} ol li`).first();
-    await first.focus();
-    await expect(first).toBeFocused();
-    await expect(first).toHaveAttribute('data-active', 'true');
+  test('TC-ABOUT-06: the ten items are reading aids, not tab stops', async ({ page }) => {
+    // The ten <li> used to carry tabindex=0 with no role and no accessible
+    // name: ten dead stops a keyboard user had to Tab through to reach the
+    // next real control (adversarial F4). Nothing inside an item is
+    // interactive — the answers are prose, the caliper is a mark — so the
+    // decision is to drop keyboard focus for the items entirely and let the
+    // compass follow scroll (a keyboard reader scrolls). Tab from the heading
+    // must therefore reach the provenance link in at most two stops, with no
+    // <li> in between.
+    await expect(page.locator(`${ABOUT} ol li[tabindex]`)).toHaveCount(0);
+
+    // Clicking prose sets the sequential-focus starting point in Chromium, so
+    // the next Tab continues from the heading rather than from the top.
+    await page.locator(`${ABOUT} h2`).click();
+    const provenance = page.locator(`${ABOUT} a[href*="aether-job-career-agent"]`);
+    let stops = 0;
+    let landed = false;
+    while (stops < 2 && !landed) {
+      await page.keyboard.press('Tab');
+      stops += 1;
+      const focused = await page.evaluate(() => {
+        const el = document.activeElement as HTMLElement | null;
+        return el ? `${el.tagName}:${el.getAttribute('href') ?? ''}` : 'none';
+      });
+      expect(focused, `Tab #${stops} landed on a list item`).not.toMatch(/^LI:/);
+      landed = focused.startsWith('A:') && focused.includes('aether-job-career-agent');
+    }
+    expect(landed, 'the provenance link was not reached within two Tab stops').toBe(true);
+    await expect(provenance).toBeFocused();
+
+    // Every focusable element inside the section has an accessible name.
+    const unnamed = await page.locator(ABOUT).evaluate((root) => {
+      const focusable = Array.from(
+        root.querySelectorAll<HTMLElement>(
+          'a[href], button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])',
+        ),
+      );
+      const nameOf = (el: HTMLElement): string => {
+        const labelledBy = el.getAttribute('aria-labelledby');
+        if (labelledBy) {
+          const text = labelledBy
+            .split(/\s+/)
+            .map((id) => document.getElementById(id)?.textContent ?? '')
+            .join(' ')
+            .trim();
+          if (text) return text;
+        }
+        return (el.getAttribute('aria-label') ?? el.textContent ?? el.getAttribute('title') ?? '').trim();
+      };
+      return focusable.filter((el) => nameOf(el).length === 0).map((el) => el.outerHTML.slice(0, 80));
+    });
+    expect(unnamed).toEqual([]);
   });
 
   test('TC-ABOUT-07: the section is complete without WebGL', async ({ page }) => {
@@ -105,5 +155,182 @@ test.describe('About', () => {
     await expect(page.locator(`${ABOUT} ol li`)).toHaveCount(10);
     await expect(page.locator(`${ABOUT} canvas`)).toHaveCount(0);
     await expect(page.locator(ABOUT)).toContainText('Ten axes · no scores');
+  });
+
+  /**
+   * Scroll item `n` (1-based) so its centre sits at the viewport's centre, with
+   * the pointer parked off the list so no hover is live.
+   */
+  async function centreItem(page: Page, n: number) {
+    await page.mouse.move(2, 2);
+    await page
+      .locator(`${ABOUT} ol li`)
+      .nth(n - 1)
+      .evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        window.scrollTo(0, window.scrollY + r.top + r.height / 2 - window.innerHeight / 2);
+      });
+  }
+
+  /** The rotation, in degrees, that a computed 2-D transform matrix encodes. */
+  function rotationOf(transform: string): number {
+    const m = transform.match(/matrix\(([^)]+)\)/);
+    if (!m) return 0;
+    const [a, b] = m[1].split(',').map((v) => parseFloat(v.trim()));
+    return (Math.atan2(b, a) * 180) / Math.PI;
+  }
+
+  /** Wait until the first-entry sweep on the compass has finished. */
+  async function waitForSweep(page: Page) {
+    await expect(page.locator(ABOUT)).toHaveAttribute('data-swept', 'true');
+    await page.locator(`${ABOUT} svg [data-sweep]`).evaluate(async (el) => {
+      await Promise.all(el.getAnimations().map((a) => a.finished.catch(() => undefined)));
+    });
+  }
+
+  test('TC-ABOUT-08: the compass turns as the reader scrolls — item 6 centred reads 06 / FROM THE ROLE', async ({
+    page,
+  }) => {
+    await waitForSweep(page);
+    await centreItem(page, 6);
+    await page.waitForTimeout(900);
+    const rose = page.locator(`${ABOUT} svg g[class*="rose"]`).last();
+    const transform = await rose.evaluate((el) => getComputedStyle(el).transform);
+    // Index 5 of ten sectors is carried to twelve o'clock by rotate(-180deg).
+    expect(Math.abs(Math.abs(rotationOf(transform)) - 180), transform).toBeLessThan(0.5);
+    await expect(page.locator(`${ABOUT} ol li`).nth(5)).toHaveAttribute('data-active', 'true');
+    // The hub readout, not the ring: the numerals 01–10 are always on the face.
+    await expect(page.locator(READ_NUMBER)).toHaveText('06');
+    await expect(page.locator(READ_STATE)).toHaveText('FROM THE ROLE');
+    // The rotation itself still travels on the cinematic-in transition.
+    const transition = await rose.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return `${cs.transitionProperty} ${cs.transitionDuration} ${cs.transitionTimingFunction}`;
+    });
+    expect(transition).toContain('transform');
+    expect(transition).toContain('0.72s');
+    expect(transition).toContain('cubic-bezier(0.16, 1, 0.3, 1)');
+  });
+
+  test('TC-ABOUT-09: hover overrides the scroll index, and leaving the list hands it back', async ({ page }) => {
+    await waitForSweep(page);
+    await centreItem(page, 6);
+    await page.waitForTimeout(900);
+    await expect(page.locator(READ_NUMBER)).toHaveText('06');
+    // Move the pointer onto the next item down without scrolling — a
+    // `locator.hover()` would scroll it into view and move the scroll index
+    // with it, which is not what is under test here.
+    const seventh = await page.locator(`${ABOUT} ol li`).nth(6).boundingBox();
+    expect(seventh).not.toBeNull();
+    await page.mouse.move(seventh!.x + seventh!.width / 2, seventh!.y + Math.min(24, seventh!.height / 2));
+    await expect(page.locator(READ_NUMBER)).toHaveText('07');
+    await expect(page.locator(`${ABOUT} ol li`).nth(6)).toHaveAttribute('data-active', 'true');
+    // Off the list: back to whatever the scroll position says.
+    await page.mouse.move(2, 2);
+    await expect(page.locator(READ_NUMBER)).toHaveText('06');
+    await expect(page.locator(`${ABOUT} ol li`).nth(5)).toHaveAttribute('data-active', 'true');
+  });
+
+  test('TC-ABOUT-10: on first entry the bezel sweeps once — 1160 ms, emphasised ease, never again', async ({
+    page,
+  }) => {
+    // beforeEach has already scrolled the section into view, which is the
+    // first entry; the sweep is running or has just run.
+    await expect(page.locator(ABOUT)).toHaveAttribute('data-swept', 'true');
+    const sweep = page.locator(`${ABOUT} svg [data-sweep]`);
+    const declared = await sweep.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return {
+        duration: cs.animationDuration,
+        easing: cs.animationTimingFunction,
+        iterations: cs.animationIterationCount,
+        name: cs.animationName,
+      };
+    });
+    expect(declared.duration).toBe('1.16s');
+    expect(declared.easing).toBe('cubic-bezier(0.16, 1, 0.3, 1)');
+    expect(declared.iterations).toBe('1');
+    expect(declared.name).not.toBe('none');
+    const played = await sweep.evaluate((el) =>
+      el.getAnimations().map((a) => ({
+        state: a.playState,
+        duration: Number(a.effect?.getComputedTiming().duration ?? 0),
+      })),
+    );
+    expect(played.length).toBeGreaterThanOrEqual(1);
+    expect(played[0].duration).toBe(1160);
+    expect(['running', 'finished']).toContain(played[0].state);
+
+    // Leave and come back: the mark stays and nothing replays.
+    await waitForSweep(page);
+    await page.locator('#hero').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(300);
+    await page.locator(ABOUT).scrollIntoViewIfNeeded();
+    await page.waitForTimeout(300);
+    await expect(page.locator(ABOUT)).toHaveAttribute('data-swept', 'true');
+    const replayed = await sweep.evaluate(
+      (el) => el.getAnimations().filter((a) => a.playState === 'running').length,
+    );
+    expect(replayed).toBe(0);
+  });
+
+  test('TC-ABOUT-11: under reduced motion the index snaps — no sweep, no travel, still swept', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    await page.locator(ABOUT).scrollIntoViewIfNeeded();
+    await expect(page.locator(ABOUT)).toHaveAttribute('data-swept', 'true');
+    const timing = await page.locator(`${ABOUT} svg [data-sweep]`).evaluate((el) => {
+      const outer = getComputedStyle(el);
+      const rose = el.querySelector('g') as SVGGElement;
+      const inner = getComputedStyle(rose);
+      return {
+        sweepAnimation: outer.animationDuration,
+        roseAnimation: inner.animationDuration,
+        roseTransition: inner.transitionDuration,
+      };
+    });
+    expect(timing.sweepAnimation).toBe('0s');
+    expect(timing.roseAnimation).toBe('0s');
+    expect(timing.roseTransition).toBe('0s');
+    // The face still points: centre item 6 and it reads 06 at once.
+    await centreItem(page, 6);
+    await expect(page.locator(READ_NUMBER)).toHaveText('06');
+    const transform = await page
+      .locator(`${ABOUT} svg g[class*="rose"]`)
+      .last()
+      .evaluate((el) => getComputedStyle(el).transform);
+    expect(Math.abs(Math.abs(rotationOf(transform)) - 180), transform).toBeLessThan(0.5);
+  });
+
+  test('TC-ABOUT-12: no gold on the face — the active sector, its numeral and the ring stay achromatic', async ({
+    page,
+  }) => {
+    await waitForSweep(page);
+    await page.locator(`${ABOUT} ol li`).nth(0).hover();
+    const active = page.locator(`${ABOUT} svg path[data-active]`);
+    await expect(active).toHaveCount(1);
+    const chroma = (colour: string): number => {
+      const m = colour.match(/rgba?\(([^)]+)\)/);
+      if (!m) return colour.startsWith('url') || colour === 'none' ? 0 : 255;
+      const [r, g, b] = m[1].split(/[\s,/]+/).map((v) => parseFloat(v));
+      return Math.max(r, g, b) - Math.min(r, g, b);
+    };
+    const paints = await page
+      .locator(`${ABOUT} svg g[class*="rose"]`)
+      .last()
+      .evaluate((rose) =>
+        [rose, ...Array.from(rose.querySelectorAll('*'))].map((el) => {
+          const cs = getComputedStyle(el);
+          return { tag: el.tagName, active: el.hasAttribute('data-active'), fill: cs.fill, stroke: cs.stroke };
+        }),
+      );
+    const activeSector = paints.find((p) => p.tag === 'path' && p.active);
+    expect(activeSector).toBeTruthy();
+    expect(chroma(activeSector!.fill), activeSector!.fill).toBeLessThanOrEqual(8);
+    expect(chroma(activeSector!.stroke), activeSector!.stroke).toBeLessThanOrEqual(8);
+    const offenders = paints
+      .filter((p) => chroma(p.fill) > 8 || chroma(p.stroke) > 8)
+      .map((p) => `${p.tag} fill=${p.fill} stroke=${p.stroke}`);
+    expect(offenders).toEqual([]);
   });
 });

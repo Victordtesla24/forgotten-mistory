@@ -24,6 +24,12 @@ interface CompassProps {
    * a candidate to measure there.
    */
   sides: readonly ('candidate' | 'role')[];
+  /**
+   * True once the section has first come into view. Starts the one full
+   * −360° sweep of the bezel; the attribute is never removed, so the CSS
+   * animation runs exactly once and does not replay on re-entry.
+   */
+  sweep?: boolean;
 }
 
 const SECTOR_SWEEP = 360 / SPOKES;
@@ -82,7 +88,7 @@ function annulus(from: number, to: number, rInner: number, rOuter: number): stri
  * pixels of empty column. It costs no context, compiles nothing, and stays
  * sharp at any zoom.
  */
-export default function Compass({ active, labels, sides }: CompassProps) {
+export default function Compass({ active, labels, sides, sweep = false }: CompassProps) {
   const geometry = useMemo(() => {
     const sectors = Array.from({ length: SPOKES }, (_, i) => {
       const centre = sectorAngle(i);
@@ -157,6 +163,12 @@ export default function Compass({ active, labels, sides }: CompassProps) {
       {/* The hub glow sits under everything and does not turn. */}
       <circle cx="50" cy="50" r={HUB + 8} fill="url(#compass-hub)" />
 
+      {/* The first-entry sweep lives on its own carrier so it composes with,
+          rather than fights, the rose's index rotation beneath it: a full
+          −360° turn ends where it began, so there is nothing to snap back to
+          when it finishes, and the rose's own 720 ms transition keeps carrying
+          the current dimension to twelve o'clock throughout. */}
+      <g className={styles.sweep} data-sweep={sweep || undefined}>
       <g
         className={styles.rose}
         style={{ transform: `rotate(${rotation}deg)` }}
@@ -205,6 +217,7 @@ export default function Compass({ active, labels, sides }: CompassProps) {
         ))}
 
         <circle cx="50" cy="50" r={SECTOR_INNER} className={styles.hubRing} />
+      </g>
       </g>
 
       {/* The reading position. Fixed at twelve o'clock while the face turns
