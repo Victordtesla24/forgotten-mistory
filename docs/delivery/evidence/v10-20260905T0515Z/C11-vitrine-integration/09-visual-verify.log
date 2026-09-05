@@ -1,0 +1,67 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/visual/screenshots.spec.ts tests/overhaul/render.spec.ts --reporter=line
+
+[2mRunning [22m11[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/11] [chromium] › tests/overhaul/render.spec.ts:102:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss
+[1A[2K[2/11] [chromium] › tests/overhaul/render.spec.ts:79:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it
+[1A[2K[3/11] [chromium] › tests/overhaul/render.spec.ts:131:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page
+[1A[2K[4/11] [chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium)
+[1A[2K[5/11] [chromium] › tests/overhaul/render.spec.ts:173:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-09: A full-page scroll never trips a page error or the error boundary
+[1A[2K[6/11] [chromium] › tests/visual/screenshots.spec.ts:95:7 › Visual Regression › VIS-01: Full hero section screenshot
+[1A[2K[7/11] [chromium] › tests/visual/screenshots.spec.ts:100:7 › Visual Regression › VIS-02: About section screenshot
+[1A[2K[8/11] [chromium] › tests/visual/screenshots.spec.ts:105:7 › Visual Regression › VIS-03: Navigation overlay screenshot (open state)
+[1A[2K[9/11] [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot
+[1A[2K[10/11] [chromium] › tests/visual/screenshots.spec.ts:118:7 › Visual Regression › VIS-05: Vitrine section screenshot
+[1A[2K[31m  1) [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot [39m
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveScreenshot[2m([22m[32mexpected[39m[2m)[22m failed
+
+      42156 pixels (ratio 0.04 of all image pixels) are different.
+
+      Snapshot: listen-section.png
+
+    Call log:
+    [2m  - Expect "toHaveScreenshot(listen-section.png)" with timeout 30000ms[22m
+    [2m    - verifying given screenshot expectation[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - 42156 pixels (ratio 0.04 of all image pixels) are different.[22m
+    [2m  - waiting 100ms before taking screenshot[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - captured a stable screenshot[22m
+    [2m  - 42156 pixels (ratio 0.04 of all image pixels) are different.[22m
+
+
+    [0m [90m 87 |[39m     }[33m;[39m
+     [90m 88 |[39m   })[33m;[39m
+    [31m[1m>[22m[39m[90m 89 |[39m   [36mawait[39m expect(page)[33m.[39mtoHaveScreenshot(name[33m,[39m { [33m...[39m[33mSHOT[39m[33m,[39m fullPage[33m:[39m [36mtrue[39m[33m,[39m clip })[33m;[39m
+     [90m    |[39m                      [31m[1m^[22m[39m
+     [90m 90 |[39m }
+     [90m 91 |[39m
+     [90m 92 |[39m test[33m.[39mdescribe([32m'Visual Regression'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at shootSection (/root/forgotten-mistory/.claude/worktrees/wf_18f926b0-2a4-2/tests/visual/screenshots.spec.ts:89:22)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_18f926b0-2a4-2/tests/visual/screenshots.spec.ts:115:5[22m
+
+[2m    attachment #1: [1mlisten-section[2m (image/png) [2m──────────────────────────────────────────────────────[2m[22m
+[2m    Expected: tests/baselines/visual/screenshots.spec.ts-snapshots/listen-section-chromium-linux.png[22m
+[2m    Received: test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/listen-section-actual.png[22m
+[2m    Diff:     test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/listen-section-diff.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/error-context.md[22m
+
+
+[1A[2K[11/11] [chromium] › tests/visual/screenshots.spec.ts:125:7 › Visual Regression › VIS-06: Full page screenshot (viewport top)
+[1A[2K[31m  1 failed[39m
+[31m    [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot [39m
+[32m  10 passed[39m[2m (34.1s)[22m
