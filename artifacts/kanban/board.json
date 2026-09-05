@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T09:28:12.772Z",
+  "updated": "2026-09-05T09:37:42.061Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -13,6 +13,25 @@
     "archived"
   ],
   "tasks": [
+    {
+      "id": "t_realign01",
+      "title": "P0 RESUME — docs/prompt.md max PEA; ship visible UI every ≤10 min (O1/O5)",
+      "column": "ready",
+      "status": "running",
+      "priority": 0,
+      "assignee": "orchestrator",
+      "created_at": "2026-09-05T09:32:35Z",
+      "updated_at": "2026-09-05T09:36:11Z",
+      "labels": [
+        "P0",
+        "resume",
+        "O1",
+        "O5",
+        "PEA"
+      ],
+      "summary": "On resume: read docs/prompt.md + docs/ORCHESTRATOR-REALIGN.md; claim this; ship visible UI each 10-min window. Hermes off. fm-deploy-cadence.timer active.",
+      "updated": "2026-09-05T09:37:42.061Z"
+    },
     {
       "id": "t_c51b34a7",
       "title": "Run v10 open — docs/prompt.md + v9 evidence (F-lighthouse-ci, F-security-upgrade, R-c12) recorded",
@@ -1821,5 +1840,6 @@
       "comments": [],
       "blocker": null
     }
-  ]
+  ],
+  "updated_at": "2026-09-05T09:36:11Z"
 }
