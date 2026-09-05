@@ -360,3 +360,244 @@ test.describe('G-H2a: the hero atmosphere is in the first paint', () => {
     }
   });
 });
+
+/**
+ * G-H2b — the scrim is a grade bound to the reading column, not a wash over the
+ * frame.
+ *
+ * ## The defect
+ *
+ * `.stage::after` used to be a flat `rgb(10 10 10 / 0.86)` across the whole
+ * frame. It did protect the copy, and it also put a second, permanent
+ * attenuation over every luminous layer the hero has — the rake, both pools,
+ * the shader. The independent review called the result a shy backdrop
+ * (ADV-FAIL-20260905): the flagship scene was on screen and could not be seen.
+ *
+ * The fix is not "less scrim". It is a scrim that is *shaped like the column it
+ * protects*: heavy where a glyph is drawn, gone where the picture is. Then both
+ * things are true at once — the copy keeps AA and the light crosses the frame.
+ *
+ * ## What this measures, and why not the bands the architecture note names
+ *
+ * `docs/architecture/SIGNATURE-SCENES-v1.md` §4.1(b) writes the acceptance as
+ * *the outer thirds (x < 22% and x > 78%) are ≥ 0.06 brighter than the centre
+ * reading band*. That phrasing assumes the copy runs down the middle of the
+ * frame, which was true when the note was written and is not true now: the fold
+ * lane (44c3e08, 70a04a8) made the reading column one grid item hard against
+ * the left gutter, beside a `38vw` photograph. Measured on the shipped build at
+ * 1440, the hero's text runs **x = 96…960** — 6.7% to 66.7% of the frame. So
+ * `x < 22%` is not an outer third at all: it is the `<h1>`, the role line and
+ * the statement, and *lighting* it is the one thing this lane is forbidden to
+ * do. `--mist-400` (`#909090`, relative luminance 0.2789) over the brightest
+ * fog this shader draws needs the ground held at or below `#2A2A2A` to clear
+ * 4.5:1; the scrim alpha the note suggests, 0.72, lands that ground on `#494949`
+ * and `--mist-400` on it at **2.82:1** — a WCAG failure, not a fix, and
+ * `tests/a11y/text-contrast.spec.ts` TC-CONTRAST-02 would say so.
+ *
+ * The *quantity* in §4.1(b) is right and is kept verbatim: a 0.06 relative
+ * luminance margin between the band the type reads on and a lit band elsewhere
+ * in the frame. Only the geometry is taken from the DOM instead of assumed, so
+ * the assertion measures the composition that shipped rather than the one the
+ * note imagined — and keeps measuring it if the column moves again.
+ *
+ * ## Why "the brightest tenth" and not "the right-hand third"
+ *
+ * Because the phone is a different mechanism and the assertion has to hold for
+ * both. Below 700 px `.stage::after` is `display: none` and each run of copy
+ * carries its own plate; the light is whole behind them, showing in the gutters
+ * and between the lines. There is no right-hand third to point at — the copy
+ * runs x = 17…373 of 390 — so a test written around one would be a desktop test
+ * wearing a mobile viewport. A window of a tenth of the frame's width, taken
+ * wherever it is brightest, asks the same question of both layouts: *is there a
+ * piece of this frame, of a size a reader would notice, that the type is not
+ * standing on and that the scrim did not flatten?*
+ *
+ * It is also the assertion a flat wash fails. A uniform `0.86` attenuates every
+ * column by the same factor, so the brightest window collapses towards the mean
+ * under the column: over this shader's own range that leaves about 0.02 between
+ * them, and on the reduced-motion still about 0.003. Neither reaches 0.06. The
+ * shape is what passes this, not the brightness — which is the point.
+ *
+ * Both paths are measured because they are two different pictures: `?gl=force`
+ * is what a reader with a GPU gets (scrim over shader), and the reduced-motion
+ * still is what everyone else gets (scrim over the site's own gradient). A
+ * scrim graded correctly for one and flat over the other would be half a fix.
+ */
+
+/**
+ * The margin, in WCAG relative luminance, between the band the hero's type
+ * reads on and the brightest tenth of the frame.
+ *
+ * 0.06 is the architecture note's own figure (§4.1(b)) and is not re-derived
+ * here. What is worth recording is the room it has on the build that ships it,
+ * so a later reader can tell a real regression from host noise — measured in
+ * this lane's `04-tests-passing.log`: 0.32 at 1440 and 0.23 at 390 on
+ * `?gl=force`, 0.088 at 1440 and 0.075 at 390 on the reduced-motion still. The
+ * still is the tight one by construction: it has no shader to be bright with,
+ * only the site's own gradient, so it is the surface a careless scrim edit
+ * breaks first and the reason the still is measured at all.
+ */
+const SCRIM_MIN_DELTA = 0.06;
+
+/** The fraction of the frame's width the brightest window is measured over. */
+const LIT_WINDOW_FRACTION = 0.1;
+
+/** Mean relative luminance of every pixel column of a capture, left to right. */
+function columnLuminance(buffer: Buffer): number[] {
+  const png = PNG.sync.read(buffer);
+  const columns = new Array<number>(png.width).fill(0);
+  for (let y = 0; y < png.height; y += 1) {
+    for (let x = 0; x < png.width; x += 1) {
+      const o = (y * png.width + x) * 4;
+      columns[x] += relativeLuminance(png.data[o], png.data[o + 1], png.data[o + 2]);
+    }
+  }
+  return columns.map((sum) => sum / png.height);
+}
+
+/** Mean of a slice of that profile, addressed in fractions of the width. */
+function bandMean(columns: number[], fromFraction: number, toFraction: number): number {
+  const from = Math.max(0, Math.floor(columns.length * fromFraction));
+  const to = Math.min(columns.length, Math.ceil(columns.length * toFraction));
+  let sum = 0;
+  for (let x = from; x < to; x += 1) sum += columns[x];
+  return sum / Math.max(1, to - from);
+}
+
+/** The brightest contiguous window of `fraction` of the width, anywhere in it. */
+function brightestWindow(
+  columns: number[],
+  fraction: number,
+): { mean: number; centreFraction: number } {
+  const width = Math.max(1, Math.round(columns.length * fraction));
+  let running = 0;
+  for (let x = 0; x < width; x += 1) running += columns[x];
+  let best = running;
+  let bestStart = 0;
+  for (let x = width; x < columns.length; x += 1) {
+    running += columns[x] - columns[x - width];
+    if (running > best) {
+      best = running;
+      bestStart = x - width + 1;
+    }
+  }
+  return {
+    mean: best / width,
+    centreFraction: (bestStart + width / 2) / columns.length,
+  };
+}
+
+/**
+ * The hero's reading column, as fractions of the slot's width — the union of
+ * every text node the hero actually renders, read from the live layout rather
+ * than assumed from the stylesheet. Leaf nodes only: a wrapper's box is its
+ * children's, and counting both would weight the wide ones twice.
+ */
+async function readingColumnFractions(page: Page, slotWidth: number, slotLeft: number) {
+  const bounds = await page.evaluate(() => {
+    const hero = document.querySelector('#hero');
+    if (!hero) return null;
+    const selector = 'h1, h2, p, a, span, li, dt, dd';
+    let minX = Number.POSITIVE_INFINITY;
+    let maxX = Number.NEGATIVE_INFINITY;
+    let count = 0;
+    for (const el of hero.querySelectorAll(selector)) {
+      if (!(el.textContent ?? '').trim()) continue;
+      if (el.querySelector(selector)) continue;
+      const rect = el.getBoundingClientRect();
+      if (rect.width < 2 || rect.height < 2) continue;
+      minX = Math.min(minX, rect.left);
+      maxX = Math.max(maxX, rect.right);
+      count += 1;
+    }
+    return count ? { minX, maxX, count } : null;
+  });
+  expect(bounds, 'the hero rendered no text to measure a reading column from').not.toBeNull();
+  return {
+    from: (bounds!.minX - slotLeft) / slotWidth,
+    to: (bounds!.maxX - slotLeft) / slotWidth,
+    count: bounds!.count,
+  };
+}
+
+for (const path of [
+  { url: '/?gl=force', reducedMotion: 'no-preference' as const, name: 'over the shader' },
+  { url: '/', reducedMotion: 'reduce' as const, name: 'over the reduced-motion still' },
+]) {
+  test.describe(`G-H2b: the hero scrim is a column-bound grade, ${path.name}`, () => {
+    test.describe.configure({ timeout: 90000 });
+
+    for (const viewport of [
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 },
+    ] as const) {
+      test(`TC-HERO-SCRIM-01 [${viewport.width}${
+        path.reducedMotion === 'reduce' ? ', still' : ', gl'
+      }]: the light crosses the frame the type does not stand on`, async ({ page }) => {
+        await page.setViewportSize(viewport);
+        // Set on the page rather than the context: `reducedMotion` as a
+        // `test.use` option is context-scoped, and a describe-level copy of it
+        // forces Playwright to spin the worker again for the second path.
+        await page.emulateMedia({ reducedMotion: path.reducedMotion });
+        await page.goto(path.url, { waitUntil: 'domcontentloaded' });
+
+        const slot = heroSlot(page);
+        await expect(slot).toBeVisible();
+
+        if (path.reducedMotion === 'reduce') {
+          // No canvas is coming — `Scene` withholds every scene under reduced
+          // motion — so the only thing to wait for is the stylesheet's own
+          // picture. Asserting the absence keeps the measurement honest: if a
+          // canvas ever did mount here, this would be photographing the shader
+          // and calling it the still.
+          await page.waitForTimeout(1200);
+          expect(
+            await slot.locator('canvas').count(),
+            'a canvas mounted under prefers-reduced-motion — this is meant to be the still',
+          ).toBe(0);
+        } else {
+          await expect(slot.locator('canvas')).toHaveCount(1, { timeout: PRIORITY_BUDGET_MS });
+          // The shader ramps its fog in; measured before it settles the frame is
+          // darker than the one a reader looks at.
+          await page.waitForTimeout(2500);
+        }
+
+        const box = await slot.boundingBox();
+        expect(box, 'the hero slot has no box to photograph').not.toBeNull();
+
+        const column = await readingColumnFractions(page, box!.width, box!.x);
+        const columns = columnLuminance(await slot.screenshot());
+
+        const underType = bandMean(columns, column.from, column.to);
+        const lit = brightestWindow(columns, LIT_WINDOW_FRACTION);
+        const delta = lit.mean - underType;
+
+        console.log(
+          `[TC-HERO-SCRIM-01] ${viewport.width}${path.reducedMotion === 'reduce' ? ' still' : ' gl'}: ` +
+            `column=${column.from.toFixed(3)}..${column.to.toFixed(3)} (${column.count} nodes) ` +
+            `under_type=${underType.toFixed(4)} lit_window=${lit.mean.toFixed(4)} ` +
+            `at=${lit.centreFraction.toFixed(3)} delta=${delta.toFixed(4)}`,
+        );
+
+        expect(
+          delta,
+          `the hero scrim is flattening the frame: the brightest tenth of it (${lit.mean.toFixed(
+            4,
+          )}, centred at ${(lit.centreFraction * 100).toFixed(1)}%) is only ${delta.toFixed(
+            4,
+          )} above the band the type reads on (${underType.toFixed(4)}), against a ` +
+            `${SCRIM_MIN_DELTA} floor — the atmosphere is on screen and cannot be seen`,
+        ).toBeGreaterThanOrEqual(SCRIM_MIN_DELTA);
+
+        // And the other half of "column-bound": the type is standing on the
+        // dark. A scrim that had drifted off the column — or been deleted —
+        // would satisfy the margin above while leaving the copy on the light.
+        expect(
+          underType,
+          `the band under the hero's type measures ${underType.toFixed(4)}, brighter than the ` +
+            'brightest tenth of the frame — the scrim is no longer over the reading column',
+        ).toBeLessThan(lit.mean);
+      });
+    }
+  });
+}

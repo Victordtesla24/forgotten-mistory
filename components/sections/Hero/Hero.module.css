@@ -240,7 +240,24 @@
        crossed 0.20 a tenth of the way down the frame and covered 5.48% of the
        slot. The wash now holds above the threshold for the first quarter of
        the stage — which, with the photograph below the actions, is the whole
-       of the first screen — and both radials reach further into it. */
+       of the first screen — and both radials reach further into it.
+
+       The pool was then raised again, and by a measurement rather than an eye.
+       TC-HERO-SCRIM-01 asks whether a tenth of the frame stands clear of the
+       band the type reads on by 0.06 relative luminance; at 390 with reduced
+       motion this still answered 0.0511 (`02-tests-failing.log`) — the one
+       surface of the four that did, because it is the only one with no shader
+       to be bright with. The reason is a shape, not a brightness: the top wash
+       runs the full width, so it lifts every column by the same amount and
+       cancels out of that difference exactly the way an ink wash would. Only
+       the two radials are *shaped*, and the pool — the light the reader's eye
+       actually goes to, at the right edge beside the photograph — was landing
+       about `#5E5E5E` where the plates sit on about `#151515`. Carrying it to
+       0.44 puts a tenth of the frame clear of the copy's ground while leaving
+       the copy's ground where it was: the plates are `rgb(10 10 10 / 0.90)`, so
+       nine tenths of any change here never reaches a glyph, and `--mist-400`
+       over the brightest point of this pool under a plate still measures
+       5.8:1 (`tests/a11y/text-contrast.spec.ts`, 390, no `?gl=force`). */
     .stage {
         background:
             linear-gradient(
@@ -251,9 +268,9 @@
                 transparent 30%
             ),
             radial-gradient(
-                40% 40% at 100% 34%,
-                rgb(246 246 246 / 0.34) 0%,
-                rgb(246 246 246 / 0.26) 44%,
+                42% 40% at 100% 34%,
+                rgb(246 246 246 / 0.44) 0%,
+                rgb(246 246 246 / 0.34) 44%,
                 transparent 86%
             ),
             radial-gradient(
