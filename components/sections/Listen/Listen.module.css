@@ -293,35 +293,32 @@
         transform: none;
     }
 
-    .listen[data-armed]:not([data-closed]) .kicker,
-    .listen[data-armed]:not([data-closed]) .title,
-    .listen[data-armed]:not([data-closed]) .sentence,
-    .listen[data-armed]:not([data-closed]) .channels,
-    .listen[data-armed]:not([data-closed]) .coffee {
-        opacity: 0;
-    }
-
-    .listen[data-closed] .kicker,
-    .listen[data-closed] .title,
-    .listen[data-closed] .sentence,
-    .listen[data-closed] .channels,
-    .listen[data-closed] .coffee {
+    /* The copy is never hidden behind the beat (TC-CINE-07: under reduced
+       motion every section is readable, never left behind a curtain). Once
+       the script has mounted it arrives as a short sequenced fade from the
+       armed state — not from the intersection — so nothing waits on a
+       threshold; without script it is simply there. */
+    .listen[data-armed] .kicker,
+    .listen[data-armed] .title,
+    .listen[data-armed] .sentence,
+    .listen[data-armed] .channels,
+    .listen[data-armed] .coffee {
         animation: listenFade var(--motion-base) linear both;
     }
 
-    .listen[data-closed] .title {
+    .listen[data-armed] .title {
         animation-delay: calc(var(--stagger-tight) / 2);
     }
 
-    .listen[data-closed] .sentence {
+    .listen[data-armed] .sentence {
         animation-delay: var(--stagger-tight);
     }
 
-    .listen[data-closed] .channels {
+    .listen[data-armed] .channels {
         animation-delay: calc(var(--stagger-tight) * 1.5);
     }
 
-    .listen[data-closed] .coffee {
+    .listen[data-armed] .coffee {
         animation-delay: calc(var(--stagger-tight) * 2);
     }
 
