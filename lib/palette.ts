@@ -7,9 +7,9 @@
  */
 export const PALETTE = {
   // Surfaces
-  ink900: '#0A0B0D',
-  ink800: '#121317',
-  ink700: '#1B1D23',
+  ink900: '#0A0A0A',
+  ink800: '#131313',
+  ink700: '#1C1C1C',
   black: '#000000',
 
   // The single hue, for scenes. Taken verbatim from the Aether brand palette so
@@ -20,16 +20,16 @@ export const PALETTE = {
   goldPale: '#e8d5a3',
 
   // Light
-  white: '#F4F6FA',
-  accent: '#E8EBF0',
-  steel: '#AEB6C2',
+  white: '#F6F6F6',
+  accent: '#EBEBEB',
+  steel: '#B8B8B8',
 
   // Starfield — monochrome whites/greys (no blue/warm tint)
-  star: ['#F4F6FA', '#C9CDD6', '#E8EBF0', '#AEB6C2'] as const,
-  starGlow: '#E8EBF0',
+  star: ['#F6F6F6', '#CDCDCD', '#EBEBEB', '#B8B8B8'] as const,
+  starGlow: '#EBEBEB',
 
   // Nebula clouds — neutral near-black (hue removed)
-  nebula: ['#0A0B0D', '#0C0D11', '#090A0C'] as const,
+  nebula: ['#0A0A0A', '#0D0D0D', '#0A0A0A'] as const,
 } as const;
 
 export type Palette = typeof PALETTE;

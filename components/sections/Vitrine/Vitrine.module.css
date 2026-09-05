@@ -63,7 +63,7 @@
     /* A thin rule under the rail, so the plates read as standing on something. */
     border-bottom: 1px solid var(--token-border-default);
     scrollbar-width: thin;
-    scrollbar-color: rgb(244 246 250 / 0.18) transparent;
+    scrollbar-color: rgb(246 246 246 / 0.18) transparent;
 }
 
 .rail::-webkit-scrollbar {
@@ -71,7 +71,7 @@
 }
 
 .rail::-webkit-scrollbar-thumb {
-    background: rgb(244 246 250 / 0.18);
+    background: rgb(246 246 246 / 0.18);
 }
 
 /* ── A plate ─────────────────────────────────────────────────────────────── */
@@ -122,7 +122,7 @@
     opacity: 1;
     border-color: var(--card-border-hover);
     background:
-        radial-gradient(120% 80% at 18% 0%, rgb(244 246 250 / 0.075), transparent 62%),
+        radial-gradient(120% 80% at 18% 0%, rgb(246 246 246 / 0.075), transparent 62%),
         var(--ink-900);
 }
 

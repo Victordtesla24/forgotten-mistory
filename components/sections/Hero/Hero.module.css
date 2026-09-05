@@ -131,7 +131,7 @@
     height: 5px;
     border-radius: 50%;
     background: var(--white);
-    box-shadow: 0 0 0 4px rgb(244 246 250 / 0.08);
+    box-shadow: 0 0 0 4px rgb(246 246 246 / 0.08);
 }
 
 .name {
@@ -220,12 +220,28 @@
 /* The line that teaches the mark, beside the figures it grades. */
 .grading {
     margin: 0;
-    max-width: var(--measure-read);
+    max-width: 22ch;
     font-family: var(--font-mono);
     font-size: var(--fs-caption);
     line-height: var(--lh-label);
     letter-spacing: 0.01em;
-    color: var(--ink-300);
+    /* The sentence that makes the three figures honest was the least legible
+       text on the page (3.9:1). --mist-200 at 0.85 samples above 8:1. */
+    color: var(--mist-200);
+    opacity: 0.85;
+}
+
+/* The same half-disc the caliper draws beside a self-reported figure, so the
+   legend shows the mark it explains instead of a fallback glyph. */
+.gradingMark {
+    display: inline-block;
+    width: 0.62em;
+    height: 0.62em;
+    margin-right: 0.35em;
+    vertical-align: -0.02em;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    background: linear-gradient(to right, currentColor 50%, transparent 50%);
 }
 
 /* ── Actions ─────────────────────────────────────────────────────────────── */
@@ -273,7 +289,7 @@
 
 .secondaryAction:hover {
     border-color: var(--card-border-hover);
-    background: rgb(244 246 250 / 0.04);
+    background: rgb(246 246 246 / 0.04);
 }
 
 .primaryAction:focus-visible,

@@ -64,7 +64,7 @@
    the open caliper uses, for the same reason: sought, and honestly not
    measurable about a person. */
 .sector {
-    fill: rgb(244 246 250 / 0.022);
+    fill: rgb(246 246 246 / 0.022);
     stroke: var(--steel);
     stroke-width: 0.4;
     opacity: 0.5;
@@ -82,7 +82,7 @@
 }
 
 .sector[data-active] {
-    fill: rgb(244 246 250 / 0.075);
+    fill: rgb(246 246 246 / 0.075);
     stroke: var(--white);
     stroke-width: 0.7;
     opacity: 1;
@@ -111,10 +111,10 @@
 
 .numeral {
     font-family: var(--font-mono);
-    font-size: 3.1px;
+    font-size: 3.4px;
     letter-spacing: 0.08px;
-    fill: var(--steel);
-    opacity: 0.5;
+    fill: var(--mist-200);
+    opacity: 0.75;
     transition:
         fill var(--motion-base) var(--motion-ease-standard),
         opacity var(--motion-base) var(--motion-ease-standard);

@@ -70,8 +70,11 @@
     height: 1px;
     max-width: var(--measure-display);
     margin: clamp(var(--space-4), 4vh, var(--space-5)) 0 clamp(var(--space-5), 5vh, 3.5rem);
-    background: var(--gold);
-    opacity: 0.55;
+    /* Not gold: a hairline under a sentence marks no figure and cites no
+       source (design council R-c1, C3). The gesture survives; the claim is
+       withdrawn. The border token already carries its own alpha. */
+    background: var(--token-border-default);
+    opacity: 1;
     transform-origin: left center;
     animation: ruleDraw var(--motion-cine-in) var(--motion-ease-emphasized) var(--stagger-loose) both;
 }

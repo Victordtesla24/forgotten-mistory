@@ -1,0 +1,40 @@
+tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited 
+tests/a11y/gold-contrast.spec.ts:328:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-02: every skills status label clears 4.5:1 
+tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › About keeps a parallel reduced-motion choreography 
+tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Experience keeps a parallel reduced-motion choreography 
+tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Listen keeps a parallel reduced-motion choreography 
+tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Skills keeps a parallel reduced-motion choreography 
+tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Vitrine keeps a parallel reduced-motion choreography 
+tests/e2e/contact.spec.ts:105:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-10: message form renders inside #contact with all three fields 
+tests/e2e/contact.spec.ts:115:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-11: labels are associated and fields carry required/autocomplete 
+tests/e2e/contact.spec.ts:140:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-12: an invalid email is rejected client-side with aria-describedby error text 
+tests/e2e/contact.spec.ts:162:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-13: a confirmed 2xx moves idle -> submitting -> sent 
+tests/e2e/contact.spec.ts:185:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-14: a 404 endpoint yields a truthful failure, not a fake success 
+tests/e2e/contact.spec.ts:20:7 › E2E: Contact Section › TC-CONTACT-01: Contact section renders with ID and headline 
+tests/e2e/contact.spec.ts:211:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-15: a 200 that is not a confirmed delivery still fails truthfully 
+tests/e2e/contact.spec.ts:227:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-16: keyboard-only completion works end to end 
+tests/e2e/contact.spec.ts:247:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-17: raw email + LinkedIn are always rendered as copyable text 
+tests/e2e/contact.spec.ts:261:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-18: reduced-motion renders the form with no send animation 
+tests/e2e/contact.spec.ts:29:7 › E2E: Contact Section › TC-CONTACT-02: Book a conversation CTA is visible 
+tests/e2e/contact.spec.ts:37:7 › E2E: Contact Section › TC-CONTACT-03: Download CV link is visible 
+tests/e2e/contact.spec.ts:45:7 › E2E: Contact Section › TC-CONTACT-04: Email card renders with correct address 
+tests/e2e/contact.spec.ts:51:7 › E2E: Contact Section › TC-CONTACT-05: Phone card renders 
+tests/e2e/contact.spec.ts:57:7 › E2E: Contact Section › TC-CONTACT-06: Email link uses mailto protocol 
+tests/e2e/contact.spec.ts:65:7 › E2E: Contact Section › TC-CONTACT-07: Social links render — GitHub and YouTube 
+tests/e2e/contact.spec.ts:72:7 › E2E: Contact Section › TC-CONTACT-09: LinkedIn social link renders in contact section (D-CONTACT-01) 
+tests/e2e/contact.spec.ts:81:7 › E2E: Contact Section › TC-CONTACT-08: Contact card icons render (Mail and Phone) 
+tests/e2e/github-feed-fallback.spec.ts:120:7 › E2E: GitHub feed rate-limit degradation › TC-GHFEED-03: the fallback shows only committed repositories, never invented ones 
+tests/e2e/github-feed-fallback.spec.ts:148:7 › E2E: GitHub feed rate-limit degradation › TC-GHFEED-04: with budget available it makes exactly one repository request 
+tests/e2e/github-feed-fallback.spec.ts:63:7 › E2E: GitHub feed rate-limit degradation › TC-GHFEED-01: exhausted budget renders the dated snapshot and spends zero requests 
+tests/e2e/github-feed-fallback.spec.ts:99:7 › E2E: GitHub feed rate-limit degradation › TC-GHFEED-02: a 403 on every endpoint degrades without throwing 
+tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine 
+tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine 
+tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine 
+tests/overhaul/cinematic.spec.ts:184:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-06: under reduced motion the hero entrance is a fade, not a rise 
+tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1280px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1920px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 375px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 768px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+tests/perf/performance.spec.ts:177:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked 
+tests/perf/performance.spec.ts:226:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer 
+tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot 

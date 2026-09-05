@@ -31,8 +31,8 @@ export default function Loading() {
         .loading-shell {
           min-height: 100vh;
           min-height: 100dvh;
-          background: var(--ink-900, #0A0B0D);
-          color: var(--white, #F4F6FA);
+          background: var(--ink-900, #0A0A0A);
+          color: var(--white, #F6F6F6);
           font-family: var(--font-inter, system-ui, sans-serif);
           display: flex;
           align-items: center;
@@ -53,7 +53,7 @@ export default function Loading() {
         .loading-bar-fill {
           height: 100%;
           width: 30%;
-          background: var(--steel, #AEB6C2);
+          background: var(--steel, #B8B8B8);
           border-radius: 0 1px 1px 0;
           animation: loading-slide 1.4s var(--motion-ease-standard, ease-in-out) infinite;
         }
@@ -76,7 +76,7 @@ export default function Loading() {
           font-weight: 500;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: var(--steel, #AEB6C2);
+          color: var(--steel, #B8B8B8);
           margin: 0;
           animation: loading-fade 2s ease-in-out infinite;
         }

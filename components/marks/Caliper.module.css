@@ -97,10 +97,20 @@
 }
 
 .caliper[data-state="self-reported"] .value::after {
-    content: "\00A0◐";
-    font-size: 0.7em;
-    vertical-align: super;
-    opacity: 0.75;
+    /* Drawn, not typed. U+25D0 is not in the self-hosted font subsets, so the
+       browser substituted a fallback glyph that rendered as a stray apostrophe
+       beside every figure (design council R-c1, C1). Two rendered halves, no
+       font dependency, scales with the figure it grades. */
+    content: "";
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    margin-left: 0.28em;
+    vertical-align: 0.34em;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    background: linear-gradient(to right, currentColor 50%, transparent 50%);
+    opacity: 0.9;
 }
 
 /* ── State: open ──────────────────────────────────────────────────────────
@@ -112,7 +122,7 @@
     padding: 0.15em 0;
     background-image: repeating-linear-gradient(
         45deg,
-        rgb(58 61 70 / 0.55) 0 1px,
+        rgb(60 60 60 / 0.55) 0 1px,
         transparent 1px 6px
     );
 }

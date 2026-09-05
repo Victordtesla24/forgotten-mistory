@@ -1,0 +1,254 @@
+{
+  "verdict": "FAIL",
+  "run": "v9-20260904T2312Z",
+  "cycle": "c1",
+  "commit": "6dcb4f53",
+  "synthesisedFrom": ["adversarial-review.md", "council-composition.md", "council-motion.md"],
+  "contradictionsResolved": [
+    {
+      "topic": "Is HeroAtmosphere wired? (adversarial F-1 says imported by nothing; motion M-01 observed it rendering under ?gl=force)",
+      "sidedWith": "motion",
+      "why": "Verified this session: `grep -rn 'HeroAtmosphere\\|CareerStrata' app components -l` returns components/sections/Hero/Hero.tsx and components/sections/Experience/Experience.tsx as importers. components/gl/useGLCapability.ts:34-40 rejects swiftshader/llvmpipe renderers unless ?gl=force, so the adversarial zero-canvas census is the software-raster fallback path, not dead code. The adversarial observation (0 canvas on this host, and therefore for every no-GPU reader) stands; the 'imported by nothing' cause does not. F-1 is re-scoped to: (a) #listen has no visual in any path, (b) hero/experience fallback path is flat, (c) real-GPU behaviour is Assumed, not Verified."
+    },
+    {
+      "topic": "Secondary-text contrast: one token (adversarial F-2, 79 nodes) vs per-component colour changes (composition C4 readouts, C8 hero note)",
+      "sidedWith": "adversarial",
+      "why": "C8's note samples rgb(110,113,120) = #6E7178 and C4's readouts rgb(104,107,114) are the same --mist-400-class token that F-2 measured 79 times at 4.03:1. One token edit in app/globals.css fixes all of them; the composition per-component values (--mist-200) are kept as the acceptance target where a component needs more than the token floor."
+    },
+    {
+      "topic": "Gold backgrounds in #skills: adversarial F-3 (14 gold backgroundColor = forbidden fill) vs motion M-07 (Bench gold is on production evidence, as designed)",
+      "sidedWith": "both, split",
+      "why": "CLAUDE.md permits gold on the 'measured in production' mark; a 4px dot drawn via background-color is that mark, so the 14 #skills hits are contract-legitimate only if each dot sits on a production-sourced fact. Direction: keep the dots that do, re-express them so a literal `background: var(--gold)` audit gate can be enforced, demote any dot that does not. The single #listen gold background (F-3) is the same hairline composition C3 measured; both reviewers agree it marks no figure — remove."
+    },
+    {
+      "topic": "Hero right third: composition C8 (empty band x 980-1344) vs motion M-01 (atmosphere washes body copy grey-on-grey)",
+      "sidedWith": "both, merged",
+      "why": "Complementary: the atmosphere should carry weight on the right (C8) and be scrimmed under the copy on the left (M-01 luma scrim). Merged into one hero item."
+    }
+  ],
+  "blockers": [
+    "F-2 (adversarial): 79 text nodes at 4.03:1 (#6E7178 on #0A0B0D, 12-14px) fail WCAG AA 1.4.3; the axe gate reports 0 violations and hides it.",
+    "F-1 (adversarial, re-scoped) + M-03 (motion): #listen owns no visualisation in any path; #hero and #experience render 0 canvas on the software-raster/no-GPU path the reviewers (and every fallback reader) get; Owner's bar of one signature visual per section is unmet in 3 of 6 sections as observed.",
+    "C1 (composition): the self-reported caliper mark (U+25D0) renders as a stray apostrophe beside all three hero figures; the device enforcing prime directive #3 is illegible.",
+    "C2 (composition): no vertical spine; six sections at left edges 72/176/96/96/168(cards 72)/352 at 1440.",
+    "C3 (composition) = F-3 listen hit (adversarial): gold spent on a decorative hairline under the #listen pull-quote, marking no figure."
+  ],
+  "items": [
+    {
+      "id": "B-01",
+      "priority": 1,
+      "section": "site-wide (secondary text token)",
+      "severity": "blocker",
+      "direction": "app/globals.css :root: lighten the secondary-text token from #6E7178 to at least #8A8F9A (rgb(138,143,154), 5.9:1 on #0A0B0D), or reserve #6E7178 for text >= 18.66px bold / >= 24px. One token, ~79 uses; do not fix per component. Also covers composition C8 (hero grading note rgb(110,113,120) on rgb(15,16,20) = 3.89:1) and C4(b) (experience readouts rgb(104,107,114) ~3.3:1) — where the composition reviewer asked for var(--mist-200) (~8.3:1 / ~9.8:1) use that as the per-component target. Stop treating a green axe run as AA evidence.",
+      "files": ["app/globals.css", "components/sections/Hero/Hero.module.css", "components/sections/Experience/Experience.module.css", "tests/a11y/"],
+      "acceptanceCheck": "Re-run adv/attack2.mjs: contrast.failing === 0 at 1440 and 390. Add a Playwright a11y spec that computes WCAG ratio per text node itself (same routine as adv/attack2.mjs) and fails on any normal-size node below 4.5:1; asserting on axe.violations alone must not be the gate. Hero note ratio >= 4.5:1; experience readout ratio >= 4.5:1.",
+      "source": "adversarial"
+    },
+    {
+      "id": "B-02",
+      "priority": 2,
+      "section": "#hero",
+      "severity": "blocker",
+      "direction": "Wiring is Verified present (Hero.tsx imports HeroAtmosphere). Fix the path readers actually get: (1) components/sections/Hero/HeroAtmosphere.tsx: mount the hero Scene eagerly (bypass the IntersectionObserver/requestIdleCallback gate in components/gl/Scene.tsx:64-81 for #hero only); ramp uIntensity 0->1 over 1160 ms cubic-bezier(0.16,1,0.3,1) instead of linear delta*0.65; set data-atmosphere=ready on #hero at uIntensity >= 0.35 and gate heroRise on it. (2) atmosphere.glsl.ts: add copy scrim `luma *= 1.0 - 0.42*smoothstep(0.55,0.0,length((uv-vec2(0.33,0.52))*vec2(1.6,1.0)))`; pointer lerp delta*1.6->2.2; near parallax 1.15->1.35, far 0.18->0.12; no gold in scene. (3) M-04 no-GL fallback in Hero.module.css .stage: static radial-gradient(120% 90% at 22% 30%, rgb(255 255 255 / 0.07), transparent 60%) key + 2% SVG grain data-URI, JS translates key by pointer*6px with transition transform 450ms cubic-bezier(0.22,1,0.36,1), off under prefers-reduced-motion. (4) C8 composition: let the atmosphere carry weight on the right; at >= 1280 give .inner grid-template-columns minmax(0,1fr) minmax(0,18rem) and move availability + LinkedIn/GitHub/Email cluster into the right column at the H1 baseline; note block max-width 22ch, .ledgerRow align-items start. Cap DPR at 1.5.",
+      "files": ["components/sections/Hero/HeroAtmosphere.tsx", "components/sections/Hero/atmosphere.glsl.ts", "components/sections/Hero/Hero.tsx", "components/sections/Hero/Hero.module.css", "components/gl/Scene.tsx", "tests/e2e/"],
+      "acceptanceCheck": "With ?gl=force: `#hero canvas` present <= 1500 ms after domcontentloaded; pointer x=100 vs x=1340 screenshots after 1500 ms settle differ > 2/255 mean-abs in the left 700px column; a 400x120 crop over the paragraph has mean luma < 48; body-copy contrast >= 4.5:1 against rendered canvas. Without ?gl=force: no canvas, pointer-sweep diff > 0.5/255 in top-left 700x450 crop, < 0.05/255 under reduced-motion. Playwright test fails if `#hero canvas` count is 0 when gl=force. At 1440 and 1920 no rectangle > 240x240 px inside #hero is free of both text and rendered atmosphere.",
+      "source": "motion"
+    },
+    {
+      "id": "B-03",
+      "priority": 3,
+      "section": "#listen",
+      "severity": "blocker",
+      "direction": "Listen has no visual in any path (all three reviewers agree; motion-observe.json listen: canvas false, svg false). Add an inline SVG caliper (data-caliper) 320 px wide, hairline in currentColor, jaws open on entry, closing over 1160 ms cubic-bezier(0.16,1,0.3,1) to the width of the sentence's first word; readout stays '—' (no figure, no gold); then existing ruleDraw (720 ms) fires last. Reduced-motion: drawn closed, no animation. Does not need WebGL.",
+      "files": ["components/sections/Listen/Listen.tsx", "components/sections/Listen/Listen.module.css", "tests/e2e/"],
+      "acceptanceCheck": "On scrollIntoView `#listen svg[data-caliper]` exists and jaw group computed animation-duration is 1.16s; under reducedMotion:'reduce' it is 0s with jaw geometry at closed position. Re-run adv/attack.mjs: sections.v1440.detail.listen (canvases+svgs+videos) >= 1.",
+      "source": "motion"
+    },
+    {
+      "id": "B-04",
+      "priority": 4,
+      "section": "#experience",
+      "severity": "blocker",
+      "direction": "Strata shader encodes nothing by its own header (strata.glsl.ts) and renders 0 canvas on the no-GPU path; the section's argument (bars to real duration) has no signature. Experience.tsx + Experience.module.css: on section entry grow each bar via transform scaleX (transform-origin left), duration clamp(600, years*140, 1200) ms, cubic-bezier(0.16,1,0.3,1), 60 ms stagger in CV order; 1 px playhead traverses the axis once over 1200 ms (gold only if CV dates are sourced, else white). Hover: bar scaleY(1.6) 200 ms cubic-bezier(0.22,1,0.36,1), gridline under pointer to 0.35 opacity. Strata alpha 0.85->0.55 as backdrop only. Reduced-motion: bars at final width, no playhead. This animation works on the DOM path, so it satisfies the bar without a GPU.",
+      "files": ["components/sections/Experience/Experience.tsx", "components/sections/Experience/Experience.module.css", "components/sections/Experience/strata.glsl.ts", "tests/e2e/"],
+      "acceptanceCheck": "`#experience ol li:nth-child(3) [class*=bar]` computed transform != none within 200 ms of scrollIntoView and settles to identity scaleX after 1400 ms; hover asserts scaleY ~1.6; under reduced-motion transform is identity immediately.",
+      "source": "motion"
+    },
+    {
+      "id": "B-05",
+      "priority": 5,
+      "section": "#hero (Caliper mark, site-wide)",
+      "severity": "blocker",
+      "direction": "components/marks/Caliper.module.css `.caliper[data-state=\"self-reported\"] .value::after`: replace the U+25D0 glyph (absent from the self-hosted Source Serif 4 / Inter subsets, so it falls back to a tick) with drawn geometry — content:\"\"; display:inline-block; width:0.5em; height:0.5em; margin-left:0.28em; vertical-align:0.34em (was super); border:1px solid currentColor; border-radius:50%; background:linear-gradient(to right, currentColor 50%, transparent 50%); opacity:0.9 (was 0.75). Replace the literal ◐ in app/data/portfolio/hero.ts caption copy with a `<span class=\"mark\" aria-label=\"self-reported\">` carrying the same rule.",
+      "files": ["components/marks/Caliper.module.css", "components/marks/Caliper.tsx", "app/data/portfolio/hero.ts", "tests/visual/"],
+      "acceptanceCheck": "Capture #hero at 1440 and 390: the mark beside ≈92% is a circle filled on its left half, >= 8px wide, and is not an apostrophe. CT-10 (hero figures remain self-reported) still passes.",
+      "source": "composition"
+    },
+    {
+      "id": "B-06",
+      "priority": 6,
+      "section": "page-wide (all six sections + nav)",
+      "severity": "blocker",
+      "direction": "1) app/globals.css :root — add `--page-max: 78rem;` beside --page-gutter. 2) Hero.module.css:89 `.inner{max-width:68rem}` -> `max-width:var(--page-max)` (leave `.statement{max-width:var(--measure-read)}` line 157). 3) Vitrine.module.css: delete `padding: 0 var(--page-gutter,…)` from `.head,.foot` (15-21), set `max-width:var(--page-max)`; move the gutter to `.section` (13) as `padding: clamp(var(--space-10),12vh,9rem) var(--page-gutter, clamp(1.5rem,5vw,5rem))`; keep the rail full-bleed with `.rail{ margin-inline: calc(var(--page-gutter, clamp(1.5rem,5vw,5rem)) * -1); padding-inline: var(--page-gutter, clamp(1.5rem,5vw,5rem)); }`. 4) Listen.module.css:24 `.inner{max-width:46rem;margin:0 auto}` -> `max-width:var(--page-max);margin-inline:auto`, move the 46rem cap to `.quote`, `.channels`.",
+      "files": ["app/globals.css", "components/sections/Hero/Hero.module.css", "components/sections/Vitrine/Vitrine.module.css", "components/sections/Listen/Listen.module.css", "tests/visual/"],
+      "acceptanceCheck": "At 1440, `['#hero h1','#about h2','#experience h2','#skills h2','#vitrine h2','#listen h2'].map(s=>Math.round(document.querySelector(s).getBoundingClientRect().left))` returns [96,96,96,96,96,96]; all-equal 64 at 1280 and all-equal 336 at 1920.",
+      "source": "composition"
+    },
+    {
+      "id": "B-07",
+      "priority": 7,
+      "section": "#listen",
+      "severity": "blocker",
+      "direction": "Listen.module.css:73 `background: var(--gold)` -> `background: var(--token-border-default)`; line 74 `opacity: 0.55` -> `opacity: 1`. Keep the `ruleDraw` animation. This is the same element adversarial F-3 counted as the 1x `listen|backgroundColor|` gold hit.",
+      "files": ["components/sections/Listen/Listen.module.css"],
+      "acceptanceCheck": "Playwright sweep of #listen finds zero pixels within ΔE 10 of #c9a84c; `getComputedStyle(document.querySelector('#listen [class*=rule]')).backgroundColor` is `rgba(255, 255, 255, 0.1)`; adv/attack2.mjs gold.unique has no `listen|backgroundColor|` entry.",
+      "source": "composition"
+    },
+    {
+      "id": "M-01",
+      "priority": 8,
+      "section": "#skills",
+      "severity": "major",
+      "direction": "adv/attack2.json gold.unique: 14x `skills|backgroundColor|` plus color/border on 15 dot glyphs. Audit each of the 14 dots against app/data/portfolio/skills.ts: keep gold only where the dot sits on a fact marked measured-in-production (motion M-07 Verified 17 gold-class wires equal the data's production links); demote every other dot to the grey surface token. Re-express the kept dots via `color`/`border-color` + currentColor so a literal `background(-color): var(--gold)|#C9A84C` gate in scripts/validate/overhaul_static_audit.mjs can fail the build.",
+      "files": ["components/sections/Skills/Skills.module.css", "components/sections/Skills/Bench.module.css", "app/data/portfolio/skills.ts", "scripts/validate/overhaul_static_audit.mjs"],
+      "acceptanceCheck": "Re-run adv/attack2.mjs: gold.unique contains zero entries whose property is backgroundColor; gold-class wire count equals the data's production link count; new audit gate fails on any `background` gold value in a CSS module and passes the tree.",
+      "source": "adversarial"
+    },
+    {
+      "id": "M-02",
+      "priority": 9,
+      "section": "site-wide chrome (status dot)",
+      "severity": "major",
+      "direction": "Tailwind `animate-ping` on the status-dot SPAN (`SPAN.absolute inline-flex h-full w-`) stays in playState running with prefers-reduced-motion: reduce (adv/attack.json reducedMotion.runningAnimations = [\"ping@SPAN\"]). Wrap it in `motion-safe:animate-ping` or add `@media (prefers-reduced-motion: reduce){ .animate-ping{animation:none} }`; the static dot is the fallback.",
+      "files": ["components/site/Navigation.tsx", "components/sections/Hero/Hero.tsx", "app/globals.css", "tests/a11y/"],
+      "acceptanceCheck": "In a reducedMotion:'reduce' context `document.getAnimations().filter(a=>a.playState==='running')` is empty after 2.5 s settle; add this assertion to the reduced-motion Playwright spec.",
+      "source": "adversarial"
+    },
+    {
+      "id": "M-03",
+      "priority": 10,
+      "section": "#experience",
+      "severity": "major",
+      "direction": "Experience.module.css — (a) bar fill (resolves ~#424346 on rgb(17,18,21) = 1.89:1, 3:1 non-text floor required): `var(--mist-400)` at opacity 0.85 (~6.4:1) and the eight-year ANZ bar `var(--white)` at opacity 0.9 so the longest bar is brightest; (b) readouts `var(--mist-400)` -> `var(--mist-200)` (~9.8:1); (c) line 246 `minmax(0,1fr) auto 1.5rem` -> `minmax(0,1fr) 4.5rem` (drop trailing spacer; readout `6 mo` at x 1352-1382 overruns the heading's right edge 1344 by ~38px) and `.chart{padding-right:0}`. Build together with B-04 since both touch the bars.",
+      "files": ["components/sections/Experience/Experience.module.css"],
+      "acceptanceCheck": "Fresh capture at 1280/1440/1920: chart row right edge <= `#experience h2` right edge; sampled bar-to-ground ratio >= 3.0:1; readout ratio >= 4.5:1.",
+      "source": "composition"
+    },
+    {
+      "id": "M-04",
+      "priority": 11,
+      "section": "page chrome — MiniVic panel",
+      "severity": "major",
+      "direction": "Panel spans x 988-1424 and covers the tail of the H1; panel right margin 16px vs launcher 24px; chip row clipped mid-word. Panel `right:16px` -> `24px`; `bottom` -> `calc(24px + 3.5rem + 1rem)` so it stacks above the 56px launcher; `max-height: min(40rem, calc(100svh - 8rem))`. Chip row: `mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent)`, `scroll-snap-type: x proximity`; chip `padding-inline: 0.75rem` -> `0.625rem`.",
+      "files": ["components/MiniVicBot.tsx", "app/globals.css"],
+      "acceptanceCheck": "At 1440 with the panel open, bounding boxes of `#hero h1` and the panel do not intersect; panel and launcher computed `right` are equal; no chip has scrollWidth > clientWidth without the fade mask applied.",
+      "source": "composition"
+    },
+    {
+      "id": "M-05",
+      "priority": 12,
+      "section": "#vitrine",
+      "severity": "major",
+      "direction": "Vitrine.module.css:90 `.card{opacity:0.42}` -> `0.62` (card-01 body then ~4.6:1; card-01 title measured 3.87:1, body 2.9:1 today); `.rail` (53) add `mask-image: linear-gradient(to right, transparent 0, #000 var(--page-gutter, 4.5rem), #000 calc(100% - 4rem), transparent 100%)`; re-enable a 2px scrollbar thumb (line 69 currently hides it). Card 03 is cut hard at x 1440 with no mask or arrow.",
+      "files": ["components/sections/Vitrine/Vitrine.module.css"],
+      "acceptanceCheck": "At 1440 every visible card's body copy samples >= 4.5:1 against the card ground; the right-hand 4rem of the rail shows a gradient fade in a fresh capture.",
+      "source": "composition"
+    },
+    {
+      "id": "M-06",
+      "priority": 13,
+      "section": "#about",
+      "severity": "major",
+      "direction": "Compass numerals 01-10 sample rgb(95,100,108) on rgb(26,27,31) = 2.89:1; NO SCORES hub similar. Compass.module.css: numeral colour `var(--mist-200)` (#C9CDD6 on #1A1B1F ~10.6:1) at opacity 0.75 (~7.4:1), ring hairlines unchanged; numeral size `--fs-micro` -> `--fs-caption` (11px -> 12px).",
+      "files": ["components/sections/About/Compass.module.css"],
+      "acceptanceCheck": "Sampled numeral-to-ground ratio >= 4.5:1 at 1440 and 390.",
+      "source": "composition"
+    },
+    {
+      "id": "N-01",
+      "priority": 14,
+      "section": "#vitrine",
+      "severity": "minor",
+      "direction": "Drawings.module.css: on `[data-lit=true]` trace every path/line/circle with pathLength=1, stroke-dashoffset 1->0 over 900 ms cubic-bezier(0.16,1,0.3,1), 40 ms stagger per element, labels fade 320 ms after; play once (data-drawn). Reduced-motion: no dash animation. Gold: repository URL only.",
+      "files": ["components/sections/Vitrine/Drawings.tsx", "components/sections/Vitrine/Drawings.module.css"],
+      "acceptanceCheck": "Scroll rail by 700, assert `li[data-lit=true]` is index 2 and within 1200 ms its first drawing path has computed stroke-dashoffset 0 and animation-name set; under reduced-motion animation-name none.",
+      "source": "motion"
+    },
+    {
+      "id": "N-02",
+      "priority": 15,
+      "section": "page chrome — MiniVic launcher (keyboard)",
+      "severity": "minor",
+      "direction": "Launcher is focusable #99 of 100 (reached at Tab 92). Render the launcher (data-testid minivic-toggle) as the first focusable after the nav (DOM position or a skip-link `Open MiniVic` after the skip-to-content link); do not use positive tabindex.",
+      "files": ["components/MiniVicBot.tsx", "app/layout.tsx", "tests/a11y/"],
+      "acceptanceCheck": "Re-run adv/attack2.mjs tabSweep: minivicReachedAtTab <= 5 and minivicTabindex is null or 0.",
+      "source": "adversarial"
+    },
+    {
+      "id": "N-03",
+      "priority": 16,
+      "section": "#about (keyboard)",
+      "severity": "minor",
+      "direction": "Inferred (adversarial did not verify a role/keydown handler): tab positions 11-20 are the ten About `<li>` elements. If they are inert, remove tabindex; if they drive the compass (M-06 item below makes them active on centre/hover), give them role=button semantics and a keydown handler so the focus stop earns its cost.",
+      "files": ["components/sections/About/About.tsx"],
+      "acceptanceCheck": "Either `#about li[tabindex]` count is 0, or each focused li changes the compass readout on Enter/Space; keyboard tabSequence from the About lede to the first #experience button is <= 2 stops when inert.",
+      "source": "adversarial"
+    },
+    {
+      "id": "N-04",
+      "priority": 17,
+      "section": "#about",
+      "severity": "polish",
+      "direction": "About.tsx: IntersectionObserver (rootMargin -45% 0px -45% 0px) on each li sets active when centred, hover overrides; first-entry -360° bezel sweep over 1160 ms cubic-bezier(0.16,1,0.3,1) settling on 01, once (data-swept). Reduced-motion: no sweep, index snaps. Gold stays on index caret only.",
+      "files": ["components/sections/About/About.tsx", "components/sections/About/Compass.tsx"],
+      "acceptanceCheck": "Scroll so item 6 is centred, wait 800 ms, assert rose style rotate(-180deg) and readout '06'/'FROM THE ROLE'; under reduced-motion computed transition-duration 0s.",
+      "source": "motion"
+    },
+    {
+      "id": "N-05",
+      "priority": 18,
+      "section": "#skills",
+      "severity": "polish",
+      "direction": "Bench.module.css: on capability hover, connected wire stroke-width 1 -> 1.5 px over 200 ms cubic-bezier(0.22,1,0.36,1). Keep everything else.",
+      "files": ["components/sections/Skills/Bench.module.css"],
+      "acceptanceCheck": "On first scrollIntoView at least one path has animation-name trace; after 1600 ms all are none; gold-class wire count equals data's production link count.",
+      "source": "motion"
+    },
+    {
+      "id": "N-06",
+      "priority": 19,
+      "section": "#hero (390) / #skills / #listen / tokens",
+      "severity": "polish",
+      "direction": "Composition polish P1-P5: (P3) Hero.module.css:366 `minmax(4.5rem, auto) 1fr` -> `minmax(6.5rem, 6.5rem) 1fr` so caliper jaws align at 390 (currently x 118/115/107); (P4) tighten Hero.module.css:33 padding-bottom and ledger gap so one CTA is visible at 390x844; (P2) Skills.module.css put lede and paragraph both on `var(--measure-read)` (rags 116px apart); (P5) Listen: promote Email to the `Download CV` pill treatment; (P1) neutralise blue-tinted greys `--mist-400:#8F9095`, `--mist-200:#CDCED2`, `--white:#F6F6F7` — only after B-01 so contrast is re-measured with the final values.",
+      "files": ["components/sections/Hero/Hero.module.css", "components/sections/Skills/Skills.module.css", "components/sections/Listen/Listen.module.css", "app/globals.css"],
+      "acceptanceCheck": "390x844 capture: all three right jaws share one x; at least one hero action visible above the fold; #skills lede and paragraph share a right rag; contrast gate from B-01 still 0 failing after the grey change.",
+      "source": "composition"
+    },
+    {
+      "id": "N-07",
+      "priority": 20,
+      "section": "mobile",
+      "severity": "minor",
+      "direction": "Inferred only: uQuality=0 branch (near layer and shafts dropped below 900 px) could not be exercised on this GPU-less host. Keep DPR cap; verify on a physical phone with Chrome performance overlay that hero holds >= 50 fps with 2x fbm(4 octaves)+stars; if not, drop mid layer to 3 octaves below 900 px.",
+      "files": ["components/sections/Hero/atmosphere.glsl.ts", "components/sections/Hero/HeroAtmosphere.tsx"],
+      "acceptanceCheck": "Device run: rAF interval p95 <= 20 ms over 5 s on #hero at 390x844 DPR 3.",
+      "source": "motion"
+    }
+  ],
+  "passesToProtect": [
+    "Deploy claim true: served HTML carries <meta name=\"build-commit\" content=\"6dcb4f53\"> (adversarial P-1, Verified).",
+    "Zero console errors, zero page errors, zero failed requests at 390 and 1440, in three independent runs (adversarial P-2, motion both passes, Verified).",
+    "/api/chat live: HTTP 200 application/json 2.39 s, provider openai model gpt-4.1-mini (adversarial P-3, Verified). Answer quality for the business-client audience NOT assessed by any reviewer.",
+    "Security headers present incl. CSP frame-ancestors 'none', HSTS preload, nosniff (adversarial P-4, Verified; script-src still 'unsafe-inline' 'unsafe-eval', not scored).",
+    "Asset budgets inside the bar; videos preload=none and paused at load (adversarial P-5, Verified).",
+    "Six sections in order with visible headings at 1440 and 390 (adversarial P-8, Verified).",
+    "Three factual hero claims match public/docs/Vik_Resume_Final.pdf (adversarial P-10, Verified).",
+    "About compass, Skills bench trace, Vitrine raking light + snap all work as designed (motion, Verified)."
+  ],
+  "notMeasuredThisCycle": [
+    "LCP and CLS were not re-measured by any of the three reviewers (Assumed).",
+    "Real-GPU rendering of the hero and experience scenes: only observed under ?gl=force on a software rasteriser (Inferred).",
+    "834 and 1920 viewports beyond the composition captures; MiniVic answer quality for employers/business clients."
+  ],
+  "nextCycleSuggestion": "B-01: change the one secondary-text token in app/globals.css :root from #6E7178 to #8A8F9A (already in the palette), then add a per-text-node WCAG contrast Playwright spec (port the routine from adv/attack2.mjs) that fails on any normal-size node below 4.5:1. One line of CSS plus one spec clears 79 AA failures across every section and installs the gate that axe was silently missing — the highest damage-per-minute fix on the board, and it must land before N-06's grey retune so the retune is measured against a working gate."
+}

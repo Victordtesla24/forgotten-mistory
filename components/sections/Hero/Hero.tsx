@@ -78,7 +78,8 @@ export default function Hero() {
 
         {/* The mark is learned here, with its grade stated once. */}
         <p className={styles.grading}>
-          ◐ self-reported, from my CV. Repository figures below are harvested and dated.
+          <span className={styles.gradingMark} aria-hidden="true" />
+          self-reported, from my CV. Repository figures below are harvested and dated.
         </p>
         </div>
 
