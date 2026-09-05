@@ -44,9 +44,36 @@
  * two colours arrive as uniforms from `lib/palette.ts` — ink and light, nothing
  * else.
  *
+ * ## The field carries the section's data, not just its scroll position
+ *
+ * The rose above turns to the dimension being read, and the field turns with
+ * it (`uRotation`, `uActive`). But the ten dimensions are not interchangeable,
+ * and the SVG already says so: seven are computed from the candidate and are
+ * answered on the page; three are computed from the role and are drawn open,
+ * over a 45° hatch, because there is nothing about a person to measure in them;
+ * and of the seven answered, four name a record a reader can open and carry the
+ * site's one claim mark, while three are self-reported and stay unmarked. That
+ * is three states — answered, open, sourced — and before this the light knew
+ * none of them: every sector was lit identically and only the indexed one
+ * changed. A recruiter's recall of `#about` was the SVG widget, because the
+ * expensive thing behind it was carrying no information the widget did not.
+ *
+ * So the section hands the field the same two facts it hands the rose, as two
+ * bit masks — one bit per dimension, set when that dimension is answered from
+ * the candidate (`uAnsweredMask`) and when it has a checkable source
+ * (`uSourcedMask`). The field reads its own sector's bits and shapes the light
+ * from them: an answered sector blooms up its mid-annulus; a sourced sector
+ * lifts a further, warm-neutral light channel; an open (role) sector does
+ * neither and reads as the flatter floor the hatch means. All three additions
+ * are strictly additive over the visibility floor the scene was rebuilt to
+ * clear, so no sector is ever taken below it — the data can only add light, it
+ * cannot dim the ring back under the gate. The claim mark itself never enters
+ * the shader: sourced sectors are brighter, not accented, and the one accent
+ * stays where a source can be clicked, in the SVG chrome.
+ *
  * Budget: one full-screen quad, no geometry, no textures, and three value-noise
  * lookups per pixel — the ceiling `CareerStrata` holds itself to — plus one
- * hash for grain.
+ * hash for grain. The two masks add integer bit tests, not noise lookups.
  */
 
 export const aboutFieldVertexShader = /* glsl */ `
@@ -73,9 +100,29 @@ export const aboutFieldFragmentShader = /* glsl */ `
   uniform float uIntensity;
   uniform vec3 uInk;
   uniform vec3 uLight;
+  /**
+   * One bit per dimension, LSB = dimension 0. Set where the engine computes the
+   * dimension from the candidate and it is answered on the page (seven of ten).
+   * The three that are clear are the role-side sectors the SVG draws open.
+   */
+  uniform float uAnsweredMask;
+  /**
+   * One bit per dimension. Set where the answer names a record a reader can go
+   * and open — the sectors the DOM marks with the site's one accent. The shader
+   * lifts their light; it never takes the accent's colour, which stays in the
+   * SVG where the source is a link.
+   */
+  uniform float uSourcedMask;
 
   const float SECTORS = 10.0;
   const float TAU = 6.283185307179586;
+
+  // Bit i of an integer-valued mask, as 0.0 or 1.0. No array indexing, so this
+  // is portable to WebGL1, where a fragment shader may not index a uniform
+  // array by a computed sector number.
+  float maskBit(float mask, float i) {
+    return mod(floor(mask / exp2(i)), 2.0);
+  }
 
   float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
@@ -132,6 +179,13 @@ export const aboutFieldFragmentShader = /* glsl */ `
     away = min(away, SECTORS - away);
     float lit = uActive < 0.0 ? 0.0 : 1.0 - smoothstep(0.0, 2.2, away);
 
+    // This sector's own state, read from the two masks the section hands down.
+    // idx can fall outside 0..9 at the wrap seam; mod brings it home before the
+    // bit test (GLSL mod is always non-negative for a positive divisor).
+    float sidx = mod(idx, SECTORS);
+    float answered = maskBit(uAnsweredMask, sidx);
+    float sourced = maskBit(uSourcedMask, sidx);
+
     // Three lookups, and no more. One slow drift per sector so the ten are not
     // identical; one shimmer across each sector's own width; one wide, very low
     // frequency wash so the disc is not evenly lit. Their amplitudes are held
@@ -168,6 +222,19 @@ export const aboutFieldFragmentShader = /* glsl */ `
     sector *= 0.88 + 0.16 * shimmer;
     sector *= 0.90 + 0.14 * wash;
     sector += band * ring * (0.26 * gleam + 0.42 * sweep);
+
+    // The data terms, all additive so nothing here can drop a sector under the
+    // floor above. An answered sector blooms up its mid-annulus — a soft core
+    // the eye reads as "there is a reading here" — and the bloom lifts further
+    // when that sector is the one being read. An open (role) sector answers
+    // neither mask and keeps the flat floor, which is what the SVG's hatch says
+    // in light: sought, and honestly nothing to measure. A sourced sector lifts
+    // a further warm-neutral channel across its whole band, so the four rows the
+    // page can actually mark read brighter than the three self-reported ones —
+    // the same ranking the DOM draws, carried by luminance, never by the accent.
+    float bloomR = exp(-pow((r - 0.62) / 0.13, 2.0));
+    sector += answered * band * bloomR * (0.17 + 0.21 * lit);
+    sector += sourced * band * ring * (0.13 + 0.15 * lit);
 
     float luma = sector;
 
