@@ -1,0 +1,51 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts --workers=1 --reporter=list -g VITRINE|LISTEN
+
+Running 8 tests using 1 worker
+
+[flagship-visibility] vitrine@1440: ground=0.0030 coverage=22.43% peak=0.3813 motion=0.00647 box=1296x759
+  ✓  1 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 1440 — vitrine cabinet light reads as light (17.6s)
+[flagship-visibility] listen@1440: ground=0.0030 coverage=21.86% peak=0.4678 motion=0.00607 box=1440x900
+  ✓  2 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light (13.6s)
+[flagship-visibility:still] vitrine@1440: ground=0.0030 coverage=19.90% peak=0.1170
+  ✓  3 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 1440 — vitrine cabinet light fallback (3.8s)
+[flagship-visibility:still] listen@1440: ground=0.0030 coverage=25.43% peak=0.0865
+  ✓  4 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 1440 — listen beat field fallback (3.3s)
+[flagship-visibility] vitrine@390: ground=0.0030 coverage=66.00% peak=0.2918 motion=0.01459 box=342x746
+  ✘  5 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 390 — vitrine cabinet light reads as light (7.5s)
+[flagship-visibility] listen@390: ground=0.0030 coverage=34.18% peak=0.4020 motion=0.01031 box=390x844
+  ✓  6 [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light (8.6s)
+[flagship-visibility:still] vitrine@390: ground=0.0030 coverage=19.98% peak=0.1170
+  ✓  7 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-VITRINE @ 390 — vitrine cabinet light fallback (4.0s)
+[flagship-visibility:still] listen@390: ground=0.0030 coverage=30.25% peak=0.0865
+  ✓  8 [chromium] › tests/overhaul/flagship-visibility.spec.ts:366:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 390 — listen beat field fallback (3.6s)
+
+
+  1) [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 390 — vitrine cabinet light reads as light 
+
+    Error: vitrine cabinet light: brightest pixel is 0.292 — the scene has no core
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.35[39m
+    Received:    [31m0.29177064981753587[39m
+
+      350 |           top,
+      351 |           `${item.label}: brightest pixel is ${top.toFixed(3)} — the scene has no core`,
+    > 352 |         ).toBeGreaterThanOrEqual(PEAK_MIN);
+          |           ^
+      353 |
+      354 |         expect(
+      355 |           motion,
+        at /root/forgotten-mistory/.claude/worktrees/wf_ca321c15-671-1/tests/overhaul/flagship-visibility.spec.ts:352:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-flagship-visibili-557e5-abinet-light-reads-as-light-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-flagship-visibili-557e5-abinet-light-reads-as-light-chromium/error-context.md
+
+  1 failed
+    [chromium] › tests/overhaul/flagship-visibility.spec.ts:311:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-VITRINE @ 390 — vitrine cabinet light reads as light 
+  7 passed (1.1m)
+EXIT=1
