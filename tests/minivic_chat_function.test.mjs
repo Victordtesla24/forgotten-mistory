@@ -481,3 +481,223 @@ describe('Firebase trigger discovery', () => {
     }
   });
 });
+
+// ── 6. G-M3 — first-token latency mechanics ─────────────────────────────────
+
+/**
+ * The reviewer measured Enter→first visible bot text at P50 2121 ms on live
+ * against a < 1500 ms bar, and the Firebase Function is the whole budget
+ * (curl POST /api/chat P50 1674 ms). Three mechanisms answer that, and each
+ * one is asserted here rather than assumed:
+ *
+ *   · a warm request that boots the instance and spends nothing,
+ *   · a ladder order that survives a cold start (the per-instance cooldown map
+ *     does not),
+ *   · a streamed completion whose first fragment reaches the caller before the
+ *     upstream has finished writing the rest.
+ */
+
+/** An SSE body double: yields the given chunks in order, like undici's stream. */
+function sseResponse(chunks) {
+  const encoder = new TextEncoder();
+  let i = 0;
+  return {
+    ok: true,
+    status: 200,
+    body: {
+      getReader: () => ({
+        read: async () =>
+          i < chunks.length
+            ? { value: encoder.encode(chunks[i++]), done: false }
+            : { value: undefined, done: true },
+      }),
+    },
+    text: async () => chunks.join(''),
+    json: async () => {
+      throw new Error('streamed response has no JSON body');
+    },
+  };
+}
+
+/** Frame a token as one OpenAI-shaped SSE event. */
+const frame = (content) =>
+  `data: ${JSON.stringify({ choices: [{ delta: { content } }] })}\n\n`;
+
+describe('G-M3 — warm request', () => {
+  it('a GET with warm=1 is a warm request', () => {
+    assert.equal(fn.isWarmRequest({ method: 'GET', query: { warm: '1' } }), true);
+    assert.equal(fn.isWarmRequest({ method: 'GET', query: { warm: 'true' } }), true);
+  });
+
+  it('a send can never be mistaken for a warm ping', () => {
+    // A POST is a real conversation even if something puts warm=1 on the query
+    // string; answering it with an empty 204 would drop a visitor's question.
+    assert.equal(fn.isWarmRequest({ method: 'POST', query: { warm: '1' } }), false);
+    assert.equal(fn.isWarmRequest({ method: 'GET', query: {} }), false);
+    assert.equal(fn.isWarmRequest({ method: 'GET' }), false);
+  });
+});
+
+describe('G-M3 — ladder order survives a cold start', () => {
+  const resolved = [rung('openrouter'), rung('deepseek'), rung('zai'), rung('openai')];
+
+  it('reorders the ladder from the env-supplied order', () => {
+    const ordered = fn.orderChatProviders(resolved, 'deepseek,openrouter');
+    assert.deepEqual(ordered.map((p) => p.id), ['deepseek', 'openrouter', 'zai', 'openai']);
+  });
+
+  it('keeps every rung — an unnamed rung falls in behind, never off', () => {
+    const ordered = fn.orderChatProviders(resolved, 'zai');
+    assert.deepEqual(ordered.map((p) => p.id), ['zai', 'openrouter', 'deepseek', 'openai']);
+  });
+
+  it('is a no-op when the env names nothing or names nonsense', () => {
+    assert.deepEqual(fn.orderChatProviders(resolved, '').map((p) => p.id),
+      ['openrouter', 'deepseek', 'zai', 'openai']);
+    assert.deepEqual(fn.orderChatProviders(resolved, 'not-a-rung, ,').map((p) => p.id),
+      ['openrouter', 'deepseek', 'zai', 'openai']);
+  });
+});
+
+describe('G-M3 — streamed completion', () => {
+  it('negotiates streaming only when the caller says it can read one', () => {
+    assert.equal(fn.wantsStreamedReply({ body: { stream: true }, headers: {} }), true);
+    assert.equal(
+      fn.wantsStreamedReply({ body: {}, headers: { accept: 'text/event-stream' } }),
+      true,
+    );
+    // An older cached bundle asks for neither and must keep getting JSON.
+    assert.equal(fn.wantsStreamedReply({ body: {}, headers: { accept: 'application/json' } }), false);
+    assert.equal(fn.wantsStreamedReply({ headers: {} }), false);
+  });
+
+  it('emits the first fragment before the upstream has finished writing', async () => {
+    // The point of the whole change: `onDelta` must fire while the completion
+    // is still arriving, not once after it is whole.
+    let resolveTail;
+    const tail = new Promise((r) => { resolveTail = r; });
+    const chunks = [frame('At the ATO '), frame('I led '), frame('the squad.'), 'data: [DONE]\n\n'];
+    const encoder = new TextEncoder();
+    let i = 0;
+    const held = {
+      ok: true,
+      status: 200,
+      body: {
+        getReader: () => ({
+          read: async () => {
+            if (i === 0) return { value: encoder.encode(chunks[i++]), done: false };
+            await tail; // the rest of the completion is still being generated
+            return i < chunks.length
+              ? { value: encoder.encode(chunks[i++]), done: false }
+              : { value: undefined, done: true };
+          },
+        }),
+      },
+      text: async () => chunks.join(''),
+    };
+
+    const seen = [];
+    const pending = fn.completeChat({
+      messages: MESSAGES,
+      providers: [rung('deepseek')],
+      fetchImpl: fakeFetch({ deepseek: () => held }),
+      onDelta: (fragment) => seen.push(fragment),
+    });
+    // Let the first read land, then assert before releasing the rest.
+    await new Promise((r) => setTimeout(r, 10));
+    assert.deepEqual(seen, ['At the ATO '], 'the first fragment did not reach the caller early');
+    resolveTail();
+    const result = await pending;
+    assert.equal(result.text, 'At the ATO I led the squad.');
+    assert.deepEqual(seen, ['At the ATO ', 'I led ', 'the squad.']);
+  });
+
+  it('asks the provider for a stream only on the streaming path', async () => {
+    const streaming = fakeFetch({ deepseek: () => sseResponse([frame('hi'), 'data: [DONE]\n\n']) });
+    await fn.completeChat({
+      messages: MESSAGES,
+      providers: [rung('deepseek')],
+      fetchImpl: streaming,
+      onDelta: () => {},
+    });
+    assert.equal(streaming.calls[0].body.stream, true);
+
+    const plain = fakeFetch({ deepseek: () => jsonResponse('hi') });
+    await fn.completeChat({ messages: MESSAGES, providers: [rung('deepseek')], fetchImpl: plain });
+    assert.equal(plain.calls[0].body.stream, undefined);
+  });
+
+  it('reassembles an event split across two network chunks', async () => {
+    const whole = frame('Payday Super');
+    const cut = Math.floor(whole.length / 2);
+    const seen = [];
+    const result = await fn.completeChat({
+      messages: MESSAGES,
+      providers: [rung('deepseek')],
+      fetchImpl: fakeFetch({
+        deepseek: () => sseResponse([whole.slice(0, cut), whole.slice(cut), 'data: [DONE]\n\n']),
+      }),
+      onDelta: (f) => seen.push(f),
+    });
+    assert.deepEqual(seen, ['Payday Super']);
+    assert.equal(result.text, 'Payday Super');
+  });
+
+  it('falls through to the next rung when the first fails before emitting anything', async () => {
+    const seen = [];
+    const result = await fn.completeChat({
+      messages: MESSAGES,
+      providers: [rung('openrouter'), rung('deepseek')],
+      fetchImpl: fakeFetch({
+        openrouter: () => errorResponse(402, 'Insufficient credits'),
+        deepseek: () => sseResponse([frame('Fifteen plus years.'), 'data: [DONE]\n\n']),
+      }),
+      onDelta: (f) => seen.push(f),
+      cooldowns: new Map(),
+    });
+    assert.equal(result.provider, 'deepseek');
+    assert.deepEqual(seen, ['Fifteen plus years.']);
+    // And the rung timings are recorded, so the ladder's cost is measurable.
+    assert.equal(typeof result.timings[0].ms, 'number');
+    assert.equal(result.timings[0].outcome, 'http_402');
+    assert.deepEqual(result.timings.map((r) => r.outcome), ['http_402', 'answered']);
+  });
+
+  it('never splices a second rung onto an answer already on the wire', async () => {
+    // Once a fragment has been written the bytes cannot be recalled; continuing
+    // down the ladder would hand the visitor two half-answers glued together.
+    const seen = [];
+    await assert.rejects(
+      fn.completeChat({
+        messages: MESSAGES,
+        providers: [rung('deepseek'), rung('openai')],
+        fetchImpl: fakeFetch({
+          deepseek: () => ({
+            ok: true,
+            status: 200,
+            body: {
+              getReader: () => {
+                let sent = false;
+                return {
+                  read: async () => {
+                    if (!sent) {
+                      sent = true;
+                      return { value: new TextEncoder().encode(frame('At the ATO ')), done: false };
+                    }
+                    throw new Error('upstream connection reset');
+                  },
+                };
+              },
+            },
+            text: async () => '',
+          }),
+          openai: () => sseResponse([frame('different answer'), 'data: [DONE]\n\n']),
+        }),
+        onDelta: (f) => seen.push(f),
+        cooldowns: new Map(),
+      }),
+      (err) => err.name === 'ChatLadderError' && err.committedTo === 'deepseek',
+    );
+    assert.deepEqual(seen, ['At the ATO '], 'a second rung was spliced onto a live answer');
+  });
+});

@@ -154,3 +154,97 @@ test.describe('MiniVic send path', () => {
     expect(late, `something is still polling after the reply:\n${late.join('\n')}`).toEqual([]);
   });
 });
+
+/**
+ * G-M3 — what the send costs, not just where it goes.
+ *
+ * The independent reviewer measured Enter→first visible bot text at P50
+ * 2121 ms against R3's < 1500 ms bar, and found the Firebase Function holding
+ * the whole budget. Two of the three mechanisms that answer that are visible
+ * from the browser and asserted here; the third (streaming) is a property of
+ * the deployed function and is measured on live, not on this static server.
+ */
+test.describe('MiniVic first-token path', () => {
+  test.describe.configure({ timeout: 120000 });
+
+  test('MV-WARM-01: opening the panel warms the function, and a send does not', async ({
+    page,
+  }) => {
+    const warmRequests: Array<{ method: string; url: string }> = [];
+    page.on('request', (request) => {
+      const url = new URL(request.url());
+      if (url.pathname === '/api/chat' && url.searchParams.has('warm')) {
+        warmRequests.push({ method: request.method(), url: request.url() });
+      }
+    });
+
+    const { panel, input } = await openMiniVic(page);
+    // The warm-up is fired from an effect on open; give it the tick it needs.
+    await expect.poll(async () => warmRequests.length, { timeout: 10000 }).toBe(1);
+    expect(warmRequests[0].method, 'the warm-up must not be a POST').toBe('GET');
+    expect(warmRequests[0].url).toContain('warm=1');
+
+    await panel.getByRole('button', { name: 'Mute voice' }).click();
+    const beforeSend = warmRequests.length;
+
+    await input.fill('What did Vikram do at the ATO?');
+    await input.press('Enter');
+    await expect
+      .poll(
+        async () => panel.locator('[data-testid="minivic-loading"]').count().then((n) => n === 0),
+        { timeout: SEND_TIMEOUT },
+      )
+      .toBe(true);
+
+    // A warm-up fired on every send would double the request count for no
+    // latency gain — the instance is already hot by then.
+    expect(
+      warmRequests.length,
+      `the send fired ${warmRequests.length - beforeSend} extra warm request(s)`,
+    ).toBe(beforeSend);
+  });
+
+  test('MV-PAYLOAD-01: the send body carries turns and a mode — no provider, model or prompt', async ({
+    page,
+  }) => {
+    const { panel, input } = await openMiniVic(page);
+    await panel.getByRole('button', { name: 'Mute voice' }).click();
+
+    const bodies: string[] = [];
+    page.on('request', (request) => {
+      const url = new URL(request.url());
+      if (url.pathname === '/api/chat' && request.method() === 'POST') {
+        bodies.push(request.postData() || '');
+      }
+    });
+
+    await input.fill('What did Vikram do at the ATO?');
+    await input.press('Enter');
+    await expect.poll(async () => bodies.length, { timeout: SEND_TIMEOUT }).toBe(1);
+
+    const payload = JSON.parse(bodies[0]) as {
+      messages?: Array<{ role: string; content: string }>;
+      mode?: string;
+      provider?: unknown;
+      model?: unknown;
+    };
+
+    // The server picks the provider and the model. A client that named either
+    // would let a visitor choose what the owner's account gets billed for.
+    expect(payload.provider, 'the client is naming a provider').toBeUndefined();
+    expect(payload.model, 'the client is naming a model').toBeUndefined();
+
+    // The system prompt is server-owned. The function drops any `system` turn a
+    // client sends, so shipping one was ~6 kB of wire cost per send that could
+    // never have any effect.
+    expect(
+      (payload.messages ?? []).map((m) => m.role),
+      'a system turn is still being shipped and discarded',
+    ).not.toContain('system');
+
+    // `mode` is what the server actually needed: without it every reply came
+    // back in the hiring persona whichever one the visitor had chosen.
+    expect(payload.mode, 'the persona mode is not reaching the server').toBeTruthy();
+    expect((payload.messages ?? []).at(-1)?.content).toContain('ATO');
+  });
+});
