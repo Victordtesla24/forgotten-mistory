@@ -1,0 +1,30 @@
+{
+  "cycle": "v10-c06",
+  "window_utc": "2026-09-05T09:32Z → 10:00Z",
+  "pea_numerator": 7,
+  "pea_denominator": 25,
+  "pea_basis": "R4 client path now met (engagement CTA live, employer CV path already complete); rest unchanged; O1 evidenced below (Deploy runs 09:36, 09:4x, 09:5x ≤10 min apart via the VPS metronome)",
+  "adversarial_verdict": "R-c13 FAIL (crash, fixed); R-c14 queued after hero photo + flagship A",
+  "deploy_commit": "c5d808c3",
+  "visible_ship": "cycle 20 — client engagement CTA (data-cta=engage, mailto with subject), contact channels at reading weight, About dial baseline, tenure derivation printed beside the claim",
+  "landed": [
+    "t_cachefr01 (V PASS; live headers must-revalidate; returning-visitor proven)",
+    "t_60d9cd7a scenes 5+6 (V PASS)",
+    "cycle 20 commits 701971c/14f1215/3209d47/c5d808c on main (verifier running)"
+  ],
+  "in_flight": [
+    "t_flagvis0a flagship visibility A (branch b200958 pushed; verifier next)",
+    "t_heroph001 hero photo (relaunched 09:5xZ)",
+    "t_realign01 (gates: timer active ✓, Hermes inactive ✓, deploy ≤10 min ✓, cache-control ✓, visible ship ✓ — closes when the cycle 20 verifier lands)"
+  ],
+  "verification_snippet": "$ systemctl is-active fm-deploy-cadence.timer → active\n$ tail -5 /var/log/fm-deploy/cadence.log\n[2026-09-05T09:41:29Z] skip: successful Deploy within last 8m (push already covered cadence)\n[2026-09-05T09:41:29Z] live build-commit\" content=\"5ff191f5\"\n[2026-09-05T09:51:34Z] cadence tick\nhttps://github.com/Victordtesla24/forgotten-mistory/actions/runs/33959106648\n[2026-09-05T09:51:37Z] workflow_dispatch ok\n$ gh run list --workflow=deploy.yml --limit 6\n2026-09-05T09:59:17Z push  ff328b93\n2026-09-05T09:51:37Z workflow_dispatch success 5ff191f5\n2026-09-05T09:51:37Z workflow_dispatch success 5ff191f5\n2026-09-05T09:39:00Z push success 5ff191f5\n2026-09-05T09:38:22Z push success dfdbe252\n2026-09-05T09:36:12Z push success 5c15f5b3\n$ live build-commit → build-commit\" content=\"c5d808c3\"\n$ cache-control → cache-control: public, max-age=0, must-revalidate\r\n",
+  "tools_used": [
+    "Workflow (opus council)",
+    "Monitor (fresh + returning-visitor probes, functions:log)",
+    "gh CLI",
+    "systemctl",
+    "curl",
+    "git"
+  ],
+  "next": "cycle 20 verifier → close t_realign01; flagship A verify + consolidate; hero photo; flagship B; R-c14"
+}
