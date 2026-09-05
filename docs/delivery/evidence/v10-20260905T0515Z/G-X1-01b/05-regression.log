@@ -1,0 +1,7 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts tests/a11y/text-contrast.spec.ts tests/overhaul/hero-first-paint.spec.ts --workers=1 --reporter=line
+
+Running 38 tests using 1 worker
+
+[1A[2K[1/38] [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+[1A[2K[2/38] [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground

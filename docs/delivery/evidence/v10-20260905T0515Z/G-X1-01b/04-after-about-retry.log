@@ -1,0 +1,34 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/perf/scene-framerate.spec.ts --workers=1 --reporter=line -g TC-SCENE-FPS-01 about-field
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 about-field: median frame <= 16.7 ms
+[1A[2K  1) [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 about-field: median frame <= 16.7 ms 
+
+    Error: TC-SCENE-FPS-01 about-field @ 1440x900 dsf1 cpu-x1 — renderer="ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)" [software-rasteriser] — SIGNATURE-SCENES-v1 D9: this is NOT GPU proof, and a miss here is still a real failure. host loadavg=[7.36, 8.76, 9.56] cores=4; artefact=docs/delivery/evidence/v10-20260905T0515Z/G-X1-01b/04-after/TC-SCENE-FPS-01-about-field.json — median rAF delta 100 ms over 120 frames (p95 216.6 ms, min 49.9 ms, max 299.9 ms); budget 16.7 ms. The budget is fixed — fix the scene or carry the failure, never the threshold.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m16.7[39m
+    Received:    [31m100[39m
+
+      400 |       `max ${round(Math.max(...sample.deltas))} ms); budget ${budget.budgetMs} ms. ` +
+      401 |       `The budget is fixed — fix the scene or carry the failure, never the threshold.`,
+    > 402 |   ).toBeLessThanOrEqual(budget.budgetMs);
+          |     ^
+      403 | }
+      404 |
+      405 | test.describe('TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms', () => {
+        at measureScene (/root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:402:5)
+        at /root/forgotten-mistory/.claude/worktrees/wf_499ab4e2-dea-1/tests/perf/scene-framerate.spec.ts:413:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/perf-scene-framerate-TC-SC-eddc1--field-median-frame-16-7-ms-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/perf-scene-framerate-TC-SC-eddc1--field-median-frame-16-7-ms-chromium/error-context.md
+
+
+[1A[2K  1 failed
+    [chromium] › tests/perf/scene-framerate.spec.ts:410:9 › TC-SCENE-FPS-01 — desktop 1440x900, median rAF <= 16.7 ms › TC-SCENE-FPS-01 about-field: median frame <= 16.7 ms 
