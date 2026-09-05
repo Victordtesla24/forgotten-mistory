@@ -1,0 +1,71 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts --workers=1 --reporter=line
+
+Running 4 tests using 1 worker
+
+[1/4] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+  1) [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 
+
+    Error: 4 text node(s) below AA — worst ten:
+    1.06:1 (needs 4.5) [experience] li#role-infocentric > h3.Experience_roleHeading__juH9X > button.Experience_roleToggle__fN0Wj > span.Experience_roleMeta__eO639:nth-of-type(2) > span.Experience_roleCompany__W_Zde:nth-of-type(1) — "InfoCentric" fg rgb(205,205,205) on bg rgb(200,199,199) @ 16px/400
+    3.63:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(2) > p.Bench_bandLabel__rA2BG — "Repositories" fg rgb(125,125,125) on bg rgb(39,39,39) @ 11px/400
+    4.00:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(3) > p.Bench_bandLabel__rA2BG — "Credentials" fg rgb(125,125,125) on bg rgb(31,31,31) @ 11px/400
+    4.10:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(1) > p.Bench_bandLabel__rA2BG — "Programmes" fg rgb(125,125,125) on bg rgb(29,29,29) @ 11px/400
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 4
+
+      366 |         failures.length,
+      367 |         `${failures.length} text node(s) below AA — worst ten:\n${worstTen(failures)}`,
+    > 368 |       ).toBe(0);
+          |         ^
+      369 |     });
+      370 |   }
+      371 | });
+        at /root/forgotten-mistory/.claude/worktrees/wf_5921109b-c4f-1/tests/a11y/text-contrast.spec.ts:368:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/error-context.md
+
+
+[2/4] [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground
+[3/4] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes
+  2) [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes 
+
+    Error: 4 text node(s) below AA on ?gl=force — worst ten:
+    1.06:1 (needs 4.5) [experience] li#role-infocentric > h3.Experience_roleHeading__juH9X > button.Experience_roleToggle__fN0Wj > span.Experience_roleMeta__eO639:nth-of-type(2) > span.Experience_roleCompany__W_Zde:nth-of-type(1) — "InfoCentric" fg rgb(205,205,205) on bg rgb(200,199,199) @ 16px/400
+    3.63:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(2) > p.Bench_bandLabel__rA2BG — "Repositories" fg rgb(125,125,125) on bg rgb(39,39,39) @ 11px/400
+    4.00:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(3) > p.Bench_bandLabel__rA2BG — "Credentials" fg rgb(125,125,125) on bg rgb(31,31,31) @ 11px/400
+    4.10:1 (needs 4.5) [skills] figure.Bench_figure__Ga8Cb > div.Bench_stage__bnzkk > div.Bench_bench__PpJzJ:nth-of-type(2) > div.Bench_rail__senrX:nth-of-type(1) > div.Bench_band__PiNX9:nth-of-type(1) > p.Bench_bandLabel__rA2BG — "Programmes" fg rgb(125,125,125) on bg rgb(29,29,29) @ 11px/400
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 4
+
+      399 |         failures.length,
+      400 |         `${failures.length} text node(s) below AA on ?gl=force — worst ten:\n${worstTen(failures)}`,
+    > 401 |       ).toBe(0);
+          |         ^
+      402 |     });
+      403 |   }
+      404 | });
+        at /root/forgotten-mistory/.claude/worktrees/wf_5921109b-c4f-1/tests/a11y/text-contrast.spec.ts:401:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-text-contrast-TC-CONT-4de2e-low-AA-over-the-live-scenes-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-text-contrast-TC-CONT-4de2e-low-AA-over-the-live-scenes-chromium/error-context.md
+
+
+[4/4] [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes
+  2 failed
+    [chromium] › tests/a11y/text-contrast.spec.ts:361:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground 
+    [chromium] › tests/a11y/text-contrast.spec.ts:393:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes 
+  2 passed (3.7m)
