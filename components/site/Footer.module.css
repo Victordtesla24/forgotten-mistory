@@ -66,7 +66,8 @@
 /* V-squared. Sized and offset explicitly so the superscript does not open up
    the footer's single line box. */
 .sup {
-  font-size: 0.72em;
+  /* R-47: a step of the modular scale, not an em fraction of the line (design-scale.spec). */
+  font-size: var(--fs-micro);
   line-height: 0;
   vertical-align: 0.42em;
   padding-left: 0.02em;

@@ -1,0 +1,31 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/perf/performance.spec.ts --reporter=line
+
+[2mRunning [22m7[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/7] [chromium] › tests/perf/performance.spec.ts:61:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s
+[1A[2K[2/7] [chromium] › tests/perf/performance.spec.ts:41:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:41:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB[22m
+Total transfer size: 0.97 MB
+
+[1A[2K[3/7] [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:61:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s[22m
+LCP: 484 ms
+
+[1A[2K[4/7] [chromium] › tests/perf/performance.spec.ts:132:7 › Performance Budgets › PERF-04: Page loads without page errors
+[1A[2K[5/7] [chromium] › tests/perf/performance.spec.ts:143:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:143:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s[22m
+DOMContentLoaded: 85 ms
+
+[1A[2K[6/7] [chromium] › tests/perf/performance.spec.ts:177:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05[22m
+CLS: 0.0000
+
+[1A[2K[7/7] [chromium] › tests/perf/performance.spec.ts:230:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:177:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked[22m
+No-JS hero title: {"opacity":1,"visibility":"visible","area":36684.375,"withinFirstViewport":true,"text":16}
+
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:230:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer[22m
+LCP entry: {"startTime":660,"tag":"H1","className":"Hero_name__vovn8"}
+
+[1A[2K[32m  7 passed[39m[2m (10.5s)[22m

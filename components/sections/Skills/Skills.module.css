@@ -298,7 +298,9 @@ tr[data-status="production"] .statusGlyph {
     font-size: var(--fs-caption);
     line-height: var(--lh-label);
     letter-spacing: 0.03em;
-    color: var(--ink-300);
+    /* --ink-300 composited to 3.92:1 on the card ground (gold-contrast GC-02);
+       --ink-400 clears WCAG AA 4.5:1 for 12 px text. */
+    color: var(--ink-400);
 }
 
 tr[data-status="pending"] .statusGlyph,
@@ -376,13 +378,39 @@ tr[data-status="pending"] .statusLabel {
     }
 }
 
+/* Reduced motion (R-46 / lock §4.3) is a parallel score, not a kill switch.
+   Colour transitions stay — a hover that changes colour causes no vestibular
+   response and is the affordance signal (RM-4). Only movement is dropped
+   (RM-3), and the entrance becomes an opacity-only fade, staggered so the
+   section still arrives in an order (RM-1). Mirrors Hero.module.css. */
 @media (prefers-reduced-motion: reduce) {
+    .kicker,
+    .title,
+    .lede,
     .card {
-        animation: none;
+        animation: skillsFade 320ms linear both;
     }
 
-    .filter {
-        transition: none;
+    .title {
+        animation-delay: 40ms;
+    }
+
+    .lede {
+        animation-delay: 80ms;
+    }
+
+    .card {
+        animation-delay: 160ms;
+    }
+
+    @keyframes skillsFade {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 }
 

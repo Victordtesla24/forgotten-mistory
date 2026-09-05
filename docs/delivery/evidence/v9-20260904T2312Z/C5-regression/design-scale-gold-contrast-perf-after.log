@@ -1,0 +1,160 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/design-scale.spec.ts tests/a11y/gold-contrast.spec.ts tests/perf/performance.spec.ts --reporter=line
+
+[2mRunning [22m26[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/26] [chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited
+[1A[2K[2/26] [chromium] › tests/a11y/gold-contrast.spec.ts:328:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-02: every skills status label clears 4.5:1
+[1A[2K[2m[chromium] › tests/a11y/gold-contrast.spec.ts:328:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-02: every skills status label clears 4.5:1[22m
+
+=== GC-02 status labels (#skills) ===
+
+[1A[2K  "measured in production"  6.27:1  (fg #8f93a3 on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 6.32–6.22:1)
+
+[1A[2K  "measured in production"  6.27:1  (fg #8f93a3 on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 6.32–6.22:1)
+
+[1A[2K  "measured in production"  6.27:1  (fg #8f93a3 on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 6.32–6.22:1)
+
+[1A[2K  "measured in production"  6.27:1  (fg #8f93a3 on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 6.32–6.23:1)
+
+[1A[2K  "measured in production"  6.27:1  (fg #8f93a3 on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 6.32–6.23:1)
+
+[1A[2K  "measured in production"  6.27:1  (fg #8f93a3 on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 6.32–1:1)
+
+[1A[2K[3/26] [chromium] › tests/a11y/gold-contrast.spec.ts:343:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-03: no gold text is ever painted on an --ink-500 ground
+[1A[2K[2m[chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited[22m
+
+=== GC-01 live repository URLs (#vitrine) ===
+
+[1A[2K  "https://aether.srv1356245.hstgr.cloud"  2.38:1  (fg #5b4e28 on modal bg #0b0c0e, 12px/400, opacity chain 0.42, ground rgb(10, 11, 13); spread 2.37–2.38:1)
+
+[1A[2K  "https://abentertainment.com.au"  8.62:1  (fg #c9a84c on modal bg #0a0b0d, 12px/400, opacity chain 1, ground rgb(10, 11, 13); spread 8.67–8.62:1)
+
+[1A[2K  "https://forgotten-mistory.web.app"  2.38:1  (fg #5b4e29 on modal bg #0c0d0f, 12px/400, opacity chain 0.42, ground rgb(10, 11, 13); spread 2.37–2.38:1)
+
+[1A[2K[31m  1) [chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited [39m
+
+    Error: gold is the site's evidence mark; a reader who cannot read it cannot check the evidence
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "https://aether.srv1356245.hstgr.cloud = 2.38:1 (needs 4.5:1)",[39m
+    [31m+   "https://forgotten-mistory.web.app = 2.38:1 (needs 4.5:1)",[39m
+    [31m+ ][39m
+
+    [0m [90m 323 |[39m       failures[33m.[39mmap((m) [33m=>[39m [32m`${m.label} = ${r2(m.ratio)}:1 (needs ${AA_TEXT}:1)`[39m)[33m,[39m
+     [90m 324 |[39m       [32m'gold is the site\'s evidence mark; a reader who cannot read it cannot check the evidence'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 325 |[39m     )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 326 |[39m   })[33m;[39m
+     [90m 327 |[39m
+     [90m 328 |[39m   test([32m'GC-02: every skills status label clears 4.5:1'[39m[33m,[39m [36masync[39m ({ page }) [33m=>[39m {[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_d2c0a366-fd2-1/tests/a11y/gold-contrast.spec.ts:325:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-gold-contrast-WCAG-2--1078e--clears-4-5-1-as-composited-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-gold-contrast-WCAG-2--1078e--clears-4-5-1-as-composited-chromium/error-context.md[22m
+
+
+[1A[2K[2m[chromium] › tests/a11y/gold-contrast.spec.ts:343:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-03: no gold text is ever painted on an --ink-500 ground[22m
+
+=== GC-03 gold-on---ink-500 sweep === 0 offender(s)
+
+[1A[2K[4/26] [chromium] › tests/overhaul/design-scale.spec.ts:171:9 › design scale @ 375px › R-46/SC-27.1 every rendered duration sits inside an R-46 band
+[1A[2K[5/26] [chromium] › tests/overhaul/design-scale.spec.ts:146:9 › design scale @ 375px › R-48/SC-29.1 the 8-point scale resolves as --space-* custom properties
+[1A[2K[6/26] [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 375px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale
+[1A[2K[7/26] [chromium] › tests/overhaul/design-scale.spec.ts:259:9 › design scale @ 375px › R-47/SC-28.1 every prose measure renders between 55 and 75 characters
+[1A[2K[8/26] [chromium] › tests/overhaul/design-scale.spec.ts:146:9 › design scale @ 768px › R-48/SC-29.1 the 8-point scale resolves as --space-* custom properties
+[1A[2K[9/26] [chromium] › tests/overhaul/design-scale.spec.ts:171:9 › design scale @ 768px › R-46/SC-27.1 every rendered duration sits inside an R-46 band
+[1A[2K[10/26] [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 768px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale
+[1A[2K[11/26] [chromium] › tests/overhaul/design-scale.spec.ts:259:9 › design scale @ 768px › R-47/SC-28.1 every prose measure renders between 55 and 75 characters
+[1A[2K[12/26] [chromium] › tests/overhaul/design-scale.spec.ts:146:9 › design scale @ 1280px › R-48/SC-29.1 the 8-point scale resolves as --space-* custom properties
+[1A[2K[13/26] [chromium] › tests/overhaul/design-scale.spec.ts:171:9 › design scale @ 1280px › R-46/SC-27.1 every rendered duration sits inside an R-46 band
+[1A[2K[14/26] [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1280px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale
+[1A[2K[15/26] [chromium] › tests/overhaul/design-scale.spec.ts:259:9 › design scale @ 1280px › R-47/SC-28.1 every prose measure renders between 55 and 75 characters
+[1A[2K[16/26] [chromium] › tests/overhaul/design-scale.spec.ts:146:9 › design scale @ 1920px › R-48/SC-29.1 the 8-point scale resolves as --space-* custom properties
+[1A[2K[17/26] [chromium] › tests/overhaul/design-scale.spec.ts:171:9 › design scale @ 1920px › R-46/SC-27.1 every rendered duration sits inside an R-46 band
+[1A[2K[18/26] [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1920px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale
+[1A[2K[19/26] [chromium] › tests/overhaul/design-scale.spec.ts:259:9 › design scale @ 1920px › R-47/SC-28.1 every prose measure renders between 55 and 75 characters
+[1A[2K[20/26] [chromium] › tests/perf/performance.spec.ts:41:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:41:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB[22m
+Total transfer size: 0.96 MB
+
+[1A[2K[21/26] [chromium] › tests/perf/performance.spec.ts:61:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s
+[1A[2K[22/26] [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:61:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s[22m
+LCP: 904 ms
+
+[1A[2K[23/26] [chromium] › tests/perf/performance.spec.ts:132:7 › Performance Budgets › PERF-04: Page loads without page errors
+[1A[2K[24/26] [chromium] › tests/perf/performance.spec.ts:143:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05[22m
+CLS: 0.0000
+
+[1A[2K[25/26] [chromium] › tests/perf/performance.spec.ts:177:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:143:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s[22m
+DOMContentLoaded: 72 ms
+
+[1A[2K[26/26] [chromium] › tests/perf/performance.spec.ts:230:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:177:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked[22m
+No-JS hero title: {"opacity":0.660218,"visibility":"visible","area":36684.375,"withinFirstViewport":true,"text":16}
+
+[1A[2K[31m  2) [chromium] › tests/perf/performance.spec.ts:177:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked [39m
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.99[39m
+    Received:    [31m0.660218[39m
+
+    [0m [90m 208 |[39m
+     [90m 209 |[39m     console[33m.[39mlog([32m`No-JS hero title: ${JSON.stringify(painted)}`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 210 |[39m     expect(painted[33m.[39mopacity)[33m.[39mtoBeGreaterThanOrEqual([35m0.99[39m)[33m;[39m
+     [90m     |[39m                             [31m[1m^[22m[39m
+     [90m 211 |[39m     expect(painted[33m.[39mvisibility)[33m.[39mtoBe([32m'visible'[39m)[33m;[39m
+     [90m 212 |[39m     expect(painted[33m.[39mtext)[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m 213 |[39m     expect(painted[33m.[39marea)[33m.[39mtoBeGreaterThan([35m10000[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_d2c0a366-fd2-1/tests/perf/performance.spec.ts:210:29[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/perf-performance-Performan-00370-L-with-JS-and-WebGL-blocked-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/perf-performance-Performan-00370-L-with-JS-and-WebGL-blocked-chromium/error-context.md[22m
+
+
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:230:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer[22m
+LCP entry: null
+
+[1A[2K[31m  3) [chromium] › tests/perf/performance.spec.ts:230:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer [39m
+
+    Error: Chrome must report a largest-contentful-paint entry
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBeNull[2m()[22m
+
+    Received: [31mnull[39m
+
+    [0m [90m 263 |[39m
+     [90m 264 |[39m     console[33m.[39mlog([32m`LCP entry: ${JSON.stringify(entry)}`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 265 |[39m     expect(entry[33m,[39m [32m'Chrome must report a largest-contentful-paint entry'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m     |[39m                                                                              [31m[1m^[22m[39m
+     [90m 266 |[39m     expect(entry[33m![39m[33m.[39mtag[33m,[39m [32m'LCP element must be real content, not a WebGL canvas'[39m)[33m.[39mnot[33m.[39mtoBe([32m'CANVAS'[39m)[33m;[39m
+     [90m 267 |[39m     expect(entry[33m![39m[33m.[39mstartTime)[33m.[39mtoBeLessThanOrEqual([33mLCP_BUDGET_MS[39m)[33m;[39m
+     [90m 268 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_d2c0a366-fd2-1/tests/perf/performance.spec.ts:265:78[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/perf-performance-Performan-f85de--not-a-deferred-WebGL-layer-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+
+[1A[2K[31m  3 failed[39m
+[31m    [chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited [39m
+[31m    [chromium] › tests/perf/performance.spec.ts:177:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked [39m
+[31m    [chromium] › tests/perf/performance.spec.ts:230:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer [39m
+[32m  23 passed[39m[2m (56.0s)[22m

@@ -114,6 +114,25 @@
     }
 }
 
+/* The name is the page's largest-contentful-paint element. Chrome never records
+   an element first painted at opacity 0 as an LCP candidate, and a compositor
+   opacity animation does not repaint it later — so a name that fades in emits
+   no LCP entry at all (perf PERF-06 / PERF-07). It rises on the same beat as
+   its siblings, but it is painted solid from the first frame. */
+.name {
+    animation-name: heroRiseSolid;
+}
+
+@keyframes heroRiseSolid {
+    from {
+        transform: translateY(14px);
+    }
+
+    to {
+        transform: none;
+    }
+}
+
 .eyebrow {
     display: flex;
     align-items: center;

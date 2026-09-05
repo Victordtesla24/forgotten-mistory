@@ -175,11 +175,10 @@
 
 @media (prefers-reduced-motion: reduce) {
     /* The face still points — that is information, not decoration. It arrives
-       rather than travels. */
-    .rose,
-    .sector,
-    .numeral,
-    .index {
+       rather than travels: only the rose's transform transition is dropped.
+       Sector fill/stroke and numeral fill keep their duration — colour is the
+       affordance, and it causes no vestibular response (R-46 / lock §4.3). */
+    .rose {
         transition: none;
     }
 }

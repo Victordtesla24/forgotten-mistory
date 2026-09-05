@@ -260,6 +260,13 @@
 .live {
     font-family: var(--font-mono);
     font-size: var(--fs-caption);
+    /* R-110: one saturated gold mark per view. The lit plate's URL carries
+       --gold; its neighbours in shadow step down to --gold-pale so two sourced
+       marks never compete in one viewport (gold-semantics GS-02). */
+    color: var(--gold-pale);
+}
+
+.plate[data-lit] .live {
     color: var(--gold);
     border-bottom-color: var(--gold-veil);
 }
@@ -372,13 +379,51 @@
 /* ── Reduced motion ──────────────────────────────────────────────────────────
    The light still tracks — it is how the reader knows which plate they are on —
    but it arrives without a transition rather than gliding. */
+/* Reduced motion (R-46 / lock §4.3) is a parallel score, not a kill switch.
+   Colour transitions stay — a hover that changes colour causes no vestibular
+   response and is the affordance signal (RM-4). Only movement is dropped
+   (RM-3), and the entrance becomes an opacity-only fade, staggered so the
+   section still arrives in an order (RM-1). Mirrors Hero.module.css. */
 @media (prefers-reduced-motion: reduce) {
+    .kicker,
+    .title,
+    .lede,
+    .foot {
+        animation: vitrineFade 320ms linear both;
+    }
+
+    .title {
+        animation-delay: 40ms;
+    }
+
+    .lede {
+        animation-delay: 80ms;
+    }
+
+    .foot {
+        animation-delay: 120ms;
+    }
+
+    /* The plate still lights and dims — that is information — but it no longer
+       travels: the transform leg of the transition is dropped, nothing else. */
     .plate {
-        transition: none;
+        transition:
+            opacity var(--motion-base) var(--motion-ease-standard),
+            border-color var(--motion-base) var(--motion-ease-standard);
     }
 
     .rail {
         scroll-behavior: auto;
+    }
+
+    @keyframes vitrineFade {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 }
 
