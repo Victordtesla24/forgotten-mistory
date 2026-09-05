@@ -71,9 +71,45 @@
  * the shader: sourced sectors are brighter, not accented, and the one accent
  * stays where a source can be clicked, in the SVG chrome.
  *
+ * ## The field is the section's plane, not the instrument's backing
+ *
+ * Through c22 the slot and the rose were the same 384 x 384 box. c23 grew the
+ * slot to a 30rem stage and inset the engraving inside it at 0.78. Both shipped;
+ * both were reviewed on live; both came back with the same finding, that a
+ * recruiter's recall of `#about` is the SVG radar. That is what a field
+ * confined to the widget's footprint gets you, and a 6rem halo around the same
+ * widget is the same object with a wider margin.
+ *
+ * So from c24 the canvas is not in the instrument at all. It spans the whole
+ * body — both columns — and is one screen tall, pinned, travelling with the
+ * reader: the plane the section is drawn on, with the engraving standing on it
+ * as chrome. Everything that had to line up with the rose still does, because
+ * the plane is measured against the rose rather than the other way round:
+ * `uCentre` is where the engraving's centre falls in this canvas and
+ * `uRoseRadius` is how big it is here, both read from the DOM every frame
+ * (`AboutField.tsx`) because the instrument is sticky and neither is a
+ * constant. `rr` is this pixel's radius *in the engraving's frame*, so the
+ * sector annulus, the numerals' groove and the answered bloom are written
+ * exactly as they were. `r` — the plane's own frame — now carries the part of
+ * the field the instrument never had: the ten sectors continued outward across
+ * the whole section as a fan, and the wide haze they sit in.
+ *
+ * ## The light is bounded where the type is
+ *
+ * A plane this size is drawn under text, which no earlier version of this scene
+ * was, so aiming the light away from the type is not enough — it has to be
+ * bounded there. Two boxes arrive as `uGuard`: the reading column's top-left
+ * corner, and the top of the instrument's own caption. Inside each, the light
+ * is compressed toward a ceiling with `1 - exp(-luma/ceiling)`, which is smooth
+ * everywhere and can never reach it, so no plateau shows where the compression
+ * starts and no pixel under type can exceed the ground that type carries at
+ * 4.5:1. The ceilings themselves are computed from `app/globals.css` and live
+ * in `AboutField.tsx`, next to the measurement they apply to.
+ *
  * Budget: one full-screen quad, no geometry, no textures, and three value-noise
  * lookups per pixel — the ceiling `CareerStrata` holds itself to — plus one
- * hash for grain. The two masks add integer bit tests, not noise lookups.
+ * hash for grain. The masks add integer bit tests, not noise lookups, and the
+ * fan and the guard reuse terms already computed.
  */
 
 export const aboutFieldVertexShader = /* glsl */ `
@@ -113,6 +149,21 @@ export const aboutFieldFragmentShader = /* glsl */ `
    * SVG where the source is a link.
    */
   uniform float uSourcedMask;
+  /** Where the engraving's centre falls in this canvas, in UV. */
+  uniform vec2 uCentre;
+  /** The engraving's radius, in the squared frame below (1.0 = half height). */
+  uniform float uRoseRadius;
+  /**
+   * The two boxes the section's type occupies, in UV. xy is the reading
+   * column's top-left corner — x rightward, y measured from the bottom like
+   * every other coordinate here — and z is where the instrument's own caption
+   * begins, again from the bottom. See the header for why they are bounds
+   * rather than exclusions.
+   */
+  uniform vec3 uGuard;
+  /** The most light allowed under the reading column, and under the caption. */
+  uniform float uReadingCeiling;
+  uniform float uInstrumentCeiling;
 
   const float SECTORS = 10.0;
   const float TAU = 6.283185307179586;
@@ -140,10 +191,15 @@ export const aboutFieldFragmentShader = /* glsl */ `
   }
 
   void main() {
-    // The face is a disc, so the frame is squared before anything polar is
-    // measured in it. r = 1 is the half-height of the stage.
-    vec2 p = (vUv - 0.5) * vec2(uResolution.x / max(uResolution.y, 1.0), 1.0) * 2.0;
+    // Polar about the instrument, wherever the instrument currently is. The
+    // frame is squared first, so a fan drawn in it is round on a plane that is
+    // not: r = 1 is half the plane's height.
+    vec2 p = (vUv - uCentre) * vec2(uResolution.x / max(uResolution.y, 1.0), 1.0) * 2.0;
     float r = length(p);
+    // The same point measured in the engraving's frame, where rr = 1 is the
+    // rose's own edge. Everything that must line up with the SVG is written in
+    // rr; r is the plane's own frame, and carries the fan and the haze.
+    float rr = r / max(uRoseRadius, 0.0001);
 
     // Twelve o'clock is up and the sectors run clockwise, numbered exactly as
     // the SVG numbers them. Subtracting uRotation puts this in the rose's own
@@ -159,7 +215,7 @@ export const aboutFieldFragmentShader = /* glsl */ `
 
     // The band of radii the rose's sector ring occupies, softened at both ends
     // so the light is under the engraving rather than around it.
-    float ring = smoothstep(0.34, 0.52, r) * smoothstep(0.98, 0.74, r);
+    float ring = smoothstep(0.34, 0.52, rr) * smoothstep(0.98, 0.74, rr);
 
     // The numerals' own groove.
     // The ten labels are drawn at r = 36.2 in the rose's 100-unit viewBox —
@@ -170,7 +226,7 @@ export const aboutFieldFragmentShader = /* glsl */ `
     // to clear, so it is dimmed exactly where the numbers are and nowhere
     // else. A channel at the numeral radius is also what an instrument face
     // does with its numerals: they sit in the metal, not on the light.
-    ring *= 1.0 - 0.90 * exp(-pow((r - 0.724) / 0.055, 2.0));
+    ring *= 1.0 - 0.90 * exp(-pow((rr - 0.724) / 0.055, 2.0));
 
     // How far this sector is from the one being read, wrapped around the face.
     // At rest (uActive < 0) nothing is favoured, which is the rose's rest state
@@ -232,20 +288,67 @@ export const aboutFieldFragmentShader = /* glsl */ `
     // a further warm-neutral channel across its whole band, so the four rows the
     // page can actually mark read brighter than the three self-reported ones —
     // the same ranking the DOM draws, carried by luminance, never by the accent.
-    float bloomR = exp(-pow((r - 0.62) / 0.13, 2.0));
+    float bloomR = exp(-pow((rr - 0.62) / 0.13, 2.0));
     sector += answered * band * bloomR * (0.17 + 0.21 * lit);
     sector += sourced * band * ring * (0.13 + 0.15 * lit);
+
+    // The fan: the ten sectors continued past the bezel and out across the
+    // whole plane. This is what makes the field the section's dominant surface
+    // rather than the instrument's backing — the same ten spokes, the same
+    // reading, the same two data states, carried to the edges of the body at a
+    // weight that falls away with distance. Its inner edge is written in rr,
+    // because it has to start exactly where the bezel ends; its falloff is
+    // written in r, because how far it reaches is a fact about the plane.
+    float fan = smoothstep(0.94, 1.30, rr) * exp(-pow(r / 1.35, 2.1));
+    sector += fan * band * (0.42 + 0.30 * lit + 0.12 * gleam + 0.34 * sweep);
+    sector += fan * band * (answered * 0.13 + sourced * 0.11) * (0.6 + 0.7 * lit);
+
+    // The haze the fan sits in, so the plane is a surface and not ten spokes on
+    // bare ink. Very low frequency, very low amplitude, and it reaches further
+    // than the fan does — this is the light that makes the section feel lit at
+    // all at the far corners, where no spoke arrives.
+    float haze = exp(-pow(r / 1.55, 2.0)) * (0.11 + 0.055 * wash + 0.045 * lit);
+    sector += haze;
 
     float luma = sector;
 
     // The scene has to end somewhere and it must not be anywhere a reader can
-    // find: the field dies inside its own frame, so the canvas rectangle never
-    // shows as a faintly lighter box against the page.
-    luma *= 1.0 - smoothstep(0.88, 1.02, r);
+    // find: the field dies inside its own rectangle on all four sides, so the
+    // canvas never shows as a faintly lighter box against the page. Measured in
+    // UV rather than in r, because the plane is wide and its corners are not
+    // equidistant from an instrument that has moved off its centre.
+    vec2 edge = min(vUv, 1.0 - vUv);
+    luma *= smoothstep(0.0, 0.075, edge.x) * smoothstep(0.0, 0.045, edge.y);
 
     // Grain, from the cheap hash rather than a fourth noise lookup.
     luma += (hash(vUv * uResolution + fract(uTime)) - 0.5) * 0.014;
     luma = clamp(luma, 0.0, 1.0);
+
+    // The two ceilings. The reading column is the quadrant right of uGuard.x
+    // and below uGuard.y — one corner describes it in both layouts, because at
+    // 1440 the ten are beside the instrument (so the x test is the live one and
+    // the y test is satisfied everywhere) and at 390 they are under it (so the
+    // y test is the live one and the x test is satisfied everywhere). The
+    // instrument's caption and key are everything below uGuard.z.
+    //
+    // Each ramp ends *at* its edge rather than straddling it: a smoothstep
+    // centred on the boundary is only half applied at the boundary, and the
+    // first line of type sits exactly there — the instrument's caption measured
+    // 3.56:1 against a ground the ceiling should have held to 7.3:1, entirely
+    // in the strip where the ramp had not finished (c24 probe, 1440).
+    float toRight = smoothstep(uGuard.x - 0.06, uGuard.x, vUv.x);
+    float belowList = smoothstep(uGuard.y + 0.06, uGuard.y, vUv.y);
+    float reading = min(toRight, belowList);
+    float caption = smoothstep(uGuard.z + 0.06, uGuard.z, vUv.y);
+    float guarded = max(reading, caption);
+    float ceiling = min(
+      mix(1.0, uReadingCeiling, reading),
+      mix(1.0, uInstrumentCeiling, caption)
+    );
+    // Asymptotic, so the bound is never actually reached and the transition
+    // into it has no edge of its own. Outside both boxes guarded is 0 and the
+    // field is untouched.
+    luma = mix(luma, ceiling * (1.0 - exp(-luma / max(ceiling, 0.0001))), guarded);
 
     // Light only, and the light carried by alpha alone. Where the field is dark
     // it paints nothing at all and the stage's own pool of light shows through

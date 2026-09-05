@@ -103,8 +103,11 @@
 
 /* ── Body: instrument + list ─────────────────────────────────────────────── */
 .body {
+    /* The field is absolutely positioned over the whole of this box, so the box
+       has to be the field's containing block. */
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 25rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
     gap: clamp(var(--space-4), 5vw, var(--space-10));
     align-items: start;
 }
@@ -112,6 +115,10 @@
 .instrument {
     position: sticky;
     top: clamp(6rem, 18vh, var(--space-20));
+    /* Over the field, always: the plane is the section's ground and the
+       instrument is chrome standing on it (TC-SCENE-ABOUT-02 checks the
+       stacking as well as the hit test). */
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -127,55 +134,122 @@
     margin-top: 0;
     width: 100%;
     aspect-ratio: 1;
-    max-width: 24rem;
-    /* A faint pool of light behind the face, so the instrument reads as lit
-       from the same direction as everything else on the page. */
-    background:
-        radial-gradient(circle at 50% 42%, rgb(246 246 246 / 0.045), transparent 64%);
-    border-radius: 50%;
+    max-width: 26rem;
+    /* No pool of its own any more. The stage used to carry a radial gradient
+       because it was the only light the instrument had; the field behind it is
+       now the section's plane and supplies it, and a second disc under the
+       bezel only competed with it. */
 }
 
-/* ── The field ───────────────────────────────────────────────────────────── */
-/* The shader sits inside the stage, never outside it. An earlier arrangement
-   bled the slot past the stage's edges to halo the instrument, which on a 390
-   px viewport pushed the canvas wider than the column and gave the page a
-   horizontal scrollbar. The light belongs under the rose's own sector ring
-   anyway — see field.glsl.ts — so the slot is exactly the stage. */
+/* ── The field: the plane the section is drawn on ────────────────────────── */
+/* The whole of the body, both columns, one screen tall and travelling with the
+   reader. It is absolutely positioned so it is out of the grid's flow and can
+   never push a column around, and `.body` is its containing block.
+
+   This is the c24 correction. Through c22 the slot was the dial's own 384 px
+   box; c23 grew it to a 30rem stage with the engraving inset at 0.78, which is
+   a halo around the same widget. Both were reviewed on live and both came back
+   with the section's recall recorded as the SVG radar. A field that is the
+   section's dominant visual plane is not a bigger backing — it is a different
+   object, and the engraving sits on it. */
 .field {
     position: absolute;
     inset: 0;
     z-index: 0;
     pointer-events: none;
+    /* Where the instrument's centre falls inside the travelling plane, for the
+       still below. The shader does not read these: it measures the stage, the
+       caption and the list from the DOM every frame, because the instrument is
+       sticky and none of this is a constant while the reader moves. */
+    --about-field-x: 19%;
+    --about-field-y: 34%;
 }
 
-/* The still of the same light (R-c13 MOT-C13-04). The shader draws ten lit
-   sectors in an annulus; with no WebGL — or with reduced motion asked for —
-   this gradient draws that annulus as one unbroken ring, at the same radii, so
-   the engraving still sits on light rather than on bare ink. Before it, the
-   fallback measured 0.00% of the slot above the ground: the rose floated on
-   nothing, which is most of why `#about` read as having no scene at all.
+/* One screen of it, pinned, so the plane is what the reader is looking at
+   rather than a tall texture mostly scrolled past. Sticky is clamped to its
+   containing block, so it can never ride up over the section header or down
+   into `#experience`; it starts at the top of the body and stops at its foot. */
+.fieldViewport {
+    position: relative;
+    height: 100vh;
+    /* Never taller than the body it belongs to, on a short viewport. */
+    max-height: 100%;
+}
 
-   The ring is placed outside the radii the rose's own labels occupy, so the
-   light is under the engraving's sector band and not under its type. */
+/* It travels only when the shader is there to travel with it. The still below
+   is a fixed gradient that cannot know where the section's type is, so a still
+   pinned to the reader's screen ends up over the ten as they scroll; the plane
+   the shader draws bounds its own light and can go anywhere. */
+.fieldViewport:has(canvas) {
+    position: sticky;
+    top: 0;
+}
+
+/* The still of the same light (R-c13 MOT-C13-04): what the plane is with no
+   WebGL, or with reduced motion asked for. A core of light in the instrument
+   column with the section's ten drawn over it, falling away across the reading
+   column — the same composition the shader draws, without the ten sectors or
+   the reading.
+
+   Where it stops is the design of it. `.evidence` is --mist-400 at
+   --fs-caption and carries a ground of about rgb(42 42 42) before it reaches
+   4.5:1, so the light is nearly spent by the time it reaches the reading
+   column: the core is a 19rem disc centred on the instrument and the column
+   starts 15rem out, where the gradient is down to about a tenth of the light —
+   a ground of rgb(36 36 36), which that grey carries at 4.86:1. The caption and
+   the key sit further in, which is why they are --mist-200 (see
+   .instrumentConstant). */
 .fieldSlot {
     position: absolute;
     inset: 0;
+    pointer-events: none;
     background:
         radial-gradient(
-            circle at 50% 50%,
-            transparent 30%,
-            rgb(246 246 246 / 0.12) 36%,
-            rgb(246 246 246 / 0.26) 44%,
-            rgb(246 246 246 / 0.26) 56%,
-            rgb(246 246 246 / 0.10) 66%,
-            transparent 76%
+            circle 19rem at var(--about-field-x) var(--about-field-y),
+            rgb(246 246 246 / 0.30) 0 55%,
+            rgb(246 246 246 / 0.16) 78%,
+            rgb(246 246 246 / 0.06) 92%,
+            transparent 100%
+        ),
+        radial-gradient(
+            circle 46rem at var(--about-field-x) var(--about-field-y),
+            rgb(246 246 246 / 0.05) 0,
+            rgb(246 246 246 / 0.02) 58%,
+            transparent 100%
         );
+    /* Gone at both gutters, so the plane's own rectangle is never a seam a
+       reader can find down the side of the section. */
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        rgb(0 0 0) 7%,
+        rgb(0 0 0) 93%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        rgb(0 0 0) 7%,
+        rgb(0 0 0) 93%,
+        transparent 100%
+    );
 }
 
-/* The engraving is always over the light, whether or not the light is there. */
+/* And it is only the no-GL path. Left under a live canvas the two lights add,
+   and the sum is not bounded by anything: at 390 the still's core sat over the
+   ten and composited to 1.91:1 where the shader's own ceiling was holding
+   4.98:1 at 1440 (c24 probe). The shader is the light when the shader is
+   there. */
+.fieldSlot:has(canvas) {
+    background: none;
+}
+
+/* The engraving fills its stage again, and the stage stands on the plane. */
 .instrumentStage > svg {
     position: relative;
     z-index: 1;
+    display: block;
+    width: 100%;
 }
 
 .instrumentCaption {
@@ -192,7 +266,7 @@
 /* The reading: the dimension the face is indexed to, or a dash at rest. */
 .instrumentReading {
     min-height: 1.4em;
-    color: var(--mist-400);
+    color: var(--mist-200);
     transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
@@ -201,15 +275,23 @@
 .instrumentConstant {
     font-size: var(--fs-caption);
     letter-spacing: var(--ls-caption);
-    /* Same swap as the rest of this file (D-5): --ink-300 (#7D7D7D) measured
-       4.39:1 at 1440 and 4.40:1 at 390 on the section ground — under AA by a
-       tenth. --mist-400 (#909090) reads 5.6:1 there and is the token every
-       other caption in this module already uses. */
-    color: var(--mist-400);
+    /* --mist-200, not --mist-400, from c24. These three lines sit inside the
+       field's core — the instrument column is where the plane is brightest —
+       and --mist-400 carries a ground of about rgb(42 42 42) before it reaches
+       4.5:1, which the core is deliberately above. --mist-200 carries rgb(87
+       87 87) (globals.css), and both the shader's ceiling over this block and
+       the still's core are held under that. */
+    color: var(--mist-200);
 }
 
 /* ── The ten ─────────────────────────────────────────────────────────────── */
 .list {
+    /* Over the plane, never under it. The reading column is the content and the
+       field is the ground; the shader holds its own light under this box to a
+       ceiling the caption grey can carry (see field.glsl.ts), so the ten need
+       no opaque backing of their own to stay legible. */
+    position: relative;
+    z-index: 1;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -317,6 +399,28 @@
         gap: var(--space-5);
     }
 
+    .field {
+        /* One column, so the instrument sits at the middle of the plane's
+           width and near its top rather than a third of the way across. */
+        --about-field-x: 50%;
+        --about-field-y: 26%;
+    }
+
+    /* One column, so the ten are directly under the instrument rather than
+       beside it, and a travelling screen of light would be a screen of light
+       under the answers — where the field has to hold itself to a ground the
+       caption grey can carry and so cannot be much of anything. The plane is a
+       band at the head of the body instead: the full width of the column,
+       taller than the instrument by 6rem so it reads past it and over the first
+       of the ten, and it stays where the compass is rather than following the
+       reader down. */
+    .fieldViewport,
+    .fieldViewport:has(canvas) {
+        position: relative;
+        top: auto;
+        height: 30rem;
+    }
+
     .instrument {
         /* In flow above the list, never sticky over it: on a phone the
            instrument is a header ornament the reader scrolls past, and a
@@ -325,17 +429,12 @@
            no later rule can pin it again. */
         position: relative;
         top: auto;
-        z-index: 0;
+        /* The plane is still underneath, so the stacking stays. */
+        z-index: 1;
         /* Below the fold on a phone the compass is a header ornament, so it
            gets less of the screen than it does beside the list. */
         max-width: 14rem;
         margin: 0 auto;
-    }
-
-    .list {
-        position: relative;
-        z-index: 1;
-        background: var(--token-bg-base);
     }
 
     .item {
@@ -422,7 +521,9 @@
     font-size: var(--fs-caption);
     line-height: var(--lh-label);
     letter-spacing: 0.03em;
-    color: var(--mist-400);
+    /* Inside the field's core with the caption above it — same reason, same
+       token (see .instrumentConstant). */
+    color: var(--mist-200);
 }
 
 .keySwatch {
