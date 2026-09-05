@@ -35,3 +35,9 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-05T13:21:55.031Z)
 running — dispatched 13:21Z — fresh analyst-programmer, isolated worktree, port 5618, RECTIFY push rule
+
+## COMMENT (2026-09-05T13:37:33.614Z)
+HEADS-UP 13:37Z: the original Skills lane pushed 0861658 touching components/sections/Skills/Bench.module.css and bench.glsl.ts (light held inside the plate, thinner graticule) — it lands on main within minutes; merge origin/main immediately before your push and keep both intents.
+
+## COMMENT (2026-09-05T13:38:44.472Z)
+SCOPE UPDATE 13:39Z: the original Skills lane's 0861658 (consolidating now) already fixes the three .Bench_bandLabel ratios at 1440 (its TC-CONTRAST-01/02 green after correcting the CSS still's cone radii). After merging origin/main, re-run text-contrast on your build: if the band labels are green, your remaining target is the 'InfoCentric' role company on the near-white ground (1.06:1) — name the culprit and fix it; keep the band-label test sampling improvement if you already wrote it.

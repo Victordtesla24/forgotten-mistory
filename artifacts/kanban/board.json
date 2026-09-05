@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T13:31:34.465Z",
+  "updated": "2026-09-05T13:38:44.472Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -315,7 +315,7 @@
         "effort": "xhigh"
       },
       "provider": "anthropic-oauth",
-      "updated": "2026-09-05T13:12:44.689Z",
+      "updated": "2026-09-05T13:37:33.569Z",
       "parents": [],
       "comments": [
         {
@@ -332,6 +332,11 @@
           "at": "2026-09-05T13:00:10.258Z",
           "by": "orchestrator",
           "text": "LIVE 9b864752 at 12:59:23Z — consolidated cleanly (no forced conflict; flagship-C plate rules and the new .fold/.proof structure both present on main). Reviewer phase-2 dispatched on 9b864752 for G-H1 + G-S1."
+        },
+        {
+          "at": "2026-09-05T13:37:33.569Z",
+          "by": "orchestrator",
+          "text": "LANE FOLLOW-UP pushed 0861658 'fix(skills): hold the bench light inside the plate, thin the graticule' + battery evidence (04/06 logs, 4 screenshots) — consolidating (only reports/static-audit.json conflicts, modify/delete → will be re-tracked by checkout --theirs; orchestrator untracks it again on main after the deploy)."
         }
       ],
       "decisions": [],
@@ -3094,10 +3099,21 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T13:21:54.983Z",
-      "updated": "2026-09-05T13:21:55.031Z",
+      "updated": "2026-09-05T13:38:44.472Z",
       "summary": "## CORRECTION: reviewer FAIL-A on live ceca1fa5 (docs/delivery/evidence/v10-20260905T0515Z/G-REV/ceca1fa5/08-adversarial-review.md — palette review; read its FAIL-A section and captures). Repo gate run against PRODUCTION: `PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/a11y/text-contrast.spec.ts --workers=1` → 2 failed (1440 on / and /?gl=force), 2 passed (390). Failing nodes: (1) li#role-infocentric > h3.Experience_roleHeading > button.Experience_roleToggle > span.Experience_roleMeta:nth-of-type(2) > span.Experience_roleCompany 'InfoCentric' fg rgb(205,205,205) on sampled ground rgb(200,199,199) — 1.06:1 — a NEAR-WHITE panel under #experience that did not exist at the 577d45af baseline (0/159): find what paints it (a bloom/keylight from the new Skills bench field canvas or CSS bleeding upward? an Experience light panel? the palette lane's --keylight/--rim change?) — use the reviewer's screenshot + a DOM/pixel probe at that node; (2)(3)(4) p.Bench_bandLabel 'Repositories' 3.63:1, 'Credentials' 4.00:1, 'Programmes' 4.10:1 — fg rgb(125,125,125) (--ink-300) at 11px/400 on rgb(39,39,39)/(31,31,31)/(29,29,29): introduced by 66b0872 (Bench.module.css). Fix: band labels to a token that clears 4.5:1 on the lit field at every phase (e.g. --mist-400 #909090 → ~5.9:1 on #272727; verify on /?gl=force with the bench field mounted and animating, worst-pixel), and remove/ground the near-white panel so the role company clears 4.5:1 on both paths. Extend tests: TC-CONTRAST-02 must include the #skills band labels with the field mounted (scroll the section into view, wait for the canvas, then sample).",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T13:37:33.614Z",
+          "by": "orchestrator",
+          "text": "HEADS-UP 13:37Z: the original Skills lane pushed 0861658 touching components/sections/Skills/Bench.module.css and bench.glsl.ts (light held inside the plate, thinner graticule) — it lands on main within minutes; merge origin/main immediately before your push and keep both intents."
+        },
+        {
+          "at": "2026-09-05T13:38:44.472Z",
+          "by": "orchestrator",
+          "text": "SCOPE UPDATE 13:39Z: the original Skills lane's 0861658 (consolidating now) already fixes the three .Bench_bandLabel ratios at 1440 (its TC-CONTRAST-01/02 green after correcting the CSS still's cone radii). After merging origin/main, re-run text-contrast on your build: if the band labels are green, your remaining target is the 'InfoCentric' role company on the near-white ground (1.06:1) — name the culprit and fix it; keep the band-label test sampling improvement if you already wrote it."
+        }
+      ],
       "blocker": null
     },
     {
