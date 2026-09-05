@@ -82,18 +82,24 @@ records, which must keep saying what they said.
 
 ## 6 · Spend
 
-Two ElevenLabs TTS calls, **58 characters** total:
+Three ElevenLabs TTS calls, **63 characters** total:
 
 1. the mandated live probe, 53 characters → HTTP 200 `audio/mpeg`, 53 960 bytes
    (`04-probe.log`);
 2. the spec's own `{"text":"probe"}`, 5 characters, when
    `tests/e2e/avatar-voice.spec.ts` was run green against the live endpoint
-   (`04-tests-passing.log`).
+   (`04-tests-passing.log`);
+3. the same 5 characters again after the function was redeployed a second time
+   — the redeploy carried a comment-only change (§5, keeping the cloned id out
+   of shipped code), and a green run against the revision that is actually
+   serving is worth more than a green run against its predecessor.
 
 The task authorises one verification call of ≤200 characters; the brief also
-requires the spec to be re-run green against the live site, which is
-necessarily a second call. Total characters stay far inside the cap. No other
-paid call of any kind was made.
+requires the spec to be green against the live site, which is necessarily a
+second call, and the third followed the redeploy. 63 characters is a third of
+the cap. No other paid call of any kind was made — no image, video, chat or
+avatar render. A fourth, free probe (`{"text":""}` → HTTP 400 `text_required`)
+confirmed the live revision without reaching ElevenLabs at all.
 
 ## 7 · Tools used
 
