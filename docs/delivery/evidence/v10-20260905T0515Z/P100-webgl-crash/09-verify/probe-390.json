@@ -1,0 +1,82 @@
+{
+  "probe": "P100 reviewer re-probe — ?gl=force, hold at #hero, hold at #experience, scroll to end",
+  "url": "http://127.0.0.1:5601/?gl=force",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "chromium": {
+    "channel": "chrome",
+    "args": [
+      "--no-sandbox",
+      "--use-gl=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "httpStatus": 200,
+  "atHero": {
+    "canvases": 1,
+    "heroH1Present": true,
+    "heroH1Text": "Vikram Deshpande",
+    "sectionIds": [
+      "hero",
+      "about",
+      "experience",
+      "skills",
+      "vitrine",
+      "listen"
+    ],
+    "slotsWithinRootMargin": [
+      "hero",
+      "skills"
+    ],
+    "slotsWithCanvas": [
+      "hero"
+    ],
+    "bodyHead": "Skip to the evidence VIKRAM. MENU Home About Experience Skills Keeping me busy Feedback & coffee LinkedIn Download CV MELBOURNE, AUSTRALIA Vikram Deshpande Delivery leadership · AI solutions architecture Sixteen years le"
+  },
+  "atExperience": {
+    "canvases": 0,
+    "heroH1Present": true,
+    "heroH1Text": "Vikram Deshpande",
+    "sectionIds": [
+      "hero",
+      "about",
+      "experience",
+      "skills",
+      "vitrine",
+      "listen"
+    ],
+    "slotsWithinRootMargin": [
+      "skills"
+    ],
+    "slotsWithCanvas": [],
+    "bodyHead": "Skip to the evidence VIKRAM. MENU Home About Experience Skills Keeping me busy Feedback & coffee LinkedIn Download CV MELBOURNE, AUSTRALIA Vikram Deshpande Delivery leadership · AI solutions architecture Sixteen years le"
+  },
+  "atEnd": {
+    "canvases": 0,
+    "heroH1Present": true,
+    "heroH1Text": "Vikram Deshpande",
+    "sectionIds": [
+      "hero",
+      "about",
+      "experience",
+      "skills",
+      "vitrine",
+      "listen"
+    ],
+    "slotsWithinRootMargin": [
+      "skills",
+      "listen"
+    ],
+    "slotsWithCanvas": [],
+    "bodyHead": "Skip to the evidence VIKRAM. MENU Home About Experience Skills Keeping me busy Feedback & coffee LinkedIn Download CV MELBOURNE, AUSTRALIA Vikram Deshpande Delivery leadership · AI solutions architecture Sixteen years le"
+  },
+  "errorShellShowing": false,
+  "pageErrors": [],
+  "consoleErrors": [],
+  "pageErrorCount": 0,
+  "consoleErrorCount": 0,
+  "recordedAt": "2026-09-05T07:13:52.764Z"
+}
