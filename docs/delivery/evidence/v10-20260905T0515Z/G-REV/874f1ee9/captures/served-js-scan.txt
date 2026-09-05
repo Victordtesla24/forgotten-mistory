@@ -1,0 +1,47 @@
+### served JS scan — every chunk referenced from the served HTML (build 874f1ee9, curl 12:51:34Z)
+/_next/static/chunks/255-f7c4c205ddd80098.js
+/_next/static/chunks/340-376242555fca3faf.js
+/_next/static/chunks/4bd1b696-c023c6e3521b1417.js
+/_next/static/chunks/581-45cc29c970e4d743.js
+/_next/static/chunks/619-ba102abea3e3d0e4.js
+/_next/static/chunks/693-47aa72fac95bf976.js
+/_next/static/chunks/app/error-d63fa7c39730a159.js
+/_next/static/chunks/app/layout-10b393598be8197e.js
+/_next/static/chunks/app/loading-bd10d73cbce8dc50.js
+/_next/static/chunks/app/not-found-17324926f4d483cf.js
+/_next/static/chunks/app/page-f8c841dc8a097faf.js
+/_next/static/chunks/main-app-33df7fcc3f52f0e3.js
+/_next/static/chunks/polyfills-42372ed130431b0a.js
+/_next/static/chunks/webpack-6566de72795d3829.js
+
+### plus every lazily/dynamically loaded chunk observed in the browser network log (build 7d467770, 12:53-12:58Z)
+/_next/static/chunks/app/page-25b9b5c550d8a886.js
+
+### predicate: grep -c -E 'api/realtime|chat-with-vic|pollTaskId|polloTaskId' over all of the above
+0	__next_static_chunks_255-f7c4c205ddd80098.js
+0	__next_static_chunks_340-376242555fca3faf.js
+0	__next_static_chunks_4bd1b696-c023c6e3521b1417.js
+0	__next_static_chunks_581-45cc29c970e4d743.js
+0	__next_static_chunks_619-ba102abea3e3d0e4.js
+0	__next_static_chunks_693-47aa72fac95bf976.js
+0	__next_static_chunks_app_error-d63fa7c39730a159.js
+0	__next_static_chunks_app_layout-10b393598be8197e.js
+0	__next_static_chunks_app_loading-bd10d73cbce8dc50.js
+0	__next_static_chunks_app_not-found-17324926f4d483cf.js
+0	__next_static_chunks_app_page-f8c841dc8a097faf.js
+0	__next_static_chunks_main-app-33df7fcc3f52f0e3.js
+0	__next_static_chunks_polyfills-42372ed130431b0a.js
+0	__next_static_chunks_webpack-6566de72795d3829.js
+0	late_page-25b9b5c550d8a886.js
+
+### total matches
+0
+
+### /api/ string literals present anywhere in the served bundle
+      1 /api/chat
+      1 /api/tts
+
+### text/event-stream (streaming) occurrences
+0
+
+### provider / model literals in the client payload shape
