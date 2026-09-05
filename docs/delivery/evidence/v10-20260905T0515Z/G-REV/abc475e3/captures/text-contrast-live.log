@@ -1,0 +1,12 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts --workers=1 --reporter=line --list
+Listing tests:
+  [chromium] › a11y/text-contrast.spec.ts:452:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+  [chromium] › a11y/text-contrast.spec.ts:452:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground
+  [chromium] › a11y/text-contrast.spec.ts:484:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes
+  [chromium] › a11y/text-contrast.spec.ts:484:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes
+Total: 4 tests in 1 file
+
+--- RUN RESULT (this session, live production) ---
+PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/a11y/text-contrast.spec.ts --workers=1
+  4 passed (4.7m)
