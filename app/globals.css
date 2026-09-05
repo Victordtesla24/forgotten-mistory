@@ -1560,78 +1560,13 @@ nav[data-scrolled="true"] {
 
 @media (prefers-reduced-motion: reduce) {}
 
-/* ── The Suspense fallback, and the height it reserves (PERF-03 / TC-HERO-15) ──
-   These rules live here, and not in `app/loading.tsx`, because they are the
-   page's layout reservation and a reservation that arrives late reserves
-   nothing. styled-jsx injects a client component's `<style>` from its client
-   runtime, which in a static export means the exported HTML carries the class
-   attributes and no rules: the shell painted 24 px tall and `<footer>` — which
-   the streaming shell emits before `<main>` — painted at y = 24, then travelled
-   11 600 px when the page streamed in. One entry, 0.1556 / 0.1764 / 0.2559 CLS
-   at 1440 / 1280 / 390. `globals.css` is render-blocking in `<head>`, so from
-   the first painted frame the shell is a full viewport tall and the footer
-   starts below the fold, where movement costs nothing. */
-.loading-shell {
-    min-height: 100vh;
-    min-height: 100svh;
-    background: var(--ink-900);
-    color: var(--white);
-    font-family: var(--font-body);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.loading-bar-track {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: rgb(246 246 246 / 0.08);
-    overflow: hidden;
-}
-
-.loading-bar-fill {
-    height: 100%;
-    width: 30%;
-    background: var(--mist-200);
-    border-radius: 0 1px 1px 0;
-    animation: loading-slide 1.4s var(--motion-ease-standard) infinite;
-}
-
-@keyframes loading-slide {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(400%); }
-}
-
-.loading-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-}
-
-.loading-label {
-    font-family: var(--font-heading);
-    font-size: var(--fs-small);
-    font-weight: 500;
-    letter-spacing: var(--ls-small);
-    text-transform: uppercase;
-    color: var(--mist-200);
-    margin: 0;
-    animation: loading-fade 2s ease-in-out infinite;
-}
-
-@keyframes loading-fade {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 0.8; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .loading-bar-fill,
-    .loading-label {
-        animation: none;
-    }
-}
+/* ── There is no Suspense fallback in front of the route (TC-NOJS-03/04) ──
+   `app/loading.tsx` and the `.loading-*` rules that reserved its height were
+   deleted together. The boundary was a fallback for a page that has nothing to
+   wait on: `app/page.tsx` is a client component with no async data and the
+   export is fully prerendered, so the only thing the boundary could ever do was
+   stand in front of markup that was already there — which is exactly what it
+   did, with script disabled, on the tree G-H2a photographed. The height
+   reservation the page still needs is `.page-frame`, above; the boundary's
+   footer-before-main inversion (0.1556 / 0.1764 / 0.2559 CLS, 87c9667) went
+   with the boundary. */
