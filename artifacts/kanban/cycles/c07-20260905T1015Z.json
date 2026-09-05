@@ -1,0 +1,35 @@
+{
+  "cycle": "v10-c07",
+  "window_utc": "2026-09-05T10:00Z → 10:15Z",
+  "pea_numerator": 8,
+  "pea_denominator": 25,
+  "pea_basis": "M1 progresses: hero/about/experience flagships now visible on production (orchestrator visual check); M6 narrative improves (strata follow spans, sectors follow the compass); R4 met; rest unchanged",
+  "adversarial_verdict": "R-c13 FAIL (crash, fixed); R-c14 queued after hero photo + flagship B",
+  "deploy_commit": "8f81ae86",
+  "visible_ship": "flagship visibility A — hero volumetric light, About ten luminous sectors, Experience sediment strata with scrims for the copy (9fd78ef, c6bf7ff, b200958, a78d9f0) + cycle 20 close (1143801 route tracks)",
+  "incident": {
+    "id": "t_skew0001",
+    "severity": 95,
+    "detected": "monitor 10:09Z on c5d808c3",
+    "cause": "page from build N lazy-loads scene chunks replaced by deploy N+1 (Firebase serves only the current version); 10-min deploys make this frequent",
+    "fix": "lane running: precache the build chunk manifest in the worker with two-generation retention; chunk-failure retry + one reload; scene-local error boundary"
+  },
+  "in_flight": [
+    "t_flagvis0a verifier",
+    "t_a88c6767 verifier (cycle 20)",
+    "t_heroph001 hero photo implementer",
+    "t_skew0001 deploy-skew implementer"
+  ],
+  "host": "load 18 with two verifiers + two implementers — no new lane until one finishes (two-battery cap)",
+  "verification_snippet": "$ systemctl is-active fm-deploy-cadence.timer → active\n$ tail -5 /var/log/fm-deploy/cadence.log\n[2026-09-05T10:01:58Z] cadence tick\n[2026-09-05T10:01:59Z] skip: successful Deploy within last 8m (push already covered cadence)\n[2026-09-05T10:01:59Z] live build-commit\" content=\"fc856f18\"\n[2026-09-05T10:12:18Z] cadence tick\n[2026-09-05T10:12:18Z] skip: 1 Deploy run(s) already in_progress\n$ gh run list --workflow=deploy.yml --limit 6\n2026-09-05T10:11:56Z push  44691b07\n2026-09-05T10:10:38Z push success 4879b1e7\n2026-09-05T10:03:48Z push success b9a92307\n2026-09-05T10:00:40Z push success fc856f18\n2026-09-05T09:59:17Z push success ff328b93\n2026-09-05T09:51:37Z workflow_dispatch success 5ff191f5\n$ live build-commit → build-commit\" content=\"4879b1e7\"\n$ cache-control → cache-control: public, max-age=0, must-revalidate\r\n",
+  "tools_used": [
+    "Workflow (opus council)",
+    "Monitor (fresh + returning-visitor + functions:log)",
+    "playwright screenshots read by the orchestrator",
+    "gh CLI",
+    "systemctl",
+    "curl",
+    "git"
+  ],
+  "next": "verifiers land → close t_realign01 + flagship A; deploy-skew merge; hero photo; flagship B (skills scene + vitrine/listen intensity); R-c14"
+}

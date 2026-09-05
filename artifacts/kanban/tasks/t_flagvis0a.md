@@ -35,3 +35,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## COMMENT (2026-09-05T10:11:52.983Z)
 SHIPPED via pipeline consolidation (39f4211, 8f81ae8) and LIVE on 8f81ae86 at 10:1xZ: 9fd78ef feat(hero) volumetric light the visitor can actually see; c6bf7ff feat(about) ten luminous sectors; b200958 feat(experience) sediment strata with real weight; a78d9f0 fix(scenes) scrims protect the copy. Live probe 0 errors, canvases mount at 1440/390. Verifier lane still running; orchestrator visual check in progress.
+
+## COMMENT (2026-09-05T10:12:39.733Z)
+ORCHESTRATOR VISUAL CHECK on live 8f81ae86 (1440, gl=force): HERO — volumetric light shafts + fog + particle glints, a bright pool behind the portrait: visible within a second, text still legible on the scrim. ABOUT — the rose now sits on ten luminous sectors with a lit top sector: visible; note 'NO SCORES' still reads at rest until the entry sweep fires (the sweep needs ~40% of the svg in view) — R-c14 should decide whether the sweep should fire earlier. EXPERIENCE — visible sediment strata bands with grain across the chart card, brighter under the ANZ span, bars remain the brightest objects: visible and on-story. Judgement: the owner's 'cannot see flagship UI/UX' is answered for these three sections; verifier lane pending for the numbers.
