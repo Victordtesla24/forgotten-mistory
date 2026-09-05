@@ -399,6 +399,62 @@
     border-bottom-color: var(--gold-light);
 }
 
+/* ── The route out of the work (G-V2) ─────────────────────────────────────
+   The note and the action sit on one line under the rail, in the page's own
+   column, so the invitation reads as the end of the cabinet rather than as a
+   banner bolted under it. The plate is white on the page's ink — the same
+   filled action #listen uses — and never gold: an invitation is chrome, and
+   gold on this site means a figure has a source. */
+.engagement {
+    max-width: var(--page-max);
+    margin: clamp(var(--space-4), 4vh, 3rem) auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+}
+
+.engagementNote {
+    margin: 0;
+    max-width: 34rem;
+    font-size: var(--fs-small);
+    line-height: var(--lh-caption);
+    color: var(--mist-200);
+}
+
+.engage {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: var(--space-2) var(--space-4);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--ink-900);
+    font-family: var(--font-mono);
+    font-size: var(--fs-lede);
+    letter-spacing: 0.02em;
+    line-height: var(--lh-snug);
+    text-decoration: none;
+    transition: opacity var(--motion-fast) var(--motion-ease-standard);
+}
+
+.engage:hover,
+.engage:focus-visible {
+    opacity: 0.86;
+}
+
+.engage:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 4px;
+}
+
+/* The press returns it to full: a pressed action is not a receding one. */
+.engage:active {
+    opacity: 1;
+}
+
 /* ── Foot: the exclusions ────────────────────────────────────────────────── */
 .foot {
     display: flex;
@@ -460,6 +516,11 @@
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 700px) {
+    .engagement {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
     .plate {
         width: 86vw;
     }

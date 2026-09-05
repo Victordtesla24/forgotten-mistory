@@ -13,6 +13,7 @@
  * do has not been looked at closely enough to be worth showing.
  */
 
+import { contact } from '../siteContent';
 import harvest from '../generated/repo-harvest.json';
 
 export type DrawingId =
@@ -117,6 +118,28 @@ export const vitrineContent = {
   lede: 'Thirty-eight public repositories exist. These six are the ones worth your time, each with what it does not do printed beside what it does.',
   harvestedAt: harvest.harvestedAt,
   publicRepoCount: harvest.publicRepoCount,
+} as const;
+
+/**
+ * The client's route out of the work (G-V2, R4).
+ *
+ * A business client who has just read six plates had nowhere to finish in this
+ * section: the plates end in a source link and a live URL, both of which lead
+ * off the site, and the only engagement action on the page sat two sections
+ * further down in #listen. The route is the same one #listen offers — a
+ * pre-addressed enquiry the visitor's own mail client sends — because there is
+ * no booking tool on this account and a calendar link that 404s would be worse
+ * than none. Same inbox, same subject line: an enquiry that starts at the work
+ * arrives indistinguishable from one that starts at the closing section, which
+ * is the point of using one address rather than inventing a second.
+ */
+const ENGAGEMENT_SUBJECT = 'Engagement enquiry — Vikram Deshpande';
+
+export const engagement = {
+  label: 'Start a project',
+  note: 'These six are shipped work. The inbox that answers a role enquiry answers a project brief.',
+  subject: ENGAGEMENT_SUBJECT,
+  href: `mailto:${contact.email}?subject=${encodeURIComponent(ENGAGEMENT_SUBJECT)}`,
 } as const;
 
 export interface PlateMetric {

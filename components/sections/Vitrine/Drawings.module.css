@@ -29,12 +29,20 @@
 }
 
 /* ── Trace-on ────────────────────────────────────────────────────────────────
-   Every stroked element carries pathLength="1", so one dash of length 1 offset
-   by 1 hides it entirely. When the plate gains the raking light (data-lit) the
-   offset runs to 0 over 720 ms with the emphasised ease, staggered in document
-   order (--k), and the labels fade up once the last stroke has landed.
-   data-drawn keeps the drawing on the plate after the light has moved on: a
-   mechanism is traced once, not every pass.
+   The trace used to be a reveal from nothing: every stroke carried
+   `stroke-dashoffset: 1` against `pathLength="1"`, so it was hidden entirely
+   until its plate was lit or had been lit once. Only one plate is lit at rest,
+   so a reader scrolling past the rail met one drawing and five empty frames —
+   five plates that read as having failed to load, with the mechanism drawing
+   withheld exactly where it is the plate's whole argument (ADV-FAIL P0, G-V1).
+
+   So the drawing is always present, and what the light changes is its weight.
+   Every stroke is drawn at rest at half weight in the plate's own colour; when
+   the plate gains the raking light (data-lit) the strokes run up to full
+   weight, staggered in document order (--k), and the labels lift once the last
+   stroke has landed. data-drawn keeps that emphasis after the light has moved
+   on: a mechanism is traced once, not every pass. The gesture is the same
+   sweep it always was — it now raises a drawing rather than conjuring one.
 
    The stagger is budgeted, not fixed. Council R-c8 (C-02) accepts a drawing
    only when every stroke has landed by 900 ms; at a flat 40 ms per stroke the
@@ -50,45 +58,53 @@
    reading as one event — so twenty-five strokes land at 840 ms, still inside
    C-02, and a seven-stroke drawing still reads as a sequence. */
 .stroke {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
+    /* Fully drawn, at rest. The offset is declared rather than left to the
+       initial value so the rule that used to hide the drawing cannot come back
+       silently (TC-VIT-V1 reads this exact property). */
+    stroke-dashoffset: 0;
+    stroke-opacity: 0.5;
 }
 
 [data-lit] .stroke,
 [data-drawn] .stroke {
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset var(--motion-base, 320ms) cubic-bezier(0.16, 1, 0.3, 1);
+    stroke-opacity: 1;
+    transition: stroke-opacity var(--motion-base, 320ms) cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: calc(var(--k, 0) * min(28ms, 520ms / max(1, var(--n, 1) - 1)));
 }
 
 /* Labels are set in --white on their own `color`, not only their fill: the
    contrast gate reads the text's computed colour, and through a resting
    plate's 0.62 the white at 0.85 composites to 5.4:1 where --mist-200 at the
-   old 0.65 was 2.8:1. */
+   old 0.65 was 2.8:1. That 0.85 is the resting alpha, not a lit one: a label
+   that reads at rest is what makes the resting drawing legible rather than
+   decorative, and it is the same composite the drawn-but-unlit plates already
+   passed the contrast gate at. */
 .label {
     font-family: var(--font-mono);
     font-size: 7px;
     letter-spacing: 0.1em;
     color: var(--white);
     fill: currentColor;
-    opacity: 0;
+    opacity: 0.85;
 }
 
 /* The labels arrive after the last stroke has landed — 520 ms of stagger plus a
    320 ms stroke is 840 ms — and never over it (council R-c13, MOT-C13-03). */
 [data-lit] .label,
 [data-drawn] .label {
-    opacity: 0.85;
+    opacity: 1;
     transition: opacity 320ms linear 860ms;
 }
 
-/* Reduced motion: the strokes and labels are simply present. The drawing is
-   the plate's argument, so it is never withheld — only the tracing is. */
+/* Reduced motion: the strokes and labels are simply present, at the weight the
+   light would have brought them to. The drawing is the plate's argument, so it
+   is never withheld — only the tracing is. */
 @media (prefers-reduced-motion: reduce) {
     .stroke,
     [data-lit] .stroke,
     [data-drawn] .stroke {
         stroke-dashoffset: 0;
+        stroke-opacity: 1;
         transition: none;
     }
 
