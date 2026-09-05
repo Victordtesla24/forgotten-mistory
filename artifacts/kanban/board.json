@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T09:09:06.184Z",
+  "updated": "2026-09-05T09:14:38.849Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -1004,10 +1004,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T09:14:38.849Z",
       "summary": "Graded by R-c8 motion council: #about and #experience failed; About compass fixed (cycle 12), Experience is cycle 15. R-c13 re-grades all six.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T09:14:38.849Z",
+          "by": "orchestrator",
+          "text": "OWNER 09:10Z: still cannot see flagship UI/UX per section. Orchestrator looked at live 1440 gl=force screenshots (c76459d0): hero atmosphere faint, About field invisible, Experience strata invisible, bars grey — the quiet/text-primary bar produced flagships nobody can see. Correction: a flagship-visibility cycle per section with a measurable criterion (slot capture with text hidden: ≥ 15% of pixels at luminance ≥ ground+0.06, max luminance ≥ 0.35, a visible entry beat and scroll response) — dispatched after the hero photo lane (two-battery cap)."
+        }
+      ]
     },
     {
       "id": "t_f5ad9394",
@@ -1707,6 +1713,48 @@
       "created": "2026-09-05T08:48:53.769Z",
       "updated": "2026-09-05T08:48:53.769Z",
       "summary": "V-c17/18 finding F-2: app/globals.css:803-804 hides .nav-cv at max-width 640px, so once a phone reader passes the hero the only CV route is behind the menu. Direction: show the nav CV pill at ≤640 under [data-scrolled] only (text-only, var(--fs-small)), keeping CTA-01 (one control at scrollY 0) green; or add the CV route to the frosted bar as an icon-only 44 px control with accessible name. TDD: extend tests/overhaul/cta-duplication.spec.ts with CTA-04 (at 390 after scrollTo 1200 exactly one visible CV control exists).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_heroph001",
+      "title": "OWNER REQUEST 09:10Z — hero photo full size, in colour, with design-matched decorations; hero video avatar plays on hover/focus only, never by default",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 98,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T09:14:38.748Z",
+      "updated": "2026-09-05T09:14:38.748Z",
+      "summary": "Owner instruction verbatim: Integrate my Photo with full size, colours and dimension with creative decorations that match the website UI/UX Design. Include a hover effect that plays the hero video avatar and not by default. Supersedes the grayscale rule and the P1 88 px stamp for this element. Lane wf hero-photo (port 5601): colour still (1480×826 avif/webp), full column on desktop, full width after the actions at ≤720 (TC-HERO-12 holds), drafting frame + corner ticks + provenance caption from avatar.ts, light bloom behind the plate, hover/focus plays the loop (src set on intent, preload none), toggle for touch, reduced motion never autoplays.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_cachefr01",
+      "title": "P100 — every deploy visible on the next load: HTML Cache-Control revalidate (was Firebase default max-age=3600), service worker navigation network-first with build-stamped cache version, controllerchange reload",
+      "status": "running",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T09:14:38.798Z",
+      "updated": "2026-09-05T09:14:38.798Z",
+      "summary": "Owner reported no visible change twice (06:57Z, 09:08Z). Measured 09:09Z: curl -sI / → cache-control: max-age=3600 (firebase.json sets Cache-Control only for /_next/static, /assets, /docs, /sw.js); public/sw.js precaches / cache-first with a static CACHE_VERSION v1 → returning visitors keep the old shell for up to an hour or until the worker updates. Lane wf_b12ab287-6ab.",
       "decisions": [],
       "comments": [],
       "blocker": null
