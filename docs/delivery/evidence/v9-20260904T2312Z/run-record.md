@@ -9,11 +9,17 @@ Cadence from 2026-09-04T23:51Z (Owner directive): every verified increment lands
 | 3 | 5f05575 | 00:2x (`build-commit` 5f055759) | research-backed MiniVic introduction, six employer-ordered quick prompts, fallback | `B-research/01-employer-expectations.md`, 78 specs green |
 | 5 | e64566e | 00:3x (`build-commit` e64566e3) | neutral black/white/gilt tokens at AA contrast, CSS-drawn provenance mark, Listen hairline off gold, compass numerals, hero note | `R-c1/council-composition.md` C1/C3/C7/C8a/P1; WCAG ratios computed; 77 specs + 2 intentional rebaselines |
 | n8n | — | 00:20 (published) | both avatar workflows repaired and published (credit preflight, exact 24 fps, review autoFix off, autonomous approval gates) | `E-n8n/n8n-fix.md`, `E-n8n/publish.log` |
-| 4 | in worktree | — | hero video portrait (placement P1), tests first | `C4-hero-portrait/` |
-| 6 | in worktree | — | regression triage of the 40 cycle-1 failures | `C5-regression/` |
-| 8 | in worktree | — | Listen caliper beat | `C8-listen-beat/` |
+| 4 | 9321998 (bundle) | 01:0x (`build-commit` 9321998b) | hero video portrait mounted poster-first beside the pitch (placement P1, TC-HERO-12..21) | `C4-hero-portrait/` |
+| 6 | 9321998 (bundle) | 01:0x | regression triage of the 40 cycle-1 failures: 21 stale-subject specs retired with proof, 12 real defects fixed, 4 test bugs corrected; Vitrine pressed-state specificity fixed | `C5-regression/triage.md` |
+| 8 | 9321998 (bundle) | 01:0x | Listen caliper beat (TC-LISTEN-06..08); reduced-motion curtain removed (TC-CINE-07); hero holds one fold at 1280×720 | `C8-listen-beat/` |
+| content | 9321998 (bundle) + functions | 01:1x | ANZ headcount corrected to the CV's "up to 40" in 11 places; function grounding pinned; live probe answers "up to 40" ×2 | `R-c5/adversarial-review.md` B-01; `tmp/fn-redeploy2.log` |
+| 7 | 4f1d659 (local main, unpushed) | — | composition pass: one spine (64/96/336 verified), Experience bars ≥3:1 + gutter, MiniVic panel stacked above the launcher, animate-ping still under reduced motion, tests/e2e/spine.spec.ts + tests/a11y/text-contrast.spec.ts (honestly red on Vitrine/About until cycle 11) | `C7-composition/` |
+| 11 | in worktree | — | Vitrine rest-state contrast, rail mask, drawings trace-on; About 390 overlap; hero 390 fold; full suite in halves | `C11-vitrine-integration/` |
+| 12 | in worktree | — | About compass scroll-drive + entry sweep + keyboard semantics | `C12-about-compass/` |
+| F | in worktree | — | Lighthouse CI job root cause + fix | `F-lighthouse-ci/` |
 | review c1 | 6dcb4f53 | — | adversarial FAIL (F-1 re-scoped, F-2 fixed in cycle 5, F-3 partly fixed) · composition FAIL (C1/C3/C7 fixed, C2/C4/C5/C6/C8 open) · motion FAIL (M-01..M-08 open) | `R-c1/` |
-| review c5 | e64566e3 | running | with `?gl=force` so the scenes are reviewed, not the fallback | `R-c5/` |
+| review c5 | e64566e3 | 00:5x | adversarial FAIL on one content blocker (headcount, fixed) and the ping/tab-order majors; composition and motion councils: spine, Experience, Vitrine, MiniVic, Listen hierarchy, hero 1920/390 (folded into cycles 7, 11, 13); 0 console errors, 0 failed requests, CLS 0, LCP ≤ 1068 ms, live chat 200 | `R-c5/` |
+| review c8 | 9321998b | running | with `?gl=force` | `R-c8/` |
 
 ## Blocked on the Owner (cannot be closed by any agent)
 
