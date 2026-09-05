@@ -4,7 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { askMiniVicBrain, type BrainTurn } from "@/lib/miniVicBrain";
 import { GREETING, type PersonaMode } from "@/app/data/miniVicKnowledge";
-import { Copy, Pause, Play, RefreshCcw, Send, Sparkles, Volume2, VolumeX, X, Mic, MicOff, Video } from "lucide-react";
+import { greetingAudioSha256 } from "@/app/data/generated/greeting-asset";
+import { Copy, Pause, Play, RefreshCcw, Send, Sparkles, Volume2, VolumeX, X, Mic, MicOff } from "lucide-react";
 import { useSetAvatarSpeaking } from "@/lib/avatarContext";
 import { PALETTE } from "@/lib/palette";
 import {
@@ -65,8 +66,6 @@ type ChatMessage = {
   role: "user" | "bot";
   text: string;
   audio?: string;
-  polloTaskId?: string;
-  videoUrl?: string;
   mode?: ModeKey;
   timestamp: number;
 };
@@ -79,35 +78,6 @@ function nextChatMessageId(role: "user" | "bot"): string {
   miniVicMsgSeq += 1;
   return `${role}-${Date.now()}-${miniVicMsgSeq}`;
 }
-
-type RealtimeServerEnvelope = {
-  sessionId: string;
-  eventType: string;
-  payload?: {
-    token?: string;
-    text?: string;
-    audioBase64?: string;
-    audioMimeType?: string;
-    streamId?: string;
-    provider?: string;
-    code?: string;
-    status?: number;
-    retryable?: boolean;
-    details?: string;
-    metrics?: { firstTokenToDoneMs?: number };
-    error?: string;
-  };
-  emittedAtMs?: number;
-};
-
-type ProviderErrorPayload = {
-  error?: string;
-  provider?: string;
-  code?: string;
-  status?: number;
-  retryable?: boolean;
-  details?: string;
-};
 
 const PERSONA_MODES: { key: ModeKey; label: string; blurb: string }[] = [
   { key: "recruiter", label: "Hiring Fit", blurb: "Outcomes, budgets, velocity" },
@@ -195,6 +165,15 @@ const hexToRgba = (hex: string, alpha: number): string => {
  */
 export const MINIVIC_OPEN_EVENT = 'minivic:open';
 
+/**
+ * SHA-256 of the greeting MP3 — assertable in tests (TC-FR-VOICE). Read from
+ * the module scripts/generate-cloned-greeting.ts writes in the same pass as the
+ * audio, so the constant cannot drift from the file it describes. Module scope,
+ * not component scope: it is a build-time fact, and hoisting it keeps it out of
+ * every effect's dependency list.
+ */
+const CLONED_VOICE_GREETING_HASH = greetingAudioSha256;
+
 const MiniVicBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   // The launcher waits until the hero has been read. On a 390 px phone its
@@ -234,7 +213,6 @@ const MiniVicBot = () => {
   // block, so the open-focus effect leaves focus on the launcher.
   const skipEntryRef = useRef(false);
   const mouthCanvasRef = useRef<HTMLCanvasElement>(null);
-  const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const currentAudioSrcRef = useRef<string>("");
 
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -247,9 +225,6 @@ const MiniVicBot = () => {
   const currentVisemeRef = useRef<VisemeShape>(getVisemeShape(0));
   const targetVisemeRef = useRef<VisemeShape>(getVisemeShape(0));
   const visemeLerpRef = useRef<number>(0);
-  // Track live WebSocket connections for clean teardown (no leaked sockets)
-  const liveSocketsRef = useRef<Set<WebSocket>>(new Set());
-  
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const objectUrlsRef = useRef<Set<string>>(new Set());
   const inFlightRef = useRef(false);
@@ -287,8 +262,6 @@ const MiniVicBot = () => {
    * is later added, regenerate this asset from his cloned voice id.
    */
   const GREETING_AUDIO_URL = "/assets/minivic-greeting.mp3";
-  /** SHA-256 of the greeting MP3 — assertable in tests (TC-FR-VOICE). */
-  const CLONED_VOICE_GREETING_HASH = "369e1eb2e0e072a8b07a56976cc5479f2187a06066f0ab696b540d8f8f9dddb3";
   const hasPlayedGreetingRef = useRef(false);
 
   // R1: wire MiniVicBot voice output to the hero avatar speaking pulse.
@@ -499,15 +472,6 @@ const MiniVicBot = () => {
           /* Closing an already-closing context is non-fatal. */
         });
       }
-      // Clean teardown: close any live WebSocket connections (FR-CLONE-LIVE)
-      // eslint-disable-next-line react-hooks/exhaustive-deps -- ref, not React node; we want current value at teardown
-      const sockets = liveSocketsRef.current;
-      sockets.forEach((ws) => {
-        if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
-          ws.close(1000, "component unmounted");
-        }
-      });
-      sockets.clear();
     };
   }, []);
 
@@ -519,69 +483,6 @@ const MiniVicBot = () => {
       stopMouth();
     }
   }, [isMuted, stopMouth]);
-
-  // Calculate active tasks for dependency tracking
-  const hasActiveTasks = messages.some(m => m.polloTaskId && !m.videoUrl);
-
-  useEffect(() => {
-    if (hasActiveTasks) {
-      pollingIntervalRef.current = setInterval(async () => {
-        // Use ref to get latest messages inside the interval closure
-        const currentMessages = messagesRef.current;
-        const activeTasks = currentMessages.filter(m => m.polloTaskId && !m.videoUrl);
-
-        if (activeTasks.length === 0) {
-           return;
-        }
-
-        const updates = new Map<string, { videoUrl?: string; removeTask?: boolean }>();
-
-        for (const msg of activeTasks) {
-          try {
-            const res = await fetch(`/api/chat-with-vic?taskId=${msg.polloTaskId}`);
-            if (res.ok) {
-              const data = await res.json();
-              // Check for completion status (Pollo API structure varies, assuming 'status' and 'output'/'data.url')
-              if (data.status === 'succeeded' || data.data?.status === 'succeeded' || data.status === 'completed') {
-                 const videoUrl = data.output?.[0] || data.data?.url || data.url;
-                 if (videoUrl) {
-                   updates.set(msg.id, { videoUrl });
-                 }
-              } else if (data.status === 'failed' || data.data?.status === 'failed') {
-                  // Stop polling for this one
-                  updates.set(msg.id, { removeTask: true });
-              }
-            }
-          } catch (e) {
-            logMiniVicIssue("Polling error", e);
-          }
-        }
-
-        if (updates.size > 0) {
-          setMessages((prev) => prev.map((m) => {
-            const update = updates.get(m.id);
-            if (!update) return m;
-            
-            if (update.removeTask) {
-               const { polloTaskId, ...rest } = m;
-               return rest;
-            }
-            if (update.videoUrl) {
-               return { ...m, videoUrl: update.videoUrl };
-            }
-            return m;
-          }));
-        }
-      }, 3000);
-    }
-
-    return () => {
-       if (pollingIntervalRef.current) {
-          clearInterval(pollingIntervalRef.current);
-          pollingIntervalRef.current = null;
-       }
-    };
-  }, [hasActiveTasks]);
 
 
   useEffect(() => {
@@ -618,7 +519,6 @@ const MiniVicBot = () => {
       stopListening();
       revokeAllObjectUrls();
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stopAudio, stopListening, revokeAllObjectUrls]);
@@ -930,35 +830,6 @@ const MiniVicBot = () => {
     })();
   };
 
-  const playGeneratedVideo = (videoSrc: string) => {
-      if (!videoRef.current) return;
-      
-      // Stop any background audio
-      if (audioRef.current) {
-          audioRef.current.pause();
-      }
-      stopMouth();
-
-      setCurrentVideoSrc(videoSrc);
-      setIsVideoPlaying(true);
-      setIsSpeaking(true); // Use same visual indicator for active bot
-
-      videoRef.current.src = videoSrc;
-      videoRef.current.loop = false;
-      videoRef.current.muted = isMuted;
-      
-      videoRef.current.onended = () => {
-          setIsSpeaking(false);
-          setIsVideoPlaying(false);
-          setCurrentVideoSrc(AVATAR_VIDEO_URL);
-          videoRef.current!.loop = true;
-          videoRef.current!.muted = true;
-          videoRef.current!.play();
-      };
-      
-      videoRef.current.play().catch(e => logMiniVicIssue("Video play failed", e));
-  };
-
   const handleCopy = async (text: string, id: string) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -967,160 +838,6 @@ const MiniVicBot = () => {
     } catch (err) {
       logMiniVicIssue("Clipboard failed", err);
     }
-  };
-
-  const wsBaseUrl = () => {
-    if (typeof window === "undefined") return "";
-    const explicit = process.env.NEXT_PUBLIC_REALTIME_WS_URL;
-    if (explicit && explicit.length > 0) {
-      return explicit.replace(/\/$/, "");
-    }
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const hostName = window.location.hostname;
-    const isLocal = hostName === "localhost" || hostName === "127.0.0.1";
-    const host = isLocal ? `${hostName}:8000` : window.location.host;
-    return `${protocol}//${host}`;
-  };
-
-  const OFFLINE_MESSAGE =
-    "MiniVic's realtime backend isn't connected on this deployment, so I can't chat live right now. You can reach Vikram directly at sarkar.vikram@gmail.com or +61 433 224 556.";
-
-  /**
-   * On the static Firebase deployment every unknown route rewrites to
-   * /index.html with a 200 status, so a missing API surfaces as an HTML
-   * response rather than an error status. Treat any non-JSON response as
-   * "backend unavailable" instead of attempting to parse it.
-   */
-  const isJsonResponse = (response: Response): boolean =>
-    (response.headers.get("content-type") || "").toLowerCase().includes("application/json");
-
-  const formatProviderError = (input?: ProviderErrorPayload): string => {
-    if (!input) return "The AI service is unavailable right now.";
-    const providerLabel = input.provider ? `${input.provider.toUpperCase()} ` : "";
-    const base = input.error || "provider request failed";
-    const retryHint = input.retryable ? " Please retry in a moment." : "";
-    return `${providerLabel}${base}.${retryHint}`.trim();
-  };
-
-  const parseProviderErrorPayload = async (response: Response): Promise<ProviderErrorPayload> => {
-    try {
-      const json = await response.json() as ProviderErrorPayload;
-      return json;
-    } catch {
-      try {
-        const text = await response.text();
-        return { error: text || `HTTP ${response.status}`, status: response.status };
-      } catch {
-        return { error: `HTTP ${response.status}`, status: response.status };
-      }
-    }
-  };
-
-  const sendRealtimeMessage = async (textToSend: string, modeToSend: ModeKey) => {
-    const createSessionResp = await fetch("/api/realtime/session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        mode: modeToSend,
-        userId: "mini-vic-client"
-      })
-    });
-
-    if (!createSessionResp.ok) {
-      const payload = await parseProviderErrorPayload(createSessionResp);
-      throw new Error(formatProviderError(payload));
-    }
-    if (!isJsonResponse(createSessionResp)) {
-      throw new Error(OFFLINE_MESSAGE);
-    }
-
-    const created = await createSessionResp.json() as { sessionId: string; wsPath: string };
-    const sessionId = created.sessionId;
-    if (!sessionId || !created.wsPath) {
-      throw new Error("Realtime session response missing identifiers");
-    }
-
-    const realtimeResult = await new Promise<{
-      text: string;
-      audioDataUrl?: string;
-      firstTokenToDoneMs?: number;
-      didStreamId?: string;
-    }>((resolve, reject) => {
-      let completed = false;
-      let textBuffer = "";
-      let didStreamId = "";
-      const timeout = window.setTimeout(() => {
-        if (completed) return;
-        completed = true;
-        reject(new Error("Realtime session timed out"));
-      }, 45000);
-
-      const ws = new WebSocket(`${wsBaseUrl()}${created.wsPath}`);
-      liveSocketsRef.current.add(ws);
-
-      ws.onopen = () => {
-        ws.send(JSON.stringify({ eventType: "session.start", message: textToSend, requestId: `${Date.now()}` }));
-      };
-
-      ws.onmessage = (event) => {
-        try {
-          const envelope = JSON.parse(String(event.data)) as RealtimeServerEnvelope;
-          if (envelope.eventType === "llm.token" && envelope.payload?.token) {
-            textBuffer += envelope.payload.token;
-          }
-          if (envelope.eventType === "avatar.state" && envelope.payload?.streamId) {
-            didStreamId = envelope.payload.streamId;
-          }
-          if (envelope.eventType === "session.error") {
-            if (completed) return;
-            completed = true;
-            clearTimeout(timeout);
-            ws.close();
-            liveSocketsRef.current.delete(ws);
-            reject(new Error(formatProviderError(envelope.payload)));
-            return;
-          }
-          if (envelope.eventType === "session.done") {
-            if (completed) return;
-            completed = true;
-            clearTimeout(timeout);
-            ws.close();
-            liveSocketsRef.current.delete(ws);
-
-            const finalText = envelope.payload?.text || textBuffer.trim();
-            const audioDataUrl = envelope.payload?.audioBase64
-              ? `data:${envelope.payload.audioMimeType || "audio/mpeg"};base64,${envelope.payload.audioBase64}`
-              : undefined;
-            resolve({
-              text: finalText,
-              audioDataUrl,
-              firstTokenToDoneMs: envelope.payload?.metrics?.firstTokenToDoneMs,
-              didStreamId
-            });
-          }
-        } catch (err) {
-          logMiniVicIssue("Realtime payload parse error", err);
-        }
-      };
-
-      ws.onerror = () => {
-        if (completed) return;
-        completed = true;
-        clearTimeout(timeout);
-        liveSocketsRef.current.delete(ws);
-        reject(new Error("Realtime websocket failed"));
-      };
-
-      ws.onclose = () => {
-        if (completed) return;
-        completed = true;
-        clearTimeout(timeout);
-        liveSocketsRef.current.delete(ws);
-        resolve({ text: textBuffer.trim() });
-      };
-    });
-
-    return realtimeResult;
   };
 
   const handleSend = async (overrideText?: string, overrideMode?: ModeKey) => {
@@ -1149,78 +866,22 @@ const MiniVicBot = () => {
     }));
 
     try {
-      // Static deployments have no /api routes — go straight to the
-      // client-side brain instead of probing endpoints that would 404.
-      if (process.env.NEXT_PUBLIC_STATIC_EXPORT === "1") {
-        throw new Error(OFFLINE_MESSAGE);
-      }
-
-      let text = "";
-      let audio: string | undefined;
-      let measuredLatency = 0;
-
-      try {
-        const realtime = await sendRealtimeMessage(textToSend, modeToSend);
-        text = realtime.text;
-        audio = realtime.audioDataUrl;
-        measuredLatency = realtime.firstTokenToDoneMs || Math.round(performance.now() - startedAt);
-      } catch (realtimeError) {
-        logMiniVicIssue("Realtime flow failed; falling back to compatibility route", realtimeError);
-        if (realtimeError instanceof Error && realtimeError.message === OFFLINE_MESSAGE) {
-          throw realtimeError;
-        }
-        const res = await fetch("/api/chat-with-vic", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: textToSend,
-            mode: modeToSend,
-            history: historyPayload
-          }),
-        });
-        if (!res.ok) {
-          const fallbackPayload = await parseProviderErrorPayload(res);
-          throw new Error(formatProviderError(fallbackPayload));
-        }
-        if (!isJsonResponse(res)) {
-          throw new Error(OFFLINE_MESSAGE);
-        }
-        const data = await res.json() as { text?: string; audio?: string };
-        text = data.text || "";
-        audio = data.audio;
-        measuredLatency = Math.round(performance.now() - startedAt);
-      }
-
-      setLatencyMs(measuredLatency);
-
-      const botMessage: ChatMessage = {
-        id: nextChatMessageId("bot"),
-        role: "bot",
-        text: text || "I'm here—ask me anything about how I deliver, lead teams, or architect AI.",
-        audio,
-        mode: modeToSend,
-        timestamp: Date.now(),
-      };
-
-      setMessages((prev) => [...prev, botMessage]);
-      setLastAnswerId(botMessage.id);
-
-      if (!isMuted && audio) {
-        rememberLastAudio(audio);
-        playAudio(audio);
-      } else if (!isMuted && text) {
-        // Provider returned text without audio — voice it in Vikram's cloned voice
-        // via /api/tts (speakReply falls back to browser TTS if unavailable).
-        speakReply(text);
-      } else {
-        setIsSpeaking(false);
-        stopMouth();
-      }
-    } catch (error) {
-      // Backend unavailable (static hosting) or provider failure: answer with
-      // the client-side brain — Gemini grounded in the knowledge base, with a
-      // deterministic local fallback. Visitors always get a real answer.
-      logMiniVicIssue("Backend flow failed; using client-side brain", error);
+      // One request per send, and it is `/api/chat`. `askMiniVicBrain` posts the
+      // grounded prompt there — a Firebase Function reached through a Hosting
+      // rewrite, so it works on the static export — and answers from the
+      // deterministic knowledge base when that function is absent or fails.
+      //
+      // What used to stand here was a four-rung ladder — a realtime session
+      // endpoint, a WebSocket, a compatibility POST route, and a three-second
+      // poller for a video task — with this call at the bottom. On the static
+      // export the first rung threw before any of it ran, so the whole ladder
+      // was dead code shipped to every visitor (G-M1, ADV-REVIEW-20260905).
+      // The endpoints are named in that review, not here: a grep gate keeps
+      // them out of the source, and a comment is still source.
+      //
+      // No catch: `askMiniVicBrain` is contracted never to reject, so a visitor
+      // always gets presentable text. If that contract is ever broken the
+      // failure must surface, not be swallowed into a fabricated reply.
       const brainHistory: BrainTurn[] = historyPayload.map((m) => ({
         role: m.role === "user" ? "user" : "bot",
         text: m.text,
@@ -1239,9 +900,12 @@ const MiniVicBot = () => {
       setLatencyMs(Math.round(performance.now() - startedAt));
 
       if (!isMuted) {
-        // Voice the brain's reply in Vikram's cloned voice via /api/tts (this is the
-        // static-site path); speakReply degrades to browser TTS if the function is down.
+        // Voice the reply in Vikram's cloned voice via /api/tts; speakReply
+        // degrades to the browser voice when that function is unavailable.
         speakReply(reply.text);
+      } else {
+        setIsSpeaking(false);
+        stopMouth();
       }
     } finally {
       inFlightRef.current = false;
@@ -1487,6 +1151,7 @@ const MiniVicBot = () => {
               <motion.div
                 key={msg.id}
                 data-minivic-message
+                data-minivic-role={msg.role}
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                 initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -1524,23 +1189,6 @@ const MiniVicBot = () => {
                           <div className="flex items-center gap-1">
                             <Play size={12} />
                             <span>Play voice</span>
-                          </div>
-                        </button>
-                      )}
-                      {msg.polloTaskId && !msg.videoUrl && (
-                         <span className="flex animate-pulse items-center gap-1 rounded-md border border-neutral-300/40 bg-neutral-500/10 px-2 py-1 text-neutral-200">
-                           <Sparkles size={12} /> Generating Video...
-                         </span>
-                      )}
-                      {msg.videoUrl && (
-                        <button
-                          onClick={() => playGeneratedVideo(msg.videoUrl!)}
-                          disabled={isMuted}
-                          className="rounded-md border border-zinc-300/40 bg-zinc-500/10 px-2 py-1 text-zinc-100 hover:bg-zinc-500/20"
-                        >
-                          <div className="flex items-center gap-1">
-                            <Video size={12} />
-                            <span>Play HD Video</span>
                           </div>
                         </button>
                       )}
