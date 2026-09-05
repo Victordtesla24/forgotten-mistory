@@ -1,0 +1,342 @@
+[
+  {
+    "slug": "g-x1-01-scene-fps-harness",
+    "title": "Scene frame-rate harness — median rAF per sceneId (R2 60fps, first measurement)",
+    "assignee": "tester",
+    "priority": 96,
+    "parents": [],
+    "summary": "R2's 60 fps clause has never been measured (grep 'rAF|16.7|median' tests/perf/performance.spec.ts = 0 hits). Author tests/perf/scene-framerate.spec.ts: for each sceneId at ?gl=force, scroll into view, discard 30 warm-up frames, sample 120 rAF deltas, assert median. TC-SCENE-FPS-01 desktop 1440x900 <=16.7ms; TC-SCENE-FPS-02 phone 390x844 dsf3 CPU throttle x4 <=20ms. Record WEBGL_debug_renderer_info alongside every number and label the result software-rasteriser — a SwiftShader pass is NOT GPU proof and the test output must say so.",
+    "order": [
+      "Read tests/perf/performance.spec.ts and tests/overhaul/flagship-visibility.spec.ts for the ?gl=force + settleBoot pattern",
+      "Author tests/perf/scene-framerate.spec.ts parameterised over the 3 sceneIds that exist today (hero-atmosphere, about-field, career-strata)",
+      "Capture red for any scene that misses budget: 02-tests-failing.log",
+      "Fix only measurement bugs, never thresholds; capture 04-tests-passing.log",
+      "Print the renderer string in the test output so evidence is self-labelling"
+    ],
+    "gates": [
+      "Median rAF asserted, not mean — one long frame must not be averaged away",
+      "Thresholds are exactly 16.7ms and 20.0ms; weakening a threshold to pass is a violation",
+      "Renderer string recorded in every assertion message",
+      "No production code touched"
+    ],
+    "verify": [
+      "npm run build:static && python3 -m http.server 5603 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5603 npx playwright test tests/perf/scene-framerate.spec.ts"
+    ]
+  },
+  {
+    "slug": "g-h2-02-hero-priority-first-paint",
+    "title": "G-H2a — hero scene mounts on first paint (Scene priority prop + poster frame)",
+    "assignee": "analyst-programmer",
+    "priority": 97,
+    "parents": ["g-x1-01-scene-fps-harness"],
+    "summary": "components/gl/Scene.tsx:216 gates every scene on pageSettled (window.load + requestIdleCallback), so the hero flagship is structurally absent from the first paint. Add an opt-in priority?:boolean prop (default false, so S2..S7 are byte-identical) making show = capability && allowMotion && near && (priority || pageSettled), and pass priority on the hero only. Render the composition's frame 0 as the slot's CSS background from the static HTML so the first paint is lit, and crossfade the canvas over it on onCreated.",
+    "order": [
+      "Author tests/overhaul/hero-first-paint.spec.ts: TC-HERO-FIRSTPAINT-01 (JS blocked, hero slot background carries the poster, slot mean luminance >= 0.10) and TC-HERO-FIRSTPAINT-02 (at ?gl=force a canvas exists inside [data-scene=hero-atmosphere] within 1200ms of domcontentloaded)",
+      "Capture red: 02-tests-failing.log",
+      "Add priority?: boolean to SceneProps and fold it into the show expression in Scene.tsx",
+      "Pass priority on Hero.tsx:35 only; leave every other Scene call untouched",
+      "Add the poster background to Hero.module.css .stage (poster asset lands in g-x1-13; until then use the existing gradient still and assert luminance on it)",
+      "Capture green: 04-tests-passing.log"
+    ],
+    "gates": [
+      "Default behaviour of Scene is unchanged for all non-hero scenes (diff shows one added optional prop)",
+      "PERF-02 LCP < 2.5s and PERF-06/PERF-07 stay green — run them in the same batch",
+      "tests/overhaul/cinematic.spec.ts stays green (TC-CINE-01..07)",
+      "npx tsc --noEmit clean, npm run lint clean"
+    ],
+    "verify": [
+      "npx tsc --noEmit && npm run lint",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5603 npx playwright test tests/overhaul/hero-first-paint.spec.ts tests/overhaul/cinematic.spec.ts tests/perf/performance.spec.ts"
+    ]
+  },
+  {
+    "slug": "g-h2-03-hero-scrim-graded-plate",
+    "title": "G-H2b — hero scrim becomes a graded text plate, not a 0.86 full-frame wash",
+    "assignee": "analyst-programmer",
+    "priority": 97,
+    "parents": ["g-h2-02-hero-priority-first-paint"],
+    "summary": "Hero.module.css:157 and :171 lay rgb(10 10 10 / 0.86) across the whole frame, which is why the reviewer called the atmosphere a shy backdrop. Bind the darkening to the reading column: ~0.72 under the type, <= 0.25 outside it, so the light crosses the frame and the copy still clears AA.",
+    "order": [
+      "Add TC-HERO-SCRIM-01 to tests/overhaul/hero-first-paint.spec.ts: the hero slot's outer thirds (x<22% and x>78%) are >= 0.06 luminance brighter than the centre reading band",
+      "Capture red: 02-tests-failing.log",
+      "Rework the .stage::after gradient in Hero.module.css from a flat 90deg wash to a column-bound grade",
+      "Capture green plus tests/a11y/text-contrast.spec.ts green in the same run",
+      "Screenshot the hero at 1440, 1280, 834 and 390 CSS px and attach"
+    ],
+    "gates": [
+      "tests/a11y/text-contrast.spec.ts green — brightening until type fails AA is a different bug, not a fix",
+      "flagship-visibility hero COVERAGE >= 0.15, PEAK >= 0.35, MOTION >= 0.004 still hold",
+      "No raw hex added outside app/globals.css and lib/palette.ts (TC-NFR-MONO)"
+    ],
+    "verify": [
+      "node scripts/validate/overhaul_static_audit.mjs",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5603 npx playwright test tests/overhaul/hero-first-paint.spec.ts tests/overhaul/flagship-visibility.spec.ts tests/a11y/text-contrast.spec.ts"
+    ]
+  },
+  {
+    "slug": "g-s1-04-land-skills-bench-scene",
+    "title": "S4 — land the Skills bench scene (#skills currently has zero WebGL)",
+    "assignee": "analyst-programmer",
+    "priority": 95,
+    "parents": ["g-x1-01-scene-fps-harness"],
+    "summary": "BenchField.tsx + bench.glsl.ts exist only in worktree .claude/worktrees/wf_c06ca2f9-9de-1 and already mount correctly through Scene with sceneId=skills-bench (Bench.tsx:304). Land them on a branch off current main. This closes the reviewer's worst-vs-R2 finding: the section claiming production calibration ships no shader at all.",
+    "order": [
+      "Add {section:'skills', scene:'skills-bench', label:'skills calibration bench'} to SCENES at tests/overhaul/flagship-visibility.spec.ts:138",
+      "Capture red (no canvas yet): 02-tests-failing.log",
+      "Copy BenchField.tsx, bench.glsl.ts and the Bench.tsx/Bench.module.css deltas from the worktree; resolve against current main",
+      "Confirm gold stays in the SVG engraving only — no gold in the shader",
+      "Capture green: 04-tests-passing.log"
+    ],
+    "gates": [
+      "flagship-visibility skills-bench passes all five cases including FALLBACK under reduced motion",
+      "TC-SCENE-FPS-01/02 include skills-bench and pass",
+      "Static audit 10/10 including TC-NFR-DEADCSS",
+      "grep -rn 'BenchField' app components shows it actually imported, not dead code"
+    ],
+    "verify": [
+      "npx tsc --noEmit && npm run lint && node scripts/validate/overhaul_static_audit.mjs",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5603 npx playwright test tests/overhaul/flagship-visibility.spec.ts tests/perf/scene-framerate.spec.ts"
+    ]
+  },
+  {
+    "slug": "g-x1-05-vitrine-scene-id",
+    "title": "S5 — give the Vitrine field a sceneId and hold it to the flagship bar",
+    "assignee": "analyst-programmer",
+    "priority": 94,
+    "parents": ["g-s1-04-land-skills-bench-scene"],
+    "summary": "grep -rn 'sceneId=' components/ returns only 3 hits; Vitrine.tsx mounts <Scene className={styles.fieldSlot}> with no id, so the cabinet light is structurally unmeasurable. Add sceneId=vitrine-field, add it to SCENES, and raise the field until it passes — the unlit neighbour plates must read as waiting, not empty (G-V1 from the scene side).",
+    "order": [
+      "Add {section:'vitrine', scene:'vitrine-field', label:'vitrine cabinet light'} to SCENES",
+      "Capture red: 02-tests-failing.log",
+      "Add sceneId=\"vitrine-field\" to the Scene call in Vitrine.tsx",
+      "Raise vitrine.glsl.ts coverage/peak only as far as the thresholds require; gold only on a plate whose repository URL is live",
+      "Capture green: 04-tests-passing.log"
+    ],
+    "gates": [
+      "COVERAGE >= 0.15 at delta 0.06, PEAK >= 0.35, MOTION >= 0.004, FALLBACK lit",
+      "Gold appears only as a sourced mark (C-8) — verified by reading the diff",
+      "text-contrast.spec.ts green"
+    ],
+    "verify": [
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5603 npx playwright test tests/overhaul/flagship-visibility.spec.ts tests/a11y/text-contrast.spec.ts"
+    ]
+  },
+  {
+    "slug": "g-x1-06-listen-scene-id",
+    "title": "S6 — give the Listen field a sceneId and hold it to the flagship bar",
+    "assignee": "analyst-programmer",
+    "priority": 94,
+    "parents": ["g-x1-05-vitrine-scene-id"],
+    "summary": "Listen.tsx:161 mounts <Scene className={styles.fieldSlot}> with no sceneId, so the beat field the voice arrives on is unmeasurable. Add sceneId=listen-field, add it to SCENES, and raise the field until it passes.",
+    "order": [
+      "Add {section:'listen', scene:'listen-field', label:'listen beat field'} to SCENES",
+      "Capture red: 02-tests-failing.log",
+      "Add sceneId=\"listen-field\" to Listen.tsx:161",
+      "Raise listen.glsl.ts only as far as the thresholds require; no gold in this scene",
+      "Capture green: 04-tests-passing.log"
+    ],
+    "gates": [
+      "All five flagship cases pass for listen-field",
+      "No gold in the listen shader — nothing in that section is a sourced numeric claim",
+      "TC-SCENE-FPS-01/02 include listen-field and pass"
+    ],
+    "verify": [
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5603 npx playwright test tests/overhaul/flagship-visibility.spec.ts tests/perf/scene-framerate.spec.ts"
+    ]
+  },
+  {
+    "slug": "g-x1-07-minivic-viseme-stage",
+    "title": "S7 — MiniVic viseme stage: the seventh signature scene",
+    "assignee": "analyst-programmer",
+    "priority": 93,
+    "parents": ["g-x1-06-listen-scene-id"],
+    "summary": "R2 wants >= 7 scenes; six are sections. The seventh is MiniVic's viseme stage. Promote the STAGE only: a Scene-mounted R3F plane behind the avatar plate whose shader is driven by the existing viseme refs (lib/visemeMap.ts getVisemeShape/lerpVisemeShapes), so the avatar is lit by what he is saying. The 2D canvas mouth in MiniVicBot.tsx stays exactly as-is and becomes the no-GL fallback, so lip-sync accuracy (R3) cannot regress.",
+    "order": [
+      "Author tests/overhaul/viseme-stage.spec.ts: TC-VISEME-GL-01 (bot open at ?gl=force, [data-scene=minivic-viseme] has a canvas, COVERAGE/PEAK/MOTION hold while a synthetic viseme stream is driven) and TC-VISEME-GL-02 (reduced motion: no canvas AND the 2D mouth still animates)",
+      "Capture red: 02-tests-failing.log",
+      "Add components/gl scenes/VisemeStage.tsx + viseme.glsl.ts reading the same refs; mount through Scene with sceneId=minivic-viseme",
+      "Do not touch the viseme computation or the 2D draw path",
+      "Capture green: 04-tests-passing.log"
+    ],
+    "gates": [
+      "Zero change to lib/visemeMap.ts and to the 2D mouth draw path — verified in the diff",
+      "Bot still answers end-to-end (tests/overhaul/avatar.spec.ts green)",
+      "At most one extra WebGL context live (Scene visibility scoping preserved)"
+    ],
+    "verify": [
+      "npx tsc --noEmit && npm run lint",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5603 npx playwright test tests/overhaul/viseme-stage.spec.ts tests/overhaul/avatar.spec.ts"
+    ]
+  },
+  {
+    "slug": "g-x1-08-r5-resolution-independence",
+    "title": "R5 proof — GL and SVG surfaces render natively at 3840x2160",
+    "assignee": "tester",
+    "priority": 92,
+    "parents": ["g-x1-07-minivic-viseme-stage"],
+    "summary": "R5 says every surface is audited >= 3840x2160 / 60fps. 'Vector scales' is an assertion; the proof is the backing store. Author tests/perf/resolution-independence.spec.ts at viewport 3840x2160, deviceScaleFactor 1, ?gl=force: TC-R5-GL-01 every canvas reports drawingBufferWidth >= 3840 and Height >= 2160; TC-R5-GL-02 median rAF at 4K <= 16.7ms; TC-R5-LAYOUT-01 no horizontal overflow and every section heading in the viewport box; TC-R5-SVG-01 the Compass, Bench and Vitrine drawings carry a viewBox and no fixed pixel width/height.",
+    "order": [
+      "Author the spec; run it and let it fail wherever it fails — this is a measurement, not a fix",
+      "Capture 02-tests-failing.log verbatim: this is the first honest R5 reading the project has",
+      "Fix only genuine defects found (a canvas clamped below 4K, an SVG with fixed px dims, an overflowing section)",
+      "Capture 04-tests-passing.log, or record the residual failures as named FAILs in the evidence dir"
+    ],
+    "gates": [
+      "The dpr cap [1,1.75] is understood as an oversampling cap, not a resolution ceiling — do not raise it to pass",
+      "Every failing surface is named individually; no aggregate pass",
+      "No threshold below 3840x2160 or above 16.7ms is introduced"
+    ],
+    "verify": [
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5603 npx playwright test tests/perf/resolution-independence.spec.ts"
+    ]
+  },
+  {
+    "slug": "g-x1-09-r5-asset-audit-waivers",
+    "title": "R5 asset audit — every shipped raster/video measured, waivers are recorded FAILs",
+    "assignee": "tester",
+    "priority": 92,
+    "parents": ["g-x1-08-r5-resolution-independence"],
+    "summary": "Measured 2026-09-05: my-avatar.mp4 = 1280x720@24, my-hero-avatar.mp4 = 640x360@24, my_avatar.avif = 1480x826 — all fail R5. Author tests/content/asset-resolution.spec.ts (node --test, ffprobe over public/): every section-referenced raster/video either reports >= 3840x2160 or appears in an explicit dated waiver list carrying the reason and the unblock. The waiver list is the R5 scoreboard and shrinks to zero as renders land.",
+    "order": [
+      "Author the test with the waiver list seeded with the three measured assets, each with reason and unblock",
+      "Capture 02-tests-failing.log with an asset deliberately un-waived to prove the test bites",
+      "Restore the waivers; capture 04-tests-passing.log",
+      "Write the interim honest state onto the board verbatim from SIGNATURE-SCENES-v1.md section 5.2"
+    ],
+    "gates": [
+      "A waiver is labelled FAIL in the output, never PASS",
+      "Adding a new asset without meeting the bar or being waived fails the suite",
+      "No Higgsfield call is attempted — balance is 0 credits on a free plan (measured); this is a cost gate, not a blocker"
+    ],
+    "verify": [
+      "node --test tests/content/asset-resolution.spec.ts",
+      "ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate -of csv=p=0 public/assets/my-avatar.mp4"
+    ]
+  },
+  {
+    "slug": "g-x1-10-hyperframes-render-pipeline",
+    "title": "HyperFrames render pipeline — 3840x2160@60 masters on this VPS, zero credits",
+    "assignee": "analyst-programmer",
+    "priority": 91,
+    "parents": ["g-x1-09-r5-asset-audit-waivers"],
+    "summary": "hyperframes@0.8.29 (CLI) + @hyperframes/engine@0.8.29 render an HTML composition to a deterministic MP4 by seeking each frame in headless Chrome and encoding with FFmpeg. All three requirements are already installed here: node v22.23.1 (README requires >= 22), /usr/bin/ffmpeg, /usr/bin/google-chrome. Add them as devDependencies only, plus scripts/assets/hyperframes_render.mjs. This is the R5 unblock that needs no credits.",
+    "order": [
+      "Add hyperframes@0.8.29 and @hyperframes/engine@0.8.29 to devDependencies at exact pins; set PUPPETEER_SKIP_DOWNLOAD=1 and PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome",
+      "Author assets/compositions/hero-overture.html with data-width=3840 data-height=2160 and a GSAP timeline",
+      "Author scripts/assets/hyperframes_render.mjs wrapping the CLI: render 2160p60, emit AV1 WebM + H.264 MP4 + frame 0 as AVIF",
+      "Run the render; ffprobe the output and prove 3840x2160 and 60/1",
+      "Capture 04-render-proof.log with the ffprobe output"
+    ],
+    "gates": [
+      "devDependencies only — zero HyperFrames bytes in the shipped bundle (TC-BUNDLE-01)",
+      "ffprobe on the master reports 3840x2160 and 60/1 — no claim without that output",
+      "Shipped clip <= 5MB under public/assets/avatar/ per scripts/validate/overhaul_static_audit.mjs:168-171",
+      "npm run build:static still clean; the render is offline and never runs in the deploy path"
+    ],
+    "verify": [
+      "node scripts/assets/hyperframes_render.mjs --composition hero-overture",
+      "ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate -of csv=p=0 public/assets/avatar/hero-overture-2160p60.mp4",
+      "node scripts/validate/overhaul_static_audit.mjs"
+    ]
+  },
+  {
+    "slug": "g-x1-11-hyperframes-player-overture",
+    "title": "HyperFrames in page — hero overture via @hyperframes/player (17.6 kB gz, lazy)",
+    "assignee": "analyst-programmer",
+    "priority": 91,
+    "parents": ["g-x1-10-hyperframes-render-pipeline"],
+    "summary": "R2 names HyperFrames explicitly and package.json has zero HyperFrames packages. @hyperframes/player@0.8.29 is an embeddable web component whose dist/hyperframes-player.global.js measures 64,037 bytes raw / 17,645 bytes gzip -9 (measured via npm pack). Mount the same hero-overture composition in page behind next/dynamic, after the poster paints, crossfading into the GL atmosphere. One authored artifact drives the in-page motion and the 2160p60 file.",
+    "order": [
+      "Author TC-BUNDLE-01 in tests/perf/: no HyperFrames or GSAP byte appears in the document's initial JS",
+      "Capture red where applicable: 02-tests-failing.log",
+      "Add @hyperframes/player@0.8.29 to dependencies at an exact pin; import lazily via next/dynamic with ssr:false",
+      "Mount the overture inside the hero stage above the poster and below the GL canvas; crossfade out on Scene onCreated",
+      "Verify reduced-motion: the overture does not play, the poster still stands",
+      "Capture green: 04-tests-passing.log"
+    ],
+    "gates": [
+      "PERF-01 first-view transfer <= 2.5MB still green",
+      "PERF-02 LCP < 2.5s and PERF-06/07 still green",
+      "Under prefers-reduced-motion nothing animates and the hero is fully readable (TC-CINE-06/07)",
+      "grep -c HyperFrames package.json > 0 — R2's named dependency is actually present"
+    ],
+    "verify": [
+      "npx tsc --noEmit && npm run lint && npm run build:static",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5603 npx playwright test tests/perf/performance.spec.ts tests/overhaul/cinematic.spec.ts tests/overhaul/hero-first-paint.spec.ts"
+    ]
+  },
+  {
+    "slug": "g-x1-12-gsap-scrolltrigger-choreography",
+    "title": "GSAP + ScrollTrigger — the choreography layer §2.1 names and the repo lacks",
+    "assignee": "analyst-programmer",
+    "priority": 90,
+    "parents": ["g-x1-11-hyperframes-player-overture"],
+    "summary": "grep -rn 'gsap|ScrollTrigger' package.json components/ app/ lib/ returns 5 hits, all prose or CSS comments (app/globals.css:1332,1343; lib/voiceoverContext.tsx:116,119,125) — the library itself is absent, and lib/voiceoverContext.tsx already listens for gsap:<section>:enter CustomEvents that nothing dispatches. Adopt gsap core + ScrollTrigger, lazy, riding the existing GL chunk, and dispatch the section-enter cues the voiceover controller is already written against.",
+    "order": [
+      "Extend TC-BUNDLE-01 to assert gsap is absent from the initial document JS and present only in a lazy chunk",
+      "Capture red: 02-tests-failing.log",
+      "Add gsap at an exact pin; register ScrollTrigger inside the lazily-imported module only",
+      "Dispatch gsap:hero:enter / gsap:about:enter / ... on ScrollTrigger onEnter, matching the map at lib/voiceoverContext.tsx:125",
+      "Capture green plus tests/overhaul/voiceover.spec.ts green"
+    ],
+    "gates": [
+      "Zero GSAP bytes on the critical path — TC-BUNDLE-01 measures it, no estimate accepted",
+      "Reduced motion: ScrollTrigger timelines are not created at all, they are not merely paused",
+      "tests/overhaul/voiceover.spec.ts green — the cue contract is honoured, not invented"
+    ],
+    "verify": [
+      "npm run build:static && node -e \"const fs=require('fs');const h=fs.readFileSync('out/index.html','utf8');console.log('gsap in initial html:', /gsap/i.test(h))\"",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5603 npx playwright test tests/perf/performance.spec.ts tests/overhaul/voiceover.spec.ts"
+    ]
+  },
+  {
+    "slug": "g-x1-13-avatar-4k-rerender",
+    "title": "R5 raster unblock — re-render the avatar plate at 3840x2160@60 and drop its waiver",
+    "assignee": "analyst-programmer",
+    "priority": 89,
+    "parents": ["g-x1-12-gsap-scrolltrigger-choreography"],
+    "summary": "my-avatar.mp4 is 1280x720@24 and my-hero-avatar.mp4 is 640x360@24 (ffprobe, 2026-09-05). Re-render the avatar plate through the HyperFrames pipeline at 3840x2160@60 from the existing footage and stills — no generative call, so Higgsfield's 0-credit balance is irrelevant and C-4 generation discipline is not engaged. Ship AV1 WebM + H.264 MP4 under public/assets/avatar/ within the 5MB click-to-play cap, and remove the two waivers from the R5 asset audit.",
+    "order": [
+      "Author the avatar composition at data-width=3840 data-height=2160 sourcing the existing master footage",
+      "Render; ffprobe and capture the 3840x2160 / 60-1 output as 04-render-proof.log",
+      "Encode the shipped derivatives under the 5MB on-demand cap; retire the orphan my-hero-avatar.mp4 (640x360) in the same commit",
+      "Delete the corresponding waiver entries from tests/content/asset-resolution.spec.ts and capture the suite green",
+      "Screenshot the hero at 1440 and 390 CSS px to confirm no layout break"
+    ],
+    "gates": [
+      "ffprobe proves 3840x2160 and 60/1 on the master before any claim is made",
+      "TC-NFR-PERF green — nothing over its cap",
+      "Waivers removed, not merely re-dated",
+      "Zero regression: tests/overhaul/avatar.spec.ts green"
+    ],
+    "verify": [
+      "ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate -of csv=p=0 public/assets/avatar/my-avatar-2160p60.mp4",
+      "node scripts/validate/overhaul_static_audit.mjs && node --test tests/content/asset-resolution.spec.ts"
+    ]
+  },
+  {
+    "slug": "g-x1-14-r2-r5-independent-verification",
+    "title": "Independent verification on the live URL — R2 / R5 / §0.3-1 scorecard",
+    "assignee": "reviewer",
+    "priority": 88,
+    "parents": ["g-x1-13-avatar-4k-rerender"],
+    "summary": "After the chain deploys, verify against https://forgotten-mistory.web.app/ (not a local build): all 7 sceneIds present and passing the flagship bar, median rAF within budget at 1440 and 390, 4K backing store proven, HyperFrames present in package.json and absent from the critical path, R5 raster waiver list empty or honestly non-empty. Report FAIL for anything not proven by a command output you ran yourself.",
+    "order": [
+      "Fetch the live build-commit meta and confirm it matches the deployed HEAD",
+      "Run the flagship, framerate and resolution suites against PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app",
+      "Read the R5 waiver list and report its contents verbatim",
+      "Write the scorecard to docs/delivery/evidence/v10-20260905T0515Z/G-H2/09-verification.md, failures first"
+    ],
+    "gates": [
+      "Every verdict cites a command output captured in this run",
+      "A software-rasteriser fps pass is reported as such, never as GPU proof",
+      "No self-approval: the reviewer profile is not the implementer",
+      "Any residual FAIL is stated plainly with its unblock — no narrowing of R2 or R5"
+    ],
+    "verify": [
+      "curl -s https://forgotten-mistory.web.app/ | grep -o 'build-commit[^>]*'",
+      "PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/overhaul/flagship-visibility.spec.ts tests/perf/scene-framerate.spec.ts tests/perf/resolution-independence.spec.ts"
+    ]
+  }
+]
