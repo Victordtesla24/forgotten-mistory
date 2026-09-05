@@ -1,0 +1,44 @@
+{
+  "probe": "P100 ?gl=force hero-hold + experience-scroll",
+  "url": "http://127.0.0.1:5601/?gl=force",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "chromium": {
+    "channel": "chrome",
+    "args": [
+      "--no-sandbox",
+      "--use-gl=swiftshader",
+      "--enable-unsafe-swiftshader",
+      "--ignore-gpu-blocklist"
+    ]
+  },
+  "httpStatus": 200,
+  "atHero": {
+    "holdMs": 4000,
+    "canvases": 1,
+    "heroH1Present": true,
+    "heroH1Text": "Vikram Deshpande",
+    "sectionIds": [
+      "hero",
+      "about",
+      "experience",
+      "skills",
+      "vitrine",
+      "listen"
+    ],
+    "bodyHead": "Skip to the evidence VIKRAM. Download CV MENU Home About Experience Skills Keeping me busy Feedback & coffee LinkedIn Download CV MELBOURNE, AUSTRALIA Vikram Deshpande Delivery leadership · AI solutions architecture Sixt"
+  },
+  "atExperience": {
+    "holdMs": 4000,
+    "canvases": 1,
+    "heroH1Present": true
+  },
+  "errorShellShowing": false,
+  "pageErrors": [],
+  "consoleErrors": [],
+  "pageErrorCount": 0,
+  "consoleErrorCount": 0,
+  "recordedAt": "2026-09-05T07:06:42.773Z"
+}
