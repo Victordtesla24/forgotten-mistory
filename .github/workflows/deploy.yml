@@ -716,16 +716,22 @@ jobs:
             echo 'Budgets defined in `lighthouserc.json`. See artifact `lighthouse-html-report` for full detail.'
           } >> "$GITHUB_STEP_SUMMARY"
 
-      # `lhci upload` is never invoked, so lighthouserc.json's upload.outputDir
-      # (.lighthouseci/reports/) is never created — the previous path silently
-      # uploaded nothing ("No files were found with the provided path"). The raw
-      # per-run lhr-*.html / lhr-*.json that `collect` writes live one level up.
+      # `lhci collect` writes its per-run lhr-*.json / lhr-*.html into ./.lighthouseci/
+      # (lighthouserc.json's upload.outputDir, .lighthouseci/reports/, only exists after
+      # `lhci upload`, which this job never runs). actions/upload-artifact@v4 (>= 4.4.0)
+      # excludes hidden files by default, and "hidden" means every file under a
+      # directory whose name starts with "." — so without include-hidden-files the
+      # action found nothing under .lighthouseci/ and if-no-files-found: error failed
+      # the job after collect, assert and the composite score had all passed
+      # (run 33933075366). The reports are Lighthouse audits of a public page; they
+      # carry no secrets. if-no-files-found stays `error`: an empty collect must fail.
       - name: Upload Lighthouse reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-html-report
           path: .lighthouseci/
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
 
