@@ -1,0 +1,13 @@
+diff --git a/components/site/Footer.tsx b/components/site/Footer.tsx
+index 2ec81ff..de36ca5 100644
+--- a/components/site/Footer.tsx
++++ b/components/site/Footer.tsx
+@@ -133,7 +133,7 @@ export default function Footer() {
+           {/* The build signal. Present only when it is real. */}
+           {stamp ? (
+             <p className={styles.build}>
+-              <span className={styles.buildLabel}>This page was built from commit</span>{' '}
++              <span className={styles.buildLabel}>PROBE built from commit</span>{' '}
+               <a
+                 className={styles.sha}
+                 href={`https://github.com/Victordtesla24/forgotten-mistory/commit/${stamp.sha}`}
