@@ -1,0 +1,17 @@
+{
+  "cycle": "v10-c01",
+  "window_utc": "2026-09-05T05:48Z → 06:20Z",
+  "pea_numerator": 5,
+  "pea_denominator": 25,
+  "pea_basis": "SPEC-v10.md rows: met = R9, O1, O4, M3, M7; partial = R1, R3, R4, R7, R8, R10, R12, O2, O3, O5, O6, M2, M5, M6; unmet = R2, R11, M1; owner-blocked = R5, R6, M4",
+  "adversarial_verdict": "PENDING — last recorded verdict R-c8 FAIL (v9, 9321998b); R-c13 (t_4adf34f7) queued for the cycle-11 deploy",
+  "deploy_commit": "5ec231d3",
+  "deploys": ["74ed0800 05:59Z docs", "07e80f5f 06:01Z docs", "973ee600 06:02Z docs", "f51733ab 06:03Z docs", "5ec231d3 06:16Z + 06:18Z cycle 13 (site)"],
+  "landed": ["t_62c9ee4d cycle 13 — next 15.5.25, checks.yml installs functions deps, .gitignore markers (V-C13 PASS fbc7253)", "t_cfc110c5 board bootstrap", "t_cba10f82 SPEC-v10 (25 rows, 9 tasks created, 4 merged)"],
+  "in_flight": ["t_8cdf3b61 cycle 11 (commits 96732ff, b7b2ad4; V-C11 running on :5602)", "t_28011b3d C14a /api/tts secret drift", "t_4e30d620 scene 3 #about GLSL"],
+  "blocked_owner": ["t_1e4e053e R3 lip-sync ≤ 40 ms (needs generated viseme track)", "t_787e6c40 R5/R6 4K generation (Higgsfield 0 credits, OpenRouter −$5.38)", "t_5529f5c4 M4 n8n proof run (credits)"],
+  "provider": "Council: Anthropic via OAuth (claude-cli Max session, opus agents); OpenRouter −$5.38 → §0.4 failover in force; site chat on the OpenAI rung (200, ~4 s)",
+  "alerts": ["/api/tts 502/401 on production — Secret Manager drift (SPEC §R3) → C14a dispatched", "Checks e2e red on main (15 ✘ pre-existing) → cycle 14", "orchestrator id-swap incident 06:1xZ — verifier ids quoted to running workflows were the O1/O2 ids; board ids swapped consistently, no work lost"],
+  "tools_used": ["Workflow (opus council agents ×5)", "mcp__claude_ai_Higgsfield__balance", "mcp__claude_ai_n8n__get_workflow_details", "gh CLI", "sqlite3 (read-only Hermes migration)", "curl (live probes)", "git"],
+  "next": "merge cycle 11 on V-C11 PASS → deploy → R-c13 three-lens review + cycle 14 regression on merged main + hygiene; scenes 4–7 after; Fusion Council only after PEA 100% + adversarial PASS"
+}

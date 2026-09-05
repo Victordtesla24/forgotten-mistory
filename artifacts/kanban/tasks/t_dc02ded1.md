@@ -33,3 +33,6 @@ role_matrix: feedback_refactor_loop → level orchestrator → effort **ultracod
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMPLETE (2026-09-05T06:21:18.245Z)
+Merged 5ec231d (--no-ff) and pushed 06:15Z; Deploy runs 06:16:24Z + 06:18:14Z success; live build-commit meta = 5ec231d3 (curl 06:20Z). Ledger: 11 rows (0e690f1).

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T06:20:07.521Z",
+  "updated": "2026-09-05T06:21:18.460Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -232,7 +232,7 @@
     {
       "id": "t_dc02ded1",
       "title": "D-C13 — merge cycle 13 into main, push, verify the live build-commit",
-      "status": "todo",
+      "status": "done",
       "assignee": "orchestrator",
       "priority": 93,
       "parents": [
@@ -246,10 +246,11 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T06:21:18.245Z",
       "summary": "Orchestrator consolidation duty (O3/O4). git merge --no-ff worktree-wf_18f926b0-2a4-1 into main; git push origin HEAD:main; deploy.yml deploys; verify meta.",
       "decisions": [],
-      "comments": []
+      "comments": [],
+      "result": "Merged 5ec231d (--no-ff) and pushed 06:15Z; Deploy runs 06:16:24Z + 06:18:14Z success; live build-commit meta = 5ec231d3 (curl 06:20Z). Ledger: 11 rows (0e690f1)."
     },
     {
       "id": "t_6fb8914b",
@@ -655,7 +656,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:03:37.506Z",
+      "updated": "2026-09-05T06:21:18.313Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": [
@@ -663,6 +664,11 @@
           "at": "2026-09-05T06:03:37.506Z",
           "by": "orchestrator",
           "text": "Cadence log: 05:59:41Z deploy 74ed0800 success; 06:01:30Z deploy 07e80f5f success; 973ee60 pushed 06:1xZ (docs). Council lanes running since 06:03Z: C13 (5601), C11 (5602), SPEC-v10."
+        },
+        {
+          "at": "2026-09-05T06:21:18.313Z",
+          "by": "orchestrator",
+          "text": "Cadence: 06:16Z/06:18Z deploy 5ec231d3 (cycle 13, first site-affecting deploy of the session: Next 15.5.25, npm audit 0); 06:19Z c9ad4f39 docs; e998e79 docs."
         }
       ]
     },
@@ -873,7 +879,7 @@
     {
       "id": "t_28011b3d",
       "title": "Cycle 14a — restore /api/tts: ElevenLabs Secret Manager drift fixed, premade voice labelled synthetic (R3 voice, M5 prerequisite)",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 94,
       "parents": [
@@ -887,16 +893,21 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:05.274Z",
-      "updated": "2026-09-05T06:20:05.274Z",
+      "updated": "2026-09-05T06:21:18.460Z",
       "summary": "SPEC-v10.md §R3(a): live POST /api/tts → 502 {tts_upstream_failed, status 401} while ELEVENLABS_API_KEY in /root/.claude/.env.production authenticates (GET /v1/user/subscription → 200, tier payg, IVC/PVC false). Classified as Secret Manager drift, not a credit block. The cloned voice 0ZJ4kFDo6bZUNQsuULOW is refused on payg (ivc_not_permitted) — orchestrator decision (§0.1): the site speaks with an ElevenLabs premade (stock) voice and every place it is heard is labelled synthetic. Spend cap for this task: ONE verification call ≤ 200 characters (≈ $0.03 on payg); log the character count.",
-      "decisions": [],
+      "decisions": [
+        {
+          "at": "2026-09-05T06:21:18.460Z",
+          "text": "Spend decision (§0.1, C-4): exactly one ElevenLabs TTS verification call ≤ 200 characters (≈$0.03 on payg) is authorised for this task; recovery path for the production change: Secret Manager keeps the prior version (record its number) and the previous function revision can be redeployed from main."
+        }
+      ],
       "comments": [],
       "blocker": null
     },
     {
       "id": "t_4e30d620",
       "title": "Scene 3 — #about flagship: GLSL compass field behind the SVG rose (R2, M1)",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 90,
       "parents": [
@@ -910,7 +921,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:05.604Z",
-      "updated": "2026-09-05T06:20:05.604Z",
+      "updated": "2026-09-05T06:21:18.415Z",
       "summary": "SPEC-v10.md §R2 / c16: promote #about from SVG-only (0 canvases, 138 paths) to an R2-grade scene mounted through components/gl/Scene.tsx — a shader field that turns with the compass (cycle-12 scroll-drive semantics kept), no new npm dependency, no new network asset; reduced motion → zero canvases and the SVG stays. Files: components/sections/About/AboutField.tsx, field.glsl.ts, About.tsx, Compass.tsx, About.module.css; tests/overhaul/scene-about.spec.ts (TDD first).",
       "decisions": [],
       "comments": [],
