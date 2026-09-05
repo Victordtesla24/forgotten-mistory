@@ -1,0 +1,252 @@
+TAP version 13
+# Subtest: the deploy pipeline is simple and autonomous
+    # Subtest: is the only workflow that deploys, and there are exactly two workflows
+    ok 1 - is the only workflow that deploys, and there are exactly two workflows
+      ---
+      duration_ms: 4.961548
+      type: 'test'
+      ...
+    # Subtest: runs on every push to main, every ten minutes, and on demand
+    ok 2 - runs on every push to main, every ten minutes, and on demand
+      ---
+      duration_ms: 0.197712
+      type: 'test'
+      ...
+    # Subtest: has one job with no needs on any check
+    ok 3 - has one job with no needs on any check
+      ---
+      duration_ms: 0.306202
+      type: 'test'
+      ...
+    # Subtest: consolidates every remote branch into main before deploying, resolves conflicts itself, and deletes what it merged
+    ok 4 - consolidates every remote branch into main before deploying, resolves conflicts itself, and deletes what it merged
+      ---
+      duration_ms: 3.360108
+      type: 'test'
+      ...
+    # Subtest: deploys with the Firebase service account to the live channel and reads the commit back
+    ok 5 - deploys with the Firebase service account to the live channel and reads the commit back
+      ---
+      duration_ms: 0.207552
+      type: 'test'
+      ...
+    # Subtest: verifies the live commit without piping curl into a parser (curl exit 23 / EPIPE)
+    ok 6 - verifies the live commit without piping curl into a parser (curl exit 23 / EPIPE)
+      ---
+      duration_ms: 0.372754
+      type: 'test'
+      ...
+    # Subtest: can push (contents: write), queues runs and never cancels a deploy in flight
+    ok 7 - can push (contents: write), queues runs and never cancels a deploy in flight
+      ---
+      duration_ms: 0.134021
+      type: 'test'
+      ...
+    # Subtest: never weakens itself
+    ok 8 - never weakens itself
+      ---
+      duration_ms: 1.18184
+      type: 'test'
+      ...
+    1..8
+ok 1 - the deploy pipeline is simple and autonomous
+  ---
+  duration_ms: 12.242098
+  type: 'suite'
+  ...
+# Subtest: checks report and never gate
+    # Subtest: run on every push and carry no deploy step
+    ok 1 - run on every push and carry no deploy step
+      ---
+      duration_ms: 1.582893
+      type: 'test'
+      ...
+    # Subtest: cover types, lint, the static audit, the node contract tests, the Playwright suite and npm audit
+    ok 2 - cover types, lint, the static audit, the node contract tests, the Playwright suite and npm audit
+      ---
+      duration_ms: 0.299042
+      type: 'test'
+      ...
+    # Subtest: installs the Cloud Functions dependencies before the node contract tests run
+    ok 3 - installs the Cloud Functions dependencies before the node contract tests run
+      ---
+      duration_ms: 0.256092
+      type: 'test'
+      ...
+    # Subtest: uploads hidden report directories (upload-artifact v4 skips dot-paths by default)
+    ok 4 - uploads hidden report directories (upload-artifact v4 skips dot-paths by default)
+      ---
+      duration_ms: 0.122232
+      type: 'test'
+      ...
+    1..4
+ok 2 - checks report and never gate
+  ---
+  duration_ms: 4.863548
+  type: 'suite'
+  ...
+# Subtest: the generated static-audit report is a build artifact, not a tracked file
+    # Subtest: is not tracked, so no consolidation ever has to force-resolve it
+    ok 1 - is not tracked, so no consolidation ever has to force-resolve it
+      ---
+      duration_ms: 13.263625
+      type: 'test'
+      ...
+    # Subtest: is ignored, so running the audit never dirties the working tree
+    ok 2 - is ignored, so running the audit never dirties the working tree
+      ---
+      duration_ms: 3.587328
+      type: 'test'
+      ...
+    # Subtest: is still written by the audit, which creates reports/ first (a clean checkout has no such directory)
+    ok 3 - is still written by the audit, which creates reports/ first (a clean checkout has no such directory)
+      ---
+      duration_ms: 0.377453
+      type: 'test'
+      ...
+    # Subtest: is uploaded tolerantly if CI uploads it at all — an untracked artifact can legitimately be absent
+    ok 4 - is uploaded tolerantly if CI uploads it at all — an untracked artifact can legitimately be absent
+      ---
+      duration_ms: 0.387753
+      type: 'test'
+      ...
+    1..4
+ok 3 - the generated static-audit report is a build artifact, not a tracked file
+  ---
+  duration_ms: 17.884571
+  type: 'suite'
+  ...
+# Subtest: the GPU-class scene frame-rate job is optional signal and can never gate a deploy (D7)
+    # Subtest: exists in checks.yml and is unknown to deploy.yml
+    not ok 1 - exists in checks.yml and is unknown to deploy.yml
+      ---
+      duration_ms: 0.957029
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_2f7d8386-55b-1/tests/ci_pipeline.test.mjs:265:3'
+      failureType: 'testCodeFailure'
+      error: 'checks.yml must carry a "scene-fps-gpu" job'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      operator: '=='
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_2f7d8386-55b-1/tests/ci_pipeline.test.mjs:266:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        node:internal/test_runner/test:1440:71
+        node:internal/per_context/primordials:466:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:435:3)
+        node:internal/per_context/primordials:466:9
+        Array.map (<anonymous>)
+      ...
+    # Subtest: is skipped entirely unless the self-hosted runner labels are configured
+    not ok 2 - is skipped entirely unless the self-hosted runner labels are configured
+      ---
+      duration_ms: 0.173531
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_2f7d8386-55b-1/tests/ci_pipeline.test.mjs:270:3'
+      failureType: 'testCodeFailure'
+      error: "Cannot read properties of undefined (reading 'if')"
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_2f7d8386-55b-1/tests/ci_pipeline.test.mjs:271:29)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1442:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: cannot fail the workflow and cannot sit in the queue indefinitely
+    not ok 3 - cannot fail the workflow and cannot sit in the queue indefinitely
+      ---
+      duration_ms: 0.120271
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_2f7d8386-55b-1/tests/ci_pipeline.test.mjs:280:3'
+      failureType: 'testCodeFailure'
+      error: "Cannot read properties of undefined (reading 'continue-on-error')"
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_2f7d8386-55b-1/tests/ci_pipeline.test.mjs:281:21)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: is in no needs: chain in either workflow
+    ok 4 - is in no needs: chain in either workflow
+      ---
+      duration_ms: 0.13618
+      type: 'test'
+      ...
+    # Subtest: builds the export, serves it on a port it discovers, and runs the harness single-worker
+    not ok 5 - builds the export, serves it on a port it discovers, and runs the harness single-worker
+      ---
+      duration_ms: 0.146721
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_2f7d8386-55b-1/tests/ci_pipeline.test.mjs:298:3'
+      failureType: 'testCodeFailure'
+      error: "Cannot read properties of undefined (reading 'steps')"
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_2f7d8386-55b-1/tests/ci_pipeline.test.mjs:299:23)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: uploads the per-scene JSON on every outcome, and tolerates its absence
+    not ok 6 - uploads the per-scene JSON on every outcome, and tolerates its absence
+      ---
+      duration_ms: 0.125292
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_2f7d8386-55b-1/tests/ci_pipeline.test.mjs:317:3'
+      failureType: 'testCodeFailure'
+      error: "Cannot read properties of undefined (reading 'steps')"
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_2f7d8386-55b-1/tests/ci_pipeline.test.mjs:318:25)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: leaves deploy.yml byte-identical to origin/main
+    ok 7 - leaves deploy.yml byte-identical to origin/main
+      ---
+      duration_ms: 15.486412
+      type: 'test'
+      ...
+    1..7
+not ok 4 - the GPU-class scene frame-rate job is optional signal and can never gate a deploy (D7)
+  ---
+  duration_ms: 17.5801
+  type: 'suite'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_2f7d8386-55b-1/tests/ci_pipeline.test.mjs:260:1'
+  failureType: 'subtestsFailed'
+  error: '5 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..4
+# tests 23
+# suites 4
+# pass 18
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 220.597764

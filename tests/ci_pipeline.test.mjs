@@ -133,9 +133,23 @@ describe('checks report and never gate', () => {
   it('run on every push and carry no deploy step', () => {
     const on = triggersOf(checks);
     assert.deepEqual(on.push.branches, ['**']);
-    for (const job of Object.values(checks.jobs)) {
+    for (const [name, job] of Object.entries(checks.jobs)) {
       assert.equal(job.needs, undefined, 'checks jobs do not chain');
-      assert.ok(!('continue-on-error' in job), 'a check that cannot fail proves nothing');
+      // One narrow exemption, and only one: a job that runs on hardware GitHub
+      // does not host — the Owner's Mac, addressed by vars.E2E_RUNNER_LABELS.
+      // That runner is offline most of the day, and a queued-then-cancelled job
+      // on an absent runner must not turn the workflow red for everyone else.
+      // Every job on a GitHub-hosted runner still has to be able to fail.
+      const optional = typeof job.if === 'string' && /vars\.E2E_RUNNER_LABELS/.test(job.if);
+      if (optional) {
+        assert.equal(
+          job['continue-on-error'],
+          true,
+          `checks.yml job "${name}" is gated on a self-hosted runner and must carry continue-on-error: true`
+        );
+      } else {
+        assert.ok(!('continue-on-error' in job), `checks.yml job "${name}" cannot fail, so it proves nothing`);
+      }
     }
   });
 
@@ -228,5 +242,102 @@ describe('the generated static-audit report is a build artifact, not a tracked f
         );
       }
     }
+  });
+});
+
+// ── The GPU-class frame-rate confirmation (SIGNATURE-SCENES-v1 D7) ──────────
+// tests/perf/scene-framerate.spec.ts measures R2's 60 fps clause on this VPS,
+// which has no GPU: every number it prints is a SwiftShader number and says so.
+// The GPU-class confirmation therefore has to run somewhere with a real GPU —
+// the Owner's self-hosted Mac — and that machine is offline most of the day.
+//
+// The repository has already paid for getting this wrong once: PR#4 gated the
+// deploy on a self-hosted GPU runner, and when the Mac was off the deploy job
+// queued forever and production went stale. So the shape below is not a style
+// preference, it is the fix: the job is skipped outright unless the labels are
+// configured, it can never fail the workflow, it is capped at fifteen minutes,
+// and nothing — in either workflow — is allowed to wait on it.
+describe('the GPU-class scene frame-rate job is optional signal and can never gate a deploy (D7)', () => {
+  const JOB = 'scene-fps-gpu';
+  const job = checks.jobs?.[JOB];
+  const gitcmd = (...args) => spawnSync('git', args, { cwd: ROOT, encoding: 'utf8' });
+
+  it('exists in checks.yml and is unknown to deploy.yml', () => {
+    assert.ok(job, `checks.yml must carry a "${JOB}" job`);
+    assert.ok(!deployText.includes(JOB), `deploy.yml must never mention "${JOB}"`);
+  });
+
+  it('is skipped entirely unless the self-hosted runner labels are configured', () => {
+    assert.equal(typeof job.if, 'string', `"${JOB}" must carry an if: guard`);
+    assert.ok(/vars\.E2E_RUNNER_LABELS/.test(job.if), 'the guard reads the E2E_RUNNER_LABELS repo variable');
+    assert.ok(/!=\s*''/.test(job.if), "an unset variable ('' by GitHub's rules) skips the job");
+    assert.ok(
+      /fromJSON\(\s*vars\.E2E_RUNNER_LABELS/.test(String(job['runs-on'])),
+      'runs-on takes its labels from the same variable, so the job cannot target a runner that was never named'
+    );
+  });
+
+  it('cannot fail the workflow and cannot sit in the queue indefinitely', () => {
+    assert.equal(job['continue-on-error'], true, 'an absent Mac must not turn Checks red');
+    const cap = job['timeout-minutes'];
+    assert.ok(
+      Number.isInteger(cap) && cap > 0 && cap <= 15,
+      `timeout-minutes must be a positive integer <= 15, got ${cap}`
+    );
+  });
+
+  it('is in no needs: chain in either workflow', () => {
+    for (const [file, doc] of [['checks.yml', checks], ['deploy.yml', deploy]]) {
+      for (const [name, other] of Object.entries(doc.jobs)) {
+        const needs = other.needs === undefined ? [] : [].concat(other.needs);
+        assert.ok(!needs.includes(JOB), `${file} job "${name}" waits on "${JOB}" — that is the PR#4 deploy hang`);
+      }
+    }
+  });
+
+  it('builds the export, serves it on a port it discovers, and runs the harness single-worker', () => {
+    const steps = job.steps ?? [];
+    const runs = steps.map((s) => s.run || '').join('\n');
+    assert.ok(steps.some((s) => (s.uses || '').startsWith('actions/checkout')), 'must check the repo out');
+    const setup = steps.find((s) => (s.uses || '').startsWith('actions/setup-node'));
+    assert.ok(setup, 'must set up node');
+    assert.equal(setup.with['node-version-file'], '.node-version', 'the node version comes from .node-version');
+    assert.equal(setup.with.cache, 'npm');
+    assert.ok(/\bnpm ci\b/.test(runs), 'must install dependencies');
+    assert.ok(/npm run build:static/.test(runs), 'must build the static export it measures');
+    assert.ok(/scene-framerate\.spec\.ts/.test(runs), 'must run the frame-rate harness');
+    assert.ok(/--workers=1/.test(runs), 'frame pacing is only meaningful when nothing else runs beside it');
+    assert.ok(/SCENE_FPS_ARTEFACT_DIR=/.test(runs), 'must point the harness at an artefact directory');
+    assert.ok(
+      !/\b(5599|8080)\b/.test(runs),
+      'ports 5599 and 8080 are owned by other tenants on shared hosts — this job discovers a free one'
+    );
+  });
+
+  it('uploads the per-scene JSON on every outcome, and tolerates its absence', () => {
+    const upload = (job.steps ?? []).find((s) => (s.uses || '').startsWith('actions/upload-artifact'));
+    assert.ok(upload, 'the measurement is worthless if it is not kept');
+    assert.equal(upload.if, 'always()', 'a red run is exactly when the numbers matter most');
+    assert.equal(
+      upload.with['if-no-files-found'],
+      'warn',
+      'a skipped or crashed run leaves no JSON, and that is not itself an error'
+    );
+    assert.ok(/artifacts\/scene-fps/.test(upload.with.path), 'uploads the directory the harness was pointed at');
+  });
+
+  it('leaves deploy.yml byte-identical to origin/main', () => {
+    const ref = gitcmd('rev-parse', '--verify', '--quiet', 'origin/main');
+    if (ref.status !== 0) {
+      // A shallow, single-branch CI checkout has no origin/main to compare
+      // against. The invariant still holds structurally: every deploy-path
+      // assertion in this file reads deploy.yml directly, and the job name
+      // appears nowhere in it.
+      assert.ok(!deployText.includes(JOB), 'deploy.yml must never mention the GPU job');
+      return;
+    }
+    const diff = gitcmd('diff', '--stat', 'origin/main', '--', '.github/workflows/deploy.yml');
+    assert.equal(diff.status, 0, 'git diff against origin/main failed');
+    assert.equal(diff.stdout.trim(), '', 'deploy.yml must not change: the deploy path is not part of this work');
   });
 });

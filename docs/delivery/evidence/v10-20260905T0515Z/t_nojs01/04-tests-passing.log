@@ -1,0 +1,13 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/no-js.spec.ts --workers=1 --reporter=list
+
+Running 4 tests using 1 worker
+
+no-js #hero box at 1440x900: 1440x1329
+  ✓  1 [chromium] › tests/e2e/no-js.spec.ts:117:9 › No JavaScript › TC-NOJS-01: the hero and all six sections paint with script disabled at 1440x900 (3.1s)
+no-js #hero box at 390x844: 390x1490
+  ✓  2 [chromium] › tests/e2e/no-js.spec.ts:117:9 › No JavaScript › TC-NOJS-02: the hero and all six sections paint with script disabled at 390x844 (3.5s)
+  ✓  3 [chromium] › tests/e2e/no-js.spec.ts:178:7 › No JavaScript › TC-NOJS-03: the served HTML carries no Suspense fallback in front of the route (32ms)
+  ✓  4 [chromium] › tests/e2e/no-js.spec.ts:215:7 › No JavaScript › TC-NOJS-04: the static route has no loading.tsx (5ms)
+
+  4 passed (7.8s)

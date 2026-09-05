@@ -1,0 +1,51 @@
+{
+  "cycle": "v10-c14",
+  "window_utc": "2026-09-05T14:06Z → 14:38Z",
+  "pea_numerator": 14,
+  "pea_denominator": 25,
+  "pea_basis": "+1 vs c13: §0.3-3 / G-H2 (hero as a lit, first-paint cinematic stage) PASS on live by independent reviewer (14/14 clauses, e16521a). ADV-FAIL-20260905 P0 SCORECARD: 11/11 gaps now carry an independent live PASS — G-A1, G-A2, G-V1, G-V2, G-M1, G-M2, G-M3 (latency), G-H1, G-H2, G-H3, G-S1. THIS IS NOT the overall adversarial PASS: R1 (net-new top-5 reinvention), R2 (≥7 scenes @60 fps: 4/7 gated, S5/S6 landing, 60 fps unproven — software rasteriser shows 67–367 ms/frame; GPU job label-gated but no runner registered), R3 (real-time Higgsfield avatar + ≤40 ms lip-sync unmet; chat latency PASS; voice via /api/tts works), R5 (2160p60 raster/video: only the hero poster is a 3840×2160 source), §0.3-1 Marvel bar (creative council directions only partially folded) remain OPEN and are not claimed.",
+  "adversarial_verdicts": [
+    "G-H2 PASS 14/14 on live d5227962 (poster 3840×2160 12.9 kB, luminance .11/.12 GL-blocked and JS-off, scrim Δ .29/.26/.21/.064, canvas 1459 ms after DCL with the poster at 200 ms, AA 6.2 worst, CLS 0 ×9, LCP 1408 worst, no-JS 6/6) — fragile: 390 still Δ 0.064 vs floor 0.06 → t_x1_03b",
+    "G-M3 latency PASS (732/594 ms) — 411650c2 review",
+    "sweep 13/13 PASS — abc475e3 review",
+    "host audit 14:12Z PARTIAL → RECTIFY applied 14:22–14:25Z (t_g_h2 reopened then closed only on the live PASS; 93 columns synced; t_g_rev closed → per-Deploy probe tasks; O5-MISS filed 14:11–14:21; concurrency cap ≤2 Chrome-heavy at load>8; stale servers killed)"
+  ],
+  "deploy_commit": "d5227962 (live); poster visible since 66199cba 14:24:40Z",
+  "visible_ships": [
+    "14:09:17Z 1d25b7ab — 9e41474 column-bound hero scrim (390 still pool reshaped)",
+    "14:11:36Z 4424d5c2 — 6f4ba6c page paints without JavaScript (loading.tsx removed)",
+    "14:24:40Z 66199cba — ee334cc 4K shader-rendered hero poster as the first paint (12.9 kB AVIF)"
+  ],
+  "non_visible_ships": [
+    "8beeda9d fps harness (red, software-rasteriser)",
+    "5108c3ce no-JS evidence",
+    "44327c5d board rectify",
+    "d5227962 GPU-runner CI job (label-gated)"
+  ],
+  "o1_o5": "Windows: 14:06–14:16 visible (14:09, 14:11); 14:16–14:26 visible (14:24 poster); 14:11:36–14:20:49 was recorded as an O5-MISS (docs/evidence-only deploys) before the poster landed; 14:26–14:36 docs-only (reviewer evidence + CI job) — P0 UI WIP: S5/S6 fields in battery, not yet pushed → O5-MISS 14:26–14:36 filed here. Deploy runs 14:06→14:36: 9, all success.",
+  "closed_this_window": [
+    "t_g_h2 (live PASS)",
+    "t_x1_02 / t_x1_02c / t_x1_03 (G-H2 slices)",
+    "t_rev_h2_next (per-Deploy probe)",
+    "t_nojs01",
+    "t_x1_01 (harness) + t_x1_01c (GPU job)",
+    "t_clean01",
+    "t_g_rev (standing probe retired)"
+  ],
+  "in_flight": [
+    "t_x1_05+06 vitrine/listen sceneIds (battery running, 34 min — checkpoint push expected)"
+  ],
+  "queued_next": [
+    "t_x1_01b shader frame cost (R2)",
+    "t_vit_desc01 vitrine description contrast + resting weight",
+    "t_x1_03b 390 still margin",
+    "t_x1_07 MiniVic GL viseme stage (R2 scene 7)",
+    "t_x1_08/09 R5 proofs",
+    "t_x1_10/11 HyperFrames pipeline + overture",
+    "P1 G-H4 / G-E1 / G-R1",
+    "docs reconciliation SIGNATURE-SCENES-v1.md §4.1(b)"
+  ],
+  "provider": "Anthropic via OAuth; OpenRouter 402 → §0.4; no ANTHROPIC_API_KEY; Hermes not started",
+  "verification_snippet": "$ date -u\n2026-09-05T14:37:43Z\n$ systemctl is-active fm-deploy-cadence.timer\nactive\n$ pgrep -af 'hermes gateway'\n(empty)\n$ tail -3 /var/log/fm-deploy/cadence.log\n[2026-09-05T14:25:19Z] skip: 1 Deploy run(s) already in_progress\n[2026-09-05T14:35:25Z] cadence tick\n[2026-09-05T14:35:25Z] skip: 1 Deploy run(s) already in_progress\n$ gh run list --workflow=deploy.yml --limit 8\n2026-09-05T14:35:00Z workflow_dispatch success d5227962\n2026-09-05T14:26:23Z workflow_dispatch success 44327c5d\n2026-09-05T14:24:26Z push success 44327c5d\n2026-09-05T14:22:49Z workflow_dispatch success 5108c3ce\n2026-09-05T14:19:15Z workflow_dispatch success 8beeda9d\n2026-09-05T14:15:43Z push success 53548a1a\n2026-09-05T14:15:41Z workflow_dispatch success 4424d5c2\n2026-09-05T14:10:06Z workflow_dispatch success 1d25b7ab\n$ live build-commit\nbuild-commit\" content=\"5afe85fc\"\n$ cache-control\ncache-control: public, max-age=0, must-revalidate\n$ uptime\n 14:37:44 up  5:31,  4 users,  load average: 6.60, 7.44, 9.50\n$ git worktree list | wc -l\n17\n",
+  "next": "S5/S6 land → reviewer probe (per-Deploy task) → R2 scorecard 6/7 gated; dispatch t_x1_01b + t_vit_desc01 under the ≤2 Chrome-heavy cap; c15 at the next visible ship."
+}

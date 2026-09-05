@@ -73,3 +73,68 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm audit --audit-level=high
+
+  # ── Optional signal, on hardware GitHub does not rent ───────────────────────
+  # R2 asks for 60 fps and tests/perf/scene-framerate.spec.ts measures it, but
+  # every Linux host this project owns renders through SwiftShader — the spec
+  # says so in each number it prints and labels the result `software-rasteriser`.
+  # GPU-class confirmation (docs/architecture/SIGNATURE-SCENES-v1.md D7) needs a
+  # real GPU: the Owner's Mac, registered as a self-hosted runner and named by
+  # the repository variable E2E_RUNNER_LABELS — a JSON array of its labels, e.g.
+  # ["self-hosted","macOS","arm64"].
+  #
+  # That Mac is offline most of the day, and this repository has already been
+  # burned by pretending otherwise: a self-hosted GPU job once sat in the deploy
+  # job's needs: chain, so an absent runner left the deploy queued forever and
+  # production went stale. Hence three independent guards, each covering a
+  # different failure:
+  #   if:                — no variable, no job: it is never even queued
+  #   continue-on-error: — a red, cancelled or abandoned run never fails Checks
+  #   timeout-minutes:   — a runner that reappears mid-run cannot linger
+  # and, above all, nothing in either workflow waits on it. All four properties
+  # are enforced by tests/ci_pipeline.test.mjs, not left to convention.
+  scene-fps-gpu:
+    name: scene frame-rate on GPU hardware (optional signal)
+    if: ${{ vars.E2E_RUNNER_LABELS != '' }}
+    # The fallback is never used — the guard above already skipped the job when
+    # the variable is unset — it only keeps fromJSON from being handed an empty
+    # string while the workflow is being read.
+    runs-on: "${{ fromJSON(vars.E2E_RUNNER_LABELS || '[\"self-hosted\"]') }}"
+    continue-on-error: true
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      # No --with-deps: that flag installs Linux system packages and fails on macOS.
+      - run: npx playwright install chromium
+      - run: npm run build:static
+      - name: Serve the export and measure every scene
+        run: |
+          set -euo pipefail
+          # A self-hosted runner is a shared machine with its own long-lived
+          # tenants, so the port is discovered rather than assumed.
+          port="$(python3 -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print(s.getsockname()[1]); s.close()')"
+          echo "serving out/ on 127.0.0.1:$port"
+          python3 -m http.server "$port" --directory out --bind 127.0.0.1 &
+          server=$!
+          # The only tolerated failure here: the server is already gone at exit.
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          for _ in $(seq 1 30); do curl -fsS "http://127.0.0.1:$port/" >/dev/null 2>&1 && break; sleep 1; done
+          # One worker: a frame-pacing median is only meaningful when nothing
+          # else on the box is competing for the same GPU.
+          PLAYWRIGHT_BASE_URL="http://127.0.0.1:$port" \
+          SCENE_FPS_ARTEFACT_DIR="$GITHUB_WORKSPACE/artifacts/scene-fps" \
+            npx playwright test tests/perf/scene-framerate.spec.ts --workers=1
+      - uses: actions/upload-artifact@v4
+        # A red run is exactly when the per-scene numbers matter most, and a
+        # cancelled one legitimately leaves none behind.
+        if: always()
+        with:
+          name: scene-fps-gpu
+          path: artifacts/scene-fps/
+          if-no-files-found: warn
+          retention-days: 14

@@ -91,16 +91,38 @@
    So: never let this rule resolve to a flat ink fill, and never move it onto an
    element that JavaScript creates. `tests/overhaul/hero-first-paint.spec.ts`
    TC-HERO-FIRSTPAINT-01 photographs this slot and fails if its mean luminance
-   drops to the ink it is drawn on. When the overture's frame 0 lands
-   (`hero-overture-poster.avif`, t_x1_13) it becomes the topmost layer of this
-   stack — an image layer above the gradients, which keeps the gradient as the
-   fallback if the asset ever 404s and keeps the assertion above unchanged. */
+   drops to the ink it is drawn on.
+
+   And that picture is now the scene itself. The layers below this note used to
+   be the whole of it: five gradients, drawn by hand, an *impression* of the
+   shader for the reader who never gets the shader. The independent production
+   review measured what the impression was worth — 0.0530 mean relative
+   luminance at 1440 and 0.0812 at 390 against an acceptance of ≥ 0.10, with no
+   `url()` layer at any width — and the lane's answer had been to lower the floor
+   to 0.04 rather than raise the picture
+   (`docs/delivery/evidence/v10-20260905T0515Z/G-REV/e3f0206c/08-adversarial-review.md`).
+
+   So the first layer is a real frame of `atmosphere.glsl.ts`, rendered at
+   3840×2160 by `scripts/assets/render-hero-poster.mjs` at the shader's brightest
+   resting phase (uTime = 14.6 s, chosen by sweeping the pools' breath and taking
+   the argmax — see that script). It measures 0.1323 at 1440 and 0.1384 at 390
+   over this slot with the WebGL chunk blocked. Nothing here is hand-painted, and
+   nothing here can drift from the scene: change the shader, re-run the script,
+   and the still changes with it.
+
+   The gradients stay underneath, and are not dead weight — they are what a
+   browser that cannot decode AVIF still gets, and what paints in the frames
+   before a 12.6 kB image arrives. `cover` on a 16:9 source, centred, at every
+   width: the phone is a tall crop of the same photograph rather than a second
+   composition to keep in step with this one. */
 .stage {
     position: absolute;
     inset: 0;
     z-index: 0;
     background:
-        /* The scrim. First in the stack, so it sits over every luminous layer
+        /* The frame. A still of the hero's own shader — see the note above. */
+        url("/assets/hero-atmosphere-poster.avif") center / cover no-repeat,
+        /* The scrim. First of the gradients, so it sits over every luminous layer
            below and under nothing: the reading column is dark ground again by
            the time a glyph is drawn on it. Without it the rake reached
            `#404040` under `.eyebrow` at 1440 and the pool reached `#525252`
@@ -240,9 +262,42 @@
        crossed 0.20 a tenth of the way down the frame and covered 5.48% of the
        slot. The wash now holds above the threshold for the first quarter of
        the stage — which, with the photograph below the actions, is the whole
-       of the first screen — and both radials reach further into it. */
+       of the first screen — and both radials reach further into it.
+
+       The pool was then raised again, and by a measurement rather than an eye.
+       TC-HERO-SCRIM-01 asks whether a tenth of the frame stands clear of the
+       band the type reads on by 0.06 relative luminance; at 390 with reduced
+       motion this still answered 0.0511 (`02-tests-failing.log`) — the one
+       surface of the four that did, because it is the only one with no shader
+       to be bright with. The reason is a shape, not a brightness: the top wash
+       runs the full width, so it lifts every column by the same amount and
+       cancels out of that difference exactly the way an ink wash would. Only
+       the two radials are *shaped*, and the pool — the light the reader's eye
+       actually goes to, at the right edge beside the photograph — was both too
+       shallow and too short.
+
+       Too short mattered more, and alpha alone could not fix it. The gate reads
+       a column of the frame over its whole height, and this pool's vertical
+       radius was 40% of a 1490 px stage centred at 34%: it reached y = 1103 and
+       left the bottom quarter — the ledger, the contact links, the foot of the
+       photograph — on flat ink. Taking the alpha from 0.34 to 0.46 alone moved
+       the measurement by 0.010, to 0.0614, which clears 0.06 by 0.0014 and is
+       not a passing test. Carrying the radius to 58% at 38% instead lights the
+       right edge for the full drop of the frame — which is what the note beside
+       it already said this pool was for — and measures 0.0775.
+
+       The copy's ground is left where it was: the plates are
+       `rgb(10 10 10 / 0.90)`, so nine tenths of any change here never reaches a
+       glyph. Measured rather than argued — the band under the type moved 0.0796
+       to 0.0826 while the lit tenth moved 0.1307 to 0.1601, and every hero text
+       node still clears AA at 390 on both paths
+       (`tests/a11y/text-contrast.spec.ts`, `05-regression.log`). */
     .stage {
         background:
+            /* The same photograph, cropped to the phone by `cover` rather than
+               replaced by a second one. The gradients below it keep their job:
+               the AVIF fallback, and the paint before the image lands. */
+            url("/assets/hero-atmosphere-poster.avif") center / cover no-repeat,
             linear-gradient(
                 180deg,
                 rgb(246 246 246 / 0.46) 0%,
@@ -251,9 +306,9 @@
                 transparent 30%
             ),
             radial-gradient(
-                40% 40% at 100% 34%,
-                rgb(246 246 246 / 0.34) 0%,
-                rgb(246 246 246 / 0.26) 44%,
+                42% 58% at 100% 38%,
+                rgb(246 246 246 / 0.46) 0%,
+                rgb(246 246 246 / 0.36) 44%,
                 transparent 86%
             ),
             radial-gradient(

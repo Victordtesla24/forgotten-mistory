@@ -1,0 +1,15 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts -g HERO --workers=1 --reporter=list
+
+Running 4 tests using 1 worker
+
+[flagship-visibility] hero@1440: ground=0.0030 coverage=46.30% peak=0.8308 motion=0.02351 box=1440x900
+  ✓  1 [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 1440 — hero atmosphere reads as light (18.3s)
+[flagship-visibility:still] hero@1440: ground=0.0030 coverage=42.61% peak=0.7454
+  ✓  2 [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 1440 — hero atmosphere fallback (3.9s)
+[flagship-visibility] hero@390: ground=0.0030 coverage=100.00% peak=0.8308 motion=0.07061 box=390x844
+  ✓  3 [chromium] › tests/overhaul/flagship-visibility.spec.ts:300:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-HERO @ 390 — hero atmosphere reads as light (8.9s)
+[flagship-visibility:still] hero@390: ground=0.0030 coverage=90.73% peak=0.3864
+  ✓  4 [chromium] › tests/overhaul/flagship-visibility.spec.ts:355:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-HERO @ 390 — hero atmosphere fallback (2.7s)
+
+  4 passed (36.8s)

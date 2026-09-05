@@ -64,3 +64,6 @@ REVIEWER PHASE-2 FAIL on live 9b864752 (G-REV/9b864752/08-adversarial-review.md,
 
 ## COMMENT (2026-09-05T13:14:27.740Z)
 ORIGINAL LANE FOLLOW-UP LIVE 6224a7f8 at 13:14:01Z: 44c3e08 'the fold is one column of type beside the photograph' — reading column is one grid item beside the figure (38vw right column), band anchored at top; lane-measured: 6–7 text leaves in fold, actions end at 723/656/762/582 (inside 900/800/1194/844), ledger tops 901/801/1195/889, CLS 0.0000, LCP 588 ms; hero-fold 12/12, hero/hero-photo/content-check/cinematic/performance green; portrait caption --mist-400 → --mist-200 (3.35:1 → AA). Still open for t_g_h1c: the 'Play the portrait' button as a second in-fold CTA group at 834/390, and the 1-px ledger margin at 1440/834 (≥40 px required); reviewer re-probe after the correction lands.
+
+## COMPLETE (2026-09-05T14:02:43.305Z)
+DONE via 44c3e08 + 70a04a8/46379f1 — independent reviewer PASS on live (phase 3). Lineage: 0506e7e (fold split) → FAIL (portrait toggle as 2nd CTA, actions below fold at desktop, CLS .176, 1-px ledger margin) → 44c3e08 (column beside the photo) → 70a04a8 (control to the proof band; margins; CLS 0) → PASS.

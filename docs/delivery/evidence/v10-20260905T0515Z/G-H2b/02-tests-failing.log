@@ -1,0 +1,42 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-first-paint.spec.ts --workers=1 --grep TC-HERO-SCRIM-01 --reporter=list
+
+Running 4 tests using 1 worker
+
+[TC-HERO-SCRIM-01] 1440 gl: column=0.067..0.667 (18 nodes) under_type=0.0871 lit_window=0.4200 at=0.717 delta=0.3328
+  ✓  1 [chromium] › tests/overhaul/hero-first-paint.spec.ts:534:11 › G-H2b: the hero scrim is a column-bound grade, over the shader › TC-HERO-SCRIM-01 [1440, gl]: the light crosses the frame the type does not stand on (15.3s)
+[TC-HERO-SCRIM-01] 390 gl: column=0.043..0.957 (18 nodes) under_type=0.1880 lit_window=0.3975 at=0.950 delta=0.2095
+  ✓  2 [chromium] › tests/overhaul/hero-first-paint.spec.ts:534:11 › G-H2b: the hero scrim is a column-bound grade, over the shader › TC-HERO-SCRIM-01 [390, gl]: the light crosses the frame the type does not stand on (9.3s)
+[TC-HERO-SCRIM-01] 1440 still: column=0.067..0.667 (18 nodes) under_type=0.0408 lit_window=0.1425 at=0.883 delta=0.1017
+  ✓  3 [chromium] › tests/overhaul/hero-first-paint.spec.ts:534:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [1440, still]: the light crosses the frame the type does not stand on (3.8s)
+[TC-HERO-SCRIM-01] 390 still: column=0.043..0.957 (18 nodes) under_type=0.0796 lit_window=0.1307 at=0.950 delta=0.0511
+  ✘  4 [chromium] › tests/overhaul/hero-first-paint.spec.ts:534:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [390, still]: the light crosses the frame the type does not stand on (2.6s)
+
+
+  1) [chromium] › tests/overhaul/hero-first-paint.spec.ts:534:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [390, still]: the light crosses the frame the type does not stand on 
+
+    Error: the hero scrim is flattening the frame: the brightest tenth of it (0.1307, centred at 95.0%) is only 0.0511 above the band the type reads on (0.0796), against a 0.06 floor — the atmosphere is on screen and cannot be seen
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.06[39m
+    Received:    [31m0.05108038622138626[39m
+
+      588 |           )} above the band the type reads on (${underType.toFixed(4)}), against a ` +
+      589 |             `${SCRIM_MIN_DELTA} floor — the atmosphere is on screen and cannot be seen`,
+    > 590 |         ).toBeGreaterThanOrEqual(SCRIM_MIN_DELTA);
+          |           ^
+      591 |
+      592 |         // And the other half of "column-bound": the type is standing on the
+      593 |         // dark. A scrim that had drifted off the column — or been deleted —
+        at /root/forgotten-mistory/.claude/worktrees/wf_396d15b0-2af-1/tests/overhaul/hero-first-paint.spec.ts:590:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-hero-first-paint--3e996--the-type-does-not-stand-on-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-hero-first-paint--3e996--the-type-does-not-stand-on-chromium/error-context.md
+
+  1 failed
+    [chromium] › tests/overhaul/hero-first-paint.spec.ts:534:11 › G-H2b: the hero scrim is a column-bound grade, over the reduced-motion still › TC-HERO-SCRIM-01 [390, still]: the light crosses the frame the type does not stand on 
+  3 passed (32.6s)

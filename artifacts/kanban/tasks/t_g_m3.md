@@ -82,3 +82,9 @@ running — dispatched 13:07Z — analyst-programmer xhigh, isolated worktree, p
 
 ## COMMENT (2026-09-05T13:31:34.342Z)
 LANE RESULT (ddb2476 + d8983e5, function deployed twice, client slice consolidating): HONEST FAIL on the bar — live first byte through Hosting P50 1836 / P95 2940 ms (was 2016/4178); the function itself first-token 639 ms; direct to the Cloud Run origin P50 665 ms first byte (SSE streams there); PROVEN by experiment that Firebase Hosting buffers SSE (first byte == last byte on every trial, both text/event-stream) — docs silent. Shipped: answering rung (openai) first via CHAT_PROVIDER_ORDER (three dead 402 rungs off the cold path — rung log now [openai answered 1618ms]); GET /api/chat?warm=1 → 204 in 192 ms fired on panel open (MV-WARM-01); payload without provider/model and mode now reaches the server (MV-PAYLOAD-01); SSE implemented end to end (real per-token frames); 45/45 node:test, 4/4 e2e, tsc/lint/build/audit clean; minInstances rejected (cold start is not the gap). REMAINING FIX → t_g_m3b: stream from the Cloud Run origin directly. R3 stays OPEN.
+
+## COMMENT (2026-09-05T13:54:12.470Z)
+Superseded by t_g_m3b (direct-origin SSE): lane-measured live P50 683/711 ms. This task's own slice (rung order, warm ping, lean payload, SSE) is live; close together with t_g_m3b on the reviewer's PASS.
+
+## COMPLETE (2026-09-05T14:04:38.117Z)
+DONE via t_g_m3b — R3 latency clause (first word < ~1.5 s) independently PASS on live; this task's slice (rung order, warm ping, lean payload, SSE) is live and the Hosting-buffering proof stands. R3 as a whole stays OPEN on t_1e4e053e (Higgsfield real-time avatar + ≤40 ms lip-sync not met; voice via /api/tts works).
