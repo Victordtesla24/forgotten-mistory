@@ -303,6 +303,7 @@ not on `origin/main`, builds from a detached worktree, and verifies the live com
 | 2026-09-05 05:1x | run v10 opened | Owner prompt refreshed (§0 continuity, §0.1 non-interactive mode, O1–O6 cadence, §0.3 UI/UX mandates); v9 evidence recorded for phase F (Lighthouse CI root cause; Next 15.5.25 battery 129/134) and the c12 post-deploy capture (39 screens); run v10 manifest with live and credit probes; seven cycle tasks opened on the Kanban board | manifest: live 200 at `debd25b9` · tsc · lint · audit 10/10 · `/api/chat` 200 (OpenAI rung) · OpenRouter −$5.38 · ElevenLabs `payg` · Higgsfield 0 credits |
 | 2026-09-05 06:3x | cycle 14a | The voice speaks again. `/api/tts` had been 502ing on an upstream 401: the function asked for Vikram's *cloned* voice, which the `payg` plan refuses outright (`ivc_not_permitted`) — the key on Secret Manager version 2 was already fine. It now asks for an ElevenLabs premade voice (George, British male), the MiniVic panel prints "Synthetic voice · not a recording of Vikram" where the audio plays, and MiniVic posts dynamic replies to `/api/tts` again with the browser voice as fallback | live probe 200 `audio/mpeg` 53 960 B (was 502) · `avatar-voice.spec.ts` red→green · tsc · lint · audit 10/10 · build clean · `node --test` 33/33 · 63 TTS characters spent |
 | 2026-09-05 07:0x | P100 hotfix | **Production incident.** Every visitor whose GPU passed capability detection got `app/error.tsx` instead of the site: `@react-three/fiber@8` reads `ReactCurrentBatchConfig` off React's internals, and the React vendored into the client bundle by `next@15.5.25` is React 19, which no longer exports it — so the first scene to mount took the whole page down. Invisible to `tsc`, `lint`, the audit and the build, because `npm ls react` shows one clean 18.2.0 tree; it only exists in the browser. `next` and `eslint-config-next` pinned back to `14.2.35` (exactly what `main` carried before `18c6beb`); the React 19 + R3F 9 upgrade is booked as the durable fix | `?gl=force` probe before: 0 canvases, error shell, 4 console errors → after: 1 canvas, `#hero h1` present, all six sections, 0 page errors, 0 console errors · render/cinematic/hero specs 34/34 (TC-RENDER-01/-02/-06/-09 red→green) · tsc · lint · audit 10/10 · build clean |
+| 2026-09-05 07:3x | phase F — React 19 | The durable fix for P100, replacing its pin. `react`/`react-dom` 18.2.0 → 19.2.8, `@react-three/fiber` 8.18.0 → 9.7.0, `@react-three/drei` 9.122.0 → 10.7.8, `lucide-react` 0.344.0 → 1.41.0, and `next`/`eslint-config-next` back to 15.5.25 — so the React the scenes read and the React Next vendors are the same React, and `ReactCurrentBatchConfig` is nobody's business. `@react-three/postprocessing` deleted: imported by no module, it was the `ERESOLVE` blocker and the sole source of the pre-existing `three@0.165.0 invalid` tree error. Two real type fixes, no suppressions — `import type { JSX } from 'react'` in `Drawings.tsx`, one `playwright-core` pinned in `overrides`. The `next@14` advisory acceptance is retired with the pin that needed it | `npm ci` · `npm ls` single deduped tree · `?gl=force` after merge: 1 canvas, 0 page errors, 0 console errors, all six sections, at 1440 and 390 · both narrow-viewport scenes proven to mount (`IntersectionObserver` lead-in, not a width gate) · render/scene-about/cinematic 18/18 · full suite 292/301, 9 ✘ all on the known list bar two CLS budgets that pass 2/2 alone · tsc · lint · audit 10/10 · build clean, 170 kB First Load JS · `npm audit --audit-level=high` 0 vulnerabilities |
 
 ---
 
@@ -311,15 +312,6 @@ not on `origin/main`, builds from a detached worktree, and verifies the live com
 Stated here for the same reason the site states its own: a reader should not have to
 discover them.
 
-- **`npm audit --audit-level=high` reports one high advisory against `next@14.2.35`.**
-  Re-accepted deliberately by the P100 hotfix: every advisory in that chain is a
-  server-side class (Server Components DoS, middleware cache poisoning, Server Action
-  SSRF, Image Optimization DoS), and the public site is a static export on Firebase
-  Hosting — no middleware, no Server Action, no image optimizer, no `app/api/*` at
-  runtime. The alternative was `next@15`, whose vendored React 19 crashes every WebGL
-  scene on the page. The acceptance expires when React 19 + `@react-three/fiber@9` +
-  `@react-three/drei@10` land together. Reasoning in
-  `docs/delivery/evidence/v10-20260905T0515Z/P100-webgl-crash/07-decisions.md` D-3.
 - **`/api/tts` returns 502 (`tts_upstream_failed`, upstream 401).** The ElevenLabs key is
   valid, but the account tier (`payg`, `can_use_instant_voice_cloning: false`) refuses
   text-to-speech in the cloned voice the function asks for. The AI clone's text path

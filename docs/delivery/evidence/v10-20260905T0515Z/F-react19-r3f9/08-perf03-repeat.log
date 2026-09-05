@@ -1,0 +1,11 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/perf/performance.spec.ts -g PERF-03 --repeat-each=2 --workers=1
+
+[2mRunning [22m2[2m tests using [22m1[2m worker[22m
+
+CLS: 0.0000
+  [32m✓[39m  [2m1 [22m[chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05[2m (6.0s)[22m
+CLS: 0.0000
+  [32m✓[39m  [2m2 [22m[chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05[2m (5.4s)[22m
+
+[32m  2 passed[39m[2m (15.0s)[22m
