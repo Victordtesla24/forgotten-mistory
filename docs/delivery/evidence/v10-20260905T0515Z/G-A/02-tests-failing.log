@@ -1,0 +1,118 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/monochrome/gold-semantics.spec.ts --workers=1 -g CC-A --reporter=list
+
+Running 3 tests using 1 worker
+
+
+=== CC-A1 @ 1440x900 (desktop) — About evidence lines ===
+  UNSOURCED rgb(144, 144, 144)  "38 public repositories · ATO evidence harness · ANZ plat"
+  UNSOURCED rgb(144, 144, 144)  "ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MY"
+  UNSOURCED rgb(144, 144, 144)  "Australian Taxation Office, ANZ, NAB, Telstra"
+  UNSOURCED rgb(144, 144, 144)  "Payday Super program · Agile Kookaburras squad · PI 47–4"
+  UNSOURCED rgb(144, 144, 144)  "5+ squads, up to 40 practitioners onshore and offshore"
+  UNSOURCED rgb(144, 144, 144)  "Open to permanent and contract engagements"
+  UNSOURCED rgb(144, 144, 144)  "Currently on site with the ATO, Melbourne"
+  UNSOURCED rgb(144, 144, 144)  "Langfuse + Phoenix evaluation stack · −38% simulated err"
+  UNSOURCED rgb(144, 144, 144)  "75+ hours of evidence against 64 available — escalated, "
+  UNSOURCED rgb(144, 144, 144)  "aether-job-career-agent · unmeasured signals read "not m"
+  ✘  1 [chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 1440x900 (desktop): every sourced About evidence line is painted in the gold token, legibly (9.9s)
+
+=== CC-A1 @ 390x844 (phone) — About evidence lines ===
+  UNSOURCED rgb(144, 144, 144)  "38 public repositories · ATO evidence harness · ANZ plat"
+  UNSOURCED rgb(144, 144, 144)  "ATO · ANZ · NAB · Microsoft · Telstra · InfoCentric · MY"
+  UNSOURCED rgb(144, 144, 144)  "Australian Taxation Office, ANZ, NAB, Telstra"
+  UNSOURCED rgb(144, 144, 144)  "Payday Super program · Agile Kookaburras squad · PI 47–4"
+  UNSOURCED rgb(144, 144, 144)  "5+ squads, up to 40 practitioners onshore and offshore"
+  UNSOURCED rgb(144, 144, 144)  "Open to permanent and contract engagements"
+  UNSOURCED rgb(144, 144, 144)  "Currently on site with the ATO, Melbourne"
+  UNSOURCED rgb(144, 144, 144)  "Langfuse + Phoenix evaluation stack · −38% simulated err"
+  UNSOURCED rgb(144, 144, 144)  "75+ hours of evidence against 64 available — escalated, "
+  UNSOURCED rgb(144, 144, 144)  "aether-job-career-agent · unmeasured signals read "not m"
+  ✘  2 [chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 390x844 (phone): every sourced About evidence line is painted in the gold token, legibly (8.7s)
+
+=== CC-A2 role swatch === {"backgroundImage":"repeating-linear-gradient(45deg, rgba(138, 143, 154, 0.34) 0px, rgba(138, 143, 154, 0.34) 1px, rgba(0, 0, 0, 0) 1px, rgba(0, 0, 0, 0) 4px)","backgroundColor":"rgba(0, 0, 0, 0)","borderTopColor":"rgb(184, 184, 184)"}
+  ✘  3 [chromium] › tests/monochrome/gold-semantics.spec.ts:662:7 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A2: the About key hatch has zero chroma (4.2s)
+
+
+  1) [chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 1440x900 (desktop): every sourced About evidence line is painted in the gold token, legibly 
+
+    Error: at least nine of the ten evidence lines name a source a reader can go and check
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m9[39m
+    Received:    [31m0[39m
+
+      631 |         sourced.length,
+      632 |         'at least nine of the ten evidence lines name a source a reader can go and check',
+    > 633 |       ).toBeGreaterThanOrEqual(9);
+          |         ^
+      634 |
+      635 |       const notGold = sourced.filter((s) => {
+      636 |         const c = rgbTriples(s.color)[0];
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-1/tests/monochrome/gold-semantics.spec.ts:633:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/monochrome-gold-semantics--e7d78-d-in-the-gold-token-legibly-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/monochrome-gold-semantics--e7d78-d-in-the-gold-token-legibly-chromium/error-context.md
+
+  2) [chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 390x844 (phone): every sourced About evidence line is painted in the gold token, legibly 
+
+    Error: at least nine of the ten evidence lines name a source a reader can go and check
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m9[39m
+    Received:    [31m0[39m
+
+      631 |         sourced.length,
+      632 |         'at least nine of the ten evidence lines name a source a reader can go and check',
+    > 633 |       ).toBeGreaterThanOrEqual(9);
+          |         ^
+      634 |
+      635 |       const notGold = sourced.filter((s) => {
+      636 |         const c = rgbTriples(s.color)[0];
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-1/tests/monochrome/gold-semantics.spec.ts:633:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/monochrome-gold-semantics--cfab8-d-in-the-gold-token-legibly-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/monochrome-gold-semantics--cfab8-d-in-the-gold-token-legibly-chromium/error-context.md
+
+  3) [chromium] › tests/monochrome/gold-semantics.spec.ts:662:7 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A2: the About key hatch has zero chroma 
+
+    Error: monochrome greys and white only — the hatch was a cool steel rgb(138 143 154), a blue hue under the audit's saturation ceiling and therefore invisible to every other gate
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "backgroundImage: rgb(138 143 154)",[39m
+    [31m+   "backgroundImage: rgb(138 143 154)",[39m
+    [31m+ ][39m
+
+      694 |       'monochrome greys and white only — the hatch was a cool steel rgb(138 143 154), a blue hue under ' +
+      695 |         "the audit's saturation ceiling and therefore invisible to every other gate",
+    > 696 |     ).toEqual([]);
+          |       ^
+      697 |   });
+      698 | });
+      699 |
+        at /root/forgotten-mistory/.claude/worktrees/wf_b908a7a9-f5d-1/tests/monochrome/gold-semantics.spec.ts:696:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/monochrome-gold-semantics--61a10-t-key-hatch-has-zero-chroma-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/monochrome-gold-semantics--61a10-t-key-hatch-has-zero-chroma-chromium/error-context.md
+
+  3 failed
+    [chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 1440x900 (desktop): every sourced About evidence line is painted in the gold token, legibly 
+    [chromium] › tests/monochrome/gold-semantics.spec.ts:572:9 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A1 @ 390x844 (phone): every sourced About evidence line is painted in the gold token, legibly 
+    [chromium] › tests/monochrome/gold-semantics.spec.ts:662:7 › G-A — #about spends gold on its sourced evidence and nothing else › CC-A2: the About key hatch has zero chroma 

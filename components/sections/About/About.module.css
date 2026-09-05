@@ -296,6 +296,20 @@
     color: var(--mist-400);
 }
 
+/* G-A1. Gold means one thing on this site — this figure has a source a reader
+   can go and check — and the evidence line under an answered dimension IS that
+   source: an employer, a program, a named repository, a figure off the CV.
+   Painted in the caption grey it read as a footnote to the answer rather than
+   as the thing the answer rests on, and #about spent no gold at all. --gold
+   measures 8.4:1 on the section ground (CC-A1 samples the composited pixels at
+   1440 and 390), so the mark is legible as well as meant. The three dimensions
+   the engine computes from the role keep their open caliper; only the line that
+   states an intention rather than a record (`sourced: false` in
+   app/data/portfolio/about.ts) stays grey. */
+.evidence[data-sourced='true'] {
+    color: var(--gold);
+}
+
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
     .body {
@@ -422,11 +436,18 @@
     background: rgb(246 246 246 / 0.05);
 }
 
+/* G-A2. The hatch was rgb(138 143 154) — a cool steel whose channels differ by
+   16, which sits under the audit's 0.28 saturation ceiling and so passed every
+   gate while still being the only blue on a monochrome page. It is now the
+   --mist-400 triple at the same 0.34, the file's own convention for a
+   translucent neutral (see .keySwatch[data-state='answered'], which is --white's
+   triple): identical alpha, zero chroma, and a luminance within a hair of what
+   it replaced, so the key reads exactly as heavy as it did. */
 .keySwatch[data-state='role'] {
     border-style: dashed;
     background-image: repeating-linear-gradient(
         45deg,
-        rgb(138 143 154 / 0.34) 0 1px,
+        rgb(144 144 144 / 0.34) 0 1px,
         transparent 1px 4px
     );
 }

@@ -232,7 +232,15 @@ export default function About() {
                     )}
                   </h3>
                   <p className={styles.answer}>{dimension.answer}</p>
-                  <p className={styles.evidence}>{dimension.evidence}</p>
+                  {/* Gold is the site's one claim mark: this line names the
+                      record behind the answer above it, so where that record
+                      is checkable the line carries the mark. Where the
+                      "evidence" is an intention rather than a record it stays
+                      grey — the flag is on the data, not the styling, so the
+                      two can never drift apart. */}
+                  <p className={styles.evidence} data-sourced={dimension.sourced}>
+                    {dimension.evidence}
+                  </p>
                 </div>
               </li>
             ))}
