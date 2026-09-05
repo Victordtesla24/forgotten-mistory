@@ -198,8 +198,16 @@ test.describe('TC-SCENE-SKILLS: the bench sits on a lit field', () => {
     const glsl = readFileSync(GLSL_SOURCE, 'utf8');
     const component = readFileSync(FIELD_SOURCE, 'utf8');
 
-    // Gold means "this figure has a source". A bench is not a figure.
-    expect(glsl.toLowerCase()).not.toContain('gold');
+    // Gold means "this figure has a source". A bench is not a figure, so the
+    // accent may not reach the program — measured on the shader bodies rather
+    // than on the file, because the file's own header is where the rule is
+    // written down and a check that failed on its own documentation would push
+    // the next author to delete the explanation instead of obeying it.
+    const programs = [...glsl.matchAll(/\/\* glsl \*\/ `([\s\S]*?)`;/g)].map((m) => m[1]);
+    expect(programs.length, 'the two shader programs were not found in bench.glsl.ts').toBe(2);
+    for (const program of programs) {
+      expect(program.toLowerCase()).not.toContain('gold');
+    }
     expect(component.toLowerCase()).not.toContain('gold');
 
     // Raw hex lives in app/globals.css and lib/palette.ts, nowhere else.
