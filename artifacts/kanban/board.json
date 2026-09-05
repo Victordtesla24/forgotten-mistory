@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T07:53:38.222Z",
+  "updated": "2026-09-05T07:56:56.008Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -778,7 +778,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:14:16.915Z",
+      "updated": "2026-09-05T07:56:56.008Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": [
@@ -811,6 +811,11 @@
           "at": "2026-09-05T07:14:16.915Z",
           "by": "orchestrator",
           "text": "Cadence: 07:12Z deploy f103462f success — P100 hotfix live; site renders again for GPU browsers."
+        },
+        {
+          "at": "2026-09-05T07:56:56.008Z",
+          "by": "orchestrator",
+          "text": "Cadence: 07:51:53Z fa27ccfc (hygiene) → consolidation 89a6803 react19 live; 79691eda live 07:5xZ."
         }
       ]
     },
@@ -1328,7 +1333,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:05:13.118Z",
-      "updated": "2026-09-05T07:53:38.222Z",
+      "updated": "2026-09-05T07:56:55.952Z",
       "summary": "Lane wf_a0a1850a-28a (port 5603). Keeps the npm-audit-clean next 15 while restoring WebGL. Push only when S-3 probe and the full suite are green; independent reviewer then gates the merge. Supersedes the next-14 pin of t_p100hotfx when it lands.",
       "decisions": [],
       "comments": [
@@ -1346,6 +1351,11 @@
           "at": "2026-09-05T07:53:38.222Z",
           "by": "orchestrator",
           "text": "07:5xZ: completion lane tester merged main (next-14 pin superseded → next 15.5.25 + react 19.2.8 + fiber 9.7.0 + drei 10.7.8), npm ci/ls single tree, gl=force probe identical to pre-merge (hero/about/experience canvases, 0 errors), render+scene-about+cinematic 18/18, FULL suite 292/301 (9 ✘ = known list + TC-HERO-15/PERF-03 load-sensitive CLS that pass 2/2 alone), tsc/lint/audit/build green, npm audit 0, First Load JS 170 kB (+0). Pushed; the pipeline consolidated it as 89a6803 before the verifier finished (gate-free by Owner directive). V-react19 running; orchestrator probes the live build on deploy."
+        },
+        {
+          "at": "2026-09-05T07:56:55.952Z",
+          "by": "orchestrator",
+          "text": "LIVE on 89a68039 → 79691eda (07:5xZ): gl=force SwiftShader probe 1440/1280 — hero canvas 1 from 5.9 s, experience canvas 1 after scroll, 0 pageerrors, 0 console errors (only SwiftShader ReadPixels perf warnings); 390 canvases 1; hardware-GPU spoof no-query: h1 'Vikram Deshpande', 6 sections, errorBoundary false, 0 console errors. The next-14 pin is superseded; npm audit 0 on the live tree. Closes when V-react19 returns."
         }
       ],
       "blocker": null
