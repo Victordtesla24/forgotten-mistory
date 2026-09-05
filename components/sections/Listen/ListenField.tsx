@@ -5,6 +5,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
+import { greetingEnvelope } from '@/app/data/generated/greeting-envelope';
 import { PALETTE } from '@/lib/palette';
 import { listenFieldFragmentShader, listenFieldVertexShader } from './listen.glsl';
 
@@ -61,6 +62,34 @@ export default function ListenField({ closed, beat }: ListenFieldProps) {
   const contextLost = useRef(false);
   const { gl, size } = useThree();
 
+  // The greeting's loudness as a 256×1 texture: `greetingEnvelope.envelope`,
+  // built from public/assets/minivic-greeting.mp3 by
+  // scripts/build/greeting_envelope.mjs. R8 (`RedFormat` / `UnsignedByteType`)
+  // is what a 0 → 1 loudness curve needs and no more, and it is linearly
+  // filterable everywhere, so the band is smooth between buckets rather than
+  // stepped. The shader reads `.r` at p.x for the band's height and at a
+  // real-time reading head for the room's breath.
+  const envelopeTexture = useMemo(() => {
+    const source = greetingEnvelope.envelope;
+    const data = new Uint8Array(source.length);
+    for (let i = 0; i < source.length; i += 1) {
+      data[i] = Math.round(Math.min(Math.max(source[i], 0), 1) * 255);
+    }
+    const texture = new THREE.DataTexture(
+      data,
+      source.length,
+      1,
+      THREE.RedFormat,
+      THREE.UnsignedByteType,
+    );
+    texture.magFilter = THREE.LinearFilter;
+    texture.minFilter = THREE.LinearFilter;
+    texture.wrapS = THREE.ClampToEdgeWrapping;
+    texture.wrapT = THREE.ClampToEdgeWrapping;
+    texture.needsUpdate = true;
+    return texture;
+  }, []);
+
   const uniforms = useMemo(
     () => ({
       uTime: { value: 0 },
@@ -70,9 +99,15 @@ export default function ListenField({ closed, beat }: ListenFieldProps) {
       uIntensity: { value: 0 },
       uInk: { value: new THREE.Color(PALETTE.ink900) },
       uLight: { value: new THREE.Color(PALETTE.white) },
+      uEnvelope: { value: envelopeTexture },
+      uDuration: { value: greetingEnvelope.durationSeconds },
     }),
-    [],
+    [envelopeTexture],
   );
+
+  // The texture holds a GPU allocation; release it when the field unmounts so a
+  // section scrolled past and back does not leak one per mount.
+  useEffect(() => () => envelopeTexture.dispose(), [envelopeTexture]);
 
   // A lost context is not a crash and must not be drawn through: the browser
   // keeps presenting the last frame, which would leave the bench light frozen

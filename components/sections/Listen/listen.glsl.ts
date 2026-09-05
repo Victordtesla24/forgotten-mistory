@@ -18,10 +18,11 @@
  * all — its reading is '—' — so there is nothing here for that accent to mark.
  * The two colours arrive as uniforms from `lib/palette.ts`.
  *
- * Budget: one full-screen quad, no geometry, no textures, two value-noise
- * lookups per pixel — under the three `AboutField` and `CareerStrata` hold to,
- * because an empty screen should cost less than a full one — plus one hash for
- * grain.
+ * Budget: one full-screen quad, no geometry, two value-noise lookups per pixel
+ * — under the three `AboutField` and `CareerStrata` hold to, because an empty
+ * screen should cost less than a full one — plus one hash for grain and two
+ * taps of a single 256×1 texture: the greeting's own loudness (`uEnvelope`),
+ * which is what the band draws instead of a sine.
  */
 
 export const listenFieldVertexShader = /* glsl */ `
@@ -48,6 +49,16 @@ export const listenFieldFragmentShader = /* glsl */ `
   uniform float uIntensity;
   uniform vec3 uInk;
   uniform vec3 uLight;
+  /**
+   * The greeting's loudness as a 256×1 texture: the peak-normalised RMS
+   * envelope of public/assets/minivic-greeting.mp3, built by
+   * scripts/build/greeting_envelope.mjs into app/data/generated. The band's
+   * height across x is a tap of this at p.x — the shape of him speaking, not a
+   * sine. See listen.glsl.ts's header and LISTEN-FLAGSHIP.md C1.
+   */
+  uniform sampler2D uEnvelope;
+  /** The greeting's length in seconds, so the field can read it back at real time. */
+  uniform float uDuration;
 
   float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
@@ -99,21 +110,25 @@ export const listenFieldFragmentShader = /* glsl */ `
     // been dimmer *and* safer.
     float across = smoothstep(0.0, 0.09, p.x) * smoothstep(1.0, 0.91, p.x);
 
-    // Two lookups, no more. One slow wash so the band is not a clean gradient;
-    // one very low frequency drift along it, so the light has a length.
+    // Two noise lookups, no more. One slow wash so the band is not a clean
+    // gradient; one very low frequency drift along it, so the light has a length.
     float wash = noise(vec2(p.x * 2.2, p.y * 3.4 - uTime * 0.03));
     float along = noise(vec2(p.x * 0.9 + uTime * 0.02, uClose * 1.7));
-    // The breath is what a bench nobody is touching is still alive by, and its
-    // rate and depth are set by the motion floor rather than by taste: at
-    // 0.8 rad/s and a 0.042 swing on the room term the field measured mean
-    // |dL| = 0.00228 over 1.5 s at 390 against a floor of 0.004 — a scene that
-    // moves, but not enough of the frame to be seen moving. 1.05 rad/s carries
-    // 1.58 rad of phase across the sampling window instead of 1.20, and the
-    // swing now sits mostly on the room term, which is the widest of the three.
-    // Trading the swing against the core instead cost the peak: at lift 0.29 /
-    // core 0.20 the brightest pixel at 390 came back 0.314 against a floor of
-    // 0.35. The band's own level is not the lever — the breath is.
-    float breath = 0.5 + 0.5 * sin(p.x * 1.7 - uTime * 1.05);
+
+    // The band's height across x is the greeting's loudness at that moment: a
+    // tap of the envelope at p.x, 0 at a pause and 1 at the loudest word. This
+    // is the whole point of the section's rebuild — the closing light is the
+    // shape of him speaking, not a sine (LISTEN-FLAGSHIP.md C1).
+    float voice = texture2D(uEnvelope, vec2(clamp(p.x, 0.0, 1.0), 0.5)).r;
+
+    // What keeps a bench nobody is touching alive is now the voice itself,
+    // played back rather than invented: a reading head runs the same envelope
+    // in real time (fract(uTime / uDuration) is where in the 25 s greeting the
+    // room is), and its loudness breathes the widest term of the three — where
+    // the old sine's swing already sat. The motion the frame is measured moving
+    // by is the greeting playing, and it carries at least the 0.5-mean swing the
+    // sine did because a peak-normalised envelope spends real time near 1.0.
+    float playhead = texture2D(uEnvelope, vec2(fract(uTime / uDuration), 0.5)).r;
 
     // The band brightens as the jaws close, and never past the point where it
     // would compete with the type standing in it.
@@ -121,9 +136,9 @@ export const listenFieldFragmentShader = /* glsl */ `
 
     float luma = across
       * (
-          band * lift * (0.80 + 0.28 * breath)
+          band * lift * (0.80 + 0.28 * voice)
           + core * (0.27 + 0.06 * close)
-          + room * (0.030 + 0.075 * breath)
+          + room * (0.030 + 0.075 * playhead)
         )
       * (0.86 + 0.20 * wash)
       * (0.90 + 0.16 * along);

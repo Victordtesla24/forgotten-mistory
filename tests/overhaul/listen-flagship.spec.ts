@@ -2,6 +2,8 @@ import { test, expect, type Page } from '@playwright/test';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { extname, join, relative } from 'node:path';
 
+import { greetingAudioSha256 } from '../../app/data/generated/greeting-asset';
+import { greetingEnvelope } from '../../app/data/generated/greeting-envelope';
 import { contact } from '../../app/data/siteContent';
 import { listenContent } from '../../app/data/portfolio/listen';
 
@@ -54,6 +56,63 @@ async function gotoListen(page: Page) {
   await page.locator('#hero').waitFor({ state: 'visible', timeout: 15000 });
   await page.locator(LISTEN).scrollIntoViewIfNeeded();
 }
+
+/** The shader source the band is drawn by, read as text for the C1 assertions. */
+const GLSL_SOURCE = join(process.cwd(), 'components/sections/Listen/listen.glsl.ts');
+
+test.describe('Listen flagship — the band is the greeting, not a sine (C1)', () => {
+  test('TC-LISTEN-FLAG-01: the generated envelope is 256 in-range samples, is a waveform, and is pinned to the shipped greeting', () => {
+    // GENERATED, never hand-edited: it is written by
+    // scripts/build/greeting_envelope.mjs from the MP3's own bytes.
+    const { envelope, durationSeconds, sourceSha256 } = greetingEnvelope;
+
+    expect(envelope, 'the envelope is not exactly 256 samples').toHaveLength(256);
+    for (const value of envelope) {
+      expect(value, `envelope sample ${value} is outside [0, 1]`).toBeGreaterThanOrEqual(0);
+      expect(value, `envelope sample ${value} is outside [0, 1]`).toBeLessThanOrEqual(1);
+    }
+
+    // A waveform, not a constant: a peak the band can land on and a pause it can
+    // fall to. A flat band would look like data without being it.
+    expect(
+      envelope.some((v) => v >= 0.9),
+      'no sample reaches 0.9 — the band has no loud moment',
+    ).toBe(true);
+    expect(
+      envelope.some((v) => v <= 0.1),
+      'no sample falls to 0.1 — the band never pauses',
+    ).toBe(true);
+
+    expect(durationSeconds, 'durationSeconds is not the greeting length').toBeGreaterThan(24);
+    expect(durationSeconds).toBeLessThan(26);
+
+    // The pin: the same defect class the greeting digest was introduced to catch
+    // — a regenerated MP3 with a stale envelope — fails here.
+    expect(
+      sourceSha256,
+      'the envelope sourceSha256 does not equal greetingAudioSha256 — the band and the greeting have drifted',
+    ).toBe(greetingAudioSha256);
+  });
+
+  test('TC-LISTEN-FLAG-02: the band is driven by uEnvelope, and the sine is gone from the fragment main (budget unchanged)', () => {
+    const glsl = readFileSync(GLSL_SOURCE, 'utf8');
+
+    expect(glsl, 'the shader never samples the greeting envelope').toContain('uEnvelope');
+
+    // The fragment program's main only — the value-noise `hash()` above it is
+    // allowed its own `sin`, exactly as TC-SCENE-LISTEN-06 measures the budget.
+    const main = glsl.slice(glsl.lastIndexOf('void main'));
+    expect(main, 'the fragment main still contains a sin() term — the breath was not removed').not.toMatch(
+      /\bsin\s*\(/,
+    );
+
+    // Budget and palette, unchanged from TC-SCENE-LISTEN-06.
+    const noiseCalls = main.match(/\bnoise\s*\(/g) ?? [];
+    expect(noiseCalls.length, `noise() calls in the fragment main: ${noiseCalls.length}`).toBeLessThanOrEqual(3);
+    expect(glsl, 'the shader gained a hex colour literal').not.toMatch(/#[0-9a-fA-F]{3,8}\b/);
+    expect(glsl.toLowerCase(), "the shader gained a 'gold' accent").not.toContain('gold');
+  });
+});
 
 test.describe('Listen flagship — the client CTA', () => {
   test('TC-LISTEN-CTA-01: #listen has exactly one filled action, it reads "Book a 20-minute call", and the email is a plain channel', async ({
