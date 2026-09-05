@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
+import Scene from "@/components/gl/Scene";
 import { askMiniVicBrain, warmMiniVicBrain, type BrainTurn } from "@/lib/miniVicBrain";
 import { GREETING, type PersonaMode } from "@/app/data/miniVicKnowledge";
 import { greetingAudioSha256 } from "@/app/data/generated/greeting-asset";
@@ -15,6 +17,16 @@ import {
   deterministicIdleViseme,
   type VisemeShape,
 } from "@/lib/visemeMap";
+
+// S7, the seventh signature scene: the stage the avatar answers from
+// (docs/architecture/SIGNATURE-SCENES-v1.md §4.7, decision D8). Dynamic, so
+// `three` and R3F land in the chunk `Scene` fetches when the stage actually
+// mounts rather than in the document's own bundle — this component is in
+// `app/layout.tsx`, so a static import here would put the WebGL runtime on
+// every page's critical path. It reads the viseme refs below; it never writes
+// them, and the 2D mouth canvas is unchanged and remains the whole of the
+// no-GL / reduced-motion path.
+const VisemeStage = dynamic(() => import("@/components/gl/scenes/VisemeStage"), { ssr: false });
 
 // Minimal shapes for the vendor-prefixed browser APIs, so the component reaches
 // `webkitSpeechRecognition` / `webkitAudioContext` through typed casts only.
@@ -1030,6 +1042,21 @@ const MiniVicBot = () => {
                 setCurrentVideoSrc("");
               }}
             />
+            {/* The stage light, S7. It sits over the portrait and under the
+                legibility gradient, so what it lifts is the face rather than
+                the type below it. With no WebGL, reduced motion, or the panel
+                closed, `Scene` mounts nothing and the plate is exactly what it
+                has always been — the stage is an enhancement, never the
+                content. The refs are handed over read-only: the viseme stream
+                and the 2D mouth below are untouched (D8). */}
+            <Scene className="absolute inset-0 pointer-events-none" sceneId="minivic-viseme">
+              <VisemeStage
+                currentViseme={currentVisemeRef}
+                targetViseme={targetVisemeRef}
+                visemeLerp={visemeLerpRef}
+                speaking={isSpeaking}
+              />
+            </Scene>
             {!isVideoPlaying && (
               <canvas
                 ref={mouthCanvasRef}
