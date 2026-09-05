@@ -231,6 +231,27 @@ test.describe('TC-SCENE-SKILLS: the bench sits on a lit field', () => {
     // The uniforms the section's own state drives.
     expect(glsl).toContain('uHover');
     expect(glsl).toContain('uIntensity');
+
+    // The field reads the table, not only the atmosphere (G-S2 / ADV-1451Z
+    // §Skills): the set of capabilities measured in production lifts the plate
+    // where each wire lands, so the light is the evidence drawn in luminance
+    // rather than a glow beneath it. The shader takes that set as uniforms and
+    // the field component feeds them.
+    expect(glsl).toContain('uRowCount');
+    expect(glsl).toContain('uRows');
+    expect(component).toContain('uRows');
+    expect(component).toContain('uRowCount');
+  });
+
+  test('TC-SCENE-SKILLS-08: the field is fed the production rows from the bench own layout', async () => {
+    const bench = readFileSync(BENCH_SOURCE, 'utf8');
+
+    // The narrative carrier: the bench measures where each production capability
+    // sits on its rail and hands that set to the field, so the plate lifts where
+    // a production wire lands rather than glowing as undifferentiated
+    // atmosphere. The rows come from measured layout, never a coordinate table.
+    expect(bench).toMatch(/rows=\{/);
+    expect(bench).toContain("=== 'production'");
   });
 
   test('TC-SCENE-SKILLS-07: three is fetched with the scene, not with the section', async () => {

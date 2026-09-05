@@ -112,6 +112,10 @@ export default function Bench({
 
   const [wires, setWires] = useState<Wire[]>([]);
   const [box, setBox] = useState({ width: 0, height: 0 });
+  // Where each production capability's wire lands on the right rail, 0 → 1 of
+  // the bench's height. Handed to the field so the light reads the table: the
+  // plate lifts on the rows measured in production and stays dark on the rest.
+  const [fieldRows, setFieldRows] = useState<number[]>([]);
   const [active, setActive] = useState<NodeRef>(null);
   const [drawn, setDrawn] = useState(false);
   // The trace runs once. After it, the animation is taken off the wires
@@ -160,6 +164,28 @@ export default function Bench({
     }
     setWires(next);
     setBox({ width: origin.width, height: origin.height });
+
+    // The field's reading set: the height of every production capability, taken
+    // from the same measured layout the wires are, so the light lands exactly
+    // where each production wire arrives on the capability rail. Only where the
+    // evidence was measured in production — the accent's own rule, kept in the
+    // shader (grey vs gold) and kept here (lit vs dark).
+    const rows: number[] = [];
+    if (origin.height > 0) {
+      capabilities.forEach((row, index) => {
+        if (row.status !== 'production') return;
+        const el = capabilityRefs.current.get(index);
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const y = (r.top + r.height / 2 - origin.top) / origin.height;
+        rows.push(Math.min(Math.max(y, 0), 1));
+      });
+    }
+    setFieldRows((prev) =>
+      prev.length === rows.length && prev.every((v, i) => Math.abs(v - rows[i]) < 0.0005)
+        ? prev
+        : rows,
+    );
   }, []);
 
   useLayoutEffect(() => {
@@ -302,7 +328,7 @@ export default function Bench({
           it. */}
       <div className={styles.stage}>
         <Scene className={styles.fieldSlot} sceneId="skills-bench">
-          <BenchField hover={hoverState} />
+          <BenchField hover={hoverState} rows={fieldRows} />
         </Scene>
 
         <div
