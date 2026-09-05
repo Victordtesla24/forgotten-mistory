@@ -1,14 +1,18 @@
 # SIGNATURE-SCENES-v1 — architecture to MEET R2 / R5 / §0.3-1 / G-H2
 
-**Task:** `t_g_h2` (authored) → **`t_g2_x2` (this refresh, ADV-1451Z P0, lane G-X2)**
+**Task:** `t_g_h2` (authored) → `t_g2_x2` (1451Z refresh) → **`t_g2_x2` (this rewrite, ADV-1556Z FAIL, lane G-X2)**
 **Author:** solutions-architect (§5, effort max) · **Contract:** `docs/prompt.md` (sole SoT)
-**Authored:** 2026-09-05 against `bdf4edc4` / `9ba97a5c` · **Refreshed:** 2026-09-05T15:16Z against live **`b0d41a20`**
+**Authored:** 2026-09-05 against `bdf4edc4` / `9ba97a5c` · **1451Z refresh:** 2026-09-05T15:16Z against `b0d41a20` · **1556Z rewrite:** 2026-09-05T17:05Z against live **`b2ac21be`**
 **Status:** binding architecture. No implementation in this document; no Owner decision parked (§0.1).
 
-> **Read §0.5 first.** §0–§9 below were written when four scenes existed and none had been timed.
-> Seven are mounted now and the frame cost has been measured. Where the two disagree, **§0.5 and
-> §4.1(b)'s superseding note are the current state**; the original text is kept because the reasoning
-> that produced the design is still the reasoning that has to be argued with to change it.
+> **Read §0.5 and §0.6 first.** §0–§9 below were written when four scenes existed and none had been
+> timed; the 1451Z refresh then counted **seven** mounted scenes. **ADV-1556Z rejected that count:**
+> the seventh, `minivic-viseme`, is a lip-sync mouth-lighting stage **inside the MiniVic bot panel** — it
+> is an R3 accessory, **not** a Marvel/R2 cinematic signature scene, and it is **not even in the live page
+> census** (`curl` of `b2ac21be` returns **6** `data-scene` mounts, §0.5). Counting it as "cinematic scene
+> 7" was a substitution lie. **This rewrite deletes that claim** (§0.6, §4). Where any older section still
+> reads "seven signature scenes", **§0.5 / §0.6 / §4 are the current state**; the original text is kept only
+> because the reasoning that produced the design is what has to be argued with to change it.
 
 ---
 
@@ -37,37 +41,113 @@ each clause below is either *designed to meet* with a named test file and assert
 
 ---
 
-## 0.5 Status on LIVE `b0d41a20` (refresh, `t_g2_x2`)
+## 0.5 Status on LIVE `b2ac21be` (rewrite, `t_g2_x2` / ADV-1556Z)
 
 ```
-curl -fsS https://forgotten-mistory.web.app/ | grep -o 'build-commit" content="[^"]*"'
-→ build-commit" content="b0d41a20"
-grep -rn 'sceneId=' components/     → 7 hits
+curl -fsS https://forgotten-mistory.web.app/ -o /tmp/live.html
+grep -o 'build-commit" content="[^"]*"' /tmp/live.html   → build-commit" content="b2ac21be"
+grep -o 'data-scene="[^"]*"' /tmp/live.html | sort | uniq -c
+      1 data-scene="about-field"
+      1 data-scene="career-strata"
+      1 data-scene="hero-atmosphere"
+      1 data-scene="listen-field"
+      1 data-scene="skills-bench"
+      1 data-scene="vitrine-field"
+grep -o 'data-scene="[^"]*"' /tmp/live.html | wc -l       → 6
+grep -rn 'sceneId=' components/                           → 7 hits (six sections + MiniVicBot.tsx:1069)
 ```
 
-**All seven named scenes are mounted.** F5, F6 and F7 above are closed; F1, F2, F8, F9, F10 and F11
-are not. The seventh (`minivic-viseme`) landed in **`c1df356`** and reached production as
-`c1df3565` at 14:54Z — after the reviewer report that said "only ~4 named data-scene mounts"
-(`ADV-REVIEW-20260905T1451Z`, probed `ff67273b` at 14:41Z, before S5/S6 in `192d743` and before S7).
-That finding is **stale by construction, not wrong when written**.
+**The live page census is SIX cinematic scenes, not seven.** The static HTML that a recruiter loads carries
+exactly six `data-scene` mounts — one per section (`hero-atmosphere`, `about-field`, `career-strata`,
+`skills-bench`, `vitrine-field`, `listen-field`). The seventh `sceneId` in the *source*,
+`minivic-viseme` (`MiniVicBot.tsx:1069`), **is not in that census**: it mounts only after the visitor opens
+the MiniVic bot panel, and it is a mouth-lighting plate driven by `lib/visemeMap.ts`, not a section
+signature scene. **§0.6 is why it does not count toward R2.** F5, F6 and F7 are closed for the six sections;
+F1, F2, F8, F9, F10 and F11 are not.
 
-### Per-scene status
+> **Do not claim PASS on a mount.** A `data-scene` in the DOM is a census fact, not an acceptance. R2 asks
+> for a *cinematic, 60 fps, interactive signature* — a mount is the cheap first inch of that. The
+> per-scene table below records mounts and reviewer verdicts; the R2 verdict is §7 and it is **FAIL**.
 
-| # | `sceneId` | Mount (file:line) | Landed | Gate | Live status | Reviewer evidence |
+### Per-scene status — the six section scenes (the R2 acceptance surface)
+
+| # | `sceneId` | Mount (file:line) | Landed | Gate | Live status (verdict, not "mounted") | Reviewer evidence |
 |---|---|---|---|---|---|---|
-| S1 | `hero-atmosphere` | `Hero.tsx:51` (`priority resolutionScale={0.5}`) | pre-existing; `priority`+poster `ee334cc`, grade `3d25643` | `flagship-visibility` + `hero-first-paint` | **PASS** 1440 & 390 | `G-REV/66199cba/`, `G-REV/e3f0206c/` |
-| S2 | `about-field` | `About.tsx:174` (`resolutionScale={0.5}`) | pre-existing | `flagship-visibility` | **PASS** | `G-REV/9b864752/`, `G-REV/e47221ed/` |
-| S3 | `career-strata` | `Experience.tsx:151` (`resolutionScale={0.5}`) | pre-existing | `flagship-visibility` (`fallbackCoverageMin 0.02`) | **PASS** | `G-REV/abc475e3/` |
-| S4 | `skills-bench` | `Bench.tsx:304` | landed (F7 closed) | `flagship-visibility` | **PASS** | `G-REV/abc475e3/`, `G-REV/577d45af/` |
-| S5 | `vitrine-field` | `Vitrine.tsx:167` | `192d743` | `flagship-visibility` | **1440 PASS · 390 FAIL** — peak **0.2918** < 0.35 | **`G-REV/ff67273b/08-adversarial-review.md` F-S5-390** |
-| S6 | `listen-field` | `Listen.tsx:161` | `192d743` | `flagship-visibility` | **PASS** both widths | `G-REV/ff67273b/` (S6-b, S6-c) |
-| S7 | `minivic-viseme` | `MiniVicBot.tsx:1052` | **`c1df356`** (live `c1df3565`, 14:54Z) | `tests/overhaul/viseme-stage.spec.ts` (`TC-VISEME-GL-01/02/03`) | **not yet independently re-probed on live** | — (post-dates every G-REV report) |
+| S1 | `hero-atmosphere` | `Hero.tsx:51` (`priority resolutionScale={0.5}`) | pre-existing; `priority`+poster `ee334cc`, grade `3d25643` | `flagship-visibility` + `hero-first-paint` | visibility **PASS** 1440 & 390; **60 fps NOT MET** (§0.5.1) | `G-REV/66199cba/`, `G-REV/e3f0206c/` |
+| S2 | `about-field` | `About.tsx:174` (`resolutionScale={0.5}`) | pre-existing | `flagship-visibility` | visibility **PASS**; **60 fps NOT MET** | `G-REV/9b864752/`, `G-REV/e47221ed/` |
+| S3 | `career-strata` | `Experience.tsx:151` (`resolutionScale={0.5}`) | pre-existing | `flagship-visibility` (`fallbackCoverageMin 0.02`) | visibility **PASS**; **60 fps NOT MET** | `G-REV/abc475e3/` |
+| S4 | `skills-bench` | `Bench.tsx:304` | landed (F7 closed) | `flagship-visibility` | visibility **PASS**; **60 fps NOT MET** | `G-REV/abc475e3/`, `G-REV/577d45af/` |
+| S5 | `vitrine-field` | `Vitrine.tsx:167` | `192d743` | `flagship-visibility` | **1440 PASS · 390 FAIL** — peak **0.2918** < 0.35; **60 fps NOT MET** | **`G-REV/ff67273b/08-adversarial-review.md` F-S5-390** |
+| S6 | `listen-field` | `Listen.tsx:161` | `192d743` | `flagship-visibility` | visibility **PASS** both widths; **60 fps NOT MET** | `G-REV/ff67273b/` (S6-b, S6-c) |
 
-`SCENES` in `tests/overhaul/flagship-visibility.spec.ts:138-164` now holds **six** entries at **both**
-1440×900 and 390×844 (`VIEWPORTS`, `:190-193`). S7 is held by its own spec instead, because the stage
-lives inside the bot panel and has to be opened before it can be photographed.
+**Six mounted. Five clear the visibility floor at both widths (S5 fails at 390). None clears 60 fps at any
+width (§0.5.1).** So R2's "≥ 7 cinematic scenes at 60 fps" is **NOT MET on two independent axes** — the count
+is six, and the frame rate is red. The seventh cinematic scene has to be *built*, and §4/§0.6 name it.
 
-### Open findings carried forward (not closed by this refresh)
+### The `minivic-viseme` mouth stage — **not counted here**
+
+`minivic-viseme` (`MiniVicBot.tsx:1069`, landed `c1df356`, live since `c1df3565`) is real and it works, but it
+is filed under R3 (the avatar), **not** R2 (signature scenes). It is held by its own spec
+(`tests/overhaul/viseme-stage.spec.ts`) and is **excluded from `SCENES` in
+`tests/overhaul/flagship-visibility.spec.ts`** — the flagship gate parameterises over the **six** section
+scenes at both 1440×900 and 390×844 (`VIEWPORTS`, `:190-193`), and that is correct: a mouth plate inside a
+chat panel is not one of "one flagship visualisation per section" (§0.3-1). See §0.6.
+
+## 0.6 Ruling (ADV-1556Z): `minivic-viseme` is NOT a Marvel/R2 cinematic signature scene
+
+The 1451Z refresh listed `minivic-viseme` as **S7**, "the seventh signature scene", and reported R2's
+"≥ 7 scenes mounted" as **MET (7/7)**. **ADV-1556Z rejected that as a substitution lie, and this rewrite
+agrees.** The finding, with evidence:
+
+1. **It is not in the page census.** `curl` of live `b2ac21be` returns **6** `data-scene` mounts (§0.5). The
+   viseme stage mounts only after a visitor clicks the MiniVic launcher and the bot panel opens — it is not
+   a scene the site *presents*, it is a widget the site *contains*. A signature scene a recruiter never
+   triggers is not a signature scene.
+2. **It is the wrong kind of object.** §0.3-1 asks for "**one flagship visualisation per section**,
+   main-title grade". The viseme stage is a shallow mouth-lighting plate bound to `getVisemeShape` /
+   `lerpVisemeShapes` (`MiniVicBot.tsx:11-16`) — a *lip-sync accessory* to the R3 avatar, not a composed
+   set-piece that tells a section's story. It belongs to R3, and R3 is separately, honestly **OPEN**.
+3. **Counting it double-counts the same failure.** R3 (real-time avatar) is FAIL; borrowing the avatar's
+   mouth plate to fill R2's seventh slot lets one unfinished feature be scored twice. That is exactly the
+   "wrong success metric / board self-PASS" root cause the reviewer named (`ADV-REVIEW-20260905T1451Z` §"Why
+   Claude Code failed", #1 and #3).
+4. **It does not meet R2's own clauses either.** Even inside the panel it is not 4K, not 60 fps (§0.5.1
+   applies), and not "the story" of a section. It clears the flagship-visibility floors *inside the panel*
+   and nothing more.
+
+**Therefore, for all R2 accounting in this document:**
+
+- **The R2 scene count is SIX**, not seven (§0.5). R2 requires **≥ 7 visible, cinematic, 60 fps, interactive
+  signature scenes** — six sections carry one each, none is 60 fps, and there is **no seventh cinematic
+  scene at all**. Until a real seventh ships and all seven clear 60 fps on trustworthy hardware, **R2 is a
+  zero-credit FAIL for the ≥7 clause** — no partial credit for the viseme mount.
+- **`minivic-viseme` keeps its handle, its spec and its fallback** (it is a good R3 detail). It is simply
+  **removed from the R2 scene inventory** (§4) and from any "7/7 mounted" claim (§7).
+- **The honest way to reach seven is to build a seventh cinematic scene**, named in §4 and §0.6.1.
+
+### 0.6.1 The NEXT real cinematic scene to dispatch
+
+The seventh scene must be *cinematic* (composed, choreographed, a subject and a key — not another ambient
+field) and *provably 4K/60* (rendered, since this host has no GPU to run 60 fps live — §0.5.1). One task
+already specifies exactly that and it is the right next dispatch:
+
+**→ `t_x1_10` — the HyperFrames hero-overture, rendered at 3840×2160@60 on this VPS for zero credits
+(`SIGNATURE-SCENES-NEXT.json`).** It is the first asset on this site that actually *is* 4K/60, it is authored
+as a composed title move (a subject — the name; a key — the first raked shaft), and because a HyperFrames
+composition is *seekable*, the same source drives the in-page overture (`t_x1_11`) and the rendered 2160p60
+file. That is a real seventh cinematic scene — **the story, rendered** — not a mount. It is the R5 unblock
+(§5) and the only unmet R2 clause no other lane closes (D12). Preconditions are re-checked green on
+`b2ac21be` in §10.1.
+
+**Alternative seventh (if the overture slips): a UHD GLSL set-piece that IS the story**, authored as one
+composed scene rather than a field — e.g. the council's `#experience` "depth planes + dossier beat" or
+`#skills` "a lattice that resolves once and holds" (§10.2). It must be authored to a `data-scene` mount in
+the **static** page (so it enters the census, unlike the viseme), rendered to a 2160p60 master for the R5
+proof, and it must not claim 60 fps from a SwiftShader reading (D9). **`t_x1_10` is preferred** because it
+closes R2's named-HyperFrames clause *and* the seventh-scene gap in one lane; the GLSL set-piece closes only
+the count.
+
+### Open findings carried forward (not closed by this rewrite)
 
 | ID | Finding | Number | Owner lane |
 |---|---|---|---|
@@ -235,11 +315,13 @@ lazy GL chunk, not the first-view budget (`PERF-01`: first view ≤ 2.5 MB).
 
 ## 2. What already exists (survey)
 
-> **Superseded by §0.5 for the `sceneId` / measured columns.** The table below is the survey taken at
-> `bdf4edc4`, kept because §2's closing paragraph (what the five-part gap was) is what the plan was
-> built on. On live `b0d41a20` all seven rows carry an id and six are in the flagship gate; (a), (b)
-> and (c) of the five-part gap are **done**, (d) is **measured and red** (§0.5.1), (e) is **not started**
-> (§10.1).
+> **Superseded by §0.5 / §0.6 for the `sceneId` / measured columns.** The table below is the survey taken
+> at `bdf4edc4`, kept because §2's closing paragraph (what the five-part gap was) is what the plan was built
+> on. On live `b2ac21be` the **six section** rows carry an id and are in the flagship gate; the MiniVic row
+> also carries an id but is an **R3 accessory, not an R2 scene** (§0.6). (a) and (b) of the five-part gap
+> are **done**; (c) shipped but is **reclassified as R3, not R2** — it does **not** deliver the seventh
+> cinematic scene; (d) is **measured and red** (§0.5.1); (e) is **not started** (§10.1). The seventh
+> cinematic scene (S7\*, the HyperFrames overture) is still to build (§4.9).
 
 | Section | Scene component | Shader | Mounted through `Scene` | `sceneId` | Measured by flagship gate |
 |---------|-----------------|--------|--------------------------|-----------|---------------------------|
@@ -251,11 +333,14 @@ lazy GL chunk, not the first-view budget (`PERF-01`: first view ≤ 2.5 MB).
 | `#listen` | `Listen/ListenField.tsx` | `listen.glsl.ts` | yes | **none (F6)** | no |
 | MiniVic | `components/MiniVicBot.tsx` | — (canvas 2D, `lib/visemeMap.ts`) | **no** | — | no |
 
-**Six of the seven scenes exist as GLSL already.** R2 is not a from-scratch build; it is (a) commit the
-seventh, (b) give two of them handles, (c) promote MiniVic's 2D mouth to the shared GL stage, (d) prove the
-frame rate and the resolution that nobody has ever measured, and (e) add the HyperFrames layer R2 names by
-name. That is a five-part gap, not a rewrite — which is exactly why renegotiating it away was never
-justified.
+**Six section scenes exist as GLSL already.** R2 was never a from-scratch build, but it was **also never
+six-plus-a-mouth**: the original (c) — "promote MiniVic's 2D mouth to the shared GL stage" — was mis-scoped
+as delivering the seventh R2 scene. ADV-1556Z corrects that: the mouth stage is an R3 detail (§0.6). The
+real gap is (a) the six section scenes have handles and mounts **[done]**, (b) prove the frame rate and
+resolution nobody had measured **[measured and red, §0.5.1]**, (c) **add the HyperFrames layer R2 names by
+name and render the seventh *cinematic* scene from it (S7\*, §4.9) [not started]**, and (d) the choreography
+layer (GSAP) and composition that turn six fields into set-pieces **[not started, §10.2]**. That is the
+honest gap, and it is why "seven mounts" was never the finish line.
 
 The plumbing is sound and is **kept**: `Scene.tsx` (visibility-scoped single context, chunk-skew recovery,
 per-scene error boundary), `GLCanvas.tsx` (one `<Canvas>`, dpr cap, no stencil), `useGLCapability.ts`
@@ -294,9 +379,16 @@ signature. **Rejected on R2's interactivity clause and on the audit gate.**
 
 ---
 
-## 4. The seven signature scenes
+## 4. The signature scenes — six sections shipped, the real seventh still to build
 
-Shared contract for all seven — this *is* the R2 acceptance surface:
+> **Rewritten by ADV-1556Z.** The 1451Z draft of this section listed **seven** scenes with
+> `minivic-viseme` as S7. **§0.6 rules that out.** The R2 acceptance surface is the **six section scenes**
+> (S1…S6); the **seventh cinematic scene is `t_x1_10` (the HyperFrames hero-overture) — not shipped**, and
+> is named as such below (S7*). `minivic-viseme` is listed separately as an R3 accessory that does **not**
+> count toward R2.
+
+Shared contract for the six section scenes — this *is* the R2 acceptance surface (the seventh, S7*, inherits
+it once built):
 
 - **Palette:** `--ink-*` / `--mist-*` / `--white` only, via `lib/palette.ts` uniforms. `--gold` appears in a
   scene **only** where the scene is drawing a sourced mark (C-8/§0.3-2). No scene introduces a hue.
@@ -308,15 +400,26 @@ Shared contract for all seven — this *is* the R2 acceptance surface:
 - **Visibility:** coverage ≥ 15 % at Δ 0.06, peak ≥ 0.35, motion mean |dL| ≥ 0.004 — the thresholds already
   at `flagship-visibility.spec.ts:150-155`.
 
-| # | `sceneId` | Section | Story it tells (§0.3-6) | Tech | New test |
-|---|-----------|---------|--------------------------|------|----------|
-| S1 | `hero-atmosphere` | `#hero` | *The approach* — volumetric shafts rake the frame; you arrive somewhere | GLSL quad + **HyperFrames overture** + GSAP | `flagship-visibility` (has) + `TC-HERO-FIRSTPAINT-01` |
-| S2 | `about-field` | `#about` | *Ten dimensions* — the compass field the answers are plotted on | GLSL quad + SVG compass | `flagship-visibility` (has) |
-| S3 | `career-strata` | `#experience` | *Sixteen years, to scale* — sediment laid down at real duration | GLSL quad, scroll-driven | `flagship-visibility` (has) |
-| S4 | `skills-bench` | `#skills` | *What was tested, where* — a ruled measuring plate under the wires | GLSL quad + hover ref | `TC-FLAGSHIP-VIS[skills-bench]` |
-| S5 | `vitrine-field` | `#vitrine` | *Six of thirty-eight* — the cabinet light that finds the lit plate | GLSL quad + rail ref | `TC-FLAGSHIP-VIS[vitrine-field]` |
-| S6 | `listen-field` | `#listen` | *Feedback & coffee?* — the beat the voice arrives on | GLSL quad + beat ref | `TC-FLAGSHIP-VIS[listen-field]` |
-| S7 | `minivic-viseme` | MiniVic | *He is answering you* — the viseme stage the avatar speaks from | R3F plane + GLSL, driven by `lib/visemeMap.ts` | `TC-FLAGSHIP-VIS[minivic-viseme]` + `TC-VISEME-GL-01` |
+| # | `sceneId` | Section | Story it tells (§0.3-6) | Tech | New test | R2 count? |
+|---|-----------|---------|--------------------------|------|----------|-----------|
+| S1 | `hero-atmosphere` | `#hero` | *The approach* — volumetric shafts rake the frame; you arrive somewhere | GLSL quad + **HyperFrames overture** + GSAP | `flagship-visibility` (has) + `TC-HERO-FIRSTPAINT-01` | ✔ mounted |
+| S2 | `about-field` | `#about` | *Ten dimensions* — the compass field the answers are plotted on | GLSL quad + SVG compass | `flagship-visibility` (has) | ✔ mounted |
+| S3 | `career-strata` | `#experience` | *Sixteen years, to scale* — sediment laid down at real duration | GLSL quad, scroll-driven | `flagship-visibility` (has) | ✔ mounted |
+| S4 | `skills-bench` | `#skills` | *What was tested, where* — a ruled measuring plate under the wires | GLSL quad + hover ref | `TC-FLAGSHIP-VIS[skills-bench]` | ✔ mounted |
+| S5 | `vitrine-field` | `#vitrine` | *Six of thirty-eight* — the cabinet light that finds the lit plate | GLSL quad + rail ref | `TC-FLAGSHIP-VIS[vitrine-field]` | ✔ mounted (390 FAIL) |
+| S6 | `listen-field` | `#listen` | *Feedback & coffee?* — the beat the voice arrives on | GLSL quad + beat ref | `TC-FLAGSHIP-VIS[listen-field]` | ✔ mounted |
+| **S7\*** | **`hero-overture`** *(to build)* | `#hero` overture | ***The title move*** — the name struck and the first shaft raked as one authored, seekable, 3840×2160@60 composition; the story, rendered | **HyperFrames composition (`@hyperframes/player` in page + CLI at build) + WAAPI/CSS** | `TC-HERO-FIRSTPAINT-01/02`, `TC-BUNDLE-01`, `ffprobe 3840,2160,60/1` | **✗ NOT SHIPPED — this is the real seventh (`t_x1_10`→`t_x1_11`, §0.6.1)** |
+
+**Six mounted section scenes + one real seventh still to build (S7\* = the HyperFrames hero-overture).** The
+count toward R2's ≥ 7 is **6 today**; S7\* is the honest path to seven, and none of the six is 60 fps yet
+(§0.5.1). **No PASS is claimed for R2 on this table** — a ✔ in the last column means "mounted in the live
+census", which §0.5 warns is not acceptance.
+
+**Not on this table — `minivic-viseme` (R3 accessory, excluded per §0.6):** the mouth-lighting plate inside
+the MiniVic panel keeps its handle (`MiniVicBot.tsx:1069`), its spec (`tests/overhaul/viseme-stage.spec.ts`)
+and its 2D fallback, and is a genuine detail of the R3 avatar — but it is **not** a section signature scene,
+is **not** in the page census, and **does not count toward R2's ≥7**. It is documented in §4.7 for
+completeness only, with that boundary stated in the heading.
 
 ### 4.1 S1 `hero-atmosphere` — the G-H2 fix (P0)
 
@@ -418,13 +521,20 @@ says is "the whole cost of holding those scenes to the same bar" (`:52-54`). **G
 the only one permitted a gold accent, and only on a plate whose repository URL is live (a sourced mark);
 S4's gold stays in the SVG engraving where evidence was taken in production, never in the shader.
 
-### 4.7 S7 `minivic-viseme` — the seventh scene
+### 4.7 `minivic-viseme` — an R3 avatar accessory, **NOT the seventh R2 scene** (ADV-1556Z)
+
+> **This was miscounted as S7.** §0.6 rules it out of R2: it is not in the page census, it is a lip-sync
+> mouth plate, and counting it double-scores the OPEN R3 avatar. It is documented here only so the handle,
+> the spec and the fallback are on record. **It contributes 0 to R2's scene count.** The real seventh scene
+> is S7\* (the HyperFrames hero-overture, §4.1(c) / §0.6.1).
 
 MiniVic drives its mouth on a 2D canvas from `lib/visemeMap.ts` (`getVisemeShape`, `lerpVisemeShapes`,
-`heuristicVisemeFromFrequency`, `deterministicIdleViseme` — `MiniVicBot.tsx:11-16`). Promote the *stage*, not
-the logic: a `Scene`-mounted R3F plane behind the avatar plate whose shader is driven by the same viseme refs
-— a shallow pool of light that opens and closes with the phoneme, so the avatar is lit *by what he is
-saying*. The 2D mouth path stays exactly as-is and is the no-GL fallback, so lip-sync accuracy cannot regress.
+`heuristicVisemeFromFrequency`, `deterministicIdleViseme` — `MiniVicBot.tsx:11-16`). The shipped stage is a
+`Scene`-mounted R3F plane behind the avatar plate whose shader is driven by the same viseme refs — a shallow
+pool of light that opens and closes with the phoneme, so the avatar is lit *by what he is saying*. The 2D
+mouth path stays exactly as-is and is the no-GL fallback, so lip-sync accuracy cannot regress. **This is a
+good R3 detail and it stays.** What changes is only the accounting: it is filed under R3 (OPEN), held by its
+own spec, excluded from `SCENES`, and never again presented as R2's seventh signature scene.
 
 **Acceptance — `tests/overhaul/viseme-stage.spec.ts`**
 - `TC-VISEME-GL-01` — with the bot open at `?gl=force`, `[data-scene="minivic-viseme"]` contains a canvas and
@@ -456,6 +566,31 @@ result is labelled `software-rasteriser` in evidence. The GPU-class confirmation
 the Mac runner when `E2E_RUNNER_LABELS` is set — **non-gating** (per the CI memory: nothing may hang the
 deploy on an offline self-hosted runner). Until it runs, the claim on the board reads
 *"60 fps proven on software rasteriser; GPU-class confirmation pending"* — not "PASS".
+
+### 4.9 S7\* `hero-overture` — the real seventh cinematic scene (the next dispatch)
+
+This is the seventh scene R2 actually asks for: **cinematic** (a composed title move with a subject and a
+key, not another ambient field), **4K/60** (rendered offline because this host has no GPU — §0.5.1), and
+**in the census** (it plays inside `#hero`, which is already a `data-scene` mount, so it does not hide behind
+a click the way the viseme does). It is specified end-to-end already:
+
+- **Build-time render (`t_x1_10`):** `hyperframes` CLI + `@hyperframes/engine` render
+  `assets/compositions/hero-overture.html` (`data-width="3840" data-height="2160"`) to a 2160p60 master in
+  headless Chrome + FFmpeg, on this VPS, at **zero credits** (§4.1(c), §5.2). Acceptance is an `ffprobe`
+  line reading `3840,2160,60/1` in evidence before any claim — the first asset on this site that *is* 4K/60.
+- **In-page play (`t_x1_11`):** `@hyperframes/player` (17.6 kB gz, §1.1) plays the **same** composition above
+  the hero poster, lazy, so the in-page motion and the rendered file cannot drift.
+
+**Why this and not "just add a seventh GLSL field":** a seventh field would repeat the exact miscount §0.6
+just corrected — a mount that clears a visibility floor but is neither cinematic, nor 4K, nor 60 fps, nor
+*the story*. The overture is composed and rendered, so it answers R2's ≥7 clause **and** its HyperFrames
+clause **and** R5's 4K clause in one lane. **Alternative (if it slips): a UHD GLSL set-piece that IS the
+story** (§0.6.1) — authored to a static `data-scene` mount so it enters the census, rendered to a 2160p60
+master for R5, and reported with its renderer label so no 60 fps is claimed off SwiftShader (D9).
+
+**No PASS until:** the master `ffprobe`s `3840,2160,60/1`, the shipped clip is under the 5 MB on-demand cap,
+the bundle carries zero HyperFrames bytes, and a fresh live reviewer confirms the overture plays on the
+deployed `build-commit`. A mount is not enough (§0.5).
 
 ---
 
@@ -556,11 +691,11 @@ is a plan, not a pass.
 | R2 · Three.js / R3F | MEET | **MET** | `package.json`: `@react-three/fiber 9.7.0`, `three 0.165.0` |
 | R2 · **HyperFrames** | MEET | **NOT MET — F1 stands** | `grep -i hyperframes package.json` → 0. §10.1 is the plan |
 | R2 · GLSL | MEET | **MET** — 7 shaders | `components/sections/*/*.glsl.ts`, `MiniVicBot` stage |
-| R2 · ≥ 7 signature scenes mounted | MEET | **MET (7/7 mounted)** — but **5/7 verified passing on live** | §0.5: S5@390 FAIL, S7 not yet re-probed |
+| R2 · ≥ 7 cinematic signature scenes | MEET | **NOT MET — 6 section scenes; no 7th cinematic scene** | §0.5 census: **6** `data-scene` mounts on `b2ac21be`. `minivic-viseme` is an R3 accessory, not counted (§0.6). S7\* (`hero-overture`) not shipped (§4.9) |
 | R2 · 60 fps desktop | MEET w/ caveat | **NOT MET — measured red** | §0.5.1: 100 ms best case @1440 vs 16.7 ms budget |
 | R2 · 60 fps 2021+ phone | MEET w/ caveat | **NOT MET — measured red** | §0.5.1: 33.4 ms best case @390 vs 20 ms budget |
 | R2 · 60 fps on a real GPU | non-gating confirm | **UNMEASURED** | 0 runners, `E2E_RUNNER_LABELS` unset (§0.5.1). D7/D9 unchanged |
-| R2 · reduced-motion fallback on each | MEET | **MET for S1…S6**, S7 by `TC-VISEME-GL-02` | flagship FALLBACK × 6 at both widths |
+| R2 · reduced-motion fallback on each | MEET | **MET for the six section scenes** | flagship FALLBACK × 6 at both widths (the viseme accessory's fallback is `TC-VISEME-GL-02`, under R3) |
 | R5 · GL/SVG surfaces ≥ 3840×2160 | MEET | **UNPROVEN** — `tests/perf/resolution-independence.spec.ts` does not exist | `ls tests/perf/` → `performance`, `scene-framerate` only. Lane `t_x1_08` (todo) |
 | R5 · 60 fps at 4K | MEET | **NOT MET** — it is not met at 1440 (§0.5.1) | — |
 | R5 · raster assets ≥ 4K | FAIL; unblock designed | **FAIL, unchanged** | re-`ffprobe`d this session: `my-avatar.mp4` 1280×720@24, `my-hero-avatar.mp4` 640×360@24, `my_avatar.avif` 1480×826 |
@@ -571,8 +706,10 @@ is a plan, not a pass.
 | G-H2 · scrim / first paint | MEET | **MET** — poster + `priority` (`ee334cc`), column-bound grade (`3d25643`) | `G-REV/66199cba/`, `G-REV/e3f0206c/`; §4.1(b) correction |
 | G-H2 · HyperFrames overture | MEET | **NOT MET** | §10.1, lane `t_x1_11` |
 
-**Score: 8 met · 5 not met · 3 unproven · 1 unmeasured.** Nothing in R2/R5/§0.3-1 is narrowed here; the
-plan is unchanged and the distance to it is now stated in numbers instead of intentions (§10.2).
+**Score: 7 met · 6 not met · 3 unproven · 1 unmeasured.** The 1451Z draft scored the "≥ 7 scenes" clause as
+MET; ADV-1556Z moves it to **NOT MET** (six section scenes, no seventh cinematic scene — §0.6). Nothing in
+R2/R5/§0.3-1 is narrowed here; the bar got **harder** (a mount is no longer counted as a scene), and the
+distance to it is stated in numbers instead of intentions (§10.2).
 
 ---
 
@@ -598,6 +735,14 @@ plan is unchanged and the distance to it is now stated in numbers instead of int
 | D11 | The About field's remaining cost is attacked as a **page-composite** problem (`t_x1_01d`), not as more shader cuts | 1866 ns/px vs `career-strata`'s 96 ns/px on the same shader budget; ~60% of the frame is the page's own composite at `#about` | none — it is a routing decision |
 | D12 | **HyperFrames (`t_x1_10` → `t_x1_11`) is the next lane after `t_g2_v3`**, ahead of GSAP (`t_x1_12`) and ahead of any further fps tuning | it is the only unmet R2 clause that no other work closes, and it is the R5 unblock; fps is bounded by a host with no GPU, HyperFrames is not | both are ≤ 1 commit to undo (D1) |
 | D13 | `t_x1_08` (4K proof) is **re-sequenced to run after** `t_x1_10`, not before | `t_x1_08` proves surfaces reach 2160; `t_x1_10` is what makes any *asset* reach 2160. Proving the cheap half first has produced two "unproven" rows and no pixels | reorder two board rows |
+
+**Added by the ADV-1556Z rewrite (`t_g2_x2`):**
+
+| # | Decision | Why | Reversal cost |
+|---|---|---|---|
+| D14 | **`minivic-viseme` is NOT a Marvel/R2 cinematic scene** and contributes **0** to R2's scene count; it is filed under R3, excluded from `SCENES`, and never presented as "S7 / the seventh signature scene" again | it is not in the page census (6 mounts on `b2ac21be`), it is a lip-sync mouth plate not a section flagship (§0.3-1), and counting it double-scores the OPEN R3 avatar — the reviewer's #1/#3 root cause | none — it is an accounting rule; the stage code stays as an R3 detail |
+| D15 | **The next real cinematic scene to dispatch is `t_x1_10` — the HyperFrames hero-overture at 3840×2160@60, rendered on this VPS for zero credits** (S7\*, §4.9); the fallback is a **UHD GLSL set-piece authored to a static `data-scene` mount that IS the story** (§0.6.1) | it is the only path that closes R2's ≥7 clause, R2's HyperFrames clause and R5's 4K clause at once, and it enters the census (unlike the viseme); a plain seventh field would repeat the miscount D14 just fixed | ≤ 1 commit (D1); a GLSL set-piece is a self-contained scene folder |
+| D16 | **No R2 PASS is claimed on a mount, and no 60 fps PASS is claimed on a SwiftShader reading** | `data-scene` in the DOM is a census fact, not acceptance (§0.5); this host has no GPU so every fps number is labelled `software-rasteriser` (D9) and S7\* PASS waits on a live-reviewer confirm + `ffprobe 3840,2160,60/1` | n/a — reporting rule |
 
 ---
 
@@ -658,10 +803,13 @@ drops the "author a poster" step (one exists) and gains a reduced-motion gate na
 
 ### 10.2 The honest distance to R2 and to the Marvel bar
 
-**R2, clause by clause, on live `b0d41a20`:** four of its named clauses are met (R3F, GLSL, ≥ 7 mounted
-scenes, per-scene reduced-motion), three are not (HyperFrames, 60 fps desktop, 60 fps phone), and one is
-unmeasurable here (GPU-class fps). **R2 is FAIL.** Nothing about seven mounts changes that: mounting a
-scene is the cheap half, and this project has now done the cheap half seven times.
+**R2, clause by clause, on live `b2ac21be`:** three of its named clauses are met (R3F, GLSL, per-scene
+reduced-motion on the six section scenes), **four are not** (**≥ 7 cinematic scenes — only six exist, §0.6**;
+HyperFrames; 60 fps desktop; 60 fps phone), and one is unmeasurable here (GPU-class fps). **R2 is FAIL.** The
+1451Z draft scored "≥ 7 scenes" as met by counting the MiniVic mouth stage as the seventh — a substitution
+lie ADV-1556Z removed. The census is **six** (`curl` of `b2ac21be`), and mounting a section field is the
+cheap half; this project has done the cheap half six times and has **not** built a single *cinematic*
+seventh scene. The honest seventh is S7\* (§4.9), not the viseme.
 
 The two remaining distances are different in kind, and it matters:
 
