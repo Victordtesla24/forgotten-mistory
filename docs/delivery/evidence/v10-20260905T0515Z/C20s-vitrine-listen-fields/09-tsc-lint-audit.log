@@ -1,0 +1,36 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'tsc' --noEmit
+TSC_EXIT=0
+npm notice run forgotten-mistory@2.0.0 lint
+npm notice run next lint
+[32m✔ No ESLint warnings or errors[39m
+LINT_EXIT=0
+
+  OVERHAUL STATIC AUDIT — baseline
+  ------------------------------------------------------------
+  [PASS] TC-NFR-TONE   No boastful/sci-fi copy (data + layout meta + alt/aria)
+         clean
+  [PASS] TC-NFR-MONO   Achromatic, with one sanctioned accent defined in one place
+         clean — greys plus the gold token, defined only in globals.css and lib/palette.ts
+  [PASS] TC-NFR-PERF   Asset budgets (img ≤0.5MB · video ≤2.5MB, ≤5MB click-to-play · audio ≤1MB)
+         within budget
+  [PASS] TC-FR-PARITY  Resume facts present in siteContent
+         all key facts present
+  [PASS] TC-NFR-TYPE   Three font families — Source Serif 4 (display) + Inter (body) + IBM Plex Mono (data)
+         clean — exactly 3 families
+  [PASS] TC-NFR-SEC    No hardcoded secrets in client source
+         clean
+  [PASS] TC-ARCH-BENCH No /performance-benchmark route in static export
+         absent from out/
+  [PASS] TC-NFR-COMPLETE No truncation/placeholder/stub markers (app|components|lib)
+         clean — no incomplete-code markers
+  [PASS] TC-NFR-TOKEN  CSS custom properties match design token spec
+         all tokens match design spec
+  [PASS] TC-NFR-DEADCSS No globals.css rules for classes that do not exist
+         clean — every class selector names a class the source can render
+  ------------------------------------------------------------
+  RESULT: ALL PASS (10/10)
+
+  📄 JSON report → reports/static-audit.json
+
+AUDIT_EXIT=0
