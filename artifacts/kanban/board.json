@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T07:56:56.008Z",
+  "updated": "2026-09-05T08:06:43.900Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -426,7 +426,7 @@
     {
       "id": "t_3729f57e",
       "title": "Cycle 17 — C-08 (+Motion F-6): #skills gold as a mark, not a mass — dim sourced strands at rest, hovered path lit",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 78,
       "parents": [
@@ -441,7 +441,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:30:51.489Z",
+      "updated": "2026-09-05T08:06:43.814Z",
       "summary": "R-c8 item 10. Files: components/sections/Skills/{Bench.module.css,Bench.tsx,Skills.module.css}. Terminal node dots stay gold at full opacity.",
       "decisions": [],
       "comments": [
@@ -460,7 +460,7 @@
     {
       "id": "t_2cc9a990",
       "title": "Cycle 18 — C-07: one \"Download CV\" in the first viewport (nav action demoted to text until scrolled)",
-      "status": "todo",
+      "status": "running",
       "assignee": "analyst-programmer",
       "priority": 70,
       "parents": [
@@ -475,7 +475,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T07:30:50.817Z",
+      "updated": "2026-09-05T08:06:43.900Z",
       "summary": "R-c8 item 11. Files: components/site/Navigation.tsx, app/globals.css nav block.",
       "decisions": [],
       "comments": [
@@ -1319,7 +1319,7 @@
     {
       "id": "t_r19r3f9",
       "title": "Durable fix — react 19 + @react-three/fiber 9 (+ drei 10 if used) on next 15.5.25; every scene proven at ?gl=force; full battery; lands only on PASS",
-      "status": "running",
+      "status": "done",
       "assignee": "analyst-programmer",
       "priority": 97,
       "parents": [
@@ -1333,7 +1333,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:05:13.118Z",
-      "updated": "2026-09-05T07:56:55.952Z",
+      "updated": "2026-09-05T08:06:43.444Z",
       "summary": "Lane wf_a0a1850a-28a (port 5603). Keeps the npm-audit-clean next 15 while restoring WebGL. Push only when S-3 probe and the full suite are green; independent reviewer then gates the merge. Supersedes the next-14 pin of t_p100hotfx when it lands.",
       "decisions": [],
       "comments": [
@@ -1358,7 +1358,8 @@
           "text": "LIVE on 89a68039 → 79691eda (07:5xZ): gl=force SwiftShader probe 1440/1280 — hero canvas 1 from 5.9 s, experience canvas 1 after scroll, 0 pageerrors, 0 console errors (only SwiftShader ReadPixels perf warnings); 390 canvases 1; hardware-GPU spoof no-query: h1 'Vikram Deshpande', 6 sections, errorBoundary false, 0 console errors. The next-14 pin is superseded; npm audit 0 on the live tree. Closes when V-react19 returns."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "V-react19 PASS (640ab59): independent re-execution of the six-file diff, no suppressions, hardware-GPU spoof (RTX 3080 renderer string) on the branch build renders all six sections, gl=force per-slot probe 1/1 at 1440 and 390; named-spec battery 48/53 under host loadavg 10–24 with only known/load-sensitive ✘. Live verified by the orchestrator on 79691eda (hero+experience canvases, 0 errors, GPU spoof clean). Finding 1 → new task: the CLS shift is footer.Footer_footer at ~508 ms (0.1556), not the hero crossfade."
     },
     {
       "id": "t_prodmon01",
@@ -1592,6 +1593,29 @@
       "created": "2026-09-05T07:41:48.957Z",
       "updated": "2026-09-05T07:41:48.957Z",
       "summary": "Same three lenses and merge as R-c13 (docs/delivery/evidence/v10-20260905T0515Z/R-c13/review.md is the template and the open backlog); precondition: live build is a descendant of the last of the three parent merges; must include the hardware-GPU spoof pass and the ?gl=force SwiftShader pass (0 pageerrors, canvases per section), every R-c13 item re-graded (closed / open), and the §0.3 mandates.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_2d068068",
+      "title": "PERF-03 / TC-HERO-15 root cause — footer.Footer_footer layout shift (~0.16 CLS at ~508 ms) under load; reserve the footer box so CLS < 0.05 on a busy host too",
+      "status": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 80,
+      "parents": [
+        "t_r19r3f9"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-05T08:06:43.493Z",
+      "updated": "2026-09-05T08:06:43.493Z",
+      "summary": "V-react19 finding 1: the only layout shift captured names footer.Footer_footer__TWDx3 at ~508 ms worth 0.1556 — the two off-list ✘ (TC-HERO-15, PERF-03) attributed to the hero crossfade are this. Files: components/site/Footer.tsx + its CSS block (app/globals.css or module). TDD: tests/perf/performance.spec.ts PERF-03 must pass with --workers=2 under load (repeat-each=3) and a new assertion that no LayoutShift entry names the footer.",
       "decisions": [],
       "comments": [],
       "blocker": null
