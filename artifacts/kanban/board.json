@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T08:48:54.077Z",
+  "updated": "2026-09-05T09:09:06.184Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -554,7 +554,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T08:25:47.596Z",
+      "updated": "2026-09-05T09:09:06.101Z",
       "summary": "R-c8 items 15 and 16. Files: components/sections/Listen/{Listen.module.css,Listen.tsx}, components/sections/About/About.module.css. No second motion beat in #listen (MOT-F-4 confirms the caliper-close is the one).",
       "decisions": [],
       "comments": [
@@ -567,6 +567,11 @@
           "at": "2026-09-05T07:30:50.960Z",
           "by": "orchestrator",
           "text": "R-c13 #11 CC-05 (major, Verified, composition + merge) — The page's business end is its quietest type: every contact line is 14 px rgb(205,205,205) with a 21 px box, under a 54.4 px pull-quote — a 3.9x ratio pointing the wrong way\nDIRECTION: Listen.module.css .channel (line 206, font-size at :210): raise font-size to var(--fs-body) (16 px) and color to var(--white); keep IBM Plex Mono — the monospace is right for an address, the greyness is not. Give each channel a 44 px minimum hit box via padding-block: var(--space-1). Reduce the pull-quote from --fs-h2 to var(--fs-h3) (~23 px at 1440) so the quote:address ratio is about 1.4x rather than 3.9x. Keep the ::after underline reveal (:223, :243) as the hover state. Distinct from CC-02: that adds the missing client action, this is the weight of the four channels that already exist.\nFILES: components/sections/Listen/Listen.module.css:63,203,206-260\nACCEPTANCE: At 1440 and 390: every #listen .channel has computed font-size >= 16px, color rgb(246, 246, 246), and getBoundingClientRect().height >= 44; the #listen quote's computed font-size divided by a channel's is <= 1.6."
+        },
+        {
+          "at": "2026-09-05T09:09:06.101Z",
+          "by": "orchestrator",
+          "text": "09:0xZ: the cycle-20 implementer was killed by the orchestrator process restart with 12 files modified but uncommitted in worktree wf_d9fbfbaa-53a-1 (07-decisions.md §1–6 written; red log + battery audit/lint/build logs present; 04-tests-passing not yet). Resumed IN PLACE (no re-do): the relaunched agent continues from that worktree."
         }
       ]
     },
@@ -881,10 +886,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T05:58:06.011Z",
+      "updated": "2026-09-05T09:09:06.184Z",
       "summary": "Two batteries max on this host (4 cores, ~4.5 GB free): ports 5601 and 5602. Worktrees are independent; merges are the orchestrator's; a conflict is resolved locally, never escalated.",
       "decisions": [],
-      "comments": []
+      "comments": [
+        {
+          "at": "2026-09-05T09:09:06.184Z",
+          "by": "orchestrator",
+          "text": "O4 incident 09:03Z: three implementers + verifiers (5601/5602/5603 batteries, 2 workers each) drove load to 72 on 4 cores and the orchestrator process exited; three lanes and the monitor stopped. Rule from now: at most TWO Playwright batteries concurrently (one per free port), verifiers count as a battery; the third lane waits."
+        }
+      ]
     },
     {
       "id": "t_b5b81d5f",
@@ -1165,10 +1176,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T06:20:05.931Z",
-      "updated": "2026-09-05T08:30:41.924Z",
+      "updated": "2026-09-05T09:09:06.060Z",
       "summary": "SPEC-v10.md c20 minus the C-02 rail fix (cycle 11 lands it). #vitrine: 6 SVG drawings, 0 canvases → a shader field under the rail that answers the lit plate; #listen: CSS caliper beat, 0 canvases → a field that answers the caliper-close (the CSS beat stays the single motion beat, MOT-F-4). Files: components/sections/Vitrine/VitrineField.tsx, vitrine.glsl.ts, Vitrine.tsx, Vitrine.module.css, components/sections/Listen/ListenField.tsx, listen.glsl.ts, Listen.tsx, Listen.module.css; tests/overhaul/scene-vitrine.spec.ts + scene-listen.spec.ts (TDD first). Two commits; if the 30-min cap approaches, ship #vitrine and return goal_complete:false naming #listen.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T09:09:06.060Z",
+          "by": "orchestrator",
+          "text": "09:0xZ: implementer done (1150e3e vitrine field + trace stagger; d53d228 listen field; 36/36 section specs, gl=force 1 canvas each at 1440/390, tsc/lint/audit/build green, +0 kB); pipeline consolidated c76459d and it is LIVE (c76459d0). The verifier was killed when the orchestrator process restarted at ~09:03Z (host load 72 with three batteries) — relaunched from the cached implementer result."
+        }
+      ],
       "blocker": null
     },
     {
@@ -1564,10 +1581,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:30:51.764Z",
-      "updated": "2026-09-05T08:48:53.863Z",
+      "updated": "2026-09-05T09:09:06.142Z",
       "summary": "components/gl · major · Verified. A fault inside a scene replaces the whole document: GLCanvas mounts with no scene-local error boundary, so a component-level throw reaches app/error.tsx — 'the scene is never the content' is not enforced in code",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T09:09:06.142Z",
+          "by": "orchestrator",
+          "text": "09:0xZ: resilience lane killed by the restart before any code change (only build-stamp touched); relaunched fresh after the two heavier lanes, to keep the host at ≤2 batteries."
+        }
+      ],
       "blocker": null
     },
     {
