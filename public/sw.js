@@ -6,20 +6,40 @@
  * file served from /sw.js with root scope. Strategy:
  *   • install  — precache the navigation shell ('/') and the CV dossier so the core
  *                takeaway is guaranteed offline on the very next load.
- *   • fetch    — cache-first for same-origin GET, caching each first-visit response. This
- *                replays the build-hashed Next.js chunks/CSS/fonts offline WITHOUT
- *                hard-coding any hashed filename (which changes every build). Navigations
- *                fall back to the cached shell when the network is unavailable.
+ *   • fetch    — NETWORK-FIRST for navigations, cache-first for everything else. Hashed
+ *                sub-resources are cached on first visit, which replays the Next.js
+ *                chunks/CSS/fonts offline WITHOUT hard-coding any hashed filename (which
+ *                changes every build).
  *   • activate — drop superseded versioned caches, then claim open clients.
  * skipWaiting + clients.claim let a freshly-registered worker control the current page so
- * the immediate next reload is served from cache.
+ * the immediate next reload is served by the new worker.
  *
- * Cache-version bump (e.g. v1 → v2) on any precache/strategy change invalidates the old
- * cache via the activate cleanup below — that is the deploy-time refresh mechanism.
+ * WHY NAVIGATIONS ARE NOT CACHE-FIRST
+ * -----------------------------------
+ * They were, and it made every deploy invisible. The document is the only file that names
+ * this build's hashed chunks, so a cached document is a cached *site*: it asks for the
+ * previous build's chunk URLs, which are immutable and correctly answered from cache,
+ * forever. The Owner reloaded production after a deploy and saw the old page — not because
+ * the deploy failed, but because the worker never let the request reach it. Serving the
+ * document from cache buys a few hundred milliseconds and costs correctness, so the
+ * document goes to the network and the cache becomes what this file's header always said
+ * it was: an offline fallback. Sub-resources stay cache-first — they are content-hashed,
+ * so a hit is by definition the right bytes and a revalidation would be a round trip for
+ * nothing.
+ *
+ * WHY THE CACHE VERSION IS A BUILD STAMP
+ * --------------------------------------
+ * It used to be the literal 'v1', with a comment asking a human to bump it. Nobody ever
+ * did, so `activate`'s "delete every cache that is not mine" step had nothing to delete
+ * and a precached shell survived every deploy indefinitely. `__BUILD_STAMP__` is rewritten
+ * in out/sw.js with the commit the build came from (scripts/build/stamp_service_worker.mjs,
+ * called from the static export's post-processing step). A new commit is a new cache name,
+ * so the previous precache is deleted the first time the new worker activates.
  */
 
 const CACHE_PREFIX = 'fm-static-';
-const CACHE_VERSION = 'v1';
+// Rewritten at build time with the short commit SHA. See stamp_service_worker.mjs.
+const CACHE_VERSION = '__BUILD_STAMP__';
 const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
 
 // Stable, non-hashed entry points only. Hashed assets are captured at runtime (below).
@@ -73,6 +93,27 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     (async () => {
       const cache = await caches.open(CACHE_NAME);
+
+      // Navigations: network-first. The freshly fetched document also refreshes the
+      // offline shell, so going offline right after a deploy strands nobody on the
+      // build before last. Only a network failure reaches the cache.
+      if (request.mode === 'navigate') {
+        try {
+          const fresh = await fetch(request);
+          if (fresh && fresh.status === 200 && fresh.type === 'basic') {
+            cache.put('/', fresh.clone());
+          }
+          return fresh;
+        } catch (error) {
+          const shell = (await cache.match(request)) || (await cache.match('/'));
+          if (shell) return shell;
+          // Offline with nothing precached: the failure is the honest answer.
+          throw error;
+        }
+      }
+
+      // Everything else: cache-first. These URLs are content-hashed, so a hit is the
+      // right bytes by construction.
       const cached = await cache.match(request);
       if (cached) return cached;
 
@@ -84,12 +125,9 @@ self.addEventListener('fetch', (event) => {
         }
         return response;
       } catch (error) {
-        // Offline: serve the cached navigation shell for navigations so the core
-        // dossier still renders; otherwise surface the failure.
-        if (request.mode === 'navigate') {
-          const shell = await cache.match('/');
-          if (shell) return shell;
-        }
+        // Offline. Navigations never reach here — they are handled above — so this is a
+        // sub-resource: try once more ignoring the query string, which rescues an asset
+        // cached under a cache-busting parameter the caller has since changed.
         const fallback = await cache.match(request, { ignoreSearch: true });
         if (fallback) return fallback;
         throw error;

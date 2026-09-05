@@ -1,0 +1,224 @@
+TAP version 13
+# Subtest: the deploy pipeline is simple and autonomous
+    # Subtest: is the only workflow that deploys, and there are exactly two workflows
+    ok 1 - is the only workflow that deploys, and there are exactly two workflows
+      ---
+      duration_ms: 5.687412
+      type: 'test'
+      ...
+    # Subtest: runs on every push to main, every ten minutes, and on demand
+    ok 2 - runs on every push to main, every ten minutes, and on demand
+      ---
+      duration_ms: 1.029288
+      type: 'test'
+      ...
+    # Subtest: has one job with no needs on any check
+    ok 3 - has one job with no needs on any check
+      ---
+      duration_ms: 0.260492
+      type: 'test'
+      ...
+    # Subtest: consolidates every remote branch into main before deploying, resolves conflicts itself, and deletes what it merged
+    ok 4 - consolidates every remote branch into main before deploying, resolves conflicts itself, and deletes what it merged
+      ---
+      duration_ms: 0.432003
+      type: 'test'
+      ...
+    # Subtest: deploys with the Firebase service account to the live channel and reads the commit back
+    ok 5 - deploys with the Firebase service account to the live channel and reads the commit back
+      ---
+      duration_ms: 0.365363
+      type: 'test'
+      ...
+    # Subtest: can push (contents: write), queues runs and never cancels a deploy in flight
+    ok 6 - can push (contents: write), queues runs and never cancels a deploy in flight
+      ---
+      duration_ms: 0.14725
+      type: 'test'
+      ...
+    # Subtest: never weakens itself
+    ok 7 - never weakens itself
+      ---
+      duration_ms: 0.234092
+      type: 'test'
+      ...
+    1..7
+ok 1 - the deploy pipeline is simple and autonomous
+  ---
+  duration_ms: 10.128676
+  type: 'suite'
+  ...
+# Subtest: checks report and never gate
+    # Subtest: run on every push and carry no deploy step
+    ok 1 - run on every push and carry no deploy step
+      ---
+      duration_ms: 0.348393
+      type: 'test'
+      ...
+    # Subtest: cover types, lint, the static audit, the node contract tests, the Playwright suite and npm audit
+    ok 2 - cover types, lint, the static audit, the node contract tests, the Playwright suite and npm audit
+      ---
+      duration_ms: 0.290203
+      type: 'test'
+      ...
+    # Subtest: installs the Cloud Functions dependencies before the node contract tests run
+    ok 3 - installs the Cloud Functions dependencies before the node contract tests run
+      ---
+      duration_ms: 0.424574
+      type: 'test'
+      ...
+    # Subtest: uploads hidden report directories (upload-artifact v4 skips dot-paths by default)
+    ok 4 - uploads hidden report directories (upload-artifact v4 skips dot-paths by default)
+      ---
+      duration_ms: 0.138471
+      type: 'test'
+      ...
+    1..4
+ok 2 - checks report and never gate
+  ---
+  duration_ms: 1.696313
+  type: 'suite'
+  ...
+# Subtest: spent budget: no repository request is issued, so nothing 4xx-es
+ok 3 - spent budget: no repository request is issued, so nothing 4xx-es
+  ---
+  duration_ms: 48.784447
+  type: 'test'
+  ...
+# Subtest: fallback numbers are the committed snapshot, not fabricated
+ok 4 - fallback numbers are the committed snapshot, not fabricated
+  ---
+  duration_ms: 24.620786
+  type: 'test'
+  ...
+# Subtest: a 403 on every endpoint degrades without rejecting
+ok 5 - a 403 on every endpoint degrades without rejecting
+  ---
+  duration_ms: 23.431306
+  type: 'test'
+  ...
+# Subtest: a transport failure degrades without rejecting
+ok 6 - a transport failure degrades without rejecting
+  ---
+  duration_ms: 22.58031
+  type: 'test'
+  ...
+# Subtest: a malformed response is rejected rather than rendered
+ok 7 - a malformed response is rejected rather than rendered
+  ---
+  duration_ms: 22.070885
+  type: 'test'
+  ...
+# Subtest: available budget: exactly one repository request, values verbatim
+ok 8 - available budget: exactly one repository request, values verbatim
+  ---
+  duration_ms: 23.483216
+  type: 'test'
+  ...
+# Subtest: a warm cache is served with zero GitHub traffic
+ok 9 - a warm cache is served with zero GitHub traffic
+  ---
+  duration_ms: 23.266595
+  type: 'test'
+  ...
+# Subtest: a stale cache beats the snapshot when the refresh cannot run
+ok 10 - a stale cache beats the snapshot when the refresh cannot run
+  ---
+  duration_ms: 23.868088
+  type: 'test'
+  ...
+# Subtest: a known-spent budget suppresses even the free probe on later navigations
+ok 11 - a known-spent budget suppresses even the free probe on later navigations
+  ---
+  duration_ms: 46.679451
+  type: 'test'
+  ...
+# node:internal/modules/cjs/loader:1430
+#   const err = new Error(message);
+#               ^
+# Error: Cannot find module 'firebase-functions/v2/https'
+# Require stack:
+# - /root/forgotten-mistory/.claude/worktrees/wf_b12ab287-6ab-1/functions/index.js
+# - /root/forgotten-mistory/.claude/worktrees/wf_b12ab287-6ab-1/tests/minivic_chat_function.test.mjs
+# [90m    at Function._resolveFilename (node:internal/modules/cjs/loader:1430:15)[39m
+# [90m    at defaultResolveImpl (node:internal/modules/cjs/loader:1040:19)[39m
+# [90m    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1045:22)[39m
+# [90m    at Function._load (node:internal/modules/cjs/loader:1216:25)[39m
+# [90m    at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)[39m
+# [90m    at Module.require (node:internal/modules/cjs/loader:1527:12)[39m
+# [90m    at require (node:internal/modules/helpers:147:16)[39m
+#     at Object.<anonymous> [90m(/root/forgotten-mistory/.claude/worktrees/wf_b12ab287-6ab-1/[39mfunctions/index.js:22:23[90m)[39m
+# [90m    at Module._compile (node:internal/modules/cjs/loader:1781:14)[39m
+# [90m    at Object..js (node:internal/modules/cjs/loader:1913:10)[39m {
+#   code: [32m'MODULE_NOT_FOUND'[39m,
+#   requireStack: [
+#     [32m'/root/forgotten-mistory/.claude/worktrees/wf_b12ab287-6ab-1/functions/index.js'[39m,
+#     [32m'/root/forgotten-mistory/.claude/worktrees/wf_b12ab287-6ab-1/tests/minivic_chat_function.test.mjs'[39m
+#   ]
+# }
+# Node.js v22.23.1
+# Subtest: tests/minivic_chat_function.test.mjs
+not ok 3 - tests/minivic_chat_function.test.mjs
+  ---
+  duration_ms: 60.578004
+  type: 'test'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_b12ab287-6ab-1/tests/minivic_chat_function.test.mjs:1:1'
+  failureType: 'testCodeFailure'
+  exitCode: 1
+  signal: ~
+  error: 'test failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: Static audit fail-loud contract
+    # Subtest: baseline: audit passes on clean source (exit 0)
+    ok 1 - baseline: audit passes on clean source (exit 0)
+      ---
+      duration_ms: 242.663636
+      type: 'test'
+      ...
+    # Subtest: TONE violation: injecting banned word in string literal causes exit 1
+    ok 2 - TONE violation: injecting banned word in string literal causes exit 1
+      ---
+      duration_ms: 187.736591
+      type: 'test'
+      ...
+    # Subtest: COMPLETE violation: TODO marker causes exit 1
+    ok 3 - COMPLETE violation: TODO marker causes exit 1
+      ---
+      duration_ms: 187.66796
+      type: 'test'
+      ...
+    # Subtest: MULTI-AXIS violation: multiple failures all reported before exit
+    ok 4 - MULTI-AXIS violation: multiple failures all reported before exit
+      ---
+      duration_ms: 192.715419
+      type: 'test'
+      ...
+    # Subtest: JSON report reflects FAIL when violations present
+    ok 5 - JSON report reflects FAIL when violations present
+      ---
+      duration_ms: 227.38382
+      type: 'test'
+      ...
+    # Subtest: JSON report reflects PASS on clean source
+    ok 6 - JSON report reflects PASS on clean source
+      ---
+      duration_ms: 187.198127
+      type: 'test'
+      ...
+    1..6
+ok 13 - Static audit fail-loud contract
+  ---
+  duration_ms: 1229.903166
+  type: 'suite'
+  ...
+1..13
+# tests 27
+# suites 3
+# pass 26
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1381.041513
+node --test (other suites) exit=1 — see 07-decisions.md
