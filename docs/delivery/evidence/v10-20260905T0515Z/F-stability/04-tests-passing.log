@@ -1,0 +1,72 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-error-boundary.spec.ts tests/perf/performance.spec.ts tests/e2e/hero.spec.ts -g SKEW|PERF-03|TC-HERO-15 --repeat-each=3 --workers=2 --reporter=line
+
+Running 21 tests using 2 workers
+
+[1A[2K[1/21] [chromium] › tests/e2e/hero.spec.ts:536:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+[1A[2K[2/21] [chromium] › tests/overhaul/scene-error-boundary.spec.ts:72:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-01: a lazy scene chunk that 404s reloads once, then falls back silently
+[1A[2K[chromium] › tests/e2e/hero.spec.ts:536:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+Crossfade shifts: []
+
+[1A[2K[3/21] [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot
+[1A[2K[4/21] [chromium] › tests/perf/performance.spec.ts:115:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05
+[1A[2K[5/21] [chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 1440: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+[1A[2K[chromium] › tests/perf/performance.spec.ts:115:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05
+CLS: 0.0000
+
+[1A[2K[6/21] [chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 1280: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+[1A[2K[chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 1440: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+PERF-03b @ 1440 CLS: 0.0000 over 0 entries
+
+[1A[2K[7/21] [chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 390: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+[1A[2K[chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 1280: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+PERF-03b @ 1280 CLS: 0.0000 over 0 entries
+
+[1A[2K[8/21] [chromium] › tests/e2e/hero.spec.ts:536:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+[1A[2K[chromium] › tests/e2e/hero.spec.ts:536:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+Crossfade shifts: []
+
+[1A[2K[9/21] [chromium] › tests/overhaul/scene-error-boundary.spec.ts:72:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-01: a lazy scene chunk that 404s reloads once, then falls back silently
+[1A[2K[chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 390: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+PERF-03b @ 390 CLS: 0.0000 over 0 entries
+
+[1A[2K[10/21] [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot
+[1A[2K[11/21] [chromium] › tests/perf/performance.spec.ts:115:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05
+[1A[2K[chromium] › tests/perf/performance.spec.ts:115:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05
+CLS: 0.0000
+
+[1A[2K[12/21] [chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 1440: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+[1A[2K[13/21] [chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 1280: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+[1A[2K[chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 1440: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+PERF-03b @ 1440 CLS: 0.0000 over 0 entries
+
+[1A[2K[14/21] [chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 390: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+[1A[2K[chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 1280: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+PERF-03b @ 1280 CLS: 0.0000 over 0 entries
+
+[1A[2K[15/21] [chromium] › tests/e2e/hero.spec.ts:536:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+[1A[2K[chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 390: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+PERF-03b @ 390 CLS: 0.0000 over 0 entries
+
+[1A[2K[chromium] › tests/e2e/hero.spec.ts:536:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+Crossfade shifts: []
+
+[1A[2K[16/21] [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot
+[1A[2K[17/21] [chromium] › tests/overhaul/scene-error-boundary.spec.ts:72:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-01: a lazy scene chunk that 404s reloads once, then falls back silently
+[1A[2K[18/21] [chromium] › tests/perf/performance.spec.ts:115:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05
+[1A[2K[chromium] › tests/perf/performance.spec.ts:115:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05
+CLS: 0.0000
+
+[1A[2K[19/21] [chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 1440: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+[1A[2K[20/21] [chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 1280: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+[1A[2K[chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 1440: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+PERF-03b @ 1440 CLS: 0.0000 over 0 entries
+
+[1A[2K[21/21] [chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 390: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+[1A[2K[chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 1280: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+PERF-03b @ 1280 CLS: 0.0000 over 0 entries
+
+[1A[2K[chromium] › tests/perf/performance.spec.ts:183:9 › Performance Budgets › PERF-03b @ 390: CLS < 0.05 on a 6x-throttled host, and no shift names the footer
+PERF-03b @ 390 CLS: 0.0000 over 0 entries
+
+[1A[2K  21 passed (1.9m)

@@ -1,0 +1,7 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts -g TC-CONTRAST-02 @ 390 --workers=1 --reporter=line
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium] › tests/a11y/text-contrast.spec.ts:433:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes
+[1A[2K  1 passed (1.2m)
