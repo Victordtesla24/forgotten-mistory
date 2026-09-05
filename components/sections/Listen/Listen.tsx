@@ -229,7 +229,7 @@ export default function Listen() {
             </a>
           </li>
           {listenContent.channels.map((channel) => (
-            <li key={channel.href}>
+            <li key={channel.href} className={channel.kind === 'email' ? styles.pillRow : undefined}>
               <a
                 className={channel.kind === 'email' ? styles.pill : styles.channel}
                 href={channel.href}

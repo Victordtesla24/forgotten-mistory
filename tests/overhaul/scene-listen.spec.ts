@@ -3,6 +3,8 @@ import { join } from 'node:path';
 
 import { test, expect, type Page } from '@playwright/test';
 
+import { listenContent } from '../../app/data/portfolio/listen';
+
 /**
  * SPEC-v10 §R2 / c20 — `#listen` carries a flagship scene, and it stays quiet.
  *
@@ -21,6 +23,9 @@ import { test, expect, type Page } from '@playwright/test';
 const LISTEN = '#listen';
 const FIELD = `${LISTEN} [data-close]`;
 const CALIPER = `${LISTEN} svg[data-caliper]`;
+
+/** The four contact routes, plus the engagement plate that leads them. */
+const ANCHORS = listenContent.channels.length + 1;
 
 const LISTEN_DIR = join(process.cwd(), 'components/sections/Listen');
 const GLSL_SOURCE = join(LISTEN_DIR, 'listen.glsl.ts');
@@ -136,7 +141,11 @@ test.describe('TC-SCENE-LISTEN: the instrument is set down in a field of light',
       .evaluate((el) => getComputedStyle(el).animationDuration);
     expect(still).toBe('0s');
 
-    await expect(page.locator(`${LISTEN} a`)).toHaveCount(4);
+    // The four routes plus the one engagement plate the section gained in
+    // cycle 20 (R-c13 CC-02): with no scene, the closing screen still
+    // carries every way a reader has of answering it.
+    await expect(page.locator(`${LISTEN} a`)).toHaveCount(ANCHORS);
+    await expect(page.locator(`${LISTEN} [data-cta="engage"]`)).toHaveCount(1);
   });
 
   test('TC-SCENE-LISTEN-05: with WebGL unavailable the closing screen is whole and silent', async ({
@@ -161,7 +170,11 @@ test.describe('TC-SCENE-LISTEN: the instrument is set down in a field of light',
 
     await expect(page.locator(`${LISTEN} canvas`)).toHaveCount(0);
     await expect(page.locator(CALIPER)).toHaveCount(1);
-    await expect(page.locator(`${LISTEN} a`)).toHaveCount(4);
+    // The four routes plus the one engagement plate the section gained in
+    // cycle 20 (R-c13 CC-02): with no scene, the closing screen still
+    // carries every way a reader has of answering it.
+    await expect(page.locator(`${LISTEN} a`)).toHaveCount(ANCHORS);
+    await expect(page.locator(`${LISTEN} [data-cta="engage"]`)).toHaveCount(1);
     expect(pageErrors, `page errors with no WebGL:\n${pageErrors.join('\n')}`).toHaveLength(0);
   });
 

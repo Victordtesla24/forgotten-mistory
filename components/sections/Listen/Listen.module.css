@@ -225,13 +225,13 @@
    one column on a phone without a second declaration (R-c8 C-09). */
 .channels {
     display: grid;
-    /* The track floor is the email plate's own measure — 23 mono characters
-       plus its --space-4 padding, about 20 rem at 1440 — not the 16 rem the
-       direction guessed at: 16 rem tracks are 288 px wide there and the plate
-       is 315, so the address overlapped the phone route beside it. At this
-       floor the four routes lay out two-up on a desktop, two rows of two, and
-       collapse to one column on a phone with no second declaration. */
-    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    /* The direction's own floor (R-c8 C-09). It works because the two wide
+       objects — the engagement plate and the email pill, both of which measure
+       more than a 16 rem track — take a row each, so what the tracks have to
+       hold is three short addresses. At 1440 that is three 394 px tracks and
+       the rightmost route ends at 0.85 of the frame; at 390 the row collapses
+       to one column with no second declaration. */
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
     gap: var(--space-4);
     margin: 0;
     padding: 0;
@@ -241,6 +241,14 @@
 /* The plate leads the routes and holds the section's spine, so its left edge is
    the heading's left edge. */
 .engageRow {
+    grid-column: 1 / -1;
+}
+
+/* The email takes the row under the plate. It is the widest route and the one a
+   client will actually take, so it sits on the spine directly beneath the
+   action rather than squeezing a 25 rem floor onto every track and leaving the
+   short addresses stranded in the left half of the frame. */
+.pillRow {
     grid-column: 1 / -1;
 }
 
