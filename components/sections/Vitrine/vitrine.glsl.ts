@@ -102,8 +102,23 @@ export const vitrineFieldFragmentShader = /* glsl */ `
     // The gallery spot, sized to the piece it is on. 24.0 puts the gather at a
     // sixteenth of its core by 0.20 of the stage either side of uCentre, which
     // at 1440 is the lit plate's own edge and the 24 px gap beyond it.
+    //
+    // A phone is a different cabinet, and dx already says so: the slot is
+    // about as tall as it is wide there, so aspect falls to ~0.9 and the same
+    // 24.0 spreads the gather across the whole stage instead of gathering it.
+    // The reviewer measured the consequence — peak 0.2918 against a 0.35 floor
+    // at 390 with ?gl=force (t_rev_s56, live ff67273b): a field with no core
+    // for the eye to land on. narrow is 1 where the slot is squarer than 1.6
+    // and 0 from 2.6 up, so at 1440 (aspect ~3.1) every term below is exactly
+    // what it was and nothing about that width can change. Where it is 1 the
+    // pool tightens and its core is paid up. Both act on gather, which rides
+    // pool and is therefore anchored on the lit plate — opacity 1 over an
+    // opaque --ink-900, so nothing behind it is ever composited into a caption.
+    // The ambient the neighbours' captions do see is untouched.
+    float narrow = 1.0 - smoothstep(1.6, 2.6, aspect);
     float dx = (p.x - uCentre) * aspect;
-    float pool = exp(-dx * dx * 24.0);
+    float pool = exp(-dx * dx * mix(24.0, 42.0, narrow));
+    float core = 1.0 + 0.62 * narrow;
 
     // Three lookups, and no more. One slow wash so the pool is not a clean
     // ellipse; one drift carried by the rail's own scroll, so the grain travels
@@ -123,7 +138,7 @@ export const vitrineFieldFragmentShader = /* glsl */ `
     // level the still and the shader together leave a --mist-200 caption on an
     // unlit plate at better than 4.7:1.
     float ambient = cabinet * (0.055 + 0.035 * wash);
-    float gather = cabinet * pool
+    float gather = cabinet * pool * core
       * (0.56 + 0.16 * seed)
       * (0.80 + 0.26 * breath)
       * (0.86 + 0.20 * drift);

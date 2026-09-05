@@ -1,0 +1,25 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-vitrine.spec.ts --workers=1 --reporter=list
+
+Running 11 tests using 1 worker
+
+  ✓   1 [chromium] › tests/overhaul/scene-vitrine.spec.ts:78:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-01: exactly one canvas mounts under the rail once the section is in view (4.5s)
+  ✓   2 [chromium] › tests/overhaul/scene-vitrine.spec.ts:92:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-02: the canvas is aria-hidden, behind the plates and behind the heading (4.4s)
+  ✓   3 [chromium] › tests/overhaul/scene-vitrine.spec.ts:123:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-03: the field reads the same lit plate the rail does (5.2s)
+  ✓   4 [chromium] › tests/overhaul/scene-vitrine.spec.ts:142:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-04: under reduced motion there is no canvas and the six drawings are whole (3.7s)
+  ✓   5 [chromium] › tests/overhaul/scene-vitrine.spec.ts:161:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-05: with WebGL unavailable the cabinet is whole and silent (3.6s)
+  ✓   6 [chromium] › tests/overhaul/scene-vitrine.spec.ts:188:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-06: the field is monochrome, palette-sourced and cheap per pixel (10ms)
+  ✓   7 [chromium] › tests/overhaul/scene-vitrine.spec.ts:213:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-07: the trace-on reads as a trace and still lands inside 900 ms (MOT-C13-03) (4.5s)
+  ✓   8 [chromium] › tests/overhaul/scene-vitrine.spec.ts:252:7 › TC-SCENE-VITRINE: a field of light under the cabinet › TC-SCENE-VITRINE-08: the rail travels under no-preference and jumps under reduce (MOT-C13-06) (4.3s)
+  ✓   9 [chromium] › tests/overhaul/scene-vitrine.spec.ts:305:7 › TC-VIT: a plate at rest is still a drawing, and the work ends in an invitation › TC-VIT-V1: a resting (unlit, undrawn) plate renders visible strokes (4.7s)
+  ✓  10 [chromium] › tests/overhaul/scene-vitrine.spec.ts:354:7 › TC-VIT: a plate at rest is still a drawing, and the work ends in an invitation › TC-VIT-V2: an engagement CTA follows the curated work (5.0s)
+
+=== TC-VIT-V3 ===
+plate 2 (rest, ground rgb(28,28,28)): primary 5.54:1, guide 3.90:1
+plate 3 (rest, ground rgb(16,16,16)): primary 5.37:1, guide 3.65:1
+plate 4 (rest, ground rgb(11,11,11)): primary 5.18:1, guide 3.37:1
+plate 5 (rest, ground rgb(11,11,11)): primary 5.38:1, guide 3.76:1
+plate 6 (rest, ground rgb(11,11,11)): primary 5.80:1, guide 3.76:1
+  ✓  11 [chromium] › tests/overhaul/scene-vitrine.spec.ts:496:7 › TC-VIT-V3: the mechanism drawings read as visualisations › TC-VIT-V3: every plate at rest carries its strokes and labels at AA on its own ground (7.3s)
+
+  11 passed (48.8s)

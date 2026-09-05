@@ -7,7 +7,13 @@
 .drawing {
     display: block;
     width: 100%;
-    color: var(--mist-200);
+    /* --white, not --mist-200 (G-V3). A drawing is only a visualisation if it
+       can be read as one: at rest a stroke is composited through its own
+       element opacity, the resting trace weight and the plate's 0.62, and
+       --mist-200 through that stack landed the principal lines at 1.4–2.4:1
+       (ADV-REVIEW-20260905T1451Z §Vitrine). The ink is the brightest the
+       palette has, and the weights below are set from it. */
+    color: var(--white);
     /* Every drawing occupies the same band, whatever proportions its own
        viewBox has. The deploy-loop drawing is authored on a 320x122 crop while
        the other five are 320x200; with `height: auto` that made its plate 99px
@@ -62,7 +68,16 @@
        initial value so the rule that used to hide the drawing cannot come back
        silently (TC-VIT-V1 reads this exact property). */
     stroke-dashoffset: 0;
-    stroke-opacity: 0.5;
+    /* The resting trace weight (G-V3). At 0.5 the whole drawing was a rumour:
+       through the plate's 0.62 the principal lines painted at an effective
+       0.28 and measured under 2:1 on the plate's ground, which is a texture,
+       not a mechanism. At 0.9 the same lines land at ~0.51 — over 5:1 — and
+       the tonal hierarchy authored into Drawings.tsx (0.66 for a guide rule,
+       1.0 for a principal line) is preserved intact above it, with the
+       faintest guide still clearing 3:1. The light still adds: the lit plate
+       traces at 1.0 through an opacity-1 plate, which is strictly heavier
+       than any resting stroke (TC-VIT-V1 asserts exactly that). */
+    stroke-opacity: 0.9;
 }
 
 [data-lit] .stroke,

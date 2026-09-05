@@ -41,7 +41,7 @@ function PipelineGate() {
         any claim the résumé does not support.
       </desc>
       {/* The line the application travels. */}
-      <line pathLength="1" className={styles.stroke} x1="12" y1="96" x2="308" y2="96" stroke="currentColor" strokeWidth="0.75" opacity="0.35" />
+      <line pathLength="1" className={styles.stroke} x1="12" y1="96" x2="308" y2="96" stroke="currentColor" strokeWidth="0.75" opacity="0.742" />
       {nodes.map((x, i) => (
         <circle pathLength="1" className={styles.stroke}
           key={x}
@@ -51,22 +51,22 @@ function PipelineGate() {
           fill="none"
           stroke="currentColor"
           strokeWidth="0.75"
-          opacity={i === 19 ? 0.9 : 0.5}
+          opacity={i === 19 ? 0.978 : 0.806}
         />
       ))}
       {/* The gate. */}
-      <line pathLength="1" className={styles.stroke} x1="248" y1="34" x2="248" y2="158" stroke="currentColor" strokeWidth="1" opacity="0.9" />
+      <line pathLength="1" className={styles.stroke} x1="248" y1="34" x2="248" y2="158" stroke="currentColor" strokeWidth="1" opacity="0.978" />
       <text x="248" y="28" className={styles.label} textAnchor="middle">
         GUARD
       </text>
       {/* A proposed sentence, struck through and reverted. */}
-      <line pathLength="1" className={styles.stroke} x1="196" y1="62" x2="292" y2="62" stroke="currentColor" strokeWidth="3" opacity="0.16" />
-      <line pathLength="1" className={styles.stroke} x1="196" y1="62" x2="292" y2="62" stroke="currentColor" strokeWidth="0.75" opacity="0.75" />
+      <line pathLength="1" className={styles.stroke} x1="196" y1="62" x2="292" y2="62" stroke="currentColor" strokeWidth="3" opacity="0.66" />
+      <line pathLength="1" className={styles.stroke} x1="196" y1="62" x2="292" y2="62" stroke="currentColor" strokeWidth="0.75" opacity="0.914" />
       <path pathLength="1" className={styles.stroke}
         d="M292 74 L262 74"
         stroke="currentColor"
         strokeWidth="0.75"
-        opacity="0.6"
+        opacity="0.849"
         markerEnd="url(#arrow)"
       />
       <text x="196" y="86" className={styles.label}>
@@ -107,7 +107,7 @@ function RebuildLoop() {
               fill="none"
               stroke="currentColor"
               strokeWidth="0.75"
-              opacity={label === 'LIVE' ? 0.9 : 0.5}
+              opacity={label === 'LIVE' ? 0.978 : 0.806}
             />
             <text x={x + width / 2} y="97" className={styles.label} textAnchor="middle">
               {label}
@@ -120,7 +120,7 @@ function RebuildLoop() {
                 y2="93"
                 stroke="currentColor"
                 strokeWidth="0.75"
-                opacity="0.4"
+                opacity="0.763"
               />
             )}
           </g>
@@ -132,7 +132,7 @@ function RebuildLoop() {
         fill="none"
         stroke="currentColor"
         strokeWidth="0.75"
-        opacity="0.55"
+        opacity="0.828"
       />
       <text x="150" y="162" className={styles.label} textAnchor="middle">
         PROBE FAILS → PREVIOUS IMAGE
@@ -155,14 +155,14 @@ function VerifierLoop() {
         exit on the right stays shut until a signed verifier reports a pass; the repository
         generates and checks those contract hashes in its own hooks.
       </desc>
-      <circle pathLength="1" className={styles.stroke} cx={cx} cy={cy} r={r} fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.3" />
+      <circle pathLength="1" className={styles.stroke} cx={cx} cy={cy} r={r} fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.72" />
       {stages.map((label, i) => {
         const angle = (i / stages.length) * Math.PI * 2 - Math.PI / 2;
         const x = cx + Math.cos(angle) * r;
         const y = cy + Math.sin(angle) * r;
         return (
           <g key={label}>
-            <circle pathLength="1" className={styles.stroke} cx={x} cy={y} r="3" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
+            <circle pathLength="1" className={styles.stroke} cx={x} cy={y} r="3" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.935" />
             <text
               x={x + Math.cos(angle) * 16}
               y={y + Math.sin(angle) * 16 + 3}
@@ -175,8 +175,8 @@ function VerifierLoop() {
         );
       })}
       {/* The exit, and the signature holding it. */}
-      <line pathLength="1" className={styles.stroke} x1={cx + r} y1={cy} x2="272" y2={cy} stroke="currentColor" strokeWidth="0.75" opacity="0.7" />
-      <line pathLength="1" className={styles.stroke} x1="252" y1="82" x2="252" y2="118" stroke="currentColor" strokeWidth="1" opacity="0.9" />
+      <line pathLength="1" className={styles.stroke} x1={cx + r} y1={cy} x2="272" y2={cy} stroke="currentColor" strokeWidth="0.75" opacity="0.892" />
+      <line pathLength="1" className={styles.stroke} x1="252" y1="82" x2="252" y2="118" stroke="currentColor" strokeWidth="1" opacity="0.978" />
       <text x="272" y={cy - 8} className={styles.label} textAnchor="end">
         EXIT
       </text>
@@ -211,7 +211,7 @@ function ReconstructionBands() {
             y2={y}
             stroke="currentColor"
             strokeWidth="0.75"
-            opacity={0.22 + (i % 3) * 0.08}
+            opacity={0.686 + (i % 3) * 0.034}
           />
         );
       })}
@@ -227,7 +227,7 @@ function ReconstructionBands() {
             y2={y}
             stroke="currentColor"
             strokeWidth="0.75"
-            opacity={0.3 + i * 0.06}
+            opacity={0.72 + i * 0.026}
           />
         );
       })}
@@ -237,7 +237,7 @@ function ReconstructionBands() {
         fill="none"
         stroke="currentColor"
         strokeWidth="0.9"
-        opacity="0.85"
+        opacity="0.957"
       />
       <text x="302" y="134" className={styles.label} textAnchor="end">
         FALLBACK
@@ -254,7 +254,7 @@ function ReconstructionBands() {
             y2={y}
             stroke="currentColor"
             strokeWidth="0.75"
-            opacity="0.75"
+            opacity="0.914"
           />
         );
       })}
@@ -272,22 +272,22 @@ function DiamondChart() {
         caliper reading the Lahiri ayanamsa the repository configures as its default; a drift
         beyond tolerance fails the build.
       </desc>
-      <rect pathLength="1" className={styles.stroke} x="70" y="26" width="148" height="148" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.5" />
-      <line pathLength="1" className={styles.stroke} x1="70" y1="26" x2="218" y2="174" stroke="currentColor" strokeWidth="0.75" opacity="0.35" />
-      <line pathLength="1" className={styles.stroke} x1="218" y1="26" x2="70" y2="174" stroke="currentColor" strokeWidth="0.75" opacity="0.35" />
+      <rect pathLength="1" className={styles.stroke} x="70" y="26" width="148" height="148" fill="none" stroke="currentColor" strokeWidth="0.75" opacity="0.806" />
+      <line pathLength="1" className={styles.stroke} x1="70" y1="26" x2="218" y2="174" stroke="currentColor" strokeWidth="0.75" opacity="0.742" />
+      <line pathLength="1" className={styles.stroke} x1="218" y1="26" x2="70" y2="174" stroke="currentColor" strokeWidth="0.75" opacity="0.742" />
       <path pathLength="1" className={styles.stroke}
         d="M144 26 L218 100 L144 174 L70 100 Z"
         fill="none"
         stroke="currentColor"
         strokeWidth="0.75"
-        opacity="0.5"
+        opacity="0.806"
       />
       {/* The isolated house. */}
       <path d="M144 26 L181 63 L144 100 L107 63 Z" fill="currentColor" opacity="0.07" />
       {/* A caliper closing onto the measurement. */}
-      <line pathLength="1" className={styles.stroke} x1="232" y1="40" x2="232" y2="86" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
-      <line pathLength="1" className={styles.stroke} x1="228" y1="40" x2="236" y2="40" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
-      <line pathLength="1" className={styles.stroke} x1="228" y1="86" x2="236" y2="86" stroke="currentColor" strokeWidth="0.75" opacity="0.8" />
+      <line pathLength="1" className={styles.stroke} x1="232" y1="40" x2="232" y2="86" stroke="currentColor" strokeWidth="0.75" opacity="0.935" />
+      <line pathLength="1" className={styles.stroke} x1="228" y1="40" x2="236" y2="40" stroke="currentColor" strokeWidth="0.75" opacity="0.935" />
+      <line pathLength="1" className={styles.stroke} x1="228" y1="86" x2="236" y2="86" stroke="currentColor" strokeWidth="0.75" opacity="0.935" />
       <text x="242" y="60" className={styles.label}>
         ayanamsa
       </text>
@@ -307,7 +307,7 @@ function ScrollRail() {
         A vertical rail with six ticks, one for each section of this site, and a single node
         travelling down it — the position you are currently reading from.
       </desc>
-      <line pathLength="1" className={styles.stroke} x1="160" y1="20" x2="160" y2="180" stroke="currentColor" strokeWidth="0.75" opacity="0.35" />
+      <line pathLength="1" className={styles.stroke} x1="160" y1="20" x2="160" y2="180" stroke="currentColor" strokeWidth="0.75" opacity="0.742" />
       {Array.from({ length: 6 }, (_, i) => {
         const y = 26 + i * 29;
         const active = i === 4;
@@ -320,7 +320,7 @@ function ScrollRail() {
               y2={y}
               stroke="currentColor"
               strokeWidth="0.75"
-              opacity={active ? 0.9 : 0.4}
+              opacity={active ? 0.978 : 0.763}
             />
             <text x="188" y={y + 3} className={styles.label} opacity={active ? 0.95 : 0.45}>
               {['HERO', 'ABOUT', 'EXPERIENCE', 'SKILLS', 'VITRINE', 'LISTEN'][i]}
@@ -328,7 +328,7 @@ function ScrollRail() {
           </g>
         );
       })}
-      <circle pathLength="1" className={styles.stroke} cx="160" cy="142" r="3.5" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.95" />
+      <circle pathLength="1" className={styles.stroke} cx="160" cy="142" r="3.5" fill="none" stroke="currentColor" strokeWidth="1" opacity="1" />
       <text x="132" y="146" className={styles.label} textAnchor="end">
         YOU ARE HERE
       </text>
