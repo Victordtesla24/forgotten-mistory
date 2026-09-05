@@ -1,0 +1,65 @@
+# G-H3 - S-1 live baseline: served CSS chroma scan
+date: 2026-09-05T12:47:16Z
+live: https://forgotten-mistory.web.app/
+name="build-commit" content="7ebf3254"
+
+$ curl -fsS https://forgotten-mistory.web.app/ | grep -o "/_next/static/css/[^"]*"
+/_next/static/css/5665d0342d4e5f0e.css
+/_next/static/css/c5672913266e1766.css
+/_next/static/css/f5fd55b6698ae52f.css
+
+$ node scripts/validate/css_chroma_scan.mjs <each downloaded bundle>
+FAIL  ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css  (47 finding(s))
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .border-orange-400
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .border-red-500
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .border-zinc-200
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .border-zinc-300
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .bg-blue-600
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .bg-gray-800
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .bg-green-400
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .bg-green-500
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .bg-red-500
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .bg-zinc-400
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .bg-zinc-500
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .stroke-amber-400
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .text-blue-500
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .text-gray-50
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .text-red-500
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .text-slate-200
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .text-slate-300
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .text-slate-400
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: hue utility .text-zinc-100
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #fb2c3666 (spread 207)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #080b11 (spread 9)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #1e2939cc (spread 27)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #fb2c3633 (spread 207)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #9f9fa9 (spread 10)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #71717b1a (spread 10)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #ff735066 (spread 175)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #c9cdd673 (spread 13)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #71717b33 (spread 10)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #e8ebf042 (spread 8)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #e8ebf06b (spread 8)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #aeb6c21f (spread 20)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #282a3242 (spread 10)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: #282a3238 (spread 10)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .237 …)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .183 …)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .189 …)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .209 …)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .219 …)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .214 …)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .245 …)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .013 …)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .022 …)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .04 …)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .041 …)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .033 …)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .015 …)
+      ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/5665d0342d4e5f0e.css :: oklch(… .016 …)
+PASS  ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/c5672913266e1766.css  (0 finding(s))
+PASS  ../../../../../tmp/claude-0/-root-forgotten-mistory/46afcf46-5464-449d-9c0d-a9f0b25357cd/scratchpad/live/f5fd55b6698ae52f.css  (0 finding(s))
+
+3 stylesheet(s) scanned · 47 finding(s)
+rule: channel spread > 6, OKLCH chroma > 0.01, HSL saturation > 3%, or a Tailwind hue utility; gold is the one sanctioned hue
+(exit 1 = findings present)

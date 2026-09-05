@@ -1168,7 +1168,7 @@ const MiniVicBot = () => {
                     <span>{msg.role === "user" ? "You" : "Vic"}</span>
                     <div className="flex gap-1 items-center">
                       {msg.mode && (
-                        <span className="rounded-full border border-zinc-200/25 bg-zinc-500/10 px-2 py-[2px] text-[10px] uppercase tracking-wide text-zinc-100">
+                        <span className="rounded-full border border-neutral-200/25 bg-neutral-500/10 px-2 py-[2px] text-[10px] uppercase tracking-wide text-neutral-100">
                           {PERSONA_MODES.find((m) => m.key === msg.mode)?.label ?? msg.mode}
                         </span>
                       )}
@@ -1192,9 +1192,26 @@ const MiniVicBot = () => {
                           </div>
                         </button>
                       )}
+                      {msg.polloTaskId && !msg.videoUrl && (
+                         <span className="flex animate-pulse items-center gap-1 rounded-md border border-neutral-300/40 bg-neutral-500/10 px-2 py-1 text-neutral-200">
+                           <Sparkles size={12} /> Generating Video...
+                         </span>
+                      )}
+                      {msg.videoUrl && (
+                        <button
+                          onClick={() => playGeneratedVideo(msg.videoUrl!)}
+                          disabled={isMuted}
+                          className="rounded-md border border-neutral-300/40 bg-neutral-500/10 px-2 py-1 text-neutral-100 hover:bg-neutral-500/20"
+                        >
+                          <div className="flex items-center gap-1">
+                            <Video size={12} />
+                            <span>Play HD Video</span>
+                          </div>
+                        </button>
+                      )}
                       <button
                         onClick={() => handleCopy(msg.text, msg.id)}
-                        className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-slate-200 hover:border-neutral-300/70 hover:bg-neutral-500/10"
+                        className="rounded-md border border-white/20 bg-white/5 px-2 py-1 text-neutral-200 hover:border-neutral-300/70 hover:bg-neutral-500/10"
                       >
                         <div className="flex items-center gap-1">
                           <Copy size={12} />
@@ -1255,7 +1272,7 @@ const MiniVicBot = () => {
                 className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-1.5 transition-colors ${
                   isListening
                     ? "bg-neutral-500/15 text-neutral-300 hover:text-neutral-200"
-                    : "text-slate-300 hover:bg-slate-800 hover:text-zinc-200"
+                    : "text-neutral-300 hover:bg-neutral-800 hover:text-neutral-200"
                 }`}
                 title="Use Microphone"
               >
@@ -1270,7 +1287,7 @@ const MiniVicBot = () => {
                       handleCopy(last.text, lastAnswerId);
                     }
                   }}
-                  className="absolute right-10 top-1/2 -translate-y-1/2 text-slate-400 hover:text-zinc-200"
+                  className="absolute right-10 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-200"
                   title="Copy last answer"
                 >
                   <Copy size={14} />
