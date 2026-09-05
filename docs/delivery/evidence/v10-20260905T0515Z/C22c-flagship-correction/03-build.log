@@ -1,14 +1,10 @@
 npm notice run forgotten-mistory@2.0.0 build:static
 npm notice run rm -rf .next out && node scripts/build/build_stamp.mjs && node scripts/build/cv_fingerprint.mjs && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs && node scripts/validate/built_output_secret_scan.mjs --dir out
-[build-stamp] 8 tracked file(s) differ from HEAD — the page will carry no commit stamp, because it was not built from one:
-  app/globals.css
-  components/sections/About/Compass.module.css
-  components/sections/About/field.glsl.ts
+[build-stamp] 4 tracked file(s) differ from HEAD — the page will carry no commit stamp, because it was not built from one:
   components/sections/Experience/Experience.module.css
   components/sections/Hero/Hero.module.css
-  components/sections/Hero/atmosphere.glsl.ts
-  tests/a11y/text-contrast.spec.ts
-  tests/overhaul/flagship-visibility.spec.ts
+  docs/delivery/evidence/v10-20260905T0515Z/C22c-flagship-correction/03-build.log
+  docs/delivery/evidence/v10-20260905T0515Z/C22c-flagship-correction/05b-section-suites.log
 [build-stamp] tree was not clean — no commit stamp will render
 [cv-fingerprint] 16b856c0 · 157615 bytes
  ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
@@ -23,7 +19,7 @@ npm notice run rm -rf .next out && node scripts/build/build_stamp.mjs && node sc
      · optimizePackageImports
 
    Creating an optimized production build ...
- ✓ Compiled successfully in 33.3s
+ ✓ Compiled successfully in 25.1s
    Skipping validation of types
    Skipping linting
    Collecting page data ...
@@ -59,7 +55,7 @@ Route (app)                                 Size  First Load JS
 [prune] removed out/performance-benchmark.txt
 [prune] removed out/_next/static/chunks/app/performance-benchmark
 [prune] done — 3 artifact(s) removed from the static export
-[sw-stamp] out/sw.js cache name is fm-static-9ba97a5c (git HEAD); precaching 68 build asset(s)
+[sw-stamp] out/sw.js cache name is fm-static-13f1b820 (git HEAD); precaching 68 build asset(s)
   BUILT-OUTPUT SECRET SCAN (NFR-SEC)
   ----------------------------------------------------------
   scanned : 48 files under out/

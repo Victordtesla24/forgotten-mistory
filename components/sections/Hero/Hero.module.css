@@ -404,10 +404,12 @@
        the strata get: the type carries its ground, the scene keeps its light.
        0.88 over the brightest fog this shader draws lands the ground inside
        the `#2A2A2A` ceiling `--mist-400` needs for 4.5:1. The plate is exactly
-       the entry's own column — no padding, no negative margin — so the rule
-       above it keeps its width and the three right jaws keep their vertical. */
+       the entry's own column and its existing box — no padding, no negative
+       margin, not a pixel of extra height. The first version gave it 0.35rem of
+       bottom padding and TC-HERO-09 caught it immediately: nine pixels of new
+       hero is enough to push "Download CV" under the fold at 1280x720, and the
+       fold is the one thing in this section a recruiter is guaranteed to see. */
     padding-top: var(--space-2);
-    padding-bottom: 0.35rem;
     border-top: 1px solid var(--token-border-default);
     background: rgb(10 10 10 / 0.88);
 }
@@ -469,7 +471,7 @@
        glyph moves. */
     width: fit-content;
     max-width: 100%;
-    padding: 0.1rem 0.4rem;
+    padding-inline: 0.4rem;
     margin-inline: -0.4rem;
     border-radius: 2px;
     background: rgb(10 10 10 / 0.88);

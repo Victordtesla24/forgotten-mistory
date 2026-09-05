@@ -401,11 +401,13 @@
     color: var(--mist-200);
     /* The same plate as `.trackCompany`, for the same measured reason: the
        readout sits at the right end of its own bar, over lit sediment, and on
-       ?gl=force "3.3 yr" sampled 3.84:1. It is absolutely positioned from a
-       `left` written inline, so the padding is given back on that side only. */
+       ?gl=force "3.3 yr" sampled 3.84:1. No inline padding, unlike the company
+       label above: this one is absolutely positioned from a `left` written
+       inline, and TC-SCENE-EXP-05 holds every duration inside the chart card —
+       widening the box on the right is the one thing that can push the last
+       bar's readout over that edge. The plate is the label's own box exactly,
+       which is all the contrast sampler reads anyway. */
     background: rgb(10 10 10 / 0.88);
-    padding-inline: 0.28rem;
-    margin-left: -0.28rem;
     border-radius: 2px;
     white-space: nowrap;
     transition: color var(--motion-fast) var(--motion-ease-standard);
