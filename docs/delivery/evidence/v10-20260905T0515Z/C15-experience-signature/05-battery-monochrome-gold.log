@@ -1,0 +1,51 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/monochrome tests/a11y/gold-contrast.spec.ts --reporter=list
+
+[2mRunning [22m15[2m tests using [22m2[2m workers[22m
+
+
+=== GC-02 status labels (#skills) ===
+  "measured in production"  6.28:1  (fg #939393 on modal bg #0e0e0e, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 6.32–6.24:1)
+  "measured in production"  6.28:1  (fg #939393 on modal bg #0e0e0e, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 6.32–6.24:1)
+  "measured in production"  6.28:1  (fg #939393 on modal bg #0e0e0e, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 6.32–6.19:1)
+  "measured in production"  6.28:1  (fg #939393 on modal bg #0e0e0f, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 6.28–6.24:1)
+  "measured in production"  6.28:1  (fg #939393 on modal bg #0e0e0f, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 6.33–6.24:1)
+  "measured in production"  6.28:1  (fg #939393 on modal bg #0e0e0f, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 6.33–1.08:1)
+  [32m✓[39m  [2m 1 [22m[chromium] › tests/a11y/gold-contrast.spec.ts:328:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-02: every skills status label clears 4.5:1[2m (50.6s)[22m
+
+=== GC-01 live repository URLs (#vitrine) ===
+  "https://aether.srv1356245.hstgr.cloud"  8.71:1  (fg #c9a84c on modal bg #090909, 12px/400, opacity chain 1, ground rgb(10, 10, 10); spread 8.71–8.66:1)
+  "https://abentertainment.com.au"  5.62:1  (fg #948869 on modal bg #0b0b0b, 12px/400, opacity chain 0.62, ground rgb(10, 10, 10); spread 5.63–5.62:1)
+  "https://forgotten-mistory.web.app"  8.71:1  (fg #c9a84c on modal bg #090909, 12px/400, opacity chain 1, ground rgb(10, 10, 10); spread 8.71–8.66:1)
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited[2m (53.7s)[22m
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(246, 246, 246)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold[2m (3.7s)[22m
+
+=== GC-03 gold-on---ink-500 sweep === 0 offender(s)
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/a11y/gold-contrast.spec.ts:343:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-03: no gold text is ever painted on an --ink-500 ground[2m (8.4s)[22m
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine[2m (2.7s)[22m
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine[2m (4.4s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine[2m (3.5s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/monochrome/monochrome.spec.ts:118:7 › Monochrome Compliance › MONO-01: :root publishes the grey ramp and exactly the four sanctioned gold tokens[2m (3.1s)[22m
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine[2m (4.1s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/monochrome/monochrome.spec.ts:146:7 › Monochrome Compliance › MONO-02: Body background is achromatic[2m (3.0s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/monochrome/monochrome.spec.ts:153:7 › Monochrome Compliance › MONO-03: No inline style declares a colour outside the palette[2m (5.4s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/monochrome/monochrome.spec.ts:207:7 › Monochrome Compliance › MONO-04: Every rendered colour in every section is achromatic or the sanctioned gold[2m (4.8s)[22m
+  [32m✓[39m  [2m14 [22m[chromium] › tests/monochrome/monochrome.spec.ts:244:7 › Monochrome Compliance › MONO-06: Navigation overlay is achromatic when open[2m (2.0s)[22m
+  [32m✓[39m  [2m15 [22m[chromium] › tests/monochrome/monochrome.spec.ts:252:7 › Monochrome Compliance › MONO-07: The check still rejects an unsanctioned hue[2m (1.7s)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/monochrome/monochrome.spec.ts:218:7 › Monochrome Compliance › MONO-05: The sanctioned accent is actually in use, and only as the accent[2m (5.9s)[22m
+
+[32m  15 passed[39m[2m (1.5m)[22m

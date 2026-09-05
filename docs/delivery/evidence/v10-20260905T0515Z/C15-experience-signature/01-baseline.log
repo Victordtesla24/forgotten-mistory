@@ -1,0 +1,48 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/experience.spec.ts --reporter=list
+
+[2mRunning [22m13[2m tests using [22m2[2m workers[22m
+
+  [32m✓[39m  [2m 1 [22m[chromium] › tests/e2e/experience.spec.ts:41:7 › Experience › TC-EXP-02: bar lengths are proportional to real durations[2m (3.6s)[22m
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/e2e/experience.spec.ts:21:7 › Experience › TC-EXP-01: every role from the CV appears in the chart and the list[2m (3.4s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/e2e/experience.spec.ts:67:7 › Experience › TC-EXP-04: each chart row is a real button with an accessible name[2m (2.6s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/e2e/experience.spec.ts:60:7 › Experience › TC-EXP-03: the axis is labelled with real years[2m (3.0s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/e2e/experience.spec.ts:75:7 › Experience › TC-EXP-05: the current role opens by default and lists its bullets[2m (2.1s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/e2e/experience.spec.ts:93:7 › Experience › TC-EXP-07: headline figures carry their role, not a bare number[2m (1.6s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/e2e/experience.spec.ts:82:7 › Experience › TC-EXP-06: roles expand and collapse from the keyboard[2m (3.4s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1280: every chart row, bar and readout lives inside the spine[2m (9.5s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1440: every chart row, bar and readout lives inside the spine[2m (13.5s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1920: every chart row, bar and readout lives inside the spine[2m (6.5s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/e2e/experience.spec.ts:154:7 › Experience › TC-EXP-10: the duration readouts are printed in --mist-200[2m (2.9s)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/e2e/experience.spec.ts:201:7 › Experience › TC-EXP-08: the section is complete without WebGL[2m (2.5s)[22m
+  [31m✘[39m  [2m12 [22m[31m[chromium] › tests/e2e/experience.spec.ts:172:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ[39m[2m (3.5s)[22m
+
+
+[31m  1) [chromium] › tests/e2e/experience.spec.ts:172:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ [39m
+
+    Error: bar 0 must not outshine ANZ
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: < [32m0[39m
+    Received:   [31m0[39m
+
+    [0m [90m 193 |[39m     [36mfor[39m ([36mlet[39m i [33m=[39m [35m0[39m[33m;[39m i [33m<[39m [35m8[39m[33m;[39m i [33m+=[39m [35m1[39m) {
+     [90m 194 |[39m       [36mif[39m (i [33m===[39m [35m2[39m) [36mcontinue[39m[33m;[39m
+    [31m[1m>[22m[39m[90m 195 |[39m       expect(brightness(fills[i])[33m,[39m [32m`bar ${i} must not outshine ANZ`[39m)[33m.[39mtoBeLessThan(anz)[33m;[39m
+     [90m     |[39m                                                                      [31m[1m^[22m[39m
+     [90m 196 |[39m       [90m// 0x90 = 144 at 0.85 ≈ 122 painted on a #131313 ground → ≥ 3:1 (1.4.11).[39m
+     [90m 197 |[39m       expect(brightness(fills[i])[33m,[39m [32m`bar ${i} fill must clear the non-text floor`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m120[39m)[33m;[39m
+     [90m 198 |[39m     }[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_eefd9de5-b04-1/tests/e2e/experience.spec.ts:195:70[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-experience-Experience--1cc8a--in-the-chart-and-it-is-ANZ-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-experience-Experience--1cc8a--in-the-chart-and-it-is-ANZ-chromium/error-context.md[22m
+
+[31m  1 failed[39m
+[31m    [chromium] › tests/e2e/experience.spec.ts:172:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ [39m
+[32m  12 passed[39m[2m (33.2s)[22m
+exit=1

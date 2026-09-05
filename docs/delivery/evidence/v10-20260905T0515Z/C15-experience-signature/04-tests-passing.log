@@ -1,0 +1,28 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-experience.spec.ts tests/e2e/experience.spec.ts --reporter=list
+
+[2mRunning [22m21[2m tests using [22m2[2m workers[22m
+
+  [32m✓[39m  [2m 1 [22m[chromium] › tests/e2e/experience.spec.ts:41:7 › Experience › TC-EXP-02: bar lengths are proportional to real durations[2m (2.0s)[22m
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/e2e/experience.spec.ts:21:7 › Experience › TC-EXP-01: every role from the CV appears in the chart and the list[2m (2.2s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/e2e/experience.spec.ts:64:7 › Experience › TC-EXP-03: the axis is labelled with real years[2m (1.8s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/e2e/experience.spec.ts:71:7 › Experience › TC-EXP-04: each chart row is a real button with an accessible name[2m (1.9s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/e2e/experience.spec.ts:79:7 › Experience › TC-EXP-05: the current role opens by default and lists its bullets[2m (2.3s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/e2e/experience.spec.ts:86:7 › Experience › TC-EXP-06: roles expand and collapse from the keyboard[2m (3.6s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/e2e/experience.spec.ts:97:7 › Experience › TC-EXP-07: headline figures carry their role, not a bare number[2m (3.1s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/e2e/experience.spec.ts:107:9 › Experience › TC-EXP-09 @ 1280: every chart row, bar and readout lives inside the spine[2m (17.4s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/e2e/experience.spec.ts:107:9 › Experience › TC-EXP-09 @ 1440: every chart row, bar and readout lives inside the spine[2m (18.2s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/e2e/experience.spec.ts:159:7 › Experience › TC-EXP-10: the duration readouts are printed in --mist-200[2m (2.5s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/e2e/experience.spec.ts:107:9 › Experience › TC-EXP-09 @ 1920: every chart row, bar and readout lives inside the spine[2m (5.9s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/e2e/experience.spec.ts:180:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ[2m (2.5s)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/e2e/experience.spec.ts:240:7 › Experience › TC-EXP-08: the section is complete without WebGL[2m (2.4s)[22m
+  [32m✓[39m  [2m15 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:208:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-02: every bar reaches its real length within 1500 ms[2m (10.8s)[22m
+  [32m✓[39m  [2m14 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:195:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-01: the bars are still growing 100 ms after the section commits[2m (10.4s)[22m
+  [32m✓[39m  [2m16 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:252:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-04: the today playhead is white[2m (3.5s)[22m
+  [32m✓[39m  [2m17 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:221:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-03: nothing in the section paints gold[2m (7.8s)[22m
+  [32m✓[39m  [2m19 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:297:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-06: one canvas behind the chart at ?gl=force[2m (10.0s)[22m
+  [32m✓[39m  [2m20 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:306:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-07: the shader is bound to the spans it sits under[2m (28ms)[22m
+  [32m✓[39m  [2m18 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:262:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-05: every duration label stays inside the chart card[2m (17.8s)[22m
+  [32m✓[39m  [2m21 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:316:7 › #experience under reduced motion › TC-SCENE-EXP-08: no bar is ever shorter than its real duration[2m (5.6s)[22m
+
+[32m  21 passed[39m[2m (1.4m)[22m
