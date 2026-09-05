@@ -63,20 +63,119 @@
     max-width: var(--measure-display);
 }
 
-/* The last stroke: a hairline the width of the sentence, drawn once on entry.
-   It is the caliper bracket at one pixel — the instrument closing for good. */
+/* ── The instrument, set down ────────────────────────────────────────────────
+   The caliper at instrument scale: 320 px of hairline, two jaws, one reading.
+   Drawn in the section's grey and never gold — gold means a figure has a
+   source, and this section makes no claim. The beam is the track the jaws
+   close along, held faint so the section stays as empty as it is meant to be. */
+.caliper {
+    display: block;
+    width: 320px;
+    max-width: 100%;
+    height: auto;
+    margin: clamp(var(--space-4), 4vh, var(--space-5)) 0 0;
+    overflow: visible;
+    color: var(--mist-400);
+}
+
+.beam {
+    stroke: currentColor;
+    stroke-width: 1;
+    opacity: 0.25;
+}
+
+/* Each jaw: a vertical hairline with a short inward return top and bottom —
+   the same drawing as the mark at type size, at the mark's own opacity. */
+.jaw {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1;
+    stroke-linecap: butt;
+    opacity: 0.55;
+}
+
+/* At rest — and with no script at all — the instrument is closed on the
+   measured width: the final state is the default state. --caliper-half is set
+   by the section once it has measured the sentence's first word; the fallback
+   is a 2.5rem gap. */
+.jawLeft {
+    transform: translateX(calc(-1 * var(--caliper-half, 1.25rem)));
+}
+
+.jawRight {
+    transform: translateX(var(--caliper-half, 1.25rem));
+}
+
+/* The reading. '—' in the mono face at caption size, and it stays '—'. */
+.reading {
+    font-family: var(--font-mono);
+    font-size: var(--fs-caption);
+    fill: currentColor;
+}
+
+/* Armed — the script is present but the section has not yet arrived — the
+   jaws stand at full width and the hairline below is not yet drawn. */
+.listen[data-armed]:not([data-closed]) .jawLeft {
+    transform: translateX(-160px);
+}
+
+.listen[data-armed]:not([data-closed]) .jawRight {
+    transform: translateX(160px);
+}
+
+.listen[data-armed]:not([data-closed]) .rule {
+    transform: scaleX(0);
+}
+
+/* Entered: the one beat. The jaws close over the long cinematic duration on
+   the emphasized curve, and hold. */
+.listen[data-closed] .jawLeft {
+    animation: caliperCloseLeft var(--motion-cine-long) var(--motion-ease-emphasized) both;
+}
+
+.listen[data-closed] .jawRight {
+    animation: caliperCloseRight var(--motion-cine-long) var(--motion-ease-emphasized) both;
+}
+
+@keyframes caliperCloseLeft {
+    from {
+        transform: translateX(-160px);
+    }
+
+    to {
+        transform: translateX(calc(-1 * var(--caliper-half, 1.25rem)));
+    }
+}
+
+@keyframes caliperCloseRight {
+    from {
+        transform: translateX(160px);
+    }
+
+    to {
+        transform: translateX(var(--caliper-half, 1.25rem));
+    }
+}
+
+/* The last stroke: a hairline the width of the instrument, drawn once the
+   caliper has closed. It is the caliper bracket at one pixel — the instrument
+   closing for good. */
 .rule {
     display: block;
     height: 1px;
-    max-width: var(--measure-display);
-    margin: clamp(var(--space-4), 4vh, var(--space-5)) 0 clamp(var(--space-5), 5vh, 3.5rem);
+    max-width: 320px;
+    margin: var(--space-2) 0 clamp(var(--space-5), 5vh, 3.5rem);
     /* Not gold: a hairline under a sentence marks no figure and cites no
        source (design council R-c1, C3). The gesture survives; the claim is
        withdrawn. The border token already carries its own alpha. */
     background: var(--token-border-default);
     opacity: 1;
     transform-origin: left center;
-    animation: ruleDraw var(--motion-cine-in) var(--motion-ease-emphasized) var(--stagger-loose) both;
+}
+
+/* It waits for the caliper's full beat, then draws in the cinematic in-time. */
+.listen[data-closed] .rule {
+    animation: ruleDraw var(--motion-cine-in) var(--motion-ease-emphasized) var(--motion-cine-long) both;
 }
 
 @keyframes ruleDraw {
@@ -107,6 +206,10 @@
     letter-spacing: 0.01em;
     color: var(--mist-200);
     text-decoration: none;
+    /* The ink lifts to white on hover and focus. A colour change is the
+       affordance that survives reduced motion, so it is declared here and not
+       withdrawn there. */
+    transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
 /* The closing hairline gesture at one-sixth scale — identical on hover and on
@@ -166,41 +269,60 @@
     color: var(--mist-400);
 }
 
-/* ── Colophon ────────────────────────────────────────────────────────────── */@media (prefers-reduced-motion: reduce) {
-    /* R-46 / lock §4.3: a parallel score. The copy and the channels arrive on
-       an opacity-only fade in order; the rule is already drawn (its default
-       entrance is a scaleX, which is movement) and the underline no longer
-       travels. Mirrors Hero.module.css. */
-    .kicker,
-    .title,
-    .sentence,
-    .channels,
-    .coffee {
-        animation: listenFade 320ms linear both;
-    }
-
-    .title {
-        animation-delay: 40ms;
-    }
-
-    .sentence {
-        animation-delay: 80ms;
-    }
-
-    .channels {
-        animation-delay: 120ms;
-    }
-
-    .coffee {
-        animation-delay: 160ms;
-    }
-
-    .rule {
+/* ── Reduced motion ──────────────────────────────────────────────────────────
+   The parallel score. The instrument is drawn closed and the rule drawn — the
+   same final state the beat arrives at, reached at once — and the copy arrives
+   instead as a short sequenced fade, in reading order. Nothing moves; the hover
+   colour keeps its duration because a colour change is not motion. */
+@media (prefers-reduced-motion: reduce) {
+    .listen[data-armed]:not([data-closed]) .jawLeft,
+    .listen[data-closed] .jawLeft {
         animation: none;
+        transform: translateX(calc(-1 * var(--caliper-half, 1.25rem)));
     }
 
-    .channel::after {
-        transition: none;
+    .listen[data-armed]:not([data-closed]) .jawRight,
+    .listen[data-closed] .jawRight {
+        animation: none;
+        transform: translateX(var(--caliper-half, 1.25rem));
+    }
+
+    .listen[data-armed]:not([data-closed]) .rule,
+    .listen[data-closed] .rule {
+        animation: none;
+        transform: none;
+    }
+
+    .listen[data-armed]:not([data-closed]) .kicker,
+    .listen[data-armed]:not([data-closed]) .title,
+    .listen[data-armed]:not([data-closed]) .sentence,
+    .listen[data-armed]:not([data-closed]) .channels,
+    .listen[data-armed]:not([data-closed]) .coffee {
+        opacity: 0;
+    }
+
+    .listen[data-closed] .kicker,
+    .listen[data-closed] .title,
+    .listen[data-closed] .sentence,
+    .listen[data-closed] .channels,
+    .listen[data-closed] .coffee {
+        animation: listenFade var(--motion-base) linear both;
+    }
+
+    .listen[data-closed] .title {
+        animation-delay: calc(var(--stagger-tight) / 2);
+    }
+
+    .listen[data-closed] .sentence {
+        animation-delay: var(--stagger-tight);
+    }
+
+    .listen[data-closed] .channels {
+        animation-delay: calc(var(--stagger-tight) * 1.5);
+    }
+
+    .listen[data-closed] .coffee {
+        animation-delay: calc(var(--stagger-tight) * 2);
     }
 
     @keyframes listenFade {
@@ -211,5 +333,9 @@
         to {
             opacity: 1;
         }
+    }
+
+    .channel::after {
+        transition: none;
     }
 }
