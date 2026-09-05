@@ -1,0 +1,243 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/monochrome/minivic-launcher.spec.ts tests/a11y/minivic-launcher.spec.ts tests/a11y/minivic-occlusion.spec.ts --reporter=list
+
+[2mRunning [22m7[2m tests using [22m2[2m workers[22m
+
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/a11y/minivic-launcher.spec.ts:70:9 › A11y: the MiniVic launcher › TC-MV-ARIA-01 @ 390: no aria-hidden ancestor, and axe finds no aria-hidden-focus[39m[2m (1.9s)[22m
+  [31m✘[39m  [2m2 [22m[31m[chromium] › tests/a11y/minivic-launcher.spec.ts:70:9 › A11y: the MiniVic launcher › TC-MV-ARIA-01 @ 1440: no aria-hidden ancestor, and axe finds no aria-hidden-focus[39m[2m (2.2s)[22m
+  [31m✘[39m  [2m3 [22m[31m[chromium] › tests/a11y/minivic-launcher.spec.ts:103:7 › A11y: the MiniVic launcher › TC-MV-SKIP-01: the launcher is reachable in three tab stops and opens from the keyboard[39m[2m (1.9s)[22m
+  [31m✘[39m  [2m5 [22m[31m[chromium] › tests/a11y/minivic-occlusion.spec.ts:302:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-02: the closed launcher never paints a light surface on a phone[39m[2m (6.4s)[22m
+  [31m✘[39m  [2m6 [22m[31m[chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold[39m[2m (2.6s)[22m
+  [31m✘[39m  [2m4 [22m[31m[chromium] › tests/a11y/minivic-occlusion.spec.ts:243:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step[39m[2m (17.2s)[22m
+  [31m✘[39m  [2m7 [22m[31m[chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold[39m[2m (1.6s)[22m
+
+
+[31m  1) [chromium] › tests/a11y/minivic-launcher.spec.ts:70:9 › A11y: the MiniVic launcher › TC-MV-ARIA-01 @ 1440: no aria-hidden ancestor, and axe finds no aria-hidden-focus [39m
+
+    Error: at scrollY 0 the launcher sits inside 1 aria-hidden="true" ancestor(s): [{"tag":"DIV","cls":"fixed bottom-6 right-6 z-[10030] flex flex-col i","ariaHidden":"true"}]
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 7[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "ariaHidden": "true",[39m
+    [31m+     "cls": "fixed bottom-6 right-6 z-[10030] flex flex-col i",[39m
+    [31m+     "tag": "DIV",[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+    [0m [90m 85 |[39m           [32m`at scrollY ${y} the launcher sits inside ${hidden.length} aria-hidden="true" ancestor(s): `[39m [33m+[39m
+     [90m 86 |[39m             [33mJSON[39m[33m.[39mstringify(hidden)[33m,[39m
+    [31m[1m>[22m[39m[90m 87 |[39m         )[33m.[39mtoEqual([])[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 88 |[39m       }
+     [90m 89 |[39m
+     [90m 90 |[39m       [36mawait[39m page[33m.[39mevaluate(() [33m=>[39m window[33m.[39mscrollTo([35m0[39m[33m,[39m [35m0[39m))[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/a11y/minivic-launcher.spec.ts:87:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-minivic-launcher-A11y-f01d4--finds-no-aria-hidden-focus-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-minivic-launcher-A11y-f01d4--finds-no-aria-hidden-focus-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/a11y/minivic-launcher.spec.ts:70:9 › A11y: the MiniVic launcher › TC-MV-ARIA-01 @ 390: no aria-hidden ancestor, and axe finds no aria-hidden-focus [39m
+
+    Error: at scrollY 0 the launcher sits inside 1 aria-hidden="true" ancestor(s): [{"tag":"DIV","cls":"fixed bottom-6 right-6 z-[10030] flex flex-col i","ariaHidden":"true"}]
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 7[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "ariaHidden": "true",[39m
+    [31m+     "cls": "fixed bottom-6 right-6 z-[10030] flex flex-col i",[39m
+    [31m+     "tag": "DIV",[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+    [0m [90m 85 |[39m           [32m`at scrollY ${y} the launcher sits inside ${hidden.length} aria-hidden="true" ancestor(s): `[39m [33m+[39m
+     [90m 86 |[39m             [33mJSON[39m[33m.[39mstringify(hidden)[33m,[39m
+    [31m[1m>[22m[39m[90m 87 |[39m         )[33m.[39mtoEqual([])[33m;[39m
+     [90m    |[39m           [31m[1m^[22m[39m
+     [90m 88 |[39m       }
+     [90m 89 |[39m
+     [90m 90 |[39m       [36mawait[39m page[33m.[39mevaluate(() [33m=>[39m window[33m.[39mscrollTo([35m0[39m[33m,[39m [35m0[39m))[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/a11y/minivic-launcher.spec.ts:87:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-minivic-launcher-A11y-29a40--finds-no-aria-hidden-focus-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-minivic-launcher-A11y-29a40--finds-no-aria-hidden-focus-chromium/error-context.md[22m
+
+[31m  3) [chromium] › tests/a11y/minivic-launcher.spec.ts:103:7 › A11y: the MiniVic launcher › TC-MV-SKIP-01: the launcher is reachable in three tab stops and opens from the keyboard [39m
+
+    Error: first three tab stops were 1: "Skip to the evidence", 2: "Back to top", 3: "Download CV"
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m-1[39m
+
+    [0m [90m 129 |[39m       }
+     [90m 130 |[39m     }
+    [31m[1m>[22m[39m[90m 131 |[39m     expect(found[33m,[39m [32m`first three tab stops were ${names.join(', ')}`[39m)[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m     |[39m                                                                     [31m[1m^[22m[39m
+     [90m 132 |[39m
+     [90m 133 |[39m     [36mawait[39m page[33m.[39mkeyboard[33m.[39mpress([32m'Enter'[39m)[33m;[39m
+     [90m 134 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m'[data-testid="minivic-panel"]'[39m))[33m.[39mtoBeVisible()[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/a11y/minivic-launcher.spec.ts:131:69[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-minivic-launcher-A11y-a48a1-and-opens-from-the-keyboard-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-minivic-launcher-A11y-a48a1-and-opens-from-the-keyboard-chromium/error-context.md[22m
+
+[31m  4) [chromium] › tests/a11y/minivic-occlusion.spec.ts:243:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step [39m
+
+    Error: 9 of 21 text node(s) under the launcher fall below AA:
+    scrollY 1688: 1.04:1 (needs 4.5) div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw > div.About_itemBody__sd_yL > p.About_evidence__WwIMJ — "ATO · ANZ · NAB · Microsoft · Telstra · InfoCent" ink rgb(144, 144, 144) on launcher-painted ground rgb(147,147,150)
+    scrollY 2532: 1.83:1 (needs 4.5) div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw > div.About_itemBody__sd_yL > p.About_answer__46DA1 — "Melbourne market band for senior delivery leader" ink rgb(205, 205, 205) on launcher-painted ground rgb(151,151,154)
+    scrollY 3376: 1.83:1 (needs 4.5) div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw > div.About_itemBody__sd_yL > p.About_answer__46DA1 — "Build systems whose claims can be checked. Every" ink rgb(205, 205, 205) on launcher-painted ground rgb(151,151,154)
+    scrollY 5064: 1.79:1 (needs 4.5) div#role-body-ato > ul.Experience_bullets__MDbij > li — "Lead end-to-end agile delivery for the Agile Koo" ink rgb(205, 205, 205) on launcher-painted ground rgb(153,153,157)
+    scrollY 5908: 1.81:1 (needs 4.5) div#role-body-ato > ul.Experience_bullets__MDbij > li — "Authored the executive change request re-baselin" ink rgb(205, 205, 205) on launcher-painted ground rgb(152,152,156)
+    scrollY 6752: 2.66:1 (needs 4.5) li#role-nab > h3.Experience_roleHeading__juH9X > button.Experience_roleToggle__fN0Wj > span.Experience_roleTitle__wOJ7P — "Senior Project Manager & Business Analyst" ink rgb(246, 246, 246) on launcher-painted ground rgb(152,152,155)
+    scrollY 8440: 1.83:1 (needs 4.5) div.Bench_bench__PpJzJ > div.Bench_rail__senrX > div.Bench_band__PiNX9 > button.Bench_node__Yu9Gp > span.Bench_nodeLabel__DqHxg — "ANZ Banking Group" ink rgb(205, 205, 205) on launcher-painted ground rgb(151,151,154)
+    scrollY 10972: 1.79:1 (needs 4.5) div.Skills_tableWrap__Aa492 > table.Skills_table__qr48d > tbody > tr > td.Skills_evidence__HceDJ — "20 agent engines · 22 routers · 4,272 backend te" ink rgb(205, 205, 205) on launcher-painted ground rgb(153,153,156)
+    scrollY 11816: 1.79:1 (needs 4.5) div.Skills_tableWrap__Aa492 > table.Skills_table__qr48d > tbody > tr > td.Skills_evidence__HceDJ — "build → gate → deploy → smoke test → automatic r" ink rgb(205, 205, 205) on launcher-painted ground rgb(153,153,156)
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 11[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "scrollY 1688: 1.04:1 (needs 4.5) div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw > div.About_itemBody__sd_yL > p.About_evidence__WwIMJ — \"ATO · ANZ · NAB · Microsoft · Telstra · InfoCent\" ink rgb(144, 144, 144) on launcher-painted ground rgb(147,147,150)",[39m
+    [31m+   "scrollY 2532: 1.83:1 (needs 4.5) div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw > div.About_itemBody__sd_yL > p.About_answer__46DA1 — \"Melbourne market band for senior delivery leader\" ink rgb(205, 205, 205) on launcher-painted ground rgb(151,151,154)",[39m
+    [31m+   "scrollY 3376: 1.83:1 (needs 4.5) div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw > div.About_itemBody__sd_yL > p.About_answer__46DA1 — \"Build systems whose claims can be checked. Every\" ink rgb(205, 205, 205) on launcher-painted ground rgb(151,151,154)",[39m
+    [31m+   "scrollY 5064: 1.79:1 (needs 4.5) div#role-body-ato > ul.Experience_bullets__MDbij > li — \"Lead end-to-end agile delivery for the Agile Koo\" ink rgb(205, 205, 205) on launcher-painted ground rgb(153,153,157)",[39m
+    [31m+   "scrollY 5908: 1.81:1 (needs 4.5) div#role-body-ato > ul.Experience_bullets__MDbij > li — \"Authored the executive change request re-baselin\" ink rgb(205, 205, 205) on launcher-painted ground rgb(152,152,156)",[39m
+    [31m+   "scrollY 6752: 2.66:1 (needs 4.5) li#role-nab > h3.Experience_roleHeading__juH9X > button.Experience_roleToggle__fN0Wj > span.Experience_roleTitle__wOJ7P — \"Senior Project Manager & Business Analyst\" ink rgb(246, 246, 246) on launcher-painted ground rgb(152,152,155)",[39m
+    [31m+   "scrollY 8440: 1.83:1 (needs 4.5) div.Bench_bench__PpJzJ > div.Bench_rail__senrX > div.Bench_band__PiNX9 > button.Bench_node__Yu9Gp > span.Bench_nodeLabel__DqHxg — \"ANZ Banking Group\" ink rgb(205, 205, 205) on launcher-painted ground rgb(151,151,154)",[39m
+    [31m+   "scrollY 10972: 1.79:1 (needs 4.5) div.Skills_tableWrap__Aa492 > table.Skills_table__qr48d > tbody > tr > td.Skills_evidence__HceDJ — \"20 agent engines · 22 routers · 4,272 backend te\" ink rgb(205, 205, 205) on launcher-painted ground rgb(153,153,156)",[39m
+    [31m+   "scrollY 11816: 1.79:1 (needs 4.5) div.Skills_tableWrap__Aa492 > table.Skills_table__qr48d > tbody > tr > td.Skills_evidence__HceDJ — \"build → gate → deploy → smoke test → automatic r\" ink rgb(205, 205, 205) on launcher-painted ground rgb(153,153,156)",[39m
+    [31m+ ][39m
+
+    [0m [90m 297 |[39m [32m        .slice(0, 10)[39m
+     [90m 298 |[39m [32m        .join('\n')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 299 |[39m     )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 300 |[39m   })[33m;[39m
+     [90m 301 |[39m
+     [90m 302 |[39m   test([32m'TC-MV-OCCLUDE-02: the closed launcher never paints a light surface on a phone'[39m[33m,[39m [36masync[39m ({[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/a11y/minivic-occlusion.spec.ts:299:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-minivic-occlusion-The-c4b56-ars-AA-at-every-scroll-step-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-minivic-occlusion-The-c4b56-ars-AA-at-every-scroll-step-chromium/error-context.md[22m
+
+[31m  5) [chromium] › tests/a11y/minivic-occlusion.spec.ts:302:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-02: the closed launcher never paints a light surface on a phone [39m
+
+    Error: the brightest pixel the closed launcher paints at 390 is rgb(163,173,176) (relative luminance 0.4081); the ceiling that keeps rgb(205,205,205) body ink at 4.5:1 is 0.0968
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m0.09677679351285885[39m
+    Received:    [31m0.40808259702671806[39m
+
+    [0m [90m 336 |[39m         [32m`(relative luminance ${maxL.toFixed(4)}); the ceiling that keeps rgb(${BODY_INK.join(',')}) `[39m [33m+[39m
+     [90m 337 |[39m         [32m`body ink at 4.5:1 is ${GROUND_CEILING.toFixed(4)}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 338 |[39m     )[33m.[39mtoBeLessThanOrEqual([33mGROUND_CEILING[39m)[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 339 |[39m   })[33m;[39m
+     [90m 340 |[39m })[33m;[39m
+     [90m 341 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/a11y/minivic-occlusion.spec.ts:338:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-minivic-occlusion-The-f0179--a-light-surface-on-a-phone-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-minivic-occlusion-The-f0179--a-light-surface-on-a-phone-chromium/error-context.md[22m
+
+[31m  6) [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold [39m
+
+    Error: closed launcher carries 1 non-achromatic or gold colour(s):
+    HUE button.group relative h-16 w-16 overflow-hidden rounded boxShadow=rgb(201,205,214)
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 3[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "HUE button.group relative h-16 w-16 overflow-hidden rounded boxShadow=rgb(201,205,214)",[39m
+    [31m+ ][39m
+
+    [0m [90m 141 |[39m         closed[33m,[39m
+     [90m 142 |[39m         [32m`closed launcher carries ${closed.length} non-achromatic or gold colour(s):\n${closed.join('\n')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 143 |[39m       )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 144 |[39m
+     [90m 145 |[39m       [90m// Open state too: the launcher keeps its ring and pip while the panel is[39m
+     [90m 146 |[39m       [90m// up, and that state is on screen for as long as a conversation lasts.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/monochrome/minivic-launcher.spec.ts:143:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/monochrome-minivic-launche-1fa63-her-is-R-G-B-and-never-gold-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/monochrome-minivic-launche-1fa63-her-is-R-G-B-and-never-gold-chromium/error-context.md[22m
+
+[31m  7) [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold [39m
+
+    Error: closed launcher carries 1 non-achromatic or gold colour(s):
+    HUE button.group relative h-16 w-16 overflow-hidden rounded boxShadow=rgb(201,205,214)
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 3[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "HUE button.group relative h-16 w-16 overflow-hidden rounded boxShadow=rgb(201,205,214)",[39m
+    [31m+ ][39m
+
+    [0m [90m 141 |[39m         closed[33m,[39m
+     [90m 142 |[39m         [32m`closed launcher carries ${closed.length} non-achromatic or gold colour(s):\n${closed.join('\n')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 143 |[39m       )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 144 |[39m
+     [90m 145 |[39m       [90m// Open state too: the launcher keeps its ring and pip while the panel is[39m
+     [90m 146 |[39m       [90m// up, and that state is on screen for as long as a conversation lasts.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/monochrome/minivic-launcher.spec.ts:143:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/monochrome-minivic-launche-ab75b-her-is-R-G-B-and-never-gold-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/monochrome-minivic-launche-ab75b-her-is-R-G-B-and-never-gold-chromium/error-context.md[22m
+
+[31m  7 failed[39m
+[31m    [chromium] › tests/a11y/minivic-launcher.spec.ts:70:9 › A11y: the MiniVic launcher › TC-MV-ARIA-01 @ 1440: no aria-hidden ancestor, and axe finds no aria-hidden-focus [39m
+[31m    [chromium] › tests/a11y/minivic-launcher.spec.ts:70:9 › A11y: the MiniVic launcher › TC-MV-ARIA-01 @ 390: no aria-hidden ancestor, and axe finds no aria-hidden-focus [39m
+[31m    [chromium] › tests/a11y/minivic-launcher.spec.ts:103:7 › A11y: the MiniVic launcher › TC-MV-SKIP-01: the launcher is reachable in three tab stops and opens from the keyboard [39m
+[31m    [chromium] › tests/a11y/minivic-occlusion.spec.ts:243:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step [39m
+[31m    [chromium] › tests/a11y/minivic-occlusion.spec.ts:302:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-02: the closed launcher never paints a light surface on a phone [39m
+[31m    [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold [39m
+[31m    [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold [39m
+exit=1

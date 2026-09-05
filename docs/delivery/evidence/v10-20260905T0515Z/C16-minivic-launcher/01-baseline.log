@@ -1,0 +1,82 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts tests/e2e/chatbot.spec.ts --reporter=list
+
+[2mRunning [22m14[2m tests using [22m2[2m workers[22m
+
+  [31m✘[39m  [2m 1 [22m[31m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground[39m[2m (20.4s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/e2e/chatbot.spec.ts:77:7 › E2E: MiniVicBot Chatbot › TC-BOT-01: MiniVicBot toggle button is visible on the page[2m (1.1s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/e2e/chatbot.spec.ts:85:7 › E2E: MiniVicBot Chatbot › TC-BOT-02: Opening MiniVic reveals the panel and chat input[2m (1.4s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/e2e/chatbot.spec.ts:93:7 › E2E: MiniVicBot Chatbot › TC-BOT-03: Opening MiniVic shows the curated quick prompts[2m (1.3s)[22m
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground[2m (26.4s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/e2e/chatbot.spec.ts:103:7 › E2E: MiniVicBot Chatbot › TC-BOT-04: Closing MiniVic via the launcher hides the panel and clears greeting audio state[2m (2.7s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/e2e/chatbot.spec.ts:136:7 › E2E: MiniVicBot Chatbot › TC-BOT-05: MiniVicBot open/close cycle does not throw page errors[2m (3.0s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/e2e/chatbot.spec.ts:149:7 › E2E: MiniVicBot Chatbot › TC-BOT-06: MiniVic shell is a labelled dialog and takes focus when it opens[2m (2.1s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/e2e/chatbot.spec.ts:172:7 › E2E: MiniVicBot Chatbot › TC-BOT-07: The launcher announces which action it will perform[2m (2.3s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/e2e/chatbot.spec.ts:190:7 › E2E: MiniVicBot Chatbot › TC-BOT-08: Persona selector is a pressed-state toggle group with one active mode[2m (2.3s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/e2e/chatbot.spec.ts:212:7 › E2E: MiniVicBot Chatbot › TC-BOT-09: Mobile shell stays inside the viewport with composer visible[2m (1.7s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/e2e/chatbot.spec.ts:227:7 › E2E: MiniVicBot Chatbot › TC-BOT-10: A question gets exactly one answer, and the composing state clears[2m (2.5s)[22m
+  [32m✓[39m  [2m14 [22m[chromium] › tests/e2e/chatbot.spec.ts:294:7 › E2E: MiniVicBot Chatbot › TC-BOT-11: The transcript controls are present and say what they do[2m (1.8s)[22m
+  [31m✘[39m  [2m13 [22m[31m[chromium] › tests/e2e/chatbot.spec.ts:257:7 › E2E: MiniVicBot Chatbot › TC-BOT-12: The open panel stacks above the launcher on its axis and never covers the h1[39m[2m (18.1s)[22m
+
+
+[31m  1) [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground [39m
+
+    Error: 1 text node(s) below AA — worst ten:
+    1.79:1 (needs 4.5) [experience] div#role-body-ato > ul.Experience_bullets__MDbij > li:nth-of-type(1) — "Lead end-to-end agile delivery for the Agile Koo" fg rgb(205,205,205) on bg rgb(153,153,157) @ 15.09px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m1[39m
+
+    [0m [90m 285 |[39m         )
+     [90m 286 |[39m         [33m.[39mjoin([32m'\n'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 287 |[39m       expect(failures[33m.[39mlength[33m,[39m [32m`${failures.length} text node(s) below AA — worst ten:\n${report}`[39m)[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m     |[39m                                                                                                   [31m[1m^[22m[39m
+     [90m 288 |[39m     })[33m;[39m
+     [90m 289 |[39m   }
+     [90m 290 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/a11y/text-contrast.spec.ts:287:99[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-text-contrast-Text-co-2adeb--against-its-sampled-ground-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-text-contrast-Text-co-2adeb--against-its-sampled-ground-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/e2e/chatbot.spec.ts:257:7 › E2E: MiniVicBot Chatbot › TC-BOT-12: The open panel stacks above the launcher on its axis and never covers the h1 [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCSS[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('.minivic-quickstrip')
+    Expected pattern: [32m/x proximity/[39m
+    Received string:  [31m"x"[39m
+    Timeout: 15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCSS" with timeout 15000ms[22m
+    [2m  - waiting for locator('.minivic-quickstrip')[22m
+    [2m    18 × locator resolved to <div class="minivic-quickstrip scrollbar-hide flex shrink-0 gap-2 overflow-x-auto border-t border-white/10 bg-black/25 px-3 py-2.5">…</div>[22m
+    [2m       - unexpected value "x"[22m
+
+
+    [0m [90m 284 |[39m
+     [90m 285 |[39m     [36mconst[39m strip [33m=[39m page[33m.[39mlocator([32m'.minivic-quickstrip'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 286 |[39m     [36mawait[39m expect(strip)[33m.[39mtoHaveCSS([32m'scroll-snap-type'[39m[33m,[39m [35m/x proximity/[39m)[33m;[39m
+     [90m     |[39m                         [31m[1m^[22m[39m
+     [90m 287 |[39m     [36mconst[39m mask [33m=[39m [36mawait[39m strip[33m.[39mevaluate((el) [33m=>[39m {
+     [90m 288 |[39m       [36mconst[39m cs [33m=[39m getComputedStyle(el)[33m;[39m
+     [90m 289 |[39m       [36mreturn[39m cs[33m.[39mmaskImage [33m!==[39m [32m'none'[39m [33m?[39m cs[33m.[39mmaskImage [33m:[39m cs[33m.[39mwebkitMaskImage[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/e2e/chatbot.spec.ts:286:25[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-chatbot-E2E-MiniVicBot-64312-xis-and-never-covers-the-h1-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-chatbot-E2E-MiniVicBot-64312-xis-and-never-covers-the-h1-chromium/error-context.md[22m
+
+[31m  2 failed[39m
+[31m    [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground [39m
+[31m    [chromium] › tests/e2e/chatbot.spec.ts:257:7 › E2E: MiniVicBot Chatbot › TC-BOT-12: The open panel stacks above the launcher on its axis and never covers the h1 [39m
+[32m  12 passed[39m[2m (53.2s)[22m
+exit=1

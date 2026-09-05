@@ -1,0 +1,243 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/interaction-states.spec.ts tests/e2e/listen.spec.ts tests/visual/screenshots.spec.ts tests/perf/performance.spec.ts tests/overhaul/render.spec.ts --grep TC-STATE-HOVER|TC-STATE-ACTIVE|TC-LISTEN-05|VIS-04|PERF-03|TC-RENDER-01|TC-RENDER-02|TC-RENDER-06 --reporter=list
+
+[2mRunning [22m8[2m tests using [22m2[2m workers[22m
+
+  [31m✘[39m  [2m2 [22m[31m[chromium] › tests/e2e/interaction-states.spec.ts:204:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-HOVER — every interactive element has a designed hover state[39m[2m (34.9s)[22m
+  [32m✓[39m  [2m3 [22m[chromium] › tests/e2e/listen.spec.ts:65:7 › Listen › TC-LISTEN-05: hover and focus produce the identical underline[2m (1.4s)[22m
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/e2e/interaction-states.spec.ts:248:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-ACTIVE — every interactive element has a designed pressed state[39m[2m (47.4s)[22m
+  [31m✘[39m  [2m4 [22m[31m[chromium] › tests/overhaul/render.spec.ts:79:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it[39m[2m (2.0m)[22m
+  [31m✘[39m  [2m5 [22m[31m[chromium] › tests/overhaul/render.spec.ts:102:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss[39m[2m (2.0m)[22m
+CLS: 0.0000
+  [32m✓[39m  [2m7 [22m[chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05[2m (5.0s)[22m
+  [31m✘[39m  [2m8 [22m[31m[chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot[39m[2m (4.4s)[22m
+  [31m✘[39m  [2m6 [22m[31m[chromium] › tests/overhaul/render.spec.ts:131:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page[39m[2m (2.0m)[22m
+
+
+[31m  1) [chromium] › tests/e2e/interaction-states.spec.ts:204:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-HOVER — every interactive element has a designed hover state [39m
+
+    Error: 2 of 21 interactive elements paint nothing on hover:
+      - row 5 — About dimension item ([class*="About_item__"][2])
+      - row 13 — Vitrine live URL ([class*="Vitrine_live__"][0])
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "row 5 — About dimension item ([class*=\"About_item__\"][2])",[39m
+    [31m+   "row 13 — Vitrine live URL ([class*=\"Vitrine_live__\"][0])",[39m
+    [31m+ ][39m
+
+    [0m [90m 237 |[39m       offenders[33m,[39m
+     [90m 238 |[39m       [32m`${offenders.length} of ${TABLE.length} interactive elements paint nothing on hover:\n  - ${offenders.join('\n  - ')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 239 |[39m     )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 240 |[39m   })[33m;[39m
+     [90m 241 |[39m
+     [90m 242 |[39m   [90m/**[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/e2e/interaction-states.spec.ts:239:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-interaction-states-Int-e7333--has-a-designed-hover-state-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-interaction-states-Int-e7333--has-a-designed-hover-state-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/e2e/interaction-states.spec.ts:248:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-ACTIVE — every interactive element has a designed pressed state [39m
+
+    Error: 1 of 21 interactive elements paint nothing while pressed:
+      - row 5 — About dimension item ([class*="About_item__"][2])
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 3[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "row 5 — About dimension item ([class*=\"About_item__\"][2])",[39m
+    [31m+ ][39m
+
+    [0m [90m 298 |[39m       offenders[33m,[39m
+     [90m 299 |[39m       [32m`${offenders.length} of ${TABLE.length} interactive elements paint nothing while pressed:\n  - ${offenders.join('\n  - ')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 300 |[39m     )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 301 |[39m   })[33m;[39m
+     [90m 302 |[39m
+     [90m 303 |[39m   [90m/**[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/e2e/interaction-states.spec.ts:300:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-interaction-states-Int-398a0-as-a-designed-pressed-state-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-interaction-states-Int-398a0-as-a-designed-pressed-state-chromium/error-context.md[22m
+
+[31m  3) [chromium] › tests/overhaul/render.spec.ts:79:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it [39m
+
+    [31mTest timeout of 120000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 120000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#about')[22m
+
+
+    [0m [90m 70 |[39m [90m/** Walks a section into view and gives its scene time to mount and draw. */[39m
+     [90m 71 |[39m [36masync[39m [36mfunction[39m settleSection(page[33m:[39m [33mPage[39m[33m,[39m selector[33m:[39m string) {
+    [31m[1m>[22m[39m[90m 72 |[39m   [36mawait[39m page[33m.[39mlocator(selector)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                [31m[1m^[22m[39m
+     [90m 73 |[39m   [36mawait[39m page[33m.[39mwaitForTimeout([35m2000[39m)[33m;[39m
+     [90m 74 |[39m }
+     [90m 75 |[39m[0m
+    [2m    at settleSection (/root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/overhaul/render.spec.ts:72:32)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/overhaul/render.spec.ts:87:13[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-render-TC-NFR-REN-b9863-nvas-when-the-GPU-allows-it-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-render-TC-NFR-REN-b9863-nvas-when-the-GPU-allows-it-chromium/error-context.md[22m
+
+[31m  4) [chromium] › tests/overhaul/render.spec.ts:102:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss [39m
+
+    [31mTest timeout of 120000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 120000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#about')[22m
+
+
+    [0m [90m 70 |[39m [90m/** Walks a section into view and gives its scene time to mount and draw. */[39m
+     [90m 71 |[39m [36masync[39m [36mfunction[39m settleSection(page[33m:[39m [33mPage[39m[33m,[39m selector[33m:[39m string) {
+    [31m[1m>[22m[39m[90m 72 |[39m   [36mawait[39m page[33m.[39mlocator(selector)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                [31m[1m^[22m[39m
+     [90m 73 |[39m   [36mawait[39m page[33m.[39mwaitForTimeout([35m2000[39m)[33m;[39m
+     [90m 74 |[39m }
+     [90m 75 |[39m[0m
+    [2m    at settleSection (/root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/overhaul/render.spec.ts:72:32)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/overhaul/render.spec.ts:119:50[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-render-TC-NFR-REN-d739a--with-no-WebGL-context-loss-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-render-TC-NFR-REN-d739a--with-no-WebGL-context-loss-chromium/error-context.md[22m
+
+[31m  5) [chromium] › tests/overhaul/render.spec.ts:131:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page [39m
+
+    [31mTest timeout of 120000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 120000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#about')[22m
+
+
+    [0m [90m 143 |[39m     [36mawait[39m gotoWithGL(page)[33m;[39m
+     [90m 144 |[39m     [36mfor[39m ([36mconst[39m selector [36mof[39m [33mALL_SECTIONS[39m) {
+    [31m[1m>[22m[39m[90m 145 |[39m       [36mawait[39m page[33m.[39mlocator(selector)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m     |[39m                                    [31m[1m^[22m[39m
+     [90m 146 |[39m       [36mawait[39m page[33m.[39mwaitForTimeout([35m1500[39m)[33m;[39m
+     [90m 147 |[39m     }
+     [90m 148 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/overhaul/render.spec.ts:145:36[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-render-TC-NFR-REN-d0745-errors-anywhere-on-the-page-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-render-TC-NFR-REN-d0745-errors-anywhere-on-the-page-chromium/error-context.md[22m
+
+[31m  6) [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot [39m
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveScreenshot[2m([22m[32mexpected[39m[2m)[22m failed
+
+      42156 pixels (ratio 0.04 of all image pixels) are different.
+
+      Snapshot: listen-section.png
+
+    Call log:
+    [2m  - Expect "toHaveScreenshot(listen-section.png)" with timeout 30000ms[22m
+    [2m    - verifying given screenshot expectation[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - 42156 pixels (ratio 0.04 of all image pixels) are different.[22m
+    [2m  - waiting 100ms before taking screenshot[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - captured a stable screenshot[22m
+    [2m  - 42156 pixels (ratio 0.04 of all image pixels) are different.[22m
+
+
+    [0m [90m 87 |[39m     }[33m;[39m
+     [90m 88 |[39m   })[33m;[39m
+    [31m[1m>[22m[39m[90m 89 |[39m   [36mawait[39m expect(page)[33m.[39mtoHaveScreenshot(name[33m,[39m { [33m...[39m[33mSHOT[39m[33m,[39m fullPage[33m:[39m [36mtrue[39m[33m,[39m clip })[33m;[39m
+     [90m    |[39m                      [31m[1m^[22m[39m
+     [90m 90 |[39m }
+     [90m 91 |[39m
+     [90m 92 |[39m test[33m.[39mdescribe([32m'Visual Regression'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at shootSection (/root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/visual/screenshots.spec.ts:89:22)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/visual/screenshots.spec.ts:115:5[22m
+
+[2m    attachment #1: [1mlisten-section[2m (image/png) [2m──────────────────────────────────────────────────────[2m[22m
+[2m    Expected: tests/baselines/visual/screenshots.spec.ts-snapshots/listen-section-chromium-linux.png[22m
+[2m    Received: test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/listen-section-actual.png[22m
+[2m    Diff:     test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/listen-section-diff.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/error-context.md[22m
+
+[31m  6 failed[39m
+[31m    [chromium] › tests/e2e/interaction-states.spec.ts:204:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-HOVER — every interactive element has a designed hover state [39m
+[31m    [chromium] › tests/e2e/interaction-states.spec.ts:248:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-ACTIVE — every interactive element has a designed pressed state [39m
+[31m    [chromium] › tests/overhaul/render.spec.ts:79:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it [39m
+[31m    [chromium] › tests/overhaul/render.spec.ts:102:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss [39m
+[31m    [chromium] › tests/overhaul/render.spec.ts:131:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page [39m
+[31m    [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot [39m
+[32m  2 passed[39m[2m (4.7m)[22m
+exit=1
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/experience.spec.ts --grep TC-EXP-11 --reporter=list
+
+[2mRunning [22m1[2m test using [22m1[2m worker[22m
+
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/e2e/experience.spec.ts:172:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ[39m[2m (2.4s)[22m
+
+
+[31m  1) [chromium] › tests/e2e/experience.spec.ts:172:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ [39m
+
+    Error: bar 0 must not outshine ANZ
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: < [32m0[39m
+    Received:   [31m0[39m
+
+    [0m [90m 193 |[39m     [36mfor[39m ([36mlet[39m i [33m=[39m [35m0[39m[33m;[39m i [33m<[39m [35m8[39m[33m;[39m i [33m+=[39m [35m1[39m) {
+     [90m 194 |[39m       [36mif[39m (i [33m===[39m [35m2[39m) [36mcontinue[39m[33m;[39m
+    [31m[1m>[22m[39m[90m 195 |[39m       expect(brightness(fills[i])[33m,[39m [32m`bar ${i} must not outshine ANZ`[39m)[33m.[39mtoBeLessThan(anz)[33m;[39m
+     [90m     |[39m                                                                      [31m[1m^[22m[39m
+     [90m 196 |[39m       [90m// 0x90 = 144 at 0.85 ≈ 122 painted on a #131313 ground → ≥ 3:1 (1.4.11).[39m
+     [90m 197 |[39m       expect(brightness(fills[i])[33m,[39m [32m`bar ${i} fill must clear the non-text floor`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m120[39m)[33m;[39m
+     [90m 198 |[39m     }[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_75ffef1b-684-1/tests/e2e/experience.spec.ts:195:70[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-experience-Experience--1cc8a--in-the-chart-and-it-is-ANZ-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-experience-Experience--1cc8a--in-the-chart-and-it-is-ANZ-chromium/error-context.md[22m
+
+[31m  1 failed[39m
+[31m    [chromium] › tests/e2e/experience.spec.ts:172:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ [39m
+exp11_exit=1

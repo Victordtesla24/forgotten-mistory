@@ -283,7 +283,13 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
     expect(panelBox.y + panelBox.height).toBeLessThanOrEqual(toggleBox.y + 0.5);
 
     const strip = page.locator('.minivic-quickstrip');
-    await expect(strip).toHaveCSS('scroll-snap-type', /x proximity/);
+    // `scroll-snap-type: x proximity` is what app/globals.css declares, but
+    // `proximity` is the initial strictness, so Chromium's computed value
+    // serialises as the axis alone — "x". Asserting the declared spelling could
+    // never pass in this browser (it is why TC-BOT-12 was red on CI run
+    // 33936783382); what the test is entitled to require is that the row snaps
+    // on the horizontal axis, in either serialisation.
+    await expect(strip).toHaveCSS('scroll-snap-type', /^x( proximity)?$/);
     const mask = await strip.evaluate((el) => {
       const cs = getComputedStyle(el);
       return cs.maskImage !== 'none' ? cs.maskImage : cs.webkitMaskImage;
