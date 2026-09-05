@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T10:46:05.235Z",
+  "updated": "2026-09-05T10:46:49.784Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -1797,10 +1797,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T09:14:38.748Z",
-      "updated": "2026-09-05T09:14:38.748Z",
+      "updated": "2026-09-05T10:46:49.700Z",
       "summary": "Owner instruction verbatim: Integrate my Photo with full size, colours and dimension with creative decorations that match the website UI/UX Design. Include a hover effect that plays the hero video avatar and not by default. Supersedes the grayscale rule and the P1 88 px stamp for this element. Lane wf hero-photo (port 5601): colour still (1480×826 avif/webp), full column on desktop, full width after the actions at ≤720 (TC-HERO-12 holds), drafting frame + corner ticks + provenance caption from avatar.ts, light bloom behind the plate, hover/focus plays the loop (src set on intent, preload none), toggle for touch, reduced motion never autoplays.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T10:46:49.700Z",
+          "by": "orchestrator",
+          "text": "SHIPPED 364c0dd feat(hero): full-colour photograph with a loop on intent — consolidated e88ba4c, LIVE on ccb15241 (10:4xZ). Verifier running; orchestrator visual check in progress."
+        }
+      ],
       "blocker": null
     },
     {
@@ -1913,10 +1919,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T10:10:33.089Z",
-      "updated": "2026-09-05T10:10:33.089Z",
+      "updated": "2026-09-05T10:46:49.737Z",
       "summary": "Monitor 10:09Z on c5d808c3: pageerrors Loading chunk 427.8222755a6b18eedc.js / 743.9672a1f959c17edf.js failed; canvasesAfterExperience 0 — the HTML was the previous build, the hashed chunks were gone after the next deploy (Firebase serves only the current version). With 10-min deploys every mid-visit scroll can hit this. Fix: (1) scripts/build/stamp_service_worker.mjs also injects PRECACHE_ASSETS = every out/_next/static/**/*.{js,css} + fonts of THIS build; install precaches them (cache-first already), activate keeps the previous generation (delete caches older than the last two) so a page still running build N can lazy-load from cache after N+1 activates; (2) components/gl/Scene.tsx dynamic import: on ChunkLoadError retry once, then one reload per session (sessionStorage guard) — and never the error shell; (3) fold t_e9d4e10f: scene-local error boundary so any scene fault stays in its slot. Tests: tests/sw_strategy.test.mjs (precache list present and stamped, two-generation cleanup), tests/overhaul/scene-error-boundary.spec.ts (inject a failing chunk via route interception → six sections stay, one console error, no error shell), node --test.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-05T10:46:49.737Z",
+          "by": "orchestrator",
+          "text": "V-skew FAIL on one clause only (0ece403): TC-SKEW-02 line 165 — the forced WebGL context-creation error escapes as an uncaught pageerror (containment itself holds: 6 sections, no error shell); deterministic 3/3. SW half PASS end to end (cutover with 7 re-hashed lazy chunks, KEEP_GENERATIONS=2 observed, manifest 68 assets). Shipped via pipeline (ccb1524, live). Correction → t_skew0002."
+        }
+      ],
       "blocker": null
     },
     {
@@ -1967,6 +1979,29 @@
       "created": "2026-09-05T10:17:15.726Z",
       "updated": "2026-09-05T10:17:15.726Z",
       "summary": "V-c20 minor findings: Listen.module.css .pill gives the email the same filled background as the engage plate although app/data/portfolio/listen.ts:24 says the engagement action is the only filled plate; tests/content/content-check.spec.ts has two CT-11 ids (:222 links, :308 tenure); Compass.module.css:142-146 comment claims numerals stay above 4.5:1 (false at 4.42:1 until t_flagvis0c lands).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_skew0002",
+      "title": "Correction — GLCanvas: a WebGL context-creation failure is caught and reported once via console.error (never an uncaught pageerror); TC-SKEW-02 green 3/3",
+      "status": "todo",
+      "assignee": "coder",
+      "priority": 80,
+      "parents": [
+        "t_skew0001"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding / documentation",
+        "level": 4,
+        "effort": "medium (xhigh when coding)"
+      },
+      "provider": "openrouter→anthropic-oauth",
+      "created": "2026-09-05T10:46:49.784Z",
+      "updated": "2026-09-05T10:46:49.784Z",
+      "summary": "V-skew (0ece403) single red clause: tests/overhaul/scene-error-boundary.spec.ts:165 expects 0 uncaught page errors when getContext throws; GLCanvas.tsx lets the error propagate before the boundary sees it. Fix: try/catch around context creation (and the webglcontextcreationerror event) → boundary fallback + one console.error naming the scene; keep the spec strict. Files: components/gl/GLCanvas.tsx, components/gl/Scene.tsx.",
       "decisions": [],
       "comments": [],
       "blocker": null

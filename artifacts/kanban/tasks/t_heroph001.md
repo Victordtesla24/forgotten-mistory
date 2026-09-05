@@ -32,3 +32,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-05T10:46:49.700Z)
+SHIPPED 364c0dd feat(hero): full-colour photograph with a loop on intent — consolidated e88ba4c, LIVE on ccb15241 (10:4xZ). Verifier running; orchestrator visual check in progress.

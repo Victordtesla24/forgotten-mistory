@@ -33,3 +33,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-05T10:46:49.737Z)
+V-skew FAIL on one clause only (0ece403): TC-SKEW-02 line 165 — the forced WebGL context-creation error escapes as an uncaught pageerror (containment itself holds: 6 sections, no error shell); deterministic 3/3. SW half PASS end to end (cutover with 7 re-hashed lazy chunks, KEEP_GENERATIONS=2 observed, manifest 68 assets). Shipped via pipeline (ccb1524, live). Correction → t_skew0002.
