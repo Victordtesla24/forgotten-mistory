@@ -17,7 +17,7 @@ import { expect, test, type Page } from '@playwright/test';
  *   · at most one paragraph longer than twelve words — the statement, which is
  *     the pitch (the role and the location are kickers, both under six words);
  *   · one call-to-action group — "See the evidence" + "Download CV", both
- *     wholly inside the fold, and no third link beside them;
+ *     wholly inside the fold, and no third link OR BUTTON beside them;
  *   · at most eight text-bearing leaves in total;
  *   · the ledger and the availability/links line start at or below 100vh —
  *     they are MOVED, never deleted (R7; CT-10 still asserts `#hero ul li` ×3
@@ -159,6 +159,92 @@ test.describe('Hero — the first fold', () => {
           leaves.length,
           `text-bearing leaves in the fold:\n  ${leaves.join('\n  ')}`,
         ).toBeLessThanOrEqual(8);
+      });
+
+      /**
+       * TC-FOLD-04 — the reviewer's instrument, as a gate.
+       *
+       * The independent adversarial re-probe of live `9b864752`
+       * (docs/delivery/evidence/v10-20260905T0515Z/G-REV/9b864752/
+       * 08-adversarial-review.md) counted calls to action as
+       * `a[href], button` inside `#hero` whose box intersects the first
+       * viewport, grouped by the nearest ancestor carrying a `data-testid`
+       * (falling back to the parent's class). By that definition the fold
+       * held TWO groups at 834 and 390 — `hero-actions` and a
+       * `Play the portrait` button stamped on the photograph — and at 1440
+       * and 1280 the single group it found was the portrait toggle, with
+       * `hero-actions` below the first screen entirely.
+       *
+       * TC-FOLD-01 could not catch either: it counted `#hero a` only, so a
+       * `<button>` was invisible to it, and it allowed the action group to end
+       * exactly at the fold edge. This test uses the reviewer's definition
+       * verbatim and adds the correction's margins: the action group ends at
+       * least 40 px above the fold, and the ledger starts at least 40 px below
+       * it. A layout that satisfies both has daylight on either side rather
+       * than a one-pixel pass.
+       */
+      test(`TC-FOLD-04: one CTA group, with margin, at ${vp.label}`, async ({ page }) => {
+        await settle(page);
+        const fold = await page.evaluate(() => window.innerHeight);
+
+        const probe = await page.evaluate(() => {
+          const hero = document.querySelector('#hero')!;
+          const limit = window.innerHeight;
+          const inFold = (el: Element) => {
+            const r = el.getBoundingClientRect();
+            return r.top < limit && r.bottom > 0 && r.width > 0 && r.height > 0;
+          };
+          const groups = new Map<string, string[]>();
+          for (const el of Array.from(hero.querySelectorAll('a[href], button')).filter(inFold)) {
+            const parent = el.parentElement;
+            const key =
+              parent?.dataset?.testid ||
+              parent?.className?.toString?.() ||
+              'ROOT';
+            if (!groups.has(key)) groups.set(key, []);
+            groups
+              .get(key)!
+              .push(
+                ((el as HTMLElement).innerText || el.getAttribute('aria-label') || '').trim(),
+              );
+          }
+          const rect = (sel: string) => {
+            const el = hero.querySelector(sel);
+            if (!el) return null;
+            const r = el.getBoundingClientRect();
+            return { top: r.top, bottom: r.bottom };
+          };
+          return {
+            groups: Array.from(groups.entries()).map(([group, items]) => ({ group, items })),
+            actions: rect('[data-testid="hero-actions"]'),
+            ledger: rect('ul'),
+          };
+        });
+
+        const described = probe.groups
+          .map((g) => `${g.group} → ${g.items.join(' + ')}`)
+          .join(' | ');
+
+        expect(probe.groups.length, `CTA groups inside the fold: ${described}`).toBe(1);
+        expect(probe.groups[0].group, 'the one group in the fold is hero-actions').toBe(
+          'hero-actions',
+        );
+        expect(probe.groups[0].items.sort(), `its members: ${described}`).toEqual([
+          'Download CV',
+          'See the evidence',
+        ]);
+
+        expect(probe.actions, 'the action group is laid out').not.toBeNull();
+        expect(
+          probe.actions!.bottom,
+          `the action group ends ${Math.round(fold - probe.actions!.bottom)} px above the fold`,
+        ).toBeLessThanOrEqual(fold - 40);
+
+        expect(probe.ledger, 'the ledger is laid out').not.toBeNull();
+        expect(
+          probe.ledger!.top,
+          `the ledger starts ${Math.round(probe.ledger!.top - fold)} px below the fold`,
+        ).toBeGreaterThanOrEqual(fold + 40);
       });
 
       test(`TC-FOLD-02: the evidence sits below the fold at ${vp.label}`, async ({ page }) => {

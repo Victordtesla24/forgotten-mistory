@@ -1,6 +1,15 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 
 import { avatarContent } from '@/app/data/portfolio/avatar';
 import { useAvatarSpeaking } from '@/lib/avatarContext';
@@ -18,7 +27,7 @@ import styles from './Hero.module.css';
  * grayscale filter (docs/delivery/evidence/v9-…/B-research/02-hero-avatar-
  * placement.md §4 "Monochrome") and the autoplay gate (§4 "Playback").
  *
- * Four rules now govern the file:
+ * Five rules now govern the file:
  *
  * 1. **The still is the content.** A `<picture>` (AVIF → WebP → PNG) is
  *    server-rendered at full opacity with its intrinsic 1480×826 on the `<img>`
@@ -26,15 +35,26 @@ import styles from './Hero.module.css';
  *    layout shift, and it is what every reader sees with or without JavaScript.
  * 2. **Nothing plays by default.** The `<video>` ships with no `src`, no
  *    `autoplay` and `preload="none"`. The source is assigned on the first
- *    pointer-enter, keyboard focus or press — never on load, never on scroll.
+ *    pointer-enter over the figure or press of the control — never on load,
+ *    never on scroll.
  *    A reader who only reads never fetches the 1.1 MB loop.
  * 3. **Colour is the photograph, and only the photograph.** No filter greys the
  *    frames; every rule, tick, plate and control around them is drawn in the
  *    site's achromatic inks. Gold is absent — it means "this figure has a
  *    source", and a portrait is not a sourced figure.
- * 4. **Reduced motion means no motion without a press.** Hover and focus do
- *    nothing there; the button still works, because a user's own action is
- *    allowed (WCAG 2.2.2), and it starts the loop with no fade.
+ * 4. **Reduced motion means no motion without a press.** Hover does nothing
+ *    there; the control still works, because a user's own action is allowed
+ *    (WCAG 2.2.2), and it starts the loop with no fade.
+ * 5. **The figure is a figure, not a second call to action.** An independent
+ *    reviewer measured the first fold on live `9b864752` and found two
+ *    competing CTA groups in it — `hero-actions` and a `Play the portrait`
+ *    button stamped on the photograph. A reader scanning the first screen was
+ *    offered two things to press, and at 1440 and 1280 the one they could see
+ *    was the wrong one. The photograph now carries no control at all: the loop
+ *    follows the pointer over the figure, and the explicit, named play/pause
+ *    control — the keyboard and touch path — stands in the proof band below
+ *    the fold, beside the evidence. `PortraitIntentProvider` is what lets one
+ *    state serve both places.
  */
 
 const REDUCE_QUERY = '(prefers-reduced-motion: reduce)';
@@ -46,7 +66,7 @@ const CORNERS = ['tl', 'tr', 'br', 'bl'] as const;
 // attribute reaches the DOM unchanged and Chromium honours it.
 const PRIORITY_HINT = { fetchpriority: 'high' } as const;
 
-/** `null` = follow hover/focus; `'on'`/`'off'` = the reader pressed the button. */
+/** `null` = follow the pointer; `'on'`/`'off'` = the reader pressed the control. */
 type Latch = 'on' | 'off' | null;
 
 function motionAllowed(): boolean {
@@ -56,7 +76,7 @@ function motionAllowed(): boolean {
 function usePortraitOnIntent(speaking: boolean) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  /** What the reader has asked for. Drives the button's `aria-pressed`. */
+  /** What the reader has asked for. Drives the control's `aria-pressed`. */
   const [wanted, setWanted] = useState(false);
   /** What the element is actually doing. Drives the crossfade. */
   const [live, setLive] = useState(false);
@@ -74,7 +94,7 @@ function usePortraitOnIntent(speaking: boolean) {
     setWanted(next);
   }, []);
 
-  /** Hover and focus are intent — but not for a reader who asked for less motion. */
+  /** The pointer over the figure is intent — but not for a reader who asked for less motion. */
   const arm = useCallback(() => {
     if (!motionAllowed()) return;
     hoverRef.current = true;
@@ -88,7 +108,7 @@ function usePortraitOnIntent(speaking: boolean) {
     resolve();
   }, [resolve]);
 
-  /** The button is authoritative: it overrides the pointer until the pointer leaves. */
+  /** The control is authoritative: it overrides the pointer until the pointer leaves. */
   const toggle = useCallback(() => {
     latchRef.current = wantedRef.current ? 'off' : 'on';
     resolve();
@@ -169,9 +189,76 @@ function usePortraitOnIntent(speaking: boolean) {
   return { videoRef, wanted, live, arm, disarm, toggle };
 }
 
-export default function HeroPortrait() {
+type PortraitIntent = ReturnType<typeof usePortraitOnIntent>;
+
+/**
+ * One state, two places in the DOM. The figure stands in the fold and the named
+ * control stands in the proof band below it, so the state that joins them
+ * cannot live in either — it lives here, in a provider that wraps both bands
+ * and nothing else. `<Scene>` is deliberately left outside it in Hero.tsx: a
+ * pointer crossing the photograph must not re-render the shader's React tree.
+ */
+const PortraitIntentContext = createContext<PortraitIntent | null>(null);
+
+function usePortraitIntent(): PortraitIntent {
+  const value = useContext(PortraitIntentContext);
+  if (!value) {
+    throw new Error('HeroPortrait and HeroPortraitControl must sit inside <PortraitIntentProvider>.');
+  }
+  return value;
+}
+
+export function PortraitIntentProvider({ children }: { children: ReactNode }) {
   const speaking = useAvatarSpeaking();
   const { videoRef, wanted, live, arm, disarm, toggle } = usePortraitOnIntent(speaking);
+  // Identity changes only when something a consumer renders changes.
+  const value = useMemo(
+    () => ({ videoRef, wanted, live, arm, disarm, toggle }),
+    [videoRef, wanted, live, arm, disarm, toggle],
+  );
+  return <PortraitIntentContext.Provider value={value}>{children}</PortraitIntentContext.Provider>;
+}
+
+/**
+ * The play/pause control — a named, keyboard-operable button standing in the
+ * proof band, under the fold, beside the evidence rather than stamped on the
+ * face. It is the keyboard and touch path to the loop; the pointer path is the
+ * figure itself. It is rendered at every width and under reduced motion: a
+ * reader's own press is allowed however little motion they asked for
+ * (WCAG 2.2.2).
+ */
+export function HeroPortraitControl() {
+  const { wanted, toggle } = usePortraitIntent();
+  const label = wanted ? 'Pause the portrait' : 'Play the portrait';
+
+  return (
+    <p className={styles.portraitControlRow}>
+      <button
+        type="button"
+        className={styles.portraitControl}
+        data-testid="portrait-control"
+        aria-pressed={wanted}
+        aria-label={label}
+        onClick={toggle}
+      >
+        <svg className={styles.portraitControlGlyph} viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+          {wanted ? (
+            <>
+              <rect x="3" y="2" width="3" height="10" />
+              <rect x="8" y="2" width="3" height="10" />
+            </>
+          ) : (
+            <path d="M4 2 L12 7 L4 12 Z" />
+          )}
+        </svg>
+        <span aria-hidden="true">{label}</span>
+      </button>
+    </p>
+  );
+}
+
+export default function HeroPortrait() {
+  const { videoRef, live, arm, disarm } = usePortraitIntent();
   const { still, loop, caption } = avatarContent;
 
   return (
@@ -180,16 +267,6 @@ export default function HeroPortrait() {
       data-testid="hero-portrait"
       onPointerEnter={arm}
       onPointerLeave={disarm}
-      onFocus={(event) => {
-        // Only keyboard focus arms the loop. A mouse press on the button is
-        // handled by the button itself, and must not re-arm what it just stopped.
-        const target = event.target as HTMLElement;
-        if (typeof target.matches === 'function' && target.matches(':focus-visible')) arm();
-      }}
-      onBlur={(event) => {
-        if (event.currentTarget.contains(event.relatedTarget as Node | null)) return;
-        disarm();
-      }}
     >
       <div className={styles.portraitStage}>
         {/* The light the photograph sits in: one achromatic bloom behind the
@@ -229,7 +306,8 @@ export default function HeroPortrait() {
 
           {/* The drafting frame: one hairline rule inset from the edge, with a
               caliper tick opening each corner, and a registration cross at the
-              top right — the same language the caliper mark speaks. */}
+              top right — the same language the caliper mark speaks. Nothing in
+              here is pressable: the figure is a figure, not a second call. */}
           <span className={styles.portraitFrame} aria-hidden="true">
             {CORNERS.map((corner) => (
               <span
@@ -241,25 +319,6 @@ export default function HeroPortrait() {
             ))}
           </span>
           <span className={styles.portraitCross} aria-hidden="true" />
-
-          <button
-            type="button"
-            className={styles.portraitToggle}
-            aria-pressed={wanted}
-            aria-label={wanted ? 'Pause the portrait' : 'Play the portrait'}
-            onClick={toggle}
-          >
-            <svg viewBox="0 0 14 14" aria-hidden="true" focusable="false">
-              {wanted ? (
-                <>
-                  <rect x="3" y="2" width="3" height="10" />
-                  <rect x="8" y="2" width="3" height="10" />
-                </>
-              ) : (
-                <path d="M4 2 L12 7 L4 12 Z" />
-              )}
-            </svg>
-          </button>
         </div>
       </div>
 

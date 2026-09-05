@@ -1,0 +1,71 @@
+npm notice run forgotten-mistory@2.0.0 build:static
+npm notice run rm -rf .next out && node scripts/build/build_stamp.mjs && node scripts/build/cv_fingerprint.mjs && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs && node scripts/validate/built_output_secret_scan.mjs --dir out
+[build-stamp] 9 tracked file(s) differ from HEAD — the page will carry no commit stamp, because it was not built from one:
+  app/globals.css
+  app/layout.tsx
+  components/sections/Hero/Hero.module.css
+  components/sections/Hero/Hero.tsx
+  components/sections/Hero/HeroPortrait.tsx
+  tests/e2e/hero-fold.spec.ts
+  tests/e2e/hero-photo.spec.ts
+  tests/e2e/hero.spec.ts
+  tests/perf/performance.spec.ts
+[build-stamp] tree was not clean — no commit stamp will render
+[cv-fingerprint] 16b856c0 · 157615 bytes
+ ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /root/forgotten-mistory/package-lock.json as the root directory.
+ To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.
+ Detected additional lockfiles: 
+   * /root/forgotten-mistory/.claude/worktrees/wf_ea3bd443-1d9-1/package-lock.json
+
+   ▲ Next.js 15.5.25
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 35.2s
+   Skipping validation of types
+   Skipping linting
+   Collecting page data ...
+   Generating static pages (0/11) ...
+   Generating static pages (2/11) 
+   Generating static pages (5/11) 
+   Generating static pages (8/11) 
+ ✓ Generating static pages (11/11)
+   Finalizing page optimization ...
+   Collecting build traces ...
+   Exporting (0/2) ...
+ ✓ Exporting (2/2)
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    31.7 kB         205 kB
+├ ○ /_not-found                            131 B         103 kB
+├ ○ /apple-icon.png                          0 B            0 B
+├ ○ /icon.png                                0 B            0 B
+├ ○ /performance-benchmark               10.3 kB         117 kB
+├ ○ /privacy                               399 B         107 kB
+├ ○ /robots.txt                            131 B         103 kB
+├ ○ /sitemap.xml                           131 B         103 kB
+└ ○ /terms                                 399 B         107 kB
++ First Load JS shared by all             103 kB
+  ├ chunks/255-f7c4c205ddd80098.js       46.5 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  └ other shared chunks (total)          2.19 kB
+
+
+○  (Static)  prerendered as static content
+
+[prune] removed out/performance-benchmark.html
+[prune] removed out/performance-benchmark.txt
+[prune] removed out/_next/static/chunks/app/performance-benchmark
+[prune] done — 3 artifact(s) removed from the static export
+[sw-stamp] out/sw.js cache name is fm-static-6224a7f8 (git HEAD); precaching 69 build asset(s)
+  BUILT-OUTPUT SECRET SCAN (NFR-SEC)
+  ----------------------------------------------------------
+  scanned : 50 files under out/
+  shapes  : 12 credential patterns
+  identity: 50 real credential value(s) from 1 file(s)
+  ----------------------------------------------------------
+  RESULT: PASS — no credential material in the emitted bundle.
+

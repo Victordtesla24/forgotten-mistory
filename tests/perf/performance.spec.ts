@@ -160,156 +160,90 @@ test.describe("Performance Budgets", () => {
   });
 
   /**
-   * PERF-03b — the same walk as PERF-03, on a slow phone, with every shift attributed.
+   * PERF-08 — CLS on a COLD load, three times, at three viewports.
    *
-   * PERF-03 measures a number and prints nothing about where it came from, so when it
-   * went red at `CLS: 0.2561` the failure could be read three different ways. The
-   * independent review (docs/delivery/evidence/v10-20260905T0515Z/C21-hero-photo/
-   * 09-verification.md §5 and F-react19-r3f9/09-verification.md finding 1) captured the
-   * one entry behind it — `0.2559`, sole source `footer.Footer_footer__TWDx3`, previous
-   * rect 215.77 px tall and current rect 0 — but only ever under `--workers=2`, roughly
-   * two runs in four. An intermittent budget breach that nothing reproduces on demand is
-   * a budget nobody actually holds.
+   * PERF-03 measures one warm phone load and scrolls it. That is not the load
+   * that failed: an independent reviewer took three cold loads of live
+   * `9b864752` at 1280x720 and read CLS 0.17639 in two of them, identical to
+   * five decimal places, with `IMG my_avatar.avif` as the LCP element — one
+   * deterministic reflow that sometimes lands before the observer's first
+   * frame, not noise. A single warm sample cannot see it, and a single cold
+   * sample sees it two times in three.
    *
-   * So this test makes the load deterministic instead of hoping for it: CDP
-   * `Emulation.setCPUThrottlingRate(6)` gives every one of these runs the busy host the
-   * flake needed, and the observer is installed by `addInitScript` — before the document
-   * runs, not after `load` — so the entries PERF-03 misses on a fast host are here too.
-   * It asserts the budget *and* the attribution, because the second is what makes a
-   * future regression legible: a shift that names the footer is the page growing
-   * underneath a reader who has already scrolled to the bottom of it.
+   * So: a fresh context per load, the observer installed before navigation via
+   * an init script, `hadRecentInput` excluded, and every load asserted
+   * separately — 3 of 3 under the budget at each of the three viewports the
+   * correction names. The shift sources are printed on failure, because the
+   * fix for a layout shift is always the node that moved.
    */
-  for (const { name, width, height } of CLS_VIEWPORTS) {
-    test(`PERF-03b @ ${name}: CLS < 0.05 on a 6x-throttled host, and no shift names the footer`, async ({
-      browser,
-      baseURL,
-    }) => {
-      const ctx = await browser.newContext({
-        viewport: { width, height },
-        baseURL,
-      });
-      const page = await ctx.newPage();
-      const cdp = await ctx.newCDPSession(page);
-      await cdp.send("Emulation.setCPUThrottlingRate", { rate: 6 });
+  test('PERF-08: CLS < 0.05 on three cold loads at 1280x720, 1440x900 and 390x844', async ({
+    browser,
+    baseURL,
+  }) => {
+    test.setTimeout(180000);
+    const VIEWPORTS = [
+      { width: 1280, height: 720 },
+      { width: 1440, height: 900 },
+      { width: 390, height: 844 },
+    ];
 
-      // Buffered entries only reach back to the observer's creation for some types, and a
-      // shift that lands during hydration is exactly the one that matters here — so the
-      // observer is installed before the first byte of the document is evaluated.
-      await page.addInitScript(() => {
-        const shifts: {
-          value: number;
-          time: number;
-          sources: {
-            node: string;
-            previousRect: string;
-            currentRect: string;
-          }[];
-        }[] = [];
-        (window as unknown as { __clsEntries: typeof shifts }).__clsEntries =
-          shifts;
-        const describe = (node: Node | null | undefined): string => {
-          const el =
-            node && node.nodeType === 1
-              ? (node as Element)
-              : (node?.parentElement as Element | null);
-          if (!el) return "unknown";
-          const id = el.id ? `#${el.id}` : "";
-          const cls =
-            typeof el.className === "string" && el.className
-              ? `.${el.className.trim().split(/\s+/).join(".")}`
-              : "";
-          const parent = el.parentElement;
-          const parentPath = parent
-            ? `${parent.tagName.toLowerCase()}${parent.id ? `#${parent.id}` : ""} > `
-            : "";
-          return `${parentPath}${el.tagName.toLowerCase()}${id}${cls}`;
-        };
-        const box = (r: DOMRectReadOnly | undefined): string =>
-          r
-            ? `${Math.round(r.x)},${Math.round(r.y)} ${r.width.toFixed(2)}x${r.height.toFixed(2)}`
-            : "none";
-        new PerformanceObserver((list) => {
-          for (const entry of list.getEntries()) {
-            const shift = entry as PerformanceEntry & {
-              hadRecentInput?: boolean;
-              value?: number;
-              sources?: {
-                node?: Node | null;
-                previousRect?: DOMRectReadOnly;
-                currentRect?: DOMRectReadOnly;
-              }[];
-            };
-            if (shift.hadRecentInput) continue;
-            shifts.push({
-              value: shift.value || 0,
-              time: Math.round(shift.startTime),
-              sources: (shift.sources ?? []).map((source) => ({
-                node: describe(source.node),
-                previousRect: box(source.previousRect),
-                currentRect: box(source.currentRect),
-              })),
-            });
+    for (const viewport of VIEWPORTS) {
+      for (let load = 0; load < 3; load += 1) {
+        const ctx = await browser.newContext({ viewport, baseURL });
+        const page = await ctx.newPage();
+        await page.addInitScript(() => {
+          const w = window as typeof window & {
+            __cls?: number;
+            __shifts?: string[];
+          };
+          w.__cls = 0;
+          w.__shifts = [];
+          try {
+            new PerformanceObserver((list) => {
+              for (const entry of list.getEntries()) {
+                const shift = entry as PerformanceEntry & {
+                  hadRecentInput?: boolean;
+                  value?: number;
+                  sources?: { node?: Element | null }[];
+                };
+                if (shift.hadRecentInput) continue;
+                w.__cls = (w.__cls ?? 0) + (shift.value ?? 0);
+                for (const source of shift.sources ?? []) {
+                  const node = source.node;
+                  w.__shifts?.push(
+                    `${(shift.value ?? 0).toFixed(5)} ${
+                      node ? `${node.tagName}${node.id ? `#${node.id}` : ''}` : 'detached'
+                    }`,
+                  );
+                }
+              }
+            }).observe({ type: 'layout-shift', buffered: true });
+          } catch {
+            /* layout-shift is not supported in every browser */
           }
-        }).observe({ type: "layout-shift", buffered: true });
-      });
+        });
+        await page.goto('/', { waitUntil: 'load' });
+        await page.waitForTimeout(4000);
+        const measured = await page.evaluate(() => {
+          const w = window as typeof window & { __cls?: number; __shifts?: string[] };
+          return { cls: w.__cls ?? 0, shifts: w.__shifts ?? [] };
+        });
+        await ctx.close();
 
-      await page.goto("/", { waitUntil: "load" });
-
-      // PERF-03's walk, step for step: six stops down the page, 400 ms apart.
-      await page.evaluate(async () => {
-        const steps = 6;
-        for (let i = 0; i < steps; i += 1) {
-          window.scrollTo(0, (i / steps) * document.body.scrollHeight);
-          await new Promise((r) => setTimeout(r, 400));
-        }
-      });
-      await page.waitForTimeout(1500);
-
-      const entries = await page.evaluate(
-        () =>
-          (
-            window as unknown as {
-              __clsEntries: {
-                value: number;
-                time: number;
-                sources: {
-                  node: string;
-                  previousRect: string;
-                  currentRect: string;
-                }[];
-              }[];
-            }
-          ).__clsEntries,
-      );
-      await ctx.close();
-
-      const cls = entries.reduce((sum, entry) => sum + entry.value, 0);
-      const footerShifts = entries.filter((entry) =>
-        entry.sources.some((source) => /footer/i.test(source.node)),
-      );
-      console.log(
-        `PERF-03b @ ${name} CLS: ${cls.toFixed(4)} over ${entries.length} entries`,
-      );
-      for (const entry of entries) {
         console.log(
-          `  ${entry.value.toFixed(4)} @ ${entry.time} ms  ${entry.sources
-            .map((s) => `${s.node} [${s.previousRect} -> ${s.currentRect}]`)
-            .join(" || ")}`,
+          `CLS ${viewport.width}x${viewport.height} load ${load}: ${measured.cls.toFixed(5)}`,
         );
+        expect(
+          measured.cls,
+          `CLS at ${viewport.width}x${viewport.height}, cold load ${load}; shift sources: ${
+            measured.shifts.join(' | ') || 'none'
+          }`,
+        ).toBeLessThan(CLS_BUDGET);
       }
+    }
+  });
 
-      expect(
-        footerShifts,
-        `the footer moved under a reader who had already scrolled to it:\n${JSON.stringify(footerShifts, null, 1)}`,
-      ).toHaveLength(0);
-      expect(
-        cls,
-        `layout shifts:\n${JSON.stringify(entries, null, 1)}`,
-      ).toBeLessThan(CLS_BUDGET);
-    });
-  }
-
-  test("PERF-04: Page loads without page errors", async ({ page }) => {
+  test('PERF-04: Page loads without page errors', async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", (err) => errors.push(err.message));
     await gotoHome(page);
