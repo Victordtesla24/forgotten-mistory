@@ -1,0 +1,77 @@
+{
+  "identity": "rev-64404134-c22",
+  "task_id": "t_rev_adv1556",
+  "role": "3rd_party_independent_adversarial_review",
+  "effort": "max",
+  "live_url": "https://forgotten-mistory.web.app/",
+  "live_sha": "64404134",
+  "probed_at": "2026-09-05T19:20:25Z",
+  "live_last_modified": "Sat, 05 Sep 2026 19:20:01 GMT",
+  "browser": "/usr/bin/google-chrome via playwright, --use-angle=swiftshader",
+  "viewports": ["1440x900", "390x844"],
+  "page_errors": 0,
+  "raf_fps": 61,
+  "overall": "FAIL",
+  "verdicts": {
+    "G-H1": "PASS",
+    "G-H5": "PASS",
+    "G-H6": "PASS",
+    "G-A3": "FAIL",
+    "G-E2": "PASS",
+    "G-S2": "PASS",
+    "G-L1-C5": "FAIL",
+    "G-X2": "FAIL"
+  },
+  "held_not_reopened": {
+    "G-NEW-1": "HOLD — pill display:flex visible 158x44 at 390; no display:none at any probed width",
+    "G-C1": "HOLD — Listen 'Email a 20-minute-call agenda' + Vitrine 'Email a project brief', both mailto, both honestly labelled",
+    "G-V3": "HOLD — six plates render at rest with visible strokes and labels",
+    "G-M4": "NOT RE-TIMED this cycle; measured on aa58395b, no MiniVic/Hosting change since; not re-claimed"
+  },
+  "failures": [
+    {
+      "gap": "G-A3",
+      "defect": "#about contains 0 <canvas> on the default path AND on ?gl=force; the only graphic is a 384x384 SVG radar dial titled 'Instrument face of ten dimensions. No scores'",
+      "measurement": "probe2.json default_afterScroll.aboutInfo.canvases=[] ; glforce_afterScroll.aboutInfo.canvases=[] ; aboutInfo.svgs[0]={w:384,h:384}",
+      "screenshot": "shots/1440-default-about.png"
+    },
+    {
+      "gap": "G-L1-C5",
+      "defect": "Caliper reading renders U+2014 em-dash; [data-reading] absent from the entire live DOM",
+      "measurement": "listenInfo.readingText='\\u2014'; listenInfo.dataReadingPresent=false; grep -c 'data-reading' served HTML = 0",
+      "source": "components/sections/Listen/Listen.tsx:265-272 hard-codes the literal; intent documented at Listen.tsx:62",
+      "expected": "24.98 s from app/data/generated/greeting-envelope.ts:277 durationSeconds=24.984671 (already in scope at components/sections/Listen/ListenField.tsx:103)"
+    },
+    {
+      "gap": "G-X2",
+      "defect": "Fewer than 7 visible cinematic scenes; 0 on the default path",
+      "measurement": "default canvasCount=0 at first paint and after scrolling all six sections, at 1440 and 390; ?gl=force yields 1 canvas at first paint (#hero 1440x1460 webgl2) and 2 concurrent after scroll (#vitrine 1296x759, #listen 300x150) = 3 distinct sections total",
+      "note": "61 fps is the DOM/CSS fallback path, not a cinematic scene; no viseme census accepted"
+    }
+  ],
+  "root_defect": {
+    "title": "Live capability gate refuses a WebGL-2-capable browser on the default path",
+    "gl_capability_reported_by_page": "WebGL 2.0 (OpenGL ES 3.0 Chromium) | WebKit WebGL",
+    "default_canvases": 0,
+    "glforce_canvases_after_scroll": 2,
+    "same_browser_same_session": true,
+    "headless_artifact": false,
+    "blocks": ["G-A3", "G-X2", "G-E2 strata-planes directive"],
+    "suspect": "components/gl/useGLCapability.ts"
+  },
+  "passes_evidence": {
+    "G-H1": "Hero_stage 1440x1460 first-viewport intersection frac=1.000; next plane frac=0.111; only multi-col grid is Hero_ledger (3col) at top=1104 > fold 900; img my_avatar.avif 547x305 at top=637 inside the plane; one h1; one CTA pair at top=535",
+    "G-H5": "my-hero-avatar.mp4 -> HTTP 404 (both probed paths); live my_avatar.png IHDR = 1480x826, 496176 B == declared avatar.ts:28-29; honest ladder at avatar.ts:17-24 and :44-45 declaring R5 a documented FAIL; no 4K claim in live HTML",
+    "G-H6": "colour photograph live at 1440 and 390; docs/architecture/PALETTE-EXCEPTIONS.md present (8477 B); pinned by tests/palette_bundle.test.mjs",
+    "G-E2": "1 gold text string in #experience ('Australian Taxation Office (ATO)', rgb(201,168,76), date-pattern=false); 0 gold date strings; 0 gold svg fill/stroke",
+    "G-S2": "Bench_figure 1248x775 dominant in #skills (section height 3175); Bench_stage 1248x580; 126 bench nodes; programmes/repositories wired to capabilities with gold marking production evidence; no proficiency bars"
+  },
+  "artifacts": [
+    "docs/delivery/evidence/v10-20260905T0515Z/G-REV/64404134/08-adversarial-review.md",
+    "docs/delivery/evidence/v10-20260905T0515Z/G-REV/64404134/probe.json",
+    "docs/delivery/evidence/v10-20260905T0515Z/G-REV/64404134/probe2.json",
+    "docs/delivery/evidence/v10-20260905T0515Z/G-REV/64404134/shots/"
+  ],
+  "self_approval": false,
+  "goal_complete": true
+}
