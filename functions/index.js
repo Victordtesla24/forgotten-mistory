@@ -611,6 +611,19 @@ exports.minivicChat = onRequest(
   {
     secrets: [OPENROUTER_API_KEY, DEEPSEEK_API_KEY, ZAI_API_KEY, OPENAI_API_KEY],
     region: "us-central1",
+    // One always-warm instance. The Hosting rewrite `/api/chat` is served
+    // through Firebase's Fastly edge to this Cloud Run service; a warm instance
+    // returns in ~0.11 s through Hosting (measured), but a COLD instance made a
+    // live probe pay ~2.3 s at the edge (2.295 s Hosting vs 0.941 s origin,
+    // ADV-1556Z) — the whole gap is container start, not SSE buffering, because
+    // the cold-probe request (`{"message":"ping"}`) is rejected 400 before any
+    // provider ladder or stream runs. `minScale=1` removes scale-to-zero so no
+    // visitor's first send — and no cold probe — ever pays that start again.
+    // The `?warm=1` GET still hides the rare secondary cold start for free; this
+    // guarantees the primary one cannot happen. One 256 MiB idle instance in
+    // us-central1 is ~US$9-12/mo — bought deliberately for the site's flagship
+    // surface (G-M4: cold Hosting POST /api/chat TTFB < 1.5 s).
+    minInstances: 1,
     maxInstances: 5,
     timeoutSeconds: 30,
     memory: "256MiB",
