@@ -8,17 +8,20 @@
  * it works identically on a phone and on a machine with no WebGL.
  */
 
+/* The section carries the page gutter like every other section, and the head
+   and foot sit in the page's one column — the gutter used to be applied
+   *inside* the already-capped box, which put this heading 72 px right of the
+   others (council R-c1, C2). The rail below bleeds back out to the viewport. */
 .vitrine {
     position: relative;
-    padding: clamp(var(--space-10), 12vh, 9rem) 0;
+    padding: clamp(var(--space-10), 12vh, 9rem) var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
     overflow: hidden;
 }
 
 .head,
 .foot {
-    max-width: 78rem;
+    max-width: var(--page-max);
     margin: 0 auto;
-    padding: 0 var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)));
 }
 
 .kicker {
@@ -53,13 +56,22 @@
 .rail {
     display: flex;
     gap: clamp(var(--space-2), 2vw, var(--space-3));
-    margin: 0;
-    padding: var(--space-1) var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10))) var(--space-4);
+    /* Full bleed: out through the section's gutter and back in to the spine,
+       so card 01 starts on the same left edge as the heading above it and the
+       last card can still run off the viewport. The inset is the gutter plus
+       whatever centring the column has at this width — nothing at 1280,
+       24 px at 1440, 256 px at 1920. */
+    --rail-inset: calc(
+        var(--page-gutter, clamp(1.5rem, 5vw, 5rem)) +
+            max(0px, (100% - var(--page-max)) / 2)
+    );
+    margin: 0 calc(var(--page-gutter, clamp(1.5rem, 5vw, 5rem)) * -1);
+    padding: var(--space-1) var(--rail-inset) var(--space-4);
     list-style: none;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
-    scroll-padding-inline: var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
+    scroll-padding-inline: var(--rail-inset);
     /* A thin rule under the rail, so the plates read as standing on something. */
     border-bottom: 1px solid var(--token-border-default);
     scrollbar-width: thin;

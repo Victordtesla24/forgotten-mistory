@@ -58,6 +58,16 @@
     position: relative;
     margin-bottom: clamp(var(--space-6), 8vh, 5.5rem);
     padding: clamp(var(--space-3), 3vh, var(--space-5)) 0 0;
+    /* The readout column is reserved inside the spine (below); the chart
+       itself claims no extra room on the right. */
+    padding-right: 0;
+    /* The duration readout sits past the end of its bar, so the newest role's
+       `6 mo` used to overrun the section's right edge by ~38 px at 1440 and
+       1920 (council R-c1, C4b). A fixed readout column is reserved inside the
+       content column: 4.5rem holds `7.8 yr` at --fs-caption with air to spare,
+       and the axis keeps the same right margin so its ticks stay under the
+       bars. Rows and axis read this one number. */
+    --readout-column: 4.5rem;
 }
 
 .chartScene {
@@ -109,7 +119,8 @@
 
 .trackButton {
     display: grid;
-    grid-template-columns: clamp(7rem, 22%, 14rem) minmax(0, 1fr);
+    /* Company, the axis, and the reserved readout column (see .chart). */
+    grid-template-columns: clamp(7rem, 22%, 14rem) minmax(0, 1fr) var(--readout-column);
     align-items: center;
     gap: var(--space-2);
     width: 100%;
@@ -166,7 +177,11 @@
     position: absolute;
     inset: 0;
     border-radius: 2px;
-    background: rgb(246 246 246 / 0.22);
+    /* --mist-400 at 0.85 samples ≈ 6.4:1 against the plot ground; the old
+       22 % white was 1.89:1, under the 3:1 floor WCAG 1.4.11 sets for a
+       graphic that carries information (council R-c1, C4a). */
+    background: var(--mist-400);
+    opacity: 0.85;
     /* The bar thickens about its own centre line. Animating `height` and `top`
        would ask the browser to lay the row out again on every frame of a hover;
        a scale about the centre is the same picture drawn on the compositor. */
@@ -179,8 +194,18 @@
 .trackButton[data-active] .trackBar::before,
 .trackButton:hover .trackBar::before {
     background: var(--white);
+    opacity: 1;
     /* 0.55rem → 0.85rem, centre held: 0.85 / 0.55 = 1.5455. */
     transform: scaleY(1.5455);
+}
+
+/* The eight-year ANZ bar — third row in the CV's order — is the brightest
+   object in the section, which is the story the lede tells. Row-positional
+   because the chart's markup carries no per-role hook; TC-EXP-11 pins that
+   the third row is ANZ so a reorder of the data fails loudly. */
+.trackRow:nth-child(3) .trackBar::before {
+    background: var(--white);
+    opacity: 0.9;
 }
 
 .trackYears {
@@ -191,21 +216,24 @@
     font-family: var(--font-mono);
     font-size: var(--fs-caption);
     letter-spacing: var(--ls-small);
-    color: var(--ink-300);
+    /* ≈ 9.8:1 on the plot ground; the previous grey sampled ≈ 3.3:1 at 12 px. */
+    color: var(--mist-200);
     white-space: nowrap;
     transition: color var(--motion-fast) var(--motion-ease-standard);
 }
 
 .trackButton[data-active] .trackYears {
-    color: var(--mist-200);
+    color: var(--white);
 }
 
 .axis {
     position: relative;
     z-index: 1;
     height: 1.5rem;
-    /* Aligns with .trackLine, which starts after the company column. */
+    /* Aligns with .trackLine, which starts after the company column and ends
+       before the reserved readout column. */
     margin-left: calc(min(12rem, max(var(--space-14), 20%)) + var(--space-2));
+    margin-right: calc(var(--readout-column) + var(--space-2));
     margin-top: var(--space-1);
 }
 
@@ -401,8 +429,13 @@
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 760px) {
+    .chart {
+        /* `7.8 yr` at --fs-caption needs ~2.6rem; 3.25rem leaves the air. */
+        --readout-column: 3.25rem;
+    }
+
     .trackButton {
-        grid-template-columns: minmax(5.5rem, 7rem) minmax(0, 1fr);
+        grid-template-columns: minmax(5.5rem, 7rem) minmax(0, 1fr) var(--readout-column);
         gap: var(--space-1);
     }
 
@@ -416,6 +449,7 @@
 
     .axis {
         margin-left: calc(var(--space-14) + var(--space-1));
+        margin-right: calc(var(--readout-column) + var(--space-1));
     }
 
     .roleToggle {

@@ -86,7 +86,9 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 68rem;
+    /* The page's one column. The column moves to the spine; the paragraph
+       does not — `.statement` keeps its own reading measure below. */
+    max-width: var(--page-max);
     margin: 0 auto;
 }
 
@@ -373,13 +375,29 @@
    saw the claims but not the way to act on them. Each entry becomes a single
    row instead: the figure on the left, its label and provenance beside it. */
 @media (max-width: 600px) {
-    .ledger {
-        gap: var(--space-2);
+    /* The first screen used to end inside the ledger, with both actions below
+       it (council R-c1, P4). The rhythm tightens so `See the evidence` sits
+       inside an 844 px phone screen: less air above and between the three
+       entries, and a shorter tail under the actions. */
+    .hero {
+        padding-bottom: var(--space-2);
     }
 
+    .ledgerRow {
+        margin-top: var(--space-3);
+        gap: var(--space-1);
+    }
+
+    .ledger {
+        gap: var(--space-05);
+    }
+
+    /* A fixed value column, so the three right jaws land on one vertical:
+       each figure used to size its own box and the jaws fell at three
+       different x positions while the labels aligned (council R-c1, P3). */
     .ledgerItem {
         display: grid;
-        grid-template-columns: minmax(4.5rem, auto) 1fr;
+        grid-template-columns: minmax(6.5rem, 6.5rem) 1fr;
         column-gap: var(--space-2);
         align-items: baseline;
         padding-top: var(--space-1);
@@ -387,6 +405,13 @@
 
     .ledgerValue {
         grid-row: span 2;
+    }
+
+    /* The caliper fills its column: the value grows and pushes the right arm
+       to the column's edge. The value is the caliper's second span (left arm,
+       value, right arm, hidden gloss). */
+    .ledgerValue > span:nth-child(2) {
+        flex: 1 1 auto;
     }
 
     .statement {

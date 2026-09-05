@@ -69,6 +69,16 @@
     --cursor-size: 20px;
     /* The rendered height of the fixed bar, used by the hero to clear it. */
     --nav-height: 5.5rem;
+
+    /* ── The page's one column ────────────────────────────────────────────
+       Every section used to invent its own container width and centre it, so
+       at 1440 the page carried four different left edges (design council
+       R-c1, C2). `--page-gutter` is the breathing room either side of the
+       viewport; `--page-max` is the single content column that every
+       section's first heading stands on. Sections read both — never a
+       literal width — so the spine is one number in one place. */
+    --page-gutter: clamp(1.5rem, 5vw, 5rem);
+    --page-max: 78rem;
     /* Three faces, one job each (design direction §1.1). All self-hosted via
        next/font; the literal names are fallbacks only.
          --font-heading  a document serif, for the h1, the six section titles and
@@ -260,11 +270,19 @@
     }
 }
 
-/* MiniVic quick-reply strip scrolls horizontally; a soft edge fade signals the
-   overflow is intentional rather than a hard clip. */
+/* MiniVic quick-reply strip scrolls horizontally; a fade at the right edge
+   signals the overflow is intentional rather than a hard clip, and the row
+   snaps chip-by-chip so a swipe lands on a whole prompt, never mid-word
+   (design council R-c1, C5). The left edge stays crisp so the first chip is
+   read in full. */
 .minivic-quickstrip {
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 0.9rem, #000 calc(100% - 1.6rem), transparent);
-    mask-image: linear-gradient(to right, transparent, #000 0.9rem, #000 calc(100% - 1.6rem), transparent);
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+    scroll-snap-type: x proximity;
+}
+
+.minivic-quickstrip > * {
+    scroll-snap-align: start;
 }
 
 html {

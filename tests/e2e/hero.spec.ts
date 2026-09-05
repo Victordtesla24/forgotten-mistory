@@ -136,4 +136,32 @@ test.describe('Hero', () => {
     const canvases = await page.locator(`${HERO} canvas`).count();
     expect(canvases).toBeLessThanOrEqual(1);
   });
+
+  test('TC-HERO-12: at 390×844 the three caliper jaws align and an action sits in the first screen', async ({
+    page,
+  }) => {
+    // Design council R-c1, P3 + P4. On a phone the ledger stacks into three
+    // rows with the figure on the left; each figure sized its own box, so the
+    // right jaws landed at three different x positions and the first screen
+    // ended inside the ledger with both actions below it.
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+    await page.locator(`${HERO} h1`).waitFor({ state: 'visible', timeout: 15000 });
+    await page.waitForTimeout(1200);
+
+    const jaws = page.locator(`${HERO} ul li [data-state] > span[aria-hidden="true"]:nth-child(3)`);
+    await expect(jaws).toHaveCount(3);
+    const xs: number[] = [];
+    for (let i = 0; i < 3; i += 1) {
+      const box = await jaws.nth(i).boundingBox();
+      expect(box, `right jaw ${i}`).not.toBeNull();
+      xs.push(box!.x);
+    }
+    expect(Math.max(...xs) - Math.min(...xs), `right jaws at ${xs.map((x) => Math.round(x)).join(' / ')}`).toBeLessThanOrEqual(2);
+
+    const evidence = page.locator(`${HERO} a[href="#experience"]`).first();
+    const box = await evidence.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.y + box!.height, 'See the evidence must end inside the first 844 px').toBeLessThanOrEqual(844);
+  });
 });

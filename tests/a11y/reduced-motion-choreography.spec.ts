@@ -592,6 +592,37 @@ test.describe('Reduced-motion choreography (R-46 / R-101 / SC-27.1)', () => {
     });
   }
 
+  test('RM-6 no infinite animation keeps running under reduce (the launcher status dot)', async ({
+    browser,
+  }) => {
+    // Adversarial review F-4: the Tailwind `animate-ping` on the MiniVic
+    // launcher's status dot was still in playState "running" with the reduce
+    // preference set. Under reduce the dot must be static and still visible.
+    test.setTimeout(120000);
+    const page = await openPage(browser, 'reduce');
+    await page.waitForTimeout(1500);
+    const running = await page.evaluate(() =>
+      document
+        .getAnimations()
+        .filter((a) => a.playState === 'running')
+        .map((a) => ({
+          name: (a as CSSAnimation).animationName || '',
+          target: (a.effect as KeyframeEffect | null)?.target?.tagName || '?',
+        }))
+        .filter((a) => /ping/i.test(a.name)),
+    );
+    const dot = await page.evaluate(() => {
+      const el = document.querySelector('[data-testid="minivic-toggle"] span span:last-child') as HTMLElement | null;
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return { visible: el.checkVisibility(), w: r.width, h: r.height };
+    });
+    await page.context().close();
+    expect(running, 'no "ping" animation may run under prefers-reduced-motion: reduce').toEqual([]);
+    expect(dot?.visible, 'the static status dot stays visible').toBe(true);
+    expect(dot!.w).toBeGreaterThan(0);
+  });
+
   test('RM-5 no blanket universal kill switch survives in the shipped CSS', async ({ browser }) => {
     test.setTimeout(180000);
     const page = await openPage(browser, 'reduce');
