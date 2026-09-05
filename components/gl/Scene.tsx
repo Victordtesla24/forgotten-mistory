@@ -13,6 +13,17 @@ const GLCanvas = dynamic(() => import('./GLCanvas'), { ssr: false });
 interface SceneProps {
   /** Class applied to the slot element, which is present whether or not the scene renders. */
   className?: string;
+  /**
+   * Stable identifier stamped on the slot as `data-scene`.
+   *
+   * The slot's class name is a hashed CSS-module token in a production export,
+   * so nothing outside the component can address it. The flagship-visibility
+   * gate (`tests/overhaul/flagship-visibility.spec.ts`) has to find each
+   * scene's slot to isolate and photograph it, and every later lane that wants
+   * to measure a scene needs the same handle — so the handle is part of the
+   * contract here rather than re-derived per section.
+   */
+  sceneId?: string;
   /** Camera for this scene. Defaults to a 45° perspective five units back. */
   camera?: { position?: [number, number, number]; fov?: number };
   children: ReactNode;
@@ -36,7 +47,7 @@ interface SceneProps {
  * legible with its scene absent: the slot keeps its own CSS treatment, and the
  * scenes are evidence rendered, never the evidence itself.
  */
-export default function Scene({ className, camera, children }: SceneProps) {
+export default function Scene({ className, camera, sceneId, children }: SceneProps) {
   const capability = useGLCapability();
   const slotRef = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
@@ -91,7 +102,7 @@ export default function Scene({ className, camera, children }: SceneProps) {
   const show = capability === 'supported' && allowMotion && near && pageSettled;
 
   return (
-    <div ref={slotRef} className={className} aria-hidden="true">
+    <div ref={slotRef} className={className} data-scene={sceneId} aria-hidden="true">
       {show && (
         <GLCanvas camera={camera}>{children}</GLCanvas>
       )}

@@ -145,7 +145,7 @@ export default function Experience() {
         </header>
 
         <div className={styles.chart} ref={chartRef} data-chart>
-          <Scene className={styles.chartScene}>
+          <Scene className={styles.chartScene} sceneId="career-strata">
             <CareerStrata spans={spans} hover={active} entered={entered} />
           </Scene>
 

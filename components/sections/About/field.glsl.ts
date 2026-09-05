@@ -10,11 +10,34 @@
  *
  * So the geometry is deliberately the same geometry. `SECTORS` is the ten
  * dimensions the engine scores on; the annulus the light occupies is the same
- * band of radii the SVG's sector ring occupies (22 → 41 of a 100-unit face);
- * and `uRotation` is the identical angle the rose is rotated by, in radians —
- * so as the reader scrolls, the field turns underneath the engraving in
- * lockstep rather than drifting against it, and the sector carried up to the
- * index at twelve o'clock is the one that brightens.
+ * band of radii the SVG's sector ring occupies; and `uRotation` is the
+ * identical angle the rose is rotated by, in radians — so as the reader
+ * scrolls, the field turns underneath the engraving in lockstep rather than
+ * drifting against it, and the sector carried up to the index at twelve
+ * o'clock is the one that brightens.
+ *
+ * ## Why the numbers here are not the numbers that shipped first
+ *
+ * The first version of this field was, measured, invisible: isolated from the
+ * engraving at 1440 it covered 0.00% of its own slot at any meaningful
+ * luminance and peaked at 0.033 — under a twentieth of what a person notices.
+ * Two things caused that, and both are worth naming because they are easy to
+ * repeat.
+ *
+ * First, the composite dimmed itself twice. The colour was ramped toward light
+ * by `luma`, and then the *alpha* was set to `luma` as well, so a sector at
+ * 0.30 painted 30% of a colour that was itself only 30% of the way to white —
+ * about a tenth of the intended brightness. Alpha here now carries the light on
+ * its own: the colour is the light, and `luma` decides how much of it lands.
+ * Dark regions still paint nothing at all, which was the point of the original
+ * arrangement, and the lit ones now actually arrive.
+ *
+ * Second, the faint sectors were too faint to be sectors. An instrument face
+ * where only one of ten segments is visible is not a face; it is a smear. The
+ * inactive floor is now high enough to read as a ring of ten, and the active
+ * sector is far enough above it to be unmistakable.
+ *
+ * `tests/overhaul/flagship-visibility.spec.ts` pins all of this to numbers.
  *
  * Monochrome, and never the site's one accent: that accent means a figure has a
  * source a reader can go and check, and a field of light is not a figure. The
@@ -46,7 +69,7 @@ export const aboutFieldFragmentShader = /* glsl */ `
   uniform float uRotation;
   /** The dimension being read, 0..9, or -1 when the reader is between items. */
   uniform float uActive;
-  /** 0 → 1 over the mount ramp; back to 0 if the context is lost. */
+  /** 0 -> 1 over the mount ramp; back to 0 if the context is lost. */
   uniform float uIntensity;
   uniform vec3 uInk;
   uniform vec3 uLight;
@@ -84,46 +107,71 @@ export const aboutFieldFragmentShader = /* glsl */ `
     float within = fract(s);
 
     // A hairline of air between neighbours, so ten sectors read as ten — the
-    // same 1.1° of separation the SVG leaves between its annular sectors.
-    float band = smoothstep(0.0, 0.07, within) * smoothstep(1.0, 0.93, within);
+    // same separation the SVG leaves between its annular sectors.
+    float band = smoothstep(0.0, 0.06, within) * smoothstep(1.0, 0.94, within);
 
     // The band of radii the rose's sector ring occupies, softened at both ends
     // so the light is under the engraving rather than around it.
-    float ring = smoothstep(0.40, 0.58, r) * smoothstep(0.94, 0.72, r);
+    float ring = smoothstep(0.34, 0.52, r) * smoothstep(0.98, 0.74, r);
 
     // How far this sector is from the one being read, wrapped around the face.
     // At rest (uActive < 0) nothing is favoured, which is the rose's rest state
     // too: an instrument with no reading is not an instrument pointing at zero.
     float away = abs(idx - uActive);
     away = min(away, SECTORS - away);
-    float lit = uActive < 0.0 ? 0.0 : 1.0 - smoothstep(0.0, 2.4, away);
+    float lit = uActive < 0.0 ? 0.0 : 1.0 - smoothstep(0.0, 2.2, away);
 
     // Three lookups, and no more. One slow drift per sector so the ten are not
     // identical; one shimmer across each sector's own width; one wide, very low
-    // frequency wash so the disc is not evenly lit.
-    float drift = noise(vec2(idx * 3.7, uTime * 0.05));
-    float shimmer = noise(vec2(within * 2.4 + idx * 7.1, r * 2.2 - uTime * 0.07));
-    float wash = noise(p * 1.1 + vec2(uTime * 0.03, 0.0));
+    // frequency wash so the disc is not evenly lit. Their amplitudes are held
+    // deliberately narrow: they are meant to keep the ring alive, not to take
+    // any sector back below the threshold where it stops being visible.
+    float drift = noise(vec2(idx * 3.7, uTime * 0.19));
+    float shimmer = noise(vec2(within * 2.4 + idx * 7.1, r * 2.2 - uTime * 0.24));
+    float wash = noise(p * 1.1 + vec2(uTime * 0.11, 0.0));
 
-    float luma = band * ring
-      * (0.055 + 0.30 * lit)
-      * (0.62 + 0.38 * drift)
-      * (0.70 + 0.44 * shimmer)
-      * (0.74 + 0.34 * wash);
+    // A gleam travelling round the ring, so the face is never twice the same
+    // even while the reader is between dimensions and nothing is indexed.
+    float gleam = 0.5 + 0.5 * sin(a * 2.0 - uTime * 0.42);
+
+    // The entry sweep: as the section arrives, a wavefront of light runs once
+    // around the face and hands over to the steady state. It is carried by the
+    // same uIntensity ramp the mount already drives, so it costs no uniform and
+    // cannot desynchronise from the fade-in.
+    float phase = clamp(uIntensity, 0.0, 1.0);
+    float around = fract(a / TAU + 1.0);
+    float sweep = exp(-pow((around - phase) * 3.4, 2.0)) * (1.0 - phase);
+
+    // The floor is what makes this a ring of ten rather than one lit wedge; the
+    // 'lit' term is what makes it an instrument with a reading.
+    float sector = band * ring * (0.36 + 0.60 * lit);
+    sector *= 0.86 + 0.16 * drift;
+    sector *= 0.88 + 0.16 * shimmer;
+    sector *= 0.90 + 0.14 * wash;
+    sector += band * ring * (0.13 * gleam + 0.42 * sweep);
+
+    float luma = sector;
 
     // The scene has to end somewhere and it must not be anywhere a reader can
     // find: the field dies inside its own frame, so the canvas rectangle never
     // shows as a faintly lighter box against the page.
-    luma *= 1.0 - smoothstep(0.86, 1.0, r);
+    luma *= 1.0 - smoothstep(0.88, 1.02, r);
 
     // Grain, from the cheap hash rather than a fourth noise lookup.
-    luma += (hash(vUv * uResolution + fract(uTime)) - 0.5) * 0.012;
+    luma += (hash(vUv * uResolution + fract(uTime)) - 0.5) * 0.014;
     luma = clamp(luma, 0.0, 1.0);
 
-    // Light only. Alpha follows the luminance, so where the field is dark it
-    // paints nothing at all and the stage's own pool of light shows through
-    // undisturbed — the scene is never in the way of the instrument.
-    vec3 colour = mix(uInk, uLight, clamp(luma * 3.2, 0.0, 1.0));
-    gl_FragColor = vec4(colour, luma * clamp(uIntensity, 0.0, 1.0) * 0.95);
+    // Light only, and the light carried by alpha alone. Where the field is dark
+    // it paints nothing at all and the stage's own pool of light shows through
+    // undisturbed; where it is lit, the full accent lands at the weight luma
+    // asks for rather than at its square. See the header for why that
+    // distinction cost this scene its visibility the first time.
+    gl_FragColor = vec4(uLight, luma * clamp(uIntensity, 0.0, 1.0));
+
+    // uInk participates in no branch above; it is kept in the signature because
+    // every scene on this site takes its two colours from lib/palette.ts and a
+    // field that quietly stopped reading one of them would be the first place a
+    // palette drift could hide.
+    gl_FragColor.rgb = mix(uInk, gl_FragColor.rgb, clamp(luma * 4.0, 0.0, 1.0));
   }
 `;
