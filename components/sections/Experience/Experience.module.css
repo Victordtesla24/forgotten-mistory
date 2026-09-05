@@ -70,11 +70,59 @@
     --readout-column: 4.5rem;
 }
 
+/* The still of the same light (R-c13 MOT-C13-04). The shader draws drifting
+   strata lit under each span; with no WebGL — or with reduced motion asked for
+   — this still draws the same sediment: a bed of fixed bands, a soft key from
+   the left, and the lit surface of the top stratum where that key lands. The
+   fallback measured 0.00% above the ink before this, which is another way of
+   saying the section stood on an empty rectangle.
+
+   Where the light is allowed to be bright is decided by the type, not by
+   taste. `tests/a11y/text-contrast.spec.ts` samples the *composited* pixel
+   behind every glyph, so this gradient is part of every ratio it computes, and
+   the small type inside the chart is the constraint: `.axisTick` is
+   `--ink-300` (4.81:1 on the ink — its ground may not pass 0.007 relative
+   luminance) and `.trackYears` and `.openNote` are `--mist-400` (6.20:1 — a
+   ground of 0.023). Both ceilings sit under the 0.04 the flagship-visibility
+   fallback gate asks for, so the bright surface is placed in the one band of
+   the slot that carries no text at all: the chart's own top padding plus the
+   6% the slot overhangs into the header's bottom margin, together ~11% of the
+   slot at 1440. The band is 6% tall and sits at 3.8–9.8%, and it fades out to
+   the right so the key reads as coming from one side.
+
+   That is why `#experience` is the single section held to a 2% fallback floor
+   instead of 8% (`fallbackCoverageMin` in tests/overhaul/flagship-visibility.
+   spec.ts): lighting the rest of the slot to the default would take the dates
+   and the axis under AA. Contrast wins that argument. The shader path — what a
+   reader with WebGL and motion enabled actually sees — meets the full bar. */
 .chartScene {
     position: absolute;
     inset: -6% -2% 8%;
     z-index: 0;
     pointer-events: none;
+    background-image:
+        /* The lit surface of the top stratum: bright where the key lands on
+           the left, gone by the readout column on the right. */
+        linear-gradient(
+            90deg,
+            rgb(246 246 246 / 0.38),
+            rgb(246 246 246 / 0.3) 50%,
+            rgb(246 246 246 / 0.05) 88%,
+            transparent
+        ),
+        /* The key itself, wide and soft. */
+        radial-gradient(58% 74% at 12% 46%, rgb(246 246 246 / 0.075), transparent 76%),
+        /* The sediment. Held at the ink's own weight — this is the part the
+           dates and the axis sit on. */
+        repeating-linear-gradient(
+            180deg,
+            transparent 0 22px,
+            rgb(246 246 246 / 0.05) 22px 29px,
+            transparent 29px 38px
+        );
+    background-size: 100% 6%, 100% 100%, 100% 100%;
+    background-position: 0 4%, 0 0, 0 0;
+    background-repeat: no-repeat, no-repeat, repeat;
 }
 
 /* The year gridlines. Drawn once behind every track rather than per row, so a

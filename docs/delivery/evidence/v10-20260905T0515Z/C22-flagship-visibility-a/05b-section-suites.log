@@ -1,0 +1,141 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero.spec.ts tests/e2e/about.spec.ts tests/e2e/experience.spec.ts tests/overhaul/scene-about.spec.ts tests/overhaul/scene-experience.spec.ts tests/overhaul/cinematic.spec.ts tests/monochrome --reporter=list --workers=3
+
+[2mRunning [22m88[2m tests using [22m3[2m workers[22m
+
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/e2e/about.spec.ts:39:7 › About › TC-ABOUT-01: all ten dimensions render, in the engine’s own order[2m (5.2s)[22m
+  [32m✓[39m  [2m 1 [22m[chromium] › tests/e2e/about.spec.ts:60:7 › About › TC-ABOUT-03: no dimension is given a score[2m (6.1s)[22m
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/e2e/about.spec.ts:47:7 › About › TC-ABOUT-02: every dimension carries an answer and its evidence[2m (8.9s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/e2e/about.spec.ts:79:7 › About › TC-ABOUT-04: the dimensions name their source[2m (4.5s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/e2e/about.spec.ts:85:7 › About › TC-ABOUT-05: job-side dimensions are labelled as such[2m (4.9s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/e2e/about.spec.ts:152:7 › About › TC-ABOUT-07: the section is complete without WebGL[2m (4.4s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/e2e/about.spec.ts:98:7 › About › TC-ABOUT-06: the ten items are reading aids, not tab stops[2m (5.1s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/e2e/about.spec.ts:191:7 › About › TC-ABOUT-08: the compass turns as the reader scrolls — item 6 centred reads 06 / FROM THE ROLE[2m (6.1s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/e2e/about.spec.ts:234:7 › About › TC-ABOUT-10: on first entry the bezel sweeps once — 1160 ms, emphasised ease, never again[2m (5.0s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/e2e/about.spec.ts:215:7 › About › TC-ABOUT-09: hover overrides the scroll index, and leaving the list hands it back[2m (6.3s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/e2e/about.spec.ts:277:7 › About › TC-ABOUT-11: under reduced motion the index snaps — no sweep, no travel, still swept[2m (5.8s)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/e2e/experience.spec.ts:21:7 › Experience › TC-EXP-01: every role from the CV appears in the chart and the list[2m (4.0s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/e2e/about.spec.ts:305:7 › About › TC-ABOUT-12: no gold on the face — the active sector, its numeral and the ring stay achromatic[2m (5.9s)[22m
+  [32m✓[39m  [2m14 [22m[chromium] › tests/e2e/experience.spec.ts:41:7 › Experience › TC-EXP-02: bar lengths are proportional to real durations[2m (3.4s)[22m
+  [32m✓[39m  [2m17 [22m[chromium] › tests/e2e/experience.spec.ts:79:7 › Experience › TC-EXP-05: the current role opens by default and lists its bullets[2m (2.5s)[22m
+  [32m✓[39m  [2m15 [22m[chromium] › tests/e2e/experience.spec.ts:64:7 › Experience › TC-EXP-03: the axis is labelled with real years[2m (4.5s)[22m
+  [32m✓[39m  [2m16 [22m[chromium] › tests/e2e/experience.spec.ts:71:7 › Experience › TC-EXP-04: each chart row is a real button with an accessible name[2m (3.8s)[22m
+  [32m✓[39m  [2m19 [22m[chromium] › tests/e2e/experience.spec.ts:97:7 › Experience › TC-EXP-07: headline figures carry their role, not a bare number[2m (3.1s)[22m
+  [32m✓[39m  [2m18 [22m[chromium] › tests/e2e/experience.spec.ts:86:7 › Experience › TC-EXP-06: roles expand and collapse from the keyboard[2m (4.7s)[22m
+  [32m✓[39m  [2m20 [22m[chromium] › tests/e2e/experience.spec.ts:107:9 › Experience › TC-EXP-09 @ 1280: every chart row, bar and readout lives inside the spine[2m (8.9s)[22m
+  [32m✓[39m  [2m21 [22m[chromium] › tests/e2e/experience.spec.ts:107:9 › Experience › TC-EXP-09 @ 1440: every chart row, bar and readout lives inside the spine[2m (8.5s)[22m
+  [32m✓[39m  [2m23 [22m[chromium] › tests/e2e/experience.spec.ts:159:7 › Experience › TC-EXP-10: the duration readouts are printed in --mist-200[2m (3.5s)[22m
+  [32m✓[39m  [2m22 [22m[chromium] › tests/e2e/experience.spec.ts:107:9 › Experience › TC-EXP-09 @ 1920: every chart row, bar and readout lives inside the spine[2m (9.0s)[22m
+  [32m✓[39m  [2m25 [22m[chromium] › tests/e2e/experience.spec.ts:240:7 › Experience › TC-EXP-08: the section is complete without WebGL[2m (3.3s)[22m
+  [32m✓[39m  [2m26 [22m[chromium] › tests/e2e/hero.spec.ts:30:7 › Hero › TC-HERO-01: the name is the page h1[2m (3.1s)[22m
+  [32m✓[39m  [2m24 [22m[chromium] › tests/e2e/experience.spec.ts:180:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ[2m (5.1s)[22m
+  [32m✓[39m  [2m28 [22m[chromium] › tests/e2e/hero.spec.ts:46:7 › Hero › TC-HERO-03: the statement stays within its word budget[2m (3.2s)[22m
+  [32m✓[39m  [2m27 [22m[chromium] › tests/e2e/hero.spec.ts:38:7 › Hero › TC-HERO-02: positioning, location and one-sentence statement render[2m (3.8s)[22m
+  [32m✓[39m  [2m29 [22m[chromium] › tests/e2e/hero.spec.ts:54:7 › Hero › TC-HERO-04: the ledger shows three figures, each with its source[2m (3.7s)[22m
+  [32m✓[39m  [2m30 [22m[chromium] › tests/e2e/hero.spec.ts:68:7 › Hero › TC-HERO-05: both actions are present and reachable[2m (4.2s)[22m
+  [32m✓[39m  [2m32 [22m[chromium] › tests/e2e/hero.spec.ts:87:7 › Hero › TC-HERO-07: a truthful availability signal is shown[2m (3.1s)[22m
+  [32m✓[39m  [2m31 [22m[chromium] › tests/e2e/hero.spec.ts:79:7 › Hero › TC-HERO-06: recruiter channels are linked[2m (4.3s)[22m
+  [32m✓[39m  [2m33 [22m[chromium] › tests/e2e/hero.spec.ts:93:7 › Hero › TC-HERO-08: the hero fills the first viewport without overflowing it[2m (4.1s)[22m
+  [32m✓[39m  [2m35 [22m[chromium] › tests/e2e/hero.spec.ts:123:7 › Hero › TC-HERO-10: the preloader is gone[2m (3.9s)[22m
+  [32m✓[39m  [2m34 [22m[chromium] › tests/e2e/hero.spec.ts:107:7 › Hero › TC-HERO-09: the whole hero is legible in the first viewport[2m (4.9s)[22m
+  [32m✓[39m  [2m36 [22m[chromium] › tests/e2e/hero.spec.ts:129:7 › Hero › TC-HERO-11: the hero holds at most one WebGL context[2m (5.6s)[22m
+  [32m✓[39m  [2m38 [22m[chromium] › tests/e2e/hero.spec.ts:305:7 › Hero portrait › TC-HERO-12: the poster is eager, AVIF, correctly named, and never faded in[2m (7.7s)[22m
+  [32m✓[39m  [2m37 [22m[chromium] › tests/e2e/hero.spec.ts:140:7 › Hero › TC-HERO-12: at 390×844 the three caliper jaws align and an action sits in the first screen[2m (9.2s)[22m
+  [32m✓[39m  [2m39 [22m[chromium] › tests/e2e/hero.spec.ts:360:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate[2m (8.5s)[22m
+  [32m✓[39m  [2m41 [22m[chromium] › tests/e2e/hero.spec.ts:475:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget[2m (5.8s)[22m
+  [32m✓[39m  [2m40 [22m[chromium] › tests/e2e/hero.spec.ts:438:7 › Hero portrait › TC-HERO-14: reduced motion is poster only — no source, no request, no button[2m (9.5s)[22m
+  [32m✓[39m  [2m43 [22m[chromium] › tests/e2e/hero.spec.ts:544:7 › Hero portrait › TC-HERO-17: the pause button is keyboard-operable and its focus ring is achromatic[2m (5.6s)[22m
+  [32m✓[39m  [2m42 [22m[chromium] › tests/e2e/hero.spec.ts:519:7 › Hero portrait › TC-HERO-16: a failed loop leaves the poster in place and throws nothing[2m (7.4s)[22m
+  [32m✓[39m  [2m44 [22m[chromium] › tests/e2e/hero.spec.ts:602:7 › Hero portrait › TC-HERO-18: both layers are grayscale and nothing in the figure is chromatic[2m (4.8s)[22m
+Hero LCP: H1 at 776 ms
+  [32m✓[39m  [2m46 [22m[chromium] › tests/e2e/hero.spec.ts:656:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720[2m (4.5s)[22m
+  [32m✓[39m  [2m45 [22m[chromium] › tests/e2e/hero.spec.ts:623:7 › Hero portrait › TC-HERO-19: eager image weight ≤ 500 kB and the loop is fetched only after load[2m (5.2s)[22m
+  [32m✓[39m  [2m47 [22m[chromium] › tests/e2e/hero.spec.ts:682:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the portrait is an 88 px poster stamp with no video[2m (5.1s)[22m
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(246, 246, 246)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m49 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine[2m (4.5s)[22m
+  [32m✓[39m  [2m48 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold[2m (4.8s)[22m
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m51 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine[2m (4.7s)[22m
+  [32m✓[39m  [2m52 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine[2m (4.9s)[22m
+  [32m✓[39m  [2m50 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine[2m (7.8s)[22m
+
+=== GS-11 any-gold inside #skills @1440 === 15
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Bench_mark__NJTKw Bench_production__Hr6n2 x=1088 licensed=true via backgroundColor: rgb(176, 146, 63)
+  span.Skills_legendGlyph__ZFNcO Skills_measuredMark__VkK_a x=129 licensed=true via color: rgb(201, 168, 76)
+  [32m✓[39m  [2m54 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:328:7 › C-08 / CC-10 — the calibration card spends gold once › GS-11: every gold mark in #skills sits on a licensed surface[2m (7.1s)[22m
+
+=== GS-10 saturated gold inside #skills @1440 === 1
+  span.Skills_legendGlyph__ZFNcO Skills_measuredMark__VkK_a x=129 via color: rgb(201, 168, 76)
+
+=== GS-12 gold columns === [[1088,14],[129,1]] → 1 run(s)
+  [32m✓[39m  [2m53 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:314:7 › C-08 / CC-10 — the calibration card spends gold once › GS-10: at most six elements paint saturated gold inside #skills at rest[2m (8.8s)[22m
+  [32m✓[39m  [2m55 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:346:7 › C-08 / CC-10 — the calibration card spends gold once › GS-12: the card carries one vertical run of gold, not two[2m (8.6s)[22m
+
+=== GS-13 strands at rest === sourced=17 others=3 stops={"gold":[{"color":"rgb(201, 168, 76)","opacity":0.1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":1},{"color":"rgb(201, 168, 76)","opacity":0.1}],"grey":[{"color":"rgb(144, 144, 144)","opacity":0.08},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":1},{"color":"rgb(144, 144, 144)","opacity":0.08}]}
+  sourced stroke-opacity: 0.28
+  other  stroke-opacity: 0.35
+  [32m✓[39m  [2m56 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:371:7 › C-08 / CC-10 — the calibration card spends gold once › GS-13: at rest the sourced strands are dim gold and the rest are grey[2m (6.5s)[22m
+
+=== GS-15 reduced-motion strand transition === {"property":"stroke-opacity","animation":"none"}
+  [32m✓[39m  [2m58 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:449:9 › C-08 / CC-10 — the calibration card spends gold once › reduced motion › GS-15: under reduced motion the strand transition is colour only[2m (6.8s)[22m
+
+=== GS-14 stroke-opacity under hover === [1,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18,0.18]
+  [32m✓[39m  [2m57 [22m[chromium] › tests/monochrome/gold-semantics.spec.ts:423:7 › C-08 / CC-10 — the calibration card spends gold once › GS-14 (Motion F-6): hovering a capability lights its strands and recedes the rest[2m (8.0s)[22m
+  [32m✓[39m  [2m59 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold[2m (5.2s)[22m
+  [32m✓[39m  [2m61 [22m[chromium] › tests/monochrome/monochrome.spec.ts:118:7 › Monochrome Compliance › MONO-01: :root publishes the grey ramp and exactly the four sanctioned gold tokens[2m (2.7s)[22m
+  [32m✓[39m  [2m60 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold[2m (4.1s)[22m
+  [32m✓[39m  [2m62 [22m[chromium] › tests/monochrome/monochrome.spec.ts:146:7 › Monochrome Compliance › MONO-02: Body background is achromatic[2m (2.4s)[22m
+  [32m✓[39m  [2m64 [22m[chromium] › tests/monochrome/monochrome.spec.ts:207:7 › Monochrome Compliance › MONO-04: Every rendered colour in every section is achromatic or the sanctioned gold[2m (4.3s)[22m
+  [32m✓[39m  [2m63 [22m[chromium] › tests/monochrome/monochrome.spec.ts:153:7 › Monochrome Compliance › MONO-03: No inline style declares a colour outside the palette[2m (5.3s)[22m
+  [32m✓[39m  [2m65 [22m[chromium] › tests/monochrome/monochrome.spec.ts:218:7 › Monochrome Compliance › MONO-05: The sanctioned accent is actually in use, and only as the accent[2m (3.9s)[22m
+  [32m✓[39m  [2m67 [22m[chromium] › tests/monochrome/monochrome.spec.ts:252:7 › Monochrome Compliance › MONO-07: The check still rejects an unsanctioned hue[2m (2.7s)[22m
+  [32m✓[39m  [2m68 [22m[chromium] › tests/overhaul/cinematic.spec.ts:47:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-01: the hero backdrop is decorative — hidden from AT and behind the content[2m (2.6s)[22m
+  [32m✓[39m  [2m66 [22m[chromium] › tests/monochrome/monochrome.spec.ts:244:7 › Monochrome Compliance › MONO-06: Navigation overlay is achromatic when open[2m (3.5s)[22m
+  [32m✓[39m  [2m70 [22m[chromium] › tests/overhaul/cinematic.spec.ts:120:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-03: nav is transparent at top and frosts (data-scrolled) after scroll[2m (2.0s)[22m
+  [32m✓[39m  [2m69 [22m[chromium] › tests/overhaul/cinematic.spec.ts:83:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-02: nothing intercepts clicks on the hero CTA[2m (3.2s)[22m
+  [32m✓[39m  [2m72 [22m[chromium] › tests/overhaul/cinematic.spec.ts:170:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-05: the hero name renders in full with no glyph-masking clip-path (D-NAME-01)[2m (1.6s)[22m
+  [32m✓[39m  [2m71 [22m[chromium] › tests/overhaul/cinematic.spec.ts:143:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-04: with every scene suppressed the page is still the whole page[2m (4.7s)[22m
+  [32m✓[39m  [2m73 [22m[chromium] › tests/overhaul/cinematic.spec.ts:184:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-06: under reduced motion the hero entrance is a fade, not a rise[2m (2.5s)[22m
+  [32m✓[39m  [2m74 [22m[chromium] › tests/overhaul/cinematic.spec.ts:243:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-07: under reduced motion every section is readable, not left behind a curtain[2m (3.9s)[22m
+  [32m✓[39m  [2m75 [22m[chromium] › tests/overhaul/scene-about.spec.ts:87:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view[2m (6.4s)[22m
+  [32m✓[39m  [2m76 [22m[chromium] › tests/overhaul/scene-about.spec.ts:101:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column[2m (7.0s)[22m
+  [32m✓[39m  [2m77 [22m[chromium] › tests/overhaul/scene-about.spec.ts:143:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose[2m (7.3s)[22m
+  [32m✓[39m  [2m80 [22m[chromium] › tests/overhaul/scene-about.spec.ts:214:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-06: the field is monochrome, palette-sourced and cheap per pixel[2m (21ms)[22m
+  [32m✓[39m  [2m78 [22m[chromium] › tests/overhaul/scene-about.spec.ts:157:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-04: under reduced motion there is no canvas, and the rose is still the instrument[2m (5.2s)[22m
+  [32m✓[39m  [2m79 [22m[chromium] › tests/overhaul/scene-about.spec.ts:184:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-05: with WebGL unavailable the section is whole and silent[2m (4.6s)[22m
+  [32m✓[39m  [2m81 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:195:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-01: the bars are still growing 100 ms after the section commits[2m (4.4s)[22m
+  [32m✓[39m  [2m84 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:252:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-04: the today playhead is white[2m (1.5s)[22m
+  [32m✓[39m  [2m82 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:208:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-02: every bar reaches its real length within 1500 ms[2m (3.7s)[22m
+  [32m✓[39m  [2m83 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:221:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-03: nothing in the section paints gold[2m (4.5s)[22m
+  [32m✓[39m  [2m87 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:306:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-07: the shader is bound to the spans it sits under[2m (57ms)[22m
+  [32m✓[39m  [2m88 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:316:7 › #experience under reduced motion › TC-SCENE-EXP-08: no bar is ever shorter than its real duration[2m (2.6s)[22m
+  [32m✓[39m  [2m86 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:297:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-06: one canvas behind the chart at ?gl=force[2m (5.1s)[22m
+  [32m✓[39m  [2m85 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:262:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-05: every duration label stays inside the chart card[2m (6.5s)[22m
+
+[32m  88 passed[39m[2m (2.6m)[22m
+SUITES_EXIT=0
