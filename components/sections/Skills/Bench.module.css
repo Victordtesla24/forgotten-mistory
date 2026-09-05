@@ -19,7 +19,47 @@
     color: var(--mist-400);
 }
 
+/* ── The bench plate ──────────────────────────────────────────────────────
+   The stage the board is engraved on. The slot is behind everything the bench
+   draws and takes no pointer events, so nothing about the diagram's behaviour
+   depends on whether the light is there.
+
+   The still on the slot itself, not on a wrapper: the flagship-visibility gate
+   isolates the scene by hiding every element except `[data-scene]` and its
+   subtree, so a still painted on a parent would be invisible to the measurement
+   for the same reason it is invisible to a reader with the scene absent — which
+   is the state it exists for. It is the same plate the shader draws: a lit band
+   held inside the middle span, clear of both rails of type. */
+.stage {
+    position: relative;
+}
+
+.fieldSlot {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            transparent 19%,
+            rgb(246 246 246 / 0.13) 32%,
+            rgb(246 246 246 / 0.13) 68%,
+            transparent 81%,
+            transparent 100%
+        ),
+        radial-gradient(
+            120% 78% at 50% 42%,
+            rgb(246 246 246 / 0.17) 0%,
+            rgb(246 246 246 / 0.09) 55%,
+            transparent 84%
+        );
+}
+
 .bench {
+    /* Over the light, whether or not the light is there. */
+    z-index: 1;
     position: relative;
     display: grid;
     /* The span in the middle is the drawing. Wide enough that the cabling has
@@ -318,6 +358,33 @@
 @media (max-width: 900px) {
     .wires {
         display: none;
+    }
+
+    /* Below 900 px the board is a list of chips and rows — type edge to edge —
+       so the light cannot stay behind it without standing under every word.
+       The plate steps out instead: a lit calibration strip above the list, with
+       the record beneath it. Same instrument, stated rather than underlaid. */
+    .stage {
+        padding-top: 10.5rem;
+    }
+
+    .fieldSlot {
+        inset: 0 0 auto 0;
+        height: 9.5rem;
+        background:
+            linear-gradient(
+                90deg,
+                transparent 0%,
+                rgb(246 246 246 / 0.15) 24%,
+                rgb(246 246 246 / 0.15) 76%,
+                transparent 100%
+            ),
+            radial-gradient(
+                110% 90% at 50% 46%,
+                rgb(246 246 246 / 0.19) 0%,
+                rgb(246 246 246 / 0.10) 58%,
+                transparent 86%
+            );
     }
 
     .bench {

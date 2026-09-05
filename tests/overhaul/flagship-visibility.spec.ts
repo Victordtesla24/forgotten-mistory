@@ -144,6 +144,12 @@ const SCENES: readonly SceneCase[] = [
     label: 'experience strata',
     fallbackCoverageMin: 0.02,
   },
+  // ADV-REVIEW-20260905's P0: `#skills` measured 0 canvases and 1 svg at 1440
+  // on both `/` and `/?gl=force` — the one section claiming production
+  // calibration had no bench to calibrate on. Held to the full default bar at
+  // both widths: the plate stops short of both rails of type (`bench.glsl.ts`),
+  // so nothing here is traded against contrast and nothing has to be relaxed.
+  { section: 'skills', scene: 'skills-bench', label: 'skills bench field' },
 ];
 
 /** >= 15% of the slot at least this far above ground. */
