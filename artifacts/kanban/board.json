@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-05T10:17:15.770Z",
+  "updated": "2026-09-05T10:46:05.235Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -191,7 +191,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T08:30:41.789Z",
+      "updated": "2026-09-05T10:46:05.202Z",
       "summary": "Checks run 33936783382 on debd25b: 15 failed / 272 passed. C13 regression (Next 15) showed 8 ✘: GC-01 gold-contrast, TC-CONTRAST-01 @390/@1440, TC-BOT-12, TC-EXP-11, TC-HERO-12, TC-STATE-HOVER, TC-STATE-ACTIVE. Cycle 11 fixes CONTRAST + HERO-12. Remaining after landing: GC-01, TC-BOT-12, TC-EXP-11, TC-STATE-HOVER/ACTIVE + whatever the merged main shows.",
       "decisions": [],
       "comments": [
@@ -199,6 +199,11 @@
           "at": "2026-09-05T08:30:41.789Z",
           "by": "orchestrator",
           "text": "Add to the regression triage: VIS-04 listen-section snapshot (ratio 0.04, pre-existing since cycle 11 era), MiniVic transcript 32 px at 1366×768 (16b trade — consider trimming the persona status line at short heights), TC-LISTEN-05 flake."
+        },
+        {
+          "at": "2026-09-05T10:46:05.202Z",
+          "by": "orchestrator",
+          "text": "Add: TC-RENDER-07 hero screenshot baseline is stale after flagship A (0.09 pixel ratio) — rebaseline tests/baselines for hero/about/experience/vitrine/listen after the flagship corrections land, by eye."
         }
       ]
     },
@@ -1470,7 +1475,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T07:05:13.160Z",
-      "updated": "2026-09-05T09:28:12.772Z",
+      "updated": "2026-09-05T10:46:05.235Z",
       "summary": "Owner directive 06:53Z: monitor the production console logs and fix every runtime error at runtime. Deliverable: scripts/monitor/prod_console_probe.mjs (playwright, channel chrome, --no-sandbox, SwiftShader flags for ?gl=force, a hardware-GPU spoof pass like R-c13/adv4-recheck.mjs) writing artifacts/monitor/<UTC>.json + a one-line summary, exit 1 on any error; scripts/monitor/functions_log_probe.sh (firebase functions:log --only minivicChat,elevenLabsTts -n 50, grep error/status ≥ 400); tests/monitor_probe.test.mjs proving the probe fails on a page that throws. The orchestrator schedules it every 10 min (cron) and files each new error as a task within one cycle.",
       "decisions": [],
       "comments": [
@@ -1483,6 +1488,11 @@
           "at": "2026-09-05T09:28:12.772Z",
           "by": "orchestrator",
           "text": "Monitor upgraded 09:2xZ: adds a returning-visitor pass (persistent profile, second load pageMeta === live meta, deliveryType not cache-storage) alongside the fresh-context gl=force probe and functions:log scan."
+        },
+        {
+          "at": "2026-09-05T10:46:05.235Z",
+          "by": "orchestrator",
+          "text": "Monitor false positive 10:45Z: 'STALE FOR RETURNING VISITOR live=ce6799ec page=ccb15241' — the page was NEWER than the curl taken a moment earlier (deploy landed between the two). Refine: flag only when the page build is an ancestor of the live build (git merge-base --is-ancestor page live && page != live)."
         }
       ],
       "blocker": null

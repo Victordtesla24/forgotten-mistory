@@ -41,3 +41,6 @@ ACCEPTANCE: node scripts/deploy.mjs exits non-zero against a build that renders 
 
 ## COMMENT (2026-09-05T09:28:12.772Z)
 Monitor upgraded 09:2xZ: adds a returning-visitor pass (persistent profile, second load pageMeta === live meta, deliveryType not cache-storage) alongside the fresh-context gl=force probe and functions:log scan.
+
+## COMMENT (2026-09-05T10:46:05.235Z)
+Monitor false positive 10:45Z: 'STALE FOR RETURNING VISITOR live=ce6799ec page=ccb15241' — the page was NEWER than the curl taken a moment earlier (deploy landed between the two). Refine: flag only when the page build is an ancestor of the live build (git merge-base --is-ancestor page live && page != live).
