@@ -40,3 +40,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-05T06:34:52.590Z)
 running — R-c13 workflow dispatched 06:3xZ: adversarial → composition → motion → merge (sequential, opus max), gated on live meta f86b125
+
+## COMMENT (2026-09-05T06:36:10.564Z)
+06:36Z: first R-c13 run stopped after 2 min — its precondition named f86b125 literally, but that run was cancelled by the queued 3adf126a deploy (GitHub keeps one pending run per concurrency group); relaunched with the precondition 'live build is a descendant of f86b125' (3adf126a qualifies).
