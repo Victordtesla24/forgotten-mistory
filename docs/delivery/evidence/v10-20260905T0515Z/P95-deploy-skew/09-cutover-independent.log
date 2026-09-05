@@ -1,0 +1,20 @@
+build A stamp        : fm-static-30198af1  (precache 68 assets, 7 lazy chunks)
+build B stamp        : fm-static-b0b0b0b0
+visit 1 (build A)    : worker controlling, cache fm-static-30198af1 holds 70 entries
+generations before   : fm-generations, fm-static-30198af1, fm-static-deadbeef
+origin now answers   : /_next/static/chunks/162.6490edc6d7909ed0.js -> HTTP 404 (the incident's 404)
+generations after    : fm-generations, fm-static-30198af1, fm-static-b0b0b0b0, fm-static-deadbeef
+  build A kept       : true
+  build B present    : true
+  stale 3rd dropped  : false
+worker answers       : /_next/static/chunks/162.6490edc6d7909ed0.js -> HTTP 200, 5403 bytes (origin says 404)
+mid-visit scroll (A) : sections 6, canvases 2, chunk errors 0, error shell false
+  chunks on scroll   : 200 743.45e97a893c99a0d7.js | 200 427.dc6df1e7370e8fb2.js | 200 366.49d1290033776ffb.js | 200 315.4e3b21383d309578.js
+  pageerrors         : none
+build B page         : sections 6, canvases 1, error shell false, build-commit 30198af1
+generations (B active): fm-generations, fm-static-30198af1, fm-static-b0b0b0b0
+  build A kept       : true
+  build B present    : true
+  stale 3rd dropped  : true
+console errors       : 0 (0 mentioning a chunk)
+CUTOVER: PASS

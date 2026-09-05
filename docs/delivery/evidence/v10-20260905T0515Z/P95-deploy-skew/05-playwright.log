@@ -1,0 +1,80 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-error-boundary.spec.ts tests/overhaul/render.spec.ts tests/overhaul/cinematic.spec.ts --workers=2 --reporter=list
+
+[2mRunning [22m14[2m tests using [22m2[2m workers[22m
+
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/overhaul/cinematic.spec.ts:47:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-01: the hero backdrop is decorative — hidden from AT and behind the content[2m (2.3s)[22m
+  [32m✓[39m  [2m 1 [22m[chromium] › tests/overhaul/cinematic.spec.ts:83:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-02: nothing intercepts clicks on the hero CTA[2m (3.5s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/overhaul/cinematic.spec.ts:120:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-03: nav is transparent at top and frosts (data-scrolled) after scroll[2m (1.8s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/overhaul/cinematic.spec.ts:170:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-05: the hero name renders in full with no glyph-masking clip-path (D-NAME-01)[2m (1.8s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/overhaul/cinematic.spec.ts:143:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-04: with every scene suppressed the page is still the whole page[2m (3.8s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/overhaul/cinematic.spec.ts:184:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-06: under reduced motion the hero entrance is a fade, not a rise[2m (1.4s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/overhaul/cinematic.spec.ts:243:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-07: under reduced motion every section is readable, not left behind a curtain[2m (3.3s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/overhaul/render.spec.ts:102:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss[2m (13.0s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/overhaul/render.spec.ts:79:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it[2m (16.1s)[22m
+  [31m✘[39m  [2m10 [22m[31m[chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium)[39m[2m (11.0s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/overhaul/render.spec.ts:131:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page[2m (22.6s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/overhaul/render.spec.ts:173:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-09: A full-page scroll never trips a page error or the error boundary[2m (9.3s)[22m
+  [32m✓[39m  [2m14 [22m[chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot[2m (6.4s)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/overhaul/scene-error-boundary.spec.ts:72:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-01: a lazy scene chunk that 404s reloads once, then falls back silently[2m (15.1s)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium) [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveScreenshot[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('#hero')
+      80446 pixels (ratio 0.09 of all image pixels) are different.
+
+      Snapshot: hero-section.png
+
+    Call log:
+    [2m  - Expect "toHaveScreenshot(hero-section.png)" with timeout 30000ms[22m
+    [2m    - verifying given screenshot expectation[22m
+    [2m  - waiting for locator('#hero')[22m
+    [2m    - locator resolved to <section id="hero" class="Hero_hero__2EmdV" aria-labelledby="hero-name">…</section>[22m
+    [2m  - taking element screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - attempting scroll into view action[22m
+    [2m    - waiting for element to be stable[22m
+    [2m  - 80253 pixels (ratio 0.09 of all image pixels) are different.[22m
+    [2m  - waiting 100ms before taking screenshot[22m
+    [2m  - waiting for locator('#hero')[22m
+    [2m    - locator resolved to <section id="hero" class="Hero_hero__2EmdV" aria-labelledby="hero-name">…</section>[22m
+    [2m  - taking element screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - attempting scroll into view action[22m
+    [2m    - waiting for element to be stable[22m
+    [2m  - captured a stable screenshot[22m
+    [2m  - 80446 pixels (ratio 0.09 of all image pixels) are different.[22m
+
+
+    [0m [90m 162 |[39m     [36mawait[39m page[33m.[39mwaitForTimeout([35m2000[39m)[33m;[39m [90m// let the CSS entrance finish[39m
+     [90m 163 |[39m
+    [31m[1m>[22m[39m[90m 164 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m'#hero'[39m))[33m.[39mtoHaveScreenshot([32m'hero-section.png'[39m[33m,[39m {
+     [90m     |[39m                                         [31m[1m^[22m[39m
+     [90m 165 |[39m       maxDiffPixelRatio[33m:[39m [35m0.01[39m[33m,[39m
+     [90m 166 |[39m       threshold[33m:[39m [35m0.2[39m[33m,[39m
+     [90m 167 |[39m       [90m// The default 15s expect timeout is not enough headroom for the capture's[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/overhaul/render.spec.ts:164:41[22m
+
+[2m    attachment #1: [1mhero-section[2m (image/png) [2m────────────────────────────────────────────────────────[2m[22m
+[2m    Expected: tests/baselines/overhaul/render.spec.ts-snapshots/hero-section-chromium-linux.png[22m
+[2m    Received: test-results/overhaul-render-TC-NFR-REN-f6fa0-ne-—-hero-section-chromium--chromium/hero-section-actual.png[22m
+[2m    Diff:     test-results/overhaul-render-TC-NFR-REN-f6fa0-ne-—-hero-section-chromium--chromium/hero-section-diff.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-render-TC-NFR-REN-f6fa0-ne-—-hero-section-chromium--chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-render-TC-NFR-REN-f6fa0-ne-—-hero-section-chromium--chromium/error-context.md[22m
+
+[31m  1 failed[39m
+[31m    [chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium) [39m
+[32m  13 passed[39m[2m (1.1m)[22m
+EXIT:1

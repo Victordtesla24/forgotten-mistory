@@ -1,0 +1,222 @@
+TAP version 13
+# Subtest: the HTML document revalidates on every load
+    # Subtest: declares a Cache-Control for "/"
+    ok 1 - declares a Cache-Control for "/"
+      ---
+      duration_ms: 5.554134
+      type: 'test'
+      ...
+    # Subtest: declares a Cache-Control for "/index.html"
+    ok 2 - declares a Cache-Control for "/index.html"
+      ---
+      duration_ms: 0.116351
+      type: 'test'
+      ...
+    # Subtest: declares a Cache-Control for "**/*.html"
+    ok 3 - declares a Cache-Control for "**/*.html"
+      ---
+      duration_ms: 0.185401
+      type: 'test'
+      ...
+    # Subtest: declares a Cache-Control for "/404.html"
+    ok 4 - declares a Cache-Control for "/404.html"
+      ---
+      duration_ms: 0.07687
+      type: 'test'
+      ...
+    # Subtest: revalidates rather than forbidding storage, so the ETag still saves the transfer
+    ok 5 - revalidates rather than forbidding storage, so the ETag still saves the transfer
+      ---
+      duration_ms: 0.459044
+      type: 'test'
+      ...
+    # Subtest: never leaves an HTML source on Firebase's default one-hour browser cache
+    ok 6 - never leaves an HTML source on Firebase's default one-hour browser cache
+      ---
+      duration_ms: 0.150241
+      type: 'test'
+      ...
+    1..6
+ok 1 - the HTML document revalidates on every load
+  ---
+  duration_ms: 7.446629
+  type: 'suite'
+  ...
+# Subtest: the rules that were already right stay right
+    # Subtest: keeps /_next/static/** immutable — the hashed chunks are safe to hold forever
+    ok 1 - keeps /_next/static/** immutable — the hashed chunks are safe to hold forever
+      ---
+      duration_ms: 9.849166
+      type: 'test'
+      ...
+    # Subtest: keeps /sw.js on no-cache — a cached worker can never announce its own replacement
+    ok 2 - keeps /sw.js on no-cache — a cached worker can never announce its own replacement
+      ---
+      duration_ms: 3.663698
+      type: 'test'
+      ...
+    # Subtest: does not make an asset or a chunk revalidate — only the document does
+    ok 3 - does not make an asset or a chunk revalidate — only the document does
+      ---
+      duration_ms: 0.385783
+      type: 'test'
+      ...
+    # Subtest: leaves the "**" security block free of Cache-Control, so nothing is overridden by accident
+    ok 4 - leaves the "**" security block free of Cache-Control, so nothing is overridden by accident
+      ---
+      duration_ms: 0.875697
+      type: 'test'
+      ...
+    1..4
+ok 2 - the rules that were already right stay right
+  ---
+  duration_ms: 15.200919
+  type: 'suite'
+  ...
+# Subtest: navigations are network-first
+    # Subtest: branches on the navigation request before consulting the cache
+    ok 1 - branches on the navigation request before consulting the cache
+      ---
+      duration_ms: 0.753136
+      type: 'test'
+      ...
+    # Subtest: fetches the document from the network and only falls back to the cache on failure
+    ok 2 - fetches the document from the network and only falls back to the cache on failure
+      ---
+      duration_ms: 0.412964
+      type: 'test'
+      ...
+    # Subtest: keeps hashed sub-resources cache-first — they cannot go stale
+    ok 3 - keeps hashed sub-resources cache-first — they cannot go stale
+      ---
+      duration_ms: 0.149451
+      type: 'test'
+      ...
+    1..3
+ok 3 - navigations are network-first
+  ---
+  duration_ms: 2.643291
+  type: 'suite'
+  ...
+# Subtest: every deploy invalidates the precache
+    # Subtest: carries a build-stamp placeholder in the source, not a hand-bumped literal
+    ok 1 - carries a build-stamp placeholder in the source, not a hand-bumped literal
+      ---
+      duration_ms: 0.350293
+      type: 'test'
+      ...
+    # Subtest: still deletes superseded caches on activate, and still claims open clients
+    ok 2 - still deletes superseded caches on activate, and still claims open clients
+      ---
+      duration_ms: 0.169262
+      type: 'test'
+      ...
+    # Subtest: stamps out/sw.js with the build commit, so the deployed cache name is new
+    ok 3 - stamps out/sw.js with the build commit, so the deployed cache name is new
+      ---
+      duration_ms: 0.718346
+      type: 'test'
+      ...
+    # Subtest: stamps the deployed worker with the commit HEAD points at
+    ok 4 - stamps the deployed worker with the commit HEAD points at
+      ---
+      duration_ms: 6.182709
+      type: 'test'
+      ...
+    1..4
+ok 4 - every deploy invalidates the precache
+  ---
+  duration_ms: 8.156803
+  type: 'suite'
+  ...
+# Subtest: an updated worker shows the new build without being asked
+    # Subtest: reloads the page once on controllerchange
+    ok 1 - reloads the page once on controllerchange
+      ---
+      duration_ms: 0.248292
+      type: 'test'
+      ...
+    # Subtest: guards the reload with a sessionStorage flag, so a failing worker cannot loop
+    ok 2 - guards the reload with a sessionStorage flag, so a failing worker cannot loop
+      ---
+      duration_ms: 0.202002
+      type: 'test'
+      ...
+    # Subtest: still offers the explicit Reload action for a worker that is merely waiting
+    ok 3 - still offers the explicit Reload action for a worker that is merely waiting
+      ---
+      duration_ms: 0.274243
+      type: 'test'
+      ...
+    1..3
+ok 5 - an updated worker shows the new build without being asked
+  ---
+  duration_ms: 0.915467
+  type: 'suite'
+  ...
+# Subtest: the worker precaches the build it shipped with
+    # Subtest: declares a build-time PRECACHE_ASSETS placeholder in the source
+    ok 1 - declares a build-time PRECACHE_ASSETS placeholder in the source
+      ---
+      duration_ms: 0.149742
+      type: 'test'
+      ...
+    # Subtest: caches the manifest in batches that survive an individual 404
+    ok 2 - caches the manifest in batches that survive an individual 404
+      ---
+      duration_ms: 0.232512
+      type: 'test'
+      ...
+    # Subtest: stamps out/sw.js with a non-empty manifest of exactly this build's static files
+    ok 3 - stamps out/sw.js with a non-empty manifest of exactly this build's static files
+      ---
+      duration_ms: 8.817448
+      type: 'test'
+      ...
+    1..3
+ok 6 - the worker precaches the build it shipped with
+  ---
+  duration_ms: 9.579804
+  type: 'suite'
+  ...
+# Subtest: activate keeps the previous generation alive
+    # Subtest: keeps two cache generations, not one
+    ok 1 - keeps two cache generations, not one
+      ---
+      duration_ms: 0.185821
+      type: 'test'
+      ...
+    # Subtest: deletes only the generations outside the keep set
+    ok 2 - deletes only the generations outside the keep set
+      ---
+      duration_ms: 0.11286
+      type: 'test'
+      ...
+    # Subtest: records the generation order so "previous" is knowable, not guessed
+    ok 3 - records the generation order so "previous" is knowable, not guessed
+      ---
+      duration_ms: 0.094541
+      type: 'test'
+      ...
+    # Subtest: rescues a 404 for a hashed chunk from any surviving generation
+    ok 4 - rescues a 404 for a hashed chunk from any surviving generation
+      ---
+      duration_ms: 0.172512
+      type: 'test'
+      ...
+    1..4
+ok 7 - activate keeps the previous generation alive
+  ---
+  duration_ms: 0.761375
+  type: 'suite'
+  ...
+1..7
+# tests 27
+# suites 7
+# pass 27
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 139.777322
+EXIT:0

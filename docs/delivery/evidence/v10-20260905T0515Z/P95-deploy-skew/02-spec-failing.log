@@ -1,0 +1,60 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-error-boundary.spec.ts --reporter=list
+
+[2mRunning [22m2[2m tests using [22m2[2m workers[22m
+
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot[39m[2m (5.3s)[22m
+  [31m✘[39m  [2m2 [22m[31m[chromium] › tests/overhaul/scene-error-boundary.spec.ts:72:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-01: a lazy scene chunk that 404s reloads once, then falls back silently[39m[2m (1.3m)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/scene-error-boundary.spec.ts:72:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-01: a lazy scene chunk that 404s reloads once, then falls back silently [39m
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#hero') to be visible[22m
+
+
+    [0m [90m 55 |[39m     [33m.[39mwaitForFunction(() [33m=>[39m document[33m.[39mbody[33m.[39mclassList[33m.[39mcontains([32m'page-ready'[39m)[33m,[39m [36mnull[39m[33m,[39m { timeout[33m:[39m [35m20000[39m })
+     [90m 56 |[39m     [33m.[39m[36mcatch[39m(() [33m=>[39m {})[33m;[39m
+    [31m[1m>[22m[39m[90m 57 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#hero'[39m)[33m.[39mwaitFor({ state[33m:[39m [32m'visible'[39m[33m,[39m timeout[33m:[39m [35m15000[39m })[33m;[39m
+     [90m    |[39m                               [31m[1m^[22m[39m
+     [90m 58 |[39m }
+     [90m 59 |[39m
+     [90m 60 |[39m [90m/** Console errors the site itself emitted from a scene, excluding browser network noise. */[39m[0m
+    [2m    at waitForPageReady (/root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/overhaul/scene-error-boundary.spec.ts:57:31)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/overhaul/scene-error-boundary.spec.ts:92:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-error-bound-4ed81-ce-then-falls-back-silently-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-error-bound-4ed81-ce-then-falls-back-silently-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot [39m
+
+    Error: a thrown renderer must leave all six sections standing
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m6[39m
+    Received: [31m0[39m
+
+    [0m [90m 158 |[39m
+     [90m 159 |[39m     [36mconst[39m sections [33m=[39m [36mawait[39m page[33m.[39mlocator([32m'section[id]'[39m)[33m.[39mcount()[33m;[39m
+    [31m[1m>[22m[39m[90m 160 |[39m     expect(sections[33m,[39m [32m'a thrown renderer must leave all six sections standing'[39m)[33m.[39mtoBe([35m6[39m)[33m;[39m
+     [90m     |[39m                                                                                [31m[1m^[22m[39m
+     [90m 161 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m'#hero h1'[39m))[33m.[39mtoContainText([32m'Vikram Deshpande'[39m)[33m;[39m
+     [90m 162 |[39m
+     [90m 163 |[39m     [36mconst[39m body [33m=[39m ([36mawait[39m page[33m.[39mlocator([32m'body'[39m)[33m.[39minnerText()) [33m||[39m [32m''[39m[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/overhaul/scene-error-boundary.spec.ts:160:80[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-error-bound-26d47-s-stays-inside-its-own-slot-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-error-bound-26d47-s-stays-inside-its-own-slot-chromium/error-context.md[22m
+
+[31m  2 failed[39m
+[31m    [chromium] › tests/overhaul/scene-error-boundary.spec.ts:72:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-01: a lazy scene chunk that 404s reloads once, then falls back silently [39m
+[31m    [chromium] › tests/overhaul/scene-error-boundary.spec.ts:131:7 › TC-SKEW: a scene that cannot load never takes the page with it › TC-SKEW-02: a renderer that throws stays inside its own slot [39m
+EXIT:1

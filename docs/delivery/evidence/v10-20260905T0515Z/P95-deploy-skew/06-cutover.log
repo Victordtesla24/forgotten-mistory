@@ -1,0 +1,41 @@
+build A stamp        : fm-static-4879b1e7  (precache 66 assets)
+build B stamp        : fm-static-fdad9403  (precache 66 assets)
+build-A-only .js     : 3 — probing /_next/static/D0FT1Ts-o3s1MW5iMZ7Mi/_buildManifest.js
+
+visit 1 (build A)    : worker controlling, cache fm-static-4879b1e7 holds 68 entries
+generations before   : fm-static-4879b1e7, fm-static-deadbeef
+
+origin now answers   : /_next/static/D0FT1Ts-o3s1MW5iMZ7Mi/_buildManifest.js → HTTP 404 (the incident's 404)
+generations after    : fm-static-4879b1e7, fm-static-deadbeef
+  build A kept       : true
+  build B present    : false
+  stale 3rd dropped  : false
+
+worker answers       : /_next/static/D0FT1Ts-o3s1MW5iMZ7Mi/_buildManifest.js → HTTP 200, 224 bytes (origin says 404)
+
+build B page         : sections 6, canvases 1, error shell false
+EXIT:0
+
+--- what this run shows, and what it does not -------------------------------------------
+SHOWN (the incident's exact request):
+  • build A's worker precached 68 entries (66 manifest files + '/' + the CV) on first visit.
+  • after the deploy the origin answers build A's asset with HTTP 404 — the incident.
+  • the page, still holding build A's document, asks for it and the WORKER answers
+    HTTP 200 with 224 bytes from fm-static-4879b1e7. That is the rescue path
+    (fetch → 404 → matchAcrossGenerations) executing end to end in a real browser.
+  • build A's generation was still present after the reload: it was not deleted out from
+    under the page running build A, which is what the old activate() did.
+  • build B's page: sections 6, canvases 1, error shell false.
+
+NOT SHOWN in this run:
+  • build B's worker did not reach activate inside the window (fm-static-fdad9403 absent,
+    and the synthetic third generation fm-static-deadbeef was therefore never collected),
+    so the "keeps exactly two, drops the rest" half was not observed in the browser here.
+    That logic is asserted statically instead — tests/sw_strategy.test.mjs,
+    "activate keeps the previous generation alive" (4 assertions, all passing in
+    04-tests-passing.log). Worth a follow-up run that waits on the registration update
+    rather than on a cache name.
+  • the A-only probe is a _buildManifest.js rather than a numbered lazy chunk: the trailing
+    comment used to force build B was removed by minification, so the GLCanvas chunk hash
+    was identical in both builds. Same worker code path (/_next/static 404 → cross-generation
+    lookup); a differently-hashed lazy chunk would exercise no additional branch.

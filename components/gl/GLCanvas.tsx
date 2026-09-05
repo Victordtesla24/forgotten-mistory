@@ -3,7 +3,7 @@
 import { Canvas } from '@react-three/fiber';
 import type { ReactNode } from 'react';
 
-interface GLCanvasProps {
+export interface GLCanvasProps {
   camera?: { position?: [number, number, number]; fov?: number };
   children: ReactNode;
 }

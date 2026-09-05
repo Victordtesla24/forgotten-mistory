@@ -1,0 +1,785 @@
+TAP version 13
+# Subtest: navigations are network-first
+    # Subtest: branches on the navigation request before consulting the cache
+    ok 1 - branches on the navigation request before consulting the cache
+      ---
+      duration_ms: 0.799597
+      type: 'test'
+      ...
+    # Subtest: fetches the document from the network and only falls back to the cache on failure
+    ok 2 - fetches the document from the network and only falls back to the cache on failure
+      ---
+      duration_ms: 0.381594
+      type: 'test'
+      ...
+    # Subtest: keeps hashed sub-resources cache-first — they cannot go stale
+    ok 3 - keeps hashed sub-resources cache-first — they cannot go stale
+      ---
+      duration_ms: 0.180952
+      type: 'test'
+      ...
+    1..3
+ok 1 - navigations are network-first
+  ---
+  duration_ms: 2.452869
+  type: 'suite'
+  ...
+# Subtest: every deploy invalidates the precache
+    # Subtest: carries a build-stamp placeholder in the source, not a hand-bumped literal
+    ok 1 - carries a build-stamp placeholder in the source, not a hand-bumped literal
+      ---
+      duration_ms: 0.365543
+      type: 'test'
+      ...
+    # Subtest: still deletes superseded caches on activate, and still claims open clients
+    ok 2 - still deletes superseded caches on activate, and still claims open clients
+      ---
+      duration_ms: 0.163442
+      type: 'test'
+      ...
+    # Subtest: stamps out/sw.js with the build commit, so the deployed cache name is new
+    ok 3 - stamps out/sw.js with the build commit, so the deployed cache name is new
+      ---
+      duration_ms: 0.412732
+      type: 'test'
+      ...
+    # Subtest: stamps the deployed worker with the commit HEAD points at
+    ok 4 - stamps the deployed worker with the commit HEAD points at
+      ---
+      duration_ms: 6.712463
+      type: 'test'
+      ...
+    1..4
+ok 2 - every deploy invalidates the precache
+  ---
+  duration_ms: 8.619077
+  type: 'suite'
+  ...
+# Subtest: an updated worker shows the new build without being asked
+    # Subtest: reloads the page once on controllerchange
+    ok 1 - reloads the page once on controllerchange
+      ---
+      duration_ms: 0.360182
+      type: 'test'
+      ...
+    # Subtest: guards the reload with a sessionStorage flag, so a failing worker cannot loop
+    ok 2 - guards the reload with a sessionStorage flag, so a failing worker cannot loop
+      ---
+      duration_ms: 1.498652
+      type: 'test'
+      ...
+    # Subtest: still offers the explicit Reload action for a worker that is merely waiting
+    ok 3 - still offers the explicit Reload action for a worker that is merely waiting
+      ---
+      duration_ms: 0.303012
+      type: 'test'
+      ...
+    1..3
+ok 3 - an updated worker shows the new build without being asked
+  ---
+  duration_ms: 2.46521
+  type: 'suite'
+  ...
+# Subtest: the worker precaches the build it shipped with
+    # Subtest: declares a build-time PRECACHE_ASSETS placeholder in the source
+    not ok 1 - declares a build-time PRECACHE_ASSETS placeholder in the source
+      ---
+      duration_ms: 1.020338
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:198:3'
+      failureType: 'testCodeFailure'
+      error: "public/sw.js must declare PRECACHE_ASSETS as the __PRECACHE_ASSETS__ placeholder — a hard-coded list would name last build's hashes"
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual: |-
+        /*
+         * Service worker — offline-after-visit durability (SPEC NFR-DURABLE / §10 TC-NFR-DURABLE;
+         * prompt §2 NN-2: the takeaway must survive disconnecting from the internet).
+         *
+         * This site is a Firebase static export (no app/api/*), so the worker is a plain static
+         * file served from /sw.js with root scope. Strategy:
+         *   • install  — precache the navigation shell ('/') and the CV dossier so the core
+         *                takeaway is guaranteed offline on the very next load.
+         *   • fetch    — NETWORK-FIRST for navigations, cache-first for everything else. Hashed
+         *                sub-resources are cached on first visit, which replays the Next.js
+         *                chunks/CSS/fonts offline WITHOUT hard-coding any hashed filename (which
+         *                changes every build).
+         *   • activate — drop superseded versioned caches, then claim open clients.
+         * skipWaiting + clients.claim let a freshly-registered worker control the current page so
+         * the immediate next reload is served by the new worker.
+         *
+         * WHY NAVIGATIONS ARE NOT CACHE-FIRST
+         * -----------------------------------
+         * They were, and it made every deploy invisible. The document is the only file that names
+         * this build's hashed chunks, so a cached document is a cached *site*: it asks for the
+         * previous build's chunk URLs, which are immutable and correctly answered from cache,
+         * forever. The Owner reloaded production after a deploy and saw the old page — not because
+         * the deploy failed, but because the worker never let the request reach it. Serving the
+         * document from cache buys a few hundred milliseconds and costs correctness, so the
+         * document goes to the network and the cache becomes what this file's header always said
+         * it was: an offline fallback. Sub-resources stay cache-first — they are content-hashed,
+         * so a hit is by definition the right bytes and a revalidation would be a round trip for
+         * nothing.
+         *
+         * WHY THE CACHE VERSION IS A BUILD STAMP
+         * --------------------------------------
+         * It used to be the literal 'v1', with a comment asking a human to bump it. Nobody ever
+         * did, so `activate`'s "delete every cache that is not mine" step had nothing to delete
+         * and a precached shell survived every deploy indefinitely. `__BUILD_STAMP__` is rewritten
+         * in out/sw.js with the commit the build came from (scripts/build/stamp_service_worker.mjs,
+         * called from the static export's post-processing step). A new commit is a new cache name,
+         * so the previous precache is deleted the first time the new worker activates.
+         */
+        
+        const CACHE_PREFIX = 'fm-static-';
+        // Rewritten at build time with the short commit SHA. See stamp_service_worker.mjs.
+        const CACHE_VERSION = '__BUILD_STAMP__';
+        const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
+        
+        // Stable, non-hashed entry points only. Hashed assets are captured at runtime (below).
+        const PRECACHE_URLS = ['/', '/docs/Vik_Resume_Final.pdf'];
+        
+        self.addEventListener('install', (event) => {
+          event.waitUntil(
+            (async () => {
+              const cache = await caches.open(CACHE_NAME);
+              await cache.addAll(PRECACHE_URLS);
+              await self.skipWaiting();
+            })(),
+          );
+        });
+        
+        self.addEventListener('activate', (event) => {
+          event.waitUntil(
+            (async () => {
+              const keys = await caches.keys();
+              await Promise.all(
+                keys
+                  .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+                  .map((key) => caches.delete(key)),
+              );
+              await self.clients.claim();
+            })(),
+          );
+        });
+        
+        self.addEventListener('fetch', (event) => {
+          const request = event.request;
+        
+          // Only same-origin GETs are cacheable. Let the browser handle the rest natively.
+          if (request.method !== 'GET') return;
+        
+          let url;
+          try {
+            url = new URL(request.url);
+          } catch {
+            return;
+          }
+          if (url.origin !== self.location.origin) return;
+        
+          // Range requests (media streaming) must reach the network for 206 responses; caching a
+          // partial response would corrupt playback. The hero/MiniVic video relies on this.
+          if (request.headers.has('range')) return;
+        
+          // Next.js dev HMR is never cached (keeps `npm run dev` reloads live).
+          if (url.pathname.startsWith('/_next/webpack-hmr')) return;
+        
+          event.respondWith(
+            (async () => {
+              const cache = await caches.open(CACHE_NAME);
+        
+              // Navigations: network-first. The freshly fetched document also refreshes the
+              // offline shell, so going offline right after a deploy strands nobody on the
+              // build before last. Only a network failure reaches the cache.
+              if (request.mode === 'navigate') {
+                try {
+                  const fresh = await fetch(request);
+                  if (fresh && fresh.status === 200 && fresh.type === 'basic') {
+                    cache.put('/', fresh.clone());
+                  }
+                  return fresh;
+                } catch (error) {
+                  const shell = (await cache.match(request)) || (await cache.match('/'));
+                  if (shell) return shell;
+                  // Offline with nothing precached: the failure is the honest answer.
+                  throw error;
+                }
+              }
+        
+              // Everything else: cache-first. These URLs are content-hashed, so a hit is the
+              // right bytes by construction.
+              const cached = await cache.match(request);
+              if (cached) return cached;
+        
+              try {
+                const response = await fetch(request);
+                // Cache successful, fully-formed same-origin responses for offline replay.
+                if (response && response.status === 200 && response.type === 'basic') {
+                  cache.put(request, response.clone());
+                }
+                return response;
+              } catch (error) {
+                // Offline. Navigations never reach here — they are handled above — so this is a
+                // sub-resource: try once more ignoring the query string, which rescues an asset
+                // cached under a cache-busting parameter the caller has since changed.
+                const fallback = await cache.match(request, { ignoreSearch: true });
+                if (fallback) return fallback;
+                throw error;
+              }
+            })(),
+          );
+        });
+        
+      operator: 'match'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:199:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        node:internal/test_runner/test:1440:71
+        node:internal/per_context/primordials:466:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:435:3)
+        node:internal/per_context/primordials:466:9
+        Array.map (<anonymous>)
+      ...
+    # Subtest: caches the manifest in batches that survive an individual 404
+    not ok 2 - caches the manifest in batches that survive an individual 404
+      ---
+      duration_ms: 0.229732
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:206:3'
+      failureType: 'testCodeFailure'
+      error: 'one missing chunk must not abort the whole install'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual: |-
+        addEventListener('install', (event) => {
+          event.waitUntil(
+            (async () => {
+              const cache = await caches.open(CACHE_NAME);
+              await cache.addAll(PRECACHE_URLS);
+              await self.skipWaiting();
+            })(),
+          );
+        });
+        
+        self.
+      operator: 'match'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:209:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1442:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: stamps out/sw.js with a non-empty manifest of exactly this build's static files
+    not ok 3 - stamps out/sw.js with a non-empty manifest of exactly this build's static files
+      ---
+      duration_ms: 0.367053
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:213:3'
+      failureType: 'testCodeFailure'
+      error: 'out/sw.js declares no PRECACHE_ASSETS array'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: ~
+      operator: '=='
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:222:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..3
+not ok 4 - the worker precaches the build it shipped with
+  ---
+  duration_ms: 1.821484
+  type: 'suite'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:197:1'
+  failureType: 'subtestsFailed'
+  error: '3 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: activate keeps the previous generation alive
+    # Subtest: keeps two cache generations, not one
+    not ok 1 - keeps two cache generations, not one
+      ---
+      duration_ms: 0.290003
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:242:3'
+      failureType: 'testCodeFailure'
+      error: 'the number of retained generations must be a named constant equal to 2'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual: |-
+        /*
+         * Service worker — offline-after-visit durability (SPEC NFR-DURABLE / §10 TC-NFR-DURABLE;
+         * prompt §2 NN-2: the takeaway must survive disconnecting from the internet).
+         *
+         * This site is a Firebase static export (no app/api/*), so the worker is a plain static
+         * file served from /sw.js with root scope. Strategy:
+         *   • install  — precache the navigation shell ('/') and the CV dossier so the core
+         *                takeaway is guaranteed offline on the very next load.
+         *   • fetch    — NETWORK-FIRST for navigations, cache-first for everything else. Hashed
+         *                sub-resources are cached on first visit, which replays the Next.js
+         *                chunks/CSS/fonts offline WITHOUT hard-coding any hashed filename (which
+         *                changes every build).
+         *   • activate — drop superseded versioned caches, then claim open clients.
+         * skipWaiting + clients.claim let a freshly-registered worker control the current page so
+         * the immediate next reload is served by the new worker.
+         *
+         * WHY NAVIGATIONS ARE NOT CACHE-FIRST
+         * -----------------------------------
+         * They were, and it made every deploy invisible. The document is the only file that names
+         * this build's hashed chunks, so a cached document is a cached *site*: it asks for the
+         * previous build's chunk URLs, which are immutable and correctly answered from cache,
+         * forever. The Owner reloaded production after a deploy and saw the old page — not because
+         * the deploy failed, but because the worker never let the request reach it. Serving the
+         * document from cache buys a few hundred milliseconds and costs correctness, so the
+         * document goes to the network and the cache becomes what this file's header always said
+         * it was: an offline fallback. Sub-resources stay cache-first — they are content-hashed,
+         * so a hit is by definition the right bytes and a revalidation would be a round trip for
+         * nothing.
+         *
+         * WHY THE CACHE VERSION IS A BUILD STAMP
+         * --------------------------------------
+         * It used to be the literal 'v1', with a comment asking a human to bump it. Nobody ever
+         * did, so `activate`'s "delete every cache that is not mine" step had nothing to delete
+         * and a precached shell survived every deploy indefinitely. `__BUILD_STAMP__` is rewritten
+         * in out/sw.js with the commit the build came from (scripts/build/stamp_service_worker.mjs,
+         * called from the static export's post-processing step). A new commit is a new cache name,
+         * so the previous precache is deleted the first time the new worker activates.
+         */
+        
+        const CACHE_PREFIX = 'fm-static-';
+        // Rewritten at build time with the short commit SHA. See stamp_service_worker.mjs.
+        const CACHE_VERSION = '__BUILD_STAMP__';
+        const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
+        
+        // Stable, non-hashed entry points only. Hashed assets are captured at runtime (below).
+        const PRECACHE_URLS = ['/', '/docs/Vik_Resume_Final.pdf'];
+        
+        self.addEventListener('install', (event) => {
+          event.waitUntil(
+            (async () => {
+              const cache = await caches.open(CACHE_NAME);
+              await cache.addAll(PRECACHE_URLS);
+              await self.skipWaiting();
+            })(),
+          );
+        });
+        
+        self.addEventListener('activate', (event) => {
+          event.waitUntil(
+            (async () => {
+              const keys = await caches.keys();
+              await Promise.all(
+                keys
+                  .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+                  .map((key) => caches.delete(key)),
+              );
+              await self.clients.claim();
+            })(),
+          );
+        });
+        
+        self.addEventListener('fetch', (event) => {
+          const request = event.request;
+        
+          // Only same-origin GETs are cacheable. Let the browser handle the rest natively.
+          if (request.method !== 'GET') return;
+        
+          let url;
+          try {
+            url = new URL(request.url);
+          } catch {
+            return;
+          }
+          if (url.origin !== self.location.origin) return;
+        
+          // Range requests (media streaming) must reach the network for 206 responses; caching a
+          // partial response would corrupt playback. The hero/MiniVic video relies on this.
+          if (request.headers.has('range')) return;
+        
+          // Next.js dev HMR is never cached (keeps `npm run dev` reloads live).
+          if (url.pathname.startsWith('/_next/webpack-hmr')) return;
+        
+          event.respondWith(
+            (async () => {
+              const cache = await caches.open(CACHE_NAME);
+        
+              // Navigations: network-first. The freshly fetched document also refreshes the
+              // offline shell, so going offline right after a deploy strands nobody on the
+              // build before last. Only a network failure reaches the cache.
+              if (request.mode === 'navigate') {
+                try {
+                  const fresh = await fetch(request);
+                  if (fresh && fresh.status === 200 && fresh.type === 'basic') {
+                    cache.put('/', fresh.clone());
+                  }
+                  return fresh;
+                } catch (error) {
+                  const shell = (await cache.match(request)) || (await cache.match('/'));
+                  if (shell) return shell;
+                  // Offline with nothing precached: the failure is the honest answer.
+                  throw error;
+                }
+              }
+        
+              // Everything else: cache-first. These URLs are content-hashed, so a hit is the
+              // right bytes by construction.
+              const cached = await cache.match(request);
+              if (cached) return cached;
+        
+              try {
+                const response = await fetch(request);
+                // Cache successful, fully-formed same-origin responses for offline replay.
+                if (response && response.status === 200 && response.type === 'basic') {
+                  cache.put(request, response.clone());
+                }
+                return response;
+              } catch (error) {
+                // Offline. Navigations never reach here — they are handled above — so this is a
+                // sub-resource: try once more ignoring the query string, which rescues an asset
+                // cached under a cache-busting parameter the caller has since changed.
+                const fallback = await cache.match(request, { ignoreSearch: true });
+                if (fallback) return fallback;
+                throw error;
+              }
+            })(),
+          );
+        });
+        
+      operator: 'match'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:243:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        node:internal/test_runner/test:1440:71
+        node:internal/per_context/primordials:466:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:435:3)
+        node:internal/per_context/primordials:466:9
+        Array.map (<anonymous>)
+      ...
+    # Subtest: deletes only the generations outside the keep set
+    not ok 2 - deletes only the generations outside the keep set
+      ---
+      duration_ms: 0.410924
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:255:3'
+      failureType: 'testCodeFailure'
+      error: 'the delete filter must test membership of the keep set, not inequality with the current cache'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual: |-
+        addEventListener('activate', (event) => {
+          event.waitUntil(
+            (async () => {
+              const keys = await caches.keys();
+              await Promise.all(
+                keys
+                  .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+                  .map((key) => caches.delete(key)),
+              );
+              await self.clients.claim();
+            })(),
+          );
+        });
+        
+        self.
+      operator: 'match'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:256:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1442:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: records the generation order so "previous" is knowable, not guessed
+    not ok 3 - records the generation order so "previous" is knowable, not guessed
+      ---
+      duration_ms: 0.169851
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:264:3'
+      failureType: 'testCodeFailure'
+      error: 'the worker needs a ledger cache to know which generation preceded it'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual: |-
+        /*
+         * Service worker — offline-after-visit durability (SPEC NFR-DURABLE / §10 TC-NFR-DURABLE;
+         * prompt §2 NN-2: the takeaway must survive disconnecting from the internet).
+         *
+         * This site is a Firebase static export (no app/api/*), so the worker is a plain static
+         * file served from /sw.js with root scope. Strategy:
+         *   • install  — precache the navigation shell ('/') and the CV dossier so the core
+         *                takeaway is guaranteed offline on the very next load.
+         *   • fetch    — NETWORK-FIRST for navigations, cache-first for everything else. Hashed
+         *                sub-resources are cached on first visit, which replays the Next.js
+         *                chunks/CSS/fonts offline WITHOUT hard-coding any hashed filename (which
+         *                changes every build).
+         *   • activate — drop superseded versioned caches, then claim open clients.
+         * skipWaiting + clients.claim let a freshly-registered worker control the current page so
+         * the immediate next reload is served by the new worker.
+         *
+         * WHY NAVIGATIONS ARE NOT CACHE-FIRST
+         * -----------------------------------
+         * They were, and it made every deploy invisible. The document is the only file that names
+         * this build's hashed chunks, so a cached document is a cached *site*: it asks for the
+         * previous build's chunk URLs, which are immutable and correctly answered from cache,
+         * forever. The Owner reloaded production after a deploy and saw the old page — not because
+         * the deploy failed, but because the worker never let the request reach it. Serving the
+         * document from cache buys a few hundred milliseconds and costs correctness, so the
+         * document goes to the network and the cache becomes what this file's header always said
+         * it was: an offline fallback. Sub-resources stay cache-first — they are content-hashed,
+         * so a hit is by definition the right bytes and a revalidation would be a round trip for
+         * nothing.
+         *
+         * WHY THE CACHE VERSION IS A BUILD STAMP
+         * --------------------------------------
+         * It used to be the literal 'v1', with a comment asking a human to bump it. Nobody ever
+         * did, so `activate`'s "delete every cache that is not mine" step had nothing to delete
+         * and a precached shell survived every deploy indefinitely. `__BUILD_STAMP__` is rewritten
+         * in out/sw.js with the commit the build came from (scripts/build/stamp_service_worker.mjs,
+         * called from the static export's post-processing step). A new commit is a new cache name,
+         * so the previous precache is deleted the first time the new worker activates.
+         */
+        
+        const CACHE_PREFIX = 'fm-static-';
+        // Rewritten at build time with the short commit SHA. See stamp_service_worker.mjs.
+        const CACHE_VERSION = '__BUILD_STAMP__';
+        const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
+        
+        // Stable, non-hashed entry points only. Hashed assets are captured at runtime (below).
+        const PRECACHE_URLS = ['/', '/docs/Vik_Resume_Final.pdf'];
+        
+        self.addEventListener('install', (event) => {
+          event.waitUntil(
+            (async () => {
+              const cache = await caches.open(CACHE_NAME);
+              await cache.addAll(PRECACHE_URLS);
+              await self.skipWaiting();
+            })(),
+          );
+        });
+        
+        self.addEventListener('activate', (event) => {
+          event.waitUntil(
+            (async () => {
+              const keys = await caches.keys();
+              await Promise.all(
+                keys
+                  .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
+                  .map((key) => caches.delete(key)),
+              );
+              await self.clients.claim();
+            })(),
+          );
+        });
+        
+        self.addEventListener('fetch', (event) => {
+          const request = event.request;
+        
+          // Only same-origin GETs are cacheable. Let the browser handle the rest natively.
+          if (request.method !== 'GET') return;
+        
+          let url;
+          try {
+            url = new URL(request.url);
+          } catch {
+            return;
+          }
+          if (url.origin !== self.location.origin) return;
+        
+          // Range requests (media streaming) must reach the network for 206 responses; caching a
+          // partial response would corrupt playback. The hero/MiniVic video relies on this.
+          if (request.headers.has('range')) return;
+        
+          // Next.js dev HMR is never cached (keeps `npm run dev` reloads live).
+          if (url.pathname.startsWith('/_next/webpack-hmr')) return;
+        
+          event.respondWith(
+            (async () => {
+              const cache = await caches.open(CACHE_NAME);
+        
+              // Navigations: network-first. The freshly fetched document also refreshes the
+              // offline shell, so going offline right after a deploy strands nobody on the
+              // build before last. Only a network failure reaches the cache.
+              if (request.mode === 'navigate') {
+                try {
+                  const fresh = await fetch(request);
+                  if (fresh && fresh.status === 200 && fresh.type === 'basic') {
+                    cache.put('/', fresh.clone());
+                  }
+                  return fresh;
+                } catch (error) {
+                  const shell = (await cache.match(request)) || (await cache.match('/'));
+                  if (shell) return shell;
+                  // Offline with nothing precached: the failure is the honest answer.
+                  throw error;
+                }
+              }
+        
+              // Everything else: cache-first. These URLs are content-hashed, so a hit is the
+              // right bytes by construction.
+              const cached = await cache.match(request);
+              if (cached) return cached;
+        
+              try {
+                const response = await fetch(request);
+                // Cache successful, fully-formed same-origin responses for offline replay.
+                if (response && response.status === 200 && response.type === 'basic') {
+                  cache.put(request, response.clone());
+                }
+                return response;
+              } catch (error) {
+                // Offline. Navigations never reach here — they are handled above — so this is a
+                // sub-resource: try once more ignoring the query string, which rescues an asset
+                // cached under a cache-busting parameter the caller has since changed.
+                const fallback = await cache.match(request, { ignoreSearch: true });
+                if (fallback) return fallback;
+                throw error;
+              }
+            })(),
+          );
+        });
+        
+      operator: 'match'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:265:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: rescues a 404 for a hashed chunk from any surviving generation
+    not ok 4 - rescues a 404 for a hashed chunk from any surviving generation
+      ---
+      duration_ms: 0.1474
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:269:3'
+      failureType: 'testCodeFailure'
+      error: 'a 404 on /_next/static must search the other generations'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual: |-
+        addEventListener('fetch', (event) => {
+          const request = event.request;
+        
+          // Only same-origin GETs are cacheable. Let the browser handle the rest natively.
+          if (request.method !== 'GET') return;
+        
+          let url;
+          try {
+            url = new URL(request.url);
+          } catch {
+            return;
+          }
+          if (url.origin !== self.location.origin) return;
+        
+          // Range requests (media streaming) must reach the network for 206 responses; caching a
+          // partial response would corrupt playback. The hero/MiniVic video relies on this.
+          if (request.headers.has('range')) return;
+        
+          // Next.js dev HMR is never cached (keeps `npm run dev` reloads live).
+          if (url.pathname.startsWith('/_next/webpack-hmr')) return;
+        
+          event.respondWith(
+            (async () => {
+              const cache = await caches.open(CACHE_NAME);
+        
+              // Navigations: network-first. The freshly fetched document also refreshes the
+              // offline shell, so going offline right after a deploy strands nobody on the
+              // build before last. Only a network failure reaches the cache.
+              if (request.mode === 'navigate') {
+                try {
+                  const fresh = await fetch(request);
+                  if (fresh && fresh.status === 200 && fresh.type === 'basic') {
+                    cache.put('/', fresh.clone());
+                  }
+                  return fresh;
+                } catch (error) {
+                  const shell = (await cache.match(request)) || (await cache.match('/'));
+                  if (shell) return shell;
+                  // Offline with nothing precached: the failure is the honest answer.
+                  throw error;
+                }
+              }
+        
+              // Everything else: cache-first. These URLs are content-hashed, so a hit is the
+              // right bytes by construction.
+              const cached = await cache.match(request);
+              if (cached) return cached;
+        
+              try {
+                const response = await fetch(request);
+                // Cache successful, fully-formed same-origin responses for offline replay.
+                if (response && response.status === 200 && response.type === 'basic') {
+                  cache.put(request, response.clone());
+                }
+                return response;
+              } catch (error) {
+                // Offline. Navigations never reach here — they are handled above — so this is a
+                // sub-resource: try once more ignoring the query string, which rescues an asset
+                // cached under a cache-busting parameter the caller has since changed.
+                const fallback = await cache.match(request, { ignoreSearch: true });
+                if (fallback) return fallback;
+                throw error;
+              }
+            })(),
+          );
+        });
+        
+      operator: 'match'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:270:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..4
+not ok 5 - activate keeps the previous generation alive
+  ---
+  duration_ms: 1.27688
+  type: 'suite'
+  location: '/root/forgotten-mistory/.claude/worktrees/wf_6fd4d3c4-790-1/tests/sw_strategy.test.mjs:239:1'
+  failureType: 'subtestsFailed'
+  error: '4 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..5
+# tests 17
+# suites 5
+# pass 10
+# fail 7
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 116.829502
+EXIT:1
