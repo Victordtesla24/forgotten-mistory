@@ -5,6 +5,7 @@ import { PNG } from 'pngjs';
 import { test, expect, type Page } from '@playwright/test';
 
 import { aboutContent } from '../../app/data/portfolio/about';
+import { ABOUT_OPEN_DASHES } from '../../components/sections/About/field.glsl';
 
 /**
  * SPEC-v10 §R2 / c16 — `#about` carries a flagship scene.
@@ -80,6 +81,19 @@ const SECTORS = aboutContent.dimensions.length;
 /** Which of the ten the engine answers from the candidate — the lit ones. */
 const ANSWERED = aboutContent.dimensions.map((d) => d.side === 'candidate');
 const TAU = Math.PI * 2;
+
+/**
+ * `TC-SCENE-ABOUT-10` thresholds (ABOUT-STORY-v2 §4, T-1).
+ *
+ * `OPEN_STRUCTURE_RATIO` is per-sector and one-sided: the *faintest* open
+ * sector against the *strongest* answered one, so a single sector that failed
+ * to be drawn open fails the case. `OPEN_NO_INVERSION` keeps the retired
+ * group-mean clause's intent — the grading may never run backwards — at the
+ * value all four measured states already clear (1.499 / 3.348 / 3.983 / 4.181).
+ */
+const OPEN_STRUCTURE_RATIO = 3.0;
+const OPEN_STRUCTURE_MIN = 0.2;
+const OPEN_NO_INVERSION = 1.2;
 
 /** Relative luminance (WCAG) of one 8-bit sRGB triple. */
 function luminance(r: number, g: number, b: number): number {
@@ -192,6 +206,21 @@ interface AnnulusReading {
   gold: { hue: number; saturation: number } | null;
   /** The radii the annulus actually covered, in units of the rose's radius. */
   band: [number, number];
+  /**
+   * Normalised amplitude of the open mark in each sector, 0 = a smooth arc.
+   *
+   * Read frequency-selectively rather than as a plain contrast, because the
+   * shimmer term (`sector *= 0.82 + 0.28 * shimmer`, `field.glsl.ts`) deposits
+   * its energy at about one cycle across a sector and a contrast measure would
+   * read it as structure. This is a single DFT bin at exactly the frequency the
+   * shader draws the broken arc at — `ABOUT_OPEN_DASHES` cycles across one
+   * sector's own width — normalised by that sector's own mean, so a sector in a
+   * dim corner of the plane reads the same mark as one in the core. That
+   * position-invariance is the whole point: `rev-12cd9123-w1` F-2 measured an
+   * *answered* sector at 0.0122 and an *open* one at 0.5661 because luminance
+   * on this plane is dominated by where a sector happens to point.
+   */
+  sectorStructure: number[];
 }
 
 /**
@@ -217,6 +246,7 @@ function readAnnulus(
   const sectorMean: number[] = [];
   const boundaryMean: number[] = [];
   const sectorSamples: number[] = [];
+  const sectorStructure: number[] = [];
   let gold: { hue: number; saturation: number } | null = null;
 
   const sampleAlong = (angle: number): number[] => {
@@ -235,6 +265,84 @@ function readAnnulus(
     return values;
   };
 
+  /**
+   * One arc position, read as the mean of a short radial run about `radius`.
+   *
+   * The mark is drawn from `within` alone (`field.glsl.ts`: `dash =
+   * -cos(within * TAU * ABOUT_OPEN_DASHES)`), so it is *exactly* invariant
+   * along a radius and a radial mean is coherent gain on it. Everything the
+   * measurement is not about — the grain, the motes, the value-noise shimmer —
+   * is not, and averages down as 1/sqrt(n). The red baseline measured that
+   * floor rather than assuming it: a single-pixel read put all ten sectors at
+   * 0.10-0.26 in DFT bin 5 with no mark on the glass at all
+   * (`02-tests-failing.log`), which is an estimator too noisy to carry the
+   * claim either way. The thresholds are untouched; only the precision of the
+   * instrument reading them changed.
+   */
+  const RADIAL_RUN = 15;
+  const RADIAL_SPAN = 0.05;
+  const sampleAt = (angle: number, radius: number): number | null => {
+    let sum = 0;
+    let n = 0;
+    for (let k = 0; k < RADIAL_RUN; k += 1) {
+      const offset = (RADIAL_SPAN * geometry.roseRadius * (k / (RADIAL_RUN - 1) - 0.5)) * 2;
+      const rr = radius + offset;
+      const x = geometry.centreX + rr * Math.sin(angle);
+      const y = geometry.centreY - rr * Math.cos(angle);
+      const pixel = pixelAt(shot, x, y);
+      if (!pixel) continue;
+      sum += luminance(pixel[0], pixel[1], pixel[2]);
+      n += 1;
+    }
+    return n >= RADIAL_RUN * 0.6 ? sum / n : null;
+  };
+
+  /**
+   * The three radii the structure is read at, as fractions of the band's own
+   * span. On the default ring band [0.4, 0.96] they land at rr = 0.551, 0.658
+   * and 0.882 — the radii ABOUT-STORY-v2 §4 names, all clear of the numerals'
+   * groove at rr = 0.724 and of both band edges. Written as fractions so the
+   * fan band gets the same three positions inside its own annulus rather than
+   * three radii that fall outside it entirely.
+   */
+  const STRUCTURE_RADII = [0.27, 0.46, 0.86];
+  /** Arc samples per radius, evenly over the sector's clear width. */
+  const STRUCTURE_ARC = 32;
+  const STRUCTURE_FROM = 0.06;
+  const STRUCTURE_TO = 0.94;
+
+  /**
+   * The single DFT bin at `ABOUT_OPEN_DASHES` cycles across the sector,
+   * correlated at the true frequency rather than at an integer bin of the
+   * window: the window covers 0.88 of a sector, so `ABOUT_OPEN_DASHES` cycles
+   * per sector is 4.4 cycles per window and no integer bin sits on it.
+   * `2|X_k| / mean` is the peak-to-mean modulation a pure sinusoid of that
+   * frequency would have to carry to produce this correlation.
+   */
+  const markAmplitude = (profile: { within: number; value: number }[]): number => {
+    if (profile.length < 8) return 0;
+    let re = 0;
+    let im = 0;
+    let sum = 0;
+    for (const { within, value } of profile) {
+      const phase = TAU * ABOUT_OPEN_DASHES * within;
+      re += value * Math.cos(phase);
+      im -= value * Math.sin(phase);
+      sum += value;
+    }
+    const n = profile.length;
+    const meanValue = sum / n;
+    if (meanValue <= 1e-6) return 0;
+    return (2 * Math.hypot(re / n, im / n)) / meanValue;
+  };
+
+  const median = (xs: number[]): number => {
+    if (xs.length === 0) return 0;
+    const sorted = [...xs].sort((a, b) => a - b);
+    const mid = Math.floor(sorted.length / 2);
+    return sorted.length % 2 === 1 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+  };
+
   for (let i = 0; i < SECTORS; i += 1) {
     const inside: number[] = [];
     for (let a = 0; a < arcSamples; a += 1) {
@@ -248,9 +356,25 @@ function readAnnulus(
     // The seam between sector i-1 and sector i: `within = 0`.
     const seam = sampleAlong(sectorAngle(geometry.active, i, 0));
     boundaryMean.push(seam.reduce((sum, v) => sum + v, 0) / Math.max(seam.length, 1));
+
+    // The mark, per radius, median of the three so one mote or one grain spike
+    // cannot make a smooth sector look drawn.
+    const perRadius: number[] = [];
+    for (const fraction of STRUCTURE_RADII) {
+      const radius = (band[0] + fraction * (band[1] - band[0])) * geometry.roseRadius;
+      const profile: { within: number; value: number }[] = [];
+      for (let a = 0; a < STRUCTURE_ARC; a += 1) {
+        const within =
+          STRUCTURE_FROM + ((STRUCTURE_TO - STRUCTURE_FROM) * a) / (STRUCTURE_ARC - 1);
+        const value = sampleAt(sectorAngle(geometry.active, i, within), radius);
+        if (value !== null) profile.push({ within, value });
+      }
+      if (profile.length >= STRUCTURE_ARC * 0.75) perRadius.push(markAmplitude(profile));
+    }
+    sectorStructure.push(median(perRadius));
   }
 
-  return { sectorMean, boundaryMean, sectorSamples, gold, band };
+  return { sectorMean, boundaryMean, sectorSamples, gold, band, sectorStructure };
 }
 
 /** The widest fan band that fits inside the canvas, or null when none does. */
@@ -707,6 +831,18 @@ test.describe('TC-SCENE-ABOUT: the compass turns over a field of light', () => {
               `answered ${mean(answeredAll).toFixed(4)} open ${mean(openAll).toFixed(4)} ` +
               `ratio ${(mean(answeredAll) / Math.max(mean(openAll), 1e-9)).toFixed(3)}`,
           );
+          // ...and the ten structure readings, on every run, pass or fail. The
+          // means above were reconstructed by hand once (`rev-12cd9123-w1`);
+          // that is not done twice.
+          console.log(
+            `TC-SCENE-ABOUT-10 ${viewport.label} ${state.key} — ${where}: ` +
+              `structure ${reading.sectorStructure.map((v) => v.toFixed(4)).join(' ')} | ` +
+              `answered-max ${Math.max(
+                ...reading.sectorStructure.filter((_, i) => ANSWERED[i]),
+              ).toFixed(4)} open-min ${Math.min(
+                ...reading.sectorStructure.filter((_, i) => !ANSWERED[i]),
+              ).toFixed(4)}`,
+          );
 
           expect(
             measured.length,
@@ -741,12 +877,54 @@ test.describe('TC-SCENE-ABOUT: the compass turns over a field of light', () => {
           expect(open.length, `${where}: no open sector measured`).toBeGreaterThan(0);
           const answeredMean = mean(answered);
           const openMean = mean(open);
+
+          // 10a / 10b — the mark, per sector. This replaces the group-mean
+          // luminance ratio the section used to be asserted with. That clause
+          // was satisfiable at 1.596 while an *answered* sector sat at 0.0122
+          // and an *open* one at 0.5661 (`rev-12cd9123-w1` F-2), because
+          // brightness on this plane tracks position — the guard under the
+          // reading column, the falloff from the origin — and not `about.ts`.
+          // The structure reading is normalised by each sector's own mean, so
+          // it is immune to exactly that gradient; the non-inversion floor
+          // below keeps the luminance channel honest as well.
+          const answeredStructure = measured
+            .filter((i) => ANSWERED[i])
+            .map((i) => reading.sectorStructure[i]);
+          const openStructure = measured
+            .filter((i) => !ANSWERED[i])
+            .map((i) => reading.sectorStructure[i]);
+          const openStructureMin = Math.min(...openStructure);
+          const answeredStructureMax = Math.max(...answeredStructure);
+          const structureNote =
+            `${where} (${viewport.label}, ${state.key}): structure per sector ` +
+            `${reading.sectorStructure.map((v) => v.toFixed(4)).join(', ')}`;
+
+          expect(
+            openStructureMin,
+            `${structureNote} — the faintest open sector carries ` +
+              `${openStructureMin.toFixed(4)} of the mark against ` +
+              `${answeredStructureMax.toFixed(4)} on the strongest answered one ` +
+              `(bar: ${OPEN_STRUCTURE_RATIO}x). The three role-side dimensions are not ` +
+              'drawn open — a reader cannot tell which of the ten are sought rather than ' +
+              'measured.',
+          ).toBeGreaterThanOrEqual(OPEN_STRUCTURE_RATIO * answeredStructureMax);
+
+          expect(
+            openStructureMin,
+            `${structureNote} — every open sector reads below ${OPEN_STRUCTURE_MIN}: the mark ` +
+              'is not on the glass at all, and the ratio above is two zeroes agreeing.',
+          ).toBeGreaterThanOrEqual(OPEN_STRUCTURE_MIN);
+
+          // 10c — the light may never grade an open sector *above* an answered
+          // one. The mark is zero-mean by construction, so this is what proves
+          // it did not quietly become a brightener.
           expect(
             answeredMean / openMean,
             `${where} (${viewport.label}, ${state.key}): answered ${answeredMean.toFixed(4)} vs ` +
-              `open ${openMean.toFixed(4)} — the light does not say which of the ten are ` +
-              `answered (per-sector ${reading.sectorMean.map((v) => v.toFixed(4)).join(', ')})`,
-          ).toBeGreaterThanOrEqual(1.6);
+              `open ${openMean.toFixed(4)} — the light grades an open dimension at or above an ` +
+              `answered one (floor: ${OPEN_NO_INVERSION}, per-sector ` +
+              `${reading.sectorMean.map((v) => v.toFixed(4)).join(', ')})`,
+          ).toBeGreaterThanOrEqual(OPEN_NO_INVERSION);
         };
 
         assertTellsTen(ring, 'the ring under the engraving', SECTORS);

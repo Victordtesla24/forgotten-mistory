@@ -1,6 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 
 import { aboutContent } from '../../app/data/portfolio/about';
+import { ABOUT_OPEN_DASHES } from '../../components/sections/About/field.glsl';
 import { NOW, TIMELINE_START, roles } from '../../app/data/portfolio/experience';
 import { greetingEnvelope } from '../../app/data/generated/greeting-envelope';
 import { capabilities } from '../../app/data/portfolio/skills';
@@ -83,6 +84,17 @@ const ABOUT_MIN_LOBES = 8;
 const ABOUT_MINIMA_DEPTH = 0.25;
 /** §5-2 — the three role-side sectors sit this far under the seven answered. */
 const ABOUT_ROLE_DEFICIT = 0.15;
+/**
+ * `TC-STORY-ABOUT-03` (ABOUT-STORY-v2 §4, T-2). The three role-side sectors
+ * are *drawn* open — the arc broken into `ABOUT_OPEN_DASHES` dashes across the
+ * sector's own width — and the claim is read off the story capture at that
+ * frequency, per sector. The absolute bar is lower than the fixed-radius read
+ * in `scene-about.spec.ts` because this histogram averages every radius at a
+ * given angle, guarded ones included, which dilutes the mark; the ratio is
+ * what does the work.
+ */
+const ABOUT_OPEN_STRUCTURE_RATIO = 3.0;
+const ABOUT_OPEN_STRUCTURE_MIN = 0.15;
 /** §5-3 — depth planes, and the tolerance on a recovered span. */
 const EXP_MIN_BAND_GROUPS = 2;
 const EXP_SPANS_REQUIRED = 6;
@@ -548,6 +560,118 @@ for (const viewport of VIEWPORTS) {
           `answered ones (bar: ${ABOUT_ROLE_DEFICIT * 100}%) — the field grades an open ` +
           'dimension the same as an answered one, which is the caliper rule broken in light.',
       ).toBeGreaterThanOrEqual(ABOUT_ROLE_DEFICIT);
+    });
+
+    test(`TC-STORY-ABOUT-03 @ ${w} — the three role-side sectors are drawn open`, async ({
+      page,
+    }) => {
+      test.setTimeout(120000);
+      await bootAt(page, '/?gl=force');
+      await readyScene(page, 'about-field');
+
+      const ground = await groundLuminance(page, 'about');
+      const clip = await slotClip(page, 'about-field');
+      const instrument = await elementClip(page, '#about svg');
+      const field = await captureScene(page, 'about-field', clip);
+
+      const cx = instrument ? instrument.x + instrument.width / 2 - clip.x : field.width / 2;
+      const cy = instrument ? instrument.y + instrument.height / 2 - clip.y : field.height / 2;
+
+      const bins = new Float64Array(360);
+      const counts = new Float64Array(360);
+      for (let y = 0; y < field.height; y += 1) {
+        for (let x = 0; x < field.width; x += 1) {
+          const dx = x - cx;
+          const dy = y - cy;
+          if (Math.hypot(dx, dy) < 8) continue;
+          let a = (Math.atan2(dx, -dy) * 180) / Math.PI;
+          if (a < 0) a += 360;
+          const bin = Math.min(359, Math.floor(a));
+          bins[bin] += Math.max(0, at(field, x, y) - ground);
+          counts[bin] += 1;
+        }
+      }
+      for (let i = 0; i < 360; i += 1) bins[i] = counts[i] > 0 ? bins[i] / counts[i] : 0;
+
+      // The alignment search runs on the smoothed histogram exactly as `-02`
+      // does — ten evenly spaced spokes against a live `uRotation`. The
+      // structure clause below then reads the **raw** bins: the mark is
+      // `ABOUT_OPEN_DASHES` cycles across a 36-degree sector, a 7.2-degree
+      // period, and the 4-bin smoother would attenuate most of it away.
+      const histogram = smooth(bins, 4);
+      let bestPhi = 0;
+      let bestScore = -Infinity;
+      for (let phi = 0; phi < 36; phi += 0.5) {
+        let score = 0;
+        for (let k = 0; k < 10; k += 1) {
+          score += histogram[Math.round(phi + k * 36) % 360];
+        }
+        if (score > bestScore) {
+          bestScore = score;
+          bestPhi = phi;
+        }
+      }
+
+      /**
+       * Normalised amplitude of the raw histogram at `ABOUT_OPEN_DASHES` cycles
+       * per sector, over sector `k`'s own span. `2|X| / mean` is the
+       * peak-to-mean modulation a pure sinusoid at that frequency would carry.
+       */
+      const sectorStructure = (k: number) => {
+        let re = 0;
+        let im = 0;
+        let sum = 0;
+        let n = 0;
+        for (let d = -14; d <= 14; d += 1) {
+          const a = Math.round(bestPhi + k * 36 + d + 720) % 360;
+          const value = bins[a];
+          // `within` measured across the sector's own width, so the frequency
+          // is the shader's own and not the window's.
+          const withinSector = (d + 18) / 36;
+          const phase = 2 * Math.PI * ABOUT_OPEN_DASHES * withinSector;
+          re += value * Math.cos(phase);
+          im -= value * Math.sin(phase);
+          sum += value;
+          n += 1;
+        }
+        const meanValue = sum / n;
+        if (meanValue <= 1e-6) return 0;
+        return (2 * Math.hypot(re / n, im / n)) / meanValue;
+      };
+
+      const sides = aboutContent.dimensions.map((d) => d.side);
+      expect(sides.length, 'the about section is a ten-dimension instrument').toBe(10);
+      const roleSectors = sides.map((s, i) => (s === 'role' ? i : -1)).filter((i) => i >= 0);
+      const candidateSectors = sides
+        .map((s, i) => (s === 'candidate' ? i : -1))
+        .filter((i) => i >= 0);
+      expect(roleSectors.length, 'three of the ten are measured from the role').toBe(3);
+
+      const structure = Array.from({ length: 10 }, (_, k) => sectorStructure(k));
+      const roleMin = Math.min(...roleSectors.map((k) => structure[k]));
+      const candidateMax = Math.max(...candidateSectors.map((k) => structure[k]));
+
+      // eslint-disable-next-line no-console
+      console.log(
+        `[story:about-03@${w}] phi=${bestPhi} k=${ABOUT_OPEN_DASHES} ` +
+          `structure=${structure.map((v) => v.toFixed(4)).join(' ')} ` +
+          `role-min=${roleMin.toFixed(4)} candidate-max=${candidateMax.toFixed(4)} ` +
+          `ratio=${(roleMin / Math.max(candidateMax, 1e-9)).toFixed(3)}`,
+      );
+
+      expect(
+        roleMin,
+        `the faintest of the three role-side sectors carries ${roleMin.toFixed(4)} of the open ` +
+          `mark against ${candidateMax.toFixed(4)} on the strongest answered one ` +
+          `(bar: ${ABOUT_OPEN_STRUCTURE_RATIO}x) — the field does not say which three of the ` +
+          'ten are sought rather than measured.',
+      ).toBeGreaterThanOrEqual(ABOUT_OPEN_STRUCTURE_RATIO * candidateMax);
+
+      expect(
+        roleMin,
+        `every role-side sector reads below ${ABOUT_OPEN_STRUCTURE_MIN} of the open mark — it ` +
+          'is not on the glass at all, and the ratio above is two zeroes agreeing.',
+      ).toBeGreaterThanOrEqual(ABOUT_OPEN_STRUCTURE_MIN);
     });
 
     /* ── §5-3 #experience — sixteen years have depth ──────────────────────── */
