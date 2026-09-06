@@ -564,6 +564,86 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
     await expect(line).toHaveText(/Answers: live text via openrouter$/, { timeout: 20000 });
   });
 
+  /**
+   * CB-LABEL-06 — the buffered fallback route says it answered short.
+   *
+   * Written before the implementation, from the independent review's F-1
+   * (docs/delivery/evidence/v10-20260905T0515Z/G-REV/97e19d07/08-adversarial-review.md):
+   * Firebase Hosting's edge buffers the whole SSE body, so its first byte is the
+   * origin's completion time and the strict-cold sample missed the 1.5 s bar at
+   * 1 805 ms. The fix shortens the answer on that route alone — a real product
+   * trade — so the panel has to name it. The origin route must be unaffected:
+   * that is the second half of this test, and without it a disclosure that
+   * always fired would look just as green.
+   */
+  test('CB-LABEL-06: an answer served through the buffered fallback says it is the short one', async ({ page }) => {
+    await gotoHome(page);
+    // The direct rung refuses, so the client falls through to /api/chat exactly
+    // as a visitor behind a proxy that blocks the run.app host would.
+    await page.route('**/minivicchat-*.run.app/**', async (route) => {
+      if (route.request().method() !== 'POST') {
+        await route.fulfill({ status: 204, body: '' });
+        return;
+      }
+      await route.fulfill({ status: 502, contentType: 'application/json', body: '{}' });
+    });
+    await page.route('**/api/chat**', async (route) => {
+      if (route.request().method() !== 'POST') {
+        await route.fulfill({ status: 204, body: '' });
+        return;
+      }
+      // The route the request actually carried, echoed the way the function
+      // does — the client must read this, not assume it from the rung it took.
+      const named = route.request().url().includes('route=hosting') ? 'hosting' : 'origin';
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          text: 'Fifteen years, mostly delivery leadership.',
+          provider: 'openai',
+          model: 'x',
+          route: named,
+          max_tokens: 48,
+        }),
+      });
+    });
+    const { panel } = await openMiniVic(page);
+    const line = panel.locator('[data-testid="minivic-synthetic-label"]');
+    await sendOnce(page, panel);
+    await expect(line).toHaveText(
+      /Answers: live text via openai · short answer on the proxy route$/,
+      { timeout: 20000 },
+    );
+  });
+
+  test('CB-LABEL-07: the origin route carries no such clause', async ({ page }) => {
+    await gotoHome(page);
+    for (const glob of CHAT_ROUTE_GLOBS) {
+      await page.route(glob, async (route) => {
+        if (route.request().method() !== 'POST') {
+          await route.fulfill({ status: 204, body: '' });
+          return;
+        }
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          headers: { 'access-control-allow-origin': '*' },
+          body: JSON.stringify({
+            text: 'Fifteen years, mostly delivery leadership.',
+            provider: 'openai',
+            model: 'x',
+            route: 'origin',
+            max_tokens: 128,
+          }),
+        });
+      });
+    }
+    const { panel } = await openMiniVic(page);
+    const line = panel.locator('[data-testid="minivic-synthetic-label"]');
+    await sendOnce(page, panel);
+    await expect(line).toHaveText(/Answers: live text via openai$/, { timeout: 20000 });
+  });
+
   test('CB-LABEL-04: an offline answer is not called live', async ({ page }) => {
     await gotoHome(page);
     await failBothRoutes(page);

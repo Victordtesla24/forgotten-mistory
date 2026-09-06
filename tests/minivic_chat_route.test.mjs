@@ -30,10 +30,12 @@ import { fileURLToPath } from 'node:url';
 
 import {
   HOSTING_CHAT_ENDPOINT,
+  HOSTING_CHAT_SEND_URL,
   DIRECT_FIRST_BYTE_TIMEOUT_MS,
   isUsableChatOrigin,
   buildChatRoutes,
   runWithFallback,
+  trimCappedAnswer,
 } from '../lib/miniVicRoute.mjs';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -51,7 +53,7 @@ test('MV-ROUTE-01: with an origin configured the direct route is tried first, Ho
   );
   assert.equal(routes[0].sendUrl, `${ORIGIN}/`);
   assert.equal(routes[0].warmUrl, `${ORIGIN}/?warm=1`);
-  assert.equal(routes[1].sendUrl, HOSTING_CHAT_ENDPOINT);
+  assert.equal(routes[1].sendUrl, HOSTING_CHAT_SEND_URL);
   assert.equal(routes[1].warmUrl, `${HOSTING_CHAT_ENDPOINT}?warm=1`);
 });
 
@@ -63,7 +65,7 @@ test('MV-ROUTE-02: with no origin configured the ladder is the Hosting rewrite a
       ['hosting'],
       `an unconfigured origin (${JSON.stringify(empty)}) must not produce a direct rung`,
     );
-    assert.equal(routes[0].sendUrl, HOSTING_CHAT_ENDPOINT);
+    assert.equal(routes[0].sendUrl, HOSTING_CHAT_SEND_URL);
   }
 });
 
@@ -207,5 +209,94 @@ test('MV-ROUTE-09: no component hard-codes the deploy-specific run.app hostname'
     offenders,
     [],
     `the deploy-specific origin is hard-coded outside the generated config point:\n${offenders.join('\n')}`,
+  );
+});
+
+/**
+ * MV-ROUTE-10 — the fallback POST names itself (G-M4 correction, t_w1_m4b).
+ *
+ * Firebase Hosting's edge buffers the SSE reply, so the function shortens the
+ * answer on that route alone. It can only do that if it knows which route the
+ * request came in on, and the one signal that cannot be confused by a proxy is
+ * the client saying so. The flag goes on the SEND url only: the warm ping does
+ * no upstream work, and the direct rung must stay a bare origin POST so that
+ * nothing about the fast path changes.
+ */
+test('MV-ROUTE-10: only the Hosting send carries the route flag the cap keys off', () => {
+  const routes = buildChatRoutes(ORIGIN);
+  const [origin, hosting] = routes;
+
+  assert.equal(hosting.sendUrl, `${HOSTING_CHAT_ENDPOINT}?route=hosting`);
+  assert.equal(HOSTING_CHAT_SEND_URL, `${HOSTING_CHAT_ENDPOINT}?route=hosting`);
+  assert.equal(
+    hosting.warmUrl,
+    `${HOSTING_CHAT_ENDPOINT}?warm=1`,
+    'the warm ping is untouched — it spends nothing and answers 204',
+  );
+  assert.ok(
+    !origin.sendUrl.includes('route='),
+    'the direct rung must remain a bare origin POST, so its 128-token ceiling is unchanged',
+  );
+  assert.ok(
+    !origin.warmUrl.includes('route='),
+    'the direct warm ping is untouched too',
+  );
+});
+
+test('MV-ROUTE-11: the panel reads the route off the wire rather than guessing it', () => {
+  const brain = read('lib/miniVicBrain.ts');
+  assert.match(
+    brain,
+    /parsed\.route/,
+    'the streamed done event names the route; the client must read it',
+  );
+  assert.match(
+    brain,
+    /route\?:\s*ChatRouteId \| null|route: ChatRouteId \| null/,
+    'BrainReply must carry the route so the disclosure can be honest about it',
+  );
+});
+
+
+/**
+ * MV-ROUTE-12 — a ceiling must not ship a severed sentence.
+ *
+ * The first strings below are the real capped replies this task measured
+ * against the deployed function (W1-M4B/04-hosting-verify.json and
+ * 05-hosting-noflag-verify.json): both stop mid-clause, which is what a hard
+ * `max_tokens` does. The trim keeps only what the model finished.
+ */
+test('MV-ROUTE-12: a capped answer is cut back to the last sentence it finished', () => {
+  const measured =
+    'At the ATO, I have led the Agile Kookaburras squad on the Payday Super reform ' +
+    'program since March 2026, managing sprint cadence, PI planning, capacity, ' +
+    'executive reporting, and delivering over 95% of the';
+  const trimmed = trimCappedAnswer(measured);
+  assert.ok(!trimmed.includes('95% of the'), 'the severed clause must not reach a reader');
+  assert.ok(trimmed.endsWith('…'), 'with no finished sentence to keep, the cut is marked');
+  assert.ok(
+    trimmed.endsWith('executive reporting…'),
+    `the last clause the model closed is kept, not discarded — got ${JSON.stringify(trimmed)}`,
+  );
+  assert.ok(
+    measured.startsWith(trimmed.slice(0, -1)),
+    'every word shown is a word the model wrote — nothing is rephrased',
+  );
+
+  const twoSentences =
+    'I led the Agile Kookaburras squad on the Payday Super reform program from March 2026. ' +
+    'Test-evidence automation cut effort by about 92% and I then';
+  assert.equal(
+    trimCappedAnswer(twoSentences),
+    'I led the Agile Kookaburras squad on the Payday Super reform program from March 2026.',
+  );
+
+  const whole = 'Fifteen years, mostly delivery leadership.';
+  assert.equal(trimCappedAnswer(whole), whole, 'a complete answer is returned untouched');
+
+  assert.equal(trimCappedAnswer(''), '', 'nothing in, nothing invented out');
+  assert.ok(
+    !trimCappedAnswer('gpt-4.1-mini answered in 1.2').includes('…answered'),
+    'a decimal point is not a sentence boundary',
   );
 });
