@@ -58,7 +58,14 @@ const VIEWPORTS = [
 
 /** §8 — both paths. Mirrors `PATHS` in `scripts/validate/hero_plane_dominance.mjs`. */
 const PATHS = [
-  { id: 'gl', label: '/?gl=force (shader, settled)', url: '/?gl=force', reducedMotion: false },
+  /* The `gl` path is SUPERSEDED by tests/overhaul/interim-frame.spec.ts TC-IF-06.
+     It settled the page by waiting for `[data-scene="hero-atmosphere"] canvas`;
+     the hero atmosphere was removed on the Owner's 2026-09-06T05:51Z instruction
+     (docs/architecture/INTERIM-FRAME.md), so that canvas can never attach and the
+     wait is a 30 s timeout, not a measurement. TC-IF-06 asserts the stronger
+     thing in its place — under `?gl=force` the two sections raise no page error
+     and mount no canvas at all. The still path below is unchanged and is now the
+     only path there is: with no scene, it is what every reader sees. */
   { id: 'still', label: 'prefers-reduced-motion still', url: '/', reducedMotion: true },
 ] as const;
 

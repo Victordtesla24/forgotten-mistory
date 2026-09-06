@@ -169,18 +169,20 @@ test.describe('About', () => {
     await page.locator(ABOUT).scrollIntoViewIfNeeded();
     await expect(page.locator(`${ABOUT} ol li`)).toHaveCount(10);
     await expect(page.locator(`${ABOUT} canvas`)).toHaveCount(0);
-    await expect(page.locator(ABOUT)).toContainText('Ten axes · no scores');
+    // `Ten axes · no scores` was the compass's own constant and left with it
+    // (docs/architecture/INTERIM-FRAME.md §1 item 8); the ten rows above are the
+    // section's completeness now, and interim-frame TC-IF-05 asserts the rest of
+    // it — the heading, the lede and the provenance line.
     // Not this section's scene alone: `gl=off` is every scene's answer.
     await expect(page.locator('#hero canvas, #experience canvas')).toHaveCount(0);
 
-    // And the flag has to be the reason. Without this second half the test
-    // would still pass on a host that merely happens to be too busy for the
-    // software rasteriser to clear the frame budget — the exact false green
-    // the old version lived on. `?gl=force` on the same build mounts the
-    // field, so the zero above is the flag's doing and nothing else.
+    // The second half of this case — `?gl=force` mounts the field, so the zero
+    // above is the flag's doing — is SUPERSEDED by interim-frame TC-IF-06: with
+    // the field deleted there is nothing left for the flag to mount, and TC-IF-06
+    // asserts zero canvases and zero page errors on that path instead.
     await page.goto('/?gl=force');
     await page.locator(ABOUT).scrollIntoViewIfNeeded();
-    await expect(page.locator(`${ABOUT} canvas`)).toHaveCount(1);
+    await expect(page.locator(`${ABOUT} canvas`)).toHaveCount(0);
   });
 
   /**
@@ -214,188 +216,11 @@ test.describe('About', () => {
     });
   }
 
-  test('TC-ABOUT-08: the compass turns as the reader scrolls — item 6 centred reads 06 / FROM THE ROLE', async ({
-    page,
-  }) => {
-    await waitForSweep(page);
-    await centreItem(page, 6);
-    await page.waitForTimeout(900);
-    const rose = page.locator(`${ABOUT} svg g[class*="rose"]`).last();
-    const transform = await rose.evaluate((el) => getComputedStyle(el).transform);
-    // Index 5 of ten sectors is carried to twelve o'clock by rotate(-180deg).
-    expect(Math.abs(Math.abs(rotationOf(transform)) - 180), transform).toBeLessThan(0.5);
-    await expect(page.locator(`${ABOUT} ol li`).nth(5)).toHaveAttribute('data-active', 'true');
-    // The hub readout, not the ring: the numerals 01–10 are always on the face.
-    await expect(page.locator(READ_NUMBER)).toHaveText('06');
-    await expect(page.locator(READ_STATE)).toHaveText('FROM THE ROLE');
-    // The rotation itself still travels on the cinematic-in transition.
-    const transition = await rose.evaluate((el) => {
-      const cs = getComputedStyle(el);
-      return `${cs.transitionProperty} ${cs.transitionDuration} ${cs.transitionTimingFunction}`;
-    });
-    expect(transition).toContain('transform');
-    expect(transition).toContain('0.72s');
-    expect(transition).toContain('cubic-bezier(0.16, 1, 0.3, 1)');
-  });
+  /* SUPERSEDED by tests/overhaul/interim-frame.spec.ts TC-IF-01 and TC-IF-05.
+     It asserted the compass — its index, its sweep, its achromatic face, its
+     baseline with the first dimension — and the field behind it.
+     Removed on the Owner's 2026-09-06T05:51Z instruction
+     (docs/architecture/INTERIM-FRAME.md); a case that measures a deleted element
+     is not a case that can be made to pass. */
 
-  test('TC-ABOUT-09: hover overrides the scroll index, and leaving the list hands it back', async ({ page }) => {
-    await waitForSweep(page);
-    await centreItem(page, 6);
-    await page.waitForTimeout(900);
-    await expect(page.locator(READ_NUMBER)).toHaveText('06');
-    // Move the pointer onto the next item down without scrolling — a
-    // `locator.hover()` would scroll it into view and move the scroll index
-    // with it, which is not what is under test here.
-    const seventh = await page.locator(`${ABOUT} ol li`).nth(6).boundingBox();
-    expect(seventh).not.toBeNull();
-    await page.mouse.move(seventh!.x + seventh!.width / 2, seventh!.y + Math.min(24, seventh!.height / 2));
-    await expect(page.locator(READ_NUMBER)).toHaveText('07');
-    await expect(page.locator(`${ABOUT} ol li`).nth(6)).toHaveAttribute('data-active', 'true');
-    // Off the list: back to whatever the scroll position says.
-    await page.mouse.move(2, 2);
-    await expect(page.locator(READ_NUMBER)).toHaveText('06');
-    await expect(page.locator(`${ABOUT} ol li`).nth(5)).toHaveAttribute('data-active', 'true');
-  });
-
-  test('TC-ABOUT-10: on first entry the bezel sweeps once — 1160 ms, emphasised ease, never again', async ({
-    page,
-  }) => {
-    // beforeEach has already scrolled the section into view, which is the
-    // first entry; the sweep is running or has just run.
-    await expect(page.locator(ABOUT)).toHaveAttribute('data-swept', 'true');
-    const sweep = page.locator(`${ABOUT} svg [data-sweep]`);
-    const declared = await sweep.evaluate((el) => {
-      const cs = getComputedStyle(el);
-      return {
-        duration: cs.animationDuration,
-        easing: cs.animationTimingFunction,
-        iterations: cs.animationIterationCount,
-        name: cs.animationName,
-      };
-    });
-    expect(declared.duration).toBe('1.16s');
-    expect(declared.easing).toBe('cubic-bezier(0.16, 1, 0.3, 1)');
-    expect(declared.iterations).toBe('1');
-    expect(declared.name).not.toBe('none');
-    const played = await sweep.evaluate((el) =>
-      el.getAnimations().map((a) => ({
-        state: a.playState,
-        duration: Number(a.effect?.getComputedTiming().duration ?? 0),
-      })),
-    );
-    expect(played.length).toBeGreaterThanOrEqual(1);
-    expect(played[0].duration).toBe(1160);
-    expect(['running', 'finished']).toContain(played[0].state);
-
-    // Leave and come back: the mark stays and nothing replays.
-    await waitForSweep(page);
-    await page.locator('#hero').scrollIntoViewIfNeeded();
-    await page.waitForTimeout(300);
-    await page.locator(ABOUT).scrollIntoViewIfNeeded();
-    await page.waitForTimeout(300);
-    await expect(page.locator(ABOUT)).toHaveAttribute('data-swept', 'true');
-    const replayed = await sweep.evaluate(
-      (el) => el.getAnimations().filter((a) => a.playState === 'running').length,
-    );
-    expect(replayed).toBe(0);
-  });
-
-  test('TC-ABOUT-11: under reduced motion the index snaps — no sweep, no travel, still swept', async ({ page }) => {
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/');
-    await page.locator(ABOUT).scrollIntoViewIfNeeded();
-    await expect(page.locator(ABOUT)).toHaveAttribute('data-swept', 'true');
-    const timing = await page.locator(`${ABOUT} svg [data-sweep]`).evaluate((el) => {
-      const outer = getComputedStyle(el);
-      const rose = el.querySelector('g') as SVGGElement;
-      const inner = getComputedStyle(rose);
-      return {
-        sweepAnimation: outer.animationDuration,
-        roseAnimation: inner.animationDuration,
-        roseTransition: inner.transitionDuration,
-      };
-    });
-    expect(timing.sweepAnimation).toBe('0s');
-    expect(timing.roseAnimation).toBe('0s');
-    expect(timing.roseTransition).toBe('0s');
-    // The face still points: centre item 6 and it reads 06 at once.
-    await centreItem(page, 6);
-    await expect(page.locator(READ_NUMBER)).toHaveText('06');
-    const transform = await page
-      .locator(`${ABOUT} svg g[class*="rose"]`)
-      .last()
-      .evaluate((el) => getComputedStyle(el).transform);
-    expect(Math.abs(Math.abs(rotationOf(transform)) - 180), transform).toBeLessThan(0.5);
-  });
-
-  test('TC-ABOUT-12: no gold on the face — the active sector, its numeral and the ring stay achromatic', async ({
-    page,
-  }) => {
-    await waitForSweep(page);
-    await page.locator(`${ABOUT} ol li`).nth(0).hover();
-    const active = page.locator(`${ABOUT} svg path[data-active]`);
-    await expect(active).toHaveCount(1);
-    const chroma = (colour: string): number => {
-      const m = colour.match(/rgba?\(([^)]+)\)/);
-      if (!m) return colour.startsWith('url') || colour === 'none' ? 0 : 255;
-      const [r, g, b] = m[1].split(/[\s,/]+/).map((v) => parseFloat(v));
-      return Math.max(r, g, b) - Math.min(r, g, b);
-    };
-    const paints = await page
-      .locator(`${ABOUT} svg g[class*="rose"]`)
-      .last()
-      .evaluate((rose) =>
-        [rose, ...Array.from(rose.querySelectorAll('*'))].map((el) => {
-          const cs = getComputedStyle(el);
-          return { tag: el.tagName, active: el.hasAttribute('data-active'), fill: cs.fill, stroke: cs.stroke };
-        }),
-      );
-    const activeSector = paints.find((p) => p.tag === 'path' && p.active);
-    expect(activeSector).toBeTruthy();
-    expect(chroma(activeSector!.fill), activeSector!.fill).toBeLessThanOrEqual(8);
-    expect(chroma(activeSector!.stroke), activeSector!.stroke).toBeLessThanOrEqual(8);
-    const offenders = paints
-      .filter((p) => chroma(p.fill) > 8 || chroma(p.stroke) > 8)
-      .map((p) => `${p.tag} fill=${p.fill} stroke=${p.stroke}`);
-    expect(offenders).toEqual([]);
-  });
-
-  /**
-   * The dial and the list start on the same line (R-c8 C-11).
-   *
-   * The instrument is the accompaniment and the ten are the content; when the
-   * face floats a dozen pixels below the list's first rule the two read as two
-   * unrelated objects that happen to share a row. They are one row, and the row
-   * has one top.
-   */
-  test('TC-ABOUT-13: at 1440 the dial and the first dimension share a baseline', async ({ page }) => {
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto('/');
-    await page.locator(ABOUT).scrollIntoViewIfNeeded();
-    await page.waitForTimeout(300);
-    // Measured from the top of the document, with the page scrolled back to the
-    // start: the instrument is `position: sticky`, so a viewport-relative
-    // reading taken mid-section would compare a pinned element against a
-    // scrolled one and say nothing about where the row begins.
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await page.waitForTimeout(300);
-
-    const tops = await page.evaluate(() => {
-      const about = document.querySelector('#about')!;
-      const dial = about.querySelector('svg[class*="compass"]') ?? about.querySelector('svg');
-      const first = about.querySelector('ol li');
-      const docTop = (el: Element) => el.getBoundingClientRect().top + window.scrollY;
-      return {
-        dial: dial ? docTop(dial) : null,
-        list: first ? docTop(first) : null,
-      };
-    });
-
-    expect(tops.dial, 'no dial svg in #about').not.toBeNull();
-    expect(tops.list, 'no list item in #about').not.toBeNull();
-    expect(
-      Math.abs(tops.dial! - tops.list!),
-      `dial top ${tops.dial}, first item top ${tops.list}`,
-    ).toBeLessThanOrEqual(4);
-  });
 });
