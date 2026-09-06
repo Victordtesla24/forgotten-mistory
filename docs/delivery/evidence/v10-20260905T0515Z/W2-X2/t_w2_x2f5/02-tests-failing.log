@@ -1,0 +1,76 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-about.spec.ts -g ABOUT-10 --workers=1 --reporter=list
+
+[2mRunning [22m4[2m tests using [22m1[2m worker[22m
+
+TC-SCENE-ABOUT-10 1440x900 at rest — the ring under the engraving: per-sector 0.2179 0.3009 0.6019 0.2680 0.5608 0.0164 0.4284 0.1093 0.2429 0.3474 | answered 0.3437 open 0.2292 ratio 1.499
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:635:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, at rest[39m[2m (7.9s)[22m
+TC-SCENE-ABOUT-10 1440x900 reading the fourth dimension — the ring under the engraving: per-sector 0.3088 0.3271 0.4578 0.5257 0.4208 0.1074 0.1064 0.2596 0.0623 0.2657 | answered 0.3665 open 0.0920 ratio 3.983
+TC-SCENE-ABOUT-10 1440x900 reading the fourth dimension — the fan outside the bezel: per-sector 0.0070 0.0065 0.2242 0.3410 0.6032 0.0453 0.0446 0.1200 0.0474 0.0378 | answered 0.1914 open 0.0458 ratio 4.181
+  [32m✓[39m  [2m2 [22m[chromium] › tests/overhaul/scene-about.spec.ts:635:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, reading the fourth dimension[2m (7.8s)[22m
+TC-SCENE-ABOUT-10 390x844 at rest — the ring under the engraving: per-sector 0.3983 0.3543 0.2141 0.2667 0.3504 0.1192 0.0815 0.1342 0.0667 0.3712 | answered 0.2984 open 0.0891 ratio 3.348
+TC-SCENE-ABOUT-10 390x844 at rest — the fan outside the bezel: per-sector 0.0000 0.2123 0.5554 0.5591 0.1939 0.0507 0.1044 0.5368 0.1883 0.2152 | answered 0.3247 open 0.1145 ratio 2.836
+  [32m✓[39m  [2m3 [22m[chromium] › tests/overhaul/scene-about.spec.ts:635:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 390x844, at rest[2m (7.0s)[22m
+  [31m✘[39m  [2m4 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:635:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 390x844, reading the fourth dimension[39m[2m (20.1s)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/scene-about.spec.ts:635:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, at rest [39m
+
+    Error: the ring under the engraving: only 4 of 10 sector boundaries show a 12% luminance step — steps 0.158, 0.045, -0.579, 0.105, 0.037, 0.856, 0.876, -0.239, 0.441, -0.396
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m9[39m
+    Received:    [31m4[39m
+
+    [0m [90m 712 |[39m             [32m`${where}: only ${legible} of ${steps.length} sector boundaries show a 12% luminance `[39m [33m+[39m
+     [90m 713 |[39m               [32m`step — steps ${steps.map((s) => s.toFixed(3)).join(', ')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 714 |[39m           )[33m.[39mtoBeGreaterThanOrEqual(steps[33m.[39mlength [33m-[39m [35m1[39m)[33m;[39m
+     [90m     |[39m             [31m[1m^[22m[39m
+     [90m 715 |[39m
+     [90m 716 |[39m           [90m// Answered brighter than open, in the order the SVG numbers them. The[39m
+     [90m 717 |[39m           [90m// task's shorthand is "sectors 1..k against k+1..10"; the ten are not[39m[0m
+    [2m    at assertTellsTen (/root/forgotten-mistory/.claude/worktrees/w2-x2f5/tests/overhaul/scene-about.spec.ts:714:13)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2f5/tests/overhaul/scene-about.spec.ts:735:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-c7f40-sectors-at-1440x900-at-rest-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-c7f40-sectors-at-1440x900-at-rest-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/overhaul/scene-about.spec.ts:635:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 390x844, reading the fourth dimension [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#about canvas')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#about canvas')[22m
+    [2m    19 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 651 |[39m           [36mawait[39m page[33m.[39mwaitForTimeout([35m900[39m)[33m;[39m
+     [90m 652 |[39m         }
+    [31m[1m>[22m[39m[90m 653 |[39m         [36mawait[39m expect(page[33m.[39mlocator([32m`${ABOUT} canvas`[39m))[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m     |[39m                                                       [31m[1m^[22m[39m
+     [90m 654 |[39m
+     [90m 655 |[39m         [36mconst[39m geometry [33m=[39m [36mawait[39m readFieldGeometry(page)[33m;[39m
+     [90m 656 |[39m         expect([0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2f5/tests/overhaul/scene-about.spec.ts:653:55[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-553b9-eading-the-fourth-dimension-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-553b9-eading-the-fourth-dimension-chromium/error-context.md[22m
+
+[31m  2 failed[39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:635:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, at rest [39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:635:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 390x844, reading the fourth dimension [39m
+[32m  2 passed[39m[2m (45.2s)[22m

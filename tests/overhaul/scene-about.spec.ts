@@ -606,97 +606,157 @@ test.describe('TC-SCENE-ABOUT: the compass turns over a field of light', () => {
    * second puts everything back and asks which object the section is actually
    * made of.
    */
+  /**
+   * Which screen of the section the measurement is taken on.
+   *
+   * ADV-REVIEW-20260905T2315Z F-2 took this claim to the screen a reader
+   * actually arrives on — `#about` at the top of the viewport, no dimension
+   * indexed, `data-axis = -1` — and it did not hold there: ring answered/open
+   * 1.039 at 390 and 1.596 at 1440, against the 1.6 asserted below, with only
+   * 6 of 10 seams clearing 12% at 1440. This test could not see any of that,
+   * because at 1440 it only ever measured with the fourth dimension indexed
+   * and at 390 it never asserted which state it was in. Both states are now
+   * measured at both widths: the rest state, where the ring runs on its floor
+   * alone and the state term is the only thing separating the ten, and one
+   * with a dimension indexed, where the `lit` term carries the peak.
+   */
   for (const viewport of [
-    { label: '1440x900', width: 1440, height: 900, item: 4 },
-    { label: '390x844', width: 390, height: 844, item: 0 },
+    // At 1440 the plane is beside the ten and travels with them, so the fourth
+    // dimension — `Role Alignment` — is the indexed state. At 390 it is not:
+    // the plane is a band at the head of the body and by the time the fourth
+    // item is centred there is no canvas in `#about` at all (measured: 0, this
+    // spec's own `toHaveCount`, 02-tests-failing.log). The indexed state there
+    // is therefore the first dimension, which is the deepest one a phone reader
+    // reaches with the field still mounted. That the plane does not follow the
+    // reader at 390 is a separate finding and is filed as one; it is not
+    // something this measurement may quietly paper over by picking a state.
+    { label: '1440x900', width: 1440, height: 900, indexed: { item: 4, axis: 3 } },
+    { label: '390x844', width: 390, height: 844, indexed: { item: 1, axis: 0 } },
   ]) {
-    test(`TC-SCENE-ABOUT-10: the field alone tells ten sectors at ${viewport.label}`, async ({
-      page,
-    }) => {
-      await page.setViewportSize({ width: viewport.width, height: viewport.height });
-      await settleAboutWithGL(page);
-      if (viewport.item > 0) {
-        // The k-th dimension is the one being read (k = 4, `Role Alignment`).
-        await centreItem(page, viewport.item);
-      } else {
-        // At 390 the instrument is a header ornament in flow, so the plane is a
-        // band at the head of the body: put that band on screen instead.
-        await page.locator(ABOUT).evaluate((el) => {
-          window.scrollTo(0, window.scrollY + el.getBoundingClientRect().top);
-        });
-        await page.waitForTimeout(900);
-      }
-      await expect(page.locator(`${ABOUT} canvas`)).toHaveCount(1);
+    const states = [
+      /** `#about` at the top of the viewport — nothing indexed, `data-axis` -1. */
+      { key: 'at rest', item: 0, axis: -1 },
+      { key: `reading dimension ${viewport.indexed.item}`, ...viewport.indexed },
+    ];
+    for (const state of states) {
+      test(`TC-SCENE-ABOUT-10: the field alone tells ten sectors at ${viewport.label}, ${state.key}`, async ({
+        page,
+      }) => {
+        await page.setViewportSize({ width: viewport.width, height: viewport.height });
+        await settleAboutWithGL(page);
+        if (state.item > 0) {
+          // The k-th dimension is the one being read (k = 4, `Role Alignment`).
+          await centreItem(page, state.item);
+        } else {
+          // The screen the section is entered on: its top edge at the top of
+          // the viewport. At 1440 the ten are beside the instrument and none of
+          // them is centred yet; at 390 the instrument is a header ornament and
+          // the plane is a band at the head of the body. Both read -1.
+          await page.locator(ABOUT).evaluate((el) => {
+            window.scrollTo(0, window.scrollY + el.getBoundingClientRect().top);
+          });
+          // Long enough for the rose to be *back* at zero, not merely heading
+          // there. `AboutField` eases uRotation at `delta * 4.2` — a time
+          // constant of about 240 ms — and walking the section into view leaves
+          // a dimension indexed, so the rest state is reached from up to 144°
+          // away. At 900 ms the residual is still ~2.4% of that, a tenth of a
+          // sector, which is exactly the width of the seam this test samples:
+          // the ring measured at 1440 with three boundaries *brighter* than the
+          // sectors either side of them, because the boundary sample had
+          // drifted into a lit wedge. That was the measurement moving, not the
+          // field, and it is why this wait is what it is.
+          await page.waitForTimeout(2200);
+        }
+        await expect(page.locator(`${ABOUT} canvas`)).toHaveCount(1);
 
-      const geometry = await readFieldGeometry(page);
-      await hideEverythingButTheField(page);
-      const buffer = await page.locator(`${ABOUT} canvas`).screenshot();
-      const png = PNG.sync.read(buffer);
-      const shot: Shot = { png, scale: png.width / geometry.width };
-
-      // The ring the engraving stands on, and — where the plane is wide enough
-      // to hold it — the same ten carried out past the bezel as a fan. The fan
-      // is the half of this that matters most: the bezel covers the ring, so
-      // the light a reader actually sees is the light outside it, and it has to
-      // say the same ten things.
-      const ring = readAnnulus(shot, geometry);
-      const fanExtent = fanBand(geometry);
-      const fan = fanExtent ? readAnnulus(shot, geometry, fanExtent) : null;
-
-      /** (i) and (ii), against one annulus. */
-      const assertTellsTen = (reading: AnnulusReading, where: string, minSectors: number) => {
-        const measured = reading.sectorSamples
-          .map((count, i) => ({ count, i }))
-          .filter(({ count }) => count >= 12)
-          .map(({ i }) => i);
+        const geometry = await readFieldGeometry(page);
         expect(
-          measured.length,
-          `${where}: only ${measured.length} of the ten sectors on the annulus ` +
-            `${JSON.stringify(reading.band)} are inside the canvas at all`,
-        ).toBeGreaterThanOrEqual(minSectors);
+          geometry.active,
+          `${viewport.label} ${state.key}: the section is not in the state this ` +
+            `measurement is about — data-axis ${geometry.active}, expected ${state.axis}`,
+        ).toBe(state.axis);
+        await hideEverythingButTheField(page);
+        const buffer = await page.locator(`${ABOUT} canvas`).screenshot();
+        const png = PNG.sync.read(buffer);
+        const shot: Shot = { png, scale: png.width / geometry.width };
 
-        // Ten lobes, not one smooth wash. Each seam between neighbours has to
-        // sit at least 12% below the light either side of it, or the "sectors"
-        // are a gradient a reader cannot count.
-        const seams = measured.filter((i) => measured.includes((i + SECTORS - 1) % SECTORS));
-        const steps = seams.map((i) => {
-          const flank = (reading.sectorMean[(i + SECTORS - 1) % SECTORS] + reading.sectorMean[i]) / 2;
-          return flank <= 0 ? 0 : 1 - reading.boundaryMean[i] / flank;
-        });
-        const legible = steps.filter((step) => step >= 0.12).length;
-        expect(
-          legible,
-          `${where}: only ${legible} of ${steps.length} sector boundaries show a 12% luminance ` +
-            `step — steps ${steps.map((s) => s.toFixed(3)).join(', ')}`,
-        ).toBeGreaterThanOrEqual(steps.length - 1);
+        // The ring the engraving stands on, and — where the plane is wide enough
+        // to hold it — the same ten carried out past the bezel as a fan. The fan
+        // is the half of this that matters most: the bezel covers the ring, so
+        // the light a reader actually sees is the light outside it, and it has to
+        // say the same ten things.
+        const ring = readAnnulus(shot, geometry);
+        const fanExtent = fanBand(geometry);
+        const fan = fanExtent ? readAnnulus(shot, geometry, fanExtent) : null;
 
-        // Answered brighter than open, in the order the SVG numbers them. The
-        // task's shorthand is "sectors 1..k against k+1..10"; the ten are not
-        // ordered that way — the three role-side dimensions are 6, 7 and 9 — so
-        // the mask from `about.ts` is what is asserted, which is the same claim
-        // against the real data and cannot pass by an accident of ordering.
-        const answered = measured.filter((i) => ANSWERED[i]).map((i) => reading.sectorMean[i]);
-        const open = measured.filter((i) => !ANSWERED[i]).map((i) => reading.sectorMean[i]);
-        expect(answered.length, `${where}: no answered sector measured`).toBeGreaterThan(0);
-        expect(open.length, `${where}: no open sector measured`).toBeGreaterThan(0);
-        const answeredMean = answered.reduce((s, v) => s + v, 0) / answered.length;
-        const openMean = open.reduce((s, v) => s + v, 0) / open.length;
-        expect(
-          answeredMean / openMean,
-          `${where}: answered ${answeredMean.toFixed(4)} vs open ${openMean.toFixed(4)} — the ` +
-            `light does not say which of the ten are answered (per-sector ${reading.sectorMean
-              .map((v) => v.toFixed(4))
-              .join(', ')})`,
-        ).toBeGreaterThanOrEqual(1.6);
-      };
+        /** (i) and (ii), against one annulus. */
+        const assertTellsTen = (reading: AnnulusReading, where: string, minSectors: number) => {
+          const measured = reading.sectorSamples
+            .map((count, i) => ({ count, i }))
+            .filter(({ count }) => count >= 12)
+            .map(({ i }) => i);
 
-      assertTellsTen(ring, 'the ring under the engraving', SECTORS);
-      if (fan) assertTellsTen(fan, 'the fan outside the bezel', 6);
+          // The ten means, in `about.ts` order, on every run — the review had to
+          // reconstruct these by hand because a passing run printed nothing.
+          const answeredAll = reading.sectorMean.filter((_, i) => ANSWERED[i]);
+          const openAll = reading.sectorMean.filter((_, i) => !ANSWERED[i]);
+          const mean = (xs: number[]) => xs.reduce((s, v) => s + v, 0) / Math.max(xs.length, 1);
+          console.log(
+            `TC-SCENE-ABOUT-10 ${viewport.label} ${state.key} — ${where}: ` +
+              `per-sector ${reading.sectorMean.map((v) => v.toFixed(4)).join(' ')} | ` +
+              `answered ${mean(answeredAll).toFixed(4)} open ${mean(openAll).toFixed(4)} ` +
+              `ratio ${(mean(answeredAll) / Math.max(mean(openAll), 1e-9)).toFixed(3)}`,
+          );
 
-      // (iii) Gold is a claim mark and a field of light is not a claim.
-      expect(ring.gold, 'a gold pixel was sampled inside the field').toBeNull();
-      expect(fan?.gold ?? null, 'a gold pixel was sampled in the fan').toBeNull();
-    });
+          expect(
+            measured.length,
+            `${where}: only ${measured.length} of the ten sectors on the annulus ` +
+              `${JSON.stringify(reading.band)} are inside the canvas at all`,
+          ).toBeGreaterThanOrEqual(minSectors);
+
+          // Ten lobes, not one smooth wash. Each seam between neighbours has to
+          // sit at least 12% below the light either side of it, or the "sectors"
+          // are a gradient a reader cannot count.
+          const seams = measured.filter((i) => measured.includes((i + SECTORS - 1) % SECTORS));
+          const steps = seams.map((i) => {
+            const flank =
+              (reading.sectorMean[(i + SECTORS - 1) % SECTORS] + reading.sectorMean[i]) / 2;
+            return flank <= 0 ? 0 : 1 - reading.boundaryMean[i] / flank;
+          });
+          const legible = steps.filter((step) => step >= 0.12).length;
+          expect(
+            legible,
+            `${where}: only ${legible} of ${steps.length} sector boundaries show a 12% luminance ` +
+              `step — steps ${steps.map((s) => s.toFixed(3)).join(', ')}`,
+          ).toBeGreaterThanOrEqual(steps.length - 1);
+
+          // Answered brighter than open, in the order the SVG numbers them. The
+          // task's shorthand is "sectors 1..k against k+1..10"; the ten are not
+          // ordered that way — the three role-side dimensions are 6, 7 and 9 — so
+          // the mask from `about.ts` is what is asserted, which is the same claim
+          // against the real data and cannot pass by an accident of ordering.
+          const answered = measured.filter((i) => ANSWERED[i]).map((i) => reading.sectorMean[i]);
+          const open = measured.filter((i) => !ANSWERED[i]).map((i) => reading.sectorMean[i]);
+          expect(answered.length, `${where}: no answered sector measured`).toBeGreaterThan(0);
+          expect(open.length, `${where}: no open sector measured`).toBeGreaterThan(0);
+          const answeredMean = mean(answered);
+          const openMean = mean(open);
+          expect(
+            answeredMean / openMean,
+            `${where} (${viewport.label}, ${state.key}): answered ${answeredMean.toFixed(4)} vs ` +
+              `open ${openMean.toFixed(4)} — the light does not say which of the ten are ` +
+              `answered (per-sector ${reading.sectorMean.map((v) => v.toFixed(4)).join(', ')})`,
+          ).toBeGreaterThanOrEqual(1.6);
+        };
+
+        assertTellsTen(ring, 'the ring under the engraving', SECTORS);
+        if (fan) assertTellsTen(fan, 'the fan outside the bezel', 6);
+
+        // (iii) Gold is a claim mark and a field of light is not a claim.
+        expect(ring.gold, 'a gold pixel was sampled inside the field').toBeNull();
+        expect(fan?.gold ?? null, 'a gold pixel was sampled in the fan').toBeNull();
+      });
+    }
   }
 
   test('TC-SCENE-ABOUT-11: the compass is chrome — the plane carries the section', async ({

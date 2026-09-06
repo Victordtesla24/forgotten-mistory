@@ -78,10 +78,23 @@
  * so a state could add light but never withhold it, and the ring was a ring of
  * ten identical things. `state` is now multiplicative and is the exception the
  * paragraph above no longer describes: an answered sector carries the full
- * light, an open one carries a 45-degree hatch at about four tenths of it, and
+ * light, an open one carries a 45-degree hatch at about a third of it, and
  * the seven the page answers can be counted from the light alone. The floor
  * that keeps this above the flagship visibility gate is `state`'s own minimum,
  * not zero, so no sector ever goes dark.
+ *
+ * Multiplicative was necessary and was not sufficient. Folded into the ring and
+ * the fan the way it first shipped, `state` moved only the part of the light
+ * those two terms carried: the haze under them was untouched, and where the
+ * type guards compressed the light toward a ceiling the two states arrived
+ * different and left identical. Measured with nothing indexed — the screen a
+ * reader arrives on, which is where ADV-REVIEW-20260905T2315Z F-2 measured it —
+ * the ring told answered from open by 1.499x at 1440 and 1.039x at 390, against
+ * a 1.6 bar this file's own test sets, and three of the ten seams inverted. So
+ * `state` is now applied once, at the very end, to everything the pixel
+ * carries and after both ceilings. See the gate itself for why each half of
+ * that matters; the short version is that a wedge's whole light now says what
+ * the wedge is, and a guard can no longer flatten the difference away.
  *
  * ## The field is the section's plane, not the instrument's backing
  *
@@ -269,10 +282,24 @@ export const aboutFieldFragmentShader = /* glsl */ `
     // sector was lit identically and only the indexed one changed, so a reader
     // could not tell answered from open by looking — the state lived in the
     // engraving, which is exactly why two reviews in a row recorded the
-    // section's recall as the engraving. An answered sector now carries the
-    // light; an open one carries the hatch at a third of it, and reads as the
-    // absence it is. Seven lit of ten, countable without the dial.
-    float state = mix(0.34 + 0.26 * hatch, 1.0, answered);
+    // section's recall as the engraving. An answered sector carries the light;
+    // an open one carries the hatch at a third of it, and reads as the absence
+    // it is. Seven lit of ten, countable without the dial.
+    //
+    // It is applied once, at the very end, to everything this pixel carries —
+    // see the gate below the ceilings for why it is no longer folded into the
+    // individual terms. That makes it a whole-plane multiplier, and a
+    // whole-plane multiplier written from idx alone would step at every seam
+    // and draw ten hard spokes across the haze. So the wedge on the other side
+    // of the nearer seam is read too and the two are crossfaded over the last
+    // 14% of the wedge: at the seam itself the mix is exactly half and half,
+    // which is the same value approached from either side, so the gate is
+    // continuous everywhere while still being flat across each wedge's body.
+    float nidx = mod(idx + (within < 0.5 ? -1.0 : 1.0), SECTORS);
+    float openState = 0.26 + 0.22 * hatch;
+    float stateHere = mix(openState, 1.0, answered);
+    float stateThere = mix(openState, 1.0, maskBit(uAnsweredMask, nidx));
+    float state = mix(stateHere, stateThere, 0.5 * smoothstep(0.72, 1.0, abs(within - 0.5) * 2.0));
 
     // Three lookups, and no more. One slow drift per sector so the ten are not
     // identical; one shimmer across each sector's own width; one wide, very low
@@ -305,11 +332,11 @@ export const aboutFieldFragmentShader = /* glsl */ `
     // on (C22 09-verification.md). The floor and the gleam below are what a
     // reader at rest actually sees, so that is where the light was added,
     // rather than in a term a phone never reaches.
-    float sector = band * ring * (0.50 + 0.58 * lit) * state;
+    float sector = band * ring * (0.62 + 0.58 * lit);
     sector *= 0.80 + 0.28 * drift;
     sector *= 0.82 + 0.28 * shimmer;
     sector *= 0.86 + 0.20 * wash;
-    sector += band * ring * (0.42 * gleam + 0.42 * sweep) * state;
+    sector += band * ring * (0.42 * gleam + 0.42 * sweep);
 
     // The data terms, all additive so nothing here can drop a sector under the
     // floor above. An answered sector blooms up its mid-annulus — a soft core
@@ -338,14 +365,14 @@ export const aboutFieldFragmentShader = /* glsl */ `
     // because it has to start exactly where the bezel ends; its falloff is
     // written in r, because how far it reaches is a fact about the plane.
     float fan = smoothstep(0.94, 1.26, rr) * exp(-pow(r / 1.85, 2.1));
-    sector += fan * band * (0.92 + 0.34 * lit + 0.22 * gleam + 0.34 * sweep) * state;
+    sector += fan * band * (1.10 + 0.34 * lit + 0.22 * gleam + 0.34 * sweep);
     sector += fan * band * (answered * 0.15 + sourced * 0.12) * (0.6 + 0.7 * lit);
 
     // The haze the fan sits in, so the plane is a surface and not ten spokes on
     // bare ink. Very low frequency, very low amplitude, and it reaches further
     // than the fan does — this is the light that makes the section feel lit at
     // all at the far corners, where no spoke arrives.
-    float haze = exp(-pow(r / 2.10, 2.0)) * (0.192 + 0.085 * wash + 0.045 * lit);
+    float haze = exp(-pow(r / 2.10, 2.0)) * (0.206 + 0.085 * wash + 0.045 * lit);
     // The face is recessed. Outside the bezel the haze is the plane's own light
     // and carries the section; under the engraving it is the ground the ten
     // numerals and the hub readout are read against, and a flat wash there is
@@ -403,6 +430,36 @@ export const aboutFieldFragmentShader = /* glsl */ `
     // into it has no edge of its own. Outside both boxes guarded is 0 and the
     // field is untouched.
     luma = mix(luma, ceiling * (1.0 - exp(-luma / max(ceiling, 0.0001))), guarded);
+
+    // The state gate — last, and after the two ceilings rather than before
+    // them. Both halves of that sentence are the fix ADV-REVIEW-20260905T2315Z
+    // F-2 asked for, and both are load-bearing.
+    //
+    // *After the ceilings*, because 1 - exp(-luma/ceiling) is a saturating
+    // curve: under the reading column it maps everything above about a third
+    // onto the same 0.0999, so an answered sector and an open one arrived at
+    // the guard four tenths apart and left it identical. That is why the ring
+    // read answered/open 1.039 at 390, where the ten are under the instrument
+    // and half the plane is guarded. Multiplying the compressed light instead
+    // of the light going in keeps the ratio intact inside the guard — and
+    // because the gate is never above 1.0 it can only ever take light away, so
+    // no ceiling moves: the bound the type is read against is exactly the bound
+    // it was before, at both boxes.
+    //
+    // *Everything*, because the haze was the one term the state never touched,
+    // and on the annulus a reader actually sees it is a third of the light —
+    // the numerals' groove takes the ring out of the middle of that band, so
+    // what remains between the spokes is largely haze. An open sector at four
+    // tenths of the ring plus all of the haze measured 1.499 against its
+    // answered neighbours at 1440 with nothing indexed, and three of the ten
+    // seams inverted (02-tests-failing.log). Gating the plane rather than the
+    // spoke makes each wedge's whole light say what the wedge is, which is what
+    // "answered sectors bloom, open ones hatch" claimed all along. The lifts
+    // above (0.50 -> 0.62 on the ring, 0.92 -> 1.10 on the fan, 0.192 -> 0.206
+    // on the haze) put back the light the three open wedges now give up, so the
+    // plane keeps the weight TC-SCENE-ABOUT-11 measures it by; inside the two
+    // guards those lifts are absorbed by the ceilings and change nothing.
+    luma *= state;
 
     // Light only, and the light carried by alpha alone. Where the field is dark
     // it paints nothing at all and the stage's own pool of light shows through
