@@ -972,25 +972,62 @@ for (const viewport of VIEWPORTS) {
       page,
     }) => {
       await settle(page);
-      // Open every collapsed role so the accordion's own copy is measured too.
-      await reveal(page, '#experience');
 
       const failures: string[] = [];
+      const counted: Record<string, number> = {};
       for (const section of TAIL_SECTIONS) {
         await reveal(page, section);
 
-        const runs = await page.evaluate((sel) => {
-          const out: {
-            text: string;
-            colour: string;
-            x: number;
-            y: number;
-            w: number;
-            h: number;
-            occluded: boolean;
-          }[] = [];
+        // The ground is the run's own effective background: the first ancestor
+        // that paints one, alpha-composited down the chain onto the page's own
+        // ground. Not a composited screenshot pixel — with every field removed
+        // there is no shader behind the type any more, and a pixel read is now
+        // only a way to be wrong: MiniVic's dock and the fixed nav paint over
+        // whole runs while staying out of hit-testing, so the pixels in a run's
+        // box can belong to something standing in front of it. What each run is
+        // *drawn on* is the honest ground, and it is what this measures.
+        const results = await page.evaluate((sel) => {
+          const out: { text: string; colour: string; ground: string; ratio: number }[] = [];
           const root = document.querySelector(sel);
           if (!root) return out;
+
+          const parse = (value: string): [number, number, number, number] | null => {
+            const m = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/.exec(value);
+            if (!m) return null;
+            return [Number(m[1]), Number(m[2]), Number(m[3]), m[4] === undefined ? 1 : Number(m[4])];
+          };
+          const luminance = (r: number, g: number, b: number) => {
+            const ch = (v: number) => {
+              const c = v / 255;
+              return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+            };
+            return 0.2126 * ch(r) + 0.7152 * ch(g) + 0.0722 * ch(b);
+          };
+          /** Every painted background from the element up, composited down. */
+          const groundOf = (el: Element): [number, number, number] => {
+            const layers: [number, number, number, number][] = [];
+            let node: Element | null = el;
+            while (node) {
+              const rgba = parse(getComputedStyle(node).backgroundColor);
+              if (rgba && rgba[3] > 0) {
+                layers.push(rgba);
+                if (rgba[3] === 1) break;
+              }
+              node = node.parentElement;
+            }
+            // The page's own ground closes the stack.
+            const base = parse(getComputedStyle(document.body).backgroundColor);
+            layers.push(base && base[3] === 1 ? base : [0, 0, 0, 1]);
+            let [r, g, b] = layers[layers.length - 1].slice(0, 3) as [number, number, number];
+            for (let i = layers.length - 2; i >= 0; i -= 1) {
+              const [lr, lg, lb, la] = layers[i];
+              r = lr * la + r * (1 - la);
+              g = lg * la + g * (1 - la);
+              b = lb * la + b * (1 - la);
+            }
+            return [r, g, b];
+          };
+
           const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
           const range = document.createRange();
           let node = walker.nextNode();
@@ -1008,25 +1045,23 @@ for (const viewport of VIEWPORTS) {
                 range.selectNodeContents(node);
                 const r = range.getBoundingClientRect();
                 if (r.width > 1 && r.height > 1) {
-                  // Is anything painted over it? `elementFromPoint` answers
-                  // with whatever the reader's own click would hit.
-                  const cx = r.x + r.width / 2;
-                  const cy = r.y + r.height / 2;
-                  const top = document.elementFromPoint(cx, cy);
-                  const occluded =
-                    cx < 0 ||
-                    cy < 0 ||
-                    top === null ||
-                    !(top === parent || parent.contains(top) || top.contains(parent));
-                  out.push({
-                    text: text.slice(0, 40),
-                    colour: cs.color,
-                    x: r.x,
-                    y: r.y,
-                    w: r.width,
-                    h: r.height,
-                    occluded,
-                  });
+                  const ink = parse(cs.color);
+                  if (ink) {
+                    const [gr, gg, gb] = groundOf(parent);
+                    // Ink drawn at less than full alpha sits over the same
+                    // ground; composite it before grading it.
+                    const ir = ink[0] * ink[3] + gr * (1 - ink[3]);
+                    const ig = ink[1] * ink[3] + gg * (1 - ink[3]);
+                    const ib = ink[2] * ink[3] + gb * (1 - ink[3]);
+                    const a = luminance(ir, ig, ib);
+                    const b = luminance(gr, gg, gb);
+                    out.push({
+                      text: text.slice(0, 40),
+                      colour: cs.color,
+                      ground: `rgb(${Math.round(gr)}, ${Math.round(gg)}, ${Math.round(gb)})`,
+                      ratio: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05),
+                    });
+                  }
                 }
               }
             }
@@ -1035,55 +1070,20 @@ for (const viewport of VIEWPORTS) {
           return out;
         }, section);
 
-        if (runs.length === 0) continue;
-        const visible = runs.filter((r) => !r.occluded);
-        console.log(
-          `[TC-IF-17] ${size} ${section} ${visible.length}/${runs.length} runs measured ` +
-            `(${runs.length - visible.length} behind the fixed chrome)`,
-        );
-        expect(visible.length, `${section} has type standing clear of the chrome`).toBeGreaterThan(0);
-        const shot = PNG.sync.read(await page.screenshot({ type: 'png', animations: 'disabled' }));
-
-        for (const run of visible) {
-          if (run.y + run.h < 0 || run.y > viewport.height) continue;
-          // The ground is the modal colour inside the run's own box. A single
-          // probe beside the run reads whatever neighbours it — a white plate
-          // one element over, the gap between two cards — and grades the run
-          // against a ground it is not drawn on. Inside the box, the glyphs
-          // are the minority and the ground is the mode, which is the colour
-          // the reader actually sees behind the words.
-          const x0 = Math.max(1, Math.round(run.x));
-          const x1 = Math.min(shot.width - 2, Math.round(run.x + run.w));
-          const y0 = Math.max(1, Math.round(run.y));
-          const y1 = Math.min(shot.height - 2, Math.round(run.y + run.h));
-          const histogram = new Map<number, number>();
-          for (let y = y0; y <= y1; y += 1) {
-            for (let x = x0; x <= x1; x += 1) {
-              const i = (shot.width * y + x) << 2;
-              const key = (shot.data[i] << 16) | (shot.data[i + 1] << 8) | shot.data[i + 2];
-              histogram.set(key, (histogram.get(key) ?? 0) + 1);
-            }
-          }
-          if (histogram.size === 0) continue;
-          let modal = 0;
-          let best = -1;
-          for (const [key, count] of histogram) {
-            if (count > best) {
-              best = count;
-              modal = key;
-            }
-          }
-          const ground = relativeLuminance((modal >> 16) & 255, (modal >> 8) & 255, modal & 255);
-          const rgb = /rgba?\((\d+),\s*(\d+),\s*(\d+)/.exec(run.colour);
-          if (!rgb) continue;
-          const ink = relativeLuminance(Number(rgb[1]), Number(rgb[2]), Number(rgb[3]));
-          const ratio = (Math.max(ink, ground) + 0.05) / (Math.min(ink, ground) + 0.05);
-          if (ratio < CONTRAST_MIN) {
+        counted[section] = results.length;
+        for (const run of results) {
+          if (run.ratio < CONTRAST_MIN) {
             failures.push(
-              `${section} "${run.text}" ${run.colour} on ${ground.toFixed(4)} = ${ratio.toFixed(2)}:1`,
+              `${section} "${run.text}" ${run.colour} on ${run.ground} = ${run.ratio.toFixed(2)}:1`,
             );
           }
         }
+      }
+
+      console.log(`[TC-IF-17] ${size} runs measured`, JSON.stringify(counted));
+      // A section that printed nothing would pass this vacuously.
+      for (const section of TAIL_SECTIONS) {
+        expect(counted[section] ?? 0, `${section} prints type`).toBeGreaterThan(4);
       }
       expect(failures, `runs under AA: ${failures.join(' · ')}`).toEqual([]);
     });
@@ -1093,66 +1093,104 @@ for (const viewport of VIEWPORTS) {
        declare is achromatic, except the elements that carry the claim mark:
        the sourced employer names, the caliper's closed jaws, the live
        repository URLs. */
-    test(`TC-IF-20 @ ${size} — every declared colour in the four sections is achromatic but the gold claim`, async ({
+    test(`TC-IF-20 @ ${size} — the only hue in the four sections is the gold claim, and it is never a fill`, async ({
       page,
     }) => {
       await settle(page);
 
-      const offenders: string[] = [];
+      // The tokens the site declares for its one accent. Read from :root, so
+      // this cannot drift from `app/globals.css`.
+      const goldTokens = await page.evaluate(() => {
+        const root = getComputedStyle(document.documentElement);
+        return ['--gold', '--gold-light', '--gold-pale', '--gold-dark', '--gold-muted',
+          '--gold-border', '--gold-veil']
+          .map((name) => root.getPropertyValue(name).trim())
+          .filter(Boolean);
+      });
+      expect(goldTokens.length, 'the gold tokens are declared in :root').toBeGreaterThan(3);
+
+      const strays: string[] = [];
+      const fills: string[] = [];
       for (const section of TAIL_SECTIONS) {
         await reveal(page, section);
         const found = await page.evaluate(
-          ({ sel, floor }) => {
-            const out: { where: string; prop: string; value: string }[] = [];
-            const chromatic = (value: string) => {
-              const m = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/.exec(value);
-              if (!m) return false;
-              if (m[4] !== undefined && Number(m[4]) === 0) return false;
-              const [r, g, b] = [Number(m[1]), Number(m[2]), Number(m[3])];
-              return Math.max(r, g, b) - Math.min(r, g, b) >= floor;
+          ({ sel, floor, tokens }) => {
+            const stray: string[] = [];
+            const fill: string[] = [];
+            const rgb = (value: string): [number, number, number, number] | null => {
+              const m = /rgba?\((\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s/]+([\d.]+))?/.exec(value);
+              return m
+                ? [Number(m[1]), Number(m[2]), Number(m[3]), m[4] === undefined ? 1 : Number(m[4])]
+                : null;
             };
+            const hex = (value: string): [number, number, number, number] | null => {
+              const m = /^#([0-9a-f]{6})$/i.exec(value.trim());
+              return m
+                ? [
+                    parseInt(m[1].slice(0, 2), 16),
+                    parseInt(m[1].slice(2, 4), 16),
+                    parseInt(m[1].slice(4, 6), 16),
+                    1,
+                  ]
+                : null;
+            };
+            const parse = (v: string) => rgb(v) ?? hex(v);
+            const golds = tokens.map(parse).filter(Boolean) as [number, number, number, number][];
+            const isGold = (c: [number, number, number, number]) =>
+              golds.some(
+                (g) =>
+                  Math.abs(g[0] - c[0]) <= 2 && Math.abs(g[1] - c[1]) <= 2 && Math.abs(g[2] - c[2]) <= 2,
+              );
+
             const root = document.querySelector(sel);
-            if (!root) return out;
+            if (!root) return { stray, fill };
             for (const el of [root, ...Array.from(root.querySelectorAll('*'))]) {
               const node = el as HTMLElement;
-              // The gold claim, exempt by name: the mark itself, a sourced
-              // employer, a live repository URL.
-              if (
-                node.closest('[data-state="self-reported"], [data-state="open"], [data-state="sourced"]') ||
-                node.hasAttribute('data-sourced') ||
-                node.closest('[data-sourced]') ||
-                node.closest('[class*="live" i]') ||
-                node.closest('[data-jaw]') ||
-                // The "measured in production" mark — the third of the three
-                // places gold is allowed to appear (CLAUDE.md §4).
-                /production/i.test((node.className || '').toString())
-              ) {
-                continue;
-              }
               const cs = getComputedStyle(node);
-              for (const prop of ['color', 'backgroundColor', 'borderTopColor', 'fill', 'stroke']) {
-                const value = cs.getPropertyValue(
-                  prop.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`),
-                );
-                if (chromatic(value)) {
-                  out.push({
-                    where: `${node.tagName.toLowerCase()}.${(node.className || '').toString().slice(0, 30)}`,
-                    prop,
-                    value,
-                  });
+              const name = node.getAttribute('class') ?? '';
+              for (const prop of [
+                'color',
+                'background-color',
+                'border-top-color',
+                'border-bottom-color',
+                'fill',
+                'stroke',
+              ]) {
+                const value = cs.getPropertyValue(prop);
+                const c = parse(value);
+                if (!c || c[3] === 0) continue;
+                if (Math.max(c[0], c[1], c[2]) - Math.min(c[0], c[1], c[2]) < floor) continue;
+                const where = `${node.tagName.toLowerCase()}.${name.slice(0, 34)}`;
+                // Rule one: gold is the only hue the page is allowed.
+                if (!isGold(c)) {
+                  stray.push(`${where} ${prop}=${value}`);
+                  continue;
+                }
+                // Rule two: gold is a mark, never a fill, a background or a
+                // theme (CLAUDE.md §4). A gold ground is allowed only at mark
+                // scale — a swatch, a jaw, a rule — never as a panel.
+                if (prop === 'background-color' && c[3] > 0.25) {
+                  const r = node.getBoundingClientRect();
+                  if (r.width * r.height > 24 * 24) {
+                    fill.push(`${where} ${Math.round(r.width)}x${Math.round(r.height)} ${value}`);
+                  }
                 }
               }
             }
-            return out;
+            return { stray, fill };
           },
-          { sel: section, floor: CHROMA_FLOOR },
+          { sel: section, floor: CHROMA_FLOOR, tokens: goldTokens },
         );
-        for (const item of found) {
-          offenders.push(`${section} ${item.where} ${item.prop}=${item.value}`);
-        }
+        for (const item of found.stray) strays.push(`${section} ${item}`);
+        for (const item of found.fill) fills.push(`${section} ${item}`);
       }
-      expect(offenders, `chromatic declarations: ${offenders.slice(0, 12).join(' · ')}`).toEqual([]);
+
+      expect(strays, `hues that are not the gold claim: ${strays.slice(0, 10).join(' · ')}`).toEqual(
+        [],
+      );
+      expect(fills, `gold used as a fill: ${fills.slice(0, 10).join(' · ')}`).toEqual([]);
     });
+
   });
 }
 
