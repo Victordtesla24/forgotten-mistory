@@ -136,4 +136,18 @@ export const experienceContent = {
    */
   derivation: 'May 2010 → September 2026',
   lede: 'Every bar below is drawn to its real duration — the same dates as the CV, on one axis. The long one in the middle is eight years at ANZ, and it is the reason the rest of this reads the way it does.',
+  /**
+   * The descent — the same eight spans, drawn as depth instead of length.
+   *
+   * One line, and one line only. The band is the single place on this page a
+   * reader is asked to look rather than read, so a heading, a paragraph or a
+   * call to action laid over a moving field would break the rule from the other
+   * side: type contrast comes first and the story second, and light is never
+   * added behind words (docs/architecture/SIGNATURE-SCENES-v2.md §2.2).
+   *
+   * The sentence states only what the picture is drawn from — the same dates,
+   * the same axis, the same subtraction the chart above prints its working for.
+   */
+  descentCaption:
+    'The same eight roles, drawn as depth instead of length: each layer is as thick as the job was long, and 2010 is at the floor.',
 };

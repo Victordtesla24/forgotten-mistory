@@ -813,3 +813,144 @@ p.roleHeadline .roleHeadlineOpen {
     line-height: var(--lh-prose);
     color: var(--mist-400);
 }
+
+/* ── The descent ────────────────────────────────────────────────────────────
+   S7 `career-descent`: the same eight spans the chart above draws as length,
+   drawn as depth. A 160vh band containing a sticky 100vh stage — the sticky
+   element's 60vh of travel IS the camera move, and `CareerDescent.tsx`
+   normalises `uDescent` against exactly that, so shrinking the band changes the
+   scroll tax and never the composition (SIGNATURE-SCENES-v2 §3, R-1).
+
+   It sits after the chart and after the accordion by construction: the CV is
+   read first, and only then is the reader asked to look rather than read.
+
+   The band breaks the section's reading measure on purpose — it is the one
+   full-bleed object on the page — but it is still inside `#experience`, so the
+   six-section information architecture in CLAUDE.md is unchanged. */
+.descentBand {
+    position: relative;
+    height: 160vh;
+    margin: clamp(var(--space-8), 12vh, 7rem) calc(var(--page-gutter, var(--space-3)) * -1) 0;
+}
+
+/* The camera. `position: sticky` is the whole mechanism: the stage holds still
+   at the top of the viewport while the band scrolls past it, which is what turns
+   a scroll into a fall. */
+.descentStage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background:
+        /* The picture with no WebGL and no motion at all: a core sample lit at
+           the surface and dark at the floor, the same composition the shader
+           draws at `uDescent = 0.62`. Slice x2-s3 replaces this with the poster
+           rendered from the shader itself; until then the fallback is still a
+           picture and not an empty box. */
+        linear-gradient(180deg, rgb(246 246 246 / 0.10), transparent 46%),
+        repeating-linear-gradient(
+            180deg,
+            transparent 0 46px,
+            rgb(246 246 246 / 0.055) 46px 58px,
+            transparent 58px 96px
+        ),
+        var(--ink-900);
+}
+
+.descentScene {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* The ruler. Deepest at the bottom, `now` at the top — the order the camera
+   travels. It runs down the left gutter, which is the strip `descent.glsl.ts`
+   holds at 18% of its own light for exactly this reason: type contrast is first
+   and the story is second, and light is never added behind a word. */
+.descentTicks {
+    position: absolute;
+    inset: clamp(var(--space-6), 12vh, 7rem) 0 clamp(var(--space-5), 8vh, 4rem)
+        var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)));
+    z-index: 1;
+    pointer-events: none;
+}
+
+.descentTick {
+    position: absolute;
+    left: 0;
+    transform: translateY(-50%);
+    padding-left: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-micro);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mist-400);
+}
+
+/* Each tick draws its own gradation, so the column is measured rather than
+   merely labelled. */
+.descentTick::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: var(--space-2);
+    height: 1px;
+    background: var(--mist-400);
+    opacity: 0.7;
+}
+
+/* The one caption line. Nothing else is laid over the field — no heading, no
+   paragraph, no call to action — and it brings its own ground at full ink
+   opacity so its ratio cannot be decided by which frame of the shader the audit
+   happened to photograph (the argument `.openNote` above settles for the
+   chart). */
+.descentCaption {
+    position: absolute;
+    z-index: 2;
+    right: var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)));
+    bottom: clamp(var(--space-5), 8vh, 4rem);
+    left: var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)));
+    max-width: var(--measure-read);
+    margin-left: auto;
+    padding: var(--space-2) var(--space-3);
+    background: var(--ink-900);
+    border-radius: 2px;
+    font-size: var(--fs-body);
+    line-height: var(--lh-prose);
+    color: var(--mist-200);
+}
+
+/* Below the fold on a phone the band is the same object, shorter: 130vh is the
+   floor v2 §5 R-1 sets, and `uDescent` is normalised, so the fall still lands
+   on the same frame at the same point in the scroll. */
+@media (max-width: 640px) {
+    .descentBand {
+        height: 140vh;
+    }
+
+    .descentCaption {
+        font-size: var(--fs-small);
+    }
+
+    /* The caption plate is full-width at this size and it paints over the
+       ticks, so the ruler ends above it rather than behind it: photographed at
+       390, `2010` was half a glyph under the plate's top edge. The column is
+       shorter, not the span — every tick keeps its position relative to the
+       ends of the fall. */
+    .descentTicks {
+        inset: clamp(var(--space-5), 8vh, 4rem) 0 clamp(var(--space-10), 26vh, 13rem)
+            var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)));
+    }
+}
+
+/* A reader who has asked for reduced motion is shown the still, and is not
+   charged 60vh of scroll to see a picture that does not move. `Scene` mounts no
+   canvas on this path, so what remains is `.descentStage`'s own background —
+   the same composition, held. */
+@media (prefers-reduced-motion: reduce) {
+    .descentBand {
+        height: 100vh;
+    }
+}
