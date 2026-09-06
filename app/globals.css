@@ -407,9 +407,67 @@
    the cap binds and, by measurement, down to about 700px of viewport height
    where the floor does; below that the hero's name sits lower than the panel
    can start and the trade is stated rather than hidden. */
+/* REGRESSION rev-97e19d07-w1 F-2 — and the height cap above is only half of
+   it. A vertical clearance means nothing while the two boxes still overlap
+   horizontally: at 1440x900 the panel {l:984,t:360,r:1416,b:812} sat straight
+   through the name's glyph run (x 560→1215, y 480→660) and the reader was left
+   with "Vikram Deshpa". The panel's box has to be separated from that run on
+   at least one axis, so three placements are expressible here and
+   lib/minivicPlacement.ts chooses between them at open time from the measured
+   glyph rects: a width cap (the panel stands beside the name), a height cap
+   (it sits below it) and a leftward shift, written as an inline `right` offset
+   against the `position: relative` below (it flips to the free side of the
+   viewport when the name owns the whole right gutter). With no caps written —
+   which is every viewport where the panel already clears the name — the panel
+   is exactly what it always was: 22rem, 27rem from 48rem up, never wider than
+   the viewport less its gutters.
+
+   The width moved out of the element's Tailwind classes and into this rule so
+   that the caps have one declaration to bite on rather than racing an inline
+   utility. */
 .minivic-panel {
+    --minivic-panel-width: 22rem;
+    position: relative;
+    right: 0;
+    /* The panel is a flex item in the dock's column, so its automatic minimum
+       size is its content's min-content height — 365px at 1440x900, which
+       silently overrode a 352px clearance cap and put 13px of dialog back over
+       the name. The panel clips its own overflow and its log already shrinks to
+       nothing, so the explicit height is the one that should win. */
+    min-height: 0;
+    /* The panel is its own size container, so the rule below can answer the
+       question the viewport cannot: how much room does THIS panel have, after
+       it has given up whatever it had to give up to clear the name. */
+    container: minivic-panel / size;
+    width: min(var(--minivic-panel-width), calc(100vw - 3rem));
     height: max(19rem, min(30rem, calc(100svh - 28rem)));
     max-height: max(19rem, min(30rem, calc(100svh - 28rem)));
+}
+
+@media (min-width: 48rem) {
+    .minivic-panel {
+        --minivic-panel-width: 27rem;
+    }
+}
+
+/* A panel that has been shortened to clear the hero name has to give the space
+   back from its own chrome, not from the composer: at 1366x768 the band above
+   the name is 246px, and with the stage at its usual 6.5rem floor the input
+   was pushed past the panel's clipped bottom edge — a dialog you cannot type
+   into. Below 22rem of panel height the face shrinks to a strip and the
+   padding tightens, which is the same trade the viewport-height rule below
+   already makes, keyed on the panel instead of the window. */
+@container minivic-panel (max-height: 22rem) {
+    .minivic-panel__stage {
+        min-height: 3.5rem;
+        max-height: 20%;
+    }
+
+    .minivic-panel__controls,
+    .minivic-panel__log {
+        padding-top: var(--space-1);
+        padding-bottom: var(--space-1);
+    }
 }
 
 /* A shorter panel has to give the height back from its chrome, not from the

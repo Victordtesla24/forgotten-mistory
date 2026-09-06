@@ -13,6 +13,14 @@ import { avatarContent } from "@/app/data/portfolio/avatar";
 import { selectLoopSrc } from "@/lib/videoRung";
 import { PALETTE } from "@/lib/palette";
 import {
+  placeMiniVicPanel,
+  rectSeparation,
+  tightenPlacement,
+  MINIVIC_CLEARANCE,
+  type PanelPlacement,
+  type PlacementRect,
+} from "@/lib/minivicPlacement";
+import {
   getVisemeShape,
   lerpVisemeShapes,
   heuristicVisemeFromFrequency,
@@ -65,6 +73,88 @@ const speechErrorLabel = (event: unknown): string => {
   }
   return "unknown";
 };
+
+/* ── The panel never covers the hero name ──────────────────────────────────────
+   REGRESSION rev-97e19d07-w1 F-2. The panel is anchored bottom-right, and at
+   1440x900 that put its box straight through the h1's glyph run: the reader
+   saw "Vikram Deshpa" and the dialog over the rest. What a reader perceives as
+   the name is the union of the h1's glyph rects — not the h1's block box,
+   which is wider and taller than the type in it — so that is what is measured
+   here, with Range.getClientRects(), and handed to lib/minivicPlacement.ts.
+   The caps come back as three custom properties the `.minivic-panel` rule in
+   app/globals.css already reads. Asserted by tests/e2e/chatbot.spec.ts
+   TC-BOT-14 at 1440, 1366, 1280 and 834. */
+const HERO_NAME_SELECTOR = "#hero h1";
+
+function heroNameGlyphRun(): PlacementRect | null {
+  const heading = document.querySelector(HERO_NAME_SELECTOR);
+  if (!heading) return null;
+  const walker = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT);
+  let run: PlacementRect | null = null;
+  let node: Node | null;
+  while ((node = walker.nextNode())) {
+    if (!(node.nodeValue ?? "").trim()) continue;
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    for (const rect of Array.from(range.getClientRects())) {
+      if (rect.width < 0.5 || rect.height < 0.5) continue;
+      run = run
+        ? {
+            left: Math.min(run.left, rect.left),
+            top: Math.min(run.top, rect.top),
+            right: Math.max(run.right, rect.right),
+            bottom: Math.max(run.bottom, rect.bottom),
+          }
+        : { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom };
+    }
+  }
+  return run;
+}
+
+/* The caps are written as plain inline `width` / `height` / `right`.
+   Whichever form they take, this Chrome does not report the uncapped box in
+   the same task the cap is cleared in — measured on this build with both a
+   custom property and a real `width`: clear the cap, read
+   getBoundingClientRect() immediately and it still answers with the capped
+   184px; the next frame answers 422px. A placement computed from that stale
+   read treats the panel's own previous cap as its natural size and narrows the
+   panel onto it, one step at a time. So the natural box is never re-read in
+   the same task as a clear: it is measured while the panel carries no caps at
+   all (which is how it mounts), cached against the viewport it was measured
+   on, and re-measured a frame after a clear when the viewport changes. */
+function clearPanelPlacement(panel: HTMLElement): void {
+  panel.style.removeProperty("width");
+  panel.style.removeProperty("height");
+  panel.style.removeProperty("right");
+  panel.style.removeProperty("bottom");
+}
+
+/** The band the lifted panel may not enter: the navigation, plus a clearance.
+    Measured off the rendered <nav> rather than read from `--nav-height`, which
+    is authored in rem — parsing that token as px put the lifted panel's top at
+    22px at 1440x900, straight through the navigation it was meant to clear. */
+function panelTopLimit(): number {
+  const nav = document.querySelector("nav");
+  const chromeBottom = nav ? nav.getBoundingClientRect().bottom : 0;
+  return Math.max(0, chromeBottom) + MINIVIC_CLEARANCE;
+}
+
+function applyPanelPlacement(panel: HTMLElement, placement: PanelPlacement): void {
+  // Caps round down and the shift rounds up, so a sub-pixel measurement can
+  // only ever hand the name more clearance than the contract asks for.
+  if (placement.widthCap !== null) {
+    panel.style.width = `${Math.floor(placement.widthCap)}px`;
+  }
+  if (placement.heightCap !== null) {
+    panel.style.height = `${Math.floor(placement.heightCap)}px`;
+  }
+  if (placement.shift !== 0) {
+    panel.style.right = `${Math.ceil(placement.shift)}px`;
+  }
+  if (placement.lift !== 0) {
+    panel.style.bottom = `${Math.ceil(placement.lift)}px`;
+  }
+}
 
 type ModeKey = "recruiter" | "engineer" | "story";
 
@@ -226,6 +316,9 @@ const MiniVicBot = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  // The open panel's box with no clearance caps applied, and the viewport it
+  // was measured on (see the placement notes above `heroNameGlyphRun`).
+  const naturalPanelBoxRef = useRef<{ key: string; box: PlacementRect } | null>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   // Set for exactly one open cycle when the panel is opened from the bypass
   // block, so the open-focus effect leaves focus on the launcher.
@@ -440,6 +533,104 @@ const MiniVicBot = () => {
     }
     panelRef.current?.focus();
   }, [isOpen]);
+
+  // Keep the open panel clear of the hero name, on both axes. The placement is
+  // sticky: it is only recomputed when the panel's current box has come within
+  // MINIVIC_CLEARANCE of the name, so scrolling does not shuffle the dialog
+  // around the reader — it moves when, and only when, it would otherwise start
+  // covering the name.
+  const placePanelClearOfHeroName = React.useCallback(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+    const run = heroNameGlyphRun();
+    if (!run) {
+      clearPanelPlacement(panel);
+      return;
+    }
+    const viewportKey = `${window.innerWidth}x${window.innerHeight}`;
+    const cached = naturalPanelBoxRef.current;
+    let natural: PlacementRect;
+    if (cached && cached.key === viewportKey) {
+      natural = cached.box;
+    } else {
+      if (panel.style.width || panel.style.height || panel.style.right || panel.style.bottom) {
+        // A cap is applied and the uncapped box is a frame away. Drop it now
+        // and measure on the next pass rather than trusting a stale rect.
+        clearPanelPlacement(panel);
+        requestAnimationFrame(() => placePanelClearOfHeroName());
+        return;
+      }
+      const box = panel.getBoundingClientRect();
+      natural = { left: box.left, top: box.top, right: box.right, bottom: box.bottom };
+      naturalPanelBoxRef.current = { key: viewportKey, box: natural };
+    }
+    if (rectSeparation(natural, run) >= MINIVIC_CLEARANCE) {
+      // The panel clears the name where the stylesheet already puts it.
+      clearPanelPlacement(panel);
+      return;
+    }
+    const placement = placeMiniVicPanel(natural, run, panelTopLimit());
+    clearPanelPlacement(panel);
+    applyPanelPlacement(panel, placement);
+    // Measure what was actually painted, not what was predicted, and take the
+    // shortfall out of the axis the panel is already giving up. One pass is not
+    // always enough — the panel's own chrome reflows as it is capped, which
+    // moves the box again — so the correction repeats until the measured box
+    // holds the contract, up to a bounded number of frames.
+    const correct = (applied: PanelPlacement, attemptsLeft: number) => {
+      requestAnimationFrame(() => {
+        const panelNow = panelRef.current;
+        if (!panelNow || attemptsLeft <= 0) return;
+        const currentRun = heroNameGlyphRun();
+        if (!currentRun) return;
+        const deficit = MINIVIC_CLEARANCE - rectSeparation(panelNow.getBoundingClientRect(), currentRun);
+        if (deficit <= 0) return;
+        const tightened = tightenPlacement(
+          applied,
+          deficit,
+          natural.right - natural.left,
+          natural.bottom - natural.top,
+        );
+        if (tightened === applied) return;
+        clearPanelPlacement(panelNow);
+        applyPanelPlacement(panelNow, tightened);
+        correct(tightened, attemptsLeft - 1);
+      });
+    };
+    correct(placement, 6);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    placePanelClearOfHeroName();
+    // The name's glyph run changes width when the display face swaps in, so the
+    // measurement is taken again once the fonts have settled.
+    let live = true;
+    document.fonts?.ready.then(() => {
+      if (!live) return;
+      // The panel enters on a 200ms slide, so the box measured at open time can
+      // be a rem lower than the one it settles at. Drop the cached natural box
+      // with the fonts so both are read once everything has stopped moving.
+      naturalPanelBoxRef.current = null;
+      placePanelClearOfHeroName();
+    });
+    let frame = 0;
+    const onViewportChange = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        placePanelClearOfHeroName();
+      });
+    };
+    window.addEventListener("resize", onViewportChange);
+    window.addEventListener("scroll", onViewportChange, { passive: true });
+    return () => {
+      live = false;
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("resize", onViewportChange);
+      window.removeEventListener("scroll", onViewportChange);
+    };
+  }, [isOpen, placePanelClearOfHeroName]);
 
   // ADV-F-2 — the launcher was the 93rd of 100 tab stops, so a keyboard reader
   // traversed the whole page before reaching the channel the brief names for
@@ -1039,7 +1230,7 @@ const MiniVicBot = () => {
           role="dialog"
           aria-modal="false"
           aria-label="MiniVic assistant panel"
-          className="minivic-panel mb-4 flex w-[22rem] md:w-[27rem] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded border border-white/12 bg-[rgb(10_11_13/0.97)] backdrop-blur-sm shadow-[0_24px_60px_rgba(0,0,0,0.55)] animate-in slide-in-from-bottom-4 duration-200"
+          className="minivic-panel mb-4 flex flex-col overflow-hidden rounded border border-white/12 bg-[rgb(10_11_13/0.97)] backdrop-blur-sm shadow-[0_24px_60px_rgba(0,0,0,0.55)] animate-in slide-in-from-bottom-4 duration-200"
         >
           {/* The header gives its height back first when the panel is short —
               a 1366x768 laptop leaves 328px for the whole dialog, and the
