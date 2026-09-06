@@ -158,9 +158,42 @@ function projectedFrameMs(): number | null {
   return perFragment * viewportFragments;
 }
 
+/**
+ * The two documented URL overrides, and why the *off* one has to exist.
+ *
+ * `?gl=force` lifts the software-rasteriser refusal so a GPU-less host can
+ * compile a line of GLSL at all. `?gl=off` is its opposite and is the only
+ * honest way to ask for the no-WebGL page: it answers `'unsupported'` before a
+ * context is ever created, so nothing about the answer depends on the host.
+ *
+ * Without it the no-WebGL contract was not a contract. Headless Chrome reports
+ * SwiftShader, the name test refuses it, and the refusal is then *appealed* by
+ * `projectedFrameMs()` — which admits the software rasteriser whenever the host
+ * happens to be idle enough for it to clear `FRAME_BUDGET_MS`. So a test that
+ * asserted "no canvas here" was really asserting "this build machine is busy",
+ * and it flipped with the load average (`tests/e2e/about.spec.ts` TC-ABOUT-07
+ * failed 3/3 on an idle VPS and passed under load; evidence
+ * `docs/delivery/evidence/v10-20260905T0515Z/W1-RED3/01-reproduction.log`).
+ *
+ * `off` wins over `force` when both are present: the check below returns before
+ * the force hatch is ever reached, so an explicit refusal is never overridden
+ * by an escape hatch.
+ */
+function glTurnedOffByUrl(): boolean {
+  return typeof window !== 'undefined' && window.location.search.includes('gl=off');
+}
+
 function probe(): GLCapability {
   if (cached) return cached;
   if (typeof document === 'undefined') return 'probing';
+
+  // Asked for the no-WebGL page: answer before any context exists, so the
+  // answer is the flag and nothing else — not the renderer's name, not the
+  // benchmark, not how busy the machine is.
+  if (glTurnedOffByUrl()) {
+    cached = 'unsupported';
+    return cached;
+  }
 
   try {
     const canvas = document.createElement('canvas');

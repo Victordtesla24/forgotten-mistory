@@ -1,0 +1,92 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts -g about compass field|listen beat field --workers=1 --reporter=line
+
+[2mRunning [22m8[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/8] [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light[22m
+[flagship-visibility] about@1440: ground=0.0030 coverage=15.66% peak=0.8308 motion=0.00877 box=1248x900
+
+[1A[2K[2/8] [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light[22m
+[flagship-visibility] listen@1440: ground=0.0030 coverage=21.14% peak=0.5395 motion=0.00050 box=1440x900
+
+[1A[2K[31m  1) [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light [39m
+
+    Error: listen beat field: mean |dL| over 1.5 s is 0.00050 — the scene does not move
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.004[39m
+    Received:    [31m0.0004969801256437528[39m
+
+    [0m [90m 363 |[39m           motion[33m,[39m
+     [90m 364 |[39m           [32m`${item.label}: mean |dL| over 1.5 s is ${motion.toFixed(5)} — the scene does not move`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 365 |[39m         )[33m.[39mtoBeGreaterThanOrEqual([33mMOTION_MIN[39m)[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 366 |[39m       })[33m;[39m
+     [90m 367 |[39m     }
+     [90m 368 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-red3/tests/overhaul/flagship-visibility.spec.ts:365:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-flagship-visibili-9a6bc-n-beat-field-reads-as-light-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-flagship-visibili-9a6bc-n-beat-field-reads-as-light-chromium/error-context.md[22m
+
+
+[1A[2K[3/8] [chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback[22m
+[flagship-visibility:still] about@1440: ground=0.0030 coverage=15.28% peak=0.1170
+
+[1A[2K[4/8] [chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 1440 — listen beat field fallback
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 1440 — listen beat field fallback[22m
+[flagship-visibility:still] listen@1440: ground=0.0030 coverage=24.94% peak=0.0865
+
+[1A[2K[5/8] [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light[22m
+[flagship-visibility] about@390: ground=0.0030 coverage=32.64% peak=0.8308 motion=0.01749 box=342x480
+
+[1A[2K[6/8] [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light[22m
+[flagship-visibility] listen@390: ground=0.0030 coverage=34.54% peak=0.5089 motion=0.00061 box=390x844
+
+[1A[2K[31m  2) [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light [39m
+
+    Error: listen beat field: mean |dL| over 1.5 s is 0.00061 — the scene does not move
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.004[39m
+    Received:    [31m0.0006119587460003384[39m
+
+    [0m [90m 363 |[39m           motion[33m,[39m
+     [90m 364 |[39m           [32m`${item.label}: mean |dL| over 1.5 s is ${motion.toFixed(5)} — the scene does not move`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 365 |[39m         )[33m.[39mtoBeGreaterThanOrEqual([33mMOTION_MIN[39m)[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 366 |[39m       })[33m;[39m
+     [90m 367 |[39m     }
+     [90m 368 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-red3/tests/overhaul/flagship-visibility.spec.ts:365:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-flagship-visibili-0fa9c-n-beat-field-reads-as-light-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-flagship-visibili-0fa9c-n-beat-field-reads-as-light-chromium/error-context.md[22m
+
+
+[1A[2K[7/8] [chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback[22m
+[flagship-visibility:still] about@390: ground=0.0030 coverage=67.38% peak=0.1195
+
+[1A[2K[8/8] [chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 390 — listen beat field fallback
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-LISTEN @ 390 — listen beat field fallback[22m
+[flagship-visibility:still] listen@390: ground=0.0030 coverage=30.45% peak=0.0865
+
+[1A[2K[31m  2 failed[39m
+[31m    [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light [39m
+[31m    [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light [39m
+[32m  6 passed[39m[2m (57.4s)[22m
+EXIT=1
