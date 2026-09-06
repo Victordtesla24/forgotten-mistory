@@ -151,11 +151,36 @@ test.describe('About', () => {
   });
 
   test('TC-ABOUT-07: the section is complete without WebGL', async ({ page }) => {
-    // Headless runs a software renderer, which the capability check declines —
-    // so this run IS the no-WebGL path, and all ten answers must still be here.
+    // The no-WebGL path is *asked for*, never inferred from the host.
+    //
+    // This test used to load `/` and rely on headless Chrome reporting
+    // SwiftShader, which `useGLCapability` refuses by name. But that refusal is
+    // appealed: `projectedFrameMs()` re-measures a refused renderer and admits
+    // it whenever it clears the 33 ms frame budget — which a software
+    // rasteriser does on an idle machine. So the assertion below was really
+    // asserting "this VPS is busy right now", and it inverted with the load
+    // average: 3/3 failures on an idle host, green under load
+    // (docs/delivery/evidence/v10-20260905T0515Z/W1-RED3/01-reproduction.log).
+    //
+    // `?gl=off` is the documented contract (components/gl/useGLCapability.ts):
+    // capability answers `'unsupported'` before any context is created, so a
+    // reader with no WebGL and this test see the same page on every machine.
+    await page.goto('/?gl=off');
+    await page.locator(ABOUT).scrollIntoViewIfNeeded();
     await expect(page.locator(`${ABOUT} ol li`)).toHaveCount(10);
     await expect(page.locator(`${ABOUT} canvas`)).toHaveCount(0);
     await expect(page.locator(ABOUT)).toContainText('Ten axes · no scores');
+    // Not this section's scene alone: `gl=off` is every scene's answer.
+    await expect(page.locator('#hero canvas, #experience canvas')).toHaveCount(0);
+
+    // And the flag has to be the reason. Without this second half the test
+    // would still pass on a host that merely happens to be too busy for the
+    // software rasteriser to clear the frame budget — the exact false green
+    // the old version lived on. `?gl=force` on the same build mounts the
+    // field, so the zero above is the flag's doing and nothing else.
+    await page.goto('/?gl=force');
+    await page.locator(ABOUT).scrollIntoViewIfNeeded();
+    await expect(page.locator(`${ABOUT} canvas`)).toHaveCount(1);
   });
 
   /**

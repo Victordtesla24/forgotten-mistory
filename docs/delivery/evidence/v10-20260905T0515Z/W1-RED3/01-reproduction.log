@@ -1,0 +1,179 @@
+### S-1 reproduction on export :5620 — 2026-09-06T02:58:57Z — HEAD 97e19d0
+--- (1) TC-ABOUT-07 x3 repeats ---
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/about.spec.ts -g TC-ABOUT-07 --repeat-each=3 --workers=1 --reporter=line
+
+[2mRunning [22m3[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/3] [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL
+[1A[2K[31m  1) [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#about canvas')
+    Expected: [32m0[39m
+    Received: [31m1[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#about canvas')[22m
+    [2m    18 × locator resolved to 1 element[22m
+    [2m       - unexpected value "1"[22m
+
+
+    [0m [90m 155 |[39m     [90m// so this run IS the no-WebGL path, and all ten answers must still be here.[39m
+     [90m 156 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m`${ABOUT} ol li`[39m))[33m.[39mtoHaveCount([35m10[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 157 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m`${ABOUT} canvas`[39m))[33m.[39mtoHaveCount([35m0[39m)[33m;[39m
+     [90m     |[39m                                                   [31m[1m^[22m[39m
+     [90m 158 |[39m     [36mawait[39m expect(page[33m.[39mlocator([33mABOUT[39m))[33m.[39mtoContainText([32m'Ten axes · no scores'[39m)[33m;[39m
+     [90m 159 |[39m   })[33m;[39m
+     [90m 160 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-red3/tests/e2e/about.spec.ts:157:51[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-about-About-TC-ABOUT-0-eb6a2-n-is-complete-without-WebGL-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-about-About-TC-ABOUT-0-eb6a2-n-is-complete-without-WebGL-chromium/error-context.md[22m
+
+
+[1A[2K[2/3] [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL
+[1A[2K[31m  2) [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#about canvas')
+    Expected: [32m0[39m
+    Received: [31m1[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#about canvas')[22m
+    [2m    18 × locator resolved to 1 element[22m
+    [2m       - unexpected value "1"[22m
+
+
+    [0m [90m 155 |[39m     [90m// so this run IS the no-WebGL path, and all ten answers must still be here.[39m
+     [90m 156 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m`${ABOUT} ol li`[39m))[33m.[39mtoHaveCount([35m10[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 157 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m`${ABOUT} canvas`[39m))[33m.[39mtoHaveCount([35m0[39m)[33m;[39m
+     [90m     |[39m                                                   [31m[1m^[22m[39m
+     [90m 158 |[39m     [36mawait[39m expect(page[33m.[39mlocator([33mABOUT[39m))[33m.[39mtoContainText([32m'Ten axes · no scores'[39m)[33m;[39m
+     [90m 159 |[39m   })[33m;[39m
+     [90m 160 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-red3/tests/e2e/about.spec.ts:157:51[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-about-About-TC-ABOUT-0-eb6a2-n-is-complete-without-WebGL-chromium-repeat1/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-about-About-TC-ABOUT-0-eb6a2-n-is-complete-without-WebGL-chromium-repeat1/error-context.md[22m
+
+
+[1A[2K[3/3] [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL
+[1A[2K[31m  3) [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#about canvas')
+    Expected: [32m0[39m
+    Received: [31m1[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#about canvas')[22m
+    [2m    17 × locator resolved to 1 element[22m
+    [2m       - unexpected value "1"[22m
+
+
+    [0m [90m 155 |[39m     [90m// so this run IS the no-WebGL path, and all ten answers must still be here.[39m
+     [90m 156 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m`${ABOUT} ol li`[39m))[33m.[39mtoHaveCount([35m10[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 157 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m`${ABOUT} canvas`[39m))[33m.[39mtoHaveCount([35m0[39m)[33m;[39m
+     [90m     |[39m                                                   [31m[1m^[22m[39m
+     [90m 158 |[39m     [36mawait[39m expect(page[33m.[39mlocator([33mABOUT[39m))[33m.[39mtoContainText([32m'Ten axes · no scores'[39m)[33m;[39m
+     [90m 159 |[39m   })[33m;[39m
+     [90m 160 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-red3/tests/e2e/about.spec.ts:157:51[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-about-About-TC-ABOUT-0-eb6a2-n-is-complete-without-WebGL-chromium-repeat2/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-about-About-TC-ABOUT-0-eb6a2-n-is-complete-without-WebGL-chromium-repeat2/error-context.md[22m
+
+
+[1A[2K[31m  3 failed[39m
+[31m    [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL [39m
+[31m    [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL [39m
+[31m    [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL [39m
+EXIT=1
+--- (2) flagship-visibility -g 'listen beat field' ---
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts -g listen beat field reads as light --workers=1 --reporter=line
+
+[2mRunning [22m2[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/2] [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light[22m
+[flagship-visibility] listen@1440: ground=0.0030 coverage=21.56% peak=0.5841 motion=0.00114 box=1440x900
+
+[1A[2K[31m  1) [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light [39m
+
+    Error: listen beat field: mean |dL| over 1.5 s is 0.00114 — the scene does not move
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.004[39m
+    Received:    [31m0.0011353205122784627[39m
+
+    [0m [90m 363 |[39m           motion[33m,[39m
+     [90m 364 |[39m           [32m`${item.label}: mean |dL| over 1.5 s is ${motion.toFixed(5)} — the scene does not move`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 365 |[39m         )[33m.[39mtoBeGreaterThanOrEqual([33mMOTION_MIN[39m)[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 366 |[39m       })[33m;[39m
+     [90m 367 |[39m     }
+     [90m 368 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-red3/tests/overhaul/flagship-visibility.spec.ts:365:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-flagship-visibili-9a6bc-n-beat-field-reads-as-light-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-flagship-visibili-9a6bc-n-beat-field-reads-as-light-chromium/error-context.md[22m
+
+
+[1A[2K[2/2] [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light[22m
+[flagship-visibility] listen@390: ground=0.0030 coverage=34.19% peak=0.4969 motion=0.00107 box=390x844
+
+[1A[2K[31m  2) [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light [39m
+
+    Error: listen beat field: mean |dL| over 1.5 s is 0.00107 — the scene does not move
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.004[39m
+    Received:    [31m0.0010697880161000203[39m
+
+    [0m [90m 363 |[39m           motion[33m,[39m
+     [90m 364 |[39m           [32m`${item.label}: mean |dL| over 1.5 s is ${motion.toFixed(5)} — the scene does not move`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 365 |[39m         )[33m.[39mtoBeGreaterThanOrEqual([33mMOTION_MIN[39m)[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 366 |[39m       })[33m;[39m
+     [90m 367 |[39m     }
+     [90m 368 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-red3/tests/overhaul/flagship-visibility.spec.ts:365:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-flagship-visibili-0fa9c-n-beat-field-reads-as-light-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-flagship-visibili-0fa9c-n-beat-field-reads-as-light-chromium/error-context.md[22m
+
+
+[1A[2K[31m  2 failed[39m
+[31m    [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 1440 — listen beat field reads as light [39m
+[31m    [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-LISTEN @ 390 — listen beat field reads as light [39m
+EXIT=1

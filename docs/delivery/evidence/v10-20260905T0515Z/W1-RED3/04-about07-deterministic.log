@@ -1,0 +1,11 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/about.spec.ts -g TC-ABOUT-07 --repeat-each=5 --workers=1 --reporter=line
+
+[2mRunning [22m5[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/5] [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL
+[1A[2K[2/5] [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL
+[1A[2K[3/5] [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL
+[1A[2K[4/5] [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL
+[1A[2K[5/5] [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL
+[1A[2K[32m  5 passed[39m[2m (29.8s)[22m
