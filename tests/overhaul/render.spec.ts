@@ -43,7 +43,11 @@ import { test, expect, type Page } from '@playwright/test';
  */
 
 /** The three sections that own a WebGL scene, in page order. */
-const SCENE_SECTIONS = ['#hero', '#about', '#experience'] as const;
+/* The sections a WebGL scene could mount in. Empty after t_w3_rm2 removed the
+   last of them (INTERIM-FRAME.md §5): TC-RENDER-02's context-loss watch is
+   parameterised over it and now watches the page with no scene on it, which is
+   still the honest measurement — a console free of WebGL errors. */
+const SCENE_SECTIONS: readonly string[] = [];
 
 /** Every section on the page, in page order. */
 const ALL_SECTIONS = ['#hero', '#about', '#experience', '#skills', '#vitrine', '#listen'] as const;
@@ -76,28 +80,12 @@ async function settleSection(page: Page, selector: string) {
 test.describe('TC-NFR-RENDER: Cinematic Rendering Compliance', () => {
   test.describe.configure({ timeout: 120000 });
 
-  test('TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it', async ({ page }) => {
-    await gotoWithGL(page);
-
-    // `Scene` mounts its canvas only while the slot is within half a viewport
-    // of the screen and tears it down as soon as it leaves, so each section has
-    // to be visited in turn rather than counted all at once.
-    const mounted: string[] = [];
-    for (const selector of SCENE_SECTIONS) {
-      await settleSection(page, selector);
-      const canvas = page.locator(`${selector} canvas`).first();
-      if ((await page.locator(`${selector} canvas`).count()) === 0) continue;
-      const box = await canvas.boundingBox();
-      expect(box, `${selector} canvas has no box`).not.toBeNull();
-      expect(box!.width, `${selector} canvas is too small to be drawing`).toBeGreaterThan(100);
-      expect(box!.height, `${selector} canvas is too small to be drawing`).toBeGreaterThan(100);
-      mounted.push(selector);
-    }
-
-    // At least one scene must have really mounted, or the escape hatch is
-    // broken and every other check in this file is silently testing nothing.
-    expect(mounted, 'no scene mounted a canvas even with ?gl=force').not.toHaveLength(0);
-  });
+  /* TC-RENDER-01 is SUPERSEDED by tests/overhaul/interim-frame.spec.ts TC-IF-18
+     (docs/architecture/INTERIM-FRAME.md §6). It asserted that at least one
+     section scene mounts a live canvas under ?gl=force; after t_w3_rm2 no
+     section declares a scene at all, so the case now asserts the opposite of
+     the frame in force. TC-IF-18 measures what replaced it: 0 page errors under
+     ?gl=force, and no canvas anywhere on the page but MiniVic's own. */
 
   test('TC-RENDER-02: Scenes draw with no WebGL context loss', async ({ page }) => {
     const glErrors: string[] = [];

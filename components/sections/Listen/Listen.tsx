@@ -1,18 +1,12 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 
-import Scene from '@/components/gl/Scene';
 import { listenContent } from '@/app/data/portfolio/listen';
 import { greetingEnvelope } from '@/app/data/generated/greeting-envelope';
 
-import type { BeatState } from './ListenField';
 import styles from './Listen.module.css';
 
-// The bench light under the instrument. Dynamic so `three` lands in the chunk
-// `Scene` fetches when a scene actually mounts, not in this section's bundle.
-const ListenField = dynamic(() => import('./ListenField'), { ssr: false });
 
 /** The caliper's drawn width, in viewBox units — one to one with CSS px unless the viewport is narrower than the instrument. */
 const CALIPER_WIDTH = 320;
@@ -99,10 +93,6 @@ export default function Listen() {
   const [armed, setArmed] = useState(false);
   const [closed, setClosed] = useState(false);
   const [half, setHalf] = useState<number | null>(null);
-  // Where the instrument lies within the section, for the field behind it. A
-  // ref, not state: it is layout, it changes only when the section is measured,
-  // and the scene reads it inside `useFrame`.
-  const beat = useRef<BeatState>({ band: 0.5 });
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -139,20 +129,6 @@ export default function Listen() {
       // beat settles.
       setHalf(Math.max(0.5, Math.round(gap) / 2));
 
-      // The same measurement the field needs: where along the section the
-      // instrument lies, so the band of light is under the caliper rather than
-      // at an arbitrary height of the canvas.
-      const sectionBox = section.getBoundingClientRect();
-      const caliperBox = caliper.getBoundingClientRect();
-      if (sectionBox.height > 0) {
-        beat.current.band = Math.min(
-          1,
-          Math.max(
-            0,
-            (caliperBox.top + caliperBox.height / 2 - sectionBox.top) / sectionBox.height,
-          ),
-        );
-      }
     };
 
     setArmed(true);
@@ -190,16 +166,6 @@ export default function Listen() {
       data-armed={armed ? '' : undefined}
       data-closed={closed ? '' : undefined}
     >
-      {/* The bench light, which is the caliper's own beat seen as light: it
-          brightens as the jaws close and then holds. No second animation — with
-          no WebGL, reduced motion, or the section off screen, `Scene` mounts
-          nothing and the closing screen is exactly as empty as it was. */}
-      <div className={styles.field} data-close={closed ? 'closed' : 'open'}>
-        <Scene className={styles.fieldSlot} sceneId="listen-field">
-          <ListenField closed={closed} beat={beat} />
-        </Scene>
-      </div>
-
       <div className={styles.inner}>
         <p className={styles.kicker}>{listenContent.kicker}</p>
         <h2 id="listen-title" className={styles.title}>

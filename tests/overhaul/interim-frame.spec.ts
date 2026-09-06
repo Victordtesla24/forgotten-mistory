@@ -573,3 +573,694 @@ test.describe('TC-IF-10 — the MiniVic launcher still takes a first-fold click 
     expect(hit!.inside, `the launcher takes its own click (top element ${hit!.tag})`).toBe(true);
   });
 });
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   TC-IF-11…21 — the interim frame, continued: Experience, Skills, Vitrine,
+   Listen.
+
+   Binding source: `artifacts/kanban/tasks/t_w3_rm2.md` and
+   `docs/architecture/INTERIM-FRAME.md` §5. The career strata field, the sticky
+   career descent stage, the skills bench plate, the vitrine cabinet light and
+   its six traced drawings, and the listen beat field are removed. What has to
+   survive removal is every fact those decorations stood behind — and that is
+   what this block measures. It replaces, by name, every contract that asserted
+   one of those fields (the table in INTERIM-FRAME.md §6 maps each one here).
+
+   The frame's second half, in eleven measurements:
+
+     11  no canvas and no declared scene node in #experience, #skills,
+         #vitrine or #listen
+     12  Experience: heading, date range, lede, eight role rows whose bar
+         widths are the real durations to within 2 %, three sourced figures
+         with caliper marks and five open brackets
+     13  Skills: the calibration card's tested/untested split reads, with no
+         proficiency bar and no canvas
+     14  Vitrine: six cards, each with title, description, the three metrics,
+         its limits and its source — and the rail still reachable by keyboard
+     15  Listen: the four routes, the synthetic-introduction label and the
+         agenda action, unchanged
+     16  the ground under all four sections is ≤ 0.03 relative luminance at
+         nine sample points each
+     17  every text node in the four sections clears 4.5:1 on the ground it is
+         actually drawn on
+     18  ?gl=force: 0 page errors, and no canvas anywhere on the page but
+         MiniVic's own
+     19  prefers-reduced-motion renders the same four sections
+     20  every colour declared inside the four sections is achromatic, except
+         the elements that carry the gold claim
+     21  MiniVic is untouched: the launcher opens and the dock is reachable
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/** The four sections this slice strips, in page order. */
+const TAIL_SECTIONS = ['#experience', '#skills', '#vitrine', '#listen'] as const;
+
+/** Scroll a section into view and let its own entry beats finish. */
+async function reveal(page: Page, section: string): Promise<void> {
+  await page.locator(section).scrollIntoViewIfNeeded();
+  await page.waitForTimeout(700);
+}
+
+for (const viewport of VIEWPORTS) {
+  const size = `${viewport.width}x${viewport.height}`;
+
+  test.describe(`TC-IF (tail) @ ${size} — Experience, Skills, Vitrine, Listen`, () => {
+    test.use({ viewport: { width: viewport.width, height: viewport.height } });
+
+    /* ── 11 ───────────────────────────────────────────────────────────────
+       The removal itself. `Scene` renders `[data-scene]`; after this slice
+       none of the four sections declares one, and no canvas mounts inside
+       them on any path. */
+    test(`TC-IF-11 @ ${size} — no canvas and no scene slot in the four tail sections`, async ({
+      page,
+    }) => {
+      await settle(page);
+
+      for (const section of TAIL_SECTIONS) {
+        await reveal(page, section);
+        expect(await page.locator(`${section} canvas`).count(), `${section} canvas`).toBe(0);
+        expect(
+          await page.locator(`${section} [data-scene]`).count(),
+          `${section} [data-scene]`,
+        ).toBe(0);
+      }
+      // The sticky descent stage went with the field it held.
+      expect(await page.locator('[data-descent-stage]').count(), 'descent stage').toBe(0);
+      expect(await page.locator('[data-descent-band]').count(), 'descent band').toBe(0);
+    });
+
+    /* ── 12 ───────────────────────────────────────────────────────────────
+       "Sixteen years, to scale" is a falsifiable claim, and this is where it
+       is falsified: every bar's rendered width is checked against the role's
+       real duration on the section's own sixteen-year axis. 2 % of the track
+       is the tolerance — sub-pixel rounding and the 0.6 % minimum-width floor
+       the shortest role sits on. */
+    test(`TC-IF-12 @ ${size} — the heading, the derivation, the lede and eight role bars drawn to scale`, async ({
+      page,
+    }) => {
+      await settle(page);
+      await reveal(page, '#experience');
+
+      await expect(page.locator('#experience-title')).toBeVisible();
+      // The claim's own arithmetic is printed inside the claim.
+      const title = (await page.locator('#experience-title').innerText()).trim();
+      expect(title.length, 'the heading prints').toBeGreaterThan(4);
+      expect(/20\d\d/.test(title), `the derivation states its dates (${title})`).toBe(true);
+
+      // The bars mount collapsed and are measured out once a third of the
+      // chart is on screen. Wait for that beat to commit — a bar read mid-
+      // transform is 0 px wide and would be graded "off scale" for a reason
+      // that has nothing to do with the scale.
+      await page.locator('#experience [data-track-field]').scrollIntoViewIfNeeded();
+      await page
+        .locator('#experience [data-track-field][data-entered]')
+        .waitFor({ state: 'attached', timeout: 15000 });
+      await page.waitForTimeout(1400);
+
+      const rows = page.locator('#experience [class*="trackRow"]');
+      expect(await rows.count(), 'eight role rows').toBe(8);
+
+      // Every bar's width as a fraction of the track, beside the duration the
+      // row prints for itself. The bar is the only encoding of the career on
+      // the page; the readout beside it is the same number in words.
+      const measured = await page.evaluate(() => {
+        const out: { years: string; width: number; track: number }[] = [];
+        for (const row of Array.from(document.querySelectorAll('#experience [class*="trackRow"]'))) {
+          const bar = row.querySelector('[class*="trackBar"]') as HTMLElement | null;
+          const years = row.querySelector('[class*="trackYears"]') as HTMLElement | null;
+          const line = row.querySelector('[class*="trackLine"]') as HTMLElement | null;
+          if (!bar || !years || !line) continue;
+          // `offsetWidth`, not the painted rect: the entry beat draws the bar
+          // with `scaleX`, and a transformed rect is the animation's width, not
+          // the bar's. The layout width is the percentage of the axis the
+          // chart declared, which is the thing "to scale" is a claim about.
+          out.push({
+            years: (years.textContent ?? '').trim(),
+            width: bar.offsetWidth,
+            track: line.offsetWidth,
+          });
+        }
+        return out;
+      });
+      expect(measured.length, 'eight bars measured').toBe(8);
+
+      // The axis the chart declares for itself: 2010 → now, from the data.
+      const span = await page.evaluate(() => {
+        const ticks = Array.from(document.querySelectorAll('#experience [class*="axisTick"]'))
+          .map((t) => Number((t.textContent ?? '').trim()))
+          .filter((n) => Number.isFinite(n) && n > 1990);
+        return ticks.length > 0 ? Math.min(...ticks) : null;
+      });
+      expect(span, 'the axis prints its earliest year').not.toBeNull();
+      const now = new Date().getFullYear() + new Date().getMonth() / 12;
+      const axisYears = now - span!;
+
+      const drift: string[] = [];
+      for (const bar of measured) {
+        const match = /^([\d.]+)\s*(yr|mo)$/.exec(bar.years);
+        if (!match) {
+          drift.push(`unreadable duration "${bar.years}"`);
+          continue;
+        }
+        const years = match[2] === 'mo' ? Number(match[1]) / 12 : Number(match[1]);
+        const expected = years / axisYears;
+        const actual = bar.track > 0 ? bar.width / bar.track : 0;
+        // The floor the chart applies so a three-month role is still a bar.
+        if (expected < 0.006) continue;
+        if (Math.abs(actual - expected) > 0.02) {
+          drift.push(
+            `"${bar.years}" drew ${(actual * 100).toFixed(2)}% of the track, ` +
+              `${(expected * 100).toFixed(2)}% expected`,
+          );
+        }
+      }
+      expect(drift, `bars off scale: ${drift.join(' · ')}`).toEqual([]);
+
+      // Three roles state a figure; the other five print an open bracket, and
+      // neither grade may drift into the other.
+      const sourcedFigures = await page
+        .locator('#experience [data-state="self-reported"]')
+        .count();
+      const openBrackets = await page.locator('#experience [data-state="open"]').count();
+      expect(sourcedFigures, 'three roles carry a stated figure').toBe(3);
+      expect(openBrackets, 'five roles carry an open bracket').toBe(5);
+    });
+
+    /* ── 13 ───────────────────────────────────────────────────────────────
+       The calibration card. No proficiency bar has ever been allowed here
+       (CLAUDE.md §4); with the bench plate gone the split has to read on the
+       flat ground, from the DOM alone. */
+    test(`TC-IF-13 @ ${size} — the calibration card reads, with no bar and no canvas`, async ({
+      page,
+    }) => {
+      await settle(page);
+      await reveal(page, '#skills');
+
+      await expect(page.locator('#skills')).toBeVisible();
+      const text = await page.locator('#skills').innerText();
+      expect(text.trim().length, '#skills prints its card').toBeGreaterThan(200);
+
+      // Tested and untested are both named — the card's whole point is the
+      // split, and a card that printed only one half would be a claim.
+      expect(/production/i.test(text), 'the card names what was measured in production').toBe(true);
+
+      // No proficiency bar: nothing in the section may declare a width-driven
+      // meter, and there is no canvas left to draw one either.
+      expect(await page.locator('#skills canvas').count(), '#skills canvas').toBe(0);
+      const meters = await page.locator('#skills [role="progressbar"], #skills progress, #skills meter').count();
+      expect(meters, 'no proficiency meter').toBe(0);
+
+      // The wires are SVG and survive the removal — the drawing never depended
+      // on the field behind it.
+      expect(await page.locator('#skills svg').count(), 'the bench still draws its wires').toBeGreaterThan(0);
+    });
+
+    /* ── 14 ───────────────────────────────────────────────────────────────
+       Six of thirty-eight. Every card keeps its title, its description, its
+       three metrics, its limits and its source; the drawing panel that stood
+       between the description and the metrics is gone, and the rail is still
+       a keyboard-reachable horizontal scroller. */
+    test(`TC-IF-14 @ ${size} — six cards with their limits and sources, no drawing panel`, async ({
+      page,
+    }) => {
+      await settle(page);
+      await reveal(page, '#vitrine');
+
+      const cards = page.locator('#vitrine [aria-roledescription="plate"]');
+      expect(await cards.count(), 'six repository cards').toBe(6);
+
+      for (let i = 0; i < 6; i += 1) {
+        const card = cards.nth(i);
+        const body = (await card.innerText()).trim();
+        expect(body.length, `card ${i} prints`).toBeGreaterThan(80);
+        expect(/limits/i.test(body), `card ${i} prints its limits`).toBe(true);
+        expect(
+          await card.locator('a[href^="https://github.com"]').count(),
+          `card ${i} links its source`,
+        ).toBeGreaterThan(0);
+        expect(await card.locator('dl dt').count(), `card ${i} prints its metrics`).toBeGreaterThan(
+          0,
+        );
+      }
+
+      // No canvas, and no traced drawing frame.
+      expect(await page.locator('#vitrine canvas').count(), '#vitrine canvas').toBe(0);
+      expect(await page.locator('#vitrine svg[class*="drawing" i]').count(), 'no drawing').toBe(0);
+
+      // Keyboard reach: focus the first card and step right with the arrow the
+      // rail binds. The rail must move.
+      await cards.first().focus();
+      const before = await page.locator('#vitrine ol[role="list"]').evaluate((el) => el.scrollLeft);
+      await page.keyboard.press('ArrowRight');
+      await page.waitForTimeout(600);
+      const after = await page.locator('#vitrine ol[role="list"]').evaluate((el) => el.scrollLeft);
+      const focused = await page.evaluate(
+        () => document.activeElement?.getAttribute('aria-roledescription') ?? null,
+      );
+      expect(
+        after > before || focused === 'plate',
+        `the rail answers the keyboard (scrollLeft ${before} → ${after}, focus ${focused})`,
+      ).toBe(true);
+    });
+
+    /* ── 15 ───────────────────────────────────────────────────────────────
+       Four ways to reach him, plus the synthetic introduction labelled as one.
+       The beat field is gone; not one route, and not the agenda action, may go
+       with it. */
+    test(`TC-IF-15 @ ${size} — four routes, the synthetic-introduction label and the agenda action`, async ({
+      page,
+    }) => {
+      await settle(page);
+      await reveal(page, '#listen');
+
+      const routes = page.locator(
+        '#listen a[href^="mailto:"], #listen a[href^="tel:"], #listen a[href^="https://"]',
+      );
+      const hrefs = await routes.evaluateAll((els) =>
+        els.map((el) => (el as HTMLAnchorElement).href),
+      );
+      const kinds = {
+        email: hrefs.filter((h) => h.startsWith('mailto:')).length,
+        phone: hrefs.filter((h) => h.startsWith('tel:')).length,
+        linkedin: hrefs.filter((h) => h.includes('linkedin.com')).length,
+        github: hrefs.filter((h) => h.includes('github.com')).length,
+      };
+      expect(kinds.email, 'a mailto route').toBeGreaterThan(0);
+      expect(kinds.phone, 'a tel route').toBeGreaterThan(0);
+      expect(kinds.linkedin, 'a LinkedIn route').toBeGreaterThan(0);
+      expect(kinds.github, 'a GitHub route').toBeGreaterThan(0);
+
+      const text = await page.locator('#listen').innerText();
+      // The synthetic introduction is labelled by the one figure the closing
+      // instrument can honestly measure: its own length, printed from the
+      // generated envelope rather than typed (LISTEN-FLAGSHIP.md §2 C5). The
+      // reading is the label, and it must still be there with the field that
+      // sat behind it removed.
+      const reading = /(\d+\.\d{2})\s*s\b/.exec(text);
+      expect(reading, `the introduction's measured length prints (${text.slice(0, 200)})`).not.toBeNull();
+      expect(Number(reading![1]), 'the reading is a real duration').toBeGreaterThan(0);
+
+      // The action the section closes on. Unchanged by this slice.
+      expect(
+        /20-minute-call agenda/i.test(text),
+        `the agenda action prints (${text.slice(0, 200)})`,
+      ).toBe(true);
+
+      expect(await page.locator('#listen canvas').count(), '#listen canvas').toBe(0);
+    });
+
+    /* ── 16 ───────────────────────────────────────────────────────────────
+       The ground the four sections stand on, sampled where no type and no
+       chrome is drawn: near-black, the same floor the hero holds. */
+    test(`TC-IF-16 @ ${size} — the tail ground is ≤ ${GROUND_LUMA_MAX} at nine points a section`, async ({
+      page,
+    }) => {
+      await settle(page);
+
+      for (const section of TAIL_SECTIONS) {
+        await reveal(page, section);
+
+        const boxes = await page.evaluate((sel) => {
+          const rects: { x: number; y: number; w: number; h: number }[] = [];
+          const root = document.querySelector(sel);
+          if (!root) return rects;
+          const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+          const range = document.createRange();
+          let node = walker.nextNode();
+          while (node) {
+            if ((node.textContent ?? '').trim().length > 0) {
+              range.selectNodeContents(node);
+              for (const r of Array.from(range.getClientRects())) {
+                if (r.width > 0 && r.height > 0) {
+                  rects.push({ x: r.x, y: r.y, w: r.width, h: r.height });
+                }
+              }
+            }
+            node = walker.nextNode();
+          }
+          // Everything that legitimately paints its own ground: the cards, the
+          // bars, the rules, the chrome.
+          for (const s of [
+            'nav',
+            '[data-minivic]',
+            'svg',
+            'img',
+            `${sel} [aria-roledescription="plate"]`,
+            `${sel} [class*="trackBar"]`,
+            `${sel} [class*="gridLine"]`,
+            `${sel} [class*="playhead"]`,
+            `${sel} [class*="caliper"]`,
+            `${sel} a`,
+            `${sel} button`,
+          ]) {
+            for (const el of Array.from(document.querySelectorAll(s))) {
+              const r = el.getBoundingClientRect();
+              if (r.width > 0 && r.height > 0) {
+                rects.push({ x: r.x, y: r.y, w: r.width, h: r.height });
+              }
+            }
+          }
+          return rects;
+        }, section);
+
+        const shot = PNG.sync.read(await page.screenshot({ type: 'png' }));
+        const occupied = (x: number, y: number) =>
+          boxes.some(
+            (b) => x >= b.x - 12 && x <= b.x + b.w + 12 && y >= b.y - 12 && y <= b.y + b.h + 12,
+          );
+
+        const samples: { x: number; y: number; luma: number }[] = [];
+        for (let row = 1; row <= 3; row += 1) {
+          for (let col = 1; col <= 3; col += 1) {
+            let x = Math.round((viewport.width * col) / 4);
+            let y = Math.round((viewport.height * row) / 4);
+            let clear = !occupied(x, y);
+            for (let step = 0; step < 60 && !clear; step += 1) {
+              x = (x + 17) % (viewport.width - 4);
+              if (x < 4) x = 4;
+              y = 8 + ((y + 13) % (viewport.height - 16));
+              clear = !occupied(x, y);
+            }
+            // Every point on the sweep was occupied — there is no ground to
+            // measure here, and a fabricated sample would be worse than none.
+            if (!clear) continue;
+            const idx =
+              (shot.width * Math.min(y, shot.height - 1) + Math.min(x, shot.width - 1)) << 2;
+            samples.push({
+              x,
+              y,
+              luma: relativeLuminance(shot.data[idx], shot.data[idx + 1], shot.data[idx + 2]),
+            });
+          }
+        }
+
+        console.log(`[TC-IF-16] ${size} ${section}`, JSON.stringify(samples));
+        expect(samples.length, `${section} has ground to sample`).toBeGreaterThan(0);
+        for (const sample of samples) {
+          expect(
+            sample.luma,
+            `${section} ground at (${sample.x}, ${sample.y}) is ${sample.luma.toFixed(4)}`,
+          ).toBeLessThanOrEqual(GROUND_LUMA_MAX);
+        }
+      }
+    });
+
+    /* ── 17 ───────────────────────────────────────────────────────────────
+       Contrast on the flat ground. The fields used to light these sections
+       from behind and every contrast number was taken against a moving
+       shader; now the ground is one colour and the measurement is honest. */
+    test(`TC-IF-17 @ ${size} — every text node in the four sections clears ${CONTRAST_MIN}:1`, async ({
+      page,
+    }) => {
+      await settle(page);
+      // Open every collapsed role so the accordion's own copy is measured too.
+      await reveal(page, '#experience');
+
+      const failures: string[] = [];
+      for (const section of TAIL_SECTIONS) {
+        await reveal(page, section);
+
+        const runs = await page.evaluate((sel) => {
+          const out: {
+            text: string;
+            colour: string;
+            x: number;
+            y: number;
+            w: number;
+            h: number;
+            occluded: boolean;
+          }[] = [];
+          const root = document.querySelector(sel);
+          if (!root) return out;
+          const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+          const range = document.createRange();
+          let node = walker.nextNode();
+          while (node) {
+            const text = (node.textContent ?? '').trim();
+            const parent = node.parentElement;
+            if (text.length > 0 && parent) {
+              const cs = getComputedStyle(parent);
+              if (
+                cs.visibility !== 'hidden' &&
+                cs.display !== 'none' &&
+                Number(cs.opacity) > 0.05 &&
+                !parent.closest('[hidden]')
+              ) {
+                range.selectNodeContents(node);
+                const r = range.getBoundingClientRect();
+                if (r.width > 1 && r.height > 1) {
+                  // Is anything painted over it? `elementFromPoint` answers
+                  // with whatever the reader's own click would hit.
+                  const cx = r.x + r.width / 2;
+                  const cy = r.y + r.height / 2;
+                  const top = document.elementFromPoint(cx, cy);
+                  const occluded =
+                    cx < 0 ||
+                    cy < 0 ||
+                    top === null ||
+                    !(top === parent || parent.contains(top) || top.contains(parent));
+                  out.push({
+                    text: text.slice(0, 40),
+                    colour: cs.color,
+                    x: r.x,
+                    y: r.y,
+                    w: r.width,
+                    h: r.height,
+                    occluded,
+                  });
+                }
+              }
+            }
+            node = walker.nextNode();
+          }
+          return out;
+        }, section);
+
+        if (runs.length === 0) continue;
+        const visible = runs.filter((r) => !r.occluded);
+        console.log(
+          `[TC-IF-17] ${size} ${section} ${visible.length}/${runs.length} runs measured ` +
+            `(${runs.length - visible.length} behind the fixed chrome)`,
+        );
+        expect(visible.length, `${section} has type standing clear of the chrome`).toBeGreaterThan(0);
+        const shot = PNG.sync.read(await page.screenshot({ type: 'png', animations: 'disabled' }));
+
+        for (const run of visible) {
+          if (run.y + run.h < 0 || run.y > viewport.height) continue;
+          // The ground is the modal colour inside the run's own box. A single
+          // probe beside the run reads whatever neighbours it — a white plate
+          // one element over, the gap between two cards — and grades the run
+          // against a ground it is not drawn on. Inside the box, the glyphs
+          // are the minority and the ground is the mode, which is the colour
+          // the reader actually sees behind the words.
+          const x0 = Math.max(1, Math.round(run.x));
+          const x1 = Math.min(shot.width - 2, Math.round(run.x + run.w));
+          const y0 = Math.max(1, Math.round(run.y));
+          const y1 = Math.min(shot.height - 2, Math.round(run.y + run.h));
+          const histogram = new Map<number, number>();
+          for (let y = y0; y <= y1; y += 1) {
+            for (let x = x0; x <= x1; x += 1) {
+              const i = (shot.width * y + x) << 2;
+              const key = (shot.data[i] << 16) | (shot.data[i + 1] << 8) | shot.data[i + 2];
+              histogram.set(key, (histogram.get(key) ?? 0) + 1);
+            }
+          }
+          if (histogram.size === 0) continue;
+          let modal = 0;
+          let best = -1;
+          for (const [key, count] of histogram) {
+            if (count > best) {
+              best = count;
+              modal = key;
+            }
+          }
+          const ground = relativeLuminance((modal >> 16) & 255, (modal >> 8) & 255, modal & 255);
+          const rgb = /rgba?\((\d+),\s*(\d+),\s*(\d+)/.exec(run.colour);
+          if (!rgb) continue;
+          const ink = relativeLuminance(Number(rgb[1]), Number(rgb[2]), Number(rgb[3]));
+          const ratio = (Math.max(ink, ground) + 0.05) / (Math.min(ink, ground) + 0.05);
+          if (ratio < CONTRAST_MIN) {
+            failures.push(
+              `${section} "${run.text}" ${run.colour} on ${ground.toFixed(4)} = ${ratio.toFixed(2)}:1`,
+            );
+          }
+        }
+      }
+      expect(failures, `runs under AA: ${failures.join(' · ')}`).toEqual([]);
+    });
+
+    /* ── 20 ───────────────────────────────────────────────────────────────
+       Monochrome, with gold as a claim. Every colour these four sections
+       declare is achromatic, except the elements that carry the claim mark:
+       the sourced employer names, the caliper's closed jaws, the live
+       repository URLs. */
+    test(`TC-IF-20 @ ${size} — every declared colour in the four sections is achromatic but the gold claim`, async ({
+      page,
+    }) => {
+      await settle(page);
+
+      const offenders: string[] = [];
+      for (const section of TAIL_SECTIONS) {
+        await reveal(page, section);
+        const found = await page.evaluate(
+          ({ sel, floor }) => {
+            const out: { where: string; prop: string; value: string }[] = [];
+            const chromatic = (value: string) => {
+              const m = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/.exec(value);
+              if (!m) return false;
+              if (m[4] !== undefined && Number(m[4]) === 0) return false;
+              const [r, g, b] = [Number(m[1]), Number(m[2]), Number(m[3])];
+              return Math.max(r, g, b) - Math.min(r, g, b) >= floor;
+            };
+            const root = document.querySelector(sel);
+            if (!root) return out;
+            for (const el of [root, ...Array.from(root.querySelectorAll('*'))]) {
+              const node = el as HTMLElement;
+              // The gold claim, exempt by name: the mark itself, a sourced
+              // employer, a live repository URL.
+              if (
+                node.closest('[data-state="self-reported"], [data-state="open"], [data-state="sourced"]') ||
+                node.hasAttribute('data-sourced') ||
+                node.closest('[data-sourced]') ||
+                node.closest('[class*="live" i]') ||
+                node.closest('[data-jaw]') ||
+                // The "measured in production" mark — the third of the three
+                // places gold is allowed to appear (CLAUDE.md §4).
+                /production/i.test((node.className || '').toString())
+              ) {
+                continue;
+              }
+              const cs = getComputedStyle(node);
+              for (const prop of ['color', 'backgroundColor', 'borderTopColor', 'fill', 'stroke']) {
+                const value = cs.getPropertyValue(
+                  prop.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`),
+                );
+                if (chromatic(value)) {
+                  out.push({
+                    where: `${node.tagName.toLowerCase()}.${(node.className || '').toString().slice(0, 30)}`,
+                    prop,
+                    value,
+                  });
+                }
+              }
+            }
+            return out;
+          },
+          { sel: section, floor: CHROMA_FLOOR },
+        );
+        for (const item of found) {
+          offenders.push(`${section} ${item.where} ${item.prop}=${item.value}`);
+        }
+      }
+      expect(offenders, `chromatic declarations: ${offenders.slice(0, 12).join(' · ')}`).toEqual([]);
+    });
+  });
+}
+
+/* ── 18 ─────────────────────────────────────────────────────────────────────
+   The GPU path. `?gl=force` used to mount five canvases across these four
+   sections; after this slice the only canvas the page may mount anywhere is
+   MiniVic's own viseme stage, and forcing WebGL must still raise nothing.
+   Measured once at 1440 — a page error is not viewport-dependent. */
+test.describe('TC-IF-18 — ?gl=force raises nothing and mounts no section canvas', () => {
+  test.use({ viewport: { width: 1440, height: 900 } });
+
+  test('TC-IF-18 — 0 page errors, and no canvas but MiniVic\'s', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+
+    await page.goto('/?gl=force');
+    await settleBoot(page);
+
+    for (const section of ['#experience', '#skills', '#vitrine', '#listen']) {
+      await page.locator(section).scrollIntoViewIfNeeded();
+      await page.waitForTimeout(900);
+      expect(await page.locator(`${section} canvas`).count(), `${section} canvas`).toBe(0);
+      expect(await page.locator(`${section} [data-scene]`).count(), `${section} scene`).toBe(0);
+    }
+
+    // Page-wide: every remaining canvas belongs to MiniVic.
+    const strays = await page.evaluate(() =>
+      Array.from(document.querySelectorAll('canvas'))
+        .filter((c) => !c.closest('[data-minivic]') && !c.closest('[data-scene="minivic-viseme"]'))
+        .map((c) => c.parentElement?.className?.toString().slice(0, 60) ?? 'unknown'),
+    );
+    expect(strays, `canvases outside MiniVic: ${strays.join(' · ')}`).toEqual([]);
+
+    console.log('[TC-IF-18] pageerrors', JSON.stringify(errors));
+    expect(errors, `page errors under ?gl=force: ${errors.join(' · ')}`).toEqual([]);
+  });
+});
+
+/* ── 19 ─────────────────────────────────────────────────────────────────────
+   Reduced motion renders the same four sections. Nothing in them is animation-
+   dependent any more, so the two paths print the same words in the same rows —
+   which is the whole of what "the frame is the content" means here. */
+test.describe('TC-IF-19 — prefers-reduced-motion renders the same four sections', () => {
+  test.use({ viewport: { width: 1440, height: 900 } });
+
+  test('TC-IF-19 — the same text and the same row counts on both motion paths', async ({
+    browser,
+  }) => {
+    const read = async (motion: 'no-preference' | 'reduce') => {
+      const context = await browser.newContext({
+        viewport: { width: 1440, height: 900 },
+        reducedMotion: motion,
+      });
+      const page = await context.newPage();
+      await gotoHome(page);
+      await settleBoot(page);
+      const out: Record<string, { text: string; counts: number[] }> = {};
+      for (const section of ['#experience', '#skills', '#vitrine', '#listen']) {
+        await page.locator(section).scrollIntoViewIfNeeded();
+        await page.waitForTimeout(700);
+        out[section] = {
+          text: (await page.locator(section).innerText()).replace(/\s+/g, ' ').trim(),
+          counts: [
+            await page.locator(`${section} a`).count(),
+            await page.locator(`${section} li`).count(),
+            await page.locator(`${section} canvas`).count(),
+          ],
+        };
+      }
+      await context.close();
+      return out;
+    };
+
+    const normal = await read('no-preference');
+    const reduced = await read('reduce');
+
+    for (const section of ['#experience', '#skills', '#vitrine', '#listen']) {
+      expect(reduced[section].text, `${section} prints the same words`).toBe(normal[section].text);
+      expect(reduced[section].counts, `${section} prints the same rows`).toEqual(
+        normal[section].counts,
+      );
+    }
+  });
+});
+
+/* ── 21 ─────────────────────────────────────────────────────────────────────
+   MiniVic is not this slice's to change. G-MV1 — the launcher is never hidden
+   below 834 — is restated here because four sections moved underneath it. The
+   *click* contract is TC-MV-CLICK-01's and TC-IF-10's (at 390, where the dock
+   and the fold actually compete); this case asserts only that the removal left
+   the launcher mounted, visible and sized at every gate width. */
+test.describe('TC-IF-21 — MiniVic is unchanged by the removal', () => {
+  for (const width of [1440, 834, 390]) {
+    test(`TC-IF-21 @ ${width} — the launcher is mounted, visible and hit-sized`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 844 });
+      await settle(page);
+
+      const launcher = page.locator('[data-testid="minivic-toggle"]').first();
+      await expect(launcher, `G-MV1: the launcher is visible at ${width}`).toBeVisible();
+
+      const box = await launcher.boundingBox();
+      expect(box, `the launcher has a box at ${width}`).not.toBeNull();
+      // A 44 px target is the floor the site's own a11y contract sets.
+      expect(box!.width, `the launcher is hit-sized at ${width}`).toBeGreaterThanOrEqual(40);
+      expect(box!.height, `the launcher is hit-sized at ${width}`).toBeGreaterThanOrEqual(40);
+      expect(box!.y, `the launcher stands in the viewport at ${width}`).toBeLessThan(844);
+    });
+  }
+});

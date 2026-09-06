@@ -59,15 +59,13 @@ test.describe('Vitrine', () => {
   });
 
   test('TC-VIT-05: no screenshots, logos or raster images', async ({ page }) => {
-    // Every drawing is an inline mechanism diagram. A screenshot would show what
-    // a repository looks like; the drawing shows what it does.
+    // The bespoke mechanism drawings are removed with the rest of the visual
+    // layer (t_w3_rm2, INTERIM-FRAME.md §5); the rule they were an instance of
+    // is not. Nothing in the cabinet may be a screenshot or a logo.
     await expect(page.locator(`${VITRINE} img`)).toHaveCount(0);
-    const drawings = page.locator(`${VITRINE} svg[role="img"]`);
-    await expect(drawings).toHaveCount(6);
-    for (let i = 0; i < 6; i++) {
-      await expect(drawings.nth(i).locator('title')).not.toHaveText('');
-      await expect(drawings.nth(i).locator('desc')).not.toHaveText('');
-    }
+    // The six-drawing count is SUPERSEDED by interim-frame.spec.ts TC-IF-14,
+    // which measures what each card must still carry: title, description, the
+    // three metrics, its limits and its source.
   });
 
   test('TC-VIT-06: the light tracks the plate at the centre of the rail', async ({ page }) => {

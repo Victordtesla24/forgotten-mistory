@@ -86,83 +86,6 @@
     --readout-column: 4.5rem;
 }
 
-/* The still of the same light (R-c13 MOT-C13-04). The shader draws drifting
-   strata lit under each span; with no WebGL — or with reduced motion asked for
-   — this still draws the same sediment: a bed of fixed bands, a soft key from
-   the left, and the lit surface of the top stratum where that key lands. The
-   fallback measured 0.00% above the ink before this, which is another way of
-   saying the section stood on an empty rectangle.
-
-   Where the light is allowed to be bright is decided by the type, not by
-   taste. `tests/a11y/text-contrast.spec.ts` samples the *composited* pixel
-   behind every glyph, so this gradient is part of every ratio it computes, and
-   the small type inside the chart is the constraint: `.axisTick` is
-   `--ink-300` (4.81:1 on the ink — its ground may not pass 0.007 relative
-   luminance) and `.trackYears` and `.openNote` are `--mist-400` (6.20:1 — a
-   ground of 0.023). Both ceilings sit under the 0.04 the flagship-visibility
-   fallback gate asks for, so the bright surface is placed in the one band of
-   the slot that carries no text at all: the chart's own top padding plus the
-   6% the slot overhangs into the header's bottom margin, together ~11% of the
-   slot at 1440. The band is 6% tall and sits at 3.8–9.8%, and it fades out to
-   the right so the key reads as coming from one side.
-
-   That is why `#experience` is the single section held to a 2% fallback floor
-   instead of 8% (`fallbackCoverageMin` in tests/overhaul/flagship-visibility.
-   spec.ts): lighting the rest of the slot to the default would take the dates
-   and the axis under AA. Contrast wins that argument. The shader path — what a
-   reader with WebGL and motion enabled actually sees — meets the full bar. */
-.chartScene {
-    position: absolute;
-    inset: -6% -2% 8%;
-    z-index: 0;
-    pointer-events: none;
-    background-image:
-        /* The lit surface of the top stratum: bright where the key lands on
-           the left, gone by the readout column on the right. */
-        linear-gradient(
-            90deg,
-            rgb(246 246 246 / 0.38),
-            rgb(246 246 246 / 0.3) 50%,
-            rgb(246 246 246 / 0.05) 88%,
-            transparent
-        ),
-        /* The key itself, wide and soft. */
-        radial-gradient(58% 74% at 12% 46%, rgb(246 246 246 / 0.075), transparent 76%),
-        /* The sediment. Held at the ink's own weight — this is the part the
-           dates and the axis sit on. */
-        repeating-linear-gradient(
-            180deg,
-            transparent 0 22px,
-            rgb(246 246 246 / 0.05) 22px 29px,
-            transparent 29px 38px
-        );
-    background-size: 100% 6%, 100% 100%, 100% 100%;
-    background-position: 0 4%, 0 0, 0 0;
-    background-repeat: no-repeat, no-repeat, repeat;
-}
-
-/* The foot of the slot, over the canvas. `.openNote` (`--mist-400`) and the
-   axis sit in the last fifth of the chart, and the shader is brightest exactly
-   there — `fade` runs to its maximum at the bottom of the frame. Photographed
-   at ?gl=force the note was grey on lit sediment. This paints after the canvas
-   and below the tracks (z-index 1 on `.trackField` and `.axis`), so it costs
-   the strata their least interesting region and buys the note its ground back.
-   The bright band of the reduced-motion still sits at 4–10% and is untouched. */
-.chartScene::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background: linear-gradient(
-        180deg,
-        transparent 0 74%,
-        rgb(10 10 10 / 0.55) 84%,
-        rgb(10 10 10 / 0.86) 94%,
-        rgb(10 10 10 / 0.86) 100%
-    );
-}
-
 /* The year gridlines. Drawn once behind every track rather than per row, so a
    bar's position can be read against a year without tracing four hundred
    pixels down to the axis. `--grid-*` are the same fractions the axis labels
@@ -267,9 +190,10 @@
    and both were being cut mid-word — a truncated employer name is the one
    thing a career chart cannot afford to get wrong. */
 /* The label stands on its own ground.
-   `.chartScene::after` scrims the foot of the slot, where `.openNote` and the
-   axis sit, but the company column runs the full height of the chart and the
-   strata are lit brightest exactly under the rows: measured on ?gl=force,
+   Historic reason, kept because the ground it names is still the one in force:
+   the strata field that used to light this column is removed
+   (docs/architecture/INTERIM-FRAME.md §5), but when it was lit brightest under
+   the rows the employer names measured, on ?gl=force,
    "Telstra" sampled 1.00:1 at 390 (rgb(144,144,144) on rgb(144,144,144) — grey
    on grey), "InfoCentric" 1.03:1, "ANZ Banking Group" 1.91:1 at 1440 (C22
    09-verification.md F2; reproduced in 02-tests-failing.log). The alternative
@@ -790,9 +714,7 @@ p.roleHeadline .roleHeadlineOpen {
    luminance 0.2789) over a ground that the lit strata push all the way to
    #2A2A2A (0.02316). That is 4.496 against a 4.5 requirement: not a pass with
    a small margin, a fail decided by which frame of the shader phase the audit
-   happened to photograph. The scrim on `.chartScene::after` already takes this
-   region to 86% ink, and the remaining 14% of a near-white stratum is the whole
-   difference.
+   happened to photograph.
 
    So the note stops borrowing its ground and brings its own. The plate is the
    page's own ink at full opacity, so what is behind it — shader phase, entrance
@@ -812,145 +734,4 @@ p.roleHeadline .roleHeadlineOpen {
     font-size: var(--fs-body);
     line-height: var(--lh-prose);
     color: var(--mist-400);
-}
-
-/* ── The descent ────────────────────────────────────────────────────────────
-   S7 `career-descent`: the same eight spans the chart above draws as length,
-   drawn as depth. A 160vh band containing a sticky 100vh stage — the sticky
-   element's 60vh of travel IS the camera move, and `CareerDescent.tsx`
-   normalises `uDescent` against exactly that, so shrinking the band changes the
-   scroll tax and never the composition (SIGNATURE-SCENES-v2 §3, R-1).
-
-   It sits after the chart and after the accordion by construction: the CV is
-   read first, and only then is the reader asked to look rather than read.
-
-   The band breaks the section's reading measure on purpose — it is the one
-   full-bleed object on the page — but it is still inside `#experience`, so the
-   six-section information architecture in CLAUDE.md is unchanged. */
-.descentBand {
-    position: relative;
-    height: 160vh;
-    margin: clamp(var(--space-8), 12vh, 7rem) calc(var(--page-gutter, var(--space-3)) * -1) 0;
-}
-
-/* The camera. `position: sticky` is the whole mechanism: the stage holds still
-   at the top of the viewport while the band scrolls past it, which is what turns
-   a scroll into a fall. */
-.descentStage {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow: hidden;
-    background:
-        /* The picture with no WebGL and no motion at all: a core sample lit at
-           the surface and dark at the floor, the same composition the shader
-           draws at `uDescent = 0.62`. Slice x2-s3 replaces this with the poster
-           rendered from the shader itself; until then the fallback is still a
-           picture and not an empty box. */
-        linear-gradient(180deg, rgb(246 246 246 / 0.10), transparent 46%),
-        repeating-linear-gradient(
-            180deg,
-            transparent 0 46px,
-            rgb(246 246 246 / 0.055) 46px 58px,
-            transparent 58px 96px
-        ),
-        var(--ink-900);
-}
-
-.descentScene {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-}
-
-/* The ruler. Deepest at the bottom, `now` at the top — the order the camera
-   travels. It runs down the left gutter, which is the strip `descent.glsl.ts`
-   holds at 18% of its own light for exactly this reason: type contrast is first
-   and the story is second, and light is never added behind a word. */
-.descentTicks {
-    position: absolute;
-    inset: clamp(var(--space-6), 12vh, 7rem) 0 clamp(var(--space-5), 8vh, 4rem)
-        var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)));
-    z-index: 1;
-    pointer-events: none;
-}
-
-.descentTick {
-    position: absolute;
-    left: 0;
-    transform: translateY(-50%);
-    padding-left: var(--space-3);
-    font-family: var(--font-mono);
-    font-size: var(--fs-micro);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--mist-400);
-}
-
-/* Each tick draws its own gradation, so the column is measured rather than
-   merely labelled. */
-.descentTick::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: var(--space-2);
-    height: 1px;
-    background: var(--mist-400);
-    opacity: 0.7;
-}
-
-/* The one caption line. Nothing else is laid over the field — no heading, no
-   paragraph, no call to action — and it brings its own ground at full ink
-   opacity so its ratio cannot be decided by which frame of the shader the audit
-   happened to photograph (the argument `.openNote` above settles for the
-   chart). */
-.descentCaption {
-    position: absolute;
-    z-index: 2;
-    right: var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)));
-    bottom: clamp(var(--space-5), 8vh, 4rem);
-    left: var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)));
-    max-width: var(--measure-read);
-    margin-left: auto;
-    padding: var(--space-2) var(--space-3);
-    background: var(--ink-900);
-    border-radius: 2px;
-    font-size: var(--fs-body);
-    line-height: var(--lh-prose);
-    color: var(--mist-200);
-}
-
-/* Below the fold on a phone the band is the same object, shorter: 130vh is the
-   floor v2 §5 R-1 sets, and `uDescent` is normalised, so the fall still lands
-   on the same frame at the same point in the scroll. */
-@media (max-width: 640px) {
-    .descentBand {
-        height: 140vh;
-    }
-
-    .descentCaption {
-        font-size: var(--fs-small);
-    }
-
-    /* The caption plate is full-width at this size and it paints over the
-       ticks, so the ruler ends above it rather than behind it: photographed at
-       390, `2010` was half a glyph under the plate's top edge. The column is
-       shorter, not the span — every tick keeps its position relative to the
-       ends of the fall. */
-    .descentTicks {
-        inset: clamp(var(--space-5), 8vh, 4rem) 0 clamp(var(--space-10), 26vh, 13rem)
-            var(--page-gutter, clamp(var(--space-3), 5vw, var(--space-10)));
-    }
-}
-
-/* A reader who has asked for reduced motion is shown the still, and is not
-   charged 60vh of scroll to see a picture that does not move. `Scene` mounts no
-   canvas on this path, so what remains is `.descentStage`'s own background —
-   the same composition, held. */
-@media (prefers-reduced-motion: reduce) {
-    .descentBand {
-        height: 100vh;
-    }
 }
