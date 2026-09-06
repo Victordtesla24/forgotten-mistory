@@ -1,0 +1,303 @@
+{
+  "label": "c3b-origin-cold",
+  "at": "2026-09-06T07:16:44.219Z",
+  "target": "origin",
+  "warmPrimed": false,
+  "question": "In one sentence, what did Vikram do at the ATO?",
+  "warmUrl": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+  "postUrl": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+  "warmStatus": null,
+  "warmMs": null,
+  "status": 200,
+  "contentType": "text/event-stream; charset=utf-8",
+  "headersMs": 2188,
+  "firstChunkMs": 2188,
+  "firstTokenMs": 2188,
+  "lastTokenMs": 2789,
+  "totalMs": 2792,
+  "deltas": 62,
+  "chars": 286,
+  "provider": "openai",
+  "model": "gpt-4.1-mini",
+  "route": "origin",
+  "max_tokens": 128,
+  "attempts": [
+    {
+      "provider": "openrouter",
+      "outcome": "cooling_down",
+      "ms": 0
+    },
+    {
+      "provider": "deepseek",
+      "outcome": "cooling_down",
+      "ms": 0
+    },
+    {
+      "provider": "zai",
+      "outcome": "cooling_down",
+      "ms": 0
+    },
+    {
+      "provider": "openai",
+      "outcome": "answered",
+      "ms": 2219
+    }
+  ],
+  "buffered": false,
+  "answer": "At the Australian Taxation Office, I have led the Agile Kookaburras squad on the Payday Super reform program since March 2026, managing sprint cadence, PI planning, capacity, and executive reporting, and architected COBOL/mainframe test-evidence automation that cut effort by about 92%.",
+  "rawFrames": [
+    {
+      "ms": 2188,
+      "payload": "{\"delta\":\"At\"}"
+    },
+    {
+      "ms": 2188,
+      "payload": "{\"delta\":\" the\"}"
+    },
+    {
+      "ms": 2189,
+      "payload": "{\"delta\":\" Australian\"}"
+    },
+    {
+      "ms": 2189,
+      "payload": "{\"delta\":\" Tax\"}"
+    },
+    {
+      "ms": 2189,
+      "payload": "{\"delta\":\"ation\"}"
+    },
+    {
+      "ms": 2189,
+      "payload": "{\"delta\":\" Office\"}"
+    },
+    {
+      "ms": 2189,
+      "payload": "{\"delta\":\",\"}"
+    },
+    {
+      "ms": 2189,
+      "payload": "{\"delta\":\" I\"}"
+    },
+    {
+      "ms": 2210,
+      "payload": "{\"delta\":\" have\"}"
+    },
+    {
+      "ms": 2210,
+      "payload": "{\"delta\":\" led\"}"
+    },
+    {
+      "ms": 2291,
+      "payload": "{\"delta\":\" the\"}"
+    },
+    {
+      "ms": 2291,
+      "payload": "{\"delta\":\" Agile\"}"
+    },
+    {
+      "ms": 2387,
+      "payload": "{\"delta\":\" K\"}"
+    },
+    {
+      "ms": 2387,
+      "payload": "{\"delta\":\"ook\"}"
+    },
+    {
+      "ms": 2388,
+      "payload": "{\"delta\":\"ab\"}"
+    },
+    {
+      "ms": 2388,
+      "payload": "{\"delta\":\"urr\"}"
+    },
+    {
+      "ms": 2388,
+      "payload": "{\"delta\":\"as\"}"
+    },
+    {
+      "ms": 2388,
+      "payload": "{\"delta\":\" squad\"}"
+    },
+    {
+      "ms": 2389,
+      "payload": "{\"delta\":\" on\"}"
+    },
+    {
+      "ms": 2389,
+      "payload": "{\"delta\":\" the\"}"
+    },
+    {
+      "ms": 2389,
+      "payload": "{\"delta\":\" Payday\"}"
+    },
+    {
+      "ms": 2389,
+      "payload": "{\"delta\":\" Super\"}"
+    },
+    {
+      "ms": 2390,
+      "payload": "{\"delta\":\" reform\"}"
+    },
+    {
+      "ms": 2390,
+      "payload": "{\"delta\":\" program\"}"
+    },
+    {
+      "ms": 2394,
+      "payload": "{\"delta\":\" since\"}"
+    },
+    {
+      "ms": 2394,
+      "payload": "{\"delta\":\" March\"}"
+    },
+    {
+      "ms": 2487,
+      "payload": "{\"delta\":\" \"}"
+    },
+    {
+      "ms": 2487,
+      "payload": "{\"delta\":\"202\"}"
+    },
+    {
+      "ms": 2487,
+      "payload": "{\"delta\":\"6\"}"
+    },
+    {
+      "ms": 2487,
+      "payload": "{\"delta\":\",\"}"
+    },
+    {
+      "ms": 2487,
+      "payload": "{\"delta\":\" managing\"}"
+    },
+    {
+      "ms": 2487,
+      "payload": "{\"delta\":\" sprint\"}"
+    },
+    {
+      "ms": 2487,
+      "payload": "{\"delta\":\" cadence\"}"
+    },
+    {
+      "ms": 2487,
+      "payload": "{\"delta\":\",\"}"
+    },
+    {
+      "ms": 2487,
+      "payload": "{\"delta\":\" PI\"}"
+    },
+    {
+      "ms": 2487,
+      "payload": "{\"delta\":\" planning\"}"
+    },
+    {
+      "ms": 2487,
+      "payload": "{\"delta\":\",\"}"
+    },
+    {
+      "ms": 2487,
+      "payload": "{\"delta\":\" capacity\"}"
+    },
+    {
+      "ms": 2588,
+      "payload": "{\"delta\":\",\"}"
+    },
+    {
+      "ms": 2588,
+      "payload": "{\"delta\":\" and\"}"
+    },
+    {
+      "ms": 2589,
+      "payload": "{\"delta\":\" executive\"}"
+    },
+    {
+      "ms": 2589,
+      "payload": "{\"delta\":\" reporting\"}"
+    },
+    {
+      "ms": 2589,
+      "payload": "{\"delta\":\",\"}"
+    },
+    {
+      "ms": 2589,
+      "payload": "{\"delta\":\" and\"}"
+    },
+    {
+      "ms": 2589,
+      "payload": "{\"delta\":\" architect\"}"
+    },
+    {
+      "ms": 2589,
+      "payload": "{\"delta\":\"ed\"}"
+    },
+    {
+      "ms": 2597,
+      "payload": "{\"delta\":\" COB\"}"
+    },
+    {
+      "ms": 2597,
+      "payload": "{\"delta\":\"OL\"}"
+    },
+    {
+      "ms": 2710,
+      "payload": "{\"delta\":\"/main\"}"
+    },
+    {
+      "ms": 2710,
+      "payload": "{\"delta\":\"frame\"}"
+    },
+    {
+      "ms": 2710,
+      "payload": "{\"delta\":\" test\"}"
+    },
+    {
+      "ms": 2710,
+      "payload": "{\"delta\":\"-e\"}"
+    },
+    {
+      "ms": 2710,
+      "payload": "{\"delta\":\"vidence\"}"
+    },
+    {
+      "ms": 2710,
+      "payload": "{\"delta\":\" automation\"}"
+    },
+    {
+      "ms": 2710,
+      "payload": "{\"delta\":\" that\"}"
+    },
+    {
+      "ms": 2710,
+      "payload": "{\"delta\":\" cut\"}"
+    },
+    {
+      "ms": 2711,
+      "payload": "{\"delta\":\" effort\"}"
+    },
+    {
+      "ms": 2711,
+      "payload": "{\"delta\":\" by\"}"
+    },
+    {
+      "ms": 2711,
+      "payload": "{\"delta\":\" about\"}"
+    },
+    {
+      "ms": 2711,
+      "payload": "{\"delta\":\" \"}"
+    },
+    {
+      "ms": 2789,
+      "payload": "{\"delta\":\"92\"}"
+    },
+    {
+      "ms": 2789,
+      "payload": "{\"delta\":\"%.\"}"
+    },
+    {
+      "ms": 2790,
+      "payload": "{\"done\":true,\"provider\":\"openai\",\"model\":\"gpt-4.1-mini\",\"route\":\"origin\",\"max_tokens\":128,\"attempts\":[{\"provider\":\"openrouter\",\"outcome\":\"cooling_down\",\"ms\":0},{\"provider\":\"deepseek\",\"outcome\":\"cooling_down\",\"ms\":0},{\"provider\":\"zai\",\"outcome\":\"cooling_down\",\"ms\":0},{\"provider\":\"openai\",\"outcome\":\"answered\",\"ms\":2219}]}"
+    }
+  ],
+  "error": null
+}

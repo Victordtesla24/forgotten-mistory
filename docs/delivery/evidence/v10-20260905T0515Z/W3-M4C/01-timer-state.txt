@@ -1,0 +1,62 @@
+# 01-timer-state.txt — fm-minivic-warm timer, captured 2026-09-06T06:58:55Z on srv1356245
+
+$ systemctl list-timers --all | grep -i -E 'warm|minivic'
+Sun 2026-09-06 07:00:38 UTC 1min 42s Sun 2026-09-06 06:58:38 UTC      17s ago fm-minivic-warm.timer          fm-minivic-warm.service
+
+$ systemctl show fm-minivic-warm.timer -p Unit -p AccuracyUSec -p NextElapseUSecMonotonic --no-pager
+Unit=fm-minivic-warm.service
+AccuracyUSec=5s
+
+$ cat /etc/systemd/system/fm-minivic-warm.timer
+[Unit]
+Description=Fire the MiniVic warm ping every 2 minutes (G-M4 requires <= 3 min)
+
+[Timer]
+OnBootSec=60
+OnUnitActiveSec=120
+AccuracySec=5s
+Unit=fm-minivic-warm.service
+
+[Install]
+WantedBy=timers.target
+
+$ cat /etc/systemd/system/fm-minivic-warm.service
+[Unit]
+Description=MiniVic brain warm ping (origin + hosting) — keeps the provider cooldown map primed for G-M4
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/root/forgotten-mistory/scripts/ops/minivic-warm-ping.sh
+TimeoutStartSec=60
+Nice=10
+
+$ journalctl -u fm-minivic-warm.service -n 20 --no-pager
+Sep 06 06:54:28 srv1356245 systemd[1]: Starting fm-minivic-warm.service - MiniVic brain warm ping (origin + hosting) — keeps the provider cooldown map primed for G-M4...
+Sep 06 06:54:29 srv1356245 minivic-warm-ping.sh[193849]: 2026-09-06T06:54:29Z origin 204 0.003742 0.064030 0.111415 0.189001
+Sep 06 06:54:29 srv1356245 minivic-warm-ping.sh[193849]: 2026-09-06T06:54:29Z hosting 204 0.003463 0.005048 0.017188 0.114553
+Sep 06 06:54:29 srv1356245 systemd[1]: fm-minivic-warm.service: Deactivated successfully.
+Sep 06 06:54:29 srv1356245 systemd[1]: Finished fm-minivic-warm.service - MiniVic brain warm ping (origin + hosting) — keeps the provider cooldown map primed for G-M4.
+Sep 06 06:56:33 srv1356245 systemd[1]: Starting fm-minivic-warm.service - MiniVic brain warm ping (origin + hosting) — keeps the provider cooldown map primed for G-M4...
+Sep 06 06:56:33 srv1356245 minivic-warm-ping.sh[199890]: 2026-09-06T06:56:33Z origin 204 0.001174 0.040284 0.091766 0.158830
+Sep 06 06:56:33 srv1356245 minivic-warm-ping.sh[199890]: 2026-09-06T06:56:33Z hosting 204 0.002147 0.005610 0.015987 0.140226
+Sep 06 06:56:33 srv1356245 systemd[1]: fm-minivic-warm.service: Deactivated successfully.
+Sep 06 06:56:33 srv1356245 systemd[1]: Finished fm-minivic-warm.service - MiniVic brain warm ping (origin + hosting) — keeps the provider cooldown map primed for G-M4.
+Sep 06 06:58:38 srv1356245 systemd[1]: Starting fm-minivic-warm.service - MiniVic brain warm ping (origin + hosting) — keeps the provider cooldown map primed for G-M4...
+Sep 06 06:58:38 srv1356245 minivic-warm-ping.sh[206299]: 2026-09-06T06:58:38Z origin 204 0.002250 0.041679 0.086103 0.155554
+Sep 06 06:58:38 srv1356245 minivic-warm-ping.sh[206299]: 2026-09-06T06:58:38Z hosting 204 0.001103 0.003106 0.014829 0.111517
+Sep 06 06:58:38 srv1356245 systemd[1]: fm-minivic-warm.service: Deactivated successfully.
+Sep 06 06:58:38 srv1356245 systemd[1]: Finished fm-minivic-warm.service - MiniVic brain warm ping (origin + hosting) — keeps the provider cooldown map primed for G-M4.
+
+$ cat /var/log/fm-minivic-warm.log   (columns: ts route http_code dns connect tls total, seconds)
+2026-09-06T06:54:29Z origin 204 0.003742 0.064030 0.111415 0.189001
+2026-09-06T06:54:29Z hosting 204 0.003463 0.005048 0.017188 0.114553
+2026-09-06T06:56:33Z origin 204 0.001174 0.040284 0.091766 0.158830
+2026-09-06T06:56:33Z hosting 204 0.002147 0.005610 0.015987 0.140226
+2026-09-06T06:58:38Z origin 204 0.002250 0.041679 0.086103 0.155554
+2026-09-06T06:58:38Z hosting 204 0.001103 0.003106 0.014829 0.111517
+
+$ awk to show inter-fire gaps in seconds (must be <= 180)
+gap_s=124
+gap_s=125

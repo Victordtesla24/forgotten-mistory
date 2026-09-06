@@ -1,0 +1,10 @@
+c1a-hosting-cold | 06:56:29 | hosting | cold | 1193ms | PASS | openai=932ms | cooled=0/0/0 | max_tokens=48 | deltas=48
+c1b-origin-cold | 06:56:30 | origin | cold | 1529ms | FAIL | openai=1731ms | cooled=0/0/0 | max_tokens=128 | deltas=60
+c2a-hosting-cold | 07:06:33 | hosting | cold | 2522ms | FAIL | openai=1337ms | cooled=0/0/0 | max_tokens=48 | deltas=48
+c2b-origin-cold | 07:06:37 | origin | cold | 1296ms | PASS | openai=951ms | cooled=0/0/0 | max_tokens=128 | deltas=62
+c3a-hosting-cold | 07:16:41 | hosting | cold | 2282ms | FAIL | openai=1231ms | cooled=0/0/0 | max_tokens=48 | deltas=48
+c3b-origin-cold | 07:16:44 | origin | cold | 2188ms | FAIL | openai=2219ms | cooled=0/0/0 | max_tokens=128 | deltas=62
+c4a-hosting-cold | 07:26:48 | hosting | cold | 3304ms | FAIL | openai=1831ms | cooled=0/0/0 | max_tokens=48 | deltas=48
+c4b-origin-cold | 07:26:55 | origin | cold | 2210ms | FAIL | openai=1505ms | cooled=0/0/0 | max_tokens=128 | deltas=60
+w1-origin-warm | 07:27:02 | origin | warm | 979ms | PASS | openai=1266ms | cooled=0/0/0 | max_tokens=128 | deltas=62
+w2-hosting-warm | 07:27:08 | hosting | warm | 1080ms | PASS | openai=790ms | cooled=0/0/0 | max_tokens=48 | deltas=48
