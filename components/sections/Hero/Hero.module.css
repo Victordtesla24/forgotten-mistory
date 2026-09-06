@@ -22,20 +22,6 @@
     /* Named once, so the photograph below 720 px can cancel exactly this much
        and bleed to both screen edges without a magic number. */
     --hero-gutter: var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
-    /* The one number that binds the figure to the name: the distance from the
-       fold's floor to the photograph's foot. `.planeFigure` reads it; the tiers
-       below set it per width. It lives here rather than on `.inner` because the
-       plane is `.inner`'s sibling and a custom property only inherits down.
-
-       340 px is measured, not chosen. The name's line box — the FONT box a
-       Range reports, ~180 px at 1440, not the 138 px element box — has to clear
-       the figure's face-safe inner 60 % and still cross its dissolve band. That
-       leaves a window of lift ∈ [326, 420] at 1440×900 and [297, 354] at
-       1280×800 (the upper bound there is the figure's own top edge reaching the
-       viewport). 340 sits in both, with the fold's boxes landing at 1440:
-       figure 88→560, face-safe ends 466, name 480→660 — fourteen pixels of
-       daylight under the face and eighty of name across the dissolve. */
-    --figure-lift: 340px;
     /* The vertical rhythm belongs to the bands now: each sets its own, because
        the fold measures itself against the viewport and the proof band does
        not. */
@@ -77,235 +63,6 @@
 
     .actions {
         margin-top: var(--space-3);
-    }
-}
-
-/* The backdrop slot, and the scene's own container. The gradient below is the
-   entire backdrop when there is no WebGL; when the scene mounts, its canvas is
-   absolutely positioned to fill this element and draws over the gradient. */
-/* The still of the same light (R-c13 MOT-C13-04). With no WebGL — or with
-   reduced motion asked for — this gradient IS the hero backdrop, so it has to
-   carry the same structure the shader draws: a pool on the right where the
-   portrait plate stands, a rake of light down from the upper-left corner, and
-   the ink ramp underneath both. The version this replaces was a single
-   near-black wash that measured 0.00% of the frame above the ink; a reader on
-   that path was looking at a flat rectangle.
-
-   Both bright figures sit clear of the reading column on purpose. The hero's
-   copy runs down the left of the page column, and nothing luminous is allowed
-   under it — which is what keeps every hero string above AA on the fallback
-   path, where tests/a11y/text-contrast.spec.ts measures the composited pixels
-   (it loads the page without ?gl=force, so this gradient is exactly what it
-   photographs). */
-/* This background is also the hero's FIRST PAINT, and that is now load-bearing.
-   The slot's scene mounts with `priority` (Scene.tsx), so the canvas no longer
-   waits for the page to settle — and the only reason that is safe for LCP is
-   that the frame under it is already lit by the document. The LCP candidate is
-   settled by static HTML and a stylesheet; the canvas composites over a picture
-   that is finished, rather than being the picture the reader is waiting for.
-
-   So: never let this rule resolve to a flat ink fill, and never move it onto an
-   element that JavaScript creates. `tests/overhaul/hero-first-paint.spec.ts`
-   TC-HERO-FIRSTPAINT-01 photographs this slot and fails if its mean luminance
-   drops to the ink it is drawn on.
-
-   And that picture is now the scene itself. The layers below this note used to
-   be the whole of it: five gradients, drawn by hand, an *impression* of the
-   shader for the reader who never gets the shader. The independent production
-   review measured what the impression was worth — 0.0530 mean relative
-   luminance at 1440 and 0.0812 at 390 against an acceptance of ≥ 0.10, with no
-   `url()` layer at any width — and the lane's answer had been to lower the floor
-   to 0.04 rather than raise the picture
-   (`docs/delivery/evidence/v10-20260905T0515Z/G-REV/e3f0206c/08-adversarial-review.md`).
-
-   So the first layer is a real frame of `atmosphere.glsl.ts`, rendered at
-   3840×2160 by `scripts/assets/render-hero-poster.mjs` at the shader's brightest
-   resting phase (uTime = 14.6 s, chosen by sweeping the pools' breath and taking
-   the argmax — see that script). It measures 0.1323 at 1440 and 0.1384 at 390
-   over this slot with the WebGL chunk blocked. Nothing here is hand-painted, and
-   nothing here can drift from the scene: change the shader, re-run the script,
-   and the still changes with it.
-
-   The gradients stay underneath, and are not dead weight — they are what a
-   browser that cannot decode AVIF still gets, and what paints in the frames
-   before a 12.6 kB image arrives. `cover` on a 16:9 source, centred, at every
-   width: the phone is a tall crop of the same photograph rather than a second
-   composition to keep in step with this one. */
-.stage {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background:
-        /* The frame. A still of the hero's own shader — see the note above. */
-        url("/assets/hero-atmosphere-poster.avif") center / cover no-repeat,
-        /* The scrim. First of the gradients, so it sits over every luminous layer
-           below and under nothing: the reading column is dark ground again by
-           the time a glyph is drawn on it. Without it the rake reached
-           `#404040` under `.eyebrow` at 1440 and the pool reached `#525252`
-           under `.statement` at 390, and `--mist-400` on either is 3.25:1 and
-           2.45:1 — measured, in tests/a11y/text-contrast.spec.ts, which
-           photographs this gradient because it loads the page without
-           ?gl=force. The ceiling that number sets is `#2A2A2A`: that is the
-           brightest ground `--mist-400` still clears 4.5:1 on, and the scrim
-           is sized to hold the column under it with room to spare. */
-        linear-gradient(
-            90deg,
-            rgb(10 10 10 / 0.68) 0%,
-            rgb(10 10 10 / 0.66) 46%,
-            rgb(10 10 10 / 0.3) 60%,
-            transparent 70%
-        ),
-        /* The pool the portrait plate stands in. */
-        radial-gradient(
-            44% 50% at 80% 40%,
-            rgb(246 246 246 / 0.30) 0%,
-            rgb(246 246 246 / 0.25) 44%,
-            rgb(246 246 246 / 0.08) 72%,
-            transparent 88%
-        ),
-        /* The rake down from the upper-left corner. */
-        radial-gradient(
-            34% 40% at 4% 2%,
-            rgb(246 246 246 / 0.26) 0%,
-            rgb(246 246 246 / 0.18) 46%,
-            transparent 82%
-        ),
-        linear-gradient(154deg, rgb(246 246 246 / 0.09) 0%, transparent 30%),
-        linear-gradient(180deg, var(--ink-900) 0%, var(--ink-800) 58%, var(--ink-900) 100%);
-}
-
-/* There is no second scrim over the canvas. `.stage::after` used to paint one —
-   `rgb(10 10 10 / 0.88)` from 0% to 44% of the frame, `0.86 → 0.45` out to 56%,
-   transparent past 66% — so that on `?gl=force` the shader's near-white fog
-   never reached the reading column. It protected the copy by switching off the
-   half of the frame the eye enters through, and an independent review named
-   the result: "polished hire landing, not cinematic stage … the atmosphere is a
-   strip on the right" (HERO-FOLD-v2 §1, measured on `G-REV/66199cba`). The
-   contrast is bought locally now — every run of copy carries its own plate at
-   every width (the block near the foot of this file, promoted from the phone,
-   where it had already been measured green) — and the light crosses the whole
-   frame on both paths. Decision D-1 of the brief; reversal is this one block. */
-
-/* At 390 the column is the whole frame: there is no right-hand third to give
-   the light to, because the copy is standing in it. The type carries its own
-   ground at every width now (see the plate block near the foot of this file);
-   what is still the phone's own here is the *still* — the poster's gradients
-   reshaped to the room the plates leave. */
-@media (max-width: 700px) {
-    /* The phone keeps the light — and the copy keeps its ground.
-       Two things had to be true at once here and no single layer can do both.
-       The version this replaces was a flat, full-frame `rgb(10 10 10 / 0.86)`
-       on `.stage::after`; because `::after` paints after the canvas it
-       extinguished the shader on every phone with a GPU (0.00% coverage,
-       0.0212 peak, 0.00011 motion at 390 on ?gl=force, canvas mounted — C22
-       09-verification.md F1). Grading that scrim the way the desktop one is
-       graded does not work either, because at 390 there is no column to grade
-       towards: measured, the copy runs x=24..355 of 390 and y=97..920 of a
-       941 px stage, so a scrim shaped to clear it leaves the scene about a
-       sixth of the frame and almost none of its movement.
-
-       So on a phone the protection moves off the scene and onto the type. Each
-       run of copy carries its own plate; the light stays whole behind them and
-       shows in the gutters and in every gap between the lines. 0.90 is the
-       measured number, not a taste: over the brightest fog this shader draws
-       (0.8308 relative luminance, about `#ECECEC`) it lands the ground on
-       `#212121`, inside the `#2A2A2A` ceiling `--mist-400` needs for 4.5:1.
-       The one bar that already had a ground keeps it (`.primaryAction` is
-       white); the one that did not, gets one. */
-    .eyebrow,
-    .name,
-    .role,
-    .statement,
-    .grading,
-    .availability,
-    .ledgerItem {
-        background: rgb(10 10 10 / 0.90);
-        border-radius: 3px;
-        padding-inline: 0.45rem;
-        margin-inline: -0.45rem;
-        /* The font-box spread, at the width the overhang was worst: 64 ink px
-           of descender on the near-white plane at 390 (F-1). Same derivation as
-           the block above. */
-        box-shadow: 0 0 0 0.3em rgb(10 10 10 / 0.90);
-    }
-
-    .secondaryAction {
-        background: rgb(10 10 10 / 0.90);
-    }
-
-    /* The still, reshaped to the room the plates leave. On a phone the copy is
-       the middle of the frame, so the light is at its edges: a wash along the
-       top under the nav's clearance, the pool pushed out to the right edge, the
-       rake down the left. The flat `rgb(10 10 10 / 0.72)` wash this replaces
-       put every luminous layer under a second permanent attenuation and
-       measured 0.00% of the slot above the ink at 390 — the reduced-motion
-       reader was looking at the empty rectangle R-c13 MOT-C13-04 exists to
-       forbid.
-
-       The numbers are sized to that floor rather than chosen. The gate counts
-       pixels at least 0.04 relative luminance above the section's ground, and
-       over `--ink-900` that is about `#3A3A3A` — which a white layer reaches at
-       0.20 alpha and no lower. So every stop that is meant to be *seen* is
-       written above 0.20 and the ramps out of them are short: the first draft
-       crossed 0.20 a tenth of the way down the frame and covered 5.48% of the
-       slot. The wash now holds above the threshold for the first quarter of
-       the stage — which, with the photograph below the actions, is the whole
-       of the first screen — and both radials reach further into it.
-
-       The pool was then raised again, and by a measurement rather than an eye.
-       TC-HERO-SCRIM-01 asks whether a tenth of the frame stands clear of the
-       band the type reads on by 0.06 relative luminance; at 390 with reduced
-       motion this still answered 0.0511 (`02-tests-failing.log`) — the one
-       surface of the four that did, because it is the only one with no shader
-       to be bright with. The reason is a shape, not a brightness: the top wash
-       runs the full width, so it lifts every column by the same amount and
-       cancels out of that difference exactly the way an ink wash would. Only
-       the two radials are *shaped*, and the pool — the light the reader's eye
-       actually goes to, at the right edge beside the photograph — was both too
-       shallow and too short.
-
-       Too short mattered more, and alpha alone could not fix it. The gate reads
-       a column of the frame over its whole height, and this pool's vertical
-       radius was 40% of a 1490 px stage centred at 34%: it reached y = 1103 and
-       left the bottom quarter — the ledger, the contact links, the foot of the
-       photograph — on flat ink. Taking the alpha from 0.34 to 0.46 alone moved
-       the measurement by 0.010, to 0.0614, which clears 0.06 by 0.0014 and is
-       not a passing test. Carrying the radius to 58% at 38% instead lights the
-       right edge for the full drop of the frame — which is what the note beside
-       it already said this pool was for — and measures 0.0775.
-
-       The copy's ground is left where it was: the plates are
-       `rgb(10 10 10 / 0.90)`, so nine tenths of any change here never reaches a
-       glyph. Measured rather than argued — the band under the type moved 0.0796
-       to 0.0826 while the lit tenth moved 0.1307 to 0.1601, and every hero text
-       node still clears AA at 390 on both paths
-       (`tests/a11y/text-contrast.spec.ts`, `05-regression.log`). */
-    .stage {
-        background:
-            /* The same photograph, cropped to the phone by `cover` rather than
-               replaced by a second one. The gradients below it keep their job:
-               the AVIF fallback, and the paint before the image lands. */
-            url("/assets/hero-atmosphere-poster.avif") center / cover no-repeat,
-            linear-gradient(
-                180deg,
-                rgb(246 246 246 / 0.46) 0%,
-                rgb(246 246 246 / 0.42) 18%,
-                rgb(246 246 246 / 0.24) 24%,
-                transparent 30%
-            ),
-            radial-gradient(
-                42% 58% at 100% 38%,
-                rgb(246 246 246 / 0.46) 0%,
-                rgb(246 246 246 / 0.36) 44%,
-                transparent 86%
-            ),
-            radial-gradient(
-                34% 26% at 0% 10%,
-                rgb(246 246 246 / 0.32) 0%,
-                rgb(246 246 246 / 0.22) 46%,
-                transparent 84%
-            ),
-            linear-gradient(180deg, var(--ink-900) 0%, var(--ink-800) 58%, var(--ink-900) 100%);
     }
 }
 
@@ -558,7 +315,6 @@
        fold is the one thing in this section a recruiter is guaranteed to see. */
     padding-top: var(--space-2);
     border-top: 1px solid var(--token-border-default);
-    background: rgb(10 10 10 / 0.88);
 }
 
 .ledgerValue {
@@ -621,7 +377,6 @@
     padding-inline: 0.4rem;
     margin-inline: -0.4rem;
     border-radius: 2px;
-    background: rgb(10 10 10 / 0.88);
 }
 
 /* The same half-disc the caliper draws beside a self-reported figure, so the
@@ -847,105 +602,20 @@
 }
 
 
-/* ── Portrait ────────────────────────────────────────────────────────────────
-   Owner instruction, 2026-09-05 09:10Z: the photograph is the hero's anchor —
-   full size, full colour, with the loop on hover and never by default. Two
-   earlier rules are superseded for this one element: the grayscale filter, and
-   the 88 px phone stamp. What does NOT move is the ink rule around it — every
-   rule, tick, plate and control here is achromatic, and gold (which means "this
-   figure has a source") appears nowhere in or near the figure.
-
-   The frame is gone (g2h1-04, HERO-FOLD-v2 §5.1): the outer edges of the media
-   box dissolve into the plane through a composite mask instead of ending on a
-   hairline rule with caliper ticks and a registration cross. What remains is the
-   mono caption plate below, lit from behind by one achromatic bloom so the
-   photograph sits in light, not on black. */
-/* The fold anchors its copy to its floor now: the name, the sentence and the
-   action bar stand at the bottom of the first screen so the name's baseline
-   crosses the figure's dissolving lower band above it (§2, TC-HERO-SET-05). It
-   was `flex-start` while the photograph flowed under the copy as a fifth block;
-   the photograph stands in the plane behind the type from this slice on, and a
-   top-anchored column would leave the two in different halves of the frame —
-   a headline AND a headshot, which is precisely the reading §0 forbids.
-
-   `--figure-lift` is the one number that binds the two: the distance from the
-   fold's floor to the figure's foot. It is set per tier here and read by
-   `.planeFigure` above; the §3 tables are the design intent and these are the
-   measured values that realise them at the four gate viewports. */
-.inner {
-    justify-content: flex-end;
-    /* The fold's box stands OVER the plane, and a box over the photograph is a
-       box that swallows the pointer: with the figure composited into the plane
-       behind the copy, `pointerenter` on the figure never fired and the loop
-       stopped following the pointer (§4.3 — measured as TC-PHOTO-05 red on the
-       first build of this slice). The band passes the pointer through; the
-       reading column and everything pressable in it take it back, so the face
-       above the copy is hoverable and every link still is. */
-    pointer-events: none;
-}
-
-.copy,
-.name,
-.statement,
-.actions {
-    pointer-events: auto;
-}
-
-/* ── The plane ───────────────────────────────────────────────────────────────
-   HERO-SETPIECE-v3 §1 / §4 (D-4). One declared ground under the whole section:
-   the stage slot and the photograph, and nothing else. It is declared rather
-   than inferred so the figure can be *inside* the plane and still carry its
-   `alt` — `Scene` renders its slot `aria-hidden`, and no descendant can undo
-   that — and so the SPD instrument's ground-chain exemption is a thing a
-   reviewer reads in the DOM instead of a thing it guesses.
-
-   `pointer-events: none` on the layer, restored on the figure alone: the plane
-   spans the section, and the copy standing over it must stay clickable. */
-.plane {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-}
-
-/* The figure, composited in the plane at the §3 geometry.
-
-   Anchored by its BOTTOM edge to the fold, not by its top: the one measurement
-   this composition lives or dies by is where the name's baseline crosses the
-   photograph's dissolving lower band (TC-HERO-SET-05), and the copy is set from
-   the bottom of the fold up. `top: calc(100svh - lift)` with a −100 % translate
-   puts the figure's foot exactly `lift` above the fold's floor at every height,
-   with no dependence on the figure's own height.
-
-   Width is bounded by FIG-CAP: 1480 device px ÷ the 1.75 DPR cap = 846 CSS px,
-   above which the site's largest raster would be upscaled (TC-HERO-SET-03). */
-.planeFigure {
-    position: absolute;
-    right: var(--hero-gutter);
-    top: calc(100svh - var(--figure-lift, 280px));
-    width: min(846px, 62.5vw);
-    margin: 0;
-    transform: translateY(-100%);
-    pointer-events: auto;
-}
-
-/* The stage carries the light. It is deliberately not clipped: the bloom
-   spills past the frame and under the caption plate. */
-.portraitStage {
+/* ── The figure ──────────────────────────────────────────────────────────────
+   INTERIM FRAME (docs/architecture/INTERIM-FRAME.md). The photograph stands in
+   the fold as a plain block in normal flow: no plane behind it, no bloom under
+   it, no colour grade over it and no dissolve mask on its edges. The still and
+   the loop are greyscale in the shipped bytes (app/data/portfolio/avatar.ts),
+   so the frame is monochrome with no CSS filter to make it so — which is what
+   TC-IF-02 measures. */
+.portraitFigure {
     position: relative;
-}
-
-.portraitGlow {
-    position: absolute;
-    inset: -14% -10% -34%;
-    z-index: 0;
-    pointer-events: none;
-    /* Two achromatic washes: one behind the frame, one under the plate. The
-       white is --white's own value at low alpha, the same way .locationDot
-       draws its halo. No hue enters the figure. */
-    background:
-        radial-gradient(58% 58% at 50% 44%, rgb(246 246 246 / 0.12), transparent 72%),
-        radial-gradient(78% 42% at 50% 96%, rgb(246 246 246 / 0.09), transparent 74%);
+    z-index: 1;
+    width: min(100%, 40rem);
+    margin: var(--space-4) 0 0;
+    flex: 0 1 auto;
+    min-height: 0;
 }
 
 .portraitMedia {
@@ -953,31 +623,13 @@
     z-index: 1;
     box-sizing: border-box;
     overflow: hidden;
-    /* Native 1480×826. Nothing is cropped, so the face cannot be cropped out. */
+    /* Native 1480x826. Capped in the block axis so the whole fold — the name,
+       the role, the sentence, both actions and the photograph — stands in one
+       screen at every gate viewport (TC-IF-02). The media inside is
+       `object-fit: cover`, so the cap crops rather than distorts. */
     aspect-ratio: 1480 / 826;
+    max-height: min(34svh, 22rem);
     background: var(--ink-800);
-    /* Colour, per the instruction (t_g2_h6). The grade is a whisper — a point of
-       saturation and three of contrast — so the golden-hour frame keeps its
-       warmth without shouting over near-black inks. No grayscale. This is the
-       one declaration the colour decision touches; the mask below is
-       colour-agnostic — it never samples inside the rect. */
-    filter: saturate(1.02) contrast(1.03);
-    /* HERO-FOLD-v2 §5.1 (g2h1-04): the photograph loses its card. No rule, no
-       ticks, no cross, no box-shadow — the four outer edges dissolve into the
-       plane through a composite mask instead of ending on a closed rectangle
-       (PH-1). Two orthogonal ramps intersected: each fades transparent → opaque
-       over the outer 16 % of its axis, so the pixel 4 px inside every edge reads
-       as the plane it sits in (PH-2), while the opaque core (16 %–84 % on both
-       axes) leaves the upper-centre face untouched (PH-3). A mask composites
-       only — the box never changes size, so CLS is unmoved (PH-5). */
-    -webkit-mask-image:
-        linear-gradient(to right, transparent 0, #000 16%, #000 84%, transparent 100%),
-        linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%);
-    -webkit-mask-composite: source-in;
-    mask-image:
-        linear-gradient(to right, transparent 0, #000 16%, #000 84%, transparent 100%),
-        linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%);
-    mask-composite: intersect;
 }
 
 /* Identical box on both layers, so the still and the first frame are the same
@@ -1090,7 +742,6 @@
     margin: calc(var(--space-2) - 0.16rem) 0 0;
     padding: 0.16rem 0.4rem 0.16rem 1.1rem;
     border-radius: 2px;
-    background: rgb(10 10 10 / 0.88);
     font-family: var(--font-mono);
     font-size: var(--fs-micro);
     line-height: var(--lh-label);
@@ -1137,15 +788,6 @@
     }
 }
 
-/* The tablet tier (§3.4, 834×1194). The figure takes the whole column — 750 px
-   at 834 — and stands higher in a taller fold, so the two-line lockup below it
-   still crosses its dissolve rather than clearing it. */
-@media (min-width: 701px) and (max-width: 899.98px) {
-    .planeFigure {
-        width: calc(100% - 2 * var(--hero-gutter));
-    }
-}
-
 /* Short viewports. The grading note sits under the ledger instead of beside it,
    which costs ~50 px on a 1280×720 laptop — the one screen where the hero must
    still be a single fold (TC-HERO-08/09). The margin rules in the
@@ -1159,138 +801,6 @@
 
     .availability {
         margin-top: var(--space-3);
-    }
-}
-
-/* ── The plates ─────────────────────────────────────────────────────────────
-   Every run of copy carries its own ground, at every width. This is the phone's
-   instrument (the `@media (max-width: 700px)` block below, where it was first
-   measured) promoted to the whole range, and it is what replaced the half-frame
-   scrim `.stage::after` used to paint over the canvas (HERO-FOLD-v2 §2 M1,
-   decision D-1). The light now crosses the whole frame on both paths, and the
-   contrast is bought on the type alone.
-
-   0.90 is the measured number, not a taste: over the brightest fog this shader
-   draws (0.8308 relative luminance, about `#ECECEC`) it lands the ground on
-   `#212121`, inside the `#2A2A2A` ceiling `--mist-400` needs for 4.5:1. Do not
-   lower it without re-running tests/overhaul/hero-plates.spec.ts
-   TC-HERO-PLATE-03, which prints the ten worst hero nodes on both paths.
-
-   Each plate is exactly its run's box. `fit-content` is what makes that true
-   above 720 px, where these are blocks in a 600–700 px column: without it the
-   eyebrow's plate would be a 690 px band under 219 px of type — the scrim
-   again, one line at a time. It changes no box's height and moves no glyph: a
-   run that wraps still wraps at the same width (`fit-content` is capped by the
-   available space, and `.statement` keeps its own `max-width`), and a run that
-   does not wrap only loses the empty width to its right. The inline padding is
-   given back as a negative margin, so the glyphs stay where they were and the
-   plate stands `.45rem` proud of them on either side — the same `.4rem`
-   pattern `.grading` and `.portraitCaption` already use. Nothing here touches
-   the block axis, so the fold's height and CLS are untouched.
-
-   `.availability` is in the set because the proof band stood under the old
-   scrim too: it is `--mist-400` at body size, and on the shader's fog without a
-   ground it is under AA. `.ledgerItem`, `.grading` and `.portraitCaption`
-   already carry their own plates above and are not repeated here.
-
-   Declared here rather than beside the scrim it replaces, because the base
-   rules further up this file set `margin` and `background` as shorthands and
-   would otherwise reset both — the copy would move 7 px right and
-   `.secondaryAction` would go back to transparent over the fog.
-
-   ── The plate is drawn to the font's box, not to the line box (S4, F-1) ──
-   The plates above bound the *element* box. With the H1's leading at 0.9 the
-   glyphs' own font box is taller than that box, so the type overhung its own
-   ground: measured on live `rev-3657baa1-w2`, the `p` descender of "Deshpande"
-   hung off the plate onto the near-white plane at 1440, 1280, 834 and 390 on
-   both paths — 204/203/84/64 ink px at 1.10–1.55:1, one blob starting exactly
-   at the plate's bottom edge. The same overhang is what TC-HERO-A11Y-01 reads
-   when it takes P95 ground luminance under a text rect, and what TC-HERO-PLANE-01
-   reads as light inside the ink set.
-
-   `box-shadow` with spread and no offset or blur is the one way to extend that
-   ground without touching a single box: it paints the plate's own colour outward
-   from the border box, behind the element's background, and it is not in the
-   layout. Padding with a compensating negative margin would have worked too, but
-   TC-HERO-SET-02 currently passes with **zero** margin — `.proof`'s top is
-   exactly `innerHeight` — so a rule that can change a block's height by a
-   sub-pixel rounding is a rule that can push the ledger into the fold. This one
-   cannot.
-
-   0.3em is derived, not chosen: the H1's text rect measures 71 px at a 52 px
-   font (1.365 em) against a 46.8 px line box (0.9 em), so the overhang is
-   (1.365 − 0.9) / 2 = 0.233 em on each side. 0.3 em covers it with room, and
-   because it is in `em` every run carries the spread its own type needs. */
-.eyebrow,
-.name,
-.role,
-.statement,
-.availability {
-    width: fit-content;
-    background: rgb(10 10 10 / 0.90);
-    border-radius: 3px;
-    padding-inline: 0.45rem;
-    margin-inline: -0.45rem;
-    box-shadow: 0 0 0 0.3em rgb(10 10 10 / 0.90);
-}
-
-.secondaryAction {
-    background: rgb(10 10 10 / 0.90);
-}
-
-/* The phone's plates — the instrument above, at the width it was first written
-   for. Kept, not replaced (HERO-FOLD-v2 §8): it still carries the proof band's
-   `.grading` and `.ledgerItem` at the phone's 0.90 rather than their desktop
-   0.88, and it is the record of where the measurement was made. */
-@media (max-width: 700px) {
-    .eyebrow,
-    .name,
-    .role,
-    .statement,
-    .grading,
-    .availability,
-    .ledgerItem {
-        background: rgb(10 10 10 / 0.90);
-        border-radius: 3px;
-        padding-inline: 0.45rem;
-        margin-inline: -0.45rem;
-        /* The font-box spread, at the width the overhang was worst: 64 ink px
-           of descender on the near-white plane at 390 (F-1). Same derivation as
-           the block above. */
-        box-shadow: 0 0 0 0.3em rgb(10 10 10 / 0.90);
-    }
-
-    .secondaryAction {
-        background: rgb(10 10 10 / 0.90);
-    }
-}
-
-/* ≤700 px: the figure bleeds to the right screen edge (§3.5). It keeps the
-   left gutter, so the name below it starts on the same spine, and it never
-   scrolls the page sideways. */
-@media (max-width: 700px) {
-    .hero {
-        /* The phone's fold is short and its name sets in two lines, so the foot
-           of the figure rides above the floor rather than on it.
-
-           Re-measured for the bounded mark (§6): at 3.25rem the two-line lockup
-           is 93.6 px tall instead of 108, and because the reading column is
-           anchored to the fold's floor a SHORTER name starts LOWER — its box
-           moved from y474 to y502, and at the old 345 px lift the figure's foot
-           stopped at 499. Three pixels of daylight between them: the name and
-           the picture had become two zones again, which is the whole failure
-           SET-05 exists to catch (02-tests-failing.log has the run). 318 px
-           puts the foot at 526 and the dissolve band at y489–526 against a name
-           that starts at 502 — twenty-four pixels of the mark written across
-           the dissolve, and the face-safe box still ends at 485, seventeen
-           pixels clear of the first glyph
-           (tests/overhaul/hero-setpiece.spec.ts SET-05, both paths). */
-        --figure-lift: 318px;
-    }
-
-    .planeFigure {
-        right: 0;
-        width: calc(100% - var(--hero-gutter));
     }
 }
 

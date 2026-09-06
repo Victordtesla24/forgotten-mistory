@@ -287,58 +287,46 @@ export default function HeroPortrait() {
 
   return (
     <figure
-      className={styles.planeFigure}
+      className={styles.portraitFigure}
       data-testid="hero-portrait"
       onPointerEnter={arm}
       onPointerLeave={disarm}
     >
-      <div className={styles.portraitStage}>
-        {/* The light the photograph sits in: one achromatic bloom behind the
-            frame and the plate, so the figure reads as lit rather than pasted
-            onto black. Tokens only — no hue enters here. */}
-        <span className={styles.portraitGlow} data-testid="portrait-glow" aria-hidden="true" />
-
-        <div className={styles.portraitMedia}>
-          <picture>
-            <source srcSet={still.avif} type="image/avif" />
-            <source srcSet={still.webp} type="image/webp" />
-            <img
-              src={still.png}
-              width={still.width}
-              height={still.height}
-              alt={still.alt}
-              loading="eager"
-              decoding="async"
-              {...PRIORITY_HINT}
-            />
-          </picture>
-
-          <video
-            ref={videoRef}
-            className={[styles.portraitVideo, live ? styles.portraitVideoLive : ''].filter(Boolean).join(' ')}
-            width={loop.width}
-            height={loop.height}
-            muted
-            loop
-            playsInline
-            preload="none"
-            aria-hidden="true"
-            tabIndex={-1}
-            disablePictureInPicture
-            disableRemotePlayback
+      <div className={styles.portraitMedia}>
+        <picture>
+          <source srcSet={still.avif} type="image/avif" />
+          <source srcSet={still.webp} type="image/webp" />
+          <img
+            src={still.png}
+            width={still.width}
+            height={still.height}
+            alt={still.alt}
+            loading="eager"
+            decoding="async"
+            {...PRIORITY_HINT}
           />
+        </picture>
 
-          {/* HERO-FOLD-v2 §5.1 / decision D-3 (g2h1-04): the photograph loses
-              its card. The hairline rule, the four caliper ticks and the
-              registration cross are gone from the fold — a closed rectangle with
-              registration marks is a card beside a column, which is exactly what
-              the 1451Z reviewer called out. The drafting language survives where
-              it belongs, on the caliper mark and in the proof band; here the
-              media box's outer edges dissolve into the light through a composite
-              mask on `.portraitMedia` (Hero.module.css), so the figure reads as a
-              body standing in the plane rather than an object framed beside it.
-              Nothing pressable is added: the figure is a figure, not a call. */}
-        </div>
+        <video
+          ref={videoRef}
+          className={[styles.portraitVideo, live ? styles.portraitVideoLive : ''].filter(Boolean).join(' ')}
+          width={loop.width}
+          height={loop.height}
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-hidden="true"
+          tabIndex={-1}
+          disablePictureInPicture
+          disableRemotePlayback
+        />
+
+        {/* INTERIM FRAME: the bloom behind the frame and the composite dissolve
+            on its edges are removed with the rest of the hero's atmosphere
+            (docs/architecture/INTERIM-FRAME.md). The photograph is a plain
+            greyscale still in the fold — the grade is in the shipped bytes
+            (app/data/portfolio/avatar.ts), never in a CSS filter. */}
       </div>
     </figure>
   );

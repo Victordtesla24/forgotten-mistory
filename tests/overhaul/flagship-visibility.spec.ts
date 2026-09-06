@@ -136,8 +136,11 @@ interface SceneCase {
 }
 
 const SCENES: readonly SceneCase[] = [
-  { section: 'hero', scene: 'hero-atmosphere', label: 'hero atmosphere' },
-  { section: 'about', scene: 'about-field', label: 'about compass field' },
+  /* SUPERSEDED by tests/overhaul/interim-frame.spec.ts TC-IF-01/TC-IF-03: the
+     hero atmosphere and the About compass field were removed on the Owner's
+     2026-09-06T05:51Z instruction (docs/architecture/INTERIM-FRAME.md), so
+     there is no flagship scene in either section to be visible. The interim
+     contract asserts the opposite — no canvas, and a ground under 0.03. */
   {
     section: 'experience',
     scene: 'career-strata',
