@@ -184,3 +184,36 @@ Two gates are touched by the removal and hold without a change:
   three `.fieldSlot`s, two `.field`s, `.drawingFrame`), and `Drawings.module.css` is
   deleted whole.
 - `TC-NFR-PERF` — five deleted shaders only reduce the shipped weight.
+
+## 8. Two measurements corrected while writing TC-IF-11…21
+
+Both were faults in the *instrument*, not in the frame, and both are recorded because a
+number taken the wrong way is worse than no number:
+
+- **TC-IF-17 reads the run's own effective ground, not a screenshot pixel.** The first
+  draft probed the composited pixel beside each run, the way TC-IF-04 does on the hero.
+  With every field removed there is no shader behind the type any more, so that method
+  now only buys a way to be wrong: the fixed nav and MiniVic's dock paint over whole runs
+  while staying out of hit-testing, and four runs were graded 1.0:1 against pixels
+  belonging to whatever stood in front of them (`#skills` "Everything" on its own white
+  pill, `#vitrine` "Email a 20-minute-call agenda" on its own). The case now walks the
+  ancestor chain for the first painted background, alpha-composites it onto the page's
+  ground, and composites sub-alpha ink the same way. It is deterministic, it cannot be
+  fooled by an overlay, and it measures what the run is drawn on.
+- **TC-IF-20 states the site's rule instead of a list of exemptions.** The first draft
+  exempted the gold claim by naming classes, and missed the `.legendGlyph` key and the
+  Listen beam's two record channels (an SVG `className` is an `SVGAnimatedString`, so the
+  name test never matched). The case now reads the seven `--gold*` tokens from `:root` and
+  asserts the two halves of CLAUDE.md §4 directly: **every** chromatic declaration in the
+  four sections is one of those tokens, and gold is never a fill — no gold background over
+  24×24 px. That is stricter than the list it replaces: it catches a new hue anywhere, and
+  it catches gold used as a panel.
+
+## 9. Known-failing, not this slice's
+
+`TC-IF-10` (the MiniVic launcher takes a first-fold click at 390) fails on this branch and
+failed identically at its base, `8359094`. This commit touches no MiniVic, Hero, About,
+`app/layout.tsx`, `app/page.tsx` or `app/globals.css` file — the dock swallowing a
+first-fold click is the MiniVic P0 lane's, and `origin/main` has moved past this branch's
+base while that lane lands it. Every other case in `interim-frame.spec.ts` is green:
+**67 passed, 1 failed** (`docs/delivery/evidence/v10-20260905T0515Z/W3-RM2/05-interim-frame.log`).
