@@ -1,0 +1,105 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/vitrine.spec.ts --reporter=line
+
+[2mRunning [22m11[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/11] [chromium] › tests/e2e/vitrine.spec.ts:32:7 › Vitrine › TC-VIT-02: every plate states its limits
+[1A[2K[2/11] [chromium] › tests/e2e/vitrine.spec.ts:22:7 › Vitrine › TC-VIT-01: exactly six plates, each with a source link
+[1A[2K[3/11] [chromium] › tests/e2e/vitrine.spec.ts:46:7 › Vitrine › TC-VIT-03: metrics are harvested and dated, not live
+[1A[2K[4/11] [chromium] › tests/e2e/vitrine.spec.ts:54:7 › Vitrine › TC-VIT-04: the exclusions are named with reasons
+[1A[2K[5/11] [chromium] › tests/e2e/vitrine.spec.ts:61:7 › Vitrine › TC-VIT-05: no screenshots, logos or raster images
+[1A[2K[6/11] [chromium] › tests/e2e/vitrine.spec.ts:71:7 › Vitrine › TC-VIT-06: the light tracks the plate at the centre of the rail
+[1A[2K[7/11] [chromium] › tests/e2e/vitrine.spec.ts:86:7 › Vitrine › TC-VIT-07: the rail is keyboard operable and traps nothing
+[1A[2K[8/11] [chromium] › tests/e2e/vitrine.spec.ts:99:7 › Vitrine › TC-VIT-08: the kicker denominator matches the harvest
+[1A[2K[9/11] [chromium] › tests/e2e/vitrine.spec.ts:104:7 › Vitrine › TC-VIT-09: every plate rules its metrics on the same line
+[1A[2K[10/11] [chromium] › tests/e2e/vitrine.spec.ts:160:9 › Vitrine › TC-VIT-12 @ 1440: card 01 stands on the heading's spine, lit at rest, and the rail fades rather than cuts
+[1A[2K[31m  1) [chromium] › tests/e2e/vitrine.spec.ts:104:7 › Vitrine › TC-VIT-09: every plate rules its metrics on the same line [39m
+
+    [31mTest timeout of 90000ms exceeded while running "beforeEach" hook.[39m
+
+    [0m [90m 14 |[39m [36mconst[39m [33mVITRINE[39m [33m=[39m [32m'#vitrine'[39m[33m;[39m
+     [90m 15 |[39m
+    [31m[1m>[22m[39m[90m 16 |[39m test[33m.[39mbeforeEach([36masync[39m ({ page }) [33m=>[39m {
+     [90m    |[39m      [31m[1m^[22m[39m
+     [90m 17 |[39m   [36mawait[39m page[33m.[39mgoto([32m'/'[39m)[33m;[39m
+     [90m 18 |[39m   [36mawait[39m page[33m.[39mlocator([33mVITRINE[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m 19 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w3-rm2/tests/e2e/vitrine.spec.ts:16:6[22m
+
+    Error: page.goto: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - navigating to "http://127.0.0.1:5607/", waiting until "load"[22m
+
+
+    [0m [90m 15 |[39m
+     [90m 16 |[39m test[33m.[39mbeforeEach([36masync[39m ({ page }) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 17 |[39m   [36mawait[39m page[33m.[39mgoto([32m'/'[39m)[33m;[39m
+     [90m    |[39m              [31m[1m^[22m[39m
+     [90m 18 |[39m   [36mawait[39m page[33m.[39mlocator([33mVITRINE[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m 19 |[39m })[33m;[39m
+     [90m 20 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w3-rm2/tests/e2e/vitrine.spec.ts:17:14[22m
+
+
+[1A[2K[31m  2) [chromium] › tests/e2e/vitrine.spec.ts:160:9 › Vitrine › TC-VIT-12 @ 1440: card 01 stands on the heading's spine, lit at rest, and the rail fades rather than cuts [39m
+
+    [31mTest timeout of 90000ms exceeded while running "beforeEach" hook.[39m
+
+    [0m [90m 14 |[39m [36mconst[39m [33mVITRINE[39m [33m=[39m [32m'#vitrine'[39m[33m;[39m
+     [90m 15 |[39m
+    [31m[1m>[22m[39m[90m 16 |[39m test[33m.[39mbeforeEach([36masync[39m ({ page }) [33m=>[39m {
+     [90m    |[39m      [31m[1m^[22m[39m
+     [90m 17 |[39m   [36mawait[39m page[33m.[39mgoto([32m'/'[39m)[33m;[39m
+     [90m 18 |[39m   [36mawait[39m page[33m.[39mlocator([33mVITRINE[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m 19 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w3-rm2/tests/e2e/vitrine.spec.ts:16:6[22m
+
+    Error: page.goto: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - navigating to "http://127.0.0.1:5607/", waiting until "load"[22m
+
+
+    [0m [90m 15 |[39m
+     [90m 16 |[39m test[33m.[39mbeforeEach([36masync[39m ({ page }) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 17 |[39m   [36mawait[39m page[33m.[39mgoto([32m'/'[39m)[33m;[39m
+     [90m    |[39m              [31m[1m^[22m[39m
+     [90m 18 |[39m   [36mawait[39m page[33m.[39mlocator([33mVITRINE[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m 19 |[39m })[33m;[39m
+     [90m 20 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w3-rm2/tests/e2e/vitrine.spec.ts:17:14[22m
+
+
+[1A[2K[11/11] [chromium] › tests/e2e/vitrine.spec.ts:160:9 › Vitrine › TC-VIT-12 @ 1920: card 01 stands on the heading's spine, lit at rest, and the rail fades rather than cuts
+[1A[2K[31m  3) [chromium] › tests/e2e/vitrine.spec.ts:160:9 › Vitrine › TC-VIT-12 @ 1920: card 01 stands on the heading's spine, lit at rest, and the rail fades rather than cuts [39m
+
+    [31mTest timeout of 90000ms exceeded while running "beforeEach" hook.[39m
+
+    [0m [90m 14 |[39m [36mconst[39m [33mVITRINE[39m [33m=[39m [32m'#vitrine'[39m[33m;[39m
+     [90m 15 |[39m
+    [31m[1m>[22m[39m[90m 16 |[39m test[33m.[39mbeforeEach([36masync[39m ({ page }) [33m=>[39m {
+     [90m    |[39m      [31m[1m^[22m[39m
+     [90m 17 |[39m   [36mawait[39m page[33m.[39mgoto([32m'/'[39m)[33m;[39m
+     [90m 18 |[39m   [36mawait[39m page[33m.[39mlocator([33mVITRINE[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m 19 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w3-rm2/tests/e2e/vitrine.spec.ts:16:6[22m
+
+    Error: page.goto: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - navigating to "http://127.0.0.1:5607/", waiting until "load"[22m
+
+
+    [0m [90m 15 |[39m
+     [90m 16 |[39m test[33m.[39mbeforeEach([36masync[39m ({ page }) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 17 |[39m   [36mawait[39m page[33m.[39mgoto([32m'/'[39m)[33m;[39m
+     [90m    |[39m              [31m[1m^[22m[39m
+     [90m 18 |[39m   [36mawait[39m page[33m.[39mlocator([33mVITRINE[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m 19 |[39m })[33m;[39m
+     [90m 20 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w3-rm2/tests/e2e/vitrine.spec.ts:17:14[22m
+
+
+[1A[2K[31m  3 failed[39m
+[31m    [chromium] › tests/e2e/vitrine.spec.ts:104:7 › Vitrine › TC-VIT-09: every plate rules its metrics on the same line [39m
+[31m    [chromium] › tests/e2e/vitrine.spec.ts:160:9 › Vitrine › TC-VIT-12 @ 1440: card 01 stands on the heading's spine, lit at rest, and the rail fades rather than cuts [39m
+[31m    [chromium] › tests/e2e/vitrine.spec.ts:160:9 › Vitrine › TC-VIT-12 @ 1920: card 01 stands on the heading's spine, lit at rest, and the rail fades rather than cuts [39m
+[32m  8 passed[39m[2m (14.9m)[22m
