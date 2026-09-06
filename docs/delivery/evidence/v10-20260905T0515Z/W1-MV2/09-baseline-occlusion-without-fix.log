@@ -1,0 +1,40 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/minivic-occlusion.spec.ts -g TC-MV-OCCLUDE-01 tests/e2e/chatbot.spec.ts --workers=1 --reporter=list
+
+[2mRunning [22m1[2m test using [22m1[2m worker[22m
+
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/a11y/minivic-occlusion.spec.ts:248:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step[39m[2m (28.6s)[22m
+
+
+[31m  1) [chromium] › tests/a11y/minivic-occlusion.spec.ts:248:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step [39m
+
+    Error: 1 of 14 text node(s) under the launcher fall below AA:
+    scrollY 16036: 4.05:1 (needs 4.5) div.Vitrine_foot__JWV__ > div.Vitrine_exclusions__m0EKc > dl.Vitrine_exclusionList__jvMb5 > div.Vitrine_exclusion___sRSz > dd — "an environment file was committed early in its h" ink rgb(125, 125, 125) on launcher-painted ground rgb(30,30,30)
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 3[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "scrollY 16036: 4.05:1 (needs 4.5) div.Vitrine_foot__JWV__ > div.Vitrine_exclusions__m0EKc > dl.Vitrine_exclusionList__jvMb5 > div.Vitrine_exclusion___sRSz > dd — \"an environment file was committed early in its h\" ink rgb(125, 125, 125) on launcher-painted ground rgb(30,30,30)",[39m
+    [31m+ ][39m
+
+    [0m [90m 302 |[39m [32m        .slice(0, 10)[39m
+     [90m 303 |[39m [32m        .join('\n')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 304 |[39m     )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 305 |[39m   })[33m;[39m
+     [90m 306 |[39m
+     [90m 307 |[39m   [90m/**[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-mv2/tests/a11y/minivic-occlusion.spec.ts:304:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-minivic-occlusion-The-c4b56-ars-AA-at-every-scroll-step-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-minivic-occlusion-The-c4b56-ars-AA-at-every-scroll-step-chromium/error-context.md[22m
+
+[31m  1 failed[39m
+[31m    [chromium] › tests/a11y/minivic-occlusion.spec.ts:248:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step [39m

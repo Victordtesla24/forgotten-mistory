@@ -1,0 +1,60 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/minivic-first-fold-click.spec.ts --workers=1 --reporter=list
+
+[2mRunning [22m2[2m tests using [22m1[2m worker[22m
+
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/e2e/minivic-first-fold-click.spec.ts:69:9 › G-MV1 / REGRESSION rev-ec53e2b4: the first-fold launcher is a real control › TC-MV-CLICK-01 @ 1440: a real click on the first fold opens the panel[39m[2m (2.8s)[22m
+  [31m✘[39m  [2m2 [22m[31m[chromium] › tests/e2e/minivic-first-fold-click.spec.ts:69:9 › G-MV1 / REGRESSION rev-ec53e2b4: the first-fold launcher is a real control › TC-MV-CLICK-01 @ 390: a real click on the first fold opens the panel[39m[2m (1.8s)[22m
+
+
+[31m  1) [chromium] › tests/e2e/minivic-first-fold-click.spec.ts:69:9 › G-MV1 / REGRESSION rev-ec53e2b4: the first-fold launcher is a real control › TC-MV-CLICK-01 @ 1440: a real click on the first fold opens the panel [39m
+
+    Error: elementFromPoint(1287.8, 844.0) resolved to <div class="Hero_inner__2iGTj" data-testid="hero-fold"> — the launcher does not receive the pointer over its own pixels on the first fold
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+    [0m [90m 121 |[39m           [32m`<${hit.tag} class="${hit.cls}" data-testid="${hit.testid}"> — the launcher does not `[39m [33m+[39m
+     [90m 122 |[39m           [32m'receive the pointer over its own pixels on the first fold'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 123 |[39m       )[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 124 |[39m
+     [90m 125 |[39m       [90m// 2. A real, hit-tested click opens the dialog.[39m
+     [90m 126 |[39m       [36mconst[39m panel [33m=[39m page[33m.[39mlocator([32m'[data-testid="minivic-panel"]'[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-mv2/tests/e2e/minivic-first-fold-click.spec.ts:123:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-minivic-first-fold-cli-a5681--first-fold-opens-the-panel-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-minivic-first-fold-cli-a5681--first-fold-opens-the-panel-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/e2e/minivic-first-fold-click.spec.ts:69:9 › G-MV1 / REGRESSION rev-ec53e2b4: the first-fold launcher is a real control › TC-MV-CLICK-01 @ 390: a real click on the first fold opens the panel [39m
+
+    Error: elementFromPoint(260.8, 798.0) resolved to <video class="Hero_portraitVideo__e3yop" data-testid="null"> — the launcher does not receive the pointer over its own pixels on the first fold
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+    [0m [90m 121 |[39m           [32m`<${hit.tag} class="${hit.cls}" data-testid="${hit.testid}"> — the launcher does not `[39m [33m+[39m
+     [90m 122 |[39m           [32m'receive the pointer over its own pixels on the first fold'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 123 |[39m       )[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 124 |[39m
+     [90m 125 |[39m       [90m// 2. A real, hit-tested click opens the dialog.[39m
+     [90m 126 |[39m       [36mconst[39m panel [33m=[39m page[33m.[39mlocator([32m'[data-testid="minivic-panel"]'[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-mv2/tests/e2e/minivic-first-fold-click.spec.ts:123:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-minivic-first-fold-cli-6470a--first-fold-opens-the-panel-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-minivic-first-fold-cli-6470a--first-fold-opens-the-panel-chromium/error-context.md[22m
+
+[31m  2 failed[39m
+[31m    [chromium] › tests/e2e/minivic-first-fold-click.spec.ts:69:9 › G-MV1 / REGRESSION rev-ec53e2b4: the first-fold launcher is a real control › TC-MV-CLICK-01 @ 1440: a real click on the first fold opens the panel [39m
+[31m    [chromium] › tests/e2e/minivic-first-fold-click.spec.ts:69:9 › G-MV1 / REGRESSION rev-ec53e2b4: the first-fold launcher is a real control › TC-MV-CLICK-01 @ 390: a real click on the first fold opens the panel [39m

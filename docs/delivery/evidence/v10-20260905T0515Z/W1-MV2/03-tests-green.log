@@ -1,0 +1,9 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/minivic-first-fold-click.spec.ts --workers=1 --reporter=list
+
+[2mRunning [22m2[2m tests using [22m1[2m worker[22m
+
+  [32m✓[39m  [2m1 [22m[chromium] › tests/e2e/minivic-first-fold-click.spec.ts:69:9 › G-MV1 / REGRESSION rev-ec53e2b4: the first-fold launcher is a real control › TC-MV-CLICK-01 @ 1440: a real click on the first fold opens the panel[2m (9.2s)[22m
+  [32m✓[39m  [2m2 [22m[chromium] › tests/e2e/minivic-first-fold-click.spec.ts:69:9 › G-MV1 / REGRESSION rev-ec53e2b4: the first-fold launcher is a real control › TC-MV-CLICK-01 @ 390: a real click on the first fold opens the panel[2m (3.3s)[22m
+
+[32m  2 passed[39m[2m (15.1s)[22m
