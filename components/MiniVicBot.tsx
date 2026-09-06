@@ -1043,8 +1043,12 @@ const MiniVicBot = () => {
         >
           {/* The header gives its height back first when the panel is short —
               a 1366x768 laptop leaves 328px for the whole dialog, and the
-              transcript is worth more than 160px of face. */}
-          <div className="minivic-panel__stage relative h-40 min-h-[6.5rem] max-h-[32%] w-full shrink-0 overflow-hidden border-b border-white/10 bg-neutral-950">
+              transcript is worth more than 160px of face. The cap moved 32% →
+              28% when the provider disclosure came out of this stage's overlay
+              and became a two-line bar of its own below it (review F4): the
+              bar has to be readable, so the face pays for it, per the same
+              rule. */}
+          <div className="minivic-panel__stage relative h-40 min-h-[6.5rem] max-h-[28%] w-full shrink-0 overflow-hidden border-b border-white/10 bg-neutral-950">
             <video
               ref={videoRef}
               src={currentVideoSrc || undefined}
@@ -1177,34 +1181,6 @@ const MiniVicBot = () => {
                 >
                   A synthetic stand-in for Vikram · ask me anything
                 </p>
-                {/* The one disclosure this panel may never lose, now naming
-                    all three synthetic parts instead of only the voice: the
-                    audio is an ElevenLabs stock voice (not a recording of
-                    Vikram and not a clone of him — his plan refuses voice
-                    cloning), the face is a pre-rendered loop, and the answers
-                    are live text from whichever server rung produced them.
-
-                    The rung is READ AT RUNTIME from the reply, never written
-                    here: the panel used to be handed a hard-coded
-                    `source: 'openrouter'` that was false on every measured live
-                    sample. Before the first question there is no rung to name,
-                    so the sentence stops at "live text"; when the offline
-                    knowledge base answered, it says so, because on that turn
-                    the answers are not live.
-                    tests/e2e/chatbot.spec.ts CB-LABEL-02..05 and
-                    tests/e2e/avatar-voice.spec.ts fail if it disappears. */}
-                <p
-                  data-testid="minivic-synthetic-label"
-                  className="mt-0.5 text-[10px] leading-[1.45] tracking-[0.02em] text-white/45"
-                >
-                  {`Voice: ElevenLabs stock · Face: pre-rendered loop · Answers: ${
-                    answerSource === null
-                      ? "live text"
-                      : answerSource === "knowledge" || answerSource === "fallback"
-                        ? "offline knowledge base"
-                        : `live text via ${answerSource}`
-                  }`}
-                </p>
               </div>
               <span className={`shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-medium tracking-wide backdrop-blur transition-colors ${
                 isSpeaking
@@ -1217,6 +1193,34 @@ const MiniVicBot = () => {
               </span>
             </div>
           </div>
+          {/* The one disclosure this panel may never lose, now naming
+              all three synthetic parts instead of only the voice: the
+              audio is an ElevenLabs stock voice (not a recording of
+              Vikram and not a clone of him — his plan refuses voice
+              cloning), the face is a pre-rendered loop, and the answers
+              are live text from whichever server rung produced them.
+
+              The rung is READ AT RUNTIME from the reply, never written
+              here: the panel used to be handed a hard-coded
+              `source: 'openrouter'` that was false on every measured live
+              sample. Before the first question there is no rung to name,
+              so the sentence stops at "live text"; when the offline
+              knowledge base answered, it says so, because on that turn
+              the answers are not live.
+              tests/e2e/chatbot.spec.ts CB-LABEL-02..05 and
+              tests/e2e/avatar-voice.spec.ts fail if it disappears. */}
+          <p
+            data-testid="minivic-synthetic-label"
+            className="shrink-0 border-b border-white/10 bg-black/40 px-4 py-1.5 text-[10px] leading-[1.45] tracking-[0.02em] text-white/50"
+          >
+            {`Voice: ElevenLabs stock · Face: pre-rendered loop · Answers: ${
+              answerSource === null
+                ? "live text"
+                : answerSource === "knowledge" || answerSource === "fallback"
+                  ? "offline knowledge base"
+                  : `live text via ${answerSource}`
+            }`}
+          </p>
           <div className="minivic-panel__controls shrink-0 border-b border-white/10 bg-black/30 px-3 py-3">
             <div className="flex items-center gap-2.5">
               {/* Persona segmented control — one clean toggle instead of three cramped pills */}
