@@ -1,9 +1,9 @@
 /**
- * About — a reading column beside a sticky instrument.
+ * About — the reading column and the ten rows.
  *
- * The list is the content and the compass is the accompaniment, so the layout
- * gives the list the wider column and lets the instrument hold its own space
- * without competing for attention.
+ * INTERIM FRAME (docs/architecture/INTERIM-FRAME.md): the compass, its shader
+ * field and the key that named its two states are removed. The list is the
+ * section — one column of ten rows on the section's own near-black ground.
  */
 
 .about {
@@ -101,205 +101,23 @@
     color: var(--mist-400);
 }
 
-/* ── Body: instrument + list ─────────────────────────────────────────────── */
+/* ── Body: the ten ──────────────────────────────────────────────────────── */
 .body {
-    /* The field is absolutely positioned over the whole of this box, so the box
-       has to be the field's containing block. */
     position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
-    gap: clamp(var(--space-4), 5vw, var(--space-10));
-    align-items: start;
-}
-
-.instrument {
-    position: sticky;
-    top: clamp(6rem, 18vh, var(--space-20));
-    /* Over the field, always: the plane is the section's ground and the
-       instrument is chrome standing on it (TC-SCENE-ABOUT-02 checks the
-       stacking as well as the hit test). */
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-2);
-}
-
-/* The dial wrapper. It starts where the row starts: the instrument and the ten
-   are one row and the row has one top, so nothing here may add leading of its
-   own or stretch to the row's height (R-c8 C-11, TC-ABOUT-13). */
-.instrumentStage {
-    position: relative;
-    align-self: start;
-    margin-top: 0;
-    width: 100%;
-    aspect-ratio: 1;
-    max-width: 26rem;
-    /* No pool of its own any more. The stage used to carry a radial gradient
-       because it was the only light the instrument had; the field behind it is
-       now the section's plane and supplies it, and a second disc under the
-       bezel only competed with it. */
-}
-
-/* ── The field: the plane the section is drawn on ────────────────────────── */
-/* The whole of the body, both columns, one screen tall and travelling with the
-   reader. It is absolutely positioned so it is out of the grid's flow and can
-   never push a column around, and `.body` is its containing block.
-
-   This is the c24 correction. Through c22 the slot was the dial's own 384 px
-   box; c23 grew it to a 30rem stage with the engraving inset at 0.78, which is
-   a halo around the same widget. Both were reviewed on live and both came back
-   with the section's recall recorded as the SVG radar. A field that is the
-   section's dominant visual plane is not a bigger backing — it is a different
-   object, and the engraving sits on it. */
-.field {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    /* Where the instrument's centre falls inside the travelling plane, for the
-       still below. The shader does not read these: it measures the stage, the
-       caption and the list from the DOM every frame, because the instrument is
-       sticky and none of this is a constant while the reader moves. */
-    --about-field-x: 19%;
-    --about-field-y: 34%;
-}
-
-/* One screen of it, pinned, so the plane is what the reader is looking at
-   rather than a tall texture mostly scrolled past. Sticky is clamped to its
-   containing block, so it can never ride up over the section header or down
-   into `#experience`; it starts at the top of the body and stops at its foot. */
-.fieldViewport {
-    position: relative;
-    height: 100vh;
-    /* Never taller than the body it belongs to, on a short viewport. */
-    max-height: 100%;
-}
-
-/* It travels only when the shader is there to travel with it. The still below
-   is a fixed gradient that cannot know where the section's type is, so a still
-   pinned to the reader's screen ends up over the ten as they scroll; the plane
-   the shader draws bounds its own light and can go anywhere. */
-.fieldViewport:has(canvas) {
-    position: sticky;
-    top: 0;
-}
-
-/* The still of the same light (R-c13 MOT-C13-04): what the plane is with no
-   WebGL, or with reduced motion asked for. A core of light in the instrument
-   column with the section's ten drawn over it, falling away across the reading
-   column — the same composition the shader draws, without the ten sectors or
-   the reading.
-
-   Where it stops is the design of it. `.evidence` is --mist-400 at
-   --fs-caption and carries a ground of about rgb(42 42 42) before it reaches
-   4.5:1, so the light is nearly spent by the time it reaches the reading
-   column: the core is a 19rem disc centred on the instrument and the column
-   starts 15rem out, where the gradient is down to about a tenth of the light —
-   a ground of rgb(36 36 36), which that grey carries at 4.86:1. The caption and
-   the key sit further in, which is why they are --mist-200 (see
-   .instrumentConstant). */
-.fieldSlot {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-        radial-gradient(
-            circle 19rem at var(--about-field-x) var(--about-field-y),
-            rgb(246 246 246 / 0.30) 0 55%,
-            rgb(246 246 246 / 0.16) 78%,
-            rgb(246 246 246 / 0.06) 92%,
-            transparent 100%
-        ),
-        radial-gradient(
-            circle 46rem at var(--about-field-x) var(--about-field-y),
-            rgb(246 246 246 / 0.05) 0,
-            rgb(246 246 246 / 0.02) 58%,
-            transparent 100%
-        );
-    /* Gone at both gutters, so the plane's own rectangle is never a seam a
-       reader can find down the side of the section. */
-    -webkit-mask-image: linear-gradient(
-        90deg,
-        transparent 0,
-        rgb(0 0 0) 7%,
-        rgb(0 0 0) 93%,
-        transparent 100%
-    );
-    mask-image: linear-gradient(
-        90deg,
-        transparent 0,
-        rgb(0 0 0) 7%,
-        rgb(0 0 0) 93%,
-        transparent 100%
-    );
-}
-
-/* And it is only the no-GL path. Left under a live canvas the two lights add,
-   and the sum is not bounded by anything: at 390 the still's core sat over the
-   ten and composited to 1.91:1 where the shader's own ceiling was holding
-   4.98:1 at 1440 (c24 probe). The shader is the light when the shader is
-   there. */
-.fieldSlot:has(canvas) {
-    background: none;
-}
-
-/* With no plane there is nothing for the engraving to be chrome over, so it
-   stops being chrome. `--dial-ink` is what every line and glyph on the dial
-   paints in (Compass.module.css); it is --mist-400 while the shader is drawing
-   the section's light, and --white here, where WebGL was refused or reduced
-   motion was asked for and the SVG is the only thing left that can draw the ten
-   dimensions. The canvas is the condition because the canvas is the plane. */
-.body:not(:has(canvas)) {
-    --dial-ink: var(--white);
-}
-
-/* The engraving fills its stage again, and the stage stands on the plane. */
-.instrumentStage > svg {
-    position: relative;
-    z-index: 1;
     display: block;
-    width: 100%;
 }
 
-.instrumentCaption {
-    display: grid;
-    gap: var(--space-05);
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: var(--fs-small);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    text-align: center;
-}
-
-/* The reading: the dimension the face is indexed to, or a dash at rest. */
-.instrumentReading {
-    min-height: 1.4em;
-    color: var(--mist-200);
-    transition: color var(--motion-fast) var(--motion-ease-standard);
-}
-
-/* The constant. Stays printed whichever axis is being read, because it is
-   the section's argument and not a state. */
-.instrumentConstant {
-    font-size: var(--fs-caption);
-    letter-spacing: var(--ls-caption);
-    /* --mist-200, not --mist-400, from c24. These three lines sit inside the
-       field's core — the instrument column is where the plane is brightest —
-       and --mist-400 carries a ground of about rgb(42 42 42) before it reaches
-       4.5:1, which the core is deliberately above. --mist-200 carries rgb(87
-       87 87) (globals.css), and both the shader's ceiling over this block and
-       the still's core are held under that. */
-    color: var(--mist-200);
-}
+/* INTERIM FRAME (docs/architecture/INTERIM-FRAME.md, Owner 2026-09-06T05:51Z).
+   The compass, the shader field it stood on, the reading caption under its face
+   and the two-line key that named its two states are removed. `#about` is the
+   heading, the two paragraphs of lede, the provenance line and the ten rows,
+   on the section's own near-black ground. Not one word of
+   `app/data/portfolio/about.ts` changed. */
 
 /* ── The ten ─────────────────────────────────────────────────────────────── */
 .list {
-    /* Over the plane, never under it. The reading column is the content and the
-       field is the ground; the shader holds its own light under this box to a
-       ceiling the caption grey can carry (see field.glsl.ts), so the ten need
-       no opaque backing of their own to stay legible. */
+    /* The ten stand on the section's own ground: no plane, no backing, no
+       plate (INTERIM FRAME). */
     position: relative;
     z-index: 1;
     margin: 0;
@@ -404,49 +222,6 @@
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
-    .body {
-        grid-template-columns: 1fr;
-        gap: var(--space-5);
-    }
-
-    .field {
-        /* One column, so the instrument sits at the middle of the plane's
-           width and near its top rather than a third of the way across. */
-        --about-field-x: 50%;
-        --about-field-y: 26%;
-    }
-
-    /* One column, so the ten are directly under the instrument rather than
-       beside it, and a travelling screen of light would be a screen of light
-       under the answers — where the field has to hold itself to a ground the
-       caption grey can carry and so cannot be much of anything. The plane is a
-       band at the head of the body instead: the full width of the column,
-       taller than the instrument by 6rem so it reads past it and over the first
-       of the ten, and it stays where the compass is rather than following the
-       reader down. */
-    .fieldViewport,
-    .fieldViewport:has(canvas) {
-        position: relative;
-        top: auto;
-        height: 30rem;
-    }
-
-    .instrument {
-        /* In flow above the list, never sticky over it: on a phone the
-           instrument is a header ornament the reader scrolls past, and a
-           sticky face behind the answers put the ten paragraphs over the
-           dial (composition pass, 390). `top` is reset with the position so
-           no later rule can pin it again. */
-        position: relative;
-        top: auto;
-        /* The plane is still underneath, so the stacking stays. */
-        z-index: 1;
-        /* Below the fold on a phone the compass is a header ornament, so it
-           gets less of the screen than it does beside the list. */
-        max-width: 14rem;
-        margin: 0 auto;
-    }
-
     .item {
         grid-template-columns: 2.25rem minmax(0, 1fr);
         gap: var(--space-1);
@@ -463,7 +238,6 @@
     .title,
     .lede,
     .provenance,
-    .instrument,
     .item {
         animation: aboutFade 320ms linear both;
     }
@@ -478,10 +252,6 @@
 
     .provenance {
         animation-delay: 120ms;
-    }
-
-    .instrument {
-        animation-delay: 160ms;
     }
 
     .item {
@@ -504,67 +274,5 @@
         to {
             opacity: 1;
         }
-    }
-}
-
-/* ── The key ─────────────────────────────────────────────────────────────── */
-/* Two states, stated once. The instrument is legible without it — an open
-   sector is visibly not a closed one — but a reader should never have to infer
-   what a mark means when one line can say it. */
-.key {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    width: 100%;
-    max-width: 24rem;
-    margin: 0;
-    padding-top: var(--space-2);
-    border-top: 1px solid var(--token-border-default);
-}
-
-.keyRow {
-    display: grid;
-    grid-template-columns: 1.6rem minmax(0, 1fr);
-    align-items: start;
-    gap: var(--space-1);
-    font-family: var(--font-mono);
-    font-size: var(--fs-caption);
-    line-height: var(--lh-label);
-    letter-spacing: 0.03em;
-    /* Inside the field's core with the caption above it — same reason, same
-       token (see .instrumentConstant). */
-    color: var(--mist-200);
-}
-
-.keySwatch {
-    height: 0.85rem;
-    border: 1px solid var(--steel);
-    border-radius: 1px;
-    opacity: 0.55;
-}
-
-.keySwatch[data-state='answered'] {
-    background: rgb(246 246 246 / 0.05);
-}
-
-/* G-A2. The hatch was rgb(138 143 154) — a cool steel whose channels differ by
-   16, which sits under the audit's 0.28 saturation ceiling and so passed every
-   gate while still being the only blue on a monochrome page. It is now the
-   --mist-400 triple at the same 0.34, the file's own convention for a
-   translucent neutral (see .keySwatch[data-state='answered'], which is --white's
-   triple): identical alpha, zero chroma, and a luminance within a hair of what
-   it replaced, so the key reads exactly as heavy as it did. */
-.keySwatch[data-state='role'] {
-    border-style: dashed;
-    background-image: repeating-linear-gradient(
-        45deg,
-        rgb(144 144 144 / 0.34) 0 1px,
-        transparent 1px 4px
-    );
-}
-
-@media (max-width: 900px) {
-    .key {
-        max-width: none;
     }
 }
