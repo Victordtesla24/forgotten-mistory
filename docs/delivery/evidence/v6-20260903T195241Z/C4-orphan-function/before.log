@@ -1,0 +1,19 @@
+# C-4 orphan Cloud Function — pre-removal capture 2026-09-03T20:41:34Z
+
+## Deployed functions BEFORE
+┌─────────────────────┬─────────┬─────────┬─────────────┬────────┬──────────┐
+│ Function            │ Version │ Trigger │ Location    │ Memory │ Runtime  │
+├─────────────────────┼─────────┼─────────┼─────────────┼────────┼──────────┤
+│ elevenLabsTts       │ v2      │ https   │ us-central1 │ 256    │ nodejs20 │
+├─────────────────────┼─────────┼─────────┼─────────────┼────────┼──────────┤
+│ minivicChat         │ v2      │ https   │ us-central1 │ 256    │ nodejs20 │
+├─────────────────────┼─────────┼─────────┼─────────────┼────────┼──────────┤
+│ ssrforgottenmistory │ v2      │ https   │ us-central1 │ 256    │ nodejs20 │
+└─────────────────────┴─────────┴─────────┴─────────────┴────────┴──────────┘
+
+## Routes that reference it
+firebase.json rewrites -> /api/tts=elevenLabsTts, /api/chat=minivicChat. NO rewrite targets ssrforgottenmistory.
+(zero source references)
+
+## Recovery path
+Regenerable by re-enabling the Firebase webframeworks experiment and redeploying; it serves no route the static export uses, so removal cannot break a live path.

@@ -67,3 +67,9 @@ ORIGINAL LANE FOLLOW-UP LIVE 6224a7f8 at 13:14:01Z: 44c3e08 'the fold is one col
 
 ## COMPLETE (2026-09-05T14:02:43.305Z)
 DONE via 44c3e08 + 70a04a8/46379f1 — independent reviewer PASS on live (phase 3). Lineage: 0506e7e (fold split) → FAIL (portrait toggle as 2nd CTA, actions below fold at desktop, CLS .176, 1-px ledger margin) → 44c3e08 (column beside the photo) → 70a04a8 (control to the proof band; margins; CLS 0) → PASS.
+
+## COMMENT (2026-09-06T00:00:29.857Z)
+REOPENED 2026-09-05T23:58Z by ADV-REVIEW-20260905T2315Z (host, independent, live 9136bc59): the gap this task closed is FAIL on live again — see docs/adversarial/ADV-REVIEW-20260905T2315Z.md + GAP-BACKLOG.md. Board PASS invalidated (§10.3 false-positive register); no rework of what landed (§0) — a fresh identity carries the delta under the t_w1_* wave-1 tasks. Status → archived (history), not done.
+
+## STATUS (2026-09-06T00:00:30.026Z)
+archived — PASS invalidated by ADV-2315Z; superseded by wave-1 t_w1_* task

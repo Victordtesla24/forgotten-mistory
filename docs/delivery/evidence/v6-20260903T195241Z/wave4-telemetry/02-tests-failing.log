@@ -1,0 +1,902 @@
+================================================================================
+ WAVE 4 · TELEMETRY + RECONCILED SELF-CLAIM — TESTS OBSERVED FAILING
+ run  : v6-20260903T195241Z
+ when : 2026-09-03T21:28:03Z
+ where: /var/tmp/v6-wt/data-backend  (branch wt/data-backend)
+ head : d1fce27
+ node : v22.23.1
+ NOTHING IS IMPLEMENTED. This is the red that the implementation must turn green.
+================================================================================
+
+################################################################################
+# 1/3  node scripts/validate/telemetry_contract_audit.mjs
+#      build-time / source contract: beacon, collector, rewrite, retention,
+#      the R-183 bidirectional self-claim lock, the anti-#185 store rule.
+################################################################################
+
+Telemetry contract audit — R-87 / R-88 / R-183
+
+  FAIL  TEL-SRC-01  The first-party beacon module exists
+        lib/telemetry/beacon.ts is absent — R-87 has no client instrumentation at all
+  FAIL  TEL-SRC-02  The beacon posts via navigator.sendBeacon to the same-origin path /api/telemetry
+        navigator.sendBeacon(: false · '/api/telemetry' literal: false · absolute URLs in beacon: none
+  FAIL  TEL-SRC-03  The beacon reads no cookie, no storage and no device/browser attribute that could re-identify a visitor
+        beacon module absent — nothing to inspect
+  FAIL  TEL-SRC-04  functions/index.js exports telemetryCollect and telemetryPrune (D-04: the server side is the already-working Functions path)
+        exports.telemetryCollect: false · exports.telemetryPrune: false
+  FAIL  TEL-SRC-05  firebase.json rewrites /api/telemetry to telemetryCollect, so the collector is first-party by construction
+        no rewrite for /api/telemetry; rewrites present: /api/tts, /api/chat
+  PASS  TEL-SRC-06  The telemetry collector adds NO host to connect-src — the zero-third-party-request property survives instrumentation
+        observed: connect-src 'self' ws: wss: https://api.github.com https://generativelanguage.googleapis.com https://*.googleapis.com
+  FAIL  TEL-SRC-07  functions/lib/telemetry.js exposes the collector's pure logic so it is unit-testable off Firebase
+        functions/lib/telemetry.js is absent
+  FAIL  TEL-SRC-08  The collector names all nine R-87 dimensions as accepted events (dwell, scroll depth, drop-off, carousel depth, chatbot session, chatbot topic, avatar play, avatar completion, conversion)
+        collector lib absent
+  FAIL  TEL-SRC-09  Raw-event retention is exactly 30 days, is enforced by pruneExpired, and is the same number the published sentence prints
+        RETENTION_DAYS in collector: not found · pruneExpired references it: false · sentence prints 30: true
+  PASS  TEL-183  R-183 lock: the analytics self-claim and the instrumentation are in the same state — both old, or both new, never one of each
+        no instrumentation present; legacy claim standing: true
+  FAIL  TEL-SRC-10  listenContent.colophon carries the reconciled measurement clause verbatim
+        absent. Required substring:
+      measured on this origin only: dwell, scroll depth, drop-off, carousel depth, chatbot sessions and topics, avatar plays and completion, and which path reached a conversation · never collected: cookies, identifiers, fingerprints, IP addresses, or anything you type
+  FAIL  TEL-SRC-11  The vitrine plate for this site describes the measurement instead of denying it
+        absent. Required description:
+      The page you are reading: static export, one WebGL context per section, and first-party cookieless measurement that counts what the sections do, never who you are.
+  FAIL  TEL-SRC-12  listenContent.measurementNotice publishes the full sentence plus the machine-readable measured / neverCollected / notAuthoredByThisPage lists (SC-30 platform logs, SC-23 the question reaching OpenRouter)
+        measurementNotice key: false · sentence verbatim: false · measured ids missing: dwell, scroll-depth, drop-off, carousel-depth, chatbot-session, chatbot-topic, avatar-play, avatar-complete, conversion · neverCollected ids missing: cookie, identifier, fingerprint, ip-address, free-text, third-party-request, cross-site, personal-data · notAuthoredByThisPage ids missing: firebase-hosting-request-log, firebase-functions-request-log, openrouter-chat-question
+  FAIL  TEL-SRC-13  The telemetry store returns a cached snapshot reference and reads no device API in a useState initializer — the 2026-07-09 outage mode (React #185 / #425) is structurally excluded
+        lib/telemetry/ contains no module to inspect
+  PASS  TEL-SRC-14  No consent wall, cookie banner or preference dialog exists — nothing is collected that could require one
+        no consent vocabulary in app/, components/ or lib/
+  FAIL  TEL-SRC-15  The R-88 aggregate exists and every metric carries provenance with a real retrievedAt
+        app/data/generated/telemetry-aggregate.json is absent — nothing feeds the reopen loop
+  FAIL  TEL-SRC-16  scripts/build/aggregate_telemetry.mjs exists and runs inside build:static — the aggregate is deploy-time, not a file someone remembers to update (the exact defect B-3 records for harvest_repos.mjs)
+        script present: false · referenced by build:static: false
+  PASS  TEL-SRC-17  No third-party analytics package is a dependency
+        34 dependencies, none of them a third-party analytics SDK
+  FAIL  TEL-SRC-18  lib/telemetry/schema.ts and lib/telemetry/store.ts exist — one event vocabulary, one referentially-stable store
+        lib/telemetry/schema.ts: ABSENT · lib/telemetry/store.ts: ABSENT
+
+  4/19 checks passed
+
+EXIT=1
+
+################################################################################
+# 2/3  node --test tests/telemetry/collector.contract.mjs
+#      the collector's pure logic: what it accepts, what it strips, how long
+#      it keeps anything, what it concludes (R-88), and the R-175 empty path.
+################################################################################
+TAP version 13
+# Subtest: TEL-COLLECT: what the collector will accept
+    # Subtest: TEL-COLLECT-01: ACCEPTED_EVENTS is exactly the nine R-87 dimensions, in order
+    not ok 1 - TEL-COLLECT-01: ACCEPTED_EVENTS is exactly the nine R-87 dimensions, in order
+      ---
+      duration_ms: 4.157293
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:94:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:95:33)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        node:internal/test_runner/test:1440:71
+        node:internal/per_context/primordials:466:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:435:3)
+        node:internal/per_context/primordials:466:9
+      ...
+    # Subtest: TEL-COLLECT-02: an envelope with no events array is rejected as events_required
+    not ok 2 - TEL-COLLECT-02: an envelope with no events array is rejected as events_required
+      ---
+      duration_ms: 0.377203
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:99:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:100:34)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1442:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+      ...
+    # Subtest: TEL-COLLECT-03: an event name outside the nine is rejected as unknown_event
+    not ok 3 - TEL-COLLECT-03: an event name outside the nine is rejected as unknown_event
+      ---
+      duration_ms: 0.259592
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:106:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:107:34)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: TEL-COLLECT-04: an oversized envelope is rejected as too_many_events
+    not ok 4 - TEL-COLLECT-04: an oversized envelope is rejected as too_many_events
+      ---
+      duration_ms: 0.322822
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:114:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:115:59)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: TEL-COLLECT-05: a chatbot topic must arrive as a topic index, never as the visitor’s words
+    not ok 5 - TEL-COLLECT-05: a chatbot topic must arrive as a topic index, never as the visitor’s words
+      ---
+      duration_ms: 4.889398
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:122:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:123:34)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: TEL-COLLECT-06: a rejection never echoes the submitted payload back
+    not ok 6 - TEL-COLLECT-06: a rejection never echoes the submitted payload back
+      ---
+      duration_ms: 0.253891
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:137:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:138:34)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..6
+not ok 1 - TEL-COLLECT: what the collector will accept
+  ---
+  duration_ms: 12.547478
+  type: 'suite'
+  location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:93:1'
+  failureType: 'subtestsFailed'
+  error: '6 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: TEL-SANITISE: what the collector refuses to keep
+    # Subtest: TEL-SANITISE-01: a sanitised event carries exactly {at, name, section, value} and nothing else
+    not ok 1 - TEL-SANITISE-01: a sanitised event carries exactly {at, name, section, value} and nothing else
+      ---
+      duration_ms: 2.50521
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:146:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:147:31)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        node:internal/test_runner/test:1440:71
+        node:internal/per_context/primordials:466:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:435:3)
+        node:internal/per_context/primordials:466:9
+      ...
+    # Subtest: TEL-SANITISE-02: no identifying key survives sanitisation, at any depth
+    not ok 2 - TEL-SANITISE-02: no identifying key survives sanitisation, at any depth
+      ---
+      duration_ms: 0.374893
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:165:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:166:31)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1442:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: TEL-SANITISE-03: the timestamp is coarsened to the minute, so it cannot join two events into a trail
+    not ok 3 - TEL-SANITISE-03: the timestamp is coarsened to the minute, so it cannot join two events into a trail
+      ---
+      duration_ms: 0.421473
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:179:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:180:31)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: TEL-SANITISE-04: an unknown section is normalised away rather than stored as free text
+    not ok 4 - TEL-SANITISE-04: an unknown section is normalised away rather than stored as free text
+      ---
+      duration_ms: 0.411983
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:185:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:186:31)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: TEL-SANITISE-05: value is coerced to a finite, non-negative, integer count
+    not ok 5 - TEL-SANITISE-05: value is coerced to a finite, non-negative, integer count
+      ---
+      duration_ms: 1.814434
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:196:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:197:31)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..5
+not ok 2 - TEL-SANITISE: what the collector refuses to keep
+  ---
+  duration_ms: 5.907787
+  type: 'suite'
+  location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:145:1'
+  failureType: 'subtestsFailed'
+  error: '5 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: TEL-RETAIN: the retention policy is enforced, not documented
+    # Subtest: TEL-RETAIN-01: RETENTION_DAYS is 30, the number the published sentence prints
+    not ok 1 - TEL-RETAIN-01: RETENTION_DAYS is 30, the number the published sentence prints
+      ---
+      duration_ms: 3.515397
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:207:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:208:32)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        node:internal/test_runner/test:1440:71
+        node:internal/per_context/primordials:466:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:435:3)
+        node:internal/per_context/primordials:466:9
+      ...
+    # Subtest: TEL-RETAIN-02: pruneExpired deletes strictly older than the cutoff and keeps the boundary row
+    not ok 2 - TEL-RETAIN-02: pruneExpired deletes strictly older than the cutoff and keeps the boundary row
+      ---
+      duration_ms: 0.239002
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:212:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:213:30)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1442:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..2
+not ok 3 - TEL-RETAIN: the retention policy is enforced, not documented
+  ---
+  duration_ms: 3.861201
+  type: 'suite'
+  location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:206:1'
+  failureType: 'subtestsFailed'
+  error: '2 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+# Subtest: TEL-AGG: the aggregation that feeds the R-88 reopen loop
+    # Subtest: TEL-AGG-01: dwell medians are the hand-computed values, not an approximation
+    not ok 1 - TEL-AGG-01: dwell medians are the hand-computed values, not an approximation
+      ---
+      duration_ms: 1.34245
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:252:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:253:35)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        node:internal/test_runner/test:1440:71
+        node:internal/per_context/primordials:466:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:435:3)
+        node:internal/per_context/primordials:466:9
+      ...
+    # Subtest: TEL-AGG-02: drop-off rate is events over observed visits, to four places
+    not ok 2 - TEL-AGG-02: drop-off rate is events over observed visits, to four places
+      ---
+      duration_ms: 0.229882
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:261:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:262:35)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1442:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: TEL-AGG-03 (R-175): a section with no events is not-observable with a reason — never a zero
+    not ok 3 - TEL-AGG-03 (R-175): a section with no events is not-observable with a reason — never a zero
+      ---
+      duration_ms: 2.282879
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:272:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:273:35)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: TEL-AGG-04 (R-175): an EMPTY event set yields not-observable everywhere, and no zeros anywhere
+    not ok 4 - TEL-AGG-04 (R-175): an EMPTY event set yields not-observable everywhere, and no zeros anywhere
+      ---
+      duration_ms: 2.143886
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:284:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:285:35)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: TEL-AGG-05: every aggregated field carries provenance with a real, recent retrievedAt and a runnable method
+    not ok 5 - TEL-AGG-05: every aggregated field carries provenance with a real, recent retrievedAt and a runnable method
+      ---
+      duration_ms: 0.312623
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:295:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:296:35)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: TEL-AGG-06: the aggregate contains no identifying key at any depth
+    not ok 6 - TEL-AGG-06: the aggregate contains no identifying key at any depth
+      ---
+      duration_ms: 0.226192
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:312:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:313:35)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: TEL-AGG-07 (R-88): underperformingSections names skills and refuses to judge the unobserved section
+    not ok 7 - TEL-AGG-07 (R-88): underperformingSections names skills and refuses to judge the unobserved section
+      ---
+      duration_ms: 1.780594
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:319:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:320:60)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: TEL-AGG-08 (R-88): a section is never reopened on the strength of a value nobody measured
+    not ok 8 - TEL-AGG-08 (R-88): a section is never reopened on the strength of a value nobody measured
+      ---
+      duration_ms: 0.204792
+      type: 'test'
+      location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:327:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        functions/lib/telemetry.js could not be loaded — the first-party telemetry collector does not exist yet. R-87 requires it. Underlying error: Cannot find module '/var/tmp/v6-wt/data-backend/functions/lib/telemetry.js'
+        Require stack:
+        - /var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      operator: 'fail'
+      stack: |-
+        collector (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:32:12)
+        TestContext.<anonymous> (file:///var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:328:60)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..8
+not ok 4 - TEL-AGG: the aggregation that feeds the R-88 reopen loop
+  ---
+  duration_ms: 8.784628
+  type: 'suite'
+  location: '/var/tmp/v6-wt/data-backend/tests/telemetry/collector.contract.mjs:229:1'
+  failureType: 'subtestsFailed'
+  error: '8 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..4
+# tests 21
+# suites 4
+# pass 0
+# fail 21
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 300.57315
+EXIT=1
+
+################################################################################
+# 3/3  PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 \
+#      npx playwright test tests/overhaul/telemetry-first-party.spec.ts
+#      browser-observable properties: zero third-party requests, the beacon,
+#      cookieless storage, no consent wall, the reconciled colophon, and the
+#      2026-07-09 render-loop guard.
+################################################################################
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/telemetry-first-party.spec.ts --reporter=list
+
+Running 8 tests using 2 workers
+
+  ✘  1 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:147:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-02: the visit sends at least one beacon to the same-origin collector (10.9s)
+  ✓  2 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:127:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-01: instrumenting the page still fires ZERO third-party requests (10.9s)
+  ✓  3 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:197:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-04: after a full visit there are no cookies and no identifier in storage (9.2s)
+  ✘  4 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:169:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-03: the beacon payload carries only {at, name, section, value} and no identifier (9.8s)
+  ✓  5 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:216:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-05: no consent wall, banner or preference dialog exists (9.3s)
+  ✘  6 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:224:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-06 (R-183): the rendered colophon states what is measured and no longer claims "no analytics" (3.8s)
+  ✘  8 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:264:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-08 (R-88): the shipped aggregate names the sections the loop must reopen (986ms)
+  ✓  7 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:240:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-07: the telemetry store never trips the 2026-07-09 render loop (React #185 / #425) (17.0s)
+
+
+  1) [chromium] › tests/overhaul/telemetry-first-party.spec.ts:147:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-02: the visit sends at least one beacon to the same-origin collector 
+
+    Error: No request to /api/telemetry was observed during a full visit. R-87 requires dwell, scroll depth, drop-off, carousel depth, chatbot sessions and topics, avatar plays and completion, and conversion to be measured; nothing was sent.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      158 |         `scroll depth, drop-off, carousel depth, chatbot sessions and topics, avatar plays and ` +
+      159 |         `completion, and conversion to be measured; nothing was sent.`,
+    > 160 |     ).toBeGreaterThan(0);
+          |       ^
+      161 |
+      162 |     const pageOrigin = new URL(page.url()).origin;
+      163 |     for (const b of beacons) {
+        at /var/tmp/v6-wt/data-backend/tests/overhaul/telemetry-first-party.spec.ts:160:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-telemetry-first-p-63b53-o-the-same-origin-collector-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-telemetry-first-p-63b53-o-the-same-origin-collector-chromium/error-context.md
+
+  2) [chromium] › tests/overhaul/telemetry-first-party.spec.ts:169:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-03: the beacon payload carries only {at, name, section, value} and no identifier 
+
+    Error: no beacon payload was captured at /api/telemetry
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      182 |     await fullVisit(page);
+      183 |
+    > 184 |     expect(bodies.length, `no beacon payload was captured at ${COLLECTOR_PATH}`).toBeGreaterThan(0);
+          |                                                                                  ^
+      185 |
+      186 |     for (const body of bodies) {
+      187 |       const envelope = body as { events?: Array<Record<string, unknown>> };
+        at /var/tmp/v6-wt/data-backend/tests/overhaul/telemetry-first-party.spec.ts:184:82
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-telemetry-first-p-39f41-ion-value-and-no-identifier-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-telemetry-first-p-39f41-ion-value-and-no-identifier-chromium/error-context.md
+
+  3) [chromium] › tests/overhaul/telemetry-first-party.spec.ts:224:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-06 (R-183): the rendered colophon states what is measured and no longer claims "no analytics" 
+
+    Error: the page still tells the visitor it collects nothing, while a collector is deployed — R-183
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected substring: not [32m"no analytics, no trackers, no cookies"[39m
+    Received string:        [31m"ALWAYS WILLING TO LISTEN[39m
+    [31m[39m
+    [31mFeedback & coffee?[39m
+    [31m[39m
+    [31mI have been wrong often enough to want to hear it early. Tell me what you think — I’ll listen properly.[39m
+    [31m[39m
+    [31msarkar.vikram@gmail.com[39m
+    [31m+61 433 224 556[39m
+    [31mlinkedin.com/in/vikramd-profile[39m
+    [31mgithub.com/Victordtesla24[39m
+    [31m[39m
+    [31mCOFFEE · MELBOURNE CBD · I’LL COME TO YOU[39m
+    [31m[39m
+    [31mWhat I was told I had got wrong[39m
+    [31m[39m
+    [31mThe line above is a claim, so here is the evidence for it: the last corrections made to this page, in the words of the commit that made each one. The reviews behind them are a mix of people and adversarial agents pointed at my own work. The corrections are the same either way, and every one of them is a link to the diff.[39m
+    [31m[39m
+    [31mf642b41[39m
+    [31m2026-09-03[39m
+    [31mLet the chart be read against the years it is drawn to[39m
+    [31me480687[39m
+    [31m2026-09-03[39m
+    [31mThe bench on a phone is a filter, not a second list[39m
+    [31mdf0dac6[39m
+    [31m2026-09-03[39m
+    [31mShip the render that was made, not a soft copy of it[39m
+    [31m5c7b50f[39m
+    [31m2026-09-03[39m
+    [31mStop drawing forty headings in fake bold[39m
+    [31m45077cb[39m
+    [31m2026-09-03[39m
+    [31mTake the WebGL runtime off the hero's critical path[39m
+    [31m79b11a0[39m
+    [31m2026-09-03[39m
+    [31mMake the rail read as one cabinet again[39m
+    [31m3df1815[39m
+    [31m2026-09-03[39m
+    [31mStop shipping the stylesheet for a site that was deleted[39m
+    [31m699933f[39m
+    [31m2026-09-03[39m
+    [31mDelete the site that no longer exists[39m
+    [31m[39m
+    [31m8 of 59 corrections in the history · harvested 2026-09-03 from the repository this page is built from[39m
+    [31m[39m
+    [31mA WORD FROM ME — 29 SECONDS[39m
+    [31m[39m
+    [31mAI-generated: my photograph, my cloned voice, animated by a model. Nothing else on this site is synthetic.[39m
+    [31m[39m
+    [31mREAD IT INSTEAD[39m
+    [31m[39m
+    [31m© 2026 Vikram Deshpande · Melbourne · static export · at most one WebGL context per section, and none on a phone · [7mno analytics, no trackers, no cookies[27m"[39m
+
+      231 |       text,
+      232 |       'the page still tells the visitor it collects nothing, while a collector is deployed — R-183',
+    > 233 |     ).not.toContain(LEGACY_CLAIM);
+          |           ^
+      234 |     expect(
+      235 |       text,
+      236 |       `the reconciled measurement clause is not on the page. Required verbatim:\n${CANONICAL_COLOPHON_CLAUSE}`,
+        at /var/tmp/v6-wt/data-backend/tests/overhaul/telemetry-first-party.spec.ts:233:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-telemetry-first-p-9fe3d-longer-claims-no-analytics--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-telemetry-first-p-9fe3d-longer-claims-no-analytics--chromium/error-context.md
+
+  4) [chromium] › tests/overhaul/telemetry-first-party.spec.ts:264:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-08 (R-88): the shipped aggregate names the sections the loop must reopen 
+
+    Error: the R-88 aggregate is not published with the site, so nothing can reopen an under-performing section
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m404[39m
+
+      267 |       res.status(),
+      268 |       'the R-88 aggregate is not published with the site, so nothing can reopen an under-performing section',
+    > 269 |     ).toBe(200);
+          |       ^
+      270 |
+      271 |     const agg = (await res.json()) as {
+      272 |       sections?: Record<string, Record<string, { kind?: string; provenance?: { retrievedAt?: string } }>>;
+        at /var/tmp/v6-wt/data-backend/tests/overhaul/telemetry-first-party.spec.ts:269:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-telemetry-first-p-254bb-ctions-the-loop-must-reopen-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4 failed
+    [chromium] › tests/overhaul/telemetry-first-party.spec.ts:147:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-02: the visit sends at least one beacon to the same-origin collector 
+    [chromium] › tests/overhaul/telemetry-first-party.spec.ts:169:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-03: the beacon payload carries only {at, name, section, value} and no identifier 
+    [chromium] › tests/overhaul/telemetry-first-party.spec.ts:224:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-06 (R-183): the rendered colophon states what is measured and no longer claims "no analytics" 
+    [chromium] › tests/overhaul/telemetry-first-party.spec.ts:264:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-08 (R-88): the shipped aggregate names the sections the loop must reopen 
+  4 passed (50.7s)
+EXIT=1
+
+################################################################################
+# SUMMARY OF THE OBSERVED RED
+################################################################################
+
+  suite                                                       assertions  failing  passing
+  ----------------------------------------------------------  ----------  -------  -------
+  scripts/validate/telemetry_contract_audit.mjs                        19       15        4
+  tests/telemetry/collector.contract.mjs      (node --test)            21       21        0
+  tests/overhaul/telemetry-first-party.spec.ts (playwright)             8        4        4
+  ----------------------------------------------------------  ----------  -------  -------
+  TOTAL                                                                48       40        8
+
+  40 assertions observed failing. Nothing was implemented; nothing was fixed.
+
+--------------------------------------------------------------------------------
+WHY 8 ASSERTIONS PASS TODAY — each one is a PRESERVATION guard, not a gap
+--------------------------------------------------------------------------------
+
+These do not "fail to reproduce a finding". They encode the property the site
+ALREADY has and that the R-87 build must not destroy. They pass now because
+there is no telemetry at all; they must still pass once there is.
+
+  TEL-SRC-06  connect-src carries no new host.
+              Passes because the CSP is untouched. Fails the moment an
+              implementer reaches for a hosted analytics script instead of the
+              same-origin Cloud Function.
+
+  TEL-SRC-14  No consent wall, banner or preference dialog.
+              Passes because nothing is collected. R-87 forbids ever adding one,
+              so this must survive the build.
+
+  TEL-SRC-17  No third-party analytics package is a dependency.
+              Same shape: a guard against the easy wrong answer.
+
+  TEL-183     The BIDIRECTIONAL self-claim lock. Passes today in its "both old"
+              branch: no instrumentation exists AND the legacy claim
+              "no analytics, no trackers, no cookies" is still on the page, which
+              is honest. It flips to FAIL the instant lib/telemetry/beacon.ts or
+              exports.telemetryCollect appears without the two published
+              sentences changing in the same commit — which is exactly R-183.
+              This is the one check in the battery that cannot be satisfied by
+              doing half the work, in either order.
+
+  TEL-FP-01   Zero third-party requests across a full visit.
+              Passes: 22 requests, one origin (see 03-network-trace-baseline.json).
+              This is the Preservation-Register-adjacent asset named in the work
+              item. The collector is first-party by construction — a Hosting
+              rewrite of /api/telemetry onto a Cloud Function on the SAME origin
+              — so this must read zero after the build too. It also refuses to
+              pass vacuously: it asserts more than five requests were seen.
+
+  TEL-FP-04   No cookies, no localStorage, no sessionStorage after a full visit.
+              Passes: document.cookie empty, 0 storage keys, 0 Set-Cookie.
+              R-87's "cookieless, no identifiers" clause lives here.
+
+  TEL-FP-05   No consent wall in the rendered page.
+
+  TEL-FP-07   The 2026-07-09 outage signature (React #185 / #425 /
+              "Maximum update depth exceeded" / "getServerSnapshot should be
+              cached") does not appear, and the root error boundary never
+              replaces the page.
+              Passes today for the reason tests/overhaul/telemetry-stability.spec.ts
+              records at lines 16-18: lib/githubTelemetry.ts was DELETED after the
+              outage and nothing replaced it, so there is currently no store to
+              break. The replacement store subscribes React to a live event
+              stream — the same shape of hazard — so this guard is aimed at the
+              code that does not exist yet. Its source-level counterpart,
+              TEL-SRC-13, is FAILING now and pins the actual defect: a
+              getSnapshot()/getServerSnapshot() that returns a freshly
+              constructed value, or a device API read inside a useState
+              initializer.
+
+--------------------------------------------------------------------------------
+THE 40 FAILING ASSERTIONS, BY WHAT THEY REQUIRE
+--------------------------------------------------------------------------------
+
+  the beacon              TEL-SRC-01, -02, -03, -18, TEL-FP-02, TEL-FP-03
+  the collector function  TEL-SRC-04, -05, -07, -08, TEL-COLLECT-01..06,
+                          TEL-SANITISE-01..05
+  storage + retention     TEL-SRC-09, TEL-RETAIN-01, TEL-RETAIN-02
+  aggregation for R-88    TEL-SRC-15, -16, TEL-AGG-01..08, TEL-FP-08
+  the reconciled claim    TEL-SRC-10, -11, -12, TEL-FP-06
+  the outage guard        TEL-SRC-13
+

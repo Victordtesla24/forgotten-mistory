@@ -41,3 +41,9 @@ ORCHESTRATOR VISUAL CHECK on live 8f81ae86 (1440, gl=force): HERO — volumetric
 
 ## DECISION (2026-09-05T10:15:48.623Z)
 V-flagship-A FAIL (c3bc139) on two live defects: F1 at ≤700 px Hero.module.css paints a flat rgb(10 10 10 / 0.86) .stage::after over the canvas → hero scene 0.00% coverage on phones; F2 shader-path contrast: 9 nodes @1440 / 12 @390 below AA (Telstra 1.10:1, InfoCentric 1.11:1 over lit strata; hero .ledgerSource 1.34:1) — text-contrast.spec.ts loads without ?gl=force so it never saw them; the visibility gate is single-viewport. Owner's O5 ship stands (1440 verified visible by the orchestrator); correction lane t_flagvis0c dispatched now: graded mobile scrim, viewport-parameterised gate (1440+390), ?gl=force TC-CONTRAST-01 variant + fix every reported node (local text plates / shader uTextRect dimming), About @390 peak ≥ 0.35.
+
+## COMMENT (2026-09-05T16:57:53.217Z)
+1556Z reclaim — swarm stopped; do not duplicate. G-H1 restated on t_g2_h1.
+
+## STATUS (2026-09-05T16:57:53.278Z)
+ready — 1556Z reclaim

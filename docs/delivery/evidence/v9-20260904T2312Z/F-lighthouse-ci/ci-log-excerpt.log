@@ -1,0 +1,23 @@
+32:lighthouse	Set up job	2026-09-05T00:29:27.2593812Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+271:lighthouse	Lighthouse collect + assert (lighthouserc.json)	2026-09-05T00:30:23.0205365Z ^[[36;1m    echo "Cleaning up dev server (PID $SERVER_PID)..."^[[0m
+313:lighthouse	Lighthouse collect + assert (lighthouserc.json)	2026-09-05T00:30:34.9307170Z Running Lighthouse 3 time(s) on http://127.0.0.1:3000/
+314:lighthouse	Lighthouse collect + assert (lighthouserc.json)	2026-09-05T00:31:02.4278508Z Run #1...done.
+315:lighthouse	Lighthouse collect + assert (lighthouserc.json)	2026-09-05T00:31:15.0410379Z Run #2...done.
+316:lighthouse	Lighthouse collect + assert (lighthouserc.json)	2026-09-05T00:31:27.5733477Z Run #3...done.
+317:lighthouse	Lighthouse collect + assert (lighthouserc.json)	2026-09-05T00:31:27.5734412Z Running Lighthouse 3 time(s) on http://127.0.0.1:3000/performance-benchmark
+318:lighthouse	Lighthouse collect + assert (lighthouserc.json)	2026-09-05T00:31:38.6113982Z Run #1...done.
+319:lighthouse	Lighthouse collect + assert (lighthouserc.json)	2026-09-05T00:31:49.5867212Z Run #2...done.
+320:lighthouse	Lighthouse collect + assert (lighthouserc.json)	2026-09-05T00:32:00.6127297Z Run #3...done.
+321:lighthouse	Lighthouse collect + assert (lighthouserc.json)	2026-09-05T00:32:00.6127895Z Done running Lighthouse!
+322:lighthouse	Lighthouse collect + assert (lighthouserc.json)	2026-09-05T00:32:01.5990730Z Checking assertions against 2 URL(s), 6 total run(s)
+324:lighthouse	Lighthouse collect + assert (lighthouserc.json)	2026-09-05T00:32:01.5993087Z All results processed!
+325:lighthouse	Lighthouse collect + assert (lighthouserc.json)	2026-09-05T00:32:01.6179948Z Cleaning up dev server (PID 2538)...
+379:lighthouse	Composite performance score (median of runs)	2026-09-05T00:32:06.6929065Z ##[notice]http://127.0.0.1:3000/ composite performance score 0.98 meets the 0.80 target
+380:lighthouse	Composite performance score (median of runs)	2026-09-05T00:32:06.6950017Z ##[notice]http://127.0.0.1:3000/performance-benchmark composite performance score 0.99 meets the 0.80 target
+411:lighthouse	Upload Lighthouse reports	2026-09-05T00:32:07.1137218Z ##[group]Run actions/upload-artifact@v4
+413:lighthouse	Upload Lighthouse reports	2026-09-05T00:32:07.1137747Z   name: lighthouse-html-report
+414:lighthouse	Upload Lighthouse reports	2026-09-05T00:32:07.1138014Z   path: .lighthouseci/
+415:lighthouse	Upload Lighthouse reports	2026-09-05T00:32:07.1138260Z   if-no-files-found: error
+419:lighthouse	Upload Lighthouse reports	2026-09-05T00:32:07.1139381Z   include-hidden-files: false
+425:lighthouse	Upload Lighthouse reports	2026-09-05T00:32:07.3003758Z ##[error]No files were found with the provided path: .lighthouseci/. No artifacts will be uploaded.
+442:lighthouse	Complete job	2026-09-05T00:32:07.5896723Z Terminate orphan process: pid (2554) (next-server (v14.2.35))

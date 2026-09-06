@@ -1,0 +1,54 @@
+{
+  "cycle": "v10-c15",
+  "window_utc": "2026-09-05T16:56Z \u2192 17:24Z (open for remaining P0)",
+  "pea_numerator": 1,
+  "pea_denominator": 10,
+  "pea_basis": "G-NEW-1 independent tester PASS on live b0513692. G-C1/G-V3 shipped to live, reviewer in flight. G-H6/G-A3/G-X2 pushed awaiting Deploy 33980742004. G-H1/G-L1/G-M4/G-H5 still open.",
+  "adversarial_verdicts": [
+    "ADV-REVIEW-20260905T1556Z FAIL on live b2ac21be \u2014 intake confirmed; t_rev_adv1556 baseline in flight"
+  ],
+  "deploy_commit": "b0513692",
+  "deploy_run_id": "33980197112",
+  "live_build_commit": "b0513692",
+  "visible_ships": [
+    "17:07Z Deploy 33979955584 \u2192 live 33e7ce64 G-C1 honest CTA labels fb49e53",
+    "17:11Z Deploy 33980197112 \u2192 live b0513692 G-V3 plate 0.82 (6b1ad3d) + G-NEW-1 pill freeze (4d875da)"
+  ],
+  "non_visible_ships": [
+    "d3afe2b G-C1 SA honest-CTA memo",
+    "fbfec0e G-H1 placement research",
+    "aaabee3 G-H6 PALETTE-EXCEPTIONS + pin test (consolidating)",
+    "5c76cca G-X2 SIGNATURE-SCENES viseme not scene 7 (consolidating)",
+    "c0bd7ae/24b036d G-A3 about-field (consolidating)"
+  ],
+  "o1_o5": "CLAIMED for 16:56\u201317:12 windows: recruiter-visible labels then contrast+pill on production. Evidence pair: Deploy 33979955584 + live 33e7ce64; Deploy 33980197112 + live b0513692. Timer active; Hermes inactive. Subsequent windows still required while P0 remain.",
+  "closed_this_window": [
+    "t_g_new1 + t_g_new1t (live PASS b0513692)",
+    "t_g_clean1556",
+    "t_g2_c1 SA docs",
+    "t_l1_01 superseded"
+  ],
+  "in_flight": [
+    "t_g2_v3 reviewer 07a59ecc",
+    "t_g2_c1b reviewer 3ca75114",
+    "t_g2_h6",
+    "t_g2_a3",
+    "t_g2_x2",
+    "t_h2_03",
+    "t_l1_02",
+    "t_g2_m4b",
+    "t_rev_adv1556"
+  ],
+  "queued_next": [
+    "t_g2_h5 AP drop 360p",
+    "t_x1_10 first real cinematic",
+    "t_l1_03-05",
+    "t_h2_04",
+    "P1 G-E2 G-S2"
+  ],
+  "provider": "Anthropic via OAuth (Cursor Task); OpenRouter treated 402; never ANTHROPIC_API_KEY; Hermes not started; claude-cli terminal 47 session-limited",
+  "verification_snippet_at_dispatch": "timer=active hermes=inactive live=b2ac21be cache=max-age=0,must-revalidate load=1.10 last Deploy=33978914825 16:46:51Z",
+  "next": "Push G-V3 and/or G-C1; Deploy consolidate; independent reviewer on new live commit.",
+  "started": "2026-09-05T17:01:16Z",
+  "verification_snippet_at_c15": "timer=active hermes=inactive live=b0513692 cache=max-age=0,must-revalidate Deploy=33980197112 success"
+}

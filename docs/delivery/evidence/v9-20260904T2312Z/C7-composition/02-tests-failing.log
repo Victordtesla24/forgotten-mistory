@@ -1,0 +1,442 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/spine.spec.ts tests/a11y/text-contrast.spec.ts tests/e2e/hero.spec.ts tests/e2e/experience.spec.ts tests/e2e/chatbot.spec.ts tests/a11y/reduced-motion-choreography.spec.ts --grep TC-SPINE|TC-CONTRAST|TC-HERO-12|TC-EXP-09|TC-EXP-10|TC-EXP-11|TC-BOT-12|RM-6 --workers=4 --reporter=line
+
+[2mRunning [22m16[2m tests using [22m4[2m workers[22m
+
+[1A[2K[1/16] [chromium] › tests/a11y/text-contrast.spec.ts:271:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+[1A[2K[2/16] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:595:7 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › RM-6 no infinite animation keeps running under reduce (the launcher status dot)
+[1A[2K[3/16] [chromium] › tests/a11y/text-contrast.spec.ts:271:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground
+[1A[2K[4/16] [chromium] › tests/e2e/chatbot.spec.ts:257:7 › E2E: MiniVicBot Chatbot › TC-BOT-12: The open panel stacks above the launcher on its axis and never covers the h1
+[1A[2K[31m  1) [chromium] › tests/e2e/chatbot.spec.ts:257:7 › E2E: MiniVicBot Chatbot › TC-BOT-12: The open panel stacks above the launcher on its axis and never covers the h1 [39m
+
+    Error: panel {"x":988,"y":224,"width":432,"height":592} must not cover h1 {"x":176,"y":183,"width":1088,"height":123.96875}
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mfalse[39m
+    Received: [31mtrue[39m
+
+    [0m [90m 273 |[39m       panelBox[33m.[39my [33m<[39m h1[33m.[39my [33m+[39m h1[33m.[39mheight [33m&&[39m
+     [90m 274 |[39m       panelBox[33m.[39my [33m+[39m panelBox[33m.[39mheight [33m>[39m h1[33m.[39my[33m;[39m
+    [31m[1m>[22m[39m[90m 275 |[39m     expect(intersects[33m,[39m [32m`panel ${JSON.stringify(panelBox)} must not cover h1 ${JSON.stringify(h1)}`[39m)[33m.[39mtoBe([36mfalse[39m)[33m;[39m
+     [90m     |[39m                                                                                                     [31m[1m^[22m[39m
+     [90m 276 |[39m
+     [90m 277 |[39m     [36mconst[39m toggleBox [33m=[39m ([36mawait[39m toggle[33m.[39mboundingBox())[33m![39m[33m;[39m
+     [90m 278 |[39m     [36mconst[39m panelRight [33m=[39m [35m1440[39m [33m-[39m (panelBox[33m.[39mx [33m+[39m panelBox[33m.[39mwidth)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/chatbot.spec.ts:275:101[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-chatbot-E2E-MiniVicBot-64312-xis-and-never-covers-the-h1-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-chatbot-E2E-MiniVicBot-64312-xis-and-never-covers-the-h1-chromium/error-context.md[22m
+
+
+[1A[2K[31m  2) [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:595:7 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › RM-6 no infinite animation keeps running under reduce (the launcher status dot) [39m
+
+    Error: no "ping" animation may run under prefers-reduced-motion: reduce
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 6[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "name": "ping",[39m
+    [31m+     "target": "SPAN",[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+    [0m [90m 619 |[39m     })[33m;[39m
+     [90m 620 |[39m     [36mawait[39m page[33m.[39mcontext()[33m.[39mclose()[33m;[39m
+    [31m[1m>[22m[39m[90m 621 |[39m     expect(running[33m,[39m [32m'no "ping" animation may run under prefers-reduced-motion: reduce'[39m)[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m                                                                                         [31m[1m^[22m[39m
+     [90m 622 |[39m     expect(dot[33m?[39m[33m.[39mvisible[33m,[39m [32m'the static status dot stays visible'[39m)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m 623 |[39m     expect(dot[33m![39m[33m.[39mw)[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m 624 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:621:89[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-7ec96-ce-the-launcher-status-dot--chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+
+[1A[2K[5/16] [chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1280: every chart row, bar and readout lives inside the spine
+[1A[2K[6/16] [chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1440: every chart row, bar and readout lives inside the spine
+[1A[2K[31m  3) [chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1280: every chart row, bar and readout lives inside the spine [39m
+
+    Error: readout 0 right
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1216.5[39m
+    Received:    [31m1253.75[39m
+
+    [0m [90m 138 |[39m         [36mconst[39m readout [33m=[39m row[33m.[39mlocator([32m'span span span'[39m)[33m.[39mlast()[33m;[39m
+     [90m 139 |[39m         [36mconst[39m readoutBox [33m=[39m ([36mawait[39m readout[33m.[39mboundingBox())[33m![39m[33m;[39m
+    [31m[1m>[22m[39m[90m 140 |[39m         expect(readoutBox[33m.[39mx [33m+[39m readoutBox[33m.[39mwidth[33m,[39m [32m`readout ${i} right`[39m)[33m.[39mtoBeLessThanOrEqual(
+     [90m     |[39m                                                                       [31m[1m^[22m[39m
+     [90m 141 |[39m           spine[33m.[39mright [33m+[39m [35m0.5[39m[33m,[39m
+     [90m 142 |[39m         )[33m;[39m
+     [90m 143 |[39m       }[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/experience.spec.ts:140:71[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-experience-Experience--bec2f-dout-lives-inside-the-spine-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-experience-Experience--bec2f-dout-lives-inside-the-spine-chromium/error-context.md[22m
+
+
+[1A[2K[31m  4) [chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1440: every chart row, bar and readout lives inside the spine [39m
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m24[39m
+
+    [0m [90m 126 |[39m       })[33m;[39m
+     [90m 127 |[39m       [90m// The heading stands on the spine's left edge; the chart must too.[39m
+    [31m[1m>[22m[39m[90m 128 |[39m       expect([33mMath[39m[33m.[39mabs(spine[33m.[39mheadingLeft [33m-[39m spine[33m.[39mleft))[33m.[39mtoBeLessThanOrEqual([35m1[39m)[33m;[39m
+     [90m     |[39m                                                        [31m[1m^[22m[39m
+     [90m 129 |[39m
+     [90m 130 |[39m       [36mconst[39m rows [33m=[39m page[33m.[39mlocator([32m`${EXPERIENCE} ol`[39m)[33m.[39mfirst()[33m.[39mlocator([32m'li button'[39m)[33m;[39m
+     [90m 131 |[39m       [36mawait[39m expect(rows)[33m.[39mtoHaveCount([35m8[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/experience.spec.ts:128:56[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-experience-Experience--f7ddc-dout-lives-inside-the-spine-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-experience-Experience--f7ddc-dout-lives-inside-the-spine-chromium/error-context.md[22m
+
+
+[1A[2K[7/16] [chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1920: every chart row, bar and readout lives inside the spine
+[1A[2K[8/16] [chromium] › tests/e2e/experience.spec.ts:147:7 › Experience › TC-EXP-10: the duration readouts are printed in --mist-200
+[1A[2K[31m  5) [chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1920: every chart row, bar and readout lives inside the spine [39m
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m256[39m
+
+    [0m [90m 126 |[39m       })[33m;[39m
+     [90m 127 |[39m       [90m// The heading stands on the spine's left edge; the chart must too.[39m
+    [31m[1m>[22m[39m[90m 128 |[39m       expect([33mMath[39m[33m.[39mabs(spine[33m.[39mheadingLeft [33m-[39m spine[33m.[39mleft))[33m.[39mtoBeLessThanOrEqual([35m1[39m)[33m;[39m
+     [90m     |[39m                                                        [31m[1m^[22m[39m
+     [90m 129 |[39m
+     [90m 130 |[39m       [36mconst[39m rows [33m=[39m page[33m.[39mlocator([32m`${EXPERIENCE} ol`[39m)[33m.[39mfirst()[33m.[39mlocator([32m'li button'[39m)[33m;[39m
+     [90m 131 |[39m       [36mawait[39m expect(rows)[33m.[39mtoHaveCount([35m8[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/experience.spec.ts:128:56[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-experience-Experience--19c0e-dout-lives-inside-the-spine-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-experience-Experience--19c0e-dout-lives-inside-the-spine-chromium/error-context.md[22m
+
+
+[1A[2K[9/16] [chromium] › tests/e2e/experience.spec.ts:165:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ
+[1A[2K[31m  6) [chromium] › tests/e2e/experience.spec.ts:165:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ [39m
+
+    Error: bar 0 must not outshine ANZ
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: < [32m0[39m
+    Received:   [31m0[39m
+
+    [0m [90m 186 |[39m     [36mfor[39m ([36mlet[39m i [33m=[39m [35m0[39m[33m;[39m i [33m<[39m [35m8[39m[33m;[39m i [33m+=[39m [35m1[39m) {
+     [90m 187 |[39m       [36mif[39m (i [33m===[39m [35m2[39m) [36mcontinue[39m[33m;[39m
+    [31m[1m>[22m[39m[90m 188 |[39m       expect(brightness(fills[i])[33m,[39m [32m`bar ${i} must not outshine ANZ`[39m)[33m.[39mtoBeLessThan(anz)[33m;[39m
+     [90m     |[39m                                                                      [31m[1m^[22m[39m
+     [90m 189 |[39m       [90m// 0x90 = 144 at 0.85 ≈ 122 painted on a #131313 ground → ≥ 3:1 (1.4.11).[39m
+     [90m 190 |[39m       expect(brightness(fills[i])[33m,[39m [32m`bar ${i} fill must clear the non-text floor`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m120[39m)[33m;[39m
+     [90m 191 |[39m     }[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/experience.spec.ts:188:70[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-experience-Experience--1cc8a--in-the-chart-and-it-is-ANZ-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-experience-Experience--1cc8a--in-the-chart-and-it-is-ANZ-chromium/error-context.md[22m
+
+
+[1A[2K[10/16] [chromium] › tests/e2e/hero.spec.ts:140:7 › Hero › TC-HERO-12: at 390×844 the three caliper jaws align and an action sits in the first screen
+[1A[2K[31m  7) [chromium] › tests/e2e/hero.spec.ts:140:7 › Hero › TC-HERO-12: at 390×844 the three caliper jaws align and an action sits in the first screen [39m
+
+    Error: right jaws at 118 / 117 / 110
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m2[39m
+    Received:    [31m8.125[39m
+
+    [0m [90m 158 |[39m       xs[33m.[39mpush(box[33m![39m[33m.[39mx)[33m;[39m
+     [90m 159 |[39m     }
+    [31m[1m>[22m[39m[90m 160 |[39m     expect([33mMath[39m[33m.[39mmax([33m...[39mxs) [33m-[39m [33mMath[39m[33m.[39mmin([33m...[39mxs)[33m,[39m [32m`right jaws at ${xs.map((x) => Math.round(x)).join(' / ')}`[39m)[33m.[39mtoBeLessThanOrEqual([35m2[39m)[33m;[39m
+     [90m     |[39m                                                                                                            [31m[1m^[22m[39m
+     [90m 161 |[39m
+     [90m 162 |[39m     [36mconst[39m evidence [33m=[39m page[33m.[39mlocator([32m`${HERO} a[href="#experience"]`[39m)[33m.[39mfirst()[33m;[39m
+     [90m 163 |[39m     [36mconst[39m box [33m=[39m [36mawait[39m evidence[33m.[39mboundingBox()[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/hero.spec.ts:160:108[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-TC-HERO-12-a-9b6cc-on-sits-in-the-first-screen-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-TC-HERO-12-a-9b6cc-on-sits-in-the-first-screen-chromium/error-context.md[22m
+
+
+[1A[2K[11/16] [chromium] › tests/e2e/spine.spec.ts:46:9 › Vertical spine › TC-SPINE-01 @ 390: all six section titles share one left edge
+[1A[2K[31m  8) [chromium] › tests/a11y/text-contrast.spec.ts:271:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground [39m
+
+    Error: 70 text node(s) below AA — worst ten:
+    1.74:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > div.Vitrine_plateHead__OEq9D:nth-of-type(1) > span.Vitrine_repo__MvlDQ:nth-of-type(2) — "ralph-loop-infinite" fg rgb(58,58,58) on bg rgb(10,10,10) @ 12px/400
+    1.74:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(3) > dt — "stack" fg rgb(58,58,58) on bg rgb(10,10,10) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > div.Vitrine_plateHead__OEq9D:nth-of-type(1) > span.Vitrine_repo__MvlDQ:nth-of-type(2) — "aether-job-career-agent" fg rgb(59,59,59) on bg rgb(11,11,11) @ 12px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(1) > dt — "commits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(2) > dt — "active" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(3) > dt — "stack" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > p.Vitrine_limits__WugAS:nth-of-type(2) > span.Vitrine_limitsLabel__19XEy — "Limits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(1) > dt — "commits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(2) > dt — "active" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > p.Vitrine_limits__WugAS:nth-of-type(2) > span.Vitrine_limitsLabel__19XEy — "Limits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m70[39m
+
+    [0m [90m 281 |[39m         )
+     [90m 282 |[39m         [33m.[39mjoin([32m'\n'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 283 |[39m       expect(failures[33m.[39mlength[33m,[39m [32m`${failures.length} text node(s) below AA — worst ten:\n${report}`[39m)[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m     |[39m                                                                                                   [31m[1m^[22m[39m
+     [90m 284 |[39m     })[33m;[39m
+     [90m 285 |[39m   }
+     [90m 286 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/text-contrast.spec.ts:283:99[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/error-context.md[22m
+
+
+[1A[2K[12/16] [chromium] › tests/e2e/spine.spec.ts:46:9 › Vertical spine › TC-SPINE-01 @ 834: all six section titles share one left edge
+[1A[2K[31m  9) [chromium] › tests/e2e/experience.spec.ts:147:7 › Experience › TC-EXP-10: the duration readouts are printed in --mist-200 [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCSS[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#experience ol').first().locator('li button span span span').first()
+    Expected: [32m"rgb(2[7m0[27m5, 2[7m0[27m5, 2[7m0[27m5)"[39m
+    Received: [31m"rgb([7m1[27m25, [7m1[27m25, [7m1[27m25)"[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCSS" with timeout 15000ms[22m
+    [2m  - waiting for locator('#experience ol').first().locator('li button span span span').first()[22m
+    [2m    18 × locator resolved to <span class="Experience_trackYears__HHvoZ">6 mo</span>[22m
+    [2m       - unexpected value "rgb(125, 125, 125)"[22m
+
+
+    [0m [90m 159 |[39m     [36mawait[39m expect(readouts)[33m.[39mtoHaveCount([35m8[39m)[33m;[39m
+     [90m 160 |[39m     [36mfor[39m ([36mlet[39m i [33m=[39m [35m0[39m[33m;[39m i [33m<[39m [35m8[39m[33m;[39m i [33m+=[39m [35m1[39m) {
+    [31m[1m>[22m[39m[90m 161 |[39m       [36mawait[39m expect(readouts[33m.[39mnth(i))[33m.[39mtoHaveCSS([32m'color'[39m[33m,[39m expected)[33m;[39m
+     [90m     |[39m                                     [31m[1m^[22m[39m
+     [90m 162 |[39m     }
+     [90m 163 |[39m   })[33m;[39m
+     [90m 164 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/experience.spec.ts:161:37[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-experience-Experience--85128-s-are-printed-in---mist-200-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-experience-Experience--85128-s-are-printed-in---mist-200-chromium/error-context.md[22m
+
+
+[1A[2K[13/16] [chromium] › tests/e2e/spine.spec.ts:46:9 › Vertical spine › TC-SPINE-01 @ 1440: all six section titles share one left edge
+[1A[2K[14/16] [chromium] › tests/e2e/spine.spec.ts:46:9 › Vertical spine › TC-SPINE-01 @ 1280: all six section titles share one left edge
+[1A[2K[31m  10) [chromium] › tests/e2e/spine.spec.ts:46:9 › Vertical spine › TC-SPINE-01 @ 834: all six section titles share one left edge [39m
+
+    Error: left edges differ by more than 1px: {"#hero h1":41.7,"#about h2":41.7,"#experience h2":41.7,"#skills h2":41.7,"#vitrine h2":41.7,"#listen h2":49}
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m7.3125[39m
+
+    [0m [90m 69 |[39m [32m          Object.fromEntries(Object.entries(edges).map(([k, v]) => [k, Math.round(v * 10) / 10])),[39m
+     [90m 70 |[39m [32m        )}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 71 |[39m       )[33m.[39mtoBeLessThanOrEqual([35m1[39m)[33m;[39m
+     [90m    |[39m         [31m[1m^[22m[39m
+     [90m 72 |[39m     })[33m;[39m
+     [90m 73 |[39m   }
+     [90m 74 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/spine.spec.ts:71:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-spine-Vertical-spine-T-10734--titles-share-one-left-edge-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-spine-Vertical-spine-T-10734--titles-share-one-left-edge-chromium/error-context.md[22m
+
+
+[1A[2K[31m  11) [chromium] › tests/e2e/spine.spec.ts:46:9 › Vertical spine › TC-SPINE-01 @ 1440: all six section titles share one left edge [39m
+
+    Error: left edges differ by more than 1px: {"#hero h1":176,"#about h2":96,"#experience h2":96,"#skills h2":96,"#vitrine h2":168,"#listen h2":352}
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m256[39m
+
+    [0m [90m 69 |[39m [32m          Object.fromEntries(Object.entries(edges).map(([k, v]) => [k, Math.round(v * 10) / 10])),[39m
+     [90m 70 |[39m [32m        )}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 71 |[39m       )[33m.[39mtoBeLessThanOrEqual([35m1[39m)[33m;[39m
+     [90m    |[39m         [31m[1m^[22m[39m
+     [90m 72 |[39m     })[33m;[39m
+     [90m 73 |[39m   }
+     [90m 74 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/spine.spec.ts:71:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-spine-Vertical-spine-T-78c5d--titles-share-one-left-edge-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-spine-Vertical-spine-T-78c5d--titles-share-one-left-edge-chromium/error-context.md[22m
+
+
+[1A[2K[31m  12) [chromium] › tests/a11y/text-contrast.spec.ts:271:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground [39m
+
+    Error: 31 text node(s) below AA — worst ten:
+    2.35:1 (needs 4.5) [about] div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(5) > div.About_itemBody__sd_yL > p.About_answer__46DA1:nth-of-type(1) — "Agile as practice rather than ceremony. Cadence " fg rgb(205,205,205) on bg rgb(131,132,136) @ 15.09px/400
+    3.06:1 (needs 4.5) [about] div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_rose__PW3GF:nth-of-type(1) > g:nth-of-type(9) > text.Compass_numeral__9WSmf — "09" fg rgb(216,215,207) on bg rgb(125,121,89) @ 3.4px/400
+    3.68:1 (needs 4.5) [about] ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(7) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_ > span.Caliper_value__usbAF:nth-of-type(2) — "measured from the role" fg rgb(129,129,129) on bg rgb(42,42,43) @ 11.098px/400
+    3.73:1 (needs 4.5) [about] ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(9) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_ > span.Caliper_value__usbAF:nth-of-type(2) — "measured from the role" fg rgb(128,128,129) on bg rgb(40,40,41) @ 11.098px/400
+    3.83:1 (needs 4.5) [about] div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_rose__PW3GF:nth-of-type(1) > g:nth-of-type(6) > text.Compass_numeral__9WSmf — "06" fg rgb(203,211,212) on bg rgb(73,107,109) @ 3.4px/400
+    3.85:1 (needs 4.5) [about] div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_rose__PW3GF:nth-of-type(1) > g:nth-of-type(3) > text.Compass_numeral__9WSmf — "03" fg rgb(207,211,209) on bg rgb(88,105,98) @ 3.4px/400
+    3.89:1 (needs 4.5) [about] div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_rose__PW3GF:nth-of-type(1) > g:nth-of-type(4) > text.Compass_numeral__9WSmf — "04" fg rgb(206,211,209) on bg rgb(87,104,98) @ 3.4px/400
+    3.89:1 (needs 4.5) [about] div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_rose__PW3GF:nth-of-type(1) > g:nth-of-type(8) > text.Compass_numeral__9WSmf — "08" fg rgb(206,211,209) on bg rgb(87,104,98) @ 3.4px/400
+    3.97:1 (needs 4.5) [about] div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_rose__PW3GF:nth-of-type(1) > g:nth-of-type(1) > text.Compass_numeral__9WSmf — "01" fg rgb(206,210,209) on bg rgb(86,102,96) @ 3.4px/400
+    4.26:1 (needs 4.5) [about] div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(5) > div.About_itemBody__sd_yL > p.About_evidence__WwIMJ:nth-of-type(2) — "5+ squads, 40+ practitioners onshore and offshor" fg rgb(125,125,125) on bg rgb(25,25,28) @ 11.098px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m31[39m
+
+    [0m [90m 281 |[39m         )
+     [90m 282 |[39m         [33m.[39mjoin([32m'\n'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 283 |[39m       expect(failures[33m.[39mlength[33m,[39m [32m`${failures.length} text node(s) below AA — worst ten:\n${report}`[39m)[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m     |[39m                                                                                                   [31m[1m^[22m[39m
+     [90m 284 |[39m     })[33m;[39m
+     [90m 285 |[39m   }
+     [90m 286 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/text-contrast.spec.ts:283:99[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-text-contrast-Text-co-2adeb--against-its-sampled-ground-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-text-contrast-Text-co-2adeb--against-its-sampled-ground-chromium/error-context.md[22m
+
+
+[1A[2K[15/16] [chromium] › tests/e2e/spine.spec.ts:46:9 › Vertical spine › TC-SPINE-01 @ 1920: all six section titles share one left edge
+[1A[2K[16/16] [chromium] › tests/e2e/spine.spec.ts:75:7 › Vertical spine › TC-SPINE-02: the spine is one token, read by the hero container
+[1A[2K[31m  13) [chromium] › tests/e2e/spine.spec.ts:46:9 › Vertical spine › TC-SPINE-01 @ 1280: all six section titles share one left edge [39m
+
+    Error: left edges differ by more than 1px: {"#hero h1":96,"#about h2":64,"#experience h2":64,"#skills h2":64,"#vitrine h2":80,"#listen h2":272}
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m208[39m
+
+    [0m [90m 69 |[39m [32m          Object.fromEntries(Object.entries(edges).map(([k, v]) => [k, Math.round(v * 10) / 10])),[39m
+     [90m 70 |[39m [32m        )}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 71 |[39m       )[33m.[39mtoBeLessThanOrEqual([35m1[39m)[33m;[39m
+     [90m    |[39m         [31m[1m^[22m[39m
+     [90m 72 |[39m     })[33m;[39m
+     [90m 73 |[39m   }
+     [90m 74 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/spine.spec.ts:71:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-spine-Vertical-spine-T-8d150--titles-share-one-left-edge-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-spine-Vertical-spine-T-8d150--titles-share-one-left-edge-chromium/error-context.md[22m
+
+
+[1A[2K[31m  14) [chromium] › tests/e2e/spine.spec.ts:75:7 › Vertical spine › TC-SPINE-02: the spine is one token, read by the hero container [39m
+
+    Error: --page-max must be declared on :root
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m"78rem"[39m
+    Received: [31m""[39m
+
+    [0m [90m 80 |[39m       getComputedStyle(document[33m.[39mdocumentElement)[33m.[39mgetPropertyValue([32m'--page-max'[39m)[33m.[39mtrim()[33m,[39m
+     [90m 81 |[39m     )[33m;[39m
+    [31m[1m>[22m[39m[90m 82 |[39m     expect(token[33m,[39m [32m'--page-max must be declared on :root'[39m)[33m.[39mtoBe([32m'78rem'[39m)[33m;[39m
+     [90m    |[39m                                                           [31m[1m^[22m[39m
+     [90m 83 |[39m     [90m// At 1440 the spine resolves to (1440 - 2*72 gutter - 1248 column)/2 + 72 = 96.[39m
+     [90m 84 |[39m     [36mconst[39m box [33m=[39m [36mawait[39m page[33m.[39mlocator([32m'#hero h1'[39m)[33m.[39mboundingBox()[33m;[39m
+     [90m 85 |[39m     expect([33mMath[39m[33m.[39mround(box[33m![39m[33m.[39mx))[33m.[39mtoBe([35m96[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/spine.spec.ts:82:59[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-spine-Vertical-spine-T-fdaf4--read-by-the-hero-container-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-spine-Vertical-spine-T-fdaf4--read-by-the-hero-container-chromium/error-context.md[22m
+
+
+[1A[2K[31m  15) [chromium] › tests/e2e/spine.spec.ts:46:9 › Vertical spine › TC-SPINE-01 @ 1920: all six section titles share one left edge [39m
+
+    Error: left edges differ by more than 1px: {"#hero h1":416,"#about h2":336,"#experience h2":336,"#skills h2":336,"#vitrine h2":416,"#listen h2":592}
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m256[39m
+
+    [0m [90m 69 |[39m [32m          Object.fromEntries(Object.entries(edges).map(([k, v]) => [k, Math.round(v * 10) / 10])),[39m
+     [90m 70 |[39m [32m        )}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 71 |[39m       )[33m.[39mtoBeLessThanOrEqual([35m1[39m)[33m;[39m
+     [90m    |[39m         [31m[1m^[22m[39m
+     [90m 72 |[39m     })[33m;[39m
+     [90m 73 |[39m   }
+     [90m 74 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/spine.spec.ts:71:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-spine-Vertical-spine-T-6d2d6--titles-share-one-left-edge-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-spine-Vertical-spine-T-6d2d6--titles-share-one-left-edge-chromium/error-context.md[22m
+
+
+[1A[2K[31m  15 failed[39m
+[31m    [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:595:7 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › RM-6 no infinite animation keeps running under reduce (the launcher status dot) [39m
+[31m    [chromium] › tests/a11y/text-contrast.spec.ts:271:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground [39m
+[31m    [chromium] › tests/a11y/text-contrast.spec.ts:271:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground [39m
+[31m    [chromium] › tests/e2e/chatbot.spec.ts:257:7 › E2E: MiniVicBot Chatbot › TC-BOT-12: The open panel stacks above the launcher on its axis and never covers the h1 [39m
+[31m    [chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1280: every chart row, bar and readout lives inside the spine [39m
+[31m    [chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1440: every chart row, bar and readout lives inside the spine [39m
+[31m    [chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1920: every chart row, bar and readout lives inside the spine [39m
+[31m    [chromium] › tests/e2e/experience.spec.ts:147:7 › Experience › TC-EXP-10: the duration readouts are printed in --mist-200 [39m
+[31m    [chromium] › tests/e2e/experience.spec.ts:165:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:140:7 › Hero › TC-HERO-12: at 390×844 the three caliper jaws align and an action sits in the first screen [39m
+[31m    [chromium] › tests/e2e/spine.spec.ts:46:9 › Vertical spine › TC-SPINE-01 @ 834: all six section titles share one left edge [39m
+[31m    [chromium] › tests/e2e/spine.spec.ts:46:9 › Vertical spine › TC-SPINE-01 @ 1280: all six section titles share one left edge [39m
+[31m    [chromium] › tests/e2e/spine.spec.ts:46:9 › Vertical spine › TC-SPINE-01 @ 1440: all six section titles share one left edge [39m
+[31m    [chromium] › tests/e2e/spine.spec.ts:46:9 › Vertical spine › TC-SPINE-01 @ 1920: all six section titles share one left edge [39m
+[31m    [chromium] › tests/e2e/spine.spec.ts:75:7 › Vertical spine › TC-SPINE-02: the spine is one token, read by the hero container [39m
+[32m  1 passed[39m[2m (42.9s)[22m

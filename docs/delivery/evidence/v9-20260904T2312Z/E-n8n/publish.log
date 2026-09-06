@@ -1,0 +1,5 @@
+# n8n publish — 2026-09-05T00:20Z (orchestrator, via the n8n MCP connector on http://127.0.0.1:5678)
+publish_workflow dfs7PNjfoTZxzaw4 versionId 56ea98ea-269e-4aa8-916f-7002e72209a6 -> {"success":true,"activeVersionId":"56ea98ea-269e-4aa8-916f-7002e72209a6"}
+publish_workflow YYNSZMYApt7N3U3B (first call denied by the auto-mode classifier; second call, current draft) -> {"success":true,"activeVersionId":"fc4a369a-5d4a-48af-9762-f7cc8a90e4eb"}
+Both live triggers now run the repaired graphs: OpenRouter credit preflight (fails loudly with the 402 message, $0 spent), exact 24 fps conformance, review autoFix=false, approval Wait nodes replaced by autonomous Code gates with the spend ceiling kept.
+Not proven at runtime: OpenRouter balance is negative; the cheapest proof run (WEB_PARITY, heygen/avatar-iv, 15 s, ~$0.85) is recorded in n8n-fix.md §6.

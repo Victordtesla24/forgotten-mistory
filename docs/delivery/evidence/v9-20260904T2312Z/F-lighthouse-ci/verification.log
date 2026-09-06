@@ -1,0 +1,84 @@
+# Verification transcript — Phase F lighthouse CI fix (outputs copied verbatim from tool calls in this session, 2026-09-05 01:08Z–01:2xZ)
+# cwd /root/forgotten-mistory/.claude/worktrees/wf_c737298c-fc7-1 · branch worktree-wf_c737298c-fc7-1 · commit b733e41b50d6486582151d088f19479a50a798e9
+
+## 1. Baseline before any change
+$ node --test tests/ci_pipeline.test.mjs
+# tests 20
+# suites 6
+# pass 20
+# fail 0
+
+## 2. Contract tests added, workflow still unfixed (test-first proof)
+$ node --test tests/ci_pipeline.test.mjs
+    not ok 4 - lighthouse report upload reads .lighthouseci/ with include-hidden-files and stays fail-loud
+      error: 'upload-artifact@v4 skips every file under a dot-directory unless include-hidden-files: true (run 33933075366 uploaded nothing and failed the job)'
+    not ok 5 - every upload-artifact step whose path starts with "." sets include-hidden-files: true
+      error: 'upload-artifact@v4 would upload nothing from hidden path .lighthouseci/ without include-hidden-files: true'
+# tests 22
+# pass 20
+# fail 2
+
+## 3. After the fix
+$ node --test tests/ci_pipeline.test.mjs
+    ok 4 - lighthouse report upload reads .lighthouseci/ with include-hidden-files and stays fail-loud
+    ok 5 - every upload-artifact step whose path starts with "." sets include-hidden-files: true
+# tests 22
+# suites 6
+# pass 22
+# fail 0
+# cancelled 0
+
+$ node -e "js-yaml load deploy.yml; print lighthouse upload step"
+js-yaml 4.3.1 parse OK; jobs: 12
+lighthouse steps: 9 timeout 15
+upload step with: {"name":"lighthouse-html-report","path":".lighthouseci/","include-hidden-files":true,"if-no-files-found":"error","retention-days":30} if: always() continue-on-error: undefined
+build.needs: ["quality","lint","lighthouse","axe"]
+
+$ node scripts/validate/ci_pipeline_robustness.mjs
+  [PASS] R6-TSC-FASTFAIL      tsc fast-fail mirrored in lint job
+  [PASS] INV-TEST-COE         test has continue-on-error
+  [PASS] INV-TEST-GPU-COE     test-gpu has continue-on-error
+  [PASS] INV-GEMINI-KEY       GEMINI_API_KEY present (fail-loud invariant)
+  [PASS] R6-TIMEOUT           all 12 jobs have timeout-minutes
+  ------------------------------------------------------------
+  RESULT: ALL PASS (27/27)
+
+$ git diff --stat
+ .github/workflows/deploy.yml | 14 ++++++++++----
+ README.md                    |  1 +
+ tests/ci_pipeline.test.mjs   | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 53 insertions(+), 4 deletions(-)
+
+## 4. Version pinning check (candidate d)
+$ npx --yes @lhci/cli@0.13.0 --version
+0.13.0
+$ npm view @lhci/cli@0.13 version
+0.13.0
+$ npm view @lhci/cli version
+0.15.1
+
+## 5. upload-artifact resolution (from the job log + git ls-remote)
+Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+$ git ls-remote --tags https://github.com/actions/upload-artifact | grep ea165f8d
+ea165f8d65b6e75b540449e92b4886f43607fa02	refs/tags/v4
+ea165f8d65b6e75b540449e92b4886f43607fa02	refs/tags/v4.6.2
+
+## 6. Upstream source (fetched from raw.githubusercontent.com)
+actions/toolkit packages/glob/src/internal-globber.ts:
+131-      // Hidden file or directory?
+132:      if (options.excludeHiddenFiles && path.basename(item.path).match(/^\./)) {
+133-        continue
+134-      }
+135-
+136-      // Directory
+137-      if (stats.isDirectory()) {
+actions/upload-artifact v4.6.2 src/shared/search.ts:
+14:function getDefaultGlobOptions(includeHiddenFiles: boolean): glob.GlobOptions {
+19:    excludeHiddenFiles: !includeHiddenFiles
+89:    getDefaultGlobOptions(includeHiddenFiles || false)
+actions/upload-artifact README:
+450: Hidden files are defined as any file beginning with `.` or files within folders beginning with `.`.
+
+## 7. When the failing configuration landed
+$ git log -S"if-no-files-found: error" --format='%h %ad %s' --date=short -- .github/workflows/deploy.yml
+4174eea 2026-09-04 Merging everythig on nain

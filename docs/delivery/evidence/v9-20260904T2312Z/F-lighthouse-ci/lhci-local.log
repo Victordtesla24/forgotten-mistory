@@ -1,0 +1,36 @@
+# lhci local reproduction — 2026-09-05T01:11:28Z
+# host: Linux 7.0.0-31-generic x86_64; node v22.23.1; chrome: Google Chrome 152.0.7977.82 
+# cwd: /root/forgotten-mistory/.claude/worktrees/wf_c737298c-fc7-1  branch: worktree-wf_c737298c-fc7-1
+# static server: python3 -m http.server 5611 --directory /root/forgotten-mistory/out --bind 127.0.0.1
+# server ready: http_code=200 at 2026-09-05T01:11:37Z
+$ CHROME_PATH=/usr/bin/google-chrome npx --yes @lhci/cli@0.13.0 collect --url=http://127.0.0.1:5611/ --numberOfRuns=3 --settings.preset=desktop --settings.chromeFlags="--no-sandbox --headless=new --disable-gpu --disable-dev-shm-usage"
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'lhci' collect --url=http://127.0.0.1:5611/ --numberOfRuns=3 --settings.preset=desktop --settings.chromeFlags=--no-sandbox --headless=new --disable-gpu --disable-dev-shm-usage
+Running Lighthouse 3 time(s) on http://127.0.0.1:5611/
+Run #1...done.
+Run #2...done.
+Run #3...done.
+Done running Lighthouse!
+collect exit=0
+$ ls -la .lighthouseci
+total 3516
+drwxr-xr-x  2 root root   4096 Sep  5 01:12 .
+drwxr-xr-x 20 root root   4096 Sep  5 01:11 ..
+-rw-r--r--  1 root root 641747 Sep  5 01:12 lhr-1788570726806.html
+-rw-r--r--  1 root root 556811 Sep  5 01:12 lhr-1788570726806.json
+-rw-r--r--  1 root root 637072 Sep  5 01:12 lhr-1788570747845.html
+-rw-r--r--  1 root root 556036 Sep  5 01:12 lhr-1788570747845.json
+-rw-r--r--  1 root root 636445 Sep  5 01:12 lhr-1788570776849.html
+-rw-r--r--  1 root root 553961 Sep  5 01:12 lhr-1788570776849.json
+$ ls -la .lighthouseci/reports
+ls: cannot access '.lighthouseci/reports': No such file or directory
+$ readlink -f .lighthouseci/lhr-*.json
+/root/forgotten-mistory/.claude/worktrees/wf_c737298c-fc7-1/.lighthouseci/lhr-1788570726806.json
+/root/forgotten-mistory/.claude/worktrees/wf_c737298c-fc7-1/.lighthouseci/lhr-1788570747845.json
+/root/forgotten-mistory/.claude/worktrees/wf_c737298c-fc7-1/.lighthouseci/lhr-1788570776849.json
+$ jq: requestedUrl / categories.performance.score / lighthouseVersion per report
+.lighthouseci/lhr-1788570726806.json  requestedUrl=http://127.0.0.1:5611/  performance=0.95  lighthouseVersion=11.4.0
+.lighthouseci/lhr-1788570747845.json  requestedUrl=http://127.0.0.1:5611/  performance=0.89  lighthouseVersion=11.4.0
+.lighthouseci/lhr-1788570776849.json  requestedUrl=http://127.0.0.1:5611/  performance=0.96  lighthouseVersion=11.4.0
+$ median performance (jq -s)
+0.95

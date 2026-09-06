@@ -1,0 +1,82 @@
+# 04 — the item's own tests, green
+# Work item: Spacing scale, motion bands and the type scale (R-48/SC-29.1, R-46/SC-27.1, R-47/SC-28.1)
+# host      : srv1356245
+# date      : 2026-09-03T23:02:05+00:00
+# repo      : /root/forgotten-mistory
+# commit    : 4e8f11c7fe2b3c1bfec13cdb98d9675cc825c91b  (feat(deploy): ship from a commit, never from a desk)
+# node      : v22.23.1
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' --version
+# playwright: Version 1.57.0
+# chrome    : Google Chrome 152.0.7977.75 
+
+################################################################################
+# PART 1 — STATIC ASSERTIONS
+# $ node scripts/validate/grid_motion_type_audit.mjs
+################################################################################
+
+  GRID · MOTION · TYPE AUDIT — R-46 / R-47 / R-48
+  ------------------------------------------------------------------------
+  [PASS] TC-NFR-GRID                    R-48/SC-29.1 — every spacing literal resolves to the 8-point scale
+         0 non-conforming spacing value(s) across 11 module(s)
+  [PASS] TC-NFR-GRID-TOKENS             R-48/SC-29.1 — the 8-point scale is declared as --space-* custom properties
+         12/12 --space-* tokens declared
+  [PASS] TC-NFR-MOTION-TOKENS           R-46/SC-27.1 — every --motion-* duration token sits inside an R-46 band
+         0 out-of-band motion token(s)
+  [PASS] TC-NFR-MOTION-BAND             R-46/SC-27.1 — every authored duration sits inside an R-46 band
+         0 out-of-band duration(s)
+  [PASS] TC-NFR-MOTION-EASE             R-46/SC-27.1 — custom cubic-bezier only, no timing keywords
+         0 keyword-eased or unspecified timing function(s)
+  [PASS] TC-NFR-MOTION-TOKENISED        R-46/SC-27.1 — every duration is a --motion-* token, never a literal
+         0 untokenised duration(s)
+  [PASS] TC-NFR-MOTION-COMPOSITOR       R-46/SC-27.1 — transitions target compositor-safe properties only
+         0 layout-triggering transition(s)
+  [PASS] TC-NFR-SCALE-TOKENS            R-47/SC-28.1 — a 10-step modular type scale is declared as --fs-* tokens
+         10/10 --fs-* tokens declared
+  [PASS] TC-NFR-SCALE-MEASURE-TOKENS    R-47/SC-28.1 — the 55–75ch measure is declared as a token
+         2/2 measure tokens declared
+  [PASS] TC-NFR-SCALE-CONSUMED          R-47/SC-28.1 — every module font-size consumes the scale, never a literal
+         0 literal font-size declaration(s), 0 distinct value(s)
+  [PASS] TC-NFR-SCALE-LEADING           R-47/SC-28.1 — line-height is bound to the step, collapsing to six values
+         0 unbound line-height value(s)
+  [PASS] TC-NFR-SCALE-MEASURE           R-47/SC-28.1 — every measure is a token, and prose sits in the 55–75ch band
+         0 literal ch measure(s)
+  [PASS] TC-NFR-TOKENS-FILE             R-47/R-48 — design-tokens.json describes the shipped type and grid
+         0 stale token declaration(s)
+  ------------------------------------------------------------------------
+  RESULT: ALL PASS (13/13 checks, 0 assertion failures)
+
+  📄 JSON report → reports/grid-motion-type-audit.json
+
+# exit=0
+
+################################################################################
+# PART 2 — RUNTIME ASSERTIONS
+# $ PLAYWRIGHT_BASE_URL=http://127.0.0.1:5611 npx playwright test tests/overhaul/design-scale.spec.ts
+#   (the static export of this tree, served from a private snapshot of out/ —
+#    three sibling implementers were rebuilding out/ concurrently, so the export
+#    was copied to a scratch directory and served on its own port. Playwright
+#    still has no webServer and no globalSetup.)
+################################################################################
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/design-scale.spec.ts --reporter=line
+
+Running 16 tests using 2 workers
+
+[1/16] [chromium] › tests/overhaul/design-scale.spec.ts:171:9 › design scale @ 375px › R-46/SC-27.1 every rendered duration sits inside an R-46 band
+[2/16] [chromium] › tests/overhaul/design-scale.spec.ts:146:9 › design scale @ 375px › R-48/SC-29.1 the 8-point scale resolves as --space-* custom properties
+[3/16] [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 375px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale
+[4/16] [chromium] › tests/overhaul/design-scale.spec.ts:259:9 › design scale @ 375px › R-47/SC-28.1 every prose measure renders between 55 and 75 characters
+[5/16] [chromium] › tests/overhaul/design-scale.spec.ts:146:9 › design scale @ 768px › R-48/SC-29.1 the 8-point scale resolves as --space-* custom properties
+[6/16] [chromium] › tests/overhaul/design-scale.spec.ts:171:9 › design scale @ 768px › R-46/SC-27.1 every rendered duration sits inside an R-46 band
+[7/16] [chromium] › tests/overhaul/design-scale.spec.ts:259:9 › design scale @ 768px › R-47/SC-28.1 every prose measure renders between 55 and 75 characters
+[8/16] [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 768px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale
+[9/16] [chromium] › tests/overhaul/design-scale.spec.ts:146:9 › design scale @ 1280px › R-48/SC-29.1 the 8-point scale resolves as --space-* custom properties
+[10/16] [chromium] › tests/overhaul/design-scale.spec.ts:171:9 › design scale @ 1280px › R-46/SC-27.1 every rendered duration sits inside an R-46 band
+[11/16] [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1280px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale
+[12/16] [chromium] › tests/overhaul/design-scale.spec.ts:259:9 › design scale @ 1280px › R-47/SC-28.1 every prose measure renders between 55 and 75 characters
+[13/16] [chromium] › tests/overhaul/design-scale.spec.ts:146:9 › design scale @ 1920px › R-48/SC-29.1 the 8-point scale resolves as --space-* custom properties
+[14/16] [chromium] › tests/overhaul/design-scale.spec.ts:171:9 › design scale @ 1920px › R-46/SC-27.1 every rendered duration sits inside an R-46 band
+[15/16] [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1920px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale
+[16/16] [chromium] › tests/overhaul/design-scale.spec.ts:259:9 › design scale @ 1920px › R-47/SC-28.1 every prose measure renders between 55 and 75 characters
+  16 passed (40.1s)

@@ -1,0 +1,152 @@
+================================================================================
+ WAVE 4 · TELEMETRY + RECONCILED SELF-CLAIM — TESTS OBSERVED PASSING
+ run  : v6-20260903T195241Z
+ where: /var/tmp/v6-wt/data-backend  (branch wt/data-backend, uncommitted)
+ served: python3 -m http.server 5601 --directory out   (static export)
+ The 40 assertions captured red in 02-tests-failing.log are green below.
+================================================================================
+
+################################################################################
+# 1/3  node scripts/validate/telemetry_contract_audit.mjs
+################################################################################
+
+Telemetry contract audit — R-87 / R-88 / R-183
+
+  PASS  TEL-SRC-01  The first-party beacon module exists
+        lib/telemetry/beacon.ts present (3249 bytes)
+  PASS  TEL-SRC-02  The beacon posts via navigator.sendBeacon to the same-origin path /api/telemetry
+        navigator.sendBeacon(: true · '/api/telemetry' literal: true · absolute URLs in beacon: none
+  PASS  TEL-SRC-03  The beacon reads no cookie, no storage and no device/browser attribute that could re-identify a visitor
+        forbidden reads found: none
+  PASS  TEL-SRC-04  functions/index.js exports telemetryCollect and telemetryPrune (D-04: the server side is the already-working Functions path)
+        exports.telemetryCollect: true · exports.telemetryPrune: true
+  PASS  TEL-SRC-05  firebase.json rewrites /api/telemetry to telemetryCollect, so the collector is first-party by construction
+        /api/telemetry -> telemetryCollect (us-central1)
+  PASS  TEL-SRC-06  The telemetry collector adds NO host to connect-src — the zero-third-party-request property survives instrumentation
+        observed: connect-src 'self' ws: wss: https://api.github.com https://generativelanguage.googleapis.com https://*.googleapis.com
+  PASS  TEL-SRC-07  functions/lib/telemetry.js exposes the collector's pure logic so it is unit-testable off Firebase
+        missing exports: none
+  PASS  TEL-SRC-08  The collector names all nine R-87 dimensions as accepted events (dwell, scroll depth, drop-off, carousel depth, chatbot session, chatbot topic, avatar play, avatar completion, conversion)
+        event names not found in the collector: none
+  PASS  TEL-SRC-09  Raw-event retention is exactly 30 days, is enforced by pruneExpired, and is the same number the published sentence prints
+        RETENTION_DAYS in collector: 30 · pruneExpired references it: true · sentence prints 30: true
+  PASS  TEL-183  R-183 lock: the analytics self-claim and the instrumentation are in the same state — both old, or both new, never one of each
+        instrumentation present (beacon: true, collector: true) · colophon carries the reconciled clause: true · vitrine plate 06 carries the reconciled description: true · legacy "no analytics" claim still on the page: false
+  PASS  TEL-SRC-10  listenContent.colophon carries the reconciled measurement clause verbatim
+        present
+  PASS  TEL-SRC-11  The vitrine plate for this site describes the measurement instead of denying it
+        present
+  PASS  TEL-SRC-12  listenContent.measurementNotice publishes the full sentence plus the machine-readable measured / neverCollected / notAuthoredByThisPage lists (SC-30 platform logs, SC-23 the question reaching OpenRouter)
+        measurementNotice key: true · sentence verbatim: true · measured ids missing: none · neverCollected ids missing: none · notAuthoredByThisPage ids missing: none
+  PASS  TEL-SRC-13  The telemetry store returns a cached snapshot reference and reads no device API in a useState initializer — the 2026-07-09 outage mode (React #185 / #425) is structurally excluded
+        files scanned: beacon.ts, runtime.ts, schema.ts, store.ts · offences: none
+  PASS  TEL-SRC-14  No consent wall, cookie banner or preference dialog exists — nothing is collected that could require one
+        no consent vocabulary in app/, components/ or lib/
+  PASS  TEL-SRC-15  The R-88 aggregate exists and every metric carries provenance with a real retrievedAt, and never a zero standing in for an unobserved window
+        6 sections, all fields provenance-carrying
+  PASS  TEL-SRC-16  scripts/build/aggregate_telemetry.mjs exists and runs inside build:static — the aggregate is deploy-time, not a file someone remembers to update (the exact defect B-3 records for harvest_repos.mjs)
+        script present: true · referenced by build:static: true
+  PASS  TEL-SRC-17  No third-party analytics package is a dependency
+        35 dependencies, none of them a third-party analytics SDK
+  PASS  TEL-SRC-18  lib/telemetry/schema.ts and lib/telemetry/store.ts exist — one event vocabulary, one referentially-stable store
+        lib/telemetry/schema.ts: present · lib/telemetry/store.ts: present
+
+  19/19 checks passed
+
+EXIT=0
+
+################################################################################
+# 2/3  node --test tests/telemetry/collector.contract.mjs
+################################################################################
+TAP version 13
+# Subtest: TEL-COLLECT: what the collector will accept
+    # Subtest: TEL-COLLECT-01: ACCEPTED_EVENTS is exactly the nine R-87 dimensions, in order
+    ok 1 - TEL-COLLECT-01: ACCEPTED_EVENTS is exactly the nine R-87 dimensions, in order
+    # Subtest: TEL-COLLECT-02: an envelope with no events array is rejected as events_required
+    ok 2 - TEL-COLLECT-02: an envelope with no events array is rejected as events_required
+    # Subtest: TEL-COLLECT-03: an event name outside the nine is rejected as unknown_event
+    ok 3 - TEL-COLLECT-03: an event name outside the nine is rejected as unknown_event
+    # Subtest: TEL-COLLECT-04: an oversized envelope is rejected as too_many_events
+    ok 4 - TEL-COLLECT-04: an oversized envelope is rejected as too_many_events
+    # Subtest: TEL-COLLECT-05: a chatbot topic must arrive as a topic index, never as the visitor’s words
+    ok 5 - TEL-COLLECT-05: a chatbot topic must arrive as a topic index, never as the visitor’s words
+    # Subtest: TEL-COLLECT-06: a rejection never echoes the submitted payload back
+    ok 6 - TEL-COLLECT-06: a rejection never echoes the submitted payload back
+    1..6
+ok 1 - TEL-COLLECT: what the collector will accept
+# Subtest: TEL-SANITISE: what the collector refuses to keep
+    # Subtest: TEL-SANITISE-01: a sanitised event carries exactly {at, name, section, value} and nothing else
+    ok 1 - TEL-SANITISE-01: a sanitised event carries exactly {at, name, section, value} and nothing else
+    # Subtest: TEL-SANITISE-02: no identifying key survives sanitisation, at any depth
+    ok 2 - TEL-SANITISE-02: no identifying key survives sanitisation, at any depth
+    # Subtest: TEL-SANITISE-03: the timestamp is coarsened to the minute, so it cannot join two events into a trail
+    ok 3 - TEL-SANITISE-03: the timestamp is coarsened to the minute, so it cannot join two events into a trail
+    # Subtest: TEL-SANITISE-04: an unknown section is normalised away rather than stored as free text
+    ok 4 - TEL-SANITISE-04: an unknown section is normalised away rather than stored as free text
+    # Subtest: TEL-SANITISE-05: value is coerced to a finite, non-negative, integer count
+    ok 5 - TEL-SANITISE-05: value is coerced to a finite, non-negative, integer count
+    1..5
+ok 2 - TEL-SANITISE: what the collector refuses to keep
+# Subtest: TEL-RETAIN: the retention policy is enforced, not documented
+    # Subtest: TEL-RETAIN-01: RETENTION_DAYS is 30, the number the published sentence prints
+    ok 1 - TEL-RETAIN-01: RETENTION_DAYS is 30, the number the published sentence prints
+    # Subtest: TEL-RETAIN-02: pruneExpired deletes strictly older than the cutoff and keeps the boundary row
+    ok 2 - TEL-RETAIN-02: pruneExpired deletes strictly older than the cutoff and keeps the boundary row
+    1..2
+ok 3 - TEL-RETAIN: the retention policy is enforced, not documented
+# Subtest: TEL-AGG: the aggregation that feeds the R-88 reopen loop
+    # Subtest: TEL-AGG-01: dwell medians are the hand-computed values, not an approximation
+    ok 1 - TEL-AGG-01: dwell medians are the hand-computed values, not an approximation
+    # Subtest: TEL-AGG-02: drop-off rate is events over observed visits, to four places
+    ok 2 - TEL-AGG-02: drop-off rate is events over observed visits, to four places
+    # Subtest: TEL-AGG-03 (R-175): a section with no events is not-observable with a reason — never a zero
+    ok 3 - TEL-AGG-03 (R-175): a section with no events is not-observable with a reason — never a zero
+    # Subtest: TEL-AGG-04 (R-175): an EMPTY event set yields not-observable everywhere, and no zeros anywhere
+    ok 4 - TEL-AGG-04 (R-175): an EMPTY event set yields not-observable everywhere, and no zeros anywhere
+    # Subtest: TEL-AGG-05: every aggregated field carries provenance with a real, recent retrievedAt and a runnable method
+    ok 5 - TEL-AGG-05: every aggregated field carries provenance with a real, recent retrievedAt and a runnable method
+    # Subtest: TEL-AGG-06: the aggregate contains no identifying key at any depth
+    ok 6 - TEL-AGG-06: the aggregate contains no identifying key at any depth
+    # Subtest: TEL-AGG-07 (R-88): underperformingSections names skills and refuses to judge the unobserved section
+    ok 7 - TEL-AGG-07 (R-88): underperformingSections names skills and refuses to judge the unobserved section
+    # Subtest: TEL-AGG-08 (R-88): a section is never reopened on the strength of a value nobody measured
+    ok 8 - TEL-AGG-08 (R-88): a section is never reopened on the strength of a value nobody measured
+    1..8
+ok 4 - TEL-AGG: the aggregation that feeds the R-88 reopen loop
+1..4
+# tests 21
+# suites 4
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 115.44283
+EXIT=0
+
+################################################################################
+# 3/3  npx playwright test tests/overhaul/telemetry-first-party.spec.ts tests/overhaul/telemetry-stability.spec.ts
+#      (PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601)
+################################################################################
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/telemetry-first-party.spec.ts tests/overhaul/telemetry-stability.spec.ts --reporter=list
+
+Running 14 tests using 2 workers
+
+  ✓   2 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:147:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-02: the visit sends at least one beacon to the same-origin collector (9.2s)
+  ✓   1 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:127:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-01: instrumenting the page still fires ZERO third-party requests (9.4s)
+  ✓   3 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:169:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-03: the beacon payload carries only {at, name, section, value} and no identifier (9.3s)
+  ✓   4 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:197:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-04: after a full visit there are no cookies and no identifier in storage (9.2s)
+  ✓   6 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:224:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-06 (R-183): the rendered colophon states what is measured and no longer claims "no analytics" (2.0s)
+  ✓   5 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:216:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-05: no consent wall, banner or preference dialog exists (9.6s)
+  ✓   8 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:264:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-08 (R-88): the shipped aggregate names the sections the loop must reopen (425ms)
+  ✓   7 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:240:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-07: the telemetry store never trips the 2026-07-09 render loop (React #185 / #425) (12.7s)
+  ✓   9 [chromium] › tests/overhaul/telemetry-stability.spec.ts:109:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-01: no uncaught React exceptions (max-update-depth / hydration) (5.6s)
+  ✓  10 [chromium] › tests/overhaul/telemetry-stability.spec.ts:119:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-02: page shows real content, never the error boundary (5.4s)
+  ✓  11 [chromium] › tests/overhaul/telemetry-stability.spec.ts:134:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-03: the stateful sections keep rendering after being driven (6.9s)
+  ✓  12 [chromium] › tests/overhaul/telemetry-stability.spec.ts:163:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-04: no hydration-mismatch console errors on first paint (5.4s)
+  ✓  13 [chromium] › tests/overhaul/telemetry-stability.spec.ts:184:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-05: full scroll never trips error boundary or React #185/#425 (7.7s)
+  ✓  14 [chromium] › tests/overhaul/telemetry-stability.spec.ts:200:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-06: no duplicate React keys during a full scroll (7.6s)
+
+  14 passed (53.1s)
+EXIT=0

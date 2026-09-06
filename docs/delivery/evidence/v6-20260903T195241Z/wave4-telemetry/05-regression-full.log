@@ -1,0 +1,856 @@
+================================================================================
+ WAVE 4 · TELEMETRY — FULL GATE BATTERY / REGRESSION RUN
+ run    : v6-20260903T195241Z
+ where  : /var/tmp/v6-wt/data-backend  (branch wt/data-backend, NOT committed)
+ served : python3 -m http.server 5601 --directory out
+ browser: chromium { channel: 'chrome' }
+
+ GATE RESULTS
+   npx tsc --noEmit ................................. clean (exit 0)
+   npm run lint ..................................... "✔ No ESLint warnings or errors"
+   node scripts/validate/overhaul_static_audit.mjs ... ALL PASS (10/10)
+   node scripts/validate/telemetry_contract_audit.mjs  19/19  (was 4/19)
+   node --test tests/telemetry/collector.contract.mjs  21/21  (was 0/21)
+   npm run build:static ............................. exit 0
+   npx playwright test (full suite) ................. 183 passed, 12 failed
+
+ THE 12 REMAINING FAILURES, AGAINST THE STATE THIS UNIT INHERITED
+ The prior unit in this wave recorded 181 passed / 14 failed at
+ wave4-dataset/05-regression-full.log:970. Difference, exactly:
+
+   FIXED BY THIS UNIT (4)
+     TEL-FP-02  the visit sends at least one beacon to the same-origin collector
+     TEL-FP-03  the beacon payload carries only {at,name,section,value}
+     TEL-FP-06  the rendered colophon states what is measured
+     TEL-FP-08  the shipped aggregate names the sections the loop must reopen
+   STILL RED, INHERITED, NOT THIS UNIT'S (10)
+     DATA-03/04/05/06/08/09/10/11/13  — the canonical dataset unit's own
+       remaining work: the six sections do not yet render [data-mark-id] /
+       [data-caliper] / [data-viz-id] elements. Untouched by this unit.
+     VIS-04  Listen (closing) section screenshot — the prior unit proved with an
+       A/B revert that this baseline is stale with respect to HEAD
+       (wave4-dataset/05-regression-full.log:986-1000).
+   NEW, CAUSED BY THIS UNIT (2) — see the note at the end of this file
+     TC-VIT-09  every plate rules its metrics on the same line
+     VIS-05     Vitrine section screenshot
+================================================================================
+
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test --reporter=list
+TAP version 13
+# Subtest: R6 pipeline structure
+    # Subtest: has all 10 required jobs
+    ok 1 - has all 10 required jobs
+      ---
+      duration_ms: 1.126789
+      type: 'test'
+      ...
+    # Subtest: quality job runs tsc + static audit + robustness + contract tests
+    ok 2 - quality job runs tsc + static audit + robustness + contract tests
+      ---
+      duration_ms: 0.168501
+      type: 'test'
+      ...
+    1..2
+ok 1 - R6 pipeline structure
+  ---
+  duration_ms: 2.062695
+  type: 'suite'
+  ...
+# Subtest: R6 invariants
+    # Subtest: build.needs excludes test and test-gpu (deploy never blocked on GPU runner)
+    ok 1 - build.needs excludes test and test-gpu (deploy never blocked on GPU runner)
+      ---
+      duration_ms: 0.342222
+      type: 'test'
+      ...
+    # Subtest: deploy only runs on main push
+    ok 2 - deploy only runs on main push
+      ---
+      duration_ms: 0.207892
+      type: 'test'
+      ...
+    # Subtest: test and test-gpu have continue-on-error
+    ok 3 - test and test-gpu have continue-on-error
+      ---
+      duration_ms: 0.228302
+      type: 'test'
+      ...
+    # Subtest: GEMINI_API_KEY used in build (fail-loud invariant)
+    ok 4 - GEMINI_API_KEY used in build (fail-loud invariant)
+      ---
+      duration_ms: 0.253082
+      type: 'test'
+      ...
+    # Subtest: STAGE 7: verify job runs after deploy and asserts production HTTP 200
+    ok 5 - STAGE 7: verify job runs after deploy and asserts production HTTP 200
+      ---
+      duration_ms: 0.342642
+      type: 'test'
+      ...
+    # Subtest: PR runs never auto-deploy to live (preview only)
+    ok 6 - PR runs never auto-deploy to live (preview only)
+      ---
+      duration_ms: 0.464174
+      type: 'test'
+      ...
+    1..6
+ok 2 - R6 invariants
+  ---
+  duration_ms: 2.328968
+  type: 'suite'
+  ...
+# Subtest: R6 upgrades
+    # Subtest: R6-HIGH: Playwright browser cache present in test and axe
+    ok 1 - R6-HIGH: Playwright browser cache present in test and axe
+      ---
+      duration_ms: 0.287562
+      type: 'test'
+      ...
+    # Subtest: R6-MED: PR preview channel present
+    ok 2 - R6-MED: PR preview channel present
+      ---
+      duration_ms: 0.406122
+      type: 'test'
+      ...
+    # Subtest: R6-MED: Visual-regression baselines artifact present
+    ok 3 - R6-MED: Visual-regression baselines artifact present
+      ---
+      duration_ms: 0.127051
+      type: 'test'
+      ...
+    # Subtest: R6-LOW: Playwright HTML report artifact present
+    ok 4 - R6-LOW: Playwright HTML report artifact present
+      ---
+      duration_ms: 0.091442
+      type: 'test'
+      ...
+    # Subtest: R6-LOW: tsc fast-fail mirrored in lint job
+    ok 5 - R6-LOW: tsc fast-fail mirrored in lint job
+      ---
+      duration_ms: 0.167152
+      type: 'test'
+      ...
+    1..5
+ok 3 - R6 upgrades
+  ---
+  duration_ms: 1.34122
+  type: 'suite'
+  ...
+# Subtest: Concurrency safety
+    # Subtest: cancel-in-progress is conditional on pull_request only
+    ok 1 - cancel-in-progress is conditional on pull_request only
+      ---
+      duration_ms: 0.196101
+      type: 'test'
+      ...
+    1..1
+ok 4 - Concurrency safety
+  ---
+  duration_ms: 0.271522
+  type: 'suite'
+  ...
+# Subtest: Edge cases
+    # Subtest: test job skips for forks (no secrets available)
+    ok 1 - test job skips for forks (no secrets available)
+      ---
+      duration_ms: 0.220141
+      type: 'test'
+      ...
+    # Subtest: test-gpu only runs when E2E_RUNNER_LABELS is set
+    ok 2 - test-gpu only runs when E2E_RUNNER_LABELS is set
+      ---
+      duration_ms: 0.218452
+      type: 'test'
+      ...
+    # Subtest: lighthouse uses lhci with proper budgets
+    ok 3 - lighthouse uses lhci with proper budgets
+      ---
+      duration_ms: 0.17452
+      type: 'test'
+      ...
+    1..3
+ok 5 - Edge cases
+  ---
+  duration_ms: 0.729476
+  type: 'suite'
+  ...
+# Subtest: CI-CD-4: Static audit hardening
+    # Subtest: static audit report artifact is uploaded in quality job
+    ok 1 - static audit report artifact is uploaded in quality job
+      ---
+      duration_ms: 0.184812
+      type: 'test'
+      ...
+    # Subtest: static audit fail-loud test file exists
+    ok 2 - static audit fail-loud test file exists
+      ---
+      duration_ms: 0.144391
+      type: 'test'
+      ...
+    # Subtest: every job has timeout-minutes (R6 guard)
+    ok 3 - every job has timeout-minutes (R6 guard)
+      ---
+      duration_ms: 0.573774
+      type: 'test'
+      ...
+    1..3
+ok 6 - CI-CD-4: Static audit hardening
+  ---
+  duration_ms: 1.023498
+  type: 'suite'
+  ...
+# Subtest: Static audit fail-loud contract
+    # Subtest: baseline: audit passes on clean source (exit 0)
+    ok 1 - baseline: audit passes on clean source (exit 0)
+      ---
+      duration_ms: 157.324129
+      type: 'test'
+      ...
+    # Subtest: TONE violation: injecting banned word in string literal causes exit 1
+    ok 2 - TONE violation: injecting banned word in string literal causes exit 1
+      ---
+      duration_ms: 210.508199
+      type: 'test'
+      ...
+    # Subtest: COMPLETE violation: TODO marker causes exit 1
+    ok 3 - COMPLETE violation: TODO marker causes exit 1
+      ---
+      duration_ms: 174.877838
+      type: 'test'
+      ...
+    # Subtest: MULTI-AXIS violation: multiple failures all reported before exit
+    ok 4 - MULTI-AXIS violation: multiple failures all reported before exit
+      ---
+      duration_ms: 186.51985
+      type: 'test'
+      ...
+    # Subtest: JSON report reflects FAIL when violations present
+    ok 5 - JSON report reflects FAIL when violations present
+      ---
+      duration_ms: 207.447205
+      type: 'test'
+      ...
+    # Subtest: JSON report reflects PASS on clean source
+    ok 6 - JSON report reflects PASS on clean source
+      ---
+      duration_ms: 203.677784
+      type: 'test'
+      ...
+    1..6
+ok 7 - Static audit fail-loud contract
+  ---
+  duration_ms: 1141.702134
+  type: 'suite'
+  ...
+
+Running 195 tests using 2 workers
+
+  ✓    2 [chromium] › tests/a11y/accessibility.spec.ts:107:7 › A11y: axe-core Accessibility Audit › A11Y-02: Hero section passes axe check (3.6s)
+  ✓    1 [chromium] › tests/a11y/accessibility.spec.ts:85:7 › A11y: axe-core Accessibility Audit › A11Y-01: Full page passes axe check (wcag2a + wcag2aa + wcag21a + wcag21aa) (6.5s)
+  ✓    3 [chromium] › tests/a11y/accessibility.spec.ts:112:7 › A11y: axe-core Accessibility Audit › A11Y-03: About section passes axe check (4.0s)
+  ✓    4 [chromium] › tests/a11y/accessibility.spec.ts:117:7 › A11y: axe-core Accessibility Audit › A11Y-04: Experience section passes axe check (3.7s)
+  ✓    5 [chromium] › tests/a11y/accessibility.spec.ts:122:7 › A11y: axe-core Accessibility Audit › A11Y-05: Skills section passes axe check (4.3s)
+  ✓    6 [chromium] › tests/a11y/accessibility.spec.ts:127:7 › A11y: axe-core Accessibility Audit › A11Y-06: Vitrine rail passes axe check, including scrollable-region-focusable (3.8s)
+  ✓    7 [chromium] › tests/a11y/accessibility.spec.ts:132:7 › A11y: axe-core Accessibility Audit › A11Y-07: Listen (closing) section passes axe check (4.8s)
+  ✓    8 [chromium] › tests/a11y/accessibility.spec.ts:137:7 › A11y: axe-core Accessibility Audit › A11Y-08: Navigation overlay (open state) passes axe check (4.1s)
+  ✓    9 [chromium] › tests/a11y/accessibility.spec.ts:148:7 › A11y: axe-core Accessibility Audit › A11Y-09: Tab moves focus forward through real, visible controls (5.1s)
+  ✓   10 [chromium] › tests/a11y/accessibility.spec.ts:178:7 › A11y: axe-core Accessibility Audit › A11Y-10: Keyboard Escape closes the nav overlay and returns focus to the toggle (4.6s)
+  ✓   11 [chromium] › tests/a11y/accessibility.spec.ts:192:7 › A11y: axe-core Accessibility Audit › A11Y-11: The page exposes one navigation landmark and one main landmark (2.3s)
+  ✓   12 [chromium] › tests/a11y/accessibility.spec.ts:198:7 › A11y: axe-core Accessibility Audit › A11Y-12: Every section is reachable by its own accessible name (2.4s)
+  ✓   14 [chromium] › tests/content/content-check.spec.ts:41:7 › Content Preservation › CT-01: Hero name from hero.ts appears verbatim (1.7s)
+  ✓   15 [chromium] › tests/content/content-check.spec.ts:46:7 › Content Preservation › CT-02: Hero positioning line appears verbatim (1.7s)
+  ✓   16 [chromium] › tests/content/content-check.spec.ts:53:7 › Content Preservation › CT-03: Hero statement states a tenure and names the current engagement (1.8s)
+  ✓   13 [chromium] › tests/a11y/accessibility.spec.ts:212:7 › A11y: axe-core Accessibility Audit › A11Y-13: Images have alt text, links and buttons have discernible names (7.3s)
+  ✓   17 [chromium] › tests/content/content-check.spec.ts:72:7 › Content Preservation › CT-05: About carries the career facts (1.7s)
+  ✓   18 [chromium] › tests/content/content-check.spec.ts:85:7 › Content Preservation › CT-04: Every employer on the CV is named in the experience timeline (2.6s)
+  ✓   19 [chromium] › tests/content/content-check.spec.ts:104:7 › Content Preservation › CT-06: All six curated repositories render as plates with real GitHub links (2.0s)
+  ✓   20 [chromium] › tests/content/content-check.spec.ts:124:7 › Content Preservation › CT-07: The Vedic-astronomy work survives the rebuild as a vitrine plate (2.6s)
+  ✓   21 [chromium] › tests/content/content-check.spec.ts:137:7 › Content Preservation › CT-08: Credentials and the un-held certification both appear in the calibration table (2.5s)
+  ✓   22 [chromium] › tests/content/content-check.spec.ts:159:7 › Content Preservation › CT-09: Contact channels from siteContent appear verbatim in the closing section (2.0s)
+  ✓   23 [chromium] › tests/content/content-check.spec.ts:172:7 › Content Preservation › CT-10: Every hero figure is printed with the source it came from (2.8s)
+  ✓   24 [chromium] › tests/content/content-check.spec.ts:214:7 › Content Preservation › CT-11: GitHub and LinkedIn are linked from the closing section (2.2s)
+  ✓   25 [chromium] › tests/content/content-check.spec.ts:232:7 › Content Preservation › CT-15: LinkedIn (primary recruiter channel) is linked from the persistent navigation (2.9s)
+  ✓   27 [chromium] › tests/content/content-check.spec.ts:255:7 › Content Preservation › CT-17: MiniVic availability default and hiring copy keep active-intent ATO wording (16ms)
+  ✓   28 [chromium] › tests/content/dataset_marks.spec.ts:56:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-01: /dataset-provenance.json is served from the static export and is non-empty (467ms)
+  ✓   29 [chromium] › tests/content/dataset_marks.spec.ts:69:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-02: every provenance-index entry carries source, retrievedAt, method and url (323ms)
+  ✓   26 [chromium] › tests/content/content-check.spec.ts:241:7 › Content Preservation › CT-14: MiniVicBot mounts from the layout without throwing (4.4s)
+  ✘   30 [chromium] › tests/content/dataset_marks.spec.ts:87:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-03: every rendered mark resolves in the provenance index (SC-51.1) (2.4s)
+  ✘   31 [chromium] › tests/content/dataset_marks.spec.ts:99:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-04: mark ids are unique across the rendered page (2.5s)
+  ✘   32 [chromium] › tests/content/dataset_marks.spec.ts:109:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-05: every one of the six sections renders at least one sourced mark (R-95) (2.8s)
+  ✘   33 [chromium] › tests/content/dataset_marks.spec.ts:119:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-06: no mark renders a zero, a dash or a placeholder where a real value belongs (R-175) (2.6s)
+  ✓   34 [chromium] › tests/content/dataset_marks.spec.ts:132:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-07: every mark carries the real observation date of its own value (2.5s)
+  ✘   35 [chromium] › tests/content/dataset_marks.spec.ts:148:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-08: the caliper state is one of the three the grammar defines, and "sourced" is actually reached (2.7s)
+  ✘   36 [chromium] › tests/content/dataset_marks.spec.ts:164:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-09: no figure appears in section prose outside a marked element (SC-51.1, the closing half) (2.4s)
+  ✘   37 [chromium] › tests/content/dataset_marks.spec.ts:209:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-10: every rendered visualisation has a dossier, and every dossier is rendered (R-112) (2.7s)
+  ✘   38 [chromium] › tests/content/dataset_marks.spec.ts:224:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-11: exactly one gold mark per registered visualisation (R-110) (3.0s)
+  ✓   39 [chromium] › tests/content/dataset_marks.spec.ts:237:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-12: the dataset reaches the page with zero third-party requests (R-87, R-183) (3.4s)
+  ✘   40 [chromium] › tests/content/dataset_marks.spec.ts:254:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-13: with JavaScript disabled the marks are still real values, never zeros (R-175, T-39) (2.4s)
+  ✓   41 [chromium] › tests/e2e/about.spec.ts:36:7 › About › TC-ABOUT-01: all ten dimensions render, in the engine’s own order (2.8s)
+  ✓   43 [chromium] › tests/e2e/about.spec.ts:57:7 › About › TC-ABOUT-03: no dimension is given a score (3.1s)
+  ✓   42 [chromium] › tests/e2e/about.spec.ts:44:7 › About › TC-ABOUT-02: every dimension carries an answer and its evidence (4.3s)
+  ✓   44 [chromium] › tests/e2e/about.spec.ts:76:7 › About › TC-ABOUT-04: the dimensions name their source (3.0s)
+  ✓   45 [chromium] › tests/e2e/about.spec.ts:82:7 › About › TC-ABOUT-05: job-side dimensions are labelled as such (3.1s)
+  ✓   46 [chromium] › tests/e2e/about.spec.ts:95:7 › About › TC-ABOUT-06: each dimension is keyboard reachable (4.8s)
+  ✓   47 [chromium] › tests/e2e/about.spec.ts:102:7 › About › TC-ABOUT-07: the section is complete without WebGL (4.4s)
+  ✓   49 [chromium] › tests/e2e/boot-failsafe.spec.ts:38:7 › the hero without JavaScript › the evidence ledger is intact (2.1s)
+  ✓   48 [chromium] › tests/e2e/boot-failsafe.spec.ts:24:7 › the hero without JavaScript › the name, positioning and statement are visible (3.9s)
+  ✓   50 [chromium] › tests/e2e/boot-failsafe.spec.ts:44:7 › the hero without JavaScript › both actions still work as links (2.2s)
+  ✓   52 [chromium] › tests/e2e/chatbot.spec.ts:76:7 › E2E: MiniVicBot Chatbot › TC-BOT-01: MiniVicBot toggle button is visible on the page (1.4s)
+  ✓   51 [chromium] › tests/e2e/boot-failsafe.spec.ts:52:7 › the hero without JavaScript › nothing covers the viewport (3.2s)
+  ✓   53 [chromium] › tests/e2e/chatbot.spec.ts:84:7 › E2E: MiniVicBot Chatbot › TC-BOT-02: Opening MiniVic reveals the panel and chat input (3.7s)
+  ✓   54 [chromium] › tests/e2e/chatbot.spec.ts:92:7 › E2E: MiniVicBot Chatbot › TC-BOT-03: Opening MiniVic shows the curated quick prompts (3.8s)
+  ✓   56 [chromium] › tests/e2e/chatbot.spec.ts:133:7 › E2E: MiniVicBot Chatbot › TC-BOT-05: MiniVicBot open/close cycle does not throw page errors (3.0s)
+  ✓   55 [chromium] › tests/e2e/chatbot.spec.ts:100:7 › E2E: MiniVicBot Chatbot › TC-BOT-04: Closing MiniVic via the launcher hides the panel and clears greeting audio state (3.4s)
+  ✓   58 [chromium] › tests/e2e/chatbot.spec.ts:169:7 › E2E: MiniVicBot Chatbot › TC-BOT-07: The launcher announces which action it will perform (3.2s)
+  ✓   57 [chromium] › tests/e2e/chatbot.spec.ts:146:7 › E2E: MiniVicBot Chatbot › TC-BOT-06: MiniVic shell is a labelled dialog and takes focus when it opens (3.5s)
+  ✓   60 [chromium] › tests/e2e/chatbot.spec.ts:209:7 › E2E: MiniVicBot Chatbot › TC-BOT-09: Mobile shell stays inside the viewport with composer visible (1.9s)
+  ✓   59 [chromium] › tests/e2e/chatbot.spec.ts:187:7 › E2E: MiniVicBot Chatbot › TC-BOT-08: Persona selector is a pressed-state toggle group with one active mode (3.8s)
+  ✓   61 [chromium] › tests/e2e/chatbot.spec.ts:224:7 › E2E: MiniVicBot Chatbot › TC-BOT-10: A question gets exactly one answer, and the composing state clears (4.4s)
+  ✓   62 [chromium] › tests/e2e/chatbot.spec.ts:254:7 › E2E: MiniVicBot Chatbot › TC-BOT-11: The transcript controls are present and say what they do (3.1s)
+  ✓   63 [chromium] › tests/e2e/clone-voice.spec.ts:54:7 › TC-FR-VOICE: Voiceover system › voiceover controller is attached to window by the layout provider (2.8s)
+  ✓   64 [chromium] › tests/e2e/clone-voice.spec.ts:63:7 › TC-FR-VOICE: Voiceover system › voiceover controller starts muted, before any gesture (3.0s)
+  ✓   65 [chromium] › tests/e2e/clone-voice.spec.ts:78:7 › TC-FR-VOICE: Voiceover system › voiceover controller respects the mute toggle once initialised (2.7s)
+  ✓   66 [chromium] › tests/e2e/clone-voice.spec.ts:104:7 › TC-FR-VOICE: Voiceover system › voiceover controller fires each section cue exactly once (2.2s)
+  ✓   67 [chromium] › tests/e2e/clone-voice.spec.ts:124:7 › TC-FR-VOICE: Voiceover system › voiceover controller ambient bed starts and stops (2.3s)
+  ✓   68 [chromium] › tests/e2e/clone-voice.spec.ts:159:7 › TC-FR-VOICE-DYN: Dynamic voiceover cues › a gsap:<section>:enter event reaches the controller as a cue (2.6s)
+  ✓   69 [chromium] › tests/e2e/clone-voice.spec.ts:179:7 › TC-FR-VOICE-DYN: Dynamic voiceover cues › the cue log records triggered sections in order (2.2s)
+  ✓   70 [chromium] › tests/e2e/clone-voice.spec.ts:202:7 › TC-FR-VOICE-DYN: Dynamic voiceover cues › under reduced motion the controller refuses to initialise audio at all (2.0s)
+  ✓   71 [chromium] › tests/e2e/experience.spec.ts:21:7 › Experience › TC-EXP-01: every role from the CV appears in the chart and the list (2.6s)
+  ✓   72 [chromium] › tests/e2e/experience.spec.ts:41:7 › Experience › TC-EXP-02: bar lengths are proportional to real durations (2.8s)
+  ✓   73 [chromium] › tests/e2e/experience.spec.ts:60:7 › Experience › TC-EXP-03: the axis is labelled with real years (3.5s)
+  ✓   74 [chromium] › tests/e2e/experience.spec.ts:67:7 › Experience › TC-EXP-04: each chart row is a real button with an accessible name (3.5s)
+  ✓   75 [chromium] › tests/e2e/experience.spec.ts:75:7 › Experience › TC-EXP-05: the current role opens by default and lists its bullets (2.9s)
+  ✓   76 [chromium] › tests/e2e/experience.spec.ts:82:7 › Experience › TC-EXP-06: roles expand and collapse from the keyboard (3.0s)
+  ✓   77 [chromium] › tests/e2e/experience.spec.ts:93:7 › Experience › TC-EXP-07: headline figures carry their role, not a bare number (2.9s)
+  ✓   78 [chromium] › tests/e2e/experience.spec.ts:102:7 › Experience › TC-EXP-08: the section is complete without WebGL (2.6s)
+  ✓   79 [chromium] › tests/e2e/hero.spec.ts:30:7 › Hero › TC-HERO-01: the name is the page h1 (2.8s)
+  ✓   80 [chromium] › tests/e2e/hero.spec.ts:38:7 › Hero › TC-HERO-02: positioning, location and one-sentence statement render (2.3s)
+  ✓   81 [chromium] › tests/e2e/hero.spec.ts:46:7 › Hero › TC-HERO-03: the statement stays within its word budget (2.2s)
+  ✓   82 [chromium] › tests/e2e/hero.spec.ts:54:7 › Hero › TC-HERO-04: the ledger shows three figures, each with its source (2.2s)
+  ✓   84 [chromium] › tests/e2e/hero.spec.ts:79:7 › Hero › TC-HERO-06: recruiter channels are linked (2.0s)
+  ✓   83 [chromium] › tests/e2e/hero.spec.ts:68:7 › Hero › TC-HERO-05: both actions are present and reachable (2.4s)
+  ✓   85 [chromium] › tests/e2e/hero.spec.ts:87:7 › Hero › TC-HERO-07: a truthful availability signal is shown (2.3s)
+  ✓   86 [chromium] › tests/e2e/hero.spec.ts:93:7 › Hero › TC-HERO-08: the hero fills the first viewport without overflowing it (2.3s)
+  ✓   88 [chromium] › tests/e2e/hero.spec.ts:123:7 › Hero › TC-HERO-10: the preloader is gone (1.9s)
+  ✓   87 [chromium] › tests/e2e/hero.spec.ts:107:7 › Hero › TC-HERO-09: the whole hero is legible in the first viewport (2.8s)
+  ✓   90 [chromium] › tests/e2e/listen.spec.ts:22:7 › Listen › TC-LISTEN-01: the closing sentence is the only italic on the page (2.3s)
+  ✓   89 [chromium] › tests/e2e/hero.spec.ts:129:7 › Hero › TC-HERO-11: the hero holds at most one WebGL context (4.0s)
+  ✓   91 [chromium] › tests/e2e/listen.spec.ts:32:7 › Listen › TC-LISTEN-02: the closing copy stays under sixty-five words (1.9s)
+  ✓   92 [chromium] › tests/e2e/listen.spec.ts:53:7 › Listen › TC-LISTEN-07: the avatar states what it is before it is played (1.8s)
+  ✓   93 [chromium] › tests/e2e/listen.spec.ts:66:7 › Listen › TC-LISTEN-08: the clip has a text alternative that needs no playback (2.1s)
+  ✓   94 [chromium] › tests/e2e/listen.spec.ts:84:7 › Listen › TC-LISTEN-03: no form, no input, no third-party embed (2.1s)
+  ✓   95 [chromium] › tests/e2e/listen.spec.ts:90:7 › Listen › TC-LISTEN-04: all four channels are real anchors matching the CV (2.0s)
+  ✓   96 [chromium] › tests/e2e/listen.spec.ts:101:7 › Listen › TC-LISTEN-05: hover and focus produce the identical underline (2.3s)
+  ✓   97 [chromium] › tests/e2e/listen.spec.ts:122:7 › Listen › TC-LISTEN-06: the colophon states what the page does not do (1.9s)
+  ✓   98 [chromium] › tests/e2e/listen.spec.ts:135:7 › Listen · the corrections ledger › TC-LEDGER-01: every correction is a link to the commit that made it (3.0s)
+  ✓   99 [chromium] › tests/e2e/listen.spec.ts:156:7 › Listen · the corrections ledger › TC-LEDGER-02: the ledger says how much of the history it is showing (2.8s)
+  ✓  100 [chromium] › tests/e2e/navigation.spec.ts:32:7 › E2E: Navigation › TC-NAV-01: Logo renders with correct text (1.7s)
+  ✓  101 [chromium] › tests/e2e/navigation.spec.ts:39:7 › E2E: Navigation › TC-NAV-02: Menu toggle and the always-visible Download CV both render (1.5s)
+  ✓  102 [chromium] › tests/e2e/navigation.spec.ts:49:7 › E2E: Navigation › TC-NAV-03: Nav overlay opens on toggle click (2.0s)
+  ✓  103 [chromium] › tests/e2e/navigation.spec.ts:57:7 › E2E: Navigation › TC-NAV-04: Every in-page nav anchor resolves to a section that exists (2.6s)
+  ✓  104 [chromium] › tests/e2e/navigation.spec.ts:107:7 › E2E: Navigation › TC-NAV-05: Nav overlay closes on Escape key (2.8s)
+  ✓  105 [chromium] › tests/e2e/navigation.spec.ts:117:7 › E2E: Navigation › TC-NAV-06: Clicking a nav link scrolls to the correct section (2.8s)
+  ✓  106 [chromium] › tests/e2e/navigation.spec.ts:131:7 › E2E: Navigation › TC-NAV-07: Sticky nav — nav and wordmark survive scrolling and frost (1.8s)
+  ✓  107 [chromium] › tests/e2e/navigation.spec.ts:141:7 › E2E: Navigation › TC-NAV-08: Logo click scrolls to top (2.1s)
+  ✓  108 [chromium] › tests/e2e/skills.spec.ts:22:7 › Skills › TC-SKILL-01: the card is a real table with scoped headers (1.9s)
+  ✓  109 [chromium] › tests/e2e/skills.spec.ts:33:7 › Skills › TC-SKILL-02: every row carries evidence and a place it was measured (2.4s)
+  ✓  110 [chromium] › tests/e2e/skills.spec.ts:46:7 › Skills › TC-SKILL-03: no proficiency bars, meters or ratings exist (1.6s)
+  ✓  111 [chromium] › tests/e2e/skills.spec.ts:62:7 › Skills › TC-SKILL-04: the not-yet-held credential is stated, not hidden (1.7s)
+  ✓  112 [chromium] › tests/e2e/skills.spec.ts:71:7 › Skills › TC-SKILL-05: status is spoken, never glyph-only (2.0s)
+  ✓  114 [chromium] › tests/e2e/skills.spec.ts:108:7 › Skills › TC-SKILL-07: the filter state is exposed and announced (2.0s)
+  ✓  113 [chromium] › tests/e2e/skills.spec.ts:77:7 › Skills › TC-SKILL-06: filtering changes the rows and moves nothing else (3.1s)
+  ✓  115 [chromium] › tests/e2e/skills.spec.ts:120:7 › Skills › TC-SKILL-08: the footer fingerprints the CV it claims to be calibrated against (2.1s)
+  ✓  116 [chromium] › tests/e2e/skills.spec.ts:139:7 › Skills · the bench › TC-BENCH-01: every link the data asserts is actually drawn (5.5s)
+  ✓  117 [chromium] › tests/e2e/skills.spec.ts:163:7 › Skills · the bench › TC-BENCH-02: gold is still only a claim about production evidence (5.0s)
+  ✓  118 [chromium] › tests/e2e/skills.spec.ts:175:7 › Skills · the bench › TC-BENCH-03: tracing a source dims what it is not wired to (5.5s)
+  ✓  119 [chromium] › tests/e2e/skills.spec.ts:190:7 › Skills · the bench › TC-BENCH-04: each node speaks its own evidence (5.1s)
+  ✓  121 [chromium] › tests/e2e/vitrine.spec.ts:32:7 › Vitrine › TC-VIT-02: every plate states its limits (1.9s)
+  ✓  120 [chromium] › tests/e2e/vitrine.spec.ts:22:7 › Vitrine › TC-VIT-01: exactly six plates, each with a source link (2.4s)
+  ✓  122 [chromium] › tests/e2e/vitrine.spec.ts:46:7 › Vitrine › TC-VIT-03: metrics are harvested and dated, not live (2.0s)
+  ✓  123 [chromium] › tests/e2e/vitrine.spec.ts:54:7 › Vitrine › TC-VIT-04: the exclusions are named with reasons (2.7s)
+  ✓  124 [chromium] › tests/e2e/vitrine.spec.ts:61:7 › Vitrine › TC-VIT-05: no screenshots, logos or raster images (2.6s)
+  ✓  125 [chromium] › tests/e2e/vitrine.spec.ts:73:7 › Vitrine › TC-VIT-06: the light tracks the plate at the centre of the rail (2.2s)
+  ✓  127 [chromium] › tests/e2e/vitrine.spec.ts:101:7 › Vitrine › TC-VIT-08: the kicker denominator matches the harvest (2.1s)
+  ✓  126 [chromium] › tests/e2e/vitrine.spec.ts:88:7 › Vitrine › TC-VIT-07: the rail is keyboard operable and traps nothing (3.4s)
+  ✓  129 [chromium] › tests/monochrome/monochrome.spec.ts:118:7 › Monochrome Compliance › MONO-01: :root publishes the grey ramp and exactly the four sanctioned gold tokens (1.7s)
+  ✘  128 [chromium] › tests/e2e/vitrine.spec.ts:106:7 › Vitrine › TC-VIT-09: every plate rules its metrics on the same line (2.4s)
+  ✓  130 [chromium] › tests/monochrome/monochrome.spec.ts:146:7 › Monochrome Compliance › MONO-02: Body background is achromatic (2.1s)
+  ✓  131 [chromium] › tests/monochrome/monochrome.spec.ts:207:7 › Monochrome Compliance › MONO-04: Every rendered colour in every section is achromatic or the sanctioned gold (5.4s)
+  ✓  132 [chromium] › tests/monochrome/monochrome.spec.ts:153:7 › Monochrome Compliance › MONO-03: No inline style declares a colour outside the palette (5.7s)
+  ✓  133 [chromium] › tests/monochrome/monochrome.spec.ts:218:7 › Monochrome Compliance › MONO-05: The sanctioned accent is actually in use, and only as the accent (5.0s)
+  ✓  134 [chromium] › tests/monochrome/monochrome.spec.ts:244:7 › Monochrome Compliance › MONO-06: Navigation overlay is achromatic when open (4.3s)
+  ✓  135 [chromium] › tests/monochrome/monochrome.spec.ts:252:7 › Monochrome Compliance › MONO-07: The check still rejects an unsanctioned hue (3.4s)
+  ✓  136 [chromium] › tests/overhaul/avatar.spec.ts:39:7 › TC-FR-CLONE: Clone Rendering (MiniVicBot) › TC-CLONE-03: MiniVicBot launcher is present and interactive on the static build (3.0s)
+  ✓  138 [chromium] › tests/overhaul/cinematic.spec.ts:46:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-01: the hero backdrop is decorative — hidden from AT and behind the content (2.5s)
+  ✓  137 [chromium] › tests/overhaul/avatar.spec.ts:51:7 › TC-FR-CLONE: Clone Rendering (MiniVicBot) › TC-CLONE-05: Pressing the launcher yields a panel carrying real clone content (4.9s)
+  ✓  139 [chromium] › tests/overhaul/cinematic.spec.ts:82:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-02: nothing intercepts clicks on the hero CTA (4.6s)
+  ✓  140 [chromium] › tests/overhaul/cinematic.spec.ts:119:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-03: nav is transparent at top and frosts (data-scrolled) after scroll (3.1s)
+  ✓  142 [chromium] › tests/overhaul/cinematic.spec.ts:169:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-05: the hero name renders in full with no glyph-masking clip-path (D-NAME-01) (2.7s)
+  ✓  141 [chromium] › tests/overhaul/cinematic.spec.ts:142:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-04: with every scene suppressed the page is still the whole page (4.8s)
+  ✓  143 [chromium] › tests/overhaul/cinematic.spec.ts:183:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-06: under reduced motion the hero entrance is a fade, not a rise (3.8s)
+  ✓  144 [chromium] › tests/overhaul/cinematic.spec.ts:210:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-07: under reduced motion every section is readable, not left behind a curtain (3.7s)
+  ✓  145 [chromium] › tests/overhaul/complete.spec.ts:69:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-02: The hero is finished copy, not a scaffold (4.1s)
+  ✓  146 [chromium] › tests/overhaul/complete.spec.ts:80:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-03: The experience timeline carries real roles (4.8s)
+  ✓  147 [chromium] › tests/overhaul/complete.spec.ts:89:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-04: The calibration table carries real rows, including the un-held one (5.3s)
+  ✓  148 [chromium] › tests/overhaul/complete.spec.ts:104:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-05: The closing section carries real contact details (4.7s)
+  ✓  149 [chromium] › tests/overhaul/complete.spec.ts:112:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-06: About has real content, not stubs (4.1s)
+  ✓  150 [chromium] › tests/overhaul/complete.spec.ts:123:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-07: Every vitrine plate states what its repository does not do (3.3s)
+  ✓  151 [chromium] › tests/overhaul/complete.spec.ts:145:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-08: The MiniVicBot clone opens without an error state (2.6s)
+  ✓  153 [chromium] › tests/overhaul/durability.spec.ts:71:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-02: Core hero content renders on first visit (2.4s)
+  ✓  152 [chromium] › tests/overhaul/durability.spec.ts:47:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-01: The service worker registers, activates and controls the page (5.3s)
+  ✓  154 [chromium] › tests/overhaul/durability.spec.ts:77:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-03: CV download link is present in the hero and resolves (3.6s)
+  ✓  155 [chromium] › tests/overhaul/durability.spec.ts:88:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-04: CV is reachable from the persistent navigation, on every screen (4.0s)
+  ✓  157 [chromium] › tests/overhaul/durability.spec.ts:136:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-06: The CV is offered from more than one place on the page (2.7s)
+  ✓  156 [chromium] › tests/overhaul/durability.spec.ts:101:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-05: Offline reload still renders the page and still serves the CV (6.5s)
+  ✓  158 [chromium] › tests/overhaul/durability.spec.ts:148:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-07: No first-party request fails on a warm load (4.0s)
+  ✓  160 [chromium] › tests/overhaul/render.spec.ts:102:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss (14.0s)
+  ✓  159 [chromium] › tests/overhaul/render.spec.ts:79:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it (16.8s)
+  ✓  162 [chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium) (5.4s)
+  ✓  161 [chromium] › tests/overhaul/render.spec.ts:131:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page (14.1s)
+  ✓  163 [chromium] › tests/overhaul/render.spec.ts:173:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-09: A full-page scroll never trips a page error or the error boundary (8.7s)
+  ✓  164 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:127:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-01: instrumenting the page still fires ZERO third-party requests (9.5s)
+  ✓  165 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:147:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-02: the visit sends at least one beacon to the same-origin collector (9.2s)
+  ✓  166 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:169:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-03: the beacon payload carries only {at, name, section, value} and no identifier (10.9s)
+  ✓  167 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:197:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-04: after a full visit there are no cookies and no identifier in storage (10.5s)
+  ✓  169 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:224:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-06 (R-183): the rendered colophon states what is measured and no longer claims "no analytics" (2.9s)
+  ✓  168 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:216:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-05: no consent wall, banner or preference dialog exists (10.1s)
+  ✓  171 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:264:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-08 (R-88): the shipped aggregate names the sections the loop must reopen (584ms)
+  ✓  170 [chromium] › tests/overhaul/telemetry-first-party.spec.ts:240:7 › TC-TELEMETRY-FIRST-PARTY: R-87 collection, R-183 self-claim › TEL-FP-07: the telemetry store never trips the 2026-07-09 render loop (React #185 / #425) (14.9s)
+  ✓  172 [chromium] › tests/overhaul/telemetry-stability.spec.ts:109:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-01: no uncaught React exceptions (max-update-depth / hydration) (7.5s)
+  ✓  173 [chromium] › tests/overhaul/telemetry-stability.spec.ts:119:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-02: page shows real content, never the error boundary (7.8s)
+  ✓  174 [chromium] › tests/overhaul/telemetry-stability.spec.ts:134:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-03: the stateful sections keep rendering after being driven (11.0s)
+  ✓  175 [chromium] › tests/overhaul/telemetry-stability.spec.ts:163:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-04: no hydration-mismatch console errors on first paint (7.4s)
+  ✓  176 [chromium] › tests/overhaul/telemetry-stability.spec.ts:184:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-05: full scroll never trips error boundary or React #185/#425 (9.4s)
+  ✓  178 [chromium] › tests/overhaul/voiceover.spec.ts:60:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-01: The greeting asset is the published cloned-voice recording (3.9s)
+  ✓  177 [chromium] › tests/overhaul/telemetry-stability.spec.ts:200:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-06: no duplicate React keys during a full scroll (9.7s)
+  ✓  180 [chromium] › tests/overhaul/voiceover.spec.ts:109:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-03: Muting stops the voice and releases the asset (5.0s)
+  ✓  179 [chromium] › tests/overhaul/voiceover.spec.ts:84:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-02: Play, pause and resume move the greeting as instructed (6.6s)
+  ✓  181 [chromium] › tests/overhaul/voiceover.spec.ts:125:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-04: Opening the clone raises no uncaught audio errors (6.8s)
+  ✓  182 [chromium] › tests/overhaul/voiceover.spec.ts:146:7 › TC-FR-VOICE-DYN: Voice never starts by itself › TC-VOICE-DYN-01: Nothing plays on load, or on scrolling the whole page (6.7s)
+  ✓  184 [chromium] › tests/overhaul/voiceover.spec.ts:186:7 › TC-FR-VOICE-DYN: Voice never starts by itself › TC-VOICE-DYN-03: The composer offers a microphone control (5.6s)
+  ✓  183 [chromium] › tests/overhaul/voiceover.spec.ts:170:7 › TC-FR-VOICE-DYN: Voice never starts by itself › TC-VOICE-DYN-02: Scrolling every section raises no scroll or animation errors (8.1s)
+Total transfer size: 0.96 MB
+  ✓  185 [chromium] › tests/perf/performance.spec.ts:41:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB (3.3s)
+LCP: 1424 ms
+  ✓  186 [chromium] › tests/perf/performance.spec.ts:61:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s (2.9s)
+  ✓  188 [chromium] › tests/perf/performance.spec.ts:132:7 › Performance Budgets › PERF-04: Page loads without page errors (5.6s)
+CLS: 0.0000
+  ✓  187 [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05 (7.1s)
+DOMContentLoaded: 121 ms
+  ✓  189 [chromium] › tests/perf/performance.spec.ts:143:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s (3.2s)
+  ✓  190 [chromium] › tests/visual/screenshots.spec.ts:95:7 › Visual Regression › VIS-01: Full hero section screenshot (7.6s)
+  ✓  191 [chromium] › tests/visual/screenshots.spec.ts:100:7 › Visual Regression › VIS-02: About section screenshot (8.7s)
+  ✓  192 [chromium] › tests/visual/screenshots.spec.ts:105:7 › Visual Regression › VIS-03: Navigation overlay screenshot (open state) (5.9s)
+  ✘  193 [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot (9.1s)
+  ✘  194 [chromium] › tests/visual/screenshots.spec.ts:118:7 › Visual Regression › VIS-05: Vitrine section screenshot (7.3s)
+  ✓  195 [chromium] › tests/visual/screenshots.spec.ts:125:7 › Visual Regression › VIS-06: Full page screenshot (viewport top) (3.5s)
+
+
+  1) [chromium] › tests/content/dataset_marks.spec.ts:87:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-03: every rendered mark resolves in the provenance index (SC-51.1) 
+
+    Error: the page renders no data-mark-id at all
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      89 |     const index = (await (await page.request.get(`${baseURL}/dataset-provenance.json`)).json()) as Record<string, unknown>;
+      90 |     const marks = await readMarks(page);
+    > 91 |     expect(marks.length, 'the page renders no data-mark-id at all').toBeGreaterThan(0);
+         |                                                                     ^
+      92 |     const unresolved = marks.filter((m) => !m.sourceId || !(m.sourceId in index));
+      93 |     expect(
+      94 |       unresolved.map((m) => `${m.markId} -> ${m.sourceId}`),
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:91:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/content-dataset_marks-TC-D-4d58e-e-provenance-index-SC-51-1--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/content-dataset_marks-TC-D-4d58e-e-provenance-index-SC-51-1--chromium/error-context.md
+
+  2) [chromium] › tests/content/dataset_marks.spec.ts:99:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-04: mark ids are unique across the rendered page 
+
+    Error: the page renders no data-mark-id at all
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      101 |     const marks = await readMarks(page);
+      102 |     // Asserted first so this test cannot pass vacuously on a page with no marks.
+    > 103 |     expect(marks.length, 'the page renders no data-mark-id at all').toBeGreaterThan(0);
+          |                                                                     ^
+      104 |     const ids = marks.map((m) => m.markId);
+      105 |     const duplicates = ids.filter((id, i) => ids.indexOf(id) !== i);
+      106 |     expect(Array.from(new Set(duplicates)), 'duplicate data-mark-id values').toHaveLength(0);
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:103:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/content-dataset_marks-TC-D-ba535-ue-across-the-rendered-page-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/content-dataset_marks-TC-D-ba535-ue-across-the-rendered-page-chromium/error-context.md
+
+  3) [chromium] › tests/content/dataset_marks.spec.ts:109:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-05: every one of the six sections renders at least one sourced mark (R-95) 
+
+    Error: sections rendering no mark from the canonical dataset
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected length: [32m0[39m
+    Received length: [31m6[39m
+    Received array:  [31m["#hero", "#about", "#experience", "#skills", "#vitrine", "#listen"][39m
+
+      114 |       if (count === 0) empty.push(id);
+      115 |     }
+    > 116 |     expect(empty, 'sections rendering no mark from the canonical dataset').toHaveLength(0);
+          |                                                                            ^
+      117 |   });
+      118 |
+      119 |   test('DATA-06: no mark renders a zero, a dash or a placeholder where a real value belongs (R-175)', async ({
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:116:76
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/content-dataset_marks-TC-D-4df04-east-one-sourced-mark-R-95--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/content-dataset_marks-TC-D-4df04-east-one-sourced-mark-R-95--chromium/error-context.md
+
+  4) [chromium] › tests/content/dataset_marks.spec.ts:119:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-06: no mark renders a zero, a dash or a placeholder where a real value belongs (R-175) 
+
+    Error: no marks to check
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      122 |     await page.goto('/', { waitUntil: 'networkidle' });
+      123 |     const marks = await readMarks(page);
+    > 124 |     expect(marks.length, 'no marks to check').toBeGreaterThan(0);
+          |                                               ^
+      125 |     const offenders = marks
+      126 |       .filter((m) => m.caliper !== 'open')
+      127 |       .filter((m) => FORBIDDEN_MARK_TEXT.test(m.text) || m.text.length === 0)
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:124:47
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/content-dataset_marks-TC-D-13997-a-real-value-belongs-R-175--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/content-dataset_marks-TC-D-13997-a-real-value-belongs-R-175--chromium/error-context.md
+
+  5) [chromium] › tests/content/dataset_marks.spec.ts:148:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-08: the caliper state is one of the three the grammar defines, and "sourced" is actually reached 
+
+    Error: the sourced caliper state is still never rendered, so the mark grammar stays two-thirds legible
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      159 |       marks.filter((m) => m.caliper === 'sourced').length,
+      160 |       'the sourced caliper state is still never rendered, so the mark grammar stays two-thirds legible',
+    > 161 |     ).toBeGreaterThan(0);
+          |       ^
+      162 |   });
+      163 |
+      164 |   test('DATA-09: no figure appears in section prose outside a marked element (SC-51.1, the closing half)', async ({
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:161:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/content-dataset_marks-TC-D-01ed2-sourced-is-actually-reached-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/content-dataset_marks-TC-D-01ed2-sourced-is-actually-reached-chromium/error-context.md
+
+  6) [chromium] › tests/content/dataset_marks.spec.ts:164:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-09: no figure appears in section prose outside a marked element (SC-51.1, the closing half) 
+
+    Error: unsourced figures in section prose: [{"section":"#hero","text":"≈92%"},{"section":"#hero","text":"ATO Payday Super · 200+ SIT scenarios"},{"section":"#hero","text":"$5M+"},{"section":"#hero","text":"ANZ · 5+ squads, 40+ practitioners"},{"section":"#hero","text":"10k+"},{"section":"#hero","text":"devices at P95 < 200 ms"},{"section":"#about","text":"01"},{"section":"#about","text":"38 public repositories · ATO evidence harness · ANZ platform migrations"},{"section":"#about","text":"02"},{"section":"#about","text":"Sixteen years. Senior delivery lead and AI/ML solutions architect since 2017; before that, business analysis and project"},{"section":"#about","text":"03"},{"section":"#about","text":"04"},{"section":"#about","text":"Payday Super program · Agile Kookaburras squad · PI 47–48"},{"section":"#about","text":"05"},{"section":"#about","text":"5+ squads, 40+ practitioners onshore and offshore"}]
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected length: [32m0[39m
+    Received length: [31m15[39m
+    Received array:  [31m[{"section": "#hero", "text": "≈92%"}, {"section": "#hero", "text": "ATO Payday Super · 200+ SIT scenarios"}, {"section": "#hero", "text": "$5M+"}, {"section": "#hero", "text": "ANZ · 5+ squads, 40+ practitioners"}, {"section": "#hero", "text": "10k+"}, {"section": "#hero", "text": "devices at P95 < 200 ms"}, {"section": "#about", "text": "01"}, {"section": "#about", "text": "38 public repositories · ATO evidence harness · ANZ platform migrations"}, {"section": "#about", "text": "02"}, {"section": "#about", "text": "Sixteen years. Senior delivery lead and AI/ML solutions architect since 2017; before that, business analysis and project"}, …][39m
+
+      200 |       unpermitted.slice(0, 15),
+      201 |       `unsourced figures in section prose: ${JSON.stringify(unpermitted.slice(0, 15))}`,
+    > 202 |     ).toHaveLength(0);
+          |       ^
+      203 |     expect(
+      204 |       allowlist.entries,
+      205 |       'the unsourced-figure allowlist must be empty at certification; every entry is a Gate K finding',
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:202:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/content-dataset_marks-TC-D-295b2-t-SC-51-1-the-closing-half--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/content-dataset_marks-TC-D-295b2-t-SC-51-1-the-closing-half--chromium/error-context.md
+
+  7) [chromium] › tests/content/dataset_marks.spec.ts:209:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-10: every rendered visualisation has a dossier, and every dossier is rendered (R-112) 
+
+    Error: no element declares a data-viz-id, so no dossier can be joined to it
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      215 |       els.map((e) => e.getAttribute('data-viz-id') ?? ''),
+      216 |     );
+    > 217 |     expect(rendered.length, 'no element declares a data-viz-id, so no dossier can be joined to it').toBeGreaterThan(0);
+          |                                                                                                     ^
+      218 |     const response = await page.request.get(`${baseURL}/dataset-provenance.json`);
+      219 |     expect(response.status()).toBe(200);
+      220 |     const duplicates = rendered.filter((id, i) => rendered.indexOf(id) !== i);
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:217:101
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/content-dataset_marks-TC-D-1ceea--dossier-is-rendered-R-112--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/content-dataset_marks-TC-D-1ceea--dossier-is-rendered-R-112--chromium/error-context.md
+
+  8) [chromium] › tests/content/dataset_marks.spec.ts:224:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-11: exactly one gold mark per registered visualisation (R-110) 
+
+    Error: no visualisation declares a data-viz-id
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      230 |       })),
+      231 |     );
+    > 232 |     expect(perViz.length, 'no visualisation declares a data-viz-id').toBeGreaterThan(0);
+          |                                                                      ^
+      233 |     const wrong = perViz.filter((v) => v.gold !== 1).map((v) => `${v.vizId}: ${v.gold} gold marks`);
+      234 |     expect(wrong, 'visualisations that do not carry exactly one gold mark').toHaveLength(0);
+      235 |   });
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:232:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/content-dataset_marks-TC-D-8628b-stered-visualisation-R-110--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/content-dataset_marks-TC-D-8628b-stered-visualisation-R-110--chromium/error-context.md
+
+  9) [chromium] › tests/content/dataset_marks.spec.ts:254:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-13: with JavaScript disabled the marks are still real values, never zeros (R-175, T-39) 
+
+    Error: no server-rendered marks: with JS off the visitor sees no sourced value
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      261 |       await page.goto(`${baseURL}/`, { waitUntil: 'domcontentloaded' });
+      262 |       const marks = await readMarks(page);
+    > 263 |       expect(marks.length, 'no server-rendered marks: with JS off the visitor sees no sourced value').toBeGreaterThan(0);
+          |                                                                                                       ^
+      264 |       const offenders = marks
+      265 |         .filter((m) => m.caliper !== 'open')
+      266 |         .filter((m) => FORBIDDEN_MARK_TEXT.test(m.text) || m.text.length === 0)
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:263:103
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/content-dataset_marks-TC-D-461da-ues-never-zeros-R-175-T-39--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  10) [chromium] › tests/e2e/vitrine.spec.ts:106:7 › Vitrine › TC-VIT-09: every plate rules its metrics on the same line 
+
+    Error: metrics varies by 49px across the rail: 483, 483, 483, 483, 483, 532
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m2[39m
+    Received:    [31m49[39m
+
+      135 |       // A pixel or two of sub-pixel rounding is fine; a row is not.
+      136 |       expect(spread, `${row} varies by ${spread}px across the rail: ${values.join(', ')}`)
+    > 137 |         .toBeLessThanOrEqual(2);
+          |          ^
+      138 |     }
+      139 |   });
+      140 | });
+        at /var/tmp/v6-wt/data-backend/tests/e2e/vitrine.spec.ts:137:10
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-vitrine-Vitrine-TC-VIT-2e4e2-ts-metrics-on-the-same-line-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-vitrine-Vitrine-TC-VIT-2e4e2-ts-metrics-on-the-same-line-chromium/error-context.md
+
+  11) [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot 
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveScreenshot[2m([22m[32mexpected[39m[2m)[22m failed
+
+      Expected an image 1280px by 1927px, received 1280px by 1941px. 
+
+      Snapshot: listen-section.png
+
+    Call log:
+    [2m  - Expect "toHaveScreenshot(listen-section.png)" with timeout 30000ms[22m
+    [2m    - verifying given screenshot expectation[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - Expected an image 1280px by 1927px, received 1280px by 1941px.[22m
+    [2m  - waiting 100ms before taking screenshot[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - captured a stable screenshot[22m
+    [2m  - Expected an image 1280px by 1927px, received 1280px by 1941px.[22m
+
+
+      87 |     };
+      88 |   });
+    > 89 |   await expect(page).toHaveScreenshot(name, { ...SHOT, fullPage: true, clip });
+         |                      ^
+      90 | }
+      91 |
+      92 | test.describe('Visual Regression', () => {
+        at shootSection (/var/tmp/v6-wt/data-backend/tests/visual/screenshots.spec.ts:89:22)
+        at /var/tmp/v6-wt/data-backend/tests/visual/screenshots.spec.ts:115:5
+
+    attachment #1: listen-section (image/png) ──────────────────────────────────────────────────────
+    Expected: tests/baselines/visual/screenshots.spec.ts-snapshots/listen-section-chromium-linux.png
+    Received: test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/listen-section-actual.png
+    Diff:     test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/listen-section-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/error-context.md
+
+  12) [chromium] › tests/visual/screenshots.spec.ts:118:7 › Visual Regression › VIS-05: Vitrine section screenshot 
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveScreenshot[2m([22m[32mexpected[39m[2m)[22m failed
+
+      Expected an image 1280px by 1268px, received 1280px by 1317px. 65273 pixels (ratio 0.04 of all image pixels) are different.
+
+      Snapshot: vitrine-section.png
+
+    Call log:
+    [2m  - Expect "toHaveScreenshot(vitrine-section.png)" with timeout 30000ms[22m
+    [2m    - verifying given screenshot expectation[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - Expected an image 1280px by 1268px, received 1280px by 1317px. 65660 pixels (ratio 0.04 of all image pixels) are different.[22m
+    [2m  - waiting 100ms before taking screenshot[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - captured a stable screenshot[22m
+    [2m  - Expected an image 1280px by 1268px, received 1280px by 1317px. 65273 pixels (ratio 0.04 of all image pixels) are different.[22m
+
+
+      87 |     };
+      88 |   });
+    > 89 |   await expect(page).toHaveScreenshot(name, { ...SHOT, fullPage: true, clip });
+         |                      ^
+      90 | }
+      91 |
+      92 | test.describe('Visual Regression', () => {
+        at shootSection (/var/tmp/v6-wt/data-backend/tests/visual/screenshots.spec.ts:89:22)
+        at /var/tmp/v6-wt/data-backend/tests/visual/screenshots.spec.ts:122:5
+
+    attachment #1: vitrine-section (image/png) ─────────────────────────────────────────────────────
+    Expected: tests/baselines/visual/screenshots.spec.ts-snapshots/vitrine-section-chromium-linux.png
+    Received: test-results/visual-screenshots-Visual--3a70d--Vitrine-section-screenshot-chromium/vitrine-section-actual.png
+    Diff:     test-results/visual-screenshots-Visual--3a70d--Vitrine-section-screenshot-chromium/vitrine-section-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/visual-screenshots-Visual--3a70d--Vitrine-section-screenshot-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-screenshots-Visual--3a70d--Vitrine-section-screenshot-chromium/error-context.md
+
+  12 failed
+    [chromium] › tests/content/dataset_marks.spec.ts:87:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-03: every rendered mark resolves in the provenance index (SC-51.1) 
+    [chromium] › tests/content/dataset_marks.spec.ts:99:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-04: mark ids are unique across the rendered page 
+    [chromium] › tests/content/dataset_marks.spec.ts:109:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-05: every one of the six sections renders at least one sourced mark (R-95) 
+    [chromium] › tests/content/dataset_marks.spec.ts:119:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-06: no mark renders a zero, a dash or a placeholder where a real value belongs (R-175) 
+    [chromium] › tests/content/dataset_marks.spec.ts:148:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-08: the caliper state is one of the three the grammar defines, and "sourced" is actually reached 
+    [chromium] › tests/content/dataset_marks.spec.ts:164:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-09: no figure appears in section prose outside a marked element (SC-51.1, the closing half) 
+    [chromium] › tests/content/dataset_marks.spec.ts:209:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-10: every rendered visualisation has a dossier, and every dossier is rendered (R-112) 
+    [chromium] › tests/content/dataset_marks.spec.ts:224:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-11: exactly one gold mark per registered visualisation (R-110) 
+    [chromium] › tests/content/dataset_marks.spec.ts:254:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-13: with JavaScript disabled the marks are still real values, never zeros (R-175, T-39) 
+    [chromium] › tests/e2e/vitrine.spec.ts:106:7 › Vitrine › TC-VIT-09: every plate rules its metrics on the same line 
+    [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot 
+    [chromium] › tests/visual/screenshots.spec.ts:118:7 › Visual Regression › VIS-05: Vitrine section screenshot 
+  183 passed (6.8m)
+SUITE_EXIT=1
+
+================================================================================
+ THE TWO NEW FAILURES — CAUSE, AND THE FIX THIS UNIT IS NOT PERMITTED TO MAKE
+================================================================================
+
+CAUSE (one cause, two symptoms)
+
+  TEL-SRC-11 and TEL-183 require this exact string, verbatim, in
+  app/data/portfolio/vitrine.ts, replacing plate 06's "…no analytics." line:
+
+    'The page you are reading: static export, one WebGL context per section, and
+     first-party cookieless measurement that counts what the sections do, never
+     who you are.'
+
+  It is 26 words. The rail's five other descriptions are 12-14 words. Measured
+  in the shipped export at 1280px (line-height 24.32px):
+
+    plate 01-05  description height  49px   (2 lines)
+    plate 06     description height  97px   (4 lines)
+
+  Everything below the description therefore starts 49px lower on plate 06:
+
+    TC-VIT-09  "metrics varies by 49px across the rail: 483, 483, 483, 483, 483, 532"
+    VIS-05     "Expected an image 1280px by 1268px, received 1280px by 1317px"
+
+  This is the same defect class the rail already has a fix for, and the CSS says
+  so at components/sections/Vitrine/Vitrine.module.css:189-196 — `.metric dd`
+  carries `min-height: calc(2 * 1.4em)` with the comment "Two lines are reserved
+  whether or not the value needs them. A plate whose stack fits on one line
+  otherwise pulls its LIMITS block up by 17px, and the rail loses the horizontal
+  line the metrics are supposed to draw across it."
+
+THE FIX (one declaration, plus one baseline re-record)
+
+  components/sections/Vitrine/Vitrine.module.css, in `.description` (line 147):
+
+      /* Four lines are reserved whether or not the copy needs them: plate 06's
+         description is fixed by contract (R-183) at 26 words and wraps to four
+         where the other five wrap to two. Without this the rail loses the
+         horizontal line TC-VIT-09 exists to protect. */
+      min-height: calc(4 * 1.6em);
+
+  then re-record VIS-05 (and VIS-04, which is independently stale):
+
+      UPDATE_SNAPSHOTS=1 npx playwright test tests/visual/screenshots.spec.ts
+
+WHY IT IS NOT DONE HERE
+
+  This unit's brief forbids touching any .css / .module.css file and anything
+  under components/sections/ — the CSS swarm is editing exactly those files,
+  concurrently, in /root/forgotten-mistory. Editing Vitrine.module.css from this
+  worktree would put two implementers in one file (§7.3). The copy change cannot
+  be reverted either: TEL-SRC-11 and TEL-183 fail without it, and R-183 forbids
+  shipping the collector while plate 06 still says "no analytics".
+
+  The two failures are therefore handed over with the exact remedy above rather
+  than silently absorbed or worked around.
+================================================================================

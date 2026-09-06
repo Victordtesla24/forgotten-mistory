@@ -1,0 +1,528 @@
+TAP version 13
+# Subtest: R6 pipeline structure
+    # Subtest: has all 10 required jobs
+    ok 1 - has all 10 required jobs
+      ---
+      duration_ms: 1.2891
+      type: 'test'
+      ...
+    # Subtest: quality job runs tsc + static audit + robustness + contract tests
+    ok 2 - quality job runs tsc + static audit + robustness + contract tests
+      ---
+      duration_ms: 0.187401
+      type: 'test'
+      ...
+    1..2
+ok 1 - R6 pipeline structure
+  ---
+  duration_ms: 2.45471
+  type: 'suite'
+  ...
+# Subtest: R6 invariants
+    # Subtest: build.needs excludes test and test-gpu (deploy never blocked on GPU runner)
+    ok 1 - build.needs excludes test and test-gpu (deploy never blocked on GPU runner)
+      ---
+      duration_ms: 5.05367
+      type: 'test'
+      ...
+    # Subtest: deploy only runs on main push
+    ok 2 - deploy only runs on main push
+      ---
+      duration_ms: 0.358062
+      type: 'test'
+      ...
+    # Subtest: test and test-gpu have continue-on-error
+    ok 3 - test and test-gpu have continue-on-error
+      ---
+      duration_ms: 0.258682
+      type: 'test'
+      ...
+    # Subtest: GEMINI_API_KEY used in build (fail-loud invariant)
+    ok 4 - GEMINI_API_KEY used in build (fail-loud invariant)
+      ---
+      duration_ms: 0.293763
+      type: 'test'
+      ...
+    # Subtest: STAGE 7: verify job runs after deploy and asserts production HTTP 200
+    ok 5 - STAGE 7: verify job runs after deploy and asserts production HTTP 200
+      ---
+      duration_ms: 0.402933
+      type: 'test'
+      ...
+    # Subtest: PR runs never auto-deploy to live (preview only)
+    ok 6 - PR runs never auto-deploy to live (preview only)
+      ---
+      duration_ms: 0.404224
+      type: 'test'
+      ...
+    1..6
+ok 2 - R6 invariants
+  ---
+  duration_ms: 8.875121
+  type: 'suite'
+  ...
+# Subtest: R6 upgrades
+    # Subtest: R6-HIGH: Playwright browser cache present in test and axe
+    ok 1 - R6-HIGH: Playwright browser cache present in test and axe
+      ---
+      duration_ms: 0.286132
+      type: 'test'
+      ...
+    # Subtest: R6-MED: PR preview channel present
+    ok 2 - R6-MED: PR preview channel present
+      ---
+      duration_ms: 0.343963
+      type: 'test'
+      ...
+    # Subtest: R6-MED: Visual-regression baselines artifact present
+    ok 3 - R6-MED: Visual-regression baselines artifact present
+      ---
+      duration_ms: 0.10482
+      type: 'test'
+      ...
+    # Subtest: R6-LOW: Playwright HTML report artifact present
+    ok 4 - R6-LOW: Playwright HTML report artifact present
+      ---
+      duration_ms: 0.088622
+      type: 'test'
+      ...
+    # Subtest: R6-LOW: tsc fast-fail mirrored in lint job
+    ok 5 - R6-LOW: tsc fast-fail mirrored in lint job
+      ---
+      duration_ms: 0.208922
+      type: 'test'
+      ...
+    1..5
+ok 3 - R6 upgrades
+  ---
+  duration_ms: 1.300691
+  type: 'suite'
+  ...
+# Subtest: Concurrency safety
+    # Subtest: cancel-in-progress is conditional on pull_request only
+    ok 1 - cancel-in-progress is conditional on pull_request only
+      ---
+      duration_ms: 0.171121
+      type: 'test'
+      ...
+    1..1
+ok 4 - Concurrency safety
+  ---
+  duration_ms: 0.233901
+  type: 'suite'
+  ...
+# Subtest: Edge cases
+    # Subtest: test job skips for forks (no secrets available)
+    ok 1 - test job skips for forks (no secrets available)
+      ---
+      duration_ms: 0.215362
+      type: 'test'
+      ...
+    # Subtest: test-gpu only runs when E2E_RUNNER_LABELS is set
+    ok 2 - test-gpu only runs when E2E_RUNNER_LABELS is set
+      ---
+      duration_ms: 0.18335
+      type: 'test'
+      ...
+    # Subtest: lighthouse uses lhci with proper budgets
+    ok 3 - lighthouse uses lhci with proper budgets
+      ---
+      duration_ms: 0.231382
+      type: 'test'
+      ...
+    # Subtest: lighthouse report upload reads .lighthouseci/ with include-hidden-files and stays fail-loud
+    ok 4 - lighthouse report upload reads .lighthouseci/ with include-hidden-files and stays fail-loud
+      ---
+      duration_ms: 0.457123
+      type: 'test'
+      ...
+    # Subtest: every upload-artifact step whose path starts with "." sets include-hidden-files: true
+    ok 5 - every upload-artifact step whose path starts with "." sets include-hidden-files: true
+      ---
+      duration_ms: 0.463783
+      type: 'test'
+      ...
+    1..5
+ok 5 - Edge cases
+  ---
+  duration_ms: 1.750685
+  type: 'suite'
+  ...
+# Subtest: CI-CD-4: Static audit hardening
+    # Subtest: static audit report artifact is uploaded in quality job
+    ok 1 - static audit report artifact is uploaded in quality job
+      ---
+      duration_ms: 0.195741
+      type: 'test'
+      ...
+    # Subtest: static audit fail-loud test file exists
+    ok 2 - static audit fail-loud test file exists
+      ---
+      duration_ms: 0.172191
+      type: 'test'
+      ...
+    # Subtest: every job has timeout-minutes (R6 guard)
+    ok 3 - every job has timeout-minutes (R6 guard)
+      ---
+      duration_ms: 0.590565
+      type: 'test'
+      ...
+    1..3
+ok 6 - CI-CD-4: Static audit hardening
+  ---
+  duration_ms: 1.068028
+  type: 'suite'
+  ...
+# Subtest: spent budget: no repository request is issued, so nothing 4xx-es
+ok 7 - spent budget: no repository request is issued, so nothing 4xx-es
+  ---
+  duration_ms: 39.872197
+  type: 'test'
+  ...
+# Subtest: fallback numbers are the committed snapshot, not fabricated
+ok 8 - fallback numbers are the committed snapshot, not fabricated
+  ---
+  duration_ms: 24.229393
+  type: 'test'
+  ...
+# Subtest: a 403 on every endpoint degrades without rejecting
+ok 9 - a 403 on every endpoint degrades without rejecting
+  ---
+  duration_ms: 22.566729
+  type: 'test'
+  ...
+# Subtest: a transport failure degrades without rejecting
+ok 10 - a transport failure degrades without rejecting
+  ---
+  duration_ms: 23.395566
+  type: 'test'
+  ...
+# Subtest: a malformed response is rejected rather than rendered
+ok 11 - a malformed response is rejected rather than rendered
+  ---
+  duration_ms: 22.938543
+  type: 'test'
+  ...
+# Subtest: available budget: exactly one repository request, values verbatim
+ok 12 - available budget: exactly one repository request, values verbatim
+  ---
+  duration_ms: 23.338486
+  type: 'test'
+  ...
+# Subtest: a warm cache is served with zero GitHub traffic
+ok 13 - a warm cache is served with zero GitHub traffic
+  ---
+  duration_ms: 22.318538
+  type: 'test'
+  ...
+# Subtest: a stale cache beats the snapshot when the refresh cannot run
+ok 14 - a stale cache beats the snapshot when the refresh cannot run
+  ---
+  duration_ms: 22.665201
+  type: 'test'
+  ...
+# Subtest: a known-spent budget suppresses even the free probe on later navigations
+ok 15 - a known-spent budget suppresses even the free probe on later navigations
+  ---
+  duration_ms: 45.815454
+  type: 'test'
+  ...
+# Subtest: buildMiniVicSystemPrompt — grounding facts
+    # Subtest: states the years of experience that the site publishes (benchmark Q4)
+    ok 1 - states the years of experience that the site publishes (benchmark Q4)
+      ---
+      duration_ms: 1.26024
+      type: 'test'
+      ...
+    # Subtest: spells out the AI tech stack (benchmark Q6)
+    ok 2 - spells out the AI tech stack (benchmark Q6)
+      ---
+      duration_ms: 0.222291
+      type: 'test'
+      ...
+    # Subtest: carries the published contact details (benchmark Q8)
+    ok 3 - carries the published contact details (benchmark Q8)
+      ---
+      duration_ms: 0.168392
+      type: 'test'
+      ...
+    # Subtest: carries employer, role, location, availability and credentials
+    ok 4 - carries employer, role, location, availability and credentials
+      ---
+      duration_ms: 0.414804
+      type: 'test'
+      ...
+    # Subtest: carries the quantified outcomes with their numbers
+    ok 5 - carries the quantified outcomes with their numbers
+      ---
+      duration_ms: 0.182622
+      type: 'test'
+      ...
+    1..5
+ok 16 - buildMiniVicSystemPrompt — grounding facts
+  ---
+  duration_ms: 3.426417
+  type: 'suite'
+  ...
+# Subtest: buildMiniVicSystemPrompt — answer rules
+    # Subtest: caps answers at 1-3 sentences and bans list formatting
+    ok 1 - caps answers at 1-3 sentences and bans list formatting
+      ---
+      duration_ms: 0.336963
+      type: 'test'
+      ...
+    # Subtest: forbids inventing employers, dates and metrics
+    ok 2 - forbids inventing employers, dates and metrics
+      ---
+      duration_ms: 0.256592
+      type: 'test'
+      ...
+    # Subtest: forbids claiming an on-record fact is unspecified
+    ok 3 - forbids claiming an on-record fact is unspecified
+      ---
+      duration_ms: 0.274522
+      type: 'test'
+      ...
+    # Subtest: requires contact details to be given, never refused
+    ok 4 - requires contact details to be given, never refused
+      ---
+      duration_ms: 0.275741
+      type: 'test'
+      ...
+    # Subtest: requires off-topic questions to be deflected back to Vikram in one sentence
+    ok 5 - requires off-topic questions to be deflected back to Vikram in one sentence
+      ---
+      duration_ms: 0.324184
+      type: 'test'
+      ...
+    # Subtest: keeps the restrained, evidence-led tone law
+    ok 6 - keeps the restrained, evidence-led tone law
+      ---
+      duration_ms: 0.358233
+      type: 'test'
+      ...
+    # Subtest: resists prompt injection: instructions are private and persona swaps are refused
+    ok 7 - resists prompt injection: instructions are private and persona swaps are refused
+      ---
+      duration_ms: 0.126351
+      type: 'test'
+      ...
+    1..7
+ok 17 - buildMiniVicSystemPrompt — answer rules
+  ---
+  duration_ms: 2.560821
+  type: 'suite'
+  ...
+# Subtest: persona modes
+    # Subtest: varies the style clause per mode
+    ok 1 - varies the style clause per mode
+      ---
+      duration_ms: 0.280712
+      type: 'test'
+      ...
+    # Subtest: falls back to the hiring tone for an unknown or absent mode
+    ok 2 - falls back to the hiring tone for an unknown or absent mode
+      ---
+      duration_ms: 0.241321
+      type: 'test'
+      ...
+    1..2
+ok 18 - persona modes
+  ---
+  duration_ms: 0.642415
+  type: 'suite'
+  ...
+# Subtest: normaliseConversation
+    # Subtest: rejects a body with no messages array
+    ok 1 - rejects a body with no messages array
+      ---
+      duration_ms: 0.278493
+      type: 'test'
+      ...
+    # Subtest: rejects an empty conversation and an over-long one
+    ok 2 - rejects an empty conversation and an over-long one
+      ---
+      duration_ms: 0.18834
+      type: 'test'
+      ...
+    # Subtest: drops browser-supplied system turns (prompt-injection regression)
+    ok 3 - drops browser-supplied system turns (prompt-injection regression)
+      ---
+      duration_ms: 0.769116
+      type: 'test'
+      ...
+    # Subtest: rejects a conversation that is only a system turn
+    ok 4 - rejects a conversation that is only a system turn
+      ---
+      duration_ms: 0.115221
+      type: 'test'
+      ...
+    # Subtest: ignores unknown roles and blank content
+    ok 5 - ignores unknown roles and blank content
+      ---
+      duration_ms: 0.12818
+      type: 'test'
+      ...
+    # Subtest: caps a single message at 4000 characters
+    ok 6 - caps a single message at 4000 characters
+      ---
+      duration_ms: 0.19995
+      type: 'test'
+      ...
+    # Subtest: rejects a conversation over the total character budget
+    ok 7 - rejects a conversation over the total character budget
+      ---
+      duration_ms: 0.16491
+      type: 'test'
+      ...
+    1..7
+ok 19 - normaliseConversation
+  ---
+  duration_ms: 2.093806
+  type: 'suite'
+  ...
+# Subtest: resolveChatProviders
+    # Subtest: skips a rung whose secret is unset, empty or whitespace
+    ok 1 - skips a rung whose secret is unset, empty or whitespace
+      ---
+      duration_ms: 0.315162
+      type: 'test'
+      ...
+    1..1
+ok 20 - resolveChatProviders
+  ---
+  duration_ms: 0.413974
+  type: 'suite'
+  ...
+# Subtest: completeChat ladder
+    # Subtest: uses the primary provider when it answers
+    ok 1 - uses the primary provider when it answers
+      ---
+      duration_ms: 0.931787
+      type: 'test'
+      ...
+    # Subtest: falls through to the secondary provider on 402 (out of credit)
+    ok 2 - falls through to the secondary provider on 402 (out of credit)
+      ---
+      duration_ms: 0.511295
+      type: 'test'
+      ...
+    # Subtest: falls through on 401, 403, 429, 5xx, a network error and an empty completion
+    ok 3 - falls through on 401, 403, 429, 5xx, a network error and an empty completion
+      ---
+      duration_ms: 2.55284
+      type: 'test'
+      ...
+    # Subtest: gives up with ChatLadderError when every rung fails, leaking no key material
+    ok 4 - gives up with ChatLadderError when every rung fails, leaking no key material
+      ---
+      duration_ms: 1.430871
+      type: 'test'
+      ...
+    # Subtest: times out a hanging provider and still answers from the next rung
+    ok 5 - times out a hanging provider and still answers from the next rung
+      ---
+      duration_ms: 51.355638
+      type: 'test'
+      ...
+    # Subtest: cools a credential/credit failure down for 10 minutes, then retries it
+    ok 6 - cools a credential/credit failure down for 10 minutes, then retries it
+      ---
+      duration_ms: 0.880537
+      type: 'test'
+      ...
+    # Subtest: cools a 429 down for only a minute
+    ok 7 - cools a 429 down for only a minute
+      ---
+      duration_ms: 0.402714
+      type: 'test'
+      ...
+    # Subtest: stops walking the ladder once the latency budget is spent
+    ok 8 - stops walking the ladder once the latency budget is spent
+      ---
+      duration_ms: 0.405794
+      type: 'test'
+      ...
+    1..8
+ok 21 - completeChat ladder
+  ---
+  duration_ms: 58.947847
+  type: 'suite'
+  ...
+# Subtest: Firebase trigger discovery
+    # Subtest: still exports both HTTPS triggers
+    ok 1 - still exports both HTTPS triggers
+      ---
+      duration_ms: 0.191741
+      type: 'test'
+      ...
+    # Subtest: declares every ladder secret on the chat function
+    ok 2 - declares every ladder secret on the chat function
+      ---
+      duration_ms: 0.150711
+      type: 'test'
+      ...
+    # Subtest: exports test helpers without __endpoint so they are not deployed as functions
+    ok 3 - exports test helpers without __endpoint so they are not deployed as functions
+      ---
+      duration_ms: 0.131171
+      type: 'test'
+      ...
+    1..3
+ok 22 - Firebase trigger discovery
+  ---
+  duration_ms: 1.722004
+  type: 'suite'
+  ...
+# Subtest: Static audit fail-loud contract
+    # Subtest: baseline: audit passes on clean source (exit 0)
+    ok 1 - baseline: audit passes on clean source (exit 0)
+      ---
+      duration_ms: 334.305223
+      type: 'test'
+      ...
+    # Subtest: TONE violation: injecting banned word in string literal causes exit 1
+    ok 2 - TONE violation: injecting banned word in string literal causes exit 1
+      ---
+      duration_ms: 196.727882
+      type: 'test'
+      ...
+    # Subtest: COMPLETE violation: TODO marker causes exit 1
+    ok 3 - COMPLETE violation: TODO marker causes exit 1
+      ---
+      duration_ms: 167.093516
+      type: 'test'
+      ...
+    # Subtest: MULTI-AXIS violation: multiple failures all reported before exit
+    ok 4 - MULTI-AXIS violation: multiple failures all reported before exit
+      ---
+      duration_ms: 314.844689
+      type: 'test'
+      ...
+    # Subtest: JSON report reflects FAIL when violations present
+    ok 5 - JSON report reflects FAIL when violations present
+      ---
+      duration_ms: 547.94414
+      type: 'test'
+      ...
+    # Subtest: JSON report reflects PASS on clean source
+    ok 6 - JSON report reflects PASS on clean source
+      ---
+      duration_ms: 431.074452
+      type: 'test'
+      ...
+    1..6
+ok 23 - Static audit fail-loud contract
+  ---
+  duration_ms: 1999.525085
+  type: 'suite'
+  ...
+1..23
+# tests 70
+# suites 14
+# pass 70
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2378.430684

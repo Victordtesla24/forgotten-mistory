@@ -1,0 +1,36 @@
+================================================================================
+ WAVE 4 · TELEMETRY — THE R-175 FAILURE PATH, EXERCISED
+ "When an API is unreachable at build time, a stale-but-true value with an
+  honest retrievedAt is CORRECT; an invented value or a zero is forbidden."
+ Subject: scripts/build/aggregate_telemetry.mjs (runs inside npm run build:static)
+================================================================================
+
+── 1 · OBSERVED PATH — a real window of rows reaches the aggregate ─────────
+$ TELEMETRY_EVENTS_FILE=<rows> node scripts/build/aggregate_telemetry.mjs
+[telemetry-aggregate] observed — 9 event(s) read from /var/tmp/v6-scratch/telemetry/rows.json · 1 under-performing, 4 unjudged
+   hero        dwellMedianMs=4000   sourced         dropOffRate=0       sourced
+   about       dwellMedianMs=null   not-observable  dropOffRate=null    not-observable
+   experience  dwellMedianMs=null   not-observable  dropOffRate=null    not-observable
+   skills      dwellMedianMs=700    sourced         dropOffRate=0.6667  sourced
+   vitrine     dwellMedianMs=null   not-observable  dropOffRate=null    not-observable
+   listen      dwellMedianMs=null   not-observable  dropOffRate=null    not-observable
+   underperforming ["skills"]  unjudged ["about","experience","vitrine","listen"]
+   hero dropOffRate is a MEASURED zero: value 0 over sampleSize 4
+
+── 2 · STALE-BUT-TRUE PATH — store unreachable, a previous aggregate exists ─
+$ node scripts/build/aggregate_telemetry.mjs
+[telemetry-aggregate] no Google Cloud access token was available on the build machine — kept the previous aggregate unchanged (stale, and says so)
+   refresh: {"attemptedAt":"2026-09-03T23:25:19.092Z","outcome":"unreachable","detail":"no Google Cloud access token was available on the build machine"}
+   hero.dwellMedianMs kept its own observation time: 2026-09-03T23:25:19.010Z | value 4000
+   -> the figure did not become a zero and did not become newer than its observation.
+
+── 3 · COLD PATH — store unreachable and NO previous aggregate ─────────────
+$ rm app/data/generated/telemetry-aggregate.json public/data/telemetry-aggregate.json && node scripts/build/aggregate_telemetry.mjs
+[telemetry-aggregate] unreachable — no Google Cloud access token was available on the build machine · 0 under-performing, 6 unjudged
+   kind = not-observable | value = null
+   reason = no telemetry window could be read at build time (no Google Cloud access token was available on the build machine), so this figure has not been observed
+   no field anywhere reports a zero: true
+   underperforming [] -> R-88 never reopens a section on a value nobody measured
+
+── restoring the aggregate that the served out/ export was built from ──────
+restored: public/data/telemetry-aggregate.json == out/data/telemetry-aggregate.json

@@ -1,0 +1,142 @@
+################################################################################
+# wave4-dataset · 04-tests-passing.log
+# The canonical dataset layer with deploy-time refresh (R-108, R-95, R-182,
+# R-175, R-112, T-37) — the two build-time suites, GREEN.
+#
+# Captured: 2026-09-03T22:40:42Z
+# HEAD:     8050ec6d7afeb257a4879d1827024a31c64db0eb
+# Branch:   wt/data-backend
+# Worktree: /var/tmp/v6-wt/data-backend
+# Node:     v22.23.1
+################################################################################
+
+$ npm run dataset:refresh   # the real APIs, on this run
+[dataset] version 6 (values moved) · built 2026-09-03T22:40:42Z
+[dataset]   cv            static    fresh   76  retained    0  oldest 2026-09-03T22:40:42Z      85 ms
+[dataset]   linkedin      fresh     fresh   12  retained    0  oldest 2026-09-03T22:40:42Z   11807 ms
+[dataset]     ! 999 — HTTP 999 <none>: <html><head>
+<script type="text/javascript">
+window.onload = function() {
+  // Parse the tracking code from cookies.
+  var trk = "bf";
+  var tr
+[dataset]   repositories  fresh     fresh   88  retained    0  oldest 2026-09-03T22:40:42Z   10973 ms
+[dataset]   channel       fresh     fresh   87  retained    0  oldest 2026-09-03T22:40:43Z   19727 ms
+[dataset]   delivery      fresh     fresh  206  retained    0  oldest 2026-09-03T22:40:43Z    1228 ms
+[dataset] 469 provenance-carrying fields · 20692 ms total · public/dataset-provenance.json written
+
+$ npm run dataset:verify
+[dataset:verify] every field is sourced, dated, non-zero-by-accident and hash-consistent.
+
+$ npm run dataset:diff
+[dataset:diff] cv            {"module":"cv","baseline":"none","note":"no committed copy at HEAD to diff against"}
+[dataset:diff] linkedin      {"module":"linkedin","baseline":"none","note":"no committed copy at HEAD to diff against"}
+[dataset:diff] repositories  {"module":"repositories","baseline":"none","note":"no committed copy at HEAD to diff against"}
+[dataset:diff] channel       {"module":"channel","baseline":"none","note":"no committed copy at HEAD to diff against"}
+[dataset:diff] delivery      {"module":"delivery","baseline":"none","note":"no committed copy at HEAD to diff against"}
+[dataset:diff] 0 JSON Patch operation(s) written to reports/dataset-diff.json
+[dataset:diff] nothing was lost, nothing claimed a freshness it did not earn.
+
+################################################################################
+# 1/2  node scripts/validate/dataset_canonical_contract.mjs
+################################################################################
+
+A · provenance kernel (R-95, R-108)
+  [PASS] A1  app/data/canonical/provenance.ts exists
+  [PASS] A2  provenance.ts declares Provenance with source, retrievedAt, method and url
+  [PASS] A3  Field<T> is the union Sourced<T> | NotObservable — never T | null (R-175)
+  [PASS] A4  provenance.ts compiles with the project tsc and exports sourced/notObservable/isObservable/must
+
+B · deploy-time refresh wiring (R-182)
+  [PASS] B1  package.json declares a dataset:refresh script
+  [PASS] B2  package.json declares a dataset:verify script
+  [PASS] B3  build:static runs dataset:refresh BEFORE next build (R-182: refreshed on each deploy)
+  [PASS] B4  build runs dataset:refresh
+  [PASS] B5  scripts/dataset/build_dataset.mjs is the single refresh entry point
+  [PASS] B6  all five source adapters exist under scripts/dataset/sources/
+  [PASS] B7  the hand-run harvest is retired — nothing imports app/data/generated/repo-harvest.json
+
+C · generated dataset & per-field provenance (R-108)
+  [PASS] C-cv  app/data/canonical/generated/cv.v1.json exists and is a DatasetModule
+  [PASS] C-linkedin  app/data/canonical/generated/linkedin.v1.json exists and is a DatasetModule
+  [PASS] C-repositories  app/data/canonical/generated/repositories.v1.json exists and is a DatasetModule
+  [PASS] C-channel  app/data/canonical/generated/channel.v1.json exists and is a DatasetModule
+  [PASS] C-delivery  app/data/canonical/generated/delivery.v1.json exists and is a DatasetModule
+  [PASS] C-manifest  manifest.v1.json exists with datasetVersion, builtAt and a row per module
+  [PASS] C-index  provenance-index.v1.json exists and is a flat sourceId -> Provenance map
+  [PASS] C-every-field  EVERY field in EVERY module carries source, retrievedAt, method and url
+  [PASS] C-retrieved-sane  no retrievedAt is in the future or before 2020-01-01
+  [PASS] C-no-fabricated-freshness  a module whose outcome is "retained" has NO field stamped with this run's attemptedAt
+  [PASS] C-no-secrets  no generated dataset file contains a secret-shaped string
+
+D · real values (R-95)
+  [PASS] D1  cv fingerprint md5 is the CV of record: 16b856c0f3f4ec0d801fdde6d084452c
+  [PASS] D2  cv fingerprint byte count is 157615
+  [PASS] D3  cv carries exactly 9 roles, the earliest being MYOB from 2010-05
+  [PASS] D4  yearsOfExperience is computed (>=16, <17) and its method states the computation (R-173)
+  [PASS] D5  repositories publicRepoCount is at least the 38 measured on 2026-09-03
+  [PASS] D6  aether-job-career-agent carries a commit count at or above the 1664 measured
+  [PASS] D7  channel id is UCJSYpoFkGKKzYTKzAr8vGzQ (@vicd0ct)
+  [PASS] D8  all 10 public videos enumerated on 2026-09-03 are present in the channel module
+  [PASS] D9  the unlisted video 9meaN-ZZAvc is either absent or flagged unlisted and excluded from the public count
+  [PASS] D10  R-119: the channel module declares NO subscriber, view, like or watch-time field
+  [PASS] D11  delivery carries both a corrections ledger and real pipeline runs
+  [PASS] D12  linkedin is recorded as not-observable with a reason and a proving command — never fabricated
+
+E · no zero, no placeholder (R-175)
+  [PASS] E1  no sourced number is 0 unless the field is explicitly marked zeroIsMeaningful
+  [PASS] E2  no sourced value is a placeholder string, null, NaN or undefined
+  [PASS] E3  a not-observable field never carries a value
+
+F · versioning & diffability (T-37)
+  [PASS] F1  each module valueHash is the sha256 of its data with every retrievedAt stripped
+  [PASS] F2  each module recordHash is the sha256 of the whole module record
+  [PASS] F3  manifest oldest/newest retrievedAt match the module contents exactly
+  [PASS] F4  diff_dataset.mjs exists and exits NON-ZERO when a field disappears from a module (preservation loss)
+  [PASS] F5  the provenance index covers every field in every module and is published to public/
+
+G · per-visualisation dossiers (R-112)
+  [PASS] G1  app/data/canonical/dossiers.ts exists and registers at least one dossier per section
+  [PASS] G2  every dossier declares the full R-112 format, with a takeaway of at most 20 words
+  [PASS] G3  dossier performance figures are measured, not authored — reports/viz-perf.json backs each one
+
+H · self-claim coherence (R-183, T-40)
+  [PASS (guard)] H1  GUARD: the site must never claim figures are "not computed live" while the build refreshes them
+  [PASS] H2  the date on the page is the date in the data — harvestedAt reads from the manifest
+
+A · provenance kernel — behaviour
+  [PASS] A6  sourced(v, p) returns { kind: "sourced", value: v, provenance: p }
+  [PASS] A7  notObservable(reason, provedBy, p) carries a null value, the reason and the proving command
+  [PASS] A8  must() throws — never returns 0, "" or undefined — for a not-observable field (R-175)
+  [PASS] A9  isObservable narrows: true for sourced, false for not-observable
+  [PASS] A10  envelope.ts declares all four RefreshOutcome states and a RefreshRecord that records failure
+
+------------------------------------------------------------------------------
+dataset canonical contract: 52 passed, 0 FAILED, 52 assertions
+ALL PASS
+EXIT=0
+
+################################################################################
+# 2/2  node scripts/validate/dataset_offline_refresh.mjs
+#      The network really is severed with unshare -rn.
+################################################################################
+
+offline deploy-time refresh — R-175 / R-182 failure path
+
+  [PASS] O1  the network can genuinely be severed with `unshare -rn` (the test must not be mockable)
+  [PASS] O2  the canonical dataset exists to be refreshed
+  [PASS] O3  scripts/dataset/build_dataset.mjs exists to run
+  [PASS] O4  a refresh with the APIs unreachable exits 0 — a degraded refresh is a normal build, not a failed one
+  [PASS] O5  the network-backed modules record outcome "retained", not "fresh"
+  [PASS] O6  the CV module still refreshes offline — it reads local bytes and its outcome is "static"
+  [PASS] O7  EVERY previously sourced field survives byte-identically — same value AND its ORIGINAL retrievedAt
+  [PASS] O8  no field degraded to a zero, a null or a placeholder (R-175)
+  [PASS] O9  the failure is recorded honestly — refresh.failure carries a real exit code or HTTP status and a detail
+  [PASS] O10  refresh.command names its secrets by VARIABLE NAME — no token value is ever written to a file
+  [PASS] O11  datasetVersion does NOT increment when nothing was re-observed (T-37: "we looked again" is not "the data moved")
+  [PASS] O12  the manifest still prints the ORIGINAL observation date, so the page cannot claim false freshness
+
+------------------------------------------------------------------------------
+offline refresh: 12 passed, 0 FAILED, 12 assertions
+ALL PASS
+EXIT=0

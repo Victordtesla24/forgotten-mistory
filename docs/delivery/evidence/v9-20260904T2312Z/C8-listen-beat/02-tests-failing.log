@@ -1,0 +1,82 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/listen.spec.ts --reporter=line
+
+[2mRunning [22m8[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/8] [chromium] › tests/e2e/listen.spec.ts:22:7 › Listen › TC-LISTEN-01: the closing sentence is the only italic on the page
+[1A[2K[2/8] [chromium] › tests/e2e/listen.spec.ts:32:7 › Listen › TC-LISTEN-02: the closing copy stays under sixty-five words
+[1A[2K[3/8] [chromium] › tests/e2e/listen.spec.ts:48:7 › Listen › TC-LISTEN-03: no form, no input, no third-party embed
+[1A[2K[4/8] [chromium] › tests/e2e/listen.spec.ts:54:7 › Listen › TC-LISTEN-04: all four channels are real anchors matching the CV
+[1A[2K[5/8] [chromium] › tests/e2e/listen.spec.ts:65:7 › Listen › TC-LISTEN-05: hover and focus produce the identical underline
+[1A[2K[6/8] [chromium] › tests/e2e/listen.spec.ts:96:7 › Listen › TC-LISTEN-06: the caliper closes once, on entry, over the long cinematic beat
+[1A[2K[7/8] [chromium] › tests/e2e/listen.spec.ts:142:7 › Listen › TC-LISTEN-07: under reduced motion the caliper is drawn closed and nothing moves
+[1A[2K[31m  1) [chromium] › tests/e2e/listen.spec.ts:96:7 › Listen › TC-LISTEN-06: the caliper closes once, on entry, over the long cinematic beat [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#listen svg[data-caliper]')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#listen svg[data-caliper]')[22m
+    [2m    18 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m  97 |[39m     [36mconst[39m section [33m=[39m page[33m.[39mlocator([33mLISTEN[39m)[33m;[39m
+     [90m  98 |[39m     [36mconst[39m caliper [33m=[39m page[33m.[39mlocator([32m`${LISTEN} svg[data-caliper]`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m  99 |[39m     [36mawait[39m expect(caliper)[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m     |[39m                           [31m[1m^[22m[39m
+     [90m 100 |[39m     [36mawait[39m expect(caliper)[33m.[39mtoHaveAttribute([32m'aria-hidden'[39m[33m,[39m [32m'true'[39m)[33m;[39m
+     [90m 101 |[39m
+     [90m 102 |[39m     [90m// Entry arms the beat. beforeEach scrolled the section into view, so the[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_e5abc934-166-1/tests/e2e/listen.spec.ts:99:27[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-listen-Listen-TC-LISTE-7cb9a-ver-the-long-cinematic-beat-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-listen-Listen-TC-LISTE-7cb9a-ver-the-long-cinematic-beat-chromium/error-context.md[22m
+
+
+[1A[2K[31m  2) [chromium] › tests/e2e/listen.spec.ts:142:7 › Listen › TC-LISTEN-07: under reduced motion the caliper is drawn closed and nothing moves [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('#listen svg[data-caliper]')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('#listen svg[data-caliper]')[22m
+    [2m    18 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 147 |[39m
+     [90m 148 |[39m     [36mconst[39m caliper [33m=[39m page[33m.[39mlocator([32m`${LISTEN} svg[data-caliper]`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 149 |[39m     [36mawait[39m expect(caliper)[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m     |[39m                           [31m[1m^[22m[39m
+     [90m 150 |[39m
+     [90m 151 |[39m     [36mconst[39m state [33m=[39m [36mawait[39m caliper[33m.[39mevaluate((svg) [33m=>[39m {
+     [90m 152 |[39m       [36mconst[39m half [33m=[39m parseFloat(getComputedStyle(svg)[33m.[39mgetPropertyValue([32m'--caliper-half'[39m))[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_e5abc934-166-1/tests/e2e/listen.spec.ts:149:27[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-listen-Listen-TC-LISTE-44eea-wn-closed-and-nothing-moves-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-listen-Listen-TC-LISTE-44eea-wn-closed-and-nothing-moves-chromium/error-context.md[22m
+
+
+[1A[2K[8/8] [chromium] › tests/e2e/listen.spec.ts:180:7 › Listen › TC-LISTEN-08: nothing in the closing section is gold
+[1A[2K[31m  2 failed[39m
+[31m    [chromium] › tests/e2e/listen.spec.ts:96:7 › Listen › TC-LISTEN-06: the caliper closes once, on entry, over the long cinematic beat [39m
+[31m    [chromium] › tests/e2e/listen.spec.ts:142:7 › Listen › TC-LISTEN-07: under reduced motion the caliper is drawn closed and nothing moves [39m
+[32m  6 passed[39m[2m (36.4s)[22m
+EXIT=1

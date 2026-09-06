@@ -1,0 +1,456 @@
+================================================================================
+ WAVE 2 · ITEM: The gold rule and the WCAG failures
+ R-21 / R-110 (gold is a claim, not decoration; one gold mark per view)
+ 7.2 (WCAG 2.1 AA, including gold-on-monochrome contrast)
+ TDD RED — tests written before any fix exists, observed failing.
+================================================================================
+ host       : srv1356245
+ date       : 2026-09-03T21:14:29+00:00
+ repo       : /root/forgotten-mistory
+ commit     : d1fce27f8a28ef6b4ef2df3bf77436e7f5be7bc5  (chore(ledger): refresh the corrections log and note that it trails by one)
+ tree       : 15 untracked/modified path(s); zero
+              tracked source file modified by this agent (test + audit files only)
+ node       : v22.23.1
+ playwright : Version 1.57.0
+ chrome     : Google Chrome 152.0.7977.75 
+ export     : npm run build:static -> exit 0, served at http://127.0.0.1:5599
+
+ NEW TESTS UNDER TEST (all three authored in this session; none existed before):
+   scripts/validate/gold_contrast_audit.mjs        static assertions, 4 checks
+   tests/a11y/gold-contrast.spec.ts                runtime assertions, 3 tests
+   tests/monochrome/gold-semantics.spec.ts         runtime assertions, 5 tests
+
+ COMMANDS (run from /root/forgotten-mistory):
+   node scripts/validate/gold_contrast_audit.mjs
+   npm run build:static
+   python3 -m http.server 5599 --directory out &
+   PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test \
+       tests/a11y/gold-contrast.spec.ts tests/monochrome/gold-semantics.spec.ts
+
+ RED OBSERVED
+   static  : 2 of 4 checks FAIL — 37 assertion failures
+               TC-GOLD-SEM    4   gold declarations outside the sanctioned inventory
+               TC-AA-INK300  33   text declarations on a 4.03:1 token
+   runtime : 6 of 8 tests  FAIL —  6 failing assertions, naming:
+               GC-01          2   live URLs at 2.38:1 (need 4.5:1)
+               GC-02          6   status labels at 3.95:1 (need 4.5:1)
+               GS-01          1   liveness dot painted rgb(212,182,92) = --gold-light
+               GS-02 x3       2   saturated gold marks sharing one viewport, at
+                                  768, 1280 and 1920 px (budget is 1)
+   total   : 8 failing checks/tests, 43 failing assertions
+   passing : TC-GOLD-GROUND, TC-GUARD-NEG, GC-03, GS-02 @390px — see PART 3/4
+
+ NOT FIXED. Nothing in app/** or components/** was touched. This log is the red.
+
+################################################################################
+# PART 1 — STATIC ASSERTIONS
+# $ node scripts/validate/gold_contrast_audit.mjs
+# exit code: 1
+################################################################################
+
+  GOLD SEMANTICS · WCAG AA CONTRAST AUDIT — R-21 / R-110 / 7.2
+  ------------------------------------------------------------------------
+  [FAIL] TC-GOLD-SEM      R-21/R-110 — every gold declaration is on the sanctioned evidence inventory
+         19 gold usage(s) found, 4 outside lock §1.3's inventory
+           · app/globals.css:973  .sw-toast { border: 1px solid var(--gold-border) }  -> gold spent on something that is not a figure with a checkable source
+           · app/globals.css:1008  .sw-toast__reload:hover { border-color: var(--gold) }  -> gold spent on something that is not a figure with a checkable source
+           · app/globals.css:1009  .sw-toast__reload:hover { color: var(--gold-light) }  -> gold spent on something that is not a figure with a checkable source
+           · components/MiniVicBot.tsx:1244  style={{ background: isSpeaking ? "var(--gold-light)" : "var(--gold)" }}  -> gold spent on something that is not a figure with a checkable source
+  [PASS] TC-GOLD-GROUND   7.2 — gold text is never set on --ink-500
+         --gold on --ink-500 recomputes to 4.75:1 (AA only, banned for text under 24px); 0 rule(s) do it
+  [FAIL] TC-AA-INK300     7.2 — --ink-300 is a non-text token (4.03:1 fails 1.4.3 under 24px)
+         --ink-300 on --ink-900 recomputes to 4.03:1; the lock's replacement --mist-400 is 6.07:1; 33 text declaration(s) still on --ink-300
+           · components/sections/About/About.module.css:68  .provenance { color: var(--ink-300) }  -> 4.03:1 at ~12.48px, needs 4.5:1
+           · components/sections/About/About.module.css:85  .provenancePath { color: var(--ink-300) }  -> 4.03:1 at ~16px, needs 4.5:1
+           · components/sections/About/About.module.css:163  .index { color: var(--ink-300) }  -> 4.03:1 at ~12.48px, needs 4.5:1
+           · components/sections/About/About.module.css:195  .sideTag { color: var(--ink-300) }  -> 4.03:1 at ~10.56px, needs 4.5:1
+           · components/sections/About/About.module.css:215  .evidence { color: var(--ink-300) }  -> 4.03:1 at ~11.52px, needs 4.5:1
+           · components/sections/About/About.module.css:271  .keyRow { color: var(--ink-300) }  -> 4.03:1 at ~10.56px, needs 4.5:1
+           · components/sections/Experience/Experience.module.css:180  .trackYears { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1
+           · components/sections/Experience/Experience.module.css:205  .axisTick { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1
+           · components/sections/Experience/Experience.module.css:276  .roleDates { color: var(--ink-300) }  -> 4.03:1 at ~11.52px, needs 4.5:1
+           · components/sections/Hero/Hero.module.css:219  .ledgerSource { color: var(--ink-300) }  -> 4.03:1 at ~11.52px, needs 4.5:1
+           · components/sections/Hero/Hero.module.css:230  .grading { color: var(--ink-300) }  -> 4.03:1 at ~11.2px, needs 4.5:1
+           · components/sections/Listen/Avatar.module.css:196  .provenance dt { color: var(--ink-300) }  -> 4.03:1 at ~9.92px, needs 4.5:1
+           · components/sections/Listen/Listen.module.css:159  .colophon { color: var(--ink-300) }  -> 4.03:1 at ~10.56px, needs 4.5:1
+           · components/sections/Listen/Listen.module.css:243  .correctionDate { color: var(--ink-300) }  -> 4.03:1 at ~11.2px, needs 4.5:1
+           · components/sections/Listen/Listen.module.css:261  .ledgerFoot { color: var(--ink-300) }  -> 4.03:1 at ~10.56px, needs 4.5:1
+           · components/sections/Skills/Bench.module.css:147  .bandLabel { color: var(--ink-300) }  -> 4.03:1 at ~9.6px, needs 4.5:1
+           · components/sections/Skills/Bench.module.css:203  .nodeCount { color: var(--ink-300) }  -> 4.03:1 at ~9.92px, needs 4.5:1
+           · components/sections/Skills/Bench.module.css:270  .readoutCaveat { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1
+           · components/sections/Skills/Bench.module.css:277  .readoutRest { color: var(--ink-300) }  -> 4.03:1 at ~11.2px, needs 4.5:1
+           · components/sections/Skills/Skills.module.css:117  .legendLabel { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1
+           · components/sections/Skills/Skills.module.css:163  .count { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1
+           · components/sections/Skills/Skills.module.css:183  .caption { color: var(--ink-300) }  -> 4.03:1 at ~12.8px, needs 4.5:1
+           · components/sections/Skills/Skills.module.css:241  .caveat { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1
+           · components/sections/Skills/Skills.module.css:279  .statusLabel { color: var(--ink-300) }  -> 4.03:1 at ~10.56px, needs 4.5:1
+           · components/sections/Skills/Skills.module.css:296  .footer { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1
+           · components/sections/Skills/Skills.module.css:354  .where::before { color: var(--ink-300) }  -> 4.03:1 at ~16px, needs 4.5:1
+           · components/sections/Vitrine/Vitrine.module.css:131  .repo { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1
+           · components/sections/Vitrine/Vitrine.module.css:181  .metric dt { color: var(--ink-300) }  -> 4.03:1 at ~9.92px, needs 4.5:1
+           · components/sections/Vitrine/Vitrine.module.css:213  .limitsLabel { color: var(--ink-300) }  -> 4.03:1 at ~9.92px, needs 4.5:1
+           · components/sections/Vitrine/Vitrine.module.css:310  .exclusion dd { color: var(--ink-300) }  -> 4.03:1 at ~13.12px, needs 4.5:1
+           · components/sections/Vitrine/Vitrine.module.css:318  .stamp { color: var(--ink-300) }  -> 4.03:1 at ~10.88px, needs 4.5:1
+           · components/sections/Vitrine/Vitrine.module.css:355  .notDeployed { color: var(--ink-300) }  -> 4.03:1 at ~11.52px, needs 4.5:1
+           · app/globals.css:1013  .sw-toast--dev { color: var(--ink-300) }  -> 4.03:1 at ~16px, needs 4.5:1
+  [PASS] TC-GUARD-NEG     negative corpus — every predicate above flags a deliberate violation
+         0 predicate(s) failed to detect or over-fired on the synthetic corpus
+  ------------------------------------------------------------------------
+  RESULT: FAILURES PRESENT (2/4 checks, 37 assertion failures)
+
+  JSON report -> reports/gold-contrast-audit.json
+
+
+################################################################################
+# PART 2 — RUNTIME ASSERTIONS (composited, measured off the rendered pixels)
+# $ PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test \
+#       tests/a11y/gold-contrast.spec.ts tests/monochrome/gold-semantics.spec.ts \
+#       --reporter=list --workers=1
+# exit code: 1
+################################################################################
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/gold-contrast.spec.ts tests/monochrome/gold-semantics.spec.ts --reporter=list --workers=1
+
+Running 8 tests using 1 worker
+
+
+=== GC-01 live repository URLs (#vitrine) ===
+  "https://aether.srv1356245.hstgr.cloud"  2.38:1  (fg #5b4e29 on modal bg #0c0d0f, 11.52px/400, opacity chain 0.42, ground rgb(10, 11, 13); spread 2.37–2.38:1)
+  "https://abentertainment.com.au"  8.67:1  (fg #c9a84c on modal bg #090a0c, 11.52px/400, opacity chain 1, ground rgb(10, 11, 13); spread 8.67–8.62:1)
+  "https://forgotten-mistory.web.app"  2.38:1  (fg #5b4e29 on modal bg #0c0d0f, 11.52px/400, opacity chain 0.42, ground rgb(10, 11, 13); spread 2.37–2.38:1)
+  ✘  1 [chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited (3.7s)
+
+=== GC-02 status labels (#skills) ===
+  "measured in production"  3.95:1  (fg #6e7178 on modal bg #0d0e10, 10.56px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 3.95–3.89:1)
+  "measured in production"  3.95:1  (fg #6e7178 on modal bg #0d0e10, 10.56px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 3.95–3.89:1)
+  "measured in production"  3.95:1  (fg #6e7178 on modal bg #0d0e10, 10.56px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 3.95–3.89:1)
+  "measured in production"  3.95:1  (fg #6e7178 on modal bg #0d0e10, 10.56px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 3.98–3.92:1)
+  "measured in production"  3.95:1  (fg #6e7178 on modal bg #0d0e10, 10.56px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 3.98–3.74:1)
+  "measured in production"  3.95:1  (fg #6e7178 on modal bg #0d0e10, 10.56px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 3.98–2.55:1)
+  ✘  2 [chromium] › tests/a11y/gold-contrast.spec.ts:328:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-02: every skills status label clears 4.5:1 (2.6s)
+
+=== GC-03 gold-on---ink-500 sweep === 0 offender(s)
+  ✓  3 [chromium] › tests/a11y/gold-contrast.spec.ts:343:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-03: no gold text is ever painted on an --ink-500 ground (2.9s)
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(212, 182, 92)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+  ✘  4 [chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold (1.4s)
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  ✓  5 [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine (2.2s)
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 2
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+  ✘  6 [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine (2.4s)
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 2
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+  ✘  7 [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine (2.4s)
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 2
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+  ✘  8 [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine (2.8s)
+
+
+  1) [chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited 
+
+    Error: gold is the site's evidence mark; a reader who cannot read it cannot check the evidence
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "https://aether.srv1356245.hstgr.cloud = 2.38:1 (needs 4.5:1)",[39m
+    [31m+   "https://forgotten-mistory.web.app = 2.38:1 (needs 4.5:1)",[39m
+    [31m+ ][39m
+
+      323 |       failures.map((m) => `${m.label} = ${r2(m.ratio)}:1 (needs ${AA_TEXT}:1)`),
+      324 |       'gold is the site\'s evidence mark; a reader who cannot read it cannot check the evidence',
+    > 325 |     ).toEqual([]);
+          |       ^
+      326 |   });
+      327 |
+      328 |   test('GC-02: every skills status label clears 4.5:1', async ({ page }) => {
+        at /root/forgotten-mistory/tests/a11y/gold-contrast.spec.ts:325:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-gold-contrast-WCAG-2--1078e--clears-4-5-1-as-composited-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-gold-contrast-WCAG-2--1078e--clears-4-5-1-as-composited-chromium/error-context.md
+
+  2) [chromium] › tests/a11y/gold-contrast.spec.ts:328:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-02: every skills status label clears 4.5:1 
+
+    Error: the status label is the text half of the gold mark — 1.4.1 depends on it being readable
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 8[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "measured in production = 3.95:1 (needs 4.5:1)",[39m
+    [31m+   "measured in production = 3.95:1 (needs 4.5:1)",[39m
+    [31m+   "measured in production = 3.95:1 (needs 4.5:1)",[39m
+    [31m+   "measured in production = 3.95:1 (needs 4.5:1)",[39m
+    [31m+   "measured in production = 3.95:1 (needs 4.5:1)",[39m
+    [31m+   "measured in production = 3.95:1 (needs 4.5:1)",[39m
+    [31m+ ][39m
+
+      338 |       failures.map((m) => `${m.label} = ${r2(m.ratio)}:1 (needs ${AA_TEXT}:1)`),
+      339 |       'the status label is the text half of the gold mark — 1.4.1 depends on it being readable',
+    > 340 |     ).toEqual([]);
+          |       ^
+      341 |   });
+      342 |
+      343 |   test('GC-03: no gold text is ever painted on an --ink-500 ground', async ({ page }) => {
+        at /root/forgotten-mistory/tests/a11y/gold-contrast.spec.ts:340:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-gold-contrast-WCAG-2--ca700-s-status-label-clears-4-5-1-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-gold-contrast-WCAG-2--ca700-s-status-label-clears-4-5-1-chromium/error-context.md
+
+  3) [chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold 
+
+    Error: a liveness indicator is not a figure with a source — gold on it makes the site's one mark mean "switched on"
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 3[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "background = rgb(212, 182, 92) (--gold-light)",[39m
+    [31m+ ][39m
+
+      119 |       offences,
+      120 |       'a liveness indicator is not a figure with a source — gold on it makes the site\'s one mark mean "switched on"',
+    > 121 |     ).toEqual([]);
+          |       ^
+      122 |   });
+      123 |
+      124 |   for (const bp of [
+        at /root/forgotten-mistory/tests/monochrome/gold-semantics.spec.ts:121:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/monochrome-gold-semantics--150bd-ic-liveness-dot-is-not-gold-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/monochrome-gold-semantics--150bd-ic-liveness-dot-is-not-gold-chromium/error-context.md
+
+  4) [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine 
+
+    Error: R-110 — one saturated gold mark per view; additional sourced marks step down to --gold-pale. Visible: a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" (color: rgb(201, 168, 76)) | a.Vitrine_live__PwDxH "abentertainment.com.au" (color: rgb(201, 168, 76))
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m2[39m
+
+      197 |       'R-110 — one saturated gold mark per view; additional sourced marks step down to --gold-pale. ' +
+      198 |         `Visible: ${marks.map((m) => `${m.tag}.${m.cls} "${m.text}" (${m.via})`).join(' | ')}`,
+    > 199 |     ).toBeLessThanOrEqual(1);
+          |       ^
+      200 |   });
+      201 |   }
+      202 | });
+        at /root/forgotten-mistory/tests/monochrome/gold-semantics.spec.ts:199:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/monochrome-gold-semantics--11b65-s-a-viewport-in-the-vitrine-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/monochrome-gold-semantics--11b65-s-a-viewport-in-the-vitrine-chromium/error-context.md
+
+  5) [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine 
+
+    Error: R-110 — one saturated gold mark per view; additional sourced marks step down to --gold-pale. Visible: a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" (color: rgb(201, 168, 76)) | a.Vitrine_live__PwDxH "abentertainment.com.au" (color: rgb(201, 168, 76))
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m2[39m
+
+      197 |       'R-110 — one saturated gold mark per view; additional sourced marks step down to --gold-pale. ' +
+      198 |         `Visible: ${marks.map((m) => `${m.tag}.${m.cls} "${m.text}" (${m.via})`).join(' | ')}`,
+    > 199 |     ).toBeLessThanOrEqual(1);
+          |       ^
+      200 |   });
+      201 |   }
+      202 | });
+        at /root/forgotten-mistory/tests/monochrome/gold-semantics.spec.ts:199:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/monochrome-gold-semantics--af3fd-s-a-viewport-in-the-vitrine-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/monochrome-gold-semantics--af3fd-s-a-viewport-in-the-vitrine-chromium/error-context.md
+
+  6) [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine 
+
+    Error: R-110 — one saturated gold mark per view; additional sourced marks step down to --gold-pale. Visible: a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" (color: rgb(201, 168, 76)) | a.Vitrine_live__PwDxH "abentertainment.com.au" (color: rgb(201, 168, 76))
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m2[39m
+
+      197 |       'R-110 — one saturated gold mark per view; additional sourced marks step down to --gold-pale. ' +
+      198 |         `Visible: ${marks.map((m) => `${m.tag}.${m.cls} "${m.text}" (${m.via})`).join(' | ')}`,
+    > 199 |     ).toBeLessThanOrEqual(1);
+          |       ^
+      200 |   });
+      201 |   }
+      202 | });
+        at /root/forgotten-mistory/tests/monochrome/gold-semantics.spec.ts:199:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/monochrome-gold-semantics--3ad05-s-a-viewport-in-the-vitrine-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/monochrome-gold-semantics--3ad05-s-a-viewport-in-the-vitrine-chromium/error-context.md
+
+  6 failed
+    [chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited 
+    [chromium] › tests/a11y/gold-contrast.spec.ts:328:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-02: every skills status label clears 4.5:1 
+    [chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold 
+    [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine 
+    [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine 
+    [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine 
+  2 passed (27.9s)
+
+################################################################################
+# PART 3 — RECOMPUTED RATIOS
+# Every number below was recomputed in this session with the WCAG 2.1
+# relative-luminance formula from the literal token values in app/globals.css.
+# "measured ground" means the modal pixel colour sampled from a screenshot of
+# the element's own box with its glyphs made transparent, i.e. the ground the
+# browser actually painted, not the ground the stylesheet nominally declares.
+################################################################################
+
+  DEFECT 1 — Vitrine live URL on an unlit plate
+    declared    Vitrine.module.css:243   .live { color: var(--gold) }
+    dimmed by   Vitrine.module.css:89    .plate { opacity: 0.42 }
+    measured ground             #0c0d0f
+    --gold flat on --ink-900              8.62:1   AAA
+    --gold at 0.42 over measured ground   2.38:1   FAIL (needs 4.5:1)
+      · the design-system lock computed 2.37:1 against a nominal #0A0B0D ground;
+        measuring the painted pixel gives 2.38:1. The lock's figure reproduces.
+    the lock's prescribed remedies, recomputed:
+      --gold      at 0.62   3.87:1   still FAIL
+      --gold-pale at 0.62   5.61:1   PASS   (the lock said 5.9:1 — recomputed 5.61:1;
+                                             still above 4.5:1, so the remedy holds,
+                                             but the lock's figure is 0.29 optimistic)
+      --gold-pale at 0.42   3.16:1   FAIL — raising the dim floor is not optional
+      --mist-200  at 0.62   5.19:1   PASS
+      --mist-400  at 0.62   2.97:1   FAIL — any --mist-400 text left inside a plate
+                                     at the 0.62 floor still fails AA. Recorded so
+                                     the implementer does not fix one token and
+                                     leave the plate failing on another.
+
+  DEFECT 2 — Skills status label
+    declared    Skills.module.css:279    .statusLabel { color: var(--ink-300) }
+    measured ground             #0d0e10   (the table paints rgba(244,246,250,0.016))
+    --ink-300 flat on --ink-900           4.03:1   FAIL
+    --ink-300 on the measured ground      3.95:1   FAIL (needs 4.5:1)
+      · the lock computed 4.03:1 against the nominal page ground. On the ground
+        the table actually paints it is worse, not better: 3.95:1.
+    --mist-400 on the measured ground     5.96:1   PASS — the lock's replacement holds.
+
+  DEFECT 3 — MiniVic liveness dot
+    declared    MiniVicBot.tsx:1244  background: isSpeaking ? var(--gold-light) : var(--gold)
+    measured    background = rgb(212, 182, 92) = --gold-light, on a 6px x 6px dot
+      · this is not a contrast failure — it is a meaning failure. Gold on this
+        site means "this figure has a source you can go and check"; here it means
+        "the widget is switched on". Geometry (6px <= 0.5rem) is within the lock's
+        permitted shapes, which is why no existing gate sees it.
+    the lock's prescribed replacement, recomputed:
+      --mist-200 on --ink-900              12.36:1  (non-text UI needs 3:1)  PASS
+
+  VERIFICATION ASKED FOR BY THE BRIEF — gold text on --ink-500
+    --gold on --ink-500                    4.75:1   AA only, AAA-fail
+    static  TC-GOLD-GROUND : 0 rules set gold text on an --ink-500 ground   PASS
+    runtime GC-03          : 0 elements across all six sections do it       PASS
+    Nothing does it. The prohibition is currently satisfied; both checks stay in
+    the suite as the guard that keeps it satisfied.
+
+################################################################################
+# PART 4 — LOCK RECONCILIATION (the lock is testimony; this is the evidence)
+################################################################################
+
+  REPRODUCED, as stated
+    · Vitrine.module.css:89 unlit plate — lock 2.37:1, measured 2.38:1.  CONFIRMED
+    · Skills.module.css:279 .statusLabel — lock 4.03:1, measured 3.95:1 on the
+      real ground (worse than the lock said).                            CONFIRMED
+    · MiniVicBot.tsx:1244 gold on a liveness dot.                        CONFIRMED
+    · Gold on --ink-500 is 4.75:1.                                       CONFIRMED
+
+  REPRODUCED, but with a different magnitude than the lock stated
+    · Lock §1.3 item #7: "up to three gold marks in one viewport".
+      Measured, with the vitrine link row centred, at the four house breakpoints:
+          390 x 844   1 saturated gold mark   (within budget — PASS)
+          768 x 1024  2 saturated gold marks  (FAIL)
+         1280 x 720   2 saturated gold marks  (FAIL)
+         1920 x 1080  2 saturated gold marks  (FAIL)
+      The R-110 violation is real at three of four breakpoints, but the worst case
+      observed is TWO, not three. Recorded rather than repeated: the third live
+      plate (index 5 of 6) is 2.5 plate-widths beyond the rail's right edge and
+      never shares a viewport with the first two. The lock over-states the count
+      by one; the defect itself stands.
+    · Lock §1.1 names ONE .statusLabel instance on --ink-300. The static scan
+      finds 33 text declarations on --ink-300 across 11 modules plus globals.css,
+      every one of them at 4.03:1 or worse. The lock's own rule 6 ("--ink-300 is
+      non-text") covers all 33; only the cited one was enumerated. The gate
+      enumerates all of them so that fixing line 279 alone cannot turn it green.
+
+  FOUND HERE, NOT IN THE LOCK — the lock's "complete list" of gold surfaces is
+  incomplete. §1.3 scans components/** only, and misses three gold declarations
+  in app/globals.css, all of them decoration rather than evidence:
+    · app/globals.css:973   .sw-toast          { border: 1px solid var(--gold-border) }
+    · app/globals.css:1008  .sw-toast__reload:hover { border-color: var(--gold) }
+    · app/globals.css:1009  .sw-toast__reload:hover { color: var(--gold-light) }
+  A service-worker update toast is chrome, not a figure with a source, and 1008/
+  1009 are a hover-only flourish — banned outright by the lock's own colour rule 2
+  ("never a hover-only flourish"). TC-GOLD-SEM fails on all three alongside
+  MiniVicBot.tsx:1244. Flagged for the Implementer as in-scope for R-21.
+
+  NO FALSE POSITIVES. Every defect the lock named for this item reproduced.
+
+################################################################################
+# PART 5 — WHOLE-BATTERY STATE AT THE MOMENT OF THIS RED
+# $ PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test
+# 206 tests: 175 passed, 31 failed
+################################################################################
+
+  Of the 31 failures, 6 are this item's, deliberately:
+    GC-01, GC-02, GS-01, GS-02 @768, GS-02 @1280, GS-02 @1920
+
+  The other 25 belong to two concurrent wave-2 swarms writing into the same tree
+  and are NOT this item's to fix or to claim:
+    16  tests/overhaul/design-scale.spec.ts   (spacing / motion / type — R-46/47/48)
+     8  tests/{a11y,e2e}/interaction-states.spec.ts (TC-STATE-* — R-49/SC-30.1)
+     1  tests/visual/screenshots.spec.ts VIS-04 "Listen (closing) section"
+
+  VIS-04 is a standing red, not a side effect of this item. It reproduces
+  identically when run alone (1 failed, 5 passed, 21.9s):
+      Expected an image 1280px by 1927px, received 1280px by 1905px.
+      52283 pixels (ratio 0.03 of all image pixels) are different.
+  `git status --porcelain` shows this agent modified zero files under app/** or
+  components/**, so no rendering input to that baseline changed here. A 22px
+  height drift in the Listen section is a real regression against
+  tests/baselines/visual/screenshots.spec.ts-snapshots/listen-section-chromium-linux.png
+  and is escalated to the orchestrator rather than absorbed, updated or silenced.
+
+################################################################################
+# END OF RED. NOTHING WAS FIXED.
+################################################################################

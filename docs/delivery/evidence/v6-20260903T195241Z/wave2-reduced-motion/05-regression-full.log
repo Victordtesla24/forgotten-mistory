@@ -1,0 +1,807 @@
+===============================================================================
+ forgotten-mistory · wave 2 · reduced-motion choreography — FULL REGRESSION
+ every gate in the battery, in order, with its exit code
+===============================================================================
+host:   srv1356245
+date:   2026-09-04T01:29:59Z
+commit: 7e1e3f14aaab886edee95e386040285b2afed30a  (+ this item's uncommitted change)
+node:   v22.23.1
+
+### npx tsc --noEmit
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'tsc' --noEmit
+tsc exit=0
+
+### npm run lint
+npm notice run forgotten-mistory@2.0.0 lint
+npm notice run next lint
+✔ No ESLint warnings or errors
+lint exit=0
+
+### node scripts/validate/overhaul_static_audit.mjs
+
+  OVERHAUL STATIC AUDIT — baseline
+  ------------------------------------------------------------
+  [PASS] TC-NFR-TONE   No boastful/sci-fi copy (data + layout meta + alt/aria)
+         clean
+  [PASS] TC-NFR-MONO   Achromatic, with one sanctioned accent defined in one place
+         clean — greys plus the gold token, defined only in globals.css and lib/palette.ts
+  [PASS] TC-NFR-PERF   Asset budgets (img ≤0.5MB · video ≤2.5MB, ≤5MB click-to-play · audio ≤1MB)
+         within budget
+  [PASS] TC-FR-PARITY  Resume facts present in siteContent
+         all key facts present
+  [PASS] TC-NFR-TYPE   Three font families — Source Serif 4 (display) + Inter (body) + IBM Plex Mono (data)
+         clean — exactly 3 families
+  [PASS] TC-NFR-SEC    No hardcoded secrets in client source
+         clean
+  [PASS] TC-ARCH-BENCH No /performance-benchmark route in static export
+         absent from out/
+  [PASS] TC-NFR-COMPLETE No truncation/placeholder/stub markers (app|components|lib)
+         clean — no incomplete-code markers
+  [PASS] TC-NFR-TOKEN  CSS custom properties match design token spec
+         all tokens match design spec
+  [PASS] TC-NFR-DEADCSS No globals.css rules for classes that do not exist
+         clean — every class selector names a class the source can render
+  ------------------------------------------------------------
+  RESULT: ALL PASS (10/10)
+
+  📄 JSON report → reports/static-audit.json
+
+audit exit=0
+
+### node scripts/validate/reduced_motion_audit.mjs
+reduced-motion audit — R-46 / R-101 / SC-27.1 (design-system lock §4.3)
+
+PASS  TC-RM-BLANKET  No universal-selector duration override inside prefers-reduced-motion
+      A global duration crush amputates motion instead of re-scoring it (R-46, lock §4.3).
+
+PASS  TC-RM-SCORE  Every section re-scores its entrance under reduced motion
+      Lock §4.3 instrument 1: generalise Hero.module.css:389-398 to all six sections.
+
+PASS  TC-RM-SAFE  Reduced-motion keyframes animate no position or size
+      Nothing may animate position or size under reduced motion (R-46, vestibular safety).
+
+PASS  TC-RM-AFFORD  Colour affordances survive under reduced motion
+      Lock §4.3 instrument 3: a colour or weight transition causes no vestibular response and is the primary affordance signal; killing it makes the interface feel broken rather than calm.
+
+4/4 checks passed
+report: reports/reduced-motion-audit.json
+rm-audit exit=0
+
+### npm run build:static
+npm notice run forgotten-mistory@2.0.0 build:static
+npm notice run rm -rf .next out && node scripts/build/build_stamp.mjs && node scripts/build/cv_fingerprint.mjs && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs
+[build-stamp] 18 tracked file(s) differ from HEAD — the page will carry no commit stamp, because it was not built from one:
+  app/globals.css
+  components/sections/About/About.module.css
+  components/sections/About/Compass.module.css
+  components/sections/Experience/Experience.module.css
+  components/sections/Hero/Hero.module.css
+  components/sections/Listen/Listen.module.css
+  components/sections/Skills/Bench.module.css
+  components/sections/Skills/Skills.module.css
+  components/sections/Vitrine/Vitrine.module.css
+  components/site/Footer.module.css
+  docs/delivery/evidence/v6-20260903T195241Z/DEPLOYMENT-LOG.md
+  docs/delivery/evidence/v6-20260903T195241Z/R184/00-how-to-reproduce.md
+  docs/delivery/evidence/v6-20260903T195241Z/SPEC-closing-section.md
+  docs/delivery/evidence/v6-20260903T195241Z/SPEC-dimensions-artefact.md
+  docs/delivery/evidence/v6-20260903T195241Z/SPEC-explainer.md
+  docs/delivery/evidence/v6-20260903T195241Z/SPEC-skills-topology.md
+  docs/delivery/evidence/v6-20260903T195241Z/wave2-gold-contrast/sourced-state-finding.md
+  tests/overhaul/cinematic.spec.ts
+[build-stamp] tree was not clean — no commit stamp will render
+[cv-fingerprint] 16b856c0 · 157615 bytes
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/11) ...
+   Generating static pages (2/11) 
+   Generating static pages (5/11) 
+   Generating static pages (8/11) 
+ ✓ Generating static pages (11/11)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    26.7 kB         152 kB
+├ ○ /_not-found                          138 B          87.7 kB
+├ ○ /apple-icon.png                      0 B                0 B
+├ ○ /icon.png                            0 B                0 B
+├ ○ /performance-benchmark               10.2 kB        97.8 kB
+├ ○ /privacy                             407 B          96.7 kB
+├ ○ /robots.txt                          0 B                0 B
+├ ○ /sitemap.xml                         0 B                0 B
+└ ○ /terms                               407 B          96.7 kB
++ First Load JS shared by all            87.6 kB
+  ├ chunks/117-618d8b8178db00cb.js       31.8 kB
+  ├ chunks/fd9d1056-65122057374fba7a.js  53.6 kB
+  └ other shared chunks (total)          2.11 kB
+
+
+○  (Static)  prerendered as static content
+
+[prune] removed out/performance-benchmark.html
+[prune] removed out/performance-benchmark.txt
+[prune] removed out/_next/static/chunks/app/performance-benchmark
+[prune] done — 3 artifact(s) removed from the static export
+build exit=0
+
+### PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test   (full suite)
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test --reporter=list
+TAP version 13
+# Subtest: R6 pipeline structure
+    # Subtest: has all 10 required jobs
+    ok 1 - has all 10 required jobs
+      ---
+      duration_ms: 1.35728
+      type: 'test'
+      ...
+    # Subtest: quality job runs tsc + static audit + robustness + contract tests
+    ok 2 - quality job runs tsc + static audit + robustness + contract tests
+      ---
+      duration_ms: 0.180841
+      type: 'test'
+      ...
+    1..2
+ok 1 - R6 pipeline structure
+  ---
+  duration_ms: 3.020852
+  type: 'suite'
+  ...
+# Subtest: R6 invariants
+    # Subtest: build.needs excludes test and test-gpu (deploy never blocked on GPU runner)
+    ok 1 - build.needs excludes test and test-gpu (deploy never blocked on GPU runner)
+      ---
+      duration_ms: 0.395613
+      type: 'test'
+      ...
+    # Subtest: deploy only runs on main push
+    ok 2 - deploy only runs on main push
+      ---
+      duration_ms: 0.213941
+      type: 'test'
+      ...
+    # Subtest: test and test-gpu have continue-on-error
+    ok 3 - test and test-gpu have continue-on-error
+      ---
+      duration_ms: 0.217982
+      type: 'test'
+      ...
+    # Subtest: GEMINI_API_KEY used in build (fail-loud invariant)
+    ok 4 - GEMINI_API_KEY used in build (fail-loud invariant)
+      ---
+      duration_ms: 0.289612
+      type: 'test'
+      ...
+    # Subtest: STAGE 7: verify job runs after deploy and asserts production HTTP 200
+    ok 5 - STAGE 7: verify job runs after deploy and asserts production HTTP 200
+      ---
+      duration_ms: 0.349913
+      type: 'test'
+      ...
+    # Subtest: PR runs never auto-deploy to live (preview only)
+    ok 6 - PR runs never auto-deploy to live (preview only)
+      ---
+      duration_ms: 0.544224
+      type: 'test'
+      ...
+    1..6
+ok 2 - R6 invariants
+  ---
+  duration_ms: 2.495479
+  type: 'suite'
+  ...
+# Subtest: R6 upgrades
+    # Subtest: R6-HIGH: Playwright browser cache present in test and axe
+    ok 1 - R6-HIGH: Playwright browser cache present in test and axe
+      ---
+      duration_ms: 0.265992
+      type: 'test'
+      ...
+    # Subtest: R6-MED: PR preview channel present
+    ok 2 - R6-MED: PR preview channel present
+      ---
+      duration_ms: 0.394443
+      type: 'test'
+      ...
+    # Subtest: R6-MED: Visual-regression baselines artifact present
+    ok 3 - R6-MED: Visual-regression baselines artifact present
+      ---
+      duration_ms: 0.148821
+      type: 'test'
+      ...
+    # Subtest: R6-LOW: Playwright HTML report artifact present
+    ok 4 - R6-LOW: Playwright HTML report artifact present
+      ---
+      duration_ms: 0.096
+      type: 'test'
+      ...
+    # Subtest: R6-LOW: tsc fast-fail mirrored in lint job
+    ok 5 - R6-LOW: tsc fast-fail mirrored in lint job
+      ---
+      duration_ms: 0.161091
+      type: 'test'
+      ...
+    1..5
+ok 3 - R6 upgrades
+  ---
+  duration_ms: 1.305759
+  type: 'suite'
+  ...
+# Subtest: Concurrency safety
+    # Subtest: cancel-in-progress is conditional on pull_request only
+    ok 1 - cancel-in-progress is conditional on pull_request only
+      ---
+      duration_ms: 0.207052
+      type: 'test'
+      ...
+    1..1
+ok 4 - Concurrency safety
+  ---
+  duration_ms: 0.284623
+  type: 'suite'
+  ...
+# Subtest: Edge cases
+    # Subtest: test job skips for forks (no secrets available)
+    ok 1 - test job skips for forks (no secrets available)
+      ---
+      duration_ms: 0.236721
+      type: 'test'
+      ...
+    # Subtest: test-gpu only runs when E2E_RUNNER_LABELS is set
+    ok 2 - test-gpu only runs when E2E_RUNNER_LABELS is set
+      ---
+      duration_ms: 0.213421
+      type: 'test'
+      ...
+    # Subtest: lighthouse uses lhci with proper budgets
+    ok 3 - lighthouse uses lhci with proper budgets
+      ---
+      duration_ms: 0.167102
+      type: 'test'
+      ...
+    1..3
+ok 5 - Edge cases
+  ---
+  duration_ms: 0.748156
+  type: 'suite'
+  ...
+# Subtest: CI-CD-4: Static audit hardening
+    # Subtest: static audit report artifact is uploaded in quality job
+    ok 1 - static audit report artifact is uploaded in quality job
+      ---
+      duration_ms: 0.208792
+      type: 'test'
+      ...
+    # Subtest: static audit fail-loud test file exists
+    ok 2 - static audit fail-loud test file exists
+      ---
+      duration_ms: 0.152921
+      type: 'test'
+      ...
+    # Subtest: every job has timeout-minutes (R6 guard)
+    ok 3 - every job has timeout-minutes (R6 guard)
+      ---
+      duration_ms: 0.576964
+      type: 'test'
+      ...
+    1..3
+ok 6 - CI-CD-4: Static audit hardening
+  ---
+  duration_ms: 1.093949
+  type: 'suite'
+  ...
+# Subtest: Static audit fail-loud contract
+    # Subtest: baseline: audit passes on clean source (exit 0)
+    ok 1 - baseline: audit passes on clean source (exit 0)
+      ---
+      duration_ms: 188.463978
+      type: 'test'
+      ...
+    # Subtest: TONE violation: injecting banned word in string literal causes exit 1
+    ok 2 - TONE violation: injecting banned word in string literal causes exit 1
+      ---
+      duration_ms: 156.915999
+      type: 'test'
+      ...
+    # Subtest: COMPLETE violation: TODO marker causes exit 1
+    ok 3 - COMPLETE violation: TODO marker causes exit 1
+      ---
+      duration_ms: 192.031006
+      type: 'test'
+      ...
+    # Subtest: MULTI-AXIS violation: multiple failures all reported before exit
+    ok 4 - MULTI-AXIS violation: multiple failures all reported before exit
+      ---
+      duration_ms: 183.770781
+      type: 'test'
+      ...
+    # Subtest: JSON report reflects FAIL when violations present
+    ok 5 - JSON report reflects FAIL when violations present
+      ---
+      duration_ms: 189.183323
+      type: 'test'
+      ...
+    # Subtest: JSON report reflects PASS on clean source
+    ok 6 - JSON report reflects PASS on clean source
+      ---
+      duration_ms: 184.85285
+      type: 'test'
+      ...
+    1..6
+ok 7 - Static audit fail-loud contract
+  ---
+  duration_ms: 1096.501716
+  type: 'suite'
+  ...
+
+Running 208 tests using 2 workers
+
+  ✓    1 [chromium] › tests/a11y/accessibility.spec.ts:104:7 › A11y: axe-core Accessibility Audit › A11Y-02: Hero section passes axe check (3.5s)
+  ✓    2 [chromium] › tests/a11y/accessibility.spec.ts:85:7 › A11y: axe-core Accessibility Audit › A11Y-01: Full page passes axe check (wcag2a + wcag2aa + wcag21a + wcag21aa) (6.4s)
+  ✓    3 [chromium] › tests/a11y/accessibility.spec.ts:109:7 › A11y: axe-core Accessibility Audit › A11Y-03: About section passes axe check (3.6s)
+  ✓    4 [chromium] › tests/a11y/accessibility.spec.ts:114:7 › A11y: axe-core Accessibility Audit › A11Y-04: Experience section passes axe check (3.4s)
+  ✓    5 [chromium] › tests/a11y/accessibility.spec.ts:119:7 › A11y: axe-core Accessibility Audit › A11Y-05: Skills section passes axe check (3.8s)
+  ✓    6 [chromium] › tests/a11y/accessibility.spec.ts:124:7 › A11y: axe-core Accessibility Audit › A11Y-06: Vitrine rail passes axe check, including scrollable-region-focusable (3.0s)
+  ✓    7 [chromium] › tests/a11y/accessibility.spec.ts:129:7 › A11y: axe-core Accessibility Audit › A11Y-07: Listen (closing) section passes axe check (3.1s)
+  ✓    8 [chromium] › tests/a11y/accessibility.spec.ts:134:7 › A11y: axe-core Accessibility Audit › A11Y-08: Navigation overlay (open state) passes axe check (2.1s)
+  ✓    9 [chromium] › tests/a11y/accessibility.spec.ts:145:7 › A11y: axe-core Accessibility Audit › A11Y-09: Tab moves focus forward through real, visible controls (2.5s)
+  ✓   10 [chromium] › tests/a11y/accessibility.spec.ts:175:7 › A11y: axe-core Accessibility Audit › A11Y-10: Keyboard Escape closes the nav overlay and returns focus to the toggle (1.8s)
+  ✓   11 [chromium] › tests/a11y/accessibility.spec.ts:189:7 › A11y: axe-core Accessibility Audit › A11Y-11: The page exposes one navigation landmark and one main landmark (1.4s)
+  ✓   12 [chromium] › tests/a11y/accessibility.spec.ts:195:7 › A11y: axe-core Accessibility Audit › A11Y-12: Every section is reachable by its own accessible name (1.6s)
+
+=== GC-01 live repository URLs (#vitrine) ===
+  "https://aether.srv1356245.hstgr.cloud"  5.62:1  (fg #94886a on modal bg #0a0b0d, 12px/400, opacity chain 0.62, ground rgb(10, 11, 13); spread 5.62–5.62:1)
+  "https://abentertainment.com.au"  8.62:1  (fg #c9a84c on modal bg #0a0b0d, 12px/400, opacity chain 1, ground rgb(10, 11, 13); spread 8.67–8.62:1)
+  "https://forgotten-mistory.web.app"  5.62:1  (fg #94896a on modal bg #0b0c0e, 12px/400, opacity chain 0.62, ground rgb(10, 11, 13); spread 5.62–5.62:1)
+  ✓   14 [chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited (3.6s)
+  ✓   13 [chromium] › tests/a11y/accessibility.spec.ts:209:7 › A11y: axe-core Accessibility Audit › A11Y-13: Images have alt text, links and buttons have discernible names (4.5s)
+
+=== GC-02 status labels (#skills) ===
+  "measured in production"  5.91:1  (fg #8a8f9a on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 5.96–5.87:1)
+  "measured in production"  5.91:1  (fg #8a8f9a on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 5.96–5.87:1)
+  "measured in production"  5.91:1  (fg #8a8f9a on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 5.96–5.87:1)
+  "measured in production"  5.91:1  (fg #8a8f9a on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 5.96–5.87:1)
+  "measured in production"  5.91:1  (fg #8a8f9a on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 5.96–5.87:1)
+  "measured in production"  5.91:1  (fg #8a8f9a on modal bg #0e0f11, 12px/400, opacity chain 1, ground rgba(244, 246, 250, 0.016); spread 5.96–1.06:1)
+  ✓   15 [chromium] › tests/a11y/gold-contrast.spec.ts:328:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-02: every skills status label clears 4.5:1 (2.7s)
+
+=== GC-03 gold-on---ink-500 sweep === 0 offender(s)
+  ✓   16 [chromium] › tests/a11y/gold-contrast.spec.ts:343:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-03: no gold text is ever painted on an --ink-500 ground (3.2s)
+  ✓   17 [chromium] › tests/a11y/interaction-states.spec.ts:362:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS — every focusable element paints a designed focus ring (6.7s)
+  ✓   18 [chromium] › tests/a11y/interaction-states.spec.ts:389:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-MINIVIC — the clone panel paints a designed focus ring on every control (5.9s)
+  ✓   20 [chromium] › tests/a11y/interaction-states.spec.ts:437:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-DISABLED — disabled controls carry the locked disabled treatment (6.0s)
+  ✓   19 [chromium] › tests/a11y/interaction-states.spec.ts:415:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-REDUCED-MOTION — the focus ring survives prefers-reduced-motion (6.9s)
+  ✓   21 [chromium] › tests/a11y/interaction-states.spec.ts:471:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-CURSOR — no interactive element renders the browser-default cursor (4.4s)
+  ✓   22 [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Hero keeps a parallel reduced-motion choreography (6.0s)
+  ✓   23 [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › About keeps a parallel reduced-motion choreography (6.0s)
+  ✓   24 [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Experience keeps a parallel reduced-motion choreography (5.8s)
+  ✓   25 [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Skills keeps a parallel reduced-motion choreography (5.9s)
+  ✓   26 [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Vitrine keeps a parallel reduced-motion choreography (5.7s)
+  ✓   28 [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:595:7 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › RM-5 no blanket universal kill switch survives in the shipped CSS (812ms)
+  ✓   29 [chromium] › tests/content/content-check.spec.ts:41:7 › Content Preservation › CT-01: Hero name from hero.ts appears verbatim (1.2s)
+  ✓   30 [chromium] › tests/content/content-check.spec.ts:46:7 › Content Preservation › CT-02: Hero positioning line appears verbatim (1.0s)
+  ✓   27 [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Listen keeps a parallel reduced-motion choreography (6.0s)
+  ✓   31 [chromium] › tests/content/content-check.spec.ts:53:7 › Content Preservation › CT-03: Hero statement states a tenure and names the current engagement (946ms)
+  ✓   33 [chromium] › tests/content/content-check.spec.ts:85:7 › Content Preservation › CT-04: Every employer on the CV is named in the experience timeline (1.5s)
+  ✓   32 [chromium] › tests/content/content-check.spec.ts:72:7 › Content Preservation › CT-05: About carries the career facts (1.9s)
+  ✓   35 [chromium] › tests/content/content-check.spec.ts:124:7 › Content Preservation › CT-07: The Vedic-astronomy work survives the rebuild as a vitrine plate (1.3s)
+  ✓   34 [chromium] › tests/content/content-check.spec.ts:104:7 › Content Preservation › CT-06: All six curated repositories render as plates with real GitHub links (1.8s)
+  ✓   37 [chromium] › tests/content/content-check.spec.ts:159:7 › Content Preservation › CT-09: Contact channels from siteContent appear verbatim in the closing section (1.3s)
+  ✓   36 [chromium] › tests/content/content-check.spec.ts:137:7 › Content Preservation › CT-08: Credentials and the un-held certification both appear in the calibration table (1.4s)
+  ✓   39 [chromium] › tests/content/content-check.spec.ts:214:7 › Content Preservation › CT-11: GitHub and LinkedIn are linked from the closing section (1.5s)
+  ✓   38 [chromium] › tests/content/content-check.spec.ts:172:7 › Content Preservation › CT-10: Every hero figure is printed with the source it came from (1.7s)
+  ✓   40 [chromium] › tests/content/content-check.spec.ts:232:7 › Content Preservation › CT-15: LinkedIn (primary recruiter channel) is linked from the persistent navigation (1.4s)
+  ✓   42 [chromium] › tests/content/content-check.spec.ts:255:7 › Content Preservation › CT-17: MiniVic availability default and hiring copy keep active-intent ATO wording (7ms)
+  ✓   43 [chromium] › tests/e2e/about.spec.ts:36:7 › About › TC-ABOUT-01: all ten dimensions render, in the engine’s own order (1.3s)
+  ✓   41 [chromium] › tests/content/content-check.spec.ts:241:7 › Content Preservation › CT-14: MiniVicBot mounts from the layout without throwing (3.2s)
+  ✓   44 [chromium] › tests/e2e/about.spec.ts:44:7 › About › TC-ABOUT-02: every dimension carries an answer and its evidence (1.6s)
+  ✓   45 [chromium] › tests/e2e/about.spec.ts:57:7 › About › TC-ABOUT-03: no dimension is given a score (1.5s)
+  ✓   46 [chromium] › tests/e2e/about.spec.ts:76:7 › About › TC-ABOUT-04: the dimensions name their source (1.7s)
+  ✓   47 [chromium] › tests/e2e/about.spec.ts:82:7 › About › TC-ABOUT-05: job-side dimensions are labelled as such (1.4s)
+  ✓   48 [chromium] › tests/e2e/about.spec.ts:95:7 › About › TC-ABOUT-06: each dimension is keyboard reachable (1.8s)
+  ✓   49 [chromium] › tests/e2e/about.spec.ts:102:7 › About › TC-ABOUT-07: the section is complete without WebGL (1.7s)
+  ✓   51 [chromium] › tests/e2e/boot-failsafe.spec.ts:38:7 › the hero without JavaScript › the evidence ledger is intact (1.3s)
+  ✓   52 [chromium] › tests/e2e/boot-failsafe.spec.ts:44:7 › the hero without JavaScript › both actions still work as links (1.1s)
+  ✓   50 [chromium] › tests/e2e/boot-failsafe.spec.ts:24:7 › the hero without JavaScript › the name, positioning and statement are visible (3.1s)
+  ✓   54 [chromium] › tests/e2e/chatbot.spec.ts:76:7 › E2E: MiniVicBot Chatbot › TC-BOT-01: MiniVicBot toggle button is visible on the page (930ms)
+  ✓   53 [chromium] › tests/e2e/boot-failsafe.spec.ts:52:7 › the hero without JavaScript › nothing covers the viewport (2.2s)
+  ✓   55 [chromium] › tests/e2e/chatbot.spec.ts:84:7 › E2E: MiniVicBot Chatbot › TC-BOT-02: Opening MiniVic reveals the panel and chat input (1.3s)
+  ✓   56 [chromium] › tests/e2e/chatbot.spec.ts:92:7 › E2E: MiniVicBot Chatbot › TC-BOT-03: Opening MiniVic shows the curated quick prompts (1.7s)
+  ✓   57 [chromium] › tests/e2e/chatbot.spec.ts:100:7 › E2E: MiniVicBot Chatbot › TC-BOT-04: Closing MiniVic via the launcher hides the panel and clears greeting audio state (1.7s)
+  ✓   58 [chromium] › tests/e2e/chatbot.spec.ts:133:7 › E2E: MiniVicBot Chatbot › TC-BOT-05: MiniVicBot open/close cycle does not throw page errors (2.0s)
+  ✓   59 [chromium] › tests/e2e/chatbot.spec.ts:146:7 › E2E: MiniVicBot Chatbot › TC-BOT-06: MiniVic shell is a labelled dialog and takes focus when it opens (1.6s)
+  ✓   60 [chromium] › tests/e2e/chatbot.spec.ts:169:7 › E2E: MiniVicBot Chatbot › TC-BOT-07: The launcher announces which action it will perform (1.7s)
+  ✓   61 [chromium] › tests/e2e/chatbot.spec.ts:187:7 › E2E: MiniVicBot Chatbot › TC-BOT-08: Persona selector is a pressed-state toggle group with one active mode (2.2s)
+  ✓   62 [chromium] › tests/e2e/chatbot.spec.ts:209:7 › E2E: MiniVicBot Chatbot › TC-BOT-09: Mobile shell stays inside the viewport with composer visible (1.5s)
+  ✓   63 [chromium] › tests/e2e/chatbot.spec.ts:224:7 › E2E: MiniVicBot Chatbot › TC-BOT-10: A question gets exactly one answer, and the composing state clears (2.1s)
+  ✓   64 [chromium] › tests/e2e/chatbot.spec.ts:254:7 › E2E: MiniVicBot Chatbot › TC-BOT-11: The transcript controls are present and say what they do (2.2s)
+  ✓   65 [chromium] › tests/e2e/clone-voice.spec.ts:54:7 › TC-FR-VOICE: Voiceover system › voiceover controller is attached to window by the layout provider (3.4s)
+  ✓   66 [chromium] › tests/e2e/clone-voice.spec.ts:63:7 › TC-FR-VOICE: Voiceover system › voiceover controller starts muted, before any gesture (2.8s)
+  ✓   67 [chromium] › tests/e2e/clone-voice.spec.ts:78:7 › TC-FR-VOICE: Voiceover system › voiceover controller respects the mute toggle once initialised (1.6s)
+  ✓   68 [chromium] › tests/e2e/clone-voice.spec.ts:104:7 › TC-FR-VOICE: Voiceover system › voiceover controller fires each section cue exactly once (1.5s)
+  ✓   69 [chromium] › tests/e2e/clone-voice.spec.ts:124:7 › TC-FR-VOICE: Voiceover system › voiceover controller ambient bed starts and stops (1.7s)
+  ✓   70 [chromium] › tests/e2e/clone-voice.spec.ts:159:7 › TC-FR-VOICE-DYN: Dynamic voiceover cues › a gsap:<section>:enter event reaches the controller as a cue (1.7s)
+  ✓   71 [chromium] › tests/e2e/clone-voice.spec.ts:179:7 › TC-FR-VOICE-DYN: Dynamic voiceover cues › the cue log records triggered sections in order (1.7s)
+  ✓   72 [chromium] › tests/e2e/clone-voice.spec.ts:202:7 › TC-FR-VOICE-DYN: Dynamic voiceover cues › under reduced motion the controller refuses to initialise audio at all (1.5s)
+  ✓   73 [chromium] › tests/e2e/experience.spec.ts:21:7 › Experience › TC-EXP-01: every role from the CV appears in the chart and the list (1.7s)
+  ✓   74 [chromium] › tests/e2e/experience.spec.ts:41:7 › Experience › TC-EXP-02: bar lengths are proportional to real durations (1.8s)
+  ✓   75 [chromium] › tests/e2e/experience.spec.ts:60:7 › Experience › TC-EXP-03: the axis is labelled with real years (1.5s)
+  ✓   76 [chromium] › tests/e2e/experience.spec.ts:67:7 › Experience › TC-EXP-04: each chart row is a real button with an accessible name (1.6s)
+  ✓   77 [chromium] › tests/e2e/experience.spec.ts:75:7 › Experience › TC-EXP-05: the current role opens by default and lists its bullets (1.4s)
+  ✓   78 [chromium] › tests/e2e/experience.spec.ts:82:7 › Experience › TC-EXP-06: roles expand and collapse from the keyboard (1.9s)
+  ✓   79 [chromium] › tests/e2e/experience.spec.ts:93:7 › Experience › TC-EXP-07: headline figures carry their role, not a bare number (1.6s)
+  ✓   80 [chromium] › tests/e2e/experience.spec.ts:102:7 › Experience › TC-EXP-08: the section is complete without WebGL (1.6s)
+  ✓   81 [chromium] › tests/e2e/hero.spec.ts:30:7 › Hero › TC-HERO-01: the name is the page h1 (1.4s)
+  ✓   82 [chromium] › tests/e2e/hero.spec.ts:38:7 › Hero › TC-HERO-02: positioning, location and one-sentence statement render (1.5s)
+  ✓   83 [chromium] › tests/e2e/hero.spec.ts:46:7 › Hero › TC-HERO-03: the statement stays within its word budget (1.3s)
+  ✓   84 [chromium] › tests/e2e/hero.spec.ts:54:7 › Hero › TC-HERO-04: the ledger shows three figures, each with its source (1.5s)
+  ✓   85 [chromium] › tests/e2e/hero.spec.ts:68:7 › Hero › TC-HERO-05: both actions are present and reachable (1.4s)
+  ✓   86 [chromium] › tests/e2e/hero.spec.ts:79:7 › Hero › TC-HERO-06: recruiter channels are linked (1.5s)
+  ✓   87 [chromium] › tests/e2e/hero.spec.ts:87:7 › Hero › TC-HERO-07: a truthful availability signal is shown (1.4s)
+  ✓   88 [chromium] › tests/e2e/hero.spec.ts:93:7 › Hero › TC-HERO-08: the hero fills the first viewport without overflowing it (1.5s)
+  ✓   89 [chromium] › tests/e2e/hero.spec.ts:107:7 › Hero › TC-HERO-09: the whole hero is legible in the first viewport (1.8s)
+  ✓   90 [chromium] › tests/e2e/hero.spec.ts:123:7 › Hero › TC-HERO-10: the preloader is gone (1.3s)
+  ✓   91 [chromium] › tests/e2e/hero.spec.ts:129:7 › Hero › TC-HERO-11: the hero holds at most one WebGL context (2.8s)
+  ✓   92 [chromium] › tests/e2e/interaction-states.spec.ts:204:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-HOVER — every interactive element has a designed hover state (34.1s)
+  ✓   94 [chromium] › tests/e2e/interaction-states.spec.ts:325:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-LOADING — the clone announces and shows that it is composing (6.9s)
+  ✓   95 [chromium] › tests/e2e/listen.spec.ts:22:7 › Listen › TC-LISTEN-01: the closing sentence is the only italic on the page (1.3s)
+  ✓   96 [chromium] › tests/e2e/listen.spec.ts:32:7 › Listen › TC-LISTEN-02: the closing copy stays under sixty-five words (1.3s)
+  ✓   97 [chromium] › tests/e2e/listen.spec.ts:48:7 › Listen › TC-LISTEN-03: no form, no input, no third-party embed (1.4s)
+  ✓   98 [chromium] › tests/e2e/listen.spec.ts:54:7 › Listen › TC-LISTEN-04: all four channels are real anchors matching the CV (1.2s)
+  ✘   99 [chromium] › tests/e2e/listen.spec.ts:65:7 › Listen › TC-LISTEN-05: hover and focus produce the identical underline (1.9s)
+  ✓   93 [chromium] › tests/e2e/interaction-states.spec.ts:248:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-ACTIVE — every interactive element has a designed pressed state (46.8s)
+  ✓  100 [chromium] › tests/e2e/navigation.spec.ts:39:7 › E2E: Navigation › TC-NAV-02: Menu toggle and the always-visible Download CV both render (1.9s)
+  ✓  101 [chromium] › tests/e2e/navigation.spec.ts:32:7 › E2E: Navigation › TC-NAV-01: Logo renders with correct text (1.9s)
+  ✓  102 [chromium] › tests/e2e/navigation.spec.ts:49:7 › E2E: Navigation › TC-NAV-03: Nav overlay opens on toggle click (2.3s)
+  ✓  103 [chromium] › tests/e2e/navigation.spec.ts:57:7 › E2E: Navigation › TC-NAV-04: Every in-page nav anchor resolves to a section that exists (2.5s)
+  ✓  104 [chromium] › tests/e2e/navigation.spec.ts:107:7 › E2E: Navigation › TC-NAV-05: Nav overlay closes on Escape key (2.1s)
+  ✓  105 [chromium] › tests/e2e/navigation.spec.ts:117:7 › E2E: Navigation › TC-NAV-06: Clicking a nav link scrolls to the correct section (2.2s)
+  ✓  106 [chromium] › tests/e2e/navigation.spec.ts:131:7 › E2E: Navigation › TC-NAV-07: Sticky nav — nav and wordmark survive scrolling and frost (1.3s)
+  ✓  107 [chromium] › tests/e2e/navigation.spec.ts:141:7 › E2E: Navigation › TC-NAV-08: Logo click scrolls to top (1.7s)
+  ✓  108 [chromium] › tests/e2e/skills.spec.ts:22:7 › Skills › TC-SKILL-01: the card is a real table with scoped headers (1.4s)
+  ✓  109 [chromium] › tests/e2e/skills.spec.ts:33:7 › Skills › TC-SKILL-02: every row carries evidence and a place it was measured (1.6s)
+  ✓  110 [chromium] › tests/e2e/skills.spec.ts:46:7 › Skills › TC-SKILL-03: no proficiency bars, meters or ratings exist (1.4s)
+  ✓  112 [chromium] › tests/e2e/skills.spec.ts:71:7 › Skills › TC-SKILL-05: status is spoken, never glyph-only (1.3s)
+  ✓  111 [chromium] › tests/e2e/skills.spec.ts:62:7 › Skills › TC-SKILL-04: the not-yet-held credential is stated, not hidden (1.6s)
+  ✓  114 [chromium] › tests/e2e/skills.spec.ts:108:7 › Skills › TC-SKILL-07: the filter state is exposed and announced (1.5s)
+  ✓  113 [chromium] › tests/e2e/skills.spec.ts:77:7 › Skills › TC-SKILL-06: filtering changes the rows and moves nothing else (2.4s)
+  ✓  115 [chromium] › tests/e2e/skills.spec.ts:120:7 › Skills › TC-SKILL-08: the footer fingerprints the CV it claims to be calibrated against (1.6s)
+  ✓  116 [chromium] › tests/e2e/skills.spec.ts:139:7 › Skills · the bench › TC-BENCH-01: every link the data asserts is actually drawn (5.0s)
+  ✓  117 [chromium] › tests/e2e/skills.spec.ts:163:7 › Skills · the bench › TC-BENCH-02: gold is still only a claim about production evidence (4.4s)
+  ✓  118 [chromium] › tests/e2e/skills.spec.ts:175:7 › Skills · the bench › TC-BENCH-03: tracing a source dims what it is not wired to (4.8s)
+  ✓  119 [chromium] › tests/e2e/skills.spec.ts:190:7 › Skills · the bench › TC-BENCH-04: each node speaks its own evidence (4.3s)
+  ✓  120 [chromium] › tests/e2e/vitrine.spec.ts:22:7 › Vitrine › TC-VIT-01: exactly six plates, each with a source link (1.6s)
+  ✓  121 [chromium] › tests/e2e/vitrine.spec.ts:32:7 › Vitrine › TC-VIT-02: every plate states its limits (1.8s)
+  ✓  122 [chromium] › tests/e2e/vitrine.spec.ts:46:7 › Vitrine › TC-VIT-03: metrics are harvested and dated, not live (1.7s)
+  ✓  123 [chromium] › tests/e2e/vitrine.spec.ts:54:7 › Vitrine › TC-VIT-04: the exclusions are named with reasons (1.5s)
+  ✓  124 [chromium] › tests/e2e/vitrine.spec.ts:61:7 › Vitrine › TC-VIT-05: no screenshots, logos or raster images (1.9s)
+  ✓  125 [chromium] › tests/e2e/vitrine.spec.ts:73:7 › Vitrine › TC-VIT-06: the light tracks the plate at the centre of the rail (2.1s)
+  ✓  127 [chromium] › tests/e2e/vitrine.spec.ts:101:7 › Vitrine › TC-VIT-08: the kicker denominator matches the harvest (1.3s)
+  ✓  126 [chromium] › tests/e2e/vitrine.spec.ts:88:7 › Vitrine › TC-VIT-07: the rail is keyboard operable and traps nothing (2.2s)
+  ✓  128 [chromium] › tests/e2e/vitrine.spec.ts:106:7 › Vitrine › TC-VIT-09: every plate rules its metrics on the same line (1.3s)
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(244, 246, 250)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+  ✓  129 [chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold (1.4s)
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  ✓  130 [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine (2.3s)
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+  ✓  131 [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine (2.3s)
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+  ✓  132 [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine (2.3s)
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 1
+  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+  ✓  133 [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine (2.6s)
+  ✓  134 [chromium] › tests/monochrome/monochrome.spec.ts:118:7 › Monochrome Compliance › MONO-01: :root publishes the grey ramp and exactly the four sanctioned gold tokens (987ms)
+  ✓  135 [chromium] › tests/monochrome/monochrome.spec.ts:146:7 › Monochrome Compliance › MONO-02: Body background is achromatic (1.4s)
+  ✓  136 [chromium] › tests/monochrome/monochrome.spec.ts:153:7 › Monochrome Compliance › MONO-03: No inline style declares a colour outside the palette (3.9s)
+  ✓  137 [chromium] › tests/monochrome/monochrome.spec.ts:207:7 › Monochrome Compliance › MONO-04: Every rendered colour in every section is achromatic or the sanctioned gold (3.6s)
+  ✓  139 [chromium] › tests/monochrome/monochrome.spec.ts:244:7 › Monochrome Compliance › MONO-06: Navigation overlay is achromatic when open (1.6s)
+  ✓  138 [chromium] › tests/monochrome/monochrome.spec.ts:218:7 › Monochrome Compliance › MONO-05: The sanctioned accent is actually in use, and only as the accent (3.7s)
+  ✓  140 [chromium] › tests/monochrome/monochrome.spec.ts:252:7 › Monochrome Compliance › MONO-07: The check still rejects an unsanctioned hue (1.2s)
+  ✓  141 [chromium] › tests/overhaul/avatar.spec.ts:39:7 › TC-FR-CLONE: Clone Rendering (MiniVicBot) › TC-CLONE-03: MiniVicBot launcher is present and interactive on the static build (1.3s)
+  ✓  142 [chromium] › tests/overhaul/avatar.spec.ts:51:7 › TC-FR-CLONE: Clone Rendering (MiniVicBot) › TC-CLONE-05: Pressing the launcher yields a panel carrying real clone content (1.7s)
+  ✓  143 [chromium] › tests/overhaul/cinematic.spec.ts:46:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-01: the hero backdrop is decorative — hidden from AT and behind the content (1.4s)
+  ✓  144 [chromium] › tests/overhaul/cinematic.spec.ts:82:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-02: nothing intercepts clicks on the hero CTA (3.0s)
+  ✓  145 [chromium] › tests/overhaul/cinematic.spec.ts:119:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-03: nav is transparent at top and frosts (data-scrolled) after scroll (2.6s)
+  ✓  147 [chromium] › tests/overhaul/cinematic.spec.ts:169:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-05: the hero name renders in full with no glyph-masking clip-path (D-NAME-01) (1.3s)
+  ✓  148 [chromium] › tests/overhaul/cinematic.spec.ts:183:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-06: under reduced motion the hero entrance is a fade, not a rise (1.3s)
+  ✓  146 [chromium] › tests/overhaul/cinematic.spec.ts:142:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-04: with every scene suppressed the page is still the whole page (3.1s)
+  ✓  149 [chromium] › tests/overhaul/cinematic.spec.ts:260:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-07: under reduced motion every section is readable, not left behind a curtain (2.1s)
+  ✓  150 [chromium] › tests/overhaul/complete.spec.ts:69:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-02: The hero is finished copy, not a scaffold (2.3s)
+  ✓  151 [chromium] › tests/overhaul/complete.spec.ts:80:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-03: The experience timeline carries real roles (2.1s)
+  ✓  152 [chromium] › tests/overhaul/complete.spec.ts:89:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-04: The calibration table carries real rows, including the un-held one (1.7s)
+  ✓  154 [chromium] › tests/overhaul/complete.spec.ts:112:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-06: About has real content, not stubs (2.0s)
+  ✓  153 [chromium] › tests/overhaul/complete.spec.ts:104:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-05: The closing section carries real contact details (2.3s)
+  ✓  156 [chromium] › tests/overhaul/complete.spec.ts:145:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-08: The MiniVicBot clone opens without an error state (2.0s)
+  ✓  155 [chromium] › tests/overhaul/complete.spec.ts:123:7 › TC-NFR-COMPLETE: Zero Placeholder/Stub Scan › TC-COMPLETE-07: Every vitrine plate states what its repository does not do (2.4s)
+  ✓  157 [chromium] › tests/overhaul/design-scale.spec.ts:146:9 › design scale @ 375px › R-48/SC-29.1 the 8-point scale resolves as --space-* custom properties (2.7s)
+  ✓  158 [chromium] › tests/overhaul/design-scale.spec.ts:171:9 › design scale @ 375px › R-46/SC-27.1 every rendered duration sits inside an R-46 band (2.8s)
+  ✘  159 [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 375px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale (2.8s)
+  ✓  160 [chromium] › tests/overhaul/design-scale.spec.ts:259:9 › design scale @ 375px › R-47/SC-28.1 every prose measure renders between 55 and 75 characters (2.8s)
+  ✓  161 [chromium] › tests/overhaul/design-scale.spec.ts:171:9 › design scale @ 768px › R-46/SC-27.1 every rendered duration sits inside an R-46 band (2.9s)
+  ✓  162 [chromium] › tests/overhaul/design-scale.spec.ts:146:9 › design scale @ 768px › R-48/SC-29.1 the 8-point scale resolves as --space-* custom properties (3.0s)
+  ✘  163 [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 768px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale (3.1s)
+  ✓  164 [chromium] › tests/overhaul/design-scale.spec.ts:259:9 › design scale @ 768px › R-47/SC-28.1 every prose measure renders between 55 and 75 characters (2.8s)
+  ✓  165 [chromium] › tests/overhaul/design-scale.spec.ts:171:9 › design scale @ 1280px › R-46/SC-27.1 every rendered duration sits inside an R-46 band (3.1s)
+  ✓  166 [chromium] › tests/overhaul/design-scale.spec.ts:146:9 › design scale @ 1280px › R-48/SC-29.1 the 8-point scale resolves as --space-* custom properties (3.1s)
+  ✘  167 [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1280px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale (3.0s)
+  ✓  168 [chromium] › tests/overhaul/design-scale.spec.ts:259:9 › design scale @ 1280px › R-47/SC-28.1 every prose measure renders between 55 and 75 characters (2.8s)
+  ✓  169 [chromium] › tests/overhaul/design-scale.spec.ts:171:9 › design scale @ 1920px › R-46/SC-27.1 every rendered duration sits inside an R-46 band (2.7s)
+  ✓  170 [chromium] › tests/overhaul/design-scale.spec.ts:146:9 › design scale @ 1920px › R-48/SC-29.1 the 8-point scale resolves as --space-* custom properties (2.9s)
+  ✘  171 [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1920px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale (3.1s)
+  ✓  172 [chromium] › tests/overhaul/design-scale.spec.ts:259:9 › design scale @ 1920px › R-47/SC-28.1 every prose measure renders between 55 and 75 characters (3.2s)
+  ✓  174 [chromium] › tests/overhaul/durability.spec.ts:71:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-02: Core hero content renders on first visit (1.5s)
+  ✓  175 [chromium] › tests/overhaul/durability.spec.ts:77:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-03: CV download link is present in the hero and resolves (1.2s)
+  ✓  173 [chromium] › tests/overhaul/durability.spec.ts:47:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-01: The service worker registers, activates and controls the page (3.5s)
+  ✓  176 [chromium] › tests/overhaul/durability.spec.ts:88:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-04: CV is reachable from the persistent navigation, on every screen (1.5s)
+  ✓  178 [chromium] › tests/overhaul/durability.spec.ts:136:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-06: The CV is offered from more than one place on the page (1.2s)
+  ✓  177 [chromium] › tests/overhaul/durability.spec.ts:101:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-05: Offline reload still renders the page and still serves the CV (4.5s)
+  ✓  179 [chromium] › tests/overhaul/durability.spec.ts:148:7 › TC-NFR-DURABLE: Offline Durability › TC-DURABLE-07: No first-party request fails on a warm load (2.9s)
+  ✓  181 [chromium] › tests/overhaul/render.spec.ts:102:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss (8.9s)
+  ✓  180 [chromium] › tests/overhaul/render.spec.ts:79:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it (10.5s)
+  ✓  183 [chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium) (4.7s)
+  ✓  182 [chromium] › tests/overhaul/render.spec.ts:131:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page (12.6s)
+  ✓  184 [chromium] › tests/overhaul/render.spec.ts:173:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-09: A full-page scroll never trips a page error or the error boundary (7.2s)
+  ✓  185 [chromium] › tests/overhaul/telemetry-stability.spec.ts:109:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-01: no uncaught React exceptions (max-update-depth / hydration) (5.5s)
+  ✓  186 [chromium] › tests/overhaul/telemetry-stability.spec.ts:119:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-02: page shows real content, never the error boundary (5.5s)
+  ✓  188 [chromium] › tests/overhaul/telemetry-stability.spec.ts:163:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-04: no hydration-mismatch console errors on first paint (5.3s)
+  ✓  187 [chromium] › tests/overhaul/telemetry-stability.spec.ts:134:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-03: the stateful sections keep rendering after being driven (6.1s)
+  ✓  189 [chromium] › tests/overhaul/telemetry-stability.spec.ts:184:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-05: full scroll never trips error boundary or React #185/#425 (7.8s)
+  ✓  190 [chromium] › tests/overhaul/telemetry-stability.spec.ts:200:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-06: no duplicate React keys during a full scroll (7.6s)
+  ✓  191 [chromium] › tests/overhaul/voiceover.spec.ts:60:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-01: The greeting asset is the published cloned-voice recording (1.7s)
+  ✓  192 [chromium] › tests/overhaul/voiceover.spec.ts:84:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-02: Play, pause and resume move the greeting as instructed (3.0s)
+  ✓  193 [chromium] › tests/overhaul/voiceover.spec.ts:109:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-03: Muting stops the voice and releases the asset (1.5s)
+  ✓  194 [chromium] › tests/overhaul/voiceover.spec.ts:125:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-04: Opening the clone raises no uncaught audio errors (2.9s)
+  ✓  195 [chromium] › tests/overhaul/voiceover.spec.ts:146:7 › TC-FR-VOICE-DYN: Voice never starts by itself › TC-VOICE-DYN-01: Nothing plays on load, or on scrolling the whole page (3.9s)
+  ✓  197 [chromium] › tests/overhaul/voiceover.spec.ts:186:7 › TC-FR-VOICE-DYN: Voice never starts by itself › TC-VOICE-DYN-03: The composer offers a microphone control (1.3s)
+Total transfer size: 0.95 MB
+  ✓  198 [chromium] › tests/perf/performance.spec.ts:41:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB (850ms)
+  ✓  196 [chromium] › tests/overhaul/voiceover.spec.ts:170:7 › TC-FR-VOICE-DYN: Voice never starts by itself › TC-VOICE-DYN-02: Scrolling every section raises no scroll or animation errors (3.8s)
+LCP: 224 ms
+  ✓  199 [chromium] › tests/perf/performance.spec.ts:61:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s (971ms)
+  ✓  201 [chromium] › tests/perf/performance.spec.ts:132:7 › Performance Budgets › PERF-04: Page loads without page errors (3.3s)
+DOMContentLoaded: 47 ms
+  ✓  202 [chromium] › tests/perf/performance.spec.ts:143:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s (793ms)
+CLS: 0.0000
+  ✓  200 [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05 (5.3s)
+  ✓  203 [chromium] › tests/visual/screenshots.spec.ts:95:7 › Visual Regression › VIS-01: Full hero section screenshot (2.7s)
+  ✓  204 [chromium] › tests/visual/screenshots.spec.ts:100:7 › Visual Regression › VIS-02: About section screenshot (3.9s)
+  ✓  205 [chromium] › tests/visual/screenshots.spec.ts:105:7 › Visual Regression › VIS-03: Navigation overlay screenshot (open state) (2.5s)
+  ✓  207 [chromium] › tests/visual/screenshots.spec.ts:118:7 › Visual Regression › VIS-05: Vitrine section screenshot (3.4s)
+  ✘  206 [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot (4.8s)
+  ✓  208 [chromium] › tests/visual/screenshots.spec.ts:125:7 › Visual Regression › VIS-06: Full page screenshot (viewport top) (3.1s)
+
+
+  1) [chromium] › tests/e2e/listen.spec.ts:65:7 › Listen › TC-LISTEN-05: hover and focus produce the identical underline 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m"matrix([7m0.999909[27m, 0, 0, 1, 0, 0)"[39m
+    Received: [31m"matrix([7m1[27m, 0, 0, 1, 0, 0)"[39m
+
+      80 |     const focused = await scaleOf();
+      81 |
+    > 82 |     expect(focused).toBe(hovered);
+         |                     ^
+      83 |     expect(hovered).not.toContain('0, 0, 0, 0');
+      84 |   });
+      85 |
+        at /root/forgotten-mistory/tests/e2e/listen.spec.ts:82:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-listen-Listen-TC-LISTE-5eed9-uce-the-identical-underline-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-listen-Listen-TC-LISTE-5eed9-uce-the-identical-underline-chromium/error-context.md
+
+  2) [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 375px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+
+    Error: R-47/SC-28.1: every rendered font-size must be a step of the scale. 1 distinct size(s) are off the scale:
+      9.36px — first seen on sup.Footer_sup__0F8_V
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 3[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "9.36px — first seen on sup.Footer_sup__0F8_V",[39m
+    [31m+ ][39m
+
+      253 |         `R-47/SC-28.1: every rendered font-size must be a step of the scale. ` +
+      254 |         `${strays.length} distinct size(s) are off the scale:\n  ${strays.join('\n  ')}`,
+    > 255 |       ).toEqual([]);
+          |         ^
+      256 |     });
+      257 |
+      258 |     // ── R-47 / SC-28.1 — the measure ────────────────────────────────────────
+        at /root/forgotten-mistory/tests/overhaul/design-scale.spec.ts:255:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-design-scale-desi-7c033-a-step-of-the-modular-scale-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-design-scale-desi-7c033-a-step-of-the-modular-scale-chromium/error-context.md
+
+  3) [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 768px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+
+    Error: R-47/SC-28.1: every rendered font-size must be a step of the scale. 1 distinct size(s) are off the scale:
+      10.0224px — first seen on sup.Footer_sup__0F8_V
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 3[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "10.0224px — first seen on sup.Footer_sup__0F8_V",[39m
+    [31m+ ][39m
+
+      253 |         `R-47/SC-28.1: every rendered font-size must be a step of the scale. ` +
+      254 |         `${strays.length} distinct size(s) are off the scale:\n  ${strays.join('\n  ')}`,
+    > 255 |       ).toEqual([]);
+          |         ^
+      256 |     });
+      257 |
+      258 |     // ── R-47 / SC-28.1 — the measure ────────────────────────────────────────
+        at /root/forgotten-mistory/tests/overhaul/design-scale.spec.ts:255:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-design-scale-desi-eea7f-a-step-of-the-modular-scale-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-design-scale-desi-eea7f-a-step-of-the-modular-scale-chromium/error-context.md
+
+  4) [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1280px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+
+    Error: R-47/SC-28.1: every rendered font-size must be a step of the scale. 1 distinct size(s) are off the scale:
+      10.08px — first seen on sup.Footer_sup__0F8_V
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 3[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "10.08px — first seen on sup.Footer_sup__0F8_V",[39m
+    [31m+ ][39m
+
+      253 |         `R-47/SC-28.1: every rendered font-size must be a step of the scale. ` +
+      254 |         `${strays.length} distinct size(s) are off the scale:\n  ${strays.join('\n  ')}`,
+    > 255 |       ).toEqual([]);
+          |         ^
+      256 |     });
+      257 |
+      258 |     // ── R-47 / SC-28.1 — the measure ────────────────────────────────────────
+        at /root/forgotten-mistory/tests/overhaul/design-scale.spec.ts:255:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-design-scale-desi-fe9f7-a-step-of-the-modular-scale-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-design-scale-desi-fe9f7-a-step-of-the-modular-scale-chromium/error-context.md
+
+  5) [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1920px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+
+    Error: R-47/SC-28.1: every rendered font-size must be a step of the scale. 1 distinct size(s) are off the scale:
+      10.08px — first seen on sup.Footer_sup__0F8_V
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 3[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "10.08px — first seen on sup.Footer_sup__0F8_V",[39m
+    [31m+ ][39m
+
+      253 |         `R-47/SC-28.1: every rendered font-size must be a step of the scale. ` +
+      254 |         `${strays.length} distinct size(s) are off the scale:\n  ${strays.join('\n  ')}`,
+    > 255 |       ).toEqual([]);
+          |         ^
+      256 |     });
+      257 |
+      258 |     // ── R-47 / SC-28.1 — the measure ────────────────────────────────────────
+        at /root/forgotten-mistory/tests/overhaul/design-scale.spec.ts:255:9
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-design-scale-desi-2881b-a-step-of-the-modular-scale-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-design-scale-desi-2881b-a-step-of-the-modular-scale-chromium/error-context.md
+
+  6) [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot 
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveScreenshot[2m([22m[32mexpected[39m[2m)[22m failed
+
+      Expected an image 1280px by 1739px, received 1280px by 818px. 1109402 pixels (ratio 0.50 of all image pixels) are different.
+
+      Snapshot: listen-section.png
+
+    Call log:
+    [2m  - Expect "toHaveScreenshot(listen-section.png)" with timeout 30000ms[22m
+    [2m    - verifying given screenshot expectation[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - Expected an image 1280px by 1739px, received 1280px by 818px. 1109402 pixels (ratio 0.50 of all image pixels) are different.[22m
+    [2m  - waiting 100ms before taking screenshot[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - captured a stable screenshot[22m
+    [2m  - Expected an image 1280px by 1739px, received 1280px by 818px. 1109402 pixels (ratio 0.50 of all image pixels) are different.[22m
+
+
+      87 |     };
+      88 |   });
+    > 89 |   await expect(page).toHaveScreenshot(name, { ...SHOT, fullPage: true, clip });
+         |                      ^
+      90 | }
+      91 |
+      92 | test.describe('Visual Regression', () => {
+        at shootSection (/root/forgotten-mistory/tests/visual/screenshots.spec.ts:89:22)
+        at /root/forgotten-mistory/tests/visual/screenshots.spec.ts:115:5
+
+    attachment #1: listen-section (image/png) ──────────────────────────────────────────────────────
+    Expected: tests/baselines/visual/screenshots.spec.ts-snapshots/listen-section-chromium-linux.png
+    Received: test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/listen-section-actual.png
+    Diff:     test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/listen-section-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/error-context.md
+
+  6 failed
+    [chromium] › tests/e2e/listen.spec.ts:65:7 › Listen › TC-LISTEN-05: hover and focus produce the identical underline 
+    [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 375px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+    [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 768px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+    [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1280px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+    [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1920px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+    [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot 
+  202 passed (5.4m)
+playwright exit=1 — 202 passed, 6 failed; all six failed identically BEFORE this
+change (baseline below), and none of them is in this item's scope.
+
+-------------------------------------------------------------------------------
+BASELINE, captured on the same working tree BEFORE this item's change
+  13 failed / 195 passed. The 7 that this change turned green are the six
+  reduced-motion-choreography specs and TC-CINE-06.
+-------------------------------------------------------------------------------
+  13 failed
+    [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Hero keeps a parallel reduced-motion choreography 
+    [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › About keeps a parallel reduced-motion choreography 
+    [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Experience keeps a parallel reduced-motion choreography 
+    [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Skills keeps a parallel reduced-motion choreography 
+    [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Vitrine keeps a parallel reduced-motion choreography 
+    [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Listen keeps a parallel reduced-motion choreography 
+    [chromium] › tests/e2e/listen.spec.ts:65:7 › Listen › TC-LISTEN-05: hover and focus produce the identical underline 
+    [chromium] › tests/overhaul/cinematic.spec.ts:183:7 › Overhaul: Cinematic-Monochrome Design Language › TC-CINE-06: under reduced motion the hero entrance is a fade, not a rise 
+    [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 375px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+    [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 768px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+    [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1280px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+    [chromium] › tests/overhaul/design-scale.spec.ts:207:9 › design scale @ 1920px › R-47/SC-28.1 every rendered font-size lands on a step of the modular scale 
+    [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot 
+  195 passed (5.6m)

@@ -1,0 +1,860 @@
+=== run v9-20260904T2312Z C4 · 2026-09-05T00:33:58Z · worktree /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1 · branch worktree-wf_b64aade6-e34-1
+=== npx tsc --noEmit → exit 0 (0 errors)
+=== npm run lint → No ESLint warnings or errors
+=== node scripts/validate/overhaul_static_audit.mjs → ALL PASS (10/10)
+=== npm run build:static → exit 0
+
+=== PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/e2e/hero.spec.ts --reporter=line
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero.spec.ts --reporter=line
+
+[2mRunning [22m21[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/21] [chromium] › tests/e2e/hero.spec.ts:38:7 › Hero › TC-HERO-02: positioning, location and one-sentence statement render
+[1A[2K[2/21] [chromium] › tests/e2e/hero.spec.ts:30:7 › Hero › TC-HERO-01: the name is the page h1
+[1A[2K[3/21] [chromium] › tests/e2e/hero.spec.ts:46:7 › Hero › TC-HERO-03: the statement stays within its word budget
+[1A[2K[4/21] [chromium] › tests/e2e/hero.spec.ts:54:7 › Hero › TC-HERO-04: the ledger shows three figures, each with its source
+[1A[2K[5/21] [chromium] › tests/e2e/hero.spec.ts:68:7 › Hero › TC-HERO-05: both actions are present and reachable
+[1A[2K[6/21] [chromium] › tests/e2e/hero.spec.ts:79:7 › Hero › TC-HERO-06: recruiter channels are linked
+[1A[2K[7/21] [chromium] › tests/e2e/hero.spec.ts:87:7 › Hero › TC-HERO-07: a truthful availability signal is shown
+[1A[2K[8/21] [chromium] › tests/e2e/hero.spec.ts:93:7 › Hero › TC-HERO-08: the hero fills the first viewport without overflowing it
+[1A[2K[9/21] [chromium] › tests/e2e/hero.spec.ts:107:7 › Hero › TC-HERO-09: the whole hero is legible in the first viewport
+[1A[2K[31m  1) [chromium] › tests/e2e/hero.spec.ts:93:7 › Hero › TC-HERO-08: the hero fills the first viewport without overflowing it [39m
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m792.0000000000001[39m
+    Received:    [31m812.109375[39m
+
+    [0m [90m 102 |[39m     [90m// rather than the section box.[39m
+     [90m 103 |[39m     expect(box[33m![39m[33m.[39mheight)[33m.[39mtoBeGreaterThanOrEqual(viewport[33m![39m[33m.[39mheight [33m*[39m [35m0.9[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 104 |[39m     expect(box[33m![39m[33m.[39mheight)[33m.[39mtoBeLessThanOrEqual(viewport[33m![39m[33m.[39mheight [33m*[39m [35m1.1[39m)[33m;[39m
+     [90m     |[39m                         [31m[1m^[22m[39m
+     [90m 105 |[39m   })[33m;[39m
+     [90m 106 |[39m
+     [90m 107 |[39m   test([32m'TC-HERO-09: the whole hero is legible in the first viewport'[39m[33m,[39m [36masync[39m ({ page }) [33m=>[39m {[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/e2e/hero.spec.ts:104:25[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-TC-HERO-08-t-68223-port-without-overflowing-it-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-TC-HERO-08-t-68223-port-without-overflowing-it-chromium/error-context.md[22m
+
+
+[1A[2K[10/21] [chromium] › tests/e2e/hero.spec.ts:123:7 › Hero › TC-HERO-10: the preloader is gone
+[1A[2K[31m  2) [chromium] › tests/e2e/hero.spec.ts:107:7 › Hero › TC-HERO-09: the whole hero is legible in the first viewport [39m
+
+    Error: #hero a[href="#experience"]
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m720[39m
+    Received:    [31m746.515625[39m
+
+    [0m [90m 117 |[39m       [36mconst[39m box [33m=[39m [36mawait[39m page[33m.[39mlocator(selector)[33m.[39mfirst()[33m.[39mboundingBox()[33m;[39m
+     [90m 118 |[39m       expect(box[33m,[39m selector)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+    [31m[1m>[22m[39m[90m 119 |[39m       expect(box[33m![39m[33m.[39my [33m+[39m box[33m![39m[33m.[39mheight[33m,[39m selector)[33m.[39mtoBeLessThanOrEqual(viewport[33m.[39mheight)[33m;[39m
+     [90m     |[39m                                              [31m[1m^[22m[39m
+     [90m 120 |[39m     }
+     [90m 121 |[39m   })[33m;[39m
+     [90m 122 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/e2e/hero.spec.ts:119:46[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-TC-HERO-09-t-1f1de-gible-in-the-first-viewport-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-TC-HERO-09-t-1f1de-gible-in-the-first-viewport-chromium/error-context.md[22m
+
+
+[1A[2K[11/21] [chromium] › tests/e2e/hero.spec.ts:129:7 › Hero › TC-HERO-11: the hero holds at most one WebGL context
+[1A[2K[12/21] [chromium] › tests/e2e/hero.spec.ts:277:7 › Hero portrait › TC-HERO-12: the poster is eager, AVIF, correctly named, and never faded in
+[1A[2K[13/21] [chromium] › tests/e2e/hero.spec.ts:332:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate
+[1A[2K[14/21] [chromium] › tests/e2e/hero.spec.ts:410:7 › Hero portrait › TC-HERO-14: reduced motion is poster only — no source, no request, no button
+[1A[2K[15/21] [chromium] › tests/e2e/hero.spec.ts:447:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+[1A[2K[16/21] [chromium] › tests/e2e/hero.spec.ts:491:7 › Hero portrait › TC-HERO-16: a failed loop leaves the poster in place and throws nothing
+[1A[2K[17/21] [chromium] › tests/e2e/hero.spec.ts:516:7 › Hero portrait › TC-HERO-17: the pause button is keyboard-operable and its focus ring is achromatic
+[1A[2K[18/21] [chromium] › tests/e2e/hero.spec.ts:574:7 › Hero portrait › TC-HERO-18: both layers are grayscale and nothing in the figure is chromatic
+[1A[2K[19/21] [chromium] › tests/e2e/hero.spec.ts:595:7 › Hero portrait › TC-HERO-19: eager image weight ≤ 500 kB and the loop is fetched only after load
+[1A[2K[20/21] [chromium] › tests/e2e/hero.spec.ts:628:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720
+[1A[2K[21/21] [chromium] › tests/e2e/hero.spec.ts:654:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the portrait is an 88 px poster stamp with no video
+[1A[2K[2m[chromium] › tests/e2e/hero.spec.ts:628:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720[22m
+Hero LCP: IMG at 564 ms
+
+[1A[2K[31m  2 failed[39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:93:7 › Hero › TC-HERO-08: the hero fills the first viewport without overflowing it [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:107:7 › Hero › TC-HERO-09: the whole hero is legible in the first viewport [39m
+[32m  19 passed[39m[2m (37.0s)[22m
+
+=== FINAL BUILD (after rhythm + toggle-transition fixes) · 2026-09-05T00:41:05Z
+=== PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/e2e/hero.spec.ts tests/monochrome tests/a11y/reduced-motion-choreography.spec.ts --reporter=line
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero.spec.ts tests/monochrome tests/a11y/reduced-motion-choreography.spec.ts --reporter=line
+
+[2mRunning [22m40[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/40] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › About keeps a parallel reduced-motion choreography
+[1A[2K[2/40] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Hero keeps a parallel reduced-motion choreography
+[1A[2K[31m  1) [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › About keeps a parallel reduced-motion choreography [39m
+
+    Error: RM-1 About: 0 element(s) carry an opacity entrance under prefers-reduced-motion; a sequenced reveal needs at least three. R-46 requires a parallel choreography, not silence.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 466 |[39m             [32m`choreography, not silence.`[39m[33m,[39m
+     [90m 467 |[39m         )
+    [31m[1m>[22m[39m[90m 468 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 469 |[39m
+     [90m 470 |[39m       [90m// Every fade runs long enough to be perceived — a 0.001 ms "animation" is[39m
+     [90m 471 |[39m       [90m// the kill switch wearing the choreography's clothes.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:468:10[22m
+
+    Error: RM-1 About: the entrance is staggered across 0 distinct delay(s) (none ms). A choreography needs an order, not a single cue.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 489 |[39m             [32m`(${delays.join(', ') || 'none'} ms). A choreography needs an order, not a single cue.`[39m[33m,[39m
+     [90m 490 |[39m         )
+    [31m[1m>[22m[39m[90m 491 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 492 |[39m       [36mif[39m (delays[33m.[39mlength [33m>[39m [35m0[39m) {
+     [90m 493 |[39m         expect[33m.[39msoft([33mMath[39m[33m.[39mmin([33m...[39mdelays)[33m,[39m [32m`RM-1 ${section.name}: negative entrance delay`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+     [90m 494 |[39m         expect[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:491:10[22m
+
+    Error: RM-4 About: colour affordances are killed under reduced motion. A hover that changes colour causes no vestibular response and is the primary affordance signal; removing it makes the interface read as broken rather than calm (lock §4.3).
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 53[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "path.Compass_sector__TsBZb@0 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@0 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@0 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@1 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@1 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@1 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@2 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@2 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@2 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@3 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@3 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@3 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@4 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@4 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@4 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@5 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@5 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@5 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@6 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@6 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@6 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@7 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@7 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@7 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@8 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@8 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@8 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@9 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@9 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@9 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "p.About_instrumentCaption__AwuGh@0 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@0 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@0 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@1 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@1 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@2 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@2 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@3 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@3 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@4 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@4 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@5 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@5 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@6 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@6 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@7 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@7 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@8 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@8 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@9 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@9 · color: 200ms default → 0ms reduced",[39m
+    [31m+ ][39m
+
+    [0m [90m 589 |[39m             [32m`the interface read as broken rather than calm (lock §4.3).`[39m[33m,[39m
+     [90m 590 |[39m         )
+    [31m[1m>[22m[39m[90m 591 |[39m         [33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 592 |[39m     })[33m;[39m
+     [90m 593 |[39m   }
+     [90m 594 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:591:10[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-4ea5f-reduced-motion-choreography-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-4ea5f-reduced-motion-choreography-chromium/test-failed-2.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+
+[1A[2K[3/40] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Skills keeps a parallel reduced-motion choreography
+[1A[2K[4/40] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Experience keeps a parallel reduced-motion choreography
+[1A[2K[31m  2) [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Skills keeps a parallel reduced-motion choreography [39m
+
+    Error: RM-1 Skills: 0 element(s) carry an opacity entrance under prefers-reduced-motion; a sequenced reveal needs at least three. R-46 requires a parallel choreography, not silence.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 466 |[39m             [32m`choreography, not silence.`[39m[33m,[39m
+     [90m 467 |[39m         )
+    [31m[1m>[22m[39m[90m 468 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 469 |[39m
+     [90m 470 |[39m       [90m// Every fade runs long enough to be perceived — a 0.001 ms "animation" is[39m
+     [90m 471 |[39m       [90m// the kill switch wearing the choreography's clothes.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:468:10[22m
+
+    Error: RM-1 Skills: the entrance is staggered across 0 distinct delay(s) (none ms). A choreography needs an order, not a single cue.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 489 |[39m             [32m`(${delays.join(', ') || 'none'} ms). A choreography needs an order, not a single cue.`[39m[33m,[39m
+     [90m 490 |[39m         )
+    [31m[1m>[22m[39m[90m 491 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 492 |[39m       [36mif[39m (delays[33m.[39mlength [33m>[39m [35m0[39m) {
+     [90m 493 |[39m         expect[33m.[39msoft([33mMath[39m[33m.[39mmin([33m...[39mdelays)[33m,[39m [32m`RM-1 ${section.name}: negative entrance delay`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+     [90m 494 |[39m         expect[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:491:10[22m
+
+    Error: RM-4 Skills: colour affordances are killed under reduced motion. A hover that changes colour causes no vestibular response and is the primary affordance signal; removing it makes the interface read as broken rather than calm (lock §4.3).
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 11[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "button.Skills_filter__V1N_r@0 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@0 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@0 · background: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@1 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@1 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@1 · background: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@2 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@2 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@2 · background: 200ms default → 0ms reduced",[39m
+    [31m+ ][39m
+
+    [0m [90m 589 |[39m             [32m`the interface read as broken rather than calm (lock §4.3).`[39m[33m,[39m
+     [90m 590 |[39m         )
+    [31m[1m>[22m[39m[90m 591 |[39m         [33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 592 |[39m     })[33m;[39m
+     [90m 593 |[39m   }
+     [90m 594 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:591:10[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-d01fa-reduced-motion-choreography-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-d01fa-reduced-motion-choreography-chromium/test-failed-2.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+
+[1A[2K[5/40] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Vitrine keeps a parallel reduced-motion choreography
+[1A[2K[31m  3) [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Experience keeps a parallel reduced-motion choreography [39m
+
+    Error: RM-1 Experience: 0 element(s) carry an opacity entrance under prefers-reduced-motion; a sequenced reveal needs at least three. R-46 requires a parallel choreography, not silence.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 466 |[39m             [32m`choreography, not silence.`[39m[33m,[39m
+     [90m 467 |[39m         )
+    [31m[1m>[22m[39m[90m 468 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 469 |[39m
+     [90m 470 |[39m       [90m// Every fade runs long enough to be perceived — a 0.001 ms "animation" is[39m
+     [90m 471 |[39m       [90m// the kill switch wearing the choreography's clothes.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:468:10[22m
+
+    Error: RM-1 Experience: the entrance is staggered across 0 distinct delay(s) (none ms). A choreography needs an order, not a single cue.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 489 |[39m             [32m`(${delays.join(', ') || 'none'} ms). A choreography needs an order, not a single cue.`[39m[33m,[39m
+     [90m 490 |[39m         )
+    [31m[1m>[22m[39m[90m 491 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 492 |[39m       [36mif[39m (delays[33m.[39mlength [33m>[39m [35m0[39m) {
+     [90m 493 |[39m         expect[33m.[39msoft([33mMath[39m[33m.[39mmin([33m...[39mdelays)[33m,[39m [32m`RM-1 ${section.name}: negative entrance delay`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+     [90m 494 |[39m         expect[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:491:10[22m
+
+    Error: RM-3 Experience: a transition moves or resizes an element under reduced motion.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 10[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "span.Experience_roleChevron__MHozd@0 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@1 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@2 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@3 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@4 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@5 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@6 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@7 · transition transform 200ms",[39m
+    [31m+ ][39m
+
+    [0m [90m 565 |[39m       expect
+     [90m 566 |[39m         [33m.[39msoft(movingTransitions[33m,[39m [32m`RM-3 ${section.name}: a transition moves or resizes an element under reduced motion.`[39m)
+    [31m[1m>[22m[39m[90m 567 |[39m         [33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 568 |[39m
+     [90m 569 |[39m       [90m// ── RM-4 · colour affordances survive ──────────────────────────────────[39m
+     [90m 570 |[39m       [36mconst[39m baseline [33m=[39m colourDurations(base)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:567:10[22m
+
+    Error: RM-4 Experience: colour affordances are killed under reduced motion. A hover that changes colour causes no vestibular response and is the primary affordance signal; removing it makes the interface read as broken rather than calm (lock §4.3).
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 18[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@0 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@0 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@1 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@1 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@2 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@2 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@3 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@3 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@4 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@4 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@5 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@5 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@6 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@6 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@7 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@7 · color: 200ms default → 0ms reduced",[39m
+    [31m+ ][39m
+
+    [0m [90m 589 |[39m             [32m`the interface read as broken rather than calm (lock §4.3).`[39m[33m,[39m
+     [90m 590 |[39m         )
+    [31m[1m>[22m[39m[90m 591 |[39m         [33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 592 |[39m     })[33m;[39m
+     [90m 593 |[39m   }
+     [90m 594 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:591:10[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-10f77-reduced-motion-choreography-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-10f77-reduced-motion-choreography-chromium/test-failed-2.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+
+[1A[2K[6/40] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Listen keeps a parallel reduced-motion choreography
+[1A[2K[31m  4) [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Vitrine keeps a parallel reduced-motion choreography [39m
+
+    Error: RM-1 Vitrine: 0 element(s) carry an opacity entrance under prefers-reduced-motion; a sequenced reveal needs at least three. R-46 requires a parallel choreography, not silence.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 466 |[39m             [32m`choreography, not silence.`[39m[33m,[39m
+     [90m 467 |[39m         )
+    [31m[1m>[22m[39m[90m 468 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 469 |[39m
+     [90m 470 |[39m       [90m// Every fade runs long enough to be perceived — a 0.001 ms "animation" is[39m
+     [90m 471 |[39m       [90m// the kill switch wearing the choreography's clothes.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:468:10[22m
+
+    Error: RM-1 Vitrine: the entrance is staggered across 0 distinct delay(s) (none ms). A choreography needs an order, not a single cue.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 489 |[39m             [32m`(${delays.join(', ') || 'none'} ms). A choreography needs an order, not a single cue.`[39m[33m,[39m
+     [90m 490 |[39m         )
+    [31m[1m>[22m[39m[90m 491 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 492 |[39m       [36mif[39m (delays[33m.[39mlength [33m>[39m [35m0[39m) {
+     [90m 493 |[39m         expect[33m.[39msoft([33mMath[39m[33m.[39mmin([33m...[39mdelays)[33m,[39m [32m`RM-1 ${section.name}: negative entrance delay`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+     [90m 494 |[39m         expect[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:491:10[22m
+
+    Error: RM-4 Vitrine: colour affordances are killed under reduced motion. A hover that changes colour causes no vestibular response and is the primary affordance signal; removing it makes the interface read as broken rather than calm (lock §4.3).
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 8[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "li.Vitrine_plate__p2JME@0 · border-color: 320ms default → 0ms reduced",[39m
+    [31m+   "li.Vitrine_plate__p2JME@1 · border-color: 320ms default → 0ms reduced",[39m
+    [31m+   "li.Vitrine_plate__p2JME@2 · border-color: 320ms default → 0ms reduced",[39m
+    [31m+   "li.Vitrine_plate__p2JME@3 · border-color: 320ms default → 0ms reduced",[39m
+    [31m+   "li.Vitrine_plate__p2JME@4 · border-color: 320ms default → 0ms reduced",[39m
+    [31m+   "li.Vitrine_plate__p2JME@5 · border-color: 320ms default → 0ms reduced",[39m
+    [31m+ ][39m
+
+    [0m [90m 589 |[39m             [32m`the interface read as broken rather than calm (lock §4.3).`[39m[33m,[39m
+     [90m 590 |[39m         )
+    [31m[1m>[22m[39m[90m 591 |[39m         [33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 592 |[39m     })[33m;[39m
+     [90m 593 |[39m   }
+     [90m 594 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:591:10[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-e7201-reduced-motion-choreography-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-e7201-reduced-motion-choreography-chromium/test-failed-2.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+
+[1A[2K[7/40] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:595:7 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › RM-5 no blanket universal kill switch survives in the shipped CSS
+[1A[2K[31m  5) [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Listen keeps a parallel reduced-motion choreography [39m
+
+    Error: RM-1 Listen: 0 element(s) carry an opacity entrance under prefers-reduced-motion; a sequenced reveal needs at least three. R-46 requires a parallel choreography, not silence.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 466 |[39m             [32m`choreography, not silence.`[39m[33m,[39m
+     [90m 467 |[39m         )
+    [31m[1m>[22m[39m[90m 468 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 469 |[39m
+     [90m 470 |[39m       [90m// Every fade runs long enough to be perceived — a 0.001 ms "animation" is[39m
+     [90m 471 |[39m       [90m// the kill switch wearing the choreography's clothes.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:468:10[22m
+
+    Error: RM-1 Listen: the entrance is staggered across 0 distinct delay(s) (none ms). A choreography needs an order, not a single cue.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 489 |[39m             [32m`(${delays.join(', ') || 'none'} ms). A choreography needs an order, not a single cue.`[39m[33m,[39m
+     [90m 490 |[39m         )
+    [31m[1m>[22m[39m[90m 491 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 492 |[39m       [36mif[39m (delays[33m.[39mlength [33m>[39m [35m0[39m) {
+     [90m 493 |[39m         expect[33m.[39msoft([33mMath[39m[33m.[39mmin([33m...[39mdelays)[33m,[39m [32m`RM-1 ${section.name}: negative entrance delay`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+     [90m 494 |[39m         expect[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/a11y/reduced-motion-choreography.spec.ts:491:10[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-a1016-reduced-motion-choreography-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-a1016-reduced-motion-choreography-chromium/test-failed-2.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+
+[1A[2K[8/40] [chromium] › tests/e2e/hero.spec.ts:38:7 › Hero › TC-HERO-02: positioning, location and one-sentence statement render
+[1A[2K[9/40] [chromium] › tests/e2e/hero.spec.ts:30:7 › Hero › TC-HERO-01: the name is the page h1
+[1A[2K[10/40] [chromium] › tests/e2e/hero.spec.ts:46:7 › Hero › TC-HERO-03: the statement stays within its word budget
+[1A[2K[11/40] [chromium] › tests/e2e/hero.spec.ts:54:7 › Hero › TC-HERO-04: the ledger shows three figures, each with its source
+[1A[2K[12/40] [chromium] › tests/e2e/hero.spec.ts:68:7 › Hero › TC-HERO-05: both actions are present and reachable
+[1A[2K[13/40] [chromium] › tests/e2e/hero.spec.ts:79:7 › Hero › TC-HERO-06: recruiter channels are linked
+[1A[2K[14/40] [chromium] › tests/e2e/hero.spec.ts:87:7 › Hero › TC-HERO-07: a truthful availability signal is shown
+[1A[2K[15/40] [chromium] › tests/e2e/hero.spec.ts:93:7 › Hero › TC-HERO-08: the hero fills the first viewport without overflowing it
+[1A[2K[16/40] [chromium] › tests/e2e/hero.spec.ts:107:7 › Hero › TC-HERO-09: the whole hero is legible in the first viewport
+[1A[2K[17/40] [chromium] › tests/e2e/hero.spec.ts:123:7 › Hero › TC-HERO-10: the preloader is gone
+[1A[2K[18/40] [chromium] › tests/e2e/hero.spec.ts:129:7 › Hero › TC-HERO-11: the hero holds at most one WebGL context
+[1A[2K[19/40] [chromium] › tests/e2e/hero.spec.ts:277:7 › Hero portrait › TC-HERO-12: the poster is eager, AVIF, correctly named, and never faded in
+[1A[2K[20/40] [chromium] › tests/e2e/hero.spec.ts:332:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate
+[1A[2K[21/40] [chromium] › tests/e2e/hero.spec.ts:410:7 › Hero portrait › TC-HERO-14: reduced motion is poster only — no source, no request, no button
+[1A[2K[22/40] [chromium] › tests/e2e/hero.spec.ts:447:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+[1A[2K[23/40] [chromium] › tests/e2e/hero.spec.ts:491:7 › Hero portrait › TC-HERO-16: a failed loop leaves the poster in place and throws nothing
+[1A[2K[24/40] [chromium] › tests/e2e/hero.spec.ts:516:7 › Hero portrait › TC-HERO-17: the pause button is keyboard-operable and its focus ring is achromatic
+[1A[2K[25/40] [chromium] › tests/e2e/hero.spec.ts:574:7 › Hero portrait › TC-HERO-18: both layers are grayscale and nothing in the figure is chromatic
+[1A[2K[26/40] [chromium] › tests/e2e/hero.spec.ts:595:7 › Hero portrait › TC-HERO-19: eager image weight ≤ 500 kB and the loop is fetched only after load
+[1A[2K[27/40] [chromium] › tests/e2e/hero.spec.ts:628:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720
+[1A[2K[28/40] [chromium] › tests/e2e/hero.spec.ts:654:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the portrait is an 88 px poster stamp with no video
+[1A[2K[2m[chromium] › tests/e2e/hero.spec.ts:628:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720[22m
+Hero LCP: IMG at 544 ms
+
+[1A[2K[29/40] [chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold[22m
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(244, 246, 250)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+
+[1A[2K[30/40] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[31/40] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine[22m
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[32/40] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine[22m
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 2
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+
+[1A[2K[31m  6) [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine [39m
+
+    Error: R-110 — one saturated gold mark per view; additional sourced marks step down to --gold-pale. Visible: a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" (color: rgb(201, 168, 76)) | a.Vitrine_live__PwDxH "abentertainment.com.au" (color: rgb(201, 168, 76))
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m2[39m
+
+    [0m [90m 197 |[39m       [32m'R-110 — one saturated gold mark per view; additional sourced marks step down to --gold-pale. '[39m [33m+[39m
+     [90m 198 |[39m         [32m`Visible: ${marks.map((m) => `${m.tag}.${m.cls} "${m.text}" (${m.via})`).join(' | ')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 199 |[39m     )[33m.[39mtoBeLessThanOrEqual([35m1[39m)[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 200 |[39m   })[33m;[39m
+     [90m 201 |[39m   }
+     [90m 202 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/monochrome/gold-semantics.spec.ts:199:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/monochrome-gold-semantics--11b65-s-a-viewport-in-the-vitrine-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/monochrome-gold-semantics--11b65-s-a-viewport-in-the-vitrine-chromium/error-context.md[22m
+
+
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine[22m
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 2
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+
+[1A[2K[31m  7) [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine [39m
+
+    Error: R-110 — one saturated gold mark per view; additional sourced marks step down to --gold-pale. Visible: a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" (color: rgb(201, 168, 76)) | a.Vitrine_live__PwDxH "abentertainment.com.au" (color: rgb(201, 168, 76))
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m2[39m
+
+    [0m [90m 197 |[39m       [32m'R-110 — one saturated gold mark per view; additional sourced marks step down to --gold-pale. '[39m [33m+[39m
+     [90m 198 |[39m         [32m`Visible: ${marks.map((m) => `${m.tag}.${m.cls} "${m.text}" (${m.via})`).join(' | ')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 199 |[39m     )[33m.[39mtoBeLessThanOrEqual([35m1[39m)[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 200 |[39m   })[33m;[39m
+     [90m 201 |[39m   }
+     [90m 202 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/monochrome/gold-semantics.spec.ts:199:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/monochrome-gold-semantics--af3fd-s-a-viewport-in-the-vitrine-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/monochrome-gold-semantics--af3fd-s-a-viewport-in-the-vitrine-chromium/error-context.md[22m
+
+
+[1A[2K[33/40] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[34/40] [chromium] › tests/monochrome/monochrome.spec.ts:118:7 › Monochrome Compliance › MONO-01: :root publishes the grey ramp and exactly the four sanctioned gold tokens
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine[22m
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 2
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+
+[1A[2K[31m  8) [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine [39m
+
+    Error: R-110 — one saturated gold mark per view; additional sourced marks step down to --gold-pale. Visible: a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" (color: rgb(201, 168, 76)) | a.Vitrine_live__PwDxH "abentertainment.com.au" (color: rgb(201, 168, 76))
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m2[39m
+
+    [0m [90m 197 |[39m       [32m'R-110 — one saturated gold mark per view; additional sourced marks step down to --gold-pale. '[39m [33m+[39m
+     [90m 198 |[39m         [32m`Visible: ${marks.map((m) => `${m.tag}.${m.cls} "${m.text}" (${m.via})`).join(' | ')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 199 |[39m     )[33m.[39mtoBeLessThanOrEqual([35m1[39m)[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 200 |[39m   })[33m;[39m
+     [90m 201 |[39m   }
+     [90m 202 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/monochrome/gold-semantics.spec.ts:199:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/monochrome-gold-semantics--3ad05-s-a-viewport-in-the-vitrine-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/monochrome-gold-semantics--3ad05-s-a-viewport-in-the-vitrine-chromium/error-context.md[22m
+
+
+[1A[2K[35/40] [chromium] › tests/monochrome/monochrome.spec.ts:153:7 › Monochrome Compliance › MONO-03: No inline style declares a colour outside the palette
+[1A[2K[36/40] [chromium] › tests/monochrome/monochrome.spec.ts:146:7 › Monochrome Compliance › MONO-02: Body background is achromatic
+[1A[2K[37/40] [chromium] › tests/monochrome/monochrome.spec.ts:207:7 › Monochrome Compliance › MONO-04: Every rendered colour in every section is achromatic or the sanctioned gold
+[1A[2K[38/40] [chromium] › tests/monochrome/monochrome.spec.ts:218:7 › Monochrome Compliance › MONO-05: The sanctioned accent is actually in use, and only as the accent
+[1A[2K[39/40] [chromium] › tests/monochrome/monochrome.spec.ts:244:7 › Monochrome Compliance › MONO-06: Navigation overlay is achromatic when open
+[1A[2K[40/40] [chromium] › tests/monochrome/monochrome.spec.ts:252:7 › Monochrome Compliance › MONO-07: The check still rejects an unsanctioned hue
+[1A[2K[31m  8 failed[39m
+[31m    [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › About keeps a parallel reduced-motion choreography [39m
+[31m    [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Experience keeps a parallel reduced-motion choreography [39m
+[31m    [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Skills keeps a parallel reduced-motion choreography [39m
+[31m    [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Vitrine keeps a parallel reduced-motion choreography [39m
+[31m    [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Listen keeps a parallel reduced-motion choreography [39m
+[31m    [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine [39m
+[31m    [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine [39m
+[31m    [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine [39m
+[32m  32 passed[39m[2m (1.4m)[22m
+
+=== VIS-01 rebaselined once (UPDATE_SNAPSHOTS=1 -g VIS-01) → tests/baselines/visual/screenshots.spec.ts-snapshots/hero-full-chromium-linux.png · then full visual suite:
+=== PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/visual/screenshots.spec.ts --reporter=line
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/visual/screenshots.spec.ts --reporter=line
+
+[2mRunning [22m6[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/6] [chromium] › tests/visual/screenshots.spec.ts:95:7 › Visual Regression › VIS-01: Full hero section screenshot
+[1A[2K[2/6] [chromium] › tests/visual/screenshots.spec.ts:100:7 › Visual Regression › VIS-02: About section screenshot
+[1A[2K[3/6] [chromium] › tests/visual/screenshots.spec.ts:105:7 › Visual Regression › VIS-03: Navigation overlay screenshot (open state)
+[1A[2K[4/6] [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot
+[1A[2K[5/6] [chromium] › tests/visual/screenshots.spec.ts:118:7 › Visual Regression › VIS-05: Vitrine section screenshot
+[1A[2K[6/6] [chromium] › tests/visual/screenshots.spec.ts:125:7 › Visual Regression › VIS-06: Full page screenshot (viewport top)
+[1A[2K[31m  1) [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot [39m
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveScreenshot[2m([22m[32mexpected[39m[2m)[22m failed
+
+      Expected an image 1280px by 1739px, received 1280px by 818px. 1112293 pixels (ratio 0.50 of all image pixels) are different.
+
+      Snapshot: listen-section.png
+
+    Call log:
+    [2m  - Expect "toHaveScreenshot(listen-section.png)" with timeout 30000ms[22m
+    [2m    - verifying given screenshot expectation[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - Expected an image 1280px by 1739px, received 1280px by 818px. 1112293 pixels (ratio 0.50 of all image pixels) are different.[22m
+    [2m  - waiting 100ms before taking screenshot[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - captured a stable screenshot[22m
+    [2m  - Expected an image 1280px by 1739px, received 1280px by 818px. 1112293 pixels (ratio 0.50 of all image pixels) are different.[22m
+
+
+    [0m [90m 87 |[39m     }[33m;[39m
+     [90m 88 |[39m   })[33m;[39m
+    [31m[1m>[22m[39m[90m 89 |[39m   [36mawait[39m expect(page)[33m.[39mtoHaveScreenshot(name[33m,[39m { [33m...[39m[33mSHOT[39m[33m,[39m fullPage[33m:[39m [36mtrue[39m[33m,[39m clip })[33m;[39m
+     [90m    |[39m                      [31m[1m^[22m[39m
+     [90m 90 |[39m }
+     [90m 91 |[39m
+     [90m 92 |[39m test[33m.[39mdescribe([32m'Visual Regression'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at shootSection (/root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/visual/screenshots.spec.ts:89:22)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/visual/screenshots.spec.ts:115:5[22m
+
+[2m    attachment #1: [1mlisten-section[2m (image/png) [2m──────────────────────────────────────────────────────[2m[22m
+[2m    Expected: tests/baselines/visual/screenshots.spec.ts-snapshots/listen-section-chromium-linux.png[22m
+[2m    Received: test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/listen-section-actual.png[22m
+[2m    Diff:     test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/listen-section-diff.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/error-context.md[22m
+
+
+[1A[2K[31m  2) [chromium] › tests/visual/screenshots.spec.ts:125:7 › Visual Regression › VIS-06: Full page screenshot (viewport top) [39m
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveScreenshot[2m([22m[32mexpected[39m[2m)[22m failed
+
+      57002 pixels (ratio 0.05 of all image pixels) are different.
+
+      Snapshot: viewport-top-1440x900.png
+
+    Call log:
+    [2m  - Expect "toHaveScreenshot(viewport-top-1440x900.png)" with timeout 30000ms[22m
+    [2m    - verifying given screenshot expectation[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - 57002 pixels (ratio 0.05 of all image pixels) are different.[22m
+    [2m  - waiting 100ms before taking screenshot[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - captured a stable screenshot[22m
+    [2m  - 57002 pixels (ratio 0.05 of all image pixels) are different.[22m
+
+
+    [0m [90m 127 |[39m     [36mawait[39m gotoHome(page)[33m;[39m
+     [90m 128 |[39m     [36mawait[39m page[33m.[39mwaitForTimeout([35m1000[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 129 |[39m     [36mawait[39m expect(page)[33m.[39mtoHaveScreenshot([32m'viewport-top-1440x900.png'[39m[33m,[39m {
+     [90m     |[39m                        [31m[1m^[22m[39m
+     [90m 130 |[39m       [33m...[39m[33mSHOT[39m[33m,[39m
+     [90m 131 |[39m       fullPage[33m:[39m [36mfalse[39m[33m,[39m
+     [90m 132 |[39m     })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/visual/screenshots.spec.ts:129:24[22m
+
+[2m    attachment #1: [1mviewport-top-1440x900[2m (image/png) [2m───────────────────────────────────────────────[2m[22m
+[2m    Expected: tests/baselines/visual/screenshots.spec.ts-snapshots/viewport-top-1440x900-chromium-linux.png[22m
+[2m    Received: test-results/visual-screenshots-Visual--aede5-ge-screenshot-viewport-top--chromium/viewport-top-1440x900-actual.png[22m
+[2m    Diff:     test-results/visual-screenshots-Visual--aede5-ge-screenshot-viewport-top--chromium/viewport-top-1440x900-diff.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/visual-screenshots-Visual--aede5-ge-screenshot-viewport-top--chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/visual-screenshots-Visual--aede5-ge-screenshot-viewport-top--chromium/error-context.md[22m
+
+
+[1A[2K[31m  2 failed[39m
+[31m    [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot [39m
+[31m    [chromium] › tests/visual/screenshots.spec.ts:125:7 › Visual Regression › VIS-06: Full page screenshot (viewport top) [39m
+[32m  4 passed[39m[2m (28.7s)[22m
+
+=== VIS-06 (viewport top, 1440x900) also rebaselined once — it frames the hero and failed for the same reason as VIS-01 (not in C5-regression/failing-tests.txt). Final visual run:
+=== PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/visual/screenshots.spec.ts --reporter=line
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/visual/screenshots.spec.ts --reporter=line
+
+[2mRunning [22m6[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/6] [chromium] › tests/visual/screenshots.spec.ts:95:7 › Visual Regression › VIS-01: Full hero section screenshot
+[1A[2K[2/6] [chromium] › tests/visual/screenshots.spec.ts:100:7 › Visual Regression › VIS-02: About section screenshot
+[1A[2K[3/6] [chromium] › tests/visual/screenshots.spec.ts:105:7 › Visual Regression › VIS-03: Navigation overlay screenshot (open state)
+[1A[2K[4/6] [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot
+[1A[2K[5/6] [chromium] › tests/visual/screenshots.spec.ts:118:7 › Visual Regression › VIS-05: Vitrine section screenshot
+[1A[2K[31m  1) [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot [39m
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveScreenshot[2m([22m[32mexpected[39m[2m)[22m failed
+
+      Expected an image 1280px by 1739px, received 1280px by 818px. 1112293 pixels (ratio 0.50 of all image pixels) are different.
+
+      Snapshot: listen-section.png
+
+    Call log:
+    [2m  - Expect "toHaveScreenshot(listen-section.png)" with timeout 30000ms[22m
+    [2m    - verifying given screenshot expectation[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - Expected an image 1280px by 1739px, received 1280px by 818px. 1112293 pixels (ratio 0.50 of all image pixels) are different.[22m
+    [2m  - waiting 100ms before taking screenshot[22m
+    [2m  - taking page screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - captured a stable screenshot[22m
+    [2m  - Expected an image 1280px by 1739px, received 1280px by 818px. 1112293 pixels (ratio 0.50 of all image pixels) are different.[22m
+
+
+    [0m [90m 87 |[39m     }[33m;[39m
+     [90m 88 |[39m   })[33m;[39m
+    [31m[1m>[22m[39m[90m 89 |[39m   [36mawait[39m expect(page)[33m.[39mtoHaveScreenshot(name[33m,[39m { [33m...[39m[33mSHOT[39m[33m,[39m fullPage[33m:[39m [36mtrue[39m[33m,[39m clip })[33m;[39m
+     [90m    |[39m                      [31m[1m^[22m[39m
+     [90m 90 |[39m }
+     [90m 91 |[39m
+     [90m 92 |[39m test[33m.[39mdescribe([32m'Visual Regression'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at shootSection (/root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/visual/screenshots.spec.ts:89:22)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/visual/screenshots.spec.ts:115:5[22m
+
+[2m    attachment #1: [1mlisten-section[2m (image/png) [2m──────────────────────────────────────────────────────[2m[22m
+[2m    Expected: tests/baselines/visual/screenshots.spec.ts-snapshots/listen-section-chromium-linux.png[22m
+[2m    Received: test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/listen-section-actual.png[22m
+[2m    Diff:     test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/listen-section-diff.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/visual-screenshots-Visual--70526--closing-section-screenshot-chromium/error-context.md[22m
+
+
+[1A[2K[6/6] [chromium] › tests/visual/screenshots.spec.ts:125:7 › Visual Regression › VIS-06: Full page screenshot (viewport top)
+[1A[2K[31m  1 failed[39m
+[31m    [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot [39m
+[32m  5 passed[39m[2m (14.2s)[22m
+
+=== GATE SUMMARY (coder, final source) — tags: Verified = tool output this session · Inferred · Assumed
+tsc            PASS  — npx tsc --noEmit, 0 errors                                                  [Verified]
+lint           PASS  — next lint, "No ESLint warnings or errors"                                    [Verified]
+audit          PASS  — overhaul_static_audit.mjs ALL PASS (10/10); TC-NFR-MONO/DEADCSS clean        [Verified]
+build          PASS  — npm run build:static exit 0; SSR HTML carries <video muted loop playsinline preload="none" aria-hidden tabindex=-1> with no src [Verified]
+heroSpec       PASS  — tests/e2e/hero.spec.ts 21/21 (TC-HERO-01..11 unchanged + TC-HERO-12..21 new); LCP = IMG at 544–564 ms [Verified]
+visual         PASS* — VIS-01/02/03/05/06 pass; VIS-01 and VIS-06 rebaselined once (both frame the hero, both PNGs inspected: grayscale portrait right of the statement, no gold). *VIS-04 (Listen) fails and is on C5-regression/failing-tests.txt — pre-existing, untouched [Verified]
+monochrome     PASS* — monochrome.spec.ts 7/7; *gold-semantics GS-02 ×3 fail in #vitrine, all on C5-regression/failing-tests.txt — pre-existing, untouched [Verified]
+reducedMotion  PASS* — "Hero keeps a parallel reduced-motion choreography" passes; *About/Experience/Skills/Vitrine/Listen fail on RM-1/RM-3/RM-4, all on C5-regression/failing-tests.txt — pre-existing, untouched [Verified]
+
+=== FINDINGS
+1. Row arithmetic (Verified by measurement at 1280×720): figure 264→520 px sits inside rows 3–5 (≈389 px) — it never stretched them. The +~50 px that broke TC-HERO-08/09 came from the grading note moving under the ledger (spec §4 ledgerRow 1fr). Fixed with a `max-height: 860px` rhythm block placed AFTER the base rules (ledgerRow/actions margin → --space-3, availability → --space-2): action bottom 733→697 px, hero 813→761 px.
+2. The pre-existing `@media (max-height: 860px)` block at the top of Hero.module.css is dead by source order for .name/.role/.statement/.ledger/.actions/.availability (the base rules set the same properties later and win): `.role` measures margin-top 17.28 px, not the 8 px it declares. Left as-is (changing it re-sizes the h1 at short viewports — outside this cycle); noted for the owner. [Verified]
+3. RM-4 (Hero) initially failed because the pause button declared colour transitions by default and is absent under reduced motion (TC-HERO-14 requires count 0) — the check keys on DOM identity. Fixed by giving the toggle no colour transition. [Verified]
+4. figcaption omitted (spec marks it optional): at 1280×720 a two-line mono caption (+~44 px) would have re-broken the fold. [Inferred from finding 1]
+5. Portrait boxes measured: 390→88×88 stamp (no <video>, no button) · 834→176×220 · 1280→205×256 · 1440→230×288; filter grayscale(1) contrast(1.04) on the wrapper at every width; loop playing at opacity 1 at ≥834 with src /assets/my-hero-avatar.mp4 assigned by the gate. [Verified]
+6. `pauses when the MiniVic panel speaks` uses useAvatarSpeaking() only — the context exposes `speaking`, not "panel open". [Verified — lib/avatarContext.tsx]
+7. components/site/HeroAvatar.tsx deleted; remaining mentions are comments only (lib/voiceoverController.ts:14, lib/avatarContext.tsx:7,43, tests/overhaul/avatar.spec.ts:8, tests/e2e/clone-voice.spec.ts:8) — no importer. [Verified — grep]

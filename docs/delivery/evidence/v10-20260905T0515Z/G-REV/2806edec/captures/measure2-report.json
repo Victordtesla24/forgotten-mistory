@@ -1,0 +1,100 @@
+{
+  "live": "https://forgotten-mistory.web.app/?gl=force#about",
+  "buildCommit": "2806edec",
+  "states": [
+    {
+      "label": "rest",
+      "axis": "3",
+      "goldFrac": 0,
+      "gold": 0,
+      "bright": {
+        "angleDeg": -9.9,
+        "radius": 80.4,
+        "max": 235
+      }
+    },
+    {
+      "label": "restB",
+      "axis": "3",
+      "goldFrac": 0,
+      "gold": 0,
+      "bright": {
+        "angleDeg": -15.4,
+        "radius": 70.9,
+        "max": 235
+      }
+    },
+    {
+      "label": "h0",
+      "axis": "0",
+      "goldFrac": 0,
+      "gold": 0,
+      "bright": {
+        "angleDeg": 13.4,
+        "radius": 83.4,
+        "max": 235
+      }
+    },
+    {
+      "label": "h2",
+      "axis": "2",
+      "goldFrac": 0,
+      "gold": 0,
+      "bright": {
+        "angleDeg": -9.8,
+        "radius": 84.1,
+        "max": 235
+      }
+    },
+    {
+      "label": "h5",
+      "axis": "5",
+      "goldFrac": 0,
+      "gold": 0,
+      "bright": {
+        "angleDeg": -28.3,
+        "radius": 32,
+        "max": 226
+      }
+    },
+    {
+      "label": "h9",
+      "axis": "9",
+      "goldFrac": 0,
+      "gold": 0,
+      "bright": {
+        "angleDeg": 56.7,
+        "radius": 41,
+        "max": 235
+      }
+    }
+  ],
+  "animationFloor_meanAbsRGB": 19.78,
+  "crossDimension_meanAbsRGB": [
+    [
+      "rest(3)->h0",
+      31.96
+    ],
+    [
+      "rest(3)->h9",
+      84.06
+    ],
+    [
+      "h0->h2",
+      18.95
+    ],
+    [
+      "h0->h5",
+      36.29
+    ],
+    [
+      "h0->h9",
+      82.29
+    ],
+    [
+      "h2->h9",
+      84.61
+    ]
+  ],
+  "interpretation": "meanAbsRGB is 0..765 per-pixel; floor=same active repeated, cross=different active. angleDeg is the bright-pattern orientation."
+}

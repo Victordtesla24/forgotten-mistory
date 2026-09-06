@@ -1,0 +1,57 @@
+{
+  "cycle": "v10-c16",
+  "window_utc": "2026-09-05T17:47Z → 18:00Z (open — first-wave live re-probe)",
+  "pea_numerator": 3,
+  "pea_denominator": 10,
+  "pea_basis": "Independent live PASS held: G-NEW-1 (b0513692), G-C1 (b0513692), G-H6 (2806edec). G-X2 SA docs only (not R2). Remaining P0 judged on live 58d9c111 this cycle — not self-report.",
+  "adversarial_verdicts": [
+    "ADV-REVIEW-20260905T1556Z FAIL on b2ac21be (intake)",
+    "t_rev_adv1556 matrix FAIL on b0513692 (8 FAIL / 2 PASS)",
+    "c16 re-probe dispatched on live 58d9c111 after Deploy 33982085429 success"
+  ],
+  "deploy_commit": "58d9c111",
+  "deploy_run_id": "33982085429",
+  "live_build_commit": "58d9c111",
+  "visible_ships": [
+    "17:07Z Deploy 33979955584 → live 33e7ce64 G-C1 honest CTA labels fb49e53",
+    "17:11Z Deploy 33980197112 → live b0513692 G-V3 plate 0.82 + G-NEW-1 pill freeze",
+    "17:48Z Deploy 33982085429 SUCCESS → live 58d9c111 publishes ffmpeg-skip plus queued H1 name-as-mark e4634aa, H5 360p retire e983dd9, L1 envelope 8b5b4ce, M4 minInstances 1c8167d, A3/H6/X2 docs"
+  ],
+  "failed_deploys_unstuck": [
+    "33981539469 / 33981645428 / 33981741911 FAILED greeting_envelope ffmpeg ENOENT",
+    "58d9c111 keeps committed greeting-envelope.ts when ffmpeg missing and sourceSha256 matches"
+  ],
+  "pm_snippet_1751Z": {
+    "live": "58d9c111",
+    "http": 200,
+    "cache": "public, max-age=0, must-revalidate",
+    "my-hero-avatar.mp4": "HTTP 404 (not a PASS until reviewer)",
+    "cta": "Email a 20-minute-call agenda / Email a project brief (no Book / Start a project in HTML grep)",
+    "timer": "active",
+    "hermes": "inactive",
+    "load": "1.72"
+  },
+  "o1_o5": "PAIR for this window: Deploy 33982085429 + live build-commit 58d9c111. Timer active; Hermes inactive. Recruiter-visible ancestors now on production (H1 fold collapse, H5 360p gone, envelope band). Do not claim individual gap PASS without independent reviewer vs GAP-BACKLOG.",
+  "closed_prior": [
+    "t_g_new1 + t_g_new1t live PASS b0513692",
+    "t_g2_c1 + t_g2_c1b live PASS b0513692",
+    "t_g2_h6 live PASS 2806edec"
+  ],
+  "in_flight_c16": [
+    "t_rev_adv1556 identity rev-58d9c111-c16 matrix on live 58d9c111",
+    "t_g2_v3 identity ap-gv3-c2-58d9 correction (thicken strokes; all six ≥4.5:1)",
+    "t_h2_04 identity ap-gh1-04-c16 photo-into-plane (dirty wt-gh1-04-1556)",
+    "t_l1_03 identity ap-gl1-03-c16 four arrivals (dirty worktree-gl1-03-1556)"
+  ],
+  "queued_next": [
+    "G-A3 correction only if c16 reviewer FAILs",
+    "t_l1_04 gold / t_l1_05 reading after L1-03 lands",
+    "t_g2_m4b Hosting TTFB valid-body confirm",
+    "t_x1_10 HyperFrames first real cinematic scene",
+    "P1 G-E2 G-S2 after first-wave live PASSes — dirty worktrees exist, not boarded"
+  ],
+  "r3_avatar": "OPEN — Higgsfield credits do not park G-M4/G-H5",
+  "fusion_council": "NOT convened — matrix has not moved to overall PASS",
+  "provider": "Anthropic via OAuth (Cursor Task generalPurpose); OpenRouter treated exhausted; never ANTHROPIC_API_KEY; Hermes not started",
+  "started": "2026-09-05T17:51:00Z"
+}

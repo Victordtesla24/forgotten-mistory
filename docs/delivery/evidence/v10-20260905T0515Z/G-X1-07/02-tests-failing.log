@@ -1,0 +1,84 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/viseme-stage.spec.ts --workers=1 --reporter=list
+
+Running 5 tests using 1 worker
+
+  ✘  1 [chromium] › tests/overhaul/viseme-stage.spec.ts:210:9 › TC-VISEME-GL @ 1440 › TC-VISEME-GL-01 @ 1440 — the stage is lit by the viseme stream (38.3s)
+  ✓  2 [chromium] › tests/overhaul/viseme-stage.spec.ts:259:9 › TC-VISEME-GL @ 1440 › TC-VISEME-GL-02 @ 1440 — reduced motion: no canvas, and the 2D mouth still animates (4.8s)
+  ✘  3 [chromium] › tests/overhaul/viseme-stage.spec.ts:210:9 › TC-VISEME-GL @ 390 › TC-VISEME-GL-01 @ 390 — the stage is lit by the viseme stream (33.3s)
+  ✓  4 [chromium] › tests/overhaul/viseme-stage.spec.ts:259:9 › TC-VISEME-GL @ 390 › TC-VISEME-GL-02 @ 390 — reduced motion: no canvas, and the 2D mouth still animates (4.3s)
+  ✘  5 [chromium] › tests/overhaul/viseme-stage.spec.ts:302:7 › TC-VISEME-GL-03 — the stage costs at most one context › TC-VISEME-GL-03 — opening the panel adds at most one live WebGL context (41.3s)
+
+
+  1) [chromium] › tests/overhaul/viseme-stage.spec.ts:210:9 › TC-VISEME-GL @ 1440 › TC-VISEME-GL-01 @ 1440 — the stage is lit by the viseme stream 
+
+    TimeoutError: locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="minivic-viseme"] canvas')[22m
+
+
+      220 |       // visible.
+      221 |       const canvas = page.locator(`[data-scene="${SCENE_ID}"] canvas`);
+    > 222 |       await canvas.waitFor({ state: 'attached', timeout: 30000 });
+          |                    ^
+      223 |       await page.waitForTimeout(2500);
+      224 |
+      225 |       const clip = await slotClip(page);
+        at /root/forgotten-mistory/.claude/worktrees/wf_c21c4ca4-74c-1/tests/overhaul/viseme-stage.spec.ts:222:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-viseme-stage-TC-V-c4dad-is-lit-by-the-viseme-stream-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-viseme-stage-TC-V-c4dad-is-lit-by-the-viseme-stream-chromium/error-context.md
+
+  2) [chromium] › tests/overhaul/viseme-stage.spec.ts:210:9 › TC-VISEME-GL @ 390 › TC-VISEME-GL-01 @ 390 — the stage is lit by the viseme stream 
+
+    TimeoutError: locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="minivic-viseme"] canvas')[22m
+
+
+      220 |       // visible.
+      221 |       const canvas = page.locator(`[data-scene="${SCENE_ID}"] canvas`);
+    > 222 |       await canvas.waitFor({ state: 'attached', timeout: 30000 });
+          |                    ^
+      223 |       await page.waitForTimeout(2500);
+      224 |
+      225 |       const clip = await slotClip(page);
+        at /root/forgotten-mistory/.claude/worktrees/wf_c21c4ca4-74c-1/tests/overhaul/viseme-stage.spec.ts:222:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-viseme-stage-TC-V-a4420-is-lit-by-the-viseme-stream-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-viseme-stage-TC-V-a4420-is-lit-by-the-viseme-stream-chromium/error-context.md
+
+  3) [chromium] › tests/overhaul/viseme-stage.spec.ts:302:7 › TC-VISEME-GL-03 — the stage costs at most one context › TC-VISEME-GL-03 — opening the panel adds at most one live WebGL context 
+
+    TimeoutError: locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="minivic-viseme"] canvas')[22m
+
+
+      325 |     await page.locator('[data-testid="minivic-toggle"]').evaluate((el: HTMLElement) => el.click());
+      326 |     await expect(page.locator('[data-testid="minivic-panel"]')).toBeVisible();
+    > 327 |     await page.locator(`[data-scene="${SCENE_ID}"] canvas`).waitFor({
+          |                                                             ^
+      328 |       state: 'attached',
+      329 |       timeout: 30000,
+      330 |     });
+        at /root/forgotten-mistory/.claude/worktrees/wf_c21c4ca4-74c-1/tests/overhaul/viseme-stage.spec.ts:327:61
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/overhaul-viseme-stage-TC-V-74eea-most-one-live-WebGL-context-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/overhaul-viseme-stage-TC-V-74eea-most-one-live-WebGL-context-chromium/error-context.md
+
+  3 failed
+    [chromium] › tests/overhaul/viseme-stage.spec.ts:210:9 › TC-VISEME-GL @ 1440 › TC-VISEME-GL-01 @ 1440 — the stage is lit by the viseme stream 
+    [chromium] › tests/overhaul/viseme-stage.spec.ts:210:9 › TC-VISEME-GL @ 390 › TC-VISEME-GL-01 @ 390 — the stage is lit by the viseme stream 
+    [chromium] › tests/overhaul/viseme-stage.spec.ts:302:7 › TC-VISEME-GL-03 — the stage costs at most one context › TC-VISEME-GL-03 — opening the panel adds at most one live WebGL context 
+  2 passed (2.1m)
+EXIT=1

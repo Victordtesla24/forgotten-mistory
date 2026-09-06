@@ -1,0 +1,303 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero.spec.ts --reporter=line
+
+[2mRunning [22m21[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/21] [chromium] › tests/e2e/hero.spec.ts:30:7 › Hero › TC-HERO-01: the name is the page h1
+[1A[2K[2/21] [chromium] › tests/e2e/hero.spec.ts:38:7 › Hero › TC-HERO-02: positioning, location and one-sentence statement render
+[1A[2K[3/21] [chromium] › tests/e2e/hero.spec.ts:46:7 › Hero › TC-HERO-03: the statement stays within its word budget
+[1A[2K[4/21] [chromium] › tests/e2e/hero.spec.ts:54:7 › Hero › TC-HERO-04: the ledger shows three figures, each with its source
+[1A[2K[5/21] [chromium] › tests/e2e/hero.spec.ts:68:7 › Hero › TC-HERO-05: both actions are present and reachable
+[1A[2K[6/21] [chromium] › tests/e2e/hero.spec.ts:79:7 › Hero › TC-HERO-06: recruiter channels are linked
+[1A[2K[7/21] [chromium] › tests/e2e/hero.spec.ts:87:7 › Hero › TC-HERO-07: a truthful availability signal is shown
+[1A[2K[8/21] [chromium] › tests/e2e/hero.spec.ts:93:7 › Hero › TC-HERO-08: the hero fills the first viewport without overflowing it
+[1A[2K[9/21] [chromium] › tests/e2e/hero.spec.ts:107:7 › Hero › TC-HERO-09: the whole hero is legible in the first viewport
+[1A[2K[10/21] [chromium] › tests/e2e/hero.spec.ts:123:7 › Hero › TC-HERO-10: the preloader is gone
+[1A[2K[11/21] [chromium] › tests/e2e/hero.spec.ts:129:7 › Hero › TC-HERO-11: the hero holds at most one WebGL context
+[1A[2K[12/21] [chromium] › tests/e2e/hero.spec.ts:277:7 › Hero portrait › TC-HERO-12: the poster is eager, AVIF, correctly named, and never faded in
+[1A[2K[31m  1) [chromium] › tests/e2e/hero.spec.ts:277:7 › Hero portrait › TC-HERO-12: the poster is eager, AVIF, correctly named, and never faded in [39m
+
+    Error: poster opacity on the first frame the hero is visible
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.99[39m
+    Received:    [31mNaN[39m
+
+    [0m [90m 312 |[39m           [33m.[39m__portraitOpacityProbe[33m,[39m
+     [90m 313 |[39m     )[33m;[39m
+    [31m[1m>[22m[39m[90m 314 |[39m     expect(probe[33m.[39mat0[33m,[39m [32m'poster opacity on the first frame the hero is visible'[39m)[33m.[39mtoBeGreaterThanOrEqual([35m0.99[39m)[33m;[39m
+     [90m     |[39m                                                                                [31m[1m^[22m[39m
+     [90m 315 |[39m     expect(probe[33m.[39mat200[33m,[39m [32m'poster opacity 200 ms after the hero is visible'[39m)[33m.[39mtoBeGreaterThanOrEqual([35m0.99[39m)[33m;[39m
+     [90m 316 |[39m
+     [90m 317 |[39m     [36mconst[39m img [33m=[39m page[33m.[39mlocator([33mPORTRAIT_IMG[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/e2e/hero.spec.ts:314:80[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-TC--62fa4-ly-named-and-never-faded-in-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-TC--62fa4-ly-named-and-never-faded-in-chromium/error-context.md[22m
+
+
+[1A[2K[13/21] [chromium] › tests/e2e/hero.spec.ts:410:7 › Hero portrait › TC-HERO-14: reduced motion is poster only — no source, no request, no button
+[1A[2K[14/21] [chromium] › tests/e2e/hero.spec.ts:332:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate
+[1A[2K[31m  2) [chromium] › tests/e2e/hero.spec.ts:332:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate [39m
+
+    Error: exactly one <video> in the figure
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m1[39m
+    Received: [31m0[39m
+
+    [0m [90m 344 |[39m
+     [90m 345 |[39m     [36mconst[39m video [33m=[39m page[33m.[39mlocator([33mPORTRAIT_VIDEO[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 346 |[39m     expect([36mawait[39m video[33m.[39mcount()[33m,[39m [32m'exactly one <video> in the figure'[39m)[33m.[39mtoBe([35m1[39m)[33m;[39m
+     [90m     |[39m                                                                      [31m[1m^[22m[39m
+     [90m 347 |[39m
+     [90m 348 |[39m     [36mconst[39m atDcl [33m=[39m [36mawait[39m page[33m.[39mevaluate(
+     [90m 349 |[39m       () [33m=>[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/e2e/hero.spec.ts:346:70[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-TC--7cdb5-tarts-only-through-the-gate-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-TC--7cdb5-tarts-only-through-the-gate-chromium/error-context.md[22m
+
+
+[1A[2K[15/21] [chromium] › tests/e2e/hero.spec.ts:447:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+[1A[2K[31m  3) [chromium] › tests/e2e/hero.spec.ts:410:7 › Hero portrait › TC-HERO-14: reduced motion is poster only — no source, no request, no button [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCount[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator:  locator('[data-testid="hero-portrait"]')
+    Expected: [32m1[39m
+    Received: [31m0[39m
+    Timeout:  15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCount" with timeout 15000ms[22m
+    [2m  - waiting for locator('[data-testid="hero-portrait"]')[22m
+    [2m    18 × locator resolved to 0 elements[22m
+    [2m       - unexpected value "0"[22m
+
+
+    [0m [90m 426 |[39m
+     [90m 427 |[39m     [36mconst[39m figure [33m=[39m page[33m.[39mlocator([33mPORTRAIT[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 428 |[39m     [36mawait[39m expect(figure)[33m.[39mtoHaveCount([35m1[39m)[33m;[39m
+     [90m     |[39m                          [31m[1m^[22m[39m
+     [90m 429 |[39m     [36mconst[39m img [33m=[39m page[33m.[39mlocator([33mPORTRAIT_IMG[39m)[33m;[39m
+     [90m 430 |[39m     [36mawait[39m expect(img)[33m.[39mtoBeVisible()[33m;[39m
+     [90m 431 |[39m     expect([36mawait[39m img[33m.[39mevaluate((el) [33m=>[39m [33mNumber[39m[33m.[39mparseFloat(getComputedStyle(el)[33m.[39mopacity)))[33m.[39mtoBeGreaterThanOrEqual([0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/e2e/hero.spec.ts:428:26[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-TC--cc619-source-no-request-no-button-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-TC--cc619-source-no-request-no-button-chromium/error-context.md[22m
+
+
+[1A[2K[16/21] [chromium] › tests/e2e/hero.spec.ts:491:7 › Hero portrait › TC-HERO-16: a failed loop leaves the poster in place and throws nothing
+[1A[2K[31m  4) [chromium] › tests/e2e/hero.spec.ts:491:7 › Hero portrait › TC-HERO-16: a failed loop leaves the poster in place and throws nothing [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('[data-testid="hero-portrait"] img')
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 15000ms[22m
+    [2m  - waiting for locator('[data-testid="hero-portrait"] img')[22m
+
+
+    [0m [90m 498 |[39m
+     [90m 499 |[39m     [36mconst[39m img [33m=[39m page[33m.[39mlocator([33mPORTRAIT_IMG[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 500 |[39m     [36mawait[39m expect(img)[33m.[39mtoBeVisible()[33m;[39m
+     [90m     |[39m                       [31m[1m^[22m[39m
+     [90m 501 |[39m     expect([36mawait[39m img[33m.[39mevaluate((el) [33m=>[39m [33mNumber[39m[33m.[39mparseFloat(getComputedStyle(el)[33m.[39mopacity)))[33m.[39mtoBeGreaterThanOrEqual(
+     [90m 502 |[39m       [35m0.99[39m[33m,[39m
+     [90m 503 |[39m     )[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/e2e/hero.spec.ts:500:23[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-TC--0283e-in-place-and-throws-nothing-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-TC--0283e-in-place-and-throws-nothing-chromium/error-context.md[22m
+
+
+[1A[2K[17/21] [chromium] › tests/e2e/hero.spec.ts:516:7 › Hero portrait › TC-HERO-17: the pause button is keyboard-operable and its focus ring is achromatic
+[1A[2K[31m  5) [chromium] › tests/e2e/hero.spec.ts:516:7 › Hero portrait › TC-HERO-17: the pause button is keyboard-operable and its focus ring is achromatic [39m
+
+    Error: one pause/play button with aria-pressed
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m1[39m
+    Received: [31m0[39m
+
+    [0m [90m 519 |[39m
+     [90m 520 |[39m     [36mconst[39m toggle [33m=[39m page[33m.[39mlocator([33mPORTRAIT_TOGGLE[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 521 |[39m     expect([36mawait[39m toggle[33m.[39mcount()[33m,[39m [32m'one pause/play button with aria-pressed'[39m)[33m.[39mtoBe([35m1[39m)[33m;[39m
+     [90m     |[39m                                                                             [31m[1m^[22m[39m
+     [90m 522 |[39m     [36mawait[39m expect(toggle)[33m.[39mtoHaveAttribute([32m'aria-pressed'[39m[33m,[39m [32m'false'[39m)[33m;[39m
+     [90m 523 |[39m     [36mawait[39m expect(toggle)[33m.[39mtoHaveAttribute([32m'aria-label'[39m[33m,[39m [32m'Pause the portrait'[39m)[33m;[39m
+     [90m 524 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/e2e/hero.spec.ts:521:77[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-TC--9f381-ts-focus-ring-is-achromatic-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-TC--9f381-ts-focus-ring-is-achromatic-chromium/error-context.md[22m
+
+
+[1A[2K[18/21] [chromium] › tests/e2e/hero.spec.ts:574:7 › Hero portrait › TC-HERO-18: both layers are grayscale and nothing in the figure is chromatic
+[1A[2K[31m  6) [chromium] › tests/e2e/hero.spec.ts:574:7 › Hero portrait › TC-HERO-18: both layers are grayscale and nothing in the figure is chromatic [39m
+
+    Error: the <picture> has a wrapper (.portraitMedia)
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m1[39m
+    Received: [31m0[39m
+
+    [0m [90m 580 |[39m     [90m// one element that carries the filter for both the still and the video.[39m
+     [90m 581 |[39m     [36mconst[39m wrapper [33m=[39m page[33m.[39mlocator([32m`${PORTRAIT} picture`[39m)[33m.[39mlocator([32m'..'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 582 |[39m     expect([36mawait[39m wrapper[33m.[39mcount()[33m,[39m [32m'the <picture> has a wrapper (.portraitMedia)'[39m)[33m.[39mtoBe([35m1[39m)[33m;[39m
+     [90m     |[39m                                                                                   [31m[1m^[22m[39m
+     [90m 583 |[39m     [36mconst[39m filter [33m=[39m [36mawait[39m wrapper[33m.[39mevaluate((el) [33m=>[39m getComputedStyle(el)[33m.[39mfilter)[33m;[39m
+     [90m 584 |[39m     expect(filter[33m,[39m [32m'computed filter on .portraitMedia'[39m)[33m.[39mtoContain([32m'grayscale(1)'[39m)[33m;[39m
+     [90m 585 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/e2e/hero.spec.ts:582:83[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-TC--ba093--in-the-figure-is-chromatic-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-TC--ba093--in-the-figure-is-chromatic-chromium/error-context.md[22m
+
+
+[1A[2K[19/21] [chromium] › tests/e2e/hero.spec.ts:595:7 › Hero portrait › TC-HERO-19: eager image weight ≤ 500 kB and the loop is fetched only after load
+[1A[2K[31m  7) [chromium] › tests/e2e/hero.spec.ts:595:7 › Hero portrait › TC-HERO-19: eager image weight ≤ 500 kB and the loop is fetched only after load [39m
+
+    Error: the loop was requested by the gate
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBeNull[2m()[22m
+
+    Received: [31mnull[39m
+
+    [0m [90m 620 |[39m       [32m`image bytes under /assets/ transferred before load:\n${timing.eagerImages.join('\n')}`[39m[33m,[39m
+     [90m 621 |[39m     )[33m.[39mtoBeLessThanOrEqual([35m500[39m_000)[33m;[39m
+    [31m[1m>[22m[39m[90m 622 |[39m     expect(timing[33m.[39mloop[33m,[39m [32m'the loop was requested by the gate'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m     |[39m                                                                   [31m[1m^[22m[39m
+     [90m 623 |[39m     expect(timing[33m.[39mloop[33m![39m[33m.[39mrequestStart[33m,[39m [32m'the loop request starts after loadEventEnd'[39m)[33m.[39mtoBeGreaterThan(
+     [90m 624 |[39m       timing[33m.[39mloadEventEnd[33m,[39m
+     [90m 625 |[39m     )[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/e2e/hero.spec.ts:622:67[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-TC--898dc--is-fetched-only-after-load-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-TC--898dc--is-fetched-only-after-load-chromium/error-context.md[22m
+
+
+[1A[2K[20/21] [chromium] › tests/e2e/hero.spec.ts:628:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720
+[1A[2K[2m[chromium] › tests/e2e/hero.spec.ts:628:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720[22m
+Hero LCP: A at 584 ms
+
+[1A[2K[31m  8) [chromium] › tests/e2e/hero.spec.ts:628:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720 [39m
+
+    Error: LCP element tag: A
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m"A"[39m
+    Received array: [31m["IMG", "H1"][39m
+
+    [0m [90m 645 |[39m     expect(lcp[33m,[39m [32m'an LCP entry was emitted'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m 646 |[39m     console[33m.[39mlog([32m`Hero LCP: ${lcp!.tag} at ${lcp!.startTime.toFixed(0)} ms`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 647 |[39m     expect([[32m'IMG'[39m[33m,[39m [32m'H1'[39m][33m,[39m [32m`LCP element tag: ${lcp!.tag}`[39m)[33m.[39mtoContain(lcp[33m![39m[33m.[39mtag)[33m;[39m
+     [90m     |[39m                                                           [31m[1m^[22m[39m
+     [90m 648 |[39m     expect(lcp[33m![39m[33m.[39mstartTime)[33m.[39mtoBeLessThanOrEqual([35m2500[39m)[33m;[39m
+     [90m 649 |[39m   })[33m;[39m
+     [90m 650 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/e2e/hero.spec.ts:647:59[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-TC--a48ff-h1-inside-2-5-s-at-1280×720-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-TC--a48ff-h1-inside-2-5-s-at-1280×720-chromium/error-context.md[22m
+
+
+[1A[2K[21/21] [chromium] › tests/e2e/hero.spec.ts:654:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the portrait is an 88 px poster stamp with no video
+[1A[2K[31m  9) [chromium] › tests/e2e/hero.spec.ts:447:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget [39m
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.boundingBox: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="hero-portrait"]')[22m
+
+
+    [0m [90m 447 |[39m   test([32m'TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget'[39m[33m,[39m [36masync[39m ({ page }) [33m=>[39m {
+     [90m 448 |[39m     [36mconst[39m figure [33m=[39m page[33m.[39mlocator([33mPORTRAIT[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 449 |[39m     [36mconst[39m before [33m=[39m [36mawait[39m figure[33m.[39mboundingBox()[33m;[39m
+     [90m     |[39m                                 [31m[1m^[22m[39m
+     [90m 450 |[39m     expect(before[33m,[39m [32m'the figure is laid out before the loop starts'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m 451 |[39m
+     [90m 452 |[39m     [36mawait[39m page[33m.[39mwaitForLoadState([32m'load'[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/e2e/hero.spec.ts:449:33[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-TC--b034a--and-CLS-stays-under-budget-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-TC--b034a--and-CLS-stays-under-budget-chromium/error-context.md[22m
+
+
+[1A[2K[31m  10) [chromium] › tests/e2e/hero.spec.ts:654:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the portrait is an 88 px poster stamp with no video [39m
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.boundingBox: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-testid="hero-portrait"]')[22m
+
+
+    [0m [90m 658 |[39m
+     [90m 659 |[39m       [36mconst[39m figure [33m=[39m page[33m.[39mlocator([33mPORTRAIT[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 660 |[39m       [36mconst[39m box [33m=[39m [36mawait[39m figure[33m.[39mboundingBox()[33m;[39m
+     [90m     |[39m                                [31m[1m^[22m[39m
+     [90m 661 |[39m       expect(box[33m,[39m [32m'the figure is laid out at 390 px'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m 662 |[39m       expect(box[33m![39m[33m.[39mwidth[33m,[39m [32m'stamp width'[39m)[33m.[39mtoBeLessThanOrEqual([35m96[39m)[33m;[39m
+     [90m 663 |[39m       expect(box[33m![39m[33m.[39mheight[33m,[39m [32m'stamp height'[39m)[33m.[39mtoBeLessThanOrEqual([35m96[39m)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_b64aade6-e34-1/tests/e2e/hero.spec.ts:660:32[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-at--98318--poster-stamp-with-no-video-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-at--98318--poster-stamp-with-no-video-chromium/error-context.md[22m
+
+
+[1A[2K[31m  10 failed[39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:277:7 › Hero portrait › TC-HERO-12: the poster is eager, AVIF, correctly named, and never faded in [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:332:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:410:7 › Hero portrait › TC-HERO-14: reduced motion is poster only — no source, no request, no button [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:447:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:491:7 › Hero portrait › TC-HERO-16: a failed loop leaves the poster in place and throws nothing [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:516:7 › Hero portrait › TC-HERO-17: the pause button is keyboard-operable and its focus ring is achromatic [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:574:7 › Hero portrait › TC-HERO-18: both layers are grayscale and nothing in the figure is chromatic [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:595:7 › Hero portrait › TC-HERO-19: eager image weight ≤ 500 kB and the loop is fetched only after load [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:628:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720 [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:654:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the portrait is an 88 px poster stamp with no video [39m
+[32m  11 passed[39m[2m (2.8m)[22m
+PW_EXIT=1

@@ -9,9 +9,9 @@ now, where things are, and the gates a change has to clear.
 
 ## ON RESUME (read first)
 
-1. **`docs/prompt.md`** — sole source of truth. Maximum prompt execution accuracy. Non-interactive (§0.1). O1/O5: visible UI/UX to production every **≤10 minutes**.
-2. **`docs/ORCHESTRATOR-REALIGN.md`** — host restored the 10-min Deploy metronome (`fm-deploy-cadence.timer`); Hermes is disabled; §5 profile files exist. Follow the resume playbook.
-3. Claim board task **`t_realign01`**, then continue unfinished UI tasks. Never start Hermes. Never ask for `ANTHROPIC_API_KEY`.
+1. **Paste `docs/ORCHESTRATOR-MASTER-PROMPT.md`** into the ultracode session, then **Read `docs/prompt.md` in full**. Max PEA. Non-interactive. O1/O5: visible UI every ≤10 minutes.
+2. **Live FAIL 2315Z:** `docs/adversarial/ADV-REVIEW-20260905T2315Z.md` + `docs/adversarial/GAP-BACKLOG.md` + `artifacts/kanban/INBOX/ADV-FAIL-20260905T2315Z.md`.
+3. If Pro/Max **session limit**: wait for reset, then MASTER prompt — do not ask the Owner. Never Hermes. Never `ANTHROPIC_API_KEY`.
 
 ---
 

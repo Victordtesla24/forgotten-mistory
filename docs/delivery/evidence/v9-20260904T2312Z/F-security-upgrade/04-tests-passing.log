@@ -1,0 +1,317 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero.spec.ts tests/e2e/chatbot.spec.ts tests/e2e/navigation.spec.ts tests/content tests/monochrome tests/visual tests/overhaul/render.spec.ts tests/overhaul/telemetry-stability.spec.ts tests/perf --reporter=line
+
+[2mRunning [22m134[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/134] [chromium] › tests/content/content-check.spec.ts:41:7 › Content Preservation › CT-01: Hero name from hero.ts appears verbatim
+[1A[2K[2/134] [chromium] › tests/content/content-check.spec.ts:46:7 › Content Preservation › CT-02: Hero positioning line appears verbatim
+[1A[2K[3/134] [chromium] › tests/content/content-check.spec.ts:53:7 › Content Preservation › CT-03: Hero statement states a tenure and names the current engagement
+[1A[2K[4/134] [chromium] › tests/content/content-check.spec.ts:72:7 › Content Preservation › CT-05: About carries the career facts
+[1A[2K[5/134] [chromium] › tests/content/content-check.spec.ts:85:7 › Content Preservation › CT-04: Every employer on the CV is named in the experience timeline
+[1A[2K[6/134] [chromium] › tests/content/content-check.spec.ts:104:7 › Content Preservation › CT-06: All six curated repositories render as plates with real GitHub links
+[1A[2K[7/134] [chromium] › tests/content/content-check.spec.ts:124:7 › Content Preservation › CT-07: The Vedic-astronomy work survives the rebuild as a vitrine plate
+[1A[2K[8/134] [chromium] › tests/content/content-check.spec.ts:137:7 › Content Preservation › CT-08: Credentials and the un-held certification both appear in the calibration table
+[1A[2K[9/134] [chromium] › tests/content/content-check.spec.ts:159:7 › Content Preservation › CT-09: Contact channels from siteContent appear verbatim in the closing section
+[1A[2K[10/134] [chromium] › tests/content/content-check.spec.ts:172:7 › Content Preservation › CT-10: Every hero figure is printed with the source it came from
+[1A[2K[11/134] [chromium] › tests/content/content-check.spec.ts:214:7 › Content Preservation › CT-11: GitHub and LinkedIn are linked from the closing section
+[1A[2K[12/134] [chromium] › tests/content/content-check.spec.ts:232:7 › Content Preservation › CT-15: LinkedIn (primary recruiter channel) is linked from the persistent navigation
+[1A[2K[13/134] [chromium] › tests/content/content-check.spec.ts:241:7 › Content Preservation › CT-14: MiniVicBot mounts from the layout without throwing
+[1A[2K[14/134] [chromium] › tests/content/content-check.spec.ts:255:7 › Content Preservation › CT-17: MiniVic availability default and hiring copy keep active-intent ATO wording
+[1A[2K[15/134] [chromium] › tests/content/minivic-knowledge.spec.ts:48:7 › MiniVic brain — direct-Gemini tier removed › KB-01: no lib/ source calls generativelanguage.googleapis.com
+[1A[2K[16/134] [chromium] › tests/content/minivic-knowledge.spec.ts:55:7 › MiniVic brain — direct-Gemini tier removed › KB-02: no lib/ source reads a NEXT_PUBLIC_GEMINI_* env var
+[1A[2K[17/134] [chromium] › tests/content/minivic-knowledge.spec.ts:62:7 › MiniVic brain — direct-Gemini tier removed › KB-03: the removed Gemini machinery is absent from miniVicBrain
+[1A[2K[18/134] [chromium] › tests/content/minivic-knowledge.spec.ts:78:7 › MiniVic brain — direct-Gemini tier removed › KB-04: BrainSource is exactly openrouter | knowledge | fallback
+[1A[2K[19/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "how many years of experience do you have" is answered offline by "years-of-experience"
+[1A[2K[20/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "years of experience" is answered offline by "years-of-experience"
+[1A[2K[21/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "how long have you been working" is answered offline by "years-of-experience"
+[1A[2K[22/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your seniority level" is answered offline by "years-of-experience"
+[1A[2K[23/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what certifications do you hold" is answered offline by "certifications"
+[1A[2K[24/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "list your certifications with dates" is answered offline by "certifications"
+[1A[2K[25/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "when did you get your CSM" is answered offline by "certifications"
+[1A[2K[26/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what accreditations do you have" is answered offline by "certifications"
+[1A[2K[27/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what technologies do you use for AI" is answered offline by "tech-stack"
+[1A[2K[28/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your tech stack" is answered offline by "tech-stack"
+[1A[2K[29/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you know python" is answered offline by "tech-stack"
+[1A[2K[30/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you know kubernetes" is answered offline by "tech-stack"
+[1A[2K[31/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your availability" is answered offline by "availability"
+[1A[2K[32/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "can you start immediately" is answered offline by "availability"
+[1A[2K[33/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "where are you located" is answered offline by "location-remote"
+[1A[2K[34/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you work remotely" is answered offline by "location-remote"
+[1A[2K[35/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "are you open to relocating" is answered offline by "location-remote"
+[1A[2K[36/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your linkedin" is answered offline by "contact"
+[1A[2K[37/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "linkedin profile" is answered offline by "contact"
+[1A[2K[38/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what is your github" is answered offline by "contact"
+[1A[2K[39/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "send me your resume" is answered offline by "resume-cv"
+[1A[2K[40/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "can I download your CV" is answered offline by "resume-cv"
+[1A[2K[41/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "give me three quantified outcomes" is answered offline by "delivery-metrics"
+[1A[2K[42/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what results have you delivered" is answered offline by "delivery-metrics"
+[1A[2K[43/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what are your top achievements with numbers" is answered offline by "delivery-metrics"
+[1A[2K[44/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "tell me about yourself" is answered offline by "profile-summary"
+[1A[2K[45/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "who are you" is answered offline by "profile-summary"
+[1A[2K[46/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "summarise your experience" is answered offline by "profile-summary"
+[1A[2K[47/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "what industries have you worked in" is answered offline by "industries-sectors"
+[1A[2K[48/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "have you worked in government" is answered offline by "industries-sectors"
+[1A[2K[49/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "have you managed budgets" is answered offline by "leadership"
+[1A[2K[50/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "how big were the teams you led" is answered offline by "leadership"
+[1A[2K[51/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you have a visa" is answered offline by "work-rights"
+[1A[2K[52/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "are you an australian citizen" is answered offline by "work-rights"
+[1A[2K[53/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "tell me about ANZ" is answered offline by "anz-experience"
+[1A[2K[54/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "do you have banking experience" is answered offline by "banking-financial-services"
+[1A[2K[55/134] [chromium] › tests/content/minivic-knowledge.spec.ts:143:9 › MiniVic offline knowledge base — recruiter coverage › KB-Q: "did you work at microsoft" is answered offline by "early-career"
+[1A[2K[56/134] [chromium] › tests/content/minivic-knowledge.spec.ts:150:7 › MiniVic offline knowledge base — recruiter coverage › KB-05: the offline corpus carries the load-bearing recruiter facts
+[1A[2K[57/134] [chromium] › tests/content/minivic-knowledge.spec.ts:185:7 › MiniVic offline knowledge base — recruiter coverage › KB-06: no knowledge-base answer still claims a Gemini-powered brain
+[1A[2K[58/134] [chromium] › tests/content/minivic-knowledge.spec.ts:194:7 › MiniVic offline knowledge base — recruiter coverage › KB-07: entry ids are unique
+[1A[2K[59/134] [chromium] › tests/e2e/chatbot.spec.ts:77:7 › E2E: MiniVicBot Chatbot › TC-BOT-01: MiniVicBot toggle button is visible on the page
+[1A[2K[60/134] [chromium] › tests/e2e/chatbot.spec.ts:85:7 › E2E: MiniVicBot Chatbot › TC-BOT-02: Opening MiniVic reveals the panel and chat input
+[1A[2K[61/134] [chromium] › tests/e2e/chatbot.spec.ts:93:7 › E2E: MiniVicBot Chatbot › TC-BOT-03: Opening MiniVic shows the curated quick prompts
+[1A[2K[62/134] [chromium] › tests/e2e/chatbot.spec.ts:103:7 › E2E: MiniVicBot Chatbot › TC-BOT-04: Closing MiniVic via the launcher hides the panel and clears greeting audio state
+[1A[2K[63/134] [chromium] › tests/e2e/chatbot.spec.ts:136:7 › E2E: MiniVicBot Chatbot › TC-BOT-05: MiniVicBot open/close cycle does not throw page errors
+[1A[2K[64/134] [chromium] › tests/e2e/chatbot.spec.ts:149:7 › E2E: MiniVicBot Chatbot › TC-BOT-06: MiniVic shell is a labelled dialog and takes focus when it opens
+[1A[2K[65/134] [chromium] › tests/e2e/chatbot.spec.ts:172:7 › E2E: MiniVicBot Chatbot › TC-BOT-07: The launcher announces which action it will perform
+[1A[2K[66/134] [chromium] › tests/e2e/chatbot.spec.ts:190:7 › E2E: MiniVicBot Chatbot › TC-BOT-08: Persona selector is a pressed-state toggle group with one active mode
+[1A[2K[67/134] [chromium] › tests/e2e/chatbot.spec.ts:212:7 › E2E: MiniVicBot Chatbot › TC-BOT-09: Mobile shell stays inside the viewport with composer visible
+[1A[2K[68/134] [chromium] › tests/e2e/chatbot.spec.ts:227:7 › E2E: MiniVicBot Chatbot › TC-BOT-10: A question gets exactly one answer, and the composing state clears
+[1A[2K[69/134] [chromium] › tests/e2e/chatbot.spec.ts:257:7 › E2E: MiniVicBot Chatbot › TC-BOT-11: The transcript controls are present and say what they do
+[1A[2K[70/134] [chromium] › tests/e2e/hero.spec.ts:30:7 › Hero › TC-HERO-01: the name is the page h1
+[1A[2K[71/134] [chromium] › tests/e2e/hero.spec.ts:38:7 › Hero › TC-HERO-02: positioning, location and one-sentence statement render
+[1A[2K[72/134] [chromium] › tests/e2e/hero.spec.ts:46:7 › Hero › TC-HERO-03: the statement stays within its word budget
+[1A[2K[73/134] [chromium] › tests/e2e/hero.spec.ts:54:7 › Hero › TC-HERO-04: the ledger shows three figures, each with its source
+[1A[2K[74/134] [chromium] › tests/e2e/hero.spec.ts:68:7 › Hero › TC-HERO-05: both actions are present and reachable
+[1A[2K[75/134] [chromium] › tests/e2e/hero.spec.ts:79:7 › Hero › TC-HERO-06: recruiter channels are linked
+[1A[2K[76/134] [chromium] › tests/e2e/hero.spec.ts:87:7 › Hero › TC-HERO-07: a truthful availability signal is shown
+[1A[2K[77/134] [chromium] › tests/e2e/hero.spec.ts:93:7 › Hero › TC-HERO-08: the hero fills the first viewport without overflowing it
+[1A[2K[78/134] [chromium] › tests/e2e/hero.spec.ts:107:7 › Hero › TC-HERO-09: the whole hero is legible in the first viewport
+[1A[2K[79/134] [chromium] › tests/e2e/hero.spec.ts:123:7 › Hero › TC-HERO-10: the preloader is gone
+[1A[2K[80/134] [chromium] › tests/e2e/hero.spec.ts:129:7 › Hero › TC-HERO-11: the hero holds at most one WebGL context
+[1A[2K[81/134] [chromium] › tests/e2e/hero.spec.ts:277:7 › Hero portrait › TC-HERO-12: the poster is eager, AVIF, correctly named, and never faded in
+[1A[2K[82/134] [chromium] › tests/e2e/hero.spec.ts:332:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate
+[1A[2K[83/134] [chromium] › tests/e2e/hero.spec.ts:410:7 › Hero portrait › TC-HERO-14: reduced motion is poster only — no source, no request, no button
+[1A[2K[84/134] [chromium] › tests/e2e/hero.spec.ts:447:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+[1A[2K[85/134] [chromium] › tests/e2e/hero.spec.ts:491:7 › Hero portrait › TC-HERO-16: a failed loop leaves the poster in place and throws nothing
+[1A[2K[31m  1) [chromium] › tests/e2e/hero.spec.ts:447:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget [39m
+
+    Error: CLS (PERF-03 budget)
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: < [32m0.05[39m
+    Received:   [31m0.1763888888888889[39m
+
+    [0m [90m 486 |[39m         })[33m,[39m
+     [90m 487 |[39m     )[33m;[39m
+    [31m[1m>[22m[39m[90m 488 |[39m     expect(cls[33m,[39m [32m'CLS (PERF-03 budget)'[39m)[33m.[39mtoBeLessThan([35m0.05[39m)[33m;[39m
+     [90m     |[39m                                         [31m[1m^[22m[39m
+     [90m 489 |[39m   })[33m;[39m
+     [90m 490 |[39m
+     [90m 491 |[39m   test([32m'TC-HERO-16: a failed loop leaves the poster in place and throws nothing'[39m[33m,[39m [36masync[39m ({ page }) [33m=>[39m {[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_dc0c232e-59d-1/tests/e2e/hero.spec.ts:488:41[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-TC--b034a--and-CLS-stays-under-budget-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-TC--b034a--and-CLS-stays-under-budget-chromium/error-context.md[22m
+
+
+[1A[2K[86/134] [chromium] › tests/e2e/hero.spec.ts:516:7 › Hero portrait › TC-HERO-17: the pause button is keyboard-operable and its focus ring is achromatic
+[1A[2K[87/134] [chromium] › tests/e2e/hero.spec.ts:574:7 › Hero portrait › TC-HERO-18: both layers are grayscale and nothing in the figure is chromatic
+[1A[2K[88/134] [chromium] › tests/e2e/hero.spec.ts:595:7 › Hero portrait › TC-HERO-19: eager image weight ≤ 500 kB and the loop is fetched only after load
+[1A[2K[89/134] [chromium] › tests/e2e/hero.spec.ts:628:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720
+[1A[2K[90/134] [chromium] › tests/e2e/hero.spec.ts:654:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the portrait is an 88 px poster stamp with no video
+[1A[2K[2m[chromium] › tests/e2e/hero.spec.ts:628:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720[22m
+Hero LCP: H1 at 1136 ms
+
+[1A[2K[91/134] [chromium] › tests/e2e/navigation.spec.ts:32:7 › E2E: Navigation › TC-NAV-01: Logo renders with correct text
+[1A[2K[92/134] [chromium] › tests/e2e/navigation.spec.ts:39:7 › E2E: Navigation › TC-NAV-02: Menu toggle and the always-visible Download CV both render
+[1A[2K[93/134] [chromium] › tests/e2e/navigation.spec.ts:49:7 › E2E: Navigation › TC-NAV-03: Nav overlay opens on toggle click
+[1A[2K[94/134] [chromium] › tests/e2e/navigation.spec.ts:57:7 › E2E: Navigation › TC-NAV-04: Every in-page nav anchor resolves to a section that exists
+[1A[2K[95/134] [chromium] › tests/e2e/navigation.spec.ts:107:7 › E2E: Navigation › TC-NAV-05: Nav overlay closes on Escape key
+[1A[2K[96/134] [chromium] › tests/e2e/navigation.spec.ts:117:7 › E2E: Navigation › TC-NAV-06: Clicking a nav link scrolls to the correct section
+[1A[2K[97/134] [chromium] › tests/e2e/navigation.spec.ts:131:7 › E2E: Navigation › TC-NAV-07: Sticky nav — nav and wordmark survive scrolling and frost
+[1A[2K[98/134] [chromium] › tests/e2e/navigation.spec.ts:141:7 › E2E: Navigation › TC-NAV-08: Logo click scrolls to top
+[1A[2K[99/134] [chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold
+[1A[2K[100/134] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:75:7 › R-21 / R-110 — gold means "this figure has a source" › GS-01: the MiniVic liveness dot is not gold[22m
+
+=== GS-01 MiniVic liveness dot === {"background":"rgb(246, 246, 246)","color":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","borderColor":"oklab(0.999994 0.0000455678 0.0000200868 / 0.9)","width":"6px","height":"6px"}
+
+[1A[2K[101/134] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 390x844 (phone): at most one saturated gold mark shares a viewport in the vitrine[22m
+
+=== GS-02 @ 390x844 (phone) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 768x1024 (tablet): at most one saturated gold mark shares a viewport in the vitrine[22m
+
+=== GS-02 @ 768x1024 (tablet) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "aether.srv1356245.hstgr.cloud" via color: rgb(201, 168, 76)
+
+[1A[2K[102/134] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[103/134] [chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1280x720 (laptop): at most one saturated gold mark shares a viewport in the vitrine[22m
+
+=== GS-02 @ 1280x720 (laptop) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+
+[1A[2K[2m[chromium] › tests/monochrome/gold-semantics.spec.ts:130:7 › R-21 / R-110 — gold means "this figure has a source" › GS-02 @ 1920x1080 (desktop): at most one saturated gold mark shares a viewport in the vitrine[22m
+
+=== GS-02 @ 1920x1080 (desktop) — saturated gold marks sharing the vitrine viewport === 1
+
+[1A[2K  a.Vitrine_live__PwDxH "abentertainment.com.au" via color: rgb(201, 168, 76)
+
+[1A[2K[104/134] [chromium] › tests/monochrome/monochrome.spec.ts:118:7 › Monochrome Compliance › MONO-01: :root publishes the grey ramp and exactly the four sanctioned gold tokens
+[1A[2K[105/134] [chromium] › tests/monochrome/monochrome.spec.ts:146:7 › Monochrome Compliance › MONO-02: Body background is achromatic
+[1A[2K[106/134] [chromium] › tests/monochrome/monochrome.spec.ts:153:7 › Monochrome Compliance › MONO-03: No inline style declares a colour outside the palette
+[1A[2K[107/134] [chromium] › tests/monochrome/monochrome.spec.ts:207:7 › Monochrome Compliance › MONO-04: Every rendered colour in every section is achromatic or the sanctioned gold
+[1A[2K[108/134] [chromium] › tests/monochrome/monochrome.spec.ts:218:7 › Monochrome Compliance › MONO-05: The sanctioned accent is actually in use, and only as the accent
+[1A[2K[109/134] [chromium] › tests/monochrome/monochrome.spec.ts:244:7 › Monochrome Compliance › MONO-06: Navigation overlay is achromatic when open
+[1A[2K[110/134] [chromium] › tests/monochrome/monochrome.spec.ts:252:7 › Monochrome Compliance › MONO-07: The check still rejects an unsanctioned hue
+[1A[2K[111/134] [chromium] › tests/overhaul/render.spec.ts:79:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it
+[1A[2K[112/134] [chromium] › tests/overhaul/render.spec.ts:102:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss
+[1A[2K[31m  2) [chromium] › tests/overhaul/render.spec.ts:79:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it [39m
+
+    Error: locator.scrollIntoViewIfNeeded: Element is not attached to the DOM
+    Call log:
+    [2m  - attempting scroll into view action[22m
+    [2m    - waiting for element to be stable[22m
+
+
+    [0m [90m 70 |[39m [90m/** Walks a section into view and gives its scene time to mount and draw. */[39m
+     [90m 71 |[39m [36masync[39m [36mfunction[39m settleSection(page[33m:[39m [33mPage[39m[33m,[39m selector[33m:[39m string) {
+    [31m[1m>[22m[39m[90m 72 |[39m   [36mawait[39m page[33m.[39mlocator(selector)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                [31m[1m^[22m[39m
+     [90m 73 |[39m   [36mawait[39m page[33m.[39mwaitForTimeout([35m2000[39m)[33m;[39m
+     [90m 74 |[39m }
+     [90m 75 |[39m[0m
+    [2m    at settleSection (/root/forgotten-mistory/.claude/worktrees/wf_dc0c232e-59d-1/tests/overhaul/render.spec.ts:72:32)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_dc0c232e-59d-1/tests/overhaul/render.spec.ts:87:13[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-render-TC-NFR-REN-b9863-nvas-when-the-GPU-allows-it-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-render-TC-NFR-REN-b9863-nvas-when-the-GPU-allows-it-chromium/error-context.md[22m
+
+
+[1A[2K[113/134] [chromium] › tests/overhaul/render.spec.ts:131:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page
+[1A[2K[31m  3) [chromium] › tests/overhaul/render.spec.ts:102:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss [39m
+
+    [31mTest timeout of 120000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 120000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#about')[22m
+
+
+    [0m [90m 70 |[39m [90m/** Walks a section into view and gives its scene time to mount and draw. */[39m
+     [90m 71 |[39m [36masync[39m [36mfunction[39m settleSection(page[33m:[39m [33mPage[39m[33m,[39m selector[33m:[39m string) {
+    [31m[1m>[22m[39m[90m 72 |[39m   [36mawait[39m page[33m.[39mlocator(selector)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                [31m[1m^[22m[39m
+     [90m 73 |[39m   [36mawait[39m page[33m.[39mwaitForTimeout([35m2000[39m)[33m;[39m
+     [90m 74 |[39m }
+     [90m 75 |[39m[0m
+    [2m    at settleSection (/root/forgotten-mistory/.claude/worktrees/wf_dc0c232e-59d-1/tests/overhaul/render.spec.ts:72:32)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_dc0c232e-59d-1/tests/overhaul/render.spec.ts:119:50[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-render-TC-NFR-REN-d739a--with-no-WebGL-context-loss-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-render-TC-NFR-REN-d739a--with-no-WebGL-context-loss-chromium/error-context.md[22m
+
+
+[1A[2K[114/134] [chromium] › tests/overhaul/render.spec.ts:154:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium)
+[1A[2K[31m  4) [chromium] › tests/overhaul/render.spec.ts:131:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page [39m
+
+    [31mTest timeout of 120000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 120000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#about')[22m
+
+
+    [0m [90m 143 |[39m     [36mawait[39m gotoWithGL(page)[33m;[39m
+     [90m 144 |[39m     [36mfor[39m ([36mconst[39m selector [36mof[39m [33mALL_SECTIONS[39m) {
+    [31m[1m>[22m[39m[90m 145 |[39m       [36mawait[39m page[33m.[39mlocator(selector)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m     |[39m                                    [31m[1m^[22m[39m
+     [90m 146 |[39m       [36mawait[39m page[33m.[39mwaitForTimeout([35m1500[39m)[33m;[39m
+     [90m 147 |[39m     }
+     [90m 148 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_dc0c232e-59d-1/tests/overhaul/render.spec.ts:145:36[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-render-TC-NFR-REN-d0745-errors-anywhere-on-the-page-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-render-TC-NFR-REN-d0745-errors-anywhere-on-the-page-chromium/error-context.md[22m
+
+
+[1A[2K[115/134] [chromium] › tests/overhaul/render.spec.ts:173:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-09: A full-page scroll never trips a page error or the error boundary
+[1A[2K[116/134] [chromium] › tests/overhaul/telemetry-stability.spec.ts:109:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-01: no uncaught React exceptions (max-update-depth / hydration)
+[1A[2K[117/134] [chromium] › tests/overhaul/telemetry-stability.spec.ts:119:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-02: page shows real content, never the error boundary
+[1A[2K[118/134] [chromium] › tests/overhaul/telemetry-stability.spec.ts:134:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-03: the stateful sections keep rendering after being driven
+[1A[2K[119/134] [chromium] › tests/overhaul/telemetry-stability.spec.ts:163:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-04: no hydration-mismatch console errors on first paint
+[1A[2K[120/134] [chromium] › tests/overhaul/telemetry-stability.spec.ts:184:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-05: full scroll never trips error boundary or React #185/#425
+[1A[2K[121/134] [chromium] › tests/overhaul/telemetry-stability.spec.ts:200:7 › TC-TELEMETRY-STABILITY: no infinite render loop / error boundary › TS-06: no duplicate React keys during a full scroll
+[1A[2K[122/134] [chromium] › tests/perf/performance.spec.ts:41:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:41:7 › Performance Budgets › PERF-01: First-view transfer size <= 2.5 MB[22m
+Total transfer size: 1.05 MB
+
+[1A[2K[123/134] [chromium] › tests/perf/performance.spec.ts:61:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:61:7 › Performance Budgets › PERF-02: LCP (Largest Contentful Paint) < 2.5s[22m
+LCP: 160 ms
+
+[1A[2K[124/134] [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05
+[1A[2K[125/134] [chromium] › tests/perf/performance.spec.ts:132:7 › Performance Budgets › PERF-04: Page loads without page errors
+[1A[2K[126/134] [chromium] › tests/perf/performance.spec.ts:143:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:143:7 › Performance Budgets › PERF-05: DOMContentLoaded < 5s[22m
+DOMContentLoaded: 66 ms
+
+[1A[2K[127/134] [chromium] › tests/perf/performance.spec.ts:177:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05[22m
+CLS: 0.2559
+
+[1A[2K[31m  5) [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05 [39m
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: < [32m0.05[39m
+    Received:   [31m0.2559241706161137[39m
+
+    [0m [90m 127 |[39m
+     [90m 128 |[39m     console[33m.[39mlog([32m`CLS: ${cls.toFixed(4)}`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 129 |[39m     expect(cls)[33m.[39mtoBeLessThan([33mCLS_BUDGET[39m)[33m;[39m
+     [90m     |[39m                 [31m[1m^[22m[39m
+     [90m 130 |[39m   })[33m;[39m
+     [90m 131 |[39m
+     [90m 132 |[39m   test([32m'PERF-04: Page loads without page errors'[39m[33m,[39m [36masync[39m ({ page }) [33m=>[39m {[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_dc0c232e-59d-1/tests/perf/performance.spec.ts:129:17[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/perf-performance-Performan-9ada0-umulative-Layout-Shift-0-05-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:177:7 › Performance Budgets › PERF-06: hero LCP element paints from static HTML with JS and WebGL blocked[22m
+No-JS hero title: {"opacity":1,"visibility":"visible","area":36684.375,"withinFirstViewport":true,"text":16}
+
+[1A[2K[128/134] [chromium] › tests/visual/screenshots.spec.ts:95:7 › Visual Regression › VIS-01: Full hero section screenshot
+[1A[2K[129/134] [chromium] › tests/perf/performance.spec.ts:230:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer
+[1A[2K[2m[chromium] › tests/perf/performance.spec.ts:230:7 › Performance Budgets › PERF-07: LCP entry is emitted and is hero content, not a deferred WebGL layer[22m
+LCP entry: {"startTime":508,"tag":"H1","className":"Hero_name__vovn8"}
+
+[1A[2K[130/134] [chromium] › tests/visual/screenshots.spec.ts:100:7 › Visual Regression › VIS-02: About section screenshot
+[1A[2K[131/134] [chromium] › tests/visual/screenshots.spec.ts:105:7 › Visual Regression › VIS-03: Navigation overlay screenshot (open state)
+[1A[2K[132/134] [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot
+[1A[2K[133/134] [chromium] › tests/visual/screenshots.spec.ts:118:7 › Visual Regression › VIS-05: Vitrine section screenshot
+[1A[2K[134/134] [chromium] › tests/visual/screenshots.spec.ts:125:7 › Visual Regression › VIS-06: Full page screenshot (viewport top)
+[1A[2K[31m  5 failed[39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:447:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget [39m
+[31m    [chromium] › tests/overhaul/render.spec.ts:79:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-01: The section scenes mount a live WebGL canvas when the GPU allows it [39m
+[31m    [chromium] › tests/overhaul/render.spec.ts:102:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss [39m
+[31m    [chromium] › tests/overhaul/render.spec.ts:131:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page [39m
+[31m    [chromium] › tests/perf/performance.spec.ts:88:7 › Performance Budgets › PERF-03: CLS (Cumulative Layout Shift) < 0.05 [39m
+[32m  129 passed[39m[2m (4.8m)[22m

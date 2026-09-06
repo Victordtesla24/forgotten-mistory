@@ -1,0 +1,181 @@
+==========================================================================
+ WAVE 4 · CHATBOT RETRIEVAL — FULL REGRESSION BATTERY
+ Run from /var/tmp/v6-wt/data-backend on branch wt/data-backend.
+ Nothing was pushed and nothing was deployed.
+==========================================================================
+
+### npx tsc --noEmit
+-----------------------------------
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'tsc' --noEmit
+exit=0
+
+### npm run lint
+-----------------------------------
+npm notice run forgotten-mistory@2.0.0 lint
+npm notice run next lint
+✔ No ESLint warnings or errors
+exit=0
+
+### node scripts/validate/overhaul_static_audit.mjs   (MUST read 10/10)
+-----------------------------------
+
+  OVERHAUL STATIC AUDIT — baseline
+  ------------------------------------------------------------
+  [PASS] TC-NFR-TONE   No boastful/sci-fi copy (data + layout meta + alt/aria)
+         clean
+  [PASS] TC-NFR-MONO   Achromatic, with one sanctioned accent defined in one place
+         clean — greys plus the gold token, defined only in globals.css and lib/palette.ts
+  [PASS] TC-NFR-PERF   Asset budgets (img ≤0.5MB · video ≤2.5MB, ≤5MB click-to-play · audio ≤1MB)
+         within budget
+  [PASS] TC-FR-PARITY  Resume facts present in siteContent
+         all key facts present
+  [PASS] TC-NFR-TYPE   Three font families — Source Serif 4 (display) + Inter (body) + IBM Plex Mono (data)
+         clean — exactly 3 families
+  [PASS] TC-NFR-SEC    No hardcoded secrets in client source
+         clean
+  [PASS] TC-ARCH-BENCH No /performance-benchmark route in static export
+         absent from out/
+  [PASS] TC-NFR-COMPLETE No truncation/placeholder/stub markers (app|components|lib)
+         clean — no incomplete-code markers
+  [PASS] TC-NFR-TOKEN  CSS custom properties match design token spec
+         all tokens match design spec
+  [PASS] TC-NFR-DEADCSS No globals.css rules for classes that do not exist
+         clean — every class selector names a class the source can render
+  ------------------------------------------------------------
+  RESULT: ALL PASS (10/10)
+
+  📄 JSON report → reports/static-audit.json
+
+exit=0
+
+### npm run build:static   (tail)
+-----------------------------------
+npm notice run node scripts/dataset/build_chat_index.mjs
+[chat:index] 121 chunks (channel 23, cv 46, dossiers 12, repositories 35, site 5) · 885 terms · dataset v15 · 340 KB
+[kb-topics] 34 topics -> functions/lib/kb-topics.json
+[telemetry-aggregate] no Google Cloud access token was available on the build machine — kept the previous aggregate unchanged (stale, and says so)
+[cv-fingerprint] 16b856c0 · 157615 bytes
+[feedback-log] 59 correction(s) in history; 8 written to app/data/generated/feedback-log.ts
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/9) ...
+   Generating static pages (2/9) 
+   Generating static pages (4/9) 
+   Generating static pages (6/9) 
+ ✓ Generating static pages (9/9)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    34.9 kB         160 kB
+├ ○ /_not-found                          138 B          87.7 kB
+├ ○ /apple-icon.png                      0 B                0 B
+├ ○ /icon.png                            0 B                0 B
+├ ○ /performance-benchmark               10.2 kB        97.8 kB
+├ ○ /robots.txt                          0 B                0 B
+└ ○ /sitemap.xml                         0 B                0 B
++ First Load JS shared by all            87.6 kB
+  ├ chunks/467-a2ff1c7e60e97191.js       31.8 kB
+  ├ chunks/96d04eec-36f7da02f971575e.js  53.6 kB
+  └ other shared chunks (total)          2.13 kB
+
+
+○  (Static)  prerendered as static content
+
+[prune] removed out/performance-benchmark.html
+[prune] removed out/performance-benchmark.txt
+[prune] removed out/_next/static/chunks/app/performance-benchmark
+[prune] done — 3 artifact(s) removed from the static export
+exit=0  (BUILD_EXIT=0, captured at run time)
+
+### npm run test:dataset   (the sibling unit's gates, unbroken)
+-----------------------------------
+  [PASS] O5  the network-backed modules record outcome "retained", not "fresh"
+  [PASS] O6  the CV module still refreshes offline — it reads local bytes and its outcome is "static"
+  [PASS] O7  EVERY previously sourced field survives byte-identically — same value AND its ORIGINAL retrievedAt
+  [PASS] O8  no field degraded to a zero, a null or a placeholder (R-175)
+  [PASS] O9  the failure is recorded honestly — refresh.failure carries a real exit code or HTTP status and a detail
+  [PASS] O10  refresh.command names its secrets by VARIABLE NAME — no token value is ever written to a file
+  [PASS] O11  datasetVersion does NOT increment when nothing was re-observed (T-37: "we looked again" is not "the data moved")
+  [PASS] O12  the manifest still prints the ORIGINAL observation date, so the page cannot claim false freshness
+
+------------------------------------------------------------------------------
+offline refresh: 12 passed, 0 FAILED, 12 assertions
+ALL PASS
+exit=0
+
+### node scripts/validate/telemetry_contract_audit.mjs   (the sibling unit's gates, unbroken)
+-----------------------------------
+        no consent vocabulary in app/, components/ or lib/
+  PASS  TEL-SRC-15  The R-88 aggregate exists and every metric carries provenance with a real retrievedAt, and never a zero standing in for an unobserved window
+        6 sections, all fields provenance-carrying
+  PASS  TEL-SRC-16  scripts/build/aggregate_telemetry.mjs exists and runs inside build:static — the aggregate is deploy-time, not a file someone remembers to update (the exact defect B-3 records for harvest_repos.mjs)
+        script present: true · referenced by build:static: true
+  PASS  TEL-SRC-17  No third-party analytics package is a dependency
+        35 dependencies, none of them a third-party analytics SDK
+  PASS  TEL-SRC-18  lib/telemetry/schema.ts and lib/telemetry/store.ts exist — one event vocabulary, one referentially-stable store
+        lib/telemetry/schema.ts: present · lib/telemetry/store.ts: present
+
+  19/19 checks passed
+
+exit=0
+
+### PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test
+-----------------------------------
+      92 | test.describe('Visual Regression', () => {
+        at shootSection (/var/tmp/v6-wt/data-backend/tests/visual/screenshots.spec.ts:89:22)
+        at /var/tmp/v6-wt/data-backend/tests/visual/screenshots.spec.ts:122:5
+
+    attachment #1: vitrine-section (image/png) ─────────────────────────────────────────────────────
+    Expected: tests/baselines/visual/screenshots.spec.ts-snapshots/vitrine-section-chromium-linux.png
+    Received: test-results/visual-screenshots-Visual--3a70d--Vitrine-section-screenshot-chromium/vitrine-section-actual.png
+    Diff:     test-results/visual-screenshots-Visual--3a70d--Vitrine-section-screenshot-chromium/vitrine-section-diff.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/visual-screenshots-Visual--3a70d--Vitrine-section-screenshot-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/visual-screenshots-Visual--3a70d--Vitrine-section-screenshot-chromium/error-context.md
+
+  12 failed
+    [chromium] › tests/content/dataset_marks.spec.ts:87:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-03: every rendered mark resolves in the provenance index (SC-51.1) 
+    [chromium] › tests/content/dataset_marks.spec.ts:99:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-04: mark ids are unique across the rendered page 
+    [chromium] › tests/content/dataset_marks.spec.ts:109:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-05: every one of the six sections renders at least one sourced mark (R-95) 
+    [chromium] › tests/content/dataset_marks.spec.ts:119:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-06: no mark renders a zero, a dash or a placeholder where a real value belongs (R-175) 
+    [chromium] › tests/content/dataset_marks.spec.ts:148:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-08: the caliper state is one of the three the grammar defines, and "sourced" is actually reached 
+    [chromium] › tests/content/dataset_marks.spec.ts:164:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-09: no figure appears in section prose outside a marked element (SC-51.1, the closing half) 
+    [chromium] › tests/content/dataset_marks.spec.ts:209:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-10: every rendered visualisation has a dossier, and every dossier is rendered (R-112) 
+    [chromium] › tests/content/dataset_marks.spec.ts:224:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-11: exactly one gold mark per registered visualisation (R-110) 
+    [chromium] › tests/content/dataset_marks.spec.ts:254:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-13: with JavaScript disabled the marks are still real values, never zeros (R-175, T-39) 
+    [chromium] › tests/e2e/vitrine.spec.ts:106:7 › Vitrine › TC-VIT-09: every plate rules its metrics on the same line 
+    [chromium] › tests/visual/screenshots.spec.ts:113:7 › Visual Regression › VIS-04: Listen (closing) section screenshot 
+    [chromium] › tests/visual/screenshots.spec.ts:118:7 › Visual Regression › VIS-05: Vitrine section screenshot 
+  183 passed (4.6m)
+
+--------------------------------------------------------------------------
+ PLAYWRIGHT: 183 passed, 12 failed — IDENTICAL, spec for spec, to the
+ baseline captured on this branch BEFORE any file in this unit was written
+ (/var/tmp/v6-scratch/wave4-retrieval/baseline-playwright.log, same run,
+ same host, same 183/12). Every one of the twelve is a pre-existing red
+ from an earlier unit in this wave and none of them touches
+ functions/**, scripts/** or the retrieval index:
+
+   9 x tests/content/dataset_marks.spec.ts  DATA-03/04/05/06/08/09/10/11/13
+       — they require [data-mark-id] / [data-caliper] / [data-viz-id]
+         elements to be RENDERED inside the six sections. That is the CSS
+         swarm's component work; the dataset unit reported it red for the
+         same reason.
+   1 x tests/e2e/vitrine.spec.ts  TC-VIT-09
+   2 x tests/visual/screenshots.spec.ts  VIS-04, VIS-05
+       — reported red by the telemetry unit when plate 06's description
+         became the verbatim self-claim string.
+
+ This unit added no failing spec and fixed none of those three, which are
+ outside its scope boundary (components/sections/** and *.css).
+--------------------------------------------------------------------------

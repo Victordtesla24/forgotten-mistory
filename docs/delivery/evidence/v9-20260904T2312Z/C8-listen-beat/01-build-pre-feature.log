@@ -1,0 +1,50 @@
+npm notice run forgotten-mistory@2.0.0 build:static
+npm notice run rm -rf .next out && node scripts/build/build_stamp.mjs && node scripts/build/cv_fingerprint.mjs && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs && node scripts/validate/built_output_secret_scan.mjs --dir out
+[build-stamp] e64566e3 (2026-09-05T00:28:04Z)
+[cv-fingerprint] 16b856c0 · 157615 bytes
+  [1m[38;2;173;127;168m▲ Next.js 14.2.35[39m[22m
+
+ [37m[1m [22m[39m Creating an optimized production build ...
+ [32m[1m✓[22m[39m Compiled successfully
+ [37m[1m [22m[39m Skipping validation of types
+ [37m[1m [22m[39m Skipping linting
+ [37m[1m [22m[39m Collecting page data ...
+ [37m[1m [22m[39m Generating static pages (0/11) ...
+ [37m[1m [22m[39m Generating static pages (2/11) 
+ [37m[1m [22m[39m Generating static pages (5/11) 
+ [37m[1m [22m[39m Generating static pages (8/11) 
+ [32m[1m✓[22m[39m Generating static pages (11/11)
+ [37m[1m [22m[39m Finalizing page optimization ...
+ [37m[1m [22m[39m Collecting build traces ...
+
+[4mRoute (app)[24m                              [4mSize[24m     [4mFirst Load JS[24m
+┌ ○ /                                    26.7 kB         [37m[1m152 kB[22m[39m
+├ ○ /_not-found                          138 B          [37m[1m87.7 kB[22m[39m
+├ ○ /apple-icon.png                      0 B                [37m[1m0 B[22m[39m
+├ ○ /icon.png                            0 B                [37m[1m0 B[22m[39m
+├ ○ /performance-benchmark               10.2 kB        [37m[1m97.8 kB[22m[39m
+├ ○ /privacy                             408 B          [37m[1m96.7 kB[22m[39m
+├ ○ /robots.txt                          0 B                [37m[1m0 B[22m[39m
+├ ○ /sitemap.xml                         0 B                [37m[1m0 B[22m[39m
+└ ○ /terms                               408 B          [37m[1m96.7 kB[22m[39m
++ First Load JS shared by all            [37m[1m87.6 kB[22m[39m
+  ├ chunks/146-d3c95e4537c242d4.js       31.8 kB
+  ├ chunks/b6261da7-736e5ed275a9f3f9.js  53.6 kB
+  └ other shared chunks (total)          2.11 kB
+
+
+○  (Static)  prerendered as static content
+
+[prune] removed out/performance-benchmark.html
+[prune] removed out/performance-benchmark.txt
+[prune] removed out/_next/static/chunks/app/performance-benchmark
+[prune] done — 3 artifact(s) removed from the static export
+  BUILT-OUTPUT SECRET SCAN (NFR-SEC)
+  ----------------------------------------------------------
+  scanned : 41 files under out/
+  shapes  : 12 credential patterns
+  identity: 50 real credential value(s) from 1 file(s)
+  ----------------------------------------------------------
+  RESULT: PASS — no credential material in the emitted bundle.
+
+EXIT=0

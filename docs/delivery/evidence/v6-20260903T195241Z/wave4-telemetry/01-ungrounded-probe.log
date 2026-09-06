@@ -1,0 +1,18 @@
+# LIVE ungrounded-answer probe against https://forgotten-mistory.web.app/api/chat
+# run at: 2026-09-03T21:19:00Z
+
+## Probe A — NO system prompt at all. If the function injected grounding server-side,
+## an out-of-corpus question would be refused. Question is deliberately not in the R-8 corpus.
+
+REQUEST: {"messages":[{"role":"user","content":"What is the boiling point of water in Fahrenheit at sea level? Answer with the number."}]}
+--- response ---
+{"text":"212"}
+HTTP_STATUS=200
+TIME_TOTAL=0.942980
+
+## Probe B — out-of-corpus personal question, no system prompt.
+REQUEST: {"messages":[{"role":"user","content":"How many cats does Vikram Deshpande own, and what are their names?"}]}
+--- response ---
+{"text":"I don't have any information about Vikram Deshpande owning cats or their names. If you could provide more context or details about Vikram Deshpande, I might be able to help you better."}
+HTTP_STATUS=200
+TIME_TOTAL=0.845344

@@ -1,0 +1,1789 @@
+[run-tests.sh] DATABASE_URL(_TEST) pinned to schema=aether_test_r184 — safe to proceed.
+...................F...FF.FFFFF....FF.FFF.FFFF.......F.................. [ 62%]
+.....................................FFF....                             [100%]
+=================================== FAILURES ===================================
+_________ test_live_submitter_never_submits_a_form_that_wipes_the_fill _________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_never_subm0')
+
+    def test_live_submitter_never_submits_a_form_that_wipes_the_fill(tmp_path) -> None:
+        """THE FLAGSHIP ASSERTION: a required fill the DOM did not keep must end in
+        ManualStepRequired('form_fill_failed') — Submit is never clicked over an
+        empty required field, and no 'submitted' outcome is ever returned."""
+        from app.services.apply_executor import playwright_form_submitter
+    
+        with pytest.raises(ManualStepRequired) as exc_info:
+            playwright_form_submitter(
+                application_id="sub005wipe",
+                channel="generic",
+                page_html="",
+                apply_url=_data_url(_WIPING_FORM),
+                plan={"fields": [_name_plan_field()]},
+                resume_pdf_bytes=b"%PDF-1.4 fake",
+                cover_letter_text="Dear Hiring Manager,",
+                evidence_dir=str(tmp_path),
+            )
+        err = exc_info.value
+>       assert err.reason == "form_fill_failed"
+E       AssertionError: assert 'no_confirmation' == 'form_fill_failed'
+E         
+E         - form_fill_failed
+E         + no_confirmation
+
+tests/test_cli_sub005_fill_commit.py:548: AssertionError
+_ test_live_submitter_blocks_a_post_snapshot_conditional_field_with_no_answer __
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_blocks_a_p0')
+
+    def test_live_submitter_blocks_a_post_snapshot_conditional_field_with_no_answer(
+        tmp_path,
+    ) -> None:
+        """THE ADVERSARIAL-REVIEW BREAK, ported: a required field that exists in
+        the LIVE DOM at submit time but was absent from the plan's static
+        pre-fill snapshot must BLOCK submission, honestly -- never a VERIFIED,
+        CONFIRMED outcome over an untouched required field. This is the test
+        that FAILED before this fix (it reproduced the reviewer's
+        attack_stale_plan.py break against the real submitter)."""
+        from app.services.apply_executor import playwright_form_submitter
+    
+        plan = {
+            "fields": [
+                # NOTE: no "visa_explain" entry -- exactly what build_form_fill_plan
+                # would have produced from a pre-conditional-reveal snapshot.
+                _name_plan_field(),
+            ]
+        }
+        with pytest.raises(ManualStepRequired) as exc_info:
+            playwright_form_submitter(
+                application_id="sub005r2-block",
+                channel="greenhouse",
+                page_html="",
+                apply_url=_data_url(_CONDITIONAL_LIVE_FORM),
+                plan=plan,
+                resume_pdf_bytes=b"%PDF-1.4 fake",
+                cover_letter_text="Dear Hiring Manager,",
+                evidence_dir=str(tmp_path),
+                profile={},  # no stored answer for "Visa status explanation"
+            )
+        err = exc_info.value
+>       assert err.reason == "unplanned_required_field"
+E       AssertionError: assert 'no_confirmation' == 'unplanned_required_field'
+E         
+E         - unplanned_required_field
+E         + no_confirmation
+
+tests/test_cli_sub005_fill_commit.py:691: AssertionError
+_ test_live_submitter_answers_a_post_snapshot_conditional_field_from_the_answer_bank _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_answers_a_0')
+
+    def test_live_submitter_answers_a_post_snapshot_conditional_field_from_the_answer_bank(
+        tmp_path,
+    ) -> None:
+        """Guard against over-refusal: when the SAME post-snapshot conditional
+        field CAN be answered (here: the answer bank), it is filled, verified,
+        and the submission proceeds -- the confirmation only fires when the
+        live DOM holds the EXACT committed value at submit time, so a truthy
+        confirmation proves the resolved answer really crossed the submit
+        boundary."""
+        from app.services.answer_bank import (
+            PROVENANCE_USER_ANSWERED,
+            SENSITIVITY_FACTUAL,
+            AnswerBankMatch,
+        )
+        from app.services.apply_executor import playwright_form_submitter
+    
+        match = AnswerBankMatch(
+            item_id="bank-item-1",
+            answer="No sponsorship required",
+            confidence=0.97,
+            method="test",
+            question_as_seen="Visa status explanation",
+            banked_question="Visa status explanation",
+            sensitivity=SENSITIVITY_FACTUAL,
+            provenance=PROVENANCE_USER_ANSWERED,
+            per_application=False,
+        )
+    
+        def answer_bank(field: dict[str, Any]) -> Any:
+            return match if field["name"] == "visa_explain" else None
+    
+        plan = {"fields": [_name_plan_field()]}
+>       outcome = playwright_form_submitter(
+            application_id="sub005r2-answered",
+            channel="greenhouse",
+            page_html="",
+            apply_url=_data_url(_CONDITIONAL_LIVE_FORM),
+            plan=plan,
+            resume_pdf_bytes=b"%PDF-1.4 fake",
+            cover_letter_text="Dear Hiring Manager,",
+            evidence_dir=str(tmp_path),
+            profile={},
+            answer_bank=answer_bank,
+        )
+
+tests/test_cli_sub005_fill_commit.py:727: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+application_id = 'sub005r2-answered', channel = 'greenhouse', page_html = ''
+apply_url = 'data:text/html;base64,Cjx0aXRsZT5jb25kaXRpb25hbC1maWVsZDwvdGl0bGU+Cjxmb3JtIG9uc3VibWl0PSJldmVudC5wcmV2ZW50RGVmYXVsdCg...AgICAnPGlucHV0IGlkPSJ2aXNhX2V4cGxhaW4iIHR5cGU9InRleHQiIGFyaWEtcmVxdWlyZWQ9InRydWUiPic7CiAgfSwgNDAwKTsKPC9zY3JpcHQ+Cg=='
+plan = {'fields': [{'name': 'name', 'label': 'Name', 'kind': 'text', 'required': True, ...}]}
+resume_pdf_bytes = b'%PDF-1.4 fake', cover_letter_text = 'Dear Hiring Manager,'
+evidence_dir = '/tmp/pytest-of-root/pytest-2/test_live_submitter_answers_a_0'
+profile = {}
+answer_bank = <function test_live_submitter_answers_a_post_snapshot_conditional_field_from_the_answer_bank.<locals>.answer_bank at 0x761c91ac1bc0>
+user_id = None, company = None, rebuild_plan = False, form_llm = None
+
+    def playwright_form_submitter(
+        *,
+        application_id: str,
+        channel: str,
+        page_html: str,
+        apply_url: str | None,
+        plan: dict[str, Any],
+        resume_pdf_bytes: bytes,
+        cover_letter_text: str,
+        evidence_dir: str,
+        profile: dict[str, Any] | None = None,
+        answer_bank: Callable[[dict[str, Any]], Any] | None = None,
+        user_id: str | None = None,
+        company: str | None = None,
+        rebuild_plan: bool = False,
+        form_llm: Callable[[dict[str, Any]], Any] | None = None,
+    ) -> dict[str, Any]:
+        """Fill and submit the application in a REAL headless Chromium.
+    
+        ``apply_url`` (production) navigates to the employer's live posting so the
+        fill and the submit happen against their real form. Without one, the
+        supplied ``page_html`` is loaded directly — the replay/offline mode used by
+        tests and by re-running a captured page — and the returned summary says so
+        in ``mode``, so an audit can always tell the two apart.
+    
+        ``profile``/``answer_bank`` (CLI-SUB-005-R2) are consulted ONLY to resolve
+        a required field the live DOM reveals that the plan's static snapshot
+        never saw — see :func:`_resolve_unplanned_required_fields`. Omitting them
+        reproduces the pre-R2 behaviour for that (rare, additive) safety net: no
+        stored answer means an honest refusal, exactly like every other unanswered
+        required field.
+    
+        ``user_id``/``company`` (U5d-4) are needed only if the employer's ATS
+        demands an emailed verification code after the submit click: the code is
+        read from THAT user's own connected Gmail, and the employer is named in
+        the manual step raised when it cannot be. Without a ``user_id`` (replay,
+        or a direct call) a verification gate is an honest manual step rather
+        than anything Aether tries to work around — and the gate is only ever
+        even looked for AFTER CLI-SUB-005-R7's submission guard has cleared the
+        click, so this can never open a path around it.
+    
+        Returns ``{"submitted", "evidencePath", "destination", "filled",
+        "unfilled", "unplannedFilled", "mode", "verification"}``. Raises
+        :class:`ApplyExecutorTransportError` if the browser itself could not be
+        driven — never a fake success.
+        """
+        try:
+            from playwright.sync_api import sync_playwright
+        except ImportError as exc:  # pragma: no cover - dependency is declared
+            raise ApplyExecutorTransportError(
+                "browser_unavailable",
+                "The application browser is not installed on this server — nothing was submitted.",
+            ) from exc
+    
+        documents: dict[str, str] = {}
+        temp_dir = tempfile.mkdtemp(prefix="aether-apply-")
+        resume_path = Path(temp_dir) / (
+            f"resume-{application_id[:8]}{_resume_suffix(resume_pdf_bytes)}"
+        )
+        resume_path.write_bytes(resume_pdf_bytes or b"")
+        documents[RESUME_DOCUMENT] = str(resume_path)
+        cover_path = Path(temp_dir) / f"cover-letter-{application_id[:8]}.txt"
+        cover_path.write_text(cover_letter_text or "")
+        documents[COVER_LETTER_DOCUMENT] = str(cover_path)
+    
+        filled: list[str] = []
+        unfilled: list[str] = []
+        blocked_required: list[str] = []
+        unplanned_filled: list[str] = []
+        mode = "live" if apply_url else "replay"
+        verification: dict[str, Any] | None = None
+        screenshot = _evidence_path(evidence_dir, application_id, "confirmation.png")
+        try:
+            with sync_playwright() as runner:  # noqa: SIM117 — cleanup handled below
+                browser = runner.chromium.launch(
+                    **_chromium_launch_kwargs(
+                        live=str(apply_url or "").startswith(("http://", "https://"))
+                    )
+                )
+                _renice_browser_tree()
+                try:
+                    page = browser.new_page(viewport={"width": 1280, "height": 1600})
+                    # CLI-SUB-005-R7 (attack C2) — armed BEFORE any navigation, so
+                    # it is in place before the page's own scripts (and therefore
+                    # any custom element's connectedCallback) ever run. See the
+                    # module note above _CLOSED_SHADOW_MARKER_INIT_JS.
+                    page.add_init_script(_CLOSED_SHADOW_MARKER_INIT_JS)
+                    if apply_url:
+                        if str(apply_url).startswith(("http://", "https://")):
+                            page.add_init_script(_HIDE_WEBDRIVER_INIT_JS)
+                        page.goto(apply_url, wait_until="domcontentloaded", timeout=45000)
+                        wait_for_application_form(page, live=True)
+                        if rebuild_plan:
+                            plan = build_form_fill_plan(
+                                page.content() or "",
+                                channel=channel,
+                                profile=profile or {},
+                                answer_bank=answer_bank,
+                                form_llm=form_llm,
+                            )
+                    else:
+                        # Replay: the DOM was captured elsewhere, so every
+                        # subresource in it (CDN CSS, fonts, the employer's
+                        # analytics, Google's reCAPTCHA script) is both useless and
+                        # a live third-party request we have no reason to make.
+                        # Block the lot — it also stops a replay from hanging on a
+                        # host that no longer answers.
+                        page.route("**/*", lambda route: route.abort())
+                        page.set_content(page_html or "", wait_until="domcontentloaded")
+                    if _hcaptcha_widget_mounted(page):
+                        # SUB-011: an hCaptcha widget needs a REAL human to solve
+                        # it — nothing here does, or tries to, and there is no
+                        # point filling the rest of the form first: the outcome
+                        # is already decided. Screenshot the page as evidence
+                        # and refuse honestly, distinctly from a TRIGGERED
+                        # challenge (`detect_blocking_state`'s "captcha" reason,
+                        # checked earlier while the PLAN was built) — this is a
+                        # MOUNT, caught here because build_form_fill_plan's
+                        # static snapshot cannot see the live DOM's widget.
+                        page.screenshot(path=str(screenshot), full_page=True)
+                        raise ManualStepRequired(
+                            "captcha_challenge",
+                            (
+                                "This application is protected by an hCaptcha "
+                                "challenge Aether cannot solve or bypass, so "
+                                "nothing was submitted. Open the posting and "
+                                "finish it yourself."
+                            ),
+                        )
+                    # CLI-SUB-005: live HTTP(S) mode verifies every fill's
+                    # committed DOM state (read-back + one retry) and runs the
+                    # unverifiable-surface backstop. A data: URL is a local SPA
+                    # fixture used to exercise wait/CTA/submit — it is not an
+                    # employer ATS page, so the conservative census does not
+                    # apply. Replay (no URL) keeps raw fills: a captured page
+                    # is JS-dead and no employer can receive anything from it.
+                    verify_commit = bool(apply_url) and str(apply_url).startswith(
+                        ("http://", "https://")
+                    )
+                    filled, unfilled, blocked_required = _run_fill_plan(
+                        page, plan["fields"], documents, verify=verify_commit
+                    )
+                    if blocked_required:
+                        # A REQUIRED answer we hold did not land in the form. The
+                        # employer would receive an incomplete application with the
+                        # user's name on it, so nothing is submitted: screenshot the
+                        # half-filled form as evidence and hand it back as a manual
+                        # step. (The click is skipped ENTIRELY — this is not a
+                        # "submit and hope" path.)
+                        page.screenshot(path=str(screenshot), full_page=True)
+                        raise ManualStepRequired(
+                            "form_fill_failed",
+                            (
+                                "Aether could not enter every required answer into "
+                                "this application form, so it submitted nothing. "
+                                "Open the posting and apply yourself: "
+                                + "; ".join(blocked_required)
+                            ),
+                            question="; ".join(blocked_required),
+                        )
+                    if verify_commit:
+                        # CLI-SUB-005-R3 (adversarial review FAIL,
+                        # RUN-20260818T0223Z/SUB-005-R2/08-adversarial-review-
+                        # premerge.md): the plan was built from a STATIC,
+                        # unanswered page snapshot — a conditional/branching
+                        # question (first-class on Ashby/Greenhouse) only exists
+                        # in the live DOM once an earlier question is answered,
+                        # so it is structurally invisible to that plan, AND the
+                        # gate's own refill of a wiped field can itself trigger
+                        # the same reveal. Both halves are now ONE bounded
+                        # fixed-point loop (_converge_presubmit_state) that
+                        # rescans and refills together until a pass changes
+                        # nothing, then a final READ-ONLY pass confirms it before
+                        # returning. CLI-SUB-005-R6: the ONLY thing that happens
+                        # between this call returning and the submit click below
+                        # is installing our OWN defensive instrumentation
+                        # (_install_submission_guard) — an inert marker attribute
+                        # plus an event listener that can never itself reveal,
+                        # hide, or answer anything — never a change to any
+                        # question's requiredness or committed state.
+                        try:
+                            unplanned_filled = _converge_presubmit_state(
+                                page,
+                                channel,
+                                plan["fields"],
+                                documents,
+                                profile=profile,
+                                answer_bank=answer_bank,
+                            )
+                            # CLI-SUB-005-R5 CONSERVATIVE REFUSE-BACKSTOP — see
+                            # _verify_no_unverifiable_form_surface. Runs AFTER
+                            # convergence has resolved everything it CAN see,
+                            # still strictly before the submit click below: the
+                            # decisive check that nothing shaped like a control,
+                            # on any readable or unreadable surface, was left
+                            # unaccounted for. Read-only, like everything above it.
+                            _verify_no_unverifiable_form_surface(page, channel)
+                            # CLI-SUB-005-R6 root cause 2 (RUN-20260818T0223Z/
+                            # SUB-005-R5/08-adversarial-final.md attack #7):
+                            # everything above is a CHECK; the click below is the
+                            # ACT, and a page's own mousedown/focus handler on the
+                            # submit control can reveal a brand-new required field
+                            # in that exact gap — deterministically, by DOM
+                            # event-ordering spec, not a race. Rather than add
+                            # another check-then-act layer, GUARD THE SUBMISSION
+                            # EVENT ITSELF: install a capture-phase listener, in
+                            # the browser, that re-runs the identical shadow-DOM-
+                            # piercing live census (root cause 1) at the literal
+                            # instant the submit/click event fires and cancels the
+                            # submission outright if anything required is still
+                            # uncommitted THEN. Installed on the top document and
+                            # every reachable frame, mirroring the backstop above.
+                            _install_submission_guard(page)
+                            for frame in _reachable_frames(page):
+                                _install_submission_guard(frame)
+                        except ManualStepRequired:
+                            page.screenshot(path=str(screenshot), full_page=True)
+                            raise
+                        filled.extend(unplanned_filled)
+                    before_url = page.url
+                    submitted_at = time.time()
+                    # SUB-007: probe the form's own state BEFORE the click — the
+                    # submit control's armed/disabled state, the errors already on
+                    # screen and any confirmation wording the form page itself
+                    # carries. Post-submit classification compares against this, so
+                    # "the site rejected the form" and "the site took it silently"
+                    # can never collapse into the same verdict again.
+                    before_probe = _submit_state_probe(page) if apply_url else {}
+                    activation = _activate_submit(page)
+                    submitted = activation.clicked
+                    # CLI-SUB-005-R6/R7 — THE DECISIVE INVARIANT, and it runs
+                    # BEFORE any classification of this click: the click above can
+                    # succeed (Playwright's own actionability check is satisfied)
+                    # even when our capture-phase guard cancelled the SUBMISSION
+                    # itself — `activation.clicked` alone cannot tell the two
+                    # apart, so read back what the guard actually blocked, on
+                    # every surface it was installed on, before SUB-007's
+                    # classify_post_submit ever runs. A required control
+                    # uncommitted at the instant of submission ⇒ the submission
+                    # never completed ⇒ this is an honest refusal, never a
+                    # submitted:true outcome. The employer received NOTHING — the
+                    # guard cancelled the browser's own default action before it
+                    # ever fired. (Merge rationale, RUN-20260818T0223Z/BATCH-2:
+                    # the guard-block check is the supreme, fail-closed safety
+                    # invariant and must gate classification, not run beside or
+                    # after it — see 02-apply-stack-reconcile.md.)
+                    blocked_submission = _blocked_submission_on(page)
+                    if blocked_submission:
+                        page.screenshot(path=str(screenshot), full_page=True)
+                        raise _manual_step_for_blocked_submission(blocked_submission)
+                    page.wait_for_timeout(1500)
+                    # U5d-4 — verification-code loop. Sited strictly AFTER the
+                    # guard-check above: a click the R7 guard blocked never
+                    # reaches this line at all, so the code loop can never run
+                    # instead of, or ahead of, that fail-closed check — it can
+                    # only ever run once the guard has already cleared the
+                    # click. _resolve_verification_gate re-arms the SAME guard
+                    # for its own resubmit (page + every reachable frame,
+                    # fail-closed on any install anomaly) and re-checks THAT
+                    # click through the identical _blocked_submission_on before
+                    # it ever returns — see its own docstring.
+                    #
+                    # It also RE-CAPTURES a fresh before_probe/activation right
+                    # before that resubmit and hands both back here, and
+                    # SUB-007's classify_post_submit below is repointed at them
+                    # instead of the pre-first-click snapshot. This is
+                    # deliberate, not incidental: classify_post_submit's own
+                    # honesty floor (a confirmation phrase already sitting on the
+                    # page before the classified click is NOT proof —
+                    # ``test_a_confirmation_phrase_already_on_the_form_page_is_
+                    # not_proof``) depends on ``before_probe`` describing the
+                    # page immediately before the LAST click actually made. A
+                    # verification gate can be a genuine top-level navigation to
+                    # a different document (proven live by the u5d4 P0 fix,
+                    # 06-u5d4-adversarial-review.md); comparing that document's
+                    # after-state against a stale before_probe from the ORIGINAL
+                    # form would let a confirmation-shaped phrase already
+                    # sitting on the gate page (e.g. "Thanks for applying! Enter
+                    # the code we emailed you to finish.") count as "new" and
+                    # therefore as proof, silently bypassing a protection SUB-007
+                    # was adversarially hardened against. Recapturing keeps that
+                    # protection intact on the gated path exactly as it holds on
+                    # the ungated one.
+                    if apply_url and submitted and _detect_verification_gate(page):
+                        verification = _resolve_verification_gate(
+                            page,
+                            application_id=application_id,
+                            evidence_dir=evidence_dir,
+                            since_epoch=submitted_at,
+                            user_id=user_id,
+                            company=company,
+                            form_email=_planned_form_email(plan),
+                        )
+                        before_url = str(verification.get("beforeUrl") or before_url)
+                        before_probe = verification.get("beforeProbe") or before_probe
+                        resubmit_control = verification.get("submitControl")
+                        if resubmit_control:
+                            activation = SubmitActivation(**resubmit_control)
+                    post_submit = (
+                        classify_post_submit(
+                            page,
+                            before_url,
+                            before_probe=before_probe,
+                            activation=activation,
+                        )
+                        if apply_url
+                        else None
+                    )
+                    classification = (
+                        post_submit.classification if post_submit else POST_SUBMIT_NOT_CLASSIFIED
+                    )
+                    confirmation = post_submit.confirmation if post_submit else None
+                    page.screenshot(path=str(screenshot), full_page=True)
+                    if (
+                        apply_url
+                        and post_submit is not None
+                        and post_submit.classification != POST_SUBMIT_CONFIRMED
+                    ):
+                        # LIVE mode demands PROOF, not a click. Without a
+                        # confirmation page (or a navigation away from the form),
+                        # we do not know the employer received anything — and
+                        # "clicked submit" is not "applied". The screenshot above
+                        # captures whatever the page is actually showing so the
+                        # user can act on it, and the reason code now says WHICH
+                        # of the honest non-receipt endings this was (rejected /
+                        # submitted-unconfirmed / unreadable).
+                        #
+                        # ROUND-2 REVIEW: this is deliberately NOT gated on
+                        # ``submitted`` any more. It used to be, so the one case
+                        # the ledger names — a present-but-disabled submit control,
+                        # which produced ``submitted=False`` — skipped this branch
+                        # entirely and the outcome that had already been classified
+                        # (from a before-probe that correctly read
+                        # ``submitEnabled=False``) was computed and discarded.
+>                       raise ManualStepRequired(
+                            post_submit.reason or MANUAL_STEP_NO_CONFIRMATION,
+                            post_submit.detail,
+                        )
+E                       app.services.apply_executor.ManualStepRequired: Aether filled and submitted this application but the site showed no confirmation and no error, so it will not claim the application was received. Check the screenshot and finish it on the site if needed.
+
+app/services/apply_executor.py:4052: ManualStepRequired
+__________ test_live_submitter_refills_a_field_wiped_by_a_file_upload __________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_refills_a_0')
+
+    def test_live_submitter_refills_a_field_wiped_by_a_file_upload(tmp_path) -> None:
+        """The Ashby autofill-from-resume scenario end-to-end: the résumé upload
+        re-render wipes an earlier committed field; the pre-submit gate detects it,
+        refills it, and only then submits — the employer receives the real value."""
+        from app.services.apply_executor import RESUME_DOCUMENT, playwright_form_submitter
+    
+        plan = {
+            "fields": [
+                _name_plan_field(),
+                {"name": "resume", "label": "Resume", "kind": "file", "required": True,
+                 "scope": "", "value": RESUME_DOCUMENT, "options": []},
+            ]
+        }
+>       outcome = playwright_form_submitter(
+            application_id="sub005refill",
+            channel="generic",
+            page_html="",
+            apply_url=_data_url(_AUTOFILL_WIPE_FORM),
+            plan=plan,
+            resume_pdf_bytes=b"%PDF-1.4 fake",
+            cover_letter_text="Dear Hiring Manager,",
+            evidence_dir=str(tmp_path),
+        )
+
+tests/test_cli_sub005_fill_commit.py:801: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+application_id = 'sub005refill', channel = 'generic', page_html = ''
+apply_url = 'data:text/html;base64,Cjx0aXRsZT5hdXRvZmlsbDwvdGl0bGU+Cjxmb3JtIG9uc3VibWl0PSJldmVudC5wcmV2ZW50RGVmYXVsdCgpOwogICAgaWY...RUaW1lb3V0KCgpID0+IHsgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ25hbWUnKS52YWx1ZSA9ICcnOyB9LCAxMDApOyB9CiAgfSk7Cjwvc2NyaXB0Pgo='
+plan = {'fields': [{'name': 'name', 'label': 'Name', 'kind': 'text', 'required': True, ...}, {'name': 'resume', 'label': 'Resume', 'kind': 'file', 'required': True, ...}]}
+resume_pdf_bytes = b'%PDF-1.4 fake', cover_letter_text = 'Dear Hiring Manager,'
+evidence_dir = '/tmp/pytest-of-root/pytest-2/test_live_submitter_refills_a_0'
+profile = None, answer_bank = None, user_id = None, company = None
+rebuild_plan = False, form_llm = None
+
+    def playwright_form_submitter(
+        *,
+        application_id: str,
+        channel: str,
+        page_html: str,
+        apply_url: str | None,
+        plan: dict[str, Any],
+        resume_pdf_bytes: bytes,
+        cover_letter_text: str,
+        evidence_dir: str,
+        profile: dict[str, Any] | None = None,
+        answer_bank: Callable[[dict[str, Any]], Any] | None = None,
+        user_id: str | None = None,
+        company: str | None = None,
+        rebuild_plan: bool = False,
+        form_llm: Callable[[dict[str, Any]], Any] | None = None,
+    ) -> dict[str, Any]:
+        """Fill and submit the application in a REAL headless Chromium.
+    
+        ``apply_url`` (production) navigates to the employer's live posting so the
+        fill and the submit happen against their real form. Without one, the
+        supplied ``page_html`` is loaded directly — the replay/offline mode used by
+        tests and by re-running a captured page — and the returned summary says so
+        in ``mode``, so an audit can always tell the two apart.
+    
+        ``profile``/``answer_bank`` (CLI-SUB-005-R2) are consulted ONLY to resolve
+        a required field the live DOM reveals that the plan's static snapshot
+        never saw — see :func:`_resolve_unplanned_required_fields`. Omitting them
+        reproduces the pre-R2 behaviour for that (rare, additive) safety net: no
+        stored answer means an honest refusal, exactly like every other unanswered
+        required field.
+    
+        ``user_id``/``company`` (U5d-4) are needed only if the employer's ATS
+        demands an emailed verification code after the submit click: the code is
+        read from THAT user's own connected Gmail, and the employer is named in
+        the manual step raised when it cannot be. Without a ``user_id`` (replay,
+        or a direct call) a verification gate is an honest manual step rather
+        than anything Aether tries to work around — and the gate is only ever
+        even looked for AFTER CLI-SUB-005-R7's submission guard has cleared the
+        click, so this can never open a path around it.
+    
+        Returns ``{"submitted", "evidencePath", "destination", "filled",
+        "unfilled", "unplannedFilled", "mode", "verification"}``. Raises
+        :class:`ApplyExecutorTransportError` if the browser itself could not be
+        driven — never a fake success.
+        """
+        try:
+            from playwright.sync_api import sync_playwright
+        except ImportError as exc:  # pragma: no cover - dependency is declared
+            raise ApplyExecutorTransportError(
+                "browser_unavailable",
+                "The application browser is not installed on this server — nothing was submitted.",
+            ) from exc
+    
+        documents: dict[str, str] = {}
+        temp_dir = tempfile.mkdtemp(prefix="aether-apply-")
+        resume_path = Path(temp_dir) / (
+            f"resume-{application_id[:8]}{_resume_suffix(resume_pdf_bytes)}"
+        )
+        resume_path.write_bytes(resume_pdf_bytes or b"")
+        documents[RESUME_DOCUMENT] = str(resume_path)
+        cover_path = Path(temp_dir) / f"cover-letter-{application_id[:8]}.txt"
+        cover_path.write_text(cover_letter_text or "")
+        documents[COVER_LETTER_DOCUMENT] = str(cover_path)
+    
+        filled: list[str] = []
+        unfilled: list[str] = []
+        blocked_required: list[str] = []
+        unplanned_filled: list[str] = []
+        mode = "live" if apply_url else "replay"
+        verification: dict[str, Any] | None = None
+        screenshot = _evidence_path(evidence_dir, application_id, "confirmation.png")
+        try:
+            with sync_playwright() as runner:  # noqa: SIM117 — cleanup handled below
+                browser = runner.chromium.launch(
+                    **_chromium_launch_kwargs(
+                        live=str(apply_url or "").startswith(("http://", "https://"))
+                    )
+                )
+                _renice_browser_tree()
+                try:
+                    page = browser.new_page(viewport={"width": 1280, "height": 1600})
+                    # CLI-SUB-005-R7 (attack C2) — armed BEFORE any navigation, so
+                    # it is in place before the page's own scripts (and therefore
+                    # any custom element's connectedCallback) ever run. See the
+                    # module note above _CLOSED_SHADOW_MARKER_INIT_JS.
+                    page.add_init_script(_CLOSED_SHADOW_MARKER_INIT_JS)
+                    if apply_url:
+                        if str(apply_url).startswith(("http://", "https://")):
+                            page.add_init_script(_HIDE_WEBDRIVER_INIT_JS)
+                        page.goto(apply_url, wait_until="domcontentloaded", timeout=45000)
+                        wait_for_application_form(page, live=True)
+                        if rebuild_plan:
+                            plan = build_form_fill_plan(
+                                page.content() or "",
+                                channel=channel,
+                                profile=profile or {},
+                                answer_bank=answer_bank,
+                                form_llm=form_llm,
+                            )
+                    else:
+                        # Replay: the DOM was captured elsewhere, so every
+                        # subresource in it (CDN CSS, fonts, the employer's
+                        # analytics, Google's reCAPTCHA script) is both useless and
+                        # a live third-party request we have no reason to make.
+                        # Block the lot — it also stops a replay from hanging on a
+                        # host that no longer answers.
+                        page.route("**/*", lambda route: route.abort())
+                        page.set_content(page_html or "", wait_until="domcontentloaded")
+                    if _hcaptcha_widget_mounted(page):
+                        # SUB-011: an hCaptcha widget needs a REAL human to solve
+                        # it — nothing here does, or tries to, and there is no
+                        # point filling the rest of the form first: the outcome
+                        # is already decided. Screenshot the page as evidence
+                        # and refuse honestly, distinctly from a TRIGGERED
+                        # challenge (`detect_blocking_state`'s "captcha" reason,
+                        # checked earlier while the PLAN was built) — this is a
+                        # MOUNT, caught here because build_form_fill_plan's
+                        # static snapshot cannot see the live DOM's widget.
+                        page.screenshot(path=str(screenshot), full_page=True)
+                        raise ManualStepRequired(
+                            "captcha_challenge",
+                            (
+                                "This application is protected by an hCaptcha "
+                                "challenge Aether cannot solve or bypass, so "
+                                "nothing was submitted. Open the posting and "
+                                "finish it yourself."
+                            ),
+                        )
+                    # CLI-SUB-005: live HTTP(S) mode verifies every fill's
+                    # committed DOM state (read-back + one retry) and runs the
+                    # unverifiable-surface backstop. A data: URL is a local SPA
+                    # fixture used to exercise wait/CTA/submit — it is not an
+                    # employer ATS page, so the conservative census does not
+                    # apply. Replay (no URL) keeps raw fills: a captured page
+                    # is JS-dead and no employer can receive anything from it.
+                    verify_commit = bool(apply_url) and str(apply_url).startswith(
+                        ("http://", "https://")
+                    )
+                    filled, unfilled, blocked_required = _run_fill_plan(
+                        page, plan["fields"], documents, verify=verify_commit
+                    )
+                    if blocked_required:
+                        # A REQUIRED answer we hold did not land in the form. The
+                        # employer would receive an incomplete application with the
+                        # user's name on it, so nothing is submitted: screenshot the
+                        # half-filled form as evidence and hand it back as a manual
+                        # step. (The click is skipped ENTIRELY — this is not a
+                        # "submit and hope" path.)
+                        page.screenshot(path=str(screenshot), full_page=True)
+                        raise ManualStepRequired(
+                            "form_fill_failed",
+                            (
+                                "Aether could not enter every required answer into "
+                                "this application form, so it submitted nothing. "
+                                "Open the posting and apply yourself: "
+                                + "; ".join(blocked_required)
+                            ),
+                            question="; ".join(blocked_required),
+                        )
+                    if verify_commit:
+                        # CLI-SUB-005-R3 (adversarial review FAIL,
+                        # RUN-20260818T0223Z/SUB-005-R2/08-adversarial-review-
+                        # premerge.md): the plan was built from a STATIC,
+                        # unanswered page snapshot — a conditional/branching
+                        # question (first-class on Ashby/Greenhouse) only exists
+                        # in the live DOM once an earlier question is answered,
+                        # so it is structurally invisible to that plan, AND the
+                        # gate's own refill of a wiped field can itself trigger
+                        # the same reveal. Both halves are now ONE bounded
+                        # fixed-point loop (_converge_presubmit_state) that
+                        # rescans and refills together until a pass changes
+                        # nothing, then a final READ-ONLY pass confirms it before
+                        # returning. CLI-SUB-005-R6: the ONLY thing that happens
+                        # between this call returning and the submit click below
+                        # is installing our OWN defensive instrumentation
+                        # (_install_submission_guard) — an inert marker attribute
+                        # plus an event listener that can never itself reveal,
+                        # hide, or answer anything — never a change to any
+                        # question's requiredness or committed state.
+                        try:
+                            unplanned_filled = _converge_presubmit_state(
+                                page,
+                                channel,
+                                plan["fields"],
+                                documents,
+                                profile=profile,
+                                answer_bank=answer_bank,
+                            )
+                            # CLI-SUB-005-R5 CONSERVATIVE REFUSE-BACKSTOP — see
+                            # _verify_no_unverifiable_form_surface. Runs AFTER
+                            # convergence has resolved everything it CAN see,
+                            # still strictly before the submit click below: the
+                            # decisive check that nothing shaped like a control,
+                            # on any readable or unreadable surface, was left
+                            # unaccounted for. Read-only, like everything above it.
+                            _verify_no_unverifiable_form_surface(page, channel)
+                            # CLI-SUB-005-R6 root cause 2 (RUN-20260818T0223Z/
+                            # SUB-005-R5/08-adversarial-final.md attack #7):
+                            # everything above is a CHECK; the click below is the
+                            # ACT, and a page's own mousedown/focus handler on the
+                            # submit control can reveal a brand-new required field
+                            # in that exact gap — deterministically, by DOM
+                            # event-ordering spec, not a race. Rather than add
+                            # another check-then-act layer, GUARD THE SUBMISSION
+                            # EVENT ITSELF: install a capture-phase listener, in
+                            # the browser, that re-runs the identical shadow-DOM-
+                            # piercing live census (root cause 1) at the literal
+                            # instant the submit/click event fires and cancels the
+                            # submission outright if anything required is still
+                            # uncommitted THEN. Installed on the top document and
+                            # every reachable frame, mirroring the backstop above.
+                            _install_submission_guard(page)
+                            for frame in _reachable_frames(page):
+                                _install_submission_guard(frame)
+                        except ManualStepRequired:
+                            page.screenshot(path=str(screenshot), full_page=True)
+                            raise
+                        filled.extend(unplanned_filled)
+                    before_url = page.url
+                    submitted_at = time.time()
+                    # SUB-007: probe the form's own state BEFORE the click — the
+                    # submit control's armed/disabled state, the errors already on
+                    # screen and any confirmation wording the form page itself
+                    # carries. Post-submit classification compares against this, so
+                    # "the site rejected the form" and "the site took it silently"
+                    # can never collapse into the same verdict again.
+                    before_probe = _submit_state_probe(page) if apply_url else {}
+                    activation = _activate_submit(page)
+                    submitted = activation.clicked
+                    # CLI-SUB-005-R6/R7 — THE DECISIVE INVARIANT, and it runs
+                    # BEFORE any classification of this click: the click above can
+                    # succeed (Playwright's own actionability check is satisfied)
+                    # even when our capture-phase guard cancelled the SUBMISSION
+                    # itself — `activation.clicked` alone cannot tell the two
+                    # apart, so read back what the guard actually blocked, on
+                    # every surface it was installed on, before SUB-007's
+                    # classify_post_submit ever runs. A required control
+                    # uncommitted at the instant of submission ⇒ the submission
+                    # never completed ⇒ this is an honest refusal, never a
+                    # submitted:true outcome. The employer received NOTHING — the
+                    # guard cancelled the browser's own default action before it
+                    # ever fired. (Merge rationale, RUN-20260818T0223Z/BATCH-2:
+                    # the guard-block check is the supreme, fail-closed safety
+                    # invariant and must gate classification, not run beside or
+                    # after it — see 02-apply-stack-reconcile.md.)
+                    blocked_submission = _blocked_submission_on(page)
+                    if blocked_submission:
+                        page.screenshot(path=str(screenshot), full_page=True)
+                        raise _manual_step_for_blocked_submission(blocked_submission)
+                    page.wait_for_timeout(1500)
+                    # U5d-4 — verification-code loop. Sited strictly AFTER the
+                    # guard-check above: a click the R7 guard blocked never
+                    # reaches this line at all, so the code loop can never run
+                    # instead of, or ahead of, that fail-closed check — it can
+                    # only ever run once the guard has already cleared the
+                    # click. _resolve_verification_gate re-arms the SAME guard
+                    # for its own resubmit (page + every reachable frame,
+                    # fail-closed on any install anomaly) and re-checks THAT
+                    # click through the identical _blocked_submission_on before
+                    # it ever returns — see its own docstring.
+                    #
+                    # It also RE-CAPTURES a fresh before_probe/activation right
+                    # before that resubmit and hands both back here, and
+                    # SUB-007's classify_post_submit below is repointed at them
+                    # instead of the pre-first-click snapshot. This is
+                    # deliberate, not incidental: classify_post_submit's own
+                    # honesty floor (a confirmation phrase already sitting on the
+                    # page before the classified click is NOT proof —
+                    # ``test_a_confirmation_phrase_already_on_the_form_page_is_
+                    # not_proof``) depends on ``before_probe`` describing the
+                    # page immediately before the LAST click actually made. A
+                    # verification gate can be a genuine top-level navigation to
+                    # a different document (proven live by the u5d4 P0 fix,
+                    # 06-u5d4-adversarial-review.md); comparing that document's
+                    # after-state against a stale before_probe from the ORIGINAL
+                    # form would let a confirmation-shaped phrase already
+                    # sitting on the gate page (e.g. "Thanks for applying! Enter
+                    # the code we emailed you to finish.") count as "new" and
+                    # therefore as proof, silently bypassing a protection SUB-007
+                    # was adversarially hardened against. Recapturing keeps that
+                    # protection intact on the gated path exactly as it holds on
+                    # the ungated one.
+                    if apply_url and submitted and _detect_verification_gate(page):
+                        verification = _resolve_verification_gate(
+                            page,
+                            application_id=application_id,
+                            evidence_dir=evidence_dir,
+                            since_epoch=submitted_at,
+                            user_id=user_id,
+                            company=company,
+                            form_email=_planned_form_email(plan),
+                        )
+                        before_url = str(verification.get("beforeUrl") or before_url)
+                        before_probe = verification.get("beforeProbe") or before_probe
+                        resubmit_control = verification.get("submitControl")
+                        if resubmit_control:
+                            activation = SubmitActivation(**resubmit_control)
+                    post_submit = (
+                        classify_post_submit(
+                            page,
+                            before_url,
+                            before_probe=before_probe,
+                            activation=activation,
+                        )
+                        if apply_url
+                        else None
+                    )
+                    classification = (
+                        post_submit.classification if post_submit else POST_SUBMIT_NOT_CLASSIFIED
+                    )
+                    confirmation = post_submit.confirmation if post_submit else None
+                    page.screenshot(path=str(screenshot), full_page=True)
+                    if (
+                        apply_url
+                        and post_submit is not None
+                        and post_submit.classification != POST_SUBMIT_CONFIRMED
+                    ):
+                        # LIVE mode demands PROOF, not a click. Without a
+                        # confirmation page (or a navigation away from the form),
+                        # we do not know the employer received anything — and
+                        # "clicked submit" is not "applied". The screenshot above
+                        # captures whatever the page is actually showing so the
+                        # user can act on it, and the reason code now says WHICH
+                        # of the honest non-receipt endings this was (rejected /
+                        # submitted-unconfirmed / unreadable).
+                        #
+                        # ROUND-2 REVIEW: this is deliberately NOT gated on
+                        # ``submitted`` any more. It used to be, so the one case
+                        # the ledger names — a present-but-disabled submit control,
+                        # which produced ``submitted=False`` — skipped this branch
+                        # entirely and the outcome that had already been classified
+                        # (from a before-probe that correctly read
+                        # ``submitEnabled=False``) was computed and discarded.
+>                       raise ManualStepRequired(
+                            post_submit.reason or MANUAL_STEP_NO_CONFIRMATION,
+                            post_submit.detail,
+                        )
+E                       app.services.apply_executor.ManualStepRequired: The site REJECTED this application form, so nothing was submitted — it is showing: "Missing entry for required field: Name". Open the posting, fix the flagged answers and submit it yourself.
+
+app/services/apply_executor.py:4052: ManualStepRequired
+____ test_live_submitter_never_submits_over_a_field_the_gate_refill_reveals ____
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_never_subm1')
+
+    def test_live_submitter_never_submits_over_a_field_the_gate_refill_reveals(
+        tmp_path,
+    ) -> None:
+        """THE R2->R3 ADVERSARIAL-REVIEW BREAK, ported exactly from
+        adversarial/attack_gate_refill.py: the gate's own refill of a wiped
+        'sponsor' select re-reveals the required 'explain' field, and nothing
+        unanswerable may ever cross the submit boundary. On the unfixed R2 branch
+        this raised nothing and returned submitted:true, unplannedFilled:[] --
+        this is that exact break, captured as a permanent regression test."""
+        from app.services.apply_executor import playwright_form_submitter
+    
+>       with pytest.raises(ManualStepRequired) as exc_info:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ManualStepRequired
+
+tests/test_cli_sub005_fill_commit.py:907: Failed
+_ test_live_submitter_converges_and_submits_when_gate_refill_reveal_is_answerable _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_converges_0')
+
+    def test_live_submitter_converges_and_submits_when_gate_refill_reveal_is_answerable(
+        tmp_path,
+    ) -> None:
+        """Guard against over-refusal: the SAME gate-refill-revealed 'explain'
+        field, when it CAN be answered (here: the answer bank), is filled,
+        verified, and the submission proceeds — proving the fixed-point loop
+        converges (rescans again after the gate's own refill) instead of either
+        submitting blind or refusing a legitimately answerable form."""
+        from app.services.answer_bank import (
+            PROVENANCE_USER_ANSWERED,
+            SENSITIVITY_FACTUAL,
+            AnswerBankMatch,
+        )
+        from app.services.apply_executor import playwright_form_submitter
+    
+        match = AnswerBankMatch(
+            item_id="bank-item-2",
+            answer="Sponsorship not required",
+            confidence=0.95,
+            method="test",
+            question_as_seen="Explain",
+            banked_question="Explain",
+            sensitivity=SENSITIVITY_FACTUAL,
+            provenance=PROVENANCE_USER_ANSWERED,
+            per_application=False,
+        )
+    
+        def answer_bank(field: dict[str, Any]) -> Any:
+            return match if field["name"] == "explain" else None
+    
+        outcome = playwright_form_submitter(
+            application_id="sub005r3-gatehole-answered",
+            channel="generic",
+            page_html="",
+            apply_url=_data_url(_GATE_REFILL_REVEALS_CONDITIONAL_FORM),
+            plan=_gate_refill_plan(),
+            resume_pdf_bytes=b"%PDF-1.4 fake",
+            cover_letter_text="Dear Hiring Manager,",
+            evidence_dir=str(tmp_path),
+            profile={},
+            answer_bank=answer_bank,
+        )
+        assert outcome["submitted"] is True
+        assert outcome["confirmation"] and "thank you" in str(outcome["confirmation"]).lower()
+>       assert "explain" in outcome["filled"]
+E       AssertionError: assert 'explain' in ['name', 'sponsor', 'resume']
+
+tests/test_cli_sub005_fill_commit.py:969: AssertionError
+_ test_live_submitter_never_submits_over_a_known_field_that_turns_required_live _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_never_subm2')
+
+    def test_live_submitter_never_submits_over_a_known_field_that_turns_required_live(
+        tmp_path,
+    ) -> None:
+        """THE R3->R4 ADVERSARIAL-REVIEW BREAK, ported exactly from
+        adversarial/attack2_required_toggle_escapes_ledger.py: an already-KNOWN,
+        already-OPTIONAL planned field ('explain') turns required live via a
+        sibling field's onchange, and nothing unanswerable may ever cross the
+        submit boundary. On the unfixed R3 branch this raised nothing and
+        returned submitted:true, unplannedFilled:[] -- this is that exact break,
+        captured as a permanent regression test."""
+        from app.services.apply_executor import playwright_form_submitter
+    
+>       with pytest.raises(ManualStepRequired) as exc_info:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ManualStepRequired
+
+tests/test_cli_sub005_fill_commit.py:1067: Failed
+_ test_live_submitter_converges_and_submits_when_the_toggled_field_is_answerable _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_converges_1')
+
+    def test_live_submitter_converges_and_submits_when_the_toggled_field_is_answerable(
+        tmp_path,
+    ) -> None:
+        """Guard against over-refusal: the SAME toggled-required 'explain'
+        field, when it CAN be answered (here: the answer bank), is filled,
+        verified, and the submission proceeds — proving the total-re-derivation
+        loop resolves a known-but-now-required field exactly like any other
+        newly discovered one, instead of either submitting blind or refusing a
+        legitimately answerable form."""
+        from app.services.answer_bank import (
+            PROVENANCE_USER_ANSWERED,
+            SENSITIVITY_FACTUAL,
+            AnswerBankMatch,
+        )
+        from app.services.apply_executor import playwright_form_submitter
+    
+        match = AnswerBankMatch(
+            item_id="bank-item-3",
+            answer="Sponsorship not required",
+            confidence=0.95,
+            method="test",
+            question_as_seen="Explain",
+            banked_question="Explain",
+            sensitivity=SENSITIVITY_FACTUAL,
+            provenance=PROVENANCE_USER_ANSWERED,
+            per_application=False,
+        )
+    
+        def answer_bank(field: dict[str, Any]) -> Any:
+            return match if field["name"] == "explain" else None
+    
+        outcome = playwright_form_submitter(
+            application_id="sub005r4-toggleescape-answered",
+            channel="generic",
+            page_html="",
+            apply_url=_data_url(_REQUIRED_TOGGLE_ESCAPES_LEDGER_FORM),
+            plan=_required_toggle_plan(),
+            resume_pdf_bytes=b"%PDF-1.4 fake",
+            cover_letter_text="Dear Hiring Manager,",
+            evidence_dir=str(tmp_path),
+            profile={},
+            answer_bank=answer_bank,
+        )
+        assert outcome["submitted"] is True
+        assert outcome["confirmation"] and "thank you" in str(outcome["confirmation"]).lower()
+>       assert "explain" in outcome["filled"]
+E       AssertionError: assert 'explain' in ['name', 'sponsor']
+
+tests/test_cli_sub005_fill_commit.py:1130: AssertionError
+_ test_live_submitter_never_submits_over_an_unanswerable_iframe_required_field _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_never_subm3')
+
+    def test_live_submitter_never_submits_over_an_unanswerable_iframe_required_field(
+        tmp_path,
+    ) -> None:
+        """THE R4->R5 ADVERSARIAL-REVIEW BREAK, ported exactly from
+        adversarial/attack5_iframe_live_reveal.py: on the unfixed R4 branch this
+        returned submitted:true, confirmation:"Thank you for applying",
+        unplannedFilled:[] — the iframe field was never attempted, never
+        verified, never raised as a manual step, because page.content() cannot
+        see inside an <iframe srcdoc> at all. With no profile/answer-bank able
+        to answer "Diversity survey", the R5 per-frame convergence must resolve
+        or refuse it — never guess, never submit."""
+        from app.services.apply_executor import playwright_form_submitter
+    
+>       with pytest.raises(ManualStepRequired) as exc_info:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ManualStepRequired
+
+tests/test_cli_sub005_fill_commit.py:1370: Failed
+_ test_live_submitter_resolves_and_submits_an_answerable_iframe_required_field _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_resolves_a0')
+
+    def test_live_submitter_resolves_and_submits_an_answerable_iframe_required_field(
+        tmp_path,
+    ) -> None:
+        """Guard against over-refusal: the SAME class of iframe-embedded,
+        live-only required field, when it CAN genuinely be answered, is
+        discovered by the per-frame re-derivation, filled and verified INSIDE
+        the iframe's own document (never the top page), and the submission
+        proceeds — proving the R5 frame extension resolves a legitimately
+        answerable iframe field exactly like any other newly discovered one,
+        instead of either submitting blind or refusing a form that could
+        genuinely be completed."""
+        from app.services.apply_executor import playwright_form_submitter
+    
+        outcome = playwright_form_submitter(
+            application_id="sub005r5-iframe-answerable",
+            channel="ashby",
+            page_html="",
+            apply_url=_data_url(_iframe_form(_IFRAME_INNER_REQUIRED_ANSWERABLE)),
+            plan=_name_only_plan(),
+            resume_pdf_bytes=b"%PDF-1.4 fake",
+            cover_letter_text="Dear Hiring Manager,",
+            evidence_dir=str(tmp_path),
+            profile={"email": "jordan@example.com"},
+            answer_bank=None,
+        )
+        assert outcome["submitted"] is True
+        assert outcome["confirmation"] and "thank you" in str(outcome["confirmation"]).lower()
+>       assert "confirm_email" in outcome["filled"]
+E       AssertionError: assert 'confirm_email' in ['name']
+
+tests/test_cli_sub005_fill_commit.py:1415: AssertionError
+_ test_live_submitter_never_submits_over_an_unanswerable_shadow_dom_required_field _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_never_subm4')
+
+    def test_live_submitter_never_submits_over_an_unanswerable_shadow_dom_required_field(
+        tmp_path,
+    ) -> None:
+        """THE R5->R6 ADVERSARIAL-REVIEW BREAK, ported exactly from
+        adversarial/attack6_shadow_dom_custom_element.py: on the unfixed R5
+        branch this returned submitted:true, confirmation:"Thank you for
+        applying", filled:["name"], unfilled:[] — the shadow-DOM field was never
+        seen by ANY census (page.content() cannot serialize an open shadow
+        root's content at all), never attempted, never verified, never raised as
+        a manual step. With no profile/answer-bank able to answer "I agree to
+        the background-check policy", the R6 live composed census must resolve
+        or refuse it — never guess, never submit silently over it."""
+        from app.services.apply_executor import playwright_form_submitter
+    
+        with pytest.raises(ManualStepRequired) as exc_info:
+            playwright_form_submitter(
+                application_id="sub005r6-shadow-unanswerable",
+                channel="ashby",
+                page_html="",
+                apply_url=_data_url(_SHADOW_DOM_CUSTOM_ELEMENT_FORM),
+                plan=_name_only_plan(),
+                resume_pdf_bytes=b"%PDF-1.4 fake",
+                cover_letter_text="Dear Hiring Manager,",
+                evidence_dir=str(tmp_path),
+                profile={},
+                answer_bank=None,
+            )
+        err = exc_info.value
+>       assert err.reason == "unplanned_required_field"
+E       AssertionError: assert 'form_rejected' == 'unplanned_required_field'
+E         
+E         - unplanned_required_field
+E         + form_rejected
+
+tests/test_cli_sub005_fill_commit.py:1572: AssertionError
+_ test_live_submitter_resolves_and_submits_an_answerable_shadow_dom_required_field _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_resolves_a1')
+
+    def test_live_submitter_resolves_and_submits_an_answerable_shadow_dom_required_field(
+        tmp_path,
+    ) -> None:
+        """Guard against over-refusal: the SAME shadow-DOM-hosted required
+        control, when it CAN genuinely be answered (here: the answer bank,
+        matched by the label the live composed census read straight out of the
+        shadow root), is discovered by the R6 live census, filled and verified
+        via a shadow-DOM-piercing Playwright locator (never assembled from an
+        id/name this anonymous control never had), and the submission proceeds —
+        proving the fix RESOLVES a legitimately answerable shadow control exactly
+        like any other newly discovered field, instead of either submitting
+        blind or refusing a form that could genuinely be completed."""
+        from app.services.answer_bank import (
+            PROVENANCE_USER_ANSWERED,
+            SENSITIVITY_FACTUAL,
+            AnswerBankMatch,
+        )
+        from app.services.apply_executor import playwright_form_submitter
+    
+        match = AnswerBankMatch(
+            item_id="bank-item-shadow-1",
+            answer="I agree",
+            confidence=0.97,
+            method="test",
+            question_as_seen="I agree to the background-check policy (required)",
+            banked_question="background check consent",
+            sensitivity=SENSITIVITY_FACTUAL,
+            provenance=PROVENANCE_USER_ANSWERED,
+            per_application=False,
+        )
+    
+        def answer_bank(field: dict[str, Any]) -> Any:
+            if "background-check" in str(field.get("label") or "").lower():
+                return match
+            return None
+    
+>       outcome = playwright_form_submitter(
+            application_id="sub005r6-shadow-answered",
+            channel="ashby",
+            page_html="",
+            apply_url=_data_url(_SHADOW_DOM_CUSTOM_ELEMENT_FORM),
+            plan=_name_only_plan(),
+            resume_pdf_bytes=b"%PDF-1.4 fake",
+            cover_letter_text="Dear Hiring Manager,",
+            evidence_dir=str(tmp_path),
+            profile={},
+            answer_bank=answer_bank,
+        )
+
+tests/test_cli_sub005_fill_commit.py:1612: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+application_id = 'sub005r6-shadow-answered', channel = 'ashby', page_html = ''
+apply_url = 'data:text/html;base64,Cjx0aXRsZT5zaGFkb3ctZG9tLXdpZGdldDwvdGl0bGU+Cjxmb3JtIG9uc3VibWl0PSJldmVudC5wcmV2ZW50RGVmYXVsdCg...0idHJ1ZSI+JzsKICAgIH0KICB9CiAgY3VzdG9tRWxlbWVudHMuZGVmaW5lKCd4LWxlZ2FsLWNvbnNlbnQnLCBMZWdhbENvbnNlbnQpOwo8L3NjcmlwdD4K'
+plan = {'fields': [{'name': 'name', 'label': 'Full name', 'kind': 'text', 'required': True, ...}]}
+resume_pdf_bytes = b'%PDF-1.4 fake', cover_letter_text = 'Dear Hiring Manager,'
+evidence_dir = '/tmp/pytest-of-root/pytest-2/test_live_submitter_resolves_a1'
+profile = {}
+answer_bank = <function test_live_submitter_resolves_and_submits_an_answerable_shadow_dom_required_field.<locals>.answer_bank at 0x761c90ca4e00>
+user_id = None, company = None, rebuild_plan = False, form_llm = None
+
+    def playwright_form_submitter(
+        *,
+        application_id: str,
+        channel: str,
+        page_html: str,
+        apply_url: str | None,
+        plan: dict[str, Any],
+        resume_pdf_bytes: bytes,
+        cover_letter_text: str,
+        evidence_dir: str,
+        profile: dict[str, Any] | None = None,
+        answer_bank: Callable[[dict[str, Any]], Any] | None = None,
+        user_id: str | None = None,
+        company: str | None = None,
+        rebuild_plan: bool = False,
+        form_llm: Callable[[dict[str, Any]], Any] | None = None,
+    ) -> dict[str, Any]:
+        """Fill and submit the application in a REAL headless Chromium.
+    
+        ``apply_url`` (production) navigates to the employer's live posting so the
+        fill and the submit happen against their real form. Without one, the
+        supplied ``page_html`` is loaded directly — the replay/offline mode used by
+        tests and by re-running a captured page — and the returned summary says so
+        in ``mode``, so an audit can always tell the two apart.
+    
+        ``profile``/``answer_bank`` (CLI-SUB-005-R2) are consulted ONLY to resolve
+        a required field the live DOM reveals that the plan's static snapshot
+        never saw — see :func:`_resolve_unplanned_required_fields`. Omitting them
+        reproduces the pre-R2 behaviour for that (rare, additive) safety net: no
+        stored answer means an honest refusal, exactly like every other unanswered
+        required field.
+    
+        ``user_id``/``company`` (U5d-4) are needed only if the employer's ATS
+        demands an emailed verification code after the submit click: the code is
+        read from THAT user's own connected Gmail, and the employer is named in
+        the manual step raised when it cannot be. Without a ``user_id`` (replay,
+        or a direct call) a verification gate is an honest manual step rather
+        than anything Aether tries to work around — and the gate is only ever
+        even looked for AFTER CLI-SUB-005-R7's submission guard has cleared the
+        click, so this can never open a path around it.
+    
+        Returns ``{"submitted", "evidencePath", "destination", "filled",
+        "unfilled", "unplannedFilled", "mode", "verification"}``. Raises
+        :class:`ApplyExecutorTransportError` if the browser itself could not be
+        driven — never a fake success.
+        """
+        try:
+            from playwright.sync_api import sync_playwright
+        except ImportError as exc:  # pragma: no cover - dependency is declared
+            raise ApplyExecutorTransportError(
+                "browser_unavailable",
+                "The application browser is not installed on this server — nothing was submitted.",
+            ) from exc
+    
+        documents: dict[str, str] = {}
+        temp_dir = tempfile.mkdtemp(prefix="aether-apply-")
+        resume_path = Path(temp_dir) / (
+            f"resume-{application_id[:8]}{_resume_suffix(resume_pdf_bytes)}"
+        )
+        resume_path.write_bytes(resume_pdf_bytes or b"")
+        documents[RESUME_DOCUMENT] = str(resume_path)
+        cover_path = Path(temp_dir) / f"cover-letter-{application_id[:8]}.txt"
+        cover_path.write_text(cover_letter_text or "")
+        documents[COVER_LETTER_DOCUMENT] = str(cover_path)
+    
+        filled: list[str] = []
+        unfilled: list[str] = []
+        blocked_required: list[str] = []
+        unplanned_filled: list[str] = []
+        mode = "live" if apply_url else "replay"
+        verification: dict[str, Any] | None = None
+        screenshot = _evidence_path(evidence_dir, application_id, "confirmation.png")
+        try:
+            with sync_playwright() as runner:  # noqa: SIM117 — cleanup handled below
+                browser = runner.chromium.launch(
+                    **_chromium_launch_kwargs(
+                        live=str(apply_url or "").startswith(("http://", "https://"))
+                    )
+                )
+                _renice_browser_tree()
+                try:
+                    page = browser.new_page(viewport={"width": 1280, "height": 1600})
+                    # CLI-SUB-005-R7 (attack C2) — armed BEFORE any navigation, so
+                    # it is in place before the page's own scripts (and therefore
+                    # any custom element's connectedCallback) ever run. See the
+                    # module note above _CLOSED_SHADOW_MARKER_INIT_JS.
+                    page.add_init_script(_CLOSED_SHADOW_MARKER_INIT_JS)
+                    if apply_url:
+                        if str(apply_url).startswith(("http://", "https://")):
+                            page.add_init_script(_HIDE_WEBDRIVER_INIT_JS)
+                        page.goto(apply_url, wait_until="domcontentloaded", timeout=45000)
+                        wait_for_application_form(page, live=True)
+                        if rebuild_plan:
+                            plan = build_form_fill_plan(
+                                page.content() or "",
+                                channel=channel,
+                                profile=profile or {},
+                                answer_bank=answer_bank,
+                                form_llm=form_llm,
+                            )
+                    else:
+                        # Replay: the DOM was captured elsewhere, so every
+                        # subresource in it (CDN CSS, fonts, the employer's
+                        # analytics, Google's reCAPTCHA script) is both useless and
+                        # a live third-party request we have no reason to make.
+                        # Block the lot — it also stops a replay from hanging on a
+                        # host that no longer answers.
+                        page.route("**/*", lambda route: route.abort())
+                        page.set_content(page_html or "", wait_until="domcontentloaded")
+                    if _hcaptcha_widget_mounted(page):
+                        # SUB-011: an hCaptcha widget needs a REAL human to solve
+                        # it — nothing here does, or tries to, and there is no
+                        # point filling the rest of the form first: the outcome
+                        # is already decided. Screenshot the page as evidence
+                        # and refuse honestly, distinctly from a TRIGGERED
+                        # challenge (`detect_blocking_state`'s "captcha" reason,
+                        # checked earlier while the PLAN was built) — this is a
+                        # MOUNT, caught here because build_form_fill_plan's
+                        # static snapshot cannot see the live DOM's widget.
+                        page.screenshot(path=str(screenshot), full_page=True)
+                        raise ManualStepRequired(
+                            "captcha_challenge",
+                            (
+                                "This application is protected by an hCaptcha "
+                                "challenge Aether cannot solve or bypass, so "
+                                "nothing was submitted. Open the posting and "
+                                "finish it yourself."
+                            ),
+                        )
+                    # CLI-SUB-005: live HTTP(S) mode verifies every fill's
+                    # committed DOM state (read-back + one retry) and runs the
+                    # unverifiable-surface backstop. A data: URL is a local SPA
+                    # fixture used to exercise wait/CTA/submit — it is not an
+                    # employer ATS page, so the conservative census does not
+                    # apply. Replay (no URL) keeps raw fills: a captured page
+                    # is JS-dead and no employer can receive anything from it.
+                    verify_commit = bool(apply_url) and str(apply_url).startswith(
+                        ("http://", "https://")
+                    )
+                    filled, unfilled, blocked_required = _run_fill_plan(
+                        page, plan["fields"], documents, verify=verify_commit
+                    )
+                    if blocked_required:
+                        # A REQUIRED answer we hold did not land in the form. The
+                        # employer would receive an incomplete application with the
+                        # user's name on it, so nothing is submitted: screenshot the
+                        # half-filled form as evidence and hand it back as a manual
+                        # step. (The click is skipped ENTIRELY — this is not a
+                        # "submit and hope" path.)
+                        page.screenshot(path=str(screenshot), full_page=True)
+                        raise ManualStepRequired(
+                            "form_fill_failed",
+                            (
+                                "Aether could not enter every required answer into "
+                                "this application form, so it submitted nothing. "
+                                "Open the posting and apply yourself: "
+                                + "; ".join(blocked_required)
+                            ),
+                            question="; ".join(blocked_required),
+                        )
+                    if verify_commit:
+                        # CLI-SUB-005-R3 (adversarial review FAIL,
+                        # RUN-20260818T0223Z/SUB-005-R2/08-adversarial-review-
+                        # premerge.md): the plan was built from a STATIC,
+                        # unanswered page snapshot — a conditional/branching
+                        # question (first-class on Ashby/Greenhouse) only exists
+                        # in the live DOM once an earlier question is answered,
+                        # so it is structurally invisible to that plan, AND the
+                        # gate's own refill of a wiped field can itself trigger
+                        # the same reveal. Both halves are now ONE bounded
+                        # fixed-point loop (_converge_presubmit_state) that
+                        # rescans and refills together until a pass changes
+                        # nothing, then a final READ-ONLY pass confirms it before
+                        # returning. CLI-SUB-005-R6: the ONLY thing that happens
+                        # between this call returning and the submit click below
+                        # is installing our OWN defensive instrumentation
+                        # (_install_submission_guard) — an inert marker attribute
+                        # plus an event listener that can never itself reveal,
+                        # hide, or answer anything — never a change to any
+                        # question's requiredness or committed state.
+                        try:
+                            unplanned_filled = _converge_presubmit_state(
+                                page,
+                                channel,
+                                plan["fields"],
+                                documents,
+                                profile=profile,
+                                answer_bank=answer_bank,
+                            )
+                            # CLI-SUB-005-R5 CONSERVATIVE REFUSE-BACKSTOP — see
+                            # _verify_no_unverifiable_form_surface. Runs AFTER
+                            # convergence has resolved everything it CAN see,
+                            # still strictly before the submit click below: the
+                            # decisive check that nothing shaped like a control,
+                            # on any readable or unreadable surface, was left
+                            # unaccounted for. Read-only, like everything above it.
+                            _verify_no_unverifiable_form_surface(page, channel)
+                            # CLI-SUB-005-R6 root cause 2 (RUN-20260818T0223Z/
+                            # SUB-005-R5/08-adversarial-final.md attack #7):
+                            # everything above is a CHECK; the click below is the
+                            # ACT, and a page's own mousedown/focus handler on the
+                            # submit control can reveal a brand-new required field
+                            # in that exact gap — deterministically, by DOM
+                            # event-ordering spec, not a race. Rather than add
+                            # another check-then-act layer, GUARD THE SUBMISSION
+                            # EVENT ITSELF: install a capture-phase listener, in
+                            # the browser, that re-runs the identical shadow-DOM-
+                            # piercing live census (root cause 1) at the literal
+                            # instant the submit/click event fires and cancels the
+                            # submission outright if anything required is still
+                            # uncommitted THEN. Installed on the top document and
+                            # every reachable frame, mirroring the backstop above.
+                            _install_submission_guard(page)
+                            for frame in _reachable_frames(page):
+                                _install_submission_guard(frame)
+                        except ManualStepRequired:
+                            page.screenshot(path=str(screenshot), full_page=True)
+                            raise
+                        filled.extend(unplanned_filled)
+                    before_url = page.url
+                    submitted_at = time.time()
+                    # SUB-007: probe the form's own state BEFORE the click — the
+                    # submit control's armed/disabled state, the errors already on
+                    # screen and any confirmation wording the form page itself
+                    # carries. Post-submit classification compares against this, so
+                    # "the site rejected the form" and "the site took it silently"
+                    # can never collapse into the same verdict again.
+                    before_probe = _submit_state_probe(page) if apply_url else {}
+                    activation = _activate_submit(page)
+                    submitted = activation.clicked
+                    # CLI-SUB-005-R6/R7 — THE DECISIVE INVARIANT, and it runs
+                    # BEFORE any classification of this click: the click above can
+                    # succeed (Playwright's own actionability check is satisfied)
+                    # even when our capture-phase guard cancelled the SUBMISSION
+                    # itself — `activation.clicked` alone cannot tell the two
+                    # apart, so read back what the guard actually blocked, on
+                    # every surface it was installed on, before SUB-007's
+                    # classify_post_submit ever runs. A required control
+                    # uncommitted at the instant of submission ⇒ the submission
+                    # never completed ⇒ this is an honest refusal, never a
+                    # submitted:true outcome. The employer received NOTHING — the
+                    # guard cancelled the browser's own default action before it
+                    # ever fired. (Merge rationale, RUN-20260818T0223Z/BATCH-2:
+                    # the guard-block check is the supreme, fail-closed safety
+                    # invariant and must gate classification, not run beside or
+                    # after it — see 02-apply-stack-reconcile.md.)
+                    blocked_submission = _blocked_submission_on(page)
+                    if blocked_submission:
+                        page.screenshot(path=str(screenshot), full_page=True)
+                        raise _manual_step_for_blocked_submission(blocked_submission)
+                    page.wait_for_timeout(1500)
+                    # U5d-4 — verification-code loop. Sited strictly AFTER the
+                    # guard-check above: a click the R7 guard blocked never
+                    # reaches this line at all, so the code loop can never run
+                    # instead of, or ahead of, that fail-closed check — it can
+                    # only ever run once the guard has already cleared the
+                    # click. _resolve_verification_gate re-arms the SAME guard
+                    # for its own resubmit (page + every reachable frame,
+                    # fail-closed on any install anomaly) and re-checks THAT
+                    # click through the identical _blocked_submission_on before
+                    # it ever returns — see its own docstring.
+                    #
+                    # It also RE-CAPTURES a fresh before_probe/activation right
+                    # before that resubmit and hands both back here, and
+                    # SUB-007's classify_post_submit below is repointed at them
+                    # instead of the pre-first-click snapshot. This is
+                    # deliberate, not incidental: classify_post_submit's own
+                    # honesty floor (a confirmation phrase already sitting on the
+                    # page before the classified click is NOT proof —
+                    # ``test_a_confirmation_phrase_already_on_the_form_page_is_
+                    # not_proof``) depends on ``before_probe`` describing the
+                    # page immediately before the LAST click actually made. A
+                    # verification gate can be a genuine top-level navigation to
+                    # a different document (proven live by the u5d4 P0 fix,
+                    # 06-u5d4-adversarial-review.md); comparing that document's
+                    # after-state against a stale before_probe from the ORIGINAL
+                    # form would let a confirmation-shaped phrase already
+                    # sitting on the gate page (e.g. "Thanks for applying! Enter
+                    # the code we emailed you to finish.") count as "new" and
+                    # therefore as proof, silently bypassing a protection SUB-007
+                    # was adversarially hardened against. Recapturing keeps that
+                    # protection intact on the gated path exactly as it holds on
+                    # the ungated one.
+                    if apply_url and submitted and _detect_verification_gate(page):
+                        verification = _resolve_verification_gate(
+                            page,
+                            application_id=application_id,
+                            evidence_dir=evidence_dir,
+                            since_epoch=submitted_at,
+                            user_id=user_id,
+                            company=company,
+                            form_email=_planned_form_email(plan),
+                        )
+                        before_url = str(verification.get("beforeUrl") or before_url)
+                        before_probe = verification.get("beforeProbe") or before_probe
+                        resubmit_control = verification.get("submitControl")
+                        if resubmit_control:
+                            activation = SubmitActivation(**resubmit_control)
+                    post_submit = (
+                        classify_post_submit(
+                            page,
+                            before_url,
+                            before_probe=before_probe,
+                            activation=activation,
+                        )
+                        if apply_url
+                        else None
+                    )
+                    classification = (
+                        post_submit.classification if post_submit else POST_SUBMIT_NOT_CLASSIFIED
+                    )
+                    confirmation = post_submit.confirmation if post_submit else None
+                    page.screenshot(path=str(screenshot), full_page=True)
+                    if (
+                        apply_url
+                        and post_submit is not None
+                        and post_submit.classification != POST_SUBMIT_CONFIRMED
+                    ):
+                        # LIVE mode demands PROOF, not a click. Without a
+                        # confirmation page (or a navigation away from the form),
+                        # we do not know the employer received anything — and
+                        # "clicked submit" is not "applied". The screenshot above
+                        # captures whatever the page is actually showing so the
+                        # user can act on it, and the reason code now says WHICH
+                        # of the honest non-receipt endings this was (rejected /
+                        # submitted-unconfirmed / unreadable).
+                        #
+                        # ROUND-2 REVIEW: this is deliberately NOT gated on
+                        # ``submitted`` any more. It used to be, so the one case
+                        # the ledger names — a present-but-disabled submit control,
+                        # which produced ``submitted=False`` — skipped this branch
+                        # entirely and the outcome that had already been classified
+                        # (from a before-probe that correctly read
+                        # ``submitEnabled=False``) was computed and discarded.
+>                       raise ManualStepRequired(
+                            post_submit.reason or MANUAL_STEP_NO_CONFIRMATION,
+                            post_submit.detail,
+                        )
+E                       app.services.apply_executor.ManualStepRequired: The site REJECTED this application form, so nothing was submitted — it is showing: "Missing entry for required field: consent". Open the posting, fix the flagged answers and submit it yourself.
+
+app/services/apply_executor.py:4052: ManualStepRequired
+_ test_live_submitter_never_submits_over_a_field_revealed_at_mousedown_on_submit _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_never_subm5')
+
+    def test_live_submitter_never_submits_over_a_field_revealed_at_mousedown_on_submit(
+        tmp_path,
+    ) -> None:
+        """THE R5->R6 ADVERSARIAL-REVIEW BREAK, ported exactly from
+        adversarial/attack7_reveal_on_submit_click.py: a required field appended
+        to the DOM inside a `mousedown` handler on the submit button itself —
+        strictly AFTER _verify_no_unverifiable_form_surface returns clean,
+        strictly BEFORE the click's default action (the actual submission)
+        fires — must never let that submission complete. On the unfixed R5
+        branch this returned submitted:true, confirmation:"Thank you for
+        applying" over the empty, unattempted, unverified late_reveal field. The
+        R6 capture-phase submission guard must cancel the submission itself, in
+        the browser, at the instant it would fire — never a Python-side re-check
+        with its own gap for the SAME race to reopen in."""
+        from app.services.apply_executor import playwright_form_submitter
+    
+>       with pytest.raises(ManualStepRequired) as exc_info:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ManualStepRequired
+
+tests/test_cli_sub005_fill_commit.py:1687: Failed
+_____ test_live_submitter_refuses_when_the_guards_own_installation_throws ______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_refuses_wh0')
+
+    def test_live_submitter_refuses_when_the_guards_own_installation_throws(
+        tmp_path,
+    ) -> None:
+        """THE R6->R7 ADVERSARIAL-REVIEW BREAK (attack B), ported exactly from
+        adversarial/attackB_guard_install_exception.py: document.
+        addEventListener poisoned as an OWN property (an unaffected Element-
+        level addEventListener still lets the page's own mousedown listener
+        register normally) makes _install_submission_guard's own
+        document.addEventListener(...) calls throw, uncaught inside the page's
+        JS. On the unfixed R6 branch the bare `except Exception: pass` swallowed
+        this and the mousedown-revealed required field (attack #7's exact
+        construction) was submitted over, empty, unverified. R7 fails closed: an
+        exception during the guard's own installation must now refuse rather
+        than proceed with an unguarded click."""
+        from app.services.apply_executor import playwright_form_submitter
+    
+>       with pytest.raises(ManualStepRequired) as exc_info:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ManualStepRequired
+
+tests/test_cli_sub005_fill_commit.py:1810: Failed
+______ test_live_submitter_refuses_when_the_composed_census_itself_throws ______
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_refuses_wh1')
+
+    def test_live_submitter_refuses_when_the_composed_census_itself_throws(
+        tmp_path,
+    ) -> None:
+        """THE R6->R7 ADVERSARIAL-REVIEW BREAK (attack F), ported exactly from
+        adversarial/attackF_composed_census_throws.py: Element.prototype.
+        getAttribute poisoned to throw specifically for the census's own marker
+        attribute name against attack #6's exact open-shadow-DOM construction.
+        window.__aetherComposedCensus() itself throws (not merely the per-node
+        walk() helper, which already guards its own querySelectorAll call). On
+        the unfixed R6 branch the bare `except Exception: return []` swallowed
+        this and silently reported zero results, reverting the shadow-DOM field
+        to fully invisible again at both the convergence AND click-time census
+        calls. R7 fails closed: an exception from the census must now refuse
+        rather than be treated as 'nothing found'."""
+        from app.services.apply_executor import playwright_form_submitter
+    
+>       with pytest.raises(ManualStepRequired) as exc_info:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ManualStepRequired
+
+tests/test_cli_sub005_fill_commit.py:1882: Failed
+__ test_live_submitter_refuses_a_closed_shadow_root_with_zero_external_signal __
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_refuses_a_0')
+
+    def test_live_submitter_refuses_a_closed_shadow_root_with_zero_external_signal(
+        tmp_path,
+    ) -> None:
+        """THE R6->R7 ADVERSARIAL-REVIEW BREAK (attack C2), ported exactly from
+        adversarial/attackC2_closed_shadow_unconditional_success.py: a required
+        control living entirely inside a CLOSED shadow root, on a host with no
+        role/aria-required/contenteditable of its own, is genuinely unreadable
+        by ANY web API — element.shadowRoot returns null for every external
+        accessor, including this codebase's own composed census. On the unfixed
+        R6 branch this returned submitted:true, confirmation:"Thank you for
+        applying", filled:["name"] — the closed-shadow field was never seen,
+        never attempted, never verified. R7's attachShadow-interception marker
+        (installed via page.add_init_script, armed before ANY page script runs)
+        gives the host's own EXISTENCE — never its content, which stays
+        genuinely unreadable, a real browser-platform limit — an honest, page-
+        JS-independent signal for the pre-existing _unclassifiable_controls
+        backstop to flag, so the submission refuses rather than guesses."""
+        from app.services.apply_executor import playwright_form_submitter
+    
+>       with pytest.raises(ManualStepRequired) as exc_info:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ManualStepRequired
+
+tests/test_cli_sub005_fill_commit.py:1943: Failed
+_ test_live_submitter_never_submits_over_a_field_revealed_inside_the_forms_own_submit_handler _
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_live_submitter_never_subm6')
+
+    def test_live_submitter_never_submits_over_a_field_revealed_inside_the_forms_own_submit_handler(
+        tmp_path,
+    ) -> None:
+        """CLI-SUB-005-R7 bubble-phase closure of attack A for a genuinely
+        NATIVE submit: the form's own 'onsubmit' handler reveals a brand-new
+        required field and does NOT call preventDefault() itself, relying on the
+        browser's own native default action (or, here, on Aether's own guard) to
+        decide whether the submission proceeds — deliberately distinct from
+        _SUBMIT_HANDLER_REVEAL_SYNC_FETCH_FORM below, which fakes success and
+        destroys the field within the SAME synchronous handler. R6's capture-
+        phase-only guard runs BEFORE the event ever reaches the target (DOM
+        spec), so it cannot see this field; R7's new BUBBLE-phase 'submit'
+        listener runs AFTER the target's own handler completes, sees the field
+        still present in the DOM, and cancels the submission itself — the exact
+        case 05-decision-memos/SUB-005-and-COV-3-rulings.md's R7 ruling names as
+        the one attack-A construction the bubble-phase check DOES close."""
+        from app.services.apply_executor import playwright_form_submitter
+    
+        with pytest.raises(ManualStepRequired) as exc_info:
+            playwright_form_submitter(
+                application_id="sub005r7-submit-handler-reveal-native",
+                channel="ashby",
+                page_html="",
+                apply_url=_data_url(_SUBMIT_HANDLER_REVEAL_NATIVE_FORM),
+                plan=_name_only_plan(),
+                resume_pdf_bytes=b"%PDF-1.4 fake",
+                cover_letter_text="Dear Hiring Manager,",
+                evidence_dir=str(tmp_path),
+                profile={},
+                answer_bank=None,
+            )
+        err = exc_info.value
+>       assert err.reason == "unplanned_required_field"
+E       AssertionError: assert 'submit_click_failed' == 'unplanned_required_field'
+E         
+E         - unplanned_required_field
+E         + submit_click_failed
+
+tests/test_cli_sub005_fill_commit.py:2016: AssertionError
+________ test_verification_gate_never_bypasses_the_r7_submission_guard _________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-2/test_verification_gate_never_b0')
+
+    def test_verification_gate_never_bypasses_the_r7_submission_guard(tmp_path) -> None:
+        from app.services.apply_executor import playwright_form_submitter
+    
+        plan = {
+            "fields": [
+                {
+                    "name": "name",
+                    "label": "Full name",
+                    "kind": "text",
+                    "required": True,
+                    "scope": '[data-field-path="name"]',
+                    "value": "Jordan Blake",
+                    "options": [],
+                }
+            ]
+        }
+        with pytest.raises(ManualStepRequired) as exc_info:
+            playwright_form_submitter(
+                application_id="u5d4-guard-first-click",
+                channel="ashby",
+                page_html="",
+                apply_url=_data_url(_MOUSEDOWN_REVEAL_GATE_FORM),
+                plan=plan,
+                resume_pdf_bytes=b"%PDF-1.4 fake",
+                cover_letter_text="Dear Hiring Manager,",
+                evidence_dir=str(tmp_path),
+                profile={},
+                answer_bank=None,
+                # A user_id IS supplied, deliberately: if the guard ever failed
+                # to preempt the gate check, this user_id would make the loop
+                # attempt a REAL Gmail read next — proving the guard, not a
+                # missing user_id, is what stops this.
+                user_id="u5d4-test-user",
+                company="Acme Corp",
+            )
+        err = exc_info.value
+        # The R7 guard's own reason — NOT the verification-code loop's. If this
+        # ever regresses to "verification_code_email", the loop ran on a click
+        # the guard should have blocked outright.
+>       assert err.reason == "unplanned_required_field"
+E       AssertionError: assert 'verification_code_email' == 'unplanned_required_field'
+E         
+E         - unplanned_required_field
+E         + verification_code_email
+
+tests/test_u5d4_verification_code_loop.py:346: AssertionError
+_ TestSyntheticFormPlan.test_without_the_bank_both_classes_are_honest_manual_steps _
+
+self = <test_sub008_answer_bank_seed_classes.TestSyntheticFormPlan object at 0x761c931e51f0>
+
+    def test_without_the_bank_both_classes_are_honest_manual_steps(self):
+        """RED-side control: with nothing banked the plan MUST still refuse —
+        this fix widens what the bank covers, it never invents an answer."""
+        from app.services.apply_executor import ManualStepRequired, build_form_fill_plan
+    
+        with pytest.raises(ManualStepRequired) as exc_info:
+            build_form_fill_plan(
+                SYNTHETIC_FORM_HTML, channel="greenhouse", profile=PROFILE
+            )
+        assert exc_info.value.reason == "unknown_required_question"
+        question = exc_info.value.question or ""
+>       assert "How did you hear" in question
+E       AssertionError: assert 'How did you hear' in 'I certify that the information provided in this application is true and complete.'
+
+tests/test_sub008_answer_bank_seed_classes.py:394: AssertionError
+_ TestSyntheticFormPlan.test_the_seeded_bank_removes_the_manual_step_entirely __
+
+self = <test_sub008_answer_bank_seed_classes.TestSyntheticFormPlan object at 0x761c931e5520>
+
+    def test_the_seeded_bank_removes_the_manual_step_entirely(self):
+        from app.services.answer_bank import build_resolver
+        from app.services.apply_executor import build_form_fill_plan
+    
+        plan = build_form_fill_plan(
+            SYNTHETIC_FORM_HTML,
+            channel="greenhouse",
+            profile=PROFILE,
+            answer_bank=build_resolver(_seeded_bank()),
+        )
+        assert plan["unanswerable_required"] == []
+        values = {f["name"]: f["value"] for f in plan["fields"]}
+>       assert values["question_88001"] == USER_REFERRAL_ANSWER
+E       AssertionError: assert 'Other' == 'LinkedIn Job... I apply for.'
+E         
+E         - LinkedIn Jobs — that is where I find most of the roles I apply for.
+E         + Other
+
+tests/test_sub008_answer_bank_seed_classes.py:409: AssertionError
+______ TestSyntheticFormPlan.test_every_auto_answer_carries_its_audit_row ______
+
+self = <test_sub008_answer_bank_seed_classes.TestSyntheticFormPlan object at 0x761c931e5850>
+
+    def test_every_auto_answer_carries_its_audit_row(self):
+        from app.services.answer_bank import build_resolver
+        from app.services.apply_executor import build_form_fill_plan
+    
+        plan = build_form_fill_plan(
+            SYNTHETIC_FORM_HTML,
+            channel="greenhouse",
+            profile=PROFILE,
+            answer_bank=build_resolver(_seeded_bank()),
+        )
+        audit = {row["fieldName"]: row for row in plan["answerBankAudit"]}
+>       assert set(audit) == {"question_88001", "question_88002"}
+E       AssertionError: assert {'question_88002'} == {'question_88...estion_88002'}
+E         
+E         Extra items in the right set:
+E         'question_88001'
+E         Use -v to get more diff
+
+tests/test_sub008_answer_bank_seed_classes.py:423: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_never_submits_a_form_that_wipes_the_fill
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_blocks_a_post_snapshot_conditional_field_with_no_answer
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_answers_a_post_snapshot_conditional_field_from_the_answer_bank
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_refills_a_field_wiped_by_a_file_upload
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_never_submits_over_a_field_the_gate_refill_reveals
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_converges_and_submits_when_gate_refill_reveal_is_answerable
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_never_submits_over_a_known_field_that_turns_required_live
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_converges_and_submits_when_the_toggled_field_is_answerable
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_never_submits_over_an_unanswerable_iframe_required_field
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_resolves_and_submits_an_answerable_iframe_required_field
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_never_submits_over_an_unanswerable_shadow_dom_required_field
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_resolves_and_submits_an_answerable_shadow_dom_required_field
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_never_submits_over_a_field_revealed_at_mousedown_on_submit
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_refuses_when_the_guards_own_installation_throws
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_refuses_when_the_composed_census_itself_throws
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_refuses_a_closed_shadow_root_with_zero_external_signal
+FAILED tests/test_cli_sub005_fill_commit.py::test_live_submitter_never_submits_over_a_field_revealed_inside_the_forms_own_submit_handler
+FAILED tests/test_u5d4_verification_code_loop.py::test_verification_gate_never_bypasses_the_r7_submission_guard
+FAILED tests/test_sub008_answer_bank_seed_classes.py::TestSyntheticFormPlan::test_without_the_bank_both_classes_are_honest_manual_steps
+FAILED tests/test_sub008_answer_bank_seed_classes.py::TestSyntheticFormPlan::test_the_seeded_bank_removes_the_manual_step_entirely
+FAILED tests/test_sub008_answer_bank_seed_classes.py::TestSyntheticFormPlan::test_every_auto_answer_carries_its_audit_row
+21 failed, 95 passed in 148.28s (0:02:28)

@@ -1,0 +1,1163 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e tests/a11y tests/visual tests/monochrome --workers=4 --reporter=line
+
+[2mRunning [22m170[2m tests using [22m4[2m workers[22m
+
+[1A[2K[1/170] [chromium] › tests/a11y/accessibility.spec.ts:85:7 › A11y: axe-core Accessibility Audit › A11Y-01: Full page passes axe check (wcag2a + wcag2aa + wcag21a + wcag21aa)
+[1A[2K[2/170] [chromium] › tests/a11y/accessibility.spec.ts:109:7 › A11y: axe-core Accessibility Audit › A11Y-03: About section passes axe check
+[1A[2K[3/170] [chromium] › tests/a11y/accessibility.spec.ts:104:7 › A11y: axe-core Accessibility Audit › A11Y-02: Hero section passes axe check
+[1A[2K[4/170] [chromium] › tests/a11y/accessibility.spec.ts:114:7 › A11y: axe-core Accessibility Audit › A11Y-04: Experience section passes axe check
+[1A[2K[5/170] [chromium] › tests/a11y/accessibility.spec.ts:119:7 › A11y: axe-core Accessibility Audit › A11Y-05: Skills section passes axe check
+[1A[2K[6/170] [chromium] › tests/a11y/accessibility.spec.ts:124:7 › A11y: axe-core Accessibility Audit › A11Y-06: Vitrine rail passes axe check, including scrollable-region-focusable
+[1A[2K[7/170] [chromium] › tests/a11y/accessibility.spec.ts:129:7 › A11y: axe-core Accessibility Audit › A11Y-07: Listen (closing) section passes axe check
+[1A[2K[8/170] [chromium] › tests/a11y/accessibility.spec.ts:134:7 › A11y: axe-core Accessibility Audit › A11Y-08: Navigation overlay (open state) passes axe check
+[1A[2K[9/170] [chromium] › tests/a11y/accessibility.spec.ts:145:7 › A11y: axe-core Accessibility Audit › A11Y-09: Tab moves focus forward through real, visible controls
+[1A[2K[10/170] [chromium] › tests/a11y/accessibility.spec.ts:175:7 › A11y: axe-core Accessibility Audit › A11Y-10: Keyboard Escape closes the nav overlay and returns focus to the toggle
+[1A[2K[11/170] [chromium] › tests/a11y/accessibility.spec.ts:189:7 › A11y: axe-core Accessibility Audit › A11Y-11: The page exposes one navigation landmark and one main landmark
+[1A[2K[12/170] [chromium] › tests/a11y/accessibility.spec.ts:195:7 › A11y: axe-core Accessibility Audit › A11Y-12: Every section is reachable by its own accessible name
+[1A[2K[13/170] [chromium] › tests/a11y/accessibility.spec.ts:209:7 › A11y: axe-core Accessibility Audit › A11Y-13: Images have alt text, links and buttons have discernible names
+[1A[2K[14/170] [chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited
+[1A[2K[15/170] [chromium] › tests/a11y/gold-contrast.spec.ts:328:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-02: every skills status label clears 4.5:1
+[1A[2K[16/170] [chromium] › tests/a11y/gold-contrast.spec.ts:343:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-03: no gold text is ever painted on an --ink-500 ground
+[1A[2K[2m[chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited[22m
+
+=== GC-01 live repository URLs (#vitrine) ===
+
+[1A[2K  "https://aether.srv1356245.hstgr.cloud"  2.37:1  (fg #5b4d26 on modal bg #0b0b0b, 12px/400, opacity chain 0.42, ground rgb(10, 10, 10); spread 2.36–2.38:1)
+
+[1A[2K  "https://abentertainment.com.au"  8.66:1  (fg #c9a84c on modal bg #0a0a0a, 12px/400, opacity chain 1, ground rgb(10, 10, 10); spread 8.71–8.66:1)
+
+[1A[2K  "https://forgotten-mistory.web.app"  2.38:1  (fg #5b4e27 on modal bg #0c0c0c, 12px/400, opacity chain 0.42, ground rgb(10, 10, 10); spread 2.36–2.38:1)
+
+[1A[2K[2m[chromium] › tests/a11y/gold-contrast.spec.ts:328:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-02: every skills status label clears 4.5:1[22m
+
+=== GC-02 status labels (#skills) ===
+
+[1A[2K  "measured in production"  4.69:1  (fg #7d7d7d on modal bg #0e0e0e, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 4.72–4.65:1)
+
+[1A[2K  "measured in production"  4.69:1  (fg #7d7d7d on modal bg #0e0e0e, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 4.72–4.65:1)
+
+[1A[2K  "measured in production"  4.69:1  (fg #7d7d7d on modal bg #0e0e0f, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 4.72–4.65:1)
+
+[1A[2K  "measured in production"  4.69:1  (fg #7d7d7d on modal bg #0e0e0f, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 4.72–4.66:1)
+
+[1A[2K  "measured in production"  4.69:1  (fg #7d7d7d on modal bg #0e0e0f, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 4.72–4.66:1)
+
+[1A[2K  "measured in production"  4.69:1  (fg #7d7d7d on modal bg #0e0e0f, 12px/400, opacity chain 1, ground rgba(245, 245, 245, 0.016); spread 4.72–1.45:1)
+
+[1A[2K[31m  1) [chromium] › tests/a11y/gold-contrast.spec.ts:293:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-01: every live repository URL clears 4.5:1 as composited [39m
+
+    Error: gold is the site's evidence mark; a reader who cannot read it cannot check the evidence
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "https://aether.srv1356245.hstgr.cloud = 2.37:1 (needs 4.5:1)",[39m
+    [31m+   "https://forgotten-mistory.web.app = 2.38:1 (needs 4.5:1)",[39m
+    [31m+ ][39m
+
+    [0m [90m 323 |[39m       failures[33m.[39mmap((m) [33m=>[39m [32m`${m.label} = ${r2(m.ratio)}:1 (needs ${AA_TEXT}:1)`[39m)[33m,[39m
+     [90m 324 |[39m       [32m'gold is the site\'s evidence mark; a reader who cannot read it cannot check the evidence'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 325 |[39m     )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 326 |[39m   })[33m;[39m
+     [90m 327 |[39m
+     [90m 328 |[39m   test([32m'GC-02: every skills status label clears 4.5:1'[39m[33m,[39m [36masync[39m ({ page }) [33m=>[39m {[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/gold-contrast.spec.ts:325:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-gold-contrast-WCAG-2--1078e--clears-4-5-1-as-composited-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-gold-contrast-WCAG-2--1078e--clears-4-5-1-as-composited-chromium/error-context.md[22m
+
+
+[1A[2K[17/170] [chromium] › tests/a11y/interaction-states.spec.ts:389:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-MINIVIC — the clone panel paints a designed focus ring on every control
+[1A[2K[2m[chromium] › tests/a11y/gold-contrast.spec.ts:343:7 › WCAG 2.1 AA — composited contrast of the gold and grey marks › GC-03: no gold text is ever painted on an --ink-500 ground[22m
+
+=== GC-03 gold-on---ink-500 sweep === 0 offender(s)
+
+[1A[2K[18/170] [chromium] › tests/a11y/interaction-states.spec.ts:415:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-REDUCED-MOTION — the focus ring survives prefers-reduced-motion
+[1A[2K[19/170] [chromium] › tests/a11y/interaction-states.spec.ts:362:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS — every focusable element paints a designed focus ring
+[1A[2K[20/170] [chromium] › tests/a11y/interaction-states.spec.ts:437:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-DISABLED — disabled controls carry the locked disabled treatment
+[1A[2K[21/170] [chromium] › tests/a11y/interaction-states.spec.ts:471:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-CURSOR — no interactive element renders the browser-default cursor
+[1A[2K[22/170] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Hero keeps a parallel reduced-motion choreography
+[1A[2K[23/170] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › About keeps a parallel reduced-motion choreography
+[1A[2K[24/170] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Experience keeps a parallel reduced-motion choreography
+[1A[2K[25/170] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Skills keeps a parallel reduced-motion choreography
+[1A[2K[26/170] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Vitrine keeps a parallel reduced-motion choreography
+[1A[2K[31m  2) [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Experience keeps a parallel reduced-motion choreography [39m
+
+    Error: RM-1 Experience: 0 element(s) carry an opacity entrance under prefers-reduced-motion; a sequenced reveal needs at least three. R-46 requires a parallel choreography, not silence.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 466 |[39m             [32m`choreography, not silence.`[39m[33m,[39m
+     [90m 467 |[39m         )
+    [31m[1m>[22m[39m[90m 468 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 469 |[39m
+     [90m 470 |[39m       [90m// Every fade runs long enough to be perceived — a 0.001 ms "animation" is[39m
+     [90m 471 |[39m       [90m// the kill switch wearing the choreography's clothes.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:468:10[22m
+
+    Error: RM-1 Experience: the entrance is staggered across 0 distinct delay(s) (none ms). A choreography needs an order, not a single cue.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 489 |[39m             [32m`(${delays.join(', ') || 'none'} ms). A choreography needs an order, not a single cue.`[39m[33m,[39m
+     [90m 490 |[39m         )
+    [31m[1m>[22m[39m[90m 491 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 492 |[39m       [36mif[39m (delays[33m.[39mlength [33m>[39m [35m0[39m) {
+     [90m 493 |[39m         expect[33m.[39msoft([33mMath[39m[33m.[39mmin([33m...[39mdelays)[33m,[39m [32m`RM-1 ${section.name}: negative entrance delay`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+     [90m 494 |[39m         expect[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:491:10[22m
+
+    Error: RM-3 Experience: a transition moves or resizes an element under reduced motion.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 10[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "span.Experience_roleChevron__MHozd@0 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@1 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@2 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@3 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@4 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@5 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@6 · transition transform 200ms",[39m
+    [31m+   "span.Experience_roleChevron__MHozd@7 · transition transform 200ms",[39m
+    [31m+ ][39m
+
+    [0m [90m 565 |[39m       expect
+     [90m 566 |[39m         [33m.[39msoft(movingTransitions[33m,[39m [32m`RM-3 ${section.name}: a transition moves or resizes an element under reduced motion.`[39m)
+    [31m[1m>[22m[39m[90m 567 |[39m         [33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 568 |[39m
+     [90m 569 |[39m       [90m// ── RM-4 · colour affordances survive ──────────────────────────────────[39m
+     [90m 570 |[39m       [36mconst[39m baseline [33m=[39m colourDurations(base)[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:567:10[22m
+
+    Error: RM-4 Experience: colour affordances are killed under reduced motion. A hover that changes colour causes no vestibular response and is the primary affordance signal; removing it makes the interface read as broken rather than calm (lock §4.3).
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 18[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@0 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@0 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@1 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@1 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@2 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@2 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@3 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@3 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@4 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@4 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@5 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@5 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@6 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@6 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackCompany__Fv6mI@7 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.Experience_trackYears__HHvoZ@7 · color: 200ms default → 0ms reduced",[39m
+    [31m+ ][39m
+
+    [0m [90m 589 |[39m             [32m`the interface read as broken rather than calm (lock §4.3).`[39m[33m,[39m
+     [90m 590 |[39m         )
+    [31m[1m>[22m[39m[90m 591 |[39m         [33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 592 |[39m     })[33m;[39m
+     [90m 593 |[39m   }
+     [90m 594 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:591:10[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-10f77-reduced-motion-choreography-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-10f77-reduced-motion-choreography-chromium/test-failed-2.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+
+[1A[2K[31m  3) [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › About keeps a parallel reduced-motion choreography [39m
+
+    Error: RM-1 About: 0 element(s) carry an opacity entrance under prefers-reduced-motion; a sequenced reveal needs at least three. R-46 requires a parallel choreography, not silence.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 466 |[39m             [32m`choreography, not silence.`[39m[33m,[39m
+     [90m 467 |[39m         )
+    [31m[1m>[22m[39m[90m 468 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 469 |[39m
+     [90m 470 |[39m       [90m// Every fade runs long enough to be perceived — a 0.001 ms "animation" is[39m
+     [90m 471 |[39m       [90m// the kill switch wearing the choreography's clothes.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:468:10[22m
+
+    Error: RM-1 About: the entrance is staggered across 0 distinct delay(s) (none ms). A choreography needs an order, not a single cue.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 489 |[39m             [32m`(${delays.join(', ') || 'none'} ms). A choreography needs an order, not a single cue.`[39m[33m,[39m
+     [90m 490 |[39m         )
+    [31m[1m>[22m[39m[90m 491 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 492 |[39m       [36mif[39m (delays[33m.[39mlength [33m>[39m [35m0[39m) {
+     [90m 493 |[39m         expect[33m.[39msoft([33mMath[39m[33m.[39mmin([33m...[39mdelays)[33m,[39m [32m`RM-1 ${section.name}: negative entrance delay`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+     [90m 494 |[39m         expect[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:491:10[22m
+
+    Error: RM-4 About: colour affordances are killed under reduced motion. A hover that changes colour causes no vestibular response and is the primary affordance signal; removing it makes the interface read as broken rather than calm (lock §4.3).
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 53[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "path.Compass_sector__TsBZb@0 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@0 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@0 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@1 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@1 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@1 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@2 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@2 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@2 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@3 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@3 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@3 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@4 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@4 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@4 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@5 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@5 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@5 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@6 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@6 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@6 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@7 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@7 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@7 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@8 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@8 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@8 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@9 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "path.Compass_sector__TsBZb@9 · stroke: 320ms default → 0ms reduced",[39m
+    [31m+   "text.Compass_numeral__9WSmf@9 · fill: 320ms default → 0ms reduced",[39m
+    [31m+   "p.About_instrumentCaption__AwuGh@0 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@0 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@0 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@1 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@1 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@2 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@2 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@3 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@3 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@4 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@4 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@5 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@5 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@6 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@6 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@7 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@7 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@8 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@8 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "li.About_item__fSusw@9 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "span.About_index__jV34H@9 · color: 200ms default → 0ms reduced",[39m
+    [31m+ ][39m
+
+    [0m [90m 589 |[39m             [32m`the interface read as broken rather than calm (lock §4.3).`[39m[33m,[39m
+     [90m 590 |[39m         )
+    [31m[1m>[22m[39m[90m 591 |[39m         [33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 592 |[39m     })[33m;[39m
+     [90m 593 |[39m   }
+     [90m 594 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:591:10[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-4ea5f-reduced-motion-choreography-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-4ea5f-reduced-motion-choreography-chromium/test-failed-2.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+
+[1A[2K[31m  4) [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Skills keeps a parallel reduced-motion choreography [39m
+
+    Error: RM-1 Skills: 0 element(s) carry an opacity entrance under prefers-reduced-motion; a sequenced reveal needs at least three. R-46 requires a parallel choreography, not silence.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 466 |[39m             [32m`choreography, not silence.`[39m[33m,[39m
+     [90m 467 |[39m         )
+    [31m[1m>[22m[39m[90m 468 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 469 |[39m
+     [90m 470 |[39m       [90m// Every fade runs long enough to be perceived — a 0.001 ms "animation" is[39m
+     [90m 471 |[39m       [90m// the kill switch wearing the choreography's clothes.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:468:10[22m
+
+    Error: RM-1 Skills: the entrance is staggered across 0 distinct delay(s) (none ms). A choreography needs an order, not a single cue.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 489 |[39m             [32m`(${delays.join(', ') || 'none'} ms). A choreography needs an order, not a single cue.`[39m[33m,[39m
+     [90m 490 |[39m         )
+    [31m[1m>[22m[39m[90m 491 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 492 |[39m       [36mif[39m (delays[33m.[39mlength [33m>[39m [35m0[39m) {
+     [90m 493 |[39m         expect[33m.[39msoft([33mMath[39m[33m.[39mmin([33m...[39mdelays)[33m,[39m [32m`RM-1 ${section.name}: negative entrance delay`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+     [90m 494 |[39m         expect[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:491:10[22m
+
+    Error: RM-4 Skills: colour affordances are killed under reduced motion. A hover that changes colour causes no vestibular response and is the primary affordance signal; removing it makes the interface read as broken rather than calm (lock §4.3).
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 11[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "button.Skills_filter__V1N_r@0 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@0 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@0 · background: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@1 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@1 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@1 · background: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@2 · color: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@2 · border-color: 200ms default → 0ms reduced",[39m
+    [31m+   "button.Skills_filter__V1N_r@2 · background: 200ms default → 0ms reduced",[39m
+    [31m+ ][39m
+
+    [0m [90m 589 |[39m             [32m`the interface read as broken rather than calm (lock §4.3).`[39m[33m,[39m
+     [90m 590 |[39m         )
+    [31m[1m>[22m[39m[90m 591 |[39m         [33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 592 |[39m     })[33m;[39m
+     [90m 593 |[39m   }
+     [90m 594 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:591:10[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-d01fa-reduced-motion-choreography-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-d01fa-reduced-motion-choreography-chromium/test-failed-2.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+
+[1A[2K[27/170] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Listen keeps a parallel reduced-motion choreography
+[1A[2K[31m  5) [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Vitrine keeps a parallel reduced-motion choreography [39m
+
+    Error: RM-1 Vitrine: 0 element(s) carry an opacity entrance under prefers-reduced-motion; a sequenced reveal needs at least three. R-46 requires a parallel choreography, not silence.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 466 |[39m             [32m`choreography, not silence.`[39m[33m,[39m
+     [90m 467 |[39m         )
+    [31m[1m>[22m[39m[90m 468 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 469 |[39m
+     [90m 470 |[39m       [90m// Every fade runs long enough to be perceived — a 0.001 ms "animation" is[39m
+     [90m 471 |[39m       [90m// the kill switch wearing the choreography's clothes.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:468:10[22m
+
+    Error: RM-1 Vitrine: the entrance is staggered across 0 distinct delay(s) (none ms). A choreography needs an order, not a single cue.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 489 |[39m             [32m`(${delays.join(', ') || 'none'} ms). A choreography needs an order, not a single cue.`[39m[33m,[39m
+     [90m 490 |[39m         )
+    [31m[1m>[22m[39m[90m 491 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 492 |[39m       [36mif[39m (delays[33m.[39mlength [33m>[39m [35m0[39m) {
+     [90m 493 |[39m         expect[33m.[39msoft([33mMath[39m[33m.[39mmin([33m...[39mdelays)[33m,[39m [32m`RM-1 ${section.name}: negative entrance delay`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+     [90m 494 |[39m         expect[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:491:10[22m
+
+    Error: RM-4 Vitrine: colour affordances are killed under reduced motion. A hover that changes colour causes no vestibular response and is the primary affordance signal; removing it makes the interface read as broken rather than calm (lock §4.3).
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 8[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "li.Vitrine_plate__p2JME@0 · border-color: 320ms default → 0ms reduced",[39m
+    [31m+   "li.Vitrine_plate__p2JME@1 · border-color: 320ms default → 0ms reduced",[39m
+    [31m+   "li.Vitrine_plate__p2JME@2 · border-color: 320ms default → 0ms reduced",[39m
+    [31m+   "li.Vitrine_plate__p2JME@3 · border-color: 320ms default → 0ms reduced",[39m
+    [31m+   "li.Vitrine_plate__p2JME@4 · border-color: 320ms default → 0ms reduced",[39m
+    [31m+   "li.Vitrine_plate__p2JME@5 · border-color: 320ms default → 0ms reduced",[39m
+    [31m+ ][39m
+
+    [0m [90m 589 |[39m             [32m`the interface read as broken rather than calm (lock §4.3).`[39m[33m,[39m
+     [90m 590 |[39m         )
+    [31m[1m>[22m[39m[90m 591 |[39m         [33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 592 |[39m     })[33m;[39m
+     [90m 593 |[39m   }
+     [90m 594 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:591:10[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-e7201-reduced-motion-choreography-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-e7201-reduced-motion-choreography-chromium/test-failed-2.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+
+[1A[2K[28/170] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:626:7 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › RM-5 no blanket universal kill switch survives in the shipped CSS
+[1A[2K[29/170] [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:595:7 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › RM-6 no infinite animation keeps running under reduce (the launcher status dot)
+[1A[2K[30/170] [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground
+[1A[2K[31/170] [chromium] › tests/e2e/about.spec.ts:36:7 › About › TC-ABOUT-01: all ten dimensions render, in the engine’s own order
+[1A[2K[32/170] [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+[1A[2K[31m  6) [chromium] › tests/a11y/reduced-motion-choreography.spec.ts:448:9 › Reduced-motion choreography (R-46 / R-101 / SC-27.1) › Listen keeps a parallel reduced-motion choreography [39m
+
+    Error: RM-1 Listen: 0 element(s) carry an opacity entrance under prefers-reduced-motion; a sequenced reveal needs at least three. R-46 requires a parallel choreography, not silence.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 466 |[39m             [32m`choreography, not silence.`[39m[33m,[39m
+     [90m 467 |[39m         )
+    [31m[1m>[22m[39m[90m 468 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 469 |[39m
+     [90m 470 |[39m       [90m// Every fade runs long enough to be perceived — a 0.001 ms "animation" is[39m
+     [90m 471 |[39m       [90m// the kill switch wearing the choreography's clothes.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:468:10[22m
+
+    Error: RM-1 Listen: the entrance is staggered across 0 distinct delay(s) (none ms). A choreography needs an order, not a single cue.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m3[39m
+    Received:    [31m0[39m
+
+    [0m [90m 489 |[39m             [32m`(${delays.join(', ') || 'none'} ms). A choreography needs an order, not a single cue.`[39m[33m,[39m
+     [90m 490 |[39m         )
+    [31m[1m>[22m[39m[90m 491 |[39m         [33m.[39mtoBeGreaterThanOrEqual([35m3[39m)[33m;[39m
+     [90m     |[39m          [31m[1m^[22m[39m
+     [90m 492 |[39m       [36mif[39m (delays[33m.[39mlength [33m>[39m [35m0[39m) {
+     [90m 493 |[39m         expect[33m.[39msoft([33mMath[39m[33m.[39mmin([33m...[39mdelays)[33m,[39m [32m`RM-1 ${section.name}: negative entrance delay`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m0[39m)[33m;[39m
+     [90m 494 |[39m         expect[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/reduced-motion-choreography.spec.ts:491:10[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-a1016-reduced-motion-choreography-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-reduced-motion-choreo-a1016-reduced-motion-choreography-chromium/test-failed-2.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+
+[1A[2K[33/170] [chromium] › tests/e2e/about.spec.ts:57:7 › About › TC-ABOUT-03: no dimension is given a score
+[1A[2K[34/170] [chromium] › tests/e2e/about.spec.ts:76:7 › About › TC-ABOUT-04: the dimensions name their source
+[1A[2K[35/170] [chromium] › tests/e2e/about.spec.ts:44:7 › About › TC-ABOUT-02: every dimension carries an answer and its evidence
+[1A[2K[36/170] [chromium] › tests/e2e/about.spec.ts:82:7 › About › TC-ABOUT-05: job-side dimensions are labelled as such
+[1A[2K[37/170] [chromium] › tests/e2e/about.spec.ts:95:7 › About › TC-ABOUT-06: each dimension is keyboard reachable
+[1A[2K[38/170] [chromium] › tests/e2e/about.spec.ts:102:7 › About › TC-ABOUT-07: the section is complete without WebGL
+[1A[2K[39/170] [chromium] › tests/e2e/boot-failsafe.spec.ts:24:7 › the hero without JavaScript › the name, positioning and statement are visible
+[1A[2K[40/170] [chromium] › tests/e2e/boot-failsafe.spec.ts:38:7 › the hero without JavaScript › the evidence ledger is intact
+[1A[2K[41/170] [chromium] › tests/e2e/boot-failsafe.spec.ts:44:7 › the hero without JavaScript › both actions still work as links
+[1A[2K[42/170] [chromium] › tests/e2e/boot-failsafe.spec.ts:52:7 › the hero without JavaScript › nothing covers the viewport
+[1A[2K[43/170] [chromium] › tests/e2e/chatbot.spec.ts:77:7 › E2E: MiniVicBot Chatbot › TC-BOT-01: MiniVicBot toggle button is visible on the page
+[1A[2K[44/170] [chromium] › tests/e2e/chatbot.spec.ts:85:7 › E2E: MiniVicBot Chatbot › TC-BOT-02: Opening MiniVic reveals the panel and chat input
+[1A[2K[45/170] [chromium] › tests/e2e/chatbot.spec.ts:93:7 › E2E: MiniVicBot Chatbot › TC-BOT-03: Opening MiniVic shows the curated quick prompts
+[1A[2K[46/170] [chromium] › tests/e2e/chatbot.spec.ts:103:7 › E2E: MiniVicBot Chatbot › TC-BOT-04: Closing MiniVic via the launcher hides the panel and clears greeting audio state
+[1A[2K[47/170] [chromium] › tests/e2e/chatbot.spec.ts:136:7 › E2E: MiniVicBot Chatbot › TC-BOT-05: MiniVicBot open/close cycle does not throw page errors
+[1A[2K[48/170] [chromium] › tests/e2e/chatbot.spec.ts:149:7 › E2E: MiniVicBot Chatbot › TC-BOT-06: MiniVic shell is a labelled dialog and takes focus when it opens
+[1A[2K[49/170] [chromium] › tests/e2e/chatbot.spec.ts:172:7 › E2E: MiniVicBot Chatbot › TC-BOT-07: The launcher announces which action it will perform
+[1A[2K[31m  7) [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground [39m
+
+    Error: 70 text node(s) below AA — worst ten:
+    1.74:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > div.Vitrine_plateHead__OEq9D:nth-of-type(1) > span.Vitrine_repo__MvlDQ:nth-of-type(2) — "ralph-loop-infinite" fg rgb(58,58,58) on bg rgb(10,10,10) @ 12px/400
+    1.74:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(3) > dt — "stack" fg rgb(58,58,58) on bg rgb(10,10,10) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > div.Vitrine_plateHead__OEq9D:nth-of-type(1) > span.Vitrine_repo__MvlDQ:nth-of-type(2) — "aether-job-career-agent" fg rgb(59,59,59) on bg rgb(11,11,11) @ 12px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(1) > dt — "commits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(2) > dt — "active" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(3) > dt — "stack" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(1) > p.Vitrine_limits__WugAS:nth-of-type(2) > span.Vitrine_limitsLabel__19XEy — "Limits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(1) > dt — "commits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > dl.Vitrine_metrics__6A_Mo > div.Vitrine_metric__nxRbR:nth-of-type(2) > dt — "active" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+    1.76:1 (needs 4.5) [vitrine] section#vitrine > ol.Vitrine_rail__UCX1h > li.Vitrine_plate__p2JME:nth-of-type(3) > p.Vitrine_limits__WugAS:nth-of-type(2) > span.Vitrine_limitsLabel__19XEy — "Limits" fg rgb(59,59,59) on bg rgb(11,11,11) @ 11px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m70[39m
+
+    [0m [90m 285 |[39m         )
+     [90m 286 |[39m         [33m.[39mjoin([32m'\n'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 287 |[39m       expect(failures[33m.[39mlength[33m,[39m [32m`${failures.length} text node(s) below AA — worst ten:\n${report}`[39m)[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m     |[39m                                                                                                   [31m[1m^[22m[39m
+     [90m 288 |[39m     })[33m;[39m
+     [90m 289 |[39m   }
+     [90m 290 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/text-contrast.spec.ts:287:99[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-text-contrast-Text-co-24c3f--against-its-sampled-ground-chromium/error-context.md[22m
+
+
+[1A[2K[50/170] [chromium] › tests/e2e/chatbot.spec.ts:212:7 › E2E: MiniVicBot Chatbot › TC-BOT-09: Mobile shell stays inside the viewport with composer visible
+[1A[2K[51/170] [chromium] › tests/e2e/chatbot.spec.ts:227:7 › E2E: MiniVicBot Chatbot › TC-BOT-10: A question gets exactly one answer, and the composing state clears
+[1A[2K[52/170] [chromium] › tests/e2e/chatbot.spec.ts:257:7 › E2E: MiniVicBot Chatbot › TC-BOT-12: The open panel stacks above the launcher on its axis and never covers the h1
+[1A[2K[53/170] [chromium] › tests/e2e/chatbot.spec.ts:294:7 › E2E: MiniVicBot Chatbot › TC-BOT-11: The transcript controls are present and say what they do
+[1A[2K[31m  8) [chromium] › tests/a11y/text-contrast.spec.ts:275:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground [39m
+
+    Error: 34 text node(s) below AA — worst ten:
+    1.15:1 (needs 4.5) [hero] section#hero > div.Hero_inner__2iGTj:nth-of-type(2) > div.Hero_actions___rnwN:nth-of-type(2) > a.Hero_primaryAction__SBJFA:nth-of-type(1) — "See the evidence" fg rgb(10,10,10) on bg rgb(26,27,29) @ 15.09px/500
+    1.81:1 (needs 4.5) [experience] div#role-body-ato > ul.Experience_bullets__MDbij > li:nth-of-type(5) — "Authored the executive change request re-baselin" fg rgb(205,205,205) on bg rgb(152,152,156) @ 15.09px/400
+    3.21:1 (needs 4.5) [about] div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_rose__PW3GF:nth-of-type(1) > g:nth-of-type(9) > text.Compass_numeral__9WSmf — "09" fg rgb(215,214,206) on bg rgb(121,117,86) @ 3.4px/400
+    3.31:1 (needs 4.5) [about] div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_rose__PW3GF:nth-of-type(1) > g:nth-of-type(5) > text.Compass_numeral__9WSmf — "05" fg rgb(213,213,205) on bg rgb(114,115,83) @ 3.4px/400
+    3.68:1 (needs 4.5) [about] ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(9) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_ > span.Caliper_value__usbAF:nth-of-type(2) — "measured from the role" fg rgb(129,129,129) on bg rgb(42,42,43) @ 11.098px/400
+    3.73:1 (needs 4.5) [about] ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(7) > div.About_itemBody__sd_yL > h3.About_name__Ytdnm > span.Caliper_caliper__w4oUs.About_sideTag__gGn7_ > span.Caliper_value__usbAF:nth-of-type(2) — "measured from the role" fg rgb(129,129,129) on bg rgb(41,41,43) @ 11.098px/400
+    3.77:1 (needs 4.5) [about] div.About_inner__s8EsR > div.About_body__cuZQw > ol.About_list__aJ6X9 > li.About_item__fSusw:nth-of-type(5) > div.About_itemBody__sd_yL > p.About_evidence__WwIMJ:nth-of-type(2) — "5+ squads, 40+ practitioners onshore and offshor" fg rgb(125,125,125) on bg rgb(35,36,40) @ 11.098px/400
+    3.84:1 (needs 4.5) [about] div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_rose__PW3GF:nth-of-type(1) > g:nth-of-type(6) > text.Compass_numeral__9WSmf — "06" fg rgb(203,211,212) on bg rgb(72,107,109) @ 3.4px/400
+    3.89:1 (needs 4.5) [about] div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_rose__PW3GF:nth-of-type(1) > g:nth-of-type(4) > text.Compass_numeral__9WSmf — "04" fg rgb(207,211,209) on bg rgb(88,104,98) @ 3.4px/400
+    3.91:1 (needs 4.5) [about] div.About_instrument__Wn_am > div.About_instrumentStage__otsrl > svg.Compass_compass__KU_lT > g.Compass_rose__PW3GF:nth-of-type(1) > g:nth-of-type(8) > text.Compass_numeral__9WSmf — "08" fg rgb(206,210,209) on bg rgb(87,103,97) @ 3.4px/400
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m0[39m
+    Received: [31m34[39m
+
+    [0m [90m 285 |[39m         )
+     [90m 286 |[39m         [33m.[39mjoin([32m'\n'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 287 |[39m       expect(failures[33m.[39mlength[33m,[39m [32m`${failures.length} text node(s) below AA — worst ten:\n${report}`[39m)[33m.[39mtoBe([35m0[39m)[33m;[39m
+     [90m     |[39m                                                                                                   [31m[1m^[22m[39m
+     [90m 288 |[39m     })[33m;[39m
+     [90m 289 |[39m   }
+     [90m 290 |[39m })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/a11y/text-contrast.spec.ts:287:99[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-text-contrast-Text-co-2adeb--against-its-sampled-ground-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-text-contrast-Text-co-2adeb--against-its-sampled-ground-chromium/error-context.md[22m
+
+
+[1A[2K[54/170] [chromium] › tests/e2e/chatbot.spec.ts:190:7 › E2E: MiniVicBot Chatbot › TC-BOT-08: Persona selector is a pressed-state toggle group with one active mode
+[1A[2K[55/170] [chromium] › tests/e2e/clone-voice.spec.ts:63:7 › TC-FR-VOICE: Voiceover system › voiceover controller starts muted, before any gesture
+[1A[2K[56/170] [chromium] › tests/e2e/clone-voice.spec.ts:78:7 › TC-FR-VOICE: Voiceover system › voiceover controller respects the mute toggle once initialised
+[1A[2K[57/170] [chromium] › tests/e2e/clone-voice.spec.ts:104:7 › TC-FR-VOICE: Voiceover system › voiceover controller fires each section cue exactly once
+[1A[2K[58/170] [chromium] › tests/e2e/clone-voice.spec.ts:124:7 › TC-FR-VOICE: Voiceover system › voiceover controller ambient bed starts and stops
+[1A[2K[59/170] [chromium] › tests/e2e/clone-voice.spec.ts:54:7 › TC-FR-VOICE: Voiceover system › voiceover controller is attached to window by the layout provider
+[1A[2K[31m  9) [chromium] › tests/e2e/chatbot.spec.ts:257:7 › E2E: MiniVicBot Chatbot › TC-BOT-12: The open panel stacks above the launcher on its axis and never covers the h1 [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveCSS[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('.minivic-quickstrip')
+    Expected pattern: [32m/x proximity/[39m
+    Received string:  [31m"x"[39m
+    Timeout: 15000ms
+
+    Call log:
+    [2m  - Expect "toHaveCSS" with timeout 15000ms[22m
+    [2m  - waiting for locator('.minivic-quickstrip')[22m
+    [2m    18 × locator resolved to <div class="minivic-quickstrip scrollbar-hide flex shrink-0 gap-2 overflow-x-auto border-t border-white/10 bg-black/25 px-3 py-2.5">…</div>[22m
+    [2m       - unexpected value "x"[22m
+
+
+    [0m [90m 284 |[39m
+     [90m 285 |[39m     [36mconst[39m strip [33m=[39m page[33m.[39mlocator([32m'.minivic-quickstrip'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 286 |[39m     [36mawait[39m expect(strip)[33m.[39mtoHaveCSS([32m'scroll-snap-type'[39m[33m,[39m [35m/x proximity/[39m)[33m;[39m
+     [90m     |[39m                         [31m[1m^[22m[39m
+     [90m 287 |[39m     [36mconst[39m mask [33m=[39m [36mawait[39m strip[33m.[39mevaluate((el) [33m=>[39m {
+     [90m 288 |[39m       [36mconst[39m cs [33m=[39m getComputedStyle(el)[33m;[39m
+     [90m 289 |[39m       [36mreturn[39m cs[33m.[39mmaskImage [33m!==[39m [32m'none'[39m [33m?[39m cs[33m.[39mmaskImage [33m:[39m cs[33m.[39mwebkitMaskImage[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/chatbot.spec.ts:286:25[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-chatbot-E2E-MiniVicBot-64312-xis-and-never-covers-the-h1-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-chatbot-E2E-MiniVicBot-64312-xis-and-never-covers-the-h1-chromium/error-context.md[22m
+
+
+[1A[2K[60/170] [chromium] › tests/e2e/clone-voice.spec.ts:179:7 › TC-FR-VOICE-DYN: Dynamic voiceover cues › the cue log records triggered sections in order
+[1A[2K[61/170] [chromium] › tests/e2e/clone-voice.spec.ts:202:7 › TC-FR-VOICE-DYN: Dynamic voiceover cues › under reduced motion the controller refuses to initialise audio at all
+[1A[2K[62/170] [chromium] › tests/e2e/contact.spec.ts:20:7 › E2E: Contact Section › TC-CONTACT-01: Contact section renders with ID and headline
+[1A[2K[63/170] [chromium] › tests/e2e/contact.spec.ts:29:7 › E2E: Contact Section › TC-CONTACT-02: Book a conversation CTA is visible
+[1A[2K[64/170] [chromium] › tests/e2e/contact.spec.ts:37:7 › E2E: Contact Section › TC-CONTACT-03: Download CV link is visible
+[1A[2K[65/170] [chromium] › tests/e2e/clone-voice.spec.ts:159:7 › TC-FR-VOICE-DYN: Dynamic voiceover cues › a gsap:<section>:enter event reaches the controller as a cue
+[1A[2K[66/170] [chromium] › tests/e2e/contact.spec.ts:45:7 › E2E: Contact Section › TC-CONTACT-04: Email card renders with correct address
+[1A[2K[31m  10) [chromium] › tests/e2e/contact.spec.ts:20:7 › E2E: Contact Section › TC-CONTACT-01: Contact section renders with ID and headline [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:21:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-Se-af1e6-enders-with-ID-and-headline-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-Se-af1e6-enders-with-ID-and-headline-chromium/error-context.md[22m
+
+
+[1A[2K[67/170] [chromium] › tests/e2e/contact.spec.ts:51:7 › E2E: Contact Section › TC-CONTACT-05: Phone card renders
+[1A[2K[31m  11) [chromium] › tests/e2e/contact.spec.ts:29:7 › E2E: Contact Section › TC-CONTACT-02: Book a conversation CTA is visible [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:30:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-Se-15db2-conversation-CTA-is-visible-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-Se-15db2-conversation-CTA-is-visible-chromium/error-context.md[22m
+
+
+[1A[2K[31m  12) [chromium] › tests/e2e/contact.spec.ts:37:7 › E2E: Contact Section › TC-CONTACT-03: Download CV link is visible [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:38:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-Se-10c6b-Download-CV-link-is-visible-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-Se-10c6b-Download-CV-link-is-visible-chromium/error-context.md[22m
+
+
+[1A[2K[68/170] [chromium] › tests/e2e/contact.spec.ts:57:7 › E2E: Contact Section › TC-CONTACT-06: Email link uses mailto protocol
+[1A[2K[69/170] [chromium] › tests/e2e/contact.spec.ts:65:7 › E2E: Contact Section › TC-CONTACT-07: Social links render — GitHub and YouTube
+[1A[2K[31m  13) [chromium] › tests/e2e/contact.spec.ts:45:7 › E2E: Contact Section › TC-CONTACT-04: Email card renders with correct address [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:46:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-Se-e2690-enders-with-correct-address-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-Se-e2690-enders-with-correct-address-chromium/error-context.md[22m
+
+
+[1A[2K[70/170] [chromium] › tests/e2e/contact.spec.ts:72:7 › E2E: Contact Section › TC-CONTACT-09: LinkedIn social link renders in contact section (D-CONTACT-01)
+[1A[2K[31m  14) [chromium] › tests/e2e/contact.spec.ts:51:7 › E2E: Contact Section › TC-CONTACT-05: Phone card renders [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:52:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-Se-595ff-NTACT-05-Phone-card-renders-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-Se-595ff-NTACT-05-Phone-card-renders-chromium/error-context.md[22m
+
+
+[1A[2K[71/170] [chromium] › tests/e2e/contact.spec.ts:81:7 › E2E: Contact Section › TC-CONTACT-08: Contact card icons render (Mail and Phone)
+[1A[2K[31m  15) [chromium] › tests/e2e/contact.spec.ts:57:7 › E2E: Contact Section › TC-CONTACT-06: Email link uses mailto protocol [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:58:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-Se-9000d-l-link-uses-mailto-protocol-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-Se-9000d-l-link-uses-mailto-protocol-chromium/error-context.md[22m
+
+
+[1A[2K[31m  16) [chromium] › tests/e2e/contact.spec.ts:65:7 › E2E: Contact Section › TC-CONTACT-07: Social links render — GitHub and YouTube [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:66:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-Se-69d21-render-—-GitHub-and-YouTube-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-Se-69d21-render-—-GitHub-and-YouTube-chromium/error-context.md[22m
+
+
+[1A[2K[72/170] [chromium] › tests/e2e/contact.spec.ts:105:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-10: message form renders inside #contact with all three fields
+[1A[2K[73/170] [chromium] › tests/e2e/contact.spec.ts:115:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-11: labels are associated and fields carry required/autocomplete
+[1A[2K[31m  17) [chromium] › tests/e2e/contact.spec.ts:72:7 › E2E: Contact Section › TC-CONTACT-09: LinkedIn social link renders in contact section (D-CONTACT-01) [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:73:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-Se-2c815-ntact-section-D-CONTACT-01--chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-Se-2c815-ntact-section-D-CONTACT-01--chromium/error-context.md[22m
+
+
+[1A[2K[74/170] [chromium] › tests/e2e/contact.spec.ts:140:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-12: an invalid email is rejected client-side with aria-describedby error text
+[1A[2K[31m  18) [chromium] › tests/e2e/contact.spec.ts:81:7 › E2E: Contact Section › TC-CONTACT-08: Contact card icons render (Mail and Phone) [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:82:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-Se-16085-cons-render-Mail-and-Phone--chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-Se-16085-cons-render-Mail-and-Phone--chromium/error-context.md[22m
+
+
+[1A[2K[75/170] [chromium] › tests/e2e/contact.spec.ts:162:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-13: a confirmed 2xx moves idle -> submitting -> sent
+[1A[2K[31m  19) [chromium] › tests/e2e/contact.spec.ts:105:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-10: message form renders inside #contact with all three fields [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:106:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-me-e8f1a-ntact-with-all-three-fields-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-me-e8f1a-ntact-with-all-three-fields-chromium/error-context.md[22m
+
+
+[1A[2K[76/170] [chromium] › tests/e2e/contact.spec.ts:185:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-14: a 404 endpoint yields a truthful failure, not a fake success
+[1A[2K[31m  20) [chromium] › tests/e2e/contact.spec.ts:115:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-11: labels are associated and fields carry required/autocomplete [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:116:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-me-0fca5-carry-required-autocomplete-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-me-0fca5-carry-required-autocomplete-chromium/error-context.md[22m
+
+
+[1A[2K[77/170] [chromium] › tests/e2e/contact.spec.ts:211:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-15: a 200 that is not a confirmed delivery still fails truthfully
+[1A[2K[31m  21) [chromium] › tests/e2e/contact.spec.ts:140:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-12: an invalid email is rejected client-side with aria-describedby error text [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:141:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-me-e74ff-aria-describedby-error-text-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-me-e74ff-aria-describedby-error-text-chromium/error-context.md[22m
+
+
+[1A[2K[78/170] [chromium] › tests/e2e/contact.spec.ts:227:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-16: keyboard-only completion works end to end
+[1A[2K[31m  22) [chromium] › tests/e2e/contact.spec.ts:162:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-13: a confirmed 2xx moves idle -> submitting -> sent [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:163:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-me-bdec0-es-idle---submitting---sent-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-me-bdec0-es-idle---submitting---sent-chromium/error-context.md[22m
+
+
+[1A[2K[79/170] [chromium] › tests/e2e/contact.spec.ts:247:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-17: raw email + LinkedIn are always rendered as copyable text
+[1A[2K[31m  23) [chromium] › tests/e2e/contact.spec.ts:185:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-14: a 404 endpoint yields a truthful failure, not a fake success [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:186:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-me-6d295--failure-not-a-fake-success-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-me-6d295--failure-not-a-fake-success-chromium/error-context.md[22m
+
+
+[1A[2K[31m  24) [chromium] › tests/e2e/contact.spec.ts:211:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-15: a 200 that is not a confirmed delivery still fails truthfully [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:212:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-me-c03bf-very-still-fails-truthfully-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-me-c03bf-very-still-fails-truthfully-chromium/error-context.md[22m
+
+
+[1A[2K[80/170] [chromium] › tests/e2e/contact.spec.ts:261:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-18: reduced-motion renders the form with no send animation
+[1A[2K[81/170] [chromium] › tests/e2e/experience.spec.ts:21:7 › Experience › TC-EXP-01: every role from the CV appears in the chart and the list
+[1A[2K[31m  25) [chromium] › tests/e2e/contact.spec.ts:227:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-16: keyboard-only completion works end to end [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:228:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-me-8af9c-completion-works-end-to-end-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-me-8af9c-completion-works-end-to-end-chromium/error-context.md[22m
+
+
+[1A[2K[82/170] [chromium] › tests/e2e/experience.spec.ts:60:7 › Experience › TC-EXP-03: the axis is labelled with real years
+[1A[2K[83/170] [chromium] › tests/e2e/experience.spec.ts:41:7 › Experience › TC-EXP-02: bar lengths are proportional to real durations
+[1A[2K[84/170] [chromium] › tests/e2e/experience.spec.ts:67:7 › Experience › TC-EXP-04: each chart row is a real button with an accessible name
+[1A[2K[85/170] [chromium] › tests/e2e/experience.spec.ts:75:7 › Experience › TC-EXP-05: the current role opens by default and lists its bullets
+[1A[2K[86/170] [chromium] › tests/e2e/experience.spec.ts:82:7 › Experience › TC-EXP-06: roles expand and collapse from the keyboard
+[1A[2K[87/170] [chromium] › tests/e2e/experience.spec.ts:93:7 › Experience › TC-EXP-07: headline figures carry their role, not a bare number
+[1A[2K[88/170] [chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1280: every chart row, bar and readout lives inside the spine
+[1A[2K[89/170] [chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1440: every chart row, bar and readout lives inside the spine
+[1A[2K[90/170] [chromium] › tests/e2e/experience.spec.ts:103:9 › Experience › TC-EXP-09 @ 1920: every chart row, bar and readout lives inside the spine
+[1A[2K[91/170] [chromium] › tests/e2e/experience.spec.ts:154:7 › Experience › TC-EXP-10: the duration readouts are printed in --mist-200
+[1A[2K[92/170] [chromium] › tests/e2e/experience.spec.ts:172:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ
+[1A[2K[93/170] [chromium] › tests/e2e/experience.spec.ts:201:7 › Experience › TC-EXP-08: the section is complete without WebGL
+[1A[2K[31m  26) [chromium] › tests/e2e/experience.spec.ts:172:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ [39m
+
+    Error: bar 0 must not outshine ANZ
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: < [32m0[39m
+    Received:   [31m0[39m
+
+    [0m [90m 193 |[39m     [36mfor[39m ([36mlet[39m i [33m=[39m [35m0[39m[33m;[39m i [33m<[39m [35m8[39m[33m;[39m i [33m+=[39m [35m1[39m) {
+     [90m 194 |[39m       [36mif[39m (i [33m===[39m [35m2[39m) [36mcontinue[39m[33m;[39m
+    [31m[1m>[22m[39m[90m 195 |[39m       expect(brightness(fills[i])[33m,[39m [32m`bar ${i} must not outshine ANZ`[39m)[33m.[39mtoBeLessThan(anz)[33m;[39m
+     [90m     |[39m                                                                      [31m[1m^[22m[39m
+     [90m 196 |[39m       [90m// 0x90 = 144 at 0.85 ≈ 122 painted on a #131313 ground → ≥ 3:1 (1.4.11).[39m
+     [90m 197 |[39m       expect(brightness(fills[i])[33m,[39m [32m`bar ${i} fill must clear the non-text floor`[39m)[33m.[39mtoBeGreaterThanOrEqual([35m120[39m)[33m;[39m
+     [90m 198 |[39m     }[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/experience.spec.ts:195:70[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-experience-Experience--1cc8a--in-the-chart-and-it-is-ANZ-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-experience-Experience--1cc8a--in-the-chart-and-it-is-ANZ-chromium/error-context.md[22m
+
+
+[1A[2K[94/170] [chromium] › tests/e2e/github-feed-fallback.spec.ts:99:7 › E2E: GitHub feed rate-limit degradation › TC-GHFEED-02: a 403 on every endpoint degrades without throwing
+[1A[2K[95/170] [chromium] › tests/e2e/github-feed-fallback.spec.ts:63:7 › E2E: GitHub feed rate-limit degradation › TC-GHFEED-01: exhausted budget renders the dated snapshot and spends zero requests
+[1A[2K[31m  27) [chromium] › tests/e2e/contact.spec.ts:247:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-17: raw email + LinkedIn are always rendered as copyable text [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:248:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-me-8d6da-s-rendered-as-copyable-text-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-me-8d6da-s-rendered-as-copyable-text-chromium/error-context.md[22m
+
+
+[1A[2K[96/170] [chromium] › tests/e2e/github-feed-fallback.spec.ts:120:7 › E2E: GitHub feed rate-limit degradation › TC-GHFEED-03: the fallback shows only committed repositories, never invented ones
+[1A[2K[31m  28) [chromium] › tests/e2e/contact.spec.ts:261:7 › E2E: Contact message form (D-CONTACT-02) › TC-CONTACT-18: reduced-motion renders the form with no send animation [39m
+
+    [31mTest timeout of 60000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 60000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#contact')[22m
+
+
+    [0m [90m 12 |[39m   [90m// `.preloader` — it is React-owned. See tests/helpers/boot.ts.[39m
+     [90m 13 |[39m   [36mawait[39m settleBoot(page)[33m;[39m
+    [31m[1m>[22m[39m[90m 14 |[39m   [36mawait[39m page[33m.[39mlocator([32m'#contact'[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                                  [31m[1m^[22m[39m
+     [90m 15 |[39m }
+     [90m 16 |[39m
+     [90m 17 |[39m test[33m.[39mdescribe([32m'E2E: Contact Section'[39m[33m,[39m () [33m=>[39m {[0m
+    [2m    at gotoHome (/root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:14:34)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/wf_71e5419d-c2e-1/tests/e2e/contact.spec.ts:263:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-contact-E2E-Contact-me-0e96c-form-with-no-send-animation-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-contact-E2E-Contact-me-0e96c-form-with-no-send-animation-chromium/error-context.md[22m
+
+
+[1A[2K[97/170] [chromium] › tests/e2e/github-feed-fallback.spec.ts:148:7 › E2E: GitHub feed rate-limit degradation › TC-GHFEED-04: with budget available it makes exactly one repository request

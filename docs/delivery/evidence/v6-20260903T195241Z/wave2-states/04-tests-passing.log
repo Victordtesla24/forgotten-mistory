@@ -1,0 +1,52 @@
+===============================================================================
+ WAVE 2 · INTERACTION-STATE LIBRARY — TDD GREEN
+ Item        : R-49 / SC-30.1 (hover, focus, active, disabled, loading, empty;
+               zero browser-default states) · R-90 (no unstyled focus ring)
+ Role        : Implementer (§7.1)
+ Captured at : 2026-09-03T23:57:54Z
+ Commit      : e8d709d95ca1e4e488681f8acb325f17214de9d5  (working tree: this change, uncommitted)
+ Host        : Linux 7.0.0-30-generic · node v22.23.1 · Playwright Version 1.57.0
+ Server      : python3 -m http.server 5599 --directory out   (HTTP 200)
+===============================================================================
+
+===============================================================================
+ 1 · STATIC AUDIT — node scripts/validate/interaction_state_audit.mjs
+===============================================================================
+
+Interaction-state static audit — R-49 / R-90 / SC-30.1
+
+  PASS  IS-01  no focus indicator removed without a designed replacement (R-90)
+         no focus indicator is removed anywhere in app/ or components/
+
+  PASS  IS-02  state styling uses :focus-visible, never bare :focus (SC-30.1)
+         every focus treatment in app/ and components/ is :focus-visible
+
+  PASS  IS-03  the locked state library exists as token-valued :active and disabled rules (SC-30.1 §5.3)
+         10 :active rule(s) and 1 disabled rule(s), all token-valued
+
+  PASS  IS-04  every runtime-variable collection has a designed empty state (SC-30.1 §5.3)
+         both variable collections carry a zero-length branch
+
+  4/4 checks passed
+
+  exit code: 0
+
+===============================================================================
+ 2 · PLAYWRIGHT — the rendered states, asserted on computed values
+===============================================================================
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/interaction-states.spec.ts tests/e2e/interaction-states.spec.ts --reporter=list --workers=1
+
+Running 8 tests using 1 worker
+
+  ✓  1 [chromium] › tests/a11y/interaction-states.spec.ts:362:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS — every focusable element paints a designed focus ring (6.9s)
+  ✓  2 [chromium] › tests/a11y/interaction-states.spec.ts:389:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-MINIVIC — the clone panel paints a designed focus ring on every control (6.2s)
+  ✓  3 [chromium] › tests/a11y/interaction-states.spec.ts:415:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-REDUCED-MOTION — the focus ring survives prefers-reduced-motion (6.4s)
+  ✓  4 [chromium] › tests/a11y/interaction-states.spec.ts:437:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-DISABLED — disabled controls carry the locked disabled treatment (5.7s)
+  ✓  5 [chromium] › tests/a11y/interaction-states.spec.ts:471:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-CURSOR — no interactive element renders the browser-default cursor (4.6s)
+  ✓  6 [chromium] › tests/e2e/interaction-states.spec.ts:204:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-HOVER — every interactive element has a designed hover state (33.6s)
+  ✓  7 [chromium] › tests/e2e/interaction-states.spec.ts:248:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-ACTIVE — every interactive element has a designed pressed state (46.2s)
+  ✓  8 [chromium] › tests/e2e/interaction-states.spec.ts:325:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-LOADING — the clone announces and shows that it is composing (5.8s)
+
+  8 passed (1.9m)
+  playwright exit code: 0

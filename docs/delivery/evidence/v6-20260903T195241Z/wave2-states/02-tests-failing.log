@@ -1,0 +1,561 @@
+===============================================================================
+ WAVE 2 · INTERACTION-STATE LIBRARY — TDD RED CAPTURE
+ Item        : R-49 / SC-30.1 (designed hover, focus, active, disabled,
+               loading and empty states; zero browser-default states)
+               R-90 (unstyled focus rings are a prohibited anti-pattern)
+ Lock        : docs/delivery/evidence/v6-20260903T195241Z/design-system-lock.md §5
+ Role        : Test Author (§7.1) — tests written BEFORE any fix exists.
+ Captured at : 2026-09-03T21:00:53Z
+ Commit      : d1fce27f8a28ef6b4ef2df3bf77436e7f5be7bc5  (working tree: tests + validate script only)
+ Host        : Linux 7.0.0-30-generic · node v22.23.1 · Version 1.57.0
+ Chromium    : channel 'chrome' (playwright.config.ts, non-CI lane)
+===============================================================================
+
+Specs under test
+  tests/a11y/interaction-states.spec.ts   — focus rings, disabled treatment, cursor
+  tests/e2e/interaction-states.spec.ts    — hover, pressed, loading
+  scripts/validate/interaction_state_audit.mjs — focus-kill, bare :focus, state
+                                            library, empty branches (static)
+
+Build and server used for the capture (the gate battery's own arrangement;
+playwright.config.ts has no webServer and no globalSetup by design).
+
+  $ npm run build:static
+  $ python3 -m http.server 5599 --directory out &
+  $ PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test \
+        tests/a11y/interaction-states.spec.ts tests/e2e/interaction-states.spec.ts
+  $ node scripts/validate/interaction_state_audit.mjs
+
+Static export served for this run:
+  GET http://127.0.0.1:5599/  -> HTTP 200
+
+===============================================================================
+ 1 · STATIC AUDIT — node scripts/validate/interaction_state_audit.mjs
+===============================================================================
+
+Interaction-state static audit — R-49 / R-90 / SC-30.1
+
+  FAIL  IS-01  no focus indicator removed without a designed replacement (R-90)
+         app/globals.css:451 — `[data-outcome-card="true"]:hover, [data-outcome-card="true"]:focus-visible` removes the outline and paints no replacement
+         app/globals.css:770 — `#terminal-input` removes the outline and paints no replacement
+         app/globals.css:789 — `#mini-vic-input` removes the outline and paints no replacement
+         components/MiniVicBot.tsx:1199 — `focus:outline-none` with no `focus-visible:` ring on the same element
+         components/MiniVicBot.tsx:1475 — `focus:outline-none` with no `focus-visible:` ring on the same element
+
+  FAIL  IS-02  state styling uses :focus-visible, never bare :focus (SC-30.1)
+         app/globals.css:800 — `#mini-vic-input:focus` styles bare :focus; use :focus-visible
+         components/MiniVicBot.tsx:1199 — bare focus utilities focus:outline-none; use focus-visible:
+         components/MiniVicBot.tsx:1475 — bare focus utilities focus:border-white/45 focus:outline-none focus:ring-1 focus:ring-white/25; use focus-visible:
+
+  FAIL  IS-03  the locked state library exists as token-valued :active and disabled rules (SC-30.1 §5.3)
+         no `:disabled` / `[aria-disabled="true"]` rule exists in app/ or components/ — the disabled state is undefined site-wide
+
+  FAIL  IS-04  every runtime-variable collection has a designed empty state (SC-30.1 §5.3)
+         components/sections/Skills/Skills.tsx — no zero-length branch for `visible`: the capability table under the status filters (lock §5.3, "Skills filter returning no rows") renders a blank region when it is empty
+         components/MiniVicBot.tsx — no zero-length branch for `messages`: the clone transcript log (lock §5.3, "any surface whose fetch returns nothing") renders a blank region when it is empty
+
+  0/4 checks passed
+
+  exit code: 1
+
+===============================================================================
+ 2 · PLAYWRIGHT — the rendered states, asserted on computed values
+===============================================================================
+
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/interaction-states.spec.ts tests/e2e/interaction-states.spec.ts --reporter=list --workers=1
+
+Running 8 tests using 1 worker
+
+  ✘  1 [chromium] › tests/a11y/interaction-states.spec.ts:362:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS — every focusable element paints a designed focus ring (7.3s)
+  ✘  2 [chromium] › tests/a11y/interaction-states.spec.ts:389:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-MINIVIC — the clone panel paints a designed focus ring on every control (6.4s)
+  ✘  3 [chromium] › tests/a11y/interaction-states.spec.ts:415:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-REDUCED-MOTION — the focus ring survives prefers-reduced-motion (7.0s)
+  ✘  4 [chromium] › tests/a11y/interaction-states.spec.ts:437:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-DISABLED — disabled controls carry the locked disabled treatment (6.7s)
+  ✘  5 [chromium] › tests/a11y/interaction-states.spec.ts:471:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-CURSOR — no interactive element renders the browser-default cursor (5.9s)
+  ✘  6 [chromium] › tests/e2e/interaction-states.spec.ts:189:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-HOVER — every interactive element has a designed hover state (38.7s)
+  ✘  7 [chromium] › tests/e2e/interaction-states.spec.ts:233:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-ACTIVE — every interactive element has a designed pressed state (48.2s)
+  ✘  8 [chromium] › tests/e2e/interaction-states.spec.ts:300:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-LOADING — the avatar announces and shows that it is loading (7.7s)
+
+
+  1) [chromium] › tests/a11y/interaction-states.spec.ts:362:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS — every focusable element paints a designed focus ring 
+
+    Error: 2 of 93 focusable elements have no designed focus indicator:
+      - a "Victordtesla24/aether-job-career-agent"
+          outline: auto 1px rgb(16, 16, 16) · ring contrast n/a · box-shadow changed: false
+          → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.group.relative.h-16[data-testid=minivic-toggle] "Open Mini Vic assistant"
+          outline: auto 3px rgb(244, 246, 250) · ring contrast n/a · box-shadow changed: false
+          → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "a \"Victordtesla24/aether-job-career-agent\"",[39m
+    [31m+   "button.group.relative.h-16[data-testid=minivic-toggle] \"Open Mini Vic assistant\"",[39m
+    [31m+ ][39m
+
+      377 |       offenders.map((r) => r.el),
+      378 |       `${offenders.length} of ${report.length} focusable elements have no designed focus indicator:\n  - ${lines.join('\n  - ')}`,
+    > 379 |     ).toEqual([]);
+          |       ^
+      380 |   });
+      381 |
+      382 |   /**
+        at /root/forgotten-mistory/tests/a11y/interaction-states.spec.ts:379:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-interaction-states-In-89286-aints-a-designed-focus-ring-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-interaction-states-In-89286-aints-a-designed-focus-ring-chromium/error-context.md
+
+  2) [chromium] › tests/a11y/interaction-states.spec.ts:389:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-MINIVIC — the clone panel paints a designed focus ring on every control 
+
+    Error: 15 of 15 controls inside the MiniVic panel have no designed focus indicator:
+      - button.rounded-full.border.border-white/15 "Mute voice" — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.rounded-full.border.border-white/15 "Pause voice" — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.rounded-full.border.border-white/15 "Close mini Vic" — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.flex-1.rounded-[3px].px-2[data-testid=minivic-mode-recruiter] "Hiring Fit" — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.flex-1.rounded-[3px].px-2[data-testid=minivic-mode-engineer] "Engineering" — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.flex-1.rounded-[3px].px-2[data-testid=minivic-mode-story] "Story" — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.rounded-lg.border.border-white/12 "Reset conversation" — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.rounded-md.border.border-white/20 "Copy" — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.inline-flex.shrink-0.items-center "Fit me to a role" — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.inline-flex.shrink-0.items-center "Ship a roadmap" — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.inline-flex.shrink-0.items-center "Tech stack read" — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.inline-flex.shrink-0.items-center "Services & rates" — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.inline-flex.shrink-0.items-center "Teams at scale" — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - input.w-full.rounded-xl.border[data-testid=minivic-input] — outline: none 3px, contrast n/a → focus indicator removed (outline-style: none) with no replacement ring
+      - button.absolute.right-2.top-1/2 — outline: auto 1px, contrast n/a → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 17[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "button.rounded-full.border.border-white/15 \"Mute voice\"",[39m
+    [31m+   "button.rounded-full.border.border-white/15 \"Pause voice\"",[39m
+    [31m+   "button.rounded-full.border.border-white/15 \"Close mini Vic\"",[39m
+    [31m+   "button.flex-1.rounded-[3px].px-2[data-testid=minivic-mode-recruiter] \"Hiring Fit\"",[39m
+    [31m+   "button.flex-1.rounded-[3px].px-2[data-testid=minivic-mode-engineer] \"Engineering\"",[39m
+    [31m+   "button.flex-1.rounded-[3px].px-2[data-testid=minivic-mode-story] \"Story\"",[39m
+    [31m+   "button.rounded-lg.border.border-white/12 \"Reset conversation\"",[39m
+    [31m+   "button.rounded-md.border.border-white/20 \"Copy\"",[39m
+    [31m+   "button.inline-flex.shrink-0.items-center \"Fit me to a role\"",[39m
+    [31m+   "button.inline-flex.shrink-0.items-center \"Ship a roadmap\"",[39m
+    [31m+   "button.inline-flex.shrink-0.items-center \"Tech stack read\"",[39m
+    [31m+   "button.inline-flex.shrink-0.items-center \"Services & rates\"",[39m
+    [31m+   "button.inline-flex.shrink-0.items-center \"Teams at scale\"",[39m
+    [31m+   "input.w-full.rounded-xl.border[data-testid=minivic-input]",[39m
+    [31m+   "button.absolute.right-2.top-1/2",[39m
+    [31m+ ][39m
+
+      403 |       offenders.map((r) => r.el),
+      404 |       `${offenders.length} of ${report.length} controls inside the MiniVic panel have no designed focus indicator:\n  - ${lines.join('\n  - ')}`,
+    > 405 |     ).toEqual([]);
+          |       ^
+      406 |   });
+      407 |
+      408 |   /**
+        at /root/forgotten-mistory/tests/a11y/interaction-states.spec.ts:405:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-interaction-states-In-3cc02-focus-ring-on-every-control-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-interaction-states-In-3cc02-focus-ring-on-every-control-chromium/error-context.md
+
+  3) [chromium] › tests/a11y/interaction-states.spec.ts:415:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-REDUCED-MOTION — the focus ring survives prefers-reduced-motion 
+
+    Error: under prefers-reduced-motion, 2 of 93 focusable elements paint no designed focus indicator:
+      - a "Victordtesla24/aether-job-career-agent" → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+      - button.group.relative.h-16[data-testid=minivic-toggle] "Open Mini Vic assistant" → browser-default focus ring (outline-style: auto) — R-90 anti-pattern
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "a \"Victordtesla24/aether-job-career-agent\"",[39m
+    [31m+   "button.group.relative.h-16[data-testid=minivic-toggle] \"Open Mini Vic assistant\"",[39m
+    [31m+ ][39m
+
+      425 |         .map((r) => `${r.el} → ${r.reason}`)
+      426 |         .join('\n  - ')}`,
+    > 427 |     ).toEqual([]);
+          |       ^
+      428 |   });
+      429 |
+      430 |   /**
+        at /root/forgotten-mistory/tests/a11y/interaction-states.spec.ts:427:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-interaction-states-In-ca65b-ives-prefers-reduced-motion-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-interaction-states-In-ca65b-ives-prefers-reduced-motion-chromium/error-context.md
+
+  4) [chromium] › tests/a11y/interaction-states.spec.ts:437:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-DISABLED — disabled controls carry the locked disabled treatment 
+
+    Error: 2 of 2 disabled controls miss the locked disabled state:
+      - button "Replay last voice" — faded to opacity 0.3 (locked: 1 — a fade destroys contrast); cursor: auto (locked: not-allowed); pointer-events: auto (locked: none); text contrast 1.8:1 (locked floor: 4:1)
+      - button "Send message" — cursor: auto (locked: not-allowed); pointer-events: auto (locked: none); text contrast 3.66:1 (locked floor: 4:1)
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "button \"Replay last voice\" — faded to opacity 0.3 (locked: 1 — a fade destroys contrast); cursor: auto (locked: not-allowed); pointer-events: auto (locked: none); text contrast 1.8:1 (locked floor: 4:1)",[39m
+    [31m+   "button \"Send message\" — cursor: auto (locked: not-allowed); pointer-events: auto (locked: none); text contrast 3.66:1 (locked floor: 4:1)",[39m
+    [31m+ ][39m
+
+      456 |       if (faults.length) offenders.push(`${r.el} — ${faults.join('; ')}`);
+      457 |     }
+    > 458 |     expect(offenders, `${offenders.length} of ${report.length} disabled controls miss the locked disabled state:\n  - ${offenders.join('\n  - ')}`).toEqual(
+          |                                                                                                                                                     ^
+      459 |       [],
+      460 |     );
+      461 |   });
+        at /root/forgotten-mistory/tests/a11y/interaction-states.spec.ts:458:149
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-interaction-states-In-d701e-e-locked-disabled-treatment-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-interaction-states-In-d701e-e-locked-disabled-treatment-chromium/error-context.md
+
+  5) [chromium] › tests/a11y/interaction-states.spec.ts:471:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-CURSOR — no interactive element renders the browser-default cursor 
+
+    Error: 45 of 97 interactive elements render the browser-default cursor
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 47[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "a.logo \"Back to top\" → cursor: auto",[39m
+    [31m+   "a.nav-cv \"Download CV\" → cursor: auto",[39m
+    [31m+   "a.Hero_primaryAction__SBJFA \"See the evidence\" → cursor: auto",[39m
+    [31m+   "a.Hero_secondaryAction__jCqGE \"Download CV\" → cursor: auto",[39m
+    [31m+   "a.Hero_link__l2JHr \"LinkedIn\" → cursor: auto",[39m
+    [31m+   "a.Hero_link__l2JHr \"GitHub\" → cursor: auto",[39m
+    [31m+   "a.Hero_link__l2JHr \"Email\" → cursor: auto",[39m
+    [31m+   "a \"Victordtesla24/aether-job-career\" → cursor: auto",[39m
+    [31m+   "li.About_item__fSusw \"01Technical SkillsPython and Typ\" → cursor: auto",[39m
+    [31m+   "li.About_item__fSusw \"02Experience LevelSixteen years.\" → cursor: auto",[39m
+    [31m+   "li.About_item__fSusw \"03Industry MatchGovernment, bank\" → cursor: auto",[39m
+    [31m+   "li.About_item__fSusw \"04Role AlignmentScrum Master and\" → cursor: auto",[39m
+    [31m+   "li.About_item__fSusw \"05Culture FitAgile as practice r\" → cursor: auto",[39m
+    [31m+   "li.About_item__fSusw \"06Salary Fitmeasured from the ro\" → cursor: auto",[39m
+    [31m+   "li.About_item__fSusw \"07Location Matchmeasured from th\" → cursor: auto",[39m
+    [31m+   "li.About_item__fSusw \"08Career GrowthPrograms where AI\" → cursor: auto",[39m
+    [31m+   "li.About_item__fSusw \"09Company Stabilitymeasured from\" → cursor: auto",[39m
+    [31m+   "li.About_item__fSusw \"10North Star AlignBuild systems \" → cursor: auto",[39m
+    [31m+   "li.Vitrine_plate__p2JME \"01aether-job-career-agentAetherA\" → cursor: auto",[39m
+    [31m+   "a.Vitrine_source__vBcGL \"Source\" → cursor: auto",[39m
+    [31m+   "a.Vitrine_live__PwDxH \"aether.srv1356245.hstgr.cloud\" → cursor: auto",[39m
+    [31m+   "li.Vitrine_plate__p2JME \"02abentertainmentAB Entertainmen\" → cursor: auto",[39m
+    [31m+   "a.Vitrine_source__vBcGL \"Source\" → cursor: auto",[39m
+    [31m+   "a.Vitrine_live__PwDxH \"abentertainment.com.au\" → cursor: auto",[39m
+    [31m+   "li.Vitrine_plate__p2JME \"03ralph-loop-infiniteRalph LoopA\" → cursor: auto",[39m
+    [31m+   "a.Vitrine_source__vBcGL \"Source\" → cursor: auto",[39m
+    [31m+   "li.Vitrine_plate__p2JME \"04prompt-reconstruction-enginePr\" → cursor: auto",[39m
+    [31m+   "a.Vitrine_source__vBcGL \"Source\" → cursor: auto",[39m
+    [31m+   "li.Vitrine_plate__p2JME \"05jyotish-shastraJyotish Shastra\" → cursor: auto",[39m
+    [31m+   "a.Vitrine_source__vBcGL \"Source\" → cursor: auto",[39m
+    [31m+   "li.Vitrine_plate__p2JME \"06forgotten-mistoryThis siteThe \" → cursor: auto",[39m
+    [31m+   "a.Vitrine_source__vBcGL \"Source\" → cursor: auto",[39m
+    [31m+   "a.Vitrine_live__PwDxH \"forgotten-mistory.web.app\" → cursor: auto",[39m
+    [31m+   "a.Listen_channel__9UH85 \"sarkar.vikram@gmail.com\" → cursor: auto",[39m
+    [31m+   "a.Listen_channel__9UH85 \"+61 433 224 556\" → cursor: auto",[39m
+    [31m+   "a.Listen_channel__9UH85 \"linkedin.com/in/vikramd-profile\" → cursor: auto",[39m
+    [31m+   "a.Listen_channel__9UH85 \"github.com/Victordtesla24\" → cursor: auto",[39m
+    [31m+   "a.Listen_correctionHash__nQo6f \"f642b41\" → cursor: auto",[39m
+    [31m+   "a.Listen_correctionHash__nQo6f \"e480687\" → cursor: auto",[39m
+    [31m+   "a.Listen_correctionHash__nQo6f \"df0dac6\" → cursor: auto",[39m
+    [31m+   "a.Listen_correctionHash__nQo6f \"5c7b50f\" → cursor: auto",[39m
+    [31m+   "a.Listen_correctionHash__nQo6f \"45077cb\" → cursor: auto",[39m
+    [31m+   "a.Listen_correctionHash__nQo6f \"79b11a0\" → cursor: auto",[39m
+    [31m+   "a.Listen_correctionHash__nQo6f \"3df1815\" → cursor: auto",[39m
+    [31m+   "a.Listen_correctionHash__nQo6f \"699933f\" → cursor: auto",[39m
+    [31m+ ][39m
+
+      495 |       offenders.map((r) => `${r.el} → cursor: ${r.cursor}`),
+      496 |       `${offenders.length} of ${report.length} interactive elements render the browser-default cursor`,
+    > 497 |     ).toEqual([]);
+          |       ^
+      498 |   });
+      499 | });
+      500 |
+        at /root/forgotten-mistory/tests/a11y/interaction-states.spec.ts:497:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/a11y-interaction-states-In-fb059--the-browser-default-cursor-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/a11y-interaction-states-In-fb059--the-browser-default-cursor-chromium/error-context.md
+
+  6) [chromium] › tests/e2e/interaction-states.spec.ts:189:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-HOVER — every interactive element has a designed hover state 
+
+    Error: 4 of 21 interactive elements paint nothing on hover:
+      - row 7 — Experience role toggle ([class*="Experience_roleToggle__"][2])
+      - row 11 — Vitrine plate ([class*="Vitrine_plate__"][2])
+      - row 18 — Nav logo (.logo[0])
+      - row 20 — Nav menu toggle (.menu-toggle[0])
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 6[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "row 7 — Experience role toggle ([class*=\"Experience_roleToggle__\"][2])",[39m
+    [31m+   "row 11 — Vitrine plate ([class*=\"Vitrine_plate__\"][2])",[39m
+    [31m+   "row 18 — Nav logo (.logo[0])",[39m
+    [31m+   "row 20 — Nav menu toggle (.menu-toggle[0])",[39m
+    [31m+ ][39m
+
+      222 |       offenders,
+      223 |       `${offenders.length} of ${TABLE.length} interactive elements paint nothing on hover:\n  - ${offenders.join('\n  - ')}`,
+    > 224 |     ).toEqual([]);
+          |       ^
+      225 |   });
+      226 |
+      227 |   /**
+        at /root/forgotten-mistory/tests/e2e/interaction-states.spec.ts:224:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-interaction-states-Int-e7333--has-a-designed-hover-state-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-interaction-states-Int-e7333--has-a-designed-hover-state-chromium/error-context.md
+
+  7) [chromium] › tests/e2e/interaction-states.spec.ts:233:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-ACTIVE — every interactive element has a designed pressed state 
+
+    Error: 20 of 21 interactive elements paint nothing while pressed:
+      - row 1 — Hero primary action ([class*="Hero_primaryAction__"][0])
+      - row 2 — Hero secondary action ([class*="Hero_secondaryAction__"][0])
+      - row 3 — Hero inline link ([class*="Hero_link__"][0])
+      - row 4 — About provenance link ([class*="About_provenance__"] a[0])
+      - row 5 — About dimension item ([class*="About_item__"][2])
+      - row 6 — Experience track button ([class*="Experience_trackButton__"][2])
+      - row 7 — Experience role toggle ([class*="Experience_roleToggle__"][2])
+      - row 8 — Skills filter ([class*="Skills_filter__"][1])
+      - row 9 — Bench source node ([class*="Bench_node__"][0])
+      - row 10 — Bench capability node ([class*="Bench_node__"][20])
+      - row 11 — Vitrine plate ([class*="Vitrine_plate__"][2])
+      - row 12 — Vitrine source link ([class*="Vitrine_source__"][0])
+      - row 13 — Vitrine live URL ([class*="Vitrine_live__"][0])
+      - row 14 — Listen channel link ([class*="Listen_channel__"][0])
+      - row 15 — Listen correction hash ([class*="Listen_correctionHash__"][0])
+      - row 16 — Avatar play trigger ([class*="Avatar_trigger__"][0])
+      - row 17 — Avatar transcript toggle ([class*="Avatar_transcriptToggle__"][0])
+      - row 18 — Nav logo (.logo[0])
+      - row 19 — Nav CV chip (.nav-cv[0])
+      - row 20 — Nav menu toggle (.menu-toggle[0])
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 22[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "row 1 — Hero primary action ([class*=\"Hero_primaryAction__\"][0])",[39m
+    [31m+   "row 2 — Hero secondary action ([class*=\"Hero_secondaryAction__\"][0])",[39m
+    [31m+   "row 3 — Hero inline link ([class*=\"Hero_link__\"][0])",[39m
+    [31m+   "row 4 — About provenance link ([class*=\"About_provenance__\"] a[0])",[39m
+    [31m+   "row 5 — About dimension item ([class*=\"About_item__\"][2])",[39m
+    [31m+   "row 6 — Experience track button ([class*=\"Experience_trackButton__\"][2])",[39m
+    [31m+   "row 7 — Experience role toggle ([class*=\"Experience_roleToggle__\"][2])",[39m
+    [31m+   "row 8 — Skills filter ([class*=\"Skills_filter__\"][1])",[39m
+    [31m+   "row 9 — Bench source node ([class*=\"Bench_node__\"][0])",[39m
+    [31m+   "row 10 — Bench capability node ([class*=\"Bench_node__\"][20])",[39m
+    [31m+   "row 11 — Vitrine plate ([class*=\"Vitrine_plate__\"][2])",[39m
+    [31m+   "row 12 — Vitrine source link ([class*=\"Vitrine_source__\"][0])",[39m
+    [31m+   "row 13 — Vitrine live URL ([class*=\"Vitrine_live__\"][0])",[39m
+    [31m+   "row 14 — Listen channel link ([class*=\"Listen_channel__\"][0])",[39m
+    [31m+   "row 15 — Listen correction hash ([class*=\"Listen_correctionHash__\"][0])",[39m
+    [31m+   "row 16 — Avatar play trigger ([class*=\"Avatar_trigger__\"][0])",[39m
+    [31m+   "row 17 — Avatar transcript toggle ([class*=\"Avatar_transcriptToggle__\"][0])",[39m
+    [31m+   "row 18 — Nav logo (.logo[0])",[39m
+    [31m+   "row 19 — Nav CV chip (.nav-cv[0])",[39m
+    [31m+   "row 20 — Nav menu toggle (.menu-toggle[0])",[39m
+    [31m+ ][39m
+
+      283 |       offenders,
+      284 |       `${offenders.length} of ${TABLE.length} interactive elements paint nothing while pressed:\n  - ${offenders.join('\n  - ')}`,
+    > 285 |     ).toEqual([]);
+          |       ^
+      286 |   });
+      287 |
+      288 |   /**
+        at /root/forgotten-mistory/tests/e2e/interaction-states.spec.ts:285:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-interaction-states-Int-398a0-as-a-designed-pressed-state-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-interaction-states-Int-398a0-as-a-designed-pressed-state-chromium/error-context.md
+
+  8) [chromium] › tests/e2e/interaction-states.spec.ts:300:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-LOADING — the avatar announces and shows that it is loading 
+
+    Error: while the clip was still arriving nothing carried aria-busy="true". The frame held:
+    <video class="Avatar_video__CFnya" poster="/assets/avatar/poster.jpg" controls="" playsinline="" preload="auto"><source src="/assets/avatar/introduction.mp4" type="video/mp4"><track kind="captions" src="/assets/avatar/introduction.vtt" srclang="en" label="English" default=""></video>
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+      356 |       state.ariaBusyPresent,
+      357 |       `while the clip was still arriving nothing carried aria-busy="true". The frame held:\n${state.frameHTML}`,
+    > 358 |     ).toBe(true);
+          |       ^
+      359 |     expect(
+      360 |       state.indicatorCount,
+      361 |       'while the clip was still arriving the media frame showed the reader nothing at all',
+        at /root/forgotten-mistory/tests/e2e/interaction-states.spec.ts:358:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-interaction-states-Int-e8813-nd-shows-that-it-is-loading-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-interaction-states-Int-e8813-nd-shows-that-it-is-loading-chromium/error-context.md
+
+  8 failed
+    [chromium] › tests/a11y/interaction-states.spec.ts:362:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS — every focusable element paints a designed focus ring 
+    [chromium] › tests/a11y/interaction-states.spec.ts:389:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-MINIVIC — the clone panel paints a designed focus ring on every control 
+    [chromium] › tests/a11y/interaction-states.spec.ts:415:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-FOCUS-REDUCED-MOTION — the focus ring survives prefers-reduced-motion 
+    [chromium] › tests/a11y/interaction-states.spec.ts:437:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-DISABLED — disabled controls carry the locked disabled treatment 
+    [chromium] › tests/a11y/interaction-states.spec.ts:471:7 › Interaction states — focus, disabled and cursor (R-49, R-90, SC-30.1) › TC-STATE-CURSOR — no interactive element renders the browser-default cursor 
+    [chromium] › tests/e2e/interaction-states.spec.ts:189:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-HOVER — every interactive element has a designed hover state 
+    [chromium] › tests/e2e/interaction-states.spec.ts:233:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-ACTIVE — every interactive element has a designed pressed state 
+    [chromium] › tests/e2e/interaction-states.spec.ts:300:7 › Interaction states — hover, active and loading (R-49, SC-30.1) › TC-STATE-LOADING — the avatar announces and shows that it is loading 
+  playwright exit code: 1
+
+===============================================================================
+ 3 · SUMMARY OF THE RED — what was observed failing, and against what
+===============================================================================
+
+  Playwright : 8 tests run, 8 failed, 0 passed.
+  Static     : 4 checks run, 4 failed, 0 passed (exit 1).
+  Total      : 12 assertions observed failing.
+
+  Individual offending elements named by those 12 assertions:
+
+    TC-STATE-FOCUS                   2 of 93 focusable elements
+    TC-STATE-FOCUS-MINIVIC          15 of 15 controls in the clone panel
+    TC-STATE-FOCUS-REDUCED-MOTION    2 of 93 focusable elements
+    TC-STATE-DISABLED                2 of 2 disabled controls
+    TC-STATE-CURSOR                 45 of 97 interactive elements
+    TC-STATE-HOVER                   4 of 21 elements in the lock's table
+    TC-STATE-ACTIVE                 20 of 21 elements in the lock's table
+    TC-STATE-LOADING                 the one async media surface on the site
+    IS-01                            5 source sites removing a focus indicator
+    IS-02                            3 source sites styling bare :focus
+    IS-03                            the disabled half of the state library
+    IS-04                            2 runtime-variable collections
+
+  Every count above was produced by a command in this file. None is estimated.
+
+-------------------------------------------------------------------------------
+ 3.1 · The gate battery is otherwise clean, so the red is the assertions
+-------------------------------------------------------------------------------
+
+  $ npx tsc --noEmit                                  → clean, exit 0
+  $ npm run lint                                      → "No ESLint warnings or errors"
+  $ node scripts/validate/overhaul_static_audit.mjs   → RESULT: ALL PASS (10/10)
+
+  No existing file was modified. The three files added are:
+
+    tests/a11y/interaction-states.spec.ts
+    tests/e2e/interaction-states.spec.ts
+    scripts/validate/interaction_state_audit.mjs
+
+  Nothing is committed. A TDD red is the handover to the implementer, and
+  committing a red battery to main would break the gate for everyone else.
+
+-------------------------------------------------------------------------------
+ 3.2 · Where the lock's testimony did NOT reproduce — recorded, not hidden
+-------------------------------------------------------------------------------
+
+  The lock is testimony. Three of its §5.2 findings did not survive being
+  reproduced against the rendered page, and are recorded here as false
+  positives so the implementer does not "fix" something that is not broken.
+
+  (a) Row 5, "About dimension item — hover: —".  FALSE POSITIVE.
+      The item has no `:hover` rule, which is what a source read shows, but it
+      carries `onMouseEnter={() => setActive(index)}` (About.tsx:93) and
+      `.item[data-active]` (About.module.css:150) then repaints the top rule and
+      the index numeral. TC-STATE-HOVER measures the rendered result and finds
+      13 changed computed properties on hover. The state is designed; it is
+      simply designed in JavaScript. Confirmed missing hover is rows 7, 11, 18
+      and 20 only — four, not five.
+
+  (b) Row 23, "MiniVic controls — active: —" and the totals line
+      "`:active` designed on 0 of 23".  PARTIALLY FALSE.
+      The launcher carries `active:scale-95` (MiniVicBot.tsx:1530) and is the
+      one element on the site that already presses. TC-STATE-ACTIVE finds 20 of
+      21, not 21 of 21. The lock's own row 23 focus finding, by contrast,
+      reproduced exactly: every control inside the panel falls through to
+      Chromium's `outline-style: auto`, and the composer input has its ring
+      removed outright.
+
+  (c) The empty-state subjects named in §5.3 are not all reachable.
+      "Skills filter returning no rows" cannot happen with the shipped data:
+      app/data/portfolio/skills.ts holds 14 production, 2 non-production and 1
+      pending capability, and the three filters are all / production / pending,
+      so the smallest result any filter can return is 1. "Avatar transcript
+      before load" cannot be empty either — avatarContent.transcript is a static
+      array compiled into the bundle. Neither can be exercised through the UI,
+      so per §6 of the operating contract they are verified at the boundary
+      instead: IS-04 asserts the zero-length branch exists in source for the two
+      collections whose length really is decided at runtime (the filtered
+      capability table and the clone's transcript log), and the end-to-end path
+      is recorded here as UNVERIFIED. The static content arrays are deliberately
+      out of scope: an empty state that can never be reached is dead code, and
+      TC-NFR-DEADCSS exists to keep dead code off this site.
+
+  (d) Row 22, the service-worker toast's Reload button, has no runtime subject.
+      It renders only when the worker reports a waiting update, which a static
+      export served fresh never does. Its missing `:focus-visible` is therefore
+      audited statically (IS-01/IS-02 scan app/globals.css and every component)
+      and its runtime behaviour is recorded as UNVERIFIED.
+
+-------------------------------------------------------------------------------
+ 3.3 · Two findings the lock did not record
+-------------------------------------------------------------------------------
+
+  (e) app/globals.css:451 sets `outline: none` inside
+      `[data-outcome-card="true"]:hover, [data-outcome-card="true"]:focus-visible`
+      — a focus ring removed with no replacement. The selector matches nothing
+      the source renders today (no `data-outcome-card` attribute exists in app/
+      or components/), so it is both an R-90 anti-pattern and dead CSS. The same
+      is true of `#terminal-input` (globals.css:770) and `#mini-vic-input`
+      (globals.css:789, 800) — neither id is rendered anywhere.
+
+  (f) `* { cursor: auto }` at app/globals.css:125 is unlayered, so it beats
+      Tailwind's preflight and every element that is not a `<button>` renders
+      the browser's default cursor. TC-STATE-CURSOR measures 45 of 97 — every
+      anchor and every `tabIndex=0` list item on the page. The lock describes
+      the cursor-state machine as "declared but not implemented"; this is the
+      measured size of that gap.
+
+===============================================================================
+ END OF RED CAPTURE
+===============================================================================

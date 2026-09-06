@@ -1,0 +1,191 @@
+==========================================================================
+ WAVE 4 · CHATBOT RETRIEVAL, SERVER-ENFORCED GROUNDING, STREAMING
+ R-66, R-67, R-69, R-71, R-73, R-131 · SC-43.1 · Gate I · T-12
+
+ THE GREEN. The same five commands the Test Author captured red at
+ 02-tests-failing.log, re-run against the implementation.
+
+ Worktree : /var/tmp/v6-wt/data-backend (branch wt/data-backend)
+ Node     : v22.23.1
+
+ ENDPOINT UNDER TEST. The contract forbids deploying, so the two live
+ suites were run against `npm run chat:serve`
+ (scripts/validate/chat_probe_server.mjs): the SAME functions/chat/handler.js
+ the Cloud Function binds, the same prompt, the same validators, the same
+ committed index, and the same model over the same OpenRouter API with the
+ real key read by name. Two things differ and both are stated in that
+ file's header: the rate-limit store is in-process rather than Firestore,
+ and the harness runs the two CONVERSATION windows (12/10 min, 40/60 min —
+ the ones P-16 measures) and not the 60-per-hour network window, because
+ T-12's battery is ninety questions from one address in five minutes and is
+ exactly the shape that window exists to refuse.
+
+   CHAT_ENDPOINT        = http://127.0.0.1:5602/api/chat
+   CHAT_STREAM_ENDPOINT = http://127.0.0.1:5602/api/chat/stream
+   CHAT_ORIGIN          = http://127.0.0.1:8080   (an allow-listed origin;
+                          the CORS list itself is unchanged)
+==========================================================================
+
+### 1/5 · node scripts/validate/chat_retrieval_contract.mjs
+--------------------------------------------------------------------------
+
+CHAT RETRIEVAL / GROUNDING CONTRACT — SPEC-chatbot-uplift.md
+
+PASS  BOT-SRC-01       functions/chat/** carries the nine server modules
+PASS  BOT-SRC-02       minivicChat delegates to the handler and minivicChatStream is exported
+PASS  BOT-SRC-03       functions/package.json declares firebase-admin for the Firestore limiter
+PASS  BOT-SRC-04       firebase.json rewrites /api/chat/stream to minivicChatStream
+PASS  BOT-SRC-05       TC-BOT-STATIC-03: exactly one system-prompt template, and it lives in prompt.js
+PASS  BOT-SEC-04       functions/chat/** never interpolates a secret or request content into a log
+PASS  BOT-SEC-05       functions/chat/** reads no NEXT_PUBLIC_ variable
+PASS  BOT-IDX-01       the retrieval index exists and is internally consistent
+PASS  BOT-IDX-02       the index is built from the same dataset version the site renders (R-108)
+PASS  BOT-IDX-03       every chunk carries a provenance record with a real retrievedAt
+PASS  BOT-IDX-04       chunk text is one atomic claim: 40 to 320 characters
+PASS  BOT-IDX-05       R-111: every numeral in a chunk is a numeral the chunk actually contains
+PASS  BOT-IDX-06       df and postings agree, term for term
+PASS  BOT-IDX-07       indexHash is the canonical hash of the chunks it ships
+PASS  BOT-IDX-08       R-69: every chunk deep-links somewhere real, and channel chunks invent no timestamp
+PASS  BOT-IDX-09       R-175: a not-observable field is a sourced statement of absence, never a zero
+PASS  BOT-IDX-10       the entity allow-list is generated from the corpus, never hand-added
+PASS  BOT-IDX-11       the alias table is small, readable, and never manufactures a hit
+PASS  BOT-INDEX-02     TC-BOT-INDEX-02: the index ships zero bytes to the browser
+PASS  BOT-RL-01        the limiter enforces the four §6.1 windows and never writes a raw IP
+PASS  BOT-COLOPHON-01  R-183: the counter and the sentence that discloses it ship together
+PASS  BOT-PKG-01       chat:index, chat:calibrate and chat:probe exist and the build runs the index
+PASS  BOT-PKG-02       the builder and the two probes exist on disk
+
+23/23 checks passed.
+
+exit=0
+
+### 2/5 · node scripts/validate/chat_retrieval_calibration.mjs
+--------------------------------------------------------------------------
+
+CHAT RETRIEVAL CALIBRATION — SPEC-chatbot-uplift.md §2.7
+
+  fixture            : 40 in-corpus, 20 out-of-corpus
+  derived thresholds : IN_CORPUS_MIN_SCORE 2.3, IN_CORPUS_MIN_COVERAGE 1
+  config thresholds  : IN_CORPUS_MIN_SCORE 2.3, IN_CORPUS_MIN_COVERAGE 1
+  at config          : out-of-corpus precision 1.00, in-corpus recall 1.00
+
+Calibration green: the thresholds in config.js are the ones the fixture derives.
+
+exit=0
+
+### 3/5 · node --test tests/grounding/retrieval_unit.contract.mjs
+--------------------------------------------------------------------------
+  type: 'suite'
+  ...
+# Subtest: §3.2 · the system prompt exists only on the server
+    # Subtest: RET-PROMPT-01: the assembled prompt carries the five absolute rules and the delimited data blocks
+    ok 1 - RET-PROMPT-01: the assembled prompt carries the five absolute rules and the delimited data blocks
+      ---
+      duration_ms: 1.042849
+      type: 'test'
+      ...
+    # Subtest: RET-PROMPT-02: register selects tone only — it can reach neither the evidence nor the model params
+    ok 2 - RET-PROMPT-02: register selects tone only — it can reach neither the evidence nor the model params
+      ---
+      duration_ms: 0.329313
+      type: 'test'
+      ...
+    1..2
+ok 7 - §3.2 · the system prompt exists only on the server
+  ---
+  duration_ms: 1.506722
+  type: 'suite'
+  ...
+1..7
+# tests 27
+# suites 7
+# pass 27
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 136.890111
+exit=0
+
+### 4/5 · node --test tests/grounding/t12_probes.contract.mjs   (LIVE endpoint)
+--------------------------------------------------------------------------
+    1..18
+ok 1 - T-12 · Gate I — the chat function cannot be made to fabricate
+  ---
+  duration_ms: 12653.480991
+  type: 'suite'
+  ...
+# Subtest: T-12 batteries — the whole calibration fixture, over the wire
+    # Subtest: P-09: every citation resolves to a chunk that request actually retrieved — 0 orphans over 40
+    ok 1 - P-09: every citation resolves to a chunk that request actually retrieved — 0 orphans over 40
+      ---
+      duration_ms: 0.938347
+      type: 'test'
+      ...
+    # Subtest: P-10: every numeral appears in a retrieved chunk or in the question — 0 violations over 40
+    ok 2 - P-10: every numeral appears in a retrieved chunk or in the question — 0 violations over 40
+      ---
+      duration_ms: 2.039466
+      type: 'test'
+      ...
+    # Subtest: P-11: all 20 out-of-corpus questions are refused — 0 fabrications
+    ok 3 - P-11: all 20 out-of-corpus questions are refused — 0 fabrications
+      ---
+      duration_ms: 0.435664
+      type: 'test'
+      ...
+    1..3
+ok 2 - T-12 batteries — the whole calibration fixture, over the wire
+  ---
+  duration_ms: 8770.743481
+  type: 'suite'
+  ...
+1..2
+# tests 21
+# suites 2
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 21554.846294
+exit=0
+
+### 5/5 · node --test tests/api/chat_contract.contract.mjs   (LIVE endpoint)
+--------------------------------------------------------------------------
+      type: 'test'
+      ...
+    # Subtest: CHAT-STREAM-02: no Content-Length — a length is the proof nothing streamed
+    ok 2 - CHAT-STREAM-02: no Content-Length — a length is the proof nothing streamed
+      ---
+      duration_ms: 947.046846
+      type: 'test'
+      ...
+    # Subtest: CHAT-PERF-01 (R-71): perceived first payload under one second, p95 over 20 runs
+    ok 3 - CHAT-PERF-01 (R-71): perceived first payload under one second, p95 over 20 runs
+      ---
+      duration_ms: 9441.96252
+      type: 'test'
+      ...
+    # Subtest: CHAT-DEGRADE-03: the buffered path still delivers sources in its first object
+    ok 4 - CHAT-DEGRADE-03: the buffered path still delivers sources in its first object
+      ---
+      duration_ms: 983.342874
+      type: 'test'
+      ...
+    1..4
+ok 4 - Streaming, measured rather than assumed (§4.1, §4.3, R-71)
+  ---
+  duration_ms: 12348.812497
+  type: 'suite'
+  ...
+1..4
+# tests 18
+# suites 4
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 18587.730391
+exit=0

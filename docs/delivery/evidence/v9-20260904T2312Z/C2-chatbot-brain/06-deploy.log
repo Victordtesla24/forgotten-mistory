@@ -1,0 +1,27 @@
+# Cycle 2 — chatbot brain live (2026-09-05 00:00–00:05 UTC)
+
+## Secrets refreshed (firebase functions:secrets:set, values piped from ~/.claude/.env.production, never printed)
+DEEPSEEK_API_KEY   version 1 created — sha256 fingerprint matches local (REFRESHED-MATCHES-LOCAL)
+ZAI_API_KEY        version 1 created — matches local
+OPENAI_API_KEY     version 1 created — matches local
+ELEVENLABS_API_KEY version 1 created — matches local
+OPENROUTER_API_KEY unchanged (already identical to local)
+
+## Functions deploy
+firebase deploy --only functions --project forgotten-mistory
+  functions[tts:minivicChat(us-central1)]  Successful update operation.
+  functions[tts:elevenLabsTts(us-central1)] Successful update operation.
+  Function URL (minivicChat): https://minivicchat-hjdyjsrzvq-uc.a.run.app
+
+## Production verification (fresh curl after deploy)
+POST https://forgotten-mistory.web.app/api/chat  {"messages":[{"role":"user","content":"What is your current role and how many years of experience do you have?"}],"mode":"hiring"}
+HTTP 200 application/json
+{"text":"I am currently a Scrum Master and Project Manager on the Australian Taxation Office Payday Super reform program since March 2026, with over 15 years of technology experience across government, financial services, and telecommunications.","provider":"openai","model":"gpt-4.1-mini"}
+
+Before cycle 1 the same request returned the HTML index (hosting deployed with firebase.static.json, no rewrite).
+After cycle 1 (hosting redeployed with firebase.json) it returned HTTP 502 {"error":"chat_upstream_failed","status":402} — OpenRouter balance −$5.38, DeepSeek and Z.ai out of balance, stale OpenAI secret.
+After cycle 2 the ladder resolves on the OpenAI rung. OpenRouter stays first in the ladder and takes over automatically once the Owner adds credits.
+
+POST https://forgotten-mistory.web.app/api/tts {"text":"Hello, this is a test."}
+HTTP 502 {"error":"tts_upstream_failed","status":401}
+Cause (Verified via GET /v1/user/subscription): the ElevenLabs account is tier payg with can_use_instant_voice_cloning=false; the function speaks with the cloned voice 0ZJ4kFDo6bZUNQsuULOW, which the plan denies (ivc_not_permitted). The key itself is valid. This is a plan entitlement, not a code defect; it needs an Owner decision (upgrade the ElevenLabs plan, or switch /api/tts to a non-cloned voice and label it as synthetic).

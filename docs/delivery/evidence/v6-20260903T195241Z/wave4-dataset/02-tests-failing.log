@@ -1,0 +1,654 @@
+################################################################################
+# wave4-dataset · 02-tests-failing.log
+# The canonical dataset layer with deploy-time refresh (R-108, R-95, R-182,
+# R-175, R-112, T-37).
+#
+# These tests were written BEFORE any implementation exists (§7.1). What
+# follows is the RED: the verbatim output of each test run against the
+# baseline of run v6-20260903T195241Z, on branch wt/data-backend in the
+# isolated worktree /var/tmp/v6-wt/data-backend.
+#
+# Captured: 2026-09-03T21:30:15Z
+# HEAD:     d1fce27f8a28ef6b4ef2df3bf77436e7f5be7bc5
+# Branch:   wt/data-backend
+# Node:     v22.23.1
+################################################################################
+
+################################################################################
+# 0/4  REPRODUCTION OF THE DEFICIENT BASELINE
+#      The audit is testimony. These are the measurements taken this run.
+################################################################################
+
+$ node -e "const p=require('./package.json'); ..."   # R-182: is the harvest wired into the build?
+build: rm -rf .next && node scripts/build/cv_fingerprint.mjs && node scripts/build/feedback_log.mjs && NODE_ENV=production next build
+build:static: rm -rf .next out && node scripts/build/cv_fingerprint.mjs && node scripts/build/feedback_log.mjs && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs
+scripts referencing harvest_repos: 0
+
+$ ls -d app/data/canonical
+ls: cannot access 'app/data/canonical': No such file or directory
+
+$ grep -rln 'Sourced<' app lib components | wc -l      # the provenance kernel
+0
+
+$ grep -c retrievedAt app/data/generated/repo-harvest.json   # per-field provenance
+0
+0
+
+$ head -4 app/data/generated/repo-harvest.json          # one date for the whole file
+{
+  "harvestedAt": "2026-09-03",
+  "publicRepoCount": 38,
+  "repos": {
+
+$ tail -8 app/data/generated/cv-fingerprint.ts          # typed, but no source/method/url/retrievedAt
+ */
+export const cvFingerprint = {
+  /** Full MD5 of the CV as shipped. */
+  md5: '16b856c0f3f4ec0d801fdde6d084452c',
+  /** The short form printed in the calibration footer. */
+  short: '16b856c0',
+  bytes: 157615,
+} as const;
+
+$ grep -n 'computed live' app/data/portfolio/vitrine.ts  # the self-claim that R-183 binds to the implementation
+93:    limits: 'Every figure on it is quoted from a CV or a repository — none is computed live.',
+
+$ ls app/data/generated/                                 # no channel, no linkedin, no delivery module
+cv-fingerprint.ts
+feedback-log.ts
+repo-harvest.json
+
+$ /usr/local/bin/yt-dlp --version                        # the YouTube transport of record is BROKEN
+Traceback (most recent call last):
+  File "/usr/local/bin/yt-dlp", line 5, in <module>
+    from yt_dlp import main
+ModuleNotFoundError: No module named 'yt_dlp'
+
+$ grep -c -ai YOUTUBE ~/.claude/.env.production          # no API key exists; the adapter must not need one
+0
+0
+
+$ gh auth status                                         # the GitHub transport DOES work locally
+github.com
+  ✓ Logged in to github.com account Victordtesla24 (/root/.config/gh/hosts.yml)
+  - Active account: true
+  - Git operations protocol: https
+  - Token: <redacted>
+  - Token scopes: 'gist', 'read:org', 'repo', 'workflow'
+
+$ unshare -rn curl https://api.github.com/               # the offline test harness is real, not mocked
+curl: (6) Could not resolve host: api.github.com
+000
+DENIED
+
+$ curl -X POST https://forgotten-mistory.web.app/api/chat  # A-2 re-probed live: no grounding, no streaming
+{\"messages\":[{\"role\":\"user\",\"content\":\"What is the capital of Peru, and what is 17 times 23?\"}]}
+  (captured separately, see below)
+{"text":"A two-part question!\n\nThe capital of Peru is Lima.\n\nAnd, 17 times 23 is:\n17 × 23 = 391\n\nLet me know if you have any other questions!"}
+[HTTP 200 · total 1.278554s · one JSON blob, no stream]
+  -> ANSWERED an entirely out-of-corpus question with no refusal and no
+     grounding. Confirms AUDIT-RECONCILIATION A-2 by direct observation.
+     (Recorded here for the record; the retrieval unit owns the fix.)
+
+################################################################################
+# 1/4  node scripts/validate/dataset_canonical_contract.mjs
+#      Build-time contract: the provenance kernel, the deploy-time refresh
+#      wiring (R-182), per-field provenance (R-108), the REAL values (R-95),
+#      no zero / no placeholder (R-175), hashes and diffability (T-37), the
+#      dossier format (R-112), and the R-183 self-claim guard.
+################################################################################
+
+
+A · provenance kernel (R-95, R-108)
+  [FAIL] A1  app/data/canonical/provenance.ts exists
+           app/data/canonical/provenance.ts does not exist
+  [FAIL] A2  provenance.ts declares Provenance with source, retrievedAt, method and url
+           missing file: app/data/canonical/provenance.ts
+  [FAIL] A3  Field<T> is the union Sourced<T> | NotObservable — never T | null (R-175)
+           missing file: app/data/canonical/provenance.ts
+  [FAIL] A4  provenance.ts compiles with the project tsc and exports sourced/notObservable/isObservable/must
+           app/data/canonical/provenance.ts does not exist — nothing to compile
+
+B · deploy-time refresh wiring (R-182)
+  [FAIL] B1  package.json declares a dataset:refresh script
+           package.json has no "dataset:refresh" script (scripts: 40 entries)
+  [FAIL] B2  package.json declares a dataset:verify script
+           package.json has no "dataset:verify" script
+  [FAIL] B3  build:static runs dataset:refresh BEFORE next build (R-182: refreshed on each deploy)
+           build:static does not run dataset:refresh — it is: rm -rf .next out && node scripts/build/cv_fingerprint.mjs && node scripts/build/feedback_log.mjs && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs
+  [FAIL] B4  build runs dataset:refresh
+           build does not run dataset:refresh — it is: rm -rf .next && node scripts/build/cv_fingerprint.mjs && node scripts/build/feedback_log.mjs && NODE_ENV=production next build
+  [FAIL] B5  scripts/dataset/build_dataset.mjs is the single refresh entry point
+           scripts/dataset/build_dataset.mjs does not exist
+  [FAIL] B6  all five source adapters exist under scripts/dataset/sources/
+           missing adapters: cv, linkedin, repositories, channel, delivery
+  [FAIL] B7  the hand-run harvest is retired — nothing imports app/data/generated/repo-harvest.json
+           still importing the hand-run harvest: app/data/portfolio/vitrine.ts
+
+C · generated dataset & per-field provenance (R-108)
+  [FAIL] C-cv  app/data/canonical/generated/cv.v1.json exists and is a DatasetModule
+           missing file: app/data/canonical/generated/cv.v1.json
+  [FAIL] C-linkedin  app/data/canonical/generated/linkedin.v1.json exists and is a DatasetModule
+           missing file: app/data/canonical/generated/linkedin.v1.json
+  [FAIL] C-repositories  app/data/canonical/generated/repositories.v1.json exists and is a DatasetModule
+           missing file: app/data/canonical/generated/repositories.v1.json
+  [FAIL] C-channel  app/data/canonical/generated/channel.v1.json exists and is a DatasetModule
+           missing file: app/data/canonical/generated/channel.v1.json
+  [FAIL] C-delivery  app/data/canonical/generated/delivery.v1.json exists and is a DatasetModule
+           missing file: app/data/canonical/generated/delivery.v1.json
+  [FAIL] C-manifest  manifest.v1.json exists with datasetVersion, builtAt and a row per module
+           missing file: app/data/canonical/generated/manifest.v1.json
+  [FAIL] C-index  provenance-index.v1.json exists and is a flat sourceId -> Provenance map
+           missing file: app/data/canonical/generated/provenance-index.v1.json
+  [FAIL] C-every-field  EVERY field in EVERY module carries source, retrievedAt, method and url
+           missing file: app/data/canonical/generated/cv.v1.json
+  [FAIL] C-retrieved-sane  no retrievedAt is in the future or before 2020-01-01
+           missing file: app/data/canonical/generated/cv.v1.json
+  [FAIL] C-no-fabricated-freshness  a module whose outcome is "retained" has NO field stamped with this run's attemptedAt
+           missing file: app/data/canonical/generated/cv.v1.json
+  [FAIL] C-no-secrets  no generated dataset file contains a secret-shaped string
+           app/data/canonical/generated/ does not exist
+
+D · real values (R-95)
+  [FAIL] D1  cv fingerprint md5 is the CV of record: 16b856c0f3f4ec0d801fdde6d084452c
+           missing file: app/data/canonical/generated/cv.v1.json
+  [FAIL] D2  cv fingerprint byte count is 157615
+           missing file: app/data/canonical/generated/cv.v1.json
+  [FAIL] D3  cv carries exactly 9 roles, the earliest being MYOB from 2010-05
+           missing file: app/data/canonical/generated/cv.v1.json
+  [FAIL] D4  yearsOfExperience is computed (>=16, <17) and its method states the computation (R-173)
+           missing file: app/data/canonical/generated/cv.v1.json
+  [FAIL] D5  repositories publicRepoCount is at least the 38 measured on 2026-09-03
+           missing file: app/data/canonical/generated/repositories.v1.json
+  [FAIL] D6  aether-job-career-agent carries a commit count at or above the 1664 measured
+           missing file: app/data/canonical/generated/repositories.v1.json
+  [FAIL] D7  channel id is UCJSYpoFkGKKzYTKzAr8vGzQ (@vicd0ct)
+           missing file: app/data/canonical/generated/channel.v1.json
+  [FAIL] D8  all 10 public videos enumerated on 2026-09-03 are present in the channel module
+           missing file: app/data/canonical/generated/channel.v1.json
+  [FAIL] D9  the unlisted video 9meaN-ZZAvc is either absent or flagged unlisted and excluded from the public count
+           missing file: app/data/canonical/generated/channel.v1.json
+  [FAIL] D10  R-119: the channel module declares NO subscriber, view, like or watch-time field
+           missing file: app/data/canonical/generated/channel.v1.json
+  [FAIL] D11  delivery carries both a corrections ledger and real pipeline runs
+           missing file: app/data/canonical/generated/delivery.v1.json
+  [FAIL] D12  linkedin is recorded as not-observable with a reason and a proving command — never fabricated
+           missing file: app/data/canonical/generated/linkedin.v1.json
+
+E · no zero, no placeholder (R-175)
+  [FAIL] E1  no sourced number is 0 unless the field is explicitly marked zeroIsMeaningful
+           missing file: app/data/canonical/generated/cv.v1.json
+  [FAIL] E2  no sourced value is a placeholder string, null, NaN or undefined
+           missing file: app/data/canonical/generated/cv.v1.json
+  [FAIL] E3  a not-observable field never carries a value
+           missing file: app/data/canonical/generated/cv.v1.json
+
+F · versioning & diffability (T-37)
+  [FAIL] F1  each module valueHash is the sha256 of its data with every retrievedAt stripped
+           missing file: app/data/canonical/generated/cv.v1.json
+  [FAIL] F2  each module recordHash is the sha256 of the whole module record
+           missing file: app/data/canonical/generated/cv.v1.json
+  [FAIL] F3  manifest oldest/newest retrievedAt match the module contents exactly
+           missing file: app/data/canonical/generated/manifest.v1.json
+  [FAIL] F4  diff_dataset.mjs exists and exits NON-ZERO when a field disappears from a module (preservation loss)
+           scripts/dataset/diff_dataset.mjs does not exist
+  [FAIL] F5  the provenance index covers every field in every module and is published to public/
+           missing file: app/data/canonical/generated/provenance-index.v1.json
+
+G · per-visualisation dossiers (R-112)
+  [FAIL] G1  app/data/canonical/dossiers.ts exists and registers at least one dossier per section
+           missing file: app/data/canonical/dossiers.ts
+  [FAIL] G2  every dossier declares the full R-112 format, with a takeaway of at most 20 words
+           missing file: app/data/canonical/dossiers.ts
+  [FAIL] G3  dossier performance figures are measured, not authored — reports/viz-perf.json backs each one
+           reports/viz-perf.json does not exist; a model may never produce a quantitative mark (R-111)
+
+H · self-claim coherence (R-183, T-40)
+  [PASS (guard)] H1  GUARD: the site must never claim figures are "not computed live" while the build refreshes them
+  [FAIL] H2  the date on the page is the date in the data — harvestedAt reads from the manifest
+           vitrine reads harvestedAt from the hand-run repo-harvest.json, so the page date can drift from the data
+
+A · provenance kernel — behaviour
+  [FAIL] A6  sourced(v, p) returns { kind: "sourced", value: v, provenance: p }
+           the provenance kernel does not exist, so its behaviour cannot be exercised
+  [FAIL] A7  notObservable(reason, provedBy, p) carries a null value, the reason and the proving command
+           the provenance kernel does not exist, so its behaviour cannot be exercised
+  [FAIL] A8  must() throws — never returns 0, "" or undefined — for a not-observable field (R-175)
+           the provenance kernel does not exist, so its behaviour cannot be exercised
+  [FAIL] A9  isObservable narrows: true for sourced, false for not-observable
+           the provenance kernel does not exist, so its behaviour cannot be exercised
+  [FAIL] A10  envelope.ts declares all four RefreshOutcome states and a RefreshRecord that records failure
+           missing file: app/data/canonical/envelope.ts
+
+------------------------------------------------------------------------------
+dataset canonical contract: 1 passed, 51 FAILED, 52 assertions
+failing: A1, A2, A3, A4, B1, B2, B3, B4, B5, B6, B7, C-cv, C-linkedin, C-repositories, C-channel, C-delivery, C-manifest, C-index, C-every-field, C-retrieved-sane, C-no-fabricated-freshness, C-no-secrets, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, E1, E2, E3, F1, F2, F3, F4, F5, G1, G2, G3, H2, A6, A7, A8, A9, A10
+EXIT=1
+
+################################################################################
+# 2/4  node scripts/validate/dataset_offline_refresh.mjs
+#      The FAILURE PATH (R-175, R-182, design §3.4). The network is severed
+#      for real with `unshare -rn` — loopback only — so api.github.com and
+#      youtube.com are genuinely unreachable. A build with the API down must
+#      keep the stale-but-true value AND its ORIGINAL retrievedAt, must never
+#      zero a field, and must never stamp fresh dates on unobserved values.
+################################################################################
+
+
+offline deploy-time refresh — R-175 / R-182 failure path
+
+  [PASS] O1  the network can genuinely be severed with `unshare -rn` (the test must not be mockable)
+  [FAIL] O2  the canonical dataset exists to be refreshed
+           app/data/canonical/generated/ is missing: cv.v1.json, linkedin.v1.json, repositories.v1.json, channel.v1.json, delivery.v1.json, manifest.v1.json
+  [FAIL] O3  scripts/dataset/build_dataset.mjs exists to run
+           scripts/dataset/build_dataset.mjs does not exist
+  [FAIL] O4  a refresh with the APIs unreachable exits 0 — a degraded refresh is a normal build, not a failed one
+           the offline refresh could not be run — see the failures above
+  [FAIL] O5  the network-backed modules record outcome "retained", not "fresh"
+           the offline refresh could not be run — see the failures above
+  [FAIL] O6  the CV module still refreshes offline — it reads local bytes and its outcome is "static"
+           the offline refresh could not be run — see the failures above
+  [FAIL] O7  EVERY previously sourced field survives byte-identically — same value AND its ORIGINAL retrievedAt
+           the offline refresh could not be run — see the failures above
+  [FAIL] O8  no field degraded to a zero, a null or a placeholder (R-175)
+           the offline refresh could not be run — see the failures above
+  [FAIL] O9  the failure is recorded honestly — refresh.failure carries a real exit code or HTTP status and a detail
+           the offline refresh could not be run — see the failures above
+  [FAIL] O10  refresh.command names its secrets by VARIABLE NAME — no token value is ever written to a file
+           the offline refresh could not be run — see the failures above
+  [FAIL] O11  datasetVersion does NOT increment when nothing was re-observed (T-37: "we looked again" is not "the data moved")
+           the offline refresh could not be run — see the failures above
+  [FAIL] O12  the manifest still prints the ORIGINAL observation date, so the page cannot claim false freshness
+           the offline refresh could not be run — see the failures above
+
+------------------------------------------------------------------------------
+offline refresh: 1 passed, 11 FAILED, 12 assertions
+failing: O2, O3, O4, O5, O6, O7, O8, O9, O10, O11, O12
+EXIT=1
+
+#################################################################
+#################################################################
+################################################################################
+# 3/4  PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 \
+#      npx playwright test tests/content/dataset_marks.spec.ts
+#      The RUNTIME half (SC-51.1, R-95, R-175, R-110, R-112, T-39), against
+#      the baseline static export in out/, served on :5601 by this unit.
+#
+#      NOTE: out/ was NOT rebuilt here. The telemetry unit is running
+#      concurrently in this same worktree and `npm run build:static` begins
+#      with `rm -rf .next out`, which would have destroyed its in-flight run.
+#      The baseline export is precisely what these tests must fail against.
+#      (An earlier attempt was discarded: the sibling's :5601 server exited
+#      mid-run and DATA-12 went red on ERR_CONNECTION_REFUSED. An
+#      infrastructure red is not a finding, so it was re-run with a server
+#      owned by this unit.)
+################################################################################
+
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/content/dataset_marks.spec.ts --reporter=list --output=/var/tmp/v6-scratch/data-backend/pw-artifacts
+
+Running 13 tests using 2 workers
+
+  ✘   1 [chromium] › tests/content/dataset_marks.spec.ts:56:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-01: /dataset-provenance.json is served from the static export and is non-empty (451ms)
+  ✘   2 [chromium] › tests/content/dataset_marks.spec.ts:69:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-02: every provenance-index entry carries source, retrievedAt, method and url (547ms)
+  ✘   3 [chromium] › tests/content/dataset_marks.spec.ts:87:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-03: every rendered mark resolves in the provenance index (SC-51.1) (1.7s)
+  ✘   4 [chromium] › tests/content/dataset_marks.spec.ts:99:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-04: mark ids are unique across the rendered page (1.8s)
+  ✘   5 [chromium] › tests/content/dataset_marks.spec.ts:109:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-05: every one of the six sections renders at least one sourced mark (R-95) (1.7s)
+  ✘   6 [chromium] › tests/content/dataset_marks.spec.ts:119:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-06: no mark renders a zero, a dash or a placeholder where a real value belongs (R-175) (1.7s)
+  ✘   7 [chromium] › tests/content/dataset_marks.spec.ts:132:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-07: every mark carries the real observation date of its own value (2.1s)
+  ✘   8 [chromium] › tests/content/dataset_marks.spec.ts:148:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-08: the caliper state is one of the three the grammar defines, and "sourced" is actually reached (1.8s)
+  ✘   9 [chromium] › tests/content/dataset_marks.spec.ts:164:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-09: no figure appears in section prose outside a marked element (SC-51.1, the closing half) (2.0s)
+  ✘  10 [chromium] › tests/content/dataset_marks.spec.ts:209:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-10: every rendered visualisation has a dossier, and every dossier is rendered (R-112) (1.8s)
+  ✘  11 [chromium] › tests/content/dataset_marks.spec.ts:224:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-11: exactly one gold mark per registered visualisation (R-110) (1.9s)
+  ✘  13 [chromium] › tests/content/dataset_marks.spec.ts:254:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-13: with JavaScript disabled the marks are still real values, never zeros (R-175, T-39) (828ms)
+  ✓  12 [chromium] › tests/content/dataset_marks.spec.ts:237:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-12: the dataset reaches the page with zero third-party requests (R-87, R-183) (3.2s)
+
+
+  1) [chromium] › tests/content/dataset_marks.spec.ts:56:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-01: /dataset-provenance.json is served from the static export and is non-empty 
+
+    Error: the provenance index must ship with the static export so a reader can verify any mark
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m200[39m
+    Received: [31m404[39m
+
+      62 |       response.status(),
+      63 |       'the provenance index must ship with the static export so a reader can verify any mark',
+    > 64 |     ).toBe(200);
+         |       ^
+      65 |     const index = (await response.json()) as Record<string, unknown>;
+      66 |     expect(Object.keys(index).length, 'the provenance index is empty').toBeGreaterThan(0);
+      67 |   });
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:64:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-3094c-tic-export-and-is-non-empty-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests/content/dataset_marks.spec.ts:69:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-02: every provenance-index entry carries source, retrievedAt, method and url 
+
+    SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+
+      71 |     baseURL,
+      72 |   }) => {
+    > 73 |     const index = (await (await page.request.get(`${baseURL}/dataset-provenance.json`)).json()) as Record<
+         |                    ^
+      74 |       string,
+      75 |       { source?: string; retrievedAt?: string; method?: string; url?: string | null }
+      76 |     >;
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:73:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-73a31--retrievedAt-method-and-url-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium] › tests/content/dataset_marks.spec.ts:87:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-03: every rendered mark resolves in the provenance index (SC-51.1) 
+
+    SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+
+      87 |   test('DATA-03: every rendered mark resolves in the provenance index (SC-51.1)', async ({ page, baseURL }) => {
+      88 |     await page.goto('/', { waitUntil: 'networkidle' });
+    > 89 |     const index = (await (await page.request.get(`${baseURL}/dataset-provenance.json`)).json()) as Record<string, unknown>;
+         |                    ^
+      90 |     const marks = await readMarks(page);
+      91 |     expect(marks.length, 'the page renders no data-mark-id at all').toBeGreaterThan(0);
+      92 |     const unresolved = marks.filter((m) => !m.sourceId || !(m.sourceId in index));
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:89:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-4d58e-e-provenance-index-SC-51-1--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-4d58e-e-provenance-index-SC-51-1--chromium/error-context.md
+
+  4) [chromium] › tests/content/dataset_marks.spec.ts:99:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-04: mark ids are unique across the rendered page 
+
+    Error: the page renders no data-mark-id at all
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      101 |     const marks = await readMarks(page);
+      102 |     // Asserted first so this test cannot pass vacuously on a page with no marks.
+    > 103 |     expect(marks.length, 'the page renders no data-mark-id at all').toBeGreaterThan(0);
+          |                                                                     ^
+      104 |     const ids = marks.map((m) => m.markId);
+      105 |     const duplicates = ids.filter((id, i) => ids.indexOf(id) !== i);
+      106 |     expect(Array.from(new Set(duplicates)), 'duplicate data-mark-id values').toHaveLength(0);
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:103:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-ba535-ue-across-the-rendered-page-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-ba535-ue-across-the-rendered-page-chromium/error-context.md
+
+  5) [chromium] › tests/content/dataset_marks.spec.ts:109:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-05: every one of the six sections renders at least one sourced mark (R-95) 
+
+    Error: sections rendering no mark from the canonical dataset
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected length: [32m0[39m
+    Received length: [31m6[39m
+    Received array:  [31m["#hero", "#about", "#experience", "#skills", "#vitrine", "#listen"][39m
+
+      114 |       if (count === 0) empty.push(id);
+      115 |     }
+    > 116 |     expect(empty, 'sections rendering no mark from the canonical dataset').toHaveLength(0);
+          |                                                                            ^
+      117 |   });
+      118 |
+      119 |   test('DATA-06: no mark renders a zero, a dash or a placeholder where a real value belongs (R-175)', async ({
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:116:76
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-4df04-east-one-sourced-mark-R-95--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-4df04-east-one-sourced-mark-R-95--chromium/error-context.md
+
+  6) [chromium] › tests/content/dataset_marks.spec.ts:119:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-06: no mark renders a zero, a dash or a placeholder where a real value belongs (R-175) 
+
+    Error: no marks to check
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      122 |     await page.goto('/', { waitUntil: 'networkidle' });
+      123 |     const marks = await readMarks(page);
+    > 124 |     expect(marks.length, 'no marks to check').toBeGreaterThan(0);
+          |                                               ^
+      125 |     const offenders = marks
+      126 |       .filter((m) => m.caliper !== 'open')
+      127 |       .filter((m) => FORBIDDEN_MARK_TEXT.test(m.text) || m.text.length === 0)
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:124:47
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-13997-a-real-value-belongs-R-175--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-13997-a-real-value-belongs-R-175--chromium/error-context.md
+
+  7) [chromium] › tests/content/dataset_marks.spec.ts:132:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-07: every mark carries the real observation date of its own value 
+
+    SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+
+      132 |   test('DATA-07: every mark carries the real observation date of its own value', async ({ page, baseURL }) => {
+      133 |     await page.goto('/', { waitUntil: 'networkidle' });
+    > 134 |     const index = (await (await page.request.get(`${baseURL}/dataset-provenance.json`)).json()) as Record<
+          |                    ^
+      135 |       string,
+      136 |       { retrievedAt?: string }
+      137 |     >;
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:134:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-7fc04-ation-date-of-its-own-value-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-7fc04-ation-date-of-its-own-value-chromium/error-context.md
+
+  8) [chromium] › tests/content/dataset_marks.spec.ts:148:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-08: the caliper state is one of the three the grammar defines, and "sourced" is actually reached 
+
+    Error: the sourced caliper state is still never rendered, so the mark grammar stays two-thirds legible
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      159 |       marks.filter((m) => m.caliper === 'sourced').length,
+      160 |       'the sourced caliper state is still never rendered, so the mark grammar stays two-thirds legible',
+    > 161 |     ).toBeGreaterThan(0);
+          |       ^
+      162 |   });
+      163 |
+      164 |   test('DATA-09: no figure appears in section prose outside a marked element (SC-51.1, the closing half)', async ({
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:161:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-01ed2-sourced-is-actually-reached-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-01ed2-sourced-is-actually-reached-chromium/error-context.md
+
+  9) [chromium] › tests/content/dataset_marks.spec.ts:164:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-09: no figure appears in section prose outside a marked element (SC-51.1, the closing half) 
+
+    Error: unsourced figures in section prose: [{"section":"#hero","text":"≈92%"},{"section":"#hero","text":"ATO Payday Super · 200+ SIT scenarios"},{"section":"#hero","text":"$5M+"},{"section":"#hero","text":"ANZ · 5+ squads, 40+ practitioners"},{"section":"#hero","text":"10k+"},{"section":"#hero","text":"devices at P95 < 200 ms"},{"section":"#about","text":"01"},{"section":"#about","text":"38 public repositories · ATO evidence harness · ANZ platform migrations"},{"section":"#about","text":"02"},{"section":"#about","text":"Sixteen years. Senior delivery lead and AI/ML solutions architect since 2017; before that, business analysis and project"},{"section":"#about","text":"03"},{"section":"#about","text":"04"},{"section":"#about","text":"Payday Super program · Agile Kookaburras squad · PI 47–48"},{"section":"#about","text":"05"},{"section":"#about","text":"5+ squads, 40+ practitioners onshore and offshore"}]
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoHaveLength[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected length: [32m0[39m
+    Received length: [31m15[39m
+    Received array:  [31m[{"section": "#hero", "text": "≈92%"}, {"section": "#hero", "text": "ATO Payday Super · 200+ SIT scenarios"}, {"section": "#hero", "text": "$5M+"}, {"section": "#hero", "text": "ANZ · 5+ squads, 40+ practitioners"}, {"section": "#hero", "text": "10k+"}, {"section": "#hero", "text": "devices at P95 < 200 ms"}, {"section": "#about", "text": "01"}, {"section": "#about", "text": "38 public repositories · ATO evidence harness · ANZ platform migrations"}, {"section": "#about", "text": "02"}, {"section": "#about", "text": "Sixteen years. Senior delivery lead and AI/ML solutions architect since 2017; before that, business analysis and project"}, …][39m
+
+      200 |       unpermitted.slice(0, 15),
+      201 |       `unsourced figures in section prose: ${JSON.stringify(unpermitted.slice(0, 15))}`,
+    > 202 |     ).toHaveLength(0);
+          |       ^
+      203 |     expect(
+      204 |       allowlist.entries,
+      205 |       'the unsourced-figure allowlist must be empty at certification; every entry is a Gate K finding',
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:202:7
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-295b2-t-SC-51-1-the-closing-half--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-295b2-t-SC-51-1-the-closing-half--chromium/error-context.md
+
+  10) [chromium] › tests/content/dataset_marks.spec.ts:209:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-10: every rendered visualisation has a dossier, and every dossier is rendered (R-112) 
+
+    Error: no element declares a data-viz-id, so no dossier can be joined to it
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      215 |       els.map((e) => e.getAttribute('data-viz-id') ?? ''),
+      216 |     );
+    > 217 |     expect(rendered.length, 'no element declares a data-viz-id, so no dossier can be joined to it').toBeGreaterThan(0);
+          |                                                                                                     ^
+      218 |     const response = await page.request.get(`${baseURL}/dataset-provenance.json`);
+      219 |     expect(response.status()).toBe(200);
+      220 |     const duplicates = rendered.filter((id, i) => rendered.indexOf(id) !== i);
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:217:101
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-1ceea--dossier-is-rendered-R-112--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-1ceea--dossier-is-rendered-R-112--chromium/error-context.md
+
+  11) [chromium] › tests/content/dataset_marks.spec.ts:224:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-11: exactly one gold mark per registered visualisation (R-110) 
+
+    Error: no visualisation declares a data-viz-id
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      230 |       })),
+      231 |     );
+    > 232 |     expect(perViz.length, 'no visualisation declares a data-viz-id').toBeGreaterThan(0);
+          |                                                                      ^
+      233 |     const wrong = perViz.filter((v) => v.gold !== 1).map((v) => `${v.vizId}: ${v.gold} gold marks`);
+      234 |     expect(wrong, 'visualisations that do not carry exactly one gold mark').toHaveLength(0);
+      235 |   });
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:232:70
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-8628b-stered-visualisation-R-110--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-8628b-stered-visualisation-R-110--chromium/error-context.md
+
+  12) [chromium] › tests/content/dataset_marks.spec.ts:254:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-13: with JavaScript disabled the marks are still real values, never zeros (R-175, T-39) 
+
+    Error: no server-rendered marks: with JS off the visitor sees no sourced value
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+      261 |       await page.goto(`${baseURL}/`, { waitUntil: 'domcontentloaded' });
+      262 |       const marks = await readMarks(page);
+    > 263 |       expect(marks.length, 'no server-rendered marks: with JS off the visitor sees no sourced value').toBeGreaterThan(0);
+          |                                                                                                       ^
+      264 |       const offenders = marks
+      265 |         .filter((m) => m.caliper !== 'open')
+      266 |         .filter((m) => FORBIDDEN_MARK_TEXT.test(m.text) || m.text.length === 0)
+        at /var/tmp/v6-wt/data-backend/tests/content/dataset_marks.spec.ts:263:103
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../v6-scratch/data-backend/pw-artifacts/content-dataset_marks-TC-D-461da-ues-never-zeros-R-175-T-39--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  12 failed
+    [chromium] › tests/content/dataset_marks.spec.ts:56:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-01: /dataset-provenance.json is served from the static export and is non-empty 
+    [chromium] › tests/content/dataset_marks.spec.ts:69:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-02: every provenance-index entry carries source, retrievedAt, method and url 
+    [chromium] › tests/content/dataset_marks.spec.ts:87:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-03: every rendered mark resolves in the provenance index (SC-51.1) 
+    [chromium] › tests/content/dataset_marks.spec.ts:99:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-04: mark ids are unique across the rendered page 
+    [chromium] › tests/content/dataset_marks.spec.ts:109:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-05: every one of the six sections renders at least one sourced mark (R-95) 
+    [chromium] › tests/content/dataset_marks.spec.ts:119:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-06: no mark renders a zero, a dash or a placeholder where a real value belongs (R-175) 
+    [chromium] › tests/content/dataset_marks.spec.ts:132:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-07: every mark carries the real observation date of its own value 
+    [chromium] › tests/content/dataset_marks.spec.ts:148:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-08: the caliper state is one of the three the grammar defines, and "sourced" is actually reached 
+    [chromium] › tests/content/dataset_marks.spec.ts:164:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-09: no figure appears in section prose outside a marked element (SC-51.1, the closing half) 
+    [chromium] › tests/content/dataset_marks.spec.ts:209:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-10: every rendered visualisation has a dossier, and every dossier is rendered (R-112) 
+    [chromium] › tests/content/dataset_marks.spec.ts:224:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-11: exactly one gold mark per registered visualisation (R-110) 
+    [chromium] › tests/content/dataset_marks.spec.ts:254:7 › TC-DATA: the canonical dataset reaches the page (R-108, R-95, R-175) › DATA-13: with JavaScript disabled the marks are still real values, never zeros (R-175, T-39) 
+  1 passed (20.0s)
+EXIT=1
+
+################################################################################
+# 4/4  SUMMARY OF THE CAPTURED RED
+################################################################################
+
+  suite                                        assertions  failing  passing
+  ------------------------------------------------------------------------
+  scripts/validate/dataset_canonical_contract.mjs       52       51        1
+  scripts/validate/dataset_offline_refresh.mjs          12       11        1
+  tests/content/dataset_marks.spec.ts                   13       12        1
+  ------------------------------------------------------------------------
+  TOTAL                                                 77       74        3
+
+  The three that pass, and why they are not findings:
+
+  H1     (contract) GUARD, R-183. The site currently says its vitrine figures
+         are 'not computed live' AND the build genuinely does not refresh
+         them — the claim is TRUE today. H1 asserts the biconditional, so it
+         passes now and TRIPS the moment dataset:refresh enters build:static
+         without app/data/portfolio/vitrine.ts being rewritten in the same
+         commit. It is deliberately included as the trap R-183 requires.
+
+  O1     (offline) A precondition, not a finding: it proves `unshare -rn`
+         really severs the network on this host, so the offline failure-path
+         test cannot be satisfied by a mock or a back door. If this ever
+         fails, the offline suite reports FAILURE TO RUN, never a skip.
+
+  DATA-12 (runtime) R-87 / R-183. The baseline already fires zero third-party
+         requests (22/22 first-party), so this reproduces as a PASS. It is
+         kept as a regression guard: the dataset layer must reach the page
+         without introducing a single foreign host.
+
+  Everything else is red for one reason: none of app/data/canonical/,
+  scripts/dataset/, the provenance kernel, the five generated modules, the
+  manifest, the provenance index, the dossier registry or the measured
+  performance report exists yet, and build:static still does not refresh
+  anything. That is the work item.
+
+  Two reds that are already specific findings against the shipped page,
+  independent of the missing machinery:
+
+    B7      app/data/portfolio/vitrine.ts still imports the hand-run
+            app/data/generated/repo-harvest.json (R-182).
+    H2      the page's harvest date is read from that hand-run file rather
+            than from the dataset manifest, so page and data can drift.
+    DATA-08 the caliper's 'sourced' state is rendered ZERO times on the live
+            page (audit C-3 reproduced): the three-state mark grammar is
+            two-thirds legible to a visitor.
+    DATA-09 real unsourced figures found in section prose right now:
+            #hero  '≈92%', '$5M+', '10k+', '200+ SIT scenarios',
+                   '5+ squads, 40+ practitioners', 'P95 < 200 ms'
+            #about '38 public repositories', '5+ squads, 40+ practitioners'
+            None sits inside a [data-mark-id] resolving to a dataset field.
+
+  Gate battery after adding these tests (nothing weakened, nothing skipped):
+    npx tsc --noEmit                              -> exit 0
+    npm run lint                                  -> No ESLint warnings or errors
+    node scripts/validate/overhaul_static_audit.mjs -> ALL PASS (10/10)
+
+  Fix nothing. This unit's job ends at the captured red (§7.1).
+
+################################################################################
+# END
+################################################################################

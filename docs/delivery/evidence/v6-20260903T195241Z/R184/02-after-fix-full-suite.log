@@ -1,0 +1,1542 @@
+===== SLICE /tmp/r184-slice-aa =====
+[run-tests.sh] DATABASE_URL(_TEST) pinned to schema=aether_test_r184 — safe to proceed.
+........................................................................ [  4%]
+........................................................................ [  8%]
+........................................................................ [ 12%]
+........................................................................ [ 16%]
+...................s.................................................... [ 20%]
+.................................................................
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A..
+
+Loading weights:  45%|████▍     | 46/103 [00:00<00:00, 439.55it/s][A[A.
+
+
+Loading weights:  37%|███▋      | 38/103 [00:00<00:00, 371.69it/s][A[A[A..Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].
+
+Loading weights:  87%|████████▋ | 90/103 [00:00<00:00, 396.26it/s][A[A
+
+
+Loading weights:  74%|███████▍  | 76/103 [00:00<00:00, 371.59it/s][A[A[A. [ 24%]
+Loading weights: 100%|██████████| 103/103 [00:00<00:00, 407.22it/s]
+.Loading weights: 100%|██████████| 103/103 [00:00<00:00, 420.08it/s]
+.Loading weights:  33%|███▎      | 34/103 [00:00<00:00, 315.49it/s]
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A...Loading weights:  68%|██████▊   | 70/103 [00:00<00:00, 323.49it/s]
+Loading weights:  33%|███▎      | 34/103 [00:00<00:00, 331.98it/s][A..................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]........
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A.......
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].................................. [ 28%]
+........................................................................ [ 32%]
+........................................................................ [ 36%]
+........................................................................ [ 40%]
+..................................................ssssssssssss.......... [ 44%]
+........................................................................ [ 48%]
+........................................................................ [ 52%]
+....................................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A.
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]................................... [ 56%]
+........................................................................ [ 60%]
+........................................................................ [ 64%]
+.................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]....................................................... [ 68%]
+.....................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].................................................. [ 72%]
+...........................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]...........Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].................................. [ 76%]
+.......................................................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]................. [ 80%]
+........................................................................ [ 84%]
+........................................................................ [ 88%]
+................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]........................................................ [ 92%]
+........................................................................ [ 96%]
+......................................................................   [100%]
+=============================== warnings summary ===============================
+../../../../../../root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+../../../../../../root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/test_admin2_billing.py: 63 warnings
+tests/test_admin2_exec_metrics.py: 35 warnings
+tests/test_admin2_sales_agents.py: 55 warnings
+tests/test_admin2_sales_coexistence.py: 15 warnings
+tests/test_admin2_user_lifecycle.py: 36 warnings
+tests/test_admin_full_entitlements.py: 27 warnings
+tests/test_admin_full_user_management.py: 51 warnings
+tests/test_admin_lifecycle_mgmt.py: 37 warnings
+tests/test_adv_ent_001_refine_entitlement_gate.py: 5 warnings
+tests/test_aether_owned_brand_registry.py: 12 warnings
+tests/test_agent_run_abandoned_reconcile.py: 14 warnings
+tests/test_agents_screen.py: 25 warnings
+tests/test_analytics.py: 35 warnings
+tests/test_applications_move.py: 28 warnings
+tests/test_applications_pipeline_clear.py: 14 warnings
+tests/test_applications_timeline.py: 4 warnings
+tests/test_applications_tracker.py: 11 warnings
+tests/test_apply_form_grounding.py: 3 warnings
+tests/test_apply_receipt_gate.py: 6 warnings
+tests/test_apply_sweep_receipt_gate.py: 1 warning
+tests/test_approval_modal.py: 11 warnings
+tests/test_approvals.py: 10 warnings
+tests/test_approvals_delete.py: 12 warnings
+tests/test_aud_agent2_supervisor_honesty.py: 3 warnings
+tests/test_aud_agent3_directives_cadence.py: 5 warnings
+tests/test_aud_agent4_honest_counts.py: 8 warnings
+tests/test_aud_cov_3_company_facts.py: 5 warnings
+tests/test_aud_llm_1_token_budget.py: 2 warnings
+tests/test_auth.py: 9 warnings
+tests/test_b1b_agent_directives.py: 23 warnings
+tests/test_b1c_story_corrective_loop.py: 3 warnings
+tests/test_b6_parent_run_id.py: 4 warnings
+tests/test_b7_linkedin_upload.py: 9 warnings
+tests/test_blocker001_admin_overpermission.py: 1 warning
+tests/test_blocker001_restart_safety.py: 2 warnings
+tests/test_blocker007_fit_scorer_read_path.py: 4 warnings
+tests/test_blocker008_jobs_list_read_path.py: 8 warnings
+tests/test_blocker_006_empty_feed.py: 5 warnings
+tests/test_career_data.py: 8 warnings
+tests/test_clear_pipeline.py: 5 warnings
+tests/test_cli001_sales_automated_sender_guard.py: 6 warnings
+tests/test_cli004_metrics_honesty.py: 1 warning
+tests/test_cli005_execute_transport_error.py: 1 warning
+tests/test_cli_d1d2_real_toggles.py: 19 warnings
+tests/test_cli_d3_transmitted_counts.py: 6 warnings
+tests/test_cli_d5_served_model_disclosure.py: 8 warnings
+tests/test_cli_qp_verified_submissions.py: 1 warning
+tests/test_clock_skew_hardening.py: 4 warnings
+tests/test_cov2_generation_fit_gate.py: 10 warnings
+tests/test_cover_letter_agent.py: 9 warnings
+tests/test_cover_letter_studio.py: 11 warnings
+tests/test_cr_p0_2_checkout_honesty.py: 2 warnings
+tests/test_critical3_llm_circuit_breaker.py: 12 warnings
+tests/test_critical3b_credit_block_is_not_a_user_quota_block.py: 9 warnings
+tests/test_critical4_orphaned_execution_claim.py: 11 warnings
+tests/test_d524_generic_route_async.py: 10 warnings
+tests/test_dqdepth_queue_status.py: 3 warnings
+tests/test_email_agent.py: 4 warnings
+tests/test_email_center_career_inbox.py: 7 warnings
+tests/test_email_center_jobs_cron.py: 10 warnings
+tests/test_email_send_gate.py: 4 warnings
+tests/test_emails.py: 6 warnings
+tests/test_env_managed_admin_password.py: 8 warnings
+tests/test_f01_provider_credential_authz.py: 17 warnings
+tests/test_f02_backend_user_scoped_discovery.py: 12 warnings
+tests/test_f03_upload_silent_quota_spend.py: 7 warnings
+tests/test_f04_probability_score_honesty.py: 9 warnings
+tests/test_feat_email_brand_digest_cron.py: 13 warnings
+tests/test_fit_scorer_agent.py: 2 warnings
+tests/test_gap6_sourcing_volume.py: 1 warning
+tests/test_gap_d1_dual_auth.py: 11 warnings
+tests/test_gap_d2_multi_inbox.py: 13 warnings
+tests/test_gap_d3_agent_config.py: 13 warnings
+tests/test_gap_e2_conversion.py: 1 warning
+tests/test_gap_model_choice.py: 8 warnings
+tests/test_gap_new003_injection.py: 2 warnings
+tests/test_gap_p4_002_guard_degrade.py: 7 warnings
+tests/test_gap_p5_auth_compliance.py: 6 warnings
+tests/test_gap_p5_cover.py: 5 warnings
+tests/test_gap_p5_cover_voice.py: 5 warnings
+tests/test_gap_p5_pdf_bullets.py: 2 warnings
+tests/test_gap_p6_admin.py: 25 warnings
+tests/test_gap_p6_billing.py: 17 warnings
+tests/test_gap_p6_paywall.py: 10 warnings
+tests/test_gap_p6_sourcing.py: 2 warnings
+tests/test_gap_p7_async_001.py: 17 warnings
+tests/test_gap_p7_async_concurrency.py: 3 warnings
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/jwt/api_jwt.py:147: InsecureKeyLengthWarning: The HMAC key is 11 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    return self._jws.encode(
+
+tests/test_admin2_billing.py: 57 warnings
+tests/test_admin2_exec_metrics.py: 31 warnings
+tests/test_admin2_sales_agents.py: 54 warnings
+tests/test_admin2_sales_coexistence.py: 9 warnings
+tests/test_admin2_user_lifecycle.py: 29 warnings
+tests/test_admin_full_entitlements.py: 3 warnings
+tests/test_admin_full_user_management.py: 35 warnings
+tests/test_admin_lifecycle_mgmt.py: 26 warnings
+tests/test_adv_ent_001_refine_entitlement_gate.py: 14 warnings
+tests/test_aether_owned_brand_registry.py: 23 warnings
+tests/test_agent_run_abandoned_reconcile.py: 14 warnings
+tests/test_agents_screen.py: 50 warnings
+tests/test_analytics.py: 71 warnings
+tests/test_applications_move.py: 56 warnings
+tests/test_applications_pipeline_clear.py: 28 warnings
+tests/test_applications_timeline.py: 8 warnings
+tests/test_applications_tracker.py: 22 warnings
+tests/test_apply_form_grounding.py: 3 warnings
+tests/test_apply_receipt_gate.py: 6 warnings
+tests/test_apply_sweep_receipt_gate.py: 1 warning
+tests/test_approval_modal.py: 26 warnings
+tests/test_approvals.py: 29 warnings
+tests/test_approvals_delete.py: 20 warnings
+tests/test_aud_agent2_supervisor_honesty.py: 6 warnings
+tests/test_aud_agent3_directives_cadence.py: 5 warnings
+tests/test_aud_agent4_honest_counts.py: 16 warnings
+tests/test_aud_cov_3_company_facts.py: 10 warnings
+tests/test_aud_llm_1_token_budget.py: 2 warnings
+tests/test_auth.py: 3 warnings
+tests/test_b1b_agent_directives.py: 32 warnings
+tests/test_b1c_story_corrective_loop.py: 6 warnings
+tests/test_b6_parent_run_id.py: 8 warnings
+tests/test_b7_linkedin_upload.py: 17 warnings
+tests/test_blocker001_admin_overpermission.py: 2 warnings
+tests/test_blocker001_restart_safety.py: 2 warnings
+tests/test_blocker007_fit_scorer_read_path.py: 8 warnings
+tests/test_blocker008_jobs_list_read_path.py: 12 warnings
+tests/test_blocker_006_empty_feed.py: 10 warnings
+tests/test_career_data.py: 11 warnings
+tests/test_clear_pipeline.py: 11 warnings
+tests/test_cli001_sales_automated_sender_guard.py: 6 warnings
+tests/test_cli004_metrics_honesty.py: 1 warning
+tests/test_cli005_execute_transport_error.py: 2 warnings
+tests/test_cli_d1d2_real_toggles.py: 20 warnings
+tests/test_cli_d3_transmitted_counts.py: 11 warnings
+tests/test_cli_d5_served_model_disclosure.py: 8 warnings
+tests/test_cli_qp_verified_submissions.py: 1 warning
+tests/test_clock_skew_hardening.py: 4 warnings
+tests/test_cov2_generation_fit_gate.py: 14 warnings
+tests/test_cover_letter_agent.py: 31 warnings
+tests/test_cover_letter_studio.py: 34 warnings
+tests/test_cr_p0_2_checkout_honesty.py: 4 warnings
+tests/test_critical3_llm_circuit_breaker.py: 14 warnings
+tests/test_critical3b_credit_block_is_not_a_user_quota_block.py: 9 warnings
+tests/test_critical4_orphaned_execution_claim.py: 12 warnings
+tests/test_d524_generic_route_async.py: 20 warnings
+tests/test_dqdepth_queue_status.py: 3 warnings
+tests/test_email_agent.py: 9 warnings
+tests/test_email_center_career_inbox.py: 15 warnings
+tests/test_email_center_jobs_cron.py: 12 warnings
+tests/test_email_send_gate.py: 9 warnings
+tests/test_emails.py: 13 warnings
+tests/test_env_managed_admin_password.py: 3 warnings
+tests/test_f01_provider_credential_authz.py: 18 warnings
+tests/test_f02_backend_user_scoped_discovery.py: 23 warnings
+tests/test_f03_upload_silent_quota_spend.py: 17 warnings
+tests/test_f04_probability_score_honesty.py: 20 warnings
+tests/test_feat_email_brand_digest_cron.py: 22 warnings
+tests/test_fit_scorer_agent.py: 5 warnings
+tests/test_gap6_sourcing_volume.py: 2 warnings
+tests/test_gap_d1_dual_auth.py: 12 warnings
+tests/test_gap_d2_multi_inbox.py: 22 warnings
+tests/test_gap_d3_agent_config.py: 24 warnings
+tests/test_gap_e2_conversion.py: 3 warnings
+tests/test_gap_model_choice.py: 16 warnings
+tests/test_gap_new003_injection.py: 5 warnings
+tests/test_gap_p4_002_guard_degrade.py: 8 warnings
+tests/test_gap_p5_auth_compliance.py: 9 warnings
+tests/test_gap_p5_cover.py: 10 warnings
+tests/test_gap_p5_cover_voice.py: 13 warnings
+tests/test_gap_p5_pdf_bullets.py: 2 warnings
+tests/test_gap_p6_admin.py: 17 warnings
+tests/test_gap_p6_billing.py: 20 warnings
+tests/test_gap_p6_paywall.py: 14 warnings
+tests/test_gap_p6_sourcing.py: 4 warnings
+tests/test_gap_p7_async_001.py: 28 warnings
+tests/test_gap_p7_async_concurrency.py: 3 warnings
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/jwt/api_jwt.py:368: InsecureKeyLengthWarning: The HMAC key is 11 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    decoded = self.decode_complete(
+
+tests/test_admin2_billing.py: 5 warnings
+tests/test_admin2_sales_agents.py: 7 warnings
+tests/test_admin2_user_lifecycle.py: 1 warning
+tests/test_admin_full_user_management.py: 2 warnings
+tests/test_admin_lifecycle_mgmt.py: 2 warnings
+tests/test_b7_linkedin_upload.py: 4 warnings
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/fastapi/routing.py:352: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    return await dependant.call(**values)
+
+tests/test_admin2_billing.py::test_custom_price_validates_amount_and_interval[body0]
+tests/test_admin2_billing.py::test_custom_price_validates_amount_and_interval[body1]
+tests/test_admin2_billing.py::test_custom_price_validates_amount_and_interval[body2]
+tests/test_admin2_billing.py::test_custom_price_validates_amount_and_interval[body3]
+tests/test_admin2_billing.py::test_custom_price_validates_amount_and_interval[body6]
+tests/test_admin2_billing.py::test_custom_price_validates_amount_and_interval[body7]
+  /var/tmp/v6-r184/repo/apps/api/app/routers/admin.py:1321: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    amount = _parse_amount_aud(body.get("amountAud"))
+
+tests/test_admin2_billing.py::test_custom_price_validates_amount_and_interval[body4]
+tests/test_admin2_billing.py::test_custom_price_validates_amount_and_interval[body5]
+  /var/tmp/v6-r184/repo/apps/api/app/routers/admin.py:1322: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    interval = _parse_interval(body.get("interval"))
+
+tests/test_admin2_billing.py::test_create_promo_validates_its_body[body0]
+tests/test_admin2_billing.py::test_create_promo_validates_its_body[body1]
+tests/test_admin2_billing.py::test_create_promo_validates_its_body[body2]
+tests/test_admin2_billing.py::test_create_promo_validates_its_body[body3]
+tests/test_admin2_billing.py::test_create_promo_validates_its_body[body4]
+tests/test_admin2_billing.py::test_create_promo_validates_its_body[body5]
+tests/test_admin2_billing.py::test_create_promo_validates_its_body[body6]
+  /var/tmp/v6-r184/repo/apps/api/app/routers/admin.py:1918: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    args = _parse_promo_body(body)
+
+tests/test_admin2_billing.py::test_create_promo_validates_its_body[body7]
+  /var/tmp/v6-r184/repo/apps/api/app/routers/admin.py:1839: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    amount_off = _parse_amount_aud(amount_off)
+
+tests/test_admin2_sales_agents.py::test_create_sales_agent_rejects_an_out_of_range_commission[-1]
+tests/test_admin2_sales_agents.py::test_create_sales_agent_rejects_an_out_of_range_commission[100.1]
+tests/test_admin2_sales_agents.py::test_create_sales_agent_rejects_an_out_of_range_commission[ten]
+tests/test_admin2_sales_agents.py::test_create_sales_agent_rejects_an_out_of_range_commission[None]
+  /var/tmp/v6-r184/repo/apps/api/app/routers/admin.py:2075: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    commission_pct = _clean_commission_pct(body.get("commissionPct", 0))
+
+tests/test_admin2_sales_agents.py::test_create_sales_agent_requires_a_name
+  /var/tmp/v6-r184/repo/apps/api/app/routers/admin.py:2072: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    name = _clean_agent_name(body.get("name"))
+
+tests/test_admin2_sales_agents.py::test_update_sales_agent_rejects_an_unknown_status
+  /var/tmp/v6-r184/repo/apps/api/app/routers/admin.py:2156: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    changes["status"] = _clean_agent_status(body.get("status"))
+
+tests/test_admin2_user_lifecycle.py::test_admin_create_user_rejects_a_malformed_email_with_422[]
+tests/test_admin2_user_lifecycle.py::test_admin_create_user_rejects_a_malformed_email_with_422[   ]
+tests/test_admin2_user_lifecycle.py::test_admin_create_user_rejects_a_malformed_email_with_422[not-an-email]
+tests/test_admin2_user_lifecycle.py::test_admin_create_user_rejects_a_malformed_email_with_422[a b@example.com]
+tests/test_admin2_user_lifecycle.py::test_admin_create_user_rejects_a_malformed_email_with_422[12]
+  /var/tmp/v6-r184/repo/apps/api/app/routers/admin.py:777: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    email = _clean_email(body.get("email"))
+
+tests/test_admin_lifecycle_mgmt.py::test_unknown_view_is_an_honest_422
+tests/test_applications_tracker.py::TestListApplications::test_invalid_status_is_422_not_500
+tests/test_applications_tracker.py::TestDetailAndSubmit::test_submit_rejects_when_no_tailored_resume_for_job
+tests/test_approval_modal.py::TestStatusFilterValidation::test_invalid_filter_is_422_not_500
+tests/test_email_agent.py::test_email_run_draft_without_thread_is_422
+tests/test_gap_d3_agent_config.py::test_credential_ref_must_belong_to_user
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:1033: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    result = context.run(func, *args)
+
+tests/test_agents_screen.py::test_provider_invalid_status_422
+tests/test_applications_tracker.py::TestDetailAndSubmit::test_submit_url_too_long_422
+tests/test_approval_modal.py::TestDecisionContext::test_oversized_edit_is_422
+tests/test_auth.py::TestRegister::test_register_weak_password_rejected
+tests/test_b1b_agent_directives.py::TestDirectivesApiShape::test_history_requires_an_agent_key
+tests/test_cover_letter_studio.py::TestRefine::test_refine_validates_slider_bounds
+tests/test_gap_d3_agent_config.py::test_temperature_out_of_range_is_422
+tests/test_gap_d3_agent_config.py::test_invalid_thinking_effort_is_422
+tests/test_gap_p5_auth_compliance.py::test_agent_config_rejects_subscription_oauth_authmode
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:59: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    response = await handler(conn, exc)  # type: ignore[arg-type]
+
+tests/test_analytics.py::TestAnalytics::test_time_period_filter_works
+  /var/tmp/v6-r184/repo/apps/api/app/routers/analytics.py:174: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    job_filter = _period_clause(period, '"createdAt"')
+
+tests/test_applications_move.py::TestApplicationMove::test_job_fed_target_is_422[discovered]
+tests/test_applications_move.py::TestApplicationMove::test_job_fed_target_is_422[evaluating]
+tests/test_applications_move.py::TestApplicationMove::test_job_fed_target_is_422[tailoring]
+tests/test_applications_move.py::TestApplicationMove::test_unknown_stage_is_422
+  /var/tmp/v6-r184/repo/apps/api/app/services/stage_transitions.py:156: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    new_status = validate_stage(to_stage, APP_STAGE_TO_STATUS, "application")
+
+tests/test_applications_move.py::TestApplicationMove::test_closed_application_cannot_move[rejected]
+tests/test_applications_move.py::TestApplicationMove::test_closed_application_cannot_move[withdrawn]
+  /var/tmp/v6-r184/repo/apps/api/app/routers/applications.py:1085: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    move_application_stage(
+
+tests/test_applications_move.py::TestJobPipelineMove::test_app_fed_target_is_422[ready]
+tests/test_applications_move.py::TestJobPipelineMove::test_app_fed_target_is_422[submitted]
+tests/test_applications_move.py::TestJobPipelineMove::test_app_fed_target_is_422[in-review]
+tests/test_applications_move.py::TestJobPipelineMove::test_app_fed_target_is_422[interview]
+tests/test_applications_move.py::TestJobPipelineMove::test_app_fed_target_is_422[offer]
+  /var/tmp/v6-r184/repo/apps/api/app/services/stage_transitions.py:286: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    new_status = validate_stage(to_stage, JOB_STAGE_TO_STATUS, "job")
+
+tests/test_b7_linkedin_upload.py::test_upload_rejects_file_over_10mb
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/fastapi/routing.py:352: StarletteDeprecationWarning: 'HTTP_413_REQUEST_ENTITY_TOO_LARGE' is deprecated. Use 'HTTP_413_CONTENT_TOO_LARGE' instead.
+    return await dependant.call(**values)
+
+tests/test_blocker_006_empty_feed.py::TestJobsEndpointBlocker006::test_ready_jobs_with_old_posting_dates_are_returned
+tests/test_blocker_006_empty_feed.py::TestJobsEndpointBlocker006::test_ready_jobs_with_old_posting_dates_are_returned
+tests/test_blocker_006_empty_feed.py::TestJobsEndpointBlocker006::test_ready_jobs_with_old_posting_dates_are_returned
+tests/test_blocker_006_empty_feed.py::TestJobsEndpointBlocker006::test_ready_jobs_with_old_posting_dates_are_returned
+tests/test_blocker_006_empty_feed.py::TestJobsEndpointBlocker006::test_ready_jobs_with_old_posting_dates_are_returned
+tests/test_blocker_006_empty_feed.py::TestJobsEndpointBlocker006::test_feed_rows_expose_their_real_posting_age
+tests/test_blocker_006_empty_feed.py::TestJobsEndpointBlocker006::test_listing_the_source_stopped_returning_is_hidden_but_kept
+tests/test_blocker_006_empty_feed.py::TestJobsEndpointBlocker006::test_listing_the_source_stopped_returning_is_hidden_but_kept
+tests/test_blocker_006_empty_feed.py::TestJobsEndpointBlocker006::test_camel_case_includeStale_is_accepted
+  /var/tmp/v6-r184/repo/apps/api/tests/test_blocker_006_empty_feed.py:239: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    else (datetime.utcnow() - timedelta(days=posted_days_ago)).isoformat()
+
+tests/test_blocker_006_empty_feed.py::TestSweepRecordsLiveness::test_create_stamps_last_seen_at
+  /var/tmp/v6-r184/repo/apps/api/tests/test_blocker_006_empty_feed.py:336: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    "postedAt": (datetime.utcnow() - timedelta(days=140)).isoformat(),
+
+tests/test_blocker_006_empty_feed.py::TestSweepRecordsLiveness::test_create_stamps_last_seen_at
+  /var/tmp/v6-r184/repo/apps/api/tests/test_blocker_006_empty_feed.py:360: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    assert stamped > datetime.utcnow() - timedelta(minutes=5), (
+
+tests/test_d524_generic_route_async.py::test_generic_route_async_missing_required_param_still_422_before_enqueue
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:2504: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    job_id = _require_job_id(params)
+
+tests/test_f02_backend_user_scoped_discovery.py::TestPipelineRunDerivesTheSearchFromTheUser::test_empty_profile_is_refused_by_name_not_substituted
+tests/test_f02_backend_user_scoped_discovery.py::TestPipelineRunDerivesTheSearchFromTheUser::test_a_refused_pipeline_records_and_bills_nothing
+tests/test_f02_backend_user_scoped_discovery.py::TestPipelineRunDerivesTheSearchFromTheUser::test_half_a_profile_is_refused_naming_only_the_missing_half
+tests/test_f02_backend_user_scoped_discovery.py::TestScoutRunDerivesTheSearchFromTheUser::test_empty_profile_is_refused_by_name
+tests/test_f02_backend_user_scoped_discovery.py::TestScoutRunDerivesTheSearchFromTheUser::test_the_shared_dispatch_seam_refuses_too
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:2453: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    raise _missing_search_target_422(missing)
+
+tests/test_gap_p4_002_guard_degrade.py::TestGuardRejectionIsAnHonestCompletedDegrade::test_rejection_still_propagates_so_callers_keep_their_shape
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:3980: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    raise _guard_rejection_http_error("Cover letter", exc) from exc
+
+tests/test_gap_p5_auth_compliance.py::test_put_deployment_credential_rejects_subscription_oauth
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:6242: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    stored_mode, stored_secret = _validate_provider_auth(
+
+tests/test_gap_p5_auth_compliance.py::test_put_user_credential_rejects_subscription_oauth
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:6551: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    stored_mode, stored_secret = _validate_provider_auth(
+
+tests/test_gap_p6_admin.py::test_spend_cap_malformed_json_authed_is_422
+tests/test_gap_p6_admin.py::test_spend_cap_invalid_value_authed_is_422
+  /var/tmp/v6-r184/repo/apps/api/app/routers/admin.py:176: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    body = await _parse_spend_cap_body(request)
+
+tests/test_gap_p6_sourcing.py::TestJobsFeedEndpoint::test_default_feed_hides_seek_and_stale_include_stale_shows_them
+tests/test_gap_p6_sourcing.py::TestJobsFeedEndpoint::test_default_feed_hides_seek_and_stale_include_stale_shows_them
+tests/test_gap_p6_sourcing.py::TestJobsFeedEndpoint::test_default_feed_hides_seek_and_stale_include_stale_shows_them
+tests/test_gap_p6_sourcing.py::TestJobsFeedEndpoint::test_default_feed_hides_seek_and_stale_include_stale_shows_them
+tests/test_gap_p6_sourcing.py::TestJobsFeedEndpoint::test_default_feed_has_zero_duplicate_external_urls
+tests/test_gap_p6_sourcing.py::TestJobsFeedEndpoint::test_default_feed_has_zero_duplicate_external_urls
+  /var/tmp/v6-r184/repo/apps/api/tests/test_gap_p6_sourcing.py:408: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    posted = (datetime.utcnow() - timedelta(days=posted_days_ago)).isoformat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1785 passed, 13 skipped, 2438 warnings in 1521.20s (0:25:21)
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 2174.52it/s]
+ATS semantic scoring active path=local (HF_TOKEN=<absent>)
+===== SLICE /tmp/r184-slice-ab =====
+[run-tests.sh] DATABASE_URL(_TEST) pinned to schema=aether_test_r184 — safe to proceed.
+....................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].......
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A............................................. [  4%]
+........................................................................ [  8%]
+........................................................................ [ 13%]
+........................................................................ [ 17%]
+...Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]...Loading weights: 100%|██████████| 103/103 [00:00<00:00, 1416.79it/s]
+.........Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A.
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[ALoading weights: 100%|██████████| 103/103 [00:00<00:00, 1110.72it/s]
+
+Loading weights:  41%|████      | 42/103 [00:00<00:00, 419.76it/s][A.Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A[ALoading weights: 100%|██████████| 103/103 [00:00<00:00, 592.75it/s]
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A
+
+Loading weights:  50%|████▉     | 51/103 [00:00<00:00, 414.15it/s][A[ALoading weights:  25%|██▌       | 26/103 [00:00<00:00, 196.38it/s].
+
+
+
+
+
+Loading weights:  38%|███▊      | 39/103 [00:00<00:00, 275.47it/s][A[A[A[A[A[A
+
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A[A[A
+Loading weights:  11%|█         | 11/103 [00:00<00:02, 44.66it/s][A
+Loading weights:  20%|██        | 21/103 [00:00<00:01, 64.16it/s][A
+
+
+
+
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A[A[A[A[A[A.
+
+
+
+
+
+
+Loading weights:  11%|█         | 11/103 [00:00<00:00, 108.00it/s][A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A[A[A[A[A[A[A[ALoading weights:  72%|███████▏  | 74/103 [00:00<00:00, 167.38it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+Loading weights:  65%|██████▌   | 67/103 [00:00<00:00, 162.84it/s][A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+Loading weights:  90%|█████████ | 93/103 [00:00<00:00, 158.38it/s][A[A
+
+
+
+
+Loading weights:  64%|██████▍   | 66/103 [00:00<00:00, 162.60it/s][A[A[A[A[A
+Loading weights:  57%|█████▋    | 59/103 [00:00<00:00, 170.28it/s][A.Loading weights: 100%|██████████| 103/103 [00:00<00:00, 1178.80it/s]
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A
+
+
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A[A[A[ALoading weights: 100%|██████████| 103/103 [00:00<00:00, 933.30it/s]
+
+
+
+
+
+
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A[A[A[A[A[A[ALoading weights:  91%|█████████▏| 94/103 [00:00<00:00, 173.58it/s]
+
+
+
+
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+Loading weights:  53%|█████▎    | 55/103 [00:00<00:00, 545.16it/s][A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A
+
+
+
+
+
+
+Loading weights:  37%|███▋      | 38/103 [00:00<00:00, 201.01it/s][A[A[A[A[A[A[A.Loading weights: 100%|██████████| 103/103 [00:00<00:00, 545.42it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+Loading weights:  83%|████████▎ | 86/103 [00:00<00:00, 141.68it/s][A[A[A[A[A[A
+
+
+
+
+Loading weights:  85%|████████▌ | 88/103 [00:00<00:00, 176.24it/s][A[A[A[A[A
+Loading weights:  82%|████████▏ | 84/103 [00:00<00:00, 193.77it/s][A.Loading weights: 100%|██████████| 103/103 [00:00<00:00, 150.48it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Loading weights:  42%|████▏     | 43/103 [00:00<00:00, 421.85it/s][A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Loading weights:  67%|██████▋   | 69/103 [00:00<00:00, 653.34it/s][A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+Loading weights:  23%|██▎       | 24/103 [00:00<00:00, 218.43it/s][A[A[A[ALoading weights: 100%|██████████| 103/103 [00:00<00:00, 138.19it/s]
+.
+
+
+
+
+
+
+
+Loading weights:  38%|███▊      | 39/103 [00:00<00:00, 379.63it/s][A[A[A[A[A[A[A[ALoading weights: 100%|██████████| 103/103 [00:00<00:00, 148.90it/s]
+Loading weights:  43%|████▎     | 44/103 [00:00<00:00, 426.94it/s][A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Loading weights:  44%|████▎     | 45/103 [00:00<00:00, 322.15it/s][A[A[A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+Loading weights:  50%|█████     | 52/103 [00:00<00:00, 506.67it/s][A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+
+Loading weights:  51%|█████▏    | 53/103 [00:00<00:00, 445.24it/s].[A[A[A[A[A[A[A[A[A[A[A[A
+
+Loading weights:  28%|██▊       | 29/103 [00:00<00:00, 280.84it/s][A[ALoading weights: 100%|██████████| 103/103 [00:00<00:00, 129.05it/s]
+
+
+
+
+
+
+
+Loading weights:  57%|█████▋    | 59/103 [00:00<00:00, 161.13it/s][A[A[A[A[A[A[A
+
+
+
+Loading weights:  45%|████▍     | 46/103 [00:00<00:00, 193.76it/s][A[A[A[ALoading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 124.35it/s]
+Loading weights:  74%|███████▍  | 76/103 [00:00<00:00, 124.76it/s][A[A[A[A[A[A[ALoading weights:   5%|▍         | 5/103 [00:00<00:02, 44.51it/s]
+
+
+
+.Loading weights:  64%|██████▍   | 66/103 [00:00<00:00, 130.14it/s][A[A[A[A
+
+Loading weights:  56%|█████▋    | 58/103 [00:00<00:00, 136.63it/s][A[ALoading weights: 100%|██████████| 103/103 [00:00<00:00, 179.91it/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.Loading weights:  83%|████████▎ | 86/103 [00:00<00:00, 192.18it/s][A[A[A[A[A[A[A[A[A[A[A[A[A[A
+
+
+
+
+
+
+
+
+
+
+............................................ [ 21%]
+........................................................................ [ 26%]
+........................................................................ [ 30%]
+........................................................................ [ 34%]
+........................................................................ [ 39%]
+........................................................................ [ 43%]
+........................................................................ [ 47%]
+........................................................................ [ 52%]
+........................................................................ [ 56%]
+...................................................................
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A.
+Loading weights:  27%|██▋       | 28/103 [00:00<00:00, 266.71it/s][A..
+Loading weights:  53%|█████▎    | 55/103 [00:00<00:00, 237.80it/s][A.Loading weights: 100%|██████████| 103/103 [00:00<00:00, 401.08it/s]. [ 60%]
+
+....Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A.......Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]....
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A..Loading weights: 100%|██████████| 103/103 [00:00<00:00, 1037.22it/s]
+...................................s.................. [ 65%]
+........................................................................ [ 69%]
+........................................................................ [ 74%]
+..............Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]......................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]................................... [ 78%]
+........................................................................ [ 82%]
+........................................................................ [ 87%]
+........................................................................ [ 91%]
+........................................................................ [ 95%]
+.....................................................................    [100%]
+=============================== warnings summary ===============================
+../../../../../../root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+../../../../../../root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/test_gap_p7_def_a_dual_mode.py: 10 warnings
+tests/test_gap_p7_def_b_email_validation.py: 8 warnings
+tests/test_gap_p7_def_b_persist.py: 2 warnings
+tests/test_gap_p7_discovery_001.py: 8 warnings
+tests/test_gap_payment_review_backend.py: 19 warnings
+tests/test_gm2_email_agents_findings.py: 3 warnings
+tests/test_gm2_f01_provider_route_authz.py: 10 warnings
+tests/test_gm2_s15_signup_nul_byte_500.py: 7 warnings
+tests/test_gm2_s15_stored_signoff_leak_paths.py: 13 warnings
+tests/test_gm2s15_f04_probability_self_reference.py: 3 warnings
+tests/test_gm_v2_raw_count_class_closure.py: 3 warnings
+tests/test_gmail_contact_import.py: 7 warnings
+tests/test_gmv2_approval_audit_fix.py: 7 warnings
+tests/test_gmv2_wf_approvals_contract.py: 5 warnings
+tests/test_gmv2_wf_reconciliation.py: 2 warnings
+tests/test_gmv2_wf_stage_patch.py: 12 warnings
+tests/test_gmv2_wh_apply_contract.py: 7 warnings
+tests/test_google_oauth.py: 4 warnings
+tests/test_i4_fe03_settings_seek_gating.py: 3 warnings
+tests/test_interview_ingest.py: 8 warnings
+tests/test_interview_pack.py: 2 warnings
+tests/test_interview_prep_briefing.py: 1 warning
+tests/test_interviews.py: 5 warnings
+tests/test_job_alert_intake.py: 13 warnings
+tests/test_job_discovery.py: 3 warnings
+tests/test_jobs_insights_apply.py: 14 warnings
+tests/test_linkedin_contact_import.py: 5 warnings
+tests/test_llm_resilience.py: 4 warnings
+tests/test_llm_retry_after_headers.py: 1 warning
+tests/test_market_pulse_interview_count_divergence.py: 1 warning
+tests/test_meta1_cohort_transmitted.py: 13 warnings
+tests/test_ml_admin_001.py: 8 warnings
+tests/test_ml_admin_003_nul_query_param.py: 22 warnings
+tests/test_ml_admin_free_fallback.py: 15 warnings
+tests/test_ml_adv_002_oauth_exchange_status.py: 2 warnings
+tests/test_ml_agents_cred_005_delete_clears_reauth.py: 4 warnings
+tests/test_ml_agents_err_001.py: 9 warnings
+tests/test_ml_agents_err_001_obs.py: 7 warnings
+tests/test_ml_agents_refix.py: 13 warnings
+tests/test_ml_catalog_fix1.py: 10 warnings
+tests/test_ml_cover002_async_degrade.py: 2 warnings
+tests/test_ml_cover_draft_resilience.py: 1 warning
+tests/test_ml_cred_001.py: 12 warnings
+tests/test_ml_cred_002_anthropic_oauth.py: 19 warnings
+tests/test_ml_email_001_noop_metering.py: 1 warning
+tests/test_ml_f1_f3_run_route_and_agent_list.py: 10 warnings
+tests/test_ml_model_curation.py: 1 warning
+tests/test_ml_nth05_normalizer_pin.py: 1 warning
+tests/test_ml_signup_001.py: 1 warning
+tests/test_ml_w11_cover_claim_context.py: 3 warnings
+tests/test_ml_w13_email_inbox_limit.py: 7 warnings
+tests/test_ml_w14_served_model_billing.py: 9 warnings
+tests/test_ml_w17_application_race_unique_index.py: 6 warnings
+tests/test_ml_w19_w20_board_sweep_suppression.py: 13 warnings
+tests/test_ml_w22_degraded_cost_recording.py: 13 warnings
+tests/test_ml_w24_success_path_real_usage.py: 5 warnings
+tests/test_ml_w25_autopilot_suppression_visibility.py: 12 warnings
+tests/test_ml_w26_refine_claim_guard.py: 2 warnings
+tests/test_ml_w4b_interview_panel_attribution.py: 6 warnings
+tests/test_ml_w4c_email_agent_quota.py: 9 warnings
+tests/test_model_sub_quota.py: 23 warnings
+tests/test_mon001_board_sweep_bounded_read.py: 5 warnings
+tests/test_mon002_gmail_403_backoff.py: 5 warnings
+tests/test_mon006_wellfound_404_blocked.py: 1 warning
+tests/test_mon011_honest_format_integrity.py: 2 warnings
+tests/test_mon020_async_scout.py: 12 warnings
+tests/test_mv_clstudio_003.py: 3 warnings
+tests/test_mv_clstudio_j_residuals.py: 8 warnings
+tests/test_mv_cluster_a_cover_letter.py: 6 warnings
+tests/test_mv_email_center.py: 7 warnings
+tests/test_mv_j_correctness.py: 11 warnings
+tests/test_mv_resume_grounding.py: 11 warnings
+tests/test_mv_resume_studio.py: 11 warnings
+tests/test_mv_signup_001_bcrypt.py: 1 warning
+tests/test_networking.py: 11 warnings
+tests/test_networking_insights.py: 8 warnings
+tests/test_offers.py: 4 warnings
+tests/test_offers_persist.py: 11 warnings
+tests/test_orch_adv_operating_loop.py: 15 warnings
+tests/test_orch_adv_story_grounded_outreach.py: 2 warnings
+tests/test_part2_remediation.py: 10 warnings
+tests/test_password_reset.py: 3 warnings
+tests/test_pipeline.py: 2 warnings
+tests/test_profile_avatar.py: 11 warnings
+tests/test_provider_config.py: 10 warnings
+tests/test_provider_oauth_connect.py: 24 warnings
+tests/test_resume_format_preserve.py: 9 warnings
+tests/test_resume_ingest.py: 5 warnings
+tests/test_resume_upload.py: 24 warnings
+tests/test_rfmt2_clean_download.py: 5 warnings
+tests/test_rfmt5_outbound_preserved_format.py: 9 warnings
+tests/test_rt001_no_internals_in_password_errors.py: 3 warnings
+tests/test_rt002_empty_bullets_guard.py: 9 warnings
+tests/test_rt004_llm_bullet_extraction.py: 9 warnings
+tests/test_rt_004_application_card_dedup.py: 9 warnings
+tests/test_rt_005_board_stage_sync.py: 9 warnings
+tests/test_rt_007_board_sweep.py: 20 warnings
+tests/test_rt_008_blocked_source.py: 2 warnings
+tests/test_rt_008_event_trigger.py: 14 warnings
+tests/test_rt_009_010_apply_wiring.py: 12 warnings
+tests/test_sales_agent.py: 43 warnings
+tests/test_sales_network_nurture.py: 4 warnings
+tests/test_sales_s1_backlog_scan.py: 28 warnings
+tests/test_sales_s2_llm_classify.py: 8 warnings
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/jwt/api_jwt.py:147: InsecureKeyLengthWarning: The HMAC key is 11 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    return self._jws.encode(
+
+tests/test_gap_p7_def_a_dual_mode.py: 20 warnings
+tests/test_gap_p7_def_b_email_validation.py: 17 warnings
+tests/test_gap_p7_def_b_persist.py: 5 warnings
+tests/test_gap_p7_discovery_001.py: 16 warnings
+tests/test_gap_payment_review_backend.py: 20 warnings
+tests/test_gm2_email_agents_findings.py: 6 warnings
+tests/test_gm2_f01_provider_route_authz.py: 12 warnings
+tests/test_gm2_s15_stored_signoff_leak_paths.py: 30 warnings
+tests/test_gm2s15_f04_probability_self_reference.py: 7 warnings
+tests/test_gm_v2_raw_count_class_closure.py: 6 warnings
+tests/test_gmail_contact_import.py: 14 warnings
+tests/test_gmv2_approval_audit_fix.py: 12 warnings
+tests/test_gmv2_wf_approvals_contract.py: 10 warnings
+tests/test_gmv2_wf_reconciliation.py: 6 warnings
+tests/test_gmv2_wf_stage_patch.py: 24 warnings
+tests/test_gmv2_wh_apply_contract.py: 14 warnings
+tests/test_google_oauth.py: 8 warnings
+tests/test_i4_fe03_settings_seek_gating.py: 6 warnings
+tests/test_interview_ingest.py: 8 warnings
+tests/test_interview_pack.py: 3 warnings
+tests/test_interview_prep_briefing.py: 1 warning
+tests/test_interviews.py: 10 warnings
+tests/test_job_alert_intake.py: 19 warnings
+tests/test_job_discovery.py: 7 warnings
+tests/test_jobs_insights_apply.py: 29 warnings
+tests/test_linkedin_contact_import.py: 10 warnings
+tests/test_llm_resilience.py: 10 warnings
+tests/test_llm_retry_after_headers.py: 1 warning
+tests/test_market_pulse_interview_count_divergence.py: 2 warnings
+tests/test_meta1_cohort_transmitted.py: 26 warnings
+tests/test_ml_admin_001.py: 4 warnings
+tests/test_ml_admin_003_nul_query_param.py: 36 warnings
+tests/test_ml_admin_free_fallback.py: 15 warnings
+tests/test_ml_adv_002_oauth_exchange_status.py: 4 warnings
+tests/test_ml_agents_cred_005_delete_clears_reauth.py: 8 warnings
+tests/test_ml_agents_err_001.py: 18 warnings
+tests/test_ml_agents_err_001_obs.py: 14 warnings
+tests/test_ml_agents_refix.py: 26 warnings
+tests/test_ml_catalog_fix1.py: 19 warnings
+tests/test_ml_cover002_async_degrade.py: 2 warnings
+tests/test_ml_cover_draft_resilience.py: 2 warnings
+tests/test_ml_cred_001.py: 24 warnings
+tests/test_ml_cred_002_anthropic_oauth.py: 36 warnings
+tests/test_ml_email_001_noop_metering.py: 2 warnings
+tests/test_ml_f1_f3_run_route_and_agent_list.py: 20 warnings
+tests/test_ml_model_curation.py: 2 warnings
+tests/test_ml_nth05_normalizer_pin.py: 2 warnings
+tests/test_ml_signup_001.py: 2 warnings
+tests/test_ml_w11_cover_claim_context.py: 6 warnings
+tests/test_ml_w13_email_inbox_limit.py: 14 warnings
+tests/test_ml_w14_served_model_billing.py: 10 warnings
+tests/test_ml_w17_application_race_unique_index.py: 10 warnings
+tests/test_ml_w19_w20_board_sweep_suppression.py: 13 warnings
+tests/test_ml_w22_degraded_cost_recording.py: 13 warnings
+tests/test_ml_w24_success_path_real_usage.py: 6 warnings
+tests/test_ml_w25_autopilot_suppression_visibility.py: 24 warnings
+tests/test_ml_w26_refine_claim_guard.py: 6 warnings
+tests/test_ml_w4b_interview_panel_attribution.py: 12 warnings
+tests/test_ml_w4c_email_agent_quota.py: 18 warnings
+tests/test_model_sub_quota.py: 32 warnings
+tests/test_mon001_board_sweep_bounded_read.py: 5 warnings
+tests/test_mon002_gmail_403_backoff.py: 10 warnings
+tests/test_mon006_wellfound_404_blocked.py: 2 warnings
+tests/test_mon011_honest_format_integrity.py: 4 warnings
+tests/test_mon020_async_scout.py: 22 warnings
+tests/test_mv_clstudio_003.py: 6 warnings
+tests/test_mv_clstudio_j_residuals.py: 16 warnings
+tests/test_mv_cluster_a_cover_letter.py: 14 warnings
+tests/test_mv_email_center.py: 12 warnings
+tests/test_mv_j_correctness.py: 20 warnings
+tests/test_mv_resume_grounding.py: 21 warnings
+tests/test_mv_resume_studio.py: 41 warnings
+tests/test_networking.py: 23 warnings
+tests/test_networking_insights.py: 18 warnings
+tests/test_offers.py: 8 warnings
+tests/test_offers_persist.py: 24 warnings
+tests/test_orch_adv_operating_loop.py: 31 warnings
+tests/test_orch_adv_story_grounded_outreach.py: 4 warnings
+tests/test_part2_remediation.py: 16 warnings
+tests/test_password_reset.py: 2 warnings
+tests/test_pipeline.py: 6 warnings
+tests/test_profile_avatar.py: 22 warnings
+tests/test_provider_config.py: 21 warnings
+tests/test_provider_oauth_connect.py: 45 warnings
+tests/test_resume_format_preserve.py: 20 warnings
+tests/test_resume_ingest.py: 13 warnings
+tests/test_resume_upload.py: 55 warnings
+tests/test_rfmt2_clean_download.py: 13 warnings
+tests/test_rfmt5_outbound_preserved_format.py: 14 warnings
+tests/test_rt001_no_internals_in_password_errors.py: 5 warnings
+tests/test_rt002_empty_bullets_guard.py: 10 warnings
+tests/test_rt004_llm_bullet_extraction.py: 18 warnings
+tests/test_rt_004_application_card_dedup.py: 17 warnings
+tests/test_rt_005_board_stage_sync.py: 30 warnings
+tests/test_rt_007_board_sweep.py: 21 warnings
+tests/test_rt_008_blocked_source.py: 4 warnings
+tests/test_rt_008_event_trigger.py: 22 warnings
+tests/test_rt_009_010_apply_wiring.py: 27 warnings
+tests/test_sales_agent.py: 82 warnings
+tests/test_sales_network_nurture.py: 8 warnings
+tests/test_sales_s1_backlog_scan.py: 32 warnings
+tests/test_sales_s2_llm_classify.py: 9 warnings
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/jwt/api_jwt.py:368: InsecureKeyLengthWarning: The HMAC key is 11 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    decoded = self.decode_complete(
+
+tests/test_gap_p7_def_a_dual_mode.py::test_garbage_credential_returns_422_naming_both_formats
+tests/test_gap_p7_def_a_dual_mode.py::test_legacy_subscription_oauth_label_still_rejected
+tests/test_ml_cred_001.py::test_bare_oat_no_digit_still_rejected_as_oauth_token
+tests/test_ml_cred_001.py::test_legacy_subscription_oauth_label_still_rejected
+tests/test_ml_cred_001.py::test_garbage_credential_still_422_message_never_echoes_secret
+tests/test_provider_config.py::TestCredentialEndpoints::test_put_rejects_mismatched_anthropic_prefix
+tests/test_provider_config.py::TestCredentialEndpoints::test_anthropic_subscription_oauth_write_is_rejected
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:6242: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    stored_mode, stored_secret = _validate_provider_auth(
+
+tests/test_gap_p7_def_b_email_validation.py: 6 warnings
+tests/test_gm2_s15_signup_nul_byte_500.py: 3 warnings
+tests/test_interviews.py: 1 warning
+tests/test_ml_w13_email_inbox_limit.py: 1 warning
+tests/test_mv_j_correctness.py: 1 warning
+tests/test_mv_resume_grounding.py: 3 warnings
+tests/test_mv_signup_001_bcrypt.py: 1 warning
+tests/test_offers_persist.py: 1 warning
+tests/test_password_reset.py: 1 warning
+tests/test_resume_ingest.py: 1 warning
+tests/test_rt002_empty_bullets_guard.py: 1 warning
+tests/test_sales_agent.py: 1 warning
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:59: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    response = await handler(conn, exc)  # type: ignore[arg-type]
+
+tests/test_gap_p7_discovery_002_cron.py::TestDiscoverySweepUserTask::test_task_reports_a_missing_search_target_honestly_never_raises
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:2453: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    raise _missing_search_target_422(missing)
+
+tests/test_gm2_s15_stored_signoff_leak_paths.py: 2 warnings
+tests/test_ml_admin_003_nul_query_param.py: 5 warnings
+tests/test_model_sub_quota.py: 2 warnings
+tests/test_mv_resume_grounding.py: 1 warning
+tests/test_networking.py: 1 warning
+tests/test_offers_persist.py: 1 warning
+tests/test_provider_oauth_connect.py: 1 warning
+tests/test_rt_009_010_apply_wiring.py: 2 warnings
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:1033: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    result = context.run(func, *args)
+
+tests/test_gm2_s15_stored_signoff_leak_paths.py::test_refine_refuses_contaminated_stored_letter[GAP-P7-DEF-B Probe 1785452243543]
+tests/test_gm2_s15_stored_signoff_leak_paths.py::test_refine_refuses_contaminated_stored_letter[GAP-P7-DEF-B Probe 1784823962960]
+tests/test_ml_w26_refine_claim_guard.py::TestRefineClaimGuard::test_refine_rejects_unevidenced_jd_sourced_claim
+  /var/tmp/v6-r184/repo/apps/api/app/routers/cover_letters.py:1143: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    lambda: _refine_cover_letter_body(letter_id, body, current_user),
+
+tests/test_gmv2_wf_stage_patch.py::TestStagePatchEndpointExists::test_illegal_job_fed_target_is_422_with_honest_message
+  /var/tmp/v6-r184/repo/apps/api/app/services/stage_transitions.py:156: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    new_status = validate_stage(to_stage, APP_STAGE_TO_STATUS, "application")
+
+tests/test_gmv2_wf_stage_patch.py::TestStagePatchEndpointExists::test_closed_application_cannot_move
+  /var/tmp/v6-r184/repo/apps/api/app/routers/applications.py:1041: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    move_application_stage(
+
+tests/test_linkedin_contact_import.py::test_wrong_file_types_are_honest_422
+tests/test_profile_avatar.py::test_rejects_unsupported_formats_without_writing
+tests/test_resume_upload.py::test_upload_rejects_too_short_content
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/fastapi/routing.py:352: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    return await dependant.call(**values)
+
+tests/test_ml_admin_003_nul_query_param.py::test_admin_users_q_nul_byte_returns_422_not_500
+tests/test_ml_admin_003_nul_query_param.py::test_admin_users_plan_nul_byte_returns_422_not_500
+tests/test_ml_admin_003_nul_query_param.py::test_admin_users_nul_byte_recovers_for_next_normal_request[q]
+tests/test_ml_admin_003_nul_query_param.py::test_admin_users_nul_byte_recovers_for_next_normal_request[plan]
+  /var/tmp/v6-r184/repo/apps/api/app/repositories/admin.py:671: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    cur.execute(f'SELECT count(*) {from_sql}{where_sql}', params)
+
+tests/test_ml_admin_003_nul_query_param.py::test_networking_contacts_company_nul_byte_returns_422_not_500
+  /var/tmp/v6-r184/repo/apps/api/app/routers/networking.py:512: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    cur.execute(
+
+tests/test_ml_admin_003_nul_query_param.py::test_networking_outreach_contact_id_nul_byte_returns_422_not_500
+  /var/tmp/v6-r184/repo/apps/api/app/routers/networking.py:686: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    cur.execute(
+
+tests/test_ml_admin_003_nul_query_param.py::test_workspaces_emails_inbox_thread_id_nul_byte_returns_422_not_500
+  /var/tmp/v6-r184/repo/apps/api/app/routers/workspaces.py:729: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    cur.execute(
+
+tests/test_ml_admin_003_nul_query_param.py::test_interviews_application_id_nul_byte_returns_422_not_500
+  /var/tmp/v6-r184/repo/apps/api/app/routers/interviews.py:462: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    cur.execute(
+
+tests/test_ml_adv_002_oauth_exchange_status.py::test_exchange_rejected_code_returns_422_not_502
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:6789: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    tok = _mint_anthropic_token(body.pastedCode, current_user["id"])
+
+tests/test_ml_catalog_fix1.py::test_unknown_model_id_rejected_valid_model_accepted
+tests/test_ml_model_curation.py::test_denylisted_model_not_offered_and_rejected_on_save
+tests/test_model_sub_quota.py::test_saving_an_unknown_claude_id_is_rejected_422_never_substituted
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:5729: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    _validate_agent_model(model_in, user_id, agent_key)
+
+tests/test_ml_cred_002_anthropic_oauth.py::test_exchange_malformed_pasted_code_rejected_422[justacodenohashmark-no-hash-separator]
+tests/test_ml_cred_002_anthropic_oauth.py::test_exchange_malformed_pasted_code_rejected_422[CODEVALUE#-empty-state-half]
+tests/test_ml_cred_002_anthropic_oauth.py::test_exchange_malformed_pasted_code_rejected_422[#STATEVALUE-empty-code-half]
+tests/test_ml_cred_002_anthropic_oauth.py::test_exchange_malformed_pasted_code_rejected_422[-empty-string]
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:6730: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    code, state = _parse_pasted_oauth_code(pasted_code)
+
+tests/test_ml_f1_f3_run_route_and_agent_list.py::test_generic_run_route_returns_422_for_a_fabrication_rejection
+tests/test_ml_f1_f3_run_route_and_agent_list.py::test_generic_run_route_returns_422_for_a_structural_rejection
+tests/test_ml_f1_f3_run_route_and_agent_list.py::test_a_guard_rejection_through_the_generic_route_is_still_refunded
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:7483: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    raise _guard_rejection_http_error(_display_for_backend(name), exc) from exc
+
+tests/test_ml_f1_f3_run_route_and_agent_list.py::test_the_dedicated_cover_letter_route_keeps_its_422_wording
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:3980: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    raise _guard_rejection_http_error("Cover letter", exc) from exc
+
+tests/test_mv_j_correctness.py::test_admin_settings_malformed_json_authed_is_422
+  /var/tmp/v6-r184/repo/apps/api/app/routers/admin.py:661: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    body = await _parse_settings_body(request)
+
+tests/test_profile_avatar.py::test_rejects_oversized_upload
+tests/test_resume_upload.py::test_upload_rejects_files_over_10mb
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/fastapi/routing.py:352: StarletteDeprecationWarning: 'HTTP_413_REQUEST_ENTITY_TOO_LARGE' is deprecated. Use 'HTTP_413_CONTENT_TOO_LARGE' instead.
+    return await dependant.call(**values)
+
+tests/test_provider_oauth_connect.py::test_exchange_malformed_pasted_code_422
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:7172: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    code, state = _parse_pasted_oauth_code(body.pastedCode)
+
+tests/test_resume_upload.py::test_upload_rejects_unparseable_pdf
+  /var/tmp/v6-r184/repo/apps/api/app/routers/resumes.py:251: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    return _extract_pdf_text(data), _PDF_CONTENT_TYPE
+
+tests/test_resume_upload.py::test_upload_rejects_undecodable_docx_junk_honestly
+tests/test_resume_upload.py::test_upload_rejects_undecodable_binary_with_image_extension
+  /var/tmp/v6-r184/repo/apps/api/app/routers/resumes.py:363: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    raw_text, content_type = _extract_upload_text(filename, data)
+
+tests/test_resume_upload.py::test_upload_rejects_docx_with_malformed_content_types_honestly
+tests/test_resume_upload.py::test_upload_rejects_docx_with_corrupted_deflate_stream_honestly
+  /var/tmp/v6-r184/repo/apps/api/app/routers/resumes.py:253: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    return _extract_docx_text(data), _DOCX_CONTENT_TYPE
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1652 passed, 1 skipped, 2500 warnings in 1192.11s (0:19:52)
+===== SLICE /tmp/r184-slice-ac =====
+[run-tests.sh] DATABASE_URL(_TEST) pinned to schema=aether_test_r184 — safe to proceed.
+........................................................................ [  3%]
+...............Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]......................................................... [  7%]
+........................................................................ [ 11%]
+........................................................................ [ 15%]
+........................................................................ [ 18%]
+........................................................................ [ 22%]
+........................................................................ [ 26%]
+........................................................................ [ 30%]
+..............................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]...Loading weights: 100%|██████████| 103/103 [00:00<00:00, 3900.97it/s].
+...................................... [ 33%]
+........................................................................ [ 37%]
+........................................................................ [ 41%]
+......................................................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].................. [ 45%]
+..Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]...........................................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]........................... [ 48%]
+........................................................................ [ 52%]
+........................................................................ [ 56%]
+........................................................................ [ 60%]
+........................................................................ [ 63%]
+........................................................................ [ 67%]
+........................................................................ [ 71%]
+.........Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A.......
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A.....Loading weights: 100%|██████████| 103/103 [00:00<00:00, 622.61it/s]
+...................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].............................. [ 75%]
+........................................................................ [ 78%]
+...................................
+===== SLICE /tmp/r184-slice-ac (RESTARTED — the first attempt's shell was killed at 78%) =====
+[run-tests.sh] DATABASE_URL(_TEST) pinned to schema=aether_test_r184 — safe to proceed.
+.......................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].Loading weights: 100%|██████████| 103/103 [00:00<00:00, 6079.13it/s]
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A.
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[ALoading weights: 100%|██████████| 103/103 [00:00<00:00, 6280.27it/s]
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[ALoading weights: 100%|██████████| 103/103 [00:00<00:00, 7936.46it/s].
+Loading weights: 100%|██████████| 103/103 [00:00<00:00, 2277.83it/s]
+Loading weights: 100%|██████████| 103/103 [00:00<00:00, 2876.85it/s]
+Loading weights: 100%|██████████| 103/103 [00:00<00:00, 3197.97it/s]
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A.Loading weights: 100%|██████████| 103/103 [00:00<00:00, 3636.51it/s]
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 5910.14it/s]
+Loading weights: 100%|██████████| 103/103 [00:00<00:00, 9140.04it/s]
+............................................. [  3%]
+.......Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]................................................................. [  7%]
+........................................................................ [ 11%]
+........................................................................ [ 15%]
+........................................................................ [ 18%]
+........................................................................ [ 22%]
+........................................................................ [ 26%]
+........................................................................ [ 30%]
+.......................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]....Loading weights:  93%|█████████▎| 96/103 [00:00<00:00, 899.80it/s].Loading weights: 100%|██████████| 103/103 [00:00<00:00, 945.97it/s]............................................ [ 33%]
+........................................................................ [ 37%]
+........................................................................ [ 41%]
+........................................................................ [ 45%]
+........................................................................ [ 48%]
+........................................................................ [ 52%]
+........................................................................ [ 56%]
+....................................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]....Loading weights: 100%|██████████| 103/103 [00:00<00:00, 5063.51it/s]
+................................ [ 60%]
+........................................................................ [ 63%]
+........................................................................ [ 67%]
+........................................................................ [ 71%]
+........................................................................ [ 75%]
+........................................................................ [ 78%]
+........................................................................ [ 82%]
+......................................Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].......................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s][A[A[A[A[A[A[A[A[A[A[A[A[A[A[A........... [ 86%]
+...........
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s].
+
+
+
+
+
+Loading weights:  69%|██████▉   | 71/103 [00:02<00:01, 30.72it/s][A[A[A[A[A[A
+Loading weights:  74%|███████▍  | 76/103 [00:05<00:01, 13.87it/s][A............................................................ [ 90%]
+........................................................................ [ 93%]
+........................................................................ [ 97%]
+............................................                             [100%]
+=============================== warnings summary ===============================
+../../../../../../root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+../../../../../../root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/test_sales_s3_output_honesty.py: 5 warnings
+tests/test_sales_s4_linkedin_cadence.py: 7 warnings
+tests/test_scout_live_sources.py: 3 warnings
+tests/test_sec422_validation_redaction.py: 2 warnings
+tests/test_settings_job_board_catalog.py: 9 warnings
+tests/test_setup1_answer_bank_agent_wiring.py: 2 warnings
+tests/test_setup1_answer_bank_readiness.py: 3 warnings
+tests/test_sfix_a_discovery_scale.py: 1 warning
+tests/test_sfix_s4_board_sweep_spend_cap.py: 3 warnings
+tests/test_sfix_s4_review_midjob_cap_and_rollover.py: 5 warnings
+tests/test_source_availability.py: 7 warnings
+tests/test_stopall_enforcement.py: 11 warnings
+tests/test_storm1_paused_row_storm.py: 5 warnings
+tests/test_story_bank.py: 3 warnings
+tests/test_story_bank_enrichment.py: 6 warnings
+tests/test_story_category_filter.py: 2 warnings
+tests/test_story_create_no_silent_overwrite.py: 4 warnings
+tests/test_story_dedup.py: 14 warnings
+tests/test_story_dedup_archive_restore.py: 5 warnings
+tests/test_story_dedup_invocation.py: 5 warnings
+tests/test_sub006_greenhouse_canonical.py: 2 warnings
+tests/test_sub007_confirmation_classification.py: 6 warnings
+tests/test_sub010_answer_pack.py: 10 warnings
+tests/test_sub_learn_evidence_pack.py: 2 warnings
+tests/test_sub_live_form_wait.py: 3 warnings
+tests/test_subscriber_welcome.py: 2 warnings
+tests/test_tailor_response_http_contract.py: 4 warnings
+tests/test_tailor_score_persistence_e2e.py: 3 warnings
+tests/test_tailoring_agent.py: 6 warnings
+tests/test_u1x_a_anthropic_catalog.py: 5 warnings
+tests/test_u1x_a_reliability.py: 3 warnings
+tests/test_u1x_b_orchestrator_role.py: 5 warnings
+tests/test_u2b_document_integrity.py: 1 warning
+tests/test_u2b_fidelity_coherence.py: 2 warnings
+tests/test_u2b_fidelity_verification.py: 5 warnings
+tests/test_u2b_format_engine.py: 2 warnings
+tests/test_u2b_format_engine_paths.py: 4 warnings
+tests/test_u2b_render_completeness.py: 1 warning
+tests/test_u2c_dedup_mirror_reconcile.py: 9 warnings
+tests/test_u2c_gate_enforcement.py: 8 warnings
+tests/test_u2c_refine_gate.py: 4 warnings
+tests/test_u5_applications_read_manual_step.py: 3 warnings
+tests/test_u5_close_apply_sweep_status_endpoint.py: 3 warnings
+tests/test_u5_email_retry.py: 2 warnings
+tests/test_u5_invariant_sweep.py: 9 warnings
+tests/test_u5_stale_approval_and_batch.py: 13 warnings
+tests/test_u5a_apply_channel_resolver.py: 2 warnings
+tests/test_u5b_apply_executor.py: 11 warnings
+tests/test_u5d2_agent_reaches_u5_engine.py: 17 warnings
+tests/test_u5d2_dry_run_e2e.py: 1 warning
+tests/test_u5d2_per_card_submission.py: 24 warnings
+tests/test_u5d2_qa_cleanup_script.py: 6 warnings
+tests/test_u5d3_answer_bank_api.py: 19 warnings
+tests/test_u5d3_answer_bank_capture.py: 9 warnings
+tests/test_u5d3_answer_bank_store.py: 18 warnings
+tests/test_u5d_submission_truth.py: 18 warnings
+tests/test_uagi_model_default.py: 5 warnings
+tests/test_uagi_p1a_credential_separation.py: 9 warnings
+tests/test_uagi_p1a_executor.py: 7 warnings
+tests/test_uagi_p1a_orchestration_plan.py: 19 warnings
+tests/test_uagi_p1a_plan_admission.py: 11 warnings
+tests/test_uagi_p1a_r5_fallback_fields.py: 5 warnings
+tests/test_uax_analytics_agent_policy_api.py: 3 warnings
+tests/test_uax_instrumentation.py: 3 warnings
+tests/test_uax_orchestration_map_api.py: 5 warnings
+tests/test_uax_r3_policy_progress.py: 9 warnings
+tests/test_uax_r3_provenance.py: 12 warnings
+tests/test_uax_rigor_policy.py: 1 warning
+tests/test_user_anthropic_oauth_mint.py: 22 warnings
+tests/test_ustory1_s5_story_corpus_mirror.py: 6 warnings
+tests/test_v5_executed_means_transmitted.py: 3 warnings
+tests/test_v5_smartrecruiters_detail_budget.py: 1 warning
+tests/test_v5_thin_score_remediation.py: 8 warnings
+tests/test_wave4a_catalog_wiring.py: 33 warnings
+tests/test_wave4a_company_research_agent.py: 14 warnings
+tests/test_wave4a_company_research_hardening.py: 8 warnings
+tests/test_wave4a_compliance_agent.py: 7 warnings
+tests/test_wave4a_learning_feedback_agent.py: 8 warnings
+tests/test_wave4a_market_trends_agent.py: 7 warnings
+tests/test_wave4a_salary_intelligence_agent.py: 13 warnings
+tests/test_wave4b_interview_prep_agent.py: 26 warnings
+tests/test_wave4c_notification_agent.py: 18 warnings
+tests/test_wave4c_outreach_contact_agents.py: 29 warnings
+tests/test_wave4c_thread_agents.py: 24 warnings
+tests/test_wb1_blocker002_placeholder_signer_name.py: 5 warnings
+tests/test_wb1_incb001_trial_will_end_webhook.py: 1 warning
+tests/test_wb1_incb002_email_verification_toggle.py: 13 warnings
+tests/test_wb1_ml_settings_006_nul_byte.py: 4 warnings
+tests/test_wc_interview_conversion_rate.py: 4 warnings
+tests/test_wc_tailoring_persistence.py: 2 warnings
+tests/test_wcal_google_calendar.py: 8 warnings
+tests/test_wclean_fixture_marker_audit.py: 2 warnings
+tests/test_we_story_dedup_relevance.py: 5 warnings
+tests/test_workspaces.py: 8 warnings
+tests/test_wsub_real_submission.py: 19 warnings
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/jwt/api_jwt.py:147: InsecureKeyLengthWarning: The HMAC key is 11 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    return self._jws.encode(
+
+tests/test_sales_s3_output_honesty.py: 5 warnings
+tests/test_sales_s4_linkedin_cadence.py: 7 warnings
+tests/test_scout_live_sources.py: 12 warnings
+tests/test_sec422_validation_redaction.py: 4 warnings
+tests/test_settings_job_board_catalog.py: 19 warnings
+tests/test_setup1_answer_bank_agent_wiring.py: 5 warnings
+tests/test_setup1_answer_bank_readiness.py: 6 warnings
+tests/test_sfix_a_discovery_scale.py: 3 warnings
+tests/test_sfix_s4_board_sweep_spend_cap.py: 3 warnings
+tests/test_sfix_s4_review_midjob_cap_and_rollover.py: 5 warnings
+tests/test_source_availability.py: 14 warnings
+tests/test_stopall_enforcement.py: 21 warnings
+tests/test_storm1_paused_row_storm.py: 10 warnings
+tests/test_story_bank.py: 9 warnings
+tests/test_story_bank_enrichment.py: 12 warnings
+tests/test_story_category_filter.py: 5 warnings
+tests/test_story_create_no_silent_overwrite.py: 8 warnings
+tests/test_story_dedup.py: 24 warnings
+tests/test_story_dedup_archive_restore.py: 5 warnings
+tests/test_story_dedup_invocation.py: 5 warnings
+tests/test_sub006_greenhouse_canonical.py: 2 warnings
+tests/test_sub007_confirmation_classification.py: 6 warnings
+tests/test_sub010_answer_pack.py: 17 warnings
+tests/test_sub_learn_evidence_pack.py: 2 warnings
+tests/test_sub_live_form_wait.py: 3 warnings
+tests/test_subscriber_welcome.py: 4 warnings
+tests/test_tailor_response_http_contract.py: 8 warnings
+tests/test_tailor_score_persistence_e2e.py: 3 warnings
+tests/test_tailoring_agent.py: 20 warnings
+tests/test_u1x_a_anthropic_catalog.py: 7 warnings
+tests/test_u1x_a_reliability.py: 4 warnings
+tests/test_u1x_b_orchestrator_role.py: 9 warnings
+tests/test_u2b_document_integrity.py: 1 warning
+tests/test_u2b_fidelity_coherence.py: 4 warnings
+tests/test_u2b_fidelity_verification.py: 8 warnings
+tests/test_u2b_format_engine.py: 4 warnings
+tests/test_u2b_format_engine_paths.py: 8 warnings
+tests/test_u2b_render_completeness.py: 2 warnings
+tests/test_u2c_dedup_mirror_reconcile.py: 9 warnings
+tests/test_u2c_gate_enforcement.py: 13 warnings
+tests/test_u2c_refine_gate.py: 14 warnings
+tests/test_u5_applications_read_manual_step.py: 6 warnings
+tests/test_u5_close_apply_sweep_status_endpoint.py: 6 warnings
+tests/test_u5_email_retry.py: 6 warnings
+tests/test_u5_invariant_sweep.py: 9 warnings
+tests/test_u5_stale_approval_and_batch.py: 16 warnings
+tests/test_u5a_apply_channel_resolver.py: 2 warnings
+tests/test_u5b_apply_executor.py: 11 warnings
+tests/test_u5d2_agent_reaches_u5_engine.py: 21 warnings
+tests/test_u5d2_dry_run_e2e.py: 4 warnings
+tests/test_u5d2_per_card_submission.py: 45 warnings
+tests/test_u5d2_qa_cleanup_script.py: 6 warnings
+tests/test_u5d3_answer_bank_api.py: 37 warnings
+tests/test_u5d3_answer_bank_capture.py: 16 warnings
+tests/test_u5d3_answer_bank_store.py: 19 warnings
+tests/test_u5d_submission_truth.py: 21 warnings
+tests/test_uagi_model_default.py: 5 warnings
+tests/test_uagi_p1a_credential_separation.py: 9 warnings
+tests/test_uagi_p1a_executor.py: 7 warnings
+tests/test_uagi_p1a_orchestration_plan.py: 38 warnings
+tests/test_uagi_p1a_plan_admission.py: 21 warnings
+tests/test_uagi_p1a_r5_fallback_fields.py: 6 warnings
+tests/test_uax_analytics_agent_policy_api.py: 6 warnings
+tests/test_uax_instrumentation.py: 6 warnings
+tests/test_uax_orchestration_map_api.py: 10 warnings
+tests/test_uax_r3_policy_progress.py: 18 warnings
+tests/test_uax_r3_provenance.py: 22 warnings
+tests/test_uax_rigor_policy.py: 2 warnings
+tests/test_user_anthropic_oauth_mint.py: 40 warnings
+tests/test_ustory1_s5_story_corpus_mirror.py: 6 warnings
+tests/test_v5_executed_means_transmitted.py: 6 warnings
+tests/test_v5_smartrecruiters_detail_budget.py: 1 warning
+tests/test_v5_thin_score_remediation.py: 11 warnings
+tests/test_wave4a_catalog_wiring.py: 65 warnings
+tests/test_wave4a_company_research_agent.py: 25 warnings
+tests/test_wave4a_company_research_hardening.py: 11 warnings
+tests/test_wave4a_compliance_agent.py: 14 warnings
+tests/test_wave4a_learning_feedback_agent.py: 16 warnings
+tests/test_wave4a_market_trends_agent.py: 14 warnings
+tests/test_wave4a_salary_intelligence_agent.py: 26 warnings
+tests/test_wave4b_interview_prep_agent.py: 53 warnings
+tests/test_wave4c_notification_agent.py: 53 warnings
+tests/test_wave4c_outreach_contact_agents.py: 88 warnings
+tests/test_wave4c_thread_agents.py: 45 warnings
+tests/test_wb1_blocker002_placeholder_signer_name.py: 10 warnings
+tests/test_wb1_incb001_trial_will_end_webhook.py: 1 warning
+tests/test_wb1_incb002_email_verification_toggle.py: 12 warnings
+tests/test_wb1_ml_settings_006_nul_byte.py: 8 warnings
+tests/test_wc_interview_conversion_rate.py: 8 warnings
+tests/test_wc_tailoring_persistence.py: 4 warnings
+tests/test_wcal_google_calendar.py: 15 warnings
+tests/test_wclean_fixture_marker_audit.py: 2 warnings
+tests/test_we_story_dedup_relevance.py: 6 warnings
+tests/test_workspaces.py: 16 warnings
+tests/test_wsub_real_submission.py: 32 warnings
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/jwt/api_jwt.py:368: InsecureKeyLengthWarning: The HMAC key is 11 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+    decoded = self.decode_complete(
+
+tests/test_sales_s4_linkedin_cadence.py::test_weekly_cap_is_enforced_and_disclosed
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/torch/library.py:505: UserWarning: Warning only once for all operators,  other operators may also be overridden.
+    Overriding a previously registered kernel for the same operator and the same dispatch key
+    operator: aten::bmm(Tensor self, Tensor mat2) -> Tensor
+      registered at /__w/pytorch/pytorch/build/aten/src/ATen/RegisterSchema.cpp:6
+    dispatch key: CUDA
+    previous kernel: registered at /__w/pytorch/pytorch/aten/src/ATen/LegacyBatchingRegistrations.cpp:1076
+         new kernel: registered at /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/torch/_native/registry.py:297 (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/core/dispatch/OperatorEntry.cpp:208.)
+    self.m.impl(
+
+tests/test_sec422_validation_redaction.py: 8 warnings
+tests/test_uax_instrumentation.py: 1 warning
+tests/test_uax_rigor_policy.py: 1 warning
+tests/test_wb1_ml_settings_006_nul_byte.py: 1 warning
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:59: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    response = await handler(conn, exc)  # type: ignore[arg-type]
+
+tests/test_sec422_validation_redaction.py: 1 warning
+tests/test_wb1_incb002_email_verification_toggle.py: 11 warnings
+  /var/tmp/v6-r184/repo/apps/api/app/routers/admin.py:661: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    body = await _parse_settings_body(request)
+
+tests/test_u5d2_per_card_submission.py::TestRequestSubmissionEndpoint::test_missing_artifacts_are_refused_with_the_reason
+tests/test_u5d3_answer_bank_api.py::TestBankCrud::test_banking_a_blank_answer_is_refused
+tests/test_u5d3_answer_bank_capture.py::TestInCardAnswering::test_a_blank_answer_is_refused_and_banks_nothing
+tests/test_uax_r3_provenance.py::TestOneGranularityAuthorityForTheBeforeAfterPair::test_resume_with_no_source_job_is_422_not_a_guessed_job
+  /root/dev/aether-job-career-agent/apps/api/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:1033: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    result = context.run(func, *args)
+
+tests/test_user_anthropic_oauth_mint.py::test_user_exchange_422_on_malformed_paste[]
+tests/test_user_anthropic_oauth_mint.py::test_user_exchange_422_on_malformed_paste[   ]
+tests/test_user_anthropic_oauth_mint.py::test_user_exchange_422_on_malformed_paste[codeonly]
+tests/test_user_anthropic_oauth_mint.py::test_user_exchange_422_on_malformed_paste[#stateonly]
+tests/test_user_anthropic_oauth_mint.py::test_user_exchange_422_on_malformed_paste[code#]
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:6730: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    code, state = _parse_pasted_oauth_code(pasted_code)
+
+tests/test_user_anthropic_oauth_mint.py::test_user_exchange_422_when_anthropic_rejects_the_code
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:6899: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    tok = _mint_anthropic_token(body.pastedCode, current_user["id"])
+
+tests/test_wb1_blocker002_placeholder_signer_name.py::test_cover_letter_refuses_placeholder_signer_name[GAP-P7-DEF-B Probe 1785452243543]
+tests/test_wb1_blocker002_placeholder_signer_name.py::test_cover_letter_refuses_placeholder_signer_name[QA Test Runner 445566778899]
+tests/test_wb1_blocker002_placeholder_signer_name.py::test_cover_letter_refuses_placeholder_signer_name[probe_user_20260731093000]
+  /var/tmp/v6-r184/repo/apps/api/app/routers/agents.py:3980: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    raise _guard_rejection_http_error("Cover letter", exc) from exc
+
+tests/test_wb1_blocker002_placeholder_signer_name.py::test_refine_refuses_placeholder_signer_name
+  /var/tmp/v6-r184/repo/apps/api/app/routers/cover_letters.py:1143: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    lambda: _refine_cover_letter_body(letter_id, body, current_user),
+
+tests/test_wb1_ml_settings_006_nul_byte.py::test_nul_byte_in_full_name_returns_422_not_500
+tests/test_wb1_ml_settings_006_nul_byte.py::test_nul_byte_in_target_role_returns_422_not_500
+tests/test_wb1_ml_settings_006_nul_byte.py::test_nul_byte_in_location_returns_422_not_500
+  /var/tmp/v6-r184/repo/apps/api/app/routers/workspaces.py:1580: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    cur.execute(
+
+tests/test_wsub_real_submission.py::TestExecuteTransmits::test_refuses_when_no_genuine_recipient
+  /var/tmp/v6-r184/repo/apps/api/app/routers/approvals.py:367: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    submitted = _execute_application_submit(approval, current_user)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1916 passed, 2068 warnings in 1112.78s (0:18:32)
+SLICE_AC_EXIT=0
+FULL_SUITE_DONE

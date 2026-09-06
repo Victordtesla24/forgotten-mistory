@@ -1,0 +1,25 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/avatar.spec.ts tests/overhaul/voiceover.spec.ts tests/e2e/minivic-send-path.spec.ts tests/monochrome/minivic-launcher.spec.ts --workers=1 --reporter=list
+
+Running 17 tests using 1 worker
+
+  ✓   1 [chromium] › tests/e2e/minivic-send-path.spec.ts:79:7 › MiniVic send path › MV-WIRE-01: one send makes exactly one /api request, and it is /api/chat (2.3s)
+  ✓   2 [chromium] › tests/e2e/minivic-send-path.spec.ts:164:7 › MiniVic send path › MV-WIRE-02: no poller keeps running after the reply lands (9.0s)
+  ✓   3 [chromium] › tests/e2e/minivic-send-path.spec.ts:203:7 › MiniVic first-token path › MV-WARM-01: opening the panel warms the function, and a send does not (2.1s)
+  ✓   4 [chromium] › tests/e2e/minivic-send-path.spec.ts:252:7 › MiniVic first-token path › MV-PAYLOAD-01: the send body carries turns and a mode — no provider, model or prompt (2.0s)
+  ✓   5 [chromium] › tests/e2e/minivic-send-path.spec.ts:312:7 › MiniVic direct-origin route › MV-ORIGIN-01: a blocked origin falls back to /api/chat, and the visitor still gets an answer (2.3s)
+  ✓   6 [chromium] › tests/e2e/minivic-send-path.spec.ts:361:7 › MiniVic direct-origin route › MV-ORIGIN-02: the origin is tried before the Hosting rewrite on an ordinary send (2.0s)
+  ✓   7 [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold (2.0s)
+  ✓   8 [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold (1.6s)
+  ✓   9 [chromium] › tests/overhaul/avatar.spec.ts:39:7 › TC-FR-CLONE: Clone Rendering (MiniVicBot) › TC-CLONE-03: MiniVicBot launcher is present and interactive on the static build (890ms)
+  ✓  10 [chromium] › tests/overhaul/avatar.spec.ts:51:7 › TC-FR-CLONE: Clone Rendering (MiniVicBot) › TC-CLONE-05: Pressing the launcher yields a panel carrying real clone content (1.2s)
+  ✓  11 [chromium] › tests/overhaul/voiceover.spec.ts:60:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-01: The greeting asset is the published cloned-voice recording (1.4s)
+  ✓  12 [chromium] › tests/overhaul/voiceover.spec.ts:84:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-02: Play, pause and resume move the greeting as instructed (3.2s)
+  ✓  13 [chromium] › tests/overhaul/voiceover.spec.ts:109:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-03: Muting stops the voice and releases the asset (1.3s)
+  ✓  14 [chromium] › tests/overhaul/voiceover.spec.ts:125:7 › TC-FR-VOICE: Cloned Voice Greeting › TC-VOICE-04: Opening the clone raises no uncaught audio errors (2.8s)
+  ✓  15 [chromium] › tests/overhaul/voiceover.spec.ts:146:7 › TC-FR-VOICE-DYN: Voice never starts by itself › TC-VOICE-DYN-01: Nothing plays on load, or on scrolling the whole page (3.6s)
+  ✓  16 [chromium] › tests/overhaul/voiceover.spec.ts:170:7 › TC-FR-VOICE-DYN: Voice never starts by itself › TC-VOICE-DYN-02: Scrolling every section raises no scroll or animation errors (3.6s)
+  ✓  17 [chromium] › tests/overhaul/voiceover.spec.ts:186:7 › TC-FR-VOICE-DYN: Voice never starts by itself › TC-VOICE-DYN-03: The composer offers a microphone control (1.6s)
+
+  17 passed (44.1s)
+EXIT=0

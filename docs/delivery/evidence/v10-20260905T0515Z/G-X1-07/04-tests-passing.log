@@ -1,0 +1,22 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/viseme-stage.spec.ts tests/a11y/text-contrast.spec.ts tests/monochrome/minivic-launcher.spec.ts --workers=1 --reporter=list
+
+Running 11 tests using 1 worker
+
+  ✓   1 [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground (30.1s)
+  ✓   2 [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground (28.0s)
+  ✓   3 [chromium] › tests/a11y/text-contrast.spec.ts:495:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes (1.6m)
+  ✓   4 [chromium] › tests/a11y/text-contrast.spec.ts:495:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes (1.2m)
+  ✓   5 [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold (2.2s)
+  ✓   6 [chromium] › tests/monochrome/minivic-launcher.spec.ts:133:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold (1.6s)
+[viseme-stage] minivic-viseme@1440: ground=0.0033 coverage=59.63% peak=0.5906 motion=0.05424 box=430x146
+  ✓   7 [chromium] › tests/overhaul/viseme-stage.spec.ts:210:9 › TC-VISEME-GL @ 1440 › TC-VISEME-GL-01 @ 1440 — the stage is lit by the viseme stream (11.4s)
+  ✓   8 [chromium] › tests/overhaul/viseme-stage.spec.ts:259:9 › TC-VISEME-GL @ 1440 › TC-VISEME-GL-02 @ 1440 — reduced motion: no canvas, and the 2D mouth still animates (4.3s)
+[viseme-stage] minivic-viseme@390: ground=0.0033 coverage=58.64% peak=0.5780 motion=0.03412 box=340x128
+  ✓   9 [chromium] › tests/overhaul/viseme-stage.spec.ts:210:9 › TC-VISEME-GL @ 390 › TC-VISEME-GL-01 @ 390 — the stage is lit by the viseme stream (7.4s)
+  ✓  10 [chromium] › tests/overhaul/viseme-stage.spec.ts:259:9 › TC-VISEME-GL @ 390 › TC-VISEME-GL-02 @ 390 — reduced motion: no canvas, and the 2D mouth still animates (3.5s)
+[viseme-stage] scene canvases before=2 after=3
+  ✓  11 [chromium] › tests/overhaul/viseme-stage.spec.ts:302:7 › TC-VISEME-GL-03 — the stage costs at most one context › TC-VISEME-GL-03 — opening the panel adds at most one live WebGL context (10.5s)
+
+  11 passed (4.6m)
+EXIT=0
