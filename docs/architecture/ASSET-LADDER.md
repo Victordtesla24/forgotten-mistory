@@ -31,10 +31,10 @@ Measured with `ffprobe`/`identify` against `public/assets/` in this worktree. "W
 | `my_avatar.webp` | still | **1480×826** | — | — | 51,028 | WebP 8-bit, greyscale | `app/data/portfolio/avatar.ts` `still.webp` (portrait `<source>` #2), `components/MiniVicBot.tsx` (bot still) | FAIL (still, < 2160) |
 | `my_avatar.png` | still | **1480×826** | — | — | 483,145 | PNG 8-bit (256-entry palette), greyscale | `app/data/portfolio/avatar.ts` `still.png` + `HeroPortrait.tsx` `<img src>` fallback, `app/layout.tsx` (schema image) | FAIL (still, < 2160); dimension mismatch fixed — matches declared 1480×826 |
 | `hero-atmosphere-poster.avif` | still | 3840×2160 | — | — | 12,935 | AVIF 8-bit | **none** found in source grep (atmosphere poster; scene is GLSL) | N/A to portrait; 4K still |
-| `og-image.png` | still | 1200×630 | — | — | 182,547 | PNG 8-bit | `app/layout.tsx` (OpenGraph/Twitter card) | N/A (social card) |
+| `og-image.png` | still | 2400×1260 | — | — | 209,035 | PNG 8-bit | `app/layout.tsx` (OpenGraph/Twitter card) | N/A (social card) |
 | `avatar-studio-voice.mp3` | audio | — | — | — | 600,961 | MP3 | **none** found in source grep (candidate orphan) | N/A (audio) |
 | `minivic-greeting.mp3` | audio | — | — | — | 417,702 | MP3 | `components/MiniVicBot.tsx`, digest in `app/data/generated/greeting-asset.ts` | N/A (audio) |
-| `minivic-greeting.txt` | text | — | — | — | 368 | text | greeting transcript | N/A |
+| `minivic-greeting.txt` | text | — | — | — | 384 | text | greeting transcript | N/A |
 
 **Retired (history, not current state):** `my-hero-avatar.mp4` at **640×360@24, 5.875 s, 160,156 B** was an unreferenced orphan under that same filename at `b2ac21b`; it was deleted by the §8 AP pass on 2026-09-05 (`git rm public/assets/my-hero-avatar.mp4`), and the filename was later re-used by §9–§10 for the current 1280×720 canonical loop — they are not the same bytes. `my-avatar.mp4` (the 1280×720@24, 1,096,301 B colour loop that shipped between §8 and §9) no longer exists in `public/assets/`; its old URL is a `firebase.json` **301** to `/assets/my-hero-avatar.mp4` (`{ "source": "/assets/my-avatar.mp4", "destination": "/assets/my-hero-avatar.mp4", "type": 301 }`).
 
@@ -248,7 +248,7 @@ ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_r
 node --test tests/hero_assets_monochrome.test.mjs                    # chroma ≤ 2 on every still + 3 loop frames
 ```
 
-`og-image.png` (1200×630 social card) is deliberately **untouched** — it is the OpenGraph/Twitter card, outside this gap's scope.
+`og-image.png` was outside this gap's scope when this section was written, but a same-wave sibling (G-OG1) has since replaced it: the live file is now **2400×1260, 209,035 B** (§1), not the 1200×630 card described here at the time.
 
 ---
 
