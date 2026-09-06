@@ -1,0 +1,37 @@
+# W1-H5B — on-demand rungs, measured (ap-w1-h5b, 2026-09-06T01:17-01:40Z)
+
+## ffprobe of every rung
+--- public/assets/my-hero-avatar.mp4 (1916328 bytes)
+codec_name=h264
+profile=High
+width=1280
+height=720
+pix_fmt=yuv420p
+level=31
+r_frame_rate=24/1
+duration=12.291667
+--- public/assets/avatar/my-hero-avatar-1080.mp4 (3690721 bytes)
+codec_name=h264
+profile=High
+width=1920
+height=1080
+pix_fmt=yuv420p
+level=50
+r_frame_rate=24/1
+duration=12.291667
+--- public/assets/avatar/my-hero-avatar-2160.webm (2913450 bytes)
+codec_name=av1
+profile=Main
+width=3840
+height=2160
+pix_fmt=yuv420p
+level=12
+r_frame_rate=24/1
+duration=12.292000
+
+## SSIM of the 2160p AV1 rung vs the master's greyscale (all 295 frames)
+n:295 Y:0.974979 U:1.000000 V:1.000000 All:0.983319 (17.777859)
+SSIM_DONE
+
+## master (never committed)
+-rw-r--r-- 1 root root 58370772 Sep  4 22:39 /root/forgotten-mistory/artifacts/masters/minivic-greeting-2160p-master.mp4

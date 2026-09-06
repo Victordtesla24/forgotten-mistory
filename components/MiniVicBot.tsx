@@ -9,6 +9,8 @@ import { GREETING, type PersonaMode } from "@/app/data/miniVicKnowledge";
 import { greetingAudioSha256 } from "@/app/data/generated/greeting-asset";
 import { Copy, Pause, Play, RefreshCcw, Send, Sparkles, Volume2, VolumeX, X, Mic, MicOff } from "lucide-react";
 import { useSetAvatarSpeaking } from "@/lib/avatarContext";
+import { avatarContent } from "@/app/data/portfolio/avatar";
+import { selectLoopSrc } from "@/lib/videoRung";
 import { PALETTE } from "@/lib/palette";
 import {
   getVisemeShape,
@@ -248,7 +250,19 @@ const MiniVicBot = () => {
   const messagesRef = useRef(messages);
   messagesRef.current = messages;
 
-  const AVATAR_VIDEO_URL = "/assets/my-hero-avatar.mp4";
+  /**
+   * G-H5. The loop ships as a ladder now (app/data/portfolio/avatar.ts): the
+   * 720p file below is the default and the fallback, and two larger encodes sit
+   * under /assets/avatar/ for readers whose box x DPR can actually resolve them.
+   * The rung is chosen at the moment a source is assigned, against the element
+   * that will display it — the panel stage is 160 CSS px tall and the launcher
+   * pill smaller still, so both normally take the 720p rung and only a hi-DPI
+   * screen reaches past it. Save-Data pins it to the base.
+   */
+  const loopSrcFor = React.useCallback(
+    (element: Element | null) => selectLoopSrc(avatarContent.loop.ladder, element),
+    [],
+  );
   // The same still the launcher's portrait layer paints, used as the launcher
   // video's poster so the clip never renders a black frame while it buffers.
   const AVATAR_STILL_URL = "/assets/my_avatar.webp";
@@ -261,7 +275,7 @@ const MiniVicBot = () => {
    *   via services/api-gateway/src/viseme/smoother.ts.
    *
    * Tier 2 (static Firebase, DEFAULT): pre-rendered synced MP4 greeting
-   *   (AVATAR_VIDEO_URL) with ≤120 ms tolerance + pre-rendered MP3
+   *   (avatarContent.loop ladder) with ≤120 ms tolerance + pre-rendered MP3
    *   (GREETING_AUDIO_URL) using the CORRECT ElevenLabs cloned voice id.
    *   The D-1 defect (generic fallback voice) is fixed — the MP3 hash is
    *   assertable (TC-FR-VOICE).
@@ -329,7 +343,7 @@ const MiniVicBot = () => {
     }
     if (videoRef.current && isVideoPlaying) {
         // Revert to loop
-        setCurrentVideoSrc(AVATAR_VIDEO_URL);
+        setCurrentVideoSrc(loopSrcFor(videoRef.current));
         setIsVideoPlaying(false);
         videoRef.current.muted = true;
         videoRef.current.loop = true;
@@ -338,7 +352,7 @@ const MiniVicBot = () => {
     setIsPaused(false);
     currentAudioSrcRef.current = "";
     stopMouth();
-  }, [isVideoPlaying, AVATAR_VIDEO_URL, stopMouth]);
+  }, [isVideoPlaying, loopSrcFor, stopMouth]);
 
   const rememberLastAudio = React.useCallback((src: string | null) => {
     setLastAudio((previous) => {
@@ -464,7 +478,7 @@ const MiniVicBot = () => {
   // Lazy-load avatar video only when the widget opens to avoid unnecessary network errors
   useEffect(() => {
     if (isOpen && !currentVideoSrc) {
-      setCurrentVideoSrc(AVATAR_VIDEO_URL);
+      setCurrentVideoSrc(loopSrcFor(videoRef.current));
     }
     // First open: greet the visitor in Vikram's cloned voice (pre-rendered
     // with ElevenLabs at build time, so no API key ships to the browser).
@@ -474,7 +488,7 @@ const MiniVicBot = () => {
       playAudio(GREETING_AUDIO_URL);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- playAudio identity is stable for this effect's purpose
-  }, [AVATAR_VIDEO_URL, GREETING_AUDIO_URL, currentVideoSrc, isOpen, isMuted]);
+  }, [loopSrcFor, GREETING_AUDIO_URL, currentVideoSrc, isOpen, isMuted]);
 
   // Release the Web Audio context on unmount so the device's audio session
   // (and microphone access for other apps) is not held hostage; also stop
@@ -772,7 +786,7 @@ const MiniVicBot = () => {
     if (!audioRef.current || isMuted) return;
     
     // Ensure we aren't playing video logic
-    setCurrentVideoSrc(AVATAR_VIDEO_URL);
+    setCurrentVideoSrc(loopSrcFor(videoRef.current));
     setIsVideoPlaying(false);
     if (videoRef.current) {
         videoRef.current.muted = true;
@@ -1424,10 +1438,10 @@ const MiniVicBot = () => {
         }}
         className="minivic-launcher group"
         onMouseEnter={() => {
-          if (!toggleVideoSrc) setToggleVideoSrc(AVATAR_VIDEO_URL);
+          if (!toggleVideoSrc) setToggleVideoSrc(loopSrcFor(toggleRef.current));
         }}
         onFocus={() => {
-          if (!toggleVideoSrc) setToggleVideoSrc(AVATAR_VIDEO_URL);
+          if (!toggleVideoSrc) setToggleVideoSrc(loopSrcFor(toggleRef.current));
         }}
         aria-expanded={isOpen}
         aria-label="Ask Mini Vic — Vikram's AI clone"
