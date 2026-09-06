@@ -35,3 +35,9 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## STATUS (2026-09-06T05:04:28.861Z)
+running — dispatched 05:05Z fm-wave2-corrections-c (serialized: mv5 → x2t3 → x2f8)
+
+## COMMENT (2026-09-06T05:05:44.216Z)
+NOTE 05:09Z: when you verify, also open the MiniVic panel at 1366x768 — t_w1_mv4's placement reports composer_inside_panel=false there (h 245 px). If the composer is outside its box, the placement's usable-dialog floor (≥ 320×304) is not being honoured at that viewport; report with numbers (fix only if it is on the launcher/panel side and within cap).

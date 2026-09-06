@@ -45,3 +45,12 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T03:53:30.542Z)
 running — dispatched 03:54Z fm-wave2-corrections-b (serialized: mv4 → m4b → l1m → a3g)
+
+## COMMENT (2026-09-06T05:16:28.071Z)
+PM check 05:16Z: 71f637d pushed on worktree-w1-m4b (consolidating). Self-report: resolveChatRoute() reads ?route=hosting (client sets it on the fallback POST only; edge headers as fallback for cached bundles); CHAT_MAX_TOKENS_FALLBACK = 48 measured from 129 tokens/s and P95 origin first token 978 ms (≈ 1 350 ms completion); origin keeps 128; done event + JSON carry route + max_tokens; trimCappedAnswer cuts a capped reply to the last finished sentence; truth line 'Answers: live text via openai — short answer on the proxy route'; verified on the redeployed function: origin 1 287 ms first token streaming, Hosting 1 180 ms (flag) / 898 ms (no flag); tests MV-CAP-01..08, MV-ROUTE-10..12, CB-LABEL-06/07 first. Not done until reviewer t_w1_rev8 re-runs the strict-cold visitor sequence on live.
+
+## COMMENT (2026-09-06T05:19:38.604Z)
+PM probe 05:19Z on LIVE 87eb005a: POST via Hosting (with and without ?route=hosting) → route 'hosting', max_tokens 48, provider openai, attempts [openrouter cooling_down, deepseek cooling_down, zai cooling_down, openai answered]. The RAW JSON text on the capped route ends mid-clause ('…delivering Distribution UI past 95% completion' / '…architected COBOL/mainframe test') — the sentence trim is client-side (lib/miniVicRoute.mjs trimCappedAnswer), so reviewer t_w1_rev8 must judge the RENDERED panel text, and confirm the origin route (a.run.app) still reports route 'origin' / max_tokens 128 and streams.
+
+## COMMENT (2026-09-06T05:20:45.038Z)
+LOAD-SHED 05:21Z (§0.1): host at 1.35 GB free with swap saturated (3 builds, 8 Playwright processes, the sibling's Cursor session); the corrections-B workflow was stopped by the PM to protect the reviewer and the hero-suite battery. This slice's code is pushed and LIVE (87eb005a); only its structured report is lost — the commit body + the PM's live probe stand in. l1m and a3g are re-queued as ready.

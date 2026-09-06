@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-06T04:59:05.179Z",
+  "updated": "2026-09-06T05:43:10.628Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -29,7 +29,7 @@
         "PEA"
       ],
       "summary": "Live 9136bc59 FAIL. Read docs/ORCHESTRATOR-MASTER-PROMPT.md. Dispatch G-H6,G-H5,G-C1,G-R2,G-A3,G-H1,G-M4,G-X2 in parallel. Session-limit is not Owner-blocked.",
-      "updated": "2026-09-06T04:59:05.179Z",
+      "updated": "2026-09-06T05:36:53.876Z",
       "comments": [
         {
           "at": "2026-09-05T23:59:20.286Z",
@@ -74,6 +74,10 @@
         {
           "at": "2026-09-06T04:43:16.927Z",
           "text": "04:48Z COEXISTENCE: a sibling agent (a claude session started 2026-09-05 16:43 with cwd /root/forgotten-mistory, alongside the Cursor server — most likely the Owner's Cursor host agent) is editing the MAIN checkout's working tree directly on main (22 app files at 04:39:28Z: volumetric spoke + motes in every scene shader, a hero title card, CSS modules). Its earlier Hero/Skills/Vitrine .module.css edits were displaced by the PM's 04:39Z fast-forward and have been RESTORED from the set-aside copies. Rules from now on: the PM never runs git checkout/reset on app paths in the main checkout; PM bookkeeping commits are made from a dedicated worktree (.claude/worktrees/pm-board, based on origin/main) by copying the board files there; council lanes keep working in their own worktrees; the sibling's uncommitted work is never committed or reverted by the PM. Independent reviewers judge only what is on the live URL."
+        },
+        {
+          "at": "2026-09-06T05:36:53.876Z",
+          "text": "05:29Z OWNER DIRECTIVE (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md): replace the entire visual layer with Marvel-Studios-grade VFX and visualisations, black and white only. New wave-3 root t_w3_own. Hero v3.1 re-brief superseded; About field tuning lanes (t_w2_x2t3, t_w2_x2f8) stopped as superseded; P0 functional regressions from rev7 continue as t_w3_p0a. Assumption: gold stays the sourced-claim mark only, never in an effect."
         }
       ]
     },
@@ -6367,8 +6371,8 @@
     {
       "id": "t_w2_r3a2",
       "title": "WAVE-2 R3 R3-A2 — Greeting alignment generated WITH its own audio (one /with-timestamps call, three-way digest pin) + lib/visemeSchedule.ts with the ~45-rule grapheme→viseme table and VS-01..VS-08 unit tests",
-      "status": "ready",
-      "column": "ready",
+      "status": "done",
+      "column": "done",
       "assignee": "analyst-programmer",
       "priority": 92,
       "parents": [],
@@ -6380,7 +6384,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:49:34.586Z",
-      "updated": "2026-09-06T02:37:33.693Z",
+      "updated": "2026-09-06T05:00:37.900Z",
       "summary": "Slice R3-A2 of docs/architecture/MINIVIC-AVATAR-v1.md (SA t_w2_r3sa; research W2-RESEARCH/R3-avatar-path.md; brain routing MINIVIC-BRAIN-0-4.md). Full definition (files, gates, test ids) = the entry with id R3-A2 in docs/architecture/MINIVIC-AVATAR-TASKS.json. docs/prompt.md §2.1 second form: a pre-made animated avatar that SEEMS real-time, driven by frame-accurate (~40 ms) lip-sync; R3 first form (generative real-time Higgsfield video) is structurally OPEN (async submit-then-poll only, 0 credits) and must never be claimed. Cost gate: only ordinary TTS calls with the configured premade voice (ELEVENLABS_VOICE_ID by name); no IVC/cloning; no Higgsfield generation. Slice R3-A1 (badge/copy) is being delivered by t_w1_r2c — keep the badge and panel line verbatim from MINIVIC-BRAIN-0-4 §2(b); only the third line changes, and only once lip-sync is real.",
       "decisions": [],
       "comments": [
@@ -6390,7 +6394,8 @@
           "text": "SCOPE NOTE 02:38Z (PM decision on t_w1_r2c): your single /with-timestamps call for the greeting must use the CURRENT greeting text (the 'AI clone' sentence was retired in a134bb5c — read app/data/portfolio or MiniVicBot GREETING for the sanctioned wording), and its audio output REPLACES public/assets/minivic-greeting.mp3 (+ minivic-greeting.txt, the generated greeting-asset.ts digest and greeting_envelope.mjs outputs regenerated). One call, premade voice ELEVENLABS_VOICE_ID by name, no IVC. The three-way digest pin (text ↔ mp3 ↔ alignment) then holds."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "ap-w2-r3a2: 3ba8ed97 + 07be6ef4 pushed (live fda84067 + next tick). Greeting regenerated WITH its alignment in one /with-timestamps call (381 chars, mp3 421,764 B, sha256 2eb7788f…, 26.285 s; schedule 244 cues, min 0.046 s, 16 distinct visemes; three-way digest pin; VS-01..08 + envelope digest green; 11 node tests; tsc/lint/build/audit 10/10; ledger). §0.1 decision recorded: the configured ELEVENLABS_VOICE_ID is a CLONED voice and the API refused (401 ivc_not_permitted, 0 characters spent) — the premade Australian male 'Charlie' (IKne3meq5aSn9XLyUdCD) was used; 1 TTS call spent, no IVC. Consequence: greeting voice ≠ live reply voice (George via the function's secret) → voice consistency folded into t_w2_r3a4. Chatbot e2e reds TC-BOT-12/14 were the pre-mv4 panel geometry (fixed in fda84067)."
     },
     {
       "id": "t_w2_r3a4",
@@ -6408,10 +6413,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:49:34.635Z",
-      "updated": "2026-09-06T01:49:34.929Z",
+      "updated": "2026-09-06T05:00:38.060Z",
       "summary": "Slice R3-A4 of docs/architecture/MINIVIC-AVATAR-v1.md (SA t_w2_r3sa; research W2-RESEARCH/R3-avatar-path.md; brain routing MINIVIC-BRAIN-0-4.md). Full definition (files, gates, test ids) = the entry with id R3-A4 in docs/architecture/MINIVIC-AVATAR-TASKS.json. docs/prompt.md §2.1 second form: a pre-made animated avatar that SEEMS real-time, driven by frame-accurate (~40 ms) lip-sync; R3 first form (generative real-time Higgsfield video) is structurally OPEN (async submit-then-poll only, 0 credits) and must never be claimed. Cost gate: only ordinary TTS calls with the configured premade voice (ELEVENLABS_VOICE_ID by name); no IVC/cloning; no Higgsfield generation. Slice R3-A1 (badge/copy) is being delivered by t_w1_r2c — keep the badge and panel line verbatim from MINIVIC-BRAIN-0-4 §2(b); only the third line changes, and only once lip-sync is real.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T05:00:38.060Z",
+          "by": "orchestrator",
+          "text": "SCOPE ADD 05:02Z (PM decision from t_w2_r3a2): ONE premade voice for the greeting and the live replies. The greeting now speaks with 'Charlie' (IKne3meq5aSn9XLyUdCD, premade, Australian male); the deployed elevenLabsTts uses the voice id from its Secret Manager value (George). Align the function to Charlie — the site is for a Melbourne-based owner and the greeting is already rendered — by setting the function's voice source of truth to the same premade id (firebase functions:secrets:set / params, never IVC, never the cloned id) and redeploying; assert in the node test that the greeting's voice id equals the function's default; record the decision and reversal cost (one secret change + one greeting regeneration)."
+        }
+      ],
       "blocker": null
     },
     {
@@ -6641,7 +6652,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T02:41:29.234Z",
-      "updated": "2026-09-06T04:57:13.557Z",
+      "updated": "2026-09-06T05:42:20.607Z",
       "summary": "From t_w2_h1s1's honest goal_complete:false (docs/delivery/evidence/v10-20260905T0515Z/W2-H1/t_w2_h1s1/05-hero-suites-remaining.log and 04-hero-suites.log). Five cases encode the superseded fold (docs/architecture/HERO-FOLD-v2.md) and must be rewritten to the v3 contract (docs/architecture/HERO-SETPIECE-v3.md §3 geometry, §4.3 rungs, §8 cases); TC-HERO-13 needs a root cause (mechanism works — TC-PHOTO-05 passes); TC-FOLD-03/04 were red before the pointer-events fix and never re-run. Run AFTER S3 (typography) lands so the geometry is final; do not edit Hero component files (S4 owns product changes) — file product findings as followups with numbers.",
       "decisions": [],
       "comments": [
@@ -6654,6 +6665,11 @@
           "at": "2026-09-06T04:18:20.112Z",
           "by": "orchestrator",
           "text": "SCOPE ADD 04:18Z (from S3's 09-hero-e2e.log, 10 failed / 54 passed): TC-FOLD-03 ×4 — visual baselines of the fold are stale since S1 recomposed it: re-accept ONLY after S4 lands (the v3 fold is the intended picture; look at the PNGs before committing them, per CLAUDE.md); TC-FOLD-04 @390 — 'the action group ends 16 px above the fold' expected ≤ 804, received 828 — decide product vs test against HERO-SETPIECE-v3 §3.5 (CTA group y 670–790 by design; if the v3 geometry puts the group at 828 the product is wrong or the geometry table is — file it for S4 with the number, do not raise 804). Order: run S5 after S4 pushes, from origin/main carrying S4."
+        },
+        {
+          "at": "2026-09-06T05:42:20.607Z",
+          "by": "orchestrator",
+          "text": "05:30Z the Owner's message interrupted the tester lane (wbtp5553u) mid-battery; nothing pushed after 199f116c. The hero suites realignment already landed in a0a9521; the full-battery pass is re-run by the reviewer on the next deploy (rev8) rather than re-dispatched, because the hero it validates is being replaced under t_w3_own."
         }
       ],
       "blocker": null
@@ -6692,8 +6708,8 @@
     {
       "id": "t_w2_l1m",
       "title": "G-LISTEN-MOTION (from t_w1_red3, product defect) — the #listen field's motion after the 1.16 s beat never clears the flagship floor (mean |ΔL| 0.00050 @1440 / 0.00061 @390 on the export, 0.00142 / 0.00384 live, vs MOTION_MIN 0.004): give the field a continuous, envelope-true motion term so TC-FLAGSHIP-VIS-LISTEN holds at both widths — without brightening over type (G-L1 envelope, 24.98 s reading, gold jaws unchanged)",
-      "status": "running",
-      "column": "running",
+      "status": "ready",
+      "column": "ready",
       "assignee": "analyst-programmer",
       "priority": 88,
       "parents": [
@@ -6707,7 +6723,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T03:16:59.708Z",
-      "updated": "2026-09-06T03:53:30.614Z",
+      "updated": "2026-09-06T05:20:45.120Z",
       "summary": "Evidence: docs/delivery/evidence/v10-20260905T0515Z/W1-RED3/02-listen-motion-1440.json, 02-listen-motion-probe.mjs, 09-flagship-regression.log (about-vs-listen control on the same spec/host proves the instrument). Cause named by the tester: after CLOSE_SECONDS (1.16 s) in components/sections/Listen/ListenField.tsx, uClose holds and the only continuously varying terms left in listen.glsl.ts sit at the bar (amplitude 0.00087–0.00487 over 1.5–12 s windows). The field must stay alive as the greeting's own envelope (G-L1 contract: the band IS the greeting's loudness; the 24.98 s reading and gold caliper jaws on LinkedIn+GitHub stay exactly as they are) — e.g. keep the envelope scrub travelling after the beat (looping the measured envelope at reduced amplitude), or add a slow breathing term bounded so text contrast ≥ 4.5:1 and no light reaches the type rails; reduced-motion path renders static (no motion required there).",
       "decisions": [],
       "comments": [],
@@ -6731,10 +6747,26 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T03:23:09.863Z",
-      "updated": "2026-09-06T03:53:30.542Z",
+      "updated": "2026-09-06T05:20:45.038Z",
       "summary": "## CORRECTION: G-M4 Hosting fallback\nOriginal output: t_w1_r2c (origin-first client, warm-prime, attempts[]). Failing criteria (docs/delivery/evidence/v10-20260905T0515Z/G-REV/97e19d07/08-adversarial-review.md F-1, 01-coldA-hosting.json, 03-spaced-sequences.jsonl): strict-cold Hosting first token 1805 ms (2 of 4 over); firstChunk == headers == firstToken and total − firstToken ≤ 4 ms → Fastly buffers the whole SSE, so Hosting first byte = origin completion (openai answered 1121–1735 ms for ~320-char answers). The panel renders the origin route (725/978 ms; strict-cold 965 ms; 0/5 over) — PASS there. PM decision (t_w1_r2c DECISION 03:22Z): fallback-only answer cap + disclosure.\nRequired fix: (1) functions/index.js — detect the Hosting route (e.g. the x-forwarded-host / via header Fastly adds, or an explicit ?route=hosting the client sets only on the fallback POST) and apply CHAT_MAX_TOKENS_FALLBACK (start at 64; size it from the measured tokens/s in attempts[] so P95 completion < 1.4 s) while the origin route keeps 128; include route:'origin'|'hosting' and max_tokens in the done event; (2) lib/miniVicBrain.ts + MiniVicBot.tsx — when the answer came via the Hosting route, the truth line reads 'Answers: live text via <provider> · short answer on the proxy route' (sentence case, wraps); (3) tests first: node test for the route detection + cap; e2e for the disclosure variant; (4) redeploy the function; (5) measure: two strict-cold Hosting sequences (≥ 10 min idle each: warm ping → 1.5 s → POST via Hosting) + three spaced, with your own first-token reader; report all; (6) write docs/architecture/MINIVIC-BRAIN-0-4.md §2(c) addendum 2: the structural finding, the cap, and the real-fix option memo (a VPS nginx location proxying /api/chat to the Cloud Run origin with proxy_buffering off — C-2 says the VPS is the execution target; note DNS/TLS/CORS implications and that it is a separate SA decision).\nVerification: tsc · lint · build:static · audit 10/10 · node tests · e2e chatbot on :5631 · curl strict-cold Hosting first token < 1.5 s on both strict samples (or the shortfall stated).",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T05:16:28.071Z",
+          "by": "orchestrator",
+          "text": "PM check 05:16Z: 71f637d pushed on worktree-w1-m4b (consolidating). Self-report: resolveChatRoute() reads ?route=hosting (client sets it on the fallback POST only; edge headers as fallback for cached bundles); CHAT_MAX_TOKENS_FALLBACK = 48 measured from 129 tokens/s and P95 origin first token 978 ms (≈ 1 350 ms completion); origin keeps 128; done event + JSON carry route + max_tokens; trimCappedAnswer cuts a capped reply to the last finished sentence; truth line 'Answers: live text via openai — short answer on the proxy route'; verified on the redeployed function: origin 1 287 ms first token streaming, Hosting 1 180 ms (flag) / 898 ms (no flag); tests MV-CAP-01..08, MV-ROUTE-10..12, CB-LABEL-06/07 first. Not done until reviewer t_w1_rev8 re-runs the strict-cold visitor sequence on live."
+        },
+        {
+          "at": "2026-09-06T05:19:38.604Z",
+          "by": "orchestrator",
+          "text": "PM probe 05:19Z on LIVE 87eb005a: POST via Hosting (with and without ?route=hosting) → route 'hosting', max_tokens 48, provider openai, attempts [openrouter cooling_down, deepseek cooling_down, zai cooling_down, openai answered]. The RAW JSON text on the capped route ends mid-clause ('…delivering Distribution UI past 95% completion' / '…architected COBOL/mainframe test') — the sentence trim is client-side (lib/miniVicRoute.mjs trimCappedAnswer), so reviewer t_w1_rev8 must judge the RENDERED panel text, and confirm the origin route (a.run.app) still reports route 'origin' / max_tokens 128 and streams."
+        },
+        {
+          "at": "2026-09-06T05:20:45.038Z",
+          "by": "orchestrator",
+          "text": "LOAD-SHED 05:21Z (§0.1): host at 1.35 GB free with swap saturated (3 builds, 8 Playwright processes, the sibling's Cursor session); the corrections-B workflow was stopped by the PM to protect the reviewer and the hero-suite battery. This slice's code is pushed and LIVE (87eb005a); only its structured report is lost — the commit body + the PM's live probe stand in. l1m and a3g are re-queued as ready."
+        }
+      ],
       "blocker": null
     },
     {
@@ -6755,7 +6787,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T03:23:09.925Z",
-      "updated": "2026-09-06T04:56:23.498Z",
+      "updated": "2026-09-06T05:05:44.156Z",
       "summary": "Evidence: G-REV/97e19d07/04-panel-1440.json + 07-b2-1440x900-answered.png (reader sees 'Vikram Deshpa'). TC-BOT-14 currently asserts vertical clearance only (panel top vs glyph bottom) and passed at 19 px while the panel horizontally overlaps the run. Hero S3 (running) will reduce the H1 to clamp(3.25rem, 8vw, 7rem) with column x 96→~1028 at 1440 — the panel's left edge must clear the H1's measured right glyph edge by ≥ 16 px at every viewport, or the panel must open below the H1 run. Fix in components/MiniVicBot.tsx + app/globals.css (panel width/anchor: e.g. width = min(432px, viewport − H1right − 16 − 16) measured at open time, or anchor the panel's top below the H1 run when the width would drop under 320 px). Rewrite TC-BOT-14 to measure BOTH axes on glyph rects at 1440/1280/834 and keep the 16 px contract. Never touch Hero component files.",
       "decisions": [],
       "comments": [
@@ -6763,6 +6795,16 @@
           "at": "2026-09-06T04:56:23.498Z",
           "by": "orchestrator",
           "text": "PM check 04:57Z: b4e4b79 pushed on worktree-w1-mv4 (consolidating). lib/minivicPlacement.ts chooses beside / below / flipped / under-nav from the measured glyph run and re-measures until the 16 px contract holds; TC-BOT-14 rewritten to both axes on Range.getClientRects at 1440/1366/1280/834 (0 glyph rects covered, 18–19 px separation, panel ≥ 320 px). Reviewer t_w1_rev7 judges on live."
+        },
+        {
+          "at": "2026-09-06T05:01:56.664Z",
+          "by": "orchestrator",
+          "text": "Lane result 05:03Z (ap-w1-mv4, over cap): b4e4b79 (fix) live in fda84067 + b2cbc43 (evidence: the two occlusion failures reproduce on origin/main, not on this branch) consolidating. Awaiting reviewer t_w1_rev7 (TC-BOT-14 both axes at 4 widths)."
+        },
+        {
+          "at": "2026-09-06T05:05:44.156Z",
+          "by": "orchestrator",
+          "text": "Structured result (ap-w1-mv4, goal_complete:false honestly): lib/minivicPlacement.ts measures the glyph run and tries beside / below / flipped / lift in cost order; 0 glyph rects covered and 18–19 px separation at 1440/1366/1280/834 (panel lifted ABOVE the run: 1440 → t 112, h 350). CAVEAT for the reviewer: at 1366x768 the applied box is h 245 px and composer_inside_panel = FALSE — the input may sit outside the panel there; rev7 measures it and mv5/rev7 decide. OCCLUDE-02 (launcher ground) is t_w1_mv5's; OCCLUDE-01 already fixed on main (mv3)."
         }
       ],
       "blocker": null
@@ -6820,8 +6862,8 @@
     {
       "id": "t_w2_a3g",
       "title": "PALETTE (rev-3657baa1-w2 observation) — #about paints a whole sourced-claim line in gold body text ('38 public repositories · ATO evidence harness · ANZ platform migrations', app/data/portfolio/about.ts:65 via var(--gold) at About.module.css:410; 1,545 chromatic px): gold is reserved for closed caliper jaws, the measured mark and live repo URLs (CLAUDE.md prime directive 4) — restore the line to ink and keep the gold on the caliper mark only; pin with a test",
-      "status": "running",
-      "column": "running",
+      "status": "ready",
+      "column": "ready",
       "assignee": "analyst-programmer",
       "priority": 84,
       "parents": [
@@ -6835,7 +6877,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T03:51:45.123Z",
-      "updated": "2026-09-06T03:53:30.733Z",
+      "updated": "2026-09-06T05:20:45.210Z",
       "summary": "Rule: gold means 'this figure has a source' and appears only on the caliper jaws, the measured-in-production mark and live repository URLs — never as a fill, a theme or running text. The About evidence line is a sourced claim, so its CALIPER carries gold; the sentence itself must be --mist-200/--white ink like every other reading. Do not touch the shader (field.glsl.ts) — the About light correction t_w2_x2f5 just landed there. Keep TC-SCENE-ABOUT-* and the gold-semantics tests green; extend tests/monochrome/gold-semantics.spec.ts (or the palette pin) so gold text runs longer than a caliper label fail.",
       "decisions": [],
       "comments": [],
@@ -6916,18 +6958,24 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T04:19:56.561Z",
-      "updated": "2026-09-06T04:50:46.208Z",
+      "updated": "2026-09-06T05:04:28.540Z",
       "summary": "Implement slice x2-f6-about-open-mark exactly as docs/architecture/ABOUT-STORY-v2.md specifies (SA t_w2_a3sa): edits E-1 (hoist the guard/ceiling terms to the top of main(), pure code motion; ceiling still applied last), E-2 (leave `state` and its four uses byte-for-byte — that protects coverage), E-3 (after `float luma = sector;` add dash/ruled/mark/markWindow and luma *= 1 + ABOUT_OPEN_MARK_DEPTH·mark·markWindow; export ABOUT_OPEN_DASHES=5.0, ABOUT_OPEN_RULING=26.0, ABOUT_OPEN_MARK_DEPTH=0.42). Tests T-1/T-2 first (TC-SCENE-ABOUT-10 clauses 10a/10b/10c with sectorStructure added to readAnnulus() — 32 arc samples at rr 0.55/0.66/0.88, single DFT bin at k=ABOUT_OPEN_DASHES imported from field.glsl.ts, normalised 2|X_k|/mean, median of radii, all ten values printed; TC-STORY-ABOUT-03 in story-contract.spec.ts on RAW bins). Tuning window: depth 0.30–0.50, ruling 20–32, dashes 4/5/6; stop conditions: coverage < 15.00% at depth 0.30, any TC-CONTRAST node below AA, a visual baseline moving, structure ratio < 3.0 at depth 0.50 — then report RED and the PM fires x2-f7; never move a threshold. Precedent for a clean revert: ef2979a.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T05:04:28.540Z",
+          "by": "orchestrator",
+          "text": "FALSE DIAGNOSIS registered (rev by t_w2_x2f7's guard-mask probe): this lane's stop-condition claim 'markWindow is exactly zero at 1440 at rest because the annulus is mostly guarded' is contradicted by measurement (88.1% unguarded). The mark's absence there is unexplained and is being instrumented in t_w2_x2f8; the tests this lane shipped stand."
+        }
+      ],
       "blocker": null,
       "result": "ap-w2-x2f6 (over cap, honest stop): 21ff176d pushed — tests only (TC-SCENE-ABOUT-10 10a/10b/10c with a 15-sample radial-run estimator that beats the bin-5 noise floor 0.09–0.26; TC-STORY-ABOUT-03; three exported constants), GLSL body byte-identical to main; the measured E-1+E-3 term saved as W2-A3/x2-f6/03-shader-E1-E3.patch. Mark works where unguarded (390 at rest ratio 2.98, screenshot shows 3 of 10 sectors ruled at unchanged luminance; non-inversion 1.53–3.89 green everywhere) but at 1440 at rest the ring annulus is mostly guarded → markWindow = 0 → ratio 0.56 (trigger 3, at 1440); TC-STORY-ABOUT-02 @390 deficit 0.1075 < 0.15 on main (trigger 1). No threshold moved; depth 0.50 not run because it multiplies a zero. Full suite logs committed."
     },
     {
       "id": "t_w2_x2f7",
       "title": "G-A3 story x2-f7 (CONDITIONAL — fire only on an x2-f6 stop condition) — create unguarded plane area at 390 (end .fieldViewport above the instrument / move the caption node) so a luminance clause can be raised without touching the ceilings; ABOUT-STORY-v2.md slice 2",
-      "status": "running",
-      "column": "running",
+      "status": "done",
+      "column": "done",
       "assignee": "analyst-programmer",
       "priority": 85,
       "parents": [
@@ -6941,7 +6989,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T04:19:56.978Z",
-      "updated": "2026-09-06T04:50:46.354Z",
+      "updated": "2026-09-06T05:04:28.321Z",
       "summary": "Trigger (ABOUT-STORY-v2.md): TC-STORY-ABOUT-02 deficit < 0.15 after x2-f6; or ABOUT coverage @1440 < 15.00% with the mark at minimum depth; or clause 10b red at 390 because the ring annulus there is mostly guarded. Edits per the doc: components/sections/About/About.module.css (≤ 900 px block, :406–450) and About.tsx only if the caption node moves. Same floors, same tests, same stop rules. Do not start unless the PM comment on this task names the trigger.",
       "decisions": [],
       "comments": [
@@ -6951,13 +6999,14 @@
           "text": "TRIGGER FIRED 04:52Z (PM): two measured triggers from t_w2_x2f6 — (1) TC-STORY-ABOUT-02 @390 deficit 0.1075 < 0.15 on origin/main; (3) TC-SCENE-ABOUT-10 clause 10b red at 1440 AT REST because guarded covers most of the ring annulus (open-min 0.0972 vs answered-max 0.1737, ratio 0.56; the mark's markWindow is exactly zero there). SCOPE: both widths, not only 390. Method: first MEASURE the guard mask over the ring annulus (rr 0.40–0.96) and the fan (1.12–1.6) at 1440 and 390 in the at-rest state (which guarded rect — reading column, instrument caption, key rows — covers it and by how much); then create unguarded annulus area by RELOCATING the guarded UI (About.module.css ≤900px block and the ≥901px grid: caption/key rows off the annulus; the reading column must not sit over the rose's annulus at rest) — never by weakening READING_CEILING 0.10 / INSTRUMENT_CEILING 0.24 or the (1−guarded) gate; then git apply docs/delivery/evidence/v10-20260905T0515Z/W2-A3/x2-f6/03-shader-E1-E3.patch and run the full About battery (ABOUT-10 both states/widths, STORY-ABOUT-01/02/03, flagship coverage ≥ 15% both widths, TC-CONTRAST-01/02 both paths, scene-about 01–09/11, text-contrast). Stop conditions unchanged. Push only green (tests-only push + numbers if it cannot be met)."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "ap-w2-x2f7 (14 min, honest): 5a8603e pushed — measurement only, no CSS. The mandated guard-mask probe FALSIFIES trigger (3): ring annulus rr 0.40–0.96 is 88.1% unguarded at 1440 at rest (mean guarded 0.036) and 94.8% at 390 (0.016); the most-guarded sector (index 5, pointing at the caption) is attenuated by a fifth, not zeroed. The fan is the guarded band (mean 0.67–0.69) and at 390 two thirds of it is OFF the plane. Relocating UI off an unguarded annulus is a no-op, so nothing shipped; commit subject changed to 'docs(about): measure the guard mask' rather than assert unfinished work. Cause of 10b = 0.0972 at 1440 at rest is inside the mark term/estimator → t_w2_x2f8."
     },
     {
       "id": "t_w2_x2t3",
       "title": "Scene-7 instruments (tester) — reconcile the duration→spacing detector (implementer TC-SCENE-DESCENT-09 ρ 0.994 vs reviewer row-profile ρ 0.214 on live), fix the TC-STORY-DESCENT-02 'caption-only' contract (a 100vh sticky stage always intersects nav/launcher chrome and the 5 axis ticks) so it measures what a reader sees, and add the renderer-labelled fps record to the harness — no threshold lowered",
-      "status": "ready",
-      "column": "ready",
+      "status": "blocked",
+      "column": "blocked",
       "assignee": "tester",
       "priority": 90,
       "parents": [
@@ -6971,17 +7020,21 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T04:28:49.587Z",
-      "updated": "2026-09-06T04:28:49.587Z",
+      "updated": "2026-09-06T05:42:20.465Z",
       "summary": "Two instruments disagree on the same live band (docs/delivery/evidence/v10-20260905T0515Z/G-REV/1ba16f90/03-scene7.json vs W2-X2/t_w2_x2s2 evidence): the implementer's TC-SCENE-DESCENT-09 (scene-descent.spec.ts) reads 9 edges with Spearman 0.994 against role durations at both widths; the reviewer's independent row-profile detector reads 10 edges but best-alignment ρ 0.214. Decide which measures the story (spacing proportional to duration, v2 §5): reproduce both on the export at the SAME scroll position/uDescent, print edge rows and the duration vector, and either fix the spec's detector (if it is reading the bars not the strata, or a fixed alignment) or file the shader defect for an AP with numbers. Second: TC-STORY-DESCENT-02 'caption-only over the canvas' counts persistent chrome (nav, launcher) and the 5 axis ticks that are part of the scene — redefine the assertion to exclude position:fixed chrome and the band's own ticks, keeping 'no heading/paragraph/CTA inside the stage' (v2 §2.4 intent), and say so in the spec. Third: the fps harness must emit the renderer string with every reading and refuse to print 'fps' for a software rasteriser (v2 §6.2).",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": {
+        "kind": "superseded",
+        "reason": "Owner directive 05:29Z replaces the About/scene visual layer; the scene-7 instrument reconciliation is re-specified inside CINEMATIC-VFX-v1 (t_w3_syn). Lane interrupted 05:30Z with nothing pushed.",
+        "at": "2026-09-06T05:42:20.465Z"
+      }
     },
     {
       "id": "t_w1_mv5",
       "title": "REGRESSION (found by t_w1_mv3) — TC-MV-OCCLUDE-02 @390: the CLOSED Ask Mini Vic launcher paints a ground of rgb(174,174,174) (relative luminance 0.4233) against the 0.0968 ceiling derived from --mist-200 body ink, i.e. the dock brightens the prose under it; regressed between b02a8863 and b9f5195e (candidates: mv2's :hover reveal / pointer-events rules, red2's panel cap, hero S1–S3 nav/token changes) — bisect, fix on the launcher side, keep G-MV1 (visible, labelled, clickable) and TC-MV-CLICK-01 green",
-      "status": "ready",
-      "column": "ready",
+      "status": "running",
+      "column": "running",
       "assignee": "analyst-programmer",
       "priority": 91,
       "parents": [
@@ -6995,17 +7048,23 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T04:38:48.278Z",
-      "updated": "2026-09-06T04:38:48.278Z",
+      "updated": "2026-09-06T05:05:44.216Z",
       "summary": "Contract (app/globals.css MiniVic block, tests/a11y/minivic-occlusion.spec.ts TC-MV-OCCLUDE-02): every pixel the launcher paints stays darker than the brightest ground that still carries --mist-200 body ink at 4.5:1 — the launcher may float over prose; it may never brighten the ground under it. On b02a8863 only OCCLUDE-01 was red; on b9f5195e the closed pill's own surface measures rgb(174,174,174) at 390. Bisect with the export at the candidate commits (mv2 6d007adb, red2 9deea50d, S1 9287089, S2 9835a950, S3 1e1cb392) — one build each, one browser, serially — then fix at the root on the launcher side (never display:none, never opacity 0 that hides the label; G-MV1). Hero component files stay untouched (S4 lane).",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T05:05:44.216Z",
+          "by": "orchestrator",
+          "text": "NOTE 05:09Z: when you verify, also open the MiniVic panel at 1366x768 — t_w1_mv4's placement reports composer_inside_panel=false there (h 245 px). If the composer is outside its box, the placement's usable-dialog floor (≥ 320×304) is not being honoured at that viewport; report with numbers (fix only if it is on the launcher/panel side and within cap)."
+        }
+      ],
       "blocker": null
     },
     {
       "id": "t_w1_rev7",
       "title": "WAVE-2 REVIEW 7 — G-H1 GRADED on the live SHA carrying hero S1–S4: every HERO-SETPIECE-v3 §8 case measured independently (F-1 descender 0 px off the plate, SPD ≥ 0.78 at 4 viewports × 2 paths, H1 contrast on glyph box, TYPE/SET/GL/PERF/PAL), the recruiter sentence, TC-BOT-14 on both axes, About story tests (red-by-design), regression table; plus the R1 question — is this a new visual system or still a résumé stack?",
-      "status": "running",
-      "column": "running",
+      "status": "done",
+      "column": "done",
       "assignee": "reviewer",
       "priority": 100,
       "parents": [
@@ -7020,8 +7079,278 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T04:56:23.594Z",
-      "updated": "2026-09-06T04:57:13.485Z",
+      "updated": "2026-09-06T05:36:53.792Z",
       "summary": "Read the live build-commit at start; it must descend from a06f317 (S4), b4e4b79 (mv4), 21ff176d (x2f6 tests). Baselines: G-REV/1ba16f90 (F-1 descender 145/130/57/42 px; SPD 390 rm 0.7487; TC-BOT-14 −67 px), G-REV/3657baa1, ADV-2315Z §Hero (the original FAIL: stacked hire landing, smoky wallpaper, no set-piece). Grade G-H1 against GAP-BACKLOG: one dominant visual plane ≥ 75% weight, brand + ≤ 1 headline + ≤ 1 non-CV sentence + ≤ 1 CTA group, photograph IN the plane, ledger below the fold, and — the human clause — a recruiter names the set-piece in one sentence (the brief's target: 'His face is standing in the shaft of light that his name is written across.'). Say the sentence you would say; say whether the fold is a new visual system (R1) or still a résumé landing. Measure with your own instruments; use scripts/validate/hero_plane_dominance.mjs exports for SPD only.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "result": "Reviewer verdict (wf_10280795-ffd, 05:27Z) on live 314d9d28 (hero numbers on fda84067): G-H1 FAIL / R1 PARTIAL. F-1..F-11: opaque nameplate defeats 'written across the light'; SET-05/SET-04 unmet; nav Menu contrast over the fold; a CV sentence in the fold; two P0 regressions: at 390 the unpainted MiniVic dock swallows the Download CV tap, and placeMiniVicPanel has no effect at 1440 (panel 432x452 at 984,360) and yields a 222 px panel with the composer outside the box at 1366. Functional P0s -> t_w3_p0a. Visual findings -> constraints in the wave-3 direction (Owner directive 05:29Z supersedes the v3.1 re-brief)."
+    },
+    {
+      "id": "t_w2_a3m",
+      "title": "About field mount range at 390 (found by t_w2_x2f5) — with the 4th list item centred, #about has 0 canvases for the full 15 s window: the field is mounted only while the section head is on screen, so a phone reader has no scene for most of the section's scroll; keep the plane with the reader (sticky/travelling field or a taller mount window) without breaking coverage/contrast floors",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 87,
+      "parents": [
+        "t_w2_x2f7"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T05:00:38.164Z",
+      "updated": "2026-09-06T05:00:38.164Z",
+      "summary": "Evidence: t_w2_x2f5 result notes + W2-X2/t_w2_x2f5/02-tests-failing.log (toHaveCount canvases 0 with the 4th item centred at 390x844, 19 polls). Compare the ≥901 px behaviour (the field is the section's sticky plane, 1248x900) with the ≤900 px block in About.module.css (static 30rem .fieldViewport) and Scene.tsx's mount/unmount rootMargin. Decide with the SA doc (ABOUT-STORY-v2.md slice 2 may already move the caption/instrument) — run AFTER x2-f7 lands so the two layout changes do not collide. Add a test that at 390, with items 1, 4, 7 and 10 centred, #about still has ≥ 1 canvas under ?gl=force (and the still under reduced motion), and that TC-CONTRAST/flagship floors hold.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_x2f8",
+      "title": "G-A3 story x2-f8 — instrument the open-mark term at 1440 at rest (why does clause 10b read open-min 0.097 vs answered-max 0.174 when the annulus is 88% unguarded?): test in order (i) ABOUT_OPEN_RULING=26 folding into DFT bin 5 at rr 0.551/0.658/0.882 with a cancelling phase, (ii) the numerals' groove at rr 0.724 between two structure radii, (iii) the 0.09–0.26 incoherent floor in bin 5; then land the mark green at both widths/states inside ABOUT-STORY-v2's window — thresholds untouched",
+      "status": "blocked",
+      "column": "blocked",
+      "assignee": "analyst-programmer",
+      "priority": 90,
+      "parents": [
+        "t_w2_x2f7"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T05:04:28.704Z",
+      "updated": "2026-09-06T05:42:20.548Z",
+      "summary": "Inputs: docs/architecture/ABOUT-STORY-v2.md (§4 metric, §6 window/stop rules), W2-A3/x2-f6/03-shader-E1-E3.patch (the mark term, apply it), x2-f6/09-verification.md (measured structure values per state), x2-f7/02-guard-mask-measured.log + 09-verification.md (annulus unguarded; candidates ordered). Method: apply the patch in your worktree, then instrument — render the field with ONLY the dash term (ruling off), then only the ruling, then both, and read the per-sector structure values printed by TC-SCENE-ABOUT-10 at 1440 at rest and dim4 and at 390 at rest; also read the raw bin spectrum (k=3..8) per sector to see where the ruling's energy lands; if (i) is the cause, choose a ruling frequency that does not alias into bin k=ABOUT_OPEN_DASHES at the three radii (the SA window allows ruling 20–32; if none in the window is clean, pick the cleanest and REPORT — do not widen the window silently); if (ii), the metric's radii are the SA's — report the groove overlap with numbers and propose the radii change in the evidence, do not change the test yourself; if (iii), the estimator's radial-run length may be raised (a measurement-precision change, log it). Hard bounds unchanged: coverage ≥ 15.00% both widths, TC-CONTRAST-01/02 both paths, ceilings untouched, non-inversion ≥ 1.20, story-about-01/02 reported, visual baselines unmoved. Stop rule: if 10a/10b cannot go green at 1440 at rest with the mark inside the window, push the instrumentation + numbers and return goal_complete:false naming which candidate is proven — a doc for the SA.",
+      "decisions": [],
+      "comments": [],
+      "blocker": {
+        "kind": "superseded",
+        "reason": "Owner directive 05:29Z replaces the About field; the story-metric requirement carries into CINEMATIC-VFX-v1 as a gate on the replacing instrument. Lane never started (chain interrupted 05:30Z).",
+        "at": "2026-09-06T05:42:20.548Z"
+      }
+    },
+    {
+      "id": "t_w1_rev8",
+      "title": "REVIEW 8 — G-M4 on the Hosting fallback after the answer cap (t_w1_m4b): strict-cold visitor sequence (≥10 min idle → warm ping → send) on BOTH routes, 2 strict + 5 spaced samples each, the trimmed answer's honesty (last finished sentence, disclosure variant visible), origin route unchanged (128 tokens, streaming); plus TC-BOT-14 at 1366x768 (composer inside the panel?) and the launcher-ground OCCLUDE-02 at 390 if t_w1_mv5 has landed; regression table",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "reviewer",
+      "priority": 100,
+      "parents": [
+        "t_w1_m4b"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T05:16:28.295Z",
+      "updated": "2026-09-06T05:16:28.295Z",
+      "summary": "Read the live build-commit at start; it must descend from 71f637d (m4b). Baselines: G-REV/97e19d07 (G-M4 FAIL: Hosting strict-cold 1805 ms; Fastly buffers the SSE) and the §14 decision on t_w1_r2c (fallback-only cap + disclosure; origin route untouched). Grade G-M4 per GAP-BACKLOG: Hosting POST /api/chat first token < 1.5 s on a cold probe — now with the cap; PASS only if every strict-cold Hosting sequence is < 1.5 s AND the origin route still streams at 128 tokens with first token < 1.5 s strict-cold; FAIL otherwise with numbers. Also judge honesty: is the capped answer a complete sentence (never a cut-off), is the 'short answer on the proxy route' clause visible only when the fallback answered, does the origin route show the normal line. Then the two carried items: panel at 1366x768 (mv4 reported composer_inside_panel=false at h 245 px — measure the composer/input box vs the panel box; a composer outside its panel is a FAIL), and OCCLUDE-02 at 390 (closed launcher ground luminance ≤ 0.0968) if mv5 landed.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3_own",
+      "title": "WAVE-3 ROOT — OWNER DIRECTIVE 05:29Z: replace the whole visual layer (every section's visualisation, the hero atmosphere and plates, the About compass/field, the Experience strata/descent, the Skills bench, the Vitrine drawings/field, the Listen field) with Marvel-Studios-grade visual effects and visualisations, black and white only; judge panel of two solutions-architect directions with real hero prototypes, independent judge, synthesis, hero-first ≤30-min slices, reviewer on every deploy, PEA loop to PASS",
+      "status": "running",
+      "column": "running",
+      "assignee": "orchestrator",
+      "priority": 100,
+      "parents": [
+        "t_adv2315"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "feedback_refactor_loop",
+        "level": "orchestrator",
+        "effort": "ultracode"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T05:39:52.508Z",
+      "updated": "2026-09-06T05:43:10.628Z",
+      "summary": "Owner's verbatim words and the four live screenshots (build-commit 199f116c) are in artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md and docs/delivery/evidence/v10-20260905T0515Z/OWNER-20260906T0529Z/. Every current visualisation is graded below the bar by the Owner and is REPLACED, not polished. Assumption logged: gold stays exclusively the sourced-claim mark and never appears in any effect. Everything else in docs/prompt.md stays binding (R7 copy, LCP/CLS, budgets, reduced-motion + no-GL readability, keyboard, G-MV1, six sections in order, tests replaced never deleted, O1/O5).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3_dA",
+      "title": "WAVE-3 DIRECTION A (solutions-architect, max) — the title-sequence school: the page as a monochrome opening title sequence; the name written by light through volumetric letterforms, dust and shafts with depth, anamorphic streaks, grain, camera dolly and rack focus on scroll, cinematic cuts between sections; every visualisation rebuilt as an instrument in the same light; removal register, per-section spec at four viewports, instrumented CQ gates + AQ rubric, TDD cases, ≤30-min hero-first slices — docs/architecture/CINEMATIC-VFX-v1-A.md",
+      "status": "running",
+      "column": "running",
+      "assignee": "solutions-architect",
+      "priority": 100,
+      "parents": [
+        "t_w3_own"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "architecture / requirements_analysis",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T05:39:52.589Z",
+      "updated": "2026-09-06T05:43:10.400Z",
+      "summary": "Design ONE complete direction for replacing the whole visual layer, independently of the other direction (do not read CINEMATIC-VFX-v1-B.md if it exists). The Owner's words: 'remove all this shabby UI/UX, visualisations etc., and replace it with MARVEL STUDIOS grade visual effects and visualisations quality and sophistication. Only black, white..' IMMOVABLE (docs/prompt.md + CLAUDE.md + the Owner): (1) every effect is black, white and grey — chroma 0; gold (--gold) stays exclusively the sourced-claim mark (caliper jaws, measured-in-production mark, live repo URLs) and never appears in any effect (Owner: 'Only black, white..'; PM assumption logged in t_w3_own); (2) every word on the page stays the content files' words (app/data/portfolio/*.ts) — the site never claims 'Marvel', never uses Marvel/Disney IP, imagery, logos, marks or music; named sequences are study material for craft only (R7 zero fabrication); (3) LCP < 2.5 s, CLS < 0.05, no shipped asset > 500 kB (critical-path video ≤ 2.5 MB, assets/avatar/** on demand ≤ 5 MB), nothing plays by default, no audio autoplay; (4) reduced-motion path = a static composition that still passes every static gate; no-GL path (?gl=off) fully readable — the scene is never the content; (5) keyboard-navigable, contrast ≥ 4.5:1 for every glyph over any plane; (6) G-MV1: Ask Mini Vic never hidden below 834 px; TC-MV-CLICK-01 first-fold click; (7) DPR capped in every scene; the bar is 60 fps on a mid GPU at 1440 (SwiftShader ?gl=force is a smoke test, never an fps claim); (8) six sections in this order with these ids: #hero #about #experience #skills #vitrine #listen, plus MiniVic; (9) every test contract may be superseded consciously but each superseded test is REPLACED by a stronger one in the same slice, never deleted silently; (10) O5: slices ship visibly ≤ 30 min each, hero first, and the removal of an old element happens inside the slice that replaces it (no bare removal, no regression window); (11) stack: Next 15 static export, React 19, three 0.165, @react-three/fiber 9.7.0, drei 10.7.8, framer-motion 11, sharp; GSAP/ScrollTrigger, postprocessing, troika-three-text are NOT installed — you may specify adding them (pinned, MIT/permitted licences) with the bundle cost stated; the 18c6beb page-wide GPU crash (R3F 8 vs React 19) is the cautionary tale — every GPU path gets a ?gl=force 0-pageerror probe. Host: VPS srv1356245, 4 cores, ~4 GB RAM free, no GPU — design for the visitor's GPU, verify structure on SwiftShader.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3_dB",
+      "title": "WAVE-3 DIRECTION B (solutions-architect, max) — the simulation school: the page as one continuous monochrome shot through a 3D world; GPGPU particle fields, raymarched volumetrics under one key light, depth of field, grain; the name and figure inside the world; every visualisation rebuilt as a data-sculpture in that world; removal register, per-section spec at four viewports, instrumented CQ gates + AQ rubric, TDD cases, ≤30-min hero-first slices — docs/architecture/CINEMATIC-VFX-v1-B.md",
+      "status": "running",
+      "column": "running",
+      "assignee": "solutions-architect",
+      "priority": 100,
+      "parents": [
+        "t_w3_own"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "architecture / requirements_analysis",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T05:39:52.669Z",
+      "updated": "2026-09-06T05:43:10.481Z",
+      "summary": "Design ONE complete direction for replacing the whole visual layer, independently of the other direction (do not read CINEMATIC-VFX-v1-A.md if it exists). The Owner's words: 'remove all this shabby UI/UX, visualisations etc., and replace it with MARVEL STUDIOS grade visual effects and visualisations quality and sophistication. Only black, white..' IMMOVABLE (docs/prompt.md + CLAUDE.md + the Owner): (1) every effect is black, white and grey — chroma 0; gold (--gold) stays exclusively the sourced-claim mark (caliper jaws, measured-in-production mark, live repo URLs) and never appears in any effect (Owner: 'Only black, white..'; PM assumption logged in t_w3_own); (2) every word on the page stays the content files' words (app/data/portfolio/*.ts) — the site never claims 'Marvel', never uses Marvel/Disney IP, imagery, logos, marks or music; named sequences are study material for craft only (R7 zero fabrication); (3) LCP < 2.5 s, CLS < 0.05, no shipped asset > 500 kB (critical-path video ≤ 2.5 MB, assets/avatar/** on demand ≤ 5 MB), nothing plays by default, no audio autoplay; (4) reduced-motion path = a static composition that still passes every static gate; no-GL path (?gl=off) fully readable — the scene is never the content; (5) keyboard-navigable, contrast ≥ 4.5:1 for every glyph over any plane; (6) G-MV1: Ask Mini Vic never hidden below 834 px; TC-MV-CLICK-01 first-fold click; (7) DPR capped in every scene; the bar is 60 fps on a mid GPU at 1440 (SwiftShader ?gl=force is a smoke test, never an fps claim); (8) six sections in this order with these ids: #hero #about #experience #skills #vitrine #listen, plus MiniVic; (9) every test contract may be superseded consciously but each superseded test is REPLACED by a stronger one in the same slice, never deleted silently; (10) O5: slices ship visibly ≤ 30 min each, hero first, and the removal of an old element happens inside the slice that replaces it (no bare removal, no regression window); (11) stack: Next 15 static export, React 19, three 0.165, @react-three/fiber 9.7.0, drei 10.7.8, framer-motion 11, sharp; GSAP/ScrollTrigger, postprocessing, troika-three-text are NOT installed — you may specify adding them (pinned, MIT/permitted licences) with the bundle cost stated; the 18c6beb page-wide GPU crash (R3F 8 vs React 19) is the cautionary tale — every GPU path gets a ?gl=force 0-pageerror probe. Host: VPS srv1356245, 4 cores, ~4 GB RAM free, no GPU — design for the visitor's GPU, verify structure on SwiftShader.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3_pa",
+      "title": "WAVE-3 PROTOTYPE A (solutions-architect, max) — a standalone hero-fold prototype of direction A (docs/architecture/proto/cinematic-A/index.html, three.js from /node_modules, no app code) rendering the first 6 s of the hero beat with the real words and the real shipped still, black and white only; deterministic frames via window.__fmProto.render(t) captured with system Chrome on SwiftShader at 1440x900 and 390x844 plus the reduced-motion still; CQ instruments measured on the frames — real pixels for the judge",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "solutions-architect",
+      "priority": 100,
+      "parents": [
+        "t_w3_dA"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "architecture / requirements_analysis",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T05:41:45.475Z",
+      "updated": "2026-09-06T05:41:45.475Z",
+      "summary": "Stage 2 of direction A: prove the hero beat with real pixels so the judge scores frames, not prose. Same immovables as t_w3_dA (black/white/grey only, gold nowhere, the words from app/data/portfolio/hero.ts verbatim, the shipped still public/assets/my_avatar.avif or the poster public/assets/hero-atmosphere-poster.avif as the figure, no external network, no app code, tests or content edited). This is an architecture spike — a design artifact under docs/architecture/proto/, never imported by the app; it must still be real, complete, running code (no stubs).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3_pb",
+      "title": "WAVE-3 PROTOTYPE B (solutions-architect, max) — a standalone hero-fold prototype of direction B (docs/architecture/proto/cinematic-B/index.html, three.js from /node_modules, no app code) rendering the first 6 s of the hero beat with the real words and the real shipped still, black and white only; deterministic frames via window.__fmProto.render(t) captured with system Chrome on SwiftShader at 1440x900 and 390x844 plus the reduced-motion still; CQ instruments measured on the frames — real pixels for the judge",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "solutions-architect",
+      "priority": 100,
+      "parents": [
+        "t_w3_dB"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "architecture / requirements_analysis",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T05:41:45.552Z",
+      "updated": "2026-09-06T05:41:45.552Z",
+      "summary": "Stage 2 of direction B: prove the hero beat with real pixels so the judge scores frames, not prose. Same immovables as t_w3_dB (black/white/grey only, gold nowhere, the words from app/data/portfolio/hero.ts verbatim, the shipped still public/assets/my_avatar.avif or the poster public/assets/hero-atmosphere-poster.avif as the figure, no external network, no app code, tests or content edited). This is an architecture spike — a design artifact under docs/architecture/proto/, never imported by the app; it must still be real, complete, running code (no stubs).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3_jdg",
+      "title": "WAVE-3 JUDGE (reviewer, max, independent) — score direction A (title-sequence) and direction B (simulation) on the Owner's words, the AQ rubric applied to the real prototype frames, the CQ gate-set quality, feasibility on this stack and host, risk to the immovables, and time-to-first-visible-ship; re-derive ≥ 3 frame measurements per direction yourself; verdict with winner, grafts from the loser, must-fix list, hard NOs — docs/delivery/evidence/v10-20260905T0515Z/W3-JUDGE/",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "reviewer",
+      "priority": 100,
+      "parents": [
+        "t_w3_pa",
+        "t_w3_pb"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T05:41:45.647Z",
+      "updated": "2026-09-06T05:41:45.647Z",
+      "summary": "You judge; you never edit app code, docs or tests. The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md): 'remove all this shabby UI/UX, visualisations etc., and replace it with MARVEL STUDIOS grade visual effects and visualisations quality and sophistication. Only black, white..'. The four Owner screenshots are the FAIL baseline. Score with instruments and the rubric; adjectives are not scores (R7).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3_syn",
+      "title": "WAVE-3 SYNTHESIS (solutions-architect, max) — from the judge's verdict, write the binding spec docs/architecture/CINEMATIC-VFX-v1.md (winner + grafts + must-fix applied; removal register; per-section spec at four viewports; CQ gate set; AQ rubric; TDD cases; risk) and docs/architecture/CINEMATIC-VFX-TASKS.json (10–16 hero-first ≤30-min analyst-programmer slices with exact files, tests, visible result); mark HERO-SETPIECE-v3 / SIGNATURE-SCENES-v2 / ABOUT-STORY-v2 / LISTEN-FLAGSHIP superseded with the carried instruments listed",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "solutions-architect",
+      "priority": 100,
+      "parents": [
+        "t_w3_jdg"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "architecture / requirements_analysis",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T05:41:45.761Z",
+      "updated": "2026-09-06T05:41:45.761Z",
+      "summary": "Synthesis, not a third design: the judge chose; apply the grafts and the must-fix list, keep every immovable from t_w3_dA/t_w3_dB's IMMOVABLE list, and produce the one document the analyst-programmers build from. Read-only for app code, tests and content.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3_p0a",
+      "title": "P0 FUNCTIONAL (analyst-programmer, xhigh) — two live regressions from rev7 on 314d9d28/199f116c: (1) at 390x844 the not-yet-painted MiniVic dock/launcher intercepts the tap on 'Download CV' in the first fold — make the dock inert (pointer-events none, aria-hidden) until it is painted, keep TC-MV-CLICK-01 (pill clickable where painted), add a test that the CTA at its own centre receives the tap at 390; (2) placeMiniVicPanel has no effect at 1440x900 (panel 432x452 at 984,360) and yields a 222-px panel with the composer outside the box at 1366x768 — find why the placement does not apply (trace the call at components/MiniVicBot.tsx:584, CSS overrides, measure-before-layout) and make the panel sit inside the viewport with ≥ 24 px margins and the composer inside the panel at 1440x900 / 1366x768 / 1280x800 / 834x1194 / 390x844, with tests at all five; no Hero or visual changes",
+      "status": "running",
+      "column": "running",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w1_rev7"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T05:41:45.858Z",
+      "updated": "2026-09-06T05:43:10.567Z",
+      "summary": "Functional only — zero visual change (the visual layer is being replaced under t_w3_own; do not touch components/sections/Hero/** or any scene). Reviewer evidence: docs/delivery/evidence/v10-20260905T0515Z/G-REV/fda84067/08-adversarial-review.md (F-findings on the dock and the panel). Work in a fresh worktree from origin/main: git -C /root/forgotten-mistory worktree add .claude/worktrees/w3-p0a -b worktree-w3-p0a origin/main; npm ci there if node_modules is missing. One heavy job at a time (build, then Playwright); port 5605 for your static server; never pgrep -f your own command text; wait on PIDs.",
       "decisions": [],
       "comments": [],
       "blocker": null

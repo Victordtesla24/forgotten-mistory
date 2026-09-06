@@ -36,3 +36,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T04:57:13.485Z)
 running — dispatched 04:59Z reviewer rev-hero-s4 (waits for live to carry a06f317)
+
+## COMPLETE (2026-09-06T05:36:53.792Z)
+Reviewer verdict (wf_10280795-ffd, 05:27Z) on live 314d9d28 (hero numbers on fda84067): G-H1 FAIL / R1 PARTIAL. F-1..F-11: opaque nameplate defeats 'written across the light'; SET-05/SET-04 unmet; nav Menu contrast over the fold; a CV sentence in the fold; two P0 regressions: at 390 the unpainted MiniVic dock swallows the Download CV tap, and placeMiniVicPanel has no effect at 1440 (panel 432x452 at 984,360) and yields a 222 px panel with the composer outside the box at 1366. Functional P0s -> t_w3_p0a. Visual findings -> constraints in the wave-3 direction (Owner directive 05:29Z supersedes the v3.1 re-brief).

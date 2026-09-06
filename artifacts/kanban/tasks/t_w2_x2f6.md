@@ -42,3 +42,6 @@ running — dispatched 04:29Z fm-wave2-about-mark
 
 ## COMPLETE (2026-09-06T04:50:46.208Z)
 ap-w2-x2f6 (over cap, honest stop): 21ff176d pushed — tests only (TC-SCENE-ABOUT-10 10a/10b/10c with a 15-sample radial-run estimator that beats the bin-5 noise floor 0.09–0.26; TC-STORY-ABOUT-03; three exported constants), GLSL body byte-identical to main; the measured E-1+E-3 term saved as W2-A3/x2-f6/03-shader-E1-E3.patch. Mark works where unguarded (390 at rest ratio 2.98, screenshot shows 3 of 10 sectors ruled at unchanged luminance; non-inversion 1.53–3.89 green everywhere) but at 1440 at rest the ring annulus is mostly guarded → markWindow = 0 → ratio 0.56 (trigger 3, at 1440); TC-STORY-ABOUT-02 @390 deficit 0.1075 < 0.15 on main (trigger 1). No threshold moved; depth 0.50 not run because it multiplies a zero. Full suite logs committed.
+
+## COMMENT (2026-09-06T05:04:28.540Z)
+FALSE DIAGNOSIS registered (rev by t_w2_x2f7's guard-mask probe): this lane's stop-condition claim 'markWindow is exactly zero at 1440 at rest because the annulus is mostly guarded' is contradicted by measurement (88.1% unguarded). The mark's absence there is unexplained and is being instrumented in t_w2_x2f8; the tests this lane shipped stand.

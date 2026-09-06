@@ -36,3 +36,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-06T05:00:38.060Z)
+SCOPE ADD 05:02Z (PM decision from t_w2_r3a2): ONE premade voice for the greeting and the live replies. The greeting now speaks with 'Charlie' (IKne3meq5aSn9XLyUdCD, premade, Australian male); the deployed elevenLabsTts uses the voice id from its Secret Manager value (George). Align the function to Charlie — the site is for a Melbourne-based owner and the greeting is already rendered — by setting the function's voice source of truth to the same premade id (firebase functions:secrets:set / params, never IVC, never the cloned id) and redeploying; assert in the node test that the greeting's voice id equals the function's default; record the decision and reversal cost (one secret change + one greeting regeneration).

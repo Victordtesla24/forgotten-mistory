@@ -1,0 +1,88 @@
+{
+  "cycle": "v10-c30",
+  "window_utc": "2026-09-06T04:30Z–05:47Z",
+  "orchestrator": "Fable 5.1 ultracode (claude-cli), session_01WWt1D5i764agLExdpEWvRC",
+  "deploys_in_window": [
+    {
+      "run_id": 34014452824,
+      "conclusion": "success",
+      "at": "05:37:37Z",
+      "sha": "199f116c"
+    },
+    {
+      "run_id": 34014023753,
+      "conclusion": "success",
+      "at": "05:27:20Z",
+      "sha": "87eb005a"
+    },
+    {
+      "run_id": 34013603791,
+      "conclusion": "success",
+      "at": "05:17:11Z",
+      "sha": "314d9d28"
+    },
+    {
+      "run_id": 34013181987,
+      "conclusion": "success",
+      "at": "05:07:10Z",
+      "sha": "fda84067"
+    },
+    {
+      "run_id": 34012769153,
+      "conclusion": "success",
+      "at": "04:57:07Z",
+      "sha": "afad076b"
+    },
+    {
+      "run_id": 34012371065,
+      "conclusion": "success",
+      "at": "04:46:58Z",
+      "sha": "afad076b"
+    },
+    {
+      "run_id": 34011947691,
+      "conclusion": "success",
+      "at": "04:36:57Z",
+      "sha": "83f4b208"
+    }
+  ],
+  "live_build_commits_in_window": [
+    "83f4b208",
+    "afad076b",
+    "fda84067",
+    "314d9d28",
+    "87eb005a",
+    "199f116c"
+  ],
+  "live_build_commit_now": "199f116c (05:29Z, PM-verified via meta build-commit); queued: none",
+  "o1_o5": "Visible UI shipped in every 10-min window: hero S2 light+figure (afad076b), S3 typography (fda84067), S4 descender/plate (314d9d28), mv4 placement + m4b capped fallback (87eb005a), mv5 launcher occlusion + S5 suites (199f116c). Timer active, Hermes inactive, all deploy runs succeeded.",
+  "adversarial": {
+    "t_w1_rev7": {
+      "live": "314d9d28 (hero numbers on fda84067)",
+      "verdict": "G-H1 FAIL / R1 PARTIAL",
+      "findings": "F-1..F-11: opaque nameplate defeats 'written across the light'; SET-05/SET-04 unmet; nav Menu contrast; CV sentence in the fold; P0: 390 unpainted dock swallows the Download CV tap; placeMiniVicPanel ineffective at 1440, 222-px panel at 1366",
+      "evidence": "docs/delivery/evidence/v10-20260905T0515Z/G-REV/fda84067/"
+    },
+    "owner": {
+      "at": "05:29Z",
+      "live": "199f116c",
+      "verdict": "FAIL — the Owner graded the whole visual layer below the bar: 'remove all this shabby UI/UX, visualisations etc., and replace it with MARVEL STUDIOS grade visual effects and visualisations quality and sophistication. Only black, white..'",
+      "evidence": "artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md + docs/delivery/evidence/v10-20260905T0515Z/OWNER-20260906T0529Z/ (4 screenshots)"
+    }
+  },
+  "pea": {
+    "score": "5/13 R-gates PASS on live (R4 partial, R6-R12 process gates green); R1/R2/§0.3-1 REOPENED by the Owner's bar; R3 first form OPEN; R5 OPEN",
+    "measured_against": "docs/prompt.md R1–R12 + Owner directive 05:29Z",
+    "fabrication": "none; every verdict cites a reviewer file or a command"
+  },
+  "architecture_this_cycle": "Wave-3 judge panel opened: t_w3_dA (title-sequence school) and t_w3_dB (simulation school) → CINEMATIC-VFX-v1-A/B.md + standalone hero prototypes with measured frames → t_w3_jdg (independent reviewer) → t_w3_syn (CINEMATIC-VFX-v1.md + TASKS.json, ≤30-min hero-first slices). Hero v3.1 re-brief superseded.",
+  "provider": "Anthropic OAuth (claude-cli Max) for all spawns; OpenRouter −5.384 USD — no change; no paid ElevenLabs/D-ID/render calls this cycle",
+  "alerts": [
+    "05:30Z the Owner's message interrupted two running lanes (tester S5 wbtp5553u, corrections C wn56e5bun) — both paused by the harness; S5's Playwright battery child kept running in /root/wt-w2-h1s5 and is left to finish as the regression baseline on 199f116c; corrections C (x2t3→x2f8) superseded and blocked on the board",
+    "Load-shed still in force: ≤2 heavy lanes; RAM avail 4.1 GB at 05:41Z; 7 historical OOM kills in dmesg, none new",
+    "Board rows t_w2_h1s1/x2s1 still show running though live — tidied next bookkeeping"
+  ],
+  "board": "running: t_w3_dA, t_w3_dB (fm-wave3-directions w9oeu56b8 / wf_c1e36f0d-032), t_w3_p0a (fm-wave3-p0a we0elz5e5 / wf_c60089b0-cba); todo-chained: t_w3_pa, t_w3_pb, t_w3_jdg, t_w3_syn; blocked-superseded: t_w2_x2t3, t_w2_x2f8; deferred until the direction lands: rev8, l1m, a3g, a3m, r3a3–a7, scene-7 t2/f0/f1/s3, hero v3.1",
+  "fusion_council": "NOT convened (PEA < 100%; Owner FAIL open)",
+  "next": "directions land (~06:10Z) → prototypes (one Chrome at a time) → judge → synthesis → slices on the board, w3-s01 visible within 30 min of dispatch; P0 fix t_w3_p0a pushed → deploy → reviewer rev8 on the live URL (dock tap at 390, panel at five viewports, G-M4 cap); c31."
+}

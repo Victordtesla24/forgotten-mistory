@@ -41,3 +41,9 @@ running — dispatched 03:54Z fm-wave2-corrections-b (serialized: mv4 → m4b �
 
 ## COMMENT (2026-09-06T04:56:23.498Z)
 PM check 04:57Z: b4e4b79 pushed on worktree-w1-mv4 (consolidating). lib/minivicPlacement.ts chooses beside / below / flipped / under-nav from the measured glyph run and re-measures until the 16 px contract holds; TC-BOT-14 rewritten to both axes on Range.getClientRects at 1440/1366/1280/834 (0 glyph rects covered, 18–19 px separation, panel ≥ 320 px). Reviewer t_w1_rev7 judges on live.
+
+## COMMENT (2026-09-06T05:01:56.664Z)
+Lane result 05:03Z (ap-w1-mv4, over cap): b4e4b79 (fix) live in fda84067 + b2cbc43 (evidence: the two occlusion failures reproduce on origin/main, not on this branch) consolidating. Awaiting reviewer t_w1_rev7 (TC-BOT-14 both axes at 4 widths).
+
+## COMMENT (2026-09-06T05:05:44.156Z)
+Structured result (ap-w1-mv4, goal_complete:false honestly): lib/minivicPlacement.ts measures the glyph run and tries beside / below / flipped / lift in cost order; 0 glyph rects covered and 18–19 px separation at 1440/1366/1280/834 (panel lifted ABOVE the run: 1440 → t 112, h 350). CAVEAT for the reviewer: at 1366x768 the applied box is h 245 px and composer_inside_panel = FALSE — the input may sit outside the panel there; rev7 measures it and mv5/rev7 decide. OCCLUDE-02 (launcher ground) is t_w1_mv5's; OCCLUDE-01 already fixed on main (mv3).

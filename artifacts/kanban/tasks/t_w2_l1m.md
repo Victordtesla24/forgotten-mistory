@@ -38,3 +38,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T03:53:30.614Z)
 running — dispatched 03:54Z fm-wave2-corrections-b (serialized: mv4 → m4b → l1m → a3g)
+
+## STATUS (2026-09-06T05:20:45.120Z)
+ready — re-queued 05:21Z after load-shedding corrections-B; dispatch when avail RAM > 3 GB

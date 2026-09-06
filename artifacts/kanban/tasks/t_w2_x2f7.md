@@ -39,3 +39,6 @@ TRIGGER FIRED 04:52Z (PM): two measured triggers from t_w2_x2f6 — (1) TC-STORY
 
 ## STATUS (2026-09-06T04:50:46.354Z)
 running — dispatched 04:52Z fm-wave2-about-unguard
+
+## COMPLETE (2026-09-06T05:04:28.321Z)
+ap-w2-x2f7 (14 min, honest): 5a8603e pushed — measurement only, no CSS. The mandated guard-mask probe FALSIFIES trigger (3): ring annulus rr 0.40–0.96 is 88.1% unguarded at 1440 at rest (mean guarded 0.036) and 94.8% at 390 (0.016); the most-guarded sector (index 5, pointing at the caption) is attenuated by a fifth, not zeroed. The fan is the guarded band (mean 0.67–0.69) and at 390 two thirds of it is OFF the plane. Relocating UI off an unguarded annulus is a no-op, so nothing shipped; commit subject changed to 'docs(about): measure the guard mask' rather than assert unfinished work. Cause of 10b = 0.0972 at 1440 at rest is inside the mark term/estimator → t_w2_x2f8.

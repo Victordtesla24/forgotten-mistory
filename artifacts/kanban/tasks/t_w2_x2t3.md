@@ -35,3 +35,9 @@ role_matrix: testing / qa → level 2 → effort **xhigh** (effort_cascade.yaml;
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## STATUS (2026-09-06T05:04:28.981Z)
+running — dispatched 05:05Z fm-wave2-corrections-c (serialized: mv5 → x2t3 → x2f8)
+
+## BLOCKED (2026-09-06T05:42:20.465Z)
+superseded: Owner directive 05:29Z replaces the About/scene visual layer; the scene-7 instrument reconciliation is re-specified inside CINEMATIC-VFX-v1 (t_w3_syn). Lane interrupted 05:30Z with nothing pushed.
