@@ -1,0 +1,80 @@
+# W1-MV3 — reproduction on origin/main b9f5195e, own static export, served on :5629
+# (t_w1_mv3, 2026-09-06). Chrome channel=chrome, --no-sandbox, workers=1.
+
+$ npm run build:static            # BUILD_EXIT=0, build-stamp b9f5195e
+$ python3 -m http.server 5629 --directory out   # 200 OK
+
+## (1) tests/a11y/minivic-occlusion.spec.ts
+$ PLAYWRIGHT_BASE_URL=http://127.0.0.1:5629 npx playwright test tests/a11y/minivic-occlusion.spec.ts --workers=1
+
+TC-MV-OCCLUDE-01  FAIL
+  1 of 13 text node(s) under the launcher fall below AA:
+  scrollY 14348: 4.00:1 (needs 4.5)
+    table.Skills_table__qr48d > tbody > tr > td.Skills_evidence__HceDJ > span.Skills_caveat__AOTAH
+    — "Compose, not Kubernetes — there are no cluster m"
+    ink rgb(125,125,125) on launcher-painted ground rgb(31,31,31)
+
+  DIVERGENCE from the task spec / W1-RED2: the spec names
+  `div.Vitrine_exclusion > dd` at scrollY 16036 (4.05:1 on rgb(30,30,30)) as the
+  failing node. On b9f5195 the launcher's overlap band has moved and the node
+  that actually fails is Skills_caveat — the same ink (--ink-300, #7D7D7D) on
+  the same launcher hairline ground, one point brighter (rgb(31,31,31)) and one
+  hundredth worse (4.00:1). Both are the same defect: --ink-300 clears AA on
+  --ink-900 (4.81:1) and on nothing brighter than rgb(19,19,19).
+
+TC-MV-OCCLUDE-02  FAIL — PRE-EXISTING, OUT OF THIS SLICE'S BLAST RADIUS
+  the brightest ground the closed launcher paints at 390 is rgb(182,182,182)
+  (relative luminance 0.4678); the ceiling is 0.0968.
+  This is the launcher's own surface, and the task forbids touching launcher CSS
+  ("keep the launcher CSS untouched"). W1-RED2 reproduced only OCCLUDE-01 on
+  b02a8863 ("One overlap fails"), so this regressed between b02a8863 and
+  b9f5195 in another lane. Reported, not edited. See 07-decisions.md.
+
+## (2) tests/monochrome/minivic-launcher.spec.ts
+$ PLAYWRIGHT_BASE_URL=http://127.0.0.1:5629 npx playwright test tests/monochrome/minivic-launcher.spec.ts --workers=1
+  3 passed, 2 failed
+
+MONO-MV-02 @ 390  FAIL
+  Error: the dock is painted (opacity 0.115637) over the fold at 390 —
+  the pastHero gate is the only thing keeping it off the portrait and the CV button
+  Expected: < 0.05 · Received: 0.115637   (spec line 337)
+
+MONO-MV-02 @ 640  FAIL
+  Error: the dock is painted (opacity 0.0791977) over the fold at 640
+  Expected: < 0.05 · Received: 0.0791977  (spec line 337)
+
+  DIVERGENCE from the PM COMMENT of 2026-09-06T03:16:05Z, which is based on the
+  b02a8863 reading and does not hold on b9f5195:
+    - the COMMENT says the label half fails ("MONO-MV-02 @390 reads opacity 0
+      after twelve 844 px steps") and that only 390 fails.
+    - measured here: the label half PASSES at both widths, and both widths fail
+      the *later* scrollY-0 assertion instead.
+
+## (2b) root cause of MONO-MV-02, measured (headless Chrome probe, :5629, b9f5195)
+
+GEOM @390: #hero position:relative, top 0, height 1607.11, docHeight 19667, innerHeight 844
+  → at scrollY 0 the hero's intersection ratio is 844/1607 = 0.525, above the
+    observer's 0.35 threshold, so pastHero is false and the dock is unpainted.
+    (The COMMENT's premise — "the ratio can never approach 0.35" — does not hold
+    at 390: the hero is 1.90 viewports tall, not "far taller".)
+  → the ratio drops below 0.35 at scrollY ≈ 1045, so the dock paints while the
+    hero's last 562px is still on screen. That band is at the TOP of the
+    viewport (hero bottom at y=562) and the dock is bottom-anchored (launcher
+    top y ≈ 756), so nothing of the launcher touches the hero. G-E2 holds.
+
+Dock state through the spec's own scroll loop @390:
+  step 0: scrollY 1266  opacity 0.992969  data-past-hero="true"  → loop breaks
+  label: text "Ask Mini Vic", composited opacity 1, rgb(205,205,205) on rgb(10,10,10)
+  → every label assertion passes. The label half is NOT the failure.
+
+Dock opacity after window.scrollTo(0, 0), sampled by rAF:
+  computed transition on .minivic-dock = "opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+  @390  t≈0 op=1 past=true | t≈100 op=1 past=null | t≈200 op=0.0792 | t≈300 op=0
+  @640  t≈0 op=1 past=null | t≈100 op=1 past=null | t≈200 op=0.0312 | t≈300 op=0
+
+  The fade cannot begin until the IntersectionObserver has re-reported #hero and
+  React has re-rendered with pastHero false (~1 frame + a render), and then runs
+  for 300ms. Observer/render latency + 300ms transition ≈ the spec's own 400ms
+  wait, so the single sample lands ON the boundary of a still-falling curve.
+  ROOT CAUSE: TEST — the instrument samples the withdrawal, not the settled state.
+  The product reaches opacity 0 over the fold at both widths, within ~300ms.

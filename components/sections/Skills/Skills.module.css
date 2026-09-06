@@ -257,14 +257,19 @@
     color: var(--mist-200);
 }
 
-/* A caveat is not small print — it is the reason the row is believable. */
+/* A caveat is not small print — it is the reason the row is believable.
+   --mist-400 for the same reason the Vitrine exclusion list carries it
+   (t_w1_mv3, TC-MV-OCCLUDE-01): on b9f5195 this is the node the launcher
+   actually lands on at 390 — scrollY 14348, ink rgb(125,125,125) on the
+   launcher-painted ground rgb(31,31,31) = 4.00:1, needs 4.5. #909090 on that
+   same ground is 5.16:1 and 6.20:1 on --ink-900. */
 .caveat {
     display: block;
     margin-top: var(--space-05);
     font-family: var(--font-mono);
     font-size: var(--fs-caption);
     line-height: var(--lh-label);
-    color: var(--ink-300);
+    color: var(--mist-400);
 }
 
 .where {

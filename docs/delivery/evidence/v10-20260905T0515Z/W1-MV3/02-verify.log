@@ -1,0 +1,40 @@
+# W1-MV3 — verification after the fix (worktree-w1-mv3, own export on :5629)
+
+$ npm run build:static                     → BUILD_EXIT=0
+$ npx tsc --noEmit                         → clean (TSC_EXIT=0)
+$ npm run lint                             → ✔ No ESLint warnings or errors
+$ node scripts/validate/overhaul_static_audit.mjs
+                                           → RESULT: ALL PASS (10/10)
+
+$ PLAYWRIGHT_BASE_URL=http://127.0.0.1:5629 npx playwright test \
+    tests/a11y/minivic-occlusion.spec.ts \
+    tests/monochrome/minivic-launcher.spec.ts \
+    tests/e2e/minivic-first-fold-click.spec.ts \
+    tests/e2e/vitrine.spec.ts \
+    tests/visual/screenshots.spec.ts --workers=1
+
+  24 passed · 5 failed (3.3m)
+
+GREEN — the four this task owns:
+  TC-MV-OCCLUDE-01  @390  PASS   (was: 4.00:1 on Skills_caveat, scrollY 14348)
+  MONO-MV-02        @390  PASS   (was: dock opacity 0.115637 over the fold)
+  MONO-MV-02        @640  PASS   (was: dock opacity 0.0791977 over the fold)
+  MONO-MV-01        @1440/640/390 PASS
+  TC-MV-CLICK-01    @1440/390     PASS   (G-MV1 / real pointer, unchanged)
+  tests/e2e/vitrine.spec.ts       PASS   (all)
+  VIS-05 Vitrine                  PASS   (baseline re-accepted, this change only)
+
+RED — none of them caused by this change, none of them touched:
+  TC-MV-OCCLUDE-02  @390  the launcher's own surface, rgb(174,174,174),
+                          luminance 0.4233 vs ceiling 0.0968. Launcher CSS is
+                          out of this task's blast radius by instruction and
+                          app/globals.css is byte-identical to origin/main.
+  VIS-01 hero · VIS-02 about · VIS-04 listen · VIS-06 viewport-top
+                          no `.exclusion dd` and no `.caveat` inside any of
+                          those frames; red before this change, left for the
+                          lanes that own them.
+
+$ git diff b9f5195e --stat -- app/globals.css          → (empty: launcher untouched)
+$ git diff b9f5195e --stat -- components/sections/Hero/ → (empty: hero untouched)
+  (origin/main advanced to 83f4b208 mid-slice in another lane; the base of this
+   branch is b9f5195e and the consolidate job merges the two.)
