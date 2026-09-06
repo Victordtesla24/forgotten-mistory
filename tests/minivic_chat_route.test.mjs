@@ -134,10 +134,12 @@ test('MV-ROUTE-06: when every rung fails the caller is told, never handed an inv
  * of three dead rungs plus the model, timed by an independent reviewer after a
  * ≥10-minute idle
  * (docs/delivery/evidence/v10-20260905T0515Z/G-REV/ec53e2b4/08-adversarial-review.md
- * F1, sample 1). The deadline has to clear it or the cold send is aborted on
- * exactly the path the gate measures.
+ * F1, sample 1 = 2 449 ms; re-measured at 2 626 ms after a strict ≥10-minute
+ * idle in W1-R2C/07-first-token-strictcold.json, which is the number pinned
+ * here because it is the larger of the two). The deadline has to clear it or
+ * the cold send is aborted on exactly the path the gate measures.
  */
-const MEASURED_COLD_FIRST_TOKEN_MS = 2449;
+const MEASURED_COLD_FIRST_TOKEN_MS = 2626;
 
 test('MV-ROUTE-07: the direct deadline clears the measured cold walk, so a live stream is never discarded', () => {
   // This used to assert `=== 1500`, the R3 bar. That was wrong twice over: the

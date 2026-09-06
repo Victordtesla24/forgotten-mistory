@@ -280,9 +280,14 @@ never discarded.
 
 Concretely, in `lib/miniVicRoute.mjs` / `lib/miniVicBrain.ts`:
 
-1. `DIRECT_FIRST_BYTE_TIMEOUT_MS` is **2 600 ms** — the 2 449 ms worst observed cold
-   first token plus a small margin. It is a *ceiling on producing nothing*, not a
-   target: a warm origin answers in 470–880 ms and never approaches it.
+1. `DIRECT_FIRST_BYTE_TIMEOUT_MS` is **3 200 ms**. It is a *ceiling on producing
+   nothing*, not a target: a warm origin answers in 470–880 ms and never approaches it.
+   The first value chosen, 2 600 ms, was set from the reviewer's 2 449 ms — and a strict
+   ≥10-minute-idle re-measurement against the redeployed function came back at
+   **2 626 ms** (`W1-R2C/07-first-token-strictcold.json`, origin sample 1), 26 ms past
+   it. The budget is therefore bounded by the *sum* a cold send pays — the serial
+   dead-rung walk (~1.67 s) plus the answering rung's own first token (P95 ~1.1 s over
+   those 14 samples) ≈ 2.8 s — with margin, rather than by any one sample.
 2. The deadline is cleared by `clearTimeout(firstByte)` the instant the response
    headers land, which for this function is the instant the first token is on the wire.
    **No origin stream whose first token has arrived can be aborted**, whatever the clock
