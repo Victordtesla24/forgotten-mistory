@@ -17,8 +17,8 @@ import { useAvatarSpeaking } from '@/lib/avatarContext';
 import styles from './Hero.module.css';
 
 /**
- * HeroPortrait — the photograph, at full size and in full colour, with the loop
- * on the reader's intent and never before it.
+ * HeroPortrait — the photograph, at full size and in the site's own monochrome,
+ * with the loop on the reader's intent and never before it.
  *
  * Owner instruction, 2026-09-05 09:10Z: "Integrate my Photo with full size,
  * colours and dimension with creative decorations that match the website UI/UX
@@ -38,10 +38,14 @@ import styles from './Hero.module.css';
  *    pointer-enter over the figure or press of the control — never on load,
  *    never on scroll.
  *    A reader who only reads never fetches the 1.1 MB loop.
- * 3. **Colour is the photograph, and only the photograph.** No filter greys the
- *    frames; every rule, tick, plate and control around them is drawn in the
- *    site's achromatic inks. Gold is absent — it means "this figure has a
- *    source", and a portrait is not a sourced figure.
+ * 3. **The photograph is monochrome, and so is everything around it.** The
+ *    chromatic exception this figure held is retired (G-H6, 2026-09-06): the
+ *    stills and the loop are re-encoded greyscale assets, so no filter greys
+ *    anything at render time — a `grayscale()` here would leave a colour file
+ *    on the wire and TC-HERO-18 fails on one. Every rule, tick, plate and
+ *    control around the frames is drawn in the site's achromatic inks. Gold is
+ *    absent — it means "this figure has a source", and a portrait is not a
+ *    sourced figure.
  * 4. **Reduced motion means no motion without a press.** Hover does nothing
  *    there; the control still works, because a user's own action is allowed
  *    (WCAG 2.2.2), and it starts the loop with no fade.

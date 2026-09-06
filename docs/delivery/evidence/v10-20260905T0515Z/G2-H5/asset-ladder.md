@@ -181,3 +181,57 @@ identify -format '%f %wx%h %m %B bytes\n' public/assets/my_avatar.png
 **(4) Retracted the portrait R5 claim in shipped code.** `app/data/portfolio/avatar.ts` comments now state R5 = FAIL for the portrait (still and loop) and point here. The R5 register `t_x1_09` already scores the portrait assets as FAIL/waiver (never PASS); nothing claimed portrait R5 = PASS, and this doc keeps `portrait_r5 = FAIL` until a real ≥4K@60 capture or generation credits land.
 
 **Files changed by AP:** `public/assets/my-hero-avatar.mp4` (deleted), `public/assets/my_avatar.png` (regenerated 1480×826), `app/data/portfolio/avatar.ts` (comments corrected), this file (§8).
+
+---
+
+## 9. 2026-09-06 re-measure — canonical name, monochrome grade, and the source ceiling corrected
+
+- **Task:** `t_w1_h6h5` (G-H5 + G-H6) · **Identity:** analyst-programmer / ADV-2315Z
+- **Worktree:** `worktree-w1-h6h5` from `origin/main` (`9136bc5`)
+- **Probed:** 2026-09-06T00:10–00:25Z on VPS srv1356245 · `ffprobe`/`ffmpeg` 8.0.1 · ImageMagick 7.1.2-18 · sharp 0.35.3
+- **Search log (raw):** `docs/delivery/evidence/v10-20260905T0515Z/W1-H6H5/01-source-search.log`
+
+### 9.1 Source search — §7 of this document was WRONG, and this section corrects it
+
+§4/§7 concluded `has_1080p_source = false`. A wider sweep (every `*.mp4|mov|mkv|webm` over 1 MB on the root filesystem, not only files whose *name* contains "avatar"/"hero") found the real masters, which live under `artifacts/masters/` and are named after the bot, not the portrait:
+
+| Candidate | Dimensions | fps | Duration | Bytes | Same subject? |
+|-----------|-----------|-----|----------|-------|---------------|
+| `artifacts/masters/minivic-greeting-2160p-master.mp4` | **3840×2160** | **24** | 12.325 s | 58,370,772 | **yes** — frame-for-frame the same shot as the shipped loop (compared at t = 2 s) |
+| `artifacts/masters/minivic-greeting-1080p-voiced.mp4` | 1920×1080 | 25 | 12.320 s | 4,754,189 | yes (voiced variant of the same shot) |
+| `artifacts/masters/minivic-idle-720p.mp4` | 1280×720 | 24 | 12.292 s | 1,096,301 | yes — **md5 `5ceec5ae2339f94b100eb5e81bc7f6e5`, byte-identical to the shipped `public/assets/my-avatar.mp4`** |
+| `/root/.claude/jobs/7aa4036e/tmp/av/h264-hq.mp4` | 1080×1080 | 25 | 29.96 s | 5,225,507 | no — square explainer render, different composition |
+| `/docker/abentertainment/**`, containerd snapshots, gradio sample clips | various | — | — | — | no — other tenants' media |
+| Stills anywhere on host | max **1480×826** (`my_avatar.webp`) | — | — | — | no larger portrait still exists |
+
+**So a genuinely higher-resolution original of the same subject DOES exist: 3840×2160 @ 24 fps.** The shipped 720p loop was a downscale of it all along; the earlier "no ≥1080p source" finding was an artefact of searching by filename.
+
+### 9.2 What ships now, and why that rung
+
+| | Before (`9136bc5`) | Now |
+|---|---|---|
+| Loop path | `/assets/my-avatar.mp4` (§0.3-3's name 404ed) | **`/assets/my-hero-avatar.mp4`** — the name `docs/prompt.md` §0.3-3 gives it; old name → **301** in `firebase.json` |
+| Loop source | a 720p transcode | the **3840×2160@24 master**, downscaled with lanczos |
+| Loop grade | colour | **greyscale in the bytes** (`format=gray,format=yuv420p`; every decoded frame measures chroma 0/255) |
+| Loop | 1280×720@24, 12.29 s, 1,096,301 B | 1280×720@24, 12.29 s, **1,916,328 B** |
+| Stills | colour, 1480×826 (PNG 496,176 B) | **greyscale**, 1480×826 — AVIF 36,551 B · WebP 51,028 B · PNG 483,145 B |
+| Binaries for the loop | 1 (wrong name) | 1 (right name) — R4 holds, no duplicate |
+
+**Why 720p and not the 2160p master:** the static audit's `TC-NFR-PERF` caps a non-click-to-play video at **2.5 MB**. Measured re-encodes of this clip: 1280×720 = **1.83 MB** (ships), 1920×1080 = **4.36 MB** (over cap), 3840×2160 ≈ 20 MB+ (far over, and ~30× the pixels the figure ever paints — the portrait renders ≈ 600 CSS px wide at 1440). The master stays in `artifacts/masters/` as the source of record; the shipped rung is a downscale of it, never an upscale.
+
+### 9.3 R5, honestly
+
+**R5 (≥ 3840×2160 @ 60 fps, or resolution-independent) is NOT met by any captured portrait asset.** The one 4K master on this host is **24 fps**, not 60, and the largest portrait still is 1480×826; the shipped loop is a 1280×720 downscale chosen against the 2.5 MB video budget. No higher-frame-rate or resolution-independent portrait source exists on this host — a genuine ≥ 2160p60 capture or a paid generation is still required, and **720p24 is never presented as 4K anywhere in the shipped code or copy**. R5 for the portrait stays **OPEN**.
+
+### 9.4 Reproduce
+
+```bash
+ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate \
+  -of csv=p=0 artifacts/masters/minivic-greeting-2160p-master.mp4   # → 3840,2160,24/1
+md5sum artifacts/masters/minivic-idle-720p.mp4 public/assets/my-hero-avatar.mp4  # first == the retired shipped file
+ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate \
+  -of csv=p=0 public/assets/my-hero-avatar.mp4                       # → 1280,720,24/1
+node --test tests/hero_assets_monochrome.test.mjs                    # chroma ≤ 2 on every still + 3 loop frames
+```
+
+`og-image.png` (1200×630 social card) is deliberately **untouched** — it is the OpenGraph/Twitter card, outside this gap's scope.

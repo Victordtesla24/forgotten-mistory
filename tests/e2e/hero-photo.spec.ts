@@ -29,7 +29,7 @@ const TOGGLE = '#hero [data-testid="portrait-control"]';
 const TICK = '[data-testid="portrait-tick"]';
 const CAPTION = '[data-testid="portrait-caption"]';
 const CAPTION_TEXT = 'Photograph · Melbourne'; // app/data/portfolio/avatar.ts → caption
-const LOOP = 'my-avatar.mp4';
+const LOOP = 'my-hero-avatar.mp4';
 
 /** WCAG relative luminance of one 8-bit sRGB triple — the same helper
  *  tests/overhaul/flagship-visibility.spec.ts measures light with. */
@@ -135,9 +135,18 @@ test.describe('Hero photograph', () => {
     expect(box!.y, 'the photo starts below the last action').toBeGreaterThanOrEqual(Math.max(...bottoms));
   });
 
-  test('TC-PHOTO-03: the still is in colour — no grayscale filter, and the pixels are saturated', async ({
+  test('TC-PHOTO-03: the still is monochrome in its bytes — no filter does the work', async ({
     page,
   }) => {
+    // RE-POINTED 2026-09-06 (G-H6). docs/prompt.md §0.3-2 / C-8 allow black,
+    // white and gold only; the chromatic exception the photograph used to hold
+    // is retired (docs/architecture/PALETTE-EXCEPTIONS.md now declares an empty
+    // register). The photograph is greyscale because the shipped PNG/WebP/AVIF
+    // and the loop are re-encoded greyscale — proven byte-side by
+    // tests/hero_assets_monochrome.test.mjs — and NOT because CSS greys a
+    // colour file. So both halves are asserted here: no `grayscale()` anywhere
+    // in the ancestor filter chain, and near-zero saturation in the pixels the
+    // browser actually painted.
     const filters = await page.locator(IMG).evaluate((el) => {
       const chain: string[] = [];
       let node: Element | null = el;
@@ -148,12 +157,12 @@ test.describe('Hero photograph', () => {
       return chain;
     });
     for (const filter of filters) {
-      expect(filter, `an ancestor filter greys the photo: ${filter}`).not.toContain('grayscale');
+      expect(filter, `a CSS filter, not the asset, is doing the work: ${filter}`).not.toContain('grayscale');
     }
 
     // Pixels, not CSS: decode the loaded still into a canvas and measure HSL
-    // saturation. A greyscale frame samples ~0; the warm sunset frame is well
-    // clear of the 0.15 floor.
+    // saturation. A greyscale frame samples ~0; the old warm sunset grade sat
+    // near 0.30.
     const saturation = await page.locator(IMG).evaluate(async (el) => {
       const img = el as HTMLImageElement;
       if (!img.complete) await img.decode();
@@ -181,7 +190,60 @@ test.describe('Hero photograph', () => {
       }
       return n ? total / n : 0;
     });
-    expect(saturation, `mean pixel saturation of the loaded still: ${saturation}`).toBeGreaterThan(0.15);
+    expect(saturation, `mean pixel saturation of the loaded still: ${saturation}`).toBeGreaterThanOrEqual(0);
+    expect(saturation, `mean pixel saturation of the loaded still: ${saturation}`).toBeLessThan(0.02);
+  });
+
+  test('TC-PHOTO-03b: the rendered <picture> at 1440 is monochrome on ≥ 99.5% of its pixels', async ({
+    page,
+  }) => {
+    // The real composite, at the width the owner reviews on: whatever the
+    // browser paints — asset, CSS, blend mode, overlay — is what a reader sees.
+    // 4/255 of chroma is a JPEG-grade rounding budget, well under the threshold
+    // of visibility; 0.5% of pixels is the allowance for the antialiased edge
+    // of the frame's own achromatic chrome.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.locator(HERO).waitFor({ state: 'visible' });
+    await page.locator(IMG).evaluate(async (el) => {
+      const img = el as HTMLImageElement;
+      if (!img.complete) await img.decode();
+    });
+    await page.waitForTimeout(400);
+
+    // The <picture> is a display:contents wrapper with no box of its own, so
+    // the screenshot is taken of the <img> it paints — the same pixels.
+    const shot = await page.locator(IMG).screenshot();
+    const png = PNG.sync.read(shot);
+    let chromatic = 0;
+    let worst = 0;
+    const total = png.width * png.height;
+    for (let i = 0; i < total; i += 1) {
+      const o = i * 4;
+      const r = png.data[o];
+      const g = png.data[o + 1];
+      const b = png.data[o + 2];
+      const chroma = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(r - b));
+      if (chroma > worst) worst = chroma;
+      if (chroma > 4) chromatic += 1;
+    }
+    const share = chromatic / total;
+    expect(total, 'the picture rendered with real pixels').toBeGreaterThan(10_000);
+    expect(
+      share,
+      `${chromatic}/${total} painted pixels carry a hue (worst chroma ${worst}/255) at 1440`,
+    ).toBeLessThanOrEqual(0.005);
+  });
+
+  test('TC-PHOTO-03c: GET /assets/my-hero-avatar.mp4 answers 200 video/mp4', async ({ page }) => {
+    // docs/prompt.md §0.3-3 names public/assets/my-hero-avatar.mp4 as the
+    // owner's hero video avatar. Live GET was 404 on 9136bc59 because the name
+    // pointed at a retired 640×360 orphan. The canonical name must now serve
+    // the real loop from the static export.
+    const response = await page.request.get(`/assets/${LOOP}`);
+    expect(response.status(), `GET /assets/${LOOP}`).toBe(200);
+    expect(response.headers()['content-type'] ?? '', 'content-type of the loop').toContain('video/mp4');
+    const body = await response.body();
+    expect(body.byteLength, 'the loop has real bytes').toBeGreaterThan(100_000);
   });
 
   test('TC-PHOTO-04: at rest the loop has no source and never plays', async ({ page }) => {

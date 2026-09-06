@@ -1,0 +1,135 @@
+TAP version 13
+# Subtest: Hero stills are true greyscale in the bytes (G-H6)
+    # Subtest: my_avatar.png: every pixel has chroma ≤ 2
+    ok 1 - my_avatar.png: every pixel has chroma ≤ 2
+      ---
+      duration_ms: 32.94561
+      type: 'test'
+      ...
+    # Subtest: my_avatar.webp: every pixel has chroma ≤ 2
+    ok 2 - my_avatar.webp: every pixel has chroma ≤ 2
+      ---
+      duration_ms: 37.616486
+      type: 'test'
+      ...
+    # Subtest: my_avatar.avif: every pixel has chroma ≤ 2
+    ok 3 - my_avatar.avif: every pixel has chroma ≤ 2
+      ---
+      duration_ms: 86.570321
+      type: 'test'
+      ...
+    1..3
+ok 1 - Hero stills are true greyscale in the bytes (G-H6)
+  ---
+  duration_ms: 158.441908
+  type: 'suite'
+  ...
+# Subtest: The hero loop is true greyscale at its measured ceiling (G-H6, G-H5)
+    # Subtest: frames 0, mid and last carry no hue
+    ok 1 - frames 0, mid and last carry no hue
+      ---
+      duration_ms: 72.630342
+      type: 'test'
+      ...
+    # Subtest: is 1280×720 — the honest ceiling, never presented as 4K
+    ok 2 - is 1280×720 — the honest ceiling, never presented as 4K
+      ---
+      duration_ms: 67.688684
+      type: 'test'
+      ...
+    # Subtest: is under the 5 MB video budget
+    ok 3 - is under the 5 MB video budget
+      ---
+      duration_ms: 0.446614
+      type: 'test'
+      ...
+    # Subtest: the retired duplicate name ships no second binary (R4)
+    ok 4 - the retired duplicate name ships no second binary (R4)
+      ---
+      duration_ms: 0.326652
+      type: 'test'
+      ...
+    1..4
+ok 2 - The hero loop is true greyscale at its measured ceiling (G-H6, G-H5)
+  ---
+  duration_ms: 1331.064183
+  type: 'suite'
+  ...
+# Subtest: Served CSS palette (bundle level)
+    # Subtest: the static export ships stylesheets to scan
+    ok 1 - the static export ships stylesheets to scan
+      ---
+      duration_ms: 1.108179
+      type: 'test'
+      ...
+    # Subtest: carries no chromatic non-gold colour and no Tailwind hue utility
+    ok 2 - carries no chromatic non-gold colour and no Tailwind hue utility
+      ---
+      duration_ms: 6.32712
+      type: 'test'
+      ...
+    1..2
+ok 3 - Served CSS palette (bundle level)
+  ---
+  duration_ms: 8.518517
+  type: 'suite'
+  ...
+# Subtest: Palette exceptions register (G-H6) — RETIRED, the register is empty
+    # Subtest: declares zero active exceptions and a retired status
+    ok 1 - declares zero active exceptions and a retired status
+      ---
+      duration_ms: 1.084897
+      type: 'test'
+      ...
+    # Subtest: records why the exception was retired, and how to reopen one honestly
+    ok 2 - records why the exception was retired, and how to reopen one honestly
+      ---
+      duration_ms: 0.329443
+      type: 'test'
+      ...
+    # Subtest: depends only on raster assets that actually ship
+    ok 3 - depends only on raster assets that actually ship
+      ---
+      duration_ms: 0.578834
+      type: 'test'
+      ...
+    # Subtest: the palette gates still read code, never raster — so the photo is proven elsewhere
+    ok 4 - the palette gates still read code, never raster — so the photo is proven elsewhere
+      ---
+      duration_ms: 0.347563
+      type: 'test'
+      ...
+    # Subtest: TC-HERO-18 guards monochrome pixels AND forbids a CSS filter standing in for them
+    ok 5 - TC-HERO-18 guards monochrome pixels AND forbids a CSS filter standing in for them
+      ---
+      duration_ms: 0.481393
+      type: 'test'
+      ...
+    1..5
+ok 4 - Palette exceptions register (G-H6) — RETIRED, the register is empty
+  ---
+  duration_ms: 3.259906
+  type: 'suite'
+  ...
+# Subtest: Tailwind source detection
+    # Subtest: scans only the directories that render markup
+    ok 1 - scans only the directories that render markup
+      ---
+      duration_ms: 1.298179
+      type: 'test'
+      ...
+    1..1
+ok 5 - Tailwind source detection
+  ---
+  duration_ms: 1.464161
+  type: 'suite'
+  ...
+1..5
+# tests 15
+# suites 5
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1694.809468
