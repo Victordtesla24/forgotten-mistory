@@ -1,0 +1,65 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-descent.spec.ts -g DESCENT-09|DESCENT-10 --workers=1 --reporter=list
+
+[2mRunning [22m3[2m tests using [22m1[2m worker[22m
+
+[descent-09@1440] edges=4 at=[483,563,617,711] gaps=[80,54,94] durations=[0.50,0.67,7.75,0.83,1.00,0.92,3.25,1.25] r=0.500
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/overhaul/scene-descent.spec.ts:431:9 › TC-SCENE-DESCENT — S7 depth (slice x2-s2) › TC-SCENE-DESCENT-09 @ 1440 — eight stratum edges, spaced by role duration[39m[2m (11.4s)[22m
+[descent-09@390] edges=5 at=[42,451,527,577,667] gaps=[409,76,50,90] durations=[0.50,0.67,7.75,0.83,1.00,0.92,3.25,1.25] r=-0.800
+  [31m✘[39m  [2m2 [22m[31m[chromium] › tests/overhaul/scene-descent.spec.ts:431:9 › TC-SCENE-DESCENT — S7 depth (slice x2-s2) › TC-SCENE-DESCENT-09 @ 390 — eight stratum edges, spaced by role duration[39m[2m (5.5s)[22m
+[descent-10@1440] before=4 after=10 shifts=[-14,-28,-12,24] distinct=4 spread=52
+  [32m✓[39m  [2m3 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:474:7 › TC-SCENE-DESCENT — S7 depth (slice x2-s2) › TC-SCENE-DESCENT-10 @ 1440 — the planes answer one scroll with different pixel counts[2m (10.4s)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/scene-descent.spec.ts:431:9 › TC-SCENE-DESCENT — S7 depth (slice x2-s2) › TC-SCENE-DESCENT-09 @ 1440 — eight stratum edges, spaced by role duration [39m
+
+    Error: only 4 stratum edges are visible in one frame (bar: 8) — a reader cannot count eight jobs in it.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m8[39m
+    Received:    [31m4[39m
+
+    [0m [90m 457 |[39m         [32m`only ${found.length} stratum edges are visible in one frame (bar: ${DESCENT_MIN_EDGES}) — `[39m [33m+[39m
+     [90m 458 |[39m           [32m'a reader cannot count eight jobs in it.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 459 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mDESCENT_MIN_EDGES[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 460 |[39m       expect(
+     [90m 461 |[39m         r[33m,[39m
+     [90m 462 |[39m         [32m`stratum spacing tracks role duration at rank r=${r.toFixed(3)} (bar: ${DESCENT_RANK_R}) — `[39m [33m+[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2s2/tests/overhaul/scene-descent.spec.ts:459:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-descent-TC--5f71c-ges-spaced-by-role-duration-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-descent-TC--5f71c-ges-spaced-by-role-duration-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/overhaul/scene-descent.spec.ts:431:9 › TC-SCENE-DESCENT — S7 depth (slice x2-s2) › TC-SCENE-DESCENT-09 @ 390 — eight stratum edges, spaced by role duration [39m
+
+    Error: only 5 stratum edges are visible in one frame (bar: 8) — a reader cannot count eight jobs in it.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m8[39m
+    Received:    [31m5[39m
+
+    [0m [90m 457 |[39m         [32m`only ${found.length} stratum edges are visible in one frame (bar: ${DESCENT_MIN_EDGES}) — `[39m [33m+[39m
+     [90m 458 |[39m           [32m'a reader cannot count eight jobs in it.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 459 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mDESCENT_MIN_EDGES[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 460 |[39m       expect(
+     [90m 461 |[39m         r[33m,[39m
+     [90m 462 |[39m         [32m`stratum spacing tracks role duration at rank r=${r.toFixed(3)} (bar: ${DESCENT_RANK_R}) — `[39m [33m+[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2s2/tests/overhaul/scene-descent.spec.ts:459:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-descent-TC--21705-ges-spaced-by-role-duration-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-descent-TC--21705-ges-spaced-by-role-duration-chromium/error-context.md[22m
+
+[31m  2 failed[39m
+[31m    [chromium] › tests/overhaul/scene-descent.spec.ts:431:9 › TC-SCENE-DESCENT — S7 depth (slice x2-s2) › TC-SCENE-DESCENT-09 @ 1440 — eight stratum edges, spaced by role duration [39m
+[31m    [chromium] › tests/overhaul/scene-descent.spec.ts:431:9 › TC-SCENE-DESCENT — S7 depth (slice x2-s2) › TC-SCENE-DESCENT-09 @ 390 — eight stratum edges, spaced by role duration [39m
+[32m  1 passed[39m[2m (33.8s)[22m

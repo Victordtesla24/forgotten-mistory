@@ -26,10 +26,21 @@
  *   ticks live and never brightens the top band where the caption sits. Type
  *   contrast is first and the story is second.
  * - **Budget.** One `ScreenQuad`, one fragment program, zero geometry, zero
- *   textures, and on this slice two value-noise lookups per pixel plus an
- *   eight-iteration `smoothstep` loop — arithmetic, not sampling. The ceiling
- *   is four lookups (v2 §3.3); slice `x2-s2` spends the remaining two on the
- *   third parallax layer.
+ *   textures, and three value-noise lookups per pixel plus an eight-iteration
+ *   `smoothstep` loop — arithmetic, not sampling. The ceiling is four lookups
+ *   (v2 §3.3): one for the sediment grain riding the strata, one for the near
+ *   dust, one for the far floor.
+ * - **Three distances, not one.** Near dust, the strata and a far floor answer
+ *   the same `uDescent` at three different rates, and that difference is the
+ *   whole of `TC-STORY-EXP-01`: a gradient answers a scroll delta with one
+ *   pixel count, a camera answers it with three. `uQuality = 0` drops the far
+ *   floor on the phone branch — uniform control flow, no divergence, exactly
+ *   the way `atmosphere.glsl.ts` branches on a uniform.
+ * - **The whole column is in frame.** The first cut of this scene windowed a
+ *   third of the axis into view, so a reader could never count eight jobs in
+ *   one picture and `TC-STORY-DESCENT-01` could not be satisfied by any amount
+ *   of scrolling. The core sample is now shown whole and the camera is the
+ *   drift and the depth of focus, not a crop.
  *
  * ## Uniforms — every one traces to data or to reader state
  *
@@ -75,16 +86,23 @@ export const descentFragmentShader = /* glsl */ `
   uniform vec3 uLight;
 
   /**
-   * How far the camera travels through the core, in normalised timeline units.
-   * The whole axis is 1.0 wide; the camera starts a little above the surface and
-   * ends a little below the floor so the first and last strata both get to
-   * arrive rather than being clipped at the frame edge on the first frame.
+   * Where the axis lands in the frame. t runs 0 at the top of the stage to 1
+   * at its foot; the whole core sample is in frame at once, from the surface at
+   * t = TOP_T down to 2010 at t = TOP_T + AXIS_T. Both ends are held clear
+   * of the 10% edge dissolve and of the caption gutter at the foot, so no
+   * stratum is ever lost to a fade and all eight are countable in one frame.
    */
-  const float TRAVEL_TOP = -0.16;
-  const float TRAVEL_BOTTOM = 1.16;
+  const float TOP_T = 0.09;
+  const float AXIS_T = 0.66;
+
+  /* The three rates. The strata drift slowly against the camera, the near dust
+   * races, the far floor barely moves — one scroll delta, three pixel counts. */
+  const float STRATA_RATE = 0.05;
+  const float DUST_RATE = 2.6;
+  const float FLOOR_RATE = 0.012;
 
   /** Half-width of the soft edge on a stratum boundary, in the same units. */
-  const float EDGE = 0.012;
+  const float EDGE = 0.007;
 
   float hash(vec2 p) {
     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
@@ -104,12 +122,14 @@ export const descentFragmentShader = /* glsl */ `
   void main() {
     vec2 uv = vUv;
 
-    // Where in the core this pixel is. The top of the frame is nearer the
-    // surface than the bottom, and the camera slides the whole column past.
-    float camera = mix(TRAVEL_TOP, TRAVEL_BOTTOM, uDescent);
-    // A third of the axis is in frame at once, so a role shorter than about
-    // four months is a seam rather than a band — which is the honest picture.
-    float core = camera + (1.0 - uv.y) * 0.34;
+    // Where in the core this pixel is. t is 0 at the top of the stage (now)
+    // and 1 at its foot (2010); the whole column is in frame, because sixteen
+    // years is ONE object and the reader is looking down it. The camera is the
+    // slow drift of that column against the scroll, centred on the travel so
+    // neither the surface nor the floor is ever pushed into an edge fade.
+    float t = 1.0 - uv.y;
+    float drift = (uDescent - 0.5) * STRATA_RATE;
+    float core = (t - TOP_T) / AXIS_T + drift;
 
     // The strata. Each role occupies (startNorm .. endNorm) of the axis, so its
     // drawn thickness IS its duration: the same quantity the bars above draw as
@@ -145,22 +165,55 @@ export const descentFragmentShader = /* glsl */ `
       // The boundary between two roles: a thin bright seam, which is what makes
       // the stack countable and the spacing measurable.
       float edge = exp(-pow((core - upper) / EDGE, 2.0) * 0.6);
-      seams += live * edge * (0.22 + 0.26 * recency) * (1.0 + 0.7 * hovered);
+      seams += live * edge * (0.34 + 0.34 * recency) * (1.0 + 0.7 * hovered);
     }
 
-    // Sediment grain riding the strata, drifting with the camera so the column
-    // reads as material the reader is moving through rather than a gradient
-    // sliding under a window. Lookup 1 of 2.
-    float grain = noise(vec2(uv.x * 3.2, core * 26.0 + uTime * 0.02));
-    body *= 0.72 + 0.42 * grain;
+    // The surface. The eight strata are drawn by their OLDER boundary, which
+    // gives eight seams and therefore seven gaps; the ninth edge is the top of
+    // the core itself — the day the current engagement began — and with it the
+    // gaps and the eight role durations are the same list. Without it the last
+    // role has no thickness a reader (or TC-STORY-DESCENT-01) can measure.
+    float surface = exp(-pow((core - uSpans[0].x) / EDGE, 2.0) * 0.6);
+    seams += surface * 0.72;
 
-    // Near dust: the one parallax term this slice carries, moving faster than
-    // the strata against the same camera so the frame already has two distances
-    // in it. Lookup 2 of 2. Slice x2-s2 adds the far floor as the third.
-    float dust = noise(vec2(uv.x * 1.6 + uTime * 0.01, uv.y * 2.2 - uDescent * 2.6));
-    float near = smoothstep(0.62, 1.0, dust) * 0.10 * uQuality;
+    // Depth of focus: the layer the reader is currently passing is the brightest
+    // one. This, not a crop, is what makes the whole column read as a fall — the
+    // light travels down the core as the reader does. Multiplicative and gentle,
+    // so it swells a stratum without inventing or erasing an edge.
+    float focus = exp(-pow((core - uDescent) / 0.22, 2.0));
+    float column = (body + seams) * mix(0.68, 1.06, focus);
 
-    float luma = body + seams * 0.72 + near;
+    // Sediment grain riding the strata: fine ACROSS the column and slow DOWN
+    // it, so it reads as material at a glance and cannot be mistaken for a
+    // stratum boundary. The first cut varied it at 30 cycles down the axis and
+    // put eight false edges into the row profile, which made the stack
+    // uncountable — the grain has to be texture, never geometry. Lookup 1 of 3.
+    float grain = noise(vec2(uv.x * 140.0, core * 2.0 + uTime * 0.02));
+    column *= 0.90 + 0.14 * grain;
+
+    // Near dust — the fastest plane. It answers the same camera at DUST_RATE,
+    // roughly fifty times the strata's own drift, which is the near field of a
+    // camera move. Fine speckle, so it is texture in front of the column rather
+    // than a second set of bands competing with the strata. Lookup 2 of 3.
+    float dust = noise(vec2(uv.x * 90.0 + uTime * 0.01, uv.y * 90.0 - uDescent * DUST_RATE));
+    float near = smoothstep(0.66, 1.0, dust) * 0.10;
+
+    // The far floor — the slowest plane, and the third distance. A soft horizon
+    // beneath 2010: the bottom of the hole the reader is falling into. It moves
+    // at FLOOR_RATE, barely at all, which is exactly how a far plane behaves.
+    // uQuality drops it on the phone branch, uniform control flow, no divergence.
+    // Lookup 3 of 3.
+    float floorY = 0.16 + uDescent * FLOOR_RATE;
+    float floorGrain = noise(vec2(uv.x * 1.9 - uDescent * 0.2, uv.y * 2.4));
+    float far = exp(-pow((uv.y - floorY) / 0.045, 2.0)) * (0.13 + 0.07 * floorGrain) * uQuality;
+
+    // Nothing exists above the top of the core. Without this the near dust
+    // keeps drifting over the empty frame above the surface and reads, in a
+    // luminance profile, as a stratum older than the current engagement — a
+    // ninth layer the CV does not have.
+    float inCore = smoothstep(-0.05, -0.005, core);
+
+    float luma = (column + near) * inCore + far;
 
     // The gutter. The year ticks run down the left of the stage and the caption
     // sits across its foot, and neither may ever have light added behind it —
