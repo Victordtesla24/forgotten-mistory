@@ -1,0 +1,217 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-setpiece.spec.ts tests/a11y/hero-contrast.spec.ts tests/e2e/hero-first-paint.spec.ts --grep SET-04|A11Y-01|GL-01|GL-02 --grep-invert 834|390|1280 --workers=1 --reporter=line
+
+[2mRunning [22m6[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/6] [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [gl] — P95 contrast ≥ 4.5:1, guard bounded
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [gl] — P95 contrast ≥ 4.5:1, guard bounded[22m
+[hero-a11y-01] 1440×900 /?gl=force (shader, settled)
+  text union         = {"x":96,"y":480.046875,"w":1119.171875,"h":351.953125}
+  text union + 8 px  = {"x":88,"y":472.046875,"w":1135.171875,"h":367.953125}
+  uCopyGuard          = not mounted on this path (poster carries the guard)
+  h1#hero-name           P95 L = 0.9131  glyph L = 0.9216  ratio = 1.01:1 FAIL  "Vikram Deshpande"
+  h1#hero-name           P95 L = 0.9216  glyph L = 0.9216  ratio = 1.00:1 FAIL  "Vikram Deshpande"
+  p.Hero_statement___HX_b P95 L = 0.2542  glyph L = 0.2789  ratio = 1.08:1 FAIL  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.2542  glyph L = 0.2789  ratio = 1.08:1 FAIL  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.2502  glyph L = 0.2789  ratio = 1.10:1 FAIL  "Sixteen years leading delivery across government"
+  a.Hero_primaryAction__SBJFA P95 L = 0.8469  glyph L = 0.0030  ratio = 16.91:1 PASS  "See the evidence"
+  a.Hero_secondaryAction__jCqGE P95 L = 0.8963  glyph L = 0.9216  ratio = 1.03:1 FAIL  "Download CV"
+
+[1A[2K[31m  1) [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [gl] — P95 contrast ≥ 4.5:1, guard bounded [39m
+
+    Error: A11Y-01 at 1440×900 on /?gl=force (shader, settled): 6 run(s) under 4.5:1 against the 95th-percentile light beneath them
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 8[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.01:1 (P95 L 0.9131)",[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.00:1 (P95 L 0.9216)",[39m
+    [31m+   "p.Hero_statement___HX_b \"Sixteen years leading delivery across government\" 1.08:1 (P95 L 0.2542)",[39m
+    [31m+   "p.Hero_statement___HX_b \"Sixteen years leading delivery across government\" 1.08:1 (P95 L 0.2542)",[39m
+    [31m+   "p.Hero_statement___HX_b \"Sixteen years leading delivery across government\" 1.10:1 (P95 L 0.2502)",[39m
+    [31m+   "a.Hero_secondaryAction__jCqGE \"Download CV\" 1.03:1 (P95 L 0.8963)",[39m
+    [31m+ ][39m
+
+    [0m [90m 225 |[39m           [32m`A11Y-01 at ${size} on ${route.label}: ${failures.length} run(s) under ${CONTRAST_MIN}:1 `[39m [33m+[39m
+     [90m 226 |[39m             [32m'against the 95th-percentile light beneath them'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 227 |[39m         )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 228 |[39m       })[33m;[39m
+     [90m 229 |[39m     }
+     [90m 230 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s2/tests/a11y/hero-contrast.spec.ts:227:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-hero-contrast-TC-HERO-d1a96-trast-≥-4-5-1-guard-bounded-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-hero-contrast-TC-HERO-d1a96-trast-≥-4-5-1-guard-bounded-chromium/error-context.md[22m
+
+
+[1A[2K[2/6] [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [still] — P95 contrast ≥ 4.5:1, guard bounded
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [still] — P95 contrast ≥ 4.5:1, guard bounded[22m
+[hero-a11y-01] 1440×900 prefers-reduced-motion still
+  text union         = {"x":96,"y":480.046875,"w":1119.171875,"h":351.953125}
+  text union + 8 px  = {"x":88,"y":472.046875,"w":1135.171875,"h":367.953125}
+  uCopyGuard          = not mounted on this path (poster carries the guard)
+  h1#hero-name           P95 L = 0.9131  glyph L = 0.9216  ratio = 1.01:1 FAIL  "Vikram Deshpande"
+  h1#hero-name           P95 L = 0.9216  glyph L = 0.9216  ratio = 1.00:1 FAIL  "Vikram Deshpande"
+  p.Hero_statement___HX_b P95 L = 0.2542  glyph L = 0.2789  ratio = 1.08:1 FAIL  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.2542  glyph L = 0.2789  ratio = 1.08:1 FAIL  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.2502  glyph L = 0.2789  ratio = 1.10:1 FAIL  "Sixteen years leading delivery across government"
+  a.Hero_primaryAction__SBJFA P95 L = 0.8469  glyph L = 0.0030  ratio = 16.91:1 PASS  "See the evidence"
+  a.Hero_secondaryAction__jCqGE P95 L = 0.8963  glyph L = 0.9216  ratio = 1.03:1 FAIL  "Download CV"
+
+[1A[2K[31m  2) [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [still] — P95 contrast ≥ 4.5:1, guard bounded [39m
+
+    Error: A11Y-01 at 1440×900 on prefers-reduced-motion still: 6 run(s) under 4.5:1 against the 95th-percentile light beneath them
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 8[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.01:1 (P95 L 0.9131)",[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.00:1 (P95 L 0.9216)",[39m
+    [31m+   "p.Hero_statement___HX_b \"Sixteen years leading delivery across government\" 1.08:1 (P95 L 0.2542)",[39m
+    [31m+   "p.Hero_statement___HX_b \"Sixteen years leading delivery across government\" 1.08:1 (P95 L 0.2542)",[39m
+    [31m+   "p.Hero_statement___HX_b \"Sixteen years leading delivery across government\" 1.10:1 (P95 L 0.2502)",[39m
+    [31m+   "a.Hero_secondaryAction__jCqGE \"Download CV\" 1.03:1 (P95 L 0.8963)",[39m
+    [31m+ ][39m
+
+    [0m [90m 225 |[39m           [32m`A11Y-01 at ${size} on ${route.label}: ${failures.length} run(s) under ${CONTRAST_MIN}:1 `[39m [33m+[39m
+     [90m 226 |[39m             [32m'against the 95th-percentile light beneath them'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 227 |[39m         )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 228 |[39m       })[33m;[39m
+     [90m 229 |[39m     }
+     [90m 230 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s2/tests/a11y/hero-contrast.spec.ts:227:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-hero-contrast-TC-HERO-3b3a4-trast-≥-4-5-1-guard-bounded-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-hero-contrast-TC-HERO-3b3a4-trast-≥-4-5-1-guard-bounded-chromium/error-context.md[22m
+
+
+[1A[2K[3/6] [chromium] › tests/e2e/hero-first-paint.spec.ts:60:9 › TC-HERO-GL @ 1440×900 — the plane paints on every path › TC-HERO-GL-01 @ 1440×900 — ?gl=force: 0 page errors, ≥ 1 canvas in the plane
+[1A[2K[2m[chromium] › tests/e2e/hero-first-paint.spec.ts:60:9 › TC-HERO-GL @ 1440×900 — the plane paints on every path › TC-HERO-GL-01 @ 1440×900 — ?gl=force: 0 page errors, ≥ 1 canvas in the plane[22m
+[hero-gl-01] 1440×900 — canvases in [data-plane="hero"] = 1, pageerrors = 0
+
+[1A[2K[4/6] [chromium] › tests/e2e/hero-first-paint.spec.ts:82:9 › TC-HERO-GL @ 1440×900 — the plane paints on every path › TC-HERO-GL-02 @ 1440×900 — reduced motion: 0 canvases, poster lit ≥ 0.045
+[1A[2K[2m[chromium] › tests/e2e/hero-first-paint.spec.ts:82:9 › TC-HERO-GL @ 1440×900 — the plane paints on every path › TC-HERO-GL-02 @ 1440×900 — reduced motion: 0 canvases, poster lit ≥ 0.045[22m
+[hero-plane-dominance] 1440×900 prefers-reduced-motion still (GL-02)
+  fold W×H            = 1440×900 (1296000 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0060    peak L = 0.9823
+  Σ_fold m            = 195506.48
+  Σ_P m               = 145883.20
+  SPD = Σ_P/Σ_fold    = 0.7462    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.1509    PLANE-2 ≥ 0.045 PASS
+  ink I               = 23 rects, dilated 8 px, covering 26.48% of the fold (343140 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=64.81 y=32.47 w=106.3 h=30.06
+    #02 text  a.logo "VIKRAM."  x=72 y=35.47 w=91.92 h=21
+    #03 media svg  x=72 y=59.47 w=91.88 h=3.06
+    #04 text  span.menu-toggle__label "Menu"  x=1290.23 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=1346 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=1346 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=88.81 y=502.05 w=1133.55 h=137.75
+    #08 text  h1#hero-name "Vikram"  x=96 y=480.05 w=437.78 h=180
+    #09 text  h1#hero-name "Deshpande"  x=560.28 y=480.05 w=654.89 h=180
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=88.81 y=666.8 w=732.5 h=90.7
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=670.8 w=713.23 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=701.03 w=713.69 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=731.27 w=433.53 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=96 y=798 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=121 y=812 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=296.58 y=798 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=321.58 y=812 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1231.63 y=829 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1248.63 y=836 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=1352 y=812 w=64 h=64
+    #21 media svg  x=1372 y=832 w=24 h=24
+    #22 plate span.minivic-launcher__pulse α=1  x=1402 y=816 w=10 h=10
+    #23 plate span.minivic-launcher__dot α=1  x=1402 y=816 w=10 h=10
+
+[1A[2K[5/6] [chromium] › tests/overhaul/hero-setpiece.spec.ts:365:11 › TC-HERO-SET-04 @ 1440×900 — the light finds the figure › TC-HERO-SET-04 @ 1440×900 [gl] — pool reach ≥ 1.35
+[1A[2K[2m[chromium] › tests/overhaul/hero-setpiece.spec.ts:365:11 › TC-HERO-SET-04 @ 1440×900 — the light finds the figure › TC-HERO-SET-04 @ 1440×900 [gl] — pool reach ≥ 1.35[22m
+[hero-set-04] 1440×900 /?gl=force (shader, settled)
+  figure rect        = {"x":522,"y":87.84375,"w":846,"h":472.15625}
+  G (10th-pct L)     = 0.0086
+  annulus 8–24 px  = 44224 px, mean m = 0.29163
+  fold mean m        = 0.29395
+  pool reach         = 0.9921   SET-04 ≥ 1.35 FAIL
+
+[1A[2K[31m  3) [chromium] › tests/overhaul/hero-setpiece.spec.ts:365:11 › TC-HERO-SET-04 @ 1440×900 — the light finds the figure › TC-HERO-SET-04 @ 1440×900 [gl] — pool reach ≥ 1.35 [39m
+
+    Error: SET-04 at 1440×900 on /?gl=force (shader, settled): the light around the figure is 0.992× the fold's mean, below 1.35 — the photograph is a plate on black, not a figure standing in a pool of light
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m1.35[39m
+    Received:    [31m0.9921117688917204[39m
+
+    [0m [90m 433 |[39m             [32m`the fold's mean, below ${POOL_REACH_MIN} — the photograph is a plate on black, not a `[39m [33m+[39m
+     [90m 434 |[39m             [32m'figure standing in a pool of light'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 435 |[39m         )[33m.[39mtoBeGreaterThanOrEqual([33mPOOL_REACH_MIN[39m)[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 436 |[39m       })[33m;[39m
+     [90m 437 |[39m     }
+     [90m 438 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s2/tests/overhaul/hero-setpiece.spec.ts:435:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-hero-setpiece-TC--d9c88-×900-gl-—-pool-reach-≥-1-35-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-hero-setpiece-TC--d9c88-×900-gl-—-pool-reach-≥-1-35-chromium/error-context.md[22m
+
+
+[1A[2K[6/6] [chromium] › tests/overhaul/hero-setpiece.spec.ts:365:11 › TC-HERO-SET-04 @ 1440×900 — the light finds the figure › TC-HERO-SET-04 @ 1440×900 [still] — pool reach ≥ 1.35
+[1A[2K[2m[chromium] › tests/overhaul/hero-setpiece.spec.ts:365:11 › TC-HERO-SET-04 @ 1440×900 — the light finds the figure › TC-HERO-SET-04 @ 1440×900 [still] — pool reach ≥ 1.35[22m
+[hero-set-04] 1440×900 prefers-reduced-motion still
+  figure rect        = {"x":522,"y":87.84375,"w":846,"h":472.15625}
+  G (10th-pct L)     = 0.0060
+  annulus 8–24 px  = 44224 px, mean m = 0.14776
+  fold mean m        = 0.15085
+  pool reach         = 0.9795   SET-04 ≥ 1.35 FAIL
+
+[1A[2K[31m  4) [chromium] › tests/overhaul/hero-setpiece.spec.ts:365:11 › TC-HERO-SET-04 @ 1440×900 — the light finds the figure › TC-HERO-SET-04 @ 1440×900 [still] — pool reach ≥ 1.35 [39m
+
+    Error: SET-04 at 1440×900 on prefers-reduced-motion still: the light around the figure is 0.979× the fold's mean, below 1.35 — the photograph is a plate on black, not a figure standing in a pool of light
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m1.35[39m
+    Received:    [31m0.9794946776301011[39m
+
+    [0m [90m 433 |[39m             [32m`the fold's mean, below ${POOL_REACH_MIN} — the photograph is a plate on black, not a `[39m [33m+[39m
+     [90m 434 |[39m             [32m'figure standing in a pool of light'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 435 |[39m         )[33m.[39mtoBeGreaterThanOrEqual([33mPOOL_REACH_MIN[39m)[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 436 |[39m       })[33m;[39m
+     [90m 437 |[39m     }
+     [90m 438 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s2/tests/overhaul/hero-setpiece.spec.ts:435:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-hero-setpiece-TC--1b5dc-0-still-—-pool-reach-≥-1-35-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-hero-setpiece-TC--1b5dc-0-still-—-pool-reach-≥-1-35-chromium/error-context.md[22m
+
+
+[1A[2K[31m  4 failed[39m
+[31m    [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [gl] — P95 contrast ≥ 4.5:1, guard bounded [39m
+[31m    [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [still] — P95 contrast ≥ 4.5:1, guard bounded [39m
+[31m    [chromium] › tests/overhaul/hero-setpiece.spec.ts:365:11 › TC-HERO-SET-04 @ 1440×900 — the light finds the figure › TC-HERO-SET-04 @ 1440×900 [gl] — pool reach ≥ 1.35 [39m
+[31m    [chromium] › tests/overhaul/hero-setpiece.spec.ts:365:11 › TC-HERO-SET-04 @ 1440×900 — the light finds the figure › TC-HERO-SET-04 @ 1440×900 [still] — pool reach ≥ 1.35 [39m
+[32m  2 passed[39m[2m (36.7s)[22m
+EXIT=1

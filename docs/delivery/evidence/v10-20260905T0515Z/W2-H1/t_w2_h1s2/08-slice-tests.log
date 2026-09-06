@@ -1,0 +1,872 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-setpiece.spec.ts tests/a11y/hero-contrast.spec.ts tests/e2e/hero-first-paint.spec.ts tests/overhaul/hero-plane-dominance.spec.ts --grep SET-04|A11Y-01|GL-01|GL-02|PLANE-01|PLANE-02 --workers=1 --reporter=line
+
+[2mRunning [22m40[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/40] [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [gl] — P95 contrast ≥ 4.5:1, guard bounded
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [gl] — P95 contrast ≥ 4.5:1, guard bounded[22m
+[hero-a11y-01] 1440×900 /?gl=force (shader, settled)
+  text union         = {"x":96,"y":480.046875,"w":1119.171875,"h":351.953125}
+  text union + 8 px  = {"x":88,"y":472.046875,"w":1135.171875,"h":367.953125}
+  uCopyGuard −50% box = {"x":96,"y":480.046875,"w":1119.171875,"h":351.953125}  inside text+8px: PASS
+  h1#hero-name           P95 L = 0.8308  glyph L = 0.9216  ratio = 1.10:1 FAIL  "Vikram Deshpande"
+  h1#hero-name           P95 L = 0.8070  glyph L = 0.9216  ratio = 1.13:1 FAIL  "Vikram Deshpande"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  a.Hero_primaryAction__SBJFA P95 L = 0.8469  glyph L = 0.0030  ratio = 16.91:1 PASS  "See the evidence"
+  a.Hero_secondaryAction__jCqGE P95 L = 0.0080  glyph L = 0.9216  ratio = 16.74:1 PASS  "Download CV"
+
+[1A[2K[31m  1) [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [gl] — P95 contrast ≥ 4.5:1, guard bounded [39m
+
+    Error: A11Y-01 at 1440×900 on /?gl=force (shader, settled): 2 run(s) under 4.5:1 against the 95th-percentile light beneath them
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.10:1 (P95 L 0.8308)",[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.13:1 (P95 L 0.8070)",[39m
+    [31m+ ][39m
+
+    [0m [90m 239 |[39m           [32m`A11Y-01 at ${size} on ${route.label}: ${failures.length} run(s) under ${CONTRAST_MIN}:1 `[39m [33m+[39m
+     [90m 240 |[39m             [32m'against the 95th-percentile light beneath them'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 241 |[39m         )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 242 |[39m       })[33m;[39m
+     [90m 243 |[39m     }
+     [90m 244 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s2/tests/a11y/hero-contrast.spec.ts:241:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-hero-contrast-TC-HERO-d1a96-trast-≥-4-5-1-guard-bounded-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-hero-contrast-TC-HERO-d1a96-trast-≥-4-5-1-guard-bounded-chromium/error-context.md[22m
+
+
+[1A[2K[2/40] [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [still] — P95 contrast ≥ 4.5:1, guard bounded
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [still] — P95 contrast ≥ 4.5:1, guard bounded[22m
+[hero-a11y-01] 1440×900 prefers-reduced-motion still
+  text union         = {"x":96,"y":480.046875,"w":1119.171875,"h":351.953125}
+  text union + 8 px  = {"x":88,"y":472.046875,"w":1135.171875,"h":367.953125}
+  uCopyGuard          = not mounted on this path (poster carries the guard)
+  h1#hero-name           P95 L = 0.7305  glyph L = 0.9216  ratio = 1.24:1 FAIL  "Vikram Deshpande"
+  h1#hero-name           P95 L = 0.5906  glyph L = 0.9216  ratio = 1.52:1 FAIL  "Vikram Deshpande"
+  p.Hero_statement___HX_b P95 L = 0.0137  glyph L = 0.2789  ratio = 5.16:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0137  glyph L = 0.2789  ratio = 5.16:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0130  glyph L = 0.2789  ratio = 5.22:1 PASS  "Sixteen years leading delivery across government"
+  a.Hero_primaryAction__SBJFA P95 L = 0.8469  glyph L = 0.0030  ratio = 16.91:1 PASS  "See the evidence"
+  a.Hero_secondaryAction__jCqGE P95 L = 0.0070  glyph L = 0.9216  ratio = 17.05:1 PASS  "Download CV"
+
+[1A[2K[31m  2) [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1440×900 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1440×900 [still] — P95 contrast ≥ 4.5:1, guard bounded [39m
+
+    Error: A11Y-01 at 1440×900 on prefers-reduced-motion still: 2 run(s) under 4.5:1 against the 95th-percentile light beneath them
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.24:1 (P95 L 0.7305)",[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.52:1 (P95 L 0.5906)",[39m
+    [31m+ ][39m
+
+    [0m [90m 239 |[39m           [32m`A11Y-01 at ${size} on ${route.label}: ${failures.length} run(s) under ${CONTRAST_MIN}:1 `[39m [33m+[39m
+     [90m 240 |[39m             [32m'against the 95th-percentile light beneath them'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 241 |[39m         )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 242 |[39m       })[33m;[39m
+     [90m 243 |[39m     }
+     [90m 244 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s2/tests/a11y/hero-contrast.spec.ts:241:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-hero-contrast-TC-HERO-3b3a4-trast-≥-4-5-1-guard-bounded-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-hero-contrast-TC-HERO-3b3a4-trast-≥-4-5-1-guard-bounded-chromium/error-context.md[22m
+
+
+[1A[2K[3/40] [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1280×800 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1280×800 [gl] — P95 contrast ≥ 4.5:1, guard bounded
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1280×800 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1280×800 [gl] — P95 contrast ≥ 4.5:1, guard bounded[22m
+[hero-a11y-01] 1280×800 /?gl=force (shader, settled)
+  text union         = {"x":64,"y":413.9375,"w":1059.203125,"h":324.0625}
+  text union + 8 px  = {"x":56,"y":405.9375,"w":1075.203125,"h":340.0625}
+  uCopyGuard −50% box = {"x":64,"y":413.9375,"w":1059.203125,"h":324.0625}  inside text+8px: PASS
+  h1#hero-name           P95 L = 0.8308  glyph L = 0.9216  ratio = 1.10:1 FAIL  "Vikram Deshpande"
+  h1#hero-name           P95 L = 0.8070  glyph L = 0.9216  ratio = 1.13:1 FAIL  "Vikram Deshpande"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  a.Hero_primaryAction__SBJFA P95 L = 0.8469  glyph L = 0.0030  ratio = 16.91:1 PASS  "See the evidence"
+  a.Hero_secondaryAction__jCqGE P95 L = 0.0103  glyph L = 0.9216  ratio = 16.10:1 PASS  "Download CV"
+
+[1A[2K[31m  3) [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1280×800 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1280×800 [gl] — P95 contrast ≥ 4.5:1, guard bounded [39m
+
+    Error: A11Y-01 at 1280×800 on /?gl=force (shader, settled): 2 run(s) under 4.5:1 against the 95th-percentile light beneath them
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.10:1 (P95 L 0.8308)",[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.13:1 (P95 L 0.8070)",[39m
+    [31m+ ][39m
+
+    [0m [90m 239 |[39m           [32m`A11Y-01 at ${size} on ${route.label}: ${failures.length} run(s) under ${CONTRAST_MIN}:1 `[39m [33m+[39m
+     [90m 240 |[39m             [32m'against the 95th-percentile light beneath them'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 241 |[39m         )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 242 |[39m       })[33m;[39m
+     [90m 243 |[39m     }
+     [90m 244 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s2/tests/a11y/hero-contrast.spec.ts:241:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-hero-contrast-TC-HERO-33039-trast-≥-4-5-1-guard-bounded-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-hero-contrast-TC-HERO-33039-trast-≥-4-5-1-guard-bounded-chromium/error-context.md[22m
+
+
+[1A[2K[4/40] [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1280×800 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1280×800 [still] — P95 contrast ≥ 4.5:1, guard bounded
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1280×800 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1280×800 [still] — P95 contrast ≥ 4.5:1, guard bounded[22m
+[hero-a11y-01] 1280×800 prefers-reduced-motion still
+  text union         = {"x":64,"y":413.9375,"w":1059.203125,"h":324.0625}
+  text union + 8 px  = {"x":56,"y":405.9375,"w":1075.203125,"h":340.0625}
+  uCopyGuard          = not mounted on this path (poster carries the guard)
+  h1#hero-name           P95 L = 0.7011  glyph L = 0.9216  ratio = 1.29:1 FAIL  "Vikram Deshpande"
+  h1#hero-name           P95 L = 0.5711  glyph L = 0.9216  ratio = 1.56:1 FAIL  "Vikram Deshpande"
+  p.Hero_statement___HX_b P95 L = 0.0137  glyph L = 0.2789  ratio = 5.16:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0137  glyph L = 0.2789  ratio = 5.16:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0137  glyph L = 0.2789  ratio = 5.16:1 PASS  "Sixteen years leading delivery across government"
+  a.Hero_primaryAction__SBJFA P95 L = 0.8469  glyph L = 0.0030  ratio = 16.91:1 PASS  "See the evidence"
+  a.Hero_secondaryAction__jCqGE P95 L = 0.0097  glyph L = 0.9216  ratio = 16.27:1 PASS  "Download CV"
+
+[1A[2K[31m  4) [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 1280×800 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 1280×800 [still] — P95 contrast ≥ 4.5:1, guard bounded [39m
+
+    Error: A11Y-01 at 1280×800 on prefers-reduced-motion still: 2 run(s) under 4.5:1 against the 95th-percentile light beneath them
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.29:1 (P95 L 0.7011)",[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.56:1 (P95 L 0.5711)",[39m
+    [31m+ ][39m
+
+    [0m [90m 239 |[39m           [32m`A11Y-01 at ${size} on ${route.label}: ${failures.length} run(s) under ${CONTRAST_MIN}:1 `[39m [33m+[39m
+     [90m 240 |[39m             [32m'against the 95th-percentile light beneath them'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 241 |[39m         )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 242 |[39m       })[33m;[39m
+     [90m 243 |[39m     }
+     [90m 244 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s2/tests/a11y/hero-contrast.spec.ts:241:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-hero-contrast-TC-HERO-8caf2-trast-≥-4-5-1-guard-bounded-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-hero-contrast-TC-HERO-8caf2-trast-≥-4-5-1-guard-bounded-chromium/error-context.md[22m
+
+
+[1A[2K[5/40] [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 834×1194 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 834×1194 [gl] — P95 contrast ≥ 4.5:1, guard bounded
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 834×1194 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 834×1194 [gl] — P95 contrast ≥ 4.5:1, guard bounded[22m
+[hero-a11y-01] 834×1194 /?gl=force (shader, settled)
+  text union         = {"x":41.6875,"y":813.734375,"w":749.71875,"h":302.265625}
+  text union + 8 px  = {"x":33.6875,"y":805.734375,"w":765.71875,"h":318.265625}
+  uCopyGuard −50% box = {"x":41.6875,"y":813.734375,"w":749.71875,"h":302.265625}  inside text+8px: PASS
+  h1#hero-name           P95 L = 0.8070  glyph L = 0.9216  ratio = 1.13:1 FAIL  "Vikram Deshpande"
+  h1#hero-name           P95 L = 0.8228  glyph L = 0.9216  ratio = 1.11:1 FAIL  "Vikram Deshpande"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  a.Hero_primaryAction__SBJFA P95 L = 0.8148  glyph L = 0.0030  ratio = 16.31:1 PASS  "See the evidence"
+  a.Hero_secondaryAction__jCqGE P95 L = 0.0137  glyph L = 0.9216  ratio = 15.25:1 PASS  "Download CV"
+
+[1A[2K[31m  5) [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 834×1194 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 834×1194 [gl] — P95 contrast ≥ 4.5:1, guard bounded [39m
+
+    Error: A11Y-01 at 834×1194 on /?gl=force (shader, settled): 2 run(s) under 4.5:1 against the 95th-percentile light beneath them
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.13:1 (P95 L 0.8070)",[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.11:1 (P95 L 0.8228)",[39m
+    [31m+ ][39m
+
+    [0m [90m 239 |[39m           [32m`A11Y-01 at ${size} on ${route.label}: ${failures.length} run(s) under ${CONTRAST_MIN}:1 `[39m [33m+[39m
+     [90m 240 |[39m             [32m'against the 95th-percentile light beneath them'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 241 |[39m         )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 242 |[39m       })[33m;[39m
+     [90m 243 |[39m     }
+     [90m 244 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s2/tests/a11y/hero-contrast.spec.ts:241:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-hero-contrast-TC-HERO-b14d3-trast-≥-4-5-1-guard-bounded-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-hero-contrast-TC-HERO-b14d3-trast-≥-4-5-1-guard-bounded-chromium/error-context.md[22m
+
+
+[1A[2K[6/40] [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 834×1194 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 834×1194 [still] — P95 contrast ≥ 4.5:1, guard bounded
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 834×1194 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 834×1194 [still] — P95 contrast ≥ 4.5:1, guard bounded[22m
+[hero-a11y-01] 834×1194 prefers-reduced-motion still
+  text union         = {"x":41.6875,"y":813.734375,"w":749.71875,"h":302.265625}
+  text union + 8 px  = {"x":33.6875,"y":805.734375,"w":765.71875,"h":318.265625}
+  uCopyGuard          = not mounted on this path (poster carries the guard)
+  h1#hero-name           P95 L = 0.6514  glyph L = 0.9216  ratio = 1.39:1 FAIL  "Vikram Deshpande"
+  h1#hero-name           P95 L = 0.6724  glyph L = 0.9216  ratio = 1.34:1 FAIL  "Vikram Deshpande"
+  p.Hero_statement___HX_b P95 L = 0.0137  glyph L = 0.2789  ratio = 5.16:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0130  glyph L = 0.2789  ratio = 5.22:1 PASS  "Sixteen years leading delivery across government"
+  a.Hero_primaryAction__SBJFA P95 L = 0.8148  glyph L = 0.0030  ratio = 16.31:1 PASS  "See the evidence"
+  a.Hero_secondaryAction__jCqGE P95 L = 0.0075  glyph L = 0.9216  ratio = 16.90:1 PASS  "Download CV"
+
+[1A[2K[31m  6) [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 834×1194 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 834×1194 [still] — P95 contrast ≥ 4.5:1, guard bounded [39m
+
+    Error: A11Y-01 at 834×1194 on prefers-reduced-motion still: 2 run(s) under 4.5:1 against the 95th-percentile light beneath them
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.39:1 (P95 L 0.6514)",[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.34:1 (P95 L 0.6724)",[39m
+    [31m+ ][39m
+
+    [0m [90m 239 |[39m           [32m`A11Y-01 at ${size} on ${route.label}: ${failures.length} run(s) under ${CONTRAST_MIN}:1 `[39m [33m+[39m
+     [90m 240 |[39m             [32m'against the 95th-percentile light beneath them'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 241 |[39m         )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 242 |[39m       })[33m;[39m
+     [90m 243 |[39m     }
+     [90m 244 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s2/tests/a11y/hero-contrast.spec.ts:241:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-hero-contrast-TC-HERO-6a38e-trast-≥-4-5-1-guard-bounded-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-hero-contrast-TC-HERO-6a38e-trast-≥-4-5-1-guard-bounded-chromium/error-context.md[22m
+
+
+[1A[2K[7/40] [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 390×844 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 390×844 [gl] — P95 contrast ≥ 4.5:1, guard bounded
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 390×844 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 390×844 [gl] — P95 contrast ≥ 4.5:1, guard bounded[22m
+[hero-a11y-01] 390×844 /?gl=force (shader, settled)
+  text union         = {"x":24,"y":473.9375,"w":330.53125,"h":338.734375}
+  text union + 8 px  = {"x":16,"y":465.9375,"w":346.53125,"h":354.734375}
+  uCopyGuard −50% box = {"x":24,"y":473.9375,"w":330.53125,"h":338.734375}  inside text+8px: PASS
+  h1#hero-name           P95 L = 0.3916  glyph L = 0.9216  ratio = 2.20:1 FAIL  "Vikram Deshpande"
+  h1#hero-name           P95 L = 0.8070  glyph L = 0.9216  ratio = 1.13:1 FAIL  "Vikram Deshpande"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0144  glyph L = 0.2789  ratio = 5.10:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0137  glyph L = 0.2789  ratio = 5.16:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0130  glyph L = 0.2789  ratio = 5.22:1 PASS  "Sixteen years leading delivery across government"
+  a.Hero_primaryAction__SBJFA P95 L = 0.7913  glyph L = 0.0030  ratio = 15.86:1 PASS  "See the evidence"
+  a.Hero_secondaryAction__jCqGE P95 L = 0.0123  glyph L = 0.9216  ratio = 15.60:1 PASS  "Download CV"
+
+[1A[2K[31m  7) [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 390×844 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 390×844 [gl] — P95 contrast ≥ 4.5:1, guard bounded [39m
+
+    Error: A11Y-01 at 390×844 on /?gl=force (shader, settled): 2 run(s) under 4.5:1 against the 95th-percentile light beneath them
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 2.20:1 (P95 L 0.3916)",[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.13:1 (P95 L 0.8070)",[39m
+    [31m+ ][39m
+
+    [0m [90m 239 |[39m           [32m`A11Y-01 at ${size} on ${route.label}: ${failures.length} run(s) under ${CONTRAST_MIN}:1 `[39m [33m+[39m
+     [90m 240 |[39m             [32m'against the 95th-percentile light beneath them'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 241 |[39m         )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 242 |[39m       })[33m;[39m
+     [90m 243 |[39m     }
+     [90m 244 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s2/tests/a11y/hero-contrast.spec.ts:241:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-hero-contrast-TC-HERO-b5ef8-trast-≥-4-5-1-guard-bounded-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-hero-contrast-TC-HERO-b5ef8-trast-≥-4-5-1-guard-bounded-chromium/error-context.md[22m
+
+
+[1A[2K[8/40] [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 390×844 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 390×844 [still] — P95 contrast ≥ 4.5:1, guard bounded
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 390×844 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 390×844 [still] — P95 contrast ≥ 4.5:1, guard bounded[22m
+[hero-a11y-01] 390×844 prefers-reduced-motion still
+  text union         = {"x":24,"y":473.9375,"w":330.53125,"h":338.734375}
+  text union + 8 px  = {"x":16,"y":465.9375,"w":346.53125,"h":354.734375}
+  uCopyGuard          = not mounted on this path (poster carries the guard)
+  h1#hero-name           P95 L = 0.3231  glyph L = 0.9216  ratio = 2.60:1 FAIL  "Vikram Deshpande"
+  h1#hero-name           P95 L = 0.6376  glyph L = 0.9216  ratio = 1.41:1 FAIL  "Vikram Deshpande"
+  p.Hero_statement___HX_b P95 L = 0.0137  glyph L = 0.2789  ratio = 5.16:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0137  glyph L = 0.2789  ratio = 5.16:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0137  glyph L = 0.2789  ratio = 5.16:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0137  glyph L = 0.2789  ratio = 5.16:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0130  glyph L = 0.2789  ratio = 5.22:1 PASS  "Sixteen years leading delivery across government"
+  p.Hero_statement___HX_b P95 L = 0.0123  glyph L = 0.2789  ratio = 5.28:1 PASS  "Sixteen years leading delivery across government"
+  a.Hero_primaryAction__SBJFA P95 L = 0.7913  glyph L = 0.0030  ratio = 15.86:1 PASS  "See the evidence"
+  a.Hero_secondaryAction__jCqGE P95 L = 0.0116  glyph L = 0.9216  ratio = 15.77:1 PASS  "Download CV"
+
+[1A[2K[31m  8) [chromium] › tests/a11y/hero-contrast.spec.ts:136:11 › TC-HERO-A11Y-01 @ 390×844 — the plane never washes out a glyph › TC-HERO-A11Y-01 @ 390×844 [still] — P95 contrast ≥ 4.5:1, guard bounded [39m
+
+    Error: A11Y-01 at 390×844 on prefers-reduced-motion still: 2 run(s) under 4.5:1 against the 95th-percentile light beneath them
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 4[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 2.60:1 (P95 L 0.3231)",[39m
+    [31m+   "h1#hero-name \"Vikram Deshpande\" 1.41:1 (P95 L 0.6376)",[39m
+    [31m+ ][39m
+
+    [0m [90m 239 |[39m           [32m`A11Y-01 at ${size} on ${route.label}: ${failures.length} run(s) under ${CONTRAST_MIN}:1 `[39m [33m+[39m
+     [90m 240 |[39m             [32m'against the 95th-percentile light beneath them'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 241 |[39m         )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 242 |[39m       })[33m;[39m
+     [90m 243 |[39m     }
+     [90m 244 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s2/tests/a11y/hero-contrast.spec.ts:241:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-hero-contrast-TC-HERO-1c7b9-trast-≥-4-5-1-guard-bounded-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-hero-contrast-TC-HERO-1c7b9-trast-≥-4-5-1-guard-bounded-chromium/error-context.md[22m
+
+
+[1A[2K[9/40] [chromium] › tests/e2e/hero-first-paint.spec.ts:60:9 › TC-HERO-GL @ 1440×900 — the plane paints on every path › TC-HERO-GL-01 @ 1440×900 — ?gl=force: 0 page errors, ≥ 1 canvas in the plane
+[1A[2K[2m[chromium] › tests/e2e/hero-first-paint.spec.ts:60:9 › TC-HERO-GL @ 1440×900 — the plane paints on every path › TC-HERO-GL-01 @ 1440×900 — ?gl=force: 0 page errors, ≥ 1 canvas in the plane[22m
+[hero-gl-01] 1440×900 — canvases in [data-plane="hero"] = 1, pageerrors = 0
+
+[1A[2K[10/40] [chromium] › tests/e2e/hero-first-paint.spec.ts:82:9 › TC-HERO-GL @ 1440×900 — the plane paints on every path › TC-HERO-GL-02 @ 1440×900 — reduced motion: 0 canvases, poster lit ≥ 0.045
+[1A[2K[2m[chromium] › tests/e2e/hero-first-paint.spec.ts:82:9 › TC-HERO-GL @ 1440×900 — the plane paints on every path › TC-HERO-GL-02 @ 1440×900 — reduced motion: 0 canvases, poster lit ≥ 0.045[22m
+[hero-plane-dominance] 1440×900 prefers-reduced-motion still (GL-02)
+  fold W×H            = 1440×900 (1296000 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0130    peak L = 0.9823
+  Σ_fold m            = 411704.14
+  Σ_P m               = 332079.18
+  SPD = Σ_P/Σ_fold    = 0.8066    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 PASS)
+  Σ_fold m / (W·H)    = 0.3177    PLANE-2 ≥ 0.045 PASS
+  ink I               = 23 rects, dilated 8 px, covering 26.48% of the fold (343140 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=64.81 y=32.47 w=106.3 h=30.06
+    #02 text  a.logo "VIKRAM."  x=72 y=35.47 w=91.92 h=21
+    #03 media svg  x=72 y=59.47 w=91.88 h=3.06
+    #04 text  span.menu-toggle__label "Menu"  x=1290.23 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=1346 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=1346 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=88.81 y=502.05 w=1133.55 h=137.75
+    #08 text  h1#hero-name "Vikram"  x=96 y=480.05 w=437.78 h=180
+    #09 text  h1#hero-name "Deshpande"  x=560.28 y=480.05 w=654.89 h=180
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=88.81 y=666.8 w=732.5 h=90.7
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=670.8 w=713.23 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=701.03 w=713.69 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=731.27 w=433.53 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=96 y=798 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=121 y=812 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=296.58 y=798 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=321.58 y=812 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1231.63 y=829 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1248.63 y=836 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=1352 y=812 w=64 h=64
+    #21 media svg  x=1372 y=832 w=24 h=24
+    #22 plate span.minivic-launcher__pulse α=1  x=1402 y=816 w=10 h=10
+    #23 plate span.minivic-launcher__dot α=1  x=1402 y=816 w=10 h=10
+
+[1A[2K[11/40] [chromium] › tests/e2e/hero-first-paint.spec.ts:60:9 › TC-HERO-GL @ 1280×800 — the plane paints on every path › TC-HERO-GL-01 @ 1280×800 — ?gl=force: 0 page errors, ≥ 1 canvas in the plane
+[1A[2K[2m[chromium] › tests/e2e/hero-first-paint.spec.ts:60:9 › TC-HERO-GL @ 1280×800 — the plane paints on every path › TC-HERO-GL-01 @ 1280×800 — ?gl=force: 0 page errors, ≥ 1 canvas in the plane[22m
+[hero-gl-01] 1280×800 — canvases in [data-plane="hero"] = 1, pageerrors = 0
+
+[1A[2K[12/40] [chromium] › tests/e2e/hero-first-paint.spec.ts:82:9 › TC-HERO-GL @ 1280×800 — the plane paints on every path › TC-HERO-GL-02 @ 1280×800 — reduced motion: 0 canvases, poster lit ≥ 0.045
+[1A[2K[2m[chromium] › tests/e2e/hero-first-paint.spec.ts:82:9 › TC-HERO-GL @ 1280×800 — the plane paints on every path › TC-HERO-GL-02 @ 1280×800 — reduced motion: 0 canvases, poster lit ≥ 0.045[22m
+[hero-plane-dominance] 1280×800 prefers-reduced-motion still (GL-02)
+  fold W×H            = 1280×800 (1024000 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0123    peak L = 1.0000
+  Σ_fold m            = 319088.03
+  Σ_P m               = 242081.01
+  SPD = Σ_P/Σ_fold    = 0.7587    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.3116    PLANE-2 ≥ 0.045 PASS
+  ink I               = 22 rects, dilated 8 px, covering 31.26% of the fold (320055 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=56.81 y=32.47 w=106.3 h=30.06
+    #02 text  a.logo "VIKRAM."  x=64 y=35.47 w=91.92 h=21
+    #03 media svg  x=64 y=59.47 w=91.88 h=3.06
+    #04 text  span.menu-toggle__label "Menu"  x=1138.23 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=1194 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=1194 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=56.81 y=434.94 w=1073.58 h=130.36
+    #08 text  h1#hero-name "Vikram"  x=64 y=413.94 w=414.31 h=171
+    #09 text  h1#hero-name "Deshpande"  x=503.41 y=413.94 w=619.8 h=171
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=56.81 y=589.3 w=731.86 h=90.7
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=593.3 w=713.23 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=623.53 w=713.69 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=653.77 w=433.53 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=64 y=704 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=89 y=718 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=264.58 y=704 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=289.58 y=718 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1071.63 y=729 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1088.63 y=736 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=1192 y=712 w=64 h=64
+    #21 media svg  x=1212 y=732 w=24 h=24
+    #22 plate span.minivic-launcher__dot α=1  x=1242 y=716 w=10 h=10
+
+[1A[2K[13/40] [chromium] › tests/e2e/hero-first-paint.spec.ts:60:9 › TC-HERO-GL @ 834×1194 — the plane paints on every path › TC-HERO-GL-01 @ 834×1194 — ?gl=force: 0 page errors, ≥ 1 canvas in the plane
+[1A[2K[2m[chromium] › tests/e2e/hero-first-paint.spec.ts:60:9 › TC-HERO-GL @ 834×1194 — the plane paints on every path › TC-HERO-GL-01 @ 834×1194 — ?gl=force: 0 page errors, ≥ 1 canvas in the plane[22m
+[hero-gl-01] 834×1194 — canvases in [data-plane="hero"] = 1, pageerrors = 0
+
+[1A[2K[14/40] [chromium] › tests/e2e/hero-first-paint.spec.ts:82:9 › TC-HERO-GL @ 834×1194 — the plane paints on every path › TC-HERO-GL-02 @ 834×1194 — reduced motion: 0 canvases, poster lit ≥ 0.045
+[1A[2K[2m[chromium] › tests/e2e/hero-first-paint.spec.ts:82:9 › TC-HERO-GL @ 834×1194 — the plane paints on every path › TC-HERO-GL-02 @ 834×1194 — reduced motion: 0 canvases, poster lit ≥ 0.045[22m
+[hero-plane-dominance] 834×1194 prefers-reduced-motion still (GL-02)
+  fold W×H            = 834×1194 (995796 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0130    peak L = 0.9734
+  Σ_fold m            = 313806.24
+  Σ_P m               = 268064.89
+  SPD = Σ_P/Σ_fold    = 0.8542    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 PASS)
+  Σ_fold m / (W·H)    = 0.3151    PLANE-2 ≥ 0.045 PASS
+  ink I               = 22 rects, dilated 8 px, covering 22.03% of the fold (219331 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=34.5 y=32.69 w=105.08 h=29.61
+    #02 text  a.logo "VIKRAM."  x=41.69 y=34.69 w=90.7 h=21
+    #03 media svg  x=41.69 y=59.28 w=90.47 h=3.02
+    #04 text  span.menu-toggle__label "Menu"  x=714.55 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=770.31 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=770.31 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=34.5 y=827.73 w=704.33 h=84.92
+    #08 text  h1#hero-name "Vikram"  x=41.69 y=813.73 w=269.88 h=111
+    #09 text  h1#hero-name "Deshpande"  x=327.91 y=813.73 w=403.73 h=111
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=34.5 y=944.66 w=765 h=89.34
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=948.66 w=742.38 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=978.44 w=749.72 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=1008.22 w=339.27 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=41.69 y=1082 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=66.69 y=1096 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=242.27 y=1082 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=267.27 y=1096 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=625.63 y=1123 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=642.63 y=1130 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=746 y=1106 w=64 h=64
+    #21 media svg  x=766 y=1126 w=24 h=24
+    #22 plate span.minivic-launcher__dot α=1  x=796 y=1110 w=10 h=10
+
+[1A[2K[15/40] [chromium] › tests/e2e/hero-first-paint.spec.ts:60:9 › TC-HERO-GL @ 390×844 — the plane paints on every path › TC-HERO-GL-01 @ 390×844 — ?gl=force: 0 page errors, ≥ 1 canvas in the plane
+[1A[2K[2m[chromium] › tests/e2e/hero-first-paint.spec.ts:60:9 › TC-HERO-GL @ 390×844 — the plane paints on every path › TC-HERO-GL-01 @ 390×844 — ?gl=force: 0 page errors, ≥ 1 canvas in the plane[22m
+[hero-gl-01] 390×844 — canvases in [data-plane="hero"] = 1, pageerrors = 0
+
+[1A[2K[16/40] [chromium] › tests/e2e/hero-first-paint.spec.ts:82:9 › TC-HERO-GL @ 390×844 — the plane paints on every path › TC-HERO-GL-02 @ 390×844 — reduced motion: 0 canvases, poster lit ≥ 0.045
+[1A[2K[2m[chromium] › tests/e2e/hero-first-paint.spec.ts:82:9 › TC-HERO-GL @ 390×844 — the plane paints on every path › TC-HERO-GL-02 @ 390×844 — reduced motion: 0 canvases, poster lit ≥ 0.045[22m
+[hero-plane-dominance] 390×844 prefers-reduced-motion still (GL-02)
+  fold W×H            = 390×844 (329160 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0110    peak L = 0.9216
+  Σ_fold m            = 86729.00
+  Σ_P m               = 62033.79
+  SPD = Σ_P/Σ_fold    = 0.7153    PLANE-1 ≥ 0.75 FAIL  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.2635    PLANE-2 ≥ 0.045 PASS
+  ink I               = 25 rects, dilated 8 px, covering 41.17% of the fold (135506 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=12.31 y=28 w=97.64 h=26.77
+    #02 text  a.logo "VIKRAM."  x=19.5 y=30 w=83.27 h=20
+    #03 media svg  x=19.5 y=52 w=82.97 h=2.77
+    #04 text  span.menu-toggle__label "Menu"  x=295.73 y=32.63 w=43.17 h=16
+    #05 plate span.menu-toggle__bar α=1  x=348.5 y=36.88 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=348.5 y=43.88 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=16.81 y=487.94 w=313.91 h=108
+    #08 text  h1#hero-name "Vikram"  x=24 y=473.94 w=200.23 h=82
+    #09 text  h1#hero-name "Deshpande"  x=24 y=527.94 w=299.53 h=82
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=16.81 y=603.94 w=356.38 h=152.06
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=606.94 w=262.77 h=19
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=632.28 w=330.53 h=19
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=657.63 w=295.31 h=19
+    #14 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=682.97 w=298.36 h=19
+    #15 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=708.31 w=294.95 h=19
+    #16 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=24 y=733.66 w=64.05 h=19
+    #17 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=24 y=780 w=180.56 h=48
+    #18 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=50.86 y=793.67 w=126.83 h=19
+    #19 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=212.56 y=780 w=153.44 h=48
+    #20 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=239.44 y=793.67 w=99.69 h=19
+    #21 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=207.63 y=783.45 w=106.38 h=29.09
+    #22 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=224.63 y=790.45 w=72.38 h=14
+    #23 plate span.minivic-launcher__disc α=1  x=322 y=776 w=44 h=44
+    #24 media svg  x=332 y=786 w=24 h=24
+    #25 plate span.minivic-launcher__dot α=1  x=352 y=780 w=10 h=10
+
+[1A[2K[17/40] [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1440×900 [gl] — SPD ≥ 0.75: the plane carries the light
+[1A[2K[2m[chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1440×900 [gl] — SPD ≥ 0.75: the plane carries the light[22m
+[hero-plane-dominance] 1440×900 /?gl=force (shader, settled)
+  fold W×H            = 1440×900 (1296000 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0137    peak L = 0.9823
+  Σ_fold m            = 505247.51
+  Σ_P m               = 416110.55
+  SPD = Σ_P/Σ_fold    = 0.8236    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 PASS)
+  Σ_fold m / (W·H)    = 0.3899    PLANE-2 ≥ 0.045 PASS
+  ink I               = 23 rects, dilated 8 px, covering 26.48% of the fold (343140 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > div > div > canvas > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=64.81 y=32.47 w=106.3 h=30.06
+    #02 text  a.logo "VIKRAM."  x=72 y=35.47 w=91.92 h=21
+    #03 media svg  x=72 y=59.47 w=91.88 h=3.06
+    #04 text  span.menu-toggle__label "Menu"  x=1290.23 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=1346 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=1346 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=88.81 y=502.05 w=1133.55 h=137.75
+    #08 text  h1#hero-name "Vikram"  x=96 y=480.05 w=437.78 h=180
+    #09 text  h1#hero-name "Deshpande"  x=560.28 y=480.05 w=654.89 h=180
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=88.81 y=666.8 w=732.5 h=90.7
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=670.8 w=713.23 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=701.03 w=713.69 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=731.27 w=433.53 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=96 y=798 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=121 y=812 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=296.58 y=798 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=321.58 y=812 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1231.63 y=829 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1248.63 y=836 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=1352 y=812 w=64 h=64
+    #21 media svg  x=1372 y=832 w=24 h=24
+    #22 plate span.minivic-launcher__pulse α=1  x=1398.85 y=812.85 w=16.3 h=16.3
+    #23 plate span.minivic-launcher__dot α=1  x=1402 y=816 w=10 h=10
+
+[1A[2K[18/40] [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:236:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1440×900 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit
+[1A[2K[2m[chromium] › tests/overhaul/hero-plane-dominance.spec.ts:236:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1440×900 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit[22m
+[hero-plane-dominance] 1440×900 /?gl=force (shader, settled)
+  fold W×H            = 1440×900 (1296000 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0137    peak L = 0.9823
+  Σ_fold m            = 493236.98
+  Σ_P m               = 405345.42
+  SPD = Σ_P/Σ_fold    = 0.8218    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 PASS)
+  Σ_fold m / (W·H)    = 0.3806    PLANE-2 ≥ 0.045 PASS
+  ink I               = 22 rects, dilated 8 px, covering 26.48% of the fold (343140 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > div > div > canvas > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=64.81 y=32.47 w=106.3 h=30.06
+    #02 text  a.logo "VIKRAM."  x=72 y=35.47 w=91.92 h=21
+    #03 media svg  x=72 y=59.47 w=91.88 h=3.06
+    #04 text  span.menu-toggle__label "Menu"  x=1290.23 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=1346 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=1346 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=88.81 y=502.05 w=1133.55 h=137.75
+    #08 text  h1#hero-name "Vikram"  x=96 y=480.05 w=437.78 h=180
+    #09 text  h1#hero-name "Deshpande"  x=560.28 y=480.05 w=654.89 h=180
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=88.81 y=666.8 w=732.5 h=90.7
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=670.8 w=713.23 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=701.03 w=713.69 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=731.27 w=433.53 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=96 y=798 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=121 y=812 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=296.58 y=798 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=321.58 y=812 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1231.63 y=829 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1248.63 y=836 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=1352 y=812 w=64 h=64
+    #21 media svg  x=1372 y=832 w=24 h=24
+    #22 plate span.minivic-launcher__dot α=1  x=1402 y=816 w=10 h=10
+
+[1A[2K[19/40] [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1440×900 [still] — SPD ≥ 0.75: the plane carries the light
+[1A[2K[2m[chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1440×900 [still] — SPD ≥ 0.75: the plane carries the light[22m
+[hero-plane-dominance] 1440×900 prefers-reduced-motion still
+  fold W×H            = 1440×900 (1296000 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0130    peak L = 0.9823
+  Σ_fold m            = 411704.14
+  Σ_P m               = 332079.18
+  SPD = Σ_P/Σ_fold    = 0.8066    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 PASS)
+  Σ_fold m / (W·H)    = 0.3177    PLANE-2 ≥ 0.045 PASS
+  ink I               = 23 rects, dilated 8 px, covering 26.48% of the fold (343140 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=64.81 y=32.47 w=106.3 h=30.06
+    #02 text  a.logo "VIKRAM."  x=72 y=35.47 w=91.92 h=21
+    #03 media svg  x=72 y=59.47 w=91.88 h=3.06
+    #04 text  span.menu-toggle__label "Menu"  x=1290.23 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=1346 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=1346 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=88.81 y=502.05 w=1133.55 h=137.75
+    #08 text  h1#hero-name "Vikram"  x=96 y=480.05 w=437.78 h=180
+    #09 text  h1#hero-name "Deshpande"  x=560.28 y=480.05 w=654.89 h=180
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=88.81 y=666.8 w=732.5 h=90.7
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=670.8 w=713.23 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=701.03 w=713.69 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=731.27 w=433.53 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=96 y=798 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=121 y=812 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=296.58 y=798 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=321.58 y=812 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1231.63 y=829 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1248.63 y=836 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=1352 y=812 w=64 h=64
+    #21 media svg  x=1372 y=832 w=24 h=24
+    #22 plate span.minivic-launcher__pulse α=1  x=1402 y=816 w=10 h=10
+    #23 plate span.minivic-launcher__dot α=1  x=1402 y=816 w=10 h=10
+
+[1A[2K[20/40] [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:236:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1440×900 [still] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit
+[1A[2K[2m[chromium] › tests/overhaul/hero-plane-dominance.spec.ts:236:11 › TC-HERO-PLANE @ 1440×900 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1440×900 [still] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit[22m
+[hero-plane-dominance] 1440×900 prefers-reduced-motion still
+  fold W×H            = 1440×900 (1296000 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0130    peak L = 0.9823
+  Σ_fold m            = 411704.14
+  Σ_P m               = 332079.18
+  SPD = Σ_P/Σ_fold    = 0.8066    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 PASS)
+  Σ_fold m / (W·H)    = 0.3177    PLANE-2 ≥ 0.045 PASS
+  ink I               = 23 rects, dilated 8 px, covering 26.48% of the fold (343140 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=64.81 y=32.47 w=106.3 h=30.06
+    #02 text  a.logo "VIKRAM."  x=72 y=35.47 w=91.92 h=21
+    #03 media svg  x=72 y=59.47 w=91.88 h=3.06
+    #04 text  span.menu-toggle__label "Menu"  x=1290.23 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=1346 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=1346 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=88.81 y=502.05 w=1133.55 h=137.75
+    #08 text  h1#hero-name "Vikram"  x=96 y=480.05 w=437.78 h=180
+    #09 text  h1#hero-name "Deshpande"  x=560.28 y=480.05 w=654.89 h=180
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=88.81 y=666.8 w=732.5 h=90.7
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=670.8 w=713.23 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=701.03 w=713.69 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=96 y=731.27 w=433.53 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=96 y=798 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=121 y=812 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=296.58 y=798 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=321.58 y=812 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1231.63 y=829 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1248.63 y=836 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=1352 y=812 w=64 h=64
+    #21 media svg  x=1372 y=832 w=24 h=24
+    #22 plate span.minivic-launcher__pulse α=1  x=1402 y=816 w=10 h=10
+    #23 plate span.minivic-launcher__dot α=1  x=1402 y=816 w=10 h=10
+
+[1A[2K[21/40] [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1280×800 [gl] — SPD ≥ 0.75: the plane carries the light
+[1A[2K[2m[chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1280×800 [gl] — SPD ≥ 0.75: the plane carries the light[22m
+[hero-plane-dominance] 1280×800 /?gl=force (shader, settled)
+  fold W×H            = 1280×800 (1024000 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0137    peak L = 1.0000
+  Σ_fold m            = 397659.81
+  Σ_P m               = 309774.15
+  SPD = Σ_P/Σ_fold    = 0.7790    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.3883    PLANE-2 ≥ 0.045 PASS
+  ink I               = 22 rects, dilated 8 px, covering 31.26% of the fold (320055 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > div > div > canvas > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=56.81 y=32.47 w=106.3 h=30.06
+    #02 text  a.logo "VIKRAM."  x=64 y=35.47 w=91.92 h=21
+    #03 media svg  x=64 y=59.47 w=91.88 h=3.06
+    #04 text  span.menu-toggle__label "Menu"  x=1138.23 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=1194 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=1194 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=56.81 y=434.94 w=1073.58 h=130.36
+    #08 text  h1#hero-name "Vikram"  x=64 y=413.94 w=414.31 h=171
+    #09 text  h1#hero-name "Deshpande"  x=503.41 y=413.94 w=619.8 h=171
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=56.81 y=589.3 w=731.86 h=90.7
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=593.3 w=713.23 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=623.53 w=713.69 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=653.77 w=433.53 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=64 y=704 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=89 y=718 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=264.58 y=704 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=289.58 y=718 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1071.63 y=729 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1088.63 y=736 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=1192 y=712 w=64 h=64
+    #21 media svg  x=1212 y=732 w=24 h=24
+    #22 plate span.minivic-launcher__dot α=1  x=1242 y=716 w=10 h=10
+
+[1A[2K[22/40] [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:236:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1280×800 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit
+[1A[2K[2m[chromium] › tests/overhaul/hero-plane-dominance.spec.ts:236:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1280×800 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit[22m
+[hero-plane-dominance] 1280×800 /?gl=force (shader, settled)
+  fold W×H            = 1280×800 (1024000 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0137    peak L = 1.0000
+  Σ_fold m            = 394832.44
+  Σ_P m               = 307350.21
+  SPD = Σ_P/Σ_fold    = 0.7784    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.3856    PLANE-2 ≥ 0.045 PASS
+  ink I               = 22 rects, dilated 8 px, covering 31.26% of the fold (320055 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > div > div > canvas > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=56.81 y=32.47 w=106.3 h=30.06
+    #02 text  a.logo "VIKRAM."  x=64 y=35.47 w=91.92 h=21
+    #03 media svg  x=64 y=59.47 w=91.88 h=3.06
+    #04 text  span.menu-toggle__label "Menu"  x=1138.23 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=1194 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=1194 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=56.81 y=434.94 w=1073.58 h=130.36
+    #08 text  h1#hero-name "Vikram"  x=64 y=413.94 w=414.31 h=171
+    #09 text  h1#hero-name "Deshpande"  x=503.41 y=413.94 w=619.8 h=171
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=56.81 y=589.3 w=731.86 h=90.7
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=593.3 w=713.23 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=623.53 w=713.69 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=653.77 w=433.53 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=64 y=704 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=89 y=718 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=264.58 y=704 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=289.58 y=718 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1071.63 y=729 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1088.63 y=736 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=1192 y=712 w=64 h=64
+    #21 media svg  x=1212 y=732 w=24 h=24
+    #22 plate span.minivic-launcher__dot α=1  x=1242 y=716 w=10 h=10
+
+[1A[2K[23/40] [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1280×800 [still] — SPD ≥ 0.75: the plane carries the light
+[1A[2K[2m[chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-01 @ 1280×800 [still] — SPD ≥ 0.75: the plane carries the light[22m
+[hero-plane-dominance] 1280×800 prefers-reduced-motion still
+  fold W×H            = 1280×800 (1024000 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0123    peak L = 1.0000
+  Σ_fold m            = 319088.03
+  Σ_P m               = 242081.01
+  SPD = Σ_P/Σ_fold    = 0.7587    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.3116    PLANE-2 ≥ 0.045 PASS
+  ink I               = 22 rects, dilated 8 px, covering 31.26% of the fold (320055 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=56.81 y=32.47 w=106.3 h=30.06
+    #02 text  a.logo "VIKRAM."  x=64 y=35.47 w=91.92 h=21
+    #03 media svg  x=64 y=59.47 w=91.88 h=3.06
+    #04 text  span.menu-toggle__label "Menu"  x=1138.23 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=1194 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=1194 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=56.81 y=434.94 w=1073.58 h=130.36
+    #08 text  h1#hero-name "Vikram"  x=64 y=413.94 w=414.31 h=171
+    #09 text  h1#hero-name "Deshpande"  x=503.41 y=413.94 w=619.8 h=171
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=56.81 y=589.3 w=731.86 h=90.7
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=593.3 w=713.23 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=623.53 w=713.69 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=653.77 w=433.53 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=64 y=704 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=89 y=718 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=264.58 y=704 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=289.58 y=718 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1071.63 y=729 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1088.63 y=736 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=1192 y=712 w=64 h=64
+    #21 media svg  x=1212 y=732 w=24 h=24
+    #22 plate span.minivic-launcher__dot α=1  x=1242 y=716 w=10 h=10
+
+[1A[2K[24/40] [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:236:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1280×800 [still] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit
+[1A[2K[2m[chromium] › tests/overhaul/hero-plane-dominance.spec.ts:236:11 › TC-HERO-PLANE @ 1280×800 — the plane dominates the fold › TC-HERO-PLANE-02 @ 1280×800 [still] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit[22m
+[hero-plane-dominance] 1280×800 prefers-reduced-motion still
+  fold W×H            = 1280×800 (1024000 px)  canvases in #hero = 0
+  G (10th-pct L)      = 0.0123    peak L = 1.0000
+  Σ_fold m            = 319088.03
+  Σ_P m               = 242081.01
+  SPD = Σ_P/Σ_fold    = 0.7587    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 FAIL)
+  Σ_fold m / (W·H)    = 0.3116    PLANE-2 ≥ 0.045 PASS
+  ink I               = 22 rects, dilated 8 px, covering 31.26% of the fold (320055 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=56.81 y=32.47 w=106.3 h=30.06
+    #02 text  a.logo "VIKRAM."  x=64 y=35.47 w=91.92 h=21
+    #03 media svg  x=64 y=59.47 w=91.88 h=3.06
+    #04 text  span.menu-toggle__label "Menu"  x=1138.23 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=1194 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=1194 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=56.81 y=434.94 w=1073.58 h=130.36
+    #08 text  h1#hero-name "Vikram"  x=64 y=413.94 w=414.31 h=171
+    #09 text  h1#hero-name "Deshpande"  x=503.41 y=413.94 w=619.8 h=171
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=56.81 y=589.3 w=731.86 h=90.7
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=593.3 w=713.23 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=623.53 w=713.69 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=64 y=653.77 w=433.53 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=64 y=704 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=89 y=718 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=264.58 y=704 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=289.58 y=718 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=1071.63 y=729 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=1088.63 y=736 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=1192 y=712 w=64 h=64
+    #21 media svg  x=1212 y=732 w=24 h=24
+    #22 plate span.minivic-launcher__dot α=1  x=1242 y=716 w=10 h=10
+
+[1A[2K[25/40] [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-01 @ 834×1194 [gl] — SPD ≥ 0.75: the plane carries the light
+[1A[2K[2m[chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-01 @ 834×1194 [gl] — SPD ≥ 0.75: the plane carries the light[22m
+[hero-plane-dominance] 834×1194 /?gl=force (shader, settled)
+  fold W×H            = 834×1194 (995796 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0144    peak L = 0.9734
+  Σ_fold m            = 531469.40
+  Σ_P m               = 465435.25
+  SPD = Σ_P/Σ_fold    = 0.8758    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 PASS)
+  Σ_fold m / (W·H)    = 0.5337    PLANE-2 ≥ 0.045 PASS
+  ink I               = 22 rects, dilated 8 px, covering 22.03% of the fold (219331 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > div > div > canvas > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=34.5 y=32.69 w=105.08 h=29.61
+    #02 text  a.logo "VIKRAM."  x=41.69 y=34.69 w=90.7 h=21
+    #03 media svg  x=41.69 y=59.28 w=90.47 h=3.02
+    #04 text  span.menu-toggle__label "Menu"  x=714.55 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=770.31 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=770.31 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=34.5 y=827.73 w=704.33 h=84.92
+    #08 text  h1#hero-name "Vikram"  x=41.69 y=813.73 w=269.88 h=111
+    #09 text  h1#hero-name "Deshpande"  x=327.91 y=813.73 w=403.73 h=111
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=34.5 y=944.66 w=765 h=89.34
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=948.66 w=742.38 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=978.44 w=749.72 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=1008.22 w=339.27 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=41.69 y=1082 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=66.69 y=1096 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=242.27 y=1082 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=267.27 y=1096 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=625.63 y=1123 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=642.63 y=1130 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=746 y=1106 w=64 h=64
+    #21 media svg  x=766 y=1126 w=24 h=24
+    #22 plate span.minivic-launcher__dot α=1  x=796 y=1110 w=10 h=10
+
+[1A[2K[26/40] [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:236:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-02 @ 834×1194 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit
+[1A[2K[2m[chromium] › tests/overhaul/hero-plane-dominance.spec.ts:236:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-02 @ 834×1194 [gl] — Σ_fold m / (W·H) ≥ 0.045: the frame is lit[22m
+[hero-plane-dominance] 834×1194 /?gl=force (shader, settled)
+  fold W×H            = 834×1194 (995796 px)  canvases in #hero = 1
+  G (10th-pct L)      = 0.0144    peak L = 0.9734
+  Σ_fold m            = 531225.86
+  Σ_P m               = 465202.67
+  SPD = Σ_P/Σ_fold    = 0.8757    PLANE-1 ≥ 0.75 PASS  (ship ≥ 0.78 PASS)
+  Σ_fold m / (W·H)    = 0.5335    PLANE-2 ≥ 0.045 PASS
+  ink I               = 22 rects, dilated 8 px, covering 22.03% of the fold (219331 px)
+  ground chain (never ink): div.Hero_plane__iCeB5 > section#hero > main#main > div.page-frame > body.page-ready > html.__variable_37ef13 > div[data-scene=hero-atmosphere] > div > div > canvas > figure[data-testid=hero-portrait] > div.Hero_portraitStage__GKbkO > span[data-testid=portrait-glow] > div.Hero_portraitMedia__gBrPy > picture > source > source > img > video.Hero_portraitVideo__e3yop
+    #01 plate a.logo α=0.9 "VIKRAM."  x=34.5 y=32.69 w=105.08 h=29.61
+    #02 text  a.logo "VIKRAM."  x=41.69 y=34.69 w=90.7 h=21
+    #03 media svg  x=41.69 y=59.28 w=90.47 h=3.02
+    #04 text  span.menu-toggle__label "Menu"  x=714.55 y=39 w=46.17 h=17
+    #05 plate span.menu-toggle__bar α=1  x=770.31 y=43 w=22 h=2
+    #06 plate span.menu-toggle__bar α=1  x=770.31 y=50 w=22 h=2
+    #07 plate h1#hero-name α=0.9 "Vikram Deshpande"  x=34.5 y=827.73 w=704.33 h=84.92
+    #08 text  h1#hero-name "Vikram"  x=41.69 y=813.73 w=269.88 h=111
+    #09 text  h1#hero-name "Deshpande"  x=327.91 y=813.73 w=403.73 h=111
+    #10 plate p.Hero_statement___HX_b α=0.9 "Sixteen years leading delivery across go"  x=34.5 y=944.66 w=765 h=89.34
+    #11 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=948.66 w=742.38 h=21
+    #12 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=978.44 w=749.72 h=21
+    #13 text  p.Hero_statement___HX_b "Sixteen years leading delivery across go"  x=41.69 y=1008.22 w=339.27 h=21
+    #14 plate a.Hero_primaryAction__SBJFA α=1 "See the evidence"  x=41.69 y=1082 w=184.58 h=48
+    #15 text  a.Hero_primaryAction__SBJFA "See the evidence"  x=66.69 y=1096 w=134.58 h=20
+    #16 plate a.Hero_secondaryAction__jCqGE α=0.9 "Download CV"  x=242.27 y=1082 w=155.78 h=48
+    #17 text  a.Hero_secondaryAction__jCqGE "Download CV"  x=267.27 y=1096 w=105.78 h=20
+    #18 plate span[data-testid=minivic-launcher-label] α=1 "Ask Mini Vic"  x=625.63 y=1123 w=112.38 h=30
+    #19 text  span[data-testid=minivic-launcher-label] "Ask Mini Vic"  x=642.63 y=1130 w=78.38 h=15
+    #20 plate span.minivic-launcher__disc α=1  x=746 y=1106 w=64 h=64
+    #21 media svg  x=766 y=1126 w=24 h=24
+    #22 plate span.minivic-launcher__dot α=1  x=796 y=1110 w=10 h=10
+
+[1A[2K[27/40] [chromium] › tests/overhaul/hero-plane-dominance.spec.ts:133:11 › TC-HERO-PLANE @ 834×1194 — the plane dominates the fold › TC-HERO-PLANE-01 @ 834×1194 [still] — SPD ≥ 0.75: the plane carries the light
+EXIT=killed-at-27/40 (host load average 7.6 on 4 cores; run cut at the 30-min cap)

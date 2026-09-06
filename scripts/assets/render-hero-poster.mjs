@@ -27,6 +27,16 @@
  *     uIntensity 1               the 1.5 s entrance has finished
  *     uQuality   1               the desktop path (uResolution.x ≥ 900)
  *     uInk/uLight PALETTE.ink900 / PALETTE.white, linearised (see below)
+ *     uFigure    FIGURE_UV       the photograph's measured centre at 1440×900
+ *     uCopyGuard COPY_GUARD_UV   the fold's measured text union at 1440×900
+ *
+ * The last two are HERO-SETPIECE-v3 §4.2's uniforms, and §5 requires the still to
+ * be rendered *with* them: on the reduced-motion and no-GL paths the poster is
+ * the whole of the plane, so a poster rendered without the guard is a different
+ * picture from the one a GPU visitor gets. They are pinned here at the values the
+ * live page measures at 1440×900 — 16:9, the poster's own aspect — read from the
+ * DOM in `docs/delivery/evidence/.../W2-H1/t_w2_h1s1` and re-derived by
+ * `tests/a11y/hero-contrast.spec.ts`, which prints the union on every run.
  *
  * That leaves exactly one free variable, `uTime`, and it is chosen by measurement
  * rather than by taste: the script sweeps the shader's slowest breathing cycle at
@@ -75,7 +85,12 @@ const WIDTH = 3840;
 const HEIGHT = 2160;
 
 /** The asset budget the static audit enforces for images (TC-NFR-PERF). */
-const BUDGET_BYTES = 500 * 1024;
+/**
+ * 60 kB, not the audit's 500 kB. HERO-SETPIECE-v3 §9 S2 pins the poster tighter
+ * than the general image budget because on the reduced-motion and no-GL paths it
+ * *is* the plane, and it is fetched on the critical path of the first fold.
+ */
+const BUDGET_BYTES = 60 * 1024;
 
 /**
  * The phase sweep. The slowest thing in this shader is `sin(uTime * 0.062 + 1.9)`
@@ -84,6 +99,21 @@ const BUDGET_BYTES = 500 * 1024;
  * 0.2 s covers both pools twice and the shafts' own 0.09 rad/s swing through its
  * brightest quarter, which is all the argmax can use.
  */
+/**
+ * §4.2 uniforms at the poster's aspect, in this shader's uv (origin bottom-left).
+ *
+ * `FIGURE_UV` is the photograph's centre: the figure renders x 522→1368, y 88→560
+ * at 1440×900 (t_w2_h1s1 measurements), so its centre is (945, 324) → uv
+ * (0.6563, 0.6400).
+ *
+ * `COPY_GUARD_UV` is the union of the fold's text rects at the same width —
+ * x 96→1030, y 480→860 → uv (0.0667, 0.0444, 0.7153, 0.4667) — the same rect the
+ * live page writes into the uniform, so the still and the shader flag the lamp in
+ * the same place.
+ */
+const FIGURE_UV = [0.6563, 0.64];
+const COPY_GUARD_UV = [0.0667, 0.0444, 0.7153, 0.4667];
+
 const SWEEP_SECONDS = 32;
 const SWEEP_STEP = 0.2;
 /** Cheap enough that 161 phases cost less than one 4K frame; same 16:9 aspect. */
@@ -128,7 +158,7 @@ async function loadShaders() {
 }
 
 /** The capture page: one canvas, one triangle, one fragment program. */
-function capturePage(vertexShader, fragmentShader, ink, light) {
+function capturePage(vertexShader, fragmentShader, ink, light, FIGURE_UV, COPY_GUARD_UV) {
   return `<!doctype html><meta charset="utf-8"><style>
     html,body{margin:0;padding:0;background:#000;overflow:hidden}
     canvas{display:block}
@@ -137,6 +167,8 @@ function capturePage(vertexShader, fragmentShader, ink, light) {
   const FRAG = ${JSON.stringify(fragmentShader)};
   const INK = ${JSON.stringify(ink)};
   const LIGHT = ${JSON.stringify(light)};
+  const FIGURE = ${JSON.stringify(FIGURE_UV)};
+  const GUARD = ${JSON.stringify(COPY_GUARD_UV)};
   const canvas = document.getElementById('c');
   // The same attributes components/gl/GLCanvas.tsx asks the driver for, plus the
   // preserved buffer a screenshot of a canvas needs.
@@ -191,6 +223,8 @@ function capturePage(vertexShader, fragmentShader, ink, light) {
     gl.uniform1f(U('uQuality'), quality);
     gl.uniform3f(U('uInk'), INK[0], INK[1], INK[2]);
     gl.uniform3f(U('uLight'), LIGHT[0], LIGHT[1], LIGHT[2]);
+    gl.uniform2f(U('uFigure'), FIGURE[0], FIGURE[1]);
+    gl.uniform4f(U('uCopyGuard'), GUARD[0], GUARD[1], GUARD[2], GUARD[3]);
     gl.clearColor(0, 0, 0, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -240,7 +274,9 @@ async function main() {
   });
   const page = await context.newPage();
   page.on('pageerror', (e) => { throw e; });
-  await page.setContent(capturePage(atmosphereVertexShader, atmosphereFragmentShader, ink, light), {
+  console.log(`[poster] uFigure   ${FIGURE_UV.join(', ')}`);
+  console.log(`[poster] uCopyGuard ${COPY_GUARD_UV.join(', ')} (uv x0,y0,x1,y1 — the −50% contour is this rect's own boundary)`);
+  await page.setContent(capturePage(atmosphereVertexShader, atmosphereFragmentShader, ink, light, FIGURE_UV, COPY_GUARD_UV), {
     waitUntil: 'load',
   });
   await page.waitForFunction('window.__ready === true');

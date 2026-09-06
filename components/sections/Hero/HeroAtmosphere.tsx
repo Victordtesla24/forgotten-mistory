@@ -2,7 +2,7 @@
 
 import { ScreenQuad } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 
 import { PALETTE } from '@/lib/palette';
@@ -40,6 +40,11 @@ export default function HeroAtmosphere() {
       // lookups a pixel is the wrong budget for a backdrop on a device whose
       // whole frame is the width of one of these light shafts.
       uQuality: { value: 1 },
+      // HERO-SETPIECE-v3 §4.2. Both are written from the DOM by `readPlane()`
+      // below; the defaults are the constants they replace, so a frame drawn
+      // before the first measurement is the frame this shader always drew.
+      uFigure: { value: new THREE.Vector2(0.875, 0.46) },
+      uCopyGuard: { value: new THREE.Vector4(0.055, 0.1, 0.635, 0.945) },
       // Colours come from lib/palette.ts — the single place raw hex is allowed
       // to live for WebGL, so the scene can never drift off the ink palette.
       uInk: { value: new THREE.Color(PALETTE.ink900) },
@@ -47,6 +52,98 @@ export default function HeroAtmosphere() {
     }),
     [],
   );
+
+  /**
+   * Measure the two things the shader has to aim at: the photograph's centre and
+   * the union of the fold's text rects, both in this shader's uv (origin
+   * bottom-left, so `y` is flipped out of the DOM's top-left).
+   *
+   * The brief's §3 table is the design intent; the DOM is the source (R7). The
+   * text union is walked the same way the SPD instrument walks it — every
+   * element inside `#hero` that owns a non-empty text node and paints inside the
+   * fold — so the guard is bounded by exactly the rects the measure calls ink,
+   * and the two cannot drift apart.
+   *
+   * The union is also published on `window.__heroCopyGuard` in CSS px, because a
+   * bound that only exists inside a fragment program is a bound no reviewer can
+   * check (tests/a11y/hero-contrast.spec.ts prints and asserts it).
+   */
+  const readPlane = useCallback(() => {
+    if (typeof window === 'undefined') return null;
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    if (W === 0 || H === 0) return null;
+
+    const figureEl = document.querySelector('[data-testid="hero-portrait"]');
+    let figure: THREE.Vector2 | null = null;
+    if (figureEl) {
+      const r = figureEl.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0) {
+        figure = new THREE.Vector2(
+          (r.left + r.width / 2) / W,
+          1 - (r.top + r.height / 2) / H,
+        );
+      }
+    }
+
+    let x1 = Infinity;
+    let y1 = Infinity;
+    let x2 = -Infinity;
+    let y2 = -Infinity;
+    let guardPx: { x: number; y: number; w: number; h: number } | null = null;
+    const hero = document.querySelector('#hero');
+    if (hero) {
+      for (const el of Array.from(hero.querySelectorAll('*'))) {
+        const cs = getComputedStyle(el);
+        if (cs.visibility === 'hidden' || cs.display === 'none' || cs.opacity === '0') continue;
+        for (const node of Array.from(el.childNodes)) {
+          if (node.nodeType !== Node.TEXT_NODE || !(node.textContent || '').trim()) continue;
+          const range = document.createRange();
+          range.selectNodeContents(node);
+          for (const r of Array.from(range.getClientRects())) {
+            if (r.width <= 0 || r.height <= 0) continue;
+            if (r.top >= H || r.bottom <= 0) continue;
+            x1 = Math.min(x1, Math.max(0, r.left));
+            y1 = Math.min(y1, Math.max(0, r.top));
+            x2 = Math.max(x2, Math.min(W, r.right));
+            y2 = Math.max(y2, Math.min(H, r.bottom));
+          }
+        }
+      }
+    }
+    let guard: THREE.Vector4 | null = null;
+    if (x2 > x1 && y2 > y1) {
+      guardPx = { x: x1, y: y1, w: x2 - x1, h: y2 - y1 };
+      // uv, y up: the DOM's top edge becomes the uv rect's high y.
+      guard = new THREE.Vector4(x1 / W, 1 - y2 / H, x2 / W, 1 - y1 / H);
+    }
+    (window as unknown as { __heroCopyGuard?: typeof guardPx }).__heroCopyGuard = guardPx;
+    return { figure, guard };
+  }, []);
+
+  useEffect(() => {
+    const material = materialRef.current;
+    const apply = () => {
+      const read = readPlane();
+      const m = materialRef.current;
+      if (!read || !m) return;
+      if (read.figure) m.uniforms.uFigure.value.copy(read.figure);
+      if (read.guard) m.uniforms.uCopyGuard.value.copy(read.guard);
+    };
+    apply();
+    // The fold settles after fonts land and the entrance finishes; re-read then
+    // rather than every frame, which would cost a layout flush per frame.
+    const timers = [120, 600, 1800].map((ms) => window.setTimeout(apply, ms));
+    window.addEventListener('resize', apply);
+    if (document.fonts && 'ready' in document.fonts) {
+      document.fonts.ready.then(apply).catch(() => {});
+    }
+    void material;
+    return () => {
+      timers.forEach((t) => window.clearTimeout(t));
+      window.removeEventListener('resize', apply);
+    };
+  }, [readPlane]);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');

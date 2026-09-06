@@ -58,6 +58,19 @@ export const atmosphereFragmentShader = /* glsl */ `
   uniform vec3 uInk;         // deep background ink
   uniform vec3 uLight;       // luminous accent
   uniform float uQuality;    // 1 = full strata, 0 = the two cheap layers only
+  // The figure's measured centre, in this shader's uv (origin bottom-left).
+  // HERO-SETPIECE-v3 §4.2 / R7: written from the photograph's own
+  // getBoundingClientRect() rather than from the brief's per-viewport table, so
+  // the pool cannot drift from the CSS. The default is the constant it replaces
+  // (p = (0.75·halfWidth, -0.04) → uv (0.875, 0.46)), so a frame drawn before
+  // the first measurement is the frame this shader always drew.
+  uniform vec2 uFigure;
+  // The union of the fold's text rects, in uv (x0, y0, x1, y1), y up. The
+  // luminance-suppression lobe below is bounded *by* this rect: its −50 %
+  // contour is the rect's own boundary, which is inside the rect dilated 8 px
+  // by construction, so the guard can never buy contrast by darkening plane
+  // pixels that count in Σ_P m (§4.2, R3).
+  uniform vec4 uCopyGuard;
 
   // -- Value noise ----------------------------------------------------------
   // Hash-based value noise rather than gradient noise: at these scales the
@@ -226,8 +239,21 @@ export const atmosphereFragmentShader = /* glsl */ `
     // plate. They are what give the hero backdrop a subject.
     vec2 q1 = (p - vec2(-0.90 * halfWidth, 0.10) - parallax * 0.22) * vec2(1.00, 1.30);
     float poolName = exp(-dot(q1, q1) * 2.10);
-    vec2 q2 = (p - vec2(0.75 * halfWidth, -0.04) - parallax * 0.14) * vec2(1.20, 0.95);
-    float poolPlate = exp(-dot(q2, q2) * 2.60);
+    // The plate pool follows the photograph. uFigure is uv, so this holds on
+    // the uQuality = 0 phone branch too — the branch where every constant sized
+    // to 1440's half-width evaluated outside the frame (see the note above the
+    // shafts). aspect maps uv back into the aspect-corrected space p lives in.
+    vec2 figCentre = (uFigure - 0.5) * vec2(uResolution.x / max(uResolution.y, 1.0), 1.0);
+    vec2 q2 = (p - figCentre - parallax * 0.14) * vec2(1.20, 0.95);
+    // 1.40, not 2.60. The plate pool was written to sit behind a portrait card;
+    // it now has to *reach* the figure's outline, because TC-HERO-SET-04 measures
+    // the light in an 8-24 px annulus around the photograph against the fold's
+    // own mean. At 2.60 the Gaussian was down to 0.44 of its peak by the figure's
+    // left and right edges and the annulus measured 1.05x the fold mean against
+    // the 1.35 the case asks for (07-slice-tests.log). Widening the falloff — the
+    // pool's radius, not its peak — carries it past the outline instead of
+    // stopping inside it.
+    float poolPlate = exp(-dot(q2, q2) * 1.40);
     // Both pools breathe, on periods prime to each other and to the shafts'.
     // Light gathering in air is not a still: a static pool took the frame's
     // mean |dL| over 1.5 s to 0.00244, and the first breath written here — a
@@ -241,7 +267,7 @@ export const atmosphereFragmentShader = /* glsl */ `
     // scene's core is brighter at rest than it was, never dimmer.
     float poolBreath = 0.94 + 0.20 * sin(uTime * 0.56);
     float plateBreath = 0.94 + 0.20 * sin(uTime * 0.43 + 1.3);
-    float pools = poolName * 0.98 * poolBreath + poolPlate * 0.76 * plateBreath;
+    float pools = poolName * 0.98 * poolBreath + poolPlate * 1.15 * plateBreath;
 
     // The key itself, falling off quadratically.
     float distLight = length(p - (vec2(-0.775 * halfWidth, 0.40) + parallax * 0.35));
@@ -254,21 +280,47 @@ export const atmosphereFragmentShader = /* glsl */ `
     float vignette = smoothstep(1.62, 0.20, length(p));
     luma *= 0.44 + vignette * 0.72;
 
-    // -- The scrim --------------------------------------------------------
-    // The reading column is protected inside the shader rather than by a plate
-    // laid over it: a soft box in screen space, roughly the hero's own text
-    // column, inside which the atmosphere gives up most of its brightness.
-    // Light still wraps the type — the box has no edge a reader can find — but
-    // nothing luminous is allowed to gather directly under a line of copy,
-    // which is what lets the rest of the frame be as bright as the scene needs
-    // while every hero string stays above AA (tests/a11y/text-contrast).
-    float scrimX = smoothstep(0.055, 0.165, uv.x) * smoothstep(0.635, 0.475, uv.x);
-    float scrimY = smoothstep(0.100, 0.215, uv.y) * smoothstep(0.945, 0.855, uv.y);
-    luma *= 1.0 - 0.58 * scrimX * scrimY;
+    // -- The copy guard ---------------------------------------------------
+    // What used to stand here was a scrim shaped to the *reading column*: a box
+    // from uv.x 0.055 to 0.635 and uv.y 0.100 to 0.945, inside which the frame
+    // gave up 58 % of its brightness. That is over half the fold, and almost all
+    // of it is plane — pixels that carry Σ_P m and nothing else. Darkening them
+    // bought contrast under three runs of type by switching off the half of the
+    // frame the eye enters through, which is the composition ADV-2315Z failed
+    // and HERO-SETPIECE-v3 §4.2 forbids: a guard may not raise contrast by
+    // lowering SPD.
+    //
+    // So the lobe is bounded to the type itself. uCopyGuard is the union of
+    // the fold's text rects, measured from the DOM, and the smoothstep pairs
+    // below are centred *on that rect's own edges*: at x = uCopyGuard.x the
+    // first factor is exactly 0.5, so the guard's −50 % contour is the rect
+    // boundary. The rect is inside the same rect dilated 8 px — the dilation the
+    // SPD instrument uses — by construction, at every width, on both paths, with
+    // no tuning that could drift. Outside it the frame is at full brightness.
+    // The feather is what keeps the box from having an edge a reader can find.
+    // The feather is capped at 0.05 uv rather than taken as half the rect, so
+    // the interior of the guard actually reaches its full strength instead of
+    // peaking only at the centre of a 930 px headline. It is still centred on
+    // the edge, so the −50 % contour does not move.
+    float guardFeatherX = clamp(0.5 * (uCopyGuard.z - uCopyGuard.x), 0.001, 0.05);
+    float guardFeatherY = clamp(0.5 * (uCopyGuard.w - uCopyGuard.y), 0.001, 0.05);
+    float gx = smoothstep(uCopyGuard.x - guardFeatherX, uCopyGuard.x + guardFeatherX, uv.x)
+             * smoothstep(uCopyGuard.z + guardFeatherX, uCopyGuard.z - guardFeatherX, uv.x);
+    float gy = smoothstep(uCopyGuard.y - guardFeatherY, uCopyGuard.y + guardFeatherY, uv.y)
+             * smoothstep(uCopyGuard.w + guardFeatherY, uCopyGuard.w - guardFeatherY, uv.y);
 
     // A shoulder rather than a clamp: the highlights roll off instead of
     // flattening into a disc around the key.
     luma = luma / (1.0 + luma * 0.42);
+
+    // The guard is applied *after* the shoulder, and that is the whole of why it
+    // works. Applied before it, the shoulder gives most of it back: measured at
+    // 1440x900 on ?gl=force, luma under the name reached 4.13 raw, 1.74 after a
+    // 0.58 guard, and 1.00 after the shoulder — the same saturated white the
+    // unguarded frame draws, and the H1 measured 1.10:1 against the 95th
+    // percentile beneath it (07-slice-tests.log). After the shoulder, 0.58 means
+    // 58% of the light that is actually on screen.
+    luma *= 1.0 - 0.58 * gx * gy;
 
     // Fine grain at ~1.8%: enough to break up gradient banding on 8-bit panels,
     // far below the threshold where it reads as noise.
