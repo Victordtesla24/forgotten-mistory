@@ -245,7 +245,7 @@ Do **not** weaken either check. Repair them to the new truth:
 
 ### 7.6 TDD cases — write these BEFORE the edits in §7.4 (R9)
 
-**(1) `tests/engagement_single_product.test.mjs`** — new `node --test` file, text-parsed like
+**(1) `tests/engage_single_product.test.mjs`** — new `node --test` file, text-parsed like
 `tests/about_sourced_semantics.test.mjs` (node cannot import `.ts`), so it fails **before** a build:
 
 | Name | Assertion |
@@ -308,7 +308,7 @@ removed by this change).
 ```bash
 npx tsc --noEmit
 npm run lint
-node --test tests/engagement_single_product.test.mjs
+node --test tests/engage_single_product.test.mjs
 npm run build:static
 node scripts/validate/overhaul_static_audit.mjs                      # 10/10
 grep -rn "Engagement enquiry\|Email a project brief" out/ || echo "clean — one product shipped"

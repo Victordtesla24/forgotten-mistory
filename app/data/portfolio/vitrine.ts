@@ -13,7 +13,7 @@
  * do has not been looked at closely enough to be worth showing.
  */
 
-import { contact } from '../siteContent';
+import { ENGAGEMENT } from '../siteContent';
 import harvest from '../generated/repo-harvest.json';
 
 export type DrawingId =
@@ -132,14 +132,17 @@ export const vitrineContent = {
  * than none. Same inbox, same subject line: an enquiry that starts at the work
  * arrives indistinguishable from one that starts at the closing section, which
  * is the point of using one address rather than inventing a second.
+ *
+ * That last sentence used to be aspirational. This plate carried its own label,
+ * its own subject and no body at all, so the two doors promised two different
+ * products over one inbox — G-C1. It now spreads the single definition in
+ * `siteContent.ts`, byte for byte the plate #listen shows, and `note` is the
+ * only thing this section adds (docs/architecture/G-C1-HONEST-CTA.md §7.4;
+ * tests/engage_single_product.test.mjs ESP-08).
  */
-const ENGAGEMENT_SUBJECT = 'Engagement enquiry — Vikram Deshpande';
-
 export const engagement = {
-  label: 'Email a project brief',
+  ...ENGAGEMENT,
   note: 'These six are shipped work. The inbox that answers a role enquiry answers a project brief.',
-  subject: ENGAGEMENT_SUBJECT,
-  href: `mailto:${contact.email}?subject=${encodeURIComponent(ENGAGEMENT_SUBJECT)}`,
 } as const;
 
 export interface PlateMetric {

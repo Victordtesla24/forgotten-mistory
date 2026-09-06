@@ -1,0 +1,337 @@
+=== FAILING FIRST (S-2) — origin/main a926768 app code, node --test ===
+Sun Sep  6 00:19:35 UTC 2026
+TAP version 13
+# Subtest: ESP — one engagement product on Listen and Vitrine (G-C1)
+    # Subtest: ESP-01: the product is defined exactly once
+    not ok 1 - ESP-01: the product is defined exactly once
+      ---
+      duration_ms: 1.422842
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:94:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        app/data/siteContent.ts must build the engagement mailto exactly once
+        
+        0 !== 1
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 1
+      actual: 0
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:95:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Test.start (node:internal/test_runner/test:944:17)
+        node:internal/test_runner/test:1440:71
+        node:internal/per_context/primordials:466:82
+        new Promise (<anonymous>)
+        new SafePromise (node:internal/per_context/primordials:435:3)
+        node:internal/per_context/primordials:466:9
+        Array.map (<anonymous>)
+      ...
+    # Subtest: ESP-02: no section file redeclares a subject or a body
+    not ok 2 - ESP-02: no section file redeclares a subject or a body
+      ---
+      duration_ms: 0.319732
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:112:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        listen.ts still declares ENGAGE_SUBJECT — the product has two owners again
+        
+        true !== false
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: false
+      actual: true
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:118:16)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1442:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+      ...
+    # Subtest: ESP-03: both surfaces import the same symbol
+    not ok 3 - ESP-03: both surfaces import the same symbol
+      ---
+      duration_ms: 0.241182
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:127:3'
+      failureType: 'testCodeFailure'
+      error: 'listen.ts does not import ENGAGEMENT from ../siteContent'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual: |-
+        /**
+         * listen.ts — the closing section's copy, and there is very little of it.
+         *
+         * Under sixty visible words, immediately after the densest screen on the site.
+         * The residue in memory is meant to be the absence of the instrument after five
+         * screens of it: no chart, no table, no rail, no scene. One sentence, one rule,
+         * four real anchors, and a way to buy him a coffee.
+         *
+         * The sentence is a statement of disposition rather than a claim of fact, which
+         * is why it is the one line on the site that carries no source — and holding
+         * that distinction properly is itself the standard the rest of the page argues
+         * for.
+         */
+        
+        import { contact } from '../siteContent';
+        
+        /**
+         * The client's door, and what it does when opened.
+         *
+         * There is no booking tool on this account — checked by key NAME in
+         * .env.production, never by value: 45 names, none matching
+         * cal|calendar|book|schedul|meet (docs/architecture/LISTEN-FLAGSHIP.md §3.1) —
+         * and a calendar link that 404s is worse than none. So the plate does the
+         * scheduling work a booking page would: the mailto arrives with a subject and a
+         * four-line agenda the sender edits in place. Every line is a prompt to the
+         * sender; none is a promise. No response time is printed because none is
+         * sourced (siteContent.ts: nothing here promises a response time).
+         *
+         * Melbourne is sourced — `contact.location` and `coffee` below both say so.
+         * Straight apostrophe on purpose: a mailto body is read by mail clients, and
+         * ASCII survives every one of them.
+         */
+        const ENGAGE_SUBJECT = '20-minute call — Vikram Deshpande';
+        const ENGAGE_AGENDA = [
+          "What you're building:",
+          'The decision you need made:',
+          'Two or three times that suit you (Melbourne time):',
+          'Anything I should read first:',
+        ] as const;
+        /**
+         * Fully percent-encoded, line breaks as %0A, and held under 900 characters:
+         * older desktop clients truncate long mailto URLs (TC-LISTEN-CTA-02).
+         */
+        const ENGAGE_HREF = `mailto:${contact.email}?subject=${encodeURIComponent(
+          ENGAGE_SUBJECT,
+        )}&body=${encodeURIComponent(ENGAGE_AGENDA.join('\n'))}`;
+        
+        export const listenContent = {
+          kicker: 'Always willing to listen',
+          title: 'Feedback & coffee?',
+          /** The only italic on the entire site. Twenty words. */
+          sentence:
+            'I have been wrong often enough to want to hear it early. Tell me what you think — I’ll listen properly.',
+          /**
+           * The client's action, and the only filled plate in the section.
+           *
+           * A business client had nowhere to finish on this page: the four routes are
+           * addresses, and the two buttons on the site both hand a recruiter the CV
+           * (R-c13 CC-02). The route is a pre-addressed enquiry the visitor's own
+           * client can send, and the agenda in its body is what makes it a scheduling
+           * handshake rather than a blank compose window (ADV-1451Z P1, one door).
+           */
+          engage: {
+            label: 'Email a 20-minute-call agenda',
+            subject: ENGAGE_SUBJECT,
+            agenda: ENGAGE_AGENDA,
+            href: ENGAGE_HREF,
+          },
+          channels: [
+            { label: contact.email, href: `mailto:${contact.email}`, kind: 'email' },
+            { label: contact.phone, href: contact.phoneHref, kind: 'phone' },
+            {
+              label: 'linkedin.com/in/vikramd-profile',
+              href: contact.linkedin,
+              kind: 'external',
+            },
+            { label: 'github.com/Victordtesla24', href: contact.github, kind: 'external' },
+          ],
+          coffee: 'Coffee · Melbourne CBD · I’ll come to you',
+        } as const;
+        
+      operator: 'match'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:129:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: ESP-04: the strings are the agreed ones
+    not ok 4 - ESP-04: the strings are the agreed ones
+      ---
+      duration_ms: 0.19942
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:133:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        siteContent.ts must contain "20-minute call — Vikram Deshpande" exactly once
+        
+        0 !== 1
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 1
+      actual: 0
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:135:14)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: ESP-05: no booking verb anywhere in the product
+    not ok 5 - ESP-05: no booking verb anywhere in the product
+      ---
+      duration_ms: 76.03507
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:143:3'
+      failureType: 'testCodeFailure'
+      error: "Cannot read properties of undefined (reading 'label')"
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:145:40)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: ESP-06: no calendar host is introduced
+    ok 6 - ESP-06: no calendar host is introduced
+      ---
+      duration_ms: 0.266012
+      type: 'test'
+      ...
+    # Subtest: ESP-07: the one href decodes to the agreed subject and the agreed five-line body, under the 900-character cap
+    not ok 7 - ESP-07: the one href decodes to the agreed subject and the agreed five-line body, under the 900-character cap
+      ---
+      duration_ms: 22.626459
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:164:3'
+      failureType: 'testCodeFailure'
+      error: "Cannot read properties of undefined (reading 'label')"
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:167:29)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: ESP-08: Vitrine reuses the product rather than restating it, and adds only its note
+    not ok 8 - ESP-08: Vitrine reuses the product rather than restating it, and adds only its note
+      ---
+      duration_ms: 0.536154
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:186:3'
+      failureType: 'testCodeFailure'
+      error: 'vitrine.ts does not spread ENGAGEMENT — the two plates can drift again'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual: |-
+        export const engagement = {
+          label: 'Email a project brief',
+          note: 'These six are shipped work. The inbox that answers a role enquiry answers a project brief.',
+          subject: ENGAGEMENT_SUBJECT,
+          href: `mailto:${contact.email}?subject=${encodeURIComponent(ENGAGEMENT_SUBJECT)}`,
+        } as const;
+        
+        
+      operator: 'match'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:188:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..8
+not ok 1 - ESP — one engagement product on Listen and Vitrine (G-C1)
+  ---
+  duration_ms: 102.784661
+  type: 'suite'
+  location: '/root/forgotten-mistory/.claude/worktrees/w1-c1/tests/engage_single_product.test.mjs:93:1'
+  failureType: 'subtestsFailed'
+  error: '7 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 8
+# suites 1
+# pass 1
+# fail 7
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 403.895034
+=== FAILING FIRST (S-2) — new e2e AP-04/06/07/08 vs LIVE pre-fix site ===
+Sun Sep  6 00:19:40 UTC 2026
+[2mRunning [22m4[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/4] [chromium] › tests/e2e/audience-paths.spec.ts:153:7 › Audience paths › AP-04: #listen carries exactly one engagement action, named for a client
+[1A[2K[2/4] [chromium] › tests/e2e/audience-paths.spec.ts:204:7 › Audience paths › AP-06: both engagement plates are byte-identical — one product, not two
+[1A[2K[31m  1) [chromium] › tests/e2e/audience-paths.spec.ts:204:7 › Audience paths › AP-06: both engagement plates are byte-identical — one product, not two [39m
+
+    Error: two different mailto products: vitrine=mailto:sarkar.vikram@gmail.com?subject=Engagement%20enquiry%20%E2%80%94%20Vikram%20Deshpande | listen=mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=What%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m1[39m
+    Received: [31m2[39m
+
+    [0m [90m 218 |[39m       [36mnew[39m [33mSet[39m(plates[33m.[39mmap((p) [33m=>[39m p[33m.[39mhref))[33m.[39msize[33m,[39m
+     [90m 219 |[39m       [32m`two different mailto products: ${plates.map((p) => `${p.section}=${p.href}`).join(' | ')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 220 |[39m     )[33m.[39mtoBe([35m1[39m)[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 221 |[39m     expect(
+     [90m 222 |[39m       [36mnew[39m [33mSet[39m(plates[33m.[39mmap((p) [33m=>[39m p[33m.[39mtext))[33m.[39msize[33m,[39m
+     [90m 223 |[39m       [32m`two different labels: ${plates.map((p) => `${p.section}="${p.text}"`).join(' | ')}`[39m[33m,[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-c1/tests/e2e/audience-paths.spec.ts:220:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-audience-paths-Audienc-84774-tical-—-one-product-not-two-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-audience-paths-Audienc-84774-tical-—-one-product-not-two-chromium/error-context.md[22m
+
+
+[1A[2K[3/4] [chromium] › tests/e2e/audience-paths.spec.ts:231:7 › Audience paths › AP-07: both audiences finish — the employer takes the CV, the client sends a prefilled enquiry
+[1A[2K[31m  2) [chromium] › tests/e2e/audience-paths.spec.ts:231:7 › Audience paths › AP-07: both audiences finish — the employer takes the CV, the client sends a prefilled enquiry [39m
+
+    Error: #vitrine: empty body — a blank compose window
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+    [0m [90m 255 |[39m       [36mconst[39m params [33m=[39m [36mnew[39m [33mURLSearchParams[39m(url[33m.[39msearch)[33m;[39m
+     [90m 256 |[39m       expect((params[33m.[39m[36mget[39m([32m'subject'[39m) [33m?[39m[33m?[39m [32m''[39m)[33m.[39mtrim()[33m.[39mlength[33m,[39m [32m`${section}: empty subject`[39m)[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 257 |[39m       expect((params[33m.[39m[36mget[39m([32m'body'[39m) [33m?[39m[33m?[39m [32m''[39m)[33m.[39mtrim()[33m.[39mlength[33m,[39m [32m`${section}: empty body — a blank compose window`[39m)[33m.[39mtoBeGreaterThan(
+     [90m     |[39m                                                                                                           [31m[1m^[22m[39m
+     [90m 258 |[39m         [35m0[39m[33m,[39m
+     [90m 259 |[39m       )[33m;[39m
+     [90m 260 |[39m       hrefs[section] [33m=[39m href[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-c1/tests/e2e/audience-paths.spec.ts:257:107[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-audience-paths-Audienc-5747b-t-sends-a-prefilled-enquiry-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-audience-paths-Audienc-5747b-t-sends-a-prefilled-enquiry-chromium/error-context.md[22m
+
+
+[1A[2K[4/4] [chromium] › tests/e2e/audience-paths.spec.ts:265:7 › Audience paths › AP-08: no plate promises a tool that does not exist
+[1A[2K[31m  2 failed[39m
+[31m    [chromium] › tests/e2e/audience-paths.spec.ts:204:7 › Audience paths › AP-06: both engagement plates are byte-identical — one product, not two [39m
+[31m    [chromium] › tests/e2e/audience-paths.spec.ts:231:7 › Audience paths › AP-07: both audiences finish — the employer takes the CV, the client sends a prefilled enquiry [39m
+[32m  2 passed[39m[2m (19.4s)[22m

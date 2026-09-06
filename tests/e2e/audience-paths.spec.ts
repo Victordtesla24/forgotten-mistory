@@ -21,8 +21,39 @@ import { test, expect, type Page } from '@playwright/test';
 
 const CV_PATH = '/docs/Vik_Resume_Final.pdf';
 const LISTEN = '#listen';
-/** The client's action, in the client's words — never "hire me", never "resume". */
-const CLIENT_NAME = /engagement|book|start a project|work together/i;
+const VITRINE = '#vitrine';
+const ENGAGE = '[data-cta="engage"]';
+/**
+ * The client's action, in the client's words — never "hire me", never "resume",
+ * and never a verb that promises a tool this account does not have. The earlier
+ * form of this rule accepted `book` and `start a project`; both were renamed out
+ * of the site (docs/architecture/G-C1-HONEST-CTA.md §4) and are now the two
+ * things a plate must not say, so accepting them here would have been the test
+ * agreeing with the defect.
+ */
+const CLIENT_NAME = /email .*(agenda|brief)|engagement|enquiry|work together/i;
+/** A plate may not promise a booking tool: there is no calendar key on this account (§7.2). */
+const BOOKING_VERB = /\bbook(ing)?\b|start a project/i;
+/** The one product, verbatim (docs/architecture/G-C1-HONEST-CTA.md §7.3). */
+const SUBJECT = '20-minute call — Vikram Deshpande';
+const BODY = [
+  'Hiring or a project:',
+  "What you're building:",
+  'The decision you need made:',
+  'Two or three times that suit you (Melbourne time):',
+  'Anything I should read first:',
+];
+
+/** Every engagement plate on the page, in document order, with what it promises. */
+async function engagePlates(page: Page) {
+  return page.locator(ENGAGE).evaluateAll((els) =>
+    els.map((el) => ({
+      href: el.getAttribute('href') || '',
+      text: (el.textContent || '').replace(/\s+/g, ' ').trim(),
+      section: el.closest('section')?.id || '',
+    })),
+  );
+}
 
 async function gotoHome(page: Page) {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
@@ -167,6 +198,84 @@ test.describe('Audience paths', () => {
     } else {
       const response = await request.get(href!);
       expect(response.status(), `${href} returned ${response.status()}`).toBeLessThan(400);
+    }
+  });
+
+  test('AP-06: both engagement plates are byte-identical — one product, not two', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.locator(VITRINE).scrollIntoViewIfNeeded();
+    await page.locator(`${VITRINE} ${ENGAGE}`).first().waitFor({ state: 'attached', timeout: 15000 });
+    await page.locator(LISTEN).scrollIntoViewIfNeeded();
+    await page.locator(`${LISTEN} ${ENGAGE}`).first().waitFor({ state: 'attached', timeout: 15000 });
+
+    const plates = await engagePlates(page);
+    expect(plates.map((p) => p.section).sort(), 'the two engagement plates are not on #vitrine and #listen').toEqual([
+      'listen',
+      'vitrine',
+    ]);
+    expect(
+      new Set(plates.map((p) => p.href)).size,
+      `two different mailto products: ${plates.map((p) => `${p.section}=${p.href}`).join(' | ')}`,
+    ).toBe(1);
+    expect(
+      new Set(plates.map((p) => p.text)).size,
+      `two different labels: ${plates.map((p) => `${p.section}="${p.text}"`).join(' | ')}`,
+    ).toBe(1);
+
+    const params = new URLSearchParams(new URL(plates[0].href).search);
+    expect(params.get('subject'), 'the shared subject is not the agreed one').toBe(SUBJECT);
+    expect((params.get('body') ?? '').split('\n'), 'the shared body is not the agreed agenda').toEqual(BODY);
+  });
+
+  test('AP-07: both audiences finish — the employer takes the CV, the client sends a prefilled enquiry', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+
+    // Employer: the CV control is reachable in the same pass as the client's action.
+    const controls = await cvControls(page);
+    expect(controls.length, `no control resolves to ${CV_PATH}`).toBeGreaterThan(0);
+
+    // Client: the work (#vitrine) and the closing section (#listen) each finish,
+    // and they finish in the same place. Vitrine carried no body at all before
+    // G-C1 was fixed — this is the assertion that would have caught it.
+    const hrefs: Record<string, string> = {};
+    for (const section of [VITRINE, LISTEN]) {
+      await page.locator(section).scrollIntoViewIfNeeded();
+      const plate = page.locator(`${section} ${ENGAGE}`).first();
+      await plate.waitFor({ state: 'attached', timeout: 15000 });
+      const href = (await plate.getAttribute('href')) ?? '';
+
+      expect(href.length, `${section}: engagement plate has no href`).toBeGreaterThan(0);
+      expect(href.startsWith('mailto:'), `${section}: engagement href is not a mailto — ${href}`).toBe(true);
+      const url = new URL(href);
+      expect(url.pathname, `${section}: mailto recipient`).toContain('@');
+      const params = new URLSearchParams(url.search);
+      expect((params.get('subject') ?? '').trim().length, `${section}: empty subject`).toBeGreaterThan(0);
+      expect((params.get('body') ?? '').trim().length, `${section}: empty body — a blank compose window`).toBeGreaterThan(
+        0,
+      );
+      hrefs[section] = href;
+    }
+    expect(hrefs[VITRINE], 'the two doors send different enquiries').toBe(hrefs[LISTEN]);
+  });
+
+  test('AP-08: no plate promises a tool that does not exist', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await gotoHome(page);
+    await page.locator(VITRINE).scrollIntoViewIfNeeded();
+    await page.locator(`${VITRINE} ${ENGAGE}`).first().waitFor({ state: 'attached', timeout: 15000 });
+    await page.locator(LISTEN).scrollIntoViewIfNeeded();
+    await page.locator(`${LISTEN} ${ENGAGE}`).first().waitFor({ state: 'attached', timeout: 15000 });
+
+    const labels = (await engagePlates(page)).map((p) => p.text);
+    expect(labels, 'not exactly two engagement plates').toHaveLength(2);
+    for (const label of labels) {
+      expect(label, `"${label}" promises a booking tool`).not.toMatch(BOOKING_VERB);
+      expect(label, `"${label}" does not name the mechanism`).toMatch(/^Email\b/);
+      expect(label, `"${label}" is not named for a client`).toMatch(CLIENT_NAME);
     }
   });
 });

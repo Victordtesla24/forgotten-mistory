@@ -1,0 +1,90 @@
+--- targeted playwright (port 5602) ---
+[1A[2K[92/102] [chromium] › tests/e2e/vitrine.spec.ts:258:7 › Vitrine › TC-VIT-13: every stroke of a lit plate lands inside the cinematic band
+[1A[2K[93/102] [chromium] › tests/overhaul/listen-flagship.spec.ts:69:7 › Listen flagship — the band is the greeting, not a sine (C1) › TC-LISTEN-FLAG-01: the generated envelope is 256 in-range samples, is a waveform, and is pinned to the shipped greeting
+[1A[2K[94/102] [chromium] › tests/overhaul/listen-flagship.spec.ts:102:7 › Listen flagship — the band is the greeting, not a sine (C1) › TC-LISTEN-FLAG-02: the band is driven by uEnvelope, and the sine is gone from the fragment main (budget unchanged)
+[1A[2K[95/102] [chromium] › tests/overhaul/listen-flagship.spec.ts:123:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-01: #listen has exactly one filled action, it reads "Email a 20-minute-call agenda", and the email is a plain channel
+[1A[2K[31m  2) [chromium] › tests/e2e/vitrine.spec.ts:258:7 › Vitrine › TC-VIT-13: every stroke of a lit plate lands inside the cinematic band [39m
+
+    Error: all 7 strokes at dashoffset 0
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1200[39m
+    Received:    [31m1296.6999999955297[39m
+
+    [0m [90m 312 |[39m     expect(result[33m.[39mstrokes[33m,[39m [32m'the lit plate has traced strokes'[39m)[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m 313 |[39m     expect(result[33m.[39mdeclaredMaxMs[33m,[39m [32m`declared duration + delay of the slowest stroke (${result.strokes} strokes)`[39m)[33m.[39mtoBeLessThanOrEqual([35m900[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 314 |[39m     expect(result[33m.[39mlandedMs[33m,[39m [32m`all ${result.strokes} strokes at dashoffset 0`[39m)[33m.[39mtoBeLessThanOrEqual([35m1200[39m)[33m;[39m
+     [90m     |[39m                                                                              [31m[1m^[22m[39m
+     [90m 315 |[39m   })[33m;[39m
+     [90m 316 |[39m })[33m;[39m
+     [90m 317 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-c1/tests/e2e/vitrine.spec.ts:314:78[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-vitrine-Vitrine-TC-VIT-b4257-s-inside-the-cinematic-band-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-vitrine-Vitrine-TC-VIT-b4257-s-inside-the-cinematic-band-chromium/error-context.md[22m
+
+
+[1A[2K[96/102] [chromium] › tests/overhaul/listen-flagship.spec.ts:196:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-02: the plate is a mailto with a 20-minute-call subject and a five-line agenda body, under 900 characters
+[1A[2K[97/102] [chromium] › tests/overhaul/listen-flagship.spec.ts:231:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-03: no response-time promise, and the closing copy still fits the word budget with the plate on it
+[1A[2K[98/102] [chromium] › tests/overhaul/listen-flagship.spec.ts:250:7 › Listen flagship — the client CTA › TC-LISTEN-CTA-04: no booking host ships — not in the built export, not in the section
+[1A[2K[99/102] [chromium] › tests/overhaul/listen-flagship.spec.ts:294:7 › Listen flagship — four routes arrive on the line (C2) › TC-LISTEN-FLAG-04: one arrival mark per channel, in data order, at strictly increasing x
+[1A[2K[100/102] [chromium] › tests/overhaul/listen-flagship.spec.ts:322:7 › Listen flagship — one beat, still (C4) › TC-LISTEN-FLAG-06: jaws, rule and arrivals run once, and every arrival lands inside the jaws’ own window
+[1A[2K[101/102] [chromium] › tests/overhaul/listen-flagship.spec.ts:398:7 › Listen flagship — the instrument finally measures something (C5) › TC-LISTEN-FLAG-08: the caliper reading is `${durationSeconds.toFixed(2)} s` from the generated envelope, within 0.01 s of ffprobe
+[1A[2K[102/102] [chromium] › tests/overhaul/listen-flagship.spec.ts:435:7 › Listen flagship — the instrument finally measures something (C5) › TC-LISTEN-FLAG-08b: the reading is achromatic — a measurement, not a record (C3/C5)
+[1A[2K[31m  2 failed[39m
+[31m    [chromium] › tests/e2e/vitrine.spec.ts:141:7 › Vitrine › TC-VIT-10: a plate traces its drawing when the light reaches it [39m
+[31m    [chromium] › tests/e2e/vitrine.spec.ts:258:7 › Vitrine › TC-VIT-13: every stroke of a lit plate lands inside the cinematic band [39m
+[32m  100 passed[39m[2m (5.0m)[22m
+--- re-run TC-VIT-10 / TC-VIT-13 serially (workers=1) ---
+ 00:27:47 up 15:21,  5 users,  load average: 21.83, 17.57, 9.44
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/vitrine.spec.ts -g TC-VIT-10|TC-VIT-13 --reporter=line --workers=1
+
+[2mRunning [22m2[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/2] [chromium] › tests/e2e/vitrine.spec.ts:141:7 › Vitrine › TC-VIT-10: a plate traces its drawing when the light reaches it
+[1A[2K[2/2] [chromium] › tests/e2e/vitrine.spec.ts:258:7 › Vitrine › TC-VIT-13: every stroke of a lit plate lands inside the cinematic band
+[1A[2K[32m  2 passed[39m[2m (22.8s)[22m
+node:internal/modules/package_json_reader:314
+  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);
+        ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@playwright/test' imported from /tmp/w1c1-shots.mjs
+[90m    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:314:9)[39m
+[90m    at packageResolve (node:internal/modules/esm/resolve:768:81)[39m
+[90m    at moduleResolve (node:internal/modules/esm/resolve:855:18)[39m
+[90m    at defaultResolve (node:internal/modules/esm/resolve:985:11)[39m
+[90m    at #cachedDefaultResolve (node:internal/modules/esm/loader:747:20)[39m
+[90m    at ModuleLoader.resolve (node:internal/modules/esm/loader:724:38)[39m
+[90m    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:320:38)[39m
+[90m    at ModuleJob._link (node:internal/modules/esm/module_job:182:49)[39m {
+  code: [32m'ERR_MODULE_NOT_FOUND'[39m
+}
+
+Node.js v22.23.1
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1200/chrome-headless-shell-linux64/chrome-headless-shell
+╔═════════════════════════════════════════════════════════════════════════╗
+║ Looks like Playwright Test or Playwright was just installed or updated. ║
+║ Please run the following command to download new browsers:              ║
+║                                                                         ║
+║     npx playwright install                                              ║
+║                                                                         ║
+║ <3 Playwright Team                                                      ║
+╚═════════════════════════════════════════════════════════════════════════╝
+    at [90m/root/forgotten-mistory/.claude/worktrees/w1-c1/[39mshots.tmp.mjs:3:32 {
+  name: [32m'Error'[39m
+}
+
+Node.js v22.23.1
+vitrine [33m1440[39m {"text":"Email a 20-minute-call agenda","href":"mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A"}
+listen [33m1440[39m {"text":"Email a 20-minute-call agenda","href":"mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A"}
+vitrine [33m390[39m {"text":"Email a 20-minute-call agenda","href":"mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A"}
+listen [33m390[39m {"text":"Email a 20-minute-call agenda","href":"mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=Hiring%20or%20a%20project%3A%0AWhat%20you're%20building%3A%0AThe%20decision%20you%20need%20made%3A%0ATwo%20or%20three%20times%20that%20suit%20you%20(Melbourne%20time)%3A%0AAnything%20I%20should%20read%20first%3A"}

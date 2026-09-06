@@ -504,6 +504,61 @@ export const contact = {
 };
 
 /**
+ * The engagement product — one door, defined once, opened from two places.
+ *
+ * There is no booking tool on this account — checked by key NAME in
+ * .env.production, never by value: 90 names, none matching
+ * cal|book|schedul|meet (docs/architecture/G-C1-HONEST-CTA.md §7.2) — and a
+ * calendar link that 404s is worse than none. So the plate does the scheduling
+ * work a booking page would: the mailto arrives with a subject and a five-line
+ * agenda the sender edits in place. Every line is a prompt to the sender; none
+ * is a promise. No response time is printed because none is sourced (nothing
+ * in this file promises one).
+ *
+ * It lives here, beside `contact`, rather than in a section data file because
+ * two sections offer it: #vitrine, where a client finishes at the work, and
+ * #listen, where one finishes at the closing section. Both files already import
+ * `contact` from here, so this is the nearest shared home that needs no new
+ * file and no cross-section import. That placement is the fix for G-C1: while
+ * listen.ts and vitrine.ts each owned a private copy, the two drifted into two
+ * different products over one inbox — different label, different subject, and
+ * one of them a blank compose window. One definition makes that drift
+ * structurally impossible rather than merely tested for
+ * (docs/architecture/G-C1-HONEST-CTA.md §7.4; tests/engage_single_product.test.mjs).
+ *
+ * The first agenda line is what makes a single product honest across both
+ * doors: an employer arriving from #vitrine and a client arriving from #listen
+ * send the same enquiry, and are asked, in the same register as the other four
+ * prompts, to say which they are. It renders nowhere on the page.
+ *
+ * Melbourne is sourced — `contact.location` and the Listen coffee line both say
+ * so. Straight apostrophe on purpose: a mailto body is read by mail clients,
+ * and ASCII survives every one of them.
+ */
+const ENGAGEMENT_SUBJECT = '20-minute call — Vikram Deshpande';
+const ENGAGEMENT_BODY = [
+  'Hiring or a project:',
+  "What you're building:",
+  'The decision you need made:',
+  'Two or three times that suit you (Melbourne time):',
+  'Anything I should read first:',
+] as const;
+
+export const ENGAGEMENT = {
+  /** Names the mechanism first and the payload second: no booking tool is claimed. */
+  label: 'Email a 20-minute-call agenda',
+  subject: ENGAGEMENT_SUBJECT,
+  agenda: ENGAGEMENT_BODY,
+  /**
+   * Fully percent-encoded, line breaks as %0A, and held under 900 characters:
+   * older desktop clients truncate long mailto URLs (TC-LISTEN-CTA-02).
+   */
+  href: `mailto:${contact.email}?subject=${encodeURIComponent(
+    ENGAGEMENT_SUBJECT,
+  )}&body=${encodeURIComponent(ENGAGEMENT_BODY.join('\n'))}`,
+} as const;
+
+/**
  * Copy for the on-site message form (D-CONTACT-02). Before this existed the only
  * way to start a conversation was a bare `mailto:` — which is a silent no-op on a
  * machine with no mail handler, so a visitor could "act" and send nothing.

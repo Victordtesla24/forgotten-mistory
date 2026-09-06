@@ -25,9 +25,12 @@ import { listenContent } from '../../app/data/portfolio/listen';
  * unverifiable promises), so none is printed.
  *
  * What ships instead: one door, and it does the scheduling work a booking page would.
- * The plate reads "Book a 20-minute call" and its mailto prefills a four-line agenda
- * the sender edits in place; the address beneath it is a plain channel like the other
- * three. `tests/e2e/listen.spec.ts` TC-LISTEN-01..11 and
+ * The plate reads "Email a 20-minute-call agenda" and its mailto prefills a five-line
+ * agenda the sender edits in place; the address beneath it is a plain channel like the
+ * other three. That plate is now the site's ONE engagement product — `#vitrine` carries
+ * the same label, subject, body and href from the same definition
+ * (docs/architecture/G-C1-HONEST-CTA.md §7; tests/engage_single_product.test.mjs owns
+ * the single-definition rule, AP-06/07/08 own the rendered pair). `tests/e2e/listen.spec.ts` TC-LISTEN-01..11 and
  * `tests/overhaul/scene-listen.spec.ts` TC-SCENE-LISTEN-04/05 keep owning the section's
  * restraint, beat and anchor count; this file owns the door.
  */
@@ -35,9 +38,10 @@ import { listenContent } from '../../app/data/portfolio/listen';
 const LISTEN = '#listen';
 const ENGAGE = `${LISTEN} [data-cta="engage"]`;
 
-const LABEL = 'Book a 20-minute call';
+const LABEL = 'Email a 20-minute-call agenda';
 /** The agenda, verbatim. Every line is a prompt to the sender; none is a promise. */
 const AGENDA = [
+  'Hiring or a project:',
   "What you're building:",
   'The decision you need made:',
   'Two or three times that suit you (Melbourne time):',
@@ -116,7 +120,7 @@ test.describe('Listen flagship — the band is the greeting, not a sine (C1)', (
 });
 
 test.describe('Listen flagship — the client CTA', () => {
-  test('TC-LISTEN-CTA-01: #listen has exactly one filled action, it reads "Book a 20-minute call", and the email is a plain channel', async ({
+  test('TC-LISTEN-CTA-01: #listen has exactly one filled action, it reads "Email a 20-minute-call agenda", and the email is a plain channel', async ({
     page,
   }) => {
     for (const viewport of [
@@ -189,7 +193,7 @@ test.describe('Listen flagship — the client CTA', () => {
     }
   });
 
-  test('TC-LISTEN-CTA-02: the plate is a mailto with a 20-minute-call subject and a four-line agenda body, under 900 characters', async ({
+  test('TC-LISTEN-CTA-02: the plate is a mailto with a 20-minute-call subject and a five-line agenda body, under 900 characters', async ({
     page,
   }) => {
     await gotoListen(page);
@@ -204,7 +208,7 @@ test.describe('Listen flagship — the client CTA', () => {
     expect(href!.startsWith(`mailto:${contact.email}?`), `href does not address ${contact.email}: ${href}`).toBe(true);
     expect(href!.length, `mailto href is ${href!.length} characters`).toBeLessThanOrEqual(HREF_CAP);
     // Fully encoded: no raw whitespace, and the line breaks travel as %0A so every
-    // client's parser reads the same four lines.
+    // client's parser reads the same five lines.
     expect(href, 'mailto href carries raw whitespace').not.toMatch(/\s/);
     expect(href, 'agenda line breaks are not percent-encoded').toContain('%0A');
 
@@ -220,7 +224,7 @@ test.describe('Listen flagship — the client CTA', () => {
 
     const body = params.get('body') ?? '';
     const lines = body.split('\n');
-    expect(lines, 'decoded body is not exactly the four agenda lines').toEqual(AGENDA);
+    expect(lines, 'decoded body is not exactly the five agenda lines').toEqual(AGENDA);
     expect(lines.length).toBeGreaterThanOrEqual(4);
   });
 

@@ -1,0 +1,67 @@
+=== S-4 VERIFY Sun Sep  6 00:21:06 UTC 2026 ===
+--- node --test tests/engage_single_product.test.mjs ---
+# tests 8
+# suites 1
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 399.151427
+--- npx tsc --noEmit ---
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'tsc' --noEmit
+tsc exit=0
+--- npm run lint ---
+npm notice run forgotten-mistory@2.0.0 lint
+npm notice run next lint
+[32m✔ No ESLint warnings or errors[39m
+--- npm run build:static ---
+├ ○ /privacy                             408 B          [37m[1m96.8 kB[22m[39m
+├ ○ /robots.txt                          0 B                [37m[1m0 B[22m[39m
+├ ○ /sitemap.xml                         0 B                [37m[1m0 B[22m[39m
+└ ○ /terms                               408 B          [37m[1m96.8 kB[22m[39m
++ First Load JS shared by all            [37m[1m87.7 kB[22m[39m
+  ├ chunks/146-d3c95e4537c242d4.js       31.8 kB
+  ├ chunks/b6261da7-736e5ed275a9f3f9.js  53.6 kB
+  └ other shared chunks (total)          2.21 kB
+
+
+○  (Static)  prerendered as static content
+
+[prune] removed out/performance-benchmark.html
+[prune] removed out/performance-benchmark.txt
+[prune] removed out/_next/static/chunks/app/performance-benchmark
+[prune] done — 3 artifact(s) removed from the static export
+[sw-stamp] out/sw.js cache name is fm-static-a926768e (git HEAD); precaching 68 build asset(s)
+  BUILT-OUTPUT SECRET SCAN (NFR-SEC)
+  ----------------------------------------------------------
+  scanned : 49 files under out/
+  shapes  : 12 credential patterns
+  identity: 50 real credential value(s) from 1 file(s)
+  ----------------------------------------------------------
+  RESULT: PASS — no credential material in the emitted bundle.
+
+--- static audit ---
+         within budget
+  [PASS] TC-FR-PARITY  Resume facts present in siteContent
+         all key facts present
+  [PASS] TC-NFR-TYPE   Three font families — Source Serif 4 (display) + Inter (body) + IBM Plex Mono (data)
+         clean — exactly 3 families
+  [PASS] TC-NFR-SEC    No hardcoded secrets in client source
+         clean
+  [PASS] TC-ARCH-BENCH No /performance-benchmark route in static export
+         absent from out/
+  [PASS] TC-NFR-COMPLETE No truncation/placeholder/stub markers (app|components|lib)
+         clean — no incomplete-code markers
+  [PASS] TC-NFR-TOKEN  CSS custom properties match design token spec
+         all tokens match design spec
+  [PASS] TC-NFR-DEADCSS No globals.css rules for classes that do not exist
+         clean — every class selector names a class the source can render
+  ------------------------------------------------------------
+  RESULT: ALL PASS (10/10)
+
+  📄 JSON report → reports/static-audit.json
+
+--- one product shipped? ---
+clean — one product shipped
