@@ -1,0 +1,62 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-typography.spec.ts tests/a11y/hero-contrast.spec.ts tests/overhaul/hero-setpiece.spec.ts -g TYPE-0|A11Y-02|SET-03/05 --workers=1 --reporter=line
+
+[2mRunning [22m20[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/20] [chromium] › tests/a11y/hero-contrast.spec.ts:364:7 › TC-HERO-A11Y-02 @ 1440x900 — exact focus order, no tab stop in the plane, ≥ 48 px targets
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:364:7 › TC-HERO-A11Y-02 @ 1440x900 — exact focus order, no tab stop in the plane, ≥ 48 px targets[22m
+A11Y-02 1440x900: tab order → a.skip-link → nav [data-testid="minivic-skip"] → nav a.logo → nav button.menu-toggle → [data-testid="hero-actions"] a:nth-of-type(1) → [data-testid="hero-actions"] a:nth-of-type(2) → hero-proof → hero-proof → hero-proof → hero-proof
+
+[1A[2K[2/20] [chromium] › tests/a11y/hero-contrast.spec.ts:364:7 › TC-HERO-A11Y-02 @ 1280x800 — exact focus order, no tab stop in the plane, ≥ 48 px targets
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:364:7 › TC-HERO-A11Y-02 @ 1280x800 — exact focus order, no tab stop in the plane, ≥ 48 px targets[22m
+A11Y-02 1280x800: tab order → a.skip-link → nav [data-testid="minivic-skip"] → nav a.logo → nav button.menu-toggle → [data-testid="hero-actions"] a:nth-of-type(1) → [data-testid="hero-actions"] a:nth-of-type(2) → hero-proof → hero-proof → hero-proof → hero-proof
+
+[1A[2K[3/20] [chromium] › tests/a11y/hero-contrast.spec.ts:364:7 › TC-HERO-A11Y-02 @ 834x1194 — exact focus order, no tab stop in the plane, ≥ 48 px targets
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:364:7 › TC-HERO-A11Y-02 @ 834x1194 — exact focus order, no tab stop in the plane, ≥ 48 px targets[22m
+A11Y-02 834x1194: tab order → a.skip-link → nav [data-testid="minivic-skip"] → nav a.logo → nav button.menu-toggle → [data-testid="hero-actions"] a:nth-of-type(1) → [data-testid="hero-actions"] a:nth-of-type(2) → hero-proof → hero-proof → hero-proof → hero-proof
+
+[1A[2K[4/20] [chromium] › tests/a11y/hero-contrast.spec.ts:364:7 › TC-HERO-A11Y-02 @ 390x844 — exact focus order, no tab stop in the plane, ≥ 48 px targets
+[1A[2K[2m[chromium] › tests/a11y/hero-contrast.spec.ts:364:7 › TC-HERO-A11Y-02 @ 390x844 — exact focus order, no tab stop in the plane, ≥ 48 px targets[22m
+A11Y-02 390x844: tab order → a.skip-link → nav [data-testid="minivic-skip"] → nav a.logo → nav button.menu-toggle → [data-testid="hero-actions"] a:nth-of-type(1) → [data-testid="hero-actions"] a:nth-of-type(2) → hero-proof → hero-proof → hero-proof → hero-proof
+
+[1A[2K[5/20] [chromium] › tests/overhaul/hero-setpiece.spec.ts:262:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-03/05 @ 1440×900 [gl] — the figure stands in the plane and the name crosses its dissolve
+[1A[2K[6/20] [chromium] › tests/overhaul/hero-setpiece.spec.ts:262:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-03/05 @ 1440×900 [still] — the figure stands in the plane and the name crosses its dissolve
+[1A[2K[7/20] [chromium] › tests/overhaul/hero-setpiece.spec.ts:262:11 › TC-HERO-SET @ 1280×800 — the fold is one set piece › TC-HERO-SET-03/05 @ 1280×800 [gl] — the figure stands in the plane and the name crosses its dissolve
+[1A[2K[8/20] [chromium] › tests/overhaul/hero-setpiece.spec.ts:262:11 › TC-HERO-SET @ 1280×800 — the fold is one set piece › TC-HERO-SET-03/05 @ 1280×800 [still] — the figure stands in the plane and the name crosses its dissolve
+[1A[2K[9/20] [chromium] › tests/overhaul/hero-setpiece.spec.ts:262:11 › TC-HERO-SET @ 834×1194 — the fold is one set piece › TC-HERO-SET-03/05 @ 834×1194 [gl] — the figure stands in the plane and the name crosses its dissolve
+[1A[2K[10/20] [chromium] › tests/overhaul/hero-setpiece.spec.ts:262:11 › TC-HERO-SET @ 834×1194 — the fold is one set piece › TC-HERO-SET-03/05 @ 834×1194 [still] — the figure stands in the plane and the name crosses its dissolve
+[1A[2K[11/20] [chromium] › tests/overhaul/hero-setpiece.spec.ts:262:11 › TC-HERO-SET @ 390×844 — the fold is one set piece › TC-HERO-SET-03/05 @ 390×844 [gl] — the figure stands in the plane and the name crosses its dissolve
+[1A[2K[12/20] [chromium] › tests/overhaul/hero-setpiece.spec.ts:262:11 › TC-HERO-SET @ 390×844 — the fold is one set piece › TC-HERO-SET-03/05 @ 390×844 [still] — the figure stands in the plane and the name crosses its dissolve
+[1A[2K[13/20] [chromium] › tests/overhaul/hero-typography.spec.ts:124:7 › TC-HERO-TYPE-01 @ 1440x900 — H1 ÷ nav mark ∈ [2.5, 6]
+[1A[2K[2m[chromium] › tests/overhaul/hero-typography.spec.ts:124:7 › TC-HERO-TYPE-01 @ 1440x900 — H1 ÷ nav mark ∈ [2.5, 6][22m
+TYPE-01 1440x900: H1 112.0px ÷ brand 20.0px = 5.60
+
+[1A[2K[14/20] [chromium] › tests/overhaul/hero-typography.spec.ts:150:7 › TC-HERO-TYPE-02 @ 1440x900 — the mark sets in 1 line(s)
+[1A[2K[2m[chromium] › tests/overhaul/hero-typography.spec.ts:150:7 › TC-HERO-TYPE-02 @ 1440x900 — the mark sets in 1 line(s)[22m
+TYPE-02 1440x900: 1 line box(es) at tops [503], H1 width 969.9 of column 1248.0
+
+[1A[2K[15/20] [chromium] › tests/overhaul/hero-typography.spec.ts:124:7 › TC-HERO-TYPE-01 @ 1280x800 — H1 ÷ nav mark ∈ [2.5, 6]
+[1A[2K[2m[chromium] › tests/overhaul/hero-typography.spec.ts:124:7 › TC-HERO-TYPE-01 @ 1280x800 — H1 ÷ nav mark ∈ [2.5, 6][22m
+TYPE-01 1280x800: H1 102.4px ÷ brand 20.0px = 5.12
+
+[1A[2K[16/20] [chromium] › tests/overhaul/hero-typography.spec.ts:150:7 › TC-HERO-TYPE-02 @ 1280x800 — the mark sets in 1 line(s)
+[1A[2K[2m[chromium] › tests/overhaul/hero-typography.spec.ts:150:7 › TC-HERO-TYPE-02 @ 1280x800 — the mark sets in 1 line(s)[22m
+TYPE-02 1280x800: 1 line box(es) at tops [441], H1 width 887.9 of column 1152.0
+
+[1A[2K[17/20] [chromium] › tests/overhaul/hero-typography.spec.ts:124:7 › TC-HERO-TYPE-01 @ 834x1194 — H1 ÷ nav mark ∈ [2.5, 6]
+[1A[2K[2m[chromium] › tests/overhaul/hero-typography.spec.ts:124:7 › TC-HERO-TYPE-01 @ 834x1194 — H1 ÷ nav mark ∈ [2.5, 6][22m
+TYPE-01 834x1194: H1 66.7px ÷ brand 20.0px = 3.34
+
+[1A[2K[18/20] [chromium] › tests/overhaul/hero-typography.spec.ts:150:7 › TC-HERO-TYPE-02 @ 834x1194 — the mark sets in 1 line(s)
+[1A[2K[2m[chromium] › tests/overhaul/hero-typography.spec.ts:150:7 › TC-HERO-TYPE-02 @ 834x1194 — the mark sets in 1 line(s)[22m
+TYPE-02 834x1194: 1 line box(es) at tops [832], H1 width 583.6 of column 750.6
+
+[1A[2K[19/20] [chromium] › tests/overhaul/hero-typography.spec.ts:124:7 › TC-HERO-TYPE-01 @ 390x844 — H1 ÷ nav mark ∈ [2.5, 6]
+[1A[2K[2m[chromium] › tests/overhaul/hero-typography.spec.ts:124:7 › TC-HERO-TYPE-01 @ 390x844 — H1 ÷ nav mark ∈ [2.5, 6][22m
+TYPE-01 390x844: H1 52.0px ÷ brand 18.0px = 2.89
+
+[1A[2K[20/20] [chromium] › tests/overhaul/hero-typography.spec.ts:150:7 › TC-HERO-TYPE-02 @ 390x844 — the mark sets in 2 line(s)
+[1A[2K[2m[chromium] › tests/overhaul/hero-typography.spec.ts:150:7 › TC-HERO-TYPE-02 @ 390x844 — the mark sets in 2 line(s)[22m
+TYPE-02 390x844: 2 line box(es) at tops [489, 536], H1 width 274.0 of column 342.0
+
+[1A[2K[32m  20 passed[39m[2m (1.5m)[22m

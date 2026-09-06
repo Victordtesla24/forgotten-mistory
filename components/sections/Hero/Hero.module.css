@@ -433,14 +433,22 @@
        measure (HERO-FOLD-v2 §4 / D-2, D-6). The scale is DERIVED, not the
        brief's 166px estimate — a browser measurement of the real advance of
        'Vikram Deshpande' in the shipped Source Serif 4 at this tracking is
-       8.531x its font-size. The copy column is --page-max (measured 1248px at
-       1440, 1137px at 1280), so the vw term lands the advance at ~0.90 of the
-       column at 1440 and ~0.93 at 1280 (BM-2 ∈ [0.86, 1.00]); the 8.2rem cap
-       holds it under 1.00 as the column stops growing at --page-max, and the
-       3.75rem floor drives the authored two-line phone lockup below. Set here
-       rather than on --fs-name so the token stays the type-scale step and the
-       mark's optical size lives with the mark. */
-    font-size: clamp(3.75rem, 9.7vw, 8.2rem);
+       8.531x its font-size. Set here rather than on --fs-name so the token
+       stays the type-scale step and the mark's optical size lives with the
+       mark.
+
+       BOUNDED, from clamp(3.75rem, 9.7vw, 8.2rem) — HERO-SETPIECE-v3 §6, move
+       2. That scale resolved to 131.2 px at 1440 against an 18 px nav mark:
+       7.29 : 1, measured on this build
+       (02-tests-failing.log, TC-HERO-TYPE-01), and the exact shape of
+       ADV-2315Z's finding that the H1 owns the fold. clamp(3.25rem, 8vw, 7rem)
+       gives 112.0 / 102.4 / 66.7 / 52.0 px at the four gate widths — still
+       5.6x the statement's 19 px, so HERO-FOLD-v2 §3.3's two-axis dominance
+       argument is untouched, and the advance stays inside the measure at every
+       one of them (955 px of 1248 at 1440, 874 of 1152 at 1280, 569 of 751 at
+       834 — TC-HERO-TYPE-02 asserts the containment, not just the line count).
+       The 3.25rem floor still drives the authored two-line phone lockup. */
+    font-size: clamp(3.25rem, 8vw, 7rem);
     font-weight: 400;
     line-height: var(--lh-tight);
     /* Display tracking, at the tight edge of BM-4 [-0.035em, -0.015em]. This is
@@ -450,13 +458,31 @@
     color: var(--white);
 }
 
-/* The authored break for the phone lockup. Hidden above the phone breakpoint,
-   where the name sets on one line; shown at <= 600px, where 'Vikram Deshpande'
-   no longer fits the measure and a controlled two-line mark (BM-1b) beats a
-   wrap. It carries a leading space on the desktop side, so with the break gone
-   the accessible name is still 'Vikram Deshpande'. */
+/* The authored break for the phone lockup. Hidden above the breakpoint, where
+   the name sets on one line; shown below it, where a controlled two-line mark
+   (BM-1b) beats a wrap. It carries a leading space on the desktop side, so with
+   the break gone the accessible name is still 'Vikram Deshpande'. */
 .nameBreak {
     display: none;
+}
+
+/* HERO-SETPIECE-v3 §6 / TC-HERO-TYPE-02: one line at >= 720px, the authored
+   two-line lockup below it. The break used to appear at <= 600px, which was
+   the width where the OLD 9.7vw mark stopped fitting — a measurement of the
+   scale, not a decision about the lockup. With the mark bounded to 8vw the
+   name would now fit on one line all the way down to ~430px, so the break has
+   to be authored at the composition's own boundary instead of at the width
+   where the type happened to run out of room. The leading closes to 0.9em
+   (BM-1b: exactly two boxes, leading <= 0.92em) so the two words read as one
+   struck mark rather than a heading that wrapped. */
+@media (max-width: 719px) {
+    .nameBreak {
+        display: inline;
+    }
+
+    .name {
+        line-height: 0.9;
+    }
 }
 
 .role {
@@ -744,19 +770,8 @@
         padding-bottom: var(--space-2);
     }
 
-    /* The phone lockup. At 390 the measure is ~342px and the mark at its floor
-       (3.75rem) needs ~300px for 'Deshpande' alone, so one line cannot hold it.
-       The authored break sets it as two line boxes — 'Vikram' over 'Deshpande'
-       — and the leading closes to 0.9em (BM-1b: exactly two boxes, leading
-       <= 0.92em) so the two words read as one struck mark rather than a
-       heading that happened to wrap. */
-    .nameBreak {
-        display: inline;
-    }
-
-    .name {
-        line-height: 0.9;
-    }
+    /* The lockup's break and leading now belong to the <= 719px tier above, so
+       they land at §6's boundary rather than at this rhythm's. */
 
     .ledgerRow {
         gap: var(--space-1);
@@ -1223,13 +1238,21 @@
 @media (max-width: 700px) {
     .hero {
         /* The phone's fold is short and its name sets in two lines, so the foot
-           of the figure rides five pixels higher above the floor than it does
-           on a desktop. Measured at 390×844 on this build: the name's first
-           line box runs y474–556, the figure's foot lands at 499, its face-safe
-           box ends at 458 — sixteen pixels of daylight under the face, and
-           twenty-five pixels of the name written across the dissolve
-           (tests/overhaul/hero-setpiece.spec.ts SET-05). */
-        --figure-lift: 345px;
+           of the figure rides above the floor rather than on it.
+
+           Re-measured for the bounded mark (§6): at 3.25rem the two-line lockup
+           is 93.6 px tall instead of 108, and because the reading column is
+           anchored to the fold's floor a SHORTER name starts LOWER — its box
+           moved from y474 to y502, and at the old 345 px lift the figure's foot
+           stopped at 499. Three pixels of daylight between them: the name and
+           the picture had become two zones again, which is the whole failure
+           SET-05 exists to catch (02-tests-failing.log has the run). 318 px
+           puts the foot at 526 and the dissolve band at y489–526 against a name
+           that starts at 502 — twenty-four pixels of the mark written across
+           the dissolve, and the face-safe box still ends at 485, seventeen
+           pixels clear of the first glyph
+           (tests/overhaul/hero-setpiece.spec.ts SET-05, both paths). */
+        --figure-lift: 318px;
     }
 
     .planeFigure {

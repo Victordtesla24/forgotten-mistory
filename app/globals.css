@@ -79,6 +79,16 @@
     --cursor-size: 20px;
     /* The rendered height of the fixed bar, used by the hero to clear it. */
     --nav-height: 5.5rem;
+    /* The wordmark's optical size, and the second half of HERO-SETPIECE-v3 §6's
+       answer to ADV-2315Z ("Brand 16–18 px vs H1 ~60–131 px — H1 owns the
+       fold"). It was `--fs-lede`, a *reading* step that resolved to 18 px at
+       1440 and 16 px at 390 — a wayfinding mark sized by the body scale, and a
+       7.3 : 1 ratio against the name. A mark is not a paragraph: it gets its
+       own token so the ratio TC-HERO-TYPE-01 measures cannot drift when the
+       lede step is retuned for prose. 1.25 rem here, 1.125 rem on the phone
+       (below), against the H1's bounded clamp puts the pair at 5.60 / 5.12 /
+       3.34 / 2.89 across the four gate widths — inside §8's [2.5, 6.0]. */
+    --nav-mark: 1.25rem;
 
     /* ── The page's one column ────────────────────────────────────────────
        Every section used to invent its own container width and centre it, so
@@ -748,7 +758,10 @@ nav {
     text-decoration: none;
     /* 600, which is a weight Inter is actually loaded at. 700 was synthesised. */
     font-weight: 600;
-    font-size: var(--fs-lede);
+    /* §6, move 1: the H1 *is* the brand in this composition, so the nav mark is
+       wayfinding — but wayfinding that a reader can still see. Its own token
+       (--nav-mark), not the lede step it used to borrow. */
+    font-size: var(--nav-mark);
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--white);
@@ -767,6 +780,17 @@ nav {
     border-radius: 3px;
     padding-inline: 0.45rem;
     margin-inline: -0.45rem;
+}
+
+/* The phone's mark. 20 px beside the name's 52 px floor is 2.60 — inside §8's
+   band but with no margin — and at 390 the bar also carries `Menu` and the
+   bypass block on a 366 px measure. 18 px holds the same optical weight and
+   puts the ratio at 2.89 (TC-HERO-TYPE-01). The repo's phone breakpoint is
+   700 px, so the 834 gate width keeps the desktop mark. */
+@media (max-width: 700px) {
+    :root {
+        --nav-mark: 1.125rem;
+    }
 }
 
 .menu-toggle {
