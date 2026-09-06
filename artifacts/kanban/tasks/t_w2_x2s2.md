@@ -38,3 +38,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMPLETE (2026-09-06T03:54:49.671Z)
+ap-w2-x2s2: c29b55e1 pushed on worktree-w2-x2s2 (consolidating). Three parallax layers + eight strata: TC-SCENE-DESCENT-09 role spans recoverable from light — 9 edges, Spearman r 0.994 vs 0.9 bar at 1440 and 390 (baseline 4–5 edges, r 0.5 = red first); DESCENT-10 parallax shifts 13–14 px across 9 band groups (bar 2 groups / 3 px); ≤ 4 noise lookups, one draw call, zero instances; DPR/resolutionScale untouched; Tier A frame time median 83 ms @1440 under SwiftShader, LABELLED software-rasteriser, never reported as fps; gold 0; Hero untouched; audit 10/10. Story-contract tests (t1) were not merged into the worktree because t1 branched before s1 (net-negative diff) — assertions authored in scene-descent.spec.ts with v2 §5 thresholds verbatim instead.

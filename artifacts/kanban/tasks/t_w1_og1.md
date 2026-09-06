@@ -45,3 +45,6 @@ Lane result 01:51Z: fc03a0e6 pushed on worktree-w1-og1 (consolidation pending). 
 
 ## COMMENT (2026-09-06T01:57:27.643Z)
 PM probe 01:58Z on LIVE 70bd273d (Deploy 34005133000): /assets/og-image.png 2400x1260, max chroma 0, 0 px > 2 — matches the lane's numbers. Awaiting independent reviewer (composite SHA) for the formal PASS.
+
+## COMPLETE (2026-09-06T03:23:09.638Z)
+Independent live PASS G-OG1 (rev-97e19d07-w1): /assets/og-image.png 2400x1260, chroma 0.

@@ -40,3 +40,9 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-06T03:25:17.698Z)
+SCOPE ADD 03:27Z (from t_w2_x2t1): TC-STORY-ABOUT-02@390 — role-side maxima must sit ≥ 15% below the candidate-side mean; measured deficit 0.1098 (role 0.1733, candidate 0.1947). Your answered/open ≥ 1.6 fix should carry this; run tests/overhaul/story-contract.spec.ts -g ABOUT at both widths and report both numbers.
+
+## COMMENT (2026-09-06T04:07:55.990Z)
+Lane outcome 04:07Z (ap-w2-x2f5): 479e2b2 fixed the ratio (ring 1.556 @1440 rest, 3.348→7.791 @390 rest, fan up to 14.996) but the three open wedges give up light across the plane and TC-FLAGSHIP-VIS-ABOUT coverage fell 15.52% → 13.66% (floor 15%); three measured attempts to buy area back either stayed under the floor (14.28/14.82) or broke TC-CONTRAST-01/02 at 390 (15.31%) because guarded light under type (ceilings 0.10/0.24) can never count as coverage — the unguarded plane at 390 is where the heading and the instrument sit. The AP REVERTED the shader (ef2979a, pushed) and kept the extended TC-SCENE-ABOUT-10 (both states, both widths, per-sector means printed) as a failing assertion in the repo. Correct §0.1 behaviour: no floor was lowered. Three-way tension (story ratio ≥ 1.6 vs coverage ≥ 15% vs contrast) → solutions-architect decision t_w2_a3sa.

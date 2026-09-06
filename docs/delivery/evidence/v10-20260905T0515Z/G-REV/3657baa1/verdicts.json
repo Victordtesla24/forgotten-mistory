@@ -1,0 +1,350 @@
+{
+  "task_id": "t_w1_rev5",
+  "reviewer": "rev-3657baa1-w2",
+  "sha": "3657baa1",
+  "live_sha_at_start": "3657baa1",
+  "live_sha_at_finish": "3657baa1 (last confirmed 03:46:22Z); the live build moved to e90c4e43 at ~03:49Z, AFTER every measurement here",
+  "sha_note": "Live build-commit read by curl at 03:29:13Z and again at 03:46:22Z: 3657baa1 both times; origin/main = 3657baa at both. Every number below was taken on that one SHA. Ancestry verified with git merge-base --is-ancestor: 9835a950 (hero S2), 8100d99b (story tests), a2891fc (red3), 26213c4c (doc fixes) are all ancestors of 3657baa1.",
+  "probed": "2026-09-06T03:29Z-03:46Z",
+  "subject": "https://forgotten-mistory.web.app/",
+  "method": "scripts/validate/hero_plane_dominance.mjs exports (preparePage/measureFold/decodeLuma/relativeLuminance/percentile/planeDominance) pointed at the live origin; H1 glyph coverage recovered per pixel from a red-ink frame on a greyscale page (alpha = 1 - G_red/G_ground), so coverage is exact over near-white ground; ground read from an ink-transparent frame with layout (and therefore uCopyGuard) unchanged.",
+  "graded": {
+    "h1_readable_by_a_reader": "YES at all four viewports on both paths - median local contrast 15.25-15.6:1 over the name's ink (6449-29366 core-ink px per run); screenshots fold-*-A-shipped.png, h1-*-shipped.png",
+    "h1_contrast_contract": "FAIL - the descender of the p in Deshpande leaves the H1 plate at every viewport on both paths and sits at 1.10-1.55:1 (64-204 px, 0.69-0.99% of the name's ink, one connected blob starting exactly at the plate's bottom edge)",
+    "task_rule_glyph_box_ge_4_5": "FAIL at 6 of 8 (1280 gl/still, 834 gl/still, 390 gl/still); PASS at 1440 gl/still"
+  },
+  "interim": {
+    "hero": {
+      "spd": {
+        "1440x900_gl": 0.8257,
+        "1440x900_still": 0.8066,
+        "1280x800_gl": 0.7788,
+        "1280x800_still": 0.7586,
+        "834x1194_gl": 0.8756,
+        "834x1194_still": 0.8542,
+        "390x844_gl": 0.7828,
+        "390x844_still": 0.7153,
+        "min_075_failures": [
+          "390x844_still (0.7153)"
+        ],
+        "ship_078_failures": [
+          "1280x800_gl (0.7788)",
+          "1280x800_still (0.7586)",
+          "390x844_still (0.7153)"
+        ],
+        "lit_density": {
+          "1440x900_gl": 0.4011,
+          "1440x900_still": 0.3177,
+          "1280x800_gl": 0.3873,
+          "1280x800_still": 0.3116,
+          "834x1194_gl": 0.5327,
+          "834x1194_still": 0.3151,
+          "390x844_gl": 0.395,
+          "390x844_still": 0.2635
+        },
+        "lit_floor_0045": "PASS 8/8",
+        "ground_chain_root": "div.Hero_plane__iCeB5 (declared plane, D-4) on all 8 runs"
+      },
+      "h1_contrast": {
+        "glyph_L": 0.9216,
+        "glyph_colour": "rgb(246,246,246)",
+        "plate": "rgba(10,10,10,0.9)",
+        "glyph_box": {
+          "1440x900_gl": {
+            "p95_bg_L": 0.0144,
+            "ratio": 15.08,
+            "pass": true
+          },
+          "1440x900_still": {
+            "p95_bg_L": 0.0137,
+            "ratio": 15.25,
+            "pass": true
+          },
+          "1280x800_gl": {
+            "p95_bg_L": 0.5906,
+            "ratio": 1.52,
+            "pass": false
+          },
+          "1280x800_still": {
+            "p95_bg_L": 0.4969,
+            "ratio": 1.78,
+            "pass": false
+          },
+          "834x1194_gl": {
+            "p95_bg_L": 0.6654,
+            "ratio": 1.36,
+            "pass": false
+          },
+          "834x1194_still": {
+            "p95_bg_L": 0.5149,
+            "ratio": 1.72,
+            "pass": false
+          },
+          "390x844_gl": {
+            "p95_bg_L": 0.807,
+            "ratio": 1.13,
+            "pass": false
+          },
+          "390x844_still": {
+            "p95_bg_L": 0.5776,
+            "ratio": 1.55,
+            "pass": false
+          }
+        },
+        "line_box": {
+          "1440x900_gl": {
+            "p95_bg_L": 0.807,
+            "ratio": 1.13,
+            "pass": false
+          },
+          "1440x900_still": {
+            "p95_bg_L": 0.6939,
+            "ratio": 1.31,
+            "pass": false
+          },
+          "1280x800_gl": {
+            "p95_bg_L": 0.807,
+            "ratio": 1.13,
+            "pass": false
+          },
+          "1280x800_still": {
+            "p95_bg_L": 0.6795,
+            "ratio": 1.33,
+            "pass": false
+          },
+          "834x1194_gl": {
+            "p95_bg_L": 0.7529,
+            "ratio": 1.21,
+            "pass": false
+          },
+          "834x1194_still": {
+            "p95_bg_L": 0.6584,
+            "ratio": 1.37,
+            "pass": false
+          },
+          "390x844_gl": {
+            "p95_bg_L": 0.807,
+            "ratio": 1.13,
+            "pass": false
+          },
+          "390x844_still": {
+            "p95_bg_L": 0.5647,
+            "ratio": 1.58,
+            "pass": false
+          }
+        },
+        "per_pixel_reader_measure": {
+          "1440x900_gl": {
+            "core_ink_px": 29366,
+            "below_4_5_px": 204,
+            "below_4_5_share": 0.00695,
+            "worst_ratio": 1.26,
+            "median_ratio": 15.25,
+            "largest_blob_px": 204,
+            "largest_blob_box": {
+              "x": 857,
+              "y": 640,
+              "w": 34,
+              "h": 6
+            }
+          },
+          "1440x900_still": {
+            "core_ink_px": 29320,
+            "below_4_5_px": 204,
+            "below_4_5_share": 0.00696,
+            "worst_ratio": 1.55,
+            "median_ratio": 15.6,
+            "largest_blob_px": 204,
+            "largest_blob_box": {
+              "x": 857,
+              "y": 640,
+              "w": 34,
+              "h": 6
+            }
+          },
+          "1280x800_gl": {
+            "core_ink_px": 26512,
+            "below_4_5_px": 203,
+            "below_4_5_share": 0.00766,
+            "worst_ratio": 1.31,
+            "median_ratio": 15.25,
+            "largest_blob_px": 203,
+            "largest_blob_box": {
+              "x": 784,
+              "y": 565,
+              "w": 32,
+              "h": 7
+            }
+          },
+          "1280x800_still": {
+            "core_ink_px": 26467,
+            "below_4_5_px": 203,
+            "below_4_5_share": 0.00767,
+            "worst_ratio": 1.55,
+            "median_ratio": 15.6,
+            "largest_blob_px": 203,
+            "largest_blob_box": {
+              "x": 784,
+              "y": 565,
+              "w": 32,
+              "h": 7
+            }
+          },
+          "834x1194_gl": {
+            "core_ink_px": 10764,
+            "below_4_5_px": 84,
+            "below_4_5_share": 0.0078,
+            "worst_ratio": 1.14,
+            "median_ratio": 15.25,
+            "largest_blob_px": 84,
+            "largest_blob_box": {
+              "x": 511,
+              "y": 913,
+              "w": 21,
+              "h": 4
+            }
+          },
+          "834x1194_still": {
+            "core_ink_px": 10697,
+            "below_4_5_px": 84,
+            "below_4_5_share": 0.00785,
+            "worst_ratio": 1.32,
+            "median_ratio": 15.43,
+            "largest_blob_px": 84,
+            "largest_blob_box": {
+              "x": 511,
+              "y": 913,
+              "w": 21,
+              "h": 4
+            }
+          },
+          "390x844_gl": {
+            "core_ink_px": 6510,
+            "below_4_5_px": 64,
+            "below_4_5_share": 0.00983,
+            "worst_ratio": 1.1,
+            "median_ratio": 15.25,
+            "largest_blob_px": 64,
+            "largest_blob_box": {
+              "x": 160,
+              "y": 596,
+              "w": 15,
+              "h": 8
+            }
+          },
+          "390x844_still": {
+            "core_ink_px": 6449,
+            "below_4_5_px": 64,
+            "below_4_5_share": 0.00992,
+            "worst_ratio": 1.34,
+            "median_ratio": 15.6,
+            "largest_blob_px": 64,
+            "largest_blob_box": {
+              "x": 160,
+              "y": 596,
+              "w": 15,
+              "h": 8
+            }
+          }
+        }
+      },
+      "set_01_fold_text_blocks": {
+        "1440x900_gl": 2,
+        "1440x900_still": 2,
+        "1280x800_gl": 2,
+        "1280x800_still": 2,
+        "834x1194_gl": 2,
+        "834x1194_still": 2,
+        "390x844_gl": 2,
+        "390x844_still": 2
+      },
+      "set_01_cta_groups": 1,
+      "set_01_stray_pressables": 0,
+      "set_02_proof_top_vs_innerHeight": {
+        "1440x900": "900 >= 900",
+        "1280x800": "800 >= 800",
+        "834x1194": "1194 >= 1194",
+        "390x844": "844 >= 844",
+        "margin": "zero at all four"
+      },
+      "set_03_figure": {
+        "in_plane": true,
+        "widths_css_px": {
+          "1440x900": 846.0,
+          "1280x800": 800.0,
+          "834x1194": 750.6,
+          "390x844": 366.0
+        },
+        "natural": "1480x826",
+        "cap_846": "PASS"
+      },
+      "gl_01_02_canvases": {
+        "gl": 1,
+        "still": 0
+      },
+      "perf_03_nothing_plays": "PASS - 0 media requests in 8 runs; video preload=none, paused, currentTime 0",
+      "pal_01_fold_max_chroma": 0,
+      "vitals_live": {
+        "1440x900": {
+          "lcp_ms": 972,
+          "cls": 0
+        },
+        "390x844": {
+          "lcp_ms": 772,
+          "cls": 0
+        }
+      }
+    }
+  },
+  "regressions": {
+    "G-H6_hero_monochrome": "PASS - max chroma 0 over every fold capture, 8/8",
+    "G-C1_identical_hrefs": "PASS - two mailto '20-minute call' hrefs in served HTML, 314 chars each, byte-identical",
+    "G-A3_ten_sectors": "PASS - #about under ?gl=force: 1 canvas, dimensions 01-10 all present, h2 'Ten dimensions, answered'",
+    "G-MV1_first_fold_click_390": "PASS - launcher (207.6,776) 158.4x44 inside the first fold, elementFromPoint -> SPAN.minivic-launcher__pill, hit-is-self, real click opened a 342x396 panel in 3173 ms",
+    "G-OG1": "PASS - /assets/og-image.png 200, 2400x1260, 209035 B, max chroma 0 over 3024000 px",
+    "minivic_disclosure_visible": "PASS - 'MiniVic . synthetic' visible and unclipped at 1440 and 390; 'AI clone' 0 hits in served HTML",
+    "scene7_band_present": "PASS (presence only) - [data-scene=career-descent] present with 1 canvas at 1440 under ?gl=force; band height not re-derived (my selector resolved to the scene box), so rev-97e19d07's 160vh figure is neither confirmed nor contradicted",
+    "gl_off_zero_canvases": "PASS - 0 canvases in all six sections and 0 page-wide under ?gl=off; H1 visible; 0 pageerrors",
+    "api_tts": "NOT RE-MEASURED (cost gate) - GET /api/tts -> 405 proves the route is alive and rewritten to elevenLabsTts; a POST is a paid ElevenLabs call and this run is non-interactive, so it was not issued",
+    "TC-BOT-14": "FAIL (report only, fix in flight) - open panel (x984-1416, y360-812) overlaps the H1 glyph run (x96-1215.2, y480.05-660.05) by 231.2 x 180 px; min horizontal gap -231.2 px vs contract >= +16 px; identical to rev-97e19d07",
+    "pageerrors_console_errors": "PASS - 0 pageerrors and 0 console errors across 11 live page visits; only 4 SwiftShader 'GPU stall due to ReadPixels' performance warnings at 1440 gl"
+  },
+  "observations": [
+    "#about carries gold body text rgb(160,134,64) on '38 public repositories . ATO evidence harness . ANZ platform migrations' (app/data/portfolio/about.ts:65 via var(--gold) at components/sections/About/About.module.css:410) - 1545 chromatic px in a 519x10 strip. Sourced-claim line, so inside the palette rule's intent, but wider than 'caliper jaws / measured mark / live repo URLs'. Owner's palette call, not graded.",
+    "TC-HERO-SET-02 passes with exactly zero margin at all four viewports (proof top == innerHeight); any typography change in S3 that grows the fold by 1 px turns it red."
+  ],
+  "false_positives": [
+    "'The H1 fails contrast so the name is unreadable' - rejected: ground under the ink is L 0.0123-0.0144, median local contrast 15.25-15.6:1; the failing P95 numbers come from plane pixels inside the rect but not under the ink, plus one real descender",
+    "My own pass-1 count of 110 washed px at 1440 - superseded by the red-channel coverage mask (204 px); photometric alpha is blind where ink and ground are 16/255 apart, i.e. exactly the wash case (self-reported per orchestration-skill 10.3)",
+    "'Chroma 125 on the About screen is a monochrome regression' - rejected: it is the --gold sourced-evidence line, sampled and read",
+    "'The scene-7 band shrank to 100vh' - not claimed: my selector resolved to the scene box, not the sticky band rev-97e19d07 measured"
+  ],
+  "false_positive_in_implementer_report": "'SPD >= 0.78 at 1440/1280/834' is contradicted on live 3657baa1 at 1280x800: 0.7788 (gl) and 0.7586 (still). The 390 figure (0.7153, still) reproduces exactly.",
+  "not_covered": [
+    "/api/tts POST (cost gate)",
+    "/api/chat streaming and G-M4 first-token timing (out of scope; rev-97e19d07's G-M4 FAIL stands)",
+    "full Playwright battery (this task measures the live origin only)",
+    "greeting mp3 drift (assigned-OPEN from rev-97e19d07)"
+  ],
+  "R3": "OPEN",
+  "goal_complete": false,
+  "review_execution_complete": true,
+  "review_gates": {
+    "h1_measured_both_boxes_4vp_2paths": "PASS",
+    "regression_table_rerun_failures_first": "PASS",
+    "writes_only_under_G-REV/3657baa1": "PASS"
+  },
+  "goal_complete_reason": "Reviewer's own quality gates are all green and the review is COMPLETE \u2014 do not re-dispatch it. goal_complete=false reports the SUBJECT: F-1/F-2 (the H1 descender leaves the plate and sits at 1.10-1.55:1 at every viewport on both paths; the task's glyph-box rule fails 6 of 8), F-4 (SPD 0.7153 < the 0.75 floor at 390 reduced-motion), F-6 (TC-BOT-14 -231.2 px). Per docs/prompt.md section 5 and orchestration-skill section 11.2 the orchestrator must open a feedback_refactor_loop task for each; none may be silent-closed. Same convention as G-REV/97e19d07/verdicts.json.",
+  "post_review_move": {
+    "new_sha": "e90c4e43",
+    "commits": [
+      "479e2b2 feat(about): answered/open light dominates position in every state (G-A3 story)",
+      "e90c4e4 consolidate: merge worktree-w2-x2f5 into main"
+    ],
+    "non_doc_files": [
+      "components/sections/About/field.glsl.ts",
+      "tests/overhaul/scene-about.spec.ts"
+    ],
+    "impact": "Nothing in #hero changed, so F-1/F-2/F-3/F-4 (H1 contrast, SPD) and F-6 (TC-BOT-14) carry over unchanged to e90c4e43. Only the G-A3 regression row (about field) was re-measured on a build that has since been superseded."
+  }
+}

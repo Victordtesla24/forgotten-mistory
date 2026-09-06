@@ -38,3 +38,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-06T03:51:44.962Z)
+LIVE DEFECT from rev-3657baa1-w2 (F-1, graded FAIL, readers see it now): the H1's plate is cut at the baseline — the 'p' descender of 'Deshpande' hangs off the plate onto the near-white plane at 1440/1280/834/390 on both paths (204/203/84/64 ink px at 1.10–1.55:1, one blob starting exactly at plate bottom 639.8/565.3/912.7/595.9 px). Fix in Hero.module.css: the plate (or the shader copy guard) must cover the font's descent — extend the plate's bottom to the line box's descender (or guard the full line box + 8 px), never by adding a scrim over the plane. Also: SPD at 390 reduced-motion is 0.7153 (< 0.75 floor) and 1280 is 0.7788/0.7586 (< 0.78 ship) — S4 must land ≥ 0.78 on both paths at all four; TC-HERO-SET-02 currently passes with ZERO margin (proof top == innerHeight) — typography must not grow the fold by even 1 px.

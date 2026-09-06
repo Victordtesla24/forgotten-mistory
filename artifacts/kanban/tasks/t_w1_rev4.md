@@ -44,3 +44,6 @@ SCOPE NOTE 02:47Z: the composite SHA also carries scene 7's mount (worktree-w2-x
 
 ## STATUS (2026-09-06T02:48:46.346Z)
 running — dispatched 02:49Z reviewer rev-97e19d07-w1 on the composite SHA
+
+## COMPLETE (2026-09-06T03:23:09.444Z)
+Reviewer rev-97e19d07-w1 (max, 32 min incl. two ≥10-min idle windows): G-R2 PASS (order behavioural, disclosure readable, attempts[], warm 204), G-MV1 PASS (pill wins hit-test and a real click opens the panel on the first fold at 390 and 1440), G-OG1 PASS (2400x1260 chroma 0), ladder doc PASS (F-3: two stale §1 rows og-image/greeting.txt, §11 'untouched'), R3 OPEN, greeting MP3 drift OPEN→t_w2_r3a2, hero S1 + scene-7 interim recorded with no regression, LCP/CLS PASS, 0 pageerrors. FAIL: G-M4 on the Hosting fallback (strict-cold 1805 ms; Fastly buffers the whole SSE so Hosting first byte = origin completion; the panel renders the ORIGIN route at 725/978 ms, origin strict-cold 965 ms, 0/5 over) → t_w1_m4b; TC-BOT-14 at 1440 (panel x 984→1416 covers the H1 glyph run 560→1215 by 231 px; pre-existing) → t_w1_mv4; F-4 MINIVIC-BRAIN-0-4 addendum 3200 vs 2600 contradiction → t_w1_doc2. Evidence G-REV/97e19d07/.

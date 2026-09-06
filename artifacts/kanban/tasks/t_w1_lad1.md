@@ -41,3 +41,6 @@ running — dispatched 02:11Z coder (documentation, medium)
 
 ## COMPLETE (2026-09-06T02:13:45.731Z)
 coder-w1-lad1 (sonnet, medium, 2.6 min): 46accc4 pushed on worktree-w1-lad1 — §1/§2 rewritten to the live rungs (numbers re-measured with ffprobe/identify in the worktree; the orphan survives only as dated history). PM check on the branch: 640x360 appears 0 times, all under the RETIRED 2026-09-05 history marker (1). Consolidates next tick.
+
+## COMMENT (2026-09-06T03:23:09.726Z)
+Reviewer PASS on the raised defect (§1–2 truthful); F-3 residue (og-image row 1200x630/182,547 B vs live 2400x1260/209,035 B; greeting.txt 368 vs 384 B; §11 'untouched') → t_w1_doc2.

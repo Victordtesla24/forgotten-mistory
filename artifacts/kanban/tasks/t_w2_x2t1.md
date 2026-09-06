@@ -38,3 +38,6 @@ role_matrix: testing / qa → level 2 → effort **xhigh** (effort_cascade.yaml;
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMPLETE (2026-09-06T03:25:17.637Z)
+tester-w2-x2t1: 8100d99b pushed on worktree-w2-x2t1 — tests/overhaul/story-contract.spec.ts (16 TC-STORY ids × 2 viewports = 30 cases) + tests/helpers/isolate.ts; no production code. 15 pass / 15 fail: 14 red-by-design named to owning slices (HERO-01@1440 → hero S2/S4: centroid 0.2887 vs 0.12; ABOUT-02@390 → x2f5: deficit 0.1098 vs 0.15; EXP-02 both → x2-s2: role spans not recoverable from light; …), 1 environment flake (listen canvas attach under load, passed elsewhere). experience e2e 13/13; tsc/lint/build/audit 10/10; 0 pageerrors under ?gl=force.

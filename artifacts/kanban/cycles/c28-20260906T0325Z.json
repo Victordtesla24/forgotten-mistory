@@ -1,0 +1,114 @@
+{
+ "cycle": "v10-c28",
+ "window_utc": "2026-09-06T01:50Z–03:25Z",
+ "orchestrator": "Fable 5.1 ultracode (claude-cli), session_01WWt1D5i764agLExdpEWvRC",
+ "deploys_last_12": [
+  {
+   "run_id": "34008576074",
+   "created": "2026-09-06T03:16:21Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34008156501",
+   "created": "2026-09-06T03:06:21Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34007737165",
+   "created": "2026-09-06T02:56:20Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34007320437",
+   "created": "2026-09-06T02:46:02Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34006892473",
+   "created": "2026-09-06T02:35:53Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34006449139",
+   "created": "2026-09-06T02:25:37Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34006012319",
+   "created": "2026-09-06T02:15:23Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34005562108",
+   "created": "2026-09-06T02:05:23Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34005133000",
+   "created": "2026-09-06T01:55:20Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34004706433",
+   "created": "2026-09-06T01:45:19Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34004286177",
+   "created": "2026-09-06T01:35:18Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34003841785",
+   "created": "2026-09-06T01:25:12Z",
+   "conclusion": "success"
+  }
+ ],
+ "live_build_commits_in_window": [
+  "70bd273d (OG card)",
+  "5293e7d6 (MiniVic correction r2c)",
+  "2cc71657/b02a8863 (r2c evidence)",
+  "521dac9c→12cd9123 (rungs, About field — reviewed c27)",
+  "97e19d07 (launcher click mv2 + hero plane S1 + career-descent mount x2s1)",
+  "4043b8e9 (red2: 4 red specs fixed at the root)",
+  "0580bd24 (red3: deterministic ?gl=off contract)"
+ ],
+ "live_build_commit_now": "0580bd24 (03:18Z); queued: bookkeeping/w2-board-3, worktree-w2-h1s2 (hero S2 light), worktree-w2-x2t1 (story-contract tests)",
+ "o1_o5": "PAIR: Deploy 34004706433 + live 12cd9123 (About field), then every 10-min window through 03:18Z carried visible UI (OG card, MiniVic disclosure, launcher click, hero plane, seventh scene, panel clearance). Timer active; Hermes inactive; every deploy run in the window succeeded.",
+ "adversarial": {
+  "rev-12cd9123-w1": {
+   "G-A3": "PASS on the gap (ten sectors countable with the dial hidden; dominance 75.2%; dial ≤ --mist-400; 0 gold) — sub-claim answered/open ratio FAIL in the initial state → t_w2_x2f5 (running)",
+   "G-H5": "PASS (three chroma-flat rungs 720/1080/2160; selection by real press; 0 requests at rest)",
+   "G-MV1": "FAIL at 390 → fixed in mv2 (PASS in rev-97e19d07)",
+   "G-L1_motion": "MISS 0.0029 < 0.004 → product defect confirmed by tester control → t_w2_l1m",
+   "R5": "OPEN (24 fps)"
+  },
+  "rev-97e19d07-w1": {
+   "G-R2": "PASS",
+   "G-MV1": "PASS",
+   "G-OG1": "PASS",
+   "ladder_doc": "PASS (+2 stale rows → t_w1_doc2)",
+   "G-M4": "FAIL on the Hosting fallback only (strict-cold 1805 ms; Fastly buffers the whole SSE); rendered origin route 965 ms strict-cold, 0/5 over → §14 decision: fallback-only answer cap + disclosure (t_w1_m4b); nginx SSE proxy on the VPS filed as the SA option",
+   "TC-BOT-14_1440": "FAIL pre-existing (panel covers the surname by 231 px) → t_w1_mv4",
+   "hero_S1_interim": "recorded, no regression",
+   "scene7_interim": "recorded, no regression; 7 data-scene mounts served",
+   "R3": "OPEN"
+  },
+  "overall": "FAIL (R1/R2/R3/§14 not yet met — by design until hero S2–S4, scene-7 s2/s3, R3 second form land with PASS)"
+ },
+ "pea": {
+  "numerator": 5,
+  "denominator": 13,
+  "basis": "2315Z gap set (9 P0 + 4 P1). Independent live PASS: G-H6, G-C1, G-H5, G-A3 (gap), G-R2. Partial/open: G-M4 (origin PASS, Hosting fallback FAIL → m4b), G-H1 (S1+S2 shipped, S3/S4/S5 pending), G-X2 (s1 shipped, t1 pushed, s2 running), G-R3 (structurally OPEN; A2 queued in the corrections chain), G-E2 (x2-f1 queued), G-S2 (x2-f2 queued), G-H2 (not started), G-NEW-1 (click PASS; MONO-MV-02 root cause → mv3 running). R7 PASS held; R1/R2/R3/R5/R6 FAIL/OPEN."
+ },
+ "provider": "Anthropic OAuth (claude-cli Max) for all 30+ spawns this session; OpenRouter −5.384 USD (402 everywhere) — top-up min 5.39 / rec. 25 USD restores §0.4's happy path; no ANTHROPIC_API_KEY",
+ "alerts": [
+  "-X theirs consolidation dropped 32 ledger rows (0580bd2) — restored in bookkeeping/w2-board-3 with .gitattributes merge=union",
+  "O1 overruns (self-reported, measurement-driven): t_w1_a3 100 min, t_w2_h1s1 120 min, t_w2_x2s1 50 min, t_w1_red2 40 min, t_w1_red3 45 min, reviewers 21–32 min — later slices were split (tester vs shader; S5)",
+  "Load peaks 17–82 with encodes + two SwiftShader browsers; no OOM after 01:20Z; ≤ 3 heavy lanes rule held afterwards",
+  "Reviewer-2 F6 was a false positive (registered c27); reviewer-4 self-registered none"
+ ],
+ "board": "193 tasks; running: hero S2→S3→S4 chain, scene-7 t1→s2, corrections x2f5→mv3→r3a2, coder doc2; ready: m4b, mv4, l1m, h1s5 (after S3), x2t2/f0/f1/s3, r3a3–a7; cleanup remainder",
+ "fusion_council": "NOT convened (PEA < 100%)",
+ "next": "reviewer on the SHA carrying hero S2 + story tests; m4b + mv4 into the next freed slots; S3 → S5 (tester) → S4; scene-7 s2 → s3; R3 A2 → A3/A4; l1m; c29."
+}

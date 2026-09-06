@@ -1,0 +1,85 @@
+{
+  "task_id": "t_w1_rev4",
+  "reviewer": "rev-97e19d07-w1",
+  "sha": "97e19d07",
+  "sha_note": "Dispatch/subject SHA 97e19d07 was live 02:49-02:51Z and carries every curl/asset/served-HTML measurement and both strict-cold chat sequences. The live build moved to 4043b8e9 at ~02:56:43Z; every browser measurement and the five spaced sequences were taken on 4043b8e9. Non-doc diff between them is app/globals.css + tests/e2e/hero.spec.ts + tests/e2e/hero-photo.spec.ts only.",
+  "live_sha_at_finish": "4043b8e9",
+  "probed": "2026-09-06T02:49Z-03:20Z",
+  "ancestry_verified": {
+    "a134bb5c_r2c": true,
+    "fc03a0e6_og1": true,
+    "46accc4_lad1": true,
+    "9287089_hero_s1": true,
+    "origin_main_equals": "4043b8e9"
+  },
+  "gaps": {
+    "G-R2": "PASS",
+    "G-M4": "FAIL",
+    "G-MV1": "PASS",
+    "G-OG1": "PASS",
+    "ladder_doc": "PASS"
+  },
+  "gap_evidence": {
+    "G-R2": "disclosure scrollWidth==clientWidth 430/430 @1440 and 340/340 @390, scrollHeight==clientHeight 41/41 both, text-transform:none, 'live text via openai'; subtitle 273/273 and 226/226 unclipped; attempts[] on the done event and body in 9/9 sends, 4 entries, provider ids only (no URLs/keys); provider read at runtime in the shipped chunk; 'AI clone' 0 hits in served HTML, all 13 _next JS chunks (positive control 'synthetic' 6 hits), live DOM and aria/title/alt/placeholder",
+    "G-M4": "strict-cold Hosting POST first token 1805 ms vs < 1500 ms bar (32 min idle, own warm ping then 1.5 s). Hosting samples 1805/1886/1284/1329 - 2 of 4 over. Fastly buffers the SSE so Hosting first byte == origin TOTAL (firstChunk==headers==firstToken, total-firstToken <= 4 ms in every sample). Origin (the route the panel actually renders) 965/528/795 by curl and 725/978 in the browser - 0 of 5 over. No POST to /api/chat occurred in either browser run; the client walks origin-then-Hosting sequentially, so the 'Hosting answer first' escape clause does not exist",
+    "G-MV1": "390x844 scrollY 0 first fold: launcher (207.6,776) 158.4x44, elementFromPoint -> SPAN.minivic-launcher__pill, hitIsSelf true, real click ok in 861 ms, panel 342x396. 1440x900: (1231.6,812) 184.4x64, hitIsSelf true, click ok 1311 ms, panel 432x452. Never display:none. rev-12cd9123 F-1 (VIDEO.Hero_portraitVideo intercepting at 390) is fixed",
+    "G-OG1": "/assets/og-image.png 200, 2400x1260, 209035 B, maxChroma 0 over all 3024000 pixels; og:image:width/height meta match the file",
+    "ladder_doc": "F-5 of rev-12cd9123 fixed on origin/main: sections 1-2 describe the live rungs, the 640x360 orphan is marked history/RETIRED, changelog cites t_w1_lad1. Every video and still row matches live bytes. Two stale rows recorded as F-3 (og-image.png 1200x630/182547 B vs live 2400x1260/209035 B; minivic-greeting.txt 368 B vs live 384 B) plus section 11 still calling the OG card 'deliberately untouched'"
+  },
+  "regression": {
+    "hero_monochrome": "PASS - maxChroma 0 at 1440 and 390, 0 chromatic px of 324000/82290 sampled",
+    "G-C1_identical_hrefs": "PASS - the two 'Email a 20-minute-call agenda' links (#vitrine, #listen) byte-identical, 305 chars each",
+    "G-V3": "PASS - #vitrine min text contrast 6.20 over 60 leaves; 1 canvas, 6 cards, 9 live links",
+    "G-A3_ten_sectors": "PASS - #about mounts 1 canvas 1248x900 CSS under ?gl=force, dial 150 shapes, 10 enumerated dimensions 01..10",
+    "about_contrast": "PASS - min 6.20 over 43 leaves",
+    "experience_contrast": "PASS - min 4.81 (12px year ticks) >= 4.5",
+    "pageerrors_console": "PASS - 0/0 at 1440 and 390, normal and ?gl=force, plus both panel runs",
+    "api_tts": "PASS - POST 200, 30973 B audio/mpeg, 0.443 s, real MPEG layer III; GET 405",
+    "lcp_cls": "PASS - 1440: LCP 1204 ms CLS 0; 390: LCP 1512 ms CLS 0 (SwiftShader, loaded 4-core VPS)",
+    "TC-BOT-14_h1_clearance_1440": "FAIL - open panel (x984-1416, y360-812) overlaps the H1 glyph run (x560.3-1215.2, y480-660) by 231.2 x 180 px; minHorizontalGap -231.2 px vs contract >= +16 px; elementFromPoint at the H1 right text edge returns a panel child with the panel open and H1.Hero_name__vovn8 with it closed. Pre-existing: .name and --fs-display are byte-identical to 12cd9123"
+  },
+  "interim_not_graded": {
+    "G-H1_hero_s1": {
+      "figure_inside_plane": true,
+      "scene_inside_plane": true,
+      "img_intrinsic": "1480x826",
+      "rendered_1440": "846x472.2 (scale 0.572)",
+      "rendered_390": "366x204.3 (scale 0.247)",
+      "upscale": false,
+      "ledger_top_vs_innerHeight": "1086.1 >= 900 @1440; 1043 >= 844 @390 - below the fold",
+      "fold_text_blocks": 3,
+      "role_location_caption": "below the fold in [data-testid=hero-proof]",
+      "lcp_cls": "1204 ms / 0 @1440; 1512 ms / 0 @390",
+      "regressions_found": "none in contrast, pageerrors or G-MV1"
+    },
+    "G-X2_scene7_career_descent": {
+      "data_scene_in_served_html": true,
+      "band": "1440 px = 160vh @1440; 1182 px = 140vh @390 (note said 160vh)",
+      "stage_position": "sticky",
+      "canvases_in_scene": "0 at page top (lazy), 1 mid-band: 1392x900 CSS @1440, 390x844 CSS @390 under ?gl=force",
+      "overlay": "1 caption line + 5 aria-hidden year ticks (now/2025/2020/2015/2010); 0 headings, paragraphs, links or buttons in the sticky stage",
+      "gold_in_canvas": "0 - canvas-only crops maxChroma 0 (840000 px @1440, 262200 px @390); the only chroma is Chrome subpixel-AA on the caption glyphs at y665-706 / y511-566, cropped and visually confirmed",
+      "experience_contrast": "min 4.81 >= 4.5",
+      "G-E2": "no overlap with .trackYears at either width; dock box intersects [data-chart] by 112.4x64 px @1440 and 158.4x44 px @390. At 1440 that corner of the plot is empty - every bar and duration label sits above y 812. At 390 the fixed dock sits inside the plot area between the NAB and Microsoft rows; nothing fully hidden in the captured frame, but a row scrolling under it will be",
+      "pageerrors": 0,
+      "recruiter_sentence": "It reads as a near-black column of faint horizontal seams with 2010 at the floor - I can see time going downward, but I cannot count eight roles or tell which one was long."
+    }
+  },
+  "R3": "OPEN",
+  "open_items": {
+    "greeting_mp3_drift": "OPEN - assigned t_w2_r3a2. /assets/minivic-greeting.mp3 sha256 dd65f259d1bf5772... is byte-identical to the render committed at 91f46e9 (2026-09-05 12:48) whose transcript read 'I'm Vikram - his AI clone'; the transcript was rewritten at 2353948 (2026-09-06 01:56) to 'a synthetic stand-in for him' without re-rendering the audio. Printed line and spoken line disagree. No ASR on this host; proof is the unchanged digest predating the copy change. Re-render is a paid ElevenLabs call (cost gate). Graded assigned-OPEN, not a new FAIL"
+  },
+  "doc_defects": [
+    "F-3 ASSET-LADDER.md section 1: og-image.png 1200x630/182547 B (live 2400x1260/209035 B); minivic-greeting.txt 368 B (live 384 B); section 11 still says the OG card is 'deliberately untouched'",
+    "F-4 MINIVIC-BRAIN-0-4.md addendum: point 1 says DIRECT_FIRST_BYTE_TIMEOUT_MS is 3200 ms (matches lib/miniVicRoute.mjs:56 and the shipped chunk); point 3 says an origin producing nothing is abandoned 'by 2600 ms'"
+  ],
+  "false_positives": [
+    "Gold leaking into the descent canvas (maxChroma 122) - it is Chrome subpixel antialiasing on the caption glyphs; every canvas-only region is maxChroma 0, cropped and viewed",
+    "G-C1 fails because the page has 3 unique mailto hrefs - the G-C1 pair (the two 20-minute-call-agenda CTAs) is byte-identical; the others are different affordances",
+    "The panel's net::ERR_ABORTED on the origin POST is a broken send - it fires after the 200 and after the stream is fully read; the answer rendered, attempts[] arrived, 0 pageerrors",
+    "The badge is wrong because it renders MINIVIC . SYNTHETIC - the DOM text is 'MiniVic . synthetic'; CSS applies text-transform: uppercase",
+    "The strict-cold probes were not cold because the cooldown map showed cooling_down - that is the ?warm=1 branch's own primeProviderCooldowns() working; the container is never cold anyway (functions/index.js minInstances: 1)"
+  ],
+  "goal_complete": false,
+  "goal_complete_reason": "G-M4 FAIL (strict-cold Hosting first token 1805 ms vs < 1500 ms bar) and TC-BOT-14 FAIL (open panel covers the H1 surname by 231.2 px at 1440x900). Per docs/prompt.md section 5 the orchestrator must open a feedback_refactor_loop task for each; neither may be silent-closed."
+}

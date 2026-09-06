@@ -45,3 +45,6 @@ Lane result 02:42Z (ap-w1-mv2): 6d007adb pushed on worktree-w1-mv2. Root cause =
 
 ## COMMENT (2026-09-06T02:48:46.516Z)
 PM check 02:49Z: consolidated into origin/main and LIVE 97e19d07. Independent reviewer t_w1_rev4 judges on live.
+
+## COMPLETE (2026-09-06T03:23:09.578Z)
+Independent live PASS G-MV1 (rev-97e19d07-w1): first-fold hit-test returns the pill and a real click opens the panel at 390 and 1440. MONO-MV-02 root cause → t_w1_mv3.

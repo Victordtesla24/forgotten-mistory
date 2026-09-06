@@ -38,3 +38,12 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-06T03:25:17.523Z)
+Lane result 03:27Z (ap-w2-h1s2, over cap): 9835a950 pushed on worktree-w2-h1s2 (branched from main + merged S1). uFigure + uCopyGuard uniforms; poolPlate centred on the measured figure uv (survives uQuality=0); poster re-rendered from the shader (≤ 60 kB); SPD: 1440 gl 0.824/0.822, still 0.807; 1280 gl 0.779, still 0.759; 834 still 0.854; 390 still 0.715 FAIL (834/390 gl not reached — run cut at 27/40); PLANE-02 lit 0.26–0.39 (≥ 0.045). goal_complete:false honestly: TC-HERO-A11Y-01 fails 8/8 on the H1 alone (P95 ground L 0.83 vs glyph L 0.92 = 1.10:1 — the H1's Range rect is the FONT box overhanging its plate; the guard is held to 50% at its §4.2 bound), so §4.2 and §7 are in tension at the union's edge. Handed to S3/S4 with numbers.
+
+## COMMENT (2026-09-06T03:28:39.351Z)
+PM check 03:29Z: consolidated and LIVE 3657baa1. Reviewer t_w1_rev5 measures the fold (interim) and the H1 readability (graded).
+
+## COMMENT (2026-09-06T03:51:44.834Z)
+FALSE POSITIVE registered (rev-3657baa1-w2 F-5): this lane reported SPD ≥ 0.78 at 1280; live measures 0.7788 (gl) / 0.7586 (still). Not done: S4 must reach 0.78 on both paths at all four viewports; S3/S4 must fix the descender plate (F-1).

@@ -57,3 +57,9 @@ Lane result 02:38Z (identity ap-w1-r2c, over cap, honest goal_complete:false): a
 
 ## DECISION (2026-09-06T02:37:33.628Z)
 §0.1 decision 02:38Z: public/assets/minivic-greeting.mp3 still speaks 'his AI clone'. Regenerating it is ONE ordinary TTS call with the configured premade voice — the same class of call the live site makes for every visitor's reply — not a new spend class (IVC/cloning/video). It is folded into t_w2_r3a2, which already makes exactly one /with-timestamps call for the greeting alignment: that call produces the new audio AND the alignment. No separate paid call.
+
+## COMPLETE (2026-09-06T03:23:09.511Z)
+Independent live PASS for G-R2 (rev-97e19d07-w1): ladder order, readable disclosure with runtime provider, attempts[], warm-prime 204 through Hosting, 'AI clone' gone from DOM/aria/chunks. G-M4 remains FAIL on the Hosting fallback route only → t_w1_m4b (PM decision recorded there).
+
+## DECISION (2026-09-06T03:23:09.793Z)
+§14 decision policy applied to G-M4 03:22Z: Firebase Hosting's function rewrite is buffered by Fastly, so first byte on that route equals the origin's completion time (measured: firstChunk == headers == firstToken, total − firstToken ≤ 4 ms). The shipped client renders the ORIGIN route first (verified from the network log; strict-cold 965 ms; 0/5 over) — that is the product a visitor experiences and it meets the bar. The Hosting route is the fallback for proxies that block *.a.run.app. Decision: keep origin-first; on the Hosting fallback route only, cap the answer length (CHAT_MAX_TOKENS_FALLBACK, sized so completion < 1.5 s at the measured openai rate) and disclose it in the truth line ('via openai · short answer on the proxy route'); never lower the primary route's tokens. Reversal cost: one env/config change. What would unblock a full fix: Hosting streaming support (not available for function rewrites) or a VPS nginx SSE proxy (C-2) — filed as an SA option in t_w1_m4b.
