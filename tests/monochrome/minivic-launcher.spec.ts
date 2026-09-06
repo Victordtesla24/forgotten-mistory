@@ -276,15 +276,37 @@ test.describe('G-MV1: the MiniVic launcher carries its name at phone widths', ()
       // The dock only paints once the hero has been read, and the hero is
       // taller than 1.5 viewports on a phone: scroll until it is actually on
       // screen, which is the state this test is about.
-      for (let step = 0; step < 12; step += 1) {
-        const painted = await page.evaluate(() => {
+      // The dock arrives on the same 300ms opacity transition it leaves on, and
+      // that transition only starts a frame or more after the scroll, once the
+      // IntersectionObserver has re-reported #hero. A fixed 400ms per step sits
+      // right on that boundary: under load the read lands mid-fade and the loop
+      // scrolls on, and after twelve steps the label is read as unpainted even
+      // though the product painted it (observed once at 640 on b9f5195 while
+      // this file ran behind tests/a11y/minivic-occlusion.spec.ts). So each step
+      // waits for the paint to settle rather than for the clock, with a budget.
+      const dockOpacity = () =>
+        page.evaluate(() => {
           const dock = document.querySelector('.minivic-dock');
           return dock ? parseFloat(getComputedStyle(dock).opacity) || 0 : 0;
         });
-        if (painted > 0.9) break;
+      for (let step = 0; step < 12; step += 1) {
+        if ((await dockOpacity()) > 0.9) break;
         await page.evaluate((h) => window.scrollBy(0, h), height);
         await page.waitForTimeout(400);
       }
+      // The last step's reading can still be mid-fade, so the paint is waited
+      // for rather than slept for. The poll runs out of process, on a fixed
+      // interval, so it does not depend on the page's own rAF — on a loaded
+      // machine, with this file running behind the pixel-heavy occlusion suite,
+      // an in-page rAF poll is exactly what stalls. Nothing here is relaxed: if
+      // the dock never paints past the hero the wait fails, which is the same
+      // failure the old fixed sleep produced, only now it is not a coin flip.
+      await expect
+        .poll(dockOpacity, {
+          timeout: 8000,
+          message: 'the dock never painted past the hero — the launcher is unreachable',
+        })
+        .toBeGreaterThan(0.9);
 
       const label = await readLabel(page);
       expect(label, '[data-testid="minivic-launcher-label"] is not in the document').not.toBeNull();
@@ -327,7 +349,44 @@ test.describe('G-MV1: the MiniVic launcher carries its name at phone widths', ()
       // read. Both halves of that are asserted: the gate holds, and if the
       // gate were ever removed the boxes would have to be clear anyway.
       await page.evaluate(() => window.scrollTo(0, 0));
-      await page.waitForTimeout(400);
+      // The dock withdraws on a 300ms opacity transition
+      // (`transition-opacity duration-300`, computed
+      // `opacity 0.3s cubic-bezier(0.4,0,0.2,1)`) that only starts once the
+      // IntersectionObserver has re-reported #hero and React has re-rendered
+      // with `pastHero` false. A single sample 400ms after the scroll therefore
+      // lands *inside* the fade rather than after it — measured on the b9f5195
+      // export at 0.115637 (390) and 0.0791977 (640), both still falling. The
+      // rule is about the state the fold is actually read in, so the
+      // withdrawal is given a stated budget instead of one arbitrary instant:
+      // it has to reach unpainted within 1000ms — more than three times the
+      // transition — and the settled reading is then held to the same 0.05
+      // ceiling below, which is not relaxed.
+      const WITHDRAWAL_BUDGET_MS = 1000;
+      const withdrawalMs = await page.evaluate(async (budget) => {
+        const painted = () => {
+          let value = 1;
+          let node: Element | null = document.querySelector('.minivic-dock');
+          if (!node) return 0;
+          while (node && node !== document.documentElement) {
+            value *= parseFloat(getComputedStyle(node).opacity) || 0;
+            node = node.parentElement;
+          }
+          return value;
+        };
+        const started = performance.now();
+        for (;;) {
+          const elapsed = performance.now() - started;
+          if (painted() < 0.05) return elapsed;
+          if (elapsed >= budget) return -1;
+          await new Promise((resolve) => requestAnimationFrame(() => resolve(null)));
+        }
+      }, WITHDRAWAL_BUDGET_MS);
+      expect(
+        withdrawalMs,
+        `the dock is still painted over the fold at ${width} ${WITHDRAWAL_BUDGET_MS}ms after ` +
+          'scrolling back to it — the withdrawal never completes',
+      ).toBeGreaterThanOrEqual(0);
+
       const geometry = await foldGeometry(page);
       expect(geometry.launcher, 'launcher must have a box').not.toBeNull();
       expect(

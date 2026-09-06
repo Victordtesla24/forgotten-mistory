@@ -566,11 +566,21 @@
     overflow-wrap: anywhere;
 }
 
+/* --mist-400, not --ink-300 (t_w1_mv3, TC-MV-OCCLUDE-01).
+   #7D7D7D clears AA on the page ground (4.81:1 on --ink-900) and nowhere
+   brighter: the ground ceiling that keeps it at 4.5:1 is L ≤ 0.00669, i.e.
+   rgb(19,19,19). At 390 the MiniVic launcher floats over this list, and its own
+   hairline — --card-border, rgb(255 255 255 / 0.09) composited over --ink-900 —
+   paints rgb(30,30,30), so the exclusion prose measured 4.05:1 under it
+   (W1-RED2/07-decisions.md, scrollY 16036). The launcher's border is not the
+   thing that moves — dropping it to 0.03 alpha would cost the hairline most of
+   its visibility — so the ink rises instead: #909090 on rgb(30,30,30) is
+   5.22:1, and 6.20:1 on the page ground it is normally read against. */
 .exclusion dd {
     margin: 0;
     font-size: var(--fs-small);
     line-height: var(--lh-caption);
-    color: var(--ink-300);
+    color: var(--mist-400);
 }
 
 .stamp {
