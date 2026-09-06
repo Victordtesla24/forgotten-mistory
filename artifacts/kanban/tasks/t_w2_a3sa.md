@@ -34,3 +34,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T04:07:56.442Z)
 running — dispatched 04:08Z SA (max, read-only)
+
+## COMPLETE (2026-09-06T04:19:56.332Z)
+SA sa-w2-a3 (max, 11 min): decision (c) recorded in docs/architecture/ABOUT-STORY-v2.md (PM verified file exists) — open sectors DRAWN as structure (broken arc −cos(within·2π·5) + 45° ruling, depth 0.42, gated by (1−guarded)(1−answered), mean 0 so coverage 15.52% is untouched and no ceiling is breached); TC-SCENE-ABOUT-10 ratio clause replaced by per-sector normalised DFT amplitude at the mark frequency (open ≥ 3.0× answered AND ≥ 0.20) + non-inversion floor answered/open ≥ 1.20 (today 1.499–4.181) — strictly stronger and position-invariant (the 1.596-with-sector-5-dark case cannot pass it); TC-STORY-ABOUT-03 added; -01/-02 and every floor unchanged. Slices: x2-f6 (AP, 30 min, bounded tuning window + stop conditions, revert precedent ef2979a) and x2-f7 (conditional: 390 unguarded plane).

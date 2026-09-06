@@ -1,0 +1,93 @@
+{
+  "task_id": "t_w1_rev6",
+  "reviewer": "rev-1ba16f90-w2",
+  "sha": "1ba16f90",
+  "subject": "https://forgotten-mistory.web.app/",
+  "probed_utc": "2026-09-06T04:00Z-04:26Z",
+  "sha_note": "The live build moved TWICE during this review. 1ba16f90 (start, 04:00Z) carried 479e2b2 (About G-A3 light, x2f5) and c29b55e (scene-7 depth, x2s2); hero S3 was NOT in it. At ~04:10Z live became b9f5195e, whose only application change is ef2979a, a REVERT of the About G-A3 light. At ~04:18Z live became 83f4b208, which merges worktree-w2-h1s3 (hero S3, 1e1cb39). Ancestry checked with git merge-base --is-ancestor: c29b55e1 and 3657baa1 are ancestors of 1ba16f90; worktree-w2-h1s3 is NOT an ancestor of 1ba16f90 and IS an ancestor of 83f4b208.",
+  "measurement_sha_map": {
+    "G-A3 story clause (all four states)": "1ba16f90",
+    "About 1440 at-rest confirmation (2 further captures)": "1ba16f90 or b9f5195e (taken across the revert; field.glsl.ts on b9f5195e is byte-identical to 3657baa1, and both readings fail the clause)",
+    "scene 7 (band, edges, parallax, text, frame time, pageerrors)": "1ba16f90/b9f5195e — descent.glsl.ts is identical across them",
+    "hero, 4 viewports x 2 paths (F-1, TYPE-01/02, SPD, SET-02, CTA)": "83f4b208 (post-S3); the pre-S3 run on b9f5195e is kept in 05-hero-regression.json as the S3 delta",
+    "regression table (G-H6, G-C1, G-MV1, G-OG1, gl=off, TC-BOT-14, LCP/CLS)": "83f4b208"
+  },
+  "hero_s3_landed": true,
+  "hero_s3_landed_note": "Not at review start. worktree-w2-h1s3 merged as 83f4b208 at ~04:18Z, mid-review; the hero block was re-run from scratch on it.",
+  "gaps": {
+    "G-A3-story": "FAIL — at 1440 in the at-rest state (data-axis -1, the screen a reader arrives on): 5/10 seams clear the 12% step (gate >= 9/10); TC-STORY-ABOUT-02 role-side maximum 0.3865 sits 8.4% ABOVE the candidate-side mean 0.3565 (gate >= 15% below); the fan outside the bezel is inverted at answered/open 0.34. The ring ratio 1.632 clears 1.60 by 0.032 and does not hold still: five captures of the same state read 1.632 / 1.269 / 1.389 with 5/10, 5/10, 3/10 seams. PASSES at 1440 dimension 4 (10/10, 8.138, 84.7% below), 390 at rest (10/10, 7.561, 82.3% below) and 390 dimension 1 (10/10, 3.244, 53.5% below).",
+    "G-A3-reverted": "FAIL (process) — the change under review is out of production. ef2979a/b9f5195e backs out the G-A3 state-gate light; `git diff 3657baa1:components/sections/About/field.glsl.ts b9f5195e:...` is empty, so the live shader is the pre-x2f5 one and the story clause has no fix on live.",
+    "G-A3-other-clauses": "PASS — ten sectors countable 10/10 in every state; plane dominance 0.7683 (>= 0.75); dial brightest stroke L 0.2789 == --mist-400 L 0.2789; 0 gold px in ring and fan in all four states; about contrast min 6.58 (>= 4.5); reduced-motion and ?gl=off both leave 0 canvases, 10 items, the heading and the SVG, 0 pageerrors."
+  },
+  "interim": {
+    "scene7": {
+      "band_present": "PASS — [data-scene=career-descent] with 1 canvas; scene 1392x900; [data-descent-band] 1392x1440 = 1.60 vh, matching the 160vh contract",
+      "spans_legible_as_bands": "PASS on count — my own detector (row-profile local minima, sigma 5, >= 0.02 drop) finds 10 edges at both scroll positions; contract >= 8",
+      "spacing_proportional_to_duration": "MISS — Spearman rho best 0.214 of four alignments (offset 0 newest-first -0.071, oldest-first 0.214; offset 1 -0.143 / 0.119) against a contract of >= 0.9. Edge rows 119 148 394 424 460 494 644 686 767 794; gaps 29 246 30 36 34 150 42 81 27. The section's own axis ticks (now/2025/2020/2015/2010 at y 101/174/392/610/829) give 43.7 px/year, predicting 22 29 338 36 44 40 142 55. The two long roles read as a 246 px and a 150 px band, ~27% short and not at the predicted positions.",
+      "parallax": "PASS — over a 270 px scroll (t 0.25 -> 0.75), separating the row profile by spatial frequency: far/low-frequency +17 rows (r 0.473), strata/mid -14 (r 0.619), near/high -15 (r 0.606). Three rates, one opposite in sign: real depth, not a gradient.",
+      "caption_only_over_the_canvas": "MISS — 10 text nodes intersect the 1392x900 stage box: the scene's own caption (1) and five axis ticks (5), plus persistent chrome VIKRAM. / Download CV / Menu / Ask Mini Vic (4). TC-STORY-DESCENT-02 as written cannot pass while the stage is 100vh and the site has persistent chrome; recorded as a contract defect plus a real overlap.",
+      "pageerrors": "PASS — 0 pageerrors, 0 console errors",
+      "frame_time_recorded_not_graded": {
+        "median_raf_ms": 50.0,
+        "p95_raf_ms": 116.6,
+        "samples": 145,
+        "renderer_string": "Google Inc. (Google) / ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "tier": "A (SIGNATURE-SCENES-v2 6.2)",
+        "may_be_called": "median rAF 50 ms, software rasteriser — never '60 fps'"
+      }
+    },
+    "hero": {
+      "graded_on": "83f4b208 (post-S3)",
+      "F1_descender_ink_off_the_plate": "FAIL 8/8 — gate is 0 px. 1440 gl/still 145 px, 1280 gl/still 130 px, 834 gl/still 57 px, 390 gl/still 42 px. Every one of those pixels lies BELOW the plate's bottom edge (1440 y=640 vs plate 522+118; 1280 566 vs 458+108; 834 913 vs 843+70; 390 596 vs 502+94) and every one is below 4.5:1 (worst 1.10-1.32, median 1.13-1.34). S3 shrank the blob (204/192/84/64 on b9f5195e) but did not close it.",
+      "TYPE_01_h1_over_brand": { "1440": 5.6, "1280": 5.12, "834": 3.34, "390": 2.89, "band": "2.5-6.0", "verdict": "PASS 4/4 — exactly the HERO-SETPIECE-v3 6 table; was 7.29/6.90/4.56/2.89 (2 of 4 out of band) before S3" },
+      "TYPE_02_h1_lines": { "1440": 1, "1280": 1, "834": 1, "390": 2, "verdict": "PASS 4/4" },
+      "CTA_targets": "PASS 8/8 — one group; 'See the evidence' 185x48 (181x48 at 390) and 'Download CV' 156x48 (153x48 at 390); all >= 48 px",
+      "SET_02_ledger_below_the_fold": "PASS 4/4 — proof top 900/800/1194/844 == innerHeight at all four; zero margin",
+      "SPD": { "1440x900_gl": 0.8623, "1440x900_still": 0.8404, "1280x800_gl": 0.8256, "1280x800_still": 0.8051, "834x1194_gl": 0.8898, "834x1194_still": 0.875, "390x844_gl": 0.8104, "390x844_still": 0.7487, "min_075_failures": ["390x844_still (0.7487)"], "ship_078_failures": ["390x844_still (0.7487)"], "ground_chain_root": "div.Hero_plane__iCeB5 on all 8 runs" },
+      "canvases": { "gl": 1, "still": 0 },
+      "pageerrors": "0 across all 8 runs"
+    }
+  },
+  "regression": {
+    "measured_on": "83f4b208",
+    "G-H6_hero_monochrome": "PASS — max sRGB chroma 0 and 0 gold-ish px over all 8 post-S3 fold captures",
+    "G-C1_identical_hrefs": "PASS — 2 mailto '20-minute call' hrefs, 1 distinct, 305 chars",
+    "G-MV1_first_fold_click_390": "PASS — pill (208,776) 158x44, display flex, inside the first fold, elementFromPoint -> SPAN.minivic-launcher__pill, hit-is-self, real click opened a 342x396 panel. The 12cd9123 FAIL (hero video intercepting the click) is closed.",
+    "G-OG1": "PASS — /assets/og-image.png 200, 2400x1260, 209035 B, max chroma 0",
+    "minivic_disclosure_visible": "PASS — served HTML carries 'synthetic stand-in for Vikram' x1 and 'AI clone' x0",
+    "gl_off_zero_canvases": "PASS — 0 canvases page-wide after walking all six sections, H1 visible, 0 pageerrors",
+    "TC-BOT-14": "FAIL (report only) — panel x984-1416 y360-812 overlaps the H1 glyph run x96-1051 y503-657; horizontal gap -67 px against a contract of >= +16 px. Improved from -231.2 px on 3657baa1 by S3's narrower H1, not closed.",
+    "pageerrors_console_errors": "PASS — 0 pageerrors and 0 console errors across every live visit in this review",
+    "LCP_CLS_live": { "1440x900": { "lcp_ms": 1408, "cls": 0 }, "390x844": { "lcp_ms": 1260, "cls": 0 }, "gates": "LCP < 2500 ms, CLS < 0.05", "verdict": "PASS" },
+    "G-A3_presence": "PASS — 1 canvas, 10 numbered dimensions, h2 'Ten dimensions, answered', data-axis -1"
+  },
+  "process_defects": {
+    "t_w2_x2f5_verification_log": "FAIL — docs/delivery/evidence/v10-20260905T0515Z/W2-X2/t_w2_x2f5/04-verification.log as committed in 1ba16f90 is 7 lines: the header 'Running 18 tests using 1 worker' and only rows 1-2, both from tests/a11y/text-contrast.spec.ts, with no summary. Not one scene-about.spec.ts case the slice authored appears in it, and 1ba16f90 shipped to production on that log. The same file at b9f5195e is complete and shows TC-SCENE-ABOUT-10 at 1440 at rest RED (6/10 seams, ratio 1.412), which independently corroborates F-2."
+  },
+  "R2": "OPEN (fps unproven on GPU) — the only instrument that ran is Tier A SwiftShader, median rAF 50.0 ms / p95 116.6 ms, ANGLE Vulkan SwiftShader; SIGNATURE-SCENES-v2 6.2's standing rule forbids reporting that as 60 fps. Tier B has never executed (no registered runner); Tier C (?fps=1 HUD) does not exist.",
+  "R3": "OPEN",
+  "R5": "OPEN (carried from 12cd9123 — all three avatar rungs are 24 fps)",
+  "false_positives": [
+    "'The MiniVic disclosure is gone' — my in-page innerText probe returned synthetic:false because it read the page with the panel closed; the served HTML carries 'synthetic stand-in for Vikram' once and 'AI clone' zero times. My instrument's fault (self-reported).",
+    "'Scene 7 has no parallax' — my first instrument split the canvas into thirds and got -14/-15/-15, a 1 px spread at the noise floor. Separating by spatial frequency gives +17/-14/-15, three rates including a sign flip. The thirds split was the weaker instrument, not evidence of absence.",
+    "'The H1 is unreadable' — 21335/17750/7097/4979 core-ink px per run; only 145/130/57/42 of them are off the plate. The name reads; the descender does not.",
+    "'Hero S3 has not landed' — true at 04:00Z, false by 04:18Z (83f4b208). The hero table was re-run from scratch on the post-S3 SHA rather than reported against the stale one.",
+    "'G-A3 fails' — it passes at 390 in both states and at 1440 with a dimension indexed. Exactly one screen fails: 1440 at rest.",
+    "'#about plane dominance regressed below 0.75' — 0.7683, clears by 1.8 points."
+  ],
+  "not_covered": [
+    "/api/tts POST (paid ElevenLabs call, cost gate, non-interactive run)",
+    "/api/chat streaming and G-M4 first-token timing (out of scope for this task)",
+    "full Playwright battery (this task measures the live origin only)",
+    "fps Tier B (no registered GPU runner) and Tier C (?fps=1 HUD does not exist)"
+  ],
+  "review_gates": {
+    "G-A3_story_judged_from_own_captures_both_states_both_widths_against_about_ts": "PASS",
+    "scene7_spans_and_parallax_measured_fps_recorded_with_renderer_and_not_graded": "PASS",
+    "hero_F1_re_measured_number_given": "PASS",
+    "regression_table_re_run_failures_first": "PASS",
+    "writes_only_under_G-REV/1ba16f90": "PASS"
+  },
+  "goal_complete": true,
+  "goal_complete_reason": "The reviewer's own quality gates are all green and the review is COMPLETE — do not re-dispatch it. The SUBJECT is not clean: F-1 (H1 descender ink off the plate, 8/8, gate 0 px), F-2 (G-A3 story clause fails at 1440 at rest and the ratio is unstable across five captures), F-3 (the x2f5 change is reverted on live, so the clause has no fix at all), F-4 (SPD 0.7487 at 390 reduced-motion), F-5 (TC-BOT-14 -67 px), F-6/F-8 (scene-7 span proportionality rho 0.214 and 10 text nodes over the stage, both INTERIM) and F-7 (t_w2_x2f5 shipped on a truncated verification log). Per docs/prompt.md 5 and orchestration-skill 11.2 the orchestrator must open a feedback_refactor_loop task for each; none may be silent-closed."
+}

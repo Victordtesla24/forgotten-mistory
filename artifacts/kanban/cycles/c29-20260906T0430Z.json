@@ -1,0 +1,90 @@
+{
+ "cycle": "v10-c29",
+ "window_utc": "2026-09-06T03:25Z–04:30Z",
+ "orchestrator": "Fable 5.1 ultracode (claude-cli), session_01WWt1D5i764agLExdpEWvRC",
+ "deploys_last_8": [
+  {
+   "run_id": "34011452479",
+   "created": "2026-09-06T04:25:12Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34011103758",
+   "created": "2026-09-06T04:16:55Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34010675057",
+   "created": "2026-09-06T04:06:49Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34010242452",
+   "created": "2026-09-06T03:56:32Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34009831881",
+   "created": "2026-09-06T03:46:25Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34009411998",
+   "created": "2026-09-06T03:36:22Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34008992631",
+   "created": "2026-09-06T03:26:21Z",
+   "conclusion": "success"
+  },
+  {
+   "run_id": "34008576074",
+   "created": "2026-09-06T03:16:21Z",
+   "conclusion": "success"
+  }
+ ],
+ "live_build_commits_in_window": [
+  "3657baa1 (hero S2 light + story-contract tests + doc fixes + red3)",
+  "e90c4e43 (About state-gate light 479e2b2)",
+  "1ba16f90 (scene-7 depth c29b55e1)",
+  "b9f5195e (About revert ef2979a — coverage floor)",
+  "83f4b208 (hero S3 typography lockup, nav-mark token, CTA bar)"
+ ],
+ "live_build_commit_now": "83f4b208 (04:18Z); queued: none",
+ "o1_o5": "Every 10-min window in this cycle shipped visible UI (hero light+poster, About light then its honest revert, scene-7 depth, hero typography). Timer active; Hermes inactive; all deploy runs succeeded.",
+ "adversarial": {
+  "rev-3657baa1-w2": {
+   "H1_readable": "PASS on the plate (15.25–15.6:1)",
+   "F-1_descender": "FAIL — descender of 'Deshpande' leaves the plate at 4 viewports × 2 paths (204/203/84/64 px at 1.10–1.55:1)",
+   "SPD": "7/8 ≥ 0.75; 390 reduced-motion 0.7153 FAIL",
+   "false_positive": "S2 lane's '≥ 0.78 at 1280' (live 0.7788/0.7586)",
+   "regression": "all PASS (G-H6, G-C1, G-A3 ten sectors, G-MV1 390 click, G-OG1, disclosure, gl-off, LCP 972/772 ms, CLS 0, 0 errors)",
+   "observation": "gold body text in #about → t_w2_a3g"
+  },
+  "rev-1ba16f90-w2": {
+   "G-A3_story": "FAIL at 1440 rest (5/10 seams; role max 8.4% above candidate mean; fan inverted); change reverted on live (process FAIL: x2f5 pushed 1ba16f90 on a 7-line truncated verification log)",
+   "G-A3_other": "PASS (ten sectors all states, dominance 0.7683, dial = mist-400, gold 0, contrast 6.58)",
+   "hero_after_S3": "F-1 descender STILL FAIL 8/8 (145/130/57/42 px); SPD 7/8 ≥ 0.78, 390 rm 0.7487 < 0.75; TYPE-01/02 PASS; CTA 48 px PASS; SET-02 PASS zero margin; TC-BOT-14 −67 px (mv4 running)",
+   "scene7_interim": "band/edges/parallax PASS; duration→spacing ρ 0.214 on the reviewer's detector vs 0.994 on the implementer's → t_w2_x2t3; caption-only contract defect (chrome + ticks in a 100vh stage) → t_w2_x2t3; SwiftShader median rAF 50 ms recorded, not graded",
+   "regression": "all PASS; LCP 1408/1260 ms; CLS 0"
+  },
+  "overall": "FAIL (R1 hero S4/S5 pending; R2 fps unproven on GPU; R3 second form in progress; G-A3 story x2-f6 running)"
+ },
+ "pea": {
+  "numerator": 5,
+  "denominator": 13,
+  "basis": "unchanged from c28 on the 2315Z set: PASS G-H6, G-C1, G-H5, G-A3 (gap), G-R2; G-A3 story clause open (x2-f6 with the SA's per-sector metric); G-M4 Hosting fallback (m4b queued); G-H1 S1–S3 live, S4/S5 pending (descender plate, 390 SPD, suites); G-X2 s1/s2 live (instrument reconciliation t_w2_x2t3); G-R3 second form (r3a2 queued after mv3); G-E2/G-S2/G-H2 pending; G-NEW-1 click PASS, MONO-MV-02 in mv3."
+ },
+ "architecture_this_cycle": "docs/architecture/ABOUT-STORY-v2.md (SA decision c: open sectors as structure; per-sector DFT story metric; slices x2-f6/x2-f7)",
+ "provider": "Anthropic OAuth (claude-cli Max) for all spawns; OpenRouter −5.384 USD — no change",
+ "alerts": [
+  "About lane self-reverted (coverage floor) — correct §0.1 behaviour; the earlier push on a truncated log is registered as a process failure",
+  "O1 overruns continue on measurement-heavy slices (S2, S3, x2s2 50 min, x2f5); every overrun self-reported",
+  "Load 30 spikes during builds; RAM 2–5 GB; no OOM since 01:20Z; ≤ 4 lanes with ≤ 3 builds/browsers held",
+  "Ledger rows dropped by -X theirs again (20) — restored in bookkeeping/w2-board-4; merge=union attribute present on main"
+ ],
+ "board": "running: hero S4, corrections A (mv3→r3a2), corrections B (mv4→m4b→l1m→a3g), About mark x2-f6; ready: t_w2_x2t3, t_w2_h1s5 (after S4), t_w2_x2t2/f0/f1/s3, r3a3–a7, cleanup remainder; conditional: t_w2_x2f7",
+ "fusion_council": "NOT convened (PEA < 100%)",
+ "next": "S4 lands → reviewer 7 (descender plate, SPD 390, full fold graded) + tester S5; x2-f6 → reviewer on the About story metric; mv4/m4b → reviewer on TC-BOT-14 + G-M4 fallback; x2t3 when a slot frees; c30."
+}

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-06T04:07:56.442Z",
+  "updated": "2026-09-06T04:59:05.179Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -29,7 +29,7 @@
         "PEA"
       ],
       "summary": "Live 9136bc59 FAIL. Read docs/ORCHESTRATOR-MASTER-PROMPT.md. Dispatch G-H6,G-H5,G-C1,G-R2,G-A3,G-H1,G-M4,G-X2 in parallel. Session-limit is not Owner-blocked.",
-      "updated": "2026-09-06T03:24:03.356Z",
+      "updated": "2026-09-06T04:59:05.179Z",
       "comments": [
         {
           "at": "2026-09-05T23:59:20.286Z",
@@ -50,12 +50,30 @@
           "at": "2026-09-06T03:24:03.356Z",
           "by": "orchestrator",
           "text": "CYCLE c28 written (artifacts/kanban/cycles/c28-20260906T0325Z.json): live 0580bd24; reviews rev-12cd9123 (G-A3 PASS gap, G-H5 PASS) and rev-97e19d07 (G-R2/G-MV1/G-OG1 PASS; G-M4 Hosting-fallback FAIL → m4b; TC-BOT-14 → mv4); PEA 5/13 on the 2315Z set; overall FAIL by design until R1/R2/R3 slices land."
+        },
+        {
+          "at": "2026-09-06T04:29:47.949Z",
+          "by": "orchestrator",
+          "text": "CYCLE c29 written (artifacts/kanban/cycles/c29-20260906T0430Z.json): live 83f4b208; reviews rev-3657baa1 + rev-1ba16f90 (hero descender plate FAIL persists → S4; About story → x2-f6 with the SA's metric; scene-7 instrument divergence → t_w2_x2t3; regression table all PASS); PEA 5/13 unchanged; overall FAIL by design."
+        },
+        {
+          "at": "2026-09-06T04:59:05.179Z",
+          "by": "orchestrator",
+          "text": "LIVE fda84067 at 04:58Z carries hero S1–S4 (a06f317), the panel placement fix (b4e4b79), the About-mark tests (21ff176d) and R3-A2 (3ba8ed97); reviewer t_w1_rev7 + tester t_w2_h1s5 dispatched on it. The sibling session's uncommitted title-card edits are not live (verified: 0 × hero-title-card in served HTML)."
         }
       ],
       "decisions": [
         {
           "at": "2026-09-06T03:18:04.164Z",
           "text": "03:20Z §0.1 decision: deploy.yml's -X theirs consolidation of worktree-w1-red3 (0580bd2) dropped 32 delegation-ledger rows on main (559 vs 591 unioned). Restored from the PM's union in this bookkeeping commit and prevented for the future with .gitattributes: artifacts/delegation-ledger.jsonl merge=union (git's built-in concatenating driver; honoured by the pipeline's git merge). Repo hygiene, not app code."
+        },
+        {
+          "at": "2026-09-06T04:41:22.216Z",
+          "text": "04:45Z INCIDENT (checkout integrity): at the 04:39Z fast-forward the main checkout's index no longer carried artifacts/delegation-ledger.jsonl, Hero/Skills/Vitrine .module.css and W1-MV3 logs (git reported them as untracked files that the merge would overwrite); a lane must have rewritten the main checkout's index. Resolution: files identical to origin/main were dropped (6), three differing CSS copies set aside under the job tmp dir (not lost), main fast-forwarded to afad076b = origin/main, tree verified (git diff HEAD shows only the PM's board files), board 204 tasks, ledger 617 = origin. No bookkeeping commit deleted any file (checked 403b6b7…88ffa14). Standing rule added to lane briefs: never run git commands in /root/forgotten-mistory itself; the PM verifies index integrity (git ls-files count) before each bookkeeping commit."
+        },
+        {
+          "at": "2026-09-06T04:43:16.927Z",
+          "text": "04:48Z COEXISTENCE: a sibling agent (a claude session started 2026-09-05 16:43 with cwd /root/forgotten-mistory, alongside the Cursor server — most likely the Owner's Cursor host agent) is editing the MAIN checkout's working tree directly on main (22 app files at 04:39:28Z: volumetric spoke + motes in every scene shader, a hero title card, CSS modules). Its earlier Hero/Skills/Vitrine .module.css edits were displaced by the PM's 04:39Z fast-forward and have been RESTORED from the set-aside copies. Rules from now on: the PM never runs git checkout/reset on app paths in the main checkout; PM bookkeeping commits are made from a dedicated worktree (.claude/worktrees/pm-board, based on origin/main) by copying the board files there; council lanes keep working in their own worktrees; the sibling's uncommitted work is never committed or reverted by the PM. Independent reviewers judge only what is on the live URL."
         }
       ]
     },
@@ -5952,7 +5970,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:23:59.629Z",
-      "updated": "2026-09-06T03:51:44.962Z",
+      "updated": "2026-09-06T04:18:20.044Z",
       "summary": "G-H1 hero set-piece, composition A (docs/architecture/HERO-SETPIECE-v3.md, SA t_w2_h1sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). This is slice S3 (g2h1v3-03) of §9. The recruiter sentence the fold must produce: 'His face is standing in the shaft of light that his name is written across.' ADV-2315Z §Hero FAIL is the baseline. Immovables (§10 of the brief): LCP < 2.5 s, CLS < 0.05, nothing plays by default, critical-path assets ≤ 500 kB / video ≤ 2.5 MB, palette B/W/gold with gold only on sourced claims, reduced-motion and no-GL paths are the same picture, keyboard order per §7, no upscale above 1480x826 (figure ≤ 846 CSS px), G-MV1 pill untouched, hero.ts copy unedited. Extra gates: G-MV1 untouched (Ask Mini Vic labelled and visible at 390); screenshots at 1440/1280/834/390.",
       "decisions": [],
       "comments": [
@@ -5960,6 +5978,11 @@
           "at": "2026-09-06T03:51:44.962Z",
           "by": "orchestrator",
           "text": "LIVE DEFECT from rev-3657baa1-w2 (F-1, graded FAIL, readers see it now): the H1's plate is cut at the baseline — the 'p' descender of 'Deshpande' hangs off the plate onto the near-white plane at 1440/1280/834/390 on both paths (204/203/84/64 ink px at 1.10–1.55:1, one blob starting exactly at plate bottom 639.8/565.3/912.7/595.9 px). Fix in Hero.module.css: the plate (or the shader copy guard) must cover the font's descent — extend the plate's bottom to the line box's descender (or guard the full line box + 8 px), never by adding a scrim over the plane. Also: SPD at 390 reduced-motion is 0.7153 (< 0.75 floor) and 1280 is 0.7788/0.7586 (< 0.78 ship) — S4 must land ≥ 0.78 on both paths at all four; TC-HERO-SET-02 currently passes with ZERO margin (proof top == innerHeight) — typography must not grow the fold by even 1 px."
+        },
+        {
+          "at": "2026-09-06T04:18:20.044Z",
+          "by": "orchestrator",
+          "text": "Lane result 04:18Z (ap-w2-h1s3, over cap): 1e1cb392 pushed and consolidated (live next tick). --nav-mark token 1.25rem/1.125rem; H1 clamp(3.25rem,8vw,7rem) → 112/102.4/66.7/52 px, ratio 5.60/5.12/3.34/2.89 (band 2.5–6.0; baseline 7.29/6.9/4.56/3.75); 1 line ≥ 720 px, 2 below; two-line lockup moved to ≤ 719 px; --figure-lift 345→318 on the phone so the name crosses the dissolve (SET-05 24 px); TYPE-01/02, A11Y-02 (focus order asserted element-by-element; Ask Mini Vic stays first as the WCAG 2.4.1 bypass), SET-05 green after failing first; no threshold lowered. goal_complete:false honestly: hero e2e 10 failed / 54 passed, all pre-existing and outside this slice — TC-FOLD-03 ×4 (visual baselines stale since S1 recomposed the fold), TC-FOLD-04 @390 (actions end 828 vs ≤ 804), TC-PHOTO-02, TC-HERO-21, … → t_w2_h1s5 (tester). Descender plate (F-1) not addressed here → S4."
         }
       ],
       "blocker": null
@@ -5983,7 +6006,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:23:59.718Z",
-      "updated": "2026-09-06T03:51:45.041Z",
+      "updated": "2026-09-06T04:57:13.421Z",
       "summary": "G-H1 hero set-piece, composition A (docs/architecture/HERO-SETPIECE-v3.md, SA t_w2_h1sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). This is slice S4 (g2h1v3-04) of §9. The recruiter sentence the fold must produce: 'His face is standing in the shaft of light that his name is written across.' ADV-2315Z §Hero FAIL is the baseline. Immovables (§10 of the brief): LCP < 2.5 s, CLS < 0.05, nothing plays by default, critical-path assets ≤ 500 kB / video ≤ 2.5 MB, palette B/W/gold with gold only on sourced claims, reduced-motion and no-GL paths are the same picture, keyboard order per §7, no upscale above 1480x826 (figure ≤ 846 CSS px), G-MV1 pill untouched, hero.ts copy unedited. Extra gates: full Playwright battery green (run it serially, one browser); no R5 claim added anywhere; evidence log per viewport per path.",
       "decisions": [],
       "comments": [
@@ -6001,6 +6024,31 @@
           "at": "2026-09-06T03:51:45.041Z",
           "by": "orchestrator",
           "text": "LIVE DEFECT from rev-3657baa1-w2 (F-1, graded FAIL, readers see it now): the H1's plate is cut at the baseline — the 'p' descender of 'Deshpande' hangs off the plate onto the near-white plane at 1440/1280/834/390 on both paths (204/203/84/64 ink px at 1.10–1.55:1, one blob starting exactly at plate bottom 639.8/565.3/912.7/595.9 px). Fix in Hero.module.css: the plate (or the shader copy guard) must cover the font's descent — extend the plate's bottom to the line box's descender (or guard the full line box + 8 px), never by adding a scrim over the plane. Also: SPD at 390 reduced-motion is 0.7153 (< 0.75 floor) and 1280 is 0.7788/0.7586 (< 0.78 ship) — S4 must land ≥ 0.78 on both paths at all four; TC-HERO-SET-02 currently passes with ZERO margin (proof top == innerHeight) — typography must not grow the fold by even 1 px."
+        },
+        {
+          "at": "2026-09-06T04:28:49.397Z",
+          "by": "orchestrator",
+          "text": "AFTER S3 (rev-1ba16f90-w2 on 83f4b208): F-1 descender STILL FAIL 8/8 — 145/145/130/130/57/57/42/42 px of core ink below the plate's bottom edge (1440 y=640 vs plate 522+118 …), worst 1.10:1; gate is 0 px. SPD 390 reduced-motion 0.7487 (< 0.75). TC-BOT-14 −67 px (mv4 owns). Everything else in the fold PASS."
+        },
+        {
+          "at": "2026-09-06T04:52:49.543Z",
+          "by": "orchestrator",
+          "text": "PM 05:00Z: the S4 agent twice blocked in a wait loop — until ! pgrep -f 'playwright test tests/e2e/hero' — which matches the loop's own shell (the pkill/pgrep self-match trap) and can never exit; the PM killed the loop shells so the tool calls returned. The hero battery it was waiting for is not running; proceed to verification with the existing 09-hero-e2e.log or re-run the suites in the foreground."
+        },
+        {
+          "at": "2026-09-06T04:53:54.167Z",
+          "by": "orchestrator",
+          "text": "Timestamp correction: the PM note above labelled 05:00Z was written at 04:50Z (host clock)."
+        },
+        {
+          "at": "2026-09-06T04:56:23.434Z",
+          "by": "orchestrator",
+          "text": "PM check 04:57Z: a06f317 pushed on worktree-w2-h1s4 (consolidating). Self-report: gate unarmed (PLANE-01 asserts 0.78 in the shared battery); descender fix = plates carry box-shadow 0 0 0 0.3em in their own colour (ground extended to the font box without entering layout; SET-02 still zero-margin); SPD 1440 0.919/0.919, 1280 0.904/0.904, 834 0.929/0.925, 390 0.850/0.791; new tests/perf/hero-vitals.spec.ts (LCP 284–1132 ms, CLS 0, zero loop requests at rest, largest media 51,028 B) and tests/monochrome/hero-palette.spec.ts (chroma 0); 35/35 slice tests, 54 hero e2e green; hero.ts unedited; no R5 claim. Not done until reviewer t_w1_rev7 grades G-H1 on live."
+        },
+        {
+          "at": "2026-09-06T04:57:13.421Z",
+          "by": "orchestrator",
+          "text": "Lane result 04:58Z (ap-w2-h1s4, goal_complete:true, over cap): SPD gl/still 0.919/0.919 · 0.904/0.904 · 0.929/0.925 · 0.850/0.791 (ship 0.78 everywhere); lit 0.25–0.52; LCP 1132/716/668/284 ms; CLS 0; chroma 0; loop requests at rest 0; descender fixed by a 0.3em plate spread (font box 1.365em vs 0.9em line box); 35/35 slice + 54 hero e2e green; full 308-battery NOT run (cap) → t_w2_h1s5 runs it. Awaiting reviewer t_w1_rev7 on live."
         }
       ],
       "blocker": null
@@ -6468,8 +6516,8 @@
     {
       "id": "t_w2_x2f5",
       "title": "CORRECTION G-A3 story (rev-12cd9123-w1 sub-claim FAIL) — the About field must encode WHICH dimensions are answered from light alone in the section's first-screen state: answered/open ≥ 1.6 at 1440 and 390 (ring and fan), ≥ 9/10 seams ≥ 12%, without raising luminance over type (READING_CEILING 0.10 / INSTRUMENT_CEILING 0.24 untouched) and with zero gold",
-      "status": "ready",
-      "column": "ready",
+      "status": "done",
+      "column": "done",
       "assignee": "analyst-programmer",
       "priority": 94,
       "parents": [
@@ -6483,7 +6531,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T02:10:43.917Z",
-      "updated": "2026-09-06T04:07:55.990Z",
+      "updated": "2026-09-06T04:28:49.130Z",
       "summary": "## CORRECTION: TC-SCENE-ABOUT-10 answered/open clause\nOriginal output: t_w1_a3 e5c1e4d (live 12cd9123) — multiplicative state term (answered full light, open 45° hatch at ~0.40) measured 4.04 ring / 5.9 fan at 1440 with dimension 4 active.\nFailing criteria (docs/delivery/evidence/v10-20260905T0515Z/G-REV/12cd9123/08-adversarial-review.md F-2, a3-field-probe.json): with dial+column hidden and the section at the top of the viewport (data-axis=-1, no dimension active), ring answered/open = 1.039 at 390x844 DPR3 (fan 0.983) and 1.596 at 1440; only 6/10 seams clear 12% at 1440; per-sector ring means at 1440: 0.7065 0.6327 0.3556 0.4980 0.0122 0.2169 0.0627 0.2303 0.5661 0.7133 — sector 5 (Culture Fit, answered) is the darkest, sector 9 (Company Stability, open) is 0.566: brightness tracks position on the plane, not about.ts; hatch energy does not separate the groups (0.944 / 1.088).\nRequired fix: in components/sections/About/field.glsl.ts (+ AboutField.tsx uniforms only if needed) make the state term dominate the positional light in EVERY state including data-axis=-1 — e.g. normalise the fan/haze by sector so each sector's base light is equal before the answered/open multiplier, and apply the multiplier to the fan as well as the ring — so that answered/open ≥ 1.6 holds at 1440 and 390 in the initial state and with any dimension active, ≥ 9/10 seams ≥ 12%, while plane dominance stays ≥ 0.75 (measured 75.2% — do not lose it), text contrast stays ≥ 4.5:1 (ceilings untouched), gold 0, TC-SCENE-ABOUT-01..09 + 11 stay green, flagship-visibility coverage/motion floors hold.\nVerification: extend TC-SCENE-ABOUT-10 to run in BOTH states (data-axis=-1 and axis 4) at 1440 and 390 and to print the ten per-sector means; capture failing on origin/main first; then tests/overhaul/scene-about.spec.ts tests/overhaul/flagship-visibility.spec.ts -g ABOUT tests/a11y/text-contrast.spec.ts tests/e2e/about.spec.ts green on :5627; screenshots field-alone at both widths in both states.",
       "decisions": [],
       "comments": [
@@ -6496,9 +6544,15 @@
           "at": "2026-09-06T04:07:55.990Z",
           "by": "orchestrator",
           "text": "Lane outcome 04:07Z (ap-w2-x2f5): 479e2b2 fixed the ratio (ring 1.556 @1440 rest, 3.348→7.791 @390 rest, fan up to 14.996) but the three open wedges give up light across the plane and TC-FLAGSHIP-VIS-ABOUT coverage fell 15.52% → 13.66% (floor 15%); three measured attempts to buy area back either stayed under the floor (14.28/14.82) or broke TC-CONTRAST-01/02 at 390 (15.31%) because guarded light under type (ceilings 0.10/0.24) can never count as coverage — the unguarded plane at 390 is where the heading and the instrument sit. The AP REVERTED the shader (ef2979a, pushed) and kept the extended TC-SCENE-ABOUT-10 (both states, both widths, per-sector means printed) as a failing assertion in the repo. Correct §0.1 behaviour: no floor was lowered. Three-way tension (story ratio ≥ 1.6 vs coverage ≥ 15% vs contrast) → solutions-architect decision t_w2_a3sa."
+        },
+        {
+          "at": "2026-09-06T04:28:49.130Z",
+          "by": "orchestrator",
+          "text": "FALSE POSITIVE / PROCESS FAIL registered (rev-1ba16f90-w2 F-7): the 04-verification.log committed in 1ba16f90 has 7 lines (only two text-contrast rows, no scene-about cases) — the slice's 'about suites green' claim at that push was not evidenced; the lane's own later log at b9f5195e shows ABOUT-10 red (6/10 seams, 1.412) and it reverted. Rule restated for every lane: a push carries the FULL suite log for the tests the slice authored."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "ap-w2-x2f5 (over cap, honest): 479e2b2 made the state term dominate position (ring 1.556 @1440 rest, 7.791 @390 rest, 8.137 indexed; fan 14.996) but cost the About flagship coverage floor (15.52% → 13.66%); three measured recoveries failed (14.28 / 14.82 / 15.31% with TC-CONTRAST-01/02 red at 390) — REVERTED in ef2979a; main keeps every floor; TC-SCENE-ABOUT-10 now measures both states at both widths and stays red-by-design at 1440 rest (1.499 vs 1.6; 4/10 seams). Design tension → t_w2_a3sa (SA, running). Live b9f5195e."
     },
     {
       "id": "t_w1_lad1",
@@ -6572,8 +6626,8 @@
     {
       "id": "t_w2_h1s5",
       "title": "G-H1 S5 (tester) — realign the hero e2e suites to HERO-SETPIECE-v3 geometry: rewrite TC-PHOTO-02 and TC-HERO-21 (figure in the plane above the copy; §3.5 bleeds right only), recompute the loop-ladder rung expectations from the v3 figure box, root-cause TC-HERO-13 (hover point now under the copy block), re-measure TC-FOLD-03 (4 viewports) and TC-FOLD-04 @390 — no threshold lowered, every rewrite justified in the spec",
-      "status": "todo",
-      "column": "todo",
+      "status": "running",
+      "column": "running",
       "assignee": "tester",
       "priority": 93,
       "parents": [
@@ -6587,7 +6641,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T02:41:29.234Z",
-      "updated": "2026-09-06T03:16:05.274Z",
+      "updated": "2026-09-06T04:57:13.557Z",
       "summary": "From t_w2_h1s1's honest goal_complete:false (docs/delivery/evidence/v10-20260905T0515Z/W2-H1/t_w2_h1s1/05-hero-suites-remaining.log and 04-hero-suites.log). Five cases encode the superseded fold (docs/architecture/HERO-FOLD-v2.md) and must be rewritten to the v3 contract (docs/architecture/HERO-SETPIECE-v3.md §3 geometry, §4.3 rungs, §8 cases); TC-HERO-13 needs a root cause (mechanism works — TC-PHOTO-05 passes); TC-FOLD-03/04 were red before the pointer-events fix and never re-run. Run AFTER S3 (typography) lands so the geometry is final; do not edit Hero component files (S4 owns product changes) — file product findings as followups with numbers.",
       "decisions": [],
       "comments": [
@@ -6595,6 +6649,11 @@
           "at": "2026-09-06T03:16:05.274Z",
           "by": "orchestrator",
           "text": "SCOPE ADD 03:16Z: tests/e2e/hero.spec.ts TC-HERO-08 — fold band 928.3 px vs viewport.height×1.1 = 792 ceiling at the default 720 px viewport (pre-existing on origin/main b02a8863, W1-RED2/04-suites.log). Decide product vs test against HERO-SETPIECE-v3 §3 (the plane is 100% of the fold by design; the ceiling may be measuring the old fold contract) — never raise the ceiling without the v3 clause that justifies it."
+        },
+        {
+          "at": "2026-09-06T04:18:20.112Z",
+          "by": "orchestrator",
+          "text": "SCOPE ADD 04:18Z (from S3's 09-hero-e2e.log, 10 failed / 54 passed): TC-FOLD-03 ×4 — visual baselines of the fold are stale since S1 recomposed it: re-accept ONLY after S4 lands (the v3 fold is the intended picture; look at the PNGs before committing them, per CLAUDE.md); TC-FOLD-04 @390 — 'the action group ends 16 px above the fold' expected ≤ 804, received 828 — decide product vs test against HERO-SETPIECE-v3 §3.5 (CTA group y 670–790 by design; if the v3 geometry puts the group at 828 the product is wrong or the geometry table is — file it for S4 with the number, do not raise 804). Order: run S5 after S4 pushes, from origin/main carrying S4."
         }
       ],
       "blocker": null
@@ -6602,8 +6661,8 @@
     {
       "id": "t_w1_mv3",
       "title": "MiniVic occlusion follow-ups from t_w1_red2 — (1) TC-MV-OCCLUDE-01: Vitrine exclusion dd ink → --mist-400 (PM decision b: 5.22:1 on the launcher ground, no hairline loss), visual baselines re-accepted with reason; (2) MONO-MV-02 @390: root-cause the dock painted/opacity contract at scrollY 0 (390 fails, 640 passes) and fix product or test with numbers — never hide the pill (G-MV1)",
-      "status": "ready",
-      "column": "ready",
+      "status": "done",
+      "column": "done",
       "assignee": "analyst-programmer",
       "priority": 90,
       "parents": [
@@ -6617,7 +6676,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T02:58:43.474Z",
-      "updated": "2026-09-06T03:16:05.183Z",
+      "updated": "2026-09-06T04:38:48.204Z",
       "summary": "Evidence: docs/delivery/evidence/v10-20260905T0515Z/W1-RED2/ (01-reproduction.log, 02-verify.log, followups in the t_w1_red2 result). (1) At 390x844 scrollY 16036 the Vitrine exclusion <dd> ink rgb(125,125,125) sits on the launcher's hairline ground rgb(30,30,30) → 4.05:1 < 4.5. Change the dd colour token to --mist-400 in the Vitrine module CSS (find the rule that sets --ink-300 for the exclusion list), keep the launcher CSS untouched, re-accept only the affected visual baselines (UPDATE_SNAPSHOTS=1 on those specs) and write why in the commit. (2) tests/monochrome/minivic-launcher.spec.ts MONO-MV-02 expects painted < 0.05 at scrollY 0 at 390 and 640; after t_w1_mv2 (pointer-events restored, :hover reveal, opacity gate kept) it fails at 390 only — reproduce, read the dock rules in app/globals.css and MiniVicBot.tsx (pastHero gate), and determine whether the product paints the dock on the first fold at 390 (then fix the product: the gate must hold on phones so the launcher does not sit on the portrait, G-E2) or the instrument measures the :hover reveal / a stale bundle (then fix the test). Constraints: G-MV1 (pill never display:none, labelled at every width), TC-MV-CLICK-01 (real click opens the panel on the first fold at 1440/390) must stay green, hero component files untouched (S2–S4 lane owns them).",
       "decisions": [],
       "comments": [
@@ -6627,7 +6686,8 @@
           "text": "ROOT CAUSE for (2) from t_w1_red2 07-decisions.md: components/MiniVicBot.tsx:307 IntersectionObserver(#hero, { threshold: 0.35 }) — at 390 the hero is far taller than the viewport, so the intersection ratio can never approach 0.35 and pastHero only flips when the hero leaves the root entirely; MONO-MV-02 @390 therefore reads opacity 0 after twelve 844 px steps. This is a PRODUCT defect (G-NEW-1: first-fold/early visibility on phones): fix by observing with thresholds [0, 0.35] or a sentinel at the hero's bottom edge so pastHero flips as the hero's end passes the viewport top, while the launcher still never sits on the portrait (G-E2) — prove with the spec at 390 AND 640 plus TC-MV-CLICK-01."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "ap-w1-mv3 (over cap): 50b7ed9e pushed and consolidated. Decision (b) applied to BOTH the spec-named node (Vitrine .exclusion dd) and the node that actually fails on b9f5195 (Skills .caveat at scrollY 14348, 4.00:1) — --ink-300 → --mist-400: 5.22:1 / 5.16:1 on the launcher hairline ground, 6.20:1 on page ground; TC-MV-OCCLUDE-01 0/13 nodes below AA; visual baselines re-accepted with reason; launcher CSS untouched; Hero untouched. MONO-MV-02: root cause = TEST (fade-in wait; label paints at the loop's first read, data-past-hero=true) — the earlier IntersectionObserver hypothesis did not reproduce on b9f5195; both widths now green. NEW regression found (outside scope by instruction): TC-MV-OCCLUDE-02 @390 — the closed launcher paints rgb(174,174,174) (L 0.4233 vs 0.0968 ceiling), regressed between b02a8863 and b9f5195e in another lane → t_w1_mv5."
     },
     {
       "id": "t_w2_l1m",
@@ -6695,10 +6755,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T03:23:09.925Z",
-      "updated": "2026-09-06T03:53:30.466Z",
+      "updated": "2026-09-06T04:56:23.498Z",
       "summary": "Evidence: G-REV/97e19d07/04-panel-1440.json + 07-b2-1440x900-answered.png (reader sees 'Vikram Deshpa'). TC-BOT-14 currently asserts vertical clearance only (panel top vs glyph bottom) and passed at 19 px while the panel horizontally overlaps the run. Hero S3 (running) will reduce the H1 to clamp(3.25rem, 8vw, 7rem) with column x 96→~1028 at 1440 — the panel's left edge must clear the H1's measured right glyph edge by ≥ 16 px at every viewport, or the panel must open below the H1 run. Fix in components/MiniVicBot.tsx + app/globals.css (panel width/anchor: e.g. width = min(432px, viewport − H1right − 16 − 16) measured at open time, or anchor the panel's top below the H1 run when the width would drop under 320 px). Rewrite TC-BOT-14 to measure BOTH axes on glyph rects at 1440/1280/834 and keep the 16 px contract. Never touch Hero component files.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T04:56:23.498Z",
+          "by": "orchestrator",
+          "text": "PM check 04:57Z: b4e4b79 pushed on worktree-w1-mv4 (consolidating). lib/minivicPlacement.ts chooses beside / below / flipped / under-nav from the measured glyph run and re-measures until the 16 px contract holds; TC-BOT-14 rewritten to both axes on Range.getClientRects at 1440/1366/1280/834 (0 glyph rects covered, 18–19 px separation, panel ≥ 320 px). Reviewer t_w1_rev7 judges on live."
+        }
+      ],
       "blocker": null
     },
     {
@@ -6778,8 +6844,8 @@
     {
       "id": "t_w1_rev6",
       "title": "WAVE-2 REVIEW 6 — independent adversarial review of the live SHA carrying the About light correction (x2f5: answered/open ≥ 1.6 in every state), scene-7 depth (x2s2: spans recoverable from light, parallax) and, if landed, hero S3 typography (descender plate fix, H1 ratio band, CTA bar): G-A3 story clause graded, G-X2/R2 INTERIM with the honest fps tier, hero INTERIM, regression table",
-      "status": "running",
-      "column": "running",
+      "status": "done",
+      "column": "done",
       "assignee": "reviewer",
       "priority": 100,
       "parents": [
@@ -6794,7 +6860,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T03:54:50.355Z",
-      "updated": "2026-09-06T04:07:56.099Z",
+      "updated": "2026-09-06T04:28:48.651Z",
       "summary": "Read the live build-commit at start; it must descend from worktree-w2-x2f5 and c29b55e1 (x2s2); note whether hero S3 (worktree-w2-h1s3) is in it. Baselines: G-REV/3657baa1 (F-1 descender plate FAIL, SPD 390 0.7153, false positive on 1280), G-REV/12cd9123 (G-A3 sub-claim: answered/open 1.039 @390 / 1.596 @1440 in the initial state; per-sector means recorded). Grade: (1) G-A3 story clause — with dial+column hidden, in BOTH the initial state (data-axis=-1) and with dimension 4 active, at 1440 and 390: ten sectors countable, answered/open ratio ≥ 1.6 on ring AND fan, ≥ 9/10 seams ≥ 12%, role-side maxima (dims 6, 7, 9) ≥ 15% below the candidate-side mean (TC-STORY-ABOUT-02), plane dominance ≥ 0.75, dial ≤ --mist-400, gold 0, about contrast ≥ 4.5:1, reduced-motion/no-GL paths; (2) scene 7 INTERIM: band present, spans legible as bands (your own edge count and rank correlation on a mid-band capture), parallax between two scroll positions, caption-only over the canvas, 0 pageerrors, and record — do not grade — the SwiftShader frame time with the renderer string (R2's 60 fps needs a GPU tier); (3) hero INTERIM/GRADED: if S3 landed, re-measure F-1 (descender ink off the plate: must be 0 px at 4 viewports × 2 paths), H1/brand ratio 2.5–6.0, H1 lines 1 at ≥ 720 px / 2 below, CTA targets ≥ 48 px, SET-02 ledger below the fold, SPD per viewport/path; if S3 has not landed, re-confirm F-1 still present and say so; (4) regression table: G-H6, G-C1, G-MV1 390 click, G-OG1, disclosure visible, ?gl=off 0 canvases, TC-BOT-14 (report), 0 pageerrors, LCP/CLS live.",
       "decisions": [],
       "comments": [
@@ -6804,13 +6870,14 @@
           "text": "NOTE 04:07Z: the About shader on live 1ba16f90 (479e2b2) is being REVERTED by ef2979a (worktree-w2-x2f5, consolidating next tick) because it broke the About coverage floor. Grade the story clause on what you measure and say which SHA; the design tension is with the SA (t_w2_a3sa)."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "Reviewer rev-1ba16f90-w2 (max, 29 min; measured 1ba16f90 → b9f5195e → 83f4b208, SHA stated per number): G-A3 story FAIL at 1440 rest (5/10 seams; STORY-ABOUT-02 role max 8.4% ABOVE candidate mean; fan inverted 0.34; ring ratio unstable 1.632/1.269/1.389) — and the change under review was reverted (ef2979a) → x2-f6 carries the new per-sector metric; G-A3 other clauses PASS (ten sectors 10/10 all states, dominance 0.7683, dial = --mist-400, gold 0, contrast 6.58, reduced-motion/?gl=off clean). Hero on 83f4b208: F-1 descender STILL FAIL 8/8 (145/130/57/42 px below the plate, worst 1.10:1) → S4; SPD 7/8 ≥ 0.78, 390 reduced-motion 0.7487 < 0.75 → S4; TYPE-01/02 PASS (5.60/5.12/3.34/2.89; lines 1/1/1/2), CTA 48 px PASS, SET-02 PASS (zero margin); TC-BOT-14 −67 px (mv4 running). Scene 7 INTERIM: band + edges PASS, parallax PASS (three rates), spacing∝duration MISS on the reviewer's detector (ρ 0.214 vs implementer 0.994) → t_w2_x2t3 reconciles instruments; caption-only MISS (10 text nodes incl. 5 ticks + 4 persistent chrome in a 100vh stage) → contract defect, same task; SwiftShader median rAF 50 ms recorded, not graded. PROCESS FAIL: t_w2_x2f5 shipped 1ba16f90 on a 7-line truncated verification log (registered). G-H6/G-C1/G-MV1-390/G-OG1/disclosure/gl-off/LCP 1408·1260 ms/CLS 0/0 errors PASS. R2/R3/R5 OPEN."
     },
     {
       "id": "t_w2_a3sa",
       "title": "ARCHITECTURE — G-A3 story vs flagship coverage vs text contrast in #about: decide how the field says WHICH dimensions are answered without dimming the plane (hatch/texture-coded open wedges at equal luminance, a redefined story assertion, or a 390 layout change that unguards plane area) — with the AP's measured numbers; TDD cases; ≤30-min AP slice",
-      "status": "running",
-      "column": "running",
+      "status": "done",
+      "column": "done",
       "assignee": "solutions-architect",
       "priority": 93,
       "parents": [
@@ -6824,8 +6891,137 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T04:07:56.354Z",
-      "updated": "2026-09-06T04:07:56.442Z",
+      "updated": "2026-09-06T04:19:56.332Z",
       "summary": "Facts (all measured by ap-w2-x2f5, docs/delivery/evidence/v10-20260905T0515Z/W2-X2/t_w2_x2f5/ + commit messages 479e2b2 / ef2979a on origin/worktree-w2-x2f5): applying the answered/open state term last and to the whole pixel gives ring answered/open 1.556 @1440 rest, 7.791 @390 rest, 8.137 @1440 indexed, fan 14.996 — but TC-FLAGSHIP-VIS-ABOUT coverage drops 15.52% → 13.66% (floor 15%, counts plane pixels ≥ 0.06 above ground); lifting ring/fan/haze bases to recover area either stays under the floor (14.28%, 14.82%) or breaks TC-CONTRAST-01/02 at 390 (15.31%) because the reading-column/instrument ceilings (READING_CEILING 0.10, INSTRUMENT_CEILING 0.24) keep guarded light below the coverage threshold, so the only unguarded area at 390 is under the heading/instrument. Reviewer rev-12cd9123-w1 F-2 (per-sector means: Culture Fit answered = darkest 0.012, Company Stability open = 0.566) and rev-3657baa1 both hold that brightness tracks position, not the data. SIGNATURE-SCENES-v2 §5 TC-STORY-ABOUT-01/02 define the story as ≥ 8 lobes + role-side maxima ≥ 15% below candidate-side. The three floors are all legitimate; the SA decides the composition, not the AP.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "result": "SA sa-w2-a3 (max, 11 min): decision (c) recorded in docs/architecture/ABOUT-STORY-v2.md (PM verified file exists) — open sectors DRAWN as structure (broken arc −cos(within·2π·5) + 45° ruling, depth 0.42, gated by (1−guarded)(1−answered), mean 0 so coverage 15.52% is untouched and no ceiling is breached); TC-SCENE-ABOUT-10 ratio clause replaced by per-sector normalised DFT amplitude at the mark frequency (open ≥ 3.0× answered AND ≥ 0.20) + non-inversion floor answered/open ≥ 1.20 (today 1.499–4.181) — strictly stronger and position-invariant (the 1.596-with-sector-5-dark case cannot pass it); TC-STORY-ABOUT-03 added; -01/-02 and every floor unchanged. Slices: x2-f6 (AP, 30 min, bounded tuning window + stop conditions, revert precedent ef2979a) and x2-f7 (conditional: 390 unguarded plane)."
+    },
+    {
+      "id": "t_w2_x2f6",
+      "title": "G-A3 story x2-f6 — the three role-side (open) sectors are DRAWN open (broken arc + 45° ruling, mean-zero mark at depth 0.42 gated by (1−guarded)(1−answered)) at unchanged mean luminance; TC-SCENE-ABOUT-10 rewritten to the per-sector structure metric (open ≥ 3.0× answered, ≥ 0.20) + non-inversion floor 1.20; TC-STORY-ABOUT-03 added; coverage ≥ 15.00% and TC-CONTRAST-01/02 are hard bounds",
+      "status": "done",
+      "column": "done",
+      "assignee": "analyst-programmer",
+      "priority": 93,
+      "parents": [
+        "t_w2_a3sa"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T04:19:56.561Z",
+      "updated": "2026-09-06T04:50:46.208Z",
+      "summary": "Implement slice x2-f6-about-open-mark exactly as docs/architecture/ABOUT-STORY-v2.md specifies (SA t_w2_a3sa): edits E-1 (hoist the guard/ceiling terms to the top of main(), pure code motion; ceiling still applied last), E-2 (leave `state` and its four uses byte-for-byte — that protects coverage), E-3 (after `float luma = sector;` add dash/ruled/mark/markWindow and luma *= 1 + ABOUT_OPEN_MARK_DEPTH·mark·markWindow; export ABOUT_OPEN_DASHES=5.0, ABOUT_OPEN_RULING=26.0, ABOUT_OPEN_MARK_DEPTH=0.42). Tests T-1/T-2 first (TC-SCENE-ABOUT-10 clauses 10a/10b/10c with sectorStructure added to readAnnulus() — 32 arc samples at rr 0.55/0.66/0.88, single DFT bin at k=ABOUT_OPEN_DASHES imported from field.glsl.ts, normalised 2|X_k|/mean, median of radii, all ten values printed; TC-STORY-ABOUT-03 in story-contract.spec.ts on RAW bins). Tuning window: depth 0.30–0.50, ruling 20–32, dashes 4/5/6; stop conditions: coverage < 15.00% at depth 0.30, any TC-CONTRAST node below AA, a visual baseline moving, structure ratio < 3.0 at depth 0.50 — then report RED and the PM fires x2-f7; never move a threshold. Precedent for a clean revert: ef2979a.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "result": "ap-w2-x2f6 (over cap, honest stop): 21ff176d pushed — tests only (TC-SCENE-ABOUT-10 10a/10b/10c with a 15-sample radial-run estimator that beats the bin-5 noise floor 0.09–0.26; TC-STORY-ABOUT-03; three exported constants), GLSL body byte-identical to main; the measured E-1+E-3 term saved as W2-A3/x2-f6/03-shader-E1-E3.patch. Mark works where unguarded (390 at rest ratio 2.98, screenshot shows 3 of 10 sectors ruled at unchanged luminance; non-inversion 1.53–3.89 green everywhere) but at 1440 at rest the ring annulus is mostly guarded → markWindow = 0 → ratio 0.56 (trigger 3, at 1440); TC-STORY-ABOUT-02 @390 deficit 0.1075 < 0.15 on main (trigger 1). No threshold moved; depth 0.50 not run because it multiplies a zero. Full suite logs committed."
+    },
+    {
+      "id": "t_w2_x2f7",
+      "title": "G-A3 story x2-f7 (CONDITIONAL — fire only on an x2-f6 stop condition) — create unguarded plane area at 390 (end .fieldViewport above the instrument / move the caption node) so a luminance clause can be raised without touching the ceilings; ABOUT-STORY-v2.md slice 2",
+      "status": "running",
+      "column": "running",
+      "assignee": "analyst-programmer",
+      "priority": 85,
+      "parents": [
+        "t_w2_x2f6"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T04:19:56.978Z",
+      "updated": "2026-09-06T04:50:46.354Z",
+      "summary": "Trigger (ABOUT-STORY-v2.md): TC-STORY-ABOUT-02 deficit < 0.15 after x2-f6; or ABOUT coverage @1440 < 15.00% with the mark at minimum depth; or clause 10b red at 390 because the ring annulus there is mostly guarded. Edits per the doc: components/sections/About/About.module.css (≤ 900 px block, :406–450) and About.tsx only if the caption node moves. Same floors, same tests, same stop rules. Do not start unless the PM comment on this task names the trigger.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-06T04:50:46.279Z",
+          "by": "orchestrator",
+          "text": "TRIGGER FIRED 04:52Z (PM): two measured triggers from t_w2_x2f6 — (1) TC-STORY-ABOUT-02 @390 deficit 0.1075 < 0.15 on origin/main; (3) TC-SCENE-ABOUT-10 clause 10b red at 1440 AT REST because guarded covers most of the ring annulus (open-min 0.0972 vs answered-max 0.1737, ratio 0.56; the mark's markWindow is exactly zero there). SCOPE: both widths, not only 390. Method: first MEASURE the guard mask over the ring annulus (rr 0.40–0.96) and the fan (1.12–1.6) at 1440 and 390 in the at-rest state (which guarded rect — reading column, instrument caption, key rows — covers it and by how much); then create unguarded annulus area by RELOCATING the guarded UI (About.module.css ≤900px block and the ≥901px grid: caption/key rows off the annulus; the reading column must not sit over the rose's annulus at rest) — never by weakening READING_CEILING 0.10 / INSTRUMENT_CEILING 0.24 or the (1−guarded) gate; then git apply docs/delivery/evidence/v10-20260905T0515Z/W2-A3/x2-f6/03-shader-E1-E3.patch and run the full About battery (ABOUT-10 both states/widths, STORY-ABOUT-01/02/03, flagship coverage ≥ 15% both widths, TC-CONTRAST-01/02 both paths, scene-about 01–09/11, text-contrast). Stop conditions unchanged. Push only green (tests-only push + numbers if it cannot be met)."
+        }
+      ],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_x2t3",
+      "title": "Scene-7 instruments (tester) — reconcile the duration→spacing detector (implementer TC-SCENE-DESCENT-09 ρ 0.994 vs reviewer row-profile ρ 0.214 on live), fix the TC-STORY-DESCENT-02 'caption-only' contract (a 100vh sticky stage always intersects nav/launcher chrome and the 5 axis ticks) so it measures what a reader sees, and add the renderer-labelled fps record to the harness — no threshold lowered",
+      "status": "ready",
+      "column": "ready",
+      "assignee": "tester",
+      "priority": 90,
+      "parents": [
+        "t_w1_rev6"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T04:28:49.587Z",
+      "updated": "2026-09-06T04:28:49.587Z",
+      "summary": "Two instruments disagree on the same live band (docs/delivery/evidence/v10-20260905T0515Z/G-REV/1ba16f90/03-scene7.json vs W2-X2/t_w2_x2s2 evidence): the implementer's TC-SCENE-DESCENT-09 (scene-descent.spec.ts) reads 9 edges with Spearman 0.994 against role durations at both widths; the reviewer's independent row-profile detector reads 10 edges but best-alignment ρ 0.214. Decide which measures the story (spacing proportional to duration, v2 §5): reproduce both on the export at the SAME scroll position/uDescent, print edge rows and the duration vector, and either fix the spec's detector (if it is reading the bars not the strata, or a fixed alignment) or file the shader defect for an AP with numbers. Second: TC-STORY-DESCENT-02 'caption-only over the canvas' counts persistent chrome (nav, launcher) and the 5 axis ticks that are part of the scene — redefine the assertion to exclude position:fixed chrome and the band's own ticks, keeping 'no heading/paragraph/CTA inside the stage' (v2 §2.4 intent), and say so in the spec. Third: the fps harness must emit the renderer string with every reading and refuse to print 'fps' for a software rasteriser (v2 §6.2).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w1_mv5",
+      "title": "REGRESSION (found by t_w1_mv3) — TC-MV-OCCLUDE-02 @390: the CLOSED Ask Mini Vic launcher paints a ground of rgb(174,174,174) (relative luminance 0.4233) against the 0.0968 ceiling derived from --mist-200 body ink, i.e. the dock brightens the prose under it; regressed between b02a8863 and b9f5195e (candidates: mv2's :hover reveal / pointer-events rules, red2's panel cap, hero S1–S3 nav/token changes) — bisect, fix on the launcher side, keep G-MV1 (visible, labelled, clickable) and TC-MV-CLICK-01 green",
+      "status": "ready",
+      "column": "ready",
+      "assignee": "analyst-programmer",
+      "priority": 91,
+      "parents": [
+        "t_w1_mv3"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T04:38:48.278Z",
+      "updated": "2026-09-06T04:38:48.278Z",
+      "summary": "Contract (app/globals.css MiniVic block, tests/a11y/minivic-occlusion.spec.ts TC-MV-OCCLUDE-02): every pixel the launcher paints stays darker than the brightest ground that still carries --mist-200 body ink at 4.5:1 — the launcher may float over prose; it may never brighten the ground under it. On b02a8863 only OCCLUDE-01 was red; on b9f5195e the closed pill's own surface measures rgb(174,174,174) at 390. Bisect with the export at the candidate commits (mv2 6d007adb, red2 9deea50d, S1 9287089, S2 9835a950, S3 1e1cb392) — one build each, one browser, serially — then fix at the root on the launcher side (never display:none, never opacity 0 that hides the label; G-MV1). Hero component files stay untouched (S4 lane).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w1_rev7",
+      "title": "WAVE-2 REVIEW 7 — G-H1 GRADED on the live SHA carrying hero S1–S4: every HERO-SETPIECE-v3 §8 case measured independently (F-1 descender 0 px off the plate, SPD ≥ 0.78 at 4 viewports × 2 paths, H1 contrast on glyph box, TYPE/SET/GL/PERF/PAL), the recruiter sentence, TC-BOT-14 on both axes, About story tests (red-by-design), regression table; plus the R1 question — is this a new visual system or still a résumé stack?",
+      "status": "running",
+      "column": "running",
+      "assignee": "reviewer",
+      "priority": 100,
+      "parents": [
+        "t_w2_h1s4",
+        "t_w1_mv4"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T04:56:23.594Z",
+      "updated": "2026-09-06T04:57:13.485Z",
+      "summary": "Read the live build-commit at start; it must descend from a06f317 (S4), b4e4b79 (mv4), 21ff176d (x2f6 tests). Baselines: G-REV/1ba16f90 (F-1 descender 145/130/57/42 px; SPD 390 rm 0.7487; TC-BOT-14 −67 px), G-REV/3657baa1, ADV-2315Z §Hero (the original FAIL: stacked hire landing, smoky wallpaper, no set-piece). Grade G-H1 against GAP-BACKLOG: one dominant visual plane ≥ 75% weight, brand + ≤ 1 headline + ≤ 1 non-CV sentence + ≤ 1 CTA group, photograph IN the plane, ledger below the fold, and — the human clause — a recruiter names the set-piece in one sentence (the brief's target: 'His face is standing in the shaft of light that his name is written across.'). Say the sentence you would say; say whether the fold is a new visual system (R1) or still a résumé landing. Measure with your own instruments; use scripts/validate/hero_plane_dominance.mjs exports for SPD only.",
       "decisions": [],
       "comments": [],
       "blocker": null

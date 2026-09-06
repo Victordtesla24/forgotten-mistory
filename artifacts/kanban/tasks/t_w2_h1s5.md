@@ -39,3 +39,12 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## COMMENT (2026-09-06T03:16:05.274Z)
 SCOPE ADD 03:16Z: tests/e2e/hero.spec.ts TC-HERO-08 — fold band 928.3 px vs viewport.height×1.1 = 792 ceiling at the default 720 px viewport (pre-existing on origin/main b02a8863, W1-RED2/04-suites.log). Decide product vs test against HERO-SETPIECE-v3 §3 (the plane is 100% of the fold by design; the ceiling may be measuring the old fold contract) — never raise the ceiling without the v3 clause that justifies it.
+
+## COMMENT (2026-09-06T04:18:20.112Z)
+SCOPE ADD 04:18Z (from S3's 09-hero-e2e.log, 10 failed / 54 passed): TC-FOLD-03 ×4 — visual baselines of the fold are stale since S1 recomposed it: re-accept ONLY after S4 lands (the v3 fold is the intended picture; look at the PNGs before committing them, per CLAUDE.md); TC-FOLD-04 @390 — 'the action group ends 16 px above the fold' expected ≤ 804, received 828 — decide product vs test against HERO-SETPIECE-v3 §3.5 (CTA group y 670–790 by design; if the v3 geometry puts the group at 828 the product is wrong or the geometry table is — file it for S4 with the number, do not raise 804). Order: run S5 after S4 pushes, from origin/main carrying S4.
+
+## STATUS (2026-09-06T04:18:21.048Z)
+ready — S3 consolidated 04:17Z — dispatch after S4 pushes
+
+## STATUS (2026-09-06T04:57:13.557Z)
+running — dispatched 04:59Z tester (waits for origin/main to carry a06f317)

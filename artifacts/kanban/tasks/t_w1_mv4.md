@@ -38,3 +38,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T03:53:30.466Z)
 running — dispatched 03:54Z fm-wave2-corrections-b (serialized: mv4 → m4b → l1m → a3g)
+
+## COMMENT (2026-09-06T04:56:23.498Z)
+PM check 04:57Z: b4e4b79 pushed on worktree-w1-mv4 (consolidating). lib/minivicPlacement.ts chooses beside / below / flipped / under-nav from the measured glyph run and re-measures until the 16 px contract holds; TC-BOT-14 rewritten to both axes on Range.getClientRects at 1440/1366/1280/834 (0 glyph rects covered, 18–19 px separation, panel ≥ 320 px). Reviewer t_w1_rev7 judges on live.

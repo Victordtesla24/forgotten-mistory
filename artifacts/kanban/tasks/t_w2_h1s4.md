@@ -47,3 +47,18 @@ MUST RESOLVE (from S2, 03:27Z): (1) TC-HERO-A11Y-01 red 8/8 on the H1 — P95 gr
 
 ## COMMENT (2026-09-06T03:51:45.041Z)
 LIVE DEFECT from rev-3657baa1-w2 (F-1, graded FAIL, readers see it now): the H1's plate is cut at the baseline — the 'p' descender of 'Deshpande' hangs off the plate onto the near-white plane at 1440/1280/834/390 on both paths (204/203/84/64 ink px at 1.10–1.55:1, one blob starting exactly at plate bottom 639.8/565.3/912.7/595.9 px). Fix in Hero.module.css: the plate (or the shader copy guard) must cover the font's descent — extend the plate's bottom to the line box's descender (or guard the full line box + 8 px), never by adding a scrim over the plane. Also: SPD at 390 reduced-motion is 0.7153 (< 0.75 floor) and 1280 is 0.7788/0.7586 (< 0.78 ship) — S4 must land ≥ 0.78 on both paths at all four; TC-HERO-SET-02 currently passes with ZERO margin (proof top == innerHeight) — typography must not grow the fold by even 1 px.
+
+## COMMENT (2026-09-06T04:28:49.397Z)
+AFTER S3 (rev-1ba16f90-w2 on 83f4b208): F-1 descender STILL FAIL 8/8 — 145/145/130/130/57/57/42/42 px of core ink below the plate's bottom edge (1440 y=640 vs plate 522+118 …), worst 1.10:1; gate is 0 px. SPD 390 reduced-motion 0.7487 (< 0.75). TC-BOT-14 −67 px (mv4 owns). Everything else in the fold PASS.
+
+## COMMENT (2026-09-06T04:52:49.543Z)
+PM 05:00Z: the S4 agent twice blocked in a wait loop — until ! pgrep -f 'playwright test tests/e2e/hero' — which matches the loop's own shell (the pkill/pgrep self-match trap) and can never exit; the PM killed the loop shells so the tool calls returned. The hero battery it was waiting for is not running; proceed to verification with the existing 09-hero-e2e.log or re-run the suites in the foreground.
+
+## COMMENT (2026-09-06T04:53:54.167Z)
+Timestamp correction: the PM note above labelled 05:00Z was written at 04:50Z (host clock).
+
+## COMMENT (2026-09-06T04:56:23.434Z)
+PM check 04:57Z: a06f317 pushed on worktree-w2-h1s4 (consolidating). Self-report: gate unarmed (PLANE-01 asserts 0.78 in the shared battery); descender fix = plates carry box-shadow 0 0 0 0.3em in their own colour (ground extended to the font box without entering layout; SET-02 still zero-margin); SPD 1440 0.919/0.919, 1280 0.904/0.904, 834 0.929/0.925, 390 0.850/0.791; new tests/perf/hero-vitals.spec.ts (LCP 284–1132 ms, CLS 0, zero loop requests at rest, largest media 51,028 B) and tests/monochrome/hero-palette.spec.ts (chroma 0); 35/35 slice tests, 54 hero e2e green; hero.ts unedited; no R5 claim. Not done until reviewer t_w1_rev7 grades G-H1 on live.
+
+## COMMENT (2026-09-06T04:57:13.421Z)
+Lane result 04:58Z (ap-w2-h1s4, goal_complete:true, over cap): SPD gl/still 0.919/0.919 · 0.904/0.904 · 0.929/0.925 · 0.850/0.791 (ship 0.78 everywhere); lit 0.25–0.52; LCP 1132/716/668/284 ms; CLS 0; chroma 0; loop requests at rest 0; descender fixed by a 0.3em plate spread (font box 1.365em vs 0.9em line box); 35/35 slice + 54 hero e2e green; full 308-battery NOT run (cap) → t_w2_h1s5 runs it. Awaiting reviewer t_w1_rev7 on live.
