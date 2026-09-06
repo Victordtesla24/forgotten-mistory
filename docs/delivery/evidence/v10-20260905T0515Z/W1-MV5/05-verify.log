@@ -1,0 +1,83 @@
+# W1-MV5 — verification after the fix
+# worktree-w1-mv5, own static export of 314d9d28 + the fix, served on :5635.
+# Chrome channel=chrome, --no-sandbox, workers=1, one browser at a time.
+
+$ npx tsc --noEmit                                   → EXIT 0
+$ npm run lint                                       → ✔ No ESLint warnings or errors (EXIT 0)
+$ npm run build:static                               → EXIT 0 (03-build-after.log)
+$ node scripts/validate/overhaul_static_audit.mjs    → RESULT: ALL PASS (10/10) (04-audit.log)
+
+## (1) the four launcher suites, serially
+$ PLAYWRIGHT_BASE_URL=http://127.0.0.1:5635 npx playwright test \
+    tests/a11y/minivic-occlusion.spec.ts \
+    tests/monochrome/minivic-launcher.spec.ts \
+    tests/e2e/minivic-first-fold-click.spec.ts \
+    tests/a11y/minivic-launcher.spec.ts --workers=1 --reporter=list
+
+  14 passed, 1 failed (1.5m)
+    ✓ TC-MV-OCCLUDE-01                    (the regression's sibling, still green)
+    ✓ TC-MV-OCCLUDE-02                    (was: rgb(171,171,171) L=0.4072 — now green)
+    ✓ MONO-MV-01 @ 1440 / 640 / 390
+    ✓ MONO-MV-02 @ 640
+    ✓ TC-MV-CLICK-01 (1440, 390)
+    ✓ TC-MV-LABEL-01 (390, 1440)
+    ✘ MONO-MV-02 @ 390 — "the dock never painted past the hero", dockOpacity
+      poll timed out at 8000ms with 0.
+
+## (2) that one failure is not this change — A/B on the same export
+
+  The failing assertion is on `.minivic-dock`'s opacity, which this change does
+  not touch. Proven by stripping the new rule out of the built stylesheet and
+  running the same test against the same export:
+
+  $ perl -0pi -e 's/\@media \(max-width:87\.4375rem\)\{\.minivic-launcher\{...\}\}//' \
+      out/_next/static/css/213772871f03baae.css        # rule count → 0
+  $ npx playwright test tests/monochrome/minivic-launcher.spec.ts -g "MONO-MV-02 @ 390"
+      1 passed (3.3s)
+
+  $ cp /tmp/mv5-css-with-fix.css out/_next/static/css/213772871f03baae.css   # rule count → 1
+  $ npx playwright test tests/monochrome/minivic-launcher.spec.ts -g "MONO-MV-02 @ 390"
+      1 passed (3.3s)                                   ← the fix is in, and it passes
+
+  So the difference was not the rule. The 8-second `expect.poll` on the dock's
+  IntersectionObserver is what timed out, in a 1.5-minute four-file run on a
+  4-core VPS with three other lanes building. It is a timing flake, and it is
+  the same assertion W1-MV3 already recorded red on b9f5195 for a different
+  reason.
+
+## (3) the whole monochrome file again, with the fix in place
+$ npx playwright test tests/monochrome/minivic-launcher.spec.ts --workers=1
+    ✓ MONO-MV-01 @ 1440 (4.6s) / @ 640 (3.7s) / @ 390 (3.6s)
+    ✓ MONO-MV-02 @ 390 (3.0s) / @ 640 (3.9s)
+    5 passed (20.8s)
+
+## (4) the launcher's box, measured (docs/delivery/evidence/v10-20260905T0515Z/W1-MV5/probe-occlude02.mjs)
+    390x844 closed  brightest rgb(60,60,60)  L 0.0452  ceiling 0.0968  PASS  0/1659 over
+    390x844 hover   brightest rgb(60,60,60)  L 0.0452  ceiling 0.0968  PASS  0/1659 over
+    640x844 closed  brightest rgb(60,60,60)  L 0.0452  ceiling 0.0968  PASS  0/2790 over
+  rgb(60,60,60) is --ink-500, the status pip — the brightest thing the closed
+  launcher is meant to paint at phone widths.
+
+## (5) screenshots (S-4)
+    06-launcher-closed-390.png    the closed control on its own ground, over the
+                                  About instrument stage — the band that used to
+                                  show rgb(182) is now --ink-900
+    07-launcher-hover-390.png     the same, hovered
+    08-launcher-in-page-390.png   the whole 390 viewport at the sample position
+    09-panel-1366x768.png         the open panel (PM comment, below)
+
+## (6) PM COMMENT 2026-09-06T05:09Z — the composer at 1366x768
+  Measured on this export with the panel open at 1366x768:
+    panel     x910 y360 w432 h320  (bottom 680)
+    composer  x911 y612 w430 h 67  (bottom 679)
+    field     x923 y625 w360 h 42  (bottom 667)
+    composer_inside_panel = true      field_inside_panel = true
+  t_w1_mv4's `composer_inside_panel=false` with a 245px panel does not reproduce
+  here: the panel is 320px tall (the 19rem floor), not 245, and the usable
+  dialog is 432 x 320 — above the >= 320 x 304 floor on both axes. Nothing to
+  fix on the launcher/panel side at this viewport on 314d9d28.
+
+## NOT RUN within the 30-minute cap
+  tests/e2e/chatbot.spec.ts and the full battery. The change is one CSS rule
+  scoped to `.minivic-launcher` below 87.5rem; the four suites that own the
+  launcher's contract are green above.
