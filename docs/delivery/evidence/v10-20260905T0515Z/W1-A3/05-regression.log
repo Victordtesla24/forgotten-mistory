@@ -1,0 +1,70 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts -g about --workers=1 --reporter=line
+
+[2mRunning [22m4[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/4] [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light[22m
+[flagship-visibility] about@1440: ground=0.0030 coverage=14.31% peak=0.8308 motion=0.00227 box=1248x900
+
+[1A[2K[31m  1) [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light [39m
+
+    Error: about compass field: only 14.31% of the scene is more than 0.06 luminance above its ground — the structure has no area
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.15[39m
+    Received:    [31m0.14314369658119658[39m
+
+    [0m [90m 353 |[39m           [32m`${item.label}: only ${(cover * 100).toFixed(2)}% of the scene is more than `[39m [33m+[39m
+     [90m 354 |[39m             [32m`${COVERAGE_DELTA} luminance above its ground — the structure has no area`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 355 |[39m         )[33m.[39mtoBeGreaterThanOrEqual([33mCOVERAGE_MIN[39m)[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 356 |[39m
+     [90m 357 |[39m         expect(
+     [90m 358 |[39m           top[33m,[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-a3/tests/overhaul/flagship-visibility.spec.ts:355:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-flagship-visibili-9ca1f-ompass-field-reads-as-light-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-flagship-visibili-9ca1f-ompass-field-reads-as-light-chromium/error-context.md[22m
+
+
+[1A[2K[2/4] [chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback[22m
+[flagship-visibility:still] about@1440: ground=0.0030 coverage=15.26% peak=0.1195
+
+[1A[2K[3/4] [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light[22m
+[flagship-visibility] about@390: ground=0.0030 coverage=27.75% peak=0.8308 motion=0.00479 box=342x480
+
+[1A[2K[4/4] [chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback[22m
+[flagship-visibility:still] about@390: ground=0.0030 coverage=67.38% peak=0.1195
+
+[1A[2K[31m  1 failed[39m
+[31m    [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light [39m
+[32m  3 passed[39m[2m (22.4s)[22m
+FLAGSHIP_EXIT=1
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/about.spec.ts --workers=2 --reporter=line
+
+[2mRunning [22m13[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/13] [chromium] › tests/e2e/about.spec.ts:39:7 › About › TC-ABOUT-01: all ten dimensions render, in the engine’s own order
+[1A[2K[2/13] [chromium] › tests/e2e/about.spec.ts:47:7 › About › TC-ABOUT-02: every dimension carries an answer and its evidence
+[1A[2K[3/13] [chromium] › tests/e2e/about.spec.ts:60:7 › About › TC-ABOUT-03: no dimension is given a score
+[1A[2K[4/13] [chromium] › tests/e2e/about.spec.ts:80:7 › About › TC-ABOUT-04: the dimensions name their source
+[1A[2K[5/13] [chromium] › tests/e2e/about.spec.ts:86:7 › About › TC-ABOUT-05: job-side dimensions are labelled as such
+[1A[2K[6/13] [chromium] › tests/e2e/about.spec.ts:99:7 › About › TC-ABOUT-06: the ten items are reading aids, not tab stops
+[1A[2K[7/13] [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL
+[1A[2K[8/13] [chromium] › tests/e2e/about.spec.ts:192:7 › About › TC-ABOUT-08: the compass turns as the reader scrolls — item 6 centred reads 06 / FROM THE ROLE
+[1A[2K[9/13] [chromium] › tests/e2e/about.spec.ts:216:7 › About › TC-ABOUT-09: hover overrides the scroll index, and leaving the list hands it back
+[1A[2K[10/13] [chromium] › tests/e2e/about.spec.ts:235:7 › About › TC-ABOUT-10: on first entry the bezel sweeps once — 1160 ms, emphasised ease, never again
+[1A[2K[11/13] [chromium] › tests/e2e/about.spec.ts:278:7 › About › TC-ABOUT-11: under reduced motion the index snaps — no sweep, no travel, still swept
+[1A[2K[12/13] [chromium] › tests/e2e/about.spec.ts:306:7 › About › TC-ABOUT-12: no gold on the face — the active sector, its numeral and the ring stay achromatic
+[1A[2K[13/13] [chromium] › tests/e2e/about.spec.ts:346:7 › About › TC-ABOUT-13: at 1440 the dial and the first dimension share a baseline
+[1A[2K[32m  13 passed[39m[2m (35.9s)[22m
+E2E_ABOUT_EXIT=0

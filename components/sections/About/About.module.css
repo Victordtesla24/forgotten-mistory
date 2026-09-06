@@ -244,6 +244,16 @@
     background: none;
 }
 
+/* With no plane there is nothing for the engraving to be chrome over, so it
+   stops being chrome. `--dial-ink` is what every line and glyph on the dial
+   paints in (Compass.module.css); it is --mist-400 while the shader is drawing
+   the section's light, and --white here, where WebGL was refused or reduced
+   motion was asked for and the SVG is the only thing left that can draw the ten
+   dimensions. The canvas is the condition because the canvas is the plane. */
+.body:not(:has(canvas)) {
+    --dial-ink: var(--white);
+}
+
 /* The engraving fills its stage again, and the stage stands on the plane. */
 .instrumentStage > svg {
     position: relative;

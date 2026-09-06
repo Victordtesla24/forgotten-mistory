@@ -5,13 +5,14 @@ import { useMemo } from 'react';
 import styles from './Compass.module.css';
 
 const SPOKES = 10;
-/** Bezel, sector band and hub, in viewBox units. */
+/** Bezel, sector band and numerals, in viewBox units. The hub radius went
+    with the hub plate: nothing is drawn at the centre any more but the readout
+    itself, and it sits on the plane rather than on a disc of its own (G-A3). */
 const BEZEL_OUTER = 47;
 const BEZEL_INNER = 43.2;
 const SECTOR_OUTER = 41;
 const SECTOR_INNER = 22;
 const NUMERAL_RADIUS = 36.2;
-const HUB = 18;
 
 interface CompassProps {
   /** Index of the dimension the reader is on, or -1 for none. */
@@ -154,15 +155,12 @@ export default function Compass({ active, labels, sides, sweep = false }: Compas
         >
           <line x1="0" y1="0" x2="0" y2="3" className={styles.hatch} />
         </pattern>
-        <radialGradient id="compass-hub" cx="50%" cy="42%" r="62%">
-          <stop offset="0%" stopColor="var(--white)" stopOpacity="0.055" />
-          <stop offset="100%" stopColor="var(--white)" stopOpacity="0" />
-        </radialGradient>
       </defs>
 
-      {/* The hub glow sits under everything and does not turn. */}
-      <circle cx="50" cy="50" r={HUB + 8} fill="url(#compass-hub)" />
-
+      {/* No hub plate. The dial used to carry its own disc of light under the
+          readout, which is the one thing a plate this size is good at: making
+          the widget the brightest object in the section. The plane behind it is
+          the section's light now, and the engraving stands on it (G-A3). */}
       {/* The first-entry sweep lives on its own carrier so it composes with,
           rather than fights, the rose's index rotation beneath it: a full
           −360° turn ends where it began, so there is nothing to snap back to

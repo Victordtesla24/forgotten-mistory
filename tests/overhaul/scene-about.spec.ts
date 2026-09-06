@@ -1,7 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
+import { PNG } from 'pngjs';
 import { test, expect, type Page } from '@playwright/test';
+
+import { aboutContent } from '../../app/data/portfolio/about';
 
 /**
  * SPEC-v10 §R2 / c16 — `#about` carries a flagship scene.
@@ -68,6 +71,199 @@ async function settleAboutWithGL(page: Page) {
   await waitForPageReady(page);
   await page.locator(ABOUT).scrollIntoViewIfNeeded();
   await page.waitForTimeout(2500);
+}
+
+/* ── Measuring the field itself ──────────────────────────────────────────── */
+
+/** The ten, in the order the SVG numbers them and the shader indexes them. */
+const SECTORS = aboutContent.dimensions.length;
+/** Which of the ten the engine answers from the candidate — the lit ones. */
+const ANSWERED = aboutContent.dimensions.map((d) => d.side === 'candidate');
+const TAU = Math.PI * 2;
+
+/** Relative luminance (WCAG) of one 8-bit sRGB triple. */
+function luminance(r: number, g: number, b: number): number {
+  const channel = (v: number) => {
+    const c = v / 255;
+    return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  };
+  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+}
+
+/** Hue in degrees and saturation 0..1 — enough to name gold and nothing else. */
+function hueSaturation(r: number, g: number, b: number): { hue: number; saturation: number } {
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const delta = max - min;
+  if (delta === 0 || max === 0) return { hue: 0, saturation: 0 };
+  let hue: number;
+  if (max === r) hue = 60 * (((g - b) / delta + 6) % 6);
+  else if (max === g) hue = 60 * ((b - r) / delta + 2);
+  else hue = 60 * ((r - g) / delta + 4);
+  return { hue, saturation: delta / max };
+}
+
+interface Shot {
+  png: ReturnType<typeof PNG.sync.read>;
+  /** Image pixels per CSS pixel — a screenshot may be taken at a scale factor. */
+  scale: number;
+}
+
+interface FieldGeometry {
+  /** The engraving's centre, in CSS pixels inside the canvas box. */
+  centreX: number;
+  centreY: number;
+  /** The engraving's radius, same units. The shader's `rr = 1` is this. */
+  roseRadius: number;
+  width: number;
+  height: number;
+  /** The dimension the section says is being read, or -1. */
+  active: number;
+}
+
+/**
+ * Where the engraving falls inside the canvas, and which dimension is indexed —
+ * read from the DOM rather than assumed, because the instrument is sticky and
+ * the plane travels with the reader (see `AboutField.tsx`, same measurement).
+ */
+async function readFieldGeometry(page: Page): Promise<FieldGeometry> {
+  return page.evaluate(() => {
+    const canvas = document.querySelector('#about canvas');
+    const stage = document.querySelector('#about [class*="instrumentStage"]');
+    const slot = document.querySelector('#about [data-axis]');
+    if (!canvas || !stage || !slot) throw new Error('#about: no canvas, stage or field slot');
+    const c = canvas.getBoundingClientRect();
+    const s = stage.getBoundingClientRect();
+    const axis = Number((slot as HTMLElement).dataset.axis ?? '-1');
+    return {
+      centreX: s.left + s.width / 2 - c.left,
+      centreY: s.top + s.height / 2 - c.top,
+      roseRadius: s.width / 2,
+      width: c.width,
+      height: c.height,
+      active: Number.isFinite(axis) ? axis : -1,
+    };
+  });
+}
+
+/** The canvas, alone: the SVG engraving and every word of the section hidden. */
+async function hideEverythingButTheField(page: Page) {
+  await page.addStyleTag({
+    content: `#about header, #about ol, #about [class*="instrument"] {
+      visibility: hidden !important;
+    }`,
+  });
+  await page.waitForTimeout(500);
+}
+
+/** One pixel of a screenshot at CSS coordinates, or null when outside it. */
+function pixelAt(shot: Shot, x: number, y: number): [number, number, number] | null {
+  const px = Math.round(x * shot.scale);
+  const py = Math.round(y * shot.scale);
+  if (px < 0 || py < 0 || px >= shot.png.width || py >= shot.png.height) return null;
+  const o = (py * shot.png.width + px) * 4;
+  return [shot.png.data[o], shot.png.data[o + 1], shot.png.data[o + 2]];
+}
+
+/**
+ * The sector geometry the shader draws, restated in screen coordinates so the
+ * test measures the picture rather than the source.
+ *
+ * `field.glsl.ts`: `a = atan(p.x, p.y) - uRotation`, `s = a / TAU * SECTORS +
+ * 0.5`, `idx = floor(s)`. `uRotation` is `-active * TAU / SECTORS`
+ * (`AboutField.tsx::indexAngle`), which carries the dimension being read to
+ * twelve o'clock. So sector `i` is centred at `uRotation + i * TAU / SECTORS`
+ * measured clockwise from up, and its two boundaries sit half a sector either
+ * side of that.
+ */
+function sectorAngle(active: number, index: number, within: number): number {
+  const rotation = active < 0 ? 0 : (-active * TAU) / SECTORS;
+  return rotation + ((index + within - 0.5) * TAU) / SECTORS;
+}
+
+interface AnnulusReading {
+  /** Mean luminance per sector, indexed as the section indexes its ten. */
+  sectorMean: number[];
+  /** Mean luminance along each sector's leading boundary. */
+  boundaryMean: number[];
+  /** Pixels actually sampled per sector. A sector off the canvas has none. */
+  sectorSamples: number[];
+  /** The brightest gold-ish pixel found, or null. Gold may never be here. */
+  gold: { hue: number; saturation: number } | null;
+  /** The radii the annulus actually covered, in units of the rose's radius. */
+  band: [number, number];
+}
+
+/**
+ * Samples ten 36° sectors on an annulus around the engraving's centre.
+ *
+ * The task's nominal band is `r ∈ [0.26, 0.42]·min(w, h)`. That band assumes an
+ * instrument at the middle of its plane; here the plane is the whole body and
+ * the engraving sits in the left column at 1440, so a band that wide runs off
+ * the canvas on the left and half the ten could not be measured at all. The
+ * band is therefore written in the rose's own frame — the frame the shader
+ * writes its sector ring in — and clipped to what is actually inside the
+ * canvas, which is the strongest annulus a reader's eye can be shown.
+ */
+function readAnnulus(
+  shot: Shot,
+  geometry: FieldGeometry,
+  band: [number, number] = [0.4, 0.96],
+): AnnulusReading {
+  const rInner = band[0] * geometry.roseRadius;
+  const rOuter = band[1] * geometry.roseRadius;
+  const steps = 24;
+  const arcSamples = 7;
+  const sectorMean: number[] = [];
+  const boundaryMean: number[] = [];
+  const sectorSamples: number[] = [];
+  let gold: { hue: number; saturation: number } | null = null;
+
+  const sampleAlong = (angle: number): number[] => {
+    const values: number[] = [];
+    for (let s = 0; s < steps; s += 1) {
+      const r = rInner + ((rOuter - rInner) * s) / (steps - 1);
+      const x = geometry.centreX + r * Math.sin(angle);
+      const y = geometry.centreY - r * Math.cos(angle);
+      const pixel = pixelAt(shot, x, y);
+      if (!pixel) continue;
+      const [red, green, blue] = pixel;
+      const hs = hueSaturation(red, green, blue);
+      if (hs.hue >= 35 && hs.hue <= 60 && hs.saturation > 0.25) gold = hs;
+      values.push(luminance(red, green, blue));
+    }
+    return values;
+  };
+
+  for (let i = 0; i < SECTORS; i += 1) {
+    const inside: number[] = [];
+    for (let a = 0; a < arcSamples; a += 1) {
+      // Across the sector's own width, clear of both boundaries.
+      const within = 0.25 + (0.5 * a) / (arcSamples - 1);
+      inside.push(...sampleAlong(sectorAngle(geometry.active, i, within)));
+    }
+    sectorMean.push(inside.reduce((sum, v) => sum + v, 0) / Math.max(inside.length, 1));
+    sectorSamples.push(inside.length);
+
+    // The seam between sector i-1 and sector i: `within = 0`.
+    const seam = sampleAlong(sectorAngle(geometry.active, i, 0));
+    boundaryMean.push(seam.reduce((sum, v) => sum + v, 0) / Math.max(seam.length, 1));
+  }
+
+  return { sectorMean, boundaryMean, sectorSamples, gold, band };
+}
+
+/** The widest fan band that fits inside the canvas, or null when none does. */
+function fanBand(geometry: FieldGeometry): [number, number] | null {
+  const reach =
+    Math.max(
+      geometry.centreX,
+      geometry.centreY,
+      geometry.width - geometry.centreX,
+      geometry.height - geometry.centreY,
+    ) / geometry.roseRadius;
+  const outer = Math.min(1.6, reach);
+  return outer > 1.2 ? [1.12, outer] : null;
 }
 
 /** Scroll item `n` (1-based) so its centre sits at the viewport's centre. */
@@ -392,5 +588,240 @@ test.describe('TC-SCENE-ABOUT: the compass turns over a field of light', () => {
     // And it is not the `?gl=force` hatch in another shape: force is still the
     // only thing that skips the question.
     expect(source).toContain("window.location.search.includes('gl=force')");
+  });
+
+  /**
+   * G-A3, the finding this file could not previously catch.
+   *
+   * ADV-REVIEW-20260905T2315Z §About: on live `9136bc59` a recruiter's recall of
+   * `#about` is still the SVG compass — "01–10, hub 01/04 ANSWERED" — even
+   * though the field is now the section's whole plane. Every test above this
+   * one measures the field's *source* or its *mount*; none of them looks at the
+   * picture and asks whether the light says anything a reader could read. So a
+   * field could be a smooth wash of haze and pass, which is roughly what it
+   * was: the ten sectors existed in the shader but not in the eye.
+   *
+   * These two measure the picture. The first hides the engraving and the type
+   * and asks the remaining light to tell the ten dimensions on its own. The
+   * second puts everything back and asks which object the section is actually
+   * made of.
+   */
+  for (const viewport of [
+    { label: '1440x900', width: 1440, height: 900, item: 4 },
+    { label: '390x844', width: 390, height: 844, item: 0 },
+  ]) {
+    test(`TC-SCENE-ABOUT-10: the field alone tells ten sectors at ${viewport.label}`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await settleAboutWithGL(page);
+      if (viewport.item > 0) {
+        // The k-th dimension is the one being read (k = 4, `Role Alignment`).
+        await centreItem(page, viewport.item);
+      } else {
+        // At 390 the instrument is a header ornament in flow, so the plane is a
+        // band at the head of the body: put that band on screen instead.
+        await page.locator(ABOUT).evaluate((el) => {
+          window.scrollTo(0, window.scrollY + el.getBoundingClientRect().top);
+        });
+        await page.waitForTimeout(900);
+      }
+      await expect(page.locator(`${ABOUT} canvas`)).toHaveCount(1);
+
+      const geometry = await readFieldGeometry(page);
+      await hideEverythingButTheField(page);
+      const buffer = await page.locator(`${ABOUT} canvas`).screenshot();
+      const png = PNG.sync.read(buffer);
+      const shot: Shot = { png, scale: png.width / geometry.width };
+
+      // The ring the engraving stands on, and — where the plane is wide enough
+      // to hold it — the same ten carried out past the bezel as a fan. The fan
+      // is the half of this that matters most: the bezel covers the ring, so
+      // the light a reader actually sees is the light outside it, and it has to
+      // say the same ten things.
+      const ring = readAnnulus(shot, geometry);
+      const fanExtent = fanBand(geometry);
+      const fan = fanExtent ? readAnnulus(shot, geometry, fanExtent) : null;
+
+      /** (i) and (ii), against one annulus. */
+      const assertTellsTen = (reading: AnnulusReading, where: string, minSectors: number) => {
+        const measured = reading.sectorSamples
+          .map((count, i) => ({ count, i }))
+          .filter(({ count }) => count >= 12)
+          .map(({ i }) => i);
+        expect(
+          measured.length,
+          `${where}: only ${measured.length} of the ten sectors on the annulus ` +
+            `${JSON.stringify(reading.band)} are inside the canvas at all`,
+        ).toBeGreaterThanOrEqual(minSectors);
+
+        // Ten lobes, not one smooth wash. Each seam between neighbours has to
+        // sit at least 12% below the light either side of it, or the "sectors"
+        // are a gradient a reader cannot count.
+        const seams = measured.filter((i) => measured.includes((i + SECTORS - 1) % SECTORS));
+        const steps = seams.map((i) => {
+          const flank = (reading.sectorMean[(i + SECTORS - 1) % SECTORS] + reading.sectorMean[i]) / 2;
+          return flank <= 0 ? 0 : 1 - reading.boundaryMean[i] / flank;
+        });
+        const legible = steps.filter((step) => step >= 0.12).length;
+        expect(
+          legible,
+          `${where}: only ${legible} of ${steps.length} sector boundaries show a 12% luminance ` +
+            `step — steps ${steps.map((s) => s.toFixed(3)).join(', ')}`,
+        ).toBeGreaterThanOrEqual(steps.length - 1);
+
+        // Answered brighter than open, in the order the SVG numbers them. The
+        // task's shorthand is "sectors 1..k against k+1..10"; the ten are not
+        // ordered that way — the three role-side dimensions are 6, 7 and 9 — so
+        // the mask from `about.ts` is what is asserted, which is the same claim
+        // against the real data and cannot pass by an accident of ordering.
+        const answered = measured.filter((i) => ANSWERED[i]).map((i) => reading.sectorMean[i]);
+        const open = measured.filter((i) => !ANSWERED[i]).map((i) => reading.sectorMean[i]);
+        expect(answered.length, `${where}: no answered sector measured`).toBeGreaterThan(0);
+        expect(open.length, `${where}: no open sector measured`).toBeGreaterThan(0);
+        const answeredMean = answered.reduce((s, v) => s + v, 0) / answered.length;
+        const openMean = open.reduce((s, v) => s + v, 0) / open.length;
+        expect(
+          answeredMean / openMean,
+          `${where}: answered ${answeredMean.toFixed(4)} vs open ${openMean.toFixed(4)} — the ` +
+            `light does not say which of the ten are answered (per-sector ${reading.sectorMean
+              .map((v) => v.toFixed(4))
+              .join(', ')})`,
+        ).toBeGreaterThanOrEqual(1.6);
+      };
+
+      assertTellsTen(ring, 'the ring under the engraving', SECTORS);
+      if (fan) assertTellsTen(fan, 'the fan outside the bezel', 6);
+
+      // (iii) Gold is a claim mark and a field of light is not a claim.
+      expect(ring.gold, 'a gold pixel was sampled inside the field').toBeNull();
+      expect(fan?.gold ?? null, 'a gold pixel was sampled in the fan').toBeNull();
+    });
+  }
+
+  test('TC-SCENE-ABOUT-11: the compass is chrome — the plane carries the section', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await settleAboutWithGL(page);
+    // The section's *first* viewport: the screen a reader arrives on, with the
+    // plane's core and the engraving on it, rather than a screen deep in the
+    // ten where the reading column is most of what is on the glass.
+    await page.locator(ABOUT).evaluate((el) => {
+      window.scrollTo(0, window.scrollY + el.getBoundingClientRect().top);
+    });
+    await page.waitForTimeout(1200);
+    await expect(page.locator(`${ABOUT} canvas`)).toHaveCount(1);
+
+    const clip = await page.locator(FIELD).evaluate((el) => {
+      const r = el.getBoundingClientRect();
+      return {
+        x: Math.max(r.left, 0),
+        y: Math.max(r.top, 0),
+        width: Math.min(r.width, window.innerWidth),
+        height: Math.min(r.height, window.innerHeight - Math.max(r.top, 0)),
+      };
+    });
+    const withField = PNG.sync.read(await page.screenshot({ clip }));
+    // The same frame with the plane's light taken away. The still underneath is
+    // `:has(canvas)`-suppressed and stays suppressed — the canvas is still in
+    // the DOM — so this is the section with its type and its engraving alone.
+    await page.addStyleTag({ content: '#about canvas { visibility: hidden !important; }' });
+    await page.waitForTimeout(400);
+    const withoutField = PNG.sync.read(await page.screenshot({ clip }));
+
+    const ground = await page.evaluate(() => {
+      const ink = getComputedStyle(document.documentElement).getPropertyValue('--ink-900').trim();
+      const probe = document.createElement('span');
+      probe.style.color = ink;
+      document.body.appendChild(probe);
+      const rgb = getComputedStyle(probe).color;
+      probe.remove();
+      const parts = rgb.match(/[\d.]+/g)!.map(Number);
+      return [parts[0], parts[1], parts[2]] as [number, number, number];
+    });
+    const groundLuma = luminance(ground[0], ground[1], ground[2]);
+
+    let total = 0;
+    let fromField = 0;
+    for (let i = 0; i < withField.width * withField.height; i += 1) {
+      const o = i * 4;
+      const lit = luminance(withField.data[o], withField.data[o + 1], withField.data[o + 2]);
+      const bare = luminance(
+        withoutField.data[o],
+        withoutField.data[o + 1],
+        withoutField.data[o + 2],
+      );
+      total += Math.max(0, lit - groundLuma);
+      fromField += Math.max(0, lit - bare);
+    }
+    const dominance = total === 0 ? 0 : fromField / total;
+    expect(
+      dominance,
+      `the canvas contributes ${(dominance * 100).toFixed(1)}% of the light above the section ` +
+        'ground — the engraving and the type are what the reader is looking at',
+    ).toBeGreaterThanOrEqual(0.75);
+
+    // And the engraving is drawn as chrome: nothing in it is painted brighter
+    // than --mist-400, the site's secondary ink. The claim mark is not affected
+    // — gold lives on the caliper in the reading column, not on the dial.
+    const brightest = await page.evaluate(() => {
+      const channel = (v: number) => {
+        const c = v / 255;
+        return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+      };
+      const luma = (rgb: string) => {
+        const parts = rgb.match(/[\d.]+/g)?.map(Number);
+        if (!parts || parts.length < 3) return 0;
+        const alpha = parts.length > 3 ? parts[3] : 1;
+        return (
+          alpha *
+          (0.2126 * channel(parts[0]) + 0.7152 * channel(parts[1]) + 0.0722 * channel(parts[2]))
+        );
+      };
+      const svg = document.querySelector('#about svg[class*="compass"]')!;
+      const limit = (() => {
+        const probe = document.createElement('span');
+        probe.style.color = getComputedStyle(document.documentElement)
+          .getPropertyValue('--mist-400')
+          .trim();
+        document.body.appendChild(probe);
+        const value = luma(getComputedStyle(probe).color);
+        probe.remove();
+        return value;
+      })();
+      let max = 0;
+      let worst = '';
+      for (const node of [svg, ...Array.from(svg.querySelectorAll('*'))]) {
+        const style = getComputedStyle(node as Element);
+        // Opacity compounds down the tree, so the paint that actually lands is
+        // the colour's luminance times every opacity above it.
+        let opacity = 1;
+        let walk: Element | null = node as Element;
+        while (walk && walk !== svg.parentElement) {
+          opacity *= Number(getComputedStyle(walk).opacity || '1');
+          walk = walk.parentElement;
+        }
+        // Stroke and fill are what the dial actually paints; `color` only
+        // counts on a <text>, where the numerals paint through `currentColor`.
+        // Reading `color` off every node would measure inheritance from the
+        // page rather than ink that lands.
+        const paints = [style.stroke, style.fill];
+        if ((node as Element).tagName.toLowerCase() === 'text') paints.push(style.color);
+        for (const paint of paints) {
+          if (!paint || paint === 'none' || paint.startsWith('url')) continue;
+          const value = luma(paint) * opacity;
+          if (value > max) {
+            max = value;
+            worst = `${(node as Element).getAttribute('class') ?? node.nodeName}: ${paint} @ ${opacity.toFixed(2)}`;
+          }
+        }
+      }
+      return { max, limit, worst };
+    });
+    expect(
+      brightest.max,
+      `the engraving paints brighter than --mist-400 (${brightest.limit.toFixed(3)}): ${brightest.worst}`,
+    ).toBeLessThanOrEqual(brightest.limit + 0.005);
   });
 });

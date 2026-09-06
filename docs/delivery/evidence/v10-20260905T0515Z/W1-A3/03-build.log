@@ -1,0 +1,95 @@
+npm notice run forgotten-mistory@2.0.0 build:static
+npm notice run rm -rf .next out && node scripts/build/build_stamp.mjs && node scripts/build/cv_fingerprint.mjs && node scripts/build/greeting_envelope.mjs && node scripts/build/minivic_origin.mjs && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs && node scripts/validate/built_output_secret_scan.mjs --dir out
+[build-stamp] 20 tracked file(s) differ from HEAD — the page will carry no commit stamp, because it was not built from one:
+  components/sections/About/About.module.css
+  components/sections/About/Compass.module.css
+  components/sections/About/Compass.tsx
+  components/sections/About/field.glsl.ts
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/01-decisions.md
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/02-tests-failing.log
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/03-audit.log
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/03-build.log
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/03-lint.log
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/03-tsc.log
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/04-tests-passing.log
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/05-baseline-build.log
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/05-listen-preexisting-live.log
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/05-regression.log
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/06-about-1440-gl.png
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/06-gl-probe.log
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/07-about-390-gl.png
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/09-about-390-reduced-motion.png
+  docs/delivery/evidence/v10-20260905T0515Z/W1-A3/10-about-1440-reduced-motion.png
+  tests/overhaul/scene-about.spec.ts
+[build-stamp] tree was not clean — no commit stamp will render
+[cv-fingerprint] 16b856c0 · 157615 bytes
+[greeting-envelope] 256 buckets · peak 1.0 · 24.985 s · dd65f259
+[minivic-origin] https://minivicchat-hjdyjsrzvq-uc.a.run.app
+  [1m[38;2;173;127;168m▲ Next.js 14.2.35[39m[22m
+
+ [37m[1m [22m[39m Creating an optimized production build ...
+ [33m[1m⚠[22m[39m Found lockfile missing swc dependencies, patching...
+ [31m[1m⨯[22m[39m Failed to patch lockfile, please try uninstalling and reinstalling next in this workspace
+TypeError: Cannot read properties of undefined (reading 'os')
+    at fetchPkgInfo (/root/forgotten-mistory/node_modules/[4mnext[24m/dist/lib/patch-incorrect-lockfile.js:73:25)
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)[39m
+    at async Promise.all (index 0)
+    at async patchIncorrectLockfile (/root/forgotten-mistory/node_modules/[4mnext[24m/dist/lib/patch-incorrect-lockfile.js:162:26)
+ [33m[1m⚠[22m[39m Found lockfile missing swc dependencies, patching...
+ [33m[1m⚠[22m[39m Found lockfile missing swc dependencies, patching...
+ [31m[1m⨯[22m[39m Failed to patch lockfile, please try uninstalling and reinstalling next in this workspace
+TypeError: Cannot read properties of undefined (reading 'os')
+    at fetchPkgInfo (/root/forgotten-mistory/node_modules/[4mnext[24m/dist/lib/patch-incorrect-lockfile.js:73:25)
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)[39m
+    at async Promise.all (index 0)
+    at async patchIncorrectLockfile (/root/forgotten-mistory/node_modules/[4mnext[24m/dist/lib/patch-incorrect-lockfile.js:162:26)
+ [32m[1m✓[22m[39m Compiled successfully
+ [37m[1m [22m[39m Skipping validation of types
+ [37m[1m [22m[39m Skipping linting
+ [37m[1m [22m[39m Collecting page data ...
+ [33m[1m⚠[22m[39m Found lockfile missing swc dependencies, patching...
+ [31m[1m⨯[22m[39m Failed to patch lockfile, please try uninstalling and reinstalling next in this workspace
+TypeError: Cannot read properties of undefined (reading 'os')
+    at fetchPkgInfo (/root/forgotten-mistory/node_modules/[4mnext[24m/dist/lib/patch-incorrect-lockfile.js:73:25)
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)[39m
+    at async Promise.all (index 0)
+    at async patchIncorrectLockfile (/root/forgotten-mistory/node_modules/[4mnext[24m/dist/lib/patch-incorrect-lockfile.js:162:26)
+ [37m[1m [22m[39m Generating static pages (0/11) ...
+ [37m[1m [22m[39m Generating static pages (2/11) 
+ [37m[1m [22m[39m Generating static pages (5/11) 
+ [37m[1m [22m[39m Generating static pages (8/11) 
+ [32m[1m✓[22m[39m Generating static pages (11/11)
+ [37m[1m [22m[39m Finalizing page optimization ...
+ [37m[1m [22m[39m Collecting build traces ...
+
+[4mRoute (app)[24m                              [4mSize[24m     [4mFirst Load JS[24m
+┌ ○ /                                    31.6 kB         [37m[1m192 kB[22m[39m
+├ ○ /_not-found                          138 B          [37m[1m87.8 kB[22m[39m
+├ ○ /apple-icon.png                      0 B                [37m[1m0 B[22m[39m
+├ ○ /icon.png                            0 B                [37m[1m0 B[22m[39m
+├ ○ /performance-benchmark               10.2 kB         [37m[1m107 kB[22m[39m
+├ ○ /privacy                             408 B          [37m[1m96.8 kB[22m[39m
+├ ○ /robots.txt                          0 B                [37m[1m0 B[22m[39m
+├ ○ /sitemap.xml                         0 B                [37m[1m0 B[22m[39m
+└ ○ /terms                               408 B          [37m[1m96.8 kB[22m[39m
++ First Load JS shared by all            [37m[1m87.7 kB[22m[39m
+  ├ chunks/146-d3c95e4537c242d4.js       31.8 kB
+  ├ chunks/b6261da7-736e5ed275a9f3f9.js  53.6 kB
+  └ other shared chunks (total)          2.21 kB
+
+
+○  (Static)  prerendered as static content
+
+[prune] removed out/performance-benchmark.html
+[prune] removed out/performance-benchmark.txt
+[prune] removed out/_next/static/chunks/app/performance-benchmark
+[prune] done — 3 artifact(s) removed from the static export
+[sw-stamp] out/sw.js cache name is fm-static-56ffed3e (git HEAD); precaching 68 build asset(s)
+  BUILT-OUTPUT SECRET SCAN (NFR-SEC)
+  ----------------------------------------------------------
+  scanned : 49 files under out/
+  shapes  : 12 credential patterns
+  identity: 50 real credential value(s) from 1 file(s)
+  ----------------------------------------------------------
+  RESULT: PASS — no credential material in the emitted bundle.
+
