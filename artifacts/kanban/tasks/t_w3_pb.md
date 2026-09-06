@@ -35,3 +35,15 @@ role_matrix: architecture / requirements_analysis → level 1 → effort **max**
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## DECISION (2026-09-06T05:56:15.476Z)
+05:58Z cut for time under the Owner's 05:51Z escalation — same as t_w3_pa.
+
+## STATUS (2026-09-06T05:56:15.546Z)
+blocked — cut for time (see decision)
+
+## UNBLOCKED (2026-09-06T06:28:24.336Z)
+Prototype B running since 06:10Z in fm-wave3-directions (serialized after A); the judge waits for its measurements.json up to 10 min
+
+## COMPLETE (2026-09-06T06:41:35.975Z)
+Landed 06:40Z: docs/architecture/proto/cinematic-B/ + frames + measurements.json in W3-DIR-B/ (journal wf_c1e36f0d-032); judge has both prototypes.

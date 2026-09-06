@@ -47,3 +47,6 @@ Lane result 05:03Z (ap-w1-mv4, over cap): b4e4b79 (fix) live in fda84067 + b2cbc
 
 ## COMMENT (2026-09-06T05:05:44.156Z)
 Structured result (ap-w1-mv4, goal_complete:false honestly): lib/minivicPlacement.ts measures the glyph run and tries beside / below / flipped / lift in cost order; 0 glyph rects covered and 18–19 px separation at 1440/1366/1280/834 (panel lifted ABOVE the run: 1440 → t 112, h 350). CAVEAT for the reviewer: at 1366x768 the applied box is h 245 px and composer_inside_panel = FALSE — the input may sit outside the panel there; rev7 measures it and mv5/rev7 decide. OCCLUDE-02 (launcher ground) is t_w1_mv5's; OCCLUDE-01 already fixed on main (mv3).
+
+## COMPLETE (2026-09-06T05:44:53.966Z)
+Landed (worktree-w1-mv4, lib/minivicPlacement.ts + MiniVicBot.tsx:584), live 314d9d28 — but rev7 measured no effect at 1440 and a 222-px panel at 1366: the defect continues as P0 t_w3_p0a

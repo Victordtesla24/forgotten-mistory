@@ -51,3 +51,6 @@ running — dispatched 04:59Z tester (waits for origin/main to carry a06f317)
 
 ## COMMENT (2026-09-06T05:42:20.607Z)
 05:30Z the Owner's message interrupted the tester lane (wbtp5553u) mid-battery; nothing pushed after 199f116c. The hero suites realignment already landed in a0a9521; the full-battery pass is re-run by the reviewer on the next deploy (rev8) rather than re-dispatched, because the hero it validates is being replaced under t_w3_own.
+
+## COMPLETE (2026-09-06T05:44:54.186Z)
+Landed a0a9521 (worktree-w2-h1s5), live 199f116c: hero suites realigned to v3 geometry; the tester's full-battery pass was interrupted by the Owner's message at 05:30Z (its Playwright child in /root/wt-w2-h1s5 finishes on its own; log read by the PM when it exits). Battery re-run deferred to the wave-3 slices, which replace the hero.

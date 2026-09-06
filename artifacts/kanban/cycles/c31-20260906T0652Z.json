@@ -1,0 +1,90 @@
+{
+  "cycle": "v10-c31",
+  "window_utc": "2026-09-06T05:47Z–06:52Z",
+  "orchestrator": "Fable 5.1 ultracode (claude-cli), session_01WWt1D5i764agLExdpEWvRC",
+  "owner_directives": [
+    {
+      "at": "05:29Z",
+      "text": "remove all this shabby UI/UX, visualisations etc., and replace it with MARVEL STUDIOS grade visual effects and visualisations quality and sophistication. Only black, white..",
+      "screenshots": "docs/delivery/evidence/v10-20260905T0515Z/OWNER-20260906T0529Z/"
+    },
+    {
+      "at": "05:51Z",
+      "text": "all the UI work that has been done is useless … remove all your shabby work immediately and replace it with credible work - or else, continue in an infinite loop refactoring the UI/UX until every single UI/UX requirement, success criteria is met"
+    }
+  ],
+  "deploys_in_window": [
+    {
+      "run_id": 34017497944,
+      "conclusion": "success",
+      "at": "06:49:20Z",
+      "head": "17891eba"
+    },
+    {
+      "run_id": 34017034110,
+      "conclusion": "success",
+      "at": "06:38:51Z",
+      "head": "83590944"
+    },
+    {
+      "run_id": 34016579431,
+      "conclusion": "success",
+      "at": "06:28:34Z",
+      "head": "83590944"
+    },
+    {
+      "run_id": 34016149993,
+      "conclusion": "success",
+      "at": "06:18:28Z",
+      "head": "20a17dfb"
+    },
+    {
+      "run_id": 34015720735,
+      "conclusion": "success",
+      "at": "06:08:20Z",
+      "head": "0c191c16"
+    },
+    {
+      "run_id": 34015291827,
+      "conclusion": "success",
+      "at": "05:58:20Z",
+      "head": "0c191c16"
+    },
+    {
+      "run_id": 34014875996,
+      "conclusion": "success",
+      "at": "05:48:00Z",
+      "head": "199f116c"
+    }
+  ],
+  "live_build_commits_in_window": [
+    "0c191c16 (05:49Z docs)",
+    "20a17dfb (06:09Z dock fix e92808f)",
+    "83590944 (06:20Z removal slice 0a a92f85b)",
+    "17891eba (06:40Z rm1 test supersessions d2cf5ba)"
+  ],
+  "live_build_commit_now": "17891eba (PM-verified 06:40Z)",
+  "o1_o5": "Visible UI at 06:09Z (functional: 390 dock inert until painted) and 06:20Z (removal slice 0a: hero atmosphere/plane/plates/poster and About compass/field gone — PM curl: 0 data-plane, 0 poster reference). O5-MISS at 05:49Z (docs-only), 06:30Z (no UI deploy) and 06:40Z (tests-only) — recorded on t_3e553558, not excused. Timer active; all deploy runs succeeded; Hermes inactive.",
+  "adversarial": {
+    "t_w1_rev7": "live 314d9d28: G-H1 FAIL / R1 PARTIAL (F-1..F-11) — closed; visual findings superseded by the Owner's directive, functional P0s continued",
+    "t_w3_rev8": "live 20a17dfb (G-REV/20a17dfb/): F-1 PASS, OCCLUDE-02 PASS, placement FAIL (432-px panel overlaps H1 at 1440 -67.5 px / 1366 -90.5 px; p0a's narrow-panel diagnosis falsified), NEW P0 F-2 dock invisible-but-clickable after a scroll jump, FOLD-04 @390 FAIL pre-existing, G-M4 not measured; overall FAIL",
+    "t_w3_rev9": "live 83590944 (G-REV/83590944/): interim frame TC-IF-01..09 PASS at 4 viewports; Owner question PASS ('disciplined black frame, not a broken page'); FOLD-04 @390 now PASS (521 vs 804); SW second load PASS; assets PASS; CLS 0; LCP NOT MEASURED (no LCP entries); TC-IF-10 FAIL P0 = G-MV1 breach at 390 (launcher invisible, focusable); overall FAIL",
+    "t_w3_m4r": "live 83590944: G-M4 FAIL — cold first token 1900/1172 ms origin, 1793/1108 ms hosting (bar 1500 on every cold send); warm 818/1320 ms; paid rungs cooling_down, openai answers 865–1278 ms; disclosure present on the capped route"
+  },
+  "pea": {
+    "score": "interim: R1/R2/§0.3-1 REOPENED at the Owner's bar (visual layer removed by order; credible replacement in design); R4 partial; R3 first form OPEN; R5 OPEN; G-M4 FAIL; G-MV1 FAIL at 390 (new); process gates R6–R12 green",
+    "measured_against": "docs/prompt.md R1–R12 + Owner directives 05:29Z/05:51Z",
+    "fabrication": "none; every verdict cites a reviewer file or a command"
+  },
+  "architecture_this_cycle": "Judge panel stage 1 complete: CINEMATIC-VFX-v1-A.md (14 slices, 18 CQ, bundle ceiling 850 kB, proto A frames W3-DIR-A — CQ-01/CQ-04 FAIL on its own numbers) and CINEMATIC-VFX-v1-B.md (15 slices, 17 CQ, bundle ceiling 200 kB, proto B frames W3-DIR-B); INTERIM-FRAME.md (removal register, superseded tests → interim-frame.spec.ts). Judge (t_w3_jdg) + synthesis (t_w3_syn) running.",
+  "provider": "Anthropic OAuth (claude-cli Max) for all spawns; OpenRouter −5.384 USD; no paid ElevenLabs/D-ID/render calls; Cloud Run min-instances NOT enabled (cost gate)",
+  "alerts": [
+    "Journal Monitor boptn3lrv never fired on three result lines (pipeline ended in cut) — 35 min lost; memory written; PM now reads journals at each wake",
+    "Load 12–14 on 4 cores with two AP lanes building; RAM 4–5 GB avail; no new OOM kills",
+    "p0a's placement diagnosis (narrow panel) contradicted by the reviewer on live (wide panel overlapping) — the placement is timing-dependent; p0b re-aimed via its task file, acceptance = the reviewer's 12-placement.mjs run three times",
+    "Two Owner-protected contracts conflicted (G-MV1 visible at 390 vs MONO-MV-02 opacity < 0.05 over the fold) — resolved in t_w3_p0c: G-MV1 wins, MONO-MV-02 re-pointed with the reason written"
+  ],
+  "board": "running: t_w3_rm2 (Experience/Skills/Vitrine/Listen removal, wptpuh4um), t_w3_p0b (placement, wmf1yb11d), t_w3_jdg→t_w3_syn (wojgw1yzt), t_w3_m4c (wamtjopxi); ready/todo: t_w3_p0c (after p0b), wave-3 slices after synthesis; done this cycle: t_w1_rev7, t_w3_dA, t_w3_dB, t_w3_pa, t_w3_pb, t_w3_p0a (partial), t_w3_rev8, t_w3_rev9, t_w3_m4r; blocked-superseded: t_w2_x2t3, t_w2_x2f8",
+  "fusion_council": "NOT convened (Owner FAIL open; loop continues by Owner instruction until every UI/UX requirement and success criterion is PASS on live)",
+  "next": "rm2 push → deploy → reviewer on live (all six sections on the interim frame); p0b push → deploy → reviewer placement table; p0c (G-MV1 at 390) after p0b; judge verdict → synthesis → CINEMATIC-VFX-TASKS.json slices on the board, w3-s01 hero visible within 30 min of dispatch; m4c cold-start numbers; c32."
+}

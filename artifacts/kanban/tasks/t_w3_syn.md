@@ -35,3 +35,6 @@ role_matrix: architecture / requirements_analysis → level 1 → effort **max**
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## DECISION (2026-09-06T05:56:15.667Z)
+05:58Z the slices build on the interim frame (docs/architecture/INTERIM-FRAME.md after t_w3_rm1/rm2): w3-s01 is the hero on a black ground; every slice reinstates the instruments it needs (SPD, story metric) as tests; the loop is infinite by Owner instruction — the TASKS json carries a 'reviewer_fail_rows_become_slices' rule.

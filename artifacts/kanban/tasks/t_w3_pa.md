@@ -35,3 +35,15 @@ role_matrix: architecture / requirements_analysis → level 1 → effort **max**
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## DECISION (2026-09-06T05:56:15.350Z)
+05:58Z cut for time under the Owner's 05:51Z escalation: the judge scores the direction specs directly and the first live hero slice becomes the pixel proof; this prototype task is not dispatched unless the judge asks for a spike on one mechanism.
+
+## STATUS (2026-09-06T05:56:15.407Z)
+blocked — cut for time (see decision)
+
+## UNBLOCKED (2026-09-06T06:28:22.933Z)
+Prototype A landed before the cut took effect (06:10Z): docs/architecture/proto/cinematic-A/index.html + W3-DIR-A frames + measurements.json
+
+## COMPLETE (2026-09-06T06:28:23.535Z)
+Landed 06:10Z: proto + 9 frames + measurements.json in W3-DIR-A/ (see journal wf_c1e36f0d-032)

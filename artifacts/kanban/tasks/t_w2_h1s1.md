@@ -50,3 +50,6 @@ O1 overrun (2 h vs 30 min) recorded; cause = serial hero battery on a 4-core box
 
 ## COMMENT (2026-09-06T02:48:47.196Z)
 PM check 02:49Z: consolidated into origin/main and LIVE 97e19d07. Independent reviewer t_w1_rev4 judges on live.
+
+## COMPLETE (2026-09-06T05:44:53.733Z)
+Landed 9287089 (branch worktree-w2-h1s1), live since 97e19d07; superseded in spirit by the Owner directive 05:29Z (hero to be replaced under t_w3_own) — row closed for board accuracy

@@ -44,3 +44,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T05:43:10.400Z)
 running — dispatched 05:43Z (fm-wave3-directions: two SAs opus/max in parallel, then serialized prototypes; fm-wave3-p0a: AP opus/xhigh)
+
+## COMPLETE (2026-09-06T06:28:21.555Z)
+Delivered docs/architecture/CINEMATIC-VFX-v1-A.md (59 kB) + CINEMATIC-VFX-TASKS-A.json (05:53Z; journal wf_c1e36f0d-032). Prototype t_w3_pa also delivered (06:10Z, frames in W3-DIR-A/) despite the cut decision — kept as judge evidence.

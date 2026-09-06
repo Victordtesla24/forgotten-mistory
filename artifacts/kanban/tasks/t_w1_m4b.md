@@ -54,3 +54,6 @@ PM probe 05:19Z on LIVE 87eb005a: POST via Hosting (with and without ?route=host
 
 ## COMMENT (2026-09-06T05:20:45.038Z)
 LOAD-SHED 05:21Z (§0.1): host at 1.35 GB free with swap saturated (3 builds, 8 Playwright processes, the sibling's Cursor session); the corrections-B workflow was stopped by the PM to protect the reviewer and the hero-suite battery. This slice's code is pushed and LIVE (87eb005a); only its structured report is lost — the commit body + the PM's live probe stand in. l1m and a3g are re-queued as ready.
+
+## COMPLETE (2026-09-06T05:44:53.865Z)
+Landed 71f637d (worktree-w1-m4b), live 87eb005a: fallback-only answer cap with disclosure on the buffered Hosting route (G-M4); awaiting independent strict-cold review (rev8)

@@ -41,3 +41,6 @@ running — dispatched 05:05Z fm-wave2-corrections-c (serialized: mv5 → x2t3 �
 
 ## COMMENT (2026-09-06T05:05:44.216Z)
 NOTE 05:09Z: when you verify, also open the MiniVic panel at 1366x768 — t_w1_mv4's placement reports composer_inside_panel=false there (h 245 px). If the composer is outside its box, the placement's usable-dialog floor (≥ 320×304) is not being honoured at that viewport; report with numbers (fix only if it is on the launcher/panel side and within cap).
+
+## COMPLETE (2026-09-06T05:44:54.061Z)
+Landed 4978a47 (worktree-w1-mv5), live 199f116c: closed launcher never brightens the ground under it (OCCLUDE-02); reviewer rev8 to confirm on live

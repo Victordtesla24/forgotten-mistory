@@ -37,3 +37,21 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T05:43:10.628Z)
 running — 05:43Z W3-1 dispatched
+
+## DECISION (2026-09-06T05:53:30.790Z)
+05:51Z Owner escalation (verbatim in the INBOX note): remove all the shabby work immediately and replace it with credible work, or loop until every UI/UX requirement and success criterion is met. Sequencing changed: removal slices t_w3_rm1 (hero+About) and t_w3_rm2 (Experience/Skills/Vitrine/Listen) ship first as a disciplined black frame; the wave-3 direction is judged on the specs as soon as they land (prototype stage cut for time); the loop never declares done.
+
+## COMMENT (2026-09-06T05:55:54.689Z)
+05:56Z removal chain dispatched (t_w3_rm1 -> t_w3_rm2). Directions A/B still designing (journal monitor boptn3lrv). Prototype stage will be cut when the specs land; judge + synthesis dispatched on the specs.
+
+## COMMENT (2026-09-06T06:08:24.242Z)
+06:09Z p0a partial (fix 1 landed e92808f; placement diagnosed -> t_w3_p0b ready). Pre-existing live FAIL surfaced: TC-FOLD-04 @390 (hero action group below the fold, bottom 828 > 804) — rm1's TC-IF-02 must fix it in the interim frame; rev8 grades it on live.
+
+## COMMENT (2026-09-06T06:27:14.346Z)
+06:27Z rev8 on 20a17dfb: F-1 PASS, OCCLUDE-02 PASS; placement FAIL (432-px panel overlaps the H1 at 1440/1366 — p0a's narrow-panel diagnosis falsified on live; p0b re-aimed via its task file); NEW P0 F-2: dock invisible-but-clickable after a scroll jump at 390/640 -> t_w3_p0c (after p0b); G-M4 -> t_w3_m4r; interim frame -> rev9 on 83590944. Overall FAIL (by design until the loop converges).
+
+## COMMENT (2026-09-06T06:29:10.117Z)
+06:29Z directions landed: A = 14 slices, 18 CQ gates, bundle ceiling 850 kB, proto A captured (CQ-01 luma range and CQ-04 light-through-type FAIL on the proto's own numbers — honest); B = 15 slices, 17 CQ, bundle ceiling 200 kB, proto B capturing. Judge dispatched; synthesis chained. NOTE: the journal monitor (boptn3lrv) never fired on the result lines — 35 min lost; replaced by direct file reads at each wake.
+
+## COMMENT (2026-09-06T06:49:20.840Z)
+06:50Z rev9 on 83590944: interim frame PASS on 9/10 clauses + the Owner's 'disciplined frame' question PASS; TC-IF-10 FAIL = G-MV1 breach at 390 (launcher invisible) -> t_w3_p0c scope widened (G-MV1 wins over MONO-MV-02; pill moved clear of the CTA row). G-M4 FAIL on cold sends (1.9 s / 1.8 s) -> t_w3_m4c. LCP still unmeasured on live (no LCP entries) — wave-3 hero slices carry CQ-12 with a Lighthouse-style probe.

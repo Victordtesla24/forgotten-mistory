@@ -33,3 +33,12 @@ role_matrix: 3rd_party_independent_adversarial_review → level 1 → effort **m
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## DECISION (2026-09-06T05:56:15.608Z)
+05:58Z the prototype stage was cut for time: score AQ from each spec's storyboards, technique and any frames present (W3-DIR-A/B may be empty); where no frame exists, score AQ on the mechanism described and say so; add D7 'time to a credible hero on the interim frame' — the removal slices (t_w3_rm1/rm2, docs/architecture/INTERIM-FRAME.md) strip every current effect, so slice 1 builds on a black frame.
+
+## UPDATE (06:29Z) — prototypes exist after all
+Prototype A landed (docs/architecture/proto/cinematic-A/index.html; frames + measurements.json in docs/delivery/evidence/v10-20260905T0515Z/W3-DIR-A/). Prototype B is being captured now (W3-DIR-B/); start with J-1 on both specs and W3-DIR-A, then before J-2 poll for W3-DIR-B/measurements.json every 30 s for up to 10 minutes (a `while` loop on the file path — never on a process name); if it never appears, score B's AQ from the spec and say so. The interim frame (removal slice 0a) is live at 83590944: slice 1 of the winning direction builds on a black ground with the words, the photograph, the ledger and the ten rows already in place (docs/architecture/INTERIM-FRAME.md).
+
+## STATUS (2026-09-06T06:29:09.929Z)
+running — dispatched 06:29Z fm-wave3-judge-synth (reviewer opus/max) — proto B still capturing; judge polls for W3-DIR-B/measurements.json

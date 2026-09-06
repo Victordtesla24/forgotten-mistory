@@ -36,3 +36,23 @@ W3-1 judge panel: two solutions-architects design independently (A "title-sequen
 each with a standalone hero prototype for real frames → W3-2 reviewer judges on gates + rubric + feasibility, SA
 synthesises CINEMATIC-VFX-v1 + slices → W3-3 analyst-programmer slices ship hero-first, each ≤ 30 min and visible on
 the live URL → reviewer on every deploy (O2/O6) → PEA loop until PASS.
+
+## Escalation — 2026-09-06T05:51Z (verbatim)
+> all the UI work that has been done is useless and does not even  come close to what was specified in the rewuirements - remove all your shabby work immediately and replace it with credible work - or else, continue in an infinite loop refactoring the UI/UX until every sinhle UI/UX requirement, success criteria is met
+
+### Reading (§0.1 — not asked back)
+1. **Remove immediately** — an interim slice strips every current effect and decoration now (hero atmosphere,
+   blur and plates; About compass/field; Experience strata/descent fields; Skills bench field; Vitrine drawings/field;
+   Listen field), leaving a disciplined black frame: black ground, white/grey type from the existing tokens, the
+   monochrome photograph, every word and section unchanged, every caliper mark unchanged. Nothing new is invented in
+   this slice. It ships in two ≤30-min pieces (hero+About first, then the rest) so the Owner sees the removal within
+   the next deploy windows.
+2. **Replace with credible work** — the wave-3 direction (two solutions-architects, independent judge, synthesis)
+   continues, compressed: the judge scores the specs as soon as they land, the first hero slice is built on the
+   interim frame, and the reviewer grades every deploy on the live URL against every UI/UX requirement and success
+   criterion in docs/prompt.md and the Owner's bar.
+3. **Infinite loop** — the PEA loop never declares done: after every deploy the reviewer's FAIL rows become the next
+   slices; the loop ends only when an independent reviewer grades every UI/UX requirement and success criterion
+   PASS on the live URL, then the Fusion Council.
+4. Prior contracts that asserted the removed elements are superseded and replaced (never deleted silently) by the
+   interim-frame contract; the audit stays 10/10 with any gate change documented.
