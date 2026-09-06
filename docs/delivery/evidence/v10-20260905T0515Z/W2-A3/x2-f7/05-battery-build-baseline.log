@@ -1,0 +1,89 @@
+npm notice run forgotten-mistory@2.0.0 build:static
+npm notice run rm -rf .next out && node scripts/build/build_stamp.mjs && node scripts/build/cv_fingerprint.mjs && node scripts/build/greeting_envelope.mjs && node scripts/build/minivic_origin.mjs && NODE_ENV=production FIREBASE_STATIC_EXPORT=1 next build && node scripts/build/prune_static_export.mjs && node scripts/validate/built_output_secret_scan.mjs --dir out
+[build-stamp] 13 tracked file(s) differ from HEAD — the page will carry no commit stamp, because it was not built from one:
+  components/sections/About/field.glsl.ts
+  docs/delivery/evidence/v10-20260905T0515Z/W2-A3/x2-f6/02-tests-failing.log
+  docs/delivery/evidence/v10-20260905T0515Z/W2-A3/x2-f6/02b-story-about-failing.log
+  docs/delivery/evidence/v10-20260905T0515Z/W2-A3/x2-f6/03-shader-E1-E3.patch
+  docs/delivery/evidence/v10-20260905T0515Z/W2-A3/x2-f6/04-tests-measured-depth-0.42.log
+  docs/delivery/evidence/v10-20260905T0515Z/W2-A3/x2-f6/05-battery-audit.log
+  docs/delivery/evidence/v10-20260905T0515Z/W2-A3/x2-f6/05-battery-build.log
+  docs/delivery/evidence/v10-20260905T0515Z/W2-A3/x2-f6/05-battery-tsc-lint.log
+  docs/delivery/evidence/v10-20260905T0515Z/W2-A3/x2-f6/08-about-1440-at-rest-mark.png
+  docs/delivery/evidence/v10-20260905T0515Z/W2-A3/x2-f6/08-about-390-at-rest-mark.png
+  docs/delivery/evidence/v10-20260905T0515Z/W2-A3/x2-f6/09-verification.md
+  tests/overhaul/scene-about.spec.ts
+  tests/overhaul/story-contract.spec.ts
+[build-stamp] tree was not clean — no commit stamp will render
+[cv-fingerprint] 16b856c0 · 157615 bytes
+[greeting-envelope] 256 buckets · peak 1.0 · 24.985 s · dd65f259
+[minivic-origin] https://minivicchat-hjdyjsrzvq-uc.a.run.app
+  [1m[38;2;173;127;168m▲ Next.js 14.2.35[39m[22m
+
+ [37m[1m [22m[39m Creating an optimized production build ...
+ [33m[1m⚠[22m[39m Found lockfile missing swc dependencies, patching...
+ [31m[1m⨯[22m[39m Failed to patch lockfile, please try uninstalling and reinstalling next in this workspace
+TypeError: Cannot read properties of undefined (reading 'os')
+    at fetchPkgInfo (/root/forgotten-mistory/node_modules/[4mnext[24m/dist/lib/patch-incorrect-lockfile.js:73:25)
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)[39m
+    at async Promise.all (index 0)
+    at async patchIncorrectLockfile (/root/forgotten-mistory/node_modules/[4mnext[24m/dist/lib/patch-incorrect-lockfile.js:162:26)
+ [33m[1m⚠[22m[39m Found lockfile missing swc dependencies, patching...
+ [33m[1m⚠[22m[39m Found lockfile missing swc dependencies, patching...
+ [31m[1m⨯[22m[39m Failed to patch lockfile, please try uninstalling and reinstalling next in this workspace
+TypeError: Cannot read properties of undefined (reading 'os')
+    at fetchPkgInfo (/root/forgotten-mistory/node_modules/[4mnext[24m/dist/lib/patch-incorrect-lockfile.js:73:25)
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)[39m
+    at async Promise.all (index 0)
+    at async patchIncorrectLockfile (/root/forgotten-mistory/node_modules/[4mnext[24m/dist/lib/patch-incorrect-lockfile.js:162:26)
+ [32m[1m✓[22m[39m Compiled successfully
+ [37m[1m [22m[39m Skipping validation of types
+ [37m[1m [22m[39m Skipping linting
+ [37m[1m [22m[39m Collecting page data ...
+ [33m[1m⚠[22m[39m Found lockfile missing swc dependencies, patching...
+ [37m[1m [22m[39m Generating static pages (0/11) ...
+ [37m[1m [22m[39m Generating static pages (2/11) 
+ [37m[1m [22m[39m Generating static pages (5/11) 
+ [37m[1m [22m[39m Generating static pages (8/11) 
+ [31m[1m⨯[22m[39m Failed to patch lockfile, please try uninstalling and reinstalling next in this workspace
+TypeError: Cannot read properties of undefined (reading 'os')
+    at fetchPkgInfo (/root/forgotten-mistory/node_modules/[4mnext[24m/dist/lib/patch-incorrect-lockfile.js:73:25)
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)[39m
+    at async Promise.all (index 0)
+    at async patchIncorrectLockfile (/root/forgotten-mistory/node_modules/[4mnext[24m/dist/lib/patch-incorrect-lockfile.js:162:26)
+ [32m[1m✓[22m[39m Generating static pages (11/11)
+ [37m[1m [22m[39m Finalizing page optimization ...
+ [37m[1m [22m[39m Collecting build traces ...
+
+[4mRoute (app)[24m                              [4mSize[24m     [4mFirst Load JS[24m
+┌ ○ /                                    32.1 kB         [37m[1m194 kB[22m[39m
+├ ○ /_not-found                          138 B          [37m[1m87.8 kB[22m[39m
+├ ○ /apple-icon.png                      0 B                [37m[1m0 B[22m[39m
+├ ○ /icon.png                            0 B                [37m[1m0 B[22m[39m
+├ ○ /performance-benchmark               10.2 kB         [37m[1m107 kB[22m[39m
+├ ○ /privacy                             406 B          [37m[1m96.8 kB[22m[39m
+├ ○ /robots.txt                          0 B                [37m[1m0 B[22m[39m
+├ ○ /sitemap.xml                         0 B                [37m[1m0 B[22m[39m
+└ ○ /terms                               406 B          [37m[1m96.8 kB[22m[39m
++ First Load JS shared by all            [37m[1m87.7 kB[22m[39m
+  ├ chunks/146-d3c95e4537c242d4.js       31.8 kB
+  ├ chunks/b6261da7-736e5ed275a9f3f9.js  53.6 kB
+  └ other shared chunks (total)          2.23 kB
+
+
+○  (Static)  prerendered as static content
+
+[prune] removed out/performance-benchmark.html
+[prune] removed out/performance-benchmark.txt
+[prune] removed out/_next/static/chunks/app/performance-benchmark
+[prune] done — 3 artifact(s) removed from the static export
+[sw-stamp] out/sw.js cache name is fm-static-afad076b (git HEAD); precaching 69 build asset(s)
+  BUILT-OUTPUT SECRET SCAN (NFR-SEC)
+  ----------------------------------------------------------
+  scanned : 50 files under out/
+  shapes  : 12 credential patterns
+  identity: 50 real credential value(s) from 1 file(s)
+  ----------------------------------------------------------
+  RESULT: PASS — no credential material in the emitted bundle.
+
+BUILD EXIT=0
