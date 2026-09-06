@@ -35,3 +35,6 @@ role_matrix: testing / qa → level 2 → effort **xhigh** (effort_cascade.yaml;
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMPLETE (2026-09-06T03:16:59.635Z)
+tester-w1-red3: a2891fc pushed on worktree-w1-red3 (consolidating). TC-ABOUT-07 = test defect: it inferred no-WebGL from SwiftShader, but useGLCapability's projectedFrameMs appeal admits the software rasteriser on an idle host — fixed by an explicit contract: ?gl=off answers 'unsupported' before any context (off beats force), spec asks for that page; appeal path untouched. LISTEN_MOTION = PRODUCT defect: the instrument is sound (about field measures 0.00877/0.01749 on the same spec/host; listen 0.00050/0.00061 export, 0.00142/0.00384 live vs 0.004): after the 1.16 s beat uClose holds and the field's remaining terms never clear the bar inside 1.5 s → AP follow-up t_w2_l1m. ~45 min (cap 30) reported.

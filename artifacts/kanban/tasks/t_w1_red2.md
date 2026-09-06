@@ -46,3 +46,12 @@ SCOPE EXTENSION 02:38Z (from t_w1_r2c on the pre-change live build): also tests/
 
 ## STATUS (2026-09-06T02:39:45.597Z)
 running — dispatched 02:41Z tester (6 pre-existing red specs)
+
+## COMMENT (2026-09-06T02:58:42.800Z)
+Lane result 02:58Z (tester-w1-red2, over cap, honest goal_complete:false): 9deea50 on worktree-w1-red2 → LIVE 4043b8e9. Fixed at the root: TC-PHOTO-11 + TC-HERO-15 (test defects — Playwright hover auto-scroll straddled a 165 px scroll the product never made; specs now position first and hover via page.mouse.move, 1 px assertion untouched), TC-HERO-13 (test defect — retired asset name), TC-BOT-14 (product defect — panel clearance in app/globals.css). Not fixed, filed with numbers: TC-MV-OCCLUDE-01 (design decision → t_w1_mv3) and MONO-MV-02 @390 (undecided → t_w1_mv3). No threshold lowered; nothing deleted/skipped.
+
+## DECISION (2026-09-06T02:58:43.339Z)
+§0.1 decision for TC-MV-OCCLUDE-01: option (b) — raise the Vitrine exclusion dd ink from --ink-300 (#7D7D7D) to --mist-400 (#909090): 5.22:1 on the launcher ground rgb(30,30,30) vs the 4.5 floor, and it improves legibility of that copy everywhere instead of erasing the launcher hairline on phones (option a). Visual baselines for the Vitrine foot are re-accepted in the same commit with the reason written on them. Owner: t_w1_mv3.
+
+## COMPLETE (2026-09-06T03:16:04.871Z)
+tester-w1-red2: 4 of 6 fixed at the root and LIVE (4043b8e9): TC-PHOTO-11/HERO-15 (test: Playwright hover auto-scroll), TC-HERO-13 (test: retired asset name), TC-BOT-14 (product: panel cap 22.5rem → clearance 19 px). Filed with numbers: TC-MV-OCCLUDE-01 + MONO-MV-02 → t_w1_mv3 (PM decision b for the contrast; MONO-MV-02 root cause = IntersectionObserver(#hero,{threshold:0.35}) unreachable at 390). TC-HERO-08 (fold band 928 px vs 792 ceiling at 720 viewport, pre-existing, Hero/* lane) → t_w2_h1s5. Suites 69/70 (the one is HERO-08). 40 min (cap 30) reported.

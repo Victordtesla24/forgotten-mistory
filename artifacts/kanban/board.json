@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-06T02:48:47.196Z",
+  "updated": "2026-09-06T03:18:04.164Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -29,7 +29,7 @@
         "PEA"
       ],
       "summary": "Live 9136bc59 FAIL. Read docs/ORCHESTRATOR-MASTER-PROMPT.md. Dispatch G-H6,G-H5,G-C1,G-R2,G-A3,G-H1,G-M4,G-X2 in parallel. Session-limit is not Owner-blocked.",
-      "updated": "2026-09-06T01:16:01.839Z",
+      "updated": "2026-09-06T03:18:04.164Z",
       "comments": [
         {
           "at": "2026-09-05T23:59:20.286Z",
@@ -45,6 +45,12 @@
           "at": "2026-09-06T01:16:01.839Z",
           "by": "orchestrator",
           "text": "CYCLE c26 written (artifacts/kanban/cycles/c26-20260906T0115Z.json): Deploy 34001642667 + live 56ffed3e; reviewer G-H6 PASS, G-C1 PASS, G-H5 FAIL→t_w1_h5b, G-OG1 new→t_w1_og1; PEA 2/11 on the 2315Z gap set; overall still FAIL by design until G-H1/G-A3/R2/R3 land."
+        }
+      ],
+      "decisions": [
+        {
+          "at": "2026-09-06T03:18:04.164Z",
+          "text": "03:20Z §0.1 decision: deploy.yml's -X theirs consolidation of worktree-w1-red3 (0580bd2) dropped 32 delegation-ledger rows on main (559 vs 591 unioned). Restored from the PM's union in this bookkeeping commit and prevented for the future with .gitattributes: artifacts/delegation-ledger.jsonl merge=union (git's built-in concatenating driver; honoured by the pipeline's git merge). Repo hygiene, not app code."
         }
       ]
     },
@@ -5579,8 +5585,8 @@
     {
       "id": "t_w1_red2",
       "title": "Two Playwright specs red on main before wave-1 (proven on main's own build): TC-PHOTO-11 hero figure moves 165 px on hover (page scrolls), TC-BOT-14 MiniVic panel top sits 11 px under the hero name at 1440x900 — root-cause and fix (not weaken)",
-      "status": "running",
-      "column": "running",
+      "status": "done",
+      "column": "done",
       "assignee": "tester",
       "priority": 88,
       "parents": [],
@@ -5592,9 +5598,14 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T00:55:26.816Z",
-      "updated": "2026-09-06T02:39:45.597Z",
+      "updated": "2026-09-06T03:16:04.871Z",
       "summary": "t_w1_h6h5 reproduced both failures on an untouched origin/main build (port 5602): (1) tests/e2e/hero-photo.spec.ts TC-PHOTO-11 'figure y unchanged across the hover fade' → 165 px shift because Playwright's hover scrolls the figure into view; (2) tests/e2e/chatbot.spec.ts TC-BOT-14 '1440x900: panel top must clear the lowest glyph of the hero name by 16 px' → 11 px. Both are real defects or real test-design defects; decide which with evidence, then fix the product where the product is wrong and the test where the test is wrong (state which, with the reason in the test file). Never delete or skip either test.",
-      "decisions": [],
+      "decisions": [
+        {
+          "at": "2026-09-06T02:58:43.339Z",
+          "text": "§0.1 decision for TC-MV-OCCLUDE-01: option (b) — raise the Vitrine exclusion dd ink from --ink-300 (#7D7D7D) to --mist-400 (#909090): 5.22:1 on the launcher ground rgb(30,30,30) vs the 4.5 floor, and it improves legibility of that copy everywhere instead of erasing the launcher hairline on phones (option a). Visual baselines for the Vitrine foot are re-accepted in the same commit with the reason written on them. Owner: t_w1_mv3."
+        }
+      ],
       "comments": [
         {
           "at": "2026-09-06T01:39:05.230Z",
@@ -5605,9 +5616,15 @@
           "at": "2026-09-06T02:37:33.747Z",
           "by": "orchestrator",
           "text": "SCOPE EXTENSION 02:38Z (from t_w1_r2c on the pre-change live build): also tests/a11y/minivic-occlusion.spec.ts TC-MV-OCCLUDE-01 and tests/monochrome/minivic-launcher.spec.ts MONO-MV-02 @640 — reproduce on origin/main first; same root-cause rule."
+        },
+        {
+          "at": "2026-09-06T02:58:42.800Z",
+          "by": "orchestrator",
+          "text": "Lane result 02:58Z (tester-w1-red2, over cap, honest goal_complete:false): 9deea50 on worktree-w1-red2 → LIVE 4043b8e9. Fixed at the root: TC-PHOTO-11 + TC-HERO-15 (test defects — Playwright hover auto-scroll straddled a 165 px scroll the product never made; specs now position first and hover via page.mouse.move, 1 px assertion untouched), TC-HERO-13 (test defect — retired asset name), TC-BOT-14 (product defect — panel clearance in app/globals.css). Not fixed, filed with numbers: TC-MV-OCCLUDE-01 (design decision → t_w1_mv3) and MONO-MV-02 @390 (undecided → t_w1_mv3). No threshold lowered; nothing deleted/skipped."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "tester-w1-red2: 4 of 6 fixed at the root and LIVE (4043b8e9): TC-PHOTO-11/HERO-15 (test: Playwright hover auto-scroll), TC-HERO-13 (test: retired asset name), TC-BOT-14 (product: panel cap 22.5rem → clearance 19 px). Filed with numbers: TC-MV-OCCLUDE-01 + MONO-MV-02 → t_w1_mv3 (PM decision b for the contrast; MONO-MV-02 root cause = IntersectionObserver(#hero,{threshold:0.35}) unreachable at 390). TC-HERO-08 (fold band 928 px vs 792 ceiling at 720 viewport, pre-existing, Hero/* lane) → t_w2_h1s5. Suites 69/70 (the one is HERO-08). 40 min (cap 30) reported."
     },
     {
       "id": "t_w2_h1r",
@@ -6040,7 +6057,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:40:35.350Z",
-      "updated": "2026-09-06T02:48:46.820Z",
+      "updated": "2026-09-06T02:59:20.447Z",
       "summary": "Slice x2-s1-career-descent-mount of docs/architecture/SIGNATURE-SCENES-v2.md (SA t_w2_x2sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). Full slice definition (files, green tests, gates) is the entry with id x2-s1-career-descent-mount in docs/architecture/SIGNATURE-SCENES-TASKS.json and the matching row of v2 §slices. ADV-2315Z R2 FAIL (six wallpaper fields, no seventh cinematic scene) is the baseline; the recruiter sentence scene 7 must earn: 'There is a bit where you scroll and you are falling down sixteen years of his career like a core sample — each job is a layer, and the layers get brighter as you come up to now.' Immovables (v2 §constraints): palette B/W/gold with gold never in a shader; 4.5:1 type contrast first, story second (never add light over type); DPR cap 1.75 and resolutionScale 0.5 not raised; six-section IA unchanged (no seventh section); zero Hero files touched (HERO-SETPIECE-v3 owns that fold); G-MV1 pill never hidden; reduced-motion and no-GL render the same picture; no fps claim from a software rasteriser (Tier A readings labelled 'software-rasteriser'); no ffmpeg/encode in these slices; masters never committed.",
       "decisions": [],
       "comments": [
@@ -6048,6 +6065,11 @@
           "at": "2026-09-06T02:48:46.820Z",
           "by": "orchestrator",
           "text": "PM check 02:49Z: consolidated into origin/main and LIVE 97e19d07. Independent reviewer t_w1_rev4 judges on live."
+        },
+        {
+          "at": "2026-09-06T02:59:20.447Z",
+          "by": "orchestrator",
+          "text": "Lane result 03:00Z (ap-w2-x2s1): daa4f57 pushed and LIVE (97e19d07 → 4043b8e9). Seven data-scene slots in the served HTML; career-descent = 160vh sticky band after the chart+accordion in #experience (140vh phone branch; 100vh under reduced motion), uSpans[8] from experience.ts (same module as the Gantt), caption from experienceContent.descentCaption (data module = single source of truth), 0 pageerrors under ?gl=force at 1440/390 on GL/reduced-motion/no-GL paths, canvases 1/1, gold 0, no raw hex, six-section IA unchanged, Hero files untouched; scene-descent (9) + scene-experience (13) + experience e2e (9) green after 8 red on baseline; TC-SCENE-EXP-06 strengthened (scoped to the chart slot). Field brightness raised after LOOKING at the first screenshot (strata base 0.26/0.42, seam 0.72). O1 overrun ~50 min (diagnosis + brightness + reduced-motion ordering), reported honestly. Interim review by t_w1_rev4; R2/G-X2 graded after s2/s3."
         }
       ],
       "blocker": null
@@ -6202,8 +6224,8 @@
     {
       "id": "t_w1_red3",
       "title": "Two more pre-existing failures surfaced by t_w1_a3 (verified on origin/main and on LIVE): TC-ABOUT-07 'complete without WebGL' intermittently sees 1 canvas because useGLCapability.ts's SwiftShader appeal admits the software rasteriser on an idle host; flagship-visibility 'listen beat field' motion gate fails on live (0.00142 < 0.004) — root-cause and fix without weakening",
-      "status": "ready",
-      "column": "ready",
+      "status": "done",
+      "column": "done",
       "assignee": "tester",
       "priority": 86,
       "parents": [],
@@ -6215,11 +6237,12 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:47:22.770Z",
-      "updated": "2026-09-06T01:47:22.770Z",
+      "updated": "2026-09-06T03:16:59.635Z",
       "summary": "Evidence: docs/delivery/evidence/v10-20260905T0515Z/W1-A3/05-baseline-build.log and 05-listen-preexisting-live.log (from t_w1_a3). (1) tests/e2e/about.spec.ts TC-ABOUT-07 expects 0 canvases without WebGL; components/gl/useGLCapability.ts appeals a SwiftShader context when the host is idle, so the no-GL contract is nondeterministic — decide the honest contract (a no-WebGL test must force capability off, e.g. via ?gl=off or a documented query, rather than depend on host idleness) and make useGLCapability deterministic under that flag. (2) tests/overhaul/flagship-visibility.spec.ts 'listen beat field' motion floor 0.004 vs live 0.00142: determine whether the listen field's motion genuinely fell below the flagship bar (then the field needs its motion restored — an analyst-programmer follow-up, filed by you with numbers) or whether the instrument measures the wrong window (then fix the instrument). Never lower 0.004 to pass.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "result": "tester-w1-red3: a2891fc pushed on worktree-w1-red3 (consolidating). TC-ABOUT-07 = test defect: it inferred no-WebGL from SwiftShader, but useGLCapability's projectedFrameMs appeal admits the software rasteriser on an idle host — fixed by an explicit contract: ?gl=off answers 'unsupported' before any context (off beats force), spec asks for that page; appeal path untouched. LISTEN_MOTION = PRODUCT defect: the instrument is sound (about field measures 0.00877/0.01749 on the same spec/host; listen 0.00050/0.00061 export, 0.00142/0.00384 live vs 0.004): after the 1.16 s beat uClose holds and the field's remaining terms never clear the bar inside 1.5 s → AP follow-up t_w2_l1m. ~45 min (cap 30) reported."
     },
     {
       "id": "t_w1_rev3",
@@ -6500,8 +6523,68 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T02:41:29.234Z",
-      "updated": "2026-09-06T02:41:29.234Z",
+      "updated": "2026-09-06T03:16:05.274Z",
       "summary": "From t_w2_h1s1's honest goal_complete:false (docs/delivery/evidence/v10-20260905T0515Z/W2-H1/t_w2_h1s1/05-hero-suites-remaining.log and 04-hero-suites.log). Five cases encode the superseded fold (docs/architecture/HERO-FOLD-v2.md) and must be rewritten to the v3 contract (docs/architecture/HERO-SETPIECE-v3.md §3 geometry, §4.3 rungs, §8 cases); TC-HERO-13 needs a root cause (mechanism works — TC-PHOTO-05 passes); TC-FOLD-03/04 were red before the pointer-events fix and never re-run. Run AFTER S3 (typography) lands so the geometry is final; do not edit Hero component files (S4 owns product changes) — file product findings as followups with numbers.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-06T03:16:05.274Z",
+          "by": "orchestrator",
+          "text": "SCOPE ADD 03:16Z: tests/e2e/hero.spec.ts TC-HERO-08 — fold band 928.3 px vs viewport.height×1.1 = 792 ceiling at the default 720 px viewport (pre-existing on origin/main b02a8863, W1-RED2/04-suites.log). Decide product vs test against HERO-SETPIECE-v3 §3 (the plane is 100% of the fold by design; the ceiling may be measuring the old fold contract) — never raise the ceiling without the v3 clause that justifies it."
+        }
+      ],
+      "blocker": null
+    },
+    {
+      "id": "t_w1_mv3",
+      "title": "MiniVic occlusion follow-ups from t_w1_red2 — (1) TC-MV-OCCLUDE-01: Vitrine exclusion dd ink → --mist-400 (PM decision b: 5.22:1 on the launcher ground, no hairline loss), visual baselines re-accepted with reason; (2) MONO-MV-02 @390: root-cause the dock painted/opacity contract at scrollY 0 (390 fails, 640 passes) and fix product or test with numbers — never hide the pill (G-MV1)",
+      "status": "ready",
+      "column": "ready",
+      "assignee": "analyst-programmer",
+      "priority": 90,
+      "parents": [
+        "t_w1_red2"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T02:58:43.474Z",
+      "updated": "2026-09-06T03:16:05.183Z",
+      "summary": "Evidence: docs/delivery/evidence/v10-20260905T0515Z/W1-RED2/ (01-reproduction.log, 02-verify.log, followups in the t_w1_red2 result). (1) At 390x844 scrollY 16036 the Vitrine exclusion <dd> ink rgb(125,125,125) sits on the launcher's hairline ground rgb(30,30,30) → 4.05:1 < 4.5. Change the dd colour token to --mist-400 in the Vitrine module CSS (find the rule that sets --ink-300 for the exclusion list), keep the launcher CSS untouched, re-accept only the affected visual baselines (UPDATE_SNAPSHOTS=1 on those specs) and write why in the commit. (2) tests/monochrome/minivic-launcher.spec.ts MONO-MV-02 expects painted < 0.05 at scrollY 0 at 390 and 640; after t_w1_mv2 (pointer-events restored, :hover reveal, opacity gate kept) it fails at 390 only — reproduce, read the dock rules in app/globals.css and MiniVicBot.tsx (pastHero gate), and determine whether the product paints the dock on the first fold at 390 (then fix the product: the gate must hold on phones so the launcher does not sit on the portrait, G-E2) or the instrument measures the :hover reveal / a stale bundle (then fix the test). Constraints: G-MV1 (pill never display:none, labelled at every width), TC-MV-CLICK-01 (real click opens the panel on the first fold at 1440/390) must stay green, hero component files untouched (S2–S4 lane owns them).",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-06T03:16:05.183Z",
+          "by": "orchestrator",
+          "text": "ROOT CAUSE for (2) from t_w1_red2 07-decisions.md: components/MiniVicBot.tsx:307 IntersectionObserver(#hero, { threshold: 0.35 }) — at 390 the hero is far taller than the viewport, so the intersection ratio can never approach 0.35 and pastHero only flips when the hero leaves the root entirely; MONO-MV-02 @390 therefore reads opacity 0 after twelve 844 px steps. This is a PRODUCT defect (G-NEW-1: first-fold/early visibility on phones): fix by observing with thresholds [0, 0.35] or a sentinel at the hero's bottom edge so pastHero flips as the hero's end passes the viewport top, while the launcher still never sits on the portrait (G-E2) — prove with the spec at 390 AND 640 plus TC-MV-CLICK-01."
+        }
+      ],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_l1m",
+      "title": "G-LISTEN-MOTION (from t_w1_red3, product defect) — the #listen field's motion after the 1.16 s beat never clears the flagship floor (mean |ΔL| 0.00050 @1440 / 0.00061 @390 on the export, 0.00142 / 0.00384 live, vs MOTION_MIN 0.004): give the field a continuous, envelope-true motion term so TC-FLAGSHIP-VIS-LISTEN holds at both widths — without brightening over type (G-L1 envelope, 24.98 s reading, gold jaws unchanged)",
+      "status": "ready",
+      "column": "ready",
+      "assignee": "analyst-programmer",
+      "priority": 88,
+      "parents": [
+        "t_w1_red3"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T03:16:59.708Z",
+      "updated": "2026-09-06T03:16:59.708Z",
+      "summary": "Evidence: docs/delivery/evidence/v10-20260905T0515Z/W1-RED3/02-listen-motion-1440.json, 02-listen-motion-probe.mjs, 09-flagship-regression.log (about-vs-listen control on the same spec/host proves the instrument). Cause named by the tester: after CLOSE_SECONDS (1.16 s) in components/sections/Listen/ListenField.tsx, uClose holds and the only continuously varying terms left in listen.glsl.ts sit at the bar (amplitude 0.00087–0.00487 over 1.5–12 s windows). The field must stay alive as the greeting's own envelope (G-L1 contract: the band IS the greeting's loudness; the 24.98 s reading and gold caliper jaws on LinkedIn+GitHub stay exactly as they are) — e.g. keep the envelope scrub travelling after the beat (looping the measured envelope at reduced amplitude), or add a slow breathing term bounded so text contrast ≥ 4.5:1 and no light reaches the type rails; reduced-motion path renders static (no motion required there).",
       "decisions": [],
       "comments": [],
       "blocker": null

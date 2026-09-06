@@ -36,3 +36,6 @@ role_matrix: testing / qa → level 2 → effort **xhigh** (effort_cascade.yaml;
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-06T03:16:05.274Z)
+SCOPE ADD 03:16Z: tests/e2e/hero.spec.ts TC-HERO-08 — fold band 928.3 px vs viewport.height×1.1 = 792 ceiling at the default 720 px viewport (pre-existing on origin/main b02a8863, W1-RED2/04-suites.log). Decide product vs test against HERO-SETPIECE-v3 §3 (the plane is 100% of the fold by design; the ceiling may be measuring the old fold contract) — never raise the ceiling without the v3 clause that justifies it.

@@ -44,3 +44,6 @@ running — dispatched 02:12Z fm-wave2-scene7 (s1 → t1 → s2)
 
 ## COMMENT (2026-09-06T02:48:46.820Z)
 PM check 02:49Z: consolidated into origin/main and LIVE 97e19d07. Independent reviewer t_w1_rev4 judges on live.
+
+## COMMENT (2026-09-06T02:59:20.447Z)
+Lane result 03:00Z (ap-w2-x2s1): daa4f57 pushed and LIVE (97e19d07 → 4043b8e9). Seven data-scene slots in the served HTML; career-descent = 160vh sticky band after the chart+accordion in #experience (140vh phone branch; 100vh under reduced motion), uSpans[8] from experience.ts (same module as the Gantt), caption from experienceContent.descentCaption (data module = single source of truth), 0 pageerrors under ?gl=force at 1440/390 on GL/reduced-motion/no-GL paths, canvases 1/1, gold 0, no raw hex, six-section IA unchanged, Hero files untouched; scene-descent (9) + scene-experience (13) + experience e2e (9) green after 8 red on baseline; TC-SCENE-EXP-06 strengthened (scoped to the chart slot). Field brightness raised after LOOKING at the first screenshot (strata base 0.26/0.42, seam 0.72). O1 overrun ~50 min (diagnosis + brightness + reduced-motion ordering), reported honestly. Interim review by t_w1_rev4; R2/G-X2 graded after s2/s3.
