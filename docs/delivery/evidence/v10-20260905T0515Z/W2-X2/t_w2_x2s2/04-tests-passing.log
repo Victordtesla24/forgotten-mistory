@@ -1,0 +1,22 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-descent.spec.ts --workers=1 --reporter=list
+
+[2mRunning [22m12[2m tests using [22m1[2m worker[22m
+
+  [32m✓[39m  [2m 1 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:102:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-01 — data-scene="career-descent" is in the static export[2m (14ms)[22m
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:112:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-02 — the band sits after the chart and the accordion, inside #experience[2m (2.0s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:135:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-03 — the stage is sticky, one viewport tall, in a taller band[2m (2.1s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:166:9 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-04 — zero pageerrors under ?gl=force at 1440[2m (4.6s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:166:9 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-04 — zero pageerrors under ?gl=force at 390[2m (5.5s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:184:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-05 — one caption line over the canvas, and no heading, paragraph or CTA[2m (5.4s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:213:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-06 — no raw hex and no gold in the scene source[2m (23ms)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:226:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-07 — the six-section IA is unchanged[2m (2.5s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:238:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-08 — uSpans is read from experience.ts, never re-derived[2m (25ms)[22m
+[descent-09@1440] edges=9 at=[98,111,139,416,444,484,517,633,675] gaps=[13,28,277,28,40,33,116,42] durations=[0.50,0.67,7.75,0.83,1.00,0.92,3.25,1.25] r=0.994
+  [32m✓[39m  [2m10 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:455:9 › TC-SCENE-DESCENT — S7 depth (slice x2-s2) › TC-SCENE-DESCENT-09 @ 1440 — eight stratum edges, spaced by role duration[2m (9.4s)[22m
+[descent-09@390] edges=9 at=[92,104,131,390,417,454,485,593,633] gaps=[12,27,259,27,37,31,108,40] durations=[0.50,0.67,7.75,0.83,1.00,0.92,3.25,1.25] r=0.994
+  [32m✓[39m  [2m11 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:455:9 › TC-SCENE-DESCENT — S7 depth (slice x2-s2) › TC-SCENE-DESCENT-09 @ 390 — eight stratum edges, spaced by role duration[2m (4.6s)[22m
+[descent-10@1440] before=9 after=9 shifts=[0,-13,-13,-13,-13,-13,-14,-14,-13] distinct=3 spread=14
+  [32m✓[39m  [2m12 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:498:7 › TC-SCENE-DESCENT — S7 depth (slice x2-s2) › TC-SCENE-DESCENT-10 @ 1440 — the planes answer one scroll with different pixel counts[2m (8.3s)[22m
+
+[32m  12 passed[39m[2m (46.9s)[22m
