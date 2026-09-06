@@ -328,6 +328,42 @@
     pointer-events: auto !important;
 }
 
+/* …and the same has to be true of a pointer (REGRESSION rev-ec53e2b4). The
+   dock is `opacity: 0; pointer-events: none` until `pastHero`, and the second
+   half of that gate made the launcher unclickable on the first fold at every
+   width: `panel-probe-1440.json` / `panel-probe-390.json` recorded the pill as
+   `display:block, visibility:visible, opacity:1` — those are read on the pill,
+   which is opaque — while `openPath` recorded `first-fold click BLOCKED …
+   after-hero-scroll click OK`, and the reported blocker was a Hero node
+   (`data-testid="hero-fold"` at 1440, `.Hero_portraitVideo` at 390). Nothing
+   was stacked over the launcher: with `pointer-events: none` inherited from
+   the dock, the launcher was not in the hit test at all, so the hit test
+   returned whatever was painted beneath it. `tests/e2e/chatbot.spec.ts` could
+   not see it either — it opens the panel with `el.click()`, a synthetic
+   dispatch straight at the node, which never hit-tests.
+
+   The dock keeps its opacity gate: MONO-MV-02 requires the dock to be unpainted
+   over the fold (`opacity < 0.05` at scrollY 0 at 390 and 640), because at
+   phone widths the hero portrait is full-bleed to the bottom of the fold and no
+   bottom-anchored dock can clear it geometrically (G-E2 — the launcher may
+   never occlude the set-piece). What changes is that the *control* inside it
+   owns its own pixels: the button re-enables pointer events for itself, and the
+   dock paints while a pointer is on it, so the launcher is revealed by the same
+   gesture that reaches for it rather than being an invisible interceptor —
+   the pointer counterpart of the `:focus-within` rule above. The pill is never
+   hidden at any width (G-MV1); above the hero it is transparent, on hover,
+   focus or past the hero it is painted. Asserted by
+   tests/e2e/minivic-first-fold-click.spec.ts TC-MV-CLICK-01 (1440 and 390:
+   `elementFromPoint` at the pill's centre resolves inside the launcher, and a
+   real `page.mouse.click` there opens the dialog at scrollY 0). */
+.minivic-dock:hover {
+    opacity: 1 !important;
+}
+
+.minivic-dock .minivic-launcher {
+    pointer-events: auto;
+}
+
 /* ── The panel's height is the hero's name, measured ─────────────────────────
    V-c16 F-V16-2. The dock is anchored 24px from the bottom and the launcher is
    64px tall, so the panel's bottom edge sits at 100svh − 5.5rem and its top

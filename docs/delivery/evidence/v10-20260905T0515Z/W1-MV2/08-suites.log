@@ -1,0 +1,96 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/chatbot.spec.ts tests/a11y/minivic-occlusion.spec.ts tests/monochrome/minivic-launcher.spec.ts tests/e2e/minivic-first-fold-click.spec.ts --workers=1 --reporter=list
+
+[2mRunning [22m31[2m tests using [22m1[2m worker[22m
+
+  [31m✘[39m  [2m 1 [22m[31m[chromium] › tests/a11y/minivic-occlusion.spec.ts:248:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step[39m[2m (30.2s)[22m
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/a11y/minivic-occlusion.spec.ts:320:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-02: the closed launcher never paints a light surface on a phone[2m (9.6s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/e2e/chatbot.spec.ts:77:7 › E2E: MiniVicBot Chatbot › TC-BOT-01: MiniVicBot toggle button is visible on the page[2m (2.8s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/e2e/chatbot.spec.ts:85:7 › E2E: MiniVicBot Chatbot › TC-BOT-02: Opening MiniVic reveals the panel and chat input[2m (3.5s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/e2e/chatbot.spec.ts:93:7 › E2E: MiniVicBot Chatbot › TC-BOT-03: Opening MiniVic shows the curated quick prompts[2m (3.3s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/e2e/chatbot.spec.ts:103:7 › E2E: MiniVicBot Chatbot › TC-BOT-04: Closing MiniVic via the launcher hides the panel and clears greeting audio state[2m (5.5s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/e2e/chatbot.spec.ts:136:7 › E2E: MiniVicBot Chatbot › TC-BOT-05: MiniVicBot open/close cycle does not throw page errors[2m (3.2s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/e2e/chatbot.spec.ts:149:7 › E2E: MiniVicBot Chatbot › TC-BOT-06: MiniVic shell is a labelled dialog and takes focus when it opens[2m (2.9s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/e2e/chatbot.spec.ts:172:7 › E2E: MiniVicBot Chatbot › TC-BOT-07: The launcher announces which action it will perform[2m (2.9s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/e2e/chatbot.spec.ts:197:7 › E2E: MiniVicBot Chatbot › TC-BOT-08: Persona selector is a pressed-state toggle group with one active mode[2m (3.2s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/e2e/chatbot.spec.ts:219:7 › E2E: MiniVicBot Chatbot › TC-BOT-09: Mobile shell stays inside the viewport with composer visible[2m (2.2s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/e2e/chatbot.spec.ts:234:7 › E2E: MiniVicBot Chatbot › TC-BOT-10: A question gets exactly one answer, and the composing state clears[2m (5.8s)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/e2e/chatbot.spec.ts:264:7 › E2E: MiniVicBot Chatbot › TC-BOT-12: The open panel stacks above the launcher on its axis and never covers the h1[2m (4.9s)[22m
+  [31m✘[39m  [2m14 [22m[31m[chromium] › tests/e2e/chatbot.spec.ts:307:7 › E2E: MiniVicBot Chatbot › TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width[39m[2m (3.5s)[22m
+  [32m✓[39m  [2m15 [22m[chromium] › tests/e2e/chatbot.spec.ts:378:7 › E2E: MiniVicBot Chatbot › TC-BOT-11: The transcript controls are present and say what they do[2m (3.9s)[22m
+  [32m✓[39m  [2m16 [22m[chromium] › tests/e2e/chatbot.spec.ts:449:7 › E2E: MiniVicBot Chatbot › CB-LABEL-01: the badge does not claim liveness[2m (2.6s)[22m
+  [32m✓[39m  [2m17 [22m[chromium] › tests/e2e/chatbot.spec.ts:457:7 › E2E: MiniVicBot Chatbot › CB-LABEL-02: the truth line names voice, face and answers[2m (2.3s)[22m
+  [32m✓[39m  [2m18 [22m[chromium] › tests/e2e/chatbot.spec.ts:466:7 › E2E: MiniVicBot Chatbot › CB-LABEL-03: the provider is read at runtime, not hard-coded[2m (4.8s)[22m
+  [32m✓[39m  [2m19 [22m[chromium] › tests/e2e/chatbot.spec.ts:483:7 › E2E: MiniVicBot Chatbot › CB-LABEL-04: an offline answer is not called live[2m (3.6s)[22m
+  [32m✓[39m  [2m20 [22m[chromium] › tests/e2e/chatbot.spec.ts:511:9 › E2E: MiniVicBot Chatbot › CB-READ-06: the truth line and subtitle are not clipped at 1440[2m (3.3s)[22m
+  [32m✓[39m  [2m21 [22m[chromium] › tests/e2e/chatbot.spec.ts:511:9 › E2E: MiniVicBot Chatbot › CB-READ-06: the truth line and subtitle are not clipped at 390[2m (2.5s)[22m
+  [32m✓[39m  [2m22 [22m[chromium] › tests/e2e/chatbot.spec.ts:541:7 › E2E: MiniVicBot Chatbot › CB-READ-07: the panel renders the sentence case a reader is shown, not a shouted LIVE[2m (2.9s)[22m
+  [32m✓[39m  [2m23 [22m[chromium] › tests/e2e/chatbot.spec.ts:557:7 › E2E: MiniVicBot Chatbot › CB-READ-08: nothing in the page calls MiniVic an AI clone[2m (1.9s)[22m
+  [32m✓[39m  [2m24 [22m[chromium] › tests/e2e/chatbot.spec.ts:581:7 › E2E: MiniVicBot Chatbot › CB-LABEL-05: the disclosure survives every panel state[2m (4.1s)[22m
+  [32m✓[39m  [2m25 [22m[chromium] › tests/e2e/minivic-first-fold-click.spec.ts:69:9 › G-MV1 / REGRESSION rev-ec53e2b4: the first-fold launcher is a real control › TC-MV-CLICK-01 @ 1440: a real click on the first fold opens the panel[2m (5.9s)[22m
+  [32m✓[39m  [2m26 [22m[chromium] › tests/e2e/minivic-first-fold-click.spec.ts:69:9 › G-MV1 / REGRESSION rev-ec53e2b4: the first-fold launcher is a real control › TC-MV-CLICK-01 @ 390: a real click on the first fold opens the panel[2m (3.8s)[22m
+  [32m✓[39m  [2m27 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold[2m (10.2s)[22m
+  [32m✓[39m  [2m28 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 640: every colour inside the launcher is R==G==B and never gold[2m (5.8s)[22m
+  [32m✓[39m  [2m29 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold[2m (6.1s)[22m
+  [32m✓[39m  [2m30 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 390: the launcher shows a visible "Ask Mini Vic" label at AA[2m (4.1s)[22m
+  [32m✓[39m  [2m31 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 640: the launcher shows a visible "Ask Mini Vic" label at AA[2m (4.3s)[22m
+
+
+[31m  1) [chromium] › tests/a11y/minivic-occlusion.spec.ts:248:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step [39m
+
+    Error: 1 of 14 text node(s) under the launcher fall below AA:
+    scrollY 16036: 4.05:1 (needs 4.5) div.Vitrine_foot__JWV__ > div.Vitrine_exclusions__m0EKc > dl.Vitrine_exclusionList__jvMb5 > div.Vitrine_exclusion___sRSz > dd — "an environment file was committed early in its h" ink rgb(125, 125, 125) on launcher-painted ground rgb(30,30,30)
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 3[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "scrollY 16036: 4.05:1 (needs 4.5) div.Vitrine_foot__JWV__ > div.Vitrine_exclusions__m0EKc > dl.Vitrine_exclusionList__jvMb5 > div.Vitrine_exclusion___sRSz > dd — \"an environment file was committed early in its h\" ink rgb(125, 125, 125) on launcher-painted ground rgb(30,30,30)",[39m
+    [31m+ ][39m
+
+    [0m [90m 302 |[39m [32m        .slice(0, 10)[39m
+     [90m 303 |[39m [32m        .join('\n')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 304 |[39m     )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 305 |[39m   })[33m;[39m
+     [90m 306 |[39m
+     [90m 307 |[39m   [90m/**[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-mv2/tests/a11y/minivic-occlusion.spec.ts:304:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-minivic-occlusion-The-c4b56-ars-AA-at-every-scroll-step-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-minivic-occlusion-The-c4b56-ars-AA-at-every-scroll-step-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/e2e/chatbot.spec.ts:307:7 › E2E: MiniVicBot Chatbot › TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width [39m
+
+    Error: 1440x900: the panel top 352 must clear the lowest glyph of the hero name (341) by 16px, not sit on it
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m16[39m
+    Received:    [31m11[39m
+
+    [0m [90m 372 |[39m         [32m`${viewport.width}x${viewport.height}: the panel top ${measured.panel.t} must clear the `[39m [33m+[39m
+     [90m 373 |[39m           [32m`lowest glyph of the hero name (${measured.glyphBottom}) by ${CLEARANCE}px, not sit on it`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 374 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mCLEARANCE[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 375 |[39m     }
+     [90m 376 |[39m   })[33m;[39m
+     [90m 377 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-mv2/tests/e2e/chatbot.spec.ts:374:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-chatbot-E2E-MiniVicBot-6404d-ro-name-at-any-laptop-width-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-chatbot-E2E-MiniVicBot-6404d-ro-name-at-any-laptop-width-chromium/error-context.md[22m
+
+[31m  2 failed[39m
+[31m    [chromium] › tests/a11y/minivic-occlusion.spec.ts:248:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step [39m
+[31m    [chromium] › tests/e2e/chatbot.spec.ts:307:7 › E2E: MiniVicBot Chatbot › TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width [39m
+[32m  29 passed[39m[2m (2.7m)[22m
