@@ -38,32 +38,28 @@ import type * as Instrument from '../../scripts/validate/hero_plane_dominance.mj
  * specification, and the thresholds are pinned by assertion against the module
  * so neither file can be relaxed without the other noticing.
  *
- * ## HERO_PLANE_GATE — why this spec is armed by an environment flag
+ * ## The gate is unarmed — HERO_PLANE_GATE is gone (S4, `g2h1v3-04`)
  *
- * The baseline on the build this file was written against is **red by design**
- * (docs/delivery/evidence/v10-20260905T0515Z/t_h2_01/02-baseline-red.log): the
- * instrument lands first, the four composition moves (t_h2_02 … t_h2_06) land
- * after it, and each is measured against this number. Until they do, the shared
- * battery would carry a permanent, expected red — which trains everyone to
- * ignore red. So:
+ * This spec used to be armed by `HERO_PLANE_GATE=1`. That flag existed for one
+ * reason and it has expired: the instrument landed before the composition moves
+ * it measures, so an unconditional spec would have carried a permanent, expected
+ * red, which trains everyone to ignore red. The moves have now landed —
+ * HERO-SETPIECE-v3 S1 (the declared plane), S2 (the pool bound to the figure)
+ * and S3 (the type struck across it) — and §9 S4 names removing the flag as this
+ * slice's work. So every case runs in the shared battery, on every build, with
+ * no environment variable to forget:
  *
- *   - unset             → every case is `test.skip`ped with the reason printed.
- *                         The battery stays green and nothing is silently passed.
- *   - HERO_PLANE_GATE=1 → every case runs and asserts at the real thresholds.
- *
- *     HERO_PLANE_GATE=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:5636 \
+ *     PLAYWRIGHT_BASE_URL=http://127.0.0.1:5610 \
  *       npx playwright test tests/overhaul/hero-plane-dominance.spec.ts --workers=1
  *
- * The thresholds are 0.75 and 0.045 exactly. Lowering either to make a run
- * green is a violation (t_h2_01 QUALITY GATES). The flag is the one permitted
- * way to keep the battery green, and it is to be removed — the spec made
- * unconditional — in the lane that brings SPD over 0.78 on every case.
+ * And it runs at the **ship** margin, not the floor. §8 fixes two numbers for
+ * PLANE-1: `≥ 0.75` is the floor a build may not fall below, `≥ 0.78` is what
+ * ships (PLANE-3). While the flag existed the assertion read the floor, because
+ * a skipped test cannot hold a margin. Unarmed, it reads 0.78 — the number the
+ * brief actually asks the fold to reach — and the floor stays in the module as
+ * the value both files pin each other to. Lowering either is a violation
+ * (t_h2_01 QUALITY GATES, inherited by t_w2_h1s4).
  */
-
-const GATE = process.env.HERO_PLANE_GATE === '1';
-const SKIP_REASON =
-  'HERO_PLANE_GATE=1 is not set — the SPD gate is armed only once the HERO-FOLD-v2 ' +
-  'moves (t_h2_02…t_h2_06) land; the baseline is red by design (t_h2_01 02-baseline-red.log)';
 
 /** The thresholds the brief fixes. The module must agree exactly (pinned below). */
 const SPD_MIN = 0.75;
@@ -130,11 +126,10 @@ for (const viewport of VIEWPORTS) {
     test.use({ viewport: { width: viewport.width, height: viewport.height } });
 
     for (const route of PATHS) {
-      test(`TC-HERO-PLANE-01 @ ${size} [${route.id}] — SPD ≥ ${SPD_MIN}: the plane carries the light`, async ({
+      test(`TC-HERO-PLANE-01 @ ${size} [${route.id}] — SPD ≥ ${SPD_SHIP}: the plane carries the light`, async ({
         page,
         baseURL,
       }) => {
-        test.skip(!GATE, SKIP_REASON);
         test.setTimeout(120000);
         const spd = await instrument();
 
@@ -155,10 +150,11 @@ for (const viewport of VIEWPORTS) {
 
         expect(
           d.spd,
-          `PLANE-1 fails at ${size} on ${route.label}: SPD = ${d.spd.toFixed(4)} < ${SPD_MIN} ` +
-            `(ship target ${SPD_SHIP}). The ink set carries ${((1 - d.spd) * 100).toFixed(1)}% of ` +
-            `the light the eye is pulled toward; the plane is not dominant.\n${report}`,
-        ).toBeGreaterThanOrEqual(SPD_MIN);
+          `PLANE-1 fails at ${size} on ${route.label}: SPD = ${d.spd.toFixed(4)} < ${SPD_SHIP} ` +
+            `(floor ${SPD_MIN}, ship margin ${SPD_SHIP}). The ink set carries ` +
+            `${((1 - d.spd) * 100).toFixed(1)}% of the light the eye is pulled toward; the plane ` +
+            `is not dominant.\n${report}`,
+        ).toBeGreaterThanOrEqual(SPD_SHIP);
       });
 
       /**
@@ -168,9 +164,9 @@ for (const viewport of VIEWPORTS) {
        * moment a headline or a CTA could be moved inside `[data-plane="hero"]`,
        * SPD would be raised by hiding ink rather than by lighting the plane.
        * So the declared subtree may hold no text leaf and nothing pressable,
-       * and it must actually cover the fold it is exempted over. This case is
-       * **not** behind HERO_PLANE_GATE: it fences the exemption, it does not
-       * measure the composition, and it must hold on every build from S1 on.
+       * and it must actually cover the fold it is exempted over. This case never
+       * was behind the retired HERO_PLANE_GATE: it fences the exemption, it does
+       * not measure the composition, and it must hold on every build from S1 on.
        */
       test(`TC-HERO-PLANE-03 @ ${size} [${route.id}] — the declared plane is fenced: no type, nothing pressable, ≥ 0.98 of the fold`, async ({
         page,
@@ -237,7 +233,6 @@ for (const viewport of VIEWPORTS) {
         page,
         baseURL,
       }) => {
-        test.skip(!GATE, SKIP_REASON);
         test.setTimeout(120000);
         const spd = await instrument();
 

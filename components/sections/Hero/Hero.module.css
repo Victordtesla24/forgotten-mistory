@@ -223,6 +223,10 @@
         border-radius: 3px;
         padding-inline: 0.45rem;
         margin-inline: -0.45rem;
+        /* The font-box spread, at the width the overhang was worst: 64 ink px
+           of descender on the near-white plane at 390 (F-1). Same derivation as
+           the block above. */
+        box-shadow: 0 0 0 0.3em rgb(10 10 10 / 0.90);
     }
 
     .secondaryAction {
@@ -1192,7 +1196,31 @@
    Declared here rather than beside the scrim it replaces, because the base
    rules further up this file set `margin` and `background` as shorthands and
    would otherwise reset both — the copy would move 7 px right and
-   `.secondaryAction` would go back to transparent over the fog. */
+   `.secondaryAction` would go back to transparent over the fog.
+
+   ── The plate is drawn to the font's box, not to the line box (S4, F-1) ──
+   The plates above bound the *element* box. With the H1's leading at 0.9 the
+   glyphs' own font box is taller than that box, so the type overhung its own
+   ground: measured on live `rev-3657baa1-w2`, the `p` descender of "Deshpande"
+   hung off the plate onto the near-white plane at 1440, 1280, 834 and 390 on
+   both paths — 204/203/84/64 ink px at 1.10–1.55:1, one blob starting exactly
+   at the plate's bottom edge. The same overhang is what TC-HERO-A11Y-01 reads
+   when it takes P95 ground luminance under a text rect, and what TC-HERO-PLANE-01
+   reads as light inside the ink set.
+
+   `box-shadow` with spread and no offset or blur is the one way to extend that
+   ground without touching a single box: it paints the plate's own colour outward
+   from the border box, behind the element's background, and it is not in the
+   layout. Padding with a compensating negative margin would have worked too, but
+   TC-HERO-SET-02 currently passes with **zero** margin — `.proof`'s top is
+   exactly `innerHeight` — so a rule that can change a block's height by a
+   sub-pixel rounding is a rule that can push the ledger into the fold. This one
+   cannot.
+
+   0.3em is derived, not chosen: the H1's text rect measures 71 px at a 52 px
+   font (1.365 em) against a 46.8 px line box (0.9 em), so the overhang is
+   (1.365 − 0.9) / 2 = 0.233 em on each side. 0.3 em covers it with room, and
+   because it is in `em` every run carries the spread its own type needs. */
 .eyebrow,
 .name,
 .role,
@@ -1203,6 +1231,7 @@
     border-radius: 3px;
     padding-inline: 0.45rem;
     margin-inline: -0.45rem;
+    box-shadow: 0 0 0 0.3em rgb(10 10 10 / 0.90);
 }
 
 .secondaryAction {
@@ -1225,6 +1254,10 @@
         border-radius: 3px;
         padding-inline: 0.45rem;
         margin-inline: -0.45rem;
+        /* The font-box spread, at the width the overhang was worst: 64 ink px
+           of descender on the near-white plane at 390 (F-1). Same derivation as
+           the block above. */
+        box-shadow: 0 0 0 0.3em rgb(10 10 10 / 0.90);
     }
 
     .secondaryAction {
