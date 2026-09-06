@@ -1,0 +1,10 @@
+[Unit]
+Description=MiniVic brain warm ping (origin + hosting) — keeps the provider cooldown map primed for G-M4
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/root/forgotten-mistory/scripts/ops/minivic-warm-ping.sh
+TimeoutStartSec=60
+Nice=10
