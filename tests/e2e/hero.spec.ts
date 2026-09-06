@@ -480,7 +480,15 @@ test.describe('Hero portrait', () => {
     await page.locator(PORTRAIT).hover();
     await expect
       .poll(async () => (await loopState(page)).src, { timeout: 2000, message: 'src assigned on hover' })
-      .toMatch(/my-avatar\.mp4$/);
+      // TEST FIX (t_w1_red2, 2026-09-06): the retired name. The loop is
+      // `my-hero-avatar.mp4` — the constant HERO_LOOP above already says so,
+      // app/data/portfolio/avatar.ts records `/assets/my-avatar.mp4` as the old
+      // path kept alive only as a 301 in firebase.json, and
+      // tests/palette_bundle.test.mjs fails if the old binary is ever shipped
+      // again. This assertion was still pinned to the retired filename and
+      // could not pass against the file the product actually loads. The
+      // contract — one hover assigns the hero loop as the source — is unchanged.
+      .toMatch(/my-hero-avatar\.mp4$/);
 
     // Playback. Muted autoplay is allowed by Chrome unconditionally
     // (developer.chrome.com/blog/autoplay) and the local project runs the
@@ -549,13 +557,22 @@ test.describe('Hero portrait', () => {
 
   test('TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget', async ({ page }) => {
     const figure = page.locator(PORTRAIT);
+    await page.waitForLoadState('load');
+    // TEST FIX (t_w1_red2, 2026-09-06): identical cause to TC-PHOTO-11's 165 px.
+    // `locator.hover()` performs an actionability scroll and `boundingBox()` is
+    // viewport-relative, so the "before"/"after" pair straddled a 165 px scroll
+    // that the product never made (reproduced on an untouched origin/main
+    // export — 01-reproduction.log). The figure is scrolled into place before
+    // the first reading and the hover is delivered by page.mouse.move, so both
+    // readings share one scroll position. The 1 px assertion is unchanged.
+    await figure.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(200);
     const before = await figure.boundingBox();
     expect(before, 'the figure is laid out before the loop starts').not.toBeNull();
 
-    await page.waitForLoadState('load');
     // RE-POINTED: the crossfade now begins on the reader's hover, so the hover
     // is what this test performs before taking the "after" reading.
-    await page.locator(PORTRAIT).hover();
+    await page.mouse.move(before!.x + before!.width / 2, before!.y + before!.height / 2);
     await page
       .waitForFunction(
         (selector) => {

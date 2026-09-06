@@ -1,0 +1,23 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'tsc' --noEmit
+tsc=0
+npm notice run forgotten-mistory@2.0.0 lint
+npm notice run next lint
+[32m✔ No ESLint warnings or errors[39m
+lint=0
+  [PASS] TC-NFR-SEC    No hardcoded secrets in client source
+         clean
+  [PASS] TC-ARCH-BENCH No /performance-benchmark route in static export
+         absent from out/
+  [PASS] TC-NFR-COMPLETE No truncation/placeholder/stub markers (app|components|lib)
+         clean — no incomplete-code markers
+  [PASS] TC-NFR-TOKEN  CSS custom properties match design token spec
+         all tokens match design spec
+  [PASS] TC-NFR-DEADCSS No globals.css rules for classes that do not exist
+         clean — every class selector names a class the source can render
+  ------------------------------------------------------------
+  RESULT: ALL PASS (10/10)
+
+  📄 JSON report → reports/static-audit.json
+
+audit=0
