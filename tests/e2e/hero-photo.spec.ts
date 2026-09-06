@@ -368,8 +368,18 @@ test.describe('Hero photograph', () => {
     // are gone; here we only prove nothing was collateral-damaged.
     await expect(page.locator(`${HERO} ${TICK}`), 'no caliper ticks remain in the fold').toHaveCount(0);
 
-    const caption = page.locator(`${FIGURE} ${CAPTION}`);
+    // The caption left the figure in g2h1v3-01 (HERO-SETPIECE-v3 §6.1): the
+    // figure is composited inside `[data-plane="hero"]` now, and a text leaf in
+    // the declared plane is exactly what TC-HERO-PLANE-03 forbids — an exemption
+    // that can hold type can hide type from the SPD measure. Same words, same
+    // source (`avatar.ts`), now standing in the proof band beside the play
+    // control. Its typography is unchanged and is still asserted below.
+    const caption = page.locator(`${HERO} ${CAPTION}`);
     await expect(caption).toHaveCount(1);
+    await expect(
+      page.locator(`[data-testid="hero-proof"] ${CAPTION}`),
+      'the provenance line stands in the proof band, below the fold',
+    ).toHaveCount(1);
     await expect(caption).toHaveText(CAPTION_TEXT);
     const type = await caption.evaluate((el) => {
       const cs = getComputedStyle(el);
@@ -675,11 +685,25 @@ test.describe('Hero photograph — masked into the plane (g2h1-04)', () => {
     );
   });
 
-  test('PH-4: it is still a <figure> with a <figcaption>, and nothing in it is pressable', async ({ page }) => {
+  test('PH-4: it is still a <figure>, its caption stands in the proof band, and nothing in it is pressable', async ({
+    page,
+  }) => {
     const figure = page.locator(FIGURE);
     await expect(figure).toHaveCount(1);
     expect(await figure.evaluate((el) => el.tagName.toLowerCase()), 'the element is a <figure>').toBe('figure');
-    await expect(page.locator(`${FIGURE} figcaption`), 'it keeps its caption').toHaveCount(1);
+    // g2h1v3-01: the figure moved into `[data-plane="hero"]`, and the declared
+    // plane may carry no text leaf at all (TC-HERO-PLANE-03) — so the caption is
+    // no longer inside it. It is not deleted: it renders in `.proof`, beside the
+    // photograph's named control, with its words and its type unchanged.
+    await expect(page.locator(`${FIGURE} figcaption`), 'no caption inside the plane').toHaveCount(0);
+    await expect(
+      page.locator(`[data-testid="hero-proof"] [data-testid="portrait-caption"]`),
+      'the caption stands in the proof band instead',
+    ).toHaveCount(1);
+    await expect(
+      figure.locator('xpath=ancestor::*[@data-plane="hero"]'),
+      'the figure is composited inside the declared plane',
+    ).toHaveCount(1);
 
     const pressables = await figure.evaluate(
       (el) =>

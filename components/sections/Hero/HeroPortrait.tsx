@@ -263,13 +263,31 @@ export function HeroPortraitControl() {
   );
 }
 
+/**
+ * The provenance line, in the proof band beside the control (HERO-SETPIECE-v3
+ * §6.1). It stood in the fold as the figure's `<figcaption>` until this slice.
+ * Two reasons it moved, and both are mechanical rather than editorial: the
+ * figure now lives inside `[data-plane="hero"]`, and TC-HERO-PLANE-03 forbids
+ * any text leaf in the declared plane — an exemption that can hold type is an
+ * exemption that can hide type from the SPD measure; and the caption was itself
+ * a text rect in the ink set, so removing it from the fold raises SPD honestly.
+ * The words are unchanged and still come from `app/data/portfolio/avatar.ts`.
+ */
+export function HeroPortraitCaption() {
+  return (
+    <p className={styles.portraitCaption} data-testid="portrait-caption">
+      {avatarContent.caption}
+    </p>
+  );
+}
+
 export default function HeroPortrait() {
   const { videoRef, live, arm, disarm } = usePortraitIntent();
-  const { still, loop, caption } = avatarContent;
+  const { still, loop } = avatarContent;
 
   return (
     <figure
-      className={styles.portrait}
+      className={styles.planeFigure}
       data-testid="hero-portrait"
       onPointerEnter={arm}
       onPointerLeave={disarm}
@@ -322,10 +340,6 @@ export default function HeroPortrait() {
               Nothing pressable is added: the figure is a figure, not a call. */}
         </div>
       </div>
-
-      <figcaption className={styles.portraitCaption} data-testid="portrait-caption">
-        {caption}
-      </figcaption>
     </figure>
   );
 }

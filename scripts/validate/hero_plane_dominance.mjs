@@ -41,9 +41,20 @@
  * `body`, `#hero` and every ancestor of the stage slot paint an opaque ink
  * ground; read literally, rule (c) would put the whole fold into I and SPD would
  * be identically 0 on every build. The plates the brief means are the elements
- * painted *over* the plane. So the **ground chain** — the stage slot
- * `[data-scene="hero-atmosphere"]`, its ancestors, and its descendants (the
- * canvas and the poster still) — is the plane by definition and is never ink.
+ * painted *over* the plane. So the **ground chain** — the declared plane
+ * `[data-plane="hero"]` (HERO-SETPIECE-v3 §4, D-4; the stage slot
+ * `[data-scene="hero-atmosphere"]` is the fallback root on a build that predates
+ * the declaration), its ancestors, and its descendants (the canvas, the poster
+ * still and the photograph composited in the plane) — is the plane by definition
+ * and is never ink.
+ *
+ * The exemption is declared rather than inferred so that a reviewer reads it in
+ * the DOM instead of deriving it, and it is FENCED so it can never be widened:
+ * TC-HERO-PLANE-03 asserts the declared subtree holds zero text leaves and zero
+ * `a, button, [role=button], input, select, textarea`. Without that fence,
+ * moving a headline inside the plane would raise SPD by hiding ink instead of by
+ * lighting the frame — measurement-gaming, and the next adversarial review would
+ * overturn it exactly as ADV-1451Z overturned "flagship".
  * Everything else in the viewport that meets (a), (b) or (c) is ink, including
  * the fixed navigation and any launcher: the fold is the screen the reader
  * opens on, not `#hero` alone. Every excluded rect is printed with its reason so
@@ -81,6 +92,14 @@ export const GROUND_PERCENTILE = 0.1;
 export const DILATE_PX = 8;
 /** An element is a plate when its computed background-color alpha reaches this. */
 export const PLATE_ALPHA_MIN = 0.5;
+/**
+ * The declared plane (HERO-SETPIECE-v3 §4, D-4) — the root of the ground chain.
+ * The stage slot stays as the fallback so this instrument still measures a build
+ * that predates the declaration rather than reporting SPD ≈ 0 for it.
+ */
+export const GROUND_SELECTOR = '[data-plane="hero"]';
+/** What the ground chain was rooted at before D-4, and what it falls back to. */
+export const GROUND_FALLBACK_SELECTOR = '[data-scene="hero-atmosphere"]';
 
 /** The four widths §3.2 names, in the order the brief lists them. */
 export const VIEWPORTS = Object.freeze([
@@ -167,6 +186,8 @@ export function percentile(values, p) {
  */
 export function collectInkRects(opts) {
   const alphaMin = opts && typeof opts.alphaMin === 'number' ? opts.alphaMin : 0.5;
+  const groundSelector = (opts && opts.groundSelector) || '[data-plane="hero"]';
+  const groundFallback = (opts && opts.groundFallback) || '[data-scene="hero-atmosphere"]';
   const W = window.innerWidth;
   const H = window.innerHeight;
 
@@ -198,8 +219,10 @@ export function collectInkRects(opts) {
     return parts.length > 3 ? parts[3] : 1;
   };
 
-  // The ground chain: the stage slot, everything above it, everything inside it.
-  const stage = document.querySelector('[data-scene="hero-atmosphere"]');
+  // The ground chain: the declared plane, everything above it, everything inside
+  // it — the canvas, the poster still and the photograph composited in the plane.
+  const stage =
+    document.querySelector(groundSelector) || document.querySelector(groundFallback);
   const ground = new Set();
   const groundChain = [];
   if (stage) {
@@ -414,7 +437,11 @@ export async function measureFold(
   page,
   { alphaMin = PLATE_ALPHA_MIN, dilate = DILATE_PX, shotPath = '' } = {},
 ) {
-  const dom = await page.evaluate(collectInkRects, { alphaMin });
+  const dom = await page.evaluate(collectInkRects, {
+    alphaMin,
+    groundSelector: GROUND_SELECTOR,
+    groundFallback: GROUND_FALLBACK_SELECTOR,
+  });
   const capture = await page.screenshot({ type: 'png', fullPage: false });
   // The very buffer that is measured, when a reviewer wants the pixels too.
   if (shotPath) writeFileSync(shotPath, capture);

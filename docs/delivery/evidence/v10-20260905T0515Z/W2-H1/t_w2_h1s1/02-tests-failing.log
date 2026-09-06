@@ -1,0 +1,112 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/hero-setpiece.spec.ts -g 1440×900 --workers=1 --reporter=line
+
+[2mRunning [22m4[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/4] [chromium] › tests/overhaul/hero-setpiece.spec.ts:218:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-01/02 @ 1440×900 [gl] — one name, one sentence, one action group, no ledger
+[1A[2K[31m  1) [chromium] › tests/overhaul/hero-setpiece.spec.ts:218:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-01/02 @ 1440×900 [gl] — one name, one sentence, one action group, no ledger [39m
+
+    Error: SET-01 at 1440×900 on /?gl=force (shader, settled): the fold carries 6 text blocks — p.Hero_eyebrow__oWOD8 "Melbourne, Australia" | h1#hero-name "Vikram Deshpande" | p.Hero_role__DCbYG "Delivery leadership · AI solutions architecture" | p.Hero_statement___HX_b "Sixteen years leading delivery across government, banking an" | a.Hero_primaryAction__SBJFA "See the evidence" | a.Hero_secondaryAction__jCqGE "Download CV"
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m3[39m
+    Received:    [31m6[39m
+
+    [0m [90m 230 |[39m           [32m`SET-01 at ${size} on ${route.label}: the fold carries ${blocks.length} text blocks — `[39m [33m+[39m
+     [90m 231 |[39m             [32m`${blocks.map((b) => `${b.handle} "${b.text}"`).join(' | ')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 232 |[39m         )[33m.[39mtoBeLessThanOrEqual([33mMAX_FOLD_TEXT_BLOCKS[39m)[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 233 |[39m
+     [90m 234 |[39m         expect(
+     [90m 235 |[39m           d[33m.[39mctaGroups[33m.[39mlength[33m,[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s1/tests/overhaul/hero-setpiece.spec.ts:232:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-hero-setpiece-TC--8a348--one-action-group-no-ledger-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-hero-setpiece-TC--8a348--one-action-group-no-ledger-chromium/error-context.md[22m
+
+
+[1A[2K[2/4] [chromium] › tests/overhaul/hero-setpiece.spec.ts:254:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-03/05 @ 1440×900 [gl] — the figure stands in the plane and the name crosses its dissolve
+[1A[2K[31m  2) [chromium] › tests/overhaul/hero-setpiece.spec.ts:254:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-03/05 @ 1440×900 [gl] — the figure stands in the plane and the name crosses its dissolve [39m
+
+    Error: SET-03: [data-plane="hero"] must exist
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBeNull[2m()[22m
+
+    Received: [31mnull[39m
+
+    [0m [90m 261 |[39m         [36mconst[39m d [33m=[39m ([36mawait[39m page[33m.[39mevaluate(readFold)) [36mas[39m [33mFoldReading[39m[33m;[39m
+     [90m 262 |[39m
+    [31m[1m>[22m[39m[90m 263 |[39m         expect(d[33m.[39mplane[33m,[39m [32m'SET-03: [data-plane="hero"] must exist'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m     |[39m                                                                       [31m[1m^[22m[39m
+     [90m 264 |[39m         expect(d[33m.[39mfigure[33m,[39m [32m'SET-03: the figure must exist'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m 265 |[39m         [36mconst[39m plane [33m=[39m d[33m.[39mplane [36mas[39m [33mBox[39m[33m;[39m
+     [90m 266 |[39m         [36mconst[39m figure [33m=[39m d[33m.[39mfigure [36mas[39m [33mBox[39m[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s1/tests/overhaul/hero-setpiece.spec.ts:263:71[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-hero-setpiece-TC--520eb-e-name-crosses-its-dissolve-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-hero-setpiece-TC--520eb-e-name-crosses-its-dissolve-chromium/error-context.md[22m
+
+
+[1A[2K[3/4] [chromium] › tests/overhaul/hero-setpiece.spec.ts:218:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-01/02 @ 1440×900 [still] — one name, one sentence, one action group, no ledger
+[1A[2K[31m  3) [chromium] › tests/overhaul/hero-setpiece.spec.ts:218:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-01/02 @ 1440×900 [still] — one name, one sentence, one action group, no ledger [39m
+
+    Error: SET-01 at 1440×900 on prefers-reduced-motion still: the fold carries 6 text blocks — p.Hero_eyebrow__oWOD8 "Melbourne, Australia" | h1#hero-name "Vikram Deshpande" | p.Hero_role__DCbYG "Delivery leadership · AI solutions architecture" | p.Hero_statement___HX_b "Sixteen years leading delivery across government, banking an" | a.Hero_primaryAction__SBJFA "See the evidence" | a.Hero_secondaryAction__jCqGE "Download CV"
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m3[39m
+    Received:    [31m6[39m
+
+    [0m [90m 230 |[39m           [32m`SET-01 at ${size} on ${route.label}: the fold carries ${blocks.length} text blocks — `[39m [33m+[39m
+     [90m 231 |[39m             [32m`${blocks.map((b) => `${b.handle} "${b.text}"`).join(' | ')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 232 |[39m         )[33m.[39mtoBeLessThanOrEqual([33mMAX_FOLD_TEXT_BLOCKS[39m)[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 233 |[39m
+     [90m 234 |[39m         expect(
+     [90m 235 |[39m           d[33m.[39mctaGroups[33m.[39mlength[33m,[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s1/tests/overhaul/hero-setpiece.spec.ts:232:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-hero-setpiece-TC--62b30--one-action-group-no-ledger-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-hero-setpiece-TC--62b30--one-action-group-no-ledger-chromium/error-context.md[22m
+
+
+[1A[2K[4/4] [chromium] › tests/overhaul/hero-setpiece.spec.ts:254:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-03/05 @ 1440×900 [still] — the figure stands in the plane and the name crosses its dissolve
+[1A[2K[31m  4) [chromium] › tests/overhaul/hero-setpiece.spec.ts:254:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-03/05 @ 1440×900 [still] — the figure stands in the plane and the name crosses its dissolve [39m
+
+    Error: SET-03: [data-plane="hero"] must exist
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBeNull[2m()[22m
+
+    Received: [31mnull[39m
+
+    [0m [90m 261 |[39m         [36mconst[39m d [33m=[39m ([36mawait[39m page[33m.[39mevaluate(readFold)) [36mas[39m [33mFoldReading[39m[33m;[39m
+     [90m 262 |[39m
+    [31m[1m>[22m[39m[90m 263 |[39m         expect(d[33m.[39mplane[33m,[39m [32m'SET-03: [data-plane="hero"] must exist'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m     |[39m                                                                       [31m[1m^[22m[39m
+     [90m 264 |[39m         expect(d[33m.[39mfigure[33m,[39m [32m'SET-03: the figure must exist'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m 265 |[39m         [36mconst[39m plane [33m=[39m d[33m.[39mplane [36mas[39m [33mBox[39m[33m;[39m
+     [90m 266 |[39m         [36mconst[39m figure [33m=[39m d[33m.[39mfigure [36mas[39m [33mBox[39m[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-h1s1/tests/overhaul/hero-setpiece.spec.ts:263:71[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-hero-setpiece-TC--44588-e-name-crosses-its-dissolve-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-hero-setpiece-TC--44588-e-name-crosses-its-dissolve-chromium/error-context.md[22m
+
+
+[1A[2K[31m  4 failed[39m
+[31m    [chromium] › tests/overhaul/hero-setpiece.spec.ts:218:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-01/02 @ 1440×900 [gl] — one name, one sentence, one action group, no ledger [39m
+[31m    [chromium] › tests/overhaul/hero-setpiece.spec.ts:254:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-03/05 @ 1440×900 [gl] — the figure stands in the plane and the name crosses its dissolve [39m
+[31m    [chromium] › tests/overhaul/hero-setpiece.spec.ts:218:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-01/02 @ 1440×900 [still] — one name, one sentence, one action group, no ledger [39m
+[31m    [chromium] › tests/overhaul/hero-setpiece.spec.ts:254:11 › TC-HERO-SET @ 1440×900 — the fold is one set piece › TC-HERO-SET-03/05 @ 1440×900 [still] — the figure stands in the plane and the name crosses its dissolve [39m
