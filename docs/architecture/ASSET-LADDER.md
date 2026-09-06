@@ -1,5 +1,13 @@
 # G2-H5 — Hero / video / raster asset ladder (honest inventory)
 
+- **2026-09-06 changelog (rev-12cd9123-w1 F-5):** §1–2 rewritten to describe the
+  live rungs shipped by §10 (`my-hero-avatar.mp4` 1280×720@24, 1,916,328 B as
+  the base/default; `avatar/my-hero-avatar-1080.mp4` and
+  `avatar/my-hero-avatar-2160.webm` as the on-demand rungs) instead of the
+  retired 640×360/160,156 B orphan, which §1–2 had kept describing as the
+  current live file after §8/§10 had already retired and replaced it. §10 is
+  unchanged. See `t_w1_lad1`.
+
 - **Task:** `t_g2_h5` · **Gap:** G-H5 · **Identity:** researcher / ADV-1556Z
 - **Worktree branch:** `worktree-gh5r-1556` (from `origin/main`)
 - **Base commit:** `b2ac21bef07c7ce62346961abbcdbd84027c5316` (`b2ac21b`)
@@ -10,33 +18,36 @@
 
 ---
 
-## 1. Full inventory — `public/assets/` on `origin/main`
+## 1. Full inventory — `public/assets/` on `origin/main` (as of §10, `12cd9123`)
 
-Measured with `ffprobe`/`identify` against `public/assets/` in this worktree. "Where used" is from `grep -rn` across `app/ components/ public/ firebase.json`.
+Measured with `ffprobe`/`identify` against `public/assets/` in this worktree. "Where used" is from `grep -rn` across `app/ components/ public/ firebase.json`. This supersedes the inventory row-for-row published at `b2ac21b` (§8 below) — the loop's canonical name, bytes and grade all changed in §9–§10.
 
 | Asset | Type | Dimensions | fps | Duration | Bytes | Codec/Fmt | Where used (source ref) | R5 |
 |-------|------|-----------|-----|----------|-------|-----------|-------------------------|----|
-| `my-avatar.mp4` | video | **1280×720** | **24** | 12.29 s | 1,096,301 | H.264 | `app/data/portfolio/avatar.ts:31` (hero portrait hover loop), `components/MiniVicBot.tsx:247` (bot talking-head) | **FAIL** (720p24) |
-| `my-hero-avatar.mp4` | video | **640×360** | 24 | 5.875 s | 160,156 | H.264 | **none** — unreferenced in app/components/public/firebase.json | **FAIL** + **ORPHAN** |
-| `my_avatar.avif` | still | **1480×826** | — | — | 41,343 | AVIF 8-bit | `app/data/portfolio/avatar.ts:17` (portrait `<source>` #1) | FAIL (still, < 2160) |
-| `my_avatar.webp` | still | **1480×826** | — | — | 66,470 | WebP 8-bit | `app/data/portfolio/avatar.ts:18` (portrait `<source>` #2), `components/MiniVicBot.tsx:250` (bot still) | FAIL (still, < 2160) |
-| `my_avatar.png` | still | **900×502** | — | — | 178,777 | PNG 8-bit | `app/data/portfolio/avatar.ts:19` + `HeroPortrait.tsx` `<img src>` fallback, `app/layout.tsx:111` (schema image) | **FAIL** + **dimension mismatch** (declared 1480×826) |
+| `my-hero-avatar.mp4` | video | **1280×720** | **24** | 12.29 s | **1,916,328** | H.264 High@3.1, greyscale | `app/data/portfolio/avatar.ts` `loop.src` / `ladder[0]` (hero portrait hover loop, base rung, default), `components/MiniVicBot.tsx` (bot talking-head) | **OPEN** (base rung; not the R5 claim) |
+| `avatar/my-hero-avatar-1080.mp4` | video | **1920×1080** | 24 | 12.29 s | 3,690,721 | H.264 High@5.0, CRF 21, greyscale | `app/data/portfolio/avatar.ts` `loop.ladder[1]`, selected by `lib/videoRung.ts` on demand | **OPEN** (on-demand rung, not fetched by default) |
+| `avatar/my-hero-avatar-2160.webm` | video | **3840×2160** | 24 | 12.29 s | 2,913,450 | AV1 Main@5.0 (SVT-AV1 CRF 40), greyscale | `app/data/portfolio/avatar.ts` `loop.ladder[2]`, selected by `lib/videoRung.ts` on demand | **OPEN** (resolution met, fps 24 ≠ 60 — see §10.4) |
+| `my_avatar.avif` | still | **1480×826** | — | — | 36,551 | AVIF 8-bit, greyscale | `app/data/portfolio/avatar.ts` `still.avif` (portrait `<source>` #1) | FAIL (still, < 2160) |
+| `my_avatar.webp` | still | **1480×826** | — | — | 51,028 | WebP 8-bit, greyscale | `app/data/portfolio/avatar.ts` `still.webp` (portrait `<source>` #2), `components/MiniVicBot.tsx` (bot still) | FAIL (still, < 2160) |
+| `my_avatar.png` | still | **1480×826** | — | — | 483,145 | PNG 8-bit (256-entry palette), greyscale | `app/data/portfolio/avatar.ts` `still.png` + `HeroPortrait.tsx` `<img src>` fallback, `app/layout.tsx` (schema image) | FAIL (still, < 2160); dimension mismatch fixed — matches declared 1480×826 |
 | `hero-atmosphere-poster.avif` | still | 3840×2160 | — | — | 12,935 | AVIF 8-bit | **none** found in source grep (atmosphere poster; scene is GLSL) | N/A to portrait; 4K still |
-| `og-image.png` | still | 1200×630 | — | — | 182,547 | PNG 8-bit | `app/layout.tsx:81,89` (OpenGraph/Twitter card) | N/A (social card) |
+| `og-image.png` | still | 1200×630 | — | — | 182,547 | PNG 8-bit | `app/layout.tsx` (OpenGraph/Twitter card) | N/A (social card) |
 | `avatar-studio-voice.mp3` | audio | — | — | — | 600,961 | MP3 | **none** found in source grep (candidate orphan) | N/A (audio) |
-| `minivic-greeting.mp3` | audio | — | — | — | 417,702 | MP3 | `components/MiniVicBot.tsx:276`, digest in `app/data/generated/greeting-asset.ts` | N/A (audio) |
+| `minivic-greeting.mp3` | audio | — | — | — | 417,702 | MP3 | `components/MiniVicBot.tsx`, digest in `app/data/generated/greeting-asset.ts` | N/A (audio) |
 | `minivic-greeting.txt` | text | — | — | — | 368 | text | greeting transcript | N/A |
 
-Budget check: every asset is **under** the 500 kB image / 5 MB video budgets. `my-avatar.mp4` (1.05 MB) is the largest and is `preload="none"` (fetched on hover only).
+**Retired (history, not current state):** `my-hero-avatar.mp4` at **640×360@24, 5.875 s, 160,156 B** was an unreferenced orphan under that same filename at `b2ac21b`; it was deleted by the §8 AP pass on 2026-09-05 (`git rm public/assets/my-hero-avatar.mp4`), and the filename was later re-used by §9–§10 for the current 1280×720 canonical loop — they are not the same bytes. `my-avatar.mp4` (the 1280×720@24, 1,096,301 B colour loop that shipped between §8 and §9) no longer exists in `public/assets/`; its old URL is a `firebase.json` **301** to `/assets/my-hero-avatar.mp4` (`{ "source": "/assets/my-avatar.mp4", "destination": "/assets/my-hero-avatar.mp4", "type": 301 }`).
+
+Budget check: the base rung (1.83 MB) is under the 2.5 MB critical-path video budget and is `preload="none"` (fetched on hover/focus/press only); the two on-demand rungs are under the 5 MB on-demand budget and carry no `src` until a reader asks to play (`scripts/validate/overhaul_static_audit.mjs` TC-NFR-PERF). Every still is under the 500 kB image budget.
 
 ### Reproduce
 
 ```bash
 cd public/assets
 ffprobe -v error -show_entries stream=codec_name,width,height,r_frame_rate:format=duration,size \
-  -of default=noprint_wrappers=0 my-avatar.mp4
-ffprobe -v error -show_entries stream=width,height,r_frame_rate:format=duration,size \
   -of default=noprint_wrappers=0 my-hero-avatar.mp4
+ffprobe -v error -show_entries stream=width,height,r_frame_rate:format=duration,size \
+  -of default=noprint_wrappers=0 avatar/my-hero-avatar-1080.mp4 avatar/my-hero-avatar-2160.webm
 for f in my_avatar.avif my_avatar.webp my_avatar.png hero-atmosphere-poster.avif og-image.png; do
   identify -format '%f  %wx%h  %m  %B bytes\n' "$f"
 done
@@ -44,20 +55,23 @@ done
 
 ---
 
-## 2. The two hero videos
+## 2. The hero video ladder, as shipped
 
-### `my-avatar.mp4` — the live portrait loop (720p24)
-- **1280×720, 24 fps, 12.29 s, 1,096,301 B, H.264.**
-- This is the current hero portrait hover loop (`avatar.ts.loop.src`) and the MiniVic bot talking-head. It replaced the 360p file already in `HeroPortrait.tsx` (which now reads `avatarContent.loop.src`, not the old `LOOP_SRC = '/assets/my-hero-avatar.mp4'` seen in `docs/.../C21-hero-photo/01-baseline.log:38`).
-- **R5: FAIL.** 720p24 is neither 4K@60 nor resolution-independent.
+### `my-hero-avatar.mp4` — the live portrait loop, base rung (720p24)
+- **1280×720, 24 fps, 12.29 s, 1,916,328 B, H.264 High@3.1, greyscale.**
+- This is the canonical hero portrait hover loop (`avatarContent.loop.src`, `ladder[0]` in `app/data/portfolio/avatar.ts`) and the MiniVic bot talking-head. It is a downscale of the genuine 3840×2160@24 master (`artifacts/masters/minivic-greeting-2160p-master.mp4`, never committed) — never an upscale (§9–§10). It is the default and the fallback: the only rung on the critical-path 2.5 MB video budget, what a save-data reader or a browser with no AV1 decoder receives, and `preload="none"` (assigned on first hover/focus/press).
+- The old URL `/assets/my-avatar.mp4` — a different, colour, 1,096,301 B encode that shipped between §8 and §9 — is now a `firebase.json` **301** to this path; one binary, one URL.
+- **R5: OPEN** for this rung on its own (720p24 is neither 4K nor 60 fps); see the ladder as a whole in §2's next two entries and §10.4 for the overall R5 position.
 
-### `my-hero-avatar.mp4` — the 360p orphan → **RETIRE**
-- **640×360, 24 fps, 5.875 s, 160,156 B, H.264.**
-- **Unreferenced by the shipped app.** `grep -rn "my-hero-avatar" app components public firebase.json` returns **zero** hits. Every remaining match on the host is non-shipping:
-  - `scripts/pm/board_bootstrap_v10.mjs:246` — a kanban task-description string.
-  - `reports/post-prod/lighthouse-production.json` — a **stale legacy** Lighthouse snapshot of the old `script.js`/`index.html` static site (`<video data-src="/assets/my-hero-avatar.mp4" id="profile-image">`). That legacy static page is **not** in `public/` today (`public/index.html`, `public/script.js` do not exist), and it is not what Next.js emits.
-  - `docs/prompt.md`, `docs/adversarial/*`, `docs/delivery/evidence/*` — documentation/evidence.
-- **Decision: RETIRE (delete).** It is a true orphan; deleting the binary and (if present) any preload/link is safe. This is an AP action (asset/code change) — see §6.
+### `avatar/my-hero-avatar-1080.mp4` and `avatar/my-hero-avatar-2160.webm` — the on-demand rungs
+- **1080p:** 1920×1080, 24 fps, 12.29 s, 3,690,721 B, H.264 High@5.0 (CRF 21, `-preset slow`), greyscale.
+- **2160p:** 3840×2160, 24 fps, 12.29 s, 2,913,450 B, AV1 Main@5.0 (SVT-AV1 CRF 40, `-preset 8`), greyscale — the master's own resolution, at less than the 1080p rung's bitrate.
+- Both are `ladder[1]`/`ladder[2]` in `app/data/portfolio/avatar.ts`, chosen at play time by `lib/videoRung.ts` (rendered CSS height × devicePixelRatio, gated by Save-Data and `canPlayType`) and carry no `src` until a reader asks to play, which is why the audit gives them a 5 MB on-demand budget instead of the 2.5 MB critical-path one.
+- **R5:** the 2160p rung meets the resolution half of R5 with a genuine downscale-free encode of the master, but the master itself is 24 fps, not 60 — R5 stays **OPEN** until a real ≥2160p60 capture or generation lands (§10.4).
+
+### `my-hero-avatar.mp4` — the 640×360 orphan of `b2ac21b` → **RETIRED 2026-09-05**
+- **History only, not the current file.** At `b2ac21b` this filename pointed to a 640×360, 24 fps, 5.875 s, 160,156 B, H.264 file that was **unreferenced by the shipped app** — `grep -rn "my-hero-avatar" app components public firebase.json` returned zero hits at that commit. Every match on the host was non-shipping: a kanban task-description string (`scripts/pm/board_bootstrap_v10.mjs`), a stale legacy Lighthouse snapshot of a pre-Next.js static page that is not in `public/` today, and documentation/evidence.
+- **Retired by the §8 AP pass** (`git rm public/assets/my-hero-avatar.mp4`, `t_g2_h5`). The filename was subsequently re-assigned by §9–§10 to the current canonical 1280×720 loop described above — the two are different bytes at the same path, at different times, and the 640×360 orphan is **not** part of the live asset set.
 
 ---
 
