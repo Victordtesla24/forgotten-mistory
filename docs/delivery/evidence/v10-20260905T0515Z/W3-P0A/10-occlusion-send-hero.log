@@ -1,0 +1,58 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/minivic-occlusion.spec.ts tests/e2e/minivic-send-path.spec.ts tests/e2e/hero-fold.spec.ts --workers=1 --reporter=list
+
+[2mRunning [22m24[2m tests using [22m1[2m worker[22m
+
+  [32m✓[39m  [2m 1 [22m[chromium] › tests/a11y/minivic-occlusion.spec.ts:248:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step[2m (31.0s)[22m
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/a11y/minivic-occlusion.spec.ts:320:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-02: the closed launcher never paints a light surface on a phone[2m (9.5s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/e2e/hero-fold.spec.ts:99:11 › Hero — the first fold › at 1440×900 › TC-FOLD-01: one headline, one sentence, one action group at 1440×900[2m (6.3s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/e2e/hero-fold.spec.ts:203:11 › Hero — the first fold › at 1440×900 › TC-FOLD-04: one CTA group, with margin, at 1440×900[2m (4.3s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/e2e/hero-fold.spec.ts:267:11 › Hero — the first fold › at 1440×900 › TC-FOLD-02: the evidence sits below the fold at 1440×900[2m (7.4s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/e2e/hero-fold.spec.ts:297:11 › Hero — the first fold › at 1440×900 › TC-FOLD-03: the visual is the fold at 1440×900[2m (5.7s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/e2e/hero-fold.spec.ts:99:11 › Hero — the first fold › at 1280×800 › TC-FOLD-01: one headline, one sentence, one action group at 1280×800[2m (5.3s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/e2e/hero-fold.spec.ts:203:11 › Hero — the first fold › at 1280×800 › TC-FOLD-04: one CTA group, with margin, at 1280×800[2m (3.9s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/e2e/hero-fold.spec.ts:267:11 › Hero — the first fold › at 1280×800 › TC-FOLD-02: the evidence sits below the fold at 1280×800[2m (7.6s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/e2e/hero-fold.spec.ts:297:11 › Hero — the first fold › at 1280×800 › TC-FOLD-03: the visual is the fold at 1280×800[2m (5.4s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/e2e/hero-fold.spec.ts:99:11 › Hero — the first fold › at 834×1194 › TC-FOLD-01: one headline, one sentence, one action group at 834×1194[2m (5.6s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/e2e/hero-fold.spec.ts:203:11 › Hero — the first fold › at 834×1194 › TC-FOLD-04: one CTA group, with margin, at 834×1194[2m (3.6s)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/e2e/hero-fold.spec.ts:267:11 › Hero — the first fold › at 834×1194 › TC-FOLD-02: the evidence sits below the fold at 834×1194[2m (7.3s)[22m
+  [32m✓[39m  [2m14 [22m[chromium] › tests/e2e/hero-fold.spec.ts:297:11 › Hero — the first fold › at 834×1194 › TC-FOLD-03: the visual is the fold at 834×1194[2m (6.5s)[22m
+  [32m✓[39m  [2m15 [22m[chromium] › tests/e2e/hero-fold.spec.ts:99:11 › Hero — the first fold › at 390×844 › TC-FOLD-01: one headline, one sentence, one action group at 390×844[2m (3.9s)[22m
+  [31m✘[39m  [2m16 [22m[31m[chromium] › tests/e2e/hero-fold.spec.ts:203:11 › Hero — the first fold › at 390×844 › TC-FOLD-04: one CTA group, with margin, at 390×844[39m[2m (4.4s)[22m
+  [32m✓[39m  [2m17 [22m[chromium] › tests/e2e/hero-fold.spec.ts:267:11 › Hero — the first fold › at 390×844 › TC-FOLD-02: the evidence sits below the fold at 390×844[2m (4.8s)[22m
+  [32m✓[39m  [2m18 [22m[chromium] › tests/e2e/hero-fold.spec.ts:297:11 › Hero — the first fold › at 390×844 › TC-FOLD-03: the visual is the fold at 390×844[2m (4.4s)[22m
+  [32m✓[39m  [2m19 [22m[chromium] › tests/e2e/minivic-send-path.spec.ts:79:7 › MiniVic send path › MV-WIRE-01: one send makes exactly one /api request, and it is /api/chat[2m (8.9s)[22m
+  [32m✓[39m  [2m20 [22m[chromium] › tests/e2e/minivic-send-path.spec.ts:164:7 › MiniVic send path › MV-WIRE-02: no poller keeps running after the reply lands[2m (15.7s)[22m
+  [32m✓[39m  [2m21 [22m[chromium] › tests/e2e/minivic-send-path.spec.ts:203:7 › MiniVic first-token path › MV-WARM-01: opening the panel warms the function, and a send does not[2m (7.1s)[22m
+  [32m✓[39m  [2m22 [22m[chromium] › tests/e2e/minivic-send-path.spec.ts:252:7 › MiniVic first-token path › MV-PAYLOAD-01: the send body carries turns and a mode — no provider, model or prompt[2m (6.2s)[22m
+  [32m✓[39m  [2m23 [22m[chromium] › tests/e2e/minivic-send-path.spec.ts:312:7 › MiniVic direct-origin route › MV-ORIGIN-01: a blocked origin falls back to /api/chat, and the visitor still gets an answer[2m (7.5s)[22m
+  [32m✓[39m  [2m24 [22m[chromium] › tests/e2e/minivic-send-path.spec.ts:361:7 › MiniVic direct-origin route › MV-ORIGIN-02: the origin is tried before the Hosting rewrite on an ordinary send[2m (7.3s)[22m
+
+
+[31m  1) [chromium] › tests/e2e/hero-fold.spec.ts:203:11 › Hero — the first fold › at 390×844 › TC-FOLD-04: one CTA group, with margin, at 390×844 [39m
+
+    Error: the action group ends 16 px above the fold
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m804[39m
+    Received:    [31m828[39m
+
+    [0m [90m 256 |[39m           probe[33m.[39mactions[33m![39m[33m.[39mbottom[33m,[39m
+     [90m 257 |[39m           [32m`the action group ends ${Math.round(fold - probe.actions!.bottom)} px above the fold`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 258 |[39m         )[33m.[39mtoBeLessThanOrEqual(fold [33m-[39m [35m40[39m)[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 259 |[39m
+     [90m 260 |[39m         expect(probe[33m.[39mledger[33m,[39m [32m'the ledger is laid out'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m 261 |[39m         expect([0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w3-p0a/tests/e2e/hero-fold.spec.ts:258:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-fold-Hero-—-the-f-1e463-roup-with-margin-at-390×844-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-1e463-roup-with-margin-at-390×844-chromium/error-context.md[22m
+
+[31m  1 failed[39m
+[31m    [chromium] › tests/e2e/hero-fold.spec.ts:203:11 › Hero — the first fold › at 390×844 › TC-FOLD-04: one CTA group, with margin, at 390×844 [39m
+[32m  23 passed[39m[2m (3.1m)[22m

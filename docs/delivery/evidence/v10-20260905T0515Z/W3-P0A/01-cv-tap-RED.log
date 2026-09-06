@@ -1,0 +1,34 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/minivic-first-fold-cv-tap.spec.ts --workers=1 --reporter=list
+
+[2mRunning [22m1[2m test using [22m1[2m worker[22m
+
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/e2e/minivic-first-fold-cv-tap.spec.ts:49:7 › ADV rev7 F-1: the unpainted dock does not swallow the first fold › TC-MV-CVTAP-01 @ 390: the hero actions receive the tap at their own centres[39m[2m (2.8s)[22m
+
+
+[31m  1) [chromium] › tests/e2e/minivic-first-fold-cv-tap.spec.ts:49:7 › ADV rev7 F-1: the unpainted dock does not swallow the first fold › TC-MV-CVTAP-01 @ 390: the hero actions receive the tap at their own centres [39m
+
+    Error: elementFromPoint(289.3, 804.3) — the centre of "Download CV" — resolved to <span class="minivic-launcher__pill">, not the action itself: something unpainted is intercepting the fold’s CTAs
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m"/docs/Vik_Resume_Final.pdf"[39m
+    Received: [31mnull[39m
+
+    [0m [90m 113 |[39m           [32m`"${action.label}" — resolved to <${hit.tag} class="${hit.cls}">, not the action `[39m [33m+[39m
+     [90m 114 |[39m           [32m'itself: something unpainted is intercepting the fold’s CTAs'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 115 |[39m       )[33m.[39mtoBe(action[33m.[39mhref)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 116 |[39m     }
+     [90m 117 |[39m
+     [90m 118 |[39m     [90m// 2. A real, hit-tested tap at the CV button's centre reaches that anchor[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w3-p0a/tests/e2e/minivic-first-fold-cv-tap.spec.ts:115:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-minivic-first-fold-cv--731b6-he-tap-at-their-own-centres-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-minivic-first-fold-cv--731b6-he-tap-at-their-own-centres-chromium/error-context.md[22m
+
+[31m  1 failed[39m
+[31m    [chromium] › tests/e2e/minivic-first-fold-cv-tap.spec.ts:49:7 › ADV rev7 F-1: the unpainted dock does not swallow the first fold › TC-MV-CVTAP-01 @ 390: the hero actions receive the tap at their own centres [39m
