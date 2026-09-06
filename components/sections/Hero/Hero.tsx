@@ -4,7 +4,11 @@ import dynamic from 'next/dynamic';
 
 import Caliper from '@/components/marks/Caliper';
 import Scene from '@/components/gl/Scene';
-import HeroPortrait, { HeroPortraitControl, PortraitIntentProvider } from './HeroPortrait';
+import HeroPortrait, {
+  HeroPortraitCaption,
+  HeroPortraitControl,
+  PortraitIntentProvider,
+} from './HeroPortrait';
 import { heroContent } from '@/app/data/portfolio/hero';
 
 import styles from './Hero.module.css';
@@ -56,44 +60,69 @@ export default function Hero() {
           computes: fog, two Gaussian shafts and two pools, none of which has an
           edge sharp enough for a reader to find the upscale. The grain is the one
           term that resolution touches and it is a 1.8% dither. */}
-      <Scene className={styles.stage} sceneId="hero-atmosphere" priority resolutionScale={0.5}>
-        <HeroAtmosphere />
-      </Scene>
-
       {/* Both bands, and only both bands, sit inside the portrait's intent
-          provider: the figure stands in the fold and its named play/pause
+          provider: the figure stands in the plane and its named play/pause
           control stands in the proof band, and one state has to serve the two.
-          `<Scene>` is outside it on purpose — a pointer crossing the
-          photograph must not re-render the shader's tree. */}
+          `<Scene>` now sits inside the provider because the plane owns both it
+          and the figure (HERO-SETPIECE-v3 §4, D-4) — and it still never
+          re-renders on a pointer crossing the photograph: the provider holds
+          the state, its `children` are the same element objects Hero passed on
+          the render before, and React skips reconciling an unchanged child. */}
       <PortraitIntentProvider>
-        {/* The fold. One name, one sentence, ONE action group — `hero-actions`,
-            and nothing else pressable — and the photograph. An independent
-            reviewer measured two competing CTA groups in this screen on live
-            `9b864752`; the second was the button stamped on the face, and it
-            is now in the proof band below. The evidence is not deleted; it is
-            one scroll away, in `.proof`. */}
-        <div className={styles.inner} data-testid="hero-fold">
-        {/* The reading column, as one box. It is a grid item at 720 px and up
-            and `display: contents` below, so the photograph beside it can
-            never stretch the rhythm of the type: a figure spanning five grid
-            rows distributes its own height across all five, which is how the
-            name ended up 390 px below the location line. */}
-        <div className={styles.copy}>
-          <p className={styles.eyebrow} style={{ '--step': 0 } as React.CSSProperties}>
-            <span className={styles.locationDot} aria-hidden="true" />
-            {heroContent.location}
-          </p>
+        {/* THE PLANE (HERO-SETPIECE-v3 §1, §4 D-4). The declared ground of the
+            fold: the atmosphere's stage slot and the photograph, and nothing
+            else, ever. The instrument
+            (`scripts/validate/hero_plane_dominance.mjs`) exempts this subtree
+            from the ink set by declaration rather than by inference, which is
+            what lets the figure be *part of* the backdrop instead of an object
+            standing on it. The exemption is fenced by TC-HERO-PLANE-03: no text
+            leaf and nothing pressable may live in here, so it can never be
+            widened to hide a headline or a CTA from the measure.
 
+            `priority` is the one place on the site that opts out of Scene's idle
+            gate, and it is the hero because the hero is the only scene that is
+            already on screen when the page opens. The poster still below it is
+            what makes that safe: the frame is lit from the static HTML, so the
+            canvas is an enhancement over a painted picture rather than the thing
+            the first paint waits on (Scene.tsx `priority`,
+            TC-HERO-FIRSTPAINT-01/02).
+
+            Half resolution. The atmosphere is the most expensive frame on the
+            site — 366.6 ms on a median frame at 1440x900, measured, against a
+            16.7 ms budget (G-X1-01) — and it is expensive because it fills, not
+            because it computes: fog, two Gaussian shafts and two pools, none of
+            which has an edge sharp enough for a reader to find the upscale. */}
+        <div className={styles.plane} data-plane="hero">
+          <Scene className={styles.stage} sceneId="hero-atmosphere" priority resolutionScale={0.5}>
+            <HeroAtmosphere />
+          </Scene>
+
+          {/* The photograph, composited inside the plane at the §3 geometry —
+              right of centre, its outer margin dissolving into the light, its
+              lower band crossed by the name's baseline. It is never scaled above
+              1.0× of the 1480×826 still (FIG-CAP, TC-HERO-SET-03). */}
+          <HeroPortrait />
+        </div>
+
+        {/* The fold. One name, one sentence, ONE action group — `hero-actions`,
+            and nothing else pressable. An independent reviewer measured two
+            competing CTA groups in this screen on live `9b864752`; the second
+            was the button stamped on the face, and it is now in the proof band
+            below. The evidence is not deleted; it is one scroll away, in
+            `.proof`. The role line, the city and the photograph's provenance
+            went the same way in this slice (§6.1) — `hero.ts` is unedited and
+            not one word of it left the page. */}
+        <div className={styles.inner} data-testid="hero-fold">
+        {/* The reading column, as one box: the name, the sentence, the actions.
+            It carries no picture column any more — the photograph stands in the
+            plane behind it — so the type is free to the full measure. */}
+        <div className={styles.copy}>
           <h1 id="hero-name" className={styles.name} style={{ '--step': 1 } as React.CSSProperties}>
             {nameLead}
             {' '}
             <br className={styles.nameBreak} aria-hidden="true" />
             {nameTail}
           </h1>
-
-          <p className={styles.role} style={{ '--step': 2 } as React.CSSProperties}>
-            {heroContent.role}
-          </p>
 
           <p className={styles.statement} style={{ '--step': 3 } as React.CSSProperties}>
             {heroContent.statement}
@@ -116,15 +145,6 @@ export default function Hero() {
             </a>
           </div>
         </div>
-
-        {/* The photograph. At 720 px and above the CSS gives it the whole
-            right column of the fold, floor to ceiling — it is the composition,
-            not an inset. Below 720 px it follows the actions in the flow,
-            full-bleed, so the fold still ends on "See the evidence"
-            (TC-HERO-12/TC-PHOTO-08) and the face is met on the way down. It is
-            a <figure> with a <figcaption>, never a <p>: the statement is still
-            the fold's only paragraph over twelve words. */}
-        <HeroPortrait />
         </div>
 
       {/* The proof band. Everything the fold used to carry and could not
@@ -134,6 +154,21 @@ export default function Hero() {
           inside #hero and before #about, so `#hero ul` still resolves and
           CT-10 still finds 92 / $5M+ / 10k+ printed with their sources. */}
         <div className={styles.proof} data-testid="hero-proof">
+        {/* The role and the city, one scroll down (HERO-SETPIECE-v3 §6.1). They
+            were the fold's third and fourth text blocks; the fold now carries
+            the name, the sentence and the actions and nothing else, because a
+            set piece a reader reads in one clause cannot also be a list. Not one
+            word is deleted — `hero.ts` is untouched and both strings render
+            here, above the evidence they belong beside. */}
+        <p className={styles.role} style={{ '--step': 5 } as React.CSSProperties}>
+          {heroContent.role}
+        </p>
+
+        <p className={styles.eyebrow} style={{ '--step': 5 } as React.CSSProperties}>
+          <span className={styles.locationDot} aria-hidden="true" />
+          {heroContent.location}
+        </p>
+
         {/* The three figures, each carrying its own provenance, and the line
             that grades them: sourced would be a lie, so the mark says
             self-reported and says why. */}
@@ -196,6 +231,13 @@ export default function Hero() {
               works under reduced motion because a reader's own press is allowed
               (WCAG 2.2.2). */}
           <HeroPortraitControl />
+
+          {/* The photograph's provenance, beside its control (§6.1). It used to
+              be a <figcaption> inside the fold; a caption in the plane would be
+              a text leaf inside the declared ground, which TC-HERO-PLANE-03
+              forbids — and it was a real ink rect in the fold besides. Same
+              words, same source (`avatar.ts`), one scroll down. */}
+          <HeroPortraitCaption />
         </div>
       </PortraitIntentProvider>
     </section>

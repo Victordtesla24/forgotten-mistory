@@ -1,0 +1,155 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero.spec.ts tests/e2e/hero-photo.spec.ts --workers=1 --reporter=line -g TC-HERO-13|TC-HERO-15|TC-HERO-16|TC-HERO-19|TC-HERO-21|ladder|TC-PHOTO-01|TC-PHOTO-02
+
+Running 14 tests using 1 worker
+
+[1A[2K[1/14] [chromium] › tests/e2e/hero-photo.spec.ts:93:7 › Hero photograph › TC-PHOTO-01: at 1440 the figure owns the right column — ≥34 % of the viewport and ≥440 px
+[1A[2K[2/14] [chromium] › tests/e2e/hero-photo.spec.ts:115:7 › Hero photograph › TC-PHOTO-02: at 390 the photo is full width and sits below the last hero action
+[1A[2K  1) [chromium] › tests/e2e/hero-photo.spec.ts:115:7 › Hero photograph › TC-PHOTO-02: at 390 the photo is full width and sits below the last hero action 
+
+    Error: the photo starts below the last action
+
+    expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 828.0155029296875
+    Received:    294.734375
+
+      133 |     }
+      134 |     expect(bottoms.length, 'both hero actions are laid out').toBeGreaterThanOrEqual(2);
+    > 135 |     expect(box!.y, 'the photo starts below the last action').toBeGreaterThanOrEqual(Math.max(...bottoms));
+          |                                                              ^
+      136 |   });
+      137 |
+      138 |   test('TC-PHOTO-03: the still is monochrome in its bytes — no filter does the work', async ({
+        at /root/forgotten-mistory/.claude/worktrees/w2-h1s1/tests/e2e/hero-photo.spec.ts:135:62
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-photo-Hero-photog-dd313--below-the-last-hero-action-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-photo-Hero-photog-dd313--below-the-last-hero-action-chromium/error-context.md
+
+
+[1A[2K[3/14] [chromium] › tests/e2e/hero-photo.spec.ts:822:9 › The loop ladder — which encode a screen is actually served › a 2x screen at 1440 › TC-PHOTO-13: needs under 720 device px, so the default 720p rung is what is fetched
+[1A[2K  2) [chromium] › tests/e2e/hero-photo.spec.ts:822:9 › The loop ladder — which encode a screen is actually served › a 2x screen at 1440 › TC-PHOTO-13: needs under 720 device px, so the default 720p rung is what is fetched 
+
+    Error: device pixels down the box
+
+    expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 720
+    Received:    944.3125
+
+      824 |       const state = await playAndRead(page);
+      825 |       expect(state.dpr, 'the emulated pixel ratio').toBe(2);
+    > 826 |       expect(state.need, 'device pixels down the box').toBeLessThanOrEqual(720);
+          |                                                        ^
+      827 |       expect(state.file, `box ${state.renderedHeight.toFixed(0)} CSS px x ${state.dpr}`).toBe('my-hero-avatar.mp4');
+      828 |     });
+      829 |   });
+        at /root/forgotten-mistory/.claude/worktrees/w2-h1s1/tests/e2e/hero-photo.spec.ts:826:56
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-photo-The-loop-la-8c68e-20p-rung-is-what-is-fetched-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-photo-The-loop-la-8c68e-20p-rung-is-what-is-fetched-chromium/error-context.md
+
+
+[1A[2K[4/14] [chromium] › tests/e2e/hero-photo.spec.ts:834:9 › The loop ladder — which encode a screen is actually served › a 3x phone at 390 › TC-PHOTO-14: a small box at 3x still resolves inside 720p — no data is spent to prove a point
+[1A[2K[5/14] [chromium] › tests/e2e/hero-photo.spec.ts:848:9 › The loop ladder — which encode a screen is actually served › a 3x desktop at 1440 › TC-PHOTO-15: needs 916 device px, so the on-demand 1080p rung is fetched instead
+[1A[2K  3) [chromium] › tests/e2e/hero-photo.spec.ts:848:9 › The loop ladder — which encode a screen is actually served › a 3x desktop at 1440 › TC-PHOTO-15: needs 916 device px, so the on-demand 1080p rung is fetched instead 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "my-hero-avatar-1080.mp4"
+    Received: "my-hero-avatar-2160.webm"
+
+      850 |       const state = await playAndRead(page);
+      851 |       expect(state.need, 'device pixels down the box').toBeGreaterThan(720);
+    > 852 |       expect(state.file).toBe('my-hero-avatar-1080.mp4');
+          |                          ^
+      853 |     });
+      854 |
+      855 |     test('TC-PHOTO-16: Save-Data pins the same screen back to the 720p rung', async ({ page }) => {
+        at /root/forgotten-mistory/.claude/worktrees/w2-h1s1/tests/e2e/hero-photo.spec.ts:852:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-photo-The-loop-la-e5935-80p-rung-is-fetched-instead-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-photo-The-loop-la-e5935-80p-rung-is-fetched-instead-chromium/error-context.md
+
+
+[1A[2K[6/14] [chromium] › tests/e2e/hero-photo.spec.ts:855:9 › The loop ladder — which encode a screen is actually served › a 3x desktop at 1440 › TC-PHOTO-16: Save-Data pins the same screen back to the 720p rung
+[1A[2K[7/14] [chromium] › tests/e2e/hero-photo.spec.ts:868:9 › The loop ladder — which encode a screen is actually served › a 3x desktop at 1440 › TC-PHOTO-17: a browser with no AV1 decoder never receives the WebM rung
+[1A[2K[8/14] [chromium] › tests/e2e/hero-photo.spec.ts:882:7 › The loop ladder — which encode a screen is actually served › TC-PHOTO-18: both on-demand rungs are published — the URLs the ladder names answer 200
+[1A[2K[9/14] [chromium] › tests/e2e/hero-photo.spec.ts:897:7 › The loop ladder — which encode a screen is actually served › TC-PHOTO-19: at rest none of the three rungs is requested
+[1A[2K[10/14] [chromium] › tests/e2e/hero.spec.ts:422:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate
+[1A[2K  4) [chromium] › tests/e2e/hero.spec.ts:422:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate 
+
+    Error: src assigned on hover
+
+    expect(received).toMatch(expected)
+
+    Expected pattern: /my-avatar\.mp4$/
+    Received string:  "http://127.0.0.1:5607/assets/my-hero-avatar.mp4"
+
+    Call Log:
+    - Timeout 2000ms exceeded while waiting on the predicate
+
+      479 |     // Intent: one hover, and the source is assigned and playing.
+      480 |     await page.locator(PORTRAIT).hover();
+    > 481 |     await expect
+          |     ^
+      482 |       .poll(async () => (await loopState(page)).src, { timeout: 2000, message: 'src assigned on hover' })
+      483 |       .toMatch(/my-avatar\.mp4$/);
+      484 |
+        at /root/forgotten-mistory/.claude/worktrees/w2-h1s1/tests/e2e/hero.spec.ts:481:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-Hero-portrait-TC--7cdb5-tarts-only-through-the-gate-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-Hero-portrait-TC--7cdb5-tarts-only-through-the-gate-chromium/error-context.md
+
+
+[1A[2K[11/14] [chromium] › tests/e2e/hero.spec.ts:550:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+[1A[2K[chromium] › tests/e2e/hero.spec.ts:550:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+Crossfade shifts: []
+
+[1A[2K[12/14] [chromium] › tests/e2e/hero.spec.ts:621:7 › Hero portrait › TC-HERO-16: a failed loop leaves the poster in place and throws nothing
+[1A[2K[13/14] [chromium] › tests/e2e/hero.spec.ts:790:7 › Hero portrait › TC-HERO-19: eager image weight ≤ 500 kB and the loop is fetched only on intent
+[1A[2K[14/14] [chromium] › tests/e2e/hero.spec.ts:854:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the photograph is full-bleed below the actions
+[1A[2K  5) [chromium] › tests/e2e/hero.spec.ts:854:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the photograph is full-bleed below the actions 
+
+    Error: the photograph bleeds to both screen edges
+
+    expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 382.2
+    Received:    366
+
+      866 |       const box = await figure.boundingBox();
+      867 |       expect(box, 'the figure is laid out at 390 px').not.toBeNull();
+    > 868 |       expect(box!.width, 'the photograph bleeds to both screen edges').toBeGreaterThanOrEqual(
+          |                                                                        ^
+      869 |         0.98 * 390,
+      870 |       );
+      871 |
+        at /root/forgotten-mistory/.claude/worktrees/w2-h1s1/tests/e2e/hero.spec.ts:868:72
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/e2e-hero-Hero-portrait-at--d21ba-ull-bleed-below-the-actions-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/e2e-hero-Hero-portrait-at--d21ba-ull-bleed-below-the-actions-chromium/error-context.md
+
+
+[1A[2K  5 failed
+    [chromium] › tests/e2e/hero-photo.spec.ts:115:7 › Hero photograph › TC-PHOTO-02: at 390 the photo is full width and sits below the last hero action 
+    [chromium] › tests/e2e/hero-photo.spec.ts:822:9 › The loop ladder — which encode a screen is actually served › a 2x screen at 1440 › TC-PHOTO-13: needs under 720 device px, so the default 720p rung is what is fetched 
+    [chromium] › tests/e2e/hero-photo.spec.ts:848:9 › The loop ladder — which encode a screen is actually served › a 3x desktop at 1440 › TC-PHOTO-15: needs 916 device px, so the on-demand 1080p rung is fetched instead 
+    [chromium] › tests/e2e/hero.spec.ts:422:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate 
+    [chromium] › tests/e2e/hero.spec.ts:854:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the photograph is full-bleed below the actions 
+  9 passed (1.3m)

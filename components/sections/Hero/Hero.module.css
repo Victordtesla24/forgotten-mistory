@@ -22,6 +22,20 @@
     /* Named once, so the photograph below 720 px can cancel exactly this much
        and bleed to both screen edges without a magic number. */
     --hero-gutter: var(--page-gutter, clamp(1.5rem, 5vw, 5rem));
+    /* The one number that binds the figure to the name: the distance from the
+       fold's floor to the photograph's foot. `.planeFigure` reads it; the tiers
+       below set it per width. It lives here rather than on `.inner` because the
+       plane is `.inner`'s sibling and a custom property only inherits down.
+
+       340 px is measured, not chosen. The name's line box — the FONT box a
+       Range reports, ~180 px at 1440, not the 138 px element box — has to clear
+       the figure's face-safe inner 60 % and still cross its dissolve band. That
+       leaves a window of lift ∈ [326, 420] at 1440×900 and [297, 354] at
+       1280×800 (the upper bound there is the figure's own top edge reaching the
+       viewport). 340 sits in both, with the fold's boxes landing at 1440:
+       figure 88→560, face-safe ends 466, name 480→660 — fourteen pixels of
+       daylight under the face and eighty of name across the dissolve. */
+    --figure-lift: 340px;
     /* The vertical rhythm belongs to the bands now: each sets its own, because
        the fold measures itself against the viewport and the proof band does
        not. */
@@ -827,17 +841,73 @@
    hairline rule with caliper ticks and a registration cross. What remains is the
    mono caption plate below, lit from behind by one achromatic bloom so the
    photograph sits in light, not on black. */
+/* The fold anchors its copy to its floor now: the name, the sentence and the
+   action bar stand at the bottom of the first screen so the name's baseline
+   crosses the figure's dissolving lower band above it (§2, TC-HERO-SET-05). It
+   was `flex-start` while the photograph flowed under the copy as a fifth block;
+   the photograph stands in the plane behind the type from this slice on, and a
+   top-anchored column would leave the two in different halves of the frame —
+   a headline AND a headshot, which is precisely the reading §0 forbids.
+
+   `--figure-lift` is the one number that binds the two: the distance from the
+   fold's floor to the figure's foot. It is set per tier here and read by
+   `.planeFigure` above; the §3 tables are the design intent and these are the
+   measured values that realise them at the four gate viewports. */
 .inner {
-    /* Wider than it was: the reviewer measured the dominant visual at 11.4% of
-       the fold and called the composition a CV dump. The right column is the
-       photograph's whole share of the screen now. */
-    --portrait-w: clamp(18rem, 38vw, 36rem);
+    justify-content: flex-end;
+    /* The fold's box stands OVER the plane, and a box over the photograph is a
+       box that swallows the pointer: with the figure composited into the plane
+       behind the copy, `pointerenter` on the figure never fired and the loop
+       stopped following the pointer (§4.3 — measured as TC-PHOTO-05 red on the
+       first build of this slice). The band passes the pointer through; the
+       reading column and everything pressable in it take it back, so the face
+       above the copy is hoverable and every link still is. */
+    pointer-events: none;
 }
 
-.portrait {
-    position: relative;
+.copy,
+.name,
+.statement,
+.actions {
+    pointer-events: auto;
+}
+
+/* ── The plane ───────────────────────────────────────────────────────────────
+   HERO-SETPIECE-v3 §1 / §4 (D-4). One declared ground under the whole section:
+   the stage slot and the photograph, and nothing else. It is declared rather
+   than inferred so the figure can be *inside* the plane and still carry its
+   `alt` — `Scene` renders its slot `aria-hidden`, and no descendant can undo
+   that — and so the SPD instrument's ground-chain exemption is a thing a
+   reviewer reads in the DOM instead of a thing it guesses.
+
+   `pointer-events: none` on the layer, restored on the figure alone: the plane
+   spans the section, and the copy standing over it must stay clickable. */
+.plane {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* The figure, composited in the plane at the §3 geometry.
+
+   Anchored by its BOTTOM edge to the fold, not by its top: the one measurement
+   this composition lives or dies by is where the name's baseline crosses the
+   photograph's dissolving lower band (TC-HERO-SET-05), and the copy is set from
+   the bottom of the fold up. `top: calc(100svh - lift)` with a −100 % translate
+   puts the figure's foot exactly `lift` above the fold's floor at every height,
+   with no dependence on the figure's own height.
+
+   Width is bounded by FIG-CAP: 1480 device px ÷ the 1.75 DPR cap = 846 CSS px,
+   above which the site's largest raster would be upscaled (TC-HERO-SET-03). */
+.planeFigure {
+    position: absolute;
+    right: var(--hero-gutter);
+    top: calc(100svh - var(--figure-lift, 280px));
+    width: min(846px, 62.5vw);
     margin: 0;
-    width: 100%;
+    transform: translateY(-100%);
+    pointer-events: auto;
 }
 
 /* The stage carries the light. It is deliberately not clipped: the bloom
@@ -1046,17 +1116,14 @@
         display: block;
         min-width: 0;
     }
+}
 
-    /* The photograph is re-homed below the copy for this slice: it no longer
-       forms a column that constrains the type. Its final placement in the plane
-       is g2h1-04's; here it simply flows under the mark at its own width, so the
-       name is freed to the measure without a second composition being invented
-       now. Capped at --portrait-w and left on the spine — not stretched to the
-       full measure — so nothing reflows the mark above it (CLS holds). */
-    .portrait {
-        width: 100%;
-        max-width: var(--portrait-w);
-        margin-top: clamp(var(--space-6), 6vh, var(--space-10));
+/* The tablet tier (§3.4, 834×1194). The figure takes the whole column — 750 px
+   at 834 — and stands higher in a taller fold, so the two-line lockup below it
+   still crosses its dissolve rather than clearing it. */
+@media (min-width: 701px) and (max-width: 899.98px) {
+    .planeFigure {
+        width: calc(100% - 2 * var(--hero-gutter));
     }
 }
 
@@ -1150,20 +1217,24 @@
     }
 }
 
-/* <720 px: the photograph runs the full width of the screen, edge to edge,
-   BELOW the actions — so the fold still ends on "See the evidence" (TC-HERO-12)
-   and the reader meets the face on the way down rather than as an 88 px stamp
-   beside the eyebrow. The bleed cancels the hero's own gutter exactly, so the
-   page never scrolls sideways. */
-@media (max-width: 719.98px) {
-    .portrait {
-        width: calc(100% + 2 * var(--hero-gutter));
-        margin: clamp(var(--space-4), 5vh, var(--space-6)) 0 0 calc(-1 * var(--hero-gutter));
+/* ≤700 px: the figure bleeds to the right screen edge (§3.5). It keeps the
+   left gutter, so the name below it starts on the same spine, and it never
+   scrolls the page sideways. */
+@media (max-width: 700px) {
+    .hero {
+        /* The phone's fold is short and its name sets in two lines, so the foot
+           of the figure rides five pixels higher above the floor than it does
+           on a desktop. Measured at 390×844 on this build: the name's first
+           line box runs y474–556, the figure's foot lands at 499, its face-safe
+           box ends at 458 — sixteen pixels of daylight under the face, and
+           twenty-five pixels of the name written across the dissolve
+           (tests/overhaul/hero-setpiece.spec.ts SET-05). */
+        --figure-lift: 345px;
     }
 
-    .portraitCaption {
-        margin-right: var(--hero-gutter);
-        margin-left: var(--hero-gutter);
+    .planeFigure {
+        right: 0;
+        width: calc(100% - var(--hero-gutter));
     }
 }
 
