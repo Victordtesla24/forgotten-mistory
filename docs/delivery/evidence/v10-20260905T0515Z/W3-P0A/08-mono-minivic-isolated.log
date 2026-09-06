@@ -1,0 +1,42 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/monochrome/minivic-launcher.spec.ts --workers=1 --reporter=list
+
+[2mRunning [22m5[2m tests using [22m1[2m worker[22m
+
+  [32m✓[39m  [2m1 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold[2m (3.1s)[22m
+  [32m✓[39m  [2m2 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 640: every colour inside the launcher is R==G==B and never gold[2m (2.5s)[22m
+  [32m✓[39m  [2m3 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold[2m (2.0s)[22m
+  [32m✓[39m  [2m4 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 390: the launcher shows a visible "Ask Mini Vic" label at AA[2m (2.0s)[22m
+  [31m✘[39m  [2m5 [22m[31m[chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 640: the launcher shows a visible "Ask Mini Vic" label at AA[39m[2m (14.2s)[22m
+
+
+[31m  1) [chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 640: the launcher shows a visible "Ask Mini Vic" label at AA [39m
+
+    Error: the dock never painted past the hero — the launcher is unreachable
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0.9[39m
+    Received:   [31m0[39m
+
+    Call Log:
+    - Timeout 8000ms exceeded while waiting on the predicate
+
+    [0m [90m 302 |[39m       [90m// the dock never paints past the hero the wait fails, which is the same[39m
+     [90m 303 |[39m       [90m// failure the old fixed sleep produced, only now it is not a coin flip.[39m
+    [31m[1m>[22m[39m[90m 304 |[39m       [36mawait[39m expect
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 305 |[39m         [33m.[39mpoll(dockOpacity[33m,[39m {
+     [90m 306 |[39m           timeout[33m:[39m [35m8000[39m[33m,[39m
+     [90m 307 |[39m           message[33m:[39m [32m'the dock never painted past the hero — the launcher is unreachable'[39m[33m,[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w3-p0a/tests/monochrome/minivic-launcher.spec.ts:304:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/monochrome-minivic-launche-0a39b-le-Ask-Mini-Vic-label-at-AA-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/monochrome-minivic-launche-0a39b-le-Ask-Mini-Vic-label-at-AA-chromium/error-context.md[22m
+
+[31m  1 failed[39m
+[31m    [chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 640: the launcher shows a visible "Ask Mini Vic" label at AA [39m
+[32m  4 passed[39m[2m (25.3s)[22m

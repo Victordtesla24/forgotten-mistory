@@ -1,0 +1,15 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/minivic-first-fold-cv-tap.spec.ts tests/e2e/minivic-first-fold-click.spec.ts tests/monochrome/minivic-launcher.spec.ts --workers=1 --reporter=list
+
+[2mRunning [22m8[2m tests using [22m1[2m worker[22m
+
+  [32m✓[39m  [2m1 [22m[chromium] › tests/e2e/minivic-first-fold-click.spec.ts:89:9 › G-MV1 / REGRESSION rev-ec53e2b4: the first-fold launcher is a real control › TC-MV-CLICK-01 @ 1440: a real click where the dock paints opens the panel[2m (3.3s)[22m
+  [32m✓[39m  [2m2 [22m[chromium] › tests/e2e/minivic-first-fold-click.spec.ts:89:9 › G-MV1 / REGRESSION rev-ec53e2b4: the first-fold launcher is a real control › TC-MV-CLICK-01 @ 390: a real click where the dock paints opens the panel[2m (3.6s)[22m
+  [32m✓[39m  [2m3 [22m[chromium] › tests/e2e/minivic-first-fold-cv-tap.spec.ts:49:7 › ADV rev7 F-1: the unpainted dock does not swallow the first fold › TC-MV-CVTAP-01 @ 390: the hero actions receive the tap at their own centres[2m (4.1s)[22m
+  [32m✓[39m  [2m4 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 1440: every colour inside the launcher is R==G==B and never gold[2m (6.0s)[22m
+  [32m✓[39m  [2m5 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 640: every colour inside the launcher is R==G==B and never gold[2m (8.5s)[22m
+  [32m✓[39m  [2m6 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:134:9 › Monochrome: the MiniVic launcher › MONO-MV-01 @ 390: every colour inside the launcher is R==G==B and never gold[2m (6.3s)[22m
+  [32m✓[39m  [2m7 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 390: the launcher shows a visible "Ask Mini Vic" label at AA[2m (5.0s)[22m
+  [32m✓[39m  [2m8 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 640: the launcher shows a visible "Ask Mini Vic" label at AA[2m (6.0s)[22m
+
+[32m  8 passed[39m[2m (45.1s)[22m

@@ -1,0 +1,9 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/monochrome/minivic-launcher.spec.ts -g MONO-MV-02 --workers=1 --reporter=list
+
+[2mRunning [22m2[2m tests using [22m1[2m worker[22m
+
+  [32m✓[39m  [2m1 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 390: the launcher shows a visible "Ask Mini Vic" label at AA[2m (1.9s)[22m
+  [32m✓[39m  [2m2 [22m[chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 640: the launcher shows a visible "Ask Mini Vic" label at AA[2m (2.4s)[22m
+
+[32m  2 passed[39m[2m (5.5s)[22m

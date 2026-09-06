@@ -370,7 +370,35 @@
     opacity: 1 !important;
 }
 
-.minivic-dock .minivic-launcher {
+/* …but only where the dock is allowed to paint. ADV rev7 F-1 (P0): at 390x844
+   the launcher's box is `x208 y776 158x44` and the hero's action row is
+   `x213 y780 153x48` — the same pixels. With the rule below unscoped, an
+   *unpainted* button owned them: `elementFromPoint` at the centre of
+   "Download CV" answered `span.minivic-launcher__pill`
+   (`01-cv-tap-RED.log`), so a reader who tapped the fold's only conversion
+   opened the chat instead. The dock cannot simply paint there — MONO-MV-02
+   requires `opacity < 0.05` over the fold at 390 and 640 because the hero
+   portrait is full-bleed to the bottom of the fold and no bottom-anchored dock
+   can clear it (G-E2) — so below 834px the launcher gives the pointer back
+   until it *is* painted. `data-past-hero` is that paint signal; the
+   `:focus-within` rule above (and `:hover`, where there is a pointer to hover
+   with) paints and arms it for the reader who reaches for it before then, and
+   the button keeps its place in the tab order and in the accessibility tree at
+   every width (G-MV1, ADV-F-3 — `aria-hidden` over a focusable control is the
+   WCAG 4.1.2 failure that rule was written to end, so it is not reintroduced
+   here; `pointer-events` is what stops an invisible interceptor).
+   At 834px and up nothing changes: TC-MV-CLICK-01 @1440 still opens the panel
+   with a real, hit-tested click on the first fold. Asserted by
+   tests/e2e/minivic-first-fold-cv-tap.spec.ts TC-MV-CVTAP-01 (390) and
+   tests/e2e/minivic-first-fold-click.spec.ts TC-MV-CLICK-01 (1440 first fold,
+   390 once painted). */
+@media (min-width: 52.125rem) {
+    .minivic-dock .minivic-launcher {
+        pointer-events: auto;
+    }
+}
+
+.minivic-dock[data-past-hero] .minivic-launcher {
     pointer-events: auto;
 }
 
