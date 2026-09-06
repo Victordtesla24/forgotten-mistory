@@ -1171,7 +1171,12 @@ const MiniVicBot = () => {
                   Mini Vic
                   <Sparkles size={14} className={isSpeaking ? "animate-spin-slow text-white" : "text-white/70"} />
                 </h3>
-                <p className="mt-0.5 truncate text-[11px] text-white/55">A synthetic stand-in for Vikram · ask me anything</p>
+                <p
+                  data-testid="minivic-subtitle"
+                  className="mt-0.5 text-[11px] leading-snug text-white/55"
+                >
+                  A synthetic stand-in for Vikram · ask me anything
+                </p>
                 {/* The one disclosure this panel may never lose, now naming
                     all three synthetic parts instead of only the voice: the
                     audio is an ElevenLabs stock voice (not a recording of
@@ -1190,7 +1195,7 @@ const MiniVicBot = () => {
                     tests/e2e/avatar-voice.spec.ts fail if it disappears. */}
                 <p
                   data-testid="minivic-synthetic-label"
-                  className="mt-0.5 truncate text-[10px] uppercase tracking-[0.16em] text-white/45"
+                  className="mt-0.5 text-[10px] leading-[1.45] tracking-[0.02em] text-white/45"
                 >
                   {`Voice: ElevenLabs stock · Face: pre-rendered loop · Answers: ${
                     answerSource === null
@@ -1444,7 +1449,7 @@ const MiniVicBot = () => {
           if (!toggleVideoSrc) setToggleVideoSrc(loopSrcFor(toggleRef.current));
         }}
         aria-expanded={isOpen}
-        aria-label="Ask Mini Vic — Vikram's AI clone"
+        aria-label="Ask Mini Vic — a synthetic stand-in for Vikram"
       >
         {/* WCAG 2.5.3, Label in Name: the pill says "Ask Mini Vic", so the
             accessible name has to begin with those words or a speech-input

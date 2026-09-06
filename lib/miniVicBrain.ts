@@ -1,5 +1,5 @@
 /**
- * miniVicBrain.ts — client-side reasoning layer for the MiniVic AI clone.
+ * miniVicBrain.ts — client-side reasoning layer for the MiniVic synthetic stand-in.
  *
  * Answer ladder (first success wins):
  *   1. The MiniVic chat Firebase Function, which owns the provider keys. It is
@@ -283,7 +283,15 @@ export type BrainDeltaHandler = (fragment: string) => void;
 export function warmMiniVicBrain(): void {
   for (const route of CHAT_ROUTES) {
     try {
-      void fetch(route.warmUrl, { method: 'GET', cache: 'no-store' }).catch(() => {});
+      // The response is READ, not just fired. A `fetch` whose Response is
+      // collected without its body being consumed is cancelled by the browser
+      // and shows up as `net::ERR_ABORTED` — which is exactly what every
+      // browser run in the adversarial review recorded against both warm pings
+      // (F3), and a cancelled ping primes nothing. `keepalive` keeps it alive
+      // if the visitor navigates while it is in flight.
+      void fetch(route.warmUrl, { method: 'GET', cache: 'no-store', keepalive: true })
+        .then((response) => response.arrayBuffer())
+        .catch(() => {});
     } catch {
       // `fetch` itself being absent (or blocked) is not a reason to fail an open.
     }
@@ -293,12 +301,16 @@ export function warmMiniVicBrain(): void {
 /**
  * One attempt at one route.
  *
- * The direct rung carries a first-byte deadline as well as the overall one: it
- * was chosen because its response headers arrive in ~665 ms, so if they have not
- * arrived inside the R3 bar the reason to prefer it is gone and the send is
- * better off on the certain path. The Hosting rung gets no such deadline —
- * buffering means its headers legitimately arrive at the end of the whole reply,
- * and cutting it at 1.5 s would kill the fallback the direct rung depends on.
+ * The direct rung carries a first-byte deadline as well as the overall one, and
+ * `clearTimeout(firstByte)` fires the moment the response headers land. Because
+ * the function writes its SSE headers on the first fragment, that is the moment
+ * the first token is on the wire: a stream that has started is never discarded,
+ * whatever the clock says. The deadline itself is DIRECT_FIRST_BYTE_TIMEOUT_MS
+ * in ./miniVicRoute.mjs — 2 600 ms, derived from the measured cold walk, NOT the
+ * R3 bar; see the comment there for why setting it to 1 500 ms made the cold
+ * send strictly worse. The Hosting rung gets no such deadline — buffering means
+ * its headers legitimately arrive at the end of the whole reply, and cutting it
+ * short would kill the fallback the direct rung depends on.
  */
 async function callChatRoute(
   route: { sendUrl: string; kind: string },
