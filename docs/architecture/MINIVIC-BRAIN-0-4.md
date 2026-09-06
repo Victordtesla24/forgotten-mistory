@@ -293,7 +293,7 @@ Concretely, in `lib/miniVicRoute.mjs` / `lib/miniVicBrain.ts`:
    **No origin stream whose first token has arrived can be aborted**, whatever the clock
    says — that is the property the review asked for, and it is a code invariant, not a
    number.
-3. An origin that has produced *nothing at all* by 2 600 ms is still abandoned for the
+3. An origin that has produced *nothing at all* by 3 200 ms is still abandoned for the
    Hosting rung. Abandoning it then is right: it has no answer to lose, and the buffered
    path is the better remaining bet well inside the 14 s overall timeout.
 4. `tests/minivic_chat_route.test.mjs` MV-ROUTE-07 now asserts the *relationship*
