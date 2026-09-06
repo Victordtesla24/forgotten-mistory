@@ -593,14 +593,20 @@ the decision is recorded here rather than made silently:
 After the corrections, the answering rung's own time is still the entire budget. From the first
 post-deploy cold pair (`docs/delivery/evidence/v10-20260905T0515Z/W3-M4C/`):
 
-| sample | first token | `openai answered` | dead rungs |
+| slot | hosting cold | origin cold | worst `openai answered` |
 |---|---|---|---|
-| `c1a-hosting-cold` | 1193 ms ✓ | 932 ms | 0 ms × 3 |
-| `c1b-origin-cold` | 1529 ms ✗ | **1731 ms** | 0 ms × 3 |
+| 06:56Z | 1193 ms ✓ | 1529 ms ✗ | 1731 ms |
+| 07:06Z | 2522 ms ✗ | 1296 ms ✓ | 1337 ms |
+| 07:16Z | 2282 ms ✗ | 2188 ms ✗ | **2219 ms** |
+| 07:26Z | 3304 ms ✗ | 2210 ms ✗ | 1831 ms |
+| warm | 1080 ms ✓ | 979 ms ✓ | 1266 ms |
 
-`openai answered 1731 ms` is **already over the 1500 ms bar before a single byte of transport**.
+**6 of 8 cold samples fail the bar; both warm samples pass.** On the 07:16Z origin sample
+`openai answered` was **2219 ms** — already over the 1500 ms bar before a single byte of transport.
 No free change in this repository can move that number: the request is one call, to one funded
-account, on one model. What remains is a cost decision, and it is written up for the Owner in
+account, on one model. A second term, stated rather than smoothed over, is the measuring host: VPS
+load average was ~13 on 4 cores across the whole window and the cold samples degrade monotonically
+through it, so a visitor on an idle machine pays less than these numbers say. What remains is a cost decision, and it is written up for the Owner in
 `docs/delivery/OWNER-BLOCKED.md` — note that the obvious candidate (Cloud Run min-instances) is
 *already enabled*, so the honest options are funding a faster rung or accepting the bar as
 upstream-bound.

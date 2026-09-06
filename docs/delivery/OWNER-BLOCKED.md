@@ -29,15 +29,27 @@ every sample reads `openrouter cooling_down 0 ms · deepseek cooling_down 0 ms �
 
 The single funded rung — `openai / gpt-4.1-mini` — is the whole budget:
 
-| sample | first token | of which `openai answered` |
-|---|---|---|
-| review `02-origin-cold` (06:31Z) | 1900 ms | 1119 ms |
-| review `01-hosting-cold-strict` (06:31Z) | 1793 ms | 1278 ms |
-| `W3-M4C/c1b-origin-cold` (06:56Z, post-fix) | 1529 ms | **1731 ms** |
-| `W3-M4C/c1a-hosting-cold` (06:56Z, post-fix) | 1193 ms | 932 ms |
+Eight cold samples were taken after the corrections above went live, in four slots spaced ten
+minutes apart, both routes in every slot (`docs/delivery/evidence/v10-20260905T0515Z/W3-M4C/`):
 
-On a bad upstream minute the provider call alone exceeds the 1500 ms bar before any transport is
-counted. That is not a defect this repository can fix.
+| sample | first token | vs 1500 ms | of which `openai answered` |
+|---|---|---|---|
+| `c1a-hosting-cold` 06:56Z | 1193 ms | PASS | 932 ms |
+| `c1b-origin-cold` 06:56Z | 1529 ms | FAIL | 1731 ms |
+| `c2a-hosting-cold` 07:06Z | 2522 ms | FAIL | 1337 ms |
+| `c2b-origin-cold` 07:06Z | 1296 ms | PASS | 951 ms |
+| `c3a-hosting-cold` 07:16Z | 2282 ms | FAIL | 1231 ms |
+| `c3b-origin-cold` 07:16Z | 2188 ms | FAIL | **2219 ms** |
+| `c4a-hosting-cold` 07:26Z | 3304 ms | FAIL | 1831 ms |
+| `c4b-origin-cold` 07:26Z | 2210 ms | FAIL | 1505 ms |
+| `w1-origin-warm` 07:27Z | 979 ms | PASS (warm) | 1266 ms |
+| `w2-hosting-warm` 07:27Z | 1080 ms | PASS (warm) | 790 ms |
+
+**6 of 8 cold samples fail; both warm samples pass.** On `c3b` and `c4b` the provider call alone
+(2219 ms, 1505 ms) exceeds the whole 1500 ms budget before any transport is counted. That is not a
+defect this repository can fix. A second, honestly-stated term is the measuring host: VPS load
+average was ~13 on 4 cores for the entire window and the cold numbers degrade across it
+(1193 -> 2522 -> 2282 -> 3304 on Hosting) while the provider term moves much less.
 
 ### The options, with prices
 
