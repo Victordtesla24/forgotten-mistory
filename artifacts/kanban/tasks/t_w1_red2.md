@@ -37,3 +37,6 @@ role_matrix: testing / qa → level 2 → effort **xhigh** (effort_cascade.yaml;
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-06T01:39:05.230Z)
+SCOPE EXTENSION 01:41Z (from t_w1_h5b, reproduced on live build 03dfd93c): also tests/e2e/hero.spec.ts TC-HERO-13 (still expects the retired /my-avatar.mp4$/ name — repoint to my-hero-avatar.mp4) and TC-HERO-15 (same hover-scroll 'figure y unchanged = 165' cause as TC-PHOTO-11). Four specs total; same root-cause rule: fix the product where the product is wrong, the test where the test is wrong, never lower a threshold.

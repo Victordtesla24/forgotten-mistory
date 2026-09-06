@@ -43,3 +43,9 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-06T01:17:55.725Z)
+PM check 01:19Z: ec53e2b (code) + 03dfd93 (evidence) pushed on worktree-w1-r2; ec53e2b4 is LIVE (Deploy 34003390250); function redeployed with --only functions:tts:minivicChat (codebase is 'tts' — first filter attempt failed and was corrected without asking). Self-report: order openrouter,deepseek,zai,openai; ?warm=1 primes cooldowns (204 in 0.175 s); balance-429 → 10-min cooldown; badge 'MiniVic · synthetic'; provider read at runtime; 7 origin first-token samples 2.512 (post-deploy cold revision) / 1.434 / 0.646 / 0.812 / 0.753 / 0.536 / 0.722 → 6 of 7 under 1.5 s, reported not hidden; e2e_targeted false (which spec? reviewer verifies). Not done until independent reviewer t_w1_rev2 PASS on live.
+
+## COMMENT (2026-09-06T01:46:12.326Z)
+FAIL loop 01:47Z (§9): reviewer rev-ec53e2b4-w1 FAIL on F2–F5/F7/F8 → correction t_w1_r2c (fresh identity). Ladder order + badge PASS stand. Regression (launcher not clickable first fold) → t_w1_mv2.

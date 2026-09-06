@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-06T00:56:51.306Z",
+  "updated": "2026-09-06T01:49:34.929Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -29,7 +29,7 @@
         "PEA"
       ],
       "summary": "Live 9136bc59 FAIL. Read docs/ORCHESTRATOR-MASTER-PROMPT.md. Dispatch G-H6,G-H5,G-C1,G-R2,G-A3,G-H1,G-M4,G-X2 in parallel. Session-limit is not Owner-blocked.",
-      "updated": "2026-09-06T00:10:56.985Z",
+      "updated": "2026-09-06T01:16:01.839Z",
       "comments": [
         {
           "at": "2026-09-05T23:59:20.286Z",
@@ -40,6 +40,11 @@
           "at": "2026-09-06T00:10:56.985Z",
           "by": "orchestrator",
           "text": "WAVE-1 DISPATCHED 00:06Z — fm-hygiene-2315-b (cleanup-agent sonnet/medium, t_clean2315 retry after classifier block), fm-wave1-a (AP t_w1_h6h5 → AP t_w1_a3 ∥ SA t_w1_c1sa → AP t_w1_c1ap; opus xhigh/max), fm-wave1-b (SA t_w1_r2sa → AP t_w1_r2ap). Concurrency ≤ 5 agents, ≤ 2 builds. Reviewer lane launches when the first wave-1 SHA is live. Board tasks carry full YOUR ROLE/PROJECT ROOT/MANDATORY/EXECUTION ORDER/QUALITY GATES/VERIFICATION/HIERARCHY/PROVIDER bodies."
+        },
+        {
+          "at": "2026-09-06T01:16:01.839Z",
+          "by": "orchestrator",
+          "text": "CYCLE c26 written (artifacts/kanban/cycles/c26-20260906T0115Z.json): Deploy 34001642667 + live 56ffed3e; reviewer G-H6 PASS, G-C1 PASS, G-H5 FAIL→t_w1_h5b, G-OG1 new→t_w1_og1; PEA 2/11 on the 2315Z gap set; overall still FAIL by design until G-H1/G-A3/R2/R3 land."
         }
       ]
     },
@@ -1195,7 +1200,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T14:04:38.275Z",
+      "updated": "2026-09-06T01:05:35.787Z",
       "summary": "Blocked in part: Higgsfield 0 credits, ElevenLabs IVC refused, OpenRouter −$5.38 (all Owner-blocked, re-probed 2026-09-05T05:50Z). The achievable slice (stock synthetic voice + pre-rendered avatar loop + envelope-driven mouth state + the working chat ladder) is specified by t_spec-r-matrix S-3 and built as cycles 22+.",
       "decisions": [
         {
@@ -1213,6 +1218,11 @@
           "at": "2026-09-05T14:04:38.275Z",
           "by": "orchestrator",
           "text": "R3 STATUS 14:05Z: latency clause PASS on live (chat first token P50 732/594 ms via direct Cloud Run SSE; reviewer 1062dc6); voice: /api/tts 200 (ElevenLabs) — but the greeting is a premade voice (REST key in .env.production is a key ID; the deployed function's secret is valid); avatar: pre-rendered loop MP4 + canvas-2D mouth — Higgsfield real-time (0 credits, free plan) and ≤40 ms lip-sync NOT met. Architecture t_x1_07 (MiniVic GL viseme stage, honest substitute) queued; R3 remains open and is not claimed."
+        },
+        {
+          "at": "2026-09-06T01:05:35.787Z",
+          "by": "orchestrator",
+          "text": "R3 structural finding 01:06Z (t_w2_r3r): Higgsfield has no live/WebSocket avatar generation at any tier — the 'real-time Higgsfield avatar' half of R3 is OPEN by product shape, not by credits. docs/prompt.md §2.1 permits the second form (pre-made animated avatar that seems real-time, frame-accurate ~40 ms lip-sync): ElevenLabs with-timestamps + viseme schedule + frames from the 4K master. Re-scoped under t_w2_r3sa (SA) → AP slices. Badge must be honest meanwhile (t_w1_r2ap)."
         }
       ],
       "column": "blocked"
@@ -1664,7 +1674,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-05T06:03:37.263Z",
+      "updated": "2026-09-06T01:05:35.735Z",
       "summary": "Evidence so far: n8n MCP (v9 E-n8n), Higgsfield MCP balance (v10 manifest), Playwright (every battery), Perplexity/Firecrawl (v9 B-research). Each future cycle names the tool it used in its decisions file.",
       "decisions": [],
       "comments": [
@@ -1672,6 +1682,11 @@
           "at": "2026-09-05T06:03:37.263Z",
           "by": "orchestrator",
           "text": "Tools used this cycle (orchestrator): Higgsfield MCP balance; n8n MCP get_workflow_details ×2; gh CLI (run list); sqlite3 read-only migration of the retired Hermes board; Workflow tool ×3 (opus council agents)."
+        },
+        {
+          "at": "2026-09-06T01:05:35.735Z",
+          "by": "orchestrator",
+          "text": "R12 evidence 01:06Z: t_w2_r3r used mcp__claude_ai_Higgsfield__balance + show_plans_and_credits (raw: {\"credits\":0,\"subscription_plan_type\":\"free\"}) and mcp__claude_ai_ElevenLabs__creative_list_voices (voice JBFqnCBsd6RMkjVDRZzb George, premade); t_w2_h1r used SearXNG, WebFetch, mcp__firecrawl__firecrawl_scrape with screenshots viewed. Raw responses recorded in W2-RESEARCH/*.md."
         }
       ],
       "column": "running"
@@ -4314,8 +4329,8 @@
     {
       "id": "t_g2_r2",
       "title": "ADV-1451Z P1 — G-R2 §0.4 brain alignment on the live function: OpenRouter is 402 so the answering rung is OpenAI — stop presenting OpenAI as the intended success path; add an Anthropic-via-OAuth rung only if a lawful server-side path exists (it does not — OAuth is a user session, not a server credential) and say so honestly",
-      "status": "ready",
-      "column": "ready",
+      "status": "archived",
+      "column": "archived",
       "assignee": "solutions-architect",
       "priority": 70,
       "parents": [],
@@ -4327,10 +4342,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T14:57:53.906Z",
-      "updated": "2026-09-05T16:57:53.592Z",
+      "updated": "2026-09-06T01:06:41.908Z",
       "summary": "§0.4 governs LLM routing: OpenRouter primary; on 402, Anthropic via OAuth — which is the CLI/council path, not a Firebase Function credential (no ANTHROPIC_API_KEY may be used). The live function answers on the OpenAI rung (functions/index.js ladder). Decide and document: the ladder order + what each rung is for, the honest label in the UI/board (never “OpenAI as success” in cycle reports), and what would restore the OpenRouter primary (credits — Owner-held, not asked). Docs-only decision memo + a one-line UI/label check if any copy names a provider.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T01:06:41.814Z",
+          "by": "orchestrator",
+          "text": "Superseded 01:12Z by t_w1_r2sa (measured decision in docs/architecture/MINIVIC-BRAIN-0-4.md); archived."
+        }
+      ],
       "blocker": null
     },
     {
@@ -4524,8 +4545,8 @@
     {
       "id": "t_h2_05",
       "title": "M4 — the pool comes to the figure: bind poolPlate to the portrait, re-render the poster",
-      "status": "todo",
-      "column": "todo",
+      "status": "ready",
+      "column": "ready",
       "assignee": "analyst-programmer",
       "priority": 94,
       "parents": [
@@ -4539,7 +4560,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T15:19:23.508Z",
-      "updated": "2026-09-05T15:19:23.508Z",
+      "updated": "2026-09-06T01:05:35.975Z",
       "summary": "[HERO-TASKS.json g2h1-05-pool-follows-the-figure] HERO-FOLD-v2 §5.2 / decision D-7. atmosphere.glsl.ts already writes the pool for this — 'vec2 q2 = (p - vec2(0.75 * halfWidth, -0.04) ...)', whose own comment says it stands behind the portrait plate — but the pool is a constant and the figure is a layout, so after g2h1-04 they no longer coincide. Add a uPortrait uniform (normalised centre, defaulting to today's constant so the shader is byte-equivalent until it is fed), set it from the figure's measured rect in HeroAtmosphere.tsx, and mirror the same centre in .stage's radial fallback so the no-GL reader gets the same picture. Then re-run node scripts/assets/render-hero-poster.mjs IN THE SAME COMMIT: the poster is rendered from this shader, so a shader change without a re-render silently desynchronises the first-paint path. Acceptance PL-1 (of the fold's brightest 5% of pixels, >= 60% lie within 1.3x the media rect's half-diagonal of its centre, ?gl=force at 1440), PL-2 (same on the reduced-motion still, >= 50%), PL-3 (the commit touches both the shader and the poster), PL-4 (poster <= 500 kB, 3840x2160).",
       "decisions": [],
       "comments": [],
@@ -4820,8 +4841,8 @@
     {
       "id": "t_l1_06",
       "title": "Independent verification on live — #listen flagship + CTA, against ADV-1451Z (O2/O6)",
-      "status": "todo",
-      "column": "todo",
+      "status": "ready",
+      "column": "ready",
       "assignee": "reviewer",
       "priority": 89,
       "parents": [
@@ -4835,7 +4856,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T15:19:23.970Z",
-      "updated": "2026-09-05T15:19:23.970Z",
+      "updated": "2026-09-06T01:05:35.975Z",
       "summary": "[LISTEN-TASKS.json g-l1-06-independent-live-verify] 3rd-party adversarial pass on https://forgotten-mistory.web.app AFTER the deploy that carries slices 01-05, not on a local build. Confirm or refute, each with a command or a screenshot: (a) the ADV-1451Z P0 'deliberately sparse caliper field' — does #listen now show a subject a viewer can name in one sentence? (b) the P1 'dual mailto engage pills' — is there exactly one filled action, and does it prefill an agenda? (c) no invented booking link anywhere; (d) no unsourced response-time promise; (e) gold appears on exactly the two record marks. Report FAIL loudly if any clause is cosmetic-only. Do NOT mark G-L1 closed without a live build-commit meta matching the shipped commit.",
       "decisions": [],
       "comments": [],
@@ -5344,8 +5365,8 @@
     {
       "id": "t_w1_h6h5",
       "title": "WAVE-1 P0 — G-H6 + G-H5 hero honesty: monochrome portrait still + loop (palette C-8), canonical /assets/my-hero-avatar.mp4 answers 200 (301 from the old name), asset ladder measured and truthful, tests first",
-      "status": "running",
-      "column": "running",
+      "status": "done",
+      "column": "done",
       "assignee": "analyst-programmer",
       "priority": 99,
       "parents": [],
@@ -5357,7 +5378,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T00:04:57.442Z",
-      "updated": "2026-09-06T00:55:26.209Z",
+      "updated": "2026-09-06T01:15:35.129Z",
       "summary": "ADV-REVIEW-20260905T2315Z §Hero fails live 9136bc59 on two counts. (G-H6) §0.3-2 / C-8 say black, white, gold ONLY; the hero photograph (my_avatar.avif/webp/png) and the hover loop (my-avatar.mp4) are colour. The documented exception in docs/architecture/PALETTE-EXCEPTIONS.md is hereby RETIRED by orchestrator decision (§0.1: the option that preserves the §14 bar is the mandate's literal palette) — ship the photograph and the loop monochrome as real re-encoded assets at their native resolution (never a CSS filter over a colour file, never an upscale). (G-H5) docs/prompt.md §0.3-3 names public/assets/my-hero-avatar.mp4 as the owner's hero video avatar; live GET /assets/my-hero-avatar.mp4 is 404 because the 640x360 orphan was retired. Make the prompt's name the canonical path for the best real source (today 1280x720@24, 12.29 s my-avatar.mp4) and 301 the old name to it (no duplicate binary — R4). 720p24 must never be presented as 4K; R5 stays OPEN in the ladder unless you find a genuinely higher-resolution original on this VPS.",
       "decisions": [
         {
@@ -5372,7 +5393,8 @@
           "text": "PM check 00:48Z: branch consolidated into origin/main and LIVE build-commit 56ffed3e (deploy cadence). Not done until independent reviewer t_w1_rev1 issues PASS on the live URL."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "Independent live verdict (rev-56ffed3e-w1): G-H6 PASS — portrait stills + loop greyscale in bytes and paint; palette register retired and pinned. G-H5 FAIL on the resolution half (2160p master exists; only 720p served) → correction t_w1_h5b (on-demand 1080p/2160p rungs, ladder to docs/architecture). Canonical URL 200 / old name 301 confirmed live."
     },
     {
       "id": "t_w1_c1sa",
@@ -5400,8 +5422,8 @@
     {
       "id": "t_w1_c1ap",
       "title": "WAVE-1 P0 — G-C1 implementation: one identical engagement product on Listen + Vitrine per t_w1_c1sa (tests first, ship visible)",
-      "status": "todo",
-      "column": "todo",
+      "status": "done",
+      "column": "done",
       "assignee": "analyst-programmer",
       "priority": 98,
       "parents": [
@@ -5415,7 +5437,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T00:05:41.309Z",
-      "updated": "2026-09-06T00:53:34.239Z",
+      "updated": "2026-09-06T01:15:35.042Z",
       "summary": "Implements the solutions-architect decision recorded in docs/architecture/G-C1-HONEST-CTA.md §7 (ADV-2315Z). Live 9136bc59 fails G-C1 because Listen and Vitrine promise two different mailto products. After this task both engage plates carry the SAME label, subject, body and href (or the same named-env calendar URL if the SA found one). R4 client click-through must complete; employer path (Download CV) must not regress.",
       "decisions": [],
       "comments": [
@@ -5425,13 +5447,14 @@
           "text": "PM check 00:48Z: branch consolidated into origin/main and LIVE build-commit 56ffed3e (deploy cadence). Not done until independent reviewer t_w1_rev1 issues PASS on the live URL."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "Independent live PASS (rev-56ffed3e-w1): Listen + Vitrine engage plates identical label/subject/body/href; no booking wording; R4 both paths hold. Live 56ffed3e via Deploy 34001200263/34001642667."
     },
     {
       "id": "t_w1_r2sa",
       "title": "WAVE-1 P0 — G-R2 + G-M4 + G-R3 architecture: §0.4 brain ladder on the live minivicChat function (OpenRouter first; an Anthropic-OAuth rung only where a lawful server-side path exists, measured), honest MiniVic labels, and the smallest change that makes Hosting POST /api/chat first token < 1.5 s on a cold probe",
-      "status": "running",
-      "column": "running",
+      "status": "done",
+      "column": "done",
       "assignee": "solutions-architect",
       "priority": 97,
       "parents": [],
@@ -5443,17 +5466,24 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T00:07:52.779Z",
-      "updated": "2026-09-06T00:10:56.882Z",
+      "updated": "2026-09-06T01:06:41.641Z",
       "summary": "ADV-REVIEW-20260905T2315Z §MiniVic: live JSON answers with provider openai / gpt-4.1-mini on every run because functions/index.js DEFAULT_PROVIDER_ORDER = 'openai,openrouter,deepseek,zai' (OpenAI first); no Anthropic-OAuth rung; Hosting cold TTFB 2.17 s (median 1.45 s) although minivicChat already runs minInstances: 1 (functions/index.js:653); the panel badge says 'MiniVic Live' (components/MiniVicBot.tsx:1112) over a muted looping MP4 + stock TTS. docs/prompt.md §0.4 / C-3: OpenRouter first; on 402 route LLM reasoning to Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli session), never ANTHROPIC_API_KEY. The prior SA finding (board t_g2_r2, unstarted) says a Cloud Function cannot lawfully hold a user OAuth session. Decide with measurements, not opinions, then hand exact edits + TDD cases to t_w1_r2ap. Read-only; ≤ 20 min.",
       "decisions": [],
-      "comments": [],
-      "blocker": null
+      "comments": [
+        {
+          "at": "2026-09-06T01:02:26.229Z",
+          "by": "orchestrator",
+          "text": "PM note 01:03Z: the SA committed docs/architecture/MINIVIC-BRAIN-0-4.md as a1504fb directly on the main checkout and pushed to origin main (docs-only push → push-triggered Deploy). Accepted (single doc, no code), but protocol for future lanes: commit in a worktree branch and let deploy.yml consolidate (O3/O4), never push main from a worker."
+        }
+      ],
+      "blocker": null,
+      "result": "SA delivered docs/architecture/MINIVIC-BRAIN-0-4.md (362 lines, on origin/main a1504fb; PM verified). Decision: DEFAULT_PROVIDER_ORDER openrouter,deepseek,zai,openai (OpenAI last, labelled); oauth_rung none (claude -p warm first token 3.130 s vs 1.2 s bar; no lawful server-side OAuth session; no quota guard — each CLI turn ≈ USD 0.22); badge 'MiniVic · synthetic'; truth line 'Voice: ElevenLabs stock · Face: pre-rendered loop · Answers: live text via {provider}' with provider read at runtime (lib/miniVicBrain.ts hard-codes source:'openrouter' while all 11 live samples were openai — defect named). G-M4 root cause: Fastly buffering at the Hosting rewrite (origin first token 0.69–0.82 s; Hosting delivers headers/first token/total within 15–47 ms of each other) + 1.67 s serial dead-rung tax; change c-1 primes cooldowns on a ?warm=1 ping. FACT for the cycle report: OpenRouter balance −5.384 USD; every paid rung 402; DeepSeek/Z.ai also out of balance; §0.4 happy path returns only with a top-up (min 5.39, recommended 25 USD)."
     },
     {
       "id": "t_w1_r2ap",
       "title": "WAVE-1 P0 — G-R2 + G-M4 implementation: ladder order per §0.4, truthful MiniVic badge/line, cold first-token < 1.5 s change, functions deployed, tests first, measured on live",
-      "status": "todo",
-      "column": "todo",
+      "status": "ready",
+      "column": "ready",
       "assignee": "analyst-programmer",
       "priority": 97,
       "parents": [
@@ -5467,17 +5497,28 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T00:07:52.834Z",
-      "updated": "2026-09-06T00:07:52.834Z",
+      "updated": "2026-09-06T01:46:12.326Z",
       "summary": "Implements docs/architecture/MINIVIC-BRAIN-0-4.md (t_w1_r2sa). Touches functions/index.js (order, G-M4 change), components/MiniVicBot.tsx (badge + truthful line), optionally scripts/ops/fm-chat-warm.* (+ systemd install on this VPS), tests. Deploys the function from the worktree and pushes the branch for the site change. Then measures live cold first-token.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T01:17:55.725Z",
+          "by": "orchestrator",
+          "text": "PM check 01:19Z: ec53e2b (code) + 03dfd93 (evidence) pushed on worktree-w1-r2; ec53e2b4 is LIVE (Deploy 34003390250); function redeployed with --only functions:tts:minivicChat (codebase is 'tts' — first filter attempt failed and was corrected without asking). Self-report: order openrouter,deepseek,zai,openai; ?warm=1 primes cooldowns (204 in 0.175 s); balance-429 → 10-min cooldown; badge 'MiniVic · synthetic'; provider read at runtime; 7 origin first-token samples 2.512 (post-deploy cold revision) / 1.434 / 0.646 / 0.812 / 0.753 / 0.536 / 0.722 → 6 of 7 under 1.5 s, reported not hidden; e2e_targeted false (which spec? reviewer verifies). Not done until independent reviewer t_w1_rev2 PASS on live."
+        },
+        {
+          "at": "2026-09-06T01:46:12.326Z",
+          "by": "orchestrator",
+          "text": "FAIL loop 01:47Z (§9): reviewer rev-ec53e2b4-w1 FAIL on F2–F5/F7/F8 → correction t_w1_r2c (fresh identity). Ladder order + badge PASS stand. Regression (launcher not clickable first fold) → t_w1_mv2."
+        }
+      ],
       "blocker": null
     },
     {
       "id": "t_w1_a3",
       "title": "WAVE-1 P0 — G-A3 About: the GL field ITSELF tells the ten dimensions (ten legible light sectors, answered lit / open dim, hub count readable from light alone); the SVG compass becomes chrome; proven by a test that hides the SVG and still reads ten sectors",
-      "status": "todo",
-      "column": "todo",
+      "status": "ready",
+      "column": "ready",
       "assignee": "analyst-programmer",
       "priority": 96,
       "parents": [
@@ -5491,17 +5532,28 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T00:08:32.096Z",
-      "updated": "2026-09-06T00:08:32.096Z",
+      "updated": "2026-09-06T01:47:22.699Z",
       "summary": "ADV-REVIEW-20260905T2315Z §About: on live 9136bc59 a recruiter names the SVG compass dial (01–10, hub 01/04 ANSWERED), not the GL field, even though the field is now the section's 1248x900 plane (4eb4c8a). Docs commit 9136bc59 claiming 'G-A3 PASS' is a false positive. GAP-BACKLOG acceptance: recruiter recall of #about is the GL field, not the SVG radar; hide the SVG for 3 s on GPU load and the remaining picture still tells ten sectors; restore the SVG and the field still carries ≥ ~75% of the visual weight; gold/hatch honesty stays green. Data lives in app/data/portfolio/about.ts (ten dimensions, each with a caliper state). Gold never enters the shader (gold = sourced claim only, drawn by Caliper/compass chrome).",
-      "decisions": [],
-      "comments": [],
+      "decisions": [
+        {
+          "at": "2026-09-06T01:47:22.699Z",
+          "text": "O1 overrun recorded (100 min vs 30). Future About/scene slices are split: (a) test-instrument slice (tester) and (b) shader slice (AP), each ≤ 30 min."
+        }
+      ],
+      "comments": [
+        {
+          "at": "2026-09-06T01:47:22.637Z",
+          "by": "orchestrator",
+          "text": "PM check 01:48Z: e5c1e4d pushed on worktree-w1-a3 and CONSOLIDATED into origin/main 12cd9123 (live after the next tick). Self-report: TC-SCENE-ABOUT-10/11 written first (fan+ring annuli in the rose's frame; answered/open from about.ts mask), lit/open 4.04 ring / 5.9 fan at 1440, 3.19 at 390 (gate 1.6); dominance 0.7518; dial ink → --dial-ink (--mist-400 with a canvas, --white without); gold 0; ?gl=force 0 pageerrors; AA text contrast held. O1 OVERRUN: ~100 min (cap 30) — measurement-driven, reported honestly; next About slices split shader vs test. Pre-existing failures flagged (not from this change): TC-ABOUT-07 intermittent 1 canvas under no-WebGL (SwiftShader appeal in useGLCapability.ts on an idle host) and flagship-visibility 'listen beat field' motion gate failing on LIVE too (0.00142 < 0.004). Not done until independent reviewer t_w1_rev3 PASS on live."
+        }
+      ],
       "blocker": null
     },
     {
       "id": "t_w1_rev1",
       "title": "WAVE-1 REVIEW — independent adversarial review of live build-commit 56ffed3e (G-H6 monochrome portrait + G-H5 canonical /assets/my-hero-avatar.mp4 + G-C1 one engagement product) plus the regression table (G-MV1, G-V3, G-L1, palette, contrast, 0 pageerrors, ?gl=force)",
-      "status": "running",
-      "column": "running",
+      "status": "done",
+      "column": "done",
       "assignee": "reviewer",
       "priority": 100,
       "parents": [
@@ -5516,11 +5568,12 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T00:53:33.657Z",
-      "updated": "2026-09-06T00:53:33.924Z",
+      "updated": "2026-09-06T01:15:34.967Z",
       "summary": "O2/O6: every production deploy gets an independent, ruthlessly honest adversarial review against https://forgotten-mistory.web.app/ only. Live build-commit 56ffed3e (Deploy consolidated worktree-w1-h6h5 5ab86cd + worktree-w1-c1 4488389 into main). You did not write this code. Prior ADV-REVIEW-20260905T2315Z is the baseline (FAIL). Judge each wave-1 gap PASS/FAIL with captured evidence, and re-run the regression table so nothing that was closed on 9136bc59 reopened. Do not consult the implementers' evidence except to know what to attack (orchestration-skill §10.2).",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "result": "Reviewer rev-56ffed3e-w1 (max, ~32 min, overrun self-reported): G-H6 PASS (bytes + painted pixels chroma 0; 295-frame SATMAX sweep all 0), G-C1 PASS (identical 305-char href both plates), G-H5 FAIL (2160p master + 1080p variant exist while only 720p is served → escape hatch false; corrected under t_w1_h5b), regression G-MV1/G-V3/G-L1/palette/pageerrors/contrast all PASS, R5 OPEN, new P1 G-OG1 (og-image.png blue-cast ground → t_w1_og1). Overall production verdict remains FAIL (G-H1/G-A3/R1/R2/R3/§14 untouched by wave-1). Evidence: docs/delivery/evidence/v10-20260905T0515Z/G-REV/56ffed3e/ (08-adversarial-review.md, verdicts.json, 40+ captures)."
     },
     {
       "id": "t_w1_red2",
@@ -5538,17 +5591,23 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T00:55:26.816Z",
-      "updated": "2026-09-06T00:55:26.816Z",
+      "updated": "2026-09-06T01:39:05.230Z",
       "summary": "t_w1_h6h5 reproduced both failures on an untouched origin/main build (port 5602): (1) tests/e2e/hero-photo.spec.ts TC-PHOTO-11 'figure y unchanged across the hover fade' → 165 px shift because Playwright's hover scrolls the figure into view; (2) tests/e2e/chatbot.spec.ts TC-BOT-14 '1440x900: panel top must clear the lowest glyph of the hero name by 16 px' → 11 px. Both are real defects or real test-design defects; decide which with evidence, then fix the product where the product is wrong and the test where the test is wrong (state which, with the reason in the test file). Never delete or skip either test.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T01:39:05.230Z",
+          "by": "orchestrator",
+          "text": "SCOPE EXTENSION 01:41Z (from t_w1_h5b, reproduced on live build 03dfd93c): also tests/e2e/hero.spec.ts TC-HERO-13 (still expects the retired /my-avatar.mp4$/ name — repoint to my-hero-avatar.mp4) and TC-HERO-15 (same hover-scroll 'figure y unchanged = 165' cause as TC-PHOTO-11). Four specs total; same root-cause rule: fix the product where the product is wrong, the test where the test is wrong, never lower a threshold."
+        }
+      ],
       "blocker": null
     },
     {
       "id": "t_w2_h1r",
       "title": "WAVE-2 research — G-H1 hero set-piece prior art: three concrete first-fold compositions (dominant plane ≥75%, photograph IN the plane, one headline, one sentence, one CTA group, ledger below the fold) achievable with the existing 4K atmosphere GLSL, the 3840x2160@24 portrait master and zero credits; plus G-X2 prior art for the seventh cinematic scene",
-      "status": "ready",
-      "column": "ready",
+      "status": "done",
+      "column": "done",
       "assignee": "researcher",
       "priority": 95,
       "parents": [],
@@ -5560,17 +5619,18 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-06T00:56:51.256Z",
-      "updated": "2026-09-06T00:56:51.256Z",
+      "updated": "2026-09-06T01:05:35.518Z",
       "summary": "ADV-REVIEW-20260905T2315Z §Hero: live composition is a stacked hire landing over a smoky GL wallpaper — not a full-bleed set-piece; recruiter cannot name it in one sentence. R2: six data-scene slots, GL reads as wallpaper, not ≥7 cinematic scenes. This research feeds the solutions-architect (t_w2_h1sa) who will write the design brief the analyst-programmer builds. Evidence-based only: every reference is a real URL you fetched (SearXNG JSON API at http://127.0.0.1:8890/search?q=…&format=json is available on this host; WebFetch/firecrawl/perplexity MCP tools are available via ToolSearch; record which MCP/tool you used — R12 evidence). No fabricated citations.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "result": "Research delivered (identity res-w2-h1r, ~22 min): docs/delivery/evidence/v10-20260905T0515Z/W2-RESEARCH/G-H1-G-X2-prior-art.md — 3 compositions ranked (A: portrait masked into the atmosphere shader via the unbound poolPlate uniform; B: portrait plate as plane, bierman.io precedent verified by screenshot; C: magazine cover, apple.com/apple-vision-pro precedent), 9 references with per-row fetch honesty, HyperFrames verdict (only verifiable 4K/60 path, but playback not interactive). PM verified file exists (25.7 kB, 11 URLs)."
     },
     {
       "id": "t_w2_r3r",
       "title": "WAVE-2 research — R3 / G-R3 honest path: probe Higgsfield credits via the Higgsfield MCP (R12 evidence), confirm ElevenLabs capabilities incl. timestamped TTS for a viseme track, and specify the zero-credit real-time-seeming avatar path (4K master → viseme clips → WebSocket-free envelope/timestamp-driven mouth) with the ≤40 ms lip-sync budget and what stays OPEN",
-      "status": "ready",
-      "column": "ready",
+      "status": "done",
+      "column": "done",
       "assignee": "researcher",
       "priority": 94,
       "parents": [],
@@ -5582,8 +5642,671 @@
       },
       "provider": "openrouter→anthropic-oauth",
       "created": "2026-09-06T00:56:51.306Z",
-      "updated": "2026-09-06T00:56:51.306Z",
+      "updated": "2026-09-06T01:05:35.651Z",
       "summary": "docs/prompt.md R3 / §2.1: real-time AI video avatar — ElevenLabs voice + Higgsfield avatar (or a pre-made animated avatar that seems real-time, driven by frame-accurate ~40 ms lip-sync) + brain per §0.4; < ~1.5 s first word. ADV-2315Z: live is a 720p24 muted loop + stock TTS + analyser visemes; 'MINIVIC LIVE' badge is false; no Higgsfield/WSS. GAP-BACKLOG G-R3: keep full realtime Higgsfield avatar OPEN/honest if credits block it; G-M4 + G-R2 + honest badge ship meanwhile. This research establishes the facts (credits, API capabilities) and the achievable slice with numbers. R12 requires MCP usage to be evidenced on the board — use the Higgsfield MCP tools (ToolSearch 'select:mcp__claude_ai_Higgsfield__balance,mcp__claude_ai_Higgsfield__show_plans_and_credits') and the ElevenLabs MCP (ToolSearch 'select:mcp__claude_ai_ElevenLabs__creative_list_voices') and record the raw responses (no secrets).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "result": "Research delivered (identity res-w2-r3r, ~24 min): docs/delivery/evidence/v10-20260905T0515Z/W2-RESEARCH/R3-avatar-path.md. Higgsfield MCP balance → credits 0, plan free; product is async submit-then-poll with NO real-time/WebSocket surface at any tier (structural OPEN, not only credit-gated). ElevenLabs MCP list_voices → configured voice George (premade); with-timestamps REST (character-level) and WS (word-level) alignment available. /api/tts first byte cold 2.897 s, warm 0.46 s. Achievable slice specified (timestamps → viseme schedule → rAF-driven mouth; greeting frames from the 4K master; ≤40 ms test method). Badge recommendation: 'Synthetic voice · pre-rendered avatar'. PM verified file exists (18.1 kB)."
+    },
+    {
+      "id": "t_w2_h1sa",
+      "title": "WAVE-2 architecture — G-H1 hero set-piece design brief (R1 bar): pick and specify ONE composition from t_w2_h1r so the first fold is a single dominant plane ≥75% with the monochrome photograph inside it, one headline, one sentence, one CTA group, ledger below the fold; TDD cases first; sliced into ≤30-min analyst-programmer tasks",
+      "status": "done",
+      "column": "done",
+      "assignee": "solutions-architect",
+      "priority": 95,
+      "parents": [
+        "t_w2_h1r"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "architecture / requirements_analysis",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T00:59:04.056Z",
+      "updated": "2026-09-06T01:23:59.821Z",
+      "summary": "ADV-REVIEW-20260905T2315Z §Hero FAIL: stacked hire landing over smoky GL wallpaper; recruiter cannot name the set-piece. Prior brief docs/architecture/HERO-FOLD-v2.md produced the current fold; it is superseded for the R1 bar by this task. Research input: docs/delivery/evidence/v10-20260905T0515Z/W2-RESEARCH/G-H1-G-X2-prior-art.md (three compositions, ranked). Constraints that cannot move: LCP < 2.5 s, CLS < 0.05, nothing plays by default, critical-path video ≤ 2.5 MB, palette B/W/gold (gold = sourced claim only), reduced-motion + no-GL paths fully readable, keyboard-navigable, monochrome portrait assets as shipped in 56ffed3e (1480x826 stills, 1280x720@24 loop; 4K master available for on-demand rungs), copy budget from app/data/portfolio/hero.ts (≤ 1 headline, ≤ 1 non-CV sentence, 1 CTA group; the three ledger figures move BELOW the fold).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "result": "SA delivered docs/architecture/HERO-SETPIECE-v3.md (35 kB; PM verified): composition A on mechanical grounds (SPD ink rule eliminates C, taints B; 1480x826 ceiling forbids full-bleed at 834), numeric geometry at four viewports, 18 TDD cases with thresholds (§8), four ≤30-min slices (§9) now on the board as t_w2_h1s1..s4."
+    },
+    {
+      "id": "t_w2_x2sa",
+      "title": "WAVE-2 architecture — G-X2 / R2: the seventh signature scene as a REAL cinematic story scene (not a viseme census), plus the 'story' contract that turns the existing six fields from wallpaper into flagships; TDD fps/reduced-motion/recall tests first; ≤30-min slices",
+      "status": "done",
+      "column": "done",
+      "assignee": "solutions-architect",
+      "priority": 93,
+      "parents": [
+        "t_w2_h1r"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "architecture / requirements_analysis",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T00:59:04.313Z",
+      "updated": "2026-09-06T01:39:26.258Z",
+      "summary": "ADV-2315Z R2 FAIL: six data-scene slots, GL is wallpaper, not ≥7 cinematic 60 fps scenes; §14 Marvel FAIL: no set-piece WoW. Prior SA docs: docs/architecture/SIGNATURE-SCENES-v1.md (+ NEXT.json, TASKS.json) and board t_x1_10 (HyperFrames 4K masters on this VPS) / t_x1_11 (@hyperframes/player overture) / t_x1_12 (GSAP ScrollTrigger). Research input: W2-RESEARCH/G-H1-G-X2-prior-art.md §seventh scene incl. the HyperFrames verdict. Zero credits: everything must be GLSL/R3F/pre-rendered-from-existing-masters. This task decides what scene 7 IS, where it mounts, what story it tells, how 60 fps on a 2021 phone is proven, and what makes each existing field carry its section's story (the recall contract already used for G-A3: hide the chrome and the field still tells the section).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "result": "SA delivered docs/architecture/SIGNATURE-SCENES-v2.md (34.6 kB; PM verified) + SIGNATURE-SCENES-TASKS.json updated: scene 7 = career-descent (sticky 160vh band in #experience after the chart; uSpans from experience.ts; no type over the canvas; resolutionScale 0.5; priority=false), story contract per section with TC-STORY-* assertions (two honest cannot-yets: hero poolPlate unbound → owned by HERO-SETPIECE-v3; strata parallax → x2-f1), three-tier fps proof (only Tier B GPU may say 60 fps), HyperFrames NOT shipped (honest zero-credit branch), 13 slices ≤ 30 min."
+    },
+    {
+      "id": "t_w2_r3sa",
+      "title": "WAVE-2 architecture — R3 second form: the avatar that SEEMS real-time (docs/prompt.md §2.1): ElevenLabs with-timestamps/WS → viseme schedule → mouth frames from the 4K master (greeting) + vector visemes (dynamic replies), audio.currentTime-driven in rAF, ≤40 ms drift proven by test, first word < 1.5 s budget, honest labelling; ≤30-min slices",
+      "status": "done",
+      "column": "done",
+      "assignee": "solutions-architect",
+      "priority": 92,
+      "parents": [
+        "t_w2_r3r"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "architecture / requirements_analysis",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:05:35.884Z",
+      "updated": "2026-09-06T01:49:34.882Z",
+      "summary": "Input: docs/delivery/evidence/v10-20260905T0515Z/W2-RESEARCH/R3-avatar-path.md (facts: Higgsfield 0 credits + no real-time surface; ElevenLabs character-level timestamps REST + word-level WS; TTS cold 2.9 s / warm 0.46 s; existing startSyntheticMouth + 21-viseme map in lib/visemeMap.ts; 4K master at artifacts/masters/minivic-greeting-2160p-master.mp4 untracked). Also docs/architecture/MINIVIC-BRAIN-0-4.md (brain ladder + first-token decision, t_w1_r2sa). Goal: a design an analyst-programmer can build in ≤30-min slices that turns the MiniVic face from a muted loop into a lip-synced avatar driven by the real TTS timing, with the drift measured, and copy that never claims live video generation. Cost gate: any paid ElevenLabs call beyond normal TTS usage (e.g. IVC/cloning) is NOT authorised — design within the premade voice; note what the cloned voice would change.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "result": "SA delivered docs/architecture/MINIVIC-AVATAR-v1.md + MINIVIC-AVATAR-TASKS.json (PM verified files exist): REST /with-timestamps (WS rejected: would expose ELEVENLABS_API_KEY client-side; no socket to upgrade in Functions v2); schedule shape [tStart,tEnd,visemeIndex] float64 over the existing 22-viseme table; master is NOT a recording of the greeting (12.3 s video vs 24.98 s MP3) → representative-frame atlas, not timeline alignment; first-word claim limited to the greeting (< 1.5 s by construction); dynamic reply 1.55–1.98 s warm as a range, never claimed; 7 slices A1–A7 (A1 folded into t_w1_r2c; A2–A7 on the board)."
+    },
+    {
+      "id": "t_w1_h5b",
+      "title": "CORRECTION G-H5 (reviewer rev-56ffed3e-w1 FAIL) — ship the higher rungs that the 2160p master makes possible: on-demand 1080p and 2160p monochrome loops under public/assets/avatar/ (≤5 MB each, ON_DEMAND_VIDEO budget), rung selection by viewport×DPR and save-data, the 720p rung stays the default; asset ladder promoted to docs/architecture/ASSET-LADDER.md; R5 still not claimed (24 fps)",
+      "status": "running",
+      "column": "running",
+      "assignee": "analyst-programmer",
+      "priority": 98,
+      "parents": [
+        "t_w1_rev1"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:15:34.840Z",
+      "updated": "2026-09-06T01:38:28.774Z",
+      "summary": "## CORRECTION: G-H5 resolution half\nOriginal output: t_w1_h6h5 shipped only public/assets/my-hero-avatar.mp4 at 1280x720@24 (1.9 MB, greyscale) downscaled from artifacts/masters/minivic-greeting-2160p-master.mp4 (3840x2160@24, 58 MB, untracked), and kept the ladder under docs/delivery/evidence/…/G2-H5/asset-ladder.md.\nFailing criteria (docs/delivery/evidence/v10-20260905T0515Z/G-REV/56ffed3e/08-adversarial-review.md, G-H5): GAP-BACKLOG requires either a ≥1080p path toward 4K or a published ladder stating no higher source exists — a 2160p master and a 1080p variant exist, so the escape hatch is false and every higher URL 404s (my-hero-avatar-1080.mp4, -2160.mp4, .webm).\nRequired fix: add on-demand rungs under public/assets/avatar/ (scripts/validate/overhaul_static_audit.mjs:170 gives that folder a 5 MB ON_DEMAND_VIDEO budget because the <video> has no src until play): my-hero-avatar-1080.mp4 (H.264, greyscale, ≤5 MB) and my-hero-avatar-2160.{mp4|webm} (AV1 or H.264 slow, greyscale, ≤5 MB — measure; monochrome 24 fps compresses well; if 2160p cannot fit under 5 MB at acceptable quality, ship the largest rung that does and record the measured size/quality in the ladder). Choose the rung at play time in components/sections/Hero/HeroPortrait.tsx and components/MiniVicBot.tsx: rung = smallest whose height ≥ rendered height × devicePixelRatio, capped when navigator.connection?.saveData; 720p (existing critical-path file) stays the default and the fallback. Move the ladder to docs/architecture/ASSET-LADDER.md (git mv, then update §9 with the new rungs, the master, measured sizes, and the sentence that R5 (2160p60) remains OPEN because the master is 24 fps). Never upscale; never commit artifacts/masters.\nVerification: node --test tests/hero_assets_monochrome.test.mjs (extend: every rung greyscale, dims as declared, sizes under budget) · node scripts/validate/overhaul_static_audit.mjs (10/10) · e2e: at 1440 with DPR 2 the hover play picks the 2160 (or highest shipped) rung; at 390 DPR 3 picks 1080; saveData picks 720 — assert via the <video> src after play, on the static export.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-06T01:22:25.954Z",
+          "by": "orchestrator",
+          "text": "HOST INCIDENT 01:19–01:20Z: the 2160p encode ran with 78 threads and 3.3 GB RSS while two headless Chromes were active → load 82, swap saturated, kernel OOM-killed two Chrome renderers (pids 3080126, 3080387) and a tenant container's chromium. PM reniced the encode; it completed. Standing rule from now on (added to host facts): media encodes run with -threads 2 and nice -n 19, never concurrently with a Playwright lane; the cycle report records this."
+        },
+        {
+          "at": "2026-09-06T01:38:28.774Z",
+          "by": "orchestrator",
+          "text": "PM probe 01:39Z on LIVE 521dac9c (Deploy 34004286177, consolidate 4a15797): /assets/avatar/my-hero-avatar-1080.mp4 200 video/mp4 3,690,721 B; /assets/avatar/my-hero-avatar-2160.webm 200 video/webm 2,913,450 B; 720p canonical unchanged 1,916,328 B; docs/architecture/ASSET-LADDER.md on origin/main. Rung selection, greyscale of each rung and no-autoplay to be judged by the next independent reviewer (t_w1_rev3 on the composite SHA). Not done until then."
+        }
+      ],
+      "blocker": null
+    },
+    {
+      "id": "t_w1_og1",
+      "title": "G-OG1 (new P1 from rev-56ffed3e-w1) — the OpenGraph card /assets/og-image.png carries a blue-cast ground (max chroma 157, 55,620 saturated non-gold pixels): regenerate it from scripts/build/og_card.mjs in true black/white/gold at 2x (2400x1260), pin with a chroma test, and scope it in the palette register",
+      "status": "running",
+      "column": "running",
+      "assignee": "analyst-programmer",
+      "priority": 86,
+      "parents": [
+        "t_w1_rev1"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:15:34.910Z",
+      "updated": "2026-09-06T01:16:33.623Z",
+      "summary": "Reviewer evidence: docs/delivery/evidence/v10-20260905T0515Z/G-REV/56ffed3e/08-adversarial-review.md (G-OG1) + og-image-preview.png + oghue.mjs. PALETTE-EXCEPTIONS.md now says the register is empty, so the social card must obey C-8 too: ink from --ink-900 (#0A0A0A, chroma 0), white, gold only where a sourced figure appears. Keep the platform-standard 1.91:1 ratio; ship 2400x1260 so it reads sharp on 2x cards (≤ 500 kB image budget).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w1_rev2",
+      "title": "WAVE-1 REVIEW 2 — independent adversarial review of live ec53e2b4 (G-R2 §0.4 ladder order + runtime provider label + honest MiniVic badge, G-M4 cold first-token protocol) plus regression table; R3 must stay OPEN",
+      "status": "done",
+      "column": "done",
+      "assignee": "reviewer",
+      "priority": 100,
+      "parents": [
+        "t_w1_r2ap"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:17:30.499Z",
+      "updated": "2026-09-06T01:46:12.012Z",
+      "summary": "Live build-commit ec53e2b4 (Deploy 34003390250, 01:14Z) = commit 'fix(minivic): §0.4 ladder order, truthful badge, cold first-token (G-R2, G-M4)' touching functions/index.js, lib/miniVicBrain.ts, components/MiniVicBot.tsx; the function was redeployed from the worktree (W1-R2/06-deploy-functions.log). Baseline ADV-2315Z §MiniVic FAIL: provider openai/gpt-4.1-mini on every run with OpenAI first in the order; cold TTFB 2.17 s; 'MINIVIC LIVE' badge. Decision doc: docs/architecture/MINIVIC-BRAIN-0-4.md (SA t_w1_r2sa) — the accepted design is OpenRouter first, OpenAI last and LABELLED (OpenRouter balance is negative, so OpenAI answering is expected and must be visible as such), badge 'MiniVic · synthetic', truth line with the provider read at runtime, and the G-M4 route/priming change with its cold protocol in W1-R2/08-g-m4-route-protocol.md. You did not write any of it. Judge on the live URL only.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "result": "Reviewer rev-ec53e2b4-w1 (max, 24 min): overall FAIL. G-R2 PARTIAL (ladder order PASS behaviourally via the 10-min cooldown step; badge PASS; truth line present in DOM but CLIPPED by nowrap/ellipsis at 1440 and 390 → never visible), G-M4 FAIL (cold origin 2449 ms 1/7; Hosting warm+primed max 2017 ms; client aborts origin at 1500 ms so cold visitors always take the buffered fallback; ?warm=1 via Hosting returns 400 → priming not running), badge PASS, R3 OPEN, regression: launcher NOT clickable on first fold (hero-fold intercepts pointer events, 3/3), 0 pageerrors, /api/tts PASS, attack surface PASS. PM CORRECTION to the review: F6 'G-C1 still two mailto products' is a reviewer FALSE POSITIVE — PM curl of live 521dac9c at 01:45Z: 0 × 'Email a project brief', 2 × identical engage href (subject 20-minute call, body Hiring or a project); reviewer-1 PASS stands. Evidence docs/delivery/evidence/v10-20260905T0515Z/G-REV/ec53e2b4/."
+    },
+    {
+      "id": "t_w2_h1s1",
+      "title": "G-H1 S1 — the plane owns the frame: [data-plane=hero] wraps Scene + figure, portrait moves into the plane at §3 geometry, role/location/caption move below the fold, SPD ground chain extended and fenced",
+      "status": "running",
+      "column": "running",
+      "assignee": "analyst-programmer",
+      "priority": 95,
+      "parents": [
+        "t_w2_h1sa"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:23:59.458Z",
+      "updated": "2026-09-06T01:41:37.730Z",
+      "summary": "G-H1 hero set-piece, composition A (docs/architecture/HERO-SETPIECE-v3.md, SA t_w2_h1sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). This is slice S1 (g2h1v3-01) of §9. The recruiter sentence the fold must produce: 'His face is standing in the shaft of light that his name is written across.' ADV-2315Z §Hero FAIL is the baseline. Immovables (§10 of the brief): LCP < 2.5 s, CLS < 0.05, nothing plays by default, critical-path assets ≤ 500 kB / video ≤ 2.5 MB, palette B/W/gold with gold only on sourced claims, reduced-motion and no-GL paths are the same picture, keyboard order per §7, no upscale above 1480x826 (figure ≤ 846 CSS px), G-MV1 pill untouched, hero.ts copy unedited. Visible outcome: the figure standing in the plane; the ledger gone from the first screen. Delete .portraitFrame/.portraitTick/.portraitCross styles in the same commit (TC-NFR-DEADCSS).",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_h1s2",
+      "title": "G-H1 S2 — the light finds the figure: poolPlate bound to uFigure (uv), bounded uCopyGuard lobe, residual frame-wide wash retired, poster re-rendered from the same shader",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 95,
+      "parents": [
+        "t_w2_h1s1"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:23:59.542Z",
+      "updated": "2026-09-06T01:23:59.542Z",
+      "summary": "G-H1 hero set-piece, composition A (docs/architecture/HERO-SETPIECE-v3.md, SA t_w2_h1sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). This is slice S2 (g2h1v3-02) of §9. The recruiter sentence the fold must produce: 'His face is standing in the shaft of light that his name is written across.' ADV-2315Z §Hero FAIL is the baseline. Immovables (§10 of the brief): LCP < 2.5 s, CLS < 0.05, nothing plays by default, critical-path assets ≤ 500 kB / video ≤ 2.5 MB, palette B/W/gold with gold only on sourced claims, reduced-motion and no-GL paths are the same picture, keyboard order per §7, no upscale above 1480x826 (figure ≤ 846 CSS px), G-MV1 pill untouched, hero.ts copy unedited. Extra gates: poster ≤ 60 kB; uCopyGuard −50% contour inside text rects + 8 px printed in the run log; no raw hex outside app/globals.css and lib/palette.ts; uQuality=0 phone branch keeps the pool.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_h1s3",
+      "title": "G-H1 S3 — the name struck across the plane: H1 clamp(3.25rem,8vw,7rem), nav mark 1.25rem/1.125rem, baseline on the dissolve band never the face-safe box, one quiet CTA bar with 48 px targets",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 95,
+      "parents": [
+        "t_w2_h1s1"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:23:59.629Z",
+      "updated": "2026-09-06T01:23:59.629Z",
+      "summary": "G-H1 hero set-piece, composition A (docs/architecture/HERO-SETPIECE-v3.md, SA t_w2_h1sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). This is slice S3 (g2h1v3-03) of §9. The recruiter sentence the fold must produce: 'His face is standing in the shaft of light that his name is written across.' ADV-2315Z §Hero FAIL is the baseline. Immovables (§10 of the brief): LCP < 2.5 s, CLS < 0.05, nothing plays by default, critical-path assets ≤ 500 kB / video ≤ 2.5 MB, palette B/W/gold with gold only on sourced claims, reduced-motion and no-GL paths are the same picture, keyboard order per §7, no upscale above 1480x826 (figure ≤ 846 CSS px), G-MV1 pill untouched, hero.ts copy unedited. Extra gates: G-MV1 untouched (Ask Mini Vic labelled and visible at 390); screenshots at 1440/1280/834/390.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_h1s4",
+      "title": "G-H1 S4 — the same picture everywhere, gate unarmed: parity ?gl=force vs reduced-motion at four viewports, palette sweep, HERO_PLANE_GATE removed at the 0.78 ship margin, LCP/CLS/no-autoplay on the export",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 95,
+      "parents": [
+        "t_w2_h1s2",
+        "t_w2_h1s3"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:23:59.718Z",
+      "updated": "2026-09-06T01:23:59.718Z",
+      "summary": "G-H1 hero set-piece, composition A (docs/architecture/HERO-SETPIECE-v3.md, SA t_w2_h1sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). This is slice S4 (g2h1v3-04) of §9. The recruiter sentence the fold must produce: 'His face is standing in the shaft of light that his name is written across.' ADV-2315Z §Hero FAIL is the baseline. Immovables (§10 of the brief): LCP < 2.5 s, CLS < 0.05, nothing plays by default, critical-path assets ≤ 500 kB / video ≤ 2.5 MB, palette B/W/gold with gold only on sourced claims, reduced-motion and no-GL paths are the same picture, keyboard order per §7, no upscale above 1480x826 (figure ≤ 846 CSS px), G-MV1 pill untouched, hero.ts copy unedited. Extra gates: full Playwright battery green (run it serially, one browser); no R5 claim added anywhere; evidence log per viewport per path.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_x2t1",
+      "title": "WAVE-2 scene-7 x2-t1-story-contract-tests — Scene story contract — author every TC-STORY-* assertion from SIGNATURE-SCENES-v2.md §5 in tests/overhaul/story-contract.spec.ts (both viewports; the two cannot-yet assertions authored RED, never skipped); no production code",
+      "status": "ready",
+      "column": "ready",
+      "assignee": "tester",
+      "priority": 93,
+      "parents": [
+        "t_w2_x2sa"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:40:34.956Z",
+      "updated": "2026-09-06T01:40:35.923Z",
+      "summary": "Slice x2-t1-story-contract-tests of docs/architecture/SIGNATURE-SCENES-v2.md (SA t_w2_x2sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). Full slice definition (files, green tests, gates) is the entry with id x2-t1-story-contract-tests in docs/architecture/SIGNATURE-SCENES-TASKS.json and the matching row of v2 §slices. ADV-2315Z R2 FAIL (six wallpaper fields, no seventh cinematic scene) is the baseline; the recruiter sentence scene 7 must earn: 'There is a bit where you scroll and you are falling down sixteen years of his career like a core sample — each job is a layer, and the layers get brighter as you come up to now.' Immovables (v2 §constraints): palette B/W/gold with gold never in a shader; 4.5:1 type contrast first, story second (never add light over type); DPR cap 1.75 and resolutionScale 0.5 not raised; six-section IA unchanged (no seventh section); zero Hero files touched (HERO-SETPIECE-v3 owns that fold); G-MV1 pill never hidden; reduced-motion and no-GL render the same picture; no fps claim from a software rasteriser (Tier A readings labelled 'software-rasteriser'); no ffmpeg/encode in these slices; masters never committed.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_x2t2",
+      "title": "WAVE-2 scene-7 x2-t2-descent-fps-harness — fps harness — extend tests/perf/scene-framerate.spec.ts with sceneId career-descent; renderer label mandatory in the JSON artifact; 16.7/20.0 ms thresholds unchanged; median not mean; no line may say 60 fps under a software rasteriser",
+      "status": "ready",
+      "column": "ready",
+      "assignee": "tester",
+      "priority": 93,
+      "parents": [
+        "t_w2_x2sa"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:40:35.078Z",
+      "updated": "2026-09-06T01:40:35.923Z",
+      "summary": "Slice x2-t2-descent-fps-harness of docs/architecture/SIGNATURE-SCENES-v2.md (SA t_w2_x2sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). Full slice definition (files, green tests, gates) is the entry with id x2-t2-descent-fps-harness in docs/architecture/SIGNATURE-SCENES-TASKS.json and the matching row of v2 §slices. ADV-2315Z R2 FAIL (six wallpaper fields, no seventh cinematic scene) is the baseline; the recruiter sentence scene 7 must earn: 'There is a bit where you scroll and you are falling down sixteen years of his career like a core sample — each job is a layer, and the layers get brighter as you come up to now.' Immovables (v2 §constraints): palette B/W/gold with gold never in a shader; 4.5:1 type contrast first, story second (never add light over type); DPR cap 1.75 and resolutionScale 0.5 not raised; six-section IA unchanged (no seventh section); zero Hero files touched (HERO-SETPIECE-v3 owns that fold); G-MV1 pill never hidden; reduced-motion and no-GL render the same picture; no fps claim from a software rasteriser (Tier A readings labelled 'software-rasteriser'); no ffmpeg/encode in these slices; masters never committed.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_x2f0",
+      "title": "WAVE-2 scene-7 x2-f0-hero-story-assertion — TC-STORY-HERO-01 authored RED in tests/overhaul/story-contract.spec.ts — the luminance centroid within 12% of the frame diagonal of the DOM-read figure centre; ZERO hero files edited; failure message names the owning lane (HERO-SETPIECE-v3)",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "tester",
+      "priority": 93,
+      "parents": [
+        "t_w2_x2t1"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:40:35.217Z",
+      "updated": "2026-09-06T01:40:35.217Z",
+      "summary": "Slice x2-f0-hero-story-assertion of docs/architecture/SIGNATURE-SCENES-v2.md (SA t_w2_x2sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). Full slice definition (files, green tests, gates) is the entry with id x2-f0-hero-story-assertion in docs/architecture/SIGNATURE-SCENES-TASKS.json and the matching row of v2 §slices. ADV-2315Z R2 FAIL (six wallpaper fields, no seventh cinematic scene) is the baseline; the recruiter sentence scene 7 must earn: 'There is a bit where you scroll and you are falling down sixteen years of his career like a core sample — each job is a layer, and the layers get brighter as you come up to now.' Immovables (v2 §constraints): palette B/W/gold with gold never in a shader; 4.5:1 type contrast first, story second (never add light over type); DPR cap 1.75 and resolutionScale 0.5 not raised; six-section IA unchanged (no seventh section); zero Hero files touched (HERO-SETPIECE-v3 owns that fold); G-MV1 pill never hidden; reduced-motion and no-GL render the same picture; no fps claim from a software rasteriser (Tier A readings labelled 'software-rasteriser'); no ffmpeg/encode in these slices; masters never committed.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_x2s1",
+      "title": "WAVE-2 scene-7 x2-s1-career-descent-mount — S7 career-descent — FIRST VISIBLE SHIP: the sticky 160vh band after the chart and accordion in #experience, CareerDescent.tsx + descent.glsl.ts mounted through Scene with sceneId career-descent, priority=false, resolutionScale 0.5, uSpans[8]/uSpanCount from app/data/portfolio/experience.ts (same module as the Gantt), uDescent driven by scroll (60vh = 0→1), year ticks + ONE caption line and nothing else over the canvas",
+      "status": "ready",
+      "column": "ready",
+      "assignee": "analyst-programmer",
+      "priority": 93,
+      "parents": [
+        "t_w2_x2sa"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:40:35.350Z",
+      "updated": "2026-09-06T01:40:35.923Z",
+      "summary": "Slice x2-s1-career-descent-mount of docs/architecture/SIGNATURE-SCENES-v2.md (SA t_w2_x2sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). Full slice definition (files, green tests, gates) is the entry with id x2-s1-career-descent-mount in docs/architecture/SIGNATURE-SCENES-TASKS.json and the matching row of v2 §slices. ADV-2315Z R2 FAIL (six wallpaper fields, no seventh cinematic scene) is the baseline; the recruiter sentence scene 7 must earn: 'There is a bit where you scroll and you are falling down sixteen years of his career like a core sample — each job is a layer, and the layers get brighter as you come up to now.' Immovables (v2 §constraints): palette B/W/gold with gold never in a shader; 4.5:1 type contrast first, story second (never add light over type); DPR cap 1.75 and resolutionScale 0.5 not raised; six-section IA unchanged (no seventh section); zero Hero files touched (HERO-SETPIECE-v3 owns that fold); G-MV1 pill never hidden; reduced-motion and no-GL render the same picture; no fps claim from a software rasteriser (Tier A readings labelled 'software-rasteriser'); no ffmpeg/encode in these slices; masters never committed.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_x2s2",
+      "title": "WAVE-2 scene-7 x2-s2-career-descent-depth — S7 depth — three parallax layers and the eight strata in descent.glsl.ts; ≤4 noise lookups per pixel, one draw call, zero instances; uQuality phone branch; Tier A reading recorded and labelled software-rasteriser (never reported as 60 fps)",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 93,
+      "parents": [
+        "t_w2_x2s1"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:40:35.600Z",
+      "updated": "2026-09-06T01:40:35.600Z",
+      "summary": "Slice x2-s2-career-descent-depth of docs/architecture/SIGNATURE-SCENES-v2.md (SA t_w2_x2sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). Full slice definition (files, green tests, gates) is the entry with id x2-s2-career-descent-depth in docs/architecture/SIGNATURE-SCENES-TASKS.json and the matching row of v2 §slices. ADV-2315Z R2 FAIL (six wallpaper fields, no seventh cinematic scene) is the baseline; the recruiter sentence scene 7 must earn: 'There is a bit where you scroll and you are falling down sixteen years of his career like a core sample — each job is a layer, and the layers get brighter as you come up to now.' Immovables (v2 §constraints): palette B/W/gold with gold never in a shader; 4.5:1 type contrast first, story second (never add light over type); DPR cap 1.75 and resolutionScale 0.5 not raised; six-section IA unchanged (no seventh section); zero Hero files touched (HERO-SETPIECE-v3 owns that fold); G-MV1 pill never hidden; reduced-motion and no-GL render the same picture; no fps claim from a software rasteriser (Tier A readings labelled 'software-rasteriser'); no ffmpeg/encode in these slices; masters never committed.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_x2s3",
+      "title": "WAVE-2 scene-7 x2-s3-career-descent-still — S7 fallbacks — poster rendered FROM the shader by scripts/assets/descent_poster.mjs → public/assets/career-descent-poster.avif (≤ 500 kB); band collapses gracefully; reduced-motion and no-GL render the SAME picture; no dead CSS",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 93,
+      "parents": [
+        "t_w2_x2s2"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:40:35.690Z",
+      "updated": "2026-09-06T01:40:35.690Z",
+      "summary": "Slice x2-s3-career-descent-still of docs/architecture/SIGNATURE-SCENES-v2.md (SA t_w2_x2sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). Full slice definition (files, green tests, gates) is the entry with id x2-s3-career-descent-still in docs/architecture/SIGNATURE-SCENES-TASKS.json and the matching row of v2 §slices. ADV-2315Z R2 FAIL (six wallpaper fields, no seventh cinematic scene) is the baseline; the recruiter sentence scene 7 must earn: 'There is a bit where you scroll and you are falling down sixteen years of his career like a core sample — each job is a layer, and the layers get brighter as you come up to now.' Immovables (v2 §constraints): palette B/W/gold with gold never in a shader; 4.5:1 type contrast first, story second (never add light over type); DPR cap 1.75 and resolutionScale 0.5 not raised; six-section IA unchanged (no seventh section); zero Hero files touched (HERO-SETPIECE-v3 owns that fold); G-MV1 pill never hidden; reduced-motion and no-GL render the same picture; no fps claim from a software rasteriser (Tier A readings labelled 'software-rasteriser'); no ffmpeg/encode in these slices; masters never committed.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_x2f1",
+      "title": "WAVE-2 scene-7 x2-f1-strata-depth-planes — G-E2 — career-strata gets the parallax term TC-STORY-EXP-01 needs (≥ 2 visible depth planes; role durations legible as bands) with no luminance increase over any type; fallbackCoverageMin 0.02 not raised; bars stay the brightest objects; only strata.glsl.ts edited",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 93,
+      "parents": [
+        "t_w2_x2t1"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:40:35.854Z",
+      "updated": "2026-09-06T01:40:35.854Z",
+      "summary": "Slice x2-f1-strata-depth-planes of docs/architecture/SIGNATURE-SCENES-v2.md (SA t_w2_x2sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). Full slice definition (files, green tests, gates) is the entry with id x2-f1-strata-depth-planes in docs/architecture/SIGNATURE-SCENES-TASKS.json and the matching row of v2 §slices. ADV-2315Z R2 FAIL (six wallpaper fields, no seventh cinematic scene) is the baseline; the recruiter sentence scene 7 must earn: 'There is a bit where you scroll and you are falling down sixteen years of his career like a core sample — each job is a layer, and the layers get brighter as you come up to now.' Immovables (v2 §constraints): palette B/W/gold with gold never in a shader; 4.5:1 type contrast first, story second (never add light over type); DPR cap 1.75 and resolutionScale 0.5 not raised; six-section IA unchanged (no seventh section); zero Hero files touched (HERO-SETPIECE-v3 owns that fold); G-MV1 pill never hidden; reduced-motion and no-GL render the same picture; no fps claim from a software rasteriser (Tier A readings labelled 'software-rasteriser'); no ffmpeg/encode in these slices; masters never committed.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w1_r2c",
+      "title": "CORRECTION G-R2/G-M4 (reviewer rev-ec53e2b4-w1 FAIL) — the provider disclosure must be READABLE (wrap, sentence case, no shouted LIVE), retire every 'AI clone' string, expose attempts[] on the done event, make the warm-prime path actually work through Hosting (204, not 400), and stop the client aborting the origin at 1500 ms on a cold cooldown map",
+      "status": "running",
+      "column": "running",
+      "assignee": "analyst-programmer",
+      "priority": 97,
+      "parents": [
+        "t_w1_rev2"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:46:12.200Z",
+      "updated": "2026-09-06T01:47:22.528Z",
+      "summary": "## CORRECTION: G-R2 truth line + G-M4 cold first token\nOriginal output: t_w1_r2ap ec53e2b4 (order openrouter,deepseek,zai,openai; badge 'MiniVic · synthetic'; truth line 'Voice: ElevenLabs stock · Face: pre-rendered loop · Answers: live text via {provider}'; primeProviderCooldowns on ?warm=1).\nFailing criteria (docs/delivery/evidence/v10-20260905T0515Z/G-REV/ec53e2b4/08-adversarial-review.md): F4 the truth line is `white-space:nowrap; overflow:hidden; text-overflow:ellipsis` and needs 595 px in a 316 px (1440) / 226 px (390) box, so 'Answers: live text via openai' is never visible (the panel subtitle is clipped at 390 too); F8 text-transform:uppercase shouts LIVE; F7 residual 'AI clone' copy (launcher aria-label 'Ask Mini Vic — Vikram's AI clone'; greeting \"I'm Vikram — his AI clone, speaking from his CV\"); F5 the done event carries only {done,provider,model} so §0.4 routing is not auditable; F3 POST/GET /api/chat?warm=1 through Hosting returns 400 (the implementer measured 204 at the origin) so primeProviderCooldowns never runs for real visitors; F2 lib/miniVicBrain.ts aborts the origin at 1500 ms — on a cold cooldown map the origin's first token is 2449 ms, so the visitor pays 1.5 s and then the buffered Hosting fallback in full.\nRequired fix: (1) MiniVicBot.tsx + CSS: the truth line wraps (white-space:normal, no ellipsis), sentence case (no uppercase transform on that line), at both widths — verify by measuring scrollWidth ≤ clientWidth per line in the test; subtitle likewise; (2) replace every 'AI clone' string (grep -rn 'AI clone' app components lib functions public) with the sanctioned synthetic wording; (3) functions/index.js done event and JSON body gain attempts:[{provider,outcome,ms}] (no secrets, no URLs) — and the node test asserts it; (4) find why ?warm=1 is 400 through Hosting (query stripped? method? body parser rejecting empty body?) — reproduce with curl against https://forgotten-mistory.web.app/api/chat?warm=1 (GET and POST) before and after; make it 204 through Hosting and keep the priming fire-and-forget; (5) in lib/miniVicBrain.ts do not abort the origin at a fixed 1500 ms — race sensibly: keep the origin as primary with a budget derived from the measured cold walk (e.g. 2600 ms) OR start the Hosting fallback only after the origin's headers are late, but never discard an origin stream whose first token arrives before the fallback's; document the chosen policy in MINIVIC-BRAIN-0-4.md §2(c) addendum; (6) redeploy the function (firebase deploy --only functions:tts:minivicChat --project forgotten-mistory --non-interactive) and push the site branch.\nVerification: tests first (node: attempts[] shape; warm 204 contract; e2e: truth line fully visible at 1440/390 by scrollWidth ≤ clientWidth, 0 'AI clone' in DOM, no uppercase LIVE); then the reviewer's own protocol: 7 cold origin samples after ≥ 10 min idle AND 7 Hosting samples, plus 3 warm — report every number; PASS bar is all 7 < 1.5 s on the route the client actually completes.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w1_mv2",
+      "title": "REGRESSION (rev-ec53e2b4-w1) — the Ask Mini Vic launcher is visible but NOT clickable on the first fold at 1440 and 390: .hero-fold intercepts pointer events over the pill (3/3 runs); fix stacking/pointer-events so a real click opens the panel, prove it with a real click test, never hide the pill (G-MV1)",
+      "status": "running",
+      "column": "running",
+      "assignee": "analyst-programmer",
+      "priority": 95,
+      "parents": [
+        "t_w1_rev2"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:46:12.270Z",
+      "updated": "2026-09-06T01:47:22.582Z",
+      "summary": "Evidence: docs/delivery/evidence/v10-20260905T0515Z/G-REV/ec53e2b4/08-adversarial-review.md (REGRESSION FAIL) + panel-probe-*.json: the pill reports display:block, opacity:1, visibility:visible, isVisible()===true, yet page.click fails because `hero-fold` intercepts pointer events at both widths. Relates to G-NEW-1 (dock opacity on the first fold) and G-E2 (dock must not occlude charts). The hero set-piece lane (t_w2_h1s1…) is editing components/sections/Hero/* concurrently — do NOT edit Hero files; fix on the launcher side (app/globals.css .minivic-launcher* / components/MiniVicBot.tsx z-index, pointer-events, stacking context) so it wins over any section overlay, and coordinate only through origin/main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w1_red3",
+      "title": "Two more pre-existing failures surfaced by t_w1_a3 (verified on origin/main and on LIVE): TC-ABOUT-07 'complete without WebGL' intermittently sees 1 canvas because useGLCapability.ts's SwiftShader appeal admits the software rasteriser on an idle host; flagship-visibility 'listen beat field' motion gate fails on live (0.00142 < 0.004) — root-cause and fix without weakening",
+      "status": "ready",
+      "column": "ready",
+      "assignee": "tester",
+      "priority": 86,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:47:22.770Z",
+      "updated": "2026-09-06T01:47:22.770Z",
+      "summary": "Evidence: docs/delivery/evidence/v10-20260905T0515Z/W1-A3/05-baseline-build.log and 05-listen-preexisting-live.log (from t_w1_a3). (1) tests/e2e/about.spec.ts TC-ABOUT-07 expects 0 canvases without WebGL; components/gl/useGLCapability.ts appeals a SwiftShader context when the host is idle, so the no-GL contract is nondeterministic — decide the honest contract (a no-WebGL test must force capability off, e.g. via ?gl=off or a documented query, rather than depend on host idleness) and make useGLCapability deterministic under that flag. (2) tests/overhaul/flagship-visibility.spec.ts 'listen beat field' motion floor 0.004 vs live 0.00142: determine whether the listen field's motion genuinely fell below the flagship bar (then the field needs its motion restored — an analyst-programmer follow-up, filed by you with numbers) or whether the instrument measures the wrong window (then fix the instrument). Never lower 0.004 to pass.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w1_rev3",
+      "title": "WAVE-1 REVIEW 3 — independent adversarial review of live 12cd9123: G-A3 (the About field tells ten sectors with the dial ignored; dial is chrome; ≥75% plane), G-H5 resolution half (on-demand 1080p/2160p greyscale rungs, selection rules, nothing plays by default), plus the regression table and R5 OPEN",
+      "status": "running",
+      "column": "running",
+      "assignee": "reviewer",
+      "priority": 100,
+      "parents": [
+        "t_w1_a3",
+        "t_w1_h5b"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:47:59.223Z",
+      "updated": "2026-09-06T01:47:59.286Z",
+      "summary": "Live build-commit 12cd9123 (Deploy 34004706433, 01:45Z) = consolidation of worktree-w1-a3 e5c1e4d (About: components/sections/About/{field.glsl.ts,AboutField.tsx,Compass.tsx,*.module.css}, tests/overhaul/scene-about.spec.ts TC-SCENE-ABOUT-10/11) on top of 521dac9c (G-H5 rungs: public/assets/avatar/my-hero-avatar-1080.mp4 3.69 MB H.264, my-hero-avatar-2160.webm 2.91 MB AV1; lib/videoRung.ts selector; docs/architecture/ASSET-LADDER.md). Baselines: ADV-2315Z §About FAIL ('recruiter names the dial'); rev-56ffed3e-w1 G-H5 FAIL (only 720p served while a 2160p master exists). GAP-BACKLOG acceptances: G-A3 — recruiter recall is the GL field; hide the SVG and the remaining picture still tells ten sectors; restore it and the field still carries ≥ ~75% weight; gold/hatch honesty green. G-H5 — ≥1080p path toward 4K shipped honestly; 720p24 never presented as 4K; R5 stays OPEN (24 fps). You did not write any of it; judge on the live URL only; generate your own artifacts.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_r3a2",
+      "title": "WAVE-2 R3 R3-A2 — Greeting alignment generated WITH its own audio (one /with-timestamps call, three-way digest pin) + lib/visemeSchedule.ts with the ~45-rule grapheme→viseme table and VS-01..VS-08 unit tests",
+      "status": "ready",
+      "column": "ready",
+      "assignee": "analyst-programmer",
+      "priority": 92,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:49:34.586Z",
+      "updated": "2026-09-06T01:49:34.929Z",
+      "summary": "Slice R3-A2 of docs/architecture/MINIVIC-AVATAR-v1.md (SA t_w2_r3sa; research W2-RESEARCH/R3-avatar-path.md; brain routing MINIVIC-BRAIN-0-4.md). Full definition (files, gates, test ids) = the entry with id R3-A2 in docs/architecture/MINIVIC-AVATAR-TASKS.json. docs/prompt.md §2.1 second form: a pre-made animated avatar that SEEMS real-time, driven by frame-accurate (~40 ms) lip-sync; R3 first form (generative real-time Higgsfield video) is structurally OPEN (async submit-then-poll only, 0 credits) and must never be claimed. Cost gate: only ordinary TTS calls with the configured premade voice (ELEVENLABS_VOICE_ID by name); no IVC/cloning; no Higgsfield generation. Slice R3-A1 (badge/copy) is being delivered by t_w1_r2c — keep the badge and panel line verbatim from MINIVIC-BRAIN-0-4 §2(b); only the third line changes, and only once lip-sync is real.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_r3a4",
+      "title": "WAVE-2 R3 R3-A4 — elevenLabsTts content-negotiates /with-timestamps (Accept) while a cached bundle still gets its MP3; TS-FN-01..06; deployed and probed with both Accept values; no secret in logs",
+      "status": "ready",
+      "column": "ready",
+      "assignee": "analyst-programmer",
+      "priority": 92,
+      "parents": [],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:49:34.635Z",
+      "updated": "2026-09-06T01:49:34.929Z",
+      "summary": "Slice R3-A4 of docs/architecture/MINIVIC-AVATAR-v1.md (SA t_w2_r3sa; research W2-RESEARCH/R3-avatar-path.md; brain routing MINIVIC-BRAIN-0-4.md). Full definition (files, gates, test ids) = the entry with id R3-A4 in docs/architecture/MINIVIC-AVATAR-TASKS.json. docs/prompt.md §2.1 second form: a pre-made animated avatar that SEEMS real-time, driven by frame-accurate (~40 ms) lip-sync; R3 first form (generative real-time Higgsfield video) is structurally OPEN (async submit-then-poll only, 0 credits) and must never be claimed. Cost gate: only ordinary TTS calls with the configured premade voice (ELEVENLABS_VOICE_ID by name); no IVC/cloning; no Higgsfield generation. Slice R3-A1 (badge/copy) is being delivered by t_w1_r2c — keep the badge and panel line verbatim from MINIVIC-BRAIN-0-4 §2(b); only the third line changes, and only once lip-sync is real.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_r3a3",
+      "title": "WAVE-2 R3 R3-A3 — Schedule-driven mouth on the greeting + the two production test hooks (data-viseme-index / window.__minivicVisemeSchedule) + the ≤40 ms drift test R3-DRIFT-01..04 — the mouth now moves with the words",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 92,
+      "parents": [
+        "t_w2_r3a2"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:49:34.687Z",
+      "updated": "2026-09-06T01:49:34.687Z",
+      "summary": "Slice R3-A3 of docs/architecture/MINIVIC-AVATAR-v1.md (SA t_w2_r3sa; research W2-RESEARCH/R3-avatar-path.md; brain routing MINIVIC-BRAIN-0-4.md). Full definition (files, gates, test ids) = the entry with id R3-A3 in docs/architecture/MINIVIC-AVATAR-TASKS.json. docs/prompt.md §2.1 second form: a pre-made animated avatar that SEEMS real-time, driven by frame-accurate (~40 ms) lip-sync; R3 first form (generative real-time Higgsfield video) is structurally OPEN (async submit-then-poll only, 0 credits) and must never be claimed. Cost gate: only ordinary TTS calls with the configured premade voice (ELEVENLABS_VOICE_ID by name); no IVC/cloning; no Higgsfield generation. Slice R3-A1 (badge/copy) is being delivered by t_w1_r2c — keep the badge and panel line verbatim from MINIVIC-BRAIN-0-4 §2(b); only the third line changes, and only once lip-sync is real.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_r3a6",
+      "title": "WAVE-2 R3 R3-A6 — 22-cell mouth atlas cropped from the 4K master (artifacts/masters, untracked) via scripts/build/minivic_viseme_atlas.mjs with committed frame indices in data/minivic-viseme-frames.json; R3-ATLAS-01..04; audit 10/10; build succeeds with ffmpeg absent when the committed atlas exists",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 92,
+      "parents": [
+        "t_w2_r3a2"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:49:34.733Z",
+      "updated": "2026-09-06T01:49:34.733Z",
+      "summary": "Slice R3-A6 of docs/architecture/MINIVIC-AVATAR-v1.md (SA t_w2_r3sa; research W2-RESEARCH/R3-avatar-path.md; brain routing MINIVIC-BRAIN-0-4.md). Full definition (files, gates, test ids) = the entry with id R3-A6 in docs/architecture/MINIVIC-AVATAR-TASKS.json. docs/prompt.md §2.1 second form: a pre-made animated avatar that SEEMS real-time, driven by frame-accurate (~40 ms) lip-sync; R3 first form (generative real-time Higgsfield video) is structurally OPEN (async submit-then-poll only, 0 credits) and must never be claimed. Cost gate: only ordinary TTS calls with the configured premade voice (ELEVENLABS_VOICE_ID by name); no IVC/cloning; no Higgsfield generation. Slice R3-A1 (badge/copy) is being delivered by t_w1_r2c — keep the badge and panel line verbatim from MINIVIC-BRAIN-0-4 §2(b); only the third line changes, and only once lip-sync is real.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_r3a5",
+      "title": "WAVE-2 R3 R3-A5 — Chat answers drive the mouth from their own alignment; TTS starts on the first sentence; analyser fallback fires AND logs when alignment is absent; CHAT_MAX_TOKENS unchanged",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 92,
+      "parents": [
+        "t_w2_r3a3",
+        "t_w2_r3a4"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:49:34.779Z",
+      "updated": "2026-09-06T01:49:34.779Z",
+      "summary": "Slice R3-A5 of docs/architecture/MINIVIC-AVATAR-v1.md (SA t_w2_r3sa; research W2-RESEARCH/R3-avatar-path.md; brain routing MINIVIC-BRAIN-0-4.md). Full definition (files, gates, test ids) = the entry with id R3-A5 in docs/architecture/MINIVIC-AVATAR-TASKS.json. docs/prompt.md §2.1 second form: a pre-made animated avatar that SEEMS real-time, driven by frame-accurate (~40 ms) lip-sync; R3 first form (generative real-time Higgsfield video) is structurally OPEN (async submit-then-poll only, 0 credits) and must never be claimed. Cost gate: only ordinary TTS calls with the configured premade voice (ELEVENLABS_VOICE_ID by name); no IVC/cloning; no Higgsfield generation. Slice R3-A1 (badge/copy) is being delivered by t_w1_r2c — keep the badge and panel line verbatim from MINIVIC-BRAIN-0-4 §2(b); only the third line changes, and only once lip-sync is real.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_r3a7",
+      "title": "WAVE-2 R3 R3-A7 — Measure the first word on live (B1 greeting max < 1.5 s; B2 reply warm+cold as a range, no pass claim; max driftMs) with scripts/validate/first_word_budget.mjs and write the R3 evidence pack + GAP-BACKLOG status that states what the 40 ms bounds",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "tester",
+      "priority": 92,
+      "parents": [
+        "t_w2_r3a3",
+        "t_w2_r3a5",
+        "t_w2_r3a6"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T01:49:34.832Z",
+      "updated": "2026-09-06T01:49:34.832Z",
+      "summary": "Slice R3-A7 of docs/architecture/MINIVIC-AVATAR-v1.md (SA t_w2_r3sa; research W2-RESEARCH/R3-avatar-path.md; brain routing MINIVIC-BRAIN-0-4.md). Full definition (files, gates, test ids) = the entry with id R3-A7 in docs/architecture/MINIVIC-AVATAR-TASKS.json. docs/prompt.md §2.1 second form: a pre-made animated avatar that SEEMS real-time, driven by frame-accurate (~40 ms) lip-sync; R3 first form (generative real-time Higgsfield video) is structurally OPEN (async submit-then-poll only, 0 credits) and must never be claimed. Cost gate: only ordinary TTS calls with the configured premade voice (ELEVENLABS_VOICE_ID by name); no IVC/cloning; no Higgsfield generation. Slice R3-A1 (badge/copy) is being delivered by t_w1_r2c — keep the badge and panel line verbatim from MINIVIC-BRAIN-0-4 §2(b); only the third line changes, and only once lip-sync is real.",
       "decisions": [],
       "comments": [],
       "blocker": null

@@ -29,7 +29,9 @@
     "title": "G-H2a — hero scene mounts on first paint (Scene priority prop + poster frame)",
     "assignee": "analyst-programmer",
     "priority": 97,
-    "parents": ["g-x1-01-scene-fps-harness"],
+    "parents": [
+      "g-x1-01-scene-fps-harness"
+    ],
     "summary": "components/gl/Scene.tsx:216 gates every scene on pageSettled (window.load + requestIdleCallback), so the hero flagship is structurally absent from the first paint. Add an opt-in priority?:boolean prop (default false, so S2..S7 are byte-identical) making show = capability && allowMotion && near && (priority || pageSettled), and pass priority on the hero only. Render the composition's frame 0 as the slot's CSS background from the static HTML so the first paint is lit, and crossfade the canvas over it on onCreated.",
     "order": [
       "Author tests/overhaul/hero-first-paint.spec.ts: TC-HERO-FIRSTPAINT-01 (JS blocked, hero slot background carries the poster, slot mean luminance >= 0.10) and TC-HERO-FIRSTPAINT-02 (at ?gl=force a canvas exists inside [data-scene=hero-atmosphere] within 1200ms of domcontentloaded)",
@@ -55,7 +57,9 @@
     "title": "G-H2b — hero scrim becomes a graded text plate, not a 0.86 full-frame wash",
     "assignee": "analyst-programmer",
     "priority": 97,
-    "parents": ["g-h2-02-hero-priority-first-paint"],
+    "parents": [
+      "g-h2-02-hero-priority-first-paint"
+    ],
     "summary": "Hero.module.css:157 and :171 lay rgb(10 10 10 / 0.86) across the whole frame, which is why the reviewer called the atmosphere a shy backdrop. Bind the darkening to the reading column: ~0.72 under the type, <= 0.25 outside it, so the light crosses the frame and the copy still clears AA.",
     "order": [
       "Add TC-HERO-SCRIM-01 to tests/overhaul/hero-first-paint.spec.ts: the hero slot's outer thirds (x<22% and x>78%) are >= 0.06 luminance brighter than the centre reading band",
@@ -79,7 +83,9 @@
     "title": "S4 — land the Skills bench scene (#skills currently has zero WebGL)",
     "assignee": "analyst-programmer",
     "priority": 95,
-    "parents": ["g-x1-01-scene-fps-harness"],
+    "parents": [
+      "g-x1-01-scene-fps-harness"
+    ],
     "summary": "BenchField.tsx + bench.glsl.ts exist only in worktree .claude/worktrees/wf_c06ca2f9-9de-1 and already mount correctly through Scene with sceneId=skills-bench (Bench.tsx:304). Land them on a branch off current main. This closes the reviewer's worst-vs-R2 finding: the section claiming production calibration ships no shader at all.",
     "order": [
       "Add {section:'skills', scene:'skills-bench', label:'skills calibration bench'} to SCENES at tests/overhaul/flagship-visibility.spec.ts:138",
@@ -104,7 +110,9 @@
     "title": "S5 — give the Vitrine field a sceneId and hold it to the flagship bar",
     "assignee": "analyst-programmer",
     "priority": 94,
-    "parents": ["g-s1-04-land-skills-bench-scene"],
+    "parents": [
+      "g-s1-04-land-skills-bench-scene"
+    ],
     "summary": "grep -rn 'sceneId=' components/ returns only 3 hits; Vitrine.tsx mounts <Scene className={styles.fieldSlot}> with no id, so the cabinet light is structurally unmeasurable. Add sceneId=vitrine-field, add it to SCENES, and raise the field until it passes — the unlit neighbour plates must read as waiting, not empty (G-V1 from the scene side).",
     "order": [
       "Add {section:'vitrine', scene:'vitrine-field', label:'vitrine cabinet light'} to SCENES",
@@ -127,7 +135,9 @@
     "title": "S6 — give the Listen field a sceneId and hold it to the flagship bar",
     "assignee": "analyst-programmer",
     "priority": 94,
-    "parents": ["g-x1-05-vitrine-scene-id"],
+    "parents": [
+      "g-x1-05-vitrine-scene-id"
+    ],
     "summary": "Listen.tsx:161 mounts <Scene className={styles.fieldSlot}> with no sceneId, so the beat field the voice arrives on is unmeasurable. Add sceneId=listen-field, add it to SCENES, and raise the field until it passes.",
     "order": [
       "Add {section:'listen', scene:'listen-field', label:'listen beat field'} to SCENES",
@@ -150,7 +160,9 @@
     "title": "MiniVic viseme stage — an R3 avatar accessory (NOT R2's seventh scene; ADV-1556Z, SIGNATURE-SCENES-v1.md 0.6)",
     "assignee": "analyst-programmer",
     "priority": 93,
-    "parents": ["g-x1-06-listen-scene-id"],
+    "parents": [
+      "g-x1-06-listen-scene-id"
+    ],
     "summary": "SUPERSEDED FRAMING: this was authored as 'the seventh signature scene'. ADV-1556Z ruled that a lie — the viseme stage is a lip-sync mouth plate inside the bot panel, not in the page census (b2ac21be = 6 data-scene mounts), and it counts 0 toward R2. It is a good R3 detail and it stays, but the real seventh cinematic scene is t_x1_10 (the HyperFrames hero-overture, S7*). Promote the STAGE only: a Scene-mounted R3F plane behind the avatar plate whose shader is driven by the existing viseme refs (lib/visemeMap.ts getVisemeShape/lerpVisemeShapes), so the avatar is lit by what he is saying. The 2D canvas mouth in MiniVicBot.tsx stays exactly as-is and becomes the no-GL fallback, so lip-sync accuracy (R3) cannot regress.",
     "order": [
       "Author tests/overhaul/viseme-stage.spec.ts: TC-VISEME-GL-01 (bot open at ?gl=force, [data-scene=minivic-viseme] has a canvas, COVERAGE/PEAK/MOTION hold while a synthetic viseme stream is driven) and TC-VISEME-GL-02 (reduced motion: no canvas AND the 2D mouth still animates)",
@@ -174,7 +186,9 @@
     "title": "R5 proof — GL and SVG surfaces render natively at 3840x2160",
     "assignee": "tester",
     "priority": 92,
-    "parents": ["g-x1-07-minivic-viseme-stage"],
+    "parents": [
+      "g-x1-07-minivic-viseme-stage"
+    ],
     "summary": "R5 says every surface is audited >= 3840x2160 / 60fps. 'Vector scales' is an assertion; the proof is the backing store. Author tests/perf/resolution-independence.spec.ts at viewport 3840x2160, deviceScaleFactor 1, ?gl=force: TC-R5-GL-01 every canvas reports drawingBufferWidth >= 3840 and Height >= 2160; TC-R5-GL-02 median rAF at 4K <= 16.7ms; TC-R5-LAYOUT-01 no horizontal overflow and every section heading in the viewport box; TC-R5-SVG-01 the Compass, Bench and Vitrine drawings carry a viewBox and no fixed pixel width/height.",
     "order": [
       "Author the spec; run it and let it fail wherever it fails — this is a measurement, not a fix",
@@ -196,7 +210,9 @@
     "title": "R5 asset audit — every shipped raster/video measured, waivers are recorded FAILs",
     "assignee": "tester",
     "priority": 92,
-    "parents": ["g-x1-08-r5-resolution-independence"],
+    "parents": [
+      "g-x1-08-r5-resolution-independence"
+    ],
     "summary": "Measured 2026-09-05: my-avatar.mp4 = 1280x720@24, my-hero-avatar.mp4 = 640x360@24, my_avatar.avif = 1480x826 — all fail R5. Author tests/content/asset-resolution.spec.ts (node --test, ffprobe over public/): every section-referenced raster/video either reports >= 3840x2160 or appears in an explicit dated waiver list carrying the reason and the unblock. The waiver list is the R5 scoreboard and shrinks to zero as renders land.",
     "order": [
       "Author the test with the waiver list seeded with the three measured assets, each with reason and unblock",
@@ -219,7 +235,9 @@
     "title": "HyperFrames render pipeline — 3840x2160@60 masters on this VPS, zero credits",
     "assignee": "analyst-programmer",
     "priority": 91,
-    "parents": ["g-x1-09-r5-asset-audit-waivers"],
+    "parents": [
+      "g-x1-09-r5-asset-audit-waivers"
+    ],
     "summary": "hyperframes@0.8.29 (CLI) + @hyperframes/engine@0.8.29 render an HTML composition to a deterministic MP4 by seeking each frame in headless Chrome and encoding with FFmpeg. All three requirements are already installed here: node v22.23.1 (README requires >= 22), /usr/bin/ffmpeg, /usr/bin/google-chrome. Add them as devDependencies only, plus scripts/assets/hyperframes_render.mjs. This is the R5 unblock that needs no credits.",
     "order": [
       "Add hyperframes@0.8.29 and @hyperframes/engine@0.8.29 to devDependencies at exact pins; set PUPPETEER_SKIP_DOWNLOAD=1 and PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome",
@@ -245,7 +263,9 @@
     "title": "HyperFrames in page — hero overture via @hyperframes/player (17.6 kB gz, lazy)",
     "assignee": "analyst-programmer",
     "priority": 91,
-    "parents": ["g-x1-10-hyperframes-render-pipeline"],
+    "parents": [
+      "g-x1-10-hyperframes-render-pipeline"
+    ],
     "summary": "R2 names HyperFrames explicitly and package.json has zero HyperFrames packages. @hyperframes/player@0.8.29 is an embeddable web component whose dist/hyperframes-player.global.js measures 64,037 bytes raw / 17,645 bytes gzip -9 (measured via npm pack). Mount the same hero-overture composition in page behind next/dynamic, after the poster paints, crossfading into the GL atmosphere. One authored artifact drives the in-page motion and the 2160p60 file.",
     "order": [
       "Author TC-BUNDLE-01 in tests/perf/: no HyperFrames or GSAP byte appears in the document's initial JS",
@@ -271,7 +291,9 @@
     "title": "GSAP + ScrollTrigger — the choreography layer §2.1 names and the repo lacks",
     "assignee": "analyst-programmer",
     "priority": 90,
-    "parents": ["g-x1-11-hyperframes-player-overture"],
+    "parents": [
+      "g-x1-11-hyperframes-player-overture"
+    ],
     "summary": "grep -rn 'gsap|ScrollTrigger' package.json components/ app/ lib/ returns 5 hits, all prose or CSS comments (app/globals.css:1332,1343; lib/voiceoverContext.tsx:116,119,125) — the library itself is absent, and lib/voiceoverContext.tsx already listens for gsap:<section>:enter CustomEvents that nothing dispatches. Adopt gsap core + ScrollTrigger, lazy, riding the existing GL chunk, and dispatch the section-enter cues the voiceover controller is already written against.",
     "order": [
       "Extend TC-BUNDLE-01 to assert gsap is absent from the initial document JS and present only in a lazy chunk",
@@ -295,7 +317,9 @@
     "title": "R5 raster unblock — re-render the avatar plate at 3840x2160@60 and drop its waiver",
     "assignee": "analyst-programmer",
     "priority": 89,
-    "parents": ["g-x1-12-gsap-scrolltrigger-choreography"],
+    "parents": [
+      "g-x1-12-gsap-scrolltrigger-choreography"
+    ],
     "summary": "my-avatar.mp4 is 1280x720@24 and my-hero-avatar.mp4 is 640x360@24 (ffprobe, 2026-09-05). Re-render the avatar plate through the HyperFrames pipeline at 3840x2160@60 from the existing footage and stills — no generative call, so Higgsfield's 0-credit balance is irrelevant and C-4 generation discipline is not engaged. Ship AV1 WebM + H.264 MP4 under public/assets/avatar/ within the 5MB click-to-play cap, and remove the two waivers from the R5 asset audit.",
     "order": [
       "Author the avatar composition at data-width=3840 data-height=2160 sourcing the existing master footage",
@@ -320,7 +344,9 @@
     "title": "Independent verification on the live URL — R2 / R5 / §0.3-1 scorecard",
     "assignee": "reviewer",
     "priority": 88,
-    "parents": ["g-x1-13-avatar-4k-rerender"],
+    "parents": [
+      "g-x1-13-avatar-4k-rerender"
+    ],
     "summary": "After the chain deploys, verify against https://forgotten-mistory.web.app/ (not a local build): all 7 sceneIds present and passing the flagship bar, median rAF within budget at 1440 and 390, 4K backing store proven, HyperFrames present in package.json and absent from the critical path, R5 raster waiver list empty or honestly non-empty. Report FAIL for anything not proven by a command output you ran yourself.",
     "order": [
       "Fetch the live build-commit meta and confirm it matches the deployed HEAD",
@@ -337,6 +363,404 @@
     "verify": [
       "curl -s https://forgotten-mistory.web.app/ | grep -o 'build-commit[^>]*'",
       "PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/overhaul/flagship-visibility.spec.ts tests/perf/scene-framerate.spec.ts tests/perf/resolution-independence.spec.ts"
+    ]
+  },
+  {
+    "slug": "x2-t1-story-contract-tests",
+    "priority": 99,
+    "assignee": "tester",
+    "minutes": 30,
+    "parents": [],
+    "title": "TDD gate — author every TC-STORY-* assertion (SIGNATURE-SCENES-v2 §5), red where the shader cannot",
+    "summary": "ADV-2315Z R2: 'GL is wallpaper'. Coverage/peak/motion asks 'is there light?'; TC-SCENE-ABOUT-08 asks 'is it wired to the data?'. Neither asks the question the reviewer is asking: hide every word on the page, photograph the slot, can a stranger tell which section it is? This slice authors that third contract for all six fields plus the seventh scene, on the SAME isolated capture flagship-visibility.spec.ts already produces (isolateScene() at :273, restorePage() at :285), at BOTH viewports (1440x900 and 390x844). Every assertion is structural — a histogram, a profile, a centroid, a correlation — never 'make it brighter': v1 records three sub-threshold margins (M-1 listen motion x1.07, M-2 vitrine peak x1.08, M-3 vitrine AA x1.04) so there is no brightness left to spend. TWO assertions are expected to fail and must be authored anyway: TC-STORY-HERO-01 (poolPlate declared and unbound) and TC-STORY-EXP-01 (strata.glsl.ts draws three drifting bands at ONE depth, no parallax term). A story contract with no red in it was written after the fact. NOTE: the brief cites 'TC-SCENE-ABOUT-10' as the G-A3 precedent; that id does not exist (grep returns -01..-09). Model on TC-SCENE-ABOUT-08 + flagship-visibility, per v2 §0.2.",
+    "order": [
+      "Read tests/overhaul/flagship-visibility.spec.ts :222-300 (bootAt, groundLuminance, isolateScene, restorePage, slotClip) and reuse them verbatim — do not fork the isolation helper",
+      "Author tests/overhaul/story-contract.spec.ts parameterised over the six section scenes at both VIEWPORTS",
+      "TC-STORY-ABOUT-01/02 — 360-bin angular histogram about uCentre: >=8 local maxima separated by minima >=25% below adjacent peaks; the three role-side sectors >=15% below the mean of the seven candidate-side ones",
+      "TC-STORY-EXP-01/02 — vertical luminance profile: >=2 band groups whose peaks move by DIFFERENT pixel counts between scroll t0 and t1 (parallax, not a gradient); >=6 of 8 uSpans recoverable as horizontal light extents within +/-8% of normalised position",
+      "TC-STORY-SKILLS-01 — mean luminance at production-row y exceeds the three non-production rows by >=0.06 relative luminance, rails' columns excluded",
+      "TC-STORY-VITRINE-01/02 — pool x-centroid takes 6 distinct values monotonic in uLit spanning >=55% of slot width; per-plate captures are not translations of one another (mean |delta| after best-fit x-alignment >=0.01)",
+      "TC-STORY-LISTEN-01 — band amplitude over the reading correlates with the uEnvelope texture at Pearson r>=0.7 AND with a same-period sine at r<0.5",
+      "TC-STORY-PLANE-01 — per section, the scene slot carries >=50% of the section's visual weight on the chrome-hidden capture (the SPD instrument reused at a lower floor than the hero's 0.75; sections carry prose)",
+      "Run and capture 02-tests-failing.log VERBATIM — the two known-red assertions must appear in it by name"
+    ],
+    "gates": [
+      "Every assertion runs on the chrome-hidden capture, at BOTH 1440x900 and 390x844 — a gate that only asks at desktop ships a black rectangle to every phone",
+      "No assertion asks for more light: M-1/M-2/M-3 margins are not headroom (v1 §0.5 'Open findings')",
+      "The two cannot-yet assertions are authored RED, never skipped, never softened",
+      "Thresholds are exactly those in SIGNATURE-SCENES-v2 §5; weakening one to pass is a violation",
+      "No production code touched by this slice"
+    ],
+    "verify": [
+      "npm run build:static",
+      "python3 -m http.server 5601 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/overhaul/story-contract.spec.ts",
+      "grep -c 'TC-STORY-' tests/overhaul/story-contract.spec.ts"
+    ]
+  },
+  {
+    "slug": "x2-t2-descent-fps-harness",
+    "priority": 98,
+    "assignee": "tester",
+    "minutes": 20,
+    "parents": [
+      "x2-t1-story-contract-tests"
+    ],
+    "title": "Extend the fps harness with career-descent, and make the renderer label mandatory in the artifact",
+    "summary": "tests/perf/scene-framerate.spec.ts already records renderer + rendererLabel per reading (:158-162) with DESKTOP_BUDGET_MS 16.7 / PHONE_BUDGET_MS 20.0 and a software-rasteriser detector at :202. Add the seventh sceneId BEFORE the scene exists — it fails 'no such scene', which is the correct first failure. Also close the reporting hole v1 D9 keeps being broken by: add a meta-assertion that no reading may be serialised without a non-empty renderer string, so a hurried cycle report cannot quote a median without its instrument. Tier A on this host will FAIL for career-descent by design (v2 §3.3 ESTIMATE ~81 ms at 1440) exactly as every shipped scene does today (33-100 ms, v1 §0.5.1) — record it, never round it up.",
+    "order": [
+      "Add career-descent to the harness's sceneId list",
+      "Author TC-SCENE-FPS-04 — every serialised reading carries a non-empty WEBGL_debug_renderer_info string and a rendererLabel; a reading without one throws rather than writing a JSON row",
+      "Run and capture the 'no such scene' red for career-descent: 02-tests-failing.log",
+      "Print loadavg alongside every reading (v1 §0.5.1 records a 3.5x swing on an untouched scene from host load alone)"
+    ],
+    "gates": [
+      "Budgets stay exactly 16.7 ms and 20.0 ms — moving a threshold to pass is a violation",
+      "Median, never mean",
+      "No output line may say '60 fps' under a software rasteriser (v1 D9)",
+      "No production code touched"
+    ],
+    "verify": [
+      "npm run build:static",
+      "python3 -m http.server 5602 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test tests/perf/scene-framerate.spec.ts",
+      "grep -n 'career-descent' tests/perf/scene-framerate.spec.ts"
+    ]
+  },
+  {
+    "slug": "x2-f0-hero-story-assertion",
+    "priority": 97,
+    "assignee": "tester",
+    "minutes": 15,
+    "parents": [
+      "x2-t1-story-contract-tests"
+    ],
+    "title": "TC-STORY-HERO-01 authored RED — the light is on the man; the target is handed to HERO-SETPIECE-v3",
+    "summary": "The hero's story is 'the light is on the man': the plane's brightest region must coincide with the figure, so plane and portrait read as ONE object rather than a résumé stack beside a card (ADV-2315Z Hero row, G-H1). atmosphere.glsl.ts declares a poolPlate uniform 'behind the portrait plate' and it is UNBOUND today (researcher W2-RESEARCH §0); HERO-FOLD-v2 M4 and HERO-SETPIECE-v3 §4.2 already own binding it. This slice does NOT touch the hero — it authors the measurement so that lane has a red target, and so the two solutions-architect lanes cannot each assume the other did it. SPD >= 0.75 stays exactly where it is in TC-HERO-PLANE-01 (armed under HERO_PLANE_GATE=1); this is a different question — not 'does the plane dominate' but 'is the light where the man is'.",
+    "order": [
+      "Author TC-STORY-HERO-01 in tests/overhaul/story-contract.spec.ts: on the chrome-hidden hero capture, the luminance centroid lies within 12% of the frame diagonal of the figure's measured bounding-box centre",
+      "Read the figure's box from the DOM at runtime — never hard-code a coordinate, the fold reflows at four viewports",
+      "Capture it red and name HERO-SETPIECE-v3 §4.2 / HERO-FOLD-v2 M4 as the owning lane in the failure message",
+      "Do not modify Hero.tsx, Hero.module.css, atmosphere.glsl.ts or any hero asset"
+    ],
+    "gates": [
+      "Zero hero files edited by this slice — the collision in SIGNATURE-SCENES-v2 §2.4 is avoided by not writing, not by coordinating",
+      "TC-HERO-PLANE-01's SPD_MIN 0.75 / SPD_SHIP 0.78 are not touched",
+      "The failure message names the owning lane, so the red is actionable rather than orphaned"
+    ],
+    "verify": [
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/overhaul/story-contract.spec.ts -g 'TC-STORY-HERO'",
+      "git diff --name-only | grep -c 'components/sections/Hero' "
+    ]
+  },
+  {
+    "slug": "x2-s1-career-descent-mount",
+    "priority": 96,
+    "assignee": "analyst-programmer",
+    "minutes": 30,
+    "parents": [
+      "x2-t2-descent-fps-harness"
+    ],
+    "title": "S7 career-descent — the sticky band, the mount, uSpans from experience.ts (FIRST VISIBLE SHIP)",
+    "summary": "The seventh scene R2 asks for, and the one a recruiter repeats: 'you scroll and you're falling down sixteen years of his career like a core sample — each job is a layer, and the layers get brighter as you come up to now.' Eight strata stacked in depth, deepest = oldest, thickness = duration — the same eight spans the Gantt draws as LENGTH, drawn as DEPTH. Mount: a 160vh band in #experience AFTER the chart and the accordion, containing a position:sticky;top:0;height:100vh stage; 60vh of scroll is 0->1 of uDescent, which is the camera. NOT a seventh section — the six-section IA in CLAUDE.md is preserved. NOT in #hero — HERO-SETPIECE-v3 owns that fold (v2 §2.4, D-3). sceneId career-descent enters the STATIC census, unlike minivic-viseme (v1 §0.6). priority=false (below the fold; only the hero is exempt from Scene.tsx:216's pageSettled gate). resolutionScale=0.5 matching hero/about/strata (af7355a). One ScreenQuad, zero instances, zero geometry, zero textures — the pattern every shipped scene keeps. uSpans is normalised from app/data/portfolio/experience.ts with the SAME TIMELINE_START=2010 / NOW=2026+8/12 the chart imports, so the descent and the Gantt can never disagree about a date. NO gold uniform: gold marks a sourced figure and a field of light is not a figure. The set piece is built on ROLE SPANS, never on the three self-reported ledger figures (v2 D-5 — building the flagship out of the least-sourced numbers would grade a claim above its evidence in the largest possible typeface).",
+    "order": [
+      "Author components/sections/Experience/CareerDescent.tsx and descent.glsl.ts following CareerStrata.tsx's shape (ScreenQuad, webglcontextlost handler, palette import)",
+      "Import roles / TIMELINE_START / NOW from app/data/portfolio/experience.ts — never re-derive a date",
+      "uSpans[8] = (startNorm, endNorm, depth, sourced); uSpanCount from roles.length, never hard-coded 8",
+      "Add the 160vh band + sticky 100vh stage to Experience.tsx and Experience.module.css, AFTER the chart and the accordion",
+      "Mount <Scene sceneId=\"career-descent\" resolutionScale={0.5}> — no priority prop",
+      "z-order: band background < canvas < year ticks < ONE caption line. No heading, no paragraph, no CTA over the canvas",
+      "Run TC-STORY-DESCENT-02 (no text node intersects the stage box at either viewport) and the ?gl=force zero-pageerror probe before pushing"
+    ],
+    "gates": [
+      "data-scene=\"career-descent\" is present in the STATIC export (grep out/index.html), not injected after a click",
+      "Zero pageerrors under ?gl=force at 1440 AND 390 — the React-19/R3F crash class this project already shipped once",
+      "No raw hex in descent.glsl.ts or CareerDescent.tsx; colours from lib/palette.ts; the string 'gold' appears nowhere",
+      "The six-section IA is unchanged: still six section ids, in order (CLAUDE.md)",
+      "Zero files under components/sections/Hero/ touched (v2 D-3)",
+      "npx tsc --noEmit && npm run lint && npm run build:static clean; static audit stays 10/10"
+    ],
+    "verify": [
+      "npx tsc --noEmit && npm run lint && npm run build:static",
+      "grep -o 'data-scene=\"[^\"]*\"' out/index.html | sort | uniq -c",
+      "node scripts/validate/overhaul_static_audit.mjs",
+      "python3 -m http.server 5601 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/overhaul/scene-experience.spec.ts tests/overhaul/story-contract.spec.ts -g 'EXP|DESCENT'"
+    ]
+  },
+  {
+    "slug": "x2-s2-career-descent-depth",
+    "priority": 95,
+    "assignee": "analyst-programmer",
+    "minutes": 30,
+    "parents": [
+      "x2-s1-career-descent-mount"
+    ],
+    "title": "S7 depth — three parallax layers and the eight strata, with a uQuality phone branch",
+    "summary": "Depth is what makes this a camera move rather than a gradient sliding. Three layers (near dust, the strata, a far floor) move at DIFFERENT rates against uDescent — that difference is exactly what TC-STORY-EXP-01 measures (peaks move by different pixel counts between scroll t0 and t1). Each stratum's thickness is its role's duration, so a nine-year band and a six-month seam are the same fact in a different projection; TC-STORY-DESCENT-01 asserts the rank correlation between edge spacing and (end - start) is >=0.9. The stratum for the role last hovered in the chart above holds a brighter edge (uHover). Budget: <=4 value-noise lookups + an 8-iteration smoothstep loop per pixel — arithmetic, not sampling; the ceiling career-strata and AboutField already hold to, plus one lookup for the third layer. uQuality=0 drops the third layer on the phone branch, exactly as atmosphere.glsl.ts branches on a uniform (uniform control flow, no divergence).",
+    "order": [
+      "Add the three parallax layers with distinct rate coefficients against uDescent",
+      "Draw the eight strata with thickness proportional to (end - start), deepest = oldest",
+      "Bind uHover from the chart's existing hovered-row state, lerped on the CPU so the answer arrives as a swell not a switch (the discipline CareerStrata keeps)",
+      "Branch the third layer on uQuality; keep it uniform control flow",
+      "Make TC-STORY-DESCENT-01 and TC-STORY-EXP-01 green for career-descent; capture 04-tests-passing.log",
+      "Re-run the fps harness and record the median WITH its renderer string and loadavg — expect a Tier A FAIL (~81 ms ESTIMATE at 1440) and record it as such"
+    ],
+    "gates": [
+      "<=4 value-noise lookups per pixel; no textures beyond none; still one draw call and zero instances",
+      "The Tier A reading is recorded, labelled software-rasteriser, and is NEVER reported as 60 fps (v1 D9)",
+      "DPR stays capped at GLCanvas DPR_CEILING 1.75; resolutionScale stays 0.5 — do not raise either to make the scene look better",
+      "No gold, no hex, palette-sourced only"
+    ],
+    "verify": [
+      "npx tsc --noEmit && npm run lint && npm run build:static",
+      "python3 -m http.server 5601 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/overhaul/story-contract.spec.ts -g 'DESCENT|EXP'",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/perf/scene-framerate.spec.ts -g 'career-descent'"
+    ]
+  },
+  {
+    "slug": "x2-s3-career-descent-still",
+    "priority": 94,
+    "assignee": "analyst-programmer",
+    "minutes": 25,
+    "parents": [
+      "x2-s2-career-descent-depth"
+    ],
+    "title": "S7 fallbacks — one picture on all three paths; the poster is rendered FROM the shader",
+    "summary": "prefers-reduced-motion is not optional and the scene is never the content. Under reduced motion the canvas does not mount (Scene.tsx gate), the band collapses 160vh -> 100vh so a reader who asked for stillness does not scroll through an empty room, and the slot's CSS background is career-descent-poster.avif RENDERED FROM THIS SAME SHADER at the composed frame uDescent=0.62 — HERO-FOLD-v2's rule ('re-render the poster from the same shader so the no-GL path is the same picture'). The no-WebGL path is byte-identical to the reduced-motion path. A reader who has asked for stillness sees the same composition HELD, not a different one.",
+    "order": [
+      "Author scripts/assets/descent_poster.mjs — headless Chrome renders the shader at uDescent=0.62, frame written as AVIF",
+      "Ship the poster under public/assets/ and set it as the slot's CSS background",
+      "Collapse the band to 100vh under prefers-reduced-motion (CSS media query, no JS branch)",
+      ".fieldSlot:has(canvas) { background: none } so the two lights never add — the still is the no-GL path, full stop (the pattern About already uses)",
+      "Assert FALLBACK_DELTA 0.04 over >= FALLBACK_COVERAGE_MIN 0.08 of the slot on the still, at both viewports",
+      "Assert zero pageerrors with WebGL unavailable and the section whole"
+    ],
+    "gates": [
+      "Poster <= 500 kB (scripts/validate/overhaul_static_audit.mjs image cap); audit stays 10/10",
+      "Reduced-motion and no-GL render the SAME picture — not a degraded one",
+      "The poster is rendered from the shader, never hand-drawn or screenshotted from a browser session",
+      "Dead CSS is a build failure: if a rule is added it must be reachable (TC-NFR-DEADCSS)"
+    ],
+    "verify": [
+      "node scripts/assets/descent_poster.mjs && ls -la public/assets/career-descent-poster.avif",
+      "npm run build:static && node scripts/validate/overhaul_static_audit.mjs",
+      "python3 -m http.server 5602 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test tests/overhaul/flagship-visibility.spec.ts -g 'career-descent|experience'"
+    ]
+  },
+  {
+    "slug": "x2-f1-strata-depth-planes",
+    "priority": 93,
+    "assignee": "analyst-programmer",
+    "minutes": 30,
+    "parents": [
+      "x2-t1-story-contract-tests"
+    ],
+    "title": "G-E2 — career-strata gets the parallax term TC-STORY-EXP-01 needs (>=2 visible depth planes)",
+    "summary": "GAP-BACKLOG G-E2 asks for '>=2 visible strata depth planes'. strata.glsl.ts draws 'three drifting bands' — read this session — at ONE depth, so there is no depth to see and TC-STORY-EXP-01 is unsatisfiable today. This is the honest 'cannot yet' from SIGNATURE-SCENES-v2 §5 row 3, and this slice is its fix: give the three bands distinct parallax rates against scroll so their peaks move by different pixel counts between t0 and t1. It does NOT touch the mount (that is x2-s1's file) and it does NOT brighten anything — the bars above must remain the brightest objects in the section by a wide margin (strata.glsl.ts header) and #experience already runs a relaxed fallbackCoverageMin of 0.02 precisely because .roleDates (--ink-300) and the axis labels (--mist-400) clear AA at 4.70:1 and 6.02:1 over this slot. Raising the ground beneath them by 0.04 puts both under 4.5:1. Contrast is not negotiable; the scene is.",
+    "order": [
+      "Read strata.glsl.ts in full and the fallbackCoverageMin 0.02 comment in flagship-visibility.spec.ts before changing a coefficient",
+      "Give the three bands distinct parallax rates against the section's scroll progress",
+      "Verify the type over the slot still clears 4.5:1 at BOTH viewports before looking at the story assertion",
+      "Make TC-STORY-EXP-01 green; capture 04-tests-passing.log",
+      "Confirm MiniVic does not occlude [data-chart] / .trackYears (G-E2's second half) and the Ask Mini Vic pill is NOT hidden below 834px (G-MV1 HOLD PASS)"
+    ],
+    "gates": [
+      "No luminance increase over any type: TC-CONTRAST assertions and the 4.5:1 floor come first, the story assertion second",
+      "fallbackCoverageMin 0.02 for #experience is not raised to pass",
+      "The bars remain the brightest objects in the section",
+      "Never display:none the Ask Mini Vic pill (G-MV1)",
+      "Only strata.glsl.ts is edited — the Experience.tsx mount belongs to x2-s1 (v2 R-5)"
+    ],
+    "verify": [
+      "npx tsc --noEmit && npm run lint && npm run build:static",
+      "python3 -m http.server 5602 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test tests/overhaul/scene-experience.spec.ts tests/overhaul/story-contract.spec.ts -g EXP",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test tests/a11y"
+    ]
+  },
+  {
+    "slug": "x2-t3-fps-hud-device-path",
+    "priority": 92,
+    "assignee": "analyst-programmer",
+    "minutes": 30,
+    "parents": [
+      "x2-t2-descent-fps-harness"
+    ],
+    "title": "Tier C — a ?fps=1 on-device HUD, the only free path to a real 2021-phone frame-rate reading",
+    "summary": "R2 requires 60 fps on a '2021+ phone' and NO GPU reading has ever been taken on this project. Tier A (SwiftShader, this VPS) cannot prove a GPU. Tier B (TC-SCENE-FPS-03 on a self-hosted runner, checks.yml:96, gated on vars.E2E_RUNNER_LABELS) has NEVER EXECUTED — v1 §0.5.1 measured variables total_count 0 and runners total_count 0. A hosted GPU browser is a cost gate. Tier C is free, needs no runner, and is the only path on the table that produces a number from real 2021-phone silicon: a query-gated dynamic import that prints median rAF, p95, sample count, the WEBGL_debug_renderer_info string and the sceneId, read on the owner's own device and screenshotted into evidence. It is an instrument, not a feature: zero bytes on the default path.",
+    "order": [
+      "Author TC-FPS-HUD-01 first: without ?fps=1 the HUD's chunk does not appear in the document's initial JS (assert on the built output, not on intent)",
+      "Author components/gl/FpsHud.tsx — median + p95 + sample count + renderer string + sceneId, discarding 30 warm-up frames and sampling 120 deltas, the same shape as scene-framerate.spec.ts",
+      "Mount it from GLCanvas only when window.location.search includes fps=1, via next/dynamic ssr:false",
+      "Render it aria-hidden and outside the tab order — it must not affect a11y or the reduced-motion path",
+      "Write docs/delivery/evidence/<cycle>/TIER-C-README.md: the exact URL to open, what to screenshot, and that the renderer string must be legible in the shot",
+      "Confirm the HUD never mounts under prefers-reduced-motion (no canvas, nothing to measure)"
+    ],
+    "gates": [
+      "Zero bytes on the default path: grep the built initial JS for the HUD chunk -> 0",
+      "PERF-01 first-view transfer <= 2.5 MB and PERF-02 LCP < 2.5 s still green",
+      "Every HUD reading displays its renderer string — a number without its instrument is not a reading (v1 D9)",
+      "The HUD is aria-hidden, keyboard-inert, and absent under reduced motion",
+      "No fps claim is written anywhere from this slice — it builds the instrument, it does not take the reading"
+    ],
+    "verify": [
+      "npx tsc --noEmit && npm run lint && npm run build:static",
+      "grep -rl 'FpsHud' out/_next/static | wc -l",
+      "python3 -m http.server 5601 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/perf/performance.spec.ts"
+    ]
+  },
+  {
+    "slug": "x2-f5-about-ten-lobes",
+    "priority": 91,
+    "assignee": "analyst-programmer",
+    "minutes": 25,
+    "parents": [
+      "x2-t1-story-contract-tests"
+    ],
+    "title": "G-A3 story — the About field reads as a ring of TEN, and the three open sectors read as open",
+    "summary": "ADV-2315Z: 'Recruiter names the dial, not the GL field' and 'Live recall still FAIL' — with an explicit instruction to reopen any board G-A3 PASS. The shader can already do this: uAnsweredMask / uSourcedMask reach it as uniforms and are read per sector with an exp2 bit test, and the fan carries them across the plane (TC-SCENE-ABOUT-07/08, read this session). What has never been measured is whether the RESULT reads as ten distinct sectors with three of them open. TC-STORY-ABOUT-01/02 measures it as a 360-bin angular histogram. If the histogram misses, the fix is per-sector CONTRAST between the answered floor and the open floor — not overall brightness: the field sits under the reading column and is bounded there by a 1.0 - exp(-luma/ceiling) ceiling with READING_CEILING 0.1 / INSTRUMENT_CEILING 0.24, and those ceilings exist to keep type legible.",
+    "order": [
+      "Run TC-STORY-ABOUT-01/02 against the current shader first and record the actual histogram — the shader may already pass",
+      "If it misses, raise the SEPARATION between answered and open sectors, never the overall luma",
+      "Do not touch READING_CEILING 0.1 or INSTRUMENT_CEILING 0.24 — they are the type's protection",
+      "Re-run tests/overhaul/scene-about.spec.ts in full: TC-SCENE-ABOUT-01..09 must all stay green",
+      "Capture the histogram in evidence so the next reviewer can check the shape, not just the verdict"
+    ],
+    "gates": [
+      "Gold/hatch honesty stays green — the accent never enters the shader (TC-SCENE-ABOUT-06)",
+      "The two reading ceilings are not raised",
+      "All nine existing TC-SCENE-ABOUT assertions stay green",
+      "No hex in the GLSL or the component"
+    ],
+    "verify": [
+      "npm run build:static && python3 -m http.server 5602 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test tests/overhaul/scene-about.spec.ts",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test tests/overhaul/story-contract.spec.ts -g ABOUT"
+    ]
+  },
+  {
+    "slug": "x2-f2-skills-split-delta",
+    "priority": 90,
+    "assignee": "analyst-programmer",
+    "minutes": 25,
+    "parents": [
+      "x2-t1-story-contract-tests"
+    ],
+    "title": "G-S2 story — the bench light reads the tested/untested split as a measurable delta",
+    "summary": "#skills claims every capability was measured somewhere, and bench.glsl.ts already lifts the plate at the height each production-measured row's wire lands (uRows / uRowCount, read this session). ADV-2315Z's Skills row is still FAIL: the 17-row table is ~2.8x taller than the canvas, so the recruiter reads the table and the bench is decoration. TC-STORY-SKILLS-01 turns the claim into a number: mean luminance at the production rows exceeds the three non-production rows by >=0.06 relative luminance. The rails are real text (thirteen sources left, seventeen capabilities right) and `across` holds the plate inside the middle span, reaching zero a full 3% of the width before the nearest .bandLabel — that guard is not negotiable and TC-CONTRAST-01/02 measures it.",
+    "order": [
+      "Measure the current delta first and record it — the shader may already pass",
+      "If it misses, deepen the FALL at the two rows measured outside production and the one not yet held, rather than brightening the production rows",
+      "Keep the plate inside the middle span; nothing bright may reach the label columns",
+      "Re-run TC-CONTRAST-01/02 and tests/overhaul/scene-skills.spec.ts in full",
+      "The quiet Download CV stays where it is (employer R4 half-PASS on live)"
+    ],
+    "gates": [
+      "TC-CONTRAST-01/02 stay green — no light reaches either rail of type",
+      "flagship-visibility skills-bench keeps clearing the FULL default bar at both widths (it is not on a relaxed floor)",
+      "skills-bench stays at resolutionScale 1 — its graticule is a hairline and does not survive an upscale (Scene.tsx)",
+      "No gold added: #skills spends its gold on the production wires and the legend mark"
+    ],
+    "verify": [
+      "npm run build:static && python3 -m http.server 5601 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/overhaul/scene-skills.spec.ts",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/overhaul/story-contract.spec.ts -g SKILLS"
+    ]
+  },
+  {
+    "slug": "x2-f3-vitrine-six-lights",
+    "priority": 89,
+    "assignee": "analyst-programmer",
+    "minutes": 25,
+    "parents": [
+      "x2-t1-story-contract-tests"
+    ],
+    "title": "Vitrine story — six plates, six different lights, proven STRUCTURALLY (the way out of F-S5-390)",
+    "summary": "vitrine.glsl.ts's own claim is 'a cabinet lit six ways, not one gradient translated' (uLit seeds the pool, uCentre places it, uScroll drifts the grain) and it has never been measured. It also sits on a deadlock: F-S5-390 has vitrine-field at peak 0.2918 against PEAK_MIN 0.35 at 390, and it CANNOT be brightened out of it because M-3 leaves only x1.04 of AA margin on the worst node in the section (4.69:1 vs 4.5) and M-2 leaves x1.08 at 1440. TC-STORY-VITRINE-01/02 is the honest way through: prove the story with STRUCTURE — six distinct, monotonic pool centroids spanning >=55% of the slot width, and per-plate captures that are not translations of one another — which spends no contrast at all. Note for the reviewer: this does NOT close F-S5-390; the peak floor stays red at 390 and stays named.",
+    "order": [
+      "Measure the six centroids at both viewports and record them before changing anything",
+      "If the pool does not concentrate at 390 (the narrow branch spreads its light — F-S5-390's mechanism), tighten the pool's radius on the narrow branch rather than raising its brightness",
+      "Assert per-plate captures are not translations of one another after best-fit x-alignment",
+      "Re-run TC-CONTRAST-01/02: the rest-plate primary strokes must stay >=4.5:1 (G-V3 PASS on live — do not regress it)",
+      "Record F-S5-390 as STILL OPEN in the evidence; do not let a structural pass be reported as closing a peak floor"
+    ],
+    "gates": [
+      "No brightening: M-2 x1.08 and M-3 x1.04 are margins, not headroom (v1 §0.5 'Open findings')",
+      "G-V3 rest-plate contrast >=4.5:1 stays green",
+      "F-S5-390 is reported as still open unless the peak floor is actually met and measured",
+      "No gold: a pool of light is not a figure"
+    ],
+    "verify": [
+      "npm run build:static && python3 -m http.server 5602 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test tests/overhaul/scene-vitrine.spec.ts",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test tests/overhaul/story-contract.spec.ts -g VITRINE",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test tests/overhaul/flagship-visibility.spec.ts -g vitrine"
+    ]
+  },
+  {
+    "slug": "x2-f4-listen-envelope-correlation",
+    "priority": 88,
+    "assignee": "tester",
+    "minutes": 20,
+    "parents": [
+      "x2-t1-story-contract-tests"
+    ],
+    "title": "Listen story — the band IS the greeting's loudness, asserted as a correlation not a comment",
+    "summary": "listen.glsl.ts samples a 256x1 uEnvelope texture — 'the greeting's own loudness, which is what the band draws instead of a sine' — and ADV-2315Z confirms on live that 'the live shader is envelope-driven (not sin() band)' with a 24.98 s reading matching the greeting MP3. That is currently a comment plus a reviewer's eye; nothing in the suite would catch a regression to a sine. TC-STORY-LISTEN-01 asserts it as a number: Pearson r >= 0.7 against the envelope texture AND r < 0.5 against a same-period sine. Expected to be test-only work. Watch M-1: listen-field motion at 1440 read 0.00428 against MOTION_MIN 0.004 (x1.07) — do not dim anything.",
+    "order": [
+      "Sample the band's amplitude across the reading from the isolated capture at uClose steps",
+      "Correlate against the uEnvelope texture data and against a same-period sine; assert both bounds",
+      "If the correlation is weak because the sampling height is wrong, fix the SAMPLING, never the shader",
+      "Re-run tests/overhaul/listen-flagship.spec.ts and scene-listen.spec.ts in full",
+      "Leave the channel-word colour nit alone — it is a separate G-L1 nit, not this slice"
+    ],
+    "gates": [
+      "M-1 x1.07 motion margin is not spent: nothing is dimmed",
+      "The '—' reading and the gold jaws on LinkedIn+GitHub only stay exactly as they are (G-L1 PASS)",
+      "If the assertion fails, it is recorded as a named FAIL — never waived, never softened"
+    ],
+    "verify": [
+      "npm run build:static && python3 -m http.server 5601 --directory out & sleep 3",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/overhaul/scene-listen.spec.ts tests/overhaul/listen-flagship.spec.ts",
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/overhaul/story-contract.spec.ts -g LISTEN"
+    ]
+  },
+  {
+    "slug": "x2-s4-descent-2160p60-master",
+    "priority": 87,
+    "assignee": "analyst-programmer",
+    "minutes": 30,
+    "parents": [
+      "x2-s3-career-descent-still"
+    ],
+    "title": "R5 asset clause — career-descent rendered offline to a 3840x2160@60 master, zero credits, zero shipped bytes",
+    "summary": "Measured on this host this session: node v22.23.1, /usr/bin/ffmpeg, /usr/bin/google-chrome. That is the whole toolchain: headless Chrome renders the SAME shader with uTime and uDescent driven by FRAME INDEX rather than wall clock (so the render is deterministic and reproducible), FFmpeg encodes 3840x2160 at 60/1. No HyperFrames dependency is required for this — the researcher's own verdict is that HyperFrames 'adds only the render pipeline, not the in-browser interactivity', and since the in-page artefact is a live scene, the player's 17.6 kB buys nothing (SIGNATURE-SCENES-v2 §4, D-4). GAP-BACKLOG G-X2 explicitly authorises this branch: 'HyperFrames in product OR honest zero-credit, not shipped + incremental UHD GLSL that IS the story.' THE LABELLING RULE, which is the whole point of this slice: an ffprobe line reading 3840,2160,60/1 proves the ASSET is 4K/60. It says NOTHING about whether the live scene holds 60 fps. No board row, evidence file or cycle report downstream of this slice may blur those two (v2 D-8).",
+    "order": [
+      "Author scripts/assets/descent_render.mjs — deterministic frame driver (uTime and uDescent from frame index), headless Chrome, FFmpeg encode at 3840x2160 60/1",
+      "Render the master into artifacts/masters/ (UNTRACKED — never commit a 4K master; the existing minivic masters live there, 58 MB / 4.7 MB / 1.1 MB measured this session)",
+      "ffprobe the master and paste the RAW output into evidence before writing any claim",
+      "Write the claim as exactly: 'asset is 3840x2160@60 (ffprobe); live-scene frame rate remains unproven — see Tier A/B/C'",
+      "Do NOT ship the master: only the AVIF poster from x2-s3 is a shipped asset (v2 R-6)",
+      "Confirm the render never runs in the deploy path — deploy.yml and checks.yml untouched"
+    ],
+    "gates": [
+      "ffprobe prints 3840,2160,60/1 — no R5 asset claim exists without that exact line pasted raw",
+      "Zero new runtime dependencies; zero bytes added to the shipped bundle",
+      "The master is untracked; git status shows no 4K file staged",
+      "No Higgsfield call, no paid API, no ANTHROPIC_API_KEY",
+      "The claim text distinguishes asset-4K60 from live-scene-60fps, verbatim (v2 D-8)",
+      "npm run build:static clean; static audit stays 10/10"
+    ],
+    "verify": [
+      "node -v && which ffmpeg && which google-chrome",
+      "node scripts/assets/descent_render.mjs",
+      "ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate -of csv=p=0 artifacts/masters/career-descent-2160p60.mp4",
+      "git status --porcelain | grep -c '2160p60' ",
+      "npm run build:static && node scripts/validate/overhaul_static_audit.mjs"
     ]
   }
 ]

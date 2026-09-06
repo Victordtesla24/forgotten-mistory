@@ -40,3 +40,9 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T00:10:56.882Z)
 running — dispatched 00:06Z via claude-cli Workflow (fresh identity)
+
+## COMMENT (2026-09-06T01:02:26.229Z)
+PM note 01:03Z: the SA committed docs/architecture/MINIVIC-BRAIN-0-4.md as a1504fb directly on the main checkout and pushed to origin main (docs-only push → push-triggered Deploy). Accepted (single doc, no code), but protocol for future lanes: commit in a worktree branch and let deploy.yml consolidate (O3/O4), never push main from a worker.
+
+## COMPLETE (2026-09-06T01:06:41.641Z)
+SA delivered docs/architecture/MINIVIC-BRAIN-0-4.md (362 lines, on origin/main a1504fb; PM verified). Decision: DEFAULT_PROVIDER_ORDER openrouter,deepseek,zai,openai (OpenAI last, labelled); oauth_rung none (claude -p warm first token 3.130 s vs 1.2 s bar; no lawful server-side OAuth session; no quota guard — each CLI turn ≈ USD 0.22); badge 'MiniVic · synthetic'; truth line 'Voice: ElevenLabs stock · Face: pre-rendered loop · Answers: live text via {provider}' with provider read at runtime (lib/miniVicBrain.ts hard-codes source:'openrouter' while all 11 live samples were openai — defect named). G-M4 root cause: Fastly buffering at the Hosting rewrite (origin first token 0.69–0.82 s; Hosting delivers headers/first token/total within 15–47 ms of each other) + 1.67 s serial dead-rung tax; change c-1 primes cooldowns on a ?warm=1 ping. FACT for the cycle report: OpenRouter balance −5.384 USD; every paid rung 402; DeepSeek/Z.ai also out of balance; §0.4 happy path returns only with a top-up (min 5.39, recommended 25 USD).

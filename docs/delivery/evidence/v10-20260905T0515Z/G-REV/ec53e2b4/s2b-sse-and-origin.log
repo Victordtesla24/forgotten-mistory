@@ -1,0 +1,217 @@
+=== SSE against Hosting rewrite (full raw body, to expose rungs/attempts) ===
+data: {"delta":"At"}
+
+data: {"delta":" the"}
+
+data: {"delta":" Australian"}
+
+data: {"delta":" Tax"}
+
+data: {"delta":"ation"}
+
+data: {"delta":" Office"}
+
+data: {"delta":","}
+
+data: {"delta":" I"}
+
+data: {"delta":" serve"}
+
+data: {"delta":" as"}
+
+data: {"delta":" Scrum"}
+
+data: {"delta":" Master"}
+
+data: {"delta":" and"}
+
+data: {"delta":" Project"}
+
+data: {"delta":" Manager"}
+
+data: {"delta":" on"}
+
+data: {"delta":" the"}
+
+data: {"delta":" Payday"}
+
+data: {"delta":" Super"}
+
+data: {"delta":" reform"}
+
+data: {"delta":" program"}
+
+data: {"delta":","}
+
+data: {"delta":" leading"}
+
+data: {"delta":" the"}
+
+data: {"delta":" Agile"}
+
+data: {"delta":" K"}
+
+data: {"delta":"ook"}
+
+data: {"delta":"ab"}
+
+data: {"delta":"urr"}
+
+data: {"delta":"as"}
+
+data: {"delta":" squad"}
+
+data: {"delta":" and"}
+
+data: {"delta":" driving"}
+
+data: {"delta":" delivery"}
+
+data: {"delta":" progress"}
+
+data: {"delta":" past"}
+
+data: {"delta":" "}
+
+data: {"delta":"95"}
+
+data: {"delta":"%"}
+
+data: {"delta":" completion"}
+
+data: {"delta":" while"}
+
+data: {"delta":" resolving"}
+
+data: {"delta":" critical"}
+
+data: {"delta":" environment"}
+
+data: {"delta":" instability"}
+
+data: {"delta":"."}
+
+data: {"done":true,"provider":"openai","model":"gpt-4.1-mini"}
+
+
+
+=== SSE against Cloud Run origin (route the client takes first) ===
+data: {"delta":"At"}
+
+data: {"delta":" the"}
+
+data: {"delta":" A"}
+
+data: {"delta":"TO"}
+
+data: {"delta":","}
+
+data: {"delta":" I"}
+
+data: {"delta":" have"}
+
+data: {"delta":" been"}
+
+data: {"delta":" Scrum"}
+
+data: {"delta":" Master"}
+
+data: {"delta":" and"}
+
+data: {"delta":" Project"}
+
+data: {"delta":" Manager"}
+
+data: {"delta":" on"}
+
+data: {"delta":" the"}
+
+data: {"delta":" Payday"}
+
+data: {"delta":" Super"}
+
+data: {"delta":" reform"}
+
+data: {"delta":" program"}
+
+data: {"delta":" since"}
+
+data: {"delta":" March"}
+
+data: {"delta":" "}
+
+data: {"delta":"202"}
+
+data: {"delta":"6"}
+
+data: {"delta":","}
+
+data: {"delta":" leading"}
+
+data: {"delta":" the"}
+
+data: {"delta":" Agile"}
+
+data: {"delta":" K"}
+
+data: {"delta":"ook"}
+
+data: {"delta":"ab"}
+
+data: {"delta":"urr"}
+
+data: {"delta":"as"}
+
+data: {"delta":" squad"}
+
+data: {"delta":" and"}
+
+data: {"delta":" delivering"}
+
+data: {"delta":" key"}
+
+data: {"delta":" components"}
+
+data: {"delta":" like"}
+
+data: {"delta":" Distribution"}
+
+data: {"delta":" UI"}
+
+data: {"delta":" past"}
+
+data: {"delta":" "}
+
+data: {"delta":"95"}
+
+data: {"delta":"%"}
+
+data: {"delta":" completion"}
+
+data: {"delta":" while"}
+
+data: {"delta":" resolving"}
+
+data: {"delta":" critical"}
+
+data: {"delta":" test"}
+
+data: {"delta":" environment"}
+
+data: {"delta":" issues"}
+
+data: {"delta":"."}
+
+data: {"done":true,"provider":"openai","model":"gpt-4.1-mini"}
+
+
+--- origin headers ---
+content-type: text/event-stream; charset=utf-8
+cache-control: no-store
+server: Google Frontend
+
+=== JSON against Cloud Run origin ===
+{"text":"Hi, I am Vikram Deshpande.","provider":"openai","model":"gpt-4.1-mini"}
+
+=== diagnostic attempt: ?debug=1 / verbose flag ===
+{"text":"I have over 15 years of technology experience, currently working as a Scrum Master and Project Manager at the Australian Taxation Office on the Payday Super reform program since March 2026. How can I assist you today?","provider":"openai","model":"gpt-4.1-mini"}

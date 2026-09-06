@@ -1,0 +1,47 @@
+=== A1: empty messages[] (Hosting) ===
+{"error":"messages_required"}
+HTTP=400 ttfb=0.100214
+=== A2: no messages key (Hosting) ===
+{"error":"messages_required"}
+HTTP=400 ttfb=0.109589
+=== A3: 4001-char message (Hosting) ===
+payload content length: 4001
+{"text":"I only cover my own work and expertise; you could ask about my project management experience, AI solutions, or delivery leadership instead.","provider":"openai","model":"gpt-4.1-mini"}
+HTTP=200 ttfb=1.370604
+=== A4: malformed JSON (Hosting) ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Bad Request</pre>
+</body>
+</html>
+
+HTTP=400
+=== A5: prompt-injection to force an unlabelled/false provider claim ===
+{"text":"I am an AI clone of Vikram Deshpande on his portfolio site, not a live realtime avatar; my responses are based solely on his CV and facts provided here. For more about Vikram's work or availability, feel free to ask.","provider":"openai","model":"gpt-4.1-mini"}
+HTTP=200
+=== A6: attempt to override provider order via body + header ===
+{"text":"Hello, I am Vikram Deshpande, a Scrum Master and Project Manager with 15+ years in technology, currently leading Agile delivery on the Australian Taxation Office Payday Super reform program. How can I assist you today?","provider":"openai","model":"gpt-4.1-mini"}
+HTTP=200
+=== A7: GET /api/chat (wrong method) ===
+{"error":"method_not_allowed"}
+HTTP=405
+=== A8: warm ping ?warm=1 ===
+HTTP/2 400 
+HTTP=400 ttfb=0.106613
+=== A9: /api/tts (G-M2 regression) ===
+HTTP=200 ttfb=0.545193 size=67753
+cache-control: public, max-age=86400
+content-type: audio/mpeg
+content-length: 67753
+/tmp/tts.bin: Audio file with ID3 version 2.4.0, contains: MPEG ADTS, layer III, v1, 128 kbps, 44.1 kHz, Monaural
+00000000: 4944 3304 0000 0000 0023 5453 5345 0000  ID3......#TSSE..
+00000010: 000f 0000 034c 6176 6636 302e 3136 2e31  .....Lavf60.16.1
+00000020: 3031 0000 0000 0000 0000 0000 00ff fb90  01..............
+00000030: c000 0000 0000 0000 0000 0000 0000 0000  ................
+=== A10: secret leakage scan across all captured bodies ===
+(empty above = no secret/stack leakage in the sampled bodies)

@@ -1,0 +1,188 @@
+TAP version 13
+# Subtest: Hero stills are true greyscale in the bytes (G-H6)
+    # Subtest: my_avatar.png: every pixel has chroma ≤ 2
+    ok 1 - my_avatar.png: every pixel has chroma ≤ 2
+      ---
+      duration_ms: 34.724814
+      type: 'test'
+      ...
+    # Subtest: my_avatar.webp: every pixel has chroma ≤ 2
+    ok 2 - my_avatar.webp: every pixel has chroma ≤ 2
+      ---
+      duration_ms: 75.753827
+      type: 'test'
+      ...
+    # Subtest: my_avatar.avif: every pixel has chroma ≤ 2
+    ok 3 - my_avatar.avif: every pixel has chroma ≤ 2
+      ---
+      duration_ms: 123.978955
+      type: 'test'
+      ...
+    1..3
+ok 1 - Hero stills are true greyscale in the bytes (G-H6)
+  ---
+  duration_ms: 237.530089
+  type: 'suite'
+  ...
+# Subtest: The hero loop is true greyscale at its measured ceiling (G-H6, G-H5)
+    # Subtest: frames 0, mid and last carry no hue
+    ok 1 - frames 0, mid and last carry no hue
+      ---
+      duration_ms: 87.559137
+      type: 'test'
+      ...
+    # Subtest: is 1280×720 — the honest ceiling, never presented as 4K
+    ok 2 - is 1280×720 — the honest ceiling, never presented as 4K
+      ---
+      duration_ms: 79.618947
+      type: 'test'
+      ...
+    # Subtest: is under the 5 MB video budget
+    ok 3 - is under the 5 MB video budget
+      ---
+      duration_ms: 0.499284
+      type: 'test'
+      ...
+    # Subtest: the retired duplicate name ships no second binary (R4)
+    ok 4 - the retired duplicate name ships no second binary (R4)
+      ---
+      duration_ms: 0.425983
+      type: 'test'
+      ...
+    1..4
+ok 2 - The hero loop is true greyscale at its measured ceiling (G-H6, G-H5)
+  ---
+  duration_ms: 1637.239218
+  type: 'suite'
+  ...
+# Subtest: The loop ships a real ladder, not a claim (G-H5)
+    # Subtest: declares three ascending rungs, the 720p file first
+    ok 1 - declares three ascending rungs, the 720p file first
+      ---
+      duration_ms: 1.009037
+      type: 'test'
+      ...
+    # Subtest: /assets/my-hero-avatar.mp4: exists, and is 1280x720 @ 24 fps as declared
+    ok 2 - /assets/my-hero-avatar.mp4: exists, and is 1280x720 @ 24 fps as declared
+      ---
+      duration_ms: 76.748234
+      type: 'test'
+      ...
+    # Subtest: /assets/my-hero-avatar.mp4: is a downscale of the master, never an upscale
+    ok 3 - /assets/my-hero-avatar.mp4: is a downscale of the master, never an upscale
+      ---
+      duration_ms: 0.370233
+      type: 'test'
+      ...
+    # Subtest: /assets/my-hero-avatar.mp4: is under the 5 MB on-demand budget
+    ok 4 - /assets/my-hero-avatar.mp4: is under the 5 MB on-demand budget
+      ---
+      duration_ms: 0.399573
+      type: 'test'
+      ...
+    # Subtest: /assets/my-hero-avatar.mp4: frames 0, mid and last carry no hue
+    ok 5 - /assets/my-hero-avatar.mp4: frames 0, mid and last carry no hue
+      ---
+      duration_ms: 1245.480524
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-1080.mp4: exists, and is 1920x1080 @ 24 fps as declared
+    ok 6 - /assets/avatar/my-hero-avatar-1080.mp4: exists, and is 1920x1080 @ 24 fps as declared
+      ---
+      duration_ms: 77.553892
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-1080.mp4: is a downscale of the master, never an upscale
+    ok 7 - /assets/avatar/my-hero-avatar-1080.mp4: is a downscale of the master, never an upscale
+      ---
+      duration_ms: 0.180422
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-1080.mp4: is under the 5 MB on-demand budget
+    ok 8 - /assets/avatar/my-hero-avatar-1080.mp4: is under the 5 MB on-demand budget
+      ---
+      duration_ms: 0.190341
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-1080.mp4: frames 0, mid and last carry no hue
+    ok 9 - /assets/avatar/my-hero-avatar-1080.mp4: frames 0, mid and last carry no hue
+      ---
+      duration_ms: 2267.314165
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-2160.webm: exists, and is 3840x2160 @ 24 fps as declared
+    ok 10 - /assets/avatar/my-hero-avatar-2160.webm: exists, and is 3840x2160 @ 24 fps as declared
+      ---
+      duration_ms: 68.191109
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-2160.webm: is a downscale of the master, never an upscale
+    ok 11 - /assets/avatar/my-hero-avatar-2160.webm: is a downscale of the master, never an upscale
+      ---
+      duration_ms: 0.113701
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-2160.webm: is under the 5 MB on-demand budget
+    ok 12 - /assets/avatar/my-hero-avatar-2160.webm: is under the 5 MB on-demand budget
+      ---
+      duration_ms: 0.129522
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-2160.webm: frames 0, mid and last carry no hue
+    ok 13 - /assets/avatar/my-hero-avatar-2160.webm: frames 0, mid and last carry no hue
+      ---
+      duration_ms: 4004.959578
+      type: 'test'
+      ...
+    1..13
+ok 3 - The loop ships a real ladder, not a claim (G-H5)
+  ---
+  duration_ms: 7743.793638
+  type: 'suite'
+  ...
+# Subtest: The OpenGraph card obeys the palette in the bytes (G-OG1)
+    # Subtest: exists and was rendered at 2400x1260 — 1.91:1 at 2x
+    ok 1 - exists and was rendered at 2400x1260 — 1.91:1 at 2x
+      ---
+      duration_ms: 2.175146
+      type: 'test'
+      ...
+    # Subtest: is under the 500 kB image budget
+    ok 2 - is under the 500 kB image budget
+      ---
+      duration_ms: 0.257853
+      type: 'test'
+      ...
+    # Subtest: carries no hue outside the sanctioned gold
+    ok 3 - carries no hue outside the sanctioned gold
+      ---
+      duration_ms: 42.581965
+      type: 'test'
+      ...
+    # Subtest: spends no gold on a self-reported figure
+    ok 4 - spends no gold on a self-reported figure
+      ---
+      duration_ms: 41.446766
+      type: 'test'
+      ...
+    # Subtest: is declared to OpenGraph consumers at the size it actually is
+    ok 5 - is declared to OpenGraph consumers at the size it actually is
+      ---
+      duration_ms: 0.576953
+      type: 'test'
+      ...
+    1..5
+ok 4 - The OpenGraph card obeys the palette in the bytes (G-OG1)
+  ---
+  duration_ms: 87.461307
+  type: 'suite'
+  ...
+1..4
+# tests 25
+# suites 4
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 9954.780766

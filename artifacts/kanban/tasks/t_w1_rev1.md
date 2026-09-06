@@ -41,3 +41,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T00:53:33.924Z)
 running — dispatched 00:48Z reviewer rev-56ffed3e-w1
+
+## COMPLETE (2026-09-06T01:15:34.967Z)
+Reviewer rev-56ffed3e-w1 (max, ~32 min, overrun self-reported): G-H6 PASS (bytes + painted pixels chroma 0; 295-frame SATMAX sweep all 0), G-C1 PASS (identical 305-char href both plates), G-H5 FAIL (2160p master + 1080p variant exist while only 720p is served → escape hatch false; corrected under t_w1_h5b), regression G-MV1/G-V3/G-L1/palette/pageerrors/contrast all PASS, R5 OPEN, new P1 G-OG1 (og-image.png blue-cast ground → t_w1_og1). Overall production verdict remains FAIL (G-H1/G-A3/R1/R2/R3/§14 untouched by wave-1). Evidence: docs/delivery/evidence/v10-20260905T0515Z/G-REV/56ffed3e/ (08-adversarial-review.md, verdicts.json, 40+ captures).

@@ -25,7 +25,10 @@
       "python3 -m http.server 5635 --directory out & sleep 3",
       "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5635 npx playwright test tests/overhaul/hero-plane-dominance.spec.ts",
       "node scripts/validate/hero_plane_dominance.mjs --base http://127.0.0.1:5635"
-    ]
+    ],
+    "status": "superseded",
+    "superseded_by": "docs/architecture/HERO-SETPIECE-v3.md (t_w2_h1sa, 2026-09-06)",
+    "superseded_note": "HERO-FOLD-v2 slice. g2h1-01 (the SPD instrument) and g2h1-04 (the composite mask) SHIPPED and their work is load-bearing in v3; the remaining rows are retired because v3 changes the composition they were cut against. Nothing is deleted: v3 slice g2h1v3-01 carries g2h1-02/-03/-06 forward, g2h1v3-02 carries g2h1-05, g2h1v3-04 carries g2h1-07."
   },
   {
     "slug": "g2h1-02-retire-halfframe-scrim",
@@ -56,14 +59,19 @@
       "python3 -m http.server 5636 --directory out & sleep 3",
       "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5636 npx playwright test tests/a11y/text-contrast.spec.ts tests/overhaul/flagship-visibility.spec.ts tests/e2e/hero-fold.spec.ts",
       "node scripts/validate/hero_plane_dominance.mjs --base http://127.0.0.1:5636"
-    ]
+    ],
+    "status": "superseded",
+    "superseded_by": "docs/architecture/HERO-SETPIECE-v3.md (t_w2_h1sa, 2026-09-06)",
+    "superseded_note": "HERO-FOLD-v2 slice. g2h1-01 (the SPD instrument) and g2h1-04 (the composite mask) SHIPPED and their work is load-bearing in v3; the remaining rows are retired because v3 changes the composition they were cut against. Nothing is deleted: v3 slice g2h1v3-01 carries g2h1-02/-03/-06 forward, g2h1v3-02 carries g2h1-05, g2h1v3-04 carries g2h1-07."
   },
   {
     "slug": "g2h1-03-brand-mark-one-line",
     "title": "M2 — the name becomes a mark: one line, full measure, display tracking",
     "assignee": "analyst-programmer",
     "priority": 95,
-    "parents": ["g2h1-02-retire-halfframe-scrim"],
+    "parents": [
+      "g2h1-02-retire-halfframe-scrim"
+    ],
     "summary": "HERO-FOLD-v2 §4 / decision D-2, D-6. 'Vikram Deshpande' wraps to two lines today: --fs-name is clamp(3rem, 8.2vw, 7.5rem) = 118px at 1440 inside a ~660px column (h1 top 183, .role top 453 on live e3f0206c). A wrapped name is a heading; a single line set to the measure is a mark. Collapse the @media (min-width: 720px) two-column grid so the copy takes the full --page-max measure, then DERIVE --fs-name from a real browser measurement of the text advance — do not ship the brief's 166px/11.5vw arithmetic, it is an estimate with a stated metric assumption. Acceptance BM-1 (h1 height <= 1.30x font-size at 1440/1280/834), BM-2 (advance 0.86-1.00 of the column), BM-3 (font-size >= 0.10 x fold height), BM-4 (letter-spacing -0.035em..-0.015em), BM-6 (no other fold node > 40px), BM-7 (scrollWidth <= innerWidth), BM-8 (>= 6x the nav wordmark cap-height). At 390 ship BM-1b instead: exactly two line boxes from an authored break, leading <= 0.92em. .name keeps heroRiseSolid — transform only, never opacity — or the LCP entry disappears.",
     "order": [
       "Measure the real advance of the name at the heading face and tracking in the browser; record the number in the commit body",
@@ -86,14 +94,19 @@
       "python3 -m http.server 5637 --directory out & sleep 3",
       "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5637 npx playwright test tests/e2e/hero-fold.spec.ts tests/perf",
       "node scripts/validate/hero_plane_dominance.mjs --base http://127.0.0.1:5637"
-    ]
+    ],
+    "status": "superseded",
+    "superseded_by": "docs/architecture/HERO-SETPIECE-v3.md (t_w2_h1sa, 2026-09-06)",
+    "superseded_note": "HERO-FOLD-v2 slice. g2h1-01 (the SPD instrument) and g2h1-04 (the composite mask) SHIPPED and their work is load-bearing in v3; the remaining rows are retired because v3 changes the composition they were cut against. Nothing is deleted: v3 slice g2h1v3-01 carries g2h1-02/-03/-06 forward, g2h1v3-02 carries g2h1-05, g2h1v3-04 carries g2h1-07."
   },
   {
     "slug": "g2h1-04-photo-into-the-plane",
     "title": "M3 — the photograph loses its card: drafting frame out, edges masked into the light",
     "assignee": "analyst-programmer",
     "priority": 95,
-    "parents": ["g2h1-03-brand-mark-one-line"],
+    "parents": [
+      "g2h1-03-brand-mark-one-line"
+    ],
     "summary": "HERO-FOLD-v2 §5.1 / decision D-3. HeroPortrait.tsx draws .portraitFrame (a hairline inset 12px), four .portraitTick corners and .portraitCross — a closed rectangle with registration marks parked in a second column, which is exactly what the 1451Z reviewer called 'a framed card beside a column'. Remove those three from the FOLD only (the drafting language stays on the caliper mark and in the proof band) and apply a composite mask-image to .portraitMedia so the outer edges fall off into the plane. Place the figure overlapping the mark's right end rather than beside it. Acceptance PH-1 (no border/outline/box-shadow on the media box or its children; zero portrait-tick nodes in the fold), PH-2 (mean |dL| across the rect boundary <= 0.04 on >= 3 of 4 edges, sampled 4px in vs 4px out), PH-3 (mask opaque over the upper-centre 46% — no gradient crosses the face), PH-4 (still a <figure> with a <figcaption>, figurePressables === 0), PH-5 (CLS 0 — a mask is compositing, no box resizes). Colour-agnostic by construction: nothing here samples inside the media rect, so the t_g2_h6 decision changes one filter declaration and nothing else.",
     "order": [
       "Read HeroPortrait.tsx and the .portrait* rules in Hero.module.css; note which marks are fold-only and which the proof band still needs",
@@ -116,14 +129,19 @@
       "python3 -m http.server 5638 --directory out & sleep 3",
       "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5638 npx playwright test tests/e2e/hero-photo.spec.ts tests/e2e/hero-fold.spec.ts tests/a11y",
       "node scripts/validate/hero_plane_dominance.mjs --base http://127.0.0.1:5638"
-    ]
+    ],
+    "status": "superseded",
+    "superseded_by": "docs/architecture/HERO-SETPIECE-v3.md (t_w2_h1sa, 2026-09-06)",
+    "superseded_note": "HERO-FOLD-v2 slice. g2h1-01 (the SPD instrument) and g2h1-04 (the composite mask) SHIPPED and their work is load-bearing in v3; the remaining rows are retired because v3 changes the composition they were cut against. Nothing is deleted: v3 slice g2h1v3-01 carries g2h1-02/-03/-06 forward, g2h1v3-02 carries g2h1-05, g2h1v3-04 carries g2h1-07."
   },
   {
     "slug": "g2h1-05-pool-follows-the-figure",
     "title": "M4 — the pool comes to the figure: bind poolPlate to the portrait, re-render the poster",
     "assignee": "analyst-programmer",
     "priority": 94,
-    "parents": ["g2h1-04-photo-into-the-plane"],
+    "parents": [
+      "g2h1-04-photo-into-the-plane"
+    ],
     "summary": "HERO-FOLD-v2 §5.2 / decision D-7. atmosphere.glsl.ts already writes the pool for this — 'vec2 q2 = (p - vec2(0.75 * halfWidth, -0.04) ...)', whose own comment says it stands behind the portrait plate — but the pool is a constant and the figure is a layout, so after g2h1-04 they no longer coincide. Add a uPortrait uniform (normalised centre, defaulting to today's constant so the shader is byte-equivalent until it is fed), set it from the figure's measured rect in HeroAtmosphere.tsx, and mirror the same centre in .stage's radial fallback so the no-GL reader gets the same picture. Then re-run node scripts/assets/render-hero-poster.mjs IN THE SAME COMMIT: the poster is rendered from this shader, so a shader change without a re-render silently desynchronises the first-paint path. Acceptance PL-1 (of the fold's brightest 5% of pixels, >= 60% lie within 1.3x the media rect's half-diagonal of its centre, ?gl=force at 1440), PL-2 (same on the reduced-motion still, >= 50%), PL-3 (the commit touches both the shader and the poster), PL-4 (poster <= 500 kB, 3840x2160).",
     "order": [
       "Read atmosphere.glsl.ts pools/shafts section and scripts/assets/render-hero-poster.mjs determinism notes",
@@ -146,14 +164,19 @@
       "npm run build:static && node scripts/validate/overhaul_static_audit.mjs",
       "python3 -m http.server 5639 --directory out & sleep 3",
       "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5639 npx playwright test tests/overhaul/hero-first-paint.spec.ts tests/overhaul/flagship-visibility.spec.ts tests/overhaul/hero-plane-dominance.spec.ts"
-    ]
+    ],
+    "status": "superseded",
+    "superseded_by": "docs/architecture/HERO-SETPIECE-v3.md (t_w2_h1sa, 2026-09-06)",
+    "superseded_note": "HERO-FOLD-v2 slice. g2h1-01 (the SPD instrument) and g2h1-04 (the composite mask) SHIPPED and their work is load-bearing in v3; the remaining rows are retired because v3 changes the composition they were cut against. Nothing is deleted: v3 slice g2h1v3-01 carries g2h1-02/-03/-06 forward, g2h1v3-02 carries g2h1-05, g2h1v3-04 carries g2h1-07."
   },
   {
     "slug": "g2h1-06-one-quiet-bar",
     "title": "The CTA group as one quiet bar — one row, one plate, contrast kept, area cut",
     "assignee": "analyst-programmer",
     "priority": 93,
-    "parents": ["g2h1-02-retire-halfframe-scrim"],
+    "parents": [
+      "g2h1-02-retire-halfframe-scrim"
+    ],
     "summary": "HERO-FOLD-v2 §6 / decision D-4. With the frame lit again, the filled white .primaryAction is the second-brightest object in the fold and it is not the subject. Reshape hero-actions into one bar: both links on one row sharing a single plate, the primary carrying a hairline rule under a white label rather than a white fill. Acceptance CTA-1 (still exactly one CTA group in the fold — TC-FOLD-04 unchanged), CTA-2 (|delta top| <= 4px, group height <= 56px at >= 720px), CTA-3 (the group's summed light mass <= 0.06 of the fold's), CTA-4 (one element carries the ground — the bar is one box in the ink set, not two pills), CTA-5 (primary label contrast >= 7:1 against its own plate; the words are unchanged), CTA-6 (marginToFoldBottom >= 40px; today 177). Contrast is not reduced — area is, and CTA-5 is what forbids trading one for the other. Gold does not appear: it means 'this figure has a source'.",
     "order": [
       "Read .actions/.primaryAction/.secondaryAction in Hero.module.css and the TC-FOLD-04 rule in tests/e2e/hero-fold.spec.ts",
@@ -176,7 +199,10 @@
       "python3 -m http.server 5640 --directory out & sleep 3",
       "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5640 npx playwright test tests/e2e/hero-fold.spec.ts tests/a11y",
       "node scripts/validate/hero_plane_dominance.mjs --base http://127.0.0.1:5640"
-    ]
+    ],
+    "status": "superseded",
+    "superseded_by": "docs/architecture/HERO-SETPIECE-v3.md (t_w2_h1sa, 2026-09-06)",
+    "superseded_note": "HERO-FOLD-v2 slice. g2h1-01 (the SPD instrument) and g2h1-04 (the composite mask) SHIPPED and their work is load-bearing in v3; the remaining rows are retired because v3 changes the composition they were cut against. Nothing is deleted: v3 slice g2h1v3-01 carries g2h1-02/-03/-06 forward, g2h1v3-02 carries g2h1-05, g2h1v3-04 carries g2h1-07."
   },
   {
     "slug": "g2h1-07-live-independent-reprobe",
@@ -206,6 +232,235 @@
       "curl -fsS https://forgotten-mistory.web.app/ | grep -o 'build-commit\" content=\"[^\"]*\"'",
       "node scripts/validate/hero_plane_dominance.mjs --base https://forgotten-mistory.web.app",
       "PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/overhaul/hero-plane-dominance.spec.ts tests/e2e/hero-fold.spec.ts tests/a11y"
-    ]
+    ],
+    "status": "superseded",
+    "superseded_by": "docs/architecture/HERO-SETPIECE-v3.md (t_w2_h1sa, 2026-09-06)",
+    "superseded_note": "HERO-FOLD-v2 slice. g2h1-01 (the SPD instrument) and g2h1-04 (the composite mask) SHIPPED and their work is load-bearing in v3; the remaining rows are retired because v3 changes the composition they were cut against. Nothing is deleted: v3 slice g2h1v3-01 carries g2h1-02/-03/-06 forward, g2h1v3-02 carries g2h1-05, g2h1v3-04 carries g2h1-07."
+  },
+  {
+    "slug": "g2h1v3-01-plane-owns-the-frame",
+    "slice": "S1",
+    "title": "S1 - the plane owns the frame: declare [data-plane=hero], move the figure inside it, move role/location/caption below the fold",
+    "assignee": "analyst-programmer",
+    "priority": 96,
+    "minutes": 30,
+    "parents": [
+      "t_w2_h1sa"
+    ],
+    "brief": "docs/architecture/HERO-SETPIECE-v3.md sections 3, 4, 6.1, 9-S1",
+    "summary": "Composition A, slice 1. Wrap <Scene> and a new sibling .planeFigure in .plane carrying data-plane=\"hero\", inset 0 over the whole fold. Move the <picture> (AVIF/WebP/PNG, intrinsic 1480x826) and the <video> verbatim out of .portraitMedia into .planeFigure at the v3 section-3 geometry, keeping the composite dissolve mask HERO-FOLD-v2 section 5.1 already shipped and extending it to a named lower dissolve band. The figure rendered CSS width is clamped to 846px (= 1480 divided by the 1.75 DPR cap) so it is never upscaled; at 834x1194 a full-bleed cover would have demanded 1.445x, which is one of the two reasons compositions B and C were rejected. Move heroContent.role, heroContent.location and avatarContent.caption out of the fold into .proof so the fold text leaves are exactly brand + H1 + statement plus one hero-actions group. Extend scripts/validate/hero_plane_dominance.mjs so the ground chain resolves from [data-plane=\"hero\"], its ancestors and its whole subtree (v3 decision D-4: the figure must keep its alt, and Scene.tsx renders its slot aria-hidden=\"true\", so the figure cannot live inside the slot). Fence that exemption in the same commit with TC-HERO-PLANE-03.",
+    "order": [
+      "Read docs/architecture/HERO-SETPIECE-v3.md sections 1, 3, 4 and 6.1 before touching a file",
+      "Add .plane (data-plane=\"hero\") in Hero.tsx wrapping <Scene> plus a new .planeFigure sibling; the figure keeps alt=\"Portrait of Vikram Deshpande\"",
+      "Move <picture> and <video> from HeroPortrait .portraitMedia into .planeFigure; position per the v3 section-3 tables at 1440x900, 1280x800, 834x1194, 390x844",
+      "Extend the dissolve mask to the lower band named per viewport in v3 section 3 so the H1 baseline crosses vanishing photograph, never the face-safe box",
+      "Move role, location and the portrait caption into .proof; delete the CSS rules no source can render any more (TC-NFR-DEADCSS fails the audit otherwise)",
+      "Change the instrument ground chain to [data-plane=\"hero\"] + ancestors + subtree; keep groundChain printed in formatReport",
+      "Author tests/overhaul/hero-setpiece.spec.ts with TC-HERO-SET-01/-02/-03/-05 and add TC-HERO-PLANE-03 to hero-plane-dominance.spec.ts",
+      "Print the real SPD baseline for the new DOM before slice 2 moves any light: docs/delivery/evidence/v10-20260905T0515Z/W2-H1/S1-spd-baseline.log"
+    ],
+    "tests": [
+      "TC-HERO-PLANE-03",
+      "TC-HERO-SET-01",
+      "TC-HERO-SET-02",
+      "TC-HERO-SET-03",
+      "TC-HERO-SET-05"
+    ],
+    "files": [
+      "components/sections/Hero/Hero.tsx",
+      "components/sections/Hero/Hero.module.css",
+      "components/sections/Hero/HeroPortrait.tsx",
+      "scripts/validate/hero_plane_dominance.mjs",
+      "tests/overhaul/hero-plane-dominance.spec.ts",
+      "tests/overhaul/hero-setpiece.spec.ts"
+    ],
+    "gates": [
+      "npx tsc --noEmit clean",
+      "npm run lint clean",
+      "npm run build:static clean",
+      "node scripts/validate/overhaul_static_audit.mjs -> 10/10",
+      "app/data/portfolio/hero.ts is NOT edited - v3 section 6.1 moves where three strings render, never what they say",
+      "no R5 claim added anywhere: the only 4K source is 3840x2160@24, so R5 stays OPEN (v3 section 4.3)",
+      "G-MV1 untouched: Ask Mini Vic stays labelled and visible at 390px",
+      "TC-HERO-PLANE-03 green: the declared plane subtree holds 0 text leaves and 0 pressables, and covers >= 0.98 of the fold",
+      "TC-HERO-SET-02 green at all four viewports on both paths: hero-proof top >= innerHeight",
+      "TC-HERO-SET-03 green: figure inside the plane, rendered width <= 846px, intrinsic 1480x826",
+      "TC-HERO-SET-01 green: <= 3 fold text blocks, exactly 1 hero-actions group, 0 other pressables in the fold",
+      "Dead CSS removed in the same commit (.portraitFrame/.portraitTick/.portraitCross and the moved rules)"
+    ],
+    "verify": [
+      "HERO_PLANE_GATE=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/overhaul/hero-setpiece.spec.ts tests/overhaul/hero-plane-dominance.spec.ts --workers=1",
+      "node scripts/validate/overhaul_static_audit.mjs"
+    ],
+    "visible": "The photograph stands inside the lit plane and the three ledger figures are gone from the first screen."
+  },
+  {
+    "slug": "g2h1v3-02-light-finds-the-figure",
+    "slice": "S2",
+    "title": "S2 - the light finds the figure: bind poolPlate to the measured figure centre, add the bounded uCopyGuard, re-render the poster from the same shader",
+    "assignee": "analyst-programmer",
+    "priority": 95,
+    "minutes": 30,
+    "parents": [
+      "g2h1v3-01"
+    ],
+    "brief": "docs/architecture/HERO-SETPIECE-v3.md sections 4.1, 4.2, 5, 9-S2",
+    "summary": "Composition A, slice 2 - the move that makes the recruiter sentence true. atmosphere.glsl.ts already carries poolPlate, authored in its own comment as the pool behind the portrait plate and bound to a constant to this day. Bind it to the figure centre through a new vec2 uFigure written from the figure measured getBoundingClientRect (never from the doc constants - v3 risk R7), expressed in uv so the uQuality=0 phone branch keeps it: the shader own comments record a Gaussian that evaluated to zero across the whole phone viewport when it was sized to 1440x900 constants. Add vec4 uCopyGuard, a soft luminance-suppression lobe under the fold text rects so the plane flags its own light instead of a scrim doing it; its -50 percent contour must lie inside the text rects dilated 8px (the instrument own dilation) or it buys contrast by lowering SPD. Retire any residual frame-wide .stage::after wash. Re-render public/assets/hero-atmosphere-poster.avif FROM atmosphere.glsl.ts in a script so the no-GL and reduced-motion paths are the same picture, not an approximation. Do NOT bake the figure into the poster: v3 section 5 computes that only x in [37.0, 63.0] percent of a 16:9 poster survives cover-crop at all four gate viewports, so a baked-in figure is deleted on a phone.",
+    "order": [
+      "Read docs/architecture/HERO-SETPIECE-v3.md sections 4.1, 4.2 and 5, and atmosphere.glsl.ts around the pools, shafts and the uQuality branch",
+      "Add uniform vec2 uFigure; replace the poolPlate constant centre with it; keep the plate breath period prime to the shafts",
+      "Write uFigure each frame in HeroAtmosphere.tsx from the measured figure rect normalised to uResolution - not from a per-viewport constant",
+      "Add uniform vec4 uCopyGuard and the suppression lobe; log its -50 percent contour bounds so the gate can be checked from the run log",
+      "Remove the residual .stage::after frame-wide wash so light reaches the left of the frame (HERO-FOLD-v2 M1, carried forward)",
+      "Author scripts/assets/render_atmosphere_poster.mjs: render the same fragment program headless at 3840x2160 and encode AVIF; keep the shaft convergence and the brighter pool inside x 37-63 percent",
+      "Measure SPD at all four viewports on both paths and attach the log"
+    ],
+    "tests": [
+      "TC-HERO-PLANE-01",
+      "TC-HERO-PLANE-02",
+      "TC-HERO-SET-04",
+      "TC-HERO-A11Y-01",
+      "TC-HERO-GL-01",
+      "TC-HERO-GL-02"
+    ],
+    "files": [
+      "components/sections/Hero/atmosphere.glsl.ts",
+      "components/sections/Hero/HeroAtmosphere.tsx",
+      "components/sections/Hero/Hero.module.css",
+      "scripts/assets/render_atmosphere_poster.mjs",
+      "public/assets/hero-atmosphere-poster.avif"
+    ],
+    "gates": [
+      "npx tsc --noEmit clean",
+      "npm run lint clean",
+      "npm run build:static clean",
+      "node scripts/validate/overhaul_static_audit.mjs -> 10/10",
+      "app/data/portfolio/hero.ts is NOT edited - v3 section 6.1 moves where three strings render, never what they say",
+      "no R5 claim added anywhere: the only 4K source is 3840x2160@24, so R5 stays OPEN (v3 section 4.3)",
+      "G-MV1 untouched: Ask Mini Vic stays labelled and visible at 390px",
+      "TC-HERO-PLANE-01 SPD >= 0.75 at all four viewports on BOTH paths; the threshold is never lowered to pass",
+      "TC-HERO-PLANE-02 lit density >= 0.045 at all four viewports on both paths",
+      "TC-HERO-SET-04 >= 1.35: the pool actually reaches the figure - it is not a plate on black",
+      "uCopyGuard -50 percent contour lies inside the fold text rects dilated 8px, printed in the run log; A11Y-01 and PLANE-01 green on the SAME build",
+      "Re-rendered poster stays <= 60 kB and is produced BY the shader script, never by hand",
+      "The figure is not baked into the poster (v3 section 5 crop-safety)",
+      "No raw hex outside app/globals.css and lib/palette.ts"
+    ],
+    "verify": [
+      "HERO_PLANE_GATE=1 PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test tests/overhaul/hero-plane-dominance.spec.ts tests/overhaul/hero-setpiece.spec.ts --workers=1",
+      "node scripts/validate/hero_plane_dominance.mjs --base http://127.0.0.1:5601 --out docs/delivery/evidence/v10-20260905T0515Z/W2-H1/spd.json",
+      "identify public/assets/hero-atmosphere-poster.avif"
+    ],
+    "visible": "The pool of light lands on the face and the frame is lit edge to edge, on the GL path and on the still."
+  },
+  {
+    "slug": "g2h1v3-03-name-struck-across-the-plane",
+    "slice": "S3",
+    "title": "S3 - the name struck across the plane: bound the H1 against the brand mark, anchor its baseline on the dissolve band, one quiet CTA bar",
+    "assignee": "analyst-programmer",
+    "priority": 94,
+    "minutes": 25,
+    "parents": [
+      "g2h1v3-01"
+    ],
+    "brief": "docs/architecture/HERO-SETPIECE-v3.md sections 6, 7, 9-S3",
+    "summary": "ADV-2315Z measured the brand at 16-18px against an H1 of 60-131px and called the fold H1-owned. Read from source: .name is clamp(3.75rem, 9.7vw, 8.2rem) = 131.2/124.2/80.9/60.0px at the four gate widths, which is 7.7 to 1 over a 17px mark. Two moves: the nav VIKRAM. mark rises to 1.25rem (20px) at 834 and above and 1.125rem (18px) at 390, and the H1 is bounded to clamp(3.25rem, 8vw, 7rem) = 112.0/102.4/66.7/52.0px, giving ratios 5.60/5.12/3.34/2.89 - all inside 2.5 to 6.0. The name still leads the type hierarchy by 5.6x over the 19px statement, so HERO-FOLD-v2 section 3.3 two-axis argument (the plane dominates the light, the name dominates the type) holds unchanged. Anchor the H1 baseline so its rect crosses the figure dissolve band by at least 40px - the type and the picture must touch, or the fold reads as two stacked zones again - while never intersecting the face-safe inner-60-percent box. The CTA group becomes one quiet bar: two actions, 48x48px targets minimum at every viewport, and nothing else pressable in the fold.",
+    "order": [
+      "Read docs/architecture/HERO-SETPIECE-v3.md section 6 (the ratio table) and section 3 (the per-viewport H1 cap bands and dissolve bands)",
+      "Set .name to clamp(3.25rem, 8vw, 7rem); keep the authored two-line lockup below 720px via the existing .nameBreak",
+      "Raise the nav mark to 1.25rem at 834 and above, 1.125rem at 390, in Navigation.tsx / the globals.css nav token",
+      "Anchor the H1 cap band per the v3 section-3 tables so it crosses the dissolve band and clears the face-safe box at all four viewports",
+      "Lay the CTA group out as one row (two rows at 390) with 48px minimum targets; confirm nothing else in the fold is pressable",
+      "Screenshot the fold at 1440x900, 1280x800, 834x1194, 390x844 and attach - the suite catches broken, only eyes catch ugly"
+    ],
+    "tests": [
+      "TC-HERO-TYPE-01",
+      "TC-HERO-TYPE-02",
+      "TC-HERO-SET-05",
+      "TC-HERO-A11Y-02"
+    ],
+    "files": [
+      "components/sections/Hero/Hero.module.css",
+      "components/site/Navigation.tsx",
+      "app/globals.css",
+      "tests/overhaul/hero-typography.spec.ts",
+      "tests/a11y/hero-contrast.spec.ts"
+    ],
+    "gates": [
+      "npx tsc --noEmit clean",
+      "npm run lint clean",
+      "npm run build:static clean",
+      "node scripts/validate/overhaul_static_audit.mjs -> 10/10",
+      "app/data/portfolio/hero.ts is NOT edited - v3 section 6.1 moves where three strings render, never what they say",
+      "no R5 claim added anywhere: the only 4K source is 3840x2160@24, so R5 stays OPEN (v3 section 4.3)",
+      "G-MV1 untouched: Ask Mini Vic stays labelled and visible at 390px",
+      "TC-HERO-TYPE-01: 2.5 <= H1px / brandPx <= 6.0 at all four viewports",
+      "TC-HERO-TYPE-02: one line at >= 720px, two lines below",
+      "TC-HERO-SET-05: zero text rects intersect the face-safe box AND the H1 touches the dissolve band by >= 40px",
+      "TC-HERO-A11Y-02: focus order brand -> nav -> Ask Mini Vic -> primary -> secondary; the figure is not tabbable; targets >= 48x48px",
+      "Four screenshots attached at 1440x900, 1280x800, 834x1194, 390x844"
+    ],
+    "verify": [
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5602 npx playwright test tests/overhaul/hero-typography.spec.ts tests/a11y --workers=1"
+    ],
+    "visible": "The name reads as the brand mark, struck across the plane and touching the figure, at all four widths."
+  },
+  {
+    "slug": "g2h1v3-04-same-picture-gate-unarmed",
+    "slice": "S4",
+    "title": "S4 - the same picture everywhere: on-demand rungs, GL/still parity, palette sweep, HERO_PLANE_GATE removed at the 0.78 ship margin",
+    "assignee": "analyst-programmer",
+    "priority": 93,
+    "minutes": 30,
+    "parents": [
+      "g2h1v3-02",
+      "g2h1v3-03"
+    ],
+    "brief": "docs/architecture/HERO-SETPIECE-v3.md sections 4.3, 5, 8, 9-S4",
+    "summary": "Close the composition. Confirm nothing plays by default and that /assets/my-hero-avatar.mp4 (measured this session with ffprobe: 1280x720 at 24 fps, 12.29 s, 1,916,328 bytes, greyscale H.264) is requested zero times at load - the preload=none plus assign-src-on-intent mechanism in HeroPortrait usePortraitOnIntent is carried over unchanged, not rewritten. Capture GL-versus-still parity at all four viewports so the claim that the no-GL path is the same picture is evidence rather than assertion. Sweep the fold for chroma: max sRGB chroma <= 2/255 and zero gold rects in the fold, because the ledger - the only gold inside #hero - now lives below it. Then remove HERO_PLANE_GATE from tests/overhaul/hero-plane-dominance.spec.ts so TC-HERO-PLANE-01/-02 run unconditionally in the shared battery, at the 0.78 PLANE-3 ship margin rather than the 0.75 floor. Measure LCP and CLS on the static export. Add no R5 claim: the only 3840x2160 source on this host is artifacts/masters/minivic-greeting-2160p-master.mp4 at 24 fps and 58.4 MB, it is not in public/ and must not be moved there.",
+    "order": [
+      "Read docs/architecture/HERO-SETPIECE-v3.md sections 4.3, 5 and 10 (the constraints ledger)",
+      "Assert zero network requests for the loop before any pointer or press, at all four viewports",
+      "Capture /?gl=force and prefers-reduced-motion at all four viewports and diff them for parity",
+      "Run the palette sweep over the fold capture: chroma <= 2/255, zero gold rects",
+      "Remove the HERO_PLANE_GATE guard and raise the assertion to the 0.78 ship margin",
+      "Measure LCP and CLS on out/ and attach; confirm no critical-path asset exceeds 500 kB",
+      "Write the evidence index to docs/delivery/evidence/v10-20260905T0515Z/W2-H1/"
+    ],
+    "tests": [
+      "TC-HERO-PERF-01",
+      "TC-HERO-PERF-02",
+      "TC-HERO-PERF-03",
+      "TC-HERO-PAL-01",
+      "TC-HERO-PLANE-01"
+    ],
+    "files": [
+      "components/sections/Hero/HeroPortrait.tsx",
+      "tests/overhaul/hero-plane-dominance.spec.ts",
+      "tests/perf/hero-vitals.spec.ts",
+      "tests/monochrome/",
+      "docs/delivery/evidence/v10-20260905T0515Z/W2-H1/"
+    ],
+    "gates": [
+      "npx tsc --noEmit clean",
+      "npm run lint clean",
+      "npm run build:static clean",
+      "node scripts/validate/overhaul_static_audit.mjs -> 10/10",
+      "app/data/portfolio/hero.ts is NOT edited - v3 section 6.1 moves where three strings render, never what they say",
+      "no R5 claim added anywhere: the only 4K source is 3840x2160@24, so R5 stays OPEN (v3 section 4.3)",
+      "G-MV1 untouched: Ask Mini Vic stays labelled and visible at 390px",
+      "TC-HERO-PERF-01 LCP < 2.5 s and TC-HERO-PERF-02 CLS < 0.05 on the export",
+      "TC-HERO-PERF-03: zero requests for the loop at load; largest critical-path asset <= 500 kB",
+      "TC-HERO-PAL-01: fold chroma <= 2/255 and zero gold rects in the fold",
+      "HERO_PLANE_GATE removed and TC-HERO-PLANE-01 green unconditionally at SPD >= 0.78",
+      "Full Playwright battery green",
+      "The 58.4 MB 2160p24 master is still absent from public/ and no R5 PASS is claimed"
+    ],
+    "verify": [
+      "PLAYWRIGHT_BASE_URL=http://127.0.0.1:5601 npx playwright test --workers=2",
+      "node scripts/validate/hero_plane_dominance.mjs --base http://127.0.0.1:5601 --out docs/delivery/evidence/v10-20260905T0515Z/W2-H1/spd-final.json",
+      "test ! -f public/assets/minivic-greeting-2160p-master.mp4"
+    ],
+    "visible": "The reduced-motion fold is the same picture as the GL fold, and the dominance gate runs unarmed in the shared battery."
   }
 ]

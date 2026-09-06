@@ -34,3 +34,6 @@ role_matrix: research → level 3 → effort **high** (effort_cascade.yaml; dept
 
 ## PROVIDER
 OpenRouter (OPENROUTER_API_KEY) — balance negative (402), so this task runs on Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli session). Never ANTHROPIC_API_KEY.
+
+## COMPLETE (2026-09-06T01:05:35.651Z)
+Research delivered (identity res-w2-r3r, ~24 min): docs/delivery/evidence/v10-20260905T0515Z/W2-RESEARCH/R3-avatar-path.md. Higgsfield MCP balance → credits 0, plan free; product is async submit-then-poll with NO real-time/WebSocket surface at any tier (structural OPEN, not only credit-gated). ElevenLabs MCP list_voices → configured voice George (premade); with-timestamps REST (character-level) and WS (word-level) alignment available. /api/tts first byte cold 2.897 s, warm 0.46 s. Achievable slice specified (timestamps → viseme schedule → rAF-driven mouth; greeting frames from the 4K master; ≤40 ms test method). Badge recommendation: 'Synthetic voice · pre-rendered avatar'. PM verified file exists (18.1 kB).

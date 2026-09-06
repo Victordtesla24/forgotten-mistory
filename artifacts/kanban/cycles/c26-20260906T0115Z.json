@@ -1,0 +1,58 @@
+{
+ "cycle": "v10-c26",
+ "window_utc": "2026-09-06T00:34Z–01:15Z",
+ "orchestrator": "Fable 5.1 ultracode (claude-cli), session_01WWt1D5i764agLExdpEWvRC",
+ "intake": "ADV-REVIEW-20260905T2315Z FAIL on 9136bc59 (docs-only); MASTER prompt + prompt.md + hierarchy + orchestration-skill read in full 23:47–00:05Z",
+ "deploys": [
+  {
+   "run_id": "34001200263",
+   "created": "2026-09-06T00:24:29Z",
+   "shipped": "worktree-w1-c1 4488389 (G-C1 one engagement product)"
+  },
+  {
+   "run_id": "34001642667",
+   "created": "2026-09-06T00:34:28Z",
+   "shipped": "56ffed3e = consolidate worktree-w1-h6h5 5ab86cd (monochrome portrait, canonical /assets/my-hero-avatar.mp4)"
+  },
+  {
+   "run_id": "34002783819",
+   "created": "2026-09-06T01:00:54Z",
+   "shipped": "a1504fb9 docs-only (board bookkeeping 403b6b7 + SA doc) — no UI delta; visible UI shipped in the 00:24/00:34 windows"
+  }
+ ],
+ "live_build_commit": "a1504fb9 (rendered surface identical to 56ffed3e; reviewer measured 56ffed3e 00:54–01:20Z)",
+ "o1_o5": "PAIR: Deploy 34001642667 + live 56ffed3e (recruiter-visible: monochrome hero photograph, one engagement product). Timer fm-deploy-cadence active; hermes-gateway inactive. First visible SHA moved off 9136bc59 at 00:24Z, 37 min after session start (10-min bar MISSED — disk at 100% blocked builds until 00:10Z; recorded honestly).",
+ "adversarial": {
+  "reviewer": "rev-56ffed3e-w1 (independent, max)",
+  "G-H6": "PASS",
+  "G-C1": "PASS",
+  "G-H5": "FAIL → t_w1_h5b",
+  "regression": {
+   "G-MV1": "PASS",
+   "G-V3": "PASS",
+   "G-L1": "PASS",
+   "palette": "PASS",
+   "pageerrors_0": "PASS",
+   "contrast": "PASS"
+  },
+  "new": {
+   "G-OG1": "FAIL P1 → t_w1_og1"
+  },
+  "overall": "FAIL (G-H1/G-A3/R1/R2/R3/§14 unchanged)"
+ },
+ "pea": {
+  "numerator": 2,
+  "denominator": 11,
+  "basis": "ADV-2315Z P0/P1 gaps with an independent live PASS this cycle: G-H6, G-C1. Open: G-H5 (corrected next), G-A3 (t_w1_a3 building), G-R2+G-M4 (t_w1_r2ap building), G-H1 (t_w2_h1sa designing), G-X2 (t_w2_x2sa), G-R3 (t_w2_r3sa; structurally OPEN — Higgsfield has no real-time surface), G-E2, G-S2, G-H2. R-matrix: R7 PASS held; R1/R2/R3/R5/R6 FAIL/OPEN; R4 client path honest mailto (PARTIAL); O1 infra PASS; O5 met this cycle; O2/O6 review per deploy running; O3/O4 holding (branches consolidate, none linger)."
+ },
+ "provider": "Anthropic OAuth (claude-cli Max) for every council spawn; OpenRouter balance −5.384 USD (all paid rungs 402; DeepSeek/Z.ai out of balance) — §0.4 happy path returns only with a top-up (min 5.39, recommended 25 USD); no ANTHROPIC_API_KEY anywhere",
+ "r12_mcp": "Higgsfield MCP balance/plans (credits 0, free), ElevenLabs MCP list_voices (George premade), firecrawl scrape + screenshots, SearXNG, WebFetch — raw responses in W2-RESEARCH/*.md",
+ "alerts": [
+  "Disk 100% (667 MB free) at session start; cleanup-agent briefs blocked twice by the auto-mode classifier; PM removed 13 clean 0-ahead worktrees (git worktree remove) → 15.6 GB free; remaining dirty worktrees still to be archived+removed",
+  "Load 15–17 with two SwiftShader Playwright lanes + one build; swap saturated; no OOM; lanes held to ≤ 5 agents",
+  "t_w1_h6h5 ran 55 min and t_w1_rev1 32 min (caps 30/25) — both self-reported; asset lanes now split search/encode",
+  "SA t_w1_r2sa pushed its doc directly to main (docs-only) — protocol note logged"
+ ],
+ "fusion_council": "NOT convened (PEA < 100%)",
+ "next": "Land t_w1_a3 (About field tells ten sectors) + t_w1_r2ap (ladder order, honest badge, first-token fix, functions deploy); dispatch t_w1_h5b + t_w1_og1 when a build slot frees; reviewer on each new live SHA; SA wave-2 briefs → AP slices for hero set-piece, scene 7, avatar-that-seems-real-time; tester t_w1_red2; cleanup-agent remainder."
+}

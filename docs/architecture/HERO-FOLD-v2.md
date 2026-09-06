@@ -1,5 +1,7 @@
 # HERO-FOLD-v2 — the first fold as a set piece
 
+> **SUPERSEDED by `docs/architecture/HERO-SETPIECE-v3.md` (t_w2_h1sa, 2026-09-06) for the R1 bar.** §3 (the SPD measure) and §5.1 (the composite mask) remain binding and are carried into v3 verbatim; §2's composition — a reading column beside a picture column — is retired, because ADV-REVIEW-20260905T2315Z §Hero measured what it produced as a stacked hire landing over smoky GL wallpaper.
+
 **Author:** solutions-architect (docs/prompt.md §5 — architecture / requirements_analysis,
 level 1, effort max). **Task:** `t_g2_h1` (ADV-1451Z P0, G-H1 restated at the R1/§14 bar).
 **Status:** composition brief. Binding on every hero lane until superseded.

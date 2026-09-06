@@ -1,0 +1,75 @@
+{
+ "cycle": "v10-c27",
+ "window_utc": "2026-09-06T01:15Z–01:50Z",
+ "orchestrator": "Fable 5.1 ultracode (claude-cli), session_01WWt1D5i764agLExdpEWvRC",
+ "deploys": [
+  {
+   "run_id": "34003390250",
+   "created": "2026-09-06T01:14:52Z",
+   "shipped": "ec53e2b4 fix(minivic): §0.4 ladder order, truthful badge, cold first-token (G-R2, G-M4) — function redeployed"
+  },
+  {
+   "run_id": "34003841785",
+   "created": "2026-09-06T01:25:12Z",
+   "shipped": "03dfd93c docs-only (W1-R2 evidence)"
+  },
+  {
+   "run_id": "34004286177",
+   "created": "2026-09-06T01:35:18Z",
+   "shipped": "521dac9c consolidate worktree-w1-h5b 4a15797 — on-demand 1080p H.264 + 2160p AV1 greyscale rungs, lib/videoRung.ts, ASSET-LADDER.md"
+  },
+  {
+   "run_id": "34004706433",
+   "created": "2026-09-06T01:45:19Z",
+   "shipped": "12cd9123 consolidate worktree-w1-a3 e5c1e4d — About field tells ten sectors; dial demoted to chrome"
+  }
+ ],
+ "live_build_commit": "12cd9123 (01:46Z)",
+ "o1_o5": "PAIR: Deploy 34004706433 + live 12cd9123. Visible UI in every 10-min window of this cycle (01:14 badge/order, 01:35 rungs, 01:45 About field). Timer active; Hermes inactive.",
+ "adversarial": {
+  "reviewer_2": {
+   "sha": "ec53e2b4→521dac9c",
+   "identity": "rev-ec53e2b4-w1",
+   "overall": "FAIL",
+   "G-R2": "PARTIAL (order PASS behavioural, badge PASS, truth line clipped → not visible)",
+   "G-M4": "FAIL (cold origin 2449 ms 1/7; Hosting warm max 2017 ms; client aborts origin at 1500 ms; ?warm=1 via Hosting 400)",
+   "regression": {
+    "launcher_click_first_fold": "FAIL",
+    "pageerrors": "0",
+    "G-MV1_pill": "PASS",
+    "hero_monochrome": "PASS",
+    "api_tts": "PASS"
+   },
+   "reviewer_false_positive_registered_by_PM": "F6 'G-C1 two mailto products' — PM curl 01:45Z on 521dac9c: 0 × 'Email a project brief', 2 × identical engage href"
+  },
+  "reviewer_3": {
+   "sha": "12cd9123",
+   "identity": "rev-12cd9123-w1",
+   "status": "RUNNING (t_w1_rev3)"
+  },
+  "overall": "FAIL (by design until G-H1/G-A3 verified/R2/R3)"
+ },
+ "corrections_dispatched": [
+  "t_w1_r2c (readable disclosure, warm-prime via Hosting, origin race, AI-clone copy, attempts audit)",
+  "t_w1_mv2 (launcher click on the first fold)",
+  "t_w1_red2 + t_w1_red3 (four + two pre-existing red specs)"
+ ],
+ "wave2_architecture": {
+  "hero": "docs/architecture/HERO-SETPIECE-v3.md — composition A, 18 TDD cases, slices t_w2_h1s1..s4 (S1 RUNNING)",
+  "scene7": "docs/architecture/SIGNATURE-SCENES-v2.md — career-descent in #experience, story contract per section, 13 slices (7 on the board), HyperFrames honestly not shipped",
+  "avatar": "docs/architecture/MINIVIC-AVATAR-v1.md — REST with-timestamps, viseme schedule, atlas from the 4K master, drift ≤ 40 ms test, first-word claim limited to the greeting; slices t_w2_r3a2..a7"
+ },
+ "pea": {
+  "numerator": 2,
+  "denominator": 11,
+  "basis": "Independent live PASS on the 2315Z set: G-H6, G-C1. Pending live verdict: G-A3, G-H5-resolution (rev-12cd9123). FAIL loop: G-R2 (partial), G-M4. Open: G-H1 (S1 building), G-X2 (slices staged), G-R3 (structurally OPEN; second-form slices staged), G-E2, G-S2, G-H2. R7 PASS held; R1/R2/R3/R5/R6 FAIL/OPEN."
+ },
+ "provider": "Anthropic OAuth (claude-cli Max) for every spawn; OpenRouter balance −5.384 USD (all paid rungs 402; DeepSeek/Z.ai out of balance); live answers come from the labelled OpenAI last rung; §0.4 happy path returns with a top-up (min 5.39 USD, recommended 25 USD)",
+ "alerts": [
+  "01:19–01:20Z: 4K encode (78 threads, 3.3 GB) + two headless Chromes → load 82, OOM-killed two Chrome renderers and a tenant chromium; PM reniced; rule added (encodes -threads 2, nice 19, never beside Playwright)",
+  "O1 overruns self-reported: t_w1_a3 ~100 min, t_w1_h6h5 55 min, t_w1_rev1 32 min — future scene/asset lanes split test-instrument vs shader/encode",
+  "Reviewer-2 F6 was a false positive (registered)"
+ ],
+ "fusion_council": "NOT convened (PEA < 100%)",
+ "next": "rev-12cd9123 verdict → G-A3/G-H5 close or loop; t_w1_r2c + t_w1_mv2 land → reviewer 4; hero S1→S4 ship each ~30 min; then scene-7 x2-s1 (first visible) + tester x2-t1; R3 A2/A4 when slots free; cleanup-agent remainder; c28."
+}

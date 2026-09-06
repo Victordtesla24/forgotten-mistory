@@ -1,0 +1,99 @@
+{
+  "task_id": "t_w1_rev2",
+  "reviewer": "rev-ec53e2b4-w1",
+  "protocol": "orchestration-skill §10 (adversarial, independent, failures first)",
+  "window_utc": "2026-09-06T01:18:35Z/2026-09-06T01:41:30Z",
+  "sha": "ec53e2b4",
+  "sha_drift": {
+    "note": "live build-commit moved three times during the review; every verdict is tagged with the SHA it was taken at",
+    "ec53e2b4": "01:20-01:34Z — function probes, attacks, bundle grep, cold/warm first-token (chunk 611-69b58c720540e0bd.js)",
+    "03dfd93c": "01:35Z — first 1440 browser run",
+    "521dac9c": "01:37-01:40Z — 390 + ?gl=force runs, truth-line clipping measurement (chunk 611-075b5115c39954d2.js); all badge/truth-line strings re-verified and still hold"
+  },
+  "overall": "FAIL",
+  "gaps": {
+    "G-R2": {
+      "verdict": "PARTIAL-FAIL",
+      "ladder_order": "PASS",
+      "badge": "PASS",
+      "truth_line_dom": "PASS",
+      "truth_line_rendered": "FAIL",
+      "how_order_was_established": "behavioural — the deployed function exposes no rungs/attempts list (F5), so the spec's 'confirm via the response's rungs list' could not be executed; the 10-min credential-cooldown step was used instead",
+      "evidence": {
+        "cold_sample_1_ms": 2449.2,
+        "warm_median_ms": 714.8,
+        "dead_rung_step_ms": 1734.4,
+        "independently_measured_dead_rung_walk_ms": 1666,
+        "provider_on_every_live_response": "openai",
+        "live_responses_sampled": 22,
+        "openrouter_total_credits": 2890.5,
+        "openrouter_total_usage": 2895.884318264,
+        "openrouter_balance_usd": -5.384318264,
+        "conclusion": "openrouter is walked before openai and openai is the last rung; ADV-2315Z's 'DEFAULT_PROVIDER_ORDER puts OpenAI first' is contradicted by live behaviour and is closed"
+      }
+    },
+    "G-M4": {
+      "verdict": "FAIL",
+      "criterion_applied": "GAP-BACKLOG.md:29 — Hosting POST /api/chat TTFB <1.5s on a cold probe, 'not only Cloud Run origin'; MINIVIC-BRAIN-0-4 §2(c) restates it onto the origin route, which does not discharge the backlog wording",
+      "cold_origin_7_samples_ms": [2449.2, 750.1, 880.5, 470.3, 714.8, 528.7, 535.0],
+      "cold_origin_median_ms": 714.8,
+      "cold_origin_max_ms": 2449.2,
+      "cold_origin_over_1500ms": 1,
+      "cold_origin_all_under_1500ms": false,
+      "hosting_7_samples_warm_and_primed_ms": [872.5, 990.6, 1158.9, 1235.5, 1277.5, 1404.7, 2016.7],
+      "hosting_median_ms": 1235.5,
+      "hosting_over_1500ms": 1,
+      "hosting_json_ttfb_0120Z_s": [1.404, 2.003, 1.689, 1.446, 1.251],
+      "hosting_json_over_1500ms": 2,
+      "warm_origin_context_ms": [600.0, 765.9, 793.3],
+      "idle_window": "last /api/chat from this host 01:22:13Z; first cold sample 01:33:07Z (10m54s)",
+      "reproduces_implementer_self_report": "yes — W1-R2/08-g-m4-route-protocol.md sample 1 = 2.512 s; mine = 2.449 s, taken 19 min after their deploy with no revision change, so container start is not the cause"
+    },
+    "badge": {
+      "verdict": "PASS",
+      "minivic_live_occurrences_shipped_js": 0,
+      "minivic_synthetic_occurrences_chunk611": 1,
+      "rendered_1440": "MINIVIC · SYNTHETIC",
+      "rendered_390": "MINIVIC · SYNTHETIC",
+      "rendered_gl_force": "MINIVIC · SYNTHETIC",
+      "verified_at_shas": ["ec53e2b4", "521dac9c"]
+    }
+  },
+  "failures_first": [
+    "F1 G-M4 FAIL both routes — cold origin first token 2449.2 ms (1/7 over 1500 ms); Hosting warm+primed max 2016.7 ms (1/7 over); Hosting JSON at 01:20Z 2/5 over",
+    "F2 the shipped client aborts the origin route at 1500 ms (`abort(),1500` in chunk 611; POST origin :: net::ERR_ABORTED in every browser run) — on a cold map the visitor never receives the origin answer and falls back to buffered Hosting, so real cold latency is worse than either table",
+    "F3 primeProviderCooldowns (c-1) is not running — POST /api/chat?warm=1 returns 400, and both ?warm=1 GETs are net::ERR_ABORTED in all three browser runs; the 1734 ms dead-rung tax is still paid",
+    "F4 the runtime provider disclosure is never visible — truth line needs 595 px, gets 316 px at 1440 (53.1%) and 226 px at 390 (38.0%); white-space:nowrap + overflow:hidden + text-overflow:ellipsis clip 'ANSWERS: LIVE TEXT VIA OPENAI' off the panel at both widths while innerText still returns it in full",
+    "F5 the deployed function exposes no rungs/attempts list, so S-2's 'confirm DEFAULT_PROVIDER_ORDER via the response's rungs list' is unexecutable; gcloud is absent on this host so the deployed env is unreadable too",
+    "F6 G-C1 still open — 'Email a 20-minute-call agenda' (Listen) and 'Email a project brief' (Vitrine), two mailto products to the same inbox; unchanged by this commit",
+    "F7 residual 'AI clone' copy contradicts the new subtitle — launcher aria-label 'Ask Mini Vic — Vikram's AI clone' and the panel greeting \"I'm Vikram — his AI clone\" sit two lines from 'A synthetic stand-in for Vikram'",
+    "F8 text-transform:uppercase renders the sanctioned 'live text' as a shouted 'LIVE', three lines under the badge that was just changed away from MINIVIC LIVE (truthful, flagged not failed)"
+  ],
+  "regression": {
+    "G-MV1_pill_at_390": "PASS — display:block, visibility:visible, opacity:1, clip-path:none, 106.4×29.1 px at (207.6, 783.5), text 'Ask Mini Vic'",
+    "minivic_launcher_first_fold_clickable": "FAIL — hero-fold intercepts pointer events over the launcher at 1440 AND 390; Playwright reports isVisible()===true then times out clicking; reproduced 3/3 runs (relates to G-NEW-1 / G-E2)",
+    "hero_monochrome": "PASS — #hero filter saturate(1.02) contrast(1.03), colour rgb(246,246,246), no chroma boost",
+    "engage_plates_G-C1": "UNCHANGED / STILL OPEN — two different mailto products, same inbox",
+    "pageerrors": "PASS — 0 at 1440, 0 at 390, 0 at ?gl=force",
+    "console_errors": "PASS — 0 at all three",
+    "canvases": "PASS — >=1 at all three (above-fold count only; below-fold scenes mount lazily)",
+    "api_tts_G-M2": "PASS — HTTP 200, 0.545 s, 67753 B, audio/mpeg, valid ID3 v2.4 / MPEG layer III 128 kbps 44.1 kHz mono",
+    "attack_surface": "PASS — 400 messages_required on empty and missing messages[], 400 plain Bad Request on malformed JSON with no stack, 405 on GET, 200 on a 4001-char message, provider/order overrides via body+header ignored, prompt-injection to claim a live realtime avatar refused, 0 secret or stack-trace hits across every captured body"
+  },
+  "R3": "OPEN",
+  "R3_evidence": "Higgsfield 0, wss:// 0, realtime 0, 'live avatar' 0, 4K 0, lipsync 0 across index.html + all shipped chunks at both SHAs; rendered panel labels face 'pre-rendered loop' and voice 'ElevenLabs stock'; not claimed anywhere",
+  "false_positives": [
+    "FP1 '>LIVE</text>' in index.html — a Vitrine repository-card SVG deploy diagram (… → PROBE → LIVE, then 'PROBE FAILS → PREVIOUS IMAGE'), class Drawings_label__SuZSS; not a MiniVic claim",
+    "FP2 'Real-time' ×6 / 'real-time' ×22 — ANZ CV capability rows in Skills/Bench (real-time telemetry, 10k+ devices at P95 <200 ms); not an R3 claim",
+    "FP3 '2160' ×2 — SVG tick coordinates in the Compass drawing; not a 4K claim",
+    "FP4 'viseme' ×13 — client-side analyser maths for the pre-rendered loop, already labelled as such; not a realtime-avatar claim",
+    "FP5 MY OWN INSTRUMENT — the first 1440 run recorded answered:false and sendMs:42633; innerText is CSS-uppercased and my detector regex was case-sensitive. The answer had arrived (truthLineAfter '…VIA OPENAI', full reply in panelTextAfter). 42633 ms is my poll-loop timeout, NOT a latency, and must not be quoted as one. Detector fixed; 390 re-run returned answered:true at 1408 ms",
+    "FP6 'GET /assets/my-hero-avatar.mp4 :: net::ERR_ABORTED' in the ?gl=force run — a cancelled media range request at browser close; not reproduced as a 404, not graded"
+  ],
+  "coverage_not_taken": [
+    "a genuinely cold Hosting probe — a second 10-min idle would breach the 30-min budget; the warm-and-primed Hosting run is the strict best case and already fails, so the cold case fails a fortiori",
+    "below-fold WebGL scene census",
+    "keyboard-only traversal of the MiniVic panel"
+  ],
+  "goal_complete": true
+}

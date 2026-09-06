@@ -28,3 +28,9 @@ role_matrix: architecture / requirements_analysis → level 1 → effort **max**
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-06T01:06:41.814Z)
+Superseded 01:12Z by t_w1_r2sa (measured decision in docs/architecture/MINIVIC-BRAIN-0-4.md); archived.
+
+## STATUS (2026-09-06T01:06:41.908Z)
+archived — superseded by t_w1_r2sa

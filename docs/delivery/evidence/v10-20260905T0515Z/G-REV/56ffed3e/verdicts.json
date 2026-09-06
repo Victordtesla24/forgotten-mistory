@@ -1,0 +1,354 @@
+{
+  "sha": "56ffed3e",
+  "task_id": "t_w1_rev1",
+  "reviewer": "rev-56ffed3e-w1",
+  "subject": "https://forgotten-mistory.web.app/",
+  "probed_utc": "2026-09-06T00:54Z–01:20Z",
+  "baseline": "docs/adversarial/ADV-REVIEW-20260905T2315Z.md (FAIL on 9136bc59)",
+  "gaps": {
+    "G-H6": "PASS",
+    "G-H5": "FAIL",
+    "G-C1": "PASS"
+  },
+  "regression": {
+    "G-MV1": "PASS",
+    "G-V3": "PASS",
+    "G-L1": "PASS",
+    "palette": "PASS",
+    "pageerrors_0": "PASS",
+    "contrast": "PASS"
+  },
+  "R5": "OPEN — not graded PASS. Live hero loop is 1280x720 @ 24 fps (ffprobe); stills 1480x826. R5 asks >=3840x2160 / 60 fps (docs/prompt.md:165).",
+  "detail": {
+    "G-H6": {
+      "verdict": "PASS",
+      "measured_on": "bytes downloaded from live + painted pixels in Chrome",
+      "still_png": {
+        "dims": "1480x826",
+        "maxChroma": 0,
+        "pctPixelsChromaLE2": 100
+      },
+      "still_avif": {
+        "dims": "1480x826",
+        "maxChroma": 0,
+        "pctPixelsChromaLE2": 100
+      },
+      "still_webp": {
+        "dims": "1480x826",
+        "maxChroma": 1,
+        "pctPixelsChromaLE2": 100
+      },
+      "loop_frames_10_147_280": {
+        "dims": "1280x720",
+        "maxChroma": 0,
+        "pctPixelsChromaLE2": 100
+      },
+      "loop_all_frames_signalstats": {
+        "frames": 295,
+        "SATMAX_min": 0,
+        "SATMAX_max": 0,
+        "distinct_values": [
+          0
+        ]
+      },
+      "rendered_picture_img_1440": {
+        "dims": "548x306",
+        "maxChroma": 0,
+        "pctPixelsChromaLE4": 100,
+        "bar": ">=99.5% <=4",
+        "cssFilter": "none"
+      },
+      "attack_hover": {
+        "maxChroma": 0
+      },
+      "attack_video_playing_figure": {
+        "maxChroma": 3,
+        "pctPixelsChromaLE4": 100,
+        "note": "px>2 are near-black rgb(8,9,11)"
+      },
+      "attack_canvas_readback_of_live_video": {
+        "dims": "1280x720",
+        "maxChroma": 0,
+        "pctPixelsChromaLE4": 100
+      },
+      "minivic_panel_dock": {
+        "maxChroma": 3,
+        "pctPixelsChromaLE4": 100
+      },
+      "memo_origin_main": "docs/architecture/PALETTE-EXCEPTIONS.md Status: RETIRED, register empty, no active exceptions",
+      "test_origin_main": "tests/palette_bundle.test.mjs asserts RETIRED + empty register + public/assets/my-avatar.mp4 absent"
+    },
+    "G-H5": {
+      "verdict": "FAIL",
+      "half_closed_canonical_url": {
+        "verdict": "PASS",
+        "my_hero_avatar_mp4": "HTTP/2 200 video/mp4 content-length 1916328",
+        "my_avatar_mp4": "HTTP/2 301 location: /assets/my-hero-avatar.mp4",
+        "shipped_js_grep_legacy_path": "NONE across 13 _next chunks",
+        "runtime_currentSrc": "https://forgotten-mistory.web.app/assets/my-hero-avatar.mp4"
+      },
+      "half_failed_resolution_or_ladder": {
+        "verdict": "FAIL",
+        "served_loop": "1280x720 @ 24/1 fps, 295 frames, 12.291667 s",
+        "higher_variants_probed": {
+          "my-hero-avatar-1080.mp4": 404,
+          "my-hero-avatar-1440.mp4": 404,
+          "my-hero-avatar-2160.mp4": 404,
+          "my-hero-avatar.webm": 404,
+          "my_avatar@2x.avif": 404
+        },
+        "higher_source_exists_on_host": {
+          "artifacts/masters/minivic-greeting-2160p-master.mp4": "3840x2160 @ 24/1, 58370772 bytes, 12.325011 s",
+          "artifacts/masters/minivic-greeting-1080p-voiced.mp4": "4754189 bytes"
+        },
+        "why_ladder_branch_unavailable": "GAP-BACKLOG allows an asset-ladder saying 'no higher source exists'. A 3840x2160 master exists on this host, and docs/architecture/PALETTE-EXCEPTIONS.md itself names it as the source the 720p loop was downscaled from. No ladder artefact was found under docs/.",
+        "acceptance_quoted": "Ship >=1080p path toward 4K or publish asset-ladder that says no higher source exists and stop any R5 claim. Stop 404 on my-hero-avatar.mp4."
+      }
+    },
+    "G-C1": {
+      "verdict": "PASS",
+      "engage_plate_count": 2,
+      "compared_by": "DOM-decoded anchor .href, not label",
+      "identical_href": true,
+      "identical_label": true,
+      "sections": [
+        "vitrine",
+        "listen"
+      ],
+      "decoded": {
+        "scheme": "mailto",
+        "to": "sarkar.vikram@gmail.com",
+        "subject": "20-minute call — Vikram Deshpande",
+        "body": "Hiring or a project:\nWhat you're building:\nThe decision you need made:\nTwo or three times that suit you (Melbourne time):\nAnything I should read first:",
+        "label": "Email a 20-minute-call agenda"
+      },
+      "forbidden_wording_counts": {
+        "Book": 0,
+        "book a": 0,
+        "booking": 0,
+        "Start a project": 0,
+        "Schedule": 0,
+        "Calendly": 0,
+        "cal.com": 0,
+        "SavvyCal": 0
+      },
+      "distinct_mailto_hrefs_on_page": 3,
+      "R4_employer_path": {
+        "href": "/docs/Vik_Resume_Final.pdf",
+        "status": 200,
+        "contentType": "application/pdf",
+        "bytes": 157615,
+        "magic": "%PDF-1.4",
+        "pdfTitle": "Vikram Deshpande — Resume"
+      },
+      "R4_client_path": "mailto only — NOT graded an R4 PASS (CLAUDE.local.md §6)"
+    },
+    "G-MV1": {
+      "verdict": "PASS",
+      "pill_text": "Ask Mini Vic",
+      "rendered_px": {
+        "390x844": "106x29",
+        "1440x900": "112x30"
+      },
+      "declared_css": ".minivic-launcher__pill{...display:inline-block}",
+      "computed_display": "block",
+      "computed_display_explanation": "spec-mandated flex-item blockification (.minivic-launcher is display:flex) — NOT a display:none regression",
+      "display_none_rules_on_minivic_selectors": 1,
+      "the_one_display_none": ".minivic-launcher__pulse (decorative ping), restored to inline-flex at min-width:87.5rem",
+      "media_queries_touching_launcher": [
+        "max-height:52rem",
+        "min-width:87.5rem",
+        "max-width:30rem (disc size only)",
+        "prefers-reduced-motion:reduce"
+      ],
+      "breakpoint_below_834px_hiding_pill": "none found",
+      "dock_opacity_after_scroll_8s_series": {
+        "1440 gl=force": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "1440 normal": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "390 gl=force": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "390 normal": [
+          0.694942,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "hit_test_elementFromPoint_is_button": true
+    },
+    "G-V3": {
+      "verdict": "PASS",
+      "nodes_sampled": 60,
+      "min_contrast_1440": 6.2,
+      "min_contrast_390": 6.2,
+      "worst": "rgb(144,144,144) on rgb(10,10,10) 14px/500 'What is keeping me busy'",
+      "bar": "4.5:1"
+    },
+    "G-L1": {
+      "verdict": "PASS",
+      "listen_canvas": {
+        "1440_normal": "1440x901",
+        "1440_glforce": "1440x901",
+        "390_normal": "390x1018",
+        "390_glforce": "390x1018"
+      },
+      "data_scene": "listen-field",
+      "note": "mounts lazily on scroll into view"
+    },
+    "palette": {
+      "verdict": "PASS",
+      "fullpage_1440_lcd_off": {
+        "dims": "1440x12577",
+        "pxSatGT025_total": 27598,
+        "pxSatGT025_goldHue_35_60": 27597,
+        "pxSatGT025_nonGoldHue": 1,
+        "pctNonGold": 1e-05,
+        "the_one_pixel": "hue 34.3, rgb(21,18,14) near-black — 0.7 degrees off the band edge"
+      },
+      "fullpage_1440_lcd_on": {
+        "pxSatGT025_nonGoldHue": 9554,
+        "explanation": "Chrome LCD subpixel text fringing — instrument artefact, see false_positives[0]"
+      },
+      "hero_fold": {
+        "1440_normal": "maxChroma 0, 0 saturated px",
+        "1440_glforce": "maxChroma 0",
+        "390_normal": "maxChroma 0",
+        "390_glforce": "maxChroma 0"
+      },
+      "gold_token_hues": {
+        "--gold #c9a84c": 44.2,
+        "--gold-light #d4b65c": 45.0,
+        "--gold-pale #e8d5a3": 43.5,
+        "--gold-dark #b0923f": 44.1
+      }
+    },
+    "pageerrors_0": {
+      "verdict": "PASS",
+      "passes": {
+        "1440x900 normal": {
+          "pageerrors": 0,
+          "consoleErrors": 0,
+          "failedRequests": 0
+        },
+        "1440x900 ?gl=force": {
+          "pageerrors": 0,
+          "consoleErrors": 0,
+          "failedRequests": 0
+        },
+        "390x844 normal": {
+          "pageerrors": 0,
+          "consoleErrors": 0,
+          "failedRequests": 0
+        },
+        "390x844 ?gl=force": {
+          "pageerrors": 0,
+          "consoleErrors": 0,
+          "failedRequests": 0
+        },
+        "attack pass (play video + open MiniVic + full scroll)": {
+          "pageerrors": 0
+        }
+      }
+    },
+    "contrast": {
+      "verdict": "PASS",
+      "worst_sampled_body_plate": 6.2,
+      "bar": 4.5
+    }
+  },
+  "new_findings": [
+    {
+      "id": "G-OG1",
+      "severity": "P1",
+      "outside_wave1_scope": true,
+      "title": "/assets/og-image.png is chromatic, undocumented and unguarded",
+      "measured": {
+        "dims": "1200x630",
+        "status": 200,
+        "maxChroma": 157,
+        "meanChroma": 5.98,
+        "pctPixelsChromaLE4": 45.7611,
+        "pxSatGT025": 57819,
+        "pxSatGT025_nonGoldHue": 55620,
+        "dominant_non_gold_hue_bucket": "210-240 deg (blue), 47410 px, e.g. rgb(23,25,31) sat 0.26"
+      },
+      "subpixel_hypothesis_tested_and_rejected": "cubic downsample to 300x158 still leaves 52.937% of pixels above chroma 4 and 8.89% non-gold saturated; only the 1.4% above chroma 40 (bbox y[78..554], mirrored R/B pairs on glyph rows) is baked-in subpixel fringing",
+      "portrait_control_for_comparison": "my_avatar.png maxChroma 0, 0.0000% non-gold",
+      "documentation": "grep -rln 'og-image' docs/ tests/ scripts/ app/ components/ returns nothing",
+      "contradicted_claim": "docs/architecture/PALETTE-EXCEPTIONS.md: 'The register is empty. There are no active exceptions. Every surface of this site ... is bound by the palette rule without qualification' — and it reasons explicitly about 'an OpenGraph consumer'",
+      "does_not_change": "G-H6 verdict — G-H6's binary acceptance is the hero still and its loop, both of which PASS"
+    }
+  ],
+  "false_positives": [
+    "MINE: my first full-page palette sweep reported 9,554 non-gold saturated pixels. With --disable-lcd-text --disable-font-subpixel-positioning --force-color-profile=srgb the same sweep returns 1. The 9,553 were Chrome LCD subpixel text fringing (mirrored rgb(83,34,10)/rgb(10,34,83) pairs on glyph stems, identical y-ranges). Any future palette probe that screenshots text on this site MUST disable LCD text or it will manufacture this finding again.",
+    "MINE: getComputedStyle(pill).display returns 'block', and t_w1_rev1's literal G-MV1 check says display:inline-block. That is NOT a regression — the served CSS declares inline-block and .minivic-launcher is display:flex, so CSS blockifies the flex item. A test asserting the computed value equals 'inline-block' would fail on correct code; assert the declared rule, or assert !== 'none'.",
+    "MINE: I first dismissed the OG-image chroma as the same subpixel artefact. I tested that hypothesis (cubic downsample) and it failed — the blue ground is real. Filed as G-OG1 rather than dropped.",
+    "PRIOR, now contradicted in the site's favour: ADV-REVIEW-20260905T2315Z 'assets/my-hero-avatar.mp4 404' and 'Still my_avatar.webp 1480x826 colour'. Both true then; both false on 56ffed3e (200 + 301; chroma 0 and 1). Do not carry those 2315Z rows forward as open.",
+    "NOT REPRODUCED AS A DEFECT: 2315Z 'First-fold dock still often opacity:0 until past hero.' Confirmed as-designed — opacity 0 with pointer-events:none on the first fold, reaching 1 within ~2 s of scrolling past #hero in all four modes. Belongs to G-NEW-1 (first-fold keyboard reachability), not to G-MV1."
+  ],
+  "not_covered": {
+    "note": "Deliberate scope of t_w1_rev1 (wave-1 gaps + regression table). Not probed and NOT graded here; they remain at their ADV-REVIEW-20260905T2315Z status (FAIL) until a targeted review says otherwise.",
+    "items": [
+      "G-H1",
+      "G-A3",
+      "G-E2",
+      "G-S2",
+      "G-X2",
+      "G-M4",
+      "G-R2",
+      "G-R3",
+      "R1",
+      "R2",
+      "R3",
+      "§14 Marvel bar"
+    ]
+  },
+  "overall": "Wave-1 is 2 of 3: G-H6 and G-C1 close cleanly with reproduced numbers; G-H5 closes only its canonical-URL half and FAILS its resolution/ladder half. R5 stays OPEN. Nothing closed on 9136bc59 reopened. This review does NOT move the overall production verdict off FAIL — it does not touch G-H1/G-A3/R1/R2/R3/§14.",
+  "notes": "Read-only review. No application code edited. No Hermes. No secrets printed. Writes confined to docs/delivery/evidence/v10-20260905T0515Z/G-REV/56ffed3e/.",
+  "live_sha_moved_during_review": {
+    "measured_sha": "56ffed3e",
+    "sha_at_end_of_review": "a1504fb9",
+    "moved_at": "2026-09-06T01:22Z (after every measurement was captured)",
+    "app_code_files_changed_between": 0,
+    "diff_scope": "artifacts/kanban/*, docs/*, CLAUDE*.md only — 210 files, zero under app|components|lib|public|scripts|tests|functions",
+    "docs_only": true,
+    "reconfirmed_on_a1504fb9": {
+      "my-hero-avatar.mp4": "200 video/mp4 1916328",
+      "my-avatar.mp4": "301 -> /assets/my-hero-avatar.mp4",
+      "engage_plates": 2,
+      "distinct_engage_hrefs": 1,
+      "my_avatar_png_etag": "6e2bfad88a3e55c2792810fd3a6644900eae5f776ed681b654f3bacc92a0840f (byte-identical to the file measured at chroma 0)"
+    },
+    "conclusion": "Every verdict is issued against the rendered surface of 56ffed3e, which is byte-identical to that of a1504fb9."
+  }
+}

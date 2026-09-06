@@ -39,3 +39,9 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-06T01:47:22.637Z)
+PM check 01:48Z: e5c1e4d pushed on worktree-w1-a3 and CONSOLIDATED into origin/main 12cd9123 (live after the next tick). Self-report: TC-SCENE-ABOUT-10/11 written first (fan+ring annuli in the rose's frame; answered/open from about.ts mask), lit/open 4.04 ring / 5.9 fan at 1440, 3.19 at 390 (gate 1.6); dominance 0.7518; dial ink → --dial-ink (--mist-400 with a canvas, --white without); gold 0; ?gl=force 0 pageerrors; AA text contrast held. O1 OVERRUN: ~100 min (cap 30) — measurement-driven, reported honestly; next About slices split shader vs test. Pre-existing failures flagged (not from this change): TC-ABOUT-07 intermittent 1 canvas under no-WebGL (SwiftShader appeal in useGLCapability.ts on an idle host) and flagship-visibility 'listen beat field' motion gate failing on LIVE too (0.00142 < 0.004). Not done until independent reviewer t_w1_rev3 PASS on live.
+
+## DECISION (2026-09-06T01:47:22.699Z)
+O1 overrun recorded (100 min vs 30). Future About/scene slices are split: (a) test-instrument slice (tester) and (b) shader slice (AP), each ≤ 30 min.

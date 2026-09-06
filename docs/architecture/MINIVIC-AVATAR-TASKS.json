@@ -1,0 +1,160 @@
+[
+  {
+    "slug": "r3-a1-honest-badge-and-truth-line",
+    "title": "R3-A1 — the badge stops claiming liveness, and the truth line names voice, face and answers (recruiter-visible in one deploy)",
+    "assignee": "analyst-programmer",
+    "priority": 96,
+    "parents": [],
+    "minutes": 25,
+    "summary": "ADV-2315Z §MiniVic: 'Badge MINIVIC LIVE vs looping muted 720p24'. Still true — grep -n 'MiniVic Live' components/MiniVicBot.tsx returns line 1112. MINIVIC-AVATAR-v1.md §7 is the wording of record and it keeps MINIVIC-BRAIN-0-4 §2(b)'s badge and panel line verbatim, refining only the third line. Change three strings in components/MiniVicBot.tsx: :1112 'MiniVic Live' -> 'MiniVic · synthetic'; :1155 \"Vikram's AI clone · ask me anything\" -> 'A synthetic stand-in for Vikram · ask me anything'; :1163 the data-testid=\"minivic-synthetic-label\" paragraph -> 'Voice: ElevenLabs stock, spoken live · Face: pre-rendered frames, lip-synced to that audio · Answers: live text via {provider}' where {provider} is read at runtime from BrainReply.source (MINIVIC-BRAIN-0-4 §3 E6-E8) and is NEVER a literal. Add one sentence to the privacy page's synthetic-media section: 'No video is generated for your question. The face is a fixed set of frames recorded once, re-timed to the voice the site speaks with.' Retarget tests/monochrome/gold-semantics.spec.ts:85-86 off the old string in the same commit. Keep the badge dot luminous white, never gold (§14 C-8). If t_w1_r2ap has already landed E9-E11, rebase onto it and apply only the truth-line refinement.",
+    "files": [
+      "components/MiniVicBot.tsx",
+      "tests/e2e/chatbot.spec.ts",
+      "tests/monochrome/gold-semantics.spec.ts"
+    ],
+    "gates": [
+      "R3-COPY-01 the truth line matches /Voice: ElevenLabs stock, spoken live · Face: pre-rendered frames, lip-synced to that audio · Answers: /",
+      "R3-COPY-02 page text matches none of /real-?time video|live video|video is generated|generates? video|video avatar (is )?generated/i",
+      "R3-COPY-03 getByText('MiniVic Live', {exact:true}) count 0",
+      "R3-COPY-04 the truth line is visible idle, listening and speaking",
+      "npx tsc --noEmit clean · npm run lint clean · node scripts/validate/overhaul_static_audit.mjs 10/10"
+    ]
+  },
+  {
+    "slug": "r3-a2-greeting-alignment-and-schedule-lib",
+    "title": "R3-A2 — the greeting's character alignment is generated with its own audio, and lib/visemeSchedule.ts turns it into cues",
+    "assignee": "analyst-programmer",
+    "priority": 94,
+    "parents": ["r3-a1-honest-badge-and-truth-line"],
+    "minutes": 30,
+    "summary": "MINIVIC-AVATAR-v1.md §2.2 and §3. ElevenLabs synthesis is not reproducible across calls, so an alignment fetched today against the committed public/assets/minivic-greeting.mp3 would describe a DIFFERENT render and drift without bound. The alignment must therefore come from the same call that renders the MP3: extend scripts/generate-cloned-greeting.ts to POST /v1/text-to-speech/{VOICE_ID}/with-timestamps?output_format=mp3_44100_128 and write app/data/generated/greeting-alignment.ts (characters[], characterStartTimesSeconds[], characterEndTimesSeconds[], sourceSha256) in the same pass as greeting-asset.ts. sourceSha256 MUST equal greetingAudioSha256 and the build must FATAL otherwise — the same three-way pin scripts/build/greeting_envelope.mjs already enforces for the envelope. Then write lib/visemeSchedule.ts (pure, no DOM): graphemeRuns() with the ~45 ordered longest-match rules in §3.2 mapping to the EXISTING 22-entry set in lib/visemeMap.ts (indices 0-21, index 0 = sil) — introduce NO new taxonomy; buildSchedule() emitting {version:1, sourceSha256, durationSeconds, cues:[[tStart,tEnd,visemeIndex]]} with cue times NEVER rounded; visemeIndexAt(). Constants SILENCE_MIN_S=0.06 and MIN_CUE_S=0.04 per §3.4. Measured: greeting is 365 code units over 24.984671 s (14.61 chars/s) → ~201 cues, ~3 kB. COST GATE: exactly one ordinary 365-character TTS call on the already-configured premade voice — no IVC, no cloning, no new voice.",
+    "files": [
+      "scripts/generate-cloned-greeting.ts",
+      "app/data/generated/greeting-alignment.ts",
+      "lib/visemeSchedule.ts",
+      "tests/viseme_schedule.test.mjs"
+    ],
+    "gates": [
+      "VS-01 cues sorted, tEnd > tStart, no overlap",
+      "VS-02 cues cover [0, durationSeconds]; every gap is an explicit viseme-0 cue",
+      "VS-03 every visemeIndex in [0, VISEME_SHAPES.length-1] (0-21)",
+      "VS-04 no cue shorter than MIN_CUE_S = 0.04 s",
+      "VS-05 th->17, sh->16, oo->7, m->20, f->18, s->15, ng->19 with indices read from visemeMap.ts labels",
+      "VS-06 determinism: JSON.stringify(buildSchedule(x)) byte-identical across runs",
+      "VS-07 a >=60 ms punctuation gap yields a viseme-0 cue; a <60 ms gap is absorbed",
+      "VS-08 the real greeting schedule's durationSeconds is within 50 ms of 24.984671 and sourceSha256 === greetingAudioSha256",
+      "scripts/build/greeting_envelope.mjs digest assertion still passes",
+      "exactly one TTS call spent (no re-fires — §14 C-4)"
+    ]
+  },
+  {
+    "slug": "r3-a3-schedule-driven-greeting-mouth",
+    "title": "R3-A3 — the greeting's mouth is driven by audio.currentTime against the schedule, and the ≤40 ms drift is measured",
+    "assignee": "analyst-programmer",
+    "priority": 93,
+    "parents": ["r3-a2-greeting-alignment-and-schedule-lib"],
+    "minutes": 30,
+    "summary": "MINIVIC-AVATAR-v1.md §4.1 and §5. The rAF loop already exists at components/MiniVicBot.tsx:642-688 and already lerps currentVisemeRef -> targetVisemeRef through visemeLerpRef; VisemeStage reads those same three refs. EXACTLY ONE LINE CHANGES IN KIND: replace heuristicVisemeFromFrequency(dataArray,...) with visemeIndexAt(scheduleRef.current, el.currentTime). Do NOT touch VisemeStage, the GLSL, drawVisemeMouth, lerpVisemeShapes, the reduced-motion path or the no-GL path — that is what keeps the regression surface at zero and TC-VISEME-GL-01..03 green unmodified. Never read timeupdate (commonly throttled to ~4 Hz, six times the budget); sample currentTime inside the rAF loop. Use a monotonic cursor over cues, reset on onseeking/onended. Add the two hooks of §5.5 and SHIP THEM IN PRODUCTION, not behind a dev flag — a dev-only hook means the test measures a build no visitor receives (ADV-2315Z's second-ranked failure): canvas.dataset.visemeIndex written ONLY when the index changes (~8 writes/s, not 60), plus window.__minivicVisemeSchedule (the cues) and window.__minivicViseme() returning {t, index} ATOMICALLY — the drift test must never take two page.evaluate reads, the audio moves between them. Keep the AnalyserNode graph wired: it is the named fallback when no schedule exists, and every fallback fires logMiniVicIssue (§4.4) — never silent (§14 C-6). Refuse a schedule whose sourceSha256 does not match the audio digest; a wrong schedule is worse than none.",
+    "files": [
+      "components/MiniVicBot.tsx",
+      "tests/e2e/avatar-voice.spec.ts"
+    ],
+    "gates": [
+      "R3-DRIFT-01 >=20 atomic {t,index} samples across the greeting, every driftMs <= 40, max(driftMs) recorded in the evidence pack",
+      "R3-DRIFT-02 window.__minivicVisemeSchedule is a non-empty cue array on the DEPLOYED origin's bundle",
+      "R3-DRIFT-03 after audio.currentTime = 8, within 100 ms data-viseme-index equals visemeIndexAt(schedule, 8)",
+      "R3-DRIFT-04 the schedule's sourceSha256 equals window.__CLONED_VOICE_GREETING_HASH__",
+      "tests/overhaul/viseme-stage.spec.ts TC-VISEME-GL-01..03 still green, unmodified",
+      "the two existing avatar-voice tests still green"
+    ]
+  },
+  {
+    "slug": "r3-a4-tts-with-timestamps",
+    "title": "R3-A4 — elevenLabsTts content-negotiates /with-timestamps, and a cached bundle still gets its MP3",
+    "assignee": "analyst-programmer",
+    "priority": 90,
+    "parents": ["r3-a1-honest-badge-and-truth-line"],
+    "minutes": 30,
+    "summary": "MINIVIC-AVATAR-v1.md §2 and §2.1. The WebSocket path is REFUSED and the reason is structural, not preference: browser-side wss:// would ship ELEVENLABS_API_KEY to the client (§14 C-7, caught by TC-NFR-SEC and scripts/validate/built_output_secret_scan.mjs) and a Cloud Functions v2 onRequest has no socket to upgrade and hand back — a relay means new persistent infrastructure. The WS is also WORSE on this task's own axis: word-level alignment vs the REST endpoint's character-level. And the latency argument is small: functions/index.js:129 already does Buffer.from(await upstream.arrayBuffer()), so today's warm 0.46 s TTFB is already a whole-utterance figure and no streaming is being given up. Change the upstream URL to /v1/text-to-speech/{VOICE_ID}/with-timestamps?output_format=mp3_44100_128 and re-shape the response ONCE so the client never learns ElevenLabs' schema: {audioBase64, alignment:{characters, characterStartTimesSeconds, characterEndTimesSeconds}}. CONTENT-NEGOTIATE: Accept: application/json -> that JSON; anything else -> today's binary audio/mpeg body with Cache-Control: public, max-age=86400 unchanged. Back-compat is a hard requirement, not a nicety — without it the window between the function deploy and the static export is a broken voice for every returning visitor. Never synthesise an alignment on an upstream failure; 502 with no alignment key. Never log key material.",
+    "files": [
+      "functions/index.js",
+      "tests/minivic_tts_timestamps.test.mjs"
+    ],
+    "gates": [
+      "TS-FN-01 JSON has audioBase64 plus three alignment arrays of equal length",
+      "TS-FN-02 content-type: application/json when Accept: application/json",
+      "TS-FN-03 start times non-decreasing and end[i] >= start[i] for every i",
+      "TS-FN-04 upstream non-200 -> 502 {error:'tts_upstream_failed'} with no alignment key in the body",
+      "TS-FN-05 no Accept (or audio/mpeg) -> binary body, content-type audio/mpeg, Cache-Control public max-age=86400",
+      "TS-FN-06 text > MAX_CHARS truncated before spend; empty -> 400 text_required",
+      "deployed function answers both Accept values · no secret in logs or output"
+    ]
+  },
+  {
+    "slug": "r3-a5-dynamic-reply-lipsync",
+    "title": "R3-A5 — chat answers drive the mouth from their own alignment, and TTS starts on the first sentence",
+    "assignee": "analyst-programmer",
+    "priority": 88,
+    "parents": ["r3-a4-tts-with-timestamps", "r3-a3-schedule-driven-greeting-mouth"],
+    "minutes": 30,
+    "summary": "MINIVIC-AVATAR-v1.md §4.3 and §2.3. Replies get NO atlas — there is no photographic footage of Vikram saying an arbitrary answer and inventing one is the fabrication §14 C-7 forbids. They drive the EXISTING vector drawVisemeMouth + VisemeStage GLSL path, unchanged pixels, new driver. Build the schedule client-side from the alignment the function now returns and install it before playAudio. The one lever with measured leverage on the first-word budget is sentence-chunking: issue the TTS call on the first complete sentence of the streamed answer rather than on the whole answer, so the call starts at 'brain first sentence' instead of 'brain done' (measured brain totals 1.157-1.846 s, first token 0.691-0.823 s at the Cloud Run origin, MINIVIC-BRAIN-0-4 §1.3). REJECTED as budget levers: shortening answers (the gaming MINIVIC-BRAIN §2(c) already refused — do NOT lower CHAT_MAX_TOKENS), a lower-bitrate first chunk (ElevenLabs TTFB is generation-bound, not transfer-bound), and any change that moves first byte without moving first word. B2 stays an ESTIMATE of 1.55-1.98 s warm and must be reported as a range, never claimed as a pass. When no alignment comes back, fall back to the analyser AND fire logMiniVicIssue — named, never silent.",
+    "files": [
+      "lib/miniVicBrain.ts",
+      "components/MiniVicBot.tsx",
+      "tests/e2e/chatbot.spec.ts"
+    ],
+    "gates": [
+      "a reply's mouth is schedule-driven, not analyser-driven, when alignment is present",
+      "with alignment absent the analyser fallback fires AND logs its notice",
+      "CHAT_MAX_TOKENS unchanged at 128",
+      "R3-COPY-01..04 still green",
+      "npx tsc --noEmit clean · npm run lint clean"
+    ]
+  },
+  {
+    "slug": "r3-a6-mouth-atlas-from-4k-master",
+    "title": "R3-A6 — the greeting's mouth becomes photographic: a 22-cell atlas cropped from the 4K master",
+    "assignee": "analyst-programmer",
+    "priority": 86,
+    "parents": ["r3-a3-schedule-driven-greeting-mouth"],
+    "minutes": 30,
+    "summary": "MINIVIC-AVATAR-v1.md §4.2, and read §1.1 FIRST. MEASURED THIS SESSION: the master is 3840x2160, 24 fps, 295 frames, 12.291667 s video / 12.325011 s audio; the greeting MP3 is 24.984671 s. The master is therefore NOT a recording of anyone speaking this greeting and there is NO timeline to align to — the R3 research doc's §2(b)(3) 'align the master's frame timestamps to the greeting' step is invalid and must not be attempted. Build the atlas by VISEME-CLASS REPRESENTATIVE SELECTION instead: (1) contact sheet, ffmpeg -vf scale=384:-1,drawtext=text='%{n}',tile=20x15 -frames:v 1 (295 frames fit one tile); (2) commit data/minivic-viseme-frames.json = {master, masterSha256, crop:{x,y,w,h}, frames:{visemeIndex -> frameNumber}} chosen once by eye, verifying the crop box with ffmpeg -vf select='eq(n\\,120)',crop=W:H:X:Y; (3) scripts/build/minivic_viseme_atlas.mjs runs in build and build:static beside greeting_envelope.mjs, emits a 22x1 tile at 192x128 per cell (4224x128) as public/assets/minivic-visemes.webp. Cell order is visemeIndex ascending so sx = i*192 and no index table ships. BUDGET: 540,672 px vs my_avatar.webp's 51,028 B at ~1,222,480 px => ~22 kB ESTIMATE; hard cap is the audit's TC-NFR-PERF 500 kB, soft target 120 kB asserted directly. The master is UNTRACKED (git ls-files errors; .gitignore:196 artifacts/*), so mirror greeting_envelope.mjs's keep-committed-artefact path exactly: if the committed webp exists and masterSha256 is unchanged, keep it and exit 0; FATAL only when nothing safe remains. Draw with two drawImage calls crossfaded by the SAME visemeLerpRef the vector path and the GLSL stage use, so all three surfaces stay in step by construction. A viseme class with no good frame maps to its nearest neighbour and that substitution is RECORDED IN THE JSON — an unfilled cell must never be a black frame.",
+    "files": [
+      "data/minivic-viseme-frames.json",
+      "scripts/build/minivic_viseme_atlas.mjs",
+      "package.json",
+      "components/MiniVicBot.tsx",
+      "tests/overhaul/viseme-atlas.spec.ts"
+    ],
+    "gates": [
+      "R3-ATLAS-01 GET /assets/minivic-visemes.webp 200 and content-length <= 122880 B",
+      "R3-ATLAS-02 with the atlas route aborted the greeting mouth still changes shape (>=3 distinct indices) and logMiniVicIssue fired",
+      "R3-ATLAS-03 reduced motion: shape still changes with the audio (keeps TC-VISEME-GL-02 true) and visemeLerp is 1 at every sample — cut, not tween",
+      "R3-ATLAS-04 ?gl=block: 0 WebGL canvases and the mouth is still schedule-driven",
+      "node scripts/validate/overhaul_static_audit.mjs 10/10 (TC-NFR-PERF)",
+      "build succeeds with ffmpeg absent when the committed atlas is current"
+    ]
+  },
+  {
+    "slug": "r3-a7-first-word-budget-and-evidence",
+    "title": "R3-A7 — measure the first word on live, and write the evidence pack that says what the 40 ms bounds",
+    "assignee": "analyst-programmer",
+    "priority": 84,
+    "parents": ["r3-a3-schedule-driven-greeting-mouth", "r3-a5-dynamic-reply-lipsync", "r3-a6-mouth-atlas-from-4k-master"],
+    "minutes": 20,
+    "summary": "MINIVIC-AVATAR-v1.md §2.3, §5.4 and §6.6. Write scripts/validate/first_word_budget.mjs: headless Chromium, --no-sandbox, against the LIVE origin; t0 = the click / the send, t1 = the 'playing' event on [data-testid=\"minivic-audio\"]. B1 (greeting, panel open -> first audio sample) is one static CDN fetch of a 417,702 B MP3 with no brain and no TTS: 7 samples, fresh context each, PASS if max < 1.5 s — this is the ONLY first-word number this design claims. B2 (send -> first audio sample) is 7 warm + 7 after a >=10 min idle and is REPORTED, never pass/fail, because the design's own composition puts it at 1.55-1.98 s warm and a gate on a number the design does not claim is a gate that will be gamed. Runs on demand, NEVER in the deploy path (O3: no chronic blockers). Then write the evidence pack recording: B1 P50 and max, B2 warm and cold, max(driftMs) from R3-DRIFT-01, the atlas byte size, and §5.4 verbatim — the 40 ms bounds RENDERER-VS-SCHEDULE, not renderer-vs-truth. Nothing in the pack, the board or the copy may read 'lip-sync accurate to 40 ms' without that qualifier. Carry the six OPEN items of §9 into docs/adversarial/GAP-BACKLOG.md unchanged — R3's full generative real-time form stays OPEN and is shown to be structurally unreachable through Higgsfield at any credit level.",
+    "files": [
+      "scripts/validate/first_word_budget.mjs",
+      "docs/delivery/evidence/v10-20260905T0515Z/R3-avatar/",
+      "docs/adversarial/GAP-BACKLOG.md"
+    ],
+    "gates": [
+      "B1 max < 1.5 s over 7 samples, recorded",
+      "B2 warm and cold recorded as a range with no pass claim attached",
+      "max(driftMs) from R3-DRIFT-01 recorded",
+      "the pack states that 40 ms bounds renderer-vs-schedule, not renderer-vs-truth",
+      "the six OPEN items of §9 carried to GAP-BACKLOG.md",
+      "the script is not wired into any deploy gate"
+    ]
+  }
+]

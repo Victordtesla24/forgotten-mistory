@@ -43,3 +43,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## COMMENT (2026-09-06T00:53:34.239Z)
 PM check 00:48Z: branch consolidated into origin/main and LIVE build-commit 56ffed3e (deploy cadence). Not done until independent reviewer t_w1_rev1 issues PASS on the live URL.
+
+## COMPLETE (2026-09-06T01:15:35.042Z)
+Independent live PASS (rev-56ffed3e-w1): Listen + Vitrine engage plates identical label/subject/body/href; no booking wording; R4 both paths hold. Live 56ffed3e via Deploy 34001200263/34001642667.

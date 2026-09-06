@@ -30,3 +30,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## COMMENT (2026-09-05T06:03:37.263Z)
 Tools used this cycle (orchestrator): Higgsfield MCP balance; n8n MCP get_workflow_details ×2; gh CLI (run list); sqlite3 read-only migration of the retired Hermes board; Workflow tool ×3 (opus council agents).
+
+## COMMENT (2026-09-06T01:05:35.735Z)
+R12 evidence 01:06Z: t_w2_r3r used mcp__claude_ai_Higgsfield__balance + show_plans_and_credits (raw: {"credits":0,"subscription_plan_type":"free"}) and mcp__claude_ai_ElevenLabs__creative_list_voices (voice JBFqnCBsd6RMkjVDRZzb George, premade); t_w2_h1r used SearXNG, WebFetch, mcp__firecrawl__firecrawl_scrape with screenshots viewed. Raw responses recorded in W2-RESEARCH/*.md.

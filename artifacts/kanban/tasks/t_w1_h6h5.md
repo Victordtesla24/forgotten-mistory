@@ -54,3 +54,6 @@ PM check 00:48Z: branch consolidated into origin/main and LIVE build-commit 56ff
 
 ## DECISION (2026-09-06T00:55:26.209Z)
 O1 overrun recorded: implementer reported ~55 min (cap 30). Cause: S-2 source search found a real 3840x2160@24 master (artifacts/masters/minivic-greeting-2160p-master.mp4), forcing a re-encode from it plus baseline runs to prove two red specs pre-existing. Future asset lanes are split: search/measure (researcher) and encode/ship (AP) as separate ≤30-min tasks. Worker honesty noted; no penalty.
+
+## COMPLETE (2026-09-06T01:15:35.129Z)
+Independent live verdict (rev-56ffed3e-w1): G-H6 PASS — portrait stills + loop greyscale in bytes and paint; palette register retired and pinned. G-H5 FAIL on the resolution half (2160p master exists; only 720p served) → correction t_w1_h5b (on-demand 1080p/2160p rungs, ladder to docs/architecture). Canonical URL 200 / old name 301 confirmed live.
