@@ -5,3 +5,113 @@ npm notice run 'playwright' test tests/overhaul/scene-about.spec.ts tests/a11y/t
 
   [32m✓[39m  [2m 1 [22m[chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground[2m (1.4m)[22m
   [32m✓[39m  [2m 2 [22m[chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground[2m (46.8s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/a11y/text-contrast.spec.ts:495:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes[2m (1.6m)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/a11y/text-contrast.spec.ts:495:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes[2m (2.4m)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/overhaul/scene-about.spec.ts:285:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view[2m (7.9s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/overhaul/scene-about.spec.ts:299:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column[2m (6.0s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/overhaul/scene-about.spec.ts:341:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose[2m (12.0s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/overhaul/scene-about.spec.ts:355:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-04: under reduced motion there is no canvas, and the rose is still the instrument[2m (4.3s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/overhaul/scene-about.spec.ts:382:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-05: with WebGL unavailable the section is whole and silent[2m (4.6s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/overhaul/scene-about.spec.ts:412:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-06: the field is monochrome, palette-sourced and cheap per pixel[2m (56ms)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/overhaul/scene-about.spec.ts:444:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-07: the field is driven by the section data — answered/role/sourced, not scroll alone[2m (37ms)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/overhaul/scene-about.spec.ts:488:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-08: the field is the section’s plane, not the instrument’s backing[2m (27ms)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/overhaul/scene-about.spec.ts:562:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-09: a renderer the name test refuses is measured, not simply turned away[2m (24ms)[22m
+TC-SCENE-ABOUT-10 1440x900 at rest — the ring under the engraving: per-sector 0.2179 0.4167 0.5389 0.3916 0.6046 0.0160 0.4971 0.1069 0.2939 0.3815 | answered 0.3797 open 0.2690 ratio 1.412
+  [31m✘[39m  [2m14 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:642:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, at rest[39m[2m (11.8s)[22m
+TC-SCENE-ABOUT-10 1440x900 reading dimension 4 — the ring under the engraving: per-sector 0.3316 0.3435 0.4849 0.5583 0.4645 0.0609 0.0573 0.3193 0.0311 0.3350 | answered 0.4053 open 0.0498 ratio 8.146
+TC-SCENE-ABOUT-10 1440x900 reading dimension 4 — the fan outside the bezel: per-sector 0.0070 0.0065 0.2315 0.3410 0.6053 0.0145 0.0138 0.1232 0.0104 0.0402 | answered 0.1935 open 0.0129 ratio 15.006
+  [32m✓[39m  [2m15 [22m[chromium] › tests/overhaul/scene-about.spec.ts:642:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, reading dimension 4[2m (9.7s)[22m
+TC-SCENE-ABOUT-10 390x844 at rest — the ring under the engraving: per-sector 0.3817 0.4837 0.4089 0.3010 0.2388 0.0496 0.0685 0.3991 0.0318 0.2775 | answered 0.3558 open 0.0500 ratio 7.120
+TC-SCENE-ABOUT-10 390x844 at rest — the fan outside the bezel: per-sector 0.0000 0.2748 0.5844 0.5785 0.1955 0.0105 0.0325 0.5854 0.0933 0.2292 | answered 0.3497 open 0.0454 ratio 7.700
+  [32m✓[39m  [2m16 [22m[chromium] › tests/overhaul/scene-about.spec.ts:642:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 390x844, at rest[2m (9.2s)[22m
+TC-SCENE-ABOUT-10 390x844 reading dimension 1 — the ring under the engraving: per-sector 0.0032 0.0036 0.1025 0.3228 0.4100 0.0649 0.0436 0.1708 0.0152 0.0033 | answered 0.1452 open 0.0413 ratio 3.518
+TC-SCENE-ABOUT-10 390x844 reading dimension 1 — the fan outside the bezel: per-sector 0.0000 0.0030 0.0371 0.5627 0.1993 0.0105 0.0318 0.5545 0.0493 0.0023 | answered 0.1941 open 0.0306 ratio 6.354
+  [32m✓[39m  [2m17 [22m[chromium] › tests/overhaul/scene-about.spec.ts:642:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 390x844, reading dimension 1[2m (7.8s)[22m
+  [32m✓[39m  [2m18 [22m[chromium] › tests/overhaul/scene-about.spec.ts:762:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-11: the compass is chrome — the plane carries the section[2m (15.4s)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/scene-about.spec.ts:642:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, at rest [39m
+
+    Error: the ring under the engraving: only 6 of 10 sector boundaries show a 12% luminance step — steps 0.666, 0.219, -0.155, 0.156, -0.025, 0.833, 0.872, 0.035, 0.454, -0.669
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m9[39m
+    Received:    [31m6[39m
+
+    [0m [90m 729 |[39m             [32m`${where}: only ${legible} of ${steps.length} sector boundaries show a 12% luminance `[39m [33m+[39m
+     [90m 730 |[39m               [32m`step — steps ${steps.map((s) => s.toFixed(3)).join(', ')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 731 |[39m           )[33m.[39mtoBeGreaterThanOrEqual(steps[33m.[39mlength [33m-[39m [35m1[39m)[33m;[39m
+     [90m     |[39m             [31m[1m^[22m[39m
+     [90m 732 |[39m
+     [90m 733 |[39m           [90m// Answered brighter than open, in the order the SVG numbers them. The[39m
+     [90m 734 |[39m           [90m// task's shorthand is "sectors 1..k against k+1..10"; the ten are not[39m[0m
+    [2m    at assertTellsTen (/root/forgotten-mistory/.claude/worktrees/w2-x2f5/tests/overhaul/scene-about.spec.ts:731:13)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2f5/tests/overhaul/scene-about.spec.ts:752:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-c7f40-sectors-at-1440x900-at-rest-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-c7f40-sectors-at-1440x900-at-rest-chromium/error-context.md[22m
+
+[33m  Slow test file: [39m[chromium] › tests/a11y/text-contrast.spec.ts[33m (6.1m)[39m
+[33m  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel[39m
+[31m  1 failed[39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:642:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, at rest [39m
+[32m  17 passed[39m[2m (7.8m)[22m
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/flagship-visibility.spec.ts -g ABOUT tests/e2e/about.spec.ts --workers=1 --reporter=list
+
+[2mRunning [22m17[2m tests using [22m1[2m worker[22m
+
+  [32m✓[39m  [2m 1 [22m[chromium] › tests/e2e/about.spec.ts:39:7 › About › TC-ABOUT-01: all ten dimensions render, in the engine’s own order[2m (4.9s)[22m
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/e2e/about.spec.ts:47:7 › About › TC-ABOUT-02: every dimension carries an answer and its evidence[2m (5.6s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/e2e/about.spec.ts:60:7 › About › TC-ABOUT-03: no dimension is given a score[2m (3.7s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/e2e/about.spec.ts:80:7 › About › TC-ABOUT-04: the dimensions name their source[2m (2.5s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/e2e/about.spec.ts:86:7 › About › TC-ABOUT-05: job-side dimensions are labelled as such[2m (3.1s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/e2e/about.spec.ts:99:7 › About › TC-ABOUT-06: the ten items are reading aids, not tab stops[2m (7.6s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL[2m (3.6s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/e2e/about.spec.ts:192:7 › About › TC-ABOUT-08: the compass turns as the reader scrolls — item 6 centred reads 06 / FROM THE ROLE[2m (5.7s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/e2e/about.spec.ts:216:7 › About › TC-ABOUT-09: hover overrides the scroll index, and leaving the list hands it back[2m (5.7s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/e2e/about.spec.ts:235:7 › About › TC-ABOUT-10: on first entry the bezel sweeps once — 1160 ms, emphasised ease, never again[2m (7.4s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/e2e/about.spec.ts:278:7 › About › TC-ABOUT-11: under reduced motion the index snaps — no sweep, no travel, still swept[2m (4.8s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/e2e/about.spec.ts:306:7 › About › TC-ABOUT-12: no gold on the face — the active sector, its numeral and the ring stay achromatic[2m (5.8s)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/e2e/about.spec.ts:346:7 › About › TC-ABOUT-13: at 1440 the dial and the first dimension share a baseline[2m (7.1s)[22m
+[flagship-visibility] about@1440: ground=0.0030 coverage=13.66% peak=0.8308 motion=0.00639 box=1248x900
+  [31m✘[39m  [2m14 [22m[31m[chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light[39m[2m (13.9s)[22m
+[flagship-visibility:still] about@1440: ground=0.0030 coverage=15.28% peak=0.1170
+  [32m✓[39m  [2m15 [22m[chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback[2m (3.8s)[22m
+[flagship-visibility] about@390: ground=0.0030 coverage=29.64% peak=0.8308 motion=0.01340 box=342x480
+  [32m✓[39m  [2m16 [22m[chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light[2m (7.0s)[22m
+[flagship-visibility:still] about@390: ground=0.0030 coverage=67.38% peak=0.1195
+  [32m✓[39m  [2m17 [22m[chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback[2m (2.4s)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light [39m
+
+    Error: about compass field: only 13.66% of the scene is more than 0.06 luminance above its ground — the structure has no area
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.15[39m
+    Received:    [31m0.13661814409172585[39m
+
+    [0m [90m 353 |[39m           [32m`${item.label}: only ${(cover * 100).toFixed(2)}% of the scene is more than `[39m [33m+[39m
+     [90m 354 |[39m             [32m`${COVERAGE_DELTA} luminance above its ground — the structure has no area`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 355 |[39m         )[33m.[39mtoBeGreaterThanOrEqual([33mCOVERAGE_MIN[39m)[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 356 |[39m
+     [90m 357 |[39m         expect(
+     [90m 358 |[39m           top[33m,[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2f5/tests/overhaul/flagship-visibility.spec.ts:355:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-flagship-visibili-9ca1f-ompass-field-reads-as-light-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-flagship-visibili-9ca1f-ompass-field-reads-as-light-chromium/error-context.md[22m
+
+[31m  1 failed[39m
+[31m    [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light [39m
+[32m  16 passed[39m[2m (1.8m)[22m
