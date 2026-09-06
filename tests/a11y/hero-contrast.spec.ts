@@ -243,3 +243,187 @@ for (const viewport of VIEWPORTS) {
     }
   });
 }
+
+/**
+ * TC-HERO-A11Y-02 — the fold's keyboard reading (HERO-SETPIECE-v3 §7, §8;
+ * slice S3).
+ *
+ * Three guarantees, and all three are about the *same* claim: the fold offers
+ * one action group and the photograph is scenery, not a control.
+ *
+ *  1. **Exact tab order.** §7 writes the intended order as "nav brand → nav
+ *     links → Ask Mini Vic → hero-actions primary → secondary → .proof". The
+ *     shipped nav cannot produce that sequence literally, and it should not:
+ *     *Ask Mini Vic* is a **bypass block** (WCAG 2.4.1) authored to stand first
+ *     inside `<nav>` precisely because the launcher was the 93rd tab stop
+ *     (Navigation.tsx), and the overlay's `.nav-link`s are inside an
+ *     `aria-hidden`, `visibility:hidden` panel until the reader opens the menu,
+ *     so they are not in the sequence at all while it is closed. Asserting the
+ *     brief's literal string would either force the bypass block behind the
+ *     brand — reopening the finding G-MV1 closed — or assert a state the
+ *     reader is not in. So this case asserts the order that is actually
+ *     reachable, element for element, with nothing permitted between the
+ *     stops: `Ask Mini Vic → VIKRAM. → Download CV → Menu → See the evidence →
+ *     Download CV (hero) → the proof band`. That is stronger than a subset
+ *     check: an inserted control anywhere in the fold fails it.
+ *  2. **The plane holds no tab stop.** `[data-plane="hero"]`'s whole subtree —
+ *     the figure included — must contain zero tabbables, which is what keeps
+ *     the fold at one CTA group (HeroPortrait rule 5, the two competing groups
+ *     on live `9b864752`).
+ *  3. **Targets.** Every CTA in the fold measures ≥ 48 × 48 CSS px, at every
+ *     viewport (WCAG 2.5.5 AAA is 44; §7 asks 48).
+ *
+ * Thresholds are §8's exactly (t_w2_h1s3 QUALITY GATES).
+ */
+
+/** §7 — 48 px, above WCAG 2.5.5 AAA's 44. */
+const MIN_TARGET_PX = 48;
+
+/** The reachable sequence §7 describes, in the order the shipped bypass blocks
+ *  and the closed overlay actually produce. `nav a.nav-cv` is display:none on
+ *  the narrow tiers, so the assertion below compares the observed head against
+ *  this list *filtered to what is present* — order and membership are both
+ *  exact, and any control not on this list fails wherever it appears. */
+const CANONICAL_TAB_ORDER = [
+  'a.skip-link',
+  'nav [data-testid="minivic-skip"]',
+  'nav a.logo',
+  'nav a.nav-cv',
+  'nav button.menu-toggle',
+  '[data-testid="hero-actions"] a:nth-of-type(1)',
+  '[data-testid="hero-actions"] a:nth-of-type(2)',
+] as const;
+
+/** The stops that must be reachable at every viewport — the two bypass blocks,
+ *  the brand, and the fold's one action group. */
+const REQUIRED_TAB_STOPS = [
+  'a.skip-link',
+  'nav [data-testid="minivic-skip"]',
+  'nav a.logo',
+  '[data-testid="hero-actions"] a:nth-of-type(1)',
+  '[data-testid="hero-actions"] a:nth-of-type(2)',
+] as const;
+
+type TabStop = { handle: string; text: string; w: number; h: number; inPlane: boolean };
+
+const readTabOrder = (): { stops: TabStop[]; proofFirstIndex: number; planeTabbables: string[] } => {
+  const SELECTOR =
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), ' +
+    'textarea:not([disabled]), [tabindex]:not([tabindex="-1"]), audio[controls], video[controls]';
+  const visible = (el: Element): boolean => {
+    const s = getComputedStyle(el);
+    if (s.visibility === 'hidden' || s.display === 'none') return false;
+    let p: Element | null = el;
+    while (p) {
+      if (p instanceof HTMLElement && p.getAttribute('aria-hidden') === 'true') return false;
+      const ps = getComputedStyle(p);
+      if (ps.visibility === 'hidden' || ps.display === 'none') return false;
+      p = p.parentElement;
+    }
+    return true;
+  };
+  const name = (el: Element): string => {
+    if (el.matches('nav [data-testid="minivic-skip"]')) return 'nav [data-testid="minivic-skip"]';
+    if (el.matches('a.skip-link')) return 'a.skip-link';
+    if (el.matches('nav a.logo')) return 'nav a.logo';
+    if (el.matches('nav a.nav-cv')) return 'nav a.nav-cv';
+    if (el.matches('nav button.menu-toggle')) return 'nav button.menu-toggle';
+    const actions = document.querySelector('[data-testid="hero-actions"]');
+    if (actions && actions.contains(el)) {
+      const idx = Array.from(actions.querySelectorAll('a')).indexOf(el as HTMLAnchorElement);
+      return `[data-testid="hero-actions"] a:nth-of-type(${idx + 1})`;
+    }
+    if (el.closest('[data-testid="hero-proof"]')) return 'hero-proof';
+    if (el.closest('[data-plane="hero"]')) return `PLANE ${el.tagName.toLowerCase()}`;
+    return `${el.tagName.toLowerCase()}${el.className ? `.${String(el.className).split(' ')[0]}` : ''}`;
+  };
+
+  const all = Array.from(document.querySelectorAll(SELECTOR)).filter(visible);
+  const plane = document.querySelector('[data-plane="hero"]');
+  const stops: TabStop[] = all.map((el) => {
+    const r = el.getBoundingClientRect();
+    return {
+      handle: name(el),
+      text: (el.textContent ?? '').trim().slice(0, 40),
+      w: r.width,
+      h: r.height,
+      inPlane: plane ? plane.contains(el) : false,
+    };
+  });
+  const proofFirstIndex = stops.findIndex((s) => s.handle === 'hero-proof');
+  return {
+    stops,
+    proofFirstIndex,
+    planeTabbables: stops.filter((s) => s.inPlane).map((s) => `${s.handle} "${s.text}"`),
+  };
+};
+
+for (const vp of VIEWPORTS) {
+  const size = `${vp.width}x${vp.height}`;
+
+  test(`TC-HERO-A11Y-02 @ ${size} — exact focus order, no tab stop in the plane, ≥ ${MIN_TARGET_PX} px targets`, async ({
+    page,
+    baseURL,
+  }) => {
+    test.setTimeout(120000);
+    await page.setViewportSize({ width: vp.width, height: vp.height });
+    const spd = await instrument();
+    await spd.preparePage(page, baseURL ?? 'http://127.0.0.1:5609', {
+      id: 'gl',
+      url: '/?gl=force',
+      reducedMotion: false,
+    });
+    const d = await page.evaluate(readTabOrder);
+
+    // eslint-disable-next-line no-console
+    console.log(
+      `A11Y-02 ${size}: tab order → ${d.stops.map((s) => s.handle).slice(0, 10).join(' → ')}`,
+    );
+
+    // Everything the reader reaches before the proof band. Order and membership
+    // are both asserted: filtering the canonical list to the stops actually
+    // present reproduces `head` exactly only if nothing foreign is in it and
+    // nothing is out of sequence.
+    const firstProof = d.stops.findIndex((s) => s.handle === 'hero-proof');
+    const head = (firstProof === -1 ? d.stops : d.stops.slice(0, firstProof)).map((s) => s.handle);
+    expect(
+      head,
+      `A11Y-02 at ${size}: the fold's reachable focus order is not §7's — a control has been ` +
+        'inserted, removed or reordered ahead of the proof band',
+    ).toEqual(CANONICAL_TAB_ORDER.filter((h) => head.includes(h)));
+    for (const required of REQUIRED_TAB_STOPS) {
+      expect(head, `A11Y-02 at ${size}: ${required} must be reachable before the proof band`).toContain(
+        required,
+      );
+    }
+    expect(
+      head.slice(-2),
+      `A11Y-02 at ${size}: the fold's last two stops must be the one action group, primary first`,
+    ).toEqual([
+      '[data-testid="hero-actions"] a:nth-of-type(1)',
+      '[data-testid="hero-actions"] a:nth-of-type(2)',
+    ]);
+
+    expect(
+      d.planeTabbables,
+      `A11Y-02 at ${size}: [data-plane="hero"] carries ${d.planeTabbables.length} tab stop(s) — ` +
+        'the photograph is scenery and the fold offers exactly one action group',
+    ).toEqual([]);
+
+    expect(
+      d.proofFirstIndex,
+      `A11Y-02 at ${size}: the proof band must follow the hero actions in the tab sequence`,
+    ).toBeGreaterThan(
+      d.stops.findIndex((s) => s.handle === '[data-testid="hero-actions"] a:nth-of-type(2)'),
+    );
+
+    const undersized = d.stops
+      .filter((s) => s.handle.startsWith('[data-testid="hero-actions"]'))
+      .filter((s) => s.w < MIN_TARGET_PX || s.h < MIN_TARGET_PX)
+      .map((s) => `${s.handle} "${s.text}" ${s.w.toFixed(1)}×${s.h.toFixed(1)}`);
+    expect(
+      undersized,
+      `A11Y-02 at ${size}: every fold CTA must measure ≥ ${MIN_TARGET_PX}×${MIN_TARGET_PX} CSS px`,
+    ).toEqual([]);
+  });
+}
