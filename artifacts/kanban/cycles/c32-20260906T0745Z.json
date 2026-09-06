@@ -1,0 +1,73 @@
+{
+  "cycle": "v10-c32",
+  "window_utc": "2026-09-06T06:52Z–07:45Z",
+  "orchestrator": "Fable 5.1 ultracode (claude-cli), session_01WWt1D5i764agLExdpEWvRC",
+  "deploys_in_window": [
+    {
+      "run_id": 34019770851,
+      "conclusion": "success",
+      "at": "07:40:11Z",
+      "head": "d25fa29e"
+    },
+    {
+      "run_id": 34019320266,
+      "conclusion": "success",
+      "at": "07:30:11Z",
+      "head": "6d3310b7"
+    },
+    {
+      "run_id": 34018856591,
+      "conclusion": "success",
+      "at": "07:20:00Z",
+      "head": "64b6fa30"
+    },
+    {
+      "run_id": 34018395205,
+      "conclusion": "success",
+      "at": "07:09:42Z",
+      "head": "64b6fa30"
+    },
+    {
+      "run_id": 34017930255,
+      "conclusion": "success",
+      "at": "06:59:21Z",
+      "head": "17891eba"
+    },
+    {
+      "run_id": 34017497944,
+      "conclusion": "success",
+      "at": "06:49:20Z",
+      "head": "17891eba"
+    }
+  ],
+  "live_build_commits_in_window": [
+    "64b6fa30 (07:01Z bookkeeping + m4c function/timer)",
+    "6d3310b7 (07:21Z removal slice 0b 316a520 — visible)",
+    "d25fa29e (07:31Z m4c re-measurement docs)",
+    "cf4ff42d (07:41Z m4c cleanup + rm2 evidence)"
+  ],
+  "live_build_commit_now": "cf4ff42d (PM-verified 07:41Z)",
+  "o1_o5": "Visible UI at 07:21Z (removal slice 0b: Experience/Skills/Vitrine/Listen fields and the descent stage gone; only MiniVic's own scene remains). O5-MISS at 07:01Z, 07:31Z, 07:41Z (docs/tests-only deploys) — recorded on t_3e553558. Hero slice s01 (first credible-replacement slice) building since 07:07Z; load spike to 30 at 07:36Z with two concurrent Next builds — no kills, dispatches held.",
+  "adversarial": {
+    "t_w3_rev9": "live 83590944 — interim frame TC-IF-01..09 PASS, Owner question PASS, TC-IF-10 FAIL (G-MV1 at 390), LCP NOT MEASURED, overall FAIL",
+    "t_w3_m4r": "live 83590944 — G-M4 FAIL cold (1900/1793 ms)",
+    "t_w3_jdg": "judge panel — winner B (7.03 vs 6.90); neither clears the AQ ship bar (3.625 / 3.25 vs 4.0); grafts from A; must-fix + hard NOs binding",
+    "t_w3_rev10": "running on live 6d3310b7 (all six sections on the interim frame)"
+  },
+  "pea": {
+    "score": "R1/R2/§0.3-1 in rebuild at the Owner's bar (removal complete on live; replacement slice 1 building); G-MV1 FAIL at 390 (p0c queued behind p0b2); TC-BOT-14 placement FAIL at 1366/1280 (p0b2 running on the lost-write cause); G-M4 FAIL cold — Owner-blocked OB-1 after free fixes (timer + prime margin shipped; residual = funded provider TTFT); m4d probing a faster model on the same funded rung; R3 first form OPEN; R5 OPEN; process gates R6–R12 green",
+    "measured_against": "docs/prompt.md R1–R12 + Owner directives 05:29Z/05:51Z + CINEMATIC-VFX-v1 CQ/AQ",
+    "fabrication": "none; every verdict cites a reviewer file or a command; two implementer claims were falsified by reviewers this window (p0a narrow-panel diagnosis; none by rev9 on rm1)"
+  },
+  "architecture_this_cycle": "CINEMATIC-VFX-v1.md (binding, 83 kB) + CINEMATIC-VFX-TASKS.json (15 slices ≤ 30 min, hero first) synthesised from the judge's verdict; 15 slice tasks imported (t_w3s01..t_w3s15) via scripts/pm/import_slices.mjs; hero chain s01→s04 dispatched serially; INTERIM-FRAME.md §6 extended by rm2; MINIVIC-BRAIN-0-4.md §6.3 (warm timer, prime margin); OWNER-BLOCKED.md OB-1",
+  "provider": "Anthropic OAuth (claude-cli Max) for all spawns; OpenRouter −5.384 USD; no paid ElevenLabs/D-ID/render calls; no min-instances change (already 1); model probe on the funded OpenAI rung only",
+  "alerts": [
+    "Load 30 at 07:36Z (two Next builds + a Playwright battery + reviewer Chrome); RAM never below 3.2 GB; no OOM; rule reaffirmed: ≤ 2 heavy lanes + one reviewer Chrome",
+    "p0b stopped short correctly and did not push a red branch (pipeline ships everything) — p0b2 continues from its local commit",
+    "Two Owner-protected contracts conflicted (G-MV1 vs MONO-MV-02) — resolved in favour of G-MV1 in t_w3_p0c",
+    "m4c found the warm timer did not exist and minInstances was already 1 — task premises corrected by the agent, recorded"
+  ],
+  "board": "running: t_w3s01 (hero volume, wlz1uxwfk), t_w3_p0b2→t_w3_p0c (wblu9np0p), t_w3_rev10 (w49t4bf7p), t_w3_m4d (w3fywqpcs), t_w3_rm2 (returning); todo: t_w3s02..s15 (s02–s04 chained after s01; s08–s12 after s01 + rm2 consolidated); done: t_w3_syn, t_w3_jdg, t_w3_pb, t_w3_m4c (FAIL), t_w3_m4r, t_w3_rev9, t_w3_p0b (partial)",
+  "fusion_council": "NOT convened (Owner FAIL open; loop continues until every UI/UX requirement and success criterion is PASS on live)",
+  "next": "s01 push → deploy → reviewer on live with the CQ instruments (first credible-hero grade against AQ); s02–s04 serial; section chain s08–s12 after s01; p0b2 → p0c → reviewer (placement table ×3 + G-MV1 at 390/640); rev10 verdict rows → slices; m4d numbers → OB-1 close or keep; c33."
+}

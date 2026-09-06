@@ -42,3 +42,6 @@ Prototype A landed (docs/architecture/proto/cinematic-A/index.html; frames + mea
 
 ## STATUS (2026-09-06T06:29:09.929Z)
 running — dispatched 06:29Z fm-wave3-judge-synth (reviewer opus/max) — proto B still capturing; judge polls for W3-DIR-B/measurements.json
+
+## COMPLETE (2026-09-06T07:00:31.308Z)
+Verdict (W3-JUDGE/verdict.md, verdicts.json, 06:53Z): WINNER B (simulation school) by 0.13/10 — narrow, on the frame: B's hero is the only one with a legible key, visible atmosphere and the subject lit inside the volume, the only one passing CQ-01 in the gate's own colour space (0.917 vs A 0.370), no AQ criterion below 3 (AQ mean 3.625 vs A 3.25 with AQ-02=2). NEITHER clears the AQ ship bar (mean >= 4.0) — the loop iterates. Grafts from A: per-section canvases behind Scene.tsx/useGLCapability (no single renderer), A1-shaped 30-min first slice on the interim frame, stills rendered from the shader inside build:static, A's anamorphic/finish stack to the tap. Must-fix: grain into band (B measured 0.0074-0.0097 vs authored 0.018), layer separation (1 of 4 pairs clears 1.35), per-pixel ground ceiling inside text rects (name-box contrast 3.86:1 measured), fix both measurement instruments (A used Rec.709 on gamma sRGB; B's CQ-02 under-specified). Hard NOs: no troika/postprocessing/GSAP/Text3D; no single WebGLRenderer for the document.

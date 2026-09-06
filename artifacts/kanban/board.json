@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-06T06:50:45.512Z",
+  "updated": "2026-09-06T07:42:18.633Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -1411,7 +1411,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-05T05:58:06.011Z",
-      "updated": "2026-09-06T06:40:37.739Z",
+      "updated": "2026-09-06T07:42:18.633Z",
       "summary": "Orchestrator standing duty. deploy.yml fires on push and on */10. Each council task is capped at 30 min (max_runtime_seconds 1800); longer work is split. Cycle reports in artifacts/kanban/cycles/ carry the timestamps.",
       "decisions": [],
       "comments": [
@@ -1499,6 +1499,26 @@
           "at": "2026-09-06T06:40:37.739Z",
           "by": "orchestrator",
           "text": "O5-MISS 06:30Z window (no deploy carrying UI) and 06:40Z (17891eba = rm1 test supersessions only; live UI unchanged since 83590944). Reason: rm2 (Experience/Skills/Vitrine/Listen removal) started only after rm1's agent returned (~06:35Z); p0b (functional) not yet pushed. Recorded as FAIL rows, not excused."
+        },
+        {
+          "at": "2026-09-06T07:01:35.532Z",
+          "by": "orchestrator",
+          "text": "O5-MISS 07:01Z: live 64b6fa30 = bookkeeping w3-board-2 + m4c (function/timer, no visible UI). Visible UI last changed at 06:20Z (83590944). rm2 and p0b not yet pushed (rm2 ~40 min in, p0b ~55 min in, both over the 30-min cap — PM watching for a push; will re-dispatch a fresh identity on the smallest slice if either returns without one)."
+        },
+        {
+          "at": "2026-09-06T07:22:09.913Z",
+          "by": "orchestrator",
+          "text": "O5 MET 07:21Z: live 6d3310b7 = removal slice 0b (316a520) — Experience/Skills/Vitrine/Listen fields gone on live (PM curl: only minivic-viseme data-scene remains)."
+        },
+        {
+          "at": "2026-09-06T07:32:34.430Z",
+          "by": "orchestrator",
+          "text": "O5-MISS 07:31Z: live d25fa29e = m4c re-measurement docs only. Visible UI last changed 07:21Z (6d3310b7). Hero slice s01 building."
+        },
+        {
+          "at": "2026-09-06T07:42:18.633Z",
+          "by": "orchestrator",
+          "text": "O5-MISS 07:41Z: live cf4ff42d = m4c cleanup + rm2 evidence (docs/tests only). Visible UI last changed 07:21Z. Hero slice s01 still building (load spike 07:36Z with two concurrent builds)."
         }
       ],
       "column": "running"
@@ -7201,7 +7221,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T05:39:52.508Z",
-      "updated": "2026-09-06T06:49:20.840Z",
+      "updated": "2026-09-06T07:06:43.318Z",
       "summary": "Owner's verbatim words and the four live screenshots (build-commit 199f116c) are in artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md and docs/delivery/evidence/v10-20260905T0515Z/OWNER-20260906T0529Z/. Every current visualisation is graded below the bar by the Owner and is REPLACED, not polished. Assumption logged: gold stays exclusively the sourced-claim mark and never appears in any effect. Everything else in docs/prompt.md stays binding (R7 copy, LCP/CLS, budgets, reduced-motion + no-GL readability, keyboard, G-MV1, six sections in order, tests replaced never deleted, O1/O5).",
       "decisions": [
         {
@@ -7234,6 +7254,11 @@
           "at": "2026-09-06T06:49:20.840Z",
           "by": "orchestrator",
           "text": "06:50Z rev9 on 83590944: interim frame PASS on 9/10 clauses + the Owner's 'disciplined frame' question PASS; TC-IF-10 FAIL = G-MV1 breach at 390 (launcher invisible) -> t_w3_p0c scope widened (G-MV1 wins over MONO-MV-02; pill moved clear of the CTA row). G-M4 FAIL on cold sends (1.9 s / 1.8 s) -> t_w3_m4c. LCP still unmeasured on live (no LCP entries) — wave-3 hero slices carry CQ-12 with a Lighthouse-style probe."
+        },
+        {
+          "at": "2026-09-06T07:06:43.318Z",
+          "by": "orchestrator",
+          "text": "07:07Z synthesis landed; 15 slices imported (t_w3s01..t_w3s15). Hero chain s01→s02→s03→s04 dispatched serially (ports 5612–5615); section chain s08→s12 starts after s01 lands and rm2 is consolidated; s05–s07, s13–s15 follow. Every deploy gets a reviewer on live."
         }
       ],
       "blocker": null
@@ -7351,8 +7376,8 @@
     {
       "id": "t_w3_jdg",
       "title": "WAVE-3 JUDGE (reviewer, max, independent) — score direction A (title-sequence) and direction B (simulation) on the Owner's words, the AQ rubric applied to the real prototype frames, the CQ gate-set quality, feasibility on this stack and host, risk to the immovables, and time-to-first-visible-ship; re-derive ≥ 3 frame measurements per direction yourself; verdict with winner, grafts from the loser, must-fix list, hard NOs — docs/delivery/evidence/v10-20260905T0515Z/W3-JUDGE/",
-      "status": "running",
-      "column": "running",
+      "status": "done",
+      "column": "done",
       "assignee": "reviewer",
       "priority": 100,
       "parents": [
@@ -7367,7 +7392,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T05:41:45.647Z",
-      "updated": "2026-09-06T06:29:09.929Z",
+      "updated": "2026-09-06T07:00:31.308Z",
       "summary": "You judge; you never edit app code, docs or tests. The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md): 'remove all this shabby UI/UX, visualisations etc., and replace it with MARVEL STUDIOS grade visual effects and visualisations quality and sophistication. Only black, white..'. The four Owner screenshots are the FAIL baseline. Score with instruments and the rubric; adjectives are not scores (R7).",
       "decisions": [
         {
@@ -7376,13 +7401,14 @@
         }
       ],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "result": "Verdict (W3-JUDGE/verdict.md, verdicts.json, 06:53Z): WINNER B (simulation school) by 0.13/10 — narrow, on the frame: B's hero is the only one with a legible key, visible atmosphere and the subject lit inside the volume, the only one passing CQ-01 in the gate's own colour space (0.917 vs A 0.370), no AQ criterion below 3 (AQ mean 3.625 vs A 3.25 with AQ-02=2). NEITHER clears the AQ ship bar (mean >= 4.0) — the loop iterates. Grafts from A: per-section canvases behind Scene.tsx/useGLCapability (no single renderer), A1-shaped 30-min first slice on the interim frame, stills rendered from the shader inside build:static, A's anamorphic/finish stack to the tap. Must-fix: grain into band (B measured 0.0074-0.0097 vs authored 0.018), layer separation (1 of 4 pairs clears 1.35), per-pixel ground ceiling inside text rects (name-box contrast 3.86:1 measured), fix both measurement instruments (A used Rec.709 on gamma sRGB; B's CQ-02 under-specified). Hard NOs: no troika/postprocessing/GSAP/Text3D; no single WebGLRenderer for the document."
     },
     {
       "id": "t_w3_syn",
       "title": "WAVE-3 SYNTHESIS (solutions-architect, max) — from the judge's verdict, write the binding spec docs/architecture/CINEMATIC-VFX-v1.md (winner + grafts + must-fix applied; removal register; per-section spec at four viewports; CQ gate set; AQ rubric; TDD cases; risk) and docs/architecture/CINEMATIC-VFX-TASKS.json (10–16 hero-first ≤30-min analyst-programmer slices with exact files, tests, visible result); mark HERO-SETPIECE-v3 / SIGNATURE-SCENES-v2 / ABOUT-STORY-v2 / LISTEN-FLAGSHIP superseded with the carried instruments listed",
-      "status": "todo",
-      "column": "todo",
+      "status": "done",
+      "column": "done",
       "assignee": "solutions-architect",
       "priority": 100,
       "parents": [
@@ -7396,7 +7422,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T05:41:45.761Z",
-      "updated": "2026-09-06T05:56:15.667Z",
+      "updated": "2026-09-06T07:06:27.228Z",
       "summary": "Synthesis, not a third design: the judge chose; apply the grafts and the must-fix list, keep every immovable from t_w3_dA/t_w3_dB's IMMOVABLE list, and produce the one document the analyst-programmers build from. Read-only for app code, tests and content.",
       "decisions": [
         {
@@ -7405,7 +7431,8 @@
         }
       ],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "result": "Delivered docs/architecture/CINEMATIC-VFX-v1.md (83 kB, §0–§10) + CINEMATIC-VFX-TASKS.json (15 slices, all ≤ 30 min, hero first: s01 volume+light model+__fm bus, s02 plates die/type under a per-pixel luma ceiling, s03 figure into the volume, s04 finish, s05 name assembles from light, s06 stills from the shader, s07 camera path/parking, s08 About ten-spoke instrument, s09 Experience strata, s10 Skills lattice, s11 Vitrine DOF, s12 Listen, s13 chrome, s14 gold out of shaders, s15 capture parity + AQ re-score); bundle ceiling 200 kB; 14 carried instruments listed; supersede headers on HERO-SETPIECE-v3, SIGNATURE-SCENES-v2, ABOUT-STORY-v2, LISTEN-FLAGSHIP. Seeded by proto B with A's per-section canvases, first-ship shape, still pipeline and finish stack grafted."
     },
     {
       "id": "t_w3_p0a",
@@ -7485,17 +7512,28 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T05:55:21.010Z",
-      "updated": "2026-09-06T06:11:13.064Z",
+      "updated": "2026-09-06T07:36:26.507Z",
       "summary": "Owner 05:51Z (verbatim in artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md §Escalation): 'remove all your shabby work immediately and replace it with credible work'. This slice is the REMOVAL: every current effect and decoration goes now; nothing new is invented here (the credible replacement is specified under CINEMATIC-VFX-v1 and lands in later slices). The interim frame is disciplined: pure black ground (the existing near-black tokens; if the darkest token is not ≤ 0.03 luma add one token in app/globals.css :root, never raw hex elsewhere), white/grey type from the existing tokens, the monochrome photograph as a plain image with no blur/glow/plate, every word of app/data/portfolio/*.ts unchanged, section ids and order unchanged, every caliper mark unchanged, MiniVic unchanged, nav unchanged. Zero functional regression: tests that asserted a removed element are SUPERSEDED — each is listed in docs/architecture/INTERIM-FRAME.md with its replacement in tests/overhaul/interim-frame.spec.ts and removed from the suite in the same commit (git history keeps it); the static audit stays 10/10 — if a gate counts scene mounts or canvases, re-point that gate to the interim contract with the reason written in INTERIM-FRAME.md (never a silent weakening). Work in a fresh worktree from origin/main (git -C /root/forgotten-mistory worktree add .claude/worktrees/<slug> -b worktree-<slug> origin/main; npm ci if node_modules is missing); one heavy job at a time; never run git checkout/reset/stash in /root/forgotten-mistory; wait on PIDs, never on a process-name search containing your own command text; stop your static server with kill <PID>. Slug: w3-rm2. Port 5607. Branch from origin/main AFTER worktree-w3-rm1 has been consolidated (check git log origin/main for its merge; if it is not there yet, branch from origin/main and cherry-pick nothing — keep your edits away from the files rm1 touched, and extend interim-frame.spec.ts by appending a second describe block in a new file tests/overhaul/interim-frame-2.spec.ts instead).",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T07:13:39.621Z",
+          "by": "orchestrator",
+          "text": "07:12Z pushed 316a520 (worktree-w3-rm2): 86 files, 9422 deletions — CareerStrata/descent, BenchField, Drawings/VitrineField, ListenField and their shaders/CSS gone; five scene specs + story-contract + flagship-visibility + scene-framerate superseded by TC-IF-11..21 (INTERIM-FRAME.md §6); only the minivic-viseme scene remains mounted. Consolidation pending; reviewer rev10 grades all six sections on live."
+        },
+        {
+          "at": "2026-09-06T07:36:26.507Z",
+          "by": "orchestrator",
+          "text": "07:35Z second push 5883bcf: TC-IF-11..21 green log (W3-RM2/05-interim-frame.log) + section screenshots at 1440/834/390 + INTERIM-FRAME.md §6 extended. Awaiting the agent's structured return; rev10 grading live 6d3310b7."
+        }
+      ],
       "blocker": null
     },
     {
       "id": "t_w3_p0b",
       "title": "P0 FUNCTIONAL 2 (analyst-programmer, xhigh) — MiniVic panel placement: the panel is placed against the pre-font-settle name and never re-widened (290 px at 1440, 315 px at 1366, both under TC-BOT-14's 320 minimum and the 360 bar) because every recompute path in placePanelClearOfHeroName can only narrow and returns early on the cached natural box; and at 390 the composer sits outside a 368-px panel. Fix at the cause: recompute from a fresh natural box after fonts.ready/resize/scroll with the ability to re-expand; guarantee width ≥ 360 at ≥ 1280 by falling back from 'beside' to 'below/over' when beside cannot reach it; at 390 the sheet holds the composer inside; tests at 1440/1366/1280/834/390; push worktree-w3-p0b within 30 min",
-      "status": "running",
-      "column": "running",
+      "status": "done",
+      "column": "done",
       "assignee": "analyst-programmer",
       "priority": 100,
       "parents": [
@@ -7509,11 +7547,12 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T06:08:23.407Z",
-      "updated": "2026-09-06T06:08:51.628Z",
+      "updated": "2026-09-06T07:08:13.913Z",
       "summary": "Diagnosis and probe from t_w3_p0a: docs/delivery/evidence/v10-20260905T0515Z/W3-P0A/02-placement-probe-baseline.json and placement-probe.mjs (re-runnable, PROBE_BASE_URL default :5605 — use :5608 here). Functional only: zero visual change outside the MiniVic panel; do not touch components/sections/**. Fresh worktree .claude/worktrees/w3-p0b on branch worktree-w3-p0b from origin/main (which now carries e92808f if consolidated — check git log origin/main; otherwise merge origin/worktree-w3-p0b's parent e92808f into your branch first). One heavy job at a time; port 5608; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "result": "PARTIAL, NOT PUSHED (correct call: the pipeline ships every branch, and TC-BOT-14 is still red at 1366/1280). Committed locally 1697bac on worktree-w3-p0b (.claude/worktrees/w3-p0b, no node_modules). Fixed: (a) width floor 360 at >=1280 / 320 below with tallest-candidate-meeting-width selection (1440 now 432 px lifted above the name, sep 18.2); (b) three staleness paths that made recompute narrowing-only (live read when no caps; post-clear read believed only after two agreeing frames; per-recompute retry budget); (c) composer inside the 390 sheet (container tiers 24rem/20rem). Probe-after: width 432 at 1440/1366/1280/834, 342 at 390; composer inside 5/5; TC-MV-PLACE-01..06 12/12 (repeat 2); MiniVic suites 11/11; node tests 19/19 placement. OPEN: at 1366 (and sometimes 1280) the panel ends with the 'above' heightCap written but the lift NOT applied (h 272, bottom still 680, over the name) — the chooser is right, the WRITE is lost; suspects: a React style prop on [data-testid=minivic-panel] (MiniVicBot.tsx:1242) rewriting the attribute on re-render, or a CSS transition measured mid-flight. -> t_w3_p0b2."
     },
     {
       "id": "t_w3_rev8",
@@ -7617,8 +7656,8 @@
     {
       "id": "t_w3_m4c",
       "title": "G-M4 cold first token (analyst-programmer, xhigh) — live measurement FAIL: cold first token 1900 ms (origin) / 1793 ms (hosting) vs the 1500 ms bar, warm 818 / 1320 ms; the paid rungs are all cooling_down (0 ms) and OpenAI answers in 865–1278 ms, so the cold cost is the Cloud Run cold start + network. Free fixes only: (1) verify the VPS warm-prime timer actually fires against BOTH the origin URL and /api/chat?warm=1 every ≤ 3 min (systemd timer state, journal, last 204s) and repair/tighten it; (2) skip dead rungs without a network round-trip when their cooldown is active (already 0 ms — confirm) and put openai first while the others are 402; (3) trim the system prompt / first-chunk work so the first token leaves the function ≤ 700 ms after request start when warm; (4) if a cold start still exceeds the bar, write the min-instances=1 option into docs/delivery/OWNER-BLOCKED.md as a COST decision for the Owner (never enable it yourself); re-measure with the reviewer's probe (G-REV/83590944/M4/probe-first-token.mjs) 4× cold spaced ≥ 10 min apart",
-      "status": "running",
-      "column": "running",
+      "status": "done",
+      "column": "done",
       "assignee": "analyst-programmer",
       "priority": 90,
       "parents": [
@@ -7632,8 +7671,453 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T06:49:19.937Z",
-      "updated": "2026-09-06T06:50:45.512Z",
+      "updated": "2026-09-06T07:33:46.109Z",
       "summary": "No browser, no site build: functions/index.js, lib/miniVicRoute.mjs, the warm timer unit on this VPS, and the reviewer's probe. Cost gate: never set Cloud Run min instances, never add a paid provider call; ElevenLabs/D-ID untouched. Read key NAMES only from /root/.claude/.env.production with grep -E '^[A-Z][A-Z0-9_]*=' — never print values. Deploy the function with the existing filter (functions:tts:minivicChat) from a fresh worktree .claude/worktrees/w3-m4c on branch worktree-w3-m4c; ledger row before commit; push the branch (never main). Timer detail: read the unit files under /etc/systemd/system/ that mention warm or minivic and report their state with systemctl list-timers --all and journalctl -u <unit> -n 20; edits to units are recorded in the commit body and in docs/architecture/MINIVIC-BRAIN-0-4.md.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-06T06:59:14.311Z",
+          "by": "orchestrator",
+          "text": "06:58Z pushed 59c986b (worktree-w3-m4c): no warm timer existed on the host and minInstances was already 1 (so no cost saving available); shipped fm-minivic-warm.timer every 120 s against both warm endpoints (scripts/ops/systemd/, installed) + PRIME_REFRESH_MARGIN_MS 180 s so the cooldown map is refreshed before it lapses (68/68 node tests); ladder order kept per prompt.md §0.4; residual cold cost written as OB-1 in docs/delivery/OWNER-BLOCKED.md. Awaiting the agent's cold/warm re-measurement."
+        }
+      ],
+      "blocker": null,
+      "result": "FAIL (honest, goal_complete:false): after the correction (fm-minivic-warm.timer every 120 s against both URLs — measured gaps 124/125/125 s, 204 on every fire; PRIME_REFRESH_MARGIN_MS 180 s; MV-WARM-10 test; functions deployed) 6 of 8 cold first-token samples exceed 1500 ms (1193 PASS, 1529, 2522, 1296 PASS, 2282, 2188, 3304, 2210); warm 979/1080 PASS. The residual is the funded provider's own TTFT (openai 1231–2219 ms on cold samples); dead rungs already cost 0 ms; minInstances was already 1. Ladder order kept per prompt.md §0.4 (a prior inversion was reverted). OB-1 written in docs/delivery/OWNER-BLOCKED.md with the priced levers (fund OpenRouter; faster model/tier). Branch pushed (22cb822 pending consolidation). Follow-up t_w3_m4d tests the one free lever left: a faster model on the already-funded OpenAI rung, gated on R7 answer honesty."
+    },
+    {
+      "id": "t_w3s01",
+      "title": "WAVE-3 SLICE w3-s01 (analyst-programmer, xhigh) — Hero volume: shared light model, raymarched density, tier ladder, __fm bus — replaces: H-1 — visible result: The black interim frame gains one key light with a readable falloff and dust travelling through it. The grey smear is gone for good. — ≤ 30 min",
+      "status": "running",
+      "column": "running",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3_own"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:28.728Z",
+      "updated": "2026-09-06T07:06:42.719Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: components/sections/Hero/atmosphere.glsl.ts, components/sections/Hero/HeroAtmosphere.tsx, components/gl/world/lightModel.ts, components/gl/world/tiers.ts, components/gl/world/instruments.ts, components/gl/useGLCapability.ts. Tests to turn green: tests/overhaul/cq-luma-range.spec.ts:T-01, tests/overhaul/cq-volumetric.spec.ts:T-06, tests/perf/bundle-ceiling.spec.ts:T-16, tests/overhaul/cq-instruments.spec.ts:T-27, tests/overhaul/scene-error-boundary.spec.ts:T-20. Fresh worktree .claude/worktrees/w3-s01 on branch worktree-w3-s01 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s02",
+      "title": "WAVE-3 SLICE w3-s02 (analyst-programmer, xhigh) — The five hero plates die; type on the volume under a per-pixel luma ceiling — replaces: H-2, H-3, H-4, H-5, H-7, H-8 — visible result: Every black rectangle is gone; the name sits in the light and still reads at 4.5:1 at 1440 and 390. — ≤ 26 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s01"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:29.518Z",
+      "updated": "2026-09-06T07:06:29.518Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: components/sections/Hero/Hero.module.css, components/sections/Hero/Hero.tsx, components/sections/Hero/atmosphere.glsl.ts. Tests to turn green: tests/overhaul/cq-flat-fill.spec.ts:T-02, tests/overhaul/cq-light-through-type.spec.ts:T-04, tests/a11y/text-contrast.spec.ts:T-17, tests/overhaul/scene-error-boundary.spec.ts:T-20. Fresh worktree .claude/worktrees/w3-s02 on branch worktree-w3-s02 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s03",
+      "title": "WAVE-3 SLICE w3-s03 (analyst-programmer, xhigh) — The figure into the volume (lit plane z -2.4); four-width geometry; 390 statement off the face — replaces: H-6 — visible result: He is IN the frame, not beside it: the key lights him and the volume occludes his edges. At 390 the statement no longer crosses his face. — ≤ 28 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s01"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:30.210Z",
+      "updated": "2026-09-06T07:06:30.210Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: components/sections/Hero/HeroPortrait.tsx, components/sections/Hero/Hero.module.css, components/gl/world/figure.ts, public/assets/hero/figure-1100.avif. Tests to turn green: tests/overhaul/cq-depth-layers.spec.ts:T-03, tests/overhaul/hero-plane-dominance.spec.ts:T-13, tests/overhaul/cq-hero-geometry.spec.ts:T-29, tests/overhaul/scene-error-boundary.spec.ts:T-20. Fresh worktree .claude/worktrees/w3-s03 on branch worktree-w3-s03 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s04",
+      "title": "WAVE-3 SLICE w3-s04 (analyst-programmer, xhigh) — The finish: anamorphic streak, halation, grain sigma 0.018 at 12 Hz, cos^4 edge, dither — replaces: H-9 — visible result: The image gains a film finish — grain, halation and edge darkening read as one process. The ledger reads on the volume with no plate. — ≤ 24 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s02",
+        "t_w3s03"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:31.321Z",
+      "updated": "2026-09-06T07:06:31.321Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: components/gl/world/finish.glsl.ts, components/sections/Hero/atmosphere.glsl.ts, components/sections/Hero/Hero.tsx. Tests to turn green: tests/overhaul/cq-grain.spec.ts:T-07, tests/overhaul/cq-edge-and-streak.spec.ts:T-30, tests/content/content-check.spec.ts:T-24, tests/overhaul/scene-error-boundary.spec.ts:T-20. Fresh worktree .claude/worktrees/w3-s04 on branch worktree-w3-s04 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s05",
+      "title": "WAVE-3 SLICE w3-s05 (analyst-programmer, xhigh) — The name assembles out of light (SDF particle entry -> <h1> handoff) — visible result: On load the name is built from ~40 k particles, then hands off to real, selectable text at 1.45-1.60 s. — ≤ 30 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s04"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:32.911Z",
+      "updated": "2026-09-06T07:06:32.911Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: components/gl/world/name.ts, scripts/assets/name_sdf.mjs, public/assets/world/name-sdf.png, components/sections/Hero/HeroAtmosphere.tsx. Tests to turn green: tests/overhaul/cq-name-assembly.spec.ts:T-05, tests/overhaul/scene-error-boundary.spec.ts:T-20. Fresh worktree .claude/worktrees/w3-s05 on branch worktree-w3-s05 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s06",
+      "title": "WAVE-3 SLICE w3-s06 (analyst-programmer, xhigh) — Tier D: stills rendered from the shader inside build:static; ?gl=off and reduced motion — visible result: ?gl=off and prefers-reduced-motion show a composed still of the same light, not a blank. — ≤ 30 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s05"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:34.128Z",
+      "updated": "2026-09-06T07:06:34.128Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: scripts/build/scene_stills.mjs, package.json, components/gl/Scene.tsx, public/assets/world/still-hero.avif. Tests to turn green: tests/a11y/reduced-motion-choreography.spec.ts:T-11, tests/perf/performance.spec.ts:T-14, scripts/validate/overhaul_static_audit.mjs:T-15, tests/e2e/no-js.spec.ts:T-21. Fresh worktree .claude/worktrees/w3-s06 on branch worktree-w3-s06 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s07",
+      "title": "WAVE-3 SLICE w3-s07 (analyst-programmer, xhigh) — The shared camera path, IntersectionObserver parking, DPR 1.5 below 834 — visible result: Scrolling moves one camera through one volume; no section boundary reads as an edge. — ≤ 28 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s06"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:34.830Z",
+      "updated": "2026-09-06T07:06:34.830Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: components/gl/world/path.ts, components/gl/world/useWorldCamera.ts, components/gl/Scene.tsx, components/gl/GLCanvas.tsx, app/page.tsx. Tests to turn green: tests/overhaul/cq-boundary.spec.ts:T-09, tests/overhaul/cq-one-light-model.spec.ts:T-18, tests/overhaul/scene-error-boundary.spec.ts:T-20. Fresh worktree .claude/worktrees/w3-s07 on branch worktree-w3-s07 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s08",
+      "title": "WAVE-3 SLICE w3-s08 (analyst-programmer, xhigh) — About: the ten-spoke particle instrument — replaces: A-1, A-2, A-3, A-4 — visible result: The blown-out starburst disc is gone; ten filaments — 7 dense and lit, 3 sparse and unlit — and the list is their read-out. — ≤ 30 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s07"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:35.826Z",
+      "updated": "2026-09-06T07:06:35.826Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: components/sections/About/About.tsx, components/sections/About/About.module.css, components/sections/About/AboutInstrument.tsx, components/sections/About/about.glsl.ts, components/sections/About/Compass.tsx, components/sections/About/Compass.module.css, components/sections/About/AboutField.tsx, components/sections/About/field.glsl.ts. Tests to turn green: tests/overhaul/scene-about.spec.ts:T-08, tests/about_sourced_semantics.test.mjs:T-26, tests/overhaul/scene-error-boundary.spec.ts:T-20. Fresh worktree .claude/worktrees/w3-s08 on branch worktree-w3-s08 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s09",
+      "title": "WAVE-3 SLICE w3-s09 (analyst-programmer, xhigh) — Experience: eight strata to scale, flown through — replaces: E-1, E-2, E-3, E-4, E-5, E-6, E-7, E-8 — visible result: The framed Gantt box and its sixteen black plates are gone; the camera descends along eight slabs drawn to their real duration, the 7.8-year one obviously nearest. — ≤ 30 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s07"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:37.108Z",
+      "updated": "2026-09-06T07:06:37.108Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: components/sections/Experience/Experience.tsx, components/sections/Experience/Experience.module.css, components/sections/Experience/Terrain.tsx, components/sections/Experience/terrain.glsl.ts, components/sections/Experience/CareerStrata.tsx, components/sections/Experience/strata.glsl.ts, components/sections/Experience/CareerDescent.tsx, components/sections/Experience/descent.glsl.ts. Tests to turn green: tests/experience_sourced_semantics.test.mjs:T-25, tests/overhaul/cq-boundary.spec.ts:T-09, tests/overhaul/scene-error-boundary.spec.ts:T-20. Fresh worktree .claude/worktrees/w3-s09 on branch worktree-w3-s09 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s10",
+      "title": "WAVE-3 SLICE w3-s10 (analyst-programmer, xhigh) — Skills: the lit lattice, holes where nothing was tested — replaces: S-1, S-2, S-3 — visible result: The backdrop is gone; a lit lattice where untested cells are holes the key light passes through. The calibration table is still a table. — ≤ 28 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s07"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:37.727Z",
+      "updated": "2026-09-06T07:06:37.727Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: components/sections/Skills/Skills.tsx, components/sections/Skills/Bench.module.css, components/sections/Skills/Lattice.tsx, components/sections/Skills/lattice.glsl.ts, components/sections/Skills/BenchField.tsx, components/sections/Skills/bench.glsl.ts. Tests to turn green: tests/overhaul/cq-flat-fill.spec.ts:T-02, tests/a11y/text-contrast.spec.ts:T-17, tests/overhaul/scene-error-boundary.spec.ts:T-20. Fresh worktree .claude/worktrees/w3-s10 on branch worktree-w3-s10 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s11",
+      "title": "WAVE-3 SLICE w3-s11 (analyst-programmer, xhigh) — Vitrine: six frames in real depth of field — replaces: V-1, V-2, V-3, V-4 — visible result: The 1 px bordered cards and the wireframe clip-art are gone; the read frame is sharp and its neighbours sit in bokeh. — ≤ 30 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s07"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:38.309Z",
+      "updated": "2026-09-06T07:06:38.309Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: components/sections/Vitrine/Vitrine.tsx, components/sections/Vitrine/Vitrine.module.css, components/sections/Vitrine/Frames.tsx, components/sections/Vitrine/frames.glsl.ts, components/sections/Vitrine/Drawings.tsx, components/sections/Vitrine/Drawings.module.css, components/sections/Vitrine/VitrineField.tsx, components/sections/Vitrine/vitrine.glsl.ts. Tests to turn green: tests/overhaul/cq-defocus.spec.ts:T-19, tests/overhaul/scene-error-boundary.spec.ts:T-20. Fresh worktree .claude/worktrees/w3-s11 on branch worktree-w3-s11 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s12",
+      "title": "WAVE-3 SLICE w3-s12 (analyst-programmer, xhigh) — Listen: the camera comes to rest — replaces: L-1, L-2, L-3, L-4 — visible result: Particle velocity decays to zero over 1.2 s; only grain and a slow halation breath remain. The shot ends on the closing card. — ≤ 24 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s07"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:39.228Z",
+      "updated": "2026-09-06T07:06:39.228Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: components/sections/Listen/Listen.tsx, components/sections/Listen/Listen.module.css, components/sections/Listen/rest.glsl.ts, components/sections/Listen/ListenField.tsx, components/sections/Listen/listen.glsl.ts. Tests to turn green: tests/overhaul/cq-boundary.spec.ts:T-09, tests/a11y/text-contrast.spec.ts:T-17, tests/overhaul/scene-error-boundary.spec.ts:T-20. Fresh worktree .claude/worktrees/w3-s12 on branch worktree-w3-s12 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s13",
+      "title": "WAVE-3 SLICE w3-s13 (analyst-programmer, xhigh) — Chrome into the world: nav, MiniVic dock, scroll seam — replaces: C-1, C-2, C-3 — visible result: The nav plate is gone and the wordmark sits on a darkened band of the volume; 'Ask Mini Vic' is still visible and pressable at 390. — ≤ 26 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s08",
+        "t_w3s09",
+        "t_w3s10",
+        "t_w3s11",
+        "t_w3s12",
+        "t_tw3p0a"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:40.514Z",
+      "updated": "2026-09-06T07:06:40.514Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: components/site/Navigation.tsx, components/MiniVicBot.tsx, app/globals.css, app/page.tsx. Tests to turn green: tests/e2e/minivic-first-fold-click.spec.ts:T-22, tests/e2e/navigation.spec.ts:T-23, tests/a11y/accessibility.spec.ts:T-23, tests/a11y/text-contrast.spec.ts:T-17. Fresh worktree .claude/worktrees/w3-s13 on branch worktree-w3-s13 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s14",
+      "title": "WAVE-3 SLICE w3-s14 (analyst-programmer, xhigh) — Gold out of every shader; the chroma gate moves onto the rendered frame — replaces: C-4 — visible result: Nothing in the frame is graded gold except a sourced claim: caliper jaws, the 'measured in production' mark, and live repository URLs. — ≤ 20 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s13"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:41.016Z",
+      "updated": "2026-09-06T07:06:41.016Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: lib/palette.ts, components/gl/world/lightModel.ts, components/gl/world/finish.glsl.ts, components/sections/Hero/atmosphere.glsl.ts, components/sections/About/about.glsl.ts, components/sections/Experience/terrain.glsl.ts, components/sections/Skills/lattice.glsl.ts, components/sections/Vitrine/frames.glsl.ts, components/sections/Listen/rest.glsl.ts, tests/monochrome/monochrome.spec.ts, tests/monochrome/gold-semantics.spec.ts. Tests to turn green: tests/monochrome/monochrome.spec.ts:T-12, tests/monochrome/gold-semantics.spec.ts:T-28. Fresh worktree .claude/worktrees/w3-s14 on branch worktree-w3-s14 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3s15",
+      "title": "WAVE-3 SLICE w3-s15 (analyst-programmer, xhigh) — Capture parity at designed quality: 10 frames, the pinned probe, re-baseline, AQ re-score pack — visible result: Every CQ has a number and a frame beside it, measured at designed quality, reproducible by an independent party. — ≤ 30 min",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3s14"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:06:41.421Z",
+      "updated": "2026-09-06T07:06:41.421Z",
+      "summary": "Binding spec: docs/architecture/CINEMATIC-VFX-v1.md (read §0–§8 in full, then this slice's row in docs/architecture/CINEMATIC-VFX-TASKS.json). The Owner's words (artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md, both entries) are the bar. Immovables: every effect chroma 0 (gold only as the sourced-claim mark); every word from app/data/portfolio/*.ts unchanged; LCP < 2.5 s, CLS < 0.05, no asset > 500 kB; nothing plays by default; reduced-motion = a static composition passing the static gates; ?gl=off fully readable; keyboard + contrast ≥ 4.5:1 per pixel over any plane; G-MV1; six section ids in order; every superseded test replaced in the same commit; ?gl=force probe 0 pageerrors + canvases ≥ 1 before push; hard NOs from the judge (no troika/postprocessing/GSAP/Text3D, no single WebGLRenderer). Files: scripts/validate/cq_probe.mjs, tests/baselines/overhaul, tests/baselines/visual, docs/delivery/evidence/v10-20260905T0515Z/W3-SYN. Tests to turn green: tests/perf/cq-frametime.spec.ts:T-10, T-01 through T-31, full battery, under the pinned instrument. Fresh worktree .claude/worktrees/w3-s15 on branch worktree-w3-s15 from origin/main (npm ci if node_modules is missing); one heavy job at a time; port assigned in the brief; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. Ledger row before the commit; push the branch, never main.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3_p0b2",
+      "title": "P0 FUNCTIONAL 2b (analyst-programmer, xhigh) — finish the MiniVic panel placement from the unpushed local commit 1697bac on worktree-w3-p0b: at 1366x768 (and intermittently 1280x800) the 'above' placement's heightCap is written but the lift (bottom offset) is lost, leaving a 272-px panel over the name; find the lost write (React style prop on [data-testid=minivic-panel] re-rendering over the imperative style, or a CSS transition on bottom/height measured mid-flight), fix at the cause, TC-BOT-14 green with --repeat-each=3 at 1440/1366/1280/834/390, then push worktree-w3-p0b",
+      "status": "running",
+      "column": "running",
+      "assignee": "analyst-programmer",
+      "priority": 100,
+      "parents": [
+        "t_w3_p0b"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:08:14.038Z",
+      "updated": "2026-09-06T07:08:14.146Z",
+      "summary": "Continue the previous agent's work — do not start over: cd /root/forgotten-mistory/.claude/worktrees/w3-p0b (branch worktree-w3-p0b at 1697bac, unpushed; run `ln -s /root/forgotten-mistory/node_modules node_modules` and remove the symlink before committing, or npm ci). Read the p0b COMPLETE note (artifacts/kanban/tasks/t_w3_p0b.md) and its evidence W3-P0B/ (02-placement-probe-after.json, 08-tc-bot-14.log). Functional only; no visual change outside the MiniVic panel; nothing under components/sections/**. Port 5608; one heavy job at a time; wait on PIDs; never pgrep -f your own command text; never git checkout/reset/stash in /root/forgotten-mistory. The reviewer's acceptance instrument is G-REV/20a17dfb/12-placement.mjs run three times.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3_rev10",
+      "title": "WAVE-3 REVIEW 10 (reviewer, max, independent) on the live SHA carrying removal slice 0b (316a520): all six sections on the interim frame — TC-IF-11…21 re-measured independently at 1440/834/390 (no canvas/[data-scene] in #experience/#skills/#vitrine/#listen except minivic-viseme; eight role rows drawn to scale as DOM within 2 % of months; three gold sourced marks + five open brackets; calibration card tested/untested readable; six repository cards with limits + source, keyboard-reachable rail; four contact routes + synthetic-introduction label; ground luma ≤ 0.03 at nine points per section; every text node ≥ 4.5:1; ?gl=force 0 pageerrors; reduced-motion identical; chroma 0 outside gold), whole-page pageerrors on a full scroll, LCP via a Lighthouse-style probe (largest image/text block paint from the trace, not only the LCP entry — state the method), CLS, SW second load, and the Owner's question for the whole page: does every section read as a disciplined frame (zero orphaned boxes, zero hidden text, zero decorative remnants) — plus the regression table vs 83590944 (TC-IF-01..10, F-1, OCCLUDE-02, G-MV1 at 390 expected still FAIL until p0c)",
+      "status": "running",
+      "column": "running",
+      "assignee": "reviewer",
+      "priority": 100,
+      "parents": [
+        "t_w3_rm2"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:13:40.214Z",
+      "updated": "2026-09-06T07:22:11.214Z",
+      "summary": "Independent adversarial review on https://forgotten-mistory.web.app only. Implementer claims to falsify: commit 316a520's body, docs/delivery/evidence/v10-20260905T0515Z/W3-RM2/, docs/architecture/INTERIM-FRAME.md §6. The Owner's words (both entries in artifacts/kanban/INBOX/OWNER-DIRECTIVE-20260906T0529Z.md) are the bar; R7: instruments, never adjectives. One Chrome at a time, short runs; port 5611 if a local server is needed; evidence → docs/delivery/evidence/v10-20260905T0515Z/G-REV/<live-sha>/; ≤ 30 min; unmeasured items are NOT MEASURED, never guessed.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w3_m4d",
+      "title": "G-M4 last free lever (analyst-programmer, xhigh, no browser) — the cold first token is now the funded OpenAI rung's own TTFT (1231–2219 ms with gpt-4.1-mini). Measure gpt-4.1-nano (and, if the account lists it, the cheapest streaming model with lower TTFT) on the SAME funded key: 6 cold samples per model spaced ≥ 5 min on the origin route with the reviewer's probe; if a model clears < 1500 ms on ≥ 5/6 cold samples AND the MiniVic answer-honesty tests (tests/minivic_chat_function.test.mjs, tests/e2e/minivic-send-path contract fixtures — grounding to the CV/LinkedIn/repos, no fabricated facts, disclosure on the capped route) stay green on its answers, switch the openai rung's model (env/config, documented in MINIVIC-BRAIN-0-4.md §6) and deploy; otherwise leave OB-1 standing and report the numbers",
+      "status": "running",
+      "column": "running",
+      "assignee": "analyst-programmer",
+      "priority": 85,
+      "parents": [
+        "t_w3_m4c"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T07:33:48.012Z",
+      "updated": "2026-09-06T07:33:49.220Z",
+      "summary": "Cost gate: same funded OpenAI account, no new provider, no paid setting, no min-instances change; a model swap within the funded rung is a quality/latency trade you decide under docs/prompt.md §0.1 with the honesty tests as the gate — never trade R7 for latency. Read key NAMES only from /root/.claude/.env.production with grep -E '^[A-Z][A-Z0-9_]*=' — never print values. Fresh worktree .claude/worktrees/w3-m4d on branch worktree-w3-m4d from origin/main (carries 59c986b/547b6cc); no site build; functions deploy with the existing filter; evidence → docs/delivery/evidence/v10-20260905T0515Z/W3-M4D/. Ledger row; push the branch, never main. ≤ 30 min of active work (idle cold gaps excluded).",
       "decisions": [],
       "comments": [],
       "blocker": null

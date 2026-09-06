@@ -38,3 +38,9 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## DECISION (2026-09-06T05:56:15.667Z)
 05:58Z the slices build on the interim frame (docs/architecture/INTERIM-FRAME.md after t_w3_rm1/rm2): w3-s01 is the hero on a black ground; every slice reinstates the instruments it needs (SPD, story metric) as tests; the loop is infinite by Owner instruction — the TASKS json carries a 'reviewer_fail_rows_become_slices' rule.
+
+## STATUS (2026-09-06T07:00:31.612Z)
+running — synthesis agent running since ~06:53Z in fm-wave3-judge-synth
+
+## COMPLETE (2026-09-06T07:06:27.228Z)
+Delivered docs/architecture/CINEMATIC-VFX-v1.md (83 kB, §0–§10) + CINEMATIC-VFX-TASKS.json (15 slices, all ≤ 30 min, hero first: s01 volume+light model+__fm bus, s02 plates die/type under a per-pixel luma ceiling, s03 figure into the volume, s04 finish, s05 name assembles from light, s06 stills from the shader, s07 camera path/parking, s08 About ten-spoke instrument, s09 Experience strata, s10 Skills lattice, s11 Vitrine DOF, s12 Listen, s13 chrome, s14 gold out of shaders, s15 capture parity + AQ re-score); bundle ceiling 200 kB; 14 carried instruments listed; supersede headers on HERO-SETPIECE-v3, SIGNATURE-SCENES-v2, ABOUT-STORY-v2, LISTEN-FLAGSHIP. Seeded by proto B with A's per-section canvases, first-ship shape, still pipeline and finish stack grafted.

@@ -38,3 +38,9 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T06:11:13.064Z)
 running — chained after rm1 in fm-wave3-removal (port 5607)
+
+## COMMENT (2026-09-06T07:13:39.621Z)
+07:12Z pushed 316a520 (worktree-w3-rm2): 86 files, 9422 deletions — CareerStrata/descent, BenchField, Drawings/VitrineField, ListenField and their shaders/CSS gone; five scene specs + story-contract + flagship-visibility + scene-framerate superseded by TC-IF-11..21 (INTERIM-FRAME.md §6); only the minivic-viseme scene remains mounted. Consolidation pending; reviewer rev10 grades all six sections on live.
+
+## COMMENT (2026-09-06T07:36:26.507Z)
+07:35Z second push 5883bcf: TC-IF-11..21 green log (W3-RM2/05-interim-frame.log) + section screenshots at 1440/834/390 + INTERIM-FRAME.md §6 extended. Awaiting the agent's structured return; rev10 grading live 6d3310b7.

@@ -55,3 +55,6 @@ running — 05:43Z W3-1 dispatched
 
 ## COMMENT (2026-09-06T06:49:20.840Z)
 06:50Z rev9 on 83590944: interim frame PASS on 9/10 clauses + the Owner's 'disciplined frame' question PASS; TC-IF-10 FAIL = G-MV1 breach at 390 (launcher invisible) -> t_w3_p0c scope widened (G-MV1 wins over MONO-MV-02; pill moved clear of the CTA row). G-M4 FAIL on cold sends (1.9 s / 1.8 s) -> t_w3_m4c. LCP still unmeasured on live (no LCP entries) — wave-3 hero slices carry CQ-12 with a Lighthouse-style probe.
+
+## COMMENT (2026-09-06T07:06:43.318Z)
+07:07Z synthesis landed; 15 slices imported (t_w3s01..t_w3s15). Hero chain s01→s02→s03→s04 dispatched serially (ports 5612–5615); section chain s08→s12 starts after s01 lands and rm2 is consolidated; s05–s07, s13–s15 follow. Every deploy gets a reviewer on live.

@@ -37,3 +37,9 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T06:50:45.512Z)
 running — dispatched 06:51Z fm-wave3-m4c (AP opus/xhigh, no browser)
+
+## COMMENT (2026-09-06T06:59:14.311Z)
+06:58Z pushed 59c986b (worktree-w3-m4c): no warm timer existed on the host and minInstances was already 1 (so no cost saving available); shipped fm-minivic-warm.timer every 120 s against both warm endpoints (scripts/ops/systemd/, installed) + PRIME_REFRESH_MARGIN_MS 180 s so the cooldown map is refreshed before it lapses (68/68 node tests); ladder order kept per prompt.md §0.4; residual cold cost written as OB-1 in docs/delivery/OWNER-BLOCKED.md. Awaiting the agent's cold/warm re-measurement.
+
+## COMPLETE (2026-09-06T07:33:46.109Z)
+FAIL (honest, goal_complete:false): after the correction (fm-minivic-warm.timer every 120 s against both URLs — measured gaps 124/125/125 s, 204 on every fire; PRIME_REFRESH_MARGIN_MS 180 s; MV-WARM-10 test; functions deployed) 6 of 8 cold first-token samples exceed 1500 ms (1193 PASS, 1529, 2522, 1296 PASS, 2282, 2188, 3304, 2210); warm 979/1080 PASS. The residual is the funded provider's own TTFT (openai 1231–2219 ms on cold samples); dead rungs already cost 0 ms; minInstances was already 1. Ladder order kept per prompt.md §0.4 (a prior inversion was reverted). OB-1 written in docs/delivery/OWNER-BLOCKED.md with the priced levers (fund OpenRouter; faster model/tier). Branch pushed (22cb822 pending consolidation). Follow-up t_w3_m4d tests the one free lever left: a faster model on the already-funded OpenAI rung, gated on R7 answer honesty.
