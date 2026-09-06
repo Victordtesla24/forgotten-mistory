@@ -112,7 +112,30 @@ test.describe('Hero photograph', () => {
     );
   });
 
-  test('TC-PHOTO-02: at 390 the photo is full width and sits below the last hero action', async ({ page }) => {
+  test('TC-PHOTO-02: at 390 the figure bleeds to the right edge only and stands above the copy', async ({
+    page,
+  }) => {
+    /* REWRITTEN 2026-09-06 (t_w2_h1s5) against HERO-SETPIECE-v3 §3.5.
+     *
+     * The old title — "full width and sits below the last hero action" — is
+     * HERO-FOLD-v2's composition: a reading column with the photograph flowing
+     * under it as a fifth block. v3 §0 forbids exactly that reading ("a
+     * headline AND a headshot"), and §3.5 states the phone geometry instead:
+     * `.planeFigure` runs x 24 → 390 — it keeps the left gutter so the name
+     * below starts on the same spine, and bleeds RIGHT ONLY — at y 150 → 354,
+     * with the H1 at y 330 → 442 crossing its dissolve band. The figure is
+     * therefore ABOVE the copy, not below the actions, and 366 px wide, not
+     * 390. `Hero.module.css` realises it at `@media (max-width: 700px)`:
+     * `.planeFigure { right: 0; width: calc(100% - var(--hero-gutter)); }`.
+     *
+     * Nothing is relaxed. The 0.9 × innerWidth width floor is kept verbatim
+     * (366 / 390 = 0.938), and the "below the last action" clause is replaced
+     * by the two clauses §3.5 actually specifies — one edge flush with the
+     * screen, one edge on the gutter — plus the ordering v3 does assert: the
+     * figure's foot is above the action bar's top, and its top is above the
+     * name's. Both are strictly harder to satisfy by accident than the single
+     * inequality they replace.
+     */
     await page.setViewportSize({ width: 390, height: 844 });
     await page.reload({ waitUntil: 'load' });
     await page.locator(HERO).waitFor({ state: 'visible', timeout: 15000 });
@@ -125,14 +148,37 @@ test.describe('Hero photograph', () => {
       0.9 * inner,
     );
 
+    // §3.5: it bleeds right, and only right.
+    const gutter = await page.evaluate(() =>
+      Number.parseFloat(
+        getComputedStyle(document.querySelector('#hero')!).paddingLeft,
+      ),
+    );
+    expect(gutter, 'the hero gutter resolves to a length').toBeGreaterThan(0);
+    expect(
+      box!.x + box!.width,
+      `the figure's right edge at ${(box!.x + box!.width).toFixed(1)} px of ${inner} px`,
+    ).toBeGreaterThanOrEqual(inner - 1);
+    expect(box!.x, `the figure keeps the left gutter (${gutter} px)`).toBeGreaterThanOrEqual(gutter - 1);
+    expect(box!.x, `the figure keeps the left gutter (${gutter} px)`).toBeLessThanOrEqual(gutter + 1);
+
+    // §3.5 ordering: the figure stands in the plane ABOVE the copy — its foot
+    // clears the action bar's top, and its head clears the name's top.
     const actions = page.locator(`${HERO} a[href="#experience"], ${HERO} a[download]`);
-    const bottoms: number[] = [];
+    const tops: number[] = [];
     for (let i = 0; i < (await actions.count()); i += 1) {
       const b = await actions.nth(i).boundingBox();
-      if (b) bottoms.push(b.y + b.height);
+      if (b) tops.push(b.y);
     }
-    expect(bottoms.length, 'both hero actions are laid out').toBeGreaterThanOrEqual(2);
-    expect(box!.y, 'the photo starts below the last action').toBeGreaterThanOrEqual(Math.max(...bottoms));
+    expect(tops.length, 'both hero actions are laid out').toBeGreaterThanOrEqual(2);
+    expect(
+      box!.y + box!.height,
+      `the figure's foot (${(box!.y + box!.height).toFixed(0)}) is above the action bar (${Math.min(...tops).toFixed(0)})`,
+    ).toBeLessThanOrEqual(Math.min(...tops));
+
+    const name = await page.locator(`${HERO} h1`).boundingBox();
+    expect(name, 'the name is laid out').not.toBeNull();
+    expect(box!.y, "the figure's top is above the name's").toBeLessThan(name!.y);
   });
 
   test('TC-PHOTO-03: the still is monochrome in its bytes — no filter does the work', async ({
@@ -595,12 +641,49 @@ test.describe('Hero photograph — masked into the plane (g2h1-04)', () => {
     await expect(page.locator(`${HERO} ${TICK}`), 'zero portrait-tick nodes in the fold').toHaveCount(0);
   });
 
-  test('PH-2: the edges dissolve — 4 px inside vs 4 px outside, mean |ΔL| ≤ 0.04 on ≥ 3 of 4 edges', async ({
+  test('PH-2: the edges dissolve — 4 px inside every edge, the photograph adds ≤ 0.04 of luminance to the plane', async ({
     page,
   }) => {
+    /* REWRITTEN 2026-09-06 (t_w2_h1s5) against HERO-SETPIECE-v3 §3.2 / §4.1.
+     *
+     * The instrument, not the threshold. The old form compared the pixel 4 px
+     * INSIDE each edge with the pixel 4 px OUTSIDE it and called the difference
+     * the mask's failure. That inference only holds while the ground on both
+     * sides of the edge is the same colour — true of HERO-FOLD-v2's flat
+     * backdrop, false of v3, where §4.1 makes the plane a LIT field whose pool
+     * is aimed at the figure's own centre (§4.2 `uFigure`). Measured on the
+     * export at fda8406 (01-baseline.log): left 0.0414, right 0.0082, top
+     * 0.0128, bottom 0.2750 — two edges over, so "≥ 3 of 4" failed. Neither
+     * over-edge is the mask:
+     *   · bottom 0.2750 is the H1's own opaque plate, which v3 §3.2 puts ACROSS
+     *     the dissolve band on purpose and TC-HERO-SET-05 requires ≥ 40 px of;
+     *   · left 0.0414 is the plane's own horizontal gradient across those 8 px.
+     * The old form could not tell either apart from a hard photographic edge.
+     *
+     * So the control is the plane itself: capture the same clip twice, once as
+     * shipped and once with the media box alone made transparent (the glow, the
+     * shader and the type all stay), and measure what the PHOTOGRAPH adds 4 px
+     * inside its own edge. A dissolve that reaches zero at the edge adds
+     * nothing; a hard edge adds all of itself. The 0.04 number is carried over
+     * verbatim, and the tolerance is TIGHTENED from "3 of 4 edges" to all four,
+     * because the confound that needed the spare edge is gone.
+     */
+    // The pair has to be two photographs of the SAME frame. On the GL path the
+    // shader is running, so two captures 150 ms apart differ by the plane's own
+    // animation and every edge reads as a mask failure (measured: left 0.169,
+    // top 0.217 with the canvas live). v3 §5 states that the reduced-motion
+    // fold is the same picture — a still poster, zero canvases — so the pair is
+    // taken there, where the only thing that changes between the two shots is
+    // the photograph itself. The mask is a CSS property and is identical on
+    // both paths (`Hero.module.css` `.portraitMedia`, one rule, no media query).
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.reload({ waitUntil: 'load' });
+    await page.locator(HERO).waitFor({ state: 'visible', timeout: 15000 });
+    await expect(page.locator(`${HERO} canvas`), 'no canvas on the still path').toHaveCount(0);
+
     const box = mediaBox(page);
     await box.scrollIntoViewIfNeeded();
-    await page.waitForTimeout(250);
+    await page.waitForTimeout(1200);
     const rect = await box.boundingBox();
     expect(rect, 'the media box is laid out').not.toBeNull();
 
@@ -613,7 +696,21 @@ test.describe('Hero photograph — masked into the plane (g2h1-04)', () => {
       width: rect!.width + 2 * margin,
       height: rect!.height + 2 * margin,
     };
-    const field = decodeLuma(await page.screenshot({ clip }));
+    const shipped = decodeLuma(await page.screenshot({ clip }));
+
+    // The control. `opacity` on the media box removes the photograph, the loop
+    // and the box's own ink ground in one declaration without touching the
+    // layout, the bloom behind it, or anything painted over it.
+    await box.evaluate((el) => {
+      (el as HTMLElement).dataset.ph2Control = '1';
+      (el as HTMLElement).style.opacity = '0';
+    });
+    await page.waitForTimeout(150);
+    const plane = decodeLuma(await page.screenshot({ clip }));
+    await box.evaluate((el) => {
+      (el as HTMLElement).style.removeProperty('opacity');
+      delete (el as HTMLElement).dataset.ph2Control;
+    });
 
     // The box origin inside the field (margin, unless the clamp above bit).
     const ox = rect!.x - clip.x;
@@ -626,31 +723,44 @@ test.describe('Hero photograph — masked into the plane (g2h1-04)', () => {
     const meanAbs = (samples: number[]) =>
       samples.length ? samples.reduce((a, b) => a + b, 0) / samples.length : 1;
 
-    const vertical = (edgeX: number) => {
+    /** What the photograph contributes at one point: shipped − plane-only. */
+    const contribution = (x: number, y: number) =>
+      Math.abs(lumaAt(shipped, x, y) - lumaAt(plane, x, y));
+
+    const vertical = (edgeX: number, inward: number) => {
       const diffs: number[] = [];
       for (let t = 0.2; t <= 0.8; t += 0.02) {
-        const y = oy + t * h;
-        diffs.push(Math.abs(lumaAt(field, edgeX + 4, y) - lumaAt(field, edgeX - 4, y)));
+        diffs.push(contribution(edgeX + inward * 4, oy + t * h));
       }
       return meanAbs(diffs);
     };
-    const horizontal = (edgeY: number) => {
+    const horizontal = (edgeY: number, inward: number) => {
       const diffs: number[] = [];
       for (let t = 0.2; t <= 0.8; t += 0.02) {
-        const x = ox + t * w;
-        diffs.push(Math.abs(lumaAt(field, x, edgeY + 4) - lumaAt(field, x, edgeY - 4)));
+        diffs.push(contribution(ox + t * w, edgeY + inward * 4));
       }
       return meanAbs(diffs);
     };
 
     const edges = {
-      left: vertical(ox),
-      right: vertical(ox + w),
-      top: horizontal(oy),
-      bottom: horizontal(oy + h),
+      left: vertical(ox, +1),
+      right: vertical(ox + w, -1),
+      top: horizontal(oy, +1),
+      bottom: horizontal(oy + h, -1),
     };
-    const passed = Object.values(edges).filter((d) => d <= 0.04).length;
-    expect(passed, `edges dissolving (≤0.04): ${JSON.stringify(edges)}`).toBeGreaterThanOrEqual(3);
+    const described = `the photograph's contribution 4 px inside each edge (≤0.04): ${JSON.stringify(edges)}`;
+    for (const [edge, delta] of Object.entries(edges)) {
+      expect(delta, `${edge} — ${described}`).toBeLessThanOrEqual(0.04);
+    }
+
+    // The control has to be a real control: at the box's CENTRE the photograph
+    // is fully opaque, so removing it must change the picture a great deal. A
+    // capture pair that differs nowhere would pass every clause above by
+    // measuring nothing.
+    const centre = contribution(ox + w / 2, oy + h * 0.42);
+    expect(centre, `the control is live — the opaque core moves by ${centre.toFixed(4)}`).toBeGreaterThan(
+      0.04,
+    );
   });
 
   test('PH-3: the face survives — the mask is opaque over the upper-centre; no gradient crosses it', async ({
@@ -812,6 +922,7 @@ async function rungState(page: Page) {
     const box = v.getBoundingClientRect();
     return {
       file: (v.currentSrc || '').split('/').pop() ?? '',
+      renderedWidth: box.width,
       renderedHeight: box.height,
       dpr: window.devicePixelRatio,
       need: box.height * window.devicePixelRatio,
@@ -827,16 +938,83 @@ async function playAndRead(page: Page) {
   return rungState(page);
 }
 
+/* -- The rule, restated here rather than imported -----------------------------
+ *
+ * REWRITTEN 2026-09-06 (t_w2_h1s5). The three cases below used to name literal
+ * device-pixel counts — "needs under 720", "needs 916" — and those numbers were
+ * true of exactly ONE figure box: the pre-v3 media rect, 305 CSS px tall at
+ * 1440 (the block comment above still records it). HERO-SETPIECE-v3 §3.2 sets
+ * `.planeFigure` to 846 × 472 at 1440, so a 2× screen now needs 472 × 2 = 944
+ * device px and a 3× screen 1416 — and the literals became assertions about a
+ * geometry the site no longer has. Measured on the export at fda8406: 944.3 and
+ * 2160.webm respectively (t_w2_h1s4/09-hero-e2e.log).
+ *
+ * What v3 §4.3 and `lib/videoRung.ts` actually promise is a RULE:
+ *
+ *   need = the video box's rendered CSS height × devicePixelRatio
+ *   rung = the smallest published rung whose encoded height ≥ need
+ *
+ * That is what these cases assert from here on, derived from the box the
+ * browser really rendered — so the next legitimate change to the figure's
+ * geometry moves the expectation with it instead of turning the case red for a
+ * reason that has nothing to do with the ladder. Nothing is relaxed: each case
+ * still pins the exact filename the rule produces, still pins the emulated DPR,
+ * and now also pins the geometry the need was computed from (native aspect,
+ * FIG-CAP width) so a collapsed box cannot make the arithmetic trivially true.
+ *
+ * The ladder is copied from `app/data/portfolio/avatar.ts` rather than imported
+ * from `lib/videoRung.ts`: a test that calls the implementation to compute its
+ * own expectation agrees with the implementation by construction.
+ */
+const LADDER = [
+  { height: 720, file: 'my-hero-avatar.mp4' },
+  { height: 1080, file: 'my-hero-avatar-1080.mp4' },
+  { height: 2160, file: 'my-hero-avatar-2160.webm' },
+] as const;
+
+/** HERO-SETPIECE-v3 §4.3: the smallest published rung that covers `need`; the
+ *  largest published rung when nothing covers it. */
+function rungFor(need: number, ladder: readonly { height: number; file: string }[] = LADDER) {
+  return ladder.find((rung) => rung.height >= need) ?? ladder[ladder.length - 1];
+}
+
+/** The figure's box is the input to the whole rule, so it is asserted too:
+ *  native 1480/826 aspect (nothing cropped) and inside FIG-CAP (v3 §3). */
+function expectFigureGeometry(state: { renderedHeight: number }, width: number) {
+  expect(width, 'FIG-CAP: the figure is never upscaled past 1480 ÷ 1.75 DPR').toBeLessThanOrEqual(846);
+  expect(
+    Math.abs(width / state.renderedHeight - 1480 / 826),
+    `the box keeps the native aspect (${width.toFixed(0)}×${state.renderedHeight.toFixed(0)})`,
+  ).toBeLessThan(0.05);
+}
+
 test.describe('The loop ladder — which encode a screen is actually served', () => {
   test.describe('a 2x screen at 1440', () => {
     test.use({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
 
-    test('TC-PHOTO-13: needs under 720 device px, so the default 720p rung is what is fetched', async ({ page }) => {
+    test('TC-PHOTO-13: a 2× screen is served the smallest rung its measured box needs — and nothing larger', async ({
+      page,
+    }) => {
       await page.goto('/', { waitUntil: 'load' });
       const state = await playAndRead(page);
       expect(state.dpr, 'the emulated pixel ratio').toBe(2);
-      expect(state.need, 'device pixels down the box').toBeLessThanOrEqual(720);
-      expect(state.file, `box ${state.renderedHeight.toFixed(0)} CSS px x ${state.dpr}`).toBe('my-hero-avatar.mp4');
+      expectFigureGeometry(state, state.renderedWidth);
+
+      const expected = rungFor(state.need);
+      expect(
+        state.file,
+        `box ${state.renderedHeight.toFixed(0)} CSS px × ${state.dpr} = ${state.need.toFixed(0)} device px → ${expected.height}p`,
+      ).toBe(expected.file);
+
+      // "and nothing larger": every rung below the chosen one is genuinely too
+      // small, so the ladder cannot pass by always reaching for the top.
+      for (const rung of LADDER) {
+        if (rung.height < expected.height) {
+          expect(rung.height, `${rung.height}p is below the ${state.need.toFixed(0)} px need`).toBeLessThan(
+            state.need,
+          );
+        }
+      }
     });
   });
 
@@ -849,19 +1027,35 @@ test.describe('The loop ladder — which encode a screen is actually served', ()
       await page.goto('/', { waitUntil: 'load' });
       const state = await playAndRead(page);
       expect(state.dpr).toBe(3);
-      expect(state.need).toBeLessThanOrEqual(720);
-      expect(state.file).toBe('my-hero-avatar.mp4');
+      expectFigureGeometry(state, state.renderedWidth);
+      // §3.5's phone box (366 × 204) still resolves inside 720p at 3×: 613 px.
+      // The claim in the title is a real geometric claim, so it is kept as an
+      // assertion rather than folded into the rule.
+      expect(state.need, `device pixels down the phone box: ${state.need.toFixed(0)}`).toBeLessThanOrEqual(
+        720,
+      );
+      expect(state.file).toBe(rungFor(state.need).file);
+      expect(state.file, 'the base rung, so no extra bytes are spent').toBe('my-hero-avatar.mp4');
     });
   });
 
   test.describe('a 3x desktop at 1440', () => {
     test.use({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 3 });
 
-    test('TC-PHOTO-15: needs 916 device px, so the on-demand 1080p rung is fetched instead', async ({ page }) => {
+    test('TC-PHOTO-15: a 3× desktop outgrows the base rung, so an on-demand rung is fetched instead', async ({
+      page,
+    }) => {
       await page.goto('/', { waitUntil: 'load' });
       const state = await playAndRead(page);
+      expectFigureGeometry(state, state.renderedWidth);
       expect(state.need, 'device pixels down the box').toBeGreaterThan(720);
-      expect(state.file).toBe('my-hero-avatar-1080.mp4');
+
+      const expected = rungFor(state.need);
+      expect(expected.file, 'the rule reaches past the base rung here').not.toBe('my-hero-avatar.mp4');
+      expect(
+        state.file,
+        `box ${state.renderedHeight.toFixed(0)} CSS px × ${state.dpr} = ${state.need.toFixed(0)} device px → ${expected.height}p`,
+      ).toBe(expected.file);
     });
 
     test('TC-PHOTO-16: Save-Data pins the same screen back to the 720p rung', async ({ page }) => {

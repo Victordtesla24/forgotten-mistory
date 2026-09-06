@@ -37,8 +37,25 @@ const PROOF = '[data-testid="hero-proof"]';
 const ACTIONS = '[data-testid="hero-actions"]';
 const AVAILABILITY = '[data-testid="hero-availability"]';
 const PORTRAIT_IMG = '[data-testid="hero-portrait"] img';
-/** The Scene slot: the hero's one decorative direct child. */
-const STAGE = '#hero > div[aria-hidden="true"]';
+/**
+ * The Scene slot.
+ *
+ * RE-POINTED 2026-09-06 (t_w2_h1s5) to HERO-SETPIECE-v3 §4 decision D-4. The
+ * selector was `#hero > div[aria-hidden="true"]` — "the hero's one decorative
+ * direct child" — and that sentence stopped being true when v3 introduced the
+ * declared plane: `<Scene>`'s slot and `.planeFigure` now live inside
+ * `[data-plane="hero"]`, which is NOT `aria-hidden` (it carries the
+ * photograph's `alt`, and `aria-hidden` on an ancestor cannot be undone by a
+ * descendant — D-4's whole reason for existing). So the old selector resolved
+ * to nothing and `boundingBox()` hung until the 90 s case timeout, at all four
+ * viewports, on every build since S1 (t_w2_h1s4/09-hero-e2e.log).
+ *
+ * This is the same element the case always measured — the stage slot that
+ * carries the canvas on the GL path and the poster gradient otherwise — named
+ * by its own `data-scene` contract rather than by a DOM position v3 moved. No
+ * threshold below changes.
+ */
+const STAGE = '[data-plane="hero"] > [data-scene="hero-atmosphere"]';
 
 interface Box {
   x: number;
