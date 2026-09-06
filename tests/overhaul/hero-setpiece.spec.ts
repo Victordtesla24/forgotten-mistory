@@ -334,3 +334,106 @@ for (const viewport of VIEWPORTS) {
     }
   });
 }
+
+/**
+ * TC-HERO-SET-04 — the pool reaches the figure (HERO-SETPIECE-v3 §8, slice S2).
+ *
+ * The failure this case exists to catch is a photograph standing on black: a
+ * plate composited into the plane while the shader's light gathers somewhere
+ * else. So it measures the light *around* the figure's own outline — an 8–24 px
+ * annulus, outside the figure's rect and therefore outside the ink set — as a
+ * ratio to the fold's own mean light mass `m = max(0, L − G)`.
+ *
+ *   mean m in the annulus ÷ mean m over the fold  ≥ 1.35
+ *
+ * The luminance comes from `hero_plane_dominance.mjs`'s exports rather than a
+ * second implementation: a fold two instruments disagree about is a fold nobody
+ * can defend (§8, measurement note). The threshold is 1.35 exactly; lowering it
+ * to make a run green is a violation (t_w2_h1s2 QUALITY GATES).
+ */
+const ANNULUS_INNER_PX = 8;
+const ANNULUS_OUTER_PX = 24;
+const POOL_REACH_MIN = 1.35;
+
+for (const viewport of VIEWPORTS) {
+  const size = `${viewport.width}×${viewport.height}`;
+
+  test.describe(`TC-HERO-SET-04 @ ${size} — the light finds the figure`, () => {
+    test.use({ viewport: { width: viewport.width, height: viewport.height } });
+
+    for (const route of PATHS) {
+      test(`TC-HERO-SET-04 @ ${size} [${route.id}] — pool reach ≥ ${POOL_REACH_MIN}`, async ({
+        page,
+        baseURL,
+      }) => {
+        test.setTimeout(120000);
+        const spd = await instrument();
+        await spd.preparePage(page, baseURL ?? 'http://127.0.0.1:5608', route);
+        const d = (await page.evaluate(readFold)) as FoldReading;
+        expect(d.figure, 'SET-04: the figure must exist').not.toBeNull();
+        const figure = d.figure as Box;
+
+        const shot = await page.screenshot({ type: 'png', fullPage: false });
+        const field = spd.decodeLuma(shot);
+        expect(
+          `${field.width}x${field.height}`,
+          'SET-04: deviceScaleFactor must be 1 so the DOM rect addresses the pixels',
+        ).toBe(`${d.viewport.w}x${d.viewport.h}`);
+
+        const ground = spd.percentile(field.values, spd.GROUND_PERCENTILE);
+        const inner = {
+          x: figure.x - ANNULUS_INNER_PX,
+          y: figure.y - ANNULUS_INNER_PX,
+          r: figure.x + figure.w + ANNULUS_INNER_PX,
+          b: figure.y + figure.h + ANNULUS_INNER_PX,
+        };
+        const outer = {
+          x: figure.x - ANNULUS_OUTER_PX,
+          y: figure.y - ANNULUS_OUTER_PX,
+          r: figure.x + figure.w + ANNULUS_OUTER_PX,
+          b: figure.y + figure.h + ANNULUS_OUTER_PX,
+        };
+
+        let annulusSum = 0;
+        let annulusPx = 0;
+        let foldSum = 0;
+        for (let y = 0; y < field.height; y += 1) {
+          for (let x = 0; x < field.width; x += 1) {
+            const L = field.values[y * field.width + x];
+            const m = L > ground ? L - ground : 0;
+            foldSum += m;
+            const inOuter = x >= outer.x && x < outer.r && y >= outer.y && y < outer.b;
+            if (!inOuter) continue;
+            const inInner = x >= inner.x && x < inner.r && y >= inner.y && y < inner.b;
+            if (inInner) continue;
+            annulusSum += m;
+            annulusPx += 1;
+          }
+        }
+        const foldMean = foldSum / (field.width * field.height);
+        const annulusMean = annulusPx > 0 ? annulusSum / annulusPx : 0;
+        const reach = foldMean > 0 ? annulusMean / foldMean : 0;
+
+        // eslint-disable-next-line no-console
+        console.log(
+          `[hero-set-04] ${size} ${route.label}\n` +
+            `  figure rect        = ${JSON.stringify(figure)}\n` +
+            `  G (10th-pct L)     = ${ground.toFixed(4)}\n` +
+            `  annulus ${ANNULUS_INNER_PX}–${ANNULUS_OUTER_PX} px  = ${annulusPx} px, mean m = ${annulusMean.toFixed(5)}\n` +
+            `  fold mean m        = ${foldMean.toFixed(5)}\n` +
+            `  pool reach         = ${reach.toFixed(4)}   SET-04 ≥ ${POOL_REACH_MIN} ${
+              reach >= POOL_REACH_MIN ? 'PASS' : 'FAIL'
+            }`,
+        );
+
+        expect(annulusPx, 'SET-04: the annulus must contain pixels inside the fold').toBeGreaterThan(0);
+        expect(
+          reach,
+          `SET-04 at ${size} on ${route.label}: the light around the figure is ${reach.toFixed(3)}× ` +
+            `the fold's mean, below ${POOL_REACH_MIN} — the photograph is a plate on black, not a ` +
+            'figure standing in a pool of light',
+        ).toBeGreaterThanOrEqual(POOL_REACH_MIN);
+      });
+    }
+  });
+}
