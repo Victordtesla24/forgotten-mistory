@@ -1,0 +1,100 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/story-contract.spec.ts -g ABOUT --workers=1 --reporter=list
+
+[2mRunning [22m8[2m tests using [22m1[2m worker[22m
+
+[story:about-01@1440] centre=(208.0,367.7) lobes=13 peak=0.56872
+  [32m✓[39m  [2m1 [22m[chromium] › tests/overhaul/story-contract.spec.ts:431:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-ABOUT-01 @ 1440 — the fan is a ring of ten, not one glow[2m (7.8s)[22m
+[story:about-02@1440] phi=24.5 role=0.10178 candidate=0.17392 deficit=0.4148
+  [32m✓[39m  [2m2 [22m[chromium] › tests/overhaul/story-contract.spec.ts:483:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-ABOUT-02 @ 1440 — the three role-side sectors read open[2m (6.7s)[22m
+[story:about-03@1440] phi=24.5 k=5 structure=0.1706 0.3296 0.1129 0.0791 0.0647 0.0882 0.1424 0.1213 0.0914 0.1198 role-min=0.0882 candidate-max=0.3296 ratio=0.268
+  [31m✘[39m  [2m3 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:565:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-ABOUT-03 @ 1440 — the three role-side sectors are drawn open[39m[2m (7.4s)[22m
+[story:plane@1440] about: slot=74924.5 section=76098.1 share=0.9846 slotbox=1248x900 sectionbox=1440x900
+  [32m✓[39m  [2m4 [22m[chromium] › tests/overhaul/story-contract.spec.ts:1097:11 › TC-STORY @ 1440 — every field says its own section › TC-STORY-PLANE-01 @ 1440 — #about: the scene carries ≥ 50% of the light[2m (7.8s)[22m
+[story:about-01@390] centre=(171.0,112.0) lobes=12 peak=0.43795
+  [32m✓[39m  [2m5 [22m[chromium] › tests/overhaul/story-contract.spec.ts:431:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-ABOUT-01 @ 390 — the fan is a ring of ten, not one glow[2m (5.7s)[22m
+[story:about-02@390] phi=24.5 role=0.17353 candidate=0.19443 deficit=0.1075
+  [31m✘[39m  [2m6 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:483:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-ABOUT-02 @ 390 — the three role-side sectors read open[39m[2m (5.5s)[22m
+[story:about-03@390] phi=24.5 k=5 structure=0.1221 0.1236 0.0857 0.2968 0.1128 0.0642 0.1285 0.1838 0.0947 0.1161 role-min=0.0642 candidate-max=0.2968 ratio=0.216
+  [31m✘[39m  [2m7 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:565:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-ABOUT-03 @ 390 — the three role-side sectors are drawn open[39m[2m (7.2s)[22m
+[story:plane@390] about: slot=22331.9 section=25296.3 share=0.8828 slotbox=342x480 sectionbox=390x844
+  [32m✓[39m  [2m8 [22m[chromium] › tests/overhaul/story-contract.spec.ts:1097:11 › TC-STORY @ 390 — every field says its own section › TC-STORY-PLANE-01 @ 390 — #about: the scene carries ≥ 50% of the light[2m (5.9s)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/story-contract.spec.ts:565:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-ABOUT-03 @ 1440 — the three role-side sectors are drawn open [39m
+
+    Error: the faintest of the three role-side sectors carries 0.0882 of the open mark against 0.3296 on the strongest answered one (bar: 3x) — the field does not say which three of the ten are sought rather than measured.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.988701865608445[39m
+    Received:    [31m0.08823274019169763[39m
+
+    [0m [90m 666 |[39m           [32m`(bar: ${ABOUT_OPEN_STRUCTURE_RATIO}x) — the field does not say which three of the `[39m [33m+[39m
+     [90m 667 |[39m           [32m'ten are sought rather than measured.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 668 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mABOUT_OPEN_STRUCTURE_RATIO[39m [33m*[39m candidateMax)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 669 |[39m
+     [90m 670 |[39m       expect(
+     [90m 671 |[39m         roleMin[33m,[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2f6/tests/overhaul/story-contract.spec.ts:668:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-705f5-side-sectors-are-drawn-open-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-705f5-side-sectors-are-drawn-open-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/overhaul/story-contract.spec.ts:483:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-ABOUT-02 @ 390 — the three role-side sectors read open [39m
+
+    Error: the three role-side sectors sit only 10.7% under the seven answered ones (bar: 15%) — the field grades an open dimension the same as an answered one, which is the caliper rule broken in light.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.15[39m
+    Received:    [31m0.10749342633313677[39m
+
+    [0m [90m 560 |[39m           [32m`answered ones (bar: ${ABOUT_ROLE_DEFICIT * 100}%) — the field grades an open `[39m [33m+[39m
+     [90m 561 |[39m           [32m'dimension the same as an answered one, which is the caliper rule broken in light.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 562 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mABOUT_ROLE_DEFICIT[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 563 |[39m     })[33m;[39m
+     [90m 564 |[39m
+     [90m 565 |[39m     test([32m`TC-STORY-ABOUT-03 @ ${w} — the three role-side sectors are drawn open`[39m[33m,[39m [36masync[39m ({[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2f6/tests/overhaul/story-contract.spec.ts:562:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-52d36-role-side-sectors-read-open-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-52d36-role-side-sectors-read-open-chromium/error-context.md[22m
+
+[31m  3) [chromium] › tests/overhaul/story-contract.spec.ts:565:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-ABOUT-03 @ 390 — the three role-side sectors are drawn open [39m
+
+    Error: the faintest of the three role-side sectors carries 0.0642 of the open mark against 0.2968 on the strongest answered one (bar: 3x) — the field does not say which three of the ten are sought rather than measured.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.890297070774904[39m
+    Received:    [31m0.06417204324676523[39m
+
+    [0m [90m 666 |[39m           [32m`(bar: ${ABOUT_OPEN_STRUCTURE_RATIO}x) — the field does not say which three of the `[39m [33m+[39m
+     [90m 667 |[39m           [32m'ten are sought rather than measured.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 668 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mABOUT_OPEN_STRUCTURE_RATIO[39m [33m*[39m candidateMax)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 669 |[39m
+     [90m 670 |[39m       expect(
+     [90m 671 |[39m         roleMin[33m,[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2f6/tests/overhaul/story-contract.spec.ts:668:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-af409-side-sectors-are-drawn-open-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-af409-side-sectors-are-drawn-open-chromium/error-context.md[22m
+
+[31m  3 failed[39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:565:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-ABOUT-03 @ 1440 — the three role-side sectors are drawn open [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:483:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-ABOUT-02 @ 390 — the three role-side sectors read open [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:565:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-ABOUT-03 @ 390 — the three role-side sectors are drawn open [39m
+[32m  5 passed[39m[2m (1.0m)[22m

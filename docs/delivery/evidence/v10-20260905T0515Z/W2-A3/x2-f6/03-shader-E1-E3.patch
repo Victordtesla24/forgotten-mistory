@@ -1,0 +1,155 @@
+diff --git a/components/sections/About/field.glsl.ts b/components/sections/About/field.glsl.ts
+index 778d9c8..9fd2212 100644
+--- a/components/sections/About/field.glsl.ts
++++ b/components/sections/About/field.glsl.ts
+@@ -124,6 +124,20 @@
+  * fan and the guard reuse terms already computed.
+  */
+ 
++/**
++ * The open mark — the three role-side sectors are *drawn* open rather than
++ * dimmed (ABOUT-STORY-v2 §3). Exported so `tests/overhaul/scene-about.spec.ts`
++ * and `tests/overhaul/story-contract.spec.ts` measure the frequency this
++ * shader actually draws, instead of a number copied into a test and left to
++ * drift away from it.
++ */
++/** Dashes the arc is broken into across one sector's own width. */
++export const ABOUT_OPEN_DASHES = 5.0;
++/** The 45-degree ruling, in the plane's own frame. */
++export const ABOUT_OPEN_RULING = 26.0;
++/** Peak swing about the sector's own mean. Zero-mean, so it spends no area. */
++export const ABOUT_OPEN_MARK_DEPTH = 0.42;
++
+ export const aboutFieldVertexShader = /* glsl */ `
+   varying vec2 vUv;
+ 
+@@ -180,6 +194,13 @@ export const aboutFieldFragmentShader = /* glsl */ `
+   const float SECTORS = 10.0;
+   const float TAU = 6.283185307179586;
+ 
++  // Interpolated from the exported constants above so the shader and the two
++  // tests that measure it read the same three numbers. A test that hard-coded
++  // the dash frequency would go on passing after the shader changed it.
++  const float ABOUT_OPEN_DASHES = ${ABOUT_OPEN_DASHES.toFixed(1)};
++  const float ABOUT_OPEN_RULING = ${ABOUT_OPEN_RULING.toFixed(1)};
++  const float ABOUT_OPEN_MARK_DEPTH = ${ABOUT_OPEN_MARK_DEPTH.toFixed(2)};
++
+   // Bit i of an integer-valued mask, as 0.0 or 1.0. No array indexing, so this
+   // is portable to WebGL1, where a fragment shader may not index a uniform
+   // array by a computed sector number.
+@@ -203,6 +224,40 @@ export const aboutFieldFragmentShader = /* glsl */ `
+   }
+ 
+   void main() {
++    // The two ceilings, and the mask that says where they bite. Both depend only
++    // on vUv and uGuard, so they are computed here, once, at the top — the open
++    // mark below has to know which pixels are guarded before it may touch them,
++    // and a term that gates on 'guarded' cannot be written above the line that
++    // declares it. The ceiling itself is still *applied* where it always was:
++    // last, after every term that makes light. This is code motion and nothing
++    // else; TC-CONTRAST-01/02 at both widths are what prove it.
++    //
++    // The reading column is the quadrant right of uGuard.x and below uGuard.y —
++    // one corner describes it in both layouts, because at 1440 the ten are
++    // beside the instrument (so the x test is the live one and the y test is
++    // satisfied everywhere) and at 390 they are under it (so the y test is the
++    // live one and the x test is satisfied everywhere). The instrument's
++    // caption and key are everything below uGuard.z.
++    //
++    // Each ramp ends *at* its edge rather than straddling it: a smoothstep
++    // centred on the boundary is only half applied at the boundary, and the
++    // first line of type sits exactly there — the instrument's caption measured
++    // 3.56:1 against a ground the ceiling should have held to 7.3:1, entirely
++    // in the strip where the ramp had not finished (c24 probe, 1440).
++    // The ramp is 0.12 of the plane, not 0.06: at the light this field now
++    // carries, a ramp half that width read as a vertical seam down the page
++    // where the reading column's ceiling began (06-about-1440-gl.png, first
++    // capture).
++    float toRight = smoothstep(uGuard.x - 0.12, uGuard.x, vUv.x);
++    float belowList = smoothstep(uGuard.y + 0.12, uGuard.y, vUv.y);
++    float reading = min(toRight, belowList);
++    float caption = smoothstep(uGuard.z + 0.10, uGuard.z, vUv.y);
++    float guarded = max(reading, caption);
++    float ceiling = min(
++      mix(1.0, uReadingCeiling, reading),
++      mix(1.0, uInstrumentCeiling, caption)
++    );
++
+     // Polar about the instrument, wherever the instrument currently is. The
+     // frame is squared first, so a fan drawn in it is round on a plane that is
+     // not: r = 1 is half the plane's height.
+@@ -361,6 +416,35 @@ export const aboutFieldFragmentShader = /* glsl */ `
+ 
+     float luma = sector;
+ 
++    // The open mark: the three role-side sectors are DRAWN open rather than
++    // dimmed. Two channels, both of them the open caliper's own vocabulary —
++    // the arc broken into ABOUT_OPEN_DASHES dashes across the sector's width,
++    // and the 45-degree ruling the SVG hatches an open sector with. 'mark' has
++    // mean 0 over a sector (the integral of -cos over a whole number of cycles,
++    // and of a ruling over area), so the multiplier has mean 1.0: it moves
++    // light around inside a sector and never takes any away. That is the whole
++    // point — the coverage gate counts area at ground + 0.06 and there are
++    // 0.52 pp of headroom, so a dimmer cannot buy this story and a mark can.
++    //
++    // It is here, and not in 'state', because 'state' is what protects the
++    // 15.52%: G-A3's first attempt (479e2b2) put the answered/open difference
++    // in the luminance of the whole pixel and cost 1.86 pp of coverage for a
++    // ratio that was still under its bar. Brightness on this plane tracks
++    // position, not about.ts — an answered sector measured 0.0122 while an open
++    // one measured 0.5661 (rev-12cd9123-w1 F-2) — so the difference is carried
++    // by structure, which is position-invariant by construction: the depth is a
++    // fraction of each sector's own light.
++    float dash = -cos(within * TAU * ABOUT_OPEN_DASHES);   // seam sits in a trough
++    float ruled = sin((p.x + p.y) * ABOUT_OPEN_RULING);
++    float mark = 0.5 * dash + 0.5 * ruled;                 // [-1, 1], mean 0
++    // Faded at both seams so a whole-plane multiplier draws no hard spoke in
++    // the haze (the failure 479e2b2 had to crossfade around), zeroed under both
++    // type guards so no guarded pixel is touched and no ceiling can be
++    // breached, and applied only where the sector is open.
++    float markWindow = smoothstep(0.0, 0.14, within) * smoothstep(1.0, 0.86, within)
++      * (1.0 - guarded) * (1.0 - answered);
++    luma *= 1.0 + ABOUT_OPEN_MARK_DEPTH * mark * markWindow;
++
+     // The scene has to end somewhere and it must not be anywhere a reader can
+     // find: the field dies inside its own rectangle on all four sides, so the
+     // canvas never shows as a faintly lighter box against the page. Measured in
+@@ -373,35 +457,11 @@ export const aboutFieldFragmentShader = /* glsl */ `
+     luma += (hash(vUv * uResolution + fract(uTime)) - 0.5) * 0.014;
+     luma = clamp(luma, 0.0, 1.0);
+ 
+-    // The two ceilings. The reading column is the quadrant right of uGuard.x
+-    // and below uGuard.y — one corner describes it in both layouts, because at
+-    // 1440 the ten are beside the instrument (so the x test is the live one and
+-    // the y test is satisfied everywhere) and at 390 they are under it (so the
+-    // y test is the live one and the x test is satisfied everywhere). The
+-    // instrument's caption and key are everything below uGuard.z.
+-    //
+-    // Each ramp ends *at* its edge rather than straddling it: a smoothstep
+-    // centred on the boundary is only half applied at the boundary, and the
+-    // first line of type sits exactly there — the instrument's caption measured
+-    // 3.56:1 against a ground the ceiling should have held to 7.3:1, entirely
+-    // in the strip where the ramp had not finished (c24 probe, 1440).
+-    // The ramp is 0.12 of the plane, not 0.06: at the light this field now
+-    // carries, a ramp half that width read as a vertical seam down the page
+-    // where the reading column's ceiling began (06-about-1440-gl.png, first
+-    // capture). It still ends *at* the edge rather than straddling it, for the
+-    // reason below — it just takes longer to get there.
+-    float toRight = smoothstep(uGuard.x - 0.12, uGuard.x, vUv.x);
+-    float belowList = smoothstep(uGuard.y + 0.12, uGuard.y, vUv.y);
+-    float reading = min(toRight, belowList);
+-    float caption = smoothstep(uGuard.z + 0.10, uGuard.z, vUv.y);
+-    float guarded = max(reading, caption);
+-    float ceiling = min(
+-      mix(1.0, uReadingCeiling, reading),
+-      mix(1.0, uInstrumentCeiling, caption)
+-    );
+     // Asymptotic, so the bound is never actually reached and the transition
+     // into it has no edge of its own. Outside both boxes guarded is 0 and the
+-    // field is untouched.
++    // field is untouched. 'guarded' and 'ceiling' are computed at the top of
++    // main() (they depend only on vUv and uGuard); the bound is still applied
++    // here, last, after every term that makes light.
+     luma = mix(luma, ceiling * (1.0 - exp(-luma / max(ceiling, 0.0001))), guarded);
+ 
+     // Light only, and the light carried by alpha alone. Where the field is dark

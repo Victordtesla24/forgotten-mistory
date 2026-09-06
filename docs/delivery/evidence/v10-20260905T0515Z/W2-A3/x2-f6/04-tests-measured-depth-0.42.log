@@ -1,0 +1,124 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-about.spec.ts -g ABOUT-10 --workers=1 --reporter=list
+
+[2mRunning [22m4[2m tests using [22m1[2m worker[22m
+
+TC-SCENE-ABOUT-10 1440x900 at rest — the ring under the engraving: per-sector 0.1517 0.4165 0.5039 0.3434 0.5450 0.0154 0.3394 0.0696 0.2227 0.3862 | answered 0.3452 open 0.1925 ratio 1.793
+TC-SCENE-ABOUT-10 1440x900 at rest — the ring under the engraving: structure 0.1489 0.1281 0.1333 0.1369 0.0859 0.1649 0.0972 0.1737 0.1550 0.1283 | answered-max 0.1737 open-min 0.0972
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:766:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, at rest[39m[2m (12.3s)[22m
+TC-SCENE-ABOUT-10 1440x900 reading dimension 4 — the ring under the engraving: per-sector 0.3132 0.3244 0.4514 0.5271 0.4293 0.1277 0.0929 0.2429 0.0623 0.2776 | answered 0.3666 open 0.0943 ratio 3.886
+TC-SCENE-ABOUT-10 1440x900 reading dimension 4 — the ring under the engraving: structure 0.1151 0.1228 0.1196 0.1263 0.1233 0.3859 0.4892 0.1297 0.4285 0.1258 | answered-max 0.1297 open-min 0.3859
+  [31m✘[39m  [2m2 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:766:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, reading dimension 4[39m[2m (10.5s)[22m
+TC-SCENE-ABOUT-10 390x844 at rest — the ring under the engraving: per-sector 0.1936 0.3437 0.4123 0.4108 0.2221 0.0612 0.0832 0.3844 0.1151 0.2637 | answered 0.3186 open 0.0865 ratio 3.684
+TC-SCENE-ABOUT-10 390x844 at rest — the ring under the engraving: structure 0.1239 0.1112 0.1137 0.1131 0.1039 0.3724 0.3750 0.0929 0.3689 0.1188 | answered-max 0.1239 open-min 0.3689
+  [31m✘[39m  [2m3 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:766:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 390x844, at rest[39m[2m (10.9s)[22m
+TC-SCENE-ABOUT-10 390x844 reading dimension 1 — the ring under the engraving: per-sector 0.0032 0.0035 0.0665 0.2497 0.3383 0.1236 0.0788 0.1361 0.0223 0.0032 | answered 0.1143 open 0.0749 ratio 1.527
+TC-SCENE-ABOUT-10 390x844 reading dimension 1 — the ring under the engraving: structure 0.1434 0.1453 0.2204 0.1143 0.1047 0.3483 0.3793 0.1124 0.4132 0.1481 | answered-max 0.2204 open-min 0.3483
+  [31m✘[39m  [2m4 [22m[31m[chromium] › tests/overhaul/scene-about.spec.ts:766:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 390x844, reading dimension 1[39m[2m (7.8s)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/scene-about.spec.ts:766:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, at rest [39m
+
+    Error: the ring under the engraving: only 4 of 10 sector boundaries show a 12% luminance step — steps 0.116, 0.128, -0.570, -0.030, -0.005, 0.797, 0.825, 0.069, 0.345, -0.806
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m9[39m
+    Received:    [31m4[39m
+
+    [0m [90m 865 |[39m             [32m`${where}: only ${legible} of ${steps.length} sector boundaries show a 12% luminance `[39m [33m+[39m
+     [90m 866 |[39m               [32m`step — steps ${steps.map((s) => s.toFixed(3)).join(', ')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 867 |[39m           )[33m.[39mtoBeGreaterThanOrEqual(steps[33m.[39mlength [33m-[39m [35m1[39m)[33m;[39m
+     [90m     |[39m             [31m[1m^[22m[39m
+     [90m 868 |[39m
+     [90m 869 |[39m           [90m// Answered brighter than open, in the order the SVG numbers them. The[39m
+     [90m 870 |[39m           [90m// task's shorthand is "sectors 1..k against k+1..10"; the ten are not[39m[0m
+    [2m    at assertTellsTen (/root/forgotten-mistory/.claude/worktrees/w2-x2f6/tests/overhaul/scene-about.spec.ts:867:13)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2f6/tests/overhaul/scene-about.spec.ts:930:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-c7f40-sectors-at-1440x900-at-rest-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-c7f40-sectors-at-1440x900-at-rest-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/overhaul/scene-about.spec.ts:766:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, reading dimension 4 [39m
+
+    Error: the ring under the engraving (1440x900, reading dimension 4): structure per sector 0.1151, 0.1228, 0.1196, 0.1263, 0.1233, 0.3859, 0.4892, 0.1297, 0.4285, 0.1258 — the faintest open sector carries 0.3859 of the mark against 0.1297 on the strongest answered one (bar: 3x). The three role-side dimensions are not drawn open — a reader cannot tell which of the ten are sought rather than measured.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.389245935020776[39m
+    Received:    [31m0.38590771179285227[39m
+
+    [0m [90m 908 |[39m               [32m'drawn open — a reader cannot tell which of the ten are sought rather than '[39m [33m+[39m
+     [90m 909 |[39m               [32m'measured.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 910 |[39m           )[33m.[39mtoBeGreaterThanOrEqual([33mOPEN_STRUCTURE_RATIO[39m [33m*[39m answeredStructureMax)[33m;[39m
+     [90m     |[39m             [31m[1m^[22m[39m
+     [90m 911 |[39m
+     [90m 912 |[39m           expect(
+     [90m 913 |[39m             openStructureMin[33m,[39m[0m
+    [2m    at assertTellsTen (/root/forgotten-mistory/.claude/worktrees/w2-x2f6/tests/overhaul/scene-about.spec.ts:910:13)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2f6/tests/overhaul/scene-about.spec.ts:930:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-42211-440x900-reading-dimension-4-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-42211-440x900-reading-dimension-4-chromium/error-context.md[22m
+
+[31m  3) [chromium] › tests/overhaul/scene-about.spec.ts:766:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 390x844, at rest [39m
+
+    Error: the ring under the engraving (390x844, at rest): structure per sector 0.1239, 0.1112, 0.1137, 0.1131, 0.1039, 0.3724, 0.3750, 0.0929, 0.3689, 0.1188 — the faintest open sector carries 0.3689 of the mark against 0.1239 on the strongest answered one (bar: 3x). The three role-side dimensions are not drawn open — a reader cannot tell which of the ten are sought rather than measured.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.371681021111075[39m
+    Received:    [31m0.36892441476913357[39m
+
+    [0m [90m 908 |[39m               [32m'drawn open — a reader cannot tell which of the ten are sought rather than '[39m [33m+[39m
+     [90m 909 |[39m               [32m'measured.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 910 |[39m           )[33m.[39mtoBeGreaterThanOrEqual([33mOPEN_STRUCTURE_RATIO[39m [33m*[39m answeredStructureMax)[33m;[39m
+     [90m     |[39m             [31m[1m^[22m[39m
+     [90m 911 |[39m
+     [90m 912 |[39m           expect(
+     [90m 913 |[39m             openStructureMin[33m,[39m[0m
+    [2m    at assertTellsTen (/root/forgotten-mistory/.claude/worktrees/w2-x2f6/tests/overhaul/scene-about.spec.ts:910:13)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2f6/tests/overhaul/scene-about.spec.ts:930:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-54fd0--sectors-at-390x844-at-rest-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-54fd0--sectors-at-390x844-at-rest-chromium/error-context.md[22m
+
+[31m  4) [chromium] › tests/overhaul/scene-about.spec.ts:766:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 390x844, reading dimension 1 [39m
+
+    Error: the ring under the engraving (390x844, reading dimension 1): structure per sector 0.1434, 0.1453, 0.2204, 0.1143, 0.1047, 0.3483, 0.3793, 0.1124, 0.4132, 0.1481 — the faintest open sector carries 0.3483 of the mark against 0.2204 on the strongest answered one (bar: 3x). The three role-side dimensions are not drawn open — a reader cannot tell which of the ten are sought rather than measured.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.6611152954688155[39m
+    Received:    [31m0.34832498458424904[39m
+
+    [0m [90m 908 |[39m               [32m'drawn open — a reader cannot tell which of the ten are sought rather than '[39m [33m+[39m
+     [90m 909 |[39m               [32m'measured.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 910 |[39m           )[33m.[39mtoBeGreaterThanOrEqual([33mOPEN_STRUCTURE_RATIO[39m [33m*[39m answeredStructureMax)[33m;[39m
+     [90m     |[39m             [31m[1m^[22m[39m
+     [90m 911 |[39m
+     [90m 912 |[39m           expect(
+     [90m 913 |[39m             openStructureMin[33m,[39m[0m
+    [2m    at assertTellsTen (/root/forgotten-mistory/.claude/worktrees/w2-x2f6/tests/overhaul/scene-about.spec.ts:910:13)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2f6/tests/overhaul/scene-about.spec.ts:930:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-about-TC-SC-a2a12-390x844-reading-dimension-1-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-about-TC-SC-a2a12-390x844-reading-dimension-1-chromium/error-context.md[22m
+
+[31m  4 failed[39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:766:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, at rest [39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:766:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900, reading dimension 4 [39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:766:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 390x844, at rest [39m
+[31m    [chromium] › tests/overhaul/scene-about.spec.ts:766:11 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 390x844, reading dimension 1 [39m

@@ -124,6 +124,29 @@
  * fan and the guard reuse terms already computed.
  */
 
+/**
+ * The open mark — the three role-side sectors DRAWN open rather than dimmed
+ * (ABOUT-STORY-v2 §3, slice X2-F6). These three numbers are exported, and the
+ * two tests that measure the mark import them, so a test can never go on
+ * passing against a frequency the shader has stopped drawing.
+ *
+ * The shader term itself is NOT in this file. X2-F6 authored it, measured it
+ * and stopped: at 1440 with the section at rest the mark is multiplied by
+ * `(1.0 - guarded)` over most of the ring annulus and reads 0.0972 against an
+ * answered maximum of 0.1737, where the other three measured states read
+ * 0.348-0.489 against 0.113-0.220. That is ABOUT-STORY-v2 §6's third X2-F7
+ * trigger — the annulus is mostly guarded — and depth cannot move a term that
+ * is multiplied by zero. The measured term is kept verbatim at
+ * `docs/delivery/evidence/v10-20260905T0515Z/W2-A3/x2-f6/03-shader-E1-E3.patch`
+ * for X2-F7 to apply once the guard no longer covers the plane.
+ */
+/** Dashes the arc is broken into across one sector's own width. */
+export const ABOUT_OPEN_DASHES = 5.0;
+/** The 45-degree ruling, in the plane's own frame. */
+export const ABOUT_OPEN_RULING = 26.0;
+/** Peak swing about the sector's own mean. Zero-mean, so it spends no area. */
+export const ABOUT_OPEN_MARK_DEPTH = 0.42;
+
 export const aboutFieldVertexShader = /* glsl */ `
   varying vec2 vUv;
 
