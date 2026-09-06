@@ -81,3 +81,15 @@ $ npx playwright test tests/monochrome/minivic-launcher.spec.ts --workers=1
   tests/e2e/chatbot.spec.ts and the full battery. The change is one CSS rule
   scoped to `.minivic-launcher` below 87.5rem; the four suites that own the
   launcher's contract are green above.
+
+## (7) 1440 for the record — the phone rule deliberately does not apply there
+    1440x900 closed  brightest rgb(250,250,250)  L 0.9560  379/2852 over the
+                     phone ceiling.
+  That is the portrait at full value and the mark at opacity 0.92, which is what
+  the launcher block prescribes from 87.5rem up ("the page's own gutter (96px at
+  --page-max) holds the disc clear of the measure, so the face is shown at full
+  value and the mark with it"). TC-MV-OCCLUDE-01/02 are phone-only by design —
+  the spec hard-pins VIEWPORT to 390x844 and says so in its own header — so this
+  number is a description of the desktop launcher, not a failure of it. The
+  desktop suites that do run at 1440 are green: MONO-MV-01 @ 1440 and
+  TC-MV-LABEL-01 @ 1440.
