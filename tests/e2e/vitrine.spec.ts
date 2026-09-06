@@ -136,62 +136,20 @@ test.describe('Vitrine', () => {
     }
   });
 
-  test('TC-VIT-10: a plate traces its drawing when the light reaches it', async ({ page }) => {
-    // Council R-c1 (motion, #vitrine): the drawings are the section's story —
-    // what each repository does — so they are traced as the plate is lit, not
-    // printed static. Scroll the rail by 700 and the third plate takes the
-    // light; its first stroke must have run its dash to 0 within 1200 ms.
-    const plates = page.locator(`${VITRINE} ol > li`);
-    const litIndex = () =>
-      plates.evaluateAll((nodes) => nodes.findIndex((n) => n.getAttribute('data-lit') === 'true'));
-    const litBefore = await litIndex();
-    await page.locator(`${VITRINE} ol`).evaluate((rail) => {
-      rail.scrollBy({ left: 700, behavior: 'instant' as ScrollBehavior });
-    });
-    await expect.poll(litIndex, { timeout: 2000 }).toBe(2);
-    expect(litBefore, 'the third plate was not the lit one before the scroll').not.toBe(2);
+  /* TC-VIT-10 is SUPERSEDED by tests/overhaul/interim-frame.spec.ts TC-IF-14
+     (INTERIM-FRAME.md §6). It asserted that a plate traces its bespoke
+     mechanism drawing as the light reaches it; both the drawings and the light
+     are removed (t_w3_rm2). TC-IF-14 measures what each card must still carry:
+     title, description, the three metrics, its limits and its source — and a
+     rail the keyboard can still drive. */
 
-    const stroke = plates
-      .nth(2)
-      .locator('svg[role="img"] :is(path, line, circle)')
-      .first();
-    await expect(stroke).toHaveAttribute('pathLength', '1');
-    const dashoffset = () =>
-      stroke.evaluate((el) => Number.parseFloat(getComputedStyle(el).strokeDashoffset));
-    await expect
-      .poll(dashoffset, {
-        timeout: 1200,
-        intervals: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
-        message: 'first stroke of the lit plate traced to 0',
-      })
-      .toBe(0);
 
-    // Drawn once: the light moving on does not undraw the plate.
-    await page.locator(`${VITRINE} ol`).evaluate((rail) => {
-      rail.scrollTo({ left: 0, behavior: 'instant' as ScrollBehavior });
-    });
-    await expect.poll(litIndex, { timeout: 2000 }).not.toBe(2);
-    await expect(plates.nth(2)).toHaveAttribute('data-drawn', 'true');
-    expect(await dashoffset()).toBe(0);
-  });
+  /* TC-VIT-11 is SUPERSEDED by tests/overhaul/interim-frame.spec.ts TC-IF-19
+     (INTERIM-FRAME.md §6). It asserted that under reduced motion the drawings
+     render present but untraced. With no drawing and no trace, this section's
+     reduced-motion contract is that it prints the same words and the same rows
+     on both motion paths — which is what TC-IF-19 measures. */
 
-  test('TC-VIT-11: under reduced motion the drawings are present, untraced', async ({ page }) => {
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/');
-    await page.locator(VITRINE).scrollIntoViewIfNeeded();
-    // The fifth plate has never been lit, so it has neither data-lit nor
-    // data-drawn: only the reduced-motion rule can have put its strokes at 0.
-    const plate = page.locator(`${VITRINE} ol > li`).nth(4);
-    await expect(plate).not.toHaveAttribute('data-lit', /.*/);
-    await expect(plate).not.toHaveAttribute('data-drawn', /.*/);
-    const stroke = plate.locator('svg[role="img"] :is(path, line, circle)').first();
-    const style = await stroke.evaluate((el) => {
-      const cs = getComputedStyle(el);
-      return { offset: Number.parseFloat(cs.strokeDashoffset), transition: cs.transitionProperty };
-    });
-    expect(style.offset, 'strokes are present immediately under reduced motion').toBe(0);
-    expect(style.transition, 'no dash animation under reduced motion').not.toContain('stroke-dashoffset');
-  });
 
   // Council R-c8, C-02 (blocker): the card rail sat 96 px (1440) / 336 px
   // (1920) off its own heading's spine, the right-most card was cut mid-word
@@ -253,62 +211,9 @@ test.describe('Vitrine', () => {
     });
   }
 
-  test('TC-VIT-13: every stroke of a lit plate lands inside the cinematic band', async ({ page }) => {
-    // Council R-c8, C-02 acceptance: "lit plate svg paths reach
-    // stroke-dashoffset 0 by 900 ms". Plate 01 has twenty-five strokes, so a
-    // fixed 40 ms stagger on top of a 900 ms draw ran to 1.9 s; the stagger is
-    // budgeted (Drawings.module.css `--n`) so the last stroke lands by 880 ms
-    // whatever the count. Two readings: the timing the stylesheet declares
-    // (deterministic) and the moment the last stroke actually reaches 0
-    // (harness-tolerant, measured from the attribute change itself).
-    const plates = page.locator(`${VITRINE} ol > li`);
-    const target = plates.nth(2);
-    await expect(target).not.toHaveAttribute('data-lit', /.*/);
-
-    // Timestamp the moment the light reaches the plate, from inside the page.
-    await target.evaluate((plate) => {
-      const w = window as unknown as { __litAt: number | null };
-      w.__litAt = null;
-      new MutationObserver(() => {
-        if (plate.hasAttribute('data-lit') && w.__litAt === null) w.__litAt = performance.now();
-      }).observe(plate, { attributes: true, attributeFilter: ['data-lit'] });
-    });
-    await page.locator(`${VITRINE} ol`).evaluate((rail) => {
-      rail.scrollBy({ left: 700, behavior: 'instant' as ScrollBehavior });
-    });
-    await expect(target).toHaveAttribute('data-lit', 'true', { timeout: 2000 });
-
-    const result = await target.evaluate(
-      (plate) =>
-        new Promise<{ strokes: number; declaredMaxMs: number; landedMs: number }>((resolve) => {
-          const w = window as unknown as { __litAt: number | null };
-          const strokes = Array.from(
-            plate.querySelectorAll<SVGElement>('svg[role="img"] :is(path, line, circle, rect)[pathLength]'),
-          );
-          const ms = (v: string) => {
-            const n = Number.parseFloat(v);
-            return v.trim().endsWith('ms') ? n : n * 1000;
-          };
-          // The stylesheet's own promise: duration + delay for every stroke.
-          const declaredMaxMs = Math.max(
-            ...strokes.map((s) => {
-              const cs = getComputedStyle(s);
-              return ms(cs.transitionDuration.split(',')[0]) + ms(cs.transitionDelay.split(',')[0]);
-            }),
-          );
-          const litAt = w.__litAt ?? performance.now();
-          const tick = () => {
-            const now = performance.now();
-            const done = strokes.every((s) => Number.parseFloat(getComputedStyle(s).strokeDashoffset) === 0);
-            if (done) return resolve({ strokes: strokes.length, declaredMaxMs, landedMs: now - litAt });
-            if (now - litAt > 4000) return resolve({ strokes: strokes.length, declaredMaxMs, landedMs: Infinity });
-            requestAnimationFrame(tick);
-          };
-          tick();
-        }),
-    );
-    expect(result.strokes, 'the lit plate has traced strokes').toBeGreaterThan(0);
-    expect(result.declaredMaxMs, `declared duration + delay of the slowest stroke (${result.strokes} strokes)`).toBeLessThanOrEqual(900);
-    expect(result.landedMs, `all ${result.strokes} strokes at dashoffset 0`).toBeLessThanOrEqual(1200);
-  });
+  /* TC-VIT-13 is SUPERSEDED by tests/overhaul/interim-frame.spec.ts TC-IF-14
+     and TC-IF-19 (docs/architecture/INTERIM-FRAME.md §6). It asserted that
+     every stroke of a lit plate's drawing reaches stroke-dashoffset 0 inside
+     the cinematic band. There are no strokes: the six bespoke mechanism
+     drawings are removed with the rest of the visual layer (t_w3_rm2). */
 });

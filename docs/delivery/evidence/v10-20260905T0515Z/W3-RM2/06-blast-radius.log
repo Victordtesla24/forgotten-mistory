@@ -1,0 +1,205 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/render.spec.ts tests/e2e/vitrine.spec.ts tests/e2e/skills.spec.ts tests/e2e/experience.spec.ts tests/e2e/listen.spec.ts tests/a11y/text-contrast.spec.ts --reporter=line
+
+[2mRunning [22m58[2m tests using [22m2[2m workers[22m
+
+[1A[2K[1/58] [chromium] › tests/a11y/text-contrast.spec.ts:458:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+[1A[2K[2/58] [chromium] › tests/a11y/text-contrast.spec.ts:458:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground
+[1A[2K[3/58] [chromium] › tests/a11y/text-contrast.spec.ts:490:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes
+[1A[2K[4/58] [chromium] › tests/a11y/text-contrast.spec.ts:490:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes
+[1A[2K[5/58] [chromium] › tests/e2e/experience.spec.ts:21:7 › Experience › TC-EXP-01: every role from the CV appears in the chart and the list
+[1A[2K[6/58] [chromium] › tests/e2e/experience.spec.ts:64:7 › Experience › TC-EXP-03: the axis is labelled with real years
+[1A[2K[7/58] [chromium] › tests/e2e/experience.spec.ts:71:7 › Experience › TC-EXP-04: each chart row is a real button with an accessible name
+[1A[2K[8/58] [chromium] › tests/e2e/experience.spec.ts:41:7 › Experience › TC-EXP-02: bar lengths are proportional to real durations
+[1A[2K[9/58] [chromium] › tests/e2e/experience.spec.ts:79:7 › Experience › TC-EXP-05: the current role opens by default and lists its bullets
+[1A[2K[10/58] [chromium] › tests/e2e/experience.spec.ts:86:7 › Experience › TC-EXP-06: roles expand and collapse from the keyboard
+[1A[2K[11/58] [chromium] › tests/e2e/experience.spec.ts:97:7 › Experience › TC-EXP-07: headline figures carry their role, not a bare number
+[1A[2K[12/58] [chromium] › tests/e2e/experience.spec.ts:107:9 › Experience › TC-EXP-09 @ 1280: every chart row, bar and readout lives inside the spine
+[1A[2K[13/58] [chromium] › tests/e2e/experience.spec.ts:107:9 › Experience › TC-EXP-09 @ 1440: every chart row, bar and readout lives inside the spine
+[1A[2K[14/58] [chromium] › tests/e2e/experience.spec.ts:107:9 › Experience › TC-EXP-09 @ 1920: every chart row, bar and readout lives inside the spine
+[1A[2K[15/58] [chromium] › tests/e2e/experience.spec.ts:159:7 › Experience › TC-EXP-10: the duration readouts are printed in --mist-200
+[1A[2K[16/58] [chromium] › tests/e2e/experience.spec.ts:180:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ
+[1A[2K[17/58] [chromium] › tests/e2e/experience.spec.ts:240:7 › Experience › TC-EXP-08: the section is complete without WebGL
+[1A[2K[18/58] [chromium] › tests/e2e/listen.spec.ts:24:7 › Listen › TC-LISTEN-01: the closing sentence is the only italic on the page
+[1A[2K[19/58] [chromium] › tests/e2e/listen.spec.ts:34:7 › Listen › TC-LISTEN-02: the closing copy stays under sixty-five words
+[1A[2K[20/58] [chromium] › tests/e2e/listen.spec.ts:50:7 › Listen › TC-LISTEN-03: no form, no input, no third-party embed
+[1A[2K[21/58] [chromium] › tests/e2e/listen.spec.ts:56:7 › Listen › TC-LISTEN-04: all four channels are real anchors matching the CV
+[1A[2K[22/58] [chromium] › tests/e2e/listen.spec.ts:67:7 › Listen › TC-LISTEN-05: hover and focus produce the identical underline
+[1A[2K[23/58] [chromium] › tests/e2e/listen.spec.ts:101:7 › Listen › TC-LISTEN-06: the caliper closes once, on entry, over the long cinematic beat
+[1A[2K[24/58] [chromium] › tests/e2e/listen.spec.ts:150:7 › Listen › TC-LISTEN-07: under reduced motion the caliper is drawn closed and nothing moves
+[1A[2K[25/58] [chromium] › tests/e2e/listen.spec.ts:188:7 › Listen › TC-LISTEN-08: exactly the two record marks are gold and nothing else
+[1A[2K[26/58] [chromium] › tests/e2e/listen.spec.ts:255:7 › Listen › TC-LISTEN-09: the contact routes are read-weight type, not caption grey
+[1A[2K[27/58] [chromium] › tests/e2e/listen.spec.ts:306:7 › Listen › TC-LISTEN-10: the routes span the column and the email is a filled plate
+[1A[2K[28/58] [chromium] › tests/e2e/listen.spec.ts:357:7 › Listen › TC-LISTEN-11: the closing section is vertically symmetric at every width
+[1A[2K[29/58] [chromium] › tests/e2e/skills.spec.ts:22:7 › Skills › TC-SKILL-01: the card is a real table with scoped headers
+[1A[2K[30/58] [chromium] › tests/e2e/skills.spec.ts:33:7 › Skills › TC-SKILL-02: every row carries evidence and a place it was measured
+[1A[2K[31/58] [chromium] › tests/e2e/skills.spec.ts:46:7 › Skills › TC-SKILL-03: no proficiency bars, meters or ratings exist
+[1A[2K[32/58] [chromium] › tests/e2e/skills.spec.ts:62:7 › Skills › TC-SKILL-04: the not-yet-held credential is stated, not hidden
+[1A[2K[33/58] [chromium] › tests/e2e/skills.spec.ts:71:7 › Skills › TC-SKILL-05: status is spoken, never glyph-only
+[1A[2K[34/58] [chromium] › tests/e2e/skills.spec.ts:77:7 › Skills › TC-SKILL-06: filtering changes the rows and moves nothing else
+[1A[2K[35/58] [chromium] › tests/e2e/skills.spec.ts:108:7 › Skills › TC-SKILL-07: the filter state is exposed and announced
+[1A[2K[36/58] [chromium] › tests/e2e/skills.spec.ts:120:7 › Skills › TC-SKILL-08: the footer fingerprints the CV it claims to be calibrated against
+[1A[2K[37/58] [chromium] › tests/e2e/skills.spec.ts:139:7 › Skills · the bench › TC-BENCH-01: every link the data asserts is actually drawn
+[1A[2K[38/58] [chromium] › tests/e2e/skills.spec.ts:163:7 › Skills · the bench › TC-BENCH-02: gold is still only a claim about production evidence
+[1A[2K[39/58] [chromium] › tests/e2e/skills.spec.ts:175:7 › Skills · the bench › TC-BENCH-03: tracing a source dims what it is not wired to
+[1A[2K[40/58] [chromium] › tests/e2e/skills.spec.ts:190:7 › Skills · the bench › TC-BENCH-04: each node speaks its own evidence
+[1A[2K[41/58] [chromium] › tests/e2e/vitrine.spec.ts:22:7 › Vitrine › TC-VIT-01: exactly six plates, each with a source link
+[1A[2K[42/58] [chromium] › tests/e2e/vitrine.spec.ts:32:7 › Vitrine › TC-VIT-02: every plate states its limits
+[1A[2K[43/58] [chromium] › tests/e2e/vitrine.spec.ts:46:7 › Vitrine › TC-VIT-03: metrics are harvested and dated, not live
+[1A[2K[44/58] [chromium] › tests/e2e/vitrine.spec.ts:54:7 › Vitrine › TC-VIT-04: the exclusions are named with reasons
+[1A[2K[45/58] [chromium] › tests/e2e/vitrine.spec.ts:61:7 › Vitrine › TC-VIT-05: no screenshots, logos or raster images
+[1A[2K[46/58] [chromium] › tests/e2e/vitrine.spec.ts:71:7 › Vitrine › TC-VIT-06: the light tracks the plate at the centre of the rail
+[1A[2K[47/58] [chromium] › tests/e2e/vitrine.spec.ts:86:7 › Vitrine › TC-VIT-07: the rail is keyboard operable and traps nothing
+[1A[2K[48/58] [chromium] › tests/e2e/vitrine.spec.ts:99:7 › Vitrine › TC-VIT-08: the kicker denominator matches the harvest
+[1A[2K[49/58] [chromium] › tests/e2e/vitrine.spec.ts:104:7 › Vitrine › TC-VIT-09: every plate rules its metrics on the same line
+[1A[2K[50/58] [chromium] › tests/e2e/vitrine.spec.ts:139:7 › Vitrine › TC-VIT-10: a plate traces its drawing when the light reaches it
+[1A[2K[51/58] [chromium] › tests/e2e/vitrine.spec.ts:178:7 › Vitrine › TC-VIT-11: under reduced motion the drawings are present, untraced
+[1A[2K[31m  1) [chromium] › tests/e2e/vitrine.spec.ts:139:7 › Vitrine › TC-VIT-10: a plate traces its drawing when the light reaches it [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveAttribute[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('#vitrine ol > li').nth(2).locator('svg[role="img"] :is(path, line, circle)').first()
+    Expected: [32m"1"[39m
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toHaveAttribute" with timeout 15000ms[22m
+    [2m  - waiting for locator('#vitrine ol > li').nth(2).locator('svg[role="img"] :is(path, line, circle)').first()[22m
+
+
+    [0m [90m 156 |[39m       [33m.[39mlocator([32m'svg[role="img"] :is(path, line, circle)'[39m)
+     [90m 157 |[39m       [33m.[39mfirst()[33m;[39m
+    [31m[1m>[22m[39m[90m 158 |[39m     [36mawait[39m expect(stroke)[33m.[39mtoHaveAttribute([32m'pathLength'[39m[33m,[39m [32m'1'[39m)[33m;[39m
+     [90m     |[39m                          [31m[1m^[22m[39m
+     [90m 159 |[39m     [36mconst[39m dashoffset [33m=[39m () [33m=>[39m
+     [90m 160 |[39m       stroke[33m.[39mevaluate((el) [33m=>[39m [33mNumber[39m[33m.[39mparseFloat(getComputedStyle(el)[33m.[39mstrokeDashoffset))[33m;[39m
+     [90m 161 |[39m     [36mawait[39m expect[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w3-rm2/tests/e2e/vitrine.spec.ts:158:26[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-vitrine-Vitrine-TC-VIT-c61df-g-when-the-light-reaches-it-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-vitrine-Vitrine-TC-VIT-c61df-g-when-the-light-reaches-it-chromium/error-context.md[22m
+
+
+[1A[2K[52/58] [chromium] › tests/e2e/vitrine.spec.ts:202:9 › Vitrine › TC-VIT-12 @ 1440: card 01 stands on the heading's spine, lit at rest, and the rail fades rather than cuts
+[1A[2K[53/58] [chromium] › tests/e2e/vitrine.spec.ts:202:9 › Vitrine › TC-VIT-12 @ 1920: card 01 stands on the heading's spine, lit at rest, and the rail fades rather than cuts
+[1A[2K[54/58] [chromium] › tests/e2e/vitrine.spec.ts:256:7 › Vitrine › TC-VIT-13: every stroke of a lit plate lands inside the cinematic band
+[1A[2K[31m  2) [chromium] › tests/e2e/vitrine.spec.ts:256:7 › Vitrine › TC-VIT-13: every stroke of a lit plate lands inside the cinematic band [39m
+
+    Error: the lit plate has traced strokes
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+    [0m [90m 308 |[39m         })[33m,[39m
+     [90m 309 |[39m     )[33m;[39m
+    [31m[1m>[22m[39m[90m 310 |[39m     expect(result[33m.[39mstrokes[33m,[39m [32m'the lit plate has traced strokes'[39m)[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m     |[39m                                                                [31m[1m^[22m[39m
+     [90m 311 |[39m     expect(result[33m.[39mdeclaredMaxMs[33m,[39m [32m`declared duration + delay of the slowest stroke (${result.strokes} strokes)`[39m)[33m.[39mtoBeLessThanOrEqual([35m900[39m)[33m;[39m
+     [90m 312 |[39m     expect(result[33m.[39mlandedMs[33m,[39m [32m`all ${result.strokes} strokes at dashoffset 0`[39m)[33m.[39mtoBeLessThanOrEqual([35m1200[39m)[33m;[39m
+     [90m 313 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w3-rm2/tests/e2e/vitrine.spec.ts:310:64[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-vitrine-Vitrine-TC-VIT-b4257-s-inside-the-cinematic-band-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-vitrine-Vitrine-TC-VIT-b4257-s-inside-the-cinematic-band-chromium/error-context.md[22m
+
+
+[1A[2K[55/58] [chromium] › tests/overhaul/render.spec.ts:90:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-02: Scenes draw with no WebGL context loss
+[1A[2K[31m  3) [chromium] › tests/e2e/vitrine.spec.ts:178:7 › Vitrine › TC-VIT-11: under reduced motion the drawings are present, untraced [39m
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.evaluate: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#vitrine ol > li').nth(4).locator('svg[role="img"] :is(path, line, circle)').first()[22m
+
+
+    [0m [90m 186 |[39m     [36mawait[39m expect(plate)[33m.[39mnot[33m.[39mtoHaveAttribute([32m'data-drawn'[39m[33m,[39m [35m/.*/[39m)[33m;[39m
+     [90m 187 |[39m     [36mconst[39m stroke [33m=[39m plate[33m.[39mlocator([32m'svg[role="img"] :is(path, line, circle)'[39m)[33m.[39mfirst()[33m;[39m
+    [31m[1m>[22m[39m[90m 188 |[39m     [36mconst[39m style [33m=[39m [36mawait[39m stroke[33m.[39mevaluate((el) [33m=>[39m {
+     [90m     |[39m                                [31m[1m^[22m[39m
+     [90m 189 |[39m       [36mconst[39m cs [33m=[39m getComputedStyle(el)[33m;[39m
+     [90m 190 |[39m       [36mreturn[39m { offset[33m:[39m [33mNumber[39m[33m.[39mparseFloat(cs[33m.[39mstrokeDashoffset)[33m,[39m transition[33m:[39m cs[33m.[39mtransitionProperty }[33m;[39m
+     [90m 191 |[39m     })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w3-rm2/tests/e2e/vitrine.spec.ts:188:32[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-vitrine-Vitrine-TC-VIT-9b7e8-awings-are-present-untraced-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-vitrine-Vitrine-TC-VIT-9b7e8-awings-are-present-untraced-chromium/error-context.md[22m
+
+
+[1A[2K[56/58] [chromium] › tests/overhaul/render.spec.ts:142:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium)
+[1A[2K[57/58] [chromium] › tests/overhaul/render.spec.ts:119:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-06: No shader compilation errors anywhere on the page
+[1A[2K[58/58] [chromium] › tests/overhaul/render.spec.ts:161:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-09: A full-page scroll never trips a page error or the error boundary
+[1A[2K[31m  4) [chromium] › tests/overhaul/render.spec.ts:142:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium) [39m
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveScreenshot[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('#hero')
+      Expected an image 1280px by 1137px, received 1280px by 1280px. 848278 pixels (ratio 0.52 of all image pixels) are different.
+
+      Snapshot: hero-section.png
+
+    Call log:
+    [2m  - Expect "toHaveScreenshot(hero-section.png)" with timeout 30000ms[22m
+    [2m    - verifying given screenshot expectation[22m
+    [2m  - waiting for locator('#hero')[22m
+    [2m    - locator resolved to <section id="hero" class="Hero_hero__2EmdV" aria-labelledby="hero-name">…</section>[22m
+    [2m  - taking element screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - attempting scroll into view action[22m
+    [2m    - waiting for element to be stable[22m
+    [2m  - Expected an image 1280px by 1137px, received 1280px by 1280px. 848464 pixels (ratio 0.52 of all image pixels) are different.[22m
+    [2m  - waiting 100ms before taking screenshot[22m
+    [2m  - waiting for locator('#hero')[22m
+    [2m    - locator resolved to <section id="hero" class="Hero_hero__2EmdV" aria-labelledby="hero-name">…</section>[22m
+    [2m  - taking element screenshot[22m
+    [2m    - disabled all CSS animations[22m
+    [2m  - waiting for fonts to load...[22m
+    [2m  - fonts loaded[22m
+    [2m  - attempting scroll into view action[22m
+    [2m    - waiting for element to be stable[22m
+    [2m  - captured a stable screenshot[22m
+    [2m  - Expected an image 1280px by 1137px, received 1280px by 1280px. 848278 pixels (ratio 0.52 of all image pixels) are different.[22m
+
+
+    [0m [90m 150 |[39m     [36mawait[39m page[33m.[39mwaitForTimeout([35m2000[39m)[33m;[39m [90m// let the CSS entrance finish[39m
+     [90m 151 |[39m
+    [31m[1m>[22m[39m[90m 152 |[39m     [36mawait[39m expect(page[33m.[39mlocator([32m'#hero'[39m))[33m.[39mtoHaveScreenshot([32m'hero-section.png'[39m[33m,[39m {
+     [90m     |[39m                                         [31m[1m^[22m[39m
+     [90m 153 |[39m       maxDiffPixelRatio[33m:[39m [35m0.01[39m[33m,[39m
+     [90m 154 |[39m       threshold[33m:[39m [35m0.2[39m[33m,[39m
+     [90m 155 |[39m       [90m// The default 15s expect timeout is not enough headroom for the capture's[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w3-rm2/tests/overhaul/render.spec.ts:152:41[22m
+
+[2m    attachment #1: [1mhero-section[2m (image/png) [2m────────────────────────────────────────────────────────[2m[22m
+[2m    Expected: tests/baselines/overhaul/render.spec.ts-snapshots/hero-section-chromium-linux.png[22m
+[2m    Received: test-results/overhaul-render-TC-NFR-REN-f6fa0-ne-—-hero-section-chromium--chromium/hero-section-actual.png[22m
+[2m    Diff:     test-results/overhaul-render-TC-NFR-REN-f6fa0-ne-—-hero-section-chromium--chromium/hero-section-diff.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    attachment #2: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-render-TC-NFR-REN-f6fa0-ne-—-hero-section-chromium--chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-render-TC-NFR-REN-f6fa0-ne-—-hero-section-chromium--chromium/error-context.md[22m
+
+
+[1A[2K[31m  4 failed[39m
+[31m    [chromium] › tests/e2e/vitrine.spec.ts:139:7 › Vitrine › TC-VIT-10: a plate traces its drawing when the light reaches it [39m
+[31m    [chromium] › tests/e2e/vitrine.spec.ts:178:7 › Vitrine › TC-VIT-11: under reduced motion the drawings are present, untraced [39m
+[31m    [chromium] › tests/e2e/vitrine.spec.ts:256:7 › Vitrine › TC-VIT-13: every stroke of a lit plate lands inside the cinematic band [39m
+[31m    [chromium] › tests/overhaul/render.spec.ts:142:7 › TC-NFR-RENDER: Cinematic Rendering Compliance › TC-RENDER-07: Screenshot baseline — hero section (chromium) [39m
+[32m  54 passed[39m[2m (17.3m)[22m
