@@ -1,10 +1,8 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 
 import Caliper from '@/components/marks/Caliper';
-import Scene from '@/components/gl/Scene';
 import {
   NOW,
   TIMELINE_START,
@@ -13,9 +11,6 @@ import {
 } from '@/app/data/portfolio/experience';
 
 import styles from './Experience.module.css';
-
-const CareerStrata = dynamic(() => import('./CareerStrata'), { ssr: false });
-const CareerDescent = dynamic(() => import('./CareerDescent'), { ssr: false });
 
 /** Percentage offsets for the DOM timeline, which is the accessible one. */
 function track(start: number, end: number | null) {
@@ -38,21 +33,6 @@ const DECADES = [2010, 2015, 2020, 2025];
  */
 const LABEL_COLUMN = 'clamp(7rem, 22%, 14rem) + var(--space-2)';
 
-/**
- * The descent's year ticks, read downward the way the camera travels.
- *
- * Same decades as the chart's horizontal axis, positioned by their own distance
- * from `NOW` on the same sixteen-year span — so the two drawings of the career
- * are ticked against one arithmetic, not two. `now` is the surface, `2010` the
- * floor.
- */
-const DESCENT_TICKS: readonly { label: string; depth: number }[] = [
-  { label: 'now', depth: 0 },
-  ...[...DECADES].reverse().map((year) => ({
-    label: String(year),
-    depth: (NOW - year) / (NOW - TIMELINE_START),
-  })),
-];
 
 /**
  * Experience — sixteen years on one axis, then the detail.
@@ -71,7 +51,6 @@ export default function Experience() {
   const [active, setActive] = useState(-1);
   const [open, setOpen] = useState<string | null>(roles[0]?.id ?? null);
   const [entered, setEntered] = useState(false);
-  const [spans, setSpans] = useState<readonly (readonly [number, number, number])[]>([]);
   const chartRef = useRef<HTMLDivElement>(null);
 
   const toggle = useCallback(
@@ -109,45 +88,6 @@ export default function Experience() {
     return () => observer.disconnect();
   }, []);
 
-  // The chart's own geometry, handed to the shader behind it so the sediment
-  // is lit under the real bars rather than under a second set of numbers. Read
-  // from `offsetLeft`/`offsetWidth`, which are layout values: the painted rect
-  // is mid-transform during the entry beat, and the shader wants the finished
-  // span with `uProgress` doing the reveal.
-  useEffect(() => {
-    const chart = chartRef.current;
-    if (!chart) return undefined;
-
-    const measure = () => {
-      const slot = chart.querySelector<HTMLElement>(`.${styles.chartScene}`);
-      const bars = Array.from(chart.querySelectorAll<HTMLElement>(`.${styles.trackBar}`));
-      if (!slot || bars.length === 0) return;
-      const canvas = slot.getBoundingClientRect();
-      if (canvas.width < 1 || canvas.height < 1) return;
-
-      setSpans(
-        bars.map((bar) => {
-          const line = (bar.offsetParent ?? bar.parentElement) as HTMLElement;
-          const box = line.getBoundingClientRect();
-          const x = box.left + bar.offsetLeft - canvas.left;
-          const y = box.top + bar.offsetTop + bar.offsetHeight / 2 - canvas.top;
-          // Clip space runs bottom-up, so the row's y is flipped here rather
-          // than in the shader, where it would have to be undone for hover.
-          return [x / canvas.width, bar.offsetWidth / canvas.width, 1 - y / canvas.height] as const;
-        }),
-      );
-    };
-
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(chart);
-    window.addEventListener('resize', measure);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('resize', measure);
-    };
-  }, []);
-
   return (
     <section id="experience" className={styles.experience} aria-labelledby="experience-title">
       <div className={styles.inner}>
@@ -162,13 +102,6 @@ export default function Experience() {
         </header>
 
         <div className={styles.chart} ref={chartRef} data-chart>
-          {/* Half resolution. The sediment is three slow horizontal smears and
-              eight span lifts, all of them soft; the bars above it are DOM and
-              stay pixel-sharp. 183.3 ms a frame at full resolution (G-X1-01). */}
-          <Scene className={styles.chartScene} sceneId="career-strata" resolutionScale={0.5}>
-            <CareerStrata spans={spans} hover={active} entered={entered} />
-          </Scene>
-
           {/* The chart itself. These percentages are the only encoding of the
               career on the page; nothing else may restate them. */}
           {/* The same years the axis labels, drawn through the tracks and
@@ -341,44 +274,6 @@ export default function Experience() {
           })}
         </ol>
 
-        {/* The descent. The chart states the sixteen years and the accordion
-            evidences them; only then is the reader asked to fall down the
-            column. It is a band inside this section, never a seventh section —
-            the six-id information architecture in CLAUDE.md is unchanged. The
-            stage is sticky, so 60vh of scroll is the whole camera move, and the
-            only marks over the field are the year ticks and one caption line
-            (docs/architecture/SIGNATURE-SCENES-v2.md §3). */}
-        <div className={styles.descentBand} data-descent-band>
-          <div className={styles.descentStage} data-descent-stage>
-            <Scene
-              className={styles.descentScene}
-              sceneId="career-descent"
-              resolutionScale={0.5}
-            >
-              <CareerDescent hover={active} />
-            </Scene>
-
-            {/* The axis above already reads these years to a screen reader; a
-                second recitation of the same four numbers is noise, so these
-                are the picture's ruler and nothing more. */}
-            <div className={styles.descentTicks} aria-hidden="true">
-              {DESCENT_TICKS.map((tick) => (
-                <span
-                  key={tick.label}
-                  className={styles.descentTick}
-                  data-descent-tick
-                  style={{ top: `${tick.depth * 100}%` }}
-                >
-                  {tick.label}
-                </span>
-              ))}
-            </div>
-
-            <span className={styles.descentCaption} data-descent-caption>
-              {experienceContent.descentCaption}
-            </span>
-          </div>
-        </div>
       </div>
     </section>
   );

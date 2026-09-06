@@ -110,3 +110,77 @@ new work is graded, and none of them is deleted by this slice:
   intact, nothing chromatic outside the gold claim. A new scene is added *over* this
   contract, and TC-IF-01/06 are re-pointed at that point — consciously, in the slice that
   adds it, with the reason written here.
+
+---
+
+# SLICE 0b — Experience, Skills, Vitrine, Listen
+
+**Task:** `artifacts/kanban/tasks/t_w3_rm2.md` · **Branch:** `worktree-w3-rm2` ·
+**Parent:** `worktree-w3-rm1` (consolidated into `main` as `8359094`).
+
+Same Owner instruction, same discipline: this slice removes the remaining visual layer —
+the five WebGL fields and the sticky descent stage — and keeps every fact they stood
+behind. Nothing is invented here. Not one word of `app/data/portfolio/*.ts` changed, the
+six section ids and their order are unchanged, every `Caliper` state is unchanged, MiniVic
+and the nav are unchanged.
+
+## 5. Removed elements
+
+| # | Element | Files | Why it is gone |
+|---|---------|-------|----------------|
+| 9 | The career strata field under the chart (`career-strata`) and the geometry the chart fed it | `components/sections/Experience/CareerStrata.tsx`, `strata.glsl.ts` — **deleted**; the `spans` state, the `offsetLeft/offsetWidth` measuring effect, the `<Scene sceneId="career-strata">` mount and `.chartScene` / `.chartScene::after` removed from `Experience.tsx` / `Experience.module.css` | Graded below the bar with the rest of the visual layer. The chart itself is DOM and always was — the field drew texture, not data, so removing it removes no information. |
+| 10 | The sticky career-descent stage (`career-descent`), its 60vh camera move, its year ticks and its caption | `components/sections/Experience/CareerDescent.tsx`, `descent.glsl.ts` — **deleted**; the `descentBand` / `descentStage` / `descentScene` / `descentTicks` / `descentTick` / `descentCaption` blocks removed from `Experience.tsx` and `Experience.module.css` | A second drawing of the same sixteen years, over a shader. The axis above already reads those four years; the descent restated them at the cost of 60vh of scroll. `experienceContent.descentCaption` **stays in the data file, unread** — no word of `experience.ts` was touched. |
+| 11 | The skills bench plate (`skills-bench`) and the row-height reading set that lit it | `components/sections/Skills/BenchField.tsx`, `bench.glsl.ts` — **deleted**; `hoverState`, `fieldRows`, the `<Scene sceneId="skills-bench">` mount, `.stage` and `.fieldSlot` removed from `Bench.tsx` / `Bench.module.css` | The wires are SVG and the board is DOM; the plate was the light under them. The calibration card reads on the flat ground. |
+| 12 | The vitrine cabinet light (`vitrine-field`) and the per-frame rail state that drove it | `components/sections/Vitrine/VitrineField.tsx`, `vitrine.glsl.ts` — **deleted**; `railState`, `stageRef`, the field `div`, `.field` and `.fieldSlot` removed from `Vitrine.tsx` / `Vitrine.module.css` | The raking light on the plates is CSS and is untouched; the pool under the cabinet was the shader. |
+| 13 | The six traced mechanism drawings and their reveal | `components/sections/Vitrine/Drawings.tsx`, `Drawings.module.css` — **deleted**; the `drawn` state, `data-drawn`, `.drawingFrame` and the `<Drawing>` mount removed from `Vitrine.tsx` / `Vitrine.module.css` | Decoration between a card's description and its metrics. Every fact each card carries — title, description, commits/active/stack, limits, source, live URL — is unchanged. `plate.drawing` **stays in `vitrine.ts`, unread**. |
+| 14 | The listen beat field (`listen-field`) and the band measurement that placed it | `components/sections/Listen/ListenField.tsx`, `listen.glsl.ts` — **deleted**; the `beat` ref, the band half of `measure()`, the field `div`, `.field` and `.fieldSlot` removed from `Listen.tsx` / `Listen.module.css` | The caliper, its four arrival marks and the reading are SVG and are untouched; the field was the light behind them. |
+
+### What did not move
+
+Everything that carries meaning. The eight role rows and their to-scale bars, the three
+`self-reported` figures and the five `open` brackets, the axis and its playhead, the
+accordion and its bullets; the calibration card and its wires; the six cards with their
+metrics, limits and sources and the keyboard-reachable rail; the four contact routes, the
+synthetic-introduction label and the agenda action; every `Caliper`; MiniVic; the nav.
+
+**No `<Scene>` remains in any section.** The only scene the page still mounts anywhere is
+`minivic-viseme`, inside MiniVic's own panel — which is why `tests/helpers/scenes.ts`
+(`discoverSceneIds`) would no longer have a second reader and is deleted with the suite
+that used it.
+
+## 6. Superseded tests → replacement
+
+Every case below asserted an element removed above. None is weakened: each is replaced by a
+case in `tests/overhaul/interim-frame.spec.ts` (TC-IF-11…21) that measures the frame that
+stands now. Git history keeps every one of them.
+
+| Superseded | What it asserted | Replacement |
+|---|---|---|
+| `tests/overhaul/scene-experience.spec.ts` (whole file) | The `career-strata` field mounts under the chart and lights the eight role spans | TC-IF-11 (no canvas, no scene), TC-IF-12 (the eight bars are the durations, to within 2 %) |
+| `tests/overhaul/scene-descent.spec.ts` (whole file) | The descent stage is sticky, its camera travels the sixteen years, and nothing is written over it | TC-IF-11 (no descent band, no descent stage), TC-IF-12 (the years are read from the chart's own axis) |
+| `tests/overhaul/scene-skills.spec.ts` (whole file) | The `skills-bench` plate mounts and lifts the production rows | TC-IF-11, TC-IF-13 (the card's tested/untested split reads with no bar and no canvas) |
+| `tests/overhaul/scene-vitrine.spec.ts` (whole file) | The `vitrine-field` pool tracks the rail across six plates | TC-IF-11, TC-IF-14 (six cards with their metrics, limits and sources; the rail still answers the keyboard) |
+| `tests/overhaul/scene-listen.spec.ts` (whole file) | The `listen-field` band is the greeting's own loudness, under the caliper | TC-IF-11, TC-IF-15 (the four routes, the synthetic-introduction label and the agenda action) |
+| `tests/overhaul/story-contract.spec.ts` (whole file — `TC-STORY-EXP-01/02`, `TC-STORY-SKILLS-01`, `TC-STORY-VITRINE-01`, `TC-STORY-LISTEN-01`, `TC-STORY-DESCENT-01/02`, `TC-STORY-PLANE-01`; its hero and About rows were already superseded in slice 0a) | Each field "says its own section": strata at ≥ 2 depths, ≥ 6 of 8 spans findable in the light, production rows lit, the pool moving six ways, the band tracking loudness, the descent spacing being the durations, and every declared plane carrying ≥ its share of the light | TC-IF-11 (there is no field to say anything), TC-IF-12/13/14/15 (each section's facts, measured in DOM), TC-IF-16 (the ground those facts stand on) |
+| `tests/overhaul/flagship-visibility.spec.ts` (whole file — its `hero` and `about` rows went in slice 0a; `experience`, `skills`, `vitrine` and `listen` are the rest of `SCENES`) | Each flagship scene reads as light above its section's ground | TC-IF-16 (the ground is ≤ 0.03 everywhere), TC-IF-17 (every run of type clears AA on it), TC-IF-20 (nothing chromatic but the gold claim) |
+| `tests/perf/scene-framerate.spec.ts` (whole file) | Every discovered scene holds its frame budget under CPU throttling | TC-IF-18 (`?gl=force` mounts no section canvas and raises nothing) and TC-IF-19 (the reduced-motion path prints the same four sections) — a section with no scene has no frame budget to miss |
+| `tests/helpers/scenes.ts` (`discoverSceneIds`) | Derived the scene list the two suites above were parameterised over | Deleted with its only two readers. It is the right shape for the wave-3 scenes and can be restored from history when the first of them lands. |
+| `tests/overhaul/render.spec.ts` → `TC-RENDER-01` (row only; `TC-RENDER-02`'s context-loss watch stays, now over an empty `SCENE_SECTIONS`) | At least one section scene mounts a live WebGL canvas ≥ 100×100 under `?gl=force` | TC-IF-18 |
+| `tests/e2e/vitrine.spec.ts` → `TC-VIT-05`'s six-drawing block (the "no screenshots, logos or raster images" assertion stays) | Six inline `svg[role="img"]` mechanism drawings, each with a non-empty `title` and `desc` | TC-IF-14 |
+| `tests/a11y/text-contrast.spec.ts` → the `SCENE_SLOTS` warm list (rows only; the contrast walk itself is untouched) | Warmed five section shaders before photographing each band | TC-IF-17 — the walk now photographs the flat ground, which is the ground a reader actually gets |
+| `scripts/testing/vitrine-plate-contrast.mjs` (whole file) | Sampled plate-caption contrast against the `vitrine-field` shader | TC-IF-17 |
+
+## 7. Audit gate changes
+
+**None.** `scripts/validate/overhaul_static_audit.mjs` was re-read after the removal: none
+of its ten gates counts a scene mount or a canvas — `TC-ARCH-BENCH` is about the
+`/performance-benchmark` route, not the skills bench. The audit is **10/10** on its
+existing contract (`docs/delivery/evidence/v10-20260905T0515Z/W3-RM2/04-audit.log`).
+
+Two gates are touched by the removal and hold without a change:
+
+- `TC-NFR-DEADCSS` — the styles for every removed node are deleted in this same commit
+  (`.chartScene`, the six `descent*` blocks and their two media-query rules, `.stage`,
+  three `.fieldSlot`s, two `.field`s, `.drawingFrame`), and `Drawings.module.css` is
+  deleted whole.
+- `TC-NFR-PERF` — five deleted shaders only reduce the shipped weight.

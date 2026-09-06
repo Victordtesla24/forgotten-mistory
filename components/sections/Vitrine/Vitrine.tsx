@@ -1,9 +1,7 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import Scene from '@/components/gl/Scene';
 import Caliper from '@/components/marks/Caliper';
 import {
   engagement,
@@ -13,13 +11,8 @@ import {
   vitrineContent,
 } from '@/app/data/portfolio/vitrine';
 
-import Drawing from './Drawings';
-import type { RailState } from './VitrineField';
 import styles from './Vitrine.module.css';
 
-// The field under the rail. Dynamic so `three` lands in the chunk `Scene`
-// fetches when a scene actually mounts, not in this section's own bundle.
-const VitrineField = dynamic(() => import('./VitrineField'), { ssr: false });
 
 /**
  * What is keeping me busy — a long vitrine of six plates.
@@ -38,25 +31,8 @@ const VitrineField = dynamic(() => import('./VitrineField'), { ssr: false });
  */
 export default function Vitrine() {
   const railRef = useRef<HTMLOListElement>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
   const plateRefs = useRef<Array<HTMLLIElement | null>>([]);
   const [lit, setLit] = useState(0);
-  // The continuous half of the rail's state — where the lit plate sits across
-  // the stage, and how far the rail has travelled. A ref, not state: the rail
-  // scrolls at frame rate and re-rendering six plates for each frame of it
-  // would cost more than the light it feeds. `VitrineField` reads it inside
-  // `useFrame`, which is where a per-frame value belongs.
-  const railState = useRef<RailState>({ centre: 0.5, scroll: 0 });
-  // A plate's drawing is traced the first time the light reaches it and stays
-  // drawn after the light has moved on (Drawings.module.css `[data-drawn]`).
-  const [drawn, setDrawn] = useState<boolean[]>(() => plates.map((_, index) => index === 0));
-
-  useEffect(() => {
-    setDrawn((previous) =>
-      previous[lit] ? previous : previous.map((was, index) => was || index === lit),
-    );
-  }, [lit]);
-
   useEffect(() => {
     const rail = railRef.current;
     if (!rail) return undefined;
@@ -93,24 +69,6 @@ export default function Vitrine() {
       });
       setLit(best);
 
-      // The same measurement, carried to the field: where the lit plate
-      // actually is across the stage, and how far the rail has travelled. The
-      // field's frame is the stage, not the rail — the rail bleeds out through
-      // the section's gutter and the light does not follow it out there.
-      const stage = stageRef.current;
-      const plate = plateRefs.current[best];
-      if (stage && plate) {
-        const stageBox = stage.getBoundingClientRect();
-        const plateBox = plate.getBoundingClientRect();
-        railState.current.centre =
-          stageBox.width > 0
-            ? Math.min(
-                1,
-                Math.max(0, (plateBox.left + plateBox.width / 2 - stageBox.left) / stageBox.width),
-              )
-            : 0.5;
-      }
-      railState.current.scroll = rail.scrollWidth > 0 ? current / rail.scrollWidth : 0;
     };
 
     const onScroll = () => {
@@ -158,17 +116,7 @@ export default function Vitrine() {
         <p className={styles.lede}>{vitrineContent.lede}</p>
       </div>
 
-      <div ref={stageRef} className={styles.railStage}>
-        {/* The light the cabinet stands in: the same lit plate the rail reads,
-            as a pool under it. With no WebGL, reduced motion, or the section
-            off screen, `Scene` mounts nothing and the cabinet is unchanged —
-            the raking light on the plates is CSS and always has been. */}
-        <div className={styles.field} data-lit-index={lit}>
-          <Scene className={styles.fieldSlot} sceneId="vitrine-field">
-            <VitrineField lit={lit} rail={railState} />
-          </Scene>
-        </div>
-
+      <div className={styles.railStage}>
         <ol
           ref={railRef}
           className={styles.rail}
@@ -185,7 +133,6 @@ export default function Vitrine() {
                 }}
                 className={styles.plate}
                 data-lit={index === lit || undefined}
-                data-drawn={drawn[index] || undefined}
                 aria-roledescription="plate"
                 tabIndex={0}
                 onKeyDown={(event) => onKeyDown(event as never, index)}
@@ -198,10 +145,6 @@ export default function Vitrine() {
 
                 <h3 className={styles.plateTitle}>{plate.title}</h3>
                 <p className={styles.description}>{plate.description}</p>
-
-                <div className={styles.drawingFrame}>
-                  <Drawing id={plate.drawing} />
-                </div>
 
                 <dl className={styles.metrics}>
                   {metrics.map((metric) => (

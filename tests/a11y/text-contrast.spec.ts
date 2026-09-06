@@ -104,18 +104,13 @@ test.use({ launchOptions: { args: GL_ARGS } });
  * actually sit on. Warming it is what puts the band labels on the ground a
  * reader with a GPU sees.
  */
-const SCENE_SLOTS = [
-  'hero-atmosphere',
-  'about-field',
-  'career-strata',
-  'skills-bench',
-  // `vitrine-field` and `listen-field` (SIGNATURE-SCENES-v1 S5/S6) join for the
-  // same reason `skills-bench` did: the plates' captions and the closing
-  // screen's routes stand on those fields, and a walk that never warmed them
-  // would photograph the CSS still and grade a shader nobody measured.
-  'vitrine-field',
-  'listen-field',
-];
+/* Empty after t_w3_rm2 (INTERIM-FRAME.md §5): `hero-atmosphere`, `about-field`,
+   `career-strata`, `skills-bench`, `vitrine-field` and `listen-field` are all
+   deleted, so there is no shader to warm before the walk. The walk itself is
+   unchanged and still photographs every band on both paths — it now photographs
+   the flat ground, which is the ground a reader actually gets. */
+const SCENE_SLOTS: readonly string[] = [];
+
 
 interface AuditOptions {
   /** What to load. `/?gl=force` is the shader path. */
