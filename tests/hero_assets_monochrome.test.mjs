@@ -27,7 +27,7 @@
 import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdtempSync, rmSync, statSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, rmSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -159,4 +159,101 @@ describe('The hero loop is true greyscale at its measured ceiling (G-H6, G-H5)',
       `${relative(ROOT, RETIRED_LOOP)} still exists — the old name is a 301 in firebase.json, not a file`,
     );
   });
+});
+
+/* -------------------------------------------------------------------------- */
+/* The on-demand rungs (G-H5).                                                 */
+/*                                                                            */
+/* The 720p file above is the default and the fallback, and it is the only     */
+/* rung on the 2.5 MB critical-path video budget. It is not the ceiling of the */
+/* source: the master on this host is 3840x2160 @ 24 fps, so claiming 720p as  */
+/* an honest maximum was false and every larger URL the ladder implied 404'd   */
+/* (ADV-REVIEW-20260905T2315Z / reviewer 56ffed3e, G-H5). The larger encodes   */
+/* now ship under public/assets/avatar/, which                                 */
+/* scripts/validate/overhaul_static_audit.mjs gives a 5 MB on-demand budget    */
+/* because that <video> carries no `src` until a reader presses play.          */
+/*                                                                            */
+/* These assertions read the shipped bytes of every rung the data file         */
+/* declares — dimensions, frame rate, size and hue — so a rung cannot be       */
+/* declared and not shipped, shipped at a size it does not have, upscaled past */
+/* the master, or quietly re-encoded in colour.                               */
+/* -------------------------------------------------------------------------- */
+
+/** The genuine master this whole ladder is cut from. Never committed (58 MB). */
+const MASTER = { width: 3840, height: 2160, fps: 24 };
+/** ON_DEMAND_VIDEO in scripts/validate/overhaul_static_audit.mjs. */
+const ON_DEMAND_BUDGET = 5 * 1024 * 1024;
+
+/** The ladder as app/data/portfolio/avatar.ts declares it — parsed, not retyped. */
+function declaredLadder() {
+  const source = readFileSync(join(ROOT, 'app', 'data', 'portfolio', 'avatar.ts'), 'utf8');
+  const block = source.slice(source.indexOf('ladder: ['));
+  const rungs = [];
+  for (const m of block.matchAll(
+    /height:\s*(\d+),\s*\n\s*width:\s*(\d+),\s*\n\s*src:\s*'([^']+)',[\s\S]*?type:\s*'([^']+)'/g,
+  )) {
+    rungs.push({ height: Number(m[1]), width: Number(m[2]), src: m[3], type: m[4] });
+  }
+  return rungs;
+}
+
+describe('The loop ships a real ladder, not a claim (G-H5)', () => {
+  const ladder = declaredLadder();
+
+  it('declares three ascending rungs, the 720p file first', () => {
+    assert.equal(ladder.length, 3, `avatar.ts declares ${ladder.length} rungs: ${JSON.stringify(ladder)}`);
+    assert.deepEqual(
+      ladder.map((r) => r.height),
+      [720, 1080, 2160],
+      'the ladder is ascending and reaches the master resolution',
+    );
+    assert.equal(ladder[0].src, '/assets/my-hero-avatar.mp4', 'the base rung is the canonical critical-path file');
+  });
+
+  for (const rung of ladder) {
+    const file = join(ROOT, 'public', rung.src.replace(/^\//, ''));
+    const name = rung.src;
+
+    it(`${name}: exists, and is ${rung.width}x${rung.height} @ ${MASTER.fps} fps as declared`, () => {
+      assert.ok(existsSync(file), `${relative(ROOT, file)} is declared in avatar.ts but not shipped`);
+      const [width, height, rate] = ffprobe(file, 'stream=width,height,r_frame_rate');
+      assert.equal(Number(width), rung.width, `${name} width`);
+      assert.equal(Number(height), rung.height, `${name} height`);
+      const [num, den] = rate.split('/').map(Number);
+      assert.equal(Math.round(num / (den || 1)), MASTER.fps, `${name} frame rate`);
+    });
+
+    it(`${name}: is a downscale of the master, never an upscale`, () => {
+      assert.ok(
+        rung.width <= MASTER.width && rung.height <= MASTER.height,
+        `${name} is ${rung.width}x${rung.height}, larger than the ${MASTER.width}x${MASTER.height} master`,
+      );
+    });
+
+    it(`${name}: is under the ${(ON_DEMAND_BUDGET / 1048576).toFixed(0)} MB on-demand budget`, () => {
+      const bytes = statSync(file).size;
+      assert.ok(bytes <= ON_DEMAND_BUDGET, `${name} is ${(bytes / 1048576).toFixed(2)} MB`);
+    });
+
+    it(`${name}: frames 0, mid and last carry no hue`, async () => {
+      const [durationRaw] = ffprobe(file, 'format=duration');
+      const duration = Number.parseFloat(durationRaw);
+      assert.ok(Number.isFinite(duration) && duration > 1, `${name} duration is measurable: ${durationRaw}`);
+      const dir = mkdtempSync(join(tmpdir(), 'rung-frames-'));
+      try {
+        for (const [i, at] of [0, duration / 2, Math.max(0, duration - 0.2)].entries()) {
+          const out = join(dir, `frame-${i}.png`);
+          execFileSync('ffmpeg', ['-y', '-v', 'error', '-ss', String(at), '-i', file, '-frames:v', '1', out]);
+          const { worst, offenders, total } = await chromaProfile(out);
+          assert.equal(
+            offenders,
+            0,
+            `${name} at ${at.toFixed(2)}s: ${offenders}/${total} pixels carry a hue (worst chroma ${worst}/255)`,
+          );
+        }
+      } finally {
+        rmSync(dir, { recursive: true, force: true });
+      }
+    });
+  }
 });

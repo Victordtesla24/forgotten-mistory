@@ -13,6 +13,7 @@ import {
 
 import { avatarContent } from '@/app/data/portfolio/avatar';
 import { useAvatarSpeaking } from '@/lib/avatarContext';
+import { selectLoopSrc } from '@/lib/videoRung';
 
 import styles from './Hero.module.css';
 
@@ -128,7 +129,11 @@ function usePortraitOnIntent(speaking: boolean) {
     video.muted = true;
     video.defaultMuted = true;
     if (!video.getAttribute('src')) {
-      video.src = avatarContent.loop.src;
+      // G-H5: the rung is chosen here, at the moment of play, because only now
+      // does the box have a measured height — the 720p file is the default and
+      // the fallback, and a hi-DPI or save-data reader is answered by
+      // lib/videoRung.ts rather than by a single one-size-fits-none encode.
+      video.src = selectLoopSrc(avatarContent.loop.ladder, video);
       video.load();
     }
 

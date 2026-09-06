@@ -745,3 +745,138 @@ test.describe('Hero photograph — masked into the plane (g2h1-04)', () => {
     expect(worst, `worst figure-attributed CLS across 9 loads: ${worst}`).toBeLessThan(0.01);
   });
 });
+
+/* -------------------------------------------------------------------------- */
+/* Rung selection on the static export (G-H5).                                 */
+/*                                                                            */
+/* The loop is no longer one file. `app/data/portfolio/avatar.ts` declares a   */
+/* three-rung ladder cut from the one 3840x2160@24 master, and lib/videoRung.ts */
+/* chooses between the rungs at the moment of play:                            */
+/*                                                                            */
+/*   need = the video box's rendered CSS height x devicePixelRatio             */
+/*   rung = the smallest published rung whose height >= need                   */
+/*                                                                            */
+/* The unit test (tests/unit/video-rung.spec.ts) pins the rule; these cases    */
+/* pin the wiring — that a real browser, on a real export, assigns the source  */
+/* the rule dictates for the box it actually rendered, and that the two larger */
+/* URLs are published rather than 404 (the precise finding of reviewer         */
+/* 56ffed3e: "every higher URL 404s").                                        */
+/*                                                                            */
+/* The measured box is what makes these numbers what they are: the hero        */
+/* portrait's media rect is 305 CSS px tall at 1440 and 321 px at its capped   */
+/* maximum, so a 1x or 2x screen genuinely needs no more than 720p and gets    */
+/* exactly that — the default holds and nothing extra is fetched — while a 3x  */
+/* screen needs 916 device px and is answered with 1080p.                     */
+/* -------------------------------------------------------------------------- */
+
+/** The whole loop state plus the arithmetic the choice was made from. */
+async function rungState(page: Page) {
+  return page.locator(VIDEO).first().evaluate((el) => {
+    const v = el as HTMLVideoElement;
+    const box = v.getBoundingClientRect();
+    return {
+      file: (v.currentSrc || '').split('/').pop() ?? '',
+      renderedHeight: box.height,
+      dpr: window.devicePixelRatio,
+      need: box.height * window.devicePixelRatio,
+    };
+  });
+}
+
+async function playAndRead(page: Page) {
+  await page.locator(FIGURE).hover();
+  await expect
+    .poll(async () => (await rungState(page)).file, { timeout: 4000, message: 'a source is assigned on hover' })
+    .not.toBe('');
+  return rungState(page);
+}
+
+test.describe('The loop ladder — which encode a screen is actually served', () => {
+  test.describe('a 2x screen at 1440', () => {
+    test.use({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
+
+    test('TC-PHOTO-13: needs under 720 device px, so the default 720p rung is what is fetched', async ({ page }) => {
+      await page.goto('/', { waitUntil: 'load' });
+      const state = await playAndRead(page);
+      expect(state.dpr, 'the emulated pixel ratio').toBe(2);
+      expect(state.need, 'device pixels down the box').toBeLessThanOrEqual(720);
+      expect(state.file, `box ${state.renderedHeight.toFixed(0)} CSS px x ${state.dpr}`).toBe('my-hero-avatar.mp4');
+    });
+  });
+
+  test.describe('a 3x phone at 390', () => {
+    test.use({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3 });
+
+    test('TC-PHOTO-14: a small box at 3x still resolves inside 720p — no data is spent to prove a point', async ({
+      page,
+    }) => {
+      await page.goto('/', { waitUntil: 'load' });
+      const state = await playAndRead(page);
+      expect(state.dpr).toBe(3);
+      expect(state.need).toBeLessThanOrEqual(720);
+      expect(state.file).toBe('my-hero-avatar.mp4');
+    });
+  });
+
+  test.describe('a 3x desktop at 1440', () => {
+    test.use({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 3 });
+
+    test('TC-PHOTO-15: needs 916 device px, so the on-demand 1080p rung is fetched instead', async ({ page }) => {
+      await page.goto('/', { waitUntil: 'load' });
+      const state = await playAndRead(page);
+      expect(state.need, 'device pixels down the box').toBeGreaterThan(720);
+      expect(state.file).toBe('my-hero-avatar-1080.mp4');
+    });
+
+    test('TC-PHOTO-16: Save-Data pins the same screen back to the 720p rung', async ({ page }) => {
+      await page.addInitScript(() => {
+        Object.defineProperty(navigator, 'connection', {
+          configurable: true,
+          get: () => ({ saveData: true }),
+        });
+      });
+      await page.goto('/', { waitUntil: 'load' });
+      const state = await playAndRead(page);
+      expect(state.need, 'the screen still needs more than 720').toBeGreaterThan(720);
+      expect(state.file, 'but the reader asked for less data').toBe('my-hero-avatar.mp4');
+    });
+
+    test('TC-PHOTO-17: a browser with no AV1 decoder never receives the WebM rung', async ({ page }) => {
+      await page.addInitScript(() => {
+        const native = HTMLMediaElement.prototype.canPlayType;
+        HTMLMediaElement.prototype.canPlayType = function patched(type: string) {
+          return /av01|webm/i.test(type) ? '' : native.call(this, type);
+        };
+      });
+      await page.goto('/', { waitUntil: 'load' });
+      const state = await playAndRead(page);
+      expect(state.file).not.toContain('.webm');
+      expect(state.file).toBe('my-hero-avatar-1080.mp4');
+    });
+  });
+
+  test('TC-PHOTO-18: both on-demand rungs are published — the URLs the ladder names answer 200', async ({ page }) => {
+    const rungs = [
+      { path: '/assets/avatar/my-hero-avatar-1080.mp4', type: 'video/mp4' },
+      { path: '/assets/avatar/my-hero-avatar-2160.webm', type: 'video/webm' },
+    ];
+    for (const rung of rungs) {
+      const response = await page.request.get(rung.path);
+      expect(response.status(), `GET ${rung.path}`).toBe(200);
+      expect(response.headers()['content-type'] ?? '', `content-type of ${rung.path}`).toContain(rung.type);
+      const body = await response.body();
+      expect(body.byteLength, `${rung.path} has real bytes`).toBeGreaterThan(1_000_000);
+      expect(body.byteLength, `${rung.path} is inside the 5 MB on-demand budget`).toBeLessThanOrEqual(5 * 1024 * 1024);
+    }
+  });
+
+  test('TC-PHOTO-19: at rest none of the three rungs is requested', async ({ page }) => {
+    const requested: string[] = [];
+    page.on('request', (r) => {
+      if (/my-hero-avatar(-\d+)?\.(mp4|webm)/.test(r.url())) requested.push(r.url());
+    });
+    await page.goto('/', { waitUntil: 'load' });
+    await page.waitForTimeout(2500);
+    expect(requested, 'no rung is fetched before the reader asks').toEqual([]);
+  });
+});

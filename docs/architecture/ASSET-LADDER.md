@@ -235,3 +235,76 @@ node --test tests/hero_assets_monochrome.test.mjs                    # chroma �
 ```
 
 `og-image.png` (1200×630 social card) is deliberately **untouched** — it is the OpenGraph/Twitter card, outside this gap's scope.
+
+---
+
+## 10. 2026-09-06 — the ladder is published: on-demand 1080p and 2160p rungs (G-H5 correction)
+
+- **Task:** `t_w1_h5b` · **Identity:** analyst-programmer / ap-w1-h5b · **Reviewer finding corrected:** `docs/delivery/evidence/v10-20260905T0515Z/G-REV/56ffed3e/08-adversarial-review.md` §G-H5
+- **Worktree:** `worktree-w1-h5b` from `origin/main` (`ec53e2b`) · **Encoded:** 2026-09-06T01:17–01:22Z on VPS srv1356245 · `ffmpeg` 8.0.1 (libx264, SVT-AV1)
+- **This section moved.** The file was `docs/delivery/evidence/v10-20260905T0515Z/G2-H5/asset-ladder.md`; it is now `docs/architecture/ASSET-LADDER.md`, because it is a standing architecture document rather than one run's evidence (`git mv`, history preserved).
+
+### 10.1 What was wrong with §9
+
+§9 shipped one rung, 720p, and justified it with the 2.5 MB critical-path video budget. That justification was true and insufficient. A genuine 3840×2160 master exists on this host and a 1080p variant of the same shot exists beside it, so "720p is what the source honestly carries" was **not** available as an escape hatch, and the larger URLs a reader (or a reviewer) would try — `my-hero-avatar-1080.mp4`, `my-hero-avatar-2160.*` — **all 404ed**. A ladder that is only a paragraph is not a ladder.
+
+### 10.2 The rungs now published
+
+All three are cut from `artifacts/masters/minivic-greeting-2160p-master.mp4` (3840×2160 @ 24 fps, 58,370,772 B, **never committed**), greyscale in the bytes (`format=gray,format=yuv420p`), no audio. Nothing is upscaled: the top rung is the master's own resolution.
+
+| Rung | File | Dimensions | fps | Bytes | Codec | Budget | Measured chroma |
+|------|------|-----------|-----|-------|-------|--------|-----------------|
+| base (default, fallback) | `public/assets/my-hero-avatar.mp4` | 1280×720 | 24 | 1,916,328 (1.83 MB) | H.264 High@3.1 | 2.5 MB critical-path | 0/255 |
+| on-demand | `public/assets/avatar/my-hero-avatar-1080.mp4` | 1920×1080 | 24 | 3,690,721 (3.52 MB) | H.264 High@5.0, CRF 21 `-preset slow` | 5 MB on-demand | 0/255 |
+| on-demand | `public/assets/avatar/my-hero-avatar-2160.webm` | 3840×2160 | 24 | 2,913,450 (2.78 MB) | AV1 Main@5.0, SVT-AV1 CRF 40 `-preset 8` | 5 MB on-demand | 0/255 |
+
+`scripts/validate/overhaul_static_audit.mjs` (TC-NFR-PERF) gives `assets/avatar/*` a 5 MB budget precisely because that `<video>` carries no `src` until a reader presses play; the base rung stays on the 2.5 MB budget and is the only file any reader fetches by default. Audit after the change: **10/10**.
+
+**Measured quality of the top rung:** `ffmpeg -lavfi ssim` against the master's own greyscale, all 295 frames → **Y = 0.974979** (`U`/`V` = 1.000000, both planes flat by construction). Monochrome 24 fps compresses far better than the §9.2 estimate of "≈20 MB+": AV1 lands the master's full resolution at *less* than the 1080p H.264 rung.
+
+```bash
+ffmpeg -i artifacts/masters/minivic-greeting-2160p-master.mp4 \
+  -vf 'scale=1920:1080:flags=lanczos,format=gray,format=yuv420p' \
+  -c:v libx264 -preset slow -crf 21 -an -movflags +faststart public/assets/avatar/my-hero-avatar-1080.mp4
+ffmpeg -i artifacts/masters/minivic-greeting-2160p-master.mp4 \
+  -vf 'format=gray,format=yuv420p' -c:v libsvtav1 -preset 8 -crf 40 -g 48 -an \
+  public/assets/avatar/my-hero-avatar-2160.webm
+```
+
+### 10.3 How a rung is chosen
+
+`lib/videoRung.ts`, called at the moment a source is assigned (`components/sections/Hero/HeroPortrait.tsx`, `components/MiniVicBot.tsx`), never at load:
+
+```
+need = the video box's rendered CSS height × devicePixelRatio
+rung = the smallest published rung whose height ≥ need
+```
+
+with three hard edges: `navigator.connection.saveData` pins the choice to the base rung; a rung whose container/codec the browser refuses (`canPlayType` → `''`) is not a candidate, so a browser with no AV1 decoder lands on 1080p H.264; and nothing above the largest playable rung exists. The rule is pure and pinned by `tests/unit/video-rung.spec.ts` (RUNG-01…09).
+
+**What that means on this layout, measured on the static export** (`tests/e2e/hero-photo.spec.ts` TC-PHOTO-13…19):
+
+| Screen | Portrait box | need | Rung served |
+|--------|--------------|------|-------------|
+| 1440 @ 1×/2× | 305 CSS px | 305 / 611 | 720p (base) |
+| 390 @ 3× | 218 CSS px | 653 | 720p (base) |
+| 1440 @ 3× | 305 CSS px | 916 | **1080p** |
+| 1440 @ 3×, Save-Data | 305 CSS px | 916 | 720p (base) |
+| 1440 @ 3×, no AV1 decoder | 305 CSS px | 916 | **1080p** H.264 |
+| 4K window @ 2× (portrait box ≥ 540 CSS px) | — | > 1080 | **2160p** |
+
+The hero's own media rect is capped by the column at **321 CSS px**, so on today's layout the 2160p rung is reached only by a display whose box × DPR exceeds 1080 device px — a 4K/5K desktop with the window wide, or any future full-bleed presentation of the same loop. It is published so the URL is real and the ladder genuinely reaches the master's resolution; it costs a normal reader **nothing**, because no rung is fetched until a reader asks (TC-PHOTO-19 asserts zero requests at rest).
+
+### 10.4 R5, still honestly
+
+**R5 (≥ 3840×2160 @ 60 fps, or resolution-independent) remains OPEN.** The ladder now reaches 3840×2160 — the resolution half of R5 is met by a real downscale-free encode of a real master — but **the master is 24 fps, not 60**, and 24 captured frames are not made into 60 by interpolation. No 60 fps portrait source exists on this host, so R5 stays OPEN until a genuine ≥ 2160p60 capture or a paid generation lands. Nothing in the shipped code or copy presents 24 fps as 60.
+
+### 10.5 Verify
+
+```bash
+node --test tests/hero_assets_monochrome.test.mjs          # 20/20 — every rung: dims, fps, ≤5 MB, chroma 0
+npx playwright test tests/unit/video-rung.spec.ts          # 9/9 — the selection rule
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:5606 \
+  npx playwright test tests/e2e/hero-photo.spec.ts         # TC-PHOTO-13…19 — the wiring, on the export
+node scripts/validate/overhaul_static_audit.mjs            # 10/10 (budgets included)
+```
