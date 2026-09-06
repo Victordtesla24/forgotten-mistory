@@ -1,0 +1,442 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/story-contract.spec.ts --workers=1 --reporter=list
+
+[2mRunning [22m30[2m tests using [22m1[2m worker[22m
+
+[story:hero@1440] selector=#hero picture img centroid=(848.5,462.1) figure=(369.6,509.7) offset=0.2834 diag
+  [31m✘[39m  [2m 1 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:350:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-HERO-01 @ 1440 — the plane's brightest region is where the figure is[39m[2m (8.8s)[22m
+[story:about-01@1440] centre=(208.0,368.0) lobes=13 peak=0.57522
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/overhaul/story-contract.spec.ts:419:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-ABOUT-01 @ 1440 — the fan is a ring of ten, not one glow[2m (6.0s)[22m
+[story:about-02@1440] phi=24.5 role=0.10143 candidate=0.17360 deficit=0.4157
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/overhaul/story-contract.spec.ts:471:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-ABOUT-02 @ 1440 — the three role-side sectors read open[2m (6.0s)[22m
+[story:exp-01@1440] bands before=21 after=21 shifts=[0,6,0,4,8,-4,-11,0,-6,7,4,6,7,-6,5,15,2,0,4,6,5] distinct=11
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/overhaul/story-contract.spec.ts:555:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-EXP-01 @ 1440 — the strata are at ≥ 2 depths, not one gradient[2m (7.6s)[22m
+[story:exp-02@1440] extents=2 recovered=0/8 []
+  [31m✘[39m  [2m 5 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:607:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-EXP-02 @ 1440 — ≥ 6 of 8 role spans are findable in the light[39m[2m (6.1s)[22m
+[story:skills@1440] production=0.23004 non-production=0.17935 delta=0.05069 rails=2
+  [31m✘[39m  [2m 6 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:657:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-SKILLS-01 @ 1440 — production rows are lit above the rest[39m[2m (12.3s)[22m
+[story:vitrine-01@1440] centroids=[0.2439,0.4583,0.4638,0.4643,0.4584,0.7006] span=0.4567 distinct=4 monotonic=false
+  [31m✘[39m  [2m 7 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:739:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-VITRINE-01 @ 1440 — the pool moves with the rail, six ways[39m[2m (26.5s)[22m
+[story:listen@1440] samples=256 envelope_len=256 r_envelope=0.1676 r_sine=-0.0843
+  [31m✘[39m  [2m 8 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:819:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-LISTEN-01 @ 1440 — the band is the greeting's own loudness[39m[2m (11.4s)[22m
+  [31m✘[39m  [2m 9 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:868:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-DESCENT-01 @ 1440 — the strata spacing is the role durations[39m[2m (1.7s)[22m
+  [31m✘[39m  [2m10 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:914:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-DESCENT-02 @ 1440 — nothing is written over the stage[39m[2m (1.7s)[22m
+[story:plane@1440] about: slot=74737.5 section=75882.9 share=0.9849 slotbox=1248x900 sectionbox=1440x900
+  [32m✓[39m  [2m11 [22m[chromium] › tests/overhaul/story-contract.spec.ts:973:11 › TC-STORY @ 1440 — every field says its own section › TC-STORY-PLANE-01 @ 1440 — #about: the scene carries ≥ 50% of the light[2m (6.7s)[22m
+[story:plane@1440] experience: slot=33645.4 section=40609.6 share=0.8285 slotbox=1298x536 sectionbox=1440x900
+  [32m✓[39m  [2m12 [22m[chromium] › tests/overhaul/story-contract.spec.ts:973:11 › TC-STORY @ 1440 — every field says its own section › TC-STORY-PLANE-01 @ 1440 — #experience: the scene carries ≥ 50% of the light[2m (6.3s)[22m
+[story:plane@1440] skills: slot=94749.2 section=96929.8 share=0.9775 slotbox=1248x580 sectionbox=1440x900
+  [32m✓[39m  [2m13 [22m[chromium] › tests/overhaul/story-contract.spec.ts:973:11 › TC-STORY @ 1440 — every field says its own section › TC-STORY-PLANE-01 @ 1440 — #skills: the scene carries ≥ 50% of the light[2m (8.9s)[22m
+[story:plane@1440] vitrine: slot=12821.7 section=24944.9 share=0.5140 slotbox=1296x759 sectionbox=1440x900
+  [32m✓[39m  [2m14 [22m[chromium] › tests/overhaul/story-contract.spec.ts:973:11 › TC-STORY @ 1440 — every field says its own section › TC-STORY-PLANE-01 @ 1440 — #vitrine: the scene carries ≥ 50% of the light[2m (9.7s)[22m
+  [31m✘[39m  [2m15 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:973:11 › TC-STORY @ 1440 — every field says its own section › TC-STORY-PLANE-01 @ 1440 — #listen: the scene carries ≥ 50% of the light[39m[2m (35.8s)[22m
+[story:hero@390] selector=#hero picture img centroid=(232.4,397.2) figure=(195.0,412.7) offset=0.0435 diag
+  [32m✓[39m  [2m16 [22m[chromium] › tests/overhaul/story-contract.spec.ts:350:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-HERO-01 @ 390 — the plane's brightest region is where the figure is[2m (5.9s)[22m
+[story:about-01@390] centre=(171.0,112.0) lobes=12 peak=0.44371
+  [32m✓[39m  [2m17 [22m[chromium] › tests/overhaul/story-contract.spec.ts:419:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-ABOUT-01 @ 390 — the fan is a ring of ten, not one glow[2m (4.9s)[22m
+[story:about-02@390] phi=24.5 role=0.17333 candidate=0.19471 deficit=0.1098
+  [31m✘[39m  [2m18 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:471:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-ABOUT-02 @ 390 — the three role-side sectors read open[39m[2m (5.1s)[22m
+[story:exp-01@390] bands before=26 after=29 shifts=[-2,0,7,10,-3,6,-8,-6,0,7,-7,9,-2,9,0,-7,-1,8,9,5,-5,-10,0,-4,8,6] distinct=16
+  [32m✓[39m  [2m19 [22m[chromium] › tests/overhaul/story-contract.spec.ts:555:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-EXP-01 @ 390 — the strata are at ≥ 2 depths, not one gradient[2m (8.1s)[22m
+[story:exp-02@390] extents=1 recovered=0/8 []
+  [31m✘[39m  [2m20 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:607:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-EXP-02 @ 390 — ≥ 6 of 8 role spans are findable in the light[39m[2m (5.4s)[22m
+  [31m✘[39m  [2m21 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:657:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-SKILLS-01 @ 390 — production rows are lit above the rest[39m[2m (5.1s)[22m
+[story:vitrine-01@390] centroids=[0.4626,0.4631,0.4835,0.4916,0.4986,0.4914] span=0.0360 distinct=4 monotonic=false
+  [31m✘[39m  [2m22 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:739:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-VITRINE-01 @ 390 — the pool moves with the rail, six ways[39m[2m (12.3s)[22m
+[story:listen@390] samples=256 envelope_len=256 r_envelope=0.1636 r_sine=-0.1133
+  [31m✘[39m  [2m23 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:819:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-LISTEN-01 @ 390 — the band is the greeting's own loudness[39m[2m (5.8s)[22m
+  [31m✘[39m  [2m24 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:868:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-DESCENT-01 @ 390 — the strata spacing is the role durations[39m[2m (1.6s)[22m
+  [31m✘[39m  [2m25 [22m[31m[chromium] › tests/overhaul/story-contract.spec.ts:914:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-DESCENT-02 @ 390 — nothing is written over the stage[39m[2m (2.0s)[22m
+[story:plane@390] about: slot=22373.2 section=25311.4 share=0.8839 slotbox=342x480 sectionbox=390x844
+  [32m✓[39m  [2m26 [22m[chromium] › tests/overhaul/story-contract.spec.ts:973:11 › TC-STORY @ 390 — every field says its own section › TC-STORY-PLANE-01 @ 390 — #about: the scene carries ≥ 50% of the light[2m (5.4s)[22m
+[story:plane@390] experience: slot=16043.8 section=16634.1 share=0.9645 slotbox=356x661 sectionbox=390x844
+  [32m✓[39m  [2m27 [22m[chromium] › tests/overhaul/story-contract.spec.ts:973:11 › TC-STORY @ 390 — every field says its own section › TC-STORY-PLANE-01 @ 390 — #experience: the scene carries ≥ 50% of the light[2m (4.9s)[22m
+[story:plane@390] skills: slot=6851.5 section=10213.5 share=0.6708 slotbox=342x152 sectionbox=390x844
+  [32m✓[39m  [2m28 [22m[chromium] › tests/overhaul/story-contract.spec.ts:973:11 › TC-STORY @ 390 — every field says its own section › TC-STORY-PLANE-01 @ 390 — #skills: the scene carries ≥ 50% of the light[2m (5.1s)[22m
+[story:plane@390] vitrine: slot=3481.5 section=4200.5 share=0.8288 slotbox=342x746 sectionbox=390x844
+  [32m✓[39m  [2m29 [22m[chromium] › tests/overhaul/story-contract.spec.ts:973:11 › TC-STORY @ 390 — every field says its own section › TC-STORY-PLANE-01 @ 390 — #vitrine: the scene carries ≥ 50% of the light[2m (6.0s)[22m
+[story:plane@390] listen: slot=36870.0 section=36870.0 share=1.0000 slotbox=390x844 sectionbox=390x844
+  [32m✓[39m  [2m30 [22m[chromium] › tests/overhaul/story-contract.spec.ts:973:11 › TC-STORY @ 390 — every field says its own section › TC-STORY-PLANE-01 @ 390 — #listen: the scene carries ≥ 50% of the light[2m (5.7s)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/story-contract.spec.ts:350:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-HERO-01 @ 1440 — the plane's brightest region is where the figure is [39m
+
+    Error: the plane's luminance centroid sits 28.3% of the frame diagonal from the figure's centre (bar: 12%) — plane and portrait read as two objects, not one. `poolPlate` is declared and unbound in atmosphere.glsl.ts; binding it is owned by HERO-SETPIECE-v3 §4.2 / HERO-FOLD-v2 M4, not by SIGNATURE-SCENES-v2. TC-HERO-PLANE-01 SPD ≥ 0.75 is a different question and is untouched by this assertion.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m0.12[39m
+    Received:    [31m0.2833973300414005[39m
+
+    [0m [90m 412 |[39m           [32m'not by SIGNATURE-SCENES-v2. TC-HERO-PLANE-01 SPD ≥ 0.75 is a different question and '[39m [33m+[39m
+     [90m 413 |[39m           [32m'is untouched by this assertion.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 414 |[39m       )[33m.[39mtoBeLessThanOrEqual([33mHERO_CENTROID_MAX_DIAG[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 415 |[39m     })[33m;[39m
+     [90m 416 |[39m
+     [90m 417 |[39m     [90m/* ── §5-2 #about — ten dimensions, and they are not interchangeable ───── */[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:414:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-48564-gion-is-where-the-figure-is-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-48564-gion-is-where-the-figure-is-chromium/error-context.md[22m
+
+[31m  2) [chromium] › tests/overhaul/story-contract.spec.ts:607:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-EXP-02 @ 1440 — ≥ 6 of 8 role spans are findable in the light [39m
+
+    Error: only 0 of 8 role spans are recoverable from the field as horizontal light extents within ±8% of their normalised positions — the light under the chart is not drawing the chart's own data.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m6[39m
+    Received:    [31m0[39m
+
+    [0m [90m 650 |[39m           [32m`as horizontal light extents within ±${EXP_SPAN_TOLERANCE * 100}% of their normalised `[39m [33m+[39m
+     [90m 651 |[39m           [32m'positions — the light under the chart is not drawing the chart\'s own data.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 652 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mEXP_SPANS_REQUIRED[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 653 |[39m     })[33m;[39m
+     [90m 654 |[39m
+     [90m 655 |[39m     [90m/* ── §5-4 #skills — the bench light reads the split ───────────────────── */[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:652:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-0bed5-s-are-findable-in-the-light-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-0bed5-s-are-findable-in-the-light-chromium/error-context.md[22m
+
+[31m  3) [chromium] › tests/overhaul/story-contract.spec.ts:657:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-SKILLS-01 @ 1440 — production rows are lit above the rest [39m
+
+    Error: the bench lifts the production rows only 0.0507 above the non-production ones (bar: 0.06) — the calibration card's own distinction is invisible in the light it stands in.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.06[39m
+    Received:    [31m0.05068738163046846[39m
+
+    [0m [90m 732 |[39m           [32m`ones (bar: ${SKILLS_SPLIT_DELTA}) — the calibration card's own distinction is `[39m [33m+[39m
+     [90m 733 |[39m           [32m'invisible in the light it stands in.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 734 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mSKILLS_SPLIT_DELTA[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 735 |[39m     })[33m;[39m
+     [90m 736 |[39m
+     [90m 737 |[39m     [90m/* ── §5-5 #vitrine — six plates, six different lights ─────────────────── */[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:734:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-49bfe-rows-are-lit-above-the-rest-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-49bfe-rows-are-lit-above-the-rest-chromium/error-context.md[22m
+
+[31m  4) [chromium] › tests/overhaul/story-contract.spec.ts:739:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-VITRINE-01 @ 1440 — the pool moves with the rail, six ways [39m
+
+    Error: the pool's x-centroid takes only 4 distinct values across the six rail positions — the cabinet is lit once, not six ways.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m6[39m
+    Received: [31m4[39m
+
+    [0m [90m 784 |[39m         [32m`the pool's x-centroid takes only ${distinct} distinct values across the six rail `[39m [33m+[39m
+     [90m 785 |[39m           [32m'positions — the cabinet is lit once, not six ways.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 786 |[39m       )[33m.[39mtoBe(plates[33m.[39mlength)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 787 |[39m       expect(
+     [90m 788 |[39m         monotonic[33m,[39m
+     [90m 789 |[39m         [32m`the pool's x-centroid is not monotonic in the lit plate `[39m [33m+[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:786:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-f969b-oves-with-the-rail-six-ways-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-f969b-oves-with-the-rail-six-ways-chromium/error-context.md[22m
+
+[31m  5) [chromium] › tests/overhaul/story-contract.spec.ts:819:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-LISTEN-01 @ 1440 — the band is the greeting's own loudness [39m
+
+    Error: the band correlates with the greeting's envelope at r=0.168 (bar: 0.7) — the closing light is not the shape of him speaking.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.7[39m
+    Received:    [31m0.16759537299469887[39m
+
+    [0m [90m 856 |[39m         [32m`the band correlates with the greeting's envelope at r=${rEnvelope.toFixed(3)} `[39m [33m+[39m
+     [90m 857 |[39m           [32m`(bar: ${LISTEN_ENVELOPE_R}) — the closing light is not the shape of him speaking.`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 858 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mLISTEN_ENVELOPE_R[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 859 |[39m       expect(
+     [90m 860 |[39m         [33mMath[39m[33m.[39mabs(rSine)[33m,[39m
+     [90m 861 |[39m         [32m`the band correlates with a plain same-period sine at r=${rSine.toFixed(3)} `[39m [33m+[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:858:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-7e5da-the-greeting-s-own-loudness-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-7e5da-the-greeting-s-own-loudness-chromium/error-context.md[22m
+
+[31m  6) [chromium] › tests/overhaul/story-contract.spec.ts:868:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-DESCENT-01 @ 1440 — the strata spacing is the role durations [39m
+
+    Error: no [data-scene="career-descent"] on the page — the scene has not landed yet. Owning lane: SIGNATURE-SCENES-v2 §2.2, slices X2-S1…S3.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+    [0m [90m 337 |[39m     count[33m,[39m
+     [90m 338 |[39m     [32m`no [data-scene="${scene}"] on the page — the scene has not landed yet. Owning lane: ${owner}.`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 339 |[39m   )[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m     |[39m     [31m[1m^[22m[39m
+     [90m 340 |[39m }
+     [90m 341 |[39m
+     [90m 342 |[39m [36mfor[39m ([36mconst[39m viewport [36mof[39m [33mVIEWPORTS[39m) {[0m
+    [2m    at requireSlot (/root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:339:5)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:873:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-9253c-acing-is-the-role-durations-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-9253c-acing-is-the-role-durations-chromium/error-context.md[22m
+
+[31m  7) [chromium] › tests/overhaul/story-contract.spec.ts:914:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-DESCENT-02 @ 1440 — nothing is written over the stage [39m
+
+    Error: no [data-scene="career-descent"] on the page — the scene has not landed yet. Owning lane: SIGNATURE-SCENES-v2 §2.2, slices X2-S1…S3.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+    [0m [90m 337 |[39m     count[33m,[39m
+     [90m 338 |[39m     [32m`no [data-scene="${scene}"] on the page — the scene has not landed yet. Owning lane: ${owner}.`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 339 |[39m   )[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m     |[39m     [31m[1m^[22m[39m
+     [90m 340 |[39m }
+     [90m 341 |[39m
+     [90m 342 |[39m [36mfor[39m ([36mconst[39m viewport [36mof[39m [33mVIEWPORTS[39m) {[0m
+    [2m    at requireSlot (/root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:339:5)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:917:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-db123-g-is-written-over-the-stage-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-db123-g-is-written-over-the-stage-chromium/error-context.md[22m
+
+[31m  8) [chromium] › tests/overhaul/story-contract.spec.ts:973:11 › TC-STORY @ 1440 — every field says its own section › TC-STORY-PLANE-01 @ 1440 — #listen: the scene carries ≥ 50% of the light [39m
+
+    TimeoutError: locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('[data-scene="listen-field"] canvas')[22m
+
+
+    [0m [90m 327 |[39m   [36mawait[39m slotClip(page[33m,[39m scene)[33m;[39m
+     [90m 328 |[39m   [36mconst[39m canvas [33m=[39m page[33m.[39mlocator([32m`[data-scene="${scene}"] canvas`[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 329 |[39m   [36mawait[39m canvas[33m.[39mwaitFor({ state[33m:[39m [32m'attached'[39m[33m,[39m timeout[33m:[39m [35m30000[39m })[33m;[39m
+     [90m     |[39m                [31m[1m^[22m[39m
+     [90m 330 |[39m   [36mawait[39m page[33m.[39mwaitForTimeout([35m2500[39m)[33m;[39m
+     [90m 331 |[39m }
+     [90m 332 |[39m[0m
+    [2m    at readyScene (/root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:329:16)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:978:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-ed179-e-carries-≥-50-of-the-light-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-ed179-e-carries-≥-50-of-the-light-chromium/error-context.md[22m
+
+[31m  9) [chromium] › tests/overhaul/story-contract.spec.ts:471:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-ABOUT-02 @ 390 — the three role-side sectors read open [39m
+
+    Error: the three role-side sectors sit only 11.0% under the seven answered ones (bar: 15%) — the field grades an open dimension the same as an answered one, which is the caliper rule broken in light.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.15[39m
+    Received:    [31m0.10976520430856325[39m
+
+    [0m [90m 548 |[39m           [32m`answered ones (bar: ${ABOUT_ROLE_DEFICIT * 100}%) — the field grades an open `[39m [33m+[39m
+     [90m 549 |[39m           [32m'dimension the same as an answered one, which is the caliper rule broken in light.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 550 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mABOUT_ROLE_DEFICIT[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 551 |[39m     })[33m;[39m
+     [90m 552 |[39m
+     [90m 553 |[39m     [90m/* ── §5-3 #experience — sixteen years have depth ──────────────────────── */[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:550:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-52d36-role-side-sectors-read-open-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-52d36-role-side-sectors-read-open-chromium/error-context.md[22m
+
+[31m  10) [chromium] › tests/overhaul/story-contract.spec.ts:607:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-EXP-02 @ 390 — ≥ 6 of 8 role spans are findable in the light [39m
+
+    Error: only 0 of 8 role spans are recoverable from the field as horizontal light extents within ±8% of their normalised positions — the light under the chart is not drawing the chart's own data.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m6[39m
+    Received:    [31m0[39m
+
+    [0m [90m 650 |[39m           [32m`as horizontal light extents within ±${EXP_SPAN_TOLERANCE * 100}% of their normalised `[39m [33m+[39m
+     [90m 651 |[39m           [32m'positions — the light under the chart is not drawing the chart\'s own data.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 652 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mEXP_SPANS_REQUIRED[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 653 |[39m     })[33m;[39m
+     [90m 654 |[39m
+     [90m 655 |[39m     [90m/* ── §5-4 #skills — the bench light reads the split ───────────────────── */[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:652:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-1fd86-s-are-findable-in-the-light-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-1fd86-s-are-findable-in-the-light-chromium/error-context.md[22m
+
+[31m  11) [chromium] › tests/overhaul/story-contract.spec.ts:657:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-SKILLS-01 @ 390 — production rows are lit above the rest [39m
+
+    Error: some rows were measured in production
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+    [0m [90m 714 |[39m       })[33m;[39m
+     [90m 715 |[39m
+    [31m[1m>[22m[39m[90m 716 |[39m       expect(production[33m.[39mlength[33m,[39m [32m'some rows were measured in production'[39m)[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m     |[39m                                                                          [31m[1m^[22m[39m
+     [90m 717 |[39m       expect(nonProduction[33m.[39mlength[33m,[39m [32m'and some were not — that is the split'[39m)[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m 718 |[39m
+     [90m 719 |[39m       [36mconst[39m mean [33m=[39m (xs[33m:[39m number[]) [33m=>[39m xs[33m.[39mreduce((s[33m,[39m v) [33m=>[39m s [33m+[39m v[33m,[39m [35m0[39m) [33m/[39m xs[33m.[39mlength[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:716:74[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-aaead-rows-are-lit-above-the-rest-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-aaead-rows-are-lit-above-the-rest-chromium/error-context.md[22m
+
+[31m  12) [chromium] › tests/overhaul/story-contract.spec.ts:739:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-VITRINE-01 @ 390 — the pool moves with the rail, six ways [39m
+
+    Error: the pool's x-centroid takes only 4 distinct values across the six rail positions — the cabinet is lit once, not six ways.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m6[39m
+    Received: [31m4[39m
+
+    [0m [90m 784 |[39m         [32m`the pool's x-centroid takes only ${distinct} distinct values across the six rail `[39m [33m+[39m
+     [90m 785 |[39m           [32m'positions — the cabinet is lit once, not six ways.'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 786 |[39m       )[33m.[39mtoBe(plates[33m.[39mlength)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 787 |[39m       expect(
+     [90m 788 |[39m         monotonic[33m,[39m
+     [90m 789 |[39m         [32m`the pool's x-centroid is not monotonic in the lit plate `[39m [33m+[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:786:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-f893e-oves-with-the-rail-six-ways-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-f893e-oves-with-the-rail-six-ways-chromium/error-context.md[22m
+
+[31m  13) [chromium] › tests/overhaul/story-contract.spec.ts:819:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-LISTEN-01 @ 390 — the band is the greeting's own loudness [39m
+
+    Error: the band correlates with the greeting's envelope at r=0.164 (bar: 0.7) — the closing light is not the shape of him speaking.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m0.7[39m
+    Received:    [31m0.16356580721840305[39m
+
+    [0m [90m 856 |[39m         [32m`the band correlates with the greeting's envelope at r=${rEnvelope.toFixed(3)} `[39m [33m+[39m
+     [90m 857 |[39m           [32m`(bar: ${LISTEN_ENVELOPE_R}) — the closing light is not the shape of him speaking.`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 858 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mLISTEN_ENVELOPE_R[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 859 |[39m       expect(
+     [90m 860 |[39m         [33mMath[39m[33m.[39mabs(rSine)[33m,[39m
+     [90m 861 |[39m         [32m`the band correlates with a plain same-period sine at r=${rSine.toFixed(3)} `[39m [33m+[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:858:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-bb300-the-greeting-s-own-loudness-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-bb300-the-greeting-s-own-loudness-chromium/error-context.md[22m
+
+[31m  14) [chromium] › tests/overhaul/story-contract.spec.ts:868:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-DESCENT-01 @ 390 — the strata spacing is the role durations [39m
+
+    Error: no [data-scene="career-descent"] on the page — the scene has not landed yet. Owning lane: SIGNATURE-SCENES-v2 §2.2, slices X2-S1…S3.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+    [0m [90m 337 |[39m     count[33m,[39m
+     [90m 338 |[39m     [32m`no [data-scene="${scene}"] on the page — the scene has not landed yet. Owning lane: ${owner}.`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 339 |[39m   )[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m     |[39m     [31m[1m^[22m[39m
+     [90m 340 |[39m }
+     [90m 341 |[39m
+     [90m 342 |[39m [36mfor[39m ([36mconst[39m viewport [36mof[39m [33mVIEWPORTS[39m) {[0m
+    [2m    at requireSlot (/root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:339:5)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:873:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-48b45-acing-is-the-role-durations-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-48b45-acing-is-the-role-durations-chromium/error-context.md[22m
+
+[31m  15) [chromium] › tests/overhaul/story-contract.spec.ts:914:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-DESCENT-02 @ 390 — nothing is written over the stage [39m
+
+    Error: no [data-scene="career-descent"] on the page — the scene has not landed yet. Owning lane: SIGNATURE-SCENES-v2 §2.2, slices X2-S1…S3.
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31m0[39m
+
+    [0m [90m 337 |[39m     count[33m,[39m
+     [90m 338 |[39m     [32m`no [data-scene="${scene}"] on the page — the scene has not landed yet. Owning lane: ${owner}.`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 339 |[39m   )[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m     |[39m     [31m[1m^[22m[39m
+     [90m 340 |[39m }
+     [90m 341 |[39m
+     [90m 342 |[39m [36mfor[39m ([36mconst[39m viewport [36mof[39m [33mVIEWPORTS[39m) {[0m
+    [2m    at requireSlot (/root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:339:5)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2t1/tests/overhaul/story-contract.spec.ts:917:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-story-contract-TC-58efd-g-is-written-over-the-stage-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-story-contract-TC-58efd-g-is-written-over-the-stage-chromium/error-context.md[22m
+
+[31m  15 failed[39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:350:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-HERO-01 @ 1440 — the plane's brightest region is where the figure is [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:607:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-EXP-02 @ 1440 — ≥ 6 of 8 role spans are findable in the light [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:657:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-SKILLS-01 @ 1440 — production rows are lit above the rest [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:739:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-VITRINE-01 @ 1440 — the pool moves with the rail, six ways [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:819:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-LISTEN-01 @ 1440 — the band is the greeting's own loudness [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:868:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-DESCENT-01 @ 1440 — the strata spacing is the role durations [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:914:9 › TC-STORY @ 1440 — every field says its own section › TC-STORY-DESCENT-02 @ 1440 — nothing is written over the stage [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:973:11 › TC-STORY @ 1440 — every field says its own section › TC-STORY-PLANE-01 @ 1440 — #listen: the scene carries ≥ 50% of the light [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:471:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-ABOUT-02 @ 390 — the three role-side sectors read open [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:607:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-EXP-02 @ 390 — ≥ 6 of 8 role spans are findable in the light [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:657:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-SKILLS-01 @ 390 — production rows are lit above the rest [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:739:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-VITRINE-01 @ 390 — the pool moves with the rail, six ways [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:819:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-LISTEN-01 @ 390 — the band is the greeting's own loudness [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:868:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-DESCENT-01 @ 390 — the strata spacing is the role durations [39m
+[31m    [chromium] › tests/overhaul/story-contract.spec.ts:914:9 › TC-STORY @ 390 — every field says its own section › TC-STORY-DESCENT-02 @ 390 — nothing is written over the stage [39m
+[32m  15 passed[39m[2m (4.4m)[22m
+EXIT=1
