@@ -1,0 +1,192 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-descent.spec.ts --workers=1 --reporter=list
+
+[2mRunning [22m9[2m tests using [22m1[2m worker[22m
+
+  [31m✘[39m  [2m1 [22m[31m[chromium] › tests/overhaul/scene-descent.spec.ts:99:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-01 — data-scene="career-descent" is in the static export[39m[2m (80ms)[22m
+  [31m✘[39m  [2m2 [22m[31m[chromium] › tests/overhaul/scene-descent.spec.ts:109:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-02 — the band sits after the chart and the accordion, inside #experience[39m[2m (4.7s)[22m
+  [31m✘[39m  [2m3 [22m[31m[chromium] › tests/overhaul/scene-descent.spec.ts:132:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-03 — the stage is sticky, one viewport tall, in a taller band[39m[2m (4.2s)[22m
+  [31m✘[39m  [2m4 [22m[31m[chromium] › tests/overhaul/scene-descent.spec.ts:163:9 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-04 — zero pageerrors under ?gl=force at 1440[39m[2m (1.5m)[22m
+  [31m✘[39m  [2m5 [22m[31m[chromium] › tests/overhaul/scene-descent.spec.ts:163:9 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-04 — zero pageerrors under ?gl=force at 390[39m[2m (1.5m)[22m
+  [31m✘[39m  [2m6 [22m[31m[chromium] › tests/overhaul/scene-descent.spec.ts:181:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-05 — one caption line over the canvas, and no heading, paragraph or CTA[39m[2m (1.5m)[22m
+  [31m✘[39m  [2m7 [22m[31m[chromium] › tests/overhaul/scene-descent.spec.ts:210:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-06 — no raw hex and no gold in the scene source[39m[2m (21ms)[22m
+  [32m✓[39m  [2m8 [22m[chromium] › tests/overhaul/scene-descent.spec.ts:223:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-07 — the six-section IA is unchanged[2m (3.4s)[22m
+  [31m✘[39m  [2m9 [22m[31m[chromium] › tests/overhaul/scene-descent.spec.ts:235:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-08 — uSpans is read from experience.ts, never re-derived[39m[2m (4ms)[22m
+
+
+[31m  1) [chromium] › tests/overhaul/scene-descent.spec.ts:99:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-01 — data-scene="career-descent" is in the static export [39m
+
+    Error: career-descent must ship in out/index.html, not be injected after an interaction (v1 §0.6)
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoContain[2m([22m[32mexpected[39m[2m) // indexOf[22m
+
+    Expected value: [32m"career-descent"[39m
+    Received array: [31m["hero-atmosphere", "about-field", "career-strata", "skills-bench", "vitrine-field", "listen-field"][39m
+
+    [0m [90m 104 |[39m       scenes[33m,[39m
+     [90m 105 |[39m       [32m'career-descent must ship in out/index.html, not be injected after an interaction (v1 §0.6)'[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 106 |[39m     )[33m.[39mtoContain([32m'career-descent'[39m)[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 107 |[39m   })[33m;[39m
+     [90m 108 |[39m
+     [90m 109 |[39m   test([32m'TC-SCENE-DESCENT-02 — the band sits after the chart and the accordion, inside #experience'[39m[33m,[39m [36masync[39m ({[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2s1/tests/overhaul/scene-descent.spec.ts:106:7[22m
+
+[31m  2) [chromium] › tests/overhaul/scene-descent.spec.ts:109:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-02 — the band sits after the chart and the accordion, inside #experience [39m
+
+    Error: the band, the chart and the roles accordion must all live in #experience
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBeNull[2m()[22m
+
+    Received: [31mnull[39m
+
+    [0m [90m 125 |[39m     })[33m;[39m
+     [90m 126 |[39m
+    [31m[1m>[22m[39m[90m 127 |[39m     expect(order[33m,[39m [32m'the band, the chart and the roles accordion must all live in #experience'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m     |[39m                                                                                                   [31m[1m^[22m[39m
+     [90m 128 |[39m     expect(order[33m![39m[33m.[39mband)[33m.[39mtoBeGreaterThan(order[33m![39m[33m.[39mchart)[33m;[39m
+     [90m 129 |[39m     expect(order[33m![39m[33m.[39mband)[33m.[39mtoBeGreaterThan(order[33m![39m[33m.[39maccordion)[33m;[39m
+     [90m 130 |[39m   })[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2s1/tests/overhaul/scene-descent.spec.ts:127:99[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-descent-TC--de364-accordion-inside-experience-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-descent-TC--de364-accordion-inside-experience-chromium/error-context.md[22m
+
+[31m  3) [chromium] › tests/overhaul/scene-descent.spec.ts:132:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-03 — the stage is sticky, one viewport tall, in a taller band [39m
+
+    Error: the descent band and its sticky stage must both exist
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBeNull[2m()[22m
+
+    Received: [31mnull[39m
+
+    [0m [90m 149 |[39m     })[33m;[39m
+     [90m 150 |[39m
+    [31m[1m>[22m[39m[90m 151 |[39m     expect(geometry[33m,[39m [32m'the descent band and its sticky stage must both exist'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m     |[39m                                                                                   [31m[1m^[22m[39m
+     [90m 152 |[39m     expect(geometry[33m![39m[33m.[39mposition)[33m.[39mtoBe([32m'sticky'[39m)[33m;[39m
+     [90m 153 |[39m     [90m// 100vh stage inside a band at least 1.3x taller — v2 §3 asks for 160vh and[39m
+     [90m 154 |[39m     [90m// R-1 allows a shrink to 130vh; below that there is no travel to fall down.[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2s1/tests/overhaul/scene-descent.spec.ts:151:83[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-descent-TC--5065b-wport-tall-in-a-taller-band-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-descent-TC--5065b-wport-tall-in-a-taller-band-chromium/error-context.md[22m
+
+[31m  4) [chromium] › tests/overhaul/scene-descent.spec.ts:163:9 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-04 — zero pageerrors under ?gl=force at 1440 [39m
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#experience [data-descent-band]')[22m
+
+
+    [0m [90m 90 |[39m [90m/** Scrolls the descent band through its own travel and lets the scene mount. */[39m
+     [90m 91 |[39m [36masync[39m [36mfunction[39m scrollThroughBand(page[33m:[39m [33mPage[39m) {
+    [31m[1m>[22m[39m[90m 92 |[39m   [36mawait[39m page[33m.[39mlocator([33mBAND[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                            [31m[1m^[22m[39m
+     [90m 93 |[39m   [36mawait[39m page[33m.[39mwaitForTimeout([35m600[39m)[33m;[39m
+     [90m 94 |[39m   [36mawait[39m page[33m.[39mevaluate(() [33m=>[39m window[33m.[39mscrollBy([35m0[39m[33m,[39m [33mMath[39m[33m.[39mround(window[33m.[39minnerHeight [33m*[39m [35m0.6[39m)))[33m;[39m
+     [90m 95 |[39m   [36mawait[39m page[33m.[39mwaitForTimeout([35m900[39m)[33m;[39m[0m
+    [2m    at scrollThroughBand (/root/forgotten-mistory/.claude/worktrees/w2-x2s1/tests/overhaul/scene-descent.spec.ts:92:28)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2s1/tests/overhaul/scene-descent.spec.ts:172:13[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-descent-TC--53df8-rors-under-gl-force-at-1440-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-descent-TC--53df8-rors-under-gl-force-at-1440-chromium/error-context.md[22m
+
+[31m  5) [chromium] › tests/overhaul/scene-descent.spec.ts:163:9 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-04 — zero pageerrors under ?gl=force at 390 [39m
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#experience [data-descent-band]')[22m
+
+
+    [0m [90m 90 |[39m [90m/** Scrolls the descent band through its own travel and lets the scene mount. */[39m
+     [90m 91 |[39m [36masync[39m [36mfunction[39m scrollThroughBand(page[33m:[39m [33mPage[39m) {
+    [31m[1m>[22m[39m[90m 92 |[39m   [36mawait[39m page[33m.[39mlocator([33mBAND[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                            [31m[1m^[22m[39m
+     [90m 93 |[39m   [36mawait[39m page[33m.[39mwaitForTimeout([35m600[39m)[33m;[39m
+     [90m 94 |[39m   [36mawait[39m page[33m.[39mevaluate(() [33m=>[39m window[33m.[39mscrollBy([35m0[39m[33m,[39m [33mMath[39m[33m.[39mround(window[33m.[39minnerHeight [33m*[39m [35m0.6[39m)))[33m;[39m
+     [90m 95 |[39m   [36mawait[39m page[33m.[39mwaitForTimeout([35m900[39m)[33m;[39m[0m
+    [2m    at scrollThroughBand (/root/forgotten-mistory/.claude/worktrees/w2-x2s1/tests/overhaul/scene-descent.spec.ts:92:28)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2s1/tests/overhaul/scene-descent.spec.ts:172:13[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-descent-TC--89311-rrors-under-gl-force-at-390-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-descent-TC--89311-rrors-under-gl-force-at-390-chromium/error-context.md[22m
+
+[31m  6) [chromium] › tests/overhaul/scene-descent.spec.ts:181:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-05 — one caption line over the canvas, and no heading, paragraph or CTA [39m
+
+    [31mTest timeout of 90000ms exceeded.[39m
+
+    Error: locator.scrollIntoViewIfNeeded: Test timeout of 90000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#experience [data-descent-band]')[22m
+
+
+    [0m [90m 90 |[39m [90m/** Scrolls the descent band through its own travel and lets the scene mount. */[39m
+     [90m 91 |[39m [36masync[39m [36mfunction[39m scrollThroughBand(page[33m:[39m [33mPage[39m) {
+    [31m[1m>[22m[39m[90m 92 |[39m   [36mawait[39m page[33m.[39mlocator([33mBAND[39m)[33m.[39mscrollIntoViewIfNeeded()[33m;[39m
+     [90m    |[39m                            [31m[1m^[22m[39m
+     [90m 93 |[39m   [36mawait[39m page[33m.[39mwaitForTimeout([35m600[39m)[33m;[39m
+     [90m 94 |[39m   [36mawait[39m page[33m.[39mevaluate(() [33m=>[39m window[33m.[39mscrollBy([35m0[39m[33m,[39m [33mMath[39m[33m.[39mround(window[33m.[39minnerHeight [33m*[39m [35m0.6[39m)))[33m;[39m
+     [90m 95 |[39m   [36mawait[39m page[33m.[39mwaitForTimeout([35m900[39m)[33m;[39m[0m
+    [2m    at scrollThroughBand (/root/forgotten-mistory/.claude/worktrees/w2-x2s1/tests/overhaul/scene-descent.spec.ts:92:28)[22m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2s1/tests/overhaul/scene-descent.spec.ts:187:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/overhaul-scene-descent-TC--b5b84-no-heading-paragraph-or-CTA-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/overhaul-scene-descent-TC--b5b84-no-heading-paragraph-or-CTA-chromium/error-context.md[22m
+
+[31m  7) [chromium] › tests/overhaul/scene-descent.spec.ts:210:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-06 — no raw hex and no gold in the scene source [39m
+
+    Error: ENOENT: no such file or directory, open '/root/forgotten-mistory/.claude/worktrees/w2-x2s1/components/sections/Experience/CareerDescent.tsx'
+
+    [0m [90m 210 |[39m   test([32m'TC-SCENE-DESCENT-06 — no raw hex and no gold in the scene source'[39m[33m,[39m () [33m=>[39m {
+     [90m 211 |[39m     [36mfor[39m ([36mconst[39m path [36mof[39m [[33mDESCENT_TSX[39m[33m,[39m [33mDESCENT_GLSL[39m]) {
+    [31m[1m>[22m[39m[90m 212 |[39m       [36mconst[39m source [33m=[39m readFileSync(path[33m,[39m [32m'utf8'[39m)[33m;[39m
+     [90m     |[39m                                  [31m[1m^[22m[39m
+     [90m 213 |[39m       expect(source[33m,[39m [32m`${path} must not carry a raw hex colour — colours come from lib/palette.ts`[39m)[33m.[39mnot[33m.[39mtoMatch(
+     [90m 214 |[39m         [35m/#[0-9a-fA-F]{3,8}\b/[39m[33m,[39m
+     [90m 215 |[39m       )[33m;[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2s1/tests/overhaul/scene-descent.spec.ts:212:34[22m
+
+[31m  8) [chromium] › tests/overhaul/scene-descent.spec.ts:235:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-08 — uSpans is read from experience.ts, never re-derived [39m
+
+    Error: ENOENT: no such file or directory, open '/root/forgotten-mistory/.claude/worktrees/w2-x2s1/components/sections/Experience/CareerDescent.tsx'
+
+    [0m [90m 234 |[39m
+     [90m 235 |[39m   test([32m'TC-SCENE-DESCENT-08 — uSpans is read from experience.ts, never re-derived'[39m[33m,[39m () [33m=>[39m {
+    [31m[1m>[22m[39m[90m 236 |[39m     [36mconst[39m source [33m=[39m readFileSync([33mDESCENT_TSX[39m[33m,[39m [32m'utf8'[39m)[33m;[39m
+     [90m     |[39m                                [31m[1m^[22m[39m
+     [90m 237 |[39m
+     [90m 238 |[39m     expect(source[33m,[39m [32m'the descent must import the same roles the Gantt draws'[39m)[33m.[39mtoMatch(
+     [90m 239 |[39m       [35m/from '@\/app\/data\/portfolio\/experience'/[39m[33m,[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w2-x2s1/tests/overhaul/scene-descent.spec.ts:236:32[22m
+
+[31m  8 failed[39m
+[31m    [chromium] › tests/overhaul/scene-descent.spec.ts:99:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-01 — data-scene="career-descent" is in the static export [39m
+[31m    [chromium] › tests/overhaul/scene-descent.spec.ts:109:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-02 — the band sits after the chart and the accordion, inside #experience [39m
+[31m    [chromium] › tests/overhaul/scene-descent.spec.ts:132:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-03 — the stage is sticky, one viewport tall, in a taller band [39m
+[31m    [chromium] › tests/overhaul/scene-descent.spec.ts:163:9 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-04 — zero pageerrors under ?gl=force at 1440 [39m
+[31m    [chromium] › tests/overhaul/scene-descent.spec.ts:163:9 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-04 — zero pageerrors under ?gl=force at 390 [39m
+[31m    [chromium] › tests/overhaul/scene-descent.spec.ts:181:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-05 — one caption line over the canvas, and no heading, paragraph or CTA [39m
+[31m    [chromium] › tests/overhaul/scene-descent.spec.ts:210:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-06 — no raw hex and no gold in the scene source [39m
+[31m    [chromium] › tests/overhaul/scene-descent.spec.ts:235:7 › TC-SCENE-DESCENT — S7 career-descent mount › TC-SCENE-DESCENT-08 — uSpans is read from experience.ts, never re-derived [39m
+[32m  1 passed[39m[2m (5.1m)[22m
+EXIT=1

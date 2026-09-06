@@ -344,12 +344,30 @@ test.describe('#experience — the narrated signature (c18 / MOT-F-1)', () => {
     }
   });
 
+  /**
+   * The chart is scrolled to, not the section.
+   *
+   * This used to scroll `#experience` itself into view, which worked only while
+   * the section was about one viewport tall. Since `career-descent` landed
+   * (`x2-s1-career-descent-mount`) the section is a little over four viewports,
+   * and `scrollIntoViewIfNeeded` on a box that size parks in the dead ground
+   * between the two slots: measured at 1280x720, the chart sat 1326 px above the
+   * viewport and the descent stage 1235 px below it, so `Scene`'s half-viewport
+   * `rootMargin` mounted neither and the count was zero.
+   *
+   * The assertion is unchanged and the question is unchanged — *is there exactly
+   * one canvas behind the chart* — it is simply now asked at the chart, which is
+   * what the test has always been named after. Scoping the count to the
+   * `career-strata` slot as well makes it stricter than it was: a second scene
+   * drifting into the chart's own slot would now fail here.
+   */
   test('TC-SCENE-EXP-06: one canvas behind the chart at ?gl=force', async ({ page }) => {
     await page.goto('/?gl=force', { waitUntil: 'domcontentloaded' });
     await waitForPageReady(page);
-    await page.locator(EXPERIENCE).scrollIntoViewIfNeeded();
+    await page.locator(CHART).scrollIntoViewIfNeeded();
     await page.waitForTimeout(2500);
 
+    await expect(page.locator(`${EXPERIENCE} [data-scene="career-strata"] canvas`)).toHaveCount(1);
     await expect(page.locator(`${EXPERIENCE} canvas`)).toHaveCount(1);
   });
 

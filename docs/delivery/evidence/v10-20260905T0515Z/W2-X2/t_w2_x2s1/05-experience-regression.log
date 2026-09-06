@@ -1,0 +1,30 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-experience.spec.ts tests/e2e/experience.spec.ts --workers=1 --reporter=list
+
+[2mRunning [22m22[2m tests using [22m1[2m worker[22m
+
+  [32m✓[39m  [2m 1 [22m[chromium] › tests/e2e/experience.spec.ts:21:7 › Experience › TC-EXP-01: every role from the CV appears in the chart and the list[2m (3.4s)[22m
+  [32m✓[39m  [2m 2 [22m[chromium] › tests/e2e/experience.spec.ts:41:7 › Experience › TC-EXP-02: bar lengths are proportional to real durations[2m (2.0s)[22m
+  [32m✓[39m  [2m 3 [22m[chromium] › tests/e2e/experience.spec.ts:64:7 › Experience › TC-EXP-03: the axis is labelled with real years[2m (2.1s)[22m
+  [32m✓[39m  [2m 4 [22m[chromium] › tests/e2e/experience.spec.ts:71:7 › Experience › TC-EXP-04: each chart row is a real button with an accessible name[2m (2.5s)[22m
+  [32m✓[39m  [2m 5 [22m[chromium] › tests/e2e/experience.spec.ts:79:7 › Experience › TC-EXP-05: the current role opens by default and lists its bullets[2m (5.6s)[22m
+  [32m✓[39m  [2m 6 [22m[chromium] › tests/e2e/experience.spec.ts:86:7 › Experience › TC-EXP-06: roles expand and collapse from the keyboard[2m (4.8s)[22m
+  [32m✓[39m  [2m 7 [22m[chromium] › tests/e2e/experience.spec.ts:97:7 › Experience › TC-EXP-07: headline figures carry their role, not a bare number[2m (2.8s)[22m
+  [32m✓[39m  [2m 8 [22m[chromium] › tests/e2e/experience.spec.ts:107:9 › Experience › TC-EXP-09 @ 1280: every chart row, bar and readout lives inside the spine[2m (11.6s)[22m
+  [32m✓[39m  [2m 9 [22m[chromium] › tests/e2e/experience.spec.ts:107:9 › Experience › TC-EXP-09 @ 1440: every chart row, bar and readout lives inside the spine[2m (12.6s)[22m
+  [32m✓[39m  [2m10 [22m[chromium] › tests/e2e/experience.spec.ts:107:9 › Experience › TC-EXP-09 @ 1920: every chart row, bar and readout lives inside the spine[2m (11.3s)[22m
+  [32m✓[39m  [2m11 [22m[chromium] › tests/e2e/experience.spec.ts:159:7 › Experience › TC-EXP-10: the duration readouts are printed in --mist-200[2m (2.8s)[22m
+  [32m✓[39m  [2m12 [22m[chromium] › tests/e2e/experience.spec.ts:180:7 › Experience › TC-EXP-11: the longest bar is the brightest object in the chart, and it is ANZ[2m (2.8s)[22m
+  [32m✓[39m  [2m13 [22m[chromium] › tests/e2e/experience.spec.ts:240:7 › Experience › TC-EXP-08: the section is complete without WebGL[2m (2.5s)[22m
+  [32m✓[39m  [2m14 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:201:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-01: the bars are still growing 100 ms after the section commits[2m (4.5s)[22m
+  [32m✓[39m  [2m15 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:214:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-02: every bar reaches its real length within 1500 ms[2m (5.2s)[22m
+  [32m✓[39m  [2m16 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:227:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-03: gold paints only sourced employers, never a date[2m (5.0s)[22m
+  [32m✓[39m  [2m17 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:274:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-03b: at most one saturated employer gold shares the chart at rest[2m (3.4s)[22m
+  [32m✓[39m  [2m18 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:302:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-04: the today playhead is white[2m (2.6s)[22m
+  [32m✓[39m  [2m19 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:312:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-05: every duration label stays inside the chart card[2m (7.0s)[22m
+  [32m✓[39m  [2m20 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:364:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-06: one canvas behind the chart at ?gl=force[2m (4.9s)[22m
+  [32m✓[39m  [2m21 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:374:7 › #experience — the narrated signature (c18 / MOT-F-1) › TC-SCENE-EXP-07: the shader is bound to the spans it sits under[2m (25ms)[22m
+  [32m✓[39m  [2m22 [22m[chromium] › tests/overhaul/scene-experience.spec.ts:384:7 › #experience under reduced motion › TC-SCENE-EXP-08: no bar is ever shorter than its real duration[2m (5.4s)[22m
+
+[32m  22 passed[39m[2m (1.9m)[22m
+EXIT=0

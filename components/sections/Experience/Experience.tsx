@@ -15,6 +15,7 @@ import {
 import styles from './Experience.module.css';
 
 const CareerStrata = dynamic(() => import('./CareerStrata'), { ssr: false });
+const CareerDescent = dynamic(() => import('./CareerDescent'), { ssr: false });
 
 /** Percentage offsets for the DOM timeline, which is the accessible one. */
 function track(start: number, end: number | null) {
@@ -36,6 +37,22 @@ const DECADES = [2010, 2015, 2020, 2025];
  * column by hand to line up with the bars they are there to measure.
  */
 const LABEL_COLUMN = 'clamp(7rem, 22%, 14rem) + var(--space-2)';
+
+/**
+ * The descent's year ticks, read downward the way the camera travels.
+ *
+ * Same decades as the chart's horizontal axis, positioned by their own distance
+ * from `NOW` on the same sixteen-year span — so the two drawings of the career
+ * are ticked against one arithmetic, not two. `now` is the surface, `2010` the
+ * floor.
+ */
+const DESCENT_TICKS: readonly { label: string; depth: number }[] = [
+  { label: 'now', depth: 0 },
+  ...[...DECADES].reverse().map((year) => ({
+    label: String(year),
+    depth: (NOW - year) / (NOW - TIMELINE_START),
+  })),
+];
 
 /**
  * Experience — sixteen years on one axis, then the detail.
@@ -323,6 +340,45 @@ export default function Experience() {
             );
           })}
         </ol>
+
+        {/* The descent. The chart states the sixteen years and the accordion
+            evidences them; only then is the reader asked to fall down the
+            column. It is a band inside this section, never a seventh section —
+            the six-id information architecture in CLAUDE.md is unchanged. The
+            stage is sticky, so 60vh of scroll is the whole camera move, and the
+            only marks over the field are the year ticks and one caption line
+            (docs/architecture/SIGNATURE-SCENES-v2.md §3). */}
+        <div className={styles.descentBand} data-descent-band>
+          <div className={styles.descentStage} data-descent-stage>
+            <Scene
+              className={styles.descentScene}
+              sceneId="career-descent"
+              resolutionScale={0.5}
+            >
+              <CareerDescent hover={active} />
+            </Scene>
+
+            {/* The axis above already reads these years to a screen reader; a
+                second recitation of the same four numbers is noise, so these
+                are the picture's ruler and nothing more. */}
+            <div className={styles.descentTicks} aria-hidden="true">
+              {DESCENT_TICKS.map((tick) => (
+                <span
+                  key={tick.label}
+                  className={styles.descentTick}
+                  data-descent-tick
+                  style={{ top: `${tick.depth * 100}%` }}
+                >
+                  {tick.label}
+                </span>
+              ))}
+            </div>
+
+            <span className={styles.descentCaption} data-descent-caption>
+              {experienceContent.descentCaption}
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   );
