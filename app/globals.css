@@ -498,6 +498,50 @@
     background: none;
 }
 
+/* ── The control's own ground (t_w1_mv5, TC-MV-OCCLUDE-02 regression) ────────
+   The launcher is two opaque parts with air between them: the label pill is
+   106×29 and the disc is 44×44, so the button's own box at 390 is 158×44 and
+   the parts cover only the middle of it. The 7px band above the pill, the 8px
+   below it and the 8px gap between pill and disc were never painted by the
+   launcher at all — the page showed straight through them.
+
+   That was invisible for as long as whatever sat behind those bands was dark,
+   and the launcher's own CSS never changed: `git diff b02a8863 b9f5195e --
+   app/globals.css` touches only `.minivic-dock:hover` / `pointer-events`
+   (t_w1_mv2) and `.minivic-panel`'s height (t_w1_red2) — the `.minivic-launcher`,
+   `__pill` and `__disc` rules are byte-identical across the window. What moved
+   is the page under it: G-H1 S1 (9287089) took the role, location and caption
+   out of the hero fold, every section below slid up by that much, and at 390
+   the sample point TC-MV-OCCLUDE-02 uses (scrollY = 2 × 844) now puts the
+   About instrument stage's SVG behind those bands. Measured on 314d9d28 with a
+   glyph-masked screenshot: 172 of 1659 pixels inside the button box are above
+   the ceiling and the brightest is rgb(171,171,171), luminance 0.4072 against
+   a ceiling of 0.0968; `document.elementsFromPoint` at those pixels returns
+   `button.minivic-launcher › div.minivic-dock › svg › div.About_instrumentStage`.
+
+   So the fix is not a colour: it is that the control has to own every pixel of
+   its own footprint. Below 87.5rem — the widths where it floats over the
+   measure — the button paints its own ground at --ink-900 (#0A0A0A, luminance
+   0.0033), and the pill and disc keep their shapes on top of it. The radius is
+   2px rather than the capsule's 999px on purpose: a stadium of radius r leaves
+   its box's corners r(√2−1) outside the paint — 9.1px at this size — and those
+   corners are page, not launcher. At 2px the unpainted sliver is 0.6px, under
+   one device pixel, so the plate is the footprint to the pixel.
+
+   It is a ground, not a reveal: nothing here changes what the launcher shows.
+   The pill stays `display: inline-block` at every width and the dock keeps its
+   opacity gate (G-MV1, MONO-MV-02), the hairlines and the dimmed portrait are
+   unchanged, and --ink-900 is R == G == B so MONO-MV-01 still holds. Above
+   87.5rem the page's own 96px gutter holds the disc clear of the measure and
+   the launcher keeps its transparent ground, which is what lets the portrait
+   and the mark be shown there at full value. */
+@media (max-width: 87.4375rem) {
+    .minivic-launcher {
+        background: var(--ink-900);
+        border-radius: 2px;
+    }
+}
+
 /* The name, at every width (G-MV1). It used to appear only from 52.125rem up,
    which left the phone — where the control is smallest and the page busiest —
    with a bare disc and no way to know it opened a conversation. The plate is

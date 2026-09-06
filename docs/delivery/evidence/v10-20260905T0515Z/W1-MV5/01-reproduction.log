@@ -1,0 +1,99 @@
+# W1-MV5 — TC-MV-OCCLUDE-02 @390 reproduction and root cause
+# worktree-w1-mv5, branched from origin/main 314d9d28 ("consolidate: merge
+# worktree-w2-x2f7 into main"). Own static export, served on :5635.
+# Chrome channel=chrome, --no-sandbox, workers=1.
+
+$ npm run build:static                 # EXIT=0, build-commit 314d9d28
+$ python3 -m http.server 5635 --directory out    # 200 OK
+
+## (1) reproduction — the spec, unmodified
+$ PLAYWRIGHT_BASE_URL=http://127.0.0.1:5635 npx playwright test \
+    tests/a11y/minivic-occlusion.spec.ts --workers=1 --reporter=list
+
+  TC-MV-OCCLUDE-01  PASS (20.6s)
+  TC-MV-OCCLUDE-02  FAIL (8.0s)
+    Error: the brightest ground the closed launcher paints at 390 is
+    rgb(171,171,171) (relative luminance 0.4072); the ceiling that keeps
+    rgb(205,205,205) body ink at 4.5:1 is 0.0968
+      Expected: <= 0.09677679351285885
+      Received:    0.40724021190173665
+    at tests/a11y/minivic-occlusion.spec.ts:415:7
+
+## (2) what is actually painting those pixels (probe-occlude02.mjs, same
+##     measurement as the spec: glyph mask, viewport screenshot, 2px lattice
+##     over the toggle's bounding box)
+
+  viewport 390x844  hover=false
+  box   = {x: 207.625, y: 776, width: 158.375, height: 44}
+  brightest rgb(182,182,182) L=0.4678 at [275,777]   ceiling 0.0968   FAIL
+  pixels over ceiling: 172 / 1659
+
+  document.elementsFromPoint at the offending pixels ([247,777], [249,777],
+  [255,777], [257,777] …):
+    button.minivic-launcher group
+    div.minivic-dock fixed bottom-6 right-6 z-[10030]
+    svg
+    div.About_instrumentStage__otsrl
+
+  geometry of the control's parts at 390 (getBoundingClientRect / getComputedStyle):
+    button  x208 y776 w158 h44   background rgba(0, 0, 0, 0)   <- paints nothing
+    pill    x208 y783 w106 h29   background rgb(10, 10, 10)
+    disc    x322 y776 w 44 h44   background rgb(10, 10, 10)
+    dock opacity 1
+
+  => the launcher's box is 158x44; its two opaque parts cover 106x29 + 44x44 of
+     it. The 7px band above the pill, the 8px below it and the 8px gap between
+     pill and disc are not painted by the launcher at all, and the About
+     instrument stage's SVG shows through them at rgb(182,182,182).
+
+## (3) which change put a light element behind those bands
+
+  The launcher did not change. Across the whole regression window the
+  `.minivic-launcher`, `.minivic-launcher__pill` and `.minivic-launcher__disc`
+  rules are byte-identical:
+
+  $ git diff b02a8863 b9f5195e -- app/globals.css
+    only two hunks:
+      + .minivic-dock:hover { opacity: 1 !important }          (t_w1_mv2 6d007ad)
+      + .minivic-dock .minivic-launcher { pointer-events: auto } (t_w1_mv2 6d007ad)
+      - .minivic-panel height 100svh - 27.5rem
+      + .minivic-panel height 100svh - 28rem                    (t_w1_red2 9deea50)
+    Neither hunk touches the closed launcher's painted box.
+
+  $ git diff --stat b02a8863 b9f5195e -- components/sections/About
+    (empty — the About section is unchanged in the window)
+
+  $ git log --oneline b02a8863..b9f5195e -- components/sections/Hero/
+    9835a95 feat(hero): the light finds the figure … (G-H1 S2)
+    9287089 feat(hero): the plane owns the frame: [data-plane=hero] wraps Scene
+            + figure, portrait moves into the plane at §3 geometry,
+            *role/location/caption move below the fold* … (G-H1 S1)
+
+  INTRODUCING COMMIT: 9287089 (G-H1 S1). It is the only change in the window
+  that alters the hero's height at 390, and every section below it slides by
+  that amount. TC-MV-OCCLUDE-02 samples at a fixed scrollY (2 x 844 = 1688), so
+  moving the page under the launcher is what put the About instrument stage's
+  SVG behind the launcher's unpainted bands. Measured consequence, above:
+  172/1659 pixels of the launcher's box above the ceiling, brightest
+  rgb(171,171,171)/rgb(182,182,182) (the value moves between runs because the
+  instrument stage animates) against a ceiling of 0.0968.
+
+  CANDIDATES RULED OUT, with the diff that rules them out:
+    6d007ad (mv2 :hover / pointer-events)  — adds no paint to the closed control
+    9deea50 (red2 panel cap)               — .minivic-panel only; the panel is
+                                             not mounted while the launcher is
+                                             closed
+    9835a95 (S2 poolPlate/uFigure)         — hero shader only, no layout
+    1e1cb392 (S3)                          — no Hero/About/launcher file in the
+                                             diff of the window
+
+  NOT RUN: a per-commit rebuild bisect (5 exports x ~4 min + a browser each)
+  does not fit the 30-minute cap with three other lanes on 4 cores. The commit
+  above is named from the source diff plus the measurement in (2), which
+  identifies the painting element rather than inferring it.
+
+## (4) DECISION (docs/prompt.md §0.1)
+  The defect is not a colour and it is not the page behind: a floating control
+  cannot depend on what happens to be under it. The fix is that the launcher
+  owns every pixel of its own footprint below 87.5rem — the widths where it
+  floats over the measure. See 02-fix.md.
