@@ -42,7 +42,33 @@ import {
   runWithFallback,
 } from './miniVicRoute.mjs';
 
-export type BrainSource = 'openrouter' | 'knowledge' | 'fallback';
+/**
+ * Where an answer came from. The first four are the real rungs of the server
+ * ladder (functions/index.js CHAT_PROVIDER_SPECS) and are read off the wire —
+ * this union used to be `'openrouter' | 'knowledge' | 'fallback'` and
+ * `askMiniVicBrain` returned `'openrouter'` unconditionally, which was false on
+ * all eleven live samples in docs/architecture/MINIVIC-BRAIN-0-4.md §1.3 (every
+ * one answered `openai`). `'fallback'` now means only what it says: nothing
+ * named the rung, so nothing is claimed about it.
+ */
+export type BrainSource =
+  | 'openrouter'
+  | 'deepseek'
+  | 'zai'
+  | 'openai'
+  | 'knowledge'
+  | 'fallback';
+
+/** The rung ids the function can name in a `done` event or a JSON body. */
+const LIVE_RUNGS: readonly BrainSource[] = ['openrouter', 'deepseek', 'zai', 'openai'];
+
+/** A provider string from the wire, or `'fallback'` — never a guess. */
+function toBrainSource(provider: string | undefined): BrainSource {
+  const named = (provider ?? '').trim();
+  return (LIVE_RUNGS as readonly string[]).includes(named)
+    ? (named as BrainSource)
+    : 'fallback';
+}
 
 export interface BrainTurn {
   role: 'user' | 'bot';
@@ -279,7 +305,7 @@ async function callChatRoute(
   body: string,
   wantsStream: boolean,
   onDelta?: BrainDeltaHandler,
-): Promise<string> {
+): Promise<{ text: string; provider: string }> {
   const controller = new AbortController();
   const overall = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   const firstByte =
@@ -309,12 +335,12 @@ async function callChatRoute(
     if (!contentType.includes('application/json')) {
       throw new Error('chat endpoint returned non-JSON (unavailable)');
     }
-    const data = (await response.json()) as { text?: string };
+    const data = (await response.json()) as { text?: string; provider?: string };
     const text = (data.text ?? '').trim();
     if (!text) {
       throw new Error('chat endpoint returned empty text');
     }
-    return text;
+    return { text, provider: String(data.provider ?? '') };
   } finally {
     clearTimeout(overall);
     if (firstByte) clearTimeout(firstByte);
@@ -334,7 +360,7 @@ async function callChatFunction(
   mode: PersonaMode,
   history: BrainTurn[],
   onDelta?: BrainDeltaHandler,
-): Promise<string> {
+): Promise<{ text: string; provider: string }> {
   const messages: Array<{ role: 'user' | 'assistant'; content: string }> = [
     ...history.slice(-MAX_HISTORY_TURNS).map((turn) => ({
       role: (turn.role === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
@@ -371,7 +397,7 @@ async function callChatFunction(
 async function readStreamedReply(
   response: Response,
   onDelta: BrainDeltaHandler,
-): Promise<string> {
+): Promise<{ text: string; provider: string }> {
   const body = response.body;
   if (!body) throw new Error('chat endpoint streamed an empty body');
   const reader = body.getReader();
@@ -379,6 +405,10 @@ async function readStreamedReply(
   let buffer = '';
   let text = '';
   let failed = '';
+  // The function has always sent `{done: true, provider, model}`; the client
+  // used to read the frame and throw the provider away, which is what made the
+  // panel's "via …" claim a hard-coded guess.
+  let provider = '';
 
   const drain = (block: string) => {
     for (const line of block.split('\n')) {
@@ -386,7 +416,7 @@ async function readStreamedReply(
       if (!trimmed.startsWith('data:')) continue;
       const payload = trimmed.slice(5).trim();
       if (!payload) continue;
-      let parsed: { delta?: string; done?: boolean; error?: string };
+      let parsed: { delta?: string; done?: boolean; error?: string; provider?: string };
       try {
         parsed = JSON.parse(payload);
       } catch {
@@ -395,6 +425,9 @@ async function readStreamedReply(
       if (parsed.error) {
         failed = parsed.error;
         continue;
+      }
+      if (typeof parsed.provider === 'string' && parsed.provider) {
+        provider = parsed.provider;
       }
       if (typeof parsed.delta === 'string' && parsed.delta) {
         text += parsed.delta;
@@ -419,7 +452,7 @@ async function readStreamedReply(
   if (failed) throw new Error(`chat stream ended early: ${failed}`);
   const answer = text.trim();
   if (!answer) throw new Error('chat endpoint streamed no text');
-  return answer;
+  return { text: answer, provider };
 }
 
 /**
@@ -443,8 +476,8 @@ export async function askMiniVicBrain(
 ): Promise<BrainReply> {
   // Tier 1 — the server-side brain. Provider keys never leave the function.
   try {
-    const text = await callChatFunction(query, mode, history, onDelta);
-    return { text: sanitizeResponse(text), source: 'openrouter' };
+    const { text, provider } = await callChatFunction(query, mode, history, onDelta);
+    return { text: sanitizeResponse(text), source: toBrainSource(provider) };
   } catch {
     // Tier 2 — the deterministic offline knowledge base below.
   }

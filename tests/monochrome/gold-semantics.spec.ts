@@ -82,8 +82,8 @@ test.describe('R-21 / R-110 — gold means "this figure has a source"', () => {
     const panel = page.locator('[data-testid="minivic-panel"]');
     await expect(panel).toBeVisible();
 
-    const badge = panel.getByText('MiniVic Live', { exact: true }).locator('xpath=..');
-    await expect(badge, 'the "MiniVic Live" badge is the subject of this check').toBeVisible();
+    const badge = panel.getByText('MiniVic · synthetic', { exact: true }).locator('xpath=..');
+    await expect(badge, 'the "MiniVic · synthetic" badge is the subject of this check').toBeVisible();
     const dot = badge.locator('span').first();
     await expect(dot).toBeVisible();
 

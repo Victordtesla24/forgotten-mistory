@@ -1,0 +1,40 @@
+ok 4 - normaliseConversation
+ok 5 - resolveChatProviders
+ok 6 - completeChat ladder
+ok 7 - Firebase trigger discovery
+ok 8 - G-M3 — warm request
+ok 9 - G-M3 — ladder order survives a cold start
+ok 10 - G-M3 — streamed completion
+# Subtest: §0.4 ladder order (MV-ORDER)
+    # Subtest: MV-ORDER-01: the default ladder starts at openrouter
+    not ok 1 - MV-ORDER-01: the default ladder starts at openrouter
+    # Subtest: MV-ORDER-02: openai is the last rung, never the first
+    not ok 2 - MV-ORDER-02: openai is the last rung, never the first
+    # Subtest: MV-ORDER-03: every rung is still in the default order
+    not ok 3 - MV-ORDER-03: every rung is still in the default order
+not ok 11 - §0.4 ladder order (MV-ORDER)
+# Subtest: the answer carries the rung that produced it (MV-PROV)
+    # Subtest: MV-PROV-04: a 402 on openrouter is recorded and deepseek is named as the answering rung
+    ok 1 - MV-PROV-04: a 402 on openrouter is recorded and deepseek is named as the answering rung
+ok 12 - the answer carries the rung that produced it (MV-PROV)
+# Subtest: balance-flavoured 429s (MV-429)
+    # Subtest: MV-429-05: a balance-flavoured 429 earns the ten-minute credential cooldown
+    not ok 1 - MV-429-05: a balance-flavoured 429 earns the ten-minute credential cooldown
+    # Subtest: MV-429-06: a plain 429 keeps the short cooldown
+    ok 2 - MV-429-06: a plain 429 keeps the short cooldown
+not ok 13 - balance-flavoured 429s (MV-429)
+# Subtest: warm-ping priming (MV-WARM)
+    # Subtest: MV-WARM-07: the warm ping answers 204 without waiting on any rung
+    ok 1 - MV-WARM-07: the warm ping answers 204 without waiting on any rung
+    # Subtest: MV-WARM-08: priming records dead rungs and spends at most one token on a live one
+    not ok 2 - MV-WARM-08: priming records dead rungs and spends at most one token on a live one
+    # Subtest: MV-WARM-09: priming never rejects into the request path
+    not ok 3 - MV-WARM-09: priming never rejects into the request path
+not ok 14 - warm-ping priming (MV-WARM)
+# Subtest: payload validation short-circuits the ladder (MV-400)
+    # Subtest: MV-400-10: an invalid payload is rejected fast and without a rung
+    ok 1 - MV-400-10: an invalid payload is rejected fast and without a rung
+ok 15 - payload validation short-circuits the ladder (MV-400)
+# tests 55
+# pass 49
+# fail 6

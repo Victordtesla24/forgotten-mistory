@@ -184,6 +184,16 @@ const CREDENTIAL_FAILURE_STATUS = new Set([401, 402, 403]);
 const CREDENTIAL_COOLDOWN_MS = 10 * 60 * 1000;
 /** 429 is usually transient, so it earns a much shorter rest. */
 const RATE_LIMIT_COOLDOWN_MS = 60 * 1000;
+/**
+ * ...except when a 429 is really a 402 wearing the wrong number. Z.ai reports an
+ * empty account as `429 {"error":{"code":"1113","message":"Insufficient balance
+ * or no resource package. Please recharge."}}` — measured 2026-09-06 at 0.668 s
+ * a call (docs/architecture/MINIVIC-BRAIN-0-4.md §1.1). Classified as a rate
+ * limit it was re-probed roughly once a minute for as long as the account
+ * stayed empty; a body matching this takes the ten-minute credential cooldown
+ * instead, which is what the condition actually is.
+ */
+const BALANCE_IN_429 = /insufficient balance|no resource package|quota exhausted|recharge/i;
 
 /**
  * Provider ladder, highest preference first. Every entry speaks the OpenAI
@@ -241,26 +251,36 @@ const providerCooldowns = new Map();
  * dropped — the ladder still self-heals the moment an account is topped up.
  */
 /**
- * Default order: the rung that is actually answering in production goes first.
+ * Default order: the contracted §0.4 ladder — `openrouter,deepseek,zai,openai`.
  *
- * Measured on live 2026-09-05T13:18Z from this function's own rung log — the
- * top three rungs are all sitting on the credential cooldown and `openai` is
- * the one answering:
+ * An earlier revision of this constant put `openai` first and argued for it on
+ * latency grounds. That inverted docs/prompt.md §0.4, which is not a
+ * latency-conditional rule, and the comment defending it has been replaced
+ * rather than left standing as a lie.
  *
- *   rungs: [openrouter cooling_down, deepseek cooling_down, zai cooling_down,
- *           openai answered 1736 ms]   firstTokenMs 493
+ * What the latency argument was pointing at is real and is measured
+ * (docs/architecture/MINIVIC-BRAIN-0-4.md §1.1, 2026-09-06, from this project's
+ * VPS): a cold instance with an empty cooldown map pays every dead rung in
+ * series before reaching one with credit —
  *
- * That cooldown map lives in one warm instance's memory. On a COLD instance it
- * is empty, so a visitor pays three failing round trips before reaching the
- * rung that works — the OpenRouter 402 alone measured 0.169 s and the DeepSeek
- * 402 measured 1.174 s. Putting the working rung first removes that tax from
- * exactly the request that is already the slowest one a visitor ever makes.
+ *   openrouter  402 `Insufficient credits`                        0.080 s
+ *   deepseek    402 `Insufficient Balance`                        0.918 s
+ *   zai         429 `code 1113 — Insufficient balance`            0.668 s
+ *                                                       total ≈  1.67 s
  *
- * This is a statement about which accounts currently have credit, not about
- * which provider is better. Top an account up and reorder it back — that is
- * what the env override is for, and every rung is still in the ladder.
+ * That tax is paid away rather than accepted: `primeProviderCooldowns()` runs
+ * on the `?warm=1` ping, while the visitor is still typing, so the map is
+ * already populated by the time a real send walks the ladder. The rungs above
+ * are silent because their accounts are empty (OpenRouter is overdrawn by
+ * USD 5.384318264), not because they are worse — the ladder self-heals the
+ * moment one is topped up, and the UI names the rung that actually answered
+ * instead of claiming one that did not.
+ *
+ * `CHAT_PROVIDER_ORDER` in the functions env still reorders rungs without a
+ * code change, and ids not named keep their relative order behind the named
+ * ones, so no rung is ever dropped.
  */
-const DEFAULT_PROVIDER_ORDER = "openai,openrouter,deepseek,zai";
+const DEFAULT_PROVIDER_ORDER = "openrouter,deepseek,zai,openai";
 function orderChatProviders(providers, orderSpec) {
   const wanted = String(orderSpec || "")
     .split(",")
@@ -489,6 +509,84 @@ async function consumeProviderStream(provider, response, onDelta) {
   return text.trim();
 }
 
+/** A priming probe is worth 3 s of the visitor's typing time and no more. */
+const PRIME_TIMEOUT_MS = 3000;
+
+/** Epoch ms of this instance's last priming run. Per warm instance, like the map. */
+let lastPrimedAt = 0;
+
+/**
+ * Populate `providerCooldowns` before a visitor's first send needs it.
+ *
+ * The cooldown map lives in one warm instance's memory, so on a fresh instance
+ * it is empty and the first real send walks every dead rung in series — 1.67 s
+ * measured (see DEFAULT_PROVIDER_ORDER above). This runs on the `?warm=1` ping
+ * instead, in parallel, while the visitor is still reading the greeting.
+ *
+ * It is measurement, not an assumption baked into code: a rung that answers is
+ * cleared, a rung that 402s or reports an empty balance is rested, and the map
+ * self-heals the moment an account is topped up. Every probe carries
+ * `max_tokens: 1`, so a live rung costs one token and a dead one costs nothing.
+ *
+ * Contract: never rejects, never blocks a response, never logs key material.
+ * `tests/minivic_chat_function.test.mjs` MV-WARM-08/09 assert both halves.
+ */
+async function primeProviderCooldowns({
+  providers = resolveChatProviders(),
+  fetchImpl = fetch,
+  now = Date.now,
+  cooldowns = providerCooldowns,
+  timeoutMs = PRIME_TIMEOUT_MS,
+} = {}) {
+  await Promise.allSettled(
+    providers.map(async (provider) => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const response = await fetchImpl(provider.url, {
+          method: "POST",
+          signal: controller.signal,
+          headers: {
+            Authorization: `Bearer ${provider.apiKey}`,
+            "content-type": "application/json",
+            ...(provider.headers || {}),
+          },
+          body: JSON.stringify({
+            model: provider.model,
+            messages: [{ role: "user", content: "ping" }],
+            max_tokens: 1,
+            temperature: 0,
+          }),
+        });
+        if (response.ok) {
+          cooldowns.delete(provider.id);
+          return;
+        }
+        const detail = typeof response.text === "function"
+          ? String((await response.text()) || "").slice(0, 200)
+          : "";
+        if (CREDENTIAL_FAILURE_STATUS.has(response.status)) {
+          cooldowns.set(provider.id, now() + CREDENTIAL_COOLDOWN_MS);
+        } else if (response.status === 429) {
+          cooldowns.set(
+            provider.id,
+            now() + (BALANCE_IN_429.test(detail) ? CREDENTIAL_COOLDOWN_MS : RATE_LIMIT_COOLDOWN_MS),
+          );
+        }
+        // Any other status is the rung being temporarily unwell, which the
+        // ladder already handles per-request. Recording it here would suppress
+        // a working rung for ten minutes on one bad second.
+      } catch {
+        // A probe that never completed measured nothing, so it must change
+        // nothing: leaving the map untouched makes the real send try the rung.
+        // This is the no-reject half of the contract above (MV-WARM-09).
+      } finally {
+        clearTimeout(timer);
+      }
+    }),
+  );
+}
+
 /**
  * Walk the provider ladder and return the first success.
  *
@@ -554,7 +652,14 @@ async function completeChat({
       if (CREDENTIAL_FAILURE_STATUS.has(status)) {
         cooldowns.set(provider.id, now() + CREDENTIAL_COOLDOWN_MS);
       } else if (status === 429) {
-        cooldowns.set(provider.id, now() + RATE_LIMIT_COOLDOWN_MS);
+        // A balance-flavoured 429 is a credit failure, not a burst limit, and
+        // resting it for 60 s just buys another dead round trip a minute later.
+        const detail = err instanceof ChatProviderError ? String(err.detail || "") : "";
+        const isBalance = BALANCE_IN_429.test(detail);
+        cooldowns.set(
+          provider.id,
+          now() + (isBalance ? CREDENTIAL_COOLDOWN_MS : RATE_LIMIT_COOLDOWN_MS),
+        );
       }
       const outcome = status ? `http_${status}` : "unavailable";
       attempts.push({ provider: provider.id, outcome });
@@ -670,6 +775,18 @@ exports.minivicChat = onRequest(
     if (isWarmRequest(req)) {
       res.set("Cache-Control", "no-store");
       res.status(204).send("");
+      // The 204 is on the wire BEFORE any rung is touched, so nothing a
+      // provider does can delay the ping the browser is waiting on. What
+      // follows is fire-and-forget: it fills the cooldown map so the visitor's
+      // first send does not pay the 1.67 s serial dead-rung tax. Guarded to at
+      // most one run per credential-cooldown window per instance, because
+      // rested rungs stay rested for exactly that long — probing more often
+      // would learn nothing new and spend a token doing it.
+      const primedAgo = Date.now() - lastPrimedAt;
+      if (primedAgo >= CREDENTIAL_COOLDOWN_MS) {
+        lastPrimedAt = Date.now();
+        void primeProviderCooldowns();
+      }
       return;
     }
     if (req.method !== "POST") {
@@ -792,5 +909,6 @@ exports.resolveChatProviders = resolveChatProviders;
 exports.completeChat = completeChat;
 exports.orderChatProviders = orderChatProviders;
 exports.DEFAULT_PROVIDER_ORDER = DEFAULT_PROVIDER_ORDER;
+exports.primeProviderCooldowns = primeProviderCooldowns;
 exports.isWarmRequest = isWarmRequest;
 exports.wantsStreamedReply = wantsStreamedReply;

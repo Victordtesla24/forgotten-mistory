@@ -389,4 +389,120 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
     await expect(panel.getByRole('button', { name: 'Close mini Vic' })).toBeVisible();
     await expect(panel.getByRole('button', { name: 'Send message' })).toBeVisible();
   });
+
+  /**
+   * CB-LABEL — the panel says what it is.
+   *
+   * Written before the implementation, from docs/architecture/MINIVIC-BRAIN-0-4.md
+   * §2(b)/§4.2 (t_w1_r2sa). The panel made three claims and two were false: a
+   * `MiniVic Live` badge on a pre-rendered avatar loop, and a hard-coded
+   * `source: 'openrouter'` in lib/miniVicBrain.ts that was wrong on all eleven
+   * live samples the architecture pass measured (every one answered `openai`).
+   *
+   * Both routes the client walks are intercepted — the Cloud Run origin it
+   * tries FIRST and the /api/chat Hosting rewrite it falls back to — because
+   * intercepting only one leaves the other free to answer and the assertion
+   * then measures the wrong thing.
+   */
+  const CHAT_ROUTE_GLOBS = ['**/minivicchat-*.run.app/**', '**/api/chat**'];
+
+  async function answerWith(page: Page, provider: string) {
+    for (const glob of CHAT_ROUTE_GLOBS) {
+      await page.route(glob, async (route) => {
+        if (route.request().method() !== 'POST') {
+          await route.fulfill({ status: 204, body: '' });
+          return;
+        }
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          headers: { 'access-control-allow-origin': '*' },
+          body: JSON.stringify({ text: 'Fifteen years, mostly delivery leadership.', provider, model: 'x' }),
+        });
+      });
+    }
+  }
+
+  async function failBothRoutes(page: Page) {
+    for (const glob of CHAT_ROUTE_GLOBS) {
+      await page.route(glob, async (route) => {
+        if (route.request().method() !== 'POST') {
+          await route.fulfill({ status: 204, body: '' });
+          return;
+        }
+        await route.fulfill({
+          status: 502,
+          contentType: 'application/json',
+          headers: { 'access-control-allow-origin': '*' },
+          body: JSON.stringify({ error: 'chat_upstream_failed' }),
+        });
+      });
+    }
+  }
+
+  async function sendOnce(page: Page, panel: ReturnType<Page['locator']>) {
+    const input = page.locator('[data-testid="minivic-input"]');
+    await input.fill('How many years of experience?');
+    await panel.getByRole('button', { name: 'Send message' }).click();
+  }
+
+  test('CB-LABEL-01: the badge does not claim liveness', async ({ page }) => {
+    await gotoHome(page);
+    const { panel } = await openMiniVic(page);
+
+    await expect(panel.getByText('MiniVic · synthetic', { exact: true })).toBeVisible();
+    await expect(page.getByText('MiniVic Live')).toHaveCount(0);
+  });
+
+  test('CB-LABEL-02: the truth line names voice, face and answers', async ({ page }) => {
+    await gotoHome(page);
+    const { panel } = await openMiniVic(page);
+
+    const line = panel.locator('[data-testid="minivic-synthetic-label"]');
+    await expect(line).toBeVisible();
+    await expect(line).toHaveText(/Voice: ElevenLabs stock · Face: pre-rendered loop · Answers: /);
+  });
+
+  test('CB-LABEL-03: the provider is read at runtime, not hard-coded', async ({ page }) => {
+    await gotoHome(page);
+    await answerWith(page, 'deepseek');
+    const { panel } = await openMiniVic(page);
+    const line = panel.locator('[data-testid="minivic-synthetic-label"]');
+
+    await sendOnce(page, panel);
+    await expect(line).toHaveText(/Answers: live text via deepseek$/, { timeout: 20000 });
+
+    // Same page, a different rung on the wire: the sentence must follow the
+    // wire, which a hard-coded literal could never do.
+    await page.unrouteAll({ behavior: 'ignoreErrors' });
+    await answerWith(page, 'openrouter');
+    await sendOnce(page, panel);
+    await expect(line).toHaveText(/Answers: live text via openrouter$/, { timeout: 20000 });
+  });
+
+  test('CB-LABEL-04: an offline answer is not called live', async ({ page }) => {
+    await gotoHome(page);
+    await failBothRoutes(page);
+    const { panel } = await openMiniVic(page);
+    const line = panel.locator('[data-testid="minivic-synthetic-label"]');
+
+    await sendOnce(page, panel);
+    await expect(line).toHaveText(/Answers: offline knowledge base$/, { timeout: 20000 });
+  });
+
+  test('CB-LABEL-05: the disclosure survives every panel state', async ({ page }) => {
+    await gotoHome(page);
+    await answerWith(page, 'openai');
+    const { panel } = await openMiniVic(page);
+    const line = panel.locator('[data-testid="minivic-synthetic-label"]');
+
+    // idle
+    await expect(line).toBeVisible();
+    // in flight — the send is under way and the reply has not landed
+    await sendOnce(page, panel);
+    await expect(line).toBeVisible();
+    // answered, with the voice transport engaged
+    await expect(line).toHaveText(/Answers: live text via openai$/, { timeout: 20000 });
+    await expect(line).toBeVisible();
+  });
 });

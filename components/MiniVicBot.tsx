@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
 import Scene from "@/components/gl/Scene";
-import { askMiniVicBrain, warmMiniVicBrain, type BrainTurn } from "@/lib/miniVicBrain";
+import { askMiniVicBrain, warmMiniVicBrain, type BrainSource, type BrainTurn } from "@/lib/miniVicBrain";
 import { GREETING, type PersonaMode } from "@/app/data/miniVicKnowledge";
 import { greetingAudioSha256 } from "@/app/data/generated/greeting-asset";
 import { Copy, Pause, Play, RefreshCcw, Send, Sparkles, Volume2, VolumeX, X, Mic, MicOff } from "lucide-react";
@@ -207,6 +207,10 @@ const MiniVicBot = () => {
   const [isListening, setIsListening] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  // The rung that produced the last answer, read off the wire. `null` means
+  // nothing has been asked yet, and the disclosure below says only what it can
+  // support: "Answers: live text" with no "via" clause it cannot back up.
+  const [answerSource, setAnswerSource] = useState<BrainSource | null>(null);
   const [activeMode, setActiveMode] = useState<ModeKey>("recruiter");
   const [latencyMs, setLatencyMs] = useState<number | null>(null);
   const [lastAudio, setLastAudio] = useState<string | null>(null);
@@ -943,6 +947,7 @@ const MiniVicBot = () => {
         },
       );
 
+      setAnswerSource(reply.source);
       const botMessage: ChatMessage = {
         id: botMessageId,
         role: "bot",
@@ -1109,7 +1114,7 @@ const MiniVicBot = () => {
                   className="h-1.5 w-1.5 rounded-full"
                   style={{ background: isSpeaking ? "var(--white)" : "var(--mist-400)" }}
                 />
-                <span>MiniVic Live</span>
+                <span>MiniVic · synthetic</span>
               </div>
               <div className="flex gap-1.5">
                 <button
@@ -1152,18 +1157,34 @@ const MiniVicBot = () => {
                   Mini Vic
                   <Sparkles size={14} className={isSpeaking ? "animate-spin-slow text-white" : "text-white/70"} />
                 </h3>
-                <p className="mt-0.5 truncate text-[11px] text-white/55">Vikram&apos;s AI clone · ask me anything</p>
-                {/* The one disclosure this panel may never lose. The audio it
-                    plays is an ElevenLabs stock voice, not a recording of
+                <p className="mt-0.5 truncate text-[11px] text-white/55">A synthetic stand-in for Vikram · ask me anything</p>
+                {/* The one disclosure this panel may never lose, now naming
+                    all three synthetic parts instead of only the voice: the
+                    audio is an ElevenLabs stock voice (not a recording of
                     Vikram and not a clone of him — his plan refuses voice
-                    cloning — so the panel says so where the voice is heard,
-                    not only in the privacy page's synthetic-media section.
-                    tests/e2e/avatar-voice.spec.ts fails if it disappears. */}
+                    cloning), the face is a pre-rendered loop, and the answers
+                    are live text from whichever server rung produced them.
+
+                    The rung is READ AT RUNTIME from the reply, never written
+                    here: the panel used to be handed a hard-coded
+                    `source: 'openrouter'` that was false on every measured live
+                    sample. Before the first question there is no rung to name,
+                    so the sentence stops at "live text"; when the offline
+                    knowledge base answered, it says so, because on that turn
+                    the answers are not live.
+                    tests/e2e/chatbot.spec.ts CB-LABEL-02..05 and
+                    tests/e2e/avatar-voice.spec.ts fail if it disappears. */}
                 <p
                   data-testid="minivic-synthetic-label"
                   className="mt-0.5 truncate text-[10px] uppercase tracking-[0.16em] text-white/45"
                 >
-                  Synthetic voice · not a recording of Vikram
+                  {`Voice: ElevenLabs stock · Face: pre-rendered loop · Answers: ${
+                    answerSource === null
+                      ? "live text"
+                      : answerSource === "knowledge" || answerSource === "fallback"
+                        ? "offline knowledge base"
+                        : `live text via ${answerSource}`
+                  }`}
                 </p>
               </div>
               <span className={`shrink-0 rounded-full border px-2.5 py-1 text-[10px] font-medium tracking-wide backdrop-blur transition-colors ${

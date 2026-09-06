@@ -1,0 +1,25 @@
+     [90m 375 |[39m     }
+     [90m 376 |[39m   })[33m;[39m
+     [90m 377 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-r2/tests/e2e/chatbot.spec.ts:374:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-chatbot-E2E-MiniVicBot-6404d-ro-name-at-any-laptop-width-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-chatbot-E2E-MiniVicBot-6404d-ro-name-at-any-laptop-width-chromium/error-context.md[22m
+
+
+[1A[2K[15/24] [chromium] › tests/e2e/chatbot.spec.ts:457:7 › E2E: MiniVicBot Chatbot › CB-LABEL-02: the truth line names voice, face and answers
+[1A[2K[16/24] [chromium] › tests/e2e/chatbot.spec.ts:466:7 › E2E: MiniVicBot Chatbot › CB-LABEL-03: the provider is read at runtime, not hard-coded
+[1A[2K[17/24] [chromium] › tests/e2e/chatbot.spec.ts:483:7 › E2E: MiniVicBot Chatbot › CB-LABEL-04: an offline answer is not called live
+[1A[2K[18/24] [chromium] › tests/e2e/chatbot.spec.ts:493:7 › E2E: MiniVicBot Chatbot › CB-LABEL-05: the disclosure survives every panel state
+[1A[2K[19/24] [chromium] › tests/e2e/minivic-send-path.spec.ts:79:7 › MiniVic send path › MV-WIRE-01: one send makes exactly one /api request, and it is /api/chat
+[1A[2K[20/24] [chromium] › tests/e2e/minivic-send-path.spec.ts:164:7 › MiniVic send path › MV-WIRE-02: no poller keeps running after the reply lands
+[1A[2K[21/24] [chromium] › tests/e2e/minivic-send-path.spec.ts:203:7 › MiniVic first-token path › MV-WARM-01: opening the panel warms the function, and a send does not
+[1A[2K[22/24] [chromium] › tests/e2e/minivic-send-path.spec.ts:252:7 › MiniVic first-token path › MV-PAYLOAD-01: the send body carries turns and a mode — no provider, model or prompt
+[1A[2K[23/24] [chromium] › tests/e2e/minivic-send-path.spec.ts:312:7 › MiniVic direct-origin route › MV-ORIGIN-01: a blocked origin falls back to /api/chat, and the visitor still gets an answer
+[1A[2K[24/24] [chromium] › tests/e2e/minivic-send-path.spec.ts:361:7 › MiniVic direct-origin route › MV-ORIGIN-02: the origin is tried before the Hosting rewrite on an ordinary send
+[1A[2K[31m  1 failed[39m
+[31m    [chromium] › tests/e2e/chatbot.spec.ts:307:7 › E2E: MiniVicBot Chatbot › TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width [39m
+[32m  23 passed[39m[2m (1.6m)[22m

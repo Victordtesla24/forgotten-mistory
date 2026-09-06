@@ -75,7 +75,7 @@ test.describe('MiniVic brain — direct-Gemini tier removed', () => {
     }
   });
 
-  test('KB-04: BrainSource is exactly openrouter | knowledge | fallback', () => {
+  test('KB-04: BrainSource is exactly the four server rungs plus knowledge and fallback', () => {
     const src = readFileSync(join(ROOT, 'lib', 'miniVicBrain.ts'), 'utf8');
     const match = src.match(/export type BrainSource\s*=\s*([^;]+);/);
     expect(match, 'BrainSource union not found').not.toBeNull();
@@ -83,7 +83,7 @@ test.describe('MiniVic brain — direct-Gemini tier removed', () => {
       .split('|')
       .map((m) => m.trim().replace(/^'|'$/g, ''))
       .filter(Boolean);
-    expect(members.sort()).toEqual(['fallback', 'knowledge', 'openrouter']);
+    expect(members.sort()).toEqual(['deepseek', 'fallback', 'knowledge', 'openai', 'openrouter', 'zai']);
   });
 });
 

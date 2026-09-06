@@ -551,13 +551,14 @@ describe('G-M3 — ladder order survives a cold start', () => {
     assert.deepEqual(ordered.map((p) => p.id), ['zai', 'openrouter', 'deepseek', 'openai']);
   });
 
-  it('defaults to the rung that is answering in production, and drops none', () => {
-    // Measured 2026-09-05T13:18Z from the function's own rung log on live:
-    // openrouter, deepseek and zai were all on the credential cooldown and
-    // openai answered. A cold instance has an empty cooldown map, so without
-    // this default a visitor pays three failing round trips first.
+  it('defaults to the contracted §0.4 ladder, and drops none', () => {
+    // This assertion used to require `openai` first — the latency-driven
+    // inversion of docs/prompt.md §0.4. It is superseded by MV-ORDER-01..03
+    // below, which pin the whole sequence rather than just its head; the cold
+    // instance's dead-rung tax is now paid by primeProviderCooldowns() on the
+    // warm ping instead of by reordering away from the contract.
     const ordered = fn.orderChatProviders(resolved, fn.DEFAULT_PROVIDER_ORDER);
-    assert.equal(ordered[0].id, 'openai');
+    assert.deepEqual(ordered.map((p) => p.id), ['openrouter', 'deepseek', 'zai', 'openai']);
     assert.deepEqual(
       [...ordered.map((p) => p.id)].sort(),
       ['deepseek', 'openai', 'openrouter', 'zai'],
@@ -713,5 +714,211 @@ describe('G-M3 — streamed completion', () => {
       (err) => err.name === 'ChatLadderError' && err.committedTo === 'deepseek',
     );
     assert.deepEqual(seen, ['At the ATO '], 'a second rung was spliced onto a live answer');
+  });
+});
+
+// ── 8. §0.4 ladder order, balance-flavoured 429s, and warm-ping priming ─────
+//
+// Written before the implementation, from docs/architecture/MINIVIC-BRAIN-0-4.md
+// §4.1 (t_w1_r2sa). Three separate defects are pinned here:
+//
+//   · the ladder order inverted docs/prompt.md §0.4 to buy latency — OpenAI was
+//     first and OpenRouter, the contracted first rung, was second;
+//   · Z.ai signals credit exhaustion with HTTP 429 (`code 1113 — Insufficient
+//     balance`), not 402, so a dead account took the 60 s rate-limit cooldown
+//     and was re-probed roughly once a minute at a measured 0.668 s a time;
+//   · `?warm=1` booted the container and left the cooldown map empty, so the
+//     first real send paid the full serial dead-rung tax (measured 1.67 s:
+//     0.080 + 0.918 + 0.668 s).
+
+describe('§0.4 ladder order (MV-ORDER)', () => {
+  it('MV-ORDER-01: the default ladder starts at openrouter', () => {
+    assert.equal(fn.DEFAULT_PROVIDER_ORDER.split(',')[0], 'openrouter');
+  });
+
+  it('MV-ORDER-02: openai is the last rung, never the first', () => {
+    assert.equal(fn.DEFAULT_PROVIDER_ORDER.split(',').at(-1), 'openai');
+  });
+
+  it('MV-ORDER-03: every rung is still in the default order', () => {
+    assert.deepEqual(
+      fn.DEFAULT_PROVIDER_ORDER.split(',').map((s) => s.trim()),
+      ['openrouter', 'deepseek', 'zai', 'openai'],
+    );
+  });
+});
+
+describe('the answer carries the rung that produced it (MV-PROV)', () => {
+  it('MV-PROV-04: a 402 on openrouter is recorded and deepseek is named as the answering rung', async () => {
+    const result = await fn.completeChat({
+      messages: MESSAGES,
+      providers: [rung('openrouter'), rung('deepseek'), rung('openai')],
+      fetchImpl: fakeFetch({
+        openrouter: () => errorResponse(402, 'Insufficient credits'),
+        deepseek: () => jsonResponse('Fifteen years.'),
+      }),
+      cooldowns: new Map(),
+    });
+    assert.equal(result.provider, 'deepseek');
+    assert.deepEqual(result.attempts[0], { provider: 'openrouter', outcome: 'http_402' });
+  });
+});
+
+describe('balance-flavoured 429s (MV-429)', () => {
+  const ZAI_1113 = JSON.stringify({
+    error: { code: '1113', message: 'Insufficient balance or no resource package. Please recharge.' },
+  });
+
+  it('MV-429-05: a balance-flavoured 429 earns the ten-minute credential cooldown', async () => {
+    const cooldowns = new Map();
+    let clock = 1_000_000;
+    const now = () => clock;
+    const routes = {
+      zai: () => errorResponse(429, ZAI_1113),
+      openai: () => jsonResponse('fallback'),
+    };
+    await fn.completeChat({
+      messages: MESSAGES,
+      providers: [rung('zai'), rung('openai')],
+      fetchImpl: fakeFetch(routes),
+      cooldowns,
+      now,
+    });
+    // Nine minutes later the rung must still be suppressed — the 60 s
+    // rate-limit rest would have expired eight minutes ago.
+    clock += 9 * 60 * 1000;
+    const second = await fn.completeChat({
+      messages: MESSAGES,
+      providers: [rung('zai'), rung('openai')],
+      fetchImpl: fakeFetch(routes),
+      cooldowns,
+      now,
+    });
+    assert.deepEqual(second.attempts[0], { provider: 'zai', outcome: 'cooling_down' });
+  });
+
+  it('MV-429-06: a plain 429 keeps the short cooldown', async () => {
+    const cooldowns = new Map();
+    let clock = 1_000_000;
+    const now = () => clock;
+    const routes = {
+      zai: () => errorResponse(429, 'Too Many Requests'),
+      openai: () => jsonResponse('fallback'),
+    };
+    await fn.completeChat({
+      messages: MESSAGES,
+      providers: [rung('zai'), rung('openai')],
+      fetchImpl: fakeFetch(routes),
+      cooldowns,
+      now,
+    });
+    clock += 61 * 1000;
+    const second = await fn.completeChat({
+      messages: MESSAGES,
+      providers: [rung('zai'), rung('openai')],
+      fetchImpl: fakeFetch(routes),
+      cooldowns,
+      now,
+    });
+    // Retried, not suppressed: the outcome is the fresh 429, not `cooling_down`.
+    assert.deepEqual(second.attempts[0], { provider: 'zai', outcome: 'http_429' });
+  });
+});
+
+// A minimal Express-shaped response double. `sentAt` records the tick on which
+// the status line was actually written, which is what MV-WARM-07 is about.
+function fakeRes() {
+  const res = {
+    statusCode: 0,
+    headers: {},
+    body: undefined,
+    sent: false,
+    set(k, v) { res.headers[String(k).toLowerCase()] = v; return res; },
+    status(code) { res.statusCode = code; return res; },
+    send(payload) { res.body = payload; res.sent = true; return res; },
+    json(payload) { res.body = payload; res.sent = true; return res; },
+    write() { return true; },
+    end() { res.sent = true; },
+    flushHeaders() {},
+    get headersSent() { return res.sent; },
+  };
+  return res;
+}
+
+describe('warm-ping priming (MV-WARM)', () => {
+  it('MV-WARM-07: the warm ping answers 204 without waiting on any rung', async () => {
+    const savedFetch = globalThis.fetch;
+    const savedKey = process.env.OPENROUTER_API_KEY;
+    // A resolvable rung, so priming has something real to walk, and a fetch
+    // that never settles, so a 204 that waited on it could never be observed.
+    process.env.OPENROUTER_API_KEY = 'test-key-openrouter';
+    globalThis.fetch = () => new Promise(() => {});
+    try {
+      const res = fakeRes();
+      await fn.minivicChat({ method: 'GET', query: { warm: '1' }, headers: {} }, res);
+      assert.equal(res.statusCode, 204);
+      assert.equal(res.sent, true);
+    } finally {
+      globalThis.fetch = savedFetch;
+      if (savedKey === undefined) delete process.env.OPENROUTER_API_KEY;
+      else process.env.OPENROUTER_API_KEY = savedKey;
+    }
+  });
+
+  it('MV-WARM-08: priming records dead rungs and spends at most one token on a live one', async () => {
+    const cooldowns = new Map();
+    const impl = fakeFetch({
+      openrouter: () => errorResponse(402, 'Insufficient credits'),
+      zai: () => errorResponse(429, 'Insufficient balance or no resource package. Please recharge.'),
+      openai: () => jsonResponse('ok'),
+    });
+    await fn.primeProviderCooldowns({
+      providers: [rung('openrouter'), rung('zai'), rung('openai')],
+      fetchImpl: impl,
+      cooldowns,
+      now: () => 1_000_000,
+    });
+    assert.equal(cooldowns.has('openrouter'), true, 'a 402 rung must be recorded');
+    assert.equal(cooldowns.has('zai'), true, 'a balance-flavoured 429 rung must be recorded');
+    assert.equal(cooldowns.has('openai'), false, 'the rung that answered must stay available');
+    assert.equal(impl.calls.length, 3, 'every rung is probed, in parallel');
+    for (const call of impl.calls) {
+      assert.equal(call.body.max_tokens, 1, `${call.id} probe must spend at most one token`);
+    }
+  });
+
+  it('MV-WARM-09: priming never rejects into the request path', async () => {
+    const cooldowns = new Map();
+    await fn.primeProviderCooldowns({
+      providers: [rung('openrouter'), rung('deepseek')],
+      fetchImpl: async () => { throw new Error('network down'); },
+      cooldowns,
+      now: () => 1_000_000,
+    });
+    // Reaching this line at all is the assertion: a rejection would fail the test.
+    assert.ok(true);
+  });
+});
+
+describe('payload validation short-circuits the ladder (MV-400)', () => {
+  it('MV-400-10: an invalid payload is rejected fast and without a rung', async () => {
+    const savedFetch = globalThis.fetch;
+    const savedKey = process.env.OPENROUTER_API_KEY;
+    process.env.OPENROUTER_API_KEY = 'test-key-openrouter';
+    let fetchCalls = 0;
+    globalThis.fetch = async () => { fetchCalls += 1; throw new Error('no rung may be called'); };
+    try {
+      const res = fakeRes();
+      await fn.minivicChat(
+        { method: 'POST', query: {}, headers: {}, body: { message: 'ping' } },
+        res,
+      );
+      assert.equal(res.statusCode, 400);
+      assert.equal(fetchCalls, 0, 'no provider may be paid for an invalid payload');
+    } finally {
+      globalThis.fetch = savedFetch;
+      if (savedKey === undefined) delete process.env.OPENROUTER_API_KEY;
+      else process.env.OPENROUTER_API_KEY = savedKey;
+    }
   });
 });
