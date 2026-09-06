@@ -76,9 +76,13 @@ export const metadata: Metadata = {
     url: 'https://forgotten-mistory.web.app',
     siteName: 'Forgotten Mistory',
     type: 'website',
-    // Static social card (1200×630, monochrome). Served from public/ so it works
-    // under the Firebase static export — no app/opengraph-image.tsx runtime route.
-    images: [{ url: '/assets/og-image.png', width: 1200, height: 630 }],
+    // Static social card, served from public/ so it works under the Firebase
+    // static export — no app/opengraph-image.tsx runtime route. 2400×1260 is
+    // the platform-standard 1.91:1 ratio at 2x, so the preview is sharp rather
+    // than upscaled; scripts/build/og_card.mjs renders it, and
+    // tests/hero_assets_monochrome.test.mjs reads the shipped bytes to hold it
+    // to the palette and to these exact dimensions (G-OG1).
+    images: [{ url: '/assets/og-image.png', width: 2400, height: 1260 }],
   },
   twitter: {
     card: 'summary_large_image',

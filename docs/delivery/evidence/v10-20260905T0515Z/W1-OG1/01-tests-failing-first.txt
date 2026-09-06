@@ -1,0 +1,445 @@
+TAP version 13
+# Subtest: Hero stills are true greyscale in the bytes (G-H6)
+    # Subtest: my_avatar.png: every pixel has chroma ≤ 2
+    ok 1 - my_avatar.png: every pixel has chroma ≤ 2
+      ---
+      duration_ms: 112.023233
+      type: 'test'
+      ...
+    # Subtest: my_avatar.webp: every pixel has chroma ≤ 2
+    ok 2 - my_avatar.webp: every pixel has chroma ≤ 2
+      ---
+      duration_ms: 144.268849
+      type: 'test'
+      ...
+    # Subtest: my_avatar.avif: every pixel has chroma ≤ 2
+    ok 3 - my_avatar.avif: every pixel has chroma ≤ 2
+      ---
+      duration_ms: 378.2518
+      type: 'test'
+      ...
+    1..3
+ok 1 - Hero stills are true greyscale in the bytes (G-H6)
+  ---
+  duration_ms: 638.20482
+  type: 'suite'
+  ...
+# Subtest: The hero loop is true greyscale at its measured ceiling (G-H6, G-H5)
+    # Subtest: frames 0, mid and last carry no hue
+    ok 1 - frames 0, mid and last carry no hue
+      ---
+      duration_ms: 269.08414
+      type: 'test'
+      ...
+    # Subtest: is 1280×720 — the honest ceiling, never presented as 4K
+    ok 2 - is 1280×720 — the honest ceiling, never presented as 4K
+      ---
+      duration_ms: 102.082578
+      type: 'test'
+      ...
+    # Subtest: is under the 5 MB video budget
+    ok 3 - is under the 5 MB video budget
+      ---
+      duration_ms: 0.536445
+      type: 'test'
+      ...
+    # Subtest: the retired duplicate name ships no second binary (R4)
+    ok 4 - the retired duplicate name ships no second binary (R4)
+      ---
+      duration_ms: 0.325902
+      type: 'test'
+      ...
+    1..4
+ok 2 - The hero loop is true greyscale at its measured ceiling (G-H6, G-H5)
+  ---
+  duration_ms: 4045.093593
+  type: 'suite'
+  ...
+# Subtest: The loop ships a real ladder, not a claim (G-H5)
+    # Subtest: declares three ascending rungs, the 720p file first
+    ok 1 - declares three ascending rungs, the 720p file first
+      ---
+      duration_ms: 1.697043
+      type: 'test'
+      ...
+    # Subtest: /assets/my-hero-avatar.mp4: exists, and is 1280x720 @ 24 fps as declared
+    ok 2 - /assets/my-hero-avatar.mp4: exists, and is 1280x720 @ 24 fps as declared
+      ---
+      duration_ms: 266.091786
+      type: 'test'
+      ...
+    # Subtest: /assets/my-hero-avatar.mp4: is a downscale of the master, never an upscale
+    ok 3 - /assets/my-hero-avatar.mp4: is a downscale of the master, never an upscale
+      ---
+      duration_ms: 0.242692
+      type: 'test'
+      ...
+    # Subtest: /assets/my-hero-avatar.mp4: is under the 5 MB on-demand budget
+    ok 4 - /assets/my-hero-avatar.mp4: is under the 5 MB on-demand budget
+      ---
+      duration_ms: 0.156731
+      type: 'test'
+      ...
+    # Subtest: /assets/my-hero-avatar.mp4: frames 0, mid and last carry no hue
+    ok 5 - /assets/my-hero-avatar.mp4: frames 0, mid and last carry no hue
+      ---
+      duration_ms: 3307.81729
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-1080.mp4: exists, and is 1920x1080 @ 24 fps as declared
+    ok 6 - /assets/avatar/my-hero-avatar-1080.mp4: exists, and is 1920x1080 @ 24 fps as declared
+      ---
+      duration_ms: 141.933651
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-1080.mp4: is a downscale of the master, never an upscale
+    ok 7 - /assets/avatar/my-hero-avatar-1080.mp4: is a downscale of the master, never an upscale
+      ---
+      duration_ms: 0.155861
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-1080.mp4: is under the 5 MB on-demand budget
+    ok 8 - /assets/avatar/my-hero-avatar-1080.mp4: is under the 5 MB on-demand budget
+      ---
+      duration_ms: 0.160671
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-1080.mp4: frames 0, mid and last carry no hue
+    ok 9 - /assets/avatar/my-hero-avatar-1080.mp4: frames 0, mid and last carry no hue
+      ---
+      duration_ms: 3996.407583
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-2160.webm: exists, and is 3840x2160 @ 24 fps as declared
+    ok 10 - /assets/avatar/my-hero-avatar-2160.webm: exists, and is 3840x2160 @ 24 fps as declared
+      ---
+      duration_ms: 70.686309
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-2160.webm: is a downscale of the master, never an upscale
+    ok 11 - /assets/avatar/my-hero-avatar-2160.webm: is a downscale of the master, never an upscale
+      ---
+      duration_ms: 0.085771
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-2160.webm: is under the 5 MB on-demand budget
+    ok 12 - /assets/avatar/my-hero-avatar-2160.webm: is under the 5 MB on-demand budget
+      ---
+      duration_ms: 0.09848
+      type: 'test'
+      ...
+    # Subtest: /assets/avatar/my-hero-avatar-2160.webm: frames 0, mid and last carry no hue
+    ok 13 - /assets/avatar/my-hero-avatar-2160.webm: frames 0, mid and last carry no hue
+      ---
+      duration_ms: 6739.450592
+      type: 'test'
+      ...
+    1..13
+ok 3 - The loop ships a real ladder, not a claim (G-H5)
+  ---
+  duration_ms: 14525.811423
+  type: 'suite'
+  ...
+# Subtest: The OpenGraph card obeys the palette in the bytes (G-OG1)
+    # Subtest: exists and was rendered at 2400x1260 — 1.91:1 at 2x
+    not ok 1 - exists and was rendered at 2400x1260 — 1.91:1 at 2x
+      ---
+      duration_ms: 19.122526
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/w1-og1/tests/hero_assets_monochrome.test.mjs:361:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        card width
+        
+        1200 !== 2400
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 2400
+      actual: 1200
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/w1-og1/tests/hero_assets_monochrome.test.mjs:364:12)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Promise.all (index 0)
+        async Suite.run (node:internal/test_runner/test:1442:7)
+        async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: is under the 500 kB image budget
+    ok 2 - is under the 500 kB image budget
+      ---
+      duration_ms: 1.107059
+      type: 'test'
+      ...
+    # Subtest: carries no hue outside the sanctioned gold
+    not ok 3 - carries no hue outside the sanctioned gold
+      ---
+      duration_ms: 39.555272
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/w1-og1/tests/hero_assets_monochrome.test.mjs:373:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        the card carries ≥6 chromatic pixels that are not the gold token (worst chroma 157/255): rgb(22,24,29) hue 223° chroma 7 at (0,0) · rgb(23,25,30) hue 223° chroma 7 at (1,0) · rgb(23,24,29) hue 230° chroma 6 at (2,0) · rgb(23,25,30) hue 223° chroma 7 at (3,0) · rgb(23,24,29) hue 230° chroma 6 at (4,0) · rgb(23,25,30) hue 223° chroma 7 at (5,0). Render the ground from --ink-900 (#0A0A0A) and the type from the white/mist tokens, and disable LCD subpixel text so glyph edges do not fringe red and blue.
+        
+        6 !== 0
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 0
+      actual: 6
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/w1-og1/tests/hero_assets_monochrome.test.mjs:375:12)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: spends no gold on a self-reported figure
+    not ok 4 - spends no gold on a self-reported figure
+      ---
+      duration_ms: 23.214647
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/w1-og1/tests/hero_assets_monochrome.test.mjs:386:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        the card paints 835 gold pixels, but every figure on it is self-reported. Grey jaws, white value — mirror components/marks/Caliper.module.css [data-state="self-reported"].
+        
+        835 !== 0
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 0
+      actual: 835
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/w1-og1/tests/hero_assets_monochrome.test.mjs:395:12)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: is declared to OpenGraph consumers at the size it actually is
+    not ok 5 - is declared to OpenGraph consumers at the size it actually is
+      ---
+      duration_ms: 0.644394
+      type: 'test'
+      location: '/root/forgotten-mistory/.claude/worktrees/w1-og1/tests/hero_assets_monochrome.test.mjs:403:3'
+      failureType: 'testCodeFailure'
+      error: "app/layout.tsx must declare og:image:width/height as the card's real pixel size"
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual: |-
+        import type { Metadata } from 'next';
+        import { IBM_Plex_Mono, Inter, Source_Serif_4 } from 'next/font/google';
+        import './globals.css';
+        import { buildStamp } from '@/app/data/generated/build-stamp';
+        import { MINIVIC_CHAT_ORIGIN } from '@/app/data/generated/minivic-origin';
+        import MiniVicBot from '../components/MiniVicBot';
+        import Footer from '@/components/site/Footer';
+        import MotionProvider from '../components/MotionProvider';
+        import ServiceWorkerRegister from '../components/site/ServiceWorkerRegister';
+        import { AvatarSpeakingProvider } from '@/lib/avatarContext';
+        
+        // Three faces, each with one job (design direction §1.1).
+        //
+        // The display face is a document serif, not a grotesque. Every rival portfolio in
+        // this category sets its headings in a geometric sans with a mono accent; a serif
+        // at display size reads as institutional record rather than as product marketing,
+        // which is the register this site is arguing in. The geometric grotesque this
+        // replaced was dropped for exactly that reason — it was the trend-following tell.
+        //
+        // All three self-host their woff2 at build time through next/font (mandatory under
+        // a static export: no runtime font request), and `adjustFontFallback` generates the
+        // metric-matched fallback, so there is no layout shift when the real face lands.
+        // One normal weight. Every heading, title and role line on the site is set at
+        // 400; nothing uses the light. The 300 was 47 kB of preload — on the critical
+        // path, ahead of the face the hero's own name is drawn in — for a weight zero
+        // elements resolved to.
+        const displayFont = Source_Serif_4({
+          subsets: ['latin'],
+          weight: ['400'],
+          style: ['normal'],
+          variable: '--font-serif',
+          display: 'swap',
+          preload: true,
+        });
+        
+        // The italic is loaded separately and NOT preloaded. It is used exactly once on
+        // the site — the closing sentence, five screens down — and preloading it cost
+        // 50 kB on the critical path for a face nobody sees until the end.
+        const displayItalic = Source_Serif_4({
+          subsets: ['latin'],
+          weight: ['300'],
+          style: ['italic'],
+          variable: '--font-serif-italic',
+          display: 'swap',
+          preload: false,
+        });
+        
+        const bodyFont = Inter({
+          subsets: ['latin'],
+          weight: ['400', '500', '600'],
+          variable: '--font-inter',
+          display: 'swap',
+          preload: true,
+        });
+        
+        // Every provenance line, date stamp, axis readout and repository metric. One
+        // weight only: this face carries data, and data does not need emphasis.
+        const dataFont = IBM_Plex_Mono({
+          subsets: ['latin'],
+          weight: ['400', '500'],
+          variable: '--font-plex-mono',
+          display: 'swap',
+          preload: false,
+        });
+        
+        export const metadata: Metadata = {
+          title: 'Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect',
+          description:
+            'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
+          metadataBase: new URL('https://forgotten-mistory.web.app'),
+          alternates: { canonical: '/' },
+          openGraph: {
+            title: 'Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect',
+            description:
+              'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
+            url: 'https://forgotten-mistory.web.app',
+            siteName: 'Forgotten Mistory',
+            type: 'website',
+            // Static social card (1200×630, monochrome). Served from public/ so it works
+            // under the Firebase static export — no app/opengraph-image.tsx runtime route.
+            images: [{ url: '/assets/og-image.png', width: 1200, height: 630 }],
+          },
+          twitter: {
+            card: 'summary_large_image',
+            title: 'Vikram Deshpande — Scrum Master / Project Manager · AI Solutions Architect',
+            description:
+              'Scrum Master / Project Manager at the Australian Taxation Office and AI Solutions Architect based in Melbourne.',
+            // Same static card drives the summary_large_image Twitter preview.
+            images: ['/assets/og-image.png'],
+          },
+        };
+        
+        const webSiteSchema = {
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: 'Forgotten Mistory',
+          url: 'https://forgotten-mistory.web.app',
+          description: 'Portfolio and AI systems showcase for Vikram Deshpande.',
+        };
+        
+        const personSchema = {
+          '@context': 'https://schema.org',
+          '@type': 'Person',
+          name: 'Vikram Deshpande',
+          jobTitle: 'Scrum Master / Project Manager — Australian Taxation Office',
+          worksFor: {
+            '@type': 'Organization',
+            name: 'Australian Taxation Office',
+          },
+          url: 'https://forgotten-mistory.web.app',
+          image: 'https://forgotten-mistory.web.app/assets/my_avatar.png',
+          sameAs: ['https://github.com/Victordtesla24', 'https://youtube.com/@vicd0ct'],
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Melbourne',
+            addressCountry: 'AU',
+          },
+        };
+        
+        export default function RootLayout({
+          children,
+        }: Readonly<{
+          children: React.ReactNode;
+        }>) {
+          return (
+            // Font variables live on <html> so the :root --font-body/--font-heading
+            // tokens (which reference these next/font vars) resolve at :root. Placing
+            // them on <body> would leave :root unable to see them — the tokens would
+            // compute to empty and headings would fall back to the UA sans stack.
+            <html lang="en" className={`${bodyFont.variable} ${displayFont.variable} ${displayItalic.variable} ${dataFont.variable}`} suppressHydrationWarning>
+              <head>
+                {/* The commit these bytes were built from. It used to render as a visible
+                    line in the footer; the footer is now a single legal line, so it lives
+                    here instead — invisible to a reader, still checkable by anyone who
+                    looks, and still the thing `scripts/deploy.mjs` verifies after every
+                    deploy. `build_stamp.mjs` writes null unless the tree matched HEAD
+                    exactly, so the tag is absent rather than wrong when a build was taken
+                    from uncommitted source. That is the whole point of it: INCIDENT-01
+                    was production serving code that existed in no commit, under a
+                    signature saying otherwise. */}
+                {buildStamp.sha ? <meta name="build-commit" content={buildStamp.sha} /> : null}
+                {/* MiniVic answers from the chat function's own Cloud Run origin, because
+                    the Firebase Hosting rewrite in front of it buffers the streamed reply
+                    (first byte 1836 ms through Hosting vs 665 ms direct — G-M3's
+                    08-decision-first-token.md). That is a cross-origin host the browser
+                    has never seen when the panel opens, so its DNS, TCP and TLS are paid
+                    here, on the critical path of nothing, instead of inside the first
+                    send. `crossOrigin` must be set: the send is a CORS fetch, which uses
+                    an anonymous connection, and a preconnect without it opens the
+                    credentialed one the fetch will not reuse. */}
+                {MINIVIC_CHAT_ORIGIN ? (
+                  <link rel="preconnect" href={MINIVIC_CHAT_ORIGIN} crossOrigin="anonymous" />
+                ) : null}
+                <script
+                  type="application/ld+json"
+                  dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
+                />
+                <script
+                  type="application/ld+json"
+                  dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+                />
+              </head>
+              <body suppressHydrationWarning>
+                {/* WCAG 2.4.1 Bypass Blocks. The styles for this have existed in
+                    globals.css since the rebuild; the element itself never did, so the
+                    rule styled nothing and a keyboard reader had to tab the whole
+                    navigation on every visit. It is the first focusable node in the
+                    document and visible only while focused. */}
+                <a className="skip-link" href="#main">
+                  Skip to the evidence
+                </a>
+                <AvatarSpeakingProvider>
+                  <MotionProvider>
+                    {/* The page's own reservation — see `.page-frame` in globals.css.
+                        Without it the footer, which is shell and paints first, lands
+                        under the nav until the sections stream in. */}
+                    <div className="page-frame">{children}</div>
+                    <Footer />
+                    <MiniVicBot />
+                  </MotionProvider>
+                </AvatarSpeakingProvider>
+                <ServiceWorkerRegister />
+              </body>
+            </html>
+          );
+        }
+        
+      operator: 'match'
+      stack: |-
+        TestContext.<anonymous> (file:///root/forgotten-mistory/.claude/worktrees/w1-og1/tests/hero_assets_monochrome.test.mjs:405:12)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        Suite.processPendingSubtests (node:internal/test_runner/test:744:18)
+        Test.postRun (node:internal/test_runner/test:1173:19)
+        Test.run (node:internal/test_runner/test:1101:12)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..5
+not ok 4 - The OpenGraph card obeys the palette in the bytes (G-OG1)
+  ---
+  duration_ms: 84.343162
+  type: 'suite'
+  location: '/root/forgotten-mistory/.claude/worktrees/w1-og1/tests/hero_assets_monochrome.test.mjs:360:1'
+  failureType: 'subtestsFailed'
+  error: '4 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..4
+# tests 25
+# suites 4
+# pass 21
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 19732.486304

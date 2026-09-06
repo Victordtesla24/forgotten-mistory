@@ -257,3 +257,155 @@ describe('The loop ships a real ladder, not a claim (G-H5)', () => {
     });
   }
 });
+
+/* -------------------------------------------------------------------------- */
+/* The social card (G-OG1).                                                    */
+/*                                                                            */
+/* `/assets/og-image.png` is the first surface of this site most readers ever  */
+/* see: it is what LinkedIn, Slack and an email client paint when the link is  */
+/* pasted. docs/architecture/PALETTE-EXCEPTIONS.md retired the register with   */
+/* the words "every surface of this site … is bound by the palette rule        */
+/* without qualification", and reasons explicitly about "the bytes … an        */
+/* OpenGraph consumer reads" — and yet the card shipped a blue-cast near-black */
+/* ground: max chroma 157, 55,620 saturated non-gold pixels, dominant bucket   */
+/* hue 210–240° (ADV-REVIEW-20260905T2315Z / reviewer 56ffed3e, G-OG1).        */
+/*                                                                            */
+/* Nothing in the repository could have caught it: TC-NFR-MONO reads source,   */
+/* css_chroma_scan.mjs reads the served stylesheets and monochrome.spec.ts     */
+/* reads computed styles. None of them can see a raster. This is the same      */
+/* instrument that closed that blind spot for the portrait, pointed at the     */
+/* card.                                                                      */
+/* -------------------------------------------------------------------------- */
+
+const OG_CARD = join(ASSETS, 'og-image.png');
+/** 1.91:1, the platform-standard card ratio, at 2x so it reads sharp on a retina preview. */
+const OG_WIDTH = 2400;
+const OG_HEIGHT = 1260;
+/** IMG budget in scripts/validate/overhaul_static_audit.mjs (TC-NFR-PERF). */
+const OG_BUDGET = 500 * 1024;
+
+/** The one sanctioned hue, from app/globals.css `--gold` / lib/palette.ts `gold`. */
+const GOLD = { r: 0xc9, g: 0xa8, b: 0x4c };
+
+/** HSV hue in degrees. Undefined for a grey, so callers must check chroma first. */
+function hueOf(r, g, b) {
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const delta = max - min;
+  if (delta === 0) return 0;
+  let hue;
+  if (max === r) hue = ((g - b) / delta) % 6;
+  else if (max === g) hue = (b - r) / delta + 2;
+  else hue = (r - g) / delta + 4;
+  hue *= 60;
+  return hue < 0 ? hue + 360 : hue;
+}
+
+/**
+ * Is this chromatic pixel the site's gold, rather than merely gold-ish?
+ *
+ * Gold laid over the near-black ground antialiases toward `--ink-900`, so an
+ * edge pixel is very close to a scalar multiple of the token. Normalising by
+ * the brightest channel collapses that ramp — every shade of the real token
+ * lands on the same ratios — while a different hue in the same 35–60° window
+ * (an amber, a mustard, a JPEG-ish cast) does not.
+ */
+function isGoldToken(r, g, b) {
+  const max = Math.max(r, g, b);
+  if (max === 0) return false;
+  const goldMax = Math.max(GOLD.r, GOLD.g, GOLD.b);
+  const dg = Math.abs(g / max - GOLD.g / goldMax);
+  const db = Math.abs(b / max - GOLD.b / goldMax);
+  const dr = Math.abs(r / max - GOLD.r / goldMax);
+  return dr <= 0.08 && dg <= 0.08 && db <= 0.08;
+}
+
+/** Every chromatic pixel of the card, classified: sanctioned gold, or a hue. */
+async function cardChroma(file) {
+  const { data, info } = await sharp(file).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+  const channels = info.channels;
+  let worstNonGold = 0;
+  let gold = 0;
+  const offenders = [];
+  for (let i = 0; i + channels - 1 < data.length; i += channels) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const chroma = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(r - b));
+    if (chroma <= CHROMA_MAX) continue;
+    const hue = hueOf(r, g, b);
+    if (hue >= 35 && hue <= 60 && isGoldToken(r, g, b)) {
+      gold += 1;
+      continue;
+    }
+    if (chroma > worstNonGold) worstNonGold = chroma;
+    if (offenders.length < 6) {
+      const px = i / channels;
+      offenders.push(
+        `rgb(${r},${g},${b}) hue ${hue.toFixed(0)}° chroma ${chroma} at (${px % info.width},${Math.floor(px / info.width)})`,
+      );
+    }
+  }
+  return {
+    worstNonGold,
+    gold,
+    nonGold: offenders.length ? offenders : [],
+    offenderCount: 0,
+    width: info.width,
+    height: info.height,
+    samples: offenders,
+  };
+}
+
+describe('The OpenGraph card obeys the palette in the bytes (G-OG1)', () => {
+  it('exists and was rendered at 2400x1260 — 1.91:1 at 2x', async () => {
+    assert.ok(existsSync(OG_CARD), `${relative(ROOT, OG_CARD)} is missing`);
+    const meta = await sharp(OG_CARD).metadata();
+    assert.equal(meta.width, OG_WIDTH, 'card width');
+    assert.equal(meta.height, OG_HEIGHT, 'card height');
+  });
+
+  it(`is under the ${(OG_BUDGET / 1024).toFixed(0)} kB image budget`, () => {
+    const bytes = statSync(OG_CARD).size;
+    assert.ok(bytes <= OG_BUDGET, `card is ${(bytes / 1024).toFixed(0)} kB, over the ${OG_BUDGET / 1024} kB budget`);
+  });
+
+  it('carries no hue outside the sanctioned gold', async () => {
+    const { worstNonGold, samples, gold } = await cardChroma(OG_CARD);
+    assert.equal(
+      samples.length,
+      0,
+      `the card carries ${samples.length >= 6 ? '≥6' : samples.length} chromatic pixels that are not the gold token `
+      + `(worst chroma ${worstNonGold}/255): ${samples.join(' · ')}. `
+      + 'Render the ground from --ink-900 (#0A0A0A) and the type from the white/mist tokens, '
+      + 'and disable LCD subpixel text so glyph edges do not fringe red and blue.',
+    );
+    assert.ok(gold >= 0);
+  });
+
+  it('spends no gold on a self-reported figure', async () => {
+    // The card quotes the hero's three ledger figures, and CT-10
+    // (tests/content/content-check.spec.ts) fixes those at `self-reported`:
+    // CV numbers with no published methodology behind them. Gold on this site
+    // means one thing — this figure has a source you could go and check — so
+    // the card carries none of it. The classifier above still admits the token
+    // by name, so a future card that does print a sourced figure passes; what
+    // must never pass is gold spent on a grade that has not earned it.
+    const { gold } = await cardChroma(OG_CARD);
+    assert.equal(
+      gold,
+      0,
+      `the card paints ${gold} gold pixels, but every figure on it is self-reported. `
+      + 'Grey jaws, white value — mirror components/marks/Caliper.module.css [data-state="self-reported"].',
+    );
+  });
+
+  it('is declared to OpenGraph consumers at the size it actually is', () => {
+    const layout = readFileSync(join(ROOT, 'app', 'layout.tsx'), 'utf8');
+    assert.match(
+      layout,
+      new RegExp(`url:\\s*'/assets/og-image\\.png',\\s*width:\\s*${OG_WIDTH},\\s*height:\\s*${OG_HEIGHT}`),
+      'app/layout.tsx must declare og:image:width/height as the card\'s real pixel size',
+    );
+  });
+});
