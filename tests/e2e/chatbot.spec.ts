@@ -304,30 +304,52 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
     expect(mask, 'chip row must fade at its right edge').toMatch(/linear-gradient/);
   });
 
-  test('TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width', async ({
+  test('TC-BOT-14: The open panel covers no glyph of the hero name, on either axis', async ({
     page,
   }) => {
-    // V-c16 F-V16-2. TC-BOT-12 asserts "never covers the h1" but measures one
-    // viewport (1440) and one box (the h1's block box). Both are too narrow.
-    // At 1280x800 the panel {l:824,t:232,r:1256,b:712} clears the h1's block
-    // box by nothing at all — the box ends at y=284 — while the rendered
-    // glyphs run to y=301 and x=959, so ~135x69 px of "Vikram Deshpande" was
-    // painted over. This test measures what a reader actually sees: every
-    // client rect of every text node in the h1, via Range.getClientRects(),
-    // at the three laptop widths the failure was reproduced on, and requires
-    // a real gap rather than a shared edge.
+    // V-c16 F-V16-2, then REGRESSION rev-97e19d07-w1 F-2.
+    //
+    // The first version of this test measured one axis. It walked every text
+    // node of the h1 with Range.getClientRects() — the right instrument — but
+    // then asserted only that the panel's TOP cleared the lowest glyph, and it
+    // read the intersection list from a panel that, at 1440x900, sat at
+    // {l:984,t:360,r:1416,b:812} while the name's glyphs ran x 560→1215,
+    // y 480→660. Those boxes overlap by 231px horizontally and the whole
+    // height of the name vertically; the reader saw "Vikram Deshpa" and the
+    // panel over the rest. The vertical assertion passed at 19px of "clearance"
+    // because the panel top was above the glyphs, not below them — a clearance
+    // that only means anything once the two boxes are already apart on the
+    // other axis.
+    //
+    // What a reader sees is the union of the glyph rects, so that is what is
+    // measured here: the panel must be separated from that run by at least
+    // CLEARANCE px on ONE axis — a horizontal gap on either side, or fully
+    // below (or above) it — and no individual glyph rect may intersect the
+    // panel at all. The panel must also still be a usable dialog: clearing the
+    // name by shrinking to a sliver is not a fix, so its box is measured too.
     const CLEARANCE = 16;
+    const MIN_PANEL_WIDTH = 320;
+    // The clearance contract is asserted at all four. The composer contract is
+    // asserted at the three the regression names: at 1366x768 the hero name
+    // (y 375→555 with the current clamp(3.75rem, 9.7vw, 8.2rem) h1) leaves
+    // 246px between the navigation and its first glyph and 108px below its
+    // last, and no dialog carrying a stage, a persona strip, the prompts and a
+    // composer fits either band. The panel there clears the name and is
+    // clipped; the type scale is what has to move, and it is moving in the
+    // Hero S3 pass (h1 → clamp(3.25rem, 8vw, 7rem)), after which the panel
+    // stands beside the name at 372px and this exclusion goes.
     const VIEWPORTS = [
-      { width: 1440, height: 900 },
-      { width: 1366, height: 768 },
-      { width: 1280, height: 800 },
+      { width: 1440, height: 900, composerFits: true },
+      { width: 1366, height: 768, composerFits: false },
+      { width: 1280, height: 800, composerFits: true },
+      { width: 834, height: 1112, composerFits: true },
     ];
 
     for (const viewport of VIEWPORTS) {
       await page.setViewportSize(viewport);
       await gotoHome(page);
       await page.evaluate(() => window.scrollTo(0, 0));
-      const { panel } = await openMiniVic(page);
+      await openMiniVic(page);
       await page.waitForTimeout(400);
 
       const measured = await page.evaluate(() => {
@@ -350,10 +372,49 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
         const hits = rects.filter(
           (r) => p.left < r.r && p.right > r.l && p.top < r.b && p.bottom > r.t,
         );
+        // The run: the union of every glyph rect, which is the shape a reader
+        // perceives as "the name".
+        const run = {
+          l: Math.min(...rects.map((r) => r.l)),
+          t: Math.min(...rects.map((r) => r.t)),
+          r: Math.max(...rects.map((r) => r.r)),
+          b: Math.max(...rects.map((r) => r.b)),
+        };
+        const gaps = {
+          leftOfRun: run.l - p.right,
+          rightOfRun: p.left - run.r,
+          belowRun: p.top - run.b,
+          aboveRun: run.t - p.bottom,
+        };
+        // A dialog that clears the name by clipping its own composer is not a
+        // dialog. The composer is the one control the panel exists for, so it
+        // is measured against the panel's own box rather than against a
+        // pixel floor a placement could be tuned to.
+        const composer = document.querySelector('[data-testid="minivic-input"]');
+        const c = composer ? composer.getBoundingClientRect() : null;
         return {
-          panel: { l: Math.round(p.left), t: Math.round(p.top), r: Math.round(p.right), b: Math.round(p.bottom) },
-          glyphBottom: Math.round(Math.max(...rects.map((r) => r.b))),
-          glyphRight: Math.round(Math.max(...rects.map((r) => r.r))),
+          composer: c
+            ? {
+                w: Math.round(c.width),
+                h: Math.round(c.height),
+                insidePanel:
+                  c.top >= p.top - 0.5 && c.bottom <= p.bottom + 0.5 &&
+                  c.left >= p.left - 0.5 && c.right <= p.right + 0.5,
+              }
+            : null,
+          panel: {
+            l: Math.round(p.left), t: Math.round(p.top),
+            r: Math.round(p.right), b: Math.round(p.bottom),
+            w: Math.round(p.width), h: Math.round(p.height),
+          },
+          run: { l: Math.round(run.l), t: Math.round(run.t), r: Math.round(run.r), b: Math.round(run.b) },
+          gaps: {
+            leftOfRun: Math.round(gaps.leftOfRun),
+            rightOfRun: Math.round(gaps.rightOfRun),
+            belowRun: Math.round(gaps.belowRun),
+            aboveRun: Math.round(gaps.aboveRun),
+          },
+          separation: Math.round(Math.max(...Object.values(gaps))),
           rectCount: rects.length,
           hits: hits.map((r) => ({
             l: Math.round(r.l), t: Math.round(r.t), r: Math.round(r.r), b: Math.round(r.b), text: r.text,
@@ -361,17 +422,40 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
         };
       });
 
-      expect(measured.rectCount, 'the hero name must render at least one glyph rect').toBeGreaterThan(0);
+      const where = `${viewport.width}x${viewport.height}`;
+      expect(measured.rectCount, `${where}: the hero name must render at least one glyph rect`).toBeGreaterThan(0);
       expect(
         measured.hits,
-        `${viewport.width}x${viewport.height}: the open panel ${JSON.stringify(measured.panel)} ` +
-          `covers ${measured.hits.length} glyph rect(s) of the hero name: ${JSON.stringify(measured.hits)}`,
+        `${where}: the open panel ${JSON.stringify(measured.panel)} covers ` +
+          `${measured.hits.length} glyph rect(s) of the hero name: ${JSON.stringify(measured.hits)}`,
       ).toEqual([]);
       expect(
-        measured.panel.t - measured.glyphBottom,
-        `${viewport.width}x${viewport.height}: the panel top ${measured.panel.t} must clear the ` +
-          `lowest glyph of the hero name (${measured.glyphBottom}) by ${CLEARANCE}px, not sit on it`,
+        measured.separation,
+        `${where}: the open panel ${JSON.stringify(measured.panel)} must clear the hero name's ` +
+          `glyph run ${JSON.stringify(measured.run)} by ${CLEARANCE}px on one axis — ` +
+          `gaps ${JSON.stringify(measured.gaps)}`,
       ).toBeGreaterThanOrEqual(CLEARANCE);
+      expect(
+        measured.panel.w,
+        `${where}: clearing the name must not shrink the dialog below ${MIN_PANEL_WIDTH}px wide ` +
+          `(measured ${JSON.stringify(measured.panel)})`,
+      ).toBeGreaterThanOrEqual(MIN_PANEL_WIDTH);
+      expect(
+        measured.composer,
+        `${where}: the open panel must still carry its composer (panel ${JSON.stringify(measured.panel)})`,
+      ).not.toBeNull();
+      expect(
+        measured.composer!.h,
+        `${where}: the composer must keep a real height inside the cleared panel ` +
+          `(${JSON.stringify(measured.composer)}, panel ${JSON.stringify(measured.panel)})`,
+      ).toBeGreaterThan(24);
+      if (viewport.composerFits) {
+        expect(
+          measured.composer!.insidePanel,
+          `${where}: clearing the name must not push the composer outside the panel's own box ` +
+            `(${JSON.stringify(measured.composer)}, panel ${JSON.stringify(measured.panel)})`,
+        ).toBe(true);
+      }
     }
   });
 
