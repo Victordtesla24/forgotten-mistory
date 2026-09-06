@@ -1,0 +1,133 @@
+[36m[1mi  functions:[22m[39m ensuring required API [1mcloudfunctions.googleapis.com[22m is enabled...
+[36m[1mi  functions:[22m[39m ensuring required API [1mcloudbuild.googleapis.com[22m is enabled...
+[36m[1mi  artifactregistry:[22m[39m ensuring required API [1martifactregistry.googleapis.com[22m is enabled...
+[33m[1m⚠  functions:[22m[39m Runtime Node.js 20 was deprecated on 2026-04-30 and will be decommissioned on 2026-10-30, after which you will not be able to deploy without upgrading. Consider upgrading now to avoid disruption. See https://cloud.google.com/functions/docs/runtime-support for full details on the lifecycle policy
+[36m[1mi  functions:[22m[39m Loading and analyzing source code for codebase tts to determine what to deploy
+Serving at port 8731
+
+[36m[1mi  extensions:[22m[39m ensuring required API [1mfirebaseextensions.googleapis.com[22m is enabled...
+[36m[1mi  functions:[22m[39m preparing [1mfunctions[22m directory for uploading...
+[36m[1mi [22m[39m [36m[1mfunctions:[22m[39m packaged [1m/root/forgotten-mistory/.claude/worktrees/w1-r2c/functions[22m (49.04 KB) for uploading
+[36m[1mi  functions:[22m[39m ensuring required API [1mrun.googleapis.com[22m is enabled...
+[36m[1mi  functions:[22m[39m ensuring required API [1meventarc.googleapis.com[22m is enabled...
+[36m[1mi  functions:[22m[39m ensuring required API [1mpubsub.googleapis.com[22m is enabled...
+[36m[1mi  functions:[22m[39m ensuring required API [1mstorage.googleapis.com[22m is enabled...
+[36m[1mi  functions:[22m[39m generating the service identity for [1mpubsub.googleapis.com[22m...
+[36m[1mi  functions:[22m[39m generating the service identity for [1meventarc.googleapis.com[22m...
+[36m[1mi  functions:[22m[39m ensuring required API [1msecretmanager.googleapis.com[22m is enabled...
+[32m[1m✔  functions:[22m[39m [1mfunctions[22m source uploaded successfully
+[36m[1mi  functions:[22m[39m updating Node.js 20 (2nd Gen) function [1mtts:minivicChat(us-central1)[22m...
+[32m[1m✔ [22m[39m [1m[32mfunctions[tts:minivicChat(us-central1)][39m[22m Successful update operation.
+[1mFunction URL[22m (tts:minivicChat(us-central1)): https://minivicchat-hjdyjsrzvq-uc.a.run.app
+
+[32m[1m✔ [22m[39m [1m[4mDeploy complete![24m[22m
+
+[1mProject Console:[22m https://console.firebase.google.com/project/forgotten-mistory/overview
+
+=== VERIFY through Hosting (after deploy) 2026-09-06T01:58:46Z
+--- GET  https://forgotten-mistory.web.app/api/chat?warm=1
+HTTP/2 204 
+cache-control: no-store
+HTTP_CODE=204 time_total=0.196929
+--- POST https://forgotten-mistory.web.app/api/chat?warm=1
+HTTP/2 204 
+cache-control: no-store
+HTTP_CODE=204 time_total=0.138954
+body_bytes=0
+--- POST with a real conversation + warm=1 (must NOT be swallowed)
+HTTP_CODE=200 time_total=1.550444
+{"text":"I have 15+ years in technology across government, financial services and telecommunications, with delivery-leadership roles since 2016 and nearly eight years at ANZ alone.","provider":"openai","model":"gpt-4.1-mini","attempts":[{"provider":"openrouter","outcome":"cooling_down","ms":0},{"provider":"deepseek","outcome":"http_402","ms":640},{"provider":"zai","outcome":"cooling_down","ms":0},
+--- SSE done event (Hosting), attempts[] on the terminator
+ata: {"delta":" leading"}
+
+data: {"delta":" the"}
+
+data: {"delta":" Agile"}
+
+data: {"delta":" K"}
+
+data: {"delta":"ook"}
+
+data: {"delta":"ab"}
+
+data: {"delta":"urr"}
+
+data: {"delta":"as"}
+
+data: {"delta":" squad"}
+
+data: {"delta":" since"}
+
+data: {"delta":" March"}
+
+data: {"delta":" "}
+
+data: {"delta":"202"}
+
+data: {"delta":"6"}
+
+data: {"delta":" in"}
+
+data: {"delta":" Melbourne"}
+
+data: {"delta":"."}
+
+data: {"done":true,"provider":"openai","model":"gpt-4.1-mini","attempts":[{"provider":"openrouter","outcome":"cooling_down","ms":0},{"provider":"deepseek","outcome":"cooling_down","ms":0},{"provider":"zai","outcome":"cooling_down","ms":0},{"provider":"openai","outcome":"answered","ms":883}]}
+
+
+--- SSE done event (Cloud Run origin)
+data: {"delta":" Agile"}
+
+data: {"delta":" K"}
+
+data: {"delta":"ook"}
+
+data: {"delta":"ab"}
+
+data: {"delta":"urr"}
+
+data: {"delta":"as"}
+
+data: {"delta":" squad"}
+
+data: {"delta":" and"}
+
+data: {"delta":" managing"}
+
+data: {"delta":" sprint"}
+
+data: {"delta":" cadence"}
+
+data: {"delta":","}
+
+data: {"delta":" PI"}
+
+data: {"delta":" planning"}
+
+data: {"delta":","}
+
+data: {"delta":" capacity"}
+
+data: {"delta":","}
+
+data: {"delta":" and"}
+
+data: {"delta":" executive"}
+
+data: {"delta":" reporting"}
+
+data: {"delta":" since"}
+
+data: {"delta":" March"}
+
+data: {"delta":" "}
+
+data: {"delta":"202"}
+
+data: {"delta":"6"}
+
+data: {"delta":"."}
+
+data: {"done":true,"provider":"openai","model":"gpt-4.1-mini","attempts":[{"provider":"openrouter","outcome":"cooling_down","ms":0},{"provider":"deepseek","outcome":"cooling_down","ms":0},{"provider":"zai","outcome":"cooling_down","ms":0},{"provider":"openai","outcome":"answered","ms":1066}]}
+
+
