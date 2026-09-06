@@ -1,7 +1,7 @@
 {
   "version": 1,
   "run_id": "v10-20260905T0515Z",
-  "updated": "2026-09-06T01:49:34.929Z",
+  "updated": "2026-09-06T02:48:47.196Z",
   "live_url": "https://forgotten-mistory.web.app",
   "columns": [
     "triage",
@@ -5517,8 +5517,8 @@
     {
       "id": "t_w1_a3",
       "title": "WAVE-1 P0 — G-A3 About: the GL field ITSELF tells the ten dimensions (ten legible light sectors, answered lit / open dim, hub count readable from light alone); the SVG compass becomes chrome; proven by a test that hides the SVG and still reads ten sectors",
-      "status": "ready",
-      "column": "ready",
+      "status": "done",
+      "column": "done",
       "assignee": "analyst-programmer",
       "priority": 96,
       "parents": [
@@ -5532,7 +5532,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T00:08:32.096Z",
-      "updated": "2026-09-06T01:47:22.699Z",
+      "updated": "2026-09-06T02:10:43.467Z",
       "summary": "ADV-REVIEW-20260905T2315Z §About: on live 9136bc59 a recruiter names the SVG compass dial (01–10, hub 01/04 ANSWERED), not the GL field, even though the field is now the section's 1248x900 plane (4eb4c8a). Docs commit 9136bc59 claiming 'G-A3 PASS' is a false positive. GAP-BACKLOG acceptance: recruiter recall of #about is the GL field, not the SVG radar; hide the SVG for 3 s on GPU load and the remaining picture still tells ten sectors; restore the SVG and the field still carries ≥ ~75% of the visual weight; gold/hatch honesty stays green. Data lives in app/data/portfolio/about.ts (ten dimensions, each with a caliper state). Gold never enters the shader (gold = sourced claim only, drawn by Caliper/compass chrome).",
       "decisions": [
         {
@@ -5547,7 +5547,8 @@
           "text": "PM check 01:48Z: e5c1e4d pushed on worktree-w1-a3 and CONSOLIDATED into origin/main 12cd9123 (live after the next tick). Self-report: TC-SCENE-ABOUT-10/11 written first (fan+ring annuli in the rose's frame; answered/open from about.ts mask), lit/open 4.04 ring / 5.9 fan at 1440, 3.19 at 390 (gate 1.6); dominance 0.7518; dial ink → --dial-ink (--mist-400 with a canvas, --white without); gold 0; ?gl=force 0 pageerrors; AA text contrast held. O1 OVERRUN: ~100 min (cap 30) — measurement-driven, reported honestly; next About slices split shader vs test. Pre-existing failures flagged (not from this change): TC-ABOUT-07 intermittent 1 canvas under no-WebGL (SwiftShader appeal in useGLCapability.ts on an idle host) and flagship-visibility 'listen beat field' motion gate failing on LIVE too (0.00142 < 0.004). Not done until independent reviewer t_w1_rev3 PASS on live."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "Independent live PASS on the G-A3 gap acceptance (rev-12cd9123-w1). Sub-claim (answered ≥ 1.6× open in the initial state at 390/1440) FAIL → t_w2_x2f5 carries it with the reviewer's per-sector numbers. Live 12cd9123 via Deploy 34004706433."
     },
     {
       "id": "t_w1_rev1",
@@ -5578,8 +5579,8 @@
     {
       "id": "t_w1_red2",
       "title": "Two Playwright specs red on main before wave-1 (proven on main's own build): TC-PHOTO-11 hero figure moves 165 px on hover (page scrolls), TC-BOT-14 MiniVic panel top sits 11 px under the hero name at 1440x900 — root-cause and fix (not weaken)",
-      "status": "ready",
-      "column": "ready",
+      "status": "running",
+      "column": "running",
       "assignee": "tester",
       "priority": 88,
       "parents": [],
@@ -5591,7 +5592,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T00:55:26.816Z",
-      "updated": "2026-09-06T01:39:05.230Z",
+      "updated": "2026-09-06T02:39:45.597Z",
       "summary": "t_w1_h6h5 reproduced both failures on an untouched origin/main build (port 5602): (1) tests/e2e/hero-photo.spec.ts TC-PHOTO-11 'figure y unchanged across the hover fade' → 165 px shift because Playwright's hover scrolls the figure into view; (2) tests/e2e/chatbot.spec.ts TC-BOT-14 '1440x900: panel top must clear the lowest glyph of the hero name by 16 px' → 11 px. Both are real defects or real test-design defects; decide which with evidence, then fix the product where the product is wrong and the test where the test is wrong (state which, with the reason in the test file). Never delete or skip either test.",
       "decisions": [],
       "comments": [
@@ -5599,6 +5600,11 @@
           "at": "2026-09-06T01:39:05.230Z",
           "by": "orchestrator",
           "text": "SCOPE EXTENSION 01:41Z (from t_w1_h5b, reproduced on live build 03dfd93c): also tests/e2e/hero.spec.ts TC-HERO-13 (still expects the retired /my-avatar.mp4$/ name — repoint to my-hero-avatar.mp4) and TC-HERO-15 (same hover-scroll 'figure y unchanged = 165' cause as TC-PHOTO-11). Four specs total; same root-cause rule: fix the product where the product is wrong, the test where the test is wrong, never lower a threshold."
+        },
+        {
+          "at": "2026-09-06T02:37:33.747Z",
+          "by": "orchestrator",
+          "text": "SCOPE EXTENSION 02:38Z (from t_w1_r2c on the pre-change live build): also tests/a11y/minivic-occlusion.spec.ts TC-MV-OCCLUDE-01 and tests/monochrome/minivic-launcher.spec.ts MONO-MV-02 @640 — reproduce on origin/main first; same root-cause rule."
         }
       ],
       "blocker": null
@@ -5727,8 +5733,8 @@
     {
       "id": "t_w1_h5b",
       "title": "CORRECTION G-H5 (reviewer rev-56ffed3e-w1 FAIL) — ship the higher rungs that the 2160p master makes possible: on-demand 1080p and 2160p monochrome loops under public/assets/avatar/ (≤5 MB each, ON_DEMAND_VIDEO budget), rung selection by viewport×DPR and save-data, the 720p rung stays the default; asset ladder promoted to docs/architecture/ASSET-LADDER.md; R5 still not claimed (24 fps)",
-      "status": "running",
-      "column": "running",
+      "status": "done",
+      "column": "done",
       "assignee": "analyst-programmer",
       "priority": 98,
       "parents": [
@@ -5742,7 +5748,7 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:15:34.840Z",
-      "updated": "2026-09-06T01:38:28.774Z",
+      "updated": "2026-09-06T02:10:43.651Z",
       "summary": "## CORRECTION: G-H5 resolution half\nOriginal output: t_w1_h6h5 shipped only public/assets/my-hero-avatar.mp4 at 1280x720@24 (1.9 MB, greyscale) downscaled from artifacts/masters/minivic-greeting-2160p-master.mp4 (3840x2160@24, 58 MB, untracked), and kept the ladder under docs/delivery/evidence/…/G2-H5/asset-ladder.md.\nFailing criteria (docs/delivery/evidence/v10-20260905T0515Z/G-REV/56ffed3e/08-adversarial-review.md, G-H5): GAP-BACKLOG requires either a ≥1080p path toward 4K or a published ladder stating no higher source exists — a 2160p master and a 1080p variant exist, so the escape hatch is false and every higher URL 404s (my-hero-avatar-1080.mp4, -2160.mp4, .webm).\nRequired fix: add on-demand rungs under public/assets/avatar/ (scripts/validate/overhaul_static_audit.mjs:170 gives that folder a 5 MB ON_DEMAND_VIDEO budget because the <video> has no src until play): my-hero-avatar-1080.mp4 (H.264, greyscale, ≤5 MB) and my-hero-avatar-2160.{mp4|webm} (AV1 or H.264 slow, greyscale, ≤5 MB — measure; monochrome 24 fps compresses well; if 2160p cannot fit under 5 MB at acceptable quality, ship the largest rung that does and record the measured size/quality in the ladder). Choose the rung at play time in components/sections/Hero/HeroPortrait.tsx and components/MiniVicBot.tsx: rung = smallest whose height ≥ rendered height × devicePixelRatio, capped when navigator.connection?.saveData; 720p (existing critical-path file) stays the default and the fallback. Move the ladder to docs/architecture/ASSET-LADDER.md (git mv, then update §9 with the new rungs, the master, measured sizes, and the sentence that R5 (2160p60) remains OPEN because the master is 24 fps). Never upscale; never commit artifacts/masters.\nVerification: node --test tests/hero_assets_monochrome.test.mjs (extend: every rung greyscale, dims as declared, sizes under budget) · node scripts/validate/overhaul_static_audit.mjs (10/10) · e2e: at 1440 with DPR 2 the hover play picks the 2160 (or highest shipped) rung; at 390 DPR 3 picks 1080; saveData picks 720 — assert via the <video> src after play, on the static export.",
       "decisions": [],
       "comments": [
@@ -5755,9 +5761,15 @@
           "at": "2026-09-06T01:38:28.774Z",
           "by": "orchestrator",
           "text": "PM probe 01:39Z on LIVE 521dac9c (Deploy 34004286177, consolidate 4a15797): /assets/avatar/my-hero-avatar-1080.mp4 200 video/mp4 3,690,721 B; /assets/avatar/my-hero-avatar-2160.webm 200 video/webm 2,913,450 B; 720p canonical unchanged 1,916,328 B; docs/architecture/ASSET-LADDER.md on origin/main. Rung selection, greyscale of each rung and no-autoplay to be judged by the next independent reviewer (t_w1_rev3 on the composite SHA). Not done until then."
+        },
+        {
+          "at": "2026-09-06T01:50:27.481Z",
+          "by": "orchestrator",
+          "text": "Lane result 01:50Z: 4a15797 consolidated (live 521dac9c → 12cd9123). Three rungs all chroma 0; selector lib/videoRung.ts (need = box height × DPR; saveData → 720p; canPlayType gate; AV1 2160p only reached above 1080 device px — stated plainly in ASSET-LADDER.md §10.3); TC-PHOTO-19 proves zero requests at rest. Pre-existing TC-HERO-13/15 + TC-PHOTO-11 → t_w1_red2. Awaiting reviewer t_w1_rev3 (running)."
         }
       ],
-      "blocker": null
+      "blocker": null,
+      "result": "Independent live PASS G-H5 resolution half (rev-12cd9123-w1); R5 remains OPEN on frame rate (24 fps). Live 521dac9c/12cd9123."
     },
     {
       "id": "t_w1_og1",
@@ -5777,10 +5789,21 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:15:34.910Z",
-      "updated": "2026-09-06T01:16:33.623Z",
+      "updated": "2026-09-06T01:57:27.643Z",
       "summary": "Reviewer evidence: docs/delivery/evidence/v10-20260905T0515Z/G-REV/56ffed3e/08-adversarial-review.md (G-OG1) + og-image-preview.png + oghue.mjs. PALETTE-EXCEPTIONS.md now says the register is empty, so the social card must obey C-8 too: ink from --ink-900 (#0A0A0A, chroma 0), white, gold only where a sourced figure appears. Keep the platform-standard 1.91:1 ratio; ship 2400x1260 so it reads sharp on 2x cards (≤ 500 kB image budget).",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T01:50:37.773Z",
+          "by": "orchestrator",
+          "text": "Lane result 01:51Z: fc03a0e6 pushed on worktree-w1-og1 (consolidation pending). OG card regenerated by scripts/build/og_card.mjs at 2400x1260, 209,035 B, chroma 0 on all 3,024,000 px, 0 gold (the three ledger figures are self-reported → grey caliper jaws per CT-10; the sourced rule stays in the card stylesheet for a future sourced figure). §0.1: fixed a stale woff2 pin (fonts resolved from the built stylesheet by family/weight/Latin range) — the previous card had been rendering body type in a fallback font. Tests first, tsc/lint/build/audit 10/10 green. Not done until the next independent reviewer (composite SHA) verifies the live /assets/og-image.png."
+        },
+        {
+          "at": "2026-09-06T01:57:27.643Z",
+          "by": "orchestrator",
+          "text": "PM probe 01:58Z on LIVE 70bd273d (Deploy 34005133000): /assets/og-image.png 2400x1260, max chroma 0, 0 px > 2 — matches the lane's numbers. Awaiting independent reviewer (composite SHA) for the formal PASS."
+        }
+      ],
       "blocker": null
     },
     {
@@ -5826,10 +5849,26 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:23:59.458Z",
-      "updated": "2026-09-06T01:41:37.730Z",
+      "updated": "2026-09-06T02:48:47.196Z",
       "summary": "G-H1 hero set-piece, composition A (docs/architecture/HERO-SETPIECE-v3.md, SA t_w2_h1sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). This is slice S1 (g2h1v3-01) of §9. The recruiter sentence the fold must produce: 'His face is standing in the shaft of light that his name is written across.' ADV-2315Z §Hero FAIL is the baseline. Immovables (§10 of the brief): LCP < 2.5 s, CLS < 0.05, nothing plays by default, critical-path assets ≤ 500 kB / video ≤ 2.5 MB, palette B/W/gold with gold only on sourced claims, reduced-motion and no-GL paths are the same picture, keyboard order per §7, no upscale above 1480x826 (figure ≤ 846 CSS px), G-MV1 pill untouched, hero.ts copy unedited. Visible outcome: the figure standing in the plane; the ledger gone from the first screen. Delete .portraitFrame/.portraitTick/.portraitCross styles in the same commit (TC-NFR-DEADCSS).",
-      "decisions": [],
-      "comments": [],
+      "decisions": [
+        {
+          "at": "2026-09-06T02:41:29.141Z",
+          "text": "O1 overrun (2 h vs 30 min) recorded; cause = serial hero battery on a 4-core box shared with two other lanes. Remaining slices stay ≤30 min nominal; hero e2e realignment split out to a tester slice so S2–S4 do not each re-pay the battery."
+        }
+      ],
+      "comments": [
+        {
+          "at": "2026-09-06T02:41:29.028Z",
+          "by": "orchestrator",
+          "text": "Lane result 02:45Z (ap-w2-h1s1): 9287089 pushed on worktree-w2-h1s1 (consolidating). Shipped: [data-plane=hero] wraps Scene + figure; HeroPortrait as .planeFigure inside the plane (no caption, nothing pressable); role/location/provenance moved to .proof (below the fold); SPD ground chain rooted at the declared plane (GROUND_SELECTOR exports) fenced by TC-HERO-PLANE-03; hero-setpiece.spec.ts SET-01/02/03/05 green at four viewports on both paths; plane coverage 1.0 everywhere; figure ≤ 846 px; hero.ts unedited; dead CSS removed. goal_complete:false honestly: 5 hero e2e cases red because they encode the OLD composition (TC-PHOTO-02, TC-HERO-21, two loop-ladder rung expectations, TC-HERO-13) + TC-FOLD-03/04 unverified after the pointer fix → t_w2_h1s5 (tester). O1 OVERRUN: ~2 h wall clock (three builds + a 30-min hero battery on 4 cores). Interim visual: the promoted opaque copy plates read as black bars across the picture at 1440 — S2's bounded uCopyGuard replaces them; do not widen a scrim."
+        },
+        {
+          "at": "2026-09-06T02:48:47.196Z",
+          "by": "orchestrator",
+          "text": "PM check 02:49Z: consolidated into origin/main and LIVE 97e19d07. Independent reviewer t_w1_rev4 judges on live."
+        }
+      ],
       "blocker": null
     },
     {
@@ -5899,10 +5938,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:23:59.718Z",
-      "updated": "2026-09-06T01:23:59.718Z",
+      "updated": "2026-09-06T02:41:29.400Z",
       "summary": "G-H1 hero set-piece, composition A (docs/architecture/HERO-SETPIECE-v3.md, SA t_w2_h1sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). This is slice S4 (g2h1v3-04) of §9. The recruiter sentence the fold must produce: 'His face is standing in the shaft of light that his name is written across.' ADV-2315Z §Hero FAIL is the baseline. Immovables (§10 of the brief): LCP < 2.5 s, CLS < 0.05, nothing plays by default, critical-path assets ≤ 500 kB / video ≤ 2.5 MB, palette B/W/gold with gold only on sourced claims, reduced-motion and no-GL paths are the same picture, keyboard order per §7, no upscale above 1480x826 (figure ≤ 846 CSS px), G-MV1 pill untouched, hero.ts copy unedited. Extra gates: full Playwright battery green (run it serially, one browser); no R5 claim added anywhere; evidence log per viewport per path.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T02:41:29.400Z",
+          "by": "orchestrator",
+          "text": "NOTE 02:46Z: hero e2e realignment is t_w2_h1s5 (tester, after S3). S4 keeps its own gates (PERF/PAL/PLANE-01 at 0.78, battery green) — coordinate by branching from origin/main once S5 is consolidated, or merge origin/worktree-w2-h1s5 first."
+        }
+      ],
       "blocker": null
     },
     {
@@ -5980,8 +6025,8 @@
     {
       "id": "t_w2_x2s1",
       "title": "WAVE-2 scene-7 x2-s1-career-descent-mount — S7 career-descent — FIRST VISIBLE SHIP: the sticky 160vh band after the chart and accordion in #experience, CareerDescent.tsx + descent.glsl.ts mounted through Scene with sceneId career-descent, priority=false, resolutionScale 0.5, uSpans[8]/uSpanCount from app/data/portfolio/experience.ts (same module as the Gantt), uDescent driven by scroll (60vh = 0→1), year ticks + ONE caption line and nothing else over the canvas",
-      "status": "ready",
-      "column": "ready",
+      "status": "running",
+      "column": "running",
       "assignee": "analyst-programmer",
       "priority": 93,
       "parents": [
@@ -5995,10 +6040,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:40:35.350Z",
-      "updated": "2026-09-06T01:40:35.923Z",
+      "updated": "2026-09-06T02:48:46.820Z",
       "summary": "Slice x2-s1-career-descent-mount of docs/architecture/SIGNATURE-SCENES-v2.md (SA t_w2_x2sa; research W2-RESEARCH/G-H1-G-X2-prior-art.md). Full slice definition (files, green tests, gates) is the entry with id x2-s1-career-descent-mount in docs/architecture/SIGNATURE-SCENES-TASKS.json and the matching row of v2 §slices. ADV-2315Z R2 FAIL (six wallpaper fields, no seventh cinematic scene) is the baseline; the recruiter sentence scene 7 must earn: 'There is a bit where you scroll and you are falling down sixteen years of his career like a core sample — each job is a layer, and the layers get brighter as you come up to now.' Immovables (v2 §constraints): palette B/W/gold with gold never in a shader; 4.5:1 type contrast first, story second (never add light over type); DPR cap 1.75 and resolutionScale 0.5 not raised; six-section IA unchanged (no seventh section); zero Hero files touched (HERO-SETPIECE-v3 owns that fold); G-MV1 pill never hidden; reduced-motion and no-GL render the same picture; no fps claim from a software rasteriser (Tier A readings labelled 'software-rasteriser'); no ffmpeg/encode in these slices; masters never committed.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T02:48:46.820Z",
+          "by": "orchestrator",
+          "text": "PM check 02:49Z: consolidated into origin/main and LIVE 97e19d07. Independent reviewer t_w1_rev4 judges on live."
+        }
+      ],
       "blocker": null
     },
     {
@@ -6091,10 +6142,26 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:46:12.200Z",
-      "updated": "2026-09-06T01:47:22.528Z",
+      "updated": "2026-09-06T02:37:33.628Z",
       "summary": "## CORRECTION: G-R2 truth line + G-M4 cold first token\nOriginal output: t_w1_r2ap ec53e2b4 (order openrouter,deepseek,zai,openai; badge 'MiniVic · synthetic'; truth line 'Voice: ElevenLabs stock · Face: pre-rendered loop · Answers: live text via {provider}'; primeProviderCooldowns on ?warm=1).\nFailing criteria (docs/delivery/evidence/v10-20260905T0515Z/G-REV/ec53e2b4/08-adversarial-review.md): F4 the truth line is `white-space:nowrap; overflow:hidden; text-overflow:ellipsis` and needs 595 px in a 316 px (1440) / 226 px (390) box, so 'Answers: live text via openai' is never visible (the panel subtitle is clipped at 390 too); F8 text-transform:uppercase shouts LIVE; F7 residual 'AI clone' copy (launcher aria-label 'Ask Mini Vic — Vikram's AI clone'; greeting \"I'm Vikram — his AI clone, speaking from his CV\"); F5 the done event carries only {done,provider,model} so §0.4 routing is not auditable; F3 POST/GET /api/chat?warm=1 through Hosting returns 400 (the implementer measured 204 at the origin) so primeProviderCooldowns never runs for real visitors; F2 lib/miniVicBrain.ts aborts the origin at 1500 ms — on a cold cooldown map the origin's first token is 2449 ms, so the visitor pays 1.5 s and then the buffered Hosting fallback in full.\nRequired fix: (1) MiniVicBot.tsx + CSS: the truth line wraps (white-space:normal, no ellipsis), sentence case (no uppercase transform on that line), at both widths — verify by measuring scrollWidth ≤ clientWidth per line in the test; subtitle likewise; (2) replace every 'AI clone' string (grep -rn 'AI clone' app components lib functions public) with the sanctioned synthetic wording; (3) functions/index.js done event and JSON body gain attempts:[{provider,outcome,ms}] (no secrets, no URLs) — and the node test asserts it; (4) find why ?warm=1 is 400 through Hosting (query stripped? method? body parser rejecting empty body?) — reproduce with curl against https://forgotten-mistory.web.app/api/chat?warm=1 (GET and POST) before and after; make it 204 through Hosting and keep the priming fire-and-forget; (5) in lib/miniVicBrain.ts do not abort the origin at a fixed 1500 ms — race sensibly: keep the origin as primary with a budget derived from the measured cold walk (e.g. 2600 ms) OR start the Hosting fallback only after the origin's headers are late, but never discard an origin stream whose first token arrives before the fallback's; document the chosen policy in MINIVIC-BRAIN-0-4.md §2(c) addendum; (6) redeploy the function (firebase deploy --only functions:tts:minivicChat --project forgotten-mistory --non-interactive) and push the site branch.\nVerification: tests first (node: attempts[] shape; warm 204 contract; e2e: truth line fully visible at 1440/390 by scrollWidth ≤ clientWidth, 0 'AI clone' in DOM, no uppercase LIVE); then the reviewer's own protocol: 7 cold origin samples after ≥ 10 min idle AND 7 Hosting samples, plus 3 warm — report every number; PASS bar is all 7 < 1.5 s on the route the client actually completes.",
-      "decisions": [],
-      "comments": [],
+      "decisions": [
+        {
+          "at": "2026-09-06T02:37:33.628Z",
+          "text": "§0.1 decision 02:38Z: public/assets/minivic-greeting.mp3 still speaks 'his AI clone'. Regenerating it is ONE ordinary TTS call with the configured premade voice — the same class of call the live site makes for every visitor's reply — not a new spend class (IVC/cloning/video). It is folded into t_w2_r3a2, which already makes exactly one /with-timestamps call for the greeting alignment: that call produces the new audio AND the alignment. No separate paid call."
+        }
+      ],
+      "comments": [
+        {
+          "at": "2026-09-06T02:07:45.989Z",
+          "by": "orchestrator",
+          "text": "PM probe 02:08Z on LIVE 5293e7d6 (Deploy 34005562108): GET and POST /api/chat?warm=1 through Hosting → 204 in 0.19 s / 0.17 s (was 400); 'AI clone' 0 in HTML and all shipped chunks. Truth-line visibility, attempts[] and the origin race policy are for the independent reviewer (rev-4, composite SHA with t_w1_mv2)."
+        },
+        {
+          "at": "2026-09-06T02:37:33.569Z",
+          "by": "orchestrator",
+          "text": "Lane result 02:38Z (identity ap-w1-r2c, over cap, honest goal_complete:false): a134bb5c on worktree-w1-r2c (live since 5293e7d6/b02a8863); function redeployed; ?warm=1 GET/POST 204 through Hosting (a POST carrying messages[] + warm flag is still answered — never swallowed); attempts[] on the done event and JSON body; disclosure moved from the clipped overlay to a flow-level bar (visible at 1440/390, sentence case), subtitle unclipped; 'AI clone' 0 in DOM/aria (retired in greeting variants, aria-label, visa answer, server system prompt). Strict-cold (≥10 min idle, no warm ping): Hosting 7/7 < 1.5 s (max 1194 ms); origin first sample 2626 ms (dead-rung walk) then 465–1408 ms. Remaining measurement: the real visitor sequence (idle → panel open fires warm ping → send) — assigned to reviewer t_w1_rev4. e2e: 32 pass / 3 pre-existing fails reproduced on the pre-change live build (TC-BOT-14, TC-MV-OCCLUDE-01, MONO-MV-02@640) → t_w1_red2 scope."
+        }
+      ],
       "blocker": null
     },
     {
@@ -6115,10 +6182,21 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:46:12.270Z",
-      "updated": "2026-09-06T01:47:22.582Z",
+      "updated": "2026-09-06T02:48:46.516Z",
       "summary": "Evidence: docs/delivery/evidence/v10-20260905T0515Z/G-REV/ec53e2b4/08-adversarial-review.md (REGRESSION FAIL) + panel-probe-*.json: the pill reports display:block, opacity:1, visibility:visible, isVisible()===true, yet page.click fails because `hero-fold` intercepts pointer events at both widths. Relates to G-NEW-1 (dock opacity on the first fold) and G-E2 (dock must not occlude charts). The hero set-piece lane (t_w2_h1s1…) is editing components/sections/Hero/* concurrently — do NOT edit Hero files; fix on the launcher side (app/globals.css .minivic-launcher* / components/MiniVicBot.tsx z-index, pointer-events, stacking context) so it wins over any section overlay, and coordinate only through origin/main.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T02:40:21.187Z",
+          "by": "orchestrator",
+          "text": "Lane result 02:42Z (ap-w1-mv2): 6d007adb pushed on worktree-w1-mv2. Root cause = hit testing, not stacking: .minivic-dock carried inline pointer-events:none until pastHero, so the launcher was never in the hit test on the first fold. Fix CSS-only in app/globals.css (launcher pointer-events:auto + :hover reveal; the opacity gate kept so MONO-MV-02 and G-E2 hold); new tests/e2e/minivic-first-fold-click.spec.ts TC-MV-CLICK-01 @1440/@390 green after failing first; Hero files untouched. goal_complete:false honestly because TC-MV-OCCLUDE-01 (Vitrine foot copy 4.05:1 under the launcher ground, pre-existing on origin/main 2cc7165) survives → in t_w1_red2 scope. Reviewer t_w1_rev4 judges on live."
+        },
+        {
+          "at": "2026-09-06T02:48:46.516Z",
+          "by": "orchestrator",
+          "text": "PM check 02:49Z: consolidated into origin/main and LIVE 97e19d07. Independent reviewer t_w1_rev4 judges on live."
+        }
+      ],
       "blocker": null
     },
     {
@@ -6146,8 +6224,8 @@
     {
       "id": "t_w1_rev3",
       "title": "WAVE-1 REVIEW 3 — independent adversarial review of live 12cd9123: G-A3 (the About field tells ten sectors with the dial ignored; dial is chrome; ≥75% plane), G-H5 resolution half (on-demand 1080p/2160p greyscale rungs, selection rules, nothing plays by default), plus the regression table and R5 OPEN",
-      "status": "running",
-      "column": "running",
+      "status": "done",
+      "column": "done",
       "assignee": "reviewer",
       "priority": 100,
       "parents": [
@@ -6162,11 +6240,12 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:47:59.223Z",
-      "updated": "2026-09-06T01:47:59.286Z",
+      "updated": "2026-09-06T02:10:42.745Z",
       "summary": "Live build-commit 12cd9123 (Deploy 34004706433, 01:45Z) = consolidation of worktree-w1-a3 e5c1e4d (About: components/sections/About/{field.glsl.ts,AboutField.tsx,Compass.tsx,*.module.css}, tests/overhaul/scene-about.spec.ts TC-SCENE-ABOUT-10/11) on top of 521dac9c (G-H5 rungs: public/assets/avatar/my-hero-avatar-1080.mp4 3.69 MB H.264, my-hero-avatar-2160.webm 2.91 MB AV1; lib/videoRung.ts selector; docs/architecture/ASSET-LADDER.md). Baselines: ADV-2315Z §About FAIL ('recruiter names the dial'); rev-56ffed3e-w1 G-H5 FAIL (only 720p served while a 2160p master exists). GAP-BACKLOG acceptances: G-A3 — recruiter recall is the GL field; hide the SVG and the remaining picture still tells ten sectors; restore it and the field still carries ≥ ~75% weight; gold/hatch honesty green. G-H5 — ≥1080p path toward 4K shipped honestly; 720p24 never presented as 4K; R5 stays OPEN (24 fps). You did not write any of it; judge on the live URL only; generate your own artifacts.",
       "decisions": [],
       "comments": [],
-      "blocker": null
+      "blocker": null,
+      "result": "Reviewer rev-12cd9123-w1 (max, 21 min): G-A3 PASS on the GAP acceptance (ten sectors countable with dial+column hidden at 1440/390; plane dominance 75.2%; dial brightest 0.2789 = --mist-400; 0 gold/chromatic px; reduced-motion 0 canvases with the SVG still telling ten; no-GL dial recovers 0.92) with sub-claim FAIL: answered/open light ratio 1.039 at 390 DPR3 and 1.596 at 1440 in the section's first-screen state (Culture Fit answered = darkest 0.012; Company Stability open = 0.566) → correction t_w2_x2f5. G-H5 PASS (720p/1080p H.264, 2160p AV1 all chroma-flat from downloaded bytes; 301 old name; nothing above top rung; selection by real press at 7 configs; 0 requests at rest). G-MV1 FAIL at 390 first fold (hero portrait <video> z-index 1 covers the launcher; click times out; works after scroll) → t_w1_mv2 in progress. G-L1 motion floor MISS 0.0029 < 0.004 (own measurement) → t_w1_red3. R5 OPEN (24 fps). Doc defect: ASSET-LADDER.md §1–2 contradict §10 → t_w1_lad1. Regression: G-V3, G-C1 identical hrefs, hero monochrome, about contrast ≥ 6.2:1, 0 pageerrors ×4, /api/tts 200 all PASS. Evidence G-REV/12cd9123/."
     },
     {
       "id": "t_w2_r3a2",
@@ -6184,10 +6263,16 @@
       },
       "provider": "anthropic-oauth",
       "created": "2026-09-06T01:49:34.586Z",
-      "updated": "2026-09-06T01:49:34.929Z",
+      "updated": "2026-09-06T02:37:33.693Z",
       "summary": "Slice R3-A2 of docs/architecture/MINIVIC-AVATAR-v1.md (SA t_w2_r3sa; research W2-RESEARCH/R3-avatar-path.md; brain routing MINIVIC-BRAIN-0-4.md). Full definition (files, gates, test ids) = the entry with id R3-A2 in docs/architecture/MINIVIC-AVATAR-TASKS.json. docs/prompt.md §2.1 second form: a pre-made animated avatar that SEEMS real-time, driven by frame-accurate (~40 ms) lip-sync; R3 first form (generative real-time Higgsfield video) is structurally OPEN (async submit-then-poll only, 0 credits) and must never be claimed. Cost gate: only ordinary TTS calls with the configured premade voice (ELEVENLABS_VOICE_ID by name); no IVC/cloning; no Higgsfield generation. Slice R3-A1 (badge/copy) is being delivered by t_w1_r2c — keep the badge and panel line verbatim from MINIVIC-BRAIN-0-4 §2(b); only the third line changes, and only once lip-sync is real.",
       "decisions": [],
-      "comments": [],
+      "comments": [
+        {
+          "at": "2026-09-06T02:37:33.693Z",
+          "by": "orchestrator",
+          "text": "SCOPE NOTE 02:38Z (PM decision on t_w1_r2c): your single /with-timestamps call for the greeting must use the CURRENT greeting text (the 'AI clone' sentence was retired in a134bb5c — read app/data/portfolio or MiniVicBot GREETING for the sanctioned wording), and its audio output REPLACES public/assets/minivic-greeting.mp3 (+ minivic-greeting.txt, the generated greeting-asset.ts digest and greeting_envelope.mjs outputs regenerated). One call, premade voice ELEVENLABS_VOICE_ID by name, no IVC. The three-way digest pin (text ↔ mp3 ↔ alignment) then holds."
+        }
+      ],
       "blocker": null
     },
     {
@@ -6307,6 +6392,116 @@
       "created": "2026-09-06T01:49:34.832Z",
       "updated": "2026-09-06T01:49:34.832Z",
       "summary": "Slice R3-A7 of docs/architecture/MINIVIC-AVATAR-v1.md (SA t_w2_r3sa; research W2-RESEARCH/R3-avatar-path.md; brain routing MINIVIC-BRAIN-0-4.md). Full definition (files, gates, test ids) = the entry with id R3-A7 in docs/architecture/MINIVIC-AVATAR-TASKS.json. docs/prompt.md §2.1 second form: a pre-made animated avatar that SEEMS real-time, driven by frame-accurate (~40 ms) lip-sync; R3 first form (generative real-time Higgsfield video) is structurally OPEN (async submit-then-poll only, 0 credits) and must never be claimed. Cost gate: only ordinary TTS calls with the configured premade voice (ELEVENLABS_VOICE_ID by name); no IVC/cloning; no Higgsfield generation. Slice R3-A1 (badge/copy) is being delivered by t_w1_r2c — keep the badge and panel line verbatim from MINIVIC-BRAIN-0-4 §2(b); only the third line changes, and only once lip-sync is real.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_x2f5",
+      "title": "CORRECTION G-A3 story (rev-12cd9123-w1 sub-claim FAIL) — the About field must encode WHICH dimensions are answered from light alone in the section's first-screen state: answered/open ≥ 1.6 at 1440 and 390 (ring and fan), ≥ 9/10 seams ≥ 12%, without raising luminance over type (READING_CEILING 0.10 / INSTRUMENT_CEILING 0.24 untouched) and with zero gold",
+      "status": "ready",
+      "column": "ready",
+      "assignee": "analyst-programmer",
+      "priority": 94,
+      "parents": [
+        "t_w1_rev3"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T02:10:43.917Z",
+      "updated": "2026-09-06T02:10:43.917Z",
+      "summary": "## CORRECTION: TC-SCENE-ABOUT-10 answered/open clause\nOriginal output: t_w1_a3 e5c1e4d (live 12cd9123) — multiplicative state term (answered full light, open 45° hatch at ~0.40) measured 4.04 ring / 5.9 fan at 1440 with dimension 4 active.\nFailing criteria (docs/delivery/evidence/v10-20260905T0515Z/G-REV/12cd9123/08-adversarial-review.md F-2, a3-field-probe.json): with dial+column hidden and the section at the top of the viewport (data-axis=-1, no dimension active), ring answered/open = 1.039 at 390x844 DPR3 (fan 0.983) and 1.596 at 1440; only 6/10 seams clear 12% at 1440; per-sector ring means at 1440: 0.7065 0.6327 0.3556 0.4980 0.0122 0.2169 0.0627 0.2303 0.5661 0.7133 — sector 5 (Culture Fit, answered) is the darkest, sector 9 (Company Stability, open) is 0.566: brightness tracks position on the plane, not about.ts; hatch energy does not separate the groups (0.944 / 1.088).\nRequired fix: in components/sections/About/field.glsl.ts (+ AboutField.tsx uniforms only if needed) make the state term dominate the positional light in EVERY state including data-axis=-1 — e.g. normalise the fan/haze by sector so each sector's base light is equal before the answered/open multiplier, and apply the multiplier to the fan as well as the ring — so that answered/open ≥ 1.6 holds at 1440 and 390 in the initial state and with any dimension active, ≥ 9/10 seams ≥ 12%, while plane dominance stays ≥ 0.75 (measured 75.2% — do not lose it), text contrast stays ≥ 4.5:1 (ceilings untouched), gold 0, TC-SCENE-ABOUT-01..09 + 11 stay green, flagship-visibility coverage/motion floors hold.\nVerification: extend TC-SCENE-ABOUT-10 to run in BOTH states (data-axis=-1 and axis 4) at 1440 and 390 and to print the ten per-sector means; capture failing on origin/main first; then tests/overhaul/scene-about.spec.ts tests/overhaul/flagship-visibility.spec.ts -g ABOUT tests/a11y/text-contrast.spec.ts tests/e2e/about.spec.ts green on :5627; screenshots field-alone at both widths in both states.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null
+    },
+    {
+      "id": "t_w1_lad1",
+      "title": "DOC DEFECT (rev-12cd9123-w1 F-5) — docs/architecture/ASSET-LADDER.md §1–2 still call /assets/my-hero-avatar.mp4 a 640x360 / 160,156 B unreferenced orphan to RETIRE while §10 and the live file are the 1280x720 / 1,916,328 B base rung; rewrite §1–2 so every sentence is true of live 12cd9123 (§11.9 honest documentation)",
+      "status": "done",
+      "column": "done",
+      "assignee": "coder",
+      "priority": 80,
+      "parents": [
+        "t_w1_rev3"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "coding / documentation",
+        "level": 4,
+        "effort": "medium (xhigh when coding)"
+      },
+      "provider": "openrouter→anthropic-oauth",
+      "created": "2026-09-06T02:10:44.244Z",
+      "updated": "2026-09-06T02:13:45.731Z",
+      "summary": "Documentation-only slice (coder profile, documentation role, medium). Source of truth for the numbers: the review's own measurements (docs/delivery/evidence/v10-20260905T0515Z/G-REV/12cd9123/h5-rung-probe.json, ffprobe lines in 08-adversarial-review.md) and §10 of the ladder. Do not touch code or assets.",
+      "decisions": [],
+      "comments": [],
+      "blocker": null,
+      "result": "coder-w1-lad1 (sonnet, medium, 2.6 min): 46accc4 pushed on worktree-w1-lad1 — §1/§2 rewritten to the live rungs (numbers re-measured with ffprobe/identify in the worktree; the orphan survives only as dated history). PM check on the branch: 640x360 appears 0 times, all under the RETIRED 2026-09-05 history marker (1). Consolidates next tick."
+    },
+    {
+      "id": "t_w1_rev4",
+      "title": "WAVE-1 REVIEW 4 — independent adversarial review of the composite live SHA carrying t_w1_r2c (readable disclosure, attempts[], warm-prime via Hosting, origin race, AI-clone copy), t_w1_mv2 (launcher clickable on the first fold), t_w1_og1 (monochrome OG card) and t_w1_lad1 (ladder doc) — plus the REAL visitor cold sequence for G-M4 and the regression table",
+      "status": "running",
+      "column": "running",
+      "assignee": "reviewer",
+      "priority": 100,
+      "parents": [
+        "t_w1_r2c",
+        "t_w1_mv2",
+        "t_w1_og1"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "3rd_party_independent_adversarial_review",
+        "level": 1,
+        "effort": "max"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T02:37:33.798Z",
+      "updated": "2026-09-06T02:48:46.346Z",
+      "summary": "Read the live build-commit at start (curl the page) and review THAT SHA; it must be a descendant of a134bb5c (r2c), fc03a0e6 (og1), 46accc4 (lad1) and the t_w1_mv2 commit named in the board comment on t_w1_mv2. Baselines: rev-ec53e2b4-w1 (F2–F8 + launcher regression), rev-12cd9123-w1 (G-MV1 FAIL at 390: hero portrait video covers the launcher). GAP-BACKLOG G-M4 bar: Hosting POST /api/chat first token < 1.5 s on a cold probe. The implementer measured strict-cold Hosting 7/7 < 1.5 s (max 1194) and origin first sample 2626 ms WITHOUT a warm ping; the shipped client fires GET /api/chat?warm=1 when the panel opens. Your job: measure what a visitor actually experiences and judge on that, and re-run everything else independently.",
+      "decisions": [],
+      "comments": [
+        {
+          "at": "2026-09-06T02:37:57.432Z",
+          "by": "orchestrator",
+          "text": "SCOPE NOTE 02:40Z: the composite SHA will also carry hero S1 (worktree-w2-h1s1 9287089 — [data-plane=hero] wraps Scene + figure; portrait inside the plane; role/location/caption below the fold). Record the fold state as INTERIM evidence (SPD baseline per viewport, text-leaf blocks ≤ 3, ledger top ≥ innerHeight, figure inside the plane, no upscale, LCP/CLS on live) — do not grade G-H1 PASS/FAIL until S4 lands; do flag any regression (contrast, pageerrors, G-MV1) as FAIL."
+        },
+        {
+          "at": "2026-09-06T02:41:42.339Z",
+          "by": "orchestrator",
+          "text": "SCOPE NOTE 02:47Z: the composite SHA also carries scene 7's mount (worktree-w2-x2s1 — sceneId career-descent, a sticky 160vh band after the chart in #experience, uSpans from experience.ts, one caption line over the canvas). Record INTERIM evidence (do not grade R2/G-X2 until s2/s3 land): data-scene=career-descent present in the served HTML, canvases ≥ 1 under ?gl=force in #experience at 1440/390, 0 pageerrors, only a caption over the canvas (no heading/paragraph/CTA), gold 0 in the canvas, text contrast in #experience ≥ 4.5:1, MiniVic dock not occluding .trackYears / [data-chart] (G-E2), and the recruiter sentence you would say about the band in one line. Any regression is a FAIL."
+        }
+      ],
+      "blocker": null
+    },
+    {
+      "id": "t_w2_h1s5",
+      "title": "G-H1 S5 (tester) — realign the hero e2e suites to HERO-SETPIECE-v3 geometry: rewrite TC-PHOTO-02 and TC-HERO-21 (figure in the plane above the copy; §3.5 bleeds right only), recompute the loop-ladder rung expectations from the v3 figure box, root-cause TC-HERO-13 (hover point now under the copy block), re-measure TC-FOLD-03 (4 viewports) and TC-FOLD-04 @390 — no threshold lowered, every rewrite justified in the spec",
+      "status": "todo",
+      "column": "todo",
+      "assignee": "tester",
+      "priority": 93,
+      "parents": [
+        "t_w2_h1s3"
+      ],
+      "skills": [],
+      "hierarchy": {
+        "role": "testing / qa",
+        "level": 2,
+        "effort": "xhigh"
+      },
+      "provider": "anthropic-oauth",
+      "created": "2026-09-06T02:41:29.234Z",
+      "updated": "2026-09-06T02:41:29.234Z",
+      "summary": "From t_w2_h1s1's honest goal_complete:false (docs/delivery/evidence/v10-20260905T0515Z/W2-H1/t_w2_h1s1/05-hero-suites-remaining.log and 04-hero-suites.log). Five cases encode the superseded fold (docs/architecture/HERO-FOLD-v2.md) and must be rewritten to the v3 contract (docs/architecture/HERO-SETPIECE-v3.md §3 geometry, §4.3 rungs, §8 cases); TC-HERO-13 needs a root cause (mechanism works — TC-PHOTO-05 passes); TC-FOLD-03/04 were red before the pointer-events fix and never re-run. Run AFTER S3 (typography) lands so the geometry is final; do not edit Hero component files (S4 owns product changes) — file product findings as followups with numbers.",
       "decisions": [],
       "comments": [],
       "blocker": null

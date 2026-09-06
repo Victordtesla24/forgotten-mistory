@@ -1,0 +1,157 @@
+{
+  "sha": "12cd9123",
+  "task_id": "t_w1_rev3",
+  "reviewer": "rev-12cd9123-w1",
+  "subject": "https://forgotten-mistory.web.app/",
+  "probed_utc": "2026-09-06T01:49Z-02:06Z",
+  "sha_note": "Every asset/G-H5/G-A3 measurement was taken on live 12cd9123 (01:49-02:04Z). The live build moved to 70bd273d at ~02:05Z mid-review; git diff --name-only 12cd912..70bd273 shows app/layout.tsx (G-OG1 OpenGraph card) as the only application file between them, so Hero/About/videoRung/public assets are unchanged. The MiniVic finding was re-run on 70bd273d at 02:06Z and reproduces identically (mv1-recheck-live-sha.json).",
+  "baselines": [
+    "docs/adversarial/ADV-REVIEW-20260905T2315Z.md (About: 'recruiter names the dial')",
+    "docs/delivery/evidence/v10-20260905T0515Z/G-REV/56ffed3e/08-adversarial-review.md (G-H5 FAIL: only 720p served)"
+  ],
+  "gaps": {
+    "G-A3": "PASS",
+    "G-H5": "PASS"
+  },
+  "gap_detail": {
+    "G-A3": {
+      "verdict": "PASS on the gap acceptance; one sub-claim FAILS (see finer_claim_fail)",
+      "ten_sectors_with_dial_hidden": {
+        "390x844_dpr3": {
+          "sectors_on_annulus": 10,
+          "pixels_per_sector_min": 23762,
+          "seams_with_step_ge_12pct": "10/10",
+          "seam_steps": [0.675, 0.756, 0.782, 0.766, 0.741, 0.629, 0.62, 0.829, 0.51, 0.697]
+        },
+        "1440x900_dpr1_first_screen": {
+          "sectors_on_annulus": 10,
+          "pixels_per_sector_min": 9104,
+          "seams_with_step_ge_12pct": "6/10",
+          "seam_steps": [-0.033, 0.128, 0.135, 0.52, 0.936, 0.174, 0.332, -0.849, -0.613, -0.184]
+        },
+        "reviewer_eye": "ten spokes and the wedges between them are countable in a3-1440x900-field-alone.png and a3-390x844-field-alone.png"
+      },
+      "plane_dominance_with_dial_restored": {
+        "measured": 0.752,
+        "threshold": 0.75,
+        "margin_points": 0.2,
+        "method": "light above --ink-900 ground attributable to the canvas, a3-1440-with-field.png vs a3-1440-without-field.png"
+      },
+      "dial_brightest_stroke_luma": 0.2789,
+      "mist_400_luma": 0.2789,
+      "dial_within_mist_400": true,
+      "gold_pixels_in_canvas": 0,
+      "max_chroma_ring_and_fan_both_viewports": 0,
+      "reduced_motion": {
+        "canvases": 0,
+        "svg_dial_ring_sector_means": [0.0638, 0.0944, 0.1159, 0.1174, 0.1119, 0.1032, 0.0667, 0.0493, 0.0474, 0.0556],
+        "answered_over_open": 1.2,
+        "max_chroma": 0
+      },
+      "no_gl": {
+        "canvases": 0,
+        "dial_brightest_luma": 0.9216,
+        "vs_with_gl": 0.2789,
+        "recovery_x": 3.3,
+        "pageerrors": 0
+      },
+      "finer_claim_fail": {
+        "claim": "TC-SCENE-ABOUT-10: answered sectors >= 1.6x open sectors, >= 9/10 seams with a 12% step",
+        "measured_390x844_dpr3": { "ring_answered_over_open": 1.039, "fan_answered_over_open": 0.983, "hatch_texture_open_over_answered": 0.944 },
+        "measured_1440x900_first_screen": { "ring_answered_over_open": 1.596, "fan_answered_over_open": 3.629, "hatch_texture_open_over_answered": 1.088 },
+        "ring_sector_means_1440": [0.7065, 0.6327, 0.3556, 0.498, 0.0122, 0.2169, 0.0627, 0.2303, 0.5661, 0.7133],
+        "ring_sector_means_390": [0.3973, 0.3527, 0.2519, 0.1614, 0.0809, 0.1123, 0.3364, 0.0701, 0.1979, 0.2535],
+        "about_ts_role_side_dimensions_1_based": [6, 7, 9],
+        "reading": "brightness ordering tracks position on the plane (guard + falloff), not about.ts: sector 5 Culture Fit (answered) is the darkest at 0.0122 while sector 9 Company Stability (role-side) is 0.5661. The ten are countable; which three are open is not readable from the light, and the 45-degree hatch energy does not separate them either."
+      }
+    },
+    "G-H5": {
+      "verdict": "PASS",
+      "rungs_live": [
+        { "url": "/assets/my-hero-avatar.mp4", "http": 200, "bytes": 1916328, "dims": "1280x720", "fps": "24/1", "codec": "h264 High", "chroma_SATMAX_3_frames": 0 },
+        { "url": "/assets/avatar/my-hero-avatar-1080.mp4", "http": 200, "bytes": 3690721, "dims": "1920x1080", "fps": "24/1", "codec": "h264 High", "chroma_SATMAX_3_frames": 0 },
+        { "url": "/assets/avatar/my-hero-avatar-2160.webm", "http": 200, "bytes": 2913450, "dims": "3840x2160", "fps": "24/1", "codec": "av1 Main", "chroma_SATMAX_3_frames": 0 }
+      ],
+      "nothing_above_top_rung": { "/assets/avatar/my-hero-avatar-2160.mp4": 404, "/assets/avatar/my-hero-avatar-1440.mp4": 404, "/assets/avatar/my-hero-avatar-4320.webm": 404 },
+      "legacy_name": { "/assets/my-avatar.mp4": 301, "location": "/assets/my-hero-avatar.mp4" },
+      "selection_after_a_real_press": [
+        { "config": "1440x900@1", "need_device_px": 305, "currentSrc": "/assets/my-hero-avatar.mp4", "intrinsic": "1280x720" },
+        { "config": "1440x900@2", "need_device_px": 611, "currentSrc": "/assets/my-hero-avatar.mp4", "intrinsic": "1280x720" },
+        { "config": "1440x900@3", "need_device_px": 916, "currentSrc": "/assets/avatar/my-hero-avatar-1080.mp4", "intrinsic": "1920x1080" },
+        { "config": "390x844@3", "need_device_px": 653, "currentSrc": "/assets/my-hero-avatar.mp4", "intrinsic": "1280x720" },
+        { "config": "1440x900@3 saveData", "need_device_px": 916, "currentSrc": "/assets/my-hero-avatar.mp4", "intrinsic": "1280x720" },
+        { "config": "1440x900@3 no-AV1", "need_device_px": 916, "currentSrc": "/assets/avatar/my-hero-avatar-1080.mp4", "intrinsic": "1920x1080" },
+        { "config": "2560x1440@2", "need_device_px": 643, "currentSrc": "/assets/my-hero-avatar.mp4", "intrinsic": "1280x720" }
+      ],
+      "nothing_plays_by_default": {
+        "rung_requests_before_pointer": 0,
+        "configs_checked": 7,
+        "video_at_rest": { "currentSrc": "", "src_attribute": null, "preload": "none" }
+      },
+      "caveat": "The portrait box caps at ~321.5 CSS px on every layout produced (checked up to 2560x1440), so need maxes near 965 device px and no emulated device selects the 2160p rung. The URL is real and honestly encoded; ASSET-LADDER.md 10.3 discloses this.",
+      "720p_never_presented_as_4K": true
+    }
+  },
+  "regression": {
+    "G-MV1": "FAIL (first fold at 390: hero video intercepts the launcher click; visible everywhere, clickable only below the fold)",
+    "G-V3": "PASS",
+    "G-L1": "PASS (field present) / MISS (motion floor 0.002889 max per 400 ms vs 0.004)",
+    "G-C1": "PASS (Vitrine and Listen engage hrefs byte-identical)",
+    "hero_monochrome": "PASS (maxChroma 0 over 1440x1461 painted pixels)",
+    "about_contrast_min": "PASS (6.2:1 index numerals; answer 12.45, name 18.32, evidence 8.66)",
+    "pageerrors_console_normal_and_gl_force": "PASS (0/0 at 1440 and 390 in both modes)",
+    "api_tts": "PASS (POST 200, 20942 B, 0.368 s; GET 405)"
+  },
+  "regression_detail": {
+    "G-MV1": {
+      "rect_390": { "x": 207.6, "y": 776, "w": 158.4, "h": 44 },
+      "display": "block",
+      "hidden_below_834px": false,
+      "scrollY_0": { "elementFromPoint": "VIDEO.Hero_portraitVideo__e3yop", "click": "TimeoutError after 6000ms" },
+      "scrollY_1497": { "elementFromPoint": "SPAN.minivic-launcher__pill", "click": "ok", "panel": "minivic-panel 342x404" },
+      "cause": "hero portrait <video> box {x:0,y:630.9,w:390,h:217.7}, z-index 1, pointer-events auto covers the launcher at y 776-820",
+      "reconfirmed_on": "70bd273d"
+    },
+    "G-L1": { "canvases_in_listen": 1, "canvas_px": "1440x901", "consecutive_mean_abs_luma_delta_400ms": [0.001999, 0.000966, 0.002889, 0.000815], "max": 0.002889, "floor": 0.004 },
+    "G-C1": { "vitrine": "mailto:sarkar.vikram@gmail.com?subject=20-minute%20call%20%E2%80%94%20Vikram%20Deshpande&body=...", "listen": "identical string", "identical": true },
+    "about_contrast": { "answer": 12.45, "name": 18.32, "evidence": 8.66, "lede": 12.45, "index": 6.2, "caption": 18.32 },
+    "vitrine_contrast": { "card_title": 18.32, "card_body": 6.2, "card_meta": 18.32 }
+  },
+  "documentation_defect": {
+    "file": "docs/architecture/ASSET-LADDER.md",
+    "issue": "Sections 1 and 2 still describe /assets/my-hero-avatar.mp4 as a 640x360, 160,156 B unreferenced orphan marked RETIRE, while section 10 and the live file are 1280x720, 1,916,328 B and the default rung every reader receives.",
+    "severity": "documentation only; no live behaviour affected"
+  },
+  "R5": "OPEN — not graded PASS. All three live rungs are 24 fps (ffprobe r_frame_rate=24/1); the top rung reaches 3840x2160 but R5 asks >=3840x2160 @ 60 fps or resolution independence.",
+  "false_positives": [
+    "'The 2160p rung is fake' — it is a real 3840x2160 AV1 encode that decodes; it is only unreachable on today's box size, which the ladder discloses.",
+    "'Rungs are fetched at load' — zero rung requests before a pointer in all seven configurations; preload=none and no src attribute at rest.",
+    "'The Ask Mini Vic pill is hidden below 834px' — it is not hidden (display:block, 158.4x44 in the viewport); the defect is click interception. The first DOM match for 'Ask Mini Vic' is the skip-link (translated off-screen by design) and grading that as the pill would have been a false positive.",
+    "'#listen has no field' — the 0 count came from reading before the in-view mount; the settled page has exactly one canvas.",
+    "'Gold leaked into the About canvas' — max chroma 0 across ring and fan at both viewports."
+  ],
+  "artifacts": [
+    "08-adversarial-review.md",
+    "h5-rung-probe.json",
+    "a3-field-probe.json",
+    "a3-hatch-texture.json",
+    "regression-probe.json",
+    "mv1-l1-probe.json",
+    "mv1-buttons-390.json",
+    "mv1-launcher-390.json",
+    "mv1-recheck-live-sha.json",
+    "a3-1440x900-field-alone.png",
+    "a3-390x844-field-alone.png",
+    "a3-1440x900-section-as-shipped.png",
+    "a3-390x844-section-as-shipped.png",
+    "a3-1440-with-field.png",
+    "a3-1440-without-field.png",
+    "a3-reduced-motion-dial.png",
+    "a3-no-gl-dial.png",
+    "reg-1440-hero.png",
+    "reg-390-minivic-after-click.png",
+    "reg-390-minivic-open.png",
+    "reg-390-minivic-state.png",
+    "reg-390-minivic-after-scroll-click.png"
+  ]
+}

@@ -36,3 +36,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-06T02:37:33.693Z)
+SCOPE NOTE 02:38Z (PM decision on t_w1_r2c): your single /with-timestamps call for the greeting must use the CURRENT greeting text (the 'AI clone' sentence was retired in a134bb5c — read app/data/portfolio or MiniVicBot GREETING for the sanctioned wording), and its audio output REPLACES public/assets/minivic-greeting.mp3 (+ minivic-greeting.txt, the generated greeting-asset.ts digest and greeting_envelope.mjs outputs regenerated). One call, premade voice ELEVENLABS_VOICE_ID by name, no IVC. The three-way digest pin (text ↔ mp3 ↔ alignment) then holds.

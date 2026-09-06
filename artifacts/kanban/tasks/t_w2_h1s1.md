@@ -41,3 +41,12 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T01:41:37.730Z)
 running — dispatched 01:42Z fm-wave2-hero (serialized S1→S4)
+
+## COMMENT (2026-09-06T02:41:29.028Z)
+Lane result 02:45Z (ap-w2-h1s1): 9287089 pushed on worktree-w2-h1s1 (consolidating). Shipped: [data-plane=hero] wraps Scene + figure; HeroPortrait as .planeFigure inside the plane (no caption, nothing pressable); role/location/provenance moved to .proof (below the fold); SPD ground chain rooted at the declared plane (GROUND_SELECTOR exports) fenced by TC-HERO-PLANE-03; hero-setpiece.spec.ts SET-01/02/03/05 green at four viewports on both paths; plane coverage 1.0 everywhere; figure ≤ 846 px; hero.ts unedited; dead CSS removed. goal_complete:false honestly: 5 hero e2e cases red because they encode the OLD composition (TC-PHOTO-02, TC-HERO-21, two loop-ladder rung expectations, TC-HERO-13) + TC-FOLD-03/04 unverified after the pointer fix → t_w2_h1s5 (tester). O1 OVERRUN: ~2 h wall clock (three builds + a 30-min hero battery on 4 cores). Interim visual: the promoted opaque copy plates read as black bars across the picture at 1440 — S2's bounded uCopyGuard replaces them; do not widen a scrim.
+
+## DECISION (2026-09-06T02:41:29.141Z)
+O1 overrun (2 h vs 30 min) recorded; cause = serial hero battery on a 4-core box shared with two other lanes. Remaining slices stay ≤30 min nominal; hero e2e realignment split out to a tester slice so S2–S4 do not each re-pay the battery.
+
+## COMMENT (2026-09-06T02:48:47.196Z)
+PM check 02:49Z: consolidated into origin/main and LIVE 97e19d07. Independent reviewer t_w1_rev4 judges on live.

@@ -1,0 +1,90 @@
+{
+  "mv1_states": [
+    {
+      "label": "top of page (scrollY 0)",
+      "rect": {
+        "x": 12,
+        "y": -44.7,
+        "w": 111.1,
+        "h": 40.7
+      },
+      "position": "fixed",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "transform": "matrix(1, 0, 0, 1, 0, -56.6875)",
+      "pointerEvents": "auto",
+      "insideViewport": false,
+      "hitIsPill": false,
+      "hitTag": "none/offscreen",
+      "scrollY": 0
+    },
+    {
+      "label": "after 900px scroll",
+      "rect": {
+        "x": 12,
+        "y": -44.7,
+        "w": 111.1,
+        "h": 40.7
+      },
+      "position": "fixed",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "transform": "matrix(1, 0, 0, 1, 0, -56.6875)",
+      "pointerEvents": "auto",
+      "insideViewport": false,
+      "hitIsPill": false,
+      "hitTag": "none/offscreen",
+      "scrollY": 900
+    },
+    {
+      "label": "#about at top",
+      "rect": {
+        "x": 12,
+        "y": -44.7,
+        "w": 111.1,
+        "h": 40.7
+      },
+      "position": "fixed",
+      "display": "block",
+      "visibility": "visible",
+      "opacity": "1",
+      "transform": "matrix(1, 0, 0, 1, 0, -56.6875)",
+      "pointerEvents": "auto",
+      "insideViewport": false,
+      "hitIsPill": false,
+      "hitTag": "none/offscreen",
+      "scrollY": 1497
+    }
+  ],
+  "mv1_click": {
+    "clicked": "TimeoutError: locator.click: Timeout 6000ms exceeded.",
+    "after": {
+      "ariaExpanded": null,
+      "panels": [
+        {
+          "cls": "minivic-dock fixed bottom-6 right-6 z-[10030] flex",
+          "w": 158.4,
+          "h": 44,
+          "vis": "visible",
+          "op": "1",
+          "disp": "flex"
+        }
+      ],
+      "hasTextarea": false
+    }
+  },
+  "L1_motion": {
+    "canvasesInListen": 1,
+    "px": "1440x901",
+    "consecutiveMeanAbsDelta_400ms": [
+      0.001999,
+      0.000966,
+      0.002889,
+      0.000815
+    ],
+    "max": 0.002889,
+    "floorRef": 0.004
+  }
+}

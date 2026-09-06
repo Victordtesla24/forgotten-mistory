@@ -37,3 +37,6 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T01:47:59.286Z)
 running — dispatched 01:49Z reviewer rev-12cd9123-w1
+
+## COMPLETE (2026-09-06T02:10:42.745Z)
+Reviewer rev-12cd9123-w1 (max, 21 min): G-A3 PASS on the GAP acceptance (ten sectors countable with dial+column hidden at 1440/390; plane dominance 75.2%; dial brightest 0.2789 = --mist-400; 0 gold/chromatic px; reduced-motion 0 canvases with the SVG still telling ten; no-GL dial recovers 0.92) with sub-claim FAIL: answered/open light ratio 1.039 at 390 DPR3 and 1.596 at 1440 in the section's first-screen state (Culture Fit answered = darkest 0.012; Company Stability open = 0.566) → correction t_w2_x2f5. G-H5 PASS (720p/1080p H.264, 2160p AV1 all chroma-flat from downloaded bytes; 301 old name; nothing above top rung; selection by real press at 7 configs; 0 requests at rest). G-MV1 FAIL at 390 first fold (hero portrait <video> z-index 1 covers the launcher; click times out; works after scroll) → t_w1_mv2 in progress. G-L1 motion floor MISS 0.0029 < 0.004 (own measurement) → t_w1_red3. R5 OPEN (24 fps). Doc defect: ASSET-LADDER.md §1–2 contradict §10 → t_w1_lad1. Regression: G-V3, G-C1 identical hrefs, hero monochrome, about contrast ≥ 6.2:1, 0 pageerrors ×4, /api/tts 200 all PASS. Evidence G-REV/12cd9123/.

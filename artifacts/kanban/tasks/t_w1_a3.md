@@ -45,3 +45,6 @@ PM check 01:48Z: e5c1e4d pushed on worktree-w1-a3 and CONSOLIDATED into origin/m
 
 ## DECISION (2026-09-06T01:47:22.699Z)
 O1 overrun recorded (100 min vs 30). Future About/scene slices are split: (a) test-instrument slice (tester) and (b) shader slice (AP), each ≤ 30 min.
+
+## COMPLETE (2026-09-06T02:10:43.467Z)
+Independent live PASS on the G-A3 gap acceptance (rev-12cd9123-w1). Sub-claim (answered ≥ 1.6× open in the initial state at 390/1440) FAIL → t_w2_x2f5 carries it with the reviewer's per-sector numbers. Live 12cd9123 via Deploy 34004706433.

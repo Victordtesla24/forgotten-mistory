@@ -39,3 +39,9 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T01:47:22.582Z)
 running — dispatched 01:48Z fm-wave1-d (serialized)
+
+## COMMENT (2026-09-06T02:40:21.187Z)
+Lane result 02:42Z (ap-w1-mv2): 6d007adb pushed on worktree-w1-mv2. Root cause = hit testing, not stacking: .minivic-dock carried inline pointer-events:none until pastHero, so the launcher was never in the hit test on the first fold. Fix CSS-only in app/globals.css (launcher pointer-events:auto + :hover reveal; the opacity gate kept so MONO-MV-02 and G-E2 hold); new tests/e2e/minivic-first-fold-click.spec.ts TC-MV-CLICK-01 @1440/@390 green after failing first; Hero files untouched. goal_complete:false honestly because TC-MV-OCCLUDE-01 (Vitrine foot copy 4.05:1 under the launcher ground, pre-existing on origin/main 2cc7165) survives → in t_w1_red2 scope. Reviewer t_w1_rev4 judges on live.
+
+## COMMENT (2026-09-06T02:48:46.516Z)
+PM check 02:49Z: consolidated into origin/main and LIVE 97e19d07. Independent reviewer t_w1_rev4 judges on live.

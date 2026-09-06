@@ -53,3 +53,9 @@ HOST INCIDENT 01:19–01:20Z: the 2160p encode ran with 78 threads and 3.3 GB RS
 
 ## COMMENT (2026-09-06T01:38:28.774Z)
 PM probe 01:39Z on LIVE 521dac9c (Deploy 34004286177, consolidate 4a15797): /assets/avatar/my-hero-avatar-1080.mp4 200 video/mp4 3,690,721 B; /assets/avatar/my-hero-avatar-2160.webm 200 video/webm 2,913,450 B; 720p canonical unchanged 1,916,328 B; docs/architecture/ASSET-LADDER.md on origin/main. Rung selection, greyscale of each rung and no-autoplay to be judged by the next independent reviewer (t_w1_rev3 on the composite SHA). Not done until then.
+
+## COMMENT (2026-09-06T01:50:27.481Z)
+Lane result 01:50Z: 4a15797 consolidated (live 521dac9c → 12cd9123). Three rungs all chroma 0; selector lib/videoRung.ts (need = box height × DPR; saveData → 720p; canPlayType gate; AV1 2160p only reached above 1080 device px — stated plainly in ASSET-LADDER.md §10.3); TC-PHOTO-19 proves zero requests at rest. Pre-existing TC-HERO-13/15 + TC-PHOTO-11 → t_w1_red2. Awaiting reviewer t_w1_rev3 (running).
+
+## COMPLETE (2026-09-06T02:10:43.651Z)
+Independent live PASS G-H5 resolution half (rev-12cd9123-w1); R5 remains OPEN on frame rate (24 fps). Live 521dac9c/12cd9123.

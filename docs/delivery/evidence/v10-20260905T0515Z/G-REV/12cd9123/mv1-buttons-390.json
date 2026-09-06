@@ -1,0 +1,45 @@
+{
+  "matches": [
+    {
+      "i": 0,
+      "tag": "BUTTON",
+      "cls": "skip-link minivic-skip",
+      "rect": {
+        "x": 12,
+        "y": -44.7,
+        "w": 111.1,
+        "h": 40.7
+      },
+      "pos": "fixed",
+      "vis": "visible",
+      "op": "1",
+      "transform": "matrix(1, 0, 0, 1, 0, -56.6875)",
+      "inVp": false,
+      "hit": "offscreen",
+      "hitIsSelf": false
+    },
+    {
+      "i": 1,
+      "tag": "BUTTON",
+      "cls": "minivic-launcher group",
+      "rect": {
+        "x": 207.6,
+        "y": 776,
+        "w": 158.4,
+        "h": 44
+      },
+      "pos": "static",
+      "vis": "visible",
+      "op": "1",
+      "transform": "none",
+      "inVp": true,
+      "hit": "VIDEO.Hero_portraitVideo__e3yop",
+      "hitIsSelf": false
+    }
+  ],
+  "clicked": "index 1 failed: TimeoutError: locator.click: Timeout 5000ms exceeded.",
+  "after": {
+    "textarea": false,
+    "dialogs": []
+  }
+}

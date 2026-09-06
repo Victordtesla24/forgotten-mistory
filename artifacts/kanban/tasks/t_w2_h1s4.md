@@ -38,3 +38,6 @@ role_matrix: coding → level 2 → effort **xhigh** (effort_cascade.yaml; depth
 
 ## PROVIDER
 Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never ANTHROPIC_API_KEY.
+
+## COMMENT (2026-09-06T02:41:29.400Z)
+NOTE 02:46Z: hero e2e realignment is t_w2_h1s5 (tester, after S3). S4 keeps its own gates (PERF/PAL/PLANE-01 at 0.78, battery green) — coordinate by branching from origin/main once S5 is consolidated, or merge origin/worktree-w2-h1s5 first.

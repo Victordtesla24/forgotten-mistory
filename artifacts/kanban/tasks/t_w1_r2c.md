@@ -48,3 +48,12 @@ Anthropic via OAuth (CLAUDE_CODE_OAUTH_TOKEN / claude-cli Max session). Never AN
 
 ## STATUS (2026-09-06T01:47:22.528Z)
 running — dispatched 01:48Z fm-wave1-d (serialized)
+
+## COMMENT (2026-09-06T02:07:45.989Z)
+PM probe 02:08Z on LIVE 5293e7d6 (Deploy 34005562108): GET and POST /api/chat?warm=1 through Hosting → 204 in 0.19 s / 0.17 s (was 400); 'AI clone' 0 in HTML and all shipped chunks. Truth-line visibility, attempts[] and the origin race policy are for the independent reviewer (rev-4, composite SHA with t_w1_mv2).
+
+## COMMENT (2026-09-06T02:37:33.569Z)
+Lane result 02:38Z (identity ap-w1-r2c, over cap, honest goal_complete:false): a134bb5c on worktree-w1-r2c (live since 5293e7d6/b02a8863); function redeployed; ?warm=1 GET/POST 204 through Hosting (a POST carrying messages[] + warm flag is still answered — never swallowed); attempts[] on the done event and JSON body; disclosure moved from the clipped overlay to a flow-level bar (visible at 1440/390, sentence case), subtitle unclipped; 'AI clone' 0 in DOM/aria (retired in greeting variants, aria-label, visa answer, server system prompt). Strict-cold (≥10 min idle, no warm ping): Hosting 7/7 < 1.5 s (max 1194 ms); origin first sample 2626 ms (dead-rung walk) then 465–1408 ms. Remaining measurement: the real visitor sequence (idle → panel open fires warm ping → send) — assigned to reviewer t_w1_rev4. e2e: 32 pass / 3 pre-existing fails reproduced on the pre-change live build (TC-BOT-14, TC-MV-OCCLUDE-01, MONO-MV-02@640) → t_w1_red2 scope.
+
+## DECISION (2026-09-06T02:37:33.628Z)
+§0.1 decision 02:38Z: public/assets/minivic-greeting.mp3 still speaks 'his AI clone'. Regenerating it is ONE ordinary TTS call with the configured premade voice — the same class of call the live site makes for every visitor's reply — not a new spend class (IVC/cloning/video). It is folded into t_w2_r3a2, which already makes exactly one /with-timestamps call for the greeting alignment: that call produces the new audio AND the alignment. No separate paid call.
