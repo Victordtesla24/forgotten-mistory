@@ -9,8 +9,8 @@
  * 2026-09-05, where the MP3 still spoke the old script while the on-screen
  * introduction had been rewritten.
  */
-export const greetingAudioSha256 = 'dd65f259d1bf57728c254763c56399cc5a0dceed5694b4d07b6147d0115c6ccb';
+export const greetingAudioSha256 = '2eb7788feb96c49f69bc1a705218ad9562221a582fd471a11964af79bba9ba2d';
 
 /** Words spoken in the recording above — always `GREETING.hiring`. */
 export const greetingSpokenText =
-  "I'm Vikram — his AI clone, speaking from his CV. I'm Scrum Master / Project Manager on the ATO's Payday Super program and open to Scrum Master and delivery-leadership roles in Melbourne. Sixteen years across government, finance and telecommunications; at ANZ I ran a $5M+ portfolio across up to 40 practitioners. Ask about availability, the ATO work, or how I lead.";
+  "I'm Vikram — a synthetic stand-in for him, speaking from his CV. I'm Scrum Master / Project Manager on the ATO's Payday Super program and open to Scrum Master and delivery-leadership roles in Melbourne. Sixteen years across government, finance and telecommunications; at ANZ I ran a $5M+ portfolio across up to 40 practitioners. Ask about availability, the ATO work, or how I lead.";
