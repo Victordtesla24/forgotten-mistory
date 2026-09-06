@@ -593,6 +593,33 @@ const PRIME_TIMEOUT_MS = 3000;
 let lastPrimedAt = 0;
 
 /**
+ * How early a warm ping is allowed to re-prime the cooldown map.
+ *
+ * The guard used to be `primedAgo >= CREDENTIAL_COOLDOWN_MS`, which reads as
+ * "re-probe no more often than a rung stays rested". The two are the same
+ * number, so the map's entries expired at the exact instant the next prime
+ * became legal — and the next prime only happens when a ping arrives. With the
+ * VPS warm timer firing every 120 s (scripts/ops/systemd/fm-minivic-warm.timer)
+ * that left a lapse window of up to one timer interval in every ten minutes, in
+ * which a real send walks openrouter -> deepseek -> zai in series for the
+ * ~1.67 s measured in docs/architecture/MINIVIC-BRAIN-0-4.md §1.1 before openai
+ * answers. On the 1500 ms first-token budget that window is the whole budget
+ * twice over.
+ *
+ * A 180 s margin is strictly larger than the 120 s timer interval, so under the
+ * timer the map is always refreshed before it lapses and the lapse window
+ * closes. The cost is one 1-token probe per rung per ~7 minutes per instance
+ * instead of per 10 — dead rungs answer 402 and spend nothing, and the live
+ * rung's probe is capped at `max_tokens: 1` (MV-WARM-08).
+ */
+const PRIME_REFRESH_MARGIN_MS = 180 * 1000;
+
+/** True when this instance's cooldown map is stale enough to be worth re-probing. */
+function shouldPrimeCooldowns(primedAgoMs) {
+  return primedAgoMs >= CREDENTIAL_COOLDOWN_MS - PRIME_REFRESH_MARGIN_MS;
+}
+
+/**
  * Populate `providerCooldowns` before a visitor's first send needs it.
  *
  * The cooldown map lives in one warm instance's memory, so on a fresh instance
@@ -881,7 +908,7 @@ exports.minivicChat = onRequest(
       // rested rungs stay rested for exactly that long — probing more often
       // would learn nothing new and spend a token doing it.
       const primedAgo = Date.now() - lastPrimedAt;
-      if (primedAgo >= CREDENTIAL_COOLDOWN_MS) {
+      if (shouldPrimeCooldowns(primedAgo)) {
         lastPrimedAt = Date.now();
         void primeProviderCooldowns();
       }
@@ -1037,6 +1064,9 @@ exports.minivicChat = onRequest(
 // Exported for the node --test suite (tests/minivic_chat_function.test.mjs).
 // Plain functions carry no `__endpoint`, so Firebase's trigger discovery ignores them.
 exports.buildMiniVicSystemPrompt = buildMiniVicSystemPrompt;
+exports.shouldPrimeCooldowns = shouldPrimeCooldowns;
+exports.PRIME_REFRESH_MARGIN_MS = PRIME_REFRESH_MARGIN_MS;
+exports.CREDENTIAL_COOLDOWN_MS = CREDENTIAL_COOLDOWN_MS;
 exports.normaliseConversation = normaliseConversation;
 exports.resolveMode = resolveMode;
 exports.resolveChatProviders = resolveChatProviders;

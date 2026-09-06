@@ -517,4 +517,96 @@ Client edits (E6–E12) ship through the ordinary static pipeline
 
 ---
 
-*Read-only architecture task. No file under `functions/` or `components/` was modified.*
+---
+
+## 6. Addendum 3 — the warm timer, and why the first-token bar is now upstream-bound (`t_w3_m4c`, 2026-09-06)
+
+Written by the implementer of `t_w3_m4c` after the independent review of build `83590944`
+(`docs/delivery/evidence/v10-20260905T0515Z/G-REV/83590944/M4/08-M4.md`) returned **FAIL** on
+G-M4: cold first token **1900 ms** (origin) and **1793 ms** (Hosting) against the 1500 ms bar.
+
+### 6.1 What the review left open, and what was actually true on the host
+
+The review's two load-bearing observations were that (a) every one of its cold numbers was taken
+with the provider cooldown map **already primed**, so they are the *favourable* case, and (b) the
+answering rung — `openai / gpt-4.1-mini`, the ladder's last rung because the three above it are out
+of credit — consumed 865–1278 ms of the 1500 ms by itself.
+
+Two things were checked on the host before any code was written:
+
+| Claim under test | Command | Result |
+|---|---|---|
+| A VPS warm-prime timer exists and fires ≤ 3 min | `systemctl list-timers --all \| grep -iE 'warm\|minivic'` | **empty** — no such unit existed. The only project timer was `fm-deploy-cadence.timer`. |
+| Cloud Run min-instances is the untaken cost option | `grep -n minInstances functions/index.js` | **already `minInstances: 1`** (`functions/index.js`, `onRequest` options). Scale-to-zero was removed long before this task, so "buy a warm instance" is not an available improvement — it is already bought. |
+
+So the priming the review relied on was happening only when a *visitor* opened the panel. Between
+visitors the map lapsed after `CREDENTIAL_COOLDOWN_MS` (10 min) and the next send paid the serial
+dead-rung walk measured in §1.1 (~1.67 s) on top of the rung's own time.
+
+### 6.2 The two free corrections shipped
+
+**(1) `fm-minivic-warm.timer` — a VPS timer that pings both routes every 120 s.**
+Unit files are versioned in the repository at `scripts/ops/systemd/fm-minivic-warm.{service,timer}`
+and installed to `/etc/systemd/system/`; the payload is `scripts/ops/minivic-warm-ping.sh`, which
+`curl`s **both** warm endpoints and appends status plus connect/TLS/total timings to
+`/var/log/fm-minivic-warm.log`:
+
+- `https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1` — the Cloud Run origin the page's CSP names
+- `https://forgotten-mistory.web.app/api/chat?warm=1` — the Firebase Hosting rewrite
+
+Both answer **204**. First fire, from `journalctl -u fm-minivic-warm.service`:
+
+```
+2026-09-06T06:54:29Z origin  204 0.003742 0.064030 0.111415 0.189001
+2026-09-06T06:54:29Z hosting 204 0.003463 0.005048 0.017188 0.114553
+```
+
+(columns: DNS, connect, TLS, total — seconds.) `OnUnitActiveSec=120` with `AccuracySec=5s`, so the
+interval is ≤ 3 min by construction, not by hope.
+
+**(2) `PRIME_REFRESH_MARGIN_MS` — close the lapse window the timer would otherwise leave.**
+The prime guard was `primedAgo >= CREDENTIAL_COOLDOWN_MS`: the same number that governs how long a
+rung stays rested, so map entries expired at the exact instant the next prime became legal. Under a
+120 s timer that leaves up to one timer interval per ten minutes in which a real send still walks
+the dead rungs. The guard is now `primedAgo >= CREDENTIAL_COOLDOWN_MS - PRIME_REFRESH_MARGIN_MS`
+with a 180 s margin — strictly larger than the 120 s interval, so the map is refreshed *before* it
+lapses. Asserted by `tests/minivic_chat_function.test.mjs` **MV-WARM-10**, which fails if the margin
+is ever set below the timer interval.
+
+### 6.3 The ladder order was deliberately NOT inverted
+
+`t_w3_m4c` proposed putting `openai` first while the rungs above it are 402. That was declined and
+the decision is recorded here rather than made silently:
+
+- `docs/prompt.md` §0.4 fixes the ladder as `openrouter,deepseek,zai,openai` and is not a
+  latency-conditional rule. A previous revision of `DEFAULT_PROVIDER_ORDER` already hardcoded
+  `openai` first on latency grounds and was reverted for exactly this reason
+  (see the comment above `DEFAULT_PROVIDER_ORDER` in `functions/index.js`).
+- It buys nothing measurable. Every `attempts[]` array on every sample in this task and the review
+  shows `openrouter cooling_down 0 ms · deepseek cooling_down 0 ms · zai cooling_down 0 ms` — the
+  skip is already free once the map is primed, and §6.2(1)+(2) is what keeps it primed.
+- The data-driven override stays available to the Owner without a code change:
+  `CHAT_PROVIDER_ORDER` in the functions env (`functions/index.js`, `orderChatProviders`).
+
+### 6.4 The residual is upstream, and it is larger than the bar
+
+After the corrections, the answering rung's own time is still the entire budget. From the first
+post-deploy cold pair (`docs/delivery/evidence/v10-20260905T0515Z/W3-M4C/`):
+
+| sample | first token | `openai answered` | dead rungs |
+|---|---|---|---|
+| `c1a-hosting-cold` | 1193 ms ✓ | 932 ms | 0 ms × 3 |
+| `c1b-origin-cold` | 1529 ms ✗ | **1731 ms** | 0 ms × 3 |
+
+`openai answered 1731 ms` is **already over the 1500 ms bar before a single byte of transport**.
+No free change in this repository can move that number: the request is one call, to one funded
+account, on one model. What remains is a cost decision, and it is written up for the Owner in
+`docs/delivery/OWNER-BLOCKED.md` — note that the obvious candidate (Cloud Run min-instances) is
+*already enabled*, so the honest options are funding a faster rung or accepting the bar as
+upstream-bound.
+
+---
+
+*Sections 1-5 were a read-only architecture task: no file under `functions/` or `components/` was
+modified for them. Section 6 is an implementation addendum written by `t_w3_m4c`, which did change
+`functions/index.js` and added the `fm-minivic-warm` unit files — the edits are itemised in 6.2.*

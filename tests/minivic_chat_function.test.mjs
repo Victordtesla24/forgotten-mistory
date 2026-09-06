@@ -908,6 +908,25 @@ describe('warm-ping priming (MV-WARM)', () => {
     }
   });
 
+  it('MV-WARM-10: the map is re-primed BEFORE it lapses, not at the instant it does', () => {
+    const cooldown = fn.CREDENTIAL_COOLDOWN_MS;
+    const margin = fn.PRIME_REFRESH_MARGIN_MS;
+    const timerIntervalMs = 120 * 1000; // scripts/ops/systemd/fm-minivic-warm.timer
+
+    assert.ok(
+      margin > timerIntervalMs,
+      `the refresh margin (${margin} ms) must exceed the warm timer interval (${timerIntervalMs} ms), ` +
+        'or the cooldown map lapses between two fires and a real send pays the serial dead-rung walk',
+    );
+    // Just before the old guard would have allowed a prime, the new one already does.
+    assert.equal(fn.shouldPrimeCooldowns(cooldown - margin), true);
+    assert.equal(fn.shouldPrimeCooldowns(cooldown - margin - 1), false);
+    // A ping one timer interval before entries expire must re-prime.
+    assert.equal(fn.shouldPrimeCooldowns(cooldown - timerIntervalMs), true);
+    // A ping seconds after the last prime must not spend another probe.
+    assert.equal(fn.shouldPrimeCooldowns(5_000), false);
+  });
+
   it('MV-WARM-09: priming never rejects into the request path', async () => {
     const cooldowns = new Map();
     await fn.primeProviderCooldowns({
