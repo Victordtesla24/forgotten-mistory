@@ -1,0 +1,59 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/overhaul/scene-about.spec.ts tests/overhaul/flagship-visibility.spec.ts -g about|ABOUT --workers=1 --reporter=line
+
+[2mRunning [22m16[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/16] [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 1440 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 1440 — about compass field reads as light[22m
+[flagship-visibility] about@1440: ground=0.0030 coverage=15.57% peak=0.8308 motion=0.00751 box=1248x900
+
+[1A[2K[2/16] [chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 1440 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 1440 — about compass field fallback[22m
+[flagship-visibility:still] about@1440: ground=0.0030 coverage=15.26% peak=0.1195
+
+[1A[2K[3/16] [chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:319:11 › TC-FLAGSHIP-VIS @ 390 — signature scenes are visible › TC-FLAGSHIP-VIS-ABOUT @ 390 — about compass field reads as light[22m
+[flagship-visibility] about@390: ground=0.0030 coverage=32.66% peak=0.8308 motion=0.01777 box=342x480
+
+[1A[2K[4/16] [chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback
+[1A[2K[2m[chromium] › tests/overhaul/flagship-visibility.spec.ts:374:11 › TC-FLAGSHIP-VIS-STILL @ 390 — the reduced-motion still is still light › TC-FLAGSHIP-VIS-STILL-ABOUT @ 390 — about compass field fallback[22m
+[flagship-visibility:still] about@390: ground=0.0030 coverage=67.38% peak=0.1195
+
+[1A[2K[5/16] [chromium] › tests/overhaul/scene-about.spec.ts:285:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-01: exactly one canvas mounts in #about once the section is in view
+[1A[2K[6/16] [chromium] › tests/overhaul/scene-about.spec.ts:299:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-02: the canvas is aria-hidden and sits behind the rose and the column
+[1A[2K[7/16] [chromium] › tests/overhaul/scene-about.spec.ts:341:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-03: the field is driven by the same scroll index as the rose
+[1A[2K[8/16] [chromium] › tests/overhaul/scene-about.spec.ts:355:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-04: under reduced motion there is no canvas, and the rose is still the instrument
+[1A[2K[9/16] [chromium] › tests/overhaul/scene-about.spec.ts:382:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-05: with WebGL unavailable the section is whole and silent
+[1A[2K[10/16] [chromium] › tests/overhaul/scene-about.spec.ts:412:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-06: the field is monochrome, palette-sourced and cheap per pixel
+[1A[2K[11/16] [chromium] › tests/overhaul/scene-about.spec.ts:444:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-07: the field is driven by the section data — answered/role/sourced, not scroll alone
+[1A[2K[12/16] [chromium] › tests/overhaul/scene-about.spec.ts:488:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-08: the field is the section’s plane, not the instrument’s backing
+[1A[2K[13/16] [chromium] › tests/overhaul/scene-about.spec.ts:562:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-09: a renderer the name test refuses is measured, not simply turned away
+[1A[2K[14/16] [chromium] › tests/overhaul/scene-about.spec.ts:613:9 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 1440x900
+[1A[2K[15/16] [chromium] › tests/overhaul/scene-about.spec.ts:613:9 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-10: the field alone tells ten sectors at 390x844
+[1A[2K[16/16] [chromium] › tests/overhaul/scene-about.spec.ts:702:7 › TC-SCENE-ABOUT: the compass turns over a field of light › TC-SCENE-ABOUT-11: the compass is chrome — the plane carries the section
+[1A[2K[32m  16 passed[39m[2m (1.2m)[22m
+FINAL_ABOUT_EXIT=0
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/text-contrast.spec.ts tests/e2e/about.spec.ts --workers=1 --reporter=line
+
+[2mRunning [22m17[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/17] [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 1440: no visible text node falls below AA against its sampled ground
+[1A[2K[2/17] [chromium] › tests/a11y/text-contrast.spec.ts:463:9 › Text contrast (WCAG 1.4.3, every visible text node) › TC-CONTRAST-01 @ 390: no visible text node falls below AA against its sampled ground
+[1A[2K[3/17] [chromium] › tests/a11y/text-contrast.spec.ts:495:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 1440: no visible text node falls below AA over the live scenes
+[1A[2K[4/17] [chromium] › tests/a11y/text-contrast.spec.ts:495:9 › TC-CONTRAST-02 (WebGL path) — contrast is measured over the shaders too › TC-CONTRAST-02 @ 390: no visible text node falls below AA over the live scenes
+[1A[2K[5/17] [chromium] › tests/e2e/about.spec.ts:39:7 › About › TC-ABOUT-01: all ten dimensions render, in the engine’s own order
+[1A[2K[6/17] [chromium] › tests/e2e/about.spec.ts:47:7 › About › TC-ABOUT-02: every dimension carries an answer and its evidence
+[1A[2K[7/17] [chromium] › tests/e2e/about.spec.ts:60:7 › About › TC-ABOUT-03: no dimension is given a score
+[1A[2K[8/17] [chromium] › tests/e2e/about.spec.ts:80:7 › About › TC-ABOUT-04: the dimensions name their source
+[1A[2K[9/17] [chromium] › tests/e2e/about.spec.ts:86:7 › About › TC-ABOUT-05: job-side dimensions are labelled as such
+[1A[2K[10/17] [chromium] › tests/e2e/about.spec.ts:99:7 › About › TC-ABOUT-06: the ten items are reading aids, not tab stops
+[1A[2K[11/17] [chromium] › tests/e2e/about.spec.ts:153:7 › About › TC-ABOUT-07: the section is complete without WebGL
+[1A[2K[12/17] [chromium] › tests/e2e/about.spec.ts:192:7 › About › TC-ABOUT-08: the compass turns as the reader scrolls — item 6 centred reads 06 / FROM THE ROLE
+[1A[2K[13/17] [chromium] › tests/e2e/about.spec.ts:216:7 › About › TC-ABOUT-09: hover overrides the scroll index, and leaving the list hands it back
+[1A[2K[14/17] [chromium] › tests/e2e/about.spec.ts:235:7 › About › TC-ABOUT-10: on first entry the bezel sweeps once — 1160 ms, emphasised ease, never again
+[1A[2K[15/17] [chromium] › tests/e2e/about.spec.ts:278:7 › About › TC-ABOUT-11: under reduced motion the index snaps — no sweep, no travel, still swept
+[1A[2K[16/17] [chromium] › tests/e2e/about.spec.ts:306:7 › About › TC-ABOUT-12: no gold on the face — the active sector, its numeral and the ring stay achromatic
+[1A[2K[17/17] [chromium] › tests/e2e/about.spec.ts:346:7 › About › TC-ABOUT-13: at 1440 the dial and the first dimension share a baseline
+[1A[2K[32m  17 passed[39m[2m (4.4m)[22m
+FINAL_A11Y_E2E_EXIT=0

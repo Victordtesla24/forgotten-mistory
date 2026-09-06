@@ -71,6 +71,18 @@
  * the shader: sourced sectors are brighter, not accented, and the one accent
  * stays where a source can be clicked, in the SVG chrome.
  *
+ * That arrangement was measured in c25 and it was not enough: with the
+ * engraving hidden, the ten sectors were all lit to within 1.49x of each other
+ * and a reader could not tell answered from open by looking
+ * (`TC-SCENE-ABOUT-10`, `02-tests-failing.log`). Every data term was additive,
+ * so a state could add light but never withhold it, and the ring was a ring of
+ * ten identical things. `state` is now multiplicative and is the exception the
+ * paragraph above no longer describes: an answered sector carries the full
+ * light, an open one carries a 45-degree hatch at about four tenths of it, and
+ * the seven the page answers can be counted from the light alone. The floor
+ * that keeps this above the flagship visibility gate is `state`'s own minimum,
+ * not zero, so no sector ever goes dark.
+ *
  * ## The field is the section's plane, not the instrument's backing
  *
  * Through c22 the slot and the rose were the same 384 x 384 box. c23 grew the
@@ -211,11 +223,16 @@ export const aboutFieldFragmentShader = /* glsl */ `
 
     // A hairline of air between neighbours, so ten sectors read as ten — the
     // same separation the SVG leaves between its annular sectors.
-    float band = smoothstep(0.0, 0.06, within) * smoothstep(1.0, 0.94, within);
+    // A gap wide enough to count across. At 0.06 the seam between neighbours
+    // was a hairline the eye integrated away and the ring read as one wash —
+    // measured, the ten lobes were there in the source and not in the picture
+    // (TC-SCENE-ABOUT-10). 0.10 of a sector is about 3.6 degrees of air, which
+    // is the separation the SVG's own annular sectors leave.
+    float band = smoothstep(0.0, 0.10, within) * smoothstep(1.0, 0.90, within);
 
     // The band of radii the rose's sector ring occupies, softened at both ends
     // so the light is under the engraving rather than around it.
-    float ring = smoothstep(0.34, 0.52, rr) * smoothstep(0.98, 0.74, rr);
+    float ring = smoothstep(0.31, 0.50, rr) * smoothstep(1.02, 0.72, rr);
 
     // The numerals' own groove.
     // The ten labels are drawn at r = 36.2 in the rose's 100-unit viewBox —
@@ -226,7 +243,8 @@ export const aboutFieldFragmentShader = /* glsl */ `
     // to clear, so it is dimmed exactly where the numbers are and nowhere
     // else. A channel at the numeral radius is also what an instrument face
     // does with its numerals: they sit in the metal, not on the light.
-    ring *= 1.0 - 0.90 * exp(-pow((rr - 0.724) / 0.055, 2.0));
+    float groove = 1.0 - 0.96 * exp(-pow((rr - 0.724) / 0.082, 2.0));
+    ring *= groove;
 
     // How far this sector is from the one being read, wrapped around the face.
     // At rest (uActive < 0) nothing is favoured, which is the rose's rest state
@@ -242,18 +260,32 @@ export const aboutFieldFragmentShader = /* glsl */ `
     float answered = maskBit(uAnsweredMask, sidx);
     float sourced = maskBit(uSourcedMask, sidx);
 
+    // The hatch, in light: a 45-degree ruling in the plane's own frame, which
+    // is the mark the SVG draws over an open sector and the mark the open
+    // caliper uses everywhere else on the site. It gives the three role-side
+    // sectors structure without giving them brightness.
+    float hatch = 0.5 + 0.5 * sin((p.x + p.y) * 42.0);
+    // ...and the one multiplicative term in this shader. Until G-A3 every
+    // sector was lit identically and only the indexed one changed, so a reader
+    // could not tell answered from open by looking — the state lived in the
+    // engraving, which is exactly why two reviews in a row recorded the
+    // section's recall as the engraving. An answered sector now carries the
+    // light; an open one carries the hatch at a third of it, and reads as the
+    // absence it is. Seven lit of ten, countable without the dial.
+    float state = mix(0.34 + 0.26 * hatch, 1.0, answered);
+
     // Three lookups, and no more. One slow drift per sector so the ten are not
     // identical; one shimmer across each sector's own width; one wide, very low
     // frequency wash so the disc is not evenly lit. Their amplitudes are held
     // deliberately narrow: they are meant to keep the ring alive, not to take
     // any sector back below the threshold where it stops being visible.
-    float drift = noise(vec2(idx * 3.7, uTime * 0.19));
-    float shimmer = noise(vec2(within * 2.4 + idx * 7.1, r * 2.2 - uTime * 0.24));
-    float wash = noise(p * 1.1 + vec2(uTime * 0.11, 0.0));
+    float drift = noise(vec2(idx * 3.7, uTime * 0.31));
+    float shimmer = noise(vec2(within * 2.4 + idx * 7.1, r * 2.2 - uTime * 0.42));
+    float wash = noise(p * 1.1 + vec2(uTime * 0.19, 0.0));
 
     // A gleam travelling round the ring, so the face is never twice the same
     // even while the reader is between dimensions and nothing is indexed.
-    float gleam = 0.5 + 0.5 * sin(a * 2.0 - uTime * 0.42);
+    float gleam = 0.5 + 0.5 * sin(a * 2.0 - uTime * 1.05);
 
     // The entry sweep: as the section arrives, a wavefront of light runs once
     // around the face and hands over to the steady state. It is carried by the
@@ -273,11 +305,11 @@ export const aboutFieldFragmentShader = /* glsl */ `
     // on (C22 09-verification.md). The floor and the gleam below are what a
     // reader at rest actually sees, so that is where the light was added,
     // rather than in a term a phone never reaches.
-    float sector = band * ring * (0.42 + 0.58 * lit);
-    sector *= 0.86 + 0.16 * drift;
-    sector *= 0.88 + 0.16 * shimmer;
-    sector *= 0.90 + 0.14 * wash;
-    sector += band * ring * (0.26 * gleam + 0.42 * sweep);
+    float sector = band * ring * (0.50 + 0.58 * lit) * state;
+    sector *= 0.80 + 0.28 * drift;
+    sector *= 0.82 + 0.28 * shimmer;
+    sector *= 0.86 + 0.20 * wash;
+    sector += band * ring * (0.42 * gleam + 0.42 * sweep) * state;
 
     // The data terms, all additive so nothing here can drop a sector under the
     // floor above. An answered sector blooms up its mid-annulus — a soft core
@@ -288,7 +320,13 @@ export const aboutFieldFragmentShader = /* glsl */ `
     // a further warm-neutral channel across its whole band, so the four rows the
     // page can actually mark read brighter than the three self-reported ones —
     // the same ranking the DOM draws, carried by luminance, never by the accent.
-    float bloomR = exp(-pow((rr - 0.62) / 0.13, 2.0));
+    // The answered bloom takes the groove too. It is centred at rr = 0.62 and
+    // still worth 0.53 of itself at the numerals' radius, which is how the
+    // active sector's "01" ended up at 4.50:1 with the numerals demoted to
+    // --mist-400 — a number that has not passed AA (04-tests-passing.log).
+    // Every term that lands on the numeral radius is grooved, or the groove is
+    // decoration.
+    float bloomR = exp(-pow((rr - 0.62) / 0.13, 2.0)) * groove;
     sector += answered * band * bloomR * (0.17 + 0.21 * lit);
     sector += sourced * band * ring * (0.13 + 0.15 * lit);
 
@@ -299,16 +337,27 @@ export const aboutFieldFragmentShader = /* glsl */ `
     // weight that falls away with distance. Its inner edge is written in rr,
     // because it has to start exactly where the bezel ends; its falloff is
     // written in r, because how far it reaches is a fact about the plane.
-    float fan = smoothstep(0.94, 1.30, rr) * exp(-pow(r / 1.35, 2.1));
-    sector += fan * band * (0.42 + 0.30 * lit + 0.12 * gleam + 0.34 * sweep);
-    sector += fan * band * (answered * 0.13 + sourced * 0.11) * (0.6 + 0.7 * lit);
+    float fan = smoothstep(0.94, 1.26, rr) * exp(-pow(r / 1.85, 2.1));
+    sector += fan * band * (0.92 + 0.34 * lit + 0.22 * gleam + 0.34 * sweep) * state;
+    sector += fan * band * (answered * 0.15 + sourced * 0.12) * (0.6 + 0.7 * lit);
 
     // The haze the fan sits in, so the plane is a surface and not ten spokes on
     // bare ink. Very low frequency, very low amplitude, and it reaches further
     // than the fan does — this is the light that makes the section feel lit at
     // all at the far corners, where no spoke arrives.
-    float haze = exp(-pow(r / 1.55, 2.0)) * (0.11 + 0.055 * wash + 0.045 * lit);
+    float haze = exp(-pow(r / 2.10, 2.0)) * (0.192 + 0.085 * wash + 0.045 * lit);
+    // The face is recessed. Outside the bezel the haze is the plane's own light
+    // and carries the section; under the engraving it is the ground the ten
+    // numerals and the hub readout are read against, and a flat wash there is
+    // what put them at 3.0-4.4:1 when the dial stopped painting in --white
+    // (04-tests-passing.log, first run). So the haze is dimmed inside the rose
+    // and dimmed hardest at the hub, where the readout sits — which is also
+    // what an instrument face does: the glass is lit at the ring, not at the
+    // pivot. The sector ring itself is untouched, so the ten sectors keep every
+    // bit of their light and their separation.
+    haze *= mix(0.40, 1.0, smoothstep(0.52, 1.02, rr));
     sector += haze;
+    sector *= mix(0.42, 1.0, smoothstep(0.05, 0.34, rr));
 
     float luma = sector;
 
@@ -336,10 +385,15 @@ export const aboutFieldFragmentShader = /* glsl */ `
     // first line of type sits exactly there — the instrument's caption measured
     // 3.56:1 against a ground the ceiling should have held to 7.3:1, entirely
     // in the strip where the ramp had not finished (c24 probe, 1440).
-    float toRight = smoothstep(uGuard.x - 0.06, uGuard.x, vUv.x);
-    float belowList = smoothstep(uGuard.y + 0.06, uGuard.y, vUv.y);
+    // The ramp is 0.12 of the plane, not 0.06: at the light this field now
+    // carries, a ramp half that width read as a vertical seam down the page
+    // where the reading column's ceiling began (06-about-1440-gl.png, first
+    // capture). It still ends *at* the edge rather than straddling it, for the
+    // reason below — it just takes longer to get there.
+    float toRight = smoothstep(uGuard.x - 0.12, uGuard.x, vUv.x);
+    float belowList = smoothstep(uGuard.y + 0.12, uGuard.y, vUv.y);
     float reading = min(toRight, belowList);
-    float caption = smoothstep(uGuard.z + 0.06, uGuard.z, vUv.y);
+    float caption = smoothstep(uGuard.z + 0.10, uGuard.z, vUv.y);
     float guarded = max(reading, caption);
     float ceiling = min(
       mix(1.0, uReadingCeiling, reading),

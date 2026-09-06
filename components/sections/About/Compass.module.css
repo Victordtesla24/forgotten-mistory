@@ -50,6 +50,22 @@
     }
 }
 
+/* ── The ink the engraving is drawn in ───────────────────────────────────── */
+/* `--dial-ink` is the whole of the c25 demotion (G-A3). Through c24 the dial
+   painted its index, its active sector and its ten numerals in --white at full
+   opacity over a hub plate of its own, and two independent reviews in a row
+   recorded a recruiter's recall of `#about` as "the SVG compass, 01–10, hub
+   01/04 ANSWERED" — not the field. A dial drawn in the page's brightest ink is
+   the section, whatever is behind it.
+
+   So the engraving is chrome: every line and every glyph on it paints at
+   --mist-400 or below, which is what `TC-SCENE-ABOUT-11` measures, and the
+   plane carries the light. The token is a variable rather than the value
+   because the demotion is only honest while there IS a plane: `About.module.css`
+   sets it back to --white on `.body:not(:has(canvas))`, so with WebGL refused or
+   reduced motion asked for the ten dimensions are drawn at full contrast by the
+   only thing left that can draw them. */
+
 /* ── Bezel ───────────────────────────────────────────────────────────────── */
 .bezel,
 .bezelInner {
@@ -109,14 +125,14 @@
 
 .sector[data-active] {
     fill: rgb(246 246 246 / 0.075);
-    stroke: var(--white);
+    stroke: var(--dial-ink, var(--mist-400));
     stroke-width: 0.7;
     opacity: 1;
 }
 
 [data-side='role'] .sector[data-active] {
     fill: url(#compass-open);
-    stroke: var(--white);
+    stroke: var(--dial-ink, var(--mist-400));
 }
 
 .hatch {
@@ -137,16 +153,19 @@
 
 .numeral {
     font-family: var(--font-mono);
-    font-size: 3.4px;
+    font-size: 2.8px;
     letter-spacing: 0.08px;
     /* Set on `color` as well as `fill`: the contrast gate reads the computed
        colour of SVG text, and the numerals are the ten labels that identify
        the dimensions, not furniture. --white at 0.85 over the darkest ground
        the dial sits on (#0A0A0A) composites to 7.5:1; over the sector fills
        and the pool of light behind the face it stays above 4.5:1. */
-    color: var(--white);
+    color: var(--dial-ink, var(--mist-400));
     fill: currentColor;
-    opacity: 0.85;
+    /* Full opacity now that the ink is --mist-400 rather than --white: the
+       numerals are the ten labels, and 0.85 of a grey that is already the
+       chrome ink took them to 3.0:1 over the lit face. */
+    opacity: 1;
     /* The numeral carries its own ground.
        That comment above is true of the SVG face alone. Over the WebGL field
        it is not: on ?gl=force the annulus under the numerals is lit to
@@ -169,7 +188,7 @@
 }
 
 .numeral[data-active] {
-    color: var(--white);
+    color: var(--dial-ink, var(--mist-400));
     opacity: 1;
 }
 
@@ -192,11 +211,11 @@
 }
 
 .indexCaret {
-    fill: var(--white);
+    fill: var(--dial-ink, var(--mist-400));
 }
 
 .indexStem {
-    stroke: var(--white);
+    stroke: var(--dial-ink, var(--mist-400));
     stroke-width: 0.7;
     opacity: 0.65;
     vector-effect: non-scaling-stroke;
@@ -212,17 +231,17 @@
    the glyph's own pixels as its ground and reports the hub number at 1:1. */
 .readNumber {
     font-family: var(--font-heading);
-    font-size: 11px;
-    color: var(--white);
+    font-size: 7px;
+    color: var(--dial-ink, var(--mist-400));
     fill: currentColor;
     letter-spacing: -0.2px;
 }
 
 .readState {
     font-family: var(--font-mono);
-    font-size: 2.6px;
+    font-size: 2.4px;
     letter-spacing: 0.42px;
-    color: var(--mist-400);
+    color: var(--dial-ink, var(--mist-400));
     fill: currentColor;
 }
 
