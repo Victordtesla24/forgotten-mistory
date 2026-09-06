@@ -36,7 +36,14 @@ const VIEWPORTS = [
 ] as const;
 
 const PATHS = [
-  { id: 'gl', label: '/?gl=force (shader, settled)', url: '/?gl=force', reducedMotion: false },
+  /* The `gl` path is SUPERSEDED by tests/overhaul/interim-frame.spec.ts TC-IF-06.
+     It settled the page by waiting for `[data-scene="hero-atmosphere"] canvas`;
+     the hero atmosphere was removed on the Owner's 2026-09-06T05:51Z instruction
+     (docs/architecture/INTERIM-FRAME.md), so that canvas can never attach and the
+     wait is a 30 s timeout, not a measurement. TC-IF-06 asserts the stronger
+     thing in its place — under `?gl=force` the two sections raise no page error
+     and mount no canvas at all. The still path below is unchanged and is now the
+     only path there is: with no scene, it is what every reader sees. */
   { id: 'still', label: 'prefers-reduced-motion still', url: '/', reducedMotion: true },
 ] as const;
 
@@ -368,10 +375,14 @@ for (const vp of VIEWPORTS) {
     test.setTimeout(120000);
     await page.setViewportSize({ width: vp.width, height: vp.height });
     const spd = await instrument();
+    /* The still path, for the reason written beside PATHS above: there is no
+       hero scene to force any more, so `?gl=force` settles on nothing. The focus
+       order this case asserts is identical on both paths — it is the DOM's, not
+       the shader's. */
     await spd.preparePage(page, baseURL ?? 'http://127.0.0.1:5609', {
-      id: 'gl',
-      url: '/?gl=force',
-      reducedMotion: false,
+      id: 'still',
+      url: '/',
+      reducedMotion: true,
     });
     const d = await page.evaluate(readTabOrder);
 

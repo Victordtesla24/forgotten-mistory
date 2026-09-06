@@ -868,78 +868,11 @@ test.describe('Hero portrait', () => {
   test.describe('at 390×844', () => {
     test.use({ viewport: { width: 390, height: 844 } });
 
-    test('TC-HERO-21: below 720 px the photograph bleeds to the right edge, above the copy', async ({
-      page,
-    }) => {
-      // RE-POINTED by the owner instruction of 2026-09-05 09:10Z. The 88 px
-      // stamp beside the eyebrow was the P1 recommendation; "full size" is not
-      // 88 px, so on a phone the photograph runs to the screen edge rather
-      // than sitting in a stamp.
-      //
-      // REWRITTEN 2026-09-06 (t_w2_h1s5) against HERO-SETPIECE-v3 §3.5. Two
-      // clauses above encoded the SUPERSEDED composition (HERO-FOLD-v2 §2 — a
-      // reading column with the picture flowing under it), and v3 §0 forbids
-      // that reading outright:
-      //
-      //   · "bleeds to BOTH screen edges" (≥ 0.98 × 390 = 382.2 px). §3.5 puts
-      //     `.planeFigure` at x 24 → 390: 366 px, bleeding RIGHT ONLY, because
-      //     it keeps the left gutter so the name below starts on the same
-      //     spine. The threshold is not lowered — it is replaced by the exact
-      //     pair of edges §3.5 specifies, which a 366 px box in the wrong
-      //     place still fails.
-      //   · "starts below the actions". §3.5 stands the figure at y 150 → 354
-      //     with the H1 at y 330 → 442 crossing its dissolve band, i.e. the
-      //     figure is above the copy, not below it.
-      //
-      // Everything the case guarded that v3 does not move — no sideways
-      // scroll, the poster visible, no source assigned at rest — is untouched.
-      // The <video> is present at every width: it carries no source until the
-      // reader asks, so a phone still runs no decoder unless it is tapped.
-      await page.waitForTimeout(3000);
+  /* SUPERSEDED by tests/overhaul/interim-frame.spec.ts TC-IF-02.
+     It asserted the photograph bleeds to the right screen edge above the copy —
+       the plane's phone geometry. Removed on the Owner's 2026-09-06T05:51Z instruction
+     (docs/architecture/INTERIM-FRAME.md); a case that measures a deleted element
+     is not a case that can be made to pass. */
 
-      const figure = page.locator(PORTRAIT);
-      const box = await figure.boundingBox();
-      expect(box, 'the figure is laid out at 390 px').not.toBeNull();
-
-      const gutter = await page.evaluate(() =>
-        Number.parseFloat(
-          getComputedStyle(document.querySelector('#hero')!).paddingLeft,
-        ),
-      );
-      expect(gutter, 'the hero gutter resolves to a length').toBeGreaterThan(0);
-      expect(
-        box!.x + box!.width,
-        `the photograph reaches the right screen edge (${(box!.x + box!.width).toFixed(1)} of 390)`,
-      ).toBeGreaterThanOrEqual(389);
-      expect(box!.x, `the photograph keeps the left gutter (${gutter} px)`).toBeGreaterThanOrEqual(
-        gutter - 1,
-      );
-      expect(box!.x, `the photograph keeps the left gutter (${gutter} px)`).toBeLessThanOrEqual(
-        gutter + 1,
-      );
-      expect(
-        box!.width,
-        `the photograph spans the gutter to the edge (${box!.width.toFixed(1)} px)`,
-      ).toBeGreaterThanOrEqual(390 - gutter - 1);
-
-      const actions = await page.locator(`${HERO} a[href="#experience"]`).first().boundingBox();
-      expect(actions, 'the primary action is laid out').not.toBeNull();
-      expect(
-        box!.y + box!.height,
-        `the photograph's foot (${(box!.y + box!.height).toFixed(0)}) stands above the actions (${actions!.y.toFixed(0)})`,
-      ).toBeLessThanOrEqual(actions!.y);
-
-      // No sideways scroll: the bleed cancels the hero gutter exactly.
-      const overflow = await page.evaluate(
-        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-      );
-      expect(overflow, 'no horizontal overflow at 390 px').toBeLessThanOrEqual(1);
-
-      await expect(page.locator(PORTRAIT_IMG)).toBeVisible();
-      const sources = await page.locator(`${HERO} video`).evaluateAll((els) =>
-        els.map((el) => (el as HTMLVideoElement).getAttribute('src')),
-      );
-      for (const src of sources) expect(src, 'no source assigned below 720 px at rest').toBeNull();
-    });
   });
 });
