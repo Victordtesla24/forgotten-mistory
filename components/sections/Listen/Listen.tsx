@@ -70,8 +70,9 @@ const arrivalX = (index: number, count: number) =>
  * scale, jaws open at full width when the section arrives. Over the long
  * cinematic beat the jaws close to the width of the sentence's first word, and
  * the reading between them is the one thing the instrument can honestly measure
- * here — the synthetic introduction's own length, `24.98 s`, read from the
- * generated envelope (LISTEN-FLAGSHIP.md §2 C5). It is a measurement, not a
+ * here — the synthetic introduction's own length, read from the generated
+ * envelope rather than typed, so a regenerated greeting re-labels itself
+ * (LISTEN-FLAGSHIP.md §2 C5). It is a measurement, not a
  * claim, so it carries no gold. Then the hairline draws beneath it as the last
  * stroke. The instrument that measured everything above is set down, still
  * honest, and finally measures the one artefact the site itself produced.

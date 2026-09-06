@@ -9,7 +9,7 @@
  * §0). Every other flagship on this site draws data; this one drew `sin()`.
  *
  * The section already owns a real signal nobody had plotted:
- * `public/assets/minivic-greeting.mp3` — 24.98 s of the synthetic introduction.
+ * `public/assets/minivic-greeting.mp3` — the synthetic introduction, spoken.
  * This script reads its actual bytes, decodes them to mono PCM with ffmpeg,
  * folds the samples into 256 RMS buckets, peak-normalises them to 0 → 1, and
  * writes them into a generated module the field uploads as a texture. The band
@@ -46,6 +46,7 @@ const ROOT = process.cwd();
 const MP3_PATH = join(ROOT, 'public', 'assets', 'minivic-greeting.mp3');
 const ASSET_PATH = join(ROOT, 'app', 'data', 'generated', 'greeting-asset.ts');
 const OUT_PATH = join(ROOT, 'app', 'data', 'generated', 'greeting-envelope.ts');
+const ALIGNMENT_PATH = join(ROOT, 'app', 'data', 'generated', 'greeting-alignment.ts');
 
 /** The band is a 256×1 texture; one RMS bucket per texel. */
 const BUCKETS = 256;
@@ -129,6 +130,34 @@ if (assetMatch[1] !== sourceSha256) {
     `the MP3 digest ${sourceSha256} does not equal greetingAudioSha256 ` +
       `${assetMatch[1]} in greeting-asset.ts — the greeting and its envelope have ` +
       'drifted. Regenerate the greeting asset, then this envelope.',
+  );
+}
+
+// The character alignment is the third artefact pinned to these same bytes
+// (MINIVIC-AVATAR-v1.md §2.2). ElevenLabs synthesis is not reproducible across
+// calls, so an alignment whose digest has drifted from the MP3 describes a
+// different render: it would drive the mouth precisely, against the wrong audio,
+// and nothing downstream could tell. Same rule as the envelope's own pin —
+// regenerate both with the greeting or fail here.
+let alignmentSource;
+try {
+  alignmentSource = readFileSync(ALIGNMENT_PATH, 'utf8');
+} catch {
+  fail(
+    `${ALIGNMENT_PATH} is missing. The greeting's mouth is driven from this file's ` +
+      'character timings; regenerate it with the greeting (npx tsx ' +
+      'scripts/generate-cloned-greeting.ts), which writes both in one pass.',
+  );
+}
+const alignmentMatch = alignmentSource.match(/sourceSha256:\s*'([0-9a-f]{64})'/);
+if (!alignmentMatch) {
+  fail(`could not read sourceSha256 from ${ALIGNMENT_PATH}.`);
+}
+if (alignmentMatch[1] !== sourceSha256) {
+  fail(
+    `the greeting alignment pins ${alignmentMatch[1]} but the shipped MP3 hashes to ` +
+      `${sourceSha256} — the alignment describes a different render. Regenerate the ` +
+      'greeting so the audio and its character timings come from one call.',
   );
 }
 
@@ -246,5 +275,6 @@ ${envelope.map((v, i) => `    ${v}${i === BUCKETS - 1 ? '' : ','}`).join('\n')}
 mkdirSync(dirname(OUT_PATH), { recursive: true });
 writeFileSync(OUT_PATH, file, 'utf8');
 console.log(
-  `[greeting-envelope] ${BUCKETS} buckets · peak 1.0 · ${durationSeconds.toFixed(3)} s · ${sourceSha256.slice(0, 8)}`,
+  `[greeting-envelope] ${BUCKETS} buckets · peak 1.0 · ${durationSeconds.toFixed(3)} s · ` +
+    `${sourceSha256.slice(0, 8)} · alignment pinned`,
 );
