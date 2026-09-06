@@ -529,12 +529,33 @@ describe('G-M3 — warm request', () => {
     assert.equal(fn.isWarmRequest({ method: 'GET', query: { warm: 'true' } }), true);
   });
 
+  it('a POST warm ping with no conversation in it is a warm request', () => {
+    // The browser's `keepalive`/beacon path and every proxy that rewrites a
+    // preflighted GET into a POST reach the function as a POST. Refusing them
+    // returned 400 through Hosting (adversarial review F3), so priming never
+    // ran for a real visitor. A POST is now eligible — but only when it is
+    // explicitly flagged AND carries no conversation.
+    assert.equal(fn.isWarmRequest({ method: 'POST', query: { warm: '1' }, body: {} }), true);
+    assert.equal(fn.isWarmRequest({ method: 'POST', query: { warm: 'true' } }), true);
+    assert.equal(fn.isWarmRequest({ method: 'POST', query: { warm: '1' }, body: { warm: true } }), true);
+  });
+
   it('a send can never be mistaken for a warm ping', () => {
-    // A POST is a real conversation even if something puts warm=1 on the query
-    // string; answering it with an empty 204 would drop a visitor's question.
-    assert.equal(fn.isWarmRequest({ method: 'POST', query: { warm: '1' } }), false);
+    // The guarantee that matters: a POST carrying a real conversation is a
+    // send, whatever the query string says. Answering it with an empty 204
+    // would drop a visitor's question.
+    assert.equal(
+      fn.isWarmRequest({
+        method: 'POST',
+        query: { warm: '1' },
+        body: { messages: [{ role: 'user', content: 'hi' }] },
+      }),
+      false,
+    );
+    assert.equal(fn.isWarmRequest({ method: 'POST', query: {}, body: {} }), false);
     assert.equal(fn.isWarmRequest({ method: 'GET', query: {} }), false);
     assert.equal(fn.isWarmRequest({ method: 'GET' }), false);
+    assert.equal(fn.isWarmRequest({ method: 'DELETE', query: { warm: '1' } }), false);
   });
 });
 
@@ -915,6 +936,175 @@ describe('payload validation short-circuits the ladder (MV-400)', () => {
       );
       assert.equal(res.statusCode, 400);
       assert.equal(fetchCalls, 0, 'no provider may be paid for an invalid payload');
+    } finally {
+      globalThis.fetch = savedFetch;
+      if (savedKey === undefined) delete process.env.OPENROUTER_API_KEY;
+      else process.env.OPENROUTER_API_KEY = savedKey;
+    }
+  });
+});
+
+/**
+ * MV-ATT — the ladder walk is auditable from outside the function.
+ *
+ * Written before the implementation, from the adversarial review's F5: the
+ * deployed function returned only `{done, provider, model}`, so §0.4's routing
+ * could not be confirmed from a response and the reviewer had to substitute a
+ * behavioural discriminator (a latency step). One `attempts:[{provider,outcome,ms}]`
+ * field on the terminator closes that: it names every rung the ladder touched,
+ * what happened on it, and what it cost. Provider ids and outcome codes only —
+ * never a key, never a URL, never an upstream error body.
+ */
+function fakeStreamRes() {
+  const res = fakeRes();
+  res.writes = [];
+  res.write = (payload) => { res.writes.push(String(payload)); res.sent = true; return true; };
+  res.events = () =>
+    res.writes
+      .join('')
+      .split('\n\n')
+      .filter((block) => block.startsWith('data: '))
+      .map((block) => JSON.parse(block.slice(6)));
+  return res;
+}
+
+/**
+ * A fetch double for the *handler* path, where the ladder's URLs are the real
+ * provider endpoints rather than the `rung()` test URLs — so it dispatches on
+ * the hostname the function actually calls.
+ */
+function wireFetch(routes) {
+  const calls = [];
+  const impl = async (url, init) => {
+    const id = Object.keys(routes).find((key) => String(url).includes(HOSTS[key]));
+    if (!id) throw new Error(`test fetch called with unrouted url: ${url}`);
+    calls.push({ id, url, init });
+    return routes[id](init);
+  };
+  impl.calls = calls;
+  return impl;
+}
+
+const HOSTS = {
+  openrouter: 'openrouter.ai',
+  deepseek: 'api.deepseek.com',
+  zai: 'api.z.ai',
+  openai: 'api.openai.com',
+};
+
+function assertAttemptsShape(attempts, label) {
+  assert.ok(Array.isArray(attempts), `${label}: attempts must be an array`);
+  assert.ok(attempts.length > 0, `${label}: attempts must name at least the answering rung`);
+  const SECRETY = /sk-|Bearer|api[_-]?key|https?:\/\//i;
+  for (const entry of attempts) {
+    assert.deepEqual(
+      Object.keys(entry).sort(),
+      ['ms', 'outcome', 'provider'],
+      `${label}: an attempt carries exactly provider, outcome and ms`,
+    );
+    assert.equal(typeof entry.provider, 'string');
+    assert.equal(typeof entry.outcome, 'string');
+    assert.equal(typeof entry.ms, 'number');
+    assert.ok(Number.isFinite(entry.ms) && entry.ms >= 0, `${label}: ms must be a real duration`);
+    assert.ok(!SECRETY.test(entry.provider + ' ' + entry.outcome), `${label}: no secret or URL in an attempt`);
+  }
+}
+
+describe('the ladder walk is auditable (MV-ATT)', () => {
+  it('MV-ATT-11: the SSE done event carries attempts[{provider,outcome,ms}]', async () => {
+    const savedFetch = globalThis.fetch;
+    const savedKeys = {
+      OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY,
+      OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    };
+    process.env.OPENROUTER_API_KEY = 'test-key-openrouter';
+    process.env.OPENAI_API_KEY = 'test-key-openai';
+    globalThis.fetch = wireFetch({
+      openrouter: () => errorResponse(402, 'Insufficient credits'),
+      openai: () => sseResponse([frame('Fifteen years.'), 'data: [DONE]\n\n']),
+    });
+    try {
+      const res = fakeStreamRes();
+      await fn.minivicChat(
+        {
+          method: 'POST',
+          query: {},
+          headers: { accept: 'text/event-stream' },
+          body: { messages: [{ role: 'user', content: 'how many years?' }], stream: true },
+        },
+        res,
+      );
+      const events = res.events();
+      const done = events.find((e) => e.done === true);
+      assert.ok(done, 'the stream must terminate with a done event');
+      assertAttemptsShape(done.attempts, 'done event');
+      const walked = done.attempts.map((a) => a.provider);
+      assert.ok(walked.includes('openrouter'), 'the dead rung the ladder walked must be named');
+      assert.equal(walked[walked.length - 1], 'openai', 'the answering rung is the last attempt');
+      assert.equal(
+        done.attempts[done.attempts.length - 1].outcome,
+        'answered',
+        'the answering rung says it answered',
+      );
+    } finally {
+      globalThis.fetch = savedFetch;
+      for (const [k, v] of Object.entries(savedKeys)) {
+        if (v === undefined) delete process.env[k];
+        else process.env[k] = v;
+      }
+    }
+  });
+
+  it('MV-ATT-12: the JSON body carries the same attempts[]', async () => {
+    const savedFetch = globalThis.fetch;
+    const savedKeys = {
+      OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY,
+      OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    };
+    process.env.OPENROUTER_API_KEY = 'test-key-openrouter';
+    process.env.OPENAI_API_KEY = 'test-key-openai';
+    globalThis.fetch = wireFetch({
+      openrouter: () => errorResponse(402, 'Insufficient credits'),
+      openai: () => jsonResponse('Fifteen years.'),
+    });
+    try {
+      const res = fakeRes();
+      await fn.minivicChat(
+        {
+          method: 'POST',
+          query: {},
+          headers: { accept: 'application/json' },
+          body: { messages: [{ role: 'user', content: 'how many years?' }] },
+        },
+        res,
+      );
+      assert.equal(res.statusCode, 200);
+      assert.equal(res.body.provider, 'openai');
+      assertAttemptsShape(res.body.attempts, 'json body');
+      assert.equal(res.body.attempts.map((a) => a.provider).includes('openrouter'), true);
+    } finally {
+      globalThis.fetch = savedFetch;
+      for (const [k, v] of Object.entries(savedKeys)) {
+        if (v === undefined) delete process.env[k];
+        else process.env[k] = v;
+      }
+    }
+  });
+
+  it('MV-ATT-13: a POST warm ping answers 204 with no body, like the GET', async () => {
+    const savedFetch = globalThis.fetch;
+    const savedKey = process.env.OPENROUTER_API_KEY;
+    process.env.OPENROUTER_API_KEY = 'test-key-openrouter';
+    globalThis.fetch = () => new Promise(() => {});
+    try {
+      const res = fakeRes();
+      await fn.minivicChat(
+        { method: 'POST', query: { warm: '1' }, headers: {}, body: {} },
+        res,
+      );
+      assert.equal(res.statusCode, 204);
+      assert.equal(res.sent, true);
+      assert.ok(!res.body, 'a warm ping returns no body');
     } finally {
       globalThis.fetch = savedFetch;
       if (savedKey === undefined) delete process.env.OPENROUTER_API_KEY;

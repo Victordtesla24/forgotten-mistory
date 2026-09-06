@@ -343,7 +343,7 @@ const DEFAULT_MODE = "hiring";
 function buildMiniVicSystemPrompt(mode = DEFAULT_MODE) {
   const style = PERSONA_STYLES[mode] || PERSONA_STYLES[DEFAULT_MODE];
   return [
-    'You are "MiniVic", Vikram Deshpande\'s AI clone on his portfolio site. Speak in the first person as Vikram ("I"). Visitors are recruiters, hiring managers and prospective clients.',
+    'You are "MiniVic", a synthetic stand-in for Vikram Deshpande on his portfolio site. Speak in the first person as Vikram ("I"). Visitors are recruiters, hiring managers and prospective clients.',
     "",
     "RULES",
     "1. Answer in 1-2 sentences, no more than 45 words. Prose only — no bullet lists, no headings, no markdown.",
@@ -711,16 +711,32 @@ function resolveMode(body) {
 }
 
 /**
- * `GET /api/chat?warm=1` — boot an instance and nothing else.
+ * `GET` or `POST /api/chat?warm=1` — boot an instance and nothing else.
  *
- * Deliberately narrow: only GET, only the explicit `warm` flag. A POST cannot
- * take this branch, so a real conversation can never be answered with an empty
- * 204, and nothing a visitor can put in a body reaches it.
+ * It used to be GET-only. Through the Firebase Hosting rewrite that made a
+ * `POST …?warm=1` return **400 `messages_required`** (adversarial review F3),
+ * because the request fell through to the send path and was rejected for having
+ * no conversation in it — so any caller that reaches the function with a POST
+ * (a `navigator.sendBeacon` warm ping, a `fetch(..., {keepalive:true})`, a proxy
+ * that will not preflight a cross-origin GET) never primed anything, and the
+ * 1.67 s serial dead-rung walk stayed on the visitor's first send.
+ *
+ * A POST is now eligible, but only on both counts at once: the explicit `warm`
+ * flag AND no `messages` array. The guarantee that mattered is unchanged and is
+ * now the stated one — a POST carrying a real conversation is a send, whatever
+ * the query string says, so a visitor's question can never be answered with an
+ * empty 204.
  */
 function isWarmRequest(req) {
-  if (req.method !== "GET") return false;
+  if (req.method !== "GET" && req.method !== "POST") return false;
   const flag = req.query ? req.query.warm : undefined;
-  return flag === "1" || flag === "true";
+  if (flag !== "1" && flag !== "true") return false;
+  if (req.method === "POST") {
+    const body = req.body;
+    // Anything that looks like a conversation disqualifies the warm branch.
+    if (body && Array.isArray(body.messages) && body.messages.length > 0) return false;
+  }
+  return true;
 }
 
 /**
@@ -864,13 +880,26 @@ exports.minivicChat = onRequest(
       // `headersSent` is the honest test of whether this actually became a
       // stream: a rung that answered without ever emitting a fragment gets the
       // ordinary JSON reply, so the client is never handed an empty SSE body.
+      //
+      // `attempts` is the same rung walk that goes to the log, put on the wire:
+      // every rung the ladder touched, what happened on it and what it cost. It
+      // exists because an independent reviewer could not confirm §0.4's ladder
+      // order from a response and had to infer it from a latency step
+      // (adversarial review F5). Provider ids and outcome codes only — never a
+      // key, never a URL, never an upstream error body.
+      const attempts = result.timings;
       if (wantsStream && res.headersSent) {
-        writeEvent({ done: true, provider: result.provider, model: result.model });
+        writeEvent({ done: true, provider: result.provider, model: result.model, attempts });
         res.end();
         return;
       }
       res.set("Cache-Control", "no-store");
-      res.status(200).json({ text: result.text, provider: result.provider, model: result.model });
+      res.status(200).json({
+        text: result.text,
+        provider: result.provider,
+        model: result.model,
+        attempts,
+      });
     } catch (err) {
       if (err instanceof ChatLadderError) {
         logger.error("MiniVic chat ladder exhausted", {

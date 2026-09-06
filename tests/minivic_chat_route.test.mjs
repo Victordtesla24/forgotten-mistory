@@ -129,11 +129,34 @@ test('MV-ROUTE-06: when every rung fails the caller is told, never handed an inv
   );
 });
 
-test('MV-ROUTE-07: the first-byte deadline on the direct rung is the R3 bar itself', () => {
-  assert.equal(
-    DIRECT_FIRST_BYTE_TIMEOUT_MS,
-    1500,
-    'a direct rung that has not answered inside the R3 bar has already lost; hand over',
+/**
+ * The measured worst-case cold first token on the origin route: the serial walk
+ * of three dead rungs plus the model, timed by an independent reviewer after a
+ * ≥10-minute idle
+ * (docs/delivery/evidence/v10-20260905T0515Z/G-REV/ec53e2b4/08-adversarial-review.md
+ * F1, sample 1). The deadline has to clear it or the cold send is aborted on
+ * exactly the path the gate measures.
+ */
+const MEASURED_COLD_FIRST_TOKEN_MS = 2449;
+
+test('MV-ROUTE-07: the direct deadline clears the measured cold walk, so a live stream is never discarded', () => {
+  // This used to assert `=== 1500`, the R3 bar. That was wrong twice over: the
+  // function writes its SSE headers on the first FRAGMENT, so this is a
+  // first-token deadline, and the cold first token is 2 449 ms — so the client
+  // aborted the origin on every cold send and then paid the buffered fallback
+  // in full, which is worse than either route alone (review F2).
+  assert.ok(
+    DIRECT_FIRST_BYTE_TIMEOUT_MS > MEASURED_COLD_FIRST_TOKEN_MS,
+    `the direct deadline (${DIRECT_FIRST_BYTE_TIMEOUT_MS} ms) must clear the measured cold ` +
+      `first token (${MEASURED_COLD_FIRST_TOKEN_MS} ms) — below it, every cold send is aborted ` +
+      'after paying for it',
+  );
+  // ...and it is still a deadline, not an absence of one: an origin that has
+  // produced nothing by then has no answer to lose, and the certain path is the
+  // better remaining bet well inside the 14 s overall timeout.
+  assert.ok(
+    DIRECT_FIRST_BYTE_TIMEOUT_MS <= 4000,
+    'the direct deadline must stay a deadline — a visitor cannot wait on a dead origin',
   );
 });
 

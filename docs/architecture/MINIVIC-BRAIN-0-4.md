@@ -253,6 +253,68 @@ a credential surface on the VPS for no measured gain.
 *Reversal cost:* c-1 and c-2 are additive and behind the existing cooldown map; deleting
 them restores today's behaviour exactly.
 
+#### Addendum, 2026-09-06 (t_w1_r2c) — the origin race policy, restated after the adversarial review
+
+The independent review of `ec53e2b4`
+(`docs/delivery/evidence/v10-20260905T0515Z/G-REV/ec53e2b4/08-adversarial-review.md`)
+found that the client made the cold send **worse**, not better, and the finding is
+accepted in full. Three facts, each measured on live by the reviewer, not by us:
+
+| Fact | Number | Where |
+|---|---|---|
+| Origin cold first token (≥10 min idle, sample 1 of 7) | **2 449.2 ms** | F1 |
+| Origin warm first token (samples 2–7) | 470–880 ms, median 714.8 ms | F1 |
+| The client's abort on the direct rung | `setTimeout(() => abort(), 1500)` | F2 |
+
+The abort fired at 1 500 ms; the first token arrived at 2 449 ms. Because
+`functions/index.js` writes the SSE headers on the **first fragment** (`beginStream`,
+so that a ladder which fails on every rung can still answer 502 rather than a 200 with
+an error inside it), that 1 500 ms "first-byte" deadline was in fact a **first-token**
+deadline. On a cold cooldown map it therefore killed the origin request on exactly the
+send the gate measures, and the visitor paid 1 500 ms of aborted request **and then the
+buffered Hosting fallback in full**.
+
+**The policy now, in one sentence:** the origin stays primary, its budget is derived
+from the measured cold walk rather than from the R3 bar, and a stream that has begun is
+never discarded.
+
+Concretely, in `lib/miniVicRoute.mjs` / `lib/miniVicBrain.ts`:
+
+1. `DIRECT_FIRST_BYTE_TIMEOUT_MS` is **2 600 ms** — the 2 449 ms worst observed cold
+   first token plus a small margin. It is a *ceiling on producing nothing*, not a
+   target: a warm origin answers in 470–880 ms and never approaches it.
+2. The deadline is cleared by `clearTimeout(firstByte)` the instant the response
+   headers land, which for this function is the instant the first token is on the wire.
+   **No origin stream whose first token has arrived can be aborted**, whatever the clock
+   says — that is the property the review asked for, and it is a code invariant, not a
+   number.
+3. An origin that has produced *nothing at all* by 2 600 ms is still abandoned for the
+   Hosting rung. Abandoning it then is right: it has no answer to lose, and the buffered
+   path is the better remaining bet well inside the 14 s overall timeout.
+4. `tests/minivic_chat_route.test.mjs` MV-ROUTE-07 now asserts the *relationship*
+   (`deadline > measured cold first token`, and still ≤ 4 s) rather than the literal
+   `1500` it used to pin, so a future edit that reintroduces the defect fails the suite
+   instead of passing it.
+
+**Rejected alternative:** starting the Hosting fallback speculatively when the origin's
+headers are late and racing the two. It doubles the upstream spend on precisely the cold
+request that already walks three dead rungs, and it needs a "discard the loser" rule that
+is easy to get wrong in exactly the way (2) forbids. The single-primary policy above gets
+the same worst case for one request's cost.
+
+**Warm priming, corrected (F3).** `?warm=1` returned 204 through Hosting on `GET` but
+**400** on `POST`, and every browser run recorded `net::ERR_ABORTED` against both warm
+pings. Two causes, both fixed: `isWarmRequest` was GET-only, so a POST fell through to
+the send path and was rejected `messages_required` (it now accepts a POST that carries
+the explicit flag *and* no `messages` — a POST with a conversation in it is still a send,
+always); and the client fired the ping without ever reading the response, which the
+browser cancels, so it now consumes the body and sets `keepalive`.
+
+**Observability, corrected (F5).** The `done` event and the JSON body now carry
+`attempts: [{ provider, outcome, ms }]` — the same rung walk that already went to the
+log. §0.4's ladder order is now readable from a response instead of inferred from a
+latency step. Provider ids and outcome codes only: no key, no URL, no upstream body.
+
 ### (d) G-R3 — the realtime avatar stays OPEN
 
 **G-R3 remains OPEN and must not be reported as PASS:** the full realtime

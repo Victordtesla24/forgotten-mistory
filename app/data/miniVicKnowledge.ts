@@ -1,5 +1,5 @@
 /**
- * miniVicKnowledge.ts — static knowledge base powering "MiniVic", the AI-clone
+ * miniVicKnowledge.ts — static knowledge base powering "MiniVic", the synthetic stand-in
  * chatbot on this portfolio site. The site is statically hosted (no backend),
  * so MiniVic answers entirely client-side via deterministic keyword matching
  * against this curated, fact-checked knowledge base.
@@ -30,18 +30,30 @@ export const FALLBACK_ANSWER: string =
 /**
  * The introduction. Written to what recruiters and hiring managers say they
  * decide on in the first sentence (present role and location first, then one
- * checkable number, then an offer of what to ask), with the AI-clone
+ * checkable number, then an offer of what to ask), with the synthetic-stand-in
  * disclosure stated once as a clause and never hedged. Every fact traces to
  * app/data/siteContent.ts; the research and its sources are recorded in
  * docs/delivery/evidence/v9-20260904T2312Z/B-research/01-employer-expectations.md.
+ *
+ * 2026-09-06 (t_w1_r2c, adversarial review F7): the phrase "his AI clone" was
+ * retired from all three variants in favour of "a synthetic stand-in for him",
+ * so the introduction no longer contradicts the panel's own disclosure two
+ * lines below it. `public/assets/minivic-greeting.txt` follows the text, as
+ * MV-GREET-01 requires. **The shipped MP3 still SPEAKS the previous sentence**
+ * — `greetingSpokenText` in app/data/generated/greeting-asset.ts is the
+ * generation run's untouched record of that — because re-rendering it is a paid
+ * ElevenLabs call and therefore an Owner cost gate (CLAUDE.md), not something
+ * an autonomous lane may spend. Closing it is one command once approved:
+ * `npx tsx scripts/generate-cloned-greeting.ts`, which rewrites the MP3, the
+ * transcript and the digest together.
  */
 export const GREETING: Record<PersonaMode, string> = {
   hiring:
-    "I'm Vikram — his AI clone, speaking from his CV. I'm Scrum Master / Project Manager on the ATO's Payday Super program and open to Scrum Master and delivery-leadership roles in Melbourne. Sixteen years across government, finance and telecommunications; at ANZ I ran a $5M+ portfolio across up to 40 practitioners. Ask about availability, the ATO work, or how I lead.",
+    "I'm Vikram — a synthetic stand-in for him, speaking from his CV. I'm Scrum Master / Project Manager on the ATO's Payday Super program and open to Scrum Master and delivery-leadership roles in Melbourne. Sixteen years across government, finance and telecommunications; at ANZ I ran a $5M+ portfolio across up to 40 practitioners. Ask about availability, the ATO work, or how I lead.",
   engineering:
-    "I'm Vikram — his AI clone, answering from his CV and repositories. Latest build: ATO mainframe test-evidence automation, 200+ SIT scenarios cut from ~3 hours to ~15 minutes each (≈92%) with REXX, SMF and SDSF and zero new InfoSec approvals. At ANZ: WebSocket telemetry holding P95 under 200 ms across 10,000+ devices. Ask about the stack, LLM evals, or trade-offs.",
+    "I'm Vikram — a synthetic stand-in for him, answering from his CV and repositories. Latest build: ATO mainframe test-evidence automation, 200+ SIT scenarios cut from ~3 hours to ~15 minutes each (≈92%) with REXX, SMF and SDSF and zero new InfoSec approvals. At ANZ: WebSocket telemetry holding P95 under 200 ms across 10,000+ devices. Ask about the stack, LLM evals, or trade-offs.",
   story:
-    "I'm Vikram — his AI clone, telling it the way he would. Latest chapter: a SIT window needing 75+ hours of manual evidence against 64 available, closed by a six-day harness build and a war room that produced a binding recommendation in under three hours. Sixteen years of those, MYOB in 2010 to the ATO now. Ask for one.",
+    "I'm Vikram — a synthetic stand-in for him, telling it the way he would. Latest chapter: a SIT window needing 75+ hours of manual evidence against 64 available, closed by a six-day harness build and a war room that produced a binding recommendation in under three hours. Sixteen years of those, MYOB in 2010 to the ATO now. Ask for one.",
 };
 
 export const knowledgeBase: KnowledgeEntry[] = [
@@ -1215,7 +1227,7 @@ export const knowledgeBase: KnowledgeEntry[] = [
       'agsva',
     ],
     answer:
-      "What's on record is that I'm based in Melbourne, VIC, Australia, and I've worked continuously for Australian employers since May 2010 — MYOB, InfoCentric, Telstra, Microsoft, NAB, ANZ, and now the Australian Taxation Office, which is a federal government engagement. Visa, citizenship, and clearance status aren't details I publish through this clone, and I won't guess at them on Vikram's behalf. Ask him directly at sarkar.vikram@gmail.com or +61 433 224 556 and you'll get a straight answer the same day.",
+      "What's on record is that I'm based in Melbourne, VIC, Australia, and I've worked continuously for Australian employers since May 2010 — MYOB, InfoCentric, Telstra, Microsoft, NAB, ANZ, and now the Australian Taxation Office, which is a federal government engagement. Visa, citizenship, and clearance status aren't details I publish through this synthetic stand-in, and I won't guess at them on Vikram's behalf. Ask him directly at sarkar.vikram@gmail.com or +61 433 224 556 and you'll get a straight answer the same day.",
   },
 ];
 

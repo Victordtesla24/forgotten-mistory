@@ -490,6 +490,94 @@ test.describe('E2E: MiniVicBot Chatbot', () => {
     await expect(line).toHaveText(/Answers: offline knowledge base$/, { timeout: 20000 });
   });
 
+  /**
+   * CB-READ — the disclosure is readable, not merely present.
+   *
+   * Written before the fix, from the adversarial review's F4/F8: the truth line
+   * was `white-space:nowrap · overflow:hidden · text-overflow:ellipsis` and
+   * needed 595 px inside a 316 px box at 1440 (226 px at 390), so the clause the
+   * whole honesty change exists to ship — `Answers: live text via {provider}` —
+   * was never visible to a human. Every assertion written against `innerText`
+   * passed while a reader saw `…Face: PRE-RENDERE…`. These tests measure the
+   * rendered box instead: an element whose `scrollWidth` exceeds its
+   * `clientWidth` is clipped, whatever its text node says.
+   */
+  const READABLE_WIDTHS = [
+    { label: '1440', width: 1440, height: 900 },
+    { label: '390', width: 390, height: 844 },
+  ];
+
+  for (const vp of READABLE_WIDTHS) {
+    test(`CB-READ-06: the truth line and subtitle are not clipped at ${vp.label}`, async ({ page }) => {
+      await page.setViewportSize({ width: vp.width, height: vp.height });
+      await gotoHome(page);
+      await answerWith(page, 'openai');
+      const { panel } = await openMiniVic(page);
+      const line = panel.locator('[data-testid="minivic-synthetic-label"]');
+      const subtitle = panel.locator('[data-testid="minivic-subtitle"]');
+
+      await sendOnce(page, panel);
+      await expect(line).toHaveText(/Answers: live text via openai$/, { timeout: 20000 });
+
+      for (const [name, locator] of [['truth line', line], ['subtitle', subtitle]] as const) {
+        const box = await locator.evaluate((el) => ({
+          scrollWidth: el.scrollWidth,
+          clientWidth: el.clientWidth,
+          whiteSpace: getComputedStyle(el).whiteSpace,
+          textOverflow: getComputedStyle(el).textOverflow,
+          textTransform: getComputedStyle(el).textTransform,
+        }));
+        expect(
+          box.scrollWidth,
+          `${name} is clipped at ${vp.label}: ${box.scrollWidth}px of text in a ${box.clientWidth}px box`,
+        ).toBeLessThanOrEqual(box.clientWidth);
+        expect(box.whiteSpace, `${name} must be allowed to wrap`).not.toBe('nowrap');
+        expect(box.textOverflow, `${name} must not ellipsize`).not.toBe('ellipsis');
+        expect(box.textTransform, `${name} must not shout`).toBe('none');
+      }
+    });
+  }
+
+  test('CB-READ-07: the panel renders the sentence case a reader is shown, not a shouted LIVE', async ({ page }) => {
+    await gotoHome(page);
+    await answerWith(page, 'openai');
+    const { panel } = await openMiniVic(page);
+    const line = panel.locator('[data-testid="minivic-synthetic-label"]');
+
+    await sendOnce(page, panel);
+    await expect(line).toHaveText(/Answers: live text via openai$/, { timeout: 20000 });
+
+    // `innerText` returns the CSS-transformed string, so it is the honest test
+    // of what a reader sees — `textContent` would pass on an uppercased line.
+    const rendered = await line.evaluate((el) => (el as HTMLElement).innerText);
+    expect(rendered).toContain('Answers: live text via openai');
+    expect(rendered).not.toContain('LIVE');
+  });
+
+  test('CB-READ-08: nothing in the page calls MiniVic an AI clone', async ({ page }) => {
+    await gotoHome(page);
+    await openMiniVic(page);
+
+    const hits = await page.evaluate(() => {
+      const found: string[] = [];
+      const needle = /ai clone/i;
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        if (needle.test(node.textContent ?? '')) found.push(`text: ${node.textContent?.trim().slice(0, 80)}`);
+      }
+      for (const el of Array.from(document.querySelectorAll('*'))) {
+        for (const attr of Array.from(el.attributes)) {
+          if (needle.test(attr.value)) found.push(`${el.tagName}[${attr.name}]: ${attr.value.slice(0, 80)}`);
+        }
+      }
+      return found;
+    });
+    expect(hits, `"AI clone" still ships: ${hits.join(' | ')}`).toEqual([]);
+
+    const label = await page.locator('[data-testid="minivic-toggle"]').getAttribute('aria-label');
+    expect(label).toBe('Ask Mini Vic — a synthetic stand-in for Vikram');
+  });
+
   test('CB-LABEL-05: the disclosure survives every panel state', async ({ page }) => {
     await gotoHome(page);
     await answerWith(page, 'openai');
