@@ -220,16 +220,19 @@ test.describe('Hero', () => {
 /* Include a hover effect that plays the hero video avatar and not by         */
 /* default." Three things this block used to assert are superseded FOR THIS   */
 /* ELEMENT ONLY, each re-pointed in place with the reason on the test:        */
-/*   · the grayscale filter        → TC-HERO-18 now guards the opposite;      */
+/*   · the grayscale filter        → TC-HERO-18 now guards monochrome in the  */
+/*     asset bytes (G-H6, 2026-09-06): the chromatic exception is retired,    */
+/*     and no CSS filter may stand in for a re-encoded greyscale file;        */
 /*   · the load→idle→intersection autoplay gate → TC-HERO-13/15/16/17/19 now  */
 /*     guard intent (hover, focus, press) and silence at rest;                */
 /*   · the 88 px phone stamp       → TC-HERO-21 now guards the full-bleed     */
 /*     photograph below the actions.                                          */
 /* The ink rule around the figure does NOT move: gold means "this figure has  */
 /* a source", and TC-HERO-18 still fails on any chromatic colour drawn by the */
-/* figure's own chrome. The loop is now the 1280x720 my-avatar.mp4 — same     */
-/* composition as the still, twice the pixels of the 640x360 hero loop, and   */
-/* never on the critical path because nothing fetches it until intent.        */
+/* figure's own chrome. The loop is the 1280x720 my-hero-avatar.mp4 — the      */
+/* name docs/prompt.md §0.3-3 gives the owner's hero video avatar, carrying    */
+/* the best real source on this host, monochrome, and never on the critical    */
+/* path because nothing fetches it until intent.                              */
 /*                                                                            */
 /* TC-HERO-01…11 above are untouched; TC-HERO-03 still reads `#hero p`        */
 /* nth(2) (the figure carries a <figcaption>, never a <p>) and TC-HERO-04     */
@@ -252,7 +255,7 @@ const PORTRAIT_VIDEO = `${PORTRAIT} video`;
  */
 const PORTRAIT_TOGGLE = '#hero [data-testid="portrait-control"]';
 const PORTRAIT_ALT = 'Portrait of Vikram Deshpande';
-const HERO_LOOP = 'my-avatar.mp4';
+const HERO_LOOP = 'my-hero-avatar.mp4';
 
 /**
  * The gate runs after `load` → requestIdleCallback (1200 ms fallback) →
@@ -724,14 +727,18 @@ test.describe('Hero portrait', () => {
     expect(box!.height).toBeGreaterThanOrEqual(40);
   });
 
-  test('TC-HERO-18: the photograph is in colour and its chrome is achromatic', async ({ page }) => {
-    // RE-POINTED by the owner instruction of 2026-09-05 09:10Z ("full size,
-    // colours and dimension"). The exemption is the photograph itself — the
-    // pixels of the still and the loop. Everything the figure DRAWS (rule,
-    // ticks, cross, caption, button) is still held to the site's achromatic
-    // inks by the offender sweep below, with an empty allow-list: not even the
-    // sanctioned golds are permitted here, because gold means "sourced" and a
-    // portrait is not a sourced figure.
+  test('TC-HERO-18: the photograph is monochrome and its chrome is achromatic', async ({ page }) => {
+    // RE-POINTED 2026-09-06 (G-H6). docs/prompt.md §0.3-2 / C-8 say black,
+    // white and gold only; the chromatic exception the photograph held under
+    // the 09:10Z instruction is RETIRED, and the register in
+    // docs/architecture/PALETTE-EXCEPTIONS.md is empty. The photograph is
+    // monochrome in its own bytes — the assertion below reads the painted
+    // pixels — and the media wrapper still carries no `grayscale()`, so a CSS
+    // filter can never stand in for a re-encoded file. Everything the figure
+    // DRAWS (rule, ticks, cross, caption, button) is held to the site's
+    // achromatic inks by the offender sweep, with an empty allow-list: not even
+    // the sanctioned golds are permitted here, because gold means "sourced" and
+    // a portrait is not a sourced figure.
     await page.waitForLoadState('load');
     await page.waitForTimeout(GATE_SETTLE_MS);
 
@@ -742,6 +749,34 @@ test.describe('Hero portrait', () => {
     expect(await wrapper.count(), 'the <picture> has a wrapper (.portraitMedia)').toBe(1);
     const filter = await wrapper.evaluate((el) => getComputedStyle(el).filter);
     expect(filter, 'no grayscale anywhere on the media wrapper').not.toContain('grayscale');
+
+    // The pixels themselves: the still is greyscale because the shipped asset
+    // is greyscale (tests/hero_assets_monochrome.test.mjs proves it byte-side).
+    const saturation = await page.locator(PORTRAIT_IMG).evaluate(async (el) => {
+      const img = el as HTMLImageElement;
+      if (!img.complete) await img.decode();
+      const w = 120;
+      const h = Math.max(1, Math.round((img.naturalHeight / img.naturalWidth) * w));
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return -1;
+      ctx.drawImage(img, 0, 0, w, h);
+      const { data } = ctx.getImageData(0, 0, w, h);
+      let total = 0;
+      let n = 0;
+      for (let i = 0; i < data.length; i += 4) {
+        const mx = Math.max(data[i], data[i + 1], data[i + 2]);
+        const mn = Math.min(data[i], data[i + 1], data[i + 2]);
+        if (mx > 24) {
+          total += (mx - mn) / mx;
+          n += 1;
+        }
+      }
+      return n ? total / n : 0;
+    });
+    expect(saturation, `mean pixel saturation of the portrait: ${saturation}`).toBeLessThan(0.02);
 
     // The video must be inside that same wrapper so one filter covers both.
     const videoInsideWrapper = await wrapper.evaluate((el) => !!el.querySelector('video'));

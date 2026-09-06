@@ -244,7 +244,7 @@ const MiniVicBot = () => {
   const messagesRef = useRef(messages);
   messagesRef.current = messages;
 
-  const AVATAR_VIDEO_URL = "/assets/my-avatar.mp4";
+  const AVATAR_VIDEO_URL = "/assets/my-hero-avatar.mp4";
   // The same still the launcher's portrait layer paints, used as the launcher
   // video's poster so the clip never renders a black frame while it buffers.
   const AVATAR_STILL_URL = "/assets/my_avatar.webp";

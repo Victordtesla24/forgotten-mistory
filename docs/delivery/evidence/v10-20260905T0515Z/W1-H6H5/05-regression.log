@@ -1,0 +1,30 @@
+== targeted e2e, run 1 (parallel) ==
+  ✘  12 [chromium] › tests/e2e/chatbot.spec.ts:307:7 › E2E: MiniVicBot Chatbot › TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width (9.9s)
+  ✘  20 [chromium] › tests/e2e/hero-photo.spec.ts:261:7 › Hero photograph › TC-PHOTO-05: hover starts the loop; leaving pauses it (9.9s)
+  ✘  21 [chromium] › tests/e2e/hero-photo.spec.ts:279:7 › Hero photograph › TC-PHOTO-06: the control is keyboard-operable — Enter plays, Enter pauses (30.1s)
+  ✘  26 [chromium] › tests/e2e/hero-photo.spec.ts:438:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts (10.4s)
+  ✘  17 [chromium] › tests/e2e/hero-photo.spec.ts:197:7 › Hero photograph › TC-PHOTO-03b: the rendered <picture> at 1440 is monochrome on ≥ 99.5% of its pixels (3.0m)
+  ✘  40 [chromium] › tests/e2e/hero.spec.ts:99:7 › Hero › TC-HERO-08: the fold band fills the first viewport without overflowing it (3.9s)
+  ✘  46 [chromium] › tests/e2e/hero.spec.ts:422:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate (11.9s)
+  ✘  48 [chromium] › tests/e2e/hero.spec.ts:550:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget (5.0s)
+  ✓  49 [chromium] › tests/e2e/hero.spec.ts:621:7 › Hero portrait › TC-HERO-16: a failed loop leaves the poster in place and throws nothing (10.1s)
+    test-results/e2e-chatbot-E2E-MiniVicBot-6404d-ro-name-at-any-laptop-width-chromium/test-failed-1.png
+    test-results/e2e-hero-photo-Hero-photog-987b7--the-loop-leaving-pauses-it-chromium/test-failed-1.png
+    test-results/e2e-hero-photo-Hero-photog-c3658--—-Enter-plays-Enter-pauses-chromium/test-failed-1.png
+    test-results/e2e-hero-photo-Hero-photog-8cdb2-ht-and-the-box-never-shifts-chromium/test-failed-1.png
+    test-results/e2e-hero-Hero-TC-HERO-08-t-10135-port-without-overflowing-it-chromium/test-failed-1.png
+    test-results/e2e-hero-Hero-portrait-TC--7cdb5-tarts-only-through-the-gate-chromium/test-failed-1.png
+    test-results/e2e-hero-Hero-portrait-TC--b034a--and-CLS-stays-under-budget-chromium/test-failed-1.png
+  8 failed
+  46 passed (6.2m)
+
+== hero-photo re-run, workers=1, after fixing TC-PHOTO-03b's selector ==
+  ✘  13 [chromium] › tests/e2e/hero-photo.spec.ts:440:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts (3.9s)
+    test-results/e2e-hero-photo-Hero-photog-8cdb2-ht-and-the-box-never-shifts-chromium/test-failed-1.png
+  1 failed
+  18 passed (1.4m)
+exit=1
+
+== baseline on main's build (port 5602): both remaining failures are PRE-EXISTING ==
+TC-PHOTO-11 → 1 failed on main build (see session log)
+TC-BOT-14  → 1 failed on main build (panel clearance 11px vs 16px; untouched by this diff)

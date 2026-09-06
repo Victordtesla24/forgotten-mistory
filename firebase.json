@@ -11,6 +11,9 @@
     "public": "out",
     "predeploy": ["npm run build:static"],
     "cleanUrls": true,
+    "redirects": [
+      { "source": "/assets/my-avatar.mp4", "destination": "/assets/my-hero-avatar.mp4", "type": 301 }
+    ],
     "rewrites": [
       { "source": "/api/tts", "function": { "functionId": "elevenLabsTts", "region": "us-central1" } },
       { "source": "/api/chat", "function": { "functionId": "minivicChat", "region": "us-central1" } }
