@@ -1,0 +1,46 @@
+{
+  "label": "04-hosting-verify",
+  "at": "2026-09-06T05:11:54.001Z",
+  "warmUrl": "https://forgotten-mistory.web.app/api/chat?warm=1",
+  "postUrl": "https://forgotten-mistory.web.app/api/chat?route=hosting",
+  "warmStatus": 204,
+  "warmMs": 353,
+  "status": 200,
+  "contentType": "text/event-stream; charset=utf-8",
+  "headersMs": 1179,
+  "firstChunkMs": 1180,
+  "firstTokenMs": 1180,
+  "lastTokenMs": 1180,
+  "totalMs": 1203,
+  "streamedSpanMs": 0,
+  "charsPerSecond": null,
+  "deltas": 48,
+  "chars": 203,
+  "provider": "openai",
+  "model": "gpt-4.1-mini",
+  "route": "hosting",
+  "max_tokens": 48,
+  "attempts": [
+    {
+      "provider": "openrouter",
+      "outcome": "cooling_down",
+      "ms": 0
+    },
+    {
+      "provider": "deepseek",
+      "outcome": "cooling_down",
+      "ms": 0
+    },
+    {
+      "provider": "zai",
+      "outcome": "cooling_down",
+      "ms": 0
+    },
+    {
+      "provider": "openai",
+      "outcome": "answered",
+      "ms": 1060
+    }
+  ],
+  "answer": "At the ATO, I have led the Agile Kookaburras squad on the Payday Super reform program since March 2026, managing sprint cadence, PI planning, capacity, executive reporting, and delivering over 95% of the"
+}

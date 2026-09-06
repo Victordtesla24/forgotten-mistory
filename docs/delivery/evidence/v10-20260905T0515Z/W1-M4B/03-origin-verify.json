@@ -1,0 +1,46 @@
+{
+  "label": "03-origin-verify",
+  "at": "2026-09-06T05:11:50.211Z",
+  "warmUrl": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+  "postUrl": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+  "warmStatus": 204,
+  "warmMs": 172,
+  "status": 200,
+  "contentType": "text/event-stream; charset=utf-8",
+  "headersMs": 1286,
+  "firstChunkMs": 1287,
+  "firstTokenMs": 1287,
+  "lastTokenMs": 1699,
+  "totalMs": 1720,
+  "streamedSpanMs": 412,
+  "charsPerSecond": 772,
+  "deltas": 64,
+  "chars": 318,
+  "provider": "openai",
+  "model": "gpt-4.1-mini",
+  "route": "origin",
+  "max_tokens": 128,
+  "attempts": [
+    {
+      "provider": "openrouter",
+      "outcome": "cooling_down",
+      "ms": 0
+    },
+    {
+      "provider": "deepseek",
+      "outcome": "cooling_down",
+      "ms": 0
+    },
+    {
+      "provider": "zai",
+      "outcome": "http_429",
+      "ms": 496
+    },
+    {
+      "provider": "openai",
+      "outcome": "answered",
+      "ms": 1119
+    }
+  ],
+  "answer": "At the Australian Taxation Office, I have been Scrum Master and Project Manager on the Payday Super reform program since March 2026, leading the Agile Kookaburras squad, managing sprint cadence, PI planning, capacity, executive reporting, and driving delivery past 95% completion while resolving key testing blockages."
+}

@@ -40,6 +40,7 @@ import {
   DIRECT_FIRST_BYTE_TIMEOUT_MS,
   buildChatRoutes,
   runWithFallback,
+  trimCappedAnswer,
 } from './miniVicRoute.mjs';
 
 /**
@@ -75,9 +76,29 @@ export interface BrainTurn {
   text: string;
 }
 
+/**
+ * Which of the function's two front doors answered. Read off the wire (the
+ * `done` event and the JSON body both carry `route`), never inferred from which
+ * rung the client tried — a request can be rewritten between the two.
+ */
+export type ChatRouteId = 'origin' | 'hosting';
+
 export interface BrainReply {
   text: string;
   source: BrainSource;
+  /**
+   * `'hosting'` means the buffered fallback answered, which the function serves
+   * under a smaller output ceiling (CHAT_MAX_TOKENS_FALLBACK). The panel says so
+   * rather than passing a deliberately shortened answer off as the full one.
+   * `null` when nothing on the wire named a route — the offline tier, or a
+   * function deployed before the field existed.
+   */
+  route: ChatRouteId | null;
+}
+
+/** A route id from the wire, or `null` — never a guess. */
+function toChatRoute(route: string | undefined): ChatRouteId | null {
+  return route === 'origin' || route === 'hosting' ? route : null;
 }
 
 const REQUEST_TIMEOUT_MS = 14000;
@@ -227,12 +248,14 @@ function knowledgeAnswer(query: string, mode: PersonaMode, history: BrainTurn[] 
     : matchKnowledge(query);
   if (entry) {
     const text = entry.personaVariants?.[mode] ?? entry.answer;
+    // No network answered, so no route did either — `null`, not a guess.
     return {
       text: sanitizeResponse(text),
       source: 'knowledge',
+      route: null,
     };
   }
-  return { text: FALLBACK_ANSWER, source: 'fallback' };
+  return { text: FALLBACK_ANSWER, source: 'fallback', route: null };
 }
 
 /**
@@ -317,7 +340,7 @@ async function callChatRoute(
   body: string,
   wantsStream: boolean,
   onDelta?: BrainDeltaHandler,
-): Promise<{ text: string; provider: string }> {
+): Promise<{ text: string; provider: string; route: ChatRouteId | null }> {
   const controller = new AbortController();
   const overall = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   const firstByte =
@@ -347,12 +370,12 @@ async function callChatRoute(
     if (!contentType.includes('application/json')) {
       throw new Error('chat endpoint returned non-JSON (unavailable)');
     }
-    const data = (await response.json()) as { text?: string; provider?: string };
+    const data = (await response.json()) as { text?: string; provider?: string; route?: string };
     const text = (data.text ?? '').trim();
     if (!text) {
       throw new Error('chat endpoint returned empty text');
     }
-    return { text, provider: String(data.provider ?? '') };
+    return { text, provider: String(data.provider ?? ''), route: toChatRoute(data.route) };
   } finally {
     clearTimeout(overall);
     if (firstByte) clearTimeout(firstByte);
@@ -372,7 +395,7 @@ async function callChatFunction(
   mode: PersonaMode,
   history: BrainTurn[],
   onDelta?: BrainDeltaHandler,
-): Promise<{ text: string; provider: string }> {
+): Promise<{ text: string; provider: string; route: ChatRouteId | null }> {
   const messages: Array<{ role: 'user' | 'assistant'; content: string }> = [
     ...history.slice(-MAX_HISTORY_TURNS).map((turn) => ({
       role: (turn.role === 'user' ? 'user' : 'assistant') as 'user' | 'assistant',
@@ -409,7 +432,7 @@ async function callChatFunction(
 async function readStreamedReply(
   response: Response,
   onDelta: BrainDeltaHandler,
-): Promise<{ text: string; provider: string }> {
+): Promise<{ text: string; provider: string; route: ChatRouteId | null }> {
   const body = response.body;
   if (!body) throw new Error('chat endpoint streamed an empty body');
   const reader = body.getReader();
@@ -421,6 +444,10 @@ async function readStreamedReply(
   // used to read the frame and throw the provider away, which is what made the
   // panel's "via …" claim a hard-coded guess.
   let provider = '';
+  // The `done` event also names the route the function answered on, and with it
+  // the output ceiling that route runs under. The panel prints that, so a
+  // shortened fallback answer is never presented as the full one.
+  let route: ChatRouteId | null = null;
 
   const drain = (block: string) => {
     for (const line of block.split('\n')) {
@@ -428,7 +455,13 @@ async function readStreamedReply(
       if (!trimmed.startsWith('data:')) continue;
       const payload = trimmed.slice(5).trim();
       if (!payload) continue;
-      let parsed: { delta?: string; done?: boolean; error?: string; provider?: string };
+      let parsed: {
+        delta?: string;
+        done?: boolean;
+        error?: string;
+        provider?: string;
+        route?: string;
+      };
       try {
         parsed = JSON.parse(payload);
       } catch {
@@ -440,6 +473,10 @@ async function readStreamedReply(
       }
       if (typeof parsed.provider === 'string' && parsed.provider) {
         provider = parsed.provider;
+      }
+      if (typeof parsed.route === 'string') {
+        const named = toChatRoute(parsed.route);
+        if (named) route = named;
       }
       if (typeof parsed.delta === 'string' && parsed.delta) {
         text += parsed.delta;
@@ -464,7 +501,7 @@ async function readStreamedReply(
   if (failed) throw new Error(`chat stream ended early: ${failed}`);
   const answer = text.trim();
   if (!answer) throw new Error('chat endpoint streamed no text');
-  return { text: answer, provider };
+  return { text: answer, provider, route };
 }
 
 /**
@@ -488,8 +525,14 @@ export async function askMiniVicBrain(
 ): Promise<BrainReply> {
   // Tier 1 — the server-side brain. Provider keys never leave the function.
   try {
-    const { text, provider } = await callChatFunction(query, mode, history, onDelta);
-    return { text: sanitizeResponse(text), source: toBrainSource(provider) };
+    const { text, provider, route } = await callChatFunction(query, mode, history, onDelta);
+    // The buffered route answers under a hard token ceiling, which stops the
+    // model wherever it happens to be — mid-word, on the measured samples. The
+    // rendered answer is cut back to the last sentence it finished; the panel's
+    // truth line says this route's answer is the short one, so the reader is
+    // told what they are holding. See trimCappedAnswer in ./miniVicRoute.mjs.
+    const answer = route === 'hosting' ? trimCappedAnswer(text) : text;
+    return { text: sanitizeResponse(answer), source: toBrainSource(provider), route };
   } catch {
     // Tier 2 — the deterministic offline knowledge base below.
   }

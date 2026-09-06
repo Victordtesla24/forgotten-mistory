@@ -1112,3 +1112,180 @@ describe('the ladder walk is auditable (MV-ATT)', () => {
     }
   });
 });
+
+/**
+ * ── MV-CAP — the fallback-only answer cap (G-M4 correction, task t_w1_m4b) ──
+ *
+ * Written before the implementation, from the independent review's F-1
+ * (docs/delivery/evidence/v10-20260905T0515Z/G-REV/97e19d07/08-adversarial-review.md):
+ * Firebase Hosting's Fastly edge buffers the whole SSE body, so a Hosting first
+ * byte is the origin's TOTAL completion time and the strict-cold sample landed
+ * at 1 805 ms against a < 1 500 ms bar. The only lever on a buffered response is
+ * how long the answer takes to generate, so the FALLBACK route — and only it —
+ * gets a smaller output ceiling. The origin streams and must be left exactly as
+ * it was; a test that let the origin's 128 slide would hide the regression the
+ * whole correction is meant to avoid.
+ */
+describe('MV-CAP — route detection and the fallback answer cap', () => {
+  it('MV-CAP-01: a bare Cloud Run request is the origin route', () => {
+    assert.equal(fn.resolveChatRoute({ method: 'POST', query: {}, headers: {} }), 'origin');
+    assert.equal(fn.resolveChatRoute({ method: 'POST' }), 'origin');
+    assert.equal(
+      fn.resolveChatRoute({
+        method: 'POST',
+        query: {},
+        headers: { 'x-forwarded-host': 'minivicchat-hjdyjsrzvq-uc.a.run.app' },
+      }),
+      'origin',
+      "Cloud Run's own forwarded host is not evidence of the Hosting edge",
+    );
+  });
+
+  it('MV-CAP-02: the explicit ?route=hosting flag the fallback POST carries names the Hosting route', () => {
+    assert.equal(
+      fn.resolveChatRoute({ method: 'POST', query: { route: 'hosting' }, headers: {} }),
+      'hosting',
+    );
+    assert.equal(
+      fn.resolveChatRoute({ method: 'POST', query: { route: 'origin' }, headers: {} }),
+      'origin',
+    );
+  });
+
+  it('MV-CAP-03: an old bundle with no flag is still detected from the edge headers', () => {
+    assert.equal(
+      fn.resolveChatRoute({
+        method: 'POST',
+        query: {},
+        headers: { 'x-forwarded-host': 'forgotten-mistory.web.app' },
+      }),
+      'hosting',
+    );
+    assert.equal(
+      fn.resolveChatRoute({ method: 'POST', query: {}, headers: { via: '1.1 varnish, 1.1 Fastly' } }),
+      'hosting',
+    );
+  });
+
+  it('MV-CAP-04: the cap is fallback-only — the origin keeps 128', () => {
+    assert.equal(fn.CHAT_MAX_TOKENS, 128, 'the origin ceiling must not move');
+    assert.equal(fn.chatMaxTokensForRoute('origin'), 128);
+    assert.equal(fn.chatMaxTokensForRoute('hosting'), fn.CHAT_MAX_TOKENS_FALLBACK);
+    assert.ok(
+      fn.CHAT_MAX_TOKENS_FALLBACK < fn.CHAT_MAX_TOKENS,
+      'a fallback cap that is not smaller buys no time at all',
+    );
+    // Sized from this task's own measured throughput: 54 delta events in 417 ms
+    // = 129 tokens/s, P95 origin first token 978 ms over the seven published
+    // samples, so a cap of N costs 978 + N/0.129 ms of origin total. The bar the
+    // spec sets is a P95 completion under 1 400 ms → N <= 54.
+    const P95_FIRST_TOKEN_MS = 978;
+    const TOKENS_PER_SECOND = 129;
+    const projected = P95_FIRST_TOKEN_MS + (fn.CHAT_MAX_TOKENS_FALLBACK / TOKENS_PER_SECOND) * 1000;
+    assert.ok(
+      projected < 1400,
+      `a ${fn.CHAT_MAX_TOKENS_FALLBACK}-token ceiling projects ${Math.round(projected)} ms of origin total at P95, which does not clear 1400 ms`,
+    );
+  });
+
+  it('MV-CAP-05: completeChat sends the ceiling it is given upstream, and 128 by default', async () => {
+    const capped = fakeFetch({ openrouter: () => jsonResponse('short') });
+    await fn.completeChat({
+      messages: MESSAGES,
+      providers: [rung('openrouter')],
+      fetchImpl: capped,
+      cooldowns: new Map(),
+      maxTokens: 48,
+    });
+    assert.equal(capped.calls[0].body.max_tokens, 48);
+
+    const uncapped = fakeFetch({ openrouter: () => jsonResponse('short') });
+    await fn.completeChat({
+      messages: MESSAGES,
+      providers: [rung('openrouter')],
+      fetchImpl: uncapped,
+      cooldowns: new Map(),
+    });
+    assert.equal(uncapped.calls[0].body.max_tokens, 128);
+  });
+
+  it('MV-CAP-06: the Hosting brief asks for the shorter answer the ceiling can hold', () => {
+    const origin = fn.buildMiniVicSystemPrompt('hiring', 'origin');
+    const hosting = fn.buildMiniVicSystemPrompt('hiring', 'hosting');
+    assert.equal(
+      origin,
+      fn.buildMiniVicSystemPrompt('hiring'),
+      'the origin brief must be byte-identical to the one that shipped',
+    );
+    assert.match(hosting, /one sentence/i);
+    assert.ok(
+      hosting.length > origin.length,
+      'the Hosting brief adds a rule rather than replacing the grounding facts',
+    );
+    assert.ok(
+      hosting.includes(origin.split('\n\nFACTS')[0].split('\n')[0]),
+      'both briefs are the same persona',
+    );
+  });
+
+  it('MV-CAP-07: a Hosting POST is answered with the fallback ceiling and says so on the wire', async () => {
+    const savedFetch = globalThis.fetch;
+    const savedKey = process.env.OPENAI_API_KEY;
+    process.env.OPENAI_API_KEY = 'test-key-openai';
+    const seen = [];
+    globalThis.fetch = async (url, init) => {
+      seen.push(JSON.parse(init.body));
+      return jsonResponse('At the ATO I lead the Agile Kookaburras squad.');
+    };
+    try {
+      const res = fakeRes();
+      await fn.minivicChat(
+        {
+          method: 'POST',
+          query: { route: 'hosting' },
+          headers: {},
+          body: { messages: [{ role: 'user', content: 'What did you do at the ATO?' }] },
+        },
+        res,
+      );
+      assert.equal(res.statusCode, 200);
+      assert.equal(seen[0].max_tokens, fn.CHAT_MAX_TOKENS_FALLBACK);
+      assert.equal(res.body.route, 'hosting');
+      assert.equal(res.body.max_tokens, fn.CHAT_MAX_TOKENS_FALLBACK);
+    } finally {
+      globalThis.fetch = savedFetch;
+      if (savedKey === undefined) delete process.env.OPENAI_API_KEY;
+      else process.env.OPENAI_API_KEY = savedKey;
+    }
+  });
+
+  it('MV-CAP-08: an origin POST is untouched — 128 upstream, route named origin', async () => {
+    const savedFetch = globalThis.fetch;
+    const savedKey = process.env.OPENAI_API_KEY;
+    process.env.OPENAI_API_KEY = 'test-key-openai';
+    const seen = [];
+    globalThis.fetch = async (url, init) => {
+      seen.push(JSON.parse(init.body));
+      return jsonResponse('At the ATO I lead the Agile Kookaburras squad.');
+    };
+    try {
+      const res = fakeRes();
+      await fn.minivicChat(
+        {
+          method: 'POST',
+          query: {},
+          headers: {},
+          body: { messages: [{ role: 'user', content: 'What did you do at the ATO?' }] },
+        },
+        res,
+      );
+      assert.equal(seen[0].max_tokens, 128);
+      assert.equal(res.body.route, 'origin');
+      assert.equal(res.body.max_tokens, 128);
+    } finally {
+      globalThis.fetch = savedFetch;
+      if (savedKey === undefined) delete process.env.OPENAI_API_KEY;
+      else process.env.OPENAI_API_KEY = savedKey;
+    }
+  });
+});

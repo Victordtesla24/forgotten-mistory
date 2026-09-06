@@ -1,0 +1,46 @@
+{
+  "label": "01-baseline-origin-throughput",
+  "at": "2026-09-06T05:03:59.399Z",
+  "warmUrl": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/?warm=1",
+  "postUrl": "https://minivicchat-hjdyjsrzvq-uc.a.run.app/",
+  "warmStatus": 204,
+  "warmMs": 257,
+  "status": 200,
+  "contentType": "text/event-stream; charset=utf-8",
+  "headersMs": 859,
+  "firstChunkMs": 860,
+  "firstTokenMs": 883,
+  "lastTokenMs": 1300,
+  "totalMs": 1316,
+  "streamedSpanMs": 417,
+  "charsPerSecond": 573,
+  "deltas": 54,
+  "chars": 239,
+  "provider": "openai",
+  "model": "gpt-4.1-mini",
+  "route": null,
+  "max_tokens": null,
+  "attempts": [
+    {
+      "provider": "openrouter",
+      "outcome": "cooling_down",
+      "ms": 0
+    },
+    {
+      "provider": "deepseek",
+      "outcome": "cooling_down",
+      "ms": 0
+    },
+    {
+      "provider": "zai",
+      "outcome": "cooling_down",
+      "ms": 0
+    },
+    {
+      "provider": "openai",
+      "outcome": "answered",
+      "ms": 1256
+    }
+  ],
+  "answer": "At the ATO, I have led the Agile Kookaburras squad on the Payday Super reform program since March 2026, managing sprint cadence, PI planning, capacity, executive reporting, and driving test-evidence automation that cut effort by about 92%."
+}

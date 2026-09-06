@@ -4,7 +4,13 @@ import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
 import Scene from "@/components/gl/Scene";
-import { askMiniVicBrain, warmMiniVicBrain, type BrainSource, type BrainTurn } from "@/lib/miniVicBrain";
+import {
+  askMiniVicBrain,
+  warmMiniVicBrain,
+  type BrainSource,
+  type BrainTurn,
+  type ChatRouteId,
+} from "@/lib/miniVicBrain";
 import { GREETING, type PersonaMode } from "@/app/data/miniVicKnowledge";
 import { greetingAudioSha256 } from "@/app/data/generated/greeting-asset";
 import { Copy, Pause, Play, RefreshCcw, Send, Sparkles, Volume2, VolumeX, X, Mic, MicOff } from "lucide-react";
@@ -303,6 +309,12 @@ const MiniVicBot = () => {
   // nothing has been asked yet, and the disclosure below says only what it can
   // support: "Answers: live text" with no "via" clause it cannot back up.
   const [answerSource, setAnswerSource] = useState<BrainSource | null>(null);
+  // Which of the function's two front doors answered, read off the same reply.
+  // `'hosting'` is the buffered fallback, which the function serves under a
+  // smaller output ceiling so its first byte lands inside the latency budget —
+  // a real trade the visitor is entitled to know about, so the disclosure below
+  // names it. `null` before the first answer, and whenever nothing named a route.
+  const [answerRoute, setAnswerRoute] = useState<ChatRouteId | null>(null);
   const [activeMode, setActiveMode] = useState<ModeKey>("recruiter");
   const [latencyMs, setLatencyMs] = useState<number | null>(null);
   const [lastAudio, setLastAudio] = useState<string | null>(null);
@@ -1153,6 +1165,7 @@ const MiniVicBot = () => {
       );
 
       setAnswerSource(reply.source);
+      setAnswerRoute(reply.route);
       const botMessage: ChatMessage = {
         id: botMessageId,
         role: "bot",
@@ -1398,6 +1411,16 @@ const MiniVicBot = () => {
               so the sentence stops at "live text"; when the offline
               knowledge base answered, it says so, because on that turn
               the answers are not live.
+
+              The route is read the same way. Firebase Hosting's edge
+              buffers the function's SSE reply, so on that route the
+              answer is served under a smaller output ceiling to keep the
+              first byte inside the latency budget (functions/index.js
+              CHAT_MAX_TOKENS_FALLBACK). A deliberately shortened answer
+              presented as the full one would be exactly the kind of
+              quiet claim this line exists to prevent, so the sentence
+              adds "· short answer on the proxy route" when, and only
+              when, the reply said it came that way.
               tests/e2e/chatbot.spec.ts CB-LABEL-02..05 and
               tests/e2e/avatar-voice.spec.ts fail if it disappears. */}
           <p
@@ -1409,7 +1432,9 @@ const MiniVicBot = () => {
                 ? "live text"
                 : answerSource === "knowledge" || answerSource === "fallback"
                   ? "offline knowledge base"
-                  : `live text via ${answerSource}`
+                  : `live text via ${answerSource}${
+                      answerRoute === "hosting" ? " · short answer on the proxy route" : ""
+                    }`
             }`}
           </p>
           <div className="minivic-panel__controls shrink-0 border-b border-white/10 bg-black/30 px-3 py-3">

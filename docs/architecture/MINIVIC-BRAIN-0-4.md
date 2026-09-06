@@ -320,6 +320,97 @@ browser cancels, so it now consumes the body and sets `keepalive`.
 log. §0.4's ladder order is now readable from a response instead of inferred from a
 latency step. Provider ids and outcome codes only: no key, no URL, no upstream body.
 
+#### §2(c) addendum 2 — the buffered route is a structural ceiling, and what it costs to lift it
+
+*Written 2026-09-06 for `t_w1_m4b`, after the independent review `rev-97e19d07-w1` failed
+G-M4 (`docs/delivery/evidence/v10-20260905T0515Z/G-REV/97e19d07/08-adversarial-review.md`
+F-1). It corrects the assumption in addendum 1 that shortening the answer to 128 tokens
+was enough.*
+
+**The finding.** On every Hosting sample the reviewer took, `firstChunkMs == headersMs ==
+firstTokenMs` and `totalMs − firstTokenMs ≤ 4 ms`. Firebase Hosting's Fastly edge holds
+the entire SSE body, so **Hosting first byte is the origin's total completion time** —
+there is no first-token latency on that route at all, only completion latency. That makes
+the gate hostage to how long the model takes to finish, and openai's own answered-ms
+across the reviewer's four samples ranged 1 121 → 1 735 ms: strict cold **1 805 ms**,
+spaced **1 886 / 1 284 / 1 329 ms**. Two of four over a 1 500 ms bar. `x-accel-buffering:
+no` is an nginx directive; Fastly ignores it. Nothing the origin does about streaming can
+move this number. **The origin route is unaffected and passes** — it genuinely streams
+(strict cold first token 965 ms, total 1 712 ms) and it is the route the panel took in
+every browser run on record.
+
+**The cap, and how it was sized.** Only one lever exists on a buffered response: the
+length of the answer. `functions/index.js` now applies `CHAT_MAX_TOKENS_FALLBACK = 48` on
+the Hosting route alone; the origin keeps `CHAT_MAX_TOKENS = 128`, the same brief and the
+same first token. The number is measured, not chosen. This task's own reader
+(`W1-M4B/00-first-token-reader.mjs`, sample `01-baseline-origin-throughput.json`) read the
+origin's stream and counted **54 delta events carrying 239 characters in 417 ms** —
+**129 tokens/s**, 4.4 characters a token — with first token at 883 ms. P95 origin first
+token over the seven published samples (528, 725, 795, 883, 965, 978 ms) is ~978 ms, so a
+ceiling of *N* projects an origin total of `978 + N/0.129` ms:
+
+| ceiling | projected origin total at P95 | verdict |
+|---|---|---|
+| 128 (shipped) | ~1 970 ms | the measured failure |
+| 64 (the spec's starting point) | ~1 474 ms | under the 1 500 ms bar, over the 1 400 ms target |
+| **48 (shipped here)** | **~1 350 ms** | 150 ms of margin at P95 |
+
+**Route detection.** Primary signal is `?route=hosting`, which the client puts on the
+fallback POST and nowhere else (`lib/miniVicRoute.mjs` `HOSTING_CHAT_SEND_URL`). Secondary
+is the edge headers — an `x-forwarded-host` that is *not* the `run.app` host, or a `via`
+naming Fastly — so a browser holding a bundle cached from before this change still gets
+the shorter answer on the buffered route. Detection is deliberately conservative in one
+direction: an origin request misread as Hosting would silently shorten the fast path, so
+Cloud Run's own hostname in `x-forwarded-host` is not treated as evidence. The `done`
+event and the JSON body now carry `route` and `max_tokens`, so a reviewer can read which
+ceiling was applied instead of inferring it from the answer's length.
+
+**A cap alone shipped a worse defect, so it is not shipped alone.** Verified against the
+deployed function, a bare 48-token ceiling ended replies mid-clause — *"…and delivering
+over 95% of the"* (`W1-M4B/04-hosting-verify.json`) and *"…architected COBOL/mainframe
+test"* (`05-hosting-noflag-verify.json`). Two things address that: the Hosting brief asks
+for one sentence of ≤ 30 words so a well-formed answer finishes inside the ceiling, and
+`trimCappedAnswer` cuts the rendered answer back to the last sentence — or, failing that,
+the last clause — the model actually closed, marking the cut with an ellipsis. It removes
+a fragment; it never adds or rephrases a word. The panel's truth line then reads
+`Answers: live text via openai · short answer on the proxy route`, so a deliberately
+shortened answer is never presented as the full one.
+
+**Post-deploy verification (2026-09-06, function redeployed from this branch):**
+
+| probe | route field | `max_tokens` | first token | total | evidence |
+|---|---|---|---|---|---|
+| Cloud Run origin | `origin` | 128 | 1 287 ms | 1 720 ms (64 deltas — streams) | `W1-M4B/03-origin-verify.json` |
+| Hosting, `?route=hosting` | `hosting` | 48 | **1 180 ms** | 1 203 ms (first == last — buffered) | `W1-M4B/04-hosting-verify.json` |
+| Hosting, no flag (header detection) | `hosting` | 48 | **898 ms** | 899 ms | `W1-M4B/05-hosting-noflag-verify.json` |
+
+**Option memo — the real fix, which is a separate SA decision.** The cap buys the budget
+by making the answer shorter. The way to have both the budget *and* the full answer is to
+stop the buffering, which means not serving the fallback through Fastly. C-2 names the VPS
+as the execution target, and an nginx `location /api/chat` there proxying to the Cloud Run
+origin with `proxy_buffering off; proxy_request_buffering off; proxy_http_version 1.1;`
+would pass the SSE through unbuffered — the fallback would then stream like the origin and
+the ceiling could return to 128 on both routes. It is **not** taken here, because it is a
+change to the site's serving topology and carries consequences this task has no mandate to
+decide:
+
+- **DNS/TLS.** `forgotten-mistory.web.app` is a Firebase-managed hostname; a VPS-served
+  path under it would need either a custom apex/subdomain pointed at the VPS with its own
+  certificate (Let's Encrypt renewal becomes a production dependency) or a second hostname,
+  which reintroduces the cross-origin problem the fallback exists to avoid.
+- **CORS.** On a second hostname the fallback becomes cross-origin, so it inherits exactly
+  the preflight and corporate-proxy fragility that made the Cloud Run origin the *primary*
+  and the Hosting rewrite the *fallback*. That would leave the site with two fragile routes
+  and no same-origin one.
+- **Availability.** Firebase Hosting's edge is the reason the fallback is "always reachable
+  when the site is". A single VPS in one region is not that, and putting it in the answer
+  path makes the site's flagship surface depend on a host the site does not otherwise need.
+
+**Recommendation:** keep the cap as the shipped correction, and raise the nginx proxy as a
+scoped SA decision with the three items above as its acceptance criteria. If it is taken,
+`CHAT_MAX_TOKENS_FALLBACK` and `trimCappedAnswer` are both removed in the same change —
+they exist only to compensate for the buffering.
+
 ### (d) G-R3 — the realtime avatar stays OPEN
 
 **G-R3 remains OPEN and must not be reported as PASS:** the full realtime
