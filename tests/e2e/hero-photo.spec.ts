@@ -455,8 +455,20 @@ test.describe('Hero photograph', () => {
     expect(attrs.width, 'intrinsic width attribute').toBe('1480');
     expect(attrs.height, 'intrinsic height attribute').toBe('826');
 
+    // TEST FIX (t_w1_red2, 2026-09-06): the 165 px this used to report was
+    // Playwright's own actionability scroll, not the product. `locator.hover()`
+    // runs scrollIntoViewIfNeeded first, and `boundingBox()` is viewport-
+    // relative — so the "before" reading was taken at scrollY 0 and the "after"
+    // reading after the figure had been scrolled up by 165 px. Measured on an
+    // untouched origin/main export (01-reproduction.log): the figure's
+    // *document* position never moved, only the viewport did. The figure is
+    // therefore scrolled into place first, both readings are taken in that same
+    // scroll position, and the hover is delivered with page.mouse.move so
+    // nothing can scroll between them. The assertion itself is unchanged: 1 px.
+    await page.locator(FIGURE).scrollIntoViewIfNeeded();
+    await page.waitForTimeout(200);
     const before = await page.locator(FIGURE).boundingBox();
-    await page.locator(FIGURE).hover();
+    await page.mouse.move(before!.x + before!.width / 2, before!.y + before!.height / 2);
     await page.waitForTimeout(1400);
     const after = await page.locator(FIGURE).boundingBox();
     for (const key of ['x', 'y', 'width', 'height'] as const) {

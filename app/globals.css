@@ -377,10 +377,19 @@
 
    So the height is capped instead. Across a 5-width × 9-height grid
    (390…1920 × 640…1400) the name's lowest glyph never fell below y=330, so the
-   panel's top edge is held at 22rem — 352px, the measured floor plus 22px —
-   whenever the viewport is short enough for that to bind:
+   panel's top edge was first held at 22rem — 352px.
 
-       height = 100svh − 5.5rem − 22rem = 100svh − 27.5rem
+   PRODUCT FIX (t_w1_red2, 2026-09-06): that grid under-measured. On the
+   b02a8863 export at 1440×900 the name's lowest glyph is at y=341, not ≤330, so
+   a 352px top left 11px of clearance where the contract asks for 16 — TC-BOT-14
+   was red on main's own build (01-reproduction.log: "the panel top 352 must
+   clear the lowest glyph of the hero name (341) by 16px"). The threshold is not
+   the thing that moves: the panel is. The top edge is held at 22.5rem (360px) —
+   the re-measured floor of 341 plus 19 — which clears 16px at 1440×900 and more
+   at 1366×768 and 1280×800, where the same 360px top sits further below a
+   higher name:
+
+       height = 100svh − 5.5rem − 22.5rem = 100svh − 28rem
 
    Below 46.5rem of viewport height that formula leaves less than the dialog's
    own chrome, so a 19rem floor takes over — enough for the stage, the persona
@@ -389,8 +398,8 @@
    where the floor does; below that the hero's name sits lower than the panel
    can start and the trade is stated rather than hidden. */
 .minivic-panel {
-    height: max(19rem, min(30rem, calc(100svh - 27.5rem)));
-    max-height: max(19rem, min(30rem, calc(100svh - 27.5rem)));
+    height: max(19rem, min(30rem, calc(100svh - 28rem)));
+    max-height: max(19rem, min(30rem, calc(100svh - 28rem)));
 }
 
 /* A shorter panel has to give the height back from its chrome, not from the

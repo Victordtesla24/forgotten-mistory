@@ -1,0 +1,22 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero-photo.spec.ts -g PHOTO-11 --workers=1 --reporter=line
+
+[2mRunning [22m1[2m test using [22m1[2m worker[22m
+
+[1A[2K[1/1] [chromium] › tests/e2e/hero-photo.spec.ts:440:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts
+[1A[2K[2m[chromium] › tests/e2e/hero-photo.spec.ts:440:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts[22m
+Hover shifts: []
+
+[1A[2K[32m  1 passed[39m[2m (7.0s)[22m
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/chatbot.spec.ts tests/e2e/hero.spec.ts -g BOT-14|HERO-13|HERO-15 --workers=1 --reporter=line
+
+[2mRunning [22m3[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/3] [chromium] › tests/e2e/chatbot.spec.ts:307:7 › E2E: MiniVicBot Chatbot › TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width
+[1A[2K[2/3] [chromium] › tests/e2e/hero.spec.ts:422:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate
+[1A[2K[3/3] [chromium] › tests/e2e/hero.spec.ts:558:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+[1A[2K[2m[chromium] › tests/e2e/hero.spec.ts:558:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget[22m
+Crossfade shifts: []
+
+[1A[2K[32m  3 passed[39m[2m (20.6s)[22m

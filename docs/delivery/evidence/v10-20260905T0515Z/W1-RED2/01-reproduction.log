@@ -1,0 +1,197 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero-photo.spec.ts -g PHOTO-11 --workers=1 --reporter=line
+
+[2mRunning [22m1[2m test using [22m1[2m worker[22m
+
+[1A[2K[1/1] [chromium] › tests/e2e/hero-photo.spec.ts:440:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts
+[1A[2K[31m  1) [chromium] › tests/e2e/hero-photo.spec.ts:440:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts [39m
+
+    Error: figure y unchanged across the hover fade
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m165[39m
+
+    [0m [90m 451 |[39m     [36mconst[39m after [33m=[39m [36mawait[39m page[33m.[39mlocator([33mFIGURE[39m)[33m.[39mboundingBox()[33m;[39m
+     [90m 452 |[39m     [36mfor[39m ([36mconst[39m key [36mof[39m [[32m'x'[39m[33m,[39m [32m'y'[39m[33m,[39m [32m'width'[39m[33m,[39m [32m'height'[39m] [36mas[39m [36mconst[39m) {
+    [31m[1m>[22m[39m[90m 453 |[39m       expect([33mMath[39m[33m.[39mabs(after[33m![39m[key] [33m-[39m before[33m![39m[key])[33m,[39m [32m`figure ${key} unchanged across the hover fade`[39m)[33m.[39mtoBeLessThanOrEqual(
+     [90m     |[39m                                                                                                     [31m[1m^[22m[39m
+     [90m 454 |[39m         [35m1[39m[33m,[39m
+     [90m 455 |[39m       )[33m;[39m
+     [90m 456 |[39m     }[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-red2/tests/e2e/hero-photo.spec.ts:453:101[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-photo-Hero-photog-8cdb2-ht-and-the-box-never-shifts-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-photo-Hero-photog-8cdb2-ht-and-the-box-never-shifts-chromium/error-context.md[22m
+
+
+[1A[2K[31m  1 failed[39m
+[31m    [chromium] › tests/e2e/hero-photo.spec.ts:440:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts [39m
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/chatbot.spec.ts tests/e2e/hero.spec.ts -g BOT-14|HERO-13|HERO-15 --workers=1 --reporter=line
+
+[2mRunning [22m3[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/3] [chromium] › tests/e2e/chatbot.spec.ts:307:7 › E2E: MiniVicBot Chatbot › TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width
+[1A[2K[31m  1) [chromium] › tests/e2e/chatbot.spec.ts:307:7 › E2E: MiniVicBot Chatbot › TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width [39m
+
+    Error: 1440x900: the panel top 352 must clear the lowest glyph of the hero name (341) by 16px, not sit on it
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: >= [32m16[39m
+    Received:    [31m11[39m
+
+    [0m [90m 372 |[39m         [32m`${viewport.width}x${viewport.height}: the panel top ${measured.panel.t} must clear the `[39m [33m+[39m
+     [90m 373 |[39m           [32m`lowest glyph of the hero name (${measured.glyphBottom}) by ${CLEARANCE}px, not sit on it`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 374 |[39m       )[33m.[39mtoBeGreaterThanOrEqual([33mCLEARANCE[39m)[33m;[39m
+     [90m     |[39m         [31m[1m^[22m[39m
+     [90m 375 |[39m     }
+     [90m 376 |[39m   })[33m;[39m
+     [90m 377 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-red2/tests/e2e/chatbot.spec.ts:374:9[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-chatbot-E2E-MiniVicBot-6404d-ro-name-at-any-laptop-width-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-chatbot-E2E-MiniVicBot-6404d-ro-name-at-any-laptop-width-chromium/error-context.md[22m
+
+
+[1A[2K[2/3] [chromium] › tests/e2e/hero.spec.ts:422:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate
+[1A[2K[31m  2) [chromium] › tests/e2e/hero.spec.ts:422:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate [39m
+
+    Error: src assigned on hover
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoMatch[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected pattern: [32m/my-avatar\.mp4$/[39m
+    Received string:  [31m"http://127.0.0.1:5605/assets/my-hero-avatar.mp4"[39m
+
+    Call Log:
+    - Timeout 2000ms exceeded while waiting on the predicate
+
+    [0m [90m 479 |[39m     [90m// Intent: one hover, and the source is assigned and playing.[39m
+     [90m 480 |[39m     [36mawait[39m page[33m.[39mlocator([33mPORTRAIT[39m)[33m.[39mhover()[33m;[39m
+    [31m[1m>[22m[39m[90m 481 |[39m     [36mawait[39m expect
+     [90m     |[39m     [31m[1m^[22m[39m
+     [90m 482 |[39m       [33m.[39mpoll([36masync[39m () [33m=>[39m ([36mawait[39m loopState(page))[33m.[39msrc[33m,[39m { timeout[33m:[39m [35m2000[39m[33m,[39m message[33m:[39m [32m'src assigned on hover'[39m })
+     [90m 483 |[39m       [33m.[39mtoMatch([35m/my-avatar\.mp4$/[39m)[33m;[39m
+     [90m 484 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-red2/tests/e2e/hero.spec.ts:481:5[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-TC--7cdb5-tarts-only-through-the-gate-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-TC--7cdb5-tarts-only-through-the-gate-chromium/error-context.md[22m
+
+
+[1A[2K[3/3] [chromium] › tests/e2e/hero.spec.ts:550:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+[1A[2K[31m  3) [chromium] › tests/e2e/hero.spec.ts:550:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget [39m
+
+    Error: figure y unchanged across the crossfade
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m165[39m
+
+    [0m [90m 572 |[39m     expect(after)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m 573 |[39m     [36mfor[39m ([36mconst[39m key [36mof[39m [[32m'x'[39m[33m,[39m [32m'y'[39m[33m,[39m [32m'width'[39m[33m,[39m [32m'height'[39m] [36mas[39m [36mconst[39m) {
+    [31m[1m>[22m[39m[90m 574 |[39m       expect([33mMath[39m[33m.[39mabs(after[33m![39m[key] [33m-[39m before[33m![39m[key])[33m,[39m [32m`figure ${key} unchanged across the crossfade`[39m)[33m.[39mtoBeLessThanOrEqual(
+     [90m     |[39m                                                                                                    [31m[1m^[22m[39m
+     [90m 575 |[39m         [35m1[39m[33m,[39m
+     [90m 576 |[39m       )[33m;[39m
+     [90m 577 |[39m     }[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-red2/tests/e2e/hero.spec.ts:574:100[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-TC--b034a--and-CLS-stays-under-budget-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-TC--b034a--and-CLS-stays-under-budget-chromium/error-context.md[22m
+
+
+[1A[2K[31m  3 failed[39m
+[31m    [chromium] › tests/e2e/chatbot.spec.ts:307:7 › E2E: MiniVicBot Chatbot › TC-BOT-14: The open panel covers no glyph of the hero name at any laptop width [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:422:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:550:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget [39m
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/minivic-occlusion.spec.ts -g MV-OCCLUDE-01 tests/monochrome/minivic-launcher.spec.ts -g MONO-MV-02 --workers=1 --reporter=line
+
+[2mRunning [22m2[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/2] [chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 390: the launcher shows a visible "Ask Mini Vic" label at AA
+[1A[2K[31m  1) [chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 390: the launcher shows a visible "Ask Mini Vic" label at AA [39m
+
+    Error: the label must be painted, not faded out
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0.9[39m
+    Received:   [31m0[39m
+
+    [0m [90m 296 |[39m       )[33m.[39mnot[33m.[39mtoBe([32m'none'[39m)[33m;[39m
+     [90m 297 |[39m       expect(label[33m![39m[33m.[39mvisibility[33m,[39m [32m'the label must be visible'[39m)[33m.[39mtoBe([32m'visible'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 298 |[39m       expect(label[33m![39m[33m.[39mopacity[33m,[39m [32m'the label must be painted, not faded out'[39m)[33m.[39mtoBeGreaterThan([35m0.9[39m)[33m;[39m
+     [90m     |[39m                                                                          [31m[1m^[22m[39m
+     [90m 299 |[39m       expect(label[33m![39m[33m.[39mrect[33m.[39mwidth[33m,[39m [32m'the label must occupy real width'[39m)[33m.[39mtoBeGreaterThan([35m40[39m)[33m;[39m
+     [90m 300 |[39m       expect(label[33m![39m[33m.[39mrect[33m.[39mheight[33m,[39m [32m'the label must occupy real height'[39m)[33m.[39mtoBeGreaterThan([35m10[39m)[33m;[39m
+     [90m 301 |[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-red2/tests/monochrome/minivic-launcher.spec.ts:298:74[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/monochrome-minivic-launche-d5989-le-Ask-Mini-Vic-label-at-AA-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/monochrome-minivic-launche-d5989-le-Ask-Mini-Vic-label-at-AA-chromium/error-context.md[22m
+
+
+[1A[2K[2/2] [chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 640: the launcher shows a visible "Ask Mini Vic" label at AA
+[1A[2K[31m  1 failed[39m
+[31m    [chromium] › tests/monochrome/minivic-launcher.spec.ts:271:9 › G-MV1: the MiniVic launcher carries its name at phone widths › MONO-MV-02 @ 390: the launcher shows a visible "Ask Mini Vic" label at AA [39m
+[32m  1 passed[39m[2m (11.8s)[22m
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/a11y/minivic-occlusion.spec.ts -g MV-OCCLUDE-01 --workers=1 --reporter=line
+
+[2mRunning [22m1[2m test using [22m1[2m worker[22m
+
+[1A[2K[1/1] [chromium] › tests/a11y/minivic-occlusion.spec.ts:248:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step
+[1A[2K[31m  1) [chromium] › tests/a11y/minivic-occlusion.spec.ts:248:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step [39m
+
+    Error: 1 of 14 text node(s) under the launcher fall below AA:
+    scrollY 16036: 4.05:1 (needs 4.5) div.Vitrine_foot__JWV__ > div.Vitrine_exclusions__m0EKc > dl.Vitrine_exclusionList__jvMb5 > div.Vitrine_exclusion___sRSz > dd — "an environment file was committed early in its h" ink rgb(125, 125, 125) on launcher-painted ground rgb(30,30,30)
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 1[39m
+    [31m+ Received  + 3[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   "scrollY 16036: 4.05:1 (needs 4.5) div.Vitrine_foot__JWV__ > div.Vitrine_exclusions__m0EKc > dl.Vitrine_exclusionList__jvMb5 > div.Vitrine_exclusion___sRSz > dd — \"an environment file was committed early in its h\" ink rgb(125, 125, 125) on launcher-painted ground rgb(30,30,30)",[39m
+    [31m+ ][39m
+
+    [0m [90m 302 |[39m [32m        .slice(0, 10)[39m
+     [90m 303 |[39m [32m        .join('\n')}`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 304 |[39m     )[33m.[39mtoEqual([])[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 305 |[39m   })[33m;[39m
+     [90m 306 |[39m
+     [90m 307 |[39m   [90m/**[39m[0m
+    [2m    at /root/forgotten-mistory/.claude/worktrees/w1-red2/tests/a11y/minivic-occlusion.spec.ts:304:7[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/a11y-minivic-occlusion-The-c4b56-ars-AA-at-every-scroll-step-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/a11y-minivic-occlusion-The-c4b56-ars-AA-at-every-scroll-step-chromium/error-context.md[22m
+
+
+[1A[2K[31m  1 failed[39m
+[31m    [chromium] › tests/a11y/minivic-occlusion.spec.ts:248:7 › The MiniVic launcher over the reading column (390) › TC-MV-OCCLUDE-01: text under the launcher still clears AA at every scroll step [39m
