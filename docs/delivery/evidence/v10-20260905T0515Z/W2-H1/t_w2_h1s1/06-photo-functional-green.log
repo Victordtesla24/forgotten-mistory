@@ -1,0 +1,13 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero-photo.spec.ts --workers=1 --reporter=line -g TC-PHOTO-05|TC-PHOTO-07|TC-PHOTO-10|TC-PHOTO-11
+
+[2mRunning [22m4[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/4] [chromium] › tests/e2e/hero-photo.spec.ts:263:7 › Hero photograph › TC-PHOTO-05: hover starts the loop; leaving pauses it
+[1A[2K[2/4] [chromium] › tests/e2e/hero-photo.spec.ts:320:7 › Hero photograph › TC-PHOTO-07: reduced motion plays nothing at rest and runs no animation
+[1A[2K[3/4] [chromium] › tests/e2e/hero-photo.spec.ts:399:7 › Hero photograph › TC-PHOTO-10: no gold anywhere in or around the figure
+[1A[2K[4/4] [chromium] › tests/e2e/hero-photo.spec.ts:450:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts
+[1A[2K[2m[chromium] › tests/e2e/hero-photo.spec.ts:450:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts[22m
+Hover shifts: []
+
+[1A[2K[32m  4 passed[39m[2m (26.0s)[22m

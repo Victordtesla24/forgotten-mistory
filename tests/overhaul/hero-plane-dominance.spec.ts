@@ -161,6 +161,78 @@ for (const viewport of VIEWPORTS) {
         ).toBeGreaterThanOrEqual(SPD_MIN);
       });
 
+      /**
+       * TC-HERO-PLANE-03 — the fence on the declared plane (HERO-SETPIECE-v3 §4
+       * D-4). The instrument's ground chain is an exemption from the ink set,
+       * and an exemption that can grow is an exemption that gets abused: the
+       * moment a headline or a CTA could be moved inside `[data-plane="hero"]`,
+       * SPD would be raised by hiding ink rather than by lighting the plane.
+       * So the declared subtree may hold no text leaf and nothing pressable,
+       * and it must actually cover the fold it is exempted over. This case is
+       * **not** behind HERO_PLANE_GATE: it fences the exemption, it does not
+       * measure the composition, and it must hold on every build from S1 on.
+       */
+      test(`TC-HERO-PLANE-03 @ ${size} [${route.id}] — the declared plane is fenced: no type, nothing pressable, ≥ 0.98 of the fold`, async ({
+        page,
+        baseURL,
+      }) => {
+        test.setTimeout(120000);
+        const spd = await instrument();
+        await spd.preparePage(page, baseURL ?? 'http://127.0.0.1:5636', route);
+
+        const fence = await page.evaluate(() => {
+          const W = window.innerWidth;
+          const H = window.innerHeight;
+          const plane = document.querySelector('[data-plane="hero"]');
+          if (!plane) return null;
+          const describe = (el: Element) => {
+            const tag = el.tagName.toLowerCase();
+            const testid = el.getAttribute('data-testid');
+            if (el.id) return `${tag}#${el.id}`;
+            if (testid) return `${tag}[data-testid=${testid}]`;
+            const cls =
+              typeof el.className === 'string' ? el.className.split(/\s+/).filter(Boolean)[0] : '';
+            return cls ? `${tag}.${cls}` : tag;
+          };
+          const texts: string[] = [];
+          for (const el of Array.from(plane.querySelectorAll('*'))) {
+            const owns = Array.from(el.childNodes).some(
+              (n) => n.nodeType === Node.TEXT_NODE && (n.textContent || '').trim().length > 0,
+            );
+            if (owns) texts.push(`${describe(el)} "${(el.textContent || '').trim().slice(0, 40)}"`);
+          }
+          const pressables = Array.from(
+            plane.querySelectorAll('a, button, [role="button"], input, select, textarea'),
+          ).map(describe);
+          const r = plane.getBoundingClientRect();
+          const x1 = Math.max(0, r.left);
+          const y1 = Math.max(0, r.top);
+          const x2 = Math.min(W, r.right);
+          const y2 = Math.min(H, r.bottom);
+          const covered = x2 > x1 && y2 > y1 ? (x2 - x1) * (y2 - y1) : 0;
+          return { texts, pressables, coverage: covered / (W * H) };
+        });
+
+        expect(fence, `${route.label}: [data-plane="hero"] must be declared in the DOM`).not.toBeNull();
+        const f = fence as { texts: string[]; pressables: string[]; coverage: number };
+
+        expect(
+          f.texts,
+          `PLANE-3 fence at ${size} on ${route.label}: the declared plane may not carry type — ` +
+            'the ground-chain exemption would then hide ink from the measure',
+        ).toEqual([]);
+        expect(
+          f.pressables,
+          `PLANE-3 fence at ${size} on ${route.label}: the declared plane may carry no control`,
+        ).toEqual([]);
+        expect(
+          f.coverage,
+          `PLANE-3 fence at ${size} on ${route.label}: the plane covers ${(f.coverage * 100).toFixed(
+            1,
+          )}% of the fold; an exemption narrower than the fold is not "the plane"`,
+        ).toBeGreaterThanOrEqual(0.98);
+      });
+
       test(`TC-HERO-PLANE-02 @ ${size} [${route.id}] — Σ_fold m / (W·H) ≥ ${LIT_FLOOR}: the frame is lit`, async ({
         page,
         baseURL,
