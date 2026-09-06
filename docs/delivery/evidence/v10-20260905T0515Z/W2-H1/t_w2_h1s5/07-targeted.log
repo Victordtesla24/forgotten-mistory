@@ -1,0 +1,9 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero-photo.spec.ts tests/e2e/hero.spec.ts --workers=1 --reporter=line -g PH-2|TC-PHOTO-02|TC-HERO-21
+
+Running 3 tests using 1 worker
+
+[1A[2K[1/3] [chromium] › tests/e2e/hero-photo.spec.ts:115:7 › Hero photograph › TC-PHOTO-02: at 390 the figure bleeds to the right edge only and stands above the copy
+[1A[2K[2/3] [chromium] › tests/e2e/hero-photo.spec.ts:644:7 › Hero photograph — masked into the plane (g2h1-04) › PH-2: the edges dissolve — 4 px inside every edge, the photograph adds ≤ 0.04 of luminance to the plane
+[1A[2K[3/3] [chromium] › tests/e2e/hero.spec.ts:871:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the photograph bleeds to the right edge, above the copy
+[1A[2K  3 passed (19.8s)

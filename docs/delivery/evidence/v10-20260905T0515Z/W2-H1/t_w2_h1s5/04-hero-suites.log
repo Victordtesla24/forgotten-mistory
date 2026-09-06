@@ -1,0 +1,185 @@
+npm notice run forgotten-mistory@2.0.0 npx
+npm notice run 'playwright' test tests/e2e/hero.spec.ts tests/e2e/hero-photo.spec.ts tests/e2e/hero-fold.spec.ts --workers=1 --reporter=line
+
+[2mRunning [22m64[2m tests using [22m1[2m worker[22m
+
+[1A[2K[1/64] [chromium] › tests/e2e/hero-fold.spec.ts:99:11 › Hero — the first fold › at 1440×900 › TC-FOLD-01: one headline, one sentence, one action group at 1440×900
+[1A[2K[2/64] [chromium] › tests/e2e/hero-fold.spec.ts:203:11 › Hero — the first fold › at 1440×900 › TC-FOLD-04: one CTA group, with margin, at 1440×900
+[1A[2K[3/64] [chromium] › tests/e2e/hero-fold.spec.ts:267:11 › Hero — the first fold › at 1440×900 › TC-FOLD-02: the evidence sits below the fold at 1440×900
+[1A[2K[4/64] [chromium] › tests/e2e/hero-fold.spec.ts:297:11 › Hero — the first fold › at 1440×900 › TC-FOLD-03: the visual is the fold at 1440×900
+[1A[2K[5/64] [chromium] › tests/e2e/hero-fold.spec.ts:99:11 › Hero — the first fold › at 1280×800 › TC-FOLD-01: one headline, one sentence, one action group at 1280×800
+[1A[2K[6/64] [chromium] › tests/e2e/hero-fold.spec.ts:203:11 › Hero — the first fold › at 1280×800 › TC-FOLD-04: one CTA group, with margin, at 1280×800
+[1A[2K[7/64] [chromium] › tests/e2e/hero-fold.spec.ts:267:11 › Hero — the first fold › at 1280×800 › TC-FOLD-02: the evidence sits below the fold at 1280×800
+[1A[2K[8/64] [chromium] › tests/e2e/hero-fold.spec.ts:297:11 › Hero — the first fold › at 1280×800 › TC-FOLD-03: the visual is the fold at 1280×800
+[1A[2K[9/64] [chromium] › tests/e2e/hero-fold.spec.ts:99:11 › Hero — the first fold › at 834×1194 › TC-FOLD-01: one headline, one sentence, one action group at 834×1194
+[1A[2K[10/64] [chromium] › tests/e2e/hero-fold.spec.ts:203:11 › Hero — the first fold › at 834×1194 › TC-FOLD-04: one CTA group, with margin, at 834×1194
+[1A[2K[11/64] [chromium] › tests/e2e/hero-fold.spec.ts:267:11 › Hero — the first fold › at 834×1194 › TC-FOLD-02: the evidence sits below the fold at 834×1194
+[1A[2K[12/64] [chromium] › tests/e2e/hero-fold.spec.ts:297:11 › Hero — the first fold › at 834×1194 › TC-FOLD-03: the visual is the fold at 834×1194
+[1A[2K[13/64] [chromium] › tests/e2e/hero-fold.spec.ts:99:11 › Hero — the first fold › at 390×844 › TC-FOLD-01: one headline, one sentence, one action group at 390×844
+[1A[2K[14/64] [chromium] › tests/e2e/hero-fold.spec.ts:203:11 › Hero — the first fold › at 390×844 › TC-FOLD-04: one CTA group, with margin, at 390×844
+[1A[2K[31m  1) [chromium] › tests/e2e/hero-fold.spec.ts:203:11 › Hero — the first fold › at 390×844 › TC-FOLD-04: one CTA group, with margin, at 390×844 [39m
+
+    Error: the action group ends 16 px above the fold
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m804[39m
+    Received:    [31m828[39m
+
+    [0m [90m 256 |[39m           probe[33m.[39mactions[33m![39m[33m.[39mbottom[33m,[39m
+     [90m 257 |[39m           [32m`the action group ends ${Math.round(fold - probe.actions!.bottom)} px above the fold`[39m[33m,[39m
+    [31m[1m>[22m[39m[90m 258 |[39m         )[33m.[39mtoBeLessThanOrEqual(fold [33m-[39m [35m40[39m)[33m;[39m
+     [90m     |[39m           [31m[1m^[22m[39m
+     [90m 259 |[39m
+     [90m 260 |[39m         expect(probe[33m.[39mledger[33m,[39m [32m'the ledger is laid out'[39m)[33m.[39mnot[33m.[39mtoBeNull()[33m;[39m
+     [90m 261 |[39m         expect([0m
+    [2m    at /root/wt-w2-h1s5/tests/e2e/hero-fold.spec.ts:258:11[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-fold-Hero-—-the-f-1e463-roup-with-margin-at-390×844-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-fold-Hero-—-the-f-1e463-roup-with-margin-at-390×844-chromium/error-context.md[22m
+
+
+[1A[2K[15/64] [chromium] › tests/e2e/hero-fold.spec.ts:267:11 › Hero — the first fold › at 390×844 › TC-FOLD-02: the evidence sits below the fold at 390×844
+[1A[2K[16/64] [chromium] › tests/e2e/hero-fold.spec.ts:297:11 › Hero — the first fold › at 390×844 › TC-FOLD-03: the visual is the fold at 390×844
+[1A[2K[17/64] [chromium] › tests/e2e/hero-photo.spec.ts:93:7 › Hero photograph › TC-PHOTO-01: at 1440 the figure owns the right column — ≥34 % of the viewport and ≥440 px
+[1A[2K[18/64] [chromium] › tests/e2e/hero-photo.spec.ts:115:7 › Hero photograph › TC-PHOTO-02: at 390 the figure bleeds to the right edge only and stands above the copy
+[1A[2K[31m  2) [chromium] › tests/e2e/hero-photo.spec.ts:115:7 › Hero photograph › TC-PHOTO-02: at 390 the figure bleeds to the right edge only and stands above the copy [39m
+
+    Error: the hero gutter resolves to a length
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31mNaN[39m
+
+    [0m [90m 155 |[39m       )[33m,[39m
+     [90m 156 |[39m     )[33m;[39m
+    [31m[1m>[22m[39m[90m 157 |[39m     expect(gutter[33m,[39m [32m'the hero gutter resolves to a length'[39m)[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m     |[39m                                                            [31m[1m^[22m[39m
+     [90m 158 |[39m     expect(
+     [90m 159 |[39m       box[33m![39m[33m.[39mx [33m+[39m box[33m![39m[33m.[39mwidth[33m,[39m
+     [90m 160 |[39m       [32m`the figure's right edge at ${(box!.x + box!.width).toFixed(1)} px of ${inner} px`[39m[33m,[39m[0m
+    [2m    at /root/wt-w2-h1s5/tests/e2e/hero-photo.spec.ts:157:60[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-photo-Hero-photog-80a08-y-and-stands-above-the-copy-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-photo-Hero-photog-80a08-y-and-stands-above-the-copy-chromium/error-context.md[22m
+
+
+[1A[2K[19/64] [chromium] › tests/e2e/hero-photo.spec.ts:184:7 › Hero photograph › TC-PHOTO-03: the still is monochrome in its bytes — no filter does the work
+[1A[2K[20/64] [chromium] › tests/e2e/hero-photo.spec.ts:243:7 › Hero photograph › TC-PHOTO-03b: the rendered <picture> at 1440 is monochrome on ≥ 99.5% of its pixels
+[1A[2K[21/64] [chromium] › tests/e2e/hero-photo.spec.ts:283:7 › Hero photograph › TC-PHOTO-03c: GET /assets/my-hero-avatar.mp4 answers 200 video/mp4
+[1A[2K[22/64] [chromium] › tests/e2e/hero-photo.spec.ts:295:7 › Hero photograph › TC-PHOTO-04: at rest the loop has no source and never plays
+[1A[2K[23/64] [chromium] › tests/e2e/hero-photo.spec.ts:309:7 › Hero photograph › TC-PHOTO-05: hover starts the loop; leaving pauses it
+[1A[2K[24/64] [chromium] › tests/e2e/hero-photo.spec.ts:327:7 › Hero photograph › TC-PHOTO-06: the control is keyboard-operable — Enter plays, Enter pauses
+[1A[2K[25/64] [chromium] › tests/e2e/hero-photo.spec.ts:366:7 › Hero photograph › TC-PHOTO-07: reduced motion plays nothing at rest and runs no animation
+[1A[2K[26/64] [chromium] › tests/e2e/hero-photo.spec.ts:394:7 › Hero photograph › TC-PHOTO-08: TC-HERO-12 still holds — an action ends inside the first 844 px at 390
+[1A[2K[27/64] [chromium] › tests/e2e/hero-photo.spec.ts:406:7 › Hero photograph › TC-PHOTO-09: the decoration that remains — the caption plate and the bloom (no ticks, no frame)
+[1A[2K[28/64] [chromium] › tests/e2e/hero-photo.spec.ts:445:7 › Hero photograph › TC-PHOTO-10: no gold anywhere in or around the figure
+[1A[2K[29/64] [chromium] › tests/e2e/hero-photo.spec.ts:496:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts
+[1A[2K[2m[chromium] › tests/e2e/hero-photo.spec.ts:496:7 › Hero photograph › TC-PHOTO-11: the still carries width/height and the box never shifts[22m
+Hover shifts: []
+
+[1A[2K[30/64] [chromium] › tests/e2e/hero-photo.spec.ts:574:7 › Hero photograph at 834 › TC-PHOTO-12: at 834 the figure still owns the whole right column
+[1A[2K[31/64] [chromium] › tests/e2e/hero-photo.spec.ts:611:7 › Hero photograph — masked into the plane (g2h1-04) › PH-1: no closed rectangle — border, outline and box-shadow are none on the box and its children; zero ticks in the fold
+[1A[2K[32/64] [chromium] › tests/e2e/hero-photo.spec.ts:644:7 › Hero photograph — masked into the plane (g2h1-04) › PH-2: the edges dissolve — 4 px inside every edge, the photograph adds ≤ 0.04 of luminance to the plane
+[1A[2K[31m  3) [chromium] › tests/e2e/hero-photo.spec.ts:644:7 › Hero photograph — masked into the plane (g2h1-04) › PH-2: the edges dissolve — 4 px inside every edge, the photograph adds ≤ 0.04 of luminance to the plane [39m
+
+    Error: left — the photograph's contribution 4 px inside each edge (≤0.04): {"left":0.16915552098485906,"right":0.028176215674435793,"top":0.2172713591440267,"bottom":0.043374511391344434}
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m0.04[39m
+    Received:    [31m0.16915552098485906[39m
+
+    [0m [90m 738 |[39m     [36mconst[39m described [33m=[39m [32m`the photograph's contribution 4 px inside each edge (≤0.04): ${JSON.stringify(edges)}`[39m[33m;[39m
+     [90m 739 |[39m     [36mfor[39m ([36mconst[39m [edge[33m,[39m delta] [36mof[39m [33mObject[39m[33m.[39mentries(edges)) {
+    [31m[1m>[22m[39m[90m 740 |[39m       expect(delta[33m,[39m [32m`${edge} — ${described}`[39m)[33m.[39mtoBeLessThanOrEqual([35m0.04[39m)[33m;[39m
+     [90m     |[39m                                               [31m[1m^[22m[39m
+     [90m 741 |[39m     }
+     [90m 742 |[39m
+     [90m 743 |[39m     [90m// The control has to be a real control: at the box's CENTRE the photograph[39m[0m
+    [2m    at /root/wt-w2-h1s5/tests/e2e/hero-photo.spec.ts:740:47[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-photo-Hero-photog-2d4a3-4-of-luminance-to-the-plane-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-photo-Hero-photog-2d4a3-4-of-luminance-to-the-plane-chromium/error-context.md[22m
+
+
+[1A[2K[33/64] [chromium] › tests/e2e/hero-photo.spec.ts:753:7 › Hero photograph — masked into the plane (g2h1-04) › PH-3: the face survives — the mask is opaque over the upper-centre; no gradient crosses it
+[1A[2K[34/64] [chromium] › tests/e2e/hero-photo.spec.ts:797:7 › Hero photograph — masked into the plane (g2h1-04) › PH-4: it is still a <figure>, its caption stands in the proof band, and nothing in it is pressable
+[1A[2K[35/64] [chromium] › tests/e2e/hero-photo.spec.ts:826:7 › Hero photograph — masked into the plane (g2h1-04) › PH-5: costs nothing — the mask is compositing only; the box never resizes and figure CLS is 0 across 9 loads
+[1A[2K[36/64] [chromium] › tests/e2e/hero-photo.spec.ts:982:9 › The loop ladder — which encode a screen is actually served › a 2x screen at 1440 › TC-PHOTO-13: a 2× screen is served the smallest rung its measured box needs — and nothing larger
+[1A[2K[37/64] [chromium] › tests/e2e/hero-photo.spec.ts:1011:9 › The loop ladder — which encode a screen is actually served › a 3x phone at 390 › TC-PHOTO-14: a small box at 3x still resolves inside 720p — no data is spent to prove a point
+[1A[2K[38/64] [chromium] › tests/e2e/hero-photo.spec.ts:1032:9 › The loop ladder — which encode a screen is actually served › a 3x desktop at 1440 › TC-PHOTO-15: a 3× desktop outgrows the base rung, so an on-demand rung is fetched instead
+[1A[2K[39/64] [chromium] › tests/e2e/hero-photo.spec.ts:1048:9 › The loop ladder — which encode a screen is actually served › a 3x desktop at 1440 › TC-PHOTO-16: Save-Data pins the same screen back to the 720p rung
+[1A[2K[40/64] [chromium] › tests/e2e/hero-photo.spec.ts:1061:9 › The loop ladder — which encode a screen is actually served › a 3x desktop at 1440 › TC-PHOTO-17: a browser with no AV1 decoder never receives the WebM rung
+[1A[2K[41/64] [chromium] › tests/e2e/hero-photo.spec.ts:1075:7 › The loop ladder — which encode a screen is actually served › TC-PHOTO-18: both on-demand rungs are published — the URLs the ladder names answer 200
+[1A[2K[42/64] [chromium] › tests/e2e/hero-photo.spec.ts:1090:7 › The loop ladder — which encode a screen is actually served › TC-PHOTO-19: at rest none of the three rungs is requested
+[1A[2K[43/64] [chromium] › tests/e2e/hero.spec.ts:36:7 › Hero › TC-HERO-01: the name is the page h1
+[1A[2K[44/64] [chromium] › tests/e2e/hero.spec.ts:44:7 › Hero › TC-HERO-02: positioning, location and one-sentence statement render
+[1A[2K[45/64] [chromium] › tests/e2e/hero.spec.ts:52:7 › Hero › TC-HERO-03: the statement stays within its word budget
+[1A[2K[46/64] [chromium] › tests/e2e/hero.spec.ts:60:7 › Hero › TC-HERO-04: the ledger shows three figures, each with its source
+[1A[2K[47/64] [chromium] › tests/e2e/hero.spec.ts:74:7 › Hero › TC-HERO-05: both actions are present and reachable
+[1A[2K[48/64] [chromium] › tests/e2e/hero.spec.ts:85:7 › Hero › TC-HERO-06: recruiter channels are linked
+[1A[2K[49/64] [chromium] › tests/e2e/hero.spec.ts:93:7 › Hero › TC-HERO-07: a truthful availability signal is shown
+[1A[2K[50/64] [chromium] › tests/e2e/hero.spec.ts:99:7 › Hero › TC-HERO-08: the fold band fills the first viewport without overflowing it
+[1A[2K[51/64] [chromium] › tests/e2e/hero.spec.ts:124:7 › Hero › TC-HERO-09: the fold carries the name and the one action group; the evidence follows it
+[1A[2K[52/64] [chromium] › tests/e2e/hero.spec.ts:159:7 › Hero › TC-HERO-10: the preloader is gone
+[1A[2K[53/64] [chromium] › tests/e2e/hero.spec.ts:165:7 › Hero › TC-HERO-11: the hero holds at most one WebGL context
+[1A[2K[54/64] [chromium] › tests/e2e/hero.spec.ts:176:7 › Hero › TC-HERO-12: at 390×844 the three caliper jaws align and an action sits in the first screen
+[1A[2K[55/64] [chromium] › tests/e2e/hero.spec.ts:367:7 › Hero portrait › TC-HERO-12: the poster is eager, AVIF, correctly named, and never faded in
+[1A[2K[56/64] [chromium] › tests/e2e/hero.spec.ts:422:7 › Hero portrait › TC-HERO-13: the loop is silent, deferred, and starts only through the gate
+[1A[2K[57/64] [chromium] › tests/e2e/hero.spec.ts:516:7 › Hero portrait › TC-HERO-14: reduced motion is poster only — no source, no request, no motion
+[1A[2K[58/64] [chromium] › tests/e2e/hero.spec.ts:558:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget
+[1A[2K[2m[chromium] › tests/e2e/hero.spec.ts:558:7 › Hero portrait › TC-HERO-15: the crossfade moves nothing — the figure box holds and CLS stays under budget[22m
+Crossfade shifts: []
+
+[1A[2K[59/64] [chromium] › tests/e2e/hero.spec.ts:638:7 › Hero portrait › TC-HERO-16: a failed loop leaves the poster in place and throws nothing
+[1A[2K[60/64] [chromium] › tests/e2e/hero.spec.ts:666:7 › Hero portrait › TC-HERO-17: the pause button is keyboard-operable and its focus ring is achromatic
+[1A[2K[61/64] [chromium] › tests/e2e/hero.spec.ts:747:7 › Hero portrait › TC-HERO-18: the photograph is monochrome and its chrome is achromatic
+[1A[2K[62/64] [chromium] › tests/e2e/hero.spec.ts:807:7 › Hero portrait › TC-HERO-19: eager image weight ≤ 500 kB and the loop is fetched only on intent
+[1A[2K[63/64] [chromium] › tests/e2e/hero.spec.ts:845:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720
+[1A[2K[2m[chromium] › tests/e2e/hero.spec.ts:845:7 › Hero portrait › TC-HERO-20: the LCP element is the poster or the h1, inside 2.5 s, at 1280×720[22m
+Hero LCP: IMG at 1476 ms
+
+[1A[2K[64/64] [chromium] › tests/e2e/hero.spec.ts:871:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the photograph bleeds to the right edge, above the copy
+[1A[2K[31m  4) [chromium] › tests/e2e/hero.spec.ts:871:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the photograph bleeds to the right edge, above the copy [39m
+
+    Error: the hero gutter resolves to a length
+
+    [2mexpect([22m[31mreceived[39m[2m).[22mtoBeGreaterThan[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: > [32m0[39m
+    Received:   [31mNaN[39m
+
+    [0m [90m 907 |[39m         )[33m,[39m
+     [90m 908 |[39m       )[33m;[39m
+    [31m[1m>[22m[39m[90m 909 |[39m       expect(gutter[33m,[39m [32m'the hero gutter resolves to a length'[39m)[33m.[39mtoBeGreaterThan([35m0[39m)[33m;[39m
+     [90m     |[39m                                                              [31m[1m^[22m[39m
+     [90m 910 |[39m       expect(
+     [90m 911 |[39m         box[33m![39m[33m.[39mx [33m+[39m box[33m![39m[33m.[39mwidth[33m,[39m
+     [90m 912 |[39m         [32m`the photograph reaches the right screen edge (${(box!.x + box!.width).toFixed(1)} of 390)`[39m[33m,[39m[0m
+    [2m    at /root/wt-w2-h1s5/tests/e2e/hero.spec.ts:909:62[22m
+
+[2m    attachment #1: [1mscreenshot[2m (image/png) [2m──────────────────────────────────────────────────────────[2m[22m
+[2m    test-results/e2e-hero-Hero-portrait-at--3e8ee-e-right-edge-above-the-copy-chromium/test-failed-1.png[22m
+[2m    [2m────────────────────────────────────────────────────────────────────────────────────────────────[2m[22m
+
+[2m    Error Context: test-results/e2e-hero-Hero-portrait-at--3e8ee-e-right-edge-above-the-copy-chromium/error-context.md[22m
+
+
+[1A[2K[31m  4 failed[39m
+[31m    [chromium] › tests/e2e/hero-fold.spec.ts:203:11 › Hero — the first fold › at 390×844 › TC-FOLD-04: one CTA group, with margin, at 390×844 [39m
+[31m    [chromium] › tests/e2e/hero-photo.spec.ts:115:7 › Hero photograph › TC-PHOTO-02: at 390 the figure bleeds to the right edge only and stands above the copy [39m
+[31m    [chromium] › tests/e2e/hero-photo.spec.ts:644:7 › Hero photograph — masked into the plane (g2h1-04) › PH-2: the edges dissolve — 4 px inside every edge, the photograph adds ≤ 0.04 of luminance to the plane [39m
+[31m    [chromium] › tests/e2e/hero.spec.ts:871:9 › Hero portrait › at 390×844 › TC-HERO-21: below 720 px the photograph bleeds to the right edge, above the copy [39m
+[32m  60 passed[39m[2m (6.5m)[22m
+EXIT=1
