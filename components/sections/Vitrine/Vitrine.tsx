@@ -121,7 +121,7 @@ export default function Vitrine() {
           ref={railRef}
           className={styles.rail}
           role="list"
-          aria-label="Six repositories, scrollable horizontally"
+          aria-label="Six repositories in the vitrine"
         >
           {plates.map((plate, index) => {
             const metrics = metricsFor(plate.repo);

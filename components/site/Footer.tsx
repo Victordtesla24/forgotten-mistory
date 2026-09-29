@@ -1,5 +1,8 @@
 import Link from 'next/link';
 
+import { buildStamp } from '@/app/data/generated/build-stamp';
+import { cvFingerprint } from '@/app/data/generated/cv-fingerprint';
+import { footerContent } from '@/app/data/portfolio/footer';
 import { contact } from '@/app/data/siteContent';
 
 import styles from './Footer.module.css';
@@ -17,6 +20,11 @@ import styles from './Footer.module.css';
  */
 
 const SUPPORT_SUBJECT = encodeURIComponent('Portfolio — support');
+
+const buildProvenance =
+  buildStamp.clean && buildStamp.sha
+    ? `${footerContent.build.label}: ${buildStamp.sha}`
+    : footerContent.build.unstampedLabel;
 
 export default function Footer() {
   return (
@@ -45,6 +53,13 @@ export default function Footer() {
           <sup className={styles.sup}>2</sup> Group of Companies Pty. Ltd. · All rights reserved.
         </span>
       </p>
+      <p className={styles.provenance}>
+        <a className={styles.link} href={footerContent.cv.href} download target="_blank" rel="noreferrer">
+          {footerContent.cv.label}
+        </a>{' '}
+        {footerContent.cv.md5Label} <code className={styles.code}>{cvFingerprint.md5}</code> · {buildProvenance}.
+      </p>
+      <p className={styles.disclosure}>{footerContent.syntheticDisclosure}</p>
     </footer>
   );
 }

@@ -521,12 +521,28 @@
         align-items: stretch;
     }
 
+    /* At phone width the vitrine becomes the page's normal vertical stack. The
+       desktop rail remains a rail; the mobile reader gets every repository and
+       every metric in the viewport without having to pan a nested scroller. */
+    .rail {
+        display: grid;
+        grid-template-columns: 1fr;
+        margin: 0;
+        padding: var(--space-1) 0 var(--space-4);
+        overflow: visible;
+        scroll-snap-type: none;
+        scroll-padding-inline: 0;
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+
     .plate {
-        width: 86vw;
+        width: 100%;
+        scroll-snap-align: none;
     }
 
     .metrics {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
     }
 
     .exclusion {
