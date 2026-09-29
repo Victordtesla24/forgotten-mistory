@@ -1,0 +1,8 @@
+{
+  "file": "components/sections/Listen/Listen.module.css",
+  "changes": [
+    "Changed .channels grid-template-columns from repeat(auto-fit, minmax(20rem, 1fr)) to repeat(auto-fit, minmax(min(100%, 20rem), 1fr)) so the track minimum cannot exceed the available inline size while preserving the 20rem target.",
+    "Kept address containment by ensuring .channel has overflow-wrap: anywhere and max-width: 100%."
+  ],
+  "verification": "Not run; per instruction no tests, build, docs, or verification claim."
+}

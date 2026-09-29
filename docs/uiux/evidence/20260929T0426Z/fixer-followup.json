@@ -1,0 +1,24 @@
+{
+  "agent_role": "fixer",
+  "task_id": "UX-P2-002",
+  "status": "done",
+  "findings": [
+    "Updated syncToLocationHash so every valid location hash event arms pendingAnchorRef for the incoming anchor before setting active hash.",
+    "Removed obsolete initialHashSyncedRef gating and its follow-up assignment; scroll handling still returns while a pending anchor is unresolved, preserving browser navigation hash instead of replacing it during pending scroll."
+  ],
+  "patch": {
+    "files": [
+      "components/site/Navigation.tsx"
+    ],
+    "summary": "Always treat valid incoming hashchange/popstate/current hashes as pending anchors; removed initial hash sync guard without changing manual scroll replaceState semantics.",
+    "tests_added": []
+  },
+  "verdict": {
+    "result": "pass",
+    "evidence": [
+      "tsc --noEmit exit code 0",
+      "tsc produced no output"
+    ],
+    "notes": "source readiness only; QA required"
+  }
+}

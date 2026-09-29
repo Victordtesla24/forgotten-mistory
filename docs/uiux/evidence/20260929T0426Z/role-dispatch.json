@@ -1,0 +1,22 @@
+{
+  "roles": {
+    "test_author": "independent API agent; tests/a11y/uiux-regressions.spec.ts; red reproduction required",
+    "release": "independent API agent; workflow/contracts only",
+    "qa": "independent API agent; production evidence only",
+    "fixer": "not dispatched until red test evidence"
+  },
+  "rejected_attempts": [
+    {
+      "route": "CLI",
+      "status": "organization subscription access disabled; no retry"
+    },
+    {
+      "route": "alternate configured CLI",
+      "status": "local config incompatible with installed wire protocol; no auth failure"
+    },
+    {
+      "route": "structured exploration test draft",
+      "status": "rejected: missing required aria-current assertion and incorrect selectors; untracked draft moved outside repo, never replaces existing tests"
+    }
+  ]
+}

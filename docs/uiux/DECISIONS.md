@@ -41,3 +41,11 @@ The reference rollback (`git revert --no-edit HEAD && git push origin HEAD:main`
 ## D-010 — Ledger roles are described without model identities
 
 Per the spec, the run header lists roles (Cartographer, Scout, Persona Auditor, Test Author, Fixer, Reviewer, Production QA) and how each was isolated (separate subagent/tool context), never the model behind it.
+
+## D-011 — Continuation supersedes D-005/D-007 authorization assumptions
+
+D-005 is revoked: pre-existing functional failures MUST gate shipment, not be hidden behind nightly scheduling. All functional Playwright tests now run unfiltered in ship.yml; only optional GPU/long audits can remain nightly. Existing CLI OAuth has workflow scope and admin repository access, distinct from the denied connector credential. Legacy deploy.yml was disabled via API before branch publication; ship.yml is a new workflow path so bootstrap never re-enables merge-all. Draft PR39 is not merge approval.
+
+Rollback now cleans only the workspace-mutated firebase.json, refuses stale remote-main SHA, reverts without force, gates the reverted source before inline redeployment, verifies parity and smokes live. GITHUB_TOKEN push alone does not retrigger CI. Independent CI source review approves these corrections; actual preview/live/rollback behavior remains unverified. Main was observed unprotected. Never weaken branch protections to make rollback pass.
+
+Final local build608dca0 succeeded; targeted UX suite3pass/1fail. Desktop manual scroll retains #skills after Back instead of #listen. No production closure or complete campaign claim is permitted. Preserve failing test and fix navigation before merge.

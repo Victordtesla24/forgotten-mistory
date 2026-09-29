@@ -6,6 +6,19 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### Continuation evidence — 2026-09-29T04:26Z
+
+- **Not shipped. Campaign and Cycle 0 remain incomplete.** Legitimate authorization is now proven: existing gh CLI session has `repo, workflow, read:org, gist` scopes and repository admin/push; this is distinct from the previously denied App credential. No denied credential retry. Default Firebase CLI session/ADC absent; Actions secret name exists but Firebase deploy authority has not yet been exercised.
+- Unsafe remote merge-all Deploy workflow **240428014 disabled_manually before any push**; no in-progress legacy run was observed. Do not re-enable it. New workflow path `ship.yml` is independent of disabled `deploy.yml`.
+- Draft PR **#39**: https://github.com/Victordtesla24/forgotten-mistory/pull/39. First actual `ship` run **36522599935** at head `6d4061045a8bbca26c43e61736fe2a05111222a5`: install, types, lint, static audit and node tests passed; full browser/preview/production gates not yet established. Follow-up head includes correction commit `608dca0`; inspect latest PR head/run before resuming.
+- Functional Playwright suite restored unfiltered to blocking CI; D-005 quarantine is revoked. Mobile Lighthouse budget now enforces Performance .90, Accessibility/Best Practices/SEO .95, LCP2500ms, TBT200ms; existing stricter CLS.05 preserved. Preview smoke, artifact identity and in-run gated rollback implemented. Independent CI review rejected first version, then approved corrected source (34 contract tests; 117 node tests locally), NOT remote deployment.
+- UX-P1-001: independently authored RED (CTA right344 at viewport320); final local test PASS after fixing grid minimum and CTA/address containment. Skills control PASS and Skills source unchanged. Still IN-REVIEW, not production-closed.
+- UX-P2-002: independent RED confirmed missing aria-current. Source review rejected initial Back lock. Follow-up built successfully at `608dca0`; final focused run **3 passed / 1 failed**: desktop manual scroll to Listen after Back retains URL #skills (expected #listen). **IN-FIX**, not ready for merge. Test unchanged; pending-anchor logic is next diagnostic target, not a confirmed complete root cause. Mobile navigation test passes.
+- Fresh independent production QA: seven specified widths have no document overflow; 320px remains344px; one h1 and zero observed console/page errors; axe0 at390/1440; CV200 application/pdf,157615bytes, MD5 `16b856c0f3f4ec0d801fdde6d084452c`. Production hash remains absent; main remains `a6f2ad8c10f30113d3a6ef4ca0211807d309279f`. No J1-J8 full completion or new perf pass claimed; previous mobile86/LCP3.34/TBT262 remains failing baseline.
+- No squash merge, Firebase preview/live release, preview smoke, actual branch-preview rollback drill, or main/live parity proof has occurred. Do not resume automatic publication on a schedule until these gates are established. Daemon configuration was not touched.
+- Evidence: `evidence/20260929T0426Z/authorization.json`, `production-qa.json`, `test-author.json`, `tdd-before-final.log.gz`, `ci-review-initial.json`, `ci-review-final.json`, `release-final.json`, `ui-review.json`, `fixer-followup.json`, `fixer-grid.json`, `build-final.log.gz`, `tdd-final.log.gz`. UI review citations of pre-fix logs are pre-fix only, not post-fix proof; final runtime log is authoritative.
+
+
 | Field | Value |
 | --- | --- |
 | Run ID | `20260929T0258Z` |
@@ -64,7 +77,7 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 - Test added:            `tests/ci_pipeline.test.mjs` — 30 contract assertions (fail on the old workflow: two-workflow set, no `-X theirs`, no cron more frequent than hourly, `needs: gates`, parity/rollback steps, hidden-file artifact uploads); `tests/e2e/smoke-cv.spec.ts` TC-SMOKE-CV-01.
 - Verification recipe:   (1) `gh run list --workflow=deploy.yml --branch main --limit 1` → conclusion `success`; (2) `curl -s https://forgotten-mistory.web.app/ | grep -o 'name="build-commit" content="[0-9a-f]*"'` → prefix of `git rev-parse origin/main`; (3) `PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test --grep @smoke` → all pass; (4) rollback dry-run logged in E.
 - RICE:                  10 × 3 × 1.0 ÷ 3 = 10.0
-- Status:                BLOCKED — fix committed locally on branch `uiux/c0-ci-ship-pipeline` (commits 16013f1, 9aa4d6f, 0d6301b, 21bf18b off main a6f2ad8; local gates green: ci_pipeline 30/30, static_audit+telemetry 15/15, functions 68/68). `git push` REJECTED by GitHub: the stored credential lacks the `workflows` scope ("refusing to allow a GitHub App to create or update workflow .github/workflows/deploy.yml"). No PR, no run id, no deploy. Patches exported to `docs/uiux/patches/0001–0004*.patch`. Per §10, not retried; requires a credential with `workflows` scope or the owner applying the patches.
+- Status:                IN-REVIEW — workflow-write route proven and draft PR #39 published; Cycle 0 NOT complete. See continuation evidence in A.
 - Shipped in:            pending
 - Evidence (post-fix):   pending
 
@@ -80,7 +93,7 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 - Test added:            planned `tests/a11y/reflow-320.spec.ts` — viewport 320×800, assert `scrollWidth <= clientWidth` for the document and for `#listen`, `#skills` bounding boxes (fails before on `out/`, passes after).
 - Verification recipe:   `node scripts/uiux/persona_journeys.mjs --only J5 --label post` on production → J5 `zoom400.scrollWidth == 320`; plus screenshot `UX-P1-001__320x800__zoom400__post__<stamp>.webp`.
 - RICE:                  4 × 3 × 0.9 ÷ 1 = 10.8
-- Status:                OPEN
+- Status:                IN-REVIEW — narrow reflow passes locally; final source review and production verification pending
 - Shipped in:            —
 - Evidence (post-fix):   —
 
@@ -112,7 +125,7 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 - Test added:            planned `tests/e2e/navigation.spec.ts` TC-NAV-09: after clicking `#about`, `a.nav-link[href="#about"]` has `aria-current`; exactly one link is current.
 - Verification recipe:   `node scripts/uiux/persona_journeys.mjs --only J8 --label post` on production → `activeLinks.length == 1` per step at 1280 and 390.
 - RICE:                  7 × 2 × 0.9 ÷ 2 = 6.3
-- Status:                OPEN
+- Status:                IN-FIX — final desktop manual-scroll/hash test fails; see continuation evidence
 - Shipped in:            —
 - Evidence (post-fix):   —
 
@@ -137,7 +150,7 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 - Persona(s) affected:   — (engineering)
 - Section / viewport:    various
 - Observed (production): local full suite against `out/` built from `main` + D-001: 468 passed / 31 failed (27.9 min). Files: `tests/a11y/reduced-motion-choreography.spec.ts` (2), `tests/e2e/interaction-states.spec.ts` (3), `tests/e2e/listen.spec.ts` TC-LISTEN-05/06, `tests/monochrome/gold-semantics.spec.ts` CC-A2, `tests/monochrome/minivic-launcher.spec.ts` MONO-MV-02, `tests/overhaul/cinematic.spec.ts` TC-CINE-01, `tests/overhaul/design-scale.spec.ts` (8: font-step + measure at 375/768/1280/1920), `tests/overhaul/durability.spec.ts` TC-DURABLE-04, `tests/overhaul/interim-frame.spec.ts` (1), `tests/overhaul/listen-flagship.spec.ts` (3), `tests/overhaul/render.spec.ts` (1), `tests/overhaul/scene-error-boundary.spec.ts` (2), `tests/visual/screenshots.spec.ts` (5). The same reduced-motion, interaction-states and listen specs failed in Checks run `34019931083` (2026-09-06) → pre-existing. Evidence: `evidence/20260929T0258Z/e2e__local__full__pre__20260929T032638Z.log.gz`.
-- Expected:              A green full suite; until then the suite reports nightly and never gates (D-005) — no test is skipped, deleted or edited.
+- Expected:              A green full functional suite on every PR/main gate. D-005 quarantine is revoked; failures block merge and shipment.
 - Root cause:            UNVERIFIED per spec; some (visual screenshots, scene-error-boundary) may be environment-sensitive on a software renderer — to be triaged one spec at a time in later cycles, each as its own finding.
 - Recommendation:        Triage into (a) real UX regressions → findings, (b) stale assertions → fix the test with a documented reason, never by loosening thresholds silently.
 - Fix specification:     per spec, later cycles.

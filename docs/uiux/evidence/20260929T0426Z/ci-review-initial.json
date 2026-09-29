@@ -1,0 +1,130 @@
+{
+  "agent_role": "reviewer",
+  "task_id": "UX-C0-001",
+  "status": "rejected",
+  "findings": [
+    {
+      "id": "R1-node-template-literal-bash-substitution",
+      "section": "ship.yml preview & deploy — 'Use the gated export as-is'",
+      "severity": "P0-blocker",
+      "observed": "The double-quoted `node -e \"...\"` inline script contains backtick template literals `${id.commit}` and `${process.env.GITHUB_SHA}`. GitHub's default shell (`bash --noprofile --norc -e -o pipefail`) expands `${id.commit}` before node ever sees it, printing `bash: line N: ${id.commit}: bad substitution`. In the identity-mismatch path the throw still runs, so the mismatch is (accidentally) still surfaced, but on the identity-match path bash emits a non-fatal 'bad substitution' warning on stderr and continues. Reproduced locally against `bash --noprofile --norc -e -o pipefail`: substitution error on both match and mismatch paths.",
+      "evidence": [
+        "Reproduction: `bash --noprofile --norc -e -o pipefail /tmp/t6.sh` with the exact one-liner produced `${id.commit}: bad substitution` on stderr on every run (see local capture).",
+        "ship.yml lines 128 and 210 are byte-identical `node -e \"...`${id.commit}`... `${process.env.GITHUB_SHA}`...\"`.",
+        "Because `-u` is not set, bash treats `id.commit` as an unset var expansion, which explodes on the `.` — hence the 'bad substitution' error, not a silent empty string."
+      ],
+      "fix": "Move the check into a heredoc (like the preview_url step already does) or single-quote the node source. Minimal patch: `node - <<'NODE'\\nconst id = require('./out/.artifact-identity.json');\\nif (id.commit !== process.env.GITHUB_SHA) { throw new Error(`artifact ${id.commit} does not match ${process.env.GITHUB_SHA}`); }\\nNODE`. Applies to both jobs (preview + deploy)."
+    },
+    {
+      "id": "R2-rollback-dirty-tree-blocks-revert-when-firebase-json-in-conflict",
+      "section": "ship.yml deploy job — Auto-rollback on failure",
+      "severity": "P0-blocker",
+      "observed": "The prior 'Use the gated export as-is' step mutates the workspace copy of `firebase.json` (jq del predeploy). When the rollback step runs later in the same job it invokes `git revert --no-edit HEAD` on that dirty tree. In the general case revert succeeds (working-tree change is preserved), BUT if the HEAD commit under revert itself modifies `firebase.json` (any hosting-config change would qualify) git aborts with 'error: Your local changes to the following files would be overwritten by merge: firebase.json / fatal: revert failed'. Reproduced locally.",
+      "evidence": [
+        "Reproduced: HEAD commit touches firebase.json + working tree has jq-modified firebase.json -> `git revert --no-edit HEAD` fails with exit 1 and 'local changes would be overwritten' (see /tmp/gr repro).",
+        "Even when revert succeeds, the subsequent `npm run build:static` runs on a tree with a modified firebase.json. scripts/build/build_stamp.mjs treats any tracked-file diff vs HEAD as 'dirty' and emits the built page with NO `<meta name=\"build-commit\">`. That silently produces a rollback artifact that will never pass the parity check the release contract requires."
+      ],
+      "fix": "Stash / reset before revert: `git checkout -- firebase.json` (or `git stash -u`) as the first line of the rollback block, then jq-del again AFTER `npm run build:static`. Equivalent: do the jq mutation into a tempfile and pass with `firebase deploy --config firebase.ship.json` so the tracked file is never touched."
+    },
+    {
+      "id": "R3-rollback-has-no-parity-or-smoke-gates",
+      "section": "ship.yml deploy job — Auto-rollback on failure vs §§6/8/9 binding",
+      "severity": "P0-blocker",
+      "observed": "The rollback rebuilds + deploys the reverted commit but does NOT re-run build-hash parity or the @smoke Playwright suite against production before the job ends green. The binding spec (§6 release pipeline, §8 smoke) requires the SAME functional gates on the state that ends up live — including the rolled-back state. Combined with R2 the rollback can leave production serving an untagged artifact that no automated check has verified.",
+      "evidence": [
+        "Auto-rollback step block ends with `firebase-tools@13 deploy --only hosting ... --non-interactive` and a summary echo; no `curl ... build-commit`, no `playwright test --grep @smoke`.",
+        "Contract test at ci_pipeline.test.mjs L253-262 only asserts the rollback rebuilds and deploys; it does not require post-rollback parity or smoke, so the test suite passes green while the contract is unmet."
+      ],
+      "fix": "Extract a reusable composite step (or inline duplicate) so rollback runs: parity poll (12×10s) then `PLAYWRIGHT_BASE_URL=$PROD_URL npx playwright test --grep @smoke`. If either fails, fail the job (the top-of-block Revert-of-Revert guard already prevents an infinite chain)."
+    },
+    {
+      "id": "R4-contract-test-gap-node-e-quoting",
+      "section": "tests/ci_pipeline.test.mjs — identity-manifest verification test",
+      "severity": "P1",
+      "observed": "The test at L153-161 only regex-matches for `out/.artifact-identity.json` and `GITHUB_SHA` in the job's `run:` blob. It does not `bash -n` the extracted shell step, nor forbid the exact 'double-quoted `node -e` containing `${...}` template literals' pattern that is R1. That is why 32 contracts can be green while R1 ships broken.",
+      "evidence": [
+        "grep of tests/ci_pipeline.test.mjs shows no invocation of `bash -n`, `spawnSync('bash', ['-n'...])`, or a lint against `node -e \"...${...}...\"` patterns.",
+        "The `never weakens itself` test at L165 checks continue-on-error / `|| true` / `npm install` — good — but not shell quoting."
+      ],
+      "fix": "Add a test that (a) walks every `run:` step, (b) rejects any `node -e \"...\"` (double-quoted) that also contains a bash-visible `${` template literal, and (c) `bash -n`-parses every extracted `run:` block via js-yaml. Positive test: assert both preview & deploy identity checks use `node - <<'NODE'` heredoc (single-quoted delimiter)."
+    },
+    {
+      "id": "R5-contract-test-gap-rollback-parity-and-clean-tree",
+      "section": "tests/ci_pipeline.test.mjs — rollback contract",
+      "severity": "P1",
+      "observed": "Rollback test asserts revert + rebuild + firebase-tools deploy, but does NOT assert (a) the workspace is cleaned before `git revert` (R2), (b) parity is re-verified post-rollback, (c) `--grep @smoke` runs post-rollback (R3). All three are part of the §6/§8 contract.",
+      "evidence": [
+        "L254-262 of tests/ci_pipeline.test.mjs — no `checkout -- firebase.json`, `git stash`, `build-commit` or `@smoke` assertion inside the rollback branch."
+      ],
+      "fix": "Extend the rollback test: assert rollback run contains a working-tree-clean step before `git revert`, and contains both `grep -m1 -o 'name=\"build-commit\"'` (parity) and `PLAYWRIGHT_BASE_URL=\"$PROD_URL\" npx playwright test --grep @smoke` after the rollback deploy."
+    },
+    {
+      "id": "R6-GITHUB_TOKEN-push-does-not-retrigger-workflow-but-code-does-not-rely-on-it",
+      "section": "ship.yml rollback — GITHUB_TOKEN event suppression concern",
+      "severity": "info / non-blocking",
+      "observed": "GitHub's default `secrets.GITHUB_TOKEN` push does NOT trigger downstream `on: push` runs. The rollback step DOES push a revert with GITHUB_TOKEN, but it then rebuilds + deploys in-run rather than relying on the push event, so this specific known-footgun is avoided at the deploy layer. The remaining risk is the revert push itself failing under branch protection (required PR review, required status checks) — that is a project-config risk outside the workflow file, but worth flagging in ops docs.",
+      "evidence": [
+        "ship.yml auto-rollback: `git push origin HEAD:main` followed by explicit `npm ci; npm run build:static; ... firebase-tools deploy --only hosting` in the same shell block — deployment is not gated on the push event."
+      ],
+      "fix": "Add a doc note in DECISIONS.md D-007 that branch protection on `main` must either exempt the workflow bot or the rollback must use `admin_bypass_actor`. No code change strictly required."
+    },
+    {
+      "id": "R7-preview-URL-output-format-tolerant",
+      "section": "ship.yml preview job — preview_url extraction",
+      "severity": "info",
+      "observed": "`steps.preview_deploy.outputs.urls` from FirebaseExtended/action-hosting-deploy@v0 is a JSON array string. The heredoc parser tolerates JSON-array, JSON-object, and whitespace-split fallback, and filters to `^https://`. This is correct and defensively coded — no change required. Note that this same heredoc pattern is exactly what R1's fix should adopt for the identity check.",
+      "evidence": [
+        "ship.yml lines 138-156 use `node - <<'NODE' \"$preview_urls\"` with `process.argv[2]` — single-quoted `NODE` delimiter means bash performs no expansion inside; contrast with the identity check that uses double quotes."
+      ],
+      "fix": "None. Cite as the reference pattern in the R1 fix."
+    },
+    {
+      "id": "R8-concurrency-group-per-ref-ok",
+      "section": "ship.yml concurrency",
+      "severity": "info",
+      "observed": "`group: ship-${{ github.ref }}` with `cancel-in-progress: false` correctly isolates PR refs from `refs/heads/main`, and queues heartbeats behind a live push. No race identified. Cron `5 * * * *` fires hourly (single literal minute) satisfying the §2.3 hourly-cap.",
+      "evidence": ["ship.yml L28-32; contract test at L54-59 already enforces the hourly cap."],
+      "fix": "None."
+    },
+    {
+      "id": "R9-no-quarantined-functional-tests-vs-origin-main",
+      "section": "test integrity vs origin/main",
+      "severity": "info",
+      "observed": "Diff of tests/** against origin/main introduces no `.skip`, `.only`, `todo`, or `test.skip` markers. The two `+`-line matches for `.skip` are string-literal `steps.skip.outputs.skip` inside contract assertions — not Node test-runner quarantine.",
+      "evidence": ["`git diff origin/main..HEAD -- tests/ | grep -E '^\\+.*(\\\\.skip|todo|\\\\.only)'` returns only `steps.skip.outputs.skip` string literals in ci_pipeline.test.mjs L237,254."],
+      "fix": "None."
+    }
+  ],
+  "patch": {
+    "ship.yml_preview_identity_check": {
+      "location": "ship.yml — job `preview`, step `Use the gated export as-is` (~L124-129), and job `deploy`, step `Use the gated export as-is` (~L205-211)",
+      "replace": "node -e \"const id=require('./out/.artifact-identity.json'); if (id.commit !== process.env.GITHUB_SHA) throw new Error(`artifact ${id.commit} does not match ${process.env.GITHUB_SHA}`);\"",
+      "with": "node - <<'NODE'\nconst id = require('./out/.artifact-identity.json');\nif (id.commit !== process.env.GITHUB_SHA) {\n  throw new Error(`artifact ${id.commit} does not match ${process.env.GITHUB_SHA}`);\n}\nNODE"
+    },
+    "ship.yml_rollback_clean_tree_and_reverify": {
+      "location": "ship.yml — job `deploy`, step `Auto-rollback on failure` (~L253-286)",
+      "prepend_before_git_revert": "# Discard the jq-mutated firebase.json so `git revert` never conflicts with the workspace.\ngit checkout -- firebase.json\n",
+      "append_after_firebase_deploy": "# Re-run parity + smoke against the rolled-back state; a rollback that lands\n# an unstamped or broken artifact is worse than the fault it fixed.\nfor _ in $(seq 1 12); do\n  tmp=\"$(mktemp)\"; trap 'rm -f \"$tmp\"' EXIT\n  if curl -fsS --max-time 20 -H 'Cache-Control: no-cache' -o \"$tmp\" \"$PROD_URL/?rb=$GITHUB_RUN_ID\"; then\n    if raw=\"$(grep -m1 -o 'name=\"build-commit\" content=\"[0-9a-f]*\"' \"$tmp\")\"; then\n      live=\"${raw##*content=\\\"}\"; live=\"${live%\\\"}\"\n      revert_sha=\"$(git rev-parse HEAD)\"\n      if [[ \"$revert_sha\" == \"$live\"* ]]; then break; fi\n    fi\n  fi\n  sleep 10\ndone\nPLAYWRIGHT_BASE_URL=\"$PROD_URL\" npx playwright test --grep @smoke"
+    },
+    "tests/ci_pipeline.test.mjs_add_shell_syntax_and_quoting_tests": {
+      "location": "tests/ci_pipeline.test.mjs — new describe block",
+      "add": "describe('every run: block is shell-safe', () => {\n  it('bash -n parses every extracted step', () => {\n    for (const [file, doc] of [['ship.yml', ship], ['nightly.yml', nightly]]) {\n      for (const [jobName, job] of Object.entries(doc.jobs)) {\n        for (const step of job.steps ?? []) {\n          if (!step.run) continue;\n          const r = spawnSync('bash', ['-n'], { input: step.run, encoding: 'utf8' });\n          assert.equal(r.status, 0, `${file}/${jobName}: ${step.name || step.uses}: ${r.stderr}`);\n        }\n      }\n    }\n  });\n  it('never wraps a `node -e` in double quotes when its body uses template literals', () => {\n    // ${...} inside a double-quoted bash string is expanded by bash before node runs.\n    const rx = /node\\s+-e\\s+\"[^\"]*\\$\\{[^}]+\\.[^}]+\\}/;\n    assert.ok(!rx.test(shipText), 'use `node - <<\\'NODE\\'` heredoc for template literals');\n    assert.ok(!rx.test(nightlyText));\n  });\n});"
+    },
+    "tests/ci_pipeline.test.mjs_extend_rollback_contract": {
+      "location": "tests/ci_pipeline.test.mjs — rollback assertions (~L253)",
+      "add": "assert.ok(/git checkout -- firebase\\.json|git stash/.test(rollback.run), 'rollback must clean the workspace before git revert');\nassert.ok(/grep -m1 -o 'name=\"build-commit\"/.test(rollback.run), 'rollback must re-verify build-hash parity');\nassert.ok(/PLAYWRIGHT_BASE_URL=\"\\$PROD_URL\" npx playwright test --grep @smoke/.test(rollback.run), 'rollback must re-run @smoke against prod');"
+    }
+  },
+  "verdict": {
+    "result": "fail",
+    "evidence": [
+      "R1 reproduced with `bash --noprofile --norc -e -o pipefail` (GitHub Actions default shell): the `node -e \"...${id.commit}...\"` lines at ship.yml:128 and ship.yml:210 emit `bad substitution` before node executes. Match-path leaks stderr noise; mismatch-path still throws but only because the throw ran despite the bash error — behavior is accidental, not contractual.",
+      "R2 reproduced in /tmp/gr: with `firebase.json` modified in the working tree (as the earlier 'Use the gated export' step does), `git revert --no-edit HEAD` fails with 'local changes would be overwritten' whenever the HEAD commit also touches firebase.json.",
+      "R3: ship.yml Auto-rollback block ends at `firebase-tools deploy --only hosting ...` — no parity poll, no `--grep @smoke`; §6/§8 binding contract not enforced on the rollback path.",
+      "R4/R5: tests/ci_pipeline.test.mjs contains no `bash -n` walk, no template-literal-in-double-quotes lint, and no rollback parity/smoke assertion — which is why 32 contracts report green while R1/R2/R3 are live.",
+      "R6: workflow does not depend on GITHUB_TOKEN push retrigger (rollback deploys in-run) — this specific footgun is avoided, but branch-protection interaction is an ops-doc gap only.",
+      "R9: no functional test was quarantined vs origin/main (only `steps.skip.outputs.skip` string-literal matches in contract assertions)."
+    ],
+    "notes": "Three P0 blockers (R1 shell quoting, R2 dirty-tree revert, R3 ungated rollback) plus two matching P1 contract-test gaps (R4, R5). The release author's 'all green' status is a test-coverage artifact, not a functional pass — the contract tests string-match the workflow YAML but never `bash -n`-parse the extracted steps and never assert rollback-path parity/smoke. Recommend the release author land the four patches above in a follow-up and re-run `node --test tests/ci_pipeline.test.mjs` before merge. Reviewer is not the author and does not close this task."
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "agent_role": "release_engineer_followup",
+  "status": "completed_with_local_green",
+  "files_changed": [
+    ".github/workflows/ship.yml",
+    "tests/ci_pipeline.test.mjs"
+  ],
+  "red_evidence": [
+    "After adding shell-safety and rollback contract tests but before workflow fixes, node --test tests/ci_pipeline.test.mjs failed: bash -n reported ship.yml/deploy Auto-rollback unexpected EOF from unescaped quote handling, and rollback contract failed stale-commit assertion.",
+    "Earlier intermediate run also failed parsing tests/ci_pipeline.test.mjs due to the newly added quoted-heredoc assertion string, confirming the new tests were executing and fail-loud during development."
+  ],
+  "green_evidence": [
+    "node --test tests/ci_pipeline.test.mjs: exit 0; 34 tests, 8 suites, pass 34, fail 0, duration_ms 308.736105.",
+    "node --test tests/ci_pipeline.test.mjs tests/static_audit_fail.test.mjs tests/github-telemetry.test.mjs tests/minivic_chat_function.test.mjs: exit 0; 117 tests, 35 suites, pass 117, fail 0, duration_ms 9302.816226."
+  ],
+  "implemented": [
+    "Preview and deploy artifact identity checks now use quoted node heredocs instead of double-quoted node -e template literals.",
+    "Deploy job timeout increased to 60 minutes.",
+    "Rollback restores only firebase.json before revert, fetches origin main, compares origin/main SHA to GITHUB_SHA, then reverts and pushes without force.",
+    "Rollback uses one EXIT trap for temporary credential/page files.",
+    "Rollback validates the reverted committed source before publishing: npm ci, functions npm ci, tsc, lint, static audit, node contracts, static build, local serve on 5599, full Playwright, LHCI; deploy happens only after these gates.",
+    "Rollback parity now has explicit parity_ok=false/true boolean and hard assertion after bounded poll, followed by live @smoke."
+  ],
+  "unresolved_concerns": [
+    "No production deployment or live rollback was performed by this subagent; no claim that production is fixed.",
+    "Full browser/LHCI gates were not run locally to completion here; only workflow contract/node tests were run, per scope and tool-budget constraints.",
+    "Branch protection may still prevent the rollback push; workflow now fails safe if push or gates fail."
+  ],
+  "git_status": "M tests/ci_pipeline.test.mjs\n?? .github/workflows/ship.yml"
+}

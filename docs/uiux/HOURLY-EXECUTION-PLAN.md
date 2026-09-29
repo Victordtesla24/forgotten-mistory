@@ -1,3 +1,5 @@
+> Continuation override (2026-09-29): prior credential-blocked precondition below is historical, not current. Existing gh CLI has workflow scope; safe draft PR39 exists on uiux/c1-gated-remediation. Legacy workflow240428014 is disabled; never re-enable it. Use ship.yml. Full functional suite and strict mobile Lighthouse are blocking, not smoke-only. Latest local source608dca0 builds, focused tests3pass/1fail (desktop manual-scroll hash after Back). Resolve that and obtain independent review, green PR full gates + Firebase preview smoke before any merge. Cycle0 parity and branch-preview rollback drill still pending. Daemon remains parent-managed; do not infer publish readiness from auth alone. See ledger A for exact evidence.
+
 # UI/UX Swarm — hands-off hourly execution plan
 
 Repo: `/home/ubuntu/github_repos/forgotten-mistory` · Production: https://forgotten-mistory.web.app/ · Ledger: `docs/uiux/UIUX-LEDGER.md`
