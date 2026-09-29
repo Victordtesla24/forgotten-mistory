@@ -30,6 +30,12 @@ const NAV_LINKS = [
 const CV_HREF = '/docs/Vik_Resume_Final.pdf';
 const INTERNAL_NAV_LINKS = NAV_LINKS.filter((link) => link.href.startsWith('#')).map((link) => link.href);
 
+// Longest a navigation-driven scroll may hold the current-section token.
+const PENDING_ANCHOR_MS = 1500;
+// Quiet period after the last scroll event that counts as "scroll settled".
+const SCROLL_SETTLE_MS = 160;
+const SCROLL_KEYS = new Set(['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ']);
+
 const SPRING = { type: 'spring', stiffness: 300, damping: 30 } as const;
 
 // Overlay drops in on a spring; its links stagger in once the panel is settling.
@@ -57,6 +63,7 @@ export default function Navigation() {
   const navRef = useRef<HTMLElement>(null);
   const activeHashRef = useRef(activeHash);
   const pendingAnchorRef = useRef<{ hash: string; until: number } | null>(null);
+  const lockToRef = useRef<((hash: string) => void) | null>(null);
   const internalHashes = useMemo(() => new Set<string>(INTERNAL_NAV_LINKS), []);
 
   const close = useCallback(() => setOpen(false), []);
@@ -158,21 +165,39 @@ export default function Navigation() {
     const nav = navRef.current;
     if (!nav) return;
 
-    const syncToLocationHash = () => {
-      const hash = window.location.hash;
-      if (!internalHashes.has(hash)) return;
-      pendingAnchorRef.current = { hash, until: performance.now() + 2200 };
-      setCurrentHash(hash);
+    // The pending-anchor lock only exists so a navigation-driven scroll (anchor
+    // click, Back/Forward restore) is not overwritten by the sections it passes
+    // through on the way. It is released as soon as any of these is true:
+    //  - the target section is the visible one (navigation landed);
+    //  - the scroll has settled (no scroll event for SCROLL_SETTLE_MS) — whatever
+    //    is visible then is where the reader actually is;
+    //  - the reader shows scroll intent (wheel, touch, scroll keys, pointer);
+    //  - the lock times out (a timer re-syncs, so no later scroll event is needed).
+    // Previously only the first and last applied, and the timeout was never
+    // re-evaluated: after Back, a manual scroll inside the 2.2s window left the
+    // URL pinned to the history target (UX-P2-002: #skills instead of #listen).
+    let settleTimer: number | undefined;
+    let expiryTimer: number | undefined;
+
+    const releasePending = () => {
+      pendingAnchorRef.current = null;
+      window.clearTimeout(expiryTimer);
     };
 
-    const onScroll = () => {
+    const syncToVisible = () => {
+      const visibleHash = chooseVisibleHash();
+      setCurrentHash(visibleHash);
+      replaceHash(visibleHash);
+    };
+
+    const update = () => {
       nav.setAttribute('data-scrolled', String(window.scrollY > 24));
 
       const pending = pendingAnchorRef.current;
       const visibleHash = chooseVisibleHash();
       if (pending) {
         if (visibleHash === pending.hash || performance.now() > pending.until) {
-          pendingAnchorRef.current = null;
+          releasePending();
         } else {
           setCurrentHash(pending.hash);
           return;
@@ -183,22 +208,68 @@ export default function Navigation() {
       replaceHash(visibleHash);
     };
 
+    const onScroll = () => {
+      update();
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(() => {
+        if (!pendingAnchorRef.current) return;
+        releasePending();
+        syncToVisible();
+      }, SCROLL_SETTLE_MS);
+    };
+
+    const onUserScrollIntent = (event: Event) => {
+      if (!pendingAnchorRef.current) return;
+      if (event instanceof KeyboardEvent && !SCROLL_KEYS.has(event.key)) return;
+      releasePending();
+    };
+
+    const syncToLocationHash = () => {
+      const hash = window.location.hash;
+      if (!internalHashes.has(hash)) return;
+      setCurrentHash(hash);
+      // Scroll restoration may already have landed on the target (the scroll
+      // event can precede popstate); locking then would pin a stale hash.
+      if (chooseVisibleHash() === hash) {
+        releasePending();
+        return;
+      }
+      lockTo(hash);
+    };
+
+    const lockTo = (hash: string) => {
+      pendingAnchorRef.current = { hash, until: performance.now() + PENDING_ANCHOR_MS };
+      window.clearTimeout(expiryTimer);
+      expiryTimer = window.setTimeout(() => {
+        if (pendingAnchorRef.current?.hash !== hash) return;
+        releasePending();
+        syncToVisible();
+      }, PENDING_ANCHOR_MS + 50);
+    };
+    lockToRef.current = lockTo;
+
     syncToLocationHash();
-    onScroll();
+    update();
+    const intentEvents = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const;
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('hashchange', syncToLocationHash);
     window.addEventListener('popstate', syncToLocationHash);
+    for (const type of intentEvents) window.addEventListener(type, onUserScrollIntent, { passive: true });
     return () => {
+      window.clearTimeout(settleTimer);
+      window.clearTimeout(expiryTimer);
+      lockToRef.current = null;
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('hashchange', syncToLocationHash);
       window.removeEventListener('popstate', syncToLocationHash);
+      for (const type of intentEvents) window.removeEventListener(type, onUserScrollIntent);
     };
   }, [chooseVisibleHash, internalHashes, replaceHash, setCurrentHash]);
 
   const handleNavLinkClick = useCallback((href: string) => {
     if (internalHashes.has(href)) {
-      pendingAnchorRef.current = { hash: href, until: performance.now() + 2200 };
       setCurrentHash(href);
+      lockToRef.current?.(href);
     }
     close();
   }, [close, internalHashes, setCurrentHash]);
