@@ -64,7 +64,7 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 - Test added:            `tests/ci_pipeline.test.mjs` — 30 contract assertions (fail on the old workflow: two-workflow set, no `-X theirs`, no cron more frequent than hourly, `needs: gates`, parity/rollback steps, hidden-file artifact uploads); `tests/e2e/smoke-cv.spec.ts` TC-SMOKE-CV-01.
 - Verification recipe:   (1) `gh run list --workflow=deploy.yml --branch main --limit 1` → conclusion `success`; (2) `curl -s https://forgotten-mistory.web.app/ | grep -o 'name="build-commit" content="[0-9a-f]*"'` → prefix of `git rev-parse origin/main`; (3) `PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test --grep @smoke` → all pass; (4) rollback dry-run logged in E.
 - RICE:                  10 × 3 × 1.0 ÷ 3 = 10.0
-- Status:                IN-REVIEW (branch pushed, PR open — see E for real IDs; not VERIFIED until Production QA confirms parity on live)
+- Status:                BLOCKED — fix committed locally on branch `uiux/c0-ci-ship-pipeline` (commits 16013f1, 9aa4d6f, 0d6301b, 21bf18b off main a6f2ad8; local gates green: ci_pipeline 30/30, static_audit+telemetry 15/15, functions 68/68). `git push` REJECTED by GitHub: the stored credential lacks the `workflows` scope ("refusing to allow a GitHub App to create or update workflow .github/workflows/deploy.yml"). No PR, no run id, no deploy. Patches exported to `docs/uiux/patches/0001–0004*.patch`. Per §10, not retried; requires a credential with `workflows` scope or the owner applying the patches.
 - Shipped in:            pending
 - Evidence (post-fix):   pending
 
@@ -183,7 +183,8 @@ Raw data: `journeys__all__J1-J8__pre__20260929T030837Z.json`.
 
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Deploy ID | Parity | Lighthouse (mobile Perf/LCP/CLS/TBT) | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| C0 | 2026-09-29T02:58Z | pending | UX-C0-001 (pipeline) — pending merge | pending | pending | pending | baseline 86 / 3.34 s / 0 / 262 ms | pending dry-run |
+| C0 | 2026-09-29T02:58Z | not merged | UX-C0-001 (pipeline) — BLOCKED: branch push rejected (token lacks `workflows` scope); no PR/run | none | UNVERIFIED (live HTML has no build-commit meta) | not run | baseline 86 / 3.34 s / 0 / 262 ms | not run (blocked upstream) |
+| C1 | — | not started | UX-P1-001 (320 px reflow) — NOT STARTED: cannot ship before Cycle 0 lands; plan in HOURLY-EXECUTION-PLAN.md | none | — | — | — | — |
 
 ## F. Verified no-issue register (production, run 20260929T0258Z)
 

@@ -1,0 +1,1149 @@
+From 9aa4d6f45ea8d36d9057e0cd8f27a97015b0694e Mon Sep 17 00:00:00 2001
+From: uiux-swarm-bot <uiux-swarm@users.noreply.github.com>
+Date: Tue, 29 Sep 2026 03:33:54 +0000
+Subject: [PATCH 2/4] ci: replace merge-all deploy with gated ship pipeline
+ (UX-C0-001)
+
+---
+ .github/workflows/deploy.yml  | 315 ++++++++++++++-------
+ .github/workflows/nightly.yml | 107 ++++++++
+ .gitignore                    |   4 +
+ lighthouserc.json             |   6 +-
+ tests/ci_pipeline.test.mjs    | 504 ++++++++++++++++++----------------
+ 5 files changed, 603 insertions(+), 333 deletions(-)
+ create mode 100644 .github/workflows/nightly.yml
+
+diff --git a/.github/workflows/deploy.yml b/.github/workflows/deploy.yml
+index 5941afa..a377a97 100644
+--- a/.github/workflows/deploy.yml
++++ b/.github/workflows/deploy.yml
+@@ -1,148 +1,279 @@
+-name: Deploy
++name: ship
+ 
+-# One pipeline, one job, one responsibility: put the latest of everything on
+-# production. It runs on every push to main and every ten minutes, consolidates
+-# every other branch into main first (so nothing a parallel agent committed is
+-# left behind), builds the static export, deploys it, and reads the deployed
+-# commit back from the live page.
++# One workflow, one path to production (UX-C0-001, docs/uiux/DECISIONS.md D-002..D-007).
+ #
+-# It gates on nothing and it escalates nothing. Tests, lint, audits and
+-# Lighthouse live in checks.yml and report; they never sit between a commit and
+-# production. A branch that merges cleanly is merged and deleted; a branch that
+-# conflicts is merged anyway with the branch's newer change winning each
+-# conflicting hunk (-X theirs), so parallel agents working on the same files
+-# never stall the line — a wrong resolution is fixed forward in the next
+-# ten-minute cycle, not by stopping. A build that cannot compile is the only
+-# thing that stops a deploy, because then there is nothing to ship.
++#   branch ─► PR ─► gates (types · lint · static audit · node contract tests · build
++#                         · @smoke + axe e2e on out/ · Lighthouse budget)
++#          ─► Firebase preview channel (PR only)
++#          ─► squash-merge to main ─► deploy the gated out/ live ─► build-hash parity
++#          ─► @smoke on production ─► on failure: revert HEAD and push (redeploys)
++#
++# What was here before — merge every remote branch into main with the branch
++# winning each conflicting hunk, then deploy every ten minutes without a single
++# gate — is gone. The full Playwright suite, npm audit and the GPU frame-rate
++# harness live in nightly.yml and report without blocking the line.
+ 
+ on:
++  pull_request:
++    branches: [main]
+   push:
+-    branches: ["main"]
++    branches: [main]
+   schedule:
+-    - cron: "*/10 * * * *"
++    # Hourly release-train heartbeat: redeploy + verify only if live is not
++    # already serving main's HEAD (see the `skip` step).
++    - cron: "5 * * * *"
+   workflow_dispatch: {}
+ 
+-# Runs queue behind each other and never cancel a deploy in flight.
++# Runs on one ref queue behind each other; a deploy in flight is never cancelled.
+ concurrency:
+-  group: deploy-production
++  group: ship-${{ github.ref }}
+   cancel-in-progress: false
+ 
+ permissions:
+   contents: write
++  pull-requests: write
++  checks: write
++
++env:
++  PROD_URL: https://forgotten-mistory.web.app
++  FIREBASE_PROJECT_ID: forgotten-mistory
++  STATIC_PORT: "5599"
+ 
+ jobs:
+-  consolidate-and-deploy:
++  gates:
++    name: gates · types · lint · build · smoke+axe e2e · Lighthouse
+     runs-on: ubuntu-latest
+-    timeout-minutes: 20
++    timeout-minutes: 25
+     steps:
+       - uses: actions/checkout@v4
+         with:
+-          ref: main
+           fetch-depth: 0
++      - uses: actions/setup-node@v4
++        with:
++          node-version-file: .node-version
++          cache: npm
++      - run: npm ci
++      - run: npm ci --prefix functions
++      - run: npx tsc --noEmit
++      - run: npm run lint
++      - run: node scripts/validate/overhaul_static_audit.mjs
++      - run: node --test tests/ci_pipeline.test.mjs tests/static_audit_fail.test.mjs tests/github-telemetry.test.mjs tests/minivic_chat_function.test.mjs
++      # The build stamps <meta name="build-commit"> with HEAD only when the
++      # tracked tree is clean — a CI checkout always is, so the artifact built
++      # here carries this run's commit and is what `deploy` ships (D-002).
++      - run: npm run build:static
++      - run: npx playwright install --with-deps chromium
++      - name: Smoke + axe e2e against the static export, then the Lighthouse budget
++        run: |
++          set -euo pipefail
++          python3 -m http.server "$STATIC_PORT" --directory out --bind 127.0.0.1 >/dev/null 2>&1 &
++          for _ in $(seq 1 30); do curl -fsS "http://127.0.0.1:$STATIC_PORT/" >/dev/null 2>&1 && break; sleep 1; done
++          curl -fsS "http://127.0.0.1:$STATIC_PORT/" >/dev/null
++          PLAYWRIGHT_BASE_URL="http://127.0.0.1:$STATIC_PORT" npx playwright test --grep "@smoke|A11Y-"
++          npx @lhci/cli@0.14.x autorun --config=lighthouserc.json
++      - uses: actions/upload-artifact@v4
++        if: always()
++        with:
++          name: playwright-report
++          path: playwright-report/
++          include-hidden-files: true
++          if-no-files-found: ignore
++          retention-days: 7
++      - uses: actions/upload-artifact@v4
++        if: always()
++        with:
++          name: lighthouse-reports
++          path: .lighthouseci/reports/
++          include-hidden-files: true
++          if-no-files-found: ignore
++          retention-days: 7
++      - uses: actions/upload-artifact@v4
++        with:
++          name: out
++          path: out
++          include-hidden-files: true
++          retention-days: 3
+ 
+-      - name: Consolidate every branch into main
+-        id: consolidate
++  preview:
++    name: Firebase preview channel (PR)
++    if: github.event_name == 'pull_request'
++    needs: gates
++    runs-on: ubuntu-latest
++    timeout-minutes: 10
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/download-artifact@v4
++        with:
++          name: out
++          path: out
++      # Ship the artifact the gates passed, not a second build: firebase.json's
++      # predeploy rebuild is dropped for this workspace only (D-002).
++      - name: Use the gated export as-is
+         run: |
+           set -euo pipefail
+-          git config user.name "forgotten-mistory-deploy"
+-          git config user.email "deploy@forgotten-mistory.web.app"
+-          git fetch --prune origin
+-          merged=()
+-          forced=()
+-          for ref in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin/ | grep -vE '^origin(/(main|HEAD))?$'); do
+-            name="${ref#origin/}"
+-            if git merge --no-edit "$ref" -m "consolidate: merge $name into main"; then
+-              merged+=("$name")
+-            else
+-              # The branch carries the newer, intentional change: it wins every
+-              # conflicting hunk. Anything -X theirs cannot settle (add/add,
+-              # binary, delete/modify) is taken from the branch outright.
+-              git merge --abort
+-              if ! git merge --no-edit -X theirs "$ref" -m "consolidate: merge $name into main (branch wins conflicts)"; then
+-                git diff --name-only --diff-filter=U | while read -r f; do
+-                  if git cat-file -e "$ref:$f" 2>/dev/null; then git checkout --theirs -- "$f"; else git rm -q -- "$f"; fi
+-                done
+-                git add -A
+-                git -c core.editor=true commit --no-edit -m "consolidate: merge $name into main (branch wins conflicts)"
+-              fi
+-              forced+=("$name")
+-            fi
+-          done
+-          if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+-            git push origin HEAD:main
+-          fi
+-          for name in "${merged[@]}" "${forced[@]}"; do
+-            if ! git push origin --delete "$name"; then
+-              echo "::warning::merged $name but could not delete it on the remote"
+-            fi
+-          done
+-          {
+-            echo "## Consolidation"
+-            echo ""
+-            echo "- deploying: \`$(git rev-parse --short=8 HEAD)\`"
+-            echo "- merged cleanly and deleted: ${merged[*]:-none}"
+-            echo "- merged with the branch winning conflicts, then deleted: ${forced[*]:-none}"
+-          } >> "$GITHUB_STEP_SUMMARY"
+-          for name in "${forced[@]}"; do
+-            echo "::warning::branch $name conflicted with main; its hunks won — review the result in the next cycle"
+-          done
+-          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
++          jq 'del(.hosting.predeploy)' firebase.json > firebase.ship.json
++          mv firebase.ship.json firebase.json
++          test -f out/index.html
++      - uses: FirebaseExtended/action-hosting-deploy@v0
++        with:
++          repoToken: ${{ secrets.GITHUB_TOKEN }}
++          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
++          projectId: forgotten-mistory
++          expires: 2d
+ 
+-      - uses: actions/setup-node@v4
++  deploy:
++    name: deploy live · parity · smoke · rollback
++    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
++    needs: gates
++    runs-on: ubuntu-latest
++    timeout-minutes: 25
++    environment: production
++    steps:
++      - uses: actions/checkout@v4
+         with:
+-          node-version-file: .node-version
+-          cache: npm
++          fetch-depth: 2
++      - uses: actions/download-artifact@v4
++        with:
++          name: out
++          path: out
+ 
+-      # A branch merged above may have moved package.json ahead of the lockfile.
+-      # That must not stop the line: fall back to a plain install and say so.
+-      - name: Install dependencies
++      # The page is downloaded to a file and parsed from the file: piping curl
++      # into a parser that exits early gives curl EPIPE (exit 23) and turned a
++      # healthy deploy red once (run 33965475659). Never pipe curl here.
++      - name: Skip if live already serves HEAD (hourly heartbeat idempotency)
++        id: skip
+         run: |
+           set -euo pipefail
+-          if ! npm ci; then
+-            echo "::warning::npm ci failed (lockfile drift from a merged branch?) — installing from package.json"
+-            npm install --no-audit --no-fund
++          tmp="$(mktemp)"
++          trap 'rm -f "$tmp"' EXIT
++          live=""
++          if curl -fsS --max-time 20 -o "$tmp" "$PROD_URL/"; then
++            if raw="$(grep -m1 -o 'name="build-commit" content="[0-9a-f]*"' "$tmp")"; then
++              live="${raw##*content=\"}"
++              live="${live%\"}"
++            fi
++          fi
++          if [ -n "$live" ] && [[ "$GITHUB_SHA" == "$live"* ]]; then
++            echo "live already serves $live (HEAD $GITHUB_SHA) — nothing to deploy"
++            echo "skip=true" >> "$GITHUB_OUTPUT"
++          else
++            echo "live serves '${live:-nothing}', HEAD is ${GITHUB_SHA:0:8} — deploying"
++            echo "skip=false" >> "$GITHUB_OUTPUT"
+           fi
+ 
+-      # firebase.json declares `predeploy: npm run build:static`, so the deploy
+-      # command builds the export from this exact checkout and ships it. The
+-      # build stamps the page with the commit it was built from.
++      - name: Use the gated export as-is
++        if: steps.skip.outputs.skip != 'true'
++        run: |
++          set -euo pipefail
++          jq 'del(.hosting.predeploy)' firebase.json > firebase.ship.json
++          mv firebase.ship.json firebase.json
++          test -f out/index.html
++          grep -m1 -o 'name="build-commit" content="[0-9a-f]*"' out/index.html
++
+       - name: Deploy to Firebase Hosting (live)
++        if: steps.skip.outputs.skip != 'true'
+         uses: FirebaseExtended/action-hosting-deploy@v0
+         with:
++          repoToken: ${{ secrets.GITHUB_TOKEN }}
+           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+           projectId: forgotten-mistory
+           channelId: live
+ 
+-      # The page is downloaded to a file and parsed from the file. It used to be
+-      # piped straight into awk, which printed the first match and exited — that
+-      # closes the pipe under curl, curl dies with 23 ("Failure writing output to
+-      # destination"), and pipefail turns a healthy deploy into a red run (run
+-      # 33965475659 shipped 9ba97a5c to production and reported failure). The
+-      # result must depend on what the live page says, never on pipe timing, so
+-      # there is no pipe here at all: curl -o writes the file, grep -m1 reads it.
+-      - name: Verify the live page carries the deployed commit
++      - name: Build-hash parity
+         run: |
+           set -euo pipefail
+-          expected="${{ steps.consolidate.outputs.sha }}"
++          expected="$GITHUB_SHA"
+           tmp="$(mktemp)"
+           trap 'rm -f "$tmp"' EXIT
+           live=""
+           for _ in $(seq 1 12); do
+-            if curl -fsS --max-time 20 -o "$tmp" https://forgotten-mistory.web.app/; then
++            if curl -fsS --max-time 20 -H 'Cache-Control: no-cache' -o "$tmp" "$PROD_URL/?v=$expected"; then
+               live=""
+-              # A page without the meta is a miss, not an error: grep's exit
+-              # status is consumed by the `if`, so it never trips set -e.
+               if raw="$(grep -m1 -o 'name="build-commit" content="[0-9a-f]*"' "$tmp")"; then
+                 live="${raw##*content=\"}"
+                 live="${live%\"}"
+               fi
+               if [ -n "$live" ] && [[ "$expected" == "$live"* ]]; then
+-                echo "live page serves $live (HEAD $expected)"
++                echo "parity OK: live page serves $live (HEAD $expected)"
+                 echo "- verified live: \`$live\`" >> "$GITHUB_STEP_SUMMARY"
+                 exit 0
+               fi
+             fi
+             sleep 10
+           done
+-          echo "::error::live page serves '${live:-nothing}', expected ${expected:0:8}"
++          echo "::error::parity FAILED (live='${live:-nothing}', head=${expected:0:8})"
+           exit 1
++
++      - uses: actions/setup-node@v4
++        with:
++          node-version-file: .node-version
++          cache: npm
++      - name: Live smoke
++        run: |
++          set -euo pipefail
++          npm ci
++          npx playwright install --with-deps chromium
++          PLAYWRIGHT_BASE_URL="$PROD_URL" npx playwright test --grep @smoke
++
++      # A failed deploy/parity/smoke on a fresh main commit is undone by a revert
++      # commit, whose own push re-enters this workflow and redeploys the previous
++      # state. Two guards: a heartbeat that deployed nothing has nothing to
++      # revert, and a revert that itself fails must not revert the revert (D-007).
++      - name: Auto-rollback on failure
++        if: failure() && steps.skip.outputs.skip != 'true' && github.event_name == 'push'
++        run: |
++          set -euo pipefail
++          if git log -1 --format=%s | grep -q '^Revert '; then
++            echo "::error::HEAD is already a revert and still fails — stopping the rollback chain; fix forward"
++            exit 1
++          fi
++          git config user.name  "ship-bot"
++          git config user.email "ship-bot@users.noreply.github.com"
++          git revert --no-edit HEAD
++          git push origin HEAD:main
++          echo "- rolled back: reverted ${GITHUB_SHA:0:8} on main" >> "$GITHUB_STEP_SUMMARY"
++
++  # Cloud Functions ship only when their source (or the firebase.json that wires
++  # them) changed; UI/UX cycles are hosting-only deploys.
++  functions:
++    name: deploy Cloud Functions (only when functions/** changed)
++    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
++    needs: gates
++    runs-on: ubuntu-latest
++    timeout-minutes: 15
++    steps:
++      - uses: actions/checkout@v4
++        with:
++          fetch-depth: 0
++      - name: Did functions/** change in this push?
++        id: changed
++        run: |
++          set -euo pipefail
++          before="${{ github.event.before }}"
++          if [ -z "$before" ] || [[ "$before" =~ ^0+$ ]] || ! git cat-file -e "$before^{commit}" 2>/dev/null; then
++            before="$(git rev-parse HEAD~1)"
++          fi
++          if git diff --name-only "$before" "$GITHUB_SHA" -- functions firebase.json | grep -q .; then
++            echo "changed=true" >> "$GITHUB_OUTPUT"
++          else
++            echo "changed=false" >> "$GITHUB_OUTPUT"
++            echo "functions/** unchanged since $before — skipping"
++          fi
++      - if: steps.changed.outputs.changed == 'true'
++        uses: actions/setup-node@v4
++        with:
++          node-version-file: .node-version
++          cache: npm
++      - if: steps.changed.outputs.changed == 'true'
++        run: npm ci --prefix functions
++      - name: Deploy functions
++        if: steps.changed.outputs.changed == 'true'
++        env:
++          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
++        run: |
++          set -euo pipefail
++          umask 077
++          printf '%s' "$FIREBASE_SERVICE_ACCOUNT_JSON" > "$RUNNER_TEMP/sa.json"
++          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
++          npx firebase-tools@13 deploy --only functions --project "$FIREBASE_PROJECT_ID" --non-interactive --force
++          rm -f "$RUNNER_TEMP/sa.json"
+diff --git a/.github/workflows/nightly.yml b/.github/workflows/nightly.yml
+new file mode 100644
+index 0000000..3eba8bd
+--- /dev/null
++++ b/.github/workflows/nightly.yml
+@@ -0,0 +1,107 @@
++name: nightly
++
++# Evidence, not a gate (UX-C0-001, D-005). Everything here is too long, too
++# flaky or too hardware-bound for the critical path in deploy.yml (`ship`):
++# the full Playwright suite, npm audit, and the GPU frame-rate harness.
++# Nothing in `ship` waits on any of these jobs and none of them deploys.
++
++on:
++  schedule:
++    - cron: "0 3 * * *"
++  workflow_dispatch: {}
++
++permissions:
++  contents: read
++
++jobs:
++  e2e-full:
++    name: full Playwright suite against the static export
++    runs-on: ubuntu-latest
++    timeout-minutes: 60
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-node@v4
++        with:
++          node-version-file: .node-version
++          cache: npm
++      - run: npm ci
++      - run: npx playwright install --with-deps chromium
++      - run: npm run build:static
++      - name: Serve the export and run the whole suite
++        run: |
++          set -euo pipefail
++          python3 -m http.server 5599 --directory out --bind 127.0.0.1 &
++          for _ in $(seq 1 30); do curl -fsS http://127.0.0.1:5599/ >/dev/null 2>&1 && break; sleep 1; done
++          PLAYWRIGHT_BASE_URL=http://127.0.0.1:5599 npx playwright test
++      - uses: actions/upload-artifact@v4
++        if: always()
++        with:
++          name: playwright-report-full
++          path: playwright-report/
++          include-hidden-files: true
++          if-no-files-found: ignore
++          retention-days: 14
++
++  audit:
++    name: npm audit (high and critical)
++    runs-on: ubuntu-latest
++    timeout-minutes: 10
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-node@v4
++        with:
++          node-version-file: .node-version
++          cache: npm
++      - run: npm ci
++      - run: npm audit --audit-level=high
++
++  # ── Optional signal, on hardware GitHub does not rent ───────────────────────
++  # R2 asks for 60 fps and tests/perf/scene-framerate.spec.ts measures it, but
++  # every Linux host this project owns renders through SwiftShader. GPU-class
++  # confirmation (docs/architecture/SIGNATURE-SCENES-v1.md D7) needs the
++  # Owner's Mac, registered as a self-hosted runner and named by the repository
++  # variable E2E_RUNNER_LABELS — a JSON array of its labels.
++  #
++  # That Mac is offline most of the day. A self-hosted GPU job once sat in the
++  # deploy job's needs: chain and an absent runner left production stale, hence
++  # three independent guards — if: (never queued without the variable),
++  # continue-on-error (never turns the workflow red), timeout-minutes (never
++  # lingers) — and nothing in any workflow waits on it. All of this is enforced
++  # by tests/ci_pipeline.test.mjs.
++  scene-fps-gpu:
++    name: scene frame-rate on GPU hardware (optional signal)
++    if: ${{ vars.E2E_RUNNER_LABELS != '' }}
++    runs-on: "${{ fromJSON(vars.E2E_RUNNER_LABELS || '[\"self-hosted\"]') }}"
++    continue-on-error: true
++    timeout-minutes: 15
++    steps:
++      - uses: actions/checkout@v4
++      - uses: actions/setup-node@v4
++        with:
++          node-version-file: .node-version
++          cache: npm
++      - run: npm ci
++      # No --with-deps: that flag installs Linux system packages and fails on macOS.
++      - run: npx playwright install chromium
++      - run: npm run build:static
++      - name: Serve the export and measure every scene
++        run: |
++          set -euo pipefail
++          # A self-hosted runner is a shared machine; the port is discovered, not assumed.
++          port="$(python3 -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print(s.getsockname()[1]); s.close()')"
++          echo "serving out/ on 127.0.0.1:$port"
++          python3 -m http.server "$port" --directory out --bind 127.0.0.1 &
++          server=$!
++          trap 'kill "$server" 2>/dev/null || true' EXIT
++          for _ in $(seq 1 30); do curl -fsS "http://127.0.0.1:$port/" >/dev/null 2>&1 && break; sleep 1; done
++          # One worker: a frame-pacing median is only meaningful when nothing else competes for the GPU.
++          PLAYWRIGHT_BASE_URL="http://127.0.0.1:$port" \
++          SCENE_FPS_ARTEFACT_DIR="$GITHUB_WORKSPACE/artifacts/scene-fps" \
++            npx playwright test tests/perf/scene-framerate.spec.ts --workers=1
++      - uses: actions/upload-artifact@v4
++        if: always()
++        with:
++          name: scene-fps-gpu
++          path: artifacts/scene-fps/
++          if-no-files-found: warn
++          retention-days: 14
+diff --git a/.gitignore b/.gitignore
+index 1ea6fee..9abf95a 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -226,3 +226,7 @@ reports/static-audit.json
+ 
+ # Claude Code agent worktrees (created by the Workflow tool, never shipped)
+ .claude/worktrees/
++
++# UI/UX swarm: rendered copies of the markdown ledgers are never committed
++docs/uiux/*.pdf
++docs/uiux/*.docx
+diff --git a/lighthouserc.json b/lighthouserc.json
+index c3e64b0..9e0eb72 100644
+--- a/lighthouserc.json
++++ b/lighthouserc.json
+@@ -2,8 +2,7 @@
+   "ci": {
+     "collect": {
+       "url": [
+-        "http://127.0.0.1:3000/",
+-        "http://127.0.0.1:3000/performance-benchmark"
++        "http://127.0.0.1:5599/"
+       ],
+       "numberOfRuns": 3,
+       "settings": {
+@@ -13,7 +12,8 @@
+           "accessibility",
+           "best-practices",
+           "seo"
+-        ]
++        ],
++        "chromeFlags": "--no-sandbox --headless=new"
+       }
+     },
+     "assert": {
+diff --git a/tests/ci_pipeline.test.mjs b/tests/ci_pipeline.test.mjs
+index 3f0ee45..8c7d720 100644
+--- a/tests/ci_pipeline.test.mjs
++++ b/tests/ci_pipeline.test.mjs
+@@ -1,10 +1,12 @@
+ /**
+- * ci_pipeline.test.mjs — contract tests for the delivery pipeline.
++ * ci_pipeline.test.mjs — contract tests for the delivery pipeline (UX-C0-001).
+  *
+- * The contract, in one sentence: every ten minutes and on every push, main is
+- * consolidated with every other branch and deployed to production, and nothing
+- * in that path waits on a test, a lint, an audit or a Lighthouse run. Checks
+- * report in their own workflow and can never block a deploy.
++ * The contract, in one sentence: there is one path to production — a PR runs
++ * the gates and gets a preview channel; a squash-merge to main runs the same
++ * gates, deploys the gated export live, proves build-hash parity, smokes
++ * production and reverts itself on failure. Nothing merges branches on its own,
++ * nothing deploys more often than the hourly heartbeat, and the long or
++ * hardware-bound checks report from nightly.yml without ever gating a deploy.
+  *
+  * Usage:  node --test tests/ci_pipeline.test.mjs
+  */
+@@ -20,324 +22,350 @@ const yaml = require('js-yaml');
+ 
+ const ROOT = process.cwd();
+ const WORKFLOWS = join(ROOT, '.github', 'workflows');
+-const deployText = readFileSync(join(WORKFLOWS, 'deploy.yml'), 'utf8');
+-const checksText = readFileSync(join(WORKFLOWS, 'checks.yml'), 'utf8');
+-const deploy = yaml.load(deployText);
+-const checks = yaml.load(checksText);
++const shipText = readFileSync(join(WORKFLOWS, 'deploy.yml'), 'utf8');
++const nightlyText = readFileSync(join(WORKFLOWS, 'nightly.yml'), 'utf8');
++const ship = yaml.load(shipText);
++const nightly = yaml.load(nightlyText);
+ // js-yaml reads the bare `on:` key as boolean true.
+ const triggersOf = (doc) => doc.on ?? doc[true];
++const runsOf = (job) => (job.steps ?? []).map((s) => s.run || '').join('\n');
++const usesStep = (job, prefix) => (job.steps ?? []).find((s) => (s.uses || '').startsWith(prefix));
+ 
+-describe('the deploy pipeline is simple and autonomous', () => {
+-  it('is the only workflow that deploys, and there are exactly two workflows', () => {
++// A cron more frequent than hourly has a minute field that is not a single
++// literal minute: "*/10", "*", "0,30", "0-59" all fire more than once an hour.
++const firesMoreThanHourly = (cron) => !/^\d{1,2}\s/.test(String(cron).trim());
++
++describe('there is exactly one path to production', () => {
++  it('has exactly two workflows: ship (deploy.yml) and nightly', () => {
+     const files = readdirSync(WORKFLOWS).filter((f) => f.endsWith('.yml')).sort();
+-    assert.deepEqual(files, ['checks.yml', 'deploy.yml']);
+-    assert.ok(!/action-hosting-deploy|firebase deploy/.test(checksText), 'checks.yml must not deploy');
++    assert.deepEqual(files, ['deploy.yml', 'nightly.yml']);
++    assert.equal(ship.name, 'ship');
++    assert.ok(!/action-hosting-deploy|firebase deploy|firebase-tools/.test(nightlyText), 'nightly.yml must not deploy');
+   });
+ 
+-  it('runs on every push to main, every ten minutes, and on demand', () => {
+-    const on = triggersOf(deploy);
++  it('runs on PRs to main, pushes to main, an hourly heartbeat and on demand', () => {
++    const on = triggersOf(ship);
++    assert.deepEqual(on.pull_request.branches, ['main']);
+     assert.deepEqual(on.push.branches, ['main']);
+-    assert.ok(Array.isArray(on.schedule) && on.schedule.some((s) => s.cron === '*/10 * * * *'), 'ten-minute schedule missing');
+     assert.ok('workflow_dispatch' in on, 'workflow_dispatch missing');
++    assert.ok(Array.isArray(on.schedule) && on.schedule.length > 0, 'the hourly heartbeat is missing');
++  });
++
++  it('never schedules anything more often than hourly, in any workflow', () => {
++    for (const [file, doc] of [['deploy.yml', ship], ['nightly.yml', nightly]]) {
++      for (const entry of triggersOf(doc).schedule ?? []) {
++        assert.ok(!firesMoreThanHourly(entry.cron), `${file} cron "${entry.cron}" fires more than once an hour`);
++      }
++    }
++  });
++
++  it('never merges other branches into main on its own', () => {
++    for (const [file, text] of [['deploy.yml', shipText], ['nightly.yml', nightlyText]]) {
++      assert.ok(!/-X theirs/.test(text), `${file} must not force-resolve merges (-X theirs)`);
++      assert.ok(!/checkout --theirs/.test(text), `${file} must not take conflicting hunks from a branch`);
++      assert.ok(!/for-each-ref[^\n]*refs\/remotes/.test(text), `${file} must not enumerate and merge remote branches`);
++      assert.ok(!/git merge/.test(text), `${file} must not merge anything`);
++      assert.ok(!/git push origin --delete/.test(text), `${file} must not delete branches`);
++    }
++  });
++
++  it('queues runs per ref and never cancels a deploy in flight; can push a revert', () => {
++    assert.equal(ship.concurrency['cancel-in-progress'], false);
++    assert.ok(/^ship-/.test(String(ship.concurrency.group)), 'concurrency group is per ref (ship-<ref>)');
++    assert.equal(ship.permissions.contents, 'write');
++    assert.equal(ship.permissions['pull-requests'], 'write');
++  });
++});
++
++describe('the gates job is the single quality gate', () => {
++  const gates = ship.jobs.gates;
++
++  it('exists and every deploying job needs it', () => {
++    assert.ok(gates, 'deploy.yml must carry a "gates" job');
++    for (const name of ['preview', 'deploy', 'functions']) {
++      const job = ship.jobs[name];
++      assert.ok(job, `deploy.yml must carry a "${name}" job`);
++      assert.ok([].concat(job.needs ?? []).includes('gates'), `"${name}" must need "gates"`);
++    }
++  });
++
++  it('checks types, lint, the static audit, the node contract tests, builds, runs @smoke + axe e2e and the Lighthouse budget', () => {
++    const runs = gates.steps.map((s) => (s.run || '').trim());
++    const joined = runs.join('\n');
++    assert.ok(runs.includes('npm ci'), 'gates must run "npm ci"');
++    assert.ok(runs.includes('npm ci --prefix functions'), 'gates must install the functions tree before the node tests');
++    assert.ok(runs.indexOf('npm ci') < runs.indexOf('npm ci --prefix functions'));
++    assert.ok(runs.indexOf('npm ci --prefix functions') < runs.findIndex((r) => /^node --test /.test(r)));
++    assert.ok(/tsc --noEmit/.test(joined));
++    assert.ok(/npm run lint/.test(joined));
++    assert.ok(/overhaul_static_audit\.mjs/.test(joined));
++    assert.ok(/ci_pipeline\.test\.mjs/.test(joined));
++    assert.ok(/npm run build:static/.test(joined));
++    assert.ok(/playwright install --with-deps chromium/.test(joined));
++    assert.ok(/PLAYWRIGHT_BASE_URL=[^\n]*npx playwright test --grep "@smoke\|A11Y-"/.test(joined), 'e2e on out/ runs the @smoke and axe (A11Y-) specs');
++    assert.ok(/@lhci\/cli[^\n]* autorun --config=lighthouserc\.json/.test(joined), 'Lighthouse budget missing');
++    // The build precedes the e2e, and the e2e precedes the Lighthouse run.
++    assert.ok(joined.indexOf('npm run build:static') < joined.indexOf('npx playwright test'));
++    assert.ok(joined.indexOf('npx playwright test') < joined.indexOf('@lhci/cli'));
++  });
++
++  it('serves the export on a port lighthouserc.json points at, waiting for it without wait-on', () => {
++    const lhrc = JSON.parse(readFileSync(join(ROOT, 'lighthouserc.json'), 'utf8'));
++    const urls = lhrc.ci.collect.url;
++    assert.ok(Array.isArray(urls) && urls.length > 0);
++    for (const u of urls) assert.ok(/^http:\/\/127\.0\.0\.1:5599\//.test(u), `lighthouserc url ${u} must target the served export`);
++    assert.ok(!urls.some((u) => /performance-benchmark/.test(u)), 'no route that the static export does not contain');
++    const runs = runsOf(gates);
++    assert.ok(/python3 -m http\.server "\$STATIC_PORT"/.test(runs), 'the export is served by python3 http.server');
++    assert.equal(ship.env.STATIC_PORT, '5599');
++    assert.ok(/curl -fsS "http:\/\/127\.0\.0\.1:\$STATIC_PORT\/"/.test(runs), 'readiness is polled with curl');
++    assert.ok(!/wait-on/.test(shipText), 'wait-on is not a dependency of this project');
++  });
++
++  it('uploads the export it tested for the deploying jobs, with hidden files, short-lived', () => {
++    const upload = gates.steps.find((s) => (s.uses || '').startsWith('actions/upload-artifact') && s.with?.name === 'out');
++    assert.ok(upload, 'gates must upload the "out" artifact');
++    assert.equal(upload.with.path, 'out');
++    assert.equal(upload.with['include-hidden-files'], true);
++    assert.ok(Number(upload.with['retention-days']) <= 3);
++    for (const name of ['preview', 'deploy']) {
++      const dl = usesStep(ship.jobs[name], 'actions/download-artifact');
++      assert.ok(dl && dl.with.name === 'out' && dl.with.path === 'out', `"${name}" must download the gated "out" artifact`);
++    }
+   });
+ 
+-  it('has one job with no needs on any check', () => {
+-    const jobs = Object.keys(deploy.jobs);
+-    assert.deepEqual(jobs, ['consolidate-and-deploy']);
+-    assert.equal(deploy.jobs['consolidate-and-deploy'].needs, undefined);
+-    for (const banned of ['quality', 'lint', 'test', 'lighthouse', 'axe', 'audit', 'build', 'preview']) {
+-      assert.ok(!(banned in deploy.jobs), `deploy.yml must not carry a "${banned}" job`);
++  it('never weakens itself', () => {
++    assert.ok(!/continue-on-error/.test(shipText), 'no continue-on-error anywhere in the ship path');
++    assert.ok(!/\|\|\s*true\b/.test(shipText), 'no "|| true" after a command');
++    assert.ok(!/npm install/.test(shipText), 'a lockfile that does not resolve is a red gate, not a fallback');
++    for (const [name, job] of Object.entries(ship.jobs)) {
++      assert.ok(!('continue-on-error' in job), `ship job "${name}" cannot fail, so it proves nothing`);
+     }
+   });
++});
++
++describe('preview and deploy ship the gated export', () => {
++  const preview = ship.jobs.preview;
++  const deploy = ship.jobs.deploy;
+ 
+-  it('consolidates every remote branch into main before deploying, resolves conflicts itself, and deletes what it merged', () => {
+-    const run = deploy.jobs['consolidate-and-deploy'].steps.find((s) => s.id === 'consolidate').run;
+-    assert.ok(/git fetch --prune origin/.test(run));
+-    assert.ok(/for-each-ref[^\n]*refs\/remotes\/origin/.test(run), 'must enumerate every remote branch');
+-    assert.ok(/grep -vE '\^origin\(\/\(main\|HEAD\)\)\?\$'/.test(run), 'must skip main and the origin/HEAD pointer (which shortens to "origin")');
+-    assert.ok(/git merge --no-edit "\$ref"/.test(run), 'must merge each branch');
+-    assert.ok(/git merge --no-edit -X theirs "\$ref"/.test(run), 'a conflicting branch is still merged, the branch winning each hunk');
+-    assert.ok(/git checkout --theirs -- "\$f"/.test(run), 'what -X theirs cannot settle is taken from the branch');
+-    assert.ok(!/skipped/.test(run), 'no branch is ever skipped or escalated');
+-    assert.ok(/git push origin HEAD:main/.test(run), 'must push the consolidated main');
+-    assert.ok(/git push origin --delete "\$name"/.test(run), 'must delete a branch it merged');
++  it('preview runs only for pull requests and deploys a short-lived channel', () => {
++    assert.match(String(preview.if), /pull_request/);
++    const fb = usesStep(preview, 'FirebaseExtended/action-hosting-deploy');
++    assert.ok(fb, 'preview must deploy a Firebase preview channel');
++    assert.equal(fb.with.projectId, 'forgotten-mistory');
++    assert.equal(fb.with.firebaseServiceAccount, '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}');
++    assert.equal(fb.with.repoToken, '${{ secrets.GITHUB_TOKEN }}');
++    assert.equal(fb.with.channelId, undefined, 'preview must never target the live channel');
++    assert.match(String(fb.with.expires), /^\d+d$/);
+   });
+ 
+-  it('deploys with the Firebase service account to the live channel and reads the commit back', () => {
+-    const steps = deploy.jobs['consolidate-and-deploy'].steps;
+-    const fb = steps.find((s) => (s.uses || '').startsWith('FirebaseExtended/action-hosting-deploy'));
+-    assert.ok(fb, 'Firebase hosting deploy step missing');
++  it('deploy runs only on main and never for a pull request', () => {
++    assert.match(String(deploy.if), /refs\/heads\/main/);
++    assert.match(String(deploy.if), /!= 'pull_request'/);
++    assert.equal(deploy.environment, 'production');
++  });
++
++  it('both drop the predeploy rebuild so what was gated is what ships (D-002)', () => {
++    const firebase = JSON.parse(readFileSync(join(ROOT, 'firebase.json'), 'utf8'));
++    assert.ok(Array.isArray(firebase.hosting.predeploy), 'firebase.json still carries predeploy for hand deploys');
++    for (const [name, job] of [['preview', preview], ['deploy', deploy]]) {
++      assert.ok(/jq 'del\(\.hosting\.predeploy\)' firebase\.json/.test(runsOf(job)), `"${name}" must strip hosting.predeploy from its workspace copy`);
++      assert.ok(/test -f out\/index\.html/.test(runsOf(job)), `"${name}" must refuse to deploy an empty export`);
++    }
++  });
++
++  it('deploy ships to the live channel with the existing secret', () => {
++    const fb = usesStep(deploy, 'FirebaseExtended/action-hosting-deploy');
++    assert.ok(fb, 'live deploy step missing');
+     assert.equal(fb.with.channelId, 'live');
+     assert.equal(fb.with.projectId, 'forgotten-mistory');
+     assert.equal(fb.with.firebaseServiceAccount, '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}');
+-    const verify = steps[steps.length - 1];
+-    assert.ok(/build-commit/.test(verify.run), 'the last step verifies the live build-commit meta');
+-    assert.ok(/exit 1/.test(verify.run), 'a mismatch is reported as a failure, not swallowed');
++    assert.ok(!/secrets\.FIREBASE_TOKEN/.test(shipText), 'no invented secret names');
+   });
+ 
+-  // Deploy run 33965475659 shipped 9ba97a5c to production and then reported a
+-  // failure: the verify step read `live="$(curl … | awk '…; exit')"`, and under
+-  // `set -euo pipefail` awk's early `exit` closes the pipe while curl is still
+-  // writing, so curl dies with 23 ("Failure writing output to destination") and
+-  // takes the whole step — and a healthy deploy — down with it. The check has to
+-  // be deterministic: curl writes the page to a file, the file is parsed
+-  // afterwards, and nothing about the result depends on pipe timing.
+-  it('verifies the live commit without piping curl into a parser (curl exit 23 / EPIPE)', () => {
+-    const steps = deploy.jobs['consolidate-and-deploy'].steps;
+-    const verify = steps[steps.length - 1];
+-    const run = verify.run;
+-
+-    assert.ok(/set -euo pipefail/.test(run), 'the verify step still runs under set -euo pipefail');
+-    assert.ok(
+-      !/curl[^\n]*\|/.test(run),
+-      'curl must not pipe into a parser: a parser that exits early gives curl EPIPE (exit 23) and fails a healthy deploy'
+-    );
+-    assert.ok(
+-      /curl -fsS --max-time 20 -o "\$tmp"/.test(run),
+-      'curl writes the live page to a file with -o instead of to a pipe'
+-    );
+-    assert.ok(/tmp="?\$\(mktemp\)"?/.test(run), 'the response file comes from mktemp');
+-    assert.ok(
+-      /(grep|sed|awk)[^\n]*"\$tmp"/.test(run),
+-      'the build-commit meta is parsed out of the downloaded file, not out of a stream'
+-    );
+-
+-    // Semantics the fix must preserve, exactly as they were.
+-    assert.ok(/for _ in \$\(seq 1 12\); do/.test(run), 'still twelve attempts');
+-    assert.ok(/sleep 10/.test(run), 'still ten seconds between attempts');
+-    assert.ok(
+-      /\[\[ "\$expected" == "\$live"\* \]\]/.test(run),
+-      'still an exact prefix match of the deployed sha against the live short sha'
+-    );
+-    assert.ok(/exit 0/.test(run), 'a match still succeeds');
+-    assert.ok(/exit 1/.test(run), 'exhausting the retries still fails the step');
+-    assert.ok(
+-      !/\|\|\s*(true|:)\b/.test(run) && !/\bset \+e\b/.test(run),
+-      'a real mismatch is never masked'
+-    );
++  it('is idempotent for the hourly heartbeat: skips when live already serves HEAD', () => {
++    const skip = deploy.steps.find((s) => s.id === 'skip');
++    assert.ok(skip, 'the skip step must exist with id: skip');
++    assert.ok(/build-commit/.test(skip.run));
++    assert.ok(/skip=true/.test(skip.run) && /skip=false/.test(skip.run));
++    const fb = usesStep(deploy, 'FirebaseExtended/action-hosting-deploy');
++    assert.equal(fb.if, "steps.skip.outputs.skip != 'true'");
+   });
+ 
+-  it('can push (contents: write), queues runs and never cancels a deploy in flight', () => {
+-    assert.equal(deploy.permissions.contents, 'write');
+-    assert.equal(deploy.concurrency['cancel-in-progress'], false);
++  it('proves build-hash parity after deploying, from a downloaded file, twelve times ten seconds', () => {
++    const parity = deploy.steps.find((s) => s.name === 'Build-hash parity');
++    assert.ok(parity, 'parity step missing');
++    const run = parity.run;
++    assert.ok(/set -euo pipefail/.test(run));
++    assert.ok(!/curl[^\n]*\|/.test(run), 'curl must not pipe into a parser (EPIPE / exit 23)');
++    assert.ok(/curl -fsS --max-time 20 [^\n]*-o "\$tmp"/.test(run), 'curl writes the live page to a file');
++    assert.ok(/tmp="?\$\(mktemp\)"?/.test(run));
++    assert.ok(/grep -m1 -o 'name="build-commit" content="\[0-9a-f\]\*"' "\$tmp"/.test(run), 'reads the build-commit meta from the file');
++    assert.ok(/for _ in \$\(seq 1 12\); do/.test(run));
++    assert.ok(/sleep 10/.test(run));
++    assert.ok(/\[\[ "\$expected" == "\$live"\* \]\]/.test(run), 'exact prefix match of HEAD against the live short sha');
++    assert.ok(/exit 0/.test(run) && /exit 1/.test(run));
++    assert.ok(!/\|\|\s*(true|:)\b/.test(run) && !/\bset \+e\b/.test(run), 'a real mismatch is never masked');
++    // Order: deploy → parity → live smoke → rollback.
++    const names = deploy.steps.map((s) => s.name || s.uses || '');
++    const iDeploy = names.findIndex((n) => /action-hosting-deploy/.test(n) || n === 'Deploy to Firebase Hosting (live)');
++    assert.ok(iDeploy < names.indexOf('Build-hash parity'));
++    assert.ok(names.indexOf('Build-hash parity') < names.indexOf('Live smoke'));
++    assert.ok(names.indexOf('Live smoke') < names.indexOf('Auto-rollback on failure'));
+   });
+ 
+-  it('never weakens itself', () => {
+-    assert.ok(!/continue-on-error/.test(deployText), 'no continue-on-error in the deploy path');
+-    assert.ok(!/\|\|\s*true/.test(deployText), 'no "|| true" after a command');
+-    assert.ok(/if ! npm ci; then/.test(deployText), 'lockfile drift from a merged branch falls back to npm install instead of stopping the line');
++  it('smokes production with the @smoke subset and rolls back with a revert on failure', () => {
++    const smoke = deploy.steps.find((s) => s.name === 'Live smoke');
++    assert.ok(/PLAYWRIGHT_BASE_URL="\$PROD_URL" npx playwright test --grep @smoke/.test(smoke.run));
++    assert.equal(ship.env.PROD_URL, 'https://forgotten-mistory.web.app');
++    const rollback = deploy.steps[deploy.steps.length - 1];
++    assert.equal(rollback.name, 'Auto-rollback on failure');
++    assert.match(String(rollback.if), /^failure\(\)/);
++    assert.match(String(rollback.if), /steps\.skip\.outputs\.skip != 'true'/, 'a heartbeat that deployed nothing has nothing to revert');
++    assert.ok(/git revert --no-edit HEAD/.test(rollback.run));
++    assert.ok(/git push origin HEAD:main/.test(rollback.run));
++    assert.ok(!/--force/.test(rollback.run) && !/push -f/.test(rollback.run), 'never force-push');
++    assert.ok(/\^Revert /.test(rollback.run), 'a failing revert must not revert the revert (no rollback chain)');
+   });
+ });
+ 
+-describe('checks report and never gate', () => {
+-  it('run on every push and carry no deploy step', () => {
+-    const on = triggersOf(checks);
+-    assert.deepEqual(on.push.branches, ['**']);
+-    for (const [name, job] of Object.entries(checks.jobs)) {
+-      assert.equal(job.needs, undefined, 'checks jobs do not chain');
+-      // One narrow exemption, and only one: a job that runs on hardware GitHub
+-      // does not host — the Owner's Mac, addressed by vars.E2E_RUNNER_LABELS.
+-      // That runner is offline most of the day, and a queued-then-cancelled job
+-      // on an absent runner must not turn the workflow red for everyone else.
+-      // Every job on a GitHub-hosted runner still has to be able to fail.
++describe('Cloud Functions deploy only when functions/** changed', () => {
++  const fn = ship.jobs.functions;
++
++  it('runs only on pushes to main and is path-filtered inside the job', () => {
++    assert.match(String(fn.if), /refs\/heads\/main/);
++    assert.match(String(fn.if), /== 'push'/);
++    const detect = fn.steps.find((s) => s.id === 'changed');
++    assert.ok(detect, 'change detection step missing');
++    assert.ok(/git diff --name-only [^\n]* -- functions firebase\.json/.test(detect.run));
++    const deployStep = fn.steps.find((s) => s.name === 'Deploy functions');
++    assert.equal(deployStep.if, "steps.changed.outputs.changed == 'true'");
++    assert.ok(/deploy --only functions/.test(deployStep.run));
++    assert.ok(!/echo[^\n]*FIREBASE_SERVICE_ACCOUNT/.test(shipText), 'the service account is never echoed');
++  });
++});
++
++describe('nightly reports and never gates', () => {
++  it('runs on a daily schedule and on demand, carries no deploy, and its jobs do not chain', () => {
++    const on = triggersOf(nightly);
++    assert.ok(Array.isArray(on.schedule) && on.schedule.length === 1);
++    assert.ok('workflow_dispatch' in on);
++    assert.equal(on.push, undefined, 'nightly must not run on push');
++    assert.equal(on.pull_request, undefined, 'nightly must not run on pull requests');
++    for (const [name, job] of Object.entries(nightly.jobs)) {
++      assert.equal(job.needs, undefined, `nightly job "${name}" must not chain`);
+       const optional = typeof job.if === 'string' && /vars\.E2E_RUNNER_LABELS/.test(job.if);
+       if (optional) {
+-        assert.equal(
+-          job['continue-on-error'],
+-          true,
+-          `checks.yml job "${name}" is gated on a self-hosted runner and must carry continue-on-error: true`
+-        );
++        assert.equal(job['continue-on-error'], true, `"${name}" is gated on a self-hosted runner and must carry continue-on-error: true`);
+       } else {
+-        assert.ok(!('continue-on-error' in job), `checks.yml job "${name}" cannot fail, so it proves nothing`);
++        assert.ok(!('continue-on-error' in job), `nightly job "${name}" cannot fail, so it proves nothing`);
+       }
+     }
+   });
+ 
+-  it('cover types, lint, the static audit, the node contract tests, the Playwright suite and npm audit', () => {
+-    assert.ok(/tsc --noEmit/.test(checksText));
+-    assert.ok(/npm run lint/.test(checksText));
+-    assert.ok(/overhaul_static_audit\.mjs/.test(checksText));
+-    assert.ok(/ci_pipeline\.test\.mjs/.test(checksText));
+-    assert.ok(/npx playwright test/.test(checksText));
+-    assert.ok(/npm audit --audit-level=high/.test(checksText));
+-  });
+-
+-  it('installs the Cloud Functions dependencies before the node contract tests run', () => {
+-    // tests/minivic_chat_function.test.mjs imports functions/index.js, which requires
+-    // firebase-functions/v2/https from functions/node_modules. The root `npm ci` does not
+-    // install that tree, so the static job has to install it itself or the contract
+-    // tests fail in CI with "Cannot find module" while passing on any machine that has
+-    // run `npm ci --prefix functions` by hand.
+-    const runs = checks.jobs.static.steps.map((s) => (s.run || '').trim());
+-    const rootInstall = runs.indexOf('npm ci');
+-    const functionsInstall = runs.indexOf('npm ci --prefix functions');
+-    const nodeTests = runs.findIndex((r) => /^node --test /.test(r));
+-    assert.ok(rootInstall !== -1, 'static job must run "npm ci"');
+-    assert.ok(functionsInstall !== -1, 'static job must run "npm ci --prefix functions"');
+-    assert.ok(nodeTests !== -1, 'static job must run the node contract tests');
+-    assert.ok(rootInstall < functionsInstall, '"npm ci --prefix functions" follows the root "npm ci"');
+-    assert.ok(functionsInstall < nodeTests, 'functions deps are installed before "node --test" runs');
+-    assert.ok(
+-      checksText.indexOf('npm ci --prefix functions') < checksText.indexOf('node --test'),
+-      'in the file text too, the functions install precedes the node tests'
+-    );
+-  });
+-
+-  it('uploads hidden report directories (upload-artifact v4 skips dot-paths by default)', () => {
+-    const e2e = checks.jobs.e2e.steps.find((s) => (s.uses || '').startsWith('actions/upload-artifact'));
+-    assert.ok(e2e, 'playwright report upload missing');
+-    assert.equal(e2e.with['include-hidden-files'], true);
++  it('covers the full Playwright suite and npm audit, uploading hidden report directories', () => {
++    assert.ok(/npx playwright test\s*$/m.test(nightlyText), 'the whole suite runs nightly, ungrepped');
++    assert.ok(/npm audit --audit-level=high/.test(nightlyText));
++    const upload = usesStep(nightly.jobs['e2e-full'], 'actions/upload-artifact');
++    assert.ok(upload, 'playwright report upload missing');
++    assert.equal(upload.with['include-hidden-files'], true);
+   });
+ });
+ 
+ // ── Generated artifacts stay out of the tree ────────────────────────────────
+ // scripts/validate/overhaul_static_audit.mjs rewrites reports/static-audit.json on every
+-// run — a fresh timestamp and this build's numbers. While that file was tracked, every
+-// lane committed its own version and every consolidation conflicted on it, which
+-// deploy.yml settled with `-X theirs` / `git checkout --theirs` (843b679d, "merge
+-// worktree-wf_b908a7a9-f5d-2 into main (branch wins conflicts)"). A forced merge is a
+-// standing risk: any *real* conflict riding along in the same merge is silently given to
+-// the branch too. Nothing reads the committed copy — tests/static_audit_fail.test.mjs
+-// runs the audit itself and then reads what that run wrote, and checks.yml uploads only
+-// playwright-report/ — so the file is a build artifact and belongs outside git.
++// run. Nothing reads the committed copy — tests/static_audit_fail.test.mjs runs the
++// audit itself and then reads what that run wrote — so the file is a build artifact
++// and belongs outside git.
+ describe('the generated static-audit report is a build artifact, not a tracked file', () => {
+   const REPORT = 'reports/static-audit.json';
+   const git = (...args) => spawnSync('git', args, { cwd: ROOT, encoding: 'utf8' });
+ 
+-  it('is not tracked, so no consolidation ever has to force-resolve it', () => {
+-    assert.notEqual(
+-      git('ls-files', '--error-unmatch', REPORT).status,
+-      0,
+-      `${REPORT} is tracked — every lane rewrites it, so every merge conflicts on it`
+-    );
++  it('is not tracked', () => {
++    assert.notEqual(git('ls-files', '--error-unmatch', REPORT).status, 0, `${REPORT} is tracked`);
+     assert.equal(git('ls-files', '--', REPORT).stdout.trim(), '', `git ls-files still lists ${REPORT}`);
+   });
+ 
+   it('is ignored, so running the audit never dirties the working tree', () => {
+     assert.equal(git('check-ignore', '-q', '--no-index', REPORT).status, 0, `${REPORT} is not covered by .gitignore`);
+-    assert.ok(
+-      readFileSync(join(ROOT, '.gitignore'), 'utf8').includes(REPORT),
+-      '.gitignore should name the path outright, so the reason is readable where the rule lives'
+-    );
++    assert.ok(readFileSync(join(ROOT, '.gitignore'), 'utf8').includes(REPORT));
+   });
+ 
+-  it('is still written by the audit, which creates reports/ first (a clean checkout has no such directory)', () => {
++  it('is still written by the audit, which creates reports/ first', () => {
+     const audit = readFileSync(join(ROOT, 'scripts', 'validate', 'overhaul_static_audit.mjs'), 'utf8');
+     const mkdir = audit.indexOf('mkdirSync(REPORT_DIR, { recursive: true })');
+     const write = audit.indexOf("writeFileSync(join(REPORT_DIR, 'static-audit.json')");
+-    assert.ok(mkdir !== -1, 'the audit must mkdir -p its report directory');
+-    assert.ok(write !== -1, 'the audit must still write reports/static-audit.json');
+-    assert.ok(mkdir < write, 'the directory is created before the report is written into it');
++    assert.ok(mkdir !== -1 && write !== -1 && mkdir < write);
+   });
+ 
+-  it('is uploaded tolerantly if CI uploads it at all — an untracked artifact can legitimately be absent', () => {
+-    for (const [name, job] of Object.entries(checks.jobs)) {
+-      for (const step of job.steps ?? []) {
+-        if (!(step.uses || '').startsWith('actions/upload-artifact')) continue;
+-        if (!/\breports\b/.test(step.with?.path ?? '')) continue;
+-        assert.notEqual(
+-          step.with['if-no-files-found'],
+-          'error',
+-          `checks.yml job "${name}" uploads reports/ and fails when the artifact is missing`
+-        );
++  it('is uploaded tolerantly if CI uploads it at all', () => {
++    for (const [file, doc] of [['deploy.yml', ship], ['nightly.yml', nightly]]) {
++      for (const [name, job] of Object.entries(doc.jobs)) {
++        for (const step of job.steps ?? []) {
++          if (!(step.uses || '').startsWith('actions/upload-artifact')) continue;
++          if (!/\breports\b/.test(step.with?.path ?? '')) continue;
++          assert.notEqual(step.with['if-no-files-found'], 'error', `${file} job "${name}" fails when reports/ is missing`);
++        }
+       }
+     }
+   });
+ });
+ 
+ // ── The GPU-class frame-rate confirmation (SIGNATURE-SCENES-v1 D7) ──────────
+-// tests/perf/scene-framerate.spec.ts measures R2's 60 fps clause on this VPS,
+-// which has no GPU: every number it prints is a SwiftShader number and says so.
+-// The GPU-class confirmation therefore has to run somewhere with a real GPU —
+-// the Owner's self-hosted Mac — and that machine is offline most of the day.
+-//
+-// The repository has already paid for getting this wrong once: PR#4 gated the
+-// deploy on a self-hosted GPU runner, and when the Mac was off the deploy job
+-// queued forever and production went stale. So the shape below is not a style
+-// preference, it is the fix: the job is skipped outright unless the labels are
+-// configured, it can never fail the workflow, it is capped at fifteen minutes,
+-// and nothing — in either workflow — is allowed to wait on it.
++// The job is skipped unless the self-hosted labels are configured, can never
++// fail the workflow, is capped at fifteen minutes, and nothing in any workflow
++// waits on it — PR#4 once gated a deploy on the Owner's Mac and production went
++// stale while it was off.
+ describe('the GPU-class scene frame-rate job is optional signal and can never gate a deploy (D7)', () => {
+   const JOB = 'scene-fps-gpu';
+-  const job = checks.jobs?.[JOB];
+-  const gitcmd = (...args) => spawnSync('git', args, { cwd: ROOT, encoding: 'utf8' });
++  const job = nightly.jobs?.[JOB];
+ 
+-  it('exists in checks.yml and is unknown to deploy.yml', () => {
+-    assert.ok(job, `checks.yml must carry a "${JOB}" job`);
+-    assert.ok(!deployText.includes(JOB), `deploy.yml must never mention "${JOB}"`);
++  it('exists in nightly.yml and is unknown to deploy.yml', () => {
++    assert.ok(job, `nightly.yml must carry a "${JOB}" job`);
++    assert.ok(!shipText.includes(JOB), `deploy.yml must never mention "${JOB}"`);
+   });
+ 
+   it('is skipped entirely unless the self-hosted runner labels are configured', () => {
+-    assert.equal(typeof job.if, 'string', `"${JOB}" must carry an if: guard`);
+-    assert.ok(/vars\.E2E_RUNNER_LABELS/.test(job.if), 'the guard reads the E2E_RUNNER_LABELS repo variable');
+-    assert.ok(/!=\s*''/.test(job.if), "an unset variable ('' by GitHub's rules) skips the job");
+-    assert.ok(
+-      /fromJSON\(\s*vars\.E2E_RUNNER_LABELS/.test(String(job['runs-on'])),
+-      'runs-on takes its labels from the same variable, so the job cannot target a runner that was never named'
+-    );
++    assert.equal(typeof job.if, 'string');
++    assert.ok(/vars\.E2E_RUNNER_LABELS/.test(job.if));
++    assert.ok(/!=\s*''/.test(job.if));
++    assert.ok(/fromJSON\(\s*vars\.E2E_RUNNER_LABELS/.test(String(job['runs-on'])));
+   });
+ 
+   it('cannot fail the workflow and cannot sit in the queue indefinitely', () => {
+-    assert.equal(job['continue-on-error'], true, 'an absent Mac must not turn Checks red');
++    assert.equal(job['continue-on-error'], true);
+     const cap = job['timeout-minutes'];
+-    assert.ok(
+-      Number.isInteger(cap) && cap > 0 && cap <= 15,
+-      `timeout-minutes must be a positive integer <= 15, got ${cap}`
+-    );
++    assert.ok(Number.isInteger(cap) && cap > 0 && cap <= 15, `timeout-minutes must be a positive integer <= 15, got ${cap}`);
+   });
+ 
+   it('is in no needs: chain in either workflow', () => {
+-    for (const [file, doc] of [['checks.yml', checks], ['deploy.yml', deploy]]) {
++    for (const [file, doc] of [['nightly.yml', nightly], ['deploy.yml', ship]]) {
+       for (const [name, other] of Object.entries(doc.jobs)) {
+         const needs = other.needs === undefined ? [] : [].concat(other.needs);
+-        assert.ok(!needs.includes(JOB), `${file} job "${name}" waits on "${JOB}" — that is the PR#4 deploy hang`);
++        assert.ok(!needs.includes(JOB), `${file} job "${name}" waits on "${JOB}"`);
+       }
+     }
+   });
+ 
+   it('builds the export, serves it on a port it discovers, and runs the harness single-worker', () => {
+     const steps = job.steps ?? [];
+-    const runs = steps.map((s) => s.run || '').join('\n');
+-    assert.ok(steps.some((s) => (s.uses || '').startsWith('actions/checkout')), 'must check the repo out');
+-    const setup = steps.find((s) => (s.uses || '').startsWith('actions/setup-node'));
+-    assert.ok(setup, 'must set up node');
+-    assert.equal(setup.with['node-version-file'], '.node-version', 'the node version comes from .node-version');
++    const runs = runsOf(job);
++    assert.ok(steps.some((s) => (s.uses || '').startsWith('actions/checkout')));
++    const setup = usesStep(job, 'actions/setup-node');
++    assert.equal(setup.with['node-version-file'], '.node-version');
+     assert.equal(setup.with.cache, 'npm');
+-    assert.ok(/\bnpm ci\b/.test(runs), 'must install dependencies');
+-    assert.ok(/npm run build:static/.test(runs), 'must build the static export it measures');
+-    assert.ok(/scene-framerate\.spec\.ts/.test(runs), 'must run the frame-rate harness');
+-    assert.ok(/--workers=1/.test(runs), 'frame pacing is only meaningful when nothing else runs beside it');
+-    assert.ok(/SCENE_FPS_ARTEFACT_DIR=/.test(runs), 'must point the harness at an artefact directory');
+-    assert.ok(
+-      !/\b(5599|8080)\b/.test(runs),
+-      'ports 5599 and 8080 are owned by other tenants on shared hosts — this job discovers a free one'
+-    );
++    assert.ok(/\bnpm ci\b/.test(runs));
++    assert.ok(/npm run build:static/.test(runs));
++    assert.ok(/scene-framerate\.spec\.ts/.test(runs));
++    assert.ok(/--workers=1/.test(runs));
++    assert.ok(/SCENE_FPS_ARTEFACT_DIR=/.test(runs));
++    assert.ok(!/\b(5599|8080)\b/.test(runs), 'this job discovers a free port');
+   });
+ 
+   it('uploads the per-scene JSON on every outcome, and tolerates its absence', () => {
+-    const upload = (job.steps ?? []).find((s) => (s.uses || '').startsWith('actions/upload-artifact'));
+-    assert.ok(upload, 'the measurement is worthless if it is not kept');
+-    assert.equal(upload.if, 'always()', 'a red run is exactly when the numbers matter most');
+-    assert.equal(
+-      upload.with['if-no-files-found'],
+-      'warn',
+-      'a skipped or crashed run leaves no JSON, and that is not itself an error'
+-    );
+-    assert.ok(/artifacts\/scene-fps/.test(upload.with.path), 'uploads the directory the harness was pointed at');
+-  });
+-
+-  it('leaves deploy.yml byte-identical to origin/main', () => {
+-    const ref = gitcmd('rev-parse', '--verify', '--quiet', 'origin/main');
+-    if (ref.status !== 0) {
+-      // A shallow, single-branch CI checkout has no origin/main to compare
+-      // against. The invariant still holds structurally: every deploy-path
+-      // assertion in this file reads deploy.yml directly, and the job name
+-      // appears nowhere in it.
+-      assert.ok(!deployText.includes(JOB), 'deploy.yml must never mention the GPU job');
+-      return;
+-    }
+-    const diff = gitcmd('diff', '--stat', 'origin/main', '--', '.github/workflows/deploy.yml');
+-    assert.equal(diff.status, 0, 'git diff against origin/main failed');
+-    assert.equal(diff.stdout.trim(), '', 'deploy.yml must not change: the deploy path is not part of this work');
++    const upload = usesStep(job, 'actions/upload-artifact');
++    assert.equal(upload.if, 'always()');
++    assert.equal(upload.with['if-no-files-found'], 'warn');
++    assert.ok(/artifacts\/scene-fps/.test(upload.with.path));
+   });
+ });
+-- 
+2.43.0
+
