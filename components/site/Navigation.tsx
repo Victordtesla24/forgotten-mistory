@@ -57,7 +57,6 @@ export default function Navigation() {
   const navRef = useRef<HTMLElement>(null);
   const activeHashRef = useRef(activeHash);
   const pendingAnchorRef = useRef<{ hash: string; until: number } | null>(null);
-  const initialHashSyncedRef = useRef(false);
   const internalHashes = useMemo(() => new Set<string>(INTERNAL_NAV_LINKS), []);
 
   const close = useCallback(() => setOpen(false), []);
@@ -162,10 +161,7 @@ export default function Navigation() {
     const syncToLocationHash = () => {
       const hash = window.location.hash;
       if (!internalHashes.has(hash)) return;
-      if (!initialHashSyncedRef.current || pendingAnchorRef.current?.hash === hash) {
-        pendingAnchorRef.current = { hash, until: performance.now() + 2200 };
-      }
-      initialHashSyncedRef.current = true;
+      pendingAnchorRef.current = { hash, until: performance.now() + 2200 };
       setCurrentHash(hash);
     };
 
@@ -188,7 +184,6 @@ export default function Navigation() {
     };
 
     syncToLocationHash();
-    initialHashSyncedRef.current = true;
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('hashchange', syncToLocationHash);

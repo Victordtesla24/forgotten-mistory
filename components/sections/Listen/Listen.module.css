@@ -309,7 +309,7 @@
        above them; the four channels flow three and one beneath it, and the
        rightmost ends past 0.85 of the frame. At 834 the row is two tracks and
        at 390 it is one, with no second declaration. */
-    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
     gap: var(--space-4);
     margin: 0;
     padding: 0;
@@ -385,6 +385,8 @@
     /* The ink is already white, so the hover lifts it off the ground by a
        shade instead. A colour change is the affordance that survives reduced
        motion, so it is declared here and not withdrawn there. */
+    overflow-wrap: anywhere;
+    max-width: 100%;
     transition: color var(--motion-fast) var(--motion-ease-standard),
         opacity var(--motion-fast) var(--motion-ease-standard);
 }
