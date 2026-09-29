@@ -155,6 +155,7 @@ export default function RootLayout({
         {MINIVIC_CHAT_ORIGIN ? (
           <link rel="preconnect" href={MINIVIC_CHAT_ORIGIN} crossOrigin="anonymous" />
         ) : null}
+        <link rel="preload" href="/assets/my_avatar.avif" as="image" type="image/avif" fetchpriority="high" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
