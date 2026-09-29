@@ -1,0 +1,77 @@
+{
+  "url": "https://forgotten-mistory.web.app/",
+  "runs": [
+    {
+      "file": "lighthouse-mobile-run1.json",
+      "fetchTime": "2026-09-29T11:12:16.797Z",
+      "url": "https://forgotten-mistory.web.app/#hero",
+      "benchmarkIndex": 2713.5,
+      "performance": 0.88,
+      "accessibility": 1,
+      "bestPractices": 1,
+      "seo": 1,
+      "lcp": 3075,
+      "tbt": 158,
+      "cls": 0,
+      "fcp": 2139,
+      "si": 4443,
+      "colorContrast": 1
+    },
+    {
+      "file": "lighthouse-mobile-run2.json",
+      "fetchTime": "2026-09-29T11:12:33.391Z",
+      "url": "https://forgotten-mistory.web.app/#hero",
+      "benchmarkIndex": 2747.5,
+      "performance": 0.92,
+      "accessibility": 1,
+      "bestPractices": 1,
+      "seo": 1,
+      "lcp": 2865,
+      "tbt": 200,
+      "cls": 0,
+      "fcp": 1365,
+      "si": 1564,
+      "colorContrast": 1
+    },
+    {
+      "file": "lighthouse-mobile-run3.json",
+      "fetchTime": "2026-09-29T11:12:52.342Z",
+      "url": "https://forgotten-mistory.web.app/#hero",
+      "benchmarkIndex": 2877.5,
+      "performance": 0.95,
+      "accessibility": 1,
+      "bestPractices": 1,
+      "seo": 1,
+      "lcp": 2784,
+      "tbt": 118,
+      "cls": 0,
+      "fcp": 1359,
+      "si": 1535,
+      "colorContrast": 1
+    }
+  ],
+  "median": {
+    "performance": 0.92,
+    "accessibility": 1,
+    "bestPractices": 1,
+    "seo": 1,
+    "lcp": 2865,
+    "tbt": 158,
+    "cls": 0,
+    "fcp": 1365,
+    "si": 1564
+  },
+  "thresholds": {
+    "performance": 0.9,
+    "lcp": 2500,
+    "tbt": 200,
+    "cls": 0.05
+  },
+  "verdict": {
+    "performance": "PASS",
+    "lcp": "FAIL",
+    "tbt": "PASS",
+    "cls": "PASS"
+  },
+  "overall": "FAIL"
+}

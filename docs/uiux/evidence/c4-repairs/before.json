@@ -1,0 +1,56 @@
+{
+  "label": "before",
+  "baseUrl": "https://forgotten-mistory.web.app",
+  "liveRevisionProvided": "ccf06d10",
+  "command": "UIUX_EVIDENCE_LABEL=before PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app npx playwright test tests/e2e/adversarial-repairs.spec.ts --project=chromium --reporter=list,json",
+  "exitCode": 1,
+  "log": "docs/uiux/evidence/c4-repairs/before.log",
+  "summary": {
+    "expected": 0,
+    "unexpected": 5,
+    "flaky": 0,
+    "skipped": 0
+  },
+  "results": [
+    {
+      "id": "C4-SSR-BARS",
+      "status": "failed-before",
+      "assertion": "With JavaScript network requests blocked but HTML/CSS allowed, every Experience duration bar must retain a non-collapsed computed transform and visible painted width.",
+      "actual": "First bar computed scaleX was 0; assertion expected >= 0.95. Layout width was present but the painted duration axis collapsed.",
+      "failureLocation": "tests/e2e/adversarial-repairs.spec.ts:57",
+      "reproRoot": "components/sections/Experience/Experience.module.css sets .trackBar transform: scaleX(0) and only .trackField[data-entered] .trackBar restores scaleX(1); components/sections/Experience/Experience.tsx sets data-entered from client IntersectionObserver state, so blocked JavaScript leaves the static axis visually empty."
+    },
+    {
+      "id": "C4-NESTED-FOCUS",
+      "status": "failed-before",
+      "assertion": "After focusing a nested Vitrine stage button, pressing ArrowRight must not bubble into the parent plate rail roving-focus handler; focus should remain on that stage button.",
+      "actual": "Locator for the focused stage button became inactive after ArrowRight; expected focused.",
+      "failureLocation": "tests/e2e/adversarial-repairs.spec.ts:75",
+      "reproRoot": "components/sections/Vitrine/Vitrine.tsx attaches onKeyDown to each focusable plate li; nested stage buttons do not stop ArrowRight propagation, so the plate handler runs for descendant key presses."
+    },
+    {
+      "id": "C4-STAGE-STATE",
+      "status": "failed-before",
+      "assertion": "Vitrine stage buttons must expose selected/unselected state with aria-pressed=true/false.",
+      "actual": "Default selected stage button rendered as <button type=\"button\" data-active=\"\" class=\"Vitrine_stageButton__aeLPm\">claim</button>; aria-pressed was absent/null, expected \"true\".",
+      "failureLocation": "tests/e2e/adversarial-repairs.spec.ts:90",
+      "reproRoot": "components/sections/Vitrine/Vitrine.tsx marks selected stages with data-active only; no aria-pressed state is emitted on stage buttons."
+    },
+    {
+      "id": "C4-MENU-TARGET-320",
+      "status": "failed-before",
+      "assertion": "At 320px viewport width, the mobile Menu button bounding rect must be at least 24 CSS px tall.",
+      "actual": "Menu target height was 19.5 CSS px; expected >= 24. Width satisfied the floor.",
+      "failureLocation": "tests/e2e/adversarial-repairs.spec.ts:112",
+      "reproRoot": "components/site/Navigation.tsx renders .menu-toggle; app/globals.css .menu-toggle has inline-flex text/icon styling without a min-height/padding that guarantees the 24px touch target floor at phone widths."
+    },
+    {
+      "id": "C4-MENU-TARGET-390",
+      "status": "failed-before",
+      "assertion": "At 390px viewport width, the mobile Menu button bounding rect must be at least 24 CSS px tall.",
+      "actual": "Menu target height was 19.5 CSS px; expected >= 24. Width satisfied the floor.",
+      "failureLocation": "tests/e2e/adversarial-repairs.spec.ts:112",
+      "reproRoot": "Same .menu-toggle CSS target-size root as C4-MENU-TARGET-320; the measured height remains 19.5px at 390px."
+    }
+  ]
+}

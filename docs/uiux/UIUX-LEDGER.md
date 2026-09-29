@@ -6,6 +6,45 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C5 Publisher — fixes shipped — 2026-09-29
+
+Branch `uiux/fixer-refinement` (fix commit `377fb02`) merged to `main` via `gh pr merge` (squash); deploy via `ship.yml`.
+
+- **Status:** **OPEN** — UX-P1-006 (mobile LCP 2865 ms > 2500 ms budget) still pending; not addressed in this cycle.
+- **Shipped:** UX-P0-001 — Hero CTA group uses translate-only `heroRiseSolid` entry (no opacity fade), so contrast stays 18.32:1 from t=0; reduced-motion disables animation. UX-P2-002 — Navigation 180 ms scroll-settle timer re-resolves the visible section, updating `aria-current`/hash after scrollbar/programmatic scroll.
+- **Adversarial matrix:** Chromium 144/144 cells PASS (312/312 iterations, evidence `evidence/20260929T1115Z-matrix/`); Firefox/WebKit 144 cells PENDING (browsers not installed). Post-merge production re-run of the matrix/RED specs: **UNVERIFIED** in this step.
+- **Main SHA / deploy run:** recorded in §E release log after merge.
+
+### C5 TestAuthor — finite adversarial matrix + independent RED — 2026-09-29T11:15Z
+
+Branch `uiux/test-author-matrix`; target production `82ffb9ee`. Evidence: `evidence/20260929T1115Z-matrix/` (`test-author.json`, `matrix-summary.md`).
+
+- **Matrix** (`tests/e2e/adversarial-matrix-full.spec.ts`): 2 Chromium profiles × 6 mechanisms × 12 scenarios; baseline ×1, stress ×3 (varied viewport sequence, hidden 0.5/2/5 s, Fast-3G/Regular-3G/no-cache, CPU 2/4/6× + 1/2/3 s script delay). **144/144 Chromium cells PASS, 312/312 iterations; Firefox/WebKit 144 cells PENDING** (not installed/configured). First run's 12 fallback failures were a harness artifact (fixed, rerun 12/12 PASS).
+- **UX-P0-001:** RED-INTERMITTENT, transient only — axe flagged `.Hero_primaryAction` 2/16 runs (both @1440) at t=0 (1.21:1, mid entry-fade); ≥150 ms and rest/hover/focus = 18.32:1. Steady state not reproduced.
+- **UX-P1-006:** RED on LCP only — mobile median Perf 0.92, **LCP 2865 ms**, TBT 158 ms, CLS 0 (3 runs). Prior 71/690 ms not reproduced.
+- **UX-P1-001:** GREEN — no document overflow at 320/360/390 (3/3 each).
+- **UX-P2-002:** RED — after a nav click, scroll-only movement (scrollbar-equivalent) to Listen leaves `aria-current`/hash on `#skills` (3/3). Keyboard/wheel/Back/mobile controls PASS.
+- **Preservation:** `adversarial-repairs` + `flagship-six` 16/16 PASS on production.
+
+### C4 authoritative update — 2026-09-29T10:15Z
+
+**Four repairs shipped; adversarial evaluation identified fresh regressions in accessibility and performance.** Earlier status is superseded. Current deployed main: `82ffb9ee4909cf03037fc2c0ef0a4f9c9a3e3f04`; live meta `82ffb9ee`. PR #46 merged. Cycle 4 adversarial evaluation is active.
+
+- **Status:** **OPEN**. Regressions in Performance and Accessibility (contrast) identified on production.
+- **Independent Test Author:** Fresh evaluative sweep covered 8 widths, 48 section checks, 7 adversarial matrix cases, and 2 Axe audits. 
+- **regressions:**
+    - **UX-P0-001: Hero CTA Contrast.** Axe-core serious violation on `.Hero_primaryAction` ("See the evidence"). Observed ratio 1.05:1 (#252525 on #292929). Likely animation-state or background-scrim collision.
+    - **UX-P1-006: Performance Regression.** Lighthouse mobile score 71 (threshold 90). TBT 690ms (threshold 200ms), LCP 3.3s (threshold 2.5s).
+- **Passes:**
+    - Visual consistency: 0 section-level layout findings across all target viewports.
+    - Adversarial Matrix: 7/7 passes (Deep Anchors, Warm Reload, Back/Forward Nav, Fast Scroll Lifecycle, Hidden Tab Resume, Resize Stress, Slow Network LCP).
+    - Repairs: All 4 repairs from PR46 (SSR bars, Vitrine focus, Stage state, Menu target) remain verified on live.
+- **Identiveness:** Main ↔ Live parity 100% (82ffb9ee).
+- **Evidence:** `evidence/c4-visual/before.json`, `tests/e2e/adversarial-matrix-20260929.spec.ts`, `lighthouse.json`.
+
+---
+
+
 ### Continuation evidence — 2026-09-29T04:26Z
 
 - **Not shipped. Campaign and Cycle 0 remain incomplete.** Legitimate authorization is now proven: existing gh CLI session has `repo, workflow, read:org, gist` scopes and repository admin/push; this is distinct from the previously denied App credential. No denied credential retry. Default Firebase CLI session/ADC absent; Actions secret name exists but Firebase deploy authority has not yet been exercised.
@@ -177,6 +216,65 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 - Shipped in:            —
 - Evidence (post-fix):   —
 
+### C4 shipped findings (current evidence supersedes historical status)
+
+#### C4-SSR-BARS — Experience duration bars invisible with blocked scripts
+- Lens / framework: WCAG accessibility · Nielsen visibility/control.
+- Persona(s) affected: P1, P4.
+- Section / viewport: Experience; desktop, blocked JavaScript.
+- Observed (production): failing-before evidence `evidence/c4-repairs/before.json`.
+- Expected: accessible meaningful static content and usable named controls.
+- Root cause / recommendation / fix specification: Static CSS scaleX(0) required client data-entered. Default scaleX(1), entry-only keyframe preserves motion. Minimal source changes; facts and privacy unchanged.
+- Test added: `tests/e2e/adversarial-repairs.spec.ts`.
+- Verification recipe: Block JavaScript requests; scroll #experience; each trackBar painted scale >=0.95.
+- RICE: ordinal triage estimate 4 × 2 × 1 ÷ 1 = 8 (not an observed usage metric).
+- Status: VERIFIED-CLOSED by independent Production QA for this recipe only.
+- Shipped in: C4, PR46, main `82ffb9ee`, live run36537718878, 2026-09-29.
+- Evidence (post-fix): `evidence/c4-repairs/production-qa.json`, `production-tests.log`, `review-final.json`.
+
+#### C4-NESTED-FOCUS — Vitrine nested arrow keys stole focus
+- Lens / framework: WCAG accessibility · Nielsen visibility/control.
+- Persona(s) affected: P1, P4.
+- Section / viewport: Vitrine; keyboard.
+- Observed (production): failing-before evidence `evidence/c4-repairs/before.json`.
+- Expected: accessible meaningful static content and usable named controls.
+- Root cause / recommendation / fix specification: Parent plate handler accepted bubbled descendant keydown. Guard target=currentTarget. Minimal source changes; facts and privacy unchanged.
+- Test added: `tests/e2e/adversarial-repairs.spec.ts`.
+- Verification recipe: Focus first nested stage button; ArrowRight keeps focus; direct plate arrows still navigate.
+- RICE: ordinal triage estimate 4 × 2 × 1 ÷ 1 = 8 (not an observed usage metric).
+- Status: VERIFIED-CLOSED by independent Production QA for this recipe only.
+- Shipped in: C4, PR46, main `82ffb9ee`, live run36537718878, 2026-09-29.
+- Evidence (post-fix): `evidence/c4-repairs/production-qa.json`, `production-tests.log`, `review-final.json`.
+
+#### C4-STAGE-STATE — Vitrine stage selection not announced
+- Lens / framework: WCAG accessibility · Nielsen visibility/control.
+- Persona(s) affected: P1, P4.
+- Section / viewport: Vitrine; assistive technology.
+- Observed (production): failing-before evidence `evidence/c4-repairs/before.json`.
+- Expected: accessible meaningful static content and usable named controls.
+- Root cause / recommendation / fix specification: Selected state existed only as data-active; added aria-pressed. Minimal source changes; facts and privacy unchanged.
+- Test added: `tests/e2e/adversarial-repairs.spec.ts`.
+- Verification recipe: Stage one aria-pressed=true; select stage two; first=false, second=true.
+- RICE: ordinal triage estimate 4 × 2 × 1 ÷ 1 = 8 (not an observed usage metric).
+- Status: VERIFIED-CLOSED by independent Production QA for this recipe only.
+- Shipped in: C4, PR46, main `82ffb9ee`, live run36537718878, 2026-09-29.
+- Evidence (post-fix): `evidence/c4-repairs/production-qa.json`, `production-tests.log`, `review-final.json`.
+
+#### C4-MENU-TARGET — Menu target below 24px
+- Lens / framework: WCAG accessibility · Nielsen visibility/control.
+- Persona(s) affected: P1, P4.
+- Section / viewport: Global; 320/390.
+- Observed (production): failing-before evidence `evidence/c4-repairs/before.json`.
+- Expected: accessible meaningful static content and usable named controls.
+- Root cause / recommendation / fix specification: Measured height19.5px; min-height now existing --space-6 token. Minimal source changes; facts and privacy unchanged.
+- Test added: `tests/e2e/adversarial-repairs.spec.ts`.
+- Verification recipe: At320 and390 Menu bounding height >=24 and width>=24.
+- RICE: ordinal triage estimate 4 × 2 × 1 ÷ 1 = 8 (not an observed usage metric).
+- Status: VERIFIED-CLOSED by independent Production QA for this recipe only.
+- Shipped in: C4, PR46, main `82ffb9ee`, live run36537718878, 2026-09-29.
+- Evidence (post-fix): `evidence/c4-repairs/production-qa.json`, `production-tests.log`, `review-final.json`.
+
+
 ## D. Persona journey maps (production, run 20260929T0258Z, pre-fix)
 
 | Journey | Persona · viewport | Steps (timing) | Result | Screenshots |
@@ -194,12 +292,18 @@ Raw data: `journeys__all__J1-J8__pre__20260929T030837Z.json`.
 
 ## E. Release log
 
+C4: 2026-09-29 ~07:15–07:41Z; four repairs above; PR46; source ec3d135; main82ffb9ee; preview36537399630/live36537718878 success; parity82ffb9ee; local/preview/live16 each; perf delta UNMEASURED; rollback drill NOT RUN.
+
+
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Deploy ID | Parity | Lighthouse (mobile Perf/LCP/CLS/TBT) | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | C0 | 2026-09-29T02:58Z | not merged | UX-C0-001 (pipeline) — BLOCKED: branch push rejected (token lacks `workflows` scope); no PR/run | none | UNVERIFIED (live HTML has no build-commit meta) | not run | baseline 86 / 3.34 s / 0 / 262 ms | not run (blocked upstream) |
 | C1 | — | not started | UX-P1-001 (320 px reflow) — NOT STARTED: cannot ship before Cycle 0 lands; plan in HOURLY-EXECUTION-PLAN.md | none | — | — | — | — |
 
-## F. Verified no-issue register (production, run 20260929T0258Z)
+## F. Verified no-issue register
+
+C4 current protection: independent live16-case regression including all six flagships; eight tested widths without document overflow; one h1; no captured console/page errors. Broad visual/a11y/performance completeness not certified.
+ (production, run 20260929T0258Z)
 
 | Check | Result | Evidence |
 | --- | --- | --- |

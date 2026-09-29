@@ -1,0 +1,158 @@
+{
+  "agent_role": "independent adversarial Test Author A",
+  "test_author": "A",
+  "task_id": "C4-STATE",
+  "status": "done",
+  "findings": [
+    {
+      "id": "desktop-1-experience",
+      "severity": "medium",
+      "observed": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":96,\\\"top\\\":-\u001b[7m681\u001b[27m.96875,\\\"width\\\":1,\\\"height\\\":378.53125}\"\u001b[39m\nReceived: \u001b[31m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":96,\\\"top\\\":-\u001b[7m30\u001b[27m.96875,\\\"width\\\":1,\\\"height\\\":378.53125}\"\u001b[39m\n\nCall Log:\n- Timeout 2500ms exceeded while waiting on the predicate",
+      "expected": "Experience range keyboard and buttons update visible role panel and playhead.",
+      "recipe": "desktop-1",
+      "evidence": [
+        "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-state/desktop-1-experience-1.webp"
+      ]
+    },
+    {
+      "id": "desktop-2-experience",
+      "severity": "medium",
+      "observed": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":96,\\\"top\\\":-\u001b[7m681\u001b[27m.96875,\\\"width\\\":1,\\\"height\\\":378.53125}\"\u001b[39m\nReceived: \u001b[31m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":96,\\\"top\\\":-\u001b[7m30\u001b[27m.96875,\\\"width\\\":1,\\\"height\\\":378.53125}\"\u001b[39m\n\nCall Log:\n- Timeout 2500ms exceeded while waiting on the predicate",
+      "expected": "Experience range keyboard and buttons update visible role panel and playhead.",
+      "recipe": "desktop-2",
+      "evidence": [
+        "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-state/desktop-2-experience-2.webp"
+      ]
+    },
+    {
+      "id": "desktop-3-experience",
+      "severity": "medium",
+      "observed": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":96,\\\"top\\\":-\u001b[7m681\u001b[27m.96875,\\\"width\\\":1,\\\"height\\\":378.53125}\"\u001b[39m\nReceived: \u001b[31m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":96,\\\"top\\\":-\u001b[7m30\u001b[27m.96875,\\\"width\\\":1,\\\"height\\\":378.53125}\"\u001b[39m\n\nCall Log:\n- Timeout 2500ms exceeded while waiting on the predicate",
+      "expected": "Experience range keyboard and buttons update visible role panel and playhead.",
+      "recipe": "desktop-3",
+      "evidence": [
+        "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-state/desktop-3-experience-3.webp"
+      ]
+    },
+    {
+      "id": "desktop-3-skills",
+      "severity": "medium",
+      "observed": "desktop-3: capability highlight has no computed style change",
+      "expected": "Skills pending/filters/back selection keeps source evidence and highlighted stage/wire visible.",
+      "recipe": "desktop-3",
+      "evidence": [
+        "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-state/desktop-3-skills-4.webp"
+      ]
+    },
+    {
+      "id": "mobile-1-experience",
+      "severity": "medium",
+      "observed": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":24,\\\"top\\\":-13\u001b[7m69\u001b[27m.546875,\\\"width\\\":1,\\\"height\\\":459.78125}\"\u001b[39m\nReceived: \u001b[31m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":24,\\\"top\\\":-13\u001b[7m3\u001b[27m.546875,\\\"width\\\":1,\\\"height\\\":459.78125}\"\u001b[39m\n\nCall Log:\n- Timeout 2500ms exceeded while waiting on the predicate",
+      "expected": "Experience range keyboard and buttons update visible role panel and playhead.",
+      "recipe": "mobile-1",
+      "evidence": [
+        "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-state/mobile-1-experience-5.webp"
+      ]
+    },
+    {
+      "id": "mobile-2-experience",
+      "severity": "medium",
+      "observed": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":24,\\\"top\\\":-13\u001b[7m69\u001b[27m.546875,\\\"width\\\":1,\\\"height\\\":459.78125}\"\u001b[39m\nReceived: \u001b[31m\"{\\\"transform\\\":\\\"none\\\",\\\"opacity\\\":\\\"0.9\\\",\\\"color\\\":\\\"rgb(246, 246, 246)\\\",\\\"background\\\":\\\"rgb(201, 168, 76)\\\",\\\"left\\\":24,\\\"top\\\":-13\u001b[7m3\u001b[27m.546875,\\\"width\\\":1,\\\"height\\\":459.78125}\"\u001b[39m\n\nCall Log:\n- Timeout 2500ms exceeded while waiting on the predicate",
+      "expected": "Experience range keyboard and buttons update visible role panel and playhead.",
+      "recipe": "mobile-2",
+      "evidence": [
+        "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-state/mobile-2-experience-6.webp"
+      ]
+    }
+  ],
+  "verdict": {
+    "result": "fail",
+    "evidence": [
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-state/before.json",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-state/desktop-1-experience-1.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-state/desktop-2-experience-2.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-state/desktop-3-experience-3.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-state/desktop-3-skills-4.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-state/mobile-1-experience-5.webp",
+      "/home/ubuntu/github_repos/forgotten-mistory/docs/uiux/evidence/c4-state/mobile-2-experience-6.webp"
+    ],
+    "notes": "Production https://forgotten-mistory.web.app; console/pageerror events captured in JSON. Source selectors/data imported from app/data/portfolio and component data-testid contracts. Evidence label before."
+  },
+  "matrix": {
+    "cases": [
+      "desktop finite state stress",
+      "mobile touch finite state stress",
+      "slow CPU/network delayed hydration",
+      "reduced motion toggling"
+    ],
+    "repetitions": {
+      "desktop_contexts": 3,
+      "mobile_contexts": 2,
+      "hero_reruns_per_interaction": 3,
+      "sections": 6
+    },
+    "counts": {
+      "passed": 32,
+      "failed": 6,
+      "console_events": 3,
+      "page_errors": 0,
+      "screenshots": 6
+    },
+    "successful_ids": [
+      "desktop-1-ssr-copy",
+      "desktop-1-hero",
+      "desktop-1-about",
+      "desktop-1-skills",
+      "desktop-1-vitrine",
+      "desktop-1-listen",
+      "desktop-1-resize-cycle",
+      "desktop-2-ssr-copy",
+      "desktop-2-hero",
+      "desktop-2-about",
+      "desktop-2-skills",
+      "desktop-2-vitrine",
+      "desktop-2-listen",
+      "desktop-2-resize-cycle",
+      "desktop-3-ssr-copy",
+      "desktop-3-hero",
+      "desktop-3-about",
+      "desktop-3-vitrine",
+      "desktop-3-listen",
+      "desktop-3-resize-cycle",
+      "mobile-1-hero",
+      "mobile-1-about",
+      "mobile-1-skills",
+      "mobile-1-vitrine",
+      "mobile-1-listen",
+      "mobile-1-resize-cycle",
+      "mobile-2-hero",
+      "mobile-2-about",
+      "mobile-2-skills",
+      "mobile-2-vitrine",
+      "mobile-2-listen",
+      "mobile-2-resize-cycle"
+    ],
+    "failed_ids": [
+      "desktop-1-experience",
+      "desktop-2-experience",
+      "desktop-3-experience",
+      "desktop-3-skills",
+      "mobile-1-experience",
+      "mobile-2-experience"
+    ],
+    "console": [
+      "warning: The resource https://forgotten-mistory.web.app/_next/static/css/f1997129dcf85dfd.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.",
+      "warning: The resource https://forgotten-mistory.web.app/_next/static/css/f1997129dcf85dfd.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.",
+      "warning: The resource https://forgotten-mistory.web.app/_next/static/css/f1997129dcf85dfd.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally."
+    ],
+    "pageerror": []
+  },
+  "unmeasuredlimitations": [
+    "desktop-1: document.visibilitychange was synthetic; headless browser was not actually backgrounded.",
+    "desktop-2: document.visibilitychange was synthetic; headless browser was not actually backgrounded.",
+    "desktop-3: document.visibilitychange was synthetic; headless browser was not actually backgrounded.",
+    "No full browser suite was run; only tests/e2e/adversarial-state.spec.ts was executed.",
+    "Document visibility backgrounding was simulated where headless Chromium could not be truly backgrounded.",
+    "Third-party repository links were not bulk-opened; link obstruction was checked in-page only."
+  ]
+}

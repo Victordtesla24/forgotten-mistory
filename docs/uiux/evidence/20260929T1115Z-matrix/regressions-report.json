@@ -1,0 +1,1650 @@
+{
+  "config": {
+    "configFile": "/home/ubuntu/github_repos/forgotten-mistory/playwright.config.ts",
+    "rootDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/ubuntu/github_repos/forgotten-mistory/test-results",
+        "repeatEach": 3,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/ubuntu/github_repos/forgotten-mistory/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "e2e/regressions-red-20260929.spec.ts",
+      "file": "e2e/regressions-red-20260929.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "UX-P0-001 Hero CTA contrast",
+          "file": "e2e/regressions-red-20260929.spec.ts",
+          "line": 49,
+          "column": 6,
+          "specs": [
+            {
+              "title": "@390: .Hero_primaryAction passes color-contrast through the entry timeline",
+              "ok": true,
+              "tags": [
+                "390:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11981,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:06.975Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "cta-contrast-timeline",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJ0IjogMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDAsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogMTUwLAogICJjbHMiOiAiSGVyb19wcmltYXJ5QWN0aW9uX19TQkpGQSIsCiAgInRleHQiOiAiU2VlIHRoZSBldmlkZW5jZSIsCiAgImNvbG9yIjogWwogICAxMCwKICAgMTAsCiAgIDEwCiAgXSwKICAiYmciOiBbCiAgIDI0NiwKICAgMjQ2LAogICAyNDYKICBdLAogICJlZmZlY3RpdmVPcGFjaXR5IjogMSwKICAicmF0aW8iOiAxOC4zMiwKICAiYXhlIjogW10KIH0sCiB7CiAgInQiOiA0MDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfSwKIHsKICAidCI6IDgwMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogMTUwMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogMzAwMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogNjAwMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9Cl0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-8a0633f3c7a4f8d6186d",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 51,
+              "column": 9
+            },
+            {
+              "title": "@1440: .Hero_primaryAction passes color-contrast through the entry timeline",
+              "ok": true,
+              "tags": [
+                "1440:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 11839,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:07.155Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "cta-contrast-timeline",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJ0IjogMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDAsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogMTUwLAogICJjbHMiOiAiSGVyb19wcmltYXJ5QWN0aW9uX19TQkpGQSIsCiAgInRleHQiOiAiU2VlIHRoZSBldmlkZW5jZSIsCiAgImNvbG9yIjogWwogICAxMCwKICAgMTAsCiAgIDEwCiAgXSwKICAiYmciOiBbCiAgIDI0NiwKICAgMjQ2LAogICAyNDYKICBdLAogICJlZmZlY3RpdmVPcGFjaXR5IjogMSwKICAicmF0aW8iOiAxOC4zMiwKICAiYXhlIjogW10KIH0sCiB7CiAgInQiOiA0MDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfSwKIHsKICAidCI6IDgwMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogMTUwMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogMzAwMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogNjAwMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9Cl0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-ffe141cc1af4da912578",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 51,
+              "column": 9
+            },
+            {
+              "title": "@390 reduced-motion + hover/focus states keep ≥4.5:1",
+              "ok": true,
+              "tags": [
+                "390"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3120,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:19.256Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "cta-states",
+                          "contentType": "application/json",
+                          "body": "ewogInJlc3QiOiB7CiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAwCiB9LAogImhvdmVyIjogewogICJjbHMiOiAiSGVyb19wcmltYXJ5QWN0aW9uX19TQkpGQSIsCiAgInRleHQiOiAiU2VlIHRoZSBldmlkZW5jZSIsCiAgImNvbG9yIjogWwogICAxMCwKICAgMTAsCiAgIDEwCiAgXSwKICAiYmciOiBbCiAgIDIzNSwKICAgMjM1LAogICAyMzUKICBdLAogICJlZmZlY3RpdmVPcGFjaXR5IjogMQogfSwKICJmb2N1cyI6IHsKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyMzUsCiAgIDIzNSwKICAgMjM1CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEKIH0sCiAiYXhlIjogW10KfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-a193f6d04b498405ca6c",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 69,
+              "column": 7
+            },
+            {
+              "title": "@390: .Hero_primaryAction passes color-contrast through the entry timeline",
+              "ok": true,
+              "tags": [
+                "390:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10596,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:40.190Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "cta-contrast-timeline",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJ0IjogMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDAsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogMTUwLAogICJjbHMiOiAiSGVyb19wcmltYXJ5QWN0aW9uX19TQkpGQSIsCiAgInRleHQiOiAiU2VlIHRoZSBldmlkZW5jZSIsCiAgImNvbG9yIjogWwogICAxMCwKICAgMTAsCiAgIDEwCiAgXSwKICAiYmciOiBbCiAgIDI0NiwKICAgMjQ2LAogICAyNDYKICBdLAogICJlZmZlY3RpdmVPcGFjaXR5IjogMC45OTc0OTgsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogNDAwLAogICJjbHMiOiAiSGVyb19wcmltYXJ5QWN0aW9uX19TQkpGQSIsCiAgInRleHQiOiAiU2VlIHRoZSBldmlkZW5jZSIsCiAgImNvbG9yIjogWwogICAxMCwKICAgMTAsCiAgIDEwCiAgXSwKICAiYmciOiBbCiAgIDI0NiwKICAgMjQ2LAogICAyNDYKICBdLAogICJlZmZlY3RpdmVPcGFjaXR5IjogMSwKICAicmF0aW8iOiAxOC4zMiwKICAiYXhlIjogW10KIH0sCiB7CiAgInQiOiA4MDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfSwKIHsKICAidCI6IDE1MDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfSwKIHsKICAidCI6IDMwMDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfSwKIHsKICAidCI6IDYwMDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfQpd"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-732e282a10fdb8240051",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 51,
+              "column": 9
+            },
+            {
+              "title": "@1440: .Hero_primaryAction passes color-contrast through the entry timeline",
+              "ok": true,
+              "tags": [
+                "1440:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 10227,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:44.006Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "cta-contrast-timeline",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJ0IjogMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDAsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogMTUwLAogICJjbHMiOiAiSGVyb19wcmltYXJ5QWN0aW9uX19TQkpGQSIsCiAgInRleHQiOiAiU2VlIHRoZSBldmlkZW5jZSIsCiAgImNvbG9yIjogWwogICAxMCwKICAgMTAsCiAgIDEwCiAgXSwKICAiYmciOiBbCiAgIDI0NiwKICAgMjQ2LAogICAyNDYKICBdLAogICJlZmZlY3RpdmVPcGFjaXR5IjogMSwKICAicmF0aW8iOiAxOC4zMiwKICAiYXhlIjogW10KIH0sCiB7CiAgInQiOiA0MDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfSwKIHsKICAidCI6IDgwMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogMTUwMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogMzAwMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogNjAwMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9Cl0="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-fe6f6d91719c81d48cdb",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 51,
+              "column": 9
+            },
+            {
+              "title": "@390 reduced-motion + hover/focus states keep ≥4.5:1",
+              "ok": true,
+              "tags": [
+                "390"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2014,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:51.072Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "cta-states",
+                          "contentType": "application/json",
+                          "body": "ewogInJlc3QiOiB7CiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAwCiB9LAogImhvdmVyIjogewogICJjbHMiOiAiSGVyb19wcmltYXJ5QWN0aW9uX19TQkpGQSIsCiAgInRleHQiOiAiU2VlIHRoZSBldmlkZW5jZSIsCiAgImNvbG9yIjogWwogICAxMCwKICAgMTAsCiAgIDEwCiAgXSwKICAiYmciOiBbCiAgIDIzNSwKICAgMjM1LAogICAyMzUKICBdLAogICJlZmZlY3RpdmVPcGFjaXR5IjogMQogfSwKICJmb2N1cyI6IHsKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyMzUsCiAgIDIzNSwKICAgMjM1CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEKIH0sCiAiYXhlIjogW10KfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-505feea9c34377ce5f60",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 69,
+              "column": 7
+            },
+            {
+              "title": "@390: .Hero_primaryAction passes color-contrast through the entry timeline",
+              "ok": true,
+              "tags": [
+                "390:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 10150,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:12.843Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "cta-contrast-timeline",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJ0IjogMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDAsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogMTUwLAogICJjbHMiOiAiSGVyb19wcmltYXJ5QWN0aW9uX19TQkpGQSIsCiAgInRleHQiOiAiU2VlIHRoZSBldmlkZW5jZSIsCiAgImNvbG9yIjogWwogICAxMCwKICAgMTAsCiAgIDEwCiAgXSwKICAiYmciOiBbCiAgIDI0NiwKICAgMjQ2LAogICAyNDYKICBdLAogICJlZmZlY3RpdmVPcGFjaXR5IjogMC45OTk3NDksCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogNDAwLAogICJjbHMiOiAiSGVyb19wcmltYXJ5QWN0aW9uX19TQkpGQSIsCiAgInRleHQiOiAiU2VlIHRoZSBldmlkZW5jZSIsCiAgImNvbG9yIjogWwogICAxMCwKICAgMTAsCiAgIDEwCiAgXSwKICAiYmciOiBbCiAgIDI0NiwKICAgMjQ2LAogICAyNDYKICBdLAogICJlZmZlY3RpdmVPcGFjaXR5IjogMSwKICAicmF0aW8iOiAxOC4zMiwKICAiYXhlIjogW10KIH0sCiB7CiAgInQiOiA4MDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfSwKIHsKICAidCI6IDE1MDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfSwKIHsKICAidCI6IDMwMDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfSwKIHsKICAidCI6IDYwMDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfQpd"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-d46d4699f35c58030ec0",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 51,
+              "column": 9
+            },
+            {
+              "title": "@1440: .Hero_primaryAction passes color-contrast through the entry timeline",
+              "ok": true,
+              "tags": [
+                "1440:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10419,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:17.011Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "cta-contrast-timeline",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJ0IjogMCwKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyNDYsCiAgIDI0NiwKICAgMjQ2CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDAsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogMTUwLAogICJjbHMiOiAiSGVyb19wcmltYXJ5QWN0aW9uX19TQkpGQSIsCiAgInRleHQiOiAiU2VlIHRoZSBldmlkZW5jZSIsCiAgImNvbG9yIjogWwogICAxMCwKICAgMTAsCiAgIDEwCiAgXSwKICAiYmciOiBbCiAgIDI0NiwKICAgMjQ2LAogICAyNDYKICBdLAogICJlZmZlY3RpdmVPcGFjaXR5IjogMC45OTk5ODQsCiAgInJhdGlvIjogMTguMzIsCiAgImF4ZSI6IFtdCiB9LAogewogICJ0IjogNDAwLAogICJjbHMiOiAiSGVyb19wcmltYXJ5QWN0aW9uX19TQkpGQSIsCiAgInRleHQiOiAiU2VlIHRoZSBldmlkZW5jZSIsCiAgImNvbG9yIjogWwogICAxMCwKICAgMTAsCiAgIDEwCiAgXSwKICAiYmciOiBbCiAgIDI0NiwKICAgMjQ2LAogICAyNDYKICBdLAogICJlZmZlY3RpdmVPcGFjaXR5IjogMSwKICAicmF0aW8iOiAxOC4zMiwKICAiYXhlIjogW10KIH0sCiB7CiAgInQiOiA4MDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfSwKIHsKICAidCI6IDE1MDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfSwKIHsKICAidCI6IDMwMDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfSwKIHsKICAidCI6IDYwMDAsCiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAxLAogICJyYXRpbyI6IDE4LjMyLAogICJheGUiOiBbXQogfQpd"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-89a05c66482d5ce04434",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 51,
+              "column": 9
+            },
+            {
+              "title": "@390 reduced-motion + hover/focus states keep ≥4.5:1",
+              "ok": true,
+              "tags": [
+                "390"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2359,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:23.326Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "cta-states",
+                          "contentType": "application/json",
+                          "body": "ewogInJlc3QiOiB7CiAgImNscyI6ICJIZXJvX3ByaW1hcnlBY3Rpb25fX1NCSkZBIiwKICAidGV4dCI6ICJTZWUgdGhlIGV2aWRlbmNlIiwKICAiY29sb3IiOiBbCiAgIDEwLAogICAxMCwKICAgMTAKICBdLAogICJiZyI6IFsKICAgMjQ2LAogICAyNDYsCiAgIDI0NgogIF0sCiAgImVmZmVjdGl2ZU9wYWNpdHkiOiAwCiB9LAogImhvdmVyIjogewogICJjbHMiOiAiSGVyb19wcmltYXJ5QWN0aW9uX19TQkpGQSIsCiAgInRleHQiOiAiU2VlIHRoZSBldmlkZW5jZSIsCiAgImNvbG9yIjogWwogICAxMCwKICAgMTAsCiAgIDEwCiAgXSwKICAiYmciOiBbCiAgIDIzNSwKICAgMjM1LAogICAyMzUKICBdLAogICJlZmZlY3RpdmVPcGFjaXR5IjogMQogfSwKICJmb2N1cyI6IHsKICAiY2xzIjogIkhlcm9fcHJpbWFyeUFjdGlvbl9fU0JKRkEiLAogICJ0ZXh0IjogIlNlZSB0aGUgZXZpZGVuY2UiLAogICJjb2xvciI6IFsKICAgMTAsCiAgIDEwLAogICAxMAogIF0sCiAgImJnIjogWwogICAyMzUsCiAgIDIzNSwKICAgMjM1CiAgXSwKICAiZWZmZWN0aXZlT3BhY2l0eSI6IDEKIH0sCiAiYXhlIjogW10KfQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-392aa883e198e930a456",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 69,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "UX-P1-001 320 px reflow",
+          "file": "e2e/regressions-red-20260929.spec.ts",
+          "line": 93,
+          "column": 6,
+          "specs": [
+            {
+              "title": "@320: document scrollWidth === clientWidth (settled + all sections visited)",
+              "ok": true,
+              "tags": [
+                "320:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4380,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:19.724Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "reflow",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJhdCI6ICJoZXJvIiwKICAic2Nyb2xsV2lkdGgiOiAzMjAsCiAgImNsaWVudFdpZHRoIjogMzIwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9MzY2IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM2NiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzUzIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNzYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM0NiIKICBdCiB9LAogewogICJhdCI6ICJhYm91dCIsCiAgInNjcm9sbFdpZHRoIjogMzIwLAogICJjbGllbnRXaWR0aCI6IDMyMCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTM2NiIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNjYiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM1MyIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9Mzc2IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNDYiCiAgXQogfSwKIHsKICAiYXQiOiAiZXhwZXJpZW5jZSIsCiAgInNjcm9sbFdpZHRoIjogMzIwLAogICJjbGllbnRXaWR0aCI6IDMyMCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTM2NiIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNjYiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM1MyIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9Mzc2IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNDYiCiAgXQogfSwKIHsKICAiYXQiOiAic2tpbGxzIiwKICAic2Nyb2xsV2lkdGgiOiAzMjAsCiAgImNsaWVudFdpZHRoIjogMzIwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9MzY2IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM2NiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzUzIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNzYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM0NiIKICBdCiB9LAogewogICJhdCI6ICJ2aXRyaW5lIiwKICAic2Nyb2xsV2lkdGgiOiAzMjAsCiAgImNsaWVudFdpZHRoIjogMzIwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9MzY2IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM2NiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzUzIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNzYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM0NiIKICBdCiB9LAogewogICJhdCI6ICJsaXN0ZW4iLAogICJzY3JvbGxXaWR0aCI6IDMyMCwKICAiY2xpZW50V2lkdGgiOiAzMjAsCiAgIm9mZmVuZGVycyI6IFsKICAgIkRJVi5IZXJvX29wdGljYWxGaWVsZF9fblJQbEogcj0zNjYiLAogICAic3ZnLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzY2IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNTMiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM3NiIsCiAgICJwYXRoLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzQ2IgogIF0KIH0KXQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-11d3c10882b529e2d46d",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 95,
+              "column": 9
+            },
+            {
+              "title": "@360: document scrollWidth === clientWidth (settled + all sections visited)",
+              "ok": true,
+              "tags": [
+                "360:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3935,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:22.423Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "reflow",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJhdCI6ICJoZXJvIiwKICAic2Nyb2xsV2lkdGgiOiAzNjAsCiAgImNsaWVudFdpZHRoIjogMzYwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDE1IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQxNiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDAwIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjciLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM5MyIKICBdCiB9LAogewogICJhdCI6ICJhYm91dCIsCiAgInNjcm9sbFdpZHRoIjogMzYwLAogICJjbGllbnRXaWR0aCI6IDM2MCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTQxNSIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MTUiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQwMCIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDI2IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zOTMiCiAgXQogfSwKIHsKICAiYXQiOiAiZXhwZXJpZW5jZSIsCiAgInNjcm9sbFdpZHRoIjogMzYwLAogICJjbGllbnRXaWR0aCI6IDM2MCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTQxNSIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MTUiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQwMCIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDI2IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zOTMiCiAgXQogfSwKIHsKICAiYXQiOiAic2tpbGxzIiwKICAic2Nyb2xsV2lkdGgiOiAzNjAsCiAgImNsaWVudFdpZHRoIjogMzYwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDE1IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQxNSIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDAwIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM5MyIKICBdCiB9LAogewogICJhdCI6ICJ2aXRyaW5lIiwKICAic2Nyb2xsV2lkdGgiOiAzNjAsCiAgImNsaWVudFdpZHRoIjogMzYwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDE1IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQxNSIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDAwIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM5MyIKICBdCiB9LAogewogICJhdCI6ICJsaXN0ZW4iLAogICJzY3JvbGxXaWR0aCI6IDM2MCwKICAiY2xpZW50V2lkdGgiOiAzNjAsCiAgIm9mZmVuZGVycyI6IFsKICAgIkRJVi5IZXJvX29wdGljYWxGaWVsZF9fblJQbEogcj00MTUiLAogICAic3ZnLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDE1IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MDAiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQyNiIsCiAgICJwYXRoLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzkzIgogIF0KIH0KXQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-3fee6ba47e1de2b4fd6d",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 95,
+              "column": 9
+            },
+            {
+              "title": "@390: document scrollWidth === clientWidth (settled + all sections visited)",
+              "ok": true,
+              "tags": [
+                "390:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3874,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:24.145Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "reflow",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJhdCI6ICJoZXJvIiwKICAic2Nyb2xsV2lkdGgiOiAzOTAsCiAgImNsaWVudFdpZHRoIjogMzkwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDUyIiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQ1MiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDM2IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NjQiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQyOCIKICBdCiB9LAogewogICJhdCI6ICJhYm91dCIsCiAgInNjcm9sbFdpZHRoIjogMzkwLAogICJjbGllbnRXaWR0aCI6IDM5MCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTQ1MiIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NTIiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQzNSIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDY0IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjgiCiAgXQogfSwKIHsKICAiYXQiOiAiZXhwZXJpZW5jZSIsCiAgInNjcm9sbFdpZHRoIjogMzkwLAogICJjbGllbnRXaWR0aCI6IDM5MCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTQ1MiIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NTIiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQzNSIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDY0IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjgiCiAgXQogfSwKIHsKICAiYXQiOiAic2tpbGxzIiwKICAic2Nyb2xsV2lkdGgiOiAzOTAsCiAgImNsaWVudFdpZHRoIjogMzkwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDUyIiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQ1MiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDM1IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NjQiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQyOCIKICBdCiB9LAogewogICJhdCI6ICJ2aXRyaW5lIiwKICAic2Nyb2xsV2lkdGgiOiAzOTAsCiAgImNsaWVudFdpZHRoIjogMzkwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDUyIiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQ1MiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDM1IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NjQiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQyOCIKICBdCiB9LAogewogICJhdCI6ICJsaXN0ZW4iLAogICJzY3JvbGxXaWR0aCI6IDM5MCwKICAiY2xpZW50V2lkdGgiOiAzOTAsCiAgIm9mZmVuZGVycyI6IFsKICAgIkRJVi5IZXJvX29wdGljYWxGaWVsZF9fblJQbEogcj00NTIiLAogICAic3ZnLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDUyIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MzUiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQ2NCIsCiAgICJwYXRoLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDI4IgogIF0KIH0KXQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-aebf6051107677484083",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 95,
+              "column": 9
+            },
+            {
+              "title": "@320: document scrollWidth === clientWidth (settled + all sections visited)",
+              "ok": true,
+              "tags": [
+                "320:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3915,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:53.143Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "reflow",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJhdCI6ICJoZXJvIiwKICAic2Nyb2xsV2lkdGgiOiAzMjAsCiAgImNsaWVudFdpZHRoIjogMzIwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9MzY2IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM2NiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzUzIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNzYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM0NyIKICBdCiB9LAogewogICJhdCI6ICJhYm91dCIsCiAgInNjcm9sbFdpZHRoIjogMzIwLAogICJjbGllbnRXaWR0aCI6IDMyMCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTM2NiIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNjYiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM1MyIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9Mzc2IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNDYiCiAgXQogfSwKIHsKICAiYXQiOiAiZXhwZXJpZW5jZSIsCiAgInNjcm9sbFdpZHRoIjogMzIwLAogICJjbGllbnRXaWR0aCI6IDMyMCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTM2NiIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNjYiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM1MyIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9Mzc2IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNDYiCiAgXQogfSwKIHsKICAiYXQiOiAic2tpbGxzIiwKICAic2Nyb2xsV2lkdGgiOiAzMjAsCiAgImNsaWVudFdpZHRoIjogMzIwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9MzY2IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM2NiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzUzIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNzYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM0NiIKICBdCiB9LAogewogICJhdCI6ICJ2aXRyaW5lIiwKICAic2Nyb2xsV2lkdGgiOiAzMjAsCiAgImNsaWVudFdpZHRoIjogMzIwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9MzY2IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM2NiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzUzIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNzYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM0NiIKICBdCiB9LAogewogICJhdCI6ICJsaXN0ZW4iLAogICJzY3JvbGxXaWR0aCI6IDMyMCwKICAiY2xpZW50V2lkdGgiOiAzMjAsCiAgIm9mZmVuZGVycyI6IFsKICAgIkRJVi5IZXJvX29wdGljYWxGaWVsZF9fblJQbEogcj0zNjYiLAogICAic3ZnLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzY2IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNTMiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM3NiIsCiAgICJwYXRoLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzQ2IgogIF0KIH0KXQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-c64544329d6f33c93bb5",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 95,
+              "column": 9
+            },
+            {
+              "title": "@360: document scrollWidth === clientWidth (settled + all sections visited)",
+              "ok": true,
+              "tags": [
+                "360:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4243,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:54.564Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "reflow",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJhdCI6ICJoZXJvIiwKICAic2Nyb2xsV2lkdGgiOiAzNjAsCiAgImNsaWVudFdpZHRoIjogMzYwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDE1IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQxNiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDAxIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjciLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM5MyIKICBdCiB9LAogewogICJhdCI6ICJhYm91dCIsCiAgInNjcm9sbFdpZHRoIjogMzYwLAogICJjbGllbnRXaWR0aCI6IDM2MCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTQxNSIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MTUiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQwMCIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDI2IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zOTMiCiAgXQogfSwKIHsKICAiYXQiOiAiZXhwZXJpZW5jZSIsCiAgInNjcm9sbFdpZHRoIjogMzYwLAogICJjbGllbnRXaWR0aCI6IDM2MCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTQxNSIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MTUiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQwMCIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDI2IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zOTMiCiAgXQogfSwKIHsKICAiYXQiOiAic2tpbGxzIiwKICAic2Nyb2xsV2lkdGgiOiAzNjAsCiAgImNsaWVudFdpZHRoIjogMzYwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDE1IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQxNSIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDAwIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM5MyIKICBdCiB9LAogewogICJhdCI6ICJ2aXRyaW5lIiwKICAic2Nyb2xsV2lkdGgiOiAzNjAsCiAgImNsaWVudFdpZHRoIjogMzYwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDE1IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQxNSIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDAwIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM5MyIKICBdCiB9LAogewogICJhdCI6ICJsaXN0ZW4iLAogICJzY3JvbGxXaWR0aCI6IDM2MCwKICAiY2xpZW50V2lkdGgiOiAzNjAsCiAgIm9mZmVuZGVycyI6IFsKICAgIkRJVi5IZXJvX29wdGljYWxGaWVsZF9fblJQbEogcj00MTUiLAogICAic3ZnLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDE1IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MDAiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQyNiIsCiAgICJwYXRoLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzkzIgogIF0KIH0KXQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-220705aee522c9d278c1",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 95,
+              "column": 9
+            },
+            {
+              "title": "@390: document scrollWidth === clientWidth (settled + all sections visited)",
+              "ok": true,
+              "tags": [
+                "390:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3887,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:57.077Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "reflow",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJhdCI6ICJoZXJvIiwKICAic2Nyb2xsV2lkdGgiOiAzOTAsCiAgImNsaWVudFdpZHRoIjogMzkwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDUyIiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQ1MiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDM1IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NjQiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQyOCIKICBdCiB9LAogewogICJhdCI6ICJhYm91dCIsCiAgInNjcm9sbFdpZHRoIjogMzkwLAogICJjbGllbnRXaWR0aCI6IDM5MCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTQ1MiIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NTIiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQzNSIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDY0IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjgiCiAgXQogfSwKIHsKICAiYXQiOiAiZXhwZXJpZW5jZSIsCiAgInNjcm9sbFdpZHRoIjogMzkwLAogICJjbGllbnRXaWR0aCI6IDM5MCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTQ1MiIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NTIiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQzNSIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDY0IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjgiCiAgXQogfSwKIHsKICAiYXQiOiAic2tpbGxzIiwKICAic2Nyb2xsV2lkdGgiOiAzOTAsCiAgImNsaWVudFdpZHRoIjogMzkwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDUyIiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQ1MiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDM1IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NjQiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQyOCIKICBdCiB9LAogewogICJhdCI6ICJ2aXRyaW5lIiwKICAic2Nyb2xsV2lkdGgiOiAzOTAsCiAgImNsaWVudFdpZHRoIjogMzkwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDUyIiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQ1MiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDM1IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NjQiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQyOCIKICBdCiB9LAogewogICJhdCI6ICJsaXN0ZW4iLAogICJzY3JvbGxXaWR0aCI6IDM5MCwKICAiY2xpZW50V2lkdGgiOiAzOTAsCiAgIm9mZmVuZGVycyI6IFsKICAgIkRJVi5IZXJvX29wdGljYWxGaWVsZF9fblJQbEogcj00NTIiLAogICAic3ZnLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDUyIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MzUiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQ2NCIsCiAgICJwYXRoLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDI4IgogIF0KIH0KXQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-9b043bf38ea540ea7529",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 95,
+              "column": 9
+            },
+            {
+              "title": "@320: document scrollWidth === clientWidth (settled + all sections visited)",
+              "ok": true,
+              "tags": [
+                "320:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3768,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:25.709Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "reflow",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJhdCI6ICJoZXJvIiwKICAic2Nyb2xsV2lkdGgiOiAzMjAsCiAgImNsaWVudFdpZHRoIjogMzIwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9MzY2IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM2NiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzUzIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNzYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM0NyIKICBdCiB9LAogewogICJhdCI6ICJhYm91dCIsCiAgInNjcm9sbFdpZHRoIjogMzIwLAogICJjbGllbnRXaWR0aCI6IDMyMCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTM2NiIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNjYiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM1MyIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9Mzc2IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNDYiCiAgXQogfSwKIHsKICAiYXQiOiAiZXhwZXJpZW5jZSIsCiAgInNjcm9sbFdpZHRoIjogMzIwLAogICJjbGllbnRXaWR0aCI6IDMyMCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTM2NiIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNjYiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM1MyIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9Mzc2IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNDYiCiAgXQogfSwKIHsKICAiYXQiOiAic2tpbGxzIiwKICAic2Nyb2xsV2lkdGgiOiAzMjAsCiAgImNsaWVudFdpZHRoIjogMzIwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9MzY2IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM2NiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzUzIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNzYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM0NiIKICBdCiB9LAogewogICJhdCI6ICJ2aXRyaW5lIiwKICAic2Nyb2xsV2lkdGgiOiAzMjAsCiAgImNsaWVudFdpZHRoIjogMzIwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9MzY2IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM2NiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzUzIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNzYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM0NiIKICBdCiB9LAogewogICJhdCI6ICJsaXN0ZW4iLAogICJzY3JvbGxXaWR0aCI6IDMyMCwKICAiY2xpZW50V2lkdGgiOiAzMjAsCiAgIm9mZmVuZGVycyI6IFsKICAgIkRJVi5IZXJvX29wdGljYWxGaWVsZF9fblJQbEogcj0zNjYiLAogICAic3ZnLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzY2IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zNTMiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM3NiIsCiAgICJwYXRoLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzQ2IgogIF0KIH0KXQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-d8fe4c41173a8b77c41a",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 95,
+              "column": 9
+            },
+            {
+              "title": "@360: document scrollWidth === clientWidth (settled + all sections visited)",
+              "ok": true,
+              "tags": [
+                "360:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3836,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:27.649Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "reflow",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJhdCI6ICJoZXJvIiwKICAic2Nyb2xsV2lkdGgiOiAzNjAsCiAgImNsaWVudFdpZHRoIjogMzYwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDE1IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQxNiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDAwIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjciLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM5MyIKICBdCiB9LAogewogICJhdCI6ICJhYm91dCIsCiAgInNjcm9sbFdpZHRoIjogMzYwLAogICJjbGllbnRXaWR0aCI6IDM2MCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTQxNSIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MTUiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQwMCIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDI2IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zOTMiCiAgXQogfSwKIHsKICAiYXQiOiAiZXhwZXJpZW5jZSIsCiAgInNjcm9sbFdpZHRoIjogMzYwLAogICJjbGllbnRXaWR0aCI6IDM2MCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTQxNSIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MTUiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQwMCIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDI2IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj0zOTMiCiAgXQogfSwKIHsKICAiYXQiOiAic2tpbGxzIiwKICAic2Nyb2xsV2lkdGgiOiAzNjAsCiAgImNsaWVudFdpZHRoIjogMzYwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDE1IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQxNSIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDAwIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM5MyIKICBdCiB9LAogewogICJhdCI6ICJ2aXRyaW5lIiwKICAic2Nyb2xsV2lkdGgiOiAzNjAsCiAgImNsaWVudFdpZHRoIjogMzYwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDE1IiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQxNSIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDAwIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjYiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTM5MyIKICBdCiB9LAogewogICJhdCI6ICJsaXN0ZW4iLAogICJzY3JvbGxXaWR0aCI6IDM2MCwKICAiY2xpZW50V2lkdGgiOiAzNjAsCiAgIm9mZmVuZGVycyI6IFsKICAgIkRJVi5IZXJvX29wdGljYWxGaWVsZF9fblJQbEogcj00MTUiLAogICAic3ZnLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDE1IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MDAiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQyNiIsCiAgICJwYXRoLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9MzkzIgogIF0KIH0KXQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-abbd2504c6b4c23d0a1e",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 95,
+              "column": 9
+            },
+            {
+              "title": "@390: document scrollWidth === clientWidth (settled + all sections visited)",
+              "ok": true,
+              "tags": [
+                "390:"
+              ],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3926,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:29.525Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "reflow",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJhdCI6ICJoZXJvIiwKICAic2Nyb2xsV2lkdGgiOiAzOTAsCiAgImNsaWVudFdpZHRoIjogMzkwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDUyIiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQ1MiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDM1IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NjQiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQyOCIKICBdCiB9LAogewogICJhdCI6ICJhYm91dCIsCiAgInNjcm9sbFdpZHRoIjogMzkwLAogICJjbGllbnRXaWR0aCI6IDM5MCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTQ1MiIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NTIiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQzNSIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDY0IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjgiCiAgXQogfSwKIHsKICAiYXQiOiAiZXhwZXJpZW5jZSIsCiAgInNjcm9sbFdpZHRoIjogMzkwLAogICJjbGllbnRXaWR0aCI6IDM5MCwKICAib2ZmZW5kZXJzIjogWwogICAiRElWLkhlcm9fb3B0aWNhbEZpZWxkX19uUlBsSiByPTQ1MiIsCiAgICJzdmcuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NTIiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQzNSIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDY0IiwKICAgInBhdGguW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MjgiCiAgXQogfSwKIHsKICAiYXQiOiAic2tpbGxzIiwKICAic2Nyb2xsV2lkdGgiOiAzOTAsCiAgImNsaWVudFdpZHRoIjogMzkwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDUyIiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQ1MiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDM1IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NjQiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQyOCIKICBdCiB9LAogewogICJhdCI6ICJ2aXRyaW5lIiwKICAic2Nyb2xsV2lkdGgiOiAzOTAsCiAgImNsaWVudFdpZHRoIjogMzkwLAogICJvZmZlbmRlcnMiOiBbCiAgICJESVYuSGVyb19vcHRpY2FsRmllbGRfX25SUGxKIHI9NDUyIiwKICAgInN2Zy5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQ1MiIsCiAgICJlbGxpcHNlLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDM1IiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00NjQiLAogICAicGF0aC5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQyOCIKICBdCiB9LAogewogICJhdCI6ICJsaXN0ZW4iLAogICJzY3JvbGxXaWR0aCI6IDM5MCwKICAiY2xpZW50V2lkdGgiOiAzOTAsCiAgIm9mZmVuZGVycyI6IFsKICAgIkRJVi5IZXJvX29wdGljYWxGaWVsZF9fblJQbEogcj00NTIiLAogICAic3ZnLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDUyIiwKICAgImVsbGlwc2UuW29iamVjdCBTVkdBbmltYXRlZFN0cmluZ10gcj00MzUiLAogICAiZWxsaXBzZS5bb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSByPTQ2NCIsCiAgICJwYXRoLltvYmplY3QgU1ZHQW5pbWF0ZWRTdHJpbmddIHI9NDI4IgogIF0KIH0KXQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-63da61992bb66c5eadd7",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 95,
+              "column": 9
+            }
+          ]
+        },
+        {
+          "title": "UX-P2-002 nav active state / hash sync",
+          "file": "e2e/regressions-red-20260929.spec.ts",
+          "line": 118,
+          "column": 6,
+          "specs": [
+            {
+              "title": "desktop: click → aria-current + hash; manual scroll → follows; Back → restores",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 9149,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:26.387Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "nav-sync",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJzdGVwIjogImNsaWNrICNza2lsbHMiLAogICJoYXNoIjogIiNza2lsbHMiLAogICJjdXJyZW50IjogWwogICAiI3NraWxscyIKICBdCiB9LAogewogICJzdGVwIjogImtleWJvYXJkIFBhZ2VEb3duIMOXOSB0byAjbGlzdGVuICh0b3AgLTI0OCkiLAogICJoYXNoIjogIiNsaXN0ZW4iLAogICJjdXJyZW50IjogWwogICAiI2xpc3RlbiIKICBdCiB9LAogewogICJzdGVwIjogIm1hbnVhbCBzY3JvbGwgdG8gI2Fib3V0IiwKICAiaGFzaCI6ICIjYWJvdXQiLAogICJjdXJyZW50IjogWwogICAiI2Fib3V0IgogIF0KIH0KXQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-b81bb6b053cb644cb949",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 127,
+              "column": 7
+            },
+            {
+              "title": "desktop: scrollbar-equivalent scroll (no wheel/key/touch events) after a nav click updates aria-current + hash",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5845,
+                      "error": {
+                        "message": "Error: aria-current follows scroll-only movement to Listen\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"#listen\"\u001b[39m\nReceived array: \u001b[31m[\"#skills\"]\u001b[39m",
+                        "stack": "Error: aria-current follows scroll-only movement to Listen\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"#listen\"\u001b[39m\nReceived array: \u001b[31m[\"#skills\"]\u001b[39m\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts:172:82",
+                        "location": {
+                          "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                          "column": 82,
+                          "line": 172
+                        },
+                        "snippet": "  170 |     await testInfo.attach('nav-scrollbar', { body: JSON.stringify({ before, after }), contentType: 'application/json' });\n  171 |     expect(before.current).toContain('#skills');\n> 172 |     expect(after.current, 'aria-current follows scroll-only movement to Listen').toContain('#listen');\n      |                                                                                  ^\n  173 |     expect(after.hash, 'hash follows scroll-only movement to Listen').toBe('#listen');\n  174 |   });\n  175 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                            "column": 82,
+                            "line": 172
+                          },
+                          "message": "Error: aria-current follows scroll-only movement to Listen\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"#listen\"\u001b[39m\nReceived array: \u001b[31m[\"#skills\"]\u001b[39m\n\n  170 |     await testInfo.attach('nav-scrollbar', { body: JSON.stringify({ before, after }), contentType: 'application/json' });\n  171 |     expect(before.current).toContain('#skills');\n> 172 |     expect(after.current, 'aria-current follows scroll-only movement to Listen').toContain('#listen');\n      |                                                                                  ^\n  173 |     expect(after.hash, 'hash follows scroll-only movement to Listen').toBe('#listen');\n  174 |   });\n  175 |\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts:172:82"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:28.042Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "nav-scrollbar",
+                          "contentType": "application/json",
+                          "body": "eyJiZWZvcmUiOnsiaGFzaCI6IiNza2lsbHMiLCJjdXJyZW50IjpbIiNza2lsbHMiXX0sImFmdGVyIjp7Imhhc2giOiIjc2tpbGxzIiwiY3VycmVudCI6WyIjc2tpbGxzIl0sImxpc3RlblRvcCI6OTZ9fQ=="
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-regressions-red-202609-7e986-k-updates-aria-current-hash-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-regressions-red-202609-7e986-k-updates-aria-current-hash-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                        "column": 82,
+                        "line": 172
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "651b829786cfd6004679-515a7178cbdd9b551bdc",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 158,
+              "column": 7
+            },
+            {
+              "title": "desktop: Back after two nav clicks restores section, hash and aria-current",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 7390,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:35.021Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "nav-back",
+                          "contentType": "application/json",
+                          "body": "eyJoYXNoIjoiI2V4cGVyaWVuY2UiLCJjdXJyZW50IjpbIiNleHBlcmllbmNlIl0sInRvcCI6OTZ9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-e51f5396921db0649210",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 176,
+              "column": 7
+            },
+            {
+              "title": "mobile 390: deep link /#vitrine marks Vitrine current in the menu",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3295,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:35.570Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "nav-mobile",
+                          "contentType": "application/json",
+                          "body": "WyIjdml0cmluZSJd"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-0bf4f77451014b74987b",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 194,
+              "column": 7
+            },
+            {
+              "title": "desktop: click → aria-current + hash; manual scroll → follows; Back → restores",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8965,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:58.849Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "nav-sync",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJzdGVwIjogImNsaWNrICNza2lsbHMiLAogICJoYXNoIjogIiNza2lsbHMiLAogICJjdXJyZW50IjogWwogICAiI3NraWxscyIKICBdCiB9LAogewogICJzdGVwIjogImtleWJvYXJkIFBhZ2VEb3duIMOXOSB0byAjbGlzdGVuICh0b3AgLTI0OCkiLAogICJoYXNoIjogIiNsaXN0ZW4iLAogICJjdXJyZW50IjogWwogICAiI2xpc3RlbiIKICBdCiB9LAogewogICJzdGVwIjogIm1hbnVhbCBzY3JvbGwgdG8gI2Fib3V0IiwKICAiaGFzaCI6ICIjYWJvdXQiLAogICJjdXJyZW50IjogWwogICAiI2Fib3V0IgogIF0KIH0KXQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-dc005a1be1f116448d3d",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 127,
+              "column": 7
+            },
+            {
+              "title": "desktop: scrollbar-equivalent scroll (no wheel/key/touch events) after a nav click updates aria-current + hash",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5560,
+                      "error": {
+                        "message": "Error: aria-current follows scroll-only movement to Listen\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"#listen\"\u001b[39m\nReceived array: \u001b[31m[\"#skills\"]\u001b[39m",
+                        "stack": "Error: aria-current follows scroll-only movement to Listen\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"#listen\"\u001b[39m\nReceived array: \u001b[31m[\"#skills\"]\u001b[39m\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts:172:82",
+                        "location": {
+                          "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                          "column": 82,
+                          "line": 172
+                        },
+                        "snippet": "  170 |     await testInfo.attach('nav-scrollbar', { body: JSON.stringify({ before, after }), contentType: 'application/json' });\n  171 |     expect(before.current).toContain('#skills');\n> 172 |     expect(after.current, 'aria-current follows scroll-only movement to Listen').toContain('#listen');\n      |                                                                                  ^\n  173 |     expect(after.hash, 'hash follows scroll-only movement to Listen').toBe('#listen');\n  174 |   });\n  175 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                            "column": 82,
+                            "line": 172
+                          },
+                          "message": "Error: aria-current follows scroll-only movement to Listen\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"#listen\"\u001b[39m\nReceived array: \u001b[31m[\"#skills\"]\u001b[39m\n\n  170 |     await testInfo.attach('nav-scrollbar', { body: JSON.stringify({ before, after }), contentType: 'application/json' });\n  171 |     expect(before.current).toContain('#skills');\n> 172 |     expect(after.current, 'aria-current follows scroll-only movement to Listen').toContain('#listen');\n      |                                                                                  ^\n  173 |     expect(after.hash, 'hash follows scroll-only movement to Listen').toBe('#listen');\n  174 |   });\n  175 |\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts:172:82"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:01.011Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "nav-scrollbar",
+                          "contentType": "application/json",
+                          "body": "eyJiZWZvcmUiOnsiaGFzaCI6IiNza2lsbHMiLCJjdXJyZW50IjpbIiNza2lsbHMiXX0sImFmdGVyIjp7Imhhc2giOiIjc2tpbGxzIiwiY3VycmVudCI6WyIjc2tpbGxzIl0sImxpc3RlblRvcCI6OTZ9fQ=="
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-regressions-red-202609-7e986-k-updates-aria-current-hash-chromium-repeat1/test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-regressions-red-202609-7e986-k-updates-aria-current-hash-chromium-repeat1/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                        "column": 82,
+                        "line": 172
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "651b829786cfd6004679-6337ebd38840bf297e1e",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 158,
+              "column": 7
+            },
+            {
+              "title": "desktop: Back after two nav clicks restores section, hash and aria-current",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7443,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:07.876Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "nav-back",
+                          "contentType": "application/json",
+                          "body": "eyJoYXNoIjoiI2V4cGVyaWVuY2UiLCJjdXJyZW50IjpbIiNleHBlcmllbmNlIl0sInRvcCI6OTZ9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-6373124e86d7cb0a6b5d",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 176,
+              "column": 7
+            },
+            {
+              "title": "mobile 390: deep link /#vitrine marks Vitrine current in the menu",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3469,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:07.844Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "nav-mobile",
+                          "contentType": "application/json",
+                          "body": "WyIjdml0cmluZSJd"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-5d9c88224ecb04255109",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 194,
+              "column": 7
+            },
+            {
+              "title": "desktop: click → aria-current + hash; manual scroll → follows; Back → restores",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8733,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:31.546Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "nav-sync",
+                          "contentType": "application/json",
+                          "body": "WwogewogICJzdGVwIjogImNsaWNrICNza2lsbHMiLAogICJoYXNoIjogIiNza2lsbHMiLAogICJjdXJyZW50IjogWwogICAiI3NraWxscyIKICBdCiB9LAogewogICJzdGVwIjogImtleWJvYXJkIFBhZ2VEb3duIMOXOSB0byAjbGlzdGVuICh0b3AgLTI0OCkiLAogICJoYXNoIjogIiNsaXN0ZW4iLAogICJjdXJyZW50IjogWwogICAiI2xpc3RlbiIKICBdCiB9LAogewogICJzdGVwIjogIm1hbnVhbCBzY3JvbGwgdG8gI2Fib3V0IiwKICAiaGFzaCI6ICIjYWJvdXQiLAogICJjdXJyZW50IjogWwogICAiI2Fib3V0IgogIF0KIH0KXQ=="
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-31f1ebe43fa85a5823b6",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 127,
+              "column": 7
+            },
+            {
+              "title": "desktop: scrollbar-equivalent scroll (no wheel/key/touch events) after a nav click updates aria-current + hash",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5430,
+                      "error": {
+                        "message": "Error: aria-current follows scroll-only movement to Listen\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"#listen\"\u001b[39m\nReceived array: \u001b[31m[\"#skills\"]\u001b[39m",
+                        "stack": "Error: aria-current follows scroll-only movement to Listen\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"#listen\"\u001b[39m\nReceived array: \u001b[31m[\"#skills\"]\u001b[39m\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts:172:82",
+                        "location": {
+                          "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                          "column": 82,
+                          "line": 172
+                        },
+                        "snippet": "  170 |     await testInfo.attach('nav-scrollbar', { body: JSON.stringify({ before, after }), contentType: 'application/json' });\n  171 |     expect(before.current).toContain('#skills');\n> 172 |     expect(after.current, 'aria-current follows scroll-only movement to Listen').toContain('#listen');\n      |                                                                                  ^\n  173 |     expect(after.hash, 'hash follows scroll-only movement to Listen').toBe('#listen');\n  174 |   });\n  175 |"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                            "column": 82,
+                            "line": 172
+                          },
+                          "message": "Error: aria-current follows scroll-only movement to Listen\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"#listen\"\u001b[39m\nReceived array: \u001b[31m[\"#skills\"]\u001b[39m\n\n  170 |     await testInfo.attach('nav-scrollbar', { body: JSON.stringify({ before, after }), contentType: 'application/json' });\n  171 |     expect(before.current).toContain('#skills');\n> 172 |     expect(after.current, 'aria-current follows scroll-only movement to Listen').toContain('#listen');\n      |                                                                                  ^\n  173 |     expect(after.hash, 'hash follows scroll-only movement to Listen').toBe('#listen');\n  174 |   });\n  175 |\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts:172:82"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:33.475Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "nav-scrollbar",
+                          "contentType": "application/json",
+                          "body": "eyJiZWZvcmUiOnsiaGFzaCI6IiNza2lsbHMiLCJjdXJyZW50IjpbIiNza2lsbHMiXX0sImFmdGVyIjp7Imhhc2giOiIjc2tpbGxzIiwiY3VycmVudCI6WyIjc2tpbGxzIl0sImxpc3RlblRvcCI6OTZ9fQ=="
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-regressions-red-202609-7e986-k-updates-aria-current-hash-chromium-repeat2/test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/home/ubuntu/github_repos/forgotten-mistory/test-results/e2e-regressions-red-202609-7e986-k-updates-aria-current-hash-chromium-repeat2/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                        "column": 82,
+                        "line": 172
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "651b829786cfd6004679-235452f24c4b65d138c5",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 158,
+              "column": 7
+            },
+            {
+              "title": "desktop: Back after two nav clicks restores section, hash and aria-current",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 7441,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:40.065Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "nav-back",
+                          "contentType": "application/json",
+                          "body": "eyJoYXNoIjoiI2V4cGVyaWVuY2UiLCJjdXJyZW50IjpbIiNleHBlcmllbmNlIl0sInRvcCI6OTZ9"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-31161bbfe617749ac1bb",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 176,
+              "column": 7
+            },
+            {
+              "title": "mobile 390: deep link /#vitrine marks Vitrine current in the menu",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3515,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:40.306Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "nav-mobile",
+                          "contentType": "application/json",
+                          "body": "WyIjdml0cmluZSJd"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "651b829786cfd6004679-c0754ef0d1cb74e93fba",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 194,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "title": "UX-P1-006 mobile Lighthouse (§9 thresholds)",
+          "file": "e2e/regressions-red-20260929.spec.ts",
+          "line": 206,
+          "column": 6,
+          "specs": [
+            {
+              "title": "median of committed runs meets Perf ≥ 0.90, LCP ≤ 2500 ms, TBT ≤ 200 ms",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "lighthouse-median",
+                      "description": "{\"performance\":0.92,\"accessibility\":1,\"bestPractices\":1,\"seo\":1,\"lcp\":2865,\"tbt\":158,\"cls\":0,\"fcp\":1365,\"si\":1564}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 25,
+                      "error": {
+                        "message": "Error: LCP ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m2500\u001b[39m\nReceived:    \u001b[31m2865\u001b[39m",
+                        "stack": "Error: LCP ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m2500\u001b[39m\nReceived:    \u001b[31m2865\u001b[39m\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts:213:34",
+                        "location": {
+                          "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                          "column": 34,
+                          "line": 213
+                        },
+                        "snippet": "  211 |     testInfo.annotations.push({ type: 'lighthouse-median', description: JSON.stringify(m) });\n  212 |     expect.soft(m.performance, 'Perf score').toBeGreaterThanOrEqual(0.9);\n> 213 |     expect.soft(m.lcp, 'LCP ms').toBeLessThanOrEqual(2500);\n      |                                  ^\n  214 |     expect.soft(m.tbt, 'TBT ms').toBeLessThanOrEqual(200);\n  215 |     expect.soft(m.cls, 'CLS').toBeLessThanOrEqual(0.05);\n  216 |   });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                            "column": 34,
+                            "line": 213
+                          },
+                          "message": "Error: LCP ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m2500\u001b[39m\nReceived:    \u001b[31m2865\u001b[39m\n\n  211 |     testInfo.annotations.push({ type: 'lighthouse-median', description: JSON.stringify(m) });\n  212 |     expect.soft(m.performance, 'Perf score').toBeGreaterThanOrEqual(0.9);\n> 213 |     expect.soft(m.lcp, 'LCP ms').toBeLessThanOrEqual(2500);\n      |                                  ^\n  214 |     expect.soft(m.tbt, 'TBT ms').toBeLessThanOrEqual(200);\n  215 |     expect.soft(m.cls, 'CLS').toBeLessThanOrEqual(0.05);\n  216 |   });\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts:213:34"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:20:38.886Z",
+                      "annotations": [
+                        {
+                          "type": "lighthouse-median",
+                          "description": "{\"performance\":0.92,\"accessibility\":1,\"bestPractices\":1,\"seo\":1,\"lcp\":2865,\"tbt\":158,\"cls\":0,\"fcp\":1365,\"si\":1564}"
+                        }
+                      ],
+                      "attachments": [],
+                      "errorLocation": {
+                        "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                        "column": 34,
+                        "line": 213
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "651b829786cfd6004679-29e0bf7a90a6906250ce",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 207,
+              "column": 7
+            },
+            {
+              "title": "median of committed runs meets Perf ≥ 0.90, LCP ≤ 2500 ms, TBT ≤ 200 ms",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "lighthouse-median",
+                      "description": "{\"performance\":0.92,\"accessibility\":1,\"bestPractices\":1,\"seo\":1,\"lcp\":2865,\"tbt\":158,\"cls\":0,\"fcp\":1365,\"si\":1564}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 17,
+                      "error": {
+                        "message": "Error: LCP ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m2500\u001b[39m\nReceived:    \u001b[31m2865\u001b[39m",
+                        "stack": "Error: LCP ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m2500\u001b[39m\nReceived:    \u001b[31m2865\u001b[39m\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts:213:34",
+                        "location": {
+                          "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                          "column": 34,
+                          "line": 213
+                        },
+                        "snippet": "  211 |     testInfo.annotations.push({ type: 'lighthouse-median', description: JSON.stringify(m) });\n  212 |     expect.soft(m.performance, 'Perf score').toBeGreaterThanOrEqual(0.9);\n> 213 |     expect.soft(m.lcp, 'LCP ms').toBeLessThanOrEqual(2500);\n      |                                  ^\n  214 |     expect.soft(m.tbt, 'TBT ms').toBeLessThanOrEqual(200);\n  215 |     expect.soft(m.cls, 'CLS').toBeLessThanOrEqual(0.05);\n  216 |   });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                            "column": 34,
+                            "line": 213
+                          },
+                          "message": "Error: LCP ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m2500\u001b[39m\nReceived:    \u001b[31m2865\u001b[39m\n\n  211 |     testInfo.annotations.push({ type: 'lighthouse-median', description: JSON.stringify(m) });\n  212 |     expect.soft(m.performance, 'Perf score').toBeGreaterThanOrEqual(0.9);\n> 213 |     expect.soft(m.lcp, 'LCP ms').toBeLessThanOrEqual(2500);\n      |                                  ^\n  214 |     expect.soft(m.tbt, 'TBT ms').toBeLessThanOrEqual(200);\n  215 |     expect.soft(m.cls, 'CLS').toBeLessThanOrEqual(0.05);\n  216 |   });\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts:213:34"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:11.356Z",
+                      "annotations": [
+                        {
+                          "type": "lighthouse-median",
+                          "description": "{\"performance\":0.92,\"accessibility\":1,\"bestPractices\":1,\"seo\":1,\"lcp\":2865,\"tbt\":158,\"cls\":0,\"fcp\":1365,\"si\":1564}"
+                        }
+                      ],
+                      "attachments": [],
+                      "errorLocation": {
+                        "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                        "column": 34,
+                        "line": 213
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "651b829786cfd6004679-30b9d90cdb61e5899aea",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 207,
+              "column": 7
+            },
+            {
+              "title": "median of committed runs meets Perf ≥ 0.90, LCP ≤ 2500 ms, TBT ≤ 200 ms",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [
+                    {
+                      "type": "lighthouse-median",
+                      "description": "{\"performance\":0.92,\"accessibility\":1,\"bestPractices\":1,\"seo\":1,\"lcp\":2865,\"tbt\":158,\"cls\":0,\"fcp\":1365,\"si\":1564}"
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 16,
+                      "error": {
+                        "message": "Error: LCP ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m2500\u001b[39m\nReceived:    \u001b[31m2865\u001b[39m",
+                        "stack": "Error: LCP ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m2500\u001b[39m\nReceived:    \u001b[31m2865\u001b[39m\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts:213:34",
+                        "location": {
+                          "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                          "column": 34,
+                          "line": 213
+                        },
+                        "snippet": "  211 |     testInfo.annotations.push({ type: 'lighthouse-median', description: JSON.stringify(m) });\n  212 |     expect.soft(m.performance, 'Perf score').toBeGreaterThanOrEqual(0.9);\n> 213 |     expect.soft(m.lcp, 'LCP ms').toBeLessThanOrEqual(2500);\n      |                                  ^\n  214 |     expect.soft(m.tbt, 'TBT ms').toBeLessThanOrEqual(200);\n  215 |     expect.soft(m.cls, 'CLS').toBeLessThanOrEqual(0.05);\n  216 |   });"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                            "column": 34,
+                            "line": 213
+                          },
+                          "message": "Error: LCP ms\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m2500\u001b[39m\nReceived:    \u001b[31m2865\u001b[39m\n\n  211 |     testInfo.annotations.push({ type: 'lighthouse-median', description: JSON.stringify(m) });\n  212 |     expect.soft(m.performance, 'Perf score').toBeGreaterThanOrEqual(0.9);\n> 213 |     expect.soft(m.lcp, 'LCP ms').toBeLessThanOrEqual(2500);\n      |                                  ^\n  214 |     expect.soft(m.tbt, 'TBT ms').toBeLessThanOrEqual(200);\n  215 |     expect.soft(m.cls, 'CLS').toBeLessThanOrEqual(0.05);\n  216 |   });\n    at /home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts:213:34"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-29T11:21:43.861Z",
+                      "annotations": [
+                        {
+                          "type": "lighthouse-median",
+                          "description": "{\"performance\":0.92,\"accessibility\":1,\"bestPractices\":1,\"seo\":1,\"lcp\":2865,\"tbt\":158,\"cls\":0,\"fcp\":1365,\"si\":1564}"
+                        }
+                      ],
+                      "attachments": [],
+                      "errorLocation": {
+                        "file": "/home/ubuntu/github_repos/forgotten-mistory/tests/e2e/regressions-red-20260929.spec.ts",
+                        "column": 34,
+                        "line": 213
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "651b829786cfd6004679-528220202ed0dc0e64aa",
+              "file": "e2e/regressions-red-20260929.spec.ts",
+              "line": 207,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-29T11:20:05.783Z",
+    "duration": 102307.81,
+    "expected": 27,
+    "skipped": 0,
+    "unexpected": 6,
+    "flaky": 0
+  }
+}
