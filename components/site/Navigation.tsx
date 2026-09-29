@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import { contact } from '@/app/data/siteContent';
 import { MINIVIC_OPEN_EVENT } from '@/components/MiniVicBot';
@@ -28,6 +28,7 @@ const NAV_LINKS = [
 ] as const;
 
 const CV_HREF = '/docs/Vik_Resume_Final.pdf';
+const INTERNAL_NAV_LINKS = NAV_LINKS.filter((link) => link.href.startsWith('#')).map((link) => link.href);
 
 const SPRING = { type: 'spring', stiffness: 300, damping: 30 } as const;
 
@@ -50,11 +51,51 @@ const LINK_VARIANTS: Variants = {
  */
 export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const [activeHash, setActiveHash] = useState<string>('#hero');
   const prefersReducedMotion = useReducedMotion();
   const overlayRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
+  const activeHashRef = useRef(activeHash);
+  const pendingAnchorRef = useRef<{ hash: string; until: number } | null>(null);
+  const initialHashSyncedRef = useRef(false);
+  const internalHashes = useMemo(() => new Set<string>(INTERNAL_NAV_LINKS), []);
 
   const close = useCallback(() => setOpen(false), []);
+
+  useEffect(() => {
+    activeHashRef.current = activeHash;
+  }, [activeHash]);
+
+  const setCurrentHash = useCallback((hash: string) => {
+    if (activeHashRef.current === hash) return;
+    activeHashRef.current = hash;
+    setActiveHash(hash);
+  }, []);
+
+  const chooseVisibleHash = useCallback(() => {
+    let bestHash = '#hero';
+    let bestDistance = Number.POSITIVE_INFINITY;
+    const targetLine = Math.min(window.innerHeight * 0.42, 220);
+
+    for (const hash of INTERNAL_NAV_LINKS) {
+      const section = document.getElementById(hash.slice(1));
+      if (!section) continue;
+      const rect = section.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) continue;
+      const distance = Math.abs(rect.top - targetLine);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        bestHash = hash;
+      }
+    }
+
+    return bestHash;
+  }, []);
+
+  const replaceHash = useCallback((hash: string) => {
+    if (window.location.hash === hash) return;
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}${window.location.search}${hash}`);
+  }, []);
 
   // Remove the closed overlay from the tab order + accessibility tree so its links
   // are not focusable while aria-hidden (fixes axe aria-hidden-focus — TC-NFR-A11Y).
@@ -112,18 +153,60 @@ export default function Navigation() {
     };
   }, [open]);
 
-  // Transparent → frosted nav: flag data-scrolled once the page leaves the top.
-  // Set imperatively via the ref so scrolling never triggers a React re-render.
+  // Transparent → frosted nav + current section. The scroll path mutates the
+  // chrome imperatively and only enters React when the section token changes.
   useEffect(() => {
     const nav = navRef.current;
     if (!nav) return;
+
+    const syncToLocationHash = () => {
+      const hash = window.location.hash;
+      if (!internalHashes.has(hash)) return;
+      if (!initialHashSyncedRef.current || pendingAnchorRef.current?.hash === hash) {
+        pendingAnchorRef.current = { hash, until: performance.now() + 2200 };
+      }
+      initialHashSyncedRef.current = true;
+      setCurrentHash(hash);
+    };
+
     const onScroll = () => {
       nav.setAttribute('data-scrolled', String(window.scrollY > 24));
+
+      const pending = pendingAnchorRef.current;
+      const visibleHash = chooseVisibleHash();
+      if (pending) {
+        if (visibleHash === pending.hash || performance.now() > pending.until) {
+          pendingAnchorRef.current = null;
+        } else {
+          setCurrentHash(pending.hash);
+          return;
+        }
+      }
+
+      setCurrentHash(visibleHash);
+      replaceHash(visibleHash);
     };
+
+    syncToLocationHash();
+    initialHashSyncedRef.current = true;
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    window.addEventListener('hashchange', syncToLocationHash);
+    window.addEventListener('popstate', syncToLocationHash);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('hashchange', syncToLocationHash);
+      window.removeEventListener('popstate', syncToLocationHash);
+    };
+  }, [chooseVisibleHash, internalHashes, replaceHash, setCurrentHash]);
+
+  const handleNavLinkClick = useCallback((href: string) => {
+    if (internalHashes.has(href)) {
+      pendingAnchorRef.current = { hash: href, until: performance.now() + 2200 };
+      setCurrentHash(href);
+    }
+    close();
+  }, [close, internalHashes, setCurrentHash]);
 
   return (
     <nav ref={navRef}>
@@ -202,7 +285,9 @@ export default function Navigation() {
               <motion.a
                 href={link.href}
                 className="nav-link"
-                onClick={close}
+                aria-current={link.href === activeHash ? 'location' : undefined}
+                data-active={link.href === activeHash ? 'true' : undefined}
+                onClick={() => handleNavLinkClick(link.href)}
                 variants={LINK_VARIANTS}
                 {...('external' in link && link.external
                   ? { target: '_blank', rel: 'noreferrer' }

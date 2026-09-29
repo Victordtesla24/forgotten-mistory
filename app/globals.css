@@ -1022,6 +1022,14 @@ nav {
     color: var(--mist-400);
 }
 
+.nav-link[aria-current="location"] {
+    color: var(--mist-200);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.16em;
+}
+
+
 /* Mobile: the 8-item menu at 4rem overran a short viewport with no scroll. Shrink the
    type, tighten the rhythm, and top-align so the list scrolls cleanly if it still
    exceeds the screen. */

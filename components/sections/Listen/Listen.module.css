@@ -332,6 +332,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
+    width: fit-content;
+    max-width: 100%;
+    min-width: 0;
     min-height: 48px;
     padding: var(--space-2) var(--space-4);
     border-radius: 999px;
@@ -341,6 +345,9 @@
     font-size: var(--fs-lede);
     letter-spacing: 0.02em;
     line-height: var(--lh-snug);
+    text-align: center;
+    overflow-wrap: anywhere;
+    white-space: normal;
     text-decoration: none;
     transition: opacity var(--motion-fast) var(--motion-ease-standard);
 }
