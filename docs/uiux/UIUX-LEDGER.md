@@ -6,6 +6,17 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C5 TestAuthor — finite adversarial matrix + independent RED — 2026-09-29T11:15Z
+
+Branch `uiux/test-author-matrix`; target production `82ffb9ee`. Evidence: `evidence/20260929T1115Z-matrix/` (`test-author.json`, `matrix-summary.md`).
+
+- **Matrix** (`tests/e2e/adversarial-matrix-full.spec.ts`): 2 Chromium profiles × 6 mechanisms × 12 scenarios; baseline ×1, stress ×3 (varied viewport sequence, hidden 0.5/2/5 s, Fast-3G/Regular-3G/no-cache, CPU 2/4/6× + 1/2/3 s script delay). **144/144 Chromium cells PASS, 312/312 iterations; Firefox/WebKit 144 cells PENDING** (not installed/configured). First run's 12 fallback failures were a harness artifact (fixed, rerun 12/12 PASS).
+- **UX-P0-001:** RED-INTERMITTENT, transient only — axe flagged `.Hero_primaryAction` 1/12 runs at t=0 (1.21:1, mid entry-fade); ≥150 ms and rest/hover/focus = 18.32:1. Steady state not reproduced.
+- **UX-P1-006:** RED on LCP only — mobile median Perf 0.92, **LCP 2865 ms**, TBT 158 ms, CLS 0 (3 runs). Prior 71/690 ms not reproduced.
+- **UX-P1-001:** GREEN — no document overflow at 320/360/390 (3/3 each).
+- **UX-P2-002:** RED — after a nav click, scroll-only movement (scrollbar-equivalent) to Listen leaves `aria-current`/hash on `#skills` (3/3). Keyboard/wheel/Back/mobile controls PASS.
+- **Preservation:** `adversarial-repairs` + `flagship-six` 16/16 PASS on production.
+
 ### C4 authoritative update — 2026-09-29T10:15Z
 
 **Four repairs shipped; adversarial evaluation identified fresh regressions in accessibility and performance.** Earlier status is superseded. Current deployed main: `82ffb9ee4909cf03037fc2c0ef0a4f9c9a3e3f04`; live meta `82ffb9ee`. PR #46 merged. Cycle 4 adversarial evaluation is active.

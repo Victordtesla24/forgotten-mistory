@@ -1,0 +1,26 @@
+{
+  "agent_role": "test-author",
+  "run": "20260929T1115Z-matrix",
+  "branch": "uiux/test-author-matrix",
+  "target": "https://forgotten-mistory.web.app/ (build-commit meta 82ffb9ee = origin/main 82ffb9e)",
+  "specs": {
+    "matrix": "tests/e2e/adversarial-matrix-full.spec.ts",
+    "regressions": "tests/e2e/regressions-red-20260929.spec.ts",
+    "scripts": ["scripts/uiux/matrix_summary.mjs", "scripts/uiux/lighthouse_mobile_gate.mjs"]
+  },
+  "matrix": {
+    "definition": "2 Chromium profiles (desktop 1280x800; mobile 390x844 DSF3 touch) x 6 mechanisms x 12 scenarios; baseline scenarios x1, stress scenarios x3 with varied params",
+    "cells": { "total": 288, "pass": 144, "fail": 0, "pending": 144 },
+    "pending_reason": "firefox + webkit: not installed / not configured in playwright.config.ts (chromium only); reported PENDING, not run",
+    "iterations": { "total": 312, "pass": 312, "fail": 0 },
+    "superseded": "First full run: 132/144 cells pass; all 12 fallback-no-blank cells failed with 'Execution context was destroyed' = harness artifact (evaluate awaiting rAF under javaScriptEnabled=false). Harness fixed; 12/12 rerun pass (matrix-fallback-rerun.json). Observation from rerun: without JS + reduced motion, sections are at opacity 0 at load and reach opaque in 138-1311 ms (CSS Hero_heroFade), recorded as msToOpaqueAfterLoad.",
+    "evidence": ["matrix-summary.md", "matrix-summary.json", "matrix-report.json.gz", "matrix-run.log", "matrix-fallback-rerun.json", "matrix-fallback-rerun.log"]
+  },
+  "regressions": {
+    "UX-P0-001": { "verdict": "RED-INTERMITTENT (transient only)", "detail": "axe color-contrast violation on .Hero_primaryAction reproduced 1 of 12 timeline runs (1440 viewport, t=0 ms sample, ratio 1.21 #343434 on #414141, effective opacity mid entry-fade). All samples t>=150 ms and rest/hover/focus states: 18.32:1, axe clean. Steady-state NOT reproduced; ledger's 1.05:1 consistent with the same entry-fade window." },
+    "UX-P1-006": { "verdict": "RED (LCP only)", "detail": "Lighthouse 13.5.0 mobile x3 on production, medians: Perf 0.92 (PASS >=0.90), LCP 2865 ms (FAIL >2500), TBT 158 ms (PASS), CLS 0 (PASS), A11y/BP/SEO 1.0. Ledger's Perf 71 / TBT 690 NOT reproduced. Loaded 2-vCPU VM; benchmarkIndex ~2700-2900." },
+    "UX-P1-001": { "verdict": "GREEN (not reproduced)", "detail": "320/360/390: scrollWidth == clientWidth at every section, 3/3 repeats each. Hero_opticalField extends past viewport (r=366 at 320) but is clipped, no document overflow." },
+    "UX-P2-002": { "verdict": "RED (scroll-only path)", "detail": "After a nav click to #skills, a scroll with no wheel/key/touch events (scrollbar-drag equivalent, window.scrollTo to Listen, top=0) leaves aria-current and hash on #skills — 3/3 repeats. Controls PASS: click sets aria-current+hash; keyboard PageDown to Listen updates; wheel updates; Back restores #experience; mobile deep link marks #vitrine. Likely cause (hypothesis): pending-anchor lock in components/site/Navigation.tsx released only by user-input events, not by scroll." }
+  },
+  "preservation": { "specs": ["tests/e2e/adversarial-repairs.spec.ts", "tests/e2e/flagship-six.spec.ts"], "result": "16 passed / 0 failed on production" , "evidence": ["preserve-report.json", "preserve-run.log"] }
+}
