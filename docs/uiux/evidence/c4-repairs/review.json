@@ -1,0 +1,91 @@
+{
+  "label": "review",
+  "role": "independent-reviewer",
+  "scope": [
+    "app/globals.css",
+    "components/sections/Experience/Experience.module.css",
+    "components/sections/Experience/Experience.tsx",
+    "components/sections/Vitrine/Vitrine.tsx"
+  ],
+  "beforeReport": "docs/uiux/evidence/c4-repairs/before.json",
+  "buildOrTestExecuted": false,
+  "verdict": "changes-requested",
+  "summary": "Three of four repairs are minimal, correct, and preserve invariants. C4-SSR-BARS repair works for the JS-blocked assertion by inverting the default to scaleX(1) and gating the animation with data-animate, but the JS-enabled path introduces an eager collapse plus an unconditional 1600ms fallback commit that will normally fire while the Experience section is still far offscreen during a leisurely scroll, so a real reader never sees the intended entry animation the code comments promise. This must be tightened before merge; the other three fixes may proceed.",
+  "results": [
+    {
+      "id": "C4-SSR-BARS",
+      "verdict": "changes-requested",
+      "assertionCoverage": "The static CSS assertion (Experience.module.css lines 312-330 in diff) now defaults .trackBar to transform: scaleX(1); the collapsed state only applies under .trackField[data-animate]. With JS blocked, Experience.tsx never sets animationReady, so data-animate is absent and every bar renders at scaleX(1) painted width. This should satisfy tests/e2e/adversarial-repairs.spec.ts:35-58 in principle. Not empirically confirmed (no local build/test run performed per scope).",
+      "concerns": [
+        {
+          "severity": "high",
+          "issue": "Unconditional 1600ms fallback commits animation-ready state regardless of viewport position.",
+          "evidence": "components/sections/Experience/Experience.tsx effect: after `observer.observe(chart)` the code unconditionally runs `setAnimationReady(true); fallback = window.setTimeout(commit, 1600);`. animationReady flipping true immediately after hydration adds [data-animate], which per Experience.module.css collapses .trackBar to scaleX(0). If the reader is above the Experience section (deep page, slow reading of Journal/Vitrine), the IntersectionObserver has not fired yet and 1600ms elapses -> commit() flips data-entered, running the transition while the section is still offscreen. When the reader finally scrolls in, the bars are already at scaleX(1) with no transition. This directly contradicts the retained code comment 'lets the visible chart draw itself in' and eliminates the section's stated 'to scale' entry beat for the normal-scroll case.",
+          "requiredChange": "Prefer the minimal alternative called out in the review brief: keep .trackBar visually static (scaleX(1)) as the default, and only prepare the collapsed state inside the IntersectionObserver callback when the section has not yet entered (i.e., set animationReady when the observer first fires with isIntersecting=false-but-approaching, or better, drop animationReady entirely and use a keyframe animation triggered by data-entered that starts from scaleX(0) to scaleX(1) only on real entry). Remove the unconditional post-hydration setAnimationReady(true) and shorten/remove the blanket 1600ms fallback (retain only a below-viewport fast-forward for boundingClientRect.bottom < 0 deep-link case, which the IO already handles)."
+        },
+        {
+          "severity": "low",
+          "issue": "Fallback also runs when the section is currently in view but IO has not yet fired its first callback; acceptable, but coupled with the eager collapse it means a hydration-time flash from scaleX(1) -> scaleX(0) -> scaleX(1) is visible whenever the reader is already on the section at load.",
+          "evidence": "setAnimationReady(true) is committed synchronously in the same effect as observer.observe; React will paint the collapsed state on the next frame before IO resolves.",
+          "requiredChange": "Gate data-animate on the observer's first non-intersecting callback (or use requestAnimationFrame + read of getBoundingClientRect) so bars never collapse if the section is already visible at hydration."
+        }
+      ],
+      "invariantsCheck": "No facts, tokens, RM, or scores altered. Existing motion tokens (900ms, cubic-bezier) preserved. prefers-reduced-motion branch in Experience.module.css correctly updated to zero out transform under both data-animate and data-animate+data-entered."
+    },
+    {
+      "id": "C4-NESTED-FOCUS",
+      "verdict": "approved",
+      "assertionCoverage": "components/sections/Vitrine/Vitrine.tsx onKeyDown now early-returns when event.target !== event.currentTarget, so ArrowRight fired on a nested stageButton no longer runs the plate rail roving-focus that moves focus away. Matches tests/e2e/adversarial-repairs.spec.ts:60-73 assertion that stageButton remains focused after ArrowRight.",
+      "concerns": [],
+      "invariantsCheck": "Minimal, targeted change; no behaviour change for direct key presses on the plate <li> itself. No token, fact, RM, or privacy impact."
+    },
+    {
+      "id": "C4-STAGE-STATE",
+      "verdict": "approved",
+      "assertionCoverage": "components/sections/Vitrine/Vitrine.tsx MechanismPanel now renders aria-pressed={item.id === stage} on every stageButton in addition to preserving the data-active hook, satisfying the aria-pressed=true/false expectations in tests/e2e/adversarial-repairs.spec.ts:76-95.",
+      "concerns": [],
+      "invariantsCheck": "data-active is preserved (CSS/styling untouched). No facts changed. aria-pressed is the correct ARIA semantic for a two-state toggle button."
+    },
+    {
+      "id": "C4-MENU-TARGET",
+      "verdict": "approved",
+      "assertionCoverage": "app/globals.css .menu-toggle gains min-height: var(--space-6) (--space-6 = 3rem = 48px per globals.css:166). At default 16px root that yields 48px, comfortably above the 24 CSS px floor asserted at tests/e2e/adversarial-repairs.spec.ts:96-112 for both 320 and 390 viewports.",
+      "concerns": [
+        {
+          "severity": "info",
+          "issue": "48px is generous; verify it does not visually overpower the compact nav at 320px. Not blocking.",
+          "evidence": "min-height: var(--space-6) resolves to 48px on the .menu-toggle inline-flex row; existing align-items: center keeps the label/icon centred so no visual regression is expected, but only local build can confirm.",
+          "requiredChange": "None required; validate visually in post-fix evidence capture."
+        }
+      ],
+      "invariantsCheck": "Uses an existing spacing token (--space-6); no new magic numbers. mix-blend-mode: difference and label reservation preserved. No copy/facts/RM/privacy changes."
+    }
+  ],
+  "crossCuttingChecks": {
+    "facts": "unchanged",
+    "tokens": "no new tokens introduced; only existing --space-6 used",
+    "scores": "no scores or metrics rendered or altered",
+    "reducedMotion": "Experience.module.css prefers-reduced-motion branch updated to zero the transform under the new data-animate selector - correct",
+    "privacy": "no analytics, network, or storage changes; JS-blocked path deliberately verified"
+  },
+  "regressionRequirements": [
+    "After the SSR-bars change is tightened, capture Experience entry-beat evidence in three scroll conditions: (a) direct load at #experience (bars should animate from 0 -> 1 once), (b) leisurely top-down scroll reaching Experience after >1600ms (bars must still animate on entry, not appear pre-committed), (c) deep-link below Experience (bars must be at scaleX(1) with no residual collapsed frame).",
+    "Re-run tests/e2e/adversarial-repairs.spec.ts against a local build; do not treat live-site pass on the current revision as evidence for these unmerged edits (before.json records liveRevisionProvided ccf06d10 which pre-dates this diff).",
+    "Add or extend a JS-enabled Experience visual/behaviour test that fails if data-entered flips to true while the section's boundingClientRect.top is still greater than viewport height (guards against the 1600ms eager-commit regression).",
+    "Verify prefers-reduced-motion still shows bars at final width with no transition (Experience.module.css:714-720 updated selector).",
+    "Verify Vitrine plate rail ArrowRight/ArrowLeft still works when focus is on the plate <li> itself (the early-return only fires for descendant targets) - add or confirm coverage.",
+    "Confirm aria-pressed additions do not conflict with any existing CSS selectors targeting [aria-pressed] (none observed in the diff scope, but confirm on full build).",
+    "Confirm .menu-toggle min-height does not push the mobile header height beyond its designed row and does not clip mix-blend-mode legibility over the hero."
+  ],
+  "unsupportedTestClaims": [
+    "This review did not execute Playwright or a local Next build; verdicts on assertion coverage are based on static reading of the diff against tests/e2e/adversarial-repairs.spec.ts and before.json. Fixer must produce an after.json with actual measured results before merge."
+  ],
+  "sourceReferences": [
+    "components/sections/Experience/Experience.tsx (useEffect with animationReady + 1600ms fallback + commit())",
+    "components/sections/Experience/Experience.module.css (.trackBar default scaleX(1); .trackField[data-animate] .trackBar scaleX(0); .trackField[data-animate][data-entered] .trackBar transition)",
+    "components/sections/Vitrine/Vitrine.tsx MechanismPanel (aria-pressed on stageButton) and Vitrine onKeyDown (event.target !== event.currentTarget guard)",
+    "app/globals.css .menu-toggle (min-height: var(--space-6)) and --space-6 declaration at line 166",
+    "tests/e2e/adversarial-repairs.spec.ts (all five assertions)",
+    "docs/uiux/evidence/c4-repairs/before.json (baseline failing measurements)"
+  ]
+}

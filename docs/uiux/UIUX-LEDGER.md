@@ -6,6 +6,19 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 
 ## A. Run header
 
+### C4 authoritative update — 2026-09-29T07:41Z
+
+**Four repairs shipped and independently production-verified; broad adversarial campaign NOT complete.** Earlier authorization, missing-hash and unshipped statements below are historical, not current. Original Firebase hosting remains the target. Current deployed main: `82ffb9ee4909cf03037fc2c0ef0a4f9c9a3e3f04`; live meta `82ffb9ee`. PR #46 squash merged; preview Actions `36537399630` SUCCESS; live Actions `36537718878` SUCCESS. Source commit `ec3d135`. Proven existing gh CLI scope names: repo, workflow, read:org, gist. Unsafe legacy merge-all remains disabled; simplified ship pipeline unchanged; functions source unchanged.
+
+- Independent Test Author: five fresh failing production assertions (four root causes) in `evidence/c4-repairs/before.json`.
+- Separate Fixer: default-visible Experience bars with observer-triggered entry animation; Vitrine descendant arrow focus guard and aria-pressed; token-based Menu target minimum. Initial eager timer rejected by independent Reviewer, removed, final review approved (`review.json`, `review-final.json`).
+- Build succeeded; local **16/16**, Firebase preview **16/16**, independent Production QA live **16/16**: five repair cases plus eleven six-feature regression cases. `evidence/c4-repairs/production-qa.json` is closure authority. No full-suite or all-future-load reliability claim.
+- Production QA eight-width overflow check covered 320/360/390/414/768/1024/1280/1440, NOT 1920; zero document overflow, one h1, empty cookie string, zero captured console/page errors. Its `italicOrEmCount=0` queries element tags and is NOT a CSS-italic invariant measurement; do not treat as a failure or pass for the sole italic.
+- Wider pre-release visual sweep covered the prescribed seven widths plus320, 48 section before/after observations and two axe audits. Raw audits include harness false positives; no blanket PASS accepted. Separate visual reviewer looked at compressed six-section desktop/mobile sequences; reported readability/possible overlap concerns. Long-section downscaling and element-capture edges confound that review: recheck full-resolution viewport crops before changing facts/layout.
+- Extended state matrix made three desktop/two mobile repetitions plus adversarial paths, but Experience reset comparison included scroll-dependent top coordinates; these draft failures are not proven product defects. Adjudication remains incomplete. No new Lighthouse, full J1–J8, browser-engine completeness, leak census, or preview rollback drill claimed this cycle. Remaining precise work: validate draft assertions, actual Skills wire/text contrast at full-resolution, Listen dock hit-testing, all-entry animation lifecycle and post-release finite matrix.
+- Prior uncommitted work preserved in stash `preserve pre-adversarial flagship docs and generated outputs`. No daemon state changed.
+
+
 ### Continuation evidence — 2026-09-29T04:26Z
 
 - **Not shipped. Campaign and Cycle 0 remain incomplete.** Legitimate authorization is now proven: existing gh CLI session has `repo, workflow, read:org, gist` scopes and repository admin/push; this is distinct from the previously denied App credential. No denied credential retry. Default Firebase CLI session/ADC absent; Actions secret name exists but Firebase deploy authority has not yet been exercised.
@@ -177,6 +190,65 @@ Single source of truth for the hourly UI/UX release cycle. Updated in place ever
 - Shipped in:            —
 - Evidence (post-fix):   —
 
+### C4 shipped findings (current evidence supersedes historical status)
+
+#### C4-SSR-BARS — Experience duration bars invisible with blocked scripts
+- Lens / framework: WCAG accessibility · Nielsen visibility/control.
+- Persona(s) affected: P1, P4.
+- Section / viewport: Experience; desktop, blocked JavaScript.
+- Observed (production): failing-before evidence `evidence/c4-repairs/before.json`.
+- Expected: accessible meaningful static content and usable named controls.
+- Root cause / recommendation / fix specification: Static CSS scaleX(0) required client data-entered. Default scaleX(1), entry-only keyframe preserves motion. Minimal source changes; facts and privacy unchanged.
+- Test added: `tests/e2e/adversarial-repairs.spec.ts`.
+- Verification recipe: Block JavaScript requests; scroll #experience; each trackBar painted scale >=0.95.
+- RICE: ordinal triage estimate 4 × 2 × 1 ÷ 1 = 8 (not an observed usage metric).
+- Status: VERIFIED-CLOSED by independent Production QA for this recipe only.
+- Shipped in: C4, PR46, main `82ffb9ee`, live run36537718878, 2026-09-29.
+- Evidence (post-fix): `evidence/c4-repairs/production-qa.json`, `production-tests.log`, `review-final.json`.
+
+#### C4-NESTED-FOCUS — Vitrine nested arrow keys stole focus
+- Lens / framework: WCAG accessibility · Nielsen visibility/control.
+- Persona(s) affected: P1, P4.
+- Section / viewport: Vitrine; keyboard.
+- Observed (production): failing-before evidence `evidence/c4-repairs/before.json`.
+- Expected: accessible meaningful static content and usable named controls.
+- Root cause / recommendation / fix specification: Parent plate handler accepted bubbled descendant keydown. Guard target=currentTarget. Minimal source changes; facts and privacy unchanged.
+- Test added: `tests/e2e/adversarial-repairs.spec.ts`.
+- Verification recipe: Focus first nested stage button; ArrowRight keeps focus; direct plate arrows still navigate.
+- RICE: ordinal triage estimate 4 × 2 × 1 ÷ 1 = 8 (not an observed usage metric).
+- Status: VERIFIED-CLOSED by independent Production QA for this recipe only.
+- Shipped in: C4, PR46, main `82ffb9ee`, live run36537718878, 2026-09-29.
+- Evidence (post-fix): `evidence/c4-repairs/production-qa.json`, `production-tests.log`, `review-final.json`.
+
+#### C4-STAGE-STATE — Vitrine stage selection not announced
+- Lens / framework: WCAG accessibility · Nielsen visibility/control.
+- Persona(s) affected: P1, P4.
+- Section / viewport: Vitrine; assistive technology.
+- Observed (production): failing-before evidence `evidence/c4-repairs/before.json`.
+- Expected: accessible meaningful static content and usable named controls.
+- Root cause / recommendation / fix specification: Selected state existed only as data-active; added aria-pressed. Minimal source changes; facts and privacy unchanged.
+- Test added: `tests/e2e/adversarial-repairs.spec.ts`.
+- Verification recipe: Stage one aria-pressed=true; select stage two; first=false, second=true.
+- RICE: ordinal triage estimate 4 × 2 × 1 ÷ 1 = 8 (not an observed usage metric).
+- Status: VERIFIED-CLOSED by independent Production QA for this recipe only.
+- Shipped in: C4, PR46, main `82ffb9ee`, live run36537718878, 2026-09-29.
+- Evidence (post-fix): `evidence/c4-repairs/production-qa.json`, `production-tests.log`, `review-final.json`.
+
+#### C4-MENU-TARGET — Menu target below 24px
+- Lens / framework: WCAG accessibility · Nielsen visibility/control.
+- Persona(s) affected: P1, P4.
+- Section / viewport: Global; 320/390.
+- Observed (production): failing-before evidence `evidence/c4-repairs/before.json`.
+- Expected: accessible meaningful static content and usable named controls.
+- Root cause / recommendation / fix specification: Measured height19.5px; min-height now existing --space-6 token. Minimal source changes; facts and privacy unchanged.
+- Test added: `tests/e2e/adversarial-repairs.spec.ts`.
+- Verification recipe: At320 and390 Menu bounding height >=24 and width>=24.
+- RICE: ordinal triage estimate 4 × 2 × 1 ÷ 1 = 8 (not an observed usage metric).
+- Status: VERIFIED-CLOSED by independent Production QA for this recipe only.
+- Shipped in: C4, PR46, main `82ffb9ee`, live run36537718878, 2026-09-29.
+- Evidence (post-fix): `evidence/c4-repairs/production-qa.json`, `production-tests.log`, `review-final.json`.
+
+
 ## D. Persona journey maps (production, run 20260929T0258Z, pre-fix)
 
 | Journey | Persona · viewport | Steps (timing) | Result | Screenshots |
@@ -194,12 +266,18 @@ Raw data: `journeys__all__J1-J8__pre__20260929T030837Z.json`.
 
 ## E. Release log
 
+C4: 2026-09-29 ~07:15–07:41Z; four repairs above; PR46; source ec3d135; main82ffb9ee; preview36537399630/live36537718878 success; parity82ffb9ee; local/preview/live16 each; perf delta UNMEASURED; rollback drill NOT RUN.
+
+
 | Cycle | UTC start | UTC end | Findings shipped | Commit SHA | Deploy ID | Parity | Lighthouse (mobile Perf/LCP/CLS/TBT) | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | C0 | 2026-09-29T02:58Z | not merged | UX-C0-001 (pipeline) — BLOCKED: branch push rejected (token lacks `workflows` scope); no PR/run | none | UNVERIFIED (live HTML has no build-commit meta) | not run | baseline 86 / 3.34 s / 0 / 262 ms | not run (blocked upstream) |
 | C1 | — | not started | UX-P1-001 (320 px reflow) — NOT STARTED: cannot ship before Cycle 0 lands; plan in HOURLY-EXECUTION-PLAN.md | none | — | — | — | — |
 
-## F. Verified no-issue register (production, run 20260929T0258Z)
+## F. Verified no-issue register
+
+C4 current protection: independent live16-case regression including all six flagships; eight tested widths without document overflow; one h1; no captured console/page errors. Broad visual/a11y/performance completeness not certified.
+ (production, run 20260929T0258Z)
 
 | Check | Result | Evidence |
 | --- | --- | --- |

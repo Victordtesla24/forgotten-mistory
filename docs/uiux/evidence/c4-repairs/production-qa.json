@@ -1,0 +1,100 @@
+{
+  "label": "production",
+  "role": "Independent Production QA",
+  "currentUTC": "2026-09-29T07:40:41Z",
+  "baseUrl": "https://forgotten-mistory.web.app",
+  "livehash": "82ffb9ee",
+  "requiredLiveHashPrefix": "82ffb9e",
+  "freshHashVerifiedBeforeTests": true,
+  "command": "PLAYWRIGHT_BASE_URL=https://forgotten-mistory.web.app UIUX_EVIDENCE_LABEL=production npx playwright test tests/e2e/adversarial-repairs.spec.ts tests/e2e/flagship-six.spec.ts --workers=1 --reporter=line > docs/uiux/evidence/c4-repairs/production-tests.log",
+  "testExitCode": 0,
+  "casesCount": 16,
+  "summary": {
+    "passed": 16
+  },
+  "beforeFailingCount": 5,
+  "beforeFailingIds": [
+    "C4-SSR-BARS",
+    "C4-NESTED-FOCUS",
+    "C4-STAGE-STATE",
+    "C4-MENU-TARGET-320",
+    "C4-MENU-TARGET-390"
+  ],
+  "closureFindingIds": [
+    "C4-SSR-BARS",
+    "C4-NESTED-FOCUS",
+    "C4-STAGE-STATE",
+    "C4-MENU-TARGET-320",
+    "C4-MENU-TARGET-390"
+  ],
+  "safeBasicInvariants": {
+    "h1CountAt1280": 1,
+    "italicOrEmCountAt1280": 0,
+    "cookieAt1280": "",
+    "eightWidthDocWithinViewport": true,
+    "widths": [
+      {
+        "width": 320,
+        "innerWidth": 320,
+        "docWidth": 320,
+        "bodyWidth": 320,
+        "docWithinViewport": true
+      },
+      {
+        "width": 360,
+        "innerWidth": 360,
+        "docWidth": 360,
+        "bodyWidth": 360,
+        "docWithinViewport": true
+      },
+      {
+        "width": 390,
+        "innerWidth": 390,
+        "docWidth": 390,
+        "bodyWidth": 390,
+        "docWithinViewport": true
+      },
+      {
+        "width": 414,
+        "innerWidth": 414,
+        "docWidth": 414,
+        "bodyWidth": 414,
+        "docWithinViewport": true
+      },
+      {
+        "width": 768,
+        "innerWidth": 768,
+        "docWidth": 768,
+        "bodyWidth": 768,
+        "docWithinViewport": true
+      },
+      {
+        "width": 1024,
+        "innerWidth": 1024,
+        "docWidth": 1024,
+        "bodyWidth": 1024,
+        "docWithinViewport": true
+      },
+      {
+        "width": 1280,
+        "innerWidth": 1280,
+        "docWidth": 1280,
+        "bodyWidth": 1280,
+        "docWithinViewport": true
+      },
+      {
+        "width": 1440,
+        "innerWidth": 1440,
+        "docWidth": 1440,
+        "bodyWidth": 1440,
+        "docWithinViewport": true
+      }
+    ],
+    "consoleErrors": [],
+    "pageErrors": []
+  },
+  "evidenceLog": "docs/uiux/evidence/c4-repairs/production-tests.log",
+  "limitations": [
+    "Targeted production verification only for the two requested Playwright spec files plus basic invariants; not a full matrix claim."
+  ]
+}

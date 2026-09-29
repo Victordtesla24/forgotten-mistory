@@ -1,0 +1,74 @@
+{
+  "label": "review-final",
+  "role": "independent-reviewer-followup",
+  "scope": [
+    "components/sections/Experience/Experience.tsx",
+    "components/sections/Experience/Experience.module.css"
+  ],
+  "inputsRead": [
+    "docs/uiux/evidence/c4-repairs/review.json",
+    "docs/uiux/evidence/c4-repairs/fixer.json",
+    "c4-repairs/fixer-followup.json (fixer followup report)",
+    "git diff HEAD for Experience.tsx and Experience.module.css (actual final diff)"
+  ],
+  "buildOrTestExecuted": false,
+  "verdict": "approve",
+  "summary": "The fixer followup resolves the sole outstanding high-severity concern from review.json (C4-SSR-BARS). The unconditional 1600ms fallback and the animationReady/data-animate scaffolding are gone; static default paints scaleX(1); the entry beat is now a genuine one-shot CSS keyframe animation triggered exclusively by data-entered, which itself is set only when the IntersectionObserver actually fires with isIntersecting or with boundingClientRect.bottom < 0. Prefers-reduced-motion continues to disable animation and hold bars at final width. The three other fixes (NESTED-FOCUS, STAGE-STATE, MENU-TARGET) were already approved and are unchanged by this followup.",
+  "results": [
+    {
+      "id": "C4-SSR-BARS",
+      "verdict": "approved",
+      "verificationEvidence": [
+        "grep of Experience.tsx: no occurrences of 'animationReady', 'data-animate', 'setTimeout', or '1600'.",
+        "Experience.tsx useEffect body: constructs IntersectionObserver with threshold 0.35; commit() sets entered and disconnects; commit() only invoked from (a) the IO callback when entries.some(isIntersecting || boundingClientRect.bottom < 0), or (b) the typeof IntersectionObserver === 'undefined' guard for environments without IO. No eager post-hydration commit path remains.",
+        "Experience.module.css:311-317: .trackBar default declares transform: scaleX(1) with no transition — SSR/JS-blocked paint shows full-length bars, matching the JS-blocked assertion in tests/e2e/adversarial-repairs.spec.ts:35-58.",
+        "Experience.module.css:319-333: .trackField[data-entered] .trackBar applies `animation: trackBarEnter 900ms cubic-bezier(0.16, 1, 0.3, 1) both` with per-row stagger (60ms) driven by keyframes from scaleX(0) to scaleX(1). Because CSS animations run once on class application and `both` retains the final frame, this is a genuine one-shot entry — the bars only collapse-then-draw at the moment data-entered is added, i.e. real viewport arrival, and remain at scaleX(1) thereafter with no re-trigger on subsequent scrolls.",
+        "Experience.module.css:715-722: prefers-reduced-motion selector covers both .trackBar and .trackField[data-entered] .trackBar, zeroing animation, animation-delay, transform, transition, transition-delay, will-change — RM-compliant final width with no motion."
+      ],
+      "invariantsPreserved": [
+        "900ms cubic-bezier(0.16, 1, 0.3, 1) timing preserved.",
+        "Per-row 60ms stagger preserved (now via animation-delay instead of transition-delay).",
+        "One-shot semantic preserved and strengthened: observer.disconnect() on commit prevents re-fire; keyframe with `both` prevents re-animation on class re-evaluation.",
+        "Deep-link/restored-scroll fast-forward preserved (boundingClientRect.bottom < 0).",
+        "Absent-IO environments still commit to final visible state.",
+        "prefers-reduced-motion correctly extended to the new animation selector."
+      ],
+      "residualConcerns": []
+    },
+    {
+      "id": "C4-NESTED-FOCUS",
+      "verdict": "approved-unchanged",
+      "note": "Out of scope for this followup; already approved in review.json and not modified per fixer-followup.json."
+    },
+    {
+      "id": "C4-STAGE-STATE",
+      "verdict": "approved-unchanged",
+      "note": "Out of scope for this followup; already approved in review.json and not modified per fixer-followup.json."
+    },
+    {
+      "id": "C4-MENU-TARGET",
+      "verdict": "approved-unchanged",
+      "note": "Out of scope for this followup; already approved in review.json and not modified per fixer-followup.json."
+    }
+  ],
+  "crossCuttingChecks": {
+    "facts": "unchanged (no copy or data touched in the followup diff)",
+    "tokens": "no new tokens; existing motion timing/easing preserved",
+    "scores": "no scores or metrics rendered or altered",
+    "reducedMotion": "prefers-reduced-motion selector updated to cover both .trackBar and .trackField[data-entered] .trackBar with animation:none and transform:none — correct",
+    "privacy": "no analytics, network, or storage changes; JS-blocked path deliberately renders final state"
+  },
+  "productionScreenshotReview": {
+    "attempted": false,
+    "reason": "Shell subagent cannot view images. No claim is made about the six-section desktop/mobile production screenshot sequence; visual QA of production must be performed by an agent with vision capability."
+  },
+  "unsupportedTestClaims": [
+    "No Playwright, Next build, or dev server was executed by this reviewer. Verdict rests on static reading of the actual git diff against review.json's requirements. Build is understood to be running separately; results not incorporated here."
+  ],
+  "sourceReferences": [
+    "components/sections/Experience/Experience.tsx (useEffect, IntersectionObserver-only entry commit)",
+    "components/sections/Experience/Experience.module.css (.trackBar default scaleX(1); .trackField[data-entered] .trackBar animation: trackBarEnter; @keyframes trackBarEnter; RM branch)",
+    "docs/uiux/evidence/c4-repairs/review.json (prior verdict and requiredChange for C4-SSR-BARS)",
+    "c4-repairs/fixer-followup.json (fixer followup change log)"
+  ]
+}

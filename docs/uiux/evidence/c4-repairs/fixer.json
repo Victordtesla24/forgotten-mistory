@@ -1,0 +1,45 @@
+{
+  "label": "fixer",
+  "role": "Fixer only",
+  "filesChanged": [
+    "components/sections/Experience/Experience.tsx",
+    "components/sections/Experience/Experience.module.css",
+    "components/sections/Vitrine/Vitrine.tsx",
+    "app/globals.css"
+  ],
+  "diffRoot": {
+    "C4-SSR-BARS": "Experience bars now SSR/default paint at scaleX(1); collapsed draw-in is scoped to trackField[data-animate] after hydration prepares observer/fallback, with data-entered restoring scaleX(1).",
+    "C4-NESTED-FOCUS": "Vitrine plate ArrowLeft/ArrowRight handler returns when event.target !== event.currentTarget, so descendant stage button arrow events are ignored while direct plate arrow navigation is preserved.",
+    "C4-STAGE-STATE": "Vitrine stage buttons emit aria-pressed true/false alongside existing data-active.",
+    "C4-MENU-TARGET": "app/globals.css .menu-toggle has min-height: var(--space-6) (48px token)."
+  },
+  "validation": [
+    {
+      "command": "npx tsc --noEmit --pretty false",
+      "exitCode": 0
+    },
+    {
+      "command": "npx playwright test tests/e2e/adversarial-repairs.spec.ts --project=chromium --reporter=list",
+      "baseUrl": "https://forgotten-mistory.web.app",
+      "exitCode": 1,
+      "note": "Initial run used the default live base URL before local dev server validation; all 5 expected live-before failures were still observed because local changes were not deployed."
+    },
+    {
+      "command": "PLAYWRIGHT_BASE_URL=http://127.0.0.1:4174 npx playwright test tests/e2e/adversarial-repairs.spec.ts --project=chromium --reporter=list",
+      "exitCode": 1,
+      "note": "Invalid local port; dev server selected port 8080, so all tests failed with ERR_CONNECTION_REFUSED."
+    },
+    {
+      "command": "PLAYWRIGHT_BASE_URL=http://127.0.0.1:8080 npx playwright test tests/e2e/adversarial-repairs.spec.ts --project=chromium --reporter=list",
+      "exitCode": 0,
+      "summary": {
+        "passed": 5,
+        "failed": 0
+      }
+    }
+  ],
+  "limitations": [
+    "No production deployment or production verification was performed by this role.",
+    "The complete browser suite was not run."
+  ]
+}
