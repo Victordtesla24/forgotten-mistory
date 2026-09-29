@@ -937,6 +937,7 @@ nav {
     z-index: 101;
     display: inline-flex;
     align-items: center;
+    min-height: var(--space-6);
     gap: 0.6rem;
     mix-blend-mode: difference; /* legible over any scrolling content (scoped — not on <nav>) */
 }

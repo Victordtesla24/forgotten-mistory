@@ -77,34 +77,41 @@ export default function Experience() {
     [],
   );
 
-  // The entry beat. The bars mount collapsed and are measured out once a third
-  // of the chart is on screen — the section's claim is "to scale", and a reader
-  // who never sees the scale being laid down has only been told it. One-shot:
-  // a chart that re-draws itself every time it is scrolled past is a fidget,
-  // not an argument.
+  // The entry beat. The static document paints the bars at their real length.
+  // Hydration does not hide them; the observer only marks the chart entered
+  // when it actually arrives (or when a restored/deep-link scroll is already
+  // below it), and CSS plays the one-shot draw from keyframes.
   useEffect(() => {
     const chart = chartRef.current;
     if (!chart) return undefined;
 
-    const observer = new IntersectionObserver(
+    let observer: IntersectionObserver | null = null;
+    const commit = () => {
+      setEntered(true);
+      observer?.disconnect();
+    };
+
+    if (typeof IntersectionObserver === 'undefined') {
+      commit();
+      return undefined;
+    }
+
+    observer = new IntersectionObserver(
       (entries) => {
         // Either a third of the chart has arrived, or the reader has already
-        // gone past it — a deep link to a role, or a restored scroll position,
-        // lands below the chart and would otherwise leave every bar at nothing
-        // for as long as the page is open. A chart that is behind you is a
-        // chart that has finished being drawn.
-        const commit = entries.some(
+        // gone past it — a deep link to a role, or a restored scroll position.
+        // A chart that is behind you is a chart that has finished being drawn.
+        const shouldCommit = entries.some(
           (entry) => entry.isIntersecting || entry.boundingClientRect.bottom < 0,
         );
-        if (commit) {
-          setEntered(true);
-          observer.disconnect();
-        }
+        if (shouldCommit) commit();
       },
       { threshold: 0.35 },
     );
     observer.observe(chart);
-    return () => observer.disconnect();
+    return () => {
+      observer?.disconnect();
+    };
   }, []);
 
   return (
