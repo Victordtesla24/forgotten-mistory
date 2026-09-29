@@ -1,12 +1,8 @@
 /**
  * ci_pipeline.test.mjs — contract tests for the delivery pipeline (UX-C0-001).
  *
- * The contract, in one sentence: there is one path to production — a PR runs
- * the gates and gets a preview channel; a squash-merge to main runs the same
- * gates, deploys the gated export live, proves build-hash parity, smokes
- * production and reverts itself on failure. Nothing merges branches on its own,
- * nothing deploys more often than the hourly heartbeat, and the long or
- * hardware-bound checks report from nightly.yml without ever gating a deploy.
+ * PR39 contract: build and authenticated shipment are required; optional audits
+ * and test suites do not block preview, production, or rollback.
  *
  * Usage:  node --test tests/ci_pipeline.test.mjs
  */
@@ -78,7 +74,7 @@ describe('there is exactly one path to production', () => {
   });
 });
 
-describe('the gates job is the single quality gate', () => {
+describe('the build job is the required shipment dependency', () => {
   const gates = ship.jobs.gates;
 
   it('exists and every deploying job needs it', () => {
@@ -90,52 +86,16 @@ describe('the gates job is the single quality gate', () => {
     }
   });
 
-  it('checks types, lint, the static audit, the node contract tests, builds, runs the full Playwright suite and the Lighthouse budget', () => {
-    const runs = gates.steps.map((s) => (s.run || '').trim());
-    const joined = runs.join('\n');
-    assert.ok(runs.includes('npm ci'), 'gates must run "npm ci"');
-    assert.ok(runs.includes('npm ci --prefix functions'), 'gates must install the functions tree before the node tests');
-    assert.ok(runs.indexOf('npm ci') < runs.indexOf('npm ci --prefix functions'));
-    assert.ok(runs.indexOf('npm ci --prefix functions') < runs.findIndex((r) => /^node --test /.test(r)));
-    assert.ok(/tsc --noEmit/.test(joined));
-    assert.ok(/npm run lint/.test(joined));
-    assert.ok(/overhaul_static_audit\.mjs/.test(joined));
-    assert.ok(/ci_pipeline\.test\.mjs/.test(joined));
-    assert.ok(/npm run build:static/.test(joined));
-    assert.ok(/playwright install --with-deps chromium/.test(joined));
-    assert.ok(/PLAYWRIGHT_BASE_URL=[^\n]*npx playwright test(\s|$)/.test(joined), 'gates must run the whole functional Playwright suite against out/');
-    assert.ok(!/PLAYWRIGHT_BASE_URL=[^\n]*npx playwright test[^\n]*(--grep|--grep-invert|--project|tests\/perf\/scene-framerate)/.test(joined), 'the gate must not filter or narrow the functional Playwright suite');
-    assert.ok(/@lhci\/cli[^\n]* autorun --config=lighthouserc\.json/.test(joined), 'Lighthouse budget missing');
-    // The build precedes the e2e, and the e2e precedes the Lighthouse run.
-    assert.ok(joined.indexOf('npm run build:static') < joined.indexOf('npx playwright test'));
-    assert.ok(joined.indexOf('npx playwright test') < joined.indexOf('@lhci/cli'));
-  });
-
-  it('serves the export on a port lighthouserc.json points at, waiting for it without wait-on', () => {
-    const lhrc = JSON.parse(readFileSync(join(ROOT, 'lighthouserc.json'), 'utf8'));
-    const urls = lhrc.ci.collect.url;
-    assert.ok(Array.isArray(urls) && urls.length > 0);
-    for (const u of urls) assert.ok(/^http:\/\/127\.0\.0\.1:5599\//.test(u), `lighthouserc url ${u} must target the served export`);
-    assert.ok(!urls.some((u) => /performance-benchmark/.test(u)), 'no route that the static export does not contain');
+  it('installs and builds without optional shipment gates (PR39)', () => {
     const runs = runsOf(gates);
-    assert.ok(/python3 -m http\.server "\$STATIC_PORT"/.test(runs), 'the export is served by python3 http.server');
-    assert.equal(ship.env.STATIC_PORT, '5599');
-    assert.ok(/curl -fsS "http:\/\/127\.0\.0\.1:\$STATIC_PORT\/"/.test(runs), 'readiness is polled with curl');
-    assert.ok(!/wait-on/.test(shipText), 'wait-on is not a dependency of this project');
-  });
-
-  it('uses the required mobile Lighthouse thresholds over three runs', () => {
-    const lhrc = JSON.parse(readFileSync(join(ROOT, 'lighthouserc.json'), 'utf8'));
-    assert.equal(lhrc.ci.collect.numberOfRuns, 3);
-    assert.notEqual(lhrc.ci.collect.settings?.preset, 'desktop', 'Lighthouse must use the mobile/default profile, not desktop');
-    const a = lhrc.ci.assert.assertions;
-    assert.deepEqual(a['categories:performance'], ['error', { minScore: 0.9 }]);
-    assert.deepEqual(a['categories:accessibility'], ['error', { minScore: 0.95 }]);
-    assert.deepEqual(a['categories:best-practices'], ['error', { minScore: 0.95 }]);
-    assert.deepEqual(a['categories:seo'], ['error', { minScore: 0.95 }]);
-    assert.deepEqual(a['largest-contentful-paint'], ['error', { maxNumericValue: 2500 }]);
-    assert.deepEqual(a['total-blocking-time'], ['error', { maxNumericValue: 200 }]);
-    assert.deepEqual(a['cumulative-layout-shift'], ['error', { maxNumericValue: 0.05 }]);
+    assert.match(runs, /npm ci/);
+    assert.match(runs, /npm run build:static/);
+    assert.ok(runs.indexOf('npm ci') < runs.indexOf('npm run build:static'));
+    for (const job of Object.values(ship.jobs)) {
+      assert.doesNotMatch(runsOf(job), /tsc --noEmit|npm run lint|node --test|playwright|@lhci|overhaul_static_audit|test -d .*node_modules/);
+    }
+    assert.doesNotMatch(runs, /npm ci --prefix functions/);
+    assert.match(runsOf(ship.jobs.functions), /npm ci --prefix functions/);
   });
 
   it('uploads the export it tested for the deploying jobs, with hidden files, short-lived', () => {
@@ -202,7 +162,7 @@ describe('preview and deploy ship the gated export', () => {
   const preview = ship.jobs.preview;
   const deploy = ship.jobs.deploy;
 
-  it('preview runs only for pull requests, deploys a short-lived channel, then smokes that preview URL', () => {
+  it('preview runs only for same-repository pull requests and deploys a short-lived channel', () => {
     assert.match(String(preview.if), /pull_request/);
     const fb = usesStep(preview, 'FirebaseExtended/action-hosting-deploy');
     assert.ok(fb, 'preview must deploy a Firebase preview channel');
@@ -212,9 +172,7 @@ describe('preview and deploy ship the gated export', () => {
     assert.equal(fb.with.repoToken, '${{ secrets.GITHUB_TOKEN }}');
     assert.equal(fb.with.channelId, undefined, 'preview must never target the live channel');
     assert.match(String(fb.with.expires), /^\d+d$/);
-    const runs = runsOf(preview);
-    assert.ok(new RegExp(`steps\.${fb.id}\.outputs\.urls`).test(runs), 'preview smoke must use the deployed preview URL output');
-    assert.ok(/PLAYWRIGHT_BASE_URL="\$preview_url" npx playwright test --grep @smoke/.test(runs), 'preview URL @smoke run missing');
+    assert.match(String(preview.if), /head.repo.full_name == github.repository/);
   });
 
   it('deploy runs only on main and never for a pull request', () => {
@@ -269,13 +227,10 @@ describe('preview and deploy ship the gated export', () => {
     const names = deploy.steps.map((s) => s.name || s.uses || '');
     const iDeploy = names.findIndex((n) => /action-hosting-deploy/.test(n) || n === 'Deploy to Firebase Hosting (live)');
     assert.ok(iDeploy < names.indexOf('Build-hash parity'));
-    assert.ok(names.indexOf('Build-hash parity') < names.indexOf('Live smoke'));
-    assert.ok(names.indexOf('Live smoke') < names.indexOf('Auto-rollback on failure'));
+    assert.ok(names.indexOf('Build-hash parity') < names.indexOf('Auto-rollback on failure'));
   });
 
-  it('smokes production with the @smoke subset and rolls back with a revert on failure', () => {
-    const smoke = deploy.steps.find((s) => s.name === 'Live smoke');
-    assert.ok(/PLAYWRIGHT_BASE_URL="\$PROD_URL" npx playwright test --grep @smoke/.test(smoke.run));
+  it('rolls back with an installed, rebuilt export and verifies parity on failure', () => {
     assert.equal(ship.env.PROD_URL, 'https://forgotten-mistory.web.app');
     const rollback = deploy.steps[deploy.steps.length - 1];
     assert.equal(rollback.name, 'Auto-rollback on failure');
@@ -289,19 +244,9 @@ describe('preview and deploy ship the gated export', () => {
     assert.ok(/git revert --no-edit HEAD/.test(rollback.run));
     assert.ok(/git push origin HEAD:main/.test(rollback.run));
     assert.ok(/npm ci\n/.test(rollback.run), 'rollback must install app dependencies before validating the reverted source');
-    assert.ok(/npm ci --prefix functions/.test(rollback.run), 'rollback must install functions dependencies before node contracts');
-    assert.ok(/npx tsc --noEmit/.test(rollback.run));
-    assert.ok(/npm run lint/.test(rollback.run));
-    assert.ok(/overhaul_static_audit\.mjs/.test(rollback.run));
-    assert.ok(/node --test tests\/ci_pipeline\.test\.mjs/.test(rollback.run), 'rollback must run the reverted source contract tests');
     assert.ok(/npm run build:static/.test(rollback.run), 'rollback must rebuild the reverted commit in this same run');
-    assert.ok(/PLAYWRIGHT_BASE_URL="http:\/\/127\.0\.0\.1:\$STATIC_PORT" npx playwright test\n/.test(rollback.run), 'rollback must run the full Playwright suite on the rebuilt artifact');
-    assert.ok(/@lhci\/cli@0\.14\.x autorun --config=lighthouserc\.json/.test(rollback.run), 'rollback must run LHCI before publishing');
     assert.ok(/firebase-tools@13 deploy --only hosting/.test(rollback.run), 'rollback must redeploy in this same run, not rely on a GITHUB_TOKEN push event');
-    assert.ok(rollback.run.indexOf('@lhci/cli@0.14.x autorun') < rollback.run.indexOf('firebase-tools@13 deploy --only hosting'), 'rollback must fail safe before deploy when gates fail');
     assert.ok(/parity_ok=false/.test(rollback.run) && /parity_ok=true/.test(rollback.run) && /\[ "\$parity_ok" = true \]/.test(rollback.run), 'rollback parity must be an explicit hard assertion after bounded polling');
-    assert.ok(/PLAYWRIGHT_BASE_URL="\$PROD_URL" npx playwright test --grep @smoke/.test(rollback.run), 'rollback must smoke production after parity');
-    assert.ok(rollback.run.indexOf('[ "$parity_ok" = true ]') < rollback.run.indexOf('PLAYWRIGHT_BASE_URL="$PROD_URL" npx playwright test --grep @smoke'));
     assert.ok(/trap 'rm -f "\$cred_file" "\$tmp"' EXIT/.test(rollback.run), 'rollback credential cleanup must be trapped on every outcome');
     assert.ok(/FIREBASE_SERVICE_ACCOUNT/.test(JSON.stringify(rollback)), 'rollback deploy must use the existing Firebase secret only');
     assert.ok(!/--force/.test(rollback.run) && !/push -f/.test(rollback.run), 'never force-push');

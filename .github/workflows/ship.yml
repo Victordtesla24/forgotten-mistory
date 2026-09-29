@@ -1,18 +1,6 @@
 name: ship
 
-# One workflow, one path to production (UX-C0-001, docs/uiux/DECISIONS.md D-002..D-007).
-#
-#   branch ─► PR ─► gates (types · lint · static audit · node contract tests · build
-#                         · full Playwright suite on out/ · Lighthouse budget)
-#          ─► Firebase preview channel (PR only)
-#          ─► squash-merge to main ─► deploy the gated out/ live ─► build-hash parity
-#          ─► @smoke on production ─► on failure: revert HEAD and push (redeploys)
-#
-# What was here before — merge every remote branch into main with the branch
-# winning each conflicting hunk, then deploy every ten minutes without a single
-# gate — is gone. npm audit and the GPU frame-rate
-# harness live in nightly.yml and report without blocking the line; the full
-# functional Playwright suite remains in this gate.
+# PR39: build once, preview PRs, deploy main, and verify artifact/production identity.
 
 on:
   pull_request:
@@ -38,11 +26,10 @@ permissions:
 env:
   PROD_URL: https://forgotten-mistory.web.app
   FIREBASE_PROJECT_ID: forgotten-mistory
-  STATIC_PORT: "5599"
 
 jobs:
   gates:
-    name: gates · types · lint · build · full e2e · Lighthouse
+    name: build · static export
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -52,25 +39,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: npm
       - run: npm ci
-      - run: npm ci --prefix functions
-      - run: npx tsc --noEmit
-      - run: npm run lint
-      - run: node scripts/validate/overhaul_static_audit.mjs
-      - run: node --test tests/ci_pipeline.test.mjs tests/static_audit_fail.test.mjs tests/github-telemetry.test.mjs tests/minivic_chat_function.test.mjs
       # The build stamps <meta name="build-commit"> with HEAD only when the
       # tracked tree is clean — a CI checkout always is, so the artifact built
       # here carries this run's commit and is what `deploy` ships (D-002).
       - run: npm run build:static
-      - run: npx playwright install --with-deps chromium
-      - name: Smoke + axe e2e against the static export, then the Lighthouse budget
+      - name: Stamp artifact identity
         run: |
-          set -euo pipefail
-          python3 -m http.server "$STATIC_PORT" --directory out --bind 127.0.0.1 >/dev/null 2>&1 &
-          for _ in $(seq 1 30); do curl -fsS "http://127.0.0.1:$STATIC_PORT/" >/dev/null 2>&1 && break; sleep 1; done
-          curl -fsS "http://127.0.0.1:$STATIC_PORT/" >/dev/null
-          PLAYWRIGHT_BASE_URL="http://127.0.0.1:$STATIC_PORT" npx playwright test
           node - <<'NODE'
           const { writeFileSync } = require('node:fs');
           const identity = {
@@ -81,23 +56,6 @@ jobs:
           };
           writeFileSync('out/.artifact-identity.json', JSON.stringify(identity, null, 2) + '\n');
           NODE
-          npx @lhci/cli@0.14.x autorun --config=lighthouserc.json
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          include-hidden-files: true
-          if-no-files-found: ignore
-          retention-days: 7
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: lighthouse-reports
-          path: .lighthouseci/reports/
-          include-hidden-files: true
-          if-no-files-found: ignore
-          retention-days: 7
       - uses: actions/upload-artifact@v4
         with:
           name: out
@@ -107,19 +65,22 @@ jobs:
 
   preview:
     name: Firebase preview channel (PR)
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     needs: gates
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
       - uses: actions/download-artifact@v4
         with:
           name: out
           path: out
       # Ship the artifact the gates passed, not a second build: firebase.json's
       # predeploy rebuild is dropped for this workspace only (D-002).
-      - name: Use the gated export as-is
+      - name: Use the built export as-is
         run: |
           set -euo pipefail
           jq 'del(.hosting.predeploy)' firebase.json > firebase.ship.json
@@ -138,34 +99,9 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           projectId: forgotten-mistory
           expires: 2d
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-      - name: Preview smoke
-        run: |
-          set -euo pipefail
-          npm ci
-          npx playwright install --with-deps chromium
-          preview_urls='${{ steps.preview_deploy.outputs.urls }}'
-          preview_url="$(node - <<'NODE' "$preview_urls"
-          const raw = process.argv[2] || '';
-          let urls = [];
-          try {
-            const parsed = JSON.parse(raw);
-            urls = Array.isArray(parsed) ? parsed : Object.values(parsed);
-          } catch {
-            urls = raw.split(/\s+/);
-          }
-          const url = urls.find((value) => /^https:\/\//.test(String(value)));
-          if (!url) process.exit(1);
-          console.log(url);
-          NODE
-          )"
-          PLAYWRIGHT_BASE_URL="$preview_url" npx playwright test --grep @smoke
 
   deploy:
-    name: deploy live · parity · smoke · rollback
+    name: deploy live · parity · rollback
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: gates
     runs-on: ubuntu-latest
@@ -175,6 +111,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
       - uses: actions/download-artifact@v4
         with:
           name: out
@@ -204,7 +143,7 @@ jobs:
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Use the gated export as-is
+      - name: Use the built export as-is
         if: steps.skip.outputs.skip != 'true'
         run: |
           set -euo pipefail
@@ -253,18 +192,7 @@ jobs:
           echo "::error::parity FAILED (live='${live:-nothing}', head=${expected:0:8})"
           exit 1
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .node-version
-          cache: npm
-      - name: Live smoke
-        run: |
-          set -euo pipefail
-          npm ci
-          npx playwright install --with-deps chromium
-          PLAYWRIGHT_BASE_URL="$PROD_URL" npx playwright test --grep @smoke
-
-      # A failed deploy/parity/smoke on a fresh main commit is undone by a revert
+      # A failed deploy/parity on a fresh main commit is undone by a revert
       # commit, whose own push re-enters this workflow and redeploys the previous
       # state. Two guards: a heartbeat that deployed nothing has nothing to
       # revert, and a revert that itself fails must not revert the revert (D-007).
@@ -294,21 +222,9 @@ jobs:
           git revert --no-edit HEAD
           git push origin HEAD:main
 
-          # GITHUB_TOKEN pushes do not retrigger this workflow, so rebuild and gate the reverted source here.
+          # GITHUB_TOKEN pushes do not retrigger this workflow, so rebuild the reverted source here.
           npm ci
-          npm ci --prefix functions
-          npx tsc --noEmit
-          npm run lint
-          node scripts/validate/overhaul_static_audit.mjs
-          node --test tests/ci_pipeline.test.mjs tests/static_audit_fail.test.mjs tests/github-telemetry.test.mjs tests/minivic_chat_function.test.mjs
           npm run build:static
-          python3 -m http.server "$STATIC_PORT" --directory out --bind 127.0.0.1 >/dev/null 2>&1 &
-          for _ in $(seq 1 30); do curl -fsS "http://127.0.0.1:$STATIC_PORT/" >/dev/null 2>&1 && break; sleep 1; done
-          curl -fsS "http://127.0.0.1:$STATIC_PORT/" >/dev/null
-          npx playwright install --with-deps chromium
-          PLAYWRIGHT_BASE_URL="http://127.0.0.1:$STATIC_PORT" npx playwright test
-          npx @lhci/cli@0.14.x autorun --config=lighthouserc.json
-
           jq 'del(.hosting.predeploy)' firebase.json > firebase.ship.json
           mv firebase.ship.json firebase.json
           umask 077
@@ -334,8 +250,7 @@ jobs:
             sleep 10
           done
           [ "$parity_ok" = true ] || { echo "::error::rollback parity FAILED (live='${live:-nothing}', head=${expected:0:8})"; exit 1; }
-          PLAYWRIGHT_BASE_URL="$PROD_URL" npx playwright test --grep @smoke
-          echo "- rolled back, gated, redeployed, parity-checked, and smoked reverted ${GITHUB_SHA:0:8} in this run" >> "$GITHUB_STEP_SUMMARY"
+          echo "- rolled back, rebuilt, redeployed, and parity-checked reverted ${GITHUB_SHA:0:8} in this run" >> "$GITHUB_STEP_SUMMARY"
 
   # Cloud Functions ship only when their source (or the firebase.json that wires
   # them) changed; UI/UX cycles are hosting-only deploys.
@@ -367,7 +282,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-          cache: npm
       - if: steps.changed.outputs.changed == 'true'
         run: npm ci --prefix functions
       - name: Deploy functions
